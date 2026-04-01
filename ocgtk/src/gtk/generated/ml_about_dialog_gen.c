@@ -110,7 +110,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_set_documenters(value self, value 
 {
 CAMLparam2(self, arg1);
     int arg1_length = Wosize_val(arg1);
-    char** c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
+    const char** c_arg1 = (const char**)g_malloc(sizeof(const char*) * (arg1_length + 1));
     for (int i = 0; i < arg1_length; i++) {
       c_arg1[i] = String_val(Field(arg1, i));
     }
@@ -141,7 +141,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_set_authors(value self, value arg1
 {
 CAMLparam2(self, arg1);
     int arg1_length = Wosize_val(arg1);
-    char** c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
+    const char** c_arg1 = (const char**)g_malloc(sizeof(const char*) * (arg1_length + 1));
     for (int i = 0; i < arg1_length; i++) {
       c_arg1[i] = String_val(Field(arg1, i));
     }
@@ -156,7 +156,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_set_artists(value self, value arg1
 {
 CAMLparam2(self, arg1);
     int arg1_length = Wosize_val(arg1);
-    char** c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
+    const char** c_arg1 = (const char**)g_malloc(sizeof(const char*) * (arg1_length + 1));
     for (int i = 0; i < arg1_length; i++) {
       c_arg1[i] = String_val(Field(arg1, i));
     }
@@ -313,7 +313,7 @@ CAMLexport CAMLprim value ml_gtk_about_dialog_add_credit_section(value self, val
 {
 CAMLparam3(self, arg1, arg2);
     int arg2_length = Wosize_val(arg2);
-    char** c_arg2 = (char**)g_malloc(sizeof(char*) * (arg2_length + 1));
+    const char** c_arg2 = (const char**)g_malloc(sizeof(const char*) * (arg2_length + 1));
     for (int i = 0; i < arg2_length; i++) {
       c_arg2[i] = String_val(Field(arg2, i));
     }

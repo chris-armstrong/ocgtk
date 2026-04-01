@@ -216,7 +216,6 @@
       (echo "GResource")
       (echo "GSeekable")
       (echo "GSettings")
-      (echo "GSettings_backend")
       (echo "GSettings_schema")
       (echo "GSettings_schema_key")
       (echo "GSettings_schema_source")
@@ -356,7 +355,6 @@
       (echo "Search_entry")
       (echo "Seekable")
       (echo "Settings")
-      (echo "Settings_backend")
       (echo "Settings_schema")
       (echo "Settings_schema_key")
       (echo "Settings_schema_source")
@@ -569,7 +567,6 @@ rm cflag-gio.sexp.tmp clink-gio.sexp.tmp\\
    ml_resolver_gen
    ml_resource_gen
    ml_seekable_gen
-   ml_settings_backend_gen
    ml_settings_gen
    ml_settings_schema_gen
    ml_settings_schema_key_gen

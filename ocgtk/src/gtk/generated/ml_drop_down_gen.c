@@ -30,7 +30,7 @@ CAMLexport CAMLprim value ml_gtk_drop_down_new_from_strings(value arg1)
 {
 CAMLparam1(arg1);
     int arg1_length = Wosize_val(arg1);
-    char** c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
+    const char** c_arg1 = (const char**)g_malloc(sizeof(const char*) * (arg1_length + 1));
     for (int i = 0; i < arg1_length; i++) {
       c_arg1[i] = String_val(Field(arg1, i));
     }

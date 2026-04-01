@@ -154,16 +154,28 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
         | None -> element_mapping.c_type
       in
 
+      (* Bare string alias types (e.g. "utf8", "gchararray") have no pointer
+         suffix, but g_value_get_boxed returns a NULL-terminated array of
+         strings.  Use const char* as the element type so c_result is declared
+         as const char** and array indexing gives const char*, making NULL
+         comparison and caml_copy_string calls well-typed. *)
+      let effective_element_c_type =
+        if String.equal element_mapping.c_to_ml "caml_copy_string"
+           && not (String.contains element_c_type '*')
+        then "const char*"
+        else element_c_type
+      in
+
       let prop_name = Utils.ml_property_name ~ctx ~class_name prop in
       let c_cast = sprintf "%s_val" c_type in
       let c_array_var = "c_result" in
 
-      (* Generate array conversion code. 
+      (* Generate array conversion code.
          Don't pass length_expr - let generate_array_c_to_ml figure it out
          from the array type (zero-terminated, etc.) *)
       let conv_code, ml_array_var_name, _cleanup_code =
         C_stub_helpers.generate_array_c_to_ml ~ctx ~var:c_array_var ~array_info
-          ~length_expr:None ~element_c_type
+          ~length_expr:None ~element_c_type:effective_element_c_type
           ~transfer_ownership:prop.prop_type.transfer_ownership
       in
 
@@ -187,8 +199,8 @@ let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
          CAMLreturn(%s);\n\
          }"
         prop_name c_type c_type c_cast prop.prop_name prop_name prop.prop_name
-        prop.prop_name element_c_type c_array_var element_c_type conv_code
-        ml_array_var_name
+        prop.prop_name effective_element_c_type c_array_var effective_element_c_type
+        conv_code ml_array_var_name
   | None ->
       (* Regular property - use existing type mapping *)
       let type_info =

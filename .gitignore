@@ -3,7 +3,7 @@ _build
 *.install
 __pycache__/
 .claude/scratchpad/
-.opencode/scratchpad/
+.opencode/
 
 # ctx managed entries
 .context/sessions/

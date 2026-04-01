@@ -21,12 +21,12 @@ CAMLexport CAMLprim value ml_gtk_string_list_new(value arg1)
 {
 CAMLparam1(arg1);
     int arg1_length = 0;
-    char** c_arg1 = NULL;
+    const char** c_arg1 = NULL;
     
     if (Is_some(arg1)) {
         value array = Some_val(arg1);
         arg1_length = Wosize_val(array);
-        c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
+        c_arg1 = (const char**)g_malloc(sizeof(const char*) * (arg1_length + 1));
         for (int i = 0; i < arg1_length; i++) {
           c_arg1[i] = String_val(Field(array, i));
         }
@@ -51,12 +51,12 @@ CAMLexport CAMLprim value ml_gtk_string_list_splice(value self, value arg1, valu
 {
 CAMLparam4(self, arg1, arg2, arg3);
     int arg3_length = 0;
-    char** c_arg3 = NULL;
+    const char** c_arg3 = NULL;
     
     if (Is_some(arg3)) {
         value array = Some_val(arg3);
         arg3_length = Wosize_val(array);
-        c_arg3 = (char**)g_malloc(sizeof(char*) * (arg3_length + 1));
+        c_arg3 = (const char**)g_malloc(sizeof(const char*) * (arg3_length + 1));
         for (int i = 0; i < arg3_length; i++) {
           c_arg3[i] = String_val(Field(array, i));
         }
@@ -108,3 +108,24 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_string_list_get_strings(value self)
+{
+GtkStringList *obj = (GtkStringList *)GtkStringList_val(self);
+CAMLparam1(self);
+GValue prop_gvalue = G_VALUE_INIT;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "strings");
+if (pspec == NULL) caml_failwith("ml_gtk_string_list_get_strings: property 'strings' not found");
+g_value_init(&prop_gvalue, pspec->value_type);
+g_object_get_property(G_OBJECT(obj), "strings", &prop_gvalue);
+const char** c_result = (const char**)g_value_get_boxed(&prop_gvalue);
+int c_result_length = 0;
+    while (c_result[c_result_length] != NULL) c_result_length++;
+    CAMLlocal1(ml_c_result);
+    ml_c_result = caml_alloc(c_result_length, 0);
+    for (int i = 0; i < c_result_length; i++) {
+      Store_field(ml_c_result, i, caml_copy_string(c_result[i]));
+    }
+g_value_unset(&prop_gvalue);
+CAMLreturn(ml_c_result);
+}

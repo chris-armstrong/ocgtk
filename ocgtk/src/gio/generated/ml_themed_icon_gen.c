@@ -35,7 +35,7 @@ CAMLexport CAMLprim value ml_g_themed_icon_new_from_names(value arg1, value arg2
 {
 CAMLparam2(arg1, arg2);
     int arg1_length = Wosize_val(arg1);
-    char** c_arg1 = (char**)g_malloc(sizeof(char*) * arg1_length);
+    const char** c_arg1 = (const char**)g_malloc(sizeof(const char*) * arg1_length);
     for (int i = 0; i < arg1_length; i++) {
       c_arg1[i] = String_val(Field(arg1, i));
     }

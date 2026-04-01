@@ -87,12 +87,12 @@ CAMLexport CAMLprim value ml_g_settings_set_strv(value self, value arg1, value a
 {
 CAMLparam3(self, arg1, arg2);
     int arg2_length = 0;
-    gchar** c_arg2 = NULL;
+    const char** c_arg2 = NULL;
     
     if (Is_some(arg2)) {
         value array = Some_val(arg2);
         arg2_length = Wosize_val(array);
-        c_arg2 = (gchar**)g_malloc(sizeof(gchar*) * (arg2_length + 1));
+        c_arg2 = (const char**)g_malloc(sizeof(const char*) * (arg2_length + 1));
         for (int i = 0; i < arg2_length; i++) {
           c_arg2[i] = String_val(Field(array, i));
         }
