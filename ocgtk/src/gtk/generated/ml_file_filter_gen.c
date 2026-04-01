@@ -98,7 +98,7 @@ GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "mime-
 if (pspec == NULL) caml_failwith("ml_gtk_file_filter_get_mime_types: property 'mime-types' not found");
 g_value_init(&prop_gvalue, pspec->value_type);
 g_object_get_property(G_OBJECT(obj), "mime-types", &prop_gvalue);
-utf8* c_result = (utf8*)g_value_get_boxed(&prop_gvalue);
+const char** c_result = (const char**)g_value_get_boxed(&prop_gvalue);
 int c_result_length = 0;
     while (c_result[c_result_length] != NULL) c_result_length++;
     CAMLlocal1(ml_c_result);
@@ -118,7 +118,7 @@ GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "patte
 if (pspec == NULL) caml_failwith("ml_gtk_file_filter_get_patterns: property 'patterns' not found");
 g_value_init(&prop_gvalue, pspec->value_type);
 g_object_get_property(G_OBJECT(obj), "patterns", &prop_gvalue);
-utf8* c_result = (utf8*)g_value_get_boxed(&prop_gvalue);
+const char** c_result = (const char**)g_value_get_boxed(&prop_gvalue);
 int c_result_length = 0;
     while (c_result[c_result_length] != NULL) c_result_length++;
     CAMLlocal1(ml_c_result);
@@ -138,7 +138,7 @@ GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "suffi
 if (pspec == NULL) caml_failwith("ml_gtk_file_filter_get_suffixes: property 'suffixes' not found");
 g_value_init(&prop_gvalue, pspec->value_type);
 g_object_get_property(G_OBJECT(obj), "suffixes", &prop_gvalue);
-utf8* c_result = (utf8*)g_value_get_boxed(&prop_gvalue);
+const char** c_result = (const char**)g_value_get_boxed(&prop_gvalue);
 int c_result_length = 0;
     while (c_result[c_result_length] != NULL) c_result_length++;
     CAMLlocal1(ml_c_result);

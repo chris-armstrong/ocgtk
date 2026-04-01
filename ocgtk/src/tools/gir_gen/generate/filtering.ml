@@ -299,7 +299,7 @@ let should_generate_constructor ~ctx (ctor : gir_constructor) =
     List.exists ctor.ctor_parameters ~f:(fun p ->
         list_has_interface_element ~ctx p.param_type)
   in
-  ctor.ctor_introspectable && (not ctor.throws)
+  ctor.ctor_introspectable
   && (not (constructor_has_varargs ctor))
   && (not has_unknown_type)
   && not has_list_with_interface_element

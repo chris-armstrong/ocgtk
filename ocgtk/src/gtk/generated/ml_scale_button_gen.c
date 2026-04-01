@@ -21,12 +21,12 @@ CAMLexport CAMLprim value ml_gtk_scale_button_new(value arg1, value arg2, value 
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
     int arg4_length = 0;
-    char** c_arg4 = NULL;
+    const char** c_arg4 = NULL;
     
     if (Is_some(arg4)) {
         value array = Some_val(arg4);
         arg4_length = Wosize_val(array);
-        c_arg4 = (char**)g_malloc(sizeof(char*) * (arg4_length + 1));
+        c_arg4 = (const char**)g_malloc(sizeof(const char*) * (arg4_length + 1));
         for (int i = 0; i < arg4_length; i++) {
           c_arg4[i] = String_val(Field(array, i));
         }
@@ -51,7 +51,7 @@ CAMLexport CAMLprim value ml_gtk_scale_button_set_icons(value self, value arg1)
 {
 CAMLparam2(self, arg1);
     int arg1_length = Wosize_val(arg1);
-    char** c_arg1 = (char**)g_malloc(sizeof(char*) * (arg1_length + 1));
+    const char** c_arg1 = (const char**)g_malloc(sizeof(const char*) * (arg1_length + 1));
     for (int i = 0; i < arg1_length; i++) {
       c_arg1[i] = String_val(Field(arg1, i));
     }

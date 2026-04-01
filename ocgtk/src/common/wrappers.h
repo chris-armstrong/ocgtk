@@ -63,7 +63,7 @@ CAMLexport const void *ml_gir_record_ptr_val(value v, const char *type_name);
 CAMLexport value ml_gobject_val_of_ext(const void *gobject);
 
 /* Extract GObject pointer from custom block (const version - preferred) */
-CAMLexport const void* ml_gobject_ext_of_val(const value val);
+CAMLexport const void* ml_gobject_ext_of_val(value val);
 
 /* Non-const version for use with functions requiring mutable pointers */
 #define GObject_ext_of_val(val) ((GObject*)ml_gobject_ext_of_val(val))

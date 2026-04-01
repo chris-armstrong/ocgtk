@@ -187,7 +187,7 @@ CAMLexport value ml_gobject_val_of_ext(const void *gobject) {
     CAMLreturn(v);
 }
 
-CAMLexport const void* ml_gobject_ext_of_val(const value val) {
+CAMLexport const void* ml_gobject_ext_of_val(value val) {
     CAMLparam1(val);
     CAMLreturnT(const void*, *((const void**)Data_custom_val(val)));
 }
@@ -229,7 +229,7 @@ value val_of_ext(const void *widget) {
     CAMLreturn(v);
 }
 
-const void* ext_of_val(const value val) {
+const void* ext_of_val(value val) {
     CAMLparam1(val);
     CAMLreturnT(const void*, *((const void**)Data_abstract_val(val)));
 }

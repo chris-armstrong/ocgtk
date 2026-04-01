@@ -22,11 +22,11 @@ module Array_conv = struct
   let is_string_array = Filtering.is_string_array
 
   (** Generate conversion code for zero-terminated arrays. Handles both pointer
-      arrays (NULL-terminated) and non-pointer arrays (structs). *)
-  let zero_terminated_conversion ~length_var ~c_array_var ~var ~element_c_type
+      arrays (NULL-terminated) and non-pointer arrays (structs).
+      [elem_type_alloc] is the pre-computed element type for allocation — callers
+      are responsible for preserving or stripping const as appropriate. *)
+  let zero_terminated_conversion ~length_var ~c_array_var ~var ~elem_type_alloc
       ~element_tm ~is_pointer_array ~deref_prefix =
-    (* Strip const for array allocation - we need mutable arrays to fill in *)
-    let elem_type_nonconst = strip_const element_c_type in
     if is_pointer_array then
       sprintf
         "int %s = Wosize_val(%s);\n\
@@ -35,7 +35,7 @@ module Array_conv = struct
         \      %s[i] = %s(Field(%s, i));\n\
         \    }\n\
         \    %s[%s] = NULL;"
-        length_var var elem_type_nonconst c_array_var elem_type_nonconst elem_type_nonconst
+        length_var var elem_type_alloc c_array_var elem_type_alloc elem_type_alloc
         length_var length_var c_array_var element_tm.ml_to_c var c_array_var
         length_var
     else
@@ -46,23 +46,22 @@ module Array_conv = struct
         \      %s[i] = %s%s(Field(%s, i));\n\
         \    }\n\
         \    %s[%s] = (%s){0};"
-        length_var var elem_type_nonconst c_array_var elem_type_nonconst elem_type_nonconst
+        length_var var elem_type_alloc c_array_var elem_type_alloc elem_type_alloc
         length_var length_var c_array_var deref_prefix element_tm.ml_to_c var
-        c_array_var length_var elem_type_nonconst
+        c_array_var length_var elem_type_alloc
 
   (** Generate conversion code for non-zero-terminated arrays. Allocates memory
-      without extra slot for NULL terminator. *)
+      without extra slot for NULL terminator.
+      [elem_type_alloc] is the pre-computed element type for allocation. *)
   let non_zero_terminated_conversion ~length_var ~c_array_var ~var
-      ~element_c_type ~element_tm ~deref_prefix =
-    (* Strip const for array allocation *)
-    let elem_type_nonconst = strip_const element_c_type in
+      ~elem_type_alloc ~element_tm ~deref_prefix =
     sprintf
       "int %s = Wosize_val(%s);\n\
       \    %s* %s = (%s*)g_malloc(sizeof(%s) * %s);\n\
       \    for (int i = 0; i < %s; i++) {\n\
       \      %s[i] = %s%s(Field(%s, i));\n\
       \    }"
-      length_var var elem_type_nonconst c_array_var elem_type_nonconst elem_type_nonconst
+      length_var var elem_type_alloc c_array_var elem_type_alloc elem_type_alloc
       length_var length_var c_array_var deref_prefix element_tm.ml_to_c var
 
   (** Generate length code when length is explicitly provided. *)
@@ -165,7 +164,17 @@ module Array_conv = struct
     | Some element_tm ->
         let length_var = var ^ "_length" in
         let c_array_var = "c_" ^ var in
-        let is_pointer_array = String.contains element_c_type '*' in
+
+        (* For string arrays, String_val returns const char* — preserve const so
+           the array element type is const char* and assignments don't discard
+           the qualifier.  For all other types, strip const so we get a mutable
+           array we can fill in. *)
+        let is_string_elem = String.equal element_tm.ml_to_c "String_val" in
+        let elem_type_alloc =
+          if is_string_elem then "const char*"
+          else strip_const element_c_type
+        in
+        let is_pointer_array = String.contains elem_type_alloc '*' in
 
         (* Determine if this array should be zero-terminated *)
         let should_zero_terminate =
@@ -185,7 +194,7 @@ module Array_conv = struct
           String.equal element_tm.ml_to_c "Int_val"
           || String.equal element_tm.ml_to_c "Double_val"
           || String.equal element_tm.ml_to_c "Bool_val"
-          || String.equal element_tm.ml_to_c "String_val"
+          || is_string_elem
         in
         let is_gobject_converter =
           String.equal element_tm.ml_to_c "GObject_ext_of_val"
@@ -198,7 +207,6 @@ module Array_conv = struct
         let conversion_code =
           if nullable then
             (* For nullable arrays, wrap in option check *)
-            let elem_type_nonconst = strip_const element_c_type in
             let inner_conversion =
               if should_zero_terminate then
                 sprintf
@@ -209,10 +217,10 @@ module Array_conv = struct
                   \          %s[i] = %s%s(Field(array, i));\n\
                   \        }\n\
                   \        %s[%s] = %s;"
-                  var length_var c_array_var elem_type_nonconst elem_type_nonconst
+                  var length_var c_array_var elem_type_alloc elem_type_alloc
                   length_var length_var c_array_var deref_prefix element_tm.ml_to_c
                   c_array_var length_var
-                  (if is_pointer_array then "NULL" else sprintf "(%s){0}" elem_type_nonconst)
+                  (if is_pointer_array then "NULL" else sprintf "(%s){0}" elem_type_alloc)
               else
                 sprintf
                   "value array = Some_val(%s);\n\
@@ -221,10 +229,9 @@ module Array_conv = struct
                   \        for (int i = 0; i < %s; i++) {\n\
                   \          %s[i] = %s%s(Field(array, i));\n\
                   \        }"
-                  var length_var c_array_var elem_type_nonconst elem_type_nonconst
+                  var length_var c_array_var elem_type_alloc elem_type_alloc
                   length_var length_var c_array_var deref_prefix element_tm.ml_to_c
             in
-            let elem_type_nonconst = strip_const element_c_type in
             sprintf
               "int %s = 0;\n\
               \    %s* %s = NULL;\n\
@@ -232,15 +239,15 @@ module Array_conv = struct
               \    if (Is_some(%s)) {\n\
               \        %s\n\
               \    }"
-              length_var elem_type_nonconst c_array_var var inner_conversion
+              length_var elem_type_alloc c_array_var var inner_conversion
           else
             (* Non-nullable: direct conversion *)
             if should_zero_terminate then
               zero_terminated_conversion ~length_var ~c_array_var ~var
-                ~element_c_type ~element_tm ~is_pointer_array ~deref_prefix
+                ~elem_type_alloc ~element_tm ~is_pointer_array ~deref_prefix
             else
               non_zero_terminated_conversion ~length_var ~c_array_var ~var
-                ~element_c_type ~element_tm ~deref_prefix
+                ~elem_type_alloc ~element_tm ~deref_prefix
         in
 
         (* Generate cleanup code if needed (TransferNone means we still own the memory) *)

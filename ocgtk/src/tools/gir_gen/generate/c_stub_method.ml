@@ -388,7 +388,16 @@ let handle_list_return ~ctx ~(meth : gir_method) ~c_name ~args
         "handle_list_return: generate_return_list_conversion returned None - \
          this is a bug"
   | Some (decls, conv_code, ret_code) ->
-      let c_call_base = sprintf "GList* c_result = %s(%s);" c_name args in
+      (* Always use GList* for the variable; cast away const when the GIR
+         c:type says const GList*.  Val_GList_with uses g_list_last and the
+         cleanup uses g_list_free, neither of which accept const GList*. *)
+      let c_call_base =
+        match meth.return_type.c_type with
+        | Some ct when CCString.prefix ~pre:"const " ct ->
+            sprintf "GList* c_result = (GList*)%s(%s);" c_name args
+        | _ ->
+            sprintf "GList* c_result = %s(%s);" c_name args
+      in
       let c_call =
         if String.length out_array_conv_code > 0 then
           sprintf "%s\n    %s\n    %s" decls c_call_base out_array_conv_code
