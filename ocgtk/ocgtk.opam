@@ -13,6 +13,7 @@ depends: [
   "dune" {>= "3.13" & >= "3.13"}
   "conf-gtk4"
   "xmlm"
+  "fmt"
   "logs"
   "containers"
   "re"

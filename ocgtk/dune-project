@@ -26,6 +26,7 @@
    (>= 3.13))
   conf-gtk4
   xmlm
+  fmt
   logs
   containers
   re
