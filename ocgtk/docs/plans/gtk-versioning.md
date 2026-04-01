@@ -38,13 +38,16 @@ Support different GTK versions (e.g. 4.0 through 4.16) from a single generated s
 
 ## Implementation Plan — Approach A (C-only guards)
 
-### Phase 1: Parse version attributes from GIR
+### Phase 1: Parse version attributes from GIR ✅ DONE
 
-**Files to modify:**
-- `types.ml` — Add `version : string option` to: `gir_method`, `gir_function`, `gir_constructor`, `gir_property`, `gir_signal`, `gir_class`, `gir_interface`, `gir_record`
-- `parse/gir_parser.ml` — Extract `get_attr "version"` in method/constructor/property/signal/class/interface/record parsing
+**Files modified:**
+- `types.ml` — `version : string option` added to all 8 types; `entity` wrapper and `entity_of_*` functions updated
+- `parse/gir_parser.ml` — `get_attr "version"` at all construction sites
+- `test_gir_gen/util/type_factory.ml` — New: smart constructors with `?version` optional param; tests refactored to use it
 
-### Phase 2: Version guard nesting logic
+**Commits:** `f8e160ba`
+
+### Phase 2: Version guard nesting logic ✅ DONE
 
 Guards are applied at **two levels** — class-level and member-level — and nest naturally:
 
@@ -103,13 +106,20 @@ The parser stores raw GIR `version` attributes. The generator resolves inheritan
 
 **Key rule**: the `#else` fallback for a class-level guard must provide fallback stubs for ALL members (regardless of their individual versions), because none of them exist if the class doesn't exist.
 
-### Phase 3: Version-check macro resolution
+**Implementation notes:**
+- New module `version_guard.ml` / `version_guard.mli` in `src/tools/gir_gen/`
+- `guard_kind` variant: `No_guard | Class_guard of version | Member_guard of version`
+- Internal `macro_kind` variant (`Standard of string | Cairo`) keeps Cairo special-case encapsulated; `Namespace` submodule not exposed in `.mli`
+- `emit_c_guard namespace version ~is_opening` produces `#if MACRO(M,m,u)` or `#endif`
+- Cairo emits `#if CAIRO_VERSION >= CAIRO_VERSION_ENCODE(M,m,u)` — no standard macro
+- Uses `int_of_string_opt` (not `int_of_string`) per partial-function guideline
+- 30 tests covering all guard rules, all 9 namespaces, and error cases
 
-Add a module or function that maps a GIR namespace name to its `CHECK_VERSION` macro name. This can be:
-- A simple lookup table in the generator
-- Or derived from the namespace's `c_identifier_prefixes` (e.g. `Gtk` → `GTK_CHECK_VERSION`, `Pango` → `PANGO_VERSION_CHECK`)
+**Commits:** `35905241`
 
-Note: Pango uses `PANGO_VERSION_CHECK` (not `PANGO_CHECK_VERSION`) — the naming isn't fully consistent across libraries, so a lookup table is safer.
+### Phase 3: Version-check macro resolution ✅ DONE (merged into Phase 2)
+
+The namespace→macro lookup table is implemented inside `Version_guard` as a private `namespace_macro_kind` function. No separate phase needed.
 
 ### Phase 4: Emit version guards in C stub generation
 
