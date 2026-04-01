@@ -38,4 +38,5 @@ let () =
       ("Integration Tests (Stage 8)", Integration_tests.tests);
       ("Compilation Tests (Stage 8)", Compilation_tests.tests);
       ("classify_type + Array Resolution (Phase 6)", Classify_type_tests.tests);
+      ("Version Guard", Version_guard_tests.test_suite);
     ]
