@@ -25,5 +25,13 @@
   (dune
    (>= 3.13))
   conf-gtk4
-  (alcotest :with-test)
-  (ppxlib :with-test)))
+  xmlm
+  logs
+  containers
+  re
+  sexplib
+  ppx_sexp_conv
+  ppx_deriving
+  cmdliner
+  ppxlib
+  (alcotest :with-test)))
