@@ -220,9 +220,8 @@ let build_constructor_return ~c_type ~class_name (ctor : gir_constructor)
    for a GIR constructor. Handles parameter conversion from OCaml to C types, C constructor
    invocation, ref_sink for GObject types (to handle Floating transfer semantics), and
    conversion of result to OCaml. Supports error handling if constructor throws. Generates
-   both native and bytecode (multi-arg) variants when parameter count exceeds 5. Wraps with
-   version guards if the class or constructor has a version. Returns the complete C function
-   code as a string. *)
+   both native and bytecode (multi-arg) variants when parameter count exceeds 5. Returns
+   the complete C function code as a string. *)
 let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
   let val_macro = sprintf "Val_%s" c_type in
   let var_name = "obj" in
@@ -261,11 +260,6 @@ let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
   let c_call_args = build_constructor_call c_args ctor.throws in
 
   (* Build the complete constructor function with return handling *)
-  let real_stub = build_constructor_return ~c_type ~class_name ctor param_count params
+  build_constructor_return ~c_type ~class_name ctor param_count params
     param_names c_call_args ref_sink_stmt val_macro var_name ~array_decls
-    ~cleanup_code in
-
-  (* Note: Version guards should only be emitted at the class level in gir_gen.ml
-     If we are here, it means the class has no version but this member does.
-     Only emit member-level guard in that case. *)
-  real_stub
+    ~cleanup_code

@@ -46,75 +46,39 @@ let entity_generator_by_entity_type =
     in
     let generate_c_stub_constructors =
      fun ~ctx ~(entity : entity) buf ->
-      List.iter
-        ~f:(fun (ctor : gir_constructor) ->
-          if Filtering.should_generate_constructor ~ctx ctor then
-            (try
-              let stub = C_stub_constructor.generate_c_constructor ~ctx
-                ~c_type:entity.c_type ~class_name:entity.name ctor in
-              let ml_name = Gir_gen_lib.Utils.ml_constructor_name
-                ~class_name:entity.name ~constructor:ctor in
-              C_stub_helpers.emit_with_member_guard ~ctx ~class_version:entity.version
-                ~member_version:ctor.version ~stub buf
-                ~fallback:(fun v ->
-                  C_stub_helpers.emit_fallback_constructor_stub ~ctx
-                    ~c_type:entity.c_type ~class_name:entity.name ~ml_name
-                    ~c_identifier:ctor.c_identifier ~version:v ctor)
-            with Failure msg ->
-              eprintf "  Warning: skipping constructor %s: %s\n" ctor.ctor_name msg))
-        entity.constructors
+      (* Constructors - skip those that throw GError, are variadic, have cross-namespace types, or have array params *)
+      C_stub_helpers.generate_constructors ~ctx ~c_type:entity.c_type
+        ~class_name:entity.name ~buf
+        ~generator:C_stub_constructor.generate_c_constructor entity.constructors
     in
     let generate_c_stub_methods =
      fun ~ctx ~(entity : entity) buf ->
-      List.iter
-        ~f:(fun (meth : gir_method) ->
-          if not (Filtering.should_skip_method_binding ~ctx meth) then
-            (try
-              let stub = C_stub_method.generate_c_method ~ctx
-                ~c_type:entity.c_type meth entity.name in
-              let ml_name = Gir_gen_lib.Utils.ml_method_name
-                ~class_name:entity.name meth in
-              C_stub_helpers.emit_with_member_guard ~ctx ~class_version:entity.version
-                ~member_version:meth.version ~stub buf
-                ~fallback:(fun v ->
-                  C_stub_helpers.emit_fallback_method_stub ~ctx
-                    ~c_type:entity.c_type ~class_name:entity.name ~ml_name
-                    ~c_identifier:meth.c_identifier ~version:v meth)
-            with Failure msg ->
-              eprintf "  Warning: skipping method %s: %s\n" meth.method_name msg))
-        (List.rev entity.methods)
+      (* Generate methods, skip duplicates *)
+      C_stub_helpers.generate_methods ~ctx ~c_type:entity.c_type
+        ~class_name:entity.name ~buf ~generator:C_stub_method.generate_c_method
+        entity.methods
     in
     let generate_c_stub_properties =
      fun ~ctx ~(entity : entity) buf ->
       let class_name = entity.name in
       let methods = entity.methods in
       let c_type = entity.c_type in
+      let properties = entity.properties in
+      (* Generate property getters and setters *)
       List.iter
         ~f:(fun (prop : gir_property) ->
           if Filtering.should_generate_property ~ctx ~class_name ~methods prop
           then begin
-            if prop.readable then begin
-              let stub = C_stub_property.generate_c_property_getter ~ctx
-                ~c_type prop class_name in
-              let ml_name = Gir_gen_lib.Utils.ml_property_name ~ctx ~class_name prop in
-              C_stub_helpers.emit_with_member_guard ~ctx ~class_version:entity.version
-                ~member_version:prop.version ~stub buf
-                ~fallback:(fun v ->
-                  C_stub_helpers.emit_fallback_property_getter_stub ~ctx
-                    ~c_type ~class_name ~ml_name ~version:v prop)
-            end;
-            if prop.writable && not prop.construct_only then begin
-              let stub = C_stub_property.generate_c_property_setter ~ctx
-                ~c_type prop class_name in
-              let ml_name = Gir_gen_lib.Utils.ml_property_setter_name ~ctx ~class_name prop in
-              C_stub_helpers.emit_with_member_guard ~ctx ~class_version:entity.version
-                ~member_version:prop.version ~stub buf
-                ~fallback:(fun v ->
-                  C_stub_helpers.emit_fallback_property_setter_stub ~ctx
-                    ~c_type ~class_name ~ml_name ~version:v prop)
-            end
+            if prop.readable then
+              Buffer.add_string buf
+                (C_stub_property.generate_c_property_getter ~ctx ~c_type prop
+                   class_name);
+            if prop.writable && not prop.construct_only then
+              Buffer.add_string buf
+                (C_stub_property.generate_c_property_setter ~ctx ~c_type prop
+                   class_name)
           end)
-        entity.properties
+        properties
     in
     let generate_c_stub_converters ~ctx ~entity buf =
       match entity.kind with
@@ -176,87 +140,10 @@ let generate_c_stub ~ctx ~output_dir entity =
       entity_generator_by_entity_type entity.kind
     in
     generate_c_stub_headers ~ctx ~entity buf;
-
-    (* Converters must NOT be wrapped with version guard because they are used by other stubs *)
     generate_c_stub_converters ~ctx ~entity buf;
-
-    (* Check if the entity has a version and wrap body with class-level guard *)
-    let body_buf = Buffer.create 4096 in
-    generate_c_stub_constructors ~ctx ~entity body_buf;
-    generate_c_stub_methods ~ctx ~entity body_buf;
-    generate_c_stub_properties ~ctx ~entity body_buf;
-
-    let body_content = Buffer.contents body_buf in
-    (match entity.version with
-    | None ->
-        (* No version, emit body as-is *)
-        Buffer.add_string buf body_content
-    | Some version_str ->
-        (* Entity has version, wrap body with class-level guard *)
-        (match Gir_gen_lib.Version_guard.resolve_guard ~class_version:(Some version_str) ~member_version:None with
-        | Error _ ->
-            (* If parsing fails, emit without guard *)
-            Buffer.add_string buf body_content
-        | Ok Gir_gen_lib.Version_guard.No_guard ->
-            (* No guard needed *)
-            Buffer.add_string buf body_content
-        | Ok (Gir_gen_lib.Version_guard.Class_guard version) ->
-            (* Emit class-level guard *)
-            (match Gir_gen_lib.Version_guard.emit_c_guard ctx.namespace.namespace_name version ~is_opening:true with
-            | Error _ ->
-                Buffer.add_string buf body_content
-            | Ok guard_if ->
-                Buffer.add_string buf guard_if;
-                Buffer.add_string buf "\n\n";
-                Buffer.add_string buf body_content;
-                Buffer.add_string buf "\n";
-                Buffer.add_string buf Gir_gen_lib.Version_guard.c_guard_else;
-                Buffer.add_string buf "\n\n";
-
-                (* Generate fallback stubs for all members *)
-                List.iter ~f:(fun (ctor : gir_constructor) ->
-                  if Gir_gen_lib.Generate.Filtering.should_generate_constructor ~ctx ctor then
-                    let ml_name = Gir_gen_lib.Utils.ml_constructor_name ~class_name:entity.name ~constructor:ctor in
-                    Buffer.add_string buf
-                      (Gir_gen_lib.Generate.C_stub_helpers.emit_fallback_constructor_stub
-                        ~ctx ~c_type:entity.c_type ~class_name:entity.name ~ml_name ~c_identifier:ctor.c_identifier ~version ctor);
-                    Buffer.add_string buf "\n"
-                ) entity.constructors;
-
-                List.iter ~f:(fun (meth : gir_method) ->
-                  if not (Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx meth) then
-                    let ml_name = Gir_gen_lib.Utils.ml_method_name ~class_name:entity.name meth in
-                    Buffer.add_string buf
-                      (Gir_gen_lib.Generate.C_stub_helpers.emit_fallback_method_stub
-                        ~ctx ~c_type:entity.c_type ~class_name:entity.name ~ml_name ~c_identifier:meth.c_identifier ~version meth);
-                    Buffer.add_string buf "\n"
-                ) entity.methods;
-
-                List.iter ~f:(fun (prop : gir_property) ->
-                  if Gir_gen_lib.Generate.Filtering.should_generate_property ~ctx ~class_name:entity.name ~methods:entity.methods prop then begin
-                    if prop.readable then
-                      let ml_name = Gir_gen_lib.Utils.ml_property_name ~ctx ~class_name:entity.name prop in
-                      Buffer.add_string buf
-                        (Gir_gen_lib.Generate.C_stub_helpers.emit_fallback_property_getter_stub
-                          ~ctx ~c_type:entity.c_type ~class_name:entity.name ~ml_name ~version prop);
-                      Buffer.add_string buf "\n";
-                    if prop.writable && not prop.construct_only then
-                      let ml_name = Gir_gen_lib.Utils.ml_property_setter_name ~ctx ~class_name:entity.name prop in
-                      Buffer.add_string buf
-                        (Gir_gen_lib.Generate.C_stub_helpers.emit_fallback_property_setter_stub
-                          ~ctx ~c_type:entity.c_type ~class_name:entity.name ~ml_name ~version prop);
-                      Buffer.add_string buf "\n"
-                  end
-                ) entity.properties;
-
-                Buffer.add_string buf "\n";
-                (match Gir_gen_lib.Version_guard.emit_c_guard ctx.namespace.namespace_name version ~is_opening:false with
-                | Error _ -> Buffer.add_string buf "#endif\n"
-                | Ok guard_endif -> Buffer.add_string buf (guard_endif ^ "\n")))
-        | Ok (Gir_gen_lib.Version_guard.Member_guard _) ->
-            (* Member guard at class level doesn't make sense, emit without guard *)
-            Buffer.add_string buf body_content));
-
+    generate_c_stub_constructors ~ctx ~entity buf;
+    generate_c_stub_methods ~ctx ~entity buf;
+    generate_c_stub_properties ~ctx ~entity buf;
     write_file ~path:c_file ~content:(Buffer.contents buf);
     Some stub_name
   end

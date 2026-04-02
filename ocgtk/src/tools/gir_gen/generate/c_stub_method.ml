@@ -648,8 +648,7 @@ let build_method_return ~ctx ~(meth : gir_method) ~c_name ~c_args =
     Handles C method invocation with proper argument passing, return value conversion (void/array/scalar),
     and post-call cleanup code. Uses length parameter maps for array parameter handling. Supports
     error handling if method throws GError. Generates both native and bytecode (multi-arg) variants
-    when parameter count exceeds 5. Wraps with version guards if the class or method has a version.
-    Returns the complete C function code as a string. *)
+    when parameter count exceeds 5. Returns the complete C function code as a string. *)
 let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
   let c_name = meth.c_identifier in
   let ml_name = Utils.ml_method_name ~class_name meth in
@@ -692,31 +691,24 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
     else ""
   in
 
-  (* Generate the real method stub *)
-  let real_stub =
-    if param_count > 5 then
-      let body_code =
-        sprintf "%s\n%s%s\n%s" locals c_call cleanup_section ret_conv
-      in
-      generate_multi_param_function ~ml_name ~params ~param_names body_code
-    else
-      sprintf
-        "\n\
-         CAMLexport CAMLprim value %s(%s)\n\
-         {\n\
-         CAMLparam%d(%s);\n\
-         %s\n\
-         %s%s\n\
-         %s\n\
-         }\n"
-        ml_name
-        (String.concat ~sep:", " params)
-        param_count
-        (String.concat ~sep:", " param_names)
-        locals c_call cleanup_section ret_conv
-  in
-
-  (* Note: Version guards should only be emitted at the class level in gir_gen.ml
-     If we are here, it means the class has no version but this member does.
-     Only emit member-level guard in that case. *)
-  real_stub
+  (* For functions with >5 parameters, generate both bytecode and native variants *)
+  if param_count > 5 then
+    let body_code =
+      sprintf "%s\n%s%s\n%s" locals c_call cleanup_section ret_conv
+    in
+    generate_multi_param_function ~ml_name ~params ~param_names body_code
+  else
+    sprintf
+      "\n\
+       CAMLexport CAMLprim value %s(%s)\n\
+       {\n\
+       CAMLparam%d(%s);\n\
+       %s\n\
+       %s%s\n\
+       %s\n\
+       }\n"
+      ml_name
+      (String.concat ~sep:", " params)
+      param_count
+      (String.concat ~sep:", " param_names)
+      locals c_call cleanup_section ret_conv

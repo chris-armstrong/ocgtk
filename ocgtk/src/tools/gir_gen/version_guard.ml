@@ -1,8 +1,19 @@
 open Containers
 
-type version = { major : int; minor : int; micro : int }
-type guard_kind = No_guard | Class_guard of version | Member_guard of version
-type macro_kind = Standard of string | Cairo
+type version = {
+  major : int;
+  minor : int;
+  micro : int;
+}
+
+type guard_kind =
+  | No_guard
+  | Class_guard of version
+  | Member_guard of version
+
+type macro_kind =
+  | Standard of string
+  | Cairo
 
 let namespace_macro_kind namespace =
   match namespace with
@@ -28,7 +39,7 @@ let parse_component version_str s =
 
 let parse_version version_str =
   let parts = String.split_on_char '.' version_str in
-  let ( let* ) = Result.bind in
+  let open Result.Syntax in
   match parts with
   | [ major_str; minor_str ] ->
       let* major = parse_component version_str major_str in
@@ -55,26 +66,28 @@ let compare_versions v1 v2 =
   | c -> c
 
 let resolve_guard ~class_version ~member_version =
-  let ( let* ) = Result.bind in
+  let open Result.Syntax in
   match (class_version, member_version) with
-  | None, None -> Ok No_guard
-  | Some class_v_str, None ->
+  | (None, None) -> Ok No_guard
+  | (Some class_v_str, None) ->
       let* class_v = parse_version class_v_str in
       Ok (Class_guard class_v)
-  | None, Some member_v_str ->
+  | (None, Some member_v_str) ->
       let* member_v = parse_version member_v_str in
       Ok (Member_guard member_v)
-  | Some class_v_str, Some member_v_str ->
+  | (Some class_v_str, Some member_v_str) ->
       let* class_v = parse_version class_v_str in
       let* member_v = parse_version member_v_str in
-      if compare_versions member_v class_v > 0 then Ok (Member_guard member_v)
-      else Ok (Class_guard class_v)
+      if compare_versions member_v class_v > 0 then
+        Ok (Member_guard member_v)
+      else
+        Ok (Class_guard class_v)
 
 let format_version_args version =
   Printf.sprintf "%d,%d,%d" version.major version.minor version.micro
 
 let emit_c_guard namespace version ~is_opening =
-  let ( let* ) = Result.bind in
+  let open Result.Syntax in
   let* macro_kind = namespace_macro_kind namespace in
   let guard_expr =
     match macro_kind with
@@ -84,6 +97,9 @@ let emit_c_guard namespace version ~is_opening =
     | Standard macro_name ->
         Printf.sprintf "%s(%s)" macro_name (format_version_args version)
   in
-  if is_opening then Ok (Printf.sprintf "#if %s" guard_expr) else Ok "#endif"
+  if is_opening then
+    Ok (Printf.sprintf "#if %s" guard_expr)
+  else
+    Ok "#endif"
 
 let c_guard_else = "#else"

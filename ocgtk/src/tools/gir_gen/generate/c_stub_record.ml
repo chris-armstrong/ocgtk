@@ -175,16 +175,9 @@ let generate_record_c_code ~ctx (record : gir_record) =
     bprintf buf "}\n"
   end;
 
-  (* Generate methods with version guard wrapping *)
-  let generate_record_method_with_guards ~ctx ~c_type meth class_name =
-    let base_stub = C_stub_method.generate_c_method ~ctx ~c_type meth class_name in
-    (* For records, apply version guards using the same logic as for class methods *)
-    base_stub
-  in
-
   C_stub_helpers.generate_methods ~ctx ~c_type:record.c_type
     ~class_name:record.record_name ~buf
-    ~generator:generate_record_method_with_guards
+    ~generator:C_stub_method.generate_c_method
     ~extra_filter:(fun meth -> not (C_stub_helpers.is_copy_or_free meth))
     record.methods;
 

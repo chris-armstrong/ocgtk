@@ -13,4 +13,3 @@ __pycache__/
 .context/logs/
 .context/.scratchpad.key
 .claude/settings.local.json
-.claude/worktrees/
