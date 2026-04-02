@@ -120,6 +120,7 @@ let parse_enumeration input ?parse_functions attrs =
             members = List.rev !members;
             enum_doc = None;
             functions = !functions;
+            enum_version = get_attr "version" attrs;
           }
       end
   | _ ->
@@ -185,6 +186,7 @@ let parse_bitfield input attrs =
             bitfield_c_type = c_type;
             flags = List.rev !flags;
             bitfield_doc = None;
+            bitfield_version = get_attr "version" attrs;
           }
       end
   | _ ->

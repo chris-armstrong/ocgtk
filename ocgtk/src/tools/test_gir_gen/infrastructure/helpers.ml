@@ -311,6 +311,7 @@ let create_test_context () =
       enum_c_type = "GtkTextDirection";
       members = [];
       enum_doc = None;
+      enum_version = None;
       functions = [];
     }
   in

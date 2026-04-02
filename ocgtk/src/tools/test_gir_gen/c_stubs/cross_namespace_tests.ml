@@ -418,6 +418,7 @@ let test_enum_module_name_matches_dune_convention () =
       members = [];
       functions = [];
       enum_doc = None;
+      enum_version = None;
     }
   in
   (* Check that the module name follows dune convention *)
@@ -434,6 +435,7 @@ let test_enum_module_name_matches_dune_convention () =
       bitfield_c_type = "GdkPixbufRotation";
       flags = [];
       bitfield_doc = None;
+      bitfield_version = None;
     }
   in
   let bitfield_module_name =
@@ -512,6 +514,7 @@ let test_enum_array_element_conversion () =
         ];
       functions = [];
       enum_doc = None;
+      enum_version = None;
     }
   in
   let ctx = { (Helpers.create_test_context ()) with enums = [ script_enum ] } in
@@ -662,6 +665,7 @@ let test_bitfield_array_element_conversion () =
           };
         ];
       bitfield_doc = None;
+      bitfield_version = None;
     }
   in
   let ctx =
@@ -1557,6 +1561,7 @@ let test_gdkpixbuf_format_flags_guarded () =
           };
         ];
       bitfield_doc = None;
+      bitfield_version = None;
     }
   in
 
@@ -1621,6 +1626,7 @@ let test_normal_bitfield_no_guard () =
           };
         ];
       bitfield_doc = None;
+      bitfield_version = None;
     }
   in
 
@@ -1679,7 +1685,7 @@ let test_cross_namespace_c_converter_names () =
         };
       classes = [];
       interfaces = [];
-      enums = [{ enum_name = "Colorspace"; enum_c_type = "GdkColorspace"; members = []; functions = []; enum_doc = None }];
+      enums = [{ enum_name = "Colorspace"; enum_c_type = "GdkColorspace"; members = []; functions = []; enum_doc = None; enum_version = None }];
       bitfields = [];
       records = [];
       module_groups = Hashtbl.create 0;

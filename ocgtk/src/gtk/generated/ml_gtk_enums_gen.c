@@ -8,6 +8,7 @@
 #include <caml/hash.h>
 #include <glib.h>
 #include <gtk/gtk.h>
+#if GTK_CHECK_VERSION(4,14,0)
 /* Convert GtkAccessibleAnnouncementPriority to OCaml value */
 value Val_GtkAccessibleAnnouncementPriority(GtkAccessibleAnnouncementPriority val) {
   switch (val) {
@@ -35,6 +36,8 @@ GtkAccessibleAnnouncementPriority GtkAccessibleAnnouncementPriority_val(value va
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GtkAccessibleAutocomplete to OCaml value */
 value Val_GtkAccessibleAutocomplete(GtkAccessibleAutocomplete val) {
@@ -96,6 +99,7 @@ GtkAccessibleInvalidState GtkAccessibleInvalidState_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,10,0)
 /* Convert GtkAccessiblePlatformState to OCaml value */
 value Val_GtkAccessiblePlatformState(GtkAccessiblePlatformState val) {
   switch (val) {
@@ -123,6 +127,8 @@ GtkAccessiblePlatformState GtkAccessiblePlatformState_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GtkAccessibleProperty to OCaml value */
 value Val_GtkAccessibleProperty(GtkAccessibleProperty val) {
@@ -504,6 +510,7 @@ GtkAccessibleState GtkAccessibleState_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Convert GtkAccessibleTextContentChange to OCaml value */
 value Val_GtkAccessibleTextContentChange(GtkAccessibleTextContentChange val) {
   switch (val) {
@@ -530,6 +537,9 @@ GtkAccessibleTextContentChange GtkAccessibleTextContentChange_val(value val) {
   }
 }
 
+#endif
+
+#if GTK_CHECK_VERSION(4,14,0)
 /* Convert GtkAccessibleTextGranularity to OCaml value */
 value Val_GtkAccessibleTextGranularity(GtkAccessibleTextGranularity val) {
   switch (val) {
@@ -561,6 +571,8 @@ GtkAccessibleTextGranularity GtkAccessibleTextGranularity_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GtkAccessibleTristate to OCaml value */
 value Val_GtkAccessibleTristate(GtkAccessibleTristate val) {
@@ -901,6 +913,7 @@ GtkCellRendererMode GtkCellRendererMode_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,10,0)
 /* Convert GtkCollation to OCaml value */
 value Val_GtkCollation(GtkCollation val) {
   switch (val) {
@@ -928,6 +941,8 @@ GtkCollation GtkCollation_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GtkConstraintAttribute to OCaml value */
 value Val_GtkConstraintAttribute(GtkConstraintAttribute val) {
@@ -1067,6 +1082,7 @@ GtkConstraintVflParserError GtkConstraintVflParserError_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,8,0)
 /* Convert GtkContentFit to OCaml value */
 value Val_GtkContentFit(GtkContentFit val) {
   switch (val) {
@@ -1096,6 +1112,8 @@ GtkContentFit GtkContentFit_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GtkCornerType to OCaml value */
 value Val_GtkCornerType(GtkCornerType val) {
@@ -1225,6 +1243,7 @@ GtkDeleteType GtkDeleteType_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,10,0)
 /* Convert GtkDialogError to OCaml value */
 value Val_GtkDialogError(GtkDialogError val) {
   switch (val) {
@@ -1252,6 +1271,8 @@ GtkDialogError GtkDialogError_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GtkDirectionType to OCaml value */
 value Val_GtkDirectionType(GtkDirectionType val) {
@@ -1495,6 +1516,7 @@ GtkFilterMatch GtkFilterMatch_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,10,0)
 /* Convert GtkFontLevel to OCaml value */
 value Val_GtkFontLevel(GtkFontLevel val) {
   switch (val) {
@@ -1525,6 +1547,9 @@ GtkFontLevel GtkFontLevel_val(value val) {
   }
 }
 
+#endif
+
+#if GTK_CHECK_VERSION(4,14,0)
 /* Convert GtkGraphicsOffloadEnabled to OCaml value */
 value Val_GtkGraphicsOffloadEnabled(GtkGraphicsOffloadEnabled val) {
   switch (val) {
@@ -1550,6 +1575,8 @@ GtkGraphicsOffloadEnabled GtkGraphicsOffloadEnabled_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GtkIconSize to OCaml value */
 value Val_GtkIconSize(GtkIconSize val) {
@@ -1713,6 +1740,7 @@ GtkInputPurpose GtkInputPurpose_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,8,0)
 /* Convert GtkInscriptionOverflow to OCaml value */
 value Val_GtkInscriptionOverflow(GtkInscriptionOverflow val) {
   switch (val) {
@@ -1742,6 +1770,8 @@ GtkInscriptionOverflow GtkInscriptionOverflow_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GtkJustification to OCaml value */
 value Val_GtkJustification(GtkJustification val) {
@@ -1799,6 +1829,7 @@ GtkLevelBarMode GtkLevelBarMode_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,12,0)
 /* Convert GtkListTabBehavior to OCaml value */
 value Val_GtkListTabBehavior(GtkListTabBehavior val) {
   switch (val) {
@@ -1826,6 +1857,8 @@ GtkListTabBehavior GtkListTabBehavior_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GtkMessageType to OCaml value */
 value Val_GtkMessageType(GtkMessageType val) {
@@ -1901,6 +1934,7 @@ GtkMovementStep GtkMovementStep_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,6,0)
 /* Convert GtkNaturalWrapMode to OCaml value */
 value Val_GtkNaturalWrapMode(GtkNaturalWrapMode val) {
   switch (val) {
@@ -1928,6 +1962,8 @@ GtkNaturalWrapMode GtkNaturalWrapMode_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GtkNotebookTab to OCaml value */
 value Val_GtkNotebookTab(GtkNotebookTab val) {
@@ -3213,6 +3249,7 @@ GtkStringFilterMatchMode GtkStringFilterMatchMode_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,6,0)
 /* Convert GtkSymbolicColor to OCaml value */
 value Val_GtkSymbolicColor(GtkSymbolicColor val) {
   switch (val) {
@@ -3242,6 +3279,8 @@ GtkSymbolicColor GtkSymbolicColor_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GtkSystemSetting to OCaml value */
 value Val_GtkSystemSetting(GtkSystemSetting val) {
@@ -4144,6 +4183,7 @@ GtkInputHints GtkInputHints_val(value list) {
   return result;
 }
 
+#if GTK_CHECK_VERSION(4,12,0)
 /* Convert GtkListScrollFlags to OCaml flag list */
 value Val_GtkListScrollFlags(GtkListScrollFlags flags) {
   CAMLparam0();
@@ -4184,6 +4224,8 @@ GtkListScrollFlags GtkListScrollFlags_val(value list) {
   }
   return result;
 }
+
+#endif
 
 /* Convert GtkPickFlags to OCaml flag list */
 value Val_GtkPickFlags(GtkPickFlags flags) {

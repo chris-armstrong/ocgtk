@@ -8,6 +8,7 @@
 #include <caml/hash.h>
 #include <glib.h>
 #include <gio/gio.h>
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GBusType to OCaml value */
 value Val_GioBusType(GBusType val) {
   switch (val) {
@@ -38,6 +39,9 @@ GBusType GioBusType_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,24,0)
 /* Convert GConverterResult to OCaml value */
 value Val_GioConverterResult(GConverterResult val) {
   switch (val) {
@@ -68,6 +72,9 @@ GConverterResult GioConverterResult_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GCredentialsType to OCaml value */
 value Val_GioCredentialsType(GCredentialsType val) {
   switch (val) {
@@ -106,6 +113,9 @@ GCredentialsType GioCredentialsType_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GDBusError to OCaml value */
 value Val_GioDBusError(GDBusError val) {
   switch (val) {
@@ -218,6 +228,9 @@ GDBusError GioDBusError_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GDBusMessageByteOrder to OCaml value */
 value Val_GioDBusMessageByteOrder(GDBusMessageByteOrder val) {
   switch (val) {
@@ -244,6 +257,9 @@ GDBusMessageByteOrder GioDBusMessageByteOrder_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GDBusMessageHeaderField to OCaml value */
 value Val_GioDBusMessageHeaderField(GDBusMessageHeaderField val) {
   switch (val) {
@@ -286,6 +302,9 @@ GDBusMessageHeaderField GioDBusMessageHeaderField_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GDBusMessageType to OCaml value */
 value Val_GioDBusMessageType(GDBusMessageType val) {
   switch (val) {
@@ -317,6 +336,8 @@ GDBusMessageType GioDBusMessageType_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GDataStreamByteOrder to OCaml value */
 value Val_GioDataStreamByteOrder(GDataStreamByteOrder val) {
@@ -376,6 +397,7 @@ GDataStreamNewlineType GioDataStreamNewlineType_val(value val) {
   }
 }
 
+#if GLIB_CHECK_VERSION(2,22,0)
 /* Convert GDriveStartStopType to OCaml value */
 value Val_GioDriveStartStopType(GDriveStartStopType val) {
   switch (val) {
@@ -408,6 +430,9 @@ GDriveStartStopType GioDriveStartStopType_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,18,0)
 /* Convert GEmblemOrigin to OCaml value */
 value Val_GioEmblemOrigin(GEmblemOrigin val) {
   switch (val) {
@@ -437,6 +462,8 @@ GEmblemOrigin GioEmblemOrigin_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GFileAttributeStatus to OCaml value */
 value Val_GioFileAttributeStatus(GFileAttributeStatus val) {
@@ -737,6 +764,7 @@ GIOErrorEnum GioIOErrorEnum_val(value val) {
   }
 }
 
+#if GLIB_CHECK_VERSION(2,30,0)
 /* Convert GIOModuleScopeFlags to OCaml value */
 value Val_GioIOModuleScopeFlags(GIOModuleScopeFlags val) {
   switch (val) {
@@ -763,6 +791,9 @@ GIOModuleScopeFlags GioIOModuleScopeFlags_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,64,0)
 /* Convert GMemoryMonitorWarningLevel to OCaml value */
 value Val_GioMemoryMonitorWarningLevel(GMemoryMonitorWarningLevel val) {
   switch (val) {
@@ -790,6 +821,8 @@ GMemoryMonitorWarningLevel GioMemoryMonitorWarningLevel_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GMountOperationResult to OCaml value */
 value Val_GioMountOperationResult(GMountOperationResult val) {
@@ -819,6 +852,7 @@ GMountOperationResult GioMountOperationResult_val(value val) {
   }
 }
 
+#if GLIB_CHECK_VERSION(2,44,0)
 /* Convert GNetworkConnectivity to OCaml value */
 value Val_GioNetworkConnectivity(GNetworkConnectivity val) {
   switch (val) {
@@ -849,6 +883,9 @@ GNetworkConnectivity GioNetworkConnectivity_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,42,0)
 /* Convert GNotificationPriority to OCaml value */
 value Val_GioNotificationPriority(GNotificationPriority val) {
   switch (val) {
@@ -879,6 +916,8 @@ GNotificationPriority GioNotificationPriority_val(value val) {
   }
 }
 
+#endif
+
 /* Convert GPasswordSave to OCaml value */
 value Val_GioPasswordSave(GPasswordSave val) {
   switch (val) {
@@ -907,6 +946,7 @@ GPasswordSave GioPasswordSave_val(value val) {
   }
 }
 
+#if GLIB_CHECK_VERSION(2,60,0)
 /* Convert GPollableReturn to OCaml value */
 value Val_GioPollableReturn(GPollableReturn val) {
   switch (val) {
@@ -935,6 +975,9 @@ GPollableReturn GioPollableReturn_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
 /* Convert GResolverError to OCaml value */
 value Val_GioResolverError(GResolverError val) {
   switch (val) {
@@ -963,6 +1006,9 @@ GResolverError GioResolverError_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,34,0)
 /* Convert GResolverRecordType to OCaml value */
 value Val_GioResolverRecordType(GResolverRecordType val) {
   switch (val) {
@@ -995,6 +1041,9 @@ GResolverRecordType GioResolverRecordType_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,32,0)
 /* Convert GResourceError to OCaml value */
 value Val_GioResourceError(GResourceError val) {
   switch (val) {
@@ -1021,6 +1070,9 @@ GResourceError GioResourceError_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,32,0)
 /* Convert GSocketClientEvent to OCaml value */
 value Val_GioSocketClientEvent(GSocketClientEvent val) {
   switch (val) {
@@ -1061,6 +1113,9 @@ GSocketClientEvent GioSocketClientEvent_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
 /* Convert GSocketFamily to OCaml value */
 value Val_GioSocketFamily(GSocketFamily val) {
   switch (val) {
@@ -1091,6 +1146,9 @@ GSocketFamily GioSocketFamily_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,46,0)
 /* Convert GSocketListenerEvent to OCaml value */
 value Val_GioSocketListenerEvent(GSocketListenerEvent val) {
   switch (val) {
@@ -1121,6 +1179,9 @@ GSocketListenerEvent GioSocketListenerEvent_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
 /* Convert GSocketProtocol to OCaml value */
 value Val_GioSocketProtocol(GSocketProtocol val) {
   switch (val) {
@@ -1153,6 +1214,9 @@ GSocketProtocol GioSocketProtocol_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
 /* Convert GSocketType to OCaml value */
 value Val_GioSocketType(GSocketType val) {
   switch (val) {
@@ -1183,6 +1247,9 @@ GSocketType GioSocketType_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
 /* Convert GTlsAuthenticationMode to OCaml value */
 value Val_GioTlsAuthenticationMode(GTlsAuthenticationMode val) {
   switch (val) {
@@ -1211,6 +1278,9 @@ GTlsAuthenticationMode GioTlsAuthenticationMode_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,40,0)
 /* Convert GTlsCertificateRequestFlags to OCaml value */
 value Val_GioTlsCertificateRequestFlags(GTlsCertificateRequestFlags val) {
   switch (val) {
@@ -1235,6 +1305,9 @@ GTlsCertificateRequestFlags GioTlsCertificateRequestFlags_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,66,0)
 /* Convert GTlsChannelBindingError to OCaml value */
 value Val_GioTlsChannelBindingError(GTlsChannelBindingError val) {
   switch (val) {
@@ -1267,6 +1340,9 @@ GTlsChannelBindingError GioTlsChannelBindingError_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,66,0)
 /* Convert GTlsChannelBindingType to OCaml value */
 value Val_GioTlsChannelBindingType(GTlsChannelBindingType val) {
   switch (val) {
@@ -1295,6 +1371,9 @@ GTlsChannelBindingType GioTlsChannelBindingType_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,30,0)
 /* Convert GTlsDatabaseLookupFlags to OCaml value */
 value Val_GioTlsDatabaseLookupFlags(GTlsDatabaseLookupFlags val) {
   switch (val) {
@@ -1321,6 +1400,9 @@ GTlsDatabaseLookupFlags GioTlsDatabaseLookupFlags_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
 /* Convert GTlsError to OCaml value */
 value Val_GioTlsError(GTlsError val) {
   switch (val) {
@@ -1361,6 +1443,9 @@ GTlsError GioTlsError_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,30,0)
 /* Convert GTlsInteractionResult to OCaml value */
 value Val_GioTlsInteractionResult(GTlsInteractionResult val) {
   switch (val) {
@@ -1389,6 +1474,9 @@ GTlsInteractionResult GioTlsInteractionResult_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,70,0)
 /* Convert GTlsProtocolVersion to OCaml value */
 value Val_GioTlsProtocolVersion(GTlsProtocolVersion val) {
   switch (val) {
@@ -1427,6 +1515,9 @@ GTlsProtocolVersion GioTlsProtocolVersion_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
 /* Convert GTlsRehandshakeMode to OCaml value */
 value Val_GioTlsRehandshakeMode(GTlsRehandshakeMode val) {
   switch (val) {
@@ -1455,6 +1546,9 @@ GTlsRehandshakeMode GioTlsRehandshakeMode_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GUnixSocketAddressType to OCaml value */
 value Val_GioUnixSocketAddressType(GUnixSocketAddressType val) {
   switch (val) {
@@ -1487,6 +1581,9 @@ GUnixSocketAddressType GioUnixSocketAddressType_val(value val) {
   }
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,24,0)
 /* Convert GZlibCompressorFormat to OCaml value */
 value Val_GioZlibCompressorFormat(GZlibCompressorFormat val) {
   switch (val) {
@@ -1514,6 +1611,8 @@ GZlibCompressorFormat GioZlibCompressorFormat_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GAppInfoCreateFlags to OCaml flag list */
 value Val_GioAppInfoCreateFlags(GAppInfoCreateFlags flags) {
@@ -1563,6 +1662,7 @@ GAppInfoCreateFlags GioAppInfoCreateFlags_val(value list) {
   return result;
 }
 
+#if GLIB_CHECK_VERSION(2,28,0)
 /* Convert GApplicationFlags to OCaml flag list */
 value Val_GioApplicationFlags(GApplicationFlags flags) {
   CAMLparam0();
@@ -1660,6 +1760,8 @@ GApplicationFlags GioApplicationFlags_val(value list) {
   return result;
 }
 
+#endif
+
 /* Convert GAskPasswordFlags to OCaml flag list */
 value Val_GioAskPasswordFlags(GAskPasswordFlags flags) {
   CAMLparam0();
@@ -1722,6 +1824,7 @@ GAskPasswordFlags GioAskPasswordFlags_val(value list) {
   return result;
 }
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GBusNameOwnerFlags to OCaml flag list */
 value Val_GioBusNameOwnerFlags(GBusNameOwnerFlags flags) {
   CAMLparam0();
@@ -1770,6 +1873,9 @@ GBusNameOwnerFlags GioBusNameOwnerFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GBusNameWatcherFlags to OCaml flag list */
 value Val_GioBusNameWatcherFlags(GBusNameWatcherFlags flags) {
   CAMLparam0();
@@ -1804,6 +1910,9 @@ GBusNameWatcherFlags GioBusNameWatcherFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,24,0)
 /* Convert GConverterFlags to OCaml flag list */
 value Val_GioConverterFlags(GConverterFlags flags) {
   CAMLparam0();
@@ -1845,6 +1954,9 @@ GConverterFlags GioConverterFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GDBusCallFlags to OCaml flag list */
 value Val_GioDBusCallFlags(GDBusCallFlags flags) {
   CAMLparam0();
@@ -1886,6 +1998,9 @@ GDBusCallFlags GioDBusCallFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GDBusCapabilityFlags to OCaml flag list */
 value Val_GioDBusCapabilityFlags(GDBusCapabilityFlags flags) {
   CAMLparam0();
@@ -1920,6 +2035,9 @@ GDBusCapabilityFlags GioDBusCapabilityFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GDBusConnectionFlags to OCaml flag list */
 value Val_GioDBusConnectionFlags(GDBusConnectionFlags flags) {
   CAMLparam0();
@@ -1996,6 +2114,9 @@ GDBusConnectionFlags GioDBusConnectionFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,30,0)
 /* Convert GDBusInterfaceSkeletonFlags to OCaml flag list */
 value Val_GioDBusInterfaceSkeletonFlags(GDBusInterfaceSkeletonFlags flags) {
   CAMLparam0();
@@ -2030,6 +2151,9 @@ GDBusInterfaceSkeletonFlags GioDBusInterfaceSkeletonFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GDBusMessageFlags to OCaml flag list */
 value Val_GioDBusMessageFlags(GDBusMessageFlags flags) {
   CAMLparam0();
@@ -2078,6 +2202,9 @@ GDBusMessageFlags GioDBusMessageFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,30,0)
 /* Convert GDBusObjectManagerClientFlags to OCaml flag list */
 value Val_GioDBusObjectManagerClientFlags(GDBusObjectManagerClientFlags flags) {
   CAMLparam0();
@@ -2112,6 +2239,9 @@ GDBusObjectManagerClientFlags GioDBusObjectManagerClientFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GDBusPropertyInfoFlags to OCaml flag list */
 value Val_GioDBusPropertyInfoFlags(GDBusPropertyInfoFlags flags) {
   CAMLparam0();
@@ -2153,6 +2283,9 @@ GDBusPropertyInfoFlags GioDBusPropertyInfoFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GDBusProxyFlags to OCaml flag list */
 value Val_GioDBusProxyFlags(GDBusProxyFlags flags) {
   CAMLparam0();
@@ -2222,6 +2355,9 @@ GDBusProxyFlags GioDBusProxyFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GDBusSendMessageFlags to OCaml flag list */
 value Val_GioDBusSendMessageFlags(GDBusSendMessageFlags flags) {
   CAMLparam0();
@@ -2256,6 +2392,9 @@ GDBusSendMessageFlags GioDBusSendMessageFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GDBusServerFlags to OCaml flag list */
 value Val_GioDBusServerFlags(GDBusServerFlags flags) {
   CAMLparam0();
@@ -2304,6 +2443,9 @@ GDBusServerFlags GioDBusServerFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GDBusSignalFlags to OCaml flag list */
 value Val_GioDBusSignalFlags(GDBusSignalFlags flags) {
   CAMLparam0();
@@ -2352,6 +2494,9 @@ GDBusSignalFlags GioDBusSignalFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Convert GDBusSubtreeFlags to OCaml flag list */
 value Val_GioDBusSubtreeFlags(GDBusSubtreeFlags flags) {
   CAMLparam0();
@@ -2386,6 +2531,9 @@ GDBusSubtreeFlags GioDBusSubtreeFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
 /* Convert GDriveStartFlags to OCaml flag list */
 value Val_GioDriveStartFlags(GDriveStartFlags flags) {
   CAMLparam0();
@@ -2412,6 +2560,8 @@ GDriveStartFlags GioDriveStartFlags_val(value list) {
   }
   return result;
 }
+
+#endif
 
 /* Convert GFileAttributeInfoFlags to OCaml flag list */
 value Val_GioFileAttributeInfoFlags(GFileAttributeInfoFlags flags) {
@@ -2571,6 +2721,7 @@ GFileCreateFlags GioFileCreateFlags_val(value list) {
   return result;
 }
 
+#if GLIB_CHECK_VERSION(2,38,0)
 /* Convert GFileMeasureFlags to OCaml flag list */
 value Val_GioFileMeasureFlags(GFileMeasureFlags flags) {
   CAMLparam0();
@@ -2618,6 +2769,8 @@ GFileMeasureFlags GioFileMeasureFlags_val(value list) {
   }
   return result;
 }
+
+#endif
 
 /* Convert GFileMonitorFlags to OCaml flag list */
 value Val_GioFileMonitorFlags(GFileMonitorFlags flags) {
@@ -2708,6 +2861,7 @@ GFileQueryInfoFlags GioFileQueryInfoFlags_val(value list) {
   return result;
 }
 
+#if GLIB_CHECK_VERSION(2,28,0)
 /* Convert GIOStreamSpliceFlags to OCaml flag list */
 value Val_GioIOStreamSpliceFlags(GIOStreamSpliceFlags flags) {
   CAMLparam0();
@@ -2755,6 +2909,8 @@ GIOStreamSpliceFlags GioIOStreamSpliceFlags_val(value list) {
   }
   return result;
 }
+
+#endif
 
 /* Convert GMountMountFlags to OCaml flag list */
 value Val_GioMountMountFlags(GMountMountFlags flags) {
@@ -2858,6 +3014,7 @@ GOutputStreamSpliceFlags GioOutputStreamSpliceFlags_val(value list) {
   return result;
 }
 
+#if GLIB_CHECK_VERSION(2,60,0)
 /* Convert GResolverNameLookupFlags to OCaml flag list */
 value Val_GioResolverNameLookupFlags(GResolverNameLookupFlags flags) {
   CAMLparam0();
@@ -2899,6 +3056,9 @@ GResolverNameLookupFlags GioResolverNameLookupFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,32,0)
 /* Convert GResourceFlags to OCaml flag list */
 value Val_GioResourceFlags(GResourceFlags flags) {
   CAMLparam0();
@@ -2933,6 +3093,9 @@ GResourceFlags GioResourceFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,32,0)
 /* Convert GResourceLookupFlags to OCaml flag list */
 value Val_GioResourceLookupFlags(GResourceLookupFlags flags) {
   CAMLparam0();
@@ -2959,6 +3122,8 @@ GResourceLookupFlags GioResourceLookupFlags_val(value list) {
   }
   return result;
 }
+
+#endif
 
 /* Convert GSettingsBindFlags to OCaml flag list */
 value Val_GioSettingsBindFlags(GSettingsBindFlags flags) {
@@ -3022,6 +3187,7 @@ GSettingsBindFlags GioSettingsBindFlags_val(value list) {
   return result;
 }
 
+#if GLIB_CHECK_VERSION(2,22,0)
 /* Convert GSocketMsgFlags to OCaml flag list */
 value Val_GioSocketMsgFlags(GSocketMsgFlags flags) {
   CAMLparam0();
@@ -3070,6 +3236,9 @@ GSocketMsgFlags GioSocketMsgFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,40,0)
 /* Convert GSubprocessFlags to OCaml flag list */
 value Val_GioSubprocessFlags(GSubprocessFlags flags) {
   CAMLparam0();
@@ -3160,6 +3329,9 @@ GSubprocessFlags GioSubprocessFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,34,0)
 /* Convert GTestDBusFlags to OCaml flag list */
 value Val_GioTestDBusFlags(GTestDBusFlags flags) {
   CAMLparam0();
@@ -3187,6 +3359,9 @@ GTestDBusFlags GioTestDBusFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
 /* Convert GTlsCertificateFlags to OCaml flag list */
 value Val_GioTlsCertificateFlags(GTlsCertificateFlags flags) {
   CAMLparam0();
@@ -3270,6 +3445,9 @@ GTlsCertificateFlags GioTlsCertificateFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,30,0)
 /* Convert GTlsDatabaseVerifyFlags to OCaml flag list */
 value Val_GioTlsDatabaseVerifyFlags(GTlsDatabaseVerifyFlags flags) {
   CAMLparam0();
@@ -3297,6 +3475,9 @@ GTlsDatabaseVerifyFlags GioTlsDatabaseVerifyFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if GLIB_CHECK_VERSION(2,30,0)
 /* Convert GTlsPasswordFlags to OCaml flag list */
 value Val_GioTlsPasswordFlags(GTlsPasswordFlags flags) {
   CAMLparam0();
@@ -3365,4 +3546,6 @@ GTlsPasswordFlags GioTlsPasswordFlags_val(value list) {
   }
   return result;
 }
+
+#endif
 

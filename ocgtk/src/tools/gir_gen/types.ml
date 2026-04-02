@@ -130,6 +130,7 @@ type gir_enum = {
   members : gir_enum_member list;
   functions : gir_function list;
   enum_doc : string option;
+  enum_version : string option;
 }
 
 type gir_bitfield_member = {
@@ -144,6 +145,7 @@ type gir_bitfield = {
   bitfield_c_type : string;
   flags : gir_bitfield_member list;
   bitfield_doc : string option;
+  bitfield_version : string option;
 }
 
 type gir_class = {

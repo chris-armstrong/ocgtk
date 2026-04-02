@@ -154,6 +154,7 @@ GdkPixbufRotation GdkPixbufPixbufRotation_val(value val) {
   }
 }
 
+#if GDK_PIXBUF_CHECK_VERSION(2,2,0)
 /* GdkPixbufFormatFlags is in GIR but marked skip in C headers */
 #ifndef GDK_PIXBUF_FORMAT_WRITABLE
 typedef enum {
@@ -203,4 +204,6 @@ GdkPixbufFormatFlags GdkPixbufPixbufFormatFlags_val(value list) {
   }
   return result;
 }
+
+#endif
 

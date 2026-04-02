@@ -45,11 +45,11 @@ let base_ctx () =
   in
   let text_direction_enum =
     { enum_name = "TextDirection"; enum_c_type = "GtkTextDirection";
-      members = []; enum_doc = None; functions = [] }
+      members = []; enum_doc = None; functions = []; enum_version = None }
   in
   let state_flags_bitfield =
     { bitfield_name = "StateFlags"; bitfield_c_type = "GtkStateFlags";
-      flags = []; bitfield_doc = None }
+      flags = []; bitfield_doc = None; bitfield_version = None }
   in
   let text_iter_record =
     { record_name = "TextIter"; c_type = "GtkTextIter";

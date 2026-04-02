@@ -612,14 +612,34 @@ let generate_enum_files ~output_dir ~generated_stubs ~generated_modules
         namespace.include_header ^ "\n";
       ]
       @ List.map
-          ~f:(fun enum ->
-            Gir_gen_lib.Generate.Enum_code.generate_c_enum_converters
-              ~namespace:namespace.name enum)
+          ~f:(fun (enum : gir_enum) ->
+            let converters = Gir_gen_lib.Generate.Enum_code.generate_c_enum_converters
+              ~namespace:namespace.name enum in
+            match enum.enum_version with
+            | None -> converters
+            | Some version_str ->
+              (match Gir_gen_lib.Version_guard.parse_version version_str with
+              | Error _ -> converters
+              | Ok version ->
+                (match Gir_gen_lib.Version_guard.emit_c_guard namespace.name version ~is_opening:true with
+                | Error _ -> converters
+                | Ok guard_if ->
+                  guard_if ^ "\n" ^ converters ^ "#endif\n\n")))
           enums
       @ List.map
-          ~f:(fun bitfield ->
-            Gir_gen_lib.Generate.Enum_code.generate_c_bitfield_converters
-              ~namespace:namespace.name bitfield)
+          ~f:(fun (bitfield : gir_bitfield) ->
+            let converters = Gir_gen_lib.Generate.Enum_code.generate_c_bitfield_converters
+              ~namespace:namespace.name bitfield in
+            match bitfield.bitfield_version with
+            | None -> converters
+            | Some version_str ->
+              (match Gir_gen_lib.Version_guard.parse_version version_str with
+              | Error _ -> converters
+              | Ok version ->
+                (match Gir_gen_lib.Version_guard.emit_c_guard namespace.name version ~is_opening:true with
+                | Error _ -> converters
+                | Ok guard_if ->
+                  guard_if ^ "\n" ^ converters ^ "#endif\n\n")))
           bitfields
     in
     write_file ~path:c_file ~content:(String.concat ~sep:"" c_content_parts);

@@ -44,6 +44,7 @@ let create_context_with_external_enum () =
         ];
       functions = [];
       enum_doc = None;
+      enum_version = None;
     }
   in
 
@@ -100,6 +101,7 @@ let test_generate_forward_decls_only_local_enums () =
       members = [];
       functions = [];
       enum_doc = None;
+      enum_version = None;
     }
   in
 
@@ -111,6 +113,7 @@ let test_generate_forward_decls_only_local_enums () =
       members = [];
       functions = [];
       enum_doc = None;
+      enum_version = None;
     }
   in
 

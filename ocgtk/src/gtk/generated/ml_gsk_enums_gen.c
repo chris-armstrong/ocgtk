@@ -92,6 +92,7 @@ GskCorner GskCorner_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Convert GskFillRule to OCaml value */
 value Val_GskFillRule(GskFillRule val) {
   switch (val) {
@@ -117,6 +118,8 @@ GskFillRule GskFillRule_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GskGLUniformType to OCaml value */
 value Val_GskGLUniformType(GskGLUniformType val) {
@@ -156,6 +159,7 @@ GskGLUniformType GskGLUniformType_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Convert GskLineCap to OCaml value */
 value Val_GskLineCap(GskLineCap val) {
   switch (val) {
@@ -184,6 +188,9 @@ GskLineCap GskLineCap_val(value val) {
   }
 }
 
+#endif
+
+#if GTK_CHECK_VERSION(4,14,0)
 /* Convert GskLineJoin to OCaml value */
 value Val_GskLineJoin(GskLineJoin val) {
   switch (val) {
@@ -212,6 +219,9 @@ GskLineJoin GskLineJoin_val(value val) {
   }
 }
 
+#endif
+
+#if GTK_CHECK_VERSION(4,10,0)
 /* Convert GskMaskMode to OCaml value */
 value Val_GskMaskMode(GskMaskMode val) {
   switch (val) {
@@ -242,6 +252,9 @@ GskMaskMode GskMaskMode_val(value val) {
   }
 }
 
+#endif
+
+#if GTK_CHECK_VERSION(4,14,0)
 /* Convert GskPathDirection to OCaml value */
 value Val_GskPathDirection(GskPathDirection val) {
   switch (val) {
@@ -272,6 +285,9 @@ GskPathDirection GskPathDirection_val(value val) {
   }
 }
 
+#endif
+
+#if GTK_CHECK_VERSION(4,14,0)
 /* Convert GskPathOperation to OCaml value */
 value Val_GskPathOperation(GskPathOperation val) {
   switch (val) {
@@ -305,6 +321,8 @@ GskPathOperation GskPathOperation_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GskRenderNodeType to OCaml value */
 value Val_GskRenderNodeType(GskRenderNodeType val) {
@@ -482,6 +500,7 @@ GskTransformCategory GskTransformCategory_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Convert GskPathForeachFlags to OCaml flag list */
 value Val_GskPathForeachFlags(GskPathForeachFlags flags) {
   CAMLparam0();
@@ -529,4 +548,6 @@ GskPathForeachFlags GskPathForeachFlags_val(value list) {
   }
   return result;
 }
+
+#endif
 

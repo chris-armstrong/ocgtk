@@ -50,6 +50,7 @@ let create_context_with_mixed_enums () =
         ];
       functions = [];
       enum_doc = None;
+      enum_version = None;
     }
   in
 
@@ -106,6 +107,7 @@ let create_context_with_mixed_bitfields () =
           };
         ];
       bitfield_doc = None;
+      bitfield_version = None;
     }
   in
 

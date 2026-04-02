@@ -86,14 +86,14 @@ let make_gir_record ?(record_name = "TestRecord") ?(c_type = "TestRecord") ?glib
 let make_gir_enum_member ?(member_name = "NONE") ?(member_value = 0) ?(c_identifier = "TEST_NONE") ?member_doc () =
   { member_name; member_value; c_identifier; member_doc }
 
-let make_gir_enum ?(enum_name = "TestEnum") ?(enum_c_type = "TestEnum") ?(members = []) ?(functions = []) ?enum_doc () =
-  { enum_name; enum_c_type; members; functions; enum_doc }
+let make_gir_enum ?(enum_name = "TestEnum") ?(enum_c_type = "TestEnum") ?(members = []) ?(functions = []) ?enum_doc ?enum_version () =
+  { enum_name; enum_c_type; members; functions; enum_doc; enum_version }
 
 let make_gir_bitfield_member ?(flag_name = "NONE") ?(flag_value = 0) ?(flag_c_identifier = "TEST_NONE") ?flag_doc () =
   { flag_name; flag_value; flag_c_identifier; flag_doc }
 
-let make_gir_bitfield ?(bitfield_name = "TestFlags") ?(bitfield_c_type = "TestFlags") ?(flags = []) ?bitfield_doc () =
-  { bitfield_name; bitfield_c_type; flags; bitfield_doc }
+let make_gir_bitfield ?(bitfield_name = "TestFlags") ?(bitfield_c_type = "TestFlags") ?(flags = []) ?bitfield_doc ?bitfield_version () =
+  { bitfield_name; bitfield_c_type; flags; bitfield_doc; bitfield_version }
 
 let make_gir_class ?(class_name = "TestClass") ?(c_type = "TestClass") ?parent ?(implements = []) ?(introspectable = true) ?(constructors = []) ?(methods = []) ?(properties = []) ?(signals = []) ?class_doc ?version () =
   {
