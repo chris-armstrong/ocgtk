@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for Stroke */
 
-#include <gsk/gsk.h>
+#include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -29,6 +29,8 @@ value Val_GskStroke_option(const GskStroke *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GskStroke(ptr));
 }
+
+#if GTK_CHECK_VERSION(4,14,0)
 
 
 CAMLexport CAMLprim value ml_gsk_stroke_new(value arg1)
@@ -142,3 +144,140 @@ CAMLparam1(self);
 GskStroke* result = gsk_stroke_copy(GskStroke_val(self));
 CAMLreturn(Val_GskStroke(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_gsk_stroke_new(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_stroke_copy(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_stroke_free(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_stroke_get_dash_offset(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_stroke_get_line_cap(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_stroke_get_line_join(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_stroke_get_line_width(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_stroke_get_miter_limit(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_stroke_set_dash_offset(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_stroke_set_line_cap(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_stroke_set_line_join(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_stroke_set_line_width(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_stroke_set_miter_limit(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_stroke_to_cairo(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+#endif

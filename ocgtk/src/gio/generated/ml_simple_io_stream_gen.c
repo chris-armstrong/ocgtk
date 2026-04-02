@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,44,0)
+
 
 CAMLexport CAMLprim value ml_g_simple_io_stream_new(value arg1, value arg2)
 {
@@ -64,3 +66,36 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_GOutputStream(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_simple_io_stream_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+(void)arg1;
+(void)arg2;
+caml_failwith("SimpleIOStream requires GLib >= 2.44");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_simple_io_stream_get_input_stream(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SimpleIOStream requires GLib >= 2.44");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_simple_io_stream_get_output_stream(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SimpleIOStream requires GLib >= 2.44");
+return Val_unit;
+}
+
+
+#endif

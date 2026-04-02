@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for TextNode */
 
-#include <gsk/gsk.h>
+#include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -25,6 +25,8 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GskTextNode(obj));
 }
+#if GTK_CHECK_VERSION(4,2,0)
+
 CAMLexport CAMLprim value ml_gsk_text_node_has_color_glyphs(value self)
 {
 CAMLparam1(self);
@@ -32,6 +34,17 @@ CAMLparam1(self);
 gboolean result = gsk_text_node_has_color_glyphs(GskTextNode_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gsk_text_node_has_color_glyphs(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TextNode requires GTK >= 4.2");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gsk_text_node_get_offset(value self)
 {

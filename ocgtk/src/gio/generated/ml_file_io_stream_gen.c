@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,22,0)
+
 
 CAMLexport CAMLprim value ml_g_file_io_stream_query_info_finish(value self, value arg1)
 {
@@ -47,3 +49,38 @@ CAMLparam1(self);
 char* result = g_file_io_stream_get_etag(GFileIOStream_val(self));
 CAMLreturn(Val_option_string(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_file_io_stream_get_etag(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FileIOStream requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_file_io_stream_query_info(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("FileIOStream requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_file_io_stream_query_info_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FileIOStream requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+#endif

@@ -57,6 +57,8 @@ const char** result = gtk_file_filter_get_attributes(GtkFileFilter_val(self));
 CAMLreturn(ml_result);
 }
 
+#if GTK_CHECK_VERSION(4,4,0)
+
 CAMLexport CAMLprim value ml_gtk_file_filter_add_suffix(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -64,6 +66,18 @@ CAMLparam2(self, arg1);
 gtk_file_filter_add_suffix(GtkFileFilter_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_file_filter_add_suffix(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FileFilter requires GTK >= 4.4");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_file_filter_add_pixbuf_formats(value self)
 {
@@ -89,6 +103,8 @@ gtk_file_filter_add_mime_type(GtkFileFilter_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,10,0)
+
 CAMLexport CAMLprim value ml_gtk_file_filter_get_mime_types(value self)
 {
 GtkFileFilter *obj = (GtkFileFilter *)GtkFileFilter_val(self);
@@ -109,6 +125,19 @@ int c_result_length = 0;
 g_value_unset(&prop_gvalue);
 CAMLreturn(ml_c_result);
 }
+#else
+
+CAMLexport CAMLprim value ml_gtk_file_filter_get_mime_types(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FileFilter requires GTK >= 4.10");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,10,0)
+
 CAMLexport CAMLprim value ml_gtk_file_filter_get_patterns(value self)
 {
 GtkFileFilter *obj = (GtkFileFilter *)GtkFileFilter_val(self);
@@ -129,6 +158,19 @@ int c_result_length = 0;
 g_value_unset(&prop_gvalue);
 CAMLreturn(ml_c_result);
 }
+#else
+
+CAMLexport CAMLprim value ml_gtk_file_filter_get_patterns(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FileFilter requires GTK >= 4.10");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,10,0)
+
 CAMLexport CAMLprim value ml_gtk_file_filter_get_suffixes(value self)
 {
 GtkFileFilter *obj = (GtkFileFilter *)GtkFileFilter_val(self);
@@ -149,3 +191,13 @@ int c_result_length = 0;
 g_value_unset(&prop_gvalue);
 CAMLreturn(ml_c_result);
 }
+#else
+
+CAMLexport CAMLprim value ml_gtk_file_filter_get_suffixes(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FileFilter requires GTK >= 4.10");
+return Val_unit;
+}
+#endif

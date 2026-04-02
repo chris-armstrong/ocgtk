@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,22,0)
+
 
 CAMLexport CAMLprim value ml_g_io_stream_set_pending(value self)
 {
@@ -107,3 +109,91 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_io_stream_clear_pending(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("IOStream requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_io_stream_close(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("IOStream requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_io_stream_close_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("IOStream requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_io_stream_get_input_stream(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("IOStream requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_io_stream_get_output_stream(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("IOStream requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_io_stream_has_pending(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("IOStream requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_io_stream_is_closed(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("IOStream requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_io_stream_set_pending(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("IOStream requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_io_stream_get_closed(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("IOStream requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+#endif

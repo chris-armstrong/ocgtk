@@ -16,6 +16,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gtk_decls.h"
 
+#if GTK_CHECK_VERSION(4,10,0)
+
 
 CAMLexport CAMLprim value ml_gtk_font_dialog_new(value unit)
 {
@@ -134,3 +136,142 @@ GError *error = NULL;
 PangoFontFace* result = gtk_font_dialog_choose_face_finish(GtkFontDialog_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_PangoFontFace))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_gtk_font_dialog_new(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("FontDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_font_dialog_choose_face_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FontDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_font_dialog_choose_family_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FontDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_font_dialog_choose_font_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FontDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_font_dialog_get_filter(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_font_dialog_get_font_map(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_font_dialog_get_language(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_font_dialog_get_modal(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_font_dialog_get_title(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_font_dialog_set_filter(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FontDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_font_dialog_set_font_map(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FontDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_font_dialog_set_language(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FontDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_font_dialog_set_modal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FontDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_font_dialog_set_title(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FontDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+#endif

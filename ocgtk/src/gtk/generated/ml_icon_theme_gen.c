@@ -123,6 +123,8 @@ gboolean result = gtk_icon_theme_has_icon(GtkIconTheme_val(self), String_val(arg
 CAMLreturn(Val_bool(result));
 }
 
+#if GTK_CHECK_VERSION(4,2,0)
+
 CAMLexport CAMLprim value ml_gtk_icon_theme_has_gicon(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -130,6 +132,18 @@ CAMLparam2(self, arg1);
 gboolean result = gtk_icon_theme_has_gicon(GtkIconTheme_val(self), GIcon_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_icon_theme_has_gicon(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("IconTheme requires GTK >= 4.2");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_icon_theme_get_theme_name(value self)
 {

@@ -30,3 +30,10 @@ value Val_PangoAttrFontFeatures_option(const PangoAttrFontFeatures *ptr) {
   return Val_some(Val_PangoAttrFontFeatures(ptr));
 }
 
+#if PANGO_VERSION_CHECK(1,38,0)
+
+
+#else
+
+
+#endif

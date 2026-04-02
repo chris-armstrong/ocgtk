@@ -37,6 +37,8 @@ value Val_GSettingsSchemaKey_option(const GSettingsSchemaKey *ptr) {
 }
 
 
+#if GLIB_CHECK_VERSION(2,40,0)
+
 CAMLexport CAMLprim value ml_g_settings_schema_key_unref(value self)
 {
 CAMLparam1(self);
@@ -44,6 +46,19 @@ CAMLparam1(self);
 g_settings_schema_key_unref(GSettingsSchemaKey_val(self));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_schema_key_unref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SettingsSchemaKey requires GLib >= 2.40");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,40,0)
 
 CAMLexport CAMLprim value ml_g_settings_schema_key_ref(value self)
 {
@@ -53,6 +68,19 @@ GSettingsSchemaKey* result = g_settings_schema_key_ref(GSettingsSchemaKey_val(se
 CAMLreturn(Val_GSettingsSchemaKey(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_settings_schema_key_ref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SettingsSchemaKey requires GLib >= 2.40");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,34,0)
+
 CAMLexport CAMLprim value ml_g_settings_schema_key_get_summary(value self)
 {
 CAMLparam1(self);
@@ -60,6 +88,19 @@ CAMLparam1(self);
 const gchar* result = g_settings_schema_key_get_summary(GSettingsSchemaKey_val(self));
 CAMLreturn(Val_option_string(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_schema_key_get_summary(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SettingsSchemaKey requires GLib >= 2.34");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,44,0)
 
 CAMLexport CAMLprim value ml_g_settings_schema_key_get_name(value self)
 {
@@ -69,6 +110,19 @@ const gchar* result = g_settings_schema_key_get_name(GSettingsSchemaKey_val(self
 CAMLreturn(caml_copy_string(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_settings_schema_key_get_name(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SettingsSchemaKey requires GLib >= 2.44");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,34,0)
+
 CAMLexport CAMLprim value ml_g_settings_schema_key_get_description(value self)
 {
 CAMLparam1(self);
@@ -76,3 +130,14 @@ CAMLparam1(self);
 const gchar* result = g_settings_schema_key_get_description(GSettingsSchemaKey_val(self));
 CAMLreturn(Val_option_string(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_schema_key_get_description(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SettingsSchemaKey requires GLib >= 2.34");
+return Val_unit;
+}
+#endif

@@ -22,6 +22,8 @@
 #include "gio_decls.h"
 
 
+#if GLIB_CHECK_VERSION(2,36,0)
+
 CAMLexport CAMLprim value ml_g_memory_output_stream_new_resizable(value unit)
 {
 CAMLparam1(unit);
@@ -31,3 +33,13 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GMemoryOutputStream(obj));
 }
+#else
+
+CAMLexport CAMLprim value ml_g_memory_output_stream_new_resizable(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("MemoryOutputStream requires GLib >= 2.36");
+return Val_unit;
+}
+#endif

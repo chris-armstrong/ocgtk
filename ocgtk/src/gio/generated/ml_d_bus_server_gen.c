@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,26,0)
+
 
 CAMLexport CAMLprim value ml_g_dbus_server_new_sync(value arg1, value arg2, value arg3, value arg4, value arg5)
 {
@@ -130,3 +132,102 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_GDBusAuthObserver(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_dbus_server_new_sync(value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(arg1, arg2, arg3, arg4, arg5);
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+caml_failwith("DBusServer requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_server_get_client_address(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusServer requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_server_get_flags(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusServer requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_server_get_guid(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusServer requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_server_is_active(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusServer requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_server_start(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusServer requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_server_stop(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusServer requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_d_bus_server_get_active(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusServer requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_d_bus_server_get_address(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusServer requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_d_bus_server_get_authentication_observer(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusServer requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+#endif

@@ -37,6 +37,8 @@ value Val_GSrvTarget_option(const GSrvTarget *ptr) {
 }
 
 
+#if GLIB_CHECK_VERSION(2,22,0)
+
 CAMLexport CAMLprim value ml_g_srv_target_get_hostname(value self)
 {
 CAMLparam1(self);
@@ -44,6 +46,19 @@ CAMLparam1(self);
 const gchar* result = g_srv_target_get_hostname(GSrvTarget_val(self));
 CAMLreturn(caml_copy_string(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_srv_target_get_hostname(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SrvTarget requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
 
 CAMLexport CAMLprim value ml_g_srv_target_free(value self)
 {
@@ -53,6 +68,19 @@ g_srv_target_free(GSrvTarget_val(self));
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_srv_target_free(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SrvTarget requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
+
 CAMLexport CAMLprim value ml_g_srv_target_copy(value self)
 {
 CAMLparam1(self);
@@ -60,3 +88,14 @@ CAMLparam1(self);
 GSrvTarget* result = g_srv_target_copy(GSrvTarget_val(self));
 CAMLreturn(Val_GSrvTarget(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_srv_target_copy(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SrvTarget requires GLib >= 2.22");
+return Val_unit;
+}
+#endif

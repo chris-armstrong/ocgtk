@@ -69,6 +69,8 @@ gboolean result = g_file_enumerator_has_pending(GFileEnumerator_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+#if GLIB_CHECK_VERSION(2,18,0)
+
 CAMLexport CAMLprim value ml_g_file_enumerator_get_container(value self)
 {
 CAMLparam1(self);
@@ -78,6 +80,19 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GFile(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_file_enumerator_get_container(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FileEnumerator requires GLib >= 2.18");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,36,0)
+
 CAMLexport CAMLprim value ml_g_file_enumerator_get_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -85,6 +100,18 @@ CAMLparam2(self, arg1);
 GFile* result = g_file_enumerator_get_child(GFileEnumerator_val(self), GFileInfo_val(arg1));
 CAMLreturn(Val_GFile(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_file_enumerator_get_child(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FileEnumerator requires GLib >= 2.36");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_file_enumerator_close_finish(value self, value arg1)
 {

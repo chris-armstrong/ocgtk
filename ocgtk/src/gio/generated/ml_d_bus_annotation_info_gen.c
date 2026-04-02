@@ -36,6 +36,8 @@ value Val_GDBusAnnotationInfo_option(const GDBusAnnotationInfo *ptr) {
   return Val_some(Val_GDBusAnnotationInfo(ptr));
 }
 
+#if GLIB_CHECK_VERSION(2,26,0)
+
 
 CAMLexport CAMLprim value ml_g_dbus_annotation_info_unref(value self)
 {
@@ -52,3 +54,26 @@ CAMLparam1(self);
 GDBusAnnotationInfo* result = g_dbus_annotation_info_ref(GDBusAnnotationInfo_val(self));
 CAMLreturn(Val_GDBusAnnotationInfo(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_dbus_annotation_info_ref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusAnnotationInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_annotation_info_unref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusAnnotationInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+#endif

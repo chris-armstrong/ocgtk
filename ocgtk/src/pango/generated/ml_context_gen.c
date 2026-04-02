@@ -25,6 +25,8 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_PangoContext(obj));
 }
+#if PANGO_VERSION_CHECK(1,44,0)
+
 CAMLexport CAMLprim value ml_pango_context_set_round_glyph_positions(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -32,6 +34,20 @@ CAMLparam2(self, arg1);
 pango_context_set_round_glyph_positions(PangoContext_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_context_set_round_glyph_positions(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Context requires Pango >= 1.44");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,6,0)
 
 CAMLexport CAMLprim value ml_pango_context_set_matrix(value self, value arg1)
 {
@@ -41,6 +57,18 @@ pango_context_set_matrix(PangoContext_val(self), Option_val(arg1, PangoMatrix_va
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_pango_context_set_matrix(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Context requires Pango >= 1.6");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_pango_context_set_language(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -49,6 +77,8 @@ pango_context_set_language(PangoContext_val(self), Option_val(arg1, PangoLanguag
 CAMLreturn(Val_unit);
 }
 
+#if PANGO_VERSION_CHECK(1,16,0)
+
 CAMLexport CAMLprim value ml_pango_context_set_gravity_hint(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -56,6 +86,18 @@ CAMLparam2(self, arg1);
 pango_context_set_gravity_hint(PangoContext_val(self), PangoGravityHint_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_context_set_gravity_hint(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Context requires Pango >= 1.16");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_context_set_font_map(value self, value arg1)
 {
@@ -73,6 +115,8 @@ pango_context_set_font_description(PangoContext_val(self), Option_val(arg1, Pang
 CAMLreturn(Val_unit);
 }
 
+#if PANGO_VERSION_CHECK(1,16,0)
+
 CAMLexport CAMLprim value ml_pango_context_set_base_gravity(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -80,6 +124,18 @@ CAMLparam2(self, arg1);
 pango_context_set_base_gravity(PangoContext_val(self), PangoGravity_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_context_set_base_gravity(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Context requires Pango >= 1.16");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_context_set_base_dir(value self, value arg1)
 {
@@ -127,6 +183,8 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+#if PANGO_VERSION_CHECK(1,32,4)
+
 CAMLexport CAMLprim value ml_pango_context_get_serial(value self)
 {
 CAMLparam1(self);
@@ -134,6 +192,19 @@ CAMLparam1(self);
 guint result = pango_context_get_serial(PangoContext_val(self));
 CAMLreturn(Val_int(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_context_get_serial(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Context requires Pango >= 1.32.4");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,44,0)
 
 CAMLexport CAMLprim value ml_pango_context_get_round_glyph_positions(value self)
 {
@@ -143,6 +214,17 @@ gboolean result = pango_context_get_round_glyph_positions(PangoContext_val(self)
 CAMLreturn(Val_bool(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_pango_context_get_round_glyph_positions(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Context requires Pango >= 1.44");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_pango_context_get_metrics(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -150,6 +232,8 @@ CAMLparam3(self, arg1, arg2);
 PangoFontMetrics* result = pango_context_get_metrics(PangoContext_val(self), Option_val(arg1, PangoFontDescription_val, NULL), Option_val(arg2, PangoLanguage_val, NULL));
 CAMLreturn(Val_PangoFontMetrics(result));
 }
+
+#if PANGO_VERSION_CHECK(1,6,0)
 
 CAMLexport CAMLprim value ml_pango_context_get_matrix(value self)
 {
@@ -159,6 +243,17 @@ const PangoMatrix* result = pango_context_get_matrix(PangoContext_val(self));
 CAMLreturn(Val_option(result, Val_PangoMatrix));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_pango_context_get_matrix(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Context requires Pango >= 1.6");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_pango_context_get_language(value self)
 {
 CAMLparam1(self);
@@ -166,6 +261,8 @@ CAMLparam1(self);
 PangoLanguage* result = pango_context_get_language(PangoContext_val(self));
 CAMLreturn(Val_PangoLanguage(result));
 }
+
+#if PANGO_VERSION_CHECK(1,16,0)
 
 CAMLexport CAMLprim value ml_pango_context_get_gravity_hint(value self)
 {
@@ -175,6 +272,19 @@ PangoGravityHint result = pango_context_get_gravity_hint(PangoContext_val(self))
 CAMLreturn(Val_PangoGravityHint(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_pango_context_get_gravity_hint(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Context requires Pango >= 1.16");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,16,0)
+
 CAMLexport CAMLprim value ml_pango_context_get_gravity(value self)
 {
 CAMLparam1(self);
@@ -182,6 +292,19 @@ CAMLparam1(self);
 PangoGravity result = pango_context_get_gravity(PangoContext_val(self));
 CAMLreturn(Val_PangoGravity(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_context_get_gravity(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Context requires Pango >= 1.16");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,6,0)
 
 CAMLexport CAMLprim value ml_pango_context_get_font_map(value self)
 {
@@ -192,6 +315,17 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_PangoFontMap));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_pango_context_get_font_map(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Context requires Pango >= 1.6");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_pango_context_get_font_description(value self)
 {
 CAMLparam1(self);
@@ -199,6 +333,8 @@ CAMLparam1(self);
 PangoFontDescription* result = pango_context_get_font_description(PangoContext_val(self));
 CAMLreturn(Val_option(result, Val_PangoFontDescription));
 }
+
+#if PANGO_VERSION_CHECK(1,16,0)
 
 CAMLexport CAMLprim value ml_pango_context_get_base_gravity(value self)
 {
@@ -208,6 +344,17 @@ PangoGravity result = pango_context_get_base_gravity(PangoContext_val(self));
 CAMLreturn(Val_PangoGravity(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_pango_context_get_base_gravity(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Context requires Pango >= 1.16");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_pango_context_get_base_dir(value self)
 {
 CAMLparam1(self);
@@ -216,6 +363,8 @@ PangoDirection result = pango_context_get_base_dir(PangoContext_val(self));
 CAMLreturn(Val_PangoDirection(result));
 }
 
+#if PANGO_VERSION_CHECK(1,32,4)
+
 CAMLexport CAMLprim value ml_pango_context_changed(value self)
 {
 CAMLparam1(self);
@@ -223,3 +372,14 @@ CAMLparam1(self);
 pango_context_changed(PangoContext_val(self));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_context_changed(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Context requires Pango >= 1.32.4");
+return Val_unit;
+}
+#endif

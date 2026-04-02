@@ -61,6 +61,8 @@ gboolean result = g_unix_mount_point_is_loopback(GUnixMountPoint_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+#if GLIB_CHECK_VERSION(2,34,0)
+
 CAMLexport CAMLprim value ml_g_unix_mount_point_guess_symbolic_icon(value self)
 {
 CAMLparam1(self);
@@ -68,6 +70,17 @@ CAMLparam1(self);
 GIcon* result = g_unix_mount_point_guess_symbolic_icon(GUnixMountPoint_val(self));
 CAMLreturn(Val_GIcon(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_guess_symbolic_icon(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixMountPoint requires GLib >= 2.34");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_unix_mount_point_guess_name(value self)
 {
@@ -93,6 +106,8 @@ gboolean result = g_unix_mount_point_guess_can_eject(GUnixMountPoint_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+#if GLIB_CHECK_VERSION(2,32,0)
+
 CAMLexport CAMLprim value ml_g_unix_mount_point_get_options(value self)
 {
 CAMLparam1(self);
@@ -100,6 +115,17 @@ CAMLparam1(self);
 const char* result = g_unix_mount_point_get_options(GUnixMountPoint_val(self));
 CAMLreturn(Val_option_string(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_get_options(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixMountPoint requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_unix_mount_point_get_mount_path(value self)
 {
@@ -133,6 +159,8 @@ g_unix_mount_point_free(GUnixMountPoint_val(self));
 CAMLreturn(Val_unit);
 }
 
+#if GLIB_CHECK_VERSION(2,54,0)
+
 CAMLexport CAMLprim value ml_g_unix_mount_point_copy(value self)
 {
 CAMLparam1(self);
@@ -140,6 +168,17 @@ CAMLparam1(self);
 GUnixMountPoint* result = g_unix_mount_point_copy(GUnixMountPoint_val(self));
 CAMLreturn(Val_GUnixMountPoint(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_copy(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixMountPoint requires GLib >= 2.54");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_unix_mount_point_compare(value self, value arg1)
 {

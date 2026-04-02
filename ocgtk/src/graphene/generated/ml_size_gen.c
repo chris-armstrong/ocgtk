@@ -30,6 +30,8 @@ value Val_graphene_size_t_option(const graphene_size_t *ptr) {
   return Val_some(Val_graphene_size_t(ptr));
 }
 
+#if GRAPHENE_CHECK_VERSION(1,0,0)
+
 
 CAMLexport CAMLprim value ml_graphene_size_alloc(value unit)
 {
@@ -88,3 +90,78 @@ CAMLparam2(self, arg1);
 _Bool result = graphene_size_equal(graphene_size_t_val(self), graphene_size_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_graphene_size_alloc(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Size requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_size_equal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Size requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_size_free(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Size requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_size_init(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Size requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_size_init_from_size(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Size requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_size_interpolate(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Size requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_size_scale(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Size requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+#endif

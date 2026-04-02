@@ -22,6 +22,8 @@
 #include "gio_decls.h"
 
 
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_settings_new(value arg1)
 {
 CAMLparam1(arg1);
@@ -31,6 +33,19 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GSettings(obj));
 }
+#else
+
+CAMLexport CAMLprim value ml_g_settings_new(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,32,0)
+
 CAMLexport CAMLprim value ml_g_settings_new_full(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
@@ -40,6 +55,21 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GSettings(obj));
 }
+#else
+
+CAMLexport CAMLprim value ml_g_settings_new_full(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Settings requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_settings_new_with_backend(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
@@ -49,6 +79,20 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GSettings(obj));
 }
+#else
+
+CAMLexport CAMLprim value ml_g_settings_new_with_backend(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+(void)arg1;
+(void)arg2;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_settings_new_with_backend_and_path(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
@@ -58,6 +102,21 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GSettings(obj));
 }
+#else
+
+CAMLexport CAMLprim value ml_g_settings_new_with_backend_and_path(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_settings_new_with_path(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
@@ -67,6 +126,20 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GSettings(obj));
 }
+#else
+
+CAMLexport CAMLprim value ml_g_settings_new_with_path(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+(void)arg1;
+(void)arg2;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,30,0)
+
 CAMLexport CAMLprim value ml_g_settings_set_uint(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -74,6 +147,21 @@ CAMLparam3(self, arg1, arg2);
 gboolean result = g_settings_set_uint(GSettings_val(self), String_val(arg1), Int_val(arg2));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_set_uint(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Settings requires GLib >= 2.30");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 
 CAMLexport CAMLprim value ml_g_settings_set_strv(value self, value arg1, value arg2)
 {
@@ -96,6 +184,21 @@ gboolean result = g_settings_set_strv(GSettings_val(self), String_val(arg1), c_a
 CAMLreturn(Val_bool(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_settings_set_strv(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_settings_set_string(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -104,6 +207,21 @@ gboolean result = g_settings_set_string(GSettings_val(self), String_val(arg1), S
 CAMLreturn(Val_bool(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_settings_set_string(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_settings_set_int(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -111,6 +229,19 @@ CAMLparam3(self, arg1, arg2);
 gboolean result = g_settings_set_int(GSettings_val(self), String_val(arg1), Int_val(arg2));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_set_int(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_settings_set_flags(value self, value arg1, value arg2)
 {
@@ -128,6 +259,8 @@ gboolean result = g_settings_set_enum(GSettings_val(self), String_val(arg1), Int
 CAMLreturn(Val_bool(result));
 }
 
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_settings_set_double(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -136,6 +269,21 @@ gboolean result = g_settings_set_double(GSettings_val(self), String_val(arg1), D
 CAMLreturn(Val_bool(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_settings_set_double(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_settings_set_boolean(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -143,6 +291,19 @@ CAMLparam3(self, arg1, arg2);
 gboolean result = g_settings_set_boolean(GSettings_val(self), String_val(arg1), Bool_val(arg2));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_set_boolean(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_settings_revert(value self)
 {
@@ -198,6 +359,8 @@ gchar** result = g_settings_list_children(GSettings_val(self));
 CAMLreturn(ml_result);
 }
 
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_settings_is_writable(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -206,6 +369,20 @@ gboolean result = g_settings_is_writable(GSettings_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_settings_is_writable(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,30,0)
+
 CAMLexport CAMLprim value ml_g_settings_get_uint(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -213,6 +390,20 @@ CAMLparam2(self, arg1);
 guint result = g_settings_get_uint(GSettings_val(self), String_val(arg1));
 CAMLreturn(Val_int(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_get_uint(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Settings requires GLib >= 2.30");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 
 CAMLexport CAMLprim value ml_g_settings_get_strv(value self, value arg1)
 {
@@ -233,6 +424,20 @@ gchar** result = g_settings_get_strv(GSettings_val(self), String_val(arg1));
 CAMLreturn(ml_result);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_settings_get_strv(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_settings_get_string(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -240,6 +445,20 @@ CAMLparam2(self, arg1);
 gchar* result = g_settings_get_string(GSettings_val(self), String_val(arg1));
 CAMLreturn(caml_copy_string(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_get_string(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 
 CAMLexport CAMLprim value ml_g_settings_get_int(value self, value arg1)
 {
@@ -249,6 +468,20 @@ gint result = g_settings_get_int(GSettings_val(self), String_val(arg1));
 CAMLreturn(Val_int(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_settings_get_int(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_settings_get_has_unapplied(value self)
 {
 CAMLparam1(self);
@@ -256,6 +489,19 @@ CAMLparam1(self);
 gboolean result = g_settings_get_has_unapplied(GSettings_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_get_has_unapplied(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 
 CAMLexport CAMLprim value ml_g_settings_get_flags(value self, value arg1)
 {
@@ -265,6 +511,20 @@ guint result = g_settings_get_flags(GSettings_val(self), String_val(arg1));
 CAMLreturn(Val_int(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_settings_get_flags(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_settings_get_enum(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -272,6 +532,20 @@ CAMLparam2(self, arg1);
 gint result = g_settings_get_enum(GSettings_val(self), String_val(arg1));
 CAMLreturn(Val_int(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_get_enum(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 
 CAMLexport CAMLprim value ml_g_settings_get_double(value self, value arg1)
 {
@@ -281,6 +555,20 @@ gdouble result = g_settings_get_double(GSettings_val(self), String_val(arg1));
 CAMLreturn(caml_copy_double(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_settings_get_double(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_settings_get_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -288,6 +576,20 @@ CAMLparam2(self, arg1);
 GSettings* result = g_settings_get_child(GSettings_val(self), String_val(arg1));
 CAMLreturn(Val_GSettings(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_get_child(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 
 CAMLexport CAMLprim value ml_g_settings_get_boolean(value self, value arg1)
 {
@@ -297,6 +599,20 @@ gboolean result = g_settings_get_boolean(GSettings_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_settings_get_boolean(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_settings_delay(value self)
 {
 CAMLparam1(self);
@@ -304,6 +620,19 @@ CAMLparam1(self);
 g_settings_delay(GSettings_val(self));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_delay(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,32,0)
 
 CAMLexport CAMLprim value ml_g_settings_create_action(value self, value arg1)
 {
@@ -313,6 +642,20 @@ GAction* result = g_settings_create_action(GSettings_val(self), String_val(arg1)
 CAMLreturn(Val_GAction(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_settings_create_action(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Settings requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_settings_bind_writable(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -321,6 +664,23 @@ g_settings_bind_writable(GSettings_val(self), String_val(arg1), GObject_ext_of_v
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_settings_bind_writable(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_settings_bind(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -328,6 +688,21 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 g_settings_bind(GSettings_val(self), String_val(arg1), GObject_ext_of_val(arg2), String_val(arg3), GioSettingsBindFlags_val(arg4));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_bind(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("Settings requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_settings_apply(value self)
 {
@@ -354,6 +729,8 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
+#if GLIB_CHECK_VERSION(2,28,0)
+
 CAMLexport CAMLprim value ml_g_settings_get_delay_apply(value self)
 {
     CAMLparam1(self);
@@ -370,6 +747,17 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_get_delay_apply(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Settings requires GLib >= 2.28");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_settings_get_path(value self)
 {

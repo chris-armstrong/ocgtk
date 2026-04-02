@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,28,0)
+
 
 CAMLexport CAMLprim value ml_g_simple_action_group_new(value unit)
 {
@@ -55,3 +57,47 @@ CAMLparam2(self, arg1);
 g_simple_action_group_insert(GSimpleActionGroup_val(self), GAction_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_simple_action_group_new(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("SimpleActionGroup requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_simple_action_group_insert(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SimpleActionGroup requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_simple_action_group_lookup(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SimpleActionGroup requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_simple_action_group_remove(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SimpleActionGroup requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+#endif

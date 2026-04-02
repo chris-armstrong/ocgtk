@@ -53,6 +53,8 @@ g_file_attribute_matcher_unref(GFileAttributeMatcher_val(self));
 CAMLreturn(Val_unit);
 }
 
+#if GLIB_CHECK_VERSION(2,32,0)
+
 CAMLexport CAMLprim value ml_g_file_attribute_matcher_to_string(value self)
 {
 CAMLparam1(self);
@@ -60,6 +62,17 @@ CAMLparam1(self);
 char* result = g_file_attribute_matcher_to_string(GFileAttributeMatcher_val(self));
 CAMLreturn(caml_copy_string(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_file_attribute_matcher_to_string(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FileAttributeMatcher requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_file_attribute_matcher_subtract(value self, value arg1)
 {

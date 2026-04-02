@@ -36,6 +36,8 @@ value Val_GSettingsSchema_option(const GSettingsSchema *ptr) {
   return Val_some(Val_GSettingsSchema(ptr));
 }
 
+#if GLIB_CHECK_VERSION(2,32,0)
+
 
 CAMLexport CAMLprim value ml_g_settings_schema_unref(value self)
 {
@@ -52,6 +54,8 @@ CAMLparam1(self);
 GSettingsSchema* result = g_settings_schema_ref(GSettingsSchema_val(self));
 CAMLreturn(Val_GSettingsSchema(result));
 }
+
+#if GLIB_CHECK_VERSION(2,46,0)
 
 CAMLexport CAMLprim value ml_g_settings_schema_list_keys(value self)
 {
@@ -72,6 +76,19 @@ gchar** result = g_settings_schema_list_keys(GSettingsSchema_val(self));
 CAMLreturn(ml_result);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_settings_schema_list_keys(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SettingsSchema requires GLib >= 2.46");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,44,0)
+
 CAMLexport CAMLprim value ml_g_settings_schema_list_children(value self)
 {
 CAMLparam1(self);
@@ -91,6 +108,19 @@ gchar** result = g_settings_schema_list_children(GSettingsSchema_val(self));
 CAMLreturn(ml_result);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_settings_schema_list_children(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SettingsSchema requires GLib >= 2.44");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,40,0)
+
 CAMLexport CAMLprim value ml_g_settings_schema_has_key(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -98,6 +128,18 @@ CAMLparam2(self, arg1);
 gboolean result = g_settings_schema_has_key(GSettingsSchema_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_settings_schema_has_key(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SettingsSchema requires GLib >= 2.40");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_settings_schema_get_path(value self)
 {
@@ -107,6 +149,8 @@ const gchar* result = g_settings_schema_get_path(GSettingsSchema_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
+#if GLIB_CHECK_VERSION(2,40,0)
+
 CAMLexport CAMLprim value ml_g_settings_schema_get_key(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -115,6 +159,18 @@ GSettingsSchemaKey* result = g_settings_schema_get_key(GSettingsSchema_val(self)
 CAMLreturn(Val_GSettingsSchemaKey(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_settings_schema_get_key(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SettingsSchema requires GLib >= 2.40");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_g_settings_schema_get_id(value self)
 {
 CAMLparam1(self);
@@ -122,3 +178,82 @@ CAMLparam1(self);
 const gchar* result = g_settings_schema_get_id(GSettingsSchema_val(self));
 CAMLreturn(caml_copy_string(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_settings_schema_get_id(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SettingsSchema requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_settings_schema_get_key(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SettingsSchema requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_settings_schema_get_path(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SettingsSchema requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_settings_schema_has_key(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SettingsSchema requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_settings_schema_list_children(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SettingsSchema requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_settings_schema_list_keys(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SettingsSchema requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_settings_schema_ref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SettingsSchema requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_settings_schema_unref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SettingsSchema requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+#endif

@@ -22,6 +22,8 @@
 #include "gio_decls.h"
 
 
+#if GLIB_CHECK_VERSION(2,22,0)
+
 CAMLexport CAMLprim value ml_g_unix_socket_address_new(value arg1)
 {
 CAMLparam1(arg1);
@@ -31,6 +33,19 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GUnixSocketAddress(obj));
 }
+#else
+
+CAMLexport CAMLprim value ml_g_unix_socket_address_new(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("UnixSocketAddress requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
+
 CAMLexport CAMLprim value ml_g_unix_socket_address_get_path(value self)
 {
 CAMLparam1(self);
@@ -38,6 +53,19 @@ CAMLparam1(self);
 const char* result = g_unix_socket_address_get_path(GUnixSocketAddress_val(self));
 CAMLreturn(caml_copy_string(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_unix_socket_address_get_path(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixSocketAddress requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
 
 CAMLexport CAMLprim value ml_g_unix_socket_address_get_is_abstract(value self)
 {
@@ -47,6 +75,19 @@ gboolean result = g_unix_socket_address_get_is_abstract(GUnixSocketAddress_val(s
 CAMLreturn(Val_bool(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_unix_socket_address_get_is_abstract(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixSocketAddress requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_unix_socket_address_get_address_type(value self)
 {
 CAMLparam1(self);
@@ -54,6 +95,17 @@ CAMLparam1(self);
 GUnixSocketAddressType result = g_unix_socket_address_get_address_type(GUnixSocketAddress_val(self));
 CAMLreturn(Val_GioUnixSocketAddressType(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_unix_socket_address_get_address_type(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixSocketAddress requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_unix_socket_address_get_abstract(value self)
 {

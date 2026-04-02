@@ -39,6 +39,8 @@ g_mount_operation_set_username(GMountOperation_val(self), String_option_val(arg1
 CAMLreturn(Val_unit);
 }
 
+#if GLIB_CHECK_VERSION(2,58,0)
+
 CAMLexport CAMLprim value ml_g_mount_operation_set_pim(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -46,6 +48,18 @@ CAMLparam2(self, arg1);
 g_mount_operation_set_pim(GMountOperation_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_mount_operation_set_pim(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("MountOperation requires GLib >= 2.58");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_mount_operation_set_password_save(value self, value arg1)
 {
@@ -63,6 +77,8 @@ g_mount_operation_set_password(GMountOperation_val(self), String_option_val(arg1
 CAMLreturn(Val_unit);
 }
 
+#if GLIB_CHECK_VERSION(2,58,0)
+
 CAMLexport CAMLprim value ml_g_mount_operation_set_is_tcrypt_system_volume(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -71,6 +87,20 @@ g_mount_operation_set_is_tcrypt_system_volume(GMountOperation_val(self), Bool_va
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_mount_operation_set_is_tcrypt_system_volume(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("MountOperation requires GLib >= 2.58");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,58,0)
+
 CAMLexport CAMLprim value ml_g_mount_operation_set_is_tcrypt_hidden_volume(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -78,6 +108,18 @@ CAMLparam2(self, arg1);
 g_mount_operation_set_is_tcrypt_hidden_volume(GMountOperation_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_mount_operation_set_is_tcrypt_hidden_volume(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("MountOperation requires GLib >= 2.58");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_mount_operation_set_domain(value self, value arg1)
 {
@@ -119,6 +161,8 @@ const char* result = g_mount_operation_get_username(GMountOperation_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
+#if GLIB_CHECK_VERSION(2,58,0)
+
 CAMLexport CAMLprim value ml_g_mount_operation_get_pim(value self)
 {
 CAMLparam1(self);
@@ -126,6 +170,17 @@ CAMLparam1(self);
 guint result = g_mount_operation_get_pim(GMountOperation_val(self));
 CAMLreturn(Val_int(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_mount_operation_get_pim(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("MountOperation requires GLib >= 2.58");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_mount_operation_get_password_save(value self)
 {
@@ -143,6 +198,8 @@ const char* result = g_mount_operation_get_password(GMountOperation_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
+#if GLIB_CHECK_VERSION(2,58,0)
+
 CAMLexport CAMLprim value ml_g_mount_operation_get_is_tcrypt_system_volume(value self)
 {
 CAMLparam1(self);
@@ -151,6 +208,19 @@ gboolean result = g_mount_operation_get_is_tcrypt_system_volume(GMountOperation_
 CAMLreturn(Val_bool(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_mount_operation_get_is_tcrypt_system_volume(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("MountOperation requires GLib >= 2.58");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,58,0)
+
 CAMLexport CAMLprim value ml_g_mount_operation_get_is_tcrypt_hidden_volume(value self)
 {
 CAMLparam1(self);
@@ -158,6 +228,17 @@ CAMLparam1(self);
 gboolean result = g_mount_operation_get_is_tcrypt_hidden_volume(GMountOperation_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_mount_operation_get_is_tcrypt_hidden_volume(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("MountOperation requires GLib >= 2.58");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_mount_operation_get_domain(value self)
 {

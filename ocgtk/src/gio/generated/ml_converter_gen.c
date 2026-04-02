@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,24,0)
+
 
 CAMLexport CAMLprim value ml_g_converter_reset(value self)
 {
@@ -29,3 +31,17 @@ CAMLparam1(self);
 g_converter_reset(GConverter_val(self));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_converter_reset(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Converter requires GLib >= 2.24");
+return Val_unit;
+}
+
+
+#endif

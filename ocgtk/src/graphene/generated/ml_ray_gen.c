@@ -30,6 +30,8 @@ value Val_graphene_ray_t_option(const graphene_ray_t *ptr) {
   return Val_some(Val_graphene_ray_t(ptr));
 }
 
+#if GRAPHENE_CHECK_VERSION(1,4,0)
+
 
 CAMLexport CAMLprim value ml_graphene_ray_alloc(value unit)
 {
@@ -39,6 +41,8 @@ graphene_ray_t *obj = graphene_ray_alloc();
 
 CAMLreturn(Val_graphene_ray_t(obj));
 }
+#if GRAPHENE_CHECK_VERSION(1,10,0)
+
 CAMLexport CAMLprim value ml_graphene_ray_intersects_triangle(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -46,6 +50,20 @@ CAMLparam2(self, arg1);
 _Bool result = graphene_ray_intersects_triangle(graphene_ray_t_val(self), graphene_triangle_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_ray_intersects_triangle(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.10");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_CHECK_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_ray_intersects_sphere(value self, value arg1)
 {
@@ -55,6 +73,20 @@ _Bool result = graphene_ray_intersects_sphere(graphene_ray_t_val(self), graphene
 CAMLreturn(Val_bool(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_graphene_ray_intersects_sphere(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.10");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_CHECK_VERSION(1,10,0)
+
 CAMLexport CAMLprim value ml_graphene_ray_intersects_box(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -62,6 +94,20 @@ CAMLparam2(self, arg1);
 _Bool result = graphene_ray_intersects_box(graphene_ray_t_val(self), graphene_box_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_ray_intersects_box(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.10");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_CHECK_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_ray_intersect_triangle(value self, value arg1)
 {
@@ -76,6 +122,20 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_graphene_ray_intersect_triangle(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.10");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_CHECK_VERSION(1,10,0)
+
 CAMLexport CAMLprim value ml_graphene_ray_intersect_sphere(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -89,6 +149,20 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_graphene_ray_intersect_sphere(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.10");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_CHECK_VERSION(1,10,0)
+
 CAMLexport CAMLprim value ml_graphene_ray_intersect_box(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -101,6 +175,18 @@ CAMLlocal1(ret);
     Store_field(ret, 1, caml_copy_double(out2));
     CAMLreturn(ret);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_ray_intersect_box(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.10");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_graphene_ray_init_from_vec3(value self, value arg1, value arg2)
 {
@@ -193,3 +279,186 @@ CAMLparam2(self, arg1);
 _Bool result = graphene_ray_equal(graphene_ray_t_val(self), graphene_ray_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_graphene_ray_alloc(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_equal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_free(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_get_closest_point_to_point(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_get_direction(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_get_distance_to_plane(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_get_distance_to_point(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_get_origin(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_get_position_at(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_init(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_init_from_ray(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_init_from_vec3(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_intersect_box(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_intersect_sphere(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_intersect_triangle(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_intersects_box(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_intersects_sphere(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_ray_intersects_triangle(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Ray requires Graphene >= 1.4");
+return Val_unit;
+}
+
+
+#endif

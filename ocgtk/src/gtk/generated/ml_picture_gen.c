@@ -119,6 +119,8 @@ gtk_picture_set_file(GtkPicture_val(self), Option_val(arg1, GFile_val, NULL));
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,8,0)
+
 CAMLexport CAMLprim value ml_gtk_picture_set_content_fit(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -126,6 +128,18 @@ CAMLparam2(self, arg1);
 gtk_picture_set_content_fit(GtkPicture_val(self), GtkContentFit_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_picture_set_content_fit(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Picture requires GTK >= 4.8");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_picture_set_can_shrink(value self, value arg1)
 {
@@ -169,6 +183,8 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GFile));
 }
 
+#if GTK_CHECK_VERSION(4,8,0)
+
 CAMLexport CAMLprim value ml_gtk_picture_get_content_fit(value self)
 {
 CAMLparam1(self);
@@ -176,6 +192,17 @@ CAMLparam1(self);
 GtkContentFit result = gtk_picture_get_content_fit(GtkPicture_val(self));
 CAMLreturn(Val_GtkContentFit(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_picture_get_content_fit(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Picture requires GTK >= 4.8");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_picture_get_can_shrink(value self)
 {

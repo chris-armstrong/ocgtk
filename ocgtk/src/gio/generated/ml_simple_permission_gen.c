@@ -22,6 +22,8 @@
 #include "gio_decls.h"
 
 
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_simple_permission_new(value arg1)
 {
 CAMLparam1(arg1);
@@ -31,3 +33,13 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GSimplePermission(obj));
 }
+#else
+
+CAMLexport CAMLprim value ml_g_simple_permission_new(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("SimplePermission requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
