@@ -25,6 +25,8 @@ gtk_list_item_set_selectable(GtkListItem_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,12,0)
+
 CAMLexport CAMLprim value ml_gtk_list_item_set_focusable(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -32,6 +34,18 @@ CAMLparam2(self, arg1);
 gtk_list_item_set_focusable(GtkListItem_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_list_item_set_focusable(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ListItem requires GTK >= 4.12");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_list_item_set_child(value self, value arg1)
 {
@@ -49,6 +63,8 @@ gtk_list_item_set_activatable(GtkListItem_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,12,0)
+
 CAMLexport CAMLprim value ml_gtk_list_item_set_accessible_label(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -57,6 +73,20 @@ gtk_list_item_set_accessible_label(GtkListItem_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_gtk_list_item_set_accessible_label(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ListItem requires GTK >= 4.12");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,12,0)
+
 CAMLexport CAMLprim value ml_gtk_list_item_set_accessible_description(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -64,6 +94,18 @@ CAMLparam2(self, arg1);
 gtk_list_item_set_accessible_description(GtkListItem_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_list_item_set_accessible_description(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ListItem requires GTK >= 4.12");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_list_item_get_selected(value self)
 {
@@ -97,6 +139,8 @@ gpointer result = gtk_list_item_get_item(GtkListItem_val(self));
 CAMLreturn(ml_gobject_val_of_ext(result));
 }
 
+#if GTK_CHECK_VERSION(4,12,0)
+
 CAMLexport CAMLprim value ml_gtk_list_item_get_focusable(value self)
 {
 CAMLparam1(self);
@@ -104,6 +148,17 @@ CAMLparam1(self);
 gboolean result = gtk_list_item_get_focusable(GtkListItem_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_list_item_get_focusable(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ListItem requires GTK >= 4.12");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_list_item_get_child(value self)
 {
@@ -122,6 +177,8 @@ gboolean result = gtk_list_item_get_activatable(GtkListItem_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+#if GTK_CHECK_VERSION(4,12,0)
+
 CAMLexport CAMLprim value ml_gtk_list_item_get_accessible_label(value self)
 {
 CAMLparam1(self);
@@ -130,6 +187,19 @@ const char* result = gtk_list_item_get_accessible_label(GtkListItem_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_gtk_list_item_get_accessible_label(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ListItem requires GTK >= 4.12");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,12,0)
+
 CAMLexport CAMLprim value ml_gtk_list_item_get_accessible_description(value self)
 {
 CAMLparam1(self);
@@ -137,3 +207,14 @@ CAMLparam1(self);
 const char* result = gtk_list_item_get_accessible_description(GtkListItem_val(self));
 CAMLreturn(caml_copy_string(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_list_item_get_accessible_description(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ListItem requires GTK >= 4.12");
+return Val_unit;
+}
+#endif

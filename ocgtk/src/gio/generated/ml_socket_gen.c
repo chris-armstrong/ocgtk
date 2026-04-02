@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,22,0)
+
 
 CAMLexport CAMLprim value ml_g_socket_new(value arg1, value arg2, value arg3)
 {
@@ -59,6 +61,8 @@ gboolean result = g_socket_shutdown(GSocket_val(self), Bool_val(arg1), Bool_val(
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#if GLIB_CHECK_VERSION(2,32,0)
+
 CAMLexport CAMLprim value ml_g_socket_set_ttl(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -67,6 +71,20 @@ g_socket_set_ttl(GSocket_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_socket_set_ttl(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Socket requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_socket_set_timeout(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -74,6 +92,20 @@ CAMLparam2(self, arg1);
 g_socket_set_timeout(GSocket_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_socket_set_timeout(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Socket requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,36,0)
 
 CAMLexport CAMLprim value ml_g_socket_set_option(value self, value arg1, value arg2, value arg3)
 {
@@ -84,6 +116,22 @@ gboolean result = g_socket_set_option(GSocket_val(self), Int_val(arg1), Int_val(
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_socket_set_option(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Socket requires GLib >= 2.36");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,32,0)
+
 CAMLexport CAMLprim value ml_g_socket_set_multicast_ttl(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -92,6 +140,20 @@ g_socket_set_multicast_ttl(GSocket_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_socket_set_multicast_ttl(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Socket requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,32,0)
+
 CAMLexport CAMLprim value ml_g_socket_set_multicast_loopback(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -99,6 +161,18 @@ CAMLparam2(self, arg1);
 g_socket_set_multicast_loopback(GSocket_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_socket_set_multicast_loopback(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Socket requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_socket_set_listen_backlog(value self, value arg1)
 {
@@ -116,6 +190,8 @@ g_socket_set_keepalive(GSocket_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if GLIB_CHECK_VERSION(2,32,0)
+
 CAMLexport CAMLprim value ml_g_socket_set_broadcast(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -124,6 +200,18 @@ g_socket_set_broadcast(GSocket_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_socket_set_broadcast(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Socket requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_g_socket_set_blocking(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -131,6 +219,8 @@ CAMLparam2(self, arg1);
 g_socket_set_blocking(GSocket_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#if GLIB_CHECK_VERSION(2,44,0)
 
 CAMLexport CAMLprim value ml_g_socket_send_messages(value self, value arg1, value arg2, value arg3, value arg4)
 {
@@ -147,6 +237,23 @@ gint result = g_socket_send_messages(GSocket_val(self), c_arg1, Int_val(arg2), I
 if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_socket_send_messages(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("Socket requires GLib >= 2.44");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,48,0)
+
 CAMLexport CAMLprim value ml_g_socket_receive_messages(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -162,6 +269,21 @@ gint result = g_socket_receive_messages(GSocket_val(self), c_arg1, Int_val(arg2)
 if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_socket_receive_messages(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("Socket requires GLib >= 2.48");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_g_socket_listen(value self)
 {
 CAMLparam1(self);
@@ -170,6 +292,8 @@ GError *error = NULL;
 gboolean result = g_socket_listen(GSocket_val(self), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+
+#if GLIB_CHECK_VERSION(2,56,0)
 
 CAMLexport CAMLprim value ml_g_socket_leave_multicast_group_ssm(value self, value arg1, value arg2, value arg3)
 {
@@ -180,6 +304,22 @@ gboolean result = g_socket_leave_multicast_group_ssm(GSocket_val(self), GInetAdd
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_socket_leave_multicast_group_ssm(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Socket requires GLib >= 2.56");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,32,0)
+
 CAMLexport CAMLprim value ml_g_socket_leave_multicast_group(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -188,6 +328,22 @@ GError *error = NULL;
 gboolean result = g_socket_leave_multicast_group(GSocket_val(self), GInetAddress_val(arg1), Bool_val(arg2), String_option_val(arg3), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_socket_leave_multicast_group(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Socket requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,56,0)
 
 CAMLexport CAMLprim value ml_g_socket_join_multicast_group_ssm(value self, value arg1, value arg2, value arg3)
 {
@@ -198,6 +354,22 @@ gboolean result = g_socket_join_multicast_group_ssm(GSocket_val(self), GInetAddr
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_socket_join_multicast_group_ssm(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Socket requires GLib >= 2.56");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,32,0)
+
 CAMLexport CAMLprim value ml_g_socket_join_multicast_group(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -206,6 +378,20 @@ GError *error = NULL;
 gboolean result = g_socket_join_multicast_group(GSocket_val(self), GInetAddress_val(arg1), Bool_val(arg2), String_option_val(arg3), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_socket_join_multicast_group(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Socket requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_socket_is_connected(value self)
 {
@@ -223,6 +409,8 @@ gboolean result = g_socket_is_closed(GSocket_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+#if GLIB_CHECK_VERSION(2,32,0)
+
 CAMLexport CAMLprim value ml_g_socket_get_ttl(value self)
 {
 CAMLparam1(self);
@@ -231,6 +419,19 @@ guint result = g_socket_get_ttl(GSocket_val(self));
 CAMLreturn(Val_int(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_socket_get_ttl(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_socket_get_timeout(value self)
 {
 CAMLparam1(self);
@@ -238,6 +439,17 @@ CAMLparam1(self);
 guint result = g_socket_get_timeout(GSocket_val(self));
 CAMLreturn(Val_int(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_socket_get_timeout(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_socket_get_socket_type(value self)
 {
@@ -264,6 +476,8 @@ GSocketProtocol result = g_socket_get_protocol(GSocket_val(self));
 CAMLreturn(Val_GioSocketProtocol(result));
 }
 
+#if GLIB_CHECK_VERSION(2,36,0)
+
 CAMLexport CAMLprim value ml_g_socket_get_option(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -278,6 +492,21 @@ CAMLlocal1(ret);
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_socket_get_option(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Socket requires GLib >= 2.36");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,32,0)
+
 CAMLexport CAMLprim value ml_g_socket_get_multicast_ttl(value self)
 {
 CAMLparam1(self);
@@ -286,6 +515,19 @@ guint result = g_socket_get_multicast_ttl(GSocket_val(self));
 CAMLreturn(Val_int(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_socket_get_multicast_ttl(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,32,0)
+
 CAMLexport CAMLprim value ml_g_socket_get_multicast_loopback(value self)
 {
 CAMLparam1(self);
@@ -293,6 +535,17 @@ CAMLparam1(self);
 gboolean result = g_socket_get_multicast_loopback(GSocket_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_socket_get_multicast_loopback(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_socket_get_local_address(value self)
 {
@@ -335,6 +588,8 @@ GSocketFamily result = g_socket_get_family(GSocket_val(self));
 CAMLreturn(Val_GioSocketFamily(result));
 }
 
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_socket_get_credentials(value self)
 {
 CAMLparam1(self);
@@ -344,6 +599,19 @@ GCredentials* result = g_socket_get_credentials(GSocket_val(self), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GCredentials(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_socket_get_credentials(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,32,0)
+
 CAMLexport CAMLprim value ml_g_socket_get_broadcast(value self)
 {
 CAMLparam1(self);
@@ -351,6 +619,17 @@ CAMLparam1(self);
 gboolean result = g_socket_get_broadcast(GSocket_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_socket_get_broadcast(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_socket_get_blocking(value self)
 {
@@ -429,3 +708,455 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_GioSocketType(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_socket_new(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_new_from_fd(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_accept(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_bind(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_check_connect_result(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_close(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_connect(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_connection_factory_create_connection(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_blocking(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_broadcast(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_credentials(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_family(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_fd(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_keepalive(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_listen_backlog(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_local_address(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_multicast_loopback(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_multicast_ttl(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_option(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_protocol(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_remote_address(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_socket_type(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_timeout(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_ttl(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_is_closed(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_is_connected(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_join_multicast_group(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_join_multicast_group_ssm(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_leave_multicast_group(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_leave_multicast_group_ssm(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_listen(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_receive_messages(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_send_messages(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_set_blocking(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_set_broadcast(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_set_keepalive(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_set_listen_backlog(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_set_multicast_loopback(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_set_multicast_ttl(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_set_option(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_set_timeout(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_set_ttl(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_shutdown(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_speaks_ipv4(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_type(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+#endif

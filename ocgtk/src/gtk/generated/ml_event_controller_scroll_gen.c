@@ -34,6 +34,8 @@ gtk_event_controller_scroll_set_flags(GtkEventControllerScroll_val(self), GtkEve
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,8,0)
+
 CAMLexport CAMLprim value ml_gtk_event_controller_scroll_get_unit(value self)
 {
 CAMLparam1(self);
@@ -41,6 +43,17 @@ CAMLparam1(self);
 GdkScrollUnit result = gtk_event_controller_scroll_get_unit(GtkEventControllerScroll_val(self));
 CAMLreturn(Val_GdkScrollUnit(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_event_controller_scroll_get_unit(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("EventControllerScroll requires GTK >= 4.8");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_event_controller_scroll_get_flags(value self)
 {

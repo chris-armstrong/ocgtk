@@ -36,3 +36,10 @@ value Val_GDBusInterfaceVTable_option(const GDBusInterfaceVTable *ptr) {
   return Val_some(Val_GDBusInterfaceVTable(ptr));
 }
 
+#if GLIB_CHECK_VERSION(2,26,0)
+
+
+#else
+
+
+#endif

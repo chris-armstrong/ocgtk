@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,30,0)
+
 
 CAMLexport CAMLprim value ml_g_tls_file_database_get_anchors(value self)
 {
@@ -53,3 +55,27 @@ g_object_set_property(G_OBJECT(obj), "anchors", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_tls_file_database_get_anchors(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsFileDatabase requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_file_database_set_anchors(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsFileDatabase requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+#endif

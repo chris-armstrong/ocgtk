@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for Transform */
 
-#include <gsk/gsk.h>
+#include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -138,6 +138,8 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+#if GTK_CHECK_VERSION(4,6,0)
+
 CAMLexport CAMLprim value ml_gsk_transform_to_2d_components(value self)
 {
 CAMLparam1(self);
@@ -162,6 +164,17 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_gsk_transform_to_2d_components(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Transform requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gsk_transform_to_2d(value self)
 {
 CAMLparam1(self);
@@ -184,6 +197,8 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+#if GTK_CHECK_VERSION(4,6,0)
+
 CAMLexport CAMLprim value ml_gsk_transform_skew(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -191,6 +206,19 @@ CAMLparam3(self, arg1, arg2);
 GskTransform* result = gsk_transform_skew(GskTransform_val(self), Double_val(arg1), Double_val(arg2));
 CAMLreturn(Val_option(result, Val_GskTransform));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gsk_transform_skew(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Transform requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gsk_transform_scale_3d(value self, value arg1, value arg2, value arg3)
 {

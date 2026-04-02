@@ -67,6 +67,8 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GdkDrop));
 }
 
+#if GTK_CHECK_VERSION(4,4,0)
+
 CAMLexport CAMLprim value ml_gtk_drop_target_get_current_drop(value self)
 {
 CAMLparam1(self);
@@ -75,6 +77,17 @@ GdkDrop* result = gtk_drop_target_get_current_drop(GtkDropTarget_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GdkDrop));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_drop_target_get_current_drop(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DropTarget requires GTK >= 4.4");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_drop_target_get_actions(value self)
 {

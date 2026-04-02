@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for Texture */
 
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -35,6 +35,8 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkTexture(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+#if GTK_CHECK_VERSION(4,6,0)
+
 CAMLexport CAMLprim value ml_gdk_texture_new_from_filename(value arg1)
 {
 CAMLparam1(arg1);
@@ -45,6 +47,17 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkTexture(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+#else
+
+CAMLexport CAMLprim value ml_gdk_texture_new_from_filename(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("Texture requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gdk_texture_new_from_resource(value arg1)
 {
 CAMLparam1(arg1);
@@ -54,6 +67,8 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GdkTexture(obj));
 }
+#if GTK_CHECK_VERSION(4,6,0)
+
 CAMLexport CAMLprim value ml_gdk_texture_save_to_tiff(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -61,6 +76,18 @@ CAMLparam2(self, arg1);
 gboolean result = gdk_texture_save_to_tiff(GdkTexture_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_texture_save_to_tiff(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Texture requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gdk_texture_save_to_png(value self, value arg1)
 {
@@ -86,6 +113,8 @@ int result = gdk_texture_get_height(GdkTexture_val(self));
 CAMLreturn(Val_int(result));
 }
 
+#if GTK_CHECK_VERSION(4,10,0)
+
 CAMLexport CAMLprim value ml_gdk_texture_get_format(value self)
 {
 CAMLparam1(self);
@@ -93,3 +122,14 @@ CAMLparam1(self);
 GdkMemoryFormat result = gdk_texture_get_format(GdkTexture_val(self));
 CAMLreturn(Val_GdkMemoryFormat(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_texture_get_format(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Texture requires GTK >= 4.10");
+return Val_unit;
+}
+#endif

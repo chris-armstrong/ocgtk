@@ -34,6 +34,8 @@ gtk_center_layout_set_start_widget(GtkCenterLayout_val(self), Option_val(arg1, G
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,12,0)
+
 CAMLexport CAMLprim value ml_gtk_center_layout_set_shrink_center_last(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -41,6 +43,18 @@ CAMLparam2(self, arg1);
 gtk_center_layout_set_shrink_center_last(GtkCenterLayout_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_center_layout_set_shrink_center_last(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("CenterLayout requires GTK >= 4.12");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_center_layout_set_orientation(value self, value arg1)
 {
@@ -83,6 +97,8 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
+#if GTK_CHECK_VERSION(4,12,0)
+
 CAMLexport CAMLprim value ml_gtk_center_layout_get_shrink_center_last(value self)
 {
 CAMLparam1(self);
@@ -90,6 +106,17 @@ CAMLparam1(self);
 gboolean result = gtk_center_layout_get_shrink_center_last(GtkCenterLayout_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_center_layout_get_shrink_center_last(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("CenterLayout requires GTK >= 4.12");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_center_layout_get_orientation(value self)
 {

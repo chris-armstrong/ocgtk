@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,28,0)
+
 
 CAMLexport CAMLprim value ml_g_tls_connection_set_use_system_certdb(value self, value arg1)
 {
@@ -46,6 +48,8 @@ g_tls_connection_set_rehandshake_mode(GTlsConnection_val(self), GioTlsRehandshak
 CAMLreturn(Val_unit);
 }
 
+#if GLIB_CHECK_VERSION(2,30,0)
+
 CAMLexport CAMLprim value ml_g_tls_connection_set_interaction(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -53,6 +57,20 @@ CAMLparam2(self, arg1);
 g_tls_connection_set_interaction(GTlsConnection_val(self), Option_val(arg1, GTlsInteraction_val, NULL));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_tls_connection_set_interaction(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsConnection requires GLib >= 2.30");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,30,0)
 
 CAMLexport CAMLprim value ml_g_tls_connection_set_database(value self, value arg1)
 {
@@ -62,6 +80,18 @@ g_tls_connection_set_database(GTlsConnection_val(self), Option_val(arg1, GTlsDat
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_tls_connection_set_database(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsConnection requires GLib >= 2.30");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_g_tls_connection_set_certificate(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -69,6 +99,8 @@ CAMLparam2(self, arg1);
 g_tls_connection_set_certificate(GTlsConnection_val(self), GTlsCertificate_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#if GLIB_CHECK_VERSION(2,60,0)
 
 CAMLexport CAMLprim value ml_g_tls_connection_set_advertised_protocols(value self, value arg1)
 {
@@ -90,6 +122,18 @@ g_tls_connection_set_advertised_protocols(GTlsConnection_val(self), c_arg1);
     if (c_arg1) g_free(c_arg1);
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_tls_connection_set_advertised_protocols(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsConnection requires GLib >= 2.60");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_tls_connection_handshake_finish(value self, value arg1)
 {
@@ -133,6 +177,8 @@ GTlsRehandshakeMode result = g_tls_connection_get_rehandshake_mode(GTlsConnectio
 CAMLreturn(Val_GioTlsRehandshakeMode(result));
 }
 
+#if GLIB_CHECK_VERSION(2,70,0)
+
 CAMLexport CAMLprim value ml_g_tls_connection_get_protocol_version(value self)
 {
 CAMLparam1(self);
@@ -140,6 +186,17 @@ CAMLparam1(self);
 GTlsProtocolVersion result = g_tls_connection_get_protocol_version(GTlsConnection_val(self));
 CAMLreturn(Val_GioTlsProtocolVersion(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_protocol_version(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.70");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_tls_connection_get_peer_certificate_errors(value self)
 {
@@ -158,6 +215,8 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GTlsCertificate));
 }
 
+#if GLIB_CHECK_VERSION(2,60,0)
+
 CAMLexport CAMLprim value ml_g_tls_connection_get_negotiated_protocol(value self)
 {
 CAMLparam1(self);
@@ -165,6 +224,19 @@ CAMLparam1(self);
 const gchar* result = g_tls_connection_get_negotiated_protocol(GTlsConnection_val(self));
 CAMLreturn(Val_option_string(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_negotiated_protocol(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.60");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,30,0)
 
 CAMLexport CAMLprim value ml_g_tls_connection_get_interaction(value self)
 {
@@ -175,6 +247,19 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GTlsInteraction));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_interaction(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.30");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,30,0)
+
 CAMLexport CAMLprim value ml_g_tls_connection_get_database(value self)
 {
 CAMLparam1(self);
@@ -184,6 +269,19 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GTlsDatabase));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_database(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.30");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,70,0)
+
 CAMLexport CAMLprim value ml_g_tls_connection_get_ciphersuite_name(value self)
 {
 CAMLparam1(self);
@@ -191,6 +289,17 @@ CAMLparam1(self);
 gchar* result = g_tls_connection_get_ciphersuite_name(GTlsConnection_val(self));
 CAMLreturn(Val_option_string(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_ciphersuite_name(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.70");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_tls_connection_get_certificate(value self)
 {
@@ -225,3 +334,217 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_GIOStream(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_emit_accept_certificate(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_certificate(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_ciphersuite_name(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_database(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_interaction(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_negotiated_protocol(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_peer_certificate(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_peer_certificate_errors(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_protocol_version(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_rehandshake_mode(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_require_close_notify(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_use_system_certdb(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_handshake(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_handshake_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_set_advertised_protocols(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_set_certificate(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_set_database(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_set_interaction(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_set_rehandshake_mode(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_set_require_close_notify(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_set_use_system_certdb(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_connection_get_base_io_stream(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+#endif

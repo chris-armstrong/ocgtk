@@ -36,3 +36,10 @@ value Val_GOutputVector_option(const GOutputVector *ptr) {
   return Val_some(Val_GOutputVector(ptr));
 }
 
+#if GLIB_CHECK_VERSION(2,22,0)
+
+
+#else
+
+
+#endif

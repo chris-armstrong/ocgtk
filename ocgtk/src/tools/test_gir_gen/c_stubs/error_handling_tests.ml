@@ -60,6 +60,7 @@ let test_method_with_throws_declares_error () =
       (* This method can throw errors *)
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -114,6 +115,7 @@ let test_error_handling_uses_res_ok () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -149,6 +151,7 @@ let test_error_passed_by_reference () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -184,6 +187,7 @@ let test_error_initialized_to_null () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -224,6 +228,7 @@ let test_has_complete_error_handling () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -266,6 +271,7 @@ let test_constructor_with_throws () =
       ctor_doc = None;
       throws = true;
       ctor_introspectable = true;
+      version = None;
       (* Constructor that can throw *)
     }
   in

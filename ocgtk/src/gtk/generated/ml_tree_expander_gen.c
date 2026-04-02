@@ -34,6 +34,8 @@ gtk_tree_expander_set_list_row(GtkTreeExpander_val(self), Option_val(arg1, GtkTr
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,6,0)
+
 CAMLexport CAMLprim value ml_gtk_tree_expander_set_indent_for_icon(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -41,6 +43,20 @@ CAMLparam2(self, arg1);
 gtk_tree_expander_set_indent_for_icon(GtkTreeExpander_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_tree_expander_set_indent_for_icon(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TreeExpander requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,10,0)
 
 CAMLexport CAMLprim value ml_gtk_tree_expander_set_indent_for_depth(value self, value arg1)
 {
@@ -50,6 +66,20 @@ gtk_tree_expander_set_indent_for_depth(GtkTreeExpander_val(self), Bool_val(arg1)
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_gtk_tree_expander_set_indent_for_depth(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TreeExpander requires GTK >= 4.10");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,10,0)
+
 CAMLexport CAMLprim value ml_gtk_tree_expander_set_hide_expander(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -57,6 +87,18 @@ CAMLparam2(self, arg1);
 gtk_tree_expander_set_hide_expander(GtkTreeExpander_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_tree_expander_set_hide_expander(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TreeExpander requires GTK >= 4.10");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_tree_expander_set_child(value self, value arg1)
 {
@@ -83,6 +125,8 @@ gpointer result = gtk_tree_expander_get_item(GtkTreeExpander_val(self));
 CAMLreturn(ml_gobject_val_of_ext(result));
 }
 
+#if GTK_CHECK_VERSION(4,6,0)
+
 CAMLexport CAMLprim value ml_gtk_tree_expander_get_indent_for_icon(value self)
 {
 CAMLparam1(self);
@@ -90,6 +134,19 @@ CAMLparam1(self);
 gboolean result = gtk_tree_expander_get_indent_for_icon(GtkTreeExpander_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_tree_expander_get_indent_for_icon(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TreeExpander requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,10,0)
 
 CAMLexport CAMLprim value ml_gtk_tree_expander_get_indent_for_depth(value self)
 {
@@ -99,6 +156,19 @@ gboolean result = gtk_tree_expander_get_indent_for_depth(GtkTreeExpander_val(sel
 CAMLreturn(Val_bool(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_gtk_tree_expander_get_indent_for_depth(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TreeExpander requires GTK >= 4.10");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,10,0)
+
 CAMLexport CAMLprim value ml_gtk_tree_expander_get_hide_expander(value self)
 {
 CAMLparam1(self);
@@ -106,6 +176,17 @@ CAMLparam1(self);
 gboolean result = gtk_tree_expander_get_hide_expander(GtkTreeExpander_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_tree_expander_get_hide_expander(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TreeExpander requires GTK >= 4.10");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_tree_expander_get_child(value self)
 {

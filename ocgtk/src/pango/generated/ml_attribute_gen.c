@@ -24,6 +24,8 @@ value copy_PangoAttribute(const PangoAttribute *ptr)
 }
 
 
+#if PANGO_VERSION_CHECK(1,20,0)
+
 CAMLexport CAMLprim value ml_pango_attribute_init(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -31,6 +33,18 @@ CAMLparam2(self, arg1);
 pango_attribute_init(PangoAttribute_val(self), PangoAttrClass_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_attribute_init(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Attribute requires Pango >= 1.20");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_attribute_equal(value self, value arg1)
 {
@@ -56,6 +70,8 @@ PangoAttribute* result = pango_attribute_copy(PangoAttribute_val(self));
 CAMLreturn(Val_PangoAttribute(result));
 }
 
+#if PANGO_VERSION_CHECK(1,50,0)
+
 CAMLexport CAMLprim value ml_pango_attribute_as_string(value self)
 {
 CAMLparam1(self);
@@ -63,6 +79,19 @@ CAMLparam1(self);
 PangoAttrString* result = pango_attribute_as_string(PangoAttribute_val(self));
 CAMLreturn(Val_option(result, Val_PangoAttrString));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_attribute_as_string(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Attribute requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,50,0)
 
 CAMLexport CAMLprim value ml_pango_attribute_as_size(value self)
 {
@@ -72,6 +101,19 @@ PangoAttrSize* result = pango_attribute_as_size(PangoAttribute_val(self));
 CAMLreturn(Val_option(result, Val_PangoAttrSize));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_pango_attribute_as_size(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Attribute requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,50,0)
+
 CAMLexport CAMLprim value ml_pango_attribute_as_shape(value self)
 {
 CAMLparam1(self);
@@ -79,6 +121,19 @@ CAMLparam1(self);
 PangoAttrShape* result = pango_attribute_as_shape(PangoAttribute_val(self));
 CAMLreturn(Val_option(result, Val_PangoAttrShape));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_attribute_as_shape(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Attribute requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,50,0)
 
 CAMLexport CAMLprim value ml_pango_attribute_as_language(value self)
 {
@@ -88,6 +143,19 @@ PangoAttrLanguage* result = pango_attribute_as_language(PangoAttribute_val(self)
 CAMLreturn(Val_option(result, Val_PangoAttrLanguage));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_pango_attribute_as_language(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Attribute requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,50,0)
+
 CAMLexport CAMLprim value ml_pango_attribute_as_int(value self)
 {
 CAMLparam1(self);
@@ -95,6 +163,19 @@ CAMLparam1(self);
 PangoAttrInt* result = pango_attribute_as_int(PangoAttribute_val(self));
 CAMLreturn(Val_option(result, Val_PangoAttrInt));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_attribute_as_int(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Attribute requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,50,0)
 
 CAMLexport CAMLprim value ml_pango_attribute_as_font_features(value self)
 {
@@ -104,6 +185,19 @@ PangoAttrFontFeatures* result = pango_attribute_as_font_features(PangoAttribute_
 CAMLreturn(Val_option(result, Val_PangoAttrFontFeatures));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_pango_attribute_as_font_features(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Attribute requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,50,0)
+
 CAMLexport CAMLprim value ml_pango_attribute_as_font_desc(value self)
 {
 CAMLparam1(self);
@@ -111,6 +205,19 @@ CAMLparam1(self);
 PangoAttrFontDesc* result = pango_attribute_as_font_desc(PangoAttribute_val(self));
 CAMLreturn(Val_option(result, Val_PangoAttrFontDesc));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_attribute_as_font_desc(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Attribute requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,50,0)
 
 CAMLexport CAMLprim value ml_pango_attribute_as_float(value self)
 {
@@ -120,6 +227,19 @@ PangoAttrFloat* result = pango_attribute_as_float(PangoAttribute_val(self));
 CAMLreturn(Val_option(result, Val_PangoAttrFloat));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_pango_attribute_as_float(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Attribute requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,50,0)
+
 CAMLexport CAMLprim value ml_pango_attribute_as_color(value self)
 {
 CAMLparam1(self);
@@ -127,3 +247,14 @@ CAMLparam1(self);
 PangoAttrColor* result = pango_attribute_as_color(PangoAttribute_val(self));
 CAMLreturn(Val_option(result, Val_PangoAttrColor));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_attribute_as_color(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Attribute requires Pango >= 1.50");
+return Val_unit;
+}
+#endif

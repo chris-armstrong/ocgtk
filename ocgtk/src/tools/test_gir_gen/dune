@@ -1,16 +1,48 @@
 (include_subdirs unqualified)
-  (test (name test_gir_gen)
-     (modules helpers core parser c_ast c_parser c_validation c_validation_tests
-        ml_ast_helpers ml_validation layer2_helpers c_stubs_tests
-        header_naming_tests header_generation_tests nullable_tests
-        error_handling_tests out_params_tests array_tests type_conversion_tests
-        type_definition_tests external_decl_tests
-        signature_tests properties signals enums records edge_cases
-        method_wrapper_tests constructor_wrapper_tests cross_namespace_tests no_external_enum_decls_tests
-        no_external_bitfield_decls_tests dependency_includes_tests
-         dependency_exclusion_tests c_stub_include_tests
-        classify_type_tests
-        integration_tests compilation_tests
-        test_gir_gen)
-     (deps %{exe:../gir_gen/gir_gen.exe})
-     (libraries str unix gir_gen_lib alcotest ppxlib))
+
+(test
+ (name test_gir_gen)
+ (modules
+  helpers
+  core
+  parser
+  c_ast
+  c_parser
+  c_validation
+  c_validation_tests
+  ml_ast_helpers
+  ml_validation
+  layer2_helpers
+  c_stubs_tests
+  header_naming_tests
+  header_generation_tests
+  nullable_tests
+  error_handling_tests
+  out_params_tests
+  array_tests
+  type_conversion_tests
+  type_definition_tests
+  external_decl_tests
+  signature_tests
+  properties
+  signals
+  enums
+  records
+  edge_cases
+  method_wrapper_tests
+  constructor_wrapper_tests
+  cross_namespace_tests
+  no_external_enum_decls_tests
+  no_external_bitfield_decls_tests
+  dependency_includes_tests
+  dependency_exclusion_tests
+  c_stub_include_tests
+  classify_type_tests
+  integration_tests
+  compilation_tests
+  version_guard_tests
+  c_stub_version_guard_tests
+  test_gir_gen
+  type_factory)
+ (deps %{exe:../gir_gen/gir_gen.exe})
+ (libraries str unix gir_gen_lib alcotest ppxlib))

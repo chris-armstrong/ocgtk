@@ -16,3 +16,10 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gtk_decls.h"
 
+#if GTK_CHECK_VERSION(4,6,0)
+
+
+#else
+
+
+#endif

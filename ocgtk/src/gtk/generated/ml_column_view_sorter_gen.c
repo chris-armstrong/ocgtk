@@ -16,6 +16,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gtk_decls.h"
 
+#if GTK_CHECK_VERSION(4,10,0)
+
 
 CAMLexport CAMLprim value ml_gtk_column_view_sorter_get_primary_sort_order(value self)
 {
@@ -55,3 +57,45 @@ CAMLparam1(self);
 guint result = gtk_column_view_sorter_get_n_sort_columns(GtkColumnViewSorter_val(self));
 CAMLreturn(Val_int(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_gtk_column_view_sorter_get_n_sort_columns(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ColumnViewSorter requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_column_view_sorter_get_nth_sort_column(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ColumnViewSorter requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_column_view_sorter_get_primary_sort_column(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ColumnViewSorter requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_column_view_sorter_get_primary_sort_order(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ColumnViewSorter requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+#endif

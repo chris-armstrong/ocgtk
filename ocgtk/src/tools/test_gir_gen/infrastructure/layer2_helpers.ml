@@ -20,6 +20,7 @@ let create_test_class_with_parent ~name ~c_type ?parent:(parent_val=None) () =
     properties = [];
     signals = [];
     class_doc = None;
+    version = None;
   }
 
 (* Create a simple parent class for testing inheritance *)
@@ -43,6 +44,7 @@ let create_test_class_with_methods ~name ~c_type ~methods () =
     properties = [];
     signals = [];
     class_doc = None;
+    version = None;
   }
 
 (* ========================================================================= *)
@@ -61,6 +63,7 @@ let create_test_method ~name ~c_identifier () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   }
 
 (* Create a test method with a single parameter *)
@@ -85,6 +88,7 @@ let create_test_method_with_param ~name ~c_identifier ~param_name ~param_type ()
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   }
 
 (* Create a test method with multiple parameters *)
@@ -99,6 +103,7 @@ let create_test_method_with_params ~name ~c_identifier ~params () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   }
 
 (* Create a test method with a return type *)
@@ -113,6 +118,7 @@ let create_test_method_with_return ~name ~c_identifier ~return_type () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   }
 
 (* Create a test method that throws errors *)
@@ -127,6 +133,7 @@ let create_test_method_throwing ~name ~c_identifier () =
     get_property = None;
     set_property = None;
     introspectable = true;
+    version = None;
   }
 
 (* ========================================================================= *)
@@ -337,6 +344,7 @@ let create_test_signal ~name =
     return_type = { name = "none"; c_type = Some "void"; nullable = false; transfer_ownership = TransferNone; array = None };
     sig_parameters = [];
     doc = None;
+    version = None;
   }
 
 (* Create a test GIR signal with return type *)
@@ -346,6 +354,7 @@ let create_test_signal_with_return ~name ~return_type =
     return_type;
     sig_parameters = [];
     doc = None;
+    version = None;
   }
 
 (* Create a test GIR signal with parameters *)
@@ -355,6 +364,7 @@ let create_test_signal_with_params ~name ~return_type ~params =
     return_type;
     sig_parameters = params;
     doc = None;
+    version = None;
   }
 
 (* Create a test class with signals *)
@@ -370,6 +380,7 @@ let create_test_class_with_signals ~name ~c_type ~signals () =
     properties = [];
     signals;
     class_doc = None;
+    version = None;
   }
 
 (* ========================================================================= *)

@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,26,0)
+
 
 CAMLexport CAMLprim value ml_g_credentials_new(value unit)
 {
@@ -66,6 +68,8 @@ uid_t result = g_credentials_get_unix_user(GCredentials_val(self), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#if GLIB_CHECK_VERSION(2,36,0)
+
 CAMLexport CAMLprim value ml_g_credentials_get_unix_pid(value self)
 {
 CAMLparam1(self);
@@ -74,3 +78,75 @@ GError *error = NULL;
 pid_t result = g_credentials_get_unix_pid(GCredentials_val(self), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_credentials_get_unix_pid(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Credentials requires GLib >= 2.36");
+return Val_unit;
+}
+#endif
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_credentials_new(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Credentials requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_credentials_get_unix_pid(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Credentials requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_credentials_get_unix_user(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Credentials requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_credentials_is_same_user(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Credentials requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_credentials_set_unix_user(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Credentials requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_credentials_to_string(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Credentials requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+#endif

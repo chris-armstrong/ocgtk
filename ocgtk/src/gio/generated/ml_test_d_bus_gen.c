@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,34,0)
+
 
 CAMLexport CAMLprim value ml_g_test_dbus_new(value arg1)
 {
@@ -78,3 +80,72 @@ CAMLparam2(self, arg1);
 g_test_dbus_add_service_dir(GTestDBus_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_test_dbus_new(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("TestDBus requires GLib >= 2.34");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_test_dbus_add_service_dir(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TestDBus requires GLib >= 2.34");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_test_dbus_down(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TestDBus requires GLib >= 2.34");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_test_dbus_get_bus_address(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TestDBus requires GLib >= 2.34");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_test_dbus_get_flags(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TestDBus requires GLib >= 2.34");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_test_dbus_stop(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TestDBus requires GLib >= 2.34");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_test_dbus_up(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TestDBus requires GLib >= 2.34");
+return Val_unit;
+}
+
+
+#endif

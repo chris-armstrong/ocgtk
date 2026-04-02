@@ -20,6 +20,7 @@ let simple_class ?(constructors = []) class_name c_type =
     properties = [];
     signals = [];
     class_doc = None;
+    version = None;
   }
 
 let make_constructor ?(params = []) ?(throws = false) name c_id =
@@ -30,6 +31,7 @@ let make_constructor ?(params = []) ?(throws = false) name c_id =
     ctor_doc = None;
     throws;
     ctor_introspectable = true;
+    version = None;
   }
 
 let make_param ?(nullable = false) name type_name c_type =

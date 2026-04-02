@@ -25,6 +25,8 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GdkPixbufLoader(obj));
 }
+#if GDK_PIXBUF_CHECK_VERSION(2,4,0)
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_loader_new_with_mime_type(value arg1)
 {
 CAMLparam1(arg1);
@@ -35,6 +37,17 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbufLoader(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_loader_new_with_mime_type(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("PixbufLoader requires GdkPixbuf >= 2.4");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_loader_new_with_type(value arg1)
 {
 CAMLparam1(arg1);
@@ -45,6 +58,8 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbufLoader(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+#if GDK_PIXBUF_CHECK_VERSION(2,2,0)
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_loader_set_size(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -52,6 +67,19 @@ CAMLparam3(self, arg1, arg2);
 gdk_pixbuf_loader_set_size(GdkPixbufLoader_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_loader_set_size(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("PixbufLoader requires GdkPixbuf >= 2.2");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_loader_get_pixbuf(value self)
 {
@@ -62,6 +90,8 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GdkPixbuf));
 }
 
+#if GDK_PIXBUF_CHECK_VERSION(2,2,0)
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_loader_get_format(value self)
 {
 CAMLparam1(self);
@@ -69,6 +99,17 @@ CAMLparam1(self);
 GdkPixbufFormat* result = gdk_pixbuf_loader_get_format(GdkPixbufLoader_val(self));
 CAMLreturn(Val_option(result, Val_GdkPixbufFormat));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_loader_get_format(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PixbufLoader requires GdkPixbuf >= 2.2");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_loader_get_animation(value self)
 {

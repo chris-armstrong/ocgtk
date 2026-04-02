@@ -92,6 +92,8 @@ gtk_string_list_append(GtkStringList_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,14,0)
+
 CAMLexport CAMLprim value ml_gtk_string_list_get_n_items(value self)
 {
     CAMLparam1(self);
@@ -108,6 +110,19 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_string_list_get_n_items(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("StringList requires GTK >= 4.14");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,10,0)
 
 CAMLexport CAMLprim value ml_gtk_string_list_get_strings(value self)
 {
@@ -129,3 +144,13 @@ int c_result_length = 0;
 g_value_unset(&prop_gvalue);
 CAMLreturn(ml_c_result);
 }
+#else
+
+CAMLexport CAMLprim value ml_gtk_string_list_get_strings(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("StringList requires GTK >= 4.10");
+return Val_unit;
+}
+#endif
