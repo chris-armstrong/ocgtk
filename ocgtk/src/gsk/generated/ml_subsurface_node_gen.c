@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for SubsurfaceNode */
 
-#include <gtk/gtk.h>
+#include <gsk/gsk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -15,8 +15,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gsk_decls.h"
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 
 CAMLexport CAMLprim value ml_gsk_subsurface_node_get_child(value self)
 {
@@ -26,17 +24,3 @@ GskRenderNode* result = gsk_subsurface_node_get_child(GskSubsurfaceNode_val(self
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GskRenderNode(result));
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_gsk_subsurface_node_get_child(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SubsurfaceNode requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-#endif

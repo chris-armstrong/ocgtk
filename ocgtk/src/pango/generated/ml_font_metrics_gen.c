@@ -47,8 +47,6 @@ PangoFontMetrics* result = pango_font_metrics_ref(PangoFontMetrics_val(self));
 CAMLreturn(Val_option(result, Val_PangoFontMetrics));
 }
 
-#if PANGO_VERSION_CHECK(1,6,0)
-
 CAMLexport CAMLprim value ml_pango_font_metrics_get_underline_thickness(value self)
 {
 CAMLparam1(self);
@@ -56,19 +54,6 @@ CAMLparam1(self);
 int result = pango_font_metrics_get_underline_thickness(PangoFontMetrics_val(self));
 CAMLreturn(Val_int(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_pango_font_metrics_get_underline_thickness(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("FontMetrics requires Pango >= 1.6");
-return Val_unit;
-}
-#endif
-
-#if PANGO_VERSION_CHECK(1,6,0)
 
 CAMLexport CAMLprim value ml_pango_font_metrics_get_underline_position(value self)
 {
@@ -78,19 +63,6 @@ int result = pango_font_metrics_get_underline_position(PangoFontMetrics_val(self
 CAMLreturn(Val_int(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_pango_font_metrics_get_underline_position(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("FontMetrics requires Pango >= 1.6");
-return Val_unit;
-}
-#endif
-
-#if PANGO_VERSION_CHECK(1,6,0)
-
 CAMLexport CAMLprim value ml_pango_font_metrics_get_strikethrough_thickness(value self)
 {
 CAMLparam1(self);
@@ -98,19 +70,6 @@ CAMLparam1(self);
 int result = pango_font_metrics_get_strikethrough_thickness(PangoFontMetrics_val(self));
 CAMLreturn(Val_int(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_pango_font_metrics_get_strikethrough_thickness(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("FontMetrics requires Pango >= 1.6");
-return Val_unit;
-}
-#endif
-
-#if PANGO_VERSION_CHECK(1,6,0)
 
 CAMLexport CAMLprim value ml_pango_font_metrics_get_strikethrough_position(value self)
 {
@@ -120,19 +79,6 @@ int result = pango_font_metrics_get_strikethrough_position(PangoFontMetrics_val(
 CAMLreturn(Val_int(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_pango_font_metrics_get_strikethrough_position(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("FontMetrics requires Pango >= 1.6");
-return Val_unit;
-}
-#endif
-
-#if PANGO_VERSION_CHECK(1,44,0)
-
 CAMLexport CAMLprim value ml_pango_font_metrics_get_height(value self)
 {
 CAMLparam1(self);
@@ -140,17 +86,6 @@ CAMLparam1(self);
 int result = pango_font_metrics_get_height(PangoFontMetrics_val(self));
 CAMLreturn(Val_int(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_pango_font_metrics_get_height(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("FontMetrics requires Pango >= 1.44");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_pango_font_metrics_get_descent(value self)
 {

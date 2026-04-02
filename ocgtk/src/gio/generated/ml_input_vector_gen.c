@@ -36,10 +36,3 @@ value Val_GInputVector_option(const GInputVector *ptr) {
   return Val_some(Val_GInputVector(ptr));
 }
 
-#if GLIB_CHECK_VERSION(2,22,0)
-
-
-#else
-
-
-#endif

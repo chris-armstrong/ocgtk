@@ -182,8 +182,6 @@ CAMLexport CAMLprim value ml_gtk_snapshot_render_background_bytecode(value * arg
 return ml_gtk_snapshot_render_background_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gtk_snapshot_push_stroke(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -191,19 +189,6 @@ CAMLparam3(self, arg1, arg2);
 gtk_snapshot_push_stroke(GtkSnapshot_val(self), GskPath_val(arg1), GskStroke_val(arg2));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_snapshot_push_stroke(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("Snapshot requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_snapshot_push_rounded_clip(value self, value arg1)
 {
@@ -229,8 +214,6 @@ gtk_snapshot_push_opacity(GtkSnapshot_val(self), Double_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,10,0)
-
 CAMLexport CAMLprim value ml_gtk_snapshot_push_mask(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -239,20 +222,6 @@ gtk_snapshot_push_mask(GtkSnapshot_val(self), GskMaskMode_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_snapshot_push_mask(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Snapshot requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gtk_snapshot_push_fill(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -260,19 +229,6 @@ CAMLparam3(self, arg1, arg2);
 gtk_snapshot_push_fill(GtkSnapshot_val(self), GskPath_val(arg1), GskFillRule_val(arg2));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_snapshot_push_fill(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("Snapshot requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_snapshot_push_cross_fade(value self, value arg1)
 {
@@ -346,8 +302,6 @@ gtk_snapshot_append_texture(GtkSnapshot_val(self), GdkTexture_val(arg1), graphen
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gtk_snapshot_append_stroke(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -356,22 +310,6 @@ gtk_snapshot_append_stroke(GtkSnapshot_val(self), GskPath_val(arg1), GskStroke_v
 CAMLreturn(Val_unit);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_snapshot_append_stroke(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-(void)self;
-(void)arg1;
-(void)arg2;
-(void)arg3;
-caml_failwith("Snapshot requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,10,0)
-
 CAMLexport CAMLprim value ml_gtk_snapshot_append_scaled_texture(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -379,20 +317,6 @@ CAMLparam4(self, arg1, arg2, arg3);
 gtk_snapshot_append_scaled_texture(GtkSnapshot_val(self), GdkTexture_val(arg1), GskScalingFilter_val(arg2), graphene_rect_t_val(arg3));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_snapshot_append_scaled_texture(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-(void)self;
-(void)arg1;
-(void)arg2;
-(void)arg3;
-caml_failwith("Snapshot requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_snapshot_append_outset_shadow_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
 {
@@ -436,8 +360,6 @@ CAMLexport CAMLprim value ml_gtk_snapshot_append_inset_shadow_bytecode(value * a
 return ml_gtk_snapshot_append_inset_shadow_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
 }
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gtk_snapshot_append_fill(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -445,20 +367,6 @@ CAMLparam4(self, arg1, arg2, arg3);
 gtk_snapshot_append_fill(GtkSnapshot_val(self), GskPath_val(arg1), GskFillRule_val(arg2), GdkRGBA_val(arg3));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_snapshot_append_fill(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-(void)self;
-(void)arg1;
-(void)arg2;
-(void)arg3;
-caml_failwith("Snapshot requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_snapshot_append_color(value self, value arg1, value arg2)
 {

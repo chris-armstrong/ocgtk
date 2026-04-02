@@ -36,10 +36,3 @@ value Val_GDBusErrorEntry_option(const GDBusErrorEntry *ptr) {
   return Val_some(Val_GDBusErrorEntry(ptr));
 }
 
-#if GLIB_CHECK_VERSION(2,26,0)
-
-
-#else
-
-
-#endif

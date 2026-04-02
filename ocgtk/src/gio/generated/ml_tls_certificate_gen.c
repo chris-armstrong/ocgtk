@@ -21,8 +21,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
-#if GLIB_CHECK_VERSION(2,28,0)
-
 
 CAMLexport CAMLprim value ml_g_tls_certificate_new_from_file(value arg1)
 {
@@ -34,8 +32,6 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GTlsCertificate(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-#if GLIB_CHECK_VERSION(2,72,0)
-
 CAMLexport CAMLprim value ml_g_tls_certificate_new_from_file_with_password(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
@@ -46,18 +42,6 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GTlsCertificate(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-#else
-
-CAMLexport CAMLprim value ml_g_tls_certificate_new_from_file_with_password(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-(void)arg1;
-(void)arg2;
-caml_failwith("TlsCertificate requires GLib >= 2.72");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_g_tls_certificate_new_from_files(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
@@ -68,8 +52,6 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GTlsCertificate(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-#if GLIB_CHECK_VERSION(2,68,0)
-
 CAMLexport CAMLprim value ml_g_tls_certificate_new_from_pkcs11_uris(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
@@ -80,18 +62,6 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GTlsCertificate(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-#else
-
-CAMLexport CAMLprim value ml_g_tls_certificate_new_from_pkcs11_uris(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-(void)arg1;
-(void)arg2;
-caml_failwith("TlsCertificate requires GLib >= 2.68");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_g_tls_certificate_verify(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -99,8 +69,6 @@ CAMLparam3(self, arg1, arg2);
 GTlsCertificateFlags result = g_tls_certificate_verify(GTlsCertificate_val(self), Option_val(arg1, GSocketConnectable_val, NULL), Option_val(arg2, GTlsCertificate_val, NULL));
 CAMLreturn(Val_GioTlsCertificateFlags(result));
 }
-
-#if GLIB_CHECK_VERSION(2,34,0)
 
 CAMLexport CAMLprim value ml_g_tls_certificate_is_same(value self, value arg1)
 {
@@ -110,20 +78,6 @@ gboolean result = g_tls_certificate_is_same(GTlsCertificate_val(self), GTlsCerti
 CAMLreturn(Val_bool(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_tls_certificate_is_same(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("TlsCertificate requires GLib >= 2.34");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,70,0)
-
 CAMLexport CAMLprim value ml_g_tls_certificate_get_subject_name(value self)
 {
 CAMLparam1(self);
@@ -132,19 +86,6 @@ gchar* result = g_tls_certificate_get_subject_name(GTlsCertificate_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_tls_certificate_get_subject_name(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TlsCertificate requires GLib >= 2.70");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,70,0)
-
 CAMLexport CAMLprim value ml_g_tls_certificate_get_issuer_name(value self)
 {
 CAMLparam1(self);
@@ -152,17 +93,6 @@ CAMLparam1(self);
 gchar* result = g_tls_certificate_get_issuer_name(GTlsCertificate_val(self));
 CAMLreturn(Val_option_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_tls_certificate_get_issuer_name(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TlsCertificate requires GLib >= 2.70");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_tls_certificate_get_issuer(value self)
 {
@@ -190,8 +120,6 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-#if GLIB_CHECK_VERSION(2,72,0)
-
 CAMLexport CAMLprim value ml_g_tls_certificate_get_password(value self)
 {
     CAMLparam1(self);
@@ -208,19 +136,6 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
-
-#else
-
-CAMLexport CAMLprim value ml_g_tls_certificate_get_password(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TlsCertificate requires GLib >= 2.72");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,68,0)
 
 CAMLexport CAMLprim value ml_g_tls_certificate_get_pkcs11_uri(value self)
 {
@@ -239,17 +154,6 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-#else
-
-CAMLexport CAMLprim value ml_g_tls_certificate_get_pkcs11_uri(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TlsCertificate requires GLib >= 2.68");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_g_tls_certificate_get_private_key_pem(value self)
 {
     CAMLparam1(self);
@@ -267,8 +171,6 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-#if GLIB_CHECK_VERSION(2,68,0)
-
 CAMLexport CAMLprim value ml_g_tls_certificate_get_private_key_pkcs11_uri(value self)
 {
     CAMLparam1(self);
@@ -285,151 +187,3 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
-
-#else
-
-CAMLexport CAMLprim value ml_g_tls_certificate_get_private_key_pkcs11_uri(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TlsCertificate requires GLib >= 2.68");
-return Val_unit;
-}
-#endif
-
-#else
-
-
-CAMLexport CAMLprim value ml_g_tls_certificate_new_from_file(value arg1)
-{
-CAMLparam1(arg1);
-(void)arg1;
-caml_failwith("TlsCertificate requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_tls_certificate_new_from_file_with_password(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-(void)arg1;
-(void)arg2;
-caml_failwith("TlsCertificate requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_tls_certificate_new_from_files(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-(void)arg1;
-(void)arg2;
-caml_failwith("TlsCertificate requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_tls_certificate_new_from_pkcs11_uris(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-(void)arg1;
-(void)arg2;
-caml_failwith("TlsCertificate requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_tls_certificate_get_issuer(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TlsCertificate requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_tls_certificate_get_issuer_name(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TlsCertificate requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_tls_certificate_get_subject_name(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TlsCertificate requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_tls_certificate_is_same(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("TlsCertificate requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_tls_certificate_verify(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("TlsCertificate requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_tls_certificate_get_certificate_pem(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TlsCertificate requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_tls_certificate_get_password(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TlsCertificate requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_tls_certificate_get_pkcs11_uri(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TlsCertificate requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_tls_certificate_get_private_key_pem(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TlsCertificate requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_tls_certificate_get_private_key_pkcs11_uri(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TlsCertificate requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-#endif

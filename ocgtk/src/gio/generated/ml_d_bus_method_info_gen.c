@@ -36,8 +36,6 @@ value Val_GDBusMethodInfo_option(const GDBusMethodInfo *ptr) {
   return Val_some(Val_GDBusMethodInfo(ptr));
 }
 
-#if GLIB_CHECK_VERSION(2,26,0)
-
 
 CAMLexport CAMLprim value ml_g_dbus_method_info_unref(value self)
 {
@@ -54,26 +52,3 @@ CAMLparam1(self);
 GDBusMethodInfo* result = g_dbus_method_info_ref(GDBusMethodInfo_val(self));
 CAMLreturn(Val_GDBusMethodInfo(result));
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_g_dbus_method_info_ref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusMethodInfo requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_method_info_unref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusMethodInfo requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-#endif

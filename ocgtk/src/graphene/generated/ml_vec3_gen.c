@@ -31,8 +31,6 @@ value Val_graphene_vec3_t_option(const graphene_vec3_t *ptr) {
 }
 
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_alloc(value unit)
 {
 CAMLparam1(unit);
@@ -41,19 +39,6 @@ graphene_vec3_t *obj = graphene_vec3_alloc();
 
 CAMLreturn(Val_graphene_vec3_t(obj));
 }
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_alloc(value unit)
-{
-CAMLparam1(unit);
-(void)unit;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_to_float(value self)
 {
 CAMLparam1(self);
@@ -70,19 +55,6 @@ graphene_vec3_to_float(graphene_vec3_t_val(self), out1);
 CAMLreturn(ml_out1);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_to_float(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_subtract(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -91,20 +63,6 @@ graphene_vec3_t out2;
 graphene_vec3_subtract(graphene_vec3_t_val(self), graphene_vec3_t_val(arg1), &out2);
 CAMLreturn(Val_graphene_vec3_t(&out2));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_subtract(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_scale(value self, value arg1)
 {
@@ -115,20 +73,6 @@ graphene_vec3_scale(graphene_vec3_t_val(self), Double_val(arg1), &out2);
 CAMLreturn(Val_graphene_vec3_t(&out2));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_scale(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Vec3 requires Graphene >= 1.2");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_normalize(value self)
 {
 CAMLparam1(self);
@@ -137,19 +81,6 @@ graphene_vec3_t out1;
 graphene_vec3_normalize(graphene_vec3_t_val(self), &out1);
 CAMLreturn(Val_graphene_vec3_t(&out1));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_normalize(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_negate(value self)
 {
@@ -160,19 +91,6 @@ graphene_vec3_negate(graphene_vec3_t_val(self), &out1);
 CAMLreturn(Val_graphene_vec3_t(&out1));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_negate(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Vec3 requires Graphene >= 1.2");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,2,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_near(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -180,21 +98,6 @@ CAMLparam3(self, arg1, arg2);
 _Bool result = graphene_vec3_near(graphene_vec3_t_val(self), graphene_vec3_t_val(arg1), Double_val(arg2));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_near(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("Vec3 requires Graphene >= 1.2");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_multiply(value self, value arg1)
 {
@@ -205,20 +108,6 @@ graphene_vec3_multiply(graphene_vec3_t_val(self), graphene_vec3_t_val(arg1), &ou
 CAMLreturn(Val_graphene_vec3_t(&out2));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_multiply(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_min(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -227,20 +116,6 @@ graphene_vec3_t out2;
 graphene_vec3_min(graphene_vec3_t_val(self), graphene_vec3_t_val(arg1), &out2);
 CAMLreturn(Val_graphene_vec3_t(&out2));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_min(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_max(value self, value arg1)
 {
@@ -251,20 +126,6 @@ graphene_vec3_max(graphene_vec3_t_val(self), graphene_vec3_t_val(arg1), &out2);
 CAMLreturn(Val_graphene_vec3_t(&out2));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_max(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_length(value self)
 {
 CAMLparam1(self);
@@ -272,19 +133,6 @@ CAMLparam1(self);
 float result = graphene_vec3_length(graphene_vec3_t_val(self));
 CAMLreturn(caml_copy_double(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_length(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_interpolate(value self, value arg1, value arg2)
 {
@@ -295,21 +143,6 @@ graphene_vec3_interpolate(graphene_vec3_t_val(self), graphene_vec3_t_val(arg1), 
 CAMLreturn(Val_graphene_vec3_t(&out3));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_interpolate(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("Vec3 requires Graphene >= 1.10");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_init_from_vec3(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -317,20 +150,6 @@ CAMLparam2(self, arg1);
 graphene_vec3_t* result = graphene_vec3_init_from_vec3(graphene_vec3_t_val(self), graphene_vec3_t_val(arg1));
 CAMLreturn(Val_graphene_vec3_t(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_init_from_vec3(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_init_from_float(value self, value arg1)
 {
@@ -346,20 +165,6 @@ graphene_vec3_t* result = graphene_vec3_init_from_float(graphene_vec3_t_val(self
 CAMLreturn(Val_graphene_vec3_t(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_init_from_float(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_init(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -367,22 +172,6 @@ CAMLparam4(self, arg1, arg2, arg3);
 graphene_vec3_t* result = graphene_vec3_init(graphene_vec3_t_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3));
 CAMLreturn(Val_graphene_vec3_t(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_init(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-(void)self;
-(void)arg1;
-(void)arg2;
-(void)arg3;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_get_z(value self)
 {
@@ -392,19 +181,6 @@ float result = graphene_vec3_get_z(graphene_vec3_t_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_get_z(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_get_y(value self)
 {
 CAMLparam1(self);
@@ -412,19 +188,6 @@ CAMLparam1(self);
 float result = graphene_vec3_get_y(graphene_vec3_t_val(self));
 CAMLreturn(caml_copy_double(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_get_y(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_get_xyzw(value self, value arg1)
 {
@@ -435,20 +198,6 @@ graphene_vec3_get_xyzw(graphene_vec3_t_val(self), Double_val(arg1), &out2);
 CAMLreturn(Val_graphene_vec4_t(&out2));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_get_xyzw(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_get_xyz1(value self)
 {
 CAMLparam1(self);
@@ -457,19 +206,6 @@ graphene_vec4_t out1;
 graphene_vec3_get_xyz1(graphene_vec3_t_val(self), &out1);
 CAMLreturn(Val_graphene_vec4_t(&out1));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_get_xyz1(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_get_xyz0(value self)
 {
@@ -480,19 +216,6 @@ graphene_vec3_get_xyz0(graphene_vec3_t_val(self), &out1);
 CAMLreturn(Val_graphene_vec4_t(&out1));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_get_xyz0(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_get_xy0(value self)
 {
 CAMLparam1(self);
@@ -501,19 +224,6 @@ graphene_vec3_t out1;
 graphene_vec3_get_xy0(graphene_vec3_t_val(self), &out1);
 CAMLreturn(Val_graphene_vec3_t(&out1));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_get_xy0(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_get_xy(value self)
 {
@@ -524,19 +234,6 @@ graphene_vec3_get_xy(graphene_vec3_t_val(self), &out1);
 CAMLreturn(Val_graphene_vec2_t(&out1));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_get_xy(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_get_x(value self)
 {
 CAMLparam1(self);
@@ -544,19 +241,6 @@ CAMLparam1(self);
 float result = graphene_vec3_get_x(graphene_vec3_t_val(self));
 CAMLreturn(caml_copy_double(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_get_x(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_free(value self)
 {
@@ -566,19 +250,6 @@ graphene_vec3_free(graphene_vec3_t_val(self));
 CAMLreturn(Val_unit);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_free(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,2,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -587,20 +258,6 @@ _Bool result = graphene_vec3_equal(graphene_vec3_t_val(self), graphene_vec3_t_va
 CAMLreturn(Val_bool(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_equal(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Vec3 requires Graphene >= 1.2");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_dot(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -608,20 +265,6 @@ CAMLparam2(self, arg1);
 float result = graphene_vec3_dot(graphene_vec3_t_val(self), graphene_vec3_t_val(arg1));
 CAMLreturn(caml_copy_double(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_dot(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_divide(value self, value arg1)
 {
@@ -632,20 +275,6 @@ graphene_vec3_divide(graphene_vec3_t_val(self), graphene_vec3_t_val(arg1), &out2
 CAMLreturn(Val_graphene_vec3_t(&out2));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_divide(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_cross(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -655,20 +284,6 @@ graphene_vec3_cross(graphene_vec3_t_val(self), graphene_vec3_t_val(arg1), &out2)
 CAMLreturn(Val_graphene_vec3_t(&out2));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_cross(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,0,0)
-
 CAMLexport CAMLprim value ml_graphene_vec3_add(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -677,15 +292,3 @@ graphene_vec3_t out2;
 graphene_vec3_add(graphene_vec3_t_val(self), graphene_vec3_t_val(arg1), &out2);
 CAMLreturn(Val_graphene_vec3_t(&out2));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_add(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif

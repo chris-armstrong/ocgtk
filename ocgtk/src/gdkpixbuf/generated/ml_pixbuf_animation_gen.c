@@ -26,8 +26,6 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbufAnimation(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-#if GDK_PIXBUF_CHECK_VERSION(2,28,0)
-
 CAMLexport CAMLprim value ml_gdk_pixbuf_animation_new_from_resource(value arg1)
 {
 CAMLparam1(arg1);
@@ -38,19 +36,6 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbufAnimation(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-#else
-
-CAMLexport CAMLprim value ml_gdk_pixbuf_animation_new_from_resource(value arg1)
-{
-CAMLparam1(arg1);
-(void)arg1;
-caml_failwith("PixbufAnimation requires GdkPixbuf >= 2.28");
-return Val_unit;
-}
-#endif
-
-#if GDK_PIXBUF_CHECK_VERSION(2,28,0)
-
 CAMLexport CAMLprim value ml_gdk_pixbuf_animation_new_from_stream(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
@@ -61,20 +46,6 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbufAnimation(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-#else
-
-CAMLexport CAMLprim value ml_gdk_pixbuf_animation_new_from_stream(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-(void)arg1;
-(void)arg2;
-caml_failwith("PixbufAnimation requires GdkPixbuf >= 2.28");
-return Val_unit;
-}
-#endif
-
-#if GDK_PIXBUF_CHECK_VERSION(2,28,0)
-
 CAMLexport CAMLprim value ml_gdk_pixbuf_animation_new_from_stream_finish(value arg1)
 {
 CAMLparam1(arg1);
@@ -85,17 +56,6 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbufAnimation(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-#else
-
-CAMLexport CAMLprim value ml_gdk_pixbuf_animation_new_from_stream_finish(value arg1)
-{
-CAMLparam1(arg1);
-(void)arg1;
-caml_failwith("PixbufAnimation requires GdkPixbuf >= 2.28");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_gdk_pixbuf_animation_is_static_image(value self)
 {
 CAMLparam1(self);

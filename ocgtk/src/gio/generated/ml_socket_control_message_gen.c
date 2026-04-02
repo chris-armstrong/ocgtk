@@ -21,8 +21,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
-#if GLIB_CHECK_VERSION(2,22,0)
-
 
 CAMLexport CAMLprim value ml_g_socket_control_message_get_msg_type(value self)
 {
@@ -39,26 +37,3 @@ CAMLparam1(self);
 int result = g_socket_control_message_get_level(GSocketControlMessage_val(self));
 CAMLreturn(Val_int(result));
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_g_socket_control_message_get_level(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SocketControlMessage requires GLib >= 2.22");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_socket_control_message_get_msg_type(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SocketControlMessage requires GLib >= 2.22");
-return Val_unit;
-}
-
-
-#endif

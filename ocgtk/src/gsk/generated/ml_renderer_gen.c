@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for Renderer */
 
-#include <gtk/gtk.h>
+#include <gsk/gsk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -49,8 +49,6 @@ gsk_renderer_render(GskRenderer_val(self), GskRenderNode_val(arg1), Option_val(a
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gsk_renderer_realize_for_display(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -59,18 +57,6 @@ GError *error = NULL;
 gboolean result = gsk_renderer_realize_for_display(GskRenderer_val(self), GdkDisplay_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gsk_renderer_realize_for_display(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Renderer requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gsk_renderer_realize(value self, value arg1)
 {

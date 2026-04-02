@@ -22,8 +22,6 @@
 #include "gio_decls.h"
 
 
-#if GLIB_CHECK_VERSION(2,24,0)
-
 CAMLexport CAMLprim value ml_g_charset_converter_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
@@ -34,20 +32,6 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GCharsetConverter(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-#else
-
-CAMLexport CAMLprim value ml_g_charset_converter_new(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-(void)arg1;
-(void)arg2;
-caml_failwith("CharsetConverter requires GLib >= 2.24");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,24,0)
-
 CAMLexport CAMLprim value ml_g_charset_converter_set_use_fallback(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -55,20 +39,6 @@ CAMLparam2(self, arg1);
 g_charset_converter_set_use_fallback(GCharsetConverter_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_charset_converter_set_use_fallback(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("CharsetConverter requires GLib >= 2.24");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,24,0)
 
 CAMLexport CAMLprim value ml_g_charset_converter_get_use_fallback(value self)
 {
@@ -78,19 +48,6 @@ gboolean result = g_charset_converter_get_use_fallback(GCharsetConverter_val(sel
 CAMLreturn(Val_bool(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_charset_converter_get_use_fallback(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("CharsetConverter requires GLib >= 2.24");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,24,0)
-
 CAMLexport CAMLprim value ml_g_charset_converter_get_num_fallbacks(value self)
 {
 CAMLparam1(self);
@@ -98,19 +55,6 @@ CAMLparam1(self);
 guint result = g_charset_converter_get_num_fallbacks(GCharsetConverter_val(self));
 CAMLreturn(Val_int(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_charset_converter_get_num_fallbacks(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("CharsetConverter requires GLib >= 2.24");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,24,0)
 
 CAMLexport CAMLprim value ml_g_charset_converter_get_from_charset(value self)
 {
@@ -129,19 +73,6 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-#else
-
-CAMLexport CAMLprim value ml_g_charset_converter_get_from_charset(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("CharsetConverter requires GLib >= 2.24");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,24,0)
-
 CAMLexport CAMLprim value ml_g_charset_converter_get_to_charset(value self)
 {
     CAMLparam1(self);
@@ -158,14 +89,3 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
-
-#else
-
-CAMLexport CAMLprim value ml_g_charset_converter_get_to_charset(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("CharsetConverter requires GLib >= 2.24");
-return Val_unit;
-}
-#endif

@@ -22,8 +22,6 @@
 #include "gio_decls.h"
 
 
-#if GLIB_CHECK_VERSION(2,50,0)
-
 CAMLexport CAMLprim value ml_g_vfs_unregister_uri_scheme(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -31,18 +29,6 @@ CAMLparam2(self, arg1);
 gboolean result = g_vfs_unregister_uri_scheme(GVfs_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_vfs_unregister_uri_scheme(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Vfs requires GLib >= 2.50");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_vfs_parse_name(value self, value arg1)
 {

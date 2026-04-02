@@ -22,8 +22,6 @@
 #include "gio_decls.h"
 
 
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_file_unmount_mountable_with_operation_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -32,18 +30,6 @@ GError *error = NULL;
 gboolean result = g_file_unmount_mountable_with_operation_finish(GFile_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_unmount_mountable_with_operation_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_unmount_mountable_finish(value self, value arg1)
 {
@@ -54,8 +40,6 @@ gboolean result = g_file_unmount_mountable_finish(GFile_val(self), GAsyncResult_
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#if GLIB_CHECK_VERSION(2,38,0)
-
 CAMLexport CAMLprim value ml_g_file_trash_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -64,18 +48,6 @@ GError *error = NULL;
 gboolean result = g_file_trash_finish(GFile_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_trash_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.38");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_trash(value self, value arg1)
 {
@@ -86,8 +58,6 @@ gboolean result = g_file_trash(GFile_val(self), Option_val(arg1, GCancellable_va
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_file_supports_thread_contexts(value self)
 {
 CAMLparam1(self);
@@ -95,19 +65,6 @@ CAMLparam1(self);
 gboolean result = g_file_supports_thread_contexts(GFile_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_supports_thread_contexts(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("File requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,22,0)
 
 CAMLexport CAMLprim value ml_g_file_stop_mountable_finish(value self, value arg1)
 {
@@ -118,20 +75,6 @@ gboolean result = g_file_stop_mountable_finish(GFile_val(self), GAsyncResult_val
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_file_stop_mountable_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_file_start_mountable_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -140,18 +83,6 @@ GError *error = NULL;
 gboolean result = g_file_start_mountable_finish(GFile_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_start_mountable_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_set_display_name_finish(value self, value arg1)
 {
@@ -206,8 +137,6 @@ GFile* result = g_file_resolve_relative_path(GFile_val(self), String_val(arg1));
 CAMLreturn(Val_GFile(result));
 }
 
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_file_replace_readwrite_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -217,20 +146,6 @@ GFileIOStream* result = g_file_replace_readwrite_finish(GFile_val(self), GAsyncR
 if (error == NULL) CAMLreturn(Res_Ok(Val_GFileIOStream(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_file_replace_readwrite_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_file_replace_readwrite(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -239,21 +154,6 @@ GError *error = NULL;
 GFileIOStream* result = g_file_replace_readwrite(GFile_val(self), String_option_val(arg1), Bool_val(arg2), GioFileCreateFlags_val(arg3), Option_val(arg4, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GFileIOStream(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_replace_readwrite(value self, value arg1, value arg2, value arg3, value arg4)
-{
-CAMLparam5(self, arg1, arg2, arg3, arg4);
-(void)self;
-(void)arg1;
-(void)arg2;
-(void)arg3;
-(void)arg4;
-caml_failwith("File requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_replace_finish(value self, value arg1)
 {
@@ -345,8 +245,6 @@ GFileInfo* result = g_file_query_filesystem_info(GFile_val(self), String_val(arg
 if (error == NULL) CAMLreturn(Res_Ok(Val_GFileInfo(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#if GLIB_CHECK_VERSION(2,18,0)
-
 CAMLexport CAMLprim value ml_g_file_query_file_type(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -355,19 +253,6 @@ GFileType result = g_file_query_file_type(GFile_val(self), GioFileQueryInfoFlags
 CAMLreturn(Val_GioFileType(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_file_query_file_type(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("File requires GLib >= 2.18");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_g_file_query_exists(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -375,8 +260,6 @@ CAMLparam2(self, arg1);
 gboolean result = g_file_query_exists(GFile_val(self), Option_val(arg1, GCancellable_val, NULL));
 CAMLreturn(Val_bool(result));
 }
-
-#if GLIB_CHECK_VERSION(2,60,0)
 
 CAMLexport CAMLprim value ml_g_file_query_default_handler_finish(value self, value arg1)
 {
@@ -387,18 +270,6 @@ GAppInfo* result = g_file_query_default_handler_finish(GFile_val(self), GAsyncRe
 if (error == NULL) CAMLreturn(Res_Ok(Val_GAppInfo(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_file_query_default_handler_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.60");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_g_file_query_default_handler(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -407,8 +278,6 @@ GError *error = NULL;
 GAppInfo* result = g_file_query_default_handler(GFile_val(self), Option_val(arg1, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GAppInfo(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#if GLIB_CHECK_VERSION(2,22,0)
 
 CAMLexport CAMLprim value ml_g_file_poll_mountable_finish(value self, value arg1)
 {
@@ -419,20 +288,6 @@ gboolean result = g_file_poll_mountable_finish(GFile_val(self), GAsyncResult_val
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_file_poll_mountable_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,56,0)
-
 CAMLexport CAMLprim value ml_g_file_peek_path(value self)
 {
 CAMLparam1(self);
@@ -440,19 +295,6 @@ CAMLparam1(self);
 const char* result = g_file_peek_path(GFile_val(self));
 CAMLreturn(Val_option_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_peek_path(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("File requires GLib >= 2.56");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,22,0)
 
 CAMLexport CAMLprim value ml_g_file_open_readwrite_finish(value self, value arg1)
 {
@@ -463,20 +305,6 @@ GFileIOStream* result = g_file_open_readwrite_finish(GFile_val(self), GAsyncResu
 if (error == NULL) CAMLreturn(Res_Ok(Val_GFileIOStream(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_file_open_readwrite_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_file_open_readwrite(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -486,20 +314,6 @@ GFileIOStream* result = g_file_open_readwrite(GFile_val(self), Option_val(arg1, 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GFileIOStream(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_file_open_readwrite(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,72,0)
-
 CAMLexport CAMLprim value ml_g_file_move_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -508,18 +322,6 @@ GError *error = NULL;
 gboolean result = g_file_move_finish(GFile_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_move_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.72");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_mount_mountable_finish(value self, value arg1)
 {
@@ -557,8 +359,6 @@ GFileMonitor* result = g_file_monitor_directory(GFile_val(self), GioFileMonitorF
 if (error == NULL) CAMLreturn(Res_Ok(Val_GFileMonitor(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#if GLIB_CHECK_VERSION(2,18,0)
-
 CAMLexport CAMLprim value ml_g_file_monitor(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -567,21 +367,6 @@ GError *error = NULL;
 GFileMonitor* result = g_file_monitor(GFile_val(self), GioFileMonitorFlags_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GFileMonitor(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_monitor(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("File requires GLib >= 2.18");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,74,0)
 
 CAMLexport CAMLprim value ml_g_file_make_symbolic_link_finish(value self, value arg1)
 {
@@ -592,18 +377,6 @@ gboolean result = g_file_make_symbolic_link_finish(GFile_val(self), GAsyncResult
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_file_make_symbolic_link_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.74");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_g_file_make_symbolic_link(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -612,8 +385,6 @@ GError *error = NULL;
 gboolean result = g_file_make_symbolic_link(GFile_val(self), String_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#if GLIB_CHECK_VERSION(2,18,0)
 
 CAMLexport CAMLprim value ml_g_file_make_directory_with_parents(value self, value arg1)
 {
@@ -624,20 +395,6 @@ gboolean result = g_file_make_directory_with_parents(GFile_val(self), Option_val
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_file_make_directory_with_parents(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.18");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,38,0)
-
 CAMLexport CAMLprim value ml_g_file_make_directory_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -646,18 +403,6 @@ GError *error = NULL;
 gboolean result = g_file_make_directory_finish(GFile_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_make_directory_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.38");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_make_directory(value self, value arg1)
 {
@@ -700,8 +445,6 @@ gboolean result = g_file_has_prefix(GFile_val(self), GFile_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
-#if GLIB_CHECK_VERSION(2,24,0)
-
 CAMLexport CAMLprim value ml_g_file_has_parent(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -709,18 +452,6 @@ CAMLparam2(self, arg1);
 gboolean result = g_file_has_parent(GFile_val(self), Option_val(arg1, GFile_val, NULL));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_has_parent(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.24");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_get_uri_scheme(value self)
 {
@@ -839,8 +570,6 @@ GFileEnumerator* result = g_file_enumerate_children(GFile_val(self), String_val(
 if (error == NULL) CAMLreturn(Res_Ok(Val_GFileEnumerator(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_file_eject_mountable_with_operation_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -849,18 +578,6 @@ GError *error = NULL;
 gboolean result = g_file_eject_mountable_with_operation_finish(GFile_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_eject_mountable_with_operation_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_eject_mountable_finish(value self, value arg1)
 {
@@ -879,8 +596,6 @@ GFile* result = g_file_dup(GFile_val(self));
 CAMLreturn(Val_GFile(result));
 }
 
-#if GLIB_CHECK_VERSION(2,34,0)
-
 CAMLexport CAMLprim value ml_g_file_delete_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -889,18 +604,6 @@ GError *error = NULL;
 gboolean result = g_file_delete_finish(GFile_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_delete_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.34");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_delete(value self, value arg1)
 {
@@ -911,8 +614,6 @@ gboolean result = g_file_delete(GFile_val(self), Option_val(arg1, GCancellable_v
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_file_create_readwrite_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -922,20 +623,6 @@ GFileIOStream* result = g_file_create_readwrite_finish(GFile_val(self), GAsyncRe
 if (error == NULL) CAMLreturn(Res_Ok(Val_GFileIOStream(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_file_create_readwrite_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("File requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_file_create_readwrite(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -944,19 +631,6 @@ GError *error = NULL;
 GFileIOStream* result = g_file_create_readwrite(GFile_val(self), GioFileCreateFlags_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GFileIOStream(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_create_readwrite(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("File requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_create_finish(value self, value arg1)
 {
@@ -994,8 +668,6 @@ gboolean result = g_file_copy_attributes(GFile_val(self), GFile_val(arg1), GioFi
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#if GLIB_CHECK_VERSION(2,68,0)
-
 CAMLexport CAMLprim value ml_g_file_build_attribute_list_for_copy(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -1004,19 +676,6 @@ GError *error = NULL;
 char* result = g_file_build_attribute_list_for_copy(GFile_val(self), GioFileCopyFlags_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(caml_copy_string(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_build_attribute_list_for_copy(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("File requires GLib >= 2.68");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_append_to_finish(value self, value arg1)
 {

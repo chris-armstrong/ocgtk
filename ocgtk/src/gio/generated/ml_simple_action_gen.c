@@ -22,8 +22,6 @@
 #include "gio_decls.h"
 
 
-#if GLIB_CHECK_VERSION(2,28,0)
-
 CAMLexport CAMLprim value ml_g_simple_action_set_enabled(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -31,20 +29,6 @@ CAMLparam2(self, arg1);
 g_simple_action_set_enabled(GSimpleAction_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_simple_action_set_enabled(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SimpleAction requires GLib >= 2.28");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,28,0)
 
 CAMLexport CAMLprim value ml_g_simple_action_get_name(value self)
 {
@@ -62,14 +46,3 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
-
-#else
-
-CAMLexport CAMLprim value ml_g_simple_action_get_name(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SimpleAction requires GLib >= 2.28");
-return Val_unit;
-}
-#endif

@@ -21,8 +21,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
-#if GLIB_CHECK_VERSION(2,48,0)
-
 
 CAMLexport CAMLprim value ml_g_dtls_connection_shutdown_finish(value self, value arg1)
 {
@@ -82,8 +80,6 @@ g_dtls_connection_set_certificate(GDtlsConnection_val(self), GTlsCertificate_val
 CAMLreturn(Val_unit);
 }
 
-#if GLIB_CHECK_VERSION(2,60,0)
-
 CAMLexport CAMLprim value ml_g_dtls_connection_set_advertised_protocols(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -104,18 +100,6 @@ g_dtls_connection_set_advertised_protocols(GDtlsConnection_val(self), c_arg1);
     if (c_arg1) g_free(c_arg1);
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_dtls_connection_set_advertised_protocols(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DtlsConnection requires GLib >= 2.60");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_dtls_connection_handshake_finish(value self, value arg1)
 {
@@ -151,8 +135,6 @@ GTlsRehandshakeMode result = g_dtls_connection_get_rehandshake_mode(GDtlsConnect
 CAMLreturn(Val_GioTlsRehandshakeMode(result));
 }
 
-#if GLIB_CHECK_VERSION(2,70,0)
-
 CAMLexport CAMLprim value ml_g_dtls_connection_get_protocol_version(value self)
 {
 CAMLparam1(self);
@@ -160,17 +142,6 @@ CAMLparam1(self);
 GTlsProtocolVersion result = g_dtls_connection_get_protocol_version(GDtlsConnection_val(self));
 CAMLreturn(Val_GioTlsProtocolVersion(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_dtls_connection_get_protocol_version(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DtlsConnection requires GLib >= 2.70");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_dtls_connection_get_peer_certificate_errors(value self)
 {
@@ -189,8 +160,6 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GTlsCertificate));
 }
 
-#if GLIB_CHECK_VERSION(2,60,0)
-
 CAMLexport CAMLprim value ml_g_dtls_connection_get_negotiated_protocol(value self)
 {
 CAMLparam1(self);
@@ -198,17 +167,6 @@ CAMLparam1(self);
 const gchar* result = g_dtls_connection_get_negotiated_protocol(GDtlsConnection_val(self));
 CAMLreturn(Val_option_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_dtls_connection_get_negotiated_protocol(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DtlsConnection requires GLib >= 2.60");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_dtls_connection_get_interaction(value self)
 {
@@ -228,8 +186,6 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GTlsDatabase));
 }
 
-#if GLIB_CHECK_VERSION(2,70,0)
-
 CAMLexport CAMLprim value ml_g_dtls_connection_get_ciphersuite_name(value self)
 {
 CAMLparam1(self);
@@ -237,17 +193,6 @@ CAMLparam1(self);
 gchar* result = g_dtls_connection_get_ciphersuite_name(GDtlsConnection_val(self));
 CAMLreturn(Val_option_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_dtls_connection_get_ciphersuite_name(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DtlsConnection requires GLib >= 2.70");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_dtls_connection_get_certificate(value self)
 {
@@ -283,231 +228,3 @@ GError *error = NULL;
 gboolean result = g_dtls_connection_close(GDtlsConnection_val(self), Option_val(arg1, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_close(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_close_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_emit_accept_certificate(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_get_certificate(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_get_ciphersuite_name(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_get_database(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_get_interaction(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_get_negotiated_protocol(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_get_peer_certificate(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_get_peer_certificate_errors(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_get_protocol_version(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_get_rehandshake_mode(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_get_require_close_notify(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_handshake(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_handshake_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_set_advertised_protocols(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_set_certificate(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_set_database(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_set_interaction(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_set_rehandshake_mode(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_set_require_close_notify(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_shutdown(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-(void)self;
-(void)arg1;
-(void)arg2;
-(void)arg3;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dtls_connection_shutdown_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DtlsConnection requires GLib >= 2.48");
-return Val_unit;
-}
-
-
-#endif

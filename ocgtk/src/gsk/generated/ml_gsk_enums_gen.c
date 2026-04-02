@@ -7,7 +7,7 @@
 #include <caml/fail.h>
 #include <caml/hash.h>
 #include <glib.h>
-#include <gtk/gtk.h>
+#include <gsk/gsk.h>
 /* Convert GskBlendMode to OCaml value */
 value Val_GskBlendMode(GskBlendMode val) {
   switch (val) {

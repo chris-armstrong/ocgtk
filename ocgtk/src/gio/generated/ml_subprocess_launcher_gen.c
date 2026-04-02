@@ -21,8 +21,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
-#if GLIB_CHECK_VERSION(2,40,0)
-
 
 CAMLexport CAMLprim value ml_g_subprocess_launcher_new(value arg1)
 {
@@ -160,8 +158,6 @@ const gchar* result = g_subprocess_launcher_getenv(GSubprocessLauncher_val(self)
 CAMLreturn(Val_option_string(result));
 }
 
-#if GLIB_CHECK_VERSION(2,68,0)
-
 CAMLexport CAMLprim value ml_g_subprocess_launcher_close(value self)
 {
 CAMLparam1(self);
@@ -169,17 +165,6 @@ CAMLparam1(self);
 g_subprocess_launcher_close(GSubprocessLauncher_val(self));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_close(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SubprocessLauncher requires GLib >= 2.68");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_subprocess_launcher_get_flags(value self)
 {
@@ -197,178 +182,3 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_GioSubprocessFlags(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
-
-#else
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_new(value arg1)
-{
-CAMLparam1(arg1);
-(void)arg1;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_close(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_getenv(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_set_cwd(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_set_environ(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_set_flags(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_set_stderr_file_path(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_set_stdin_file_path(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_set_stdout_file_path(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_setenv(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-(void)self;
-(void)arg1;
-(void)arg2;
-(void)arg3;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_spawnv(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_take_fd(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_take_stderr_fd(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_take_stdin_fd(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_take_stdout_fd(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_unsetenv(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_subprocess_launcher_get_flags(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SubprocessLauncher requires GLib >= 2.40");
-return Val_unit;
-}
-
-
-#endif

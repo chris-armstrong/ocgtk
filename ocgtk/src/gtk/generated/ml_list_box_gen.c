@@ -98,8 +98,6 @@ gtk_list_box_select_all(GtkListBox_val(self));
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,12,0)
-
 CAMLexport CAMLprim value ml_gtk_list_box_remove_all(value self)
 {
 CAMLparam1(self);
@@ -107,17 +105,6 @@ CAMLparam1(self);
 gtk_list_box_remove_all(GtkListBox_val(self));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_list_box_remove_all(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("ListBox requires GTK >= 4.12");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_list_box_remove(value self, value arg1)
 {

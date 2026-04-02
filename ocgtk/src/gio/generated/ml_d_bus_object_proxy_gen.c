@@ -21,8 +21,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
-#if GLIB_CHECK_VERSION(2,30,0)
-
 
 CAMLexport CAMLprim value ml_g_dbus_object_proxy_new(value arg1, value arg2)
 {
@@ -75,45 +73,3 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
-
-#else
-
-
-CAMLexport CAMLprim value ml_g_dbus_object_proxy_new(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-(void)arg1;
-(void)arg2;
-caml_failwith("DBusObjectProxy requires GLib >= 2.30");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_object_proxy_get_connection(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusObjectProxy requires GLib >= 2.30");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_d_bus_object_proxy_get_g_connection(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusObjectProxy requires GLib >= 2.30");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_d_bus_object_proxy_get_g_object_path(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusObjectProxy requires GLib >= 2.30");
-return Val_unit;
-}
-
-
-#endif

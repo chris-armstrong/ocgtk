@@ -25,8 +25,6 @@ gtk_media_stream_unrealize(GtkMediaStream_val(self), GdkSurface_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,4,0)
-
 CAMLexport CAMLprim value ml_gtk_media_stream_stream_unprepared(value self)
 {
 CAMLparam1(self);
@@ -35,19 +33,6 @@ gtk_media_stream_stream_unprepared(GtkMediaStream_val(self));
 CAMLreturn(Val_unit);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_media_stream_stream_unprepared(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("MediaStream requires GTK >= 4.4");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,4,0)
-
 CAMLexport CAMLprim value ml_gtk_media_stream_stream_ended(value self)
 {
 CAMLparam1(self);
@@ -55,17 +40,6 @@ CAMLparam1(self);
 gtk_media_stream_stream_ended(GtkMediaStream_val(self));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_media_stream_stream_ended(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("MediaStream requires GTK >= 4.4");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_media_stream_set_volume(value self, value arg1)
 {

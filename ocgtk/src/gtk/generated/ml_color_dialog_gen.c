@@ -16,8 +16,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gtk_decls.h"
 
-#if GTK_CHECK_VERSION(4,10,0)
-
 
 CAMLexport CAMLprim value ml_gtk_color_dialog_new(value unit)
 {
@@ -84,84 +82,3 @@ GError *error = NULL;
 GdkRGBA* result = gtk_color_dialog_choose_rgba_finish(GtkColorDialog_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GdkRGBA))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_gtk_color_dialog_new(value unit)
-{
-CAMLparam1(unit);
-(void)unit;
-caml_failwith("ColorDialog requires GTK >= 4.10");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_color_dialog_choose_rgba_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("ColorDialog requires GTK >= 4.10");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_color_dialog_get_modal(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("ColorDialog requires GTK >= 4.10");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_color_dialog_get_title(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("ColorDialog requires GTK >= 4.10");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_color_dialog_get_with_alpha(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("ColorDialog requires GTK >= 4.10");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_color_dialog_set_modal(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("ColorDialog requires GTK >= 4.10");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_color_dialog_set_title(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("ColorDialog requires GTK >= 4.10");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_color_dialog_set_with_alpha(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("ColorDialog requires GTK >= 4.10");
-return Val_unit;
-}
-
-
-#endif

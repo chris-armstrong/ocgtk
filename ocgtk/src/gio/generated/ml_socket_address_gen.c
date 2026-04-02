@@ -22,8 +22,6 @@
 #include "gio_decls.h"
 
 
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_socket_address_get_family(value self)
 {
 CAMLparam1(self);
@@ -31,14 +29,3 @@ CAMLparam1(self);
 GSocketFamily result = g_socket_address_get_family(GSocketAddress_val(self));
 CAMLreturn(Val_GioSocketFamily(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_socket_address_get_family(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SocketAddress requires GLib >= 2.22");
-return Val_unit;
-}
-#endif

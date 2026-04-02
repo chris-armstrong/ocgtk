@@ -34,8 +34,6 @@ gtk_menu_button_set_use_underline(GtkMenuButton_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,4,0)
-
 CAMLexport CAMLprim value ml_gtk_menu_button_set_primary(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -43,18 +41,6 @@ CAMLparam2(self, arg1);
 gtk_menu_button_set_primary(GtkMenuButton_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_menu_button_set_primary(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("MenuButton requires GTK >= 4.4");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_menu_button_set_popover(value self, value arg1)
 {
@@ -104,8 +90,6 @@ gtk_menu_button_set_direction(GtkMenuButton_val(self), GtkArrowType_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,6,0)
-
 CAMLexport CAMLprim value ml_gtk_menu_button_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -113,20 +97,6 @@ CAMLparam2(self, arg1);
 gtk_menu_button_set_child(GtkMenuButton_val(self), Option_val(arg1, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_menu_button_set_child(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("MenuButton requires GTK >= 4.6");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,12,0)
 
 CAMLexport CAMLprim value ml_gtk_menu_button_set_can_shrink(value self, value arg1)
 {
@@ -136,20 +106,6 @@ gtk_menu_button_set_can_shrink(GtkMenuButton_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_menu_button_set_can_shrink(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("MenuButton requires GTK >= 4.12");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,4,0)
-
 CAMLexport CAMLprim value ml_gtk_menu_button_set_always_show_arrow(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -158,20 +114,6 @@ gtk_menu_button_set_always_show_arrow(GtkMenuButton_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_menu_button_set_always_show_arrow(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("MenuButton requires GTK >= 4.4");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,10,0)
-
 CAMLexport CAMLprim value ml_gtk_menu_button_set_active(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -179,18 +121,6 @@ CAMLparam2(self, arg1);
 gtk_menu_button_set_active(GtkMenuButton_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_menu_button_set_active(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("MenuButton requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_menu_button_popup(value self)
 {
@@ -216,8 +146,6 @@ gboolean result = gtk_menu_button_get_use_underline(GtkMenuButton_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-#if GTK_CHECK_VERSION(4,4,0)
-
 CAMLexport CAMLprim value ml_gtk_menu_button_get_primary(value self)
 {
 CAMLparam1(self);
@@ -225,17 +153,6 @@ CAMLparam1(self);
 gboolean result = gtk_menu_button_get_primary(GtkMenuButton_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_menu_button_get_primary(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("MenuButton requires GTK >= 4.4");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_menu_button_get_popover(value self)
 {
@@ -287,8 +204,6 @@ GtkArrowType result = gtk_menu_button_get_direction(GtkMenuButton_val(self));
 CAMLreturn(Val_GtkArrowType(result));
 }
 
-#if GTK_CHECK_VERSION(4,6,0)
-
 CAMLexport CAMLprim value ml_gtk_menu_button_get_child(value self)
 {
 CAMLparam1(self);
@@ -298,19 +213,6 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_menu_button_get_child(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("MenuButton requires GTK >= 4.6");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,12,0)
-
 CAMLexport CAMLprim value ml_gtk_menu_button_get_can_shrink(value self)
 {
 CAMLparam1(self);
@@ -318,19 +220,6 @@ CAMLparam1(self);
 gboolean result = gtk_menu_button_get_can_shrink(GtkMenuButton_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_menu_button_get_can_shrink(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("MenuButton requires GTK >= 4.12");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,4,0)
 
 CAMLexport CAMLprim value ml_gtk_menu_button_get_always_show_arrow(value self)
 {
@@ -340,19 +229,6 @@ gboolean result = gtk_menu_button_get_always_show_arrow(GtkMenuButton_val(self))
 CAMLreturn(Val_bool(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_menu_button_get_always_show_arrow(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("MenuButton requires GTK >= 4.4");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,10,0)
-
 CAMLexport CAMLprim value ml_gtk_menu_button_get_active(value self)
 {
 CAMLparam1(self);
@@ -360,14 +236,3 @@ CAMLparam1(self);
 gboolean result = gtk_menu_button_get_active(GtkMenuButton_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_menu_button_get_active(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("MenuButton requires GTK >= 4.10");
-return Val_unit;
-}
-#endif

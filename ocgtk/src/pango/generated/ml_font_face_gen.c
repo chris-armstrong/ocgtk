@@ -16,8 +16,6 @@
 #include "pango_decls.h"
 
 
-#if PANGO_VERSION_CHECK(1,4,0)
-
 CAMLexport CAMLprim value ml_pango_font_face_list_sizes(value self)
 {
 CAMLparam1(self);
@@ -40,19 +38,6 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_pango_font_face_list_sizes(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("FontFace requires Pango >= 1.4");
-return Val_unit;
-}
-#endif
-
-#if PANGO_VERSION_CHECK(1,18,0)
-
 CAMLexport CAMLprim value ml_pango_font_face_is_synthesized(value self)
 {
 CAMLparam1(self);
@@ -60,19 +45,6 @@ CAMLparam1(self);
 gboolean result = pango_font_face_is_synthesized(PangoFontFace_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_pango_font_face_is_synthesized(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("FontFace requires Pango >= 1.18");
-return Val_unit;
-}
-#endif
-
-#if PANGO_VERSION_CHECK(1,46,0)
 
 CAMLexport CAMLprim value ml_pango_font_face_get_family(value self)
 {
@@ -82,17 +54,6 @@ PangoFontFamily* result = pango_font_face_get_family(PangoFontFace_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_PangoFontFamily(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_pango_font_face_get_family(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("FontFace requires Pango >= 1.46");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_pango_font_face_get_face_name(value self)
 {

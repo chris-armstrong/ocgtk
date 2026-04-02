@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for DmabufTexture */
 
-#include <gtk/gtk.h>
+#include <gdk/gdk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -15,10 +15,3 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gdk_decls.h"
 
-#if GTK_CHECK_VERSION(4,14,0)
-
-
-#else
-
-
-#endif

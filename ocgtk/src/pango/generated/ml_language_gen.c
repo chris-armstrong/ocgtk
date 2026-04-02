@@ -47,8 +47,6 @@ gboolean result = pango_language_matches(PangoLanguage_val(self), String_val(arg
 CAMLreturn(Val_bool(result));
 }
 
-#if PANGO_VERSION_CHECK(1,4,0)
-
 CAMLexport CAMLprim value ml_pango_language_includes_script(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -56,20 +54,6 @@ CAMLparam2(self, arg1);
 gboolean result = pango_language_includes_script(PangoLanguage_val(self), PangoScript_val(arg1));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_pango_language_includes_script(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Language requires Pango >= 1.4");
-return Val_unit;
-}
-#endif
-
-#if PANGO_VERSION_CHECK(1,22,0)
 
 CAMLexport CAMLprim value ml_pango_language_get_scripts(value self)
 {
@@ -89,17 +73,6 @@ CAMLlocal1(ret);
     Store_field(ret, 1, Val_int(out1));
     CAMLreturn(ret);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_pango_language_get_scripts(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Language requires Pango >= 1.22");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_pango_language_get_sample_string(value self)
 {

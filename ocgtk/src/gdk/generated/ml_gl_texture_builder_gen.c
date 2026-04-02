@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for GLTextureBuilder */
 
-#include <gtk/gtk.h>
+#include <gdk/gdk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -14,8 +14,6 @@
 #include <gdk/gdk.h>
 /* Include library-specific type conversions and forward declarations */
 #include "gdk_decls.h"
-
-#if GTK_CHECK_VERSION(4,12,0)
 
 
 CAMLexport CAMLprim value ml_gdk_gl_texture_builder_new(value unit)
@@ -156,169 +154,3 @@ GdkGLContext* result = gdk_gl_texture_builder_get_context(GdkGLTextureBuilder_va
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GdkGLContext));
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_new(value unit)
-{
-CAMLparam1(unit);
-(void)unit;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_get_context(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_get_format(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_get_has_mipmap(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_get_height(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_get_id(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_get_update_region(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_get_update_texture(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_get_width(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_set_context(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_set_format(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_set_has_mipmap(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_set_height(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_set_id(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_set_update_region(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_set_update_texture(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_gl_texture_builder_set_width(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("GLTextureBuilder requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-#endif

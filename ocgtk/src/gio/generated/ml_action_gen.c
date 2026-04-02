@@ -22,8 +22,6 @@
 #include "gio_decls.h"
 
 
-#if GLIB_CHECK_VERSION(2,28,0)
-
 CAMLexport CAMLprim value ml_g_action_get_name(value self)
 {
 CAMLparam1(self);
@@ -32,19 +30,6 @@ const gchar* result = g_action_get_name(GAction_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_action_get_name(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Action requires GLib >= 2.28");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,28,0)
-
 CAMLexport CAMLprim value ml_g_action_get_enabled(value self)
 {
 CAMLparam1(self);
@@ -52,14 +37,3 @@ CAMLparam1(self);
 gboolean result = g_action_get_enabled(GAction_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_action_get_enabled(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Action requires GLib >= 2.28");
-return Val_unit;
-}
-#endif

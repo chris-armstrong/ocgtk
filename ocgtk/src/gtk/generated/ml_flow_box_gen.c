@@ -130,8 +130,6 @@ gtk_flow_box_select_all(GtkFlowBox_val(self));
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,12,0)
-
 CAMLexport CAMLprim value ml_gtk_flow_box_remove_all(value self)
 {
 CAMLparam1(self);
@@ -139,17 +137,6 @@ CAMLparam1(self);
 gtk_flow_box_remove_all(GtkFlowBox_val(self));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_flow_box_remove_all(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("FlowBox requires GTK >= 4.12");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_flow_box_remove(value self, value arg1)
 {
@@ -159,8 +146,6 @@ gtk_flow_box_remove(GtkFlowBox_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,6,0)
-
 CAMLexport CAMLprim value ml_gtk_flow_box_prepend(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -168,18 +153,6 @@ CAMLparam2(self, arg1);
 gtk_flow_box_prepend(GtkFlowBox_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_flow_box_prepend(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("FlowBox requires GTK >= 4.6");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_flow_box_invalidate_sort(value self)
 {
@@ -290,8 +263,6 @@ gboolean result = gtk_flow_box_get_activate_on_single_click(GtkFlowBox_val(self)
 CAMLreturn(Val_bool(result));
 }
 
-#if GTK_CHECK_VERSION(4,6,0)
-
 CAMLexport CAMLprim value ml_gtk_flow_box_append(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -299,18 +270,6 @@ CAMLparam2(self, arg1);
 gtk_flow_box_append(GtkFlowBox_val(self), GtkWidget_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_flow_box_append(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("FlowBox requires GTK >= 4.6");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_flow_box_get_accept_unpaired_release(value self)
 {

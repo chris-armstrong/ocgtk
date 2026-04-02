@@ -16,8 +16,6 @@
 #include "pango_decls.h"
 
 
-#if PANGO_VERSION_CHECK(1,52,0)
-
 CAMLexport CAMLprim value ml_pango_font_map_reload_font(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -25,21 +23,6 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 PangoFont* result = pango_font_map_reload_font(PangoFontMap_val(self), PangoFont_val(arg1), Double_val(arg2), Option_val(arg3, PangoContext_val, NULL), String_option_val(arg4));
 CAMLreturn(Val_PangoFont(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_pango_font_map_reload_font(value self, value arg1, value arg2, value arg3, value arg4)
-{
-CAMLparam5(self, arg1, arg2, arg3, arg4);
-(void)self;
-(void)arg1;
-(void)arg2;
-(void)arg3;
-(void)arg4;
-caml_failwith("FontMap requires Pango >= 1.52");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_pango_font_map_load_fontset(value self, value arg1, value arg2, value arg3)
 {
@@ -79,8 +62,6 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
-#if PANGO_VERSION_CHECK(1,32,4)
-
 CAMLexport CAMLprim value ml_pango_font_map_get_serial(value self)
 {
 CAMLparam1(self);
@@ -88,19 +69,6 @@ CAMLparam1(self);
 guint result = pango_font_map_get_serial(PangoFontMap_val(self));
 CAMLreturn(Val_int(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_pango_font_map_get_serial(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("FontMap requires Pango >= 1.32.4");
-return Val_unit;
-}
-#endif
-
-#if PANGO_VERSION_CHECK(1,46,0)
 
 CAMLexport CAMLprim value ml_pango_font_map_get_family(value self, value arg1)
 {
@@ -111,20 +79,6 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_PangoFontFamily(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_pango_font_map_get_family(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("FontMap requires Pango >= 1.46");
-return Val_unit;
-}
-#endif
-
-#if PANGO_VERSION_CHECK(1,22,0)
-
 CAMLexport CAMLprim value ml_pango_font_map_create_context(value self)
 {
 CAMLparam1(self);
@@ -133,19 +87,6 @@ PangoContext* result = pango_font_map_create_context(PangoFontMap_val(self));
 CAMLreturn(Val_PangoContext(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_pango_font_map_create_context(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("FontMap requires Pango >= 1.22");
-return Val_unit;
-}
-#endif
-
-#if PANGO_VERSION_CHECK(1,34,0)
-
 CAMLexport CAMLprim value ml_pango_font_map_changed(value self)
 {
 CAMLparam1(self);
@@ -153,17 +94,6 @@ CAMLparam1(self);
 pango_font_map_changed(PangoFontMap_val(self));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_pango_font_map_changed(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("FontMap requires Pango >= 1.34");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_pango_font_map_get_n_items(value self)
 {

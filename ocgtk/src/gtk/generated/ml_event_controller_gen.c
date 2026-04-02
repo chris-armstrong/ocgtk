@@ -17,8 +17,6 @@
 #include "gtk_decls.h"
 
 
-#if GTK_CHECK_VERSION(4,8,0)
-
 CAMLexport CAMLprim value ml_gtk_event_controller_set_static_name(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -26,18 +24,6 @@ CAMLparam2(self, arg1);
 gtk_event_controller_set_static_name(GtkEventController_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_event_controller_set_static_name(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("EventController requires GTK >= 4.8");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_event_controller_set_propagation_phase(value self, value arg1)
 {

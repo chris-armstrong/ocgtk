@@ -36,10 +36,3 @@ value Val_GDBusSubtreeVTable_option(const GDBusSubtreeVTable *ptr) {
   return Val_some(Val_GDBusSubtreeVTable(ptr));
 }
 
-#if GLIB_CHECK_VERSION(2,26,0)
-
-
-#else
-
-
-#endif

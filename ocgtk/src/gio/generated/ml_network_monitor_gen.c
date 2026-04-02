@@ -21,10 +21,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
-#if GLIB_CHECK_VERSION(2,32,0)
-
-
-#if GLIB_CHECK_VERSION(2,46,0)
 
 CAMLexport CAMLprim value ml_g_network_monitor_get_network_metered(value self)
 {
@@ -34,17 +30,6 @@ gboolean result = g_network_monitor_get_network_metered(GNetworkMonitor_val(self
 CAMLreturn(Val_bool(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_network_monitor_get_network_metered(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("NetworkMonitor requires GLib >= 2.46");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_g_network_monitor_get_network_available(value self)
 {
 CAMLparam1(self);
@@ -53,8 +38,6 @@ gboolean result = g_network_monitor_get_network_available(GNetworkMonitor_val(se
 CAMLreturn(Val_bool(result));
 }
 
-#if GLIB_CHECK_VERSION(2,44,0)
-
 CAMLexport CAMLprim value ml_g_network_monitor_get_connectivity(value self)
 {
 CAMLparam1(self);
@@ -62,17 +45,6 @@ CAMLparam1(self);
 GNetworkConnectivity result = g_network_monitor_get_connectivity(GNetworkMonitor_val(self));
 CAMLreturn(Val_GioNetworkConnectivity(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_network_monitor_get_connectivity(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("NetworkMonitor requires GLib >= 2.44");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_network_monitor_can_reach_finish(value self, value arg1)
 {
@@ -91,56 +63,3 @@ GError *error = NULL;
 gboolean result = g_network_monitor_can_reach(GNetworkMonitor_val(self), GSocketConnectable_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_g_network_monitor_can_reach(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("NetworkMonitor requires GLib >= 2.32");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_network_monitor_can_reach_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("NetworkMonitor requires GLib >= 2.32");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_network_monitor_get_connectivity(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("NetworkMonitor requires GLib >= 2.32");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_network_monitor_get_network_available(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("NetworkMonitor requires GLib >= 2.32");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_network_monitor_get_network_metered(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("NetworkMonitor requires GLib >= 2.32");
-return Val_unit;
-}
-
-
-#endif

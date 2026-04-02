@@ -15,8 +15,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "pangocairo_decls.h"
 
-#if PANGO_VERSION_CHECK(1,18,0)
-
 
 CAMLexport CAMLprim value ml_pango_cairo_font_get_scaled_font(value self)
 {
@@ -25,17 +23,3 @@ CAMLparam1(self);
 cairo_scaled_font_t* result = pango_cairo_font_get_scaled_font(PangoCairoFont_val(self));
 CAMLreturn(Val_option(result, Val_cairo_scaled_font_t));
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_pango_cairo_font_get_scaled_font(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Font requires Pango >= 1.18");
-return Val_unit;
-}
-
-
-#endif

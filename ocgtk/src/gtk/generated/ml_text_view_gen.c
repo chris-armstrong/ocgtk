@@ -356,8 +356,6 @@ PangoTabArray* result = gtk_text_view_get_tabs(GtkTextView_val(self));
 CAMLreturn(Val_option(result, Val_PangoTabArray));
 }
 
-#if GTK_CHECK_VERSION(4,4,0)
-
 CAMLexport CAMLprim value ml_gtk_text_view_get_rtl_context(value self)
 {
 CAMLparam1(self);
@@ -366,17 +364,6 @@ PangoContext* result = gtk_text_view_get_rtl_context(GtkTextView_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_PangoContext(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_text_view_get_rtl_context(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TextView requires GTK >= 4.4");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_text_view_get_right_margin(value self)
 {
@@ -426,8 +413,6 @@ gboolean result = gtk_text_view_get_monospace(GtkTextView_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-#if GTK_CHECK_VERSION(4,4,0)
-
 CAMLexport CAMLprim value ml_gtk_text_view_get_ltr_context(value self)
 {
 CAMLparam1(self);
@@ -436,17 +421,6 @@ PangoContext* result = gtk_text_view_get_ltr_context(GtkTextView_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_PangoContext(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_text_view_get_ltr_context(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TextView requires GTK >= 4.4");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_text_view_get_line_yrange(value self, value arg1)
 {

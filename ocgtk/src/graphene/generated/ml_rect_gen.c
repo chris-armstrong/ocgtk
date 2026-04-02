@@ -30,8 +30,6 @@ value Val_graphene_rect_t_option(const graphene_rect_t *ptr) {
   return Val_some(Val_graphene_rect_t(ptr));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
-
 
 CAMLexport CAMLprim value ml_graphene_rect_union(value self, value arg1)
 {
@@ -42,8 +40,6 @@ graphene_rect_union(graphene_rect_t_val(self), graphene_rect_t_val(arg1), &out2)
 CAMLreturn(Val_graphene_rect_t(&out2));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
-
 CAMLexport CAMLprim value ml_graphene_rect_scale(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -53,19 +49,6 @@ graphene_rect_scale(graphene_rect_t_val(self), Double_val(arg1), Double_val(arg2
 CAMLreturn(Val_graphene_rect_t(&out3));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_rect_scale(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("Rect requires Graphene >= 1.10");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_graphene_rect_round_to_pixel(value self)
 {
 CAMLparam1(self);
@@ -73,8 +56,6 @@ CAMLparam1(self);
 graphene_rect_t* result = graphene_rect_round_to_pixel(graphene_rect_t_val(self));
 CAMLreturn(Val_graphene_rect_t(result));
 }
-
-#if GRAPHENE_CHECK_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_rect_round_extents(value self)
 {
@@ -85,19 +66,6 @@ graphene_rect_round_extents(graphene_rect_t_val(self), &out1);
 CAMLreturn(Val_graphene_rect_t(&out1));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_rect_round_extents(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.10");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,4,0)
-
 CAMLexport CAMLprim value ml_graphene_rect_round(value self)
 {
 CAMLparam1(self);
@@ -106,19 +74,6 @@ graphene_rect_t out1;
 graphene_rect_round(graphene_rect_t_val(self), &out1);
 CAMLreturn(Val_graphene_rect_t(&out1));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_rect_round(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.4");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_CHECK_VERSION(1,4,0)
 
 CAMLexport CAMLprim value ml_graphene_rect_offset_r(value self, value arg1, value arg2)
 {
@@ -129,19 +84,6 @@ graphene_rect_offset_r(graphene_rect_t_val(self), Double_val(arg1), Double_val(a
 CAMLreturn(Val_graphene_rect_t(&out3));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_graphene_rect_offset_r(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("Rect requires Graphene >= 1.4");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_graphene_rect_offset(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -149,8 +91,6 @@ CAMLparam3(self, arg1, arg2);
 graphene_rect_t* result = graphene_rect_offset(graphene_rect_t_val(self), Double_val(arg1), Double_val(arg2));
 CAMLreturn(Val_graphene_rect_t(result));
 }
-
-#if GRAPHENE_CHECK_VERSION(1,4,0)
 
 CAMLexport CAMLprim value ml_graphene_rect_normalize_r(value self)
 {
@@ -160,17 +100,6 @@ graphene_rect_t out1;
 graphene_rect_normalize_r(graphene_rect_t_val(self), &out1);
 CAMLreturn(Val_graphene_rect_t(&out1));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_rect_normalize_r(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.4");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_graphene_rect_normalize(value self)
 {
@@ -202,8 +131,6 @@ graphene_rect_interpolate(graphene_rect_t_val(self), graphene_rect_t_val(arg1), 
 CAMLreturn(Val_graphene_rect_t(&out3));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,4,0)
-
 CAMLexport CAMLprim value ml_graphene_rect_inset_r(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -212,19 +139,6 @@ graphene_rect_t out3;
 graphene_rect_inset_r(graphene_rect_t_val(self), Double_val(arg1), Double_val(arg2), &out3);
 CAMLreturn(Val_graphene_rect_t(&out3));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_rect_inset_r(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("Rect requires Graphene >= 1.4");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_graphene_rect_inset(value self, value arg1, value arg2)
 {
@@ -274,8 +188,6 @@ float result = graphene_rect_get_width(graphene_rect_t_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,4,0)
-
 CAMLexport CAMLprim value ml_graphene_rect_get_vertices(value self)
 {
 CAMLparam1(self);
@@ -291,17 +203,6 @@ graphene_rect_get_vertices(graphene_rect_t_val(self), out1);
 
 CAMLreturn(ml_out1);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_rect_get_vertices(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.4");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_graphene_rect_get_top_right(value self)
 {
@@ -356,8 +257,6 @@ graphene_rect_get_bottom_left(graphene_rect_t_val(self), &out1);
 CAMLreturn(Val_graphene_point_t(&out1));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
-
 CAMLexport CAMLprim value ml_graphene_rect_get_area(value self)
 {
 CAMLparam1(self);
@@ -365,17 +264,6 @@ CAMLparam1(self);
 float result = graphene_rect_get_area(graphene_rect_t_val(self));
 CAMLreturn(caml_copy_double(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_rect_get_area(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.10");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_graphene_rect_free(value self)
 {
@@ -385,8 +273,6 @@ graphene_rect_free(graphene_rect_t_val(self));
 CAMLreturn(Val_unit);
 }
 
-#if GRAPHENE_CHECK_VERSION(1,4,0)
-
 CAMLexport CAMLprim value ml_graphene_rect_expand(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -395,18 +281,6 @@ graphene_rect_t out2;
 graphene_rect_expand(graphene_rect_t_val(self), graphene_point_t_val(arg1), &out2);
 CAMLreturn(Val_graphene_rect_t(&out2));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_rect_expand(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Rect requires Graphene >= 1.4");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_graphene_rect_equal(value self, value arg1)
 {
@@ -431,310 +305,3 @@ CAMLparam2(self, arg1);
 _Bool result = graphene_rect_contains_point(graphene_rect_t_val(self), graphene_point_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_graphene_rect_contains_point(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_contains_rect(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_equal(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_expand(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_free(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_get_area(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_get_bottom_left(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_get_bottom_right(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_get_center(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_get_height(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_get_top_left(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_get_top_right(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_get_vertices(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_get_width(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_get_x(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_get_y(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_init(value self, value arg1, value arg2, value arg3, value arg4)
-{
-CAMLparam5(self, arg1, arg2, arg3, arg4);
-(void)self;
-(void)arg1;
-(void)arg2;
-(void)arg3;
-(void)arg4;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_init_from_rect(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_inset(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_inset_r(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_interpolate(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_intersection(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_normalize(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_normalize_r(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_offset(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_offset_r(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_round(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_round_extents(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_round_to_pixel(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_scale(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_union(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-#endif

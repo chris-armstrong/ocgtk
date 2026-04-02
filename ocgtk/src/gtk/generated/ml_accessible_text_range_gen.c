@@ -31,10 +31,3 @@ value Val_GtkAccessibleTextRange_option(const GtkAccessibleTextRange *ptr) {
   return Val_some(Val_GtkAccessibleTextRange(ptr));
 }
 
-#if GTK_CHECK_VERSION(4,14,0)
-
-
-#else
-
-
-#endif

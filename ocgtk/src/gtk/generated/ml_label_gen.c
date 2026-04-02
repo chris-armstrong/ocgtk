@@ -107,8 +107,6 @@ gtk_label_set_text(GtkLabel_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,8,0)
-
 CAMLexport CAMLprim value ml_gtk_label_set_tabs(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -116,18 +114,6 @@ CAMLparam2(self, arg1);
 gtk_label_set_tabs(GtkLabel_val(self), Option_val(arg1, PangoTabArray_val, NULL));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_label_set_tabs(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Label requires GTK >= 4.8");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_label_set_single_line_mode(value self, value arg1)
 {
@@ -145,8 +131,6 @@ gtk_label_set_selectable(GtkLabel_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,6,0)
-
 CAMLexport CAMLprim value ml_gtk_label_set_natural_wrap_mode(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -154,18 +138,6 @@ CAMLparam2(self, arg1);
 gtk_label_set_natural_wrap_mode(GtkLabel_val(self), GtkNaturalWrapMode_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_label_set_natural_wrap_mode(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Label requires GTK >= 4.6");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_label_set_mnemonic_widget(value self, value arg1)
 {
@@ -319,8 +291,6 @@ const char* result = gtk_label_get_text(GtkLabel_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
-#if GTK_CHECK_VERSION(4,8,0)
-
 CAMLexport CAMLprim value ml_gtk_label_get_tabs(value self)
 {
 CAMLparam1(self);
@@ -328,17 +298,6 @@ CAMLparam1(self);
 PangoTabArray* result = gtk_label_get_tabs(GtkLabel_val(self));
 CAMLreturn(Val_option(result, Val_PangoTabArray));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_label_get_tabs(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Label requires GTK >= 4.8");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_label_get_single_line_mode(value self)
 {
@@ -371,8 +330,6 @@ gboolean result = gtk_label_get_selectable(GtkLabel_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-#if GTK_CHECK_VERSION(4,6,0)
-
 CAMLexport CAMLprim value ml_gtk_label_get_natural_wrap_mode(value self)
 {
 CAMLparam1(self);
@@ -380,17 +337,6 @@ CAMLparam1(self);
 GtkNaturalWrapMode result = gtk_label_get_natural_wrap_mode(GtkLabel_val(self));
 CAMLreturn(Val_GtkNaturalWrapMode(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_label_get_natural_wrap_mode(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Label requires GTK >= 4.6");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_label_get_mnemonic_widget(value self)
 {

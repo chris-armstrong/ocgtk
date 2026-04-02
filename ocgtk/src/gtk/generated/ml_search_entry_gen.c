@@ -26,8 +26,6 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkSearchEntry(obj));
 }
-#if GTK_CHECK_VERSION(4,8,0)
-
 CAMLexport CAMLprim value ml_gtk_search_entry_set_search_delay(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -35,20 +33,6 @@ CAMLparam2(self, arg1);
 gtk_search_entry_set_search_delay(GtkSearchEntry_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_search_entry_set_search_delay(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SearchEntry requires GTK >= 4.8");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,10,0)
 
 CAMLexport CAMLprim value ml_gtk_search_entry_set_placeholder_text(value self, value arg1)
 {
@@ -58,18 +42,6 @@ gtk_search_entry_set_placeholder_text(GtkSearchEntry_val(self), String_option_va
 CAMLreturn(Val_unit);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_search_entry_set_placeholder_text(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SearchEntry requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_gtk_search_entry_set_key_capture_widget(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -77,8 +49,6 @@ CAMLparam2(self, arg1);
 gtk_search_entry_set_key_capture_widget(GtkSearchEntry_val(self), Option_val(arg1, GtkWidget_val, NULL));
 CAMLreturn(Val_unit);
 }
-
-#if GTK_CHECK_VERSION(4,14,0)
 
 CAMLexport CAMLprim value ml_gtk_search_entry_set_input_purpose(value self, value arg1)
 {
@@ -88,20 +58,6 @@ gtk_search_entry_set_input_purpose(GtkSearchEntry_val(self), GtkInputPurpose_val
 CAMLreturn(Val_unit);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_search_entry_set_input_purpose(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SearchEntry requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gtk_search_entry_set_input_hints(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -109,20 +65,6 @@ CAMLparam2(self, arg1);
 gtk_search_entry_set_input_hints(GtkSearchEntry_val(self), GtkInputHints_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_search_entry_set_input_hints(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SearchEntry requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,8,0)
 
 CAMLexport CAMLprim value ml_gtk_search_entry_get_search_delay(value self)
 {
@@ -132,19 +74,6 @@ guint result = gtk_search_entry_get_search_delay(GtkSearchEntry_val(self));
 CAMLreturn(Val_int(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_search_entry_get_search_delay(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SearchEntry requires GTK >= 4.8");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,10,0)
-
 CAMLexport CAMLprim value ml_gtk_search_entry_get_placeholder_text(value self)
 {
 CAMLparam1(self);
@@ -152,17 +81,6 @@ CAMLparam1(self);
 const char* result = gtk_search_entry_get_placeholder_text(GtkSearchEntry_val(self));
 CAMLreturn(Val_option_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_search_entry_get_placeholder_text(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SearchEntry requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_search_entry_get_key_capture_widget(value self)
 {
@@ -173,8 +91,6 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gtk_search_entry_get_input_purpose(value self)
 {
 CAMLparam1(self);
@@ -183,19 +99,6 @@ GtkInputPurpose result = gtk_search_entry_get_input_purpose(GtkSearchEntry_val(s
 CAMLreturn(Val_GtkInputPurpose(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_search_entry_get_input_purpose(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SearchEntry requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gtk_search_entry_get_input_hints(value self)
 {
 CAMLparam1(self);
@@ -203,17 +106,6 @@ CAMLparam1(self);
 GtkInputHints result = gtk_search_entry_get_input_hints(GtkSearchEntry_val(self));
 CAMLreturn(Val_GtkInputHints(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_search_entry_get_input_hints(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SearchEntry requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_search_entry_get_activates_default(value self)
 {

@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for PathMeasure */
 
-#include <gtk/gtk.h>
+#include <gsk/gsk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -29,8 +29,6 @@ value Val_GskPathMeasure_option(const GskPathMeasure *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GskPathMeasure(ptr));
 }
-
-#if GTK_CHECK_VERSION(4,14,0)
 
 
 CAMLexport CAMLprim value ml_gsk_path_measure_new(value arg1)
@@ -101,82 +99,3 @@ CAMLparam1(self);
 float result = gsk_path_measure_get_length(GskPathMeasure_val(self));
 CAMLreturn(caml_copy_double(result));
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_gsk_path_measure_new(value arg1)
-{
-CAMLparam1(arg1);
-(void)arg1;
-caml_failwith("PathMeasure requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_path_measure_new_with_tolerance(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-(void)arg1;
-(void)arg2;
-caml_failwith("PathMeasure requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_path_measure_get_length(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PathMeasure requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_path_measure_get_path(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PathMeasure requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_path_measure_get_point(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("PathMeasure requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_path_measure_get_tolerance(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PathMeasure requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_path_measure_ref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PathMeasure requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_path_measure_unref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PathMeasure requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-#endif

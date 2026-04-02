@@ -22,8 +22,6 @@
 #include "gio_decls.h"
 
 
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_drive_stop_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -32,20 +30,6 @@ GError *error = NULL;
 gboolean result = g_drive_stop_finish(GDrive_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_drive_stop_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Drive requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,22,0)
 
 CAMLexport CAMLprim value ml_g_drive_start_finish(value self, value arg1)
 {
@@ -56,18 +40,6 @@ gboolean result = g_drive_start_finish(GDrive_val(self), GAsyncResult_val(arg1),
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_drive_start_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Drive requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_g_drive_poll_for_media_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -77,8 +49,6 @@ gboolean result = g_drive_poll_for_media_finish(GDrive_val(self), GAsyncResult_v
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#if GLIB_CHECK_VERSION(2,50,0)
-
 CAMLexport CAMLprim value ml_g_drive_is_removable(value self)
 {
 CAMLparam1(self);
@@ -86,17 +56,6 @@ CAMLparam1(self);
 gboolean result = g_drive_is_removable(GDrive_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_drive_is_removable(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Drive requires GLib >= 2.50");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_drive_is_media_removable(value self)
 {
@@ -130,8 +89,6 @@ gboolean result = g_drive_has_media(GDrive_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-#if GLIB_CHECK_VERSION(2,34,0)
-
 CAMLexport CAMLprim value ml_g_drive_get_symbolic_icon(value self)
 {
 CAMLparam1(self);
@@ -139,19 +96,6 @@ CAMLparam1(self);
 GIcon* result = g_drive_get_symbolic_icon(GDrive_val(self));
 CAMLreturn(Val_GIcon(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_drive_get_symbolic_icon(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Drive requires GLib >= 2.34");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,22,0)
 
 CAMLexport CAMLprim value ml_g_drive_get_start_stop_type(value self)
 {
@@ -161,19 +105,6 @@ GDriveStartStopType result = g_drive_get_start_stop_type(GDrive_val(self));
 CAMLreturn(Val_GioDriveStartStopType(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_drive_get_start_stop_type(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Drive requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,32,0)
-
 CAMLexport CAMLprim value ml_g_drive_get_sort_key(value self)
 {
 CAMLparam1(self);
@@ -181,17 +112,6 @@ CAMLparam1(self);
 const gchar* result = g_drive_get_sort_key(GDrive_val(self));
 CAMLreturn(Val_option_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_drive_get_sort_key(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Drive requires GLib >= 2.32");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_drive_get_name(value self)
 {
@@ -236,8 +156,6 @@ char** result = g_drive_enumerate_identifiers(GDrive_val(self));
 CAMLreturn(ml_result);
 }
 
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_drive_eject_with_operation_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -246,18 +164,6 @@ GError *error = NULL;
 gboolean result = g_drive_eject_with_operation_finish(GDrive_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_drive_eject_with_operation_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Drive requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_drive_eject_finish(value self, value arg1)
 {
@@ -268,8 +174,6 @@ gboolean result = g_drive_eject_finish(GDrive_val(self), GAsyncResult_val(arg1),
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_drive_can_stop(value self)
 {
 CAMLparam1(self);
@@ -277,19 +181,6 @@ CAMLparam1(self);
 gboolean result = g_drive_can_stop(GDrive_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_drive_can_stop(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Drive requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,22,0)
 
 CAMLexport CAMLprim value ml_g_drive_can_start_degraded(value self)
 {
@@ -299,19 +190,6 @@ gboolean result = g_drive_can_start_degraded(GDrive_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_drive_can_start_degraded(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Drive requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_drive_can_start(value self)
 {
 CAMLparam1(self);
@@ -319,17 +197,6 @@ CAMLparam1(self);
 gboolean result = g_drive_can_start(GDrive_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_drive_can_start(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Drive requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_drive_can_poll_for_media(value self)
 {

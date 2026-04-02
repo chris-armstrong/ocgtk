@@ -21,8 +21,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
-#if GLIB_CHECK_VERSION(2,36,0)
-
 
 CAMLexport CAMLprim value ml_g_simple_proxy_resolver_set_uri_proxy(value self, value arg1, value arg2)
 {
@@ -54,39 +52,3 @@ CAMLparam2(self, arg1);
 g_simple_proxy_resolver_set_default_proxy(GSimpleProxyResolver_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_g_simple_proxy_resolver_set_default_proxy(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SimpleProxyResolver requires GLib >= 2.36");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_simple_proxy_resolver_set_ignore_hosts(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SimpleProxyResolver requires GLib >= 2.36");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_simple_proxy_resolver_set_uri_proxy(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("SimpleProxyResolver requires GLib >= 2.36");
-return Val_unit;
-}
-
-
-#endif

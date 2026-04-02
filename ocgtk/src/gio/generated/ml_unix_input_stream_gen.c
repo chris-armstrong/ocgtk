@@ -31,8 +31,6 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GUnixInputStream(obj));
 }
-#if GLIB_CHECK_VERSION(2,20,0)
-
 CAMLexport CAMLprim value ml_g_unix_input_stream_set_close_fd(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -40,20 +38,6 @@ CAMLparam2(self, arg1);
 g_unix_input_stream_set_close_fd(GUnixInputStream_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_unix_input_stream_set_close_fd(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("UnixInputStream requires GLib >= 2.20");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,20,0)
 
 CAMLexport CAMLprim value ml_g_unix_input_stream_get_fd(value self)
 {
@@ -63,19 +47,6 @@ gint result = g_unix_input_stream_get_fd(GUnixInputStream_val(self));
 CAMLreturn(Val_int(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_unix_input_stream_get_fd(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("UnixInputStream requires GLib >= 2.20");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,20,0)
-
 CAMLexport CAMLprim value ml_g_unix_input_stream_get_close_fd(value self)
 {
 CAMLparam1(self);
@@ -83,14 +54,3 @@ CAMLparam1(self);
 gboolean result = g_unix_input_stream_get_close_fd(GUnixInputStream_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_unix_input_stream_get_close_fd(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("UnixInputStream requires GLib >= 2.20");
-return Val_unit;
-}
-#endif

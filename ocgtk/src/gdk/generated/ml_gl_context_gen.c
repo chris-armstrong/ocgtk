@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for GLContext */
 
-#include <gtk/gtk.h>
+#include <gdk/gdk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -48,8 +48,6 @@ gdk_gl_context_set_debug_enabled(GdkGLContext_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,6,0)
-
 CAMLexport CAMLprim value ml_gdk_gl_context_set_allowed_apis(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -57,18 +55,6 @@ CAMLparam2(self, arg1);
 gdk_gl_context_set_allowed_apis(GdkGLContext_val(self), GdkGLAPI_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gdk_gl_context_set_allowed_apis(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("GLContext requires GTK >= 4.6");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gdk_gl_context_realize(value self)
 {
@@ -87,8 +73,6 @@ gdk_gl_context_make_current(GdkGLContext_val(self));
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,4,0)
-
 CAMLexport CAMLprim value ml_gdk_gl_context_is_shared(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -96,18 +80,6 @@ CAMLparam2(self, arg1);
 gboolean result = gdk_gl_context_is_shared(GdkGLContext_val(self), GdkGLContext_val(arg1));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gdk_gl_context_is_shared(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("GLContext requires GTK >= 4.4");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gdk_gl_context_is_legacy(value self)
 {
@@ -196,8 +168,6 @@ gboolean result = gdk_gl_context_get_debug_enabled(GdkGLContext_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-#if GTK_CHECK_VERSION(4,6,0)
-
 CAMLexport CAMLprim value ml_gdk_gl_context_get_api(value self)
 {
 CAMLparam1(self);
@@ -206,19 +176,6 @@ GdkGLAPI result = gdk_gl_context_get_api(GdkGLContext_val(self));
 CAMLreturn(Val_GdkGLAPI(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gdk_gl_context_get_api(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("GLContext requires GTK >= 4.6");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,6,0)
-
 CAMLexport CAMLprim value ml_gdk_gl_context_get_allowed_apis(value self)
 {
 CAMLparam1(self);
@@ -226,14 +183,3 @@ CAMLparam1(self);
 GdkGLAPI result = gdk_gl_context_get_allowed_apis(GdkGLContext_val(self));
 CAMLreturn(Val_GdkGLAPI(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gdk_gl_context_get_allowed_apis(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("GLContext requires GTK >= 4.6");
-return Val_unit;
-}
-#endif

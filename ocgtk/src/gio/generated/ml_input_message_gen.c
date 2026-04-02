@@ -36,10 +36,3 @@ value Val_GInputMessage_option(const GInputMessage *ptr) {
   return Val_some(Val_GInputMessage(ptr));
 }
 
-#if GLIB_CHECK_VERSION(2,48,0)
-
-
-#else
-
-
-#endif

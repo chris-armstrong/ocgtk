@@ -793,8 +793,6 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,6,0)
-
 CAMLexport CAMLprim value ml_gtk_settings_get_gtk_hint_font_metrics(value self)
 {
     CAMLparam1(self);
@@ -812,19 +810,6 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_settings_get_gtk_hint_font_metrics(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Settings requires GTK >= 4.6");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,6,0)
-
 CAMLexport CAMLprim value ml_gtk_settings_set_gtk_hint_font_metrics(value self, value new_value)
 {
     CAMLparam2(self, new_value);
@@ -839,18 +824,6 @@ g_object_set_property(G_OBJECT(obj), "gtk-hint-font-metrics", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_settings_set_gtk_hint_font_metrics(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Settings requires GTK >= 4.6");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_settings_get_gtk_icon_theme_name(value self)
 {
@@ -1300,8 +1273,6 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gtk_settings_get_gtk_show_status_shapes(value self)
 {
     CAMLparam1(self);
@@ -1319,19 +1290,6 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_settings_get_gtk_show_status_shapes(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Settings requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gtk_settings_set_gtk_show_status_shapes(value self, value new_value)
 {
     CAMLparam2(self, new_value);
@@ -1346,18 +1304,6 @@ g_object_set_property(G_OBJECT(obj), "gtk-show-status-shapes", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_settings_set_gtk_show_status_shapes(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Settings requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_settings_get_gtk_sound_theme_name(value self)
 {

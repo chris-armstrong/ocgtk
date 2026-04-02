@@ -31,8 +31,6 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GAppLaunchContext(obj));
 }
-#if GLIB_CHECK_VERSION(2,32,0)
-
 CAMLexport CAMLprim value ml_g_app_launch_context_unsetenv(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -40,20 +38,6 @@ CAMLparam2(self, arg1);
 g_app_launch_context_unsetenv(GAppLaunchContext_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_app_launch_context_unsetenv(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("AppLaunchContext requires GLib >= 2.32");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,32,0)
 
 CAMLexport CAMLprim value ml_g_app_launch_context_setenv(value self, value arg1, value arg2)
 {
@@ -63,19 +47,6 @@ g_app_launch_context_setenv(GAppLaunchContext_val(self), String_val(arg1), Strin
 CAMLreturn(Val_unit);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_app_launch_context_setenv(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("AppLaunchContext requires GLib >= 2.32");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_g_app_launch_context_launch_failed(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -83,8 +54,6 @@ CAMLparam2(self, arg1);
 g_app_launch_context_launch_failed(GAppLaunchContext_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#if GLIB_CHECK_VERSION(2,32,0)
 
 CAMLexport CAMLprim value ml_g_app_launch_context_get_environment(value self)
 {
@@ -104,14 +73,3 @@ char** result = g_app_launch_context_get_environment(GAppLaunchContext_val(self)
     g_free(result);
 CAMLreturn(ml_result);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_app_launch_context_get_environment(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("AppLaunchContext requires GLib >= 2.32");
-return Val_unit;
-}
-#endif

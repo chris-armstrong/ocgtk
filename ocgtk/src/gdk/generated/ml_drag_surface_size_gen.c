@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for DragSurfaceSize */
 
-#include <gtk/gtk.h>
+#include <gdk/gdk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -30,8 +30,6 @@ value Val_GdkDragSurfaceSize_option(const GdkDragSurfaceSize *ptr) {
   return Val_some(Val_GdkDragSurfaceSize(ptr));
 }
 
-#if GTK_CHECK_VERSION(4,12,0)
-
 
 CAMLexport CAMLprim value ml_gdk_drag_surface_size_set_size(value self, value arg1, value arg2)
 {
@@ -40,19 +38,3 @@ CAMLparam3(self, arg1, arg2);
 gdk_drag_surface_size_set_size(GdkDragSurfaceSize_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_gdk_drag_surface_size_set_size(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("DragSurfaceSize requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-#endif

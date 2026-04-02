@@ -21,8 +21,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
-#if GLIB_CHECK_VERSION(2,26,0)
-
 
 CAMLexport CAMLprim value ml_g_dbus_connection_new_finish(value arg1)
 {
@@ -80,8 +78,6 @@ gboolean result = g_dbus_connection_unregister_object(GDBusConnection_val(self),
 CAMLreturn(Val_bool(result));
 }
 
-#if GLIB_CHECK_VERSION(2,32,0)
-
 CAMLexport CAMLprim value ml_g_dbus_connection_unexport_menu_model(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -90,20 +86,6 @@ g_dbus_connection_unexport_menu_model(GDBusConnection_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_dbus_connection_unexport_menu_model(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.32");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,32,0)
-
 CAMLexport CAMLprim value ml_g_dbus_connection_unexport_action_group(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -111,18 +93,6 @@ CAMLparam2(self, arg1);
 g_dbus_connection_unexport_action_group(GDBusConnection_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_dbus_connection_unexport_action_group(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.32");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_dbus_connection_start_message_processing(value self)
 {
@@ -207,8 +177,6 @@ const gchar* result = g_dbus_connection_get_guid(GDBusConnection_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
-#if GLIB_CHECK_VERSION(2,60,0)
-
 CAMLexport CAMLprim value ml_g_dbus_connection_get_flags(value self)
 {
 CAMLparam1(self);
@@ -216,17 +184,6 @@ CAMLparam1(self);
 GDBusConnectionFlags result = g_dbus_connection_get_flags(GDBusConnection_val(self));
 CAMLreturn(Val_GioDBusConnectionFlags(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_dbus_connection_get_flags(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusConnection requires GLib >= 2.60");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_dbus_connection_get_exit_on_close(value self)
 {
@@ -262,8 +219,6 @@ gboolean result = g_dbus_connection_flush_finish(GDBusConnection_val(self), GAsy
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#if GLIB_CHECK_VERSION(2,32,0)
-
 CAMLexport CAMLprim value ml_g_dbus_connection_export_menu_model(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -273,21 +228,6 @@ guint result = g_dbus_connection_export_menu_model(GDBusConnection_val(self), St
 if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_dbus_connection_export_menu_model(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("DBusConnection requires GLib >= 2.32");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,32,0)
-
 CAMLexport CAMLprim value ml_g_dbus_connection_export_action_group(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -296,19 +236,6 @@ GError *error = NULL;
 guint result = g_dbus_connection_export_action_group(GDBusConnection_val(self), String_val(arg1), GActionGroup_val(arg2), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_dbus_connection_export_action_group(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("DBusConnection requires GLib >= 2.32");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_dbus_connection_close_sync(value self, value arg1)
 {
@@ -378,301 +305,3 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
-
-#else
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_new_finish(value arg1)
-{
-CAMLparam1(arg1);
-(void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_new_for_address_finish(value arg1)
-{
-CAMLparam1(arg1);
-(void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_new_for_address_sync(value arg1, value arg2, value arg3, value arg4)
-{
-CAMLparam4(arg1, arg2, arg3, arg4);
-(void)arg1;
-(void)arg2;
-(void)arg3;
-(void)arg4;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_new_sync(value arg1, value arg2, value arg3, value arg4, value arg5)
-{
-CAMLparam5(arg1, arg2, arg3, arg4, arg5);
-(void)arg1;
-(void)arg2;
-(void)arg3;
-(void)arg4;
-(void)arg5;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_close_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_close_sync(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_export_action_group(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_export_menu_model(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_flush_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_flush_sync(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_get_capabilities(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_get_exit_on_close(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_get_flags(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_get_guid(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_get_peer_credentials(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_get_stream(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_get_unique_name(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_is_closed(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_remove_filter(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_send_message_with_reply_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_set_exit_on_close(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_signal_unsubscribe(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_start_message_processing(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_unexport_action_group(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_unexport_menu_model(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_unregister_object(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_connection_unregister_subtree(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_d_bus_connection_get_address(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_d_bus_connection_get_authentication_observer(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_d_bus_connection_get_closed(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-#endif

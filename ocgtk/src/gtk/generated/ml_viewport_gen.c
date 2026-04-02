@@ -42,8 +42,6 @@ gtk_viewport_set_child(GtkViewport_val(self), Option_val(arg1, GtkWidget_val, NU
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,12,0)
-
 CAMLexport CAMLprim value ml_gtk_viewport_scroll_to(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -51,19 +49,6 @@ CAMLparam3(self, arg1, arg2);
 gtk_viewport_scroll_to(GtkViewport_val(self), GtkWidget_val(arg1), Option_val(arg2, GtkScrollInfo_val, NULL));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_viewport_scroll_to(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("Viewport requires GTK >= 4.12");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_viewport_get_scroll_to_focus(value self)
 {

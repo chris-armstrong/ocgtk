@@ -24,8 +24,6 @@ value copy_PangoColor(const PangoColor *ptr)
 }
 
 
-#if PANGO_VERSION_CHECK(1,16,0)
-
 CAMLexport CAMLprim value ml_pango_color_to_string(value self)
 {
 CAMLparam1(self);
@@ -33,17 +31,6 @@ CAMLparam1(self);
 char* result = pango_color_to_string(PangoColor_val(self));
 CAMLreturn(caml_copy_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_pango_color_to_string(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Color requires Pango >= 1.16");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_pango_color_parse(value self, value arg1)
 {

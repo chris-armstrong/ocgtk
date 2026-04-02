@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for Monitor */
 
-#include <gtk/gtk.h>
+#include <gdk/gdk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -48,8 +48,6 @@ int result = gdk_monitor_get_scale_factor(GdkMonitor_val(self));
 CAMLreturn(Val_int(result));
 }
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gdk_monitor_get_scale(value self)
 {
 CAMLparam1(self);
@@ -57,17 +55,6 @@ CAMLparam1(self);
 double result = gdk_monitor_get_scale(GdkMonitor_val(self));
 CAMLreturn(caml_copy_double(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gdk_monitor_get_scale(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Monitor requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gdk_monitor_get_refresh_rate(value self)
 {
@@ -119,8 +106,6 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GdkDisplay(result));
 }
 
-#if GTK_CHECK_VERSION(4,10,0)
-
 CAMLexport CAMLprim value ml_gdk_monitor_get_description(value self)
 {
 CAMLparam1(self);
@@ -128,17 +113,6 @@ CAMLparam1(self);
 const char* result = gdk_monitor_get_description(GdkMonitor_val(self));
 CAMLreturn(Val_option_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gdk_monitor_get_description(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Monitor requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gdk_monitor_get_connector(value self)
 {

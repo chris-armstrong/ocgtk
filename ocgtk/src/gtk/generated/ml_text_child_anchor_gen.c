@@ -26,8 +26,6 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkTextChildAnchor(obj));
 }
-#if GTK_CHECK_VERSION(4,6,0)
-
 CAMLexport CAMLprim value ml_gtk_text_child_anchor_new_with_replacement(value arg1)
 {
 CAMLparam1(arg1);
@@ -37,17 +35,6 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkTextChildAnchor(obj));
 }
-#else
-
-CAMLexport CAMLprim value ml_gtk_text_child_anchor_new_with_replacement(value arg1)
-{
-CAMLparam1(arg1);
-(void)arg1;
-caml_failwith("TextChildAnchor requires GTK >= 4.6");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_gtk_text_child_anchor_get_widgets(value self)
 {
 CAMLparam1(self);

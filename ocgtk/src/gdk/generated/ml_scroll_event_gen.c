@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for ScrollEvent */
 
-#include <gtk/gtk.h>
+#include <gdk/gdk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -24,8 +24,6 @@ gboolean result = gdk_scroll_event_is_stop(GdkScrollEvent_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-#if GTK_CHECK_VERSION(4,8,0)
-
 CAMLexport CAMLprim value ml_gdk_scroll_event_get_unit(value self)
 {
 CAMLparam1(self);
@@ -33,17 +31,6 @@ CAMLparam1(self);
 GdkScrollUnit result = gdk_scroll_event_get_unit(GdkScrollEvent_val(self));
 CAMLreturn(Val_GdkScrollUnit(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gdk_scroll_event_get_unit(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("ScrollEvent requires GTK >= 4.8");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gdk_scroll_event_get_direction(value self)
 {

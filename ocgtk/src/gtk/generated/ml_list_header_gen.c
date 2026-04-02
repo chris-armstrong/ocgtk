@@ -16,8 +16,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gtk_decls.h"
 
-#if GTK_CHECK_VERSION(4,12,0)
-
 
 CAMLexport CAMLprim value ml_gtk_list_header_set_child(value self, value arg1)
 {
@@ -67,63 +65,3 @@ GtkWidget* result = gtk_list_header_get_child(GtkListHeader_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_gtk_list_header_get_child(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("ListHeader requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_list_header_get_end(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("ListHeader requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_list_header_get_item(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("ListHeader requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_list_header_get_n_items(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("ListHeader requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_list_header_get_start(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("ListHeader requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_list_header_set_child(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("ListHeader requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-#endif

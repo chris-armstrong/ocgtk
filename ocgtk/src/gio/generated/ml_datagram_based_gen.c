@@ -21,10 +21,3 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
-#if GLIB_CHECK_VERSION(2,48,0)
-
-
-#else
-
-
-#endif

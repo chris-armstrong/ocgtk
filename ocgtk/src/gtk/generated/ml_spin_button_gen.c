@@ -131,8 +131,6 @@ gtk_spin_button_set_adjustment(GtkSpinButton_val(self), GtkAdjustment_val(arg1))
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gtk_spin_button_set_activates_default(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -140,18 +138,6 @@ CAMLparam2(self, arg1);
 gtk_spin_button_set_activates_default(GtkSpinButton_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_spin_button_set_activates_default(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("SpinButton requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_spin_button_get_wrap(value self)
 {
@@ -254,8 +240,6 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkAdjustment(result));
 }
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gtk_spin_button_get_activates_default(value self)
 {
 CAMLparam1(self);
@@ -263,17 +247,6 @@ CAMLparam1(self);
 gboolean result = gtk_spin_button_get_activates_default(GtkSpinButton_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_spin_button_get_activates_default(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SpinButton requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_spin_button_configure(value self, value arg1, value arg2, value arg3)
 {

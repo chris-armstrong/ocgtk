@@ -40,8 +40,6 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GDesktopAppInfo(obj));
 }
-#if GLIB_CHECK_VERSION(2,38,0)
-
 CAMLexport CAMLprim value ml_g_desktop_app_info_list_actions(value self)
 {
 CAMLparam1(self);
@@ -57,19 +55,6 @@ const gchar* const* result = g_desktop_app_info_list_actions(GDesktopAppInfo_val
 CAMLreturn(ml_result);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_desktop_app_info_list_actions(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DesktopAppInfo requires GLib >= 2.38");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,38,0)
-
 CAMLexport CAMLprim value ml_g_desktop_app_info_launch_action(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -77,21 +62,6 @@ CAMLparam3(self, arg1, arg2);
 g_desktop_app_info_launch_action(GDesktopAppInfo_val(self), String_val(arg1), Option_val(arg2, GAppLaunchContext_val, NULL));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_desktop_app_info_launch_action(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("DesktopAppInfo requires GLib >= 2.38");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,36,0)
 
 CAMLexport CAMLprim value ml_g_desktop_app_info_has_key(value self, value arg1)
 {
@@ -101,20 +71,6 @@ gboolean result = g_desktop_app_info_has_key(GDesktopAppInfo_val(self), String_v
 CAMLreturn(Val_bool(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_desktop_app_info_has_key(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DesktopAppInfo requires GLib >= 2.36");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,36,0)
-
 CAMLexport CAMLprim value ml_g_desktop_app_info_get_string(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -122,20 +78,6 @@ CAMLparam2(self, arg1);
 char* result = g_desktop_app_info_get_string(GDesktopAppInfo_val(self), String_val(arg1));
 CAMLreturn(Val_option_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_desktop_app_info_get_string(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DesktopAppInfo requires GLib >= 2.36");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,34,0)
 
 CAMLexport CAMLprim value ml_g_desktop_app_info_get_startup_wm_class(value self)
 {
@@ -145,19 +87,6 @@ const char* result = g_desktop_app_info_get_startup_wm_class(GDesktopAppInfo_val
 CAMLreturn(Val_option_string(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_desktop_app_info_get_startup_wm_class(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DesktopAppInfo requires GLib >= 2.34");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,30,0)
-
 CAMLexport CAMLprim value ml_g_desktop_app_info_get_show_in(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -165,20 +94,6 @@ CAMLparam2(self, arg1);
 gboolean result = g_desktop_app_info_get_show_in(GDesktopAppInfo_val(self), String_option_val(arg1));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_desktop_app_info_get_show_in(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DesktopAppInfo requires GLib >= 2.30");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,30,0)
 
 CAMLexport CAMLprim value ml_g_desktop_app_info_get_nodisplay(value self)
 {
@@ -188,19 +103,6 @@ gboolean result = g_desktop_app_info_get_nodisplay(GDesktopAppInfo_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_desktop_app_info_get_nodisplay(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DesktopAppInfo requires GLib >= 2.30");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,56,0)
-
 CAMLexport CAMLprim value ml_g_desktop_app_info_get_locale_string(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -208,20 +110,6 @@ CAMLparam2(self, arg1);
 char* result = g_desktop_app_info_get_locale_string(GDesktopAppInfo_val(self), String_val(arg1));
 CAMLreturn(Val_option_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_desktop_app_info_get_locale_string(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DesktopAppInfo requires GLib >= 2.56");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,32,0)
 
 CAMLexport CAMLprim value ml_g_desktop_app_info_get_keywords(value self)
 {
@@ -237,17 +125,6 @@ const char* const* result = g_desktop_app_info_get_keywords(GDesktopAppInfo_val(
     }
 CAMLreturn(ml_result);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_desktop_app_info_get_keywords(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DesktopAppInfo requires GLib >= 2.32");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_desktop_app_info_get_is_hidden(value self)
 {
@@ -265,8 +142,6 @@ const char* result = g_desktop_app_info_get_generic_name(GDesktopAppInfo_val(sel
 CAMLreturn(Val_option_string(result));
 }
 
-#if GLIB_CHECK_VERSION(2,24,0)
-
 CAMLexport CAMLprim value ml_g_desktop_app_info_get_filename(value self)
 {
 CAMLparam1(self);
@@ -274,17 +149,6 @@ CAMLparam1(self);
 const char* result = g_desktop_app_info_get_filename(GDesktopAppInfo_val(self));
 CAMLreturn(Val_option_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_desktop_app_info_get_filename(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DesktopAppInfo requires GLib >= 2.24");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_desktop_app_info_get_categories(value self)
 {
@@ -294,8 +158,6 @@ const char* result = g_desktop_app_info_get_categories(GDesktopAppInfo_val(self)
 CAMLreturn(Val_option_string(result));
 }
 
-#if GLIB_CHECK_VERSION(2,36,0)
-
 CAMLexport CAMLprim value ml_g_desktop_app_info_get_boolean(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -304,20 +166,6 @@ gboolean result = g_desktop_app_info_get_boolean(GDesktopAppInfo_val(self), Stri
 CAMLreturn(Val_bool(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_desktop_app_info_get_boolean(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DesktopAppInfo requires GLib >= 2.36");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,38,0)
-
 CAMLexport CAMLprim value ml_g_desktop_app_info_get_action_name(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -325,15 +173,3 @@ CAMLparam2(self, arg1);
 gchar* result = g_desktop_app_info_get_action_name(GDesktopAppInfo_val(self), String_val(arg1));
 CAMLreturn(caml_copy_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_desktop_app_info_get_action_name(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("DesktopAppInfo requires GLib >= 2.38");
-return Val_unit;
-}
-#endif

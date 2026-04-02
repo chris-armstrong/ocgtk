@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for Display */
 
-#include <gtk/gtk.h>
+#include <gdk/gdk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -43,8 +43,6 @@ gdk_display_sync(GdkDisplay_val(self));
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gdk_display_supports_shadow_width(value self)
 {
 CAMLparam1(self);
@@ -52,17 +50,6 @@ CAMLparam1(self);
 gboolean result = gdk_display_supports_shadow_width(GdkDisplay_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gdk_display_supports_shadow_width(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Display requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gdk_display_supports_input_shapes(value self)
 {
@@ -80,8 +67,6 @@ gdk_display_put_event(GdkDisplay_val(self), GdkEvent_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,4,0)
-
 CAMLexport CAMLprim value ml_gdk_display_prepare_gl(value self)
 {
 CAMLparam1(self);
@@ -90,17 +75,6 @@ GError *error = NULL;
 gboolean result = gdk_display_prepare_gl(GdkDisplay_val(self), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gdk_display_prepare_gl(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Display requires GTK >= 4.4");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gdk_display_notify_startup_complete(value self, value arg1)
 {
@@ -243,8 +217,6 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GdkMonitor));
 }
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gdk_display_get_dmabuf_formats(value self)
 {
 CAMLparam1(self);
@@ -252,17 +224,6 @@ CAMLparam1(self);
 GdkDmabufFormats* result = gdk_display_get_dmabuf_formats(GdkDisplay_val(self));
 CAMLreturn(Val_GdkDmabufFormats(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gdk_display_get_dmabuf_formats(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Display requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gdk_display_get_default_seat(value self)
 {
@@ -306,8 +267,6 @@ gboolean result = gdk_display_device_is_grabbed(GdkDisplay_val(self), GdkDevice_
 CAMLreturn(Val_bool(result));
 }
 
-#if GTK_CHECK_VERSION(4,6,0)
-
 CAMLexport CAMLprim value ml_gdk_display_create_gl_context(value self)
 {
 CAMLparam1(self);
@@ -316,17 +275,6 @@ GError *error = NULL;
 GdkGLContext* result = gdk_display_create_gl_context(GdkDisplay_val(self), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkGLContext(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gdk_display_create_gl_context(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Display requires GTK >= 4.6");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gdk_display_close(value self)
 {
@@ -395,8 +343,6 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gdk_display_get_shadow_width(value self)
 {
     CAMLparam1(self);
@@ -413,14 +359,3 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
-
-#else
-
-CAMLexport CAMLprim value ml_gdk_display_get_shadow_width(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Display requires GTK >= 4.14");
-return Val_unit;
-}
-#endif

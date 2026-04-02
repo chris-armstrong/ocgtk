@@ -21,8 +21,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
-#if GLIB_CHECK_VERSION(2,28,0)
-
 
 CAMLexport CAMLprim value ml_g_tcp_wrapper_connection_new(value arg1, value arg2)
 {
@@ -41,27 +39,3 @@ GIOStream* result = g_tcp_wrapper_connection_get_base_io_stream(GTcpWrapperConne
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GIOStream(result));
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_g_tcp_wrapper_connection_new(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-(void)arg1;
-(void)arg2;
-caml_failwith("TcpWrapperConnection requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_tcp_wrapper_connection_get_base_io_stream(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TcpWrapperConnection requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-#endif

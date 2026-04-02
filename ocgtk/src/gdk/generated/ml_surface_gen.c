@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for Surface */
 
-#include <gtk/gtk.h>
+#include <gdk/gdk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -129,8 +129,6 @@ int result = gdk_surface_get_scale_factor(GdkSurface_val(self));
 CAMLreturn(Val_int(result));
 }
 
-#if GTK_CHECK_VERSION(4,12,0)
-
 CAMLexport CAMLprim value ml_gdk_surface_get_scale(value self)
 {
 CAMLparam1(self);
@@ -138,17 +136,6 @@ CAMLparam1(self);
 double result = gdk_surface_get_scale(GdkSurface_val(self));
 CAMLreturn(caml_copy_double(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gdk_surface_get_scale(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Surface requires GTK >= 4.12");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gdk_surface_get_mapped(value self)
 {

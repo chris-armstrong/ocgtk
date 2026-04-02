@@ -17,8 +17,6 @@
 #include "gtk_decls.h"
 
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gtk_shortcuts_group_add_shortcut(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -26,18 +24,6 @@ CAMLparam2(self, arg1);
 gtk_shortcuts_group_add_shortcut(GtkShortcutsGroup_val(self), GtkShortcutsShortcut_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_shortcuts_group_add_shortcut(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("ShortcutsGroup requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_shortcuts_group_get_accel_size_group(value self)
 {

@@ -26,8 +26,6 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkGestureStylus(obj));
 }
-#if GTK_CHECK_VERSION(4,10,0)
-
 CAMLexport CAMLprim value ml_gtk_gesture_stylus_set_stylus_only(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -36,20 +34,6 @@ gtk_gesture_stylus_set_stylus_only(GtkGestureStylus_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_gesture_stylus_set_stylus_only(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("GestureStylus requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,10,0)
-
 CAMLexport CAMLprim value ml_gtk_gesture_stylus_get_stylus_only(value self)
 {
 CAMLparam1(self);
@@ -57,17 +41,6 @@ CAMLparam1(self);
 gboolean result = gtk_gesture_stylus_get_stylus_only(GtkGestureStylus_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_gesture_stylus_get_stylus_only(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("GestureStylus requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_gesture_stylus_get_device_tool(value self)
 {

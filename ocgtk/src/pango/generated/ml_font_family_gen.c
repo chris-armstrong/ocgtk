@@ -38,8 +38,6 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
-#if PANGO_VERSION_CHECK(1,44,0)
-
 CAMLexport CAMLprim value ml_pango_font_family_is_variable(value self)
 {
 CAMLparam1(self);
@@ -47,19 +45,6 @@ CAMLparam1(self);
 gboolean result = pango_font_family_is_variable(PangoFontFamily_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_pango_font_family_is_variable(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("FontFamily requires Pango >= 1.44");
-return Val_unit;
-}
-#endif
-
-#if PANGO_VERSION_CHECK(1,4,0)
 
 CAMLexport CAMLprim value ml_pango_font_family_is_monospace(value self)
 {
@@ -69,17 +54,6 @@ gboolean result = pango_font_family_is_monospace(PangoFontFamily_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_pango_font_family_is_monospace(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("FontFamily requires Pango >= 1.4");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_pango_font_family_get_name(value self)
 {
 CAMLparam1(self);
@@ -87,8 +61,6 @@ CAMLparam1(self);
 const char* result = pango_font_family_get_name(PangoFontFamily_val(self));
 CAMLreturn(caml_copy_string(result));
 }
-
-#if PANGO_VERSION_CHECK(1,46,0)
 
 CAMLexport CAMLprim value ml_pango_font_family_get_face(value self, value arg1)
 {
@@ -98,18 +70,6 @@ PangoFontFace* result = pango_font_family_get_face(PangoFontFamily_val(self), St
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_PangoFontFace));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_pango_font_family_get_face(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("FontFamily requires Pango >= 1.46");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_pango_font_family_get_n_items(value self)
 {

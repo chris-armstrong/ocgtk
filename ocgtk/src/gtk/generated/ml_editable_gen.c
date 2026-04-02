@@ -210,8 +210,6 @@ gtk_editable_delete_selection(GtkEditable_val(self));
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,10,0)
-
 CAMLexport CAMLprim value ml_gtk_editable_delegate_get_accessible_platform_state(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -219,18 +217,6 @@ CAMLparam2(self, arg1);
 gboolean result = gtk_editable_delegate_get_accessible_platform_state(GtkEditable_val(self), GtkAccessiblePlatformState_val(arg1));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_editable_delegate_get_accessible_platform_state(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Editable requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_editable_get_cursor_position(value self)
 {

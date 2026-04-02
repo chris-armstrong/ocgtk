@@ -16,8 +16,6 @@
 #include "gdkpixbuf_decls.h"
 
 
-#if GDK_PIXBUF_CHECK_VERSION(2,8,0)
-
 CAMLexport CAMLprim value ml_gdk_pixbuf_simple_anim_new(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
@@ -27,21 +25,6 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GdkPixbufSimpleAnim(obj));
 }
-#else
-
-CAMLexport CAMLprim value ml_gdk_pixbuf_simple_anim_new(value arg1, value arg2, value arg3)
-{
-CAMLparam3(arg1, arg2, arg3);
-(void)arg1;
-(void)arg2;
-(void)arg3;
-caml_failwith("PixbufSimpleAnim requires GdkPixbuf >= 2.8");
-return Val_unit;
-}
-#endif
-
-#if GDK_PIXBUF_CHECK_VERSION(2,18,0)
-
 CAMLexport CAMLprim value ml_gdk_pixbuf_simple_anim_set_loop(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -49,20 +32,6 @@ CAMLparam2(self, arg1);
 gdk_pixbuf_simple_anim_set_loop(GdkPixbufSimpleAnim_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gdk_pixbuf_simple_anim_set_loop(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("PixbufSimpleAnim requires GdkPixbuf >= 2.18");
-return Val_unit;
-}
-#endif
-
-#if GDK_PIXBUF_CHECK_VERSION(2,18,0)
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_simple_anim_get_loop(value self)
 {
@@ -72,19 +41,6 @@ gboolean result = gdk_pixbuf_simple_anim_get_loop(GdkPixbufSimpleAnim_val(self))
 CAMLreturn(Val_bool(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gdk_pixbuf_simple_anim_get_loop(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PixbufSimpleAnim requires GdkPixbuf >= 2.18");
-return Val_unit;
-}
-#endif
-
-#if GDK_PIXBUF_CHECK_VERSION(2,8,0)
-
 CAMLexport CAMLprim value ml_gdk_pixbuf_simple_anim_add_frame(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -92,15 +48,3 @@ CAMLparam2(self, arg1);
 gdk_pixbuf_simple_anim_add_frame(GdkPixbufSimpleAnim_val(self), GdkPixbuf_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gdk_pixbuf_simple_anim_add_frame(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("PixbufSimpleAnim requires GdkPixbuf >= 2.8");
-return Val_unit;
-}
-#endif

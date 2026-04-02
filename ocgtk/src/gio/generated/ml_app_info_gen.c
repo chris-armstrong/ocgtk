@@ -82,8 +82,6 @@ gboolean result = g_app_info_remove_supports_type(GAppInfo_val(self), String_val
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#if GLIB_CHECK_VERSION(2,60,0)
-
 CAMLexport CAMLprim value ml_g_app_info_launch_uris_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -92,18 +90,6 @@ GError *error = NULL;
 gboolean result = g_app_info_launch_uris_finish(GAppInfo_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_app_info_launch_uris_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("AppInfo requires GLib >= 2.60");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_app_info_launch_uris(value self, value arg1, value arg2)
 {
@@ -116,8 +102,6 @@ gboolean result = g_app_info_launch_uris(GAppInfo_val(self), arg1_list, Option_v
     g_list_free(arg1_list);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#if GLIB_CHECK_VERSION(2,34,0)
 
 CAMLexport CAMLprim value ml_g_app_info_get_supported_types(value self)
 {
@@ -133,17 +117,6 @@ const char** result = g_app_info_get_supported_types(GAppInfo_val(self));
     }
 CAMLreturn(ml_result);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_app_info_get_supported_types(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("AppInfo requires GLib >= 2.34");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_app_info_get_name(value self)
 {
@@ -178,8 +151,6 @@ const char* result = g_app_info_get_executable(GAppInfo_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
-#if GLIB_CHECK_VERSION(2,24,0)
-
 CAMLexport CAMLprim value ml_g_app_info_get_display_name(value self)
 {
 CAMLparam1(self);
@@ -187,17 +158,6 @@ CAMLparam1(self);
 const char* result = g_app_info_get_display_name(GAppInfo_val(self));
 CAMLreturn(caml_copy_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_app_info_get_display_name(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("AppInfo requires GLib >= 2.24");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_app_info_get_description(value self)
 {
@@ -207,8 +167,6 @@ const char* result = g_app_info_get_description(GAppInfo_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
-#if GLIB_CHECK_VERSION(2,20,0)
-
 CAMLexport CAMLprim value ml_g_app_info_get_commandline(value self)
 {
 CAMLparam1(self);
@@ -216,17 +174,6 @@ CAMLparam1(self);
 const char* result = g_app_info_get_commandline(GAppInfo_val(self));
 CAMLreturn(Val_option_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_app_info_get_commandline(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("AppInfo requires GLib >= 2.20");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_app_info_equal(value self, value arg1)
 {
@@ -244,8 +191,6 @@ GAppInfo* result = g_app_info_dup(GAppInfo_val(self));
 CAMLreturn(Val_GAppInfo(result));
 }
 
-#if GLIB_CHECK_VERSION(2,20,0)
-
 CAMLexport CAMLprim value ml_g_app_info_delete(value self)
 {
 CAMLparam1(self);
@@ -253,17 +198,6 @@ CAMLparam1(self);
 gboolean result = g_app_info_delete(GAppInfo_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_app_info_delete(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("AppInfo requires GLib >= 2.20");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_app_info_can_remove_supports_type(value self)
 {
@@ -273,8 +207,6 @@ gboolean result = g_app_info_can_remove_supports_type(GAppInfo_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-#if GLIB_CHECK_VERSION(2,20,0)
-
 CAMLexport CAMLprim value ml_g_app_info_can_delete(value self)
 {
 CAMLparam1(self);
@@ -282,17 +214,6 @@ CAMLparam1(self);
 gboolean result = g_app_info_can_delete(GAppInfo_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_app_info_can_delete(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("AppInfo requires GLib >= 2.20");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_app_info_add_supports_type(value self, value arg1)
 {

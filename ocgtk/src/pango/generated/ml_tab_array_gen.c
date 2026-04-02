@@ -39,8 +39,6 @@ PangoTabArray *obj = pango_tab_array_new(Int_val(arg1), Bool_val(arg2));
 
 CAMLreturn(Val_PangoTabArray(obj));
 }
-#if PANGO_VERSION_CHECK(1,50,0)
-
 CAMLexport CAMLprim value ml_pango_tab_array_to_string(value self)
 {
 CAMLparam1(self);
@@ -48,19 +46,6 @@ CAMLparam1(self);
 char* result = pango_tab_array_to_string(PangoTabArray_val(self));
 CAMLreturn(caml_copy_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_pango_tab_array_to_string(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TabArray requires Pango >= 1.50");
-return Val_unit;
-}
-#endif
-
-#if PANGO_VERSION_CHECK(1,50,0)
 
 CAMLexport CAMLprim value ml_pango_tab_array_sort(value self)
 {
@@ -70,17 +55,6 @@ pango_tab_array_sort(PangoTabArray_val(self));
 CAMLreturn(Val_unit);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_pango_tab_array_sort(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TabArray requires Pango >= 1.50");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_pango_tab_array_set_tab(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -89,8 +63,6 @@ pango_tab_array_set_tab(PangoTabArray_val(self), Int_val(arg1), PangoTabAlign_va
 CAMLreturn(Val_unit);
 }
 
-#if PANGO_VERSION_CHECK(1,50,0)
-
 CAMLexport CAMLprim value ml_pango_tab_array_set_positions_in_pixels(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -98,18 +70,6 @@ CAMLparam2(self, arg1);
 pango_tab_array_set_positions_in_pixels(PangoTabArray_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_pango_tab_array_set_positions_in_pixels(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("TabArray requires Pango >= 1.50");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_pango_tab_array_resize(value self, value arg1)
 {

@@ -37,8 +37,6 @@ value Val_GStaticResource_option(const GStaticResource *ptr) {
 }
 
 
-#if GLIB_CHECK_VERSION(2,32,0)
-
 CAMLexport CAMLprim value ml_g_static_resource_init(value self)
 {
 CAMLparam1(self);
@@ -46,19 +44,6 @@ CAMLparam1(self);
 g_static_resource_init(GStaticResource_val(self));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_static_resource_init(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("StaticResource requires GLib >= 2.32");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,32,0)
 
 CAMLexport CAMLprim value ml_g_static_resource_get_resource(value self)
 {
@@ -68,19 +53,6 @@ GResource* result = g_static_resource_get_resource(GStaticResource_val(self));
 CAMLreturn(Val_GResource(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_static_resource_get_resource(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("StaticResource requires GLib >= 2.32");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,32,0)
-
 CAMLexport CAMLprim value ml_g_static_resource_fini(value self)
 {
 CAMLparam1(self);
@@ -88,14 +60,3 @@ CAMLparam1(self);
 g_static_resource_fini(GStaticResource_val(self));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_static_resource_fini(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("StaticResource requires GLib >= 2.32");
-return Val_unit;
-}
-#endif

@@ -16,8 +16,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gtk_decls.h"
 
-#if GTK_CHECK_VERSION(4,10,0)
-
 
 CAMLexport CAMLprim value ml_gtk_uri_launcher_new(value arg1)
 {
@@ -52,46 +50,3 @@ CAMLparam1(self);
 const char* result = gtk_uri_launcher_get_uri(GtkUriLauncher_val(self));
 CAMLreturn(Val_option_string(result));
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_gtk_uri_launcher_new(value arg1)
-{
-CAMLparam1(arg1);
-(void)arg1;
-caml_failwith("UriLauncher requires GTK >= 4.10");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_uri_launcher_get_uri(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("UriLauncher requires GTK >= 4.10");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_uri_launcher_launch_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("UriLauncher requires GTK >= 4.10");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_uri_launcher_set_uri(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("UriLauncher requires GTK >= 4.10");
-return Val_unit;
-}
-
-
-#endif

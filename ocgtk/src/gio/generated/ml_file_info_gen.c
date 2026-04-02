@@ -47,8 +47,6 @@ g_file_info_set_symlink_target(GFileInfo_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#if GLIB_CHECK_VERSION(2,34,0)
-
 CAMLexport CAMLprim value ml_g_file_info_set_symbolic_icon(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -56,18 +54,6 @@ CAMLparam2(self, arg1);
 g_file_info_set_symbolic_icon(GFileInfo_val(self), GIcon_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_info_set_symbolic_icon(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("FileInfo requires GLib >= 2.34");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_info_set_name(value self, value arg1)
 {
@@ -156,8 +142,6 @@ g_file_info_set_attribute_string(GFileInfo_val(self), String_val(arg1), String_v
 CAMLreturn(Val_unit);
 }
 
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_file_info_set_attribute_status(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -165,19 +149,6 @@ CAMLparam3(self, arg1, arg2);
 gboolean result = g_file_info_set_attribute_status(GFileInfo_val(self), String_val(arg1), GioFileAttributeStatus_val(arg2));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_info_set_attribute_status(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("FileInfo requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_info_set_attribute_object(value self, value arg1, value arg2)
 {
@@ -195,8 +166,6 @@ g_file_info_set_attribute_mask(GFileInfo_val(self), GFileAttributeMatcher_val(ar
 CAMLreturn(Val_unit);
 }
 
-#if GLIB_CHECK_VERSION(2,78,0)
-
 CAMLexport CAMLprim value ml_g_file_info_set_attribute_file_path(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -204,19 +173,6 @@ CAMLparam3(self, arg1, arg2);
 g_file_info_set_attribute_file_path(GFileInfo_val(self), String_val(arg1), String_val(arg2));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_info_set_attribute_file_path(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("FileInfo requires GLib >= 2.78");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_info_set_attribute_byte_string(value self, value arg1, value arg2)
 {
@@ -261,8 +217,6 @@ char** result = g_file_info_list_attributes(GFileInfo_val(self), String_option_v
 CAMLreturn(ml_result);
 }
 
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_file_info_has_namespace(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -270,18 +224,6 @@ CAMLparam2(self, arg1);
 gboolean result = g_file_info_has_namespace(GFileInfo_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_info_has_namespace(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("FileInfo requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_info_has_attribute(value self, value arg1)
 {
@@ -299,8 +241,6 @@ const char* result = g_file_info_get_symlink_target(GFileInfo_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
-#if GLIB_CHECK_VERSION(2,34,0)
-
 CAMLexport CAMLprim value ml_g_file_info_get_symbolic_icon(value self)
 {
 CAMLparam1(self);
@@ -309,17 +249,6 @@ GIcon* result = g_file_info_get_symbolic_icon(GFileInfo_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GIcon));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_info_get_symbolic_icon(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("FileInfo requires GLib >= 2.34");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_info_get_name(value self)
 {
@@ -410,8 +339,6 @@ GFileAttributeType result = g_file_info_get_attribute_type(GFileInfo_val(self), 
 CAMLreturn(Val_GioFileAttributeType(result));
 }
 
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_file_info_get_attribute_stringv(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -426,18 +353,6 @@ char** result = g_file_info_get_attribute_stringv(GFileInfo_val(self), String_va
     }
 CAMLreturn(ml_result);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_info_get_attribute_stringv(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("FileInfo requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_info_get_attribute_string(value self, value arg1)
 {
@@ -463,8 +378,6 @@ GObject* result = g_file_info_get_attribute_object(GFileInfo_val(self), String_v
 CAMLreturn(Val_option(result, ml_gobject_val_of_ext));
 }
 
-#if GLIB_CHECK_VERSION(2,78,0)
-
 CAMLexport CAMLprim value ml_g_file_info_get_attribute_file_path(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -472,18 +385,6 @@ CAMLparam2(self, arg1);
 const char* result = g_file_info_get_attribute_file_path(GFileInfo_val(self), String_val(arg1));
 CAMLreturn(Val_option_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_file_info_get_attribute_file_path(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("FileInfo requires GLib >= 2.78");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_file_info_get_attribute_byte_string(value self, value arg1)
 {

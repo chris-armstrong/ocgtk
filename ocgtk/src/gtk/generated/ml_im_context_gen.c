@@ -25,8 +25,6 @@ gtk_im_context_set_use_preedit(GtkIMContext_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,2,0)
-
 CAMLexport CAMLprim value ml_gtk_im_context_set_surrounding_with_selection(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -34,21 +32,6 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 gtk_im_context_set_surrounding_with_selection(GtkIMContext_val(self), String_val(arg1), Int_val(arg2), Int_val(arg3), Int_val(arg4));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_im_context_set_surrounding_with_selection(value self, value arg1, value arg2, value arg3, value arg4)
-{
-CAMLparam5(self, arg1, arg2, arg3, arg4);
-(void)self;
-(void)arg1;
-(void)arg2;
-(void)arg3;
-(void)arg4;
-caml_failwith("IMContext requires GTK >= 4.2");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_im_context_set_surrounding(value self, value arg1, value arg2, value arg3)
 {
@@ -114,8 +97,6 @@ gboolean result = gtk_im_context_delete_surrounding(GtkIMContext_val(self), Int_
 CAMLreturn(Val_bool(result));
 }
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gtk_im_context_activate_osk(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -123,18 +104,6 @@ CAMLparam2(self, arg1);
 gboolean result = gtk_im_context_activate_osk(GtkIMContext_val(self), Option_val(arg1, GdkEvent_val, NULL));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_im_context_activate_osk(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("IMContext requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_im_context_get_input_hints(value self)
 {

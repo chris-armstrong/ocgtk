@@ -36,10 +36,3 @@ value Val_GOutputMessage_option(const GOutputMessage *ptr) {
   return Val_some(Val_GOutputMessage(ptr));
 }
 
-#if GLIB_CHECK_VERSION(2,44,0)
-
-
-#else
-
-
-#endif

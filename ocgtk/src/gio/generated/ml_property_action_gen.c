@@ -21,8 +21,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
-#if GLIB_CHECK_VERSION(2,38,0)
-
 
 CAMLexport CAMLprim value ml_g_property_action_new(value arg1, value arg2, value arg3)
 {
@@ -50,8 +48,6 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-#if GLIB_CHECK_VERSION(2,46,0)
-
 CAMLexport CAMLprim value ml_g_property_action_get_invert_boolean(value self)
 {
     CAMLparam1(self);
@@ -68,17 +64,6 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
-
-#else
-
-CAMLexport CAMLprim value ml_g_property_action_get_invert_boolean(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PropertyAction requires GLib >= 2.46");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_property_action_get_name(value self)
 {
@@ -130,64 +115,3 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
-
-#else
-
-
-CAMLexport CAMLprim value ml_g_property_action_new(value arg1, value arg2, value arg3)
-{
-CAMLparam3(arg1, arg2, arg3);
-(void)arg1;
-(void)arg2;
-(void)arg3;
-caml_failwith("PropertyAction requires GLib >= 2.38");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_property_action_get_enabled(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PropertyAction requires GLib >= 2.38");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_property_action_get_invert_boolean(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PropertyAction requires GLib >= 2.38");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_property_action_get_name(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PropertyAction requires GLib >= 2.38");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_property_action_get_object(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PropertyAction requires GLib >= 2.38");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_property_action_get_property_name(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PropertyAction requires GLib >= 2.38");
-return Val_unit;
-}
-
-
-#endif

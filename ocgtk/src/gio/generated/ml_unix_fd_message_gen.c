@@ -22,8 +22,6 @@
 #include "gio_decls.h"
 
 
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_unix_fd_message_new(value unit)
 {
 CAMLparam1(unit);
@@ -33,19 +31,6 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GUnixFDMessage(obj));
 }
-#else
-
-CAMLexport CAMLprim value ml_g_unix_fd_message_new(value unit)
-{
-CAMLparam1(unit);
-(void)unit;
-caml_failwith("UnixFDMessage requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,24,0)
-
 CAMLexport CAMLprim value ml_g_unix_fd_message_new_with_fd_list(value arg1)
 {
 CAMLparam1(arg1);
@@ -55,19 +40,6 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GUnixFDMessage(obj));
 }
-#else
-
-CAMLexport CAMLprim value ml_g_unix_fd_message_new_with_fd_list(value arg1)
-{
-CAMLparam1(arg1);
-(void)arg1;
-caml_failwith("UnixFDMessage requires GLib >= 2.24");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_unix_fd_message_steal_fds(value self)
 {
 CAMLparam1(self);
@@ -88,19 +60,6 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_unix_fd_message_steal_fds(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("UnixFDMessage requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,24,0)
-
 CAMLexport CAMLprim value ml_g_unix_fd_message_get_fd_list(value self)
 {
 CAMLparam1(self);
@@ -110,19 +69,6 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GUnixFDList(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_unix_fd_message_get_fd_list(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("UnixFDMessage requires GLib >= 2.24");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_unix_fd_message_append_fd(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -131,15 +77,3 @@ GError *error = NULL;
 gboolean result = g_unix_fd_message_append_fd(GUnixFDMessage_val(self), Int_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_unix_fd_message_append_fd(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("UnixFDMessage requires GLib >= 2.22");
-return Val_unit;
-}
-#endif

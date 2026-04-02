@@ -66,8 +66,6 @@ gtk_gl_area_set_auto_render(GtkGLArea_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,12,0)
-
 CAMLexport CAMLprim value ml_gtk_gl_area_set_allowed_apis(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -75,18 +73,6 @@ CAMLparam2(self, arg1);
 gtk_gl_area_set_allowed_apis(GtkGLArea_val(self), GdkGLAPI_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_gl_area_set_allowed_apis(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("GLArea requires GTK >= 4.12");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_gl_area_queue_render(value self)
 {
@@ -159,8 +145,6 @@ gboolean result = gtk_gl_area_get_auto_render(GtkGLArea_val(self));
 CAMLreturn(Val_bool(result));
 }
 
-#if GTK_CHECK_VERSION(4,12,0)
-
 CAMLexport CAMLprim value ml_gtk_gl_area_get_api(value self)
 {
 CAMLparam1(self);
@@ -169,19 +153,6 @@ GdkGLAPI result = gtk_gl_area_get_api(GtkGLArea_val(self));
 CAMLreturn(Val_GdkGLAPI(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_gl_area_get_api(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("GLArea requires GTK >= 4.12");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,12,0)
-
 CAMLexport CAMLprim value ml_gtk_gl_area_get_allowed_apis(value self)
 {
 CAMLparam1(self);
@@ -189,17 +160,6 @@ CAMLparam1(self);
 GdkGLAPI result = gtk_gl_area_get_allowed_apis(GtkGLArea_val(self));
 CAMLreturn(Val_GdkGLAPI(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_gl_area_get_allowed_apis(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("GLArea requires GTK >= 4.12");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_gl_area_attach_buffers(value self)
 {

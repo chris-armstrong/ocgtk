@@ -47,8 +47,6 @@ char* result = g_volume_get_uuid(GVolume_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
-#if GLIB_CHECK_VERSION(2,34,0)
-
 CAMLexport CAMLprim value ml_g_volume_get_symbolic_icon(value self)
 {
 CAMLparam1(self);
@@ -57,19 +55,6 @@ GIcon* result = g_volume_get_symbolic_icon(GVolume_val(self));
 CAMLreturn(Val_GIcon(result));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_g_volume_get_symbolic_icon(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Volume requires GLib >= 2.34");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,32,0)
-
 CAMLexport CAMLprim value ml_g_volume_get_sort_key(value self)
 {
 CAMLparam1(self);
@@ -77,17 +62,6 @@ CAMLparam1(self);
 const gchar* result = g_volume_get_sort_key(GVolume_val(self));
 CAMLreturn(Val_option_string(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_volume_get_sort_key(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Volume requires GLib >= 2.32");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_volume_get_name(value self)
 {
@@ -129,8 +103,6 @@ GDrive* result = g_volume_get_drive(GVolume_val(self));
 CAMLreturn(Val_option(result, Val_GDrive));
 }
 
-#if GLIB_CHECK_VERSION(2,18,0)
-
 CAMLexport CAMLprim value ml_g_volume_get_activation_root(value self)
 {
 CAMLparam1(self);
@@ -138,17 +110,6 @@ CAMLparam1(self);
 GFile* result = g_volume_get_activation_root(GVolume_val(self));
 CAMLreturn(Val_option(result, Val_GFile));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_volume_get_activation_root(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Volume requires GLib >= 2.18");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_volume_enumerate_identifiers(value self)
 {
@@ -169,8 +130,6 @@ char** result = g_volume_enumerate_identifiers(GVolume_val(self));
 CAMLreturn(ml_result);
 }
 
-#if GLIB_CHECK_VERSION(2,22,0)
-
 CAMLexport CAMLprim value ml_g_volume_eject_with_operation_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -179,18 +138,6 @@ GError *error = NULL;
 gboolean result = g_volume_eject_with_operation_finish(GVolume_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_volume_eject_with_operation_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Volume requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_volume_eject_finish(value self, value arg1)
 {

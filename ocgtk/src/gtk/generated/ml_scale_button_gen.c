@@ -62,8 +62,6 @@ gtk_scale_button_set_icons(GtkScaleButton_val(self), c_arg1);
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gtk_scale_button_set_has_frame(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -71,18 +69,6 @@ CAMLparam2(self, arg1);
 gtk_scale_button_set_has_frame(GtkScaleButton_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_scale_button_set_has_frame(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("ScaleButton requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_scale_button_set_adjustment(value self, value arg1)
 {
@@ -127,8 +113,6 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkButton(result));
 }
 
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gtk_scale_button_get_has_frame(value self)
 {
 CAMLparam1(self);
@@ -136,17 +120,6 @@ CAMLparam1(self);
 gboolean result = gtk_scale_button_get_has_frame(GtkScaleButton_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_scale_button_get_has_frame(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("ScaleButton requires GTK >= 4.14");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_scale_button_get_adjustment(value self)
 {
@@ -157,8 +130,6 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkAdjustment(result));
 }
 
-#if GTK_CHECK_VERSION(4,10,0)
-
 CAMLexport CAMLprim value ml_gtk_scale_button_get_active(value self)
 {
 CAMLparam1(self);
@@ -166,14 +137,3 @@ CAMLparam1(self);
 gboolean result = gtk_scale_button_get_active(GtkScaleButton_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_scale_button_get_active(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("ScaleButton requires GTK >= 4.10");
-return Val_unit;
-}
-#endif

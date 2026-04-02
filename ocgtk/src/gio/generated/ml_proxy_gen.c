@@ -21,8 +21,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
-#if GLIB_CHECK_VERSION(2,26,0)
-
 
 CAMLexport CAMLprim value ml_g_proxy_supports_hostname(value self)
 {
@@ -49,39 +47,3 @@ GError *error = NULL;
 GIOStream* result = g_proxy_connect(GProxy_val(self), GIOStream_val(arg1), GProxyAddress_val(arg2), Option_val(arg3, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GIOStream(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_g_proxy_connect(value self, value arg1, value arg2, value arg3)
-{
-CAMLparam4(self, arg1, arg2, arg3);
-(void)self;
-(void)arg1;
-(void)arg2;
-(void)arg3;
-caml_failwith("Proxy requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_proxy_connect_finish(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Proxy requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_proxy_supports_hostname(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Proxy requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-#endif

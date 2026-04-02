@@ -22,8 +22,6 @@
 #include "gio_decls.h"
 
 
-#if GLIB_CHECK_VERSION(2,34,0)
-
 CAMLexport CAMLprim value ml_g_async_result_legacy_propagate_error(value self)
 {
 CAMLparam1(self);
@@ -32,17 +30,6 @@ GError *error = NULL;
 gboolean result = g_async_result_legacy_propagate_error(GAsyncResult_val(self), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_async_result_legacy_propagate_error(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("AsyncResult requires GLib >= 2.34");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_g_async_result_get_source_object(value self)
 {

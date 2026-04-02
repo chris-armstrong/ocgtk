@@ -17,8 +17,6 @@
 #include "gtk_decls.h"
 
 
-#if GTK_CHECK_VERSION(4,10,0)
-
 CAMLexport CAMLprim value ml_gtk_accessible_update_next_accessible_sibling(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -27,20 +25,6 @@ gtk_accessible_update_next_accessible_sibling(GtkAccessible_val(self), Option_va
 CAMLreturn(Val_unit);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_accessible_update_next_accessible_sibling(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Accessible requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,10,0)
-
 CAMLexport CAMLprim value ml_gtk_accessible_set_accessible_parent(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -48,19 +32,6 @@ CAMLparam3(self, arg1, arg2);
 gtk_accessible_set_accessible_parent(GtkAccessible_val(self), Option_val(arg1, GtkAccessible_val, NULL), Option_val(arg2, GtkAccessible_val, NULL));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_accessible_set_accessible_parent(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("Accessible requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_accessible_reset_state(value self, value arg1)
 {
@@ -86,8 +57,6 @@ gtk_accessible_reset_property(GtkAccessible_val(self), GtkAccessibleProperty_val
 CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,10,0)
-
 CAMLexport CAMLprim value ml_gtk_accessible_get_platform_state(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -95,20 +64,6 @@ CAMLparam2(self, arg1);
 gboolean result = gtk_accessible_get_platform_state(GtkAccessible_val(self), GtkAccessiblePlatformState_val(arg1));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_accessible_get_platform_state(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("Accessible requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,10,0)
 
 CAMLexport CAMLprim value ml_gtk_accessible_get_next_accessible_sibling(value self)
 {
@@ -118,19 +73,6 @@ GtkAccessible* result = gtk_accessible_get_next_accessible_sibling(GtkAccessible
 CAMLreturn(Val_option(result, Val_GtkAccessible));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_accessible_get_next_accessible_sibling(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Accessible requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,10,0)
-
 CAMLexport CAMLprim value ml_gtk_accessible_get_first_accessible_child(value self)
 {
 CAMLparam1(self);
@@ -138,19 +80,6 @@ CAMLparam1(self);
 GtkAccessible* result = gtk_accessible_get_first_accessible_child(GtkAccessible_val(self));
 CAMLreturn(Val_option(result, Val_GtkAccessible));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_accessible_get_first_accessible_child(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Accessible requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,10,0)
 
 CAMLexport CAMLprim value ml_gtk_accessible_get_bounds(value self)
 {
@@ -171,19 +100,6 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_accessible_get_bounds(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Accessible requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,10,0)
-
 CAMLexport CAMLprim value ml_gtk_accessible_get_at_context(value self)
 {
 CAMLparam1(self);
@@ -191,17 +107,6 @@ CAMLparam1(self);
 GtkATContext* result = gtk_accessible_get_at_context(GtkAccessible_val(self));
 CAMLreturn(Val_GtkATContext(result));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_accessible_get_at_context(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Accessible requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_gtk_accessible_get_accessible_role(value self)
 {
@@ -211,8 +116,6 @@ GtkAccessibleRole result = gtk_accessible_get_accessible_role(GtkAccessible_val(
 CAMLreturn(Val_GtkAccessibleRole(result));
 }
 
-#if GTK_CHECK_VERSION(4,10,0)
-
 CAMLexport CAMLprim value ml_gtk_accessible_get_accessible_parent(value self)
 {
 CAMLparam1(self);
@@ -221,19 +124,6 @@ GtkAccessible* result = gtk_accessible_get_accessible_parent(GtkAccessible_val(s
 CAMLreturn(Val_option(result, Val_GtkAccessible));
 }
 
-#else
-
-CAMLexport CAMLprim value ml_gtk_accessible_get_accessible_parent(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Accessible requires GTK >= 4.10");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,14,0)
-
 CAMLexport CAMLprim value ml_gtk_accessible_announce(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -241,16 +131,3 @@ CAMLparam3(self, arg1, arg2);
 gtk_accessible_announce(GtkAccessible_val(self), String_val(arg1), GtkAccessibleAnnouncementPriority_val(arg2));
 CAMLreturn(Val_unit);
 }
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_accessible_announce(value self, value arg1, value arg2)
-{
-CAMLparam3(self, arg1, arg2);
-(void)self;
-(void)arg1;
-(void)arg2;
-caml_failwith("Accessible requires GTK >= 4.14");
-return Val_unit;
-}
-#endif

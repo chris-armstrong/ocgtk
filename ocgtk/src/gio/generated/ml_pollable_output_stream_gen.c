@@ -21,8 +21,6 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
-#if GLIB_CHECK_VERSION(2,28,0)
-
 
 CAMLexport CAMLprim value ml_g_pollable_output_stream_is_writable(value self)
 {
@@ -39,26 +37,3 @@ CAMLparam1(self);
 gboolean result = g_pollable_output_stream_can_poll(GPollableOutputStream_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-#else
-
-
-CAMLexport CAMLprim value ml_g_pollable_output_stream_can_poll(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PollableOutputStream requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_pollable_output_stream_is_writable(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PollableOutputStream requires GLib >= 2.28");
-return Val_unit;
-}
-
-
-#endif
