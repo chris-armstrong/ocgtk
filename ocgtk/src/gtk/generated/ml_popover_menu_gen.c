@@ -43,6 +43,8 @@ gtk_popover_menu_set_menu_model(GtkPopoverMenu_val(self), Option_val(arg1, GMenu
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,14,0)
+
 CAMLexport CAMLprim value ml_gtk_popover_menu_set_flags(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -50,6 +52,18 @@ CAMLparam2(self, arg1);
 gtk_popover_menu_set_flags(GtkPopoverMenu_val(self), GtkPopoverMenuFlags_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_popover_menu_set_flags(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("PopoverMenu requires GTK >= 4.14");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_popover_menu_remove_child(value self, value arg1)
 {
@@ -68,6 +82,8 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GMenuModel));
 }
 
+#if GTK_CHECK_VERSION(4,14,0)
+
 CAMLexport CAMLprim value ml_gtk_popover_menu_get_flags(value self)
 {
 CAMLparam1(self);
@@ -75,6 +91,17 @@ CAMLparam1(self);
 GtkPopoverMenuFlags result = gtk_popover_menu_get_flags(GtkPopoverMenu_val(self));
 CAMLreturn(Val_GtkPopoverMenuFlags(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_popover_menu_get_flags(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PopoverMenu requires GTK >= 4.14");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_popover_menu_add_child(value self, value arg1, value arg2)
 {

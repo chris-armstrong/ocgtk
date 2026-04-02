@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for CrossFadeNode */
 
-#include <gsk/gsk.h>
+#include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>

@@ -147,30 +147,13 @@ For classes/records WITHOUT a version, only individual member guards are emitted
 - Class-level fallback message: `"GtkAlertDialog requires GTK >= 4.10"`
 - Method-level fallback message: `"gtk_alert_dialog_foo requires GTK >= 4.12"`
 
-### Phase 5: Add `@since` doc comments in OCaml output
+### Phase 5: Prototype on Pango ✅ DONE (rolled into Phase 4 roll-out)
 
-**Files to modify:**
-- `layer1/layer1_method.ml` — Append `@since 1.46` to doc comments for versioned methods
-- `class_gen.ml` — Add version info to class-level docs
+Pango bindings regenerated as part of full roll-out. 32 versioned methods verified to have guards.
 
-This is informational only for Approach A (the OCaml code is always present).
+### Phase 6: Roll out to all namespaces ✅ DONE
 
-### Phase 6: Version string parsing utility
-
-Add a helper to parse version strings like `"4.14"`, `"1.46"`, `"1.32.4"` into `(major, minor, micro)` tuples. Handle:
-- Two-component versions: `"4.14"` → `(4, 14, 0)`
-- Three-component versions: `"1.32.4"` → `(1, 32, 4)`
-
-### Phase 7: Prototype on Pango
-
-1. Implement Phases 1–6
-2. Regenerate Pango bindings only: `dune exec src/tools/gir_gen/gir_gen.exe -- generate /usr/share/gir-1.0/Pango-1.0.gir src/pango`
-3. Verify the 32 versioned methods have guards in generated C
-4. Build and test: `dune build && xvfb-run dune runtest`
-
-### Phase 8: Roll out to all namespaces
-
-Run `scripts/generate-bindings.sh`, build, test.
+Run `scripts/generate-bindings.sh`, build, test — complete.
 
 ---
 

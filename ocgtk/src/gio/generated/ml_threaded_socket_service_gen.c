@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,22,0)
+
 
 CAMLexport CAMLprim value ml_g_threaded_socket_service_new(value arg1)
 {
@@ -47,3 +49,26 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_threaded_socket_service_new(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("ThreadedSocketService requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_threaded_socket_service_get_max_threads(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ThreadedSocketService requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+#endif

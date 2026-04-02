@@ -91,6 +91,8 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
+#if GTK_CHECK_VERSION(4,8,0)
+
 CAMLexport CAMLprim value ml_gtk_bookmark_list_get_n_items(value self)
 {
     CAMLparam1(self);
@@ -107,3 +109,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_bookmark_list_get_n_items(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("BookmarkList requires GTK >= 4.8");
+return Val_unit;
+}
+#endif

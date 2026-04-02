@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,28,0)
+
 
 CAMLexport CAMLprim value ml_g_tls_client_connection_set_validation_flags(value self, value arg1)
 {
@@ -71,6 +73,8 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GSocketConnectable));
 }
 
+#if GLIB_CHECK_VERSION(2,46,0)
+
 CAMLexport CAMLprim value ml_g_tls_client_connection_copy_session_state(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -78,3 +82,87 @@ CAMLparam2(self, arg1);
 g_tls_client_connection_copy_session_state(GTlsClientConnection_val(self), GTlsClientConnection_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_tls_client_connection_copy_session_state(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsClientConnection requires GLib >= 2.46");
+return Val_unit;
+}
+#endif
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_tls_client_connection_copy_session_state(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsClientConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_client_connection_get_server_identity(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsClientConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_client_connection_get_use_ssl3(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsClientConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_client_connection_get_validation_flags(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TlsClientConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_client_connection_set_server_identity(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsClientConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_client_connection_set_use_ssl3(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsClientConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_client_connection_set_validation_flags(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsClientConnection requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+#endif

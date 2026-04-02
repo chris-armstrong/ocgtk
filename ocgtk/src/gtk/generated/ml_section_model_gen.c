@@ -16,6 +16,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gtk_decls.h"
 
+#if GTK_CHECK_VERSION(4,12,0)
+
 
 CAMLexport CAMLprim value ml_gtk_section_model_sections_changed(value self, value arg1, value arg2)
 {
@@ -38,3 +40,29 @@ CAMLlocal1(ret);
     Store_field(ret, 1, Val_int(out3));
     CAMLreturn(ret);
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_gtk_section_model_get_section(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SectionModel requires GTK >= 4.12");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_section_model_sections_changed(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("SectionModel requires GTK >= 4.12");
+return Val_unit;
+}
+
+
+#endif

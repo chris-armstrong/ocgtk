@@ -53,6 +53,8 @@ gboolean result = pango_attr_iterator_next(PangoAttrIterator_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+#if PANGO_VERSION_CHECK(1,2,0)
+
 CAMLexport CAMLprim value ml_pango_attr_iterator_get_attrs(value self)
 {
 CAMLparam1(self);
@@ -63,6 +65,17 @@ Val_GSList_with(c_result, result, item, cell, Val_PangoAttribute((gpointer)_tmp-
     g_slist_free(c_result);
     CAMLreturn(result);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_attr_iterator_get_attrs(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("AttrIterator requires Pango >= 1.2");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_attr_iterator_get(value self, value arg1)
 {

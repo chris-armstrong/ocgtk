@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for FileList */
 
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -30,3 +30,10 @@ value Val_GdkFileList_option(const GdkFileList *ptr) {
   return Val_some(Val_GdkFileList(ptr));
 }
 
+#if GTK_CHECK_VERSION(4,6,0)
+
+
+#else
+
+
+#endif

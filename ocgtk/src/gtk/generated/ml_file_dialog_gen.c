@@ -16,6 +16,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gtk_decls.h"
 
+#if GTK_CHECK_VERSION(4,10,0)
+
 
 CAMLexport CAMLprim value ml_gtk_file_dialog_new(value unit)
 {
@@ -202,3 +204,219 @@ CAMLparam1(self);
 const char* result = gtk_file_dialog_get_accept_label(GtkFileDialog_val(self));
 CAMLreturn(Val_option_string(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_new(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_get_accept_label(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_get_default_filter(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_get_filters(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_get_initial_file(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_get_initial_folder(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_get_initial_name(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_get_modal(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_get_title(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_open_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_open_multiple_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_save_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_select_folder_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_select_multiple_folders_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_set_accept_label(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_set_default_filter(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_set_filters(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_set_initial_file(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_set_initial_folder(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_set_initial_name(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_set_modal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_file_dialog_set_title(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FileDialog requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+#endif

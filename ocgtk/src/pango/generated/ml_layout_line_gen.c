@@ -54,6 +54,8 @@ pango_layout_line_unref(PangoLayoutLine_val(self));
 CAMLreturn(Val_unit);
 }
 
+#if PANGO_VERSION_CHECK(1,10,0)
+
 CAMLexport CAMLprim value ml_pango_layout_line_ref(value self)
 {
 CAMLparam1(self);
@@ -62,6 +64,19 @@ PangoLayoutLine* result = pango_layout_line_ref(PangoLayoutLine_val(self));
 CAMLreturn(Val_option(result, Val_PangoLayoutLine));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_pango_layout_line_ref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("LayoutLine requires Pango >= 1.10");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,50,0)
+
 CAMLexport CAMLprim value ml_pango_layout_line_is_paragraph_start(value self)
 {
 CAMLparam1(self);
@@ -69,6 +84,17 @@ CAMLparam1(self);
 gboolean result = pango_layout_line_is_paragraph_start(PangoLayoutLine_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_layout_line_is_paragraph_start(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("LayoutLine requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_layout_line_index_to_x(value self, value arg1, value arg2)
 {
@@ -101,6 +127,8 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+#if PANGO_VERSION_CHECK(1,50,0)
+
 CAMLexport CAMLprim value ml_pango_layout_line_get_start_index(value self)
 {
 CAMLparam1(self);
@@ -109,6 +137,19 @@ int result = pango_layout_line_get_start_index(PangoLayoutLine_val(self));
 CAMLreturn(Val_int(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_pango_layout_line_get_start_index(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("LayoutLine requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,50,0)
+
 CAMLexport CAMLprim value ml_pango_layout_line_get_resolved_direction(value self)
 {
 CAMLparam1(self);
@@ -116,6 +157,17 @@ CAMLparam1(self);
 PangoDirection result = pango_layout_line_get_resolved_direction(PangoLayoutLine_val(self));
 CAMLreturn(Val_PangoDirection(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_layout_line_get_resolved_direction(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("LayoutLine requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_layout_line_get_pixel_extents(value self)
 {
@@ -131,6 +183,8 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+#if PANGO_VERSION_CHECK(1,50,0)
+
 CAMLexport CAMLprim value ml_pango_layout_line_get_length(value self)
 {
 CAMLparam1(self);
@@ -138,6 +192,19 @@ CAMLparam1(self);
 int result = pango_layout_line_get_length(PangoLayoutLine_val(self));
 CAMLreturn(Val_int(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_layout_line_get_length(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("LayoutLine requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,44,0)
 
 CAMLexport CAMLprim value ml_pango_layout_line_get_height(value self)
 {
@@ -147,6 +214,17 @@ int out1;
 pango_layout_line_get_height(PangoLayoutLine_val(self), &out1);
 CAMLreturn(Val_int(out1));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_layout_line_get_height(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("LayoutLine requires Pango >= 1.44");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_layout_line_get_extents(value self)
 {

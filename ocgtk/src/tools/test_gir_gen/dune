@@ -41,6 +41,7 @@
   integration_tests
   compilation_tests
   version_guard_tests
+  c_stub_version_guard_tests
   test_gir_gen
   type_factory)
  (deps %{exe:../gir_gen/gir_gen.exe})

@@ -31,6 +31,8 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GConverterOutputStream(obj));
 }
+#if GLIB_CHECK_VERSION(2,24,0)
+
 CAMLexport CAMLprim value ml_g_converter_output_stream_get_converter(value self)
 {
 CAMLparam1(self);
@@ -39,3 +41,14 @@ GConverter* result = g_converter_output_stream_get_converter(GConverterOutputStr
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GConverter(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_converter_output_stream_get_converter(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ConverterOutputStream requires GLib >= 2.24");
+return Val_unit;
+}
+#endif

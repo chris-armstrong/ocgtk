@@ -58,6 +58,8 @@ gtk_column_view_column_set_resizable(GtkColumnViewColumn_val(self), Bool_val(arg
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,10,0)
+
 CAMLexport CAMLprim value ml_gtk_column_view_column_set_id(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -65,6 +67,18 @@ CAMLparam2(self, arg1);
 gtk_column_view_column_set_id(GtkColumnViewColumn_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_column_view_column_set_id(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ColumnViewColumn requires GTK >= 4.10");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_column_view_column_set_header_menu(value self, value arg1)
 {
@@ -131,6 +145,8 @@ gboolean result = gtk_column_view_column_get_resizable(GtkColumnViewColumn_val(s
 CAMLreturn(Val_bool(result));
 }
 
+#if GTK_CHECK_VERSION(4,10,0)
+
 CAMLexport CAMLprim value ml_gtk_column_view_column_get_id(value self)
 {
 CAMLparam1(self);
@@ -138,6 +154,17 @@ CAMLparam1(self);
 const char* result = gtk_column_view_column_get_id(GtkColumnViewColumn_val(self));
 CAMLreturn(Val_option_string(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_column_view_column_get_id(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ColumnViewColumn requires GTK >= 4.10");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_column_view_column_get_header_menu(value self)
 {

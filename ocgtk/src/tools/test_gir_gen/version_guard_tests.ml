@@ -295,5 +295,3 @@ let test_suite =
       test_emit_c_guard_unknown_namespace );
     ("c_guard_else", `Quick, test_c_guard_else);
   ]
-
-let () = Alcotest.run "Version Guard" [ ("version_guard", test_suite) ]

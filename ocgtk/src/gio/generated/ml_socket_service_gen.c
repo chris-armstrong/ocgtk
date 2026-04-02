@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,22,0)
+
 
 CAMLexport CAMLprim value ml_g_socket_service_new(value unit)
 {
@@ -55,6 +57,8 @@ gboolean result = g_socket_service_is_active(GSocketService_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+#if GLIB_CHECK_VERSION(2,46,0)
+
 CAMLexport CAMLprim value ml_g_socket_service_get_active(value self)
 {
     CAMLparam1(self);
@@ -72,6 +76,19 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
+#else
+
+CAMLexport CAMLprim value ml_g_socket_service_get_active(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SocketService requires GLib >= 2.46");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,46,0)
+
 CAMLexport CAMLprim value ml_g_socket_service_set_active(value self, value new_value)
 {
     CAMLparam2(self, new_value);
@@ -86,3 +103,75 @@ g_object_set_property(G_OBJECT(obj), "active", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_socket_service_set_active(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SocketService requires GLib >= 2.46");
+return Val_unit;
+}
+#endif
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_socket_service_new(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("SocketService requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_service_is_active(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SocketService requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_service_start(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SocketService requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_service_stop(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SocketService requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_service_get_active(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SocketService requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_service_set_active(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SocketService requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+#endif

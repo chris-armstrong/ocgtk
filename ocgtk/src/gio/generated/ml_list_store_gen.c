@@ -22,6 +22,8 @@
 #include "gio_decls.h"
 
 
+#if GLIB_CHECK_VERSION(2,44,0)
+
 CAMLexport CAMLprim value ml_g_list_store_splice(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -36,6 +38,23 @@ g_list_store_splice(GListStore_val(self), Int_val(arg1), Int_val(arg2), c_arg3, 
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_list_store_splice(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("ListStore requires GLib >= 2.44");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,44,0)
+
 CAMLexport CAMLprim value ml_g_list_store_remove_all(value self)
 {
 CAMLparam1(self);
@@ -43,6 +62,19 @@ CAMLparam1(self);
 g_list_store_remove_all(GListStore_val(self));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_list_store_remove_all(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ListStore requires GLib >= 2.44");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,44,0)
 
 CAMLexport CAMLprim value ml_g_list_store_remove(value self, value arg1)
 {
@@ -52,6 +84,20 @@ g_list_store_remove(GListStore_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_list_store_remove(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ListStore requires GLib >= 2.44");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,44,0)
+
 CAMLexport CAMLprim value ml_g_list_store_insert(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -59,6 +105,21 @@ CAMLparam3(self, arg1, arg2);
 g_list_store_insert(GListStore_val(self), Int_val(arg1), GObject_ext_of_val(arg2));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_list_store_insert(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("ListStore requires GLib >= 2.44");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,64,0)
 
 CAMLexport CAMLprim value ml_g_list_store_find(value self, value arg1)
 {
@@ -73,6 +134,20 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_list_store_find(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ListStore requires GLib >= 2.64");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,44,0)
+
 CAMLexport CAMLprim value ml_g_list_store_append(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -80,6 +155,20 @@ CAMLparam2(self, arg1);
 g_list_store_append(GListStore_val(self), GObject_ext_of_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_list_store_append(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ListStore requires GLib >= 2.44");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,74,0)
 
 CAMLexport CAMLprim value ml_g_list_store_get_n_items(value self)
 {
@@ -97,3 +186,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_g_list_store_get_n_items(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ListStore requires GLib >= 2.74");
+return Val_unit;
+}
+#endif

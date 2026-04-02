@@ -30,6 +30,8 @@ value Val_graphene_point_t_option(const graphene_point_t *ptr) {
   return Val_some(Val_graphene_point_t(ptr));
 }
 
+#if GRAPHENE_CHECK_VERSION(1,0,0)
+
 
 CAMLexport CAMLprim value ml_graphene_point_alloc(value unit)
 {
@@ -39,6 +41,8 @@ graphene_point_t *obj = graphene_point_alloc();
 
 CAMLreturn(Val_graphene_point_t(obj));
 }
+#if GRAPHENE_CHECK_VERSION(1,4,0)
+
 CAMLexport CAMLprim value ml_graphene_point_to_vec2(value self)
 {
 CAMLparam1(self);
@@ -47,6 +51,17 @@ graphene_vec2_t out1;
 graphene_point_to_vec2(graphene_point_t_val(self), &out1);
 CAMLreturn(Val_graphene_vec2_t(&out1));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_point_to_vec2(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Point requires Graphene >= 1.4");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_graphene_point_near(value self, value arg1, value arg2)
 {
@@ -65,6 +80,8 @@ graphene_point_interpolate(graphene_point_t_val(self), graphene_point_t_val(arg1
 CAMLreturn(Val_graphene_point_t(&out3));
 }
 
+#if GRAPHENE_CHECK_VERSION(1,4,0)
+
 CAMLexport CAMLprim value ml_graphene_point_init_from_vec2(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -72,6 +89,18 @@ CAMLparam2(self, arg1);
 graphene_point_t* result = graphene_point_init_from_vec2(graphene_point_t_val(self), graphene_vec2_t_val(arg1));
 CAMLreturn(Val_graphene_point_t(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_point_init_from_vec2(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Point requires Graphene >= 1.4");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_graphene_point_init_from_point(value self, value arg1)
 {
@@ -119,3 +148,108 @@ CAMLlocal1(ret);
     Store_field(ret, 2, caml_copy_double(out3));
     CAMLreturn(ret);
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_graphene_point_alloc(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Point requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_point_distance(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Point requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_point_equal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Point requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_point_free(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Point requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_point_init(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Point requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_point_init_from_point(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Point requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_point_init_from_vec2(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Point requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_point_interpolate(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Point requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_point_near(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Point requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_point_to_vec2(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Point requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+#endif

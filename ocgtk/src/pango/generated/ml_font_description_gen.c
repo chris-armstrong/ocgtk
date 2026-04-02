@@ -71,6 +71,8 @@ pango_font_description_set_weight(PangoFontDescription_val(self), PangoWeight_va
 CAMLreturn(Val_unit);
 }
 
+#if PANGO_VERSION_CHECK(1,42,0)
+
 CAMLexport CAMLprim value ml_pango_font_description_set_variations_static(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -79,6 +81,20 @@ pango_font_description_set_variations_static(PangoFontDescription_val(self), Str
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_pango_font_description_set_variations_static(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FontDescription requires Pango >= 1.42");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,42,0)
+
 CAMLexport CAMLprim value ml_pango_font_description_set_variations(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -86,6 +102,18 @@ CAMLparam2(self, arg1);
 pango_font_description_set_variations(PangoFontDescription_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_font_description_set_variations(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FontDescription requires Pango >= 1.42");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_font_description_set_variant(value self, value arg1)
 {
@@ -119,6 +147,8 @@ pango_font_description_set_size(PangoFontDescription_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if PANGO_VERSION_CHECK(1,16,0)
+
 CAMLexport CAMLprim value ml_pango_font_description_set_gravity(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -126,6 +156,18 @@ CAMLparam2(self, arg1);
 pango_font_description_set_gravity(PangoFontDescription_val(self), PangoGravity_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_font_description_set_gravity(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FontDescription requires Pango >= 1.16");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_font_description_set_family_static(value self, value arg1)
 {
@@ -143,6 +185,8 @@ pango_font_description_set_family(PangoFontDescription_val(self), String_val(arg
 CAMLreturn(Val_unit);
 }
 
+#if PANGO_VERSION_CHECK(1,8,0)
+
 CAMLexport CAMLprim value ml_pango_font_description_set_absolute_size(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -150,6 +194,18 @@ CAMLparam2(self, arg1);
 pango_font_description_set_absolute_size(PangoFontDescription_val(self), Double_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_font_description_set_absolute_size(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FontDescription requires Pango >= 1.8");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_font_description_merge_static(value self, value arg1, value arg2)
 {
@@ -183,6 +239,8 @@ PangoWeight result = pango_font_description_get_weight(PangoFontDescription_val(
 CAMLreturn(Val_PangoWeight(result));
 }
 
+#if PANGO_VERSION_CHECK(1,42,0)
+
 CAMLexport CAMLprim value ml_pango_font_description_get_variations(value self)
 {
 CAMLparam1(self);
@@ -190,6 +248,17 @@ CAMLparam1(self);
 const char* result = pango_font_description_get_variations(PangoFontDescription_val(self));
 CAMLreturn(Val_option_string(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_font_description_get_variations(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontDescription requires Pango >= 1.42");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_font_description_get_variant(value self)
 {
@@ -215,6 +284,8 @@ PangoStretch result = pango_font_description_get_stretch(PangoFontDescription_va
 CAMLreturn(Val_PangoStretch(result));
 }
 
+#if PANGO_VERSION_CHECK(1,8,0)
+
 CAMLexport CAMLprim value ml_pango_font_description_get_size_is_absolute(value self)
 {
 CAMLparam1(self);
@@ -222,6 +293,17 @@ CAMLparam1(self);
 gboolean result = pango_font_description_get_size_is_absolute(PangoFontDescription_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_font_description_get_size_is_absolute(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontDescription requires Pango >= 1.8");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_font_description_get_size(value self)
 {
@@ -239,6 +321,8 @@ PangoFontMask result = pango_font_description_get_set_fields(PangoFontDescriptio
 CAMLreturn(Val_PangoFontMask(result));
 }
 
+#if PANGO_VERSION_CHECK(1,16,0)
+
 CAMLexport CAMLprim value ml_pango_font_description_get_gravity(value self)
 {
 CAMLparam1(self);
@@ -246,6 +330,17 @@ CAMLparam1(self);
 PangoGravity result = pango_font_description_get_gravity(PangoFontDescription_val(self));
 CAMLreturn(Val_PangoGravity(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_font_description_get_gravity(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontDescription requires Pango >= 1.16");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_font_description_get_family(value self)
 {

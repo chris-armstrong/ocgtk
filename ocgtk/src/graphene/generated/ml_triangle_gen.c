@@ -30,6 +30,8 @@ value Val_graphene_triangle_t_option(const graphene_triangle_t *ptr) {
   return Val_some(Val_graphene_triangle_t(ptr));
 }
 
+#if GRAPHENE_CHECK_VERSION(1,2,0)
+
 
 CAMLexport CAMLprim value ml_graphene_triangle_alloc(value unit)
 {
@@ -54,6 +56,8 @@ CAMLparam4(self, arg1, arg2, arg3);
 graphene_triangle_t* result = graphene_triangle_init_from_point3d(graphene_triangle_t_val(self), Option_val(arg1, graphene_point3d_t_val, NULL), Option_val(arg2, graphene_point3d_t_val, NULL), Option_val(arg3, graphene_point3d_t_val, NULL));
 CAMLreturn(Val_graphene_triangle_t(result));
 }
+
+#if GRAPHENE_CHECK_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_triangle_init_from_float(value self, value arg1, value arg2, value arg3)
 {
@@ -81,6 +85,20 @@ graphene_triangle_t* result = graphene_triangle_init_from_float(graphene_triangl
 CAMLreturn(Val_graphene_triangle_t(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_graphene_triangle_init_from_float(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Triangle requires Graphene >= 1.10");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_graphene_triangle_get_vertices(value self)
 {
 CAMLparam1(self);
@@ -97,6 +115,8 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+#if GRAPHENE_CHECK_VERSION(1,10,0)
+
 CAMLexport CAMLprim value ml_graphene_triangle_get_uv(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -109,6 +129,21 @@ CAMLlocal1(ret);
     Store_field(ret, 1, Val_graphene_vec2_t(&out5));
     CAMLreturn(ret);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_triangle_get_uv(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("Triangle requires Graphene >= 1.10");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_graphene_triangle_get_points(value self)
 {
@@ -206,3 +241,168 @@ CAMLparam2(self, arg1);
 _Bool result = graphene_triangle_contains_point(graphene_triangle_t_val(self), graphene_point3d_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_graphene_triangle_alloc(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Triangle requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_triangle_contains_point(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Triangle requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_triangle_equal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Triangle requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_triangle_free(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Triangle requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_triangle_get_area(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Triangle requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_triangle_get_barycoords(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Triangle requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_triangle_get_bounding_box(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Triangle requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_triangle_get_midpoint(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Triangle requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_triangle_get_normal(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Triangle requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_triangle_get_plane(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Triangle requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_triangle_get_points(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Triangle requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_triangle_get_uv(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("Triangle requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_triangle_get_vertices(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Triangle requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_triangle_init_from_float(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Triangle requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_triangle_init_from_point3d(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Triangle requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_triangle_init_from_vec3(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Triangle requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+#endif

@@ -35,6 +35,8 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbuf(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+#if GDK_PIXBUF_CHECK_VERSION(2,6,0)
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_file_at_scale(value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
@@ -45,6 +47,22 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbuf(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_file_at_scale(value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam4(arg1, arg2, arg3, arg4);
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("Pixbuf requires GdkPixbuf >= 2.6");
+return Val_unit;
+}
+#endif
+
+#if GDK_PIXBUF_CHECK_VERSION(2,4,0)
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_file_at_size(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
@@ -55,6 +73,21 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbuf(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_file_at_size(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Pixbuf requires GdkPixbuf >= 2.4");
+return Val_unit;
+}
+#endif
+
+#if GDK_PIXBUF_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_resource(value arg1)
 {
 CAMLparam1(arg1);
@@ -65,6 +98,19 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbuf(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_resource(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("Pixbuf requires GdkPixbuf >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GDK_PIXBUF_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_resource_at_scale(value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
@@ -75,6 +121,22 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbuf(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_resource_at_scale(value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam4(arg1, arg2, arg3, arg4);
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("Pixbuf requires GdkPixbuf >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GDK_PIXBUF_CHECK_VERSION(2,14,0)
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_stream(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
@@ -85,6 +147,20 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbuf(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_stream(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+(void)arg1;
+(void)arg2;
+caml_failwith("Pixbuf requires GdkPixbuf >= 2.14");
+return Val_unit;
+}
+#endif
+
+#if GDK_PIXBUF_CHECK_VERSION(2,14,0)
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_stream_at_scale(value arg1, value arg2, value arg3, value arg4, value arg5)
 {
 CAMLparam5(arg1, arg2, arg3, arg4, arg5);
@@ -95,6 +171,23 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbuf(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_stream_at_scale(value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(arg1, arg2, arg3, arg4, arg5);
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+caml_failwith("Pixbuf requires GdkPixbuf >= 2.14");
+return Val_unit;
+}
+#endif
+
+#if GDK_PIXBUF_CHECK_VERSION(2,24,0)
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_stream_finish(value arg1)
 {
 CAMLparam1(arg1);
@@ -105,6 +198,17 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbuf(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_stream_finish(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("Pixbuf requires GdkPixbuf >= 2.24");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_new_from_xpm_data(value arg1)
 {
 CAMLparam1(arg1);
@@ -121,6 +225,8 @@ if (obj) g_object_ref_sink(obj);
     g_free(c_arg1);
 CAMLreturn(Val_GdkPixbuf(obj));
 }
+#if GDK_PIXBUF_CHECK_VERSION(2,2,0)
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_set_option(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -128,6 +234,19 @@ CAMLparam3(self, arg1, arg2);
 gboolean result = gdk_pixbuf_set_option(GdkPixbuf_val(self), String_val(arg1), String_val(arg2));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_set_option(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Pixbuf requires GdkPixbuf >= 2.2");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_scale_simple(value self, value arg1, value arg2, value arg3)
 {
@@ -186,6 +305,8 @@ gboolean result = gdk_pixbuf_savev(GdkPixbuf_val(self), String_val(arg1), String
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#if GDK_PIXBUF_CHECK_VERSION(2,36,0)
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_save_to_streamv_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -226,6 +347,22 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_save_to_streamv_bytecode(value * argv, i
 return ml_gdk_pixbuf_save_to_streamv_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_save_to_streamv(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+caml_failwith("Pixbuf requires GdkPixbuf >= 2.36");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_saturate_and_pixelate(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -233,6 +370,8 @@ CAMLparam4(self, arg1, arg2, arg3);
 gdk_pixbuf_saturate_and_pixelate(GdkPixbuf_val(self), GdkPixbuf_val(arg1), Double_val(arg2), Bool_val(arg3));
 CAMLreturn(Val_unit);
 }
+
+#if GDK_PIXBUF_CHECK_VERSION(2,6,0)
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_rotate_simple(value self, value arg1)
 {
@@ -242,6 +381,20 @@ GdkPixbuf* result = gdk_pixbuf_rotate_simple(GdkPixbuf_val(self), GdkPixbufPixbu
 CAMLreturn(Val_option(result, Val_GdkPixbuf));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_rotate_simple(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Pixbuf requires GdkPixbuf >= 2.6");
+return Val_unit;
+}
+#endif
+
+#if GDK_PIXBUF_CHECK_VERSION(2,36,0)
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_remove_option(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -249,6 +402,18 @@ CAMLparam2(self, arg1);
 gboolean result = gdk_pixbuf_remove_option(GdkPixbuf_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_remove_option(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Pixbuf requires GdkPixbuf >= 2.36");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_new_subpixbuf(value self, value arg1, value arg2, value arg3, value arg4)
 {
@@ -322,6 +487,8 @@ int result = gdk_pixbuf_get_bits_per_sample(GdkPixbuf_val(self));
 CAMLreturn(Val_int(result));
 }
 
+#if GDK_PIXBUF_CHECK_VERSION(2,6,0)
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_flip(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -330,6 +497,20 @@ GdkPixbuf* result = gdk_pixbuf_flip(GdkPixbuf_val(self), Bool_val(arg1));
 CAMLreturn(Val_option(result, Val_GdkPixbuf));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_flip(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Pixbuf requires GdkPixbuf >= 2.6");
+return Val_unit;
+}
+#endif
+
+#if GDK_PIXBUF_CHECK_VERSION(2,36,0)
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_copy_options(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -337,6 +518,18 @@ CAMLparam2(self, arg1);
 gboolean result = gdk_pixbuf_copy_options(GdkPixbuf_val(self), GdkPixbuf_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_copy_options(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Pixbuf requires GdkPixbuf >= 2.36");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_copy_area_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7)
 {
@@ -373,6 +566,8 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_composite_bytecode(value * argv, int arg
 return ml_gdk_pixbuf_composite_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7], argv[8], argv[9], argv[10], argv[11]);
 }
 
+#if GDK_PIXBUF_CHECK_VERSION(2,12,0)
+
 CAMLexport CAMLprim value ml_gdk_pixbuf_apply_embedded_orientation(value self)
 {
 CAMLparam1(self);
@@ -380,3 +575,14 @@ CAMLparam1(self);
 GdkPixbuf* result = gdk_pixbuf_apply_embedded_orientation(GdkPixbuf_val(self));
 CAMLreturn(Val_option(result, Val_GdkPixbuf));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_apply_embedded_orientation(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Pixbuf requires GdkPixbuf >= 2.12");
+return Val_unit;
+}
+#endif

@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,32,0)
+
 
 CAMLexport CAMLprim value ml_g_menu_link_iter_next(value self)
 {
@@ -45,3 +47,35 @@ CAMLparam1(self);
 const gchar* result = g_menu_link_iter_get_name(GMenuLinkIter_val(self));
 CAMLreturn(caml_copy_string(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_menu_link_iter_get_name(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("MenuLinkIter requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_menu_link_iter_get_value(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("MenuLinkIter requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_menu_link_iter_next(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("MenuLinkIter requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+#endif

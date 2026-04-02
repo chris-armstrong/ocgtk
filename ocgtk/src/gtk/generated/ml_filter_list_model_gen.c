@@ -84,6 +84,8 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkFilter));
 }
 
+#if GTK_CHECK_VERSION(4,8,0)
+
 CAMLexport CAMLprim value ml_gtk_filter_list_model_get_n_items(value self)
 {
     CAMLparam1(self);
@@ -100,3 +102,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_filter_list_model_get_n_items(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FilterListModel requires GTK >= 4.8");
+return Val_unit;
+}
+#endif

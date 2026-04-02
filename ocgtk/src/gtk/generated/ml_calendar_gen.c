@@ -34,6 +34,8 @@ gtk_calendar_unmark_day(GtkCalendar_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,14,0)
+
 CAMLexport CAMLprim value ml_gtk_calendar_set_year(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -41,6 +43,18 @@ CAMLparam2(self, arg1);
 gtk_calendar_set_year(GtkCalendar_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_calendar_set_year(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Calendar requires GTK >= 4.14");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_calendar_set_show_week_numbers(value self, value arg1)
 {
@@ -66,6 +80,8 @@ gtk_calendar_set_show_day_names(GtkCalendar_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,14,0)
+
 CAMLexport CAMLprim value ml_gtk_calendar_set_month(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -73,6 +89,20 @@ CAMLparam2(self, arg1);
 gtk_calendar_set_month(GtkCalendar_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_calendar_set_month(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Calendar requires GTK >= 4.14");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,14,0)
 
 CAMLexport CAMLprim value ml_gtk_calendar_set_day(value self, value arg1)
 {
@@ -82,6 +112,18 @@ gtk_calendar_set_day(GtkCalendar_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_gtk_calendar_set_day(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Calendar requires GTK >= 4.14");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gtk_calendar_mark_day(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -90,6 +132,8 @@ gtk_calendar_mark_day(GtkCalendar_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,14,0)
+
 CAMLexport CAMLprim value ml_gtk_calendar_get_year(value self)
 {
 CAMLparam1(self);
@@ -97,6 +141,17 @@ CAMLparam1(self);
 int result = gtk_calendar_get_year(GtkCalendar_val(self));
 CAMLreturn(Val_int(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_calendar_get_year(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Calendar requires GTK >= 4.14");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_calendar_get_show_week_numbers(value self)
 {
@@ -122,6 +177,8 @@ gboolean result = gtk_calendar_get_show_day_names(GtkCalendar_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+#if GTK_CHECK_VERSION(4,14,0)
+
 CAMLexport CAMLprim value ml_gtk_calendar_get_month(value self)
 {
 CAMLparam1(self);
@@ -129,6 +186,17 @@ CAMLparam1(self);
 int result = gtk_calendar_get_month(GtkCalendar_val(self));
 CAMLreturn(Val_int(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_calendar_get_month(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Calendar requires GTK >= 4.14");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_calendar_get_day_is_marked(value self, value arg1)
 {
@@ -138,6 +206,8 @@ gboolean result = gtk_calendar_get_day_is_marked(GtkCalendar_val(self), Int_val(
 CAMLreturn(Val_bool(result));
 }
 
+#if GTK_CHECK_VERSION(4,14,0)
+
 CAMLexport CAMLprim value ml_gtk_calendar_get_day(value self)
 {
 CAMLparam1(self);
@@ -145,6 +215,17 @@ CAMLparam1(self);
 int result = gtk_calendar_get_day(GtkCalendar_val(self));
 CAMLreturn(Val_int(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_calendar_get_day(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Calendar requires GTK >= 4.14");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_calendar_clear_marks(value self)
 {

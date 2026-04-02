@@ -56,6 +56,8 @@ PangoItem* result = pango_item_copy(PangoItem_val(self));
 CAMLreturn(Val_option(result, Val_PangoItem));
 }
 
+#if PANGO_VERSION_CHECK(1,44,0)
+
 CAMLexport CAMLprim value ml_pango_item_apply_attrs(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -63,3 +65,15 @@ CAMLparam2(self, arg1);
 pango_item_apply_attrs(PangoItem_val(self), PangoAttrIterator_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_item_apply_attrs(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Item requires Pango >= 1.44");
+return Val_unit;
+}
+#endif

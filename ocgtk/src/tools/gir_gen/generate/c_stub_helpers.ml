@@ -25,10 +25,10 @@ let include_header_for_namespace namespace_name =
   let ns_lower = String.lowercase_ascii namespace_name in
   match ns_lower with
   | "gtk" -> "#include <gtk/gtk.h>"
-  | "gdk" -> "#include <gdk/gdk.h>"
+  | "gdk" -> "#include <gtk/gtk.h>"
   | "pango" -> "#include <pango/pango.h>"
   | "gdkpixbuf" -> "#include <gdk-pixbuf/gdk-pixbuf.h>"
-  | "gsk" -> "#include <gsk/gsk.h>"
+  | "gsk" -> "#include <gtk/gtk.h>"
   | "graphene" -> "#include <graphene.h>"
   | "gio" -> "#include <gio/gio.h>"
   | "gobject" -> "#include <glib-object.h>"
@@ -372,3 +372,191 @@ let nullable_ml_to_c_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping)
 
 (* Re-export forward declaration helper *)
 let generate_forward_decl_section = Forward_decl.generate_section
+
+(* {1 Version Guard Support} *)
+
+(** Get the display name for a namespace for use in failwith messages *)
+let namespace_display_name namespace_name =
+  match namespace_name with
+  | "Gtk" -> "GTK"
+  | "Gdk" -> "GTK"
+  | "Gsk" -> "GTK"
+  | "Pango" -> "Pango"
+  | "PangoCairo" -> "Pango"
+  | "GdkPixbuf" -> "GdkPixbuf"
+  | "Gio" -> "GLib"
+  | "Graphene" -> "Graphene"
+  | "Cairo" -> "Cairo"
+  | other -> other
+
+(** Format version string for failwith messages: "M.m" (omit micro if 0) *)
+let format_version_for_message (version : Version_guard.version) =
+  if version.micro = 0 then
+    sprintf "%d.%d" version.major version.minor
+  else
+    sprintf "%d.%d.%d" version.major version.minor version.micro
+
+(** Emit a class-level fallback stub for a constructor.
+    The stub accepts the same parameters and raises caml_failwith with the appropriate message. *)
+let emit_fallback_constructor_stub ~ctx ~c_type:_ ~class_name ~ml_name ~c_identifier:_
+    ~version (ctor : gir_constructor) =
+  let param_count = List.length ctor.ctor_parameters in
+  let param_names =
+    match param_count with
+    | 0 -> [ "unit" ]
+    | n -> List.init ~len:n ~f:(fun i -> sprintf "arg%d" (i + 1))
+  in
+  let params =
+    match param_count with
+    | 0 -> [ "value unit" ]
+    | n -> List.init ~len:n ~f:(fun i -> sprintf "value arg%d" (i + 1))
+  in
+
+  (* Emit the function signature *)
+  let buf = Buffer.create 256 in
+  bprintf buf "\nCAMLexport CAMLprim value %s(%s)\n{\n" ml_name
+    (String.concat ~sep:", " params);
+
+  (* CAMLparam declaration *)
+  let param_count_for_caml = if param_count = 0 then 1 else param_count in
+  bprintf buf "CAMLparam%d(%s);\n" param_count_for_caml (String.concat ~sep:", " param_names);
+
+  (* Suppress unused parameter warnings *)
+  List.iter ~f:(fun pname ->
+    bprintf buf "(void)%s;\n" pname
+  ) param_names;
+
+  (* Build failwith message *)
+  let display_ns = namespace_display_name ctx.namespace.namespace_name in
+  let failwith_msg = sprintf "%s requires %s >= %s" class_name display_ns (format_version_for_message version) in
+  bprintf buf "caml_failwith(\"%s\");\n" failwith_msg;
+  bprintf buf "return Val_unit;\n}\n";
+
+  Buffer.contents buf
+
+(** Emit a class-level fallback stub for a method. *)
+let emit_fallback_method_stub ~ctx ~c_type:_ ~class_name ~ml_name ~c_identifier:_
+    ~version (meth : gir_method) =
+  let in_params =
+    List.filter ~f:(fun p -> match p.direction with Out -> false | _ -> true)
+      meth.parameters
+  in
+  let param_count = 1 + List.length in_params in
+  let param_names =
+    "self" :: List.init ~len:(List.length in_params) ~f:(fun i -> sprintf "arg%d" (i + 1))
+  in
+  let params =
+    "value self"
+    :: List.init ~len:(List.length in_params) ~f:(fun i -> sprintf "value arg%d" (i + 1))
+  in
+
+  let buf = Buffer.create 256 in
+  bprintf buf "\nCAMLexport CAMLprim value %s(%s)\n{\n" ml_name
+    (String.concat ~sep:", " params);
+
+  let param_count_for_caml = if param_count = 0 then 1 else (min param_count 5) in
+  let param_names_for_caml = CCList.take param_count_for_caml param_names in
+  bprintf buf "CAMLparam%d(%s);\n" param_count_for_caml
+    (String.concat ~sep:", " param_names_for_caml);
+
+  (* Suppress unused parameter warnings *)
+  List.iter ~f:(fun pname ->
+    bprintf buf "(void)%s;\n" pname
+  ) param_names;
+
+  (* Build failwith message *)
+  let display_ns = namespace_display_name ctx.namespace.namespace_name in
+  let failwith_msg = sprintf "%s requires %s >= %s" class_name display_ns (format_version_for_message version) in
+  bprintf buf "caml_failwith(\"%s\");\n" failwith_msg;
+  bprintf buf "return Val_unit;\n}\n";
+
+  Buffer.contents buf
+
+(** Emit a class-level fallback stub for a property getter. *)
+let emit_fallback_property_getter_stub ~ctx ~c_type:_ ~class_name ~ml_name ~version (_prop : gir_property) =
+  let buf = Buffer.create 256 in
+  bprintf buf "\nCAMLexport CAMLprim value %s(value self)\n{\n" ml_name;
+  bprintf buf "CAMLparam1(self);\n";
+  bprintf buf "(void)self;\n";
+
+  let display_ns = namespace_display_name ctx.namespace.namespace_name in
+  let failwith_msg = sprintf "%s requires %s >= %s" class_name display_ns (format_version_for_message version) in
+  bprintf buf "caml_failwith(\"%s\");\n" failwith_msg;
+  bprintf buf "return Val_unit;\n}\n";
+
+  Buffer.contents buf
+
+(** Emit a class-level fallback stub for a property setter. *)
+let emit_fallback_property_setter_stub ~ctx ~c_type:_ ~class_name ~ml_name ~version (_prop : gir_property) =
+  let buf = Buffer.create 256 in
+  bprintf buf "\nCAMLexport CAMLprim value %s(value self, value arg1)\n{\n" ml_name;
+  bprintf buf "CAMLparam2(self, arg1);\n";
+  bprintf buf "(void)self;\n";
+  bprintf buf "(void)arg1;\n";
+
+  let display_ns = namespace_display_name ctx.namespace.namespace_name in
+  let failwith_msg = sprintf "%s requires %s >= %s" class_name display_ns (format_version_for_message version) in
+  bprintf buf "caml_failwith(\"%s\");\n" failwith_msg;
+  bprintf buf "return Val_unit;\n}\n";
+
+  Buffer.contents buf
+
+(** Emit a class-level fallback stub for a record method. *)
+let emit_fallback_record_method_stub ~ctx ~c_type:_ ~class_name ~ml_name ~version (meth : gir_method) =
+  let in_params =
+    List.filter ~f:(fun p -> match p.direction with Out -> false | _ -> true)
+      meth.parameters
+  in
+  let param_count = 1 + List.length in_params in
+  let param_names =
+    "self" :: List.init ~len:(List.length in_params) ~f:(fun i -> sprintf "arg%d" (i + 1))
+  in
+  let params =
+    "value self"
+    :: List.init ~len:(List.length in_params) ~f:(fun i -> sprintf "value arg%d" (i + 1))
+  in
+
+  let buf = Buffer.create 256 in
+  bprintf buf "\nCAMLexport CAMLprim value %s(%s)\n{\n" ml_name
+    (String.concat ~sep:", " params);
+
+  let param_count_for_caml = if param_count = 0 then 1 else (min param_count 5) in
+  let param_names_for_caml = CCList.take param_count_for_caml param_names in
+  bprintf buf "CAMLparam%d(%s);\n" param_count_for_caml
+    (String.concat ~sep:", " param_names_for_caml);
+
+  (* Suppress unused parameter warnings *)
+  List.iter ~f:(fun pname ->
+    bprintf buf "(void)%s;\n" pname
+  ) param_names;
+
+  let display_ns = namespace_display_name ctx.namespace.namespace_name in
+  let failwith_msg = sprintf "%s requires %s >= %s" class_name display_ns (format_version_for_message version) in
+  bprintf buf "caml_failwith(\"%s\");\n" failwith_msg;
+  bprintf buf "return Val_unit;\n}\n";
+
+  Buffer.contents buf
+
+(** Wrap a generated stub in a member-level version guard when
+    [resolve_guard] returns [Member_guard]. [fallback v] is called with
+    the member version to produce the [#else] stub. Falls through to
+    plain emit on parse errors or when no guard is needed (e.g.
+    [No_guard] for same-version members). *)
+let emit_with_member_guard ~ctx ~class_version ~member_version ~fallback ~stub buf =
+  match Version_guard.resolve_guard ~class_version ~member_version with
+  | Ok (Version_guard.Member_guard v) ->
+    (match Version_guard.emit_c_guard ctx.namespace.namespace_name v ~is_opening:true with
+    | Ok guard_if ->
+      Buffer.add_char buf '\n';
+      Buffer.add_string buf guard_if;
+      Buffer.add_char buf '\n';
+      Buffer.add_string buf stub;
+      Buffer.add_char buf '\n';
+      Buffer.add_string buf Version_guard.c_guard_else;
+      Buffer.add_char buf '\n';
+      Buffer.add_string buf (fallback v);
+      (match Version_guard.emit_c_guard ctx.namespace.namespace_name v ~is_opening:false with
+      | Ok guard_endif -> Buffer.add_string buf (guard_endif ^ "\n")
+      | Error _ -> Buffer.add_string buf "#endif\n")
+    | Error _ -> Buffer.add_string buf stub)
+  | _ -> Buffer.add_string buf stub

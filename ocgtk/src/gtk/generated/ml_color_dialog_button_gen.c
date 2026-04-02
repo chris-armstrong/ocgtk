@@ -16,6 +16,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gtk_decls.h"
 
+#if GTK_CHECK_VERSION(4,10,0)
+
 
 CAMLexport CAMLprim value ml_gtk_color_dialog_button_new(value arg1)
 {
@@ -58,3 +60,55 @@ GtkColorDialog* result = gtk_color_dialog_button_get_dialog(GtkColorDialogButton
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkColorDialog));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_gtk_color_dialog_button_new(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("ColorDialogButton requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_color_dialog_button_get_dialog(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ColorDialogButton requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_color_dialog_button_get_rgba(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ColorDialogButton requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_color_dialog_button_set_dialog(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ColorDialogButton requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_color_dialog_button_set_rgba(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ColorDialogButton requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+#endif
