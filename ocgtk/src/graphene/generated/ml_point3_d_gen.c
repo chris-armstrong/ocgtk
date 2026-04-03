@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "graphene_decls.h"
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 /* Conversion functions for graphene_point3d_t (opaque record with hidden fields) */
 graphene_point3d_t *graphene_point3d_t_val(value v) {
   return *(graphene_point3d_t **)Data_custom_val(v);
@@ -29,8 +30,9 @@ value Val_graphene_point3d_t_option(const graphene_point3d_t *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_graphene_point3d_t(ptr));
 }
+#endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 
 CAMLexport CAMLprim value ml_graphene_point3d_alloc(value unit)
@@ -59,7 +61,7 @@ graphene_point3d_scale(graphene_point3d_t_val(self), Double_val(arg1), &out2);
 CAMLreturn(Val_graphene_point3d_t(&out2));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,4,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,4,0)
 
 CAMLexport CAMLprim value ml_graphene_point3d_normalize_viewport(value self, value arg1, value arg2, value arg3)
 {
@@ -166,7 +168,7 @@ float result = graphene_point3d_dot(graphene_point3d_t_val(self), graphene_point
 CAMLreturn(caml_copy_double(result));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,4,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,4,0)
 
 CAMLexport CAMLprim value ml_graphene_point3d_distance(value self, value arg1)
 {

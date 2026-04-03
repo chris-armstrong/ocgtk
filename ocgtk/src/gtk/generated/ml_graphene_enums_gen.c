@@ -8,7 +8,7 @@
 #include <caml/hash.h>
 #include <glib.h>
 #include <graphene.h>
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 /* Convert graphene_euler_order_t to OCaml value */
 value Val_GrapheneEulerOrder(graphene_euler_order_t val) {
   switch (val) {
@@ -95,7 +95,7 @@ graphene_euler_order_t GrapheneEulerOrder_val(value val) {
 
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 /* Convert graphene_ray_intersection_kind_t to OCaml value */
 value Val_GrapheneRayIntersectionKind(graphene_ray_intersection_kind_t val) {
   switch (val) {

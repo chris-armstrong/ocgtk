@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gdk_decls.h"
 
+#if GTK_CHECK_VERSION(4,10,0)
 /* Conversion functions for GdkTextureDownloader (opaque record with hidden fields) */
 GdkTextureDownloader *GdkTextureDownloader_val(value v) {
   return *(GdkTextureDownloader **)Data_custom_val(v);
@@ -29,6 +30,7 @@ value Val_GdkTextureDownloader_option(const GdkTextureDownloader *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GdkTextureDownloader(ptr));
 }
+#endif
 
 #if GTK_CHECK_VERSION(4,10,0)
 

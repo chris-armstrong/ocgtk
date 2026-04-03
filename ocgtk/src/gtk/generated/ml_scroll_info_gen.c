@@ -16,6 +16,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gtk_decls.h"
 
+#if GTK_CHECK_VERSION(4,12,0)
 /* Conversion functions for GtkScrollInfo (opaque record with hidden fields) */
 GtkScrollInfo *GtkScrollInfo_val(value v) {
   return *(GtkScrollInfo **)Data_custom_val(v);
@@ -30,6 +31,7 @@ value Val_GtkScrollInfo_option(const GtkScrollInfo *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GtkScrollInfo(ptr));
 }
+#endif
 
 #if GTK_CHECK_VERSION(4,12,0)
 

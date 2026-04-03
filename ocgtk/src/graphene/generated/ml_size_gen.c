@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "graphene_decls.h"
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 /* Conversion functions for graphene_size_t (opaque record with hidden fields) */
 graphene_size_t *graphene_size_t_val(value v) {
   return *(graphene_size_t **)Data_custom_val(v);
@@ -29,8 +30,9 @@ value Val_graphene_size_t_option(const graphene_size_t *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_graphene_size_t(ptr));
 }
+#endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 
 CAMLexport CAMLprim value ml_graphene_size_alloc(value unit)

@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "graphene_decls.h"
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 /* Conversion functions for graphene_point_t (opaque record with hidden fields) */
 graphene_point_t *graphene_point_t_val(value v) {
   return *(graphene_point_t **)Data_custom_val(v);
@@ -29,8 +30,9 @@ value Val_graphene_point_t_option(const graphene_point_t *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_graphene_point_t(ptr));
 }
+#endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 
 CAMLexport CAMLprim value ml_graphene_point_alloc(value unit)
@@ -41,7 +43,7 @@ graphene_point_t *obj = graphene_point_alloc();
 
 CAMLreturn(Val_graphene_point_t(obj));
 }
-#if GRAPHENE_CHECK_VERSION(1,4,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,4,0)
 
 CAMLexport CAMLprim value ml_graphene_point_to_vec2(value self)
 {
@@ -80,7 +82,7 @@ graphene_point_interpolate(graphene_point_t_val(self), graphene_point_t_val(arg1
 CAMLreturn(Val_graphene_point_t(&out3));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,4,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,4,0)
 
 CAMLexport CAMLprim value ml_graphene_point_init_from_vec2(value self, value arg1)
 {

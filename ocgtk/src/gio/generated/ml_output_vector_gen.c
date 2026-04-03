@@ -21,6 +21,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,22,0)
 /* Conversion functions for GOutputVector (opaque record with hidden fields) */
 GOutputVector *GOutputVector_val(value v) {
   return *(GOutputVector **)Data_custom_val(v);
@@ -35,6 +36,7 @@ value Val_GOutputVector_option(const GOutputVector *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GOutputVector(ptr));
 }
+#endif
 
 #if GLIB_CHECK_VERSION(2,22,0)
 

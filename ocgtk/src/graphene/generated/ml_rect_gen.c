@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "graphene_decls.h"
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 /* Conversion functions for graphene_rect_t (opaque record with hidden fields) */
 graphene_rect_t *graphene_rect_t_val(value v) {
   return *(graphene_rect_t **)Data_custom_val(v);
@@ -29,8 +30,9 @@ value Val_graphene_rect_t_option(const graphene_rect_t *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_graphene_rect_t(ptr));
 }
+#endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 
 CAMLexport CAMLprim value ml_graphene_rect_union(value self, value arg1)
@@ -42,7 +44,7 @@ graphene_rect_union(graphene_rect_t_val(self), graphene_rect_t_val(arg1), &out2)
 CAMLreturn(Val_graphene_rect_t(&out2));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_rect_scale(value self, value arg1, value arg2)
 {
@@ -74,7 +76,7 @@ graphene_rect_t* result = graphene_rect_round_to_pixel(graphene_rect_t_val(self)
 CAMLreturn(Val_graphene_rect_t(result));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_rect_round_extents(value self)
 {
@@ -96,7 +98,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,4,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,4,0)
 
 CAMLexport CAMLprim value ml_graphene_rect_round(value self)
 {
@@ -118,7 +120,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,4,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,4,0)
 
 CAMLexport CAMLprim value ml_graphene_rect_offset_r(value self, value arg1, value arg2)
 {
@@ -150,7 +152,7 @@ graphene_rect_t* result = graphene_rect_offset(graphene_rect_t_val(self), Double
 CAMLreturn(Val_graphene_rect_t(result));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,4,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,4,0)
 
 CAMLexport CAMLprim value ml_graphene_rect_normalize_r(value self)
 {
@@ -202,7 +204,7 @@ graphene_rect_interpolate(graphene_rect_t_val(self), graphene_rect_t_val(arg1), 
 CAMLreturn(Val_graphene_rect_t(&out3));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,4,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,4,0)
 
 CAMLexport CAMLprim value ml_graphene_rect_inset_r(value self, value arg1, value arg2)
 {
@@ -274,7 +276,7 @@ float result = graphene_rect_get_width(graphene_rect_t_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,4,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,4,0)
 
 CAMLexport CAMLprim value ml_graphene_rect_get_vertices(value self)
 {
@@ -356,7 +358,7 @@ graphene_rect_get_bottom_left(graphene_rect_t_val(self), &out1);
 CAMLreturn(Val_graphene_point_t(&out1));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_rect_get_area(value self)
 {
@@ -385,7 +387,7 @@ graphene_rect_free(graphene_rect_t_val(self));
 CAMLreturn(Val_unit);
 }
 
-#if GRAPHENE_CHECK_VERSION(1,4,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,4,0)
 
 CAMLexport CAMLprim value ml_graphene_rect_expand(value self, value arg1)
 {

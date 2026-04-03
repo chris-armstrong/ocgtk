@@ -31,7 +31,7 @@ value Val_graphene_vec3_t_option(const graphene_vec3_t *ptr) {
 }
 
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_alloc(value unit)
 {
@@ -52,7 +52,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_to_float(value self)
 {
@@ -81,7 +81,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_subtract(value self, value arg1)
 {
@@ -104,7 +104,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_scale(value self, value arg1)
 {
@@ -127,7 +127,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_normalize(value self)
 {
@@ -149,7 +149,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_negate(value self)
 {
@@ -171,7 +171,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_near(value self, value arg1, value arg2)
 {
@@ -194,7 +194,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_multiply(value self, value arg1)
 {
@@ -217,7 +217,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_min(value self, value arg1)
 {
@@ -240,7 +240,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_max(value self, value arg1)
 {
@@ -263,7 +263,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_length(value self)
 {
@@ -284,7 +284,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_interpolate(value self, value arg1, value arg2)
 {
@@ -308,7 +308,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_init_from_vec3(value self, value arg1)
 {
@@ -330,7 +330,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_init_from_float(value self, value arg1)
 {
@@ -358,7 +358,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_init(value self, value arg1, value arg2, value arg3)
 {
@@ -382,7 +382,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_get_z(value self)
 {
@@ -403,7 +403,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_get_y(value self)
 {
@@ -424,7 +424,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_get_xyzw(value self, value arg1)
 {
@@ -447,7 +447,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_get_xyz1(value self)
 {
@@ -469,7 +469,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_get_xyz0(value self)
 {
@@ -491,7 +491,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_get_xy0(value self)
 {
@@ -513,7 +513,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_get_xy(value self)
 {
@@ -535,7 +535,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_get_x(value self)
 {
@@ -556,7 +556,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_free(value self)
 {
@@ -577,7 +577,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_equal(value self, value arg1)
 {
@@ -599,7 +599,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_dot(value self, value arg1)
 {
@@ -621,7 +621,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_divide(value self, value arg1)
 {
@@ -644,7 +644,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_cross(value self, value arg1)
 {
@@ -667,7 +667,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_add(value self, value arg1)
 {

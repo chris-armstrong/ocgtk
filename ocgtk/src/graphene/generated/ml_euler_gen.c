@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "graphene_decls.h"
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 /* Conversion functions for graphene_euler_t (opaque record with hidden fields) */
 graphene_euler_t *graphene_euler_t_val(value v) {
   return *(graphene_euler_t **)Data_custom_val(v);
@@ -29,8 +30,9 @@ value Val_graphene_euler_t_option(const graphene_euler_t *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_graphene_euler_t(ptr));
 }
+#endif
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 
 CAMLexport CAMLprim value ml_graphene_euler_alloc(value unit)
@@ -50,7 +52,7 @@ graphene_euler_to_vec3(graphene_euler_t_val(self), &out1);
 CAMLreturn(Val_graphene_vec3_t(&out1));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_euler_to_quaternion(value self)
 {
@@ -106,7 +108,7 @@ graphene_euler_t* result = graphene_euler_init_from_vec3(graphene_euler_t_val(se
 CAMLreturn(Val_graphene_euler_t(result));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_euler_init_from_radians(value self, value arg1, value arg2, value arg3, value arg4)
 {
@@ -195,7 +197,7 @@ graphene_euler_order_t result = graphene_euler_get_order(graphene_euler_t_val(se
 CAMLreturn(Val_GrapheneEulerOrder(result));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_euler_get_gamma(value self)
 {
@@ -216,7 +218,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_euler_get_beta(value self)
 {
@@ -237,7 +239,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_euler_get_alpha(value self)
 {

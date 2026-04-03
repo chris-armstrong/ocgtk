@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gdk_decls.h"
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GdkDmabufFormats (opaque record with hidden fields) */
 GdkDmabufFormats *GdkDmabufFormats_val(value v) {
   return *(GdkDmabufFormats **)Data_custom_val(v);
@@ -29,6 +30,7 @@ value Val_GdkDmabufFormats_option(const GdkDmabufFormats *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GdkDmabufFormats(ptr));
 }
+#endif
 
 #if GTK_CHECK_VERSION(4,14,0)
 

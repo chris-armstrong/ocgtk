@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "pango_decls.h"
 
+#if PANGO_VERSION_CHECK(1,6,0)
 /* Copy function for PangoMatrix (value-like record with copy method) */
 value copy_PangoMatrix(const PangoMatrix *ptr)
 {
@@ -22,6 +23,7 @@ value copy_PangoMatrix(const PangoMatrix *ptr)
   PangoMatrix *copy = pango_matrix_copy((PangoMatrix*)ptr);
   return ml_gir_record_val_ptr(copy);
 }
+#endif
 
 #if PANGO_VERSION_CHECK(1,6,0)
 

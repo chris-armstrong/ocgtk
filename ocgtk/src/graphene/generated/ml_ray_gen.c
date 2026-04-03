@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "graphene_decls.h"
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,4,0)
 /* Conversion functions for graphene_ray_t (opaque record with hidden fields) */
 graphene_ray_t *graphene_ray_t_val(value v) {
   return *(graphene_ray_t **)Data_custom_val(v);
@@ -29,8 +30,9 @@ value Val_graphene_ray_t_option(const graphene_ray_t *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_graphene_ray_t(ptr));
 }
+#endif
 
-#if GRAPHENE_CHECK_VERSION(1,4,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,4,0)
 
 
 CAMLexport CAMLprim value ml_graphene_ray_alloc(value unit)
@@ -41,7 +43,7 @@ graphene_ray_t *obj = graphene_ray_alloc();
 
 CAMLreturn(Val_graphene_ray_t(obj));
 }
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_ray_intersects_triangle(value self, value arg1)
 {
@@ -63,7 +65,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_ray_intersects_sphere(value self, value arg1)
 {
@@ -85,7 +87,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_ray_intersects_box(value self, value arg1)
 {
@@ -107,7 +109,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_ray_intersect_triangle(value self, value arg1)
 {
@@ -134,7 +136,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_ray_intersect_sphere(value self, value arg1)
 {
@@ -161,7 +163,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_ray_intersect_box(value self, value arg1)
 {

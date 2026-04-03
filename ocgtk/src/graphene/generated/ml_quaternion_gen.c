@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "graphene_decls.h"
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 /* Conversion functions for graphene_quaternion_t (opaque record with hidden fields) */
 graphene_quaternion_t *graphene_quaternion_t_val(value v) {
   return *(graphene_quaternion_t **)Data_custom_val(v);
@@ -29,8 +30,9 @@ value Val_graphene_quaternion_t_option(const graphene_quaternion_t *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_graphene_quaternion_t(ptr));
 }
+#endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 
 CAMLexport CAMLprim value ml_graphene_quaternion_alloc(value unit)
@@ -50,7 +52,7 @@ graphene_quaternion_to_vec4(graphene_quaternion_t_val(self), &out1);
 CAMLreturn(Val_graphene_vec4_t(&out1));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_quaternion_to_radians(value self)
 {
@@ -88,7 +90,7 @@ graphene_quaternion_to_matrix(graphene_quaternion_t_val(self), &out1);
 CAMLreturn(Val_graphene_matrix_t(&out1));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_quaternion_to_angles(value self)
 {
@@ -140,7 +142,7 @@ graphene_quaternion_slerp(graphene_quaternion_t_val(self), graphene_quaternion_t
 CAMLreturn(Val_graphene_quaternion_t(&out3));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_quaternion_scale(value self, value arg1)
 {
@@ -172,7 +174,7 @@ graphene_quaternion_normalize(graphene_quaternion_t_val(self), &out1);
 CAMLreturn(Val_graphene_quaternion_t(&out1));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_quaternion_multiply(value self, value arg1)
 {
@@ -244,7 +246,7 @@ graphene_quaternion_t* result = graphene_quaternion_init_from_matrix(graphene_qu
 CAMLreturn(Val_graphene_quaternion_t(result));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_quaternion_init_from_euler(value self, value arg1)
 {
@@ -314,7 +316,7 @@ float result = graphene_quaternion_dot(graphene_quaternion_t_val(self), graphene
 CAMLreturn(caml_copy_double(result));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_quaternion_add(value self, value arg1)
 {

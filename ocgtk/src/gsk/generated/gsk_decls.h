@@ -82,11 +82,13 @@
 #define Val_GskDebugNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GskDebugNode */
 
+#if GTK_CHECK_VERSION(4,14,0)
 #ifndef Val_GskFillNode
 #define GskFillNode_val(val) ((GskFillNode*)ml_gobject_ext_of_val(val))
 #define Val_GskFillNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GskFillNode */
 
+#endif
 #ifndef Val_GskGLRenderer
 #define GskGLRenderer_val(val) ((GskGLRenderer*)ml_gobject_ext_of_val(val))
 #define Val_GskGLRenderer(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -112,11 +114,13 @@
 #define Val_GskLinearGradientNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GskLinearGradientNode */
 
+#if GTK_CHECK_VERSION(4,10,0)
 #ifndef Val_GskMaskNode
 #define GskMaskNode_val(val) ((GskMaskNode*)ml_gobject_ext_of_val(val))
 #define Val_GskMaskNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GskMaskNode */
 
+#endif
 #ifndef Val_GskNglRenderer
 #define GskNglRenderer_val(val) ((GskNglRenderer*)ml_gobject_ext_of_val(val))
 #define Val_GskNglRenderer(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -172,16 +176,20 @@
 #define Val_GskShadowNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GskShadowNode */
 
+#if GTK_CHECK_VERSION(4,14,0)
 #ifndef Val_GskStrokeNode
 #define GskStrokeNode_val(val) ((GskStrokeNode*)ml_gobject_ext_of_val(val))
 #define Val_GskStrokeNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GskStrokeNode */
 
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
 #ifndef Val_GskSubsurfaceNode
 #define GskSubsurfaceNode_val(val) ((GskSubsurfaceNode*)ml_gobject_ext_of_val(val))
 #define Val_GskSubsurfaceNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GskSubsurfaceNode */
 
+#endif
 #ifndef Val_GskTextNode
 #define GskTextNode_val(val) ((GskTextNode*)ml_gobject_ext_of_val(val))
 #define Val_GskTextNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -192,11 +200,13 @@
 #define Val_GskTextureNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GskTextureNode */
 
+#if GTK_CHECK_VERSION(4,10,0)
 #ifndef Val_GskTextureScaleNode
 #define GskTextureScaleNode_val(val) ((GskTextureScaleNode*)ml_gobject_ext_of_val(val))
 #define Val_GskTextureScaleNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GskTextureScaleNode */
 
+#endif
 #ifndef Val_GskTransformNode
 #define GskTransformNode_val(val) ((GskTransformNode*)ml_gobject_ext_of_val(val))
 #define Val_GskTransformNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -209,15 +219,19 @@
 
 /* Interface-specific conversion macros (shared) */
 /* Value-returning structs copied into OCaml */
+#if GTK_CHECK_VERSION(4,14,0)
 value copy_GskPathPoint(const GskPathPoint *ptr);
+#endif
 value copy_GskRoundedRect(const GskRoundedRect *ptr);
 
+#if GTK_CHECK_VERSION(4,14,0)
 #ifndef Val_GskPathPoint
 #define GskPathPoint_val(val) ((GskPathPoint*)ext_of_val(val))
 #define Val_GskPathPoint(obj) copy_GskPathPoint((obj))
 #define Val_GskPathPoint_option(ptr) ((ptr) ? Val_some(copy_GskPathPoint(ptr)) : Val_none)
 #endif /* Val_GskPathPoint */
 
+#endif
 #ifndef Val_GskRoundedRect
 #define GskRoundedRect_val(val) ((GskRoundedRect*)ext_of_val(val))
 #define Val_GskRoundedRect(obj) copy_GskRoundedRect((obj))
@@ -236,20 +250,26 @@ GskParseLocation *GskParseLocation_val(value val);
 value Val_GskParseLocation(const GskParseLocation *ptr);
 value Val_GskParseLocation_option(const GskParseLocation *ptr);
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Forward declarations for GskPath converters */
 GskPath *GskPath_val(value val);
 value Val_GskPath(const GskPath *ptr);
 value Val_GskPath_option(const GskPath *ptr);
+#endif
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Forward declarations for GskPathBuilder converters */
 GskPathBuilder *GskPathBuilder_val(value val);
 value Val_GskPathBuilder(const GskPathBuilder *ptr);
 value Val_GskPathBuilder_option(const GskPathBuilder *ptr);
+#endif
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Forward declarations for GskPathMeasure converters */
 GskPathMeasure *GskPathMeasure_val(value val);
 value Val_GskPathMeasure(const GskPathMeasure *ptr);
 value Val_GskPathMeasure_option(const GskPathMeasure *ptr);
+#endif
 
 /* Forward declarations for GskShaderArgsBuilder converters */
 GskShaderArgsBuilder *GskShaderArgsBuilder_val(value val);
@@ -261,10 +281,12 @@ GskShadow *GskShadow_val(value val);
 value Val_GskShadow(const GskShadow *ptr);
 value Val_GskShadow_option(const GskShadow *ptr);
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Forward declarations for GskStroke converters */
 GskStroke *GskStroke_val(value val);
 value Val_GskStroke(const GskStroke *ptr);
 value Val_GskStroke_option(const GskStroke *ptr);
+#endif
 
 /* Forward declarations for GskTransform converters */
 GskTransform *GskTransform_val(value val);

@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gdkpixbuf_decls.h"
 
+#if GDK_PIXBUF_CHECK_VERSION(2,2,0)
 /* Copy function for GdkPixbufFormat (value-like record with copy method) */
 value copy_GdkPixbufFormat(const GdkPixbufFormat *ptr)
 {
@@ -22,6 +23,7 @@ value copy_GdkPixbufFormat(const GdkPixbufFormat *ptr)
   GdkPixbufFormat *copy = gdk_pixbuf_format_copy((GdkPixbufFormat*)ptr);
   return ml_gir_record_val_ptr(copy);
 }
+#endif
 
 #if GDK_PIXBUF_CHECK_VERSION(2,2,0)
 

@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "graphene_decls.h"
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 /* Conversion functions for graphene_triangle_t (opaque record with hidden fields) */
 graphene_triangle_t *graphene_triangle_t_val(value v) {
   return *(graphene_triangle_t **)Data_custom_val(v);
@@ -29,8 +30,9 @@ value Val_graphene_triangle_t_option(const graphene_triangle_t *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_graphene_triangle_t(ptr));
 }
+#endif
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 
 CAMLexport CAMLprim value ml_graphene_triangle_alloc(value unit)
@@ -57,7 +59,7 @@ graphene_triangle_t* result = graphene_triangle_init_from_point3d(graphene_trian
 CAMLreturn(Val_graphene_triangle_t(result));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_triangle_init_from_float(value self, value arg1, value arg2, value arg3)
 {
@@ -115,7 +117,7 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_triangle_get_uv(value self, value arg1, value arg2, value arg3, value arg4)
 {

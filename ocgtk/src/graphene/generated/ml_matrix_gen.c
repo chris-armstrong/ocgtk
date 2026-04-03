@@ -31,7 +31,7 @@ value Val_graphene_matrix_t_option(const graphene_matrix_t *ptr) {
 }
 
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_alloc(value unit)
 {
@@ -52,7 +52,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_untransform_point(value self, value arg1, value arg2)
 {
@@ -80,7 +80,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_untransform_bounds(value self, value arg1, value arg2)
 {
@@ -104,7 +104,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_unproject_point3d(value self, value arg1, value arg2)
 {
@@ -128,7 +128,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_transpose(value self)
 {
@@ -150,7 +150,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_translate(value self, value arg1)
 {
@@ -172,7 +172,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_transform_vec4(value self, value arg1)
 {
@@ -195,7 +195,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_transform_vec3(value self, value arg1)
 {
@@ -218,7 +218,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_transform_sphere(value self, value arg1)
 {
@@ -241,7 +241,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_transform_rect(value self, value arg1)
 {
@@ -264,7 +264,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,4,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,4,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_transform_ray(value self, value arg1)
 {
@@ -287,7 +287,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_transform_point3d(value self, value arg1)
 {
@@ -310,7 +310,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_transform_point(value self, value arg1)
 {
@@ -333,7 +333,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_transform_box(value self, value arg1)
 {
@@ -356,7 +356,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_transform_bounds(value self, value arg1)
 {
@@ -379,7 +379,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_to_float(value self)
 {
@@ -408,7 +408,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_to_2d(value self)
 {
@@ -444,7 +444,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_skew_yz(value self, value arg1)
 {
@@ -466,7 +466,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_skew_xz(value self, value arg1)
 {
@@ -488,7 +488,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_skew_xy(value self, value arg1)
 {
@@ -510,7 +510,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_scale(value self, value arg1, value arg2, value arg3)
 {
@@ -534,7 +534,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_rotate_z(value self, value arg1)
 {
@@ -556,7 +556,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_rotate_y(value self, value arg1)
 {
@@ -578,7 +578,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_rotate_x(value self, value arg1)
 {
@@ -600,7 +600,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_rotate_quaternion(value self, value arg1)
 {
@@ -622,7 +622,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_rotate_euler(value self, value arg1)
 {
@@ -644,7 +644,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_rotate(value self, value arg1, value arg2)
 {
@@ -667,7 +667,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_project_rect_bounds(value self, value arg1)
 {
@@ -690,7 +690,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_project_rect(value self, value arg1)
 {
@@ -713,7 +713,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_project_point(value self, value arg1)
 {
@@ -736,7 +736,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_print(value self)
 {
@@ -757,7 +757,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_perspective(value self, value arg1)
 {
@@ -780,7 +780,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_normalize(value self)
 {
@@ -802,7 +802,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_near(value self, value arg1, value arg2)
 {
@@ -825,7 +825,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_multiply(value self, value arg1)
 {
@@ -848,7 +848,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_is_singular(value self)
 {
@@ -869,7 +869,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_is_identity(value self)
 {
@@ -890,7 +890,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_is_backface_visible(value self)
 {
@@ -911,7 +911,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_is_2d(value self)
 {
@@ -932,7 +932,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_inverse(value self)
 {
@@ -958,7 +958,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_interpolate(value self, value arg1, value arg2)
 {
@@ -982,7 +982,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_init_translate(value self, value arg1)
 {
@@ -1004,7 +1004,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_init_skew(value self, value arg1, value arg2)
 {
@@ -1027,7 +1027,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_init_scale(value self, value arg1, value arg2, value arg3)
 {
@@ -1051,7 +1051,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_init_rotate(value self, value arg1, value arg2)
 {
@@ -1074,7 +1074,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_init_perspective(value self, value arg1, value arg2, value arg3, value arg4)
 {
@@ -1099,7 +1099,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_init_ortho_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
 {
@@ -1131,7 +1131,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_init_look_at(value self, value arg1, value arg2, value arg3)
 {
@@ -1155,7 +1155,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_init_identity(value self)
 {
@@ -1176,7 +1176,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_init_frustum_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
 {
@@ -1208,7 +1208,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_init_from_vec4(value self, value arg1, value arg2, value arg3, value arg4)
 {
@@ -1233,7 +1233,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_init_from_matrix(value self, value arg1)
 {
@@ -1255,7 +1255,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_init_from_float(value self, value arg1)
 {
@@ -1283,7 +1283,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_init_from_2d_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
 {
@@ -1315,7 +1315,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_get_z_translation(value self)
 {
@@ -1336,7 +1336,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_get_z_scale(value self)
 {
@@ -1357,7 +1357,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_get_y_translation(value self)
 {
@@ -1378,7 +1378,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_get_y_scale(value self)
 {
@@ -1399,7 +1399,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_get_x_translation(value self)
 {
@@ -1420,7 +1420,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_get_x_scale(value self)
 {
@@ -1441,7 +1441,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_get_value(value self, value arg1, value arg2)
 {
@@ -1464,7 +1464,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_get_row(value self, value arg1)
 {
@@ -1487,7 +1487,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_free(value self)
 {
@@ -1508,7 +1508,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_equal_fast(value self, value arg1)
 {
@@ -1530,7 +1530,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_equal(value self, value arg1)
 {
@@ -1552,7 +1552,7 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_determinant(value self)
 {

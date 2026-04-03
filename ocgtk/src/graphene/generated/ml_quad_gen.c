@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "graphene_decls.h"
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 /* Conversion functions for graphene_quad_t (opaque record with hidden fields) */
 graphene_quad_t *graphene_quad_t_val(value v) {
   return *(graphene_quad_t **)Data_custom_val(v);
@@ -29,8 +30,9 @@ value Val_graphene_quad_t_option(const graphene_quad_t *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_graphene_quad_t(ptr));
 }
+#endif
 
-#if GRAPHENE_CHECK_VERSION(1,0,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 
 CAMLexport CAMLprim value ml_graphene_quad_alloc(value unit)
@@ -49,7 +51,7 @@ graphene_quad_t* result = graphene_quad_init_from_rect(graphene_quad_t_val(self)
 CAMLreturn(Val_graphene_quad_t(result));
 }
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_quad_init_from_points(value self, value arg1)
 {

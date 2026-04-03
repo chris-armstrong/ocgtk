@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gdk_decls.h"
 
+#if GTK_CHECK_VERSION(4,12,0)
 /* Conversion functions for GdkDragSurfaceSize (opaque record with hidden fields) */
 GdkDragSurfaceSize *GdkDragSurfaceSize_val(value v) {
   return *(GdkDragSurfaceSize **)Data_custom_val(v);
@@ -29,6 +30,7 @@ value Val_GdkDragSurfaceSize_option(const GdkDragSurfaceSize *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GdkDragSurfaceSize(ptr));
 }
+#endif
 
 #if GTK_CHECK_VERSION(4,12,0)
 

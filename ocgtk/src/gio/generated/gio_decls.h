@@ -14,21 +14,25 @@
 #include <caml/mlvalues.h>
 
 /* Class-specific conversion macros (shared) */
+#if GLIB_CHECK_VERSION(2,40,0)
 #ifndef Val_GAppInfoMonitor
 #define GAppInfoMonitor_val(val) ((GAppInfoMonitor*)ml_gobject_ext_of_val(val))
 #define Val_GAppInfoMonitor(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GAppInfoMonitor */
 
+#endif
 #ifndef Val_GAppLaunchContext
 #define GAppLaunchContext_val(val) ((GAppLaunchContext*)ml_gobject_ext_of_val(val))
 #define Val_GAppLaunchContext(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GAppLaunchContext */
 
+#if GLIB_CHECK_VERSION(2,28,0)
 #ifndef Val_GApplication
 #define GApplication_val(val) ((GApplication*)ml_gobject_ext_of_val(val))
 #define Val_GApplication(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GApplication */
 
+#endif
 #ifndef Val_GApplicationCommandLine
 #define GApplicationCommandLine_val(val) ((GApplicationCommandLine*)ml_gobject_ext_of_val(val))
 #define Val_GApplicationCommandLine(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -44,11 +48,13 @@
 #define Val_GBufferedOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GBufferedOutputStream */
 
+#if GLIB_CHECK_VERSION(2,38,0)
 #ifndef Val_GBytesIcon
 #define GBytesIcon_val(val) ((GBytesIcon*)ml_gobject_ext_of_val(val))
 #define Val_GBytesIcon(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GBytesIcon */
 
+#endif
 #ifndef Val_GCancellable
 #define GCancellable_val(val) ((GCancellable*)ml_gobject_ext_of_val(val))
 #define Val_GCancellable(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -69,76 +75,100 @@
 #define Val_GConverterOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GConverterOutputStream */
 
+#if GLIB_CHECK_VERSION(2,26,0)
 #ifndef Val_GCredentials
 #define GCredentials_val(val) ((GCredentials*)ml_gobject_ext_of_val(val))
 #define Val_GCredentials(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GCredentials */
 
+#endif
 #ifndef Val_GDBusActionGroup
 #define GDBusActionGroup_val(val) ((GDBusActionGroup*)ml_gobject_ext_of_val(val))
 #define Val_GDBusActionGroup(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusActionGroup */
 
+#if GLIB_CHECK_VERSION(2,26,0)
 #ifndef Val_GDBusAuthObserver
 #define GDBusAuthObserver_val(val) ((GDBusAuthObserver*)ml_gobject_ext_of_val(val))
 #define Val_GDBusAuthObserver(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusAuthObserver */
 
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 #ifndef Val_GDBusConnection
 #define GDBusConnection_val(val) ((GDBusConnection*)ml_gobject_ext_of_val(val))
 #define Val_GDBusConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusConnection */
 
+#endif
+#if GLIB_CHECK_VERSION(2,30,0)
 #ifndef Val_GDBusInterfaceSkeleton
 #define GDBusInterfaceSkeleton_val(val) ((GDBusInterfaceSkeleton*)ml_gobject_ext_of_val(val))
 #define Val_GDBusInterfaceSkeleton(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusInterfaceSkeleton */
 
+#endif
 #ifndef Val_GDBusMenuModel
 #define GDBusMenuModel_val(val) ((GDBusMenuModel*)ml_gobject_ext_of_val(val))
 #define Val_GDBusMenuModel(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusMenuModel */
 
+#if GLIB_CHECK_VERSION(2,26,0)
 #ifndef Val_GDBusMessage
 #define GDBusMessage_val(val) ((GDBusMessage*)ml_gobject_ext_of_val(val))
 #define Val_GDBusMessage(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusMessage */
 
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 #ifndef Val_GDBusMethodInvocation
 #define GDBusMethodInvocation_val(val) ((GDBusMethodInvocation*)ml_gobject_ext_of_val(val))
 #define Val_GDBusMethodInvocation(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusMethodInvocation */
 
+#endif
+#if GLIB_CHECK_VERSION(2,30,0)
 #ifndef Val_GDBusObjectManagerClient
 #define GDBusObjectManagerClient_val(val) ((GDBusObjectManagerClient*)ml_gobject_ext_of_val(val))
 #define Val_GDBusObjectManagerClient(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusObjectManagerClient */
 
+#endif
+#if GLIB_CHECK_VERSION(2,30,0)
 #ifndef Val_GDBusObjectManagerServer
 #define GDBusObjectManagerServer_val(val) ((GDBusObjectManagerServer*)ml_gobject_ext_of_val(val))
 #define Val_GDBusObjectManagerServer(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusObjectManagerServer */
 
+#endif
+#if GLIB_CHECK_VERSION(2,30,0)
 #ifndef Val_GDBusObjectProxy
 #define GDBusObjectProxy_val(val) ((GDBusObjectProxy*)ml_gobject_ext_of_val(val))
 #define Val_GDBusObjectProxy(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusObjectProxy */
 
+#endif
+#if GLIB_CHECK_VERSION(2,30,0)
 #ifndef Val_GDBusObjectSkeleton
 #define GDBusObjectSkeleton_val(val) ((GDBusObjectSkeleton*)ml_gobject_ext_of_val(val))
 #define Val_GDBusObjectSkeleton(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusObjectSkeleton */
 
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 #ifndef Val_GDBusProxy
 #define GDBusProxy_val(val) ((GDBusProxy*)ml_gobject_ext_of_val(val))
 #define Val_GDBusProxy(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusProxy */
 
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 #ifndef Val_GDBusServer
 #define GDBusServer_val(val) ((GDBusServer*)ml_gobject_ext_of_val(val))
 #define Val_GDBusServer(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusServer */
 
+#endif
 #ifndef Val_GDataInputStream
 #define GDataInputStream_val(val) ((GDataInputStream*)ml_gobject_ext_of_val(val))
 #define Val_GDataInputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -149,11 +179,13 @@
 #define Val_GDataOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDataOutputStream */
 
+#if GLIB_CHECK_VERSION(2,72,0)
 #ifndef Val_GDebugControllerDBus
 #define GDebugControllerDBus_val(val) ((GDebugControllerDBus*)ml_gobject_ext_of_val(val))
 #define Val_GDebugControllerDBus(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDebugControllerDBus */
 
+#endif
 #ifndef Val_GDesktopAppInfo
 #define GDesktopAppInfo_val(val) ((GDesktopAppInfo*)ml_gobject_ext_of_val(val))
 #define Val_GDesktopAppInfo(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -174,11 +206,13 @@
 #define Val_GFileEnumerator(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFileEnumerator */
 
+#if GLIB_CHECK_VERSION(2,22,0)
 #ifndef Val_GFileIOStream
 #define GFileIOStream_val(val) ((GFileIOStream*)ml_gobject_ext_of_val(val))
 #define Val_GFileIOStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFileIOStream */
 
+#endif
 #ifndef Val_GFileIcon
 #define GFileIcon_val(val) ((GFileIcon*)ml_gobject_ext_of_val(val))
 #define Val_GFileIcon(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -224,21 +258,25 @@
 #define Val_GIOModule(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GIOModule */
 
+#if GLIB_CHECK_VERSION(2,22,0)
 #ifndef Val_GIOStream
 #define GIOStream_val(val) ((GIOStream*)ml_gobject_ext_of_val(val))
 #define Val_GIOStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GIOStream */
 
+#endif
 #ifndef Val_GInetAddress
 #define GInetAddress_val(val) ((GInetAddress*)ml_gobject_ext_of_val(val))
 #define Val_GInetAddress(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GInetAddress */
 
+#if GLIB_CHECK_VERSION(2,32,0)
 #ifndef Val_GInetAddressMask
 #define GInetAddressMask_val(val) ((GInetAddressMask*)ml_gobject_ext_of_val(val))
 #define Val_GInetAddressMask(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GInetAddressMask */
 
+#endif
 #ifndef Val_GInetSocketAddress
 #define GInetSocketAddress_val(val) ((GInetSocketAddress*)ml_gobject_ext_of_val(val))
 #define Val_GInetSocketAddress(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -264,41 +302,53 @@
 #define Val_GMemoryOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMemoryOutputStream */
 
+#if GLIB_CHECK_VERSION(2,32,0)
 #ifndef Val_GMenu
 #define GMenu_val(val) ((GMenu*)ml_gobject_ext_of_val(val))
 #define Val_GMenu(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMenu */
 
+#endif
+#if GLIB_CHECK_VERSION(2,32,0)
 #ifndef Val_GMenuAttributeIter
 #define GMenuAttributeIter_val(val) ((GMenuAttributeIter*)ml_gobject_ext_of_val(val))
 #define Val_GMenuAttributeIter(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMenuAttributeIter */
 
+#endif
+#if GLIB_CHECK_VERSION(2,32,0)
 #ifndef Val_GMenuItem
 #define GMenuItem_val(val) ((GMenuItem*)ml_gobject_ext_of_val(val))
 #define Val_GMenuItem(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMenuItem */
 
+#endif
+#if GLIB_CHECK_VERSION(2,32,0)
 #ifndef Val_GMenuLinkIter
 #define GMenuLinkIter_val(val) ((GMenuLinkIter*)ml_gobject_ext_of_val(val))
 #define Val_GMenuLinkIter(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMenuLinkIter */
 
+#endif
+#if GLIB_CHECK_VERSION(2,32,0)
 #ifndef Val_GMenuModel
 #define GMenuModel_val(val) ((GMenuModel*)ml_gobject_ext_of_val(val))
 #define Val_GMenuModel(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMenuModel */
 
+#endif
 #ifndef Val_GMountOperation
 #define GMountOperation_val(val) ((GMountOperation*)ml_gobject_ext_of_val(val))
 #define Val_GMountOperation(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMountOperation */
 
+#if GLIB_CHECK_VERSION(2,46,0)
 #ifndef Val_GNativeSocketAddress
 #define GNativeSocketAddress_val(val) ((GNativeSocketAddress*)ml_gobject_ext_of_val(val))
 #define Val_GNativeSocketAddress(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GNativeSocketAddress */
 
+#endif
 #ifndef Val_GNativeVolumeMonitor
 #define GNativeVolumeMonitor_val(val) ((GNativeVolumeMonitor*)ml_gobject_ext_of_val(val))
 #define Val_GNativeVolumeMonitor(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -314,11 +364,13 @@
 #define Val_GNetworkService(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GNetworkService */
 
+#if GLIB_CHECK_VERSION(2,40,0)
 #ifndef Val_GNotification
 #define GNotification_val(val) ((GNotification*)ml_gobject_ext_of_val(val))
 #define Val_GNotification(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GNotification */
 
+#endif
 #ifndef Val_GOutputStream
 #define GOutputStream_val(val) ((GOutputStream*)ml_gobject_ext_of_val(val))
 #define Val_GOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -329,16 +381,20 @@
 #define Val_GPermission(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GPermission */
 
+#if GLIB_CHECK_VERSION(2,38,0)
 #ifndef Val_GPropertyAction
 #define GPropertyAction_val(val) ((GPropertyAction*)ml_gobject_ext_of_val(val))
 #define Val_GPropertyAction(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GPropertyAction */
 
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 #ifndef Val_GProxyAddress
 #define GProxyAddress_val(val) ((GProxyAddress*)ml_gobject_ext_of_val(val))
 #define Val_GProxyAddress(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GProxyAddress */
 
+#endif
 #ifndef Val_GProxyAddressEnumerator
 #define GProxyAddressEnumerator_val(val) ((GProxyAddressEnumerator*)ml_gobject_ext_of_val(val))
 #define Val_GProxyAddressEnumerator(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -364,36 +420,44 @@
 #define Val_GSimpleAction(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSimpleAction */
 
+#if GLIB_CHECK_VERSION(2,28,0)
 #ifndef Val_GSimpleActionGroup
 #define GSimpleActionGroup_val(val) ((GSimpleActionGroup*)ml_gobject_ext_of_val(val))
 #define Val_GSimpleActionGroup(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSimpleActionGroup */
 
+#endif
 #ifndef Val_GSimpleAsyncResult
 #define GSimpleAsyncResult_val(val) ((GSimpleAsyncResult*)ml_gobject_ext_of_val(val))
 #define Val_GSimpleAsyncResult(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSimpleAsyncResult */
 
+#if GLIB_CHECK_VERSION(2,44,0)
 #ifndef Val_GSimpleIOStream
 #define GSimpleIOStream_val(val) ((GSimpleIOStream*)ml_gobject_ext_of_val(val))
 #define Val_GSimpleIOStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSimpleIOStream */
 
+#endif
 #ifndef Val_GSimplePermission
 #define GSimplePermission_val(val) ((GSimplePermission*)ml_gobject_ext_of_val(val))
 #define Val_GSimplePermission(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSimplePermission */
 
+#if GLIB_CHECK_VERSION(2,36,0)
 #ifndef Val_GSimpleProxyResolver
 #define GSimpleProxyResolver_val(val) ((GSimpleProxyResolver*)ml_gobject_ext_of_val(val))
 #define Val_GSimpleProxyResolver(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSimpleProxyResolver */
 
+#endif
+#if GLIB_CHECK_VERSION(2,22,0)
 #ifndef Val_GSocket
 #define GSocket_val(val) ((GSocket*)ml_gobject_ext_of_val(val))
 #define Val_GSocket(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocket */
 
+#endif
 #ifndef Val_GSocketAddress
 #define GSocketAddress_val(val) ((GSocketAddress*)ml_gobject_ext_of_val(val))
 #define Val_GSocketAddress(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -404,111 +468,149 @@
 #define Val_GSocketAddressEnumerator(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocketAddressEnumerator */
 
+#if GLIB_CHECK_VERSION(2,22,0)
 #ifndef Val_GSocketClient
 #define GSocketClient_val(val) ((GSocketClient*)ml_gobject_ext_of_val(val))
 #define Val_GSocketClient(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocketClient */
 
+#endif
+#if GLIB_CHECK_VERSION(2,22,0)
 #ifndef Val_GSocketConnection
 #define GSocketConnection_val(val) ((GSocketConnection*)ml_gobject_ext_of_val(val))
 #define Val_GSocketConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocketConnection */
 
+#endif
+#if GLIB_CHECK_VERSION(2,22,0)
 #ifndef Val_GSocketControlMessage
 #define GSocketControlMessage_val(val) ((GSocketControlMessage*)ml_gobject_ext_of_val(val))
 #define Val_GSocketControlMessage(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocketControlMessage */
 
+#endif
+#if GLIB_CHECK_VERSION(2,22,0)
 #ifndef Val_GSocketListener
 #define GSocketListener_val(val) ((GSocketListener*)ml_gobject_ext_of_val(val))
 #define Val_GSocketListener(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocketListener */
 
+#endif
+#if GLIB_CHECK_VERSION(2,22,0)
 #ifndef Val_GSocketService
 #define GSocketService_val(val) ((GSocketService*)ml_gobject_ext_of_val(val))
 #define Val_GSocketService(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocketService */
 
+#endif
+#if GLIB_CHECK_VERSION(2,40,0)
 #ifndef Val_GSubprocess
 #define GSubprocess_val(val) ((GSubprocess*)ml_gobject_ext_of_val(val))
 #define Val_GSubprocess(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSubprocess */
 
+#endif
+#if GLIB_CHECK_VERSION(2,40,0)
 #ifndef Val_GSubprocessLauncher
 #define GSubprocessLauncher_val(val) ((GSubprocessLauncher*)ml_gobject_ext_of_val(val))
 #define Val_GSubprocessLauncher(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSubprocessLauncher */
 
+#endif
 #ifndef Val_GTask
 #define GTask_val(val) ((GTask*)ml_gobject_ext_of_val(val))
 #define Val_GTask(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTask */
 
+#if GLIB_CHECK_VERSION(2,22,0)
 #ifndef Val_GTcpConnection
 #define GTcpConnection_val(val) ((GTcpConnection*)ml_gobject_ext_of_val(val))
 #define Val_GTcpConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTcpConnection */
 
+#endif
+#if GLIB_CHECK_VERSION(2,28,0)
 #ifndef Val_GTcpWrapperConnection
 #define GTcpWrapperConnection_val(val) ((GTcpWrapperConnection*)ml_gobject_ext_of_val(val))
 #define Val_GTcpWrapperConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTcpWrapperConnection */
 
+#endif
+#if GLIB_CHECK_VERSION(2,34,0)
 #ifndef Val_GTestDBus
 #define GTestDBus_val(val) ((GTestDBus*)ml_gobject_ext_of_val(val))
 #define Val_GTestDBus(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTestDBus */
 
+#endif
 #ifndef Val_GThemedIcon
 #define GThemedIcon_val(val) ((GThemedIcon*)ml_gobject_ext_of_val(val))
 #define Val_GThemedIcon(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GThemedIcon */
 
+#if GLIB_CHECK_VERSION(2,20,0)
 #ifndef Val_GThreadedResolver
 #define GThreadedResolver_val(val) ((GThreadedResolver*)ml_gobject_ext_of_val(val))
 #define Val_GThreadedResolver(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GThreadedResolver */
 
+#endif
+#if GLIB_CHECK_VERSION(2,22,0)
 #ifndef Val_GThreadedSocketService
 #define GThreadedSocketService_val(val) ((GThreadedSocketService*)ml_gobject_ext_of_val(val))
 #define Val_GThreadedSocketService(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GThreadedSocketService */
 
+#endif
+#if GLIB_CHECK_VERSION(2,28,0)
 #ifndef Val_GTlsCertificate
 #define GTlsCertificate_val(val) ((GTlsCertificate*)ml_gobject_ext_of_val(val))
 #define Val_GTlsCertificate(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsCertificate */
 
+#endif
+#if GLIB_CHECK_VERSION(2,28,0)
 #ifndef Val_GTlsConnection
 #define GTlsConnection_val(val) ((GTlsConnection*)ml_gobject_ext_of_val(val))
 #define Val_GTlsConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsConnection */
 
+#endif
+#if GLIB_CHECK_VERSION(2,30,0)
 #ifndef Val_GTlsDatabase
 #define GTlsDatabase_val(val) ((GTlsDatabase*)ml_gobject_ext_of_val(val))
 #define Val_GTlsDatabase(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsDatabase */
 
+#endif
+#if GLIB_CHECK_VERSION(2,30,0)
 #ifndef Val_GTlsInteraction
 #define GTlsInteraction_val(val) ((GTlsInteraction*)ml_gobject_ext_of_val(val))
 #define Val_GTlsInteraction(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsInteraction */
 
+#endif
+#if GLIB_CHECK_VERSION(2,30,0)
 #ifndef Val_GTlsPassword
 #define GTlsPassword_val(val) ((GTlsPassword*)ml_gobject_ext_of_val(val))
 #define Val_GTlsPassword(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsPassword */
 
+#endif
+#if GLIB_CHECK_VERSION(2,22,0)
 #ifndef Val_GUnixConnection
 #define GUnixConnection_val(val) ((GUnixConnection*)ml_gobject_ext_of_val(val))
 #define Val_GUnixConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GUnixConnection */
 
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 #ifndef Val_GUnixCredentialsMessage
 #define GUnixCredentialsMessage_val(val) ((GUnixCredentialsMessage*)ml_gobject_ext_of_val(val))
 #define Val_GUnixCredentialsMessage(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GUnixCredentialsMessage */
 
+#endif
 #ifndef Val_GUnixFDList
 #define GUnixFDList_val(val) ((GUnixFDList*)ml_gobject_ext_of_val(val))
 #define Val_GUnixFDList(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -570,36 +672,44 @@
 #define Val_GActionGroup(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GActionGroup */
 
+#if GLIB_CHECK_VERSION(2,32,0)
 #ifndef Val_GActionMap
 #define GActionMap_val(val) ((GActionMap*)ml_gobject_ext_of_val(val))
 #define Val_GActionMap(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GActionMap */
 
+#endif
 #ifndef Val_GAppInfo
 #define GAppInfo_val(val) ((GAppInfo*)ml_gobject_ext_of_val(val))
 #define Val_GAppInfo(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GAppInfo */
 
+#if GLIB_CHECK_VERSION(2,22,0)
 #ifndef Val_GAsyncInitable
 #define GAsyncInitable_val(val) ((GAsyncInitable*)ml_gobject_ext_of_val(val))
 #define Val_GAsyncInitable(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GAsyncInitable */
 
+#endif
 #ifndef Val_GAsyncResult
 #define GAsyncResult_val(val) ((GAsyncResult*)ml_gobject_ext_of_val(val))
 #define Val_GAsyncResult(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GAsyncResult */
 
+#if GLIB_CHECK_VERSION(2,24,0)
 #ifndef Val_GConverter
 #define GConverter_val(val) ((GConverter*)ml_gobject_ext_of_val(val))
 #define Val_GConverter(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GConverter */
 
+#endif
+#if GLIB_CHECK_VERSION(2,30,0)
 #ifndef Val_GDBusInterface
 #define GDBusInterface_val(val) ((GDBusInterface*)ml_gobject_ext_of_val(val))
 #define Val_GDBusInterface(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusInterface */
 
+#endif
 #ifndef Val_GDBusObject
 #define GDBusObject_val(val) ((GDBusObject*)ml_gobject_ext_of_val(val))
 #define Val_GDBusObject(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -610,16 +720,20 @@
 #define Val_GDBusObjectManager(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDBusObjectManager */
 
+#if GLIB_CHECK_VERSION(2,48,0)
 #ifndef Val_GDatagramBased
 #define GDatagramBased_val(val) ((GDatagramBased*)ml_gobject_ext_of_val(val))
 #define Val_GDatagramBased(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDatagramBased */
 
+#endif
+#if GLIB_CHECK_VERSION(2,72,0)
 #ifndef Val_GDebugController
 #define GDebugController_val(val) ((GDebugController*)ml_gobject_ext_of_val(val))
 #define Val_GDebugController(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDebugController */
 
+#endif
 #ifndef Val_GDesktopAppInfoLookup
 #define GDesktopAppInfoLookup_val(val) ((GDesktopAppInfoLookup*)ml_gobject_ext_of_val(val))
 #define Val_GDesktopAppInfoLookup(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -630,41 +744,51 @@
 #define Val_GDrive(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDrive */
 
+#if GLIB_CHECK_VERSION(2,48,0)
 #ifndef Val_GDtlsClientConnection
 #define GDtlsClientConnection_val(val) ((GDtlsClientConnection*)ml_gobject_ext_of_val(val))
 #define Val_GDtlsClientConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDtlsClientConnection */
 
+#endif
+#if GLIB_CHECK_VERSION(2,48,0)
 #ifndef Val_GDtlsConnection
 #define GDtlsConnection_val(val) ((GDtlsConnection*)ml_gobject_ext_of_val(val))
 #define Val_GDtlsConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDtlsConnection */
 
+#endif
+#if GLIB_CHECK_VERSION(2,48,0)
 #ifndef Val_GDtlsServerConnection
 #define GDtlsServerConnection_val(val) ((GDtlsServerConnection*)ml_gobject_ext_of_val(val))
 #define Val_GDtlsServerConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDtlsServerConnection */
 
+#endif
 #ifndef Val_GFile
 #define GFile_val(val) ((GFile*)ml_gobject_ext_of_val(val))
 #define Val_GFile(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFile */
 
+#if GLIB_CHECK_VERSION(2,24,0)
 #ifndef Val_GFileDescriptorBased
 #define GFileDescriptorBased_val(val) ((GFileDescriptorBased*)ml_gobject_ext_of_val(val))
 #define Val_GFileDescriptorBased(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFileDescriptorBased */
 
+#endif
 #ifndef Val_GIcon
 #define GIcon_val(val) ((GIcon*)ml_gobject_ext_of_val(val))
 #define Val_GIcon(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GIcon */
 
+#if GLIB_CHECK_VERSION(2,22,0)
 #ifndef Val_GInitable
 #define GInitable_val(val) ((GInitable*)ml_gobject_ext_of_val(val))
 #define Val_GInitable(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GInitable */
 
+#endif
 #ifndef Val_GListModel
 #define GListModel_val(val) ((GListModel*)ml_gobject_ext_of_val(val))
 #define Val_GListModel(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -675,51 +799,67 @@
 #define Val_GLoadableIcon(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GLoadableIcon */
 
+#if GLIB_CHECK_VERSION(2,64,0)
 #ifndef Val_GMemoryMonitor
 #define GMemoryMonitor_val(val) ((GMemoryMonitor*)ml_gobject_ext_of_val(val))
 #define Val_GMemoryMonitor(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMemoryMonitor */
 
+#endif
 #ifndef Val_GMount
 #define GMount_val(val) ((GMount*)ml_gobject_ext_of_val(val))
 #define Val_GMount(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GMount */
 
+#if GLIB_CHECK_VERSION(2,32,0)
 #ifndef Val_GNetworkMonitor
 #define GNetworkMonitor_val(val) ((GNetworkMonitor*)ml_gobject_ext_of_val(val))
 #define Val_GNetworkMonitor(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GNetworkMonitor */
 
+#endif
+#if GLIB_CHECK_VERSION(2,28,0)
 #ifndef Val_GPollableInputStream
 #define GPollableInputStream_val(val) ((GPollableInputStream*)ml_gobject_ext_of_val(val))
 #define Val_GPollableInputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GPollableInputStream */
 
+#endif
+#if GLIB_CHECK_VERSION(2,28,0)
 #ifndef Val_GPollableOutputStream
 #define GPollableOutputStream_val(val) ((GPollableOutputStream*)ml_gobject_ext_of_val(val))
 #define Val_GPollableOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GPollableOutputStream */
 
+#endif
+#if GLIB_CHECK_VERSION(2,70,0)
 #ifndef Val_GPowerProfileMonitor
 #define GPowerProfileMonitor_val(val) ((GPowerProfileMonitor*)ml_gobject_ext_of_val(val))
 #define Val_GPowerProfileMonitor(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GPowerProfileMonitor */
 
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 #ifndef Val_GProxy
 #define GProxy_val(val) ((GProxy*)ml_gobject_ext_of_val(val))
 #define Val_GProxy(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GProxy */
 
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 #ifndef Val_GProxyResolver
 #define GProxyResolver_val(val) ((GProxyResolver*)ml_gobject_ext_of_val(val))
 #define Val_GProxyResolver(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GProxyResolver */
 
+#endif
+#if GLIB_CHECK_VERSION(2,32,0)
 #ifndef Val_GRemoteActionGroup
 #define GRemoteActionGroup_val(val) ((GRemoteActionGroup*)ml_gobject_ext_of_val(val))
 #define Val_GRemoteActionGroup(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GRemoteActionGroup */
 
+#endif
 #ifndef Val_GSeekable
 #define GSeekable_val(val) ((GSeekable*)ml_gobject_ext_of_val(val))
 #define Val_GSeekable(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -730,26 +870,34 @@
 #define Val_GSocketConnectable(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSocketConnectable */
 
+#if GLIB_CHECK_VERSION(2,28,0)
 #ifndef Val_GTlsBackend
 #define GTlsBackend_val(val) ((GTlsBackend*)ml_gobject_ext_of_val(val))
 #define Val_GTlsBackend(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsBackend */
 
+#endif
+#if GLIB_CHECK_VERSION(2,28,0)
 #ifndef Val_GTlsClientConnection
 #define GTlsClientConnection_val(val) ((GTlsClientConnection*)ml_gobject_ext_of_val(val))
 #define Val_GTlsClientConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsClientConnection */
 
+#endif
+#if GLIB_CHECK_VERSION(2,30,0)
 #ifndef Val_GTlsFileDatabase
 #define GTlsFileDatabase_val(val) ((GTlsFileDatabase*)ml_gobject_ext_of_val(val))
 #define Val_GTlsFileDatabase(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsFileDatabase */
 
+#endif
+#if GLIB_CHECK_VERSION(2,28,0)
 #ifndef Val_GTlsServerConnection
 #define GTlsServerConnection_val(val) ((GTlsServerConnection*)ml_gobject_ext_of_val(val))
 #define Val_GTlsServerConnection(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GTlsServerConnection */
 
+#endif
 #ifndef Val_GVolume
 #define GVolume_val(val) ((GVolume*)ml_gobject_ext_of_val(val))
 #define Val_GVolume(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -761,55 +909,75 @@ GActionEntry *GActionEntry_val(value val);
 value Val_GActionEntry(const GActionEntry *ptr);
 value Val_GActionEntry_option(const GActionEntry *ptr);
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Forward declarations for GDBusAnnotationInfo converters */
 GDBusAnnotationInfo *GDBusAnnotationInfo_val(value val);
 value Val_GDBusAnnotationInfo(const GDBusAnnotationInfo *ptr);
 value Val_GDBusAnnotationInfo_option(const GDBusAnnotationInfo *ptr);
+#endif
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Forward declarations for GDBusArgInfo converters */
 GDBusArgInfo *GDBusArgInfo_val(value val);
 value Val_GDBusArgInfo(const GDBusArgInfo *ptr);
 value Val_GDBusArgInfo_option(const GDBusArgInfo *ptr);
+#endif
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Forward declarations for GDBusErrorEntry converters */
 GDBusErrorEntry *GDBusErrorEntry_val(value val);
 value Val_GDBusErrorEntry(const GDBusErrorEntry *ptr);
 value Val_GDBusErrorEntry_option(const GDBusErrorEntry *ptr);
+#endif
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Forward declarations for GDBusInterfaceInfo converters */
 GDBusInterfaceInfo *GDBusInterfaceInfo_val(value val);
 value Val_GDBusInterfaceInfo(const GDBusInterfaceInfo *ptr);
 value Val_GDBusInterfaceInfo_option(const GDBusInterfaceInfo *ptr);
+#endif
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Forward declarations for GDBusInterfaceVTable converters */
 GDBusInterfaceVTable *GDBusInterfaceVTable_val(value val);
 value Val_GDBusInterfaceVTable(const GDBusInterfaceVTable *ptr);
 value Val_GDBusInterfaceVTable_option(const GDBusInterfaceVTable *ptr);
+#endif
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Forward declarations for GDBusMethodInfo converters */
 GDBusMethodInfo *GDBusMethodInfo_val(value val);
 value Val_GDBusMethodInfo(const GDBusMethodInfo *ptr);
 value Val_GDBusMethodInfo_option(const GDBusMethodInfo *ptr);
+#endif
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Forward declarations for GDBusNodeInfo converters */
 GDBusNodeInfo *GDBusNodeInfo_val(value val);
 value Val_GDBusNodeInfo(const GDBusNodeInfo *ptr);
 value Val_GDBusNodeInfo_option(const GDBusNodeInfo *ptr);
+#endif
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Forward declarations for GDBusPropertyInfo converters */
 GDBusPropertyInfo *GDBusPropertyInfo_val(value val);
 value Val_GDBusPropertyInfo(const GDBusPropertyInfo *ptr);
 value Val_GDBusPropertyInfo_option(const GDBusPropertyInfo *ptr);
+#endif
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Forward declarations for GDBusSignalInfo converters */
 GDBusSignalInfo *GDBusSignalInfo_val(value val);
 value Val_GDBusSignalInfo(const GDBusSignalInfo *ptr);
 value Val_GDBusSignalInfo_option(const GDBusSignalInfo *ptr);
+#endif
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Forward declarations for GDBusSubtreeVTable converters */
 GDBusSubtreeVTable *GDBusSubtreeVTable_val(value val);
 value Val_GDBusSubtreeVTable(const GDBusSubtreeVTable *ptr);
 value Val_GDBusSubtreeVTable_option(const GDBusSubtreeVTable *ptr);
+#endif
 
 /* Forward declarations for GFileAttributeInfo converters */
 GFileAttributeInfo *GFileAttributeInfo_val(value val);
@@ -836,10 +1004,12 @@ GIOExtensionPoint *GIOExtensionPoint_val(value val);
 value Val_GIOExtensionPoint(const GIOExtensionPoint *ptr);
 value Val_GIOExtensionPoint_option(const GIOExtensionPoint *ptr);
 
+#if GLIB_CHECK_VERSION(2,30,0)
 /* Forward declarations for GIOModuleScope converters */
 GIOModuleScope *GIOModuleScope_val(value val);
 value Val_GIOModuleScope(const GIOModuleScope *ptr);
 value Val_GIOModuleScope_option(const GIOModuleScope *ptr);
+#endif
 
 /* Forward declarations for GIOSchedulerJob converters */
 GIOSchedulerJob *GIOSchedulerJob_val(value val);
@@ -851,45 +1021,59 @@ GIOStreamAdapter *GIOStreamAdapter_val(value val);
 value Val_GIOStreamAdapter(const GIOStreamAdapter *ptr);
 value Val_GIOStreamAdapter_option(const GIOStreamAdapter *ptr);
 
+#if GLIB_CHECK_VERSION(2,48,0)
 /* Forward declarations for GInputMessage converters */
 GInputMessage *GInputMessage_val(value val);
 value Val_GInputMessage(const GInputMessage *ptr);
 value Val_GInputMessage_option(const GInputMessage *ptr);
+#endif
 
+#if GLIB_CHECK_VERSION(2,22,0)
 /* Forward declarations for GInputVector converters */
 GInputVector *GInputVector_val(value val);
 value Val_GInputVector(const GInputVector *ptr);
 value Val_GInputVector_option(const GInputVector *ptr);
+#endif
 
+#if GLIB_CHECK_VERSION(2,44,0)
 /* Forward declarations for GOutputMessage converters */
 GOutputMessage *GOutputMessage_val(value val);
 value Val_GOutputMessage(const GOutputMessage *ptr);
 value Val_GOutputMessage_option(const GOutputMessage *ptr);
+#endif
 
+#if GLIB_CHECK_VERSION(2,22,0)
 /* Forward declarations for GOutputVector converters */
 GOutputVector *GOutputVector_val(value val);
 value Val_GOutputVector(const GOutputVector *ptr);
 value Val_GOutputVector_option(const GOutputVector *ptr);
+#endif
 
+#if GLIB_CHECK_VERSION(2,32,0)
 /* Forward declarations for GResource converters */
 GResource *GResource_val(value val);
 value Val_GResource(const GResource *ptr);
 value Val_GResource_option(const GResource *ptr);
+#endif
 
+#if GLIB_CHECK_VERSION(2,32,0)
 /* Forward declarations for GSettingsSchema converters */
 GSettingsSchema *GSettingsSchema_val(value val);
 value Val_GSettingsSchema(const GSettingsSchema *ptr);
 value Val_GSettingsSchema_option(const GSettingsSchema *ptr);
+#endif
 
 /* Forward declarations for GSettingsSchemaKey converters */
 GSettingsSchemaKey *GSettingsSchemaKey_val(value val);
 value Val_GSettingsSchemaKey(const GSettingsSchemaKey *ptr);
 value Val_GSettingsSchemaKey_option(const GSettingsSchemaKey *ptr);
 
+#if GLIB_CHECK_VERSION(2,32,0)
 /* Forward declarations for GSettingsSchemaSource converters */
 GSettingsSchemaSource *GSettingsSchemaSource_val(value val);
 value Val_GSettingsSchemaSource(const GSettingsSchemaSource *ptr);
 value Val_GSettingsSchemaSource_option(const GSettingsSchemaSource *ptr);
+#endif
 
 /* Forward declarations for GSrvTarget converters */
 GSrvTarget *GSrvTarget_val(value val);

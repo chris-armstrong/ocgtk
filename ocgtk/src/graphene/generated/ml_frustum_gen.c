@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "graphene_decls.h"
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 /* Conversion functions for graphene_frustum_t (opaque record with hidden fields) */
 graphene_frustum_t *graphene_frustum_t_val(value v) {
   return *(graphene_frustum_t **)Data_custom_val(v);
@@ -29,8 +30,9 @@ value Val_graphene_frustum_t_option(const graphene_frustum_t *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_graphene_frustum_t(ptr));
 }
+#endif
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 
 CAMLexport CAMLprim value ml_graphene_frustum_alloc(value unit)
@@ -110,7 +112,7 @@ graphene_frustum_free(graphene_frustum_t_val(self));
 CAMLreturn(Val_unit);
 }
 
-#if GRAPHENE_CHECK_VERSION(1,6,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,6,0)
 
 CAMLexport CAMLprim value ml_graphene_frustum_equal(value self, value arg1)
 {

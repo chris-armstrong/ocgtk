@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "graphene_decls.h"
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 /* Conversion functions for graphene_plane_t (opaque record with hidden fields) */
 graphene_plane_t *graphene_plane_t_val(value v) {
   return *(graphene_plane_t **)Data_custom_val(v);
@@ -29,8 +30,9 @@ value Val_graphene_plane_t_option(const graphene_plane_t *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_graphene_plane_t(ptr));
 }
+#endif
 
-#if GRAPHENE_CHECK_VERSION(1,2,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 
 CAMLexport CAMLprim value ml_graphene_plane_alloc(value unit)
@@ -41,7 +43,7 @@ graphene_plane_t *obj = graphene_plane_alloc();
 
 CAMLreturn(Val_graphene_plane_t(obj));
 }
-#if GRAPHENE_CHECK_VERSION(1,10,0)
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_plane_transform(value self, value arg1, value arg2)
 {

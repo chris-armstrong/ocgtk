@@ -21,6 +21,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Conversion functions for GDBusAnnotationInfo (opaque record with hidden fields) */
 GDBusAnnotationInfo *GDBusAnnotationInfo_val(value v) {
   return *(GDBusAnnotationInfo **)Data_custom_val(v);
@@ -35,6 +36,7 @@ value Val_GDBusAnnotationInfo_option(const GDBusAnnotationInfo *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GDBusAnnotationInfo(ptr));
 }
+#endif
 
 #if GLIB_CHECK_VERSION(2,26,0)
 

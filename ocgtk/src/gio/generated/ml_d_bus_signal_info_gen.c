@@ -21,6 +21,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Conversion functions for GDBusSignalInfo (opaque record with hidden fields) */
 GDBusSignalInfo *GDBusSignalInfo_val(value v) {
   return *(GDBusSignalInfo **)Data_custom_val(v);
@@ -35,6 +36,7 @@ value Val_GDBusSignalInfo_option(const GDBusSignalInfo *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GDBusSignalInfo(ptr));
 }
+#endif
 
 #if GLIB_CHECK_VERSION(2,26,0)
 

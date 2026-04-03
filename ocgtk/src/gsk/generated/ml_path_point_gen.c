@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gsk_decls.h"
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Copy function for GskPathPoint (value-like record with copy method) */
 value copy_GskPathPoint(const GskPathPoint *ptr)
 {
@@ -22,6 +23,7 @@ value copy_GskPathPoint(const GskPathPoint *ptr)
   GskPathPoint *copy = gsk_path_point_copy((GskPathPoint*)ptr);
   return ml_gir_record_val_ptr(copy);
 }
+#endif
 
 #if GTK_CHECK_VERSION(4,14,0)
 

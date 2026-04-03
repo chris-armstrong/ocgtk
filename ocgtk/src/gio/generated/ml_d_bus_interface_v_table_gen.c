@@ -21,6 +21,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Conversion functions for GDBusInterfaceVTable (opaque record with hidden fields) */
 GDBusInterfaceVTable *GDBusInterfaceVTable_val(value v) {
   return *(GDBusInterfaceVTable **)Data_custom_val(v);
@@ -35,6 +36,7 @@ value Val_GDBusInterfaceVTable_option(const GDBusInterfaceVTable *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GDBusInterfaceVTable(ptr));
 }
+#endif
 
 #if GLIB_CHECK_VERSION(2,26,0)
 

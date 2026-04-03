@@ -21,6 +21,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,30,0)
 /* Conversion functions for GIOModuleScope (opaque record with hidden fields) */
 GIOModuleScope *GIOModuleScope_val(value v) {
   return *(GIOModuleScope **)Data_custom_val(v);
@@ -35,6 +36,7 @@ value Val_GIOModuleScope_option(const GIOModuleScope *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GIOModuleScope(ptr));
 }
+#endif
 
 #if GLIB_CHECK_VERSION(2,30,0)
 

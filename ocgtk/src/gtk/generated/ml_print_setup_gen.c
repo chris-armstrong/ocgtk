@@ -16,6 +16,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gtk_decls.h"
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GtkPrintSetup (opaque record with hidden fields) */
 GtkPrintSetup *GtkPrintSetup_val(value v) {
   return *(GtkPrintSetup **)Data_custom_val(v);
@@ -30,6 +31,7 @@ value Val_GtkPrintSetup_option(const GtkPrintSetup *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GtkPrintSetup(ptr));
 }
+#endif
 
 #if GTK_CHECK_VERSION(4,14,0)
 

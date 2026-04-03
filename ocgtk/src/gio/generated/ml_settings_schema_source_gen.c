@@ -21,6 +21,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,32,0)
 /* Conversion functions for GSettingsSchemaSource (opaque record with hidden fields) */
 GSettingsSchemaSource *GSettingsSchemaSource_val(value v) {
   return *(GSettingsSchemaSource **)Data_custom_val(v);
@@ -35,6 +36,7 @@ value Val_GSettingsSchemaSource_option(const GSettingsSchemaSource *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GSettingsSchemaSource(ptr));
 }
+#endif
 
 #if GLIB_CHECK_VERSION(2,32,0)
 

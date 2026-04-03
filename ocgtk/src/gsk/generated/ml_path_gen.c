@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gsk_decls.h"
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GskPath (opaque record with hidden fields) */
 GskPath *GskPath_val(value v) {
   return *(GskPath **)Data_custom_val(v);
@@ -29,6 +30,7 @@ value Val_GskPath_option(const GskPath *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GskPath(ptr));
 }
+#endif
 
 #if GTK_CHECK_VERSION(4,14,0)
 

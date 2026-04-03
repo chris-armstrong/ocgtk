@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "pango_decls.h"
 
+#if PANGO_VERSION_CHECK(1,22,0)
 /* Copy function for PangoGlyphItemIter (value-like record with copy method) */
 value copy_PangoGlyphItemIter(const PangoGlyphItemIter *ptr)
 {
@@ -22,6 +23,7 @@ value copy_PangoGlyphItemIter(const PangoGlyphItemIter *ptr)
   PangoGlyphItemIter *copy = pango_glyph_item_iter_copy((PangoGlyphItemIter*)ptr);
   return ml_gir_record_val_ptr(copy);
 }
+#endif
 
 #if PANGO_VERSION_CHECK(1,22,0)
 

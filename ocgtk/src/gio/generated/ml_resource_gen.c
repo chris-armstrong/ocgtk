@@ -21,6 +21,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,32,0)
 /* Conversion functions for GResource (opaque record with hidden fields) */
 GResource *GResource_val(value v) {
   return *(GResource **)Data_custom_val(v);
@@ -35,6 +36,7 @@ value Val_GResource_option(const GResource *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GResource(ptr));
 }
+#endif
 
 #if GLIB_CHECK_VERSION(2,32,0)
 
