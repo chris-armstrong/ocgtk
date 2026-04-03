@@ -36,7 +36,6 @@
 #include <caml/threads.h>
 
 #include "wrappers.h"
-#include "generated_forward_decls.h"
 
 /* ==================================================================== */
 /* GLib Initialization */
