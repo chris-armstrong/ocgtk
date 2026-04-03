@@ -57,18 +57,15 @@ dune build
 
 ## Requirements
 
-
-### For GTK4
-- OCaml >= 4.09
-- GTK 4 >= 4.10
-- Cairo 2
-- Dune >= 3.0
+- OCaml >= 5.3 
+- GTK 4 >= 4.0 (bindings are generated up to 4.14.5 - older versions will throw runtime errors on unavailable APIs)
+- Dune >= 3.13
 
 ## License
 
-Copyright (C) 2025 Chris Armstrong, with some parts derived from lablgtk3 (see [LICENSE](LICENSE)).
+Copyright (C) 2025 Chris Armstrong, with some parts derived from lablgtk3 (see [LICENSE](LICENSE.md)).
 
-This library is distributed under the terms of the GNU Library General Public License v2, with the special exception on linking described in the [LICENSE](LICENSE) file.
+This library is distributed under the terms of the GNU Library General Public License v2, with the special exception on linking described in the [LICENSE](LICENSE.md) file.
 
 ## Documentation
 
