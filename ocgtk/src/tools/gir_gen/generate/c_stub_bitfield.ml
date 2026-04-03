@@ -50,6 +50,13 @@ let emit_bitfield_proto buf ~namespace (bitfield : gir_bitfield) =
       The namespace prefix for the current library (e.g., "Gtk")
     @param gtk_bitfields List of local bitfields to generate declarations for
     @return String containing forward declarations for bitfield converters *)
+let emit_version_guard_open buf ~namespace version_str =
+  let ( let* ) = Result.bind in
+  match (let* version = Version_guard.parse_version version_str in
+         Version_guard.emit_c_guard namespace version ~is_opening:true) with
+  | Error msg -> failwith msg
+  | Ok guard -> Buffer.add_string buf (guard ^ "\n")
+
 let generate_forward_decls ~namespace_prefix ~gtk_bitfields =
   let buf = Buffer.create 1024 in
 
@@ -57,6 +64,7 @@ let generate_forward_decls ~namespace_prefix ~gtk_bitfields =
     Buffer.add_string buf "/* Forward declarations for bitfield converters */\n";
     List.iter
       ~f:(fun (bitfield : gir_bitfield) ->
+        Option.iter (emit_version_guard_open buf ~namespace:namespace_prefix) bitfield.bitfield_version;
         let is_pixbuf_format_flags =
           String.equal bitfield.bitfield_c_type "GdkPixbufFormatFlags"
         in
@@ -73,7 +81,8 @@ let generate_forward_decls ~namespace_prefix ~gtk_bitfields =
           bitfield.bitfield_name bitfield.bitfield_c_type;
         bprintf buf "%s %s%s_val(value list);\n" bitfield.bitfield_c_type
           namespace_prefix bitfield.bitfield_name;
-        if is_pixbuf_format_flags then bprintf buf "#endif\n")
+        if is_pixbuf_format_flags then bprintf buf "#endif\n";
+        Option.iter (fun _ -> Buffer.add_string buf "#endif\n") bitfield.bitfield_version)
       gtk_bitfields;
     Buffer.add_string buf "\n"
   end;
