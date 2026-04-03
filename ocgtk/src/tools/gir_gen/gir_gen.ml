@@ -49,19 +49,24 @@ let entity_generator_by_entity_type =
       List.iter
         ~f:(fun (ctor : gir_constructor) ->
           if Filtering.should_generate_constructor ~ctx ctor then
-            (try
-              let stub = C_stub_constructor.generate_c_constructor ~ctx
-                ~c_type:entity.c_type ~class_name:entity.name ctor in
-              let ml_name = Gir_gen_lib.Utils.ml_constructor_name
-                ~class_name:entity.name ~constructor:ctor in
-              C_stub_helpers.emit_with_member_guard ~ctx ~class_version:entity.version
-                ~member_version:ctor.version ~stub buf
-                ~fallback:(fun v ->
+            try
+              let stub =
+                C_stub_constructor.generate_c_constructor ~ctx
+                  ~c_type:entity.c_type ~class_name:entity.name ctor
+              in
+              let ml_name =
+                Gir_gen_lib.Utils.ml_constructor_name ~class_name:entity.name
+                  ~constructor:ctor
+              in
+              C_stub_helpers.emit_with_member_guard ~ctx
+                ~class_version:entity.version ~member_version:ctor.version ~stub
+                buf ~fallback:(fun v ->
                   C_stub_helpers.emit_fallback_constructor_stub ~ctx
                     ~c_type:entity.c_type ~class_name:entity.name ~ml_name
                     ~c_identifier:ctor.c_identifier ~version:v ctor)
             with Failure msg ->
-              eprintf "  Warning: skipping constructor %s: %s\n" ctor.ctor_name msg))
+              eprintf "  Warning: skipping constructor %s: %s\n" ctor.ctor_name
+                msg)
         entity.constructors
     in
     let generate_c_stub_methods =
@@ -69,19 +74,22 @@ let entity_generator_by_entity_type =
       List.iter
         ~f:(fun (meth : gir_method) ->
           if not (Filtering.should_skip_method_binding ~ctx meth) then
-            (try
-              let stub = C_stub_method.generate_c_method ~ctx
-                ~c_type:entity.c_type meth entity.name in
-              let ml_name = Gir_gen_lib.Utils.ml_method_name
-                ~class_name:entity.name meth in
-              C_stub_helpers.emit_with_member_guard ~ctx ~class_version:entity.version
-                ~member_version:meth.version ~stub buf
-                ~fallback:(fun v ->
+            try
+              let stub =
+                C_stub_method.generate_c_method ~ctx ~c_type:entity.c_type meth
+                  entity.name
+              in
+              let ml_name =
+                Gir_gen_lib.Utils.ml_method_name ~class_name:entity.name meth
+              in
+              C_stub_helpers.emit_with_member_guard ~ctx
+                ~class_version:entity.version ~member_version:meth.version ~stub
+                buf ~fallback:(fun v ->
                   C_stub_helpers.emit_fallback_method_stub ~ctx
                     ~c_type:entity.c_type ~class_name:entity.name ~ml_name
                     ~c_identifier:meth.c_identifier ~version:v meth)
             with Failure msg ->
-              eprintf "  Warning: skipping method %s: %s\n" meth.method_name msg))
+              eprintf "  Warning: skipping method %s: %s\n" meth.method_name msg)
         (List.rev entity.methods)
     in
     let generate_c_stub_properties =
@@ -94,24 +102,32 @@ let entity_generator_by_entity_type =
           if Filtering.should_generate_property ~ctx ~class_name ~methods prop
           then begin
             if prop.readable then begin
-              let stub = C_stub_property.generate_c_property_getter ~ctx
-                ~c_type prop class_name in
-              let ml_name = Gir_gen_lib.Utils.ml_property_name ~ctx ~class_name prop in
-              C_stub_helpers.emit_with_member_guard ~ctx ~class_version:entity.version
-                ~member_version:prop.version ~stub buf
-                ~fallback:(fun v ->
-                  C_stub_helpers.emit_fallback_property_getter_stub ~ctx
-                    ~c_type ~class_name ~ml_name ~version:v prop)
+              let stub =
+                C_stub_property.generate_c_property_getter ~ctx ~c_type prop
+                  class_name
+              in
+              let ml_name =
+                Gir_gen_lib.Utils.ml_property_name ~ctx ~class_name prop
+              in
+              C_stub_helpers.emit_with_member_guard ~ctx
+                ~class_version:entity.version ~member_version:prop.version ~stub
+                buf ~fallback:(fun v ->
+                  C_stub_helpers.emit_fallback_property_getter_stub ~ctx ~c_type
+                    ~class_name ~ml_name ~version:v prop)
             end;
             if prop.writable && not prop.construct_only then begin
-              let stub = C_stub_property.generate_c_property_setter ~ctx
-                ~c_type prop class_name in
-              let ml_name = Gir_gen_lib.Utils.ml_property_setter_name ~ctx ~class_name prop in
-              C_stub_helpers.emit_with_member_guard ~ctx ~class_version:entity.version
-                ~member_version:prop.version ~stub buf
-                ~fallback:(fun v ->
-                  C_stub_helpers.emit_fallback_property_setter_stub ~ctx
-                    ~c_type ~class_name ~ml_name ~version:v prop)
+              let stub =
+                C_stub_property.generate_c_property_setter ~ctx ~c_type prop
+                  class_name
+              in
+              let ml_name =
+                Gir_gen_lib.Utils.ml_property_setter_name ~ctx ~class_name prop
+              in
+              C_stub_helpers.emit_with_member_guard ~ctx
+                ~class_version:entity.version ~member_version:prop.version ~stub
+                buf ~fallback:(fun v ->
+                  C_stub_helpers.emit_fallback_property_setter_stub ~ctx ~c_type
+                    ~class_name ~ml_name ~version:v prop)
             end
           end)
         entity.properties
@@ -119,7 +135,9 @@ let entity_generator_by_entity_type =
     let generate_c_stub_converters ~ctx ~entity buf =
       match entity.kind with
       | Class _ | Interface _ -> ()
-      | Record record -> C_stub_record.generate_record_converters ~buf record
+      | Record record ->
+          let namespace_prefix = ctx.namespace.namespace_name in
+          C_stub_record.generate_record_converters ~namespace_prefix ~buf record
     in
 
     match entity_type with
@@ -191,21 +209,26 @@ let generate_c_stub ~ctx ~output_dir entity =
     | None ->
         (* No version, emit body as-is *)
         Buffer.add_string buf body_content
-    | Some version_str ->
+    | Some version_str -> (
         (* Entity has version, wrap body with class-level guard *)
-        (match Gir_gen_lib.Version_guard.resolve_guard ~class_version:(Some version_str) ~member_version:None with
+        match
+          Gir_gen_lib.Version_guard.resolve_guard
+            ~class_version:(Some version_str) ~member_version:None
+        with
         | Error _ ->
             (* If parsing fails, emit without guard *)
             Buffer.add_string buf body_content
         | Ok Gir_gen_lib.Version_guard.No_guard ->
             (* No guard needed *)
             Buffer.add_string buf body_content
-        | Ok (Gir_gen_lib.Version_guard.Class_guard version) ->
+        | Ok (Gir_gen_lib.Version_guard.Class_guard version) -> (
             (* Emit class-level guard *)
-            (match Gir_gen_lib.Version_guard.emit_c_guard ctx.namespace.namespace_name version ~is_opening:true with
-            | Error _ ->
-                Buffer.add_string buf body_content
-            | Ok guard_if ->
+            match
+              Gir_gen_lib.Version_guard.emit_c_guard
+                ctx.namespace.namespace_name version ~is_opening:true
+            with
+            | Error _ -> Buffer.add_string buf body_content
+            | Ok guard_if -> (
                 Buffer.add_string buf guard_if;
                 Buffer.add_string buf "\n\n";
                 Buffer.add_string buf body_content;
@@ -214,43 +237,81 @@ let generate_c_stub ~ctx ~output_dir entity =
                 Buffer.add_string buf "\n\n";
 
                 (* Generate fallback stubs for all members *)
-                List.iter ~f:(fun (ctor : gir_constructor) ->
-                  if Gir_gen_lib.Generate.Filtering.should_generate_constructor ~ctx ctor then
-                    let ml_name = Gir_gen_lib.Utils.ml_constructor_name ~class_name:entity.name ~constructor:ctor in
-                    Buffer.add_string buf
-                      (Gir_gen_lib.Generate.C_stub_helpers.emit_fallback_constructor_stub
-                        ~ctx ~c_type:entity.c_type ~class_name:entity.name ~ml_name ~c_identifier:ctor.c_identifier ~version ctor);
-                    Buffer.add_string buf "\n"
-                ) entity.constructors;
-
-                List.iter ~f:(fun (meth : gir_method) ->
-                  if not (Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx meth) then
-                    let ml_name = Gir_gen_lib.Utils.ml_method_name ~class_name:entity.name meth in
-                    Buffer.add_string buf
-                      (Gir_gen_lib.Generate.C_stub_helpers.emit_fallback_method_stub
-                        ~ctx ~c_type:entity.c_type ~class_name:entity.name ~ml_name ~c_identifier:meth.c_identifier ~version meth);
-                    Buffer.add_string buf "\n"
-                ) entity.methods;
-
-                List.iter ~f:(fun (prop : gir_property) ->
-                  if Gir_gen_lib.Generate.Filtering.should_generate_property ~ctx ~class_name:entity.name ~methods:entity.methods prop then begin
-                    if prop.readable then
-                      let ml_name = Gir_gen_lib.Utils.ml_property_name ~ctx ~class_name:entity.name prop in
+                List.iter
+                  ~f:(fun (ctor : gir_constructor) ->
+                    if
+                      Gir_gen_lib.Generate.Filtering.should_generate_constructor
+                        ~ctx ctor
+                    then (
+                      let ml_name =
+                        Gir_gen_lib.Utils.ml_constructor_name
+                          ~class_name:entity.name ~constructor:ctor
+                      in
                       Buffer.add_string buf
-                        (Gir_gen_lib.Generate.C_stub_helpers.emit_fallback_property_getter_stub
-                          ~ctx ~c_type:entity.c_type ~class_name:entity.name ~ml_name ~version prop);
-                      Buffer.add_string buf "\n";
-                    if prop.writable && not prop.construct_only then
-                      let ml_name = Gir_gen_lib.Utils.ml_property_setter_name ~ctx ~class_name:entity.name prop in
+                        (Gir_gen_lib.Generate.C_stub_helpers
+                         .emit_fallback_constructor_stub ~ctx
+                           ~c_type:entity.c_type ~class_name:entity.name
+                           ~ml_name ~c_identifier:ctor.c_identifier ~version
+                           ctor);
+                      Buffer.add_string buf "\n"))
+                  entity.constructors;
+
+                List.iter
+                  ~f:(fun (meth : gir_method) ->
+                    if
+                      not
+                        (Gir_gen_lib.Generate.Filtering
+                         .should_skip_method_binding ~ctx meth)
+                    then (
+                      let ml_name =
+                        Gir_gen_lib.Utils.ml_method_name ~class_name:entity.name
+                          meth
+                      in
                       Buffer.add_string buf
-                        (Gir_gen_lib.Generate.C_stub_helpers.emit_fallback_property_setter_stub
-                          ~ctx ~c_type:entity.c_type ~class_name:entity.name ~ml_name ~version prop);
-                      Buffer.add_string buf "\n"
-                  end
-                ) entity.properties;
+                        (Gir_gen_lib.Generate.C_stub_helpers
+                         .emit_fallback_method_stub ~ctx ~c_type:entity.c_type
+                           ~class_name:entity.name ~ml_name
+                           ~c_identifier:meth.c_identifier ~version meth);
+                      Buffer.add_string buf "\n"))
+                  entity.methods;
+
+                List.iter
+                  ~f:(fun (prop : gir_property) ->
+                    if
+                      Gir_gen_lib.Generate.Filtering.should_generate_property
+                        ~ctx ~class_name:entity.name ~methods:entity.methods
+                        prop
+                    then
+                      begin if prop.readable then (
+                        let ml_name =
+                          Gir_gen_lib.Utils.ml_property_name ~ctx
+                            ~class_name:entity.name prop
+                        in
+                        Buffer.add_string buf
+                          (Gir_gen_lib.Generate.C_stub_helpers
+                           .emit_fallback_property_getter_stub ~ctx
+                             ~c_type:entity.c_type ~class_name:entity.name
+                             ~ml_name ~version prop);
+                        Buffer.add_string buf "\n";
+                        if prop.writable && not prop.construct_only then (
+                          let ml_name =
+                            Gir_gen_lib.Utils.ml_property_setter_name ~ctx
+                              ~class_name:entity.name prop
+                          in
+                          Buffer.add_string buf
+                            (Gir_gen_lib.Generate.C_stub_helpers
+                             .emit_fallback_property_setter_stub ~ctx
+                               ~c_type:entity.c_type ~class_name:entity.name
+                               ~ml_name ~version prop);
+                          Buffer.add_string buf "\n"))
+                      end)
+                  entity.properties;
 
                 Buffer.add_string buf "\n";
-                (match Gir_gen_lib.Version_guard.emit_c_guard ctx.namespace.namespace_name version ~is_opening:false with
+                match
+                  Gir_gen_lib.Version_guard.emit_c_guard
+                    ctx.namespace.namespace_name version ~is_opening:false
+                with
                 | Error _ -> Buffer.add_string buf "#endif\n"
                 | Ok guard_endif -> Buffer.add_string buf (guard_endif ^ "\n")))
         | Ok (Gir_gen_lib.Version_guard.Member_guard _) ->
@@ -352,12 +413,14 @@ let generate_high_level_class ~ctx ~output_dir ~generated_modules entity
     let g_file =
       Filename.concat
         (generated_output_dir output_dir)
-        (Gir_gen_lib.Utils.layer2_module_filename entity.Gir_gen_lib.Types.name ^ ".ml")
+        (Gir_gen_lib.Utils.layer2_module_filename entity.Gir_gen_lib.Types.name
+        ^ ".ml")
     in
     let g_sig_file =
       Filename.concat
         (generated_output_dir output_dir)
-        (Gir_gen_lib.Utils.layer2_module_filename entity.Gir_gen_lib.Types.name ^ ".mli")
+        (Gir_gen_lib.Utils.layer2_module_filename entity.Gir_gen_lib.Types.name
+        ^ ".mli")
     in
 
     (* Check if we're generating to src directory *)
@@ -383,7 +446,9 @@ let generate_high_level_class ~ctx ~output_dir ~generated_modules entity
            ~properties:entity.Gir_gen_lib.Types.properties
            ~signals:entity.Gir_gen_lib.Types.signals
            ~constructors:entity.Gir_gen_lib.Types.constructors);
-    generated_modules := Gir_gen_lib.Utils.layer2_module_filename entity.Gir_gen_lib.Types.name :: !generated_modules;
+    generated_modules :=
+      Gir_gen_lib.Utils.layer2_module_filename entity.Gir_gen_lib.Types.name
+      :: !generated_modules;
 
     (* Always overwrite signature files too *)
     let g_sig_exists = output_under_src && Sys.file_exists g_sig_file in
@@ -533,17 +598,17 @@ let generate_combined_class_files ~ctx ~output_dir ~generated_modules
   write_file ~path:g_file ~content:g_content;
   write_file ~path:g_sig_file ~content:g_sig;
   generated_modules :=
-    (Gir_gen_lib.Utils.layer2_module_filename combined_name)
-    :: !generated_modules
+    Gir_gen_lib.Utils.layer2_module_filename combined_name :: !generated_modules
 
 (* Generate shim modules for entities in cyclic groups *)
 let generate_cyclic_shim_files ~ctx ~output_dir ~generated_modules
     ~combined_module_name ~entity =
   let open Gir_gen_lib in
   let open Gir_gen_lib.Generate in
-
   (* Get the shim module names (gWindow, gApplication, etc.) *)
-  let shim_module_name = Gir_gen_lib.Utils.layer2_module_filename entity.Types.name in
+  let shim_module_name =
+    Gir_gen_lib.Utils.layer2_module_filename entity.Types.name
+  in
   let shim_file =
     Filename.concat (generated_output_dir output_dir) (shim_module_name ^ ".ml")
   in
@@ -552,18 +617,16 @@ let generate_cyclic_shim_files ~ctx ~output_dir ~generated_modules
   in
 
   (* Get the combined G module name *)
-  let combined_g_module_name =
-    Utils.layer2_module_name combined_module_name
-  in
+  let combined_g_module_name = Utils.layer2_module_name combined_module_name in
 
   (* Generate content using class_gen functions *)
   let ml_content =
-    Class_gen.generate_cyclic_shim_module ~ctx ~entity
-      ~combined_module_name ~g_combined_module_name:combined_g_module_name
+    Class_gen.generate_cyclic_shim_module ~ctx ~entity ~combined_module_name
+      ~g_combined_module_name:combined_g_module_name
   in
   let mli_content =
-    Class_gen.generate_cyclic_shim_signature ~ctx ~entity
-      ~combined_module_name ~g_combined_module_name:combined_g_module_name
+    Class_gen.generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name
+      ~g_combined_module_name:combined_g_module_name
   in
 
   (* Write files *)
@@ -613,33 +676,43 @@ let generate_enum_files ~output_dir ~generated_stubs ~generated_modules
       ]
       @ List.map
           ~f:(fun (enum : gir_enum) ->
-            let converters = Gir_gen_lib.Generate.Enum_code.generate_c_enum_converters
-              ~namespace:namespace.name enum in
+            let converters =
+              Gir_gen_lib.Generate.Enum_code.generate_c_enum_converters
+                ~namespace:namespace.name enum
+            in
             match enum.enum_version with
             | None -> converters
-            | Some version_str ->
-              (match Gir_gen_lib.Version_guard.parse_version version_str with
-              | Error _ -> converters
-              | Ok version ->
-                (match Gir_gen_lib.Version_guard.emit_c_guard namespace.name version ~is_opening:true with
+            | Some version_str -> (
+                match Gir_gen_lib.Version_guard.parse_version version_str with
                 | Error _ -> converters
-                | Ok guard_if ->
-                  guard_if ^ "\n" ^ converters ^ "#endif\n\n")))
+                | Ok version -> (
+                    match
+                      Gir_gen_lib.Version_guard.emit_c_guard namespace.name
+                        version ~is_opening:true
+                    with
+                    | Error _ -> converters
+                    | Ok guard_if -> guard_if ^ "\n" ^ converters ^ "#endif\n\n"
+                    )))
           enums
       @ List.map
           ~f:(fun (bitfield : gir_bitfield) ->
-            let converters = Gir_gen_lib.Generate.Enum_code.generate_c_bitfield_converters
-              ~namespace:namespace.name bitfield in
+            let converters =
+              Gir_gen_lib.Generate.Enum_code.generate_c_bitfield_converters
+                ~namespace:namespace.name bitfield
+            in
             match bitfield.bitfield_version with
             | None -> converters
-            | Some version_str ->
-              (match Gir_gen_lib.Version_guard.parse_version version_str with
-              | Error _ -> converters
-              | Ok version ->
-                (match Gir_gen_lib.Version_guard.emit_c_guard namespace.name version ~is_opening:true with
+            | Some version_str -> (
+                match Gir_gen_lib.Version_guard.parse_version version_str with
                 | Error _ -> converters
-                | Ok guard_if ->
-                  guard_if ^ "\n" ^ converters ^ "#endif\n\n")))
+                | Ok version -> (
+                    match
+                      Gir_gen_lib.Version_guard.emit_c_guard namespace.name
+                        version ~is_opening:true
+                    with
+                    | Error _ -> converters
+                    | Ok guard_if -> guard_if ^ "\n" ^ converters ^ "#endif\n\n"
+                    )))
           bitfields
     in
     write_file ~path:c_file ~content:(String.concat ~sep:"" c_content_parts);
@@ -731,12 +804,13 @@ let generate_bindings filter_file gir_file output_dir reference_files =
     ~f:(fun (cls : Gir_gen_lib.Types.gir_class) ->
       Hashtbl.replace parent_table
         (Gir_gen_lib.Utils.normalize_class_name cls.class_name)
-        (Option.map (fun p ->
-          if String.contains p '.' then
-            (* Cross-namespace parent: preserve qualified name (e.g. "Gio.Application") *)
-            p
-          else
-            Gir_gen_lib.Utils.normalize_class_name p) cls.parent))
+        (Option.map
+           (fun p ->
+             if String.contains p '.' then
+               (* Cross-namespace parent: preserve qualified name (e.g. "Gio.Application") *)
+               p
+             else Gir_gen_lib.Utils.normalize_class_name p)
+           cls.parent))
     classes;
 
   (* Resolve parent chain through cross-namespace references.
@@ -750,9 +824,7 @@ let generate_bindings filter_file gir_file output_dir reference_files =
      GObject/GLib aren't generated from GIR, so we hardcode the hierarchy
      here so that parent chain resolution can continue through them. *)
   let gobject_known_classes =
-    [ ("Object", None);
-      ("InitiallyUnowned", Some "Object");
-    ]
+    [ ("Object", None); ("InitiallyUnowned", Some "Object") ]
   in
 
   let cross_ns_parent_chain ns name =
@@ -763,27 +835,29 @@ let generate_bindings filter_file gir_file output_dir reference_files =
         let qualified = ns ^ "." ^ name in
         match List.assoc_opt name gobject_known_classes with
         | Some (Some parent) -> qualified :: aux ns parent (depth + 1)
-        | Some None -> [ qualified ]  (* root class *)
-        | None -> [ qualified ]       (* unknown GObject class, treat as terminal *)
+        | Some None -> [ qualified ] (* root class *)
+        | None -> [ qualified ] (* unknown GObject class, treat as terminal *)
       else
         match StringMap.find_opt ns cross_references with
         | None -> [ ns ^ "." ^ name ]
-        | Some ncr ->
+        | Some ncr -> (
             match StringMap.find_opt name ncr.ncr_entities with
             | None -> [ ns ^ "." ^ name ]
-            | Some cr ->
+            | Some cr -> (
                 let qualified = ns ^ "." ^ name in
                 match cr.cr_type with
                 | Crt_Class { parent = Some p } ->
                     if String.contains p '.' then
                       let dot = String.rindex p '.' in
                       let p_ns = String.sub p ~pos:0 ~len:dot in
-                      let p_name = String.sub p ~pos:(dot + 1) ~len:(String.length p - dot - 1) in
+                      let p_name =
+                        String.sub p ~pos:(dot + 1)
+                          ~len:(String.length p - dot - 1)
+                      in
                       qualified :: aux p_ns p_name (depth + 1)
-                    else
-                      qualified :: aux ns p (depth + 1)
+                    else qualified :: aux ns p (depth + 1)
                 | Crt_Class { parent = None } -> [ qualified ]
-                | _ -> [ qualified ]
+                | _ -> [ qualified ]))
     in
     aux ns name 0
   in
@@ -798,7 +872,10 @@ let generate_bindings filter_file gir_file output_dir reference_files =
               (* Cross-namespace parent: resolve full chain via cross-references *)
               let dot = String.rindex parent '.' in
               let ns = String.sub parent ~pos:0 ~len:dot in
-              let pname = String.sub parent ~pos:(dot + 1) ~len:(String.length parent - dot - 1) in
+              let pname =
+                String.sub parent ~pos:(dot + 1)
+                  ~len:(String.length parent - dot - 1)
+              in
               cross_ns_parent_chain ns pname
             else parent :: aux parent (depth + 1)
         | _ -> []

@@ -31,7 +31,7 @@ Support different GTK versions (e.g. 4.0 through 4.16) from a single generated s
 | PangoCairo | `PANGO_VERSION_CHECK(M,m,u)` | Same as Pango |
 | GdkPixbuf | `GDK_PIXBUF_CHECK_VERSION(M,m,u)` | `<gdk-pixbuf/gdk-pixbuf-macros.h>` |
 | Gio | `GLIB_CHECK_VERSION(M,m,u)` | `<glib/gversion.h>` |
-| Graphene | `GRAPHENE_CHECK_VERSION(M,m,u)` | `<graphene-version-macros.h>` |
+| Graphene | `GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(M,m,u)` | `<graphene-version-macros.h>` - the check macro is inverted for graphene |
 | Cairo | `CAIRO_VERSION >= CAIRO_VERSION_ENCODE(M,m,u)` | No CHECK macro; use encode comparison. Only 4 versioned elements in GIR |
 
 ---

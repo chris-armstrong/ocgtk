@@ -917,28 +917,46 @@ value Val_GUnixMountPoint_option(const GUnixMountPoint *ptr);
 /* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */
 
 /* Forward declarations for enum converters */
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioBusType(GBusType val);
 GBusType GioBusType_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,24,0)
 value Val_GioConverterResult(GConverterResult val);
 GConverterResult GioConverterResult_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioCredentialsType(GCredentialsType val);
 GCredentialsType GioCredentialsType_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioDBusError(GDBusError val);
 GDBusError GioDBusError_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioDBusMessageByteOrder(GDBusMessageByteOrder val);
 GDBusMessageByteOrder GioDBusMessageByteOrder_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioDBusMessageHeaderField(GDBusMessageHeaderField val);
 GDBusMessageHeaderField GioDBusMessageHeaderField_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioDBusMessageType(GDBusMessageType val);
 GDBusMessageType GioDBusMessageType_val(value val);
+#endif
 value Val_GioDataStreamByteOrder(GDataStreamByteOrder val);
 GDataStreamByteOrder GioDataStreamByteOrder_val(value val);
 value Val_GioDataStreamNewlineType(GDataStreamNewlineType val);
 GDataStreamNewlineType GioDataStreamNewlineType_val(value val);
+#if GLIB_CHECK_VERSION(2,22,0)
 value Val_GioDriveStartStopType(GDriveStartStopType val);
 GDriveStartStopType GioDriveStartStopType_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,18,0)
 value Val_GioEmblemOrigin(GEmblemOrigin val);
 GEmblemOrigin GioEmblemOrigin_val(value val);
+#endif
 value Val_GioFileAttributeStatus(GFileAttributeStatus val);
 GFileAttributeStatus GioFileAttributeStatus_val(value val);
 value Val_GioFileAttributeType(GFileAttributeType val);
@@ -951,138 +969,242 @@ value Val_GioFilesystemPreviewType(GFilesystemPreviewType val);
 GFilesystemPreviewType GioFilesystemPreviewType_val(value val);
 value Val_GioIOErrorEnum(GIOErrorEnum val);
 GIOErrorEnum GioIOErrorEnum_val(value val);
+#if GLIB_CHECK_VERSION(2,30,0)
 value Val_GioIOModuleScopeFlags(GIOModuleScopeFlags val);
 GIOModuleScopeFlags GioIOModuleScopeFlags_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,64,0)
 value Val_GioMemoryMonitorWarningLevel(GMemoryMonitorWarningLevel val);
 GMemoryMonitorWarningLevel GioMemoryMonitorWarningLevel_val(value val);
+#endif
 value Val_GioMountOperationResult(GMountOperationResult val);
 GMountOperationResult GioMountOperationResult_val(value val);
+#if GLIB_CHECK_VERSION(2,44,0)
 value Val_GioNetworkConnectivity(GNetworkConnectivity val);
 GNetworkConnectivity GioNetworkConnectivity_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,42,0)
 value Val_GioNotificationPriority(GNotificationPriority val);
 GNotificationPriority GioNotificationPriority_val(value val);
+#endif
 value Val_GioPasswordSave(GPasswordSave val);
 GPasswordSave GioPasswordSave_val(value val);
+#if GLIB_CHECK_VERSION(2,60,0)
 value Val_GioPollableReturn(GPollableReturn val);
 GPollableReturn GioPollableReturn_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,22,0)
 value Val_GioResolverError(GResolverError val);
 GResolverError GioResolverError_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,34,0)
 value Val_GioResolverRecordType(GResolverRecordType val);
 GResolverRecordType GioResolverRecordType_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,32,0)
 value Val_GioResourceError(GResourceError val);
 GResourceError GioResourceError_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,32,0)
 value Val_GioSocketClientEvent(GSocketClientEvent val);
 GSocketClientEvent GioSocketClientEvent_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,22,0)
 value Val_GioSocketFamily(GSocketFamily val);
 GSocketFamily GioSocketFamily_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,46,0)
 value Val_GioSocketListenerEvent(GSocketListenerEvent val);
 GSocketListenerEvent GioSocketListenerEvent_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,22,0)
 value Val_GioSocketProtocol(GSocketProtocol val);
 GSocketProtocol GioSocketProtocol_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,22,0)
 value Val_GioSocketType(GSocketType val);
 GSocketType GioSocketType_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,28,0)
 value Val_GioTlsAuthenticationMode(GTlsAuthenticationMode val);
 GTlsAuthenticationMode GioTlsAuthenticationMode_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,40,0)
 value Val_GioTlsCertificateRequestFlags(GTlsCertificateRequestFlags val);
 GTlsCertificateRequestFlags GioTlsCertificateRequestFlags_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,66,0)
 value Val_GioTlsChannelBindingError(GTlsChannelBindingError val);
 GTlsChannelBindingError GioTlsChannelBindingError_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,66,0)
 value Val_GioTlsChannelBindingType(GTlsChannelBindingType val);
 GTlsChannelBindingType GioTlsChannelBindingType_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,30,0)
 value Val_GioTlsDatabaseLookupFlags(GTlsDatabaseLookupFlags val);
 GTlsDatabaseLookupFlags GioTlsDatabaseLookupFlags_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,28,0)
 value Val_GioTlsError(GTlsError val);
 GTlsError GioTlsError_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,30,0)
 value Val_GioTlsInteractionResult(GTlsInteractionResult val);
 GTlsInteractionResult GioTlsInteractionResult_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,70,0)
 value Val_GioTlsProtocolVersion(GTlsProtocolVersion val);
 GTlsProtocolVersion GioTlsProtocolVersion_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,28,0)
 value Val_GioTlsRehandshakeMode(GTlsRehandshakeMode val);
 GTlsRehandshakeMode GioTlsRehandshakeMode_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioUnixSocketAddressType(GUnixSocketAddressType val);
 GUnixSocketAddressType GioUnixSocketAddressType_val(value val);
+#endif
+#if GLIB_CHECK_VERSION(2,24,0)
 value Val_GioZlibCompressorFormat(GZlibCompressorFormat val);
 GZlibCompressorFormat GioZlibCompressorFormat_val(value val);
+#endif
 
 /* Forward declarations for bitfield converters */
 value Val_GioAppInfoCreateFlags(GAppInfoCreateFlags flags);
 GAppInfoCreateFlags GioAppInfoCreateFlags_val(value list);
+#if GLIB_CHECK_VERSION(2,28,0)
 value Val_GioApplicationFlags(GApplicationFlags flags);
 GApplicationFlags GioApplicationFlags_val(value list);
+#endif
 value Val_GioAskPasswordFlags(GAskPasswordFlags flags);
 GAskPasswordFlags GioAskPasswordFlags_val(value list);
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioBusNameOwnerFlags(GBusNameOwnerFlags flags);
 GBusNameOwnerFlags GioBusNameOwnerFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioBusNameWatcherFlags(GBusNameWatcherFlags flags);
 GBusNameWatcherFlags GioBusNameWatcherFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,24,0)
 value Val_GioConverterFlags(GConverterFlags flags);
 GConverterFlags GioConverterFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioDBusCallFlags(GDBusCallFlags flags);
 GDBusCallFlags GioDBusCallFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioDBusCapabilityFlags(GDBusCapabilityFlags flags);
 GDBusCapabilityFlags GioDBusCapabilityFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioDBusConnectionFlags(GDBusConnectionFlags flags);
 GDBusConnectionFlags GioDBusConnectionFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,30,0)
 value Val_GioDBusInterfaceSkeletonFlags(GDBusInterfaceSkeletonFlags flags);
 GDBusInterfaceSkeletonFlags GioDBusInterfaceSkeletonFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioDBusMessageFlags(GDBusMessageFlags flags);
 GDBusMessageFlags GioDBusMessageFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,30,0)
 value Val_GioDBusObjectManagerClientFlags(GDBusObjectManagerClientFlags flags);
 GDBusObjectManagerClientFlags GioDBusObjectManagerClientFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioDBusPropertyInfoFlags(GDBusPropertyInfoFlags flags);
 GDBusPropertyInfoFlags GioDBusPropertyInfoFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioDBusProxyFlags(GDBusProxyFlags flags);
 GDBusProxyFlags GioDBusProxyFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioDBusSendMessageFlags(GDBusSendMessageFlags flags);
 GDBusSendMessageFlags GioDBusSendMessageFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioDBusServerFlags(GDBusServerFlags flags);
 GDBusServerFlags GioDBusServerFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioDBusSignalFlags(GDBusSignalFlags flags);
 GDBusSignalFlags GioDBusSignalFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
 value Val_GioDBusSubtreeFlags(GDBusSubtreeFlags flags);
 GDBusSubtreeFlags GioDBusSubtreeFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,22,0)
 value Val_GioDriveStartFlags(GDriveStartFlags flags);
 GDriveStartFlags GioDriveStartFlags_val(value list);
+#endif
 value Val_GioFileAttributeInfoFlags(GFileAttributeInfoFlags flags);
 GFileAttributeInfoFlags GioFileAttributeInfoFlags_val(value list);
 value Val_GioFileCopyFlags(GFileCopyFlags flags);
 GFileCopyFlags GioFileCopyFlags_val(value list);
 value Val_GioFileCreateFlags(GFileCreateFlags flags);
 GFileCreateFlags GioFileCreateFlags_val(value list);
+#if GLIB_CHECK_VERSION(2,38,0)
 value Val_GioFileMeasureFlags(GFileMeasureFlags flags);
 GFileMeasureFlags GioFileMeasureFlags_val(value list);
+#endif
 value Val_GioFileMonitorFlags(GFileMonitorFlags flags);
 GFileMonitorFlags GioFileMonitorFlags_val(value list);
 value Val_GioFileQueryInfoFlags(GFileQueryInfoFlags flags);
 GFileQueryInfoFlags GioFileQueryInfoFlags_val(value list);
+#if GLIB_CHECK_VERSION(2,28,0)
 value Val_GioIOStreamSpliceFlags(GIOStreamSpliceFlags flags);
 GIOStreamSpliceFlags GioIOStreamSpliceFlags_val(value list);
+#endif
 value Val_GioMountMountFlags(GMountMountFlags flags);
 GMountMountFlags GioMountMountFlags_val(value list);
 value Val_GioMountUnmountFlags(GMountUnmountFlags flags);
 GMountUnmountFlags GioMountUnmountFlags_val(value list);
 value Val_GioOutputStreamSpliceFlags(GOutputStreamSpliceFlags flags);
 GOutputStreamSpliceFlags GioOutputStreamSpliceFlags_val(value list);
+#if GLIB_CHECK_VERSION(2,60,0)
 value Val_GioResolverNameLookupFlags(GResolverNameLookupFlags flags);
 GResolverNameLookupFlags GioResolverNameLookupFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,32,0)
 value Val_GioResourceFlags(GResourceFlags flags);
 GResourceFlags GioResourceFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,32,0)
 value Val_GioResourceLookupFlags(GResourceLookupFlags flags);
 GResourceLookupFlags GioResourceLookupFlags_val(value list);
+#endif
 value Val_GioSettingsBindFlags(GSettingsBindFlags flags);
 GSettingsBindFlags GioSettingsBindFlags_val(value list);
+#if GLIB_CHECK_VERSION(2,22,0)
 value Val_GioSocketMsgFlags(GSocketMsgFlags flags);
 GSocketMsgFlags GioSocketMsgFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,40,0)
 value Val_GioSubprocessFlags(GSubprocessFlags flags);
 GSubprocessFlags GioSubprocessFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,34,0)
 value Val_GioTestDBusFlags(GTestDBusFlags flags);
 GTestDBusFlags GioTestDBusFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,28,0)
 value Val_GioTlsCertificateFlags(GTlsCertificateFlags flags);
 GTlsCertificateFlags GioTlsCertificateFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,30,0)
 value Val_GioTlsDatabaseVerifyFlags(GTlsDatabaseVerifyFlags flags);
 GTlsDatabaseVerifyFlags GioTlsDatabaseVerifyFlags_val(value list);
+#endif
+#if GLIB_CHECK_VERSION(2,30,0)
 value Val_GioTlsPasswordFlags(GTlsPasswordFlags flags);
 GTlsPasswordFlags GioTlsPasswordFlags_val(value list);
+#endif
 
 
 #endif /* _gio_decls_h_ */

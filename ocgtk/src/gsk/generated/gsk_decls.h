@@ -281,20 +281,32 @@ value Val_GskBlendMode(GskBlendMode val);
 GskBlendMode GskBlendMode_val(value val);
 value Val_GskCorner(GskCorner val);
 GskCorner GskCorner_val(value val);
+#if GTK_CHECK_VERSION(4,14,0)
 value Val_GskFillRule(GskFillRule val);
 GskFillRule GskFillRule_val(value val);
+#endif
 value Val_GskGLUniformType(GskGLUniformType val);
 GskGLUniformType GskGLUniformType_val(value val);
+#if GTK_CHECK_VERSION(4,14,0)
 value Val_GskLineCap(GskLineCap val);
 GskLineCap GskLineCap_val(value val);
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
 value Val_GskLineJoin(GskLineJoin val);
 GskLineJoin GskLineJoin_val(value val);
+#endif
+#if GTK_CHECK_VERSION(4,10,0)
 value Val_GskMaskMode(GskMaskMode val);
 GskMaskMode GskMaskMode_val(value val);
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
 value Val_GskPathDirection(GskPathDirection val);
 GskPathDirection GskPathDirection_val(value val);
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
 value Val_GskPathOperation(GskPathOperation val);
 GskPathOperation GskPathOperation_val(value val);
+#endif
 value Val_GskRenderNodeType(GskRenderNodeType val);
 GskRenderNodeType GskRenderNodeType_val(value val);
 value Val_GskScalingFilter(GskScalingFilter val);
@@ -305,8 +317,10 @@ value Val_GskTransformCategory(GskTransformCategory val);
 GskTransformCategory GskTransformCategory_val(value val);
 
 /* Forward declarations for bitfield converters */
+#if GTK_CHECK_VERSION(4,14,0)
 value Val_GskPathForeachFlags(GskPathForeachFlags flags);
 GskPathForeachFlags GskPathForeachFlags_val(value list);
+#endif
 
 
 #endif /* _gsk_decls_h_ */

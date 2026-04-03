@@ -76,6 +76,7 @@ value Val_GdkPixbufPixbufRotation(GdkPixbufRotation val);
 GdkPixbufRotation GdkPixbufPixbufRotation_val(value val);
 
 /* Forward declarations for bitfield converters */
+#if GDK_PIXBUF_CHECK_VERSION(2,2,0)
 #ifndef GDK_PIXBUF_FORMAT_WRITABLE
 typedef enum {
   GDK_PIXBUF_FORMAT_WRITABLE = 1,
@@ -84,6 +85,7 @@ typedef enum {
 } GdkPixbufFormatFlags;
 value Val_GdkPixbufPixbufFormatFlags(GdkPixbufFormatFlags flags);
 GdkPixbufFormatFlags GdkPixbufPixbufFormatFlags_val(value list);
+#endif
 #endif
 
 

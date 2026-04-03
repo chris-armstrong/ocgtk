@@ -2,7 +2,7 @@ open Containers
 
 type version = { major : int; minor : int; micro : int }
 type guard_kind = No_guard | Class_guard of version | Member_guard of version
-type macro_kind = Standard of string | Cairo
+type macro_kind = Standard of string | EncodeComparison of (string * string)
 
 let namespace_macro_kind namespace =
   match namespace with
@@ -13,8 +13,11 @@ let namespace_macro_kind namespace =
   | "PangoCairo" -> Ok (Standard "PANGO_VERSION_CHECK")
   | "GdkPixbuf" -> Ok (Standard "GDK_PIXBUF_CHECK_VERSION")
   | "Gio" -> Ok (Standard "GLIB_CHECK_VERSION")
-  | "Graphene" -> Ok (Standard "GRAPHENE_CHECK_VERSION")
-  | "Cairo" -> Ok Cairo
+  (* Graphene has a check macro, but its inverted in some versions. It's headers suggest comparing against the encoded version *)
+  | "Graphene" ->
+      Ok (EncodeComparison ("GRAPHENE_VERSION", "GRAPHENE_ENCODE_VERSION"))
+  (* Cairo needs an encode comparison macro too *)
+  | "Cairo" -> Ok (EncodeComparison ("CAIRO_VERSION", "CAIRO_VERSION_ENCODE"))
   | other -> Error (Printf.sprintf "Unknown namespace: %s" other)
 
 let parse_component version_str s =
@@ -78,8 +81,8 @@ let emit_c_guard namespace version ~is_opening =
   let* macro_kind = namespace_macro_kind namespace in
   let guard_expr =
     match macro_kind with
-    | Cairo ->
-        Printf.sprintf "CAIRO_VERSION >= CAIRO_VERSION_ENCODE(%s)"
+    | EncodeComparison (version_macro, encode_macro_name) ->
+        Printf.sprintf "%s >= %s(%s)" version_macro encode_macro_name
           (format_version_args version)
     | Standard macro_name ->
         Printf.sprintf "%s(%s)" macro_name (format_version_args version)

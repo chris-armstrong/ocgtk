@@ -54,17 +54,6 @@ let sample_header_incomplete_guard =
 #endif /* _gdk_decls_h_ */
 |}
 
-(* Sample header with old naming pattern *)
-let sample_header_old_naming =
-  {|
-#ifndef _gtk_generated_forward_decls_h_
-#define _gtk_generated_forward_decls_h_
-
-/* Content */
-
-#endif /* _gtk_generated_forward_decls_h_ */
-|}
-
 (* ========================================================================= *)
 (* Test Cases *)
 (* ========================================================================= *)
@@ -148,12 +137,7 @@ let test_header_guard_parsing_variations () =
   in
   Alcotest.(check int)
     "Should find one guard even if incomplete" 1
-    (List.length guards_incomplete);
-
-  (* Test with old naming - should still find it *)
-  let guards_old = C_validation.parse_header_guards sample_header_old_naming in
-  Alcotest.(check int)
-    "Should find one guard with old naming" 1 (List.length guards_old)
+    (List.length guards_incomplete)
 
 let test_parse_header_guards () =
   (* Test the parse_header_guards function directly *)

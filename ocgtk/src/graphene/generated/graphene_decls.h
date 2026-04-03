@@ -111,10 +111,14 @@ value Val_graphene_vec4_t_option(const graphene_vec4_t *ptr);
 /* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */
 
 /* Forward declarations for enum converters */
+#if GRAPHENE_CHECK_VERSION(1,2,0)
 value Val_GrapheneEulerOrder(graphene_euler_order_t val);
 graphene_euler_order_t GrapheneEulerOrder_val(value val);
+#endif
+#if GRAPHENE_CHECK_VERSION(1,10,0)
 value Val_GrapheneRayIntersectionKind(graphene_ray_intersection_kind_t val);
 graphene_ray_intersection_kind_t GrapheneRayIntersectionKind_val(value val);
+#endif
 
 
 #endif /* _graphene_decls_h_ */

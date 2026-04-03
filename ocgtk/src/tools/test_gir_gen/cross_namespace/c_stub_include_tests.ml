@@ -1,7 +1,7 @@
 (* Cross-namespace tests - Stage 5: Update C Stub File Header Include
 
    Tests that generated C stub files include the library-specific `<ns>_decls.h`
-   header instead of the generic `generated_forward_decls.h`. This ensures that
+   header. This ensures that
    each library's C stubs have access to the correct type converters. *)
 
 open C_validation
@@ -38,7 +38,7 @@ let create_test_context ~namespace =
 
 (* Stage 5 Test: C stub file includes library-specific decls header.
    When generating C stubs for a namespace, the file should include
-   `<ns>_decls.h` instead of the old `generated_forward_decls.h`. *)
+   `<ns>_decls.h`. *)
 let test_c_stub_includes_namespace_decls () =
   (* Create context for Gtk namespace *)
   let ctx = create_test_context ~namespace:"Gtk" in
@@ -52,10 +52,7 @@ let test_c_stub_includes_namespace_decls () =
     "c_stub_header.c (Stage 5 namespace decls include test)" header_content;
 
   (* Verify the namespace-specific header is included using AST-based validation *)
-  assert_local_include_exists header_content "gtk_decls.h";
-
-  (* Verify the old generic header is NOT included *)
-  assert_local_include_not_exists header_content "generated_forward_decls.h"
+  assert_local_include_exists header_content "gtk_decls.h"
 
 (* Stage 5 Test: C stub file includes correct header for Gdk namespace. *)
 let test_c_stub_includes_gdk_decls () =

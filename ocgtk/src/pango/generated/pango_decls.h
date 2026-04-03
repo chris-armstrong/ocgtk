@@ -251,28 +251,44 @@ value Val_PangoAlignment(PangoAlignment val);
 PangoAlignment PangoAlignment_val(value val);
 value Val_PangoAttrType(PangoAttrType val);
 PangoAttrType PangoAttrType_val(value val);
+#if PANGO_VERSION_CHECK(1,50,0)
 value Val_PangoBaselineShift(PangoBaselineShift val);
 PangoBaselineShift PangoBaselineShift_val(value val);
+#endif
+#if PANGO_VERSION_CHECK(1,22,0)
 value Val_PangoBidiType(PangoBidiType val);
 PangoBidiType PangoBidiType_val(value val);
+#endif
 value Val_PangoCoverageLevel(PangoCoverageLevel val);
 PangoCoverageLevel PangoCoverageLevel_val(value val);
 value Val_PangoDirection(PangoDirection val);
 PangoDirection PangoDirection_val(value val);
 value Val_PangoEllipsizeMode(PangoEllipsizeMode val);
 PangoEllipsizeMode PangoEllipsizeMode_val(value val);
+#if PANGO_VERSION_CHECK(1,50,0)
 value Val_PangoFontScale(PangoFontScale val);
 PangoFontScale PangoFontScale_val(value val);
+#endif
+#if PANGO_VERSION_CHECK(1,16,0)
 value Val_PangoGravity(PangoGravity val);
 PangoGravity PangoGravity_val(value val);
+#endif
+#if PANGO_VERSION_CHECK(1,16,0)
 value Val_PangoGravityHint(PangoGravityHint val);
 PangoGravityHint PangoGravityHint_val(value val);
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
 value Val_PangoLayoutDeserializeError(PangoLayoutDeserializeError val);
 PangoLayoutDeserializeError PangoLayoutDeserializeError_val(value val);
+#endif
+#if PANGO_VERSION_CHECK(1,46,0)
 value Val_PangoOverline(PangoOverline val);
 PangoOverline PangoOverline_val(value val);
+#endif
+#if PANGO_VERSION_CHECK(1,8,0)
 value Val_PangoRenderPart(PangoRenderPart val);
 PangoRenderPart PangoRenderPart_val(value val);
+#endif
 value Val_PangoScript(PangoScript val);
 PangoScript PangoScript_val(value val);
 value Val_PangoStretch(PangoStretch val);
@@ -281,8 +297,10 @@ value Val_PangoStyle(PangoStyle val);
 PangoStyle PangoStyle_val(value val);
 value Val_PangoTabAlign(PangoTabAlign val);
 PangoTabAlign PangoTabAlign_val(value val);
+#if PANGO_VERSION_CHECK(1,50,0)
 value Val_PangoTextTransform(PangoTextTransform val);
 PangoTextTransform PangoTextTransform_val(value val);
+#endif
 value Val_PangoUnderline(PangoUnderline val);
 PangoUnderline PangoUnderline_val(value val);
 value Val_PangoVariant(PangoVariant val);
@@ -295,14 +313,22 @@ PangoWrapMode PangoWrapMode_val(value val);
 /* Forward declarations for bitfield converters */
 value Val_PangoFontMask(PangoFontMask flags);
 PangoFontMask PangoFontMask_val(value list);
+#if PANGO_VERSION_CHECK(1,50,0)
 value Val_PangoLayoutDeserializeFlags(PangoLayoutDeserializeFlags flags);
 PangoLayoutDeserializeFlags PangoLayoutDeserializeFlags_val(value list);
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
 value Val_PangoLayoutSerializeFlags(PangoLayoutSerializeFlags flags);
 PangoLayoutSerializeFlags PangoLayoutSerializeFlags_val(value list);
+#endif
+#if PANGO_VERSION_CHECK(1,44,0)
 value Val_PangoShapeFlags(PangoShapeFlags flags);
 PangoShapeFlags PangoShapeFlags_val(value list);
+#endif
+#if PANGO_VERSION_CHECK(1,44,0)
 value Val_PangoShowFlags(PangoShowFlags flags);
 PangoShowFlags PangoShowFlags_val(value list);
+#endif
 
 
 #endif /* _pango_decls_h_ */

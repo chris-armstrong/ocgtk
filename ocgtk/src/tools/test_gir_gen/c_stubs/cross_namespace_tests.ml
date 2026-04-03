@@ -246,7 +246,8 @@ let test_copy_function_returns_copy_result () =
 
   (* Generate the copy function C code *)
   let buf = Buffer.create 1024 in
-  Gir_gen_lib.Generate.C_stub_record.generate_record_converters ~buf record;
+  Gir_gen_lib.Generate.C_stub_record.generate_record_converters
+    ~namespace_prefix:"test" ~buf record;
   let c_code = Buffer.contents buf in
   Helpers.log_generated_c_code "copy_function" c_code;
 
@@ -349,7 +350,8 @@ let test_record_copy_parses_successfully () =
 
   (* Generate the copy function C code *)
   let buf = Buffer.create 1024 in
-  Gir_gen_lib.Generate.C_stub_record.generate_record_converters ~buf record;
+  Gir_gen_lib.Generate.C_stub_record.generate_record_converters
+    ~namespace_prefix:"test" ~buf record;
   let c_code = Buffer.contents buf in
   Helpers.log_generated_c_code "record_copy_syntax" c_code;
 
@@ -1685,7 +1687,17 @@ let test_cross_namespace_c_converter_names () =
         };
       classes = [];
       interfaces = [];
-      enums = [{ enum_name = "Colorspace"; enum_c_type = "GdkColorspace"; members = []; functions = []; enum_doc = None; enum_version = None }];
+      enums =
+        [
+          {
+            enum_name = "Colorspace";
+            enum_c_type = "GdkColorspace";
+            members = [];
+            functions = [];
+            enum_doc = None;
+            enum_version = None;
+          };
+        ];
       bitfields = [];
       records = [];
       module_groups = Hashtbl.create 0;
@@ -1763,17 +1775,18 @@ let test_cross_namespace_enum_array_element_conversion () =
   let gdk_entities =
     StringMap.empty
     |> StringMap.add "ModifierType"
-         { cr_name = "ModifierType"; cr_type = Crt_Enum;
-           cr_c_type = "GdkModifierType" }
+         {
+           cr_name = "ModifierType";
+           cr_type = Crt_Enum;
+           cr_c_type = "GdkModifierType";
+         }
   in
   let cross_refs =
     StringMap.empty
-    |> StringMap.add "Gdk"
-         (snd (Helpers.make_ncr "Gdk" gdk_entities))
+    |> StringMap.add "Gdk" (snd (Helpers.make_ncr "Gdk" gdk_entities))
   in
   let ctx =
-    { (Helpers.create_test_context ()) with
-      cross_references = cross_refs }
+    { (Helpers.create_test_context ()) with cross_references = cross_refs }
   in
 
   (* Create a method returning an array of Gdk.ModifierType with length param *)
@@ -1871,8 +1884,7 @@ let test_cross_namespace_enum_array_element_conversion () =
     check_stmts func.C_ast.body
   in
   Alcotest.(check bool)
-    "No AddrOf wrapping cross-ns enum converter" false
-    has_addr_of_in_enum_call
+    "No AddrOf wrapping cross-ns enum converter" false has_addr_of_in_enum_call
 
 let tests =
   [
@@ -1923,7 +1935,6 @@ let tests =
     Alcotest.test_case "Cross-namespace C converter names (Bug 11)" `Quick
       test_cross_namespace_c_converter_names;
     (* Cross-namespace enum array element - no address-of *)
-    Alcotest.test_case
-      "Cross-namespace enum array element (no address-of)" `Quick
-      test_cross_namespace_enum_array_element_conversion;
+    Alcotest.test_case "Cross-namespace enum array element (no address-of)"
+      `Quick test_cross_namespace_enum_array_element_conversion;
   ]
