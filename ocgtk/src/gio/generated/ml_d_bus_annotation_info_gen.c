@@ -21,6 +21,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Conversion functions for GDBusAnnotationInfo (opaque record with hidden fields) */
 GDBusAnnotationInfo *GDBusAnnotationInfo_val(value v) {
   return *(GDBusAnnotationInfo **)Data_custom_val(v);
@@ -35,6 +36,9 @@ value Val_GDBusAnnotationInfo_option(const GDBusAnnotationInfo *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GDBusAnnotationInfo(ptr));
 }
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 
 
 CAMLexport CAMLprim value ml_g_dbus_annotation_info_unref(value self)
@@ -52,3 +56,26 @@ CAMLparam1(self);
 GDBusAnnotationInfo* result = g_dbus_annotation_info_ref(GDBusAnnotationInfo_val(self));
 CAMLreturn(Val_GDBusAnnotationInfo(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_dbus_annotation_info_ref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusAnnotationInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_annotation_info_unref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusAnnotationInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+#endif

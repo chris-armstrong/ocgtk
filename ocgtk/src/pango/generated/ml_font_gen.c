@@ -24,6 +24,8 @@ PangoFontMetrics* result = pango_font_get_metrics(PangoFont_val(self), Option_va
 CAMLreturn(Val_PangoFontMetrics(result));
 }
 
+#if PANGO_VERSION_CHECK(1,10,0)
+
 CAMLexport CAMLprim value ml_pango_font_get_font_map(value self)
 {
 CAMLparam1(self);
@@ -32,6 +34,19 @@ PangoFontMap* result = pango_font_get_font_map(PangoFont_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_PangoFontMap));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_font_get_font_map(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Font requires Pango >= 1.10");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,46,0)
 
 CAMLexport CAMLprim value ml_pango_font_get_face(value self)
 {
@@ -42,6 +57,17 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_PangoFontFace(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_pango_font_get_face(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Font requires Pango >= 1.46");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_pango_font_get_coverage(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -50,6 +76,8 @@ PangoCoverage* result = pango_font_get_coverage(PangoFont_val(self), PangoLangua
 CAMLreturn(Val_PangoCoverage(result));
 }
 
+#if PANGO_VERSION_CHECK(1,14,0)
+
 CAMLexport CAMLprim value ml_pango_font_describe_with_absolute_size(value self)
 {
 CAMLparam1(self);
@@ -57,6 +85,17 @@ CAMLparam1(self);
 PangoFontDescription* result = pango_font_describe_with_absolute_size(PangoFont_val(self));
 CAMLreturn(Val_PangoFontDescription(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_font_describe_with_absolute_size(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Font requires Pango >= 1.14");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_font_describe(value self)
 {

@@ -34,6 +34,8 @@ gtk_sort_list_model_set_sorter(GtkSortListModel_val(self), Option_val(arg1, GtkS
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,12,0)
+
 CAMLexport CAMLprim value ml_gtk_sort_list_model_set_section_sorter(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -41,6 +43,18 @@ CAMLparam2(self, arg1);
 gtk_sort_list_model_set_section_sorter(GtkSortListModel_val(self), Option_val(arg1, GtkSorter_val, NULL));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_sort_list_model_set_section_sorter(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SortListModel requires GTK >= 4.12");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_sort_list_model_set_model(value self, value arg1)
 {
@@ -67,6 +81,8 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkSorter));
 }
 
+#if GTK_CHECK_VERSION(4,12,0)
+
 CAMLexport CAMLprim value ml_gtk_sort_list_model_get_section_sorter(value self)
 {
 CAMLparam1(self);
@@ -75,6 +91,17 @@ GtkSorter* result = gtk_sort_list_model_get_section_sorter(GtkSortListModel_val(
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkSorter));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_sort_list_model_get_section_sorter(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SortListModel requires GTK >= 4.12");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_sort_list_model_get_pending(value self)
 {
@@ -101,6 +128,8 @@ gboolean result = gtk_sort_list_model_get_incremental(GtkSortListModel_val(self)
 CAMLreturn(Val_bool(result));
 }
 
+#if GTK_CHECK_VERSION(4,8,0)
+
 CAMLexport CAMLprim value ml_gtk_sort_list_model_get_n_items(value self)
 {
     CAMLparam1(self);
@@ -117,3 +146,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_sort_list_model_get_n_items(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SortListModel requires GTK >= 4.8");
+return Val_unit;
+}
+#endif

@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,48,0)
+
 
 CAMLexport CAMLprim value ml_g_dtls_client_connection_set_validation_flags(value self, value arg1)
 {
@@ -54,3 +56,46 @@ GSocketConnectable* result = g_dtls_client_connection_get_server_identity(GDtlsC
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GSocketConnectable(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_dtls_client_connection_get_server_identity(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DtlsClientConnection requires GLib >= 2.48");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dtls_client_connection_get_validation_flags(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DtlsClientConnection requires GLib >= 2.48");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dtls_client_connection_set_server_identity(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DtlsClientConnection requires GLib >= 2.48");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dtls_client_connection_set_validation_flags(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DtlsClientConnection requires GLib >= 2.48");
+return Val_unit;
+}
+
+
+#endif

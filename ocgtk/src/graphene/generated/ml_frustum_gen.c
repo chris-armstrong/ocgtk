@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "graphene_decls.h"
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 /* Conversion functions for graphene_frustum_t (opaque record with hidden fields) */
 graphene_frustum_t *graphene_frustum_t_val(value v) {
   return *(graphene_frustum_t **)Data_custom_val(v);
@@ -29,6 +30,9 @@ value Val_graphene_frustum_t_option(const graphene_frustum_t *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_graphene_frustum_t(ptr));
 }
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 
 CAMLexport CAMLprim value ml_graphene_frustum_alloc(value unit)
@@ -108,6 +112,8 @@ graphene_frustum_free(graphene_frustum_t_val(self));
 CAMLreturn(Val_unit);
 }
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,6,0)
+
 CAMLexport CAMLprim value ml_graphene_frustum_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -116,6 +122,18 @@ _Bool result = graphene_frustum_equal(graphene_frustum_t_val(self), graphene_fru
 CAMLreturn(Val_bool(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_graphene_frustum_equal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Frustum requires Graphene >= 1.6");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_graphene_frustum_contains_point(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -123,3 +141,110 @@ CAMLparam2(self, arg1);
 _Bool result = graphene_frustum_contains_point(graphene_frustum_t_val(self), graphene_point3d_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_graphene_frustum_alloc(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Frustum requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_frustum_contains_point(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Frustum requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_frustum_equal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Frustum requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_frustum_free(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Frustum requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_frustum_get_planes(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Frustum requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_frustum_init(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+(void)arg6;
+caml_failwith("Frustum requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_frustum_init_from_frustum(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Frustum requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_frustum_init_from_matrix(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Frustum requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_frustum_intersects_box(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Frustum requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_frustum_intersects_sphere(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Frustum requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+#endif

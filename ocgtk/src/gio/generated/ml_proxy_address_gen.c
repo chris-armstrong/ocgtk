@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,26,0)
+
 
 CAMLexport CAMLprim value ml_g_proxy_address_get_username(value self)
 {
@@ -30,6 +32,8 @@ const gchar* result = g_proxy_address_get_username(GProxyAddress_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
+#if GLIB_CHECK_VERSION(2,34,0)
+
 CAMLexport CAMLprim value ml_g_proxy_address_get_uri(value self)
 {
 CAMLparam1(self);
@@ -37,6 +41,17 @@ CAMLparam1(self);
 const gchar* result = g_proxy_address_get_uri(GProxyAddress_val(self));
 CAMLreturn(Val_option_string(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_proxy_address_get_uri(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ProxyAddress requires GLib >= 2.34");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_proxy_address_get_protocol(value self)
 {
@@ -54,6 +69,8 @@ const gchar* result = g_proxy_address_get_password(GProxyAddress_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
+#if GLIB_CHECK_VERSION(2,34,0)
+
 CAMLexport CAMLprim value ml_g_proxy_address_get_destination_protocol(value self)
 {
 CAMLparam1(self);
@@ -62,6 +79,17 @@ const gchar* result = g_proxy_address_get_destination_protocol(GProxyAddress_val
 CAMLreturn(caml_copy_string(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_proxy_address_get_destination_protocol(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ProxyAddress requires GLib >= 2.34");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_g_proxy_address_get_destination_hostname(value self)
 {
 CAMLparam1(self);
@@ -69,3 +97,62 @@ CAMLparam1(self);
 const gchar* result = g_proxy_address_get_destination_hostname(GProxyAddress_val(self));
 CAMLreturn(caml_copy_string(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_proxy_address_get_destination_hostname(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ProxyAddress requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_proxy_address_get_destination_protocol(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ProxyAddress requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_proxy_address_get_password(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ProxyAddress requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_proxy_address_get_protocol(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ProxyAddress requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_proxy_address_get_uri(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ProxyAddress requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_proxy_address_get_username(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ProxyAddress requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+#endif

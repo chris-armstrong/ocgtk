@@ -57,20 +57,26 @@
 #define Val_PangoLayout(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_PangoLayout */
 
+#if PANGO_VERSION_CHECK(1,8,0)
 #ifndef Val_PangoRenderer
 #define PangoRenderer_val(val) ((PangoRenderer*)ml_gobject_ext_of_val(val))
 #define Val_PangoRenderer(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_PangoRenderer */
 
+#endif
 /* Interface-specific conversion macros (shared) */
 /* Value-returning structs copied into OCaml */
 value copy_PangoAttribute(const PangoAttribute *ptr);
 value copy_PangoColor(const PangoColor *ptr);
 value copy_PangoGlyphItem(const PangoGlyphItem *ptr);
+#if PANGO_VERSION_CHECK(1,22,0)
 value copy_PangoGlyphItemIter(const PangoGlyphItemIter *ptr);
+#endif
 value copy_PangoGlyphString(const PangoGlyphString *ptr);
 value copy_PangoItem(const PangoItem *ptr);
+#if PANGO_VERSION_CHECK(1,6,0)
 value copy_PangoMatrix(const PangoMatrix *ptr);
+#endif
 
 #ifndef Val_PangoAttribute
 #define PangoAttribute_val(val) ((PangoAttribute*)ext_of_val(val))
@@ -90,12 +96,14 @@ value copy_PangoMatrix(const PangoMatrix *ptr);
 #define Val_PangoGlyphItem_option(ptr) ((ptr) ? Val_some(copy_PangoGlyphItem(ptr)) : Val_none)
 #endif /* Val_PangoGlyphItem */
 
+#if PANGO_VERSION_CHECK(1,22,0)
 #ifndef Val_PangoGlyphItemIter
 #define PangoGlyphItemIter_val(val) ((PangoGlyphItemIter*)ext_of_val(val))
 #define Val_PangoGlyphItemIter(obj) copy_PangoGlyphItemIter((obj))
 #define Val_PangoGlyphItemIter_option(ptr) ((ptr) ? Val_some(copy_PangoGlyphItemIter(ptr)) : Val_none)
 #endif /* Val_PangoGlyphItemIter */
 
+#endif
 #ifndef Val_PangoGlyphString
 #define PangoGlyphString_val(val) ((PangoGlyphString*)ext_of_val(val))
 #define Val_PangoGlyphString(obj) copy_PangoGlyphString((obj))
@@ -108,12 +116,14 @@ value copy_PangoMatrix(const PangoMatrix *ptr);
 #define Val_PangoItem_option(ptr) ((ptr) ? Val_some(copy_PangoItem(ptr)) : Val_none)
 #endif /* Val_PangoItem */
 
+#if PANGO_VERSION_CHECK(1,6,0)
 #ifndef Val_PangoMatrix
 #define PangoMatrix_val(val) ((PangoMatrix*)ext_of_val(val))
 #define Val_PangoMatrix(obj) copy_PangoMatrix((obj))
 #define Val_PangoMatrix_option(ptr) ((ptr) ? Val_some(copy_PangoMatrix(ptr)) : Val_none)
 #endif /* Val_PangoMatrix */
 
+#endif
 
 /* Forward declarations for record converters (non-opaque records) */
 /* Forward declarations for PangoAnalysis converters */
@@ -141,10 +151,12 @@ PangoAttrFontDesc *PangoAttrFontDesc_val(value val);
 value Val_PangoAttrFontDesc(const PangoAttrFontDesc *ptr);
 value Val_PangoAttrFontDesc_option(const PangoAttrFontDesc *ptr);
 
+#if PANGO_VERSION_CHECK(1,38,0)
 /* Forward declarations for PangoAttrFontFeatures converters */
 PangoAttrFontFeatures *PangoAttrFontFeatures_val(value val);
 value Val_PangoAttrFontFeatures(const PangoAttrFontFeatures *ptr);
 value Val_PangoAttrFontFeatures_option(const PangoAttrFontFeatures *ptr);
+#endif
 
 /* Forward declarations for PangoAttrInt converters */
 PangoAttrInt *PangoAttrInt_val(value val);
@@ -251,28 +263,44 @@ value Val_PangoAlignment(PangoAlignment val);
 PangoAlignment PangoAlignment_val(value val);
 value Val_PangoAttrType(PangoAttrType val);
 PangoAttrType PangoAttrType_val(value val);
+#if PANGO_VERSION_CHECK(1,50,0)
 value Val_PangoBaselineShift(PangoBaselineShift val);
 PangoBaselineShift PangoBaselineShift_val(value val);
+#endif
+#if PANGO_VERSION_CHECK(1,22,0)
 value Val_PangoBidiType(PangoBidiType val);
 PangoBidiType PangoBidiType_val(value val);
+#endif
 value Val_PangoCoverageLevel(PangoCoverageLevel val);
 PangoCoverageLevel PangoCoverageLevel_val(value val);
 value Val_PangoDirection(PangoDirection val);
 PangoDirection PangoDirection_val(value val);
 value Val_PangoEllipsizeMode(PangoEllipsizeMode val);
 PangoEllipsizeMode PangoEllipsizeMode_val(value val);
+#if PANGO_VERSION_CHECK(1,50,0)
 value Val_PangoFontScale(PangoFontScale val);
 PangoFontScale PangoFontScale_val(value val);
+#endif
+#if PANGO_VERSION_CHECK(1,16,0)
 value Val_PangoGravity(PangoGravity val);
 PangoGravity PangoGravity_val(value val);
+#endif
+#if PANGO_VERSION_CHECK(1,16,0)
 value Val_PangoGravityHint(PangoGravityHint val);
 PangoGravityHint PangoGravityHint_val(value val);
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
 value Val_PangoLayoutDeserializeError(PangoLayoutDeserializeError val);
 PangoLayoutDeserializeError PangoLayoutDeserializeError_val(value val);
+#endif
+#if PANGO_VERSION_CHECK(1,46,0)
 value Val_PangoOverline(PangoOverline val);
 PangoOverline PangoOverline_val(value val);
+#endif
+#if PANGO_VERSION_CHECK(1,8,0)
 value Val_PangoRenderPart(PangoRenderPart val);
 PangoRenderPart PangoRenderPart_val(value val);
+#endif
 value Val_PangoScript(PangoScript val);
 PangoScript PangoScript_val(value val);
 value Val_PangoStretch(PangoStretch val);
@@ -281,8 +309,10 @@ value Val_PangoStyle(PangoStyle val);
 PangoStyle PangoStyle_val(value val);
 value Val_PangoTabAlign(PangoTabAlign val);
 PangoTabAlign PangoTabAlign_val(value val);
+#if PANGO_VERSION_CHECK(1,50,0)
 value Val_PangoTextTransform(PangoTextTransform val);
 PangoTextTransform PangoTextTransform_val(value val);
+#endif
 value Val_PangoUnderline(PangoUnderline val);
 PangoUnderline PangoUnderline_val(value val);
 value Val_PangoVariant(PangoVariant val);
@@ -295,14 +325,22 @@ PangoWrapMode PangoWrapMode_val(value val);
 /* Forward declarations for bitfield converters */
 value Val_PangoFontMask(PangoFontMask flags);
 PangoFontMask PangoFontMask_val(value list);
+#if PANGO_VERSION_CHECK(1,50,0)
 value Val_PangoLayoutDeserializeFlags(PangoLayoutDeserializeFlags flags);
 PangoLayoutDeserializeFlags PangoLayoutDeserializeFlags_val(value list);
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
 value Val_PangoLayoutSerializeFlags(PangoLayoutSerializeFlags flags);
 PangoLayoutSerializeFlags PangoLayoutSerializeFlags_val(value list);
+#endif
+#if PANGO_VERSION_CHECK(1,44,0)
 value Val_PangoShapeFlags(PangoShapeFlags flags);
 PangoShapeFlags PangoShapeFlags_val(value list);
+#endif
+#if PANGO_VERSION_CHECK(1,44,0)
 value Val_PangoShowFlags(PangoShowFlags flags);
 PangoShowFlags PangoShowFlags_val(value list);
+#endif
 
 
 #endif /* _pango_decls_h_ */

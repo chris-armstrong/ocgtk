@@ -31,6 +31,8 @@ value Val_graphene_vec2_t_option(const graphene_vec2_t *ptr) {
 }
 
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
+
 CAMLexport CAMLprim value ml_graphene_vec2_alloc(value unit)
 {
 CAMLparam1(unit);
@@ -39,6 +41,19 @@ graphene_vec2_t *obj = graphene_vec2_alloc();
 
 CAMLreturn(Val_graphene_vec2_t(obj));
 }
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_alloc(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
+
 CAMLexport CAMLprim value ml_graphene_vec2_to_float(value self)
 {
 CAMLparam1(self);
@@ -55,6 +70,19 @@ graphene_vec2_to_float(graphene_vec2_t_val(self), out1);
 CAMLreturn(ml_out1);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_to_float(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
+
 CAMLexport CAMLprim value ml_graphene_vec2_subtract(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -63,6 +91,20 @@ graphene_vec2_t out2;
 graphene_vec2_subtract(graphene_vec2_t_val(self), graphene_vec2_t_val(arg1), &out2);
 CAMLreturn(Val_graphene_vec2_t(&out2));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_subtract(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_vec2_scale(value self, value arg1)
 {
@@ -73,6 +115,20 @@ graphene_vec2_scale(graphene_vec2_t_val(self), Double_val(arg1), &out2);
 CAMLreturn(Val_graphene_vec2_t(&out2));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_scale(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Vec2 requires Graphene >= 1.2");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
+
 CAMLexport CAMLprim value ml_graphene_vec2_normalize(value self)
 {
 CAMLparam1(self);
@@ -81,6 +137,19 @@ graphene_vec2_t out1;
 graphene_vec2_normalize(graphene_vec2_t_val(self), &out1);
 CAMLreturn(Val_graphene_vec2_t(&out1));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_normalize(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_vec2_negate(value self)
 {
@@ -91,6 +160,19 @@ graphene_vec2_negate(graphene_vec2_t_val(self), &out1);
 CAMLreturn(Val_graphene_vec2_t(&out1));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_negate(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Vec2 requires Graphene >= 1.2");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
+
 CAMLexport CAMLprim value ml_graphene_vec2_near(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -98,6 +180,21 @@ CAMLparam3(self, arg1, arg2);
 _Bool result = graphene_vec2_near(graphene_vec2_t_val(self), graphene_vec2_t_val(arg1), Double_val(arg2));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_near(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Vec2 requires Graphene >= 1.2");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec2_multiply(value self, value arg1)
 {
@@ -108,6 +205,20 @@ graphene_vec2_multiply(graphene_vec2_t_val(self), graphene_vec2_t_val(arg1), &ou
 CAMLreturn(Val_graphene_vec2_t(&out2));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_multiply(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
+
 CAMLexport CAMLprim value ml_graphene_vec2_min(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -116,6 +227,20 @@ graphene_vec2_t out2;
 graphene_vec2_min(graphene_vec2_t_val(self), graphene_vec2_t_val(arg1), &out2);
 CAMLreturn(Val_graphene_vec2_t(&out2));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_min(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec2_max(value self, value arg1)
 {
@@ -126,6 +251,20 @@ graphene_vec2_max(graphene_vec2_t_val(self), graphene_vec2_t_val(arg1), &out2);
 CAMLreturn(Val_graphene_vec2_t(&out2));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_max(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
+
 CAMLexport CAMLprim value ml_graphene_vec2_length(value self)
 {
 CAMLparam1(self);
@@ -133,6 +272,19 @@ CAMLparam1(self);
 float result = graphene_vec2_length(graphene_vec2_t_val(self));
 CAMLreturn(caml_copy_double(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_length(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_vec2_interpolate(value self, value arg1, value arg2)
 {
@@ -143,6 +295,21 @@ graphene_vec2_interpolate(graphene_vec2_t_val(self), graphene_vec2_t_val(arg1), 
 CAMLreturn(Val_graphene_vec2_t(&out3));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_interpolate(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Vec2 requires Graphene >= 1.10");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
+
 CAMLexport CAMLprim value ml_graphene_vec2_init_from_vec2(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -150,6 +317,20 @@ CAMLparam2(self, arg1);
 graphene_vec2_t* result = graphene_vec2_init_from_vec2(graphene_vec2_t_val(self), graphene_vec2_t_val(arg1));
 CAMLreturn(Val_graphene_vec2_t(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_init_from_vec2(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec2_init_from_float(value self, value arg1)
 {
@@ -165,6 +346,20 @@ graphene_vec2_t* result = graphene_vec2_init_from_float(graphene_vec2_t_val(self
 CAMLreturn(Val_graphene_vec2_t(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_init_from_float(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
+
 CAMLexport CAMLprim value ml_graphene_vec2_init(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -172,6 +367,21 @@ CAMLparam3(self, arg1, arg2);
 graphene_vec2_t* result = graphene_vec2_init(graphene_vec2_t_val(self), Double_val(arg1), Double_val(arg2));
 CAMLreturn(Val_graphene_vec2_t(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_init(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec2_get_y(value self)
 {
@@ -181,6 +391,19 @@ float result = graphene_vec2_get_y(graphene_vec2_t_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_get_y(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
+
 CAMLexport CAMLprim value ml_graphene_vec2_get_x(value self)
 {
 CAMLparam1(self);
@@ -188,6 +411,19 @@ CAMLparam1(self);
 float result = graphene_vec2_get_x(graphene_vec2_t_val(self));
 CAMLreturn(caml_copy_double(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_get_x(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec2_free(value self)
 {
@@ -197,6 +433,19 @@ graphene_vec2_free(graphene_vec2_t_val(self));
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_free(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
+
 CAMLexport CAMLprim value ml_graphene_vec2_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -205,6 +454,20 @@ _Bool result = graphene_vec2_equal(graphene_vec2_t_val(self), graphene_vec2_t_va
 CAMLreturn(Val_bool(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_equal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Vec2 requires Graphene >= 1.2");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
+
 CAMLexport CAMLprim value ml_graphene_vec2_dot(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -212,6 +475,20 @@ CAMLparam2(self, arg1);
 float result = graphene_vec2_dot(graphene_vec2_t_val(self), graphene_vec2_t_val(arg1));
 CAMLreturn(caml_copy_double(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_dot(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 CAMLexport CAMLprim value ml_graphene_vec2_divide(value self, value arg1)
 {
@@ -222,6 +499,20 @@ graphene_vec2_divide(graphene_vec2_t_val(self), graphene_vec2_t_val(arg1), &out2
 CAMLreturn(Val_graphene_vec2_t(&out2));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_divide(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
+
 CAMLexport CAMLprim value ml_graphene_vec2_add(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -230,3 +521,15 @@ graphene_vec2_t out2;
 graphene_vec2_add(graphene_vec2_t_val(self), graphene_vec2_t_val(arg1), &out2);
 CAMLreturn(Val_graphene_vec2_t(&out2));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_vec2_add(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Vec2 requires Graphene >= 1.0");
+return Val_unit;
+}
+#endif

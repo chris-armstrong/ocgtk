@@ -21,6 +21,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,48,0)
 /* Conversion functions for GInputMessage (opaque record with hidden fields) */
 GInputMessage *GInputMessage_val(value v) {
   return *(GInputMessage **)Data_custom_val(v);
@@ -35,4 +36,12 @@ value Val_GInputMessage_option(const GInputMessage *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GInputMessage(ptr));
 }
+#endif
 
+#if GLIB_CHECK_VERSION(2,48,0)
+
+
+#else
+
+
+#endif

@@ -55,6 +55,8 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GThemedIcon(obj));
 }
+#if GLIB_CHECK_VERSION(2,18,0)
+
 CAMLexport CAMLprim value ml_g_themed_icon_prepend_name(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -62,6 +64,18 @@ CAMLparam2(self, arg1);
 g_themed_icon_prepend_name(GThemedIcon_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_themed_icon_prepend_name(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ThemedIcon requires GLib >= 2.18");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_themed_icon_get_names(value self)
 {

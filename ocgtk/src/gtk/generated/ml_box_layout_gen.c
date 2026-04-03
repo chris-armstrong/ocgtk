@@ -50,6 +50,8 @@ gtk_box_layout_set_baseline_position(GtkBoxLayout_val(self), GtkBaselinePosition
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,12,0)
+
 CAMLexport CAMLprim value ml_gtk_box_layout_set_baseline_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -57,6 +59,18 @@ CAMLparam2(self, arg1);
 gtk_box_layout_set_baseline_child(GtkBoxLayout_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_box_layout_set_baseline_child(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("BoxLayout requires GTK >= 4.12");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_box_layout_get_spacing(value self)
 {
@@ -82,6 +96,8 @@ GtkBaselinePosition result = gtk_box_layout_get_baseline_position(GtkBoxLayout_v
 CAMLreturn(Val_GtkBaselinePosition(result));
 }
 
+#if GTK_CHECK_VERSION(4,12,0)
+
 CAMLexport CAMLprim value ml_gtk_box_layout_get_baseline_child(value self)
 {
 CAMLparam1(self);
@@ -89,3 +105,14 @@ CAMLparam1(self);
 int result = gtk_box_layout_get_baseline_child(GtkBoxLayout_val(self));
 CAMLreturn(Val_int(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_box_layout_get_baseline_child(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("BoxLayout requires GTK >= 4.12");
+return Val_unit;
+}
+#endif

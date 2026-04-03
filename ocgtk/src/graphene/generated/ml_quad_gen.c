@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "graphene_decls.h"
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 /* Conversion functions for graphene_quad_t (opaque record with hidden fields) */
 graphene_quad_t *graphene_quad_t_val(value v) {
   return *(graphene_quad_t **)Data_custom_val(v);
@@ -29,6 +30,9 @@ value Val_graphene_quad_t_option(const graphene_quad_t *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_graphene_quad_t(ptr));
 }
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 
 
 CAMLexport CAMLprim value ml_graphene_quad_alloc(value unit)
@@ -47,6 +51,8 @@ graphene_quad_t* result = graphene_quad_init_from_rect(graphene_quad_t_val(self)
 CAMLreturn(Val_graphene_quad_t(result));
 }
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
+
 CAMLexport CAMLprim value ml_graphene_quad_init_from_points(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -60,6 +66,18 @@ graphene_quad_t* result = graphene_quad_init_from_points(graphene_quad_t_val(sel
     g_free(c_arg1);
 CAMLreturn(Val_graphene_quad_t(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_graphene_quad_init_from_points(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Quad requires Graphene >= 1.2");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_graphene_quad_init(value self, value arg1, value arg2, value arg3, value arg4)
 {
@@ -101,3 +119,88 @@ graphene_rect_t out1;
 graphene_quad_bounds(graphene_quad_t_val(self), &out1);
 CAMLreturn(Val_graphene_rect_t(&out1));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_graphene_quad_alloc(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Quad requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_quad_bounds(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Quad requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_quad_contains(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Quad requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_quad_free(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Quad requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_quad_get_point(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Quad requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_quad_init(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("Quad requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_quad_init_from_points(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Quad requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_quad_init_from_rect(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Quad requires Graphene >= 1.0");
+return Val_unit;
+}
+
+
+#endif

@@ -21,6 +21,10 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,32,0)
+
+
+#if GLIB_CHECK_VERSION(2,78,0)
 
 CAMLexport CAMLprim value ml_g_action_map_remove_action_entries(value self, value arg1, value arg2)
 {
@@ -35,6 +39,19 @@ g_action_map_remove_action_entries(GActionMap_val(self), c_arg1, Int_val(arg2));
     g_free(c_arg1);
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_action_map_remove_action_entries(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("ActionMap requires GLib >= 2.78");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_action_map_remove_action(value self, value arg1)
 {
@@ -60,3 +77,49 @@ CAMLparam2(self, arg1);
 g_action_map_add_action(GActionMap_val(self), GAction_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_action_map_add_action(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ActionMap requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_action_map_lookup_action(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ActionMap requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_action_map_remove_action(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ActionMap requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_action_map_remove_action_entries(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("ActionMap requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+#endif

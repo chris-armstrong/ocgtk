@@ -22,6 +22,8 @@
 #include "gio_decls.h"
 
 
+#if GLIB_CHECK_VERSION(2,24,0)
+
 CAMLexport CAMLprim value ml_g_zlib_compressor_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
@@ -31,6 +33,20 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GZlibCompressor(obj));
 }
+#else
+
+CAMLexport CAMLprim value ml_g_zlib_compressor_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+(void)arg1;
+(void)arg2;
+caml_failwith("ZlibCompressor requires GLib >= 2.24");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_zlib_compressor_set_file_info(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -38,6 +54,20 @@ CAMLparam2(self, arg1);
 g_zlib_compressor_set_file_info(GZlibCompressor_val(self), Option_val(arg1, GFileInfo_val, NULL));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_zlib_compressor_set_file_info(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ZlibCompressor requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 
 CAMLexport CAMLprim value ml_g_zlib_compressor_get_file_info(value self)
 {
@@ -47,6 +77,19 @@ GFileInfo* result = g_zlib_compressor_get_file_info(GZlibCompressor_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GFileInfo));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_zlib_compressor_get_file_info(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ZlibCompressor requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,24,0)
 
 CAMLexport CAMLprim value ml_g_zlib_compressor_get_format(value self)
 {
@@ -65,6 +108,19 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
+#else
+
+CAMLexport CAMLprim value ml_g_zlib_compressor_get_format(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ZlibCompressor requires GLib >= 2.24");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,24,0)
+
 CAMLexport CAMLprim value ml_g_zlib_compressor_get_level(value self)
 {
     CAMLparam1(self);
@@ -81,3 +137,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_g_zlib_compressor_get_level(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ZlibCompressor requires GLib >= 2.24");
+return Val_unit;
+}
+#endif

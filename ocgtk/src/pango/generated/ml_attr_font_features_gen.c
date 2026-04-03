@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "pango_decls.h"
 
+#if PANGO_VERSION_CHECK(1,38,0)
 /* Conversion functions for PangoAttrFontFeatures (opaque record with hidden fields) */
 PangoAttrFontFeatures *PangoAttrFontFeatures_val(value v) {
   return *(PangoAttrFontFeatures **)Data_custom_val(v);
@@ -29,4 +30,12 @@ value Val_PangoAttrFontFeatures_option(const PangoAttrFontFeatures *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_PangoAttrFontFeatures(ptr));
 }
+#endif
 
+#if PANGO_VERSION_CHECK(1,38,0)
+
+
+#else
+
+
+#endif

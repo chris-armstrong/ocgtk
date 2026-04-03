@@ -21,6 +21,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Conversion functions for GDBusNodeInfo (opaque record with hidden fields) */
 GDBusNodeInfo *GDBusNodeInfo_val(value v) {
   return *(GDBusNodeInfo **)Data_custom_val(v);
@@ -35,6 +36,9 @@ value Val_GDBusNodeInfo_option(const GDBusNodeInfo *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GDBusNodeInfo(ptr));
 }
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 
 
 CAMLexport CAMLprim value ml_g_dbus_node_info_new_for_xml(value arg1)
@@ -69,3 +73,45 @@ CAMLparam2(self, arg1);
 GDBusInterfaceInfo* result = g_dbus_node_info_lookup_interface(GDBusNodeInfo_val(self), String_val(arg1));
 CAMLreturn(Val_option(result, Val_GDBusInterfaceInfo));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_dbus_node_info_new_for_xml(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("DBusNodeInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_node_info_lookup_interface(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusNodeInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_node_info_ref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusNodeInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_node_info_unref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusNodeInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+#endif

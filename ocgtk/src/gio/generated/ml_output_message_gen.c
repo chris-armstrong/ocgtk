@@ -21,6 +21,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,44,0)
 /* Conversion functions for GOutputMessage (opaque record with hidden fields) */
 GOutputMessage *GOutputMessage_val(value v) {
   return *(GOutputMessage **)Data_custom_val(v);
@@ -35,4 +36,12 @@ value Val_GOutputMessage_option(const GOutputMessage *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GOutputMessage(ptr));
 }
+#endif
 
+#if GLIB_CHECK_VERSION(2,44,0)
+
+
+#else
+
+
+#endif

@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for PathPoint */
 
-#include <gsk/gsk.h>
+#include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gsk_decls.h"
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Copy function for GskPathPoint (value-like record with copy method) */
 value copy_GskPathPoint(const GskPathPoint *ptr)
 {
@@ -22,6 +23,9 @@ value copy_GskPathPoint(const GskPathPoint *ptr)
   GskPathPoint *copy = gsk_path_point_copy((GskPathPoint*)ptr);
   return ml_gir_record_val_ptr(copy);
 }
+#endif
+
+#if GTK_CHECK_VERSION(4,14,0)
 
 
 CAMLexport CAMLprim value ml_gsk_path_point_get_tangent(value self, value arg1, value arg2)
@@ -102,3 +106,99 @@ CAMLparam2(self, arg1);
 int result = gsk_path_point_compare(GskPathPoint_val(self), GskPathPoint_val(arg1));
 CAMLreturn(Val_int(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_gsk_path_point_compare(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("PathPoint requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_point_copy(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PathPoint requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_point_equal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("PathPoint requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_point_free(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PathPoint requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_point_get_curvature(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("PathPoint requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_point_get_distance(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("PathPoint requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_point_get_position(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("PathPoint requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_point_get_rotation(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("PathPoint requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_point_get_tangent(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("PathPoint requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+#endif

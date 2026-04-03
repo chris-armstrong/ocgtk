@@ -3,7 +3,10 @@
 (** {1 Public API} *)
 
 val generate_forward_decls :
-  classes:Types.gir_class list -> interfaces:Types.gir_interface list -> string
+  namespace_prefix:string ->
+  classes:Types.gir_class list ->
+  interfaces:Types.gir_interface list ->
+  string
 (** Generate forward declaration macros for class and interface conversion
     functions. Creates #define macros for Val_<type> and <type>_val conversions
     that map between OCaml values and C pointers using helper functions. Avoids

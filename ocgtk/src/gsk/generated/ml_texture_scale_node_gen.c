@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for TextureScaleNode */
 
-#include <gsk/gsk.h>
+#include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -14,6 +14,8 @@
 #include <gsk/gsk.h>
 /* Include library-specific type conversions and forward declarations */
 #include "gsk_decls.h"
+
+#if GTK_CHECK_VERSION(4,10,0)
 
 
 CAMLexport CAMLprim value ml_gsk_texture_scale_node_new(value arg1, value arg2, value arg3)
@@ -41,3 +43,37 @@ CAMLparam1(self);
 GskScalingFilter result = gsk_texture_scale_node_get_filter(GskTextureScaleNode_val(self));
 CAMLreturn(Val_GskScalingFilter(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_gsk_texture_scale_node_new(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("TextureScaleNode requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_texture_scale_node_get_filter(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TextureScaleNode requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_texture_scale_node_get_texture(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TextureScaleNode requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+#endif

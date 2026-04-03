@@ -7,7 +7,7 @@
 #include <caml/fail.h>
 #include <caml/hash.h>
 #include <glib.h>
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 /* Convert GdkAxisUse to OCaml value */
 value Val_GdkAxisUse(GdkAxisUse val) {
   switch (val) {
@@ -162,6 +162,7 @@ GdkDeviceToolType GdkDeviceToolType_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Convert GdkDmabufError to OCaml value */
 value Val_GdkDmabufError(GdkDmabufError val) {
   switch (val) {
@@ -189,6 +190,8 @@ GdkDmabufError GdkDmabufError_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GdkDragCancelReason to OCaml value */
 value Val_GdkDragCancelReason(GdkDragCancelReason val) {
@@ -620,6 +623,7 @@ GdkScrollDirection GdkScrollDirection_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,8,0)
 /* Convert GdkScrollUnit to OCaml value */
 value Val_GdkScrollUnit(GdkScrollUnit val) {
   switch (val) {
@@ -645,6 +649,8 @@ GdkScrollUnit GdkScrollUnit_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GdkSubpixelLayout to OCaml value */
 value Val_GdkSubpixelLayout(GdkSubpixelLayout val) {
@@ -718,6 +724,7 @@ GdkSurfaceEdge GdkSurfaceEdge_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,6,0)
 /* Convert GdkTextureError to OCaml value */
 value Val_GdkTextureError(GdkTextureError val) {
   switch (val) {
@@ -748,6 +755,9 @@ GdkTextureError GdkTextureError_val(value val) {
   }
 }
 
+#endif
+
+#if GTK_CHECK_VERSION(4,4,0)
 /* Convert GdkTitlebarGesture to OCaml value */
 value Val_GdkTitlebarGesture(GdkTitlebarGesture val) {
   switch (val) {
@@ -775,6 +785,8 @@ GdkTitlebarGesture GdkTitlebarGesture_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert GdkTouchpadGesturePhase to OCaml value */
 value Val_GdkTouchpadGesturePhase(GdkTouchpadGesturePhase val) {
@@ -1136,6 +1148,7 @@ GdkFrameClockPhase GdkFrameClockPhase_val(value list) {
   return result;
 }
 
+#if GTK_CHECK_VERSION(4,6,0)
 /* Convert GdkGLAPI to OCaml flag list */
 value Val_GdkGLAPI(GdkGLAPI flags) {
   CAMLparam0();
@@ -1169,6 +1182,8 @@ GdkGLAPI GdkGLAPI_val(value list) {
   }
   return result;
 }
+
+#endif
 
 /* Convert GdkModifierType to OCaml flag list */
 value Val_GdkModifierType(GdkModifierType flags) {

@@ -22,6 +22,8 @@
 #include "gio_decls.h"
 
 
+#if GLIB_CHECK_VERSION(2,24,0)
+
 CAMLexport CAMLprim value ml_g_zlib_decompressor_new(value arg1)
 {
 CAMLparam1(arg1);
@@ -31,6 +33,19 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GZlibDecompressor(obj));
 }
+#else
+
+CAMLexport CAMLprim value ml_g_zlib_decompressor_new(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("ZlibDecompressor requires GLib >= 2.24");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
+
 CAMLexport CAMLprim value ml_g_zlib_decompressor_get_file_info(value self)
 {
 CAMLparam1(self);
@@ -39,6 +54,19 @@ GFileInfo* result = g_zlib_decompressor_get_file_info(GZlibDecompressor_val(self
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GFileInfo));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_zlib_decompressor_get_file_info(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ZlibDecompressor requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,24,0)
 
 CAMLexport CAMLprim value ml_g_zlib_decompressor_get_format(value self)
 {
@@ -56,3 +84,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_GioZlibCompressorFormat(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_g_zlib_decompressor_get_format(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ZlibDecompressor requires GLib >= 2.24");
+return Val_unit;
+}
+#endif

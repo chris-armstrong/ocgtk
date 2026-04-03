@@ -31,6 +31,8 @@ gboolean result = g_output_stream_set_pending(GOutputStream_val(self), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#if GLIB_CHECK_VERSION(2,24,0)
+
 CAMLexport CAMLprim value ml_g_output_stream_is_closing(value self)
 {
 CAMLparam1(self);
@@ -38,6 +40,17 @@ CAMLparam1(self);
 gboolean result = g_output_stream_is_closing(GOutputStream_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_output_stream_is_closing(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("OutputStream requires GLib >= 2.24");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_output_stream_is_closed(value self)
 {

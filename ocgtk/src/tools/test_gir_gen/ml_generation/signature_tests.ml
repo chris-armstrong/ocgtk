@@ -77,6 +77,7 @@ let test_constructor_signature_matches () =
     ctor_doc = None;
     throws = false;
     ctor_introspectable = true;
+      version = None;
   } in
 
   let mli_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -149,6 +150,7 @@ let test_method_signature_matches () =
     get_property = None;
     set_property = None;
     introspectable = true;
+      version = None;
   } in
 
   let mli_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -222,6 +224,7 @@ let test_multiple_methods_match () =
       get_property = None;
       set_property = None;
     introspectable = true;
+      version = None;
     };
     {
       method_name = "get_label";
@@ -233,6 +236,7 @@ let test_multiple_methods_match () =
       get_property = None;
       set_property = None;
     introspectable = true;
+      version = None;
     };
   ] in
 

@@ -15,6 +15,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "pangocairo_decls.h"
 
+#if PANGO_VERSION_CHECK(1,10,0)
+
 
 CAMLexport CAMLprim value ml_pango_cairo_font_map_set_resolution(value self, value arg1)
 {
@@ -24,6 +26,8 @@ pango_cairo_font_map_set_resolution(PangoCairoFontMap_val(self), Double_val(arg1
 CAMLreturn(Val_unit);
 }
 
+#if PANGO_VERSION_CHECK(1,22,0)
+
 CAMLexport CAMLprim value ml_pango_cairo_font_map_set_default(value self)
 {
 CAMLparam1(self);
@@ -31,6 +35,17 @@ CAMLparam1(self);
 pango_cairo_font_map_set_default(PangoCairoFontMap_val(self));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_cairo_font_map_set_default(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontMap requires Pango >= 1.22");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_cairo_font_map_get_resolution(value self)
 {
@@ -40,6 +55,8 @@ double result = pango_cairo_font_map_get_resolution(PangoCairoFontMap_val(self))
 CAMLreturn(caml_copy_double(result));
 }
 
+#if PANGO_VERSION_CHECK(1,18,0)
+
 CAMLexport CAMLprim value ml_pango_cairo_font_map_get_font_type(value self)
 {
 CAMLparam1(self);
@@ -47,3 +64,56 @@ CAMLparam1(self);
 cairo_font_type_t result = pango_cairo_font_map_get_font_type(PangoCairoFontMap_val(self));
 CAMLreturn(Val_cairoFontType(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_cairo_font_map_get_font_type(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontMap requires Pango >= 1.18");
+return Val_unit;
+}
+#endif
+
+#else
+
+
+CAMLexport CAMLprim value ml_pango_cairo_font_map_get_font_type(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontMap requires Pango >= 1.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_pango_cairo_font_map_get_resolution(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontMap requires Pango >= 1.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_pango_cairo_font_map_set_default(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontMap requires Pango >= 1.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_pango_cairo_font_map_set_resolution(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FontMap requires Pango >= 1.10");
+return Val_unit;
+}
+
+
+#endif

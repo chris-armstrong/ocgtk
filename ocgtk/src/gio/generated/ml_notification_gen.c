@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,40,0)
+
 
 CAMLexport CAMLprim value ml_g_notification_new(value arg1)
 {
@@ -79,6 +81,8 @@ g_notification_set_default_action(GNotification_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if GLIB_CHECK_VERSION(2,70,0)
+
 CAMLexport CAMLprim value ml_g_notification_set_category(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -86,6 +90,18 @@ CAMLparam2(self, arg1);
 g_notification_set_category(GNotification_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_notification_set_category(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Notification requires GLib >= 2.70");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_notification_set_body(value self, value arg1)
 {
@@ -110,3 +126,98 @@ CAMLparam3(self, arg1, arg2);
 g_notification_add_button(GNotification_val(self), String_val(arg1), String_val(arg2));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_notification_new(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("Notification requires GLib >= 2.40");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_notification_add_button(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Notification requires GLib >= 2.40");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_notification_set_body(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Notification requires GLib >= 2.40");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_notification_set_category(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Notification requires GLib >= 2.40");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_notification_set_default_action(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Notification requires GLib >= 2.40");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_notification_set_icon(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Notification requires GLib >= 2.40");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_notification_set_priority(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Notification requires GLib >= 2.40");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_notification_set_title(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Notification requires GLib >= 2.40");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_notification_set_urgent(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Notification requires GLib >= 2.40");
+return Val_unit;
+}
+
+
+#endif

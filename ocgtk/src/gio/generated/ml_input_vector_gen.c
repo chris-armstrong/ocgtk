@@ -21,6 +21,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,22,0)
 /* Conversion functions for GInputVector (opaque record with hidden fields) */
 GInputVector *GInputVector_val(value v) {
   return *(GInputVector **)Data_custom_val(v);
@@ -35,4 +36,12 @@ value Val_GInputVector_option(const GInputVector *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GInputVector(ptr));
 }
+#endif
 
+#if GLIB_CHECK_VERSION(2,22,0)
+
+
+#else
+
+
+#endif

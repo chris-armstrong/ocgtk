@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,32,0)
+
 
 CAMLexport CAMLprim value ml_g_inet_address_mask_new(value arg1, value arg2)
 {
@@ -90,3 +92,83 @@ CAMLparam2(self, arg1);
 gboolean result = g_inet_address_mask_equal(GInetAddressMask_val(self), GInetAddressMask_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_inet_address_mask_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+(void)arg1;
+(void)arg2;
+caml_failwith("InetAddressMask requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_inet_address_mask_new_from_string(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("InetAddressMask requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_inet_address_mask_equal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("InetAddressMask requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_inet_address_mask_get_address(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("InetAddressMask requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_inet_address_mask_get_family(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("InetAddressMask requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_inet_address_mask_get_length(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("InetAddressMask requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_inet_address_mask_matches(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("InetAddressMask requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_inet_address_mask_to_string(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("InetAddressMask requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+#endif

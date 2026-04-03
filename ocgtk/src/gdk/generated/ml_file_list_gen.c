@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for FileList */
 
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gdk_decls.h"
 
+#if GTK_CHECK_VERSION(4,6,0)
 /* Conversion functions for GdkFileList (opaque record with hidden fields) */
 GdkFileList *GdkFileList_val(value v) {
   return *(GdkFileList **)Data_custom_val(v);
@@ -29,4 +30,12 @@ value Val_GdkFileList_option(const GdkFileList *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GdkFileList(ptr));
 }
+#endif
 
+#if GTK_CHECK_VERSION(4,6,0)
+
+
+#else
+
+
+#endif

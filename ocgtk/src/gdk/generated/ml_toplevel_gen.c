@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for Toplevel */
 
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -16,6 +16,8 @@
 #include "gdk_decls.h"
 
 
+#if GTK_CHECK_VERSION(4,4,0)
+
 CAMLexport CAMLprim value ml_gdk_toplevel_titlebar_gesture(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -23,6 +25,18 @@ CAMLparam2(self, arg1);
 gboolean result = gdk_toplevel_titlebar_gesture(GdkToplevel_val(self), GdkTitlebarGesture_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_toplevel_titlebar_gesture(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Toplevel requires GTK >= 4.4");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gdk_toplevel_supports_edge_constraints(value self)
 {

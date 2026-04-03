@@ -60,6 +60,7 @@ let test_nullable_string_param () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -113,6 +114,7 @@ let test_nullable_object_param () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -169,6 +171,7 @@ let test_non_nullable_string () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -204,6 +207,7 @@ let test_nullable_return_value () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -277,6 +281,7 @@ let test_multiple_nullable_params () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 
@@ -331,6 +336,7 @@ let test_nullable_param_count () =
       introspectable = true;
       get_property = None;
       set_property = None;
+      version = None;
     }
   in
 

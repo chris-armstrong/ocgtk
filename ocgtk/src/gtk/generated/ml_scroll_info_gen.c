@@ -16,6 +16,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gtk_decls.h"
 
+#if GTK_CHECK_VERSION(4,12,0)
 /* Conversion functions for GtkScrollInfo (opaque record with hidden fields) */
 GtkScrollInfo *GtkScrollInfo_val(value v) {
   return *(GtkScrollInfo **)Data_custom_val(v);
@@ -30,6 +31,9 @@ value Val_GtkScrollInfo_option(const GtkScrollInfo *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GtkScrollInfo(ptr));
 }
+#endif
+
+#if GTK_CHECK_VERSION(4,12,0)
 
 
 CAMLexport CAMLprim value ml_gtk_scroll_info_new(value unit)
@@ -87,3 +91,73 @@ CAMLparam1(self);
 gboolean result = gtk_scroll_info_get_enable_horizontal(GtkScrollInfo_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_gtk_scroll_info_new(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("ScrollInfo requires GTK >= 4.12");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_scroll_info_get_enable_horizontal(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ScrollInfo requires GTK >= 4.12");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_scroll_info_get_enable_vertical(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ScrollInfo requires GTK >= 4.12");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_scroll_info_ref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ScrollInfo requires GTK >= 4.12");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_scroll_info_set_enable_horizontal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ScrollInfo requires GTK >= 4.12");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_scroll_info_set_enable_vertical(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ScrollInfo requires GTK >= 4.12");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_scroll_info_unref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ScrollInfo requires GTK >= 4.12");
+return Val_unit;
+}
+
+
+#endif

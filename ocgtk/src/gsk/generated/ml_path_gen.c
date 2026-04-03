@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for Path */
 
-#include <gsk/gsk.h>
+#include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gsk_decls.h"
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GskPath (opaque record with hidden fields) */
 GskPath *GskPath_val(value v) {
   return *(GskPath **)Data_custom_val(v);
@@ -29,6 +30,9 @@ value Val_GskPath_option(const GskPath *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GskPath(ptr));
 }
+#endif
+
+#if GTK_CHECK_VERSION(4,14,0)
 
 
 CAMLexport CAMLprim value ml_gsk_path_unref(value self)
@@ -153,3 +157,122 @@ CAMLlocal1(ret);
     Store_field(ret, 1, Val_graphene_rect_t(&out1));
     CAMLreturn(ret);
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_gsk_path_get_bounds(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Path requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_get_closest_point(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Path requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_get_end_point(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Path requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_get_start_point(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Path requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_get_stroke_bounds(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Path requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_in_fill(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Path requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_is_closed(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Path requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_is_empty(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Path requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_ref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Path requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_to_cairo(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Path requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_to_string(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Path requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_unref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Path requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+#endif

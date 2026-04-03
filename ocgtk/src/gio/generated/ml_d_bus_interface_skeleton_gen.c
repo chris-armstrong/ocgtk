@@ -21,6 +21,10 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,30,0)
+
+
+#if GLIB_CHECK_VERSION(2,32,0)
 
 CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_unexport_from_connection(value self, value arg1)
 {
@@ -29,6 +33,18 @@ CAMLparam2(self, arg1);
 g_dbus_interface_skeleton_unexport_from_connection(GDBusInterfaceSkeleton_val(self), GDBusConnection_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_unexport_from_connection(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_unexport(value self)
 {
@@ -46,6 +62,8 @@ g_dbus_interface_skeleton_set_flags(GDBusInterfaceSkeleton_val(self), GioDBusInt
 CAMLreturn(Val_unit);
 }
 
+#if GLIB_CHECK_VERSION(2,32,0)
+
 CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_has_connection(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -53,6 +71,18 @@ CAMLparam2(self, arg1);
 gboolean result = g_dbus_interface_skeleton_has_connection(GDBusInterfaceSkeleton_val(self), GDBusConnection_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_has_connection(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_vtable(value self)
 {
@@ -94,6 +124,8 @@ GDBusInterfaceSkeletonFlags result = g_dbus_interface_skeleton_get_flags(GDBusIn
 CAMLreturn(Val_GioDBusInterfaceSkeletonFlags(result));
 }
 
+#if GLIB_CHECK_VERSION(2,32,0)
+
 CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_connections(value self)
 {
 CAMLparam1(self);
@@ -104,6 +136,17 @@ Val_GList_with(c_result, result, item, cell, Val_GDBusConnection((gpointer)_tmp-
     g_list_free(c_result);
     CAMLreturn(result);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_connections(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_connection(value self)
 {
@@ -162,3 +205,140 @@ g_object_set_property(G_OBJECT(obj), "g-flags", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_export(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_flush(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_connection(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_connections(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_flags(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_info(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_object_path(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_vtable(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_has_connection(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_set_flags(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_unexport(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_unexport_from_connection(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_d_bus_interface_skeleton_get_g_flags(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_d_bus_interface_skeleton_set_g_flags(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+#endif

@@ -12,7 +12,7 @@
  (preprocess
   (pps ppx_sexp_conv ppx_deriving.eq))
  (flags
-  (:standard -w -32)))
+  (:standard -w -32 -w -39)))
 
 ; Main executable
 

@@ -21,6 +21,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Conversion functions for GDBusInterfaceInfo (opaque record with hidden fields) */
 GDBusInterfaceInfo *GDBusInterfaceInfo_val(value v) {
   return *(GDBusInterfaceInfo **)Data_custom_val(v);
@@ -35,6 +36,9 @@ value Val_GDBusInterfaceInfo_option(const GDBusInterfaceInfo *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GDBusInterfaceInfo(ptr));
 }
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 
 
 CAMLexport CAMLprim value ml_g_dbus_interface_info_unref(value self)
@@ -77,6 +81,8 @@ GDBusMethodInfo* result = g_dbus_interface_info_lookup_method(GDBusInterfaceInfo
 CAMLreturn(Val_option(result, Val_GDBusMethodInfo));
 }
 
+#if GLIB_CHECK_VERSION(2,30,0)
+
 CAMLexport CAMLprim value ml_g_dbus_interface_info_cache_release(value self)
 {
 CAMLparam1(self);
@@ -85,6 +91,19 @@ g_dbus_interface_info_cache_release(GDBusInterfaceInfo_val(self));
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_dbus_interface_info_cache_release(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceInfo requires GLib >= 2.30");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,30,0)
+
 CAMLexport CAMLprim value ml_g_dbus_interface_info_cache_build(value self)
 {
 CAMLparam1(self);
@@ -92,3 +111,85 @@ CAMLparam1(self);
 g_dbus_interface_info_cache_build(GDBusInterfaceInfo_val(self));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_dbus_interface_info_cache_build(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceInfo requires GLib >= 2.30");
+return Val_unit;
+}
+#endif
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_info_cache_build(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_info_cache_release(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_info_lookup_method(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusInterfaceInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_info_lookup_property(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusInterfaceInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_info_lookup_signal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusInterfaceInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_info_ref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_interface_info_unref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+#endif

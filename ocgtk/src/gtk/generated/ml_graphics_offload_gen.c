@@ -16,6 +16,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gtk_decls.h"
 
+#if GTK_CHECK_VERSION(4,14,0)
+
 
 CAMLexport CAMLprim value ml_gtk_graphics_offload_new(value arg1)
 {
@@ -58,3 +60,55 @@ GtkWidget* result = gtk_graphics_offload_get_child(GtkGraphicsOffload_val(self))
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_gtk_graphics_offload_new(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("GraphicsOffload requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_graphics_offload_get_child(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("GraphicsOffload requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_graphics_offload_get_enabled(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("GraphicsOffload requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_graphics_offload_set_child(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("GraphicsOffload requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_graphics_offload_set_enabled(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("GraphicsOffload requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+#endif

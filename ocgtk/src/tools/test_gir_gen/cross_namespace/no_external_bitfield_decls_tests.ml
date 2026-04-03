@@ -43,6 +43,7 @@ let create_context_with_external_bitfield () =
           };
         ];
       bitfield_doc = None;
+      bitfield_version = None;
     }
   in
 
@@ -99,6 +100,7 @@ let test_generate_forward_decls_only_local_bitfields () =
       bitfield_c_type = "GtkAlign";
       flags = [];
       bitfield_doc = None;
+      bitfield_version = None;
     }
   in
 
@@ -109,6 +111,7 @@ let test_generate_forward_decls_only_local_bitfields () =
       bitfield_c_type = "GdkWindowState";
       flags = [];
       bitfield_doc = None;
+      bitfield_version = None;
     }
   in
 

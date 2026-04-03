@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for PopupLayout */
 
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -55,6 +55,8 @@ gdk_popup_layout_set_surface_anchor(GdkPopupLayout_val(self), GdkGravity_val(arg
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,2,0)
+
 CAMLexport CAMLprim value ml_gdk_popup_layout_set_shadow_width(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -62,6 +64,21 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 gdk_popup_layout_set_shadow_width(GdkPopupLayout_val(self), Int_val(arg1), Int_val(arg2), Int_val(arg3), Int_val(arg4));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_popup_layout_set_shadow_width(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("PopupLayout requires GTK >= 4.2");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gdk_popup_layout_set_rect_anchor(value self, value arg1)
 {
@@ -111,6 +128,8 @@ GdkGravity result = gdk_popup_layout_get_surface_anchor(GdkPopupLayout_val(self)
 CAMLreturn(Val_GdkGravity(result));
 }
 
+#if GTK_CHECK_VERSION(4,2,0)
+
 CAMLexport CAMLprim value ml_gdk_popup_layout_get_shadow_width(value self)
 {
 CAMLparam1(self);
@@ -128,6 +147,17 @@ CAMLlocal1(ret);
     Store_field(ret, 3, Val_int(out4));
     CAMLreturn(ret);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_popup_layout_get_shadow_width(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PopupLayout requires GTK >= 4.2");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gdk_popup_layout_get_rect_anchor(value self)
 {

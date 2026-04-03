@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,26,0)
+
 
 CAMLexport CAMLprim value ml_g_unix_credentials_message_new(value unit)
 {
@@ -48,3 +50,35 @@ GCredentials* result = g_unix_credentials_message_get_credentials(GUnixCredentia
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GCredentials(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_unix_credentials_message_new(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("UnixCredentialsMessage requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_credentials_message_new_with_credentials(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("UnixCredentialsMessage requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_credentials_message_get_credentials(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixCredentialsMessage requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+#endif

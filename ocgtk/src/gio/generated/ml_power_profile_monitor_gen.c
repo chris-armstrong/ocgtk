@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,70,0)
+
 
 CAMLexport CAMLprim value ml_g_power_profile_monitor_get_power_saver_enabled(value self)
 {
@@ -29,3 +31,17 @@ CAMLparam1(self);
 gboolean result = g_power_profile_monitor_get_power_saver_enabled(GPowerProfileMonitor_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_power_profile_monitor_get_power_saver_enabled(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PowerProfileMonitor requires GLib >= 2.70");
+return Val_unit;
+}
+
+
+#endif

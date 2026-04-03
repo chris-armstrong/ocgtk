@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for PathBuilder */
 
-#include <gsk/gsk.h>
+#include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gsk_decls.h"
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GskPathBuilder (opaque record with hidden fields) */
 GskPathBuilder *GskPathBuilder_val(value v) {
   return *(GskPathBuilder **)Data_custom_val(v);
@@ -29,6 +30,9 @@ value Val_GskPathBuilder_option(const GskPathBuilder *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GskPathBuilder(ptr));
 }
+#endif
+
+#if GTK_CHECK_VERSION(4,14,0)
 
 
 CAMLexport CAMLprim value ml_gsk_path_builder_new(value unit)
@@ -310,3 +314,359 @@ CAMLparam2(self, arg1);
 gsk_path_builder_add_cairo_path(GskPathBuilder_val(self), cairo_path_t_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_new(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_add_cairo_path(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_add_circle(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_add_layout(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_add_path(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_add_rect(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_add_reverse_path(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_add_rounded_rect(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_add_segment(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_arc_to(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_close(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_conic_to(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_cubic_to(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+(void)arg6;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_get_current_point(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_html_arc_to(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_line_to(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_move_to(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_quad_to(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_ref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_rel_arc_to(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_rel_conic_to(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_rel_cubic_to(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+(void)arg6;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_rel_html_arc_to(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_rel_line_to(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_rel_move_to(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_rel_quad_to(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_rel_svg_arc_to(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+(void)arg6;
+(void)arg7;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_svg_arc_to(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+(void)arg6;
+(void)arg7;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_to_path(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_path_builder_unref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PathBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+#endif

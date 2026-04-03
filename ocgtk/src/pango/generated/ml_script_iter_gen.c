@@ -31,6 +31,8 @@ value Val_PangoScriptIter_option(const PangoScriptIter *ptr) {
 }
 
 
+#if PANGO_VERSION_CHECK(1,4,0)
+
 CAMLexport CAMLprim value ml_pango_script_iter_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
@@ -39,6 +41,20 @@ PangoScriptIter *obj = pango_script_iter_new(String_val(arg1), Int_val(arg2));
 
 CAMLreturn(Val_PangoScriptIter(obj));
 }
+#else
+
+CAMLexport CAMLprim value ml_pango_script_iter_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+(void)arg1;
+(void)arg2;
+caml_failwith("ScriptIter requires Pango >= 1.4");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,4,0)
+
 CAMLexport CAMLprim value ml_pango_script_iter_next(value self)
 {
 CAMLparam1(self);
@@ -47,6 +63,19 @@ gboolean result = pango_script_iter_next(PangoScriptIter_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_pango_script_iter_next(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ScriptIter requires Pango >= 1.4");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,4,0)
+
 CAMLexport CAMLprim value ml_pango_script_iter_free(value self)
 {
 CAMLparam1(self);
@@ -54,3 +83,14 @@ CAMLparam1(self);
 pango_script_iter_free(PangoScriptIter_val(self));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_script_iter_free(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ScriptIter requires Pango >= 1.4");
+return Val_unit;
+}
+#endif

@@ -120,6 +120,7 @@ let parse_enumeration input ?parse_functions attrs =
             members = List.rev !members;
             enum_doc = None;
             functions = !functions;
+            enum_version = get_attr "version" attrs;
           }
       end
   | _ ->
@@ -185,6 +186,7 @@ let parse_bitfield input attrs =
             bitfield_c_type = c_type;
             flags = List.rev !flags;
             bitfield_doc = None;
+            bitfield_version = get_attr "version" attrs;
           }
       end
   | _ ->
@@ -316,6 +318,7 @@ let parse_gir_file filename filter_classes =
                           ctor_doc = doc;
                           throws;
                           ctor_introspectable;
+                          version = get_attr "version" tag_attrs;
                         }
                         :: !constructors;
                       parse_class_contents ()
@@ -357,6 +360,7 @@ let parse_gir_file filename filter_classes =
                           get_property;
                           set_property;
                           introspectable;
+                          version = get_attr "version" tag_attrs;
                         }
                         :: !methods;
                       parse_class_contents ()
@@ -390,6 +394,7 @@ let parse_gir_file filename filter_classes =
                           get_property;
                           set_property;
                           introspectable;
+                          version = get_attr "version" tag_attrs;
                         }
                         :: !virtual_methods;
                       parse_class_contents ()
@@ -429,6 +434,7 @@ let parse_gir_file filename filter_classes =
             properties = List.rev !properties;
             signals = List.rev !signals;
             class_doc = None;
+            version = get_attr "version" attrs;
           }
     | _ ->
         skip_element input 1;
@@ -515,6 +521,7 @@ let parse_gir_file filename filter_classes =
       writable;
       construct_only;
       prop_doc = None;
+      version = get_attr "version" attrs;
     }
   (* Parse method contents to extract return type and parameters *)
   and parse_method tag_attrs =
@@ -601,6 +608,7 @@ let parse_gir_file filename filter_classes =
             return_type = !return_type;
             sig_parameters = List.rev !params;
             doc = !doc;
+            version = get_attr "version" attrs;
           }
     | None ->
         skip_element input 1;
@@ -837,6 +845,7 @@ let parse_gir_file filename filter_classes =
           doc = !doc;
           throws;
           introspectable;
+          version = get_attr "version" attrs;
         }
     | _, _, _ -> failwith "Unable to parse function correctly"
   (* Parse parameters list *)
@@ -1163,6 +1172,7 @@ let parse_gir_file filename filter_classes =
                       ctor_doc = doc;
                       throws;
                       ctor_introspectable;
+                      version = get_attr "version" tag_attrs;
                     }
                     :: !constructors;
                   parse_record_contents ()
@@ -1196,6 +1206,7 @@ let parse_gir_file filename filter_classes =
                        get_property;
                        set_property;
                        introspectable;
+                       version = get_attr "version" tag_attrs;
                      }
                      :: !methods;
                    parse_record_contents ()
@@ -1235,6 +1246,7 @@ let parse_gir_file filename filter_classes =
             methods = List.rev !methods;
             record_doc = !record_doc;
             functions = !functions;
+            version = get_attr "version" attrs;
           }
     | _ ->
         skip_element input 1;
@@ -1296,6 +1308,7 @@ let parse_gir_file filename filter_classes =
                       get_property;
                       set_property;
                       introspectable;
+                      version = get_attr "version" tag_attrs;
                     }
                     :: !methods;
                   parse_class_contents ()
@@ -1328,6 +1341,7 @@ let parse_gir_file filename filter_classes =
                       get_property;
                       set_property;
                       introspectable;
+                      version = get_attr "version" tag_attrs;
                     }
                     :: !virtual_methods;
                   parse_class_contents ()
@@ -1364,6 +1378,7 @@ let parse_gir_file filename filter_classes =
         properties = List.rev !properties;
         signals = List.rev !signals;
         interface_doc = None;
+        version = get_attr "version" attrs;
       }
   in
 

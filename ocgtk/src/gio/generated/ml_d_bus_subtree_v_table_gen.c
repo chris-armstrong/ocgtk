@@ -21,6 +21,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Conversion functions for GDBusSubtreeVTable (opaque record with hidden fields) */
 GDBusSubtreeVTable *GDBusSubtreeVTable_val(value v) {
   return *(GDBusSubtreeVTable **)Data_custom_val(v);
@@ -35,4 +36,12 @@ value Val_GDBusSubtreeVTable_option(const GDBusSubtreeVTable *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GDBusSubtreeVTable(ptr));
 }
+#endif
 
+#if GLIB_CHECK_VERSION(2,26,0)
+
+
+#else
+
+
+#endif

@@ -1168,6 +1168,8 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,6,0)
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_line_height(value self)
 {
     CAMLparam1(self);
@@ -1185,6 +1187,19 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
+#else
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_line_height(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TextTag requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,6,0)
+
 CAMLexport CAMLprim value ml_gtk_text_tag_set_line_height(value self, value new_value)
 {
     CAMLparam2(self, new_value);
@@ -1199,6 +1214,18 @@ g_object_set_property(G_OBJECT(obj), "line-height", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_line_height(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TextTag requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_text_tag_get_line_height_set(value self)
 {
@@ -1840,6 +1867,8 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,6,0)
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_sentence(value self)
 {
     CAMLparam1(self);
@@ -1857,6 +1886,19 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
+#else
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_sentence(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TextTag requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,6,0)
+
 CAMLexport CAMLprim value ml_gtk_text_tag_set_sentence(value self, value new_value)
 {
     CAMLparam2(self, new_value);
@@ -1871,6 +1913,18 @@ g_object_set_property(G_OBJECT(obj), "sentence", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_sentence(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TextTag requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_text_tag_get_sentence_set(value self)
 {
@@ -2384,6 +2438,8 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,6,0)
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_text_transform(value self)
 {
     CAMLparam1(self);
@@ -2401,6 +2457,19 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
+#else
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_text_transform(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TextTag requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,6,0)
+
 CAMLexport CAMLprim value ml_gtk_text_tag_set_text_transform(value self, value new_value)
 {
     CAMLparam2(self, new_value);
@@ -2415,6 +2484,18 @@ g_object_set_property(G_OBJECT(obj), "text-transform", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_text_transform(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TextTag requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_text_tag_get_text_transform_set(value self)
 {
@@ -2704,6 +2785,8 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,6,0)
+
 CAMLexport CAMLprim value ml_gtk_text_tag_get_word(value self)
 {
     CAMLparam1(self);
@@ -2721,6 +2804,19 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
+#else
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_word(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TextTag requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,6,0)
+
 CAMLexport CAMLprim value ml_gtk_text_tag_set_word(value self, value new_value)
 {
     CAMLparam2(self, new_value);
@@ -2735,6 +2831,18 @@ g_object_set_property(G_OBJECT(obj), "word", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_word(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TextTag requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_text_tag_get_word_set(value self)
 {

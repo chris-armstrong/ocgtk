@@ -16,6 +16,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gtk_decls.h"
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GtkAccessibleTextRange (opaque record with hidden fields) */
 GtkAccessibleTextRange *GtkAccessibleTextRange_val(value v) {
   return *(GtkAccessibleTextRange **)Data_custom_val(v);
@@ -30,4 +31,12 @@ value Val_GtkAccessibleTextRange_option(const GtkAccessibleTextRange *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GtkAccessibleTextRange(ptr));
 }
+#endif
 
+#if GTK_CHECK_VERSION(4,14,0)
+
+
+#else
+
+
+#endif

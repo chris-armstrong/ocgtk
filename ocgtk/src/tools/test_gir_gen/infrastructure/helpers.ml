@@ -249,6 +249,7 @@ let create_test_context () =
       properties = [];
       signals = [];
       class_doc = None;
+      version = None;
     }
   in
 
@@ -265,6 +266,7 @@ let create_test_context () =
       properties = [];
       signals = [];
       class_doc = None;
+      version = None;
     }
   in
 
@@ -281,6 +283,7 @@ let create_test_context () =
       properties = [];
       signals = [];
       class_doc = None;
+      version = None;
     }
   in
 
@@ -297,6 +300,7 @@ let create_test_context () =
       properties = [];
       signals = [];
       class_doc = None;
+      version = None;
     }
   in
 
@@ -307,6 +311,7 @@ let create_test_context () =
       enum_c_type = "GtkTextDirection";
       members = [];
       enum_doc = None;
+      enum_version = None;
       functions = [];
     }
   in
@@ -328,6 +333,7 @@ let create_test_context () =
       methods = [];
       functions = [];
       record_doc = None;
+      version = None;
     }
   in
 
@@ -348,6 +354,7 @@ let create_test_context () =
       methods = [];
       functions = [];
       record_doc = None;
+      version = None;
     }
   in
 

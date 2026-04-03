@@ -73,12 +73,15 @@ let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
     Buffer.add_string buf "\n"
   end;
 
+  let namespace_prefix = ctx.namespace.namespace_name in
+
   (* Generate class/interface forward declarations *)
   Buffer.add_string buf
-    (C_stub_class.generate_forward_decls ~classes ~interfaces);
+    (C_stub_class.generate_forward_decls ~namespace_prefix ~classes ~interfaces);
 
   (* Generate record forward declarations *)
-  Buffer.add_string buf (C_stub_record.generate_forward_decls ~records);
+  Buffer.add_string buf
+    (C_stub_record.generate_forward_decls ~namespace_prefix ~records);
 
   Buffer.add_string buf "/* Const-safe string extraction for setters */\n";
   Buffer.add_string buf
@@ -91,7 +94,6 @@ let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
   Buffer.add_string buf "\n";
 
   (* Generate enum forward declarations *)
-  let namespace_prefix = ctx.namespace.namespace_name in
   if List.length gtk_enums > 0 then begin
     Buffer.add_string buf
       (C_stub_enum.generate_forward_decls ~namespace_prefix ~gtk_enums)

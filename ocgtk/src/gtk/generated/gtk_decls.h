@@ -43,11 +43,13 @@
 #define Val_GtkAdjustment(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkAdjustment */
 
+#if GTK_CHECK_VERSION(4,10,0)
 #ifndef Val_GtkAlertDialog
 #define GtkAlertDialog_val(val) ((GtkAlertDialog*)ml_gobject_ext_of_val(val))
 #define Val_GtkAlertDialog(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkAlertDialog */
 
+#endif
 #ifndef Val_GtkAlternativeTrigger
 #define GtkAlternativeTrigger_val(val) ((GtkAlternativeTrigger*)ml_gobject_ext_of_val(val))
 #define Val_GtkAlternativeTrigger(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -258,41 +260,51 @@
 #define Val_GtkColorChooserWidget(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkColorChooserWidget */
 
+#if GTK_CHECK_VERSION(4,10,0)
 #ifndef Val_GtkColorDialog
 #define GtkColorDialog_val(val) ((GtkColorDialog*)ml_gobject_ext_of_val(val))
 #define Val_GtkColorDialog(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkColorDialog */
 
+#endif
+#if GTK_CHECK_VERSION(4,10,0)
 #ifndef Val_GtkColorDialogButton
 #define GtkColorDialogButton_val(val) ((GtkColorDialogButton*)ml_gobject_ext_of_val(val))
 #define Val_GtkColorDialogButton(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkColorDialogButton */
 
+#endif
 #ifndef Val_GtkColumnView
 #define GtkColumnView_val(val) ((GtkColumnView*)ml_gobject_ext_of_val(val))
 #define Val_GtkColumnView(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkColumnView */
 
+#if GTK_CHECK_VERSION(4,12,0)
 #ifndef Val_GtkColumnViewCell
 #define GtkColumnViewCell_val(val) ((GtkColumnViewCell*)ml_gobject_ext_of_val(val))
 #define Val_GtkColumnViewCell(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkColumnViewCell */
 
+#endif
 #ifndef Val_GtkColumnViewColumn
 #define GtkColumnViewColumn_val(val) ((GtkColumnViewColumn*)ml_gobject_ext_of_val(val))
 #define Val_GtkColumnViewColumn(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkColumnViewColumn */
 
+#if GTK_CHECK_VERSION(4,12,0)
 #ifndef Val_GtkColumnViewRow
 #define GtkColumnViewRow_val(val) ((GtkColumnViewRow*)ml_gobject_ext_of_val(val))
 #define Val_GtkColumnViewRow(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkColumnViewRow */
 
+#endif
+#if GTK_CHECK_VERSION(4,10,0)
 #ifndef Val_GtkColumnViewSorter
 #define GtkColumnViewSorter_val(val) ((GtkColumnViewSorter*)ml_gobject_ext_of_val(val))
 #define Val_GtkColumnViewSorter(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkColumnViewSorter */
 
+#endif
 #ifndef Val_GtkComboBox
 #define GtkComboBox_val(val) ((GtkComboBox*)ml_gobject_ext_of_val(val))
 #define Val_GtkComboBox(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -478,21 +490,25 @@
 #define Val_GtkFileChooserWidget(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkFileChooserWidget */
 
+#if GTK_CHECK_VERSION(4,10,0)
 #ifndef Val_GtkFileDialog
 #define GtkFileDialog_val(val) ((GtkFileDialog*)ml_gobject_ext_of_val(val))
 #define Val_GtkFileDialog(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkFileDialog */
 
+#endif
 #ifndef Val_GtkFileFilter
 #define GtkFileFilter_val(val) ((GtkFileFilter*)ml_gobject_ext_of_val(val))
 #define Val_GtkFileFilter(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkFileFilter */
 
+#if GTK_CHECK_VERSION(4,10,0)
 #ifndef Val_GtkFileLauncher
 #define GtkFileLauncher_val(val) ((GtkFileLauncher*)ml_gobject_ext_of_val(val))
 #define Val_GtkFileLauncher(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkFileLauncher */
 
+#endif
 #ifndef Val_GtkFilter
 #define GtkFilter_val(val) ((GtkFilter*)ml_gobject_ext_of_val(val))
 #define Val_GtkFilter(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -548,16 +564,20 @@
 #define Val_GtkFontChooserWidget(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkFontChooserWidget */
 
+#if GTK_CHECK_VERSION(4,10,0)
 #ifndef Val_GtkFontDialog
 #define GtkFontDialog_val(val) ((GtkFontDialog*)ml_gobject_ext_of_val(val))
 #define Val_GtkFontDialog(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkFontDialog */
 
+#endif
+#if GTK_CHECK_VERSION(4,10,0)
 #ifndef Val_GtkFontDialogButton
 #define GtkFontDialogButton_val(val) ((GtkFontDialogButton*)ml_gobject_ext_of_val(val))
 #define Val_GtkFontDialogButton(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkFontDialogButton */
 
+#endif
 #ifndef Val_GtkFrame
 #define GtkFrame_val(val) ((GtkFrame*)ml_gobject_ext_of_val(val))
 #define Val_GtkFrame(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -618,11 +638,13 @@
 #define Val_GtkGestureZoom(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkGestureZoom */
 
+#if GTK_CHECK_VERSION(4,14,0)
 #ifndef Val_GtkGraphicsOffload
 #define GtkGraphicsOffload_val(val) ((GtkGraphicsOffload*)ml_gobject_ext_of_val(val))
 #define Val_GtkGraphicsOffload(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkGraphicsOffload */
 
+#endif
 #ifndef Val_GtkGrid
 #define GtkGrid_val(val) ((GtkGrid*)ml_gobject_ext_of_val(val))
 #define Val_GtkGrid(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -688,11 +710,13 @@
 #define Val_GtkInfoBar(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkInfoBar */
 
+#if GTK_CHECK_VERSION(4,8,0)
 #ifndef Val_GtkInscription
 #define GtkInscription_val(val) ((GtkInscription*)ml_gobject_ext_of_val(val))
 #define Val_GtkInscription(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkInscription */
 
+#endif
 #ifndef Val_GtkKeyvalTrigger
 #define GtkKeyvalTrigger_val(val) ((GtkKeyvalTrigger*)ml_gobject_ext_of_val(val))
 #define Val_GtkKeyvalTrigger(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -738,11 +762,13 @@
 #define Val_GtkListBoxRow(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkListBoxRow */
 
+#if GTK_CHECK_VERSION(4,12,0)
 #ifndef Val_GtkListHeader
 #define GtkListHeader_val(val) ((GtkListHeader*)ml_gobject_ext_of_val(val))
 #define Val_GtkListHeader(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkListHeader */
 
+#endif
 #ifndef Val_GtkListItem
 #define GtkListItem_val(val) ((GtkListItem*)ml_gobject_ext_of_val(val))
 #define Val_GtkListItem(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -918,11 +944,13 @@
 #define Val_GtkPasswordEntry(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkPasswordEntry */
 
+#if GTK_CHECK_VERSION(4,4,0)
 #ifndef Val_GtkPasswordEntryBuffer
 #define GtkPasswordEntryBuffer_val(val) ((GtkPasswordEntryBuffer*)ml_gobject_ext_of_val(val))
 #define Val_GtkPasswordEntryBuffer(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkPasswordEntryBuffer */
 
+#endif
 #ifndef Val_GtkPicture
 #define GtkPicture_val(val) ((GtkPicture*)ml_gobject_ext_of_val(val))
 #define Val_GtkPicture(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -948,11 +976,13 @@
 #define Val_GtkPrintContext(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkPrintContext */
 
+#if GTK_CHECK_VERSION(4,14,0)
 #ifndef Val_GtkPrintDialog
 #define GtkPrintDialog_val(val) ((GtkPrintDialog*)ml_gobject_ext_of_val(val))
 #define Val_GtkPrintDialog(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkPrintDialog */
 
+#endif
 #ifndef Val_GtkPrintJob
 #define GtkPrintJob_val(val) ((GtkPrintJob*)ml_gobject_ext_of_val(val))
 #define Val_GtkPrintJob(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -1293,11 +1323,13 @@
 #define Val_GtkTreeViewColumn(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkTreeViewColumn */
 
+#if GTK_CHECK_VERSION(4,10,0)
 #ifndef Val_GtkUriLauncher
 #define GtkUriLauncher_val(val) ((GtkUriLauncher*)ml_gobject_ext_of_val(val))
 #define Val_GtkUriLauncher(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkUriLauncher */
 
+#endif
 #ifndef Val_GtkVideo
 #define GtkVideo_val(val) ((GtkVideo*)ml_gobject_ext_of_val(val))
 #define Val_GtkVideo(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -1349,16 +1381,20 @@
 #define Val_GtkAccessible(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkAccessible */
 
+#if GTK_CHECK_VERSION(4,10,0)
 #ifndef Val_GtkAccessibleRange
 #define GtkAccessibleRange_val(val) ((GtkAccessibleRange*)ml_gobject_ext_of_val(val))
 #define Val_GtkAccessibleRange(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkAccessibleRange */
 
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
 #ifndef Val_GtkAccessibleText
 #define GtkAccessibleText_val(val) ((GtkAccessibleText*)ml_gobject_ext_of_val(val))
 #define Val_GtkAccessibleText(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkAccessibleText */
 
+#endif
 #ifndef Val_GtkActionable
 #define GtkActionable_val(val) ((GtkActionable*)ml_gobject_ext_of_val(val))
 #define Val_GtkActionable(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -1439,11 +1475,13 @@
 #define Val_GtkScrollable(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkScrollable */
 
+#if GTK_CHECK_VERSION(4,12,0)
 #ifndef Val_GtkSectionModel
 #define GtkSectionModel_val(val) ((GtkSectionModel*)ml_gobject_ext_of_val(val))
 #define Val_GtkSectionModel(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkSectionModel */
 
+#endif
 #ifndef Val_GtkSelectionModel
 #define GtkSelectionModel_val(val) ((GtkSelectionModel*)ml_gobject_ext_of_val(val))
 #define Val_GtkSelectionModel(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -1459,11 +1497,13 @@
 #define Val_GtkStyleProvider(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkStyleProvider */
 
+#if GTK_CHECK_VERSION(4,6,0)
 #ifndef Val_GtkSymbolicPaintable
 #define GtkSymbolicPaintable_val(val) ((GtkSymbolicPaintable*)ml_gobject_ext_of_val(val))
 #define Val_GtkSymbolicPaintable(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkSymbolicPaintable */
 
+#endif
 #ifndef Val_GtkTreeDragDest
 #define GtkTreeDragDest_val(val) ((GtkTreeDragDest*)ml_gobject_ext_of_val(val))
 #define Val_GtkTreeDragDest(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -1516,15 +1556,19 @@ value copy_GtkTreeIter(const GtkTreeIter *ptr);
 
 
 /* Forward declarations for record converters (non-opaque records) */
+#if GTK_CHECK_VERSION(4,14,0)
 /* Forward declarations for GtkAccessibleList converters */
 GtkAccessibleList *GtkAccessibleList_val(value val);
 value Val_GtkAccessibleList(const GtkAccessibleList *ptr);
 value Val_GtkAccessibleList_option(const GtkAccessibleList *ptr);
+#endif
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Forward declarations for GtkAccessibleTextRange converters */
 GtkAccessibleTextRange *GtkAccessibleTextRange_val(value val);
 value Val_GtkAccessibleTextRange(const GtkAccessibleTextRange *ptr);
 value Val_GtkAccessibleTextRange_option(const GtkAccessibleTextRange *ptr);
+#endif
 
 /* Forward declarations for GtkBitset converters */
 GtkBitset *GtkBitset_val(value val);
@@ -1581,10 +1625,12 @@ GtkPaperSize *GtkPaperSize_val(value val);
 value Val_GtkPaperSize(const GtkPaperSize *ptr);
 value Val_GtkPaperSize_option(const GtkPaperSize *ptr);
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Forward declarations for GtkPrintSetup converters */
 GtkPrintSetup *GtkPrintSetup_val(value val);
 value Val_GtkPrintSetup(const GtkPrintSetup *ptr);
 value Val_GtkPrintSetup_option(const GtkPrintSetup *ptr);
+#endif
 
 /* Forward declarations for GtkRecentData converters */
 GtkRecentData *GtkRecentData_val(value val);
@@ -1601,10 +1647,12 @@ GtkRequestedSize *GtkRequestedSize_val(value val);
 value Val_GtkRequestedSize(const GtkRequestedSize *ptr);
 value Val_GtkRequestedSize_option(const GtkRequestedSize *ptr);
 
+#if GTK_CHECK_VERSION(4,12,0)
 /* Forward declarations for GtkScrollInfo converters */
 GtkScrollInfo *GtkScrollInfo_val(value val);
 value Val_GtkScrollInfo(const GtkScrollInfo *ptr);
 value Val_GtkScrollInfo_option(const GtkScrollInfo *ptr);
+#endif
 
 /* Forward declarations for GtkTreePath converters */
 GtkTreePath *GtkTreePath_val(value val);
@@ -1622,14 +1670,18 @@ value Val_GtkTreeRowReference_option(const GtkTreeRowReference *ptr);
 /* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */
 
 /* Forward declarations for enum converters */
+#if GTK_CHECK_VERSION(4,14,0)
 value Val_GtkAccessibleAnnouncementPriority(GtkAccessibleAnnouncementPriority val);
 GtkAccessibleAnnouncementPriority GtkAccessibleAnnouncementPriority_val(value val);
+#endif
 value Val_GtkAccessibleAutocomplete(GtkAccessibleAutocomplete val);
 GtkAccessibleAutocomplete GtkAccessibleAutocomplete_val(value val);
 value Val_GtkAccessibleInvalidState(GtkAccessibleInvalidState val);
 GtkAccessibleInvalidState GtkAccessibleInvalidState_val(value val);
+#if GTK_CHECK_VERSION(4,10,0)
 value Val_GtkAccessiblePlatformState(GtkAccessiblePlatformState val);
 GtkAccessiblePlatformState GtkAccessiblePlatformState_val(value val);
+#endif
 value Val_GtkAccessibleProperty(GtkAccessibleProperty val);
 GtkAccessibleProperty GtkAccessibleProperty_val(value val);
 value Val_GtkAccessibleRelation(GtkAccessibleRelation val);
@@ -1640,10 +1692,14 @@ value Val_GtkAccessibleSort(GtkAccessibleSort val);
 GtkAccessibleSort GtkAccessibleSort_val(value val);
 value Val_GtkAccessibleState(GtkAccessibleState val);
 GtkAccessibleState GtkAccessibleState_val(value val);
+#if GTK_CHECK_VERSION(4,14,0)
 value Val_GtkAccessibleTextContentChange(GtkAccessibleTextContentChange val);
 GtkAccessibleTextContentChange GtkAccessibleTextContentChange_val(value val);
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
 value Val_GtkAccessibleTextGranularity(GtkAccessibleTextGranularity val);
 GtkAccessibleTextGranularity GtkAccessibleTextGranularity_val(value val);
+#endif
 value Val_GtkAccessibleTristate(GtkAccessibleTristate val);
 GtkAccessibleTristate GtkAccessibleTristate_val(value val);
 value Val_GtkAlign(GtkAlign val);
@@ -1664,8 +1720,10 @@ value Val_GtkCellRendererAccelMode(GtkCellRendererAccelMode val);
 GtkCellRendererAccelMode GtkCellRendererAccelMode_val(value val);
 value Val_GtkCellRendererMode(GtkCellRendererMode val);
 GtkCellRendererMode GtkCellRendererMode_val(value val);
+#if GTK_CHECK_VERSION(4,10,0)
 value Val_GtkCollation(GtkCollation val);
 GtkCollation GtkCollation_val(value val);
+#endif
 value Val_GtkConstraintAttribute(GtkConstraintAttribute val);
 GtkConstraintAttribute GtkConstraintAttribute_val(value val);
 value Val_GtkConstraintRelation(GtkConstraintRelation val);
@@ -1674,8 +1732,10 @@ value Val_GtkConstraintStrength(GtkConstraintStrength val);
 GtkConstraintStrength GtkConstraintStrength_val(value val);
 value Val_GtkConstraintVflParserError(GtkConstraintVflParserError val);
 GtkConstraintVflParserError GtkConstraintVflParserError_val(value val);
+#if GTK_CHECK_VERSION(4,8,0)
 value Val_GtkContentFit(GtkContentFit val);
 GtkContentFit GtkContentFit_val(value val);
+#endif
 value Val_GtkCornerType(GtkCornerType val);
 GtkCornerType GtkCornerType_val(value val);
 value Val_GtkCssParserError(GtkCssParserError val);
@@ -1684,8 +1744,10 @@ value Val_GtkCssParserWarning(GtkCssParserWarning val);
 GtkCssParserWarning GtkCssParserWarning_val(value val);
 value Val_GtkDeleteType(GtkDeleteType val);
 GtkDeleteType GtkDeleteType_val(value val);
+#if GTK_CHECK_VERSION(4,10,0)
 value Val_GtkDialogError(GtkDialogError val);
 GtkDialogError GtkDialogError_val(value val);
+#endif
 value Val_GtkDirectionType(GtkDirectionType val);
 GtkDirectionType GtkDirectionType_val(value val);
 value Val_GtkEditableProperties(GtkEditableProperties val);
@@ -1702,10 +1764,14 @@ value Val_GtkFilterChange(GtkFilterChange val);
 GtkFilterChange GtkFilterChange_val(value val);
 value Val_GtkFilterMatch(GtkFilterMatch val);
 GtkFilterMatch GtkFilterMatch_val(value val);
+#if GTK_CHECK_VERSION(4,10,0)
 value Val_GtkFontLevel(GtkFontLevel val);
 GtkFontLevel GtkFontLevel_val(value val);
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
 value Val_GtkGraphicsOffloadEnabled(GtkGraphicsOffloadEnabled val);
 GtkGraphicsOffloadEnabled GtkGraphicsOffloadEnabled_val(value val);
+#endif
 value Val_GtkIconSize(GtkIconSize val);
 GtkIconSize GtkIconSize_val(value val);
 value Val_GtkIconThemeError(GtkIconThemeError val);
@@ -1716,20 +1782,26 @@ value Val_GtkImageType(GtkImageType val);
 GtkImageType GtkImageType_val(value val);
 value Val_GtkInputPurpose(GtkInputPurpose val);
 GtkInputPurpose GtkInputPurpose_val(value val);
+#if GTK_CHECK_VERSION(4,8,0)
 value Val_GtkInscriptionOverflow(GtkInscriptionOverflow val);
 GtkInscriptionOverflow GtkInscriptionOverflow_val(value val);
+#endif
 value Val_GtkJustification(GtkJustification val);
 GtkJustification GtkJustification_val(value val);
 value Val_GtkLevelBarMode(GtkLevelBarMode val);
 GtkLevelBarMode GtkLevelBarMode_val(value val);
+#if GTK_CHECK_VERSION(4,12,0)
 value Val_GtkListTabBehavior(GtkListTabBehavior val);
 GtkListTabBehavior GtkListTabBehavior_val(value val);
+#endif
 value Val_GtkMessageType(GtkMessageType val);
 GtkMessageType GtkMessageType_val(value val);
 value Val_GtkMovementStep(GtkMovementStep val);
 GtkMovementStep GtkMovementStep_val(value val);
+#if GTK_CHECK_VERSION(4,6,0)
 value Val_GtkNaturalWrapMode(GtkNaturalWrapMode val);
 GtkNaturalWrapMode GtkNaturalWrapMode_val(value val);
+#endif
 value Val_GtkNotebookTab(GtkNotebookTab val);
 GtkNotebookTab GtkNotebookTab_val(value val);
 value Val_GtkNumberUpLayout(GtkNumberUpLayout val);
@@ -1810,8 +1882,10 @@ value Val_GtkStackTransitionType(GtkStackTransitionType val);
 GtkStackTransitionType GtkStackTransitionType_val(value val);
 value Val_GtkStringFilterMatchMode(GtkStringFilterMatchMode val);
 GtkStringFilterMatchMode GtkStringFilterMatchMode_val(value val);
+#if GTK_CHECK_VERSION(4,6,0)
 value Val_GtkSymbolicColor(GtkSymbolicColor val);
 GtkSymbolicColor GtkSymbolicColor_val(value val);
+#endif
 value Val_GtkSystemSetting(GtkSystemSetting val);
 GtkSystemSetting GtkSystemSetting_val(value val);
 value Val_GtkTextDirection(GtkTextDirection val);
@@ -1852,8 +1926,10 @@ value Val_GtkIconLookupFlags(GtkIconLookupFlags flags);
 GtkIconLookupFlags GtkIconLookupFlags_val(value list);
 value Val_GtkInputHints(GtkInputHints flags);
 GtkInputHints GtkInputHints_val(value list);
+#if GTK_CHECK_VERSION(4,12,0)
 value Val_GtkListScrollFlags(GtkListScrollFlags flags);
 GtkListScrollFlags GtkListScrollFlags_val(value list);
+#endif
 value Val_GtkPickFlags(GtkPickFlags flags);
 GtkPickFlags GtkPickFlags_val(value list);
 value Val_GtkPopoverMenuFlags(GtkPopoverMenuFlags flags);

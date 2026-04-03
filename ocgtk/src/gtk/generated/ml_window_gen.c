@@ -122,6 +122,8 @@ gtk_window_set_hide_on_close(GtkWindow_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,2,0)
+
 CAMLexport CAMLprim value ml_gtk_window_set_handle_menubar_accel(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -129,6 +131,18 @@ CAMLparam2(self, arg1);
 gtk_window_set_handle_menubar_accel(GtkWindow_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_window_set_handle_menubar_accel(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Window requires GTK >= 4.2");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_window_set_focus_visible(value self, value arg1)
 {
@@ -234,6 +248,8 @@ gtk_window_maximize(GtkWindow_val(self));
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,12,0)
+
 CAMLexport CAMLprim value ml_gtk_window_is_suspended(value self)
 {
 CAMLparam1(self);
@@ -241,6 +257,17 @@ CAMLparam1(self);
 gboolean result = gtk_window_is_suspended(GtkWindow_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_window_is_suspended(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Window requires GTK >= 4.12");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_window_is_maximized(value self)
 {
@@ -340,6 +367,8 @@ gboolean result = gtk_window_get_hide_on_close(GtkWindow_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+#if GTK_CHECK_VERSION(4,2,0)
+
 CAMLexport CAMLprim value ml_gtk_window_get_handle_menubar_accel(value self)
 {
 CAMLparam1(self);
@@ -347,6 +376,17 @@ CAMLparam1(self);
 gboolean result = gtk_window_get_handle_menubar_accel(GtkWindow_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_window_get_handle_menubar_accel(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Window requires GTK >= 4.2");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_window_get_group(value self)
 {
@@ -631,6 +671,8 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,12,0)
+
 CAMLexport CAMLprim value ml_gtk_window_get_suspended(value self)
 {
     CAMLparam1(self);
@@ -647,3 +689,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_window_get_suspended(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Window requires GTK >= 4.12");
+return Val_unit;
+}
+#endif

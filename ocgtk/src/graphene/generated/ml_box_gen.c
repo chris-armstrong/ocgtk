@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "graphene_decls.h"
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 /* Conversion functions for graphene_box_t (opaque record with hidden fields) */
 graphene_box_t *graphene_box_t_val(value v) {
   return *(graphene_box_t **)Data_custom_val(v);
@@ -29,6 +30,9 @@ value Val_graphene_box_t_option(const graphene_box_t *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_graphene_box_t(ptr));
 }
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 
 CAMLexport CAMLprim value ml_graphene_box_alloc(value unit)
@@ -256,3 +260,241 @@ CAMLparam2(self, arg1);
 _Bool result = graphene_box_contains_box(graphene_box_t_val(self), graphene_box_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_graphene_box_alloc(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_contains_box(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_contains_point(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_equal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_expand(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_expand_scalar(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_expand_vec3(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_free(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_get_bounding_sphere(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_get_center(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_get_depth(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_get_height(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_get_max(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_get_min(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_get_size(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_get_vertices(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_get_width(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_init(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_init_from_box(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_init_from_points(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_init_from_vec3(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_init_from_vectors(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_intersection(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_box_union(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Box requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+#endif

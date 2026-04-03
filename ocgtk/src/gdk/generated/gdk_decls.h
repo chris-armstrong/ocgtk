@@ -90,16 +90,20 @@
 #define Val_GdkDisplayManager(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GdkDisplayManager */
 
+#if GTK_CHECK_VERSION(4,14,0)
 #ifndef Val_GdkDmabufTexture
 #define GdkDmabufTexture_val(val) ((GdkDmabufTexture*)ml_gobject_ext_of_val(val))
 #define Val_GdkDmabufTexture(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GdkDmabufTexture */
 
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
 #ifndef Val_GdkDmabufTextureBuilder
 #define GdkDmabufTextureBuilder_val(val) ((GdkDmabufTextureBuilder*)ml_gobject_ext_of_val(val))
 #define Val_GdkDmabufTextureBuilder(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GdkDmabufTextureBuilder */
 
+#endif
 #ifndef Val_GdkDrag
 #define GdkDrag_val(val) ((GdkDrag*)ml_gobject_ext_of_val(val))
 #define Val_GdkDrag(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -140,11 +144,13 @@
 #define Val_GdkGLTexture(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GdkGLTexture */
 
+#if GTK_CHECK_VERSION(4,12,0)
 #ifndef Val_GdkGLTextureBuilder
 #define GdkGLTextureBuilder_val(val) ((GdkGLTextureBuilder*)ml_gobject_ext_of_val(val))
 #define Val_GdkGLTextureBuilder(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GdkGLTextureBuilder */
 
+#endif
 #ifndef Val_GdkGrabBrokenEvent
 #define GdkGrabBrokenEvent_val(val) ((GdkGrabBrokenEvent*)ml_gobject_ext_of_val(val))
 #define Val_GdkGrabBrokenEvent(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -267,25 +273,31 @@ GdkContentFormatsBuilder *GdkContentFormatsBuilder_val(value val);
 value Val_GdkContentFormatsBuilder(const GdkContentFormatsBuilder *ptr);
 value Val_GdkContentFormatsBuilder_option(const GdkContentFormatsBuilder *ptr);
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Forward declarations for GdkDmabufFormats converters */
 GdkDmabufFormats *GdkDmabufFormats_val(value val);
 value Val_GdkDmabufFormats(const GdkDmabufFormats *ptr);
 value Val_GdkDmabufFormats_option(const GdkDmabufFormats *ptr);
+#endif
 
+#if GTK_CHECK_VERSION(4,12,0)
 /* Forward declarations for GdkDragSurfaceSize converters */
 GdkDragSurfaceSize *GdkDragSurfaceSize_val(value val);
 value Val_GdkDragSurfaceSize(const GdkDragSurfaceSize *ptr);
 value Val_GdkDragSurfaceSize_option(const GdkDragSurfaceSize *ptr);
+#endif
 
 /* Forward declarations for GdkEventSequence converters */
 GdkEventSequence *GdkEventSequence_val(value val);
 value Val_GdkEventSequence(const GdkEventSequence *ptr);
 value Val_GdkEventSequence_option(const GdkEventSequence *ptr);
 
+#if GTK_CHECK_VERSION(4,6,0)
 /* Forward declarations for GdkFileList converters */
 GdkFileList *GdkFileList_val(value val);
 value Val_GdkFileList(const GdkFileList *ptr);
 value Val_GdkFileList_option(const GdkFileList *ptr);
+#endif
 
 /* Forward declarations for GdkFrameTimings converters */
 GdkFrameTimings *GdkFrameTimings_val(value val);
@@ -307,10 +319,12 @@ GdkRectangle *GdkRectangle_val(value val);
 value Val_GdkRectangle(const GdkRectangle *ptr);
 value Val_GdkRectangle_option(const GdkRectangle *ptr);
 
+#if GTK_CHECK_VERSION(4,10,0)
 /* Forward declarations for GdkTextureDownloader converters */
 GdkTextureDownloader *GdkTextureDownloader_val(value val);
 value Val_GdkTextureDownloader(const GdkTextureDownloader *ptr);
 value Val_GdkTextureDownloader_option(const GdkTextureDownloader *ptr);
+#endif
 
 /* Forward declarations for GdkTimeCoord converters */
 GdkTimeCoord *GdkTimeCoord_val(value val);
@@ -341,8 +355,10 @@ value Val_GdkDevicePadFeature(GdkDevicePadFeature val);
 GdkDevicePadFeature GdkDevicePadFeature_val(value val);
 value Val_GdkDeviceToolType(GdkDeviceToolType val);
 GdkDeviceToolType GdkDeviceToolType_val(value val);
+#if GTK_CHECK_VERSION(4,14,0)
 value Val_GdkDmabufError(GdkDmabufError val);
 GdkDmabufError GdkDmabufError_val(value val);
+#endif
 value Val_GdkDragCancelReason(GdkDragCancelReason val);
 GdkDragCancelReason GdkDragCancelReason_val(value val);
 value Val_GdkEventType(GdkEventType val);
@@ -363,16 +379,22 @@ value Val_GdkNotifyType(GdkNotifyType val);
 GdkNotifyType GdkNotifyType_val(value val);
 value Val_GdkScrollDirection(GdkScrollDirection val);
 GdkScrollDirection GdkScrollDirection_val(value val);
+#if GTK_CHECK_VERSION(4,8,0)
 value Val_GdkScrollUnit(GdkScrollUnit val);
 GdkScrollUnit GdkScrollUnit_val(value val);
+#endif
 value Val_GdkSubpixelLayout(GdkSubpixelLayout val);
 GdkSubpixelLayout GdkSubpixelLayout_val(value val);
 value Val_GdkSurfaceEdge(GdkSurfaceEdge val);
 GdkSurfaceEdge GdkSurfaceEdge_val(value val);
+#if GTK_CHECK_VERSION(4,6,0)
 value Val_GdkTextureError(GdkTextureError val);
 GdkTextureError GdkTextureError_val(value val);
+#endif
+#if GTK_CHECK_VERSION(4,4,0)
 value Val_GdkTitlebarGesture(GdkTitlebarGesture val);
 GdkTitlebarGesture GdkTitlebarGesture_val(value val);
+#endif
 value Val_GdkTouchpadGesturePhase(GdkTouchpadGesturePhase val);
 GdkTouchpadGesturePhase GdkTouchpadGesturePhase_val(value val);
 value Val_GdkVulkanError(GdkVulkanError val);
@@ -387,8 +409,10 @@ value Val_GdkDragAction(GdkDragAction flags);
 GdkDragAction GdkDragAction_val(value list);
 value Val_GdkFrameClockPhase(GdkFrameClockPhase flags);
 GdkFrameClockPhase GdkFrameClockPhase_val(value list);
+#if GTK_CHECK_VERSION(4,6,0)
 value Val_GdkGLAPI(GdkGLAPI flags);
 GdkGLAPI GdkGLAPI_val(value list);
+#endif
 value Val_GdkModifierType(GdkModifierType flags);
 GdkModifierType GdkModifierType_val(value list);
 value Val_GdkPaintableFlags(GdkPaintableFlags flags);

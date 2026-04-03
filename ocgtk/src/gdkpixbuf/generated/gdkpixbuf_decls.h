@@ -48,14 +48,18 @@
 
 /* Interface-specific conversion macros (shared) */
 /* Value-returning structs copied into OCaml */
+#if GDK_PIXBUF_CHECK_VERSION(2,2,0)
 value copy_GdkPixbufFormat(const GdkPixbufFormat *ptr);
+#endif
 
+#if GDK_PIXBUF_CHECK_VERSION(2,2,0)
 #ifndef Val_GdkPixbufFormat
 #define GdkPixbufFormat_val(val) ((GdkPixbufFormat*)ext_of_val(val))
 #define Val_GdkPixbufFormat(obj) copy_GdkPixbufFormat((obj))
 #define Val_GdkPixbufFormat_option(ptr) ((ptr) ? Val_some(copy_GdkPixbufFormat(ptr)) : Val_none)
 #endif /* Val_GdkPixbufFormat */
 
+#endif
 
 /* Forward declarations for record converters (non-opaque records) */
 /* Const-safe string extraction for setters */
@@ -76,6 +80,7 @@ value Val_GdkPixbufPixbufRotation(GdkPixbufRotation val);
 GdkPixbufRotation GdkPixbufPixbufRotation_val(value val);
 
 /* Forward declarations for bitfield converters */
+#if GDK_PIXBUF_CHECK_VERSION(2,2,0)
 #ifndef GDK_PIXBUF_FORMAT_WRITABLE
 typedef enum {
   GDK_PIXBUF_FORMAT_WRITABLE = 1,
@@ -84,6 +89,7 @@ typedef enum {
 } GdkPixbufFormatFlags;
 value Val_GdkPixbufPixbufFormatFlags(GdkPixbufFormatFlags flags);
 GdkPixbufFormatFlags GdkPixbufPixbufFormatFlags_val(value list);
+#endif
 #endif
 
 

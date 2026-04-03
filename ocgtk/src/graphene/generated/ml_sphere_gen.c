@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "graphene_decls.h"
 
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 /* Conversion functions for graphene_sphere_t (opaque record with hidden fields) */
 graphene_sphere_t *graphene_sphere_t_val(value v) {
   return *(graphene_sphere_t **)Data_custom_val(v);
@@ -29,6 +30,9 @@ value Val_graphene_sphere_t_option(const graphene_sphere_t *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_graphene_sphere_t(ptr));
 }
+#endif
+
+#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 
 CAMLexport CAMLprim value ml_graphene_sphere_alloc(value unit)
@@ -149,3 +153,137 @@ CAMLparam2(self, arg1);
 _Bool result = graphene_sphere_contains_point(graphene_sphere_t_val(self), graphene_point3d_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_graphene_sphere_alloc(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("Sphere requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_sphere_contains_point(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Sphere requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_sphere_distance(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Sphere requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_sphere_equal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Sphere requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_sphere_free(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Sphere requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_sphere_get_bounding_box(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Sphere requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_sphere_get_center(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Sphere requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_sphere_get_radius(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Sphere requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_sphere_init(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Sphere requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_sphere_init_from_points(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Sphere requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_sphere_init_from_vectors(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Sphere requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_sphere_is_empty(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Sphere requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_graphene_sphere_translate(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Sphere requires Graphene >= 1.2");
+return Val_unit;
+}
+
+
+#endif

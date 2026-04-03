@@ -1109,6 +1109,8 @@ char** result = gtk_widget_get_css_classes(GtkWidget_val(self));
 CAMLreturn(ml_result);
 }
 
+#if GTK_CHECK_VERSION(4,10,0)
+
 CAMLexport CAMLprim value ml_gtk_widget_get_color(value self)
 {
 CAMLparam1(self);
@@ -1117,6 +1119,17 @@ GdkRGBA out1;
 gtk_widget_get_color(GtkWidget_val(self), &out1);
 CAMLreturn(Val_GdkRGBA(&out1));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_widget_get_color(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Widget requires GTK >= 4.10");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_widget_get_clipboard(value self)
 {
@@ -1151,6 +1164,8 @@ gboolean result = gtk_widget_get_can_focus(GtkWidget_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+#if GTK_CHECK_VERSION(4,12,0)
+
 CAMLexport CAMLprim value ml_gtk_widget_get_baseline(value self)
 {
 CAMLparam1(self);
@@ -1158,6 +1173,17 @@ CAMLparam1(self);
 int result = gtk_widget_get_baseline(GtkWidget_val(self));
 CAMLreturn(Val_int(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_widget_get_baseline(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Widget requires GTK >= 4.12");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_widget_get_allocated_width(value self)
 {

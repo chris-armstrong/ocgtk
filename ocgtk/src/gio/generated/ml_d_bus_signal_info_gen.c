@@ -21,6 +21,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,26,0)
 /* Conversion functions for GDBusSignalInfo (opaque record with hidden fields) */
 GDBusSignalInfo *GDBusSignalInfo_val(value v) {
   return *(GDBusSignalInfo **)Data_custom_val(v);
@@ -35,6 +36,9 @@ value Val_GDBusSignalInfo_option(const GDBusSignalInfo *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GDBusSignalInfo(ptr));
 }
+#endif
+
+#if GLIB_CHECK_VERSION(2,26,0)
 
 
 CAMLexport CAMLprim value ml_g_dbus_signal_info_unref(value self)
@@ -52,3 +56,26 @@ CAMLparam1(self);
 GDBusSignalInfo* result = g_dbus_signal_info_ref(GDBusSignalInfo_val(self));
 CAMLreturn(Val_GDBusSignalInfo(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_dbus_signal_info_ref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusSignalInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_signal_info_unref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusSignalInfo requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+#endif

@@ -1,7 +1,7 @@
 /* GENERATED CODE - DO NOT EDIT */
 /* C bindings for DmabufFormats */
 
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
 #include <caml/alloc.h>
@@ -15,6 +15,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gdk_decls.h"
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GdkDmabufFormats (opaque record with hidden fields) */
 GdkDmabufFormats *GdkDmabufFormats_val(value v) {
   return *(GdkDmabufFormats **)Data_custom_val(v);
@@ -29,6 +30,9 @@ value Val_GdkDmabufFormats_option(const GdkDmabufFormats *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GdkDmabufFormats(ptr));
 }
+#endif
+
+#if GTK_CHECK_VERSION(4,14,0)
 
 
 CAMLexport CAMLprim value ml_gdk_dmabuf_formats_unref(value self)
@@ -54,3 +58,36 @@ CAMLparam2(self, arg1);
 gboolean result = gdk_dmabuf_formats_equal(GdkDmabufFormats_val(self), Option_val(arg1, GdkDmabufFormats_val, NULL));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_gdk_dmabuf_formats_equal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DmabufFormats requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gdk_dmabuf_formats_ref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DmabufFormats requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gdk_dmabuf_formats_unref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DmabufFormats requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+#endif

@@ -134,6 +134,7 @@ PangoAttrType PangoAttrType_val(value val) {
   }
 }
 
+#if PANGO_VERSION_CHECK(1,50,0)
 /* Convert PangoBaselineShift to OCaml value */
 value Val_PangoBaselineShift(PangoBaselineShift val) {
   switch (val) {
@@ -162,6 +163,9 @@ PangoBaselineShift PangoBaselineShift_val(value val) {
   }
 }
 
+#endif
+
+#if PANGO_VERSION_CHECK(1,22,0)
 /* Convert PangoBidiType to OCaml value */
 value Val_PangoBidiType(PangoBidiType val) {
   switch (val) {
@@ -229,6 +233,8 @@ PangoBidiType PangoBidiType_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert PangoCoverageLevel to OCaml value */
 value Val_PangoCoverageLevel(PangoCoverageLevel val) {
@@ -326,6 +332,7 @@ PangoEllipsizeMode PangoEllipsizeMode_val(value val) {
   }
 }
 
+#if PANGO_VERSION_CHECK(1,50,0)
 /* Convert PangoFontScale to OCaml value */
 value Val_PangoFontScale(PangoFontScale val) {
   switch (val) {
@@ -356,6 +363,9 @@ PangoFontScale PangoFontScale_val(value val) {
   }
 }
 
+#endif
+
+#if PANGO_VERSION_CHECK(1,16,0)
 /* Convert PangoGravity to OCaml value */
 value Val_PangoGravity(PangoGravity val) {
   switch (val) {
@@ -388,6 +398,9 @@ PangoGravity PangoGravity_val(value val) {
   }
 }
 
+#endif
+
+#if PANGO_VERSION_CHECK(1,16,0)
 /* Convert PangoGravityHint to OCaml value */
 value Val_PangoGravityHint(PangoGravityHint val) {
   switch (val) {
@@ -416,6 +429,9 @@ PangoGravityHint PangoGravityHint_val(value val) {
   }
 }
 
+#endif
+
+#if PANGO_VERSION_CHECK(1,50,0)
 /* Convert PangoLayoutDeserializeError to OCaml value */
 value Val_PangoLayoutDeserializeError(PangoLayoutDeserializeError val) {
   switch (val) {
@@ -444,6 +460,9 @@ PangoLayoutDeserializeError PangoLayoutDeserializeError_val(value val) {
   }
 }
 
+#endif
+
+#if PANGO_VERSION_CHECK(1,46,0)
 /* Convert PangoOverline to OCaml value */
 value Val_PangoOverline(PangoOverline val) {
   switch (val) {
@@ -470,6 +489,9 @@ PangoOverline PangoOverline_val(value val) {
   }
 }
 
+#endif
+
+#if PANGO_VERSION_CHECK(1,8,0)
 /* Convert PangoRenderPart to OCaml value */
 value Val_PangoRenderPart(PangoRenderPart val) {
   switch (val) {
@@ -501,6 +523,8 @@ PangoRenderPart PangoRenderPart_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert PangoScript to OCaml value */
 value Val_PangoScript(PangoScript val) {
@@ -858,6 +882,7 @@ PangoTabAlign PangoTabAlign_val(value val) {
   }
 }
 
+#if PANGO_VERSION_CHECK(1,50,0)
 /* Convert PangoTextTransform to OCaml value */
 value Val_PangoTextTransform(PangoTextTransform val) {
   switch (val) {
@@ -887,6 +912,8 @@ PangoTextTransform PangoTextTransform_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#endif
 
 /* Convert PangoUnderline to OCaml value */
 value Val_PangoUnderline(PangoUnderline val) {
@@ -1112,6 +1139,7 @@ PangoFontMask PangoFontMask_val(value list) {
   return result;
 }
 
+#if PANGO_VERSION_CHECK(1,50,0)
 /* Convert PangoLayoutDeserializeFlags to OCaml flag list */
 value Val_PangoLayoutDeserializeFlags(PangoLayoutDeserializeFlags flags) {
   CAMLparam0();
@@ -1146,6 +1174,9 @@ PangoLayoutDeserializeFlags PangoLayoutDeserializeFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if PANGO_VERSION_CHECK(1,50,0)
 /* Convert PangoLayoutSerializeFlags to OCaml flag list */
 value Val_PangoLayoutSerializeFlags(PangoLayoutSerializeFlags flags) {
   CAMLparam0();
@@ -1187,6 +1218,9 @@ PangoLayoutSerializeFlags PangoLayoutSerializeFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if PANGO_VERSION_CHECK(1,44,0)
 /* Convert PangoShapeFlags to OCaml flag list */
 value Val_PangoShapeFlags(PangoShapeFlags flags) {
   CAMLparam0();
@@ -1221,6 +1255,9 @@ PangoShapeFlags PangoShapeFlags_val(value list) {
   return result;
 }
 
+#endif
+
+#if PANGO_VERSION_CHECK(1,44,0)
 /* Convert PangoShowFlags to OCaml flag list */
 value Val_PangoShowFlags(PangoShowFlags flags) {
   CAMLparam0();
@@ -1268,4 +1305,6 @@ PangoShowFlags PangoShowFlags_val(value list) {
   }
   return result;
 }
+
+#endif
 

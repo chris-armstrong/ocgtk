@@ -54,6 +54,8 @@ pango_glyph_string_set_size(PangoGlyphString_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if PANGO_VERSION_CHECK(1,50,0)
+
 CAMLexport CAMLprim value ml_pango_glyph_string_index_to_x_full_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -67,6 +69,23 @@ CAMLexport CAMLprim value ml_pango_glyph_string_index_to_x_full_bytecode(value *
 {
 return ml_pango_glyph_string_index_to_x_full_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_glyph_string_index_to_x_full(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+(void)arg6;
+caml_failwith("GlyphString requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_glyph_string_index_to_x_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
 {
@@ -82,6 +101,8 @@ CAMLexport CAMLprim value ml_pango_glyph_string_index_to_x_bytecode(value * argv
 return ml_pango_glyph_string_index_to_x_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
 
+#if PANGO_VERSION_CHECK(1,14,0)
+
 CAMLexport CAMLprim value ml_pango_glyph_string_get_width(value self)
 {
 CAMLparam1(self);
@@ -89,6 +110,17 @@ CAMLparam1(self);
 int result = pango_glyph_string_get_width(PangoGlyphString_val(self));
 CAMLreturn(Val_int(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_pango_glyph_string_get_width(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("GlyphString requires Pango >= 1.14");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_glyph_string_free(value self)
 {

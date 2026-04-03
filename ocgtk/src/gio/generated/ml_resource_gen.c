@@ -21,6 +21,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,32,0)
 /* Conversion functions for GResource (opaque record with hidden fields) */
 GResource *GResource_val(value v) {
   return *(GResource **)Data_custom_val(v);
@@ -35,6 +36,9 @@ value Val_GResource_option(const GResource *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GResource(ptr));
 }
+#endif
+
+#if GLIB_CHECK_VERSION(2,32,0)
 
 
 CAMLexport CAMLprim value ml_g_resource_unref(value self)
@@ -97,3 +101,66 @@ CAMLparam1(self);
 g_resources_register(GResource_val(self));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_resources_register(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Resource requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_resources_unregister(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Resource requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_resource_enumerate_children(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Resource requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_resource_open_stream(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Resource requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_resource_ref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Resource requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_resource_unref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Resource requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+#endif

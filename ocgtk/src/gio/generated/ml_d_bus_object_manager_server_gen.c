@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,30,0)
+
 
 CAMLexport CAMLprim value ml_g_dbus_object_manager_server_new(value arg1)
 {
@@ -47,6 +49,8 @@ g_dbus_object_manager_server_set_connection(GDBusObjectManagerServer_val(self), 
 CAMLreturn(Val_unit);
 }
 
+#if GLIB_CHECK_VERSION(2,34,0)
+
 CAMLexport CAMLprim value ml_g_dbus_object_manager_server_is_exported(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -54,6 +58,18 @@ CAMLparam2(self, arg1);
 gboolean result = g_dbus_object_manager_server_is_exported(GDBusObjectManagerServer_val(self), GDBusObjectSkeleton_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_server_is_exported(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusObjectManagerServer requires GLib >= 2.34");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_dbus_object_manager_server_get_connection(value self)
 {
@@ -95,3 +111,85 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = caml_copy_string(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_server_new(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("DBusObjectManagerServer requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_server_export(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusObjectManagerServer requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_server_export_uniquely(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusObjectManagerServer requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_server_get_connection(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusObjectManagerServer requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_server_is_exported(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusObjectManagerServer requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_server_set_connection(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusObjectManagerServer requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_server_unexport(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusObjectManagerServer requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_d_bus_object_manager_server_get_object_path(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusObjectManagerServer requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+#endif

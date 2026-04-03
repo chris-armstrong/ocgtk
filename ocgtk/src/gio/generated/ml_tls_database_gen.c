@@ -21,6 +21,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+#if GLIB_CHECK_VERSION(2,30,0)
+
 
 CAMLexport CAMLprim value ml_g_tls_database_verify_chain_finish(value self, value arg1)
 {
@@ -102,3 +104,99 @@ CAMLparam2(self, arg1);
 gchar* result = g_tls_database_create_certificate_handle(GTlsDatabase_val(self), GTlsCertificate_val(arg1));
 CAMLreturn(Val_option_string(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_tls_database_create_certificate_handle(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsDatabase requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_database_lookup_certificate_for_handle(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("TlsDatabase requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_database_lookup_certificate_for_handle_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsDatabase requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_database_lookup_certificate_issuer(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("TlsDatabase requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_database_lookup_certificate_issuer_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsDatabase requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_database_lookup_certificates_issued_by_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsDatabase requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_database_verify_chain(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+(void)arg6;
+caml_failwith("TlsDatabase requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_database_verify_chain_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TlsDatabase requires GLib >= 2.30");
+return Val_unit;
+}
+
+
+#endif

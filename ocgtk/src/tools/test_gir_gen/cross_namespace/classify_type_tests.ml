@@ -36,27 +36,27 @@ let base_ctx () =
   let widget_class =
     { class_name = "Widget"; c_type = "GtkWidget"; parent = None;
       implements = []; introspectable = true; constructors = [];
-      methods = []; properties = []; signals = []; class_doc = None }
+      methods = []; properties = []; signals = []; class_doc = None; version = None }
   in
   let scrollable_iface =
     { interface_name = "Scrollable"; c_type = "GtkScrollable";
       c_symbol_prefix = "scrollable"; methods = []; properties = [];
-      signals = []; interface_doc = None }
+      signals = []; interface_doc = None; version = None }
   in
   let text_direction_enum =
     { enum_name = "TextDirection"; enum_c_type = "GtkTextDirection";
-      members = []; enum_doc = None; functions = [] }
+      members = []; enum_doc = None; functions = []; enum_version = None }
   in
   let state_flags_bitfield =
     { bitfield_name = "StateFlags"; bitfield_c_type = "GtkStateFlags";
-      flags = []; bitfield_doc = None }
+      flags = []; bitfield_doc = None; bitfield_version = None }
   in
   let text_iter_record =
     { record_name = "TextIter"; c_type = "GtkTextIter";
       glib_type_name = None; glib_get_type = None; introspectable = true;
       opaque = false; disguised = false; c_symbol_prefix = None;
       is_gtype_struct_for = None; fields = []; constructors = [];
-      methods = []; functions = []; record_doc = None }
+      methods = []; functions = []; record_doc = None; version = None }
   in
   { namespace; repository;
     classes = [ widget_class ];

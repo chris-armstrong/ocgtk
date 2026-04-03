@@ -16,6 +16,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gtk_decls.h"
 
+#if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GtkPrintSetup (opaque record with hidden fields) */
 GtkPrintSetup *GtkPrintSetup_val(value v) {
   return *(GtkPrintSetup **)Data_custom_val(v);
@@ -30,6 +31,9 @@ value Val_GtkPrintSetup_option(const GtkPrintSetup *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GtkPrintSetup(ptr));
 }
+#endif
+
+#if GTK_CHECK_VERSION(4,14,0)
 
 
 CAMLexport CAMLprim value ml_gtk_print_setup_unref(value self)
@@ -47,3 +51,26 @@ CAMLparam1(self);
 GtkPrintSetup* result = gtk_print_setup_ref(GtkPrintSetup_val(self));
 CAMLreturn(Val_GtkPrintSetup(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_gtk_print_setup_ref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PrintSetup requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_print_setup_unref(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PrintSetup requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+#endif
