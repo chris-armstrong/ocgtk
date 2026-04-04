@@ -282,13 +282,8 @@ let parse_overrides filename =
   | Sys_error msg -> Error (Invalid_format { location = filename; message = msg })
 
 let parse_overrides_from_string content =
-  (* Write to temp file and use load_sexp to reuse the same parsing path *)
-  let filename = Filename.temp_file "override" ".sexp" in
-  Fun.protect
-    ~finally:(fun () -> try Sys.remove filename with _ -> ())
-    (fun () ->
-      let oc = open_out filename in
-      Fun.protect
-        ~finally:(fun () -> close_out_noerr oc)
-        (fun () -> output_string oc content);
-      parse_overrides filename)
+  try parse_overrides_sexp (Sexp.of_string content)
+  with
+  | Sexplib.Sexp.Parse_error e ->
+      Error (Invalid_format { location = "<string>"; message = e.err_msg })
+  | Failure msg -> Error (Invalid_format { location = "<string>"; message = msg })

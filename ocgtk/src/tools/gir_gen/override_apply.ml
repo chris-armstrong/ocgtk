@@ -171,245 +171,151 @@ let apply_bitfield_components (ov : bitfield_override) (bf : gir_bitfield)
   in
   { bf with flags }
 
-(* Process classes: entity-level ignore/version and component overrides. *)
-let apply_class_overrides ~(class_overrides : class_override list)
-    (all_classes : gir_class list) =
+(* Generic: entity-level ignore/version and component overrides.
+   ~get_entity_name / ~get_override_name: name accessors for entity and override types
+   ~get_action: extracts the entity-level action from an override record
+   ~set_version: applies a version string to the entity record
+   ~apply_components: applies all component-level overrides to a surviving entity
+   ~check_components: emits component-level unknown-name warnings for one entity *)
+let apply_entity_overrides ~get_entity_name ~get_override_name
+    ~get_action ~set_version ~apply_components ~check_components all_entities
+    overrides =
   let ignored = ref [] in
   let warnings = ref [] in
-  let process_class (cls : gir_class) =
+  let process entity =
     match
       List.find_opt
-        (fun (ov : class_override) -> String.equal ov.class_name cls.class_name)
-        class_overrides
+        (fun ov -> String.equal (get_override_name ov) (get_entity_name entity))
+        overrides
     with
-    | None -> Some cls
+    | None -> Some entity
     | Some ov -> (
-        match ov.class_action with
+        match get_action ov with
         | Some Ignore ->
-            ignored := cls.class_name :: !ignored;
+            ignored := get_entity_name entity :: !ignored;
             None
         | Some (Set_version v) ->
-            Some (apply_class_components ov { cls with version = Some v })
-        | None -> Some (apply_class_components ov cls))
+            Some (apply_components ov (set_version v entity))
+        | None -> Some (apply_components ov entity))
   in
-  let processed = List.filter_map process_class all_classes in
-  (* Warn using the ORIGINAL class list so that successfully-ignored components
+  let processed = List.filter_map process all_entities in
+  (* Warn using the ORIGINAL entity list so that successfully-ignored components
      do not produce false "unknown" warnings. *)
   List.iter
-    (fun (ov : class_override) ->
-      match ov.class_action with
+    (fun ov ->
+      match get_action ov with
       | Some Ignore -> ()
       | Some _ | None ->
           Option.iter
-            (fun (cls : gir_class) ->
-              warn_unknown_components ~entity_name:ov.class_name
-                ~entity_kind:"class" ~component_kind:"constructor"
-                ~get_name:(fun (c : gir_constructor) -> c.ctor_name)
-                ~components:cls.constructors ~overrides:ov.constructors ~warnings;
-              warn_unknown_components ~entity_name:ov.class_name
-                ~entity_kind:"class" ~component_kind:"method"
-                ~get_name:(fun (m : gir_method) -> m.method_name)
-                ~components:cls.methods ~overrides:ov.methods ~warnings;
-              warn_unknown_components ~entity_name:ov.class_name
-                ~entity_kind:"class" ~component_kind:"property"
-                ~get_name:(fun (p : gir_property) -> p.prop_name)
-                ~components:cls.properties ~overrides:ov.properties ~warnings;
-              warn_unknown_components ~entity_name:ov.class_name
-                ~entity_kind:"class" ~component_kind:"signal"
-                ~get_name:(fun (s : gir_signal) -> s.signal_name)
-                ~components:cls.signals ~overrides:ov.signals ~warnings)
+            (fun entity ->
+              check_components ~entity_name:(get_override_name ov) entity ov
+                ~warnings)
             (List.find_opt
-               (fun (cls : gir_class) ->
-                 String.equal cls.class_name ov.class_name)
-               all_classes))
-    class_overrides;
+               (fun e -> String.equal (get_entity_name e) (get_override_name ov))
+               all_entities))
+    overrides;
   (processed, !ignored, !warnings)
 
-(* Process interfaces: entity-level ignore/version and component overrides. *)
-let apply_interface_overrides ~(interface_overrides : interface_override list)
-    (all_interfaces : gir_interface list) =
-  let ignored = ref [] in
-  let warnings = ref [] in
-  let process_interface (intf : gir_interface) =
-    match
-      List.find_opt
-        (fun (ov : interface_override) ->
-          String.equal ov.interface_name intf.interface_name)
-        interface_overrides
-    with
-    | None -> Some intf
-    | Some ov -> (
-        match ov.interface_action with
-        | Some Ignore ->
-            ignored := intf.interface_name :: !ignored;
-            None
-        | Some (Set_version v) ->
-            Some (apply_interface_components ov { intf with version = Some v })
-        | None -> Some (apply_interface_components ov intf))
-  in
-  let processed = List.filter_map process_interface all_interfaces in
-  List.iter
-    (fun (ov : interface_override) ->
-      match ov.interface_action with
-      | Some Ignore -> ()
-      | Some _ | None ->
-          Option.iter
-            (fun (intf : gir_interface) ->
-              warn_unknown_components ~entity_name:ov.interface_name
-                ~entity_kind:"interface" ~component_kind:"method"
-                ~get_name:(fun (m : gir_method) -> m.method_name)
-                ~components:intf.methods ~overrides:ov.methods ~warnings;
-              warn_unknown_components ~entity_name:ov.interface_name
-                ~entity_kind:"interface" ~component_kind:"property"
-                ~get_name:(fun (p : gir_property) -> p.prop_name)
-                ~components:intf.properties ~overrides:ov.properties ~warnings;
-              warn_unknown_components ~entity_name:ov.interface_name
-                ~entity_kind:"interface" ~component_kind:"signal"
-                ~get_name:(fun (s : gir_signal) -> s.signal_name)
-                ~components:intf.signals ~overrides:ov.signals ~warnings)
-            (List.find_opt
-               (fun (intf : gir_interface) ->
-                 String.equal intf.interface_name ov.interface_name)
-               all_interfaces))
-    interface_overrides;
-  (processed, !ignored, !warnings)
+let apply_class_overrides ~class_overrides all_classes =
+  apply_entity_overrides ~get_entity_name:(fun (c : gir_class) -> c.class_name)
+    ~get_override_name:(fun (o : class_override) -> o.class_name)
+    ~get_action:(fun (o : class_override) -> o.class_action)
+    ~set_version:(fun v (c : gir_class) -> { c with version = Some v })
+    ~apply_components:apply_class_components
+    ~check_components:(fun ~entity_name cls ov ~warnings ->
+      warn_unknown_components ~entity_name ~entity_kind:"class"
+        ~component_kind:"constructor"
+        ~get_name:(fun (c : gir_constructor) -> c.ctor_name)
+        ~components:cls.constructors ~overrides:ov.constructors ~warnings;
+      warn_unknown_components ~entity_name ~entity_kind:"class"
+        ~component_kind:"method"
+        ~get_name:(fun (m : gir_method) -> m.method_name)
+        ~components:cls.methods ~overrides:ov.methods ~warnings;
+      warn_unknown_components ~entity_name ~entity_kind:"class"
+        ~component_kind:"property"
+        ~get_name:(fun (p : gir_property) -> p.prop_name)
+        ~components:cls.properties ~overrides:ov.properties ~warnings;
+      warn_unknown_components ~entity_name ~entity_kind:"class"
+        ~component_kind:"signal"
+        ~get_name:(fun (s : gir_signal) -> s.signal_name)
+        ~components:cls.signals ~overrides:ov.signals ~warnings)
+    all_classes class_overrides
 
-(* Process records: entity-level ignore/version and component overrides. *)
-let apply_record_overrides ~(record_overrides : record_override list)
-    (all_records : gir_record list) =
-  let ignored = ref [] in
-  let warnings = ref [] in
-  let process_record (rec_ : gir_record) =
-    match
-      List.find_opt
-        (fun (ov : record_override) ->
-          String.equal ov.record_name rec_.record_name)
-        record_overrides
-    with
-    | None -> Some rec_
-    | Some ov -> (
-        match ov.record_action with
-        | Some Ignore ->
-            ignored := rec_.record_name :: !ignored;
-            None
-        | Some (Set_version v) ->
-            Some (apply_record_components ov { rec_ with version = Some v })
-        | None -> Some (apply_record_components ov rec_))
-  in
-  let processed = List.filter_map process_record all_records in
-  List.iter
-    (fun (ov : record_override) ->
-      match ov.record_action with
-      | Some Ignore -> ()
-      | Some _ | None ->
-          Option.iter
-            (fun (rec_ : gir_record) ->
-              warn_unknown_components ~entity_name:ov.record_name
-                ~entity_kind:"record" ~component_kind:"field"
-                ~get_name:(fun (f : gir_record_field) -> f.field_name)
-                ~components:rec_.fields ~overrides:ov.fields ~warnings;
-              warn_unknown_components ~entity_name:ov.record_name
-                ~entity_kind:"record" ~component_kind:"constructor"
-                ~get_name:(fun (c : gir_constructor) -> c.ctor_name)
-                ~components:rec_.constructors ~overrides:ov.constructors ~warnings;
-              warn_unknown_components ~entity_name:ov.record_name
-                ~entity_kind:"record" ~component_kind:"method"
-                ~get_name:(fun (m : gir_method) -> m.method_name)
-                ~components:rec_.methods ~overrides:ov.methods ~warnings;
-              warn_unknown_components ~entity_name:ov.record_name
-                ~entity_kind:"record" ~component_kind:"function"
-                ~get_name:(fun (f : gir_function) -> f.function_name)
-                ~components:rec_.functions ~overrides:ov.functions ~warnings)
-            (List.find_opt
-               (fun (rec_ : gir_record) ->
-                 String.equal rec_.record_name ov.record_name)
-               all_records))
-    record_overrides;
-  (processed, !ignored, !warnings)
+let apply_interface_overrides ~interface_overrides all_interfaces =
+  apply_entity_overrides ~get_entity_name:(fun (i : gir_interface) -> i.interface_name)
+    ~get_override_name:(fun (o : interface_override) -> o.interface_name)
+    ~get_action:(fun (o : interface_override) -> o.interface_action)
+    ~set_version:(fun v (i : gir_interface) -> { i with version = Some v })
+    ~apply_components:apply_interface_components
+    ~check_components:(fun ~entity_name intf ov ~warnings ->
+      warn_unknown_components ~entity_name ~entity_kind:"interface"
+        ~component_kind:"method"
+        ~get_name:(fun (m : gir_method) -> m.method_name)
+        ~components:intf.methods ~overrides:ov.methods ~warnings;
+      warn_unknown_components ~entity_name ~entity_kind:"interface"
+        ~component_kind:"property"
+        ~get_name:(fun (p : gir_property) -> p.prop_name)
+        ~components:intf.properties ~overrides:ov.properties ~warnings;
+      warn_unknown_components ~entity_name ~entity_kind:"interface"
+        ~component_kind:"signal"
+        ~get_name:(fun (s : gir_signal) -> s.signal_name)
+        ~components:intf.signals ~overrides:ov.signals ~warnings)
+    all_interfaces interface_overrides
 
-(* Process enums: entity-level ignore/version and component overrides. *)
-let apply_enum_overrides ~(enum_overrides : enum_override list)
-    (all_enums : gir_enum list) =
-  let ignored = ref [] in
-  let warnings = ref [] in
-  let process_enum (enm : gir_enum) =
-    match
-      List.find_opt
-        (fun (ov : enum_override) -> String.equal ov.enum_name enm.enum_name)
-        enum_overrides
-    with
-    | None -> Some enm
-    | Some ov -> (
-        match ov.enum_action with
-        | Some Ignore ->
-            ignored := enm.enum_name :: !ignored;
-            None
-        | Some (Set_version v) ->
-            Some (apply_enum_components ov { enm with enum_version = Some v })
-        | None -> Some (apply_enum_components ov enm))
-  in
-  let processed = List.filter_map process_enum all_enums in
-  List.iter
-    (fun (ov : enum_override) ->
-      match ov.enum_action with
-      | Some Ignore -> ()
-      | Some _ | None ->
-          Option.iter
-            (fun (enm : gir_enum) ->
-              warn_unknown_components ~entity_name:ov.enum_name
-                ~entity_kind:"enumeration" ~component_kind:"member"
-                ~get_name:(fun (m : gir_enum_member) -> m.member_name)
-                ~components:enm.members ~overrides:ov.members ~warnings;
-              warn_unknown_components ~entity_name:ov.enum_name
-                ~entity_kind:"enumeration" ~component_kind:"function"
-                ~get_name:(fun (f : gir_function) -> f.function_name)
-                ~components:enm.functions ~overrides:ov.functions ~warnings)
-            (List.find_opt
-               (fun (enm : gir_enum) -> String.equal enm.enum_name ov.enum_name)
-               all_enums))
-    enum_overrides;
-  (processed, !ignored, !warnings)
+let apply_record_overrides ~record_overrides all_records =
+  apply_entity_overrides ~get_entity_name:(fun (r : gir_record) -> r.record_name)
+    ~get_override_name:(fun (o : record_override) -> o.record_name)
+    ~get_action:(fun (o : record_override) -> o.record_action)
+    ~set_version:(fun v (r : gir_record) -> { r with version = Some v })
+    ~apply_components:apply_record_components
+    ~check_components:(fun ~entity_name rec_ ov ~warnings ->
+      warn_unknown_components ~entity_name ~entity_kind:"record"
+        ~component_kind:"field"
+        ~get_name:(fun (f : gir_record_field) -> f.field_name)
+        ~components:rec_.fields ~overrides:ov.fields ~warnings;
+      warn_unknown_components ~entity_name ~entity_kind:"record"
+        ~component_kind:"constructor"
+        ~get_name:(fun (c : gir_constructor) -> c.ctor_name)
+        ~components:rec_.constructors ~overrides:ov.constructors ~warnings;
+      warn_unknown_components ~entity_name ~entity_kind:"record"
+        ~component_kind:"method"
+        ~get_name:(fun (m : gir_method) -> m.method_name)
+        ~components:rec_.methods ~overrides:ov.methods ~warnings;
+      warn_unknown_components ~entity_name ~entity_kind:"record"
+        ~component_kind:"function"
+        ~get_name:(fun (f : gir_function) -> f.function_name)
+        ~components:rec_.functions ~overrides:ov.functions ~warnings)
+    all_records record_overrides
 
-(* Process bitfields: entity-level ignore/version and component overrides. *)
-let apply_bitfield_overrides ~(bitfield_overrides : bitfield_override list)
-    (all_bitfields : gir_bitfield list) =
-  let ignored = ref [] in
-  let warnings = ref [] in
-  let process_bitfield (bf : gir_bitfield) =
-    match
-      List.find_opt
-        (fun (ov : bitfield_override) ->
-          String.equal ov.bitfield_name bf.bitfield_name)
-        bitfield_overrides
-    with
-    | None -> Some bf
-    | Some ov -> (
-        match ov.bitfield_action with
-        | Some Ignore ->
-            ignored := bf.bitfield_name :: !ignored;
-            None
-        | Some (Set_version v) ->
-            Some (apply_bitfield_components ov { bf with bitfield_version = Some v })
-        | None -> Some (apply_bitfield_components ov bf))
-  in
-  let processed = List.filter_map process_bitfield all_bitfields in
-  List.iter
-    (fun (ov : bitfield_override) ->
-      match ov.bitfield_action with
-      | Some Ignore -> ()
-      | Some _ | None ->
-          Option.iter
-            (fun (bf : gir_bitfield) ->
-              warn_unknown_components ~entity_name:ov.bitfield_name
-                ~entity_kind:"bitfield" ~component_kind:"member"
-                ~get_name:(fun (f : gir_bitfield_member) -> f.flag_name)
-                ~components:bf.flags ~overrides:ov.flags ~warnings)
-            (List.find_opt
-               (fun (bf : gir_bitfield) ->
-                 String.equal bf.bitfield_name ov.bitfield_name)
-               all_bitfields))
-    bitfield_overrides;
-  (processed, !ignored, !warnings)
+let apply_enum_overrides ~enum_overrides all_enums =
+  apply_entity_overrides ~get_entity_name:(fun (e : gir_enum) -> e.enum_name)
+    ~get_override_name:(fun (o : enum_override) -> o.enum_name)
+    ~get_action:(fun (o : enum_override) -> o.enum_action)
+    ~set_version:(fun v (e : gir_enum) -> { e with enum_version = Some v })
+    ~apply_components:apply_enum_components
+    ~check_components:(fun ~entity_name enm ov ~warnings ->
+      warn_unknown_components ~entity_name ~entity_kind:"enumeration"
+        ~component_kind:"member"
+        ~get_name:(fun (m : gir_enum_member) -> m.member_name)
+        ~components:enm.members ~overrides:ov.members ~warnings;
+      warn_unknown_components ~entity_name ~entity_kind:"enumeration"
+        ~component_kind:"function"
+        ~get_name:(fun (f : gir_function) -> f.function_name)
+        ~components:enm.functions ~overrides:ov.functions ~warnings)
+    all_enums enum_overrides
+
+let apply_bitfield_overrides ~bitfield_overrides all_bitfields =
+  apply_entity_overrides ~get_entity_name:(fun (b : gir_bitfield) -> b.bitfield_name)
+    ~get_override_name:(fun (o : bitfield_override) -> o.bitfield_name)
+    ~get_action:(fun (o : bitfield_override) -> o.bitfield_action)
+    ~set_version:(fun v (b : gir_bitfield) -> { b with bitfield_version = Some v })
+    ~apply_components:apply_bitfield_components
+    ~check_components:(fun ~entity_name bf ov ~warnings ->
+      warn_unknown_components ~entity_name ~entity_kind:"bitfield"
+        ~component_kind:"member"
+        ~get_name:(fun (f : gir_bitfield_member) -> f.flag_name)
+        ~components:bf.flags ~overrides:ov.flags ~warnings)
+    all_bitfields bitfield_overrides
 
 (* Process standalone functions: ignore or version override. *)
 let apply_function_overrides ~(function_overrides : component_override list)
