@@ -1425,19 +1425,18 @@ let extract_since_version = Gir_gen_lib.Override_extractor.extract_since_version
 let render_version_component (name : string) (version : string) =
   sprintf "    (%s (version \"%s\"))" name version
 
-(* Collect version overrides — prefers direct version attr, falls back to Since in doc text *)
-let member_versions members get_name get_version get_doc =
+(* Collect version overrides from Since annotations in member doc text.
+   The parser handles version XML attributes natively; this only extracts
+   unstructured "Since X.Y" text that is not captured by the parser. *)
+let member_versions_from_docs members get_name get_doc =
   List.filter_map
     ~f:(fun m ->
-      match get_version m with
-      | Some v -> Some (get_name m, v)
-      | None -> (
-          match get_doc m with
+      match get_doc m with
+      | None -> None
+      | Some doc -> (
+          match extract_since_version doc with
           | None -> None
-          | Some doc -> (
-              match extract_since_version doc with
-              | None -> None
-              | Some v -> Some (get_name m, v))))
+          | Some v -> Some (get_name m, v)))
     members
 
 (* Generate overrides sexp file from parsed GIR data *)
@@ -1456,9 +1455,8 @@ let generate_overrides gir_file output_file =
   List.iter
     ~f:(fun (enm : gir_enum) ->
       let member_versions =
-        member_versions enm.members
+        member_versions_from_docs enm.members
           (fun m -> m.member_name)
-          (fun m -> m.member_version)
           (fun m -> m.member_doc)
       in
       if member_versions <> [] then begin
@@ -1476,9 +1474,8 @@ let generate_overrides gir_file output_file =
   List.iter
     ~f:(fun (bf : gir_bitfield) ->
       let flag_versions =
-        member_versions bf.flags
+        member_versions_from_docs bf.flags
           (fun f -> f.flag_name)
-          (fun f -> f.flag_version)
           (fun f -> f.flag_doc)
       in
       if flag_versions <> [] then begin
@@ -1496,9 +1493,8 @@ let generate_overrides gir_file output_file =
   List.iter
     ~f:(fun (rec_ : gir_record) ->
       let field_versions =
-        member_versions rec_.fields
+        member_versions_from_docs rec_.fields
           (fun f -> f.field_name)
-          (fun f -> f.field_version)
           (fun f -> f.field_doc)
       in
       if field_versions <> [] then begin
