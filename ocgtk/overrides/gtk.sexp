@@ -6,29 +6,18 @@
   (class PrintUnixDialog (ignore))
   (class PageSetupUnixDialog (ignore))
   (class Printer (ignore))
-  ;; Note: PixbufNonAnim → gdkpixbuf.sexp, BroadwayRenderer/NglRenderer → gsk.sexp,
-  ;; SettingsBackend → gio.sexp (each ignored in their correct namespace)
-
-  ;; Migrated from exclude_list.ml platform_specific_type_exclude_list
-  ;; PageSetupUnixDialog and PrintUnixDialog already above
-  (class PageSetup (ignore))
-  (class PrintSettings (ignore))
-  (class PrintContext (ignore))
-  (class PrintOperation (ignore))
-  ;; PrintCapabilities is a bitfield, not a class
+  ;; PrintCapabilities (bitfield) and License (enum) were never generated on main
+  ;; (they were skipped at parse time by is_platform_specific_type guard)
   (bitfield PrintCapabilities (ignore))
-  ;; PrintOperationPreview is an interface, not a class
-  (interface PrintOperationPreview (ignore))
   (enumeration License (ignore))
+
+  ;; PrintBackend is an internal GTK type not in public headers
+  (record PrintBackend (ignore))
 
   ;; Migrated from filtering.ml property_exclude_list
   (class IconPaintable
     (property is-symbolic (ignore))
   )
-
-  ;; Migrated from filtering.ml banned_records
-  ;; Note: PixbufModule/PixbufModulePattern → gdkpixbuf.sexp
-  (record PrintBackend (ignore))
 
   ;; Migrated from exclude_list.ml variadic_function_exclude_list
   ;; These are class methods (matched by GIR method name, not c_identifier)

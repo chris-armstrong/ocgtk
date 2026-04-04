@@ -42,6 +42,15 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_PangoFontMap(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_print_context_get_page_setup(value self)
+{
+CAMLparam1(self);
+
+GtkPageSetup* result = gtk_print_context_get_page_setup(GtkPrintContext_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_GtkPageSetup(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_print_context_get_height(value self)
 {
 CAMLparam1(self);

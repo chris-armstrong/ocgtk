@@ -2,8 +2,7 @@
   (library "Gio")
 
   ;; GSettingsBackend requires #define G_SETTINGS_ENABLE_BACKEND before
-  ;; including gsettingsbackend.h, and is only useful for implementing
-  ;; custom settings backends (which requires GObject subclassing we don't have)
+  ;; including gsettingsbackend.h — not suitable for general use
   (class SettingsBackend (ignore))
 
   (enumeration DBusError
