@@ -407,12 +407,16 @@ auto-discovers new `.ml` files.
 
 ---
 
-## Phase 2: Override Application ✅ COMPLETE (2026-04-04)
+## Phase 2: Override Application ✅ COMPLETE (2026-04-04, refactored 2026-04-05)
 
 **Goal**: Apply parsed overrides to the GIR data structures after parsing, before generation.
 
 **Implementation notes:**
-- `override_apply.ml`: single-pass `filter_map` per entity type (class, interface, record,
+- `override_apply.ml`: refactored (2026-04-05) to use a single `apply_entity_overrides`
+  generic helper replacing 5 near-identical per-entity functions (~100 lines removed)
+- `override_parser.ml`: `parse_overrides_from_string` cleaned up to use `Sexp.of_string`
+  directly instead of a temp-file round-trip
+- Original: single-pass `filter_map` per entity type (class, interface, record,
   enum, bitfield, function) — each `process_entity` call does one `List.find_opt` for the
   override, then dispatches on the action with exhaustive pattern matching
 - Entity-level `Set_version` sets the entity version field then applies component overrides
@@ -851,11 +855,17 @@ Create `ocgtk/test_gir_gen/test_override_integration.ml`:
 
 In `test_override_parser.ml`, add:
 
-- Generate override file content from `library_overrides` type using `sexplib`
-  (enabled by `[@@deriving sexp]` on override types — see Task 1.1)
-- Parse it back
-- Verify structural equality using `[@@deriving eq]` derived `equal_library_overrides`
+- First add `sexp` to the `[@@deriving eq]` annotations in `override_types.ml` and `.mli`
+  (they currently only derive `eq` — `sexp` was deferred because the human-readable override
+  file format is hand-parsed, but sexp serialisation is still useful for round-trip tests)
+- Generate override content from `library_overrides` using `sexplib` (`sexp_of_library_overrides`)
+- Parse it back with `parse_overrides_from_string`
+- Verify structural equality using `equal_library_overrides`
 - Test with complex multi-entity override files
+
+**Note**: The `[@@deriving sexp]` output format (verbose, record-structured) is NOT the
+human-authored override file format — it is only used here for serialisation in tests.
+The hand-written parser remains the authoritative parser for `.sexp` override files.
 
 ### Task 5.2: End-to-End Smoke Test
 
