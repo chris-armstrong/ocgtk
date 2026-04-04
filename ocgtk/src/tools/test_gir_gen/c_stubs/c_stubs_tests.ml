@@ -1,7 +1,7 @@
 (* C Stub Generation Tests - validates generated C code using lightweight parser *)
 
 open Printf
-open Gir_gen_lib.Types
+open Type_factory
 open C_validation
 
 (* ========================================================================= *)
@@ -128,15 +128,7 @@ let create_test_context = Helpers.create_test_context
 let test_simple_constructor () =
   let ctx = create_test_context () in
   let ctor =
-    {
-      ctor_name = "new";
-      c_identifier = "gtk_button_new";
-      ctor_parameters = [];
-      ctor_doc = None;
-      throws = false;
-      ctor_introspectable = true;
-      version = None;
-    }
+    make_gir_constructor ~ctor_name:"new" ~c_identifier:"gtk_button_new" ()
   in
 
   let c_code =
@@ -162,32 +154,10 @@ let test_simple_constructor () =
 let test_constructor_with_params () =
   let ctx = create_test_context () in
   let ctor =
-    {
-      ctor_name = "new_with_label";
-      c_identifier = "gtk_button_new_with_label";
-      ctor_parameters =
-        [
-          {
-            param_name = "label";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const gchar*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      ctor_doc = None;
-      throws = false;
-      ctor_introspectable = true;
-      version = None;
-    }
+    make_gir_constructor ~ctor_name:"new_with_label"
+      ~c_identifier:"gtk_button_new_with_label"
+      ~ctor_parameters:[ make_string_param ~param_name:"label" () ]
+      ()
   in
 
   let c_code =
@@ -213,33 +183,12 @@ let test_constructor_many_params () =
   (* Create constructor with 6 parameters to trigger bytecode/native split *)
   let params =
     List.init 6 (fun i ->
-        {
-          param_name = sprintf "arg%d" (i + 1);
-          param_type =
-            {
-              name = "gint";
-              c_type = Some "gint";
-              nullable = false;
-              transfer_ownership = TransferNone;
-              array = None;
-            };
-          direction = In;
-          nullable = false;
-          varargs = false;
-          caller_allocates = false;
-        })
+        make_int_param ~param_name:(sprintf "arg%d" (i + 1)) ())
   in
 
   let ctor =
-    {
-      ctor_name = "new_complex";
-      c_identifier = "gtk_widget_new_complex";
-      ctor_parameters = params;
-      ctor_doc = None;
-      throws = false;
-      ctor_introspectable = true;
-      version = None;
-    }
+    make_gir_constructor ~ctor_name:"new_complex"
+      ~c_identifier:"gtk_widget_new_complex" ~ctor_parameters:params ()
   in
 
   let c_code =
@@ -263,42 +212,10 @@ let test_constructor_many_params () =
 let test_simple_method () =
   let ctx = create_test_context () in
   let meth =
-    {
-      method_name = "set_label";
-      c_identifier = "gtk_button_set_label";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
-        [
-          {
-            param_name = "label";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const gchar*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"set_label"
+      ~c_identifier:"gtk_button_set_label" ~return_type:void_type
+      ~parameters:[ make_string_param ~param_name:"label" () ]
+      ()
   in
 
   let c_code =
@@ -321,25 +238,8 @@ let test_simple_method () =
 let test_method_with_return_value () =
   let ctx = create_test_context () in
   let meth =
-    {
-      method_name = "get_label";
-      c_identifier = "gtk_button_get_label";
-      return_type =
-        {
-          name = "utf8";
-          c_type = Some "const gchar*";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"get_label"
+      ~c_identifier:"gtk_button_get_label" ~return_type:utf8_type ()
   in
 
   let c_code =
@@ -365,43 +265,13 @@ let test_method_many_params () =
   (* Note: methods have implicit 'self' parameter, so 6 in-parameters = 7 total *)
   let params =
     List.init 6 (fun i ->
-        {
-          param_name = sprintf "arg%d" (i + 1);
-          param_type =
-            {
-              name = "gint";
-              c_type = Some "gint";
-              nullable = false;
-              transfer_ownership = TransferNone;
-              array = None;
-            };
-          direction = In;
-          nullable = false;
-          varargs = false;
-          caller_allocates = false;
-        })
+        make_int_param ~param_name:(sprintf "arg%d" (i + 1)) ())
   in
 
   let meth =
-    {
-      method_name = "process_many";
-      c_identifier = "gtk_widget_process_many";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = params;
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"process_many"
+      ~c_identifier:"gtk_widget_process_many" ~return_type:void_type
+      ~parameters:params ()
   in
 
   let c_code =
@@ -426,43 +296,13 @@ let test_method_camlxparam_chunking () =
   (* With self, that's 12 total params: CAMLparam5 + CAMLxparam5 + CAMLxparam2 *)
   let params =
     List.init 11 (fun i ->
-        {
-          param_name = sprintf "arg%d" (i + 1);
-          param_type =
-            {
-              name = "gint";
-              c_type = Some "gint";
-              nullable = false;
-              transfer_ownership = TransferNone;
-              array = None;
-            };
-          direction = In;
-          nullable = false;
-          varargs = false;
-          caller_allocates = false;
-        })
+        make_int_param ~param_name:(sprintf "arg%d" (i + 1)) ())
   in
 
   let meth =
-    {
-      method_name = "process_eleven";
-      c_identifier = "gtk_widget_process_eleven";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = params;
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"process_eleven"
+      ~c_identifier:"gtk_widget_process_eleven" ~return_type:void_type
+      ~parameters:params ()
   in
 
   let c_code =
@@ -503,15 +343,7 @@ let test_method_camlxparam_chunking () =
 let test_constructor_type_conversion () =
   let ctx = create_test_context () in
   let ctor =
-    {
-      ctor_name = "new";
-      c_identifier = "gtk_button_new";
-      ctor_parameters = [];
-      ctor_doc = None;
-      throws = false;
-      ctor_introspectable = true;
-      version = None;
-    }
+    make_gir_constructor ~ctor_name:"new" ~c_identifier:"gtk_button_new" ()
   in
 
   let c_code =
@@ -530,42 +362,10 @@ let test_constructor_type_conversion () =
 let test_method_calls_c_function () =
   let ctx = create_test_context () in
   let meth =
-    {
-      method_name = "set_label";
-      c_identifier = "gtk_button_set_label";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
-        [
-          {
-            param_name = "label";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const gchar*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"set_label"
+      ~c_identifier:"gtk_button_set_label" ~return_type:void_type
+      ~parameters:[ make_string_param ~param_name:"label" () ]
+      ()
   in
 
   let c_code =
@@ -584,15 +384,7 @@ let test_method_calls_c_function () =
 let test_variable_declarations () =
   let ctx = create_test_context () in
   let ctor =
-    {
-      ctor_name = "new";
-      c_identifier = "gtk_button_new";
-      ctor_parameters = [];
-      ctor_doc = None;
-      throws = false;
-      ctor_introspectable = true;
-      version = None;
-    }
+    make_gir_constructor ~ctor_name:"new" ~c_identifier:"gtk_button_new" ()
   in
 
   let c_code =
@@ -617,15 +409,7 @@ let test_variable_declarations () =
 let test_parameter_flow_to_return () =
   let ctx = create_test_context () in
   let ctor =
-    {
-      ctor_name = "new";
-      c_identifier = "gtk_button_new";
-      ctor_parameters = [];
-      ctor_doc = None;
-      throws = false;
-      ctor_introspectable = true;
-      version = None;
-    }
+    make_gir_constructor ~ctor_name:"new" ~c_identifier:"gtk_button_new" ()
   in
 
   let c_code =
@@ -651,33 +435,12 @@ let test_bytecode_calls_native () =
 
   let params =
     List.init 6 (fun i ->
-        {
-          param_name = sprintf "arg%d" (i + 1);
-          param_type =
-            {
-              name = "gint";
-              c_type = Some "gint";
-              nullable = false;
-              transfer_ownership = TransferNone;
-              array = None;
-            };
-          direction = In;
-          nullable = false;
-          varargs = false;
-          caller_allocates = false;
-        })
+        make_int_param ~param_name:(sprintf "arg%d" (i + 1)) ())
   in
 
   let ctor =
-    {
-      ctor_name = "new_complex";
-      c_identifier = "gtk_widget_new_complex";
-      ctor_parameters = params;
-      ctor_doc = None;
-      throws = false;
-      ctor_introspectable = true;
-      version = None;
-    }
+    make_gir_constructor ~ctor_name:"new_complex"
+      ~c_identifier:"gtk_widget_new_complex" ~ctor_parameters:params ()
   in
 
   let c_code =
@@ -702,64 +465,22 @@ let test_non_opaque_record_return () =
 
   (* Add a non-opaque record to the context *)
   let test_record =
-    {
-      Gir_gen_lib.Types.record_name = "TestRecord";
-      c_type = "GtkTestRecord";
-      glib_type_name = Some "GtkTestRecord";
-      glib_get_type = Some "gtk_test_record_get_type";
-      fields =
-        [
-          {
-            field_name = "width";
-            field_type =
-              Some
-                {
-                  name = "gint";
-                  c_type = Some "gint";
-                  nullable = false;
-                  transfer_ownership = TransferNone;
-                  array = None;
-                };
-            readable = true;
-            writable = false;
-            field_doc = None;
-          };
-        ];
-      constructors = [];
-      methods = [];
-      c_symbol_prefix = None;
-      is_gtype_struct_for = None;
-      disguised = false;
-      opaque = false;
-      introspectable = true;
-      record_doc = None;
-      functions = [];
-      version = None;
-    }
+    make_gir_record ~record_name:"TestRecord" ~c_type:"GtkTestRecord"
+      ~glib_type_name:"GtkTestRecord" ~glib_get_type:"gtk_test_record_get_type"
+      ~opaque:false ~disguised:false
+      ~fields:
+        [ make_gir_record_field ~field_name:"width" ~field_type:gint_type () ]
+      ()
   in
 
   let ctx = { ctx with records = [ test_record ] } in
 
+  let return_type =
+    make_gir_type ~name:"TestRecord" ~c_type:"GtkTestRecord*" ()
+  in
   let meth =
-    {
-      method_name = "get_record";
-      c_identifier = "gtk_widget_get_record";
-      return_type =
-        {
-          name = "TestRecord";
-          c_type = Some "GtkTestRecord*";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"get_record"
+      ~c_identifier:"gtk_widget_get_record" ~return_type ()
   in
 
   let c_code =
@@ -781,81 +502,25 @@ let test_non_opaque_record_parameter () =
   let ctx = Helpers.create_test_context () in
 
   let test_record =
-    {
-      Gir_gen_lib.Types.record_name = "TestRecord";
-      c_type = "GtkTestRecord";
-      glib_type_name = Some "GtkTestRecord";
-      glib_get_type = Some "gtk_test_record_get_type";
-      fields =
-        [
-          {
-            field_name = "width";
-            field_type =
-              Some
-                {
-                  name = "gint";
-                  c_type = Some "gint";
-                  nullable = false;
-                  transfer_ownership = TransferNone;
-                  array = None;
-                };
-            readable = true;
-            writable = false;
-            field_doc = None;
-          };
-        ];
-      constructors = [];
-      methods = [];
-      c_symbol_prefix = None;
-      is_gtype_struct_for = None;
-      disguised = false;
-      opaque = false;
-      introspectable = true;
-      record_doc = None;
-      functions = [];
-      version = None;
-    }
+    make_gir_record ~record_name:"TestRecord" ~c_type:"GtkTestRecord"
+      ~glib_type_name:"GtkTestRecord" ~glib_get_type:"gtk_test_record_get_type"
+      ~opaque:false ~disguised:false
+      ~fields:
+        [ make_gir_record_field ~field_name:"width" ~field_type:gint_type () ]
+      ()
   in
 
   let ctx = { ctx with records = [ test_record ] } in
 
+  let record_param_type =
+    make_gir_type ~name:"TestRecord" ~c_type:"GtkTestRecord*" ()
+  in
   let meth =
-    {
-      method_name = "set_record";
-      c_identifier = "gtk_widget_set_record";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
-        [
-          {
-            param_name = "record";
-            param_type =
-              {
-                name = "TestRecord";
-                c_type = Some "GtkTestRecord*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"set_record"
+      ~c_identifier:"gtk_widget_set_record" ~return_type:void_type
+      ~parameters:
+        [ make_gir_param ~param_name:"record" ~param_type:record_param_type () ]
+      ()
   in
 
   let c_code =
@@ -881,47 +546,18 @@ let test_opaque_record_return () =
 
   (* Add an opaque record to the context *)
   let opaque_record =
-    {
-      Gir_gen_lib.Types.record_name = "OpaqueRec";
-      c_type = "GtkOpaqueRec";
-      glib_type_name = None;
-      glib_get_type = None;
-      fields = [];
-      constructors = [];
-      methods = [];
-      c_symbol_prefix = None;
-      is_gtype_struct_for = None;
-      disguised = true;
-      opaque = true;
-      introspectable = true;
-      record_doc = None;
-      functions = [];
-      version = None;
-    }
+    make_gir_record ~record_name:"OpaqueRec" ~c_type:"GtkOpaqueRec" ~opaque:true
+      ~disguised:true ()
   in
 
   let ctx = { ctx with records = [ opaque_record ] } in
 
+  let return_type =
+    make_gir_type ~name:"OpaqueRec" ~c_type:"GtkOpaqueRec*" ()
+  in
   let meth =
-    {
-      method_name = "get_opaque";
-      c_identifier = "gtk_widget_get_opaque";
-      return_type =
-        {
-          name = "OpaqueRec";
-          c_type = Some "GtkOpaqueRec*";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"get_opaque"
+      ~c_identifier:"gtk_widget_get_opaque" ~return_type ()
   in
 
   let c_code =
@@ -943,64 +579,21 @@ let test_opaque_record_parameter () =
   let ctx = Helpers.create_test_context () in
 
   let opaque_record =
-    {
-      Gir_gen_lib.Types.record_name = "OpaqueRec";
-      c_type = "GtkOpaqueRec";
-      glib_type_name = None;
-      glib_get_type = None;
-      fields = [];
-      constructors = [];
-      methods = [];
-      c_symbol_prefix = None;
-      is_gtype_struct_for = None;
-      disguised = true;
-      opaque = true;
-      introspectable = true;
-      record_doc = None;
-      functions = [];
-      version = None;
-    }
+    make_gir_record ~record_name:"OpaqueRec" ~c_type:"GtkOpaqueRec" ~opaque:true
+      ~disguised:true ()
   in
 
   let ctx = { ctx with records = [ opaque_record ] } in
 
+  let opaque_param_type =
+    make_gir_type ~name:"OpaqueRec" ~c_type:"GtkOpaqueRec*" ()
+  in
   let meth =
-    {
-      method_name = "set_opaque";
-      c_identifier = "gtk_widget_set_opaque";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
-        [
-          {
-            param_name = "opaque";
-            param_type =
-              {
-                name = "OpaqueRec";
-                c_type = Some "GtkOpaqueRec*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"set_opaque"
+      ~c_identifier:"gtk_widget_set_opaque" ~return_type:void_type
+      ~parameters:
+        [ make_gir_param ~param_name:"opaque" ~param_type:opaque_param_type () ]
+      ()
   in
 
   let c_code =
@@ -1025,64 +618,22 @@ let test_nullable_record_return () =
   let ctx = Helpers.create_test_context () in
 
   let test_record =
-    {
-      Gir_gen_lib.Types.record_name = "TestRecord";
-      c_type = "GtkTestRecord";
-      glib_type_name = Some "GtkTestRecord";
-      glib_get_type = Some "gtk_test_record_get_type";
-      fields =
-        [
-          {
-            field_name = "width";
-            field_type =
-              Some
-                {
-                  name = "gint";
-                  c_type = Some "gint";
-                  nullable = false;
-                  transfer_ownership = TransferNone;
-                  array = None;
-                };
-            readable = true;
-            writable = false;
-            field_doc = None;
-          };
-        ];
-      constructors = [];
-      methods = [];
-      c_symbol_prefix = None;
-      is_gtype_struct_for = None;
-      disguised = false;
-      opaque = false;
-      introspectable = true;
-      record_doc = None;
-      functions = [];
-      version = None;
-    }
+    make_gir_record ~record_name:"TestRecord" ~c_type:"GtkTestRecord"
+      ~glib_type_name:"GtkTestRecord" ~glib_get_type:"gtk_test_record_get_type"
+      ~opaque:false ~disguised:false
+      ~fields:
+        [ make_gir_record_field ~field_name:"width" ~field_type:gint_type () ]
+      ()
   in
 
   let ctx = { ctx with records = [ test_record ] } in
 
+  let return_type =
+    make_gir_type ~name:"TestRecord" ~c_type:"GtkTestRecord*" ~nullable:true ()
+  in
   let meth =
-    {
-      method_name = "get_nullable_record";
-      c_identifier = "gtk_widget_get_nullable_record";
-      return_type =
-        {
-          name = "TestRecord";
-          c_type = Some "GtkTestRecord*";
-          nullable = true;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"get_nullable_record"
+      ~c_identifier:"gtk_widget_get_nullable_record" ~return_type ()
   in
 
   let c_code =
@@ -1106,81 +657,28 @@ let test_nullable_record_parameter () =
   let ctx = Helpers.create_test_context () in
 
   let test_record =
-    {
-      Gir_gen_lib.Types.record_name = "TestRecord";
-      c_type = "GtkTestRecord";
-      glib_type_name = Some "GtkTestRecord";
-      glib_get_type = Some "gtk_test_record_get_type";
-      fields =
-        [
-          {
-            field_name = "width";
-            field_type =
-              Some
-                {
-                  name = "gint";
-                  c_type = Some "gint";
-                  nullable = false;
-                  transfer_ownership = TransferNone;
-                  array = None;
-                };
-            readable = true;
-            writable = false;
-            field_doc = None;
-          };
-        ];
-      constructors = [];
-      methods = [];
-      c_symbol_prefix = None;
-      is_gtype_struct_for = None;
-      disguised = false;
-      opaque = false;
-      introspectable = true;
-      record_doc = None;
-      functions = [];
-      version = None;
-    }
+    make_gir_record ~record_name:"TestRecord" ~c_type:"GtkTestRecord"
+      ~glib_type_name:"GtkTestRecord" ~glib_get_type:"gtk_test_record_get_type"
+      ~opaque:false ~disguised:false
+      ~fields:
+        [ make_gir_record_field ~field_name:"width" ~field_type:gint_type () ]
+      ()
   in
 
   let ctx = { ctx with records = [ test_record ] } in
 
+  let record_param_type =
+    make_gir_type ~name:"TestRecord" ~c_type:"GtkTestRecord*" ~nullable:true ()
+  in
   let meth =
-    {
-      method_name = "set_nullable_record";
-      c_identifier = "gtk_widget_set_nullable_record";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    make_gir_method ~method_name:"set_nullable_record"
+      ~c_identifier:"gtk_widget_set_nullable_record" ~return_type:void_type
+      ~parameters:
         [
-          {
-            param_name = "record";
-            param_type =
-              {
-                name = "TestRecord";
-                c_type = Some "GtkTestRecord*";
-                nullable = true;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = true;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+          make_gir_param ~param_name:"record" ~param_type:record_param_type
+            ~nullable:true ();
+        ]
+      ()
   in
 
   let c_code =

@@ -1,55 +1,8 @@
 (* Constructor Wrapper Tests - End-to-end testing of constructor wrapper generation *)
 
-open Gir_gen_lib.Types
+open Type_factory
 
 let create_test_context = Helpers.create_test_context_with_hierarchy
-
-(* ========================================================================= *)
-(* Helper Functions                                                          *)
-(* ========================================================================= *)
-
-let simple_class ?(constructors = []) class_name c_type =
-  {
-    class_name;
-    c_type;
-    parent = None;
-    implements = [];
-    introspectable = true;
-    constructors;
-    methods = [];
-    properties = [];
-    signals = [];
-    class_doc = None;
-    version = None;
-  }
-
-let make_constructor ?(params = []) ?(throws = false) name c_id =
-  {
-    ctor_name = name;
-    c_identifier = c_id;
-    ctor_parameters = params;
-    ctor_doc = None;
-    throws;
-    ctor_introspectable = true;
-    version = None;
-  }
-
-let make_param ?(nullable = false) name type_name c_type =
-  {
-    param_name = name;
-    param_type =
-      {
-        name = type_name;
-        c_type = Some c_type;
-        nullable = false;
-        transfer_ownership = TransferNone;
-        array = None;
-      };
-    direction = In;
-    nullable;
-    varargs = false;
-    caller_allocates = false;
-  }
 
 let find_let_binding_or_fail ast name =
   match Ml_ast_helpers.find_let_binding ast name with
@@ -67,14 +20,19 @@ let find_val_or_fail ast name =
 
 let test_zero_param_constructor () =
   let ctx = create_test_context () in
-  let ctor = make_constructor "new" "gtk_button_new" in
-  let button_class = simple_class ~constructors:[ctor] "Button" "GtkButton" in
+  let ctor =
+    make_gir_constructor ~ctor_name:"new" ~c_identifier:"gtk_button_new" ()
+  in
+  let button_class =
+    make_gir_class ~class_name:"Button" ~c_type:"GtkButton"
+      ~constructors:[ ctor ] ()
+  in
   let ctx = { ctx with classes = button_class :: ctx.classes } in
 
   let ml_code =
     Gir_gen_lib.Generate.Class_gen.generate_class_module ~ctx
-      ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:["Widget"]
-      ~methods:[] ~properties:[] ~signals:[] ~constructors:[ctor]
+      ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
+      ~methods:[] ~properties:[] ~signals:[] ~constructors:[ ctor ]
   in
   let ast = Ml_ast_helpers.parse_implementation ml_code in
 
@@ -88,21 +46,28 @@ let test_zero_param_constructor () =
 
 let test_single_string_param_constructor () =
   let ctx = create_test_context () in
-  let param = make_param "label" "utf8" "const gchar*" in
-  let ctor = make_constructor ~params:[param] "new_with_label" "gtk_button_new_with_label" in
-  let button_class = simple_class ~constructors:[ctor] "Button" "GtkButton" in
+  let param = make_string_param ~param_name:"label" () in
+  let ctor =
+    make_gir_constructor ~ctor_name:"new_with_label"
+      ~c_identifier:"gtk_button_new_with_label" ~ctor_parameters:[ param ] ()
+  in
+  let button_class =
+    make_gir_class ~class_name:"Button" ~c_type:"GtkButton"
+      ~constructors:[ ctor ] ()
+  in
   let ctx = { ctx with classes = button_class :: ctx.classes } in
 
   let ml_code =
     Gir_gen_lib.Generate.Class_gen.generate_class_module ~ctx
-      ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:["Widget"]
-      ~methods:[] ~properties:[] ~signals:[] ~constructors:[ctor]
+      ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
+      ~methods:[] ~properties:[] ~signals:[] ~constructors:[ ctor ]
   in
   let ast = Ml_ast_helpers.parse_implementation ml_code in
 
   (* Should generate: let new_with_label (label : string) : button_t = ... *)
   let _binding = find_let_binding_or_fail ast "new_with_label" in
-  Ml_ast_helpers.assert_let_binding_calls_function ast "Button.new_with_label" "new_with_label"
+  Ml_ast_helpers.assert_let_binding_calls_function ast "Button.new_with_label"
+    "new_with_label"
 
 (* ========================================================================= *)
 (* Test 3: Class-typed param constructor (unwrapping)                        *)
@@ -110,18 +75,22 @@ let test_single_string_param_constructor () =
 
 let test_class_typed_param_constructor () =
   let ctx = create_test_context () in
-  let param = make_param "child" "Widget" "GtkWidget*" in
-  let ctor = make_constructor ~params:[param] "new_with_child" "gtk_box_new_with_child" in
+  let param = make_widget_param ~param_name:"child" () in
+  let ctor =
+    make_gir_constructor ~ctor_name:"new_with_child"
+      ~c_identifier:"gtk_box_new_with_child" ~ctor_parameters:[ param ] ()
+  in
 
   let ml_code =
-    Gir_gen_lib.Generate.Class_gen.generate_class_module ~ctx
-      ~class_name:"Box" ~c_type:"GtkBox" ~parent_chain:["Widget"]
-      ~methods:[] ~properties:[] ~signals:[] ~constructors:[ctor]
+    Gir_gen_lib.Generate.Class_gen.generate_class_module ~ctx ~class_name:"Box"
+      ~c_type:"GtkBox" ~parent_chain:[ "Widget" ] ~methods:[] ~properties:[]
+      ~signals:[] ~constructors:[ ctor ]
   in
   let ast = Ml_ast_helpers.parse_implementation ml_code in
 
   (* Should contain unwrapping: let child = child#as_widget in *)
-  Ml_ast_helpers.assert_let_binding_sends_method ast "as_widget" "new_with_child"
+  Ml_ast_helpers.assert_let_binding_sends_method ast "as_widget"
+    "new_with_child"
 
 (* ========================================================================= *)
 (* Test 4: Nullable class param (Option.map unwrapping)                      *)
@@ -129,19 +98,24 @@ let test_class_typed_param_constructor () =
 
 let test_nullable_class_param_constructor () =
   let ctx = create_test_context () in
-  let param = make_param ~nullable:true "child" "Widget" "GtkWidget*" in
-  let ctor = make_constructor ~params:[param] "new_with_child" "gtk_box_new_with_child" in
+  let param = make_widget_param ~param_name:"child" ~nullable:true () in
+  let ctor =
+    make_gir_constructor ~ctor_name:"new_with_child"
+      ~c_identifier:"gtk_box_new_with_child" ~ctor_parameters:[ param ] ()
+  in
 
   let ml_code =
-    Gir_gen_lib.Generate.Class_gen.generate_class_module ~ctx
-      ~class_name:"Box" ~c_type:"GtkBox" ~parent_chain:["Widget"]
-      ~methods:[] ~properties:[] ~signals:[] ~constructors:[ctor]
+    Gir_gen_lib.Generate.Class_gen.generate_class_module ~ctx ~class_name:"Box"
+      ~c_type:"GtkBox" ~parent_chain:[ "Widget" ] ~methods:[] ~properties:[]
+      ~signals:[] ~constructors:[ ctor ]
   in
   let ast = Ml_ast_helpers.parse_implementation ml_code in
 
   (* Should contain: let child = Option.map (fun c -> c#as_widget) child in *)
-  Ml_ast_helpers.assert_let_binding_calls_function ast "Option.map" "new_with_child";
-  Ml_ast_helpers.assert_let_binding_sends_method ast "as_widget" "new_with_child"
+  Ml_ast_helpers.assert_let_binding_calls_function ast "Option.map"
+    "new_with_child";
+  Ml_ast_helpers.assert_let_binding_sends_method ast "as_widget"
+    "new_with_child"
 
 (* ========================================================================= *)
 (* Test 5: Constructor signature (.mli)                                      *)
@@ -149,17 +123,26 @@ let test_nullable_class_param_constructor () =
 
 let test_constructor_signature () =
   let ctx = create_test_context () in
-  let param = make_param "label" "utf8" "const gchar*" in
-  let ctor_no_params = make_constructor "new" "gtk_button_new" in
-  let ctor_with_param = make_constructor ~params:[param] "new_with_label" "gtk_button_new_with_label" in
-  let button_class = simple_class ~constructors:[ctor_no_params; ctor_with_param] "Button" "GtkButton" in
+  let param = make_string_param ~param_name:"label" () in
+  let ctor_no_params =
+    make_gir_constructor ~ctor_name:"new" ~c_identifier:"gtk_button_new" ()
+  in
+  let ctor_with_param =
+    make_gir_constructor ~ctor_name:"new_with_label"
+      ~c_identifier:"gtk_button_new_with_label" ~ctor_parameters:[ param ] ()
+  in
+  let button_class =
+    make_gir_class ~class_name:"Button" ~c_type:"GtkButton"
+      ~constructors:[ ctor_no_params; ctor_with_param ]
+      ()
+  in
   let ctx = { ctx with classes = button_class :: ctx.classes } in
 
   let mli_code =
     Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
-      ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:["Widget"]
+      ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[] ~properties:[] ~signals:[]
-      ~constructors:[ctor_no_params; ctor_with_param]
+      ~constructors:[ ctor_no_params; ctor_with_param ]
   in
   let ast = Ml_ast_helpers.parse_interface mli_code in
 
@@ -179,17 +162,21 @@ let test_constructor_signature () =
 
 let test_combined_module_constructors () =
   let ctx = create_test_context () in
-  let ctor = make_constructor "new" "gtk_window_new" in
-  let window_class = simple_class ~constructors:[ctor] "Window" "GtkWindow" in
+  let ctor =
+    make_gir_constructor ~ctor_name:"new" ~c_identifier:"gtk_window_new" ()
+  in
+  let window_class =
+    make_gir_class ~class_name:"Window" ~c_type:"GtkWindow"
+      ~constructors:[ ctor ] ()
+  in
   let ctx = { ctx with classes = window_class :: ctx.classes } in
 
   let entity = entity_of_class window_class in
 
   let ml_code =
     Gir_gen_lib.Generate.Class_gen.generate_combined_class_module ~ctx
-      ~combined_module_name:"Window"
-      ~entities:[entity]
-      ~parent_chain_for_entity:(fun _ -> ["Widget"])
+      ~combined_module_name:"Window" ~entities:[ entity ]
+      ~parent_chain_for_entity:(fun _ -> [ "Widget" ])
   in
   let ast = Ml_ast_helpers.parse_implementation ml_code in
 
@@ -203,15 +190,20 @@ let test_combined_module_constructors () =
 
 let test_cyclic_shim_constructors () =
   let ctx = create_test_context () in
-  let ctor = make_constructor "new" "gtk_window_new" in
-  let window_class = simple_class ~constructors:[ctor] "Window" "GtkWindow" in
+  let ctor =
+    make_gir_constructor ~ctor_name:"new" ~c_identifier:"gtk_window_new" ()
+  in
+  let window_class =
+    make_gir_class ~class_name:"Window" ~c_type:"GtkWindow"
+      ~constructors:[ ctor ] ()
+  in
   let ctx = { ctx with classes = window_class :: ctx.classes } in
 
   let entity = entity_of_class window_class in
 
   let ml_code =
-    Gir_gen_lib.Generate.Class_gen.generate_cyclic_shim_module ~ctx
-      ~entity ~combined_module_name:"Application_and__window_and__window_group"
+    Gir_gen_lib.Generate.Class_gen.generate_cyclic_shim_module ~ctx ~entity
+      ~combined_module_name:"Application_and__window_and__window_group"
       ~g_combined_module_name:"GApplication_and__window_and__window_group"
   in
   let ast = Ml_ast_helpers.parse_implementation ml_code in

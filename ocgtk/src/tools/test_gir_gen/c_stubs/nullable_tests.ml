@@ -1,6 +1,6 @@
 (* Nullable Parameter and Return Value Tests *)
 
-open Gir_gen_lib.Types
+open Type_factory
 
 (* =================================================================== *)
 (* Methods under test *)
@@ -25,43 +25,10 @@ let find_function functions name = C_ast.find_function functions name
 let test_nullable_string_param () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "set_title";
-      c_identifier = "gtk_window_set_title";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
-        [
-          {
-            param_name = "title";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const gchar*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = true;
-            (* Nullable string parameter *)
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"set_title"
+      ~c_identifier:"gtk_window_set_title" ~return_type:void_type
+      ~parameters:[ make_string_param ~param_name:"title" ~nullable:true () ]
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWindow" meth "Window" in
@@ -79,43 +46,10 @@ let test_nullable_string_param () =
 let test_nullable_object_param () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "set_parent";
-      c_identifier = "gtk_widget_set_parent";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
-        [
-          {
-            param_name = "parent";
-            param_type =
-              {
-                name = "Widget";
-                c_type = Some "GtkWidget*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = true;
-            (* Nullable object parameter *)
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"set_parent"
+      ~c_identifier:"gtk_widget_set_parent" ~return_type:void_type
+      ~parameters:[ make_widget_param ~param_name:"parent" ~nullable:true () ]
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -136,43 +70,10 @@ let test_nullable_object_param () =
 let test_non_nullable_string () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "set_label";
-      c_identifier = "gtk_button_set_label";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
-        [
-          {
-            param_name = "label";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const gchar*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            (* Non-nullable *)
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"set_label"
+      ~c_identifier:"gtk_button_set_label" ~return_type:void_type
+      ~parameters:[ make_string_param ~param_name:"label" ~nullable:false () ]
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkButton" meth "Button" in
@@ -190,25 +91,10 @@ let test_non_nullable_string () =
 let test_nullable_return_value () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "get_parent";
-      c_identifier = "gtk_widget_get_parent";
-      return_type =
-        {
-          name = "Widget";
-          c_type = Some "GtkWidget*";
-          nullable = true;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"get_parent"
+      ~c_identifier:"gtk_widget_get_parent"
+      ~return_type:(make_widget_type ~nullable:true ())
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -232,57 +118,14 @@ let test_nullable_return_value () =
 let test_multiple_nullable_params () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "set_data";
-      c_identifier = "gtk_widget_set_data";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    make_gir_method ~method_name:"set_data" ~c_identifier:"gtk_widget_set_data"
+      ~return_type:void_type
+      ~parameters:
         [
-          {
-            param_name = "key";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const gchar*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = true;
-            varargs = false;
-            caller_allocates = false;
-          };
-          {
-            param_name = "value";
-            param_type =
-              {
-                name = "Widget";
-                c_type = Some "GtkWidget*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = true;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+          make_string_param ~param_name:"key" ~nullable:true ();
+          make_widget_param ~param_name:"value" ~nullable:true ();
+        ]
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -302,42 +145,10 @@ let test_multiple_nullable_params () =
 let test_nullable_param_count () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "set_title";
-      c_identifier = "gtk_window_set_title";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
-        [
-          {
-            param_name = "title";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const gchar*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = true;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"set_title"
+      ~c_identifier:"gtk_window_set_title" ~return_type:void_type
+      ~parameters:[ make_string_param ~param_name:"title" ~nullable:true () ]
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWindow" meth "Window" in
