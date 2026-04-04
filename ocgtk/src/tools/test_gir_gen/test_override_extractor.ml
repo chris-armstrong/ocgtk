@@ -88,6 +88,27 @@ let minimal_gir_with_doc_nested_elements =
 </repository>|}
     ns_attrs
 
+let minimal_gir_with_record_field_doc =
+  Printf.sprintf
+    {|<?xml version="1.0"?>
+<repository version="1.2"
+  xmlns="http://www.gtk.org/introspection/core/1.0"
+  xmlns:c="http://www.gtk.org/introspection/c/1.0"
+  xmlns:glib="http://www.gtk.org/introspection/glib/1.0">
+  <namespace %s>
+    <record name="TestRecord" c:type="TestRecord">
+      <field name="x" readable="1" writable="0">
+        <doc xml:space="preserve">The x coordinate. Since 1.20</doc>
+        <type name="gdouble" c:type="gdouble"/>
+      </field>
+      <field name="y" readable="1" writable="0">
+        <type name="gdouble" c:type="gdouble"/>
+      </field>
+    </record>
+  </namespace>
+</repository>|}
+    ns_attrs
+
 let minimal_gir_with_bitfield_doc =
   Printf.sprintf
     {|<?xml version="1.0"?>
@@ -186,6 +207,25 @@ let test_bitfield_flag_doc () =
       Alcotest.(check (option string)) "flag_b doc" None b.flag_doc
   | other -> Alcotest.fail (Printf.sprintf "Expected 1 bitfield, got %d" (List.length other))
 
+let test_record_field_doc () =
+  let _repo, _ns, _classes, _ifaces, _enums, _bitfields, records =
+    parse_gir minimal_gir_with_record_field_doc
+  in
+  match records with
+  | [ rec_ ] ->
+      let fields = rec_.Gir_gen_lib.Types.fields in
+      let find name =
+        match List.find_opt (fun f -> f.Gir_gen_lib.Types.field_name = name) fields with
+        | None -> Alcotest.fail (Printf.sprintf "Field %s not found" name)
+        | Some f -> f
+      in
+      let x = find "x" in
+      let y = find "y" in
+      Alcotest.(check (option string)) "x field doc"
+        (Some "The x coordinate. Since 1.20") x.field_doc;
+      Alcotest.(check (option string)) "y field doc" None y.field_doc
+  | other -> Alcotest.fail (Printf.sprintf "Expected 1 record, got %d" (List.length other))
+
 let test_suite =
   [
     ("since_plain", `Quick, test_since_plain);
@@ -198,4 +238,5 @@ let test_suite =
     ("enum_member_doc_plain", `Quick, test_enum_member_doc_plain);
     ("enum_member_doc_with_nested_elements", `Quick, test_enum_member_doc_with_nested_elements);
     ("bitfield_flag_doc", `Quick, test_bitfield_flag_doc);
+    ("record_field_doc", `Quick, test_record_field_doc);
   ]
