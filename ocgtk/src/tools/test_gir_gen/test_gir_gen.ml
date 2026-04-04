@@ -45,4 +45,5 @@ let () =
       ("Override Parser Roundtrip", Test_override_parser.test_suite_roundtrip);
       ("Override Apply", Test_override_apply.test_suite);
       ("Override Extractor", Test_override_extractor.test_suite);
+      ("Override E2E", Test_override_e2e.test_suite);
     ]

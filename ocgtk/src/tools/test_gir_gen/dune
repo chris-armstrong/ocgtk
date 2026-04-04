@@ -46,6 +46,7 @@
     test_override_parser
     test_override_apply
     test_override_extractor
+    test_override_e2e
     test_gir_gen
    type_factory)
  (deps %{exe:../gir_gen/gir_gen.exe})
