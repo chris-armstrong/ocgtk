@@ -410,11 +410,6 @@
 #define Val_GSettings(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GSettings */
 
-#ifndef Val_GSettingsBackend
-#define GSettingsBackend_val(val) ((GSettingsBackend*)ml_gobject_ext_of_val(val))
-#define Val_GSettingsBackend(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GSettingsBackend */
-
 #ifndef Val_GSimpleAction
 #define GSimpleAction_val(val) ((GSimpleAction*)ml_gobject_ext_of_val(val))
 #define Val_GSimpleAction(obj) ((value)(ml_gobject_val_of_ext(obj)))

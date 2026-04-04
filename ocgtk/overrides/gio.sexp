@@ -1,6 +1,11 @@
 (overrides
   (library "Gio")
 
+  ;; GSettingsBackend requires #define G_SETTINGS_ENABLE_BACKEND before
+  ;; including gsettingsbackend.h, and is only useful for implementing
+  ;; custom settings backends (which requires GObject subclassing we don't have)
+  (class SettingsBackend (ignore))
+
   (enumeration DBusError
     (unknown_object (version "2.42"))
     (unknown_interface (version "2.42"))

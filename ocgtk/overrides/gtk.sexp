@@ -6,11 +6,8 @@
   (class PrintUnixDialog (ignore))
   (class PageSetupUnixDialog (ignore))
   (class Printer (ignore))
-  ;; Note: PixbufNonAnim, BroadwayRenderer, NglRenderer not present in GTK 4.0 GIR
-  ;; (class PixbufNonAnim (ignore))
-  ;; (class BroadwayRenderer (ignore))
-  ;; (class NglRenderer (ignore))
-  (class SettingsBackend (ignore))
+  ;; Note: PixbufNonAnim → gdkpixbuf.sexp, BroadwayRenderer/NglRenderer → gsk.sexp,
+  ;; SettingsBackend → gio.sexp (each ignored in their correct namespace)
 
   ;; Migrated from exclude_list.ml platform_specific_type_exclude_list
   ;; PageSetupUnixDialog and PrintUnixDialog already above
@@ -22,8 +19,6 @@
   (bitfield PrintCapabilities (ignore))
   ;; PrintOperationPreview is an interface, not a class
   (interface PrintOperationPreview (ignore))
-  ;; License is an enum, skipped at parse time via is_platform_specific_type
-  ;; (active in Phase 4 after parser guard is removed)
   (enumeration License (ignore))
 
   ;; Migrated from filtering.ml property_exclude_list
@@ -32,10 +27,8 @@
   )
 
   ;; Migrated from filtering.ml banned_records
+  ;; Note: PixbufModule/PixbufModulePattern → gdkpixbuf.sexp
   (record PrintBackend (ignore))
-  ;; Note: PixbufModule and PixbufModulePattern not present in GTK 4.0 GIR
-  ;; (record PixbufModule (ignore))
-  ;; (record PixbufModulePattern (ignore))
 
   ;; Migrated from exclude_list.ml variadic_function_exclude_list
   ;; These are class methods (matched by GIR method name, not c_identifier)

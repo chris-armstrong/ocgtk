@@ -28,7 +28,6 @@ class type settings_t = object
     method set_string : string -> string -> bool
     method set_strv : string -> string array option -> bool
     method set_uint : string -> int -> bool
-    method backend : GSettings_backend.settings_backend_t
     method delay_apply : bool
     method path : string
     method schema : string
@@ -40,7 +39,4 @@ end
 class settings : Settings.t -> settings_t
 
 val new_ : string -> settings_t
-val new_full : Settings_schema.t -> GSettings_backend.settings_backend_t option -> string option -> settings_t
-val new_with_backend : string -> GSettings_backend.settings_backend_t -> settings_t
-val new_with_backend_and_path : string -> GSettings_backend.settings_backend_t -> string -> settings_t
 val new_with_path : string -> string -> settings_t

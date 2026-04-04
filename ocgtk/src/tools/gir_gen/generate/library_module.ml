@@ -146,10 +146,6 @@ let generate_library_implementation ~ctx =
     @ List.map (fun (i : gir_interface) -> i.interface_name) ctx.interfaces
     @ List.map (fun (r : gir_record) -> r.record_name) ctx.records
   in
-  let all_entities =
-    ListLabels.filter all_entities ~f:(fun name ->
-        not (Exclude_list.should_skip_class name))
-  in
   let sorted_entities = List.sort String.compare all_entities in
 
   (* Generate Wrappers submodule BEFORE module aliases to avoid shadowing *)

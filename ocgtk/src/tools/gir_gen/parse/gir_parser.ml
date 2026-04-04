@@ -74,11 +74,7 @@ let rec parse_doc_text input ?(text = "") () =
 let parse_enumeration input ?parse_functions attrs =
   match (get_attr "name" attrs, get_attr "c:type" attrs) with
   | Some name, Some c_type ->
-      if Exclude_list.is_platform_specific_type name then begin
-        skip_element input 1;
-        None
-      end
-      else begin
+      begin
         let members = ref [] in
         let functions = ref [] in
 
@@ -166,11 +162,7 @@ let merge_methods concrete virtuals =
 let parse_bitfield input attrs =
   match (get_attr "name" attrs, get_attr "c:type" attrs) with
   | Some name, Some c_type ->
-      if Exclude_list.is_platform_specific_type name then begin
-        skip_element input 1;
-        None
-      end
-      else begin
+      begin
         let flags = ref [] in
 
         let rec parse_bitfield_contents () =

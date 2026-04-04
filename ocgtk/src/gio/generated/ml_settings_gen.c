@@ -44,77 +44,6 @@ return Val_unit;
 }
 #endif
 
-#if GLIB_CHECK_VERSION(2,32,0)
-
-CAMLexport CAMLprim value ml_g_settings_new_full(value arg1, value arg2, value arg3)
-{
-CAMLparam3(arg1, arg2, arg3);
-
-GSettings *obj = g_settings_new_full(GSettingsSchema_val(arg1), Option_val(arg2, GSettingsBackend_val, NULL), String_option_val(arg3));
-if (obj) g_object_ref_sink(obj);
-
-CAMLreturn(Val_GSettings(obj));
-}
-#else
-
-CAMLexport CAMLprim value ml_g_settings_new_full(value arg1, value arg2, value arg3)
-{
-CAMLparam3(arg1, arg2, arg3);
-(void)arg1;
-(void)arg2;
-(void)arg3;
-caml_failwith("Settings requires GLib >= 2.32");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,26,0)
-
-CAMLexport CAMLprim value ml_g_settings_new_with_backend(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-
-GSettings *obj = g_settings_new_with_backend(String_val(arg1), GSettingsBackend_val(arg2));
-if (obj) g_object_ref_sink(obj);
-
-CAMLreturn(Val_GSettings(obj));
-}
-#else
-
-CAMLexport CAMLprim value ml_g_settings_new_with_backend(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-(void)arg1;
-(void)arg2;
-caml_failwith("Settings requires GLib >= 2.26");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,26,0)
-
-CAMLexport CAMLprim value ml_g_settings_new_with_backend_and_path(value arg1, value arg2, value arg3)
-{
-CAMLparam3(arg1, arg2, arg3);
-
-GSettings *obj = g_settings_new_with_backend_and_path(String_val(arg1), GSettingsBackend_val(arg2), String_val(arg3));
-if (obj) g_object_ref_sink(obj);
-
-CAMLreturn(Val_GSettings(obj));
-}
-#else
-
-CAMLexport CAMLprim value ml_g_settings_new_with_backend_and_path(value arg1, value arg2, value arg3)
-{
-CAMLparam3(arg1, arg2, arg3);
-(void)arg1;
-(void)arg2;
-(void)arg3;
-caml_failwith("Settings requires GLib >= 2.26");
-return Val_unit;
-}
-#endif
-
 #if GLIB_CHECK_VERSION(2,26,0)
 
 CAMLexport CAMLprim value ml_g_settings_new_with_path(value arg1, value arg2)
@@ -711,23 +640,6 @@ CAMLparam1(self);
 g_settings_apply(GSettings_val(self));
 CAMLreturn(Val_unit);
 }
-
-CAMLexport CAMLprim value ml_g_settings_get_backend(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GSettings *obj = (GSettings *)GSettings_val(self);
-    GSettingsBackend *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "backend");
-if (pspec == NULL) caml_failwith("ml_g_settings_get_backend: property 'backend' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "backend", &prop_gvalue);
-          prop_value = (GSettingsBackend*)g_value_get_object(&prop_gvalue);
-
-      result = Val_GSettingsBackend(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
 
 #if GLIB_CHECK_VERSION(2,28,0)
 
