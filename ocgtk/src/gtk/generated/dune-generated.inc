@@ -350,7 +350,6 @@
       (echo "GPad_action_entry")
       (echo "GPad_controller")
       (echo "GPage_range")
-      (echo "GPage_setup")
       (echo "GPaned")
       (echo "GPaper_size")
       (echo "GParam_spec_expression")
@@ -360,11 +359,7 @@
       (echo "GPopover")
       (echo "GPopover_menu")
       (echo "GPopover_menu_bar")
-      (echo "GPrint_context")
       (echo "GPrint_dialog")
-      (echo "GPrint_operation")
-      (echo "GPrint_operation_preview")
-      (echo "GPrint_settings")
       (echo "GPrint_setup")
       (echo "GProgress_bar")
       (echo "GProperty_expression")
@@ -550,7 +545,6 @@
       (echo "Pad_action_entry")
       (echo "Pad_controller")
       (echo "Page_range")
-      (echo "Page_setup")
       (echo "Paned")
       (echo "Pango")
       (echo "Pango_enums")
@@ -562,11 +556,7 @@
       (echo "Popover")
       (echo "Popover_menu")
       (echo "Popover_menu_bar")
-      (echo "Print_context")
       (echo "Print_dialog")
-      (echo "Print_operation")
-      (echo "Print_operation_preview")
-      (echo "Print_settings")
       (echo "Print_setup")
       (echo "Progress_bar")
       (echo "Property_expression")
@@ -909,7 +899,6 @@ rm cflag-gtk.sexp.tmp clink-gtk.sexp.tmp\\
    ml_pad_action_entry_gen
    ml_pad_controller_gen
    ml_page_range_gen
-   ml_page_setup_gen
    ml_paned_gen
    ml_pango_enums_gen
    ml_paper_size_gen
@@ -920,11 +909,7 @@ rm cflag-gtk.sexp.tmp clink-gtk.sexp.tmp\\
    ml_popover_gen
    ml_popover_menu_bar_gen
    ml_popover_menu_gen
-   ml_print_context_gen
    ml_print_dialog_gen
-   ml_print_operation_gen
-   ml_print_operation_preview_gen
-   ml_print_settings_gen
    ml_print_setup_gen
    ml_progress_bar_gen
    ml_property_expression_gen

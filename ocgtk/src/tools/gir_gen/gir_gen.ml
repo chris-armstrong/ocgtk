@@ -1420,6 +1420,105 @@ let generate_references gir_file output_file overrides_file =
   Sexplib.Sexp.(save_hum output_file (converter crns));
   `Ok ()
 
+let extract_since_version = Gir_gen_lib.Override_extractor.extract_since_version
+
+let render_version_component (name : string) (version : string) =
+  sprintf "    (%s (version \"%s\"))" name version
+
+(* Collect version overrides — prefers direct version attr, falls back to Since in doc text *)
+let member_versions members get_name get_version get_doc =
+  List.filter_map
+    ~f:(fun m ->
+      match get_version m with
+      | Some v -> Some (get_name m, v)
+      | None -> (
+          match get_doc m with
+          | None -> None
+          | Some doc -> (
+              match extract_since_version doc with
+              | None -> None
+              | Some v -> Some (get_name m, v))))
+    members
+
+(* Generate overrides sexp file from parsed GIR data *)
+let generate_overrides gir_file output_file =
+  printf "Parsing %s for Since version annotations...\n" gir_file;
+
+  let _repository, namespace, _classes, _interfaces, enums, bitfields, records =
+    Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file []
+  in
+  let lib_name = namespace.namespace_name in
+
+  let buf = Buffer.create 4096 in
+  Buffer.add_string buf (sprintf "(overrides\n  (library \"%s\")\n" lib_name);
+
+  (* Enumerations with member Since annotations *)
+  List.iter
+    ~f:(fun (enm : gir_enum) ->
+      let member_versions =
+        member_versions enm.members
+          (fun m -> m.member_name)
+          (fun m -> m.member_version)
+          (fun m -> m.member_doc)
+      in
+      if member_versions <> [] then begin
+        Buffer.add_string buf (sprintf "\n  (enumeration %s\n" enm.enum_name);
+        List.iter
+          ~f:(fun (name, version) ->
+            Buffer.add_string buf
+              (render_version_component name version ^ "\n"))
+          member_versions;
+        Buffer.add_string buf "  )\n"
+      end)
+    enums;
+
+  (* Bitfields with flag Since annotations *)
+  List.iter
+    ~f:(fun (bf : gir_bitfield) ->
+      let flag_versions =
+        member_versions bf.flags
+          (fun f -> f.flag_name)
+          (fun f -> f.flag_version)
+          (fun f -> f.flag_doc)
+      in
+      if flag_versions <> [] then begin
+        Buffer.add_string buf (sprintf "\n  (bitfield %s\n" bf.bitfield_name);
+        List.iter
+          ~f:(fun (name, version) ->
+            Buffer.add_string buf
+              (render_version_component name version ^ "\n"))
+          flag_versions;
+        Buffer.add_string buf "  )\n"
+      end)
+    bitfields;
+
+  (* Records with field Since annotations *)
+  List.iter
+    ~f:(fun (rec_ : gir_record) ->
+      let field_versions =
+        member_versions rec_.fields
+          (fun f -> f.field_name)
+          (fun f -> f.field_version)
+          (fun f -> f.field_doc)
+      in
+      if field_versions <> [] then begin
+        Buffer.add_string buf (sprintf "\n  (record %s\n" rec_.record_name);
+        List.iter
+          ~f:(fun (name, version) ->
+            Buffer.add_string buf
+              (render_version_component name version ^ "\n"))
+          field_versions;
+        Buffer.add_string buf "  )\n"
+      end)
+    records;
+
+  Buffer.add_string buf ")\n";
+
+  let content = Buffer.contents buf in
+  write_file ~path:output_file ~content;
+  printf "✓ Overrides written to %s\n" output_file;
+  `Ok ()
+
 (* Cmdliner argument definitions *)
 let filter_arg =
   let doc = "Filter file specifying which classes to generate" in
@@ -1489,6 +1588,37 @@ let generate_cmd =
         (const generate_bindings $ filter_arg $ gir_file_arg $ output_dir_arg
        $ reference_files_arg $ overrides_arg))
 
+(* Arguments for overrides command *)
+let gir_file_arg_overrides =
+  let doc = "Path to GIR file to parse for Since version annotations" in
+  Arg.(required & pos 0 (some file) None & info [] ~docv:"GIR_FILE" ~doc)
+
+let output_file_arg_overrides =
+  let doc = "Output file path for generated override sexp" in
+  Arg.(required & pos 1 (some string) None & info [] ~docv:"OUTPUT_FILE" ~doc)
+
+(* Overrides subcommand *)
+let overrides_cmd =
+  let doc = "Extract Since version annotations from a GIR file into an override sexp" in
+  let man =
+    [
+      `S Manpage.s_description;
+      `P
+        "The overrides command parses a GIR file and generates a partial \
+         override file containing version entries extracted from Since \
+         comments in member/field doc strings. The output can be combined \
+         with manually-authored ignore entries to form a complete override \
+         file.";
+      `S Manpage.s_examples;
+      `P "Extract version overrides from GTK GIR:";
+      `Pre "  gir_gen overrides /usr/share/gir-1.0/Gtk-4.0.gir overrides/gtk.sexp";
+    ]
+  in
+  let info = Cmd.info "overrides" ~doc ~man in
+  Cmd.v info
+    Term.(
+      ret (const generate_overrides $ gir_file_arg_overrides $ output_file_arg_overrides))
+
 (* References subcommand *)
 let references_cmd =
   let doc = "Generate cross-namespace reference list from a GIR file" in
@@ -1527,13 +1657,14 @@ let gir_gen_cmd =
       `P "Available commands:";
       `I ("generate", "Generate C FFI bindings and OCaml modules");
       `I ("references", "Generate cross-namespace reference list");
+      `I ("overrides", "Extract Since version annotations into override sexp");
       `S Manpage.s_bugs;
       `P "Report bugs to https://github.com/chris-armstrong/ocgtk/issues";
     ]
   in
   let info = Cmd.info "gir_gen" ~version:"5.0.0" ~doc ~man in
   let default = Term.(ret (const (`Help (`Pager, None)))) in
-  Cmd.group info ~default [ generate_cmd; references_cmd ]
+  Cmd.group info ~default [ generate_cmd; references_cmd; overrides_cmd ]
 
 (* Main entry point *)
 let () = exit (Cmd.eval gir_gen_cmd)

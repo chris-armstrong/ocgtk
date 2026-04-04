@@ -193,6 +193,8 @@ let apply_class_overrides ~(class_overrides : class_override list)
         | None -> Some (apply_class_components ov cls))
   in
   let processed = List.filter_map process_class all_classes in
+  (* Warn using the ORIGINAL class list so that successfully-ignored components
+     do not produce false "unknown" warnings. *)
   List.iter
     (fun (ov : class_override) ->
       match ov.class_action with
@@ -219,7 +221,7 @@ let apply_class_overrides ~(class_overrides : class_override list)
             (List.find_opt
                (fun (cls : gir_class) ->
                  String.equal cls.class_name ov.class_name)
-               processed))
+               all_classes))
     class_overrides;
   (processed, !ignored, !warnings)
 
@@ -268,7 +270,7 @@ let apply_interface_overrides ~(interface_overrides : interface_override list)
             (List.find_opt
                (fun (intf : gir_interface) ->
                  String.equal intf.interface_name ov.interface_name)
-               processed))
+               all_interfaces))
     interface_overrides;
   (processed, !ignored, !warnings)
 
@@ -321,7 +323,7 @@ let apply_record_overrides ~(record_overrides : record_override list)
             (List.find_opt
                (fun (rec_ : gir_record) ->
                  String.equal rec_.record_name ov.record_name)
-               processed))
+               all_records))
     record_overrides;
   (processed, !ignored, !warnings)
 
@@ -364,7 +366,7 @@ let apply_enum_overrides ~(enum_overrides : enum_override list)
                 ~components:enm.functions ~overrides:ov.functions ~warnings)
             (List.find_opt
                (fun (enm : gir_enum) -> String.equal enm.enum_name ov.enum_name)
-               processed))
+               all_enums))
     enum_overrides;
   (processed, !ignored, !warnings)
 
@@ -405,7 +407,7 @@ let apply_bitfield_overrides ~(bitfield_overrides : bitfield_override list)
             (List.find_opt
                (fun (bf : gir_bitfield) ->
                  String.equal bf.bitfield_name ov.bitfield_name)
-               processed))
+               all_bitfields))
     bitfield_overrides;
   (processed, !ignored, !warnings)
 

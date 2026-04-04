@@ -58,6 +58,18 @@ let rec element_data input ?(str = None) () =
   | `El_end -> str
   | `El_start _ | `Dtd _ -> failwith "unwanted element inside data element"
 
+(* Common helper: extract text content from a <doc> element, skipping nested
+   XML elements (e.g. <link>, <code>) rather than failing on them. This is
+   more robust than element_data for doc strings, which can contain markup. *)
+let rec parse_doc_text input ?(text = "") () =
+  match Xmlm.input input with
+  | `Data s -> parse_doc_text input ~text:(text ^ s) ()
+  | `El_end -> if text = "" then None else Some text
+  | `El_start _ ->
+      skip_element input 1;
+      parse_doc_text input ~text ()
+  | `Dtd _ -> parse_doc_text input ~text ()
+
 (* Shared: Parse enumeration element *)
 let parse_enumeration input ?parse_functions attrs =
   match (get_attr "name" attrs, get_attr "c:type" attrs) with
@@ -81,16 +93,28 @@ let parse_enumeration input ?parse_functions attrs =
               with
               | Some member_name, Some value_str, Some c_id ->
                   let value = try int_of_string value_str with _ -> 0 in
+                  let member_doc = ref None in
+                  let rec parse_member_contents () =
+                    match Xmlm.input input with
+                    | `El_start ((_, tag), _) when local_name tag = "doc" ->
+                        member_doc := parse_doc_text input ();
+                        parse_member_contents ()
+                    | `El_start _ ->
+                        skip_element input 1;
+                        parse_member_contents ()
+                    | `El_end -> ()
+                    | `Data _ | `Dtd _ -> parse_member_contents ()
+                  in
+                  parse_member_contents ();
                   members :=
                     {
                       member_name;
                       member_value = value;
                       c_identifier = c_id;
-                      member_doc = None;
-                      member_version = None;
+                      member_doc = !member_doc;
+                      member_version = get_attr "version" member_attrs;
                     }
                     :: !members;
-                  skip_element input 1;
                   parse_enum_contents ()
               | _ ->
                   skip_element input 1;
@@ -159,16 +183,28 @@ let parse_bitfield input attrs =
               with
               | Some flag_name, Some value_str, Some c_id ->
                   let value = try int_of_string value_str with _ -> 0 in
+                  let flag_doc = ref None in
+                  let rec parse_flag_contents () =
+                    match Xmlm.input input with
+                    | `El_start ((_, tag), _) when local_name tag = "doc" ->
+                        flag_doc := parse_doc_text input ();
+                        parse_flag_contents ()
+                    | `El_start _ ->
+                        skip_element input 1;
+                        parse_flag_contents ()
+                    | `El_end -> ()
+                    | `Data _ | `Dtd _ -> parse_flag_contents ()
+                  in
+                  parse_flag_contents ();
                   flags :=
                     {
                       flag_name;
                       flag_value = value;
                       flag_c_identifier = c_id;
-                      flag_doc = None;
-                      flag_version = None;
+                      flag_doc = !flag_doc;
+                      flag_version = get_attr "version" member_attrs;
                     }
                     :: !flags;
-                  skip_element input 1;
                   parse_bitfield_contents ()
               | _ ->
                   skip_element input 1;
@@ -1091,6 +1127,7 @@ let parse_gir_file filename filter_classes =
                 get_attr "writable" field_attrs |> Utils.parse_bool
               in
               let field_type = ref None in
+              let field_doc = ref None in
 
               let rec parse_field_contents () =
                 match Xmlm.input input with
@@ -1128,6 +1165,9 @@ let parse_gir_file filename filter_classes =
                           array = array_info;
                         };
                     parse_field_contents ()
+                | `El_start ((_, tag), _) when local_name tag = "doc" ->
+                    field_doc := parse_doc_text input ();
+                    parse_field_contents ()
                 | `El_start _ ->
                     skip_element input 1;
                     parse_field_contents ()
@@ -1144,8 +1184,8 @@ let parse_gir_file filename filter_classes =
                       field_type = !field_type;
                       readable;
                       writable;
-                      field_doc = None;
-                      field_version = None;
+                      field_doc = !field_doc;
+                      field_version = get_attr "version" field_attrs;
                     }
                     :: !fields
               | None -> ());
