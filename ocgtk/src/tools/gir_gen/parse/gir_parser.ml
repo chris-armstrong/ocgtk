@@ -87,6 +87,7 @@ let parse_enumeration input ?parse_functions attrs =
                       member_value = value;
                       c_identifier = c_id;
                       member_doc = None;
+                      member_version = None;
                     }
                     :: !members;
                   skip_element input 1;
@@ -164,6 +165,7 @@ let parse_bitfield input attrs =
                       flag_value = value;
                       flag_c_identifier = c_id;
                       flag_doc = None;
+                      flag_version = None;
                     }
                     :: !flags;
                   skip_element input 1;
@@ -1143,6 +1145,7 @@ let parse_gir_file filename filter_classes =
                       readable;
                       writable;
                       field_doc = None;
+                      field_version = None;
                     }
                     :: !fields
               | None -> ());

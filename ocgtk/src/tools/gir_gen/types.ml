@@ -96,6 +96,7 @@ type gir_record_field = {
   readable : bool;
   writable : bool;
   field_doc : string option;
+  field_version : string option;
 }
 
 type gir_record = {
@@ -122,6 +123,7 @@ type gir_enum_member = {
   member_value : int;
   c_identifier : string;
   member_doc : string option;
+  member_version : string option;
 }
 
 type gir_enum = {
@@ -138,6 +140,7 @@ type gir_bitfield_member = {
   flag_value : int;
   flag_c_identifier : string;
   flag_doc : string option;
+  flag_version : string option;
 }
 
 type gir_bitfield = {

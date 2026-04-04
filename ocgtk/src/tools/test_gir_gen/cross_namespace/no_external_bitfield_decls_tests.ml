@@ -34,12 +34,14 @@ let create_context_with_external_bitfield () =
             flag_value = 0;
             flag_c_identifier = "GTK_STATE_FLAG_NORMAL";
             flag_doc = None;
+            flag_version = None;
           };
           {
             flag_name = "ACTIVE";
             flag_value = 1;
             flag_c_identifier = "GTK_STATE_FLAG_ACTIVE";
             flag_doc = None;
+            flag_version = None;
           };
         ];
       bitfield_doc = None;

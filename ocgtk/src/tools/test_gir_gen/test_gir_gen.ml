@@ -40,4 +40,6 @@ let () =
       ("classify_type + Array Resolution (Phase 6)", Classify_type_tests.tests);
       ("Version Guard", Version_guard_tests.test_suite);
       ("C Stub Version Guards", C_stub_version_guard_tests.test_suite);
+      ("Override Types", Test_override_types.test_suite);
+      ("Override Parser", Test_override_parser.test_suite);
     ]

@@ -158,11 +158,20 @@ Naming convention: lowercase namespace name + `.sexp`. The file is passed to
 
 ---
 
-## Phase 1: Override Types and S-Expression Parsing
+## Phase 1: Override Types and S-Expression Parsing ✅ COMPLETE (2026-04-04)
 
 **Goal**: Define the OCaml types for overrides and build a parser from s-expressions.
 
-### Task 1.1: Define Override Types (new file: `override_types.ml`)
+**Implementation notes:**
+- Test files live in `src/tools/test_gir_gen/` (not `ocgtk/test_gir_gen/`) to match existing test structure
+- Parser handles both `(ignore)` (list form) and `ignore` (atom form) for component actions, since sexplib parses `(ignore)` as `List [Atom "ignore"]`
+- `parse_overrides_from_string` writes to a temp file and uses `Sexp.load_sexp` — avoids dealing with sexplib's incremental `parse` API
+- `Sexp.load_sexp` raises `Failure` for malformed sexps (not `Parse_error`), so both are caught
+- Duplicate detection uses a Hashtbl keyed by `(kind, name)` — first error stops iteration
+- Fixed existing `gir_parser.ml` to include `member_version = None`, `flag_version = None`, `field_version = None` in record constructions (Task 1.1b dependency)
+- Fixed ppxlib 0.35.0 API changes in `ml_ast_helpers.ml` (`Ptyp_alias` and `Pexp_function` constructors changed)
+
+### Task 1.1: Define Override Types (new file: `override_types.ml`) ✅
 
 Create `ocgtk/src/tools/gir_gen/override_types.mli` and `ocgtk/src/tools/gir_gen/override_types.ml`.
 
@@ -259,7 +268,7 @@ type library_overrides = {
 - `type-safety.md`: variant types (`override_action`) instead of strings
 - `pattern-matching.md`: exhaustive matching required
 
-### Task 1.1b: Extend GIR Types with Member Version Fields
+### Task 1.1b: Extend GIR Types with Member Version Fields ✅
 
 GIR XML does not include `version` attributes on `<member>` elements within
 `<enumeration>` or `<bitfield>`, nor on `<field>` elements within `<record>`.
@@ -298,18 +307,14 @@ type gir_record_field = {
 No parser changes needed — GIR doesn't provide these. The fields are populated
 exclusively by the override system (Phase 2 / `override_apply.ml`).
 
-### Task 1.2: Write Unit Tests for Override Types
+### Task 1.2: Write Unit Tests for Override Types ✅
 
-Create `ocgtk/test_gir_gen/test_override_types.ml` with Alcotest tests:
+Created `ocgtk/src/tools/test_gir_gen/test_override_types.ml` — 12 tests covering
+construction of each override type, equality via `[@@deriving eq]`, and library_overrides.
 
-- Test construction of each override type
-- Test equality (`ppx_deriving.eq` already available in dune)
-- Validate that `component_override` records have non-empty `component_name`
-- Round-trip test: construct → sexp → parse → compare (after Task 1.3)
+### Task 1.3: Build S-Expression Parser (new file: `override_parser.ml`) ✅
 
-### Task 1.3: Build S-Expression Parser (new file: `override_parser.ml`)
-
-Create `ocgtk/src/tools/gir_gen/override_parser.mli` and
+Created `ocgtk/src/tools/gir_gen/override_parser.mli` and
 `ocgtk/src/tools/gir_gen/override_parser.ml`.
 
 Use `sexplib` (already a dependency) to parse s-expressions. The module provides:
@@ -372,28 +377,20 @@ The parser must handle:
 - `partial-functions.md`: no `List.hd`, use pattern matching
 - `pattern-matching.md`: exhaustive, no catch-all
 
-### Task 1.4: Write Parser Unit Tests
+### Task 1.4: Write Parser Unit Tests ✅
 
-Create `ocgtk/test_gir_gen/test_override_parser.ml`:
+Created `ocgtk/src/tools/test_gir_gen/test_override_parser.ml` — 22 tests covering:
+- All entity types (class, interface, record, enumeration, bitfield, function)
+- Version overrides and validation
+- Error cases (malformed sexp, unknown entity, invalid version, duplicate entity)
+- Class ignore + component overrides in same entry
 
-- Parse minimal valid file: `(overrides (library "Gtk"))`
-- Parse class ignore: `(overrides (library "Gtk") (class Widget (ignore)))`
-- Parse class with method overrides
-- Parse interface, record, enumeration, bitfield overrides
-- Parse version overrides and validate version format
-- Error cases: malformed s-expressions, unknown entity kinds, invalid versions,
-  missing library name
-- **Duplicate rejection**: two `(class Widget ...)` entries → `Duplicate_entity` error
-- **Duplicate component rejection**: two `(method foo ...)` in same entity →
-  `Duplicate_component` error
-- **Class ignore + component overrides**: accepted, class ignore takes precedence
-- Round-trip: construct `library_overrides`, convert to sexp, parse back, compare
+### Task 1.5: Update Dune Build File ✅
 
-### Task 1.5: Update Dune Build File
-
-Update `ocgtk/src/tools/gir_gen/dune` — no changes needed since `include_subdirs qualified`
-already picks up new `.ml` files in the directory tree. However, verify that the test
-executable includes the new test files.
+Updated `ocgtk/src/tools/test_gir_gen/dune` (added `test_override_types` and
+`test_override_parser` to modules list) and `test_gir_gen.ml` (registered
+new test suites). No changes to gir_gen library dune — `include_subdirs qualified`
+auto-discovers new `.ml` files.
 
 ---
 
