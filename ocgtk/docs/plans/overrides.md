@@ -280,10 +280,10 @@ type library_overrides = {
 
 ### Task 1.1b: Extend GIR Types with Member Version Fields ✅
 
-GIR XML does not include `version` attributes on `<member>` elements within
-`<enumeration>` or `<bitfield>`, nor on `<field>` elements within `<record>`.
-However, we need per-member/per-field versioning to support version-guarded C code
-generation for members added in newer library versions.
+GIR XML *sometimes* includes `version` attributes on `<member>` and `<field>`
+elements (e.g. some GDK4 and GTK4 members use `version="4.x"`), and `<doc>` text
+may also contain "Since X.Y" annotations. We need per-member/per-field versioning
+to support version-guarded C code generation.
 
 Add version fields to `types.ml`:
 
@@ -293,7 +293,7 @@ type gir_enum_member = {
   member_value : int;
   c_identifier : string;
   member_doc : string option;
-  member_version : string option;   (* NEW - always None from GIR, set by overrides *)
+  member_version : string option;   (* NEW - read from version XML attr by gir_parser *)
 }
 
 type gir_bitfield_member = {
@@ -301,7 +301,7 @@ type gir_bitfield_member = {
   flag_value : int;
   flag_c_identifier : string;
   flag_doc : string option;
-  flag_version : string option;     (* NEW - always None from GIR, set by overrides *)
+  flag_version : string option;     (* NEW - read from version XML attr by gir_parser *)
 }
 
 type gir_record_field = {
@@ -310,12 +310,15 @@ type gir_record_field = {
   readable : bool;
   writable : bool;
   field_doc : string option;
-  field_version : string option;    (* NEW - always None from GIR, set by overrides *)
+  field_version : string option;    (* NEW - read from version XML attr by gir_parser *)
 }
 ```
 
-No parser changes needed — GIR doesn't provide these. The fields are populated
-exclusively by the override system (Phase 2 / `override_apply.ml`).
+**Implementation note**: `gir_parser.ml` reads these from the `version` XML attribute
+on each element. The `gir_gen overrides` extractor (Phase 3) extracts "Since X.Y" from
+`<doc>` text — it does NOT duplicate what the parser already reads from XML attributes.
+The override system (`override_apply.ml`) can additionally set these fields from override
+sexp files when neither source provides a version.
 
 ### Task 1.2: Write Unit Tests for Override Types ✅
 
@@ -657,6 +660,11 @@ sexp file containing version overrides extracted from `<doc>` "Since" comments.
 and every `<field>` in `<record>`, it looks for a `<doc>` child element whose text
 matches `Since[: ]<version>` (with flexible spacing, punctuation, and position in
 the doc string). When found, it emits:
+
+**Note**: The extractor reads only `<doc>` text, not the `version` XML attribute.
+Version XML attributes on `<member>` and `<field>` elements are already parsed
+natively by `gir_parser.ml` into `member_version`/`flag_version`/`field_version`
+and used directly in code generation — they do not need to appear in override files.
 
 ```sexp
 (enumeration ApplicationFlags
