@@ -743,7 +743,8 @@ let load_reference_files reference_files =
       StringMap.add cr_namespace.cr_namespace_name ncr_namespace acc)
 
 (* Main generation function *)
-let generate_bindings filter_file gir_file output_dir reference_files =
+let generate_bindings filter_file gir_file output_dir reference_files
+    overrides_file =
   printf "Current directory: %s\n" (Sys.getcwd ());
   printf "Parsing %s ...\n" gir_file;
 
@@ -792,6 +793,35 @@ let generate_bindings filter_file gir_file output_dir reference_files =
   printf "Found %d Gtk enumerations\n" (List.length gtk_enums);
   printf "Found %d Gtk bitfields\n" (List.length gtk_bitfields);
   printf "Found %d records\n" (List.length gtk_records);
+
+  (* ==== OVERRIDE APPLICATION STAGE ==== *)
+
+  (* Apply overrides before building type-mapping context. Ignored entities
+     must be absent from ctx so that find_type_mapping_for_gir_type returns
+     None for their types. *)
+  let classes, interfaces, gtk_enums, gtk_bitfields, gtk_records =
+    match overrides_file with
+    | None -> classes, interfaces, gtk_enums, gtk_bitfields, gtk_records
+    | Some file ->
+      printf "Loading overrides from %s\n" file;
+      match Gir_gen_lib.Override_parser.parse_overrides file with
+      | Error e ->
+        eprintf "Error: override parse failed: %s\n"
+          (Gir_gen_lib.Override_parser.format_error e);
+        exit 1
+      | Ok ov ->
+        let result =
+          Gir_gen_lib.Override_apply.apply_overrides ~overrides:ov
+            ~classes ~interfaces ~enums:gtk_enums ~bitfields:gtk_bitfields
+            ~records:gtk_records ~functions:[] in
+        List.iter result.warnings ~f:(fun w -> eprintf "Warning: %s\n" w);
+        if List.length result.ignored_entities > 0 then
+          printf "Ignored %d entity(ies): %s\n"
+            (List.length result.ignored_entities)
+            (String.concat ~sep:", " result.ignored_entities);
+        result.classes, result.interfaces, result.enums,
+        result.bitfields, result.records
+  in
 
   (* ==== PREPROCESSING STAGE ==== *)
 
@@ -1297,7 +1327,7 @@ let generate_bindings filter_file gir_file output_dir reference_files =
   `Ok ()
 
 (* References generation function *)
-let generate_references gir_file output_file =
+let generate_references gir_file output_file overrides_file =
   printf "Parsing %s for references...\n" gir_file;
 
   let filter_classes = [] in
@@ -1305,6 +1335,27 @@ let generate_references gir_file output_file =
   let repository, namespace, classes, interfaces, enums, bitfields, records =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file filter_classes
   in
+
+  (* Apply overrides to filter ignored entities from references *)
+  let classes, interfaces, enums, bitfields, records =
+    match overrides_file with
+    | None -> classes, interfaces, enums, bitfields, records
+    | Some file ->
+      printf "Loading overrides from %s\n" file;
+      match Gir_gen_lib.Override_parser.parse_overrides file with
+      | Error e ->
+        eprintf "Error: override parse failed: %s\n"
+          (Gir_gen_lib.Override_parser.format_error e);
+        exit 1
+      | Ok ov ->
+        let result =
+          Gir_gen_lib.Override_apply.apply_overrides ~overrides:ov
+            ~classes ~interfaces ~enums ~bitfields ~records ~functions:[] in
+        List.iter result.warnings ~f:(fun w -> eprintf "Warning: %s\n" w);
+        result.classes, result.interfaces, result.enums,
+        result.bitfields, result.records
+  in
+
   printf "References will be written to: %s\n" output_file;
   let entities =
     (classes
@@ -1385,6 +1436,10 @@ let reference_files_arg =
   in
   Arg.(value & opt_all file [] & info [ "r"; "reference" ] ~docv:"FILE" ~doc)
 
+let overrides_arg =
+  let doc = "Override file (s-expression) for GIR generation configuration" in
+  Arg.(value & opt (some file) None & info [ "o"; "overrides" ] ~docv:"FILE" ~doc)
+
 (* Arguments for references command *)
 let gir_file_arg_refs =
   let doc = "Path to GIR file to parse for references" in
@@ -1393,6 +1448,10 @@ let gir_file_arg_refs =
 let output_file_arg_refs =
   let doc = "Output file path for generated references" in
   Arg.(required & pos 1 (some string) None & info [] ~docv:"OUTPUT_FILE" ~doc)
+
+let overrides_arg_refs =
+  let doc = "Override file for filtering references" in
+  Arg.(value & opt (some file) None & info [ "o"; "overrides" ] ~docv:"FILE" ~doc)
 
 (* Command definitions *)
 
@@ -1413,6 +1472,10 @@ let generate_cmd =
       `Pre
         "  gir_gen generate -r gtk_refs.txt -r gdk_refs.txt \
          /usr/share/gir-1.0/Gtk-4.0.gir ./output";
+      `P "Generate with override file:";
+      `Pre
+        "  gir_gen generate -o overrides/gtk.sexp \
+         /usr/share/gir-1.0/Gtk-4.0.gir ./output";
     ]
   in
   let info = Cmd.info "generate" ~doc ~man in
@@ -1420,7 +1483,7 @@ let generate_cmd =
     Term.(
       ret
         (const generate_bindings $ filter_arg $ gir_file_arg $ output_dir_arg
-       $ reference_files_arg))
+       $ reference_files_arg $ overrides_arg))
 
 (* References subcommand *)
 let references_cmd =
@@ -1435,12 +1498,16 @@ let references_cmd =
       `S Manpage.s_examples;
       `P "Generate reference list:";
       `Pre "  gir_gen references /usr/share/gir-1.0/Gtk-4.0.gir gtk_refs.txt";
+      `P "Generate reference list with overrides:";
+      `Pre "  gir_gen references -o overrides/gtk.sexp \
+         /usr/share/gir-1.0/Gtk-4.0.gir gtk_refs.txt";
     ]
   in
   let info = Cmd.info "references" ~doc ~man in
   Cmd.v info
     Term.(
-      ret (const generate_references $ gir_file_arg_refs $ output_file_arg_refs))
+      ret (const generate_references $ gir_file_arg_refs $ output_file_arg_refs
+         $ overrides_arg_refs))
 
 (* Main command *)
 let gir_gen_cmd =

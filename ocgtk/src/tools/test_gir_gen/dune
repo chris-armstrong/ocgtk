@@ -42,9 +42,10 @@
   compilation_tests
    version_guard_tests
    c_stub_version_guard_tests
-   test_override_types
-   test_override_parser
-   test_gir_gen
+    test_override_types
+    test_override_parser
+    test_override_apply
+    test_gir_gen
    type_factory)
  (deps %{exe:../gir_gen/gir_gen.exe})
  (libraries str unix gir_gen_lib alcotest ppxlib))
