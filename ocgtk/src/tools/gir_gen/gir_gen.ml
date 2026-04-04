@@ -811,11 +811,13 @@ let generate_bindings filter_file gir_file output_dir reference_files
         exit 1
       | Ok ov ->
         let result =
+          (* parse_gir_file does not extract top-level namespace functions,
+             so ~functions:[] is correct — there is nothing to filter. *)
           Gir_gen_lib.Override_apply.apply_overrides ~overrides:ov
             ~classes ~interfaces ~enums:gtk_enums ~bitfields:gtk_bitfields
             ~records:gtk_records ~functions:[] in
         List.iter result.warnings ~f:(fun w -> eprintf "Warning: %s\n" w);
-        if List.length result.ignored_entities > 0 then
+        if result.ignored_entities <> [] then
           printf "Ignored %d entity(ies): %s\n"
             (List.length result.ignored_entities)
             (String.concat ~sep:", " result.ignored_entities);
@@ -1349,6 +1351,8 @@ let generate_references gir_file output_file overrides_file =
         exit 1
       | Ok ov ->
         let result =
+          (* parse_gir_file does not extract top-level namespace functions,
+             so ~functions:[] is correct — there is nothing to filter. *)
           Gir_gen_lib.Override_apply.apply_overrides ~overrides:ov
             ~classes ~interfaces ~enums ~bitfields ~records ~functions:[] in
         List.iter result.warnings ~f:(fun w -> eprintf "Warning: %s\n" w);

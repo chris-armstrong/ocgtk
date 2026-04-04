@@ -119,9 +119,19 @@ Naming convention: lowercase namespace name + `.sexp`. The file is passed to
 1. **`ignore` means "do not generate"** - removes the entity/component from all
    generation stages (C stubs, Layer 1, Layer 2, signals, dune modules).
 
-2. **`version` sets/overrides the version field** - if the GIR already has a version,
-   the override replaces it. If not, it adds one. This feeds into `Version_guard`
-   for `#if` guard generation.
+2. **`version` applies at both entity and component level** - if the GIR already
+   has a version, the override replaces it; if not, it adds one. This feeds into
+   `Version_guard` for `#if` guard generation.
+
+   - **Entity-level** `(version "X.Y")` sets the entity's top-level version field
+     (e.g. `gir_class.version`, `gir_enum.enum_version`). This is the right way to
+     annotate classes/records/enums that were added in a specific library version,
+     which becomes a class-level C `#if` guard (see `gtk-versioning.md` Phase 2).
+     Component overrides on the same entity are still applied.
+
+   - **Component-level** `(method foo (version "X.Y"))` sets the version on that
+     specific member/method/field. This becomes an inner member-level guard nested
+     inside any class-level guard.
 
 3. **Entity names are GIR names** (e.g. `Widget`, `RGBA`, `StateFlags`) - the same
    names as they appear in the GIR XML. No normalization needed for matching.
@@ -394,9 +404,20 @@ auto-discovers new `.ml` files.
 
 ---
 
-## Phase 2: Override Application
+## Phase 2: Override Application ✅ COMPLETE (2026-04-04)
 
 **Goal**: Apply parsed overrides to the GIR data structures after parsing, before generation.
+
+**Implementation notes:**
+- `override_apply.ml`: single-pass `filter_map` per entity type (class, interface, record,
+  enum, bitfield, function) — each `process_entity` call does one `List.find_opt` for the
+  override, then dispatches on the action with exhaustive pattern matching
+- Entity-level `Set_version` sets the entity version field then applies component overrides
+  (not a no-op as in the original draft)
+- Generic `apply_components_by_name` helper used for all component filter+version passes
+- Generic `check_unknown_entity_names` helper replaces 5 near-identical functions
+- `~functions:[]` in `gir_gen.ml` is intentional — `parse_gir_file` does not extract
+  top-level namespace functions
 
 ### Task 2.1: Define Override Application Module (new file: `override_apply.ml`)
 
@@ -444,31 +465,38 @@ Implementation strategy:
 2. **Component-level ignore**: For surviving entities, filter their sub-lists.
    For a class with `(method create (ignore))`, remove `create` from its `methods` list.
 
-3. **Version override**: For surviving entities/components, update the `version` field.
-   Use record update syntax (`{ entity with version = Some v }`).
-   For enum members and bitfield flags, update `member_version` and `flag_version`
-   respectively — this is the **only** source for these fields since GIR does not
-   provide member-level versions. Same for record fields (`field_version`).
+3. **Entity-level version override**: For surviving entities, set the entity's
+   version field: `{ cls with version = Some v }` for classes/interfaces/records,
+   `{ enm with enum_version = Some v }` for enums, `{ bf with bitfield_version = Some v }`
+   for bitfields. Component overrides are still applied after the entity-level version
+   is set. This becomes a class-level C `#if` guard (see `gtk-versioning.md` Phase 2).
 
-4. **Unknown name warnings**: When an override references an entity or component name
+4. **Component-level version override**: For surviving entities/components, update
+   the component's version field. For enum members and bitfield flags, this updates
+   `member_version` and `flag_version` — the **only** source for these since GIR
+   does not provide member-level versions. Same for record fields (`field_version`).
+
+5. **Unknown name warnings**: When an override references an entity or component name
    that doesn't exist in the parsed GIR data, add a warning to `apply_result.warnings`.
    This catches typos without blocking generation.
 
 Key implementation details:
-- Use `List.filter` + `List.map` with named predicates (per `naming-and-intermediates.md`)
+- Use `List.filter_map` over entities with a single-pass `process_entity` function
+  that both checks ignore and applies overrides (avoids multiple `List.find_opt` passes)
+- Use `apply_components_by_name` generic helper for component-level filter+version
 - Use record update syntax (per `code-reuse.md`)
-- Extract entity name matching into a helper (e.g. `matches_class_override`)
-- For enums/bitfields from external namespaces: overrides should only apply to the
-   primary namespace being generated
+- Use `check_unknown_entity_names` generic helper (replaces 5 near-identical functions)
+- `~functions:[]` is correct in the `gir_gen.ml` calls — `parse_gir_file` does not
+  extract top-level namespace functions, so there is nothing to filter
 
 **Code guidelines reference**:
 - `code-reuse.md`: record update syntax, extract common patterns
 - `naming-and-intermediates.md`: named predicates
 - `module-boundaries.md`: `.mli` with labelled arguments
 
-### Task 2.2: Write Override Application Unit Tests
+### Task 2.2: Write Override Application Unit Tests ✅
 
-Create `ocgtk/test_gir_gen/test_override_apply.ml`:
+Created `ocgtk/src/tools/test_gir_gen/test_override_apply.ml` — 24 tests covering:
 
 - Test class ignore removes it from the list
 - Test method ignore removes it from the class's methods
@@ -483,9 +511,9 @@ Create `ocgtk/test_gir_gen/test_override_apply.ml`:
 - Test class ignore takes precedence over component overrides (no warning for
   component overrides under ignored entity)
 
-### Task 2.3: Integrate into Generation Pipeline
+### Task 2.3: Integrate into Generation Pipeline ✅
 
-Modify `ocgtk/src/tools/gir_gen/gir_gen.ml`:
+Modified `ocgtk/src/tools/gir_gen/gir_gen.ml`:
 
 1. **Add CLI argument**:
    ```ocaml
@@ -536,9 +564,9 @@ Modify `ocgtk/src/tools/gir_gen/gir_gen.ml`:
 - `abstractions.md`: layered module dependencies (parser → apply → pipeline)
 - `module-boundaries.md`: labelled args for same-type params
 
-### Task 2.4: Integrate Overrides into References Generation
+### Task 2.4: Integrate Overrides into References Generation ✅
 
-The `gir_gen references` subcommand (line 1300 of `gir_gen.ml`) generates cross-namespace
+The `gir_gen references` subcommand generates cross-namespace
 reference files. Ignored entities must be excluded from references — otherwise another
 namespace could reference a type that doesn't exist in the generated bindings.
 
