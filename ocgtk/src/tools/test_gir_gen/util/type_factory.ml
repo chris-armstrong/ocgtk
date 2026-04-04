@@ -200,3 +200,54 @@ let gboolean_type = make_gir_type ~name:"gboolean" ~c_type:"gboolean" ()
 
 let make_widget_type ?(nullable = false) () =
   make_gir_type ~name:"GtkWidget" ~c_type:"GtkWidget*" ~nullable ()
+
+(* ========================================================================= *)
+(* Convenience Helper Factories for Common Test Patterns *)
+(* ========================================================================= *)
+
+(* Common object types *)
+let widget_type = make_widget_type ()
+let window_type = make_gir_type ~name:"Window" ~c_type:"GtkWindow*" ()
+let button_type = make_gir_type ~name:"Button" ~c_type:"GtkButton*" ()
+let string_option_type = make_gir_type ~name:"utf8" ~c_type:"const gchar*" ~nullable:true ()
+
+(* Quick method factories for common return types *)
+let make_void_method ~method_name ~c_identifier ?parameters ?throws ?version () =
+  make_gir_method ~method_name ~c_identifier ~return_type:void_type ?parameters ?throws ?version ()
+
+let make_string_method ~method_name ~c_identifier ?parameters ?throws ?version () =
+  make_gir_method ~method_name ~c_identifier ~return_type:utf8_type ?parameters ?throws ?version ()
+
+let make_bool_method ~method_name ~c_identifier ?parameters ?throws ?version () =
+  make_gir_method ~method_name ~c_identifier ~return_type:gboolean_type ?parameters ?throws ?version ()
+
+let make_int_method ~method_name ~c_identifier ?parameters ?throws ?version () =
+  make_gir_method ~method_name ~c_identifier ~return_type:gint_type ?parameters ?throws ?version ()
+
+(* Quick parameter factories *)
+let make_string_param ~param_name ?nullable () =
+  make_gir_param ~param_name ~param_type:utf8_type ?nullable ()
+
+let make_int_param ~param_name ?nullable () =
+  make_gir_param ~param_name ~param_type:gint_type ?nullable ()
+
+let make_uint_param ~param_name ?nullable () =
+  make_gir_param ~param_name ~param_type:guint_type ?nullable ()
+
+let make_bool_param ~param_name ?nullable () =
+  make_gir_param ~param_name ~param_type:gboolean_type ?nullable ()
+
+let make_object_param ~param_name ~type_name ~c_type ?nullable () =
+  let param_type = make_gir_type ~name:type_name ~c_type ?nullable () in
+  make_gir_param ~param_name ~param_type ()
+
+let make_widget_param ~param_name ?nullable () =
+  make_object_param ~param_name ~type_name:"Widget" ~c_type:"GtkWidget*" ?nullable ()
+
+(* Quick constructor factories *)
+let make_void_constructor ~ctor_name ~c_identifier ?ctor_parameters ?throws ?version () =
+  make_gir_constructor ~ctor_name ~c_identifier ?ctor_parameters ?throws ?version ()
+
+(* Signal factories *)
+let make_void_signal ~signal_name ?sig_parameters ?version () =
+  make_gir_signal ~signal_name ~return_type:void_type ?sig_parameters ?version ()

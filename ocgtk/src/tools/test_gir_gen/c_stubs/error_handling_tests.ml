@@ -1,6 +1,6 @@
 (* Error Handling Tests (throws=true) *)
 
-open Gir_gen_lib.Types
+open Type_factory
 
 (* =================================================================== *)
 (* Methods under test *)
@@ -25,43 +25,10 @@ let find_function functions name = C_ast.find_function functions name
 let test_method_with_throws_declares_error () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "save_to_file";
-      c_identifier = "gtk_widget_save_to_file";
-      return_type =
-        {
-          name = "gboolean";
-          c_type = Some "gboolean";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
-        [
-          {
-            param_name = "filename";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const gchar*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = true;
-      introspectable = true;
-      (* This method can throw errors *)
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"save_to_file"
+      ~c_identifier:"gtk_widget_save_to_file" ~return_type:gboolean_type
+      ~parameters:[ make_string_param ~param_name:"filename" () ]
+      ~throws:true ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -81,42 +48,10 @@ let test_method_with_throws_declares_error () =
 let test_error_handling_uses_res_ok () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "load_file";
-      c_identifier = "gtk_widget_load_file";
-      return_type =
-        {
-          name = "gboolean";
-          c_type = Some "gboolean";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
-        [
-          {
-            param_name = "filename";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const gchar*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = true;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"load_file"
+      ~c_identifier:"gtk_widget_load_file" ~return_type:gboolean_type
+      ~parameters:[ make_string_param ~param_name:"filename" () ]
+      ~throws:true ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -134,25 +69,8 @@ let test_error_handling_uses_res_ok () =
 let test_error_passed_by_reference () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "save";
-      c_identifier = "gtk_widget_save";
-      return_type =
-        {
-          name = "gboolean";
-          c_type = Some "gboolean";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = true;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"save" ~c_identifier:"gtk_widget_save"
+      ~return_type:gboolean_type ~throws:true ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -170,25 +88,8 @@ let test_error_passed_by_reference () =
 let test_error_initialized_to_null () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "open";
-      c_identifier = "gtk_widget_open";
-      return_type =
-        {
-          name = "gboolean";
-          c_type = Some "gboolean";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = true;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"open" ~c_identifier:"gtk_widget_open"
+      ~return_type:gboolean_type ~throws:true ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -211,25 +112,8 @@ let test_error_initialized_to_null () =
 let test_has_complete_error_handling () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "process";
-      c_identifier = "gtk_widget_process";
-      return_type =
-        {
-          name = "gboolean";
-          c_type = Some "gboolean";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = true;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method ~method_name:"process" ~c_identifier:"gtk_widget_process"
+      ~return_type:gboolean_type ~throws:true ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -247,33 +131,10 @@ let test_has_complete_error_handling () =
 let test_constructor_with_throws () =
   let ctx = Helpers.create_test_context () in
   let ctor =
-    {
-      ctor_name = "new_from_file";
-      c_identifier = "gtk_widget_new_from_file";
-      ctor_parameters =
-        [
-          {
-            param_name = "filename";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const gchar*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      ctor_doc = None;
-      throws = true;
-      ctor_introspectable = true;
-      version = None;
-      (* Constructor that can throw *)
-    }
+    make_gir_constructor ~ctor_name:"new_from_file"
+      ~c_identifier:"gtk_widget_new_from_file"
+      ~ctor_parameters:[ make_string_param ~param_name:"filename" () ]
+      ~throws:true ()
   in
 
   let c_code =
