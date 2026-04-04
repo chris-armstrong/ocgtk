@@ -1,15 +1,17 @@
 (* Types for GIR generation overrides. *)
 
+open Sexplib.Std
+
 type override_action =
   | Ignore
   | Set_version of string
-[@@deriving eq]
+[@@deriving sexp, eq]
 
 type component_override = {
   component_name : string;
   action : override_action;
 }
-[@@deriving eq]
+[@@deriving sexp, eq]
 
 type class_override = {
   class_name : string;
@@ -19,7 +21,7 @@ type class_override = {
   properties : component_override list;
   signals : component_override list;
 }
-[@@deriving eq]
+[@@deriving sexp, eq]
 
 type interface_override = {
   interface_name : string;
@@ -28,7 +30,7 @@ type interface_override = {
   properties : component_override list;
   signals : component_override list;
 }
-[@@deriving eq]
+[@@deriving sexp, eq]
 
 type record_override = {
   record_name : string;
@@ -38,7 +40,7 @@ type record_override = {
   methods : component_override list;
   functions : component_override list;
 }
-[@@deriving eq]
+[@@deriving sexp, eq]
 
 type enum_override = {
   enum_name : string;
@@ -46,14 +48,14 @@ type enum_override = {
   members : component_override list;
   functions : component_override list;
 }
-[@@deriving eq]
+[@@deriving sexp, eq]
 
 type bitfield_override = {
   bitfield_name : string;
   bitfield_action : override_action option;
   flags : component_override list;
 }
-[@@deriving eq]
+[@@deriving sexp, eq]
 
 type library_overrides = {
   library_name : string;
@@ -64,4 +66,4 @@ type library_overrides = {
   bitfields : bitfield_override list;
   functions : component_override list;
 }
-[@@deriving eq]
+[@@deriving sexp, eq]

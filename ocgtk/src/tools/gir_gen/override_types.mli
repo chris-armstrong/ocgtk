@@ -9,14 +9,14 @@
 type override_action =
   | Ignore
   | Set_version of string
-[@@deriving eq]
+[@@deriving sexp, eq]
 
 (** Override for a sub-component of an entity (method, property, etc.). *)
 type component_override = {
   component_name : string;
   action : override_action;
 }
-[@@deriving eq]
+[@@deriving sexp, eq]
 
 (** Override for a class. *)
 type class_override = {
@@ -27,7 +27,7 @@ type class_override = {
   properties : component_override list;
   signals : component_override list;
 }
-[@@deriving eq]
+[@@deriving sexp, eq]
 
 (** Override for an interface. *)
 type interface_override = {
@@ -37,7 +37,7 @@ type interface_override = {
   properties : component_override list;
   signals : component_override list;
 }
-[@@deriving eq]
+[@@deriving sexp, eq]
 
 (** Override for a record. *)
 type record_override = {
@@ -50,7 +50,7 @@ type record_override = {
   (** Record-level functions. Parsed from [(function ...)] inside a [(record ...)] block.
       Distinct from top-level [library_overrides.functions] (namespace-level). *)
 }
-[@@deriving eq]
+[@@deriving sexp, eq]
 
 (** Override for an enumeration. *)
 type enum_override = {
@@ -59,7 +59,7 @@ type enum_override = {
   members : component_override list;
   functions : component_override list;
 }
-[@@deriving eq]
+[@@deriving sexp, eq]
 
 (** Override for a bitfield.
 
@@ -71,7 +71,7 @@ type bitfield_override = {
   flags : component_override list;
   (** Populated from [(member ...)] in the sexp (same keyword as enum members). *)
 }
-[@@deriving eq]
+[@@deriving sexp, eq]
 
 (** Top-level overrides container. *)
 type library_overrides = {
@@ -85,4 +85,4 @@ type library_overrides = {
   (** Standalone namespace-level functions. Parsed from [(function ...)] at the
       top level of the [(overrides ...)] form, not nested inside any entity. *)
 }
-[@@deriving eq]
+[@@deriving sexp, eq]

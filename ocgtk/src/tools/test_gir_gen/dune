@@ -49,4 +49,4 @@
     test_gir_gen
    type_factory)
  (deps %{exe:../gir_gen/gir_gen.exe})
- (libraries str unix gir_gen_lib alcotest ppxlib))
+ (libraries str unix gir_gen_lib alcotest ppxlib sexplib))

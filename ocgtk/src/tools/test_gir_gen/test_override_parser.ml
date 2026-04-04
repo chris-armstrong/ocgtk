@@ -296,6 +296,137 @@ let test_many_components () =
   Alcotest.(check int) "properties" 2 (List.length c.properties);
   Alcotest.(check int) "signals" 2 (List.length c.signals)
 
+let roundtrip original =
+  let sexp = sexp_of_library_overrides original in
+  let sexp_str = Sexplib.Sexp.to_string sexp in
+  let roundtripped = library_overrides_of_sexp (Sexplib.Sexp.of_string sexp_str) in
+  Alcotest.(check bool)
+    "roundtrip equality" true
+    (equal_library_overrides original roundtripped)
+
+let test_roundtrip_minimal () =
+  let original = parse_ok "(overrides (library \"Gtk\"))" in
+  roundtrip original
+
+let test_roundtrip_class_ignore () =
+  let original = parse_ok "(overrides (library \"Gtk\") (class Widget (ignore)))" in
+  roundtrip original
+
+let test_roundtrip_class_components () =
+  let original =
+    parse_ok
+      "(overrides (library \"Gtk\") \
+       (class Widget \
+         (constructor new (ignore)) \
+         (constructor new_with_label (version \"4.10\")) \
+         (method foo (ignore)) \
+         (method bar (version \"4.12\")) \
+         (property visible (ignore)) \
+         (property sensitive (version \"4.10\")) \
+         (signal destroy (ignore)) \
+         (signal show (version \"4.8\"))))"
+  in
+  roundtrip original
+
+let test_roundtrip_interface () =
+  let original =
+    parse_ok
+      "(overrides (library \"Gtk\") \
+       (interface Actionable \
+         (method get_action_name (ignore)) \
+         (property action_name (version \"4.12\")) \
+         (signal activated (ignore))))"
+  in
+  roundtrip original
+
+let test_roundtrip_record () =
+  let original =
+    parse_ok
+      "(overrides (library \"Gtk\") \
+       (record TextIter \
+         (field user_data (ignore)) \
+         (field start (version \"4.14\")) \
+         (constructor new (ignore)) \
+         (method get_text (version \"4.14\")) \
+         (function get_slice (ignore))))"
+  in
+  roundtrip original
+
+let test_roundtrip_enum () =
+  let original =
+    parse_ok
+      "(overrides (library \"Gtk\") \
+       (enumeration RGBA \
+         (member RED (ignore)) \
+         (member GREEN (version \"4.14\")) \
+         (function parse (ignore))))"
+  in
+  roundtrip original
+
+let test_roundtrip_bitfield () =
+  let original =
+    parse_ok
+      "(overrides (library \"Gtk\") \
+       (bitfield StateFlags \
+         (member ACTIVE (ignore)) \
+         (member BACKDROP (version \"4.14\"))))"
+  in
+  roundtrip original
+
+let test_roundtrip_standalone_function () =
+  let original =
+    parse_ok
+      "(overrides (library \"Gtk\") \
+       (function gtk_show_uri (ignore)))"
+  in
+  roundtrip original
+
+let test_roundtrip_complex () =
+  let original =
+    parse_ok
+      "(overrides (library \"Gtk\") \
+       (class Widget \
+         (ignore) \
+         (constructor new (ignore)) \
+         (method show (version \"4.8\")) \
+         (property visible (ignore)) \
+         (signal destroy (ignore))) \
+       (class Button \
+         (method clicked (version \"4.10\")) \
+         (property label (ignore))) \
+       (interface Actionable \
+         (method get_action_name (version \"4.12\")) \
+         (property action_name (ignore))) \
+       (record TextIter \
+         (field user_data (ignore)) \
+         (constructor new (ignore)) \
+         (method get_text (version \"4.14\")) \
+         (function slice (ignore))) \
+       (enumeration Align \
+         (member START (ignore)) \
+         (member END (version \"4.0\")) \
+         (function from_string (ignore))) \
+       (bitfield StateFlags \
+         (member ACTIVE (ignore)) \
+         (member FOCUSED (version \"4.2\"))) \
+       (function gtk_init (ignore)) \
+       (function gtk_main (version \"4.0\")))"
+  in
+  roundtrip original
+
+let test_suite_roundtrip =
+  [
+    ("minimal", `Quick, test_roundtrip_minimal);
+    ("class_ignore", `Quick, test_roundtrip_class_ignore);
+    ("class_components", `Quick, test_roundtrip_class_components);
+    ("interface", `Quick, test_roundtrip_interface);
+    ("record", `Quick, test_roundtrip_record);
+    ("enum", `Quick, test_roundtrip_enum);
+    ("bitfield", `Quick, test_roundtrip_bitfield);
+    ("standalone_function", `Quick, test_roundtrip_standalone_function);
+    ("complex", `Quick, test_roundtrip_complex);
+  ]
+
 let test_suite =
   [
     ("minimal", `Quick, test_minimal);

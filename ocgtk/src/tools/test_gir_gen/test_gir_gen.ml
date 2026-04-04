@@ -42,6 +42,7 @@ let () =
       ("C Stub Version Guards", C_stub_version_guard_tests.test_suite);
       ("Override Types", Test_override_types.test_suite);
       ("Override Parser", Test_override_parser.test_suite);
+      ("Override Parser Roundtrip", Test_override_parser.test_suite_roundtrip);
       ("Override Apply", Test_override_apply.test_suite);
       ("Override Extractor", Test_override_extractor.test_suite);
     ]
