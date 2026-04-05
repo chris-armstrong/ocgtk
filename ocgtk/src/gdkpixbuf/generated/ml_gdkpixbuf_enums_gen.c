@@ -38,7 +38,10 @@ value Val_GdkPixbufInterpType(GdkInterpType val) {
     case GDK_INTERP_NEAREST: return caml_hash_variant("NEAREST"); /* `NEAREST */
     case GDK_INTERP_TILES: return caml_hash_variant("TILES"); /* `TILES */
     case GDK_INTERP_BILINEAR: return caml_hash_variant("BILINEAR"); /* `BILINEAR */
+#if GDK_PIXBUF_CHECK_VERSION(2,38,0)
     case GDK_INTERP_HYPER: return caml_hash_variant("HYPER"); /* `HYPER */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GdkInterpType value: %d", (int)val);
@@ -53,7 +56,12 @@ GdkInterpType GdkPixbufInterpType_val(value val) {
   if (val == caml_hash_variant("NEAREST")) return GDK_INTERP_NEAREST; /* `NEAREST */
   else if (val == caml_hash_variant("TILES")) return GDK_INTERP_TILES; /* `TILES */
   else if (val == caml_hash_variant("BILINEAR")) return GDK_INTERP_BILINEAR; /* `BILINEAR */
+#if GDK_PIXBUF_CHECK_VERSION(2,38,0)
   else if (val == caml_hash_variant("HYPER")) return GDK_INTERP_HYPER; /* `HYPER */
+
+#else
+  else if (val == caml_hash_variant("HYPER")) caml_failwith("GdkInterpType.HYPER requires 2.38");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GdkInterpType tag: %ld", val);
@@ -182,12 +190,15 @@ value Val_GdkPixbufPixbufFormatFlags(GdkPixbufFormatFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GDK_PIXBUF_CHECK_VERSION(2,28,0)
   if (flags & GDK_PIXBUF_FORMAT_THREADSAFE) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("THREADSAFE"))); /* `THREADSAFE */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -199,7 +210,12 @@ GdkPixbufFormatFlags GdkPixbufPixbufFormatFlags_val(value list) {
     int tag = Int_val(Field(list, 0));
     if (tag == caml_hash_variant("WRITABLE")) result |= GDK_PIXBUF_FORMAT_WRITABLE; /* `WRITABLE */
     else if (tag == caml_hash_variant("SCALABLE")) result |= GDK_PIXBUF_FORMAT_SCALABLE; /* `SCALABLE */
+#if GDK_PIXBUF_CHECK_VERSION(2,28,0)
     else if (tag == caml_hash_variant("THREADSAFE")) result |= GDK_PIXBUF_FORMAT_THREADSAFE; /* `THREADSAFE */
+
+#else
+    else if (tag == caml_hash_variant("THREADSAFE")) caml_failwith("GdkPixbufFormatFlags.THREADSAFE requires 2.28");
+#endif
     list = Field(list, 1);
   }
   return result;

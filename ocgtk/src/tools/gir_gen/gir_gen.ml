@@ -1422,8 +1422,92 @@ let generate_references gir_file output_file overrides_file =
 
 let extract_since_version = Gir_gen_lib.Override_extractor.extract_since_version
 
-let render_version_component (name : string) (version : string) =
-  sprintf "    (%s (version \"%s\"))" name version
+let render_version_component ~kind (name : string) (version : string) =
+  sprintf "    (%s %s (version \"%s\"))" kind name version
+
+(* Render a single component override back to human-friendly sexp. *)
+let render_component ~kind (c : Gir_gen_lib.Override_types.component_override) =
+  match c.action with
+  | Gir_gen_lib.Override_types.Ignore ->
+      sprintf "    (%s %s (ignore))" kind c.component_name
+  | Gir_gen_lib.Override_types.Set_version v ->
+      sprintf "    (%s %s (version \"%s\"))" kind c.component_name v
+
+(* Render an enum override entry, merging existing ignores with fresh version data.
+   [ignore_components]: component-level ignores to preserve from the existing file.
+   [version_data]: fresh (name, version) pairs from GIR.
+   [entity_action]: entity-level ignore to preserve, if any. *)
+let render_enum_entry entity_kind component_kind entity_name entity_action
+    ignore_components version_data =
+  let buf = Buffer.create 128 in
+  bprintf buf "\n  (%s %s\n" entity_kind entity_name;
+  (match entity_action with
+  | Some Gir_gen_lib.Override_types.Ignore -> bprintf buf "    (ignore)\n"
+  | Some (Gir_gen_lib.Override_types.Set_version v) ->
+      bprintf buf "    (version \"%s\")\n" v
+  | None -> ());
+  List.iter
+    ~f:(fun c -> bprintf buf "%s\n" (render_component ~kind:component_kind c))
+    ignore_components;
+  List.iter
+    ~f:(fun (name, version) ->
+      bprintf buf "%s\n" (render_version_component ~kind:component_kind name version))
+    version_data;
+  bprintf buf "  )";
+  Buffer.contents buf
+
+(* Merge GIR-extracted version data into an existing override file's entity list.
+   Preserves all (ignore) directives; replaces version annotations with fresh GIR data.
+   [existing]: parsed existing override entities (may be empty if file is new).
+   [gir_versions]: map from entity_name -> [(component_name, version_str)].
+   [get_name / get_action / get_components]: accessors for the entity type.
+   [component_kind]: "member" or "field" for rendering.
+   [entity_kind]: "enumeration", "bitfield", or "record" for rendering. *)
+let merge_version_entities ~entity_kind ~component_kind ~existing ~gir_versions
+    ~get_name ~get_entity_action ~get_components =
+  let buf = Buffer.create 512 in
+  (* Track which existing entities we've processed *)
+  let processed = Hashtbl.create 16 in
+  (* Emit entities that appear in GIR version data *)
+  List.iter
+    ~f:(fun (entity_name, version_data) ->
+      Hashtbl.replace processed entity_name true;
+      let existing_ov =
+        List.find_opt
+          ~f:(fun e -> String.equal (get_name e) entity_name)
+          existing
+      in
+      let entity_action, ignore_components =
+        match existing_ov with
+        | None -> (None, [])
+        | Some ov ->
+            let ignores =
+              List.filter
+                ~f:(fun (c : Gir_gen_lib.Override_types.component_override) ->
+                  match c.action with
+                  | Gir_gen_lib.Override_types.Ignore -> true
+                  | Gir_gen_lib.Override_types.Set_version _ -> false)
+                (get_components ov)
+            in
+            (get_entity_action ov, ignores)
+      in
+      bprintf buf "%s\n"
+        (render_enum_entry entity_kind component_kind entity_name entity_action
+           ignore_components version_data))
+    gir_versions;
+  (* Emit existing entities that had no GIR version data (preserve as-is) *)
+  List.iter
+    ~f:(fun e ->
+      let name = get_name e in
+      if not (Hashtbl.mem processed name) then begin
+        let entity_action = get_entity_action e in
+        let all_components = get_components e in
+        bprintf buf "%s\n"
+          (render_enum_entry entity_kind component_kind name entity_action
+             all_components [])
+      end)
+    existing;
+  Buffer.contents buf
 
 (* Collect version overrides from Since annotations in member doc text.
    The parser handles version XML attributes natively; this only extracts
@@ -1439,7 +1523,9 @@ let member_versions_from_docs members get_name get_doc =
           | Some v -> Some (get_name m, v)))
     members
 
-(* Generate overrides sexp file from parsed GIR data *)
+(* Generate overrides sexp file from parsed GIR data, merging with any existing file.
+   Existing (ignore) entries are always preserved. Version annotations are replaced
+   with fresh data extracted from GIR <doc> text. *)
 let generate_overrides gir_file output_file =
   printf "Parsing %s for Since version annotations...\n" gir_file;
 
@@ -1448,65 +1534,103 @@ let generate_overrides gir_file output_file =
   in
   let lib_name = namespace.namespace_name in
 
+  (* Load existing overrides if the file already exists *)
+  let existing =
+    if Sys.file_exists output_file then begin
+      printf "Merging with existing %s...\n" output_file;
+      match Gir_gen_lib.Override_parser.parse_overrides output_file with
+      | Ok ov -> ov
+      | Error e ->
+          eprintf "Warning: could not parse existing override file (%s); starting fresh\n"
+            (Gir_gen_lib.Override_parser.format_error e);
+          { Gir_gen_lib.Override_types.library_name = lib_name;
+            classes = []; interfaces = []; records = [];
+            enums = []; bitfields = []; functions = [] }
+    end else
+      { Gir_gen_lib.Override_types.library_name = lib_name;
+        classes = []; interfaces = []; records = [];
+        enums = []; bitfields = []; functions = [] }
+  in
+
   let buf = Buffer.create 4096 in
   Buffer.add_string buf (sprintf "(overrides\n  (library \"%s\")\n" lib_name);
 
-  (* Enumerations with member Since annotations *)
+  (* Emit class/interface/function overrides from existing file unchanged *)
   List.iter
-    ~f:(fun (enm : gir_enum) ->
-      let member_versions =
-        member_versions_from_docs enm.members
-          (fun m -> m.member_name)
-          (fun m -> m.member_doc)
-      in
-      if member_versions <> [] then begin
-        Buffer.add_string buf (sprintf "\n  (enumeration %s\n" enm.enum_name);
-        List.iter
-          ~f:(fun (name, version) ->
-            Buffer.add_string buf
-              (render_version_component name version ^ "\n"))
-          member_versions;
-        Buffer.add_string buf "  )\n"
-      end)
-    enums;
+    ~f:(fun (o : Gir_gen_lib.Override_types.class_override) ->
+      let buf2 = Buffer.create 64 in
+      bprintf buf2 "\n  (class %s\n" o.class_name;
+      (match o.class_action with
+      | Some Gir_gen_lib.Override_types.Ignore -> bprintf buf2 "    (ignore)\n"
+      | Some (Gir_gen_lib.Override_types.Set_version v) ->
+          bprintf buf2 "    (version \"%s\")\n" v
+      | None -> ());
+      List.iter ~f:(fun c -> bprintf buf2 "%s\n" (render_component ~kind:"constructor" c))
+        o.constructors;
+      List.iter ~f:(fun c -> bprintf buf2 "%s\n" (render_component ~kind:"method" c))
+        o.methods;
+      List.iter ~f:(fun c -> bprintf buf2 "%s\n" (render_component ~kind:"property" c))
+        o.properties;
+      List.iter ~f:(fun c -> bprintf buf2 "%s\n" (render_component ~kind:"signal" c))
+        o.signals;
+      bprintf buf2 "  )";
+      bprintf buf "%s\n" (Buffer.contents buf2))
+    existing.classes;
 
-  (* Bitfields with flag Since annotations *)
-  List.iter
-    ~f:(fun (bf : gir_bitfield) ->
-      let flag_versions =
-        member_versions_from_docs bf.flags
-          (fun f -> f.flag_name)
-          (fun f -> f.flag_doc)
-      in
-      if flag_versions <> [] then begin
-        Buffer.add_string buf (sprintf "\n  (bitfield %s\n" bf.bitfield_name);
-        List.iter
-          ~f:(fun (name, version) ->
-            Buffer.add_string buf
-              (render_version_component name version ^ "\n"))
-          flag_versions;
-        Buffer.add_string buf "  )\n"
-      end)
-    bitfields;
+  (* Merge enum version data with existing enum ignores *)
+  let enum_versions =
+    List.filter_map
+      ~f:(fun (enm : gir_enum) ->
+        let vs = member_versions_from_docs enm.members
+          (fun m -> m.member_name) (fun m -> m.member_doc) in
+        if vs <> [] then Some (enm.enum_name, vs) else None)
+      enums
+  in
+  Buffer.add_string buf
+    (merge_version_entities ~entity_kind:"enumeration" ~component_kind:"member"
+       ~existing:existing.enums ~gir_versions:enum_versions
+       ~get_name:(fun (o : Gir_gen_lib.Override_types.enum_override) -> o.enum_name)
+       ~get_entity_action:(fun o -> o.enum_action)
+       ~get_components:(fun o -> o.members));
 
-  (* Records with field Since annotations *)
-  List.iter
-    ~f:(fun (rec_ : gir_record) ->
-      let field_versions =
-        member_versions_from_docs rec_.fields
-          (fun f -> f.field_name)
-          (fun f -> f.field_doc)
-      in
-      if field_versions <> [] then begin
-        Buffer.add_string buf (sprintf "\n  (record %s\n" rec_.record_name);
-        List.iter
-          ~f:(fun (name, version) ->
-            Buffer.add_string buf
-              (render_version_component name version ^ "\n"))
-          field_versions;
-        Buffer.add_string buf "  )\n"
-      end)
-    records;
+  (* Merge bitfield version data with existing bitfield ignores *)
+  let bitfield_versions =
+    List.filter_map
+      ~f:(fun (bf : gir_bitfield) ->
+        let vs = member_versions_from_docs bf.flags
+          (fun f -> f.flag_name) (fun f -> f.flag_doc) in
+        if vs <> [] then Some (bf.bitfield_name, vs) else None)
+      bitfields
+  in
+  Buffer.add_string buf
+    (merge_version_entities ~entity_kind:"bitfield" ~component_kind:"member"
+       ~existing:existing.bitfields ~gir_versions:bitfield_versions
+       ~get_name:(fun (o : Gir_gen_lib.Override_types.bitfield_override) -> o.bitfield_name)
+       ~get_entity_action:(fun o -> o.bitfield_action)
+       ~get_components:(fun o -> o.flags));
+
+  (* Merge record field version data with existing record ignores *)
+  let record_versions =
+    List.filter_map
+      ~f:(fun (rec_ : gir_record) ->
+        let vs = member_versions_from_docs rec_.fields
+          (fun f -> f.field_name) (fun f -> f.field_doc) in
+        if vs <> [] then Some (rec_.record_name, vs) else None)
+      records
+  in
+  Buffer.add_string buf
+    (merge_version_entities ~entity_kind:"record" ~component_kind:"field"
+       ~existing:existing.records ~gir_versions:record_versions
+       ~get_name:(fun (o : Gir_gen_lib.Override_types.record_override) -> o.record_name)
+       ~get_entity_action:(fun o -> o.record_action)
+       ~get_components:(fun o ->
+         (* Only carry forward ignore-action field components; version ones are replaced *)
+         List.filter
+           ~f:(fun (c : Gir_gen_lib.Override_types.component_override) ->
+             match c.action with
+             | Gir_gen_lib.Override_types.Ignore -> true
+             | Gir_gen_lib.Override_types.Set_version _ -> false)
+           o.fields));
 
   Buffer.add_string buf ")\n";
 

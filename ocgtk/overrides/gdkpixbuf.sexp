@@ -8,10 +8,10 @@
   (record PixbufModulePattern (ignore))
 
   (enumeration InterpType
-    (hyper (version "2.38"))
+    (member hyper (version "2.38"))
   )
 
   (bitfield PixbufFormatFlags
-    (threadsafe (version "2.28"))
+    (member threadsafe (version "2.28"))
   )
 )
