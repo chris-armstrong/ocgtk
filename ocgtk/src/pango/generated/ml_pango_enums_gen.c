@@ -62,21 +62,63 @@ value Val_PangoAttrType(PangoAttrType val) {
     case PANGO_ATTR_ABSOLUTE_SIZE: return caml_hash_variant("ABSOLUTE_SIZE"); /* `ABSOLUTE_SIZE */
     case PANGO_ATTR_GRAVITY: return caml_hash_variant("GRAVITY"); /* `GRAVITY */
     case PANGO_ATTR_GRAVITY_HINT: return caml_hash_variant("GRAVITY_HINT"); /* `GRAVITY_HINT */
+#if PANGO_VERSION_CHECK(1,38,0)
     case PANGO_ATTR_FONT_FEATURES: return caml_hash_variant("FONT_FEATURES"); /* `FONT_FEATURES */
+
+#endif
+#if PANGO_VERSION_CHECK(1,38,0)
     case PANGO_ATTR_FOREGROUND_ALPHA: return caml_hash_variant("FOREGROUND_ALPHA"); /* `FOREGROUND_ALPHA */
+
+#endif
+#if PANGO_VERSION_CHECK(1,38,0)
     case PANGO_ATTR_BACKGROUND_ALPHA: return caml_hash_variant("BACKGROUND_ALPHA"); /* `BACKGROUND_ALPHA */
+
+#endif
+#if PANGO_VERSION_CHECK(1,44,0)
     case PANGO_ATTR_ALLOW_BREAKS: return caml_hash_variant("ALLOW_BREAKS"); /* `ALLOW_BREAKS */
+
+#endif
+#if PANGO_VERSION_CHECK(1,44,0)
     case PANGO_ATTR_SHOW: return caml_hash_variant("SHOW"); /* `SHOW */
+
+#endif
+#if PANGO_VERSION_CHECK(1,44,0)
     case PANGO_ATTR_INSERT_HYPHENS: return caml_hash_variant("INSERT_HYPHENS"); /* `INSERT_HYPHENS */
+
+#endif
+#if PANGO_VERSION_CHECK(1,46,0)
     case PANGO_ATTR_OVERLINE: return caml_hash_variant("OVERLINE"); /* `OVERLINE */
+
+#endif
+#if PANGO_VERSION_CHECK(1,46,0)
     case PANGO_ATTR_OVERLINE_COLOR: return caml_hash_variant("OVERLINE_COLOR"); /* `OVERLINE_COLOR */
+
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
     case PANGO_ATTR_LINE_HEIGHT: return caml_hash_variant("LINE_HEIGHT"); /* `LINE_HEIGHT */
+
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
     case PANGO_ATTR_ABSOLUTE_LINE_HEIGHT: return caml_hash_variant("ABSOLUTE_LINE_HEIGHT"); /* `ABSOLUTE_LINE_HEIGHT */
+
+#endif
     case PANGO_ATTR_TEXT_TRANSFORM: return caml_hash_variant("TEXT_TRANSFORM"); /* `TEXT_TRANSFORM */
+#if PANGO_VERSION_CHECK(1,50,0)
     case PANGO_ATTR_WORD: return caml_hash_variant("WORD"); /* `WORD */
+
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
     case PANGO_ATTR_SENTENCE: return caml_hash_variant("SENTENCE"); /* `SENTENCE */
+
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
     case PANGO_ATTR_BASELINE_SHIFT: return caml_hash_variant("BASELINE_SHIFT"); /* `BASELINE_SHIFT */
+
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
     case PANGO_ATTR_FONT_SCALE: return caml_hash_variant("FONT_SCALE"); /* `FONT_SCALE */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown PangoAttrType value: %d", (int)val);
@@ -111,21 +153,91 @@ PangoAttrType PangoAttrType_val(value val) {
   else if (val == caml_hash_variant("ABSOLUTE_SIZE")) return PANGO_ATTR_ABSOLUTE_SIZE; /* `ABSOLUTE_SIZE */
   else if (val == caml_hash_variant("GRAVITY")) return PANGO_ATTR_GRAVITY; /* `GRAVITY */
   else if (val == caml_hash_variant("GRAVITY_HINT")) return PANGO_ATTR_GRAVITY_HINT; /* `GRAVITY_HINT */
+#if PANGO_VERSION_CHECK(1,38,0)
   else if (val == caml_hash_variant("FONT_FEATURES")) return PANGO_ATTR_FONT_FEATURES; /* `FONT_FEATURES */
+
+#else
+  else if (val == caml_hash_variant("FONT_FEATURES")) caml_failwith("PangoAttrType.FONT_FEATURES requires 1.38");
+#endif
+#if PANGO_VERSION_CHECK(1,38,0)
   else if (val == caml_hash_variant("FOREGROUND_ALPHA")) return PANGO_ATTR_FOREGROUND_ALPHA; /* `FOREGROUND_ALPHA */
+
+#else
+  else if (val == caml_hash_variant("FOREGROUND_ALPHA")) caml_failwith("PangoAttrType.FOREGROUND_ALPHA requires 1.38");
+#endif
+#if PANGO_VERSION_CHECK(1,38,0)
   else if (val == caml_hash_variant("BACKGROUND_ALPHA")) return PANGO_ATTR_BACKGROUND_ALPHA; /* `BACKGROUND_ALPHA */
+
+#else
+  else if (val == caml_hash_variant("BACKGROUND_ALPHA")) caml_failwith("PangoAttrType.BACKGROUND_ALPHA requires 1.38");
+#endif
+#if PANGO_VERSION_CHECK(1,44,0)
   else if (val == caml_hash_variant("ALLOW_BREAKS")) return PANGO_ATTR_ALLOW_BREAKS; /* `ALLOW_BREAKS */
+
+#else
+  else if (val == caml_hash_variant("ALLOW_BREAKS")) caml_failwith("PangoAttrType.ALLOW_BREAKS requires 1.44");
+#endif
+#if PANGO_VERSION_CHECK(1,44,0)
   else if (val == caml_hash_variant("SHOW")) return PANGO_ATTR_SHOW; /* `SHOW */
+
+#else
+  else if (val == caml_hash_variant("SHOW")) caml_failwith("PangoAttrType.SHOW requires 1.44");
+#endif
+#if PANGO_VERSION_CHECK(1,44,0)
   else if (val == caml_hash_variant("INSERT_HYPHENS")) return PANGO_ATTR_INSERT_HYPHENS; /* `INSERT_HYPHENS */
+
+#else
+  else if (val == caml_hash_variant("INSERT_HYPHENS")) caml_failwith("PangoAttrType.INSERT_HYPHENS requires 1.44");
+#endif
+#if PANGO_VERSION_CHECK(1,46,0)
   else if (val == caml_hash_variant("OVERLINE")) return PANGO_ATTR_OVERLINE; /* `OVERLINE */
+
+#else
+  else if (val == caml_hash_variant("OVERLINE")) caml_failwith("PangoAttrType.OVERLINE requires 1.46");
+#endif
+#if PANGO_VERSION_CHECK(1,46,0)
   else if (val == caml_hash_variant("OVERLINE_COLOR")) return PANGO_ATTR_OVERLINE_COLOR; /* `OVERLINE_COLOR */
+
+#else
+  else if (val == caml_hash_variant("OVERLINE_COLOR")) caml_failwith("PangoAttrType.OVERLINE_COLOR requires 1.46");
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
   else if (val == caml_hash_variant("LINE_HEIGHT")) return PANGO_ATTR_LINE_HEIGHT; /* `LINE_HEIGHT */
+
+#else
+  else if (val == caml_hash_variant("LINE_HEIGHT")) caml_failwith("PangoAttrType.LINE_HEIGHT requires 1.50");
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
   else if (val == caml_hash_variant("ABSOLUTE_LINE_HEIGHT")) return PANGO_ATTR_ABSOLUTE_LINE_HEIGHT; /* `ABSOLUTE_LINE_HEIGHT */
+
+#else
+  else if (val == caml_hash_variant("ABSOLUTE_LINE_HEIGHT")) caml_failwith("PangoAttrType.ABSOLUTE_LINE_HEIGHT requires 1.50");
+#endif
   else if (val == caml_hash_variant("TEXT_TRANSFORM")) return PANGO_ATTR_TEXT_TRANSFORM; /* `TEXT_TRANSFORM */
+#if PANGO_VERSION_CHECK(1,50,0)
   else if (val == caml_hash_variant("WORD")) return PANGO_ATTR_WORD; /* `WORD */
+
+#else
+  else if (val == caml_hash_variant("WORD")) caml_failwith("PangoAttrType.WORD requires 1.50");
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
   else if (val == caml_hash_variant("SENTENCE")) return PANGO_ATTR_SENTENCE; /* `SENTENCE */
+
+#else
+  else if (val == caml_hash_variant("SENTENCE")) caml_failwith("PangoAttrType.SENTENCE requires 1.50");
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
   else if (val == caml_hash_variant("BASELINE_SHIFT")) return PANGO_ATTR_BASELINE_SHIFT; /* `BASELINE_SHIFT */
+
+#else
+  else if (val == caml_hash_variant("BASELINE_SHIFT")) caml_failwith("PangoAttrType.BASELINE_SHIFT requires 1.50");
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
   else if (val == caml_hash_variant("FONT_SCALE")) return PANGO_ATTR_FONT_SCALE; /* `FONT_SCALE */
+
+#else
+  else if (val == caml_hash_variant("FONT_SCALE")) caml_failwith("PangoAttrType.FONT_SCALE requires 1.50");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown PangoAttrType tag: %ld", val);
@@ -188,10 +300,22 @@ value Val_PangoBidiType(PangoBidiType val) {
     case PANGO_BIDI_TYPE_S: return caml_hash_variant("S"); /* `S */
     case PANGO_BIDI_TYPE_WS: return caml_hash_variant("WS"); /* `WS */
     case PANGO_BIDI_TYPE_ON: return caml_hash_variant("ON"); /* `ON */
+#if PANGO_VERSION_CHECK(1,48,6)
     case PANGO_BIDI_TYPE_LRI: return caml_hash_variant("LRI"); /* `LRI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,48,6)
     case PANGO_BIDI_TYPE_RLI: return caml_hash_variant("RLI"); /* `RLI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,48,6)
     case PANGO_BIDI_TYPE_FSI: return caml_hash_variant("FSI"); /* `FSI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,48,6)
     case PANGO_BIDI_TYPE_PDI: return caml_hash_variant("PDI"); /* `PDI */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown PangoBidiType value: %d", (int)val);
@@ -222,10 +346,30 @@ PangoBidiType PangoBidiType_val(value val) {
   else if (val == caml_hash_variant("S")) return PANGO_BIDI_TYPE_S; /* `S */
   else if (val == caml_hash_variant("WS")) return PANGO_BIDI_TYPE_WS; /* `WS */
   else if (val == caml_hash_variant("ON")) return PANGO_BIDI_TYPE_ON; /* `ON */
+#if PANGO_VERSION_CHECK(1,48,6)
   else if (val == caml_hash_variant("LRI")) return PANGO_BIDI_TYPE_LRI; /* `LRI */
+
+#else
+  else if (val == caml_hash_variant("LRI")) caml_failwith("PangoBidiType.LRI requires 1.48.6");
+#endif
+#if PANGO_VERSION_CHECK(1,48,6)
   else if (val == caml_hash_variant("RLI")) return PANGO_BIDI_TYPE_RLI; /* `RLI */
+
+#else
+  else if (val == caml_hash_variant("RLI")) caml_failwith("PangoBidiType.RLI requires 1.48.6");
+#endif
+#if PANGO_VERSION_CHECK(1,48,6)
   else if (val == caml_hash_variant("FSI")) return PANGO_BIDI_TYPE_FSI; /* `FSI */
+
+#else
+  else if (val == caml_hash_variant("FSI")) caml_failwith("PangoBidiType.FSI requires 1.48.6");
+#endif
+#if PANGO_VERSION_CHECK(1,48,6)
   else if (val == caml_hash_variant("PDI")) return PANGO_BIDI_TYPE_PDI; /* `PDI */
+
+#else
+  else if (val == caml_hash_variant("PDI")) caml_failwith("PangoBidiType.PDI requires 1.48.6");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown PangoBidiType tag: %ld", val);
@@ -584,69 +728,258 @@ value Val_PangoScript(PangoScript val) {
     case PANGO_SCRIPT_LINEAR_B: return caml_hash_variant("LINEAR_B"); /* `LINEAR_B */
     case PANGO_SCRIPT_TAI_LE: return caml_hash_variant("TAI_LE"); /* `TAI_LE */
     case PANGO_SCRIPT_UGARITIC: return caml_hash_variant("UGARITIC"); /* `UGARITIC */
+#if PANGO_VERSION_CHECK(1,10,0)
     case PANGO_SCRIPT_NEW_TAI_LUE: return caml_hash_variant("NEW_TAI_LUE"); /* `NEW_TAI_LUE */
+
+#endif
+#if PANGO_VERSION_CHECK(1,10,0)
     case PANGO_SCRIPT_BUGINESE: return caml_hash_variant("BUGINESE"); /* `BUGINESE */
+
+#endif
+#if PANGO_VERSION_CHECK(1,10,0)
     case PANGO_SCRIPT_GLAGOLITIC: return caml_hash_variant("GLAGOLITIC"); /* `GLAGOLITIC */
+
+#endif
+#if PANGO_VERSION_CHECK(1,10,0)
     case PANGO_SCRIPT_TIFINAGH: return caml_hash_variant("TIFINAGH"); /* `TIFINAGH */
+
+#endif
+#if PANGO_VERSION_CHECK(1,10,0)
     case PANGO_SCRIPT_SYLOTI_NAGRI: return caml_hash_variant("SYLOTI_NAGRI"); /* `SYLOTI_NAGRI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,10,0)
     case PANGO_SCRIPT_OLD_PERSIAN: return caml_hash_variant("OLD_PERSIAN"); /* `OLD_PERSIAN */
+
+#endif
+#if PANGO_VERSION_CHECK(1,10,0)
     case PANGO_SCRIPT_KHAROSHTHI: return caml_hash_variant("KHAROSHTHI"); /* `KHAROSHTHI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,14,0)
     case PANGO_SCRIPT_UNKNOWN: return caml_hash_variant("UNKNOWN"); /* `UNKNOWN */
+
+#endif
+#if PANGO_VERSION_CHECK(1,14,0)
     case PANGO_SCRIPT_BALINESE: return caml_hash_variant("BALINESE"); /* `BALINESE */
+
+#endif
+#if PANGO_VERSION_CHECK(1,14,0)
     case PANGO_SCRIPT_CUNEIFORM: return caml_hash_variant("CUNEIFORM"); /* `CUNEIFORM */
+
+#endif
+#if PANGO_VERSION_CHECK(1,14,0)
     case PANGO_SCRIPT_PHOENICIAN: return caml_hash_variant("PHOENICIAN"); /* `PHOENICIAN */
+
+#endif
+#if PANGO_VERSION_CHECK(1,14,0)
     case PANGO_SCRIPT_PHAGS_PA: return caml_hash_variant("PHAGS_PA"); /* `PHAGS_PA */
+
+#endif
+#if PANGO_VERSION_CHECK(1,14,0)
     case PANGO_SCRIPT_NKO: return caml_hash_variant("NKO"); /* `NKO */
+
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
     case PANGO_SCRIPT_KAYAH_LI: return caml_hash_variant("KAYAH_LI"); /* `KAYAH_LI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
     case PANGO_SCRIPT_LEPCHA: return caml_hash_variant("LEPCHA"); /* `LEPCHA */
+
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
     case PANGO_SCRIPT_REJANG: return caml_hash_variant("REJANG"); /* `REJANG */
+
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
     case PANGO_SCRIPT_SUNDANESE: return caml_hash_variant("SUNDANESE"); /* `SUNDANESE */
+
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
     case PANGO_SCRIPT_SAURASHTRA: return caml_hash_variant("SAURASHTRA"); /* `SAURASHTRA */
+
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
     case PANGO_SCRIPT_CHAM: return caml_hash_variant("CHAM"); /* `CHAM */
+
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
     case PANGO_SCRIPT_OL_CHIKI: return caml_hash_variant("OL_CHIKI"); /* `OL_CHIKI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
     case PANGO_SCRIPT_VAI: return caml_hash_variant("VAI"); /* `VAI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
     case PANGO_SCRIPT_CARIAN: return caml_hash_variant("CARIAN"); /* `CARIAN */
+
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
     case PANGO_SCRIPT_LYCIAN: return caml_hash_variant("LYCIAN"); /* `LYCIAN */
+
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
     case PANGO_SCRIPT_LYDIAN: return caml_hash_variant("LYDIAN"); /* `LYDIAN */
+
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
     case PANGO_SCRIPT_BATAK: return caml_hash_variant("BATAK"); /* `BATAK */
+
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
     case PANGO_SCRIPT_BRAHMI: return caml_hash_variant("BRAHMI"); /* `BRAHMI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
     case PANGO_SCRIPT_MANDAIC: return caml_hash_variant("MANDAIC"); /* `MANDAIC */
+
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
     case PANGO_SCRIPT_CHAKMA: return caml_hash_variant("CHAKMA"); /* `CHAKMA */
+
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
     case PANGO_SCRIPT_MEROITIC_CURSIVE: return caml_hash_variant("MEROITIC_CURSIVE"); /* `MEROITIC_CURSIVE */
+
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
     case PANGO_SCRIPT_MEROITIC_HIEROGLYPHS: return caml_hash_variant("MEROITIC_HIEROGLYPHS"); /* `MEROITIC_HIEROGLYPHS */
+
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
     case PANGO_SCRIPT_MIAO: return caml_hash_variant("MIAO"); /* `MIAO */
+
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
     case PANGO_SCRIPT_SHARADA: return caml_hash_variant("SHARADA"); /* `SHARADA */
+
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
     case PANGO_SCRIPT_SORA_SOMPENG: return caml_hash_variant("SORA_SOMPENG"); /* `SORA_SOMPENG */
+
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
     case PANGO_SCRIPT_TAKRI: return caml_hash_variant("TAKRI"); /* `TAKRI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_BASSA_VAH: return caml_hash_variant("BASSA_VAH"); /* `BASSA_VAH */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_CAUCASIAN_ALBANIAN: return caml_hash_variant("CAUCASIAN_ALBANIAN"); /* `CAUCASIAN_ALBANIAN */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_DUPLOYAN: return caml_hash_variant("DUPLOYAN"); /* `DUPLOYAN */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_ELBASAN: return caml_hash_variant("ELBASAN"); /* `ELBASAN */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_GRANTHA: return caml_hash_variant("GRANTHA"); /* `GRANTHA */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_KHOJKI: return caml_hash_variant("KHOJKI"); /* `KHOJKI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_KHUDAWADI: return caml_hash_variant("KHUDAWADI"); /* `KHUDAWADI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_LINEAR_A: return caml_hash_variant("LINEAR_A"); /* `LINEAR_A */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_MAHAJANI: return caml_hash_variant("MAHAJANI"); /* `MAHAJANI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_MANICHAEAN: return caml_hash_variant("MANICHAEAN"); /* `MANICHAEAN */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_MENDE_KIKAKUI: return caml_hash_variant("MENDE_KIKAKUI"); /* `MENDE_KIKAKUI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_MODI: return caml_hash_variant("MODI"); /* `MODI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_MRO: return caml_hash_variant("MRO"); /* `MRO */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_NABATAEAN: return caml_hash_variant("NABATAEAN"); /* `NABATAEAN */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_OLD_NORTH_ARABIAN: return caml_hash_variant("OLD_NORTH_ARABIAN"); /* `OLD_NORTH_ARABIAN */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_OLD_PERMIC: return caml_hash_variant("OLD_PERMIC"); /* `OLD_PERMIC */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_PAHAWH_HMONG: return caml_hash_variant("PAHAWH_HMONG"); /* `PAHAWH_HMONG */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_PALMYRENE: return caml_hash_variant("PALMYRENE"); /* `PALMYRENE */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_PAU_CIN_HAU: return caml_hash_variant("PAU_CIN_HAU"); /* `PAU_CIN_HAU */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_PSALTER_PAHLAVI: return caml_hash_variant("PSALTER_PAHLAVI"); /* `PSALTER_PAHLAVI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_SIDDHAM: return caml_hash_variant("SIDDHAM"); /* `SIDDHAM */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_TIRHUTA: return caml_hash_variant("TIRHUTA"); /* `TIRHUTA */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_WARANG_CITI: return caml_hash_variant("WARANG_CITI"); /* `WARANG_CITI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_AHOM: return caml_hash_variant("AHOM"); /* `AHOM */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_ANATOLIAN_HIEROGLYPHS: return caml_hash_variant("ANATOLIAN_HIEROGLYPHS"); /* `ANATOLIAN_HIEROGLYPHS */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_HATRAN: return caml_hash_variant("HATRAN"); /* `HATRAN */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_MULTANI: return caml_hash_variant("MULTANI"); /* `MULTANI */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_OLD_HUNGARIAN: return caml_hash_variant("OLD_HUNGARIAN"); /* `OLD_HUNGARIAN */
+
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
     case PANGO_SCRIPT_SIGNWRITING: return caml_hash_variant("SIGNWRITING"); /* `SIGNWRITING */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown PangoScript value: %d", (int)val);
@@ -713,69 +1046,384 @@ PangoScript PangoScript_val(value val) {
   else if (val == caml_hash_variant("LINEAR_B")) return PANGO_SCRIPT_LINEAR_B; /* `LINEAR_B */
   else if (val == caml_hash_variant("TAI_LE")) return PANGO_SCRIPT_TAI_LE; /* `TAI_LE */
   else if (val == caml_hash_variant("UGARITIC")) return PANGO_SCRIPT_UGARITIC; /* `UGARITIC */
+#if PANGO_VERSION_CHECK(1,10,0)
   else if (val == caml_hash_variant("NEW_TAI_LUE")) return PANGO_SCRIPT_NEW_TAI_LUE; /* `NEW_TAI_LUE */
+
+#else
+  else if (val == caml_hash_variant("NEW_TAI_LUE")) caml_failwith("PangoScript.NEW_TAI_LUE requires 1.10");
+#endif
+#if PANGO_VERSION_CHECK(1,10,0)
   else if (val == caml_hash_variant("BUGINESE")) return PANGO_SCRIPT_BUGINESE; /* `BUGINESE */
+
+#else
+  else if (val == caml_hash_variant("BUGINESE")) caml_failwith("PangoScript.BUGINESE requires 1.10");
+#endif
+#if PANGO_VERSION_CHECK(1,10,0)
   else if (val == caml_hash_variant("GLAGOLITIC")) return PANGO_SCRIPT_GLAGOLITIC; /* `GLAGOLITIC */
+
+#else
+  else if (val == caml_hash_variant("GLAGOLITIC")) caml_failwith("PangoScript.GLAGOLITIC requires 1.10");
+#endif
+#if PANGO_VERSION_CHECK(1,10,0)
   else if (val == caml_hash_variant("TIFINAGH")) return PANGO_SCRIPT_TIFINAGH; /* `TIFINAGH */
+
+#else
+  else if (val == caml_hash_variant("TIFINAGH")) caml_failwith("PangoScript.TIFINAGH requires 1.10");
+#endif
+#if PANGO_VERSION_CHECK(1,10,0)
   else if (val == caml_hash_variant("SYLOTI_NAGRI")) return PANGO_SCRIPT_SYLOTI_NAGRI; /* `SYLOTI_NAGRI */
+
+#else
+  else if (val == caml_hash_variant("SYLOTI_NAGRI")) caml_failwith("PangoScript.SYLOTI_NAGRI requires 1.10");
+#endif
+#if PANGO_VERSION_CHECK(1,10,0)
   else if (val == caml_hash_variant("OLD_PERSIAN")) return PANGO_SCRIPT_OLD_PERSIAN; /* `OLD_PERSIAN */
+
+#else
+  else if (val == caml_hash_variant("OLD_PERSIAN")) caml_failwith("PangoScript.OLD_PERSIAN requires 1.10");
+#endif
+#if PANGO_VERSION_CHECK(1,10,0)
   else if (val == caml_hash_variant("KHAROSHTHI")) return PANGO_SCRIPT_KHAROSHTHI; /* `KHAROSHTHI */
+
+#else
+  else if (val == caml_hash_variant("KHAROSHTHI")) caml_failwith("PangoScript.KHAROSHTHI requires 1.10");
+#endif
+#if PANGO_VERSION_CHECK(1,14,0)
   else if (val == caml_hash_variant("UNKNOWN")) return PANGO_SCRIPT_UNKNOWN; /* `UNKNOWN */
+
+#else
+  else if (val == caml_hash_variant("UNKNOWN")) caml_failwith("PangoScript.UNKNOWN requires 1.14");
+#endif
+#if PANGO_VERSION_CHECK(1,14,0)
   else if (val == caml_hash_variant("BALINESE")) return PANGO_SCRIPT_BALINESE; /* `BALINESE */
+
+#else
+  else if (val == caml_hash_variant("BALINESE")) caml_failwith("PangoScript.BALINESE requires 1.14");
+#endif
+#if PANGO_VERSION_CHECK(1,14,0)
   else if (val == caml_hash_variant("CUNEIFORM")) return PANGO_SCRIPT_CUNEIFORM; /* `CUNEIFORM */
+
+#else
+  else if (val == caml_hash_variant("CUNEIFORM")) caml_failwith("PangoScript.CUNEIFORM requires 1.14");
+#endif
+#if PANGO_VERSION_CHECK(1,14,0)
   else if (val == caml_hash_variant("PHOENICIAN")) return PANGO_SCRIPT_PHOENICIAN; /* `PHOENICIAN */
+
+#else
+  else if (val == caml_hash_variant("PHOENICIAN")) caml_failwith("PangoScript.PHOENICIAN requires 1.14");
+#endif
+#if PANGO_VERSION_CHECK(1,14,0)
   else if (val == caml_hash_variant("PHAGS_PA")) return PANGO_SCRIPT_PHAGS_PA; /* `PHAGS_PA */
+
+#else
+  else if (val == caml_hash_variant("PHAGS_PA")) caml_failwith("PangoScript.PHAGS_PA requires 1.14");
+#endif
+#if PANGO_VERSION_CHECK(1,14,0)
   else if (val == caml_hash_variant("NKO")) return PANGO_SCRIPT_NKO; /* `NKO */
+
+#else
+  else if (val == caml_hash_variant("NKO")) caml_failwith("PangoScript.NKO requires 1.14");
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
   else if (val == caml_hash_variant("KAYAH_LI")) return PANGO_SCRIPT_KAYAH_LI; /* `KAYAH_LI */
+
+#else
+  else if (val == caml_hash_variant("KAYAH_LI")) caml_failwith("PangoScript.KAYAH_LI requires 1.20.1");
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
   else if (val == caml_hash_variant("LEPCHA")) return PANGO_SCRIPT_LEPCHA; /* `LEPCHA */
+
+#else
+  else if (val == caml_hash_variant("LEPCHA")) caml_failwith("PangoScript.LEPCHA requires 1.20.1");
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
   else if (val == caml_hash_variant("REJANG")) return PANGO_SCRIPT_REJANG; /* `REJANG */
+
+#else
+  else if (val == caml_hash_variant("REJANG")) caml_failwith("PangoScript.REJANG requires 1.20.1");
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
   else if (val == caml_hash_variant("SUNDANESE")) return PANGO_SCRIPT_SUNDANESE; /* `SUNDANESE */
+
+#else
+  else if (val == caml_hash_variant("SUNDANESE")) caml_failwith("PangoScript.SUNDANESE requires 1.20.1");
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
   else if (val == caml_hash_variant("SAURASHTRA")) return PANGO_SCRIPT_SAURASHTRA; /* `SAURASHTRA */
+
+#else
+  else if (val == caml_hash_variant("SAURASHTRA")) caml_failwith("PangoScript.SAURASHTRA requires 1.20.1");
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
   else if (val == caml_hash_variant("CHAM")) return PANGO_SCRIPT_CHAM; /* `CHAM */
+
+#else
+  else if (val == caml_hash_variant("CHAM")) caml_failwith("PangoScript.CHAM requires 1.20.1");
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
   else if (val == caml_hash_variant("OL_CHIKI")) return PANGO_SCRIPT_OL_CHIKI; /* `OL_CHIKI */
+
+#else
+  else if (val == caml_hash_variant("OL_CHIKI")) caml_failwith("PangoScript.OL_CHIKI requires 1.20.1");
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
   else if (val == caml_hash_variant("VAI")) return PANGO_SCRIPT_VAI; /* `VAI */
+
+#else
+  else if (val == caml_hash_variant("VAI")) caml_failwith("PangoScript.VAI requires 1.20.1");
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
   else if (val == caml_hash_variant("CARIAN")) return PANGO_SCRIPT_CARIAN; /* `CARIAN */
+
+#else
+  else if (val == caml_hash_variant("CARIAN")) caml_failwith("PangoScript.CARIAN requires 1.20.1");
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
   else if (val == caml_hash_variant("LYCIAN")) return PANGO_SCRIPT_LYCIAN; /* `LYCIAN */
+
+#else
+  else if (val == caml_hash_variant("LYCIAN")) caml_failwith("PangoScript.LYCIAN requires 1.20.1");
+#endif
+#if PANGO_VERSION_CHECK(1,20,1)
   else if (val == caml_hash_variant("LYDIAN")) return PANGO_SCRIPT_LYDIAN; /* `LYDIAN */
+
+#else
+  else if (val == caml_hash_variant("LYDIAN")) caml_failwith("PangoScript.LYDIAN requires 1.20.1");
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
   else if (val == caml_hash_variant("BATAK")) return PANGO_SCRIPT_BATAK; /* `BATAK */
+
+#else
+  else if (val == caml_hash_variant("BATAK")) caml_failwith("PangoScript.BATAK requires 1.32");
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
   else if (val == caml_hash_variant("BRAHMI")) return PANGO_SCRIPT_BRAHMI; /* `BRAHMI */
+
+#else
+  else if (val == caml_hash_variant("BRAHMI")) caml_failwith("PangoScript.BRAHMI requires 1.32");
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
   else if (val == caml_hash_variant("MANDAIC")) return PANGO_SCRIPT_MANDAIC; /* `MANDAIC */
+
+#else
+  else if (val == caml_hash_variant("MANDAIC")) caml_failwith("PangoScript.MANDAIC requires 1.32");
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
   else if (val == caml_hash_variant("CHAKMA")) return PANGO_SCRIPT_CHAKMA; /* `CHAKMA */
+
+#else
+  else if (val == caml_hash_variant("CHAKMA")) caml_failwith("PangoScript.CHAKMA requires 1.32");
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
   else if (val == caml_hash_variant("MEROITIC_CURSIVE")) return PANGO_SCRIPT_MEROITIC_CURSIVE; /* `MEROITIC_CURSIVE */
+
+#else
+  else if (val == caml_hash_variant("MEROITIC_CURSIVE")) caml_failwith("PangoScript.MEROITIC_CURSIVE requires 1.32");
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
   else if (val == caml_hash_variant("MEROITIC_HIEROGLYPHS")) return PANGO_SCRIPT_MEROITIC_HIEROGLYPHS; /* `MEROITIC_HIEROGLYPHS */
+
+#else
+  else if (val == caml_hash_variant("MEROITIC_HIEROGLYPHS")) caml_failwith("PangoScript.MEROITIC_HIEROGLYPHS requires 1.32");
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
   else if (val == caml_hash_variant("MIAO")) return PANGO_SCRIPT_MIAO; /* `MIAO */
+
+#else
+  else if (val == caml_hash_variant("MIAO")) caml_failwith("PangoScript.MIAO requires 1.32");
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
   else if (val == caml_hash_variant("SHARADA")) return PANGO_SCRIPT_SHARADA; /* `SHARADA */
+
+#else
+  else if (val == caml_hash_variant("SHARADA")) caml_failwith("PangoScript.SHARADA requires 1.32");
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
   else if (val == caml_hash_variant("SORA_SOMPENG")) return PANGO_SCRIPT_SORA_SOMPENG; /* `SORA_SOMPENG */
+
+#else
+  else if (val == caml_hash_variant("SORA_SOMPENG")) caml_failwith("PangoScript.SORA_SOMPENG requires 1.32");
+#endif
+#if PANGO_VERSION_CHECK(1,32,0)
   else if (val == caml_hash_variant("TAKRI")) return PANGO_SCRIPT_TAKRI; /* `TAKRI */
+
+#else
+  else if (val == caml_hash_variant("TAKRI")) caml_failwith("PangoScript.TAKRI requires 1.32");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("BASSA_VAH")) return PANGO_SCRIPT_BASSA_VAH; /* `BASSA_VAH */
+
+#else
+  else if (val == caml_hash_variant("BASSA_VAH")) caml_failwith("PangoScript.BASSA_VAH requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("CAUCASIAN_ALBANIAN")) return PANGO_SCRIPT_CAUCASIAN_ALBANIAN; /* `CAUCASIAN_ALBANIAN */
+
+#else
+  else if (val == caml_hash_variant("CAUCASIAN_ALBANIAN")) caml_failwith("PangoScript.CAUCASIAN_ALBANIAN requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("DUPLOYAN")) return PANGO_SCRIPT_DUPLOYAN; /* `DUPLOYAN */
+
+#else
+  else if (val == caml_hash_variant("DUPLOYAN")) caml_failwith("PangoScript.DUPLOYAN requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("ELBASAN")) return PANGO_SCRIPT_ELBASAN; /* `ELBASAN */
+
+#else
+  else if (val == caml_hash_variant("ELBASAN")) caml_failwith("PangoScript.ELBASAN requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("GRANTHA")) return PANGO_SCRIPT_GRANTHA; /* `GRANTHA */
+
+#else
+  else if (val == caml_hash_variant("GRANTHA")) caml_failwith("PangoScript.GRANTHA requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("KHOJKI")) return PANGO_SCRIPT_KHOJKI; /* `KHOJKI */
+
+#else
+  else if (val == caml_hash_variant("KHOJKI")) caml_failwith("PangoScript.KHOJKI requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("KHUDAWADI")) return PANGO_SCRIPT_KHUDAWADI; /* `KHUDAWADI */
+
+#else
+  else if (val == caml_hash_variant("KHUDAWADI")) caml_failwith("PangoScript.KHUDAWADI requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("LINEAR_A")) return PANGO_SCRIPT_LINEAR_A; /* `LINEAR_A */
+
+#else
+  else if (val == caml_hash_variant("LINEAR_A")) caml_failwith("PangoScript.LINEAR_A requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("MAHAJANI")) return PANGO_SCRIPT_MAHAJANI; /* `MAHAJANI */
+
+#else
+  else if (val == caml_hash_variant("MAHAJANI")) caml_failwith("PangoScript.MAHAJANI requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("MANICHAEAN")) return PANGO_SCRIPT_MANICHAEAN; /* `MANICHAEAN */
+
+#else
+  else if (val == caml_hash_variant("MANICHAEAN")) caml_failwith("PangoScript.MANICHAEAN requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("MENDE_KIKAKUI")) return PANGO_SCRIPT_MENDE_KIKAKUI; /* `MENDE_KIKAKUI */
+
+#else
+  else if (val == caml_hash_variant("MENDE_KIKAKUI")) caml_failwith("PangoScript.MENDE_KIKAKUI requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("MODI")) return PANGO_SCRIPT_MODI; /* `MODI */
+
+#else
+  else if (val == caml_hash_variant("MODI")) caml_failwith("PangoScript.MODI requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("MRO")) return PANGO_SCRIPT_MRO; /* `MRO */
+
+#else
+  else if (val == caml_hash_variant("MRO")) caml_failwith("PangoScript.MRO requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("NABATAEAN")) return PANGO_SCRIPT_NABATAEAN; /* `NABATAEAN */
+
+#else
+  else if (val == caml_hash_variant("NABATAEAN")) caml_failwith("PangoScript.NABATAEAN requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("OLD_NORTH_ARABIAN")) return PANGO_SCRIPT_OLD_NORTH_ARABIAN; /* `OLD_NORTH_ARABIAN */
+
+#else
+  else if (val == caml_hash_variant("OLD_NORTH_ARABIAN")) caml_failwith("PangoScript.OLD_NORTH_ARABIAN requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("OLD_PERMIC")) return PANGO_SCRIPT_OLD_PERMIC; /* `OLD_PERMIC */
+
+#else
+  else if (val == caml_hash_variant("OLD_PERMIC")) caml_failwith("PangoScript.OLD_PERMIC requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("PAHAWH_HMONG")) return PANGO_SCRIPT_PAHAWH_HMONG; /* `PAHAWH_HMONG */
+
+#else
+  else if (val == caml_hash_variant("PAHAWH_HMONG")) caml_failwith("PangoScript.PAHAWH_HMONG requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("PALMYRENE")) return PANGO_SCRIPT_PALMYRENE; /* `PALMYRENE */
+
+#else
+  else if (val == caml_hash_variant("PALMYRENE")) caml_failwith("PangoScript.PALMYRENE requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("PAU_CIN_HAU")) return PANGO_SCRIPT_PAU_CIN_HAU; /* `PAU_CIN_HAU */
+
+#else
+  else if (val == caml_hash_variant("PAU_CIN_HAU")) caml_failwith("PangoScript.PAU_CIN_HAU requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("PSALTER_PAHLAVI")) return PANGO_SCRIPT_PSALTER_PAHLAVI; /* `PSALTER_PAHLAVI */
+
+#else
+  else if (val == caml_hash_variant("PSALTER_PAHLAVI")) caml_failwith("PangoScript.PSALTER_PAHLAVI requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("SIDDHAM")) return PANGO_SCRIPT_SIDDHAM; /* `SIDDHAM */
+
+#else
+  else if (val == caml_hash_variant("SIDDHAM")) caml_failwith("PangoScript.SIDDHAM requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("TIRHUTA")) return PANGO_SCRIPT_TIRHUTA; /* `TIRHUTA */
+
+#else
+  else if (val == caml_hash_variant("TIRHUTA")) caml_failwith("PangoScript.TIRHUTA requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("WARANG_CITI")) return PANGO_SCRIPT_WARANG_CITI; /* `WARANG_CITI */
+
+#else
+  else if (val == caml_hash_variant("WARANG_CITI")) caml_failwith("PangoScript.WARANG_CITI requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("AHOM")) return PANGO_SCRIPT_AHOM; /* `AHOM */
+
+#else
+  else if (val == caml_hash_variant("AHOM")) caml_failwith("PangoScript.AHOM requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("ANATOLIAN_HIEROGLYPHS")) return PANGO_SCRIPT_ANATOLIAN_HIEROGLYPHS; /* `ANATOLIAN_HIEROGLYPHS */
+
+#else
+  else if (val == caml_hash_variant("ANATOLIAN_HIEROGLYPHS")) caml_failwith("PangoScript.ANATOLIAN_HIEROGLYPHS requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("HATRAN")) return PANGO_SCRIPT_HATRAN; /* `HATRAN */
+
+#else
+  else if (val == caml_hash_variant("HATRAN")) caml_failwith("PangoScript.HATRAN requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("MULTANI")) return PANGO_SCRIPT_MULTANI; /* `MULTANI */
+
+#else
+  else if (val == caml_hash_variant("MULTANI")) caml_failwith("PangoScript.MULTANI requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("OLD_HUNGARIAN")) return PANGO_SCRIPT_OLD_HUNGARIAN; /* `OLD_HUNGARIAN */
+
+#else
+  else if (val == caml_hash_variant("OLD_HUNGARIAN")) caml_failwith("PangoScript.OLD_HUNGARIAN requires 1.40");
+#endif
+#if PANGO_VERSION_CHECK(1,40,0)
   else if (val == caml_hash_variant("SIGNWRITING")) return PANGO_SCRIPT_SIGNWRITING; /* `SIGNWRITING */
+
+#else
+  else if (val == caml_hash_variant("SIGNWRITING")) caml_failwith("PangoScript.SIGNWRITING requires 1.40");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown PangoScript tag: %ld", val);
@@ -856,9 +1504,18 @@ PangoStyle PangoStyle_val(value val) {
 value Val_PangoTabAlign(PangoTabAlign val) {
   switch (val) {
     case PANGO_TAB_LEFT: return caml_hash_variant("LEFT"); /* `LEFT */
+#if PANGO_VERSION_CHECK(1,50,0)
     case PANGO_TAB_RIGHT: return caml_hash_variant("RIGHT"); /* `RIGHT */
+
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
     case PANGO_TAB_CENTER: return caml_hash_variant("CENTER"); /* `CENTER */
+
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
     case PANGO_TAB_DECIMAL: return caml_hash_variant("DECIMAL"); /* `DECIMAL */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown PangoTabAlign value: %d", (int)val);
@@ -871,9 +1528,24 @@ value Val_PangoTabAlign(PangoTabAlign val) {
 /* Convert OCaml value to PangoTabAlign */
 PangoTabAlign PangoTabAlign_val(value val) {
   if (val == caml_hash_variant("LEFT")) return PANGO_TAB_LEFT; /* `LEFT */
+#if PANGO_VERSION_CHECK(1,50,0)
   else if (val == caml_hash_variant("RIGHT")) return PANGO_TAB_RIGHT; /* `RIGHT */
+
+#else
+  else if (val == caml_hash_variant("RIGHT")) caml_failwith("PangoTabAlign.RIGHT requires 1.50");
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
   else if (val == caml_hash_variant("CENTER")) return PANGO_TAB_CENTER; /* `CENTER */
+
+#else
+  else if (val == caml_hash_variant("CENTER")) caml_failwith("PangoTabAlign.CENTER requires 1.50");
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
   else if (val == caml_hash_variant("DECIMAL")) return PANGO_TAB_DECIMAL; /* `DECIMAL */
+
+#else
+  else if (val == caml_hash_variant("DECIMAL")) caml_failwith("PangoTabAlign.DECIMAL requires 1.50");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown PangoTabAlign tag: %ld", val);
@@ -958,11 +1630,26 @@ value Val_PangoVariant(PangoVariant val) {
   switch (val) {
     case PANGO_VARIANT_NORMAL: return caml_hash_variant("NORMAL"); /* `NORMAL */
     case PANGO_VARIANT_SMALL_CAPS: return caml_hash_variant("SMALL_CAPS"); /* `SMALL_CAPS */
+#if PANGO_VERSION_CHECK(1,50,0)
     case PANGO_VARIANT_ALL_SMALL_CAPS: return caml_hash_variant("ALL_SMALL_CAPS"); /* `ALL_SMALL_CAPS */
+
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
     case PANGO_VARIANT_PETITE_CAPS: return caml_hash_variant("PETITE_CAPS"); /* `PETITE_CAPS */
+
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
     case PANGO_VARIANT_ALL_PETITE_CAPS: return caml_hash_variant("ALL_PETITE_CAPS"); /* `ALL_PETITE_CAPS */
+
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
     case PANGO_VARIANT_UNICASE: return caml_hash_variant("UNICASE"); /* `UNICASE */
+
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
     case PANGO_VARIANT_TITLE_CAPS: return caml_hash_variant("TITLE_CAPS"); /* `TITLE_CAPS */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown PangoVariant value: %d", (int)val);
@@ -976,11 +1663,36 @@ value Val_PangoVariant(PangoVariant val) {
 PangoVariant PangoVariant_val(value val) {
   if (val == caml_hash_variant("NORMAL")) return PANGO_VARIANT_NORMAL; /* `NORMAL */
   else if (val == caml_hash_variant("SMALL_CAPS")) return PANGO_VARIANT_SMALL_CAPS; /* `SMALL_CAPS */
+#if PANGO_VERSION_CHECK(1,50,0)
   else if (val == caml_hash_variant("ALL_SMALL_CAPS")) return PANGO_VARIANT_ALL_SMALL_CAPS; /* `ALL_SMALL_CAPS */
+
+#else
+  else if (val == caml_hash_variant("ALL_SMALL_CAPS")) caml_failwith("PangoVariant.ALL_SMALL_CAPS requires 1.50");
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
   else if (val == caml_hash_variant("PETITE_CAPS")) return PANGO_VARIANT_PETITE_CAPS; /* `PETITE_CAPS */
+
+#else
+  else if (val == caml_hash_variant("PETITE_CAPS")) caml_failwith("PangoVariant.PETITE_CAPS requires 1.50");
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
   else if (val == caml_hash_variant("ALL_PETITE_CAPS")) return PANGO_VARIANT_ALL_PETITE_CAPS; /* `ALL_PETITE_CAPS */
+
+#else
+  else if (val == caml_hash_variant("ALL_PETITE_CAPS")) caml_failwith("PangoVariant.ALL_PETITE_CAPS requires 1.50");
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
   else if (val == caml_hash_variant("UNICASE")) return PANGO_VARIANT_UNICASE; /* `UNICASE */
+
+#else
+  else if (val == caml_hash_variant("UNICASE")) caml_failwith("PangoVariant.UNICASE requires 1.50");
+#endif
+#if PANGO_VERSION_CHECK(1,50,0)
   else if (val == caml_hash_variant("TITLE_CAPS")) return PANGO_VARIANT_TITLE_CAPS; /* `TITLE_CAPS */
+
+#else
+  else if (val == caml_hash_variant("TITLE_CAPS")) caml_failwith("PangoVariant.TITLE_CAPS requires 1.50");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown PangoVariant tag: %ld", val);
@@ -992,18 +1704,33 @@ PangoVariant PangoVariant_val(value val) {
 /* Convert PangoWeight to OCaml value */
 value Val_PangoWeight(PangoWeight val) {
   switch (val) {
+#if PANGO_VERSION_CHECK(1,24,0)
     case PANGO_WEIGHT_THIN: return caml_hash_variant("THIN"); /* `THIN */
+
+#endif
     case PANGO_WEIGHT_ULTRALIGHT: return caml_hash_variant("ULTRALIGHT"); /* `ULTRALIGHT */
     case PANGO_WEIGHT_LIGHT: return caml_hash_variant("LIGHT"); /* `LIGHT */
+#if PANGO_VERSION_CHECK(1,36,7)
     case PANGO_WEIGHT_SEMILIGHT: return caml_hash_variant("SEMILIGHT"); /* `SEMILIGHT */
+
+#endif
+#if PANGO_VERSION_CHECK(1,24,0)
     case PANGO_WEIGHT_BOOK: return caml_hash_variant("BOOK"); /* `BOOK */
+
+#endif
     case PANGO_WEIGHT_NORMAL: return caml_hash_variant("NORMAL"); /* `NORMAL */
+#if PANGO_VERSION_CHECK(1,24,0)
     case PANGO_WEIGHT_MEDIUM: return caml_hash_variant("MEDIUM"); /* `MEDIUM */
+
+#endif
     case PANGO_WEIGHT_SEMIBOLD: return caml_hash_variant("SEMIBOLD"); /* `SEMIBOLD */
     case PANGO_WEIGHT_BOLD: return caml_hash_variant("BOLD"); /* `BOLD */
     case PANGO_WEIGHT_ULTRABOLD: return caml_hash_variant("ULTRABOLD"); /* `ULTRABOLD */
     case PANGO_WEIGHT_HEAVY: return caml_hash_variant("HEAVY"); /* `HEAVY */
+#if PANGO_VERSION_CHECK(1,24,0)
     case PANGO_WEIGHT_ULTRAHEAVY: return caml_hash_variant("ULTRAHEAVY"); /* `ULTRAHEAVY */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown PangoWeight value: %d", (int)val);
@@ -1015,18 +1742,43 @@ value Val_PangoWeight(PangoWeight val) {
 
 /* Convert OCaml value to PangoWeight */
 PangoWeight PangoWeight_val(value val) {
+#if PANGO_VERSION_CHECK(1,24,0)
   if (val == caml_hash_variant("THIN")) return PANGO_WEIGHT_THIN; /* `THIN */
+
+#else
+  if (val == caml_hash_variant("THIN")) caml_failwith("PangoWeight.THIN requires 1.24");
+#endif
   else if (val == caml_hash_variant("ULTRALIGHT")) return PANGO_WEIGHT_ULTRALIGHT; /* `ULTRALIGHT */
   else if (val == caml_hash_variant("LIGHT")) return PANGO_WEIGHT_LIGHT; /* `LIGHT */
+#if PANGO_VERSION_CHECK(1,36,7)
   else if (val == caml_hash_variant("SEMILIGHT")) return PANGO_WEIGHT_SEMILIGHT; /* `SEMILIGHT */
+
+#else
+  else if (val == caml_hash_variant("SEMILIGHT")) caml_failwith("PangoWeight.SEMILIGHT requires 1.36.7");
+#endif
+#if PANGO_VERSION_CHECK(1,24,0)
   else if (val == caml_hash_variant("BOOK")) return PANGO_WEIGHT_BOOK; /* `BOOK */
+
+#else
+  else if (val == caml_hash_variant("BOOK")) caml_failwith("PangoWeight.BOOK requires 1.24");
+#endif
   else if (val == caml_hash_variant("NORMAL")) return PANGO_WEIGHT_NORMAL; /* `NORMAL */
+#if PANGO_VERSION_CHECK(1,24,0)
   else if (val == caml_hash_variant("MEDIUM")) return PANGO_WEIGHT_MEDIUM; /* `MEDIUM */
+
+#else
+  else if (val == caml_hash_variant("MEDIUM")) caml_failwith("PangoWeight.MEDIUM requires 1.24");
+#endif
   else if (val == caml_hash_variant("SEMIBOLD")) return PANGO_WEIGHT_SEMIBOLD; /* `SEMIBOLD */
   else if (val == caml_hash_variant("BOLD")) return PANGO_WEIGHT_BOLD; /* `BOLD */
   else if (val == caml_hash_variant("ULTRABOLD")) return PANGO_WEIGHT_ULTRABOLD; /* `ULTRABOLD */
   else if (val == caml_hash_variant("HEAVY")) return PANGO_WEIGHT_HEAVY; /* `HEAVY */
+#if PANGO_VERSION_CHECK(1,24,0)
   else if (val == caml_hash_variant("ULTRAHEAVY")) return PANGO_WEIGHT_ULTRAHEAVY; /* `ULTRAHEAVY */
+
+#else
+  else if (val == caml_hash_variant("ULTRAHEAVY")) caml_failwith("PangoWeight.ULTRAHEAVY requires 1.24");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown PangoWeight tag: %ld", val);
@@ -1105,18 +1857,24 @@ value Val_PangoFontMask(PangoFontMask flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if PANGO_VERSION_CHECK(1,16,0)
   if (flags & PANGO_FONT_MASK_GRAVITY) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("GRAVITY"))); /* `GRAVITY */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
+#if PANGO_VERSION_CHECK(1,42,0)
   if (flags & PANGO_FONT_MASK_VARIATIONS) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("VARIATIONS"))); /* `VARIATIONS */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -1132,8 +1890,18 @@ PangoFontMask PangoFontMask_val(value list) {
     else if (tag == caml_hash_variant("WEIGHT")) result |= PANGO_FONT_MASK_WEIGHT; /* `WEIGHT */
     else if (tag == caml_hash_variant("STRETCH")) result |= PANGO_FONT_MASK_STRETCH; /* `STRETCH */
     else if (tag == caml_hash_variant("SIZE")) result |= PANGO_FONT_MASK_SIZE; /* `SIZE */
+#if PANGO_VERSION_CHECK(1,16,0)
     else if (tag == caml_hash_variant("GRAVITY")) result |= PANGO_FONT_MASK_GRAVITY; /* `GRAVITY */
+
+#else
+    else if (tag == caml_hash_variant("GRAVITY")) caml_failwith("PangoFontMask.GRAVITY requires 1.16");
+#endif
+#if PANGO_VERSION_CHECK(1,42,0)
     else if (tag == caml_hash_variant("VARIATIONS")) result |= PANGO_FONT_MASK_VARIATIONS; /* `VARIATIONS */
+
+#else
+    else if (tag == caml_hash_variant("VARIATIONS")) caml_failwith("PangoFontMask.VARIATIONS requires 1.42");
+#endif
     list = Field(list, 1);
   }
   return result;

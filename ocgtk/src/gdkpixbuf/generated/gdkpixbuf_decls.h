@@ -31,11 +31,6 @@
 #define Val_GdkPixbufLoader(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GdkPixbufLoader */
 
-#ifndef Val_GdkPixbufNonAnim
-#define GdkPixbufNonAnim_val(val) ((GdkPixbufNonAnim*)ml_gobject_ext_of_val(val))
-#define Val_GdkPixbufNonAnim(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GdkPixbufNonAnim */
-
 #ifndef Val_GdkPixbufSimpleAnim
 #define GdkPixbufSimpleAnim_val(val) ((GdkPixbufSimpleAnim*)ml_gobject_ext_of_val(val))
 #define Val_GdkPixbufSimpleAnim(obj) ((value)(ml_gobject_val_of_ext(obj)))

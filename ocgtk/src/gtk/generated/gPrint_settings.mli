@@ -1,4 +1,5 @@
 class type print_settings_t = object
+    method copy : unit -> print_settings_t
     method get : string -> string option
     method get_bool : string -> bool
     method get_collate : unit -> bool

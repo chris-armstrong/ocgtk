@@ -353,11 +353,26 @@ value Val_GskRenderNodeType(GskRenderNodeType val) {
     case GSK_BLUR_NODE: return caml_hash_variant("BLUR_NODE"); /* `BLUR_NODE */
     case GSK_DEBUG_NODE: return caml_hash_variant("DEBUG_NODE"); /* `DEBUG_NODE */
     case GSK_GL_SHADER_NODE: return caml_hash_variant("GL_SHADER_NODE"); /* `GL_SHADER_NODE */
+#if GTK_CHECK_VERSION(4,10,0)
     case GSK_TEXTURE_SCALE_NODE: return caml_hash_variant("TEXTURE_SCALE_NODE"); /* `TEXTURE_SCALE_NODE */
+
+#endif
+#if GTK_CHECK_VERSION(4,10,0)
     case GSK_MASK_NODE: return caml_hash_variant("MASK_NODE"); /* `MASK_NODE */
+
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
     case GSK_FILL_NODE: return caml_hash_variant("FILL_NODE"); /* `FILL_NODE */
+
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
     case GSK_STROKE_NODE: return caml_hash_variant("STROKE_NODE"); /* `STROKE_NODE */
+
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
     case GSK_SUBSURFACE_NODE: return caml_hash_variant("SUBSURFACE_NODE"); /* `SUBSURFACE_NODE */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GskRenderNodeType value: %d", (int)val);
@@ -395,11 +410,36 @@ GskRenderNodeType GskRenderNodeType_val(value val) {
   else if (val == caml_hash_variant("BLUR_NODE")) return GSK_BLUR_NODE; /* `BLUR_NODE */
   else if (val == caml_hash_variant("DEBUG_NODE")) return GSK_DEBUG_NODE; /* `DEBUG_NODE */
   else if (val == caml_hash_variant("GL_SHADER_NODE")) return GSK_GL_SHADER_NODE; /* `GL_SHADER_NODE */
+#if GTK_CHECK_VERSION(4,10,0)
   else if (val == caml_hash_variant("TEXTURE_SCALE_NODE")) return GSK_TEXTURE_SCALE_NODE; /* `TEXTURE_SCALE_NODE */
+
+#else
+  else if (val == caml_hash_variant("TEXTURE_SCALE_NODE")) caml_failwith("GskRenderNodeType.TEXTURE_SCALE_NODE requires 4.10");
+#endif
+#if GTK_CHECK_VERSION(4,10,0)
   else if (val == caml_hash_variant("MASK_NODE")) return GSK_MASK_NODE; /* `MASK_NODE */
+
+#else
+  else if (val == caml_hash_variant("MASK_NODE")) caml_failwith("GskRenderNodeType.MASK_NODE requires 4.10");
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
   else if (val == caml_hash_variant("FILL_NODE")) return GSK_FILL_NODE; /* `FILL_NODE */
+
+#else
+  else if (val == caml_hash_variant("FILL_NODE")) caml_failwith("GskRenderNodeType.FILL_NODE requires 4.14");
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
   else if (val == caml_hash_variant("STROKE_NODE")) return GSK_STROKE_NODE; /* `STROKE_NODE */
+
+#else
+  else if (val == caml_hash_variant("STROKE_NODE")) caml_failwith("GskRenderNodeType.STROKE_NODE requires 4.14");
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
   else if (val == caml_hash_variant("SUBSURFACE_NODE")) return GSK_SUBSURFACE_NODE; /* `SUBSURFACE_NODE */
+
+#else
+  else if (val == caml_hash_variant("SUBSURFACE_NODE")) caml_failwith("GskRenderNodeType.SUBSURFACE_NODE requires 4.14");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GskRenderNodeType tag: %ld", val);

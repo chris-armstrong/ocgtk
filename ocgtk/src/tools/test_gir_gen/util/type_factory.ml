@@ -93,7 +93,7 @@ let make_gir_property ~prop_name ~prop_type ?(readable = true)
 
 let make_gir_record_field ~field_name ?field_type ?(readable = true)
     ?(writable = false) ?field_doc () =
-  { field_name; field_type; readable; writable; field_doc }
+  { field_name; field_type; readable; writable; field_doc; field_version = None }
 
 let make_gir_record ?(record_name = "TestRecord") ?(c_type = "TestRecord")
     ?glib_type_name ?glib_get_type ?(opaque = false) ?(disguised = false)
@@ -120,7 +120,7 @@ let make_gir_record ?(record_name = "TestRecord") ?(c_type = "TestRecord")
 
 let make_gir_enum_member ?(member_name = "NONE") ?(member_value = 0)
     ?(c_identifier = "TEST_NONE") ?member_doc () =
-  { member_name; member_value; c_identifier; member_doc }
+  { member_name; member_value; c_identifier; member_doc; member_version = None }
 
 let make_gir_enum ?(enum_name = "TestEnum") ?(enum_c_type = "TestEnum")
     ?(members = []) ?(functions = []) ?enum_doc ?enum_version () =
@@ -128,7 +128,7 @@ let make_gir_enum ?(enum_name = "TestEnum") ?(enum_c_type = "TestEnum")
 
 let make_gir_bitfield_member ?(flag_name = "NONE") ?(flag_value = 0)
     ?(flag_c_identifier = "TEST_NONE") ?flag_doc () =
-  { flag_name; flag_value; flag_c_identifier; flag_doc }
+  { flag_name; flag_value; flag_c_identifier; flag_doc; flag_version = None }
 
 let make_gir_bitfield ?(bitfield_name = "TestFlags")
     ?(bitfield_c_type = "TestFlags") ?(flags = []) ?bitfield_doc

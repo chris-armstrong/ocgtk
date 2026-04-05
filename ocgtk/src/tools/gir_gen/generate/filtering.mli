@@ -11,7 +11,7 @@ val is_array_type : gir_type -> bool
 (* Check if a property should be generated *)
 val should_generate_property :
   ctx:generation_context ->
-  class_name:string ->
+  class_name:'a ->
   methods:gir_method list ->
   gir_property ->
   bool
@@ -31,9 +31,6 @@ val property_base_names :
   methods:gir_method list ->
   gir_property list ->
   string list
-
-(* Check if a method has excluded type *)
-val method_has_excluded_type : gir_method -> bool
 
 (* Check if a method should be skipped *)
 val should_skip_method_binding : ctx:generation_context -> gir_method -> bool
