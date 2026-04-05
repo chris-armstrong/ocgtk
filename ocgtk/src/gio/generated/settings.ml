@@ -7,15 +7,6 @@ type t = [`settings | `object_] Gobject.obj
 external new_ : string -> t = "ml_g_settings_new"
 
 (** Create a new Settings *)
-external new_full : Settings_schema.t -> Settings_backend.t option -> string option -> t = "ml_g_settings_new_full"
-
-(** Create a new Settings *)
-external new_with_backend : string -> Settings_backend.t -> t = "ml_g_settings_new_with_backend"
-
-(** Create a new Settings *)
-external new_with_backend_and_path : string -> Settings_backend.t -> string -> t = "ml_g_settings_new_with_backend_and_path"
-
-(** Create a new Settings *)
 external new_with_path : string -> string -> t = "ml_g_settings_new_with_path"
 
 (* Methods *)
@@ -294,9 +285,6 @@ applied immediately. *)
 external apply : t -> unit = "ml_g_settings_apply"
 
 (* Properties *)
-
-(** Get property: backend *)
-external get_backend : t -> Settings_backend.t = "ml_g_settings_get_backend"
 
 (** Get property: delay-apply *)
 external get_delay_apply : t -> bool = "ml_g_settings_get_delay_apply"

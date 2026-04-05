@@ -5,6 +5,7 @@ class type print_context_t = object
     method get_dpi_x : unit -> float
     method get_dpi_y : unit -> float
     method get_height : unit -> float
+    method get_page_setup : unit -> GPage_setup.page_setup_t
     method get_pango_fontmap : unit -> Ocgtk_pango.Pango.Font_map.font_map_t
     method get_width : unit -> float
     method set_cairo_context : Ocgtk_cairo.Cairo.Context.context_t -> float -> float -> unit
@@ -37,6 +38,10 @@ class print_context (obj : Print_context.t) : print_context_t = object (self)
   method get_height : unit -> float =
     fun () ->
       (Print_context.get_height obj)
+
+  method get_page_setup : unit -> GPage_setup.page_setup_t =
+    fun () ->
+      new  GPage_setup.page_setup(Print_context.get_page_setup obj)
 
   method get_pango_fontmap : unit -> Ocgtk_pango.Pango.Font_map.font_map_t =
     fun () ->

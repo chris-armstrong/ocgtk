@@ -30,7 +30,6 @@ class type settings_t = object
     method set_string : string -> string -> bool
     method set_strv : string -> string array option -> bool
     method set_uint : string -> int -> bool
-    method backend : GSettings_backend.settings_backend_t
     method delay_apply : bool
     method path : string
     method schema : string
@@ -155,8 +154,6 @@ class settings (obj : Settings.t) : settings_t = object (self)
     fun key value ->
       (Settings.set_uint obj key value)
 
-  method backend = new GSettings_backend.settings_backend (Settings.get_backend obj)
-
   method delay_apply = Settings.get_delay_apply obj
 
   method path = Settings.get_path obj
@@ -172,21 +169,6 @@ end
 
 let new_ (schema_id : string) : settings_t =
   let obj_ = Settings.new_ schema_id in
-  new settings obj_
-
-let new_full (schema : Settings_schema.t) (backend : GSettings_backend.settings_backend_t option) (path : string option) : settings_t =
-  let backend = Option.map (fun c -> c#as_settings_backend) backend in
-  let obj_ = Settings.new_full schema backend path in
-  new settings obj_
-
-let new_with_backend (schema_id : string) (backend : GSettings_backend.settings_backend_t) : settings_t =
-  let backend = backend#as_settings_backend in
-  let obj_ = Settings.new_with_backend schema_id backend in
-  new settings obj_
-
-let new_with_backend_and_path (schema_id : string) (backend : GSettings_backend.settings_backend_t) (path : string) : settings_t =
-  let backend = backend#as_settings_backend in
-  let obj_ = Settings.new_with_backend_and_path schema_id backend path in
   new settings obj_
 
 let new_with_path (schema_id : string) (path : string) : settings_t =

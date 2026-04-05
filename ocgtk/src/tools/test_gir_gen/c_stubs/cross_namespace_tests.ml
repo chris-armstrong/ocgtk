@@ -336,6 +336,7 @@ let test_record_copy_parses_successfully () =
             readable = true;
             writable = true;
             field_doc = None;
+            field_version = None;
           };
         ];
       constructors = [];
@@ -512,6 +513,7 @@ let test_enum_array_element_conversion () =
             member_value = 0;
             c_identifier = "PANGO_SCRIPT_INVALID";
             member_doc = None;
+            member_version = None;
           };
         ];
       functions = [];
@@ -664,6 +666,7 @@ let test_bitfield_array_element_conversion () =
             flag_value = 1;
             flag_c_identifier = "GTK_APPLICATION_INHIBIT_LOGOUT";
             flag_doc = None;
+            flag_version = None;
           };
         ];
       bitfield_doc = None;
@@ -818,6 +821,7 @@ let test_inout_record_param_pointer_type () =
             readable = true;
             writable = true;
             field_doc = None;
+            field_version = None;
           };
         ];
       constructors = [];
@@ -1554,12 +1558,14 @@ let test_gdkpixbuf_format_flags_guarded () =
             flag_value = 1;
             flag_c_identifier = "GDK_PIXBUF_FORMAT_WRITABLE";
             flag_doc = None;
+            flag_version = None;
           };
           {
             flag_name = "SCALABLE";
             flag_value = 2;
             flag_c_identifier = "GDK_PIXBUF_FORMAT_SCALABLE";
             flag_doc = None;
+            flag_version = None;
           };
         ];
       bitfield_doc = None;
@@ -1625,6 +1631,7 @@ let test_normal_bitfield_no_guard () =
             flag_value = 1;
             flag_c_identifier = "GTK_APPLICATION_INHIBIT_LOGOUT";
             flag_doc = None;
+            flag_version = None;
           };
         ];
       bitfield_doc = None;

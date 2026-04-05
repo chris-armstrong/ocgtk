@@ -19,6 +19,10 @@ external get_width : t -> float = "ml_gtk_print_context_get_width"
 with the `GtkPrintContext`. *)
 external get_pango_fontmap : t -> Ocgtk_pango.Pango.Wrappers.Font_map.t = "ml_gtk_print_context_get_pango_fontmap"
 
+(** Obtains the `GtkPageSetup` that determines the page
+dimensions of the `GtkPrintContext`. *)
+external get_page_setup : t -> Page_setup.t = "ml_gtk_print_context_get_page_setup"
+
 (** Obtains the height of the `GtkPrintContext`, in pixels. *)
 external get_height : t -> float = "ml_gtk_print_context_get_height"
 

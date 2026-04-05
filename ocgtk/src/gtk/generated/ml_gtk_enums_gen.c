@@ -329,13 +329,34 @@ value Val_GtkAccessibleRole(GtkAccessibleRole val) {
     case GTK_ACCESSIBLE_ROLE_TREE_ITEM: return caml_hash_variant("TREE_ITEM"); /* `TREE_ITEM */
     case GTK_ACCESSIBLE_ROLE_WIDGET: return caml_hash_variant("WIDGET"); /* `WIDGET */
     case GTK_ACCESSIBLE_ROLE_WINDOW: return caml_hash_variant("WINDOW"); /* `WINDOW */
+#if GTK_CHECK_VERSION(4,10,0)
     case GTK_ACCESSIBLE_ROLE_TOGGLE_BUTTON: return caml_hash_variant("TOGGLE_BUTTON"); /* `TOGGLE_BUTTON */
+
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
     case GTK_ACCESSIBLE_ROLE_APPLICATION: return caml_hash_variant("APPLICATION"); /* `APPLICATION */
+
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
     case GTK_ACCESSIBLE_ROLE_PARAGRAPH: return caml_hash_variant("PARAGRAPH"); /* `PARAGRAPH */
+
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
     case GTK_ACCESSIBLE_ROLE_BLOCK_QUOTE: return caml_hash_variant("BLOCK_QUOTE"); /* `BLOCK_QUOTE */
+
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
     case GTK_ACCESSIBLE_ROLE_ARTICLE: return caml_hash_variant("ARTICLE"); /* `ARTICLE */
+
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
     case GTK_ACCESSIBLE_ROLE_COMMENT: return caml_hash_variant("COMMENT"); /* `COMMENT */
+
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
     case GTK_ACCESSIBLE_ROLE_TERMINAL: return caml_hash_variant("TERMINAL"); /* `TERMINAL */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GtkAccessibleRole value: %d", (int)val);
@@ -425,13 +446,48 @@ GtkAccessibleRole GtkAccessibleRole_val(value val) {
   else if (val == caml_hash_variant("TREE_ITEM")) return GTK_ACCESSIBLE_ROLE_TREE_ITEM; /* `TREE_ITEM */
   else if (val == caml_hash_variant("WIDGET")) return GTK_ACCESSIBLE_ROLE_WIDGET; /* `WIDGET */
   else if (val == caml_hash_variant("WINDOW")) return GTK_ACCESSIBLE_ROLE_WINDOW; /* `WINDOW */
+#if GTK_CHECK_VERSION(4,10,0)
   else if (val == caml_hash_variant("TOGGLE_BUTTON")) return GTK_ACCESSIBLE_ROLE_TOGGLE_BUTTON; /* `TOGGLE_BUTTON */
+
+#else
+  else if (val == caml_hash_variant("TOGGLE_BUTTON")) caml_failwith("GtkAccessibleRole.TOGGLE_BUTTON requires 4.10");
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
   else if (val == caml_hash_variant("APPLICATION")) return GTK_ACCESSIBLE_ROLE_APPLICATION; /* `APPLICATION */
+
+#else
+  else if (val == caml_hash_variant("APPLICATION")) caml_failwith("GtkAccessibleRole.APPLICATION requires 4.12");
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
   else if (val == caml_hash_variant("PARAGRAPH")) return GTK_ACCESSIBLE_ROLE_PARAGRAPH; /* `PARAGRAPH */
+
+#else
+  else if (val == caml_hash_variant("PARAGRAPH")) caml_failwith("GtkAccessibleRole.PARAGRAPH requires 4.14");
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
   else if (val == caml_hash_variant("BLOCK_QUOTE")) return GTK_ACCESSIBLE_ROLE_BLOCK_QUOTE; /* `BLOCK_QUOTE */
+
+#else
+  else if (val == caml_hash_variant("BLOCK_QUOTE")) caml_failwith("GtkAccessibleRole.BLOCK_QUOTE requires 4.14");
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
   else if (val == caml_hash_variant("ARTICLE")) return GTK_ACCESSIBLE_ROLE_ARTICLE; /* `ARTICLE */
+
+#else
+  else if (val == caml_hash_variant("ARTICLE")) caml_failwith("GtkAccessibleRole.ARTICLE requires 4.14");
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
   else if (val == caml_hash_variant("COMMENT")) return GTK_ACCESSIBLE_ROLE_COMMENT; /* `COMMENT */
+
+#else
+  else if (val == caml_hash_variant("COMMENT")) caml_failwith("GtkAccessibleRole.COMMENT requires 4.14");
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
   else if (val == caml_hash_variant("TERMINAL")) return GTK_ACCESSIBLE_ROLE_TERMINAL; /* `TERMINAL */
+
+#else
+  else if (val == caml_hash_variant("TERMINAL")) caml_failwith("GtkAccessibleRole.TERMINAL requires 4.14");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GtkAccessibleRole tag: %ld", val);
@@ -481,7 +537,10 @@ value Val_GtkAccessibleState(GtkAccessibleState val) {
     case GTK_ACCESSIBLE_STATE_INVALID: return caml_hash_variant("INVALID"); /* `INVALID */
     case GTK_ACCESSIBLE_STATE_PRESSED: return caml_hash_variant("PRESSED"); /* `PRESSED */
     case GTK_ACCESSIBLE_STATE_SELECTED: return caml_hash_variant("SELECTED"); /* `SELECTED */
+#if GTK_CHECK_VERSION(4,12,0)
     case GTK_ACCESSIBLE_STATE_VISITED: return caml_hash_variant("VISITED"); /* `VISITED */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GtkAccessibleState value: %d", (int)val);
@@ -501,7 +560,12 @@ GtkAccessibleState GtkAccessibleState_val(value val) {
   else if (val == caml_hash_variant("INVALID")) return GTK_ACCESSIBLE_STATE_INVALID; /* `INVALID */
   else if (val == caml_hash_variant("PRESSED")) return GTK_ACCESSIBLE_STATE_PRESSED; /* `PRESSED */
   else if (val == caml_hash_variant("SELECTED")) return GTK_ACCESSIBLE_STATE_SELECTED; /* `SELECTED */
+#if GTK_CHECK_VERSION(4,12,0)
   else if (val == caml_hash_variant("VISITED")) return GTK_ACCESSIBLE_STATE_VISITED; /* `VISITED */
+
+#else
+  else if (val == caml_hash_variant("VISITED")) caml_failwith("GtkAccessibleState.VISITED requires 4.12");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GtkAccessibleState tag: %ld", val);
@@ -609,8 +673,14 @@ value Val_GtkAlign(GtkAlign val) {
     case GTK_ALIGN_START: return caml_hash_variant("START"); /* `START */
     case GTK_ALIGN_END: return caml_hash_variant("END"); /* `END */
     case GTK_ALIGN_CENTER: return caml_hash_variant("CENTER"); /* `CENTER */
+#if GTK_CHECK_VERSION(4,12,0)
     case GTK_ALIGN_BASELINE_FILL: return caml_hash_variant("BASELINE_FILL"); /* `BASELINE_FILL */
+
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
     case GTK_ALIGN_BASELINE_CENTER: return caml_hash_variant("BASELINE_CENTER"); /* `BASELINE_CENTER */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GtkAlign value: %d", (int)val);
@@ -626,9 +696,19 @@ GtkAlign GtkAlign_val(value val) {
   else if (val == caml_hash_variant("START")) return GTK_ALIGN_START; /* `START */
   else if (val == caml_hash_variant("END")) return GTK_ALIGN_END; /* `END */
   else if (val == caml_hash_variant("CENTER")) return GTK_ALIGN_CENTER; /* `CENTER */
+#if GTK_CHECK_VERSION(4,12,0)
   else if (val == caml_hash_variant("BASELINE_FILL")) return GTK_ALIGN_BASELINE_FILL; /* `BASELINE_FILL */
+
+#else
+  else if (val == caml_hash_variant("BASELINE_FILL")) caml_failwith("GtkAlign.BASELINE_FILL requires 4.12");
+#endif
   else if (val == caml_hash_variant("BASELINE")) return GTK_ALIGN_BASELINE; /* `BASELINE */
+#if GTK_CHECK_VERSION(4,12,0)
   else if (val == caml_hash_variant("BASELINE_CENTER")) return GTK_ALIGN_BASELINE_CENTER; /* `BASELINE_CENTER */
+
+#else
+  else if (val == caml_hash_variant("BASELINE_CENTER")) caml_failwith("GtkAlign.BASELINE_CENTER requires 4.12");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GtkAlign tag: %ld", val);
@@ -3828,18 +3908,24 @@ value Val_GtkDebugFlags(GtkDebugFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GTK_CHECK_VERSION(4,2,0)
   if (flags & GTK_DEBUG_ICONFALLBACK) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("ICONFALLBACK"))); /* `ICONFALLBACK */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
+#if GTK_CHECK_VERSION(4,8,0)
   if (flags & GTK_DEBUG_INVERT_TEXT_DIR) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("INVERT_TEXT_DIR"))); /* `INVERT_TEXT_DIR */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -3866,8 +3952,18 @@ GtkDebugFlags GtkDebugFlags_val(value list) {
     else if (tag == caml_hash_variant("CONSTRAINTS")) result |= GTK_DEBUG_CONSTRAINTS; /* `CONSTRAINTS */
     else if (tag == caml_hash_variant("BUILDER_OBJECTS")) result |= GTK_DEBUG_BUILDER_OBJECTS; /* `BUILDER_OBJECTS */
     else if (tag == caml_hash_variant("A11Y")) result |= GTK_DEBUG_A11Y; /* `A11Y */
+#if GTK_CHECK_VERSION(4,2,0)
     else if (tag == caml_hash_variant("ICONFALLBACK")) result |= GTK_DEBUG_ICONFALLBACK; /* `ICONFALLBACK */
+
+#else
+    else if (tag == caml_hash_variant("ICONFALLBACK")) caml_failwith("GtkDebugFlags.ICONFALLBACK requires 4.2");
+#endif
+#if GTK_CHECK_VERSION(4,8,0)
     else if (tag == caml_hash_variant("INVERT_TEXT_DIR")) result |= GTK_DEBUG_INVERT_TEXT_DIR; /* `INVERT_TEXT_DIR */
+
+#else
+    else if (tag == caml_hash_variant("INVERT_TEXT_DIR")) caml_failwith("GtkDebugFlags.INVERT_TEXT_DIR requires 4.8");
+#endif
     list = Field(list, 1);
   }
   return result;
@@ -4274,12 +4370,15 @@ value Val_GtkPopoverMenuFlags(GtkPopoverMenuFlags flags) {
   CAMLlocal2(result, cons);
   result = Val_emptylist;
 
+#if GTK_CHECK_VERSION(4,14,0)
   if (flags & GTK_POPOVER_MENU_SLIDING) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("SLIDING"))); /* `SLIDING */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
   if (flags & GTK_POPOVER_MENU_NESTED) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("NESTED"))); /* `NESTED */
@@ -4295,7 +4394,12 @@ GtkPopoverMenuFlags GtkPopoverMenuFlags_val(value list) {
   GtkPopoverMenuFlags result = 0;
   while (list != Val_emptylist) {
     int tag = Int_val(Field(list, 0));
+#if GTK_CHECK_VERSION(4,14,0)
     if (tag == caml_hash_variant("SLIDING")) result |= GTK_POPOVER_MENU_SLIDING; /* `SLIDING */
+
+#else
+    if (tag == caml_hash_variant("SLIDING")) caml_failwith("GtkPopoverMenuFlags.SLIDING requires 4.14");
+#endif
     else if (tag == caml_hash_variant("NESTED")) result |= GTK_POPOVER_MENU_NESTED; /* `NESTED */
     list = Field(list, 1);
   }

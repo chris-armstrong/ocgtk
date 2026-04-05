@@ -32,11 +32,6 @@
 #define Val_GskBorderNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GskBorderNode */
 
-#ifndef Val_GskBroadwayRenderer
-#define GskBroadwayRenderer_val(val) ((GskBroadwayRenderer*)ml_gobject_ext_of_val(val))
-#define Val_GskBroadwayRenderer(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GskBroadwayRenderer */
-
 #ifndef Val_GskCairoNode
 #define GskCairoNode_val(val) ((GskCairoNode*)ml_gobject_ext_of_val(val))
 #define Val_GskCairoNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -121,11 +116,6 @@
 #endif /* Val_GskMaskNode */
 
 #endif
-#ifndef Val_GskNglRenderer
-#define GskNglRenderer_val(val) ((GskNglRenderer*)ml_gobject_ext_of_val(val))
-#define Val_GskNglRenderer(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GskNglRenderer */
-
 #ifndef Val_GskOpacityNode
 #define GskOpacityNode_val(val) ((GskOpacityNode*)ml_gobject_ext_of_val(val))
 #define Val_GskOpacityNode(obj) ((value)(ml_gobject_val_of_ext(obj)))

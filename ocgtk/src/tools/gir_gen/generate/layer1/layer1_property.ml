@@ -6,9 +6,8 @@ open Types
 
 (** Check if the type mapping exists for this property *)
 let has_property_type_mapping ~ctx (prop : gir_property) =
-  (not (Exclude_list.is_excluded_type_name prop.prop_type.name))
-  && Option.is_some
-       (Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type)
+  Option.is_some
+    (Type_mappings.find_type_mapping_for_gir_type ~ctx prop.prop_type)
 
 (** Check if a property getter should be generated *)
 let should_generate_property_getter (prop : gir_property) = prop.readable

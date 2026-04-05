@@ -1,4 +1,5 @@
 class type page_setup_t = object
+    method copy : unit -> page_setup_t
     method get_bottom_margin : Gtk_enums.unit -> float
     method get_left_margin : Gtk_enums.unit -> float
     method get_orientation : unit -> Gtk_enums.pageorientation

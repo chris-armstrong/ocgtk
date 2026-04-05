@@ -249,3 +249,6 @@ external get_bool : t -> string -> bool = "ml_gtk_print_settings_get_bool"
 (** Looks up the string value associated with @key. *)
 external get : t -> string -> string option = "ml_gtk_print_settings_get"
 
+(** Copies a `GtkPrintSettings` object. *)
+external copy : t -> t = "ml_gtk_print_settings_copy"
+

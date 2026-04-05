@@ -34,25 +34,30 @@ Generated code lives in `src/<namespace>/generated/`:
 
 ## gir_gen Architecture
 
-### Pipeline (4 Layers)
+### Pipeline
 
 ```
-GIR XML
-    │
-    ├─► parse/gir_parser.ml ──► types.ml (AST)
-    │                              │
-    │                              ▼
-    │                       type_mappings.ml
-    │                              │
-    ├──────────────────────────────┼──────────────────────────────┐
-    ▼                              ▼                              ▼
-generate/                  generate/                       generate/
-c_stubs.ml                 layer1/*.ml                     class_gen*.ml
-(Layer 0: C FFI)           (Layer 1: Low-level ML)         (Layer 2: High-level)
-    │                              │                              │
-    ▼                              ▼                              ▼
-ml_*_gen.c                widget.mli/ml                   gWidget.ml
-C stubs                   External functions              OCaml classes
+GIR XML          overrides/<ns>.sexp
+    │                    │
+    ▼                    ▼
+parse/gir_parser.ml   override_parser.ml
+    │                    │
+    └──────── AST ───────┘
+                  │
+           override_apply.ml   (filter ignored entities, set versions)
+                  │
+                  ▼
+           type_mappings.ml   (build generation context)
+                  │
+    ┌─────────────┼──────────────────┐
+    ▼             ▼                  ▼
+generate/     generate/         generate/
+c_stubs.ml    layer1/*.ml       class_gen*.ml
+(Layer 0: C)  (Layer 1: ML)     (Layer 2: ML)
+    │             │                  │
+    ▼             ▼                  ▼
+ml_*_gen.c    widget.mli/ml     gWidget.ml
+C stubs       External decls    OCaml classes
 ```
 
 **Layer 3** (Signals): `generate/signal_gen.ml` produces `gWidget_signals` classes.
@@ -62,11 +67,14 @@ C stubs                   External functions              OCaml classes
 | Module | Purpose |
 |--------|---------|
 | `types.ml` | AST for GIR elements (classes, methods, enums, records) |
-| `parse/gir_parser.ml` | XML parsing → AST |
+| `parse/gir_parser.ml` | XML parsing → AST; reads `version` XML attrs on members/fields |
 | `type_mappings.ml` | C→OCaml type mapping (`gint`→`int`, etc.) + cross-namespace resolution |
+| `override_types.ml` | Override type definitions (ignore, version actions) |
+| `override_parser.ml` | S-expression parser for `overrides/<ns>.sexp` files |
+| `override_apply.ml` | Apply overrides to AST before ctx build (filter + version) |
 | `dependency_analysis.ml` | Tarjan SCC for cyclic dependency handling |
-| `filtering.ml` | Method/property filtering (out params, unknown types) |
-| `exclude_list.ml` | Platform-specific skips, variadic functions |
+| `filtering.ml` | Method/property filtering (out params, unknown types, varargs) |
+| `exclude_list.ml` | Residual structural skips (`*Private` records, etc.) |
 
 ### Generation Modules
 
@@ -106,11 +114,33 @@ Cyclic dependencies (e.g., `Application` ↔ `Window`) are combined into single 
 - Generates `application_and__window_and__window_group.ml`
 - Type references: simple names within cycle (`Window.t`), qualified across cycles
 
+### Override System
+
+Per-namespace override files (`ocgtk/overrides/<ns>.sexp`) configure what gets
+generated without modifying the generator source. Applied in `override_apply.ml`
+**before** the type-mapping context is built — ignored entities are absent from
+`ctx`, so methods referencing them are naturally skipped by the existing
+unknown-type filter in `filtering.ml`.
+
+Two actions are supported:
+- `(ignore)` — remove the entity/component entirely from all generation stages
+- `(version "X.Y")` — set a version field, which feeds into `#if` C version guards
+
+Version guards appear at two granularities:
+- **Entity-level**: wraps the entire C converter/stub (`#if MACRO(X,Y,0)`)
+- **Member-level**: wraps individual `case`/`else if` branches inside a converter
+
+See [`gir_gen/overrides.md`](gir_gen/overrides.md) for the design rationale and
+[`README_GIR_GEN.md`](../src/tools/README_GIR_GEN.md#override-system) for the file format.
+
 ### Cross-Namespace Types
 
-Resolved via reference files (`<ns>_refs.txt`):
+Resolved via reference files (`_build/references/<ns>-references.sexp`):
 - Classes/records: `Ocgtk_<ns>.<Ns>.Wrappers.<Module>.t`
 - Enums/bitfields: `Ocgtk_<ns>.<Ns>.<enum_name>`
+
+The `gir_gen references` command also accepts `-o <ns>.sexp` so ignored entities
+are excluded from reference output.
 
 ## Key Documentation
 

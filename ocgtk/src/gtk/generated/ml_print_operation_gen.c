@@ -66,6 +66,14 @@ gtk_print_operation_set_show_progress(GtkPrintOperation_val(self), Bool_val(arg1
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_print_operation_set_print_settings(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_print_operation_set_print_settings(GtkPrintOperation_val(self), Option_val(arg1, GtkPrintSettings_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_print_operation_set_n_pages(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -111,6 +119,14 @@ CAMLexport CAMLprim value ml_gtk_print_operation_set_defer_drawing(value self)
 CAMLparam1(self);
 
 gtk_print_operation_set_defer_drawing(GtkPrintOperation_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_operation_set_default_page_setup(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_print_operation_set_default_page_setup(GtkPrintOperation_val(self), Option_val(arg1, GtkPageSetup_val, NULL));
 CAMLreturn(Val_unit);
 }
 
@@ -179,6 +195,15 @@ GtkPrintStatus result = gtk_print_operation_get_status(GtkPrintOperation_val(sel
 CAMLreturn(Val_GtkPrintStatus(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_print_operation_get_print_settings(value self)
+{
+CAMLparam1(self);
+
+GtkPrintSettings* result = gtk_print_operation_get_print_settings(GtkPrintOperation_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GtkPrintSettings));
+}
+
 CAMLexport CAMLprim value ml_gtk_print_operation_get_n_pages_to_print(value self)
 {
 CAMLparam1(self);
@@ -210,6 +235,15 @@ CAMLparam1(self);
 
 gboolean result = gtk_print_operation_get_embed_page_setup(GtkPrintOperation_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_print_operation_get_default_page_setup(value self)
+{
+CAMLparam1(self);
+
+GtkPageSetup* result = gtk_print_operation_get_default_page_setup(GtkPrintOperation_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_GtkPageSetup(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_operation_draw_page_finish(value self)

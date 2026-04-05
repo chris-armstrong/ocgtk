@@ -23,3 +23,15 @@ external unref : t -> unit = "ml_gtk_print_setup_unref"
 (** Increase the reference count of @setup. *)
 external ref : t -> t = "ml_gtk_print_setup_ref"
 
+(** Returns the print settings of @setup.
+
+They may be different from the `GtkPrintDialog`'s settings
+if the user changed them during the setup process. *)
+external get_print_settings : t -> Print_settings.t option = "ml_gtk_print_setup_get_print_settings"
+
+(** Returns the page setup of @setup.
+
+It may be different from the `GtkPrintDialog`'s page setup
+if the user changed it during the setup process. *)
+external get_page_setup : t -> Page_setup.t option = "ml_gtk_print_setup_get_page_setup"
+

@@ -1,4 +1,5 @@
 class type page_setup_t = object
+    method copy : unit -> page_setup_t
     method get_bottom_margin : Gtk_enums.unit -> float
     method get_left_margin : Gtk_enums.unit -> float
     method get_orientation : unit -> Gtk_enums.pageorientation
@@ -23,6 +24,10 @@ end
 
 (* High-level class for PageSetup *)
 class page_setup (obj : Page_setup.t) : page_setup_t = object (self)
+
+  method copy : unit -> page_setup_t =
+    fun () ->
+      new  page_setup(Page_setup.copy obj)
 
   method get_bottom_margin : Gtk_enums.unit -> float =
     fun unit ->
