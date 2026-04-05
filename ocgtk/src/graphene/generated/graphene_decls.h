@@ -147,4 +147,6 @@ graphene_ray_intersection_kind_t GrapheneRayIntersectionKind_val(value val);
 #endif
 
 
+#include "../core/graphene_core.h"
+
 #endif /* _graphene_decls_h_ */

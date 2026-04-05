@@ -35,4 +35,6 @@
 /* Note: Res_Ok, Res_Error, ValUnit, and Val_GError are defined in wrappers.h */
 
 
+#include "../core/pangocairo_core.h"
+
 #endif /* _pangocairo_decls_h_ */

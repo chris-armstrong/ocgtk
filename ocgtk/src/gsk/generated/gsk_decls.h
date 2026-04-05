@@ -345,4 +345,6 @@ GskPathForeachFlags GskPathForeachFlags_val(value list);
 #endif
 
 
+#include "../core/gsk_core.h"
+
 #endif /* _gsk_decls_h_ */

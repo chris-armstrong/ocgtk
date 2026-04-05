@@ -1,0 +1,38 @@
+services:
+  ubuntu22:
+    build:
+      context: ..
+      dockerfile: ci/ubuntu22.Dockerfile
+    volumes:
+      - ..:/workspace:cached
+      - ubuntu22-build:/build
+    working_dir: /workspace
+    command: sleep infinity
+    tty: true
+
+  debian12:
+    build:
+      context: ..
+      dockerfile: ci/debian12.Dockerfile
+    volumes:
+      - ..:/workspace:cached
+      - debian12-build:/build
+    working_dir: /workspace
+    command: sleep infinity
+    tty: true
+
+  centos9:
+    build:
+      context: ..
+      dockerfile: ci/centos9.Dockerfile
+    volumes:
+      - ..:/workspace:cached
+      - centos9-build:/build
+    working_dir: /workspace
+    command: sleep infinity
+    tty: true
+
+volumes:
+  ubuntu22-build:
+  debian12-build:
+  centos9-build:
