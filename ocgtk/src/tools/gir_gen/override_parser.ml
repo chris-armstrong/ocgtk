@@ -5,6 +5,7 @@ open Override_types
 type parse_error =
   | Invalid_format of { location : string; message : string }
   | Unknown_entity_kind of string
+  | Unknown_component_kind of { entity_name : string; kind : string; valid_kinds : string list }
   | Duplicate_entity of { kind : string; name : string }
   | Duplicate_component of { entity : string; component_kind : string; name : string }
   | Invalid_version of { name : string; version : string; reason : string }
@@ -14,6 +15,9 @@ let format_error = function
       Printf.sprintf "%s: %s" location message
   | Unknown_entity_kind kind ->
       Printf.sprintf "Unknown entity kind: %s" kind
+  | Unknown_component_kind { entity_name; kind; valid_kinds } ->
+      Printf.sprintf "%s: Unknown component kind '%s' (expected one of: %s)"
+        entity_name kind (String.concat ", " valid_kinds)
   | Duplicate_entity { kind; name } ->
       Printf.sprintf "Duplicate %s '%s'" kind name
   | Duplicate_component { entity; component_kind; name } ->
@@ -75,10 +79,30 @@ let has_ignore_marker body =
       | _ -> false)
     body
 
+(** Validate that every list-form element in an entity body starts with one of
+    [valid_kinds] (or is an action marker like [ignore] / [version]).
+    Returns [Error (Unknown_component_kind ...)] on the first unrecognised kind. *)
+let validate_body_elements ~entity_name ~valid_kinds body =
+  let rec check = function
+    | [] -> Ok ()
+    | sexp :: rest -> (
+        match sexp with
+        | Sexp.Atom _ -> check rest (* bare atoms: ignore / other – handled elsewhere *)
+        | Sexp.List [] -> check rest
+        | Sexp.List (Sexp.Atom k :: _) ->
+            if List.mem k valid_kinds || String.equal k "ignore" || String.equal k "version"
+            then check rest
+            else Error (Unknown_component_kind { entity_name; kind = k; valid_kinds })
+        | Sexp.List _ -> check rest)
+  in
+  check body
+
 let parse_class_override sexp =
   match sexp with
   | Sexp.List (Sexp.Atom "class" :: Sexp.Atom name :: body) ->
       let class_action = if has_ignore_marker body then Some Ignore else None in
+      let* () = validate_body_elements ~entity_name:name
+          ~valid_kinds:["constructor"; "method"; "property"; "signal"] body in
       let* constructors = parse_components_of_kind ~entity_name:name ~kind:"constructor" body in
       let* methods = parse_components_of_kind ~entity_name:name ~kind:"method" body in
       let* properties = parse_components_of_kind ~entity_name:name ~kind:"property" body in
@@ -99,6 +123,8 @@ let parse_interface_override sexp =
   match sexp with
   | Sexp.List (Sexp.Atom "interface" :: Sexp.Atom name :: body) ->
       let interface_action = if has_ignore_marker body then Some Ignore else None in
+      let* () = validate_body_elements ~entity_name:name
+          ~valid_kinds:["method"; "property"; "signal"] body in
       let* methods = parse_components_of_kind ~entity_name:name ~kind:"method" body in
       let* properties = parse_components_of_kind ~entity_name:name ~kind:"property" body in
       let* signals = parse_components_of_kind ~entity_name:name ~kind:"signal" body in
@@ -118,6 +144,8 @@ let parse_record_override sexp =
   match sexp with
   | Sexp.List (Sexp.Atom "record" :: Sexp.Atom name :: body) ->
       let record_action = if has_ignore_marker body then Some Ignore else None in
+      let* () = validate_body_elements ~entity_name:name
+          ~valid_kinds:["field"; "constructor"; "method"; "function"] body in
       let* fields = parse_components_of_kind ~entity_name:name ~kind:"field" body in
       let* constructors = parse_components_of_kind ~entity_name:name ~kind:"constructor" body in
       let* methods = parse_components_of_kind ~entity_name:name ~kind:"method" body in
@@ -139,6 +167,8 @@ let parse_enum_override sexp =
   match sexp with
   | Sexp.List (Sexp.Atom "enumeration" :: Sexp.Atom name :: body) ->
       let enum_action = if has_ignore_marker body then Some Ignore else None in
+      let* () = validate_body_elements ~entity_name:name
+          ~valid_kinds:["member"; "function"] body in
       let* members = parse_components_of_kind ~entity_name:name ~kind:"member" body in
       let* functions = parse_components_of_kind ~entity_name:name ~kind:"function" body in
       Ok { enum_name = name; enum_action; members; functions }
@@ -151,6 +181,7 @@ let parse_bitfield_override sexp =
   match sexp with
   | Sexp.List (Sexp.Atom "bitfield" :: Sexp.Atom name :: body) ->
       let bitfield_action = if has_ignore_marker body then Some Ignore else None in
+      let* () = validate_body_elements ~entity_name:name ~valid_kinds:["member"] body in
       let* flags = parse_components_of_kind ~entity_name:name ~kind:"member" body in
       Ok { bitfield_name = name; bitfield_action; flags }
   | _ ->

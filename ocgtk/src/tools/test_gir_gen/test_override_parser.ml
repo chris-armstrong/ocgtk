@@ -230,6 +230,73 @@ let test_unknown_entity () =
   | e ->
       Alcotest.fail (Printf.sprintf "Expected Unknown_entity_kind, got: %s" (Gir_gen_lib.Override_parser.format_error e))
 
+let test_bare_name_member_in_enum () =
+  (* (foo (version "X.Y")) is missing the "member" keyword — should error *)
+  let err =
+    parse_err
+      "(overrides (library \"Gtk\") \
+       (enumeration StateFlags \
+         (foo (version \"4.14\"))))"
+  in
+  match err with
+  | Unknown_component_kind { entity_name; kind; _ } ->
+      Alcotest.(check string) "entity" "StateFlags" entity_name;
+      Alcotest.(check string) "kind" "foo" kind
+  | e ->
+      Alcotest.fail
+        (Printf.sprintf "Expected Unknown_component_kind, got: %s"
+           (Gir_gen_lib.Override_parser.format_error e))
+
+let test_bare_name_member_in_bitfield () =
+  let err =
+    parse_err
+      "(overrides (library \"Gtk\") \
+       (bitfield StateFlags \
+         (focused (version \"4.16\"))))"
+  in
+  match err with
+  | Unknown_component_kind { entity_name; kind; _ } ->
+      Alcotest.(check string) "entity" "StateFlags" entity_name;
+      Alcotest.(check string) "kind" "focused" kind
+  | e ->
+      Alcotest.fail
+        (Printf.sprintf "Expected Unknown_component_kind, got: %s"
+           (Gir_gen_lib.Override_parser.format_error e))
+
+let test_wrong_kind_in_class () =
+  (* "field" is not valid inside a class body *)
+  let err =
+    parse_err
+      "(overrides (library \"Gtk\") \
+       (class Widget \
+         (field foo (ignore))))"
+  in
+  match err with
+  | Unknown_component_kind { entity_name; kind; _ } ->
+      Alcotest.(check string) "entity" "Widget" entity_name;
+      Alcotest.(check string) "kind" "field" kind
+  | e ->
+      Alcotest.fail
+        (Printf.sprintf "Expected Unknown_component_kind, got: %s"
+           (Gir_gen_lib.Override_parser.format_error e))
+
+let test_wrong_kind_in_record () =
+  (* "signal" is not valid inside a record body *)
+  let err =
+    parse_err
+      "(overrides (library \"Gtk\") \
+       (record TextIter \
+         (signal changed (ignore))))"
+  in
+  match err with
+  | Unknown_component_kind { entity_name; kind; _ } ->
+      Alcotest.(check string) "entity" "TextIter" entity_name;
+      Alcotest.(check string) "kind" "signal" kind
+  | e ->
+      Alcotest.fail
+        (Printf.sprintf "Expected Unknown_component_kind, got: %s"
+           (Gir_gen_lib.Override_parser.format_error e))
+
 let test_invalid_version () =
   let err =
     parse_err
@@ -446,6 +513,10 @@ let test_suite =
     ("duplicate_interface", `Quick, test_duplicate_interface);
     ("duplicate_function", `Quick, test_duplicate_function);
     ("unknown_entity", `Quick, test_unknown_entity);
+    ("bare_name_member_in_enum", `Quick, test_bare_name_member_in_enum);
+    ("bare_name_member_in_bitfield", `Quick, test_bare_name_member_in_bitfield);
+    ("wrong_kind_in_class", `Quick, test_wrong_kind_in_class);
+    ("wrong_kind_in_record", `Quick, test_wrong_kind_in_record);
     ("invalid_version", `Quick, test_invalid_version);
     ("malformed_sexp", `Quick, test_malformed_sexp);
     ("not_overrides_form", `Quick, test_not_overrides_form);

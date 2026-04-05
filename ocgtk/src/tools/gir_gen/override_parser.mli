@@ -7,6 +7,7 @@
 type parse_error =
   | Invalid_format of { location : string; message : string }
   | Unknown_entity_kind of string
+  | Unknown_component_kind of { entity_name : string; kind : string; valid_kinds : string list }
   | Duplicate_entity of { kind : string; name : string }
   | Duplicate_component of { entity : string; component_kind : string; name : string }
   | Invalid_version of { name : string; version : string; reason : string }
