@@ -1,10 +1,13 @@
 # GIR Overrides System - Implementation Plan
 
+**Status: ✅ ALL PHASES COMPLETE (2026-04-05)**
+
 ## Overview
 
-Introduce a s-expression-based override file (`overrides-gir.sexp`) that allows manual
-configuration of GIR generation behaviour per-library. This replaces scattered hardcoded
-exclusion lists (`exclude_list.ml`, `filtering.ml`) with a single, user-editable configuration.
+A s-expression-based override file system that allows manual configuration of GIR
+generation behaviour per-library. This replaces scattered hardcoded exclusion lists
+(`exclude_list.ml`, `filtering.ml`) with per-namespace configuration files in
+`ocgtk/overrides/`.
 
 The system covers:
 - **Ignoring** entire entities (classes, interfaces, records, enums, bitfields, functions)
@@ -625,7 +628,7 @@ let generate_references gir_file output_file overrides_file =
 
 ---
 
-## Phase 3: Extract Versions from GIR and Generate Initial Override Files
+## Phase 3: Extract Versions from GIR and Generate Initial Override Files ✅ COMPLETE (2026-04-05)
 
 **Goal**: Build a tool to extract "Since" version info from GIR doc comments, then
 generate complete initial override files combining those versions with the ignore
@@ -782,7 +785,7 @@ to the pre-override baseline. The only differences should be:
 
 ---
 
-## Phase 4: Filtering Integration and Hardcoded List Removal
+## Phase 4: Filtering Integration and Hardcoded List Removal ✅ COMPLETE (2026-04-05)
 
 **Goal**: Verify that override-based ignores produce identical filtering behaviour
 to the existing hardcoded lists, then remove the redundant hardcoded entries.
@@ -849,7 +852,7 @@ Create `ocgtk/test_gir_gen/test_override_integration.ml`:
 
 ---
 
-## Phase 5: Round-Trip and End-to-End Tests
+## Phase 5: Round-Trip and End-to-End Tests ✅ COMPLETE (2026-04-05)
 
 ### Task 5.1: Round-Trip S-Expression Tests
 
@@ -879,7 +882,7 @@ Create `ocgtk/test_gir_gen/test_override_e2e.ml`:
 
 ---
 
-## Phase 6: Enum/Bitfield Member Version Guards in C Generation
+## Phase 6: Enum/Bitfield Member Version Guards in C Generation ✅ COMPLETE (2026-04-05)
 
 **Goal**: Generate `#if` version guards around individual enum/bitfield member
 cases in C converter functions, so that members added in newer library versions
@@ -1024,78 +1027,34 @@ Create `ocgtk/test_gir_gen/test_enum_member_version.ml`:
 
 ---
 
-## Phase 7: Build Script and Documentation Updates
+## Phase 7: Build Script and Documentation Updates ✅ COMPLETE (2026-04-05)
 
-### Task 7.1: Update `generate-bindings.sh`
+### Task 7.1: Update `generate-bindings.sh` ✅
 
-Modify `scripts/generate-bindings.sh` to pass `-o` (overrides) to both
-`gir_gen generate` and `gir_gen references` calls.
+`OVERRIDES_DIR="$WORKSPACE_ROOT/overrides"` added. All 9 `references` and `generate`
+invocations pass `-o "$OVERRIDES_DIR/<ns>.sexp"`.
 
-Add override directory constant:
+### Task 7.2: Update README_GIR_GEN.md ✅
 
-```bash
-OVERRIDES_DIR="$REPO_ROOT/ocgtk/overrides"
-```
+- Commands section updated: `overrides` added as third command
+- Generate and references options updated: `-o/--overrides FILE` documented
+- Overrides command section added with CLI example
+- New "Override System" section added: format reference with full sexp example,
+  file location convention, workflow for updating override files
 
-Then for each **generate** invocation, add `-o "$OVERRIDES_DIR/<ns>.sexp"`:
+### Task 7.3: Update Root README.md ✅
 
-```bash
-# Use an array to avoid word-splitting on the path
-OVERRIDE_FLAGS=()
-if [ -f "$OVERRIDES_DIR/gtk.sexp" ]; then
-    OVERRIDE_FLAGS=(-o "$OVERRIDES_DIR/gtk.sexp")
-fi
+Link to `ocgtk/overrides/` directory added to Key Documents section.
 
-"$GIR_GEN" generate \
-    "${OVERRIDE_FLAGS[@]}" \
-    -r "$BUILD_DIR/cairo-references.sexp" \
-    ... \
-    "$GIR_PATH/Gtk-4.0.gir" \
-    src/gtk
-```
+### Task 7.4: Update scripts/README.md ✅
 
-For each **references** invocation, also add the override flag so ignored entities
-are excluded from cross-namespace references:
+Rewritten to cover all 9 namespaces, both generation phases, and the `-o` flag.
+Override files section added.
 
-```bash
-"$GIR_GEN" references \
-    "${OVERRIDE_FLAGS[@]}" \
-    "$GIR_PATH/Gtk-4.0.gir" \
-    "$BUILD_DIR/gtk-references.sexp"
-```
+### Task 7.5: Update CLAUDE.md ✅
 
-Apply the same pattern to all 9 generate and references invocations.
-
-### Task 7.2: Update README_GIR_GEN.md
-
-Update `ocgtk/src/tools/README_GIR_GEN.md`:
-
-1. **Section "Command Options"** (near the generate/references command docs):
-   Add `--overrides` / `-o FILE` option description
-2. **New section "Override Files"** (after the command options section):
-   - The override file format (with full sexp example covering all entity types)
-   - File location convention (`ocgtk/overrides/<namespace>.sexp`)
-   - What can be overridden (ignore, version) with examples at each level
-   - How overrides interact with existing filtering (pre-filter, additive)
-   - How entity-level ignore takes precedence over component-level
-   - Error behaviour: parse failure halts generation, unknown names warn
-3. **Section "Usage Examples"**: Add an example invocation with `-o` flag
-4. **Section "Known Limitations"**: Add note about OCaml enum types always
-   containing all variants (no conditional compilation)
-
-### Task 7.3: Update Root README.md
-
-Update `ocgtk/README.md`:
-
-1. **Section "Code generation from GIR files"** (line ~28): Add one sentence
-   mentioning the override system and linking to `README_GIR_GEN.md` for details
-
-### Task 7.4: Update scripts/README.md
-
-Update `ocgtk/scripts/README.md`:
-
-1. **Section describing `generate-bindings.sh`**: Add note that the script
-   automatically picks up override files from `ocgtk/overrides/`
+Single-library regeneration example updated to include `-o overrides/<ns>.sexp`.
+Override files note added.
 
 ---
 
