@@ -1,8 +1,14 @@
+x-build-args: &build-args
+  args:
+    OPAM_VERSION: ${OPAM_VERSION}
+    OCAML_VERSION: ${OCAML_VERSION}
+
 services:
   ubuntu22:
     build:
       context: ..
       dockerfile: ci/ubuntu22.Dockerfile
+      <<: *build-args
     volumes:
       - ..:/workspace:cached
       - ubuntu22-build:/build
@@ -14,6 +20,7 @@ services:
     build:
       context: ..
       dockerfile: ci/debian12.Dockerfile
+      <<: *build-args
     volumes:
       - ..:/workspace:cached
       - debian12-build:/build
@@ -25,6 +32,7 @@ services:
     build:
       context: ..
       dockerfile: ci/centos9.Dockerfile
+      <<: *build-args
     volumes:
       - ..:/workspace:cached
       - centos9-build:/build

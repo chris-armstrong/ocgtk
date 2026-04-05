@@ -1,5 +1,8 @@
 FROM quay.io/centos/centos:stream9
 
+ARG OPAM_VERSION=2.5.0
+ARG OCAML_VERSION=5.3.0
+
 # Enable EPEL and CodeReady Linux Builder for broader package availability
 RUN dnf install -y epel-release \
  && dnf config-manager --set-enabled crb \
@@ -10,7 +13,7 @@ RUN dnf install -y \
     # Build toolchain
     gcc make m4 patch unzip bzip2 curl git \
     # OCaml / opam requirements
-    pkgconf-pkg-config perl diffutils which \
+    pkgconf-pkg-config perl diffutils which rsync \
     # GTK 4 and friends
     gtk4-devel \
     cairo-devel \
@@ -21,17 +24,16 @@ RUN dnf install -y \
     gobject-introspection-devel \
     # Headless display for running GTK tests
     xorg-x11-server-Xvfb \
-    rsync \
  && dnf clean all
 
 # Install opam
-RUN curl -fsSL https://github.com/ocaml/opam/releases/download/2.4.1/opam-2.4.1-x86_64-linux \
+RUN curl -fsSL "https://github.com/ocaml/opam/releases/download/${OPAM_VERSION}/opam-${OPAM_VERSION}-x86_64-linux" \
       -o /usr/local/bin/opam \
  && chmod +x /usr/local/bin/opam
 
-# Bootstrap opam and create OCaml 5.3.0 switch
+# Bootstrap opam and create OCaml switch
 RUN opam init --disable-sandboxing -y --bare \
- && opam switch create default ocaml-base-compiler.5.3.0 -y \
+ && opam switch create default "ocaml-base-compiler.${OCAML_VERSION}" -y \
  && opam clean -a -c -s
 
 # Install conf-gtk4 (local virtual package) and OCaml deps

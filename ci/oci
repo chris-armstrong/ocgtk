@@ -27,6 +27,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COMPOSE_FILE="$SCRIPT_DIR/docker-compose.yml"
+VERSIONS_FILE="$SCRIPT_DIR/versions.env"
 ALL_DISTROS=(ubuntu22 debian12 centos9)
 STATE_FILE="$SCRIPT_DIR/.oci-state"
 
@@ -35,8 +36,13 @@ STATE_FILE="$SCRIPT_DIR/.oci-state"
 die()  { echo "oci: error: $*" >&2; exit 1; }
 info() { echo "oci: $*"; }
 
+# Load version pins from versions.env
+[[ -f "$VERSIONS_FILE" ]] || die "versions.env not found at $VERSIONS_FILE"
+# shellcheck source=versions.env
+source "$VERSIONS_FILE"
+
 compose() {
-  docker compose -f "$COMPOSE_FILE" "$@"
+  docker compose --env-file "$VERSIONS_FILE" -f "$COMPOSE_FILE" "$@"
 }
 
 # Resolve the list of distros from args, defaulting to all
@@ -109,6 +115,10 @@ cmd_build() {
 }
 
 cmd_status() {
+  echo ""
+  echo "  Version pins (ci/versions.env):"
+  echo "    opam  ${OPAM_VERSION}"
+  echo "    OCaml ${OCAML_VERSION}"
   echo ""
   echo "  Distro      Container state   Image built"
   echo "  ─────────── ───────────────   ──────────────────────"
