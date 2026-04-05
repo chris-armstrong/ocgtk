@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y \
     gir1.2-gtk-4.0 \
     # Headless display for running GTK tests
     xvfb \
+    rsync \
  && rm -rf /var/lib/apt/lists/*
 
 # Install opam

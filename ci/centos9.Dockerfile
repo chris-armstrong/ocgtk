@@ -21,6 +21,7 @@ RUN dnf install -y \
     gobject-introspection-devel \
     # Headless display for running GTK tests
     xorg-x11-server-Xvfb \
+    rsync \
  && dnf clean all
 
 # Install opam
