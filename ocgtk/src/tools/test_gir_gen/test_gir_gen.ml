@@ -46,4 +46,5 @@ let () =
       ("Override Apply", Test_override_apply.test_suite);
       ("Override Extractor", Test_override_extractor.test_suite);
       ("Override E2E", Test_override_e2e.test_suite);
+      ("Enum Member Version Guards", Test_enum_member_version.test_suite);
     ]

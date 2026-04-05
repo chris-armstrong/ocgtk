@@ -678,7 +678,7 @@ let generate_enum_files ~output_dir ~generated_stubs ~generated_modules
           ~f:(fun (enum : gir_enum) ->
             let converters =
               Gir_gen_lib.Generate.Enum_code.generate_c_enum_converters
-                ~namespace:namespace.name enum
+                ~namespace:namespace.name ~class_version:enum.enum_version enum
             in
             match enum.enum_version with
             | None -> converters
@@ -698,7 +698,7 @@ let generate_enum_files ~output_dir ~generated_stubs ~generated_modules
           ~f:(fun (bitfield : gir_bitfield) ->
             let converters =
               Gir_gen_lib.Generate.Enum_code.generate_c_bitfield_converters
-                ~namespace:namespace.name bitfield
+                ~namespace:namespace.name ~class_version:bitfield.bitfield_version bitfield
             in
             match bitfield.bitfield_version with
             | None -> converters

@@ -4,6 +4,30 @@ open StdLabels
 open Printf
 open Types
 
+(** Emit a single converter branch, optionally wrapped in a per-member version guard.
+    [~class_version]: the enum/bitfield entity-level version (outer guard, if any)
+    [~member_version]: this specific member's version override
+    [~fallback_line]: if [Some s], emit [#else s] between guard and [#endif];
+                      if [None], emit only [#if branch #endif] (C->OCaml direction,
+                      where the [default:] case handles unknown values)
+    [~branch]: the C source line(s) to guard (no trailing newline required) *)
+let emit_member_branch ~namespace ~class_version ~member_version ~fallback_line ~branch buf =
+  match Version_guard.resolve_guard ~class_version ~member_version with
+  | Error _ | Ok (Version_guard.No_guard | Version_guard.Class_guard _) ->
+      Buffer.add_string buf branch
+  | Ok (Version_guard.Member_guard v) ->
+      match Version_guard.emit_c_guard namespace v ~is_opening:true with
+      | Error _ -> Buffer.add_string buf branch
+      | Ok guard_if ->
+          bprintf buf "%s\n%s\n" guard_if branch;
+          (match fallback_line with
+          | None -> ()
+          | Some fb ->
+              bprintf buf "%s\n%s\n" Version_guard.c_guard_else fb);
+          (match Version_guard.emit_c_guard namespace v ~is_opening:false with
+          | Ok guard_endif -> Buffer.add_string buf (guard_endif ^ "\n")
+          | Error _ -> Buffer.add_string buf "#endif\n")
+
 (* Generate OCaml enum type definition *)
 let generate_ocaml_enum enum =
   let buf = Buffer.create 512 in
@@ -74,7 +98,7 @@ let generate_ocaml_bitfield bitfield =
   Buffer.contents buf
 
 (* Generate C conversion functions for enum *)
-let generate_c_enum_converters ~namespace enum =
+let generate_c_enum_converters ~namespace ~class_version enum =
   (* Skip enums with no members *)
   if List.length enum.members = 0 then ""
   else begin
@@ -99,8 +123,11 @@ let generate_c_enum_converters ~namespace enum =
           else
             variant_name
         in
-        bprintf buf "    case %s: return caml_hash_variant(\"%s\"); /* `%s */\n"
-          enum_member.c_identifier variant_name variant_name;
+        let case_line = sprintf "    case %s: return caml_hash_variant(\"%s\"); /* `%s */\n"
+          enum_member.c_identifier variant_name variant_name in
+        emit_member_branch ~namespace ~class_version
+          ~member_version:enum_member.member_version
+          ~fallback_line:None ~branch:case_line buf
       end
     ) enum.members;
 
@@ -126,8 +153,20 @@ let generate_c_enum_converters ~namespace enum =
         else
           variant_name
       in
-      bprintf buf "  %sif (val == caml_hash_variant(\"%s\")) return %s; /* `%s */\n"
-        (if i = 0 then "" else "else ") variant_name enum_member.c_identifier variant_name;
+      let fallback_line =
+        match enum_member.member_version with
+        | None -> None
+        | Some v_str ->
+            let msg = sprintf "  %sif (val == caml_hash_variant(\"%s\")) caml_failwith(\"%s.%s requires %s\");"
+              (if i = 0 then "" else "else ")
+              variant_name enum.enum_c_type variant_name v_str in
+            Some msg
+      in
+      let branch_line = sprintf "  %sif (val == caml_hash_variant(\"%s\")) return %s; /* `%s */\n"
+        (if i = 0 then "" else "else ") variant_name enum_member.c_identifier variant_name in
+      emit_member_branch ~namespace ~class_version
+        ~member_version:enum_member.member_version
+        ~fallback_line ~branch:branch_line buf
     ) enum.members;
 
     bprintf buf "  else {\n";
@@ -142,7 +181,7 @@ let generate_c_enum_converters ~namespace enum =
   end
 
 (* Generate C conversion functions for bitfield *)
-let generate_c_bitfield_converters ~namespace bitfield =
+let generate_c_bitfield_converters ~namespace ~class_version bitfield =
   (* Skip bitfields with no flags *)
   if List.length bitfield.flags = 0 then ""
   else begin
@@ -179,12 +218,11 @@ let generate_c_bitfield_converters ~namespace bitfield =
         else
           variant_name
       in
-      bprintf buf "  if (flags & %s) {\n" flag.flag_c_identifier;
-      bprintf buf "    cons = caml_alloc(2, 0);\n";
-      bprintf buf "    Store_field(cons, 0, Val_int(caml_hash_variant(\"%s\"))); /* `%s */\n" variant_name variant_name;
-      bprintf buf "    Store_field(cons, 1, result);\n";
-      bprintf buf "    result = cons;\n";
-      bprintf buf "  }\n";
+      let branch = sprintf "  if (flags & %s) {\n    cons = caml_alloc(2, 0);\n    Store_field(cons, 0, Val_int(caml_hash_variant(\"%s\"))); /* `%s */\n    Store_field(cons, 1, result);\n    result = cons;\n  }\n"
+        flag.flag_c_identifier variant_name variant_name in
+      emit_member_branch ~namespace ~class_version
+        ~member_version:flag.flag_version
+        ~fallback_line:None ~branch buf
     ) bitfield.flags;
 
     bprintf buf "\n  CAMLreturn(result);\n";
@@ -206,8 +244,20 @@ let generate_c_bitfield_converters ~namespace bitfield =
         else
           variant_name
       in
-      bprintf buf "    %sif (tag == caml_hash_variant(\"%s\")) result |= %s; /* `%s */\n"
-        (if i = 0 then "" else "else ") variant_name flag.flag_c_identifier variant_name;
+      let fallback_line =
+        match flag.flag_version with
+        | None -> None
+        | Some v_str ->
+            let msg = sprintf "    %sif (tag == caml_hash_variant(\"%s\")) caml_failwith(\"%s.%s requires %s\");"
+              (if i = 0 then "" else "else ")
+              variant_name bitfield.bitfield_c_type variant_name v_str in
+            Some msg
+      in
+      let branch_line = sprintf "    %sif (tag == caml_hash_variant(\"%s\")) result |= %s; /* `%s */\n"
+        (if i = 0 then "" else "else ") variant_name flag.flag_c_identifier variant_name in
+      emit_member_branch ~namespace ~class_version
+        ~member_version:flag.flag_version
+        ~fallback_line ~branch:branch_line buf
     ) bitfield.flags;
 
     bprintf buf "    list = Field(list, 1);\n";
