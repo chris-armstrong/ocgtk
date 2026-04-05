@@ -252,7 +252,10 @@ value Val_GdkEventType(GdkEventType val) {
     case GDK_PAD_RING: return caml_hash_variant("PAD_RING"); /* `PAD_RING */
     case GDK_PAD_STRIP: return caml_hash_variant("PAD_STRIP"); /* `PAD_STRIP */
     case GDK_PAD_GROUP_MODE: return caml_hash_variant("PAD_GROUP_MODE"); /* `PAD_GROUP_MODE */
+#if GTK_CHECK_VERSION(4,6,0)
     case GDK_TOUCHPAD_HOLD: return caml_hash_variant("TOUCHPAD_HOLD"); /* `TOUCHPAD_HOLD */
+
+#endif
     case GDK_EVENT_LAST: return caml_hash_variant("EVENT_LAST"); /* `EVENT_LAST */
     default: {
       char msg[128];
@@ -293,7 +296,12 @@ GdkEventType GdkEventType_val(value val) {
   else if (val == caml_hash_variant("PAD_RING")) return GDK_PAD_RING; /* `PAD_RING */
   else if (val == caml_hash_variant("PAD_STRIP")) return GDK_PAD_STRIP; /* `PAD_STRIP */
   else if (val == caml_hash_variant("PAD_GROUP_MODE")) return GDK_PAD_GROUP_MODE; /* `PAD_GROUP_MODE */
+#if GTK_CHECK_VERSION(4,6,0)
   else if (val == caml_hash_variant("TOUCHPAD_HOLD")) return GDK_TOUCHPAD_HOLD; /* `TOUCHPAD_HOLD */
+
+#else
+  else if (val == caml_hash_variant("TOUCHPAD_HOLD")) caml_failwith("GdkEventType.TOUCHPAD_HOLD requires 4.6");
+#endif
   else if (val == caml_hash_variant("EVENT_LAST")) return GDK_EVENT_LAST; /* `EVENT_LAST */
   else {
     char msg[128];
@@ -479,30 +487,99 @@ value Val_GdkMemoryFormat(GdkMemoryFormat val) {
     case GDK_MEMORY_A8B8G8R8: return caml_hash_variant("A8B8G8R8"); /* `A8B8G8R8 */
     case GDK_MEMORY_R8G8B8: return caml_hash_variant("R8G8B8"); /* `R8G8B8 */
     case GDK_MEMORY_B8G8R8: return caml_hash_variant("B8G8R8"); /* `B8G8R8 */
+#if GTK_CHECK_VERSION(4,6,0)
     case GDK_MEMORY_R16G16B16: return caml_hash_variant("R16G16B16"); /* `R16G16B16 */
+
+#endif
+#if GTK_CHECK_VERSION(4,6,0)
     case GDK_MEMORY_R16G16B16A16_PREMULTIPLIED: return caml_hash_variant("R16G16B16A16_PREMULTIPLIED"); /* `R16G16B16A16_PREMULTIPLIED */
+
+#endif
+#if GTK_CHECK_VERSION(4,6,0)
     case GDK_MEMORY_R16G16B16A16: return caml_hash_variant("R16G16B16A16"); /* `R16G16B16A16 */
+
+#endif
+#if GTK_CHECK_VERSION(4,6,0)
     case GDK_MEMORY_R16G16B16_FLOAT: return caml_hash_variant("R16G16B16_FLOAT"); /* `R16G16B16_FLOAT */
+
+#endif
+#if GTK_CHECK_VERSION(4,6,0)
     case GDK_MEMORY_R16G16B16A16_FLOAT_PREMULTIPLIED: return caml_hash_variant("R16G16B16A16_FLOAT_PREMULTIPLIED"); /* `R16G16B16A16_FLOAT_PREMULTIPLIED */
+
+#endif
+#if GTK_CHECK_VERSION(4,6,0)
     case GDK_MEMORY_R16G16B16A16_FLOAT: return caml_hash_variant("R16G16B16A16_FLOAT"); /* `R16G16B16A16_FLOAT */
+
+#endif
     case GDK_MEMORY_R32G32B32_FLOAT: return caml_hash_variant("R32G32B32_FLOAT"); /* `R32G32B32_FLOAT */
+#if GTK_CHECK_VERSION(4,6,0)
     case GDK_MEMORY_R32G32B32A32_FLOAT_PREMULTIPLIED: return caml_hash_variant("R32G32B32A32_FLOAT_PREMULTIPLIED"); /* `R32G32B32A32_FLOAT_PREMULTIPLIED */
+
+#endif
+#if GTK_CHECK_VERSION(4,6,0)
     case GDK_MEMORY_R32G32B32A32_FLOAT: return caml_hash_variant("R32G32B32A32_FLOAT"); /* `R32G32B32A32_FLOAT */
+
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
     case GDK_MEMORY_G8A8_PREMULTIPLIED: return caml_hash_variant("G8A8_PREMULTIPLIED"); /* `G8A8_PREMULTIPLIED */
+
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
     case GDK_MEMORY_G8A8: return caml_hash_variant("G8A8"); /* `G8A8 */
+
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
     case GDK_MEMORY_G8: return caml_hash_variant("G8"); /* `G8 */
+
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
     case GDK_MEMORY_G16A16_PREMULTIPLIED: return caml_hash_variant("G16A16_PREMULTIPLIED"); /* `G16A16_PREMULTIPLIED */
+
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
     case GDK_MEMORY_G16A16: return caml_hash_variant("G16A16"); /* `G16A16 */
+
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
     case GDK_MEMORY_G16: return caml_hash_variant("G16"); /* `G16 */
+
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
     case GDK_MEMORY_A8: return caml_hash_variant("A8"); /* `A8 */
+
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
     case GDK_MEMORY_A16: return caml_hash_variant("A16"); /* `A16 */
+
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
     case GDK_MEMORY_A16_FLOAT: return caml_hash_variant("A16_FLOAT"); /* `A16_FLOAT */
+
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
     case GDK_MEMORY_A32_FLOAT: return caml_hash_variant("A32_FLOAT"); /* `A32_FLOAT */
+
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
     case GDK_MEMORY_A8B8G8R8_PREMULTIPLIED: return caml_hash_variant("A8B8G8R8_PREMULTIPLIED"); /* `A8B8G8R8_PREMULTIPLIED */
+
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
     case GDK_MEMORY_B8G8R8X8: return caml_hash_variant("B8G8R8X8"); /* `B8G8R8X8 */
+
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
     case GDK_MEMORY_X8R8G8B8: return caml_hash_variant("X8R8G8B8"); /* `X8R8G8B8 */
+
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
     case GDK_MEMORY_R8G8B8X8: return caml_hash_variant("R8G8B8X8"); /* `R8G8B8X8 */
+
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
     case GDK_MEMORY_X8B8G8R8: return caml_hash_variant("X8B8G8R8"); /* `X8B8G8R8 */
+
+#endif
     case GDK_MEMORY_N_FORMATS: return caml_hash_variant("N_FORMATS"); /* `N_FORMATS */
     default: {
       char msg[128];
@@ -524,30 +601,145 @@ GdkMemoryFormat GdkMemoryFormat_val(value val) {
   else if (val == caml_hash_variant("A8B8G8R8")) return GDK_MEMORY_A8B8G8R8; /* `A8B8G8R8 */
   else if (val == caml_hash_variant("R8G8B8")) return GDK_MEMORY_R8G8B8; /* `R8G8B8 */
   else if (val == caml_hash_variant("B8G8R8")) return GDK_MEMORY_B8G8R8; /* `B8G8R8 */
+#if GTK_CHECK_VERSION(4,6,0)
   else if (val == caml_hash_variant("R16G16B16")) return GDK_MEMORY_R16G16B16; /* `R16G16B16 */
+
+#else
+  else if (val == caml_hash_variant("R16G16B16")) caml_failwith("GdkMemoryFormat.R16G16B16 requires 4.6");
+#endif
+#if GTK_CHECK_VERSION(4,6,0)
   else if (val == caml_hash_variant("R16G16B16A16_PREMULTIPLIED")) return GDK_MEMORY_R16G16B16A16_PREMULTIPLIED; /* `R16G16B16A16_PREMULTIPLIED */
+
+#else
+  else if (val == caml_hash_variant("R16G16B16A16_PREMULTIPLIED")) caml_failwith("GdkMemoryFormat.R16G16B16A16_PREMULTIPLIED requires 4.6");
+#endif
+#if GTK_CHECK_VERSION(4,6,0)
   else if (val == caml_hash_variant("R16G16B16A16")) return GDK_MEMORY_R16G16B16A16; /* `R16G16B16A16 */
+
+#else
+  else if (val == caml_hash_variant("R16G16B16A16")) caml_failwith("GdkMemoryFormat.R16G16B16A16 requires 4.6");
+#endif
+#if GTK_CHECK_VERSION(4,6,0)
   else if (val == caml_hash_variant("R16G16B16_FLOAT")) return GDK_MEMORY_R16G16B16_FLOAT; /* `R16G16B16_FLOAT */
+
+#else
+  else if (val == caml_hash_variant("R16G16B16_FLOAT")) caml_failwith("GdkMemoryFormat.R16G16B16_FLOAT requires 4.6");
+#endif
+#if GTK_CHECK_VERSION(4,6,0)
   else if (val == caml_hash_variant("R16G16B16A16_FLOAT_PREMULTIPLIED")) return GDK_MEMORY_R16G16B16A16_FLOAT_PREMULTIPLIED; /* `R16G16B16A16_FLOAT_PREMULTIPLIED */
+
+#else
+  else if (val == caml_hash_variant("R16G16B16A16_FLOAT_PREMULTIPLIED")) caml_failwith("GdkMemoryFormat.R16G16B16A16_FLOAT_PREMULTIPLIED requires 4.6");
+#endif
+#if GTK_CHECK_VERSION(4,6,0)
   else if (val == caml_hash_variant("R16G16B16A16_FLOAT")) return GDK_MEMORY_R16G16B16A16_FLOAT; /* `R16G16B16A16_FLOAT */
+
+#else
+  else if (val == caml_hash_variant("R16G16B16A16_FLOAT")) caml_failwith("GdkMemoryFormat.R16G16B16A16_FLOAT requires 4.6");
+#endif
   else if (val == caml_hash_variant("R32G32B32_FLOAT")) return GDK_MEMORY_R32G32B32_FLOAT; /* `R32G32B32_FLOAT */
+#if GTK_CHECK_VERSION(4,6,0)
   else if (val == caml_hash_variant("R32G32B32A32_FLOAT_PREMULTIPLIED")) return GDK_MEMORY_R32G32B32A32_FLOAT_PREMULTIPLIED; /* `R32G32B32A32_FLOAT_PREMULTIPLIED */
+
+#else
+  else if (val == caml_hash_variant("R32G32B32A32_FLOAT_PREMULTIPLIED")) caml_failwith("GdkMemoryFormat.R32G32B32A32_FLOAT_PREMULTIPLIED requires 4.6");
+#endif
+#if GTK_CHECK_VERSION(4,6,0)
   else if (val == caml_hash_variant("R32G32B32A32_FLOAT")) return GDK_MEMORY_R32G32B32A32_FLOAT; /* `R32G32B32A32_FLOAT */
+
+#else
+  else if (val == caml_hash_variant("R32G32B32A32_FLOAT")) caml_failwith("GdkMemoryFormat.R32G32B32A32_FLOAT requires 4.6");
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
   else if (val == caml_hash_variant("G8A8_PREMULTIPLIED")) return GDK_MEMORY_G8A8_PREMULTIPLIED; /* `G8A8_PREMULTIPLIED */
+
+#else
+  else if (val == caml_hash_variant("G8A8_PREMULTIPLIED")) caml_failwith("GdkMemoryFormat.G8A8_PREMULTIPLIED requires 4.12");
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
   else if (val == caml_hash_variant("G8A8")) return GDK_MEMORY_G8A8; /* `G8A8 */
+
+#else
+  else if (val == caml_hash_variant("G8A8")) caml_failwith("GdkMemoryFormat.G8A8 requires 4.12");
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
   else if (val == caml_hash_variant("G8")) return GDK_MEMORY_G8; /* `G8 */
+
+#else
+  else if (val == caml_hash_variant("G8")) caml_failwith("GdkMemoryFormat.G8 requires 4.12");
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
   else if (val == caml_hash_variant("G16A16_PREMULTIPLIED")) return GDK_MEMORY_G16A16_PREMULTIPLIED; /* `G16A16_PREMULTIPLIED */
+
+#else
+  else if (val == caml_hash_variant("G16A16_PREMULTIPLIED")) caml_failwith("GdkMemoryFormat.G16A16_PREMULTIPLIED requires 4.12");
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
   else if (val == caml_hash_variant("G16A16")) return GDK_MEMORY_G16A16; /* `G16A16 */
+
+#else
+  else if (val == caml_hash_variant("G16A16")) caml_failwith("GdkMemoryFormat.G16A16 requires 4.12");
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
   else if (val == caml_hash_variant("G16")) return GDK_MEMORY_G16; /* `G16 */
+
+#else
+  else if (val == caml_hash_variant("G16")) caml_failwith("GdkMemoryFormat.G16 requires 4.12");
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
   else if (val == caml_hash_variant("A8")) return GDK_MEMORY_A8; /* `A8 */
+
+#else
+  else if (val == caml_hash_variant("A8")) caml_failwith("GdkMemoryFormat.A8 requires 4.12");
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
   else if (val == caml_hash_variant("A16")) return GDK_MEMORY_A16; /* `A16 */
+
+#else
+  else if (val == caml_hash_variant("A16")) caml_failwith("GdkMemoryFormat.A16 requires 4.12");
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
   else if (val == caml_hash_variant("A16_FLOAT")) return GDK_MEMORY_A16_FLOAT; /* `A16_FLOAT */
+
+#else
+  else if (val == caml_hash_variant("A16_FLOAT")) caml_failwith("GdkMemoryFormat.A16_FLOAT requires 4.12");
+#endif
+#if GTK_CHECK_VERSION(4,12,0)
   else if (val == caml_hash_variant("A32_FLOAT")) return GDK_MEMORY_A32_FLOAT; /* `A32_FLOAT */
+
+#else
+  else if (val == caml_hash_variant("A32_FLOAT")) caml_failwith("GdkMemoryFormat.A32_FLOAT requires 4.12");
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
   else if (val == caml_hash_variant("A8B8G8R8_PREMULTIPLIED")) return GDK_MEMORY_A8B8G8R8_PREMULTIPLIED; /* `A8B8G8R8_PREMULTIPLIED */
+
+#else
+  else if (val == caml_hash_variant("A8B8G8R8_PREMULTIPLIED")) caml_failwith("GdkMemoryFormat.A8B8G8R8_PREMULTIPLIED requires 4.14");
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
   else if (val == caml_hash_variant("B8G8R8X8")) return GDK_MEMORY_B8G8R8X8; /* `B8G8R8X8 */
+
+#else
+  else if (val == caml_hash_variant("B8G8R8X8")) caml_failwith("GdkMemoryFormat.B8G8R8X8 requires 4.14");
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
   else if (val == caml_hash_variant("X8R8G8B8")) return GDK_MEMORY_X8R8G8B8; /* `X8R8G8B8 */
+
+#else
+  else if (val == caml_hash_variant("X8R8G8B8")) caml_failwith("GdkMemoryFormat.X8R8G8B8 requires 4.14");
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
   else if (val == caml_hash_variant("R8G8B8X8")) return GDK_MEMORY_R8G8B8X8; /* `R8G8B8X8 */
+
+#else
+  else if (val == caml_hash_variant("R8G8B8X8")) caml_failwith("GdkMemoryFormat.R8G8B8X8 requires 4.14");
+#endif
+#if GTK_CHECK_VERSION(4,14,0)
   else if (val == caml_hash_variant("X8B8G8R8")) return GDK_MEMORY_X8B8G8R8; /* `X8B8G8R8 */
+
+#else
+  else if (val == caml_hash_variant("X8B8G8R8")) caml_failwith("GdkMemoryFormat.X8B8G8R8 requires 4.14");
+#endif
   else if (val == caml_hash_variant("N_FORMATS")) return GDK_MEMORY_N_FORMATS; /* `N_FORMATS */
   else {
     char msg[128];
@@ -1191,12 +1383,15 @@ value Val_GdkModifierType(GdkModifierType flags) {
   CAMLlocal2(result, cons);
   result = Val_emptylist;
 
+#if GTK_CHECK_VERSION(4,14,0)
   if (flags & GDK_NO_MODIFIER_MASK) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("NO_MODIFIER_MASK"))); /* `NO_MODIFIER_MASK */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
   if (flags & GDK_SHIFT_MASK) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("SHIFT_MASK"))); /* `SHIFT_MASK */
@@ -1278,7 +1473,12 @@ GdkModifierType GdkModifierType_val(value list) {
   GdkModifierType result = 0;
   while (list != Val_emptylist) {
     int tag = Int_val(Field(list, 0));
+#if GTK_CHECK_VERSION(4,14,0)
     if (tag == caml_hash_variant("NO_MODIFIER_MASK")) result |= GDK_NO_MODIFIER_MASK; /* `NO_MODIFIER_MASK */
+
+#else
+    if (tag == caml_hash_variant("NO_MODIFIER_MASK")) caml_failwith("GdkModifierType.NO_MODIFIER_MASK requires 4.14");
+#endif
     else if (tag == caml_hash_variant("SHIFT_MASK")) result |= GDK_SHIFT_MASK; /* `SHIFT_MASK */
     else if (tag == caml_hash_variant("LOCK_MASK")) result |= GDK_LOCK_MASK; /* `LOCK_MASK */
     else if (tag == caml_hash_variant("CONTROL_MASK")) result |= GDK_CONTROL_MASK; /* `CONTROL_MASK */
