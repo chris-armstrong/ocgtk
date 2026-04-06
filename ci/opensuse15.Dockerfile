@@ -19,6 +19,7 @@ RUN zypper refresh && zypper install -y \
     gobject-introspection-devel \
     # Headless display for running GTK tests
     xorg-x11-server-Xvfb \
+    xvfb-run \
  && zypper clean --all
 
 # Install opam
