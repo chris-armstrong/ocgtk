@@ -16,6 +16,7 @@
     (member sentence (version "1.50"))
     (member baseline_shift (version "1.50"))
     (member font_scale (version "1.50"))
+    (member text_transform (version "1.50"))
   )
 
   (enumeration BidiType
