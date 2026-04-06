@@ -253,10 +253,68 @@ silently drop the namespace; a warning should be considered for a later phase.
 
 ### Tests to Add / Update
 
-- `test_override_parser.ml` — parse `(version (pango "1.50"))` round-trip; error on unknown lib name
-- `test_override_apply.ml` — `version_namespace` is set on surviving component
-- `version_guard_tests.ml` — `normalize_namespace` maps known and rejects unknown names
-- `c_stubs` integration tests — property stubs with cross-namespace guard emit `PANGO_VERSION_CHECK`
+#### `test_override_parser.ml`
+
+- **Cross-namespace parse round-trip**: parse `(overrides (library "Gtk") (class TextTag (property text-transform (version (pango "1.50")))))` and assert the resulting `component_override` has `action = Set_version { vs_version = "1.50"; vs_namespace = Some "Pango" }`.
+- **Unknown library hard error**: parse `(version (unknownlib "1.0"))` and assert an `Error` result is returned (not a parse success with a bad value).
+- **Same-namespace version still works**: `(version "4.14")` still produces `Set_version { vs_version = "4.14"; vs_namespace = None }` — regression guard.
+- **All supported library names accepted**: at minimum `gtk`, `pango`, `gdk`, `gio`, `gsk`, `graphene`, `cairo`, `gdkpixbuf`, `pangocairo` produce `Ok` results from `normalize_namespace`.
+
+#### `test_override_apply.ml`
+
+- **Cross-namespace version sets `version_namespace` on method**: apply an override with `Set_version { vs_version = "1.50"; vs_namespace = Some "Pango" }` to a method; assert the surviving method has `version = Some "1.50"` and `version_namespace = Some "Pango"`.
+- **Cross-namespace version sets `version_namespace` on property**: same as above for `gir_property`.
+- **Same-namespace version leaves `version_namespace = None`**: `vs_namespace = None` override leaves `version_namespace = None` on the component (regression guard for existing behaviour).
+- **Polymorphic equality**: the existing tests on lines 256, 272, 304, 383, 428, 469 use `Stdlib.(=)` for `option` comparison — replace with `Option.equal String.equal` as required by the code guidelines.
+
+#### New file: `version_guard_tests.ml`
+
+Create `src/tools/test_gir_gen/version_guard_tests.ml` and register it in `dune`. Test:
+- `normalize_namespace "pango"` → `Ok "Pango"`
+- `normalize_namespace "PANGO"` → `Ok "Pango"` (case-insensitive)
+- `normalize_namespace "pango-cairo"` → `Ok "PangoCairo"`
+- `normalize_namespace "pangocairo"` → `Ok "PangoCairo"`
+- `normalize_namespace "glib"` → `Ok "Gio"` (alias)
+- `normalize_namespace "gtk"` → `Ok "Gtk"`
+- `normalize_namespace "unknownlib"` → `Error _`
+
+#### `c_stubs` integration tests
+
+Add a test in `c_stubs/cross_namespace_tests.ml` (the file already exists) that:
+- Builds a `gir_property` with `version = Some "1.50"` and `version_namespace = Some "Pango"`.
+- Calls the property stub generator for it.
+- Asserts the C output contains `PANGO_VERSION_CHECK(1,50,0)` and does **not** contain `GTK_CHECK_VERSION`.
+
+### Known Code Quality Issues
+
+The following issues were identified during review and should be addressed in a future cleanup pass. They do not affect correctness.
+
+#### `set_version` lambda duplicated in `override_apply.ml`
+
+`apply_components_by_name` is called ~12 times, each time passing a nearly identical `~set_version` lambda:
+
+```ocaml
+~set_version:(fun vs (m : gir_method) ->
+  { m with version = Some vs.vs_version; version_namespace = vs.vs_namespace })
+```
+
+The code-reuse guideline requires extraction when a pattern appears 3+ times. Each call site should use a per-type helper defined once at the top of the file, e.g.:
+
+```ocaml
+let set_method_version vs m = { m with version = Some vs.vs_version; version_namespace = vs.vs_namespace }
+let set_property_version vs p = { p with version = Some vs.vs_version; version_namespace = vs.vs_namespace }
+(* etc. *)
+```
+
+#### Entity-level `Set_version` is dead code in `override_apply.ml`
+
+`apply_entity_overrides` handles `Some (Set_version vs)` at the entity level, but `override_parser.ml` never produces an entity-level `Set_version` — it only produces `Some Ignore` or `None`. This path is unreachable and untested. Either:
+- Add parser support for entity-level `(version "X.Y")`, or
+- Remove the `Set_version` arm from `apply_entity_overrides`.
+
+#### `namespace_display_name` duplicates knowledge from `version_guard.ml`
+
+`c_stub_helpers.ml` maintains its own namespace → display-name mapping (line ~379) independent of `version_guard.ml`'s `namespace_macro_kind`. Adding a new namespace currently requires updating both. The display name should be derived from `version_guard.ml`'s table or a shared helper.
 
 ### Known Limitations
 
