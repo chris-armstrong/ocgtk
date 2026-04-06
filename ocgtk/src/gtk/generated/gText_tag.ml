@@ -151,8 +151,6 @@ class type text_tag_t = object
     method set_tabs : Ocgtk_pango.Pango.Tab_array.tab_array_t -> unit
     method tabs_set : bool
     method set_tabs_set : bool -> unit
-    method text_transform : Ocgtk_pango.Pango.texttransform
-    method set_text_transform : Ocgtk_pango.Pango.texttransform -> unit
     method text_transform_set : bool
     method set_text_transform_set : bool -> unit
     method underline : Ocgtk_pango.Pango.underline
@@ -420,9 +418,6 @@ class text_tag (obj : Text_tag.t) : text_tag_t = object (self)
 
   method tabs_set = Text_tag.get_tabs_set obj
   method set_tabs_set v =  Text_tag.set_tabs_set obj v
-
-  method text_transform = Text_tag.get_text_transform obj
-  method set_text_transform v =  Text_tag.set_text_transform obj v
 
   method text_transform_set = Text_tag.get_text_transform_set obj
   method set_text_transform_set v =  Text_tag.set_text_transform_set obj v
