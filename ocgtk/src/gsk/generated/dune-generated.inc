@@ -45,7 +45,6 @@
       (echo "GDebug_node")
       (echo "GError")
       (echo "GFill_node")
-      (echo "GGl_renderer")
       (echo "GGl_shader")
       (echo "GGl_shader_node")
       (echo "GInset_shadow_node")
@@ -78,14 +77,12 @@
       (echo "GTexture_scale_node")
       (echo "GTransform")
       (echo "GTransform_node")
-      (echo "GVulkan_renderer")
       (echo "Gaux")
       (echo "Gdk")
       (echo "GdkClipboard")
       (echo "GdkPixbuf")
       (echo "Gdk_enums")
       (echo "GestureClick")
-      (echo "Gl_renderer")
       (echo "Gl_shader")
       (echo "Gl_shader_node")
       (echo "Glib")
@@ -152,7 +149,6 @@
       (echo "Toggle_button")
       (echo "Transform")
       (echo "Transform_node")
-      (echo "Vulkan_renderer")
     )))
 )
 
@@ -211,7 +207,6 @@ rm cflag-gsk.sexp.tmp clink-gsk.sexp.tmp\\
    ml_cross_fade_node_gen
    ml_debug_node_gen
    ml_fill_node_gen
-   ml_gl_renderer_gen
    ml_gl_shader_gen
    ml_gl_shader_node_gen
    ml_gsk_enums_gen
@@ -244,7 +239,6 @@ rm cflag-gsk.sexp.tmp clink-gsk.sexp.tmp\\
    ml_texture_scale_node_gen
    ml_transform_gen
    ml_transform_node_gen
-   ml_vulkan_renderer_gen
   )
   (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gsk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gsk.sexp)))
