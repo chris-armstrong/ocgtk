@@ -9,7 +9,8 @@ RUN dnf install -y epel-release \
  && dnf update -y
 
 # System dependencies
-RUN dnf install -y \
+# --allowerasing lets dnf replace curl-minimal (shipped by default) with full curl
+RUN dnf install -y --allowerasing \
     # Build toolchain
     gcc make m4 patch unzip bzip2 curl git \
     # OCaml / opam requirements
