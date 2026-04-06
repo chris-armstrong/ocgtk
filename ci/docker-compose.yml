@@ -52,8 +52,35 @@ services:
     command: sleep infinity
     tty: true
 
+  fedora40:
+    build:
+      context: ..
+      dockerfile: ci/fedora40.Dockerfile
+      <<: *build-args
+    volumes:
+      - ..:/workspace:cached
+      - fedora40-build:/build
+    working_dir: /workspace
+    command: sleep infinity
+    tty: true
+
+  # ubuntu24: skipped in normal runs — dev environment already runs Ubuntu 24.04
+  ubuntu24:
+    build:
+      context: ..
+      dockerfile: ci/ubuntu24.Dockerfile
+      <<: *build-args
+    volumes:
+      - ..:/workspace:cached
+      - ubuntu24-build:/build
+    working_dir: /workspace
+    command: sleep infinity
+    tty: true
+
 volumes:
   ubuntu22-build:
   debian12-build:
   centos9-build:
   opensuse15-build:
+  fedora40-build:
+  ubuntu24-build:

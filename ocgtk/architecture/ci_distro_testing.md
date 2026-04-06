@@ -7,12 +7,14 @@ they reach users.
 
 ## Supported Distros
 
-| Service name   | Image                          | Key GTK version |
-|----------------|--------------------------------|-----------------|
-| `ubuntu22`     | `ubuntu:22.04`                 | GTK 4.6 / GLib 2.72 |
-| `debian12`     | `debian:12`                    | GTK 4.8 / GLib 2.74 |
-| `centos9`      | `quay.io/centos/centos:stream9`| GTK 4.x / GLib 2.68 |
-| `opensuse15`   | `opensuse/leap:15.6`           | GTK 4.x          |
+| Service name   | Image                          | Key GTK version      | Notes |
+|----------------|--------------------------------|----------------------|-------|
+| `ubuntu22`     | `ubuntu:22.04`                 | GTK 4.6 / GLib 2.72 | Oldest GTK in the matrix |
+| `debian12`     | `debian:12`                    | GTK 4.8 / GLib 2.74 | |
+| `centos9`      | `quay.io/centos/centos:stream9`| GTK 4.x / GLib 2.68 | Pango < 1.50 — tests cross-namespace version guards |
+| `opensuse15`   | `opensuse/leap:15.6`           | GTK 4.x / Pango 1.50| GTK < 4.14 — StringList tests skip |
+| `fedora40`     | `fedora:40`                    | GTK 4.14+ / Pango 1.52 | Newest RHEL-family; all tests run |
+| `ubuntu24`     | `ubuntu:24.04`                 | GTK 4.14+            | **Opt-in only** — excluded from default `oci up/build/down` runs since the dev environment is Ubuntu 24.04 |
 
 Ubuntu 22.04 is the most important test target because GLib 2.72 is the boundary
 where several version-guarded APIs (e.g. `G_CONNECT_DEFAULT`, `G_APPLICATION_DEFAULT_FLAGS`)
@@ -26,9 +28,11 @@ ci/
   docker-compose.yml     # service definitions
   versions.env           # OPAM_VERSION and OCAML_VERSION pins (edit here to update all)
   ubuntu22.Dockerfile
+  ubuntu24.Dockerfile    # opt-in
   debian12.Dockerfile
   centos9.Dockerfile
   opensuse15.Dockerfile
+  fedora40.Dockerfile
   scripts/
     build.sh             # dune build --build-dir /build
     test.sh              # xvfb-run dune runtest --build-dir /build

@@ -16,9 +16,11 @@
 #   ./ci/oci clean --all         Stop, remove containers, volumes, AND images
 #
 # Examples:
-#   ./ci/oci up                     # start all three distros
+#   ./ci/oci up                     # start all default distros
 #   ./ci/oci run ubuntu22 build     # build on Ubuntu 22.04
 #   ./ci/oci run debian12 test      # run tests on Debian 12
+#   ./ci/oci run fedora40 test      # run tests on Fedora 40
+#   ./ci/oci run ubuntu24 build     # opt-in: build on Ubuntu 24.04
 #   ./ci/oci shell centos9          # interactive shell on CentOS Stream 9
 #   ./ci/oci clean debian12         # free disk for one distro
 #   ./ci/oci clean --all            # full teardown
@@ -28,7 +30,9 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COMPOSE_FILE="$SCRIPT_DIR/docker-compose.yml"
 VERSIONS_FILE="$SCRIPT_DIR/versions.env"
-ALL_DISTROS=(ubuntu22 debian12 centos9 opensuse15)
+# ubuntu24 is excluded from the default set — the dev environment already runs
+# Ubuntu 24.04, so it adds no coverage. Run it explicitly: ./ci/oci run ubuntu24 build
+ALL_DISTROS=(ubuntu22 debian12 centos9 opensuse15 fedora40)
 STATE_FILE="$SCRIPT_DIR/.oci-state"
 
 # ── helpers ───────────────────────────────────────────────────────────────────
@@ -45,6 +49,9 @@ compose() {
   docker compose --env-file "$VERSIONS_FILE" -f "$COMPOSE_FILE" "$@"
 }
 
+# All distros recognised by name (superset of ALL_DISTROS — includes opt-in ones)
+ALL_KNOWN_DISTROS=(ubuntu22 debian12 centos9 opensuse15 fedora40 ubuntu24)
+
 # Resolve the list of distros from args, defaulting to all
 distros_from_args() {
   local args=("$@")
@@ -53,10 +60,10 @@ distros_from_args() {
   else
     for d in "${args[@]}"; do
       local valid=false
-      for known in "${ALL_DISTROS[@]}"; do
+      for known in "${ALL_KNOWN_DISTROS[@]}"; do
         [[ "$d" == "$known" ]] && valid=true && break
       done
-      $valid || die "unknown distro '$d' (valid: ${ALL_DISTROS[*]})"
+      $valid || die "unknown distro '$d' (valid: ${ALL_KNOWN_DISTROS[*]})"
       echo "$d"
     done
   fi
@@ -122,7 +129,7 @@ cmd_status() {
   echo ""
   echo "  Distro      Container state   Image built"
   echo "  ─────────── ───────────────   ──────────────────────"
-  for d in "${ALL_DISTROS[@]}"; do
+  for d in "${ALL_KNOWN_DISTROS[@]}"; do
     local state
     state=$(docker compose -f "$COMPOSE_FILE" ps --status running --format '{{.Service}}' 2>/dev/null \
               | grep -c "^$d$" || true)
