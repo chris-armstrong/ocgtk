@@ -6,7 +6,7 @@ ARG OCAML_VERSION=5.3.0
 # System dependencies
 RUN zypper refresh && zypper install -y \
     # Build toolchain
-    gcc make m4 patch unzip bzip2 curl git \
+    gcc make m4 patch unzip bzip2 gzip curl git tar \
     # OCaml / opam requirements
     pkg-config perl diffutils which rsync \
     # GTK 4 and friends
