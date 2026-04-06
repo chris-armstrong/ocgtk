@@ -1708,12 +1708,15 @@ value Val_GdkToplevelState(GdkToplevelState flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GTK_CHECK_VERSION(4,12,0)
   if (flags & GDK_TOPLEVEL_STATE_SUSPENDED) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("SUSPENDED"))); /* `SUSPENDED */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -1739,7 +1742,12 @@ GdkToplevelState GdkToplevelState_val(value list) {
     else if (tag == caml_hash_variant("BOTTOM_RESIZABLE")) result |= GDK_TOPLEVEL_STATE_BOTTOM_RESIZABLE; /* `BOTTOM_RESIZABLE */
     else if (tag == caml_hash_variant("LEFT_TILED")) result |= GDK_TOPLEVEL_STATE_LEFT_TILED; /* `LEFT_TILED */
     else if (tag == caml_hash_variant("LEFT_RESIZABLE")) result |= GDK_TOPLEVEL_STATE_LEFT_RESIZABLE; /* `LEFT_RESIZABLE */
+#if GTK_CHECK_VERSION(4,12,0)
     else if (tag == caml_hash_variant("SUSPENDED")) result |= GDK_TOPLEVEL_STATE_SUSPENDED; /* `SUSPENDED */
+
+#else
+    else if (tag == caml_hash_variant("SUSPENDED")) caml_failwith("GdkToplevelState.SUSPENDED requires 4.12");
+#endif
     list = Field(list, 1);
   }
   return result;

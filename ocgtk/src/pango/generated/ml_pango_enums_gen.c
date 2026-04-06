@@ -102,7 +102,10 @@ value Val_PangoAttrType(PangoAttrType val) {
     case PANGO_ATTR_ABSOLUTE_LINE_HEIGHT: return caml_hash_variant("ABSOLUTE_LINE_HEIGHT"); /* `ABSOLUTE_LINE_HEIGHT */
 
 #endif
+#if PANGO_VERSION_CHECK(1,50,0)
     case PANGO_ATTR_TEXT_TRANSFORM: return caml_hash_variant("TEXT_TRANSFORM"); /* `TEXT_TRANSFORM */
+
+#endif
 #if PANGO_VERSION_CHECK(1,50,0)
     case PANGO_ATTR_WORD: return caml_hash_variant("WORD"); /* `WORD */
 
@@ -213,7 +216,12 @@ PangoAttrType PangoAttrType_val(value val) {
 #else
   else if (val == caml_hash_variant("ABSOLUTE_LINE_HEIGHT")) caml_failwith("PangoAttrType.ABSOLUTE_LINE_HEIGHT requires 1.50");
 #endif
+#if PANGO_VERSION_CHECK(1,50,0)
   else if (val == caml_hash_variant("TEXT_TRANSFORM")) return PANGO_ATTR_TEXT_TRANSFORM; /* `TEXT_TRANSFORM */
+
+#else
+  else if (val == caml_hash_variant("TEXT_TRANSFORM")) caml_failwith("PangoAttrType.TEXT_TRANSFORM requires 1.50");
+#endif
 #if PANGO_VERSION_CHECK(1,50,0)
   else if (val == caml_hash_variant("WORD")) return PANGO_ATTR_WORD; /* `WORD */
 

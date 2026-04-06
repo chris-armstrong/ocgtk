@@ -88,4 +88,6 @@ GdkPixbufFormatFlags GdkPixbufPixbufFormatFlags_val(value list);
 #endif
 
 
+#include "../core/gdkpixbuf_core.h"
+
 #endif /* _gdkpixbuf_decls_h_ */

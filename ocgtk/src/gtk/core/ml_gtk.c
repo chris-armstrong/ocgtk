@@ -110,3 +110,43 @@ CAMLprim value ml_gtk_main_iteration_do(value block)
   gboolean result = g_main_context_iteration(context, Bool_val(block));
   CAMLreturn(Val_bool(result));
 }
+
+/* ========== Version ========== */
+
+/* Runtime version — from the GTK shared library actually loaded */
+CAMLprim value ml_gtk_get_major_version(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_int(gtk_get_major_version()));
+}
+
+CAMLprim value ml_gtk_get_minor_version(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_int(gtk_get_minor_version()));
+}
+
+CAMLprim value ml_gtk_get_micro_version(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_int(gtk_get_micro_version()));
+}
+
+/* Compile-time version — from the GTK headers used to build this library */
+CAMLprim value ml_gtk_compile_major_version(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_int(GTK_MAJOR_VERSION));
+}
+
+CAMLprim value ml_gtk_compile_minor_version(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_int(GTK_MINOR_VERSION));
+}
+
+CAMLprim value ml_gtk_compile_micro_version(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_int(GTK_MICRO_VERSION));
+}

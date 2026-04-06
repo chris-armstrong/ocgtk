@@ -222,6 +222,7 @@ let test_copy_function_returns_copy_result () =
       set_property = None;
       introspectable = true;
       version = None;
+      version_namespace = None;
     }
   in
   let record =
@@ -308,6 +309,7 @@ let test_record_copy_parses_successfully () =
       set_property = None;
       introspectable = true;
       version = None;
+      version_namespace = None;
     }
   in
   let record =
@@ -576,6 +578,7 @@ let test_enum_array_element_conversion () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -732,6 +735,7 @@ let test_bitfield_array_element_conversion () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -890,6 +894,7 @@ let test_inout_record_param_pointer_type () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -1123,6 +1128,7 @@ let test_fixed_size_array_out_param () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -1254,6 +1260,7 @@ let test_fixed_size_float_array_return () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -1390,6 +1397,7 @@ let test_out_param_array_without_length_skipped () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -1446,6 +1454,7 @@ let test_double_pointer_out_param_skipped () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -1530,6 +1539,7 @@ let test_normal_out_param_not_skipped () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -1752,6 +1762,7 @@ let test_cross_namespace_c_converter_names () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -1848,6 +1859,7 @@ let test_cross_namespace_enum_array_element_conversion () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 

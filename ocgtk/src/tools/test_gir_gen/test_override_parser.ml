@@ -57,7 +57,7 @@ let test_class_with_method_overrides () =
   let m2 = find_exn "Expected method 'notify_destroy'" (fun m -> String.equal m.component_name "notify_destroy") c.methods in
   Alcotest.(check bool) "create ignored" true (equal_override_action m1.action Ignore);
   Alcotest.(check bool) "notify_destroy version" true
-    (equal_override_action m2.action (Set_version "4.53"))
+    (equal_override_action m2.action (Set_version { vs_version = "4.53"; vs_namespace = None }))
 
 let test_class_with_constructor_and_property () =
   let ov =

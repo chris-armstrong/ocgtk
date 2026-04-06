@@ -49,6 +49,7 @@ type gir_method = {
   set_property : string option;
   introspectable : bool;
   version : string option;
+  version_namespace : string option;
 }
 
 type gir_function = {
@@ -60,6 +61,7 @@ type gir_function = {
   throws : bool;
   introspectable : bool;
   version : string option;
+  version_namespace : string option;
 }
 
 type gir_signal = {
@@ -68,6 +70,7 @@ type gir_signal = {
   sig_parameters : gir_param list;
   doc : string option;
   version : string option;
+  version_namespace : string option;
 }
 
 type gir_constructor = {
@@ -78,6 +81,7 @@ type gir_constructor = {
   throws : bool;
   ctor_introspectable : bool;
   version : string option;
+  version_namespace : string option;
 }
 
 type gir_property = {
@@ -88,6 +92,7 @@ type gir_property = {
   construct_only : bool;
   prop_doc : string option;
   version : string option;
+  version_namespace : string option;
 }
 
 type gir_record_field = {

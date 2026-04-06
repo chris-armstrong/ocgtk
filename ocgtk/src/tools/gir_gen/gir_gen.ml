@@ -59,6 +59,7 @@ let entity_generator_by_entity_type =
                   ~constructor:ctor
               in
               C_stub_helpers.emit_with_member_guard ~ctx
+                ~version_namespace:ctor.version_namespace
                 ~class_version:entity.version ~member_version:ctor.version ~stub
                 buf ~fallback:(fun v ->
                   C_stub_helpers.emit_fallback_constructor_stub ~ctx
@@ -83,6 +84,7 @@ let entity_generator_by_entity_type =
                 Gir_gen_lib.Utils.ml_method_name ~class_name:entity.name meth
               in
               C_stub_helpers.emit_with_member_guard ~ctx
+                ~version_namespace:meth.version_namespace
                 ~class_version:entity.version ~member_version:meth.version ~stub
                 buf ~fallback:(fun v ->
                   C_stub_helpers.emit_fallback_method_stub ~ctx
@@ -110,6 +112,7 @@ let entity_generator_by_entity_type =
                 Gir_gen_lib.Utils.ml_property_name ~ctx ~class_name prop
               in
               C_stub_helpers.emit_with_member_guard ~ctx
+                ~version_namespace:prop.version_namespace
                 ~class_version:entity.version ~member_version:prop.version ~stub
                 buf ~fallback:(fun v ->
                   C_stub_helpers.emit_fallback_property_getter_stub ~ctx ~c_type
@@ -124,6 +127,7 @@ let entity_generator_by_entity_type =
                 Gir_gen_lib.Utils.ml_property_setter_name ~ctx ~class_name prop
               in
               C_stub_helpers.emit_with_member_guard ~ctx
+                ~version_namespace:prop.version_namespace
                 ~class_version:entity.version ~member_version:prop.version ~stub
                 buf ~fallback:(fun v ->
                   C_stub_helpers.emit_fallback_property_setter_stub ~ctx ~c_type
@@ -915,59 +919,6 @@ let generate_bindings filter_file gir_file output_dir reference_files
     aux (Gir_gen_lib.Utils.normalize_class_name name) 0
   in
 
-  (* Parse external namespace GIR files for enums/bitfields *)
-  let external_namespaces =
-    [
-      ("Gdk", "/usr/share/gir-1.0/Gdk-4.0.gir");
-      ("Pango", "/usr/share/gir-1.0/Pango-1.0.gir");
-      ("GdkPixbuf", "/usr/share/gir-1.0/GdkPixbuf-2.0.gir");
-      ("Gsk", "/usr/share/gir-1.0/Gsk-4.0.gir");
-      ("Graphene", "/usr/share/gir-1.0/Graphene-1.0.gir");
-      ("GObject", "/usr/share/gir-1.0/GObject-2.0.gir");
-    ]
-  in
-
-  let included_namespaces =
-    let rec find_included includes =
-      includes
-      |> List.map ~f:(fun incl ->
-          try
-            let external_file =
-              ListLabels.assoc
-                Gir_gen_lib.Types.(incl.include_name)
-                external_namespaces
-            in
-            let repository, _, _, _, _, _, _ =
-              Gir_gen_lib.Parse.Gir_parser.parse_gir_file external_file []
-            in
-            (incl.include_name, external_file)
-            :: find_included repository.repository_includes
-          with Not_found -> [])
-      |> List.flatten
-    in
-    find_included repository.repository_includes
-    |> List.sort_uniq ~cmp:(fun (x1, _) (x2, _) -> String.compare x1 x2)
-  in
-  let external_enums_bitfields =
-    List.map
-      ~f:(fun (ns_name, gir_path) ->
-        if Sys.file_exists gir_path then begin
-          printf "Parsing %s for enums/bitfields...\n" gir_path;
-          let ns_enums, ns_bitfields =
-            Gir_gen_lib.Parse.Gir_parser.parse_gir_enums_only gir_path
-          in
-          printf "Found %d %s enumerations, %d %s bitfields\n"
-            (List.length ns_enums) ns_name (List.length ns_bitfields) ns_name;
-          Some (ns_name, ns_enums, ns_bitfields)
-        end
-        else begin
-          eprintf "Warning: %s not found, skipping external namespace %s\n"
-            gir_path ns_name;
-          None
-        end)
-      included_namespaces
-    |> List.filter_map ~f:(fun x -> x)
-  in
 
   (* Combine all enums and bitfields for type mapping lookups *)
   let all_classes =
@@ -1130,21 +1081,6 @@ let generate_bindings filter_file gir_file output_dir reference_files
   (* Generate signal classes for all entities (classes and interfaces) *)
   generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class entities;
 
-  (* Generate enum files for external namespaces *)
-  (* Only generate these for Gtk - other libraries will use Gtk's converters *)
-  let is_gtk = String.lowercase_ascii ctx.namespace.namespace_name = "gtk" in
-  if is_gtk then begin
-    List.iter
-      ~f:(fun (ns_name, ns_enums, ns_bitfields) ->
-        let ns_lower = String.lowercase_ascii ns_name in
-        let include_header =
-          Gir_gen_lib.Generate.C_stubs.include_header_for_namespace ns_name
-        in
-        let namespace = { name = ns_name; prefix = ns_lower; include_header } in
-        generate_enum_files ~output_dir ~generated_stubs ~generated_modules
-          namespace ns_enums ns_bitfields)
-      external_enums_bitfields
-  end;
 
   (* ==== BUILD CONFIGURATION ==== *)
 
@@ -1311,18 +1247,6 @@ let generate_bindings filter_file gir_file output_dir reference_files
       (List.length gtk_enums)
       (List.length gtk_bitfields)
   end;
-  if is_gtk then begin
-    List.iter
-      ~f:(fun (ns_name, ns_enums, ns_bitfields) ->
-        if List.length ns_enums > 0 || List.length ns_bitfields > 0 then
-          printf
-            "  Generated: %s_enums.mli and ml_%s_enums_gen.c (%d enums, %d \
-             bitfields)\n"
-            (String.lowercase_ascii ns_name)
-            (String.lowercase_ascii ns_name)
-            (List.length ns_enums) (List.length ns_bitfields))
-      external_enums_bitfields
-  end;
   printf "  Generated: dune-generated.inc with %d C stub names\n"
     (List.length stub_list);
   printf "  Generated: %s.ml/.mli (library top-level module)\n" lib_name;
@@ -1430,8 +1354,8 @@ let render_component ~kind (c : Gir_gen_lib.Override_types.component_override) =
   match c.action with
   | Gir_gen_lib.Override_types.Ignore ->
       sprintf "    (%s %s (ignore))" kind c.component_name
-  | Gir_gen_lib.Override_types.Set_version v ->
-      sprintf "    (%s %s (version \"%s\"))" kind c.component_name v
+  | Gir_gen_lib.Override_types.Set_version vs ->
+      sprintf "    (%s %s (version \"%s\"))" kind c.component_name vs.vs_version
 
 (* Render an enum override entry, merging existing ignores with fresh version data.
    [ignore_components]: component-level ignores to preserve from the existing file.
@@ -1443,8 +1367,8 @@ let render_enum_entry entity_kind component_kind entity_name entity_action
   bprintf buf "\n  (%s %s\n" entity_kind entity_name;
   (match entity_action with
   | Some Gir_gen_lib.Override_types.Ignore -> bprintf buf "    (ignore)\n"
-  | Some (Gir_gen_lib.Override_types.Set_version v) ->
-      bprintf buf "    (version \"%s\")\n" v
+  | Some (Gir_gen_lib.Override_types.Set_version vs) ->
+      bprintf buf "    (version \"%s\")\n" vs.vs_version
   | None -> ());
   List.iter
     ~f:(fun c -> bprintf buf "%s\n" (render_component ~kind:component_kind c))
@@ -1562,8 +1486,8 @@ let generate_overrides gir_file output_file =
       bprintf buf2 "\n  (class %s\n" o.class_name;
       (match o.class_action with
       | Some Gir_gen_lib.Override_types.Ignore -> bprintf buf2 "    (ignore)\n"
-      | Some (Gir_gen_lib.Override_types.Set_version v) ->
-          bprintf buf2 "    (version \"%s\")\n" v
+      | Some (Gir_gen_lib.Override_types.Set_version vs) ->
+          bprintf buf2 "    (version \"%s\")\n" vs.vs_version
       | None -> ());
       List.iter ~f:(fun c -> bprintf buf2 "%s\n" (render_component ~kind:"constructor" c))
         o.constructors;

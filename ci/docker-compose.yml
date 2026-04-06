@@ -1,0 +1,86 @@
+x-build-args: &build-args
+  args:
+    OPAM_VERSION: ${OPAM_VERSION}
+    OCAML_VERSION: ${OCAML_VERSION}
+
+services:
+  ubuntu22:
+    build:
+      context: ..
+      dockerfile: ci/ubuntu22.Dockerfile
+      <<: *build-args
+    volumes:
+      - ..:/workspace:cached
+      - ubuntu22-build:/build
+    working_dir: /workspace
+    command: sleep infinity
+    tty: true
+
+  debian12:
+    build:
+      context: ..
+      dockerfile: ci/debian12.Dockerfile
+      <<: *build-args
+    volumes:
+      - ..:/workspace:cached
+      - debian12-build:/build
+    working_dir: /workspace
+    command: sleep infinity
+    tty: true
+
+  centos9:
+    build:
+      context: ..
+      dockerfile: ci/centos9.Dockerfile
+      <<: *build-args
+    volumes:
+      - ..:/workspace:cached
+      - centos9-build:/build
+    working_dir: /workspace
+    command: sleep infinity
+    tty: true
+
+  opensuse15:
+    build:
+      context: ..
+      dockerfile: ci/opensuse15.Dockerfile
+      <<: *build-args
+    volumes:
+      - ..:/workspace:cached
+      - opensuse15-build:/build
+    working_dir: /workspace
+    command: sleep infinity
+    tty: true
+
+  fedora40:
+    build:
+      context: ..
+      dockerfile: ci/fedora40.Dockerfile
+      <<: *build-args
+    volumes:
+      - ..:/workspace:cached
+      - fedora40-build:/build
+    working_dir: /workspace
+    command: sleep infinity
+    tty: true
+
+  # ubuntu24: skipped in normal runs — dev environment already runs Ubuntu 24.04
+  ubuntu24:
+    build:
+      context: ..
+      dockerfile: ci/ubuntu24.Dockerfile
+      <<: *build-args
+    volumes:
+      - ..:/workspace:cached
+      - ubuntu24-build:/build
+    working_dir: /workspace
+    command: sleep infinity
+    tty: true
+
+volumes:
+  ubuntu22-build:
+  debian12-build:
+  centos9-build:
+  opensuse15-build:
+  fedora40-build:
+  ubuntu24-build:

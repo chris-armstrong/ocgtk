@@ -105,6 +105,24 @@ If you are running in a clean container (e.g. Claude Code Web), you will need to
 
 [The architecture documentation](./ocgtk/architecture/README.md) describes the project layout and system architecture.
 
+## CI / Distro Compatibility Testing
+
+The `ci/` directory provides Docker-based build and test environments for Ubuntu 22.04,
+Debian 12, CentOS Stream 9, and OpenSUSE Leap 15.6. Use `./ci/oci` to manage them:
+
+```bash
+./ci/oci build ubuntu22    # build image (once)
+./ci/oci run ubuntu22 build
+./ci/oci run ubuntu22 test
+./ci/oci shell ubuntu22    # interactive shell
+./ci/oci status            # disk/container state
+./ci/oci clean --all       # full teardown
+```
+
+Version pins (opam, OCaml) live in `ci/versions.env`. See
+[ocgtk/architecture/ci_distro_testing.md](./ocgtk/architecture/ci_distro_testing.md)
+for full documentation.
+
 
 ## Code Guidelines - how to write or refactor code 
 

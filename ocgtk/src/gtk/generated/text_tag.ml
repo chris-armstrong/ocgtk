@@ -482,17 +482,17 @@ external get_tabs_set : t -> bool = "ml_gtk_text_tag_get_tabs_set"
 (** Set property: tabs-set *)
 external set_tabs_set : t -> bool -> unit = "ml_gtk_text_tag_set_tabs_set"
 
-(** Get property: text-transform *)
-external get_text_transform : t -> Ocgtk_pango.Pango.texttransform = "ml_gtk_text_tag_get_text_transform"
-
-(** Set property: text-transform *)
-external set_text_transform : t -> Ocgtk_pango.Pango.texttransform -> unit = "ml_gtk_text_tag_set_text_transform"
-
 (** Get property: text-transform-set *)
 external get_text_transform_set : t -> bool = "ml_gtk_text_tag_get_text_transform_set"
 
 (** Set property: text-transform-set *)
 external set_text_transform_set : t -> bool -> unit = "ml_gtk_text_tag_set_text_transform_set"
+
+(** Get property: text-transform (requires Pango >= 1.50) *)
+external get_text_transform : t -> Ocgtk_pango.Pango.texttransform = "ml_gtk_text_tag_get_text_transform"
+
+(** Set property: text-transform (requires Pango >= 1.50) *)
+external set_text_transform : t -> Ocgtk_pango.Pango.texttransform -> unit = "ml_gtk_text_tag_set_text_transform"
 
 (** Get property: underline *)
 external get_underline : t -> Ocgtk_pango.Pango.underline = "ml_gtk_text_tag_get_underline"

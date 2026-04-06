@@ -7,19 +7,21 @@ let test_override_action_ignore () =
   match a with Ignore -> () | Set_version _ -> Alcotest.fail "Expected Ignore"
 
 let test_override_action_version () =
-  let a = Set_version "4.10" in
+  let a = Set_version { vs_version = "4.10"; vs_namespace = None } in
   match a with
-  | Set_version v -> Alcotest.(check string) "version" "4.10" v
+  | Set_version vs -> Alcotest.(check string) "version" "4.10" vs.vs_version
   | Ignore -> Alcotest.fail "Expected Set_version"
 
 let test_override_action_eq () =
+  let v410 = { vs_version = "4.10"; vs_namespace = None } in
+  let v412 = { vs_version = "4.12"; vs_namespace = None } in
   Alcotest.(check bool) "ignore eq" true (equal_override_action Ignore Ignore);
   Alcotest.(check bool) "version eq" true
-    (equal_override_action (Set_version "4.10") (Set_version "4.10"));
+    (equal_override_action (Set_version v410) (Set_version v410));
   Alcotest.(check bool) "version neq" false
-    (equal_override_action (Set_version "4.10") (Set_version "4.12"));
+    (equal_override_action (Set_version v410) (Set_version v412));
   Alcotest.(check bool) "ignore neq version" false
-    (equal_override_action Ignore (Set_version "4.10"))
+    (equal_override_action Ignore (Set_version v410))
 
 let test_component_override_construction () =
   let c = { component_name = "foo"; action = Ignore } in
@@ -54,7 +56,7 @@ let test_interface_override_construction () =
       interface_name = "Actionable";
       interface_action = None;
       methods = [];
-      properties = [ { component_name = "action_name"; action = Set_version "4.12" } ];
+      properties = [ { component_name = "action_name"; action = Set_version { vs_version = "4.12"; vs_namespace = None } } ];
       signals = [];
     }
   in
@@ -91,7 +93,7 @@ let test_bitfield_override_construction () =
   let b =
     {
       bitfield_name = "StateFlags";
-      bitfield_action = Some (Set_version "4.10");
+      bitfield_action = Some (Set_version { vs_version = "4.10"; vs_namespace = None });
       flags = [ { component_name = "ACTIVE"; action = Ignore } ];
     }
   in

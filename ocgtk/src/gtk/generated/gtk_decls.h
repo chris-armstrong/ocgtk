@@ -1926,4 +1926,6 @@ value Val_GtkTreeModelFlags(GtkTreeModelFlags flags);
 GtkTreeModelFlags GtkTreeModelFlags_val(value list);
 
 
+#include "../core/gtk_core.h"
+
 #endif /* _gtk_decls_h_ */

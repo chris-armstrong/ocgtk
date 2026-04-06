@@ -1386,4 +1386,6 @@ GTlsPasswordFlags GioTlsPasswordFlags_val(value list);
 #endif
 
 
+#include "../core/gio_core.h"
+
 #endif /* _gio_decls_h_ */

@@ -17,7 +17,6 @@ module Wrappers = struct
   module Cross_fade_node = Cross_fade_node
   module Debug_node = Debug_node
   module Fill_node = Fill_node
-  module Gl_renderer = Gl_renderer
   module Gl_shader = Gl_shader
   module Gl_shader_node = Gl_shader_node
   module Inset_shadow_node = Inset_shadow_node
@@ -49,7 +48,6 @@ module Wrappers = struct
   module Texture_scale_node = Texture_scale_node
   module Transform = Transform
   module Transform_node = Transform_node
-  module Vulkan_renderer = Vulkan_renderer
 end
 
 (** Classes and Interfaces *)
@@ -68,7 +66,6 @@ module Container_node = GContainer_node
 module Cross_fade_node = GCross_fade_node
 module Debug_node = GDebug_node
 module Fill_node = GFill_node
-module Gl_renderer = GGl_renderer
 module Gl_shader = GGl_shader
 module Gl_shader_node = GGl_shader_node
 module Inset_shadow_node = GInset_shadow_node
@@ -100,7 +97,6 @@ module Texture_node = GTexture_node
 module Texture_scale_node = GTexture_scale_node
 module Transform = GTransform
 module Transform_node = GTransform_node
-module Vulkan_renderer = GVulkan_renderer
 
 (** Enumerations and Bitfields *)
 

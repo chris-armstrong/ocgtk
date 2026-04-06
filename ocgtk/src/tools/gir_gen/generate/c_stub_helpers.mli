@@ -238,6 +238,7 @@ val emit_fallback_record_method_stub
     plain emit on parse errors or when no guard is needed. *)
 val emit_with_member_guard
   :  ctx:Types.generation_context
+  -> ?version_namespace:string option
   -> class_version:string option
   -> member_version:string option
   -> fallback:(Version_guard.version -> string)

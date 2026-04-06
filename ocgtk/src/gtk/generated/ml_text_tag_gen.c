@@ -2489,65 +2489,6 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,6,0)
-
-CAMLexport CAMLprim value ml_gtk_text_tag_get_text_transform(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    PangoTextTransform prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "text-transform");
-if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_text_transform: property 'text-transform' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "text-transform", &prop_gvalue);
-          prop_value = (PangoTextTransform)g_value_get_enum(&prop_gvalue);
-
-      result = Val_PangoTextTransform(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_text_tag_get_text_transform(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("TextTag requires GTK >= 4.6");
-return Val_unit;
-}
-#endif
-
-#if GTK_CHECK_VERSION(4,6,0)
-
-CAMLexport CAMLprim value ml_gtk_text_tag_set_text_transform(value self, value new_value)
-{
-    CAMLparam2(self, new_value);
-GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
-    PangoTextTransform c_value = PangoTextTransform_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "text-transform");
-if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_text_transform: property 'text-transform' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-          g_value_set_enum(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "text-transform", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-    CAMLreturn(Val_unit);
-}
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_text_tag_set_text_transform(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("TextTag requires GTK >= 4.6");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_gtk_text_tag_get_text_transform_set(value self)
 {
     CAMLparam1(self);
@@ -2579,6 +2520,60 @@ g_object_set_property(G_OBJECT(obj), "text-transform-set", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
+
+#if PANGO_VERSION_CHECK(1,50,0)
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_text_transform(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoTextTransform prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "text-transform");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_get_text_transform: property 'text-transform' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "text-transform", &prop_gvalue);
+          prop_value = (PangoTextTransform)g_value_get_enum(&prop_gvalue);
+
+      result = Val_PangoTextTransform(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_text_transform(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkTextTag *obj = (GtkTextTag *)GtkTextTag_val(self);
+    PangoTextTransform c_value = PangoTextTransform_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "text-transform");
+if (pspec == NULL) caml_failwith("ml_gtk_text_tag_set_text_transform: property 'text-transform' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "text-transform", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_text_tag_get_text_transform(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TextTag.text_transform requires Pango >= 1.50");
+return Val_unit;
+}
+
+CAMLexport CAMLprim value ml_gtk_text_tag_set_text_transform(value self, value new_value)
+{
+CAMLparam2(self, new_value);
+(void)self; (void)new_value;
+caml_failwith("TextTag.text_transform requires Pango >= 1.50");
+return Val_unit;
+}
+
+#endif
 
 CAMLexport CAMLprim value ml_gtk_text_tag_get_underline(value self)
 {

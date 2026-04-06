@@ -221,4 +221,12 @@
     (field get_sort_key (version "2.32"))
     (field get_symbolic_icon (version "2.34"))
   )
+
+  (enumeration CredentialsType
+    (member win32_pid (version "2.72"))
+    (member apple_xucred (version "2.66"))
+    (member netbsd_unpcbid (version "2.42"))
+    (member solaris_ucred (version "2.40"))
+    (member openbsd_sockpeercred (version "2.30"))
+  )
 )
