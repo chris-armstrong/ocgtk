@@ -2,7 +2,7 @@
 
 (test
  (name test_string_list)
- (modules test_string_list)
+ (modules test_string_list gtk_test_helpers)
  (libraries ocgtk.gtk alcotest))
 
 (test

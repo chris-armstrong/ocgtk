@@ -14,6 +14,7 @@
 open Alcotest
 open Ocgtk_gtk.Gtk
 module GMain = Ocgtk_gtk.GMain
+module Helpers = Gtk_test_helpers
 
 (* Layer 1 (raw) string_list functions *)
 let string_list_new = Wrappers.String_list.new_
@@ -32,6 +33,9 @@ let gtk_available =
 
 (* Helper to skip tests when GTK is not available *)
 let require_gtk f () = if not gtk_available then skip () else f ()
+
+(* Helper to skip tests that require GTK >= 4.14 (e.g. n-items property) *)
+let require_gtk_414 f = require_gtk (Helpers.require_gtk_version 4 14 0 f)
 
 (* ========== Module Accessibility Tests ========== *)
 
@@ -330,13 +334,13 @@ let () =
         ] );
       ( "Creation",
         [
-          test_case "empty_list" `Quick (require_gtk test_creation_empty_list);
+          test_case "empty_list" `Quick (require_gtk_414 test_creation_empty_list);
           test_case "empty_string" `Quick
-            (require_gtk test_creation_with_empty_string);
+            (require_gtk_414 test_creation_with_empty_string);
         ] );
       ( "Take Method (String_copy)",
         [
-          test_case "basic" `Quick (require_gtk test_take_basic);
+          test_case "basic" `Quick (require_gtk_414 test_take_basic);
           test_case "independence" `Quick
             (require_gtk test_take_string_copy_independence);
           test_case "ownership" `Quick (require_gtk test_take_copies_ownership);
@@ -346,8 +350,8 @@ let () =
         ] );
       ( "Append Method",
         [
-          test_case "basic" `Quick (require_gtk test_append_basic);
-          test_case "append_vs_take" `Quick (require_gtk test_append_vs_take);
+          test_case "basic" `Quick (require_gtk_414 test_append_basic);
+          test_case "append_vs_take" `Quick (require_gtk_414 test_append_vs_take);
         ] );
       ( "Get String (Extraction)",
         [
@@ -363,25 +367,25 @@ let () =
         ] );
       ( "Remove",
         [
-          test_case "first" `Quick (require_gtk test_remove_first);
-          test_case "last" `Quick (require_gtk test_remove_last);
+          test_case "first" `Quick (require_gtk_414 test_remove_first);
+          test_case "last" `Quick (require_gtk_414 test_remove_last);
           test_case "invalid" `Quick (require_gtk test_remove_invalid_index);
         ] );
       ( "N Items",
         [
-          test_case "empty" `Quick (require_gtk test_n_items_empty);
+          test_case "empty" `Quick (require_gtk_414 test_n_items_empty);
           test_case "operations" `Quick
-            (require_gtk test_n_items_after_operations);
+            (require_gtk_414 test_n_items_after_operations);
         ] );
       ( "Wrapper",
         [
           test_case "gstring_list" `Quick
-            (require_gtk test_gstring_list_wrapper);
+            (require_gtk_414 test_gstring_list_wrapper);
         ] );
       ( "Integration",
         [
           test_case "mixed_operations" `Quick
-            (require_gtk test_mixed_operations);
+            (require_gtk_414 test_mixed_operations);
           test_case "gc_survival" `Quick
             (require_gtk test_string_list_survives_gc);
         ] );
