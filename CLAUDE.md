@@ -130,6 +130,26 @@ For instructions and best practices for writing and updating OCaml / C FFI, see 
 
 ## ocgtk Development Tools
 
+### CI / Distro Compatibility Testing
+
+Use `./ci/oci` to build and test against Ubuntu 22.04, Debian 12, CentOS Stream 9,
+and OpenSUSE Leap 15.6 via Docker. Source is bind-mounted so changes are immediately
+reflected without rebuilding images.
+
+```bash
+./ci/oci build ubuntu22    # build image (once — compiles OCaml, takes ~20 min)
+./ci/oci up                # start all containers
+./ci/oci run ubuntu22 build
+./ci/oci run ubuntu22 test
+./ci/oci shell debian12    # interactive shell for debugging
+./ci/oci status            # show running containers, volumes, disk usage
+./ci/oci clean --all       # full teardown to recover disk space
+```
+
+Version pins live in `ci/versions.env`. See
+[ocgtk/architecture/ci_distro_testing.md](ocgtk/architecture/ci_distro_testing.md)
+for full documentation.
+
 ### GIR Code Generator
 For generating GTK bindings from GObject Introspection (GIR) files:
 - See [ocgtk/src/tools/README_GIR_GEN.md](ocgtk/src/tools/README_GIR_GEN.md) for complete usage instructions

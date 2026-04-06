@@ -148,3 +148,4 @@ are excluded from reference output.
 - **[FFI Guidelines](./FFI_GUIDELINES.md)** - OCaml/C binding best practices
 - **[SECURITY_GUIDELINES.md](../SECURITY_GUIDELINES.md)** - Security for C bindings
 - **[Code Guidelines](../docs/code_guidelines/index.md)** - OCaml coding standards
+- **[CI Distro Testing](./ci_distro_testing.md)** - Docker-based multi-distro build/test setup

@@ -28,7 +28,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COMPOSE_FILE="$SCRIPT_DIR/docker-compose.yml"
 VERSIONS_FILE="$SCRIPT_DIR/versions.env"
-ALL_DISTROS=(ubuntu22 debian12 centos9)
+ALL_DISTROS=(ubuntu22 debian12 centos9 opensuse15)
 STATE_FILE="$SCRIPT_DIR/.oci-state"
 
 # ── helpers ───────────────────────────────────────────────────────────────────
