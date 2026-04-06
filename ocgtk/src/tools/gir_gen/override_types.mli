@@ -5,10 +5,19 @@
     parsed by {!Override_parser} and applied by {!Override_apply} before
     the generation pipeline builds its type-mapping context. *)
 
+(** Version string plus an optional cross-namespace override.
+    [vs_namespace = None] means use the current library's check macro;
+    [vs_namespace = Some "Pango"] means use [PANGO_VERSION_CHECK]. *)
+type version_spec = {
+  vs_version : string;
+  vs_namespace : string option;
+}
+[@@deriving sexp, eq]
+
 (** What to do for a specific entity or sub-component. *)
 type override_action =
   | Ignore
-  | Set_version of string
+  | Set_version of version_spec
 [@@deriving sexp, eq]
 
 (** Override for a sub-component of an entity (method, property, etc.). *)

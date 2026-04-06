@@ -151,6 +151,8 @@ class type text_tag_t = object
     method set_tabs : Ocgtk_pango.Pango.Tab_array.tab_array_t -> unit
     method tabs_set : bool
     method set_tabs_set : bool -> unit
+    method text_transform : Ocgtk_pango.Pango.texttransform
+    method set_text_transform : Ocgtk_pango.Pango.texttransform -> unit
     method text_transform_set : bool
     method set_text_transform_set : bool -> unit
     method underline : Ocgtk_pango.Pango.underline

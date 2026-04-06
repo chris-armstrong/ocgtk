@@ -30,6 +30,7 @@ let make_method ~name ~version =
     set_property = None;
     introspectable = true;
     version;
+    version_namespace = None;
   }
 
 let make_constructor ~name ~version =
@@ -41,6 +42,7 @@ let make_constructor ~name ~version =
     throws = false;
     ctor_introspectable = true;
     version;
+    version_namespace = None;
   }
 
 let make_property ~name ~version =
@@ -54,6 +56,7 @@ let make_property ~name ~version =
     construct_only = false;
     prop_doc = None;
     version;
+    version_namespace = None;
   }
 
 let make_signal ~name ~version =
@@ -65,6 +68,7 @@ let make_signal ~name ~version =
     sig_parameters = [];
     doc = None;
     version;
+    version_namespace = None;
   }
 
 let make_class ~name ~version ~methods ~constructors ~properties ~signals =
@@ -172,6 +176,7 @@ let make_function ~name ~version =
     throws = false;
     introspectable = true;
     version;
+    version_namespace = None;
   }
 
 let make_empty_overrides library_name =
@@ -241,7 +246,7 @@ let test_method_version_override () =
   let overrides = { (make_empty_overrides "Gtk") with
     classes = [{ class_name = "Widget"; class_action = None;
       constructors = [];
-      methods = [{ component_name = "show"; action = Set_version "4.10" }];
+      methods = [{ component_name = "show"; action = Set_version { vs_version = "4.10"; vs_namespace = None } }];
       properties = []; signals = [] }];
   } in
   let result = Gir_gen_lib.Override_apply.apply_overrides ~overrides
@@ -257,7 +262,7 @@ let test_method_version_replaces_existing () =
   let overrides = { (make_empty_overrides "Gtk") with
     classes = [{ class_name = "Widget"; class_action = None;
       constructors = [];
-      methods = [{ component_name = "show"; action = Set_version "4.12" }];
+      methods = [{ component_name = "show"; action = Set_version { vs_version = "4.12"; vs_namespace = None } }];
       properties = []; signals = [] }];
   } in
   let result = Gir_gen_lib.Override_apply.apply_overrides ~overrides
@@ -289,7 +294,7 @@ let test_property_version_override () =
   let overrides = { (make_empty_overrides "Gtk") with
     classes = [{ class_name = "Widget"; class_action = None;
       constructors = []; methods = [];
-      properties = [{ component_name = "sensitive"; action = Set_version "4.10" }];
+      properties = [{ component_name = "sensitive"; action = Set_version { vs_version = "4.10"; vs_namespace = None } }];
       signals = [] }];
   } in
   let result = Gir_gen_lib.Override_apply.apply_overrides ~overrides
@@ -368,7 +373,7 @@ let test_record_field_version_override () =
     ~constructors:[] ~methods:[] ~functions:[] in
   let overrides = { (make_empty_overrides "Gtk") with
     records = [{ record_name = "TextIter"; record_action = None;
-      fields = [{ component_name = "start"; action = Set_version "4.14" }];
+      fields = [{ component_name = "start"; action = Set_version { vs_version = "4.14"; vs_namespace = None } }];
       constructors = []; methods = []; functions = [] }];
   } in
   let result = Gir_gen_lib.Override_apply.apply_overrides ~overrides
@@ -413,7 +418,7 @@ let test_enum_member_version_override () =
     ~functions:[] in
   let overrides = { (make_empty_overrides "Gtk") with
     enums = [{ enum_name = "RGBA"; enum_action = None;
-      members = [{ component_name = "RED"; action = Set_version "4.14" }];
+      members = [{ component_name = "RED"; action = Set_version { vs_version = "4.14"; vs_namespace = None } }];
       functions = [] }];
   } in
   let result = Gir_gen_lib.Override_apply.apply_overrides ~overrides
@@ -455,7 +460,7 @@ let test_bitfield_member_version_override () =
     ~flags:[make_bitfield_member ~name:"ACTIVE" ~version:None] in
   let overrides = { (make_empty_overrides "Gtk") with
     bitfields = [{ bitfield_name = "StateFlags"; bitfield_action = None;
-      flags = [{ component_name = "ACTIVE"; action = Set_version "4.14" }] }];
+      flags = [{ component_name = "ACTIVE"; action = Set_version { vs_version = "4.14"; vs_namespace = None } }] }];
   } in
   let result = Gir_gen_lib.Override_apply.apply_overrides ~overrides
     ~classes:[] ~interfaces:[] ~enums:[] ~bitfields:[bf] ~records:[] ~functions:[] in

@@ -34,6 +34,37 @@ let validate_version name version_str =
   | Ok _ -> Ok ()
   | Error reason -> Error (Invalid_version { name; version = version_str; reason })
 
+let parse_version_spec ~comp_name sexp_args =
+  (* (version "X.Y")  — default namespace *)
+  (* (version (lib "X.Y")) — cross-namespace *)
+  match sexp_args with
+  | [ Sexp.Atom v ] -> (
+      match validate_version comp_name v with
+      | Error e -> Error e
+      | Ok () -> Ok (Set_version { vs_version = v; vs_namespace = None }))
+  | [ Sexp.List [ Sexp.Atom lib; Sexp.Atom v ] ] -> (
+      match Version_guard.normalize_namespace lib with
+      | Error msg ->
+          Error
+            (Invalid_format
+               {
+                 location = Printf.sprintf "%s (version)" comp_name;
+                 message = msg;
+               })
+      | Ok ns -> (
+          match validate_version comp_name v with
+          | Error e -> Error e
+          | Ok () ->
+              Ok (Set_version { vs_version = v; vs_namespace = Some ns })))
+  | _ ->
+      Error
+        (Invalid_format
+           {
+             location = Printf.sprintf "%s (version)" comp_name;
+             message =
+               "Expected (version \"X.Y\") or (version (lib \"X.Y\"))";
+           })
+
 let parse_component ~entity_name sexp =
   match sexp with
   | Sexp.List [ Sexp.Atom _comp_kind; Sexp.Atom comp_name; Sexp.Atom "ignore" ]
@@ -41,17 +72,18 @@ let parse_component ~entity_name sexp =
     ->
       Ok { component_name = comp_name; action = Ignore }
   | Sexp.List
-      [ Sexp.Atom _comp_kind; Sexp.Atom comp_name; Sexp.List [ Sexp.Atom "version"; Sexp.Atom v ] ]
+      (Sexp.Atom _comp_kind :: Sexp.Atom comp_name :: [ Sexp.List (Sexp.Atom "version" :: args) ])
     -> (
-      match validate_version comp_name v with
+      match parse_version_spec ~comp_name args with
       | Error e -> Error e
-      | Ok () -> Ok { component_name = comp_name; action = Set_version v })
+      | Ok action -> Ok { component_name = comp_name; action })
   | Sexp.List (Sexp.Atom _comp_kind :: Sexp.Atom comp_name :: _) ->
       Error
         (Invalid_format
            {
              location = Printf.sprintf "%s %s" entity_name comp_name;
-             message = "Expected (ignore) or (version \"...\")";
+             message =
+               "Expected (ignore), (version \"X.Y\"), or (version (lib \"X.Y\"))";
            })
   | _ ->
       Error

@@ -542,10 +542,16 @@ let emit_fallback_record_method_stub ~ctx ~c_type:_ ~class_name ~ml_name ~versio
     the member version to produce the [#else] stub. Falls through to
     plain emit on parse errors or when no guard is needed (e.g.
     [No_guard] for same-version members). *)
-let emit_with_member_guard ~ctx ~class_version ~member_version ~fallback ~stub buf =
+let emit_with_member_guard ~ctx ?(version_namespace : string option = None)
+    ~class_version ~member_version ~fallback ~stub buf =
+  let guard_ns =
+    match version_namespace with
+    | Some ns -> ns
+    | None -> ctx.namespace.namespace_name
+  in
   match Version_guard.resolve_guard ~class_version ~member_version with
   | Ok (Version_guard.Member_guard v) ->
-    (match Version_guard.emit_c_guard ctx.namespace.namespace_name v ~is_opening:true with
+    (match Version_guard.emit_c_guard guard_ns v ~is_opening:true with
     | Ok guard_if ->
       Buffer.add_char buf '\n';
       Buffer.add_string buf guard_if;
@@ -555,7 +561,7 @@ let emit_with_member_guard ~ctx ~class_version ~member_version ~fallback ~stub b
       Buffer.add_string buf Version_guard.c_guard_else;
       Buffer.add_char buf '\n';
       Buffer.add_string buf (fallback v);
-      (match Version_guard.emit_c_guard ctx.namespace.namespace_name v ~is_opening:false with
+      (match Version_guard.emit_c_guard guard_ns v ~is_opening:false with
       | Ok guard_endif -> Buffer.add_string buf (guard_endif ^ "\n")
       | Error _ -> Buffer.add_string buf "#endif\n")
     | Error _ -> Buffer.add_string buf stub)

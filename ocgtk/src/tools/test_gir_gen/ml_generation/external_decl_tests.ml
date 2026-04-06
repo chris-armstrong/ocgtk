@@ -39,6 +39,7 @@ let test_method_multiple_params () =
     set_property = None;
     introspectable = true;
     version = None;
+    version_namespace = None;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -97,6 +98,7 @@ let test_method_with_object_param () =
     set_property = None;
     introspectable = true;
     version = None;
+    version_namespace = None;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -154,6 +156,7 @@ let test_method_with_bool_param () =
     set_property = None;
     introspectable = true;
     version = None;
+    version_namespace = None;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -202,6 +205,7 @@ let test_method_with_int_return () =
     set_property = None;
     introspectable = true;
     version = None;
+    version_namespace = None;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -263,6 +267,7 @@ let test_constructor_with_multiple_params () =
     throws = false;
     ctor_introspectable = true;
     version = None;
+    version_namespace = None;
     } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -320,6 +325,7 @@ let test_method_with_nullable_object () =
     set_property = None;
     introspectable = true;
     version = None;
+    version_namespace = None;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -367,6 +373,7 @@ let test_property_getter () =
     set_property = None;
     introspectable = true;
     version = None;
+    version_namespace = None;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -421,6 +428,7 @@ let test_property_setter () =
     set_property = Some "label";
     introspectable = true;
     version = None;
+    version_namespace = None;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface
@@ -467,6 +475,7 @@ let test_property_getter_nullable () =
     set_property = None;
     introspectable = true;
     version = None;
+    version_namespace = None;
   } in
 
   let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_ml_interface

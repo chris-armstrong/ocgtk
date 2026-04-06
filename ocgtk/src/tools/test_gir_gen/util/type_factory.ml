@@ -48,6 +48,7 @@ let make_gir_method ~method_name ~c_identifier ~return_type ?parameters ?doc
     get_property;
     set_property;
     version;
+    version_namespace = None;
   }
 
 let make_gir_function ~function_name ~c_identifier ~return_type ?parameters ?doc
@@ -61,11 +62,12 @@ let make_gir_function ~function_name ~c_identifier ~return_type ?parameters ?doc
     throws = Option.value throws ~default:false;
     introspectable = Option.value introspectable ~default:true;
     version;
+    version_namespace = None;
   }
 
 let make_gir_signal ~signal_name ~return_type ?(sig_parameters = []) ?doc
     ?version () =
-  { signal_name; return_type; sig_parameters; doc; version }
+  { signal_name; return_type; sig_parameters; doc; version; version_namespace = None }
 
 let make_gir_constructor ~ctor_name ~c_identifier ?(ctor_parameters = [])
     ?ctor_doc ?throws ?ctor_introspectable ?version () =
@@ -77,6 +79,7 @@ let make_gir_constructor ~ctor_name ~c_identifier ?(ctor_parameters = [])
     throws = Option.value throws ~default:false;
     ctor_introspectable = Option.value ctor_introspectable ~default:true;
     version;
+    version_namespace = None;
   }
 
 let make_gir_property ~prop_name ~prop_type ?(readable = true)
@@ -89,6 +92,7 @@ let make_gir_property ~prop_name ~prop_type ?(readable = true)
     construct_only;
     prop_doc;
     version;
+    version_namespace = None;
   }
 
 let make_gir_record_field ~field_name ?field_type ?(readable = true)

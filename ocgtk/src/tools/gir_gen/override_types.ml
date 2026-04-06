@@ -2,9 +2,18 @@
 
 open Sexplib.Std
 
+(** Version string plus an optional namespace override.
+    [vs_namespace = None] means "use the current library's check macro";
+    [vs_namespace = Some "Pango"] means "use PANGO_VERSION_CHECK". *)
+type version_spec = {
+  vs_version : string;
+  vs_namespace : string option;
+}
+[@@deriving sexp, eq]
+
 type override_action =
   | Ignore
-  | Set_version of string
+  | Set_version of version_spec
 [@@deriving sexp, eq]
 
 type component_override = {

@@ -21,10 +21,10 @@
 
   ;; text-transform uses PangoTextTransform (Pango >= 1.50). The GTK version
   ;; guard (#if GTK_CHECK_VERSION(4,6,0)) is not sufficient because CentOS 9
-  ;; ships GTK >= 4.6 with Pango < 1.50. Ignore until the generator supports
-  ;; cross-namespace version checks.
+  ;; ships GTK >= 4.6 with Pango < 1.50. Use a cross-namespace pango version
+  ;; guard so the stub is compiled only when Pango 1.50+ is available.
   (class TextTag
-    (property text-transform (ignore))
+    (property text-transform (version (pango "1.50")))
   )
 
   ;; Migrated from exclude_list.ml variadic_function_exclude_list

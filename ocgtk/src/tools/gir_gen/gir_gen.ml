@@ -59,6 +59,7 @@ let entity_generator_by_entity_type =
                   ~constructor:ctor
               in
               C_stub_helpers.emit_with_member_guard ~ctx
+                ~version_namespace:ctor.version_namespace
                 ~class_version:entity.version ~member_version:ctor.version ~stub
                 buf ~fallback:(fun v ->
                   C_stub_helpers.emit_fallback_constructor_stub ~ctx
@@ -83,6 +84,7 @@ let entity_generator_by_entity_type =
                 Gir_gen_lib.Utils.ml_method_name ~class_name:entity.name meth
               in
               C_stub_helpers.emit_with_member_guard ~ctx
+                ~version_namespace:meth.version_namespace
                 ~class_version:entity.version ~member_version:meth.version ~stub
                 buf ~fallback:(fun v ->
                   C_stub_helpers.emit_fallback_method_stub ~ctx
@@ -110,6 +112,7 @@ let entity_generator_by_entity_type =
                 Gir_gen_lib.Utils.ml_property_name ~ctx ~class_name prop
               in
               C_stub_helpers.emit_with_member_guard ~ctx
+                ~version_namespace:prop.version_namespace
                 ~class_version:entity.version ~member_version:prop.version ~stub
                 buf ~fallback:(fun v ->
                   C_stub_helpers.emit_fallback_property_getter_stub ~ctx ~c_type
@@ -124,6 +127,7 @@ let entity_generator_by_entity_type =
                 Gir_gen_lib.Utils.ml_property_setter_name ~ctx ~class_name prop
               in
               C_stub_helpers.emit_with_member_guard ~ctx
+                ~version_namespace:prop.version_namespace
                 ~class_version:entity.version ~member_version:prop.version ~stub
                 buf ~fallback:(fun v ->
                   C_stub_helpers.emit_fallback_property_setter_stub ~ctx ~c_type
@@ -1350,8 +1354,8 @@ let render_component ~kind (c : Gir_gen_lib.Override_types.component_override) =
   match c.action with
   | Gir_gen_lib.Override_types.Ignore ->
       sprintf "    (%s %s (ignore))" kind c.component_name
-  | Gir_gen_lib.Override_types.Set_version v ->
-      sprintf "    (%s %s (version \"%s\"))" kind c.component_name v
+  | Gir_gen_lib.Override_types.Set_version vs ->
+      sprintf "    (%s %s (version \"%s\"))" kind c.component_name vs.vs_version
 
 (* Render an enum override entry, merging existing ignores with fresh version data.
    [ignore_components]: component-level ignores to preserve from the existing file.
@@ -1363,8 +1367,8 @@ let render_enum_entry entity_kind component_kind entity_name entity_action
   bprintf buf "\n  (%s %s\n" entity_kind entity_name;
   (match entity_action with
   | Some Gir_gen_lib.Override_types.Ignore -> bprintf buf "    (ignore)\n"
-  | Some (Gir_gen_lib.Override_types.Set_version v) ->
-      bprintf buf "    (version \"%s\")\n" v
+  | Some (Gir_gen_lib.Override_types.Set_version vs) ->
+      bprintf buf "    (version \"%s\")\n" vs.vs_version
   | None -> ());
   List.iter
     ~f:(fun c -> bprintf buf "%s\n" (render_component ~kind:component_kind c))
@@ -1482,8 +1486,8 @@ let generate_overrides gir_file output_file =
       bprintf buf2 "\n  (class %s\n" o.class_name;
       (match o.class_action with
       | Some Gir_gen_lib.Override_types.Ignore -> bprintf buf2 "    (ignore)\n"
-      | Some (Gir_gen_lib.Override_types.Set_version v) ->
-          bprintf buf2 "    (version \"%s\")\n" v
+      | Some (Gir_gen_lib.Override_types.Set_version vs) ->
+          bprintf buf2 "    (version \"%s\")\n" vs.vs_version
       | None -> ());
       List.iter ~f:(fun c -> bprintf buf2 "%s\n" (render_component ~kind:"constructor" c))
         o.constructors;
