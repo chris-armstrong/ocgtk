@@ -81,11 +81,26 @@ value Val_GioCredentialsType(GCredentialsType val) {
     case G_CREDENTIALS_TYPE_INVALID: return caml_hash_variant("INVALID"); /* `INVALID */
     case G_CREDENTIALS_TYPE_LINUX_UCRED: return caml_hash_variant("LINUX_UCRED"); /* `LINUX_UCRED */
     case G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED: return caml_hash_variant("FREEBSD_CMSGCRED"); /* `FREEBSD_CMSGCRED */
+#if GLIB_CHECK_VERSION(2,30,0)
     case G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED: return caml_hash_variant("OPENBSD_SOCKPEERCRED"); /* `OPENBSD_SOCKPEERCRED */
+
+#endif
+#if GLIB_CHECK_VERSION(2,40,0)
     case G_CREDENTIALS_TYPE_SOLARIS_UCRED: return caml_hash_variant("SOLARIS_UCRED"); /* `SOLARIS_UCRED */
+
+#endif
+#if GLIB_CHECK_VERSION(2,42,0)
     case G_CREDENTIALS_TYPE_NETBSD_UNPCBID: return caml_hash_variant("NETBSD_UNPCBID"); /* `NETBSD_UNPCBID */
+
+#endif
+#if GLIB_CHECK_VERSION(2,66,0)
     case G_CREDENTIALS_TYPE_APPLE_XUCRED: return caml_hash_variant("APPLE_XUCRED"); /* `APPLE_XUCRED */
+
+#endif
+#if GLIB_CHECK_VERSION(2,72,0)
     case G_CREDENTIALS_TYPE_WIN32_PID: return caml_hash_variant("WIN32_PID"); /* `WIN32_PID */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GCredentialsType value: %d", (int)val);
@@ -100,11 +115,36 @@ GCredentialsType GioCredentialsType_val(value val) {
   if (val == caml_hash_variant("INVALID")) return G_CREDENTIALS_TYPE_INVALID; /* `INVALID */
   else if (val == caml_hash_variant("LINUX_UCRED")) return G_CREDENTIALS_TYPE_LINUX_UCRED; /* `LINUX_UCRED */
   else if (val == caml_hash_variant("FREEBSD_CMSGCRED")) return G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED; /* `FREEBSD_CMSGCRED */
+#if GLIB_CHECK_VERSION(2,30,0)
   else if (val == caml_hash_variant("OPENBSD_SOCKPEERCRED")) return G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED; /* `OPENBSD_SOCKPEERCRED */
+
+#else
+  else if (val == caml_hash_variant("OPENBSD_SOCKPEERCRED")) caml_failwith("GCredentialsType.OPENBSD_SOCKPEERCRED requires 2.30");
+#endif
+#if GLIB_CHECK_VERSION(2,40,0)
   else if (val == caml_hash_variant("SOLARIS_UCRED")) return G_CREDENTIALS_TYPE_SOLARIS_UCRED; /* `SOLARIS_UCRED */
+
+#else
+  else if (val == caml_hash_variant("SOLARIS_UCRED")) caml_failwith("GCredentialsType.SOLARIS_UCRED requires 2.40");
+#endif
+#if GLIB_CHECK_VERSION(2,42,0)
   else if (val == caml_hash_variant("NETBSD_UNPCBID")) return G_CREDENTIALS_TYPE_NETBSD_UNPCBID; /* `NETBSD_UNPCBID */
+
+#else
+  else if (val == caml_hash_variant("NETBSD_UNPCBID")) caml_failwith("GCredentialsType.NETBSD_UNPCBID requires 2.42");
+#endif
+#if GLIB_CHECK_VERSION(2,66,0)
   else if (val == caml_hash_variant("APPLE_XUCRED")) return G_CREDENTIALS_TYPE_APPLE_XUCRED; /* `APPLE_XUCRED */
+
+#else
+  else if (val == caml_hash_variant("APPLE_XUCRED")) caml_failwith("GCredentialsType.APPLE_XUCRED requires 2.66");
+#endif
+#if GLIB_CHECK_VERSION(2,72,0)
   else if (val == caml_hash_variant("WIN32_PID")) return G_CREDENTIALS_TYPE_WIN32_PID; /* `WIN32_PID */
+
+#else
+  else if (val == caml_hash_variant("WIN32_PID")) caml_failwith("GCredentialsType.WIN32_PID requires 2.72");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GCredentialsType tag: %ld", val);
