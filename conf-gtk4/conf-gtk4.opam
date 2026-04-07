@@ -39,7 +39,7 @@ depexts: [
 
 # Check that pkg-config can find gtk4 (any version — compatibility handled via version guards)
 build: [
-  ["pkgconf" "--print-errors" "--exists" "gtk4"] {os = "win32" & os-distribution != "cygwinports"}
+  ["pkgconf" "--print-errors" "--exists" "gtk4"] {os = "win32" & os-distribution != "cygwinports" & os-distribution != "msys2"}
   ["pkg-config" "--short-errors" "--print-errors" "--exists" "gtk4"] {os != "win32" | os-distribution = "cygwinports"}
 ]
 

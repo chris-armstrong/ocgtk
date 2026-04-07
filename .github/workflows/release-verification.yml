@@ -306,9 +306,10 @@ jobs:
   # (x86_64-w64-mingw32), making it binary-compatible with MSYS2 MINGW64
   # libraries including GTK4.
   #
-  # conf-gtk4 checks for GTK4 using Cygwin's pkg-config (installed by
-  # setup-ocaml by default) with PKG_CONFIG_PATH pointing at MSYS2's
-  # MinGW64 .pc files.
+  # windows-environment: msys2 means opam runs build commands inside MSYS2's
+  # shell rather than its own Cygwin instance.  This gives conf-gtk4's build
+  # check direct access to MSYS2's pkgconf and the MinGW64 .pc files without
+  # any extra PATH or PKG_CONFIG_PATH wiring.
   windows:
     name: Windows
     runs-on: windows-latest
@@ -330,26 +331,16 @@ jobs:
             mingw-w64-x86_64-pkgconf
 
       # Set up OCaml via opam on Windows.
-      # windows-compiler: mingw  → OCaml built with MinGW64 GCC (native Windows
-      #                            binaries, no cygwin1.dll dependency)
-      # windows-environment: cygwin (default) → Cygwin provides the POSIX shell
-      #                            and build utilities (bash, make, patch, …)
-      - name: Set up OCaml (MinGW64 compiler, Cygwin shell)
+      # windows-compiler: mingw       → OCaml built with MinGW64 GCC
+      # windows-environment: msys2    → opam runs build commands in MSYS2's
+      #                                 shell, so conf-gtk4's pkgconf check
+      #                                 finds the MinGW64 pkgconf directly.
+      - name: Set up OCaml (MinGW64 compiler, MSYS2 shell)
         uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ env.OCAML_VERSION }}
           windows-compiler: mingw
-
-      # Expose MSYS2's MinGW64 tools (pkgconf, etc.) to opam's Cygwin build
-      # environment.  opam runs build commands in a Cygwin bash that sources
-      # $BASH_ENV on startup, so appending to that file is the reliable way
-      # to extend PATH for all opam build steps.  PKG_CONFIG_PATH tells
-      # pkgconf where the GTK4 .pc files live.
-      - name: Configure pkg-config paths for MSYS2 GTK4
-        shell: bash
-        run: |
-          echo "PKG_CONFIG_PATH=C:/msys64/mingw64/lib/pkgconfig" >> "$GITHUB_ENV"
-          echo 'export PATH="$PATH:/cygdrive/c/msys64/mingw64/bin"' >> "$BASH_ENV"
+          windows-environment: msys2
 
       - name: Pin conf-gtk4 and install OCaml dependencies
         run: |
