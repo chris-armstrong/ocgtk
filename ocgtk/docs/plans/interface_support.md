@@ -48,20 +48,23 @@ The GIR defines `<record name="EditableInterface" glib:is-gtype-struct-for="Edit
 
 ### Phase 1: Type System and Parser Extensions
 
-**Goal**: Add missing metadata to `gir_interface` and parse it from GIR.
+**Goal**: Add missing metadata to `gir_interface` and parse it from GIR. Also fix two pre-existing parser bugs uncovered during validation.
 
 **Tasks**:
-- [ ] Extend `gir_interface` in `types.ml` (lines 156-164) with:
+- [ ] Extend `gir_interface` in `types.ml` (lines 165-174) with:
   - `glib_type_name : string option`
   - `glib_get_type : string option`
   - `prerequisites : string list`
   - `introspectable : bool`
-- [ ] Update `parse_interface` in `gir_parser.ml` (line 1239) to:
-  - Extract `glib:type-name` and `glib:get-type` from interface attributes (same pattern as `parse_class` at line 1046)
+- [ ] Update `parse_interface` in `gir_parser.ml` (line 1251) to:
+  - Extract `glib:type-name` and `glib:get-type` from interface attributes (same namespaced-attr pattern as `parse_record` at line 1055-1064)
   - Parse `<prerequisite>` child elements into the `prerequisites` list
   - Set `introspectable` from attributes
-- [ ] Update `entity_of_interface` in `types.ml` (line 199) if any new fields are needed on `entity`
+- [ ] **Fix `c_symbol_prefix` bug in `parse_interface`** (gir_parser.ml:1373): currently hardcoded to `c_symbol_prefix = name` (e.g., `"Editable"`). The GIR has `c:symbol-prefix="editable"`. Fix to `get_attr "c:symbol-prefix" attrs |> Option.value ~default:name`, matching the record parser (line 1073).
+- [ ] **Add `<implements>` parsing in `parse_class`** (gir_parser.ml:430): `implements` is hardcoded to `[]`. The GIR has `<implements name="Editable"/>` etc. as child elements of `<class>`, which are silently skipped by the `| _ -> skip_element` branch in `parse_class_contents`. Add a `"implements"` case that accumulates the interface names. This is required for Phase 4.
+- [ ] Update `entity_of_interface` in `types.ml` (line 211) if any new fields are needed on `entity`
 - [ ] Fix all compilation errors from the type change (update record literals in parser, filtering, etc.)
+- [ ] Update `make_gir_interface` in `ocgtk/src/tools/test_gir_gen/util/type_factory.ml` (line 155) to include the 4 new fields with appropriate defaults
 
 **Tests**:
 
@@ -72,8 +75,12 @@ Parse `GtkEditable` from the real GIR file and verify:
 - `glib_get_type` = `Some "gtk_editable_get_type"`
 - `prerequisites` = `["Widget"]`
 - `introspectable` = `true`
+- `c_symbol_prefix` = `"editable"` (not `"Editable"`)
 - `methods` list is non-empty (verify count)
 - `properties` list is non-empty (verify count)
+
+Parse `GtkEntry` from the real GIR file and verify:
+- `implements` contains `"Editable"`, `"Accessible"`, `"Buildable"`, `"CellEditable"`, `"ConstraintTarget"` (5 entries)
 
 **Test gate**: Tests pass, `dune build` succeeds.
 
@@ -163,14 +170,13 @@ This is the core deliverable. When `Entry` implements `Editable`, the generated 
 3. Include all Editable properties (delegating similarly)
 
 **Tasks**:
-- [ ] In `class_gen_body.ml`, after parent class inheritance and signal inheritance, add interface inheritance:
-  - Look up the entity's `implements` list (from `gir_class.implements`, already parsed)
-  - For each implemented interface, resolve the Layer 2 class type name (e.g. `GEditable.editable_t`)
-  - Emit `inherit <interface_class_type>` in the class type definition
-  - Emit `inherit <interface_class> (Editable.from_gobject obj)` in the class implementation (this calls `from_gobject` to convert the class's Layer 1 `obj` to the interface type, then constructs the interface class)
-- [ ] Handle method/property name conflicts between the class's own methods and inherited interface methods:
-  - Use the existing conflict detection mechanism (`Class_gen_conflict_detection`)
-  - When a class method and an interface method have the same name, the class's own method takes precedence (skip the inherited one)
+- [ ] **Add `~implements:string list` parameter** to `generate_class_module` and `generate_class_signature` in `class_gen.ml` (lines 143, 188), to `generate_class_module_body` and `generate_class_signature_body` in `class_gen_body.ml`, and to the combined-class variants (`generate_combined_class_module`, `generate_combined_class_signature`). Thread the value from `entity.implements` at every call site in `gir_gen.ml` (lines 440-466 in `generate_high_level_class`, plus the combined-entity paths).
+- [ ] In `class_gen_body.ml`, **after parent class inheritance but before signal inheritance**, add interface inheritance:
+  - Iterate `implements` (now correctly populated from Phase 1)
+  - For each interface name, resolve the Layer 2 class type name (e.g. `GEditable.editable_t`) and class name (e.g. `GEditable.editable`)
+  - Emit `inherit <interface_class_type>` in the class type definition (`generate_class_signature_body`)
+  - Emit `inherit <interface_class> (<InterfaceLayer1>.from_gobject obj)` in the class implementation (`generate_class_module_body`)
+- [ ] **Interface method conflict detection**: the existing `Class_gen_conflict_detection.detect_method_conflicts` only walks the parent-class hierarchy — it does not know about interface methods. Add separate logic (or extend `collect_inherited_method_names`) so that when generating a class's own methods, any method name that also appears in an inherited interface is suppressed (the class's own method wins). This prevents duplicate method definitions in the generated OCaml.
 - [ ] Handle cross-namespace interfaces (e.g. a Gtk class implementing a Gio interface):
   - Use `Type_mappings.find_type_mapping_for_gir_type` to resolve the qualified module path
 - [ ] Handle signal inheritance from interfaces:
@@ -288,10 +294,12 @@ let test_from_gobject_fails () =
 
 ### Modified Files
 - `ocgtk/src/tools/gir_gen/types.ml` — extend `gir_interface` with 4 new fields
-- `ocgtk/src/tools/gir_gen/parse/gir_parser.ml` — parse new interface attributes and prerequisites
-- `ocgtk/src/tools/gir_gen/gir_gen.ml` — generate `from_gobject` C stub for interface entities
-- `ocgtk/src/tools/gir_gen/generate/class_gen_body.ml` — add interface inheritance to class body generation
+- `ocgtk/src/tools/gir_gen/parse/gir_parser.ml` — parse new interface attributes/prerequisites; fix `c_symbol_prefix` bug; add `<implements>` parsing in `parse_class`
+- `ocgtk/src/tools/gir_gen/gir_gen.ml` — generate `from_gobject` C stub for interface entities; pass `entity.implements` to class gen functions
+- `ocgtk/src/tools/gir_gen/generate/class_gen.ml` — add `~implements` parameter to `generate_class_module`, `generate_class_signature`, and combined-class variants
+- `ocgtk/src/tools/gir_gen/generate/class_gen_body.ml` — add `~implements` parameter; add interface inheritance to body generation; add interface method conflict suppression
 - `ocgtk/src/tools/gir_gen/generate/layer1/layer1_main.ml` — add `from_gobject` external to interface Layer 1
+- `ocgtk/src/tools/test_gir_gen/util/type_factory.ml` — extend `make_gir_interface` with 4 new fields
 
 ### New Test Files
 - `ocgtk/src/tools/test_gir_gen/interface_tests/interface_parsing_tests.ml` — Phase 1
