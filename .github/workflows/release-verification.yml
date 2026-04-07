@@ -294,19 +294,16 @@ jobs:
           install: >-
             mingw-w64-x86_64-gtk4
             mingw-w64-x86_64-gobject-introspection
-            mingw-w64-x86_64-pkgconf
 
       # Set up OCaml via opam on Windows.
-      # windows-compiler: mingw       → OCaml built with MinGW64 GCC
-      # windows-environment: msys2    → opam runs build commands in MSYS2's
-      #                                 shell, so conf-gtk4's pkgconf check
-      #                                 finds the MinGW64 pkgconf directly.
-      - name: Set up OCaml (MinGW64 compiler, MSYS2 shell)
+      # windows-compiler: mingw  → OCaml built with MinGW64 GCC (native
+      #                            Windows binaries, ABI-compatible with
+      #                            MSYS2 MINGW64 libraries including GTK4).
+      - name: Set up OCaml (MinGW64 compiler)
         uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ env.OCAML_VERSION }}
           windows-compiler: mingw
-          windows-environment: msys2
 
       - name: Pin conf-gtk4 and install OCaml dependencies
         run: |
