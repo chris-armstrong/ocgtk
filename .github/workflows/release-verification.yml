@@ -327,12 +327,16 @@ jobs:
           ocaml-compiler: ${{ env.OCAML_VERSION }}
           windows-compiler: mingw
 
-      # Tell Cygwin's pkg-config where to find GTK4's .pc files from the
-      # MSYS2 MinGW64 prefix.
+      # Expose MSYS2's MinGW64 tools (pkgconf, etc.) to opam's Cygwin build
+      # environment.  opam runs build commands in a Cygwin bash that sources
+      # $BASH_ENV on startup, so appending to that file is the reliable way
+      # to extend PATH for all opam build steps.  PKG_CONFIG_PATH tells
+      # pkgconf where the GTK4 .pc files live.
       - name: Configure pkg-config paths for MSYS2 GTK4
         shell: bash
         run: |
           echo "PKG_CONFIG_PATH=C:/msys64/mingw64/lib/pkgconfig" >> "$GITHUB_ENV"
+          echo 'export PATH="$PATH:/cygdrive/c/msys64/mingw64/bin"' >> "$BASH_ENV"
 
       - name: Pin conf-gtk4 and install OCaml dependencies
         run: |
