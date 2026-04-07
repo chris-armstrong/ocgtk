@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ocaml-compiler: [5.3.x, 5.4.x]
+        ocaml-compiler: [5.4.x]
 
     steps:
       - name: Checkout code

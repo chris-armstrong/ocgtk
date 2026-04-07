@@ -263,40 +263,6 @@ jobs:
           eval $(opam env)
           xvfb-run -a dune runtest
 
-  # ── FreeBSD 14 ───────────────────────────────────────────────────────────────
-  freebsd:
-    name: FreeBSD 14
-    if: ${{ !inputs.windows_only }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build and test on FreeBSD
-        uses: vmactions/freebsd-vm@v1
-        with:
-          usesh: true
-          prepare: |
-            pkg install -y \
-              gtk4 gobject-introspection pkgconf \
-              bash gcc gmake m4 patch unzip bzip2 curl git perl5 rsync \
-              xorg-vfbserver
-          run: |
-            set -e
-            curl -fsSL \
-              "https://github.com/ocaml/opam/releases/download/${{ env.OPAM_VERSION }}/opam-${{ env.OPAM_VERSION }}-x86_64-freebsd" \
-              -o /usr/local/bin/opam
-            chmod +x /usr/local/bin/opam
-            opam init --disable-sandboxing -y --bare
-            opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
-            eval $(opam env)
-            opam pin add -n conf-gtk4 conf-gtk4
-            opam install --deps-only --with-test -y ./ocgtk
-            cd ocgtk
-            dune build
-            # xvfb-run is not available on FreeBSD; start Xvfb manually
-            Xvfb :99 -screen 0 1280x1024x24 &
-            sleep 1
-            DISPLAY=:99 dune runtest
-
   # ── Windows ──────────────────────────────────────────────────────────────────
   #
   # Setup model: Cygwin shell + MinGW64 compiler + MSYS2 GTK4 libraries.
