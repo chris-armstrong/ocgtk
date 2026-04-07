@@ -77,6 +77,30 @@ services:
     command: sleep infinity
     tty: true
 
+  fedora43:
+    build:
+      context: ..
+      dockerfile: ci/fedora43.Dockerfile
+      <<: *build-args
+    volumes:
+      - ..:/workspace:cached
+      - fedora43-build:/build
+    working_dir: /workspace
+    command: sleep infinity
+    tty: true
+
+  ubuntu25:
+    build:
+      context: ..
+      dockerfile: ci/ubuntu25.Dockerfile
+      <<: *build-args
+    volumes:
+      - ..:/workspace:cached
+      - ubuntu25-build:/build
+    working_dir: /workspace
+    command: sleep infinity
+    tty: true
+
 volumes:
   ubuntu22-build:
   debian12-build:
@@ -84,3 +108,5 @@ volumes:
   opensuse15-build:
   fedora40-build:
   ubuntu24-build:
+  fedora43-build:
+  ubuntu25-build:
