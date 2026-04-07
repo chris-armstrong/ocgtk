@@ -264,7 +264,7 @@ jobs:
           prepare: |
             pkg install -y \
               gtk4 gobject-introspection pkgconf \
-              gcc gmake m4 patch unzip bzip2 curl git perl5 rsync \
+              bash gcc gmake m4 patch unzip bzip2 curl git perl5 rsync \
               xorg-vfbserver
           run: |
             set -e
@@ -293,12 +293,9 @@ jobs:
   # (x86_64-w64-mingw32), making it binary-compatible with MSYS2 MINGW64
   # libraries including GTK4.
   #
-  # conf-gtk4 checks for GTK4 using:
-  #   pkgconf --personality=x86_64-w64-mingw32 --exists gtk4
-  # The x86_64-w64-mingw32 personality is provided by Cygwin's pkgconf
-  # package and resolves .pc files from the MinGW64 prefix. We point it at
-  # MSYS2's MinGW64 prefix via the personality-specific PKG_CONFIG_PATH var
-  # (x86_64_w64_mingw32_PKG_CONFIG_PATH, hyphens → underscores).
+  # conf-gtk4 checks for GTK4 using Cygwin's pkg-config (installed by
+  # setup-ocaml by default) with PKG_CONFIG_PATH pointing at MSYS2's
+  # MinGW64 .pc files.
   windows:
     name: Windows
     runs-on: windows-latest
@@ -330,16 +327,12 @@ jobs:
           ocaml-compiler: ${{ env.OCAML_VERSION }}
           windows-compiler: mingw
 
-      # Tell Cygwin's pkgconf --personality=x86_64-w64-mingw32 where to find
-      # GTK4's .pc files.  The personality-scoped variable uses the triplet
-      # with hyphens replaced by underscores.  We also set the plain
-      # PKG_CONFIG_PATH as a fallback for tools that ignore personalities.
+      # Tell Cygwin's pkg-config where to find GTK4's .pc files from the
+      # MSYS2 MinGW64 prefix.
       - name: Configure pkg-config paths for MSYS2 GTK4
         shell: bash
         run: |
-          MINGW64_PC="C:/msys64/mingw64/lib/pkgconfig"
-          echo "x86_64_w64_mingw32_PKG_CONFIG_PATH=${MINGW64_PC}" >> "$GITHUB_ENV"
-          echo "PKG_CONFIG_PATH=${MINGW64_PC}" >> "$GITHUB_ENV"
+          echo "PKG_CONFIG_PATH=C:/msys64/mingw64/lib/pkgconfig" >> "$GITHUB_ENV"
 
       - name: Pin conf-gtk4 and install OCaml dependencies
         run: |
