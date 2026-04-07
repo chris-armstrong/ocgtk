@@ -1,28 +1,25 @@
-FROM debian:12
+FROM fedora:43
 
 ARG OPAM_VERSION=2.5.0
 ARG OCAML_VERSION=5.3.0
 
-ENV DEBIAN_FRONTEND=noninteractive
-
 # System dependencies
-RUN apt-get update && apt-get install -y \
+RUN dnf install -y \
     # Build toolchain
     gcc make m4 patch unzip bzip2 curl git \
     # OCaml / opam requirements
-    pkg-config perl diffutils rsync \
+    pkgconf perl diffutils which rsync \
     # GTK 4 and friends
-    libgtk-4-dev \
-    libcairo2-dev \
-    libpango1.0-dev \
-    libgdk-pixbuf-2.0-dev \
-    libglib2.0-dev \
+    gtk4-devel \
+    cairo-devel \
+    pango-devel \
+    gdk-pixbuf2-devel \
+    glib2-devel \
     # GIR files for code generation
-    libgirepository1.0-dev \
-    gir1.2-gtk-4.0 \
+    gobject-introspection-devel \
     # Headless display for running GTK tests
-    xvfb \
- && rm -rf /var/lib/apt/lists/*
+    xorg-x11-server-Xvfb \
+ && dnf clean all
 
 # Install opam
 RUN curl -fsSL "https://github.com/ocaml/opam/releases/download/${OPAM_VERSION}/opam-${OPAM_VERSION}-x86_64-linux" \
