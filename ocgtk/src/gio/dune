@@ -4,12 +4,12 @@
 ; Include generated C stubs library definition
 (include generated/dune-generated.inc)
 
-; Configure pkg-config for GIO
+; Configure pkg-config for GIO.
+; gio-unix-2.0 is optional: it exists on Linux/macOS but not on Windows.
 (rule
- (targets c_flags.sexp)
+ (targets c_flags.sexp c_library_flags.sexp)
  (action
-  (with-stdout-to %{targets}
-   (bash "echo '(' && pkg-config --cflags gio-2.0 && echo '\n' && pkg-config --cflags gio-unix-2.0 && echo ')'"))))
+  (run %{exe:../config/discover.exe} --pkg gio-2.0 --optional-pkg gio-unix-2.0)))
 
 ; Code generation for GIO bindings
 ; To regenerate bindings from GIR files, run:

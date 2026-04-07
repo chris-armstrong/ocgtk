@@ -4,10 +4,9 @@
 ; Configure pkg-config for GTK4
 
 (rule
- (targets cflag-gtk4.sexp clink-gtk4.sexp)
+ (targets c_flags.sexp c_library_flags.sexp)
  (action
-  (bash
-   "pkg-config --cflags gtk4 > cflag-gtk4.tmp && pkg-config --libs gtk4 > clink-gtk4.tmp && echo \"(\" > cflag-gtk4.sexp && tr ' ' '\\n' < cflag-gtk4.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-gtk4.sexp && echo \")\" >> cflag-gtk4.sexp && echo \"(\" > clink-gtk4.sexp && tr ' ' '\\n' < clink-gtk4.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> clink-gtk4.sexp && echo \")\" >> clink-gtk4.sexp && rm cflag-gtk4.tmp clink-gtk4.tmp")))
+  (run %{exe:../config/discover.exe} --pkg gtk4)))
 
 (library
  (name ocgtk_common)
@@ -19,9 +18,9 @@
   (flags
    -fPIC
    -I../gtk/generated
-   (:include cflag-gtk4.sexp)
+   (:include c_flags.sexp)
    -Wno-deprecated-declarations))
  (c_library_flags
-  (:include clink-gtk4.sexp))
+  (:include c_library_flags.sexp))
  (install_c_headers wrappers)
  (modules ocgtk_common Gaux Gpointer GError Gobject Glib))

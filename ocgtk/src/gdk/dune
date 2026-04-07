@@ -4,12 +4,11 @@
 ; Include generated C stubs library definition
 (include generated/dune-generated.inc)
 
-; Configure pkg-config for GDK (using gtk4 as GDK is bundled with it)
+; Configure pkg-config for GDK (bundled with gtk4)
 (rule
- (targets c_flags.sexp)
+ (targets c_flags.sexp c_library_flags.sexp)
  (action
-  (with-stdout-to %{targets}
-   (bash "echo '(' && pkg-config --cflags gtk4 && echo ')'"))))
+  (run %{exe:../config/discover.exe} --pkg gtk4)))
 
 ; Code generation for GDK bindings
 ; To regenerate bindings from GIR files, run:

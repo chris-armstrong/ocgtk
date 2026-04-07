@@ -6,10 +6,9 @@
 
 ; Configure pkg-config for GSK (bundled with gtk4)
 (rule
- (targets c_flags.sexp)
+ (targets c_flags.sexp c_library_flags.sexp)
  (action
-  (with-stdout-to %{targets}
-   (bash "echo '(' && pkg-config --cflags gtk4 && echo ')'"))))
+  (run %{exe:../config/discover.exe} --pkg gtk4)))
 
 ; Main GSK library combining core and generated code
 (library

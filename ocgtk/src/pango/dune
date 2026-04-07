@@ -6,10 +6,9 @@
 
 ; Configure pkg-config for Pango
 (rule
- (targets c_flags.sexp)
+ (targets c_flags.sexp c_library_flags.sexp)
  (action
-  (with-stdout-to %{targets}
-   (bash "echo '(' && pkg-config --cflags pango && echo ')'"))))
+  (run %{exe:../config/discover.exe} --pkg pango)))
 
 ; Main Pango library combining core and generated code
 (library

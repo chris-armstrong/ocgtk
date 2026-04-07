@@ -6,10 +6,9 @@
 
 ; Configure pkg-config for Cairo
 (rule
- (targets c_flags.sexp)
+ (targets c_flags.sexp c_library_flags.sexp)
  (action
-  (with-stdout-to %{targets}
-   (bash "echo '(' && pkg-config --cflags cairo-gobject && echo ')'"))))
+  (run %{exe:../config/discover.exe} --pkg cairo-gobject)))
 
 ; Main Cairo library combining core and generated code
 (library
