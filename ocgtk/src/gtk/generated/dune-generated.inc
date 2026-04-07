@@ -656,35 +656,18 @@
 
 (rule
  (targets cflag-gtk.sexp clink-gtk.sexp)
- (action (bash "\
-echo '' > cflag-gtk.sexp.tmp && \\
-echo '' > clink-gtk.sexp.tmp && \\
-pkg-config --cflags gtk4 >> cflag-gtk.sexp.tmp && \\
-pkg-config --libs gtk4 >> clink-gtk.sexp.tmp && \\
-pkg-config --cflags cairo-gobject >> cflag-gtk.sexp.tmp && \\
-pkg-config --libs cairo-gobject >> clink-gtk.sexp.tmp && \\
-pkg-config --cflags gdk-pixbuf-2.0 >> cflag-gtk.sexp.tmp && \\
-pkg-config --libs gdk-pixbuf-2.0 >> clink-gtk.sexp.tmp && \\
-pkg-config --cflags gio-2.0 >> cflag-gtk.sexp.tmp && \\
-pkg-config --libs gio-2.0 >> clink-gtk.sexp.tmp && \\
-pkg-config --cflags gio-unix-2.0 >> cflag-gtk.sexp.tmp && \\
-pkg-config --libs gio-unix-2.0 >> clink-gtk.sexp.tmp && \\
-pkg-config --cflags graphene-gobject-1.0 >> cflag-gtk.sexp.tmp && \\
-pkg-config --libs graphene-gobject-1.0 >> clink-gtk.sexp.tmp && \\
-pkg-config --cflags gtk4 >> cflag-gtk.sexp.tmp && \\
-pkg-config --libs gtk4 >> clink-gtk.sexp.tmp && \\
-pkg-config --cflags pango >> cflag-gtk.sexp.tmp && \\
-pkg-config --libs pango >> clink-gtk.sexp.tmp && \\
-pkg-config --cflags pangocairo >> cflag-gtk.sexp.tmp && \\
-pkg-config --libs pangocairo >> clink-gtk.sexp.tmp && \\
-echo \"(\" > cflag-gtk.sexp && \\
-tr ' ' '\\n' < cflag-gtk.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-gtk.sexp && \\
-echo \")\" >> cflag-gtk.sexp && \\
-echo \"(\" > clink-gtk.sexp && \\
-tr ' ' '\\n' < clink-gtk.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> clink-gtk.sexp && \\
-echo \")\" >> clink-gtk.sexp && \\
-rm cflag-gtk.sexp.tmp clink-gtk.sexp.tmp\\
-")))
+ (action
+  (run %{exe:../config/discover.exe}
+   --pkg gtk4
+   --pkg cairo-gobject
+   --pkg gdk-pixbuf-2.0
+   --pkg gio-2.0
+   --pkg graphene-gobject-1.0
+   --pkg pango
+   --pkg pangocairo
+   --optional-pkg gio-unix-2.0
+   --output-cflags cflag-gtk.sexp
+   --output-libs clink-gtk.sexp)))
 
 (library
  (name ocgtk_gtk_generated_stubs)

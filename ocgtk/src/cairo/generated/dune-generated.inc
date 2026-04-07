@@ -89,19 +89,11 @@
 
 (rule
  (targets cflag-cairo.sexp clink-cairo.sexp)
- (action (bash "\
-echo '' > cflag-cairo.sexp.tmp && \\
-echo '' > clink-cairo.sexp.tmp && \\
-pkg-config --cflags cairo-gobject >> cflag-cairo.sexp.tmp && \\
-pkg-config --libs cairo-gobject >> clink-cairo.sexp.tmp && \\
-echo \"(\" > cflag-cairo.sexp && \\
-tr ' ' '\\n' < cflag-cairo.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-cairo.sexp && \\
-echo \")\" >> cflag-cairo.sexp && \\
-echo \"(\" > clink-cairo.sexp && \\
-tr ' ' '\\n' < clink-cairo.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> clink-cairo.sexp && \\
-echo \")\" >> clink-cairo.sexp && \\
-rm cflag-cairo.sexp.tmp clink-cairo.sexp.tmp\\
-")))
+ (action
+  (run %{exe:../config/discover.exe}
+   --pkg cairo-gobject
+   --output-cflags cflag-cairo.sexp
+   --output-libs clink-cairo.sexp)))
 
 (library
  (name ocgtk_cairo_generated_stubs)

@@ -78,23 +78,13 @@
 
 (rule
  (targets cflag-gdkpixbuf.sexp clink-gdkpixbuf.sexp)
- (action (bash "\
-echo '' > cflag-gdkpixbuf.sexp.tmp && \\
-echo '' > clink-gdkpixbuf.sexp.tmp && \\
-pkg-config --cflags gdk-pixbuf-2.0 >> cflag-gdkpixbuf.sexp.tmp && \\
-pkg-config --libs gdk-pixbuf-2.0 >> clink-gdkpixbuf.sexp.tmp && \\
-pkg-config --cflags gio-2.0 >> cflag-gdkpixbuf.sexp.tmp && \\
-pkg-config --libs gio-2.0 >> clink-gdkpixbuf.sexp.tmp && \\
-pkg-config --cflags gio-unix-2.0 >> cflag-gdkpixbuf.sexp.tmp && \\
-pkg-config --libs gio-unix-2.0 >> clink-gdkpixbuf.sexp.tmp && \\
-echo \"(\" > cflag-gdkpixbuf.sexp && \\
-tr ' ' '\\n' < cflag-gdkpixbuf.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-gdkpixbuf.sexp && \\
-echo \")\" >> cflag-gdkpixbuf.sexp && \\
-echo \"(\" > clink-gdkpixbuf.sexp && \\
-tr ' ' '\\n' < clink-gdkpixbuf.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> clink-gdkpixbuf.sexp && \\
-echo \")\" >> clink-gdkpixbuf.sexp && \\
-rm cflag-gdkpixbuf.sexp.tmp clink-gdkpixbuf.sexp.tmp\\
-")))
+ (action
+  (run %{exe:../config/discover.exe}
+   --pkg gdk-pixbuf-2.0
+   --pkg gio-2.0
+   --optional-pkg gio-unix-2.0
+   --output-cflags cflag-gdkpixbuf.sexp
+   --output-libs clink-gdkpixbuf.sexp)))
 
 (library
  (name ocgtk_gdk_pixbuf_generated_stubs)

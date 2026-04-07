@@ -1,6 +1,8 @@
 let () =
   let packages = ref [] in
   let optional_packages = ref [] in
+  let output_cflags = ref "c_flags.sexp" in
+  let output_libs = ref "c_library_flags.sexp" in
   let open Configurator.V1 in
   main
     ~name:"ocgtk-discover"
@@ -11,6 +13,12 @@ let () =
       ; ( "--optional-pkg"
         , Arg.String (fun p -> optional_packages := p :: !optional_packages)
         , "<name> Optional pkg-config package (skipped if not found)" )
+      ; ( "--output-cflags"
+        , Arg.String (fun s -> output_cflags := s)
+        , "<file> Output file for C flags sexp (default: c_flags.sexp)" )
+      ; ( "--output-libs"
+        , Arg.String (fun s -> output_libs := s)
+        , "<file> Output file for C library flags sexp (default: c_library_flags.sexp)" )
       ]
     (fun cfg ->
       let packages = List.rev !packages in
@@ -31,5 +39,5 @@ let () =
           ( List.concat_map (fun c -> c.Pkg_config.cflags) confs
           , List.concat_map (fun c -> c.Pkg_config.libs) confs )
       in
-      Flags.write_sexp "c_flags.sexp" cflags;
-      Flags.write_sexp "c_library_flags.sexp" libs)
+      Flags.write_sexp !output_cflags cflags;
+      Flags.write_sexp !output_libs libs)

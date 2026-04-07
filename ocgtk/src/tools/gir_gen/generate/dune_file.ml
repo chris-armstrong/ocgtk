@@ -81,33 +81,22 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~module_names ~repository =
   in
   let all_packages = repository.repository_packages @ dep_packages in
 
+  (* Packages that are optional (platform-specific, absence is not an error) *)
+  let optional_packages = [ "gio-unix-2.0" ] in
+  let required, optional =
+    List.partition
+      ~f:(fun p -> not (List.mem ~eq:String.equal p optional_packages))
+      all_packages
+  in
+
   bprintf buf "(rule\n";
   bprintf buf " (targets %s %s)\n" cflag_file clink_file;
-  bprintf buf " (action (bash \"\\\n";
-  bprintf buf "echo '' > %s.tmp && \\\\\n" cflag_file;
-  bprintf buf "echo '' > %s.tmp && \\\\\n" clink_file;
-
-  List.iter
-    ~f:(fun package_name ->
-      bprintf buf "pkg-config --cflags %s >> %s.tmp && \\\\\n" package_name
-        cflag_file;
-      bprintf buf "pkg-config --libs %s >> %s.tmp && \\\\\n" package_name
-        clink_file)
-    all_packages;
-  bprintf buf "echo \\\"(\\\" > %s && \\\\\n" cflag_file;
-  bprintf buf
-    "tr ' ' '\\\\n' < %s.tmp | sed 's/^\\\\(.*\\\\)$/\\\\1/' | tr '\\\\n' ' ' \
-     >> %s && \\\\\n"
-    cflag_file cflag_file;
-  bprintf buf "echo \\\")\\\" >> %s && \\\\\n" cflag_file;
-  bprintf buf "echo \\\"(\\\" > %s && \\\\\n" clink_file;
-  bprintf buf
-    "tr ' ' '\\\\n' < %s.tmp | sed 's/^\\\\(.*\\\\)$/\\\\1/' | tr '\\\\n' ' ' \
-     >> %s && \\\\\n"
-    clink_file clink_file;
-  bprintf buf "echo \\\")\\\" >> %s && \\\\\n" clink_file;
-  bprintf buf "rm %s.tmp %s.tmp\\\\\n" cflag_file clink_file;
-  bprintf buf "\")))\n\n";
+  bprintf buf " (action\n";
+  bprintf buf "  (run %%{exe:../config/discover.exe}\n";
+  List.iter ~f:(fun p -> bprintf buf "   --pkg %s\n" p) required;
+  List.iter ~f:(fun p -> bprintf buf "   --optional-pkg %s\n" p) optional;
+  bprintf buf "   --output-cflags %s\n" cflag_file;
+  bprintf buf "   --output-libs %s)))\n\n" clink_file;
 
   Buffer.add_string buf "(library\n";
   Buffer.add_string buf

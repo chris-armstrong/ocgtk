@@ -145,25 +145,14 @@
 
 (rule
  (targets cflag-pango.sexp clink-pango.sexp)
- (action (bash "\
-echo '' > cflag-pango.sexp.tmp && \\
-echo '' > clink-pango.sexp.tmp && \\
-pkg-config --cflags pango >> cflag-pango.sexp.tmp && \\
-pkg-config --libs pango >> clink-pango.sexp.tmp && \\
-pkg-config --cflags cairo-gobject >> cflag-pango.sexp.tmp && \\
-pkg-config --libs cairo-gobject >> clink-pango.sexp.tmp && \\
-pkg-config --cflags gio-2.0 >> cflag-pango.sexp.tmp && \\
-pkg-config --libs gio-2.0 >> clink-pango.sexp.tmp && \\
-pkg-config --cflags gio-unix-2.0 >> cflag-pango.sexp.tmp && \\
-pkg-config --libs gio-unix-2.0 >> clink-pango.sexp.tmp && \\
-echo \"(\" > cflag-pango.sexp && \\
-tr ' ' '\\n' < cflag-pango.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-pango.sexp && \\
-echo \")\" >> cflag-pango.sexp && \\
-echo \"(\" > clink-pango.sexp && \\
-tr ' ' '\\n' < clink-pango.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> clink-pango.sexp && \\
-echo \")\" >> clink-pango.sexp && \\
-rm cflag-pango.sexp.tmp clink-pango.sexp.tmp\\
-")))
+ (action
+  (run %{exe:../config/discover.exe}
+   --pkg pango
+   --pkg cairo-gobject
+   --pkg gio-2.0
+   --optional-pkg gio-unix-2.0
+   --output-cflags cflag-pango.sexp
+   --output-libs clink-pango.sexp)))
 
 (library
  (name ocgtk_pango_generated_stubs)
