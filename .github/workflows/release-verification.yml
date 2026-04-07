@@ -3,6 +3,12 @@ name: Release Verification
 # Manually triggered, or automatically on release tags.
 on:
   workflow_dispatch:
+    inputs:
+      windows_only:
+        description: 'Run only the Windows job (for faster iteration)'
+        required: false
+        default: false
+        type: boolean
   push:
     tags: ['v*']
 
@@ -15,6 +21,7 @@ jobs:
   # ── Ubuntu 22.04 (native runner) ────────────────────────────────────────────
   ubuntu-22:
     name: Ubuntu 22.04
+    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -42,6 +49,7 @@ jobs:
   # ── Ubuntu 24.04 (native runner) ────────────────────────────────────────────
   ubuntu-24:
     name: Ubuntu 24.04
+    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -69,6 +77,7 @@ jobs:
   # ── APT-based containers (Ubuntu 25.04, Debian 12) ──────────────────────────
   linux-apt:
     name: ${{ matrix.name }}
+    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-latest
     container: ${{ matrix.image }}
     env:
@@ -120,6 +129,7 @@ jobs:
   # ── Fedora containers (Fedora 40, Fedora 43) ─────────────────────────────────
   linux-fedora:
     name: ${{ matrix.name }}
+    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-latest
     container: ${{ matrix.image }}
     strategy:
@@ -169,6 +179,7 @@ jobs:
   # ── CentOS Stream 9 ──────────────────────────────────────────────────────────
   centos-9:
     name: CentOS Stream 9
+    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-latest
     container: quay.io/centos/centos:stream9
     steps:
@@ -213,6 +224,7 @@ jobs:
   # ── openSUSE Leap 15.6 ───────────────────────────────────────────────────────
   opensuse-15:
     name: openSUSE Leap 15.6
+    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-latest
     container: opensuse/leap:15.6
     steps:
@@ -254,6 +266,7 @@ jobs:
   # ── FreeBSD 14 ───────────────────────────────────────────────────────────────
   freebsd:
     name: FreeBSD 14
+    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
