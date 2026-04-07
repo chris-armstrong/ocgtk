@@ -12,6 +12,7 @@ depends: [
   "ocaml" {>= "5.3"}
   "dune" {>= "3.13" & >= "3.13"}
   "conf-gtk4"
+  "integers" {>= "0.7.0"}
   "xmlm"
   "fmt"
   "logs"

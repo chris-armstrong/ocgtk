@@ -43,7 +43,7 @@ COPY conf-gtk4/ ./conf-gtk4/
 RUN eval $(opam env) \
  && opam install ./conf-gtk4 -y \
  && opam install \
-      xmlm fmt logs containers re sexplib \
+      integers xmlm fmt logs containers re sexplib \
       ppx_sexp_conv ppx_deriving cmdliner ppxlib \
       alcotest \
       -y \
