@@ -10,12 +10,17 @@ homepage: "https://github.com/chris-armstrong/ocgtk"
 bug-reports: "https://github.com/chris-armstrong/ocgtk/issues"
 flags: conf
 available: os = "win32"
-build: ["pkgconf" "--personality=x86_64-w64-mingw32" "gtk4"]
+# Verify gtk4.pc is discoverable via PKG_CONFIG_PATH.
+# We do not use --personality because the x86_64-w64-mingw32 personality
+# file is only present when Cygwin cross-compilation packages are installed,
+# which is not the case when GTK4 is provided by MSYS2 MINGW64.
+build: ["pkgconf" "--print-errors" "--exists" "gtk4"]
 depends: [
   "conf-pkg-config" {build}
   "conf-mingw-w64-gcc-x86_64" {build}
 ]
 depexts: [
-  ["mingw64-x86_64-gtk4"] {os = "win32" & os-distribution = "cygwin"}
+  # Cygwin does not ship mingw-w64 GTK4 cross-compilation packages (unlike
+  # GTK3). Only MSYS2 provides mingw-w64 GTK4.
   ["mingw-w64-x86_64-gtk4"] {os = "win32" & os-distribution = "msys2"}
 ]

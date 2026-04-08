@@ -286,9 +286,13 @@ jobs:
     name: Windows
     runs-on: windows-latest
     env:
-      # Bridge opam's pkgconf to the MSYS2 MINGW64 prefix where GTK4 is
-      # installed.  Without this, pkgconf cannot find gtk4.pc and friends.
-      PKG_CONFIG_PATH: C:/msys64/mingw64/lib/pkgconfig
+      # Bridge opam's Cygwin pkgconf to the MSYS2 MINGW64 prefix where GTK4
+      # is installed.  Must use Cygwin-style path because opam's pkgconf
+      # binary (C:\.opam\.cygwin\root\bin\pkgconf.exe) is a Cygwin program
+      # that splits PKG_CONFIG_PATH on ':' — a Windows-style path like
+      # C:/msys64/... would be split into "C" and "/msys64/..." which both
+      # fail.
+      PKG_CONFIG_PATH: /cygdrive/c/msys64/mingw64/lib/pkgconfig
     steps:
       - uses: actions/checkout@v4
 

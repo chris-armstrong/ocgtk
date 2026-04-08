@@ -44,11 +44,14 @@ depexts: [
   ["gtk4"] {os = "freebsd"}
 ]
 
-# On Windows (non-cygwinports), use pkgconf with mingw personality.
+# On Windows (non-cygwinports), verify gtk4.pc is discoverable via
+# PKG_CONFIG_PATH.  We do not use --personality because the personality file
+# is only present with Cygwin cross-compilation packages, which do not exist
+# for GTK4.
 # On other platforms (including cygwinports), use standard pkg-config.
 build: [
-  ["pkgconf" "--personality=x86_64-w64-mingw32" "--print-errors" "--exists" "gtk4"]
-    {os = "win32" & os-distribution != "cygwinports" & host-arch-x86_64:installed}
+  ["pkgconf" "--print-errors" "--exists" "gtk4"]
+    {os = "win32" & os-distribution != "cygwinports"}
   ["pkg-config" "--short-errors" "--print-errors" "--exists" "gtk4"]
     {os != "win32" | os-distribution = "cygwinports"}
 ]
