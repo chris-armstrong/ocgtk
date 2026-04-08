@@ -41,6 +41,15 @@ value Val_GResource_option(const GResource *ptr) {
 #if GLIB_CHECK_VERSION(2,32,0)
 
 
+CAMLexport CAMLprim value ml_g_resource_new_from_data(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GResource *obj = g_resource_new_from_data(GBytes_val(arg1), &error);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GResource(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 CAMLexport CAMLprim value ml_g_resource_unref(value self)
 {
 CAMLparam1(self);
@@ -64,6 +73,15 @@ GError *error = NULL;
 
 GInputStream* result = g_resource_open_stream(GResource_val(self), String_val(arg1), GioResourceLookupFlags_val(arg2), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GInputStream(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_resource_lookup_data(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+
+GBytes* result = g_resource_lookup_data(GResource_val(self), String_val(arg1), GioResourceLookupFlags_val(arg2), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GBytes(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_resource_enumerate_children(value self, value arg1, value arg2)
@@ -105,6 +123,15 @@ CAMLreturn(Val_unit);
 #else
 
 
+CAMLexport CAMLprim value ml_g_resource_new_from_data(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("Resource requires GLib >= 2.32");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_resources_register(value self)
 {
 CAMLparam1(self);
@@ -124,6 +151,17 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_resource_enumerate_children(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Resource requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_resource_lookup_data(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
 (void)self;

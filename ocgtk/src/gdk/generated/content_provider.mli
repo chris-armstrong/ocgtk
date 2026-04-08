@@ -3,6 +3,9 @@
 
 type t = [`content_provider | `object_] Gobject.obj
 
+(** Create a new ContentProvider *)
+external new_for_bytes : string -> Glib_bytes.t -> t = "ml_gdk_content_provider_new_for_bytes"
+
 (* Methods *)
 (** Finishes an asynchronous write operation.
 

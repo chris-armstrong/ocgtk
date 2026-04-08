@@ -31,12 +31,28 @@ value Val_GskShaderArgsBuilder_option(const GskShaderArgsBuilder *ptr) {
 }
 
 
+CAMLexport CAMLprim value ml_gsk_shader_args_builder_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+
+GskShaderArgsBuilder *obj = gsk_shader_args_builder_new(GskGLShader_val(arg1), Option_val(arg2, GBytes_val, NULL));
+
+CAMLreturn(Val_GskShaderArgsBuilder(obj));
+}
 CAMLexport CAMLprim value ml_gsk_shader_args_builder_unref(value self)
 {
 CAMLparam1(self);
 
 gsk_shader_args_builder_unref(GskShaderArgsBuilder_val(self));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gsk_shader_args_builder_to_args(value self)
+{
+CAMLparam1(self);
+
+GBytes* result = gsk_shader_args_builder_to_args(GskShaderArgsBuilder_val(self));
+CAMLreturn(Val_GBytes(result));
 }
 
 CAMLexport CAMLprim value ml_gsk_shader_args_builder_set_vec4(value self, value arg1, value arg2)

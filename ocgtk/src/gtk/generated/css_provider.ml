@@ -44,3 +44,8 @@ external load_from_path : t -> string -> unit = "ml_gtk_css_provider_load_from_p
 This clears any previously loaded information. *)
 external load_from_file : t -> Ocgtk_gio.Gio.Wrappers.File.t -> unit = "ml_gtk_css_provider_load_from_file"
 
+(** Loads @data into @css_provider.
+
+This clears any previously loaded information. *)
+external load_from_bytes : t -> Glib_bytes.t -> unit = "ml_gtk_css_provider_load_from_bytes"
+

@@ -24,7 +24,42 @@
 #if GLIB_CHECK_VERSION(2,38,0)
 
 
+CAMLexport CAMLprim value ml_g_bytes_icon_new(value arg1)
+{
+CAMLparam1(arg1);
+
+GBytesIcon *obj = g_bytes_icon_new(GBytes_val(arg1));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GBytesIcon(obj));
+}
+CAMLexport CAMLprim value ml_g_bytes_icon_get_bytes(value self)
+{
+CAMLparam1(self);
+
+GBytes* result = g_bytes_icon_get_bytes(GBytesIcon_val(self));
+CAMLreturn(Val_GBytes(result));
+}
+
 #else
+
+
+CAMLexport CAMLprim value ml_g_bytes_icon_new(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("BytesIcon requires GLib >= 2.38");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_bytes_icon_get_bytes(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("BytesIcon requires GLib >= 2.38");
+return Val_unit;
+}
 
 
 #endif

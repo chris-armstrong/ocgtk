@@ -17,6 +17,15 @@
 #include "gtk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gtk_builder_list_item_factory_new_from_bytes(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+
+GtkBuilderListItemFactory *obj = gtk_builder_list_item_factory_new_from_bytes(Option_val(arg1, GtkBuilderScope_val, NULL), GBytes_val(arg2));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkBuilderListItemFactory(obj));
+}
 CAMLexport CAMLprim value ml_gtk_builder_list_item_factory_new_from_resource(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
@@ -41,4 +50,12 @@ CAMLparam1(self);
 
 const char* result = gtk_builder_list_item_factory_get_resource(GtkBuilderListItemFactory_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_builder_list_item_factory_get_bytes(value self)
+{
+CAMLparam1(self);
+
+GBytes* result = gtk_builder_list_item_factory_get_bytes(GtkBuilderListItemFactory_val(self));
+CAMLreturn(Val_GBytes(result));
 }

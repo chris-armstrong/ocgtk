@@ -9,6 +9,9 @@ already set or @stream is closed, it will return %FALSE and set
 @error. *)
 external set_pending : t -> (bool, GError.t) result = "ml_g_input_stream_set_pending"
 
+(** Finishes an asynchronous stream read-into-#GBytes operation. *)
+external read_bytes_finish : t -> Async_result.t -> (Glib_bytes.t, GError.t) result = "ml_g_input_stream_read_bytes_finish"
+
 (** Checks if an input stream is closed. *)
 external is_closed : t -> bool = "ml_g_input_stream_is_closed"
 

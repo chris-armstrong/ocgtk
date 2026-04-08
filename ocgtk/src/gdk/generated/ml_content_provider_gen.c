@@ -16,6 +16,15 @@
 #include "gdk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gdk_content_provider_new_for_bytes(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+
+GdkContentProvider *obj = gdk_content_provider_new_for_bytes(String_val(arg1), GBytes_val(arg2));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GdkContentProvider(obj));
+}
 CAMLexport CAMLprim value ml_gdk_content_provider_write_mime_type_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);

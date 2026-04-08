@@ -7,6 +7,9 @@ type t = [`pixbuf | `object_] Gobject.obj
 external new_ : Gdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> t = "ml_gdk_pixbuf_new"
 
 (** Create a new Pixbuf *)
+external new_from_bytes : Glib_bytes.t -> Gdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> int -> t = "ml_gdk_pixbuf_new_from_bytes_bytecode" "ml_gdk_pixbuf_new_from_bytes_native"
+
+(** Create a new Pixbuf *)
 external new_from_file : string -> (t, GError.t) result = "ml_gdk_pixbuf_new_from_file"
 
 (** Create a new Pixbuf *)
@@ -117,6 +120,13 @@ external rotate_simple : t -> Gdkpixbuf_enums.pixbufrotation -> t option = "ml_g
 (** Removes the key/value pair option attached to a `GdkPixbuf`. *)
 external remove_option : t -> string -> bool = "ml_gdk_pixbuf_remove_option"
 
+(** Provides a #GBytes buffer containing the raw pixel data; the data
+must not be modified.
+
+This function allows skipping the implicit copy that must be made
+if gdk_pixbuf_get_pixels() is called on a read-only pixbuf. *)
+external read_pixel_bytes : t -> Glib_bytes.t = "ml_gdk_pixbuf_read_pixel_bytes"
+
 (** Creates a new pixbuf which represents a sub-region of `src_pixbuf`.
 
 The new pixbuf shares its pixels with the original pixbuf, so
@@ -223,4 +233,7 @@ will be performed so that the pixbuf is oriented correctly. *)
 external apply_embedded_orientation : t -> t option = "ml_gdk_pixbuf_apply_embedded_orientation"
 
 (* Properties *)
+
+(** Get property: pixel-bytes *)
+external get_pixel_bytes : t -> Glib_bytes.t = "ml_gdk_pixbuf_get_pixel_bytes"
 

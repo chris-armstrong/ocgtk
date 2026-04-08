@@ -166,6 +166,17 @@ and Font
   type t = [`font | `object_] Gobject.obj
 
   (* Methods *)
+  (** Serializes the @font in a way that can be uniquely identified.
+
+  There are no guarantees about the format of the output across different
+  versions of Pango.
+
+  The intended use of this function is testing, benchmarking and debugging.
+  The format is not meant as a permanent storage format.
+
+  To recreate a font from its serialized form, use [func@Pango.Font.deserialize]. *)
+  external serialize : t -> Glib_bytes.t = "ml_pango_font_serialize"
+
   (** Gets overall metric information for a font.
 
   Since the metrics may be substantially different for different scripts,

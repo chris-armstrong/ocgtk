@@ -32,6 +32,7 @@ and font_t = object
     method get_face : unit -> GFont_face_and__font_family.font_face_t
     method get_font_map : unit -> font_map_t option
     method get_metrics : Language.t option -> Font_metrics.t
+    method serialize : unit -> Glib_bytes.t
     method as_font : Context_and__font_and__font_map_and__fontset.Font.t
 end
 

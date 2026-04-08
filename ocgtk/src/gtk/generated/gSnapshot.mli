@@ -20,6 +20,7 @@ class type snapshot_t = object
     method push_color_matrix : Ocgtk_graphene.Graphene.Matrix.matrix_t -> Ocgtk_graphene.Graphene.Vec4.vec4_t -> unit
     method push_cross_fade : float -> unit
     method push_fill : Ocgtk_gsk.Gsk.Path.path_t -> Ocgtk_gsk.Gsk.fillrule -> unit
+    method push_gl_shader : Ocgtk_gsk.Gsk.Gl_shader.gl_shader_t -> Ocgtk_graphene.Graphene.Rect.rect_t -> Glib_bytes.t -> unit
     method push_mask : Ocgtk_gsk.Gsk.maskmode -> unit
     method push_opacity : float -> unit
     method push_repeat : Ocgtk_graphene.Graphene.Rect.rect_t -> Ocgtk_graphene.Graphene.Rect.rect_t option -> unit

@@ -4,6 +4,9 @@
 type t = [`gl_shader | `object_] Gobject.obj
 
 (** Create a new GLShader *)
+external new_from_bytes : Glib_bytes.t -> t = "ml_gsk_gl_shader_new_from_bytes"
+
+(** Create a new GLShader *)
 external new_from_resource : string -> t = "ml_gsk_gl_shader_new_from_resource"
 
 (* Methods *)
@@ -15,6 +18,9 @@ external get_uniform_offset : t -> int -> int = "ml_gsk_gl_shader_get_uniform_of
 
 (** Get the name of the declared uniform for this shader at index @idx. *)
 external get_uniform_name : t -> int -> string = "ml_gsk_gl_shader_get_uniform_name"
+
+(** Gets the GLSL sourcecode being used to render this shader. *)
+external get_source : t -> Glib_bytes.t = "ml_gsk_gl_shader_get_source"
 
 (** Gets the resource path for the GLSL sourcecode being used
 to render this shader. *)
@@ -29,6 +35,31 @@ This can be used to check that the a passed shader works
 in your usecase. It is determined by looking at the highest
 u_textureN value that the shader defines. *)
 external get_n_textures : t -> int = "ml_gsk_gl_shader_get_n_textures"
+
+(** Gets the value of the uniform @idx in the @args block.
+
+The uniform must be of vec4 type. *)
+external get_arg_vec4 : t -> Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Wrappers.Vec4.t -> unit = "ml_gsk_gl_shader_get_arg_vec4"
+
+(** Gets the value of the uniform @idx in the @args block.
+
+The uniform must be of vec3 type. *)
+external get_arg_vec3 : t -> Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Wrappers.Vec3.t -> unit = "ml_gsk_gl_shader_get_arg_vec3"
+
+(** Gets the value of the uniform @idx in the @args block.
+
+The uniform must be of vec2 type. *)
+external get_arg_vec2 : t -> Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Wrappers.Vec2.t -> unit = "ml_gsk_gl_shader_get_arg_vec2"
+
+(** Gets the value of the uniform @idx in the @args block.
+
+The uniform must be of float type. *)
+external get_arg_float : t -> Glib_bytes.t -> int -> float = "ml_gsk_gl_shader_get_arg_float"
+
+(** Gets the value of the uniform @idx in the @args block.
+
+The uniform must be of bool type. *)
+external get_arg_bool : t -> Glib_bytes.t -> int -> bool = "ml_gsk_gl_shader_get_arg_bool"
 
 (** Looks for a uniform by the name @name, and returns the index
 of the uniform, or -1 if it was not found. *)

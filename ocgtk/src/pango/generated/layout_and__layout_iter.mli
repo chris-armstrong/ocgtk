@@ -247,6 +247,16 @@ module rec Layout : sig
   The default alignment is %PANGO_ALIGN_LEFT. *)
   external set_alignment : t -> Pango_enums.alignment -> unit = "ml_pango_layout_set_alignment"
 
+  (** Serializes the @layout for later deserialization via [func@Pango.Layout.deserialize].
+
+  There are no guarantees about the format of the output across different
+  versions of Pango and [func@Pango.Layout.deserialize] will reject data
+  that it cannot parse.
+
+  The intended use of this function is testing, benchmarking and debugging.
+  The format is not meant as a permanent storage format. *)
+  external serialize : t -> Pango_enums.layoutserializeflags -> Glib_bytes.t = "ml_pango_layout_serialize"
+
   (** Computes a new cursor position from an old position and a direction.
 
   If @direction is positive, then the new position will cause the strong

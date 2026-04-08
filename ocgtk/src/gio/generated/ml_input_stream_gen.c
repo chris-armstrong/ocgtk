@@ -31,6 +31,29 @@ gboolean result = g_input_stream_set_pending(GInputStream_val(self), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#if GLIB_CHECK_VERSION(2,34,0)
+
+CAMLexport CAMLprim value ml_g_input_stream_read_bytes_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GBytes* result = g_input_stream_read_bytes_finish(GInputStream_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GBytes(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_input_stream_read_bytes_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("InputStream requires GLib >= 2.34");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_g_input_stream_is_closed(value self)
 {
 CAMLparam1(self);

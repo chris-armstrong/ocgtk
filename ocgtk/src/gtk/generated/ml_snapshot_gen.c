@@ -251,6 +251,14 @@ return Val_unit;
 }
 #endif
 
+CAMLexport CAMLprim value ml_gtk_snapshot_push_gl_shader(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_snapshot_push_gl_shader(GtkSnapshot_val(self), GskGLShader_val(arg1), graphene_rect_t_val(arg2), GBytes_val(arg3));
+CAMLreturn(Val_unit);
+}
+
 #if GTK_CHECK_VERSION(4,14,0)
 
 CAMLexport CAMLprim value ml_gtk_snapshot_push_fill(value self, value arg1, value arg2)
