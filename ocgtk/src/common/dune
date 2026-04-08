@@ -1,12 +1,12 @@
 ; Common library for ocgtk
 ; Hand-written library-agnostic code
 
-; Configure pkg-config for GTK4
+; Configure pkg-config for GLib and GObject
 
 (rule
  (targets c_flags.sexp c_library_flags.sexp)
  (action
-  (run %{exe:../config/discover.exe} --pkg gtk4)))
+  (run %{exe:../config/discover.exe} --pkg glib-2.0 --pkg gobject-2.0)))
 
 (library
  (name ocgtk_common)
@@ -17,7 +17,6 @@
   (names wrappers ml_glib ml_gobject)
   (flags
    -fPIC
-   -I../gtk/generated
    (:include c_flags.sexp)
    -Wno-deprecated-declarations))
  (c_library_flags
