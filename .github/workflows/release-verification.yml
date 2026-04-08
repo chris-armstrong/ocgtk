@@ -319,14 +319,16 @@ jobs:
       # Uses Cygwin-style path (/cygdrive/...) because pkgconf is a
       # Cygwin binary that splits PKG_CONFIG_PATH on ':'.
       #
-      # We also set PKG_CONFIG_SYSROOT_DIR to the MSYS2 root so that
-      # pkgconf prepends the correct prefix to paths from .pc files.
-      # Without this, pkgconf uses the Cygwin cross-compiler sysroot
-      # (/usr/x86_64-w64-mingw32/sys-root) which does not contain the
-      # MSYS2-installed headers.  With the MSYS2 root as sysroot, the
-      # .pc prefix (/mingw64) resolves to e.g.
-      # /cygdrive/c/msys64/mingw64/include/glib-2.0 — a valid Cygwin
-      # path pointing to the actual MSYS2 headers.
+      # We also set PKG_CONFIG_SYSROOT_DIR to the MSYS2 root (in Windows
+      # path format) so that pkgconf prepends the correct prefix to
+      # paths from .pc files.  Without this, pkgconf uses the Cygwin
+      # cross-compiler sysroot (/usr/x86_64-w64-mingw32/sys-root) which
+      # does not contain the MSYS2-installed headers and produces paths
+      # the MinGW GCC compiler cannot resolve.  The sysroot must be in
+      # Windows format (C:/msys64) because pkgconf prepends it as a raw
+      # string and the resulting -I paths go to MinGW GCC which expects
+      # Windows paths.  Example: sysroot C:/msys64 + .pc prefix
+      # /mingw64 → C:/msys64/mingw64/include/glib-2.0.
       - name: Register MSYS2 MINGW64 pkg-config path in opam
         run: |
           $msys2Root = "${{ steps.msys2.outputs.msys2-location }}"
@@ -353,20 +355,28 @@ jobs:
           Write-Host "--- pacman file listing for gtk4.pc ---"
           msys2 -c "pacman -Ql mingw-w64-x86_64-gtk4 | grep '\.pc$'"
 
-          # Convert Windows path to Cygwin path for opam's pkgconf
+          # Convert Windows path to Cygwin path for pkgconf file discovery.
+          # PKG_CONFIG_PATH must be Cygwin-style because pkgconf is a Cygwin
+          # binary that needs to open the .pc files.
           $driveLetter = $msys2Root.Substring(0, 1).ToLower()
-          $cygwinMsys2Root = "/cygdrive/$driveLetter" + $msys2Root.Substring(2).Replace('\', '/')
-          $cygwinPcDir = "$cygwinMsys2Root/mingw64/lib/pkgconfig"
+          $cygwinPcDir = "/cygdrive/$driveLetter" + $msys2Root.Substring(2).Replace('\', '/') + "/mingw64/lib/pkgconfig"
+
+          # PKG_CONFIG_SYSROOT_DIR must be in Windows format (forward slashes)
+          # because pkgconf prepends it as a raw string to the output paths,
+          # and the MinGW GCC compiler expects Windows-style paths.
+          # MSYS2 .pc files use prefix=/mingw64, so with sysroot=C:/msys64
+          # pkgconf outputs e.g. C:/msys64/mingw64/include/glib-2.0 which
+          # GCC resolves correctly.  Without this, pkgconf uses the Cygwin
+          # cross-compiler sysroot (/usr/x86_64-w64-mingw32/sys-root) which
+          # produces paths the compiler cannot resolve.
+          $winMsys2Root = $msys2Root.Replace('\', '/')
+
           Write-Host "--- Registering pkg-config env in opam switch ---"
-          Write-Host "Cygwin MSYS2 root: $cygwinMsys2Root"
           Write-Host "Cygwin pkgconfig dir: $cygwinPcDir"
+          Write-Host "Windows MSYS2 root (sysroot): $winMsys2Root"
           # Values must be quoted for opam's lexer (bare '/' is not a valid token)
-          # PKG_CONFIG_PATH: tell pkgconf where to find MSYS2 .pc files
-          # PKG_CONFIG_SYSROOT_DIR: override the cross-compiler sysroot so
-          #   pkgconf resolves .pc prefix paths (/mingw64/...) relative to
-          #   the MSYS2 installation instead of Cygwin's cross-compiler sysroot
           opam option "setenv+=[PKG_CONFIG_PATH += ""$cygwinPcDir""]"
-          opam option "setenv+=[PKG_CONFIG_SYSROOT_DIR = ""$cygwinMsys2Root""]"
+          opam option "setenv+=[PKG_CONFIG_SYSROOT_DIR = ""$winMsys2Root""]"
           Write-Host "--- Confirming opam setenv ---"
           opam option setenv
 
