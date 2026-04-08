@@ -32,10 +32,12 @@ RUN opam init --disable-sandboxing -y --bare \
  && opam switch create default "ocaml-base-compiler.${OCAML_VERSION}" -y \
  && opam clean -a -c -s
 
-# Install conf-gtk4 (local virtual package) and OCaml deps
+# Install conf packages (local virtual packages) and OCaml deps
 WORKDIR /tmp/opam-bootstrap
 COPY conf-gtk4/ ./conf-gtk4/
+COPY conf-mingw-w64-gtk4-x86_64/ ./conf-mingw-w64-gtk4-x86_64/
 RUN eval $(opam env) \
+ && opam pin add -n conf-mingw-w64-gtk4-x86_64 ./conf-mingw-w64-gtk4-x86_64 \
  && opam install ./conf-gtk4 -y \
  && opam install \
       integers xmlm fmt logs containers re sexplib \

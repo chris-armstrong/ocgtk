@@ -59,8 +59,9 @@ sudo apt-get install -y \
 
 #### For ocgtk:
 ```bash
-# Install local conf-gtk4 package (verifies GTK 4 system installation)
+# Install local conf packages (verifies GTK 4 system installation)
 cd /home/user/ocgtk
+opam pin add -n conf-mingw-w64-gtk4-x86_64 ./conf-mingw-w64-gtk4-x86_64
 opam install ./conf-gtk4 -y
 
 # Install other dependencies
@@ -120,6 +121,7 @@ opam install camlp5 -y
 
 # Install OCaml dependencies for ocgtk
 cd /home/user/ocgtk
+opam pin add -n conf-mingw-w64-gtk4-x86_64 ./conf-mingw-w64-gtk4-x86_64
 opam install ./conf-gtk4 -y
 cd ocgtk
 opam install cairo2 dune alcotest camlp-streams -y
@@ -174,6 +176,7 @@ apt-get install -y \
 
 # Install OCaml dependencies for ocgtk
 cd /home/user/ocgtk
+opam pin add -n conf-mingw-w64-gtk4-x86_64 ./conf-mingw-w64-gtk4-x86_64
 opam install ./conf-gtk4 -y
 cd ocgtk
 opam install . --deps-only --with-test -y

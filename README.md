@@ -8,8 +8,9 @@ This repository is organized to support development of GTK 4 bindings:
 
 ```
 lablgtk/
-├── conf-gtk4/         # GTK 4 stub package
-├── ocgtk/             # GTK 4 bindings (under active development)
+├── conf-gtk4/                      # GTK 4 virtual package (all platforms)
+├── conf-mingw-w64-gtk4-x86_64/     # GTK 4 virtual package (Windows mingw-w64)
+├── ocgtk/                          # GTK 4 bindings (under active development)
 ```
 
 
