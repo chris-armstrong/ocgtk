@@ -1,3 +1,45 @@
+let path_entries () =
+  match Sys.getenv_opt "PATH" with
+  | None -> []
+  | Some p ->
+    let sep = if Sys.os_type = "Win32" then ';' else ':' in
+    String.split_on_char sep p
+
+let prog_exists_in dir prog =
+  let path = Filename.concat dir prog in
+  let paths =
+    if Sys.os_type = "Win32" then
+      [ path ^ ".exe"; path ^ ".cmd"; path ]
+    else
+      [ path ]
+  in
+  List.exists Sys.file_exists paths
+
+let diagnose_pkg_config () =
+  let entries = path_entries () in
+  Printf.eprintf "discover: pkg-config not found via dune configurator\n";
+  Printf.eprintf "discover: PKG_CONFIG env = %s\n"
+    (Option.value ~default:"(not set)" (Sys.getenv_opt "PKG_CONFIG"));
+  Printf.eprintf "discover: PATH has %d entries\n" (List.length entries);
+  let found = ref [] in
+  List.iter
+    (fun dir ->
+       List.iter
+         (fun prog ->
+            if prog_exists_in dir prog then
+              found := (dir, prog) :: !found)
+         [ "pkgconf"; "pkg-config" ])
+    entries;
+  (match !found with
+   | [] ->
+     Printf.eprintf "discover: neither pkgconf nor pkg-config found in any PATH entry\n";
+     Printf.eprintf "discover: PATH entries searched:\n";
+     List.iter (fun e -> Printf.eprintf "  %s\n" e) entries
+   | hits ->
+     Printf.eprintf "discover: found executables but configurator still returned None:\n";
+     List.iter (fun (dir, prog) -> Printf.eprintf "  %s/%s\n" dir prog) (List.rev hits));
+  Printf.eprintf "%!"
+
 let () =
   let packages = ref [] in
   let optional_packages = ref [] in
@@ -26,6 +68,7 @@ let () =
       let cflags, libs =
         match Pkg_config.get cfg with
         | None ->
+          diagnose_pkg_config ();
           failwith
             "pkg-config not found. Ensure pkg-config (or pkgconf) is installed \
              and available on PATH."
