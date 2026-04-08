@@ -40,59 +40,6 @@ let diagnose_pkg_config () =
      List.iter (fun (dir, prog) -> Printf.eprintf "  %s/%s\n" dir prog) (List.rev hits));
   Printf.eprintf "%!"
 
-(* On Windows with MinGW cross-compilation, dune-configurator may select
-   a cross-compiler-aware pkg-config binary (e.g. x86_64-w64-mingw32-pkg-config)
-   that uses the Cygwin cross-compiler sysroot for .pc file lookup.  Since
-   we provide GTK4/GLib headers via MSYS2 (not Cygwin cross-compilation
-   packages), we need to query pkgconf directly and override the prefix
-   to point to the MSYS2 MINGW64 installation.
-
-   The OCGTK_MINGW_PREFIX environment variable should be set to the
-   Windows-format path of the MSYS2 MINGW64 prefix, e.g. "D:/a/_temp/msys64/mingw64".
-   When set, discover.exe calls pkgconf directly with --define-variable=prefix=...
-   to override the .pc file prefix, producing correct Windows paths that
-   the MinGW GCC compiler can resolve. *)
-let query_mingw cfg ~packages ~optional_packages =
-  let mingw_prefix = Sys.getenv "OCGTK_MINGW_PREFIX" in
-  let binary =
-    match Sys.getenv_opt "PKG_CONFIG" with
-    | Some s -> s
-    | None -> "pkgconf"
-  in
-  let define_var = "--define-variable=prefix=" ^ mingw_prefix in
-  Printf.eprintf "discover: MinGW mode, prefix=%s, binary=%s\n%!" mingw_prefix binary;
-  let split_flags s =
-    String.split_on_char ' ' (String.trim s)
-    |> List.filter (fun s -> s <> "")
-  in
-  let query_one ~required package =
-    let run args =
-      try
-        Some (Configurator.V1.Process.run cfg binary (define_var :: args))
-      with _ ->
-        None
-    in
-    match run [ "--cflags"; package ], run [ "--libs"; package ] with
-    | Some cflags, Some libs ->
-      Some (split_flags cflags, split_flags libs)
-    | _ ->
-      if required then
-        failwith (Printf.sprintf "pkg-config package not found: %s" package)
-      else
-        None
-  in
-  let required_results =
-    List.map (fun p -> query_one ~required:true p) packages
-  in
-  let optional_results =
-    List.map (fun p -> query_one ~required:false p) optional_packages
-  in
-  let all_results =
-    List.filter_map Fun.id (required_results @ optional_results)
-  in
-  ( List.concat_map fst all_results
-  , List.concat_map snd all_results )
-
 let () =
   let packages = ref [] in
   let optional_packages = ref [] in
@@ -118,32 +65,48 @@ let () =
     (fun cfg ->
       let packages = List.rev !packages in
       let optional_packages = List.rev !optional_packages in
+      (* Log pkg-config environment on Windows for diagnostics *)
+      if Sys.os_type = "Win32" then begin
+        Printf.eprintf "discover: os_type=%s\n" Sys.os_type;
+        Printf.eprintf "discover: PKG_CONFIG=%s\n"
+          (Option.value ~default:"(not set)" (Sys.getenv_opt "PKG_CONFIG"));
+        Printf.eprintf "discover: PKG_CONFIG_PATH=%s\n"
+          (Option.value ~default:"(not set)" (Sys.getenv_opt "PKG_CONFIG_PATH"));
+        Printf.eprintf "discover: PKG_CONFIG_SYSROOT_DIR=%s\n%!"
+          (Option.value ~default:"(not set)" (Sys.getenv_opt "PKG_CONFIG_SYSROOT_DIR"))
+      end;
       let cflags, libs =
-        match Sys.getenv_opt "OCGTK_MINGW_PREFIX" with
-        | Some _ ->
-          (* Windows MinGW: bypass Configurator.V1.Pkg_config and call
-             pkgconf directly with prefix override *)
-          query_mingw cfg ~packages ~optional_packages
+        match Pkg_config.get cfg with
         | None ->
-          (* Standard path: use dune-configurator's Pkg_config *)
-          (match Pkg_config.get cfg with
-           | None ->
-             diagnose_pkg_config ();
-             failwith
-               "pkg-config not found. Ensure pkg-config (or pkgconf) is installed \
-                and available on PATH."
-           | Some pc ->
-             let query_required p =
-               match Pkg_config.query pc ~package:p with
-               | None -> failwith (Printf.sprintf "pkg-config package not found: %s" p)
-               | Some c -> c
-             in
-             let confs =
-               List.map query_required packages
-               @ List.filter_map (fun p -> Pkg_config.query pc ~package:p) optional_packages
-             in
-             ( List.concat_map (fun c -> c.Pkg_config.cflags) confs
-             , List.concat_map (fun c -> c.Pkg_config.libs) confs ))
+          diagnose_pkg_config ();
+          failwith
+            "pkg-config not found. Ensure pkg-config (or pkgconf) is installed \
+             and available on PATH."
+        | Some pc ->
+          let query_required p =
+            match Pkg_config.query pc ~package:p with
+            | None -> failwith (Printf.sprintf "pkg-config package not found: %s" p)
+            | Some c -> c
+          in
+          let confs =
+            List.map query_required packages
+            @ List.filter_map (fun p -> Pkg_config.query pc ~package:p) optional_packages
+          in
+          let cflags = List.concat_map (fun c -> c.Pkg_config.cflags) confs in
+          let libs = List.concat_map (fun c -> c.Pkg_config.libs) confs in
+          (* Log first few flags on Windows for diagnostics *)
+          if Sys.os_type = "Win32" then begin
+            let show_first n l =
+              let rec take acc n = function
+                | [] -> List.rev acc
+                | _ when n <= 0 -> List.rev acc
+                | x :: xs -> take (x :: acc) (n - 1) xs
+              in
+              String.concat " " (take [] n l)
+            in
+            Printf.eprintf "discover: cflags (first 5): %s\n%!" (show_first 5 cflags)
+          end;
+          (cflags, libs)
       in
       Flags.write_sexp !output_cflags cflags;
       Flags.write_sexp !output_libs libs)

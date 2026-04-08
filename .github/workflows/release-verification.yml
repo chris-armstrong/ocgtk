@@ -317,17 +317,13 @@ jobs:
       # env vars in the switch's setenv so they reach pkgconf and
       # dune-configurator during builds.
       #
-      # Three env vars are needed:
-      #   PKG_CONFIG_PATH  — Cygwin-style path to MSYS2 .pc files so
-      #                      pkgconf can open them.
-      #   OCGTK_MINGW_PREFIX — Windows-format path to MSYS2 MINGW64
-      #                      prefix (e.g. D:/a/_temp/msys64/mingw64).
-      #                      discover.exe uses this to call pkgconf
-      #                      with --define-variable=prefix=... bypassing
-      #                      dune-configurator's cross-compilation-aware
-      #                      pkg-config binary lookup which would select
-      #                      x86_64-w64-mingw32-pkg-config (a Cygwin
-      #                      cross-compiler binary using the wrong sysroot).
+      # Env vars registered:
+      #   PKG_CONFIG_PATH        — Cygwin-style path to MSYS2 .pc files
+      #   PKG_CONFIG_SYSROOT_DIR — Windows-format MSYS2 root; pkgconf
+      #                            prepends this to .pc prefix paths so
+      #                            /mingw64/include/… → D:/…/mingw64/include/…
+      #   PKG_CONFIG             — Force "pkgconf" binary (not a cross-
+      #                            compiler-prefixed variant)
       - name: Register MSYS2 MINGW64 pkg-config path in opam
         run: |
           $msys2Root = "${{ steps.msys2.outputs.msys2-location }}"
@@ -354,19 +350,37 @@ jobs:
           Write-Host "--- pacman file listing for gtk4.pc ---"
           msys2 -c "pacman -Ql mingw-w64-x86_64-gtk4 | grep '\.pc$'"
 
-          # Convert paths for opam's Cygwin environment
+          # Compute paths in both formats
           $driveLetter = $msys2Root.Substring(0, 1).ToLower()
           $cygwinPcDir = "/cygdrive/$driveLetter" + $msys2Root.Substring(2).Replace('\', '/') + "/mingw64/lib/pkgconfig"
-          $winMingwPrefix = $msys2Root.Replace('\', '/') + "/mingw64"
+          $winMsys2Root = $msys2Root.Replace('\', '/')
 
           Write-Host "--- Registering pkg-config env in opam switch ---"
-          Write-Host "Cygwin pkgconfig dir: $cygwinPcDir"
-          Write-Host "MINGW prefix (Windows): $winMingwPrefix"
-          # Values must be quoted for opam's lexer (bare '/' is not a valid token)
+          Write-Host "PKG_CONFIG_PATH (Cygwin): $cygwinPcDir"
+          Write-Host "PKG_CONFIG_SYSROOT_DIR (Windows): $winMsys2Root"
+          Write-Host "PKG_CONFIG: pkgconf"
+
+          # Register all three vars in opam switch environment.
+          # Values must be quoted for opam's lexer (bare '/' is not a valid token).
           opam option "setenv+=[PKG_CONFIG_PATH += ""$cygwinPcDir""]"
-          opam option "setenv+=[OCGTK_MINGW_PREFIX = ""$winMingwPrefix""]"
+          opam option "setenv+=[PKG_CONFIG_SYSROOT_DIR = ""$winMsys2Root""]"
+          opam option "setenv+=[PKG_CONFIG = ""pkgconf""]"
+
           Write-Host "--- Confirming opam setenv ---"
           opam option setenv
+
+      - name: Verify pkg-config environment reaches opam exec
+        run: |
+          opam exec -- bash -c '
+            echo "PKG_CONFIG=$PKG_CONFIG"
+            echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
+            echo "PKG_CONFIG_SYSROOT_DIR=$PKG_CONFIG_SYSROOT_DIR"
+            echo "--- which pkg-config / pkgconf ---"
+            which pkg-config 2>/dev/null || echo "pkg-config: not found"
+            which pkgconf 2>/dev/null || echo "pkgconf: not found"
+            echo "--- pkgconf --cflags glib-2.0 ---"
+            pkgconf --cflags glib-2.0 2>&1 || echo "(failed)"
+          '
 
       - name: Pin conf packages and install OCaml dependencies
         run: |
