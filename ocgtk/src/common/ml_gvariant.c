@@ -112,7 +112,7 @@ static struct custom_operations gvariant_custom_ops = {
  *   transfer-full return  → pass directly: Val_GVariant(result)
  *   transfer-none return  → caller must ref first: Val_GVariant(g_variant_ref(result))
  */
-value Val_GVariant(GVariant *variant) {
+CAMLexport value Val_GVariant(GVariant *variant) {
     CAMLparam0();
     CAMLlocal1(v);
 

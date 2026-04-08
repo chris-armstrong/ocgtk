@@ -56,7 +56,7 @@ static struct custom_operations gvariant_type_custom_ops = {
 /* Wrap a GVariantType in a custom block with automatic free finalizer.
  * The type is copied when wrapped, so the caller can free the original.
  */
-value Val_GVariantType(const GVariantType *type) {
+CAMLexport value Val_GVariantType(const GVariantType *type) {
     CAMLparam0();
     CAMLlocal1(v);
 

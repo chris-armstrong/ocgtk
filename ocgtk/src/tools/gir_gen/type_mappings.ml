@@ -264,6 +264,16 @@ let type_mappings : (string * Types.type_mapping) list =
         c_type = "GVariantType*";
         is_value_type_record = false;
       } );
+    (* GLib.Bytes - Immutable reference-counted byte buffer *)
+    ( "GLib.Bytes",
+      {
+        ocaml_type = "Glib_bytes.t";
+        c_to_ml = "Val_GBytes";
+        ml_to_c = "GBytes_val";
+        layer2_class = None;
+        c_type = "GBytes*";
+        is_value_type_record = false;
+      } );
   ]
 
 let normalize_c_pointer_type lookup_str =
