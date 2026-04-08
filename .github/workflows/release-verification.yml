@@ -35,9 +35,10 @@ jobs:
       - uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ env.OCAML_VERSION }}
-      - name: Pin conf-gtk4 and install dependencies
+      - name: Pin conf packages and install dependencies
         run: |
           opam pin add -n conf-gtk4 conf-gtk4
+          opam pin add -n conf-mingw-w64-gtk4-x86_64 conf-mingw-w64-gtk4-x86_64
           opam install --deps-only --with-test -y ./ocgtk
       - name: Build
         working-directory: ocgtk
@@ -63,9 +64,10 @@ jobs:
       - uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ env.OCAML_VERSION }}
-      - name: Pin conf-gtk4 and install dependencies
+      - name: Pin conf packages and install dependencies
         run: |
           opam pin add -n conf-gtk4 conf-gtk4
+          opam pin add -n conf-mingw-w64-gtk4-x86_64 conf-mingw-w64-gtk4-x86_64
           opam install --deps-only --with-test -y ./ocgtk
       - name: Build
         working-directory: ocgtk
@@ -110,10 +112,11 @@ jobs:
         run: |
           opam init --disable-sandboxing -y --bare
           opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin conf packages and install OCaml dependencies
         run: |
           eval $(opam env)
           opam pin add -n conf-gtk4 conf-gtk4
+          opam pin add -n conf-mingw-w64-gtk4-x86_64 conf-mingw-w64-gtk4-x86_64
           opam install --deps-only --with-test -y ./ocgtk
       - name: Build
         working-directory: ocgtk
@@ -160,10 +163,11 @@ jobs:
         run: |
           opam init --disable-sandboxing -y --bare
           opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin conf packages and install OCaml dependencies
         run: |
           eval $(opam env)
           opam pin add -n conf-gtk4 conf-gtk4
+          opam pin add -n conf-mingw-w64-gtk4-x86_64 conf-mingw-w64-gtk4-x86_64
           opam install --deps-only --with-test -y ./ocgtk
       - name: Build
         working-directory: ocgtk
@@ -205,10 +209,11 @@ jobs:
         run: |
           opam init --disable-sandboxing -y --bare
           opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin conf packages and install OCaml dependencies
         run: |
           eval $(opam env)
           opam pin add -n conf-gtk4 conf-gtk4
+          opam pin add -n conf-mingw-w64-gtk4-x86_64 conf-mingw-w64-gtk4-x86_64
           opam install --deps-only --with-test -y ./ocgtk
       - name: Build
         working-directory: ocgtk
@@ -247,10 +252,11 @@ jobs:
         run: |
           opam init --disable-sandboxing -y --bare
           opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin conf packages and install OCaml dependencies
         run: |
           eval $(opam env)
           opam pin add -n conf-gtk4 conf-gtk4
+          opam pin add -n conf-mingw-w64-gtk4-x86_64 conf-mingw-w64-gtk4-x86_64
           opam install --deps-only --with-test -y ./ocgtk
       - name: Build
         working-directory: ocgtk
@@ -305,9 +311,10 @@ jobs:
           ocaml-compiler: ${{ env.OCAML_VERSION }}
           windows-compiler: mingw
 
-      - name: Pin conf-gtk4 and install OCaml dependencies
+      - name: Pin conf packages and install OCaml dependencies
         run: |
           opam pin add -n conf-gtk4 conf-gtk4
+          opam pin add -n conf-mingw-w64-gtk4-x86_64 conf-mingw-w64-gtk4-x86_64
           opam install --deps-only --with-test -y ./ocgtk
 
       - name: Build
