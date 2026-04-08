@@ -47,6 +47,7 @@
     test_override_apply
     test_override_extractor
     test_override_e2e
+    test_override_integration
     test_enum_member_version
     test_gir_gen
    type_factory)
