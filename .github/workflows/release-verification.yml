@@ -314,21 +314,20 @@ jobs:
       # Bridge opam's Cygwin environment to MSYS2 MINGW64.
       # opam constructs its own build environment for Cygwin sub-processes
       # and does NOT forward arbitrary parent env vars.  We must register
-      # PKG_CONFIG_PATH in the switch's setenv so it reaches pkgconf and
-      # dune-configurator during package builds.
-      # Uses Cygwin-style path (/cygdrive/...) because pkgconf is a
-      # Cygwin binary that splits PKG_CONFIG_PATH on ':'.
+      # env vars in the switch's setenv so they reach pkgconf and
+      # dune-configurator during builds.
       #
-      # We also set PKG_CONFIG_SYSROOT_DIR to the MSYS2 root (in Windows
-      # path format) so that pkgconf prepends the correct prefix to
-      # paths from .pc files.  Without this, pkgconf uses the Cygwin
-      # cross-compiler sysroot (/usr/x86_64-w64-mingw32/sys-root) which
-      # does not contain the MSYS2-installed headers and produces paths
-      # the MinGW GCC compiler cannot resolve.  The sysroot must be in
-      # Windows format (e.g. D:/msys64) because pkgconf prepends it as a
-      # raw string and the resulting -I paths go to MinGW GCC which
-      # expects Windows paths.  Example: sysroot <msys2-root> + .pc
-      # prefix /mingw64 → <msys2-root>/mingw64/include/glib-2.0.
+      # Three env vars are needed:
+      #   PKG_CONFIG_PATH  — Cygwin-style path to MSYS2 .pc files so
+      #                      pkgconf can open them.
+      #   OCGTK_MINGW_PREFIX — Windows-format path to MSYS2 MINGW64
+      #                      prefix (e.g. D:/a/_temp/msys64/mingw64).
+      #                      discover.exe uses this to call pkgconf
+      #                      with --define-variable=prefix=... bypassing
+      #                      dune-configurator's cross-compilation-aware
+      #                      pkg-config binary lookup which would select
+      #                      x86_64-w64-mingw32-pkg-config (a Cygwin
+      #                      cross-compiler binary using the wrong sysroot).
       - name: Register MSYS2 MINGW64 pkg-config path in opam
         run: |
           $msys2Root = "${{ steps.msys2.outputs.msys2-location }}"
@@ -355,28 +354,17 @@ jobs:
           Write-Host "--- pacman file listing for gtk4.pc ---"
           msys2 -c "pacman -Ql mingw-w64-x86_64-gtk4 | grep '\.pc$'"
 
-          # Convert Windows path to Cygwin path for pkgconf file discovery.
-          # PKG_CONFIG_PATH must be Cygwin-style because pkgconf is a Cygwin
-          # binary that needs to open the .pc files.
+          # Convert paths for opam's Cygwin environment
           $driveLetter = $msys2Root.Substring(0, 1).ToLower()
           $cygwinPcDir = "/cygdrive/$driveLetter" + $msys2Root.Substring(2).Replace('\', '/') + "/mingw64/lib/pkgconfig"
-
-          # PKG_CONFIG_SYSROOT_DIR must be in Windows format (forward slashes)
-          # because pkgconf prepends it as a raw string to the output paths,
-          # and the MinGW GCC compiler expects Windows-style paths.
-          # MSYS2 .pc files use prefix=/mingw64, so with e.g. sysroot=D:/msys64
-          # pkgconf outputs D:/msys64/mingw64/include/glib-2.0 which
-          # GCC resolves correctly.  Without this, pkgconf uses the Cygwin
-          # cross-compiler sysroot (/usr/x86_64-w64-mingw32/sys-root) which
-          # produces paths the compiler cannot resolve.
-          $winMsys2Root = $msys2Root.Replace('\', '/')
+          $winMingwPrefix = $msys2Root.Replace('\', '/') + "/mingw64"
 
           Write-Host "--- Registering pkg-config env in opam switch ---"
           Write-Host "Cygwin pkgconfig dir: $cygwinPcDir"
-          Write-Host "Windows MSYS2 root (sysroot): $winMsys2Root"
+          Write-Host "MINGW prefix (Windows): $winMingwPrefix"
           # Values must be quoted for opam's lexer (bare '/' is not a valid token)
           opam option "setenv+=[PKG_CONFIG_PATH += ""$cygwinPcDir""]"
-          opam option "setenv+=[PKG_CONFIG_SYSROOT_DIR = ""$winMsys2Root""]"
+          opam option "setenv+=[OCGTK_MINGW_PREFIX = ""$winMingwPrefix""]"
           Write-Host "--- Confirming opam setenv ---"
           opam option setenv
 
