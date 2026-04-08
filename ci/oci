@@ -21,6 +21,8 @@
 #   ./ci/oci run debian12 test      # run tests on Debian 12
 #   ./ci/oci run fedora40 test      # run tests on Fedora 40
 #   ./ci/oci run ubuntu24 build     # opt-in: build on Ubuntu 24.04
+#   ./ci/oci run fedora43 build     # build on Fedora 43
+#   ./ci/oci run ubuntu25 build     # build on Ubuntu 25.04
 #   ./ci/oci shell centos9          # interactive shell on CentOS Stream 9
 #   ./ci/oci clean debian12         # free disk for one distro
 #   ./ci/oci clean --all            # full teardown
@@ -32,7 +34,7 @@ COMPOSE_FILE="$SCRIPT_DIR/docker-compose.yml"
 VERSIONS_FILE="$SCRIPT_DIR/versions.env"
 # ubuntu24 is excluded from the default set — the dev environment already runs
 # Ubuntu 24.04, so it adds no coverage. Run it explicitly: ./ci/oci run ubuntu24 build
-ALL_DISTROS=(ubuntu22 debian12 centos9 opensuse15 fedora40)
+ALL_DISTROS=(ubuntu22 debian12 centos9 opensuse15 fedora40 fedora43 ubuntu25)
 STATE_FILE="$SCRIPT_DIR/.oci-state"
 
 # ── helpers ───────────────────────────────────────────────────────────────────
@@ -50,7 +52,7 @@ compose() {
 }
 
 # All distros recognised by name (superset of ALL_DISTROS — includes opt-in ones)
-ALL_KNOWN_DISTROS=(ubuntu22 debian12 centos9 opensuse15 fedora40 ubuntu24)
+ALL_KNOWN_DISTROS=(ubuntu22 debian12 centos9 opensuse15 fedora40 ubuntu24 fedora43 ubuntu25)
 
 # Resolve the list of distros from args, defaulting to all
 distros_from_args() {

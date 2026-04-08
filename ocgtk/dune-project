@@ -36,6 +36,8 @@
   (fmt :build)
   (fpath :build)
   (yojson :build)
+  (logs :build)
+  (cmdliner :build)
   (alcotest :with-test)
   (ppxlib :with-test)
   (sexplib :build)
