@@ -388,9 +388,9 @@ jobs:
           opam pin add -n conf-mingw-w64-gtk4-x86_64 conf-mingw-w64-gtk4-x86_64
           opam install --deps-only --with-test -y ./ocgtk
 
-      - name: Build
+      - name: Build (verbose to surface discover.exe diagnostics)
         working-directory: ocgtk
-        run: opam exec -- dune build
+        run: opam exec -- dune build --verbose
 
       - name: Test
         working-directory: ocgtk
