@@ -318,6 +318,15 @@ jobs:
       # dune-configurator during package builds.
       # Uses Cygwin-style path (/cygdrive/...) because pkgconf is a
       # Cygwin binary that splits PKG_CONFIG_PATH on ':'.
+      #
+      # We also set PKG_CONFIG_SYSROOT_DIR to the MSYS2 root so that
+      # pkgconf prepends the correct prefix to paths from .pc files.
+      # Without this, pkgconf uses the Cygwin cross-compiler sysroot
+      # (/usr/x86_64-w64-mingw32/sys-root) which does not contain the
+      # MSYS2-installed headers.  With the MSYS2 root as sysroot, the
+      # .pc prefix (/mingw64) resolves to e.g.
+      # /cygdrive/c/msys64/mingw64/include/glib-2.0 — a valid Cygwin
+      # path pointing to the actual MSYS2 headers.
       - name: Register MSYS2 MINGW64 pkg-config path in opam
         run: |
           $msys2Root = "${{ steps.msys2.outputs.msys2-location }}"
@@ -345,13 +354,19 @@ jobs:
           msys2 -c "pacman -Ql mingw-w64-x86_64-gtk4 | grep '\.pc$'"
 
           # Convert Windows path to Cygwin path for opam's pkgconf
-          $driveLetter = $pcDir.Substring(0, 1).ToLower()
-          $cygwinPcDir = "/cygdrive/$driveLetter" + $pcDir.Substring(2).Replace('\', '/')
-          Write-Host "--- Registering PKG_CONFIG_PATH in opam switch ---"
-          Write-Host "Cygwin path: $cygwinPcDir"
-          # Value must be quoted for opam's lexer (bare '/' is not a valid token)
-          $setenvEntry = 'setenv+=[PKG_CONFIG_PATH += "' + $cygwinPcDir + '"]'
-          opam option $setenvEntry
+          $driveLetter = $msys2Root.Substring(0, 1).ToLower()
+          $cygwinMsys2Root = "/cygdrive/$driveLetter" + $msys2Root.Substring(2).Replace('\', '/')
+          $cygwinPcDir = "$cygwinMsys2Root/mingw64/lib/pkgconfig"
+          Write-Host "--- Registering pkg-config env in opam switch ---"
+          Write-Host "Cygwin MSYS2 root: $cygwinMsys2Root"
+          Write-Host "Cygwin pkgconfig dir: $cygwinPcDir"
+          # Values must be quoted for opam's lexer (bare '/' is not a valid token)
+          # PKG_CONFIG_PATH: tell pkgconf where to find MSYS2 .pc files
+          # PKG_CONFIG_SYSROOT_DIR: override the cross-compiler sysroot so
+          #   pkgconf resolves .pc prefix paths (/mingw64/...) relative to
+          #   the MSYS2 installation instead of Cygwin's cross-compiler sysroot
+          opam option "setenv+=[PKG_CONFIG_PATH += ""$cygwinPcDir""]"
+          opam option "setenv+=[PKG_CONFIG_SYSROOT_DIR = ""$cygwinMsys2Root""]"
           Write-Host "--- Confirming opam setenv ---"
           opam option setenv
 
