@@ -271,27 +271,30 @@ jobs:
 
   # ── Windows ──────────────────────────────────────────────────────────────────
   #
-  # Setup model: Cygwin shell + MinGW64 compiler + MSYS2 GTK4 libraries.
+  # Setup model: opam's internal Cygwin + MinGW64 compiler + MSYS2 GTK4 libs.
   #
-  # setup-ocaml uses Cygwin only as the build shell; with windows-compiler:
-  # mingw, the OCaml compiler and its output target the MinGW64 ABI
+  # setup-ocaml uses its own internal Cygwin as the build shell.  With
+  # windows-compiler: mingw the OCaml compiler targets the MinGW64 ABI
   # (x86_64-w64-mingw32), making it binary-compatible with MSYS2 MINGW64
   # libraries including GTK4.
   #
-  # windows-environment: msys2 means opam runs build commands inside MSYS2's
-  # shell rather than its own Cygwin instance.  This gives conf-gtk4's build
-  # check direct access to MSYS2's pkgconf and the MinGW64 .pc files without
-  # any extra PATH or PKG_CONFIG_PATH wiring.
+  # Because opam's Cygwin is isolated from the MSYS2 installation where
+  # GTK4 lives, we set PKG_CONFIG_PATH so that pkgconf (installed by
+  # conf-pkg-config inside opam's Cygwin) can find the MINGW64 .pc files
+  # at C:\msys64\mingw64\lib\pkgconfig.
   windows:
     name: Windows
     runs-on: windows-latest
+    env:
+      # Bridge opam's pkgconf to the MSYS2 MINGW64 prefix where GTK4 is
+      # installed.  Without this, pkgconf cannot find gtk4.pc and friends.
+      PKG_CONFIG_PATH: C:/msys64/mingw64/lib/pkgconfig
     steps:
       - uses: actions/checkout@v4
 
       # Install GTK4 and its dependencies into the MSYS2 MINGW64 prefix.
       # The GitHub Actions Windows runner ships MSYS2 at C:\msys64 so these
-      # packages land in C:\msys64\mingw64\ where the MinGW64 linker can find
-      # them.
+      # packages land in C:\msys64\mingw64\.
       - name: Install GTK4 via MSYS2 MINGW64
         uses: msys2/setup-msys2@v2
         with:
