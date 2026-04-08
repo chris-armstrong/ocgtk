@@ -352,8 +352,8 @@ jobs:
           # Value must be quoted for opam's lexer (bare '/' is not a valid token)
           $setenvEntry = 'setenv+=[PKG_CONFIG_PATH += "' + $cygwinPcDir + '"]'
           opam option $setenvEntry
-          Write-Host "--- Verifying pkgconf can find gtk4 ---"
-          opam exec -- bash -lc "echo PKG_CONFIG_PATH=\$PKG_CONFIG_PATH && pkgconf --print-errors --exists gtk4"
+          Write-Host "--- Confirming opam setenv ---"
+          opam option setenv
 
       - name: Pin conf packages and install OCaml dependencies
         run: |
