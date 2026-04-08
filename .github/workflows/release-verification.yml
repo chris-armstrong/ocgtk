@@ -291,9 +291,8 @@ jobs:
       - uses: actions/checkout@v4
 
       # Install GTK4 and its dependencies into the MSYS2 MINGW64 prefix.
-      # The GitHub Actions Windows runner ships MSYS2 at C:\msys64 so these
-      # packages land in C:\msys64\mingw64\.
       - name: Install GTK4 via MSYS2 MINGW64
+        id: msys2
         uses: msys2/setup-msys2@v2
         with:
           msystem: MINGW64
@@ -317,20 +316,40 @@ jobs:
       # and does NOT forward arbitrary parent env vars.  We must register
       # PKG_CONFIG_PATH in the switch's setenv so it reaches pkgconf and
       # dune-configurator during package builds.
-      # Uses Cygwin-style path (/cygdrive/c/...) because pkgconf is a
+      # Uses Cygwin-style path (/cygdrive/...) because pkgconf is a
       # Cygwin binary that splits PKG_CONFIG_PATH on ':'.
       - name: Register MSYS2 MINGW64 pkg-config path in opam
         run: |
-          Write-Host "--- Verifying gtk4.pc location ---"
-          if (Test-Path "C:\msys64\mingw64\lib\pkgconfig\gtk4.pc") {
-            Write-Host "FOUND: C:\msys64\mingw64\lib\pkgconfig\gtk4.pc"
+          $msys2Root = "${{ steps.msys2.outputs.msys2-location }}"
+          Write-Host "MSYS2 root: $msys2Root"
+          $pcDir = "$msys2Root\mingw64\lib\pkgconfig"
+
+          Write-Host "--- Searching for gtk4 .pc file ---"
+          if (Test-Path $pcDir) {
+            Write-Host "pkgconfig dir exists: $pcDir"
+            Get-ChildItem $pcDir -Filter "gtk*" | ForEach-Object { Write-Host "  $($_.Name)" }
           } else {
-            Write-Host "NOT FOUND at C:\msys64\mingw64\lib\pkgconfig\gtk4.pc"
-            Get-ChildItem "C:\msys64\mingw64\lib\pkgconfig\" -Filter "gtk*" | ForEach-Object { Write-Host "  $_" }
-            exit 1
+            Write-Host "pkgconfig dir NOT FOUND: $pcDir"
+            Write-Host "Listing $msys2Root\mingw64\lib\:"
+            if (Test-Path "$msys2Root\mingw64\lib") {
+              Get-ChildItem "$msys2Root\mingw64\lib" -Directory | Select-Object -First 20 | ForEach-Object { Write-Host "  $($_.Name)/" }
+            } else {
+              Write-Host "  mingw64\lib does not exist"
+              Write-Host "Listing $msys2Root\:"
+              Get-ChildItem $msys2Root -Directory | Select-Object -First 20 | ForEach-Object { Write-Host "  $($_.Name)/" }
+            }
           }
+
+          # Also search via msys2 shell to see where pacman put it
+          Write-Host "--- pacman file listing for gtk4.pc ---"
+          msys2 -c "pacman -Ql mingw-w64-x86_64-gtk4 | grep '\.pc$'"
+
+          # Convert Windows path to Cygwin path for opam's pkgconf
+          $driveLetter = $pcDir.Substring(0, 1).ToLower()
+          $cygwinPcDir = "/cygdrive/$driveLetter" + $pcDir.Substring(2).Replace('\', '/')
           Write-Host "--- Registering PKG_CONFIG_PATH in opam switch ---"
-          opam option setenv+="[PKG_CONFIG_PATH += /cygdrive/c/msys64/mingw64/lib/pkgconfig]"
+          Write-Host "Cygwin path: $cygwinPcDir"
+          opam option setenv+="[PKG_CONFIG_PATH += $cygwinPcDir]"
           Write-Host "--- Verifying pkgconf can find gtk4 ---"
           opam exec -- bash -lc "echo PKG_CONFIG_PATH=\$PKG_CONFIG_PATH; pkgconf --print-errors --exists gtk4"
 
