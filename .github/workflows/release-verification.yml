@@ -279,20 +279,14 @@ jobs:
   # libraries including GTK4.
   #
   # Because opam's Cygwin is isolated from the MSYS2 installation where
-  # GTK4 lives, we set PKG_CONFIG_PATH so that pkgconf (installed by
-  # conf-pkg-config inside opam's Cygwin) can find the MINGW64 .pc files
-  # at C:\msys64\mingw64\lib\pkgconfig.
+  # GTK4 lives, we must register PKG_CONFIG_PATH in opam's switch
+  # environment (via `opam option setenv`) so that pkgconf inside Cygwin
+  # build commands can find the MINGW64 .pc files.  Setting it as a
+  # process env var is NOT sufficient — opam constructs its own build
+  # environment and does not forward arbitrary parent env vars.
   windows:
     name: Windows
     runs-on: windows-latest
-    env:
-      # Bridge opam's Cygwin pkgconf to the MSYS2 MINGW64 prefix where GTK4
-      # is installed.  Must use Cygwin-style path because opam's pkgconf
-      # binary (C:\.opam\.cygwin\root\bin\pkgconf.exe) is a Cygwin program
-      # that splits PKG_CONFIG_PATH on ':' — a Windows-style path like
-      # C:/msys64/... would be split into "C" and "/msys64/..." which both
-      # fail.
-      PKG_CONFIG_PATH: /cygdrive/c/msys64/mingw64/lib/pkgconfig
     steps:
       - uses: actions/checkout@v4
 
@@ -317,6 +311,28 @@ jobs:
         with:
           ocaml-compiler: ${{ env.OCAML_VERSION }}
           windows-compiler: mingw
+
+      # Bridge opam's Cygwin environment to MSYS2 MINGW64.
+      # opam constructs its own build environment for Cygwin sub-processes
+      # and does NOT forward arbitrary parent env vars.  We must register
+      # PKG_CONFIG_PATH in the switch's setenv so it reaches pkgconf and
+      # dune-configurator during package builds.
+      # Uses Cygwin-style path (/cygdrive/c/...) because pkgconf is a
+      # Cygwin binary that splits PKG_CONFIG_PATH on ':'.
+      - name: Register MSYS2 MINGW64 pkg-config path in opam
+        run: |
+          Write-Host "--- Verifying gtk4.pc location ---"
+          if (Test-Path "C:\msys64\mingw64\lib\pkgconfig\gtk4.pc") {
+            Write-Host "FOUND: C:\msys64\mingw64\lib\pkgconfig\gtk4.pc"
+          } else {
+            Write-Host "NOT FOUND at C:\msys64\mingw64\lib\pkgconfig\gtk4.pc"
+            Get-ChildItem "C:\msys64\mingw64\lib\pkgconfig\" -Filter "gtk*" | ForEach-Object { Write-Host "  $_" }
+            exit 1
+          }
+          Write-Host "--- Registering PKG_CONFIG_PATH in opam switch ---"
+          opam option setenv+="[PKG_CONFIG_PATH += /cygdrive/c/msys64/mingw64/lib/pkgconfig]"
+          Write-Host "--- Verifying pkgconf can find gtk4 ---"
+          opam exec -- bash -lc "echo PKG_CONFIG_PATH=\$PKG_CONFIG_PATH; pkgconf --print-errors --exists gtk4"
 
       - name: Pin conf packages and install OCaml dependencies
         run: |
