@@ -1,0 +1,21 @@
+opam-version: "2.0"
+version: "1"
+synopsis: "GTK 4 for x86_64 mingw-w64 (64-bit x86)"
+description:
+  "Ensures the x86_64 version of GTK 4 for the mingw-w64 project is available"
+maintainer: "hello@chrisarmstrong.dev"
+authors: ["Chris Armstrong"]
+license: "LGPL-2.1-or-later WITH OCaml-LGPL-linking-exception"
+homepage: "https://github.com/chris-armstrong/ocgtk"
+bug-reports: "https://github.com/chris-armstrong/ocgtk/issues"
+flags: conf
+available: os = "win32"
+build: ["pkgconf" "--personality=x86_64-w64-mingw32" "gtk4"]
+depends: [
+  "conf-pkg-config" {build}
+  "conf-mingw-w64-gcc-x86_64" {build}
+]
+depexts: [
+  ["mingw64-x86_64-gtk4"] {os = "win32" & os-distribution = "cygwin"}
+  ["mingw-w64-x86_64-gtk4"] {os = "win32" & os-distribution = "msys2"}
+]

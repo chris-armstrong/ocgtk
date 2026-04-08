@@ -25,6 +25,7 @@
   (dune
    (>= 3.13))
   conf-gtk4
+  conf-pkg-config
   (integers (>= 0.7.0))
   xmlm
   fmt
