@@ -174,12 +174,22 @@ external get_has_alpha : t -> bool = "ml_gdk_pixbuf_get_has_alpha"
 (** Queries the color space of a pixbuf. *)
 external get_colorspace : t -> Gdkpixbuf_enums.colorspace = "ml_gdk_pixbuf_get_colorspace"
 
+(** Returns the length of the pixel data, in bytes. *)
+external get_byte_length : t -> int = "ml_gdk_pixbuf_get_byte_length"
+
 (** Queries the number of bits per color sample in a pixbuf. *)
 external get_bits_per_sample : t -> int = "ml_gdk_pixbuf_get_bits_per_sample"
 
 (** Flips a pixbuf horizontally or vertically and returns the
 result in a new pixbuf. *)
 external flip : t -> bool -> t option = "ml_gdk_pixbuf_flip"
+
+(** Clears a pixbuf to the given RGBA value, converting the RGBA value into
+the pixbuf's pixel format.
+
+The alpha component will be ignored if the pixbuf doesn't have an alpha
+channel. *)
+external fill : t -> int -> unit = "ml_gdk_pixbuf_fill"
 
 (** Copies the key/value pair options attached to a `GdkPixbuf` to another
 `GdkPixbuf`.
@@ -204,6 +214,25 @@ external copy_area : t -> int -> int -> int -> int -> t -> int -> int -> unit = 
 Note that this does not copy the options set on the original `GdkPixbuf`,
 use gdk_pixbuf_copy_options() for this. *)
 external copy : t -> t option = "ml_gdk_pixbuf_copy"
+
+(** Creates a new pixbuf by scaling `src` to `dest_width` x `dest_height`
+and alpha blending the result with a checkboard of colors `color1`
+and `color2`. *)
+external composite_color_simple : t -> int -> int -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> t option = "ml_gdk_pixbuf_composite_color_simple_bytecode" "ml_gdk_pixbuf_composite_color_simple_native"
+
+(** Creates a transformation of the source image @src by scaling by
+@scale_x and @scale_y then translating by @offset_x and @offset_y,
+then alpha blends the rectangle (@dest_x ,@dest_y, @dest_width,
+@dest_height) of the resulting image with a checkboard of the
+colors @color1 and @color2 and renders it onto the destination
+image.
+
+If the source image has no alpha channel, and @overall_alpha is 255, a fast
+path is used which omits the alpha blending and just performs the scaling.
+
+See gdk_pixbuf_composite_color_simple() for a simpler variant of this
+function suitable for many tasks. *)
+external composite_color : t -> t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> int -> int -> unit = "ml_gdk_pixbuf_composite_color_bytecode" "ml_gdk_pixbuf_composite_color_native"
 
 (** Creates a transformation of the source image @src by scaling by
 @scale_x and @scale_y then translating by @offset_x and @offset_y.

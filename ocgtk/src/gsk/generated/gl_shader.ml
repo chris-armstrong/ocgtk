@@ -36,6 +36,9 @@ in your usecase. It is determined by looking at the highest
 u_textureN value that the shader defines. *)
 external get_n_textures : t -> int = "ml_gsk_gl_shader_get_n_textures"
 
+(** Get the size of the data block used to specify arguments for this shader. *)
+external get_args_size : t -> int = "ml_gsk_gl_shader_get_args_size"
+
 (** Gets the value of the uniform @idx in the @args block.
 
 The uniform must be of vec4 type. *)
@@ -50,6 +53,16 @@ external get_arg_vec3 : t -> Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Wrap
 
 The uniform must be of vec2 type. *)
 external get_arg_vec2 : t -> Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Wrappers.Vec2.t -> unit = "ml_gsk_gl_shader_get_arg_vec2"
+
+(** Gets the value of the uniform @idx in the @args block.
+
+The uniform must be of uint type. *)
+external get_arg_uint : t -> Glib_bytes.t -> int -> int = "ml_gsk_gl_shader_get_arg_uint"
+
+(** Gets the value of the uniform @idx in the @args block.
+
+The uniform must be of int type. *)
+external get_arg_int : t -> Glib_bytes.t -> int -> int32 = "ml_gsk_gl_shader_get_arg_int"
 
 (** Gets the value of the uniform @idx in the @args block.
 

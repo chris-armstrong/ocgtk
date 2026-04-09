@@ -76,6 +76,14 @@ g_dbus_message_set_signature(GDBusMessage_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_dbus_message_set_serial(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_dbus_message_set_serial(GDBusMessage_val(self), Long_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_dbus_message_set_sender(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -84,11 +92,27 @@ g_dbus_message_set_sender(GDBusMessage_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_dbus_message_set_reply_serial(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_dbus_message_set_reply_serial(GDBusMessage_val(self), Long_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_dbus_message_set_path(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 g_dbus_message_set_path(GDBusMessage_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_dbus_message_set_num_unix_fds(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_dbus_message_set_num_unix_fds(GDBusMessage_val(self), Long_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -213,6 +237,14 @@ const gchar* result = g_dbus_message_get_signature(GDBusMessage_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
+CAMLexport CAMLprim value ml_g_dbus_message_get_serial(value self)
+{
+CAMLparam1(self);
+
+guint32 result = g_dbus_message_get_serial(GDBusMessage_val(self));
+CAMLreturn(Val_long(result));
+}
+
 CAMLexport CAMLprim value ml_g_dbus_message_get_sender(value self)
 {
 CAMLparam1(self);
@@ -221,12 +253,28 @@ const gchar* result = g_dbus_message_get_sender(GDBusMessage_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
+CAMLexport CAMLprim value ml_g_dbus_message_get_reply_serial(value self)
+{
+CAMLparam1(self);
+
+guint32 result = g_dbus_message_get_reply_serial(GDBusMessage_val(self));
+CAMLreturn(Val_long(result));
+}
+
 CAMLexport CAMLprim value ml_g_dbus_message_get_path(value self)
 {
 CAMLparam1(self);
 
 const gchar* result = g_dbus_message_get_path(GDBusMessage_val(self));
 CAMLreturn(Val_option_string(result));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_message_get_num_unix_fds(value self)
+{
+CAMLparam1(self);
+
+guint32 result = g_dbus_message_get_num_unix_fds(GDBusMessage_val(self));
+CAMLreturn(Val_long(result));
 }
 
 CAMLexport CAMLprim value ml_g_dbus_message_get_message_type(value self)
@@ -502,6 +550,15 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_g_dbus_message_get_num_unix_fds(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusMessage requires GLib >= 2.26");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_dbus_message_get_path(value self)
 {
 CAMLparam1(self);
@@ -511,7 +568,25 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_g_dbus_message_get_reply_serial(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusMessage requires GLib >= 2.26");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_dbus_message_get_sender(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusMessage requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_message_get_serial(value self)
 {
 CAMLparam1(self);
 (void)self;
@@ -668,6 +743,16 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_g_dbus_message_set_num_unix_fds(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusMessage requires GLib >= 2.26");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_dbus_message_set_path(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -678,7 +763,27 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_g_dbus_message_set_reply_serial(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusMessage requires GLib >= 2.26");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_dbus_message_set_sender(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusMessage requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_message_set_serial(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 (void)self;

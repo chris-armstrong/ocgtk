@@ -70,6 +70,38 @@ bus connection, you should make sure that your application exits
 when the user session ends. *)
 external set_exit_on_close : t -> bool -> unit = "ml_g_dbus_connection_set_exit_on_close"
 
+(** Synchronously sends @message to the peer represented by @connection
+and blocks the calling thread until a reply is received or the
+timeout is reached. See g_dbus_connection_send_message_with_reply()
+for the asynchronous version of this method.
+
+Unless @flags contain the
+%G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag, the serial number
+will be assigned by @connection and set on @message via
+g_dbus_message_set_serial(). If @out_serial is not %NULL, then the
+serial number used will be written to this location prior to
+submitting the message to the underlying transport. While it has a `volatile`
+qualifier, this is a historical artifact and the argument passed to it should
+not be `volatile`.
+
+If @connection is closed then the operation will fail with
+%G_IO_ERROR_CLOSED. If @cancellable is canceled, the operation will
+fail with %G_IO_ERROR_CANCELLED. If @message is not well-formed,
+the operation fails with %G_IO_ERROR_INVALID_ARGUMENT.
+
+Note that @error is only set if a local in-process error
+occurred. That is to say that the returned #GDBusMessage object may
+be of type %G_DBUS_MESSAGE_TYPE_ERROR. Use
+g_dbus_message_to_gerror() to transcode this to a #GError.
+
+See this [server][gdbus-server] and [client][gdbus-unix-fd-client]
+for an example of how to use this low-level API to send and receive
+UNIX file descriptors.
+
+Note that @message must be unlocked, unless @flags contain the
+%G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag. *)
+external send_message_with_reply_sync : t -> D_bus_message.t -> Gio_enums.dbussendmessageflags -> int -> Cancellable.t option -> (D_bus_message.t * int, GError.t) result = "ml_g_dbus_connection_send_message_with_reply_sync"
+
 (** Finishes an operation started with g_dbus_connection_send_message_with_reply().
 
 Note that @error is only set if a local in-process error
@@ -81,6 +113,29 @@ See this [server][gdbus-server] and [client][gdbus-unix-fd-client]
 for an example of how to use this low-level API to send and receive
 UNIX file descriptors. *)
 external send_message_with_reply_finish : t -> Async_result.t -> (D_bus_message.t, GError.t) result = "ml_g_dbus_connection_send_message_with_reply_finish"
+
+(** Asynchronously sends @message to the peer represented by @connection.
+
+Unless @flags contain the
+%G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag, the serial number
+will be assigned by @connection and set on @message via
+g_dbus_message_set_serial(). If @out_serial is not %NULL, then the
+serial number used will be written to this location prior to
+submitting the message to the underlying transport. While it has a `volatile`
+qualifier, this is a historical artifact and the argument passed to it should
+not be `volatile`.
+
+If @connection is closed then the operation will fail with
+%G_IO_ERROR_CLOSED. If @message is not well-formed,
+the operation fails with %G_IO_ERROR_INVALID_ARGUMENT.
+
+See this [server][gdbus-server] and [client][gdbus-unix-fd-client]
+for an example of how to use this low-level API to send and receive
+UNIX file descriptors.
+
+Note that @message must be unlocked, unless @flags contain the
+%G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag. *)
+external send_message : t -> D_bus_message.t -> Gio_enums.dbussendmessageflags -> (bool * int, GError.t) result = "ml_g_dbus_connection_send_message"
 
 (** Removes a filter.
 
@@ -117,6 +172,13 @@ In a message bus setup, the message bus is always the server and
 each application is a client. So this method will always return
 %NULL for message bus clients. *)
 external get_peer_credentials : t -> Credentials.t option = "ml_g_dbus_connection_get_peer_credentials"
+
+(** Retrieves the last serial number assigned to a #GDBusMessage on
+the current thread. This includes messages sent via both low-level
+API such as g_dbus_connection_send_message() as well as
+high-level API such as g_dbus_connection_emit_signal(),
+g_dbus_connection_call() or g_dbus_proxy_call(). *)
+external get_last_serial : t -> int = "ml_g_dbus_connection_get_last_serial"
 
 (** The GUID of the peer performing the role of server when
 authenticating. See #GDBusConnection:guid for more details. *)

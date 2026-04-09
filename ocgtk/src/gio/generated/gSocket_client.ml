@@ -3,7 +3,9 @@
 class type socket_client_t = object
     inherit Gsocket_client_signals.socket_client_signals
     method add_application_proxy : string -> unit
+    method connect_to_host : string -> int -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result
     method connect_to_service : string -> string -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result
+    method connect_to_uri : string -> int -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result
     method get_enable_proxy : unit -> bool
     method get_family : unit -> Gio_enums.socketfamily
     method get_local_address : unit -> GSocket_address.socket_address_t option
@@ -34,10 +36,20 @@ class socket_client (obj : Socket_client.t) : socket_client_t = object (self)
     fun protocol ->
       (Socket_client.add_application_proxy obj protocol)
 
+  method connect_to_host : string -> int -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result =
+    fun host_and_port default_port cancellable ->
+      let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
+      Result.map (fun ret -> new GSocket_and__socket_connection.socket_connection ret)(Socket_client.connect_to_host obj host_and_port default_port cancellable)
+
   method connect_to_service : string -> string -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result =
     fun domain service cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       Result.map (fun ret -> new GSocket_and__socket_connection.socket_connection ret)(Socket_client.connect_to_service obj domain service cancellable)
+
+  method connect_to_uri : string -> int -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result =
+    fun uri default_port cancellable ->
+      let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
+      Result.map (fun ret -> new GSocket_and__socket_connection.socket_connection ret)(Socket_client.connect_to_uri obj uri default_port cancellable)
 
   method get_enable_proxy : unit -> bool =
     fun () ->

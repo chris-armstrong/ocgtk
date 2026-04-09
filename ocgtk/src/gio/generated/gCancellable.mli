@@ -1,6 +1,7 @@
 class type cancellable_t = object
     inherit Gcancellable_signals.cancellable_signals
     method cancel : unit -> unit
+    method disconnect : int -> unit
     method get_fd : unit -> int
     method is_cancelled : unit -> bool
     method pop_current : unit -> unit

@@ -90,6 +90,14 @@ int result = gsk_gl_shader_get_n_textures(GskGLShader_val(self));
 CAMLreturn(Val_int(result));
 }
 
+CAMLexport CAMLprim value ml_gsk_gl_shader_get_args_size(value self)
+{
+CAMLparam1(self);
+
+gsize result = gsk_gl_shader_get_args_size(GskGLShader_val(self));
+CAMLreturn(Val_long(result));
+}
+
 CAMLexport CAMLprim value ml_gsk_gl_shader_get_arg_vec4(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -112,6 +120,22 @@ CAMLparam4(self, arg1, arg2, arg3);
 
 gsk_gl_shader_get_arg_vec2(GskGLShader_val(self), GBytes_val(arg1), Int_val(arg2), graphene_vec2_t_val(arg3));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gsk_gl_shader_get_arg_uint(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+guint32 result = gsk_gl_shader_get_arg_uint(GskGLShader_val(self), GBytes_val(arg1), Int_val(arg2));
+CAMLreturn(Val_long(result));
+}
+
+CAMLexport CAMLprim value ml_gsk_gl_shader_get_arg_int(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gint32 result = gsk_gl_shader_get_arg_int(GskGLShader_val(self), GBytes_val(arg1), Int_val(arg2));
+CAMLreturn(caml_copy_int32(result));
 }
 
 CAMLexport CAMLprim value ml_gsk_gl_shader_get_arg_float(value self, value arg1, value arg2)

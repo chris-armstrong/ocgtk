@@ -33,7 +33,22 @@ external unref : t -> unit = "ml_gdk_dmabuf_formats_unref"
 (** Increases the reference count of @formats. *)
 external ref : t -> t = "ml_gdk_dmabuf_formats_ref"
 
+(** Returns the number of formats that the @formats object
+contains.
+
+Note that DMA buffers are a Linux concept, so on other
+platforms, [method@Gdk.DmabufFormats.get_n_formats] will
+always return zero. *)
+external get_n_formats : t -> int = "ml_gdk_dmabuf_formats_get_n_formats"
+
+(** Gets the fourcc code and modifier for a format
+that is contained in @formats. *)
+external get_format : t -> int -> int * Unsigned.UInt64.t = "ml_gdk_dmabuf_formats_get_format"
+
 (** Returns whether @formats1 and @formats2 contain the
 same dmabuf formats, in the same order. *)
 external equal : t -> t option -> bool = "ml_gdk_dmabuf_formats_equal"
+
+(** Returns whether a given format is contained in @formats. *)
+external contains : t -> int -> Unsigned.UInt64.t -> bool = "ml_gdk_dmabuf_formats_contains"
 

@@ -12,6 +12,9 @@ external new_from_file : string -> t = "ml_gtk_builder_new_from_file"
 (** Create a new Builder *)
 external new_from_resource : string -> t = "ml_gtk_builder_new_from_resource"
 
+(** Create a new Builder *)
+external new_from_string : string -> int -> t = "ml_gtk_builder_new_from_string"
+
 (* Methods *)
 (** Sets the translation domain of @builder. *)
 external set_translation_domain : t -> string option -> unit = "ml_gtk_builder_set_translation_domain"
@@ -31,6 +34,13 @@ when an object is optional.
 object to the widget the template is inited for. For functions like
 [ctor@Gtk.Builder.new_from_resource], the current object will be %NULL. *)
 external set_current_object : t -> [`object_] Gobject.obj option -> unit = "ml_gtk_builder_set_current_object"
+
+(** Looks up a type by name.
+
+This is using the virtual function that `GtkBuilder` has
+for that purpose. This is mainly used when implementing
+the `GtkBuildable` interface on a type. *)
+external get_type_from_name : t -> string -> int = "ml_gtk_builder_get_type_from_name"
 
 (** Gets the translation domain of @builder. *)
 external get_translation_domain : t -> string option = "ml_gtk_builder_get_translation_domain"
@@ -53,6 +63,13 @@ external get_object : t -> string -> [`object_] Gobject.obj option = "ml_gtk_bui
 (** Gets the current object set via gtk_builder_set_current_object(). *)
 external get_current_object : t -> [`object_] Gobject.obj option = "ml_gtk_builder_get_current_object"
 
+(** Main private entry point for building composite components
+from template XML.
+
+Most likely you do not need to call this function in applications as
+templates are handled by `GtkWidget`. *)
+external extend_with_template : t -> [`object_] Gobject.obj -> int -> string -> int -> (bool, GError.t) result = "ml_gtk_builder_extend_with_template"
+
 (** Add @object to the @builder object pool so it can be
 referenced just like any other object built by builder.
 
@@ -61,6 +78,18 @@ it is not an error to expose the same object under multiple
 names. `gtk_builder_get_object()` may be used to determine
 if an object has already been added with @name. *)
 external expose_object : t -> string -> [`object_] Gobject.obj -> unit = "ml_gtk_builder_expose_object"
+
+(** Parses a string containing a UI definition, building only the
+requested objects and merges them with the current contents of
+@builder.
+
+Upon errors %FALSE will be returned and @error will be assigned a
+`GError` from the %GTK_BUILDER_ERROR or %G_MARKUP_ERROR domain.
+
+If you are adding an object that depends on an object that is not
+its child (for instance a `GtkTreeView` that depends on its
+`GtkTreeModel`), you have to explicitly list all of them in @object_ids. *)
+external add_objects_from_string : t -> string -> int -> string array -> (bool, GError.t) result = "ml_gtk_builder_add_objects_from_string"
 
 (** Parses a resource file containing a UI definition, building
 only the requested objects and merges them with the current
@@ -87,6 +116,23 @@ If you are adding an object that depends on an object that is not
 its child (for instance a `GtkTreeView` that depends on its
 `GtkTreeModel`), you have to explicitly list all of them in @object_ids. *)
 external add_objects_from_file : t -> string -> string array -> (bool, GError.t) result = "ml_gtk_builder_add_objects_from_file"
+
+(** Parses a string containing a UI definition and merges it
+with the current contents of @builder.
+
+This function is useful if you need to call
+[method@Gtk.Builder.set_current_object] to add user data to
+callbacks before loading `GtkBuilder` UI. Otherwise, you probably
+want [ctor@Gtk.Builder.new_from_string] instead.
+
+Upon errors %FALSE will be returned and @error will be assigned a
+`GError` from the %GTK_BUILDER_ERROR, %G_MARKUP_ERROR or
+%G_VARIANT_PARSE_ERROR domain.
+
+It’s not really reasonable to attempt to handle failures of this
+call.  The only reasonable thing to do when an error is detected is
+to call g_error(). *)
+external add_from_string : t -> string -> int -> (bool, GError.t) result = "ml_gtk_builder_add_from_string"
 
 (** Parses a resource file containing a UI definition
 and merges it with the current contents of @builder.

@@ -32,6 +32,32 @@ the @socket was automatically closed on finalization of the @listener, even
 if references to it were held elsewhere. *)
 external add_socket : t -> Socket_and__socket_connection.Socket.t -> [`object_] Gobject.obj option -> (bool, GError.t) result = "ml_g_socket_listener_add_socket"
 
+(** Helper function for g_socket_listener_add_address() that
+creates a TCP/IP socket listening on IPv4 and IPv6 (if
+supported) on the specified port on all interfaces.
+
+@source_object will be passed out in the various calls
+to accept to identify this particular source, which is
+useful if you're listening on multiple addresses and do
+different things depending on what address is connected to.
+
+Call g_socket_listener_close() to stop listening on @port; this will not
+be done automatically when you drop your final reference to @listener, as
+references may be held internally. *)
+external add_inet_port : t -> int -> [`object_] Gobject.obj option -> (bool, GError.t) result = "ml_g_socket_listener_add_inet_port"
+
+(** Listens for TCP connections on any available port number for both
+IPv6 and IPv4 (if each is available).
+
+This is useful if you need to have a socket for incoming connections
+but don't care about the specific port number.
+
+@source_object will be passed out in the various calls
+to accept to identify this particular source, which is
+useful if you're listening on multiple addresses and do
+different things depending on what address is connected to. *)
+external add_any_inet_port : t -> [`object_] Gobject.obj option -> (int, GError.t) result = "ml_g_socket_listener_add_any_inet_port"
+
 (* Properties *)
 
 (** Get property: listen-backlog *)

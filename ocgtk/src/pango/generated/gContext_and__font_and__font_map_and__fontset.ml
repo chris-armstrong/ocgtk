@@ -34,6 +34,7 @@ and font_t = object
     method get_face : unit -> GFont_face_and__font_family.font_face_t
     method get_font_map : unit -> font_map_t option
     method get_metrics : Language.t option -> Font_metrics.t
+    method has_char : int -> bool
     method serialize : unit -> Glib_bytes.t
     method as_font : Context_and__font_and__font_map_and__fontset.Font.t
 end
@@ -46,6 +47,7 @@ and font_map_t = object
     method load_font : context_t -> Font_description.t -> font_t option
     method load_fontset : context_t -> Font_description.t -> Language.t -> fontset_t option
     method reload_font : font_t -> float -> context_t option -> string option -> font_t
+    method item_type : int
     method n_items : int
     method as_font_map : Context_and__font_and__font_map_and__fontset.Font_map.t
 end
@@ -177,6 +179,10 @@ and font (obj : Context_and__font_and__font_map_and__fontset.Font.t) : font_t = 
     fun language ->
       (Context_and__font_and__font_map_and__fontset.Font.get_metrics obj language)
 
+  method has_char : int -> bool =
+    fun wc ->
+      (Context_and__font_and__font_map_and__fontset.Font.has_char obj wc)
+
   method serialize : unit -> Glib_bytes.t =
     fun () ->
       (Context_and__font_and__font_map_and__fontset.Font.serialize obj)
@@ -217,6 +223,8 @@ and font_map (obj : Context_and__font_and__font_map_and__fontset.Font_map.t) : f
       let font = font#as_font in
       let context = Option.map (fun (c) -> c#as_context) context in
       new  font(Context_and__font_and__font_map_and__fontset.Font_map.reload_font obj font scale context variations)
+
+  method item_type = Context_and__font_and__font_map_and__fontset.Font_map.get_item_type obj
 
   method n_items = Context_and__font_and__font_map_and__fontset.Font_map.get_n_items obj
 

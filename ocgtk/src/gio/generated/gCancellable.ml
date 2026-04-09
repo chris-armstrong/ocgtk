@@ -3,6 +3,7 @@
 class type cancellable_t = object
     inherit Gcancellable_signals.cancellable_signals
     method cancel : unit -> unit
+    method disconnect : int -> unit
     method get_fd : unit -> int
     method is_cancelled : unit -> bool
     method pop_current : unit -> unit
@@ -20,6 +21,10 @@ class cancellable (obj : Cancellable.t) : cancellable_t = object (self)
   method cancel : unit -> unit =
     fun () ->
       (Cancellable.cancel obj)
+
+  method disconnect : int -> unit =
+    fun handler_id ->
+      (Cancellable.disconnect obj handler_id)
 
   method get_fd : unit -> int =
     fun () ->

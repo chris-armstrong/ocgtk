@@ -1,6 +1,7 @@
 class type no_selection_t = object
     method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
     method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
+    method item_type : int
     method n_items : int
     method as_no_selection : No_selection.t
 end
@@ -16,6 +17,8 @@ class no_selection (obj : No_selection.t) : no_selection_t = object (self)
     fun model ->
       let model = Option.map (fun (c) -> c#as_list_model) model in
       (No_selection.set_model obj model)
+
+  method item_type = No_selection.get_item_type obj
 
   method n_items = No_selection.get_n_items obj
 

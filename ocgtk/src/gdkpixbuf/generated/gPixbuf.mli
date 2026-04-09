@@ -1,11 +1,15 @@
 class type pixbuf_t = object
     method apply_embedded_orientation : unit -> pixbuf_t option
     method composite : pixbuf_t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> unit
+    method composite_color : pixbuf_t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> int -> int -> unit
+    method composite_color_simple : int -> int -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> pixbuf_t option
     method copy : unit -> pixbuf_t option
     method copy_area : int -> int -> int -> int -> pixbuf_t -> int -> int -> unit
     method copy_options : pixbuf_t -> bool
+    method fill : int -> unit
     method flip : bool -> pixbuf_t option
     method get_bits_per_sample : unit -> int
+    method get_byte_length : unit -> int
     method get_colorspace : unit -> Gdkpixbuf_enums.colorspace
     method get_has_alpha : unit -> bool
     method get_height : unit -> int

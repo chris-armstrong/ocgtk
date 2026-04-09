@@ -19,7 +19,23 @@ to the remote service, you can use [class@Gio.NetworkService]’s
 `GSrvTarget` at all. *)
 type t = [`srv_target] Gobject.obj
 
+(** Create a new SrvTarget *)
+external new_ : string -> int -> int -> int -> t = "ml_g_srv_target_new"
+
 (* Methods *)
+(** Gets @target's weight. You should not need to look at this;
+#GResolver already sorts the targets according to the algorithm in
+RFC 2782. *)
+external get_weight : t -> int = "ml_g_srv_target_get_weight"
+
+(** Gets @target's priority. You should not need to look at this;
+#GResolver already sorts the targets according to the algorithm in
+RFC 2782. *)
+external get_priority : t -> int = "ml_g_srv_target_get_priority"
+
+(** Gets @target's port *)
+external get_port : t -> int = "ml_g_srv_target_get_port"
+
 (** Gets @target's hostname (in ASCII form; if you are going to present
 this to the user, you should use g_hostname_is_ascii_encoded() to
 check if it contains encoded Unicode segments, and use

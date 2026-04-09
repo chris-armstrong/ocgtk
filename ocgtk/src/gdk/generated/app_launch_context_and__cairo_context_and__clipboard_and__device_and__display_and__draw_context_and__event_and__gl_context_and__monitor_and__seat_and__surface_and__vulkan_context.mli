@@ -5,6 +5,17 @@ module rec App_launch_context : sig
   type t = [`app_launch_context | `object_] Gobject.obj
 
   (* Methods *)
+  (** Sets the timestamp of @context.
+
+  The timestamp should ideally be taken from the event that
+  triggered the launch.
+
+  Window managers can use this information to avoid moving the
+  focus to the newly launched application when the user is busy
+  typing in another window. This is also known as 'focus stealing
+  prevention'. *)
+  external set_timestamp : t -> int -> unit = "ml_gdk_app_launch_context_set_timestamp"
+
   (** Sets the icon for applications that are launched with this context.
 
   The @icon_name will be interpreted in the same way as the Icon field
@@ -168,6 +179,14 @@ and Device
    }
   ``` *)
   external get_vendor_id : t -> string option = "ml_gdk_device_get_vendor_id"
+
+  (** Returns the timestamp of the last activity for this device.
+
+  In practice, this means the timestamp of the last event that was
+  received from the OS for this device. (GTK may occasionally produce
+  events for a device that are not received from the OS, and will not
+  update the timestamp). *)
+  external get_timestamp : t -> int = "ml_gdk_device_get_timestamp"
 
   (** Obtains the surface underneath @device, returning the location of the
   device in @win_x and @win_y.
@@ -575,6 +594,12 @@ and Event
 
   (** Increase the ref count of @event. *)
   external ref : t -> t = "ml_gdk_event_ref"
+
+  (** Returns the timestamp of @event.
+
+  Not all events have timestamps. In that case, this function
+  returns %GDK_CURRENT_TIME. *)
+  external get_time : t -> int = "ml_gdk_event_get_time"
 
   (** Extracts the surface associated with an event. *)
   external get_surface : t -> Surface.t option = "ml_gdk_event_get_surface"

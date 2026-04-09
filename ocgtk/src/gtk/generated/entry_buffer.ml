@@ -45,6 +45,11 @@ external get_max_length : t -> int = "ml_gtk_entry_buffer_get_max_length"
 (** Retrieves the length in characters of the buffer. *)
 external get_length : t -> int = "ml_gtk_entry_buffer_get_length"
 
+(** Retrieves the length in bytes of the buffer.
+
+See [method@Gtk.EntryBuffer.get_length]. *)
+external get_bytes : t -> int = "ml_gtk_entry_buffer_get_bytes"
+
 (** Used when subclassing `GtkEntryBuffer`. *)
 external emit_inserted_text : t -> int -> string -> int -> unit = "ml_gtk_entry_buffer_emit_inserted_text"
 

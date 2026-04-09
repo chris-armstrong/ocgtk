@@ -68,6 +68,16 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GTlsCertificate(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+CAMLexport CAMLprim value ml_g_tls_certificate_new_from_pem(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+GError *error = NULL;
+    
+GTlsCertificate *obj = g_tls_certificate_new_from_pem(String_val(arg1), Long_val(arg2), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GTlsCertificate(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 #if GLIB_CHECK_VERSION(2,68,0)
 
 CAMLexport CAMLprim value ml_g_tls_certificate_new_from_pkcs11_uris(value arg1, value arg2)
@@ -290,6 +300,16 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_tls_certificate_new_from_files(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+(void)arg1;
+(void)arg2;
+caml_failwith("TlsCertificate requires GLib >= 2.28");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_tls_certificate_new_from_pem(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 (void)arg1;

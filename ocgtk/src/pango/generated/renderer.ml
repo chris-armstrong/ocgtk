@@ -12,6 +12,12 @@ external set_matrix : t -> Matrix.t option -> unit = "ml_pango_renderer_set_matr
 Also see [method@Pango.Renderer.set_alpha]. *)
 external set_color : t -> Pango_enums.renderpart -> Color.t option -> unit = "ml_pango_renderer_set_color"
 
+(** Sets the alpha for part of the rendering.
+
+Note that the alpha may only be used if a color is
+specified for @part as well. *)
+external set_alpha : t -> Pango_enums.renderpart -> int -> unit = "ml_pango_renderer_set_alpha"
+
 (** Informs Pango that the way that the rendering is done
 for @part has changed.
 
@@ -55,6 +61,9 @@ external get_layout : t -> Layout_and__layout_iter.Layout.t option = "ml_pango_r
 
 (** Gets the current rendering color for the specified part. *)
 external get_color : t -> Pango_enums.renderpart -> Color.t option = "ml_pango_renderer_get_color"
+
+(** Gets the current alpha for the specified part. *)
+external get_alpha : t -> Pango_enums.renderpart -> int = "ml_pango_renderer_get_alpha"
 
 (** Draws a trapezoid with the parallel sides aligned with the X axis
 using the given `PangoRenderer`; coordinates are in device space. *)

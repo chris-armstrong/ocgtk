@@ -3,9 +3,12 @@ class type gl_shader_t = object
     method find_uniform_by_name : string -> int
     method get_arg_bool : Glib_bytes.t -> int -> bool
     method get_arg_float : Glib_bytes.t -> int -> float
+    method get_arg_int : Glib_bytes.t -> int -> int32
+    method get_arg_uint : Glib_bytes.t -> int -> int
     method get_arg_vec2 : Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Vec2.vec2_t -> unit
     method get_arg_vec3 : Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Vec3.vec3_t -> unit
     method get_arg_vec4 : Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Vec4.vec4_t -> unit
+    method get_args_size : unit -> int
     method get_n_textures : unit -> int
     method get_n_uniforms : unit -> int
     method get_resource : unit -> string option
@@ -36,6 +39,14 @@ class gl_shader (obj : Gl_shader.t) : gl_shader_t = object (self)
     fun args idx ->
       (Gl_shader.get_arg_float obj args idx)
 
+  method get_arg_int : Glib_bytes.t -> int -> int32 =
+    fun args idx ->
+      (Gl_shader.get_arg_int obj args idx)
+
+  method get_arg_uint : Glib_bytes.t -> int -> int =
+    fun args idx ->
+      (Gl_shader.get_arg_uint obj args idx)
+
   method get_arg_vec2 : Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Vec2.vec2_t -> unit =
     fun args idx out_value ->
       let out_value = out_value#as_vec2 in
@@ -50,6 +61,10 @@ class gl_shader (obj : Gl_shader.t) : gl_shader_t = object (self)
     fun args idx out_value ->
       let out_value = out_value#as_vec4 in
       (Gl_shader.get_arg_vec4 obj args idx out_value)
+
+  method get_args_size : unit -> int =
+    fun () ->
+      (Gl_shader.get_args_size obj)
 
   method get_n_textures : unit -> int =
     fun () ->

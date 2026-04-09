@@ -23,6 +23,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#include <ocaml_integers.h>
 
 /* For value blocks containing copied C structs */
 #define MLPointer_val(val) \

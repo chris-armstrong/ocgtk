@@ -74,6 +74,14 @@ guint result = gtk_entry_buffer_get_length(GtkEntryBuffer_val(self));
 CAMLreturn(Val_int(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_entry_buffer_get_bytes(value self)
+{
+CAMLparam1(self);
+
+gsize result = gtk_entry_buffer_get_bytes(GtkEntryBuffer_val(self));
+CAMLreturn(Val_long(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_entry_buffer_emit_inserted_text(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);

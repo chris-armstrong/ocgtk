@@ -37,7 +37,9 @@ let should_generate_property ~ctx ~class_name:_ ~methods (prop : gir_property) =
       check_interface_by_name prop.prop_type.name
       || check_interface_by_c_type prop.prop_type.c_type
     in
-    if is_interface_type then false
+    (* Array-typed properties can't be generated — the GObject property system
+       would require marshalling arrays through GValue which we don't support *)
+    if is_interface_type || is_array_type prop.prop_type then false
     else
       let matches_method =
         List.exists

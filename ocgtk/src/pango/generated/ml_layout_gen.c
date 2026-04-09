@@ -112,6 +112,15 @@ pango_layout_set_single_paragraph_mode(PangoLayout_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_pango_layout_set_markup_with_accel(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gunichar out4;
+
+pango_layout_set_markup_with_accel(PangoLayout_val(self), String_val(arg1), Int_val(arg2), Long_val(arg3), &out4);
+CAMLreturn(Val_long(out4));
+}
+
 CAMLexport CAMLprim value ml_pango_layout_set_markup(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);

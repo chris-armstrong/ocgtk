@@ -21,6 +21,15 @@ external set_value : t -> string -> Gvariant.t -> bool = "ml_g_settings_set_valu
 
 (** Sets @key in @settings to @value.
 
+A convenience variant of g_settings_set() for 64-bit unsigned
+integers.
+
+It is a programmer error to give a @key that isn't specified as
+having a uint64 type in the schema for @settings. *)
+external set_uint64 : t -> string -> Unsigned.UInt64.t -> bool = "ml_g_settings_set_uint64"
+
+(** Sets @key in @settings to @value.
+
 A convenience variant of g_settings_set() for 32-bit unsigned
 integers.
 
@@ -44,6 +53,14 @@ A convenience variant of g_settings_set() for strings.
 It is a programmer error to give a @key that isn't specified as
 having a string type in the schema for @settings. *)
 external set_string : t -> string -> string -> bool = "ml_g_settings_set_string"
+
+(** Sets @key in @settings to @value.
+
+A convenience variant of g_settings_set() for 64-bit integers.
+
+It is a programmer error to give a @key that isn't specified as
+having a int64 type in the schema for @settings. *)
+external set_int64 : t -> string -> int64 -> bool = "ml_g_settings_set_int64"
 
 (** Sets @key in @settings to @value.
 
@@ -167,6 +184,15 @@ external get_user_value : t -> string -> Gvariant.t option = "ml_g_settings_get_
 
 (** Gets the value that is stored at @key in @settings.
 
+A convenience variant of g_settings_get() for 64-bit unsigned
+integers.
+
+It is a programmer error to give a @key that isn't specified as
+having a uint64 type in the schema for @settings. *)
+external get_uint64 : t -> string -> Unsigned.UInt64.t = "ml_g_settings_get_uint64"
+
+(** Gets the value that is stored at @key in @settings.
+
 A convenience variant of g_settings_get() for 32-bit unsigned
 integers.
 
@@ -190,6 +216,14 @@ external get_string : t -> string -> string = "ml_g_settings_get_string"
 
 (** Queries the range of a key. *)
 external get_range : t -> string -> Gvariant.t = "ml_g_settings_get_range"
+
+(** Gets the value that is stored at @key in @settings.
+
+A convenience variant of g_settings_get() for 64-bit integers.
+
+It is a programmer error to give a @key that isn't specified as
+having a int64 type in the schema for @settings. *)
+external get_int64 : t -> string -> int64 = "ml_g_settings_get_int64"
 
 (** Gets the value that is stored at @key in @settings.
 

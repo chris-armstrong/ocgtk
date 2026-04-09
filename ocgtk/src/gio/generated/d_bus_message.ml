@@ -38,11 +38,20 @@ external set_unix_fd_list : t -> Unix_fd_list.t option -> unit = "ml_g_dbus_mess
 (** Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field. *)
 external set_signature : t -> string option -> unit = "ml_g_dbus_message_set_signature"
 
+(** Sets the serial for @message. *)
+external set_serial : t -> int -> unit = "ml_g_dbus_message_set_serial"
+
 (** Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_SENDER header field. *)
 external set_sender : t -> string option -> unit = "ml_g_dbus_message_set_sender"
 
+(** Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field. *)
+external set_reply_serial : t -> int -> unit = "ml_g_dbus_message_set_reply_serial"
+
 (** Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_PATH header field. *)
 external set_path : t -> string option -> unit = "ml_g_dbus_message_set_path"
+
+(** Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field. *)
+external set_num_unix_fds : t -> int -> unit = "ml_g_dbus_message_set_num_unix_fds"
 
 (** Sets @message to be of @type. *)
 external set_message_type : t -> Gio_enums.dbusmessagetype -> unit = "ml_g_dbus_message_set_message_type"
@@ -136,11 +145,20 @@ external get_unix_fd_list : t -> Unix_fd_list.t option = "ml_g_dbus_message_get_
 This will always be non-%NULL, but may be an empty string. *)
 external get_signature : t -> string = "ml_g_dbus_message_get_signature"
 
+(** Gets the serial for @message. *)
+external get_serial : t -> int = "ml_g_dbus_message_get_serial"
+
 (** Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_SENDER header field. *)
 external get_sender : t -> string option = "ml_g_dbus_message_get_sender"
 
+(** Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field. *)
+external get_reply_serial : t -> int = "ml_g_dbus_message_get_reply_serial"
+
 (** Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_PATH header field. *)
 external get_path : t -> string option = "ml_g_dbus_message_get_path"
+
+(** Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field. *)
+external get_num_unix_fds : t -> int = "ml_g_dbus_message_get_num_unix_fds"
 
 (** Gets the type of @message. *)
 external get_message_type : t -> Gio_enums.dbusmessagetype = "ml_g_dbus_message_get_message_type"

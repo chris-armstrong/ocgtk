@@ -6,9 +6,11 @@ class type tree_store_t = object
     method move_after : Tree_iter.t -> Tree_iter.t option -> unit
     method move_before : Tree_iter.t -> Tree_iter.t option -> unit
     method remove : Tree_iter.t -> bool
+    method set_column_types : int -> int array -> unit
     method swap : Tree_iter.t -> Tree_iter.t -> unit
     method as_tree_store : Tree_store.t
 end
 
 class tree_store : Tree_store.t -> tree_store_t
 
+val newv : int -> int array -> tree_store_t

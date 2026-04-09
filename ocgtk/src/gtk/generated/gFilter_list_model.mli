@@ -6,6 +6,7 @@ class type filter_list_model_t = object
     method set_filter : GFilter.filter_t option -> unit
     method set_incremental : bool -> unit
     method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
+    method item_type : int
     method n_items : int
     method as_filter_list_model : Filter_list_model.t
 end

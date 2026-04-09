@@ -71,6 +71,14 @@ gdk_content_formats_builder_add_mime_type(GdkContentFormatsBuilder_val(self), St
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gdk_content_formats_builder_add_gtype(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gdk_content_formats_builder_add_gtype(GdkContentFormatsBuilder_val(self), GType_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gdk_content_formats_builder_add_formats(value self, value arg1)
 {
 CAMLparam2(self, arg1);

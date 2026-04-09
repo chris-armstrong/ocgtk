@@ -84,6 +84,22 @@ GBytes* result = g_resource_lookup_data(GResource_val(self), String_val(arg1), G
 if (error == NULL) CAMLreturn(Res_Ok(Val_GBytes(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+CAMLexport CAMLprim value ml_g_resource_get_info(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+gsize out3;
+guint32 out4;
+
+gboolean result = g_resource_get_info(GResource_val(self), String_val(arg1), GioResourceLookupFlags_val(arg2), &out3, &out4, &error);
+CAMLlocal1(ret);
+    ret = caml_alloc(3, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_long(out3));
+    Store_field(ret, 2, Val_long(out4));
+    if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_resource_enumerate_children(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -151,6 +167,17 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_resource_enumerate_children(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Resource requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_resource_get_info(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
 (void)self;

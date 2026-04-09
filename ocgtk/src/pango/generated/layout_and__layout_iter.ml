@@ -106,6 +106,21 @@ module rec Layout : sig
 
   Replaces the current text and attribute list.
 
+  If @accel_marker is nonzero, the given character will mark the
+  character following it as an accelerator. For example, @accel_marker
+  might be an ampersand or underscore. All characters marked
+  as an accelerator will receive a %PANGO_UNDERLINE_LOW attribute,
+  and the first character so marked will be returned in @accel_char.
+  Two @accel_marker characters following each other produce a single
+  literal @accel_marker character. *)
+  external set_markup_with_accel : t -> string -> int -> int -> int = "ml_pango_layout_set_markup_with_accel"
+
+  (** Sets the layout text and attribute list from marked-up text.
+
+  See [Pango Markup](pango_markup.html)).
+
+  Replaces the current text and attribute list.
+
   This is the same as [method@Pango.Layout.set_markup_with_accel],
   but the markup text isn't scanned for accelerators. *)
   external set_markup : t -> string -> int -> unit = "ml_pango_layout_set_markup"
@@ -653,6 +668,21 @@ end = struct
 
   The default value is %FALSE. *)
   external set_single_paragraph_mode : t -> bool -> unit = "ml_pango_layout_set_single_paragraph_mode"
+
+  (** Sets the layout text and attribute list from marked-up text.
+
+  See [Pango Markup](pango_markup.html)).
+
+  Replaces the current text and attribute list.
+
+  If @accel_marker is nonzero, the given character will mark the
+  character following it as an accelerator. For example, @accel_marker
+  might be an ampersand or underscore. All characters marked
+  as an accelerator will receive a %PANGO_UNDERLINE_LOW attribute,
+  and the first character so marked will be returned in @accel_char.
+  Two @accel_marker characters following each other produce a single
+  literal @accel_marker character. *)
+  external set_markup_with_accel : t -> string -> int -> int -> int = "ml_pango_layout_set_markup_with_accel"
 
   (** Sets the layout text and attribute list from marked-up text.
 

@@ -160,6 +160,22 @@ gtk_bitset_intersect(GtkBitset_val(self), GtkBitset_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_bitset_get_size_in_range(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+guint64 result = gtk_bitset_get_size_in_range(GtkBitset_val(self), Int_val(arg1), Int_val(arg2));
+CAMLreturn(integers_copy_uint64(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_bitset_get_size(value self)
+{
+CAMLparam1(self);
+
+guint64 result = gtk_bitset_get_size(GtkBitset_val(self));
+CAMLreturn(integers_copy_uint64(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_bitset_get_nth(value self, value arg1)
 {
 CAMLparam2(self, arg1);

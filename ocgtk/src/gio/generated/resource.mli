@@ -200,6 +200,12 @@ the heap and automatically uncompress the data.
 @lookup_flags controls the behaviour of the lookup. *)
 external lookup_data : t -> string -> Gio_enums.resourcelookupflags -> (Glib_bytes.t, GError.t) result = "ml_g_resource_lookup_data"
 
+(** Looks for a file at the specified @path in the resource and
+if found returns information about it.
+
+@lookup_flags controls the behaviour of the lookup. *)
+external get_info : t -> string -> Gio_enums.resourcelookupflags -> (bool * int * int, GError.t) result = "ml_g_resource_get_info"
+
 (** Returns all the names of children at the specified @path in the resource.
 The return result is a %NULL terminated list of strings which should
 be released with g_strfreev().

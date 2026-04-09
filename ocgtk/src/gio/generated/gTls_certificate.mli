@@ -15,4 +15,5 @@ class tls_certificate : Tls_certificate.t -> tls_certificate_t
 val new_from_file : string -> (tls_certificate_t, GError.t) result
 val new_from_file_with_password : string -> string -> (tls_certificate_t, GError.t) result
 val new_from_files : string -> string -> (tls_certificate_t, GError.t) result
+val new_from_pem : string -> int -> (tls_certificate_t, GError.t) result
 val new_from_pkcs11_uris : string -> string option -> (tls_certificate_t, GError.t) result

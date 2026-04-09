@@ -8,6 +8,7 @@ class type single_selection_t = object
     method set_can_unselect : bool -> unit
     method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
     method set_selected : int -> unit
+    method item_type : int
     method n_items : int
     method as_single_selection : Single_selection.t
 end

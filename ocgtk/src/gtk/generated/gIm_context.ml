@@ -4,6 +4,7 @@ class type im_context_t = object
     inherit Gim_context_signals.im_context_signals
     method activate_osk : Ocgtk_gdk.Gdk.Event.event_t option -> bool
     method delete_surrounding : int -> int -> bool
+    method filter_key : bool -> Ocgtk_gdk.Gdk.Surface.surface_t -> Ocgtk_gdk.Gdk.Device.device_t -> int -> int -> Ocgtk_gdk.Gdk.modifiertype -> int -> bool
     method filter_keypress : Ocgtk_gdk.Gdk.Event.event_t -> bool
     method focus_in : unit -> unit
     method focus_out : unit -> unit
@@ -32,6 +33,12 @@ class im_context (obj : Im_context.t) : im_context_t = object (self)
   method delete_surrounding : int -> int -> bool =
     fun offset n_chars ->
       (Im_context.delete_surrounding obj offset n_chars)
+
+  method filter_key : bool -> Ocgtk_gdk.Gdk.Surface.surface_t -> Ocgtk_gdk.Gdk.Device.device_t -> int -> int -> Ocgtk_gdk.Gdk.modifiertype -> int -> bool =
+    fun press surface device time keycode state group ->
+      let surface = surface#as_surface in
+      let device = device#as_device in
+      (Im_context.filter_key obj press surface device time keycode state group)
 
   method filter_keypress : Ocgtk_gdk.Gdk.Event.event_t -> bool =
     fun event ->

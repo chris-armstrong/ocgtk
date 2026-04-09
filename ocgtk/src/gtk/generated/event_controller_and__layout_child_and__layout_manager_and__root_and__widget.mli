@@ -39,6 +39,12 @@ module rec Event_controller : sig
   (** Gets the name of @controller. *)
   external get_name : t -> string option = "ml_gtk_event_controller_get_name"
 
+  (** Returns the timestamp of the event that is currently being
+  handled by the controller.
+
+  At other times, 0 is returned. *)
+  external get_current_event_time : t -> int = "ml_gtk_event_controller_get_current_event_time"
+
   (** Returns the modifier state of the event that is currently being
   handled by the controller.
 
@@ -952,6 +958,18 @@ and Widget
   function returns %NULL. *)
   external get_tooltip_markup : t -> string option = "ml_gtk_widget_get_tooltip_markup"
 
+  (** Fetch an object build from the template XML for @widget_type in
+  this @widget instance.
+
+  This will only report children which were previously declared
+  with [method@Gtk.WidgetClass.bind_template_child_full] or one of its
+  variants.
+
+  This function is only meant to be called for code which is private
+  to the @widget_type which declared the child and is meant for language
+  bindings which cannot easily make use of the GObject structure offsets. *)
+  external get_template_child : t -> int -> string -> [`object_] Gobject.obj = "ml_gtk_widget_get_template_child"
+
   (** Returns the style context associated to @widget.
 
   The returned object is guaranteed to be the same
@@ -1319,6 +1337,17 @@ and Widget
   child widgets in `GtkWidget`Class.size_allocate(). *)
   external get_baseline : t -> int = "ml_gtk_widget_get_baseline"
 
+  (** Gets the first ancestor of @widget with type @widget_type.
+
+  For example, `gtk_widget_get_ancestor (widget, GTK_TYPE_BOX)`
+  gets the first `GtkBox` that’s an ancestor of @widget. No
+  reference will be added to the returned widget; it should
+  not be unreferenced.
+
+  Note that unlike [method@Gtk.Widget.is_ancestor], this function
+  considers @widget to be an ancestor of itself. *)
+  external get_ancestor : t -> int -> t option = "ml_gtk_widget_get_ancestor"
+
   (** Returns the width that has currently been allocated to @widget.
 
   To learn more about widget sizes, see the coordinate
@@ -1350,6 +1379,33 @@ and Widget
 
   (** Checks to see if a drag movement has passed the GTK drag threshold. *)
   external drag_check_threshold : t -> int -> int -> int -> int -> bool = "ml_gtk_drag_check_threshold"
+
+  (** Clears the template children for the given widget.
+
+  This function is the opposite of [method@Gtk.Widget.init_template], and
+  it is used to clear all the template children from a widget instance.
+  If you bound a template child to a field in the instance structure, or
+  in the instance private data structure, the field will be set to `NULL`
+  after this function returns.
+
+  You should call this function inside the `GObjectClass.dispose()`
+  implementation of any widget that called `gtk_widget_init_template()`.
+  Typically, you will want to call this function last, right before
+  chaining up to the parent type's dispose implementation, e.g.
+
+  ```c
+  static void
+  some_widget_dispose (GObject *gobject)
+  {
+    SomeWidget *self = SOME_WIDGET (gobject);
+
+    // Clear the template data for SomeWidget
+    gtk_widget_dispose_template (GTK_WIDGET (self), SOME_TYPE_WIDGET);
+
+    G_OBJECT_CLASS (some_widget_parent_class)->dispose (gobject);
+  }
+  ``` *)
+  external dispose_template : t -> int -> unit = "ml_gtk_widget_dispose_template"
 
   (** Creates a new `PangoLayout` with the appropriate font map,
   font description, and base direction for drawing text for

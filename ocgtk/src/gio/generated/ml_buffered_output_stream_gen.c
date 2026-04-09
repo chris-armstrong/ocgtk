@@ -31,12 +31,37 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GBufferedOutputStream(obj));
 }
+CAMLexport CAMLprim value ml_g_buffered_output_stream_new_sized(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+
+GBufferedOutputStream *obj = g_buffered_output_stream_new_sized(GOutputStream_val(arg1), Long_val(arg2));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GBufferedOutputStream(obj));
+}
+CAMLexport CAMLprim value ml_g_buffered_output_stream_set_buffer_size(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_buffered_output_stream_set_buffer_size(GBufferedOutputStream_val(self), Long_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_buffered_output_stream_set_auto_grow(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 g_buffered_output_stream_set_auto_grow(GBufferedOutputStream_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_buffered_output_stream_get_buffer_size(value self)
+{
+CAMLparam1(self);
+
+gsize result = g_buffered_output_stream_get_buffer_size(GBufferedOutputStream_val(self));
+CAMLreturn(Val_long(result));
 }
 
 CAMLexport CAMLprim value ml_g_buffered_output_stream_get_auto_grow(value self)

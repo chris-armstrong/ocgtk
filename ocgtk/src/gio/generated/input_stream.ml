@@ -4,13 +4,71 @@
 type t = [`input_stream | `object_] Gobject.obj
 
 (* Methods *)
+(** Finishes a stream skip operation. *)
+external skip_finish : t -> Async_result.t -> (int, GError.t) result = "ml_g_input_stream_skip_finish"
+
+(** Tries to skip @count bytes from the stream. Will block during the operation.
+
+This is identical to g_input_stream_read(), from a behaviour standpoint,
+but the bytes that are skipped are not returned to the user. Some
+streams have an implementation that is more efficient than reading the data.
+
+This function is optional for inherited classes, as the default implementation
+emulates it using read.
+
+If @cancellable is not %NULL, then the operation can be cancelled by
+triggering the cancellable object from another thread. If the operation
+was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. If an
+operation was partially finished when the operation was cancelled the
+partial result will be returned, without an error. *)
+external skip : t -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_input_stream_skip"
+
 (** Sets @stream to have actions pending. If the pending flag is
 already set or @stream is closed, it will return %FALSE and set
 @error. *)
 external set_pending : t -> (bool, GError.t) result = "ml_g_input_stream_set_pending"
 
+(** Finishes an asynchronous stream read operation. *)
+external read_finish : t -> Async_result.t -> (int, GError.t) result = "ml_g_input_stream_read_finish"
+
 (** Finishes an asynchronous stream read-into-#GBytes operation. *)
 external read_bytes_finish : t -> Async_result.t -> (Glib_bytes.t, GError.t) result = "ml_g_input_stream_read_bytes_finish"
+
+(** Like g_input_stream_read(), this tries to read @count bytes from
+the stream in a blocking fashion. However, rather than reading into
+a user-supplied buffer, this will create a new #GBytes containing
+the data that was read. This may be easier to use from language
+bindings.
+
+If count is zero, returns a zero-length #GBytes and does nothing. A
+value of @count larger than %G_MAXSSIZE will cause a
+%G_IO_ERROR_INVALID_ARGUMENT error.
+
+On success, a new #GBytes is returned. It is not an error if the
+size of this object is not the same as the requested size, as it
+can happen e.g. near the end of a file. A zero-length #GBytes is
+returned on end of file (or if @count is zero), but never
+otherwise.
+
+If @cancellable is not %NULL, then the operation can be cancelled by
+triggering the cancellable object from another thread. If the operation
+was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. If an
+operation was partially finished when the operation was cancelled the
+partial result will be returned, without an error.
+
+On error %NULL is returned and @error is set accordingly. *)
+external read_bytes : t -> int -> Cancellable.t option -> (Glib_bytes.t, GError.t) result = "ml_g_input_stream_read_bytes"
+
+(** Finishes an asynchronous stream read operation started with
+g_input_stream_read_all_async().
+
+As a special exception to the normal conventions for functions that
+use #GError, if this function returns %FALSE (and sets @error) then
+@bytes_read will be set to the number of bytes that were successfully
+read before the error was encountered.  This functionality is only
+available from C.  If you need it from another language then you must
+write your own loop around g_input_stream_read_async(). *)
+external read_all_finish : t -> Async_result.t -> (bool * int, GError.t) result = "ml_g_input_stream_read_all_finish"
 
 (** Checks if an input stream is closed. *)
 external is_closed : t -> bool = "ml_g_input_stream_is_closed"

@@ -10,6 +10,7 @@ class type drop_target_t = object
     method get_preload : unit -> bool
     method reject : unit -> unit
     method set_actions : Ocgtk_gdk.Gdk.dragaction -> unit
+    method set_gtypes : int array option -> int -> unit
     method set_preload : bool -> unit
     method as_drop_target : Drop_target.t
 end
@@ -47,10 +48,18 @@ class drop_target (obj : Drop_target.t) : drop_target_t = object (self)
     fun actions ->
       (Drop_target.set_actions obj actions)
 
+  method set_gtypes : int array option -> int -> unit =
+    fun types n_types ->
+      (Drop_target.set_gtypes obj types n_types)
+
   method set_preload : bool -> unit =
     fun preload ->
       (Drop_target.set_preload obj preload)
 
     method as_drop_target = obj
 end
+
+let new_ (type_ : int) (actions : Ocgtk_gdk.Gdk.dragaction) : drop_target_t =
+  let obj_ = Drop_target.new_ type_ actions in
+  new drop_target obj_
 

@@ -66,6 +66,18 @@ This is equivalent to getting @entry's `GtkEntryBuffer` and
 calling [method@Gtk.EntryBuffer.set_max_length] on it. *)
 external set_max_length : t -> int -> unit = "ml_gtk_entry_set_max_length"
 
+(** Sets the character to use in place of the actual text
+in “password mode”.
+
+See [method@Gtk.Entry.set_visibility] for how to enable
+“password mode”.
+
+By default, GTK picks the best invisible char available in
+the current font. If you set the invisible char to 0, then
+the user will get no feedback at all; there will be no text
+on the screen as they type. *)
+external set_invisible_char : t -> int -> unit = "ml_gtk_entry_set_invisible_char"
+
 (** Sets the input purpose which can be used by input methods
 to adjust their behavior. *)
 external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit = "ml_gtk_entry_set_input_purpose"
@@ -213,6 +225,12 @@ external grab_focus_without_selecting : t -> bool = "ml_gtk_entry_grab_focus_wit
 See [method@Gtk.Entry.set_visibility]. *)
 external get_visibility : t -> bool = "ml_gtk_entry_get_visibility"
 
+(** Retrieves the current length of the text in @entry.
+
+This is equivalent to getting @entry's `GtkEntryBuffer`
+and calling [method@Gtk.EntryBuffer.get_length] on it. *)
+external get_text_length : t -> int = "ml_gtk_entry_get_text_length"
+
 (** Gets the tabstops of the `GtkEntry`.
 
 See [method@Gtk.Entry.set_tabs]. *)
@@ -238,6 +256,10 @@ external get_overwrite_mode : t -> bool = "ml_gtk_entry_get_overwrite_mode"
 
 See [method@Gtk.Entry.set_max_length]. *)
 external get_max_length : t -> int = "ml_gtk_entry_get_max_length"
+
+(** Retrieves the character displayed in place of the actual text
+in “password mode”. *)
+external get_invisible_char : t -> int = "ml_gtk_entry_get_invisible_char"
 
 (** Gets the input purpose of the `GtkEntry`. *)
 external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_entry_get_input_purpose"

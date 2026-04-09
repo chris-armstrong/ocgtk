@@ -6,6 +6,8 @@ class type output_stream_t = object
     method is_closed : unit -> bool
     method is_closing : unit -> bool
     method set_pending : unit -> (bool, GError.t) result
+    method splice : GInput_stream.input_stream_t -> Gio_enums.outputstreamspliceflags -> GCancellable.cancellable_t option -> (int, GError.t) result
+    method write_bytes : Glib_bytes.t -> GCancellable.cancellable_t option -> (int, GError.t) result
     method as_output_stream : Output_stream.t
 end
 

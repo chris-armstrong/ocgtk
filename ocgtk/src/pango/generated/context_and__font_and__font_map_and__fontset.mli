@@ -177,6 +177,9 @@ and Font
   To recreate a font from its serialized form, use [func@Pango.Font.deserialize]. *)
   external serialize : t -> Glib_bytes.t = "ml_pango_font_serialize"
 
+  (** Returns whether the font provides a glyph for this character. *)
+  external has_char : t -> int -> bool = "ml_pango_font_has_char"
+
   (** Gets overall metric information for a font.
 
   Since the metrics may be substantially different for different scripts,
@@ -285,6 +288,9 @@ and Font_map
   external changed : t -> unit = "ml_pango_font_map_changed"
 
   (* Properties *)
+
+  (** Get property: item-type *)
+  external get_item_type : t -> int = "ml_pango_font_map_get_item_type"
 
   (** Get property: n-items *)
   external get_n_items : t -> int = "ml_pango_font_map_get_n_items"

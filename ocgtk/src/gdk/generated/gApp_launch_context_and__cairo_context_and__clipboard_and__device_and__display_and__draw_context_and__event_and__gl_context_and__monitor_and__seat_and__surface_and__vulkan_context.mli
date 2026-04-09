@@ -5,6 +5,7 @@ class type app_launch_context_t = object
     method set_desktop : int -> unit
     method set_icon : Ocgtk_gio.Gio.Icon.icon_t option -> unit
     method set_icon_name : string option -> unit
+    method set_timestamp : int -> unit
 end
 
 and cairo_context_t = object
@@ -41,6 +42,7 @@ and device_t = object
     method get_scroll_lock_state : unit -> bool
     method get_seat : unit -> seat_t
     method get_source : unit -> Gdk_enums.inputsource
+    method get_timestamp : unit -> int
     method get_vendor_id : unit -> string option
     method has_bidi_layouts : unit -> bool
     method n_axes : int
@@ -101,6 +103,7 @@ and event_t = object
     method get_pointer_emulated : unit -> bool
     method get_seat : unit -> seat_t option
     method get_surface : unit -> surface_t option
+    method get_time : unit -> int
     method ref : unit -> event_t
     method triggers_context_menu : unit -> bool
     method unref : unit -> unit

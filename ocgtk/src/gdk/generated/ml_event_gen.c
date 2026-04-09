@@ -40,6 +40,14 @@ GdkEvent* result = gdk_event_ref(GdkEvent_val(self));
 CAMLreturn(Val_GdkEvent(result));
 }
 
+CAMLexport CAMLprim value ml_gdk_event_get_time(value self)
+{
+CAMLparam1(self);
+
+guint32 result = gdk_event_get_time(GdkEvent_val(self));
+CAMLreturn(Val_long(result));
+}
+
 CAMLexport CAMLprim value ml_gdk_event_get_surface(value self)
 {
 CAMLparam1(self);

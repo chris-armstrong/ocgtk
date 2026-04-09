@@ -1,5 +1,6 @@
 class type content_deserializer_t = object
     method get_cancellable : unit -> Ocgtk_gio.Gio.Cancellable.cancellable_t option
+    method get_gtype : unit -> int
     method get_input_stream : unit -> Ocgtk_gio.Gio.Input_stream.input_stream_t
     method get_mime_type : unit -> string
     method get_priority : unit -> int
@@ -13,6 +14,10 @@ class content_deserializer (obj : Content_deserializer.t) : content_deserializer
   method get_cancellable : unit -> Ocgtk_gio.Gio.Cancellable.cancellable_t option =
     fun () ->
       Option.map (fun ret -> new Ocgtk_gio.Gio.Cancellable.cancellable ret) (Content_deserializer.get_cancellable obj)
+
+  method get_gtype : unit -> int =
+    fun () ->
+      (Content_deserializer.get_gtype obj)
 
   method get_input_stream : unit -> Ocgtk_gio.Gio.Input_stream.input_stream_t =
     fun () ->

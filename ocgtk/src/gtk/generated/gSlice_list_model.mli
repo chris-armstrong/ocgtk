@@ -5,6 +5,7 @@ class type slice_list_model_t = object
     method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
     method set_offset : int -> unit
     method set_size : int -> unit
+    method item_type : int
     method n_items : int
     method as_slice_list_model : Slice_list_model.t
 end

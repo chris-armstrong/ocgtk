@@ -221,6 +221,14 @@ GtkTreeModelFlags result = gtk_tree_model_get_flags(GtkTreeModel_val(self));
 CAMLreturn(Val_GtkTreeModelFlags(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_model_get_column_type(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GType result = gtk_tree_model_get_column_type(GtkTreeModel_val(self), Int_val(arg1));
+CAMLreturn(Val_GType(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_model_filter_new(value self, value arg1)
 {
 CAMLparam2(self, arg1);

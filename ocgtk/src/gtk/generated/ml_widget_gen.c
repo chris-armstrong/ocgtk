@@ -709,6 +709,14 @@ const char* result = gtk_widget_get_tooltip_markup(GtkWidget_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_widget_get_template_child(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+GObject* result = gtk_widget_get_template_child(GtkWidget_val(self), GType_val(arg1), String_val(arg2));
+CAMLreturn(ml_gobject_val_of_ext(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_get_style_context(value self)
 {
 CAMLparam1(self);
@@ -1185,6 +1193,15 @@ return Val_unit;
 }
 #endif
 
+CAMLexport CAMLprim value ml_gtk_widget_get_ancestor(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GtkWidget* result = gtk_widget_get_ancestor(GtkWidget_val(self), GType_val(arg1));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GtkWidget));
+}
+
 CAMLexport CAMLprim value ml_gtk_widget_get_allocated_width(value self)
 {
 CAMLparam1(self);
@@ -1224,6 +1241,28 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 gboolean result = gtk_drag_check_threshold(GtkWidget_val(self), Int_val(arg1), Int_val(arg2), Int_val(arg3), Int_val(arg4));
 CAMLreturn(Val_bool(result));
 }
+
+#if GTK_CHECK_VERSION(4,8,0)
+
+CAMLexport CAMLprim value ml_gtk_widget_dispose_template(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_dispose_template(GtkWidget_val(self), GType_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_widget_dispose_template(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Widget requires GTK >= 4.8");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_widget_create_pango_layout(value self, value arg1)
 {

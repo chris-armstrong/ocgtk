@@ -162,6 +162,9 @@ The flags supported should not change during the lifetime
 of the @tree_model. *)
 external get_flags : t -> Gtk_enums.treemodelflags = "ml_gtk_tree_model_get_flags"
 
+(** Returns the type of the column. *)
+external get_column_type : t -> int -> int = "ml_gtk_tree_model_get_column_type"
+
 (** Creates a new `GtkTreeModel`, with @child_model as the child_model
 and @root as the virtual root. *)
 external filter_new : t -> Tree_path.t option -> t = "ml_gtk_tree_model_filter_new"

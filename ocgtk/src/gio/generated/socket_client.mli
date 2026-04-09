@@ -143,6 +143,29 @@ external get_enable_proxy : t -> bool = "ml_g_socket_client_get_enable_proxy"
 (** Finishes an async connect operation. See g_socket_client_connect_to_uri_async() *)
 external connect_to_uri_finish : t -> Async_result.t -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_uri_finish"
 
+(** This is a helper function for g_socket_client_connect().
+
+Attempts to create a TCP connection with a network URI.
+
+@uri may be any valid URI containing an "authority" (hostname/port)
+component. If a port is not specified in the URI, @default_port
+will be used. TLS will be negotiated if #GSocketClient:tls is %TRUE.
+(#GSocketClient does not know to automatically assume TLS for
+certain URI schemes.)
+
+Using this rather than g_socket_client_connect() or
+g_socket_client_connect_to_host() allows #GSocketClient to
+determine when to use application-specific proxy protocols.
+
+Upon a successful connection, a new #GSocketConnection is constructed
+and returned.  The caller owns this new object and must drop their
+reference to it when finished with it.
+
+In the event of any failure (DNS error, service not found, no hosts
+connectable) %NULL is returned and @error (if non-%NULL) is set
+accordingly. *)
+external connect_to_uri : t -> string -> int -> Cancellable.t option -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_uri"
+
 (** Finishes an async connect operation. See g_socket_client_connect_to_service_async() *)
 external connect_to_service_finish : t -> Async_result.t -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_service_finish"
 
@@ -164,6 +187,38 @@ external connect_to_service : t -> string -> string -> Cancellable.t option -> (
 
 (** Finishes an async connect operation. See g_socket_client_connect_to_host_async() *)
 external connect_to_host_finish : t -> Async_result.t -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_host_finish"
+
+(** This is a helper function for g_socket_client_connect().
+
+Attempts to create a TCP connection to the named host.
+
+@host_and_port may be in any of a number of recognized formats; an IPv6
+address, an IPv4 address, or a domain name (in which case a DNS
+lookup is performed).  Quoting with [] is supported for all address
+types.  A port override may be specified in the usual way with a
+colon.  Ports may be given as decimal numbers or symbolic names (in
+which case an /etc/services lookup is performed).
+
+If no port override is given in @host_and_port then @default_port will be
+used as the port number to connect to.
+
+In general, @host_and_port is expected to be provided by the user (allowing
+them to give the hostname, and a port override if necessary) and
+@default_port is expected to be provided by the application.
+
+In the case that an IP address is given, a single connection
+attempt is made.  In the case that a name is given, multiple
+connection attempts may be made, in turn and according to the
+number of address records in DNS, until a connection succeeds.
+
+Upon a successful connection, a new #GSocketConnection is constructed
+and returned.  The caller owns this new object and must drop their
+reference to it when finished with it.
+
+In the event of any failure (DNS error, service not found, no hosts
+connectable) %NULL is returned and @error (if non-%NULL) is set
+accordingly. *)
+external connect_to_host : t -> string -> int -> Cancellable.t option -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_host"
 
 (** Finishes an async connect operation. See g_socket_client_connect_async() *)
 external connect_finish : t -> Async_result.t -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_finish"

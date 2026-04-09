@@ -2,6 +2,7 @@ class type multi_sorter_t = object
     inherit GSorter.sorter_t
     method append : GSorter.sorter_t -> unit
     method remove : int -> unit
+    method item_type : int
     method n_items : int
     method as_multi_sorter : Multi_sorter.t
 end
@@ -18,6 +19,8 @@ class multi_sorter (obj : Multi_sorter.t) : multi_sorter_t = object (self)
   method remove : int -> unit =
     fun position ->
       (Multi_sorter.remove obj position)
+
+  method item_type = Multi_sorter.get_item_type obj
 
   method n_items = Multi_sorter.get_n_items obj
 

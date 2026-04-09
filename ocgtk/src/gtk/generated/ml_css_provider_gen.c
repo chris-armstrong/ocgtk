@@ -88,6 +88,14 @@ gtk_css_provider_load_from_file(GtkCssProvider_val(self), GFile_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_css_provider_load_from_data(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_css_provider_load_from_data(GtkCssProvider_val(self), String_val(arg1), Long_val(arg2));
+CAMLreturn(Val_unit);
+}
+
 #if GTK_CHECK_VERSION(4,12,0)
 
 CAMLexport CAMLprim value ml_gtk_css_provider_load_from_bytes(value self, value arg1)
