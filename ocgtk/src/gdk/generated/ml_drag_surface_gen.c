@@ -23,3 +23,16 @@ CAMLparam3(self, arg1, arg2);
 gboolean result = gdk_drag_surface_present(GdkDragSurface_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_bool(result));
 }
+CAMLexport CAMLprim value ml_gdk_drag_surface_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GDK_TYPE_DRAG_SURFACE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GdkDragSurface");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GdkDragSurface((GdkDragSurface*)gobj));
+}

@@ -1,6 +1,8 @@
 (* Signal class defined in gapplication_signals.ml *)
 
 class type application_t = object
+    inherit GAction_group.action_group_t
+    inherit GAction_map.action_map_t
     inherit Gapplication_signals.application_signals
     method activate : unit -> unit
     method bind_busy_property : [`object_] Gobject.obj -> string -> unit
@@ -39,6 +41,8 @@ end
 
 (* High-level class for Application *)
 class application (obj : Application.t) : application_t = object (self)
+  inherit GAction_group.action_group (Action_group.from_gobject obj)
+  inherit GAction_map.action_map (Action_map.from_gobject obj)
   inherit Gapplication_signals.application_signals obj
 
   method activate : unit -> unit =

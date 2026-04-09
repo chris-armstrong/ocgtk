@@ -1,4 +1,5 @@
 class type tree_list_model_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
     method get_autoexpand : unit -> bool
     method get_child_row : int -> GTree_list_row.tree_list_row_t option
     method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t

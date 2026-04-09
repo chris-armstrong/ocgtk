@@ -1,5 +1,6 @@
 class type app_chooser_dialog_t = object
     inherit GDialog.dialog_t
+    inherit GApp_chooser.app_chooser_t
     method get_heading : unit -> string option
     method get_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method set_heading : string -> unit
@@ -10,6 +11,7 @@ end
 (* High-level class for AppChooserDialog *)
 class app_chooser_dialog (obj : App_chooser_dialog.t) : app_chooser_dialog_t = object (self)
   inherit GDialog.dialog (obj :> Dialog.t)
+  inherit GApp_chooser.app_chooser (App_chooser.from_gobject obj)
 
   method get_heading : unit -> string option =
     fun () ->

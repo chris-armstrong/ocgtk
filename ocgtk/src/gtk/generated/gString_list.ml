@@ -1,4 +1,6 @@
 class type string_list_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
+    inherit GBuildable.buildable_t
     method append : string -> unit
     method get_string : int -> string option
     method remove : int -> unit
@@ -11,6 +13,8 @@ end
 
 (* High-level class for StringList *)
 class string_list (obj : String_list.t) : string_list_t = object (self)
+  inherit Ocgtk_gio.Gio.List_model.list_model (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
+  inherit GBuildable.buildable (Buildable.from_gobject obj)
 
   method append : string -> unit =
     fun string ->

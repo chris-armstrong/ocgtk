@@ -1,4 +1,5 @@
 class type selection_filter_model_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
     method get_model : unit -> GSelection_model.selection_model_t option
     method item_type : int
     method n_items : int

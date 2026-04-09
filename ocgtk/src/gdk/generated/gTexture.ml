@@ -1,4 +1,7 @@
 class type texture_t = object
+    inherit GPaintable.paintable_t
+    inherit Ocgtk_gio.Gio.Icon.icon_t
+    inherit Ocgtk_gio.Gio.Loadable_icon.loadable_icon_t
     method get_format : unit -> Gdk_enums.memoryformat
     method get_height : unit -> int
     method get_width : unit -> int
@@ -11,6 +14,9 @@ end
 
 (* High-level class for Texture *)
 class texture (obj : Texture.t) : texture_t = object (self)
+  inherit GPaintable.paintable (Paintable.from_gobject obj)
+  inherit Ocgtk_gio.Gio.Icon.icon (Ocgtk_gio.Gio.Wrappers.Icon.from_gobject obj)
+  inherit Ocgtk_gio.Gio.Loadable_icon.loadable_icon (Ocgtk_gio.Gio.Wrappers.Loadable_icon.from_gobject obj)
 
   method get_format : unit -> Gdk_enums.memoryformat =
     fun () ->

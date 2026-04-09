@@ -40,3 +40,16 @@ CAMLparam1(self);
 gtk_print_operation_preview_end_preview(GtkPrintOperationPreview_val(self));
 CAMLreturn(Val_unit);
 }
+CAMLexport CAMLprim value ml_gtk_print_operation_preview_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_PRINT_OPERATION_PREVIEW)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkPrintOperationPreview");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GtkPrintOperationPreview((GtkPrintOperationPreview*)gobj));
+}

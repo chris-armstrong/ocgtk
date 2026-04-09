@@ -88,24 +88,16 @@ caml_failwith("ListModel requires GLib >= 2.44");
 return Val_unit;
 }
 #endif
-
-#if GLIB_CHECK_VERSION(2,44,0)
-
-CAMLexport CAMLprim value ml_g_list_model_get_item_type(value self)
+CAMLexport CAMLprim value ml_gio_list_model_from_gobject(value obj)
 {
-CAMLparam1(self);
-
-GType result = g_list_model_get_item_type(GListModel_val(self));
-CAMLreturn(Val_GType(result));
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_LIST_MODEL)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GListModel");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GListModel((GListModel*)gobj));
 }
-
-#else
-
-CAMLexport CAMLprim value ml_g_list_model_get_item_type(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("ListModel requires GLib >= 2.44");
-return Val_unit;
-}
-#endif

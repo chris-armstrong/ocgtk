@@ -173,18 +173,45 @@ let entity_generator_by_entity_type =
 (** Generate the from_gobject C function for an interface.
     Raises [Failure] if [intf.glib_type_name] is [None] — callers must
     guard with [Option.is_some intf.glib_type_name] before calling. *)
+let gtype_macro_from_get_type get_type_fn =
+  (* Derive the GType macro from the glib:get-type function name.
+     e.g. "g_dbus_interface_get_type" -> "G_TYPE_DBUS_INTERFACE"
+          "gtk_editable_get_type"      -> "GTK_TYPE_EDITABLE"
+     This avoids using to_snake_case on the type name, which incorrectly
+     splits names like "GDBusInterface" into "gd_bus_interface". *)
+  let name =
+    let suffix = "_get_type" in
+    let slen = String.length suffix in
+    if String.length get_type_fn > slen &&
+       String.equal (String.sub get_type_fn ~pos:(String.length get_type_fn - slen) ~len:slen) suffix
+    then String.sub get_type_fn ~pos:0 ~len:(String.length get_type_fn - slen)
+    else get_type_fn
+  in
+  let screaming = String.uppercase_ascii name in
+  match String.index_opt screaming '_' with
+  | None -> screaming
+  | Some i ->
+      let prefix = String.sub screaming ~pos:0 ~len:i in
+      let rest = String.sub screaming ~pos:(i + 1) ~len:(String.length screaming - i - 1) in
+      prefix ^ "_TYPE_" ^ rest
+
 let generate_from_gobject_stub ~namespace_name (intf : gir_interface) =
-  match intf.glib_type_name with
-  | None ->
+  match intf.glib_type_name, intf.glib_get_type with
+  | None, _ ->
       failwith (sprintf
         "generate_from_gobject_stub: interface %s has no glib_type_name"
         intf.interface_name)
-  | Some type_name ->
+  | Some type_name, get_type_opt ->
       let fn_name = sprintf "ml_%s_%s_from_gobject"
         (String.lowercase_ascii namespace_name)
         (Gir_gen_lib.Utils.to_snake_case intf.interface_name)
       in
-      let gtype_macro = Gir_gen_lib.Utils.gtype_macro_of_type_name type_name in
+      (* Prefer deriving the GType macro from glib:get-type (already snake_case)
+         to avoid to_snake_case mishandling acronym-heavy names like GDBusInterface *)
+      let gtype_macro = match get_type_opt with
+        | Some get_type_fn -> gtype_macro_from_get_type get_type_fn
+        | None -> Gir_gen_lib.Utils.gtype_macro_of_type_name type_name
+      in
       sprintf
 {|CAMLexport CAMLprim value %s(value obj)
 {
@@ -197,13 +224,14 @@ let generate_from_gobject_stub ~namespace_name (intf : gir_interface) =
             G_OBJECT_TYPE_NAME(gobj), "%s");
         caml_failwith(msg);
     }
-    CAMLreturn(%s(gobj));
+    CAMLreturn(%s((%s*)gobj));
 }
 |}
         fn_name
         gtype_macro
         type_name
         (sprintf "Val_%s" intf.c_type)
+        intf.c_type
 
 (* Generate C stub file for a single entity (class or interface or record) *)
 let generate_c_stub ~ctx ~output_dir entity =
@@ -601,17 +629,28 @@ let generate_combined_ml_files ~ctx ~output_dir ~generated_modules ~module_group
     { ctx with Gir_gen_lib.Types.current_cycle_classes = cycle_class_names }
   in
 
+  let from_gobject_c_name_for_entity (entity : Gir_gen_lib.Types.entity) =
+    match entity.kind with
+    | Gir_gen_lib.Types.Interface intf ->
+        Option.map
+          (fun _ ->
+            Printf.sprintf "ml_%s_%s_from_gobject"
+              (String.lowercase_ascii ctx.Gir_gen_lib.Types.namespace.namespace_name)
+              (Gir_gen_lib.Utils.to_snake_case intf.interface_name))
+          intf.glib_type_name
+    | Gir_gen_lib.Types.Class _ | Gir_gen_lib.Types.Record _ -> None
+  in
   let mli_content =
     Gir_gen_lib.Generate.Ml_interface.generate_combined_ml_modules
       ~ctx:ctx_with_cycle
       ~output_mode:Gir_gen_lib.Generate.Ml_interface.Interface ~entities
-      ~parent_chain_for_entity ()
+      ~parent_chain_for_entity ~from_gobject_c_name_for_entity ()
   in
   let ml_content =
     Gir_gen_lib.Generate.Ml_interface.generate_combined_ml_modules
       ~ctx:ctx_with_cycle
       ~output_mode:Gir_gen_lib.Generate.Ml_interface.Implementation ~entities
-      ~parent_chain_for_entity ()
+      ~parent_chain_for_entity ~from_gobject_c_name_for_entity ()
   in
 
   write_file ~path:mli_path ~content:mli_content;

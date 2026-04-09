@@ -1,6 +1,8 @@
 (* Signal class defined in gd_bus_connection_signals.ml *)
 
 class type d_bus_connection_t = object
+    inherit GAsync_initable.async_initable_t
+    inherit GInitable.initable_t
     inherit Gd_bus_connection_signals.d_bus_connection_signals
     method call_sync : string option -> string -> string -> string -> Gvariant.t option -> Gvariant_type.t option -> Gio_enums.dbuscallflags -> int -> GCancellable.cancellable_t option -> (Gvariant.t, GError.t) result
     method close_sync : GCancellable.cancellable_t option -> (bool, GError.t) result
@@ -30,6 +32,8 @@ end
 
 (* High-level class for DBusConnection *)
 class d_bus_connection (obj : D_bus_connection.t) : d_bus_connection_t = object (self)
+  inherit GAsync_initable.async_initable (Async_initable.from_gobject obj)
+  inherit GInitable.initable (Initable.from_gobject obj)
   inherit Gd_bus_connection_signals.d_bus_connection_signals obj
 
   method call_sync : string option -> string -> string -> string -> Gvariant.t option -> Gvariant_type.t option -> Gio_enums.dbuscallflags -> int -> GCancellable.cancellable_t option -> (Gvariant.t, GError.t) result =

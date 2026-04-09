@@ -1,4 +1,5 @@
 class type desktop_app_info_t = object
+    inherit GApp_info_and__app_launch_context.app_info_t
     method get_action_name : string -> string
     method get_boolean : string -> bool
     method get_categories : unit -> string option

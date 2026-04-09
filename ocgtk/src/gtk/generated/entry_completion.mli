@@ -7,7 +7,7 @@ type t = [`entry_completion | `object_] Gobject.obj
 external new_ : unit -> t = "ml_gtk_entry_completion_new"
 
 (** Create a new EntryCompletion *)
-external new_with_area : Cell_area_and__cell_area_context.Cell_area.t -> t = "ml_gtk_entry_completion_new_with_area"
+external new_with_area : Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t -> t = "ml_gtk_entry_completion_new_with_area"
 
 (* Methods *)
 (** Convenience function for setting up the most used case of this code: a
@@ -116,5 +116,5 @@ external complete : t -> unit = "ml_gtk_entry_completion_complete"
 (* Properties *)
 
 (** Get property: cell-area *)
-external get_cell_area : t -> Cell_area_and__cell_area_context.Cell_area.t = "ml_gtk_entry_completion_get_cell_area"
+external get_cell_area : t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t = "ml_gtk_entry_completion_get_cell_area"
 

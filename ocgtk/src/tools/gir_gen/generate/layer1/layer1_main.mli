@@ -44,9 +44,11 @@ val generate_combined_ml_modules :
   output_mode:Layer1_helpers.output_mode ->
   entities:Types.entity list ->
   parent_chain_for_entity:(string -> string list) ->
-  ?from_gobject_c_name:string ->
+  ?from_gobject_c_name_for_entity:(Types.entity -> string option) ->
   unit ->
   string
 (** Generate combined ML modules for entities with cyclic dependencies. This
     creates a module rec ... and ... structure containing all entities sorted
-    alphabetically by name. *)
+    alphabetically by name. Each entity's from_gobject C name is derived
+    independently via from_gobject_c_name_for_entity, defaulting to None for
+    all entities. *)

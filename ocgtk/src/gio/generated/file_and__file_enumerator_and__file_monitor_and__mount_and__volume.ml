@@ -4,6 +4,8 @@
 module rec File : sig
   type t = [`file] Gobject.obj
 
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_file_from_gobject"
+
   (* Methods *)
   (** Finishes an unmount operation,
   see g_file_unmount_mountable_with_operation() for details.
@@ -831,6 +833,8 @@ module rec File : sig
 
 end = struct
   type t = [`file] Gobject.obj
+
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_file_from_gobject"
 
   (* Methods *)
   (** Finishes an unmount operation,
@@ -1867,6 +1871,8 @@ and Mount
  : sig
   type t = [`mount] Gobject.obj
 
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_mount_from_gobject"
+
   (* Methods *)
   (** Decrements the shadow count on @mount. Usually used by
   #GVolumeMonitor implementations when destroying a shadow mount for
@@ -1987,6 +1993,8 @@ and Mount
 
 end = struct
   type t = [`mount] Gobject.obj
+
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_mount_from_gobject"
 
   (* Methods *)
   (** Decrements the shadow count on @mount. Usually used by
@@ -2112,6 +2120,8 @@ and Volume
  : sig
   type t = [`volume] Gobject.obj
 
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_volume_from_gobject"
+
   (* Methods *)
   (** Returns whether the volume should be automatically mounted. *)
   external should_automount : t -> bool = "ml_g_volume_should_automount"
@@ -2203,6 +2213,8 @@ and Volume
 
 end = struct
   type t = [`volume] Gobject.obj
+
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_volume_from_gobject"
 
   (* Methods *)
   (** Returns whether the volume should be automatically mounted. *)

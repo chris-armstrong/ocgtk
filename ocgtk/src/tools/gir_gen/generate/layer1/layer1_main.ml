@@ -112,7 +112,7 @@ let generate_module_implementation ~ctx ~output_mode ~entity ~base_type
 
 (** Generate a single combined module entity *)
 let generate_combined_module_entity ~ctx ~output_mode ~entity
-    ~parent_chain_for_entity ~index ?from_gobject_c_name buf =
+    ~parent_chain_for_entity ~index ~from_gobject_c_name_for_entity buf =
   let parent_chain = parent_chain_for_entity entity.name in
   let class_name = entity.name in
   let _, base_type =
@@ -126,6 +126,7 @@ let generate_combined_module_entity ~ctx ~output_mode ~entity
     | Layer1_helpers.Interface -> false
   in
   let is_start = index = 0 in
+  let from_gobject_c_name = from_gobject_c_name_for_entity entity in
 
   format_module_declaration buf module_name is_start;
 
@@ -144,7 +145,8 @@ let generate_combined_module_entity ~ctx ~output_mode ~entity
 
 (* Generate combined modules for cyclic dependencies *)
 let generate_combined_ml_modules ~ctx ~output_mode ~entities
-    ~parent_chain_for_entity ?from_gobject_c_name () =
+    ~parent_chain_for_entity
+    ?(from_gobject_c_name_for_entity = fun _ -> None) () =
   let buf = Buffer.create 4096 in
 
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
@@ -157,7 +159,7 @@ let generate_combined_ml_modules ~ctx ~output_mode ~entities
   List.iteri
     ~f:(fun i entity ->
       generate_combined_module_entity ~ctx ~output_mode ~entity
-        ~parent_chain_for_entity ~index:i ?from_gobject_c_name buf)
+        ~parent_chain_for_entity ~index:i ~from_gobject_c_name_for_entity buf)
     sorted_entities;
 
   Buffer.contents buf

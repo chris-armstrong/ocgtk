@@ -4,6 +4,8 @@
 module rec D_bus_interface : sig
   type t = [`d_bus_interface] Gobject.obj
 
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_d_bus_interface_from_gobject"
+
   (* Methods *)
   (** Sets the #GDBusObject for @interface_ to @object.
 
@@ -23,6 +25,8 @@ end
 and D_bus_object
  : sig
   type t = [`d_bus_object] Gobject.obj
+
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_d_bus_object_from_gobject"
 
   (* Methods *)
   (** Gets the object path for @object. *)

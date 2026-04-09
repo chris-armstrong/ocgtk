@@ -64,3 +64,16 @@ GskRenderer* result = gtk_native_get_renderer(GtkNative_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GskRenderer));
 }
+CAMLexport CAMLprim value ml_gtk_native_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_NATIVE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkNative");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GtkNative((GtkNative*)gobj));
+}

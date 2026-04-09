@@ -20,6 +20,7 @@ end
 
 and tree_view_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GScrollable.scrollable_t
     inherit Gtree_view_signals.tree_view_signals
     method append_column : GTree_view_column.tree_view_column_t -> int
     method collapse_all : unit -> unit

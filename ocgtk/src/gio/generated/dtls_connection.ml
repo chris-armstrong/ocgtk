@@ -3,6 +3,8 @@
 
 type t = [`dtls_connection] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_dtls_connection_from_gobject"
+
 (* Methods *)
 (** Finish an asynchronous TLS shutdown operation. See
 g_dtls_connection_shutdown() for more information. *)

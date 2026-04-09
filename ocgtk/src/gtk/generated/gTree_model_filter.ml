@@ -1,4 +1,6 @@
 class type tree_model_filter_t = object
+    inherit GTree_drag_source.tree_drag_source_t
+    inherit GTree_model.tree_model_t
     method clear_cache : unit -> unit
     method convert_child_path_to_path : Tree_path.t -> Tree_path.t option
     method convert_path_to_child_path : Tree_path.t -> Tree_path.t option
@@ -11,6 +13,8 @@ end
 
 (* High-level class for TreeModelFilter *)
 class tree_model_filter (obj : Tree_model_filter.t) : tree_model_filter_t = object (self)
+  inherit GTree_drag_source.tree_drag_source (Tree_drag_source.from_gobject obj)
+  inherit GTree_model.tree_model (Tree_model.from_gobject obj)
 
   method clear_cache : unit -> unit =
     fun () ->

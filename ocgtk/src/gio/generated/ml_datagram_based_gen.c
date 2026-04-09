@@ -23,6 +23,19 @@
 
 #if GLIB_CHECK_VERSION(2,48,0)
 
+CAMLexport CAMLprim value ml_gio_datagram_based_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_DATAGRAM_BASED)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GDatagramBased");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GDatagramBased((GDatagramBased*)gobj));
+}
 
 CAMLexport CAMLprim value ml_g_datagram_based_send_messages_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
 {

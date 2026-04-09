@@ -1,4 +1,5 @@
 class type emblemed_icon_t = object
+    inherit GIcon.icon_t
     method add_emblem : GEmblem.emblem_t -> unit
     method clear_emblems : unit -> unit
     method get_emblems : unit -> Emblem.t list
@@ -8,6 +9,7 @@ end
 
 (* High-level class for EmblemedIcon *)
 class emblemed_icon (obj : Emblemed_icon.t) : emblemed_icon_t = object (self)
+  inherit GIcon.icon (Icon.from_gobject obj)
 
   method add_emblem : GEmblem.emblem_t -> unit =
     fun emblem ->

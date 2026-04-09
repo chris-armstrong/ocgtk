@@ -1,4 +1,5 @@
 class type simple_action_t = object
+    inherit GAction.action_t
     inherit Gsimple_action_signals.simple_action_signals
     method set_enabled : bool -> unit
     method set_state : Gvariant.t -> unit

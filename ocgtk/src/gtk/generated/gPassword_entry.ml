@@ -2,6 +2,7 @@
 
 class type password_entry_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GEditable.editable_t
     inherit Gpassword_entry_signals.password_entry_signals
     method get_extra_menu : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
     method get_show_peek_icon : unit -> bool
@@ -17,6 +18,7 @@ end
 (* High-level class for PasswordEntry *)
 class password_entry (obj : Password_entry.t) : password_entry_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GEditable.editable (Editable.from_gobject obj)
   inherit Gpassword_entry_signals.password_entry_signals obj
 
   method get_extra_menu : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option =

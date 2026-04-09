@@ -189,6 +189,7 @@ and surface_t = object
 end
 
 and vulkan_context_t = object
+    inherit Ocgtk_gio.Gio.Initable.initable_t
     inherit Gvulkan_context_signals.vulkan_context_signals
     method as_vulkan_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Vulkan_context.t
 end
@@ -818,6 +819,7 @@ end
 
 
 and vulkan_context (obj : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Vulkan_context.t) : vulkan_context_t = object (self)
+  inherit Ocgtk_gio.Gio.Initable.initable (Ocgtk_gio.Gio.Wrappers.Initable.from_gobject obj)
   inherit Gvulkan_context_signals.vulkan_context_signals obj
 
     method as_vulkan_context = obj

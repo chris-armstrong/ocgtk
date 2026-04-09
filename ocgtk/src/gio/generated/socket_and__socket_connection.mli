@@ -363,7 +363,7 @@ module rec Socket : sig
 
   (** Try to get the remote address of a connected socket. This is only
   useful for connection oriented sockets that have been connected. *)
-  external get_remote_address : t -> (Socket_address.t, GError.t) result = "ml_g_socket_get_remote_address"
+  external get_remote_address : t -> (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t, GError.t) result = "ml_g_socket_get_remote_address"
 
   (** Gets the socket protocol id the socket was created with.
   In case the protocol is unknown, -1 is returned. *)
@@ -396,7 +396,7 @@ module rec Socket : sig
   (** Try to get the local address of a bound socket. This is only
   useful if the socket has been bound to a local address,
   either explicitly or implicitly when connecting. *)
-  external get_local_address : t -> (Socket_address.t, GError.t) result = "ml_g_socket_get_local_address"
+  external get_local_address : t -> (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t, GError.t) result = "ml_g_socket_get_local_address"
 
   (** Gets the listen backlog setting of the socket. For details on this,
   see g_socket_set_listen_backlog(). *)
@@ -481,7 +481,7 @@ module rec Socket : sig
   and the user can be notified of the connection finishing by waiting
   for the G_IO_OUT condition. The result of the connection must then be
   checked with g_socket_check_connect_result(). *)
-  external connect : t -> Socket_address.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_socket_connect"
+  external connect : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_socket_connect"
 
   (** Closes the socket, shutting down any active connection.
 
@@ -542,7 +542,7 @@ module rec Socket : sig
   same address, and they will all receive all of the multicast and
   broadcast packets sent to that address. (The behavior of unicast
   UDP packets to an address with multiple listeners is not defined.) *)
-  external bind : t -> Socket_address.t -> bool -> (bool, GError.t) result = "ml_g_socket_bind"
+  external bind : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t -> bool -> (bool, GError.t) result = "ml_g_socket_bind"
 
   (** Accept incoming connections on a connection-based socket. This removes
   the first outstanding connection request from the listening socket and
@@ -586,16 +586,16 @@ and Socket_connection
   address that will be used for the connection.  This allows
   applications to print e.g. "Connecting to example.com
   (10.42.77.3)...". *)
-  external get_remote_address : t -> (Socket_address.t, GError.t) result = "ml_g_socket_connection_get_remote_address"
+  external get_remote_address : t -> (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t, GError.t) result = "ml_g_socket_connection_get_remote_address"
 
   (** Try to get the local address of a socket connection. *)
-  external get_local_address : t -> (Socket_address.t, GError.t) result = "ml_g_socket_connection_get_local_address"
+  external get_local_address : t -> (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t, GError.t) result = "ml_g_socket_connection_get_local_address"
 
   (** Gets the result of a g_socket_connection_connect_async() call. *)
   external connect_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_socket_connection_connect_finish"
 
   (** Connect @connection to the specified remote address. *)
-  external connect : t -> Socket_address.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_socket_connection_connect"
+  external connect : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_socket_connection_connect"
 
   (* Properties *)
 

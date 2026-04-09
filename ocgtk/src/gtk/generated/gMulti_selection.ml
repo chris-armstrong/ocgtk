@@ -1,4 +1,7 @@
 class type multi_selection_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
+    inherit GSection_model.section_model_t
+    inherit GSelection_model.selection_model_t
     method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
     method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
     method item_type : int
@@ -8,6 +11,9 @@ end
 
 (* High-level class for MultiSelection *)
 class multi_selection (obj : Multi_selection.t) : multi_selection_t = object (self)
+  inherit Ocgtk_gio.Gio.List_model.list_model (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
+  inherit GSection_model.section_model (Section_model.from_gobject obj)
+  inherit GSelection_model.selection_model (Selection_model.from_gobject obj)
 
   method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option =
     fun () ->

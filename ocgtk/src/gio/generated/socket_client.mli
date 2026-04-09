@@ -75,7 +75,7 @@ specified address (if not %NULL) before connecting.
 This is useful if you want to ensure that the local
 side of the connection is on a specific port, or on
 a specific interface. *)
-external set_local_address : t -> Socket_address.t option -> unit = "ml_g_socket_client_set_local_address"
+external set_local_address : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t option -> unit = "ml_g_socket_client_set_local_address"
 
 (** Sets the socket family of the socket client.
 If this is set to something other than %G_SOCKET_FAMILY_INVALID
@@ -130,7 +130,7 @@ external get_protocol : t -> Gio_enums.socketprotocol = "ml_g_socket_client_get_
 (** Gets the local address of the socket client.
 
 See g_socket_client_set_local_address() for details. *)
-external get_local_address : t -> Socket_address.t option = "ml_g_socket_client_get_local_address"
+external get_local_address : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t option = "ml_g_socket_client_get_local_address"
 
 (** Gets the socket family of the socket client.
 
@@ -241,7 +241,7 @@ g_socket_client_set_socket_type().
 
 If a local address is specified with g_socket_client_set_local_address() the
 socket will be bound to this address before connecting. *)
-external connect : t -> Socket_connectable.t -> Cancellable.t option -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect"
+external connect : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_connectable.t -> Cancellable.t option -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect"
 
 (** Enable proxy protocols to be handled by the application. When the
 indicated proxy protocol is returned by the #GProxyResolver,

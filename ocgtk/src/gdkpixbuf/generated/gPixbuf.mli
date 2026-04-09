@@ -1,4 +1,6 @@
 class type pixbuf_t = object
+    inherit Ocgtk_gio.Gio.Icon.icon_t
+    inherit Ocgtk_gio.Gio.Loadable_icon.loadable_icon_t
     method apply_embedded_orientation : unit -> pixbuf_t option
     method composite : pixbuf_t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> unit
     method composite_color : pixbuf_t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> UInt32.t -> UInt32.t -> unit

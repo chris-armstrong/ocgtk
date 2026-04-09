@@ -1,4 +1,5 @@
 class type settings_t = object
+    inherit GStyle_provider.style_provider_t
     method reset_property : string -> unit
     method gtk_alternative_button_order : bool
     method set_gtk_alternative_button_order : bool -> unit

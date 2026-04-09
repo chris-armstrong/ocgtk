@@ -1,6 +1,9 @@
 (* Signal class defined in gd_bus_object_manager_client_signals.ml *)
 
 class type d_bus_object_manager_client_t = object
+    inherit GAsync_initable.async_initable_t
+    inherit GD_bus_object_manager.d_bus_object_manager_t
+    inherit GInitable.initable_t
     inherit Gd_bus_object_manager_client_signals.d_bus_object_manager_client_signals
     method get_connection : unit -> GD_bus_connection.d_bus_connection_t
     method get_flags : unit -> Gio_enums.dbusobjectmanagerclientflags
@@ -12,6 +15,9 @@ end
 
 (* High-level class for DBusObjectManagerClient *)
 class d_bus_object_manager_client (obj : D_bus_object_manager_client.t) : d_bus_object_manager_client_t = object (self)
+  inherit GAsync_initable.async_initable (Async_initable.from_gobject obj)
+  inherit GD_bus_object_manager.d_bus_object_manager (D_bus_object_manager.from_gobject obj)
+  inherit GInitable.initable (Initable.from_gobject obj)
   inherit Gd_bus_object_manager_client_signals.d_bus_object_manager_client_signals obj
 
   method get_connection : unit -> GD_bus_connection.d_bus_connection_t =

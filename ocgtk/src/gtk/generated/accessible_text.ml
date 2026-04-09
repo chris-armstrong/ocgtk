@@ -3,6 +3,8 @@
 
 type t = [`accessible_text] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_accessible_text_from_gobject"
+
 (* Methods *)
 (** Updates the boundary of the selection.
 

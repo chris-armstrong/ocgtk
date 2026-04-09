@@ -2,6 +2,8 @@
 
 class type range_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GAccessible_range.accessible_range_t
+    inherit GOrientable.orientable_t
     inherit Grange_signals.range_signals
     method get_adjustment : unit -> GAdjustment.adjustment_t
     method get_fill_level : unit -> float
@@ -29,6 +31,8 @@ end
 (* High-level class for Range *)
 class range (obj : Range.t) : range_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GAccessible_range.accessible_range (Accessible_range.from_gobject obj)
+  inherit GOrientable.orientable (Orientable.from_gobject obj)
   inherit Grange_signals.range_signals obj
 
   method get_adjustment : unit -> GAdjustment.adjustment_t =

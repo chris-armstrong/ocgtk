@@ -2,6 +2,8 @@
 
 class type text_view_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GAccessible_text.accessible_text_t
+    inherit GScrollable.scrollable_t
     inherit Gtext_view_signals.text_view_signals
     method add_child_at_anchor : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GText_child_anchor.text_child_anchor_t -> unit
     method add_overlay : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int -> int -> unit
@@ -73,6 +75,8 @@ end
 (* High-level class for TextView *)
 class text_view (obj : Text_view.t) : text_view_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GAccessible_text.accessible_text (Accessible_text.from_gobject obj)
+  inherit GScrollable.scrollable (Scrollable.from_gobject obj)
   inherit Gtext_view_signals.text_view_signals obj
 
   method add_child_at_anchor : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GText_child_anchor.text_child_anchor_t -> unit =

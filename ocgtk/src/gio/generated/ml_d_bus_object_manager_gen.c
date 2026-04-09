@@ -87,3 +87,16 @@ caml_failwith("DBusObjectManager requires GLib >= 2.30");
 return Val_unit;
 }
 #endif
+CAMLexport CAMLprim value ml_gio_d_bus_object_manager_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_DBUS_OBJECT_MANAGER)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GDBusObjectManager");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GDBusObjectManager((GDBusObjectManager*)gobj));
+}

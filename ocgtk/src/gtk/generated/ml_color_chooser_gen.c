@@ -69,3 +69,16 @@ gtk_color_chooser_add_palette(GtkColorChooser_val(self), GtkOrientation_val(arg1
     if (c_arg4) g_free(c_arg4);
 CAMLreturn(Val_unit);
 }
+CAMLexport CAMLprim value ml_gtk_color_chooser_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_COLOR_CHOOSER)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkColorChooser");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GtkColorChooser((GtkColorChooser*)gobj));
+}

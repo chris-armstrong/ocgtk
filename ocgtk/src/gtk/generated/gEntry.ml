@@ -2,9 +2,10 @@
 
 class type entry_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GCell_editable.cell_editable_t
+    inherit GEditable.editable_t
     inherit Gentry_signals.entry_signals
     method get_activates_default : unit -> bool
-    method get_alignment : unit -> float
     method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
     method get_buffer : unit -> GEntry_buffer.entry_buffer_t
     method get_completion : unit -> GEntry_completion.entry_completion_t option
@@ -35,7 +36,6 @@ class type entry_t = object
     method progress_pulse : unit -> unit
     method reset_im_context : unit -> unit
     method set_activates_default : bool -> unit
-    method set_alignment : float -> unit
     method set_attributes : Ocgtk_pango.Pango.Attr_list.attr_list_t -> unit
     method set_buffer : GEntry_buffer.entry_buffer_t -> unit
     method set_completion : GEntry_completion.entry_completion_t option -> unit
@@ -107,15 +107,13 @@ end
 (* High-level class for Entry *)
 class entry (obj : Entry.t) : entry_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GCell_editable.cell_editable (Cell_editable.from_gobject obj)
+  inherit GEditable.editable (Editable.from_gobject obj)
   inherit Gentry_signals.entry_signals obj
 
   method get_activates_default : unit -> bool =
     fun () ->
       (Entry.get_activates_default obj)
-
-  method get_alignment : unit -> float =
-    fun () ->
-      (Entry.get_alignment obj)
 
   method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option =
     fun () ->
@@ -236,10 +234,6 @@ class entry (obj : Entry.t) : entry_t = object (self)
   method set_activates_default : bool -> unit =
     fun setting ->
       (Entry.set_activates_default obj setting)
-
-  method set_alignment : float -> unit =
-    fun xalign ->
-      (Entry.set_alignment obj xalign)
 
   method set_attributes : Ocgtk_pango.Pango.Attr_list.attr_list_t -> unit =
     fun attrs ->

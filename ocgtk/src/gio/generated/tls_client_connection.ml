@@ -3,6 +3,8 @@
 
 type t = [`tls_client_connection] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_tls_client_connection_from_gobject"
+
 (* Methods *)
 (** Sets @conn's validation flags, to override the default set of
 checks performed when validating a server certificate. By default,
@@ -29,7 +31,7 @@ external set_use_ssl3 : t -> bool -> unit = "ml_g_tls_client_connection_set_use_
 servers on virtual hosts which certificate to present, and also
 to let @conn know what name to look for in the certificate when
 performing %G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled. *)
-external set_server_identity : t -> Socket_connectable.t -> unit = "ml_g_tls_client_connection_set_server_identity"
+external set_server_identity : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_connectable.t -> unit = "ml_g_tls_client_connection_set_server_identity"
 
 (** Gets @conn's validation flags
 
@@ -43,7 +45,7 @@ g_tls_client_connection_set_use_ssl3() for details. *)
 external get_use_ssl3 : t -> bool = "ml_g_tls_client_connection_get_use_ssl3"
 
 (** Gets @conn's expected server identity *)
-external get_server_identity : t -> Socket_connectable.t option = "ml_g_tls_client_connection_get_server_identity"
+external get_server_identity : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_connectable.t option = "ml_g_tls_client_connection_get_server_identity"
 
 (** Possibly copies session state from one connection to another, for use
 in TLS session resumption. This is not normally needed, but may be

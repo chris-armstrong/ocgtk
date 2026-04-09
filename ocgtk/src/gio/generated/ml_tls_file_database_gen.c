@@ -55,6 +55,19 @@ g_object_set_property(G_OBJECT(obj), "anchors", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
+CAMLexport CAMLprim value ml_gio_tls_file_database_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_TLS_FILE_DATABASE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GTlsFileDatabase");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GTlsFileDatabase((GTlsFileDatabase*)gobj));
+}
 
 #else
 

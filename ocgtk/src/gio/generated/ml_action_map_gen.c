@@ -77,6 +77,19 @@ CAMLparam2(self, arg1);
 g_action_map_add_action(GActionMap_val(self), GAction_val(arg1));
 CAMLreturn(Val_unit);
 }
+CAMLexport CAMLprim value ml_gio_action_map_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_ACTION_MAP)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GActionMap");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GActionMap((GActionMap*)gobj));
+}
 
 #else
 

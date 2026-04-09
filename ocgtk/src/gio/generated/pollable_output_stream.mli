@@ -3,6 +3,8 @@
 
 type t = [`pollable_output_stream] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_pollable_output_stream_from_gobject"
+
 (* Methods *)
 (** Attempts to write the bytes contained in the @n_vectors @vectors to @stream,
 as with g_output_stream_writev(). If @stream is not currently writable,

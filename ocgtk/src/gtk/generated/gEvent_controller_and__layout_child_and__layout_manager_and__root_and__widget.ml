@@ -41,6 +41,9 @@ and root_t = object
 end
 
 and widget_t = object
+    inherit GAt_context_and__accessible.accessible_t
+    inherit GBuildable.buildable_t
+    inherit GConstraint_target.constraint_target_t
     inherit Gwidget_signals.widget_signals
     method action_set_enabled : string -> bool -> unit
     method activate : unit -> bool
@@ -318,6 +321,9 @@ end
 
 
 and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t) : widget_t = object (self)
+  inherit GAt_context_and__accessible.accessible (At_context_and__accessible.Accessible.from_gobject obj)
+  inherit GBuildable.buildable (Buildable.from_gobject obj)
+  inherit GConstraint_target.constraint_target (Constraint_target.from_gobject obj)
   inherit Gwidget_signals.widget_signals obj
 
   method action_set_enabled : string -> bool -> unit =

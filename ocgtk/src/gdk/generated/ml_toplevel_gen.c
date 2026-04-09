@@ -243,3 +243,16 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+CAMLexport CAMLprim value ml_gdk_toplevel_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GDK_TYPE_TOPLEVEL)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GdkToplevel");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GdkToplevel((GdkToplevel*)gobj));
+}

@@ -1,4 +1,7 @@
 class type d_bus_proxy_t = object
+    inherit GAsync_initable.async_initable_t
+    inherit GD_bus_interface_and__d_bus_object.d_bus_interface_t
+    inherit GInitable.initable_t
     inherit Gd_bus_proxy_signals.d_bus_proxy_signals
     method call_sync : string -> Gvariant.t option -> Gio_enums.dbuscallflags -> int -> GCancellable.cancellable_t option -> (Gvariant.t, GError.t) result
     method get_cached_property : string -> Gvariant.t option

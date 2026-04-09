@@ -1,4 +1,6 @@
 class type map_list_model_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
+    inherit GSection_model.section_model_t
     method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
     method has_map : unit -> bool
     method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
@@ -9,6 +11,8 @@ end
 
 (* High-level class for MapListModel *)
 class map_list_model (obj : Map_list_model.t) : map_list_model_t = object (self)
+  inherit Ocgtk_gio.Gio.List_model.list_model (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
+  inherit GSection_model.section_model (Section_model.from_gobject obj)
 
   method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option =
     fun () ->

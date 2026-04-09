@@ -1,4 +1,5 @@
 class type stack_page_t = object
+    inherit GAt_context_and__accessible.accessible_t
     method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method get_icon_name : unit -> string option
     method get_name : unit -> string option

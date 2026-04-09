@@ -18,6 +18,19 @@
 
 #if GTK_CHECK_VERSION(4,6,0)
 
+CAMLexport CAMLprim value ml_gtk_symbolic_paintable_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_SYMBOLIC_PAINTABLE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkSymbolicPaintable");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GtkSymbolicPaintable((GtkSymbolicPaintable*)gobj));
+}
 
 CAMLexport CAMLprim value ml_gtk_symbolic_paintable_snapshot_symbolic_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
 {

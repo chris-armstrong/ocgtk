@@ -25,6 +25,19 @@ CAMLparam1(self);
 cairo_scaled_font_t* result = pango_cairo_font_get_scaled_font(PangoCairoFont_val(self));
 CAMLreturn(Val_option(result, Val_cairo_scaled_font_t));
 }
+CAMLexport CAMLprim value ml_pangocairo_font_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), PANGO_TYPE_CAIRO_FONT)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "PangoCairoFont");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_PangoCairoFont((PangoCairoFont*)gobj));
+}
 
 #else
 

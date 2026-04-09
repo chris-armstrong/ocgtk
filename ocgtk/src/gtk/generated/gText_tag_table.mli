@@ -1,4 +1,5 @@
 class type text_tag_table_t = object
+    inherit GBuildable.buildable_t
     inherit Gtext_tag_table_signals.text_tag_table_signals
     method add : GText_tag.text_tag_t -> bool
     method get_size : unit -> int

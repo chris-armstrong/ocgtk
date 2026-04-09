@@ -1,4 +1,5 @@
 class type zlib_compressor_t = object
+    inherit GConverter.converter_t
     method get_file_info : unit -> GFile_info.file_info_t option
     method set_file_info : GFile_info.file_info_t option -> unit
     method format : Gio_enums.zlibcompressorformat
@@ -8,6 +9,7 @@ end
 
 (* High-level class for ZlibCompressor *)
 class zlib_compressor (obj : Zlib_compressor.t) : zlib_compressor_t = object (self)
+  inherit GConverter.converter (Converter.from_gobject obj)
 
   method get_file_info : unit -> GFile_info.file_info_t option =
     fun () ->

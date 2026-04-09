@@ -1,4 +1,6 @@
 class type d_bus_connection_t = object
+    inherit GAsync_initable.async_initable_t
+    inherit GInitable.initable_t
     inherit Gd_bus_connection_signals.d_bus_connection_signals
     method call_sync : string option -> string -> string -> string -> Gvariant.t option -> Gvariant_type.t option -> Gio_enums.dbuscallflags -> int -> GCancellable.cancellable_t option -> (Gvariant.t, GError.t) result
     method close_sync : GCancellable.cancellable_t option -> (bool, GError.t) result

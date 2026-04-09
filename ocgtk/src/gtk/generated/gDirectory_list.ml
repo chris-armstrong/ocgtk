@@ -1,4 +1,5 @@
 class type directory_list_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
     method get_attributes : unit -> string option
     method get_file : unit -> Ocgtk_gio.Gio.File.file_t option
     method get_io_priority : unit -> int
@@ -16,6 +17,7 @@ end
 
 (* High-level class for DirectoryList *)
 class directory_list (obj : Directory_list.t) : directory_list_t = object (self)
+  inherit Ocgtk_gio.Gio.List_model.list_model (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
 
   method get_attributes : unit -> string option =
     fun () ->

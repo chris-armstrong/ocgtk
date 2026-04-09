@@ -84,3 +84,16 @@ caml_failwith("SocketConnectable requires GLib >= 2.22");
 return Val_unit;
 }
 #endif
+CAMLexport CAMLprim value ml_gio_socket_connectable_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_SOCKET_CONNECTABLE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GSocketConnectable");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GSocketConnectable((GSocketConnectable*)gobj));
+}

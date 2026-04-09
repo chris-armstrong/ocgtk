@@ -3,6 +3,8 @@
 
 type t = [`desktop_app_info_lookup] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_desktop_app_info_lookup_from_gobject"
+
 (* Methods *)
 (** Gets the default application for launching applications
 using this URI scheme for a particular #GDesktopAppInfoLookup

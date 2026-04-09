@@ -1,4 +1,5 @@
 class type subprocess_t = object
+    inherit GInitable.initable_t
     method force_exit : unit -> unit
     method get_exit_status : unit -> int
     method get_identifier : unit -> string option

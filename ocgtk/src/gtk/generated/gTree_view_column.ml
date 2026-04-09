@@ -1,11 +1,10 @@
 (* Signal class defined in gtree_view_column_signals.ml *)
 
 class type tree_view_column_t = object
+    inherit GBuildable.buildable_t
+    inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
     inherit Gtree_view_column_signals.tree_view_column_signals
-    method add_attribute : GCell_renderer.cell_renderer_t -> string -> int -> unit
     method cell_is_visible : unit -> bool
-    method clear : unit -> unit
-    method clear_attributes : GCell_renderer.cell_renderer_t -> unit
     method clicked : unit -> unit
     method focus_cell : GCell_renderer.cell_renderer_t -> unit
     method get_alignment : unit -> float
@@ -28,8 +27,6 @@ class type tree_view_column_t = object
     method get_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
     method get_width : unit -> int
     method get_x_offset : unit -> int
-    method pack_end : GCell_renderer.cell_renderer_t -> bool -> unit
-    method pack_start : GCell_renderer.cell_renderer_t -> bool -> unit
     method queue_resize : unit -> unit
     method set_alignment : float -> unit
     method set_clickable : bool -> unit
@@ -47,31 +44,19 @@ class type tree_view_column_t = object
     method set_title : string -> unit
     method set_visible : bool -> unit
     method set_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
-    method cell_area : GCell_area_and__cell_area_context.cell_area_t
+    method cell_area : GCell_area_and__cell_area_context_and__cell_layout.cell_area_t
     method as_tree_view_column : Tree_view_column.t
 end
 
 (* High-level class for TreeViewColumn *)
 class tree_view_column (obj : Tree_view_column.t) : tree_view_column_t = object (self)
+  inherit GBuildable.buildable (Buildable.from_gobject obj)
+  inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout (Cell_area_and__cell_area_context_and__cell_layout.Cell_layout.from_gobject obj)
   inherit Gtree_view_column_signals.tree_view_column_signals obj
-
-  method add_attribute : GCell_renderer.cell_renderer_t -> string -> int -> unit =
-    fun cell_renderer attribute column ->
-      let cell_renderer = cell_renderer#as_cell_renderer in
-      (Tree_view_column.add_attribute obj cell_renderer attribute column)
 
   method cell_is_visible : unit -> bool =
     fun () ->
       (Tree_view_column.cell_is_visible obj)
-
-  method clear : unit -> unit =
-    fun () ->
-      (Tree_view_column.clear obj)
-
-  method clear_attributes : GCell_renderer.cell_renderer_t -> unit =
-    fun cell_renderer ->
-      let cell_renderer = cell_renderer#as_cell_renderer in
-      (Tree_view_column.clear_attributes obj cell_renderer)
 
   method clicked : unit -> unit =
     fun () ->
@@ -162,16 +147,6 @@ class tree_view_column (obj : Tree_view_column.t) : tree_view_column_t = object 
     fun () ->
       (Tree_view_column.get_x_offset obj)
 
-  method pack_end : GCell_renderer.cell_renderer_t -> bool -> unit =
-    fun cell expand ->
-      let cell = cell#as_cell_renderer in
-      (Tree_view_column.pack_end obj cell expand)
-
-  method pack_start : GCell_renderer.cell_renderer_t -> bool -> unit =
-    fun cell expand ->
-      let cell = cell#as_cell_renderer in
-      (Tree_view_column.pack_start obj cell expand)
-
   method queue_resize : unit -> unit =
     fun () ->
       (Tree_view_column.queue_resize obj)
@@ -241,7 +216,7 @@ class tree_view_column (obj : Tree_view_column.t) : tree_view_column_t = object 
       let widget = Option.map (fun (c) -> c#as_widget) widget in
       (Tree_view_column.set_widget obj widget)
 
-  method cell_area = new GCell_area_and__cell_area_context.cell_area (Tree_view_column.get_cell_area obj)
+  method cell_area = new GCell_area_and__cell_area_context_and__cell_layout.cell_area (Tree_view_column.get_cell_area obj)
 
     method as_tree_view_column = obj
 end
@@ -249,7 +224,7 @@ end
 let new_ () : tree_view_column_t =
   new tree_view_column (Tree_view_column.new_ ())
 
-let new_with_area (area : GCell_area_and__cell_area_context.cell_area_t) : tree_view_column_t =
+let new_with_area (area : GCell_area_and__cell_area_context_and__cell_layout.cell_area_t) : tree_view_column_t =
   let area = area#as_cell_area in
   let obj_ = Tree_view_column.new_with_area area in
   new tree_view_column obj_

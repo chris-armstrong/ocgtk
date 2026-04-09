@@ -3,6 +3,8 @@
 
 type t = [`initable] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_initable_from_gobject"
+
 (* Methods *)
 (** Initializes the object implementing the interface.
 

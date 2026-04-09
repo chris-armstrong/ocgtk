@@ -1,4 +1,5 @@
 class type d_bus_server_t = object
+    inherit GInitable.initable_t
     inherit Gd_bus_server_signals.d_bus_server_signals
     method get_client_address : unit -> string
     method get_flags : unit -> Gio_enums.dbusserverflags

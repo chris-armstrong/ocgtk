@@ -2,6 +2,8 @@
 
 class type text_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GAccessible_text.accessible_text_t
+    inherit GEditable.editable_t
     inherit Gtext_signals.text_signals
     method get_activates_default : unit -> bool
     method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
@@ -47,6 +49,8 @@ end
 (* High-level class for Text *)
 class text (obj : Text.t) : text_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GAccessible_text.accessible_text (Accessible_text.from_gobject obj)
+  inherit GEditable.editable (Editable.from_gobject obj)
   inherit Gtext_signals.text_signals obj
 
   method get_activates_default : unit -> bool =

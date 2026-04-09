@@ -3,6 +3,8 @@
 
 type t = [`file_chooser] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_file_chooser_from_gobject"
+
 (* Methods *)
 (** Sets whether multiple files can be selected in the file chooser.
 
