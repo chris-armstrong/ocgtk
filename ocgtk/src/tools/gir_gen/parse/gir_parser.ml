@@ -1295,7 +1295,11 @@ let parse_gir_file filename filter_classes =
         skip_element input 1;
         None
   and parse_interface attrs () =
-    let name = get_attr "name" attrs |> Option.get in
+    match get_attr "name" attrs with
+    | None ->
+        skip_element input 1;
+        None
+    | Some name ->
     let c_type =
       match get_attr "c:type" attrs with
       | Some t -> t
@@ -1308,10 +1312,14 @@ let parse_gir_file filename filter_classes =
           in
           prefix ^ name
     in
+    let introspectable =
+      get_attr "introspectable" attrs |> Utils.parse_bool ~default:true
+    in
     let methods = ref [] in
     let virtual_methods = ref [] in
     let properties = ref [] in
     let signals = ref [] in
+    let prerequisites = ref [] in
     let rec parse_class_contents () =
       match Xmlm.input input with
       | `El_start ((_, raw_tag), tag_attrs) -> (
@@ -1402,6 +1410,12 @@ let parse_gir_file filename filter_classes =
               | None ->
                   skip_element input 1;
                   parse_class_contents ())
+          | "prerequisite" -> (
+              (match get_attr "name" tag_attrs with
+              | Some prereq_name -> prerequisites := prereq_name :: !prerequisites
+              | None -> ());
+              skip_element input 1;
+              parse_class_contents ())
           | _ ->
               skip_element input 1;
               parse_class_contents ())
@@ -1418,7 +1432,14 @@ let parse_gir_file filename filter_classes =
       {
         interface_name = name;
         c_type;
-        c_symbol_prefix = name;
+        c_symbol_prefix =
+          (match get_attr "c:symbol-prefix" attrs with
+          | Some p -> p
+          | None -> String.lowercase_ascii name);
+        glib_type_name = get_attr "glib:type-name" attrs;
+        glib_get_type = get_attr "glib:get-type" attrs;
+        prerequisites = List.rev !prerequisites;
+        introspectable;
         methods;
         properties = List.rev !properties;
         signals = List.rev !signals;

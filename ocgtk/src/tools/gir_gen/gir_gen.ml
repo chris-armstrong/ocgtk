@@ -170,6 +170,37 @@ let entity_generator_by_entity_type =
           generate_c_stub_properties;
         }
 
+(** Generate the from_gobject C function for an interface.
+    Returns empty string if glib_type_name is None. *)
+let generate_from_gobject_stub ~namespace_name (intf : gir_interface) =
+  match intf.glib_type_name with
+  | None -> ""
+  | Some type_name ->
+      let fn_name = sprintf "ml_%s_%s_from_gobject"
+        (String.lowercase_ascii namespace_name)
+        (Gir_gen_lib.Utils.to_snake_case intf.interface_name)
+      in
+      let gtype_macro = Gir_gen_lib.Utils.gtype_macro_of_type_name type_name in
+      sprintf
+{|CAMLexport CAMLprim value %s(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), %s)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%%s' does not implement %%s",
+            G_OBJECT_TYPE_NAME(gobj), "%s");
+        caml_failwith(msg);
+    }
+    CAMLreturn(%s(gobj));
+}
+|}
+        fn_name
+        gtype_macro
+        type_name
+        (sprintf "Val_%s" intf.c_type)
+
 (* Generate C stub file for a single entity (class or interface or record) *)
 let generate_c_stub ~ctx ~output_dir entity =
   begin
@@ -207,6 +238,14 @@ let generate_c_stub ~ctx ~output_dir entity =
     generate_c_stub_constructors ~ctx ~entity body_buf;
     generate_c_stub_methods ~ctx ~entity body_buf;
     generate_c_stub_properties ~ctx ~entity body_buf;
+
+    (* Append from_gobject stub for interfaces with a glib_type_name *)
+    (match entity.kind with
+    | Gir_gen_lib.Types.Interface intf ->
+        let stub = generate_from_gobject_stub
+          ~namespace_name:ctx.namespace.namespace_name intf in
+        Buffer.add_string body_buf stub
+    | _ -> ());
 
     let body_content = Buffer.contents body_buf in
     (match entity.version with

@@ -174,6 +174,10 @@ type gir_interface = {
   interface_name : string;
   c_type : string;
   c_symbol_prefix : string;
+  glib_type_name : string option;
+  glib_get_type : string option;
+  prerequisites : string list;
+  introspectable : bool;
   methods : gir_method list;
   properties : gir_property list;
   signals : gir_signal list;

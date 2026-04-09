@@ -318,6 +318,23 @@ let extract_ml_prefix (ctx : Types.generation_context) : string =
   let namespace_prefix = ctx.namespace.namespace_c_identifier_prefixes in
   "ml_" ^ String.lowercase_ascii namespace_prefix ^ "_"
 
+(** Convert a GLib type name (e.g. "GtkEditable") to a GType macro constant
+    (e.g. "GTK_TYPE_EDITABLE"). *)
+let gtype_macro_of_type_name type_name =
+  let screaming = type_name |> to_snake_case |> String.uppercase_ascii in
+  (* Insert _TYPE_ after the first word (namespace prefix) *)
+  match String.index_opt screaming '_' with
+  | None -> screaming  (* no underscore — use as-is *)
+  | Some i ->
+      let prefix = String.sub screaming ~pos:0 ~len:i in
+      let rest = String.sub screaming ~pos:(i + 1) ~len:(String.length screaming - i - 1) in
+      prefix ^ "_TYPE_" ^ rest
+
+(** Convert a GLib type name (e.g. "GtkEditable") to its GObject cast macro
+    (e.g. "GTK_EDITABLE"). *)
+let cast_macro_of_type_name type_name =
+  type_name |> to_snake_case |> String.uppercase_ascii
+
 let ocaml_constructor_name ~class_name:_ (ctor : Types.gir_constructor) =
   ctor.ctor_name |> kebab_to_snake |> to_snake_case |> sanitize_identifier
 

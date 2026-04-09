@@ -91,6 +91,10 @@ let make_interface ~name ~version ~methods ~properties ~signals =
     interface_name = name;
     c_type = "Gtk" ^ name;
     c_symbol_prefix = String.lowercase_ascii name;
+    glib_type_name = None;
+    glib_get_type = None;
+    prerequisites = [];
+    introspectable = true;
     methods;
     properties;
     signals;
