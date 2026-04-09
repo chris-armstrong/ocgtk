@@ -493,17 +493,58 @@ Created `tests/test_gvariant_type.ml` with 19 tests covering:
 - **Gdk:** 4 (ContentProvider, Texture pixel_bytes)
 - **Gtk:** 2 (CssProvider load_from_bytes, Snapshot serialize)
 
-#### Task 3.3: GLib.DateTime (90 hits)
+#### Task 3.3: GLib/GObject Primitive Integer Type Mappings — ✅ COMPLETED
+
+**Status:** ✅ COMPLETED — April 2026
+
+**Goal:** Add type mappings for primitive GLib/GObject integer types to unlock ~161 methods.
+
+**Problem:** Types like `gsize`, `gssize`, `GType`, `guint32`, `gint64`, `guint64` were not in `type_mappings.ml`, causing methods that used them to be filtered out even when all other types were resolved.
+
+**Types added to `type_mappings.ml`:**
+
+| GIR Type | OCaml Type | C→OCaml | OCaml→C | Notes |
+|----------|-----------|---------|---------|-------|
+| `gsize` | `int` | `Val_long` | `Long_val` | size_t equivalent |
+| `gssize` | `int` | `Val_long` | `Long_val` | ssize_t equivalent |
+| `GType` | `int` | `Val_GType` | `GType_val` | macros already in wrappers.h |
+| `guint16` | `int` | `Val_int` | `Int_val` | fits in OCaml int |
+| `gint16` | `int` | `Val_int` | `Int_val` | |
+| `gint32` | `int32` | `caml_copy_int32` | `Int32_val` | boxed |
+| `guint32` | `int` | `Val_long` | `Long_val` | fits in 63-bit OCaml int |
+| `gint64` | `int64` | `caml_copy_int64` | `Int64_val` | boxed |
+| `guint64` | `Unsigned.UInt64.t` | `integers_copy_uint64` | `Uint64_val` | uses integers library |
+| `gulong` | `int` | `Val_long` | `Long_val` | |
+| `gunichar` | `int` | `Val_long` | `Long_val` | Unicode codepoint |
+| `gchar` | `int` | `Val_int` | `Int_val` | single byte |
+
+**`guint8` intentionally omitted:** Used almost exclusively as the element type of
+`gpointer`/`void*` byte-buffer arrays (e.g. `g_input_stream_read`, `g_output_stream_write`).
+These require length-erasure infrastructure (hiding the `gsize count` param, exposing the
+buffer as `Bytes.t` or `string`) not yet implemented. See `KNOWN_BUGS.md` for details.
+
+**Additional fix:** Extended `is_primitive_converter` in both directions of
+`c_stub_array_conv.ml` to cover the new converters. Without this, `GType` arrays
+(e.g. `gtk_drop_target_set_gtypes`, `gtk_list_store_newv`) emitted `*GType_val(...)` with
+a spurious pointer dereference, failing to compile.
+
+**Intersection test results:** ~161 methods unlocked across all namespaces.
+Notable examples:
+- **GType arrays:** `drop_target_set_gtypes`, `list_store_newv`, `tree_store_newv`
+- **Gio:** socket/stream count params (gsize/gssize) on non-async paths
+- **GDK/GTK:** APIs using guint32, gint64 (e.g. timing, masks)
+
+#### Task 3.4: GLib.DateTime (90 hits)
 
 Create `src/common/glib_date_time.ml`, `src/common/ml_glib_date_time.c`. Opaque type with ref-counting finalizer and basic accessors.
 
 **Intersection analysis (April 2026):** 56 hits in Gio (mostly GFileInfo date properties). Likely blocked by other missing types on most methods, but GDateTime is used in Gtk.Calendar and other user-facing APIs. Moderate priority.
 
-#### Task 3.4: GLib.KeyFile (50 hits) — DEFERRED
+#### Task 3.5: GLib.KeyFile (50 hits) — DEFERRED
 
 Low intersection potential. Most GKeyFile methods are in Gio and use additional missing types.
 
-#### Task 3.5: GLib.Source (37 hits) — DEFERRED
+#### Task 3.6: GLib.Source (37 hits) — DEFERRED
 
 41 hits in Gio. Most GSource methods use callbacks (GSourceFunc) that can't be auto-generated.
 
