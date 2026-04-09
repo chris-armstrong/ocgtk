@@ -171,10 +171,14 @@ let entity_generator_by_entity_type =
         }
 
 (** Generate the from_gobject C function for an interface.
-    Returns empty string if glib_type_name is None. *)
+    Raises [Failure] if [intf.glib_type_name] is [None] — callers must
+    guard with [Option.is_some intf.glib_type_name] before calling. *)
 let generate_from_gobject_stub ~namespace_name (intf : gir_interface) =
   match intf.glib_type_name with
-  | None -> ""
+  | None ->
+      failwith (sprintf
+        "generate_from_gobject_stub: interface %s has no glib_type_name"
+        intf.interface_name)
   | Some type_name ->
       let fn_name = sprintf "ml_%s_%s_from_gobject"
         (String.lowercase_ascii namespace_name)
@@ -239,9 +243,9 @@ let generate_c_stub ~ctx ~output_dir entity =
     generate_c_stub_methods ~ctx ~entity body_buf;
     generate_c_stub_properties ~ctx ~entity body_buf;
 
-    (* Append from_gobject stub for interfaces with a glib_type_name *)
+    (* Append from_gobject stub for interfaces that have a glib_type_name *)
     (match entity.kind with
-    | Gir_gen_lib.Types.Interface intf ->
+    | Gir_gen_lib.Types.Interface intf when Option.is_some intf.glib_type_name ->
         let stub = generate_from_gobject_stub
           ~namespace_name:ctx.namespace.namespace_name intf in
         Buffer.add_string body_buf stub
@@ -386,7 +390,8 @@ type namespace_info = {
 }
 
 (* Generate a single ML file (interface or implementation) for an entity *)
-let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain entity =
+let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
+    entity =
   let ext = match kind with Interface -> ".mli" | Implementation -> ".ml" in
   let ml_file =
     Filename.concat
@@ -412,7 +417,7 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain entity =
            Some entity.Gir_gen_lib.Types.constructors
          else None)
       ~methods:entity.Gir_gen_lib.Types.methods
-      ~properties:entity.Gir_gen_lib.Types.properties ()
+      ~properties:entity.Gir_gen_lib.Types.properties ?from_gobject_c_name ()
   in
 
   write_file ~path:ml_file ~content
@@ -432,9 +437,18 @@ let generate_ml_interfaces ~ctx ~output_dir ~generated_modules ~parent_chain
       end
   | Gir_gen_lib.Types.Interface intf ->
       if Gir_gen_lib.Generate.Filtering.should_generate_interface intf then begin
-        generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain entity;
+        let from_gobject_c_name =
+          Option.map
+            (fun _ ->
+              Printf.sprintf "ml_%s_%s_from_gobject"
+                (String.lowercase_ascii ctx.Gir_gen_lib.Types.namespace.namespace_name)
+                (Gir_gen_lib.Utils.to_snake_case intf.interface_name))
+            intf.glib_type_name
+        in
+        generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain
+          ?from_gobject_c_name entity;
         generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain
-          entity;
+          ?from_gobject_c_name entity;
         generated_modules :=
           Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
           :: !generated_modules

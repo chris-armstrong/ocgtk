@@ -320,12 +320,19 @@ let parse_gir_file filename filter_classes =
         let virtual_methods = ref [] in
         let properties = ref [] in
         let signals = ref [] in
+        let implements = ref [] in
 
         let rec parse_class_contents () =
           match Xmlm.input input with
           | `El_start ((_, raw_tag), tag_attrs) -> (
               let tag = local_name raw_tag in
               match tag with
+              | "implements" -> (
+                  (match get_attr "name" tag_attrs with
+                  | Some iface_name -> implements := iface_name :: !implements
+                  | None -> ());
+                  skip_element input 1;
+                  parse_class_contents ())
               | "constructor" -> (
                   match
                     ( get_attr "name" tag_attrs,
@@ -460,7 +467,7 @@ let parse_gir_file filename filter_classes =
             class_name = name;
             c_type;
             parent;
-            implements = [];
+            implements = List.rev !implements;
             introspectable;
             constructors = List.rev !constructors;
             methods;

@@ -50,4 +50,5 @@ let () =
       ("Enum Member Version Guards", Test_enum_member_version.test_suite);
       ("Interface Parsing", Test_interface_parsing.test_suite);
       ("From GObject Generation", Test_from_gobject_gen.test_suite);
+      ("Interface Inheritance (Phase 4)", Test_interface_inheritance.test_suite);
     ]

@@ -5,6 +5,9 @@
  *
  * Tests use both the real Gtk-4.0.gir file (for GtkEditable) and
  * synthetic XML (for edge cases).
+ *
+ * Shared file utilities come from the Helpers module (infrastructure/helpers.ml).
+ * GIR XML is wrapped via Helpers.wrap_namespace.
  *)
 
 open Gir_gen_lib.Types
@@ -13,28 +16,15 @@ open Gir_gen_lib.Types
 (* Helpers *)
 (* ========================================================================= *)
 
+(** Write [content] to a temp file and return its path. *)
 let write_temp_gir content =
   let tmp = Filename.temp_file "test_interface_parsing" ".gir" in
-  let oc = open_out tmp in
-  output_string oc content;
-  close_out oc;
+  Helpers.create_gir_file tmp content;
   tmp
 
 (** Wrap namespace content in a minimal GIR repository envelope. *)
 let make_gir_xml namespace_content =
-  Printf.sprintf
-    {|<?xml version="1.0"?>
-<repository version="1.2"
-  xmlns="http://www.gtk.org/introspection/core/1.0"
-  xmlns:c="http://www.gtk.org/introspection/c/1.0"
-  xmlns:glib="http://www.gtk.org/introspection/glib/1.0">
-  <namespace name="Gtk" version="4.0"
-             shared-library="libgtk-4.so.1"
-             c:identifier-prefixes="Gtk"
-             c:symbol-prefixes="gtk">
-    %s
-  </namespace>
-</repository>|} namespace_content
+  Helpers.wrap_namespace ~version:"4.0" namespace_content
 
 let parse_gir_string content =
   let tmp = write_temp_gir content in
