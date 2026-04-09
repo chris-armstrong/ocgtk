@@ -119,4 +119,20 @@ let collect_inherited_method_names ~ctx ~class_name : StringSet.t =
       List.fold_left (property_method_names prop) ~init:acc ~f:(fun acc n ->
         StringSet.add n acc))
   ) in
+  (* Also collect method names from implemented interfaces (interface methods
+     are provided via `inherit GIface.iface_t`, so we must not re-emit them) *)
+  let class_implements =
+    match List.find_opt ~f:(fun cls -> String.equal cls.class_name class_name) ctx.classes with
+    | Some cls -> cls.implements
+    | None -> []
+  in
+  let names = List.fold_left class_implements ~init:names ~f:(fun acc iface_name ->
+    match List.find_opt ~f:(fun iface -> String.equal iface.interface_name iface_name) ctx.interfaces with
+    | None -> acc
+    | Some iface ->
+        List.fold_left iface.methods ~init:acc ~f:(fun acc meth ->
+          StringSet.add
+            (ocaml_method_name ~class_name:iface_name ~c_type:iface.c_type meth)
+            acc)
+  ) in
   names

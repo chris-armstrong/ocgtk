@@ -191,3 +191,57 @@ let assert_value_exists (ast : structure) (value_name : string) =
       | Some _ -> ()
       | None ->
           Alcotest.fail (sprintf "Value '%s' not found in implementation" value_name)
+
+(* ========================================================================= *)
+(* Class Type Inheritance Validations                                         *)
+(* ========================================================================= *)
+
+(** Assert that class type [class_type_name] in implementation [ast] inherits
+    from [parent_name] (exact dotted name, e.g. "GMyIface.my_iface_t"). *)
+let assert_class_type_inherits (ast : structure) ~class_type ~parent =
+  match Ml_ast_helpers.find_class_type_declaration_impl ast class_type with
+  | None ->
+      Alcotest.failf "class type '%s' not found in implementation" class_type
+  | Some ctd ->
+      let inherits = Ml_ast_helpers.get_class_type_inherit_names ctd in
+      if not (List.mem parent inherits) then
+        Alcotest.failf
+          "class type '%s' does not inherit '%s'; inherited: [%s]"
+          class_type parent (String.concat "; " inherits)
+
+(** Assert that class type [class_type_name] does NOT inherit anything with
+    the given [parent_prefix] (e.g. "GMyIface"). *)
+let assert_class_type_not_inherits_prefix (ast : structure) ~class_type
+    ~parent_prefix =
+  match Ml_ast_helpers.find_class_type_declaration_impl ast class_type with
+  | None ->
+      Alcotest.failf "class type '%s' not found in implementation" class_type
+  | Some ctd ->
+      let inherits = Ml_ast_helpers.get_class_type_inherit_names ctd in
+      let offender =
+        List.find_opt
+          (fun inh -> String.length inh >= String.length parent_prefix
+                      && String.sub inh 0 (String.length parent_prefix)
+                         = parent_prefix)
+          inherits
+      in
+      (match offender with
+      | Some bad ->
+          Alcotest.failf
+            "class type '%s' should NOT inherit '%s' (prefix '%s')"
+            class_type bad parent_prefix
+      | None -> ())
+
+(** Assert that class [class_name] in implementation [ast] inherits from
+    a class whose name (fully qualified) equals [parent_class_name] —
+    this checks the inherit in the object body (implementation inherit). *)
+let assert_class_impl_inherits (ast : structure) ~class_name ~parent_class_name =
+  match Ml_ast_helpers.find_class_definition ast class_name with
+  | None ->
+      Alcotest.failf "class '%s' not found in implementation" class_name
+  | Some cd ->
+      let inherits = Ml_ast_helpers.get_class_inherit_names cd in
+      if not (List.mem parent_class_name inherits) then
+        Alcotest.failf
+          "class '%s' does not inherit '%s'; inherited: [%s]"
+          class_name parent_class_name (String.concat "; " inherits)
