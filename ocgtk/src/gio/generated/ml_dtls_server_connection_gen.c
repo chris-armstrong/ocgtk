@@ -55,6 +55,19 @@ g_object_set_property(G_OBJECT(obj), "authentication-mode", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
+CAMLexport CAMLprim value ml_gio_dtls_server_connection_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_DTLS_SERVER_CONNECTION)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GDtlsServerConnection");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GDtlsServerConnection((GDtlsServerConnection*)gobj));
+}
 
 #else
 

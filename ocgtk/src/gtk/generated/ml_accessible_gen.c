@@ -254,3 +254,16 @@ caml_failwith("Accessible requires GTK >= 4.14");
 return Val_unit;
 }
 #endif
+CAMLexport CAMLprim value ml_gtk_accessible_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_ACCESSIBLE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkAccessible");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GtkAccessible((GtkAccessible*)gobj));
+}

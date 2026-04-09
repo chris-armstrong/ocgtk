@@ -1,5 +1,6 @@
 class type buffered_input_stream_t = object
     inherit GFilter_input_stream.filter_input_stream_t
+    inherit GSeekable.seekable_t
     method read_byte : GCancellable.cancellable_t option -> (int, GError.t) result
     method as_buffered_input_stream : Buffered_input_stream.t
 end
@@ -7,6 +8,7 @@ end
 (* High-level class for BufferedInputStream *)
 class buffered_input_stream (obj : Buffered_input_stream.t) : buffered_input_stream_t = object (self)
   inherit GFilter_input_stream.filter_input_stream (obj :> Filter_input_stream.t)
+  inherit GSeekable.seekable (Seekable.from_gobject obj)
 
   method read_byte : GCancellable.cancellable_t option -> (int, GError.t) result =
     fun cancellable ->

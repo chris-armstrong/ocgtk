@@ -8,6 +8,7 @@ class type font_face_t = object
 end
 
 and font_family_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
     method get_face : string option -> font_face_t option
     method get_name : unit -> string
     method is_monospace : unit -> bool

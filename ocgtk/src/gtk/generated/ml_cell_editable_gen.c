@@ -72,3 +72,16 @@ g_object_set_property(G_OBJECT(obj), "editing-canceled", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
+CAMLexport CAMLprim value ml_gtk_cell_editable_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_CELL_EDITABLE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkCellEditable");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GtkCellEditable((GtkCellEditable*)gobj));
+}

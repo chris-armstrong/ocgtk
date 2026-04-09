@@ -1,6 +1,7 @@
 (* Signal class defined in gtext_tag_table_signals.ml *)
 
 class type text_tag_table_t = object
+    inherit GBuildable.buildable_t
     inherit Gtext_tag_table_signals.text_tag_table_signals
     method add : GText_tag.text_tag_t -> bool
     method get_size : unit -> int
@@ -11,6 +12,7 @@ end
 
 (* High-level class for TextTagTable *)
 class text_tag_table (obj : Text_tag_table.t) : text_tag_table_t = object (self)
+  inherit GBuildable.buildable (Buildable.from_gobject obj)
   inherit Gtext_tag_table_signals.text_tag_table_signals obj
 
   method add : GText_tag.text_tag_t -> bool =

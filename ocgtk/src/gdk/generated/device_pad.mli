@@ -3,6 +3,8 @@
 
 type t = [`device_pad] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gdk_device_pad_from_gobject"
+
 (* Methods *)
 (** Returns the number of groups this pad device has.
 

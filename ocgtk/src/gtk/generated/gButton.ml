@@ -2,6 +2,7 @@
 
 class type button_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GActionable.actionable_t
     inherit Gbutton_signals.button_signals
     method get_can_shrink : unit -> bool
     method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
@@ -21,6 +22,7 @@ end
 (* High-level class for Button *)
 class button (obj : Button.t) : button_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GActionable.actionable (Actionable.from_gobject obj)
   inherit Gbutton_signals.button_signals obj
 
   method get_can_shrink : unit -> bool =

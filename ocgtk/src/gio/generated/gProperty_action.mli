@@ -1,4 +1,5 @@
 class type property_action_t = object
+    inherit GAction.action_t
     method enabled : bool
     method invert_boolean : bool
     method name : string

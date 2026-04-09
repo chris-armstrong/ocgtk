@@ -84,3 +84,16 @@ CAMLparam4(self, arg1, arg2, arg3);
 gtk_cell_layout_add_attribute(GtkCellLayout_val(self), GtkCellRenderer_val(arg1), String_val(arg2), Int_val(arg3));
 CAMLreturn(Val_unit);
 }
+CAMLexport CAMLprim value ml_gtk_cell_layout_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_CELL_LAYOUT)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkCellLayout");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GtkCellLayout((GtkCellLayout*)gobj));
+}

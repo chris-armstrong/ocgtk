@@ -1,6 +1,7 @@
 (* Signal class defined in gd_bus_object_skeleton_signals.ml *)
 
 class type d_bus_object_skeleton_t = object
+    inherit GD_bus_interface_and__d_bus_object.d_bus_object_t
     inherit Gd_bus_object_skeleton_signals.d_bus_object_skeleton_signals
     method add_interface : GD_bus_interface_skeleton.d_bus_interface_skeleton_t -> unit
     method flush : unit -> unit
@@ -14,6 +15,7 @@ end
 
 (* High-level class for DBusObjectSkeleton *)
 class d_bus_object_skeleton (obj : D_bus_object_skeleton.t) : d_bus_object_skeleton_t = object (self)
+  inherit GD_bus_interface_and__d_bus_object.d_bus_object (D_bus_interface_and__d_bus_object.D_bus_object.from_gobject obj)
   inherit Gd_bus_object_skeleton_signals.d_bus_object_skeleton_signals obj
 
   method add_interface : GD_bus_interface_skeleton.d_bus_interface_skeleton_t -> unit =

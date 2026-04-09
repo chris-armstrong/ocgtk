@@ -1,4 +1,6 @@
 class type charset_converter_t = object
+    inherit GConverter.converter_t
+    inherit GInitable.initable_t
     method get_num_fallbacks : unit -> int
     method get_use_fallback : unit -> bool
     method set_use_fallback : bool -> unit

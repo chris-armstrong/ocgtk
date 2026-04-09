@@ -3,6 +3,8 @@
 
 type t = [`font_map] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_pangocairo_font_map_from_gobject"
+
 (* Methods *)
 (** Sets the resolution for the fontmap.
 

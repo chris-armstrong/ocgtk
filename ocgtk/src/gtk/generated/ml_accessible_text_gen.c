@@ -42,6 +42,19 @@ CAMLparam1(self);
 gtk_accessible_text_update_caret_position(GtkAccessibleText_val(self));
 CAMLreturn(Val_unit);
 }
+CAMLexport CAMLprim value ml_gtk_accessible_text_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_ACCESSIBLE_TEXT)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkAccessibleText");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GtkAccessibleText((GtkAccessibleText*)gobj));
+}
 
 #else
 

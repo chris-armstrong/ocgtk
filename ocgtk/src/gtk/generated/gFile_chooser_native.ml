@@ -1,5 +1,6 @@
 class type file_chooser_native_t = object
     inherit GNative_dialog.native_dialog_t
+    inherit GFile_chooser.file_chooser_t
     method get_accept_label : unit -> string option
     method get_cancel_label : unit -> string option
     method set_accept_label : string option -> unit
@@ -10,6 +11,7 @@ end
 (* High-level class for FileChooserNative *)
 class file_chooser_native (obj : File_chooser_native.t) : file_chooser_native_t = object (self)
   inherit GNative_dialog.native_dialog (obj :> Native_dialog.t)
+  inherit GFile_chooser.file_chooser (File_chooser.from_gobject obj)
 
   method get_accept_label : unit -> string option =
     fun () ->

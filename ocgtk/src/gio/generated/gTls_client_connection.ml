@@ -1,5 +1,5 @@
 class type tls_client_connection_t = object
-    method get_server_identity : unit -> GSocket_connectable.socket_connectable_t option
+    method get_server_identity : unit -> GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_connectable_t option
     method get_use_ssl3 : unit -> bool
     method get_validation_flags : unit -> Gio_enums.tlscertificateflags
     method set_use_ssl3 : bool -> unit
@@ -10,9 +10,9 @@ end
 (* High-level class for TlsClientConnection *)
 class tls_client_connection (obj : Tls_client_connection.t) : tls_client_connection_t = object (self)
 
-  method get_server_identity : unit -> GSocket_connectable.socket_connectable_t option =
+  method get_server_identity : unit -> GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_connectable_t option =
     fun () ->
-      Option.map (fun ret -> new GSocket_connectable.socket_connectable ret) (Tls_client_connection.get_server_identity obj)
+      Option.map (fun ret -> new GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_connectable ret) (Tls_client_connection.get_server_identity obj)
 
   method get_use_ssl3 : unit -> bool =
     fun () ->

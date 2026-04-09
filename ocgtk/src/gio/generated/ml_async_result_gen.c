@@ -51,3 +51,16 @@ CAMLparam1(self);
 GObject* result = g_async_result_get_source_object(GAsyncResult_val(self));
 CAMLreturn(Val_option(result, ml_gobject_val_of_ext));
 }
+CAMLexport CAMLprim value ml_gio_async_result_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_ASYNC_RESULT)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GAsyncResult");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GAsyncResult((GAsyncResult*)gobj));
+}

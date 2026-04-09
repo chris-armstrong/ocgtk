@@ -235,6 +235,8 @@ and Root
  : sig
   type t = [`root] Gobject.obj
 
+  external from_gobject : 'a Gobject.obj -> t = "ml_gtk_root_from_gobject"
+
   (* Methods *)
   (** If @focus is not the current focus widget, and is focusable, sets
   it as the focus widget for the root.
@@ -260,6 +262,8 @@ and Root
 
 end = struct
   type t = [`root] Gobject.obj
+
+  external from_gobject : 'a Gobject.obj -> t = "ml_gtk_root_from_gobject"
 
   (* Methods *)
   (** If @focus is not the current focus widget, and is focusable, sets

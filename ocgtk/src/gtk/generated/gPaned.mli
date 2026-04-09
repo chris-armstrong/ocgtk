@@ -1,5 +1,7 @@
 class type paned_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GAccessible_range.accessible_range_t
+    inherit GOrientable.orientable_t
     inherit Gpaned_signals.paned_signals
     method get_end_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
     method get_position : unit -> int

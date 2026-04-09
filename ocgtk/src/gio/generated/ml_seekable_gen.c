@@ -37,3 +37,16 @@ CAMLparam1(self);
 gboolean result = g_seekable_can_seek(GSeekable_val(self));
 CAMLreturn(Val_bool(result));
 }
+CAMLexport CAMLprim value ml_gio_seekable_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_SEEKABLE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GSeekable");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GSeekable((GSeekable*)gobj));
+}

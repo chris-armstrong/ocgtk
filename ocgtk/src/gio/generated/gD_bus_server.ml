@@ -1,6 +1,7 @@
 (* Signal class defined in gd_bus_server_signals.ml *)
 
 class type d_bus_server_t = object
+    inherit GInitable.initable_t
     inherit Gd_bus_server_signals.d_bus_server_signals
     method get_client_address : unit -> string
     method get_flags : unit -> Gio_enums.dbusserverflags
@@ -16,6 +17,7 @@ end
 
 (* High-level class for DBusServer *)
 class d_bus_server (obj : D_bus_server.t) : d_bus_server_t = object (self)
+  inherit GInitable.initable (Initable.from_gobject obj)
   inherit Gd_bus_server_signals.d_bus_server_signals obj
 
   method get_client_address : unit -> string =

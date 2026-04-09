@@ -2,6 +2,7 @@
 
 class type font_button_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GFont_chooser.font_chooser_t
     inherit Gfont_button_signals.font_button_signals
     method get_modal : unit -> bool
     method get_title : unit -> string
@@ -17,6 +18,7 @@ end
 (* High-level class for FontButton *)
 class font_button (obj : Font_button.t) : font_button_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GFont_chooser.font_chooser (Font_chooser.from_gobject obj)
   inherit Gfont_button_signals.font_button_signals obj
 
   method get_modal : unit -> bool =

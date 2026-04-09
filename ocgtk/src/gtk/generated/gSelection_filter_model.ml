@@ -1,4 +1,5 @@
 class type selection_filter_model_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
     method get_model : unit -> GSelection_model.selection_model_t option
     method n_items : int
     method as_selection_filter_model : Selection_filter_model.t
@@ -6,6 +7,7 @@ end
 
 (* High-level class for SelectionFilterModel *)
 class selection_filter_model (obj : Selection_filter_model.t) : selection_filter_model_t = object (self)
+  inherit Ocgtk_gio.Gio.List_model.list_model (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
 
   method get_model : unit -> GSelection_model.selection_model_t option =
     fun () ->

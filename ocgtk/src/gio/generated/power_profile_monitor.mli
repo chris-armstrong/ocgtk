@@ -3,6 +3,8 @@
 
 type t = [`power_profile_monitor] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_power_profile_monitor_from_gobject"
+
 (* Methods *)
 (** Gets whether the system is in “Power Saver” mode.
 

@@ -1,4 +1,5 @@
 class type content_serializer_t = object
+    inherit Ocgtk_gio.Gio.Async_result.async_result_t
     method get_cancellable : unit -> Ocgtk_gio.Gio.Cancellable.cancellable_t option
     method get_mime_type : unit -> string
     method get_output_stream : unit -> Ocgtk_gio.Gio.Output_stream.output_stream_t
@@ -9,6 +10,7 @@ end
 
 (* High-level class for ContentSerializer *)
 class content_serializer (obj : Content_serializer.t) : content_serializer_t = object (self)
+  inherit Ocgtk_gio.Gio.Async_result.async_result (Ocgtk_gio.Gio.Wrappers.Async_result.from_gobject obj)
 
   method get_cancellable : unit -> Ocgtk_gio.Gio.Cancellable.cancellable_t option =
     fun () ->

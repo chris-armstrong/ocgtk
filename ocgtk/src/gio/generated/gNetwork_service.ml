@@ -1,4 +1,5 @@
 class type network_service_t = object
+    inherit GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_connectable_t
     method get_domain : unit -> string
     method get_protocol : unit -> string
     method get_scheme : unit -> string
@@ -9,6 +10,7 @@ end
 
 (* High-level class for NetworkService *)
 class network_service (obj : Network_service.t) : network_service_t = object (self)
+  inherit GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_connectable (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_connectable.from_gobject obj)
 
   method get_domain : unit -> string =
     fun () ->

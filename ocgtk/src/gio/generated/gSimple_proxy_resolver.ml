@@ -1,4 +1,5 @@
 class type simple_proxy_resolver_t = object
+    inherit GProxy_resolver.proxy_resolver_t
     method set_default_proxy : string option -> unit
     method set_ignore_hosts : string array -> unit
     method set_uri_proxy : string -> string -> unit
@@ -7,6 +8,7 @@ end
 
 (* High-level class for SimpleProxyResolver *)
 class simple_proxy_resolver (obj : Simple_proxy_resolver.t) : simple_proxy_resolver_t = object (self)
+  inherit GProxy_resolver.proxy_resolver (Proxy_resolver.from_gobject obj)
 
   method set_default_proxy : string option -> unit =
     fun default_proxy ->

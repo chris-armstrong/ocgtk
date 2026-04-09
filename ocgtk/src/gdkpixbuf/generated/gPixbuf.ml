@@ -1,4 +1,6 @@
 class type pixbuf_t = object
+    inherit Ocgtk_gio.Gio.Icon.icon_t
+    inherit Ocgtk_gio.Gio.Loadable_icon.loadable_icon_t
     method apply_embedded_orientation : unit -> pixbuf_t option
     method composite : pixbuf_t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> unit
     method copy : unit -> pixbuf_t option
@@ -27,6 +29,8 @@ end
 
 (* High-level class for Pixbuf *)
 class pixbuf (obj : Pixbuf.t) : pixbuf_t = object (self)
+  inherit Ocgtk_gio.Gio.Icon.icon (Ocgtk_gio.Gio.Wrappers.Icon.from_gobject obj)
+  inherit Ocgtk_gio.Gio.Loadable_icon.loadable_icon (Ocgtk_gio.Gio.Wrappers.Loadable_icon.from_gobject obj)
 
   method apply_embedded_orientation : unit -> pixbuf_t option =
     fun () ->

@@ -1,4 +1,5 @@
 class type network_service_t = object
+    inherit GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_connectable_t
     method get_domain : unit -> string
     method get_protocol : unit -> string
     method get_scheme : unit -> string

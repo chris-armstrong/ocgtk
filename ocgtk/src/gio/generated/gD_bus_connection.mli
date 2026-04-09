@@ -1,4 +1,6 @@
 class type d_bus_connection_t = object
+    inherit GAsync_initable.async_initable_t
+    inherit GInitable.initable_t
     inherit Gd_bus_connection_signals.d_bus_connection_signals
     method close_sync : GCancellable.cancellable_t option -> (bool, GError.t) result
     method export_menu_model : string -> GMenu_link_iter_and__menu_model.menu_model_t -> (int, GError.t) result

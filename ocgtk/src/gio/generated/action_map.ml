@@ -3,6 +3,8 @@
 
 type t = [`action_map] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_action_map_from_gobject"
+
 (* Methods *)
 (** Remove actions from a #GActionMap. This is meant as the reverse of
 g_action_map_add_action_entries().

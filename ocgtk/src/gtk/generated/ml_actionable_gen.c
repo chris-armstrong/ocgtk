@@ -40,3 +40,16 @@ CAMLparam1(self);
 const char* result = gtk_actionable_get_action_name(GtkActionable_val(self));
 CAMLreturn(Val_option_string(result));
 }
+CAMLexport CAMLprim value ml_gtk_actionable_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_ACTIONABLE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkActionable");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GtkActionable((GtkActionable*)gobj));
+}

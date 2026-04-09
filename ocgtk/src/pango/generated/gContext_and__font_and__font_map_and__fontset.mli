@@ -36,6 +36,7 @@ and font_t = object
 end
 
 and font_map_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
     method changed : unit -> unit
     method create_context : unit -> context_t
     method get_family : string -> GFont_face_and__font_family.font_family_t

@@ -41,6 +41,19 @@ GError *error = NULL;
 gboolean result = g_async_initable_init_finish(GAsyncInitable_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+CAMLexport CAMLprim value ml_gio_async_initable_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_ASYNC_INITABLE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GAsyncInitable");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GAsyncInitable((GAsyncInitable*)gobj));
+}
 
 #else
 

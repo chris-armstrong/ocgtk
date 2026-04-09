@@ -51,6 +51,8 @@ and Accessible
  : sig
   type t = [`accessible] Gobject.obj
 
+  external from_gobject : 'a Gobject.obj -> t = "ml_gtk_accessible_from_gobject"
+
   (* Methods *)
   (** Updates the next accessible sibling of @self.
 
@@ -127,6 +129,8 @@ and Accessible
 
 end = struct
   type t = [`accessible] Gobject.obj
+
+  external from_gobject : 'a Gobject.obj -> t = "ml_gtk_accessible_from_gobject"
 
   (* Methods *)
   (** Updates the next accessible sibling of @self.

@@ -1,5 +1,7 @@
 class type shortcut_controller_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.event_controller_t
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
+    inherit GBuildable.buildable_t
     method add_shortcut : GShortcut.shortcut_t -> unit
     method get_mnemonics_modifiers : unit -> Ocgtk_gdk.Gdk.modifiertype
     method get_scope : unit -> Gtk_enums.shortcutscope

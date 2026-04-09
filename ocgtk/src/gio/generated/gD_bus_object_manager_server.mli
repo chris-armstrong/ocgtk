@@ -1,4 +1,5 @@
 class type d_bus_object_manager_server_t = object
+    inherit GD_bus_object_manager.d_bus_object_manager_t
     method export : GD_bus_object_skeleton.d_bus_object_skeleton_t -> unit
     method export_uniquely : GD_bus_object_skeleton.d_bus_object_skeleton_t -> unit
     method get_connection : unit -> GD_bus_connection.d_bus_connection_t option

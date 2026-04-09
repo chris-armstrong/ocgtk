@@ -362,25 +362,78 @@ regenerated bindings compile.
 
 ---
 
+### Opus Code Review — Phases 3 & 4
+
+**Date**: 2026-04-09  
+**Reviewer**: Claude Opus 4.6  
+**Verdict**: 3 critical, 8 significant, 11 minor issues. C1 and C2 must be fixed before Phase 5.
+
+#### Critical Issues
+
+**C1 / C2: `generate_combined_ml_files` missing `from_gobject_c_name` for cyclic modules + design flaw**
+
+- `generate_combined_ml_files` in `gir_gen.ml` never passes `?from_gobject_c_name` when calling `generate_combined_ml_modules` for cyclic dependency groups. Interfaces in cyclic modules will not get `from_gobject` externals, breaking Phase 4's `inherit` which calls `MyIface.from_gobject obj`.
+- The root cause is a design flaw: `?from_gobject_c_name:string` is a single value applied to ALL entities in a cycle. If a cycle contains a class and an interface, the class would also incorrectly receive a `from_gobject` external.
+- **Fix required**: Change the parameter to `?from_gobject_c_name_for_entity:(entity -> string option)` (or derive it internally from entity kind) so each entity in the cycle is handled independently.
+
+**C3: Missing C cast in `generate_from_gobject_stub`**
+
+- `gobj` is `GObject *` but is passed directly to `Val_GtkMyIface(gobj)` which expects `GtkMyIface *`. Relies implicitly on pointer equality of GObject subtype pointers.
+- **Fix**: Add an explicit cast: `Val_GtkMyIface((GtkMyIface*)gobj)` — makes intent clear and eliminates potential compiler warnings.
+
+#### Significant Issues
+
+- **S1/S2**: Polymorphic equality (`=`, `<>`) used in `class_gen_conflict_detection.ml` and `class_gen_body.ml` — violates STYLE_GUIDELINES. Replace with `String.equal`.
+- **S3**: `collect_inherited_method_names` looks up `iface_name` in `ctx.interfaces` but cross-namespace names (e.g. `"Gio.Initable"`) are never in same-namespace `ctx.interfaces` — cross-namespace interface methods won't be suppressed, risking duplicate method errors in generated OCaml.
+- **S4**: `_ -> ()` catch-all in `class_gen_body.ml` silently swallows genuine type-mapping lookup failures. Should use explicit patterns for `Some { layer2_class = None; _ }` vs `None`.
+- **S5**: `test_from_gobject_inside_version_guard` uses `Helpers.string_contains` for preprocessor check — test-patterns.md bans string matching for structural assertions (even for preprocessor content). Needs explicit guideline exception or structural fix.
+- **S6**: Interface inheritance logic duplicated verbatim between `generate_class_module_body` and `generate_class_signature_body`. Extract shared helper `resolve_interface_inherits ~ctx ~class_name`.
+- **S7**: Suffix stripping (`String.sub ... = "_t"`) is fragile index arithmetic. Use `String.ends_with` / `String.chop_suffix_if_exists`.
+- **S8**: No test for `from_gobject` absence in `.ml` (only `.mli`) when `glib_type_name` is absent.
+
+#### Minor Issues
+
+- **M1**: `[@@@warning "-32"]` suppresses unused-value warnings globally in `class_gen_body.ml` — should be scoped to specific bindings.
+- **M2**: `longident_to_string_phase4` encodes phase number in function name — rename by behaviour.
+- **M3**: Four near-identical `run_and_parse_*` helpers across test files — extract shared `with_gir_gen_run`.
+- **M4**: Polymorphic equality in `ml_validation.ml` — use `String.equal`.
+- **M5**: `generate_constructors_section` takes `list option` but empty list is equivalent to `None` — remove the wrapping.
+- **M6**: `find_class_type_declaration_sig2` has unexplained `2` suffix.
+- **M7**: `generate_from_gobject_stub` uses `failwith` as dead-code safety net — prefer making `glib_type_name:string` a required parameter to enforce the invariant via the type system.
+- **M8**: No test for class implementing multiple interfaces simultaneously.
+- **M9**: No test for class implementing an interface with no `glib_type_name` (should silently skip at Layer 2).
+- **M10**: Synthetic `gir_type` records constructed inline twice in `class_gen_body.ml` — signals `find_type_mapping_for_gir_type` needs a simpler `by_name` entry point.
+
+---
+
 ### Phase 5: Integration — Generate and Compile All Bindings
 
 **Goal**: Regenerate all bindings and verify everything compiles.
 
+**Fixes applied during Phase 5 integration** (discovered during first `dune build` after regen):
+
+1. **C1/C2 fix**: `generate_combined_ml_modules` parameter changed from `?from_gobject_c_name:string` to `?from_gobject_c_name_for_entity:(entity -> string option)`. `gir_gen.ml` computes the function per-entity for cyclic groups. Fixes missing `from_gobject` in cyclic interface modules (e.g. `DInterface`/`DObject` in Gio).
+
+2. **GType macro bug** (`GD_TYPE_BUS_INTERFACE` → `G_TYPE_DBUS_INTERFACE`): `gtype_macro_of_type_name` mishandled acronym-style names like `GDBusInterface` via `to_snake_case`. Fixed by adding `gtype_macro_from_get_type` which derives the macro from `glib_get_type` (already snake_case), avoiding the camel-case splitter entirely.
+
+3. **Same-cycle interface inheritance** (`socket_connectable_t not yet completely defined`): When a class and the interface it implements are in the same cyclic `module rec` group, OCaml cannot reference the not-yet-defined class type. Fixed by checking `same_cluster_classes` before emitting `inherit`.
+
+4. **Diamond interface inheritance** (warning 7 as error, `can_seek`/`can_truncate` overridden): When a class implements `Seekable` AND one of its ancestors also implements `Seekable`, the generated `inherit GSeekable.seekable` lines conflict. Fixed by adding `parent_chain_provides_interface ~ctx ~class_name iface_name` check in `class_gen_conflict_detection.ml`; if any ancestor already provides the interface, the child skips the redundant `inherit`.
+
+5. **S1/S2 polymorphic equality**: Replaced bare `=` with `String.equal` throughout `class_gen_conflict_detection.ml` and `class_gen_body.ml`.
+
+6. **S4 catch-all pattern**: Split `| _ -> ()` into explicit `| Some { layer2_class = None; _ } -> ()` and `| None -> ()` in both body and signature.
+
+7. **C3 cast**: Added explicit `(GtkMyIface*)gobj` cast in `generate_from_gobject_stub`.
+
 **Tasks**:
-- [ ] Run `bash scripts/generate-bindings.sh` to regenerate all 9 namespace bindings
-- [ ] Run `cd ocgtk && dune build` and fix any compilation errors
+- [x] Run `bash scripts/generate-bindings.sh` to regenerate all 9 namespace bindings
+- [ ] Run `cd ocgtk && dune build` and fix any remaining compilation errors
 - [ ] Spot-check generated files:
   - `gEntry.ml` inherits `GEditable.editable_t` and `GCellEditable.cell_editable_t` (and others)
   - `gButton.ml` does NOT inherit `GEditable.editable_t` (Button doesn't implement Editable)
   - `gSpinButton.ml` inherits `GEditable.editable_t`
   - `gEntry.ml` does NOT inherit `GActionable` (Entry does not implement Actionable)
-
-**Potential issues to watch for**:
-- Method name conflicts between multiple interfaces on the same class
-- Cross-namespace interface resolution (e.g. Gio interfaces implemented by Gtk classes)
-- Circular dependency issues if interface classes reference each other
-- OCaml class linearisation issues with diamond inheritance (multiple interfaces sharing a
-  common prerequisite like Widget)
 
 **Test gate**: Full `dune build` succeeds with zero errors.
 

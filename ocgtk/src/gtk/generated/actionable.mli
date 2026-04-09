@@ -3,6 +3,8 @@
 
 type t = [`actionable] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_actionable_from_gobject"
+
 (* Methods *)
 (** Sets the action-name and associated string target value of an
 actionable widget.

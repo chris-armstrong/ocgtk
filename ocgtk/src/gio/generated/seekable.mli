@@ -3,6 +3,8 @@
 
 type t = [`seekable] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_seekable_from_gobject"
+
 (* Methods *)
 (** Tests if the length of the stream can be adjusted with
 g_seekable_truncate(). *)

@@ -94,6 +94,19 @@ caml_failwith("TlsClientConnection requires GLib >= 2.46");
 return Val_unit;
 }
 #endif
+CAMLexport CAMLprim value ml_gio_tls_client_connection_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_TLS_CLIENT_CONNECTION)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GTlsClientConnection");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GTlsClientConnection((GTlsClientConnection*)gobj));
+}
 
 #else
 

@@ -1,5 +1,7 @@
 class type icon_view_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
+    inherit GScrollable.scrollable_t
     inherit Gicon_view_signals.icon_view_signals
     method create_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.Paintable.paintable_t option
     method enable_model_drag_dest : Ocgtk_gdk.Gdk.Content_formats.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
@@ -51,12 +53,12 @@ class type icon_view_t = object
     method unselect_path : Tree_path.t -> unit
     method unset_model_drag_dest : unit -> unit
     method unset_model_drag_source : unit -> unit
-    method cell_area : GCell_area_and__cell_area_context.cell_area_t
+    method cell_area : GCell_area_and__cell_area_context_and__cell_layout.cell_area_t
     method as_icon_view : Icon_view.t
 end
 
 class icon_view : Icon_view.t -> icon_view_t
 
 val new_ : unit -> icon_view_t
-val new_with_area : GCell_area_and__cell_area_context.cell_area_t -> icon_view_t
+val new_with_area : GCell_area_and__cell_area_context_and__cell_layout.cell_area_t -> icon_view_t
 val new_with_model : GTree_model.tree_model_t -> icon_view_t

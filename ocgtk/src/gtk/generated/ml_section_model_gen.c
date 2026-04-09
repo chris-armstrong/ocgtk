@@ -40,6 +40,19 @@ CAMLlocal1(ret);
     Store_field(ret, 1, Val_int(out3));
     CAMLreturn(ret);
 }
+CAMLexport CAMLprim value ml_gtk_section_model_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_SECTION_MODEL)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkSectionModel");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GtkSectionModel((GtkSectionModel*)gobj));
+}
 
 #else
 

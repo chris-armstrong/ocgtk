@@ -1,6 +1,7 @@
 (* Signal class defined in gprint_operation_signals.ml *)
 
 class type print_operation_t = object
+    inherit GPrint_operation_preview.print_operation_preview_t
     inherit Gprint_operation_signals.print_operation_signals
     method cancel : unit -> unit
     method draw_page_finish : unit -> unit
@@ -36,6 +37,7 @@ end
 
 (* High-level class for PrintOperation *)
 class print_operation (obj : Print_operation.t) : print_operation_t = object (self)
+  inherit GPrint_operation_preview.print_operation_preview (Print_operation_preview.from_gobject obj)
   inherit Gprint_operation_signals.print_operation_signals obj
 
   method cancel : unit -> unit =

@@ -1,5 +1,7 @@
 class type multi_sorter_t = object
     inherit GSorter.sorter_t
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
+    inherit GBuildable.buildable_t
     method append : GSorter.sorter_t -> unit
     method remove : int -> unit
     method n_items : int
@@ -9,6 +11,8 @@ end
 (* High-level class for MultiSorter *)
 class multi_sorter (obj : Multi_sorter.t) : multi_sorter_t = object (self)
   inherit GSorter.sorter (obj :> Sorter.t)
+  inherit Ocgtk_gio.Gio.List_model.list_model (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
+  inherit GBuildable.buildable (Buildable.from_gobject obj)
 
   method append : GSorter.sorter_t -> unit =
     fun sorter ->

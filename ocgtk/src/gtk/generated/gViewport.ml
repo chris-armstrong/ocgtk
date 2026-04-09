@@ -1,5 +1,6 @@
 class type viewport_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GScrollable.scrollable_t
     method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
     method get_scroll_to_focus : unit -> bool
     method scroll_to : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> Scroll_info.t option -> unit
@@ -11,6 +12,7 @@ end
 (* High-level class for Viewport *)
 class viewport (obj : Viewport.t) : viewport_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GScrollable.scrollable (Scrollable.from_gobject obj)
 
   method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
     fun () ->

@@ -1,4 +1,7 @@
 class type texture_t = object
+    inherit GPaintable.paintable_t
+    inherit Ocgtk_gio.Gio.Icon.icon_t
+    inherit Ocgtk_gio.Gio.Loadable_icon.loadable_icon_t
     method get_format : unit -> Gdk_enums.memoryformat
     method get_height : unit -> int
     method get_width : unit -> int

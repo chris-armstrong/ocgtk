@@ -164,3 +164,16 @@ caml_failwith("ActionGroup requires GLib >= 2.28");
 return Val_unit;
 }
 #endif
+CAMLexport CAMLprim value ml_gio_action_group_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_ACTION_GROUP)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GActionGroup");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GActionGroup((GActionGroup*)gobj));
+}

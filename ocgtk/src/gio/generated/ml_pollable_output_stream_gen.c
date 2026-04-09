@@ -39,6 +39,19 @@ CAMLparam1(self);
 gboolean result = g_pollable_output_stream_can_poll(GPollableOutputStream_val(self));
 CAMLreturn(Val_bool(result));
 }
+CAMLexport CAMLprim value ml_gio_pollable_output_stream_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_POLLABLE_OUTPUT_STREAM)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GPollableOutputStream");
+        caml_failwith(msg);
+    }
+    CAMLreturn(Val_GPollableOutputStream((GPollableOutputStream*)gobj));
+}
 
 #else
 

@@ -1,5 +1,6 @@
 class type converter_input_stream_t = object
     inherit GFilter_input_stream.filter_input_stream_t
+    inherit GPollable_input_stream.pollable_input_stream_t
     method get_converter : unit -> GConverter.converter_t
     method as_converter_input_stream : Converter_input_stream.t
 end
@@ -7,6 +8,7 @@ end
 (* High-level class for ConverterInputStream *)
 class converter_input_stream (obj : Converter_input_stream.t) : converter_input_stream_t = object (self)
   inherit GFilter_input_stream.filter_input_stream (obj :> Filter_input_stream.t)
+  inherit GPollable_input_stream.pollable_input_stream (Pollable_input_stream.from_gobject obj)
 
   method get_converter : unit -> GConverter.converter_t =
     fun () ->

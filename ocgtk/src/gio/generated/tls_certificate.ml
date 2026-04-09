@@ -49,7 +49,7 @@ For example, certificate constraints may not be honored, and
 revocation checks may not be performed. The best way to verify TLS
 certificates used by a TLS connection is to let #GTlsConnection
 handle the verification. *)
-external verify : t -> Socket_connectable.t option -> t option -> Gio_enums.tlscertificateflags = "ml_g_tls_certificate_verify"
+external verify : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_connectable.t option -> t option -> Gio_enums.tlscertificateflags = "ml_g_tls_certificate_verify"
 
 (** Check if two #GTlsCertificate objects represent the same certificate.
 The raw DER byte data of the two certificates are checked for equality.
