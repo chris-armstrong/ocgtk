@@ -499,6 +499,203 @@ interface inherits for known cases (e.g. `GtkApplication` should NOT double-inhe
 
 ---
 
+### Phase 7: Unfilter Methods with Interface-Typed Parameters and Return Values
+
+**Status**: Not started
+
+**Goal**: Allow the generator to emit bindings for methods whose parameters or return values are
+interface types. Currently these are silently dropped at Layer 2 by `method_has_interface_param`
+in `class_gen_helpers.ml` and by a similar guard in `should_generate_property` in `filtering.ml`.
+Now that interfaces have full type mappings and forward declarations, this filtering is no longer
+necessary.
+
+**Background**: The forward-declaration macros (`Val_GtkScrollable`, `GtkScrollable_val`, etc.)
+are already emitted for every interface — identically to class types. The C layer, Layer 1
+externals, and Layer 2 wrapping patterns are therefore already supported; they just need to be
+wired up. The `get_delegate` method on `GtkEditable` (returns `GtkEditable*`) is a live example
+demonstrating that interface return types at all three layers already work when the method is on
+the interface itself. The only work here is enabling this for methods on other types.
+
+**What is currently filtered and why**:
+
+1. **`class_gen_helpers.ml:should_skip_method`** — calls `Filtering.method_has_interface_param`
+   and skips the whole method if any parameter is an interface type. This was added before
+   interfaces had type mappings. Now safe to remove.
+2. **`filtering.ml:should_generate_property`** — skips properties whose type is an interface.
+   Same reason. Now safe to remove or narrow.
+3. **`filtering.ml:list_has_interface_element` / `method_has_unsupported_arrays`** — filters
+   `GList`/`GSList` containing interface elements. This one remains correct: list element
+   types require specialised marshalling that isn't generated yet. Leave this filter in place.
+
+**Layer 0 (C) — no changes needed**
+
+Interface types are already handled identically to class types:
+```c
+/* Return type: use Val_GtkScrollable (already in generated_forward_decls.h) */
+GtkScrollable* result = gtk_foo_get_scrollable(GtkFoo_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_option(result, Val_GtkScrollable));
+
+/* Parameter type: use GtkScrollable_val (already in generated_forward_decls.h) */
+gtk_foo_set_scrollable(GtkFoo_val(self), GtkScrollable_val(arg1));
+```
+
+No changes to C stub generation are required.
+
+**Layer 1 (OCaml externals) — no changes needed**
+
+Interface types already have valid type mappings via `find_interface_mapping` in `type_mappings.ml`
+(line 520). `should_skip_method_binding` in `filtering.ml` already passes methods with interface
+types through (they are not excluded by `has_unknown_type`). Layer 1 externals for these methods
+are therefore already being generated correctly:
+```ocaml
+external get_scrollable : t -> Scrollable.t option = "ml_gtk_foo_get_scrollable"
+external set_scrollable : t -> Scrollable.t -> unit  = "ml_gtk_foo_set_scrollable"
+```
+
+**Layer 2 (OCaml class wrapper) — the work**
+
+Two patterns are needed in `class_gen_method.ml`:
+
+*Interface return type* — wrap the `Interface.t` from Layer 1 with the interface's Layer 2
+class constructor (same pattern as `get_delegate` in `gEditable.ml:64`):
+```ocaml
+method get_scrollable : unit -> GScrollable.scrollable_t option =
+  fun () ->
+    Option.map (fun ret -> new GScrollable.scrollable ret) (Foo.get_scrollable obj)
+```
+
+*Interface parameter type* — use the `#as_interface` open-type accessor that every interface
+class type already exposes (e.g. `as_editable` in `gEditable.ml:31`):
+```ocaml
+method set_scrollable : #GScrollable.scrollable_t -> unit =
+  fun arg1 ->
+    Foo.set_scrollable obj arg1#as_scrollable
+```
+
+The `#GScrollable.scrollable_t` accepts any class that satisfies the interface (e.g. an `entry_t`
+which inherits `scrollable_t`). `arg1#as_scrollable` is the generated accessor that returns the
+underlying `Scrollable.t`.
+
+**Tasks**:
+
+- [ ] **`class_gen_helpers.ml`**: Remove `has_interface_param` from `should_skip_method` (line 68–74).
+  Delete the call to `Filtering.method_has_interface_param` entirely. Keep other skip conditions.
+- [ ] **`filtering.ml`**: In `should_generate_property`, remove the `is_interface_type` guard (lines
+  23–42). Interface properties are now supported.
+- [ ] **`class_gen_method.ml`**: In the Layer 2 method return-value wrapper, detect when the return
+  type maps to an interface (via `Type_mappings.find_interface_mapping`) and emit
+  `Option.map (fun ret -> new GInterface.iface_class ret)` / `new GInterface.iface_class ret`
+  wrapping, mirroring the existing class-return wrapping logic.
+- [ ] **`class_gen_method.ml`**: In the Layer 2 method parameter generator, detect when a parameter
+  type maps to an interface and emit `arg#as_<interface_snake_name>` instead of a direct coercion.
+  Use `Type_mappings.find_interface_mapping` to resolve the interface module + accessor name.
+- [ ] Regenerate all bindings with `bash scripts/generate-bindings.sh`.
+- [ ] Build with `cd ocgtk && dune build` — fix any compilation errors.
+- [ ] Run `xvfb-run dune runtest` — all tests must pass.
+
+**Tests**
+
+File: `ocgtk/src/tools/test_gir_gen/test_interface_method_types.ml`
+
+Use synthetic GIR with a class `Foo` that has methods returning and accepting interface types.
+Validate generated output with `Ml_validation` (AST) and `C_validation` (AST) — no string search.
+
+```ocaml
+(* Synthetic GIR: class Foo with a method returning interface MyIface *)
+let gir_class_with_iface_return = Helpers.wrap_namespace ~version:"4.0"
+  {|<interface name="MyIface"
+               c:type="GtkMyIface"
+               glib:type-name="GtkMyIface"
+               glib:get-type="gtk_my_iface_get_type">
+      <method name="do_thing" c:identifier="gtk_my_iface_do_thing"
+              introspectable="1">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+      </method>
+    </interface>
+    <class name="Foo"
+           c:type="GtkFoo"
+           glib:type-name="GtkFoo"
+           glib:get-type="gtk_foo_get_type"
+           parent="GObject.Object">
+      <method name="get_iface" c:identifier="gtk_foo_get_iface"
+              introspectable="1">
+        <return-value transfer-ownership="none" nullable="1">
+          <type name="MyIface" c:type="GtkMyIface*"/>
+        </return-value>
+      </method>
+      <method name="set_iface" c:identifier="gtk_foo_set_iface"
+              introspectable="1">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="iface" transfer-ownership="none">
+            <type name="MyIface" c:type="GtkMyIface*"/>
+          </parameter>
+        </parameters>
+      </method>
+    </class>|}
+
+(* Layer 1: external for method returning interface type is generated *)
+let test_layer1_interface_return_type () =
+  let _content, ml_ast = run_and_parse_layer1_ml gir_class_with_iface_return "foo" in
+  Ml_validation.assert_external_exists ml_ast
+    ~name:"get_iface"
+    ~return_type:"MyIface.t option"
+
+(* Layer 1: external for method taking interface parameter is generated *)
+let test_layer1_interface_param_type () =
+  let _content, ml_ast = run_and_parse_layer1_ml gir_class_with_iface_return "foo" in
+  Ml_validation.assert_external_exists ml_ast
+    ~name:"set_iface"
+    ~param_types:["t"; "MyIface.t"]
+
+(* Layer 2: method returning interface is wrapped with interface class constructor *)
+let test_layer2_interface_return_wrapped () =
+  let _content, ml_ast = run_and_parse_layer2_ml gir_class_with_iface_return "foo" in
+  (* Method exists in class type with interface class type as return *)
+  Ml_validation.assert_method_exists ml_ast
+    ~class_type:"foo_t" ~name:"get_iface"
+    ~return_type:"GMyIface.my_iface_t option"
+
+(* Layer 2: method taking interface parameter uses #as_ accessor pattern *)
+let test_layer2_interface_param_uses_accessor () =
+  let _content, ml_ast = run_and_parse_layer2_ml gir_class_with_iface_return "foo" in
+  Ml_validation.assert_method_exists ml_ast
+    ~class_type:"foo_t" ~name:"set_iface"
+    ~param_types:["#GMyIface.my_iface_t"]
+
+(* Real GIR spot-check: a class method with interface return is present in generated Layer 2 *)
+(* e.g. GtkEditable.get_delegate — already working, confirms regression guard *)
+let test_editable_get_delegate_generated () =
+  let _content, ml_ast = run_and_parse_layer2_ml_real_gir "editable" in
+  Ml_validation.assert_method_exists ml_ast
+    ~class_type:"editable_t" ~name:"get_delegate"
+    ~return_type:"editable_t option"
+```
+
+**Cross-namespace interfaces — no special treatment needed**
+
+Cross-namespace interface types (e.g. `Gio.Initable`) are already handled by the existing
+`find_type_mapping_for_gir_type` pipeline. When `normal_type_lookup` encounters a dotted name,
+`find_cross_namespace_type_mapping` splits on `.`, looks up the namespace in
+`ctx.cross_references`, and resolves the entity. `Crt_Interface` entries there are already
+mapped to the correct qualified OCaml module path and `as_` accessor name (see
+`type_mappings.ml:56–68`). The Layer 2 parameter and return-type generators just need to call
+`find_type_mapping_for_gir_type` (as they already do for class types) and cross-namespace
+interface resolution falls out for free.
+
+**Note**: The `list_has_interface_element` filter in `filtering.ml` is intentionally left in
+place — `GList`/`GSList` with interface elements still require specialised marshalling that
+is out of scope for this phase.
+
+**Test gate**: New tests pass, all existing tests pass, `dune build` succeeds, bindings compile.
+
+---
+
 ### Phase 8: Runtime Tests
 
 **Goal**: Verify interface functionality at runtime with real GTK objects.
@@ -607,10 +804,12 @@ is already consistent.
 
 ## Success Criteria
 
-1. `Entry`, `Text`, `SpinButton`, `SearchEntry`, `PasswordEntry`, `EditableLabel` classes all inherit `GEditable.editable_t` in their generated Layer 2 code
-2. `Button` does NOT inherit `GEditable.editable_t`
+1. `Entry`, `Text`, `SpinButton`, `SearchEntry`, `PasswordEntry`, `EditableLabel` classes all inherit `GEditable.editable_t` in their generated Layer 2 code ✅
+2. `Button` does NOT inherit `GEditable.editable_t` ✅
 3. Interface methods work through inheritance: `entry#get_text ()` returns the entry's text
 4. `Editable.from_gobject` succeeds on Entry, raises `Failure` on Button
-5. All generated bindings compile with `dune build`
+5. All generated bindings compile with `dune build` ✅
 6. All runtime tests pass under `xvfb-run dune runtest`
-7. Method name conflicts between class and interface are handled gracefully
+7. Method name conflicts between class and interface are handled gracefully ✅
+8. Methods returning interface types on non-interface classes are generated at all three layers (Phase 7)
+9. Methods taking interface parameters are generated with `#as_` accessor pattern at Layer 2 (Phase 7)
