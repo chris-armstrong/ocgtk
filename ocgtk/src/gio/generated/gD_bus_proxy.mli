@@ -1,5 +1,7 @@
 class type d_bus_proxy_t = object
     inherit Gd_bus_proxy_signals.d_bus_proxy_signals
+    method call_sync : string -> Gvariant.t option -> Gio_enums.dbuscallflags -> int -> GCancellable.cancellable_t option -> (Gvariant.t, GError.t) result
+    method get_cached_property : string -> Gvariant.t option
     method get_cached_property_names : unit -> string array option
     method get_connection : unit -> GD_bus_connection.d_bus_connection_t
     method get_default_timeout : unit -> int
@@ -9,9 +11,9 @@ class type d_bus_proxy_t = object
     method get_name : unit -> string option
     method get_name_owner : unit -> string option
     method get_object_path : unit -> string
+    method set_cached_property : string -> Gvariant.t option -> unit
     method set_default_timeout : int -> unit
     method set_interface_info : D_bus_interface_info.t option -> unit
-    method g_bus_type : Gio_enums.bustype
     method g_connection : GD_bus_connection.d_bus_connection_t
     method g_default_timeout : int
     method set_g_default_timeout : int -> unit

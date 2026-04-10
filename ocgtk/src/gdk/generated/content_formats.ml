@@ -38,6 +38,9 @@ type t = [`content_formats] Gobject.obj
 (** Create a new ContentFormats *)
 external new_ : string array option -> int -> t = "ml_gdk_content_formats_new"
 
+(** Create a new ContentFormats *)
+external new_for_gtype : int -> t = "ml_gdk_content_formats_new_for_gtype"
+
 (* Methods *)
 (** Decreases the reference count of a `GdkContentFormats` by one.
 
@@ -81,9 +84,30 @@ in @second.
 If no matching mime type is found, %NULL is returned. *)
 external match_mime_type : t -> t -> string option = "ml_gdk_content_formats_match_mime_type"
 
+(** Finds the first `GType` from @first that is also contained
+in @second.
+
+If no matching `GType` is found, %G_TYPE_INVALID is returned. *)
+external match_gtype : t -> t -> int = "ml_gdk_content_formats_match_gtype"
+
 (** Checks if @first and @second have any matching formats. *)
 external match_ : t -> t -> bool = "ml_gdk_content_formats_match"
 
+(** Gets the mime types included in @formats.
+
+Note that @formats may not contain any mime types, in particular
+when they are empty. In that case %NULL will be returned. *)
+external get_mime_types : t -> string array option * Gsize.t = "ml_gdk_content_formats_get_mime_types"
+
+(** Gets the `GType`s included in @formats.
+
+Note that @formats may not contain any `GType`s, in particular when
+they are empty. In that case %NULL will be returned. *)
+external get_gtypes : t -> int array option * Gsize.t = "ml_gdk_content_formats_get_gtypes"
+
 (** Checks if a given mime type is part of the given @formats. *)
 external contain_mime_type : t -> string -> bool = "ml_gdk_content_formats_contain_mime_type"
+
+(** Checks if a given `GType` is part of the given @formats. *)
+external contain_gtype : t -> int -> bool = "ml_gdk_content_formats_contain_gtype"
 

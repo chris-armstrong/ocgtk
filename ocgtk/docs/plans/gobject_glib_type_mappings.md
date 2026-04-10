@@ -67,6 +67,8 @@ The caller uses `Gobject.try_cast` to downcast from the generic object. No layer
 - `c_stub_helpers.ml:build_return_statement` wraps results in `Res_Ok`/`Res_Error(Val_GError(error))`
 - `layer1_method.ml` wraps the OCaml return type in `('a, GError.t) result` when `throws=true`
 
+
+
 | Namespace  | Throwing Constructors Skipped |
 |------------|------------------------------|
 | Gio        | 30                           |
@@ -261,54 +263,73 @@ This covers the GAction/GSettings use case (pass/receive simple values) and prov
 
 Each phase ends with intersection testing: regenerate bindings, count actual methods unlocked (not just type hit counts), and use the results to validate/adjust the next phase.
 
-### Phase 1: Wire Up Existing Types
+### Phase 1: Wire Up Existing Types — PARTIALLY COMPLETED
 
 **Goal:** Add type mappings for types that already have OCaml/C implementations.
 
-#### Task 1.1: Introduce `object` tag and add GObject.Object type mapping
+#### Task 1.1: Introduce `object` tag and add GObject.Object type mapping ✅ COMPLETED
 
-1. Add `` `object `` to the generator's parent chain resolution so all generated classes include it at the root of their polymorphic variant type.
-2. Add `GObject.InitiallyUnowned` with its own tag (5 Gtk classes inherit from it directly).
-3. Add type mappings:
+Type mappings added for `GObject.Object` (`` [`object_] Gobject.obj ``) and `GObject.InitiallyUnowned` (`` [`initially_unowned | `object_] Gobject.obj ``). Both use `ml_gobject_val_of_ext`/`GObject_ext_of_val` converters already in `wrappers.h`.
 
-```ocaml
-("GObject.Object", {
-  ocaml_type = "[`object] Gobject.obj";
-  c_to_ml = "ml_gobject_val_of_ext";
-  ml_to_c = "GObject_ext_of_val";
-  layer2_class = None;
-  is_value_type_record = false;
-})
+**Note:** These mappings unlock 0 methods on their own because every method that takes/returns `GObject.Object` also uses other unresolved types (e.g. `GObject.Value`, `GType`, `Gio.ListModel`). The mappings are a prerequisite for future unlocks.
 
-("GObject.InitiallyUnowned", {
-  ocaml_type = "[`initially_unowned | `object] Gobject.obj";
-  c_to_ml = "ml_gobject_val_of_ext";
-  ml_to_c = "GObject_ext_of_val";
-  layer2_class = None;
-  is_value_type_record = false;
-})
-```
+#### Task 1.2: Add GObject.Value type mapping — DEFERRED
 
-The generated C stubs already include `wrappers.h` which provides `ml_gobject_val_of_ext` and `GObject_ext_of_val`.
+`GValue_val` exists in `wrappers.h` (ml→c) but there is no `Val_GValue` (c→ml). GValue has 73 hits in GTK and 50 in GDK, but GValue is typically used inline in property get/set patterns that the generator already handles specially. The remaining methods that need GValue as a parameter or return type are mostly blocked by other missing types too.
 
-#### Task 1.2: Add GObject.Value type mapping
+**Decision:** Defer until cross-namespace interface types (Gio.ListModel, Gio.File, etc.) are resolved, which would actually unlock the methods that also need GValue.
 
-Need to verify/add `Val_GValue`/`GValue_val` macros in `wrappers.h`. GValue is stack-allocated in C but uses custom block representation in OCaml — the existing `Gobject.Value.create`/`init` pattern handles this.
+#### Task 1.3: Add GObject.Closure type mapping — DEFERRED
 
-#### Task 1.3: Add GObject.Closure type mapping
+`GClosure_val` exists in `wrappers.h`, `Val_GClosure_sink` exists in `ml_gobject.c` (static). Only 16 hits in GIR. Most closure usage goes through the signal system which is already handled. Low priority.
 
-Wire to existing `Gobject.Closure` module.
+#### Task 1.4: Add simple GLib type mappings — DEFERRED
 
-#### Task 1.4: Add simple GLib type mappings
+Current skip counts from intersection testing (April 2026):
 
-- `GLib.Quark` → `int` (via `Val_int`/`Int_val`)
-- `GLib.String` → `string` (convert `GString*` → `caml_copy_string(str->str)`)
-- `GLib.IOCondition` → define flags type in `glib.ml`
-- `GLib.SeekType` → define enum type in `glib.ml`
+| Type | Gio hits | GTK hits | GDK hits | Notes |
+|------|----------|----------|----------|-------|
+| `GLib.Quark` | 45 | — | — | Mostly in GError domain APIs |
+| `GLib.IOCondition` | 68 | — | — | GSocket/GPollableInputStream |
+| `GLib.String` | — | — | — | Rare in public API |
+| `GLib.SeekType` | — | — | — | Only in GSeekable |
 
-#### Task 1.5: Intersection test
+These are blocked by the same pattern: methods using GLib.Quark also need other missing types (callbacks, GType). Low standalone unlock potential.
 
-Regenerate all bindings, build, count actual methods unlocked. Report results.
+#### Task 1.5: Intersection test — COMPLETED (April 2026)
+
+**Key finding:** The biggest blockers across all namespaces are NOT GObject/GLib primitive types but rather:
+
+**GTK top blockers:**
+| Type | Hits | Category |
+|------|------|----------|
+| `Gio.ListModel` | 283 | Cross-namespace interface |
+| `Gio.File` | 213 | Cross-namespace interface |
+| `void` (callbacks) | 190 | Callback support |
+| `Gdk.Rectangle` | 141 | Missing value-type record |
+| `Gio.MenuModel` | 139 | Cross-namespace interface |
+| `Gio.AsyncResult` | 119 | Cross-namespace interface |
+| `array` | 115 | Array parameter support |
+| `Gdk.Paintable` | 109 | Cross-namespace interface |
+| `GType` | 76 | Runtime type system |
+| `GObject.Value` | 73 | See Task 1.2 |
+
+**Gio top blockers:**
+| Type | Hits | Category |
+|------|------|----------|
+| `AsyncReadyCallback` | 695 | Callback type |
+| `array` | 287 | Array parameter support |
+| `gsize` | 259 | Missing primitive mapping |
+| `gssize` | 218 | Missing primitive mapping |
+| `gpointer` | 187 | Raw pointer type |
+
+**Conclusion:** Phase 1's remaining tasks (GObject.Value, GObject.Closure, GLib.Quark, etc.) have low standalone unlock potential. The actual bottlenecks are:
+1. **Cross-namespace interface types** (Gio.ListModel, Gio.File, Gio.MenuModel, etc.)
+2. **Callback parameter support** (AsyncReadyCallback, etc.)
+3. **Array parameter support** (`array` type)
+4. **Missing primitive mappings** (gsize, gssize, GType, guint32, gint64)
+
+These are separate work streams that would unlock far more methods than the remaining Phase 1 tasks.
 
 ### Phase 2: GList/GSList Container Support ✓ COMPLETED
 
@@ -347,21 +368,269 @@ Regenerate all bindings, build, count actual methods unlocked. Report results.
 
 Work these in priority order, intersection testing after each:
 
-#### Task 3.1: GLib.Variant + GLib.VariantType (495 combined hits)
+#### Task 3.1: GLib.Variant + GLib.VariantType (495 combined hits) — ✅ COMPLETED
 
-Create `src/common/gvariant.ml`, `src/common/ml_gvariant.c`, `src/common/gvariant_type.ml`, `src/common/ml_gvariant_type.c`. See DD5 for API design.
+**Status:** ✅ Implementation complete — April 1, 2026  
+**Files created:**
+- `src/common/gvariant.ml` / `ml_gvariant.c` — Complete GVariant implementation with ALL scalar types
+- `src/common/gvariant_type.ml` / `ml_gvariant_type.c` — GVariantType wrapper
+- `tests/test_gvariant.ml` — 55 comprehensive tests (all passing)
+- `tests/test_gvariant_type.ml` — 19 GVariantType tests (all passing)
+- `tests/test_gvariant_text_format.c` — External verification of GVariant text format syntax
 
-#### Task 3.2: GLib.Bytes (291 hits)
+**Complete Type Coverage:**
 
-Create `src/common/glib_bytes.ml`, `src/common/ml_glib_bytes.c`. See DD3.
+| Type | OCaml Type | GVariant | Status |
+|------|-----------|----------|--------|
+| boolean | `bool` | b | ✅ |
+| byte (uint8) | `int` | y | ✅ |
+| int16 | `int` | n | ✅ |
+| uint16 | `Unsigned.UInt16.t` | q | ✅ |
+| int32 | `int32` | i | ✅ |
+| uint32 | `Unsigned.UInt32.t` | u | ✅ |
+| int64 | `int64` | x | ✅ |
+| uint64 | `Unsigned.UInt64.t` | t | ✅ |
+| double | `float` | d | ✅ |
+| string | `string` | s | ✅ |
+| object_path | `string` | o | ✅ |
+| signature | `string` | g | ✅ |
+| handle | `int` | h | ✅ |
+| variant | `t` | v | ✅ |
+| maybe | `t option` | m* | ✅ |
+| string array | `string array` | as | ✅ |
+| object_path array | `string array` | ao | ✅ |
 
-#### Task 3.3: GLib.DateTime (90 hits)
+**Implementation Details:**
+- Reference counting via `g_variant_ref/unref` for GVariant
+- Copy/free via `g_variant_type_copy/free` for GVariantType
+- Type mappings added to `type_mappings.ml` for `GLib.Variant` → `Gvariant.t` and `GLib.VariantType` → `Gvariant_type.t`
+- Helper macros added to `wrappers.h`: `Val_GVariant`, `GVariant_val`, `Val_GVariantType`, `GVariantType_val`
+- Uses `integers` library for proper unsigned integer support (UInt16, UInt32, UInt64)
+
+**Issues discovered during implementation:**
+
+1. **GVariant text format parsing is strict and poorly documented**
+   - Tests initially tried `<{'name': <'John'>}>` format but GLib rejects this
+   - Error: *"can not parse as value of type '*'"* provides no guidance on correct syntax
+   - Dictionary variants (a{sv}) and nested structures require specific syntax rules
+
+2. **Type mapping added but activation not verified**
+   - Mappings added to `type_mappings.ml` but bindings not yet regenerated
+   - Need to verify the 436 methods using `GLib.Variant` are actually being generated
+   - Potential issue: methods may have multiple unresolved types, so Variant alone may not unlock them
+
+**Remediation Results:**
+
+##### 3.1.R1: ✅ COMPLETED - GVariant text format syntax verified externally
+Created `tests/test_gvariant_text_format.c` — standalone C program using GLib directly.
+
+**Key Findings (GLib 2.80+):**
+1. **Pass NULL for type parameter**, NOT `G_VARIANT_TYPE_ANY` — the ANY constant doesn't work as expected
+2. **Dictionary syntax**: `{'key': <value>}` creates `a{sv}` (string→variant dict)
+3. **String quoting is flexible**: Both `"double"` and `'single'` quotes work (output uses single)
+4. **Variant syntax**: `<value>` works with any value: `<42>`, `<'hello'>`, `<(1, 2)>`
+
+##### 3.1.R2: ✅ COMPLETED - Type mapping activation verified
+Bindings successfully regenerated with GLib.Variant type mappings. Fixed parser bug where `readable` attribute was hardcoded to `true` instead of being read from GIR (caused duplicate function generation for write-only properties).
+
+##### 3.1.R3: ✅ COMPLETED - C stub and test suite fixed
+- Fixed `ml_gvariant.c` to pass `NULL` instead of `G_VARIANT_TYPE_ANY`
+- Dictionary parse tests enabled and passing
+- Added complete test coverage for all scalar types
+- Added GVariantType test module (19 tests)
+
+**Final Test Results:**
+- GVariant Tests: **55/55 passing**
+- GVariantType Tests: **19/19 passing**
+- Total: **74 tests** covering all implemented types
+
+##### 3.1.R4: ✅ COMPLETED - GVariantType test module
+Created `tests/test_gvariant_type.ml` with 19 tests covering:
+- Type constant constructors (boolean, int32, string, object_path, signature, variant, unit, int64, double)
+- `of_string` / `to_string` roundtrip for basic, array, dict, and tuple types
+- Predicate functions (is_basic, is_container, is_array, is_tuple, is_dict_entry, is_variant)
+
+**Acceptance Criteria:**
+- [x] External C test documents valid GVariant text format syntax
+- [x] test_gvariant.ml dictionary tests pass with correct syntax
+- [x] Bindings regenerate successfully with type mappings
+- [x] At least 50 methods using GLib.Variant are verified unlocked — **76 methods confirmed** (April 2026)
+- [x] GVariantType test module with 10+ tests (19 tests)
+
+**Post-review fixes applied (code review 2026-03-30):**
+- Added `.mli` files for `gvariant.ml` and `gvariant_type.ml`
+- Replaced `g_variant_type_peek_string` with `g_variant_type_dup_string` in `ml_gvariant_type_get_string`
+- Added `g_new()` NULL checks in `ml_g_variant_new_strv` and `ml_g_variant_new_objv`
+- Removed duplicate `GVariant_val`/`GVariantType_val` macro definitions from `.c` files
+- Replaced stub parse tests with real tests
+
+**Known remaining issue:**
+- `value result` declared without `CAMLlocal1` in `ml_g_variant_get_variant`, `ml_g_variant_get_child_value`, and `ml_g_variant_type_new`. Currently safe (no GC between allocation and return) but violates OCaml FFI convention.
+
+#### Task 3.2: GLib.Bytes (291 hits) — ✅ COMPLETED
+
+**Status:** ✅ Implementation complete — April 8, 2026
+**Files created:**
+- `src/common/glib_bytes.ml` / `glib_bytes.mli` — Opaque `t` type with `create`, `to_string`, `size`
+- `src/common/ml_glib_bytes.c` — Custom block with `g_bytes_unref` finalizer, `g_bytes_compare`, `g_bytes_hash`
+- `tests/test_glib_bytes.ml` — 13 tests (all passing)
+
+**Implementation details:**
+- Reference counting: `g_bytes_new` returns transfer-full, finalizer calls `g_bytes_unref`
+- `Val_GBytes` rejects NULL with `caml_failwith`
+- GC-safe ordering in `ml_g_bytes_new`: reads `String_val`/`caml_string_length` before any OCaml allocation
+- Type mapping: `GLib.Bytes` → `Glib_bytes.t` with `Val_GBytes`/`GBytes_val` converters
+
+**Review (Opus, April 2026):** No critical or important issues found. Minor:
+- Fixed `CAMLexport` consistency across `Val_GVariant`, `Val_GVariantType`, `Val_GBytes`
+- `.ml`/`.mli` byte-identical (expected for externals-only module)
+- `gsize` → `long` truncation theoretical only (>4.6 EB)
+
+**Intersection testing results:** 36 new methods unlocked across 5 namespaces:
+- **Gsk:** 12 (GLShader args, ShaderArgsBuilder, RenderNode serialize)
+- **Gio:** 8 (BytesIcon, MemoryInputStream/OutputStream, Resource)
+- **GdkPixbuf:** 4 (Pixbuf save_to_png/tiff_bytes, PixbufLoader)
+- **Gdk:** 4 (ContentProvider, Texture pixel_bytes)
+- **Gtk:** 2 (CssProvider load_from_bytes, Snapshot serialize)
+
+#### Task 3.3: GLib/GObject Primitive Integer Type Mappings — ✅ COMPLETED
+
+**Status:** ✅ COMPLETED — April 2026
+
+**Goal:** Add type mappings for primitive GLib/GObject integer types to unlock ~161 methods.
+
+**Problem:** Types like `gsize`, `gssize`, `GType`, `guint32`, `gint64`, `guint64` were not in `type_mappings.ml`, causing methods that used them to be filtered out even when all other types were resolved.
+
+**Types added to `type_mappings.ml`:**
+
+| GIR Type | OCaml Type | C→OCaml | OCaml→C | Notes |
+|----------|-----------|---------|---------|-------|
+| `gsize` | `int` | `Val_long` | `Long_val` | size_t equivalent |
+| `gssize` | `int` | `Val_long` | `Long_val` | ssize_t equivalent |
+| `GType` | `int` | `Val_GType` | `GType_val` | macros already in wrappers.h |
+| `guint16` | `int` | `Val_int` | `Int_val` | fits in OCaml int |
+| `gint16` | `int` | `Val_int` | `Int_val` | |
+| `gint32` | `int32` | `caml_copy_int32` | `Int32_val` | boxed |
+| `guint32` | `int` | `Val_long` | `Long_val` | fits in 63-bit OCaml int |
+| `gint64` | `int64` | `caml_copy_int64` | `Int64_val` | boxed |
+| `guint64` | `Unsigned.UInt64.t` | `integers_copy_uint64` | `Uint64_val` | uses integers library |
+| `gulong` | `int` | `Val_long` | `Long_val` | |
+| `gunichar` | `int` | `Val_long` | `Long_val` | Unicode codepoint |
+| `gchar` | `int` | `Val_int` | `Int_val` | single byte |
+
+**`guint8` intentionally omitted:** Used almost exclusively as the element type of
+`gpointer`/`void*` byte-buffer arrays (e.g. `g_input_stream_read`, `g_output_stream_write`).
+These require length-erasure infrastructure (hiding the `gsize count` param, exposing the
+buffer as `Bytes.t` or `string`) not yet implemented. See `architecture/todo/KNOWN_BUGS.md` for details.
+
+**Additional fix:** Extended `is_primitive_converter` in both directions of
+`c_stub_array_conv.ml` to cover the new converters. Without this, `GType` arrays
+(e.g. `gtk_drop_target_set_gtypes`, `gtk_list_store_newv`) emitted `*GType_val(...)` with
+a spurious pointer dereference, failing to compile.
+
+**Intersection test results:** ~161 methods unlocked across all namespaces.
+Notable examples:
+- **GType arrays:** `drop_target_set_gtypes`, `list_store_newv`, `tree_store_newv`
+- **Gio:** socket/stream count params (gsize/gssize) on non-async paths
+- **GDK/GTK:** APIs using guint32, gint64 (e.g. timing, masks)
+
+#### Task 3.3.1: Bounded Integer Wrapper Types — ⏳ PLANNED
+
+**Status:** ⏳ PLANNED
+
+**Goal:** Replace the bare `int`/`int32` mappings for bounded GLib integer types with opaque wrapper types that enforce range constraints at the OCaml level, eliminating silent truncation and providing self-documenting APIs.
+
+**Problem with Task 3.3 mappings:**
+- `guint16`, `gint16`, `guint32` exposed as `int`, `gint32` as `int32` — callers can pass any value and silent truncation occurs at the C boundary (e.g. passing `70000` for `guint16` silently wraps to `4464`)
+- Generated `.mli` files show `int` with no hint the value is semantically bounded
+- Inconsistent with `guint64` which already uses `Unsigned.UInt64.t` from the `integers` library
+
+**Investigation: `ocaml_integers.h` is insufficient**
+
+The `integers` library C header (`ocaml_integers.h`) was examined. It provides only:
+- `Uint8_val` / `Integers_val_uint8` — backed by `Int_val` (no custom block, no safety)
+- `Uint16_val` / `Integers_val_uint16` — same
+- `Uint32_val` / `integers_copy_uint32` — custom block (heap allocated)
+- `Uint64_val` / `integers_copy_uint64` — custom block (heap allocated)
+- **No signed type support** — `Int16_val`, `Int32_val`, `integers_copy_int16`, etc. are absent
+
+Since signed type C macros must be written from scratch regardless, and since `UInt16` in integers is just `Int_val` in disguise with no additional safety, the decision is to write a purpose-built `bounded_int` module rather than use the `integers` library for these types.
+
+**Decision: Custom `bounded_int` module in `src/common/`**
+
+Create `src/common/bounded_int.ml` and `bounded_int.mli` exposing flat top-level modules (deliberately shadowing stdlib where needed — users requiring both can qualify as `Stdlib.Int32`):
+
+| Module  | Backing type  | Range                        | GLib types      |
+|---------|--------------|------------------------------|-----------------|
+| `UInt8` | `private int` | `[0, 255]`                   | `guint8`        |
+| `Int8`  | `private int` | `[-128, 127]`                | `gint8`         |
+| `UInt16`| `private int` | `[0, 65535]`                 | `guint16`       |
+| `Int16` | `private int` | `[-32768, 32767]`            | `gint16`        |
+| `UInt32`| `private int` | `[0, 4294967295]`            | `guint32`       |
+| `Int32` | `private int` | `[-2147483648, 2147483647]`  | `gint32`        |
+
+All types use `type t = private int` — no boxing, no heap allocation. On 64-bit OCaml, all six ranges fit within the 63-bit `int`. Each module exposes:
+- `of_int : int -> t` — raises `Invalid_argument` if value is out of range
+- `to_int : t -> int`
+- `zero : t` (unsigned) / `minus_one : t` (signed)
+- `min_int : t`, `max_int : t`
+
+`guint64` is unchanged — it keeps `Unsigned.UInt64.t` from the `integers` library, which is already working and genuinely requires 64-bit custom-block storage.
+
+**C macro layer** — add to `src/common/wrappers.h`:
+
+```c
+/* Bounded integer types — all backed by OCaml int (private int representation) */
+#define UInt8_val(v)           ((uint8_t)(Long_val(v)))
+#define Val_uint8(x)           (Val_long((uint8_t)(x)))
+#define Int8_val(v)            ((int8_t)(Long_val(v)))
+#define Val_int8(x)            (Val_long((int8_t)(x)))
+#define UInt16_val(v)          ((uint16_t)(Long_val(v)))
+#define Val_uint16(x)          (Val_long((uint16_t)(x)))
+#define Int16_val(v)           ((int16_t)(Long_val(v)))
+#define Val_int16(x)           (Val_long((int16_t)(x)))
+#define UInt32_val(v)          ((uint32_t)(Long_val(v)))
+#define Val_uint32(x)          (Val_long((uint32_t)(x)))
+#define Int32_val_bounded(v)   ((int32_t)(Long_val(v)))   /* avoids conflict with caml Int32_val */
+#define Val_int32_bounded(x)   (Val_long((int32_t)(x)))
+```
+
+**`type_mappings.ml` changes:**
+
+| GIR Type | Old OCaml type | New OCaml type | Old C→OCaml        | New C→OCaml        | Old OCaml→C | New OCaml→C       |
+|----------|---------------|---------------|--------------------|--------------------|-------------|-------------------|
+| `guint16`| `int`         | `UInt16.t`    | `Val_int`          | `Val_uint16`       | `Int_val`   | `UInt16_val`      |
+| `gint16` | `int`         | `Int16.t`     | `Val_int`          | `Val_int16`        | `Int_val`   | `Int16_val`       |
+| `guint32`| `int`         | `UInt32.t`    | `Val_long`         | `Val_uint32`       | `Long_val`  | `UInt32_val`      |
+| `gint32` | `int32`       | `Int32.t`     | `caml_copy_int32`  | `Val_int32_bounded`| `Int32_val` | `Int32_val_bounded` |
+
+After updating `type_mappings.ml`, all bindings must be regenerated via `bash scripts/generate-bindings.sh` from the repository root.
+
+**User-visible impact:**
+
+```ocaml
+(* Before: silent truncation, no type signal *)
+Widget.set_something widget 70000
+
+(* After: explicit conversion, raises Invalid_argument on bad input *)
+Widget.set_something widget (UInt16.of_int 70000)
+```
+
+**Architecture reference:** See `ocgtk/architecture/integer_type_design.md` for full rationale.
+
+#### Task 3.4: GLib.DateTime (90 hits)
 
 Create `src/common/glib_date_time.ml`, `src/common/ml_glib_date_time.c`. Opaque type with ref-counting finalizer and basic accessors.
 
-#### Task 3.4: GLib.KeyFile (50 hits) — if intersection testing shows significant unlocks
+**Intersection analysis (April 2026):** 56 hits in Gio (mostly GFileInfo date properties). Likely blocked by other missing types on most methods, but GDateTime is used in Gtk.Calendar and other user-facing APIs. Moderate priority.
 
-#### Task 3.5: GLib.Source (37 hits) — if intersection testing shows significant unlocks
+#### Task 3.5: GLib.KeyFile (50 hits) — DEFERRED
+
+Low intersection potential. Most GKeyFile methods are in Gio and use additional missing types.
+
+#### Task 3.6: GLib.Source (37 hits) — DEFERRED
+
+41 hits in Gio. Most GSource methods use callbacks (GSourceFunc) that can't be auto-generated.
 
 ### Phase 4: On-Demand Additions
 

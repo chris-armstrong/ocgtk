@@ -97,37 +97,54 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-CAMLexport CAMLprim value ml_g_property_action_get_object(value self)
+CAMLexport CAMLprim value ml_g_property_action_get_parameter_type(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GPropertyAction *obj = (GPropertyAction *)GPropertyAction_val(self);
-    GObject* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "object");
-if (pspec == NULL) caml_failwith("ml_g_property_action_get_object: property 'object' not found");
+    GVariantType* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "parameter-type");
+if (pspec == NULL) caml_failwith("ml_g_property_action_get_parameter_type: property 'parameter-type' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "object", &prop_gvalue);
-          prop_value = (GObject*)g_value_get_pointer(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "parameter-type", &prop_gvalue);
+          prop_value = (GVariantType*)g_value_get_pointer(&prop_gvalue);
 
-      result = ml_gobject_val_of_ext(prop_value);
+      result = Val_GVariantType(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-CAMLexport CAMLprim value ml_g_property_action_get_property_name(value self)
+CAMLexport CAMLprim value ml_g_property_action_get_state(value self)
 {
     CAMLparam1(self);
     CAMLlocal1(result);
 GPropertyAction *obj = (GPropertyAction *)GPropertyAction_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "property-name");
-if (pspec == NULL) caml_failwith("ml_g_property_action_get_property_name: property 'property-name' not found");
+    GVariant* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "state");
+if (pspec == NULL) caml_failwith("ml_g_property_action_get_state: property 'state' not found");
 GValue prop_gvalue = G_VALUE_INIT;
 g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "property-name", &prop_gvalue);
-          prop_value = g_value_get_string(&prop_gvalue);
+      g_object_get_property(G_OBJECT(obj), "state", &prop_gvalue);
+          prop_value = g_variant_ref(g_value_get_variant(&prop_gvalue));
 
-      result = caml_copy_string(prop_value);
+      result = Val_GVariant(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_g_property_action_get_state_type(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GPropertyAction *obj = (GPropertyAction *)GPropertyAction_val(self);
+    GVariantType* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "state-type");
+if (pspec == NULL) caml_failwith("ml_g_property_action_get_state_type: property 'state-type' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "state-type", &prop_gvalue);
+          prop_value = (GVariantType*)g_value_get_pointer(&prop_gvalue);
+
+      result = Val_GVariantType(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
@@ -172,7 +189,7 @@ return Val_unit;
 }
 
 
-CAMLexport CAMLprim value ml_g_property_action_get_object(value self)
+CAMLexport CAMLprim value ml_g_property_action_get_parameter_type(value self)
 {
 CAMLparam1(self);
 (void)self;
@@ -181,7 +198,16 @@ return Val_unit;
 }
 
 
-CAMLexport CAMLprim value ml_g_property_action_get_property_name(value self)
+CAMLexport CAMLprim value ml_g_property_action_get_state(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PropertyAction requires GLib >= 2.38");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_property_action_get_state_type(value self)
 {
 CAMLparam1(self);
 (void)self;

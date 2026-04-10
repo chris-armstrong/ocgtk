@@ -51,6 +51,14 @@ GdkContentFormats *obj = gdk_content_formats_new(c_arg1, Int_val(arg2));
     if (c_arg1) g_free(c_arg1);
 CAMLreturn(Val_GdkContentFormats(obj));
 }
+CAMLexport CAMLprim value ml_gdk_content_formats_new_for_gtype(value arg1)
+{
+CAMLparam1(arg1);
+
+GdkContentFormats *obj = gdk_content_formats_new_for_gtype(GType_val(arg1));
+
+CAMLreturn(Val_GdkContentFormats(obj));
+}
 CAMLexport CAMLprim value ml_gdk_content_formats_unref(value self)
 {
 CAMLparam1(self);
@@ -123,6 +131,14 @@ const char* result = gdk_content_formats_match_mime_type(GdkContentFormats_val(s
 CAMLreturn(Val_option_string(result));
 }
 
+CAMLexport CAMLprim value ml_gdk_content_formats_match_gtype(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GType result = gdk_content_formats_match_gtype(GdkContentFormats_val(self), GdkContentFormats_val(arg1));
+CAMLreturn(Val_GType(result));
+}
+
 CAMLexport CAMLprim value ml_gdk_content_formats_match(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -131,10 +147,56 @@ gboolean result = gdk_content_formats_match(GdkContentFormats_val(self), GdkCont
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gdk_content_formats_get_mime_types(value self)
+{
+CAMLparam1(self);
+gsize out1;
+
+const char* const* result = gdk_content_formats_get_mime_types(GdkContentFormats_val(self), &out1);
+    int result_length = out1;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, ml_result);
+    Store_field(ret, 1, Val_gsize(out1));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gdk_content_formats_get_gtypes(value self)
+{
+CAMLparam1(self);
+gsize out1;
+
+const GType* result = gdk_content_formats_get_gtypes(GdkContentFormats_val(self), &out1);
+    int result_length = out1;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, Val_GType(result[i]));
+    }
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, ml_result);
+    Store_field(ret, 1, Val_gsize(out1));
+    CAMLreturn(ret);
+}
+
 CAMLexport CAMLprim value ml_gdk_content_formats_contain_mime_type(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gboolean result = gdk_content_formats_contain_mime_type(GdkContentFormats_val(self), String_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gdk_content_formats_contain_gtype(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = gdk_content_formats_contain_gtype(GdkContentFormats_val(self), GType_val(arg1));
 CAMLreturn(Val_bool(result));
 }

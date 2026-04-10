@@ -23,6 +23,7 @@ module GValue = struct
         is_pointer : bool;  (** true if passed by pointer *)
       }  (** Boxed types (records/structs) *)
     | Object of string  (** Object types with C type name *)
+    | GVariant  (** GLib.Variant — uses g_value_get/set_variant *)
     | Pointer  (** Generic pointer types *)
     | Unsupported of string  (** Fallback for unsupported types *)
 
@@ -55,6 +56,7 @@ module GValue = struct
       Float "get_float"
     else if prop_info.has_pointer && list_contains ~value:base_lower string_base_types then
       String
+    else if String.equal c_type_name "GVariant" || String.equal c_type_name "GVariant*" then GVariant
     else
       match prop_info.record_info with
       | Some (record, is_pointer, _) ->
@@ -69,7 +71,7 @@ module GValue = struct
       Eliminates duplication between generate_getter_for_category and generate_setter_for_category. *)
   let gvalue_type_dispatch ~c_type_name ~(gen_enum : unit -> string) ~gen_bitfield ~gen_boolean
       ~gen_integer ~gen_float ~gen_string ~gen_boxed ~gen_boxed_no_ptr
-      ~gen_object ~gen_pointer category =
+      ~gen_object ~gen_gvariant ~gen_pointer category =
     match category with
     | Enum -> gen_enum ()
     | Bitfield -> gen_bitfield ()
@@ -81,6 +83,7 @@ module GValue = struct
         if is_pointer then gen_boxed c_type
         else gen_boxed_no_ptr c_type
     | Object c_type -> gen_object c_type
+    | GVariant -> gen_gvariant ()
     | Pointer -> gen_pointer c_type_name
     | Unsupported _ ->
         sprintf "    caml_failwith(\"unsupported property type\");\n"
@@ -97,6 +100,8 @@ module GValue = struct
       ~gen_boxed:(fun c_type -> sprintf "    prop_value = (%s*)g_value_get_boxed(&prop_gvalue);\n" c_type)
       ~gen_boxed_no_ptr:(fun c_type -> sprintf "    prop_value = (%s*)g_value_get_boxed(&prop_gvalue);\n" c_type)
       ~gen_object:(fun c_type -> sprintf "    prop_value = (%s*)g_value_get_object(&prop_gvalue);\n" c_type)
+      (* g_value_get_variant is transfer-none; g_variant_ref gives Val_GVariant an owned ref *)
+      ~gen_gvariant:(fun () -> "    prop_value = g_variant_ref(g_value_get_variant(&prop_gvalue));\n")
       ~gen_pointer:(fun ct -> sprintf "    prop_value = (%s)g_value_get_pointer(&prop_gvalue);\n" ct)
       category
 
@@ -116,6 +121,7 @@ module GValue = struct
       ~gen_boxed:(fun _ -> "    g_value_set_boxed(&prop_gvalue, c_value);\n")
       ~gen_boxed_no_ptr:(fun _ -> "    g_value_set_boxed(&prop_gvalue, &c_value);\n")
       ~gen_object:(fun _ -> "    g_value_set_object(&prop_gvalue, c_value);\n")
+      ~gen_gvariant:(fun () -> "    g_value_set_variant(&prop_gvalue, c_value);\n")
       ~gen_pointer:(fun _ -> "    g_value_set_pointer(&prop_gvalue, c_value);\n")
       category
 

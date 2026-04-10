@@ -32,6 +32,7 @@ class type layout_t = object
     method get_wrap : unit -> Pango_enums.wrapmode
     method is_ellipsized : unit -> bool
     method is_wrapped : unit -> bool
+    method serialize : Pango_enums.layoutserializeflags -> Glib_bytes.t
     method set_alignment : Pango_enums.alignment -> unit
     method set_attributes : Attr_list.t option -> unit
     method set_auto_dir : bool -> unit

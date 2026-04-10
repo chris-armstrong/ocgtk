@@ -28,9 +28,6 @@ external get_connection : t -> D_bus_connection.t = "ml_g_dbus_object_manager_cl
 
 (* Properties *)
 
-(** Get property: bus-type *)
-external get_bus_type : t -> Gio_enums.bustype = "ml_g_d_bus_object_manager_client_get_bus_type"
-
 (** Get property: object-path *)
 external get_object_path : t -> string = "ml_g_d_bus_object_manager_client_get_object_path"
 

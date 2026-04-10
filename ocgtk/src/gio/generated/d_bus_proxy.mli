@@ -28,6 +28,41 @@ g_dbus_proxy_call_sync() functions.
 See the #GDBusProxy:g-default-timeout property for more details. *)
 external set_default_timeout : t -> int -> unit = "ml_g_dbus_proxy_set_default_timeout"
 
+(** If @value is not %NULL, sets the cached value for the property with
+name @property_name to the value in @value.
+
+If @value is %NULL, then the cached value is removed from the
+property cache.
+
+If @proxy has an expected interface (see
+#GDBusProxy:g-interface-info) and @property_name is referenced by
+it, then @value is checked against the type of the property.
+
+If the @value #GVariant is floating, it is consumed. This allows
+convenient 'inline' use of g_variant_new(), e.g.
+|[<!-- language="C" -->
+ g_dbus_proxy_set_cached_property (proxy,
+                                   "SomeProperty",
+                                   g_variant_new ("(si)",
+                                                 "A String",
+                                                 42));
+]|
+
+Normally you will not need to use this method since @proxy
+is tracking changes using the
+`org.freedesktop.DBus.Properties.PropertiesChanged`
+D-Bus signal. However, for performance reasons an object may
+decide to not use this signal for some properties and instead
+use a proprietary out-of-band mechanism to transmit changes.
+
+As a concrete example, consider an object with a property
+`ChatroomParticipants` which is an array of strings. Instead of
+transmitting the same (long) array every time the property changes,
+it is more efficient to only transmit the delta using e.g. signals
+`ChatroomParticipantJoined(String name)` and
+`ChatroomParticipantParted(String name)`. *)
+external set_cached_property : t -> string -> Gvariant.t option -> unit = "ml_g_dbus_proxy_set_cached_property"
+
 (** Gets the object path @proxy is for. *)
 external get_object_path : t -> string = "ml_g_dbus_proxy_get_object_path"
 
@@ -68,10 +103,54 @@ external get_connection : t -> D_bus_connection.t = "ml_g_dbus_proxy_get_connect
 (** Gets the names of all cached properties on @proxy. *)
 external get_cached_property_names : t -> string array option = "ml_g_dbus_proxy_get_cached_property_names"
 
-(* Properties *)
+(** Looks up the value for a property from the cache. This call does no
+blocking IO.
 
-(** Get property: g-bus-type *)
-external get_g_bus_type : t -> Gio_enums.bustype = "ml_g_d_bus_proxy_get_g_bus_type"
+If @proxy has an expected interface (see
+#GDBusProxy:g-interface-info) and @property_name is referenced by
+it, then @value is checked against the type of the property. *)
+external get_cached_property : t -> string -> Gvariant.t option = "ml_g_dbus_proxy_get_cached_property"
+
+(** Synchronously invokes the @method_name method on @proxy.
+
+If @method_name contains any dots, then @name is split into interface and
+method name parts. This allows using @proxy for invoking methods on
+other interfaces.
+
+If the #GDBusConnection associated with @proxy is disconnected then
+the operation will fail with %G_IO_ERROR_CLOSED. If
+@cancellable is canceled, the operation will fail with
+%G_IO_ERROR_CANCELLED. If @parameters contains a value not
+compatible with the D-Bus protocol, the operation fails with
+%G_IO_ERROR_INVALID_ARGUMENT.
+
+If the @parameters #GVariant is floating, it is consumed. This allows
+convenient 'inline' use of g_variant_new(), e.g.:
+|[<!-- language="C" -->
+ g_dbus_proxy_call_sync (proxy,
+                         "TwoStrings",
+                         g_variant_new ("(ss)",
+                                        "Thing One",
+                                        "Thing Two"),
+                         G_DBUS_CALL_FLAGS_NONE,
+                         -1,
+                         NULL,
+                         &error);
+]|
+
+The calling thread is blocked until a reply is received. See
+g_dbus_proxy_call() for the asynchronous version of this
+method.
+
+If @proxy has an expected interface (see
+#GDBusProxy:g-interface-info) and @method_name is referenced by it,
+then the return value is checked against the return type. *)
+external call_sync : t -> string -> Gvariant.t option -> Gio_enums.dbuscallflags -> int -> Cancellable.t option -> (Gvariant.t, GError.t) result = "ml_g_dbus_proxy_call_sync_bytecode" "ml_g_dbus_proxy_call_sync_native"
+
+(** Finishes an operation started with g_dbus_proxy_call(). *)
+external call_finish : t -> Async_result.t -> (Gvariant.t, GError.t) result = "ml_g_dbus_proxy_call_finish"
+
+(* Properties *)
 
 (** Get property: g-connection *)
 external get_g_connection : t -> D_bus_connection.t = "ml_g_d_bus_proxy_get_g_connection"

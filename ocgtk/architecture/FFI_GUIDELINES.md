@@ -96,11 +96,45 @@ fprintf(f, "Created: %p, Received: %p\n", original_ptr, received_ptr);
 // If different, wrapping/unwrapping is broken!
 ```
 
-### 5. Common Pitfalls
+### 5. GC Safety: Always Use CAMLlocal for Local `value` Variables
+
+**Rule**: Every local C variable of type `value` MUST be declared with `CAMLlocal1` (or `CAMLlocal2`, etc.), not as a plain C stack variable.
+
+**Why**: The OCaml GC can only run during OCaml allocations, but this is a fragile invariant. A bare `value result = Val_*(...)` on the C stack is not a GC root. If any allocation is ever inserted between the `Val_*` call and `CAMLreturn`, the GC may move or collect the object that `result` points to, causing a silent use-after-free.
+
+**Wrong** (currently safe but violates FFI contract):
+```c
+CAMLprim value ml_g_variant_get_variant(value v) {
+    CAMLparam1(v);
+    GVariant *child = g_variant_get_variant(GVariant_val(v));
+    value result = Val_GVariant(child);   /* NOT a GC root! */
+    g_variant_unref(child);
+    CAMLreturn(result);
+}
+```
+
+**Right**:
+```c
+CAMLprim value ml_g_variant_get_variant(value v) {
+    CAMLparam1(v);
+    CAMLlocal1(result);                   /* registered GC root */
+    GVariant *child = g_variant_get_variant(GVariant_val(v));
+    result = Val_GVariant(child);
+    g_variant_unref(child);
+    CAMLreturn(result);
+}
+```
+
+**Also applies to `CAMLreturn(Val_*(...))`**: Calling `Val_*` directly inside `CAMLreturn` is fine — the macro captures the result into a compiler-managed variable before popping the GC frame. But if you need to use the value before returning, always use `CAMLlocal`.
+
+**Note on C pointers (`GVariant*`, `GObject*`, etc.)**: These are GLib-managed heap pointers, not OCaml values. The OCaml GC does not move or collect them. Only OCaml `value` variables need GC root registration.
+
+### 6. Common Pitfalls
 
 | Pitfall | Symptom | Solution |
 |---------|---------|----------|
 | Using Val_pointer/Pointer_val incorrectly | Garbage pointer values | Create proper wrapper functions |
 | memcpy GValues | Segfault on access/finalization | Use g_value_init + g_value_copy |
 | Forgetting ml_gvalue.initialized flag | Segfault in finalizer | Always set after initialization |
+| `value result = Val_*(...)` without CAMLlocal | Silent GC corruption if allocation added later | Always use `CAMLlocal1(result)` |
 | Not checking lablgtk3 | Hours of debugging | **ALWAYS check lablgtk3 first!** |

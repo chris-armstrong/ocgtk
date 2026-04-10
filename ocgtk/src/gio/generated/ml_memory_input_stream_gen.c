@@ -31,3 +31,46 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GMemoryInputStream(obj));
 }
+#if GLIB_CHECK_VERSION(2,34,0)
+
+CAMLexport CAMLprim value ml_g_memory_input_stream_new_from_bytes(value arg1)
+{
+CAMLparam1(arg1);
+
+GMemoryInputStream *obj = g_memory_input_stream_new_from_bytes(GBytes_val(arg1));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GMemoryInputStream(obj));
+}
+#else
+
+CAMLexport CAMLprim value ml_g_memory_input_stream_new_from_bytes(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("MemoryInputStream requires GLib >= 2.34");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,34,0)
+
+CAMLexport CAMLprim value ml_g_memory_input_stream_add_bytes(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_memory_input_stream_add_bytes(GMemoryInputStream_val(self), GBytes_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_memory_input_stream_add_bytes(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("MemoryInputStream requires GLib >= 2.34");
+return Val_unit;
+}
+#endif

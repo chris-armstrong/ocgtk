@@ -474,6 +474,9 @@ let parse_gir_file filename filter_classes =
         None
   (* Parse property element *)
   and parse_property prop_name attrs =
+    let readable =
+      match get_attr "readable" attrs with Some "0" -> false | _ -> true
+    in
     let writable =
       match get_attr "writable" attrs with Some "1" -> true | _ -> false
     in
@@ -547,7 +550,7 @@ let parse_gir_file filename filter_classes =
     {
       prop_name;
       prop_type = !prop_type;
-      readable = true;
+      readable;
       writable;
       construct_only;
       prop_doc = None;

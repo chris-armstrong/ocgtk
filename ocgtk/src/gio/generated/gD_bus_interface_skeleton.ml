@@ -9,6 +9,7 @@ class type d_bus_interface_skeleton_t = object
     method get_flags : unit -> Gio_enums.dbusinterfaceskeletonflags
     method get_info : unit -> D_bus_interface_info.t
     method get_object_path : unit -> string option
+    method get_properties : unit -> Gvariant.t
     method get_vtable : unit -> D_bus_interface_v_table.t
     method has_connection : GD_bus_connection.d_bus_connection_t -> bool
     method set_flags : Gio_enums.dbusinterfaceskeletonflags -> unit
@@ -51,6 +52,10 @@ class d_bus_interface_skeleton (obj : D_bus_interface_skeleton.t) : d_bus_interf
   method get_object_path : unit -> string option =
     fun () ->
       (D_bus_interface_skeleton.get_object_path obj)
+
+  method get_properties : unit -> Gvariant.t =
+    fun () ->
+      (D_bus_interface_skeleton.get_properties obj)
 
   method get_vtable : unit -> D_bus_interface_v_table.t =
     fun () ->

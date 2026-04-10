@@ -10,6 +10,7 @@ end
 
 and menu_model_t = object
     inherit Gmenu_model_signals.menu_model_signals
+    method get_item_attribute_value : int -> string -> Gvariant_type.t option -> Gvariant.t option
     method get_item_link : int -> string -> menu_model_t option
     method get_n_items : unit -> int
     method is_mutable : unit -> bool
@@ -41,6 +42,10 @@ end
 
 and menu_model (obj : Menu_link_iter_and__menu_model.Menu_model.t) : menu_model_t = object (self)
   inherit Gmenu_model_signals.menu_model_signals obj
+
+  method get_item_attribute_value : int -> string -> Gvariant_type.t option -> Gvariant.t option =
+    fun item_index attribute expected_type ->
+      (Menu_link_iter_and__menu_model.Menu_model.get_item_attribute_value obj item_index attribute expected_type)
 
   method get_item_link : int -> string -> menu_model_t option =
     fun item_index link ->

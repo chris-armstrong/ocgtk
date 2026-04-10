@@ -15,6 +15,11 @@ to advance it to the first attribute (and determine if the first
 attribute exists at all). *)
 external next : t -> bool = "ml_g_menu_attribute_iter_next"
 
+(** Gets the value of the attribute at the current iterator position.
+
+The iterator is not advanced. *)
+external get_value : t -> Gvariant.t = "ml_g_menu_attribute_iter_get_value"
+
 (** Gets the name of the attribute at the current iterator position, as
 a string.
 

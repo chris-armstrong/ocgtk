@@ -27,6 +27,9 @@ external has_connection : t -> D_bus_connection.t -> bool = "ml_g_dbus_interface
 itself to be passed as @user_data. *)
 external get_vtable : t -> D_bus_interface_v_table.t = "ml_g_dbus_interface_skeleton_get_vtable"
 
+(** Gets all D-Bus properties for @interface_. *)
+external get_properties : t -> Gvariant.t = "ml_g_dbus_interface_skeleton_get_properties"
+
 (** Gets the object path that @interface_ is exported on, if any. *)
 external get_object_path : t -> string option = "ml_g_dbus_interface_skeleton_get_object_path"
 

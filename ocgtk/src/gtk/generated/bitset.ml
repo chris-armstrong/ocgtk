@@ -101,6 +101,24 @@ It is allowed for @self and @other to be the same bitset. Nothing will
 happen in that case. *)
 external intersect : t -> t -> unit = "ml_gtk_bitset_intersect"
 
+(** Gets the number of values that are part of the set from @first to @last
+(inclusive).
+
+Note that this function returns a `guint64`, because when all values are
+set, the return value is `G_MAXUINT + 1`. Unless you are sure this cannot
+happen (it can't with `GListModel`), be sure to use a 64bit type. *)
+external get_size_in_range : t -> int -> int -> UInt64.t = "ml_gtk_bitset_get_size_in_range"
+
+(** Gets the number of values that were added to the set.
+
+For example, if the set is empty, 0 is returned.
+
+Note that this function returns a `guint64`, because when all
+values are set, the return value is `G_MAXUINT + 1`. Unless you
+are sure this cannot happen (it can't with `GListModel`), be sure
+to use a 64bit type. *)
+external get_size : t -> UInt64.t = "ml_gtk_bitset_get_size"
+
 (** Returns the value of the @nth item in self.
 
 If @nth is >= the size of @self, 0 is returned. *)

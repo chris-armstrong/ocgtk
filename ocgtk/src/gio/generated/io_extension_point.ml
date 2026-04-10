@@ -55,6 +55,13 @@ g_io_extension_point_implement ("my-extension-point",
 type t = [`io_extension_point] Gobject.obj
 
 (* Methods *)
+(** Sets the required type for @extension_point to @type.
+All implementations must henceforth have this type. *)
+external set_required_type : t -> int -> unit = "ml_g_io_extension_point_set_required_type"
+
+(** Gets the required type for @extension_point. *)
+external get_required_type : t -> int = "ml_g_io_extension_point_get_required_type"
+
 (** Gets a list of all extensions that implement this extension point.
 The list is sorted by priority, beginning with the highest priority. *)
 external get_extensions : t -> Io_extension.t list = "ml_g_io_extension_point_get_extensions"

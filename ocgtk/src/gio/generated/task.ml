@@ -76,6 +76,11 @@ If you are using g_task_set_return_on_cancel() as well, then
 you must leave check-cancellable set %TRUE. *)
 external set_check_cancellable : t -> bool -> unit = "ml_g_task_set_check_cancellable"
 
+(** Sets @task's result to @result and completes the task (see
+g_task_return_pointer() for more discussion of exactly what this
+means). *)
+external return_int : t -> int -> unit = "ml_g_task_return_int"
+
 (** Checks if @task's #GCancellable has been cancelled, and if so, sets
 @task's error accordingly and completes the task (see
 g_task_return_pointer() for more discussion of exactly what this
@@ -86,6 +91,15 @@ external return_error_if_cancelled : t -> bool = "ml_g_task_return_error_if_canc
 g_task_return_pointer() for more discussion of exactly what this
 means). *)
 external return_boolean : t -> bool -> unit = "ml_g_task_return_boolean"
+
+(** Gets the result of @task as an integer (#gssize).
+
+If the task resulted in an error, or was cancelled, then this will
+instead return -1 and set @error.
+
+Since this method transfers ownership of the return value (or
+error) to the caller, you may only call it once. *)
+external propagate_int : t -> (int, GError.t) result = "ml_g_task_propagate_int"
 
 (** Gets the result of @task as a #gboolean.
 

@@ -5,6 +5,7 @@ class type bookmark_list_t = object
     method is_loading : unit -> bool
     method set_attributes : string option -> unit
     method set_io_priority : int -> unit
+    method item_type : int
     method loading : bool
     method n_items : int
     method as_bookmark_list : Bookmark_list.t

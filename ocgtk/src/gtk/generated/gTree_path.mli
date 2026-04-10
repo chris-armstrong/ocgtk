@@ -19,4 +19,5 @@ class tree_path : Tree_path.t -> tree_path_t
 
 val new_ : unit -> tree_path_t
 val new_first : unit -> tree_path_t
+val new_from_indicesv : int array -> Gsize.t -> tree_path_t
 val new_from_string : string -> tree_path_t

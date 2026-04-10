@@ -32,6 +32,14 @@ gboolean result = g_menu_attribute_iter_next(GMenuAttributeIter_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_g_menu_attribute_iter_get_value(value self)
+{
+CAMLparam1(self);
+
+GVariant* result = g_menu_attribute_iter_get_value(GMenuAttributeIter_val(self));
+CAMLreturn(Val_GVariant(result));
+}
+
 CAMLexport CAMLprim value ml_g_menu_attribute_iter_get_name(value self)
 {
 CAMLparam1(self);
@@ -44,6 +52,15 @@ CAMLreturn(caml_copy_string(result));
 
 
 CAMLexport CAMLprim value ml_g_menu_attribute_iter_get_name(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("MenuAttributeIter requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_menu_attribute_iter_get_value(value self)
 {
 CAMLparam1(self);
 (void)self;

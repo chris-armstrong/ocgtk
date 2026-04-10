@@ -69,6 +69,19 @@ future, support may be expanded to other platforms.
 You must only call this function once per commandline invocation. *)
 external get_stdin : t -> Input_stream.t option = "ml_g_application_command_line_get_stdin"
 
+(** Gets the platform data associated with the invocation of @cmdline.
+
+This is a #GVariant dictionary containing information about the
+context in which the invocation occurred.  It typically contains
+information like the current working directory and the startup
+notification ID.
+
+It comes from an untrusted external process and hence the types of all
+values must be validated before being used.
+
+For local invocation, it will be %NULL. *)
+external get_platform_data : t -> Gvariant.t option = "ml_g_application_command_line_get_platform_data"
+
 (** Determines if @cmdline represents a remote invocation. *)
 external get_is_remote : t -> bool = "ml_g_application_command_line_get_is_remote"
 

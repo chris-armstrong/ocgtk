@@ -30,6 +30,9 @@ external ref : t -> t = "ml_gdk_content_formats_builder_ref"
 (** Appends @mime_type to @builder if it has not already been added. *)
 external add_mime_type : t -> string -> unit = "ml_gdk_content_formats_builder_add_mime_type"
 
+(** Appends @type to @builder if it has not already been added. *)
+external add_gtype : t -> int -> unit = "ml_gdk_content_formats_builder_add_gtype"
+
 (** Appends all formats from @formats to @builder, skipping those that
 already exist. *)
 external add_formats : t -> Content_formats.t -> unit = "ml_gdk_content_formats_builder_add_formats"

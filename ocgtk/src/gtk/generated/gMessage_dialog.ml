@@ -2,7 +2,6 @@ class type message_dialog_t = object
     inherit GDialog.dialog_t
     method get_message_area : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
     method set_markup : string -> unit
-    method buttons : Gtk_enums.buttonstype
     method message_type : Gtk_enums.messagetype
     method set_message_type : Gtk_enums.messagetype -> unit
     method secondary_text : string
@@ -27,8 +26,6 @@ class message_dialog (obj : Message_dialog.t) : message_dialog_t = object (self)
   method set_markup : string -> unit =
     fun str ->
       (Message_dialog.set_markup obj str)
-
-  method buttons = Message_dialog.get_buttons obj
 
   method message_type = Message_dialog.get_message_type obj
   method set_message_type v =  Message_dialog.set_message_type obj v

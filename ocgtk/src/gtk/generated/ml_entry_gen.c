@@ -99,6 +99,14 @@ gtk_entry_set_max_length(GtkEntry_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_entry_set_invisible_char(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_entry_set_invisible_char(GtkEntry_val(self), Long_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_entry_set_input_purpose(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -267,6 +275,14 @@ gboolean result = gtk_entry_get_visibility(GtkEntry_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_entry_get_text_length(value self)
+{
+CAMLparam1(self);
+
+guint16 result = gtk_entry_get_text_length(GtkEntry_val(self));
+CAMLreturn(Val_uint16(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_entry_get_tabs(value self)
 {
 CAMLparam1(self);
@@ -314,6 +330,14 @@ CAMLparam1(self);
 
 int result = gtk_entry_get_max_length(GtkEntry_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_entry_get_invisible_char(value self)
+{
+CAMLparam1(self);
+
+gunichar result = gtk_entry_get_invisible_char(GtkEntry_val(self));
+CAMLreturn(Val_long(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_input_purpose(value self)

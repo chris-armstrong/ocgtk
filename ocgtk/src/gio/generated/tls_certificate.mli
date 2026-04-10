@@ -13,6 +13,9 @@ external new_from_file_with_password : string -> string -> (t, GError.t) result 
 external new_from_files : string -> string -> (t, GError.t) result = "ml_g_tls_certificate_new_from_files"
 
 (** Create a new TlsCertificate *)
+external new_from_pem : string -> int -> (t, GError.t) result = "ml_g_tls_certificate_new_from_pem"
+
+(** Create a new TlsCertificate *)
 external new_from_pkcs11_uris : string -> string option -> (t, GError.t) result = "ml_g_tls_certificate_new_from_pkcs11_uris"
 
 (* Methods *)
@@ -71,9 +74,6 @@ external get_issuer : t -> t option = "ml_g_tls_certificate_get_issuer"
 
 (** Get property: certificate-pem *)
 external get_certificate_pem : t -> string = "ml_g_tls_certificate_get_certificate_pem"
-
-(** Get property: password *)
-external get_password : t -> string = "ml_g_tls_certificate_get_password"
 
 (** Get property: pkcs11-uri *)
 external get_pkcs11_uri : t -> string = "ml_g_tls_certificate_get_pkcs11_uri"

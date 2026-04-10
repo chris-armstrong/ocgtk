@@ -324,6 +324,20 @@ and Font
   type t = [`font | `object_] Gobject.obj
 
   (* Methods *)
+  (** Serializes the @font in a way that can be uniquely identified.
+
+  There are no guarantees about the format of the output across different
+  versions of Pango.
+
+  The intended use of this function is testing, benchmarking and debugging.
+  The format is not meant as a permanent storage format.
+
+  To recreate a font from its serialized form, use [func@Pango.Font.deserialize]. *)
+  external serialize : t -> Glib_bytes.t = "ml_pango_font_serialize"
+
+  (** Returns whether the font provides a glyph for this character. *)
+  external has_char : t -> int -> bool = "ml_pango_font_has_char"
+
   (** Gets overall metric information for a font.
 
   Since the metrics may be substantially different for different scripts,
@@ -370,6 +384,20 @@ end = struct
   type t = [`font | `object_] Gobject.obj
 
   (* Methods *)
+  (** Serializes the @font in a way that can be uniquely identified.
+
+  There are no guarantees about the format of the output across different
+  versions of Pango.
+
+  The intended use of this function is testing, benchmarking and debugging.
+  The format is not meant as a permanent storage format.
+
+  To recreate a font from its serialized form, use [func@Pango.Font.deserialize]. *)
+  external serialize : t -> Glib_bytes.t = "ml_pango_font_serialize"
+
+  (** Returns whether the font provides a glyph for this character. *)
+  external has_char : t -> int -> bool = "ml_pango_font_has_char"
+
   (** Gets overall metric information for a font.
 
   Since the metrics may be substantially different for different scripts,
@@ -479,6 +507,9 @@ and Font_map
 
   (* Properties *)
 
+  (** Get property: item-type *)
+  external get_item_type : t -> int = "ml_pango_font_map_get_item_type"
+
   (** Get property: n-items *)
   external get_n_items : t -> int = "ml_pango_font_map_get_n_items"
 
@@ -546,6 +577,9 @@ end = struct
   external changed : t -> unit = "ml_pango_font_map_changed"
 
   (* Properties *)
+
+  (** Get property: item-type *)
+  external get_item_type : t -> int = "ml_pango_font_map_get_item_type"
 
   (** Get property: n-items *)
   external get_n_items : t -> int = "ml_pango_font_map_get_n_items"

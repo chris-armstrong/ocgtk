@@ -136,6 +136,22 @@ g_menu_item_set_detailed_action(GMenuItem_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_menu_item_set_attribute_value(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_menu_item_set_attribute_value(GMenuItem_val(self), String_val(arg1), Option_val(arg2, GVariant_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_menu_item_set_action_and_target_value(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_menu_item_set_action_and_target_value(GMenuItem_val(self), String_option_val(arg1), Option_val(arg2, GVariant_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 #if GLIB_CHECK_VERSION(2,34,0)
 
 CAMLexport CAMLprim value ml_g_menu_item_get_link(value self, value arg1)
@@ -153,6 +169,29 @@ CAMLexport CAMLprim value ml_g_menu_item_get_link(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
+caml_failwith("MenuItem requires GLib >= 2.34");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,34,0)
+
+CAMLexport CAMLprim value ml_g_menu_item_get_attribute_value(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+GVariant* result = g_menu_item_get_attribute_value(GMenuItem_val(self), String_val(arg1), Option_val(arg2, GVariantType_val, NULL));
+CAMLreturn(Val_option(result, Val_GVariant));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_menu_item_get_attribute_value(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
 caml_failwith("MenuItem requires GLib >= 2.34");
 return Val_unit;
 }
@@ -201,11 +240,44 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_g_menu_item_get_attribute_value(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("MenuItem requires GLib >= 2.32");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_menu_item_get_link(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
+caml_failwith("MenuItem requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_menu_item_set_action_and_target_value(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("MenuItem requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_menu_item_set_attribute_value(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
 caml_failwith("MenuItem requires GLib >= 2.32");
 return Val_unit;
 }

@@ -56,6 +56,7 @@ and window_t = object
     method maximize : unit -> unit
     method minimize : unit -> unit
     method present : unit -> unit
+    method present_with_time : UInt32.t -> unit
     method set_application : application_t option -> unit
     method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
     method set_decorated : bool -> unit
@@ -300,6 +301,10 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
   method present : unit -> unit =
     fun () ->
       (Application_and__window_and__window_group.Window.present obj)
+
+  method present_with_time : UInt32.t -> unit =
+    fun timestamp ->
+      (Application_and__window_and__window_group.Window.present_with_time obj timestamp)
 
   method set_application : application_t option -> unit =
     fun application ->

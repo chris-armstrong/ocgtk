@@ -3,6 +3,7 @@ class type event_controller_t = object
     method get_current_event : unit -> Ocgtk_gdk.Gdk.Event.event_t option
     method get_current_event_device : unit -> Ocgtk_gdk.Gdk.Device.device_t option
     method get_current_event_state : unit -> Ocgtk_gdk.Gdk.modifiertype
+    method get_current_event_time : unit -> UInt32.t
     method get_name : unit -> string option
     method get_propagation_limit : unit -> Gtk_enums.propagationlimit
     method get_propagation_phase : unit -> Gtk_enums.propagationphase
@@ -41,6 +42,7 @@ and widget_t = object
     inherit Gwidget_signals.widget_signals
     method action_set_enabled : string -> bool -> unit
     method activate : unit -> bool
+    method activate_action_variant : string -> Gvariant.t option -> bool
     method activate_default : unit -> unit
     method add_controller : event_controller_t -> unit
     method add_css_class : string -> unit
@@ -51,11 +53,13 @@ and widget_t = object
     method contains : float -> float -> bool
     method create_pango_context : unit -> Ocgtk_pango.Pango.Context.context_t
     method create_pango_layout : string option -> Ocgtk_pango.Pango.Layout.layout_t
+    method dispose_template : int -> unit
     method drag_check_threshold : int -> int -> int -> int -> bool
     method error_bell : unit -> unit
     method get_allocated_baseline : unit -> int
     method get_allocated_height : unit -> int
     method get_allocated_width : unit -> int
+    method get_ancestor : int -> widget_t option
     method get_baseline : unit -> int
     method get_can_focus : unit -> bool
     method get_can_target : unit -> bool
@@ -104,6 +108,7 @@ and widget_t = object
     method get_size : Gtk_enums.orientation -> int
     method get_state_flags : unit -> Gtk_enums.stateflags
     method get_style_context : unit -> GStyle_context.style_context_t
+    method get_template_child : int -> string -> [`object_] Gobject.obj
     method get_tooltip_markup : unit -> string option
     method get_tooltip_text : unit -> string option
     method get_valign : unit -> Gtk_enums.align

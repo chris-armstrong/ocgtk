@@ -13,9 +13,10 @@
  (name ocgtk_common)
  (public_name ocgtk.common)
  (wrapped false)
+ (libraries integers)
  (foreign_stubs
   (language c)
-  (names wrappers ml_glib ml_gobject)
+  (names wrappers ml_glib ml_gobject ml_gvariant ml_gvariant_type ml_glib_bytes)
   (flags
    -fPIC
    -I../gtk/generated
@@ -24,4 +25,7 @@
  (c_library_flags
   (:include clink-gtk4.sexp))
  (install_c_headers wrappers)
- (modules ocgtk_common Gaux Gpointer GError Gobject Glib))
+  ; UInt8/UInt16/UInt32/UInt64 come from uInt8.ml/uInt16.ml/uInt32.ml/uInt64.ml respectively.
+  ; Int8/Int16/Int32 come from int8.ml/int16.ml/int32.ml respectively.
+  (modules ocgtk_common Gaux Gpointer GError Gobject Glib Gvariant Gvariant_type Glib_bytes
+           Bounded_int UInt8 Int8 UInt16 Int16 UInt32 Int32 UInt64 Gsize))

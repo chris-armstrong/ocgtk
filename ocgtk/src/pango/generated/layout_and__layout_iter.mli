@@ -106,6 +106,21 @@ module rec Layout : sig
 
   Replaces the current text and attribute list.
 
+  If @accel_marker is nonzero, the given character will mark the
+  character following it as an accelerator. For example, @accel_marker
+  might be an ampersand or underscore. All characters marked
+  as an accelerator will receive a %PANGO_UNDERLINE_LOW attribute,
+  and the first character so marked will be returned in @accel_char.
+  Two @accel_marker characters following each other produce a single
+  literal @accel_marker character. *)
+  external set_markup_with_accel : t -> string -> int -> int -> int = "ml_pango_layout_set_markup_with_accel"
+
+  (** Sets the layout text and attribute list from marked-up text.
+
+  See [Pango Markup](pango_markup.html)).
+
+  Replaces the current text and attribute list.
+
   This is the same as [method@Pango.Layout.set_markup_with_accel],
   but the markup text isn't scanned for accelerators. *)
   external set_markup : t -> string -> int -> unit = "ml_pango_layout_set_markup"
@@ -246,6 +261,16 @@ module rec Layout : sig
 
   The default alignment is %PANGO_ALIGN_LEFT. *)
   external set_alignment : t -> Pango_enums.alignment -> unit = "ml_pango_layout_set_alignment"
+
+  (** Serializes the @layout for later deserialization via [func@Pango.Layout.deserialize].
+
+  There are no guarantees about the format of the output across different
+  versions of Pango and [func@Pango.Layout.deserialize] will reject data
+  that it cannot parse.
+
+  The intended use of this function is testing, benchmarking and debugging.
+  The format is not meant as a permanent storage format. *)
+  external serialize : t -> Pango_enums.layoutserializeflags -> Glib_bytes.t = "ml_pango_layout_serialize"
 
   (** Computes a new cursor position from an old position and a direction.
 

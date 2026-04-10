@@ -1,5 +1,6 @@
 class type content_formats_builder_t = object
     method add_formats : Content_formats.t -> unit
+    method add_gtype : int -> unit
     method add_mime_type : string -> unit
     method ref : unit -> Content_formats_builder.t
     method to_formats : unit -> Content_formats.t
@@ -13,6 +14,10 @@ class content_formats_builder (obj : Content_formats_builder.t) : content_format
   method add_formats : Content_formats.t -> unit =
     fun formats ->
       (Content_formats_builder.add_formats obj formats)
+
+  method add_gtype : int -> unit =
+    fun type_ ->
+      (Content_formats_builder.add_gtype obj type_)
 
   method add_mime_type : string -> unit =
     fun mime_type ->

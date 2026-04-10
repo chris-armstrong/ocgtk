@@ -58,6 +58,38 @@ gboolean result = g_socket_listener_add_socket(GSocketListener_val(self), GSocke
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+CAMLexport CAMLprim value ml_g_socket_listener_add_inet_port(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+
+gboolean result = g_socket_listener_add_inet_port(GSocketListener_val(self), UInt16_val(arg1), Option_val(arg2, GObject_ext_of_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+#if GLIB_CHECK_VERSION(2,24,0)
+
+CAMLexport CAMLprim value ml_g_socket_listener_add_any_inet_port(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+guint16 result = g_socket_listener_add_any_inet_port(GSocketListener_val(self), Option_val(arg1, GObject_ext_of_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_uint16(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_socket_listener_add_any_inet_port(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SocketListener requires GLib >= 2.24");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_g_socket_listener_get_listen_backlog(value self)
 {
     CAMLparam1(self);
@@ -97,6 +129,27 @@ CAMLexport CAMLprim value ml_g_socket_listener_new(value unit)
 {
 CAMLparam1(unit);
 (void)unit;
+caml_failwith("SocketListener requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_listener_add_any_inet_port(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SocketListener requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_listener_add_inet_port(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
 caml_failwith("SocketListener requires GLib >= 2.22");
 return Val_unit;
 }

@@ -2,6 +2,8 @@
 
 class type d_bus_proxy_t = object
     inherit Gd_bus_proxy_signals.d_bus_proxy_signals
+    method call_sync : string -> Gvariant.t option -> Gio_enums.dbuscallflags -> int -> GCancellable.cancellable_t option -> (Gvariant.t, GError.t) result
+    method get_cached_property : string -> Gvariant.t option
     method get_cached_property_names : unit -> string array option
     method get_connection : unit -> GD_bus_connection.d_bus_connection_t
     method get_default_timeout : unit -> int
@@ -11,9 +13,9 @@ class type d_bus_proxy_t = object
     method get_name : unit -> string option
     method get_name_owner : unit -> string option
     method get_object_path : unit -> string
+    method set_cached_property : string -> Gvariant.t option -> unit
     method set_default_timeout : int -> unit
     method set_interface_info : D_bus_interface_info.t option -> unit
-    method g_bus_type : Gio_enums.bustype
     method g_connection : GD_bus_connection.d_bus_connection_t
     method g_default_timeout : int
     method set_g_default_timeout : int -> unit
@@ -30,6 +32,15 @@ end
 (* High-level class for DBusProxy *)
 class d_bus_proxy (obj : D_bus_proxy.t) : d_bus_proxy_t = object (self)
   inherit Gd_bus_proxy_signals.d_bus_proxy_signals obj
+
+  method call_sync : string -> Gvariant.t option -> Gio_enums.dbuscallflags -> int -> GCancellable.cancellable_t option -> (Gvariant.t, GError.t) result =
+    fun method_name parameters flags timeout_msec cancellable ->
+      let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
+      (D_bus_proxy.call_sync obj method_name parameters flags timeout_msec cancellable)
+
+  method get_cached_property : string -> Gvariant.t option =
+    fun property_name ->
+      (D_bus_proxy.get_cached_property obj property_name)
 
   method get_cached_property_names : unit -> string array option =
     fun () ->
@@ -67,6 +78,10 @@ class d_bus_proxy (obj : D_bus_proxy.t) : d_bus_proxy_t = object (self)
     fun () ->
       (D_bus_proxy.get_object_path obj)
 
+  method set_cached_property : string -> Gvariant.t option -> unit =
+    fun property_name value ->
+      (D_bus_proxy.set_cached_property obj property_name value)
+
   method set_default_timeout : int -> unit =
     fun timeout_msec ->
       (D_bus_proxy.set_default_timeout obj timeout_msec)
@@ -74,8 +89,6 @@ class d_bus_proxy (obj : D_bus_proxy.t) : d_bus_proxy_t = object (self)
   method set_interface_info : D_bus_interface_info.t option -> unit =
     fun info ->
       (D_bus_proxy.set_interface_info obj info)
-
-  method g_bus_type = D_bus_proxy.get_g_bus_type obj
 
   method g_connection = new GD_bus_connection.d_bus_connection (D_bus_proxy.get_g_connection obj)
 

@@ -3,9 +3,15 @@
 
 type t = [`drop_target | `event_controller | `object_] Gobject.obj
 
+(** Create a new DropTarget *)
+external new_ : int -> Ocgtk_gdk.Gdk.dragaction -> t = "ml_gtk_drop_target_new"
+
 (* Methods *)
 (** Sets whether data should be preloaded on hover. *)
 external set_preload : t -> bool -> unit = "ml_gtk_drop_target_set_preload"
+
+(** Sets the supported `GType`s for this drop target. *)
+external set_gtypes : t -> int array option -> Gsize.t -> unit = "ml_gtk_drop_target_set_gtypes"
 
 (** Sets the actions that this drop target supports. *)
 external set_actions : t -> Ocgtk_gdk.Gdk.dragaction -> unit = "ml_gtk_drop_target_set_actions"
@@ -22,6 +28,11 @@ external reject : t -> unit = "ml_gtk_drop_target_reject"
 
 (** Gets whether data should be preloaded on hover. *)
 external get_preload : t -> bool = "ml_gtk_drop_target_get_preload"
+
+(** Gets the list of supported `GType`s that can be dropped on the target.
+
+If no types have been set, `NULL` will be returned. *)
+external get_gtypes : t -> int array option * Gsize.t = "ml_gtk_drop_target_get_gtypes"
 
 (** Gets the data formats that this drop target accepts.
 

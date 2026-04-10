@@ -1,7 +1,9 @@
 class type socket_client_t = object
     inherit Gsocket_client_signals.socket_client_signals
     method add_application_proxy : string -> unit
+    method connect_to_host : string -> UInt16.t -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result
     method connect_to_service : string -> string -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result
+    method connect_to_uri : string -> UInt16.t -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result
     method get_enable_proxy : unit -> bool
     method get_family : unit -> Gio_enums.socketfamily
     method get_local_address : unit -> GSocket_address.socket_address_t option

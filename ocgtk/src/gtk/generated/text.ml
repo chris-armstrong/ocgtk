@@ -61,6 +61,14 @@ This is equivalent to getting @self's `GtkEntryBuffer` and
 calling [method@Gtk.EntryBuffer.set_max_length] on it. *)
 external set_max_length : t -> int -> unit = "ml_gtk_text_set_max_length"
 
+(** Sets the character to use when in “password mode”.
+
+By default, GTK picks the best invisible char available in the
+current font. If you set the invisible char to 0, then the user
+will get no feedback at all; there will be no text on the screen
+as they type. *)
+external set_invisible_char : t -> int -> unit = "ml_gtk_text_set_invisible_char"
+
 (** Sets the input purpose of the `GtkText`.
 
 This can be used by on-screen keyboards and other
@@ -113,6 +121,12 @@ external get_visibility : t -> bool = "ml_gtk_text_get_visibility"
 that is pasted into the widget *)
 external get_truncate_multiline : t -> bool = "ml_gtk_text_get_truncate_multiline"
 
+(** Retrieves the current length of the text in @self.
+
+This is equivalent to getting @self's `GtkEntryBuffer`
+and calling [method@Gtk.EntryBuffer.get_length] on it. *)
+external get_text_length : t -> UInt16.t = "ml_gtk_text_get_text_length"
+
 (** Gets the tabstops that were set on the `GtkText`.
 
 See [method@Gtk.Text.set_tabs]. *)
@@ -140,6 +154,13 @@ See [method@Gtk.Text.set_max_length].
 This is equivalent to getting @self's `GtkEntryBuffer` and
 calling [method@Gtk.EntryBuffer.get_max_length] on it. *)
 external get_max_length : t -> int = "ml_gtk_text_get_max_length"
+
+(** Retrieves the character displayed when visibility is set to false.
+
+Note that GTK does not compute this value unless it needs it,
+so the value returned by this function is not very useful unless
+it has been explicitly set with [method@Gtk.Text.set_invisible_char]. *)
+external get_invisible_char : t -> int = "ml_gtk_text_get_invisible_char"
 
 (** Gets the input purpose of the `GtkText`. *)
 external get_input_purpose : t -> Gtk_enums.inputpurpose = "ml_gtk_text_get_input_purpose"
@@ -170,6 +191,18 @@ the default widget for the window containing @self.
 
 See [method@Gtk.Text.set_activates_default]. *)
 external get_activates_default : t -> bool = "ml_gtk_text_get_activates_default"
+
+(** Determine the positions of the strong and weak cursors if the
+insertion point in the layout is at @position.
+
+The position of each cursor is stored as a zero-width rectangle.
+The strong cursor location is the location where characters of
+the directionality equal to the base direction are inserted.
+The weak cursor location is the location where characters of
+the directionality opposite to the base direction are inserted.
+
+The rectangle positions are in widget coordinates. *)
+external compute_cursor_extents : t -> Gsize.t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t * Ocgtk_graphene.Graphene.Wrappers.Rect.t = "ml_gtk_text_compute_cursor_extents"
 
 (* Properties *)
 

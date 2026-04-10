@@ -324,6 +324,14 @@ int result = gtk_text_iter_get_chars_in_line(GtkTextIter_val(self));
 CAMLreturn(Val_int(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_text_iter_get_char(value self)
+{
+CAMLparam1(self);
+
+gunichar result = gtk_text_iter_get_char(GtkTextIter_val(self));
+CAMLreturn(Val_long(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_text_iter_get_bytes_in_line(value self)
 {
 CAMLparam1(self);

@@ -1,8 +1,10 @@
 class type media_stream_t = object
+    method get_duration : unit -> int64
     method get_ended : unit -> bool
     method get_loop : unit -> bool
     method get_muted : unit -> bool
     method get_playing : unit -> bool
+    method get_timestamp : unit -> int64
     method get_volume : unit -> float
     method has_audio : unit -> bool
     method has_video : unit -> bool
@@ -12,6 +14,7 @@ class type media_stream_t = object
     method pause : unit -> unit
     method play : unit -> unit
     method realize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit
+    method seek : int64 -> unit
     method seek_failed : unit -> unit
     method seek_success : unit -> unit
     method set_loop : bool -> unit
@@ -19,8 +22,10 @@ class type media_stream_t = object
     method set_playing : bool -> unit
     method set_volume : float -> unit
     method stream_ended : unit -> unit
+    method stream_prepared : bool -> bool -> bool -> int64 -> unit
     method stream_unprepared : unit -> unit
     method unrealize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit
+    method update : int64 -> unit
     method prepared : bool
     method set_prepared : bool -> unit
     method seekable : bool
@@ -30,6 +35,10 @@ end
 
 (* High-level class for MediaStream *)
 class media_stream (obj : Media_stream.t) : media_stream_t = object (self)
+
+  method get_duration : unit -> int64 =
+    fun () ->
+      (Media_stream.get_duration obj)
 
   method get_ended : unit -> bool =
     fun () ->
@@ -46,6 +55,10 @@ class media_stream (obj : Media_stream.t) : media_stream_t = object (self)
   method get_playing : unit -> bool =
     fun () ->
       (Media_stream.get_playing obj)
+
+  method get_timestamp : unit -> int64 =
+    fun () ->
+      (Media_stream.get_timestamp obj)
 
   method get_volume : unit -> float =
     fun () ->
@@ -84,6 +97,10 @@ class media_stream (obj : Media_stream.t) : media_stream_t = object (self)
       let surface = surface#as_surface in
       (Media_stream.realize obj surface)
 
+  method seek : int64 -> unit =
+    fun timestamp ->
+      (Media_stream.seek obj timestamp)
+
   method seek_failed : unit -> unit =
     fun () ->
       (Media_stream.seek_failed obj)
@@ -112,6 +129,10 @@ class media_stream (obj : Media_stream.t) : media_stream_t = object (self)
     fun () ->
       (Media_stream.stream_ended obj)
 
+  method stream_prepared : bool -> bool -> bool -> int64 -> unit =
+    fun has_audio has_video seekable duration ->
+      (Media_stream.stream_prepared obj has_audio has_video seekable duration)
+
   method stream_unprepared : unit -> unit =
     fun () ->
       (Media_stream.stream_unprepared obj)
@@ -120,6 +141,10 @@ class media_stream (obj : Media_stream.t) : media_stream_t = object (self)
     fun surface ->
       let surface = surface#as_surface in
       (Media_stream.unrealize obj surface)
+
+  method update : int64 -> unit =
+    fun timestamp ->
+      (Media_stream.update obj timestamp)
 
   method prepared = Media_stream.get_prepared obj
   method set_prepared v =  Media_stream.set_prepared obj v

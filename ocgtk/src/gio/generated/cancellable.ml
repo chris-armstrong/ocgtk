@@ -67,6 +67,22 @@ the returned file descriptor.
 See also g_cancellable_make_pollfd(). *)
 external get_fd : t -> int = "ml_g_cancellable_get_fd"
 
+(** Disconnects a handler from a cancellable instance similar to
+g_signal_handler_disconnect().  Additionally, in the event that a
+signal handler is currently running, this call will block until the
+handler has finished.  Calling this function from a
+#GCancellable::cancelled signal handler will therefore result in a
+deadlock.
+
+This avoids a race condition where a thread cancels at the
+same time as the cancellable operation is finished and the
+signal handler is removed. See #GCancellable::cancelled for
+details on how to use this.
+
+If @cancellable is %NULL or @handler_id is `0` this function does
+nothing. *)
+external disconnect : t -> int -> unit = "ml_g_cancellable_disconnect"
+
 (** Will set @cancellable to cancelled, and will emit the
 #GCancellable::cancelled signal. (However, see the warning about
 race conditions in the documentation for that signal if you are

@@ -49,6 +49,14 @@ const char* result = gdk_content_serializer_get_mime_type(GdkContentSerializer_v
 CAMLreturn(caml_copy_string(result));
 }
 
+CAMLexport CAMLprim value ml_gdk_content_serializer_get_gtype(value self)
+{
+CAMLparam1(self);
+
+GType result = gdk_content_serializer_get_gtype(GdkContentSerializer_val(self));
+CAMLreturn(Val_GType(result));
+}
+
 CAMLexport CAMLprim value ml_gdk_content_serializer_get_cancellable(value self)
 {
 CAMLparam1(self);

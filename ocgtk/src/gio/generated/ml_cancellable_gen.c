@@ -101,6 +101,28 @@ int result = g_cancellable_get_fd(GCancellable_val(self));
 CAMLreturn(Val_int(result));
 }
 
+#if GLIB_CHECK_VERSION(2,22,0)
+
+CAMLexport CAMLprim value ml_g_cancellable_disconnect(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_cancellable_disconnect(GCancellable_val(self), Long_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_cancellable_disconnect(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Cancellable requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_g_cancellable_cancel(value self)
 {
 CAMLparam1(self);

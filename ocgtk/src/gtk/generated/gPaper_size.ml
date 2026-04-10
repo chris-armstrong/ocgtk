@@ -14,6 +14,7 @@ class type paper_size_t = object
     method is_equal : Paper_size.t -> bool
     method is_ipp : unit -> bool
     method set_size : float -> float -> Gtk_enums.unit -> unit
+    method to_gvariant : unit -> Gvariant.t
     method as_paper_size : Paper_size.t
 end
 
@@ -80,6 +81,10 @@ class paper_size (obj : Paper_size.t) : paper_size_t = object (self)
     fun width height unit ->
       (Paper_size.set_size obj width height unit)
 
+  method to_gvariant : unit -> Gvariant.t =
+    fun () ->
+      (Paper_size.to_gvariant obj)
+
     method as_paper_size = obj
 end
 
@@ -89,6 +94,10 @@ let new_ (name : string option) : paper_size_t =
 
 let new_custom (name : string) (display_name : string) (width : float) (height : float) (unit : Gtk_enums.unit) : paper_size_t =
   let obj_ = Paper_size.new_custom name display_name width height unit in
+  new paper_size obj_
+
+let new_from_gvariant (variant : Gvariant.t) : paper_size_t =
+  let obj_ = Paper_size.new_from_gvariant variant in
   new paper_size obj_
 
 let new_from_ipp (ipp_name : string) (width : float) (height : float) : paper_size_t =

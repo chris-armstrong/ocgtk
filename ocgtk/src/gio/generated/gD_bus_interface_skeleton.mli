@@ -7,6 +7,7 @@ class type d_bus_interface_skeleton_t = object
     method get_flags : unit -> Gio_enums.dbusinterfaceskeletonflags
     method get_info : unit -> D_bus_interface_info.t
     method get_object_path : unit -> string option
+    method get_properties : unit -> Gvariant.t
     method get_vtable : unit -> D_bus_interface_v_table.t
     method has_connection : GD_bus_connection.d_bus_connection_t -> bool
     method set_flags : Gio_enums.dbusinterfaceskeletonflags -> unit

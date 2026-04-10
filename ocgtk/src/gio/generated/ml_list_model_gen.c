@@ -88,3 +88,24 @@ caml_failwith("ListModel requires GLib >= 2.44");
 return Val_unit;
 }
 #endif
+
+#if GLIB_CHECK_VERSION(2,44,0)
+
+CAMLexport CAMLprim value ml_g_list_model_get_item_type(value self)
+{
+CAMLparam1(self);
+
+GType result = g_list_model_get_item_type(GListModel_val(self));
+CAMLreturn(Val_GType(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_list_model_get_item_type(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ListModel requires GLib >= 2.44");
+return Val_unit;
+}
+#endif

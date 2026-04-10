@@ -1,9 +1,11 @@
 class type tab_array_t = object
     method copy : unit -> Tab_array.t
     method free : unit -> unit
+    method get_decimal_point : int -> int
     method get_positions_in_pixels : unit -> bool
     method get_size : unit -> int
     method resize : int -> unit
+    method set_decimal_point : int -> int -> unit
     method set_positions_in_pixels : bool -> unit
     method set_tab : int -> Pango_enums.tabalign -> int -> unit
     method sort : unit -> unit
@@ -22,6 +24,10 @@ class tab_array (obj : Tab_array.t) : tab_array_t = object (self)
     fun () ->
       (Tab_array.free obj)
 
+  method get_decimal_point : int -> int =
+    fun tab_index ->
+      (Tab_array.get_decimal_point obj tab_index)
+
   method get_positions_in_pixels : unit -> bool =
     fun () ->
       (Tab_array.get_positions_in_pixels obj)
@@ -33,6 +39,10 @@ class tab_array (obj : Tab_array.t) : tab_array_t = object (self)
   method resize : int -> unit =
     fun new_size ->
       (Tab_array.resize obj new_size)
+
+  method set_decimal_point : int -> int -> unit =
+    fun tab_index decimal_point ->
+      (Tab_array.set_decimal_point obj tab_index decimal_point)
 
   method set_positions_in_pixels : bool -> unit =
     fun positions_in_pixels ->

@@ -5,6 +5,7 @@ class type application_command_line_t = object
     method get_environ : unit -> string array
     method get_exit_status : unit -> int
     method get_is_remote : unit -> bool
+    method get_platform_data : unit -> Gvariant.t option
     method get_stdin : unit -> GInput_stream.input_stream_t option
     method getenv : string -> string option
     method print_literal : string -> unit
@@ -39,6 +40,10 @@ class application_command_line (obj : Application_command_line.t) : application_
   method get_is_remote : unit -> bool =
     fun () ->
       (Application_command_line.get_is_remote obj)
+
+  method get_platform_data : unit -> Gvariant.t option =
+    fun () ->
+      (Application_command_line.get_platform_data obj)
 
   method get_stdin : unit -> GInput_stream.input_stream_t option =
     fun () ->

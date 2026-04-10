@@ -14,6 +14,7 @@ and font_family_t = object
     method get_name : unit -> string
     method is_monospace : unit -> bool
     method is_variable : unit -> bool
+    method item_type : int
     method n_items : int
     method as_font_family : Font_face_and__font_family.Font_family.t
 end
@@ -57,6 +58,8 @@ and font_family (obj : Font_face_and__font_family.Font_family.t) : font_family_t
   method is_variable : unit -> bool =
     fun () ->
       (Font_face_and__font_family.Font_family.is_variable obj)
+
+  method item_type = Font_face_and__font_family.Font_family.get_item_type obj
 
   method n_items = Font_face_and__font_family.Font_family.get_n_items obj
 

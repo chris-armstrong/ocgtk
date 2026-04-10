@@ -83,6 +83,36 @@ gtk_shortcut_controller_add_shortcut(GtkShortcutController_val(self), GtkShortcu
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,8,0)
+
+CAMLexport CAMLprim value ml_gtk_shortcut_controller_get_item_type(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkShortcutController *obj = (GtkShortcutController *)GtkShortcutController_val(self);
+    GType *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "item-type");
+if (pspec == NULL) caml_failwith("ml_gtk_shortcut_controller_get_item_type: property 'item-type' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "item-type", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GType(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_shortcut_controller_get_item_type(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ShortcutController requires GTK >= 4.8");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gtk_shortcut_controller_get_mnemonic_modifiers(value self)
 {
     CAMLparam1(self);
@@ -114,23 +144,6 @@ g_object_set_property(G_OBJECT(obj), "mnemonic-modifiers", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
-
-CAMLexport CAMLprim value ml_gtk_shortcut_controller_get_model(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GtkShortcutController *obj = (GtkShortcutController *)GtkShortcutController_val(self);
-    GListModel *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "model");
-if (pspec == NULL) caml_failwith("ml_gtk_shortcut_controller_get_model: property 'model' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "model", &prop_gvalue);
-          caml_failwith("unsupported property type");
-
-      result = Val_GListModel(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
 
 #if GTK_CHECK_VERSION(4,8,0)
 

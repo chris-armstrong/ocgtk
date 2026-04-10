@@ -25,6 +25,29 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GdkTexture(obj));
 }
+#if GTK_CHECK_VERSION(4,6,0)
+
+CAMLexport CAMLprim value ml_gdk_texture_new_from_bytes(value arg1)
+{
+CAMLparam1(arg1);
+GError *error = NULL;
+    
+GdkTexture *obj = gdk_texture_new_from_bytes(GBytes_val(arg1), &error);
+if (obj) g_object_ref_sink(obj);
+
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkTexture(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+#else
+
+CAMLexport CAMLprim value ml_gdk_texture_new_from_bytes(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("Texture requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gdk_texture_new_from_file(value arg1)
 {
 CAMLparam1(arg1);
@@ -69,6 +92,27 @@ CAMLreturn(Val_GdkTexture(obj));
 }
 #if GTK_CHECK_VERSION(4,6,0)
 
+CAMLexport CAMLprim value ml_gdk_texture_save_to_tiff_bytes(value self)
+{
+CAMLparam1(self);
+
+GBytes* result = gdk_texture_save_to_tiff_bytes(GdkTexture_val(self));
+CAMLreturn(Val_GBytes(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_texture_save_to_tiff_bytes(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Texture requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,6,0)
+
 CAMLexport CAMLprim value ml_gdk_texture_save_to_tiff(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -84,6 +128,27 @@ CAMLexport CAMLprim value ml_gdk_texture_save_to_tiff(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
+caml_failwith("Texture requires GTK >= 4.6");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,6,0)
+
+CAMLexport CAMLprim value ml_gdk_texture_save_to_png_bytes(value self)
+{
+CAMLparam1(self);
+
+GBytes* result = gdk_texture_save_to_png_bytes(GdkTexture_val(self));
+CAMLreturn(Val_GBytes(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_texture_save_to_png_bytes(value self)
+{
+CAMLparam1(self);
+(void)self;
 caml_failwith("Texture requires GTK >= 4.6");
 return Val_unit;
 }

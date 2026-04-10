@@ -109,9 +109,6 @@ external activate : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t -> Event_controller_and_
 
 (* Properties *)
 
-(** Get property: cell-background *)
-external get_cell_background : t -> string = "ml_gtk_cell_renderer_get_cell_background"
-
 (** Set property: cell-background *)
 external set_cell_background : t -> string -> unit = "ml_gtk_cell_renderer_set_cell_background"
 

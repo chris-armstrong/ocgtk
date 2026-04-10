@@ -19,6 +19,7 @@ class type page_setup_t = object
     method set_right_margin : float -> Gtk_enums.unit -> unit
     method set_top_margin : float -> Gtk_enums.unit -> unit
     method to_file : string -> (bool, GError.t) result
+    method to_gvariant : unit -> Gvariant.t
     method as_page_setup : Page_setup.t
 end
 
@@ -26,3 +27,4 @@ class page_setup : Page_setup.t -> page_setup_t
 
 val new_ : unit -> page_setup_t
 val new_from_file : string -> (page_setup_t, GError.t) result
+val new_from_gvariant : Gvariant.t -> page_setup_t

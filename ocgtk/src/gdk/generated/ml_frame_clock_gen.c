@@ -24,6 +24,52 @@ gdk_frame_clock_request_phase(GdkFrameClock_val(self), GdkFrameClockPhase_val(ar
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gdk_frame_clock_get_timings(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GdkFrameTimings* result = gdk_frame_clock_get_timings(GdkFrameClock_val(self), Int64_val(arg1));
+CAMLreturn(Val_option(result, Val_GdkFrameTimings));
+}
+
+CAMLexport CAMLprim value ml_gdk_frame_clock_get_refresh_info(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gint64 out2;
+gint64 out3;
+
+gdk_frame_clock_get_refresh_info(GdkFrameClock_val(self), Int64_val(arg1), &out2, &out3);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, caml_copy_int64(out2));
+    Store_field(ret, 1, caml_copy_int64(out3));
+    CAMLreturn(ret);
+}
+
+CAMLexport CAMLprim value ml_gdk_frame_clock_get_history_start(value self)
+{
+CAMLparam1(self);
+
+gint64 result = gdk_frame_clock_get_history_start(GdkFrameClock_val(self));
+CAMLreturn(caml_copy_int64(result));
+}
+
+CAMLexport CAMLprim value ml_gdk_frame_clock_get_frame_time(value self)
+{
+CAMLparam1(self);
+
+gint64 result = gdk_frame_clock_get_frame_time(GdkFrameClock_val(self));
+CAMLreturn(caml_copy_int64(result));
+}
+
+CAMLexport CAMLprim value ml_gdk_frame_clock_get_frame_counter(value self)
+{
+CAMLparam1(self);
+
+gint64 result = gdk_frame_clock_get_frame_counter(GdkFrameClock_val(self));
+CAMLreturn(caml_copy_int64(result));
+}
+
 CAMLexport CAMLprim value ml_gdk_frame_clock_get_fps(value self)
 {
 CAMLparam1(self);

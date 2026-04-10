@@ -38,6 +38,11 @@ external launch_action : t -> string -> App_info_and__app_launch_context.App_lau
 of the keyfile backing @info. *)
 external has_key : t -> string -> bool = "ml_g_desktop_app_info_has_key"
 
+(** Looks up a string list value in the keyfile backing @info.
+
+The @key is looked up in the "Desktop Entry" group. *)
+external get_string_list : t -> string -> string array * Gsize.t = "ml_g_desktop_app_info_get_string_list"
+
 (** Looks up a string value in the keyfile backing @info.
 
 The @key is looked up in the "Desktop Entry" group. *)

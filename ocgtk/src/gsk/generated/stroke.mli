@@ -46,6 +46,31 @@ the array values of the dash array.
 See [method@Gsk.Stroke.set_dash] for more details on dashing. *)
 external set_dash_offset : t -> float -> unit = "ml_gsk_stroke_set_dash_offset"
 
+(** Sets the dash pattern to use by this stroke.
+
+A dash pattern is specified by an array of alternating non-negative
+values. Each value provides the length of alternate "on" and "off"
+portions of the stroke.
+
+Each "on" segment will have caps applied as if the segment were a
+separate contour. In particular, it is valid to use an "on" length
+of 0 with `GSK_LINE_CAP_ROUND` or `GSK_LINE_CAP_SQUARE` to draw dots
+or squares along a path.
+
+If @n_dash is 0, if all elements in @dash are 0, or if there are
+negative values in @dash, then dashing is disabled.
+
+If @n_dash is 1, an alternating "on" and "off" pattern with the
+single dash length provided is assumed.
+
+If @n_dash is uneven, the dash array will be used with the first
+element in @dash defining an "on" or "off" in alternating passes
+through the array.
+
+You can specify a starting offset into the dash with
+[method@Gsk.Stroke.set_dash_offset]. *)
+external set_dash : t -> float array option -> Gsize.t -> unit = "ml_gsk_stroke_set_dash"
+
 (** Returns the miter limit of a `GskStroke`. *)
 external get_miter_limit : t -> float = "ml_gsk_stroke_get_miter_limit"
 
@@ -64,6 +89,9 @@ external get_line_cap : t -> Gsk_enums.linecap = "ml_gsk_stroke_get_line_cap"
 
 (** Returns the dash_offset of a `GskStroke`. *)
 external get_dash_offset : t -> float = "ml_gsk_stroke_get_dash_offset"
+
+(** Gets the dash array in use or `NULL` if dashing is disabled. *)
+external get_dash : t -> float array option * Gsize.t = "ml_gsk_stroke_get_dash"
 
 (** Frees a `GskStroke`. *)
 external free : t -> unit = "ml_gsk_stroke_free"

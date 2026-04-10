@@ -4,4 +4,7 @@
 (** An opaque type representing a list of files. *)
 type t = [`file_list] Gobject.obj
 
+(** Create a new FileList *)
+external new_from_array : Ocgtk_gio.Gio.Wrappers.File.t array -> Gsize.t -> t = "ml_gdk_file_list_new_from_array"
+
 (* Methods *)

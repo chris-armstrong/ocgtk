@@ -164,6 +164,9 @@ this is not strictly required.  It is possible to overlay the location of a
 single resource with an individual file. *)
 type t = [`resource] Gobject.obj
 
+(** Create a new Resource *)
+external new_from_data : Glib_bytes.t -> (t, GError.t) result = "ml_g_resource_new_from_data"
+
 (* Methods *)
 (** Atomically decrements the reference count of @resource by one. If the
 reference count drops to 0, all memory allocated by the resource is
@@ -180,6 +183,28 @@ returns a #GInputStream that lets you read the data.
 
 @lookup_flags controls the behaviour of the lookup. *)
 external open_stream : t -> string -> Gio_enums.resourcelookupflags -> (Input_stream.t, GError.t) result = "ml_g_resource_open_stream"
+
+(** Looks for a file at the specified @path in the resource and
+returns a #GBytes that lets you directly access the data in
+memory.
+
+The data is always followed by a zero byte, so you
+can safely use the data as a C string. However, that byte
+is not included in the size of the GBytes.
+
+For uncompressed resource files this is a pointer directly into
+the resource bundle, which is typically in some readonly data section
+in the program binary. For compressed files we allocate memory on
+the heap and automatically uncompress the data.
+
+@lookup_flags controls the behaviour of the lookup. *)
+external lookup_data : t -> string -> Gio_enums.resourcelookupflags -> (Glib_bytes.t, GError.t) result = "ml_g_resource_lookup_data"
+
+(** Looks for a file at the specified @path in the resource and
+if found returns information about it.
+
+@lookup_flags controls the behaviour of the lookup. *)
+external get_info : t -> string -> Gio_enums.resourcelookupflags -> (bool * Gsize.t * UInt32.t, GError.t) result = "ml_g_resource_get_info"
 
 (** Returns all the names of children at the specified @path in the resource.
 The return result is a %NULL terminated list of strings which should
