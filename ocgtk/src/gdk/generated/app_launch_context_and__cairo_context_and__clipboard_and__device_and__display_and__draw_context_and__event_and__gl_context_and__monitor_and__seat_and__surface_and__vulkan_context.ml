@@ -14,7 +14,7 @@ module rec App_launch_context : sig
   focus to the newly launched application when the user is busy
   typing in another window. This is also known as 'focus stealing
   prevention'. *)
-  external set_timestamp : t -> int -> unit = "ml_gdk_app_launch_context_set_timestamp"
+  external set_timestamp : t -> UInt32.t -> unit = "ml_gdk_app_launch_context_set_timestamp"
 
   (** Sets the icon for applications that are launched with this context.
 
@@ -70,7 +70,7 @@ end = struct
   focus to the newly launched application when the user is busy
   typing in another window. This is also known as 'focus stealing
   prevention'. *)
-  external set_timestamp : t -> int -> unit = "ml_gdk_app_launch_context_set_timestamp"
+  external set_timestamp : t -> UInt32.t -> unit = "ml_gdk_app_launch_context_set_timestamp"
 
   (** Sets the icon for applications that are launched with this context.
 
@@ -317,7 +317,7 @@ and Device
   received from the OS for this device. (GTK may occasionally produce
   events for a device that are not received from the OS, and will not
   update the timestamp). *)
-  external get_timestamp : t -> int = "ml_gdk_device_get_timestamp"
+  external get_timestamp : t -> UInt32.t = "ml_gdk_device_get_timestamp"
 
   (** Obtains the surface underneath @device, returning the location of the
   device in @win_x and @win_y.
@@ -438,7 +438,7 @@ end = struct
   received from the OS for this device. (GTK may occasionally produce
   events for a device that are not received from the OS, and will not
   update the timestamp). *)
-  external get_timestamp : t -> int = "ml_gdk_device_get_timestamp"
+  external get_timestamp : t -> UInt32.t = "ml_gdk_device_get_timestamp"
 
   (** Obtains the surface underneath @device, returning the location of the
   device in @win_x and @win_y.
@@ -1154,7 +1154,7 @@ and Event
 
   Not all events have timestamps. In that case, this function
   returns %GDK_CURRENT_TIME. *)
-  external get_time : t -> int = "ml_gdk_event_get_time"
+  external get_time : t -> UInt32.t = "ml_gdk_event_get_time"
 
   (** Extracts the surface associated with an event. *)
   external get_surface : t -> Surface.t option = "ml_gdk_event_get_surface"
@@ -1274,7 +1274,7 @@ end = struct
 
   Not all events have timestamps. In that case, this function
   returns %GDK_CURRENT_TIME. *)
-  external get_time : t -> int = "ml_gdk_event_get_time"
+  external get_time : t -> UInt32.t = "ml_gdk_event_get_time"
 
   (** Extracts the surface associated with an event. *)
   external get_surface : t -> Surface.t option = "ml_gdk_event_get_surface"

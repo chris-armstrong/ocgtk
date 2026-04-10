@@ -158,7 +158,7 @@ GDBusMessage* result = g_dbus_connection_send_message_with_reply_sync(GDBusConne
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_GDBusMessage(result));
-    Store_field(ret, 1, Val_long(out4));
+    Store_field(ret, 1, Val_uint32(out4));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -181,7 +181,7 @@ gboolean result = g_dbus_connection_send_message(GDBusConnection_val(self), GDBu
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_long(out3));
+    Store_field(ret, 1, Val_uint32(out3));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -234,7 +234,7 @@ CAMLexport CAMLprim value ml_g_dbus_connection_get_last_serial(value self)
 CAMLparam1(self);
 
 guint32 result = g_dbus_connection_get_last_serial(GDBusConnection_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_uint32(result));
 }
 
 #else

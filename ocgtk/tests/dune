@@ -167,3 +167,8 @@
  (name test_glib_bytes)
  (modules test_glib_bytes)
  (libraries ocgtk alcotest))
+
+(test
+ (name test_bounded_int)
+ (modules test_bounded_int)
+ (libraries ocgtk alcotest))

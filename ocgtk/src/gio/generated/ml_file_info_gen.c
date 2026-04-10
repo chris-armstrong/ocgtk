@@ -73,7 +73,7 @@ CAMLexport CAMLprim value ml_g_file_info_set_sort_order(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-g_file_info_set_sort_order(GFileInfo_val(self), Int32_val(arg1));
+g_file_info_set_sort_order(GFileInfo_val(self), Int32_val_bounded(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -161,7 +161,7 @@ CAMLexport CAMLprim value ml_g_file_info_set_attribute_uint32(value self, value 
 {
 CAMLparam3(self, arg1, arg2);
 
-g_file_info_set_attribute_uint32(GFileInfo_val(self), String_val(arg1), Long_val(arg2));
+g_file_info_set_attribute_uint32(GFileInfo_val(self), String_val(arg1), UInt32_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -239,7 +239,7 @@ CAMLexport CAMLprim value ml_g_file_info_set_attribute_int32(value self, value a
 {
 CAMLparam3(self, arg1, arg2);
 
-g_file_info_set_attribute_int32(GFileInfo_val(self), String_val(arg1), Int32_val(arg2));
+g_file_info_set_attribute_int32(GFileInfo_val(self), String_val(arg1), Int32_val_bounded(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -374,7 +374,7 @@ CAMLexport CAMLprim value ml_g_file_info_get_sort_order(value self)
 CAMLparam1(self);
 
 gint32 result = g_file_info_get_sort_order(GFileInfo_val(self));
-CAMLreturn(caml_copy_int32(result));
+CAMLreturn(Val_int32_bounded(result));
 }
 
 CAMLexport CAMLprim value ml_g_file_info_get_size(value self)
@@ -479,7 +479,7 @@ CAMLexport CAMLprim value ml_g_file_info_get_attribute_uint32(value self, value 
 CAMLparam2(self, arg1);
 
 guint32 result = g_file_info_get_attribute_uint32(GFileInfo_val(self), String_val(arg1));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_uint32(result));
 }
 
 CAMLexport CAMLprim value ml_g_file_info_get_attribute_type(value self, value arg1)
@@ -556,7 +556,7 @@ CAMLexport CAMLprim value ml_g_file_info_get_attribute_int32(value self, value a
 CAMLparam2(self, arg1);
 
 gint32 result = g_file_info_get_attribute_int32(GFileInfo_val(self), String_val(arg1));
-CAMLreturn(caml_copy_int32(result));
+CAMLreturn(Val_int32_bounded(result));
 }
 
 #if GLIB_CHECK_VERSION(2,78,0)

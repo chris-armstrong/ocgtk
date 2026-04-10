@@ -6,14 +6,14 @@ class type file_info_t = object
     method get_attribute_boolean : string -> bool
     method get_attribute_byte_string : string -> string option
     method get_attribute_file_path : string -> string option
-    method get_attribute_int32 : string -> int32
+    method get_attribute_int32 : string -> Int32.t
     method get_attribute_int64 : string -> int64
     method get_attribute_object : string -> [`object_] Gobject.obj option
     method get_attribute_status : string -> Gio_enums.fileattributestatus
     method get_attribute_string : string -> string option
     method get_attribute_stringv : string -> string array option
     method get_attribute_type : string -> Gio_enums.fileattributetype
-    method get_attribute_uint32 : string -> int
+    method get_attribute_uint32 : string -> UInt32.t
     method get_attribute_uint64 : string -> Unsigned.UInt64.t
     method get_content_type : unit -> string option
     method get_display_name : unit -> string
@@ -26,7 +26,7 @@ class type file_info_t = object
     method get_is_symlink : unit -> bool
     method get_name : unit -> string
     method get_size : unit -> int64
-    method get_sort_order : unit -> int32
+    method get_sort_order : unit -> Int32.t
     method get_symbolic_icon : unit -> GIcon.icon_t option
     method get_symlink_target : unit -> string option
     method has_attribute : string -> bool
@@ -36,14 +36,14 @@ class type file_info_t = object
     method set_attribute_boolean : string -> bool -> unit
     method set_attribute_byte_string : string -> string -> unit
     method set_attribute_file_path : string -> string -> unit
-    method set_attribute_int32 : string -> int32 -> unit
+    method set_attribute_int32 : string -> Int32.t -> unit
     method set_attribute_int64 : string -> int64 -> unit
     method set_attribute_mask : File_attribute_matcher.t -> unit
     method set_attribute_object : string -> [`object_] Gobject.obj -> unit
     method set_attribute_status : string -> Gio_enums.fileattributestatus -> bool
     method set_attribute_string : string -> string -> unit
     method set_attribute_stringv : string -> string array -> unit
-    method set_attribute_uint32 : string -> int -> unit
+    method set_attribute_uint32 : string -> UInt32.t -> unit
     method set_attribute_uint64 : string -> Unsigned.UInt64.t -> unit
     method set_content_type : string -> unit
     method set_display_name : string -> unit
@@ -53,7 +53,7 @@ class type file_info_t = object
     method set_is_symlink : bool -> unit
     method set_name : string -> unit
     method set_size : int64 -> unit
-    method set_sort_order : int32 -> unit
+    method set_sort_order : Int32.t -> unit
     method set_symlink_target : string -> unit
     method unset_attribute_mask : unit -> unit
     method as_file_info : File_info.t
@@ -91,7 +91,7 @@ class file_info (obj : File_info.t) : file_info_t = object (self)
     fun attribute ->
       (File_info.get_attribute_file_path obj attribute)
 
-  method get_attribute_int32 : string -> int32 =
+  method get_attribute_int32 : string -> Int32.t =
     fun attribute ->
       (File_info.get_attribute_int32 obj attribute)
 
@@ -119,7 +119,7 @@ class file_info (obj : File_info.t) : file_info_t = object (self)
     fun attribute ->
       (File_info.get_attribute_type obj attribute)
 
-  method get_attribute_uint32 : string -> int =
+  method get_attribute_uint32 : string -> UInt32.t =
     fun attribute ->
       (File_info.get_attribute_uint32 obj attribute)
 
@@ -171,7 +171,7 @@ class file_info (obj : File_info.t) : file_info_t = object (self)
     fun () ->
       (File_info.get_size obj)
 
-  method get_sort_order : unit -> int32 =
+  method get_sort_order : unit -> Int32.t =
     fun () ->
       (File_info.get_sort_order obj)
 
@@ -211,7 +211,7 @@ class file_info (obj : File_info.t) : file_info_t = object (self)
     fun attribute attr_value ->
       (File_info.set_attribute_file_path obj attribute attr_value)
 
-  method set_attribute_int32 : string -> int32 -> unit =
+  method set_attribute_int32 : string -> Int32.t -> unit =
     fun attribute attr_value ->
       (File_info.set_attribute_int32 obj attribute attr_value)
 
@@ -239,7 +239,7 @@ class file_info (obj : File_info.t) : file_info_t = object (self)
     fun attribute attr_value ->
       (File_info.set_attribute_stringv obj attribute attr_value)
 
-  method set_attribute_uint32 : string -> int -> unit =
+  method set_attribute_uint32 : string -> UInt32.t -> unit =
     fun attribute attr_value ->
       (File_info.set_attribute_uint32 obj attribute attr_value)
 
@@ -279,7 +279,7 @@ class file_info (obj : File_info.t) : file_info_t = object (self)
     fun size ->
       (File_info.set_size obj size)
 
-  method set_sort_order : int32 -> unit =
+  method set_sort_order : Int32.t -> unit =
     fun sort_order ->
       (File_info.set_sort_order obj sort_order)
 

@@ -27,7 +27,7 @@ class type entry_t = object
     method get_progress_fraction : unit -> float
     method get_progress_pulse_step : unit -> float
     method get_tabs : unit -> Ocgtk_pango.Pango.Tab_array.tab_array_t option
-    method get_text_length : unit -> int
+    method get_text_length : unit -> UInt16.t
     method get_visibility : unit -> bool
     method grab_focus_without_selecting : unit -> bool
     method progress_pulse : unit -> unit

@@ -101,7 +101,7 @@ module rec File : sig
   If @cancellable is not %NULL, then the operation can be cancelled by
   triggering the cancellable object from another thread. If the operation
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
-  external set_attribute_uint32 : t -> string -> int -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_uint32"
+  external set_attribute_uint32 : t -> string -> UInt32.t -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_uint32"
 
   (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_STRING to @value.
   If @attribute is of a different type, this operation will fail.
@@ -125,7 +125,7 @@ module rec File : sig
   If @cancellable is not %NULL, then the operation can be cancelled by
   triggering the cancellable object from another thread. If the operation
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
-  external set_attribute_int32 : t -> string -> int32 -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_int32"
+  external set_attribute_int32 : t -> string -> Int32.t -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_int32"
 
   (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING to @value.
   If @attribute is of a different type, this operation will fail,

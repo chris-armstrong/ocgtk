@@ -109,7 +109,7 @@ CAMLexport CAMLprim value ml_gtk_event_controller_get_current_event_time(value s
 CAMLparam1(self);
 
 guint32 result = gtk_event_controller_get_current_event_time(GtkEventController_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_uint32(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_event_controller_get_current_event_state(value self)

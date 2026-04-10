@@ -125,7 +125,7 @@ external get_truncate_multiline : t -> bool = "ml_gtk_text_get_truncate_multilin
 
 This is equivalent to getting @self's `GtkEntryBuffer`
 and calling [method@Gtk.EntryBuffer.get_length] on it. *)
-external get_text_length : t -> int = "ml_gtk_text_get_text_length"
+external get_text_length : t -> UInt16.t = "ml_gtk_text_get_text_length"
 
 (** Gets the tabstops that were set on the `GtkText`.
 

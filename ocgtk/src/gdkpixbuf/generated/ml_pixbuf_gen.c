@@ -589,7 +589,7 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_fill(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gdk_pixbuf_fill(GdkPixbuf_val(self), Long_val(arg1));
+gdk_pixbuf_fill(GdkPixbuf_val(self), UInt32_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -641,7 +641,7 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_composite_color_simple_native(value self
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam3(arg5, arg6, arg7);
 
-GdkPixbuf* result = gdk_pixbuf_composite_color_simple(GdkPixbuf_val(self), Int_val(arg1), Int_val(arg2), GdkPixbufInterpType_val(arg3), Int_val(arg4), Int_val(arg5), Long_val(arg6), Long_val(arg7));
+GdkPixbuf* result = gdk_pixbuf_composite_color_simple(GdkPixbuf_val(self), Int_val(arg1), Int_val(arg2), GdkPixbufInterpType_val(arg3), Int_val(arg4), Int_val(arg5), UInt32_val(arg6), UInt32_val(arg7));
 CAMLreturn(Val_option(result, Val_GdkPixbuf));}
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_composite_color_simple_bytecode(value * argv, int argn)
@@ -656,7 +656,7 @@ CAMLxparam5(arg5, arg6, arg7, arg8, arg9);
 CAMLxparam5(arg10, arg11, arg12, arg13, arg14);
 CAMLxparam2(arg15, arg16);
 
-gdk_pixbuf_composite_color(GdkPixbuf_val(self), GdkPixbuf_val(arg1), Int_val(arg2), Int_val(arg3), Int_val(arg4), Int_val(arg5), Double_val(arg6), Double_val(arg7), Double_val(arg8), Double_val(arg9), GdkPixbufInterpType_val(arg10), Int_val(arg11), Int_val(arg12), Int_val(arg13), Int_val(arg14), Long_val(arg15), Long_val(arg16));
+gdk_pixbuf_composite_color(GdkPixbuf_val(self), GdkPixbuf_val(arg1), Int_val(arg2), Int_val(arg3), Int_val(arg4), Int_val(arg5), Double_val(arg6), Double_val(arg7), Double_val(arg8), Double_val(arg9), GdkPixbufInterpType_val(arg10), Int_val(arg11), Int_val(arg12), Int_val(arg13), Int_val(arg14), UInt32_val(arg15), UInt32_val(arg16));
 CAMLreturn(Val_unit);}
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_composite_color_bytecode(value * argv, int argn)

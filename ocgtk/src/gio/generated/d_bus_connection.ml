@@ -100,7 +100,7 @@ UNIX file descriptors.
 
 Note that @message must be unlocked, unless @flags contain the
 %G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag. *)
-external send_message_with_reply_sync : t -> D_bus_message.t -> Gio_enums.dbussendmessageflags -> int -> Cancellable.t option -> (D_bus_message.t * int, GError.t) result = "ml_g_dbus_connection_send_message_with_reply_sync"
+external send_message_with_reply_sync : t -> D_bus_message.t -> Gio_enums.dbussendmessageflags -> int -> Cancellable.t option -> (D_bus_message.t * UInt32.t, GError.t) result = "ml_g_dbus_connection_send_message_with_reply_sync"
 
 (** Finishes an operation started with g_dbus_connection_send_message_with_reply().
 
@@ -135,7 +135,7 @@ UNIX file descriptors.
 
 Note that @message must be unlocked, unless @flags contain the
 %G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag. *)
-external send_message : t -> D_bus_message.t -> Gio_enums.dbussendmessageflags -> (bool * int, GError.t) result = "ml_g_dbus_connection_send_message"
+external send_message : t -> D_bus_message.t -> Gio_enums.dbussendmessageflags -> (bool * UInt32.t, GError.t) result = "ml_g_dbus_connection_send_message"
 
 (** Removes a filter.
 
@@ -178,7 +178,7 @@ the current thread. This includes messages sent via both low-level
 API such as g_dbus_connection_send_message() as well as
 high-level API such as g_dbus_connection_emit_signal(),
 g_dbus_connection_call() or g_dbus_proxy_call(). *)
-external get_last_serial : t -> int = "ml_g_dbus_connection_get_last_serial"
+external get_last_serial : t -> UInt32.t = "ml_g_dbus_connection_get_last_serial"
 
 (** The GUID of the peer performing the role of server when
 authenticating. See #GDBusConnection:guid for more details. *)

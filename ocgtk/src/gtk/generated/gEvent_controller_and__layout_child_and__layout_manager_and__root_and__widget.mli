@@ -3,7 +3,7 @@ class type event_controller_t = object
     method get_current_event : unit -> Ocgtk_gdk.Gdk.Event.event_t option
     method get_current_event_device : unit -> Ocgtk_gdk.Gdk.Device.device_t option
     method get_current_event_state : unit -> Ocgtk_gdk.Gdk.modifiertype
-    method get_current_event_time : unit -> int
+    method get_current_event_time : unit -> UInt32.t
     method get_name : unit -> string option
     method get_propagation_limit : unit -> Gtk_enums.propagationlimit
     method get_propagation_phase : unit -> Gtk_enums.propagationphase

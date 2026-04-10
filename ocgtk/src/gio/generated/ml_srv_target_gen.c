@@ -43,7 +43,7 @@ CAMLexport CAMLprim value ml_g_srv_target_new(value arg1, value arg2, value arg3
 {
 CAMLparam4(arg1, arg2, arg3, arg4);
 
-GSrvTarget *obj = g_srv_target_new(String_val(arg1), Int_val(arg2), Int_val(arg3), Int_val(arg4));
+GSrvTarget *obj = g_srv_target_new(String_val(arg1), UInt16_val(arg2), UInt16_val(arg3), UInt16_val(arg4));
 
 CAMLreturn(Val_GSrvTarget(obj));
 }
@@ -68,7 +68,7 @@ CAMLexport CAMLprim value ml_g_srv_target_get_weight(value self)
 CAMLparam1(self);
 
 guint16 result = g_srv_target_get_weight(GSrvTarget_val(self));
-CAMLreturn(Val_int(result));
+CAMLreturn(Val_uint16(result));
 }
 
 #else
@@ -89,7 +89,7 @@ CAMLexport CAMLprim value ml_g_srv_target_get_priority(value self)
 CAMLparam1(self);
 
 guint16 result = g_srv_target_get_priority(GSrvTarget_val(self));
-CAMLreturn(Val_int(result));
+CAMLreturn(Val_uint16(result));
 }
 
 #else
@@ -110,7 +110,7 @@ CAMLexport CAMLprim value ml_g_srv_target_get_port(value self)
 CAMLparam1(self);
 
 guint16 result = g_srv_target_get_port(GSrvTarget_val(self));
-CAMLreturn(Val_int(result));
+CAMLreturn(Val_uint16(result));
 }
 
 #else

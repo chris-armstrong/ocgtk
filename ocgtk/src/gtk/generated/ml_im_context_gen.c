@@ -111,7 +111,7 @@ CAMLexport CAMLprim value ml_gtk_im_context_filter_key_native(value self, value 
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam3(arg5, arg6, arg7);
 
-gboolean result = gtk_im_context_filter_key(GtkIMContext_val(self), Bool_val(arg1), GdkSurface_val(arg2), GdkDevice_val(arg3), Long_val(arg4), Int_val(arg5), GdkModifierType_val(arg6), Int_val(arg7));
+gboolean result = gtk_im_context_filter_key(GtkIMContext_val(self), Bool_val(arg1), GdkSurface_val(arg2), GdkDevice_val(arg3), UInt32_val(arg4), Int_val(arg5), GdkModifierType_val(arg6), Int_val(arg7));
 CAMLreturn(Val_bool(result));}
 
 CAMLexport CAMLprim value ml_gtk_im_context_filter_key_bytecode(value * argv, int argn)

@@ -44,7 +44,7 @@ different things depending on what address is connected to.
 Call g_socket_listener_close() to stop listening on @port; this will not
 be done automatically when you drop your final reference to @listener, as
 references may be held internally. *)
-external add_inet_port : t -> int -> [`object_] Gobject.obj option -> (bool, GError.t) result = "ml_g_socket_listener_add_inet_port"
+external add_inet_port : t -> UInt16.t -> [`object_] Gobject.obj option -> (bool, GError.t) result = "ml_g_socket_listener_add_inet_port"
 
 (** Listens for TCP connections on any available port number for both
 IPv6 and IPv4 (if each is available).
@@ -56,7 +56,7 @@ but don't care about the specific port number.
 to accept to identify this particular source, which is
 useful if you're listening on multiple addresses and do
 different things depending on what address is connected to. *)
-external add_any_inet_port : t -> [`object_] Gobject.obj option -> (int, GError.t) result = "ml_g_socket_listener_add_any_inet_port"
+external add_any_inet_port : t -> [`object_] Gobject.obj option -> (UInt16.t, GError.t) result = "ml_g_socket_listener_add_any_inet_port"
 
 (* Properties *)
 

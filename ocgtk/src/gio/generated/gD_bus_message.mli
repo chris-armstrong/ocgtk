@@ -12,11 +12,11 @@ class type d_bus_message_t = object
     method get_locked : unit -> bool
     method get_member : unit -> string option
     method get_message_type : unit -> Gio_enums.dbusmessagetype
-    method get_num_unix_fds : unit -> int
+    method get_num_unix_fds : unit -> UInt32.t
     method get_path : unit -> string option
-    method get_reply_serial : unit -> int
+    method get_reply_serial : unit -> UInt32.t
     method get_sender : unit -> string option
-    method get_serial : unit -> int
+    method get_serial : unit -> UInt32.t
     method get_signature : unit -> string
     method get_unix_fd_list : unit -> GUnix_fd_list.unix_fd_list_t option
     method lock : unit -> unit
@@ -32,11 +32,11 @@ class type d_bus_message_t = object
     method set_interface : string option -> unit
     method set_member : string option -> unit
     method set_message_type : Gio_enums.dbusmessagetype -> unit
-    method set_num_unix_fds : int -> unit
+    method set_num_unix_fds : UInt32.t -> unit
     method set_path : string option -> unit
-    method set_reply_serial : int -> unit
+    method set_reply_serial : UInt32.t -> unit
     method set_sender : string option -> unit
-    method set_serial : int -> unit
+    method set_serial : UInt32.t -> unit
     method set_signature : string option -> unit
     method set_unix_fd_list : GUnix_fd_list.unix_fd_list_t option -> unit
     method to_gerror : unit -> (bool, GError.t) result

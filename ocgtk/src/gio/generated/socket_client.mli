@@ -164,7 +164,7 @@ reference to it when finished with it.
 In the event of any failure (DNS error, service not found, no hosts
 connectable) %NULL is returned and @error (if non-%NULL) is set
 accordingly. *)
-external connect_to_uri : t -> string -> int -> Cancellable.t option -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_uri"
+external connect_to_uri : t -> string -> UInt16.t -> Cancellable.t option -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_uri"
 
 (** Finishes an async connect operation. See g_socket_client_connect_to_service_async() *)
 external connect_to_service_finish : t -> Async_result.t -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_service_finish"
@@ -218,7 +218,7 @@ reference to it when finished with it.
 In the event of any failure (DNS error, service not found, no hosts
 connectable) %NULL is returned and @error (if non-%NULL) is set
 accordingly. *)
-external connect_to_host : t -> string -> int -> Cancellable.t option -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_host"
+external connect_to_host : t -> string -> UInt16.t -> Cancellable.t option -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_host"
 
 (** Finishes an async connect operation. See g_socket_client_connect_async() *)
 external connect_finish : t -> Async_result.t -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_finish"

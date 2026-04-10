@@ -1,7 +1,7 @@
 class type dmabuf_texture_builder_t = object
     method get_display : unit -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.display_t
     method get_fd : int -> int
-    method get_fourcc : unit -> int
+    method get_fourcc : unit -> UInt32.t
     method get_height : unit -> int
     method get_modifier : unit -> Unsigned.UInt64.t
     method get_n_planes : unit -> int
@@ -13,7 +13,7 @@ class type dmabuf_texture_builder_t = object
     method get_width : unit -> int
     method set_display : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.display_t -> unit
     method set_fd : int -> int -> unit
-    method set_fourcc : int -> unit
+    method set_fourcc : UInt32.t -> unit
     method set_height : int -> unit
     method set_modifier : Unsigned.UInt64.t -> unit
     method set_n_planes : int -> unit
@@ -37,7 +37,7 @@ class dmabuf_texture_builder (obj : Dmabuf_texture_builder.t) : dmabuf_texture_b
     fun plane ->
       (Dmabuf_texture_builder.get_fd obj plane)
 
-  method get_fourcc : unit -> int =
+  method get_fourcc : unit -> UInt32.t =
     fun () ->
       (Dmabuf_texture_builder.get_fourcc obj)
 
@@ -86,7 +86,7 @@ class dmabuf_texture_builder (obj : Dmabuf_texture_builder.t) : dmabuf_texture_b
     fun plane fd ->
       (Dmabuf_texture_builder.set_fd obj plane fd)
 
-  method set_fourcc : int -> unit =
+  method set_fourcc : UInt32.t -> unit =
     fun fourcc ->
       (Dmabuf_texture_builder.set_fourcc obj fourcc)
 

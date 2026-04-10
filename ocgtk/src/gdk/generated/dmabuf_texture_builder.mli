@@ -58,7 +58,7 @@ external set_height : t -> int -> unit = "ml_gdk_dmabuf_texture_builder_set_heig
 The format is specified as a fourcc code.
 
 The format must be set before calling [method@Gdk.GLTextureBuilder.build]. *)
-external set_fourcc : t -> int -> unit = "ml_gdk_dmabuf_texture_builder_set_fourcc"
+external set_fourcc : t -> UInt32.t -> unit = "ml_gdk_dmabuf_texture_builder_set_fourcc"
 
 (** Sets the file descriptor for a plane. *)
 external set_fd : t -> int -> int -> unit = "ml_gdk_dmabuf_texture_builder_set_fd"
@@ -105,7 +105,7 @@ external get_height : t -> int = "ml_gdk_dmabuf_texture_builder_get_height"
 or 0 if the format wasn't set.
 
 The format is specified as a fourcc code. *)
-external get_fourcc : t -> int = "ml_gdk_dmabuf_texture_builder_get_fourcc"
+external get_fourcc : t -> UInt32.t = "ml_gdk_dmabuf_texture_builder_get_fourcc"
 
 (** Gets the file descriptor for a plane. *)
 external get_fd : t -> int -> int = "ml_gdk_dmabuf_texture_builder_get_fd"

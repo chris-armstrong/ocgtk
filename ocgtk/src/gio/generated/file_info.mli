@@ -21,7 +21,7 @@ external set_symbolic_icon : t -> Icon.t -> unit = "ml_g_file_info_set_symbolic_
 
 (** Sets the sort order attribute in the file info structure. See
 %G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER. *)
-external set_sort_order : t -> int32 -> unit = "ml_g_file_info_set_sort_order"
+external set_sort_order : t -> Int32.t -> unit = "ml_g_file_info_set_sort_order"
 
 (** Sets the %G_FILE_ATTRIBUTE_STANDARD_SIZE attribute in the file info
 to the given size. *)
@@ -65,7 +65,7 @@ external set_attribute_uint64 : t -> string -> Unsigned.UInt64.t -> unit = "ml_g
 
 (** Sets the @attribute to contain the given @attr_value,
 if possible. *)
-external set_attribute_uint32 : t -> string -> int -> unit = "ml_g_file_info_set_attribute_uint32"
+external set_attribute_uint32 : t -> string -> UInt32.t -> unit = "ml_g_file_info_set_attribute_uint32"
 
 (** Sets the @attribute to contain the given @attr_value,
 if possible.
@@ -98,7 +98,7 @@ external set_attribute_int64 : t -> string -> int64 -> unit = "ml_g_file_info_se
 
 (** Sets the @attribute to contain the given @attr_value,
 if possible. *)
-external set_attribute_int32 : t -> string -> int32 -> unit = "ml_g_file_info_set_attribute_int32"
+external set_attribute_int32 : t -> string -> Int32.t -> unit = "ml_g_file_info_set_attribute_int32"
 
 (** Sets the @attribute to contain the given @attr_value,
 if possible.
@@ -145,7 +145,7 @@ See %G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
 
 It is an error to call this if the #GFileInfo does not contain
 %G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER. *)
-external get_sort_order : t -> int32 = "ml_g_file_info_get_sort_order"
+external get_sort_order : t -> Int32.t = "ml_g_file_info_get_sort_order"
 
 (** Gets the file's size (in bytes). The size is retrieved through the value of
 the %G_FILE_ATTRIBUTE_STANDARD_SIZE attribute and is converted
@@ -225,7 +225,7 @@ external get_attribute_uint64 : t -> string -> Unsigned.UInt64.t = "ml_g_file_in
 (** Gets an unsigned 32-bit integer contained within the attribute. If the
 attribute does not contain an unsigned 32-bit integer, or is invalid,
 0 will be returned. *)
-external get_attribute_uint32 : t -> string -> int = "ml_g_file_info_get_attribute_uint32"
+external get_attribute_uint32 : t -> string -> UInt32.t = "ml_g_file_info_get_attribute_uint32"
 
 (** Gets the attribute type for an attribute key. *)
 external get_attribute_type : t -> string -> Gio_enums.fileattributetype = "ml_g_file_info_get_attribute_type"
@@ -253,7 +253,7 @@ external get_attribute_int64 : t -> string -> int64 = "ml_g_file_info_get_attrib
 (** Gets a signed 32-bit integer contained within the attribute. If the
 attribute does not contain a signed 32-bit integer, or is invalid,
 0 will be returned. *)
-external get_attribute_int32 : t -> string -> int32 = "ml_g_file_info_get_attribute_int32"
+external get_attribute_int32 : t -> string -> Int32.t = "ml_g_file_info_get_attribute_int32"
 
 (** Gets the value of a byte string attribute as a file path.
 

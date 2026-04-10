@@ -608,7 +608,7 @@ and Window
   The timestamp should be gathered when the window was requested
   to be shown (when clicking a link for example), rather than once
   the window is ready to be shown. *)
-  external present_with_time : t -> int -> unit = "ml_gtk_window_present_with_time"
+  external present_with_time : t -> UInt32.t -> unit = "ml_gtk_window_present_with_time"
 
   (** Presents a window to the user.
 
@@ -1095,7 +1095,7 @@ end = struct
   The timestamp should be gathered when the window was requested
   to be shown (when clicking a link for example), rather than once
   the window is ready to be shown. *)
-  external present_with_time : t -> int -> unit = "ml_gtk_window_present_with_time"
+  external present_with_time : t -> UInt32.t -> unit = "ml_gtk_window_present_with_time"
 
   (** Presents a window to the user.
 

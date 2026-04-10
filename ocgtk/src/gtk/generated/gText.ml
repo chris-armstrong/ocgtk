@@ -16,7 +16,7 @@ class type text_t = object
     method get_placeholder_text : unit -> string option
     method get_propagate_text_width : unit -> bool
     method get_tabs : unit -> Ocgtk_pango.Pango.Tab_array.tab_array_t option
-    method get_text_length : unit -> int
+    method get_text_length : unit -> UInt16.t
     method get_truncate_multiline : unit -> bool
     method get_visibility : unit -> bool
     method grab_focus_without_selecting : unit -> bool
@@ -101,7 +101,7 @@ class text (obj : Text.t) : text_t = object (self)
     fun () ->
       Option.map (fun ret -> new Ocgtk_pango.Pango.Tab_array.tab_array ret) (Text.get_tabs obj)
 
-  method get_text_length : unit -> int =
+  method get_text_length : unit -> UInt16.t =
     fun () ->
       (Text.get_text_length obj)
 

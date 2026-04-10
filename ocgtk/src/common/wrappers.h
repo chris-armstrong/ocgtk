@@ -189,6 +189,27 @@ CAMLexport const void* ext_of_val(const value val);
 #define Val_GType(t) (Val_long(t))
 
 /* ==================================================================== */
+/* Bounded integer types (private int representation)                   */
+/* ==================================================================== */
+
+/* Bounded integer types — all backed by OCaml int (private int representation).
+ * The cast on read (UInt16_val, etc.) handles sign/zero extension from OCaml's
+ * tagged int correctly. The cast on write (Val_uint16, etc.) ensures the value
+ * is stored with the correct bit pattern before tagging. */
+#define UInt8_val(v)           ((uint8_t)(Long_val(v)))
+#define Val_uint8(x)           (Val_long((uint8_t)(x)))
+#define Int8_val(v)            ((int8_t)(Long_val(v)))
+#define Val_int8(x)            (Val_long((int8_t)(x)))
+#define UInt16_val(v)          ((uint16_t)(Long_val(v)))
+#define Val_uint16(x)          (Val_long((uint16_t)(x)))
+#define Int16_val(v)           ((int16_t)(Long_val(v)))
+#define Val_int16(x)           (Val_long((int16_t)(x)))
+#define UInt32_val(v)          ((uint32_t)(Long_val(v)))
+#define Val_uint32(x)          (Val_long((uint32_t)(x)))
+#define Int32_val_bounded(v)   ((int32_t)(Long_val(v)))   /* avoids clash with caml Int32_val */
+#define Val_int32_bounded(x)   (Val_long((int32_t)(x)))
+
+/* ==================================================================== */
 /* String Utilities */
 /* ==================================================================== */
 

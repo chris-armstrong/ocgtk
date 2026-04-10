@@ -69,7 +69,7 @@ external filter_keypress : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t -> bool = "ml_gtk
 (** Allow an input method to forward key press and release events
 to another input method without necessarily having a `GdkEvent`
 available. *)
-external filter_key : t -> bool -> Ocgtk_gdk.Gdk.Wrappers.Surface.t -> Ocgtk_gdk.Gdk.Wrappers.Device.t -> int -> int -> Ocgtk_gdk.Gdk.modifiertype -> int -> bool = "ml_gtk_im_context_filter_key_bytecode" "ml_gtk_im_context_filter_key_native"
+external filter_key : t -> bool -> Ocgtk_gdk.Gdk.Wrappers.Surface.t -> Ocgtk_gdk.Gdk.Wrappers.Device.t -> UInt32.t -> int -> Ocgtk_gdk.Gdk.modifiertype -> int -> bool = "ml_gtk_im_context_filter_key_bytecode" "ml_gtk_im_context_filter_key_native"
 
 (** Asks the widget that the input context is attached to delete
 characters around the cursor position by emitting the

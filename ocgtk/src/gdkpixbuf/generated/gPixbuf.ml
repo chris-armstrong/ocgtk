@@ -1,12 +1,12 @@
 class type pixbuf_t = object
     method apply_embedded_orientation : unit -> pixbuf_t option
     method composite : pixbuf_t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> unit
-    method composite_color : pixbuf_t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> int -> int -> unit
-    method composite_color_simple : int -> int -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> pixbuf_t option
+    method composite_color : pixbuf_t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> UInt32.t -> UInt32.t -> unit
+    method composite_color_simple : int -> int -> Gdkpixbuf_enums.interptype -> int -> int -> UInt32.t -> UInt32.t -> pixbuf_t option
     method copy : unit -> pixbuf_t option
     method copy_area : int -> int -> int -> int -> pixbuf_t -> int -> int -> unit
     method copy_options : pixbuf_t -> bool
-    method fill : int -> unit
+    method fill : UInt32.t -> unit
     method flip : bool -> pixbuf_t option
     method get_bits_per_sample : unit -> int
     method get_byte_length : unit -> int
@@ -43,12 +43,12 @@ class pixbuf (obj : Pixbuf.t) : pixbuf_t = object (self)
       let dest = dest#as_pixbuf in
       (Pixbuf.composite obj dest dest_x dest_y dest_width dest_height offset_x offset_y scale_x scale_y interp_type overall_alpha)
 
-  method composite_color : pixbuf_t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> int -> int -> unit =
+  method composite_color : pixbuf_t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> UInt32.t -> UInt32.t -> unit =
     fun dest dest_x dest_y dest_width dest_height offset_x offset_y scale_x scale_y interp_type overall_alpha check_x check_y check_size color1 color2 ->
       let dest = dest#as_pixbuf in
       (Pixbuf.composite_color obj dest dest_x dest_y dest_width dest_height offset_x offset_y scale_x scale_y interp_type overall_alpha check_x check_y check_size color1 color2)
 
-  method composite_color_simple : int -> int -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> pixbuf_t option =
+  method composite_color_simple : int -> int -> Gdkpixbuf_enums.interptype -> int -> int -> UInt32.t -> UInt32.t -> pixbuf_t option =
     fun dest_width dest_height interp_type overall_alpha check_size color1 color2 ->
       Option.map (fun ret -> new pixbuf ret) (Pixbuf.composite_color_simple obj dest_width dest_height interp_type overall_alpha check_size color1 color2)
 
@@ -66,7 +66,7 @@ class pixbuf (obj : Pixbuf.t) : pixbuf_t = object (self)
       let dest_pixbuf = dest_pixbuf#as_pixbuf in
       (Pixbuf.copy_options obj dest_pixbuf)
 
-  method fill : int -> unit =
+  method fill : UInt32.t -> unit =
     fun pixel ->
       (Pixbuf.fill obj pixel)
 

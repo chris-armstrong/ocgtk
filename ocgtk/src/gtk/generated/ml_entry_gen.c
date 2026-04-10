@@ -280,7 +280,7 @@ CAMLexport CAMLprim value ml_gtk_entry_get_text_length(value self)
 CAMLparam1(self);
 
 guint16 result = gtk_entry_get_text_length(GtkEntry_val(self));
-CAMLreturn(Val_int(result));
+CAMLreturn(Val_uint16(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_get_tabs(value self)

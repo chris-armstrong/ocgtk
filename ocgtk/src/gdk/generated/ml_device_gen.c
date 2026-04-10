@@ -39,7 +39,7 @@ CAMLexport CAMLprim value ml_gdk_device_get_timestamp(value self)
 CAMLparam1(self);
 
 guint32 result = gdk_device_get_timestamp(GdkDevice_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_uint32(result));
 }
 
 #else

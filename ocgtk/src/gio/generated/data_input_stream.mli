@@ -77,13 +77,13 @@ see g_data_input_stream_get_byte_order() and g_data_input_stream_set_byte_order(
 If @cancellable is not %NULL, then the operation can be cancelled by
 triggering the cancellable object from another thread. If the operation
 was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
-external read_uint32 : t -> Cancellable.t option -> (int, GError.t) result = "ml_g_data_input_stream_read_uint32"
+external read_uint32 : t -> Cancellable.t option -> (UInt32.t, GError.t) result = "ml_g_data_input_stream_read_uint32"
 
 (** Reads an unsigned 16-bit/2-byte value from @stream.
 
 In order to get the correct byte order for this read operation,
 see g_data_input_stream_get_byte_order() and g_data_input_stream_set_byte_order(). *)
-external read_uint16 : t -> Cancellable.t option -> (int, GError.t) result = "ml_g_data_input_stream_read_uint16"
+external read_uint16 : t -> Cancellable.t option -> (UInt16.t, GError.t) result = "ml_g_data_input_stream_read_uint16"
 
 (** Reads a UTF-8 encoded line from the data input stream.
 
@@ -114,13 +114,13 @@ see g_data_input_stream_get_byte_order() and g_data_input_stream_set_byte_order(
 If @cancellable is not %NULL, then the operation can be cancelled by
 triggering the cancellable object from another thread. If the operation
 was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
-external read_int32 : t -> Cancellable.t option -> (int32, GError.t) result = "ml_g_data_input_stream_read_int32"
+external read_int32 : t -> Cancellable.t option -> (Int32.t, GError.t) result = "ml_g_data_input_stream_read_int32"
 
 (** Reads a 16-bit/2-byte value from @stream.
 
 In order to get the correct byte order for this read operation,
 see g_data_input_stream_get_byte_order() and g_data_input_stream_set_byte_order(). *)
-external read_int16 : t -> Cancellable.t option -> (int, GError.t) result = "ml_g_data_input_stream_read_int16"
+external read_int16 : t -> Cancellable.t option -> (Int16.t, GError.t) result = "ml_g_data_input_stream_read_int16"
 
 (** Gets the current newline type for the @stream. *)
 external get_newline_type : t -> Gio_enums.datastreamnewlinetype = "ml_g_data_input_stream_get_newline_type"

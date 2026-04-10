@@ -29,7 +29,7 @@ CAMLexport CAMLprim value ml_g_proxy_address_new_native(value arg1, value arg2, 
 CAMLparam5(arg1, arg2, arg3, arg4, arg5);
 CAMLxparam2(arg6, arg7);
 
-GProxyAddress *obj = g_proxy_address_new(GInetAddress_val(arg1), Int_val(arg2), String_val(arg3), String_val(arg4), Int_val(arg5), String_option_val(arg6), String_option_val(arg7));
+GProxyAddress *obj = g_proxy_address_new(GInetAddress_val(arg1), UInt16_val(arg2), String_val(arg3), String_val(arg4), UInt16_val(arg5), String_option_val(arg6), String_option_val(arg7));
 if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GProxyAddress(obj));}
@@ -110,7 +110,7 @@ CAMLexport CAMLprim value ml_g_proxy_address_get_destination_port(value self)
 CAMLparam1(self);
 
 guint16 result = g_proxy_address_get_destination_port(GProxyAddress_val(self));
-CAMLreturn(Val_int(result));
+CAMLreturn(Val_uint16(result));
 }
 
 CAMLexport CAMLprim value ml_g_proxy_address_get_destination_hostname(value self)

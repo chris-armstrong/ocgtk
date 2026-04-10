@@ -162,7 +162,7 @@ CAMLparam2(self, arg1);
 GError *error = NULL;
 
 guint32 result = g_data_input_stream_read_uint32(GDataInputStream_val(self), Option_val(arg1, GCancellable_val, NULL), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_long(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+if (error == NULL) CAMLreturn(Res_Ok(Val_uint32(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_data_input_stream_read_uint16(value self, value arg1)
@@ -171,7 +171,7 @@ CAMLparam2(self, arg1);
 GError *error = NULL;
 
 guint16 result = g_data_input_stream_read_uint16(GDataInputStream_val(self), Option_val(arg1, GCancellable_val, NULL), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+if (error == NULL) CAMLreturn(Res_Ok(Val_uint16(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 #if GLIB_CHECK_VERSION(2,30,0)
@@ -245,7 +245,7 @@ CAMLparam2(self, arg1);
 GError *error = NULL;
 
 gint32 result = g_data_input_stream_read_int32(GDataInputStream_val(self), Option_val(arg1, GCancellable_val, NULL), &error);
-if (error == NULL) CAMLreturn(Res_Ok(caml_copy_int32(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+if (error == NULL) CAMLreturn(Res_Ok(Val_int32_bounded(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_data_input_stream_read_int16(value self, value arg1)
@@ -254,7 +254,7 @@ CAMLparam2(self, arg1);
 GError *error = NULL;
 
 gint16 result = g_data_input_stream_read_int16(GDataInputStream_val(self), Option_val(arg1, GCancellable_val, NULL), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+if (error == NULL) CAMLreturn(Res_Ok(Val_int16(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_data_input_stream_get_newline_type(value self)

@@ -28,7 +28,7 @@ CAMLexport CAMLprim value ml_g_inet_socket_address_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 
-GInetSocketAddress *obj = g_inet_socket_address_new(GInetAddress_val(arg1), Int_val(arg2));
+GInetSocketAddress *obj = g_inet_socket_address_new(GInetAddress_val(arg1), UInt16_val(arg2));
 if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GInetSocketAddress(obj));
@@ -75,7 +75,7 @@ CAMLexport CAMLprim value ml_g_inet_socket_address_get_scope_id(value self)
 CAMLparam1(self);
 
 guint32 result = g_inet_socket_address_get_scope_id(GInetSocketAddress_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_uint32(result));
 }
 
 #else
@@ -96,7 +96,7 @@ CAMLexport CAMLprim value ml_g_inet_socket_address_get_port(value self)
 CAMLparam1(self);
 
 guint16 result = g_inet_socket_address_get_port(GInetSocketAddress_val(self));
-CAMLreturn(Val_int(result));
+CAMLreturn(Val_uint16(result));
 }
 
 #else
@@ -117,7 +117,7 @@ CAMLexport CAMLprim value ml_g_inet_socket_address_get_flowinfo(value self)
 CAMLparam1(self);
 
 guint32 result = g_inet_socket_address_get_flowinfo(GInetSocketAddress_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_uint32(result));
 }
 
 #else

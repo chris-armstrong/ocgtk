@@ -11,7 +11,7 @@ class type d_bus_connection_t = object
     method get_exit_on_close : unit -> bool
     method get_flags : unit -> Gio_enums.dbusconnectionflags
     method get_guid : unit -> string
-    method get_last_serial : unit -> int
+    method get_last_serial : unit -> UInt32.t
     method get_peer_credentials : unit -> GCredentials.credentials_t option
     method get_stream : unit -> GIo_stream.io_stream_t
     method get_unique_name : unit -> string option
@@ -72,7 +72,7 @@ class d_bus_connection (obj : D_bus_connection.t) : d_bus_connection_t = object 
     fun () ->
       (D_bus_connection.get_guid obj)
 
-  method get_last_serial : unit -> int =
+  method get_last_serial : unit -> UInt32.t =
     fun () ->
       (D_bus_connection.get_last_serial obj)
 

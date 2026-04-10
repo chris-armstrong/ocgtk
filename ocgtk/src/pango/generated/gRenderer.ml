@@ -8,13 +8,13 @@ class type renderer_t = object
     method draw_layout_line : Layout_line.t -> int -> int -> unit
     method draw_rectangle : Pango_enums.renderpart -> int -> int -> int -> int -> unit
     method draw_trapezoid : Pango_enums.renderpart -> float -> float -> float -> float -> float -> float -> unit
-    method get_alpha : Pango_enums.renderpart -> int
+    method get_alpha : Pango_enums.renderpart -> UInt16.t
     method get_color : Pango_enums.renderpart -> Color.t option
     method get_layout : unit -> GLayout_and__layout_iter.layout_t option
     method get_layout_line : unit -> Layout_line.t option
     method get_matrix : unit -> Matrix.t option
     method part_changed : Pango_enums.renderpart -> unit
-    method set_alpha : Pango_enums.renderpart -> int -> unit
+    method set_alpha : Pango_enums.renderpart -> UInt16.t -> unit
     method set_color : Pango_enums.renderpart -> Color.t option -> unit
     method set_matrix : Matrix.t option -> unit
     method as_renderer : Renderer.t
@@ -61,7 +61,7 @@ class renderer (obj : Renderer.t) : renderer_t = object (self)
     fun part y1_ x11 x21 y2 x12 x22 ->
       (Renderer.draw_trapezoid obj part y1_ x11 x21 y2 x12 x22)
 
-  method get_alpha : Pango_enums.renderpart -> int =
+  method get_alpha : Pango_enums.renderpart -> UInt16.t =
     fun part ->
       (Renderer.get_alpha obj part)
 
@@ -85,7 +85,7 @@ class renderer (obj : Renderer.t) : renderer_t = object (self)
     fun part ->
       (Renderer.part_changed obj part)
 
-  method set_alpha : Pango_enums.renderpart -> int -> unit =
+  method set_alpha : Pango_enums.renderpart -> UInt16.t -> unit =
     fun part alpha ->
       (Renderer.set_alpha obj part alpha)
 

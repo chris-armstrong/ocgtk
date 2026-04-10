@@ -189,7 +189,7 @@ the pixbuf's pixel format.
 
 The alpha component will be ignored if the pixbuf doesn't have an alpha
 channel. *)
-external fill : t -> int -> unit = "ml_gdk_pixbuf_fill"
+external fill : t -> UInt32.t -> unit = "ml_gdk_pixbuf_fill"
 
 (** Copies the key/value pair options attached to a `GdkPixbuf` to another
 `GdkPixbuf`.
@@ -218,7 +218,7 @@ external copy : t -> t option = "ml_gdk_pixbuf_copy"
 (** Creates a new pixbuf by scaling `src` to `dest_width` x `dest_height`
 and alpha blending the result with a checkboard of colors `color1`
 and `color2`. *)
-external composite_color_simple : t -> int -> int -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> t option = "ml_gdk_pixbuf_composite_color_simple_bytecode" "ml_gdk_pixbuf_composite_color_simple_native"
+external composite_color_simple : t -> int -> int -> Gdkpixbuf_enums.interptype -> int -> int -> UInt32.t -> UInt32.t -> t option = "ml_gdk_pixbuf_composite_color_simple_bytecode" "ml_gdk_pixbuf_composite_color_simple_native"
 
 (** Creates a transformation of the source image @src by scaling by
 @scale_x and @scale_y then translating by @offset_x and @offset_y,
@@ -232,7 +232,7 @@ path is used which omits the alpha blending and just performs the scaling.
 
 See gdk_pixbuf_composite_color_simple() for a simpler variant of this
 function suitable for many tasks. *)
-external composite_color : t -> t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> int -> int -> unit = "ml_gdk_pixbuf_composite_color_bytecode" "ml_gdk_pixbuf_composite_color_native"
+external composite_color : t -> t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> UInt32.t -> UInt32.t -> unit = "ml_gdk_pixbuf_composite_color_bytecode" "ml_gdk_pixbuf_composite_color_native"
 
 (** Creates a transformation of the source image @src by scaling by
 @scale_x and @scale_y then translating by @offset_x and @offset_y.

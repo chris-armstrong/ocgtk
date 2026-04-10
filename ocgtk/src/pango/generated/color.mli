@@ -28,7 +28,7 @@ Additionally, parse strings of the form `#rgba`, `#rrggbbaa`,
 to the value specified by the hex digits for `a`. If no alpha
 component is found in @spec, @alpha is set to 0xffff (for a
 solid color). *)
-external parse_with_alpha : t -> string -> bool * int = "ml_pango_color_parse_with_alpha"
+external parse_with_alpha : t -> string -> bool * UInt16.t = "ml_pango_color_parse_with_alpha"
 
 (** Fill in the fields of a color from a string specification.
 

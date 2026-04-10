@@ -43,12 +43,12 @@ external get_n_formats : t -> int = "ml_gdk_dmabuf_formats_get_n_formats"
 
 (** Gets the fourcc code and modifier for a format
 that is contained in @formats. *)
-external get_format : t -> int -> int * Unsigned.UInt64.t = "ml_gdk_dmabuf_formats_get_format"
+external get_format : t -> int -> UInt32.t * Unsigned.UInt64.t = "ml_gdk_dmabuf_formats_get_format"
 
 (** Returns whether @formats1 and @formats2 contain the
 same dmabuf formats, in the same order. *)
 external equal : t -> t option -> bool = "ml_gdk_dmabuf_formats_equal"
 
 (** Returns whether a given format is contained in @formats. *)
-external contains : t -> int -> Unsigned.UInt64.t -> bool = "ml_gdk_dmabuf_formats_contains"
+external contains : t -> UInt32.t -> Unsigned.UInt64.t -> bool = "ml_gdk_dmabuf_formats_contains"
 

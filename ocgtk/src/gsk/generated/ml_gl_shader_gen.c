@@ -127,7 +127,7 @@ CAMLexport CAMLprim value ml_gsk_gl_shader_get_arg_uint(value self, value arg1, 
 CAMLparam3(self, arg1, arg2);
 
 guint32 result = gsk_gl_shader_get_arg_uint(GskGLShader_val(self), GBytes_val(arg1), Int_val(arg2));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_uint32(result));
 }
 
 CAMLexport CAMLprim value ml_gsk_gl_shader_get_arg_int(value self, value arg1, value arg2)
@@ -135,7 +135,7 @@ CAMLexport CAMLprim value ml_gsk_gl_shader_get_arg_int(value self, value arg1, v
 CAMLparam3(self, arg1, arg2);
 
 gint32 result = gsk_gl_shader_get_arg_int(GskGLShader_val(self), GBytes_val(arg1), Int_val(arg2));
-CAMLreturn(caml_copy_int32(result));
+CAMLreturn(Val_int32_bounded(result));
 }
 
 CAMLexport CAMLprim value ml_gsk_gl_shader_get_arg_float(value self, value arg1, value arg2)

@@ -74,14 +74,14 @@ let test_int32_roundtrip_zero () =
   Alcotest.(check int32) "int32 zero roundtrip" 0l result
 
 let test_int32_roundtrip_max () =
-  let v = Gvariant.of_int32 Int32.max_int in
+  let v = Gvariant.of_int32 Stdlib.Int32.max_int in
   let result = Gvariant.to_int32 v in
-  Alcotest.(check int32) "int32 max roundtrip" Int32.max_int result
+  Alcotest.(check int32) "int32 max roundtrip" Stdlib.Int32.max_int result
 
 let test_int32_roundtrip_min () =
-  let v = Gvariant.of_int32 Int32.min_int in
+  let v = Gvariant.of_int32 Stdlib.Int32.min_int in
   let result = Gvariant.to_int32 v in
-  Alcotest.(check int32) "int32 min roundtrip" Int32.min_int result
+  Alcotest.(check int32) "int32 min roundtrip" Stdlib.Int32.min_int result
 
 (** {2 Int64 Tests} *)
 
@@ -101,7 +101,7 @@ let test_int64_roundtrip_zero () =
   Alcotest.(check int64) "int64 zero roundtrip" 0L result
 
 let test_int64_roundtrip_large () =
-  let large = Int64.of_int32 Int32.max_int |> Int64.add 1L in
+  let large = Int64.of_int32 Stdlib.Int32.max_int |> Int64.add 1L in
   let v = Gvariant.of_int64 large in
   let result = Gvariant.to_int64 v in
   Alcotest.(check int64) "int64 large roundtrip" large result
@@ -187,13 +187,13 @@ let test_uint32_boundary () =
   let open Unsigned.UInt32 in
   (* Test values around Int32.max_int boundary *)
   let just_above_max_int =
-    of_int64 (Int64.add (Int64.of_int32 Int32.max_int) 1L)
+    of_int64 (Int64.add (Int64.of_int32 Stdlib.Int32.max_int) 1L)
   in
   let v = Gvariant.of_uint32 just_above_max_int in
   let result = Gvariant.to_uint32 v in
   Alcotest.(check int64)
     "uint32 just above Int32.max_int"
-    (Int64.add (Int64.of_int32 Int32.max_int) 1L)
+    (Int64.add (Int64.of_int32 Stdlib.Int32.max_int) 1L)
     (to_int64 result)
 
 let test_uint32_boundary_exact () =

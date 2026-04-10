@@ -7,7 +7,7 @@ class type app_launch_context_t = object
     method set_desktop : int -> unit
     method set_icon : Ocgtk_gio.Gio.Icon.icon_t option -> unit
     method set_icon_name : string option -> unit
-    method set_timestamp : int -> unit
+    method set_timestamp : UInt32.t -> unit
 end
 
 and cairo_context_t = object
@@ -44,7 +44,7 @@ and device_t = object
     method get_scroll_lock_state : unit -> bool
     method get_seat : unit -> seat_t
     method get_source : unit -> Gdk_enums.inputsource
-    method get_timestamp : unit -> int
+    method get_timestamp : unit -> UInt32.t
     method get_vendor_id : unit -> string option
     method has_bidi_layouts : unit -> bool
     method n_axes : int
@@ -105,7 +105,7 @@ and event_t = object
     method get_pointer_emulated : unit -> bool
     method get_seat : unit -> seat_t option
     method get_surface : unit -> surface_t option
-    method get_time : unit -> int
+    method get_time : unit -> UInt32.t
     method ref : unit -> event_t
     method triggers_context_menu : unit -> bool
     method unref : unit -> unit
@@ -214,7 +214,7 @@ class app_launch_context (obj : App_launch_context_and__cairo_context_and__clipb
     fun icon_name ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.App_launch_context.set_icon_name obj icon_name)
 
-  method set_timestamp : int -> unit =
+  method set_timestamp : UInt32.t -> unit =
     fun timestamp ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.App_launch_context.set_timestamp obj timestamp)
 
@@ -332,7 +332,7 @@ and device (obj : App_launch_context_and__cairo_context_and__clipboard_and__devi
     fun () ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Device.get_source obj)
 
-  method get_timestamp : unit -> int =
+  method get_timestamp : unit -> UInt32.t =
     fun () ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Device.get_timestamp obj)
 
@@ -534,7 +534,7 @@ and event (obj : App_launch_context_and__cairo_context_and__clipboard_and__devic
     fun () ->
       Option.map (fun ret -> new surface ret) (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Event.get_surface obj)
 
-  method get_time : unit -> int =
+  method get_time : unit -> UInt32.t =
     fun () ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Event.get_time obj)
 

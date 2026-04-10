@@ -40,7 +40,7 @@ CAMLexport CAMLprim value ml_pango_renderer_set_alpha(value self, value arg1, va
 {
 CAMLparam3(self, arg1, arg2);
 
-pango_renderer_set_alpha(PangoRenderer_val(self), PangoRenderPart_val(arg1), Int_val(arg2));
+pango_renderer_set_alpha(PangoRenderer_val(self), PangoRenderPart_val(arg1), UInt16_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -131,7 +131,7 @@ CAMLexport CAMLprim value ml_pango_renderer_get_alpha(value self, value arg1)
 CAMLparam2(self, arg1);
 
 guint16 result = pango_renderer_get_alpha(PangoRenderer_val(self), PangoRenderPart_val(arg1));
-CAMLreturn(Val_int(result));
+CAMLreturn(Val_uint16(result));
 }
 
 #else

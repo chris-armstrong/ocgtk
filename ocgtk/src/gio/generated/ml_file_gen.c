@@ -194,7 +194,7 @@ CAMLexport CAMLprim value ml_g_file_set_attribute_uint32(value self, value arg1,
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 GError *error = NULL;
 
-gboolean result = g_file_set_attribute_uint32(GFile_val(self), String_val(arg1), Long_val(arg2), GioFileQueryInfoFlags_val(arg3), Option_val(arg4, GCancellable_val, NULL), &error);
+gboolean result = g_file_set_attribute_uint32(GFile_val(self), String_val(arg1), UInt32_val(arg2), GioFileQueryInfoFlags_val(arg3), Option_val(arg4, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -221,7 +221,7 @@ CAMLexport CAMLprim value ml_g_file_set_attribute_int32(value self, value arg1, 
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 GError *error = NULL;
 
-gboolean result = g_file_set_attribute_int32(GFile_val(self), String_val(arg1), Int32_val(arg2), GioFileQueryInfoFlags_val(arg3), Option_val(arg4, GCancellable_val, NULL), &error);
+gboolean result = g_file_set_attribute_int32(GFile_val(self), String_val(arg1), Int32_val_bounded(arg2), GioFileQueryInfoFlags_val(arg3), Option_val(arg4, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 

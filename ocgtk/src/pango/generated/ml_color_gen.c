@@ -56,7 +56,7 @@ gboolean result = pango_color_parse_with_alpha(PangoColor_val(self), &out1, Stri
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_int(out1));
+    Store_field(ret, 1, Val_uint16(out1));
     CAMLreturn(ret);
 }
 

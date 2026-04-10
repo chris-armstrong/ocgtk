@@ -149,3 +149,4 @@ are excluded from reference output.
 - **[SECURITY_GUIDELINES.md](../SECURITY_GUIDELINES.md)** - Security for C bindings
 - **[Code Guidelines](../docs/code_guidelines/index.md)** - OCaml coding standards
 - **[CI Distro Testing](./ci_distro_testing.md)** - Docker-based multi-distro build/test setup
+- **[Integer Type Design](./integer_type_design.md)** - Bounded integer wrapper types: rationale, design decisions, C macro layer

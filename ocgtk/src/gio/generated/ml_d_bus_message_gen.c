@@ -80,7 +80,7 @@ CAMLexport CAMLprim value ml_g_dbus_message_set_serial(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-g_dbus_message_set_serial(GDBusMessage_val(self), Long_val(arg1));
+g_dbus_message_set_serial(GDBusMessage_val(self), UInt32_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -96,7 +96,7 @@ CAMLexport CAMLprim value ml_g_dbus_message_set_reply_serial(value self, value a
 {
 CAMLparam2(self, arg1);
 
-g_dbus_message_set_reply_serial(GDBusMessage_val(self), Long_val(arg1));
+g_dbus_message_set_reply_serial(GDBusMessage_val(self), UInt32_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -112,7 +112,7 @@ CAMLexport CAMLprim value ml_g_dbus_message_set_num_unix_fds(value self, value a
 {
 CAMLparam2(self, arg1);
 
-g_dbus_message_set_num_unix_fds(GDBusMessage_val(self), Long_val(arg1));
+g_dbus_message_set_num_unix_fds(GDBusMessage_val(self), UInt32_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -242,7 +242,7 @@ CAMLexport CAMLprim value ml_g_dbus_message_get_serial(value self)
 CAMLparam1(self);
 
 guint32 result = g_dbus_message_get_serial(GDBusMessage_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_uint32(result));
 }
 
 CAMLexport CAMLprim value ml_g_dbus_message_get_sender(value self)
@@ -258,7 +258,7 @@ CAMLexport CAMLprim value ml_g_dbus_message_get_reply_serial(value self)
 CAMLparam1(self);
 
 guint32 result = g_dbus_message_get_reply_serial(GDBusMessage_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_uint32(result));
 }
 
 CAMLexport CAMLprim value ml_g_dbus_message_get_path(value self)
@@ -274,7 +274,7 @@ CAMLexport CAMLprim value ml_g_dbus_message_get_num_unix_fds(value self)
 CAMLparam1(self);
 
 guint32 result = g_dbus_message_get_num_unix_fds(GDBusMessage_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_uint32(result));
 }
 
 CAMLexport CAMLprim value ml_g_dbus_message_get_message_type(value self)

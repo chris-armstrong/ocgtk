@@ -57,12 +57,12 @@ external get_arg_vec2 : t -> Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Wrap
 (** Gets the value of the uniform @idx in the @args block.
 
 The uniform must be of uint type. *)
-external get_arg_uint : t -> Glib_bytes.t -> int -> int = "ml_gsk_gl_shader_get_arg_uint"
+external get_arg_uint : t -> Glib_bytes.t -> int -> UInt32.t = "ml_gsk_gl_shader_get_arg_uint"
 
 (** Gets the value of the uniform @idx in the @args block.
 
 The uniform must be of int type. *)
-external get_arg_int : t -> Glib_bytes.t -> int -> int32 = "ml_gsk_gl_shader_get_arg_int"
+external get_arg_int : t -> Glib_bytes.t -> int -> Int32.t = "ml_gsk_gl_shader_get_arg_int"
 
 (** Gets the value of the uniform @idx in the @args block.
 

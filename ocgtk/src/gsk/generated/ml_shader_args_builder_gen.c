@@ -83,7 +83,7 @@ CAMLexport CAMLprim value ml_gsk_shader_args_builder_set_uint(value self, value 
 {
 CAMLparam3(self, arg1, arg2);
 
-gsk_shader_args_builder_set_uint(GskShaderArgsBuilder_val(self), Int_val(arg1), Long_val(arg2));
+gsk_shader_args_builder_set_uint(GskShaderArgsBuilder_val(self), Int_val(arg1), UInt32_val(arg2));
 CAMLreturn(Val_unit);
 }
 
@@ -91,7 +91,7 @@ CAMLexport CAMLprim value ml_gsk_shader_args_builder_set_int(value self, value a
 {
 CAMLparam3(self, arg1, arg2);
 
-gsk_shader_args_builder_set_int(GskShaderArgsBuilder_val(self), Int_val(arg1), Int32_val(arg2));
+gsk_shader_args_builder_set_int(GskShaderArgsBuilder_val(self), Int_val(arg1), Int32_val_bounded(arg2));
 CAMLreturn(Val_unit);
 }
 

@@ -310,38 +310,38 @@ let type_mappings : (string * Types.type_mapping) list =
       } );
     ( "guint16",
       {
-        ocaml_type = "int";
-        c_to_ml = "Val_int";
-        ml_to_c = "Int_val";
+        ocaml_type = "UInt16.t";
+        c_to_ml = "Val_uint16";
+        ml_to_c = "UInt16_val";
         layer2_class = None;
         c_type = "guint16";
         is_value_type_record = false;
       } );
     ( "gint16",
       {
-        ocaml_type = "int";
-        c_to_ml = "Val_int";
-        ml_to_c = "Int_val";
+        ocaml_type = "Int16.t";
+        c_to_ml = "Val_int16";
+        ml_to_c = "Int16_val";
         layer2_class = None;
         c_type = "gint16";
         is_value_type_record = false;
       } );
     ( "gint32",
       {
-        ocaml_type = "int32";
-        c_to_ml = "caml_copy_int32";
-        ml_to_c = "Int32_val";
+        ocaml_type = "Int32.t";
+        c_to_ml = "Val_int32_bounded";
+        ml_to_c = "Int32_val_bounded";
         layer2_class = None;
         c_type = "gint32";
         is_value_type_record = false;
       } );
-    (* guint32 mapped to int (not int32) — OCaml int is 63-bit on 64-bit
-       platforms so it covers the full uint32 range without boxing *)
+    (* guint32 mapped to UInt32.t (bounded private int) — OCaml int is 63-bit on
+       64-bit platforms so it covers the full uint32 range without boxing *)
     ( "guint32",
       {
-        ocaml_type = "int";
-        c_to_ml = "Val_long";
-        ml_to_c = "Long_val";
+        ocaml_type = "UInt32.t";
+        c_to_ml = "Val_uint32";
+        ml_to_c = "UInt32_val";
         layer2_class = None;
         c_type = "guint32";
         is_value_type_record = false;

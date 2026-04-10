@@ -165,7 +165,7 @@ CAMLexport CAMLprim value ml_gdk_toplevel_focus(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gdk_toplevel_focus(GdkToplevel_val(self), Long_val(arg1));
+gdk_toplevel_focus(GdkToplevel_val(self), UInt32_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -174,7 +174,7 @@ CAMLexport CAMLprim value ml_gdk_toplevel_begin_resize_native(value self, value 
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam2(arg5, arg6);
 
-gdk_toplevel_begin_resize(GdkToplevel_val(self), GdkSurfaceEdge_val(arg1), Option_val(arg2, GdkDevice_val, NULL), Int_val(arg3), Double_val(arg4), Double_val(arg5), Long_val(arg6));
+gdk_toplevel_begin_resize(GdkToplevel_val(self), GdkSurfaceEdge_val(arg1), Option_val(arg2, GdkDevice_val, NULL), Int_val(arg3), Double_val(arg4), Double_val(arg5), UInt32_val(arg6));
 CAMLreturn(Val_unit);}
 
 CAMLexport CAMLprim value ml_gdk_toplevel_begin_resize_bytecode(value * argv, int argn)
@@ -187,7 +187,7 @@ CAMLexport CAMLprim value ml_gdk_toplevel_begin_move_native(value self, value ar
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam1(arg5);
 
-gdk_toplevel_begin_move(GdkToplevel_val(self), GdkDevice_val(arg1), Int_val(arg2), Double_val(arg3), Double_val(arg4), Long_val(arg5));
+gdk_toplevel_begin_move(GdkToplevel_val(self), GdkDevice_val(arg1), Int_val(arg2), Double_val(arg3), Double_val(arg4), UInt32_val(arg5));
 CAMLreturn(Val_unit);}
 
 CAMLexport CAMLprim value ml_gdk_toplevel_begin_move_bytecode(value * argv, int argn)

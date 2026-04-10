@@ -3,8 +3,8 @@ class type gl_shader_t = object
     method find_uniform_by_name : string -> int
     method get_arg_bool : Glib_bytes.t -> int -> bool
     method get_arg_float : Glib_bytes.t -> int -> float
-    method get_arg_int : Glib_bytes.t -> int -> int32
-    method get_arg_uint : Glib_bytes.t -> int -> int
+    method get_arg_int : Glib_bytes.t -> int -> Int32.t
+    method get_arg_uint : Glib_bytes.t -> int -> UInt32.t
     method get_arg_vec2 : Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Vec2.vec2_t -> unit
     method get_arg_vec3 : Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Vec3.vec3_t -> unit
     method get_arg_vec4 : Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Vec4.vec4_t -> unit
@@ -39,11 +39,11 @@ class gl_shader (obj : Gl_shader.t) : gl_shader_t = object (self)
     fun args idx ->
       (Gl_shader.get_arg_float obj args idx)
 
-  method get_arg_int : Glib_bytes.t -> int -> int32 =
+  method get_arg_int : Glib_bytes.t -> int -> Int32.t =
     fun args idx ->
       (Gl_shader.get_arg_int obj args idx)
 
-  method get_arg_uint : Glib_bytes.t -> int -> int =
+  method get_arg_uint : Glib_bytes.t -> int -> UInt32.t =
     fun args idx ->
       (Gl_shader.get_arg_uint obj args idx)
 

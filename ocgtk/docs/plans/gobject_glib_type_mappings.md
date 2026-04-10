@@ -534,6 +534,90 @@ Notable examples:
 - **Gio:** socket/stream count params (gsize/gssize) on non-async paths
 - **GDK/GTK:** APIs using guint32, gint64 (e.g. timing, masks)
 
+#### Task 3.3.1: Bounded Integer Wrapper Types — ⏳ PLANNED
+
+**Status:** ⏳ PLANNED
+
+**Goal:** Replace the bare `int`/`int32` mappings for bounded GLib integer types with opaque wrapper types that enforce range constraints at the OCaml level, eliminating silent truncation and providing self-documenting APIs.
+
+**Problem with Task 3.3 mappings:**
+- `guint16`, `gint16`, `guint32` exposed as `int`, `gint32` as `int32` — callers can pass any value and silent truncation occurs at the C boundary (e.g. passing `70000` for `guint16` silently wraps to `4464`)
+- Generated `.mli` files show `int` with no hint the value is semantically bounded
+- Inconsistent with `guint64` which already uses `Unsigned.UInt64.t` from the `integers` library
+
+**Investigation: `ocaml_integers.h` is insufficient**
+
+The `integers` library C header (`ocaml_integers.h`) was examined. It provides only:
+- `Uint8_val` / `Integers_val_uint8` — backed by `Int_val` (no custom block, no safety)
+- `Uint16_val` / `Integers_val_uint16` — same
+- `Uint32_val` / `integers_copy_uint32` — custom block (heap allocated)
+- `Uint64_val` / `integers_copy_uint64` — custom block (heap allocated)
+- **No signed type support** — `Int16_val`, `Int32_val`, `integers_copy_int16`, etc. are absent
+
+Since signed type C macros must be written from scratch regardless, and since `UInt16` in integers is just `Int_val` in disguise with no additional safety, the decision is to write a purpose-built `bounded_int` module rather than use the `integers` library for these types.
+
+**Decision: Custom `bounded_int` module in `src/common/`**
+
+Create `src/common/bounded_int.ml` and `bounded_int.mli` exposing flat top-level modules (deliberately shadowing stdlib where needed — users requiring both can qualify as `Stdlib.Int32`):
+
+| Module  | Backing type  | Range                        | GLib types      |
+|---------|--------------|------------------------------|-----------------|
+| `UInt8` | `private int` | `[0, 255]`                   | `guint8`        |
+| `Int8`  | `private int` | `[-128, 127]`                | `gint8`         |
+| `UInt16`| `private int` | `[0, 65535]`                 | `guint16`       |
+| `Int16` | `private int` | `[-32768, 32767]`            | `gint16`        |
+| `UInt32`| `private int` | `[0, 4294967295]`            | `guint32`       |
+| `Int32` | `private int` | `[-2147483648, 2147483647]`  | `gint32`        |
+
+All types use `type t = private int` — no boxing, no heap allocation. On 64-bit OCaml, all six ranges fit within the 63-bit `int`. Each module exposes:
+- `of_int : int -> t` — raises `Invalid_argument` if value is out of range
+- `to_int : t -> int`
+- `zero : t` (unsigned) / `minus_one : t` (signed)
+- `min_int : t`, `max_int : t`
+
+`guint64` is unchanged — it keeps `Unsigned.UInt64.t` from the `integers` library, which is already working and genuinely requires 64-bit custom-block storage.
+
+**C macro layer** — add to `src/common/wrappers.h`:
+
+```c
+/* Bounded integer types — all backed by OCaml int (private int representation) */
+#define UInt8_val(v)           ((uint8_t)(Long_val(v)))
+#define Val_uint8(x)           (Val_long((uint8_t)(x)))
+#define Int8_val(v)            ((int8_t)(Long_val(v)))
+#define Val_int8(x)            (Val_long((int8_t)(x)))
+#define UInt16_val(v)          ((uint16_t)(Long_val(v)))
+#define Val_uint16(x)          (Val_long((uint16_t)(x)))
+#define Int16_val(v)           ((int16_t)(Long_val(v)))
+#define Val_int16(x)           (Val_long((int16_t)(x)))
+#define UInt32_val(v)          ((uint32_t)(Long_val(v)))
+#define Val_uint32(x)          (Val_long((uint32_t)(x)))
+#define Int32_val_bounded(v)   ((int32_t)(Long_val(v)))   /* avoids conflict with caml Int32_val */
+#define Val_int32_bounded(x)   (Val_long((int32_t)(x)))
+```
+
+**`type_mappings.ml` changes:**
+
+| GIR Type | Old OCaml type | New OCaml type | Old C→OCaml        | New C→OCaml        | Old OCaml→C | New OCaml→C       |
+|----------|---------------|---------------|--------------------|--------------------|-------------|-------------------|
+| `guint16`| `int`         | `UInt16.t`    | `Val_int`          | `Val_uint16`       | `Int_val`   | `UInt16_val`      |
+| `gint16` | `int`         | `Int16.t`     | `Val_int`          | `Val_int16`        | `Int_val`   | `Int16_val`       |
+| `guint32`| `int`         | `UInt32.t`    | `Val_long`         | `Val_uint32`       | `Long_val`  | `UInt32_val`      |
+| `gint32` | `int32`       | `Int32.t`     | `caml_copy_int32`  | `Val_int32_bounded`| `Int32_val` | `Int32_val_bounded` |
+
+After updating `type_mappings.ml`, all bindings must be regenerated via `bash scripts/generate-bindings.sh` from the repository root.
+
+**User-visible impact:**
+
+```ocaml
+(* Before: silent truncation, no type signal *)
+Widget.set_something widget 70000
+
+(* After: explicit conversion, raises Invalid_argument on bad input *)
+Widget.set_something widget (UInt16.of_int 70000)
+```
+
+**Architecture reference:** See `ocgtk/architecture/integer_type_design.md` for full rationale.
+
 #### Task 3.4: GLib.DateTime (90 hits)
 
 Create `src/common/glib_date_time.ml`, `src/common/ml_glib_date_time.c`. Opaque type with ref-counting finalizer and basic accessors.

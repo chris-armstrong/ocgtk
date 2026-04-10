@@ -28,7 +28,7 @@ CAMLexport CAMLprim value ml_g_network_address_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
 
-GNetworkAddress *obj = g_network_address_new(String_val(arg1), Int_val(arg2));
+GNetworkAddress *obj = g_network_address_new(String_val(arg1), UInt16_val(arg2));
 if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GNetworkAddress(obj));
@@ -51,7 +51,7 @@ CAMLexport CAMLprim value ml_g_network_address_new_loopback(value arg1)
 {
 CAMLparam1(arg1);
 
-GNetworkAddress *obj = g_network_address_new_loopback(Int_val(arg1));
+GNetworkAddress *obj = g_network_address_new_loopback(UInt16_val(arg1));
 if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GNetworkAddress(obj));
@@ -95,7 +95,7 @@ CAMLexport CAMLprim value ml_g_network_address_get_port(value self)
 CAMLparam1(self);
 
 guint16 result = g_network_address_get_port(GNetworkAddress_val(self));
-CAMLreturn(Val_int(result));
+CAMLreturn(Val_uint16(result));
 }
 
 #else

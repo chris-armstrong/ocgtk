@@ -103,7 +103,7 @@ CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_set_fourcc(value self, v
 {
 CAMLparam2(self, arg1);
 
-gdk_dmabuf_texture_builder_set_fourcc(GdkDmabufTextureBuilder_val(self), Long_val(arg1));
+gdk_dmabuf_texture_builder_set_fourcc(GdkDmabufTextureBuilder_val(self), UInt32_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -201,7 +201,7 @@ CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_fourcc(value self)
 CAMLparam1(self);
 
 guint32 result = gdk_dmabuf_texture_builder_get_fourcc(GdkDmabufTextureBuilder_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_uint32(result));
 }
 
 CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_fd(value self, value arg1)

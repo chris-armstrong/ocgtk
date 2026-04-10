@@ -20,7 +20,7 @@ CAMLexport CAMLprim value ml_gdk_app_launch_context_set_timestamp(value self, va
 {
 CAMLparam2(self, arg1);
 
-gdk_app_launch_context_set_timestamp(GdkAppLaunchContext_val(self), Long_val(arg1));
+gdk_app_launch_context_set_timestamp(GdkAppLaunchContext_val(self), UInt32_val(arg1));
 CAMLreturn(Val_unit);
 }
 

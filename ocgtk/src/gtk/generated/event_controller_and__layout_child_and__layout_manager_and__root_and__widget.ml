@@ -43,7 +43,7 @@ module rec Event_controller : sig
   handled by the controller.
 
   At other times, 0 is returned. *)
-  external get_current_event_time : t -> int = "ml_gtk_event_controller_get_current_event_time"
+  external get_current_event_time : t -> UInt32.t = "ml_gtk_event_controller_get_current_event_time"
 
   (** Returns the modifier state of the event that is currently being
   handled by the controller.
@@ -107,7 +107,7 @@ end = struct
   handled by the controller.
 
   At other times, 0 is returned. *)
-  external get_current_event_time : t -> int = "ml_gtk_event_controller_get_current_event_time"
+  external get_current_event_time : t -> UInt32.t = "ml_gtk_event_controller_get_current_event_time"
 
   (** Returns the modifier state of the event that is currently being
   handled by the controller.

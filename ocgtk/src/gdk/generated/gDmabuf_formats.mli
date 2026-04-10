@@ -1,5 +1,5 @@
 class type dmabuf_formats_t = object
-    method contains : int -> Unsigned.UInt64.t -> bool
+    method contains : UInt32.t -> Unsigned.UInt64.t -> bool
     method equal : Dmabuf_formats.t option -> bool
     method get_n_formats : unit -> int
     method ref : unit -> Dmabuf_formats.t

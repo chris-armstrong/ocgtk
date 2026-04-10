@@ -45,7 +45,7 @@ CAMLexport CAMLprim value ml_gdk_event_get_time(value self)
 CAMLparam1(self);
 
 guint32 result = gdk_event_get_time(GdkEvent_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_uint32(result));
 }
 
 CAMLexport CAMLprim value ml_gdk_event_get_surface(value self)

@@ -344,7 +344,7 @@ CAMLexport CAMLprim value ml_g_socket_client_connect_to_uri(value self, value ar
 CAMLparam4(self, arg1, arg2, arg3);
 GError *error = NULL;
 
-GSocketConnection* result = g_socket_client_connect_to_uri(GSocketClient_val(self), String_val(arg1), Int_val(arg2), Option_val(arg3, GCancellable_val, NULL), &error);
+GSocketConnection* result = g_socket_client_connect_to_uri(GSocketClient_val(self), String_val(arg1), UInt16_val(arg2), Option_val(arg3, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GSocketConnection(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -394,7 +394,7 @@ CAMLexport CAMLprim value ml_g_socket_client_connect_to_host(value self, value a
 CAMLparam4(self, arg1, arg2, arg3);
 GError *error = NULL;
 
-GSocketConnection* result = g_socket_client_connect_to_host(GSocketClient_val(self), String_val(arg1), Int_val(arg2), Option_val(arg3, GCancellable_val, NULL), &error);
+GSocketConnection* result = g_socket_client_connect_to_host(GSocketClient_val(self), String_val(arg1), UInt16_val(arg2), Option_val(arg3, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GSocketConnection(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 

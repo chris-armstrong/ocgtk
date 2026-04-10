@@ -44,12 +44,12 @@ external set_vec2 : t -> int -> Ocgtk_graphene.Graphene.Wrappers.Vec2.t -> unit 
 (** Sets the value of the uniform @idx.
 
 The uniform must be of uint type. *)
-external set_uint : t -> int -> int -> unit = "ml_gsk_shader_args_builder_set_uint"
+external set_uint : t -> int -> UInt32.t -> unit = "ml_gsk_shader_args_builder_set_uint"
 
 (** Sets the value of the uniform @idx.
 
 The uniform must be of int type. *)
-external set_int : t -> int -> int32 -> unit = "ml_gsk_shader_args_builder_set_int"
+external set_int : t -> int -> Int32.t -> unit = "ml_gsk_shader_args_builder_set_int"
 
 (** Sets the value of the uniform @idx.
 

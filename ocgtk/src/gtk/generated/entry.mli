@@ -229,7 +229,7 @@ external get_visibility : t -> bool = "ml_gtk_entry_get_visibility"
 
 This is equivalent to getting @entry's `GtkEntryBuffer`
 and calling [method@Gtk.EntryBuffer.get_length] on it. *)
-external get_text_length : t -> int = "ml_gtk_entry_get_text_length"
+external get_text_length : t -> UInt16.t = "ml_gtk_entry_get_text_length"
 
 (** Gets the tabstops of the `GtkEntry`.
 

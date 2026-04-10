@@ -63,7 +63,7 @@ CAMLexport CAMLprim value ml_g_socket_listener_add_inet_port(value self, value a
 CAMLparam3(self, arg1, arg2);
 GError *error = NULL;
 
-gboolean result = g_socket_listener_add_inet_port(GSocketListener_val(self), Int_val(arg1), Option_val(arg2, GObject_ext_of_val, NULL), &error);
+gboolean result = g_socket_listener_add_inet_port(GSocketListener_val(self), UInt16_val(arg1), Option_val(arg2, GObject_ext_of_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -75,7 +75,7 @@ CAMLparam2(self, arg1);
 GError *error = NULL;
 
 guint16 result = g_socket_listener_add_any_inet_port(GSocketListener_val(self), Option_val(arg1, GObject_ext_of_val, NULL), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_int(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+if (error == NULL) CAMLreturn(Res_Ok(Val_uint16(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 #else

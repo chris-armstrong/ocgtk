@@ -4,7 +4,7 @@
 type t = [`proxy_address | `inet_socket_address | `socket_address | `object_] Gobject.obj
 
 (** Create a new ProxyAddress *)
-external new_ : Inet_address.t -> int -> string -> string -> int -> string option -> string option -> t = "ml_g_proxy_address_new_bytecode" "ml_g_proxy_address_new_native"
+external new_ : Inet_address.t -> UInt16.t -> string -> string -> UInt16.t -> string option -> string option -> t = "ml_g_proxy_address_new_bytecode" "ml_g_proxy_address_new_native"
 
 (* Methods *)
 (** Gets @proxy's username. *)
@@ -26,7 +26,7 @@ external get_destination_protocol : t -> string = "ml_g_proxy_address_get_destin
 (** Gets @proxy's destination port; that is, the port on the
 destination host that will be connected to via the proxy, not the
 port number of the proxy itself. *)
-external get_destination_port : t -> int = "ml_g_proxy_address_get_destination_port"
+external get_destination_port : t -> UInt16.t = "ml_g_proxy_address_get_destination_port"
 
 (** Gets @proxy's destination hostname; that is, the name of the host
 that will be connected to via the proxy, not the name of the proxy

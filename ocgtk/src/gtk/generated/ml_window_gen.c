@@ -228,7 +228,7 @@ CAMLexport CAMLprim value ml_gtk_window_present_with_time(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-gtk_window_present_with_time(GtkWindow_val(self), Long_val(arg1));
+gtk_window_present_with_time(GtkWindow_val(self), UInt32_val(arg1));
 CAMLreturn(Val_unit);
 }
 

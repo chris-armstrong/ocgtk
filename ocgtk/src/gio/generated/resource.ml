@@ -204,7 +204,7 @@ external lookup_data : t -> string -> Gio_enums.resourcelookupflags -> (Glib_byt
 if found returns information about it.
 
 @lookup_flags controls the behaviour of the lookup. *)
-external get_info : t -> string -> Gio_enums.resourcelookupflags -> (bool * int * int, GError.t) result = "ml_g_resource_get_info"
+external get_info : t -> string -> Gio_enums.resourcelookupflags -> (bool * int * UInt32.t, GError.t) result = "ml_g_resource_get_info"
 
 (** Returns all the names of children at the specified @path in the resource.
 The return result is a %NULL terminated list of strings which should
