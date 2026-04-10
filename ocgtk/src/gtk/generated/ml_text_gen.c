@@ -311,7 +311,7 @@ CAMLparam2(self, arg1);
 graphene_rect_t out2;
 graphene_rect_t out3;
 
-gtk_text_compute_cursor_extents(GtkText_val(self), Long_val(arg1), &out2, &out3);
+gtk_text_compute_cursor_extents(GtkText_val(self), Gsize_val(arg1), &out2, &out3);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_graphene_rect_t(&out2));

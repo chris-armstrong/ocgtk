@@ -95,7 +95,7 @@ gboolean result = g_resource_get_info(GResource_val(self), String_val(arg1), Gio
 CAMLlocal1(ret);
     ret = caml_alloc(3, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_long(out3));
+    Store_field(ret, 1, Val_gsize(out3));
     Store_field(ret, 2, Val_uint32(out4));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }

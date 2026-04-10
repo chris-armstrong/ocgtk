@@ -7,7 +7,7 @@ class type data_input_stream_t = object
     method read_int64 : GCancellable.cancellable_t option -> (int64, GError.t) result
     method read_uint16 : GCancellable.cancellable_t option -> (UInt16.t, GError.t) result
     method read_uint32 : GCancellable.cancellable_t option -> (UInt32.t, GError.t) result
-    method read_uint64 : GCancellable.cancellable_t option -> (Unsigned.UInt64.t, GError.t) result
+    method read_uint64 : GCancellable.cancellable_t option -> (UInt64.t, GError.t) result
     method set_byte_order : Gio_enums.datastreambyteorder -> unit
     method set_newline_type : Gio_enums.datastreamnewlinetype -> unit
     method as_data_input_stream : Data_input_stream.t

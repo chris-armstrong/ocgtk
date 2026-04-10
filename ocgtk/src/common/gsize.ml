@@ -11,17 +11,17 @@
 (*                                                                        *)
 (**************************************************************************)
 
-(* Convenience re-export of the individual bounded integer modules.
- * The canonical implementations live in uInt8.ml, int8.ml, uInt16.ml,
- * int16.ml, uInt32.ml, int32.ml, and uInt64.ml; they are exposed as flat
- * top-level modules (UInt8, Int8, …) because ocgtk_common is (wrapped false).
- * This module lets callers write Bounded_int.UInt16 if they prefer
- * an explicit namespace. *)
+type t = private int
 
-module UInt8 = UInt8
-module Int8 = Int8
-module UInt16 = UInt16
-module Int16 = Int16
-module UInt32 = UInt32
-module Int32 = Int32
-module UInt64 = UInt64
+external unsafe_of_int : int -> t = "%identity"
+
+let of_int n =
+  if n < 0 then
+    invalid_arg (Printf.sprintf "Gsize.of_int: value %d is negative" n)
+  else unsafe_of_int n
+
+let to_int (t : t) = (t :> int)
+let zero = unsafe_of_int 0
+let max_int = unsafe_of_int Stdlib.max_int
+let min_value = 0
+let max_value = Stdlib.max_int

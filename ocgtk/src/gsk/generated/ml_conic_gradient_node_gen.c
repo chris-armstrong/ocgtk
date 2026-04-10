@@ -25,7 +25,7 @@ CAMLparam5(arg1, arg2, arg3, arg4, arg5);
       c_arg4[i] = *GskColorStop_val(Field(arg4, i));
     }
 
-GskConicGradientNode *obj = gsk_conic_gradient_node_new(graphene_rect_t_val(arg1), graphene_point_t_val(arg2), Double_val(arg3), c_arg4, Long_val(arg5));
+GskConicGradientNode *obj = gsk_conic_gradient_node_new(graphene_rect_t_val(arg1), graphene_point_t_val(arg2), Double_val(arg3), c_arg4, Gsize_val(arg5));
 if (obj) g_object_ref_sink(obj);
 
     g_free(c_arg4);
@@ -44,7 +44,7 @@ CAMLexport CAMLprim value ml_gsk_conic_gradient_node_get_n_color_stops(value sel
 CAMLparam1(self);
 
 gsize result = gsk_conic_gradient_node_get_n_color_stops(GskConicGradientNode_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_gsize(result));
 }
 
 CAMLexport CAMLprim value ml_gsk_conic_gradient_node_get_color_stops(value self)
@@ -62,7 +62,7 @@ const GskColorStop* result = gsk_conic_gradient_node_get_color_stops(GskConicGra
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, ml_result);
-    Store_field(ret, 1, Val_long(out1));
+    Store_field(ret, 1, Val_gsize(out1));
     CAMLreturn(ret);
 }
 

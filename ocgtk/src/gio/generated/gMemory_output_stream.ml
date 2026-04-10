@@ -1,7 +1,7 @@
 class type memory_output_stream_t = object
     inherit GOutput_stream.output_stream_t
-    method get_data_size : unit -> int
-    method get_size : unit -> int
+    method get_data_size : unit -> Gsize.t
+    method get_size : unit -> Gsize.t
     method steal_as_bytes : unit -> Glib_bytes.t
     method as_memory_output_stream : Memory_output_stream.t
 end
@@ -10,11 +10,11 @@ end
 class memory_output_stream (obj : Memory_output_stream.t) : memory_output_stream_t = object (self)
   inherit GOutput_stream.output_stream (obj :> Output_stream.t)
 
-  method get_data_size : unit -> int =
+  method get_data_size : unit -> Gsize.t =
     fun () ->
       (Memory_output_stream.get_data_size obj)
 
-  method get_size : unit -> int =
+  method get_size : unit -> Gsize.t =
     fun () ->
       (Memory_output_stream.get_size obj)
 

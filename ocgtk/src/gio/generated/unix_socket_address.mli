@@ -16,7 +16,7 @@ external new_with_type : int array -> int -> Gio_enums.unixsocketaddresstype -> 
 (** Gets the length of @address's path.
 
 For details, see g_unix_socket_address_get_path(). *)
-external get_path_len : t -> int = "ml_g_unix_socket_address_get_path_len"
+external get_path_len : t -> Gsize.t = "ml_g_unix_socket_address_get_path_len"
 
 (** Gets @address's path, or for abstract sockets the "name".
 

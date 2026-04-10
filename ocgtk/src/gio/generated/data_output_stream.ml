@@ -11,7 +11,7 @@ external new_ : Output_stream.t -> t = "ml_g_data_output_stream_new"
 external set_byte_order : t -> Gio_enums.datastreambyteorder -> unit = "ml_g_data_output_stream_set_byte_order"
 
 (** Puts an unsigned 64-bit integer into the stream. *)
-external put_uint64 : t -> Unsigned.UInt64.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_data_output_stream_put_uint64"
+external put_uint64 : t -> UInt64.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_data_output_stream_put_uint64"
 
 (** Puts an unsigned 32-bit integer into the stream. *)
 external put_uint32 : t -> UInt32.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_data_output_stream_put_uint32"

@@ -9,7 +9,7 @@ class type pixbuf_t = object
     method fill : UInt32.t -> unit
     method flip : bool -> pixbuf_t option
     method get_bits_per_sample : unit -> int
-    method get_byte_length : unit -> int
+    method get_byte_length : unit -> Gsize.t
     method get_colorspace : unit -> Gdkpixbuf_enums.colorspace
     method get_has_alpha : unit -> bool
     method get_height : unit -> int

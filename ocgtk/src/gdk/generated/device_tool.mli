@@ -11,7 +11,7 @@ external get_tool_type : t -> Gdk_enums.devicetooltype = "ml_gdk_device_tool_get
 
 This value can be used to identify a physical tool
 (eg. a tablet pen) across program executions. *)
-external get_serial : t -> Unsigned.UInt64.t = "ml_gdk_device_tool_get_serial"
+external get_serial : t -> UInt64.t = "ml_gdk_device_tool_get_serial"
 
 (** Gets the hardware ID of this tool, or 0 if it's not known.
 
@@ -24,7 +24,7 @@ This is a more concrete (and device specific) method to identify
 a `GdkDeviceTool` than [method@Gdk.DeviceTool.get_tool_type],
 as a tablet may support multiple devices with the same
 `GdkDeviceToolType`, but different hardware identifiers. *)
-external get_hardware_id : t -> Unsigned.UInt64.t = "ml_gdk_device_tool_get_hardware_id"
+external get_hardware_id : t -> UInt64.t = "ml_gdk_device_tool_get_hardware_id"
 
 (** Gets the axes of the tool. *)
 external get_axes : t -> Gdk_enums.axisflags = "ml_gdk_device_tool_get_axes"

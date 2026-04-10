@@ -147,7 +147,7 @@ char** result = gtk_recent_info_get_groups(GtkRecentInfo_val(self), &out1);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, ml_result);
-    Store_field(ret, 1, Val_long(out1));
+    Store_field(ret, 1, Val_gsize(out1));
     CAMLreturn(ret);
 }
 
@@ -194,7 +194,7 @@ char** result = gtk_recent_info_get_applications(GtkRecentInfo_val(self), &out1)
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, ml_result);
-    Store_field(ret, 1, Val_long(out1));
+    Store_field(ret, 1, Val_gsize(out1));
     CAMLreturn(ret);
 }
 

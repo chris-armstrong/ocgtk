@@ -6,7 +6,7 @@ type t = [`socket_control_message | `object_] Gobject.obj
 (* Methods *)
 (** Returns the space required for the control message, not including
 headers or alignment. *)
-external get_size : t -> int = "ml_g_socket_control_message_get_size"
+external get_size : t -> Gsize.t = "ml_g_socket_control_message_get_size"
 
 (** Returns the protocol specific type of the control message.
 For instance, for UNIX fd passing this would be SCM_RIGHTS. *)

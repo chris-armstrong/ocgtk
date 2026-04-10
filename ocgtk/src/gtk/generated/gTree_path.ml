@@ -79,7 +79,7 @@ let new_ () : tree_path_t =
 let new_first () : tree_path_t =
   new tree_path (Tree_path.new_first ())
 
-let new_from_indicesv (indices : int array) (length : int) : tree_path_t =
+let new_from_indicesv (indices : int array) (length : Gsize.t) : tree_path_t =
   let obj_ = Tree_path.new_from_indicesv indices length in
   new tree_path obj_
 

@@ -18,7 +18,7 @@ external to_string : t -> string = "ml_g_inet_address_to_string"
 
 (** Gets the size of the native raw binary address for @address. This
 is the size of the data that you get from g_inet_address_to_bytes(). *)
-external get_native_size : t -> int = "ml_g_inet_address_get_native_size"
+external get_native_size : t -> Gsize.t = "ml_g_inet_address_get_native_size"
 
 (** Tests whether @address is a site-local address such as 10.0.0.1
 (that is, the address identifies a host on a local network that can

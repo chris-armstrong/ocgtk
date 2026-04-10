@@ -11,7 +11,7 @@ external new_ : int -> Ocgtk_gdk.Gdk.dragaction -> t = "ml_gtk_drop_target_new"
 external set_preload : t -> bool -> unit = "ml_gtk_drop_target_set_preload"
 
 (** Sets the supported `GType`s for this drop target. *)
-external set_gtypes : t -> int array option -> int -> unit = "ml_gtk_drop_target_set_gtypes"
+external set_gtypes : t -> int array option -> Gsize.t -> unit = "ml_gtk_drop_target_set_gtypes"
 
 (** Sets the actions that this drop target supports. *)
 external set_actions : t -> Ocgtk_gdk.Gdk.dragaction -> unit = "ml_gtk_drop_target_set_actions"
@@ -32,7 +32,7 @@ external get_preload : t -> bool = "ml_gtk_drop_target_get_preload"
 (** Gets the list of supported `GType`s that can be dropped on the target.
 
 If no types have been set, `NULL` will be returned. *)
-external get_gtypes : t -> int array option * int = "ml_gtk_drop_target_get_gtypes"
+external get_gtypes : t -> int array option * Gsize.t = "ml_gtk_drop_target_get_gtypes"
 
 (** Gets the data formats that this drop target accepts.
 

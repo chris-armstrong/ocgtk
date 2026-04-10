@@ -36,7 +36,7 @@ CAMLexport CAMLprim value ml_g_input_stream_skip(value self, value arg1, value a
 CAMLparam3(self, arg1, arg2);
 GError *error = NULL;
 
-gssize result = g_input_stream_skip(GInputStream_val(self), Long_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
+gssize result = g_input_stream_skip(GInputStream_val(self), Gsize_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_long(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -88,7 +88,7 @@ CAMLexport CAMLprim value ml_g_input_stream_read_bytes(value self, value arg1, v
 CAMLparam3(self, arg1, arg2);
 GError *error = NULL;
 
-GBytes* result = g_input_stream_read_bytes(GInputStream_val(self), Long_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
+GBytes* result = g_input_stream_read_bytes(GInputStream_val(self), Gsize_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GBytes(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -117,7 +117,7 @@ gboolean result = g_input_stream_read_all_finish(GInputStream_val(self), GAsyncR
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_long(out2));
+    Store_field(ret, 1, Val_gsize(out2));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 

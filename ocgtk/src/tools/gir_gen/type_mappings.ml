@@ -282,9 +282,9 @@ let type_mappings : (string * Types.type_mapping) list =
        require length-erasure infrastructure not yet implemented. *)
     ( "gsize",
       {
-        ocaml_type = "int";
-        c_to_ml = "Val_long";
-        ml_to_c = "Long_val";
+        ocaml_type = "Gsize.t";
+        c_to_ml = "Val_gsize";
+        ml_to_c = "Gsize_val";
         layer2_class = None;
         c_type = "gsize";
         is_value_type_record = false;
@@ -356,10 +356,12 @@ let type_mappings : (string * Types.type_mapping) list =
         is_value_type_record = false;
       } );
     (* guint64 uses the integers library (already a dependency via GVariant).
-       wrappers.h includes <ocaml_integers.h> to expose Uint64_val/integers_copy_uint64 *)
+       wrappers.h includes <ocaml_integers.h> to expose Uint64_val/integers_copy_uint64.
+       Exposed as UInt64.t (via src/common/uInt64.ml) for consistency with the other
+       bounded integer modules — the underlying type is still Unsigned.UInt64.t. *)
     ( "guint64",
       {
-        ocaml_type = "Unsigned.UInt64.t";
+        ocaml_type = "UInt64.t";
         c_to_ml = "integers_copy_uint64";
         ml_to_c = "Uint64_val";
         layer2_class = None;

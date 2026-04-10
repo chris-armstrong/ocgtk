@@ -10,8 +10,8 @@ class type bitset_t = object
     method get_maximum : unit -> int
     method get_minimum : unit -> int
     method get_nth : int -> int
-    method get_size : unit -> Unsigned.UInt64.t
-    method get_size_in_range : int -> int -> Unsigned.UInt64.t
+    method get_size : unit -> UInt64.t
+    method get_size_in_range : int -> int -> UInt64.t
     method intersect : Bitset.t -> unit
     method is_empty : unit -> bool
     method ref : unit -> Bitset.t
@@ -76,11 +76,11 @@ class bitset (obj : Bitset.t) : bitset_t = object (self)
     fun nth ->
       (Bitset.get_nth obj nth)
 
-  method get_size : unit -> Unsigned.UInt64.t =
+  method get_size : unit -> UInt64.t =
     fun () ->
       (Bitset.get_size obj)
 
-  method get_size_in_range : int -> int -> Unsigned.UInt64.t =
+  method get_size_in_range : int -> int -> UInt64.t =
     fun first last ->
       (Bitset.get_size_in_range obj first last)
 

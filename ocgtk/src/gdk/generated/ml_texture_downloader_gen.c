@@ -93,7 +93,7 @@ GBytes* result = gdk_texture_downloader_download_bytes(GdkTextureDownloader_val(
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_GBytes(result));
-    Store_field(ret, 1, Val_long(out1));
+    Store_field(ret, 1, Val_gsize(out1));
     CAMLreturn(ret);
 }
 

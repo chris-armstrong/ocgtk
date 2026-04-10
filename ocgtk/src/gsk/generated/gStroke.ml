@@ -6,7 +6,7 @@ class type stroke_t = object
     method get_line_join : unit -> Gsk_enums.linejoin
     method get_line_width : unit -> float
     method get_miter_limit : unit -> float
-    method set_dash : float array option -> int -> unit
+    method set_dash : float array option -> Gsize.t -> unit
     method set_dash_offset : float -> unit
     method set_line_cap : Gsk_enums.linecap -> unit
     method set_line_join : Gsk_enums.linejoin -> unit
@@ -47,7 +47,7 @@ class stroke (obj : Stroke.t) : stroke_t = object (self)
     fun () ->
       (Stroke.get_miter_limit obj)
 
-  method set_dash : float array option -> int -> unit =
+  method set_dash : float array option -> Gsize.t -> unit =
     fun dash n_dash ->
       (Stroke.set_dash obj dash n_dash)
 

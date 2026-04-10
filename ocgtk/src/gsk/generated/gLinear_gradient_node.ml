@@ -1,7 +1,7 @@
 class type linear_gradient_node_t = object
     inherit GRender_node.render_node_t
     method get_end : unit -> Ocgtk_graphene.Graphene.Point.point_t
-    method get_n_color_stops : unit -> int
+    method get_n_color_stops : unit -> Gsize.t
     method get_start : unit -> Ocgtk_graphene.Graphene.Point.point_t
     method as_linear_gradient_node : Linear_gradient_node.t
 end
@@ -14,7 +14,7 @@ class linear_gradient_node (obj : Linear_gradient_node.t) : linear_gradient_node
     fun () ->
       new  Ocgtk_graphene.Graphene.Point.point(Linear_gradient_node.get_end obj)
 
-  method get_n_color_stops : unit -> int =
+  method get_n_color_stops : unit -> Gsize.t =
     fun () ->
       (Linear_gradient_node.get_n_color_stops obj)
 
@@ -25,7 +25,7 @@ class linear_gradient_node (obj : Linear_gradient_node.t) : linear_gradient_node
     method as_linear_gradient_node = obj
 end
 
-let new_ (bounds : Ocgtk_graphene.Graphene.Rect.rect_t) (start : Ocgtk_graphene.Graphene.Point.point_t) (end_ : Ocgtk_graphene.Graphene.Point.point_t) (color_stops : Color_stop.t array) (n_color_stops : int) : linear_gradient_node_t =
+let new_ (bounds : Ocgtk_graphene.Graphene.Rect.rect_t) (start : Ocgtk_graphene.Graphene.Point.point_t) (end_ : Ocgtk_graphene.Graphene.Point.point_t) (color_stops : Color_stop.t array) (n_color_stops : Gsize.t) : linear_gradient_node_t =
   let bounds = bounds#as_rect in
   let start = start#as_point in
   let end_ = end_#as_point in

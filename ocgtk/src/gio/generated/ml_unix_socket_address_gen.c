@@ -96,7 +96,7 @@ CAMLexport CAMLprim value ml_g_unix_socket_address_get_path_len(value self)
 CAMLparam1(self);
 
 gsize result = g_unix_socket_address_get_path_len(GUnixSocketAddress_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_gsize(result));
 }
 
 #else

@@ -69,7 +69,7 @@ through the array.
 
 You can specify a starting offset into the dash with
 [method@Gsk.Stroke.set_dash_offset]. *)
-external set_dash : t -> float array option -> int -> unit = "ml_gsk_stroke_set_dash"
+external set_dash : t -> float array option -> Gsize.t -> unit = "ml_gsk_stroke_set_dash"
 
 (** Returns the miter limit of a `GskStroke`. *)
 external get_miter_limit : t -> float = "ml_gsk_stroke_get_miter_limit"
@@ -91,7 +91,7 @@ external get_line_cap : t -> Gsk_enums.linecap = "ml_gsk_stroke_get_line_cap"
 external get_dash_offset : t -> float = "ml_gsk_stroke_get_dash_offset"
 
 (** Gets the dash array in use or `NULL` if dashing is disabled. *)
-external get_dash : t -> float array option * int = "ml_gsk_stroke_get_dash"
+external get_dash : t -> float array option * Gsize.t = "ml_gsk_stroke_get_dash"
 
 (** Frees a `GskStroke`. *)
 external free : t -> unit = "ml_gsk_stroke_free"

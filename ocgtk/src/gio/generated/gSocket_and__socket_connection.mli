@@ -29,7 +29,7 @@ class type socket_t = object
     method leave_multicast_group : GInet_address.inet_address_t -> bool -> string option -> (bool, GError.t) result
     method leave_multicast_group_ssm : GInet_address.inet_address_t -> GInet_address.inet_address_t option -> string option -> (bool, GError.t) result
     method listen : unit -> (bool, GError.t) result
-    method receive_bytes : int -> int64 -> GCancellable.cancellable_t option -> (Glib_bytes.t, GError.t) result
+    method receive_bytes : Gsize.t -> int64 -> GCancellable.cancellable_t option -> (Glib_bytes.t, GError.t) result
     method receive_messages : Input_message.t array -> int -> int -> GCancellable.cancellable_t option -> (int, GError.t) result
     method send_message : GSocket_address.socket_address_t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> GCancellable.cancellable_t option -> (int, GError.t) result
     method send_messages : Output_message.t array -> int -> int -> GCancellable.cancellable_t option -> (int, GError.t) result

@@ -134,7 +134,7 @@ gchar** result = g_desktop_app_info_get_string_list(GDesktopAppInfo_val(self), S
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, ml_result);
-    Store_field(ret, 1, Val_long(out2));
+    Store_field(ret, 1, Val_gsize(out2));
     CAMLreturn(ret);
 }
 

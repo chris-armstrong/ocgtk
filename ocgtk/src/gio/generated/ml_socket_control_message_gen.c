@@ -29,7 +29,7 @@ CAMLexport CAMLprim value ml_g_socket_control_message_get_size(value self)
 CAMLparam1(self);
 
 gsize result = g_socket_control_message_get_size(GSocketControlMessage_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_gsize(result));
 }
 
 CAMLexport CAMLprim value ml_g_socket_control_message_get_msg_type(value self)

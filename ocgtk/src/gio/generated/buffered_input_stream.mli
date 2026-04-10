@@ -7,13 +7,13 @@ type t = [`buffered_input_stream | `filter_input_stream | `input_stream | `objec
 external new_ : Input_stream.t -> t = "ml_g_buffered_input_stream_new"
 
 (** Create a new BufferedInputStream *)
-external new_sized : Input_stream.t -> int -> t = "ml_g_buffered_input_stream_new_sized"
+external new_sized : Input_stream.t -> Gsize.t -> t = "ml_g_buffered_input_stream_new_sized"
 
 (* Methods *)
 (** Sets the size of the internal buffer of @stream to @size, or to the
 size of the contents of the buffer. The buffer can never be resized
 smaller than its current contents. *)
-external set_buffer_size : t -> int -> unit = "ml_g_buffered_input_stream_set_buffer_size"
+external set_buffer_size : t -> Gsize.t -> unit = "ml_g_buffered_input_stream_set_buffer_size"
 
 (** Tries to read a single byte from the stream or the buffer. Will block
 during this read.
@@ -31,10 +31,10 @@ On error -1 is returned and @error is set accordingly. *)
 external read_byte : t -> Cancellable.t option -> (int, GError.t) result = "ml_g_buffered_input_stream_read_byte"
 
 (** Gets the size of the input buffer. *)
-external get_buffer_size : t -> int = "ml_g_buffered_input_stream_get_buffer_size"
+external get_buffer_size : t -> Gsize.t = "ml_g_buffered_input_stream_get_buffer_size"
 
 (** Gets the size of the available data within the stream. *)
-external get_available : t -> int = "ml_g_buffered_input_stream_get_available"
+external get_available : t -> Gsize.t = "ml_g_buffered_input_stream_get_available"
 
 (** Finishes an asynchronous read. *)
 external fill_finish : t -> Async_result.t -> (int, GError.t) result = "ml_g_buffered_input_stream_fill_finish"

@@ -34,7 +34,7 @@ gboolean result = g_output_stream_writev_finish(GOutputStream_val(self), GAsyncR
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_long(out2));
+    Store_field(ret, 1, Val_gsize(out2));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -62,7 +62,7 @@ gboolean result = g_output_stream_writev_all_finish(GOutputStream_val(self), GAs
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_long(out2));
+    Store_field(ret, 1, Val_gsize(out2));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -91,12 +91,12 @@ GError *error = NULL;
     }
 gsize out3;
 
-gboolean result = g_output_stream_writev_all(GOutputStream_val(self), c_arg1, Long_val(arg2), &out3, Option_val(arg3, GCancellable_val, NULL), &error);
+gboolean result = g_output_stream_writev_all(GOutputStream_val(self), c_arg1, Gsize_val(arg2), &out3, Option_val(arg3, GCancellable_val, NULL), &error);
     g_free(c_arg1);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_long(out3));
+    Store_field(ret, 1, Val_gsize(out3));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -127,12 +127,12 @@ GError *error = NULL;
     }
 gsize out3;
 
-gboolean result = g_output_stream_writev(GOutputStream_val(self), c_arg1, Long_val(arg2), &out3, Option_val(arg3, GCancellable_val, NULL), &error);
+gboolean result = g_output_stream_writev(GOutputStream_val(self), c_arg1, Gsize_val(arg2), &out3, Option_val(arg3, GCancellable_val, NULL), &error);
     g_free(c_arg1);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_long(out3));
+    Store_field(ret, 1, Val_gsize(out3));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -189,7 +189,7 @@ gboolean result = g_output_stream_write_all_finish(GOutputStream_val(self), GAsy
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
-    Store_field(ret, 1, Val_long(out2));
+    Store_field(ret, 1, Val_gsize(out2));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 

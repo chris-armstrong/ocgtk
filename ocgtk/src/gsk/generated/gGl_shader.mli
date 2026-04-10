@@ -8,7 +8,7 @@ class type gl_shader_t = object
     method get_arg_vec2 : Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Vec2.vec2_t -> unit
     method get_arg_vec3 : Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Vec3.vec3_t -> unit
     method get_arg_vec4 : Glib_bytes.t -> int -> Ocgtk_graphene.Graphene.Vec4.vec4_t -> unit
-    method get_args_size : unit -> int
+    method get_args_size : unit -> Gsize.t
     method get_n_textures : unit -> int
     method get_n_uniforms : unit -> int
     method get_resource : unit -> string option

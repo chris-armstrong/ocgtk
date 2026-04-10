@@ -43,7 +43,7 @@ let new_for_bytes (mime_type : string) (bytes : Glib_bytes.t) : content_provider
   let obj_ = Content_provider.new_for_bytes mime_type bytes in
   new content_provider obj_
 
-let new_union (providers : Content_provider.t array option) (n_providers : int) : content_provider_t =
+let new_union (providers : Content_provider.t array option) (n_providers : Gsize.t) : content_provider_t =
   let obj_ = Content_provider.new_union providers n_providers in
   new content_provider obj_
 

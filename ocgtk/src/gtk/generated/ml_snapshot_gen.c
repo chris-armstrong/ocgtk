@@ -214,7 +214,7 @@ CAMLparam3(self, arg1, arg2);
       c_arg1[i] = *GskShadow_val(Field(arg1, i));
     }
 
-gtk_snapshot_push_shadow(GtkSnapshot_val(self), c_arg1, Long_val(arg2));
+gtk_snapshot_push_shadow(GtkSnapshot_val(self), c_arg1, Gsize_val(arg2));
     g_free(c_arg1);
 CAMLreturn(Val_unit);
 }
@@ -426,7 +426,7 @@ CAMLxparam4(arg5, arg6, arg7, arg8);
       c_arg7[i] = *GskColorStop_val(Field(arg7, i));
     }
 
-gtk_snapshot_append_repeating_radial_gradient(GtkSnapshot_val(self), graphene_rect_t_val(arg1), graphene_point_t_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6), c_arg7, Long_val(arg8));
+gtk_snapshot_append_repeating_radial_gradient(GtkSnapshot_val(self), graphene_rect_t_val(arg1), graphene_point_t_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6), c_arg7, Gsize_val(arg8));
     g_free(c_arg7);
 CAMLreturn(Val_unit);}
 
@@ -445,7 +445,7 @@ CAMLxparam1(arg5);
       c_arg4[i] = *GskColorStop_val(Field(arg4, i));
     }
 
-gtk_snapshot_append_repeating_linear_gradient(GtkSnapshot_val(self), graphene_rect_t_val(arg1), graphene_point_t_val(arg2), graphene_point_t_val(arg3), c_arg4, Long_val(arg5));
+gtk_snapshot_append_repeating_linear_gradient(GtkSnapshot_val(self), graphene_rect_t_val(arg1), graphene_point_t_val(arg2), graphene_point_t_val(arg3), c_arg4, Gsize_val(arg5));
     g_free(c_arg4);
 CAMLreturn(Val_unit);}
 
@@ -464,7 +464,7 @@ CAMLxparam4(arg5, arg6, arg7, arg8);
       c_arg7[i] = *GskColorStop_val(Field(arg7, i));
     }
 
-gtk_snapshot_append_radial_gradient(GtkSnapshot_val(self), graphene_rect_t_val(arg1), graphene_point_t_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6), c_arg7, Long_val(arg8));
+gtk_snapshot_append_radial_gradient(GtkSnapshot_val(self), graphene_rect_t_val(arg1), graphene_point_t_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6), c_arg7, Gsize_val(arg8));
     g_free(c_arg7);
 CAMLreturn(Val_unit);}
 
@@ -504,7 +504,7 @@ CAMLxparam1(arg5);
       c_arg4[i] = *GskColorStop_val(Field(arg4, i));
     }
 
-gtk_snapshot_append_linear_gradient(GtkSnapshot_val(self), graphene_rect_t_val(arg1), graphene_point_t_val(arg2), graphene_point_t_val(arg3), c_arg4, Long_val(arg5));
+gtk_snapshot_append_linear_gradient(GtkSnapshot_val(self), graphene_rect_t_val(arg1), graphene_point_t_val(arg2), graphene_point_t_val(arg3), c_arg4, Gsize_val(arg5));
     g_free(c_arg4);
 CAMLreturn(Val_unit);}
 
@@ -568,7 +568,7 @@ CAMLxparam1(arg5);
       c_arg4[i] = *GskColorStop_val(Field(arg4, i));
     }
 
-gtk_snapshot_append_conic_gradient(GtkSnapshot_val(self), graphene_rect_t_val(arg1), graphene_point_t_val(arg2), Double_val(arg3), c_arg4, Long_val(arg5));
+gtk_snapshot_append_conic_gradient(GtkSnapshot_val(self), graphene_rect_t_val(arg1), graphene_point_t_val(arg2), Double_val(arg3), c_arg4, Gsize_val(arg5));
     g_free(c_arg4);
 CAMLreturn(Val_unit);}
 

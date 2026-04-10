@@ -46,7 +46,7 @@ external set_offset : t -> int -> int -> unit = "ml_gdk_dmabuf_texture_builder_s
 external set_n_planes : t -> int -> unit = "ml_gdk_dmabuf_texture_builder_set_n_planes"
 
 (** Sets the modifier. *)
-external set_modifier : t -> Unsigned.UInt64.t -> unit = "ml_gdk_dmabuf_texture_builder_set_modifier"
+external set_modifier : t -> UInt64.t -> unit = "ml_gdk_dmabuf_texture_builder_set_modifier"
 
 (** Sets the height of the texture.
 
@@ -95,7 +95,7 @@ external get_offset : t -> int -> int = "ml_gdk_dmabuf_texture_builder_get_offse
 external get_n_planes : t -> int = "ml_gdk_dmabuf_texture_builder_get_n_planes"
 
 (** Gets the modifier value. *)
-external get_modifier : t -> Unsigned.UInt64.t = "ml_gdk_dmabuf_texture_builder_get_modifier"
+external get_modifier : t -> UInt64.t = "ml_gdk_dmabuf_texture_builder_get_modifier"
 
 (** Gets the height previously set via gdk_dmabuf_texture_builder_set_height() or
 0 if the height wasn't set. *)

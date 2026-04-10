@@ -261,6 +261,33 @@ let test_int32_constants () =
   Alcotest.(check int) "Int32 max_value = 2147483647" 2147483647
     Int32.max_value
 
+(** {2 Gsize tests} *)
+
+let test_gsize_zero_accepted () =
+  let _ = Gsize.of_int 0 in
+  Alcotest.(check pass) "Gsize of_int 0 accepted" () ()
+
+let test_gsize_max_int_accepted () =
+  let _ = Gsize.of_int Stdlib.max_int in
+  Alcotest.(check pass) "Gsize of_int Stdlib.max_int accepted" () ()
+
+let test_gsize_negative_rejected () =
+  Alcotest.check_raises "Gsize negative rejected"
+    (Invalid_argument "Gsize.of_int: value -1 is negative")
+    (fun () -> ignore (Gsize.of_int (-1)))
+
+let test_gsize_roundtrip () =
+  Alcotest.(check int) "Gsize roundtrip 42" 42
+    (Gsize.to_int (Gsize.of_int 42))
+
+let test_gsize_zero_constant () =
+  Alcotest.(check int) "Gsize to_int zero = 0" 0 (Gsize.to_int Gsize.zero)
+
+let test_gsize_constants () =
+  Alcotest.(check int) "Gsize min_value = 0" 0 Gsize.min_value;
+  Alcotest.(check int) "Gsize max_value = Stdlib.max_int" Stdlib.max_int
+    Gsize.max_value
+
 (** {2 Test Suite} *)
 
 let () =
@@ -349,5 +376,16 @@ let () =
             test_int32_above_max_rejected;
           Alcotest.test_case "roundtrip" `Quick test_int32_roundtrip;
           Alcotest.test_case "constants" `Quick test_int32_constants;
+        ] );
+      ( "Gsize",
+        [
+          Alcotest.test_case "of_int 0 accepted" `Quick test_gsize_zero_accepted;
+          Alcotest.test_case "of_int max_int accepted" `Quick
+            test_gsize_max_int_accepted;
+          Alcotest.test_case "negative rejected" `Quick
+            test_gsize_negative_rejected;
+          Alcotest.test_case "roundtrip" `Quick test_gsize_roundtrip;
+          Alcotest.test_case "zero constant" `Quick test_gsize_zero_constant;
+          Alcotest.test_case "constants" `Quick test_gsize_constants;
         ] );
     ]

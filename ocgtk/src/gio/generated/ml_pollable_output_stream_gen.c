@@ -37,12 +37,12 @@ GError *error = NULL;
     }
 gsize out3;
 
-GPollableReturn result = g_pollable_output_stream_writev_nonblocking(GPollableOutputStream_val(self), c_arg1, Long_val(arg2), &out3, Option_val(arg3, GCancellable_val, NULL), &error);
+GPollableReturn result = g_pollable_output_stream_writev_nonblocking(GPollableOutputStream_val(self), c_arg1, Gsize_val(arg2), &out3, Option_val(arg3, GCancellable_val, NULL), &error);
     g_free(c_arg1);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_GioPollableReturn(result));
-    Store_field(ret, 1, Val_long(out3));
+    Store_field(ret, 1, Val_gsize(out3));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 

@@ -26,7 +26,7 @@ CAMLxparam3(arg6, arg7, arg8);
       c_arg7[i] = *GskColorStop_val(Field(arg7, i));
     }
 
-GskRepeatingRadialGradientNode *obj = gsk_repeating_radial_gradient_node_new(graphene_rect_t_val(arg1), graphene_point_t_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6), c_arg7, Long_val(arg8));
+GskRepeatingRadialGradientNode *obj = gsk_repeating_radial_gradient_node_new(graphene_rect_t_val(arg1), graphene_point_t_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6), c_arg7, Gsize_val(arg8));
 if (obj) g_object_ref_sink(obj);
 
     g_free(c_arg7);

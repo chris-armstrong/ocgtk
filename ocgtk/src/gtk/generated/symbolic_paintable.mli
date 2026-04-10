@@ -8,5 +8,5 @@ type t = [`symbolic_paintable] Gobject.obj
 
 If less than 4 colors are provided, GTK will pad the array with default
 colors. *)
-external snapshot_symbolic : t -> Ocgtk_gdk.Gdk.Wrappers.Snapshot.t -> float -> float -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array -> int -> unit = "ml_gtk_symbolic_paintable_snapshot_symbolic_bytecode" "ml_gtk_symbolic_paintable_snapshot_symbolic_native"
+external snapshot_symbolic : t -> Ocgtk_gdk.Gdk.Wrappers.Snapshot.t -> float -> float -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array -> Gsize.t -> unit = "ml_gtk_symbolic_paintable_snapshot_symbolic_bytecode" "ml_gtk_symbolic_paintable_snapshot_symbolic_native"
 

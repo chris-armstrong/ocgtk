@@ -37,7 +37,7 @@ u_textureN value that the shader defines. *)
 external get_n_textures : t -> int = "ml_gsk_gl_shader_get_n_textures"
 
 (** Get the size of the data block used to specify arguments for this shader. *)
-external get_args_size : t -> int = "ml_gsk_gl_shader_get_args_size"
+external get_args_size : t -> Gsize.t = "ml_gsk_gl_shader_get_args_size"
 
 (** Gets the value of the uniform @idx in the @args block.
 

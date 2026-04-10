@@ -11,7 +11,7 @@ class type inet_address_t = object
     method get_is_mc_site_local : unit -> bool
     method get_is_multicast : unit -> bool
     method get_is_site_local : unit -> bool
-    method get_native_size : unit -> int
+    method get_native_size : unit -> Gsize.t
     method to_string : unit -> string
     method as_inet_address : Inet_address.t
 end

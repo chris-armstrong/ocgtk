@@ -61,7 +61,7 @@ external set_content_type : t -> string -> unit = "ml_g_file_info_set_content_ty
 
 (** Sets the @attribute to contain the given @attr_value,
 if possible. *)
-external set_attribute_uint64 : t -> string -> Unsigned.UInt64.t -> unit = "ml_g_file_info_set_attribute_uint64"
+external set_attribute_uint64 : t -> string -> UInt64.t -> unit = "ml_g_file_info_set_attribute_uint64"
 
 (** Sets the @attribute to contain the given @attr_value,
 if possible. *)
@@ -220,7 +220,7 @@ external get_content_type : t -> string option = "ml_g_file_info_get_content_typ
 (** Gets a unsigned 64-bit integer contained within the attribute. If the
 attribute does not contain an unsigned 64-bit integer, or is invalid,
 0 will be returned. *)
-external get_attribute_uint64 : t -> string -> Unsigned.UInt64.t = "ml_g_file_info_get_attribute_uint64"
+external get_attribute_uint64 : t -> string -> UInt64.t = "ml_g_file_info_get_attribute_uint64"
 
 (** Gets an unsigned 32-bit integer contained within the attribute. If the
 attribute does not contain an unsigned 32-bit integer, or is invalid,

@@ -45,7 +45,7 @@ class type file_t = object
     method set_attribute_int64 : string -> int64 -> Gio_enums.filequeryinfoflags -> GCancellable.cancellable_t option -> (bool, GError.t) result
     method set_attribute_string : string -> string -> Gio_enums.filequeryinfoflags -> GCancellable.cancellable_t option -> (bool, GError.t) result
     method set_attribute_uint32 : string -> UInt32.t -> Gio_enums.filequeryinfoflags -> GCancellable.cancellable_t option -> (bool, GError.t) result
-    method set_attribute_uint64 : string -> Unsigned.UInt64.t -> Gio_enums.filequeryinfoflags -> GCancellable.cancellable_t option -> (bool, GError.t) result
+    method set_attribute_uint64 : string -> UInt64.t -> Gio_enums.filequeryinfoflags -> GCancellable.cancellable_t option -> (bool, GError.t) result
     method set_attributes_from_info : GFile_info.file_info_t -> Gio_enums.filequeryinfoflags -> GCancellable.cancellable_t option -> (bool, GError.t) result
     method set_display_name : string -> GCancellable.cancellable_t option -> (file_t, GError.t) result
     method supports_thread_contexts : unit -> bool
@@ -315,7 +315,7 @@ class file (obj : File_and__file_enumerator_and__file_monitor_and__mount_and__vo
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.set_attribute_uint32 obj attribute value flags cancellable)
 
-  method set_attribute_uint64 : string -> Unsigned.UInt64.t -> Gio_enums.filequeryinfoflags -> GCancellable.cancellable_t option -> (bool, GError.t) result =
+  method set_attribute_uint64 : string -> UInt64.t -> Gio_enums.filequeryinfoflags -> GCancellable.cancellable_t option -> (bool, GError.t) result =
     fun attribute value flags cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.set_attribute_uint64 obj attribute value flags cancellable)

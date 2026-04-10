@@ -541,7 +541,7 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_get_byte_length(value self)
 CAMLparam1(self);
 
 gsize result = gdk_pixbuf_get_byte_length(GdkPixbuf_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_gsize(result));
 }
 
 #else

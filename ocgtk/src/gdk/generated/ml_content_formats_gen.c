@@ -162,7 +162,7 @@ const char* const* result = gdk_content_formats_get_mime_types(GdkContentFormats
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, ml_result);
-    Store_field(ret, 1, Val_long(out1));
+    Store_field(ret, 1, Val_gsize(out1));
     CAMLreturn(ret);
 }
 
@@ -181,7 +181,7 @@ const GType* result = gdk_content_formats_get_gtypes(GdkContentFormats_val(self)
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, ml_result);
-    Store_field(ret, 1, Val_long(out1));
+    Store_field(ret, 1, Val_gsize(out1));
     CAMLreturn(ret);
 }
 

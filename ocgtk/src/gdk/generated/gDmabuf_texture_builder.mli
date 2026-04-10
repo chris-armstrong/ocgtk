@@ -3,7 +3,7 @@ class type dmabuf_texture_builder_t = object
     method get_fd : int -> int
     method get_fourcc : unit -> UInt32.t
     method get_height : unit -> int
-    method get_modifier : unit -> Unsigned.UInt64.t
+    method get_modifier : unit -> UInt64.t
     method get_n_planes : unit -> int
     method get_offset : int -> int
     method get_premultiplied : unit -> bool
@@ -15,7 +15,7 @@ class type dmabuf_texture_builder_t = object
     method set_fd : int -> int -> unit
     method set_fourcc : UInt32.t -> unit
     method set_height : int -> unit
-    method set_modifier : Unsigned.UInt64.t -> unit
+    method set_modifier : UInt64.t -> unit
     method set_n_planes : int -> unit
     method set_offset : int -> int -> unit
     method set_premultiplied : bool -> unit

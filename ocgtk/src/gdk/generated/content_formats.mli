@@ -97,13 +97,13 @@ external match_ : t -> t -> bool = "ml_gdk_content_formats_match"
 
 Note that @formats may not contain any mime types, in particular
 when they are empty. In that case %NULL will be returned. *)
-external get_mime_types : t -> string array option * int = "ml_gdk_content_formats_get_mime_types"
+external get_mime_types : t -> string array option * Gsize.t = "ml_gdk_content_formats_get_mime_types"
 
 (** Gets the `GType`s included in @formats.
 
 Note that @formats may not contain any `GType`s, in particular when
 they are empty. In that case %NULL will be returned. *)
-external get_gtypes : t -> int array option * int = "ml_gdk_content_formats_get_gtypes"
+external get_gtypes : t -> int array option * Gsize.t = "ml_gdk_content_formats_get_gtypes"
 
 (** Checks if a given mime type is part of the given @formats. *)
 external contain_mime_type : t -> string -> bool = "ml_gdk_content_formats_contain_mime_type"

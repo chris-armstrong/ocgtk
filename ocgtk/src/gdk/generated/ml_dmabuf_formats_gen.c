@@ -56,7 +56,7 @@ CAMLexport CAMLprim value ml_gdk_dmabuf_formats_get_n_formats(value self)
 CAMLparam1(self);
 
 gsize result = gdk_dmabuf_formats_get_n_formats(GdkDmabufFormats_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_gsize(result));
 }
 
 CAMLexport CAMLprim value ml_gdk_dmabuf_formats_get_format(value self, value arg1)
@@ -65,7 +65,7 @@ CAMLparam2(self, arg1);
 guint32 out2;
 guint64 out3;
 
-gdk_dmabuf_formats_get_format(GdkDmabufFormats_val(self), Long_val(arg1), &out2, &out3);
+gdk_dmabuf_formats_get_format(GdkDmabufFormats_val(self), Gsize_val(arg1), &out2, &out3);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_uint32(out2));

@@ -46,7 +46,7 @@ CAMLparam2(arg1, arg2);
       c_arg1[i] = GFile_val(Field(arg1, i));
     }
 
-GdkFileList *obj = gdk_file_list_new_from_array(c_arg1, Long_val(arg2));
+GdkFileList *obj = gdk_file_list_new_from_array(c_arg1, Gsize_val(arg2));
 
     g_free(c_arg1);
 CAMLreturn(Val_GdkFileList(obj));

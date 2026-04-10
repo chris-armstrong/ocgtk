@@ -64,7 +64,7 @@ external get_mime_type : t -> string = "ml_gtk_recent_info_get_mime_type"
 
 The array of returned group names will be %NULL terminated, so
 length might optionally be %NULL. *)
-external get_groups : t -> string array * int = "ml_gtk_recent_info_get_groups"
+external get_groups : t -> string array * Gsize.t = "ml_gtk_recent_info_get_groups"
 
 (** Retrieves the icon associated to the resource MIME type. *)
 external get_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t option = "ml_gtk_recent_info_get_gicon"
@@ -79,7 +79,7 @@ external get_display_name : t -> string = "ml_gtk_recent_info_get_display_name"
 external get_description : t -> string = "ml_gtk_recent_info_get_description"
 
 (** Retrieves the list of applications that have registered this resource. *)
-external get_applications : t -> string array * int = "ml_gtk_recent_info_get_applications"
+external get_applications : t -> string array * Gsize.t = "ml_gtk_recent_info_get_applications"
 
 (** Gets the number of days elapsed since the last update
 of the resource pointed by @info. *)

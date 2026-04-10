@@ -26,7 +26,7 @@ CAMLxparam3(arg6, arg7, arg8);
       c_arg7[i] = *GskColorStop_val(Field(arg7, i));
     }
 
-GskRadialGradientNode *obj = gsk_radial_gradient_node_new(graphene_rect_t_val(arg1), graphene_point_t_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6), c_arg7, Long_val(arg8));
+GskRadialGradientNode *obj = gsk_radial_gradient_node_new(graphene_rect_t_val(arg1), graphene_point_t_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6), c_arg7, Gsize_val(arg8));
 if (obj) g_object_ref_sink(obj);
 
     g_free(c_arg7);
@@ -58,7 +58,7 @@ CAMLexport CAMLprim value ml_gsk_radial_gradient_node_get_n_color_stops(value se
 CAMLparam1(self);
 
 gsize result = gsk_radial_gradient_node_get_n_color_stops(GskRadialGradientNode_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_gsize(result));
 }
 
 CAMLexport CAMLprim value ml_gsk_radial_gradient_node_get_hradius(value self)
@@ -92,7 +92,7 @@ const GskColorStop* result = gsk_radial_gradient_node_get_color_stops(GskRadialG
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, ml_result);
-    Store_field(ret, 1, Val_long(out1));
+    Store_field(ret, 1, Val_gsize(out1));
     CAMLreturn(ret);
 }
 

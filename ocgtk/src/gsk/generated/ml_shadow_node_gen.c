@@ -25,7 +25,7 @@ CAMLparam3(arg1, arg2, arg3);
       c_arg2[i] = *GskShadow_val(Field(arg2, i));
     }
 
-GskShadowNode *obj = gsk_shadow_node_new(GskRenderNode_val(arg1), c_arg2, Long_val(arg3));
+GskShadowNode *obj = gsk_shadow_node_new(GskRenderNode_val(arg1), c_arg2, Gsize_val(arg3));
 if (obj) g_object_ref_sink(obj);
 
     g_free(c_arg2);
@@ -35,7 +35,7 @@ CAMLexport CAMLprim value ml_gsk_shadow_node_get_shadow(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-const GskShadow* result = gsk_shadow_node_get_shadow(GskShadowNode_val(self), Long_val(arg1));
+const GskShadow* result = gsk_shadow_node_get_shadow(GskShadowNode_val(self), Gsize_val(arg1));
 CAMLreturn(Val_GskShadow(result));
 }
 
@@ -44,7 +44,7 @@ CAMLexport CAMLprim value ml_gsk_shadow_node_get_n_shadows(value self)
 CAMLparam1(self);
 
 gsize result = gsk_shadow_node_get_n_shadows(GskShadowNode_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_gsize(result));
 }
 
 CAMLexport CAMLprim value ml_gsk_shadow_node_get_child(value self)

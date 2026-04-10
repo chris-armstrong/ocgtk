@@ -116,7 +116,7 @@ CAMLexport CAMLprim value ml_g_inet_address_get_native_size(value self)
 CAMLparam1(self);
 
 gsize result = g_inet_address_get_native_size(GInetAddress_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_gsize(result));
 }
 
 #else

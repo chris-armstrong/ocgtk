@@ -45,7 +45,7 @@ CAMLparam2(arg1, arg2);
       c_arg1[i] = GtkAccessible_val(Field(arg1, i));
     }
 
-GtkAccessibleList *obj = gtk_accessible_list_new_from_array(c_arg1, Long_val(arg2));
+GtkAccessibleList *obj = gtk_accessible_list_new_from_array(c_arg1, Gsize_val(arg2));
 
     g_free(c_arg1);
 CAMLreturn(Val_GtkAccessibleList(obj));

@@ -118,7 +118,7 @@ external push_stroke : t -> Ocgtk_gsk.Gsk.Wrappers.Path.t -> Ocgtk_gsk.Gsk.Wrapp
 (** Applies a shadow to an image.
 
 The image is recorded until the next call to [method@Gtk.Snapshot.pop]. *)
-external push_shadow : t -> Ocgtk_gsk.Gsk.Wrappers.Shadow.t array -> int -> unit = "ml_gtk_snapshot_push_shadow"
+external push_shadow : t -> Ocgtk_gsk.Gsk.Wrappers.Shadow.t array -> Gsize.t -> unit = "ml_gtk_snapshot_push_shadow"
 
 (** Clips an image to a rounded rectangle.
 
@@ -277,13 +277,13 @@ that is used when scaling. *)
 external append_scaled_texture : t -> Ocgtk_gdk.Gdk.Wrappers.Texture.t -> Ocgtk_gsk.Gsk.scalingfilter -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> unit = "ml_gtk_snapshot_append_scaled_texture"
 
 (** Appends a repeating radial gradient node with the given stops to @snapshot. *)
-external append_repeating_radial_gradient : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> float -> float -> float -> float -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> int -> unit = "ml_gtk_snapshot_append_repeating_radial_gradient_bytecode" "ml_gtk_snapshot_append_repeating_radial_gradient_native"
+external append_repeating_radial_gradient : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> float -> float -> float -> float -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> Gsize.t -> unit = "ml_gtk_snapshot_append_repeating_radial_gradient_bytecode" "ml_gtk_snapshot_append_repeating_radial_gradient_native"
 
 (** Appends a repeating linear gradient node with the given stops to @snapshot. *)
-external append_repeating_linear_gradient : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> int -> unit = "ml_gtk_snapshot_append_repeating_linear_gradient_bytecode" "ml_gtk_snapshot_append_repeating_linear_gradient_native"
+external append_repeating_linear_gradient : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> Gsize.t -> unit = "ml_gtk_snapshot_append_repeating_linear_gradient_bytecode" "ml_gtk_snapshot_append_repeating_linear_gradient_native"
 
 (** Appends a radial gradient node with the given stops to @snapshot. *)
-external append_radial_gradient : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> float -> float -> float -> float -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> int -> unit = "ml_gtk_snapshot_append_radial_gradient_bytecode" "ml_gtk_snapshot_append_radial_gradient_native"
+external append_radial_gradient : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> float -> float -> float -> float -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> Gsize.t -> unit = "ml_gtk_snapshot_append_radial_gradient_bytecode" "ml_gtk_snapshot_append_radial_gradient_native"
 
 (** Appends an outset shadow node around the box given by @outline. *)
 external append_outset_shadow : t -> Ocgtk_gsk.Gsk.Wrappers.Rounded_rect.t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> float -> float -> float -> float -> unit = "ml_gtk_snapshot_append_outset_shadow_bytecode" "ml_gtk_snapshot_append_outset_shadow_native"
@@ -296,7 +296,7 @@ will become the initial node. *)
 external append_node : t -> Ocgtk_gsk.Gsk.Wrappers.Render_node.t -> unit = "ml_gtk_snapshot_append_node"
 
 (** Appends a linear gradient node with the given stops to @snapshot. *)
-external append_linear_gradient : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> int -> unit = "ml_gtk_snapshot_append_linear_gradient_bytecode" "ml_gtk_snapshot_append_linear_gradient_native"
+external append_linear_gradient : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> Gsize.t -> unit = "ml_gtk_snapshot_append_linear_gradient_bytecode" "ml_gtk_snapshot_append_linear_gradient_native"
 
 external append_layout : t -> Ocgtk_pango.Pango.Wrappers.Layout.t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit = "ml_gtk_snapshot_append_layout"
 
@@ -311,7 +311,7 @@ a color. *)
 external append_fill : t -> Ocgtk_gsk.Gsk.Wrappers.Path.t -> Ocgtk_gsk.Gsk.fillrule -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit = "ml_gtk_snapshot_append_fill"
 
 (** Appends a conic gradient node with the given stops to @snapshot. *)
-external append_conic_gradient : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> float -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> int -> unit = "ml_gtk_snapshot_append_conic_gradient_bytecode" "ml_gtk_snapshot_append_conic_gradient_native"
+external append_conic_gradient : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> float -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> Gsize.t -> unit = "ml_gtk_snapshot_append_conic_gradient_bytecode" "ml_gtk_snapshot_append_conic_gradient_native"
 
 (** Creates a new render node drawing the @color into the
 given @bounds and appends it to the current render node

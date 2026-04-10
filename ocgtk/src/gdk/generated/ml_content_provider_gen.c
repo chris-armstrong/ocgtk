@@ -40,7 +40,7 @@ CAMLparam2(arg1, arg2);
         }
     }
 
-GdkContentProvider *obj = gdk_content_provider_new_union(c_arg1, Long_val(arg2));
+GdkContentProvider *obj = gdk_content_provider_new_union(c_arg1, Gsize_val(arg2));
 if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GdkContentProvider(obj));

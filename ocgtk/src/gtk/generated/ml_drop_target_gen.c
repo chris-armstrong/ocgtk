@@ -49,7 +49,7 @@ CAMLparam3(self, arg1, arg2);
         }
     }
 
-gtk_drop_target_set_gtypes(GtkDropTarget_val(self), c_arg1, Long_val(arg2));
+gtk_drop_target_set_gtypes(GtkDropTarget_val(self), c_arg1, Gsize_val(arg2));
     if (c_arg1) g_free(c_arg1);
 CAMLreturn(Val_unit);
 }
@@ -93,7 +93,7 @@ const GType* result = gtk_drop_target_get_gtypes(GtkDropTarget_val(self), &out1)
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, ml_result);
-    Store_field(ret, 1, Val_long(out1));
+    Store_field(ret, 1, Val_gsize(out1));
     CAMLreturn(ret);
 }
 

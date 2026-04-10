@@ -14,7 +14,7 @@ class type file_info_t = object
     method get_attribute_stringv : string -> string array option
     method get_attribute_type : string -> Gio_enums.fileattributetype
     method get_attribute_uint32 : string -> UInt32.t
-    method get_attribute_uint64 : string -> Unsigned.UInt64.t
+    method get_attribute_uint64 : string -> UInt64.t
     method get_content_type : unit -> string option
     method get_display_name : unit -> string
     method get_edit_name : unit -> string
@@ -44,7 +44,7 @@ class type file_info_t = object
     method set_attribute_string : string -> string -> unit
     method set_attribute_stringv : string -> string array -> unit
     method set_attribute_uint32 : string -> UInt32.t -> unit
-    method set_attribute_uint64 : string -> Unsigned.UInt64.t -> unit
+    method set_attribute_uint64 : string -> UInt64.t -> unit
     method set_content_type : string -> unit
     method set_display_name : string -> unit
     method set_edit_name : string -> unit
@@ -123,7 +123,7 @@ class file_info (obj : File_info.t) : file_info_t = object (self)
     fun attribute ->
       (File_info.get_attribute_uint32 obj attribute)
 
-  method get_attribute_uint64 : string -> Unsigned.UInt64.t =
+  method get_attribute_uint64 : string -> UInt64.t =
     fun attribute ->
       (File_info.get_attribute_uint64 obj attribute)
 
@@ -243,7 +243,7 @@ class file_info (obj : File_info.t) : file_info_t = object (self)
     fun attribute attr_value ->
       (File_info.set_attribute_uint32 obj attribute attr_value)
 
-  method set_attribute_uint64 : string -> Unsigned.UInt64.t -> unit =
+  method set_attribute_uint64 : string -> UInt64.t -> unit =
     fun attribute attr_value ->
       (File_info.set_attribute_uint64 obj attribute attr_value)
 

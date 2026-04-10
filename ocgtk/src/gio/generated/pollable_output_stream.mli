@@ -23,7 +23,7 @@ transports like D/TLS require that you re-send the same @vectors and
 
 The behaviour of this method is undefined if
 g_pollable_output_stream_can_poll() returns %FALSE for @stream. *)
-external writev_nonblocking : t -> Output_vector.t array -> int -> Cancellable.t option -> (Gio_enums.pollablereturn * int, GError.t) result = "ml_g_pollable_output_stream_writev_nonblocking"
+external writev_nonblocking : t -> Output_vector.t array -> Gsize.t -> Cancellable.t option -> (Gio_enums.pollablereturn * Gsize.t, GError.t) result = "ml_g_pollable_output_stream_writev_nonblocking"
 
 (** Checks if @stream can be written.
 

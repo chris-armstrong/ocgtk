@@ -35,7 +35,7 @@ CAMLexport CAMLprim value ml_g_buffered_input_stream_new_sized(value arg1, value
 {
 CAMLparam2(arg1, arg2);
 
-GBufferedInputStream *obj = g_buffered_input_stream_new_sized(GInputStream_val(arg1), Long_val(arg2));
+GBufferedInputStream *obj = g_buffered_input_stream_new_sized(GInputStream_val(arg1), Gsize_val(arg2));
 if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GBufferedInputStream(obj));
@@ -44,7 +44,7 @@ CAMLexport CAMLprim value ml_g_buffered_input_stream_set_buffer_size(value self,
 {
 CAMLparam2(self, arg1);
 
-g_buffered_input_stream_set_buffer_size(GBufferedInputStream_val(self), Long_val(arg1));
+g_buffered_input_stream_set_buffer_size(GBufferedInputStream_val(self), Gsize_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -62,7 +62,7 @@ CAMLexport CAMLprim value ml_g_buffered_input_stream_get_buffer_size(value self)
 CAMLparam1(self);
 
 gsize result = g_buffered_input_stream_get_buffer_size(GBufferedInputStream_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_gsize(result));
 }
 
 CAMLexport CAMLprim value ml_g_buffered_input_stream_get_available(value self)
@@ -70,7 +70,7 @@ CAMLexport CAMLprim value ml_g_buffered_input_stream_get_available(value self)
 CAMLparam1(self);
 
 gsize result = g_buffered_input_stream_get_available(GBufferedInputStream_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_gsize(result));
 }
 
 CAMLexport CAMLprim value ml_g_buffered_input_stream_fill_finish(value self, value arg1)

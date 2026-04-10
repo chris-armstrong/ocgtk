@@ -29,7 +29,7 @@ CAMLxparam1(arg5);
       c_arg4[i] = *GdkRGBA_val(Field(arg4, i));
     }
 
-gtk_symbolic_paintable_snapshot_symbolic(GtkSymbolicPaintable_val(self), GdkSnapshot_val(arg1), Double_val(arg2), Double_val(arg3), c_arg4, Long_val(arg5));
+gtk_symbolic_paintable_snapshot_symbolic(GtkSymbolicPaintable_val(self), GdkSnapshot_val(arg1), Double_val(arg2), Double_val(arg3), c_arg4, Gsize_val(arg5));
     g_free(c_arg4);
 CAMLreturn(Val_unit);}
 

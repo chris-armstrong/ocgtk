@@ -208,6 +208,8 @@ CAMLexport const void* ext_of_val(const value val);
 #define Val_uint32(x)          (Val_long((uint32_t)(x)))
 #define Int32_val_bounded(v)   ((int32_t)(Long_val(v)))   /* avoids clash with caml Int32_val */
 #define Val_int32_bounded(x)   (Val_long((int32_t)(x)))
+#define Gsize_val(v)           ((gsize)(Long_val(v)))
+#define Val_gsize(x)           (Val_long((gsize)(x)))
 
 /* ==================================================================== */
 /* String Utilities */

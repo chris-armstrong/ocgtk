@@ -107,7 +107,7 @@ external intersect : t -> t -> unit = "ml_gtk_bitset_intersect"
 Note that this function returns a `guint64`, because when all values are
 set, the return value is `G_MAXUINT + 1`. Unless you are sure this cannot
 happen (it can't with `GListModel`), be sure to use a 64bit type. *)
-external get_size_in_range : t -> int -> int -> Unsigned.UInt64.t = "ml_gtk_bitset_get_size_in_range"
+external get_size_in_range : t -> int -> int -> UInt64.t = "ml_gtk_bitset_get_size_in_range"
 
 (** Gets the number of values that were added to the set.
 
@@ -117,7 +117,7 @@ Note that this function returns a `guint64`, because when all
 values are set, the return value is `G_MAXUINT + 1`. Unless you
 are sure this cannot happen (it can't with `GListModel`), be sure
 to use a 64bit type. *)
-external get_size : t -> Unsigned.UInt64.t = "ml_gtk_bitset_get_size"
+external get_size : t -> UInt64.t = "ml_gtk_bitset_get_size"
 
 (** Returns the value of the @nth item in self.
 

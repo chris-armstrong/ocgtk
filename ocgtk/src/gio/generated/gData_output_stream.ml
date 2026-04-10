@@ -7,7 +7,7 @@ class type data_output_stream_t = object
     method put_string : string -> GCancellable.cancellable_t option -> (bool, GError.t) result
     method put_uint16 : UInt16.t -> GCancellable.cancellable_t option -> (bool, GError.t) result
     method put_uint32 : UInt32.t -> GCancellable.cancellable_t option -> (bool, GError.t) result
-    method put_uint64 : Unsigned.UInt64.t -> GCancellable.cancellable_t option -> (bool, GError.t) result
+    method put_uint64 : UInt64.t -> GCancellable.cancellable_t option -> (bool, GError.t) result
     method set_byte_order : Gio_enums.datastreambyteorder -> unit
     method as_data_output_stream : Data_output_stream.t
 end
@@ -50,7 +50,7 @@ class data_output_stream (obj : Data_output_stream.t) : data_output_stream_t = o
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Data_output_stream.put_uint32 obj data cancellable)
 
-  method put_uint64 : Unsigned.UInt64.t -> GCancellable.cancellable_t option -> (bool, GError.t) result =
+  method put_uint64 : UInt64.t -> GCancellable.cancellable_t option -> (bool, GError.t) result =
     fun data cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Data_output_stream.put_uint64 obj data cancellable)

@@ -26,7 +26,7 @@ integers.
 
 It is a programmer error to give a @key that isn't specified as
 having a uint64 type in the schema for @settings. *)
-external set_uint64 : t -> string -> Unsigned.UInt64.t -> bool = "ml_g_settings_set_uint64"
+external set_uint64 : t -> string -> UInt64.t -> bool = "ml_g_settings_set_uint64"
 
 (** Sets @key in @settings to @value.
 
@@ -189,7 +189,7 @@ integers.
 
 It is a programmer error to give a @key that isn't specified as
 having a uint64 type in the schema for @settings. *)
-external get_uint64 : t -> string -> Unsigned.UInt64.t = "ml_g_settings_get_uint64"
+external get_uint64 : t -> string -> UInt64.t = "ml_g_settings_get_uint64"
 
 (** Gets the value that is stored at @key in @settings.
 

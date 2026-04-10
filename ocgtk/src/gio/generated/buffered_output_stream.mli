@@ -7,11 +7,11 @@ type t = [`buffered_output_stream | `filter_output_stream | `output_stream | `ob
 external new_ : Output_stream.t -> t = "ml_g_buffered_output_stream_new"
 
 (** Create a new BufferedOutputStream *)
-external new_sized : Output_stream.t -> int -> t = "ml_g_buffered_output_stream_new_sized"
+external new_sized : Output_stream.t -> Gsize.t -> t = "ml_g_buffered_output_stream_new_sized"
 
 (* Methods *)
 (** Sets the size of the internal buffer to @size. *)
-external set_buffer_size : t -> int -> unit = "ml_g_buffered_output_stream_set_buffer_size"
+external set_buffer_size : t -> Gsize.t -> unit = "ml_g_buffered_output_stream_set_buffer_size"
 
 (** Sets whether or not the @stream's buffer should automatically grow.
 If @auto_grow is true, then each write will just make the buffer
@@ -20,7 +20,7 @@ the data to the underlying stream. *)
 external set_auto_grow : t -> bool -> unit = "ml_g_buffered_output_stream_set_auto_grow"
 
 (** Gets the size of the buffer in the @stream. *)
-external get_buffer_size : t -> int = "ml_g_buffered_output_stream_get_buffer_size"
+external get_buffer_size : t -> Gsize.t = "ml_g_buffered_output_stream_get_buffer_size"
 
 (** Checks if the buffer automatically grows as data is added. *)
 external get_auto_grow : t -> bool = "ml_g_buffered_output_stream_get_auto_grow"

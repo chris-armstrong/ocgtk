@@ -169,7 +169,7 @@ module rec Socket : sig
   On error %G_POLLABLE_RETURN_FAILED is returned and @error is set accordingly, or
   if the socket is currently not writable %G_POLLABLE_RETURN_WOULD_BLOCK is
   returned. @bytes_written will contain 0 in both cases. *)
-  external send_message_with_timeout : t -> Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> int64 -> Cancellable.t option -> (Gio_enums.pollablereturn * int, GError.t) result = "ml_g_socket_send_message_with_timeout_bytecode" "ml_g_socket_send_message_with_timeout_native"
+  external send_message_with_timeout : t -> Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> int64 -> Cancellable.t option -> (Gio_enums.pollablereturn * Gsize.t, GError.t) result = "ml_g_socket_send_message_with_timeout_bytecode" "ml_g_socket_send_message_with_timeout_native"
 
   (** Send data to @address on @socket.  For sending multiple messages see
   g_socket_send_messages(); for easier use, see
@@ -274,7 +274,7 @@ module rec Socket : sig
   the connection is closed, or there is an error). Pass `0` to use the default
   timeout from [property@Gio.Socket:timeout], or pass a positive number to wait
   for that many microseconds for data before returning `G_IO_ERROR_TIMED_OUT`. *)
-  external receive_bytes : t -> int -> int64 -> Cancellable.t option -> (Glib_bytes.t, GError.t) result = "ml_g_socket_receive_bytes"
+  external receive_bytes : t -> Gsize.t -> int64 -> Cancellable.t option -> (Glib_bytes.t, GError.t) result = "ml_g_socket_receive_bytes"
 
   (** Marks the socket as a server socket, i.e. a socket that is used
   to accept incoming requests using g_socket_accept().
@@ -730,7 +730,7 @@ end = struct
   On error %G_POLLABLE_RETURN_FAILED is returned and @error is set accordingly, or
   if the socket is currently not writable %G_POLLABLE_RETURN_WOULD_BLOCK is
   returned. @bytes_written will contain 0 in both cases. *)
-  external send_message_with_timeout : t -> Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> int64 -> Cancellable.t option -> (Gio_enums.pollablereturn * int, GError.t) result = "ml_g_socket_send_message_with_timeout_bytecode" "ml_g_socket_send_message_with_timeout_native"
+  external send_message_with_timeout : t -> Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> int64 -> Cancellable.t option -> (Gio_enums.pollablereturn * Gsize.t, GError.t) result = "ml_g_socket_send_message_with_timeout_bytecode" "ml_g_socket_send_message_with_timeout_native"
 
   (** Send data to @address on @socket.  For sending multiple messages see
   g_socket_send_messages(); for easier use, see
@@ -835,7 +835,7 @@ end = struct
   the connection is closed, or there is an error). Pass `0` to use the default
   timeout from [property@Gio.Socket:timeout], or pass a positive number to wait
   for that many microseconds for data before returning `G_IO_ERROR_TIMED_OUT`. *)
-  external receive_bytes : t -> int -> int64 -> Cancellable.t option -> (Glib_bytes.t, GError.t) result = "ml_g_socket_receive_bytes"
+  external receive_bytes : t -> Gsize.t -> int64 -> Cancellable.t option -> (Glib_bytes.t, GError.t) result = "ml_g_socket_receive_bytes"
 
   (** Marks the socket as a server socket, i.e. a socket that is used
   to accept incoming requests using g_socket_accept().

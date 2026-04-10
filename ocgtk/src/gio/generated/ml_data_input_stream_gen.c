@@ -59,7 +59,7 @@ char* result = g_data_input_stream_read_upto_finish(GDataInputStream_val(self), 
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, caml_copy_string(result));
-    Store_field(ret, 1, Val_long(out2));
+    Store_field(ret, 1, Val_gsize(out2));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -87,7 +87,7 @@ char* result = g_data_input_stream_read_upto(GDataInputStream_val(self), String_
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, caml_copy_string(result));
-    Store_field(ret, 1, Val_long(out3));
+    Store_field(ret, 1, Val_gsize(out3));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -117,7 +117,7 @@ char* result = g_data_input_stream_read_until_finish(GDataInputStream_val(self),
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, caml_copy_string(result));
-    Store_field(ret, 1, Val_long(out2));
+    Store_field(ret, 1, Val_gsize(out2));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -143,7 +143,7 @@ char* result = g_data_input_stream_read_until(GDataInputStream_val(self), String
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, caml_copy_string(result));
-    Store_field(ret, 1, Val_long(out2));
+    Store_field(ret, 1, Val_gsize(out2));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -186,7 +186,7 @@ char* result = g_data_input_stream_read_line_utf8(GDataInputStream_val(self), &o
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_option_string(result));
-    Store_field(ret, 1, Val_long(out1));
+    Store_field(ret, 1, Val_gsize(out1));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -214,7 +214,7 @@ char* result = g_data_input_stream_read_line_finish_utf8(GDataInputStream_val(se
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_option_string(result));
-    Store_field(ret, 1, Val_long(out2));
+    Store_field(ret, 1, Val_gsize(out2));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 

@@ -70,7 +70,7 @@ CAMLexport CAMLprim value ml_g_memory_output_stream_get_size(value self)
 CAMLparam1(self);
 
 gsize result = g_memory_output_stream_get_size(GMemoryOutputStream_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_gsize(result));
 }
 
 #if GLIB_CHECK_VERSION(2,18,0)
@@ -80,7 +80,7 @@ CAMLexport CAMLprim value ml_g_memory_output_stream_get_data_size(value self)
 CAMLparam1(self);
 
 gsize result = g_memory_output_stream_get_data_size(GMemoryOutputStream_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_gsize(result));
 }
 
 #else

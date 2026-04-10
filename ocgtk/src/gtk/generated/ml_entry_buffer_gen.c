@@ -79,7 +79,7 @@ CAMLexport CAMLprim value ml_gtk_entry_buffer_get_bytes(value self)
 CAMLparam1(self);
 
 gsize result = gtk_entry_buffer_get_bytes(GtkEntryBuffer_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_gsize(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_entry_buffer_emit_inserted_text(value self, value arg1, value arg2, value arg3)

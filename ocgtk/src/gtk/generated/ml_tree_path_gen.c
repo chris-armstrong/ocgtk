@@ -57,7 +57,7 @@ CAMLparam2(arg1, arg2);
       c_arg1[i] = Int_val(Field(arg1, i));
     }
 
-GtkTreePath *obj = gtk_tree_path_new_from_indicesv(c_arg1, Long_val(arg2));
+GtkTreePath *obj = gtk_tree_path_new_from_indicesv(c_arg1, Gsize_val(arg2));
 
     g_free(c_arg1);
 CAMLreturn(Val_GtkTreePath(obj));

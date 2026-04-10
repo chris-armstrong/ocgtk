@@ -283,7 +283,7 @@ GPollableReturn result = g_socket_send_message_with_timeout(GSocket_val(self), O
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_GioPollableReturn(result));
-    Store_field(ret, 1, Val_long(out8));
+    Store_field(ret, 1, Val_gsize(out8));
     if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));}
 
 CAMLexport CAMLprim value ml_g_socket_send_message_with_timeout_bytecode(value * argv, int argn)
@@ -381,7 +381,7 @@ CAMLexport CAMLprim value ml_g_socket_receive_bytes(value self, value arg1, valu
 CAMLparam4(self, arg1, arg2, arg3);
 GError *error = NULL;
 
-GBytes* result = g_socket_receive_bytes(GSocket_val(self), Long_val(arg1), Int64_val(arg2), Option_val(arg3, GCancellable_val, NULL), &error);
+GBytes* result = g_socket_receive_bytes(GSocket_val(self), Gsize_val(arg1), Int64_val(arg2), Option_val(arg3, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GBytes(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 

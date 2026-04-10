@@ -95,7 +95,7 @@ CAMLexport CAMLprim value ml_gsk_gl_shader_get_args_size(value self)
 CAMLparam1(self);
 
 gsize result = gsk_gl_shader_get_args_size(GskGLShader_val(self));
-CAMLreturn(Val_long(result));
+CAMLreturn(Val_gsize(result));
 }
 
 CAMLexport CAMLprim value ml_gsk_gl_shader_get_arg_vec4(value self, value arg1, value arg2, value arg3)

@@ -5,7 +5,7 @@ type t = [`output_stream | `object_] Gobject.obj
 
 (* Methods *)
 (** Finishes a stream writev operation. *)
-external writev_finish : t -> Async_result.t -> (bool * int, GError.t) result = "ml_g_output_stream_writev_finish"
+external writev_finish : t -> Async_result.t -> (bool * Gsize.t, GError.t) result = "ml_g_output_stream_writev_finish"
 
 (** Finishes an asynchronous stream write operation started with
 g_output_stream_writev_all_async().
@@ -17,7 +17,7 @@ successfully written before the error was encountered.  This
 functionality is only available from C.  If you need it from another
 language then you must write your own loop around
 g_output_stream_writev_async(). *)
-external writev_all_finish : t -> Async_result.t -> (bool * int, GError.t) result = "ml_g_output_stream_writev_all_finish"
+external writev_all_finish : t -> Async_result.t -> (bool * Gsize.t, GError.t) result = "ml_g_output_stream_writev_all_finish"
 
 (** Tries to write the bytes contained in the @n_vectors @vectors into the
 stream. Will block during the operation.
@@ -41,7 +41,7 @@ g_output_stream_write().
 
 The content of the individual elements of @vectors might be changed by this
 function. *)
-external writev_all : t -> Output_vector.t array -> int -> Cancellable.t option -> (bool * int, GError.t) result = "ml_g_output_stream_writev_all"
+external writev_all : t -> Output_vector.t array -> Gsize.t -> Cancellable.t option -> (bool * Gsize.t, GError.t) result = "ml_g_output_stream_writev_all"
 
 (** Tries to write the bytes contained in the @n_vectors @vectors into the
 stream. Will block during the operation.
@@ -66,7 +66,7 @@ Some implementations of g_output_stream_writev() may have limitations on the
 aggregate buffer size, and will return %G_IO_ERROR_INVALID_ARGUMENT if these
 are exceeded. For example, when writing to a local file on UNIX platforms,
 the aggregate buffer size must not exceed %G_MAXSSIZE bytes. *)
-external writev : t -> Output_vector.t array -> int -> Cancellable.t option -> (bool * int, GError.t) result = "ml_g_output_stream_writev"
+external writev : t -> Output_vector.t array -> Gsize.t -> Cancellable.t option -> (bool * Gsize.t, GError.t) result = "ml_g_output_stream_writev"
 
 (** Finishes a stream write operation. *)
 external write_finish : t -> Async_result.t -> (int, GError.t) result = "ml_g_output_stream_write_finish"
@@ -97,7 +97,7 @@ successfully written before the error was encountered.  This
 functionality is only available from C.  If you need it from another
 language then you must write your own loop around
 g_output_stream_write_async(). *)
-external write_all_finish : t -> Async_result.t -> (bool * int, GError.t) result = "ml_g_output_stream_write_all_finish"
+external write_all_finish : t -> Async_result.t -> (bool * Gsize.t, GError.t) result = "ml_g_output_stream_write_all_finish"
 
 (** Finishes an asynchronous stream splice operation. *)
 external splice_finish : t -> Async_result.t -> (int, GError.t) result = "ml_g_output_stream_splice_finish"

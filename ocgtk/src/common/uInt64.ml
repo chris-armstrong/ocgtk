@@ -11,17 +11,10 @@
 (*                                                                        *)
 (**************************************************************************)
 
-(* Convenience re-export of the individual bounded integer modules.
- * The canonical implementations live in uInt8.ml, int8.ml, uInt16.ml,
- * int16.ml, uInt32.ml, int32.ml, and uInt64.ml; they are exposed as flat
- * top-level modules (UInt8, Int8, …) because ocgtk_common is (wrapped false).
- * This module lets callers write Bounded_int.UInt16 if they prefer
- * an explicit namespace. *)
+(* Thin alias over Unsigned.UInt64 from the integers library.
+ * Exposed as a flat top-level module (UInt64) for consistency with the
+ * other bounded integer modules (UInt8, UInt16, UInt32, Int16, Int32, …).
+ * The underlying representation is a custom OCaml block — unlike the
+ * smaller types, 64-bit unsigned values cannot fit in a 63-bit OCaml int. *)
 
-module UInt8 = UInt8
-module Int8 = Int8
-module UInt16 = UInt16
-module Int16 = Int16
-module UInt32 = UInt32
-module Int32 = Int32
-module UInt64 = UInt64
+include Unsigned.UInt64

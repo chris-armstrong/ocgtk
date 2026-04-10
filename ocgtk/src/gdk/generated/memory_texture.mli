@@ -4,6 +4,6 @@
 type t = [`memory_texture | `texture | `object_] Gobject.obj
 
 (** Create a new MemoryTexture *)
-external new_ : int -> int -> Gdk_enums.memoryformat -> Glib_bytes.t -> int -> t = "ml_gdk_memory_texture_new"
+external new_ : int -> int -> Gdk_enums.memoryformat -> Glib_bytes.t -> Gsize.t -> t = "ml_gdk_memory_texture_new"
 
 (* Methods *)

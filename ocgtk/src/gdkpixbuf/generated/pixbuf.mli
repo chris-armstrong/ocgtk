@@ -175,7 +175,7 @@ external get_has_alpha : t -> bool = "ml_gdk_pixbuf_get_has_alpha"
 external get_colorspace : t -> Gdkpixbuf_enums.colorspace = "ml_gdk_pixbuf_get_colorspace"
 
 (** Returns the length of the pixel data, in bytes. *)
-external get_byte_length : t -> int = "ml_gdk_pixbuf_get_byte_length"
+external get_byte_length : t -> Gsize.t = "ml_gdk_pixbuf_get_byte_length"
 
 (** Queries the number of bits per color sample in a pixbuf. *)
 external get_bits_per_sample : t -> int = "ml_gdk_pixbuf_get_bits_per_sample"

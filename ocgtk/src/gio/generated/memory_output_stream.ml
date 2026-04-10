@@ -26,11 +26,11 @@ stream and further writes will return %G_IO_ERROR_NO_SPACE.
 
 In any case, if you want the number of bytes currently written to the
 stream, use g_memory_output_stream_get_data_size(). *)
-external get_size : t -> int = "ml_g_memory_output_stream_get_size"
+external get_size : t -> Gsize.t = "ml_g_memory_output_stream_get_size"
 
 (** Returns the number of bytes from the start up to including the last
 byte written in the stream that has not been truncated away. *)
-external get_data_size : t -> int = "ml_g_memory_output_stream_get_data_size"
+external get_data_size : t -> Gsize.t = "ml_g_memory_output_stream_get_data_size"
 
 (* Properties *)
 

@@ -41,7 +41,7 @@ This function will abort if it tries to download a large texture and
 fails to allocate memory. If you think that may happen, you should handle
 memory allocation yourself and use [method@Gdk.TextureDownloader.download_into]
 once allocation succeeded. *)
-external download_bytes : t -> Glib_bytes.t * int = "ml_gdk_texture_downloader_download_bytes"
+external download_bytes : t -> Glib_bytes.t * Gsize.t = "ml_gdk_texture_downloader_download_bytes"
 
 (** Creates a copy of the downloader.
 

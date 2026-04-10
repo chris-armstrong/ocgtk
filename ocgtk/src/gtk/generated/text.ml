@@ -202,7 +202,7 @@ The weak cursor location is the location where characters of
 the directionality opposite to the base direction are inserted.
 
 The rectangle positions are in widget coordinates. *)
-external compute_cursor_extents : t -> int -> Ocgtk_graphene.Graphene.Wrappers.Rect.t * Ocgtk_graphene.Graphene.Wrappers.Rect.t = "ml_gtk_text_compute_cursor_extents"
+external compute_cursor_extents : t -> Gsize.t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t * Ocgtk_graphene.Graphene.Wrappers.Rect.t = "ml_gtk_text_compute_cursor_extents"
 
 (* Properties *)
 
