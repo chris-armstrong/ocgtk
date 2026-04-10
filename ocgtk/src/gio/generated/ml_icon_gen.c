@@ -82,7 +82,7 @@ CAMLreturn(Val_bool(result));
 CAMLexport CAMLprim value ml_gio_icon_from_gobject(value obj)
 {
     CAMLparam1(obj);
-    GObject *gobj = GObject_val(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
     if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_ICON)) {
         char msg[256];
         snprintf(msg, sizeof(msg),
@@ -90,5 +90,6 @@ CAMLexport CAMLprim value ml_gio_icon_from_gobject(value obj)
             G_OBJECT_TYPE_NAME(gobj), "GIcon");
         caml_failwith(msg);
     }
+    g_object_ref(gobj);
     CAMLreturn(Val_GIcon((GIcon*)gobj));
 }
