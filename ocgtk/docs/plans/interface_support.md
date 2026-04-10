@@ -436,18 +436,7 @@ ancestors through `ctx.cross_references` in the conflict-detection helpers.
 
 **Test gate**: ✅ Full `dune build` succeeds. All 424 tests pass locally.
 
-**CI status** ⚠️ UNRESOLVED: `dune test` exits 1 on a fresh CI checkout (after `dune clean && dune build`)
-but exits 0 on a second run (without clean). All 424 tests pass in both runs. Pattern indicates
-dune promotion is pending — some expected-output file in the test suite is out of date relative to
-what the generator now produces. Investigation was interrupted; next step is:
-
-```bash
-dune clean && dune build && xvfb-run -a dune test; git status
-# or:
-dune promote --dry-run
-```
-
-to identify which test snapshot needs updating, then commit the promoted file.
+**CI status** ✅ RESOLVED: regenerated bindings committed and all tests pass clean.
 
 ---
 
