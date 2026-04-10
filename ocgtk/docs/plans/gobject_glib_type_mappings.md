@@ -521,7 +521,7 @@ Created `tests/test_gvariant_type.ml` with 19 tests covering:
 **`guint8` intentionally omitted:** Used almost exclusively as the element type of
 `gpointer`/`void*` byte-buffer arrays (e.g. `g_input_stream_read`, `g_output_stream_write`).
 These require length-erasure infrastructure (hiding the `gsize count` param, exposing the
-buffer as `Bytes.t` or `string`) not yet implemented. See `KNOWN_BUGS.md` for details.
+buffer as `Bytes.t` or `string`) not yet implemented. See `architecture/todo/KNOWN_BUGS.md` for details.
 
 **Additional fix:** Extended `is_primitive_converter` in both directions of
 `c_stub_array_conv.ml` to cover the new converters. Without this, `GType` arrays
