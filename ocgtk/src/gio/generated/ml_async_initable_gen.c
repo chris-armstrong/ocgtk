@@ -44,7 +44,7 @@ if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Err
 CAMLexport CAMLprim value ml_gio_async_initable_from_gobject(value obj)
 {
     CAMLparam1(obj);
-    GObject *gobj = GObject_val(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
     if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_ASYNC_INITABLE)) {
         char msg[256];
         snprintf(msg, sizeof(msg),
@@ -52,6 +52,7 @@ CAMLexport CAMLprim value ml_gio_async_initable_from_gobject(value obj)
             G_OBJECT_TYPE_NAME(gobj), "GAsyncInitable");
         caml_failwith(msg);
     }
+    g_object_ref(gobj);
     CAMLreturn(Val_GAsyncInitable((GAsyncInitable*)gobj));
 }
 
@@ -75,6 +76,14 @@ CAMLparam2(self, arg1);
 (void)arg1;
 caml_failwith("AsyncInitable requires GLib >= 2.22");
 return Val_unit;
+}
+
+CAMLexport CAMLprim value ml_gio_async_initable_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    (void)obj;
+    caml_failwith("AsyncInitable requires GTK >= 2.22");
+    return Val_unit;
 }
 
 

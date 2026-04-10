@@ -80,7 +80,7 @@ CAMLreturn(Val_unit);
 CAMLexport CAMLprim value ml_gio_action_map_from_gobject(value obj)
 {
     CAMLparam1(obj);
-    GObject *gobj = GObject_val(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
     if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_ACTION_MAP)) {
         char msg[256];
         snprintf(msg, sizeof(msg),
@@ -88,6 +88,7 @@ CAMLexport CAMLprim value ml_gio_action_map_from_gobject(value obj)
             G_OBJECT_TYPE_NAME(gobj), "GActionMap");
         caml_failwith(msg);
     }
+    g_object_ref(gobj);
     CAMLreturn(Val_GActionMap((GActionMap*)gobj));
 }
 
@@ -132,6 +133,14 @@ CAMLparam3(self, arg1, arg2);
 (void)arg2;
 caml_failwith("ActionMap requires GLib >= 2.32");
 return Val_unit;
+}
+
+CAMLexport CAMLprim value ml_gio_action_map_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    (void)obj;
+    caml_failwith("ActionMap requires GTK >= 2.32");
+    return Val_unit;
 }
 
 

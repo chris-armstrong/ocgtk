@@ -126,19 +126,19 @@ CAMLexport CAMLprim value ml_gtk_editable_from_gobject(value obj)
 
 ---
 
-### Phase 3: Layer 1 — `from_gobject` External Declaration
+### Phase 3: Layer 1 — `from_gobject` External Declaration — DONE ✅
 
 **Goal**: Add a `from_gobject` external declaration to each interface's Layer 1 `.ml` and `.mli`.
 
 **Tasks**:
-- [ ] Extend Layer 1 generation in `layer1_main.ml` or the layer1 pipeline to emit, for each
-  interface that has a `glib_type_name`:
+- [x] Extend Layer 1 generation in `layer1_main.ml` to emit, for each interface that has a `glib_type_name`:
   ```ocaml
   external from_gobject : 'a Gobject.obj -> t = "ml_gtk_editable_from_gobject"
   ```
-- [ ] Emit the external in both `.ml` and `.mli` files
-- [ ] The C name is `ml_<namespace_snake>_<iface_snake>_from_gobject`
-- [ ] Only emit when `glib_type_name` is `Some` (guard same as Phase 2 C stub)
+- [x] Emit the external in both `.ml` and `.mli` files
+- [x] The C name is `ml_<namespace_snake>_<iface_snake>_from_gobject`
+- [x] Only emit when `glib_type_name` is `Some` (guard same as Phase 2 C stub)
+- [x] `generate_combined_ml_modules` parameter changed to `?from_gobject_c_name_for_entity:(entity -> string option)` so each entity in a cyclic group is handled independently (C1/C2 fix)
 
 **Generated OCaml Pattern** (addition to existing `editable.mli`):
 ```ocaml
@@ -197,7 +197,7 @@ in the existing test file: write GIR to temp, run `gir_gen.exe`, read and parse 
 
 ---
 
-### Phase 4: Layer 2 — Interface Inheritance on Implementing Classes
+### Phase 4: Layer 2 — Interface Inheritance on Implementing Classes — DONE ✅
 
 **Goal**: Make implementing classes inherit the interface's Layer 2 class type and include all
 interface methods/properties via `inherit`.
@@ -207,21 +207,11 @@ When `Entry` implements `Editable`, the generated `gEntry.ml` must:
 2. Inherit `GEditable.editable (Editable.from_gobject obj)` in the class implementation
 
 **Tasks**:
-- [ ] **Add `~implements:string list` parameter** to `generate_class_module` and `generate_class_signature`
-  in `class_gen.ml`, to `generate_class_module_body` and `generate_class_signature_body` in
-  `class_gen_body.ml`, and to the combined-class variants. Thread from `entity.implements` at
-  every call site in `gir_gen.ml`.
-- [ ] In `class_gen_body.ml`, **after parent class inheritance but before signal inheritance**:
-  - Iterate `implements`
-  - For each interface name, resolve the Layer 2 class type name (e.g. `GEditable.editable_t`)
-    and class name (e.g. `GEditable.editable`)
-  - Emit `inherit <interface_class_type>` in the class type definition
-  - Emit `inherit <interface_class> (<InterfaceLayer1>.from_gobject obj)` in the class body
-- [ ] **Interface method conflict detection**: extend `Class_gen_conflict_detection` so that any
-  method name that appears in an inherited interface is suppressed on the implementing class's own
-  method list (the class's own method wins). This prevents duplicate definitions.
-- [ ] Handle cross-namespace interfaces: use `Type_mappings.find_type_mapping_for_gir_type` to
-  resolve the qualified module path for interfaces in other namespaces.
+- [x] In `class_gen_body.ml`, **after parent class inheritance but before signal inheritance**, emit interface `inherit` clauses by iterating `cls.implements` from `ctx.classes`
+- [x] Interface method conflict detection: `collect_inherited_method_names` suppresses interface methods so implementing classes don't redeclare them
+- [x] Cross-namespace interfaces resolved via `Type_mappings.find_type_mapping_for_gir_type`
+- [x] Same-cycle guard: skip `inherit` when interface is in `same_cluster_classes` (OCaml `module rec` limitation)
+- [x] Diamond-inheritance guard: `parent_chain_provides_interface` prevents double-inherit when ancestor already provides interface (avoids warning 7 as error)
 
 **Generated OCaml Pattern** — `gEntry.ml` (changes shown):
 ```ocaml
@@ -426,20 +416,90 @@ regenerated bindings compile.
 
 7. **C3 cast**: Added explicit `(GtkMyIface*)gobj` cast in `generate_from_gobject_stub`.
 
+**Known limitation — cross-namespace parent chain**: `parent_chain_provides_interface` and
+`collect_inherited_method_names` only traverse same-namespace parent chains (via `ctx.classes`).
+A cross-namespace parent (e.g. `GtkApplication` → `GApplication` in Gio) is invisible, so
+diamond interface inheritance through a cross-namespace ancestor is not detected. For now this
+is safe because the Gtk library dune config suppresses warning 7 (`-w -7`). A proper fix would
+add `implements : string list` to `Crt_Class` in the references file and resolve cross-namespace
+ancestors through `ctx.cross_references` in the conflict-detection helpers.
+
 **Tasks**:
 - [x] Run `bash scripts/generate-bindings.sh` to regenerate all 9 namespace bindings
-- [ ] Run `cd ocgtk && dune build` and fix any remaining compilation errors
-- [ ] Spot-check generated files:
-  - `gEntry.ml` inherits `GEditable.editable_t` and `GCellEditable.cell_editable_t` (and others)
-  - `gButton.ml` does NOT inherit `GEditable.editable_t` (Button doesn't implement Editable)
-  - `gSpinButton.ml` inherits `GEditable.editable_t`
-  - `gEntry.ml` does NOT inherit `GActionable` (Entry does not implement Actionable)
+- [x] Run `cd ocgtk && dune build` — clean, only deprecation warnings from GDesktopAppInfoLookup
+- [x] Spot-check generated files:
+  - `gEntry.ml` inherits `GEditable.editable_t` and `GCellEditable.cell_editable_t` ✓
+  - `gButton.ml` does NOT inherit `GEditable.editable_t` ✓
+  - `gSpinButton.ml` inherits `GEditable.editable_t` (confirmed via grep)
+  - `gEntry.ml` does NOT inherit `GActionable` ✓
+- [x] All 424 gir_gen tests + GTK runtime tests pass
 
-**Test gate**: Full `dune build` succeeds with zero errors.
+**Test gate**: ✅ Full `dune build` succeeds. All 424 tests pass locally.
+
+**CI status** ⚠️ UNRESOLVED: `dune test` exits 1 on a fresh CI checkout (after `dune clean && dune build`)
+but exits 0 on a second run (without clean). All 424 tests pass in both runs. Pattern indicates
+dune promotion is pending — some expected-output file in the test suite is out of date relative to
+what the generator now produces. Investigation was interrupted; next step is:
+
+```bash
+dune clean && dune build && xvfb-run -a dune test; git status
+# or:
+dune promote --dry-run
+```
+
+to identify which test snapshot needs updating, then commit the promoted file.
 
 ---
 
-### Phase 6: Runtime Tests
+### Phase 6: Cross-Namespace Interface Awareness in References File
+
+**Goal**: Extend the references file so that cross-namespace parent chains are visible to
+`parent_chain_provides_interface` and `collect_inherited_method_names`. Currently these helpers
+only traverse same-namespace parents (via `ctx.classes`), so diamond interface inheritance
+through a cross-namespace ancestor is not detected and cross-namespace interface methods are not
+suppressed. This is safe today only because warning 7 is disabled in generated library dune configs.
+
+**Root cause**: `Crt_Class` in the cross-reference type stores `parent : string option` but not
+`implements : string list`. The consuming namespace therefore cannot know which interfaces a
+cross-namespace parent provides.
+
+**Example**: `GtkApplication` (Gtk) → parent `GApplication` (Gio) implements `ActionGroup`,
+`ActionMap`. If `GtkApplication` also lists `ActionGroup` in its own `implements`, our
+diamond-detection misses it because `GApplication` is not in `ctx.classes`.
+
+**Tasks**:
+
+- [ ] **`types.ml`**: Add `implements : string list` to `Crt_Class`:
+  ```ocaml
+  type entity_cross_reference_type =
+    | Crt_Class of { parent : string option; implements : string list }
+    | ...
+  ```
+  Update `sexp_of_entity_cross_reference_type` and `entity_cross_reference_type_of_sexp` accordingly.
+
+- [ ] **`generate_references` in `gir_gen.ml`**: Populate the new field:
+  ```ocaml
+  cr_type = Crt_Class { parent = cls.parent; implements = cls.implements }
+  ```
+
+- [ ] **`class_gen_conflict_detection.ml` — `parent_chain_provides_interface`**: When `build_parent_chain`
+  encounters a cross-namespace ancestor (not in `ctx.classes`), resolve it via `ctx.cross_references`
+  and check its `implements` list from the `Crt_Class` record.
+
+- [ ] **`class_gen_conflict_detection.ml` — `collect_inherited_method_names`**: For a
+  cross-namespace `iface_name` (containing `.`), split on `.`, look up the namespace in
+  `ctx.cross_references`, find the interface entity, and include its methods in the suppression set.
+
+- [ ] Regenerate all references files (`scripts/generate-bindings.sh` runs the `references`
+  subcommand first), then regenerate bindings and verify `dune build` still passes.
+
+**Test gate**: `dune build` succeeds. Generated code produces no redundant cross-namespace
+interface inherits for known cases (e.g. `GtkApplication` should NOT double-inherit
+`ActionGroup`/`ActionMap` that `GApplication` already provides).
+
+---
+
+### Phase 8: Runtime Tests
 
 **Goal**: Verify interface functionality at runtime with real GTK objects.
 
@@ -484,22 +544,23 @@ let test_from_gobject_fails () =
 - `ocgtk/src/tools/gir_gen/parse/gir_parser.ml` — parse interface metadata; fix `c_symbol_prefix`; add `<implements>` ✅
 - `ocgtk/src/tools/gir_gen/gir_gen.ml` — generate `from_gobject` C stub ✅
 - `ocgtk/src/tools/gir_gen/utils.ml` — `gtype_macro_of_type_name`, `cast_macro_of_type_name` ✅
-- `ocgtk/src/tools/gir_gen/generate/class_gen.ml` — add `~implements` parameter (Phase 4)
-- `ocgtk/src/tools/gir_gen/generate/class_gen_body.ml` — interface inheritance (Phase 4)
-- `ocgtk/src/tools/gir_gen/generate/layer1/layer1_main.ml` — `from_gobject` external (Phase 3)
+- `ocgtk/src/tools/gir_gen/generate/class_gen_body.ml` — interface inheritance ✅
+- `ocgtk/src/tools/gir_gen/generate/class_gen_conflict_detection.ml` — `parent_chain_provides_interface` ✅
+- `ocgtk/src/tools/gir_gen/generate/layer1/layer1_main.ml` — `from_gobject` external, per-entity cyclic support ✅
+- `ocgtk/src/tools/gir_gen/generate/layer1/layer1_main.mli` — updated signature ✅
 - `ocgtk/src/tools/test_gir_gen/util/type_factory.ml` — extend `make_gir_interface` ✅
 
 ### New Test Files
 - `ocgtk/src/tools/test_gir_gen/test_interface_parsing.ml` — Phase 1 ✅
 - `ocgtk/src/tools/test_gir_gen/test_from_gobject_gen.ml` — Phase 2 ✅
-- `ocgtk/src/tools/test_gir_gen/test_interface_inheritance.ml` — Phase 4 (integration tests)
-- `ocgtk/tests/gtk/test_interface.ml` — Phase 6 runtime tests
+- `ocgtk/src/tools/test_gir_gen/test_interface_inheritance.ml` — Phase 4 integration tests (not yet written — see Phase 4 test spec above)
+- `ocgtk/tests/gtk/test_interface.ml` — Phase 8 runtime tests (not yet written)
 
 ### Regenerated Files (via `scripts/generate-bindings.sh`)
-All files under `ocgtk/src/*/generated/` — specifically:
-- Interface `.c` files gain `from_gobject` function (Phase 2 ✅)
-- Interface `.ml`/`.mli` files gain `from_gobject` external (Phase 3)
-- Implementing class `g*.ml`/`g*.mli` files gain interface inheritance (Phase 4)
+All files under `ocgtk/src/*/generated/` — regenerated in Phase 5 ✅:
+- Interface `.c` files gain `from_gobject` function ✅
+- Interface `.ml`/`.mli` files gain `from_gobject` external ✅
+- Implementing class `g*.ml`/`g*.mli` files gain interface inheritance ✅
 
 ---
 

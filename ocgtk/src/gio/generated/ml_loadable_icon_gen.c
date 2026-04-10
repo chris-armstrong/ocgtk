@@ -24,7 +24,7 @@
 CAMLexport CAMLprim value ml_gio_loadable_icon_from_gobject(value obj)
 {
     CAMLparam1(obj);
-    GObject *gobj = GObject_val(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
     if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_LOADABLE_ICON)) {
         char msg[256];
         snprintf(msg, sizeof(msg),
@@ -32,5 +32,6 @@ CAMLexport CAMLprim value ml_gio_loadable_icon_from_gobject(value obj)
             G_OBJECT_TYPE_NAME(gobj), "GLoadableIcon");
         caml_failwith(msg);
     }
+    g_object_ref(gobj);
     CAMLreturn(Val_GLoadableIcon((GLoadableIcon*)gobj));
 }

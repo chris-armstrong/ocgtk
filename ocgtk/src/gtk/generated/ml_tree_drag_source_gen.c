@@ -43,7 +43,7 @@ CAMLreturn(Val_bool(result));
 CAMLexport CAMLprim value ml_gtk_tree_drag_source_from_gobject(value obj)
 {
     CAMLparam1(obj);
-    GObject *gobj = GObject_val(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
     if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_TREE_DRAG_SOURCE)) {
         char msg[256];
         snprintf(msg, sizeof(msg),
@@ -51,5 +51,6 @@ CAMLexport CAMLprim value ml_gtk_tree_drag_source_from_gobject(value obj)
             G_OBJECT_TYPE_NAME(gobj), "GtkTreeDragSource");
         caml_failwith(msg);
     }
+    g_object_ref(gobj);
     CAMLreturn(Val_GtkTreeDragSource((GtkTreeDragSource*)gobj));
 }
