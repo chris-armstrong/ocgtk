@@ -169,7 +169,7 @@ module rec Socket : sig
   On error %G_POLLABLE_RETURN_FAILED is returned and @error is set accordingly, or
   if the socket is currently not writable %G_POLLABLE_RETURN_WOULD_BLOCK is
   returned. @bytes_written will contain 0 in both cases. *)
-  external send_message_with_timeout : t -> Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> int64 -> Cancellable.t option -> (Gio_enums.pollablereturn * Gsize.t, GError.t) result = "ml_g_socket_send_message_with_timeout_bytecode" "ml_g_socket_send_message_with_timeout_native"
+  external send_message_with_timeout : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> int64 -> Cancellable.t option -> (Gio_enums.pollablereturn * Gsize.t, GError.t) result = "ml_g_socket_send_message_with_timeout_bytecode" "ml_g_socket_send_message_with_timeout_native"
 
   (** Send data to @address on @socket.  For sending multiple messages see
   g_socket_send_messages(); for easier use, see
@@ -213,7 +213,7 @@ module rec Socket : sig
   function.
 
   On error -1 is returned and @error is set accordingly. *)
-  external send_message : t -> Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_send_message_bytecode" "ml_g_socket_send_message_native"
+  external send_message : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_send_message_bytecode" "ml_g_socket_send_message_native"
 
   (** Receive multiple data messages from @socket in one go.  This is the most
   complicated and fully-featured version of this call. For easier use, see
@@ -730,7 +730,7 @@ end = struct
   On error %G_POLLABLE_RETURN_FAILED is returned and @error is set accordingly, or
   if the socket is currently not writable %G_POLLABLE_RETURN_WOULD_BLOCK is
   returned. @bytes_written will contain 0 in both cases. *)
-  external send_message_with_timeout : t -> Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> int64 -> Cancellable.t option -> (Gio_enums.pollablereturn * Gsize.t, GError.t) result = "ml_g_socket_send_message_with_timeout_bytecode" "ml_g_socket_send_message_with_timeout_native"
+  external send_message_with_timeout : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> int64 -> Cancellable.t option -> (Gio_enums.pollablereturn * Gsize.t, GError.t) result = "ml_g_socket_send_message_with_timeout_bytecode" "ml_g_socket_send_message_with_timeout_native"
 
   (** Send data to @address on @socket.  For sending multiple messages see
   g_socket_send_messages(); for easier use, see
@@ -774,7 +774,7 @@ end = struct
   function.
 
   On error -1 is returned and @error is set accordingly. *)
-  external send_message : t -> Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_send_message_bytecode" "ml_g_socket_send_message_native"
+  external send_message : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_send_message_bytecode" "ml_g_socket_send_message_native"
 
   (** Receive multiple data messages from @socket in one go.  This is the most
   complicated and fully-featured version of this call. For easier use, see

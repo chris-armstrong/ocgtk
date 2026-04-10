@@ -110,14 +110,6 @@ caml_failwith("PollableOutputStream requires GLib >= 2.28");
 return Val_unit;
 }
 
-CAMLexport CAMLprim value ml_gio_pollable_output_stream_from_gobject(value obj)
-{
-    CAMLparam1(obj);
-    (void)obj;
-    caml_failwith("PollableOutputStream requires GTK >= 2.28");
-    return Val_unit;
-}
-
 
 CAMLexport CAMLprim value ml_g_pollable_output_stream_writev_nonblocking(value self, value arg1, value arg2, value arg3)
 {
@@ -128,6 +120,14 @@ CAMLparam4(self, arg1, arg2, arg3);
 (void)arg3;
 caml_failwith("PollableOutputStream requires GLib >= 2.28");
 return Val_unit;
+}
+
+CAMLexport CAMLprim value ml_gio_pollable_output_stream_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    (void)obj;
+    caml_failwith("PollableOutputStream requires GTK >= 2.28");
+    return Val_unit;
 }
 
 

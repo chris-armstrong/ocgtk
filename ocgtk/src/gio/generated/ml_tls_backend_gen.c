@@ -166,20 +166,6 @@ caml_failwith("TlsBackend requires GLib >= 2.30");
 return Val_unit;
 }
 #endif
-CAMLexport CAMLprim value ml_gio_tls_backend_from_gobject(value obj)
-{
-    CAMLparam1(obj);
-    GObject *gobj = GObject_ext_of_val(obj);
-    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_TLS_BACKEND)) {
-        char msg[256];
-        snprintf(msg, sizeof(msg),
-            "from_gobject: object of type '%s' does not implement %s",
-            G_OBJECT_TYPE_NAME(gobj), "GTlsBackend");
-        caml_failwith(msg);
-    }
-    g_object_ref(gobj);
-    CAMLreturn(Val_GTlsBackend((GTlsBackend*)gobj));
-}
 
 CAMLexport CAMLprim value ml_g_tls_backend_get_client_connection_type(value self)
 {
@@ -195,6 +181,20 @@ CAMLparam1(self);
 
 GType result = g_tls_backend_get_certificate_type(GTlsBackend_val(self));
 CAMLreturn(Val_GType(result));
+}
+CAMLexport CAMLprim value ml_gio_tls_backend_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_TLS_BACKEND)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GTlsBackend");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GTlsBackend((GTlsBackend*)gobj));
 }
 
 #else

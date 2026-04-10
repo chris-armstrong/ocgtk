@@ -23,20 +23,6 @@
 
 #if GLIB_CHECK_VERSION(2,48,0)
 
-CAMLexport CAMLprim value ml_gio_datagram_based_from_gobject(value obj)
-{
-    CAMLparam1(obj);
-    GObject *gobj = GObject_ext_of_val(obj);
-    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_DATAGRAM_BASED)) {
-        char msg[256];
-        snprintf(msg, sizeof(msg),
-            "from_gobject: object of type '%s' does not implement %s",
-            G_OBJECT_TYPE_NAME(gobj), "GDatagramBased");
-        caml_failwith(msg);
-    }
-    g_object_ref(gobj);
-    CAMLreturn(Val_GDatagramBased((GDatagramBased*)gobj));
-}
 
 CAMLexport CAMLprim value ml_g_datagram_based_send_messages_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
 {
@@ -77,16 +63,22 @@ CAMLexport CAMLprim value ml_g_datagram_based_receive_messages_bytecode(value * 
 {
 return ml_g_datagram_based_receive_messages_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
-
-#else
-
 CAMLexport CAMLprim value ml_gio_datagram_based_from_gobject(value obj)
 {
     CAMLparam1(obj);
-    (void)obj;
-    caml_failwith("DatagramBased requires GTK >= 2.48");
-    return Val_unit;
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_DATAGRAM_BASED)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GDatagramBased");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GDatagramBased((GDatagramBased*)gobj));
 }
+
+#else
 
 
 CAMLexport CAMLprim value ml_g_datagram_based_receive_messages(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
@@ -114,6 +106,14 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 (void)arg5;
 caml_failwith("DatagramBased requires GLib >= 2.48");
 return Val_unit;
+}
+
+CAMLexport CAMLprim value ml_gio_datagram_based_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    (void)obj;
+    caml_failwith("DatagramBased requires GTK >= 2.48");
+    return Val_unit;
 }
 
 
