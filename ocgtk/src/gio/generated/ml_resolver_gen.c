@@ -22,6 +22,8 @@
 #include "gio_decls.h"
 
 
+#if GLIB_CHECK_VERSION(2,78,0)
+
 CAMLexport CAMLprim value ml_g_resolver_set_timeout(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -30,6 +32,20 @@ g_resolver_set_timeout(GResolver_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_resolver_set_timeout(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Resolver requires GLib >= 2.78");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
+
 CAMLexport CAMLprim value ml_g_resolver_set_default(value self)
 {
 CAMLparam1(self);
@@ -37,6 +53,19 @@ CAMLparam1(self);
 g_resolver_set_default(GResolver_val(self));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_resolver_set_default(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Resolver requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
 
 CAMLexport CAMLprim value ml_g_resolver_lookup_service_finish(value self, value arg1)
 {
@@ -52,6 +81,20 @@ if (error == NULL) {
     } else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_service_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Resolver requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
+
 CAMLexport CAMLprim value ml_g_resolver_lookup_service(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -65,6 +108,23 @@ if (error == NULL) {
         CAMLreturn(Res_Ok(result));
     } else CAMLreturn(Res_Error(Val_GError(error)));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_service(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("Resolver requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,34,0)
 
 CAMLexport CAMLprim value ml_g_resolver_lookup_records_finish(value self, value arg1)
 {
@@ -81,6 +141,20 @@ if (error == NULL) {
     } else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_records_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Resolver requires GLib >= 2.34");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,34,0)
+
 CAMLexport CAMLprim value ml_g_resolver_lookup_records(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -96,6 +170,22 @@ if (error == NULL) {
     } else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_records(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Resolver requires GLib >= 2.34");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,60,0)
+
 CAMLexport CAMLprim value ml_g_resolver_lookup_by_name_with_flags_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -109,6 +199,20 @@ if (error == NULL) {
         CAMLreturn(Res_Ok(result));
     } else CAMLreturn(Res_Error(Val_GError(error)));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_by_name_with_flags_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Resolver requires GLib >= 2.60");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,60,0)
 
 CAMLexport CAMLprim value ml_g_resolver_lookup_by_name_with_flags(value self, value arg1, value arg2, value arg3)
 {
@@ -124,6 +228,22 @@ if (error == NULL) {
     } else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_by_name_with_flags(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Resolver requires GLib >= 2.60");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
+
 CAMLexport CAMLprim value ml_g_resolver_lookup_by_name_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -137,6 +257,20 @@ if (error == NULL) {
         CAMLreturn(Res_Ok(result));
     } else CAMLreturn(Res_Error(Val_GError(error)));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_by_name_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Resolver requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
 
 CAMLexport CAMLprim value ml_g_resolver_lookup_by_name(value self, value arg1, value arg2)
 {
@@ -152,6 +286,21 @@ if (error == NULL) {
     } else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_by_name(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Resolver requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
+
 CAMLexport CAMLprim value ml_g_resolver_lookup_by_address_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -160,6 +309,20 @@ GError *error = NULL;
 gchar* result = g_resolver_lookup_by_address_finish(GResolver_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(caml_copy_string(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_by_address_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Resolver requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
 
 CAMLexport CAMLprim value ml_g_resolver_lookup_by_address(value self, value arg1, value arg2)
 {
@@ -170,6 +333,21 @@ gchar* result = g_resolver_lookup_by_address(GResolver_val(self), GInetAddress_v
 if (error == NULL) CAMLreturn(Res_Ok(caml_copy_string(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_resolver_lookup_by_address(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Resolver requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,78,0)
+
 CAMLexport CAMLprim value ml_g_resolver_get_timeout(value self)
 {
 CAMLparam1(self);
@@ -177,3 +355,14 @@ CAMLparam1(self);
 unsigned result = g_resolver_get_timeout(GResolver_val(self));
 CAMLreturn(Val_int(result));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_resolver_get_timeout(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Resolver requires GLib >= 2.78");
+return Val_unit;
+}
+#endif

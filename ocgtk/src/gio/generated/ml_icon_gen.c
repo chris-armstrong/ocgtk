@@ -22,6 +22,8 @@
 #include "gio_decls.h"
 
 
+#if GLIB_CHECK_VERSION(2,20,0)
+
 CAMLexport CAMLprim value ml_g_icon_to_string(value self)
 {
 CAMLparam1(self);
@@ -30,6 +32,19 @@ gchar* result = g_icon_to_string(GIcon_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_icon_to_string(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Icon requires GLib >= 2.20");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,38,0)
+
 CAMLexport CAMLprim value ml_g_icon_serialize(value self)
 {
 CAMLparam1(self);
@@ -37,6 +52,17 @@ CAMLparam1(self);
 GVariant* result = g_icon_serialize(GIcon_val(self));
 CAMLreturn(Val_option(result, Val_GVariant));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_icon_serialize(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Icon requires GLib >= 2.38");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_icon_hash(value self)
 {

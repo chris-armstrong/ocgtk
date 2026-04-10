@@ -92,6 +92,38 @@ gtk_string_list_append(GtkStringList_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,14,0)
+
+CAMLexport CAMLprim value ml_gtk_string_list_get_item_type(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkStringList *obj = (GtkStringList *)GtkStringList_val(self);
+    GType *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "item-type");
+if (pspec == NULL) caml_failwith("ml_gtk_string_list_get_item_type: property 'item-type' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "item-type", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GType(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_string_list_get_item_type(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("StringList requires GTK >= 4.14");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,14,0)
+
 CAMLexport CAMLprim value ml_gtk_string_list_get_n_items(value self)
 {
     CAMLparam1(self);
@@ -109,23 +141,13 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-CAMLexport CAMLprim value ml_gtk_string_list_get_strings(value self)
+#else
+
+CAMLexport CAMLprim value ml_gtk_string_list_get_n_items(value self)
 {
-GtkStringList *obj = (GtkStringList *)GtkStringList_val(self);
 CAMLparam1(self);
-GValue prop_gvalue = G_VALUE_INIT;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "strings");
-if (pspec == NULL) caml_failwith("ml_gtk_string_list_get_strings: property 'strings' not found");
-g_value_init(&prop_gvalue, pspec->value_type);
-g_object_get_property(G_OBJECT(obj), "strings", &prop_gvalue);
-const char** c_result = (const char**)g_value_get_boxed(&prop_gvalue);
-int c_result_length = 0;
-    while (c_result[c_result_length] != NULL) c_result_length++;
-    CAMLlocal1(ml_c_result);
-    ml_c_result = caml_alloc(c_result_length, 0);
-    for (int i = 0; i < c_result_length; i++) {
-      Store_field(ml_c_result, i, caml_copy_string(c_result[i]));
-    }
-g_value_unset(&prop_gvalue);
-CAMLreturn(ml_c_result);
+(void)self;
+caml_failwith("StringList requires GTK >= 4.14");
+return Val_unit;
 }
+#endif

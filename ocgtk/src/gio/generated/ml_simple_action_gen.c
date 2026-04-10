@@ -22,6 +22,8 @@
 #include "gio_decls.h"
 
 
+#if GLIB_CHECK_VERSION(2,28,0)
+
 CAMLexport CAMLprim value ml_g_simple_action_new(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
@@ -31,6 +33,20 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GSimpleAction(obj));
 }
+#else
+
+CAMLexport CAMLprim value ml_g_simple_action_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+(void)arg1;
+(void)arg2;
+caml_failwith("SimpleAction requires GLib >= 2.28");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
+
 CAMLexport CAMLprim value ml_g_simple_action_new_stateful(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
@@ -40,6 +56,21 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GSimpleAction(obj));
 }
+#else
+
+CAMLexport CAMLprim value ml_g_simple_action_new_stateful(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("SimpleAction requires GLib >= 2.28");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,44,0)
+
 CAMLexport CAMLprim value ml_g_simple_action_set_state_hint(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -47,6 +78,20 @@ CAMLparam2(self, arg1);
 g_simple_action_set_state_hint(GSimpleAction_val(self), Option_val(arg1, GVariant_val, NULL));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_simple_action_set_state_hint(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SimpleAction requires GLib >= 2.44");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,30,0)
 
 CAMLexport CAMLprim value ml_g_simple_action_set_state(value self, value arg1)
 {
@@ -56,6 +101,20 @@ g_simple_action_set_state(GSimpleAction_val(self), GVariant_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_simple_action_set_state(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SimpleAction requires GLib >= 2.30");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
+
 CAMLexport CAMLprim value ml_g_simple_action_set_enabled(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -63,6 +122,20 @@ CAMLparam2(self, arg1);
 g_simple_action_set_enabled(GSimpleAction_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_simple_action_set_enabled(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SimpleAction requires GLib >= 2.28");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
 
 CAMLexport CAMLprim value ml_g_simple_action_get_name(value self)
 {
@@ -81,6 +154,19 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
+#else
+
+CAMLexport CAMLprim value ml_g_simple_action_get_name(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SimpleAction requires GLib >= 2.28");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
+
 CAMLexport CAMLprim value ml_g_simple_action_get_parameter_type(value self)
 {
     CAMLparam1(self);
@@ -98,6 +184,19 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
+#else
+
+CAMLexport CAMLprim value ml_g_simple_action_get_parameter_type(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SimpleAction requires GLib >= 2.28");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
+
 CAMLexport CAMLprim value ml_g_simple_action_get_state_type(value self)
 {
     CAMLparam1(self);
@@ -114,3 +213,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_GVariantType(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_g_simple_action_get_state_type(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SimpleAction requires GLib >= 2.28");
+return Val_unit;
+}
+#endif
