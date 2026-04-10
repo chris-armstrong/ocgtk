@@ -14,15 +14,9 @@ depends: [
   "conf-gtk4"
   "integers" {>= "0.7.0"}
   "containers" {build}
-  "camlp5" {build}
-  "camlp-streams" {build}
   "xmlm" {build}
   "re" {build}
-  "uutf" {build}
-  "uuseg" {build}
   "fmt" {build}
-  "fpath" {build}
-  "yojson" {build}
   "logs" {build}
   "cmdliner" {build}
   "alcotest" {with-test}
