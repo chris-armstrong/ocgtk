@@ -1,0 +1,349 @@
+name: Release Verification
+
+# Manually triggered, or automatically on release tags.
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+env:
+  OCAML_VERSION: '5.3.0'
+  OPAM_VERSION: '2.5.0'
+
+jobs:
+
+  # ── Ubuntu 22.04 (native runner) ────────────────────────────────────────────
+  ubuntu-22:
+    name: Ubuntu 22.04
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            gcc make m4 patch unzip bzip2 curl git pkg-config perl diffutils rsync \
+            libgtk-4-dev libcairo2-dev libpango1.0-dev libgdk-pixbuf-2.0-dev libglib2.0-dev \
+            libgirepository1.0-dev gir1.2-gtk-4.0 xvfb
+      - uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: ${{ env.OCAML_VERSION }}
+      - name: Pin conf-gtk4 and install dependencies
+        run: |
+          opam pin add -n conf-gtk4 conf-gtk4
+          opam install --deps-only --with-test -y ./ocgtk
+      - name: Build
+        working-directory: ocgtk
+        run: opam exec -- dune build
+      - name: Test
+        working-directory: ocgtk
+        run: opam exec -- xvfb-run -a dune runtest
+
+  # ── Ubuntu 24.04 (native runner) ────────────────────────────────────────────
+  ubuntu-24:
+    name: Ubuntu 24.04
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            gcc make m4 patch unzip bzip2 curl git pkg-config perl diffutils rsync \
+            libgtk-4-dev libcairo2-dev libpango1.0-dev libgdk-pixbuf-2.0-dev libglib2.0-dev \
+            libgirepository1.0-dev gir1.2-gtk-4.0 xvfb
+      - uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: ${{ env.OCAML_VERSION }}
+      - name: Pin conf-gtk4 and install dependencies
+        run: |
+          opam pin add -n conf-gtk4 conf-gtk4
+          opam install --deps-only --with-test -y ./ocgtk
+      - name: Build
+        working-directory: ocgtk
+        run: opam exec -- dune build
+      - name: Test
+        working-directory: ocgtk
+        run: opam exec -- xvfb-run -a dune runtest
+
+  # ── APT-based containers (Ubuntu 25.04, Debian 12) ──────────────────────────
+  linux-apt:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    container: ${{ matrix.image }}
+    env:
+      DEBIAN_FRONTEND: noninteractive
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Ubuntu 25.04
+            image: ubuntu:25.04
+          - name: Debian 12
+            image: debian:12
+    steps:
+      - name: Install git and curl
+        run: apt-get update && apt-get install -y git curl ca-certificates
+      - uses: actions/checkout@v4
+      - name: Install system dependencies
+        run: |
+          apt-get install -y \
+            gcc make m4 patch unzip bzip2 pkg-config perl diffutils rsync \
+            libgtk-4-dev libcairo2-dev libpango1.0-dev libgdk-pixbuf-2.0-dev libglib2.0-dev \
+            libgirepository1.0-dev gir1.2-gtk-4.0 xvfb
+      - name: Install opam
+        run: |
+          curl -fsSL \
+            "https://github.com/ocaml/opam/releases/download/${{ env.OPAM_VERSION }}/opam-${{ env.OPAM_VERSION }}-x86_64-linux" \
+            -o /usr/local/bin/opam
+          chmod +x /usr/local/bin/opam
+      - name: Initialise opam and create switch
+        run: |
+          opam init --disable-sandboxing -y --bare
+          opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
+      - name: Pin conf-gtk4 and install OCaml dependencies
+        run: |
+          eval $(opam env)
+          opam pin add -n conf-gtk4 conf-gtk4
+          opam install --deps-only --with-test -y ./ocgtk
+      - name: Build
+        working-directory: ocgtk
+        run: |
+          eval $(opam env)
+          dune build
+      - name: Test
+        working-directory: ocgtk
+        run: |
+          eval $(opam env)
+          xvfb-run -a dune runtest
+
+  # ── Fedora containers (Fedora 40, Fedora 43) ─────────────────────────────────
+  linux-fedora:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    container: ${{ matrix.image }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Fedora 40
+            image: fedora:40
+          - name: Fedora 43
+            image: fedora:43
+    steps:
+      - name: Install git and curl
+        run: dnf install -y git curl
+      - uses: actions/checkout@v4
+      - name: Install system dependencies
+        run: |
+          dnf install -y \
+            gcc make m4 patch unzip bzip2 pkgconf perl diffutils which rsync \
+            gtk4-devel cairo-devel pango-devel gdk-pixbuf2-devel glib2-devel \
+            gobject-introspection-devel xorg-x11-server-Xvfb
+      - name: Install opam
+        run: |
+          curl -fsSL \
+            "https://github.com/ocaml/opam/releases/download/${{ env.OPAM_VERSION }}/opam-${{ env.OPAM_VERSION }}-x86_64-linux" \
+            -o /usr/local/bin/opam
+          chmod +x /usr/local/bin/opam
+      - name: Initialise opam and create switch
+        run: |
+          opam init --disable-sandboxing -y --bare
+          opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
+      - name: Pin conf-gtk4 and install OCaml dependencies
+        run: |
+          eval $(opam env)
+          opam pin add -n conf-gtk4 conf-gtk4
+          opam install --deps-only --with-test -y ./ocgtk
+      - name: Build
+        working-directory: ocgtk
+        run: |
+          eval $(opam env)
+          dune build
+      - name: Test
+        working-directory: ocgtk
+        run: |
+          eval $(opam env)
+          xvfb-run -a dune runtest
+
+  # ── CentOS Stream 9 ──────────────────────────────────────────────────────────
+  centos-9:
+    name: CentOS Stream 9
+    runs-on: ubuntu-latest
+    container: quay.io/centos/centos:stream9
+    steps:
+      - name: Enable EPEL + CRB and install git/curl
+        run: |
+          dnf install -y epel-release
+          dnf config-manager --set-enabled crb
+          dnf install -y --allowerasing git curl
+      - uses: actions/checkout@v4
+      - name: Install system dependencies
+        run: |
+          dnf install -y --allowerasing \
+            gcc make m4 patch unzip bzip2 pkgconf-pkg-config perl diffutils which rsync \
+            gtk4-devel cairo-devel pango-devel gdk-pixbuf2-devel glib2-devel \
+            gobject-introspection-devel xorg-x11-server-Xvfb
+      - name: Install opam
+        run: |
+          curl -fsSL \
+            "https://github.com/ocaml/opam/releases/download/${{ env.OPAM_VERSION }}/opam-${{ env.OPAM_VERSION }}-x86_64-linux" \
+            -o /usr/local/bin/opam
+          chmod +x /usr/local/bin/opam
+      - name: Initialise opam and create switch
+        run: |
+          opam init --disable-sandboxing -y --bare
+          opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
+      - name: Pin conf-gtk4 and install OCaml dependencies
+        run: |
+          eval $(opam env)
+          opam pin add -n conf-gtk4 conf-gtk4
+          opam install --deps-only --with-test -y ./ocgtk
+      - name: Build
+        working-directory: ocgtk
+        run: |
+          eval $(opam env)
+          dune build
+      - name: Test
+        working-directory: ocgtk
+        run: |
+          eval $(opam env)
+          xvfb-run -a dune runtest
+
+  # ── openSUSE Leap 15.6 ───────────────────────────────────────────────────────
+  opensuse-15:
+    name: openSUSE Leap 15.6
+    runs-on: ubuntu-latest
+    container: opensuse/leap:15.6
+    steps:
+      - name: Install git and curl
+        run: zypper install -y git curl
+      - uses: actions/checkout@v4
+      - name: Install system dependencies
+        run: |
+          zypper install -y \
+            gcc make m4 patch unzip bzip2 gzip tar pkg-config perl diffutils which rsync \
+            gtk4-devel cairo-devel pango-devel gdk-pixbuf-devel glib2-devel \
+            gobject-introspection-devel xorg-x11-server-Xvfb xvfb-run
+      - name: Install opam
+        run: |
+          curl -fsSL \
+            "https://github.com/ocaml/opam/releases/download/${{ env.OPAM_VERSION }}/opam-${{ env.OPAM_VERSION }}-x86_64-linux" \
+            -o /usr/local/bin/opam
+          chmod +x /usr/local/bin/opam
+      - name: Initialise opam and create switch
+        run: |
+          opam init --disable-sandboxing -y --bare
+          opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
+      - name: Pin conf-gtk4 and install OCaml dependencies
+        run: |
+          eval $(opam env)
+          opam pin add -n conf-gtk4 conf-gtk4
+          opam install --deps-only --with-test -y ./ocgtk
+      - name: Build
+        working-directory: ocgtk
+        run: |
+          eval $(opam env)
+          dune build
+      - name: Test
+        working-directory: ocgtk
+        run: |
+          eval $(opam env)
+          xvfb-run -a dune runtest
+
+  # ── FreeBSD 14 ───────────────────────────────────────────────────────────────
+  freebsd:
+    name: FreeBSD 14
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and test on FreeBSD
+        uses: vmactions/freebsd-vm@v1
+        with:
+          usesh: true
+          prepare: |
+            pkg install -y \
+              gtk4 gobject-introspection pkgconf \
+              bash gcc gmake m4 patch unzip bzip2 curl git perl5 rsync \
+              xorg-vfbserver
+          run: |
+            set -e
+            curl -fsSL \
+              "https://github.com/ocaml/opam/releases/download/${{ env.OPAM_VERSION }}/opam-${{ env.OPAM_VERSION }}-x86_64-freebsd" \
+              -o /usr/local/bin/opam
+            chmod +x /usr/local/bin/opam
+            opam init --disable-sandboxing -y --bare
+            opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
+            eval $(opam env)
+            opam pin add -n conf-gtk4 conf-gtk4
+            opam install --deps-only --with-test -y ./ocgtk
+            cd ocgtk
+            dune build
+            # xvfb-run is not available on FreeBSD; start Xvfb manually
+            Xvfb :99 -screen 0 1280x1024x24 &
+            sleep 1
+            DISPLAY=:99 dune runtest
+
+  # ── Windows ──────────────────────────────────────────────────────────────────
+  #
+  # Setup model: Cygwin shell + MinGW64 compiler + MSYS2 GTK4 libraries.
+  #
+  # setup-ocaml uses Cygwin only as the build shell; with windows-compiler:
+  # mingw, the OCaml compiler and its output target the MinGW64 ABI
+  # (x86_64-w64-mingw32), making it binary-compatible with MSYS2 MINGW64
+  # libraries including GTK4.
+  #
+  # conf-gtk4 checks for GTK4 using Cygwin's pkg-config (installed by
+  # setup-ocaml by default) with PKG_CONFIG_PATH pointing at MSYS2's
+  # MinGW64 .pc files.
+  windows:
+    name: Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Install GTK4 and its dependencies into the MSYS2 MINGW64 prefix.
+      # The GitHub Actions Windows runner ships MSYS2 at C:\msys64 so these
+      # packages land in C:\msys64\mingw64\ where the MinGW64 linker can find
+      # them.
+      - name: Install GTK4 via MSYS2 MINGW64
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-gtk4
+            mingw-w64-x86_64-gobject-introspection
+            mingw-w64-x86_64-pkgconf
+
+      # Set up OCaml via opam on Windows.
+      # windows-compiler: mingw  → OCaml built with MinGW64 GCC (native Windows
+      #                            binaries, no cygwin1.dll dependency)
+      # windows-environment: cygwin (default) → Cygwin provides the POSIX shell
+      #                            and build utilities (bash, make, patch, …)
+      - name: Set up OCaml (MinGW64 compiler, Cygwin shell)
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: ${{ env.OCAML_VERSION }}
+          windows-compiler: mingw
+
+      # Tell Cygwin's pkg-config where to find GTK4's .pc files from the
+      # MSYS2 MinGW64 prefix.
+      - name: Configure pkg-config paths for MSYS2 GTK4
+        shell: bash
+        run: |
+          echo "PKG_CONFIG_PATH=C:/msys64/mingw64/lib/pkgconfig" >> "$GITHUB_ENV"
+
+      - name: Pin conf-gtk4 and install OCaml dependencies
+        run: |
+          opam pin add -n conf-gtk4 conf-gtk4
+          opam install --deps-only --with-test -y ./ocgtk
+
+      - name: Build
+        working-directory: ocgtk
+        run: opam exec -- dune build
+
+      - name: Test
+        working-directory: ocgtk
+        # Windows runners have a native display; no virtual framebuffer needed
+        run: opam exec -- dune runtest

@@ -22,6 +22,29 @@
 #include "gio_decls.h"
 
 
+#if GLIB_CHECK_VERSION(2,22,0)
+
+CAMLexport CAMLprim value ml_g_inet_socket_address_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+
+GInetSocketAddress *obj = g_inet_socket_address_new(GInetAddress_val(arg1), Int_val(arg2));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GInetSocketAddress(obj));
+}
+#else
+
+CAMLexport CAMLprim value ml_g_inet_socket_address_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+(void)arg1;
+(void)arg2;
+caml_failwith("InetSocketAddress requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
 #if GLIB_CHECK_VERSION(2,40,0)
 
 CAMLexport CAMLprim value ml_g_inet_socket_address_new_from_string(value arg1, value arg2)
@@ -41,6 +64,69 @@ CAMLparam2(arg1, arg2);
 (void)arg1;
 (void)arg2;
 caml_failwith("InetSocketAddress requires GLib >= 2.40");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,32,0)
+
+CAMLexport CAMLprim value ml_g_inet_socket_address_get_scope_id(value self)
+{
+CAMLparam1(self);
+
+guint32 result = g_inet_socket_address_get_scope_id(GInetSocketAddress_val(self));
+CAMLreturn(Val_long(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_inet_socket_address_get_scope_id(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("InetSocketAddress requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
+
+CAMLexport CAMLprim value ml_g_inet_socket_address_get_port(value self)
+{
+CAMLparam1(self);
+
+guint16 result = g_inet_socket_address_get_port(GInetSocketAddress_val(self));
+CAMLreturn(Val_int(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_inet_socket_address_get_port(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("InetSocketAddress requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,32,0)
+
+CAMLexport CAMLprim value ml_g_inet_socket_address_get_flowinfo(value self)
+{
+CAMLparam1(self);
+
+guint32 result = g_inet_socket_address_get_flowinfo(GInetSocketAddress_val(self));
+CAMLreturn(Val_long(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_inet_socket_address_get_flowinfo(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("InetSocketAddress requires GLib >= 2.32");
 return Val_unit;
 }
 #endif

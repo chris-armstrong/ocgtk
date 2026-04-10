@@ -66,6 +66,11 @@ If this function returns %TRUE, then no further processing
 should be done for this key event. *)
 external filter_keypress : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t -> bool = "ml_gtk_im_context_filter_keypress"
 
+(** Allow an input method to forward key press and release events
+to another input method without necessarily having a `GdkEvent`
+available. *)
+external filter_key : t -> bool -> Ocgtk_gdk.Gdk.Wrappers.Surface.t -> Ocgtk_gdk.Gdk.Wrappers.Device.t -> int -> int -> Ocgtk_gdk.Gdk.modifiertype -> int -> bool = "ml_gtk_im_context_filter_key_bytecode" "ml_gtk_im_context_filter_key_native"
+
 (** Asks the widget that the input context is attached to delete
 characters around the cursor position by emitting the
 `::delete_surrounding` signal.

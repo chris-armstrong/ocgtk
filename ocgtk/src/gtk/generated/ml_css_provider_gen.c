@@ -87,3 +87,33 @@ CAMLparam2(self, arg1);
 gtk_css_provider_load_from_file(GtkCssProvider_val(self), GFile_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+CAMLexport CAMLprim value ml_gtk_css_provider_load_from_data(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_css_provider_load_from_data(GtkCssProvider_val(self), String_val(arg1), Long_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+#if GTK_CHECK_VERSION(4,12,0)
+
+CAMLexport CAMLprim value ml_gtk_css_provider_load_from_bytes(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_css_provider_load_from_bytes(GtkCssProvider_val(self), GBytes_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_css_provider_load_from_bytes(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("CssProvider requires GTK >= 4.12");
+return Val_unit;
+}
+#endif

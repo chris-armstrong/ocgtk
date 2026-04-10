@@ -130,6 +130,26 @@ For instructions and best practices for writing and updating OCaml / C FFI, see 
 
 ## ocgtk Development Tools
 
+### CI / Distro Compatibility Testing
+
+Use `./ci/oci` to build and test against Ubuntu 22.04, Debian 12, CentOS Stream 9,
+and OpenSUSE Leap 15.6 via Docker. Source is bind-mounted so changes are immediately
+reflected without rebuilding images.
+
+```bash
+./ci/oci build ubuntu22    # build image (once — compiles OCaml, takes ~20 min)
+./ci/oci up                # start all containers
+./ci/oci run ubuntu22 build
+./ci/oci run ubuntu22 test
+./ci/oci shell debian12    # interactive shell for debugging
+./ci/oci status            # show running containers, volumes, disk usage
+./ci/oci clean --all       # full teardown to recover disk space
+```
+
+Version pins live in `ci/versions.env`. See
+[ocgtk/architecture/ci_distro_testing.md](ocgtk/architecture/ci_distro_testing.md)
+for full documentation.
+
 ### GIR Code Generator
 For generating GTK bindings from GObject Introspection (GIR) files:
 - See [ocgtk/src/tools/README_GIR_GEN.md](ocgtk/src/tools/README_GIR_GEN.md) for complete usage instructions
@@ -142,15 +162,19 @@ For generating GTK bindings from GObject Introspection (GIR) files:
 bash scripts/generate-bindings.sh
 ```
 
-This builds the generator, generates reference files for all 9 namespaces, then generates bindings with correct cross-namespace dependencies.
+This builds the generator, generates reference files for all 9 namespaces, then generates bindings with correct cross-namespace dependencies. Override files in `ocgtk/overrides/` are applied automatically (one per namespace).
 
 **To regenerate a single library manually:**
 ```bash
 cd ocgtk
-dune exec src/tools/gir_gen/gir_gen.exe -- generate /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+dune exec src/tools/gir_gen/gir_gen.exe -- generate \
+  -o overrides/gtk.sexp \
+  /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 ```
 
 NOTE: For other libraries, use `src/<short_name>`. For example, src/pango for Pango, src/gsk for GSK, src/gdk for GDK, etc.
+
+**Override files** (`ocgtk/overrides/<ns>.sexp`) control which entities are ignored during generation and set version guards on enum/bitfield members. Pass `-o overrides/<ns>.sexp` to `generate` or `references`. See [README_GIR_GEN.md — Override System](ocgtk/src/tools/README_GIR_GEN.md#override-system).
 
 **⚠️ IMPORTANT:** Use `src/gtk` NOT `src/gtk/generated` as the output directory. The generator automatically creates the `generated/` subdirectory. Using `src/gtk/generated` will create a nested `src/gtk/generated/generated/` directory.
 

@@ -32,11 +32,6 @@
 #define Val_GskBorderNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GskBorderNode */
 
-#ifndef Val_GskBroadwayRenderer
-#define GskBroadwayRenderer_val(val) ((GskBroadwayRenderer*)ml_gobject_ext_of_val(val))
-#define Val_GskBroadwayRenderer(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GskBroadwayRenderer */
-
 #ifndef Val_GskCairoNode
 #define GskCairoNode_val(val) ((GskCairoNode*)ml_gobject_ext_of_val(val))
 #define Val_GskCairoNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -89,11 +84,6 @@
 #endif /* Val_GskFillNode */
 
 #endif
-#ifndef Val_GskGLRenderer
-#define GskGLRenderer_val(val) ((GskGLRenderer*)ml_gobject_ext_of_val(val))
-#define Val_GskGLRenderer(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GskGLRenderer */
-
 #ifndef Val_GskGLShader
 #define GskGLShader_val(val) ((GskGLShader*)ml_gobject_ext_of_val(val))
 #define Val_GskGLShader(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -121,11 +111,6 @@
 #endif /* Val_GskMaskNode */
 
 #endif
-#ifndef Val_GskNglRenderer
-#define GskNglRenderer_val(val) ((GskNglRenderer*)ml_gobject_ext_of_val(val))
-#define Val_GskNglRenderer(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GskNglRenderer */
-
 #ifndef Val_GskOpacityNode
 #define GskOpacityNode_val(val) ((GskOpacityNode*)ml_gobject_ext_of_val(val))
 #define Val_GskOpacityNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -211,11 +196,6 @@
 #define GskTransformNode_val(val) ((GskTransformNode*)ml_gobject_ext_of_val(val))
 #define Val_GskTransformNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GskTransformNode */
-
-#ifndef Val_GskVulkanRenderer
-#define GskVulkanRenderer_val(val) ((GskVulkanRenderer*)ml_gobject_ext_of_val(val))
-#define Val_GskVulkanRenderer(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GskVulkanRenderer */
 
 /* Interface-specific conversion macros (shared) */
 /* Value-returning structs copied into OCaml */
@@ -344,5 +324,7 @@ value Val_GskPathForeachFlags(GskPathForeachFlags flags);
 GskPathForeachFlags GskPathForeachFlags_val(value list);
 #endif
 
+
+#include "../core/gsk_core.h"
 
 #endif /* _gsk_decls_h_ */

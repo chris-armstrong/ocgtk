@@ -34,6 +34,7 @@ class type layout_t = object
     method get_wrap : unit -> Pango_enums.wrapmode
     method is_ellipsized : unit -> bool
     method is_wrapped : unit -> bool
+    method serialize : Pango_enums.layoutserializeflags -> Glib_bytes.t
     method set_alignment : Pango_enums.alignment -> unit
     method set_attributes : Attr_list.t option -> unit
     method set_auto_dir : bool -> unit
@@ -202,6 +203,10 @@ class layout (obj : Layout_and__layout_iter.Layout.t) : layout_t = object (self)
   method is_wrapped : unit -> bool =
     fun () ->
       (Layout_and__layout_iter.Layout.is_wrapped obj)
+
+  method serialize : Pango_enums.layoutserializeflags -> Glib_bytes.t =
+    fun flags ->
+      (Layout_and__layout_iter.Layout.serialize obj flags)
 
   method set_alignment : Pango_enums.alignment -> unit =
     fun alignment ->

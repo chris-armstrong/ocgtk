@@ -189,7 +189,7 @@ return Val_unit;
 }
 
 
-CAMLexport CAMLprim value ml_g_property_action_get_object(value self)
+CAMLexport CAMLprim value ml_g_property_action_get_parameter_type(value self)
 {
 CAMLparam1(self);
 (void)self;
@@ -198,7 +198,16 @@ return Val_unit;
 }
 
 
-CAMLexport CAMLprim value ml_g_property_action_get_property_name(value self)
+CAMLexport CAMLprim value ml_g_property_action_get_state(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PropertyAction requires GLib >= 2.38");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_property_action_get_state_type(value self)
 {
 CAMLparam1(self);
 (void)self;

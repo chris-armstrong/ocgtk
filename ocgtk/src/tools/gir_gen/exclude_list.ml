@@ -6,65 +6,6 @@ open Types
 
 module Log = (val Logs.src_log (Logs.Src.create "gir_gen.exclude_list" ~doc:"Exclusion lists and filtering logic for GIR Code Generator"))
 
-let variadic_function_exclude_list =
-  [
-    "gtk_text_buffer_insert_with_tags";
-    "gtk_text_buffer_insert_with_tags_by_name";
-    "gtk_text_buffer_create_tag";
-  ]
-
-let is_variadic_function c_identifier =
-  List.mem c_identifier ~set:variadic_function_exclude_list
-
-let platform_specific_type_exclude_list =
-  [
-    "PrintCapabilities";
-    "PageSetup";
-    "PageSetupUnixDialog";
-    "PrintSettings";
-    "PrintContext";
-    "PrintOperation";
-    "PrintOperationPreview";
-    "PrintUnixDialog";
-    "License";
-  ]
-
-let is_platform_specific_type type_name =
-  List.mem type_name ~set:platform_specific_type_exclude_list
-
-(* Normalized type names (namespace and Gtk prefix stripped) that should be skipped wherever they appear *)
-let type_name_exclude_list =
-  List.map ~f:String.lowercase_ascii platform_specific_type_exclude_list
-
-let is_excluded_type_name name =
-  let normalized = Utils.normalize_class_name name |> String.lowercase_ascii in
-  List.mem normalized ~set:type_name_exclude_list
-
-(* Specific functions that should not be generated *)
-let function_exclude_list = [ "gtk_tree_model_filter_get_virtual_root" ]
-let is_excluded_function name = List.mem name ~set:function_exclude_list
-
-let should_skip_class class_name =
-  (* Removed skip list to allow wholesale regeneration of all classes *)
-  let skip_list =
-    [
-      (* Print-related classes are platform-specific *)
-      "PrintJob";
-      "PrintUnixDialog";
-      "PageSetupUnixDialog";
-      "Printer";
-      (* Internal/platform-specific classes not in public headers *)
-      "PixbufNonAnim";
-      "BroadwayRenderer";
-      "NglRenderer";
-      (* GSettingsBackend requires #define G_SETTINGS_ENABLE_BACKEND before
-         including gsettingsbackend.h, and is only useful for implementing
-         custom settings backends (which requires GObject subclassing support
-         we don't have). Skip the entire class. *)
-      "SettingsBackend";
-    ]
-  in
-  List.mem class_name ~set:skip_list
 
 let should_skip_method ~find_type_mapping ~enums:_ ~bitfields:_
     (meth : Types.gir_method) =

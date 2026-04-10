@@ -41,6 +41,14 @@ gboolean result = gtk_expression_is_static(GtkExpression_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_expression_get_value_type(value self)
+{
+CAMLparam1(self);
+
+GType result = gtk_expression_get_value_type(GtkExpression_val(self));
+CAMLreturn(Val_GType(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_expression_bind(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);

@@ -924,11 +924,6 @@
 #define Val_GtkPageSetup(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkPageSetup */
 
-#ifndef Val_GtkPageSetupUnixDialog
-#define GtkPageSetupUnixDialog_val(val) ((GtkPageSetupUnixDialog*)ml_gobject_ext_of_val(val))
-#define Val_GtkPageSetupUnixDialog(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GtkPageSetupUnixDialog */
-
 #ifndef Val_GtkPaned
 #define GtkPaned_val(val) ((GtkPaned*)ml_gobject_ext_of_val(val))
 #define Val_GtkPaned(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -983,11 +978,6 @@
 #endif /* Val_GtkPrintDialog */
 
 #endif
-#ifndef Val_GtkPrintJob
-#define GtkPrintJob_val(val) ((GtkPrintJob*)ml_gobject_ext_of_val(val))
-#define Val_GtkPrintJob(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GtkPrintJob */
-
 #ifndef Val_GtkPrintOperation
 #define GtkPrintOperation_val(val) ((GtkPrintOperation*)ml_gobject_ext_of_val(val))
 #define Val_GtkPrintOperation(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -997,16 +987,6 @@
 #define GtkPrintSettings_val(val) ((GtkPrintSettings*)ml_gobject_ext_of_val(val))
 #define Val_GtkPrintSettings(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GtkPrintSettings */
-
-#ifndef Val_GtkPrintUnixDialog
-#define GtkPrintUnixDialog_val(val) ((GtkPrintUnixDialog*)ml_gobject_ext_of_val(val))
-#define Val_GtkPrintUnixDialog(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GtkPrintUnixDialog */
-
-#ifndef Val_GtkPrinter
-#define GtkPrinter_val(val) ((GtkPrinter*)ml_gobject_ext_of_val(val))
-#define Val_GtkPrinter(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GtkPrinter */
 
 #ifndef Val_GtkProgressBar
 #define GtkProgressBar_val(val) ((GtkProgressBar*)ml_gobject_ext_of_val(val))
@@ -1945,5 +1925,7 @@ GtkTextSearchFlags GtkTextSearchFlags_val(value list);
 value Val_GtkTreeModelFlags(GtkTreeModelFlags flags);
 GtkTreeModelFlags GtkTreeModelFlags_val(value list);
 
+
+#include "../core/gtk_core.h"
 
 #endif /* _gtk_decls_h_ */

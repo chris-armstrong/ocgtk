@@ -1,4 +1,5 @@
 class type print_settings_t = object
+    method copy : unit -> print_settings_t
     method get : string -> string option
     method get_bool : string -> bool
     method get_collate : unit -> bool
@@ -71,6 +72,10 @@ end
 
 (* High-level class for PrintSettings *)
 class print_settings (obj : Print_settings.t) : print_settings_t = object (self)
+
+  method copy : unit -> print_settings_t =
+    fun () ->
+      new  print_settings(Print_settings.copy obj)
 
   method get : string -> string option =
     fun key ->

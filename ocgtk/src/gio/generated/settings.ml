@@ -7,15 +7,6 @@ type t = [`settings | `object_] Gobject.obj
 external new_ : string -> t = "ml_g_settings_new"
 
 (** Create a new Settings *)
-external new_full : Settings_schema.t -> Settings_backend.t option -> string option -> t = "ml_g_settings_new_full"
-
-(** Create a new Settings *)
-external new_with_backend : string -> Settings_backend.t -> t = "ml_g_settings_new_with_backend"
-
-(** Create a new Settings *)
-external new_with_backend_and_path : string -> Settings_backend.t -> string -> t = "ml_g_settings_new_with_backend_and_path"
-
-(** Create a new Settings *)
 external new_with_path : string -> string -> t = "ml_g_settings_new_with_path"
 
 (* Methods *)
@@ -27,6 +18,15 @@ the schema.
 
 If @value is floating then this function consumes the reference. *)
 external set_value : t -> string -> Gvariant.t -> bool = "ml_g_settings_set_value"
+
+(** Sets @key in @settings to @value.
+
+A convenience variant of g_settings_set() for 64-bit unsigned
+integers.
+
+It is a programmer error to give a @key that isn't specified as
+having a uint64 type in the schema for @settings. *)
+external set_uint64 : t -> string -> Unsigned.UInt64.t -> bool = "ml_g_settings_set_uint64"
 
 (** Sets @key in @settings to @value.
 
@@ -53,6 +53,14 @@ A convenience variant of g_settings_set() for strings.
 It is a programmer error to give a @key that isn't specified as
 having a string type in the schema for @settings. *)
 external set_string : t -> string -> string -> bool = "ml_g_settings_set_string"
+
+(** Sets @key in @settings to @value.
+
+A convenience variant of g_settings_set() for 64-bit integers.
+
+It is a programmer error to give a @key that isn't specified as
+having a int64 type in the schema for @settings. *)
+external set_int64 : t -> string -> int64 -> bool = "ml_g_settings_set_int64"
 
 (** Sets @key in @settings to @value.
 
@@ -176,6 +184,15 @@ external get_user_value : t -> string -> Gvariant.t option = "ml_g_settings_get_
 
 (** Gets the value that is stored at @key in @settings.
 
+A convenience variant of g_settings_get() for 64-bit unsigned
+integers.
+
+It is a programmer error to give a @key that isn't specified as
+having a uint64 type in the schema for @settings. *)
+external get_uint64 : t -> string -> Unsigned.UInt64.t = "ml_g_settings_get_uint64"
+
+(** Gets the value that is stored at @key in @settings.
+
 A convenience variant of g_settings_get() for 32-bit unsigned
 integers.
 
@@ -199,6 +216,14 @@ external get_string : t -> string -> string = "ml_g_settings_get_string"
 
 (** Queries the range of a key. *)
 external get_range : t -> string -> Gvariant.t = "ml_g_settings_get_range"
+
+(** Gets the value that is stored at @key in @settings.
+
+A convenience variant of g_settings_get() for 64-bit integers.
+
+It is a programmer error to give a @key that isn't specified as
+having a int64 type in the schema for @settings. *)
+external get_int64 : t -> string -> int64 = "ml_g_settings_get_int64"
 
 (** Gets the value that is stored at @key in @settings.
 
@@ -359,9 +384,6 @@ applied immediately. *)
 external apply : t -> unit = "ml_g_settings_apply"
 
 (* Properties *)
-
-(** Get property: backend *)
-external get_backend : t -> Settings_backend.t = "ml_g_settings_get_backend"
 
 (** Get property: delay-apply *)
 external get_delay_apply : t -> bool = "ml_g_settings_get_delay_apply"

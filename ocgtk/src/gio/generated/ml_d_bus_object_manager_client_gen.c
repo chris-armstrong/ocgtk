@@ -151,15 +151,6 @@ return Val_unit;
 }
 
 
-CAMLexport CAMLprim value ml_g_d_bus_object_manager_client_get_bus_type(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusObjectManagerClient requires GLib >= 2.30");
-return Val_unit;
-}
-
-
 CAMLexport CAMLprim value ml_g_d_bus_object_manager_client_get_object_path(value self)
 {
 CAMLparam1(self);

@@ -17,11 +17,40 @@
 #include "gtk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gtk_drop_target_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+
+GtkDropTarget *obj = gtk_drop_target_new(GType_val(arg1), GdkDragAction_val(arg2));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkDropTarget(obj));
+}
 CAMLexport CAMLprim value ml_gtk_drop_target_set_preload(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gtk_drop_target_set_preload(GtkDropTarget_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_drop_target_set_gtypes(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+    int arg1_length = 0;
+    GType* c_arg1 = NULL;
+    
+    if (Is_some(arg1)) {
+        value array = Some_val(arg1);
+        arg1_length = Wosize_val(array);
+        c_arg1 = (GType*)g_malloc(sizeof(GType) * arg1_length);
+        for (int i = 0; i < arg1_length; i++) {
+          c_arg1[i] = GType_val(Field(array, i));
+        }
+    }
+
+gtk_drop_target_set_gtypes(GtkDropTarget_val(self), c_arg1, Long_val(arg2));
+    if (c_arg1) g_free(c_arg1);
 CAMLreturn(Val_unit);
 }
 
@@ -47,6 +76,25 @@ CAMLparam1(self);
 
 gboolean result = gtk_drop_target_get_preload(GtkDropTarget_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_drop_target_get_gtypes(value self)
+{
+CAMLparam1(self);
+gsize out1;
+
+const GType* result = gtk_drop_target_get_gtypes(GtkDropTarget_val(self), &out1);
+    int result_length = out1;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, Val_GType(result[i]));
+    }
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, ml_result);
+    Store_field(ret, 1, Val_long(out1));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_drop_target_get_formats(value self)

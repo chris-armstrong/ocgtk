@@ -19,6 +19,14 @@ external set_symlink_target : t -> string -> unit = "ml_g_file_info_set_symlink_
 See %G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON. *)
 external set_symbolic_icon : t -> Icon.t -> unit = "ml_g_file_info_set_symbolic_icon"
 
+(** Sets the sort order attribute in the file info structure. See
+%G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER. *)
+external set_sort_order : t -> int32 -> unit = "ml_g_file_info_set_sort_order"
+
+(** Sets the %G_FILE_ATTRIBUTE_STANDARD_SIZE attribute in the file info
+to the given size. *)
+external set_size : t -> int64 -> unit = "ml_g_file_info_set_size"
+
 (** Sets the name attribute for the current #GFileInfo.
 See %G_FILE_ATTRIBUTE_STANDARD_NAME. *)
 external set_name : t -> string -> unit = "ml_g_file_info_set_name"
@@ -52,6 +60,14 @@ See %G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE. *)
 external set_content_type : t -> string -> unit = "ml_g_file_info_set_content_type"
 
 (** Sets the @attribute to contain the given @attr_value,
+if possible. *)
+external set_attribute_uint64 : t -> string -> Unsigned.UInt64.t -> unit = "ml_g_file_info_set_attribute_uint64"
+
+(** Sets the @attribute to contain the given @attr_value,
+if possible. *)
+external set_attribute_uint32 : t -> string -> int -> unit = "ml_g_file_info_set_attribute_uint32"
+
+(** Sets the @attribute to contain the given @attr_value,
 if possible.
 
 Sinze: 2.22 *)
@@ -75,6 +91,14 @@ external set_attribute_object : t -> string -> [`object_] Gobject.obj -> unit = 
 
 (** Sets @mask on @info to match specific attribute types. *)
 external set_attribute_mask : t -> File_attribute_matcher.t -> unit = "ml_g_file_info_set_attribute_mask"
+
+(** Sets the @attribute to contain the given @attr_value,
+if possible. *)
+external set_attribute_int64 : t -> string -> int64 -> unit = "ml_g_file_info_set_attribute_int64"
+
+(** Sets the @attribute to contain the given @attr_value,
+if possible. *)
+external set_attribute_int32 : t -> string -> int32 -> unit = "ml_g_file_info_set_attribute_int32"
 
 (** Sets the @attribute to contain the given @attr_value,
 if possible.
@@ -115,6 +139,21 @@ external get_symlink_target : t -> string option = "ml_g_file_info_get_symlink_t
 It is an error to call this if the #GFileInfo does not contain
 %G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON. *)
 external get_symbolic_icon : t -> Icon.t option = "ml_g_file_info_get_symbolic_icon"
+
+(** Gets the value of the sort_order attribute from the #GFileInfo.
+See %G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
+
+It is an error to call this if the #GFileInfo does not contain
+%G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER. *)
+external get_sort_order : t -> int32 = "ml_g_file_info_get_sort_order"
+
+(** Gets the file's size (in bytes). The size is retrieved through the value of
+the %G_FILE_ATTRIBUTE_STANDARD_SIZE attribute and is converted
+from #guint64 to #goffset before returning the result.
+
+It is an error to call this if the #GFileInfo does not contain
+%G_FILE_ATTRIBUTE_STANDARD_SIZE. *)
+external get_size : t -> int64 = "ml_g_file_info_get_size"
 
 (** Gets the name for a file. This is guaranteed to always be set.
 
@@ -178,6 +217,16 @@ It is an error to call this if the #GFileInfo does not contain
 %G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE. *)
 external get_content_type : t -> string option = "ml_g_file_info_get_content_type"
 
+(** Gets a unsigned 64-bit integer contained within the attribute. If the
+attribute does not contain an unsigned 64-bit integer, or is invalid,
+0 will be returned. *)
+external get_attribute_uint64 : t -> string -> Unsigned.UInt64.t = "ml_g_file_info_get_attribute_uint64"
+
+(** Gets an unsigned 32-bit integer contained within the attribute. If the
+attribute does not contain an unsigned 32-bit integer, or is invalid,
+0 will be returned. *)
+external get_attribute_uint32 : t -> string -> int = "ml_g_file_info_get_attribute_uint32"
+
 (** Gets the attribute type for an attribute key. *)
 external get_attribute_type : t -> string -> Gio_enums.fileattributetype = "ml_g_file_info_get_attribute_type"
 
@@ -195,6 +244,16 @@ external get_attribute_status : t -> string -> Gio_enums.fileattributestatus = "
 (** Gets the value of a #GObject attribute. If the attribute does
 not contain a #GObject, %NULL will be returned. *)
 external get_attribute_object : t -> string -> [`object_] Gobject.obj option = "ml_g_file_info_get_attribute_object"
+
+(** Gets a signed 64-bit integer contained within the attribute. If the
+attribute does not contain a signed 64-bit integer, or is invalid,
+0 will be returned. *)
+external get_attribute_int64 : t -> string -> int64 = "ml_g_file_info_get_attribute_int64"
+
+(** Gets a signed 32-bit integer contained within the attribute. If the
+attribute does not contain a signed 32-bit integer, or is invalid,
+0 will be returned. *)
+external get_attribute_int32 : t -> string -> int32 = "ml_g_file_info_get_attribute_int32"
 
 (** Gets the value of a byte string attribute as a file path.
 

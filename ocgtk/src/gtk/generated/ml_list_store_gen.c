@@ -17,11 +17,40 @@
 #include "gtk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gtk_list_store_newv(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+    int arg2_length = Wosize_val(arg2);
+    GType* c_arg2 = (GType*)g_malloc(sizeof(GType) * arg2_length);
+    for (int i = 0; i < arg2_length; i++) {
+      c_arg2[i] = GType_val(Field(arg2, i));
+    }
+
+GtkListStore *obj = gtk_list_store_newv(Int_val(arg1), c_arg2);
+if (obj) g_object_ref_sink(obj);
+
+    g_free(c_arg2);
+CAMLreturn(Val_GtkListStore(obj));
+}
 CAMLexport CAMLprim value ml_gtk_list_store_swap(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
 
 gtk_list_store_swap(GtkListStore_val(self), GtkTreeIter_val(arg1), GtkTreeIter_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_list_store_set_column_types(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+    int arg2_length = Wosize_val(arg2);
+    GType* c_arg2 = (GType*)g_malloc(sizeof(GType) * arg2_length);
+    for (int i = 0; i < arg2_length; i++) {
+      c_arg2[i] = GType_val(Field(arg2, i));
+    }
+
+gtk_list_store_set_column_types(GtkListStore_val(self), Int_val(arg1), c_arg2);
+    g_free(c_arg2);
 CAMLreturn(Val_unit);
 }
 

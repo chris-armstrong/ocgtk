@@ -3,6 +3,7 @@ class type unix_socket_address_t = object
     method get_address_type : unit -> Gio_enums.unixsocketaddresstype
     method get_is_abstract : unit -> bool
     method get_path : unit -> string
+    method get_path_len : unit -> int
     method abstract : bool
     method as_unix_socket_address : Unix_socket_address.t
 end
@@ -23,6 +24,10 @@ class unix_socket_address (obj : Unix_socket_address.t) : unix_socket_address_t 
     fun () ->
       (Unix_socket_address.get_path obj)
 
+  method get_path_len : unit -> int =
+    fun () ->
+      (Unix_socket_address.get_path_len obj)
+
   method abstract = Unix_socket_address.get_abstract obj
 
     method as_unix_socket_address = obj
@@ -30,5 +35,13 @@ end
 
 let new_ (path : string) : unix_socket_address_t =
   let obj_ = Unix_socket_address.new_ path in
+  new unix_socket_address obj_
+
+let new_abstract (path : int array) (path_len : int) : unix_socket_address_t =
+  let obj_ = Unix_socket_address.new_abstract path path_len in
+  new unix_socket_address obj_
+
+let new_with_type (path : int array) (path_len : int) (type_ : Gio_enums.unixsocketaddresstype) : unix_socket_address_t =
+  let obj_ = Unix_socket_address.new_with_type path path_len type_ in
   new unix_socket_address obj_
 

@@ -252,6 +252,96 @@ return Val_unit;
 }
 #endif
 
+#if GLIB_CHECK_VERSION(2,60,0)
+
+CAMLexport CAMLprim value ml_g_socket_send_message_with_timeout_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam4(arg5, arg6, arg7, arg8);
+GError *error = NULL;
+    int arg2_length = Wosize_val(arg2);
+    GOutputVector* c_arg2 = (GOutputVector*)g_malloc(sizeof(GOutputVector) * arg2_length);
+    for (int i = 0; i < arg2_length; i++) {
+      c_arg2[i] = *GOutputVector_val(Field(arg2, i));
+    }
+    int arg4_length = 0;
+    GSocketControlMessage** c_arg4 = NULL;
+    
+    if (Is_some(arg4)) {
+        value array = Some_val(arg4);
+        arg4_length = Wosize_val(array);
+        c_arg4 = (GSocketControlMessage**)g_malloc(sizeof(GSocketControlMessage*) * arg4_length);
+        for (int i = 0; i < arg4_length; i++) {
+          c_arg4[i] = GSocketControlMessage_val(Field(array, i));
+        }
+    }
+gsize out8;
+
+GPollableReturn result = g_socket_send_message_with_timeout(GSocket_val(self), Option_val(arg1, GSocketAddress_val, NULL), c_arg2, Int_val(arg3), c_arg4, Int_val(arg5), Int_val(arg6), Int64_val(arg7), &out8, Option_val(arg8, GCancellable_val, NULL), &error);
+    g_free(c_arg2);
+    if (c_arg4) g_free(c_arg4);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_GioPollableReturn(result));
+    Store_field(ret, 1, Val_long(out8));
+    if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));}
+
+CAMLexport CAMLprim value ml_g_socket_send_message_with_timeout_bytecode(value * argv, int argn)
+{
+return ml_g_socket_send_message_with_timeout_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7], argv[8]);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_socket_send_message_with_timeout(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+(void)arg6;
+(void)arg7;
+(void)arg8;
+caml_failwith("Socket requires GLib >= 2.60");
+return Val_unit;
+}
+#endif
+
+CAMLexport CAMLprim value ml_g_socket_send_message_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam3(arg5, arg6, arg7);
+GError *error = NULL;
+    int arg2_length = Wosize_val(arg2);
+    GOutputVector* c_arg2 = (GOutputVector*)g_malloc(sizeof(GOutputVector) * arg2_length);
+    for (int i = 0; i < arg2_length; i++) {
+      c_arg2[i] = *GOutputVector_val(Field(arg2, i));
+    }
+    int arg4_length = 0;
+    GSocketControlMessage** c_arg4 = NULL;
+    
+    if (Is_some(arg4)) {
+        value array = Some_val(arg4);
+        arg4_length = Wosize_val(array);
+        c_arg4 = (GSocketControlMessage**)g_malloc(sizeof(GSocketControlMessage*) * arg4_length);
+        for (int i = 0; i < arg4_length; i++) {
+          c_arg4[i] = GSocketControlMessage_val(Field(array, i));
+        }
+    }
+
+gssize result = g_socket_send_message(GSocket_val(self), Option_val(arg1, GSocketAddress_val, NULL), c_arg2, Int_val(arg3), c_arg4, Int_val(arg5), Int_val(arg6), Option_val(arg7, GCancellable_val, NULL), &error);
+    g_free(c_arg2);
+    if (c_arg4) g_free(c_arg4);
+if (error == NULL) CAMLreturn(Res_Ok(Val_long(result))); else CAMLreturn(Res_Error(Val_GError(error)));}
+
+CAMLexport CAMLprim value ml_g_socket_send_message_bytecode(value * argv, int argn)
+{
+return ml_g_socket_send_message_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7]);
+}
+
 #if GLIB_CHECK_VERSION(2,48,0)
 
 CAMLexport CAMLprim value ml_g_socket_receive_messages(value self, value arg1, value arg2, value arg3, value arg4)
@@ -280,6 +370,31 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 (void)arg3;
 (void)arg4;
 caml_failwith("Socket requires GLib >= 2.48");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,80,0)
+
+CAMLexport CAMLprim value ml_g_socket_receive_bytes(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+GError *error = NULL;
+
+GBytes* result = g_socket_receive_bytes(GSocket_val(self), Long_val(arg1), Int64_val(arg2), Option_val(arg3, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GBytes(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_socket_receive_bytes(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Socket requires GLib >= 2.80");
 return Val_unit;
 }
 #endif
@@ -639,6 +754,27 @@ gboolean result = g_socket_get_blocking(GSocket_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+#if GLIB_CHECK_VERSION(2,32,0)
+
+CAMLexport CAMLprim value ml_g_socket_get_available_bytes(value self)
+{
+CAMLparam1(self);
+
+gssize result = g_socket_get_available_bytes(GSocket_val(self));
+CAMLreturn(Val_long(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_socket_get_available_bytes(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.32");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_g_socket_connection_factory_create_connection(value self)
 {
 CAMLparam1(self);
@@ -783,6 +919,15 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_socket_connection_factory_create_connection(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_get_available_bytes(value self)
 {
 CAMLparam1(self);
 (void)self;
@@ -1012,6 +1157,18 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_g_socket_receive_bytes(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_socket_receive_messages(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -1020,6 +1177,39 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 (void)arg2;
 (void)arg3;
 (void)arg4;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_send_message(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+(void)arg6;
+(void)arg7;
+caml_failwith("Socket requires GLib >= 2.22");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_socket_send_message_with_timeout(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+(void)arg6;
+(void)arg7;
+(void)arg8;
 caml_failwith("Socket requires GLib >= 2.22");
 return Val_unit;
 }

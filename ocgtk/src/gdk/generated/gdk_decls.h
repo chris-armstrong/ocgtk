@@ -423,4 +423,6 @@ value Val_GdkToplevelState(GdkToplevelState flags);
 GdkToplevelState GdkToplevelState_val(value list);
 
 
+#include "../core/gdk_core.h"
+
 #endif /* _gdk_decls_h_ */

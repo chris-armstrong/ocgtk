@@ -2,6 +2,7 @@ class type multi_filter_t = object
     inherit GFilter.filter_t
     method append : GFilter.filter_t -> unit
     method remove : int -> unit
+    method item_type : int
     method n_items : int
     method as_multi_filter : Multi_filter.t
 end

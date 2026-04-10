@@ -1,6 +1,6 @@
 (* Type Conversion Tests *)
 
-open Gir_gen_lib.Types
+open Type_factory
 
 (* ========================================================================= *)
 (* Test Helpers *)
@@ -18,25 +18,11 @@ let generate_c_method = Gir_gen_lib.Generate.C_stub_method.generate_c_method
 let test_gboolean_conversion () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "get_visible";
-      c_identifier = "gtk_widget_get_visible";
-      return_type =
-        {
-          name = "gboolean";
-          c_type = Some "gboolean";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method
+      ~method_name:"get_visible"
+      ~c_identifier:"gtk_widget_get_visible"
+      ~return_type:gboolean_type
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -54,25 +40,11 @@ let test_gboolean_conversion () =
 let test_gint_conversion () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "get_width";
-      c_identifier = "gtk_widget_get_width";
-      return_type =
-        {
-          name = "gint";
-          c_type = Some "gint";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method
+      ~method_name:"get_width"
+      ~c_identifier:"gtk_widget_get_width"
+      ~return_type:gint_type
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -90,25 +62,11 @@ let test_gint_conversion () =
 let test_gdouble_conversion () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "get_opacity";
-      c_identifier = "gtk_widget_get_opacity";
-      return_type =
-        {
-          name = "gdouble";
-          c_type = Some "gdouble";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method
+      ~method_name:"get_opacity"
+      ~c_identifier:"gtk_widget_get_opacity"
+      ~return_type:gdouble_type
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -126,25 +84,11 @@ let test_gdouble_conversion () =
 let test_utf8_string_conversion () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "get_name";
-      c_identifier = "gtk_widget_get_name";
-      return_type =
-        {
-          name = "utf8";
-          c_type = Some "const gchar*";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method
+      ~method_name:"get_name"
+      ~c_identifier:"gtk_widget_get_name"
+      ~return_type:utf8_type
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -162,42 +106,12 @@ let test_utf8_string_conversion () =
 let test_utf8_string_parameter () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "set_name";
-      c_identifier = "gtk_widget_set_name";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
-        [
-          {
-            param_name = "name";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const gchar*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method
+      ~method_name:"set_name"
+      ~c_identifier:"gtk_widget_set_name"
+      ~return_type:void_type
+      ~parameters:[make_string_param ~param_name:"name" ()]
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -213,25 +127,11 @@ let test_utf8_string_parameter () =
 let test_object_type_conversion () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "get_parent";
-      c_identifier = "gtk_widget_get_parent";
-      return_type =
-        {
-          name = "Widget";
-          c_type = Some "GtkWidget*";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method
+      ~method_name:"get_parent"
+      ~c_identifier:"gtk_widget_get_parent"
+      ~return_type:(make_widget_type ())
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -248,26 +148,15 @@ let test_object_type_conversion () =
 
 let test_enum_type_conversion () =
   let ctx = Helpers.create_test_context () in
+  let text_direction_type =
+    make_gir_type ~name:"TextDirection" ~c_type:"GtkTextDirection" ()
+  in
   let meth =
-    {
-      method_name = "get_direction";
-      c_identifier = "gtk_widget_get_direction";
-      return_type =
-        {
-          name = "TextDirection";
-          c_type = Some "GtkTextDirection";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method
+      ~method_name:"get_direction"
+      ~c_identifier:"gtk_widget_get_direction"
+      ~return_type:text_direction_type
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -287,42 +176,12 @@ let test_enum_type_conversion () =
 let test_gboolean_parameter () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "set_visible";
-      c_identifier = "gtk_widget_set_visible";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
-        [
-          {
-            param_name = "visible";
-            param_type =
-              {
-                name = "gboolean";
-                c_type = Some "gboolean";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method
+      ~method_name:"set_visible"
+      ~c_identifier:"gtk_widget_set_visible"
+      ~return_type:void_type
+      ~parameters:[make_bool_param ~param_name:"visible" ()]
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -338,57 +197,13 @@ let test_gboolean_parameter () =
 let test_multiple_type_conversions () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    {
-      method_name = "set_size_request";
-      c_identifier = "gtk_widget_set_size_request";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
-        [
-          {
-            param_name = "width";
-            param_type =
-              {
-                name = "gint";
-                c_type = Some "gint";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-          {
-            param_name = "height";
-            param_type =
-              {
-                name = "gint";
-                c_type = Some "gint";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-    }
+    make_gir_method
+      ~method_name:"set_size_request"
+      ~c_identifier:"gtk_widget_set_size_request"
+      ~return_type:void_type
+      ~parameters:
+        [make_int_param ~param_name:"width" (); make_int_param ~param_name:"height" ()]
+      ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in

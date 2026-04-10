@@ -466,7 +466,6 @@
       (echo "GdkClipboard")
       (echo "GdkPixbuf")
       (echo "Gdk_enums")
-      (echo "Gdkpixbuf_enums")
       (echo "Gesture")
       (echo "GestureClick")
       (echo "Gesture_click")
@@ -481,16 +480,13 @@
       (echo "Gl_area")
       (echo "Glib")
       (echo "Gobject")
-      (echo "Gobject_enums")
       (echo "Gpointer")
       (echo "Graphene")
-      (echo "Graphene_enums")
       (echo "Graphics_offload")
       (echo "Grid")
       (echo "Grid_layout")
       (echo "Grid_layout_child")
       (echo "Grid_view")
-      (echo "Gsk_enums")
       (echo "Gtk")
       (echo "GtkButton")
       (echo "GtkCheckButton")
@@ -833,8 +829,6 @@ rm cflag-gtk.sexp.tmp clink-gtk.sexp.tmp\\
    ml_font_dialog_button_gen
    ml_font_dialog_gen
    ml_frame_gen
-   ml_gdk_enums_gen
-   ml_gdkpixbuf_enums_gen
    ml_gesture_click_gen
    ml_gesture_drag_gen
    ml_gesture_gen
@@ -846,14 +840,11 @@ rm cflag-gtk.sexp.tmp clink-gtk.sexp.tmp\\
    ml_gesture_swipe_gen
    ml_gesture_zoom_gen
    ml_gl_area_gen
-   ml_gobject_enums_gen
-   ml_graphene_enums_gen
    ml_graphics_offload_gen
    ml_grid_gen
    ml_grid_layout_child_gen
    ml_grid_layout_gen
    ml_grid_view_gen
-   ml_gsk_enums_gen
    ml_gtk_enums_gen
    ml_header_bar_gen
    ml_icon_paintable_gen
@@ -911,7 +902,6 @@ rm cflag-gtk.sexp.tmp clink-gtk.sexp.tmp\\
    ml_page_range_gen
    ml_page_setup_gen
    ml_paned_gen
-   ml_pango_enums_gen
    ml_paper_size_gen
    ml_param_spec_expression_gen
    ml_password_entry_buffer_gen

@@ -45,6 +45,22 @@ gtk_print_dialog_set_title(GtkPrintDialog_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_print_dialog_set_print_settings(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_print_dialog_set_print_settings(GtkPrintDialog_val(self), GtkPrintSettings_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_set_page_setup(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_print_dialog_set_page_setup(GtkPrintDialog_val(self), GtkPageSetup_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_print_dialog_set_modal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -85,6 +101,24 @@ CAMLparam1(self);
 
 const char* result = gtk_print_dialog_get_title(GtkPrintDialog_val(self));
 CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_get_print_settings(value self)
+{
+CAMLparam1(self);
+
+GtkPrintSettings* result = gtk_print_dialog_get_print_settings(GtkPrintDialog_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_GtkPrintSettings(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_get_page_setup(value self)
+{
+CAMLparam1(self);
+
+GtkPageSetup* result = gtk_print_dialog_get_page_setup(GtkPrintDialog_val(self));
+if (result) g_object_ref_sink(result);
+CAMLreturn(Val_GtkPageSetup(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_dialog_get_modal(value self)
@@ -133,6 +167,24 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gtk_print_dialog_get_page_setup(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PrintDialog requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_get_print_settings(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("PrintDialog requires GTK >= 4.14");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_gtk_print_dialog_get_title(value self)
 {
 CAMLparam1(self);
@@ -173,6 +225,26 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_gtk_print_dialog_set_modal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("PrintDialog requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_set_page_setup(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("PrintDialog requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_print_dialog_set_print_settings(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 (void)self;

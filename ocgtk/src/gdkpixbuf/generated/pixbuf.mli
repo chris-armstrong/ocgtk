@@ -7,6 +7,9 @@ type t = [`pixbuf | `object_] Gobject.obj
 external new_ : Gdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> t = "ml_gdk_pixbuf_new"
 
 (** Create a new Pixbuf *)
+external new_from_bytes : Glib_bytes.t -> Gdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> int -> t = "ml_gdk_pixbuf_new_from_bytes_bytecode" "ml_gdk_pixbuf_new_from_bytes_native"
+
+(** Create a new Pixbuf *)
 external new_from_file : string -> (t, GError.t) result = "ml_gdk_pixbuf_new_from_file"
 
 (** Create a new Pixbuf *)
@@ -117,6 +120,13 @@ external rotate_simple : t -> Gdkpixbuf_enums.pixbufrotation -> t option = "ml_g
 (** Removes the key/value pair option attached to a `GdkPixbuf`. *)
 external remove_option : t -> string -> bool = "ml_gdk_pixbuf_remove_option"
 
+(** Provides a #GBytes buffer containing the raw pixel data; the data
+must not be modified.
+
+This function allows skipping the implicit copy that must be made
+if gdk_pixbuf_get_pixels() is called on a read-only pixbuf. *)
+external read_pixel_bytes : t -> Glib_bytes.t = "ml_gdk_pixbuf_read_pixel_bytes"
+
 (** Creates a new pixbuf which represents a sub-region of `src_pixbuf`.
 
 The new pixbuf shares its pixels with the original pixbuf, so
@@ -164,12 +174,22 @@ external get_has_alpha : t -> bool = "ml_gdk_pixbuf_get_has_alpha"
 (** Queries the color space of a pixbuf. *)
 external get_colorspace : t -> Gdkpixbuf_enums.colorspace = "ml_gdk_pixbuf_get_colorspace"
 
+(** Returns the length of the pixel data, in bytes. *)
+external get_byte_length : t -> int = "ml_gdk_pixbuf_get_byte_length"
+
 (** Queries the number of bits per color sample in a pixbuf. *)
 external get_bits_per_sample : t -> int = "ml_gdk_pixbuf_get_bits_per_sample"
 
 (** Flips a pixbuf horizontally or vertically and returns the
 result in a new pixbuf. *)
 external flip : t -> bool -> t option = "ml_gdk_pixbuf_flip"
+
+(** Clears a pixbuf to the given RGBA value, converting the RGBA value into
+the pixbuf's pixel format.
+
+The alpha component will be ignored if the pixbuf doesn't have an alpha
+channel. *)
+external fill : t -> int -> unit = "ml_gdk_pixbuf_fill"
 
 (** Copies the key/value pair options attached to a `GdkPixbuf` to another
 `GdkPixbuf`.
@@ -194,6 +214,25 @@ external copy_area : t -> int -> int -> int -> int -> t -> int -> int -> unit = 
 Note that this does not copy the options set on the original `GdkPixbuf`,
 use gdk_pixbuf_copy_options() for this. *)
 external copy : t -> t option = "ml_gdk_pixbuf_copy"
+
+(** Creates a new pixbuf by scaling `src` to `dest_width` x `dest_height`
+and alpha blending the result with a checkboard of colors `color1`
+and `color2`. *)
+external composite_color_simple : t -> int -> int -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> t option = "ml_gdk_pixbuf_composite_color_simple_bytecode" "ml_gdk_pixbuf_composite_color_simple_native"
+
+(** Creates a transformation of the source image @src by scaling by
+@scale_x and @scale_y then translating by @offset_x and @offset_y,
+then alpha blends the rectangle (@dest_x ,@dest_y, @dest_width,
+@dest_height) of the resulting image with a checkboard of the
+colors @color1 and @color2 and renders it onto the destination
+image.
+
+If the source image has no alpha channel, and @overall_alpha is 255, a fast
+path is used which omits the alpha blending and just performs the scaling.
+
+See gdk_pixbuf_composite_color_simple() for a simpler variant of this
+function suitable for many tasks. *)
+external composite_color : t -> t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> int -> int -> unit = "ml_gdk_pixbuf_composite_color_bytecode" "ml_gdk_pixbuf_composite_color_native"
 
 (** Creates a transformation of the source image @src by scaling by
 @scale_x and @scale_y then translating by @offset_x and @offset_y.
@@ -223,4 +262,7 @@ will be performed so that the pixbuf is oriented correctly. *)
 external apply_embedded_orientation : t -> t option = "ml_gdk_pixbuf_apply_embedded_orientation"
 
 (* Properties *)
+
+(** Get property: pixel-bytes *)
+external get_pixel_bytes : t -> Glib_bytes.t = "ml_gdk_pixbuf_get_pixel_bytes"
 

@@ -32,6 +32,16 @@ external set_tab : t -> int -> Pango_enums.tabalign -> int -> unit = "ml_pango_t
 pixels. *)
 external set_positions_in_pixels : t -> bool -> unit = "ml_pango_tab_array_set_positions_in_pixels"
 
+(** Sets the Unicode character to use as decimal point.
+
+This is only relevant for tabs with %PANGO_TAB_DECIMAL alignment,
+which align content at the first occurrence of the decimal point
+character.
+
+By default, Pango uses the decimal point according
+to the current locale. *)
+external set_decimal_point : t -> int -> int -> unit = "ml_pango_tab_array_set_decimal_point"
+
 (** Resizes a tab array.
 
 You must subsequently initialize any tabs
@@ -47,6 +57,16 @@ external get_size : t -> int = "ml_pango_tab_array_get_size"
 (** Returns %TRUE if the tab positions are in pixels,
 %FALSE if they are in Pango units. *)
 external get_positions_in_pixels : t -> bool = "ml_pango_tab_array_get_positions_in_pixels"
+
+(** Gets the Unicode character to use as decimal point.
+
+This is only relevant for tabs with %PANGO_TAB_DECIMAL alignment,
+which align content at the first occurrence of the decimal point
+character.
+
+The default value of 0 means that Pango will use the
+decimal point according to the current locale. *)
+external get_decimal_point : t -> int -> int = "ml_pango_tab_array_get_decimal_point"
 
 (** Frees a tab array and associated resources. *)
 external free : t -> unit = "ml_pango_tab_array_free"

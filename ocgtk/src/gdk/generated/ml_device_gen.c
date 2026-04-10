@@ -32,6 +32,27 @@ const char* result = gdk_device_get_vendor_id(GdkDevice_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
+#if GTK_CHECK_VERSION(4,2,0)
+
+CAMLexport CAMLprim value ml_gdk_device_get_timestamp(value self)
+{
+CAMLparam1(self);
+
+guint32 result = gdk_device_get_timestamp(GdkDevice_val(self));
+CAMLreturn(Val_long(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_device_get_timestamp(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Device requires GTK >= 4.2");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gdk_device_get_surface_at_position(value self)
 {
 CAMLparam1(self);

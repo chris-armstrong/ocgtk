@@ -16,6 +16,49 @@
 #include "pango_decls.h"
 
 
+#if PANGO_VERSION_CHECK(1,50,0)
+
+CAMLexport CAMLprim value ml_pango_font_serialize(value self)
+{
+CAMLparam1(self);
+
+GBytes* result = pango_font_serialize(PangoFont_val(self));
+CAMLreturn(Val_GBytes(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_pango_font_serialize(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Font requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,44,0)
+
+CAMLexport CAMLprim value ml_pango_font_has_char(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = pango_font_has_char(PangoFont_val(self), Long_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_pango_font_has_char(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Font requires Pango >= 1.44");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_pango_font_get_metrics(value self, value arg1)
 {
 CAMLparam2(self, arg1);

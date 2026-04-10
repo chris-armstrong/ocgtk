@@ -23,6 +23,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#include <ocaml_integers.h>
 
 /* For value blocks containing copied C structs */
 #define MLPointer_val(val) \
@@ -340,6 +341,14 @@ CAMLexport value Val_GVariant(GVariant *variant);
 /* Defined in ml_gvariant_type.c - wrap/unwrap GVariantType with copy/free */
 CAMLexport value Val_GVariantType(const GVariantType *type);
 #define GVariantType_val(val) (*((GVariantType**)Data_custom_val(val)))
+
+/* ==================================================================== */
+/* GBytes                                                                */
+/* ==================================================================== */
+
+/* Defined in ml_glib_bytes.c - wrap/unwrap GBytes with ref counting */
+CAMLexport value Val_GBytes(GBytes *bytes);
+#define GBytes_val(val) (*((GBytes**)Data_custom_val(val)))
 
 typedef gchar utf8;
 

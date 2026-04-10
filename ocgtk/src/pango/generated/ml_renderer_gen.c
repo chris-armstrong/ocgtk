@@ -34,6 +34,29 @@ pango_renderer_set_color(PangoRenderer_val(self), PangoRenderPart_val(arg1), Opt
 CAMLreturn(Val_unit);
 }
 
+#if PANGO_VERSION_CHECK(1,38,0)
+
+CAMLexport CAMLprim value ml_pango_renderer_set_alpha(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+pango_renderer_set_alpha(PangoRenderer_val(self), PangoRenderPart_val(arg1), Int_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_pango_renderer_set_alpha(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Renderer requires Pango >= 1.38");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_pango_renderer_part_changed(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -100,6 +123,28 @@ CAMLparam2(self, arg1);
 PangoColor* result = pango_renderer_get_color(PangoRenderer_val(self), PangoRenderPart_val(arg1));
 CAMLreturn(Val_option(result, Val_PangoColor));
 }
+
+#if PANGO_VERSION_CHECK(1,38,0)
+
+CAMLexport CAMLprim value ml_pango_renderer_get_alpha(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+guint16 result = pango_renderer_get_alpha(PangoRenderer_val(self), PangoRenderPart_val(arg1));
+CAMLreturn(Val_int(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_pango_renderer_get_alpha(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Renderer requires Pango >= 1.38");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_renderer_draw_trapezoid_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7)
 {
@@ -314,6 +359,16 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_pango_renderer_get_alpha(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Renderer requires Pango >= 1.8");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_pango_renderer_get_color(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -356,6 +411,17 @@ CAMLexport CAMLprim value ml_pango_renderer_part_changed(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
+caml_failwith("Renderer requires Pango >= 1.8");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_pango_renderer_set_alpha(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
 caml_failwith("Renderer requires Pango >= 1.8");
 return Val_unit;
 }

@@ -122,4 +122,6 @@ value Val_cairoRegionOverlap(cairo_region_overlap_t val);
 cairo_region_overlap_t cairoRegionOverlap_val(value val);
 
 
+#include "../core/cairo_core.h"
+
 #endif /* _cairo_decls_h_ */

@@ -4,6 +4,10 @@
 type t = [`simple_async_result | `object_] Gobject.obj
 
 (* Methods *)
+(** Sets the operation result within the asynchronous result to
+the given @op_res. *)
+external set_op_res_gssize : t -> int -> unit = "ml_g_simple_async_result_set_op_res_gssize"
+
 (** Sets the operation result to a boolean within the asynchronous result. *)
 external set_op_res_gboolean : t -> bool -> unit = "ml_g_simple_async_result_set_op_res_gboolean"
 
@@ -38,6 +42,9 @@ If the #GCancellable given to a prior call to
 g_simple_async_result_set_check_cancellable() is cancelled then this
 function will return %TRUE with @dest set appropriately. *)
 external propagate_error : t -> (bool, GError.t) result = "ml_g_simple_async_result_propagate_error"
+
+(** Gets a gssize from the asynchronous result. *)
+external get_op_res_gssize : t -> int = "ml_g_simple_async_result_get_op_res_gssize"
 
 (** Gets the operation result boolean from within the asynchronous result. *)
 external get_op_res_gboolean : t -> bool = "ml_g_simple_async_result_get_op_res_gboolean"

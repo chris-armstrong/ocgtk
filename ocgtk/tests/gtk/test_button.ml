@@ -3,6 +3,7 @@
 open Alcotest
 open Ocgtk_gtk.Gtk
 module GMain = Ocgtk_gtk.GMain
+module Helpers = Gtk_test_helpers
 
 (* Try to initialize GTK once for all tests *)
 let gtk_available =
@@ -16,6 +17,8 @@ let gtk_available =
 let require_gtk f () =
   if not gtk_available then skip ()
   else f ()
+
+let require_gtk_412 f = require_gtk (Helpers.require_gtk_version 4 12 0 f)
 
 (* Test button creation and basic properties *)
 let test_button_creation () =
@@ -126,7 +129,7 @@ let () =
       test_case "button_with_label" `Quick (require_gtk test_button_with_label);
       test_case "button_with_mnemonic" `Quick (require_gtk test_button_with_mnemonic);
       test_case "button_icon_name" `Quick (require_gtk test_button_icon_name);
-      test_case "button_properties" `Quick (require_gtk test_button_properties);
+      test_case "button_properties" `Quick (require_gtk_412 test_button_properties);
     ];
     "low_level_check_button", [
       test_case "check_button_creation" `Quick (require_gtk test_check_button_creation);

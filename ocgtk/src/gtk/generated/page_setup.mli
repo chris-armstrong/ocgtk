@@ -95,3 +95,6 @@ external get_left_margin : t -> Gtk_enums.unit -> float = "ml_gtk_page_setup_get
 (** Gets the bottom margin in units of @unit. *)
 external get_bottom_margin : t -> Gtk_enums.unit -> float = "ml_gtk_page_setup_get_bottom_margin"
 
+(** Copies a `GtkPageSetup`. *)
+external copy : t -> t = "ml_gtk_page_setup_copy"
+

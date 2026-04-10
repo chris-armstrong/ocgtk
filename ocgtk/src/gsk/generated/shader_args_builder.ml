@@ -4,11 +4,27 @@
 (** An object to build the uniforms data for a `GskGLShader`. *)
 type t = [`shader_args_builder] Gobject.obj
 
+(** Create a new ShaderArgsBuilder *)
+external new_ : Gl_shader.t -> Glib_bytes.t option -> t = "ml_gsk_shader_args_builder_new"
+
 (* Methods *)
 (** Decreases the reference count of a `GskShaderArgBuilder` by one.
 
 If the resulting reference count is zero, frees the builder. *)
 external unref : t -> unit = "ml_gsk_shader_args_builder_unref"
+
+(** Creates a new `GBytes` args from the current state of the
+given @builder.
+
+Any uniforms of the shader that have not been explicitly set on
+the @builder are zero-initialized.
+
+The given `GskShaderArgsBuilder` is reset once this function returns;
+you cannot call this function multiple times on the same @builder instance.
+
+This function is intended primarily for bindings. C code should use
+[method@Gsk.ShaderArgsBuilder.free_to_args]. *)
+external to_args : t -> Glib_bytes.t = "ml_gsk_shader_args_builder_to_args"
 
 (** Sets the value of the uniform @idx.
 
@@ -24,6 +40,16 @@ external set_vec3 : t -> int -> Ocgtk_graphene.Graphene.Wrappers.Vec3.t -> unit 
 
 The uniform must be of vec2 type. *)
 external set_vec2 : t -> int -> Ocgtk_graphene.Graphene.Wrappers.Vec2.t -> unit = "ml_gsk_shader_args_builder_set_vec2"
+
+(** Sets the value of the uniform @idx.
+
+The uniform must be of uint type. *)
+external set_uint : t -> int -> int -> unit = "ml_gsk_shader_args_builder_set_uint"
+
+(** Sets the value of the uniform @idx.
+
+The uniform must be of int type. *)
+external set_int : t -> int -> int32 -> unit = "ml_gsk_shader_args_builder_set_int"
 
 (** Sets the value of the uniform @idx.
 

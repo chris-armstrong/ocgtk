@@ -34,12 +34,14 @@ let create_context_with_external_enum () =
             member_value = 0;
             c_identifier = "GTK_WRAP_NONE";
             member_doc = None;
+            member_version = None;
           };
           {
             member_name = "WORD";
             member_value = 1;
             c_identifier = "GTK_WRAP_WORD";
             member_doc = None;
+            member_version = None;
           };
         ];
       functions = [];

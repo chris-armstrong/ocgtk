@@ -58,3 +58,9 @@ val emit_c_guard :
 
 val c_guard_else : string
 (** The string ["#else"]. *)
+
+val normalize_namespace : string -> (string, string) result
+(** [normalize_namespace s] maps a user-friendly, case-insensitive library name
+    (e.g. ["pango"], ["gdk-pixbuf"]) to the canonical GIR namespace name
+    accepted by {!emit_c_guard} (e.g. ["Pango"], ["GdkPixbuf"]).
+    Returns [Error] if the name is not recognised. *)

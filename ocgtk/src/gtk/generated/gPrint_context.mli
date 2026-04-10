@@ -5,6 +5,7 @@ class type print_context_t = object
     method get_dpi_x : unit -> float
     method get_dpi_y : unit -> float
     method get_height : unit -> float
+    method get_page_setup : unit -> GPage_setup.page_setup_t
     method get_pango_fontmap : unit -> Ocgtk_pango.Pango.Font_map.font_map_t
     method get_width : unit -> float
     method set_cairo_context : Ocgtk_cairo.Cairo.Context.context_t -> float -> float -> unit

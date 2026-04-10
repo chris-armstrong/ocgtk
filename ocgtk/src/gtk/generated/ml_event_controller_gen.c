@@ -104,6 +104,14 @@ const char* result = gtk_event_controller_get_name(GtkEventController_val(self))
 CAMLreturn(Val_option_string(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_event_controller_get_current_event_time(value self)
+{
+CAMLparam1(self);
+
+guint32 result = gtk_event_controller_get_current_event_time(GtkEventController_val(self));
+CAMLreturn(Val_long(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_event_controller_get_current_event_state(value self)
 {
 CAMLparam1(self);

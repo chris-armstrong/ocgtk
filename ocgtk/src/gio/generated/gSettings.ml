@@ -15,10 +15,12 @@ class type settings_t = object
     method get_flags : string -> int
     method get_has_unapplied : unit -> bool
     method get_int : string -> int
+    method get_int64 : string -> int64
     method get_range : string -> Gvariant.t
     method get_string : string -> string
     method get_strv : string -> string array
     method get_uint : string -> int
+    method get_uint64 : string -> Unsigned.UInt64.t
     method get_user_value : string -> Gvariant.t option
     method get_value : string -> Gvariant.t
     method is_writable : string -> bool
@@ -32,11 +34,12 @@ class type settings_t = object
     method set_enum : string -> int -> bool
     method set_flags : string -> int -> bool
     method set_int : string -> int -> bool
+    method set_int64 : string -> int64 -> bool
     method set_string : string -> string -> bool
     method set_strv : string -> string array option -> bool
     method set_uint : string -> int -> bool
+    method set_uint64 : string -> Unsigned.UInt64.t -> bool
     method set_value : string -> Gvariant.t -> bool
-    method backend : GSettings_backend.settings_backend_t
     method delay_apply : bool
     method path : string
     method schema : string
@@ -101,6 +104,10 @@ class settings (obj : Settings.t) : settings_t = object (self)
     fun key ->
       (Settings.get_int obj key)
 
+  method get_int64 : string -> int64 =
+    fun key ->
+      (Settings.get_int64 obj key)
+
   method get_range : string -> Gvariant.t =
     fun key ->
       (Settings.get_range obj key)
@@ -116,6 +123,10 @@ class settings (obj : Settings.t) : settings_t = object (self)
   method get_uint : string -> int =
     fun key ->
       (Settings.get_uint obj key)
+
+  method get_uint64 : string -> Unsigned.UInt64.t =
+    fun key ->
+      (Settings.get_uint64 obj key)
 
   method get_user_value : string -> Gvariant.t option =
     fun key ->
@@ -169,6 +180,10 @@ class settings (obj : Settings.t) : settings_t = object (self)
     fun key value ->
       (Settings.set_int obj key value)
 
+  method set_int64 : string -> int64 -> bool =
+    fun key value ->
+      (Settings.set_int64 obj key value)
+
   method set_string : string -> string -> bool =
     fun key value ->
       (Settings.set_string obj key value)
@@ -181,11 +196,13 @@ class settings (obj : Settings.t) : settings_t = object (self)
     fun key value ->
       (Settings.set_uint obj key value)
 
+  method set_uint64 : string -> Unsigned.UInt64.t -> bool =
+    fun key value ->
+      (Settings.set_uint64 obj key value)
+
   method set_value : string -> Gvariant.t -> bool =
     fun key value ->
       (Settings.set_value obj key value)
-
-  method backend = new GSettings_backend.settings_backend (Settings.get_backend obj)
 
   method delay_apply = Settings.get_delay_apply obj
 
@@ -202,21 +219,6 @@ end
 
 let new_ (schema_id : string) : settings_t =
   let obj_ = Settings.new_ schema_id in
-  new settings obj_
-
-let new_full (schema : Settings_schema.t) (backend : GSettings_backend.settings_backend_t option) (path : string option) : settings_t =
-  let backend = Option.map (fun c -> c#as_settings_backend) backend in
-  let obj_ = Settings.new_full schema backend path in
-  new settings obj_
-
-let new_with_backend (schema_id : string) (backend : GSettings_backend.settings_backend_t) : settings_t =
-  let backend = backend#as_settings_backend in
-  let obj_ = Settings.new_with_backend schema_id backend in
-  new settings obj_
-
-let new_with_backend_and_path (schema_id : string) (backend : GSettings_backend.settings_backend_t) (path : string) : settings_t =
-  let backend = backend#as_settings_backend in
-  let obj_ = Settings.new_with_backend_and_path schema_id backend path in
   new settings obj_
 
 let new_with_path (schema_id : string) (path : string) : settings_t =

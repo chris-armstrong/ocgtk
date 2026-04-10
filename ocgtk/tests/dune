@@ -162,3 +162,8 @@
  (name test_gvariant_type)
  (modules test_gvariant_type)
  (libraries ocgtk alcotest))
+
+(test
+ (name test_glib_bytes)
+ (modules test_glib_bytes)
+ (libraries ocgtk alcotest))

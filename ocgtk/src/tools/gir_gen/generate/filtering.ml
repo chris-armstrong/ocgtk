@@ -10,9 +10,6 @@ module Log =
             ~doc:"Shared filtering helpers for GIR generators"))
 
 let has_simple_type ~ctx (gir_type : gir_type) =
-  let is_excluded = Exclude_list.is_excluded_type_name gir_type.name in
-  (not is_excluded)
-  &&
   match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
   | Some _ ->
       Logs.debug (fun m -> m "has_simple_type: %s -> true\n" gir_type.name);
@@ -22,17 +19,7 @@ let has_simple_type ~ctx (gir_type : gir_type) =
 (* Check if a type is an array type - arrays require inline code generation
    and can't be handled by simple type mapping macros *)
 let is_array_type (gir_type : gir_type) = Option.is_some gir_type.array
-let property_exclude_list = [ ("IconPaintable", "is-symbolic") ]
-
-let should_generate_property ~ctx ~class_name ~methods (prop : gir_property) =
-  if
-    List.exists
-      ~f:(fun (test_class_name, test_property_name) ->
-        String.equal prop.prop_name test_property_name
-        && String.equal class_name test_class_name)
-      property_exclude_list
-  then false
-  else
+let should_generate_property ~ctx ~class_name:_ ~methods (prop : gir_property) =
     (* Check if property type is an interface - we can't handle these yet *)
     let is_interface_type =
       let check_interface_by_name name =
@@ -50,7 +37,9 @@ let should_generate_property ~ctx ~class_name ~methods (prop : gir_property) =
       check_interface_by_name prop.prop_type.name
       || check_interface_by_c_type prop.prop_type.c_type
     in
-    if is_interface_type then false
+    (* Array-typed properties can't be generated — the GObject property system
+       would require marshalling arrays through GValue which we don't support *)
+    if is_interface_type || is_array_type prop.prop_type then false
     else
       let matches_method =
         List.exists
@@ -218,11 +207,6 @@ let method_has_unsupported_arrays ~ctx (meth : gir_method) =
   in
   return_array_unsupported || param_array_unsupported
 
-let method_has_excluded_type (meth : gir_method) =
-  Exclude_list.is_excluded_type_name meth.return_type.name
-  || List.exists meth.parameters ~f:(fun p ->
-      Exclude_list.is_excluded_type_name p.param_type.name)
-
 (** Check if a method has out-parameter arrays that cannot be safely converted.
     This covers two cases: 1. Arrays with zero_terminated=false and no length or
     fixed_size info 2. Double-pointer out-params not marked as arrays in GIR *)
@@ -244,19 +228,12 @@ let method_has_unsupported_out_arrays (meth : gir_method) =
       | In -> false)
 
 let should_skip_method_binding ~ctx (meth : gir_method) =
-  let is_excluded_function =
-    Exclude_list.is_excluded_function meth.c_identifier
-  in
   let has_unknown_type =
     Exclude_list.should_skip_method
       ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx)
       ~enums:ctx.enums ~bitfields:ctx.bitfields meth
   in
-  let has_excluded_type = method_has_excluded_type meth in
-  let is_variadic =
-    List.exists meth.parameters ~f:(fun p -> p.varargs)
-    || Exclude_list.is_variadic_function meth.c_identifier
-  in
+  let is_variadic = List.exists meth.parameters ~f:(fun p -> p.varargs) in
   (* Check if method is marked as non-introspectable *)
   let is_not_introspectable = not meth.introspectable in
   (* Check for out-param arrays that can't be safely converted *)
@@ -271,14 +248,14 @@ let should_skip_method_binding ~ctx (meth : gir_method) =
   in
 
   Logs.debug (fun m ->
-      m "should_skip_method_name: %s -> %b %b %b %b %b %b %b\n"
-        meth.c_identifier is_variadic has_excluded_type has_unknown_type
-        is_excluded_function is_not_introspectable has_unsupported_out_arrays
-        has_unsupported_arrays);
+      m "should_skip_method_name: %s -> %b %b %b %b %b %b\n"
+        meth.c_identifier is_variadic has_unknown_type
+        is_not_introspectable has_unsupported_out_arrays
+        has_unsupported_arrays has_list_with_interface_element);
 
-  is_variadic || has_excluded_type || has_unknown_type || is_excluded_function
-  || is_not_introspectable || has_unsupported_out_arrays
-  || has_unsupported_arrays || has_list_with_interface_element
+  is_variadic || has_unknown_type || is_not_introspectable
+  || has_unsupported_out_arrays || has_unsupported_arrays
+  || has_list_with_interface_element
 
 let constructor_has_varargs (ctor : gir_constructor) =
   List.exists ctor.ctor_parameters ~f:(fun p -> p.varargs)
@@ -304,15 +281,12 @@ let should_generate_constructor ~ctx (ctor : gir_constructor) =
   && (not has_unknown_type)
   && not has_list_with_interface_element
 
-let banned_records = [ "PrintBackend"; "PixbufModule"; "PixbufModulePattern" ]
-
 (* Check if a record name ends with "Private" - these are typically internal
    GObject private data structures that don't appear in public headers *)
 let should_skip_private_record (record : gir_record) =
   let name = record.record_name in
   let len = String.length name in
-  List.exists banned_records ~f:(fun banned -> String.equal banned name)
-  || (len > 7 && String.equal (String.sub name ~pos:(len - 7) ~len:7) "Private")
+  len > 7 && String.equal (String.sub name ~pos:(len - 7) ~len:7) "Private"
 
 (* Check if a record should be generated *)
 let should_generate_record (record : gir_record) =
@@ -340,11 +314,9 @@ let method_has_interface_param ~ctx (meth : gir_method) =
       check_interface_by_name p.param_type.name
       || check_interface_by_c_type p.param_type.c_type)
 
-let should_generate_class (cls : gir_class) =
-  cls.introspectable && not (Exclude_list.should_skip_class cls.class_name)
+let should_generate_class (cls : gir_class) = cls.introspectable
 
-let should_generate_interface (intf : gir_interface) =
-  not (Exclude_list.should_skip_class intf.interface_name)
+let should_generate_interface (_intf : gir_interface) = true
 
 (* Check if a standalone function should be generated *)
 let should_generate_function (func : gir_function) = func.introspectable

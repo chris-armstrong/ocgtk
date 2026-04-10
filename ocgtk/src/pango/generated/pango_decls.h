@@ -343,4 +343,6 @@ PangoShowFlags PangoShowFlags_val(value list);
 #endif
 
 
+#include "../core/pango_core.h"
+
 #endif /* _pango_decls_h_ */

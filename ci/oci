@@ -1,0 +1,263 @@
+#!/usr/bin/env bash
+# oci — ocgtk CI container manager
+#
+# Manages the three distro build containers. Keeps a state file so it can
+# report what is running and offer targeted cleanup.
+#
+# Usage:
+#   ./ci/oci up   [distro...]    Start containers (all if no distro given)
+#   ./ci/oci down [distro...]    Stop containers  (all if no distro given)
+#   ./ci/oci build [distro...]   Rebuild images   (all if no distro given)
+#   ./ci/oci status              Show running containers and disk usage
+#   ./ci/oci run <distro> build  Run build script in a container
+#   ./ci/oci run <distro> test   Run test script in a container
+#   ./ci/oci shell <distro>      Open an interactive shell
+#   ./ci/oci clean [distro...]   Stop and remove containers + named volumes
+#   ./ci/oci clean --all         Stop, remove containers, volumes, AND images
+#
+# Examples:
+#   ./ci/oci up                     # start all default distros
+#   ./ci/oci run ubuntu22 build     # build on Ubuntu 22.04
+#   ./ci/oci run debian12 test      # run tests on Debian 12
+#   ./ci/oci run fedora40 test      # run tests on Fedora 40
+#   ./ci/oci run ubuntu24 build     # opt-in: build on Ubuntu 24.04
+#   ./ci/oci run fedora43 build     # build on Fedora 43
+#   ./ci/oci run ubuntu25 build     # build on Ubuntu 25.04
+#   ./ci/oci shell centos9          # interactive shell on CentOS Stream 9
+#   ./ci/oci clean debian12         # free disk for one distro
+#   ./ci/oci clean --all            # full teardown
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+COMPOSE_FILE="$SCRIPT_DIR/docker-compose.yml"
+VERSIONS_FILE="$SCRIPT_DIR/versions.env"
+# ubuntu24 is excluded from the default set — the dev environment already runs
+# Ubuntu 24.04, so it adds no coverage. Run it explicitly: ./ci/oci run ubuntu24 build
+ALL_DISTROS=(ubuntu22 debian12 centos9 opensuse15 fedora40 fedora43 ubuntu25)
+STATE_FILE="$SCRIPT_DIR/.oci-state"
+
+# ── helpers ───────────────────────────────────────────────────────────────────
+
+die()  { echo "oci: error: $*" >&2; exit 1; }
+info() { echo "oci: $*"; }
+
+# Load version pins from versions.env
+[[ -f "$VERSIONS_FILE" ]] || die "versions.env not found at $VERSIONS_FILE"
+# shellcheck source=versions.env
+source "$VERSIONS_FILE"
+
+compose() {
+  docker compose --env-file "$VERSIONS_FILE" -f "$COMPOSE_FILE" "$@"
+}
+
+# All distros recognised by name (superset of ALL_DISTROS — includes opt-in ones)
+ALL_KNOWN_DISTROS=(ubuntu22 debian12 centos9 opensuse15 fedora40 ubuntu24 fedora43 ubuntu25)
+
+# Resolve the list of distros from args, defaulting to all
+distros_from_args() {
+  local args=("$@")
+  if [[ ${#args[@]} -eq 0 ]]; then
+    echo "${ALL_DISTROS[@]}"
+  else
+    for d in "${args[@]}"; do
+      local valid=false
+      for known in "${ALL_KNOWN_DISTROS[@]}"; do
+        [[ "$d" == "$known" ]] && valid=true && break
+      done
+      $valid || die "unknown distro '$d' (valid: ${ALL_KNOWN_DISTROS[*]})"
+      echo "$d"
+    done
+  fi
+}
+
+# Record that a distro image has been built
+mark_built() {
+  local distro="$1"
+  mkdir -p "$(dirname "$STATE_FILE")"
+  # Remove existing entry then append
+  grep -v "^built:$distro:" "$STATE_FILE" 2>/dev/null > "$STATE_FILE.tmp" || true
+  echo "built:$distro:$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$STATE_FILE.tmp"
+  mv "$STATE_FILE.tmp" "$STATE_FILE"
+}
+
+mark_unbuilt() {
+  local distro="$1"
+  grep -v "^built:$distro:" "$STATE_FILE" 2>/dev/null > "$STATE_FILE.tmp" || true
+  mv "$STATE_FILE.tmp" "$STATE_FILE"
+}
+
+last_built() {
+  local distro="$1"
+  grep "^built:$distro:" "$STATE_FILE" 2>/dev/null | cut -d: -f3- || echo "never"
+}
+
+# ── subcommands ───────────────────────────────────────────────────────────────
+
+cmd_up() {
+  local distros
+  read -ra distros <<< "$(distros_from_args "$@")"
+  for d in "${distros[@]}"; do
+    info "starting $d …"
+    compose up -d "$d"
+  done
+}
+
+cmd_down() {
+  local distros
+  read -ra distros <<< "$(distros_from_args "$@")"
+  for d in "${distros[@]}"; do
+    info "stopping $d …"
+    compose stop "$d"
+  done
+}
+
+cmd_build() {
+  local distros
+  read -ra distros <<< "$(distros_from_args "$@")"
+  for d in "${distros[@]}"; do
+    info "building image for $d …"
+    compose build "$d"
+    mark_built "$d"
+    info "$d image ready"
+  done
+}
+
+cmd_status() {
+  echo ""
+  echo "  Version pins (ci/versions.env):"
+  echo "    opam  ${OPAM_VERSION}"
+  echo "    OCaml ${OCAML_VERSION}"
+  echo ""
+  echo "  Distro      Container state   Image built"
+  echo "  ─────────── ───────────────   ──────────────────────"
+  for d in "${ALL_KNOWN_DISTROS[@]}"; do
+    local state
+    state=$(docker compose -f "$COMPOSE_FILE" ps --status running --format '{{.Service}}' 2>/dev/null \
+              | grep -c "^$d$" || true)
+    local running_label
+    if [[ "$state" -gt 0 ]]; then
+      running_label="running"
+    else
+      running_label="stopped"
+    fi
+    printf "  %-11s %-16s  %s\n" "$d" "$running_label" "$(last_built "$d")"
+  done
+
+  echo ""
+  echo "  Named volumes:"
+  docker volume ls --filter "name=ci_" --format "  {{.Name}}  ({{.Driver}})" 2>/dev/null || true
+
+  echo ""
+  echo "  Docker disk usage:"
+  docker system df 2>/dev/null | sed 's/^/  /'
+  echo ""
+}
+
+cmd_run() {
+  local distro="${1:-}"
+  local target="${2:-}"
+  [[ -n "$distro" ]] || die "usage: oci run <distro> <build|test>"
+  [[ -n "$target" ]] || die "usage: oci run <distro> <build|test>"
+
+  local script
+  case "$target" in
+    build) script="/workspace/ci/scripts/build.sh" ;;
+    test)  script="/workspace/ci/scripts/test.sh"  ;;
+    *)     die "unknown target '$target' (valid: build, test)" ;;
+  esac
+
+  # Ensure container is running
+  local running
+  running=$(compose ps --status running --format '{{.Service}}' 2>/dev/null \
+              | grep -c "^$distro$" || true)
+  if [[ "$running" -eq 0 ]]; then
+    info "$distro is not running — starting it …"
+    compose up -d "$distro"
+  fi
+
+  info "running '$target' on $distro …"
+  compose exec "$distro" bash "$script"
+}
+
+cmd_shell() {
+  local distro="${1:-}"
+  [[ -n "$distro" ]] || die "usage: oci shell <distro>"
+
+  local running
+  running=$(compose ps --status running --format '{{.Service}}' 2>/dev/null \
+              | grep -c "^$distro$" || true)
+  if [[ "$running" -eq 0 ]]; then
+    info "$distro is not running — starting it …"
+    compose up -d "$distro"
+  fi
+
+  compose exec -it "$distro" bash --login
+}
+
+cmd_clean() {
+  local nuke_images=false
+  local targets=()
+  for arg in "$@"; do
+    if [[ "$arg" == "--all" ]]; then
+      nuke_images=true
+    else
+      targets+=("$arg")
+    fi
+  done
+
+  local distros
+  read -ra distros <<< "$(distros_from_args "${targets[@]}")"
+
+  for d in "${distros[@]}"; do
+    info "stopping and removing $d container …"
+    compose rm -sf "$d" 2>/dev/null || true
+
+    # Remove the named build volume for this distro
+    local vol
+    vol=$(basename "$SCRIPT_DIR")_${d}-build
+    # docker compose uses the project name (directory name) as prefix
+    local project_vol
+    project_vol=$(docker volume ls --format '{{.Name}}' \
+                   | grep "${d}-build" || true)
+    if [[ -n "$project_vol" ]]; then
+      info "removing volume $project_vol …"
+      docker volume rm "$project_vol" || true
+    fi
+
+    if $nuke_images; then
+      local img
+      img=$(docker images --filter "label=com.docker.compose.service=$d" \
+                          --format '{{.ID}}' | head -1 || true)
+      if [[ -n "$img" ]]; then
+        info "removing image $img for $d …"
+        docker rmi "$img" || true
+      fi
+      mark_unbuilt "$d"
+    fi
+  done
+
+  if $nuke_images; then
+    info "pruning dangling build cache …"
+    docker builder prune -f
+  fi
+
+  info "done"
+}
+
+# ── dispatch ──────────────────────────────────────────────────────────────────
+
+CMD="${1:-}"
+shift || true
+
+case "$CMD" in
+  up)     cmd_up     "$@" ;;
+  down)   cmd_down   "$@" ;;
+  build)  cmd_build  "$@" ;;
+  status) cmd_status       ;;
+  run)    cmd_run    "$@" ;;
+  shell)  cmd_shell  "$@" ;;
+  clean)  cmd_clean  "$@" ;;
+  "")     die "usage: oci <up|down|build|status|run|shell|clean> [args...]" ;;
+  *)      die "unknown command '$CMD'" ;;
+esac

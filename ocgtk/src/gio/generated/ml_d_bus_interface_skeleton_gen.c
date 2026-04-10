@@ -274,6 +274,15 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_properties(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusInterfaceSkeleton requires GLib >= 2.30");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_dbus_interface_skeleton_get_vtable(value self)
 {
 CAMLparam1(self);

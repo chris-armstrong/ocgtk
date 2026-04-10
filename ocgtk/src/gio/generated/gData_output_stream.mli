@@ -1,7 +1,13 @@
 class type data_output_stream_t = object
     inherit GFilter_output_stream.filter_output_stream_t
     method get_byte_order : unit -> Gio_enums.datastreambyteorder
+    method put_int16 : int -> GCancellable.cancellable_t option -> (bool, GError.t) result
+    method put_int32 : int32 -> GCancellable.cancellable_t option -> (bool, GError.t) result
+    method put_int64 : int64 -> GCancellable.cancellable_t option -> (bool, GError.t) result
     method put_string : string -> GCancellable.cancellable_t option -> (bool, GError.t) result
+    method put_uint16 : int -> GCancellable.cancellable_t option -> (bool, GError.t) result
+    method put_uint32 : int -> GCancellable.cancellable_t option -> (bool, GError.t) result
+    method put_uint64 : Unsigned.UInt64.t -> GCancellable.cancellable_t option -> (bool, GError.t) result
     method set_byte_order : Gio_enums.datastreambyteorder -> unit
     method as_data_output_stream : Data_output_stream.t
 end

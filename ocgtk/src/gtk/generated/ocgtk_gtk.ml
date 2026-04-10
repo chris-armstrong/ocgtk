@@ -3,3 +3,4 @@
 
 module Gtk = Gtk
 module GMain = GMain
+module GVersion = GVersion

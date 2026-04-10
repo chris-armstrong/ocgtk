@@ -111,6 +111,27 @@ return Val_unit;
 
 #if GLIB_CHECK_VERSION(2,22,0)
 
+CAMLexport CAMLprim value ml_g_inet_address_get_native_size(value self)
+{
+CAMLparam1(self);
+
+gsize result = g_inet_address_get_native_size(GInetAddress_val(self));
+CAMLreturn(Val_long(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_inet_address_get_native_size(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("InetAddress requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
+
 CAMLexport CAMLprim value ml_g_inet_address_get_is_site_local(value self)
 {
 CAMLparam1(self);

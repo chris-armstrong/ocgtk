@@ -432,6 +432,40 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_g_dbus_proxy_call_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusProxy requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_proxy_call_sync(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+caml_failwith("DBusProxy requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_proxy_get_cached_property(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusProxy requires GLib >= 2.26");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_dbus_proxy_get_cached_property_names(value self)
 {
 CAMLparam1(self);
@@ -513,6 +547,17 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_g_dbus_proxy_set_cached_property(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("DBusProxy requires GLib >= 2.26");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_dbus_proxy_set_default_timeout(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -528,15 +573,6 @@ CAMLexport CAMLprim value ml_g_dbus_proxy_set_interface_info(value self, value a
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("DBusProxy requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_d_bus_proxy_get_g_bus_type(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("DBusProxy requires GLib >= 2.26");
 return Val_unit;
 }

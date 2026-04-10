@@ -204,12 +204,14 @@ let test_no_includes_when_no_dependencies () =
       ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
   in
 
-  (* Verify no dependency includes are present using AST-based validation *)
-  let includes = extract_includes header_content in
-  let local_includes = List.filter (fun inc -> not inc.is_system) includes in
-  Alcotest.(check int)
-    "Should have no local includes when no dependencies" 0
-    (List.length local_includes)
+  (* Verify no cross-namespace dependency includes are present.
+     We check specifically that no generated/<ns>_decls.h includes appear,
+     since that is the form all dependency includes take. The core header
+     (#include "../core/<ns>_core.h") is a structural include, not a dependency,
+     so its presence is expected and not checked here. *)
+  assert_local_include_not_exists header_content "generated/gdk_decls.h";
+  assert_local_include_not_exists header_content "generated/gio_decls.h";
+  assert_local_include_not_exists header_content "generated/gsk_decls.h"
 
 let tests =
   [

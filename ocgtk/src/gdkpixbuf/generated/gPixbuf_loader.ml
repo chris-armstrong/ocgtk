@@ -7,6 +7,7 @@ class type pixbuf_loader_t = object
     method get_format : unit -> Pixbuf_format.t option
     method get_pixbuf : unit -> GPixbuf.pixbuf_t option
     method set_size : int -> int -> unit
+    method write_bytes : Glib_bytes.t -> (bool, GError.t) result
     method as_pixbuf_loader : Pixbuf_loader.t
 end
 
@@ -33,6 +34,10 @@ class pixbuf_loader (obj : Pixbuf_loader.t) : pixbuf_loader_t = object (self)
   method set_size : int -> int -> unit =
     fun width height ->
       (Pixbuf_loader.set_size obj width height)
+
+  method write_bytes : Glib_bytes.t -> (bool, GError.t) result =
+    fun buffer ->
+      (Pixbuf_loader.write_bytes obj buffer)
 
     method as_pixbuf_loader = obj
 end

@@ -60,6 +60,15 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_g_menu_attribute_iter_get_value(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("MenuAttributeIter requires GLib >= 2.32");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_menu_attribute_iter_next(value self)
 {
 CAMLparam1(self);

@@ -15,6 +15,7 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 WORKSPACE_ROOT="$REPO_ROOT/ocgtk"
 BUILD_DIR="$WORKSPACE_ROOT/_build/references"
 GIR_GEN="$WORKSPACE_ROOT/_build/default/src/tools/gir_gen/gir_gen.exe"
+OVERRIDES_DIR="$WORKSPACE_ROOT/overrides"
 
 echo "==================================="
 echo "OCaml GTK Bindings Generator"
@@ -48,46 +49,47 @@ echo "Step 1: Generating cross-namespace reference files..."
 echo "-----------------------------------"
 
 echo "  [1/9] Generating Cairo references..."
-"$GIR_GEN" references "$GIR_PATH/cairo-1.0.gir" "$BUILD_DIR/cairo-references.sexp"
+"$GIR_GEN" references -o "$OVERRIDES_DIR/cairo.sexp" "$GIR_PATH/cairo-1.0.gir" "$BUILD_DIR/cairo-references.sexp"
 
 echo "  [2/9] Generating GIO references..."
-"$GIR_GEN" references "$GIR_PATH/Gio-2.0.gir" "$BUILD_DIR/gio-references.sexp"
+"$GIR_GEN" references -o "$OVERRIDES_DIR/gio.sexp" "$GIR_PATH/Gio-2.0.gir" "$BUILD_DIR/gio-references.sexp"
 
 echo "  [3/9] Generating GDK references..."
-"$GIR_GEN" references "$GIR_PATH/Gdk-4.0.gir" "$BUILD_DIR/gdk-references.sexp"
+"$GIR_GEN" references -o "$OVERRIDES_DIR/gdk.sexp" "$GIR_PATH/Gdk-4.0.gir" "$BUILD_DIR/gdk-references.sexp"
 
 echo "  [4/9] Generating Graphene references..."
-"$GIR_GEN" references "$GIR_PATH/Graphene-1.0.gir" "$BUILD_DIR/graphene-references.sexp"
+"$GIR_GEN" references -o "$OVERRIDES_DIR/graphene.sexp" "$GIR_PATH/Graphene-1.0.gir" "$BUILD_DIR/graphene-references.sexp"
 
 echo "  [5/9] Generating GdkPixbuf references..."
-"$GIR_GEN" references "$GIR_PATH/GdkPixbuf-2.0.gir" "$BUILD_DIR/gdkpixbuf-references.sexp"
+"$GIR_GEN" references -o "$OVERRIDES_DIR/gdkpixbuf.sexp" "$GIR_PATH/GdkPixbuf-2.0.gir" "$BUILD_DIR/gdkpixbuf-references.sexp"
 
 echo "  [6/9] Generating Pango references..."
-"$GIR_GEN" references "$GIR_PATH/Pango-1.0.gir" "$BUILD_DIR/pango-references.sexp"
+"$GIR_GEN" references -o "$OVERRIDES_DIR/pango.sexp" "$GIR_PATH/Pango-1.0.gir" "$BUILD_DIR/pango-references.sexp"
 
 echo "  [7/9] Generating GSK references..."
-"$GIR_GEN" references "$GIR_PATH/Gsk-4.0.gir" "$BUILD_DIR/gsk-references.sexp"
+"$GIR_GEN" references -o "$OVERRIDES_DIR/gsk.sexp" "$GIR_PATH/Gsk-4.0.gir" "$BUILD_DIR/gsk-references.sexp"
 
 echo "  [8/9] Generating PangoCairo references..."
-"$GIR_GEN" references "$GIR_PATH/PangoCairo-1.0.gir" "$BUILD_DIR/pangocairo-references.sexp"
+"$GIR_GEN" references -o "$OVERRIDES_DIR/pangocairo.sexp" "$GIR_PATH/PangoCairo-1.0.gir" "$BUILD_DIR/pangocairo-references.sexp"
 
 echo "  [9/9] Generating GTK references..."
-"$GIR_GEN" references "$GIR_PATH/Gtk-4.0.gir" "$BUILD_DIR/gtk-references.sexp"
+"$GIR_GEN" references -o "$OVERRIDES_DIR/gtk.sexp" "$GIR_PATH/Gtk-4.0.gir" "$BUILD_DIR/gtk-references.sexp"
 
 echo ""
 echo "Step 2: Generating OCaml bindings..."
 echo "-----------------------------------"
 
 echo "  [1/9] Generating Cairo bindings..."
-"$GIR_GEN" generate "$GIR_PATH/cairo-1.0.gir" src/cairo
+"$GIR_GEN" generate -o "$OVERRIDES_DIR/cairo.sexp" "$GIR_PATH/cairo-1.0.gir" src/cairo
 
 echo ""
 echo "  [2/9] Generating GIO bindings..."
-"$GIR_GEN" generate "$GIR_PATH/Gio-2.0.gir" src/gio
+"$GIR_GEN" generate -o "$OVERRIDES_DIR/gio.sexp" "$GIR_PATH/Gio-2.0.gir" src/gio
 
 echo ""
 echo "  [3/9] Generating GDK bindings (with Cairo, GIO references)..."
 "$GIR_GEN" generate \
+    -o "$OVERRIDES_DIR/gdk.sexp" \
     -r "$BUILD_DIR/cairo-references.sexp" \
     -r "$BUILD_DIR/pango-references.sexp" \
     -r "$BUILD_DIR/pangocairo-references.sexp" \
@@ -99,12 +101,14 @@ echo "  [3/9] Generating GDK bindings (with Cairo, GIO references)..."
 echo ""
 echo "  [4/9] Generating Graphene bindings..."
 "$GIR_GEN" generate \
+    -o "$OVERRIDES_DIR/graphene.sexp" \
     "$GIR_PATH/Graphene-1.0.gir" \
     src/graphene
 
 echo ""
 echo "  [5/9] Generating GdkPixbuf bindings (with GIO references)..."
 "$GIR_GEN" generate \
+    -o "$OVERRIDES_DIR/gdkpixbuf.sexp" \
     -r "$BUILD_DIR/gio-references.sexp" \
     "$GIR_PATH/GdkPixbuf-2.0.gir" \
     src/gdkpixbuf
@@ -112,6 +116,7 @@ echo "  [5/9] Generating GdkPixbuf bindings (with GIO references)..."
 echo ""
 echo "  [6/9] Generating Pango bindings (with Cairo, GIO references)..."
 "$GIR_GEN" generate \
+    -o "$OVERRIDES_DIR/pango.sexp" \
     -r "$BUILD_DIR/cairo-references.sexp" \
     -r "$BUILD_DIR/gio-references.sexp" \
     "$GIR_PATH/Pango-1.0.gir" \
@@ -120,6 +125,7 @@ echo "  [6/9] Generating Pango bindings (with Cairo, GIO references)..."
 echo ""
 echo "  [7/9] Generating PangoCairo bindings (with Cairo, Pango, GIO references)..."
 "$GIR_GEN" generate \
+    -o "$OVERRIDES_DIR/pangocairo.sexp" \
     -r "$BUILD_DIR/cairo-references.sexp" \
     -r "$BUILD_DIR/pango-references.sexp" \
     -r "$BUILD_DIR/gio-references.sexp" \
@@ -129,6 +135,7 @@ echo "  [7/9] Generating PangoCairo bindings (with Cairo, Pango, GIO references)
 echo ""
 echo "  [8/9] Generating GSK bindings (with Cairo, GIO, GDK, Graphene references)..."
 "$GIR_GEN" generate \
+    -o "$OVERRIDES_DIR/gsk.sexp" \
     -r "$BUILD_DIR/cairo-references.sexp" \
     -r "$BUILD_DIR/gio-references.sexp" \
     -r "$BUILD_DIR/gdk-references.sexp" \
@@ -142,6 +149,7 @@ echo "  [8/9] Generating GSK bindings (with Cairo, GIO, GDK, Graphene references
 echo ""
 echo "  [9/9] Generating GTK bindings (with all references)..."
 "$GIR_GEN" generate \
+    -o "$OVERRIDES_DIR/gtk.sexp" \
     -r "$BUILD_DIR/cairo-references.sexp" \
     -r "$BUILD_DIR/gio-references.sexp" \
     -r "$BUILD_DIR/gdk-references.sexp" \

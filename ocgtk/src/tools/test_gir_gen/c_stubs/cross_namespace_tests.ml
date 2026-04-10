@@ -222,6 +222,7 @@ let test_copy_function_returns_copy_result () =
       set_property = None;
       introspectable = true;
       version = None;
+      version_namespace = None;
     }
   in
   let record =
@@ -308,6 +309,7 @@ let test_record_copy_parses_successfully () =
       set_property = None;
       introspectable = true;
       version = None;
+      version_namespace = None;
     }
   in
   let record =
@@ -336,6 +338,7 @@ let test_record_copy_parses_successfully () =
             readable = true;
             writable = true;
             field_doc = None;
+            field_version = None;
           };
         ];
       constructors = [];
@@ -512,6 +515,7 @@ let test_enum_array_element_conversion () =
             member_value = 0;
             c_identifier = "PANGO_SCRIPT_INVALID";
             member_doc = None;
+            member_version = None;
           };
         ];
       functions = [];
@@ -574,6 +578,7 @@ let test_enum_array_element_conversion () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -664,6 +669,7 @@ let test_bitfield_array_element_conversion () =
             flag_value = 1;
             flag_c_identifier = "GTK_APPLICATION_INHIBIT_LOGOUT";
             flag_doc = None;
+            flag_version = None;
           };
         ];
       bitfield_doc = None;
@@ -729,6 +735,7 @@ let test_bitfield_array_element_conversion () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -818,6 +825,7 @@ let test_inout_record_param_pointer_type () =
             readable = true;
             writable = true;
             field_doc = None;
+            field_version = None;
           };
         ];
       constructors = [];
@@ -886,6 +894,7 @@ let test_inout_record_param_pointer_type () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -1119,6 +1128,7 @@ let test_fixed_size_array_out_param () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -1250,6 +1260,7 @@ let test_fixed_size_float_array_return () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -1386,6 +1397,7 @@ let test_out_param_array_without_length_skipped () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -1442,6 +1454,7 @@ let test_double_pointer_out_param_skipped () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -1526,6 +1539,7 @@ let test_normal_out_param_not_skipped () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -1554,12 +1568,14 @@ let test_gdkpixbuf_format_flags_guarded () =
             flag_value = 1;
             flag_c_identifier = "GDK_PIXBUF_FORMAT_WRITABLE";
             flag_doc = None;
+            flag_version = None;
           };
           {
             flag_name = "SCALABLE";
             flag_value = 2;
             flag_c_identifier = "GDK_PIXBUF_FORMAT_SCALABLE";
             flag_doc = None;
+            flag_version = None;
           };
         ];
       bitfield_doc = None;
@@ -1625,6 +1641,7 @@ let test_normal_bitfield_no_guard () =
             flag_value = 1;
             flag_c_identifier = "GTK_APPLICATION_INHIBIT_LOGOUT";
             flag_doc = None;
+            flag_version = None;
           };
         ];
       bitfield_doc = None;
@@ -1745,6 +1762,7 @@ let test_cross_namespace_c_converter_names () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 
@@ -1841,6 +1859,7 @@ let test_cross_namespace_enum_array_element_conversion () =
       get_property = None;
       set_property = None;
       version = None;
+      version_namespace = None;
     }
   in
 

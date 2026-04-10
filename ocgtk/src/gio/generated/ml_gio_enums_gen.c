@@ -81,11 +81,26 @@ value Val_GioCredentialsType(GCredentialsType val) {
     case G_CREDENTIALS_TYPE_INVALID: return caml_hash_variant("INVALID"); /* `INVALID */
     case G_CREDENTIALS_TYPE_LINUX_UCRED: return caml_hash_variant("LINUX_UCRED"); /* `LINUX_UCRED */
     case G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED: return caml_hash_variant("FREEBSD_CMSGCRED"); /* `FREEBSD_CMSGCRED */
+#if GLIB_CHECK_VERSION(2,30,0)
     case G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED: return caml_hash_variant("OPENBSD_SOCKPEERCRED"); /* `OPENBSD_SOCKPEERCRED */
+
+#endif
+#if GLIB_CHECK_VERSION(2,40,0)
     case G_CREDENTIALS_TYPE_SOLARIS_UCRED: return caml_hash_variant("SOLARIS_UCRED"); /* `SOLARIS_UCRED */
+
+#endif
+#if GLIB_CHECK_VERSION(2,42,0)
     case G_CREDENTIALS_TYPE_NETBSD_UNPCBID: return caml_hash_variant("NETBSD_UNPCBID"); /* `NETBSD_UNPCBID */
+
+#endif
+#if GLIB_CHECK_VERSION(2,66,0)
     case G_CREDENTIALS_TYPE_APPLE_XUCRED: return caml_hash_variant("APPLE_XUCRED"); /* `APPLE_XUCRED */
+
+#endif
+#if GLIB_CHECK_VERSION(2,72,0)
     case G_CREDENTIALS_TYPE_WIN32_PID: return caml_hash_variant("WIN32_PID"); /* `WIN32_PID */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GCredentialsType value: %d", (int)val);
@@ -100,11 +115,36 @@ GCredentialsType GioCredentialsType_val(value val) {
   if (val == caml_hash_variant("INVALID")) return G_CREDENTIALS_TYPE_INVALID; /* `INVALID */
   else if (val == caml_hash_variant("LINUX_UCRED")) return G_CREDENTIALS_TYPE_LINUX_UCRED; /* `LINUX_UCRED */
   else if (val == caml_hash_variant("FREEBSD_CMSGCRED")) return G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED; /* `FREEBSD_CMSGCRED */
+#if GLIB_CHECK_VERSION(2,30,0)
   else if (val == caml_hash_variant("OPENBSD_SOCKPEERCRED")) return G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED; /* `OPENBSD_SOCKPEERCRED */
+
+#else
+  else if (val == caml_hash_variant("OPENBSD_SOCKPEERCRED")) caml_failwith("GCredentialsType.OPENBSD_SOCKPEERCRED requires 2.30");
+#endif
+#if GLIB_CHECK_VERSION(2,40,0)
   else if (val == caml_hash_variant("SOLARIS_UCRED")) return G_CREDENTIALS_TYPE_SOLARIS_UCRED; /* `SOLARIS_UCRED */
+
+#else
+  else if (val == caml_hash_variant("SOLARIS_UCRED")) caml_failwith("GCredentialsType.SOLARIS_UCRED requires 2.40");
+#endif
+#if GLIB_CHECK_VERSION(2,42,0)
   else if (val == caml_hash_variant("NETBSD_UNPCBID")) return G_CREDENTIALS_TYPE_NETBSD_UNPCBID; /* `NETBSD_UNPCBID */
+
+#else
+  else if (val == caml_hash_variant("NETBSD_UNPCBID")) caml_failwith("GCredentialsType.NETBSD_UNPCBID requires 2.42");
+#endif
+#if GLIB_CHECK_VERSION(2,66,0)
   else if (val == caml_hash_variant("APPLE_XUCRED")) return G_CREDENTIALS_TYPE_APPLE_XUCRED; /* `APPLE_XUCRED */
+
+#else
+  else if (val == caml_hash_variant("APPLE_XUCRED")) caml_failwith("GCredentialsType.APPLE_XUCRED requires 2.66");
+#endif
+#if GLIB_CHECK_VERSION(2,72,0)
   else if (val == caml_hash_variant("WIN32_PID")) return G_CREDENTIALS_TYPE_WIN32_PID; /* `WIN32_PID */
+
+#else
+  else if (val == caml_hash_variant("WIN32_PID")) caml_failwith("GCredentialsType.WIN32_PID requires 2.72");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GCredentialsType tag: %ld", val);
@@ -160,10 +200,22 @@ value Val_GioDBusError(GDBusError val) {
     case G_DBUS_ERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN: return caml_hash_variant("SELINUX_SECURITY_CONTEXT_UNKNOWN"); /* `SELINUX_SECURITY_CONTEXT_UNKNOWN */
     case G_DBUS_ERROR_ADT_AUDIT_DATA_UNKNOWN: return caml_hash_variant("ADT_AUDIT_DATA_UNKNOWN"); /* `ADT_AUDIT_DATA_UNKNOWN */
     case G_DBUS_ERROR_OBJECT_PATH_IN_USE: return caml_hash_variant("OBJECT_PATH_IN_USE"); /* `OBJECT_PATH_IN_USE */
+#if GLIB_CHECK_VERSION(2,42,0)
     case G_DBUS_ERROR_UNKNOWN_OBJECT: return caml_hash_variant("UNKNOWN_OBJECT"); /* `UNKNOWN_OBJECT */
+
+#endif
+#if GLIB_CHECK_VERSION(2,42,0)
     case G_DBUS_ERROR_UNKNOWN_INTERFACE: return caml_hash_variant("UNKNOWN_INTERFACE"); /* `UNKNOWN_INTERFACE */
+
+#endif
+#if GLIB_CHECK_VERSION(2,42,0)
     case G_DBUS_ERROR_UNKNOWN_PROPERTY: return caml_hash_variant("UNKNOWN_PROPERTY"); /* `UNKNOWN_PROPERTY */
+
+#endif
+#if GLIB_CHECK_VERSION(2,42,0)
     case G_DBUS_ERROR_PROPERTY_READ_ONLY: return caml_hash_variant("PROPERTY_READ_ONLY"); /* `PROPERTY_READ_ONLY */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GDBusError value: %d", (int)val);
@@ -216,10 +268,30 @@ GDBusError GioDBusError_val(value val) {
   else if (val == caml_hash_variant("SELINUX_SECURITY_CONTEXT_UNKNOWN")) return G_DBUS_ERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN; /* `SELINUX_SECURITY_CONTEXT_UNKNOWN */
   else if (val == caml_hash_variant("ADT_AUDIT_DATA_UNKNOWN")) return G_DBUS_ERROR_ADT_AUDIT_DATA_UNKNOWN; /* `ADT_AUDIT_DATA_UNKNOWN */
   else if (val == caml_hash_variant("OBJECT_PATH_IN_USE")) return G_DBUS_ERROR_OBJECT_PATH_IN_USE; /* `OBJECT_PATH_IN_USE */
+#if GLIB_CHECK_VERSION(2,42,0)
   else if (val == caml_hash_variant("UNKNOWN_OBJECT")) return G_DBUS_ERROR_UNKNOWN_OBJECT; /* `UNKNOWN_OBJECT */
+
+#else
+  else if (val == caml_hash_variant("UNKNOWN_OBJECT")) caml_failwith("GDBusError.UNKNOWN_OBJECT requires 2.42");
+#endif
+#if GLIB_CHECK_VERSION(2,42,0)
   else if (val == caml_hash_variant("UNKNOWN_INTERFACE")) return G_DBUS_ERROR_UNKNOWN_INTERFACE; /* `UNKNOWN_INTERFACE */
+
+#else
+  else if (val == caml_hash_variant("UNKNOWN_INTERFACE")) caml_failwith("GDBusError.UNKNOWN_INTERFACE requires 2.42");
+#endif
+#if GLIB_CHECK_VERSION(2,42,0)
   else if (val == caml_hash_variant("UNKNOWN_PROPERTY")) return G_DBUS_ERROR_UNKNOWN_PROPERTY; /* `UNKNOWN_PROPERTY */
+
+#else
+  else if (val == caml_hash_variant("UNKNOWN_PROPERTY")) caml_failwith("GDBusError.UNKNOWN_PROPERTY requires 2.42");
+#endif
+#if GLIB_CHECK_VERSION(2,42,0)
   else if (val == caml_hash_variant("PROPERTY_READ_ONLY")) return G_DBUS_ERROR_PROPERTY_READ_ONLY; /* `PROPERTY_READ_ONLY */
+
+#else
+  else if (val == caml_hash_variant("PROPERTY_READ_ONLY")) caml_failwith("GDBusError.PROPERTY_READ_ONLY requires 2.42");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GDBusError tag: %ld", val);
@@ -505,7 +577,10 @@ value Val_GioFileAttributeType(GFileAttributeType val) {
     case G_FILE_ATTRIBUTE_TYPE_UINT64: return caml_hash_variant("UINT64"); /* `UINT64 */
     case G_FILE_ATTRIBUTE_TYPE_INT64: return caml_hash_variant("INT64"); /* `INT64 */
     case G_FILE_ATTRIBUTE_TYPE_OBJECT: return caml_hash_variant("OBJECT"); /* `OBJECT */
+#if GLIB_CHECK_VERSION(2,22,0)
     case G_FILE_ATTRIBUTE_TYPE_STRINGV: return caml_hash_variant("STRINGV"); /* `STRINGV */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GFileAttributeType value: %d", (int)val);
@@ -526,7 +601,12 @@ GFileAttributeType GioFileAttributeType_val(value val) {
   else if (val == caml_hash_variant("UINT64")) return G_FILE_ATTRIBUTE_TYPE_UINT64; /* `UINT64 */
   else if (val == caml_hash_variant("INT64")) return G_FILE_ATTRIBUTE_TYPE_INT64; /* `INT64 */
   else if (val == caml_hash_variant("OBJECT")) return G_FILE_ATTRIBUTE_TYPE_OBJECT; /* `OBJECT */
+#if GLIB_CHECK_VERSION(2,22,0)
   else if (val == caml_hash_variant("STRINGV")) return G_FILE_ATTRIBUTE_TYPE_STRINGV; /* `STRINGV */
+
+#else
+  else if (val == caml_hash_variant("STRINGV")) caml_failwith("GFileAttributeType.STRINGV requires 2.22");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GFileAttributeType tag: %ld", val);
@@ -546,9 +626,18 @@ value Val_GioFileMonitorEvent(GFileMonitorEvent val) {
     case G_FILE_MONITOR_EVENT_PRE_UNMOUNT: return caml_hash_variant("PRE_UNMOUNT"); /* `PRE_UNMOUNT */
     case G_FILE_MONITOR_EVENT_UNMOUNTED: return caml_hash_variant("UNMOUNTED"); /* `UNMOUNTED */
     case G_FILE_MONITOR_EVENT_MOVED: return caml_hash_variant("MOVED"); /* `MOVED */
+#if GLIB_CHECK_VERSION(2,46,0)
     case G_FILE_MONITOR_EVENT_RENAMED: return caml_hash_variant("RENAMED"); /* `RENAMED */
+
+#endif
+#if GLIB_CHECK_VERSION(2,46,0)
     case G_FILE_MONITOR_EVENT_MOVED_IN: return caml_hash_variant("MOVED_IN"); /* `MOVED_IN */
+
+#endif
+#if GLIB_CHECK_VERSION(2,46,0)
     case G_FILE_MONITOR_EVENT_MOVED_OUT: return caml_hash_variant("MOVED_OUT"); /* `MOVED_OUT */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GFileMonitorEvent value: %d", (int)val);
@@ -568,9 +657,24 @@ GFileMonitorEvent GioFileMonitorEvent_val(value val) {
   else if (val == caml_hash_variant("PRE_UNMOUNT")) return G_FILE_MONITOR_EVENT_PRE_UNMOUNT; /* `PRE_UNMOUNT */
   else if (val == caml_hash_variant("UNMOUNTED")) return G_FILE_MONITOR_EVENT_UNMOUNTED; /* `UNMOUNTED */
   else if (val == caml_hash_variant("MOVED")) return G_FILE_MONITOR_EVENT_MOVED; /* `MOVED */
+#if GLIB_CHECK_VERSION(2,46,0)
   else if (val == caml_hash_variant("RENAMED")) return G_FILE_MONITOR_EVENT_RENAMED; /* `RENAMED */
+
+#else
+  else if (val == caml_hash_variant("RENAMED")) caml_failwith("GFileMonitorEvent.RENAMED requires 2.46");
+#endif
+#if GLIB_CHECK_VERSION(2,46,0)
   else if (val == caml_hash_variant("MOVED_IN")) return G_FILE_MONITOR_EVENT_MOVED_IN; /* `MOVED_IN */
+
+#else
+  else if (val == caml_hash_variant("MOVED_IN")) caml_failwith("GFileMonitorEvent.MOVED_IN requires 2.46");
+#endif
+#if GLIB_CHECK_VERSION(2,46,0)
   else if (val == caml_hash_variant("MOVED_OUT")) return G_FILE_MONITOR_EVENT_MOVED_OUT; /* `MOVED_OUT */
+
+#else
+  else if (val == caml_hash_variant("MOVED_OUT")) caml_failwith("GFileMonitorEvent.MOVED_OUT requires 2.46");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GFileMonitorEvent tag: %ld", val);
@@ -677,24 +781,78 @@ value Val_GioIOErrorEnum(GIOErrorEnum val) {
     case G_IO_ERROR_HOST_NOT_FOUND: return caml_hash_variant("HOST_NOT_FOUND"); /* `HOST_NOT_FOUND */
     case G_IO_ERROR_WOULD_MERGE: return caml_hash_variant("WOULD_MERGE"); /* `WOULD_MERGE */
     case G_IO_ERROR_FAILED_HANDLED: return caml_hash_variant("FAILED_HANDLED"); /* `FAILED_HANDLED */
+#if GLIB_CHECK_VERSION(2,20,0)
     case G_IO_ERROR_TOO_MANY_OPEN_FILES: return caml_hash_variant("TOO_MANY_OPEN_FILES"); /* `TOO_MANY_OPEN_FILES */
+
+#endif
+#if GLIB_CHECK_VERSION(2,22,0)
     case G_IO_ERROR_NOT_INITIALIZED: return caml_hash_variant("NOT_INITIALIZED"); /* `NOT_INITIALIZED */
+
+#endif
+#if GLIB_CHECK_VERSION(2,22,0)
     case G_IO_ERROR_ADDRESS_IN_USE: return caml_hash_variant("ADDRESS_IN_USE"); /* `ADDRESS_IN_USE */
+
+#endif
+#if GLIB_CHECK_VERSION(2,24,0)
     case G_IO_ERROR_PARTIAL_INPUT: return caml_hash_variant("PARTIAL_INPUT"); /* `PARTIAL_INPUT */
+
+#endif
+#if GLIB_CHECK_VERSION(2,24,0)
     case G_IO_ERROR_INVALID_DATA: return caml_hash_variant("INVALID_DATA"); /* `INVALID_DATA */
+
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
     case G_IO_ERROR_DBUS_ERROR: return caml_hash_variant("DBUS_ERROR"); /* `DBUS_ERROR */
+
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
     case G_IO_ERROR_HOST_UNREACHABLE: return caml_hash_variant("HOST_UNREACHABLE"); /* `HOST_UNREACHABLE */
+
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
     case G_IO_ERROR_NETWORK_UNREACHABLE: return caml_hash_variant("NETWORK_UNREACHABLE"); /* `NETWORK_UNREACHABLE */
+
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
     case G_IO_ERROR_CONNECTION_REFUSED: return caml_hash_variant("CONNECTION_REFUSED"); /* `CONNECTION_REFUSED */
+
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
     case G_IO_ERROR_PROXY_FAILED: return caml_hash_variant("PROXY_FAILED"); /* `PROXY_FAILED */
+
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
     case G_IO_ERROR_PROXY_AUTH_FAILED: return caml_hash_variant("PROXY_AUTH_FAILED"); /* `PROXY_AUTH_FAILED */
+
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
     case G_IO_ERROR_PROXY_NEED_AUTH: return caml_hash_variant("PROXY_NEED_AUTH"); /* `PROXY_NEED_AUTH */
+
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
     case G_IO_ERROR_PROXY_NOT_ALLOWED: return caml_hash_variant("PROXY_NOT_ALLOWED"); /* `PROXY_NOT_ALLOWED */
+
+#endif
+#if GLIB_CHECK_VERSION(2,36,0)
     case G_IO_ERROR_BROKEN_PIPE: return caml_hash_variant("BROKEN_PIPE"); /* `BROKEN_PIPE */
+
+#endif
+#if GLIB_CHECK_VERSION(2,44,0)
     case G_IO_ERROR_NOT_CONNECTED: return caml_hash_variant("NOT_CONNECTED"); /* `NOT_CONNECTED */
+
+#endif
+#if GLIB_CHECK_VERSION(2,48,0)
     case G_IO_ERROR_MESSAGE_TOO_LARGE: return caml_hash_variant("MESSAGE_TOO_LARGE"); /* `MESSAGE_TOO_LARGE */
+
+#endif
+#if GLIB_CHECK_VERSION(2,74,0)
     case G_IO_ERROR_NO_SUCH_DEVICE: return caml_hash_variant("NO_SUCH_DEVICE"); /* `NO_SUCH_DEVICE */
+
+#endif
+#if GLIB_CHECK_VERSION(2,80,0)
     case G_IO_ERROR_DESTINATION_UNSET: return caml_hash_variant("DESTINATION_UNSET"); /* `DESTINATION_UNSET */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GIOErrorEnum value: %d", (int)val);
@@ -737,25 +895,120 @@ GIOErrorEnum GioIOErrorEnum_val(value val) {
   else if (val == caml_hash_variant("HOST_NOT_FOUND")) return G_IO_ERROR_HOST_NOT_FOUND; /* `HOST_NOT_FOUND */
   else if (val == caml_hash_variant("WOULD_MERGE")) return G_IO_ERROR_WOULD_MERGE; /* `WOULD_MERGE */
   else if (val == caml_hash_variant("FAILED_HANDLED")) return G_IO_ERROR_FAILED_HANDLED; /* `FAILED_HANDLED */
+#if GLIB_CHECK_VERSION(2,20,0)
   else if (val == caml_hash_variant("TOO_MANY_OPEN_FILES")) return G_IO_ERROR_TOO_MANY_OPEN_FILES; /* `TOO_MANY_OPEN_FILES */
+
+#else
+  else if (val == caml_hash_variant("TOO_MANY_OPEN_FILES")) caml_failwith("GIOErrorEnum.TOO_MANY_OPEN_FILES requires 2.20");
+#endif
+#if GLIB_CHECK_VERSION(2,22,0)
   else if (val == caml_hash_variant("NOT_INITIALIZED")) return G_IO_ERROR_NOT_INITIALIZED; /* `NOT_INITIALIZED */
+
+#else
+  else if (val == caml_hash_variant("NOT_INITIALIZED")) caml_failwith("GIOErrorEnum.NOT_INITIALIZED requires 2.22");
+#endif
+#if GLIB_CHECK_VERSION(2,22,0)
   else if (val == caml_hash_variant("ADDRESS_IN_USE")) return G_IO_ERROR_ADDRESS_IN_USE; /* `ADDRESS_IN_USE */
+
+#else
+  else if (val == caml_hash_variant("ADDRESS_IN_USE")) caml_failwith("GIOErrorEnum.ADDRESS_IN_USE requires 2.22");
+#endif
+#if GLIB_CHECK_VERSION(2,24,0)
   else if (val == caml_hash_variant("PARTIAL_INPUT")) return G_IO_ERROR_PARTIAL_INPUT; /* `PARTIAL_INPUT */
+
+#else
+  else if (val == caml_hash_variant("PARTIAL_INPUT")) caml_failwith("GIOErrorEnum.PARTIAL_INPUT requires 2.24");
+#endif
+#if GLIB_CHECK_VERSION(2,24,0)
   else if (val == caml_hash_variant("INVALID_DATA")) return G_IO_ERROR_INVALID_DATA; /* `INVALID_DATA */
+
+#else
+  else if (val == caml_hash_variant("INVALID_DATA")) caml_failwith("GIOErrorEnum.INVALID_DATA requires 2.24");
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
   else if (val == caml_hash_variant("DBUS_ERROR")) return G_IO_ERROR_DBUS_ERROR; /* `DBUS_ERROR */
+
+#else
+  else if (val == caml_hash_variant("DBUS_ERROR")) caml_failwith("GIOErrorEnum.DBUS_ERROR requires 2.26");
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
   else if (val == caml_hash_variant("HOST_UNREACHABLE")) return G_IO_ERROR_HOST_UNREACHABLE; /* `HOST_UNREACHABLE */
+
+#else
+  else if (val == caml_hash_variant("HOST_UNREACHABLE")) caml_failwith("GIOErrorEnum.HOST_UNREACHABLE requires 2.26");
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
   else if (val == caml_hash_variant("NETWORK_UNREACHABLE")) return G_IO_ERROR_NETWORK_UNREACHABLE; /* `NETWORK_UNREACHABLE */
+
+#else
+  else if (val == caml_hash_variant("NETWORK_UNREACHABLE")) caml_failwith("GIOErrorEnum.NETWORK_UNREACHABLE requires 2.26");
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
   else if (val == caml_hash_variant("CONNECTION_REFUSED")) return G_IO_ERROR_CONNECTION_REFUSED; /* `CONNECTION_REFUSED */
+
+#else
+  else if (val == caml_hash_variant("CONNECTION_REFUSED")) caml_failwith("GIOErrorEnum.CONNECTION_REFUSED requires 2.26");
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
   else if (val == caml_hash_variant("PROXY_FAILED")) return G_IO_ERROR_PROXY_FAILED; /* `PROXY_FAILED */
+
+#else
+  else if (val == caml_hash_variant("PROXY_FAILED")) caml_failwith("GIOErrorEnum.PROXY_FAILED requires 2.26");
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
   else if (val == caml_hash_variant("PROXY_AUTH_FAILED")) return G_IO_ERROR_PROXY_AUTH_FAILED; /* `PROXY_AUTH_FAILED */
+
+#else
+  else if (val == caml_hash_variant("PROXY_AUTH_FAILED")) caml_failwith("GIOErrorEnum.PROXY_AUTH_FAILED requires 2.26");
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
   else if (val == caml_hash_variant("PROXY_NEED_AUTH")) return G_IO_ERROR_PROXY_NEED_AUTH; /* `PROXY_NEED_AUTH */
+
+#else
+  else if (val == caml_hash_variant("PROXY_NEED_AUTH")) caml_failwith("GIOErrorEnum.PROXY_NEED_AUTH requires 2.26");
+#endif
+#if GLIB_CHECK_VERSION(2,26,0)
   else if (val == caml_hash_variant("PROXY_NOT_ALLOWED")) return G_IO_ERROR_PROXY_NOT_ALLOWED; /* `PROXY_NOT_ALLOWED */
+
+#else
+  else if (val == caml_hash_variant("PROXY_NOT_ALLOWED")) caml_failwith("GIOErrorEnum.PROXY_NOT_ALLOWED requires 2.26");
+#endif
+#if GLIB_CHECK_VERSION(2,36,0)
   else if (val == caml_hash_variant("BROKEN_PIPE")) return G_IO_ERROR_BROKEN_PIPE; /* `BROKEN_PIPE */
+
+#else
+  else if (val == caml_hash_variant("BROKEN_PIPE")) caml_failwith("GIOErrorEnum.BROKEN_PIPE requires 2.36");
+#endif
+#if GLIB_CHECK_VERSION(2,44,0)
   else if (val == caml_hash_variant("CONNECTION_CLOSED")) return G_IO_ERROR_CONNECTION_CLOSED; /* `CONNECTION_CLOSED */
+
+#else
+  else if (val == caml_hash_variant("CONNECTION_CLOSED")) caml_failwith("GIOErrorEnum.CONNECTION_CLOSED requires 2.44");
+#endif
+#if GLIB_CHECK_VERSION(2,44,0)
   else if (val == caml_hash_variant("NOT_CONNECTED")) return G_IO_ERROR_NOT_CONNECTED; /* `NOT_CONNECTED */
+
+#else
+  else if (val == caml_hash_variant("NOT_CONNECTED")) caml_failwith("GIOErrorEnum.NOT_CONNECTED requires 2.44");
+#endif
+#if GLIB_CHECK_VERSION(2,48,0)
   else if (val == caml_hash_variant("MESSAGE_TOO_LARGE")) return G_IO_ERROR_MESSAGE_TOO_LARGE; /* `MESSAGE_TOO_LARGE */
+
+#else
+  else if (val == caml_hash_variant("MESSAGE_TOO_LARGE")) caml_failwith("GIOErrorEnum.MESSAGE_TOO_LARGE requires 2.48");
+#endif
+#if GLIB_CHECK_VERSION(2,74,0)
   else if (val == caml_hash_variant("NO_SUCH_DEVICE")) return G_IO_ERROR_NO_SUCH_DEVICE; /* `NO_SUCH_DEVICE */
+
+#else
+  else if (val == caml_hash_variant("NO_SUCH_DEVICE")) caml_failwith("GIOErrorEnum.NO_SUCH_DEVICE requires 2.74");
+#endif
+#if GLIB_CHECK_VERSION(2,80,0)
   else if (val == caml_hash_variant("DESTINATION_UNSET")) return G_IO_ERROR_DESTINATION_UNSET; /* `DESTINATION_UNSET */
+
+#else
+  else if (val == caml_hash_variant("DESTINATION_UNSET")) caml_failwith("GIOErrorEnum.DESTINATION_UNSET requires 2.80");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GIOErrorEnum tag: %ld", val);
@@ -1348,7 +1601,10 @@ value Val_GioTlsChannelBindingType(GTlsChannelBindingType val) {
   switch (val) {
     case G_TLS_CHANNEL_BINDING_TLS_UNIQUE: return caml_hash_variant("UNIQUE"); /* `UNIQUE */
     case G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT: return caml_hash_variant("SERVER_END_POINT"); /* `SERVER_END_POINT */
+#if GLIB_CHECK_VERSION(2,74,0)
     case G_TLS_CHANNEL_BINDING_TLS_EXPORTER: return caml_hash_variant("EXPORTER"); /* `EXPORTER */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GTlsChannelBindingType value: %d", (int)val);
@@ -1362,7 +1618,12 @@ value Val_GioTlsChannelBindingType(GTlsChannelBindingType val) {
 GTlsChannelBindingType GioTlsChannelBindingType_val(value val) {
   if (val == caml_hash_variant("UNIQUE")) return G_TLS_CHANNEL_BINDING_TLS_UNIQUE; /* `UNIQUE */
   else if (val == caml_hash_variant("SERVER_END_POINT")) return G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT; /* `SERVER_END_POINT */
+#if GLIB_CHECK_VERSION(2,74,0)
   else if (val == caml_hash_variant("EXPORTER")) return G_TLS_CHANNEL_BINDING_TLS_EXPORTER; /* `EXPORTER */
+
+#else
+  else if (val == caml_hash_variant("EXPORTER")) caml_failwith("GTlsChannelBindingType.EXPORTER requires 2.74");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GTlsChannelBindingType tag: %ld", val);
@@ -1413,8 +1674,14 @@ value Val_GioTlsError(GTlsError val) {
     case G_TLS_ERROR_HANDSHAKE: return caml_hash_variant("HANDSHAKE"); /* `HANDSHAKE */
     case G_TLS_ERROR_CERTIFICATE_REQUIRED: return caml_hash_variant("CERTIFICATE_REQUIRED"); /* `CERTIFICATE_REQUIRED */
     case G_TLS_ERROR_EOF: return caml_hash_variant("EOF"); /* `EOF */
+#if GLIB_CHECK_VERSION(2,60,0)
     case G_TLS_ERROR_INAPPROPRIATE_FALLBACK: return caml_hash_variant("INAPPROPRIATE_FALLBACK"); /* `INAPPROPRIATE_FALLBACK */
+
+#endif
+#if GLIB_CHECK_VERSION(2,72,0)
     case G_TLS_ERROR_BAD_CERTIFICATE_PASSWORD: return caml_hash_variant("BAD_CERTIFICATE_PASSWORD"); /* `BAD_CERTIFICATE_PASSWORD */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GTlsError value: %d", (int)val);
@@ -1433,8 +1700,18 @@ GTlsError GioTlsError_val(value val) {
   else if (val == caml_hash_variant("HANDSHAKE")) return G_TLS_ERROR_HANDSHAKE; /* `HANDSHAKE */
   else if (val == caml_hash_variant("CERTIFICATE_REQUIRED")) return G_TLS_ERROR_CERTIFICATE_REQUIRED; /* `CERTIFICATE_REQUIRED */
   else if (val == caml_hash_variant("EOF")) return G_TLS_ERROR_EOF; /* `EOF */
+#if GLIB_CHECK_VERSION(2,60,0)
   else if (val == caml_hash_variant("INAPPROPRIATE_FALLBACK")) return G_TLS_ERROR_INAPPROPRIATE_FALLBACK; /* `INAPPROPRIATE_FALLBACK */
+
+#else
+  else if (val == caml_hash_variant("INAPPROPRIATE_FALLBACK")) caml_failwith("GTlsError.INAPPROPRIATE_FALLBACK requires 2.60");
+#endif
+#if GLIB_CHECK_VERSION(2,72,0)
   else if (val == caml_hash_variant("BAD_CERTIFICATE_PASSWORD")) return G_TLS_ERROR_BAD_CERTIFICATE_PASSWORD; /* `BAD_CERTIFICATE_PASSWORD */
+
+#else
+  else if (val == caml_hash_variant("BAD_CERTIFICATE_PASSWORD")) caml_failwith("GTlsError.BAD_CERTIFICATE_PASSWORD requires 2.72");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GTlsError tag: %ld", val);
@@ -1638,12 +1915,15 @@ value Val_GioAppInfoCreateFlags(GAppInfoCreateFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GLIB_CHECK_VERSION(2,26,0)
   if (flags & G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("SUPPORTS_STARTUP_NOTIFICATION"))); /* `SUPPORTS_STARTUP_NOTIFICATION */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -1656,7 +1936,12 @@ GAppInfoCreateFlags GioAppInfoCreateFlags_val(value list) {
     if (tag == caml_hash_variant("NONE")) result |= G_APP_INFO_CREATE_NONE; /* `NONE */
     else if (tag == caml_hash_variant("NEEDS_TERMINAL")) result |= G_APP_INFO_CREATE_NEEDS_TERMINAL; /* `NEEDS_TERMINAL */
     else if (tag == caml_hash_variant("SUPPORTS_URIS")) result |= G_APP_INFO_CREATE_SUPPORTS_URIS; /* `SUPPORTS_URIS */
+#if GLIB_CHECK_VERSION(2,26,0)
     else if (tag == caml_hash_variant("SUPPORTS_STARTUP_NOTIFICATION")) result |= G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION; /* `SUPPORTS_STARTUP_NOTIFICATION */
+
+#else
+    else if (tag == caml_hash_variant("SUPPORTS_STARTUP_NOTIFICATION")) caml_failwith("GAppInfoCreateFlags.SUPPORTS_STARTUP_NOTIFICATION requires 2.26");
+#endif
     list = Field(list, 1);
   }
   return result;
@@ -1675,12 +1960,15 @@ value Val_GioApplicationFlags(GApplicationFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GLIB_CHECK_VERSION(2,74,0)
   if (flags & G_APPLICATION_DEFAULT_FLAGS) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("DEFAULT_FLAGS"))); /* `DEFAULT_FLAGS */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
   if (flags & G_APPLICATION_IS_SERVICE) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("IS_SERVICE"))); /* `IS_SERVICE */
@@ -1711,30 +1999,42 @@ value Val_GioApplicationFlags(GApplicationFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GLIB_CHECK_VERSION(2,30,0)
   if (flags & G_APPLICATION_NON_UNIQUE) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("NON_UNIQUE"))); /* `NON_UNIQUE */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
+#if GLIB_CHECK_VERSION(2,48,0)
   if (flags & G_APPLICATION_CAN_OVERRIDE_APP_ID) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("CAN_OVERRIDE_APP_ID"))); /* `CAN_OVERRIDE_APP_ID */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
+#if GLIB_CHECK_VERSION(2,60,0)
   if (flags & G_APPLICATION_ALLOW_REPLACEMENT) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("ALLOW_REPLACEMENT"))); /* `ALLOW_REPLACEMENT */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
+#if GLIB_CHECK_VERSION(2,60,0)
   if (flags & G_APPLICATION_REPLACE) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("REPLACE"))); /* `REPLACE */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -1745,16 +2045,41 @@ GApplicationFlags GioApplicationFlags_val(value list) {
   while (list != Val_emptylist) {
     int tag = Int_val(Field(list, 0));
     if (tag == caml_hash_variant("FLAGS_NONE")) result |= G_APPLICATION_FLAGS_NONE; /* `FLAGS_NONE */
+#if GLIB_CHECK_VERSION(2,74,0)
     else if (tag == caml_hash_variant("DEFAULT_FLAGS")) result |= G_APPLICATION_DEFAULT_FLAGS; /* `DEFAULT_FLAGS */
+
+#else
+    else if (tag == caml_hash_variant("DEFAULT_FLAGS")) caml_failwith("GApplicationFlags.DEFAULT_FLAGS requires 2.74");
+#endif
     else if (tag == caml_hash_variant("IS_SERVICE")) result |= G_APPLICATION_IS_SERVICE; /* `IS_SERVICE */
     else if (tag == caml_hash_variant("IS_LAUNCHER")) result |= G_APPLICATION_IS_LAUNCHER; /* `IS_LAUNCHER */
     else if (tag == caml_hash_variant("HANDLES_OPEN")) result |= G_APPLICATION_HANDLES_OPEN; /* `HANDLES_OPEN */
     else if (tag == caml_hash_variant("HANDLES_COMMAND_LINE")) result |= G_APPLICATION_HANDLES_COMMAND_LINE; /* `HANDLES_COMMAND_LINE */
     else if (tag == caml_hash_variant("SEND_ENVIRONMENT")) result |= G_APPLICATION_SEND_ENVIRONMENT; /* `SEND_ENVIRONMENT */
+#if GLIB_CHECK_VERSION(2,30,0)
     else if (tag == caml_hash_variant("NON_UNIQUE")) result |= G_APPLICATION_NON_UNIQUE; /* `NON_UNIQUE */
+
+#else
+    else if (tag == caml_hash_variant("NON_UNIQUE")) caml_failwith("GApplicationFlags.NON_UNIQUE requires 2.30");
+#endif
+#if GLIB_CHECK_VERSION(2,48,0)
     else if (tag == caml_hash_variant("CAN_OVERRIDE_APP_ID")) result |= G_APPLICATION_CAN_OVERRIDE_APP_ID; /* `CAN_OVERRIDE_APP_ID */
+
+#else
+    else if (tag == caml_hash_variant("CAN_OVERRIDE_APP_ID")) caml_failwith("GApplicationFlags.CAN_OVERRIDE_APP_ID requires 2.48");
+#endif
+#if GLIB_CHECK_VERSION(2,60,0)
     else if (tag == caml_hash_variant("ALLOW_REPLACEMENT")) result |= G_APPLICATION_ALLOW_REPLACEMENT; /* `ALLOW_REPLACEMENT */
+
+#else
+    else if (tag == caml_hash_variant("ALLOW_REPLACEMENT")) caml_failwith("GApplicationFlags.ALLOW_REPLACEMENT requires 2.60");
+#endif
+#if GLIB_CHECK_VERSION(2,60,0)
     else if (tag == caml_hash_variant("REPLACE")) result |= G_APPLICATION_REPLACE; /* `REPLACE */
+
+#else
+    else if (tag == caml_hash_variant("REPLACE")) caml_failwith("GApplicationFlags.REPLACE requires 2.60");
+#endif
     list = Field(list, 1);
   }
   return result;
@@ -1798,12 +2123,15 @@ value Val_GioAskPasswordFlags(GAskPasswordFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GLIB_CHECK_VERSION(2,58,0)
   if (flags & G_ASK_PASSWORD_TCRYPT) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("TCRYPT"))); /* `TCRYPT */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -1818,7 +2146,12 @@ GAskPasswordFlags GioAskPasswordFlags_val(value list) {
     else if (tag == caml_hash_variant("NEED_DOMAIN")) result |= G_ASK_PASSWORD_NEED_DOMAIN; /* `NEED_DOMAIN */
     else if (tag == caml_hash_variant("SAVING_SUPPORTED")) result |= G_ASK_PASSWORD_SAVING_SUPPORTED; /* `SAVING_SUPPORTED */
     else if (tag == caml_hash_variant("ANONYMOUS_SUPPORTED")) result |= G_ASK_PASSWORD_ANONYMOUS_SUPPORTED; /* `ANONYMOUS_SUPPORTED */
+#if GLIB_CHECK_VERSION(2,58,0)
     else if (tag == caml_hash_variant("TCRYPT")) result |= G_ASK_PASSWORD_TCRYPT; /* `TCRYPT */
+
+#else
+    else if (tag == caml_hash_variant("TCRYPT")) caml_failwith("GAskPasswordFlags.TCRYPT requires 2.58");
+#endif
     list = Field(list, 1);
   }
   return result;
@@ -1849,12 +2182,15 @@ value Val_GioBusNameOwnerFlags(GBusNameOwnerFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GLIB_CHECK_VERSION(2,54,0)
   if (flags & G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("DO_NOT_QUEUE"))); /* `DO_NOT_QUEUE */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -1867,7 +2203,12 @@ GBusNameOwnerFlags GioBusNameOwnerFlags_val(value list) {
     if (tag == caml_hash_variant("NONE")) result |= G_BUS_NAME_OWNER_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("ALLOW_REPLACEMENT")) result |= G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT; /* `ALLOW_REPLACEMENT */
     else if (tag == caml_hash_variant("REPLACE")) result |= G_BUS_NAME_OWNER_FLAGS_REPLACE; /* `REPLACE */
+#if GLIB_CHECK_VERSION(2,54,0)
     else if (tag == caml_hash_variant("DO_NOT_QUEUE")) result |= G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE; /* `DO_NOT_QUEUE */
+
+#else
+    else if (tag == caml_hash_variant("DO_NOT_QUEUE")) caml_failwith("GBusNameOwnerFlags.DO_NOT_QUEUE requires 2.54");
+#endif
     list = Field(list, 1);
   }
   return result;
@@ -1975,12 +2316,15 @@ value Val_GioDBusCallFlags(GDBusCallFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GLIB_CHECK_VERSION(2,46,0)
   if (flags & G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("ALLOW_INTERACTIVE_AUTHORIZATION"))); /* `ALLOW_INTERACTIVE_AUTHORIZATION */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -1992,7 +2336,12 @@ GDBusCallFlags GioDBusCallFlags_val(value list) {
     int tag = Int_val(Field(list, 0));
     if (tag == caml_hash_variant("NONE")) result |= G_DBUS_CALL_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("NO_AUTO_START")) result |= G_DBUS_CALL_FLAGS_NO_AUTO_START; /* `NO_AUTO_START */
+#if GLIB_CHECK_VERSION(2,46,0)
     else if (tag == caml_hash_variant("ALLOW_INTERACTIVE_AUTHORIZATION")) result |= G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION; /* `ALLOW_INTERACTIVE_AUTHORIZATION */
+
+#else
+    else if (tag == caml_hash_variant("ALLOW_INTERACTIVE_AUTHORIZATION")) caml_failwith("GDBusCallFlags.ALLOW_INTERACTIVE_AUTHORIZATION requires 2.46");
+#endif
     list = Field(list, 1);
   }
   return result;
@@ -2080,18 +2429,24 @@ value Val_GioDBusConnectionFlags(GDBusConnectionFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GLIB_CHECK_VERSION(2,68,0)
   if (flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("AUTHENTICATION_REQUIRE_SAME_USER"))); /* `AUTHENTICATION_REQUIRE_SAME_USER */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
+#if GLIB_CHECK_VERSION(2,74,0)
   if (flags & G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("CROSS_NAMESPACE"))); /* `CROSS_NAMESPACE */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -2107,8 +2462,18 @@ GDBusConnectionFlags GioDBusConnectionFlags_val(value list) {
     else if (tag == caml_hash_variant("AUTHENTICATION_ALLOW_ANONYMOUS")) result |= G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS; /* `AUTHENTICATION_ALLOW_ANONYMOUS */
     else if (tag == caml_hash_variant("MESSAGE_BUS_CONNECTION")) result |= G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION; /* `MESSAGE_BUS_CONNECTION */
     else if (tag == caml_hash_variant("DELAY_MESSAGE_PROCESSING")) result |= G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING; /* `DELAY_MESSAGE_PROCESSING */
+#if GLIB_CHECK_VERSION(2,68,0)
     else if (tag == caml_hash_variant("AUTHENTICATION_REQUIRE_SAME_USER")) result |= G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER; /* `AUTHENTICATION_REQUIRE_SAME_USER */
+
+#else
+    else if (tag == caml_hash_variant("AUTHENTICATION_REQUIRE_SAME_USER")) caml_failwith("GDBusConnectionFlags.AUTHENTICATION_REQUIRE_SAME_USER requires 2.68");
+#endif
+#if GLIB_CHECK_VERSION(2,74,0)
     else if (tag == caml_hash_variant("CROSS_NAMESPACE")) result |= G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE; /* `CROSS_NAMESPACE */
+
+#else
+    else if (tag == caml_hash_variant("CROSS_NAMESPACE")) caml_failwith("GDBusConnectionFlags.CROSS_NAMESPACE requires 2.74");
+#endif
     list = Field(list, 1);
   }
   return result;
@@ -2178,12 +2543,15 @@ value Val_GioDBusMessageFlags(GDBusMessageFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GLIB_CHECK_VERSION(2,46,0)
   if (flags & G_DBUS_MESSAGE_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("ALLOW_INTERACTIVE_AUTHORIZATION"))); /* `ALLOW_INTERACTIVE_AUTHORIZATION */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -2196,7 +2564,12 @@ GDBusMessageFlags GioDBusMessageFlags_val(value list) {
     if (tag == caml_hash_variant("NONE")) result |= G_DBUS_MESSAGE_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("NO_REPLY_EXPECTED")) result |= G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED; /* `NO_REPLY_EXPECTED */
     else if (tag == caml_hash_variant("NO_AUTO_START")) result |= G_DBUS_MESSAGE_FLAGS_NO_AUTO_START; /* `NO_AUTO_START */
+#if GLIB_CHECK_VERSION(2,46,0)
     else if (tag == caml_hash_variant("ALLOW_INTERACTIVE_AUTHORIZATION")) result |= G_DBUS_MESSAGE_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION; /* `ALLOW_INTERACTIVE_AUTHORIZATION */
+
+#else
+    else if (tag == caml_hash_variant("ALLOW_INTERACTIVE_AUTHORIZATION")) caml_failwith("GDBusMessageFlags.ALLOW_INTERACTIVE_AUTHORIZATION requires 2.46");
+#endif
     list = Field(list, 1);
   }
   return result;
@@ -2316,24 +2689,30 @@ value Val_GioDBusProxyFlags(GDBusProxyFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GLIB_CHECK_VERSION(2,32,0)
   if (flags & G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("GET_INVALIDATED_PROPERTIES"))); /* `GET_INVALIDATED_PROPERTIES */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
   if (flags & G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("DO_NOT_AUTO_START_AT_CONSTRUCTION"))); /* `DO_NOT_AUTO_START_AT_CONSTRUCTION */
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GLIB_CHECK_VERSION(2,72,0)
   if (flags & G_DBUS_PROXY_FLAGS_NO_MATCH_RULE) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("NO_MATCH_RULE"))); /* `NO_MATCH_RULE */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -2347,9 +2726,19 @@ GDBusProxyFlags GioDBusProxyFlags_val(value list) {
     else if (tag == caml_hash_variant("DO_NOT_LOAD_PROPERTIES")) result |= G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES; /* `DO_NOT_LOAD_PROPERTIES */
     else if (tag == caml_hash_variant("DO_NOT_CONNECT_SIGNALS")) result |= G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS; /* `DO_NOT_CONNECT_SIGNALS */
     else if (tag == caml_hash_variant("DO_NOT_AUTO_START")) result |= G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START; /* `DO_NOT_AUTO_START */
+#if GLIB_CHECK_VERSION(2,32,0)
     else if (tag == caml_hash_variant("GET_INVALIDATED_PROPERTIES")) result |= G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES; /* `GET_INVALIDATED_PROPERTIES */
+
+#else
+    else if (tag == caml_hash_variant("GET_INVALIDATED_PROPERTIES")) caml_failwith("GDBusProxyFlags.GET_INVALIDATED_PROPERTIES requires 2.32");
+#endif
     else if (tag == caml_hash_variant("DO_NOT_AUTO_START_AT_CONSTRUCTION")) result |= G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION; /* `DO_NOT_AUTO_START_AT_CONSTRUCTION */
+#if GLIB_CHECK_VERSION(2,72,0)
     else if (tag == caml_hash_variant("NO_MATCH_RULE")) result |= G_DBUS_PROXY_FLAGS_NO_MATCH_RULE; /* `NO_MATCH_RULE */
+
+#else
+    else if (tag == caml_hash_variant("NO_MATCH_RULE")) caml_failwith("GDBusProxyFlags.NO_MATCH_RULE requires 2.72");
+#endif
     list = Field(list, 1);
   }
   return result;
@@ -2419,12 +2808,15 @@ value Val_GioDBusServerFlags(GDBusServerFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GLIB_CHECK_VERSION(2,68,0)
   if (flags & G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("AUTHENTICATION_REQUIRE_SAME_USER"))); /* `AUTHENTICATION_REQUIRE_SAME_USER */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -2437,7 +2829,12 @@ GDBusServerFlags GioDBusServerFlags_val(value list) {
     if (tag == caml_hash_variant("NONE")) result |= G_DBUS_SERVER_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("RUN_IN_THREAD")) result |= G_DBUS_SERVER_FLAGS_RUN_IN_THREAD; /* `RUN_IN_THREAD */
     else if (tag == caml_hash_variant("AUTHENTICATION_ALLOW_ANONYMOUS")) result |= G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS; /* `AUTHENTICATION_ALLOW_ANONYMOUS */
+#if GLIB_CHECK_VERSION(2,68,0)
     else if (tag == caml_hash_variant("AUTHENTICATION_REQUIRE_SAME_USER")) result |= G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER; /* `AUTHENTICATION_REQUIRE_SAME_USER */
+
+#else
+    else if (tag == caml_hash_variant("AUTHENTICATION_REQUIRE_SAME_USER")) caml_failwith("GDBusServerFlags.AUTHENTICATION_REQUIRE_SAME_USER requires 2.68");
+#endif
     list = Field(list, 1);
   }
   return result;
@@ -2652,12 +3049,15 @@ value Val_GioFileCopyFlags(GFileCopyFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GLIB_CHECK_VERSION(2,80,0)
   if (flags & G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("TARGET_DEFAULT_MODIFIED_TIME"))); /* `TARGET_DEFAULT_MODIFIED_TIME */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -2674,7 +3074,12 @@ GFileCopyFlags GioFileCopyFlags_val(value list) {
     else if (tag == caml_hash_variant("ALL_METADATA")) result |= G_FILE_COPY_ALL_METADATA; /* `ALL_METADATA */
     else if (tag == caml_hash_variant("NO_FALLBACK_FOR_MOVE")) result |= G_FILE_COPY_NO_FALLBACK_FOR_MOVE; /* `NO_FALLBACK_FOR_MOVE */
     else if (tag == caml_hash_variant("TARGET_DEFAULT_PERMS")) result |= G_FILE_COPY_TARGET_DEFAULT_PERMS; /* `TARGET_DEFAULT_PERMS */
+#if GLIB_CHECK_VERSION(2,80,0)
     else if (tag == caml_hash_variant("TARGET_DEFAULT_MODIFIED_TIME")) result |= G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME; /* `TARGET_DEFAULT_MODIFIED_TIME */
+
+#else
+    else if (tag == caml_hash_variant("TARGET_DEFAULT_MODIFIED_TIME")) caml_failwith("GFileCopyFlags.TARGET_DEFAULT_MODIFIED_TIME requires 2.80");
+#endif
     list = Field(list, 1);
   }
   return result;
@@ -2698,12 +3103,15 @@ value Val_GioFileCreateFlags(GFileCreateFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GLIB_CHECK_VERSION(2,20,0)
   if (flags & G_FILE_CREATE_REPLACE_DESTINATION) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("REPLACE_DESTINATION"))); /* `REPLACE_DESTINATION */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -2715,7 +3123,12 @@ GFileCreateFlags GioFileCreateFlags_val(value list) {
     int tag = Int_val(Field(list, 0));
     if (tag == caml_hash_variant("NONE")) result |= G_FILE_CREATE_NONE; /* `NONE */
     else if (tag == caml_hash_variant("PRIVATE")) result |= G_FILE_CREATE_PRIVATE; /* `PRIVATE */
+#if GLIB_CHECK_VERSION(2,20,0)
     else if (tag == caml_hash_variant("REPLACE_DESTINATION")) result |= G_FILE_CREATE_REPLACE_DESTINATION; /* `REPLACE_DESTINATION */
+
+#else
+    else if (tag == caml_hash_variant("REPLACE_DESTINATION")) caml_failwith("GFileCreateFlags.REPLACE_DESTINATION requires 2.20");
+#endif
     list = Field(list, 1);
   }
   return result;
@@ -2796,18 +3209,24 @@ value Val_GioFileMonitorFlags(GFileMonitorFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GLIB_CHECK_VERSION(2,36,0)
   if (flags & G_FILE_MONITOR_WATCH_HARD_LINKS) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("WATCH_HARD_LINKS"))); /* `WATCH_HARD_LINKS */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
+#if GLIB_CHECK_VERSION(2,46,0)
   if (flags & G_FILE_MONITOR_WATCH_MOVES) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("WATCH_MOVES"))); /* `WATCH_MOVES */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -2820,8 +3239,18 @@ GFileMonitorFlags GioFileMonitorFlags_val(value list) {
     if (tag == caml_hash_variant("NONE")) result |= G_FILE_MONITOR_NONE; /* `NONE */
     else if (tag == caml_hash_variant("WATCH_MOUNTS")) result |= G_FILE_MONITOR_WATCH_MOUNTS; /* `WATCH_MOUNTS */
     else if (tag == caml_hash_variant("SEND_MOVED")) result |= G_FILE_MONITOR_SEND_MOVED; /* `SEND_MOVED */
+#if GLIB_CHECK_VERSION(2,36,0)
     else if (tag == caml_hash_variant("WATCH_HARD_LINKS")) result |= G_FILE_MONITOR_WATCH_HARD_LINKS; /* `WATCH_HARD_LINKS */
+
+#else
+    else if (tag == caml_hash_variant("WATCH_HARD_LINKS")) caml_failwith("GFileMonitorFlags.WATCH_HARD_LINKS requires 2.36");
+#endif
+#if GLIB_CHECK_VERSION(2,46,0)
     else if (tag == caml_hash_variant("WATCH_MOVES")) result |= G_FILE_MONITOR_WATCH_MOVES; /* `WATCH_MOVES */
+
+#else
+    else if (tag == caml_hash_variant("WATCH_MOVES")) caml_failwith("GFileMonitorFlags.WATCH_MOVES requires 2.46");
+#endif
     list = Field(list, 1);
   }
   return result;
@@ -3299,12 +3728,15 @@ value Val_GioSubprocessFlags(GSubprocessFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GLIB_CHECK_VERSION(2,72,0)
   if (flags & G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("SEARCH_PATH_FROM_ENVP"))); /* `SEARCH_PATH_FROM_ENVP */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -3323,7 +3755,12 @@ GSubprocessFlags GioSubprocessFlags_val(value list) {
     else if (tag == caml_hash_variant("STDERR_SILENCE")) result |= G_SUBPROCESS_FLAGS_STDERR_SILENCE; /* `STDERR_SILENCE */
     else if (tag == caml_hash_variant("STDERR_MERGE")) result |= G_SUBPROCESS_FLAGS_STDERR_MERGE; /* `STDERR_MERGE */
     else if (tag == caml_hash_variant("INHERIT_FDS")) result |= G_SUBPROCESS_FLAGS_INHERIT_FDS; /* `INHERIT_FDS */
+#if GLIB_CHECK_VERSION(2,72,0)
     else if (tag == caml_hash_variant("SEARCH_PATH_FROM_ENVP")) result |= G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP; /* `SEARCH_PATH_FROM_ENVP */
+
+#else
+    else if (tag == caml_hash_variant("SEARCH_PATH_FROM_ENVP")) caml_failwith("GSubprocessFlags.SEARCH_PATH_FROM_ENVP requires 2.72");
+#endif
     list = Field(list, 1);
   }
   return result;
@@ -3368,12 +3805,15 @@ value Val_GioTlsCertificateFlags(GTlsCertificateFlags flags) {
   CAMLlocal2(result, cons);
   result = Val_emptylist;
 
+#if GLIB_CHECK_VERSION(2,74,0)
   if (flags & G_TLS_CERTIFICATE_NO_FLAGS) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("NO_FLAGS"))); /* `NO_FLAGS */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
   if (flags & G_TLS_CERTIFICATE_UNKNOWN_CA) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("UNKNOWN_CA"))); /* `UNKNOWN_CA */
@@ -3431,7 +3871,12 @@ GTlsCertificateFlags GioTlsCertificateFlags_val(value list) {
   GTlsCertificateFlags result = 0;
   while (list != Val_emptylist) {
     int tag = Int_val(Field(list, 0));
+#if GLIB_CHECK_VERSION(2,74,0)
     if (tag == caml_hash_variant("NO_FLAGS")) result |= G_TLS_CERTIFICATE_NO_FLAGS; /* `NO_FLAGS */
+
+#else
+    if (tag == caml_hash_variant("NO_FLAGS")) caml_failwith("GTlsCertificateFlags.NO_FLAGS requires 2.74");
+#endif
     else if (tag == caml_hash_variant("UNKNOWN_CA")) result |= G_TLS_CERTIFICATE_UNKNOWN_CA; /* `UNKNOWN_CA */
     else if (tag == caml_hash_variant("BAD_IDENTITY")) result |= G_TLS_CERTIFICATE_BAD_IDENTITY; /* `BAD_IDENTITY */
     else if (tag == caml_hash_variant("NOT_ACTIVATED")) result |= G_TLS_CERTIFICATE_NOT_ACTIVATED; /* `NOT_ACTIVATED */
@@ -3508,24 +3953,33 @@ value Val_GioTlsPasswordFlags(GTlsPasswordFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GLIB_CHECK_VERSION(2,70,0)
   if (flags & G_TLS_PASSWORD_PKCS11_USER) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("PKCS11_USER"))); /* `PKCS11_USER */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
+#if GLIB_CHECK_VERSION(2,70,0)
   if (flags & G_TLS_PASSWORD_PKCS11_SECURITY_OFFICER) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("PKCS11_SECURITY_OFFICER"))); /* `PKCS11_SECURITY_OFFICER */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
+#if GLIB_CHECK_VERSION(2,70,0)
   if (flags & G_TLS_PASSWORD_PKCS11_CONTEXT_SPECIFIC) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, Val_int(caml_hash_variant("PKCS11_CONTEXT_SPECIFIC"))); /* `PKCS11_CONTEXT_SPECIFIC */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -3539,9 +3993,24 @@ GTlsPasswordFlags GioTlsPasswordFlags_val(value list) {
     else if (tag == caml_hash_variant("RETRY")) result |= G_TLS_PASSWORD_RETRY; /* `RETRY */
     else if (tag == caml_hash_variant("MANY_TRIES")) result |= G_TLS_PASSWORD_MANY_TRIES; /* `MANY_TRIES */
     else if (tag == caml_hash_variant("FINAL_TRY")) result |= G_TLS_PASSWORD_FINAL_TRY; /* `FINAL_TRY */
+#if GLIB_CHECK_VERSION(2,70,0)
     else if (tag == caml_hash_variant("PKCS11_USER")) result |= G_TLS_PASSWORD_PKCS11_USER; /* `PKCS11_USER */
+
+#else
+    else if (tag == caml_hash_variant("PKCS11_USER")) caml_failwith("GTlsPasswordFlags.PKCS11_USER requires 2.70");
+#endif
+#if GLIB_CHECK_VERSION(2,70,0)
     else if (tag == caml_hash_variant("PKCS11_SECURITY_OFFICER")) result |= G_TLS_PASSWORD_PKCS11_SECURITY_OFFICER; /* `PKCS11_SECURITY_OFFICER */
+
+#else
+    else if (tag == caml_hash_variant("PKCS11_SECURITY_OFFICER")) caml_failwith("GTlsPasswordFlags.PKCS11_SECURITY_OFFICER requires 2.70");
+#endif
+#if GLIB_CHECK_VERSION(2,70,0)
     else if (tag == caml_hash_variant("PKCS11_CONTEXT_SPECIFIC")) result |= G_TLS_PASSWORD_PKCS11_CONTEXT_SPECIFIC; /* `PKCS11_CONTEXT_SPECIFIC */
+
+#else
+    else if (tag == caml_hash_variant("PKCS11_CONTEXT_SPECIFIC")) caml_failwith("GTlsPasswordFlags.PKCS11_CONTEXT_SPECIFIC requires 2.70");
+#endif
     list = Field(list, 1);
   }
   return result;

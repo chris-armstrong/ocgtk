@@ -3,11 +3,25 @@
 
 type t = [`tree_store | `object_] Gobject.obj
 
+(** Create a new TreeStore *)
+external newv : int -> int array -> t = "ml_gtk_tree_store_newv"
+
 (* Methods *)
 (** Swaps @a and @b in the same level of @tree_store.
 
 Note that this function only works with unsorted stores. *)
 external swap : t -> Tree_iter.t -> Tree_iter.t -> unit = "ml_gtk_tree_store_swap"
+
+(** Sets the type of the columns in a tree store.
+
+This function is meant primarily for types that inherit from
+`GtkTreeStore`, and should only be used when constructing a new
+`GtkTreeStore`.
+
+This functions cannot be called after a row has been added,
+or a method on the `GtkTreeModel` interface is called on the
+tree store. *)
+external set_column_types : t -> int -> int array -> unit = "ml_gtk_tree_store_set_column_types"
 
 (** Removes @iter from @tree_store.
 

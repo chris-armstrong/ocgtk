@@ -20,6 +20,9 @@ external get_model : t -> Selection_model.t option = "ml_gtk_selection_filter_mo
 
 (* Properties *)
 
+(** Get property: item-type *)
+external get_item_type : t -> int = "ml_gtk_selection_filter_model_get_item_type"
+
 (** Get property: n-items *)
 external get_n_items : t -> int = "ml_gtk_selection_filter_model_get_n_items"
 

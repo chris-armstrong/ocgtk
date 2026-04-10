@@ -63,10 +63,11 @@ The executable is built to `_build/default/src/tools/gir_gen/gir_gen.exe`
 
 ### Commands
 
-gir_gen has two main commands:
+gir_gen has three commands:
 
 - **`generate`** - Generate C FFI bindings and OCaml modules from GIR files
 - **`references`** - Generate cross-namespace reference list for type validation
+- **`overrides`** - Extract `Since` version annotations from a GIR file into an override sexp file
 
 ### From the `ocgtk` directory
 
@@ -88,10 +89,27 @@ dune exec src/tools/gir_gen/gir_gen.exe -- generate /usr/share/gir-1.0/Gtk-4.0.g
 
 ### Generate Command Options
 
-- `GIR_FILE`: Path to GTK GIR file (usually `/usr/share/gir-1.0/Gtk-4.0.gir`)
+- `GIR_FILE`: Path to GIR file (e.g. `/usr/share/gir-1.0/Gtk-4.0.gir`)
 - `OUTPUT_DIR`: Where to write generated files
 - `-f, --filter FILE`: Optional filter file specifying which classes to generate
 - `-r, --reference FILE`: Optional reference file(s) for cross-namespace type validation (can be specified multiple times)
+- `-o, --overrides FILE`: Optional override sexp file controlling which entities are ignored and their version guards (see [Override System](#override-system))
+
+### References Command Options
+
+- `GIR_FILE`: Path to GIR file
+- `OUTPUT_FILE`: Where to write the reference sexp
+- `-o, --overrides FILE`: Optional override sexp file; ignored entities are excluded from the reference output
+
+### Overrides Command
+
+Extracts `Since` version annotations from GIR documentation into a starter override file. The output should be committed to `overrides/<ns>.sexp` and then augmented with manually-authored `(ignore)` entries.
+
+```bash
+# Extract version annotations for GTK into the overrides directory
+dune exec src/tools/gir_gen/gir_gen.exe -- overrides \
+  /usr/share/gir-1.0/Gtk-4.0.gir overrides/gtk.sexp
+```
 
 ### ⚠️ IMPORTANT: Output Directory Convention
 
@@ -157,6 +175,16 @@ dune exec src/tools/gir_gen/gir_gen.exe -- generate \
   /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
 ```
 
+### Generate with Override File
+
+```bash
+# Apply overrides while generating
+dune exec src/tools/gir_gen/gir_gen.exe -- generate \
+  -o overrides/gtk.sexp \
+  -r gdk_refs.txt \
+  /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+```
+
 ## Output Files
 
 Generated files are written to `src/<ns>/generated/` (e.g., `src/gtk/generated/`):
@@ -169,6 +197,76 @@ Generated files are written to `src/<ns>/generated/` (e.g., `src/gtk/generated/`
 - **Wrapper module**: `ocgtk_<ns>.ml` - Library wrapper: `module <Ns> = <Ns>; include <Ns>` + core module aliases
 - **Declaration header**: `<ns>_decls.h` - C type converter declarations, includes dependency headers
 - **Combined cyclic modules**: `<class1>_and__<class2>_and__<class3>.ml/.mli` - Single module combining mutually-recursive classes (see dependency resolution below)
+
+## Override System
+
+Override files (`overrides/<ns>.sexp`) allow per-library customisation of what gets
+generated without modifying the generator source. They replace the former hardcoded
+exclusion lists in `exclude_list.ml`, `filtering.ml`, and `library_module.ml`.
+
+Override files live in `ocgtk/overrides/` and are committed to the repository. One file
+exists per namespace (e.g. `overrides/gtk.sexp`, `overrides/gio.sexp`).
+
+### Format
+
+```sexp
+(overrides
+  (library "Gtk")
+
+  ;; Ignore an entire class (no bindings generated)
+  (class PrintJob (ignore))
+
+  ;; Ignore a single method on a class
+  (class TextBuffer
+    (method insert_with_tags (ignore))
+  )
+
+  ;; Ignore a property
+  (class IconPaintable
+    (property is-symbolic (ignore))
+  )
+
+  ;; Set a version guard on an enum member (emits #if GTK_CHECK_VERSION(...))
+  (enumeration FileChooserAction
+    (save (version "4.10"))
+  )
+
+  ;; Ignore a bitfield or record
+  (bitfield PrintCapabilities (ignore))
+  (record PrintBackend (ignore))
+)
+```
+
+Supported entity kinds: `class`, `interface`, `enumeration`, `bitfield`, `record`.
+Supported sub-component directives: `method`, `constructor`, `property`, `signal`,
+`member` (enum member), `flag` (bitfield flag).
+
+Available actions:
+- `(ignore)` — skip generation of this entity or sub-component entirely
+- `(version "X.Y")` — emit a `#if NS_CHECK_VERSION(X, Y, 0)` guard around the C code
+
+### Workflow: updating override files
+
+Override files are generated once with `gir_gen overrides` and then hand-edited. When
+the GIR file changes (e.g. a GTK upgrade), re-run `gir_gen overrides` and merge the
+diff to pick up new `Since` annotations.
+
+The recommended workflow is to use `generate-bindings.sh` (from the repository root),
+which handles all 9 namespaces end-to-end:
+
+```bash
+bash scripts/generate-bindings.sh
+```
+
+To regenerate just the version-annotation portion for one namespace:
+
+```bash
+cd ocgtk
+dune exec src/tools/gir_gen/gir_gen.exe -- overrides \
+  /usr/share/gir-1.0/Gtk-4.0.gir overrides/gtk.sexp
+```
+
+Then review the diff, keep any manual `(ignore)` entries you added, and commit.
 
 ## Constructor Wrapper Generation
 

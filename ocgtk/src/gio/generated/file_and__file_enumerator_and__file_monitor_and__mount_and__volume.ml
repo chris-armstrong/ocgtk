@@ -87,6 +87,22 @@ module rec File : sig
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
   external set_attributes_from_info : t -> File_info.t -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attributes_from_info"
 
+  (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_UINT64 to @value.
+  If @attribute is of a different type, this operation will fail.
+
+  If @cancellable is not %NULL, then the operation can be cancelled by
+  triggering the cancellable object from another thread. If the operation
+  was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+  external set_attribute_uint64 : t -> string -> Unsigned.UInt64.t -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_uint64"
+
+  (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_UINT32 to @value.
+  If @attribute is of a different type, this operation will fail.
+
+  If @cancellable is not %NULL, then the operation can be cancelled by
+  triggering the cancellable object from another thread. If the operation
+  was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+  external set_attribute_uint32 : t -> string -> int -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_uint32"
+
   (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_STRING to @value.
   If @attribute is of a different type, this operation will fail.
 
@@ -94,6 +110,22 @@ module rec File : sig
   triggering the cancellable object from another thread. If the operation
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
   external set_attribute_string : t -> string -> string -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_string"
+
+  (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_INT64 to @value.
+  If @attribute is of a different type, this operation will fail.
+
+  If @cancellable is not %NULL, then the operation can be cancelled by
+  triggering the cancellable object from another thread. If the operation
+  was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+  external set_attribute_int64 : t -> string -> int64 -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_int64"
+
+  (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_INT32 to @value.
+  If @attribute is of a different type, this operation will fail.
+
+  If @cancellable is not %NULL, then the operation can be cancelled by
+  triggering the cancellable object from another thread. If the operation
+  was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+  external set_attribute_int32 : t -> string -> int32 -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_int32"
 
   (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING to @value.
   If @attribute is of a different type, this operation will fail,
@@ -409,6 +441,11 @@ module rec File : sig
   triggering the cancellable object from another thread. If the operation
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
   external monitor : t -> Gio_enums.filemonitorflags -> Cancellable.t option -> (File_monitor.t, GError.t) result = "ml_g_file_monitor"
+
+  (** Collects the results from an earlier call to
+  g_file_measure_disk_usage_async().  See g_file_measure_disk_usage() for
+  more information. *)
+  external measure_disk_usage_finish : t -> Async_result.t -> (bool * Unsigned.UInt64.t * Unsigned.UInt64.t * Unsigned.UInt64.t, GError.t) result = "ml_g_file_measure_disk_usage_finish"
 
   (** Finishes an asynchronous symbolic link creation, started with
   g_file_make_symbolic_link_async(). *)
@@ -878,6 +915,22 @@ end = struct
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
   external set_attributes_from_info : t -> File_info.t -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attributes_from_info"
 
+  (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_UINT64 to @value.
+  If @attribute is of a different type, this operation will fail.
+
+  If @cancellable is not %NULL, then the operation can be cancelled by
+  triggering the cancellable object from another thread. If the operation
+  was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+  external set_attribute_uint64 : t -> string -> Unsigned.UInt64.t -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_uint64"
+
+  (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_UINT32 to @value.
+  If @attribute is of a different type, this operation will fail.
+
+  If @cancellable is not %NULL, then the operation can be cancelled by
+  triggering the cancellable object from another thread. If the operation
+  was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+  external set_attribute_uint32 : t -> string -> int -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_uint32"
+
   (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_STRING to @value.
   If @attribute is of a different type, this operation will fail.
 
@@ -885,6 +938,22 @@ end = struct
   triggering the cancellable object from another thread. If the operation
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
   external set_attribute_string : t -> string -> string -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_string"
+
+  (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_INT64 to @value.
+  If @attribute is of a different type, this operation will fail.
+
+  If @cancellable is not %NULL, then the operation can be cancelled by
+  triggering the cancellable object from another thread. If the operation
+  was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+  external set_attribute_int64 : t -> string -> int64 -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_int64"
+
+  (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_INT32 to @value.
+  If @attribute is of a different type, this operation will fail.
+
+  If @cancellable is not %NULL, then the operation can be cancelled by
+  triggering the cancellable object from another thread. If the operation
+  was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+  external set_attribute_int32 : t -> string -> int32 -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_int32"
 
   (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING to @value.
   If @attribute is of a different type, this operation will fail,
@@ -1200,6 +1269,11 @@ end = struct
   triggering the cancellable object from another thread. If the operation
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
   external monitor : t -> Gio_enums.filemonitorflags -> Cancellable.t option -> (File_monitor.t, GError.t) result = "ml_g_file_monitor"
+
+  (** Collects the results from an earlier call to
+  g_file_measure_disk_usage_async().  See g_file_measure_disk_usage() for
+  more information. *)
+  external measure_disk_usage_finish : t -> Async_result.t -> (bool * Unsigned.UInt64.t * Unsigned.UInt64.t * Unsigned.UInt64.t, GError.t) result = "ml_g_file_measure_disk_usage_finish"
 
   (** Finishes an asynchronous symbolic link creation, started with
   g_file_make_symbolic_link_async(). *)

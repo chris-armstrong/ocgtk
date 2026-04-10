@@ -1,5 +1,7 @@
 class type css_provider_t = object
     inherit Gcss_provider_signals.css_provider_signals
+    method load_from_bytes : Glib_bytes.t -> unit
+    method load_from_data : string -> int -> unit
     method load_from_file : Ocgtk_gio.Gio.File.file_t -> unit
     method load_from_path : string -> unit
     method load_from_resource : string -> unit

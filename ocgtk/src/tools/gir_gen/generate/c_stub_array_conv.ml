@@ -194,6 +194,11 @@ module Array_conv = struct
           String.equal element_tm.ml_to_c "Int_val"
           || String.equal element_tm.ml_to_c "Double_val"
           || String.equal element_tm.ml_to_c "Bool_val"
+          || String.equal element_tm.ml_to_c "Long_val"
+          || String.equal element_tm.ml_to_c "GType_val"
+          || String.equal element_tm.ml_to_c "Int32_val"
+          || String.equal element_tm.ml_to_c "Int64_val"
+          || String.equal element_tm.ml_to_c "Uint64_val"
           || is_string_elem
         in
         let is_gobject_converter =
@@ -320,6 +325,11 @@ module Array_conv = struct
           || String.equal element_tm.c_to_ml "Val_bool"
           || String.equal element_tm.c_to_ml "caml_copy_double"
           || String.equal element_tm.c_to_ml "caml_copy_string"
+          || String.equal element_tm.c_to_ml "Val_long"
+          || String.equal element_tm.c_to_ml "Val_GType"
+          || String.equal element_tm.c_to_ml "caml_copy_int32"
+          || String.equal element_tm.c_to_ml "caml_copy_int64"
+          || String.equal element_tm.c_to_ml "integers_copy_uint64"
         in
         (* Check if element type is an enum or bitfield - these take values, not pointers.
            Use classify_type to handle both same-namespace and cross-namespace types. *)

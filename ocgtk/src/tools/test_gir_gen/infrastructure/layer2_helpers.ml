@@ -64,6 +64,7 @@ let create_test_method ~name ~c_identifier () =
     set_property = None;
     introspectable = true;
     version = None;
+    version_namespace = None;
   }
 
 (* Create a test method with a single parameter *)
@@ -89,6 +90,7 @@ let create_test_method_with_param ~name ~c_identifier ~param_name ~param_type ()
     set_property = None;
     introspectable = true;
     version = None;
+    version_namespace = None;
   }
 
 (* Create a test method with multiple parameters *)
@@ -104,6 +106,7 @@ let create_test_method_with_params ~name ~c_identifier ~params () =
     set_property = None;
     introspectable = true;
     version = None;
+    version_namespace = None;
   }
 
 (* Create a test method with a return type *)
@@ -119,6 +122,7 @@ let create_test_method_with_return ~name ~c_identifier ~return_type () =
     set_property = None;
     introspectable = true;
     version = None;
+    version_namespace = None;
   }
 
 (* Create a test method that throws errors *)
@@ -134,6 +138,7 @@ let create_test_method_throwing ~name ~c_identifier () =
     set_property = None;
     introspectable = true;
     version = None;
+    version_namespace = None;
   }
 
 (* ========================================================================= *)
@@ -345,6 +350,7 @@ let create_test_signal ~name =
     sig_parameters = [];
     doc = None;
     version = None;
+    version_namespace = None;
   }
 
 (* Create a test GIR signal with return type *)
@@ -355,6 +361,7 @@ let create_test_signal_with_return ~name ~return_type =
     sig_parameters = [];
     doc = None;
     version = None;
+    version_namespace = None;
   }
 
 (* Create a test GIR signal with parameters *)
@@ -365,6 +372,7 @@ let create_test_signal_with_params ~name ~return_type ~params =
     sig_parameters = params;
     doc = None;
     version = None;
+    version_namespace = None;
   }
 
 (* Create a test class with signals *)

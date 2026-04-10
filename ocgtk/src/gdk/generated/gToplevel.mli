@@ -1,5 +1,8 @@
 class type toplevel_t = object
     inherit Gtoplevel_signals.toplevel_signals
+    method begin_move : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.device_t -> int -> float -> float -> int -> unit
+    method begin_resize : Gdk_enums.surfaceedge -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.device_t option -> int -> float -> float -> int -> unit
+    method focus : int -> unit
     method get_state : unit -> Gdk_enums.toplevelstate
     method inhibit_system_shortcuts : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event_t option -> unit
     method lower : unit -> bool

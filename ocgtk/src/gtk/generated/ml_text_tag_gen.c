@@ -2438,7 +2438,7 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
-#if GTK_CHECK_VERSION(4,6,0)
+#if PANGO_VERSION_CHECK(1,50,0)
 
 CAMLexport CAMLprim value ml_gtk_text_tag_get_text_transform(value self)
 {
@@ -2463,12 +2463,12 @@ CAMLexport CAMLprim value ml_gtk_text_tag_get_text_transform(value self)
 {
 CAMLparam1(self);
 (void)self;
-caml_failwith("TextTag requires GTK >= 4.6");
+caml_failwith("TextTag requires GTK >= 1.50");
 return Val_unit;
 }
 #endif
 
-#if GTK_CHECK_VERSION(4,6,0)
+#if PANGO_VERSION_CHECK(1,50,0)
 
 CAMLexport CAMLprim value ml_gtk_text_tag_set_text_transform(value self, value new_value)
 {
@@ -2492,7 +2492,7 @@ CAMLexport CAMLprim value ml_gtk_text_tag_set_text_transform(value self, value a
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("TextTag requires GTK >= 4.6");
+caml_failwith("TextTag requires GTK >= 1.50");
 return Val_unit;
 }
 #endif

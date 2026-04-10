@@ -17,6 +17,15 @@
 #include "gtk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gtk_property_expression_new(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+
+GtkPropertyExpression *obj = gtk_property_expression_new(GType_val(arg1), Option_val(arg2, GtkExpression_val, NULL), String_val(arg3));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkPropertyExpression(obj));
+}
 CAMLexport CAMLprim value ml_gtk_property_expression_get_expression(value self)
 {
 CAMLparam1(self);

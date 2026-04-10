@@ -53,6 +53,10 @@ let new_from_files (cert_file : string) (key_file : string) : (tls_certificate_t
   let obj_ = Tls_certificate.new_from_files cert_file key_file in
 Result.map (fun obj_ ->  new tls_certificate obj_) obj_
 
+let new_from_pem (data : string) (length : int) : (tls_certificate_t, GError.t) result =
+  let obj_ = Tls_certificate.new_from_pem data length in
+Result.map (fun obj_ ->  new tls_certificate obj_) obj_
+
 let new_from_pkcs11_uris (pkcs11_uri : string) (private_key_pkcs11_uri : string option) : (tls_certificate_t, GError.t) result =
   let obj_ = Tls_certificate.new_from_pkcs11_uris pkcs11_uri private_key_pkcs11_uri in
 Result.map (fun obj_ ->  new tls_certificate obj_) obj_

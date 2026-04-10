@@ -106,5 +106,9 @@ let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
   end;
 
   Buffer.add_string buf "\n";
+  (* Include manually-maintained core header for namespace-specific additions
+     (e.g. UNIX headers not present in older GIR versions) *)
+  bprintf buf "#include \"../core/%s_core.h\"\n" ns_lower;
+  Buffer.add_string buf "\n";
   bprintf buf "#endif /* _%s_decls_h_ */\n" ns_lower;
   Buffer.contents buf

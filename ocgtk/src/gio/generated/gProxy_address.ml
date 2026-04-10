@@ -1,6 +1,7 @@
 class type proxy_address_t = object
     inherit GInet_socket_address.inet_socket_address_t
     method get_destination_hostname : unit -> string
+    method get_destination_port : unit -> int
     method get_destination_protocol : unit -> string
     method get_password : unit -> string option
     method get_protocol : unit -> string
@@ -16,6 +17,10 @@ class proxy_address (obj : Proxy_address.t) : proxy_address_t = object (self)
   method get_destination_hostname : unit -> string =
     fun () ->
       (Proxy_address.get_destination_hostname obj)
+
+  method get_destination_port : unit -> int =
+    fun () ->
+      (Proxy_address.get_destination_port obj)
 
   method get_destination_protocol : unit -> string =
     fun () ->
@@ -39,4 +44,9 @@ class proxy_address (obj : Proxy_address.t) : proxy_address_t = object (self)
 
     method as_proxy_address = obj
 end
+
+let new_ (inetaddr : GInet_address.inet_address_t) (port : int) (protocol : string) (dest_hostname : string) (dest_port : int) (username : string option) (password : string option) : proxy_address_t =
+  let inetaddr = inetaddr#as_inet_address in
+  let obj_ = Proxy_address.new_ inetaddr port protocol dest_hostname dest_port username password in
+  new proxy_address obj_
 

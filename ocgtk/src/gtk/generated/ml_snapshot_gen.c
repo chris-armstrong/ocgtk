@@ -205,6 +205,20 @@ return Val_unit;
 }
 #endif
 
+CAMLexport CAMLprim value ml_gtk_snapshot_push_shadow(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+    int arg1_length = Wosize_val(arg1);
+    GskShadow* c_arg1 = (GskShadow*)g_malloc(sizeof(GskShadow) * arg1_length);
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = *GskShadow_val(Field(arg1, i));
+    }
+
+gtk_snapshot_push_shadow(GtkSnapshot_val(self), c_arg1, Long_val(arg2));
+    g_free(c_arg1);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_snapshot_push_rounded_clip(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -250,6 +264,14 @@ caml_failwith("Snapshot requires GTK >= 4.10");
 return Val_unit;
 }
 #endif
+
+CAMLexport CAMLprim value ml_gtk_snapshot_push_gl_shader(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_snapshot_push_gl_shader(GtkSnapshot_val(self), GskGLShader_val(arg1), graphene_rect_t_val(arg2), GBytes_val(arg3));
+CAMLreturn(Val_unit);
+}
 
 #if GTK_CHECK_VERSION(4,14,0)
 
@@ -394,6 +416,63 @@ return Val_unit;
 }
 #endif
 
+CAMLexport CAMLprim value ml_gtk_snapshot_append_repeating_radial_gradient_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam4(arg5, arg6, arg7, arg8);
+    int arg7_length = Wosize_val(arg7);
+    GskColorStop* c_arg7 = (GskColorStop*)g_malloc(sizeof(GskColorStop) * arg7_length);
+    for (int i = 0; i < arg7_length; i++) {
+      c_arg7[i] = *GskColorStop_val(Field(arg7, i));
+    }
+
+gtk_snapshot_append_repeating_radial_gradient(GtkSnapshot_val(self), graphene_rect_t_val(arg1), graphene_point_t_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6), c_arg7, Long_val(arg8));
+    g_free(c_arg7);
+CAMLreturn(Val_unit);}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_repeating_radial_gradient_bytecode(value * argv, int argn)
+{
+return ml_gtk_snapshot_append_repeating_radial_gradient_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7], argv[8]);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_repeating_linear_gradient_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam1(arg5);
+    int arg4_length = Wosize_val(arg4);
+    GskColorStop* c_arg4 = (GskColorStop*)g_malloc(sizeof(GskColorStop) * arg4_length);
+    for (int i = 0; i < arg4_length; i++) {
+      c_arg4[i] = *GskColorStop_val(Field(arg4, i));
+    }
+
+gtk_snapshot_append_repeating_linear_gradient(GtkSnapshot_val(self), graphene_rect_t_val(arg1), graphene_point_t_val(arg2), graphene_point_t_val(arg3), c_arg4, Long_val(arg5));
+    g_free(c_arg4);
+CAMLreturn(Val_unit);}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_repeating_linear_gradient_bytecode(value * argv, int argn)
+{
+return ml_gtk_snapshot_append_repeating_linear_gradient_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_radial_gradient_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam4(arg5, arg6, arg7, arg8);
+    int arg7_length = Wosize_val(arg7);
+    GskColorStop* c_arg7 = (GskColorStop*)g_malloc(sizeof(GskColorStop) * arg7_length);
+    for (int i = 0; i < arg7_length; i++) {
+      c_arg7[i] = *GskColorStop_val(Field(arg7, i));
+    }
+
+gtk_snapshot_append_radial_gradient(GtkSnapshot_val(self), graphene_rect_t_val(arg1), graphene_point_t_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6), c_arg7, Long_val(arg8));
+    g_free(c_arg7);
+CAMLreturn(Val_unit);}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_radial_gradient_bytecode(value * argv, int argn)
+{
+return ml_gtk_snapshot_append_radial_gradient_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7], argv[8]);
+}
+
 CAMLexport CAMLprim value ml_gtk_snapshot_append_outset_shadow_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -413,6 +492,25 @@ CAMLparam2(self, arg1);
 
 gtk_snapshot_append_node(GtkSnapshot_val(self), GskRenderNode_val(arg1));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_linear_gradient_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam1(arg5);
+    int arg4_length = Wosize_val(arg4);
+    GskColorStop* c_arg4 = (GskColorStop*)g_malloc(sizeof(GskColorStop) * arg4_length);
+    for (int i = 0; i < arg4_length; i++) {
+      c_arg4[i] = *GskColorStop_val(Field(arg4, i));
+    }
+
+gtk_snapshot_append_linear_gradient(GtkSnapshot_val(self), graphene_rect_t_val(arg1), graphene_point_t_val(arg2), graphene_point_t_val(arg3), c_arg4, Long_val(arg5));
+    g_free(c_arg4);
+CAMLreturn(Val_unit);}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_linear_gradient_bytecode(value * argv, int argn)
+{
+return ml_gtk_snapshot_append_linear_gradient_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
 
 CAMLexport CAMLprim value ml_gtk_snapshot_append_layout(value self, value arg1, value arg2)
@@ -459,6 +557,25 @@ caml_failwith("Snapshot requires GTK >= 4.14");
 return Val_unit;
 }
 #endif
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_conic_gradient_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam1(arg5);
+    int arg4_length = Wosize_val(arg4);
+    GskColorStop* c_arg4 = (GskColorStop*)g_malloc(sizeof(GskColorStop) * arg4_length);
+    for (int i = 0; i < arg4_length; i++) {
+      c_arg4[i] = *GskColorStop_val(Field(arg4, i));
+    }
+
+gtk_snapshot_append_conic_gradient(GtkSnapshot_val(self), graphene_rect_t_val(arg1), graphene_point_t_val(arg2), Double_val(arg3), c_arg4, Long_val(arg5));
+    g_free(c_arg4);
+CAMLreturn(Val_unit);}
+
+CAMLexport CAMLprim value ml_gtk_snapshot_append_conic_gradient_bytecode(value * argv, int argn)
+{
+return ml_gtk_snapshot_append_conic_gradient_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+}
 
 CAMLexport CAMLprim value ml_gtk_snapshot_append_color(value self, value arg1, value arg2)
 {

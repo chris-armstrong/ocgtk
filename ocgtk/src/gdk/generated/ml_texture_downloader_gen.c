@@ -84,6 +84,19 @@ gdk_texture_downloader_free(GdkTextureDownloader_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gdk_texture_downloader_download_bytes(value self)
+{
+CAMLparam1(self);
+gsize out1;
+
+GBytes* result = gdk_texture_downloader_download_bytes(GdkTextureDownloader_val(self), &out1);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_GBytes(result));
+    Store_field(ret, 1, Val_long(out1));
+    CAMLreturn(ret);
+}
+
 CAMLexport CAMLprim value ml_gdk_texture_downloader_copy(value self)
 {
 CAMLparam1(self);
@@ -105,6 +118,15 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_gdk_texture_downloader_copy(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TextureDownloader requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gdk_texture_downloader_download_bytes(value self)
 {
 CAMLparam1(self);
 (void)self;

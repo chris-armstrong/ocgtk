@@ -1,5 +1,6 @@
 class type selection_filter_model_t = object
     method get_model : unit -> GSelection_model.selection_model_t option
+    method item_type : int
     method n_items : int
     method as_selection_filter_model : Selection_filter_model.t
 end
@@ -10,6 +11,8 @@ class selection_filter_model (obj : Selection_filter_model.t) : selection_filter
   method get_model : unit -> GSelection_model.selection_model_t option =
     fun () ->
       Option.map (fun ret -> new GSelection_model.selection_model ret) (Selection_filter_model.get_model obj)
+
+  method item_type = Selection_filter_model.get_item_type obj
 
   method n_items = Selection_filter_model.get_n_items obj
 

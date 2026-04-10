@@ -609,3 +609,11 @@ CAMLparam2(self, arg1);
 const char* result = gtk_print_settings_get(GtkPrintSettings_val(self), String_val(arg1));
 CAMLreturn(Val_option_string(result));
 }
+
+CAMLexport CAMLprim value ml_gtk_print_settings_copy(value self)
+{
+CAMLparam1(self);
+
+GtkPrintSettings* result = gtk_print_settings_copy(GtkPrintSettings_val(self));
+CAMLreturn(Val_GtkPrintSettings(result));
+}

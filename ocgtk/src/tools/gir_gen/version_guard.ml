@@ -20,6 +20,25 @@ let namespace_macro_kind namespace =
   | "Cairo" -> Ok (EncodeComparison ("CAIRO_VERSION", "CAIRO_VERSION_ENCODE"))
   | other -> Error (Printf.sprintf "Unknown namespace: %s" other)
 
+(** Map a user-supplied (case-insensitive) library name to the canonical GIR
+    namespace name accepted by {!namespace_macro_kind}.  Returns [Error] for
+    unknown names. *)
+let normalize_namespace s =
+  match String.lowercase_ascii s with
+  | "gtk"        -> Ok "Gtk"
+  | "gdk"        -> Ok "Gdk"
+  | "gsk"        -> Ok "Gsk"
+  | "pango"      -> Ok "Pango"
+  | "pangocairo" | "pango-cairo" -> Ok "PangoCairo"
+  | "gio" | "glib" -> Ok "Gio"
+  | "gdkpixbuf" | "gdk-pixbuf"   -> Ok "GdkPixbuf"
+  | "graphene"   -> Ok "Graphene"
+  | "cairo"      -> Ok "Cairo"
+  | _ ->
+      Error (Printf.sprintf
+        "Unknown library name '%s'. Expected one of: \
+         gtk, gdk, gsk, pango, pangocairo, gio, glib, gdkpixbuf, graphene, cairo" s)
+
 let parse_component version_str s =
   match int_of_string_opt s with
   | Some n -> Ok n
