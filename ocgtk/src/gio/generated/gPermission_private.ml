@@ -1,6 +1,5 @@
 (* High-level class for PermissionPrivate *)
-class permission_private (obj : Permission_private.t) = object (self)
-
+class permission_private (obj : Permission_private.t) =
+  object (self)
     method as_permission_private = obj
-end
-
+  end

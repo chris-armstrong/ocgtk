@@ -1,4 +1,9 @@
 class type tree_store_t = object
+    inherit GBuildable.buildable_t
+    inherit GTree_drag_dest.tree_drag_dest_t
+    inherit GTree_drag_source.tree_drag_source_t
+    inherit GTree_model.tree_model_t
+    inherit GTree_sortable.tree_sortable_t
     method clear : unit -> unit
     method is_ancestor : Tree_iter.t -> Tree_iter.t -> bool
     method iter_depth : Tree_iter.t -> int

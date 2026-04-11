@@ -3,6 +3,8 @@
 
 type t = [`network_monitor] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_network_monitor_from_gobject"
+
 (* Methods *)
 (** Checks if the network is metered.
 See #GNetworkMonitor:network-metered for more details. *)
@@ -56,7 +58,7 @@ Note that although this does not attempt to connect to
 @connectable, it may still block for a brief period of time (eg,
 trying to do multicast DNS on the local network), so if you do not
 want to block, you should use g_network_monitor_can_reach_async(). *)
-external can_reach : t -> Socket_connectable.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_network_monitor_can_reach"
+external can_reach : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_connectable.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_network_monitor_can_reach"
 
 (* Properties *)
 

@@ -1,6 +1,8 @@
 class type buffered_input_stream_t = object
     inherit GFilter_input_stream.filter_input_stream_t
+    inherit GSeekable.seekable_t
     method fill : int -> GCancellable.cancellable_t option -> (int, GError.t) result
+    method fill_finish : GAsync_result.async_result_t -> (int, GError.t) result
     method get_available : unit -> Gsize.t
     method get_buffer_size : unit -> Gsize.t
     method read_byte : GCancellable.cancellable_t option -> (int, GError.t) result
@@ -11,11 +13,17 @@ end
 (* High-level class for BufferedInputStream *)
 class buffered_input_stream (obj : Buffered_input_stream.t) : buffered_input_stream_t = object (self)
   inherit GFilter_input_stream.filter_input_stream (obj :> Filter_input_stream.t)
+  inherit GSeekable.seekable (Seekable.from_gobject obj)
 
   method fill : int -> GCancellable.cancellable_t option -> (int, GError.t) result =
     fun count cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Buffered_input_stream.fill obj count cancellable)
+
+  method fill_finish : GAsync_result.async_result_t -> (int, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (Buffered_input_stream.fill_finish obj result)
 
   method get_available : unit -> Gsize.t =
     fun () ->

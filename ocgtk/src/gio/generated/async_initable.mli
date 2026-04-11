@@ -3,6 +3,8 @@
 
 type t = [`async_initable] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_async_initable_from_gobject"
+
 (* Methods *)
 (** Finishes the async construction for the various g_async_initable_new
 calls, returning the created object or %NULL on error. *)

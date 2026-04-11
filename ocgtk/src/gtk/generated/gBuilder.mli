@@ -14,6 +14,7 @@ class type builder_t = object
     method get_translation_domain : unit -> string option
     method get_type_from_name : string -> int
     method set_current_object : [`object_] Gobject.obj option -> unit
+    method set_scope : GBuilder_scope.builder_scope_t option -> unit
     method set_translation_domain : string option -> unit
     method as_builder : Builder.t
 end

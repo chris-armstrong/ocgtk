@@ -7,7 +7,7 @@ type t = [`tree_view_column | `initially_unowned | `object_] Gobject.obj
 external new_ : unit -> t = "ml_gtk_tree_view_column_new"
 
 (** Create a new TreeViewColumn *)
-external new_with_area : Cell_area_and__cell_area_context.Cell_area.t -> t = "ml_gtk_tree_view_column_new_with_area"
+external new_with_area : Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t -> t = "ml_gtk_tree_view_column_new_with_area"
 
 (* Methods *)
 (** Sets the widget in the header to be @widget.  If widget is %NULL, then the
@@ -238,5 +238,5 @@ external add_attribute : t -> Cell_renderer.t -> string -> int -> unit = "ml_gtk
 (* Properties *)
 
 (** Get property: cell-area *)
-external get_cell_area : t -> Cell_area_and__cell_area_context.Cell_area.t = "ml_gtk_tree_view_column_get_cell_area"
+external get_cell_area : t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t = "ml_gtk_tree_view_column_get_cell_area"
 

@@ -4,6 +4,8 @@
 module rec App_info : sig
   type t = [`app_info] Gobject.obj
 
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_app_info_from_gobject"
+
   (* Methods *)
   (** Checks if the application supports reading files and directories from URIs. *)
   external supports_uris : t -> bool = "ml_g_app_info_supports_uris"
@@ -119,6 +121,8 @@ module rec App_info : sig
 
 end = struct
   type t = [`app_info] Gobject.obj
+
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_app_info_from_gobject"
 
   (* Methods *)
   (** Checks if the application supports reading files and directories from URIs. *)

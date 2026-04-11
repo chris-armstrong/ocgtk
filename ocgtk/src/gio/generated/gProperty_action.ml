@@ -1,4 +1,5 @@
 class type property_action_t = object
+    inherit GAction.action_t
     method enabled : bool
     method invert_boolean : bool
     method name : string
@@ -10,6 +11,7 @@ end
 
 (* High-level class for PropertyAction *)
 class property_action (obj : Property_action.t) : property_action_t = object (self)
+  inherit GAction.action (Action.from_gobject obj)
 
   method enabled = Property_action.get_enabled obj
 

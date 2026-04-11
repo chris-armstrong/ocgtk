@@ -1,4 +1,6 @@
 class type charset_converter_t = object
+    inherit GConverter.converter_t
+    inherit GInitable.initable_t
     method get_num_fallbacks : unit -> int
     method get_use_fallback : unit -> bool
     method set_use_fallback : bool -> unit
@@ -9,6 +11,8 @@ end
 
 (* High-level class for CharsetConverter *)
 class charset_converter (obj : Charset_converter.t) : charset_converter_t = object (self)
+  inherit GConverter.converter (Converter.from_gobject obj)
+  inherit GInitable.initable (Initable.from_gobject obj)
 
   method get_num_fallbacks : unit -> int =
     fun () ->

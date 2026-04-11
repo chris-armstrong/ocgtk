@@ -1,5 +1,6 @@
 class type data_output_stream_t = object
     inherit GFilter_output_stream.filter_output_stream_t
+    inherit GSeekable.seekable_t
     method get_byte_order : unit -> Gio_enums.datastreambyteorder
     method put_int16 : Int16.t -> GCancellable.cancellable_t option -> (bool, GError.t) result
     method put_int32 : Int32.t -> GCancellable.cancellable_t option -> (bool, GError.t) result

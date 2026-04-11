@@ -1,4 +1,6 @@
 class type icon_paintable_t = object
+    inherit Ocgtk_gdk.Gdk.Paintable.paintable_t
+    inherit GSymbolic_paintable.symbolic_paintable_t
     method get_file : unit -> Ocgtk_gio.Gio.File.file_t option
     method get_icon_name : unit -> string option
     method is_symbolic : unit -> bool
@@ -7,6 +9,8 @@ end
 
 (* High-level class for IconPaintable *)
 class icon_paintable (obj : Icon_paintable.t) : icon_paintable_t = object (self)
+  inherit Ocgtk_gdk.Gdk.Paintable.paintable (Ocgtk_gdk.Gdk.Wrappers.Paintable.from_gobject obj)
+  inherit GSymbolic_paintable.symbolic_paintable (Symbolic_paintable.from_gobject obj)
 
   method get_file : unit -> Ocgtk_gio.Gio.File.file_t option =
     fun () ->

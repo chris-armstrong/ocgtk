@@ -3,6 +3,8 @@
 
 type t = [`debug_controller] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_debug_controller_from_gobject"
+
 (* Methods *)
 (** Set the value of #GDebugController:debug-enabled. *)
 external set_debug_enabled : t -> bool -> unit = "ml_g_debug_controller_set_debug_enabled"

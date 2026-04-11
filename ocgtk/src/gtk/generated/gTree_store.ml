@@ -1,4 +1,9 @@
 class type tree_store_t = object
+    inherit GBuildable.buildable_t
+    inherit GTree_drag_dest.tree_drag_dest_t
+    inherit GTree_drag_source.tree_drag_source_t
+    inherit GTree_model.tree_model_t
+    inherit GTree_sortable.tree_sortable_t
     method clear : unit -> unit
     method is_ancestor : Tree_iter.t -> Tree_iter.t -> bool
     method iter_depth : Tree_iter.t -> int
@@ -13,6 +18,11 @@ end
 
 (* High-level class for TreeStore *)
 class tree_store (obj : Tree_store.t) : tree_store_t = object (self)
+  inherit GBuildable.buildable (Buildable.from_gobject obj)
+  inherit GTree_drag_dest.tree_drag_dest (Tree_drag_dest.from_gobject obj)
+  inherit GTree_drag_source.tree_drag_source (Tree_drag_source.from_gobject obj)
+  inherit GTree_model.tree_model (Tree_model.from_gobject obj)
+  inherit GTree_sortable.tree_sortable (Tree_sortable.from_gobject obj)
 
   method clear : unit -> unit =
     fun () ->

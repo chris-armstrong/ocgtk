@@ -7,6 +7,7 @@ class type app_info_t = object
     method can_remove_supports_type : unit -> bool
     method delete : unit -> bool
     method dup : unit -> app_info_t
+    method equal : app_info_t -> bool
     method get_commandline : unit -> string option
     method get_description : unit -> string option
     method get_display_name : unit -> string
@@ -16,6 +17,7 @@ class type app_info_t = object
     method get_name : unit -> string
     method get_supported_types : unit -> string array
     method launch_uris : string list option -> app_launch_context_t option -> (bool, GError.t) result
+    method launch_uris_finish : GAsync_result.async_result_t -> (bool, GError.t) result
     method remove_supports_type : string -> (bool, GError.t) result
     method set_as_default_for_extension : string -> (bool, GError.t) result
     method set_as_default_for_type : string -> (bool, GError.t) result
@@ -58,6 +60,11 @@ class app_info (obj : App_info_and__app_launch_context.App_info.t) : app_info_t 
     fun () ->
       new  app_info(App_info_and__app_launch_context.App_info.dup obj)
 
+  method equal : app_info_t -> bool =
+    fun appinfo2 ->
+      let appinfo2 = appinfo2#as_app_info in
+      (App_info_and__app_launch_context.App_info.equal obj appinfo2)
+
   method get_commandline : unit -> string option =
     fun () ->
       (App_info_and__app_launch_context.App_info.get_commandline obj)
@@ -94,6 +101,11 @@ class app_info (obj : App_info_and__app_launch_context.App_info.t) : app_info_t 
     fun uris context ->
       let context = Option.map (fun (c) -> c#as_app_launch_context) context in
       (App_info_and__app_launch_context.App_info.launch_uris obj uris context)
+
+  method launch_uris_finish : GAsync_result.async_result_t -> (bool, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (App_info_and__app_launch_context.App_info.launch_uris_finish obj result)
 
   method remove_supports_type : string -> (bool, GError.t) result =
     fun content_type ->

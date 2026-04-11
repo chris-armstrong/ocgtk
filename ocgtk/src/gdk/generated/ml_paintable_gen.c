@@ -93,3 +93,17 @@ CAMLlocal1(ret);
     Store_field(ret, 1, caml_copy_double(out6));
     CAMLreturn(ret);
 }
+CAMLexport CAMLprim value ml_gdk_paintable_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GDK_TYPE_PAINTABLE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GdkPaintable");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GdkPaintable((GdkPaintable*)gobj));
+}

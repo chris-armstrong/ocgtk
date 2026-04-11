@@ -1,4 +1,5 @@
 class type settings_t = object
+    inherit GStyle_provider.style_provider_t
     method reset_property : string -> unit
     method gtk_alternative_button_order : bool
     method set_gtk_alternative_button_order : bool -> unit
@@ -107,6 +108,7 @@ end
 
 (* High-level class for Settings *)
 class settings (obj : Settings.t) : settings_t = object (self)
+  inherit GStyle_provider.style_provider (Style_provider.from_gobject obj)
 
   method reset_property : string -> unit =
     fun name ->

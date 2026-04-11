@@ -1,4 +1,7 @@
 class type tree_model_sort_t = object
+    inherit GTree_drag_source.tree_drag_source_t
+    inherit GTree_model.tree_model_t
+    inherit GTree_sortable.tree_sortable_t
     method clear_cache : unit -> unit
     method convert_child_path_to_path : Tree_path.t -> Tree_path.t option
     method convert_path_to_child_path : Tree_path.t -> Tree_path.t option

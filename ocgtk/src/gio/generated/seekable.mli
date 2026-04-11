@@ -3,6 +3,8 @@
 
 type t = [`seekable] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_seekable_from_gobject"
+
 (* Methods *)
 (** Sets the length of the stream to @offset. If the stream was previously
 larger than @offset, the extra data is discarded. If the stream was

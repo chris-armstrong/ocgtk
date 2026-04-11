@@ -3,6 +3,8 @@
 
 type t = [`async_result] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_async_result_from_gobject"
+
 (* Methods *)
 (** If @res is a #GSimpleAsyncResult, this is equivalent to
 g_simple_async_result_propagate_error(). Otherwise it returns

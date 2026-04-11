@@ -1,4 +1,5 @@
 class type list_store_t = object
+    inherit GList_model.list_model_t
     method append : [`object_] Gobject.obj -> unit
     method insert : int -> [`object_] Gobject.obj -> unit
     method remove : int -> unit
@@ -11,6 +12,7 @@ end
 
 (* High-level class for ListStore *)
 class list_store (obj : List_store.t) : list_store_t = object (self)
+  inherit GList_model.list_model (List_model.from_gobject obj)
 
   method append : [`object_] Gobject.obj -> unit =
     fun item ->

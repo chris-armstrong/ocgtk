@@ -2,6 +2,7 @@
 
 class type list_box_row_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GActionable.actionable_t
     inherit Glist_box_row_signals.list_box_row_signals
     method changed : unit -> unit
     method get_activatable : unit -> bool
@@ -20,6 +21,7 @@ end
 (* High-level class for ListBoxRow *)
 class list_box_row (obj : List_box_row.t) : list_box_row_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GActionable.actionable (Actionable.from_gobject obj)
   inherit Glist_box_row_signals.list_box_row_signals obj
 
   method changed : unit -> unit =

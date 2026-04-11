@@ -3,6 +3,8 @@
 
 type t = [`editable] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_editable_from_gobject"
+
 (* Methods *)
 (** Changes the size request of the editable to be about the
 right size for @n_chars characters.

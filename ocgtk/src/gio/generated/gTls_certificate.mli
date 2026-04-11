@@ -3,6 +3,7 @@ class type tls_certificate_t = object
     method get_issuer_name : unit -> string option
     method get_subject_name : unit -> string option
     method is_same : tls_certificate_t -> bool
+    method verify : GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_connectable_t option -> tls_certificate_t option -> Gio_enums.tlscertificateflags
     method certificate_pem : string
     method pkcs11_uri : string
     method private_key_pem : string

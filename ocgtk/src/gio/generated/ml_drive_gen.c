@@ -346,3 +346,17 @@ CAMLparam1(self);
 gboolean result = g_drive_can_eject(GDrive_val(self));
 CAMLreturn(Val_bool(result));
 }
+CAMLexport CAMLprim value ml_gio_drive_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_DRIVE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GDrive");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GDrive((GDrive*)gobj));
+}

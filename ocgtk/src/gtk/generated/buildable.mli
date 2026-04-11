@@ -3,6 +3,8 @@
 
 type t = [`buildable] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_buildable_from_gobject"
+
 (* Methods *)
 (** Gets the ID of the @buildable object.
 

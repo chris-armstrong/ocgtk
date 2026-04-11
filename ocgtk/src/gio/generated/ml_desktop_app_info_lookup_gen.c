@@ -29,3 +29,17 @@ CAMLparam2(self, arg1);
 GAppInfo* result = g_desktop_app_info_lookup_get_default_for_uri_scheme(GDesktopAppInfoLookup_val(self), String_val(arg1));
 CAMLreturn(Val_option(result, Val_GAppInfo));
 }
+CAMLexport CAMLprim value ml_gio_desktop_app_info_lookup_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_DESKTOP_APP_INFO_LOOKUP)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GDesktopAppInfoLookup");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GDesktopAppInfoLookup((GDesktopAppInfoLookup*)gobj));
+}

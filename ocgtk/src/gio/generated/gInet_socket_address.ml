@@ -1,5 +1,5 @@
 class type inet_socket_address_t = object
-    inherit GSocket_address.socket_address_t
+    inherit GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_address_t
     method get_address : unit -> GInet_address.inet_address_t
     method get_flowinfo : unit -> UInt32.t
     method get_port : unit -> UInt16.t
@@ -9,7 +9,7 @@ end
 
 (* High-level class for InetSocketAddress *)
 class inet_socket_address (obj : Inet_socket_address.t) : inet_socket_address_t = object (self)
-  inherit GSocket_address.socket_address (obj :> Socket_address.t)
+  inherit GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_address (obj :> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t)
 
   method get_address : unit -> GInet_address.inet_address_t =
     fun () ->

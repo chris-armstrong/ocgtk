@@ -158,12 +158,20 @@ let make_gir_class ?(class_name = "TestClass") ?(c_type = "TestClass") ?parent
 
 let make_gir_interface ?(interface_name = "TestInterface")
     ?(c_type = "TestInterface") ?(c_symbol_prefix = "test_interface")
+    ?(glib_type_name = None)
+    ?(glib_get_type = None)
+    ?(prerequisites = [])
+    ?(introspectable = true)
     ?(methods = []) ?(properties = []) ?(signals = []) ?interface_doc ?version
     () =
   {
     interface_name;
     c_type;
     c_symbol_prefix;
+    glib_type_name;
+    glib_get_type;
+    prerequisites;
+    introspectable;
     methods;
     properties;
     signals;
@@ -217,7 +225,7 @@ let make_gir_repository ?(repository_includes = [])
   { repository_includes; repository_c_includes; repository_packages }
 
 let make_cross_reference_type ?parent = function
-  | `Class -> Crt_Class { parent }
+  | `Class -> Crt_Class { parent; implements = [] }
   | `Interface -> Crt_Interface
   | `Record opaque -> Crt_Record { opaque }
   | `Enum -> Crt_Enum

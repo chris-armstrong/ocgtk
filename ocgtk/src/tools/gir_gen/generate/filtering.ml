@@ -19,42 +19,26 @@ let has_simple_type ~ctx (gir_type : gir_type) =
 (* Check if a type is an array type - arrays require inline code generation
    and can't be handled by simple type mapping macros *)
 let is_array_type (gir_type : gir_type) = Option.is_some gir_type.array
+
 let should_generate_property ~ctx ~class_name:_ ~methods (prop : gir_property) =
-    (* Check if property type is an interface - we can't handle these yet *)
-    let is_interface_type =
-      let check_interface_by_name name =
-        if name = "" then false
-        else
-          match Type_mappings.lookup_interface ctx.interfaces name with
-          | Some _ -> true
-          | None -> false
-      in
-      let check_interface_by_c_type c_type_opt =
-        match c_type_opt with
-        | None -> false
-        | Some c_type -> check_interface_by_name c_type
-      in
-      check_interface_by_name prop.prop_type.name
-      || check_interface_by_c_type prop.prop_type.c_type
-    in
-    (* Array-typed properties can't be generated — the GObject property system
+  (* Array-typed properties can't be generated — the GObject property system
        would require marshalling arrays through GValue which we don't support *)
-    if is_interface_type || is_array_type prop.prop_type then false
-    else
-      let matches_method =
-        List.exists
-          ~f:(fun m ->
-            m.set_property
-            |> Option.map (String.equal prop.prop_name)
-            |> Option.value ~default:false
-            || m.get_property
-               |> Option.map (String.equal prop.prop_name)
-               |> Option.value ~default:false)
-          methods
-      in
-      Log.debug (fun m ->
-          m "matches method %s=%b\n" prop.prop_name matches_method);
-      (not matches_method) && has_simple_type ~ctx prop.prop_type
+  if is_array_type prop.prop_type then false
+  else
+    let matches_method =
+      List.exists
+        ~f:(fun m ->
+          m.set_property
+          |> Option.map (String.equal prop.prop_name)
+          |> Option.value ~default:false
+          || m.get_property
+             |> Option.map (String.equal prop.prop_name)
+             |> Option.value ~default:false)
+        methods
+    in
+    Log.debug (fun m ->
+        m "matches method %s=%b\n" prop.prop_name matches_method);
+    (not matches_method) && has_simple_type ~ctx prop.prop_type
 
 let property_method_names ~ctx ~class_name ~methods
     (properties : gir_property list) =
@@ -248,10 +232,10 @@ let should_skip_method_binding ~ctx (meth : gir_method) =
   in
 
   Logs.debug (fun m ->
-      m "should_skip_method_name: %s -> %b %b %b %b %b %b\n"
-        meth.c_identifier is_variadic has_unknown_type
-        is_not_introspectable has_unsupported_out_arrays
-        has_unsupported_arrays has_list_with_interface_element);
+      m "should_skip_method_name: %s -> %b %b %b %b %b %b\n" meth.c_identifier
+        is_variadic has_unknown_type is_not_introspectable
+        has_unsupported_out_arrays has_unsupported_arrays
+        has_list_with_interface_element);
 
   is_variadic || has_unknown_type || is_not_introspectable
   || has_unsupported_out_arrays || has_unsupported_arrays
@@ -315,7 +299,6 @@ let method_has_interface_param ~ctx (meth : gir_method) =
       || check_interface_by_c_type p.param_type.c_type)
 
 let should_generate_class (cls : gir_class) = cls.introspectable
-
 let should_generate_interface (_intf : gir_interface) = true
 
 (* Check if a standalone function should be generated *)

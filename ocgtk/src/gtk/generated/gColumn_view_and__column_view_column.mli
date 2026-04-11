@@ -1,6 +1,7 @@
 
 class type column_view_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GScrollable.scrollable_t
     inherit Gcolumn_view_signals.column_view_signals
     method append_column : column_view_column_t -> unit
     method get_columns : unit -> Ocgtk_gio.Gio.List_model.list_model_t
@@ -19,6 +20,7 @@ class type column_view_t = object
     method scroll_to : int -> column_view_column_t option -> Gtk_enums.listscrollflags -> Scroll_info.t option -> unit
     method set_enable_rubberband : bool -> unit
     method set_header_factory : GList_item_factory.list_item_factory_t option -> unit
+    method set_model : GSelection_model.selection_model_t option -> unit
     method set_reorderable : bool -> unit
     method set_row_factory : GList_item_factory.list_item_factory_t option -> unit
     method set_show_column_separators : bool -> unit

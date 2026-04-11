@@ -1,4 +1,5 @@
 class type emblemed_icon_t = object
+    inherit GIcon.icon_t
     method add_emblem : GEmblem.emblem_t -> unit
     method clear_emblems : unit -> unit
     method get_emblems : unit -> Emblem.t list

@@ -1,5 +1,9 @@
 class type spin_button_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GAccessible_range.accessible_range_t
+    inherit GCell_editable.cell_editable_t
+    inherit GEditable.editable_t
+    inherit GOrientable.orientable_t
     inherit Gspin_button_signals.spin_button_signals
     method configure : GAdjustment.adjustment_t option -> float -> int -> unit
     method get_activates_default : unit -> bool

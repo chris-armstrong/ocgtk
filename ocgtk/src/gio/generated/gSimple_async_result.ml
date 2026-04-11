@@ -1,4 +1,5 @@
 class type simple_async_result_t = object
+    inherit GAsync_result.async_result_t
     method complete : unit -> unit
     method complete_in_idle : unit -> unit
     method get_op_res_gboolean : unit -> bool
@@ -13,6 +14,7 @@ end
 
 (* High-level class for SimpleAsyncResult *)
 class simple_async_result (obj : Simple_async_result.t) : simple_async_result_t = object (self)
+  inherit GAsync_result.async_result (Async_result.from_gobject obj)
 
   method complete : unit -> unit =
     fun () ->

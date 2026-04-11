@@ -1,6 +1,8 @@
 (* Signal class defined in gentry_completion_signals.ml *)
 
 class type entry_completion_t = object
+    inherit GBuildable.buildable_t
+    inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
     inherit Gentry_completion_signals.entry_completion_signals
     method complete : unit -> unit
     method compute_prefix : string -> string option
@@ -18,16 +20,19 @@ class type entry_completion_t = object
     method set_inline_completion : bool -> unit
     method set_inline_selection : bool -> unit
     method set_minimum_key_length : int -> unit
+    method set_model : GTree_model.tree_model_t option -> unit
     method set_popup_completion : bool -> unit
     method set_popup_set_width : bool -> unit
     method set_popup_single_match : bool -> unit
     method set_text_column : int -> unit
-    method cell_area : GCell_area_and__cell_area_context.cell_area_t
+    method cell_area : GCell_area_and__cell_area_context_and__cell_layout.cell_area_t
     method as_entry_completion : Entry_completion.t
 end
 
 (* High-level class for EntryCompletion *)
 class entry_completion (obj : Entry_completion.t) : entry_completion_t = object (self)
+  inherit GBuildable.buildable (Buildable.from_gobject obj)
+  inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout (Cell_area_and__cell_area_context_and__cell_layout.Cell_layout.from_gobject obj)
   inherit Gentry_completion_signals.entry_completion_signals obj
 
   method complete : unit -> unit =
@@ -94,6 +99,11 @@ class entry_completion (obj : Entry_completion.t) : entry_completion_t = object 
     fun length ->
       (Entry_completion.set_minimum_key_length obj length)
 
+  method set_model : GTree_model.tree_model_t option -> unit =
+    fun model ->
+      let model = Option.map (fun (c) -> c#as_tree_model) model in
+      (Entry_completion.set_model obj model)
+
   method set_popup_completion : bool -> unit =
     fun popup_completion ->
       (Entry_completion.set_popup_completion obj popup_completion)
@@ -110,7 +120,7 @@ class entry_completion (obj : Entry_completion.t) : entry_completion_t = object 
     fun column ->
       (Entry_completion.set_text_column obj column)
 
-  method cell_area = new GCell_area_and__cell_area_context.cell_area (Entry_completion.get_cell_area obj)
+  method cell_area = new GCell_area_and__cell_area_context_and__cell_layout.cell_area (Entry_completion.get_cell_area obj)
 
     method as_entry_completion = obj
 end
@@ -118,7 +128,7 @@ end
 let new_ () : entry_completion_t =
   new entry_completion (Entry_completion.new_ ())
 
-let new_with_area (area : GCell_area_and__cell_area_context.cell_area_t) : entry_completion_t =
+let new_with_area (area : GCell_area_and__cell_area_context_and__cell_layout.cell_area_t) : entry_completion_t =
   let area = area#as_cell_area in
   let obj_ = Entry_completion.new_with_area area in
   new entry_completion obj_

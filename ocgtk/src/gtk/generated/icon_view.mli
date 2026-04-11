@@ -7,7 +7,7 @@ type t = [`icon_view | `widget | `initially_unowned | `object_] Gobject.obj
 external new_ : unit -> t = "ml_gtk_icon_view_new"
 
 (** Create a new IconView *)
-external new_with_area : Cell_area_and__cell_area_context.Cell_area.t -> t = "ml_gtk_icon_view_new_with_area"
+external new_with_area : Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t -> t = "ml_gtk_icon_view_new_with_area"
 
 (** Create a new IconView *)
 external new_with_model : Tree_model.t -> t = "ml_gtk_icon_view_new_with_model"
@@ -274,5 +274,5 @@ external create_drag_icon : t -> Tree_path.t -> Ocgtk_gdk.Gdk.Wrappers.Paintable
 (* Properties *)
 
 (** Get property: cell-area *)
-external get_cell_area : t -> Cell_area_and__cell_area_context.Cell_area.t = "ml_gtk_icon_view_get_cell_area"
+external get_cell_area : t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t = "ml_gtk_icon_view_get_cell_area"
 

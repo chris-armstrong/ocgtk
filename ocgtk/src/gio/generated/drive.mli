@@ -3,6 +3,8 @@
 
 type t = [`drive] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_drive_from_gobject"
+
 (* Methods *)
 (** Finishes stopping a drive. *)
 external stop_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_stop_finish"

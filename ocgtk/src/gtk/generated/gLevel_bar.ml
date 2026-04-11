@@ -2,6 +2,8 @@
 
 class type level_bar_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GAccessible_range.accessible_range_t
+    inherit GOrientable.orientable_t
     inherit Glevel_bar_signals.level_bar_signals
     method add_offset_value : string -> float -> unit
     method get_inverted : unit -> bool
@@ -21,6 +23,8 @@ end
 (* High-level class for LevelBar *)
 class level_bar (obj : Level_bar.t) : level_bar_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GAccessible_range.accessible_range (Accessible_range.from_gobject obj)
+  inherit GOrientable.orientable (Orientable.from_gobject obj)
   inherit Glevel_bar_signals.level_bar_signals obj
 
   method add_offset_value : string -> float -> unit =

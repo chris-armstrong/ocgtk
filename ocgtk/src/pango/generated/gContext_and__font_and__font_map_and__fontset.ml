@@ -40,6 +40,7 @@ and font_t = object
 end
 
 and font_map_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
     method changed : unit -> unit
     method create_context : unit -> context_t
     method get_family : string -> GFont_face_and__font_family.font_family_t
@@ -191,6 +192,7 @@ and font (obj : Context_and__font_and__font_map_and__fontset.Font.t) : font_t = 
 end
 
 and font_map (obj : Context_and__font_and__font_map_and__fontset.Font_map.t) : font_map_t = object (self)
+  inherit Ocgtk_gio.Gio.List_model.list_model (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
 
   method changed : unit -> unit =
     fun () ->

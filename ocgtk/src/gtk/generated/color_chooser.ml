@@ -3,6 +3,8 @@
 
 type t = [`color_chooser] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_color_chooser_from_gobject"
+
 (* Methods *)
 (** Sets whether or not the color chooser should use the alpha channel. *)
 external set_use_alpha : t -> bool -> unit = "ml_gtk_color_chooser_set_use_alpha"

@@ -3,6 +3,8 @@
 
 type t = [`popup] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gdk_popup_from_gobject"
+
 (* Methods *)
 (** Present @popup after having processed the `GdkPopupLayout` rules.
 

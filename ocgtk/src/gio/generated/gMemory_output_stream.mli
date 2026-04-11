@@ -1,5 +1,7 @@
 class type memory_output_stream_t = object
     inherit GOutput_stream.output_stream_t
+    inherit GPollable_output_stream.pollable_output_stream_t
+    inherit GSeekable.seekable_t
     method get_data_size : unit -> Gsize.t
     method get_size : unit -> Gsize.t
     method steal_as_bytes : unit -> Glib_bytes.t

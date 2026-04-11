@@ -39,6 +39,9 @@ and root_t = object
 end
 
 and widget_t = object
+    inherit GAt_context_and__accessible.accessible_t
+    inherit GBuildable.buildable_t
+    inherit GConstraint_target.constraint_target_t
     inherit Gwidget_signals.widget_signals
     method action_set_enabled : string -> bool -> unit
     method activate : unit -> bool

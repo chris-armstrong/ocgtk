@@ -1,5 +1,6 @@
 class type file_filter_t = object
     inherit GFilter.filter_t
+    inherit GBuildable.buildable_t
     method add_mime_type : string -> unit
     method add_pattern : string -> unit
     method add_pixbuf_formats : unit -> unit
@@ -14,6 +15,7 @@ end
 (* High-level class for FileFilter *)
 class file_filter (obj : File_filter.t) : file_filter_t = object (self)
   inherit GFilter.filter (obj :> Filter.t)
+  inherit GBuildable.buildable (Buildable.from_gobject obj)
 
   method add_mime_type : string -> unit =
     fun mime_type ->

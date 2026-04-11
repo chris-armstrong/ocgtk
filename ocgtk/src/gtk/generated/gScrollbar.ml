@@ -1,5 +1,7 @@
 class type scrollbar_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GAccessible_range.accessible_range_t
+    inherit GOrientable.orientable_t
     method get_adjustment : unit -> GAdjustment.adjustment_t
     method set_adjustment : GAdjustment.adjustment_t option -> unit
     method as_scrollbar : Scrollbar.t
@@ -8,6 +10,8 @@ end
 (* High-level class for Scrollbar *)
 class scrollbar (obj : Scrollbar.t) : scrollbar_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GAccessible_range.accessible_range (Accessible_range.from_gobject obj)
+  inherit GOrientable.orientable (Orientable.from_gobject obj)
 
   method get_adjustment : unit -> GAdjustment.adjustment_t =
     fun () ->

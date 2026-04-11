@@ -19,10 +19,10 @@ let test_header_generation_with_gdk_cross_references () =
   (* Create context with Gdk cross-references simulating Gtk depending on Gdk *)
   let open Gir_gen_lib.Types in
   let texture_cr =
-    { cr_name = "Texture"; cr_type = Crt_Class { parent = None }; cr_c_type = "GdkTexture" }
+    { cr_name = "Texture"; cr_type = Crt_Class { parent = None; implements = [] }; cr_c_type = "GdkTexture" }
   in
   let surface_cr =
-    { cr_name = "Surface"; cr_type = Crt_Class { parent = None }; cr_c_type = "GdkSurface" }
+    { cr_name = "Surface"; cr_type = Crt_Class { parent = None; implements = [] }; cr_c_type = "GdkSurface" }
   in
   let gdk_map =
     StringMap.add "Texture" texture_cr StringMap.empty
@@ -74,9 +74,9 @@ let test_header_generation_with_multiple_dependencies () =
   (* Create context with multiple cross-references *)
   let open Gir_gen_lib.Types in
   let gdk_cr =
-    { cr_name = "Texture"; cr_type = Crt_Class { parent = None }; cr_c_type = "GdkTexture" }
+    { cr_name = "Texture"; cr_type = Crt_Class { parent = None; implements = [] }; cr_c_type = "GdkTexture" }
   in
-  let gio_cr = { cr_name = "File"; cr_type = Crt_Class { parent = None }; cr_c_type = "GFile" } in
+  let gio_cr = { cr_name = "File"; cr_type = Crt_Class { parent = None; implements = [] }; cr_c_type = "GFile" } in
   let gdk_map = StringMap.add "Texture" gdk_cr StringMap.empty in
   let gio_map = StringMap.add "File" gio_cr StringMap.empty in
   let cross_refs =
@@ -172,7 +172,7 @@ let test_base_namespaces_filtered () =
   (* Create context with base namespace cross-references *)
   let open Gir_gen_lib.Types in
   let glib_cr =
-    { cr_name = "Object"; cr_type = Crt_Class { parent = None }; cr_c_type = "GObject" }
+    { cr_name = "Object"; cr_type = Crt_Class { parent = None; implements = [] }; cr_c_type = "GObject" }
   in
   let glib_map = StringMap.add "Object" glib_cr StringMap.empty in
   let cross_refs = StringMap.add "GLib" (snd (Helpers.make_ncr "GLib" glib_map)) StringMap.empty in
@@ -218,7 +218,7 @@ let test_gsk_with_gdk_dependency () =
   (* Create context simulating Gsk with Gdk dependency *)
   let open Gir_gen_lib.Types in
   let renderer_cr =
-    { cr_name = "Renderer"; cr_type = Crt_Class { parent = None }; cr_c_type = "GdkSurface" }
+    { cr_name = "Renderer"; cr_type = Crt_Class { parent = None; implements = [] }; cr_c_type = "GdkSurface" }
   in
   let gdk_map = StringMap.add "Surface" renderer_cr StringMap.empty in
   let cross_refs = StringMap.add "Gdk" (snd (Helpers.make_ncr "Gdk" gdk_map)) StringMap.empty in
@@ -265,10 +265,10 @@ let test_complete_dependency_chain () =
   (* Create context with complete Gtk dependency chain *)
   let open Gir_gen_lib.Types in
   let gsk_renderer_cr =
-    { cr_name = "Renderer"; cr_type = Crt_Class { parent = None }; cr_c_type = "GskRenderer" }
+    { cr_name = "Renderer"; cr_type = Crt_Class { parent = None; implements = [] }; cr_c_type = "GskRenderer" }
   in
   let gdk_texture_cr =
-    { cr_name = "Texture"; cr_type = Crt_Class { parent = None }; cr_c_type = "GdkTexture" }
+    { cr_name = "Texture"; cr_type = Crt_Class { parent = None; implements = [] }; cr_c_type = "GdkTexture" }
   in
   let gsk_map = StringMap.add "Renderer" gsk_renderer_cr StringMap.empty in
   let gdk_map = StringMap.add "Texture" gdk_texture_cr StringMap.empty in

@@ -49,11 +49,13 @@ class type file_info_t = object
     method set_display_name : string -> unit
     method set_edit_name : string -> unit
     method set_file_type : Gio_enums.filetype -> unit
+    method set_icon : GIcon.icon_t -> unit
     method set_is_hidden : bool -> unit
     method set_is_symlink : bool -> unit
     method set_name : string -> unit
     method set_size : int64 -> unit
     method set_sort_order : Int32.t -> unit
+    method set_symbolic_icon : GIcon.icon_t -> unit
     method set_symlink_target : string -> unit
     method unset_attribute_mask : unit -> unit
     method as_file_info : File_info.t
@@ -263,6 +265,11 @@ class file_info (obj : File_info.t) : file_info_t = object (self)
     fun type_ ->
       (File_info.set_file_type obj type_)
 
+  method set_icon : GIcon.icon_t -> unit =
+    fun icon ->
+      let icon = icon#as_icon in
+      (File_info.set_icon obj icon)
+
   method set_is_hidden : bool -> unit =
     fun is_hidden ->
       (File_info.set_is_hidden obj is_hidden)
@@ -282,6 +289,11 @@ class file_info (obj : File_info.t) : file_info_t = object (self)
   method set_sort_order : Int32.t -> unit =
     fun sort_order ->
       (File_info.set_sort_order obj sort_order)
+
+  method set_symbolic_icon : GIcon.icon_t -> unit =
+    fun icon ->
+      let icon = icon#as_icon in
+      (File_info.set_symbolic_icon obj icon)
 
   method set_symlink_target : string -> unit =
     fun symlink_target ->

@@ -3,6 +3,7 @@ class type tls_certificate_t = object
     method get_issuer_name : unit -> string option
     method get_subject_name : unit -> string option
     method is_same : tls_certificate_t -> bool
+    method verify : GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_connectable_t option -> tls_certificate_t option -> Gio_enums.tlscertificateflags
     method certificate_pem : string
     method pkcs11_uri : string
     method private_key_pem : string
@@ -29,6 +30,12 @@ class tls_certificate (obj : Tls_certificate.t) : tls_certificate_t = object (se
     fun cert_two ->
       let cert_two = cert_two#as_tls_certificate in
       (Tls_certificate.is_same obj cert_two)
+
+  method verify : GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_connectable_t option -> tls_certificate_t option -> Gio_enums.tlscertificateflags =
+    fun identity trusted_ca ->
+      let identity = Option.map (fun (c) -> c#as_socket_connectable) identity in
+      let trusted_ca = Option.map (fun (c) -> c#as_tls_certificate) trusted_ca in
+      (Tls_certificate.verify obj identity trusted_ca)
 
   method certificate_pem = Tls_certificate.get_certificate_pem obj
 

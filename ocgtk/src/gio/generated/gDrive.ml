@@ -7,6 +7,8 @@ class type drive_t = object
     method can_start : unit -> bool
     method can_start_degraded : unit -> bool
     method can_stop : unit -> bool
+    method eject_finish : GAsync_result.async_result_t -> (bool, GError.t) result
+    method eject_with_operation_finish : GAsync_result.async_result_t -> (bool, GError.t) result
     method enumerate_identifiers : unit -> string array
     method get_icon : unit -> GIcon.icon_t
     method get_identifier : string -> string option
@@ -19,6 +21,9 @@ class type drive_t = object
     method is_media_check_automatic : unit -> bool
     method is_media_removable : unit -> bool
     method is_removable : unit -> bool
+    method poll_for_media_finish : GAsync_result.async_result_t -> (bool, GError.t) result
+    method start_finish : GAsync_result.async_result_t -> (bool, GError.t) result
+    method stop_finish : GAsync_result.async_result_t -> (bool, GError.t) result
     method as_drive : Drive.t
 end
 
@@ -45,6 +50,16 @@ class drive (obj : Drive.t) : drive_t = object (self)
   method can_stop : unit -> bool =
     fun () ->
       (Drive.can_stop obj)
+
+  method eject_finish : GAsync_result.async_result_t -> (bool, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (Drive.eject_finish obj result)
+
+  method eject_with_operation_finish : GAsync_result.async_result_t -> (bool, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (Drive.eject_with_operation_finish obj result)
 
   method enumerate_identifiers : unit -> string array =
     fun () ->
@@ -93,6 +108,21 @@ class drive (obj : Drive.t) : drive_t = object (self)
   method is_removable : unit -> bool =
     fun () ->
       (Drive.is_removable obj)
+
+  method poll_for_media_finish : GAsync_result.async_result_t -> (bool, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (Drive.poll_for_media_finish obj result)
+
+  method start_finish : GAsync_result.async_result_t -> (bool, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (Drive.start_finish obj result)
+
+  method stop_finish : GAsync_result.async_result_t -> (bool, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (Drive.stop_finish obj result)
 
     method as_drive = obj
 end

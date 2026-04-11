@@ -21,6 +21,8 @@ and accessible_t = object
     method reset_property : Gtk_enums.accessibleproperty -> unit
     method reset_relation : Gtk_enums.accessiblerelation -> unit
     method reset_state : Gtk_enums.accessiblestate -> unit
+    method set_accessible_parent : accessible_t option -> accessible_t option -> unit
+    method update_next_accessible_sibling : accessible_t option -> unit
     method as_accessible : At_context_and__accessible.Accessible.t
 end
 
@@ -85,6 +87,17 @@ and accessible (obj : At_context_and__accessible.Accessible.t) : accessible_t = 
   method reset_state : Gtk_enums.accessiblestate -> unit =
     fun state ->
       (At_context_and__accessible.Accessible.reset_state obj state)
+
+  method set_accessible_parent : accessible_t option -> accessible_t option -> unit =
+    fun parent next_sibling ->
+      let parent = Option.map (fun (c) -> c#as_accessible) parent in
+      let next_sibling = Option.map (fun (c) -> c#as_accessible) next_sibling in
+      (At_context_and__accessible.Accessible.set_accessible_parent obj parent next_sibling)
+
+  method update_next_accessible_sibling : accessible_t option -> unit =
+    fun new_sibling ->
+      let new_sibling = Option.map (fun (c) -> c#as_accessible) new_sibling in
+      (At_context_and__accessible.Accessible.update_next_accessible_sibling obj new_sibling)
 
     method as_accessible = obj
 end

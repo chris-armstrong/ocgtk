@@ -1,6 +1,8 @@
 class type buffered_input_stream_t = object
     inherit GFilter_input_stream.filter_input_stream_t
+    inherit GSeekable.seekable_t
     method fill : int -> GCancellable.cancellable_t option -> (int, GError.t) result
+    method fill_finish : GAsync_result.async_result_t -> (int, GError.t) result
     method get_available : unit -> Gsize.t
     method get_buffer_size : unit -> Gsize.t
     method read_byte : GCancellable.cancellable_t option -> (int, GError.t) result

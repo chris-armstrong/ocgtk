@@ -3,6 +3,8 @@
 
 type t = [`toplevel] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gdk_toplevel_from_gobject"
+
 (* Methods *)
 external titlebar_gesture : t -> Gdk_enums.titlebargesture -> bool = "ml_gdk_toplevel_titlebar_gesture"
 

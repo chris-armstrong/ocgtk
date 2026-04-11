@@ -49,11 +49,13 @@ class type file_info_t = object
     method set_display_name : string -> unit
     method set_edit_name : string -> unit
     method set_file_type : Gio_enums.filetype -> unit
+    method set_icon : GIcon.icon_t -> unit
     method set_is_hidden : bool -> unit
     method set_is_symlink : bool -> unit
     method set_name : string -> unit
     method set_size : int64 -> unit
     method set_sort_order : Int32.t -> unit
+    method set_symbolic_icon : GIcon.icon_t -> unit
     method set_symlink_target : string -> unit
     method unset_attribute_mask : unit -> unit
     method as_file_info : File_info.t

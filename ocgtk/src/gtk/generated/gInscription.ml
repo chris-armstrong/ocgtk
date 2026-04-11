@@ -1,5 +1,6 @@
 class type inscription_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GAccessible_text.accessible_text_t
     method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
     method get_min_chars : unit -> int
     method get_min_lines : unit -> int
@@ -27,6 +28,7 @@ end
 (* High-level class for Inscription *)
 class inscription (obj : Inscription.t) : inscription_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GAccessible_text.accessible_text (Accessible_text.from_gobject obj)
 
   method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option =
     fun () ->

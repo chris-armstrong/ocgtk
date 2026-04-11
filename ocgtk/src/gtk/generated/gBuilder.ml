@@ -14,6 +14,7 @@ class type builder_t = object
     method get_translation_domain : unit -> string option
     method get_type_from_name : string -> int
     method set_current_object : [`object_] Gobject.obj option -> unit
+    method set_scope : GBuilder_scope.builder_scope_t option -> unit
     method set_translation_domain : string option -> unit
     method as_builder : Builder.t
 end
@@ -80,6 +81,11 @@ class builder (obj : Builder.t) : builder_t = object (self)
   method set_current_object : [`object_] Gobject.obj option -> unit =
     fun current_object ->
       (Builder.set_current_object obj current_object)
+
+  method set_scope : GBuilder_scope.builder_scope_t option -> unit =
+    fun scope ->
+      let scope = Option.map (fun (c) -> c#as_builder_scope) scope in
+      (Builder.set_scope obj scope)
 
   method set_translation_domain : string option -> unit =
     fun domain ->

@@ -1,4 +1,6 @@
 class type slice_list_model_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
+    inherit GSection_model.section_model_t
     method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
     method get_offset : unit -> int
     method get_size : unit -> int

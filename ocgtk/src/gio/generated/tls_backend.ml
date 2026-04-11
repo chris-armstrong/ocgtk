@@ -3,6 +3,8 @@
 
 type t = [`tls_backend] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_tls_backend_from_gobject"
+
 (* Methods *)
 (** Checks if TLS is supported; if this returns %FALSE for the default
 #GTlsBackend, it means no "real" TLS backend is available. *)

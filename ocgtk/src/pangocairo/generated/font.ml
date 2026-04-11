@@ -3,6 +3,8 @@
 
 type t = [`font] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_pangocairo_font_from_gobject"
+
 (* Methods *)
 (** Gets the `cairo_scaled_font_t` used by @font.
 The scaled font can be referenced and kept using

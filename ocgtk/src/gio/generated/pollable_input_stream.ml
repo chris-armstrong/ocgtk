@@ -3,6 +3,8 @@
 
 type t = [`pollable_input_stream] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_pollable_input_stream_from_gobject"
+
 (* Methods *)
 (** Checks if @stream can be read.
 

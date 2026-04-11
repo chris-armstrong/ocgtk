@@ -1,7 +1,11 @@
 (* Signal class defined in gd_bus_proxy_signals.ml *)
 
 class type d_bus_proxy_t = object
+    inherit GAsync_initable.async_initable_t
+    inherit GD_bus_interface_and__d_bus_object.d_bus_interface_t
+    inherit GInitable.initable_t
     inherit Gd_bus_proxy_signals.d_bus_proxy_signals
+    method call_finish : GAsync_result.async_result_t -> (Gvariant.t, GError.t) result
     method call_sync : string -> Gvariant.t option -> Gio_enums.dbuscallflags -> int -> GCancellable.cancellable_t option -> (Gvariant.t, GError.t) result
     method get_cached_property : string -> Gvariant.t option
     method get_cached_property_names : unit -> string array option
@@ -31,7 +35,15 @@ end
 
 (* High-level class for DBusProxy *)
 class d_bus_proxy (obj : D_bus_proxy.t) : d_bus_proxy_t = object (self)
+  inherit GAsync_initable.async_initable (Async_initable.from_gobject obj)
+  inherit GD_bus_interface_and__d_bus_object.d_bus_interface (D_bus_interface_and__d_bus_object.D_bus_interface.from_gobject obj)
+  inherit GInitable.initable (Initable.from_gobject obj)
   inherit Gd_bus_proxy_signals.d_bus_proxy_signals obj
+
+  method call_finish : GAsync_result.async_result_t -> (Gvariant.t, GError.t) result =
+    fun res ->
+      let res = res#as_async_result in
+      (D_bus_proxy.call_finish obj res)
 
   method call_sync : string -> Gvariant.t option -> Gio_enums.dbuscallflags -> int -> GCancellable.cancellable_t option -> (Gvariant.t, GError.t) result =
     fun method_name parameters flags timeout_msec cancellable ->

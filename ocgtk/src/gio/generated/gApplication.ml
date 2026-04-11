@@ -1,6 +1,8 @@
 (* Signal class defined in gapplication_signals.ml *)
 
 class type application_t = object
+    inherit GAction_group.action_group_t
+    inherit GAction_map.action_map_t
     inherit Gapplication_signals.application_signals
     method activate : unit -> unit
     method bind_busy_property : [`object_] Gobject.obj -> string -> unit
@@ -22,6 +24,7 @@ class type application_t = object
     method release : unit -> unit
     method run : int -> string array option -> int
     method send_notification : string option -> GNotification.notification_t -> unit
+    method set_action_group : GAction_group.action_group_t option -> unit
     method set_application_id : string option -> unit
     method set_default : unit -> unit
     method set_flags : Gio_enums.applicationflags -> unit
@@ -39,6 +42,8 @@ end
 
 (* High-level class for Application *)
 class application (obj : Application.t) : application_t = object (self)
+  inherit GAction_group.action_group (Action_group.from_gobject obj)
+  inherit GAction_map.action_map (Action_map.from_gobject obj)
   inherit Gapplication_signals.application_signals obj
 
   method activate : unit -> unit =
@@ -122,6 +127,11 @@ class application (obj : Application.t) : application_t = object (self)
     fun id notification ->
       let notification = notification#as_notification in
       (Application.send_notification obj id notification)
+
+  method set_action_group : GAction_group.action_group_t option -> unit =
+    fun action_group ->
+      let action_group = Option.map (fun (c) -> c#as_action_group) action_group in
+      (Application.set_action_group obj action_group)
 
   method set_application_id : string option -> unit =
     fun application_id ->

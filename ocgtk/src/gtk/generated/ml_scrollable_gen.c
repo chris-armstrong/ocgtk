@@ -95,3 +95,17 @@ CAMLlocal1(ret);
     Store_field(ret, 1, Val_GtkBorder(&out1));
     CAMLreturn(ret);
 }
+CAMLexport CAMLprim value ml_gtk_scrollable_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_SCROLLABLE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkScrollable");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GtkScrollable((GtkScrollable*)gobj));
+}

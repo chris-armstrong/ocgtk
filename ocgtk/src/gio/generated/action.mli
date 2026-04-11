@@ -3,6 +3,8 @@
 
 type t = [`action] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_action_from_gobject"
+
 (* Methods *)
 (** Queries the type of the state of @action.
 

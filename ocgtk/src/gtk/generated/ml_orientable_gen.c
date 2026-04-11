@@ -32,3 +32,17 @@ CAMLparam1(self);
 GtkOrientation result = gtk_orientable_get_orientation(GtkOrientable_val(self));
 CAMLreturn(Val_GtkOrientation(result));
 }
+CAMLexport CAMLprim value ml_gtk_orientable_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_ORIENTABLE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkOrientable");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GtkOrientable((GtkOrientable*)gobj));
+}

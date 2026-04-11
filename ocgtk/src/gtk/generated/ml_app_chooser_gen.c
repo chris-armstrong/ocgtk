@@ -40,3 +40,17 @@ CAMLparam1(self);
 GAppInfo* result = gtk_app_chooser_get_app_info(GtkAppChooser_val(self));
 CAMLreturn(Val_option(result, Val_GAppInfo));
 }
+CAMLexport CAMLprim value ml_gtk_app_chooser_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_APP_CHOOSER)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkAppChooser");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GtkAppChooser((GtkAppChooser*)gobj));
+}

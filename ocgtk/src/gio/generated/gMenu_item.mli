@@ -4,6 +4,7 @@ class type menu_item_t = object
     method set_action_and_target_value : string option -> Gvariant.t option -> unit
     method set_attribute_value : string -> Gvariant.t option -> unit
     method set_detailed_action : string -> unit
+    method set_icon : GIcon.icon_t -> unit
     method set_label : string option -> unit
     method set_link : string -> GMenu_link_iter_and__menu_model.menu_model_t option -> unit
     method set_section : GMenu_link_iter_and__menu_model.menu_model_t option -> unit

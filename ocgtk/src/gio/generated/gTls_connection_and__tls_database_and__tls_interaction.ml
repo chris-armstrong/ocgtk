@@ -17,6 +17,7 @@ class type tls_connection_t = object
     method get_require_close_notify : unit -> bool
     method get_use_system_certdb : unit -> bool
     method handshake : GCancellable.cancellable_t option -> (bool, GError.t) result
+    method handshake_finish : GAsync_result.async_result_t -> (bool, GError.t) result
     method set_advertised_protocols : string array option -> unit
     method set_certificate : GTls_certificate.tls_certificate_t -> unit
     method set_database : tls_database_t option -> unit
@@ -31,15 +32,22 @@ end
 and tls_database_t = object
     method create_certificate_handle : GTls_certificate.tls_certificate_t -> string option
     method lookup_certificate_for_handle : string -> tls_interaction_t option -> Gio_enums.tlsdatabaselookupflags -> GCancellable.cancellable_t option -> (GTls_certificate.tls_certificate_t option, GError.t) result
+    method lookup_certificate_for_handle_finish : GAsync_result.async_result_t -> (GTls_certificate.tls_certificate_t, GError.t) result
     method lookup_certificate_issuer : GTls_certificate.tls_certificate_t -> tls_interaction_t option -> Gio_enums.tlsdatabaselookupflags -> GCancellable.cancellable_t option -> (GTls_certificate.tls_certificate_t, GError.t) result
+    method lookup_certificate_issuer_finish : GAsync_result.async_result_t -> (GTls_certificate.tls_certificate_t, GError.t) result
+    method lookup_certificates_issued_by_finish : GAsync_result.async_result_t -> (Tls_certificate.t list, GError.t) result
+    method verify_chain : GTls_certificate.tls_certificate_t -> string -> GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_connectable_t option -> tls_interaction_t option -> Gio_enums.tlsdatabaseverifyflags -> GCancellable.cancellable_t option -> (Gio_enums.tlscertificateflags, GError.t) result
+    method verify_chain_finish : GAsync_result.async_result_t -> (Gio_enums.tlscertificateflags, GError.t) result
     method as_tls_database : Tls_connection_and__tls_database_and__tls_interaction.Tls_database.t
 end
 
 and tls_interaction_t = object
     method ask_password : GTls_password.tls_password_t -> GCancellable.cancellable_t option -> (Gio_enums.tlsinteractionresult, GError.t) result
+    method ask_password_finish : GAsync_result.async_result_t -> (Gio_enums.tlsinteractionresult, GError.t) result
     method invoke_ask_password : GTls_password.tls_password_t -> GCancellable.cancellable_t option -> (Gio_enums.tlsinteractionresult, GError.t) result
     method invoke_request_certificate : tls_connection_t -> Gio_enums.tlscertificaterequestflags -> GCancellable.cancellable_t option -> (Gio_enums.tlsinteractionresult, GError.t) result
     method request_certificate : tls_connection_t -> Gio_enums.tlscertificaterequestflags -> GCancellable.cancellable_t option -> (Gio_enums.tlsinteractionresult, GError.t) result
+    method request_certificate_finish : GAsync_result.async_result_t -> (Gio_enums.tlsinteractionresult, GError.t) result
     method as_tls_interaction : Tls_connection_and__tls_database_and__tls_interaction.Tls_interaction.t
 end
 
@@ -104,6 +112,11 @@ class tls_connection (obj : Tls_connection_and__tls_database_and__tls_interactio
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Tls_connection_and__tls_database_and__tls_interaction.Tls_connection.handshake obj cancellable)
 
+  method handshake_finish : GAsync_result.async_result_t -> (bool, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (Tls_connection_and__tls_database_and__tls_interaction.Tls_connection.handshake_finish obj result)
+
   method set_advertised_protocols : string array option -> unit =
     fun protocols ->
       (Tls_connection_and__tls_database_and__tls_interaction.Tls_connection.set_advertised_protocols obj protocols)
@@ -153,12 +166,40 @@ and tls_database (obj : Tls_connection_and__tls_database_and__tls_interaction.Tl
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       Result.map (fun ret -> Option.map (fun ret -> new GTls_certificate.tls_certificate ret) ret)(Tls_connection_and__tls_database_and__tls_interaction.Tls_database.lookup_certificate_for_handle obj handle interaction flags cancellable)
 
+  method lookup_certificate_for_handle_finish : GAsync_result.async_result_t -> (GTls_certificate.tls_certificate_t, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      Result.map (fun ret -> new GTls_certificate.tls_certificate ret)(Tls_connection_and__tls_database_and__tls_interaction.Tls_database.lookup_certificate_for_handle_finish obj result)
+
   method lookup_certificate_issuer : GTls_certificate.tls_certificate_t -> tls_interaction_t option -> Gio_enums.tlsdatabaselookupflags -> GCancellable.cancellable_t option -> (GTls_certificate.tls_certificate_t, GError.t) result =
     fun certificate interaction flags cancellable ->
       let certificate = certificate#as_tls_certificate in
       let interaction = Option.map (fun (c) -> c#as_tls_interaction) interaction in
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       Result.map (fun ret -> new GTls_certificate.tls_certificate ret)(Tls_connection_and__tls_database_and__tls_interaction.Tls_database.lookup_certificate_issuer obj certificate interaction flags cancellable)
+
+  method lookup_certificate_issuer_finish : GAsync_result.async_result_t -> (GTls_certificate.tls_certificate_t, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      Result.map (fun ret -> new GTls_certificate.tls_certificate ret)(Tls_connection_and__tls_database_and__tls_interaction.Tls_database.lookup_certificate_issuer_finish obj result)
+
+  method lookup_certificates_issued_by_finish : GAsync_result.async_result_t -> (Tls_certificate.t list, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (Tls_connection_and__tls_database_and__tls_interaction.Tls_database.lookup_certificates_issued_by_finish obj result)
+
+  method verify_chain : GTls_certificate.tls_certificate_t -> string -> GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_connectable_t option -> tls_interaction_t option -> Gio_enums.tlsdatabaseverifyflags -> GCancellable.cancellable_t option -> (Gio_enums.tlscertificateflags, GError.t) result =
+    fun chain purpose identity interaction flags cancellable ->
+      let chain = chain#as_tls_certificate in
+      let identity = Option.map (fun (c) -> c#as_socket_connectable) identity in
+      let interaction = Option.map (fun (c) -> c#as_tls_interaction) interaction in
+      let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
+      (Tls_connection_and__tls_database_and__tls_interaction.Tls_database.verify_chain obj chain purpose identity interaction flags cancellable)
+
+  method verify_chain_finish : GAsync_result.async_result_t -> (Gio_enums.tlscertificateflags, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (Tls_connection_and__tls_database_and__tls_interaction.Tls_database.verify_chain_finish obj result)
 
     method as_tls_database = obj
 end
@@ -170,6 +211,11 @@ and tls_interaction (obj : Tls_connection_and__tls_database_and__tls_interaction
       let password = password#as_tls_password in
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Tls_connection_and__tls_database_and__tls_interaction.Tls_interaction.ask_password obj password cancellable)
+
+  method ask_password_finish : GAsync_result.async_result_t -> (Gio_enums.tlsinteractionresult, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (Tls_connection_and__tls_database_and__tls_interaction.Tls_interaction.ask_password_finish obj result)
 
   method invoke_ask_password : GTls_password.tls_password_t -> GCancellable.cancellable_t option -> (Gio_enums.tlsinteractionresult, GError.t) result =
     fun password cancellable ->
@@ -188,6 +234,11 @@ and tls_interaction (obj : Tls_connection_and__tls_database_and__tls_interaction
       let connection = connection#as_tls_connection in
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Tls_connection_and__tls_database_and__tls_interaction.Tls_interaction.request_certificate obj connection flags cancellable)
+
+  method request_certificate_finish : GAsync_result.async_result_t -> (Gio_enums.tlsinteractionresult, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (Tls_connection_and__tls_database_and__tls_interaction.Tls_interaction.request_certificate_finish obj result)
 
     method as_tls_interaction = obj
 end
