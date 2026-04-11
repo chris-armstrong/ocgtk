@@ -440,7 +440,7 @@ ancestors through `ctx.cross_references` in the conflict-detection helpers.
 
 ---
 
-### Phase 6: Cross-Namespace Interface Awareness in References File
+### Phase 6: Cross-Namespace Interface Awareness in References File — DONE ✅
 
 **Goal**: Extend the references file so that cross-namespace parent chains are visible to
 `parent_chain_provides_interface` and `collect_inherited_method_names`. Currently these helpers
@@ -490,7 +490,7 @@ interface inherits for known cases (e.g. `GtkApplication` should NOT double-inhe
 
 ### Phase 7: Unfilter Methods with Interface-Typed Parameters and Return Values
 
-**Status**: Not started
+**Status**: DONE ✅
 
 **Goal**: Allow the generator to emit bindings for methods whose parameters or return values are
 interface types. Currently these are silently dropped at Layer 2 by `method_has_interface_param`
@@ -685,17 +685,20 @@ is out of scope for this phase.
 
 ---
 
-### Phase 8: Runtime Tests
+### Phase 8: Runtime Tests — DONE ✅
 
 **Goal**: Verify interface functionality at runtime with real GTK objects.
 
 **Tasks**:
-- [ ] Create runtime test file: `ocgtk/tests/gtk/test_interface.ml`
-- [ ] Test: Create `Entry` via `GEntry.new_ ()`, verify `entry#get_text ()` returns `""`
-  (inherited from Editable interface)
-- [ ] Test: Call `Editable.from_gobject` on an Entry's underlying object — must succeed
-- [ ] Test: Call `Editable.from_gobject` on a Button's underlying object — must raise `Failure`
-- [ ] Test: Verify `Editable.set_text` / `Editable.get_text` work through the interface on an Entry
+- [x] Create runtime test file: `ocgtk/tests/gtk/test_interface.ml`
+- [x] Test: Entry inherits Editable methods (`set_text`/`get_text`, `delete_text`, `get_chars`, `set_position`)
+- [x] Test: `Editable.from_gobject` succeeds for Entry and SpinButton (two implementing classes)
+- [x] Test: `Editable.from_gobject` raises `Failure` for Button (non-implementing class)
+- [x] Test: Layer 1 `set_text`/`get_text`, `insert_text`, `select_region`+`get_selection_bounds` via `Editable.t`
+- [x] Test: `as_editable` accessor round-trip
+- [x] Extract `gtk_available`/`require_gtk` into `gtk_test_helpers.ml`
+
+**Test gate**: ✅ 12 tests pass under `xvfb-run dune runtest`.
 
 ```ocaml
 (* Runtime test: Entry inherits Editable methods *)

@@ -29,3 +29,8 @@
  (name test_variance)
  (modules test_variance)
  (libraries ocgtk.gtk alcotest))
+
+(test
+ (name test_interface)
+ (modules test_interface gtk_test_helpers)
+ (libraries ocgtk.gtk alcotest))
