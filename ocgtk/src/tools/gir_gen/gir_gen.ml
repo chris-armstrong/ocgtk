@@ -1016,7 +1016,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
             | Some cr -> (
                 let qualified = ns ^ "." ^ name in
                 match cr.cr_type with
-                | Crt_Class { parent = Some p } ->
+                | Crt_Class { parent = Some p; _ } ->
                     if String.contains p '.' then
                       let dot = String.rindex p '.' in
                       let p_ns = String.sub p ~pos:0 ~len:dot in
@@ -1026,7 +1026,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
                       in
                       qualified :: aux p_ns p_name (depth + 1)
                     else qualified :: aux ns p (depth + 1)
-                | Crt_Class { parent = None } -> [ qualified ]
+                | Crt_Class { parent = None; _ } -> [ qualified ]
                 | _ -> [ qualified ]))
     in
     aux ns name 0
@@ -1427,7 +1427,7 @@ let generate_references gir_file output_file overrides_file =
     |> List.map ~f:(fun cls ->
         {
           cr_name = cls.class_name;
-          cr_type = Crt_Class { parent = cls.parent };
+          cr_type = Crt_Class { parent = cls.parent; implements = cls.implements };
           cr_c_type = cls.c_type;
         }))
     @ (interfaces

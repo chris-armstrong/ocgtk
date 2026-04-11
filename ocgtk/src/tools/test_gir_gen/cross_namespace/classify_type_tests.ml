@@ -78,7 +78,7 @@ let add_cross_refs ctx =
            cr_c_type = "GdkModifierType" }
     |> StringMap.add "Texture"
          { cr_name = "Texture";
-           cr_type = Crt_Class { parent = Some "Paintable" };
+           cr_type = Crt_Class { parent = Some "Paintable"; implements = [] };
            cr_c_type = "GdkTexture*" }
     |> StringMap.add "ContentFormats"
          { cr_name = "ContentFormats";

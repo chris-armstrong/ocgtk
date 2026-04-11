@@ -3,8 +3,6 @@
 
 class type application_t = object
     inherit Ocgtk_gio.Gio.Application.application_t
-    inherit Ocgtk_gio.Gio.Action_group.action_group_t
-    inherit Ocgtk_gio.Gio.Action_map.action_map_t
     inherit Gapplication_signals.application_signals
     method add_window : window_t -> unit
     method get_accels_for_action : string -> string array
@@ -109,8 +107,6 @@ end
 
 class application (obj : Application_and__window_and__window_group.Application.t) : application_t = object (self)
   inherit Ocgtk_gio.Gio.Application.application (obj :> Ocgtk_gio.Gio.Wrappers.Application.t)
-  inherit Ocgtk_gio.Gio.Action_group.action_group (Ocgtk_gio.Gio.Wrappers.Action_group.from_gobject obj)
-  inherit Ocgtk_gio.Gio.Action_map.action_map (Ocgtk_gio.Gio.Wrappers.Action_map.from_gobject obj)
   inherit Gapplication_signals.application_signals obj
 
   method add_window : window_t -> unit =

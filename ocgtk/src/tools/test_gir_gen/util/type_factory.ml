@@ -225,7 +225,7 @@ let make_gir_repository ?(repository_includes = [])
   { repository_includes; repository_c_includes; repository_packages }
 
 let make_cross_reference_type ?parent = function
-  | `Class -> Crt_Class { parent }
+  | `Class -> Crt_Class { parent; implements = [] }
   | `Interface -> Crt_Interface
   | `Record opaque -> Crt_Record { opaque }
   | `Enum -> Crt_Enum

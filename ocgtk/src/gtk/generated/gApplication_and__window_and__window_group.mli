@@ -1,8 +1,6 @@
 
 class type application_t = object
     inherit Ocgtk_gio.Gio.Application.application_t
-    inherit Ocgtk_gio.Gio.Action_group.action_group_t
-    inherit Ocgtk_gio.Gio.Action_map.action_map_t
     inherit Gapplication_signals.application_signals
     method add_window : window_t -> unit
     method get_accels_for_action : string -> string array
