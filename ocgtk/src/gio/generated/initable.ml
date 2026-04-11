@@ -1,14 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Initable: Initable *)
 
-type t = [ `initable ] Gobject.obj
+type t = [`initable] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_initable_from_gobject"
 
 (* Methods *)
-
-external init : t -> Cancellable.t option -> (bool, GError.t) result
-  = "ml_g_initable_init"
 (** Initializes the object implementing the interface.
 
 This method is intended for language bindings. If writing in C,
@@ -47,3 +44,5 @@ it is designed to be used via the singleton pattern, with a
 In this pattern, a caller would expect to be able to call g_initable_init()
 on the result of g_object_new(), regardless of whether it is in fact a new
 instance. *)
+external init : t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_initable_init"
+

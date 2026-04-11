@@ -1,36 +1,31 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* IOStream: IOStream *)
 
-type t = [ `io_stream | `object_ ] Gobject.obj
+type t = [`io_stream | `object_] Gobject.obj
 
 (* Methods *)
-
-external set_pending : t -> (bool, GError.t) result
-  = "ml_g_io_stream_set_pending"
 (** Sets @stream to have actions pending. If the pending flag is
 already set or @stream is closed, it will return %FALSE and set
 @error. *)
+external set_pending : t -> (bool, GError.t) result = "ml_g_io_stream_set_pending"
 
-external is_closed : t -> bool = "ml_g_io_stream_is_closed"
 (** Checks if a stream is closed. *)
+external is_closed : t -> bool = "ml_g_io_stream_is_closed"
 
-external has_pending : t -> bool = "ml_g_io_stream_has_pending"
 (** Checks if a stream has pending actions. *)
+external has_pending : t -> bool = "ml_g_io_stream_has_pending"
 
-external get_output_stream : t -> Output_stream.t
-  = "ml_g_io_stream_get_output_stream"
-(** Gets the output stream for this object. This is used for writing. *)
+(** Gets the output stream for this object. This is used for
+writing. *)
+external get_output_stream : t -> Output_stream.t = "ml_g_io_stream_get_output_stream"
 
-external get_input_stream : t -> Input_stream.t
-  = "ml_g_io_stream_get_input_stream"
-(** Gets the input stream for this object. This is used for reading. *)
+(** Gets the input stream for this object. This is used
+for reading. *)
+external get_input_stream : t -> Input_stream.t = "ml_g_io_stream_get_input_stream"
 
-external close_finish : t -> Async_result.t -> (bool, GError.t) result
-  = "ml_g_io_stream_close_finish"
 (** Closes a stream. *)
+external close_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_io_stream_close_finish"
 
-external close : t -> Cancellable.t option -> (bool, GError.t) result
-  = "ml_g_io_stream_close"
 (** Closes the stream, releasing resources related to it. This will also
 close the individual input and output streams, if they are not already
 closed.
@@ -64,11 +59,13 @@ can use a faster close that doesn't block to e.g. check errors.
 
 The default implementation of this method just calls close on the
 individual input/output streams. *)
+external close : t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_io_stream_close"
 
-external clear_pending : t -> unit = "ml_g_io_stream_clear_pending"
 (** Clears the pending flag on @stream. *)
+external clear_pending : t -> unit = "ml_g_io_stream_clear_pending"
 
 (* Properties *)
 
-external get_closed : t -> bool = "ml_g_io_stream_get_closed"
 (** Get property: closed *)
+external get_closed : t -> bool = "ml_g_io_stream_get_closed"
+

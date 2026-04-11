@@ -2,9 +2,10 @@
 (* Top-level library module with direct references to all classes and enumerations *)
 
 (** {1 Layer 1 Module Wrappers}
-
-    This submodule provides aliases to the layer 1 (low-level) modules. These
-    are the modules containing external declarations and basic bindings. *)
+    
+    This submodule provides aliases to the layer 1 (low-level) modules.
+    These are the modules containing external declarations and basic bindings.
+ *)
 module Wrappers : sig
   module Action = Action
   module Action_entry = Action_entry
@@ -12,10 +13,7 @@ module Wrappers : sig
   module Action_map = Action_map
   module App_info = App_info_and__app_launch_context.App_info
   module App_info_monitor = App_info_monitor
-
-  module App_launch_context =
-    App_info_and__app_launch_context.App_launch_context
-
+  module App_launch_context = App_info_and__app_launch_context.App_launch_context
   module Application = Application
   module Application_command_line = Application_command_line
   module Async_initable = Async_initable
@@ -68,28 +66,17 @@ module Wrappers : sig
   module Dtls_server_connection = Dtls_server_connection
   module Emblem = Emblem
   module Emblemed_icon = Emblemed_icon
-
-  module File =
-    File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File
-
+  module File = File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File
   module File_attribute_info = File_attribute_info
   module File_attribute_info_list = File_attribute_info_list
   module File_attribute_matcher = File_attribute_matcher
   module File_descriptor_based = File_descriptor_based
-
-  module File_enumerator =
-    File_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .File_enumerator
-
+  module File_enumerator = File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File_enumerator
   module File_io_stream = File_io_stream
   module File_icon = File_icon
   module File_info = File_info
   module File_input_stream = File_input_stream
-
-  module File_monitor =
-    File_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .File_monitor
-
+  module File_monitor = File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File_monitor
   module File_output_stream = File_output_stream
   module Filename_completer = Filename_completer
   module Filter_input_stream = Filter_input_stream
@@ -120,10 +107,7 @@ module Wrappers : sig
   module Menu_item = Menu_item
   module Menu_link_iter = Menu_link_iter_and__menu_model.Menu_link_iter
   module Menu_model = Menu_link_iter_and__menu_model.Menu_model
-
-  module Mount =
-    File_and__file_enumerator_and__file_monitor_and__mount_and__volume.Mount
-
+  module Mount = File_and__file_enumerator_and__file_monitor_and__mount_and__volume.Mount
   module Mount_operation = Mount_operation
   module Native_socket_address = Native_socket_address
   module Native_volume_monitor = Native_volume_monitor
@@ -158,21 +142,10 @@ module Wrappers : sig
   module Simple_permission = Simple_permission
   module Simple_proxy_resolver = Simple_proxy_resolver
   module Socket = Socket_and__socket_connection.Socket
-
-  module Socket_address =
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .Socket_address
-
-  module Socket_address_enumerator =
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .Socket_address_enumerator
-
+  module Socket_address = Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address
+  module Socket_address_enumerator = Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address_enumerator
   module Socket_client = Socket_client
-
-  module Socket_connectable =
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .Socket_connectable
-
+  module Socket_connectable = Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_connectable
   module Socket_connection = Socket_and__socket_connection.Socket_connection
   module Socket_control_message = Socket_control_message
   module Socket_listener = Socket_listener
@@ -191,18 +164,10 @@ module Wrappers : sig
   module Tls_backend = Tls_backend
   module Tls_certificate = Tls_certificate
   module Tls_client_connection = Tls_client_connection
-
-  module Tls_connection =
-    Tls_connection_and__tls_database_and__tls_interaction.Tls_connection
-
-  module Tls_database =
-    Tls_connection_and__tls_database_and__tls_interaction.Tls_database
-
+  module Tls_connection = Tls_connection_and__tls_database_and__tls_interaction.Tls_connection
+  module Tls_database = Tls_connection_and__tls_database_and__tls_interaction.Tls_database
   module Tls_file_database = Tls_file_database
-
-  module Tls_interaction =
-    Tls_connection_and__tls_database_and__tls_interaction.Tls_interaction
-
+  module Tls_interaction = Tls_connection_and__tls_database_and__tls_interaction.Tls_interaction
   module Tls_password = Tls_password
   module Tls_server_connection = Tls_server_connection
   module Unix_connection = Unix_connection
@@ -216,10 +181,7 @@ module Wrappers : sig
   module Unix_output_stream = Unix_output_stream
   module Unix_socket_address = Unix_socket_address
   module Vfs = Vfs
-
-  module Volume =
-    File_and__file_enumerator_and__file_monitor_and__mount_and__volume.Volume
-
+  module Volume = File_and__file_enumerator_and__file_monitor_and__mount_and__volume.Volume
   module Volume_monitor = Volume_monitor
   module Zlib_compressor = Zlib_compressor
   module Zlib_decompressor = Zlib_decompressor

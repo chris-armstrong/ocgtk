@@ -1,22 +1,18 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Actionable: Actionable *)
 
-type t = [ `actionable ] Gobject.obj
+type t = [`actionable] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gtk_actionable_from_gobject"
 
 (* Methods *)
-
-external set_detailed_action_name : t -> string -> unit
-  = "ml_gtk_actionable_set_detailed_action_name"
 (** Sets the action-name and associated string target value of an
 actionable widget.
 
 @detailed_action_name is a string in the format accepted by
 [func@Gio.Action.parse_detailed_name]. *)
+external set_detailed_action_name : t -> string -> unit = "ml_gtk_actionable_set_detailed_action_name"
 
-external set_action_target_value : t -> Gvariant.t option -> unit
-  = "ml_gtk_actionable_set_action_target_value"
 (** Sets the target value of an actionable widget.
 
 If @target_value is %NULL then the target value is unset.
@@ -35,9 +31,8 @@ the action’s state to change to that value. Since the action’s state
 is now equal to the target value of the button, the button will now
 be rendered as active (and the other buttons, with different targets,
 rendered inactive). *)
+external set_action_target_value : t -> Gvariant.t option -> unit = "ml_gtk_actionable_set_action_target_value"
 
-external set_action_name : t -> string option -> unit
-  = "ml_gtk_actionable_set_action_name"
 (** Specifies the name of the action with which this widget should be
 associated.
 
@@ -51,13 +46,13 @@ Names are of the form “win.save” or “app.quit” for actions on the
 containing [class@ApplicationWindow] or its associated [class@Application],
 respectively. This is the same form used for actions in the [class@Gio.Menu]
 associated with the window. *)
+external set_action_name : t -> string option -> unit = "ml_gtk_actionable_set_action_name"
 
-external get_action_target_value : t -> Gvariant.t option
-  = "ml_gtk_actionable_get_action_target_value"
 (** Gets the current target value of @actionable. *)
+external get_action_target_value : t -> Gvariant.t option = "ml_gtk_actionable_get_action_target_value"
 
-external get_action_name : t -> string option
-  = "ml_gtk_actionable_get_action_name"
 (** Gets the action name for @actionable. *)
+external get_action_name : t -> string option = "ml_gtk_actionable_get_action_name"
 
 (* Properties *)
+

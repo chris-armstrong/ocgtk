@@ -1,183 +1,190 @@
 (* Signal class defined in gapplication_signals.ml *)
 
 class type application_t = object
-  inherit GAction_group.action_group_t
-  inherit GAction_map.action_map_t
-  inherit Gapplication_signals.application_signals
-  method activate : unit -> unit
-  method bind_busy_property : [ `object_ ] Gobject.obj -> string -> unit
-  method get_application_id : unit -> string option
-
-  method get_dbus_connection :
-    unit -> GD_bus_connection.d_bus_connection_t option
-
-  method get_dbus_object_path : unit -> string option
-  method get_flags : unit -> Gio_enums.applicationflags
-  method get_inactivity_timeout : unit -> int
-  method get_is_busy : unit -> bool
-  method get_is_registered : unit -> bool
-  method get_is_remote : unit -> bool
-  method get_resource_base_path : unit -> string option
-  method get_version : unit -> string option
-  method hold : unit -> unit
-  method mark_busy : unit -> unit
-
-  method open_ :
-    File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t
-    array ->
-    int ->
-    string ->
-    unit
-
-  method quit : unit -> unit
-  method register : GCancellable.cancellable_t option -> (bool, GError.t) result
-  method release : unit -> unit
-  method run : int -> string array option -> int
-
-  method send_notification :
-    string option -> GNotification.notification_t -> unit
-
-  method set_action_group : GAction_group.action_group_t option -> unit
-  method set_application_id : string option -> unit
-  method set_default : unit -> unit
-  method set_flags : Gio_enums.applicationflags -> unit
-  method set_inactivity_timeout : int -> unit
-  method set_option_context_description : string option -> unit
-  method set_option_context_parameter_string : string option -> unit
-  method set_option_context_summary : string option -> unit
-  method set_resource_base_path : string option -> unit
-  method set_version : string -> unit
-  method unbind_busy_property : [ `object_ ] Gobject.obj -> string -> unit
-  method unmark_busy : unit -> unit
-  method withdraw_notification : string -> unit
-  method as_application : Application.t
+    inherit GAction_group.action_group_t
+    inherit GAction_map.action_map_t
+    inherit Gapplication_signals.application_signals
+    method activate : unit -> unit
+    method bind_busy_property : [`object_] Gobject.obj -> string -> unit
+    method get_application_id : unit -> string option
+    method get_dbus_connection : unit -> GD_bus_connection.d_bus_connection_t option
+    method get_dbus_object_path : unit -> string option
+    method get_flags : unit -> Gio_enums.applicationflags
+    method get_inactivity_timeout : unit -> int
+    method get_is_busy : unit -> bool
+    method get_is_registered : unit -> bool
+    method get_is_remote : unit -> bool
+    method get_resource_base_path : unit -> string option
+    method get_version : unit -> string option
+    method hold : unit -> unit
+    method mark_busy : unit -> unit
+    method open_ : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t array -> int -> string -> unit
+    method quit : unit -> unit
+    method register : GCancellable.cancellable_t option -> (bool, GError.t) result
+    method release : unit -> unit
+    method run : int -> string array option -> int
+    method send_notification : string option -> GNotification.notification_t -> unit
+    method set_action_group : GAction_group.action_group_t option -> unit
+    method set_application_id : string option -> unit
+    method set_default : unit -> unit
+    method set_flags : Gio_enums.applicationflags -> unit
+    method set_inactivity_timeout : int -> unit
+    method set_option_context_description : string option -> unit
+    method set_option_context_parameter_string : string option -> unit
+    method set_option_context_summary : string option -> unit
+    method set_resource_base_path : string option -> unit
+    method set_version : string -> unit
+    method unbind_busy_property : [`object_] Gobject.obj -> string -> unit
+    method unmark_busy : unit -> unit
+    method withdraw_notification : string -> unit
+    method as_application : Application.t
 end
 
 (* High-level class for Application *)
-class application (obj : Application.t) : application_t =
-  object (self)
-    inherit GAction_group.action_group (Action_group.from_gobject obj)
-    inherit GAction_map.action_map (Action_map.from_gobject obj)
-    inherit Gapplication_signals.application_signals obj
-    method activate : unit -> unit = fun () -> Application.activate obj
+class application (obj : Application.t) : application_t = object (self)
+  inherit GAction_group.action_group (Action_group.from_gobject obj)
+  inherit GAction_map.action_map (Action_map.from_gobject obj)
+  inherit Gapplication_signals.application_signals obj
 
-    method bind_busy_property : [ `object_ ] Gobject.obj -> string -> unit =
-      fun object_ property ->
-        Application.bind_busy_property obj object_ property
+  method activate : unit -> unit =
+    fun () ->
+      (Application.activate obj)
 
-    method get_application_id : unit -> string option =
-      fun () -> Application.get_application_id obj
+  method bind_busy_property : [`object_] Gobject.obj -> string -> unit =
+    fun object_ property ->
+      (Application.bind_busy_property obj object_ property)
 
-    method get_dbus_connection :
-        unit -> GD_bus_connection.d_bus_connection_t option =
-      fun () ->
-        Option.map
-          (fun ret -> new GD_bus_connection.d_bus_connection ret)
-          (Application.get_dbus_connection obj)
+  method get_application_id : unit -> string option =
+    fun () ->
+      (Application.get_application_id obj)
 
-    method get_dbus_object_path : unit -> string option =
-      fun () -> Application.get_dbus_object_path obj
+  method get_dbus_connection : unit -> GD_bus_connection.d_bus_connection_t option =
+    fun () ->
+      Option.map (fun ret -> new GD_bus_connection.d_bus_connection ret) (Application.get_dbus_connection obj)
 
-    method get_flags : unit -> Gio_enums.applicationflags =
-      fun () -> Application.get_flags obj
+  method get_dbus_object_path : unit -> string option =
+    fun () ->
+      (Application.get_dbus_object_path obj)
 
-    method get_inactivity_timeout : unit -> int =
-      fun () -> Application.get_inactivity_timeout obj
+  method get_flags : unit -> Gio_enums.applicationflags =
+    fun () ->
+      (Application.get_flags obj)
 
-    method get_is_busy : unit -> bool = fun () -> Application.get_is_busy obj
+  method get_inactivity_timeout : unit -> int =
+    fun () ->
+      (Application.get_inactivity_timeout obj)
 
-    method get_is_registered : unit -> bool =
-      fun () -> Application.get_is_registered obj
+  method get_is_busy : unit -> bool =
+    fun () ->
+      (Application.get_is_busy obj)
 
-    method get_is_remote : unit -> bool =
-      fun () -> Application.get_is_remote obj
+  method get_is_registered : unit -> bool =
+    fun () ->
+      (Application.get_is_registered obj)
 
-    method get_resource_base_path : unit -> string option =
-      fun () -> Application.get_resource_base_path obj
+  method get_is_remote : unit -> bool =
+    fun () ->
+      (Application.get_is_remote obj)
 
-    method get_version : unit -> string option =
-      fun () -> Application.get_version obj
+  method get_resource_base_path : unit -> string option =
+    fun () ->
+      (Application.get_resource_base_path obj)
 
-    method hold : unit -> unit = fun () -> Application.hold obj
-    method mark_busy : unit -> unit = fun () -> Application.mark_busy obj
+  method get_version : unit -> string option =
+    fun () ->
+      (Application.get_version obj)
 
-    method open_ :
-        File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File
-        .t
-        array ->
-        int ->
-        string ->
-        unit =
-      fun files n_files hint -> Application.open_ obj files n_files hint
+  method hold : unit -> unit =
+    fun () ->
+      (Application.hold obj)
 
-    method quit : unit -> unit = fun () -> Application.quit obj
+  method mark_busy : unit -> unit =
+    fun () ->
+      (Application.mark_busy obj)
 
-    method register :
-        GCancellable.cancellable_t option -> (bool, GError.t) result =
-      fun cancellable ->
-        let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        Application.register obj cancellable
+  method open_ : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t array -> int -> string -> unit =
+    fun files n_files hint ->
+      (Application.open_ obj files n_files hint)
 
-    method release : unit -> unit = fun () -> Application.release obj
+  method quit : unit -> unit =
+    fun () ->
+      (Application.quit obj)
 
-    method run : int -> string array option -> int =
-      fun argc argv -> Application.run obj argc argv
+  method register : GCancellable.cancellable_t option -> (bool, GError.t) result =
+    fun cancellable ->
+      let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
+      (Application.register obj cancellable)
 
-    method send_notification :
-        string option -> GNotification.notification_t -> unit =
-      fun id notification ->
-        let notification = notification#as_notification in
-        Application.send_notification obj id notification
+  method release : unit -> unit =
+    fun () ->
+      (Application.release obj)
 
-    method set_action_group : GAction_group.action_group_t option -> unit =
-      fun action_group ->
-        let action_group =
-          Option.map (fun c -> c#as_action_group) action_group
-        in
-        Application.set_action_group obj action_group
+  method run : int -> string array option -> int =
+    fun argc argv ->
+      (Application.run obj argc argv)
 
-    method set_application_id : string option -> unit =
-      fun application_id -> Application.set_application_id obj application_id
+  method send_notification : string option -> GNotification.notification_t -> unit =
+    fun id notification ->
+      let notification = notification#as_notification in
+      (Application.send_notification obj id notification)
 
-    method set_default : unit -> unit = fun () -> Application.set_default obj
+  method set_action_group : GAction_group.action_group_t option -> unit =
+    fun action_group ->
+      let action_group = Option.map (fun (c) -> c#as_action_group) action_group in
+      (Application.set_action_group obj action_group)
 
-    method set_flags : Gio_enums.applicationflags -> unit =
-      fun flags -> Application.set_flags obj flags
+  method set_application_id : string option -> unit =
+    fun application_id ->
+      (Application.set_application_id obj application_id)
 
-    method set_inactivity_timeout : int -> unit =
-      fun inactivity_timeout ->
-        Application.set_inactivity_timeout obj inactivity_timeout
+  method set_default : unit -> unit =
+    fun () ->
+      (Application.set_default obj)
 
-    method set_option_context_description : string option -> unit =
-      fun description ->
-        Application.set_option_context_description obj description
+  method set_flags : Gio_enums.applicationflags -> unit =
+    fun flags ->
+      (Application.set_flags obj flags)
 
-    method set_option_context_parameter_string : string option -> unit =
-      fun parameter_string ->
-        Application.set_option_context_parameter_string obj parameter_string
+  method set_inactivity_timeout : int -> unit =
+    fun inactivity_timeout ->
+      (Application.set_inactivity_timeout obj inactivity_timeout)
 
-    method set_option_context_summary : string option -> unit =
-      fun summary -> Application.set_option_context_summary obj summary
+  method set_option_context_description : string option -> unit =
+    fun description ->
+      (Application.set_option_context_description obj description)
 
-    method set_resource_base_path : string option -> unit =
-      fun resource_path -> Application.set_resource_base_path obj resource_path
+  method set_option_context_parameter_string : string option -> unit =
+    fun parameter_string ->
+      (Application.set_option_context_parameter_string obj parameter_string)
 
-    method set_version : string -> unit =
-      fun version -> Application.set_version obj version
+  method set_option_context_summary : string option -> unit =
+    fun summary ->
+      (Application.set_option_context_summary obj summary)
 
-    method unbind_busy_property : [ `object_ ] Gobject.obj -> string -> unit =
-      fun object_ property ->
-        Application.unbind_busy_property obj object_ property
+  method set_resource_base_path : string option -> unit =
+    fun resource_path ->
+      (Application.set_resource_base_path obj resource_path)
 
-    method unmark_busy : unit -> unit = fun () -> Application.unmark_busy obj
+  method set_version : string -> unit =
+    fun version ->
+      (Application.set_version obj version)
 
-    method withdraw_notification : string -> unit =
-      fun id -> Application.withdraw_notification obj id
+  method unbind_busy_property : [`object_] Gobject.obj -> string -> unit =
+    fun object_ property ->
+      (Application.unbind_busy_property obj object_ property)
+
+  method unmark_busy : unit -> unit =
+    fun () ->
+      (Application.unmark_busy obj)
+
+  method withdraw_notification : string -> unit =
+    fun id ->
+      (Application.withdraw_notification obj id)
 
     method as_application = obj
-  end
+end
 
-let new_ (application_id : string option) (flags : Gio_enums.applicationflags) :
-    application_t =
+let new_ (application_id : string option) (flags : Gio_enums.applicationflags) : application_t =
   let obj_ = Application.new_ application_id flags in
   new application obj_
+

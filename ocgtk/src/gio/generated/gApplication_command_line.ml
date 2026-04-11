@@ -1,71 +1,70 @@
 class type application_command_line_t = object
-  method create_file_for_arg :
-    string ->
-    GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file_t
-
-  method done_ : unit -> unit
-  method get_cwd : unit -> string option
-  method get_environ : unit -> string array
-  method get_exit_status : unit -> int
-  method get_is_remote : unit -> bool
-  method get_platform_data : unit -> Gvariant.t option
-  method get_stdin : unit -> GInput_stream.input_stream_t option
-  method getenv : string -> string option
-  method print_literal : string -> unit
-  method printerr_literal : string -> unit
-  method set_exit_status : int -> unit
-  method as_application_command_line : Application_command_line.t
+    method create_file_for_arg : string -> GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file_t
+    method done_ : unit -> unit
+    method get_cwd : unit -> string option
+    method get_environ : unit -> string array
+    method get_exit_status : unit -> int
+    method get_is_remote : unit -> bool
+    method get_platform_data : unit -> Gvariant.t option
+    method get_stdin : unit -> GInput_stream.input_stream_t option
+    method getenv : string -> string option
+    method print_literal : string -> unit
+    method printerr_literal : string -> unit
+    method set_exit_status : int -> unit
+    method as_application_command_line : Application_command_line.t
 end
 
 (* High-level class for ApplicationCommandLine *)
-class application_command_line (obj : Application_command_line.t) :
-  application_command_line_t =
-  object (self)
-    method create_file_for_arg :
-        string ->
-        GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .file_t =
-      fun arg ->
-        new
-          GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume
-          .file
-          (Application_command_line.create_file_for_arg obj arg)
+class application_command_line (obj : Application_command_line.t) : application_command_line_t = object (self)
 
-    method done_ : unit -> unit = fun () -> Application_command_line.done_ obj
+  method create_file_for_arg : string -> GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file_t =
+    fun arg ->
+      new  GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file(Application_command_line.create_file_for_arg obj arg)
 
-    method get_cwd : unit -> string option =
-      fun () -> Application_command_line.get_cwd obj
+  method done_ : unit -> unit =
+    fun () ->
+      (Application_command_line.done_ obj)
 
-    method get_environ : unit -> string array =
-      fun () -> Application_command_line.get_environ obj
+  method get_cwd : unit -> string option =
+    fun () ->
+      (Application_command_line.get_cwd obj)
 
-    method get_exit_status : unit -> int =
-      fun () -> Application_command_line.get_exit_status obj
+  method get_environ : unit -> string array =
+    fun () ->
+      (Application_command_line.get_environ obj)
 
-    method get_is_remote : unit -> bool =
-      fun () -> Application_command_line.get_is_remote obj
+  method get_exit_status : unit -> int =
+    fun () ->
+      (Application_command_line.get_exit_status obj)
 
-    method get_platform_data : unit -> Gvariant.t option =
-      fun () -> Application_command_line.get_platform_data obj
+  method get_is_remote : unit -> bool =
+    fun () ->
+      (Application_command_line.get_is_remote obj)
 
-    method get_stdin : unit -> GInput_stream.input_stream_t option =
-      fun () ->
-        Option.map
-          (fun ret -> new GInput_stream.input_stream ret)
-          (Application_command_line.get_stdin obj)
+  method get_platform_data : unit -> Gvariant.t option =
+    fun () ->
+      (Application_command_line.get_platform_data obj)
 
-    method getenv : string -> string option =
-      fun name -> Application_command_line.getenv obj name
+  method get_stdin : unit -> GInput_stream.input_stream_t option =
+    fun () ->
+      Option.map (fun ret -> new GInput_stream.input_stream ret) (Application_command_line.get_stdin obj)
 
-    method print_literal : string -> unit =
-      fun message -> Application_command_line.print_literal obj message
+  method getenv : string -> string option =
+    fun name ->
+      (Application_command_line.getenv obj name)
 
-    method printerr_literal : string -> unit =
-      fun message -> Application_command_line.printerr_literal obj message
+  method print_literal : string -> unit =
+    fun message ->
+      (Application_command_line.print_literal obj message)
 
-    method set_exit_status : int -> unit =
-      fun exit_status ->
-        Application_command_line.set_exit_status obj exit_status
+  method printerr_literal : string -> unit =
+    fun message ->
+      (Application_command_line.printerr_literal obj message)
+
+  method set_exit_status : int -> unit =
+    fun exit_status ->
+      (Application_command_line.set_exit_status obj exit_status)
 
     method as_application_command_line = obj
-  end
+end
+

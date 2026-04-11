@@ -1,11 +1,11 @@
 (* Signal handlers for IconTheme *)
-class icon_theme_signals (obj : Icon_theme.t) =
-  object
-    method on_changed ~callback =
-      Gobject.Signal.connect_simple obj ~name:"changed" ~callback ~after:false
-    (** Emitted when the icon theme changes.
+class icon_theme_signals (obj : Icon_theme.t) = object
+  (** Emitted when the icon theme changes.
 
-        This can happen because current icon theme is switched or because GTK
-        detects that a change has occurred in the contents of the current icon
-        theme. *)
-  end
+This can happen because current icon theme is switched or
+because GTK detects that a change has occurred in the
+contents of the current icon theme. *)
+  method on_changed ~callback =
+    Gobject.Signal.connect_simple obj ~name:"changed" ~callback ~after:false
+
+end

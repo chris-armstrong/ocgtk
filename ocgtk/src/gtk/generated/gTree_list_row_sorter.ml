@@ -1,31 +1,28 @@
 class type tree_list_row_sorter_t = object
-  inherit GSorter.sorter_t
-  method get_sorter : unit -> GSorter.sorter_t option
-  method set_sorter : GSorter.sorter_t option -> unit
-  method as_tree_list_row_sorter : Tree_list_row_sorter.t
+    inherit GSorter.sorter_t
+    method get_sorter : unit -> GSorter.sorter_t option
+    method set_sorter : GSorter.sorter_t option -> unit
+    method as_tree_list_row_sorter : Tree_list_row_sorter.t
 end
 
 (* High-level class for TreeListRowSorter *)
-class tree_list_row_sorter (obj : Tree_list_row_sorter.t) :
-  tree_list_row_sorter_t =
-  object (self)
-    inherit GSorter.sorter (obj :> Sorter.t)
+class tree_list_row_sorter (obj : Tree_list_row_sorter.t) : tree_list_row_sorter_t = object (self)
+  inherit GSorter.sorter (obj :> Sorter.t)
 
-    method get_sorter : unit -> GSorter.sorter_t option =
-      fun () ->
-        Option.map
-          (fun ret -> new GSorter.sorter ret)
-          (Tree_list_row_sorter.get_sorter obj)
+  method get_sorter : unit -> GSorter.sorter_t option =
+    fun () ->
+      Option.map (fun ret -> new GSorter.sorter ret) (Tree_list_row_sorter.get_sorter obj)
 
-    method set_sorter : GSorter.sorter_t option -> unit =
-      fun sorter ->
-        let sorter = Option.map (fun c -> c#as_sorter) sorter in
-        Tree_list_row_sorter.set_sorter obj sorter
+  method set_sorter : GSorter.sorter_t option -> unit =
+    fun sorter ->
+      let sorter = Option.map (fun (c) -> c#as_sorter) sorter in
+      (Tree_list_row_sorter.set_sorter obj sorter)
 
     method as_tree_list_row_sorter = obj
-  end
+end
 
 let new_ (sorter : GSorter.sorter_t option) : tree_list_row_sorter_t =
   let sorter = Option.map (fun c -> c#as_sorter) sorter in
   let obj_ = Tree_list_row_sorter.new_ sorter in
   new tree_list_row_sorter obj_
+

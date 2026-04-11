@@ -1,23 +1,20 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ActionGroup: ActionGroup *)
 
-type t = [ `action_group ] Gobject.obj
+type t = [`action_group] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_action_group_from_gobject"
 
 (* Methods *)
-
-external list_actions : t -> string array = "ml_g_action_group_list_actions"
 (** Lists the actions contained within @action_group.
 
 The caller is responsible for freeing the list with g_strfreev() when
 it is no longer required. *)
+external list_actions : t -> string array = "ml_g_action_group_list_actions"
 
-external has_action : t -> string -> bool = "ml_g_action_group_has_action"
 (** Checks if the named action exists within @action_group. *)
+external has_action : t -> string -> bool = "ml_g_action_group_has_action"
 
-external get_action_state_type : t -> string -> Gvariant_type.t option
-  = "ml_g_action_group_get_action_state_type"
 (** Queries the type of the state of the named action within
 @action_group.
 
@@ -34,9 +31,8 @@ and you must not call g_action_group_change_action_state().
 The state type of a particular action will never change but it is
 possible for an action to be removed and for a new action to be added
 with the same name but a different state type. *)
+external get_action_state_type : t -> string -> Gvariant_type.t option = "ml_g_action_group_get_action_state_type"
 
-external get_action_state_hint : t -> string -> Gvariant.t option
-  = "ml_g_action_group_get_action_state_hint"
 (** Requests a hint about the valid range of values for the state of the
 named action within @action_group.
 
@@ -55,9 +51,8 @@ within the range may fail.
 
 The return value (if non-%NULL) should be freed with
 g_variant_unref() when it is no longer required. *)
+external get_action_state_hint : t -> string -> Gvariant.t option = "ml_g_action_group_get_action_state_hint"
 
-external get_action_state : t -> string -> Gvariant.t option
-  = "ml_g_action_group_get_action_state"
 (** Queries the current state of the named action within @action_group.
 
 If the action is not stateful then %NULL will be returned.  If the
@@ -66,9 +61,8 @@ given by g_action_group_get_action_state_type().
 
 The return value (if non-%NULL) should be freed with
 g_variant_unref() when it is no longer required. *)
+external get_action_state : t -> string -> Gvariant.t option = "ml_g_action_group_get_action_state"
 
-external get_action_parameter_type : t -> string -> Gvariant_type.t option
-  = "ml_g_action_group_get_action_parameter_type"
 (** Queries the type of the parameter that must be given when activating
 the named action within @action_group.
 
@@ -82,16 +76,14 @@ In the case that this function returns %NULL, you must not give any
 The parameter type of a particular action will never change but it is
 possible for an action to be removed and for a new action to be added
 with the same name but a different parameter type. *)
+external get_action_parameter_type : t -> string -> Gvariant_type.t option = "ml_g_action_group_get_action_parameter_type"
 
-external get_action_enabled : t -> string -> bool
-  = "ml_g_action_group_get_action_enabled"
 (** Checks if the named action within @action_group is currently enabled.
 
 An action must be enabled in order to be activated or in order to
 have its state changed from outside callers. *)
+external get_action_enabled : t -> string -> bool = "ml_g_action_group_get_action_enabled"
 
-external change_action_state : t -> string -> Gvariant.t -> unit
-  = "ml_g_action_group_change_action_state"
 (** Request for the state of the named action within @action_group to be
 changed to @value.
 
@@ -103,9 +95,8 @@ its state or may change its state to something other than @value.
 See g_action_group_get_action_state_hint().
 
 If the @value GVariant is floating, it is consumed. *)
+external change_action_state : t -> string -> Gvariant.t -> unit = "ml_g_action_group_change_action_state"
 
-external activate_action : t -> string -> Gvariant.t option -> unit
-  = "ml_g_action_group_activate_action"
 (** Activate the named action within @action_group.
 
 If the action is expecting a parameter, then the correct type of
@@ -139,26 +130,25 @@ g_debug ("application has been terminated. exiting.");
 
 exit (0);
 ]| *)
+external activate_action : t -> string -> Gvariant.t option -> unit = "ml_g_action_group_activate_action"
 
-external action_state_changed : t -> string -> Gvariant.t -> unit
-  = "ml_g_action_group_action_state_changed"
 (** Emits the #GActionGroup::action-state-changed signal on @action_group.
 
 This function should only be called by #GActionGroup implementations. *)
+external action_state_changed : t -> string -> Gvariant.t -> unit = "ml_g_action_group_action_state_changed"
 
-external action_removed : t -> string -> unit
-  = "ml_g_action_group_action_removed"
 (** Emits the #GActionGroup::action-removed signal on @action_group.
 
 This function should only be called by #GActionGroup implementations. *)
+external action_removed : t -> string -> unit = "ml_g_action_group_action_removed"
 
-external action_enabled_changed : t -> string -> bool -> unit
-  = "ml_g_action_group_action_enabled_changed"
 (** Emits the #GActionGroup::action-enabled-changed signal on @action_group.
 
 This function should only be called by #GActionGroup implementations. *)
+external action_enabled_changed : t -> string -> bool -> unit = "ml_g_action_group_action_enabled_changed"
 
-external action_added : t -> string -> unit = "ml_g_action_group_action_added"
 (** Emits the #GActionGroup::action-added signal on @action_group.
 
 This function should only be called by #GActionGroup implementations. *)
+external action_added : t -> string -> unit = "ml_g_action_group_action_added"
+

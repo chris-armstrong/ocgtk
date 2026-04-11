@@ -1,37 +1,44 @@
 class type tls_password_t = object
-  method get_description : unit -> string
-  method get_flags : unit -> Gio_enums.tlspasswordflags
-  method get_warning : unit -> string
-  method set_description : string -> unit
-  method set_flags : Gio_enums.tlspasswordflags -> unit
-  method set_warning : string -> unit
-  method as_tls_password : Tls_password.t
+    method get_description : unit -> string
+    method get_flags : unit -> Gio_enums.tlspasswordflags
+    method get_warning : unit -> string
+    method set_description : string -> unit
+    method set_flags : Gio_enums.tlspasswordflags -> unit
+    method set_warning : string -> unit
+    method as_tls_password : Tls_password.t
 end
 
 (* High-level class for TlsPassword *)
-class tls_password (obj : Tls_password.t) : tls_password_t =
-  object (self)
-    method get_description : unit -> string =
-      fun () -> Tls_password.get_description obj
+class tls_password (obj : Tls_password.t) : tls_password_t = object (self)
 
-    method get_flags : unit -> Gio_enums.tlspasswordflags =
-      fun () -> Tls_password.get_flags obj
+  method get_description : unit -> string =
+    fun () ->
+      (Tls_password.get_description obj)
 
-    method get_warning : unit -> string = fun () -> Tls_password.get_warning obj
+  method get_flags : unit -> Gio_enums.tlspasswordflags =
+    fun () ->
+      (Tls_password.get_flags obj)
 
-    method set_description : string -> unit =
-      fun description -> Tls_password.set_description obj description
+  method get_warning : unit -> string =
+    fun () ->
+      (Tls_password.get_warning obj)
 
-    method set_flags : Gio_enums.tlspasswordflags -> unit =
-      fun flags -> Tls_password.set_flags obj flags
+  method set_description : string -> unit =
+    fun description ->
+      (Tls_password.set_description obj description)
 
-    method set_warning : string -> unit =
-      fun warning -> Tls_password.set_warning obj warning
+  method set_flags : Gio_enums.tlspasswordflags -> unit =
+    fun flags ->
+      (Tls_password.set_flags obj flags)
+
+  method set_warning : string -> unit =
+    fun warning ->
+      (Tls_password.set_warning obj warning)
 
     method as_tls_password = obj
-  end
+end
 
-let new_ (flags : Gio_enums.tlspasswordflags) (description : string) :
-    tls_password_t =
+let new_ (flags : Gio_enums.tlspasswordflags) (description : string) : tls_password_t =
   let obj_ = Tls_password.new_ flags description in
   new tls_password obj_
+

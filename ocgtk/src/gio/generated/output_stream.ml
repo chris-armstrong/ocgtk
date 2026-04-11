@@ -1,18 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* OutputStream: OutputStream *)
 
-type t = [ `output_stream | `object_ ] Gobject.obj
+type t = [`output_stream | `object_] Gobject.obj
 
 (* Methods *)
-
-external writev_finish :
-  t -> Async_result.t -> (bool * Gsize.t, GError.t) result
-  = "ml_g_output_stream_writev_finish"
 (** Finishes a stream writev operation. *)
+external writev_finish : t -> Async_result.t -> (bool * Gsize.t, GError.t) result = "ml_g_output_stream_writev_finish"
 
-external writev_all_finish :
-  t -> Async_result.t -> (bool * Gsize.t, GError.t) result
-  = "ml_g_output_stream_writev_all_finish"
 (** Finishes an asynchronous stream write operation started with
 g_output_stream_writev_all_async().
 
@@ -23,13 +17,8 @@ successfully written before the error was encountered.  This
 functionality is only available from C.  If you need it from another
 language then you must write your own loop around
 g_output_stream_writev_async(). *)
+external writev_all_finish : t -> Async_result.t -> (bool * Gsize.t, GError.t) result = "ml_g_output_stream_writev_all_finish"
 
-external writev_all :
-  t ->
-  Output_vector.t array ->
-  Gsize.t ->
-  Cancellable.t option ->
-  (bool * Gsize.t, GError.t) result = "ml_g_output_stream_writev_all"
 (** Tries to write the bytes contained in the @n_vectors @vectors into the
 stream. Will block during the operation.
 
@@ -52,13 +41,8 @@ g_output_stream_write().
 
 The content of the individual elements of @vectors might be changed by this
 function. *)
+external writev_all : t -> Output_vector.t array -> Gsize.t -> Cancellable.t option -> (bool * Gsize.t, GError.t) result = "ml_g_output_stream_writev_all"
 
-external writev :
-  t ->
-  Output_vector.t array ->
-  Gsize.t ->
-  Cancellable.t option ->
-  (bool * Gsize.t, GError.t) result = "ml_g_output_stream_writev"
 (** Tries to write the bytes contained in the @n_vectors @vectors into the
 stream. Will block during the operation.
 
@@ -82,32 +66,27 @@ Some implementations of g_output_stream_writev() may have limitations on the
 aggregate buffer size, and will return %G_IO_ERROR_INVALID_ARGUMENT if these
 are exceeded. For example, when writing to a local file on UNIX platforms,
 the aggregate buffer size must not exceed %G_MAXSSIZE bytes. *)
+external writev : t -> Output_vector.t array -> Gsize.t -> Cancellable.t option -> (bool * Gsize.t, GError.t) result = "ml_g_output_stream_writev"
 
-external write_finish : t -> Async_result.t -> (int, GError.t) result
-  = "ml_g_output_stream_write_finish"
 (** Finishes a stream write operation. *)
+external write_finish : t -> Async_result.t -> (int, GError.t) result = "ml_g_output_stream_write_finish"
 
-external write_bytes_finish : t -> Async_result.t -> (int, GError.t) result
-  = "ml_g_output_stream_write_bytes_finish"
 (** Finishes a stream write-from-#GBytes operation. *)
+external write_bytes_finish : t -> Async_result.t -> (int, GError.t) result = "ml_g_output_stream_write_bytes_finish"
 
-external write_bytes :
-  t -> Glib_bytes.t -> Cancellable.t option -> (int, GError.t) result
-  = "ml_g_output_stream_write_bytes"
-(** A wrapper function for g_output_stream_write() which takes a #GBytes as
-    input. This can be more convenient for use by language bindings or in other
-    cases where the refcounted nature of #GBytes is helpful over a bare pointer
-    interface.
+(** A wrapper function for g_output_stream_write() which takes a
+#GBytes as input.  This can be more convenient for use by language
+bindings or in other cases where the refcounted nature of #GBytes
+is helpful over a bare pointer interface.
 
-    However, note that this function may still perform partial writes, just like
-    g_output_stream_write(). If that occurs, to continue writing, you will need
-    to create a new #GBytes containing just the remaining bytes, using
-    g_bytes_new_from_bytes(). Passing the same #GBytes instance multiple times
-    potentially can result in duplicated data in the output stream. *)
+However, note that this function may still perform partial writes,
+just like g_output_stream_write().  If that occurs, to continue
+writing, you will need to create a new #GBytes containing just the
+remaining bytes, using g_bytes_new_from_bytes(). Passing the same
+#GBytes instance multiple times potentially can result in duplicated
+data in the output stream. *)
+external write_bytes : t -> Glib_bytes.t -> Cancellable.t option -> (int, GError.t) result = "ml_g_output_stream_write_bytes"
 
-external write_all_finish :
-  t -> Async_result.t -> (bool * Gsize.t, GError.t) result
-  = "ml_g_output_stream_write_all_finish"
 (** Finishes an asynchronous stream write operation started with
 g_output_stream_write_all_async().
 
@@ -118,42 +97,34 @@ successfully written before the error was encountered.  This
 functionality is only available from C.  If you need it from another
 language then you must write your own loop around
 g_output_stream_write_async(). *)
+external write_all_finish : t -> Async_result.t -> (bool * Gsize.t, GError.t) result = "ml_g_output_stream_write_all_finish"
 
-external splice_finish : t -> Async_result.t -> (int, GError.t) result
-  = "ml_g_output_stream_splice_finish"
 (** Finishes an asynchronous stream splice operation. *)
+external splice_finish : t -> Async_result.t -> (int, GError.t) result = "ml_g_output_stream_splice_finish"
 
-external splice :
-  t ->
-  Input_stream.t ->
-  Gio_enums.outputstreamspliceflags ->
-  Cancellable.t option ->
-  (int, GError.t) result = "ml_g_output_stream_splice"
 (** Splices an input stream into an output stream. *)
+external splice : t -> Input_stream.t -> Gio_enums.outputstreamspliceflags -> Cancellable.t option -> (int, GError.t) result = "ml_g_output_stream_splice"
 
-external set_pending : t -> (bool, GError.t) result
-  = "ml_g_output_stream_set_pending"
 (** Sets @stream to have actions pending. If the pending flag is
 already set or @stream is closed, it will return %FALSE and set
 @error. *)
+external set_pending : t -> (bool, GError.t) result = "ml_g_output_stream_set_pending"
 
+(** Checks if an output stream is being closed. This can be
+used inside e.g. a flush implementation to see if the
+flush (or other i/o operation) is called from within
+the closing operation. *)
 external is_closing : t -> bool = "ml_g_output_stream_is_closing"
-(** Checks if an output stream is being closed. This can be used inside e.g. a
-    flush implementation to see if the flush (or other i/o operation) is called
-    from within the closing operation. *)
 
-external is_closed : t -> bool = "ml_g_output_stream_is_closed"
 (** Checks if an output stream has already been closed. *)
+external is_closed : t -> bool = "ml_g_output_stream_is_closed"
 
-external has_pending : t -> bool = "ml_g_output_stream_has_pending"
 (** Checks if an output stream has pending actions. *)
+external has_pending : t -> bool = "ml_g_output_stream_has_pending"
 
-external flush_finish : t -> Async_result.t -> (bool, GError.t) result
-  = "ml_g_output_stream_flush_finish"
 (** Finishes flushing an output stream. *)
+external flush_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_output_stream_flush_finish"
 
-external flush : t -> Cancellable.t option -> (bool, GError.t) result
-  = "ml_g_output_stream_flush"
 (** Forces a write of all user-space buffered data for the given
 @stream. Will block during the operation. Closing the stream will
 implicitly cause a flush.
@@ -163,13 +134,11 @@ This function is optional for inherited classes.
 If @cancellable is not %NULL, then the operation can be cancelled by
 triggering the cancellable object from another thread. If the operation
 was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+external flush : t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_output_stream_flush"
 
-external close_finish : t -> Async_result.t -> (bool, GError.t) result
-  = "ml_g_output_stream_close_finish"
 (** Closes an output stream. *)
+external close_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_output_stream_close_finish"
 
-external close : t -> Cancellable.t option -> (bool, GError.t) result
-  = "ml_g_output_stream_close"
 (** Closes the stream, releasing resources related to it.
 
 Once the stream is closed, all other operations will return %G_IO_ERROR_CLOSED.
@@ -199,6 +168,8 @@ Cancelling a close will still leave the stream closed, but there some streams
 can use a faster close that doesn't block to e.g. check errors. On
 cancellation (as with any error) there is no guarantee that all written
 data will reach the target. *)
+external close : t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_output_stream_close"
 
-external clear_pending : t -> unit = "ml_g_output_stream_clear_pending"
 (** Clears the pending flag on @stream. *)
+external clear_pending : t -> unit = "ml_g_output_stream_clear_pending"
+

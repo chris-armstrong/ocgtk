@@ -1,24 +1,25 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ExpressionWatch: ExpressionWatch *)
 
-type t = [ `expression_watch ] Gobject.obj
 (** An opaque structure representing a watched `GtkExpression`.
 
-    The contents of `GtkExpressionWatch` should only be accessed through the
-    provided API. *)
+The contents of `GtkExpressionWatch` should only be accessed through the
+provided API. *)
+type t = [`expression_watch] Gobject.obj
 
 (* Methods *)
-
-external unwatch : t -> unit = "ml_gtk_expression_watch_unwatch"
 (** Stops watching an expression.
 
-    See [method@Gtk.Expression.watch] for how the watch was established. *)
+See [method@Gtk.Expression.watch] for how the watch
+was established. *)
+external unwatch : t -> unit = "ml_gtk_expression_watch_unwatch"
 
-external unref : t -> unit = "ml_gtk_expression_watch_unref"
 (** Releases a reference on the given `GtkExpressionWatch`.
 
-    If the reference was the last, the resources associated to `self` are freed.
-*)
+If the reference was the last, the resources associated to `self` are
+freed. *)
+external unref : t -> unit = "ml_gtk_expression_watch_unref"
 
-external ref : t -> t = "ml_gtk_expression_watch_ref"
 (** Acquires a reference on the given `GtkExpressionWatch`. *)
+external ref : t -> t = "ml_gtk_expression_watch_ref"
+

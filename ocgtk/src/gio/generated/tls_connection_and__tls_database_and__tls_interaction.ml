@@ -2,12 +2,9 @@
 (* Combined modules for cyclic dependencies *)
 
 module rec Tls_connection : sig
-  type t = [ `tls_connection | `io_stream | `object_ ] Gobject.obj
+  type t = [`tls_connection | `io_stream | `object_] Gobject.obj
 
   (* Methods *)
-
-  external set_use_system_certdb : t -> bool -> unit
-    = "ml_g_tls_connection_set_use_system_certdb"
   (** Sets whether @conn uses the system certificate database to verify
   peer certificates. This is %TRUE by default. If set to %FALSE, then
   peer certificate validation will always set the
@@ -15,9 +12,8 @@ module rec Tls_connection : sig
   #GTlsConnection::accept-certificate will always be emitted on
   client-side connections, unless that bit is not set in
   #GTlsClientConnection:validation-flags). *)
+  external set_use_system_certdb : t -> bool -> unit = "ml_g_tls_connection_set_use_system_certdb"
 
-  external set_require_close_notify : t -> bool -> unit
-    = "ml_g_tls_connection_set_require_close_notify"
   (** Sets whether or not @conn expects a proper TLS close notification
   before the connection is closed. If this is %TRUE (the default),
   then @conn will expect to receive a TLS close notification from its
@@ -45,38 +41,35 @@ module rec Tls_connection : sig
   close, you can close @conn's #GTlsConnection:base-io-stream rather
   than closing @conn itself, but note that this may only be done when no other
   operations are pending on @conn or the base I/O stream. *)
+  external set_require_close_notify : t -> bool -> unit = "ml_g_tls_connection_set_require_close_notify"
 
-  external set_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode -> unit
-    = "ml_g_tls_connection_set_rehandshake_mode"
-  (** Since GLib 2.64, changing the rehandshake mode is no longer supported and
-      will have no effect. With TLS 1.3, rehandshaking has been removed from the
-      TLS protocol, replaced by separate post-handshake authentication and rekey
-      operations. *)
+  (** Since GLib 2.64, changing the rehandshake mode is no longer supported
+  and will have no effect. With TLS 1.3, rehandshaking has been removed from
+  the TLS protocol, replaced by separate post-handshake authentication and
+  rekey operations. *)
+  external set_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode -> unit = "ml_g_tls_connection_set_rehandshake_mode"
 
-  external set_interaction : t -> Tls_interaction.t option -> unit
-    = "ml_g_tls_connection_set_interaction"
   (** Set the object that will be used to interact with the user. It will be used
   for things like prompting the user for passwords.
 
   The @interaction argument will normally be a derived subclass of
   #GTlsInteraction. %NULL can also be provided if no user interaction
   should occur for this connection. *)
+  external set_interaction : t -> Tls_interaction.t option -> unit = "ml_g_tls_connection_set_interaction"
 
-  external set_database : t -> Tls_database.t option -> unit
-    = "ml_g_tls_connection_set_database"
   (** Sets the certificate database that is used to verify peer certificates.
-      This is set to the default database by default. See
-      g_tls_backend_get_default_database(). If set to %NULL, then peer
-      certificate validation will always set the %G_TLS_CERTIFICATE_UNKNOWN_CA
-      error (meaning #GTlsConnection::accept-certificate will always be emitted
-      on client-side connections, unless that bit is not set in
-      #GTlsClientConnection:validation-flags).
+  This is set to the default database by default. See
+  g_tls_backend_get_default_database(). If set to %NULL, then
+  peer certificate validation will always set the
+  %G_TLS_CERTIFICATE_UNKNOWN_CA error (meaning
+  #GTlsConnection::accept-certificate will always be emitted on
+  client-side connections, unless that bit is not set in
+  #GTlsClientConnection:validation-flags).
 
-      There are nonintuitive security implications when using a non-default
-      database. See #GTlsConnection:database for details. *)
+  There are nonintuitive security implications when using a non-default
+  database. See #GTlsConnection:database for details. *)
+  external set_database : t -> Tls_database.t option -> unit = "ml_g_tls_connection_set_database"
 
-  external set_certificate : t -> Tls_certificate.t -> unit
-    = "ml_g_tls_connection_set_certificate"
   (** This sets the certificate that @conn will present to its peer
   during the TLS handshake. For a #GTlsServerConnection, it is
   mandatory to set this, and that will normally be done at construct
@@ -95,9 +88,8 @@ module rec Tls_connection : sig
   certificate, you can tell that the server requested one by the fact
   that g_tls_client_connection_get_accepted_cas() will return
   non-%NULL.) *)
+  external set_certificate : t -> Tls_certificate.t -> unit = "ml_g_tls_connection_set_certificate"
 
-  external set_advertised_protocols : t -> string array option -> unit
-    = "ml_g_tls_connection_set_advertised_protocols"
   (** Sets the list of application-layer protocols to advertise that the
   caller is willing to speak on this connection. The
   Application-Layer Protocol Negotiation (ALPN) extension will be
@@ -108,14 +100,12 @@ module rec Tls_connection : sig
 
   See [IANA TLS ALPN Protocol IDs](https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
   for a list of registered protocol IDs. *)
+  external set_advertised_protocols : t -> string array option -> unit = "ml_g_tls_connection_set_advertised_protocols"
 
-  external handshake_finish : t -> Async_result.t -> (bool, GError.t) result
-    = "ml_g_tls_connection_handshake_finish"
   (** Finish an asynchronous TLS handshake operation. See
-      g_tls_connection_handshake() for more information. *)
+  g_tls_connection_handshake() for more information. *)
+  external handshake_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_tls_connection_handshake_finish"
 
-  external handshake : t -> Cancellable.t option -> (bool, GError.t) result
-    = "ml_g_tls_connection_handshake"
   (** Attempts a TLS handshake on @conn.
 
   On the client side, it is never necessary to call this method;
@@ -147,46 +137,39 @@ module rec Tls_connection : sig
 
   #GTlsConnection::accept_certificate may be emitted during the
   handshake. *)
+  external handshake : t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_tls_connection_handshake"
 
-  external get_use_system_certdb : t -> bool
-    = "ml_g_tls_connection_get_use_system_certdb"
   (** Gets whether @conn uses the system certificate database to verify
   peer certificates. See g_tls_connection_set_use_system_certdb(). *)
+  external get_use_system_certdb : t -> bool = "ml_g_tls_connection_get_use_system_certdb"
 
-  external get_require_close_notify : t -> bool
-    = "ml_g_tls_connection_get_require_close_notify"
   (** Tests whether or not @conn expects a proper TLS close notification
   when the connection is closed. See
   g_tls_connection_set_require_close_notify() for details. *)
+  external get_require_close_notify : t -> bool = "ml_g_tls_connection_get_require_close_notify"
 
-  external get_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode
-    = "ml_g_tls_connection_get_rehandshake_mode"
   (** Gets @conn rehandshaking mode. See
   g_tls_connection_set_rehandshake_mode() for details. *)
+  external get_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode = "ml_g_tls_connection_get_rehandshake_mode"
 
-  external get_protocol_version : t -> Gio_enums.tlsprotocolversion
-    = "ml_g_tls_connection_get_protocol_version"
   (** Returns the current TLS protocol version, which may be
-      %G_TLS_PROTOCOL_VERSION_UNKNOWN if the connection has not handshaked, or
-      has been closed, or if the TLS backend has implemented a protocol version
-      that is not a recognized #GTlsProtocolVersion. *)
+  %G_TLS_PROTOCOL_VERSION_UNKNOWN if the connection has not handshaked, or
+  has been closed, or if the TLS backend has implemented a protocol version
+  that is not a recognized #GTlsProtocolVersion. *)
+  external get_protocol_version : t -> Gio_enums.tlsprotocolversion = "ml_g_tls_connection_get_protocol_version"
 
-  external get_peer_certificate_errors : t -> Gio_enums.tlscertificateflags
-    = "ml_g_tls_connection_get_peer_certificate_errors"
   (** Gets the errors associated with validating @conn's peer's
   certificate, after the handshake has completed or failed. (It is
   not set during the emission of #GTlsConnection::accept-certificate.)
 
   See #GTlsConnection:peer-certificate-errors for more information. *)
+  external get_peer_certificate_errors : t -> Gio_enums.tlscertificateflags = "ml_g_tls_connection_get_peer_certificate_errors"
 
-  external get_peer_certificate : t -> Tls_certificate.t option
-    = "ml_g_tls_connection_get_peer_certificate"
   (** Gets @conn's peer's certificate after the handshake has completed
   or failed. (It is not set during the emission of
   #GTlsConnection::accept-certificate.) *)
+  external get_peer_certificate : t -> Tls_certificate.t option = "ml_g_tls_connection_get_peer_certificate"
 
-  external get_negotiated_protocol : t -> string option
-    = "ml_g_tls_connection_get_negotiated_protocol"
   (** Gets the name of the application-layer protocol negotiated during
   the handshake.
 
@@ -194,52 +177,45 @@ module rec Tls_connection : sig
   protocol that matched one of @conn's protocols, or the TLS backend
   does not support ALPN, then this will be %NULL. See
   g_tls_connection_set_advertised_protocols(). *)
+  external get_negotiated_protocol : t -> string option = "ml_g_tls_connection_get_negotiated_protocol"
 
-  external get_interaction : t -> Tls_interaction.t option
-    = "ml_g_tls_connection_get_interaction"
-  (** Get the object that will be used to interact with the user. It will be
-      used for things like prompting the user for passwords. If %NULL is
-      returned, then no user interaction will occur for this connection. *)
+  (** Get the object that will be used to interact with the user. It will be used
+  for things like prompting the user for passwords. If %NULL is returned, then
+  no user interaction will occur for this connection. *)
+  external get_interaction : t -> Tls_interaction.t option = "ml_g_tls_connection_get_interaction"
 
-  external get_database : t -> Tls_database.t option
-    = "ml_g_tls_connection_get_database"
   (** Gets the certificate database that @conn uses to verify
   peer certificates. See g_tls_connection_set_database(). *)
+  external get_database : t -> Tls_database.t option = "ml_g_tls_connection_get_database"
 
-  external get_ciphersuite_name : t -> string option
-    = "ml_g_tls_connection_get_ciphersuite_name"
   (** Returns the name of the current TLS ciphersuite, or %NULL if the
-      connection has not handshaked or has been closed. Beware that the TLS
-      backend may use any of multiple different naming conventions, because
-      OpenSSL and GnuTLS have their own ciphersuite naming conventions that are
-      different from each other and different from the standard, IANA-
-      registered ciphersuite names. The ciphersuite name is intended to be
-      displayed to the user for informative purposes only, and parsing it is not
-      recommended. *)
+  connection has not handshaked or has been closed. Beware that the TLS
+  backend may use any of multiple different naming conventions, because
+  OpenSSL and GnuTLS have their own ciphersuite naming conventions that
+  are different from each other and different from the standard, IANA-
+  registered ciphersuite names. The ciphersuite name is intended to be
+  displayed to the user for informative purposes only, and parsing it
+  is not recommended. *)
+  external get_ciphersuite_name : t -> string option = "ml_g_tls_connection_get_ciphersuite_name"
 
-  external get_certificate : t -> Tls_certificate.t option
-    = "ml_g_tls_connection_get_certificate"
   (** Gets @conn's certificate, as set by
   g_tls_connection_set_certificate(). *)
+  external get_certificate : t -> Tls_certificate.t option = "ml_g_tls_connection_get_certificate"
 
-  external emit_accept_certificate :
-    t -> Tls_certificate.t -> Gio_enums.tlscertificateflags -> bool
-    = "ml_g_tls_connection_emit_accept_certificate"
   (** Used by #GTlsConnection implementations to emit the
-      #GTlsConnection::accept-certificate signal. *)
+  #GTlsConnection::accept-certificate signal. *)
+  external emit_accept_certificate : t -> Tls_certificate.t -> Gio_enums.tlscertificateflags -> bool = "ml_g_tls_connection_emit_accept_certificate"
 
   (* Properties *)
 
-  external get_base_io_stream : t -> Io_stream.t
-    = "ml_g_tls_connection_get_base_io_stream"
   (** Get property: base-io-stream *)
+  external get_base_io_stream : t -> Io_stream.t = "ml_g_tls_connection_get_base_io_stream"
+
+
 end = struct
-  type t = [ `tls_connection | `io_stream | `object_ ] Gobject.obj
+  type t = [`tls_connection | `io_stream | `object_] Gobject.obj
 
   (* Methods *)
-
-  external set_use_system_certdb : t -> bool -> unit
-    = "ml_g_tls_connection_set_use_system_certdb"
   (** Sets whether @conn uses the system certificate database to verify
   peer certificates. This is %TRUE by default. If set to %FALSE, then
   peer certificate validation will always set the
@@ -247,9 +223,8 @@ end = struct
   #GTlsConnection::accept-certificate will always be emitted on
   client-side connections, unless that bit is not set in
   #GTlsClientConnection:validation-flags). *)
+  external set_use_system_certdb : t -> bool -> unit = "ml_g_tls_connection_set_use_system_certdb"
 
-  external set_require_close_notify : t -> bool -> unit
-    = "ml_g_tls_connection_set_require_close_notify"
   (** Sets whether or not @conn expects a proper TLS close notification
   before the connection is closed. If this is %TRUE (the default),
   then @conn will expect to receive a TLS close notification from its
@@ -277,38 +252,35 @@ end = struct
   close, you can close @conn's #GTlsConnection:base-io-stream rather
   than closing @conn itself, but note that this may only be done when no other
   operations are pending on @conn or the base I/O stream. *)
+  external set_require_close_notify : t -> bool -> unit = "ml_g_tls_connection_set_require_close_notify"
 
-  external set_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode -> unit
-    = "ml_g_tls_connection_set_rehandshake_mode"
-  (** Since GLib 2.64, changing the rehandshake mode is no longer supported and
-      will have no effect. With TLS 1.3, rehandshaking has been removed from the
-      TLS protocol, replaced by separate post-handshake authentication and rekey
-      operations. *)
+  (** Since GLib 2.64, changing the rehandshake mode is no longer supported
+  and will have no effect. With TLS 1.3, rehandshaking has been removed from
+  the TLS protocol, replaced by separate post-handshake authentication and
+  rekey operations. *)
+  external set_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode -> unit = "ml_g_tls_connection_set_rehandshake_mode"
 
-  external set_interaction : t -> Tls_interaction.t option -> unit
-    = "ml_g_tls_connection_set_interaction"
   (** Set the object that will be used to interact with the user. It will be used
   for things like prompting the user for passwords.
 
   The @interaction argument will normally be a derived subclass of
   #GTlsInteraction. %NULL can also be provided if no user interaction
   should occur for this connection. *)
+  external set_interaction : t -> Tls_interaction.t option -> unit = "ml_g_tls_connection_set_interaction"
 
-  external set_database : t -> Tls_database.t option -> unit
-    = "ml_g_tls_connection_set_database"
   (** Sets the certificate database that is used to verify peer certificates.
-      This is set to the default database by default. See
-      g_tls_backend_get_default_database(). If set to %NULL, then peer
-      certificate validation will always set the %G_TLS_CERTIFICATE_UNKNOWN_CA
-      error (meaning #GTlsConnection::accept-certificate will always be emitted
-      on client-side connections, unless that bit is not set in
-      #GTlsClientConnection:validation-flags).
+  This is set to the default database by default. See
+  g_tls_backend_get_default_database(). If set to %NULL, then
+  peer certificate validation will always set the
+  %G_TLS_CERTIFICATE_UNKNOWN_CA error (meaning
+  #GTlsConnection::accept-certificate will always be emitted on
+  client-side connections, unless that bit is not set in
+  #GTlsClientConnection:validation-flags).
 
-      There are nonintuitive security implications when using a non-default
-      database. See #GTlsConnection:database for details. *)
+  There are nonintuitive security implications when using a non-default
+  database. See #GTlsConnection:database for details. *)
+  external set_database : t -> Tls_database.t option -> unit = "ml_g_tls_connection_set_database"
 
-  external set_certificate : t -> Tls_certificate.t -> unit
-    = "ml_g_tls_connection_set_certificate"
   (** This sets the certificate that @conn will present to its peer
   during the TLS handshake. For a #GTlsServerConnection, it is
   mandatory to set this, and that will normally be done at construct
@@ -327,9 +299,8 @@ end = struct
   certificate, you can tell that the server requested one by the fact
   that g_tls_client_connection_get_accepted_cas() will return
   non-%NULL.) *)
+  external set_certificate : t -> Tls_certificate.t -> unit = "ml_g_tls_connection_set_certificate"
 
-  external set_advertised_protocols : t -> string array option -> unit
-    = "ml_g_tls_connection_set_advertised_protocols"
   (** Sets the list of application-layer protocols to advertise that the
   caller is willing to speak on this connection. The
   Application-Layer Protocol Negotiation (ALPN) extension will be
@@ -340,14 +311,12 @@ end = struct
 
   See [IANA TLS ALPN Protocol IDs](https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
   for a list of registered protocol IDs. *)
+  external set_advertised_protocols : t -> string array option -> unit = "ml_g_tls_connection_set_advertised_protocols"
 
-  external handshake_finish : t -> Async_result.t -> (bool, GError.t) result
-    = "ml_g_tls_connection_handshake_finish"
   (** Finish an asynchronous TLS handshake operation. See
-      g_tls_connection_handshake() for more information. *)
+  g_tls_connection_handshake() for more information. *)
+  external handshake_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_tls_connection_handshake_finish"
 
-  external handshake : t -> Cancellable.t option -> (bool, GError.t) result
-    = "ml_g_tls_connection_handshake"
   (** Attempts a TLS handshake on @conn.
 
   On the client side, it is never necessary to call this method;
@@ -379,46 +348,39 @@ end = struct
 
   #GTlsConnection::accept_certificate may be emitted during the
   handshake. *)
+  external handshake : t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_tls_connection_handshake"
 
-  external get_use_system_certdb : t -> bool
-    = "ml_g_tls_connection_get_use_system_certdb"
   (** Gets whether @conn uses the system certificate database to verify
   peer certificates. See g_tls_connection_set_use_system_certdb(). *)
+  external get_use_system_certdb : t -> bool = "ml_g_tls_connection_get_use_system_certdb"
 
-  external get_require_close_notify : t -> bool
-    = "ml_g_tls_connection_get_require_close_notify"
   (** Tests whether or not @conn expects a proper TLS close notification
   when the connection is closed. See
   g_tls_connection_set_require_close_notify() for details. *)
+  external get_require_close_notify : t -> bool = "ml_g_tls_connection_get_require_close_notify"
 
-  external get_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode
-    = "ml_g_tls_connection_get_rehandshake_mode"
   (** Gets @conn rehandshaking mode. See
   g_tls_connection_set_rehandshake_mode() for details. *)
+  external get_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode = "ml_g_tls_connection_get_rehandshake_mode"
 
-  external get_protocol_version : t -> Gio_enums.tlsprotocolversion
-    = "ml_g_tls_connection_get_protocol_version"
   (** Returns the current TLS protocol version, which may be
-      %G_TLS_PROTOCOL_VERSION_UNKNOWN if the connection has not handshaked, or
-      has been closed, or if the TLS backend has implemented a protocol version
-      that is not a recognized #GTlsProtocolVersion. *)
+  %G_TLS_PROTOCOL_VERSION_UNKNOWN if the connection has not handshaked, or
+  has been closed, or if the TLS backend has implemented a protocol version
+  that is not a recognized #GTlsProtocolVersion. *)
+  external get_protocol_version : t -> Gio_enums.tlsprotocolversion = "ml_g_tls_connection_get_protocol_version"
 
-  external get_peer_certificate_errors : t -> Gio_enums.tlscertificateflags
-    = "ml_g_tls_connection_get_peer_certificate_errors"
   (** Gets the errors associated with validating @conn's peer's
   certificate, after the handshake has completed or failed. (It is
   not set during the emission of #GTlsConnection::accept-certificate.)
 
   See #GTlsConnection:peer-certificate-errors for more information. *)
+  external get_peer_certificate_errors : t -> Gio_enums.tlscertificateflags = "ml_g_tls_connection_get_peer_certificate_errors"
 
-  external get_peer_certificate : t -> Tls_certificate.t option
-    = "ml_g_tls_connection_get_peer_certificate"
   (** Gets @conn's peer's certificate after the handshake has completed
   or failed. (It is not set during the emission of
   #GTlsConnection::accept-certificate.) *)
+  external get_peer_certificate : t -> Tls_certificate.t option = "ml_g_tls_connection_get_peer_certificate"
 
-  external get_negotiated_protocol : t -> string option
-    = "ml_g_tls_connection_get_negotiated_protocol"
   (** Gets the name of the application-layer protocol negotiated during
   the handshake.
 
@@ -426,55 +388,48 @@ end = struct
   protocol that matched one of @conn's protocols, or the TLS backend
   does not support ALPN, then this will be %NULL. See
   g_tls_connection_set_advertised_protocols(). *)
+  external get_negotiated_protocol : t -> string option = "ml_g_tls_connection_get_negotiated_protocol"
 
-  external get_interaction : t -> Tls_interaction.t option
-    = "ml_g_tls_connection_get_interaction"
-  (** Get the object that will be used to interact with the user. It will be
-      used for things like prompting the user for passwords. If %NULL is
-      returned, then no user interaction will occur for this connection. *)
+  (** Get the object that will be used to interact with the user. It will be used
+  for things like prompting the user for passwords. If %NULL is returned, then
+  no user interaction will occur for this connection. *)
+  external get_interaction : t -> Tls_interaction.t option = "ml_g_tls_connection_get_interaction"
 
-  external get_database : t -> Tls_database.t option
-    = "ml_g_tls_connection_get_database"
   (** Gets the certificate database that @conn uses to verify
   peer certificates. See g_tls_connection_set_database(). *)
+  external get_database : t -> Tls_database.t option = "ml_g_tls_connection_get_database"
 
-  external get_ciphersuite_name : t -> string option
-    = "ml_g_tls_connection_get_ciphersuite_name"
   (** Returns the name of the current TLS ciphersuite, or %NULL if the
-      connection has not handshaked or has been closed. Beware that the TLS
-      backend may use any of multiple different naming conventions, because
-      OpenSSL and GnuTLS have their own ciphersuite naming conventions that are
-      different from each other and different from the standard, IANA-
-      registered ciphersuite names. The ciphersuite name is intended to be
-      displayed to the user for informative purposes only, and parsing it is not
-      recommended. *)
+  connection has not handshaked or has been closed. Beware that the TLS
+  backend may use any of multiple different naming conventions, because
+  OpenSSL and GnuTLS have their own ciphersuite naming conventions that
+  are different from each other and different from the standard, IANA-
+  registered ciphersuite names. The ciphersuite name is intended to be
+  displayed to the user for informative purposes only, and parsing it
+  is not recommended. *)
+  external get_ciphersuite_name : t -> string option = "ml_g_tls_connection_get_ciphersuite_name"
 
-  external get_certificate : t -> Tls_certificate.t option
-    = "ml_g_tls_connection_get_certificate"
   (** Gets @conn's certificate, as set by
   g_tls_connection_set_certificate(). *)
+  external get_certificate : t -> Tls_certificate.t option = "ml_g_tls_connection_get_certificate"
 
-  external emit_accept_certificate :
-    t -> Tls_certificate.t -> Gio_enums.tlscertificateflags -> bool
-    = "ml_g_tls_connection_emit_accept_certificate"
   (** Used by #GTlsConnection implementations to emit the
-      #GTlsConnection::accept-certificate signal. *)
+  #GTlsConnection::accept-certificate signal. *)
+  external emit_accept_certificate : t -> Tls_certificate.t -> Gio_enums.tlscertificateflags -> bool = "ml_g_tls_connection_emit_accept_certificate"
 
   (* Properties *)
 
-  external get_base_io_stream : t -> Io_stream.t
-    = "ml_g_tls_connection_get_base_io_stream"
   (** Get property: base-io-stream *)
+  external get_base_io_stream : t -> Io_stream.t = "ml_g_tls_connection_get_base_io_stream"
+
+
 end
 
-and Tls_database : sig
-  type t = [ `tls_database | `object_ ] Gobject.obj
+and Tls_database
+ : sig
+  type t = [`tls_database | `object_] Gobject.obj
 
   (* Methods *)
-
-  external verify_chain_finish :
-    t -> Async_result.t -> (Gio_enums.tlscertificateflags, GError.t) result
-    = "ml_g_tls_database_verify_chain_finish"
   (** Finish an asynchronous verify chain operation. See
   g_tls_database_verify_chain() for more information.
 
@@ -486,21 +441,8 @@ and Tls_database : sig
   %G_TLS_CERTIFICATE_GENERIC_ERROR and @error will be set
   accordingly. @error is not set when @chain is successfully analyzed
   but found to be invalid. *)
+  external verify_chain_finish : t -> Async_result.t -> (Gio_enums.tlscertificateflags, GError.t) result = "ml_g_tls_database_verify_chain_finish"
 
-  external verify_chain :
-    t ->
-    Tls_certificate.t ->
-    string ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .Socket_connectable
-    .t
-    option ->
-    Tls_interaction.t option ->
-    Gio_enums.tlsdatabaseverifyflags ->
-    Cancellable.t option ->
-    (Gio_enums.tlscertificateflags, GError.t) result
-    = "ml_g_tls_database_verify_chain_bytecode"
-      "ml_g_tls_database_verify_chain_native"
   (** Determines the validity of a certificate chain, outside the context
   of a TLS session.
 
@@ -561,27 +503,16 @@ and Tls_database : sig
 
   This function can block. Use g_tls_database_verify_chain_async() to
   perform the verification operation asynchronously. *)
+  external verify_chain : t -> Tls_certificate.t -> string -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_connectable.t option -> Tls_interaction.t option -> Gio_enums.tlsdatabaseverifyflags -> Cancellable.t option -> (Gio_enums.tlscertificateflags, GError.t) result = "ml_g_tls_database_verify_chain_bytecode" "ml_g_tls_database_verify_chain_native"
 
-  external lookup_certificates_issued_by_finish :
-    t -> Async_result.t -> (Tls_certificate.t list, GError.t) result
-    = "ml_g_tls_database_lookup_certificates_issued_by_finish"
   (** Finish an asynchronous lookup of certificates. See
-      g_tls_database_lookup_certificates_issued_by() for more information. *)
+  g_tls_database_lookup_certificates_issued_by() for more information. *)
+  external lookup_certificates_issued_by_finish : t -> Async_result.t -> (Tls_certificate.t list, GError.t) result = "ml_g_tls_database_lookup_certificates_issued_by_finish"
 
-  external lookup_certificate_issuer_finish :
-    t -> Async_result.t -> (Tls_certificate.t, GError.t) result
-    = "ml_g_tls_database_lookup_certificate_issuer_finish"
   (** Finish an asynchronous lookup issuer operation. See
-      g_tls_database_lookup_certificate_issuer() for more information. *)
+  g_tls_database_lookup_certificate_issuer() for more information. *)
+  external lookup_certificate_issuer_finish : t -> Async_result.t -> (Tls_certificate.t, GError.t) result = "ml_g_tls_database_lookup_certificate_issuer_finish"
 
-  external lookup_certificate_issuer :
-    t ->
-    Tls_certificate.t ->
-    Tls_interaction.t option ->
-    Gio_enums.tlsdatabaselookupflags ->
-    Cancellable.t option ->
-    (Tls_certificate.t, GError.t) result
-    = "ml_g_tls_database_lookup_certificate_issuer"
   (** Look up the issuer of @certificate in the database. The
   #GTlsCertificate:issuer property of @certificate is not modified, and
   the two certificates are not hooked into a chain.
@@ -602,57 +533,44 @@ and Tls_database : sig
   certificate. Accordingly, this function cannot be used to make
   security-related decisions. Only GLib itself should make security
   decisions about TLS certificates. *)
+  external lookup_certificate_issuer : t -> Tls_certificate.t -> Tls_interaction.t option -> Gio_enums.tlsdatabaselookupflags -> Cancellable.t option -> (Tls_certificate.t, GError.t) result = "ml_g_tls_database_lookup_certificate_issuer"
 
-  external lookup_certificate_for_handle_finish :
-    t -> Async_result.t -> (Tls_certificate.t, GError.t) result
-    = "ml_g_tls_database_lookup_certificate_for_handle_finish"
   (** Finish an asynchronous lookup of a certificate by its handle. See
-      g_tls_database_lookup_certificate_for_handle() for more information.
+  g_tls_database_lookup_certificate_for_handle() for more information.
 
-      If the handle is no longer valid, or does not point to a certificate in
-      this database, then %NULL will be returned. *)
+  If the handle is no longer valid, or does not point to a certificate in
+  this database, then %NULL will be returned. *)
+  external lookup_certificate_for_handle_finish : t -> Async_result.t -> (Tls_certificate.t, GError.t) result = "ml_g_tls_database_lookup_certificate_for_handle_finish"
 
-  external lookup_certificate_for_handle :
-    t ->
-    string ->
-    Tls_interaction.t option ->
-    Gio_enums.tlsdatabaselookupflags ->
-    Cancellable.t option ->
-    (Tls_certificate.t option, GError.t) result
-    = "ml_g_tls_database_lookup_certificate_for_handle"
   (** Look up a certificate by its handle.
 
-      The handle should have been created by calling
-      g_tls_database_create_certificate_handle() on a #GTlsDatabase object of
-      the same TLS backend. The handle is designed to remain valid across
-      instantiations of the database.
+  The handle should have been created by calling
+  g_tls_database_create_certificate_handle() on a #GTlsDatabase object of
+  the same TLS backend. The handle is designed to remain valid across
+  instantiations of the database.
 
-      If the handle is no longer valid, or does not point to a certificate in
-      this database, then %NULL will be returned.
+  If the handle is no longer valid, or does not point to a certificate in
+  this database, then %NULL will be returned.
 
-      This function can block, use
-      g_tls_database_lookup_certificate_for_handle_async() to perform the lookup
-      operation asynchronously. *)
+  This function can block, use g_tls_database_lookup_certificate_for_handle_async() to perform
+  the lookup operation asynchronously. *)
+  external lookup_certificate_for_handle : t -> string -> Tls_interaction.t option -> Gio_enums.tlsdatabaselookupflags -> Cancellable.t option -> (Tls_certificate.t option, GError.t) result = "ml_g_tls_database_lookup_certificate_for_handle"
 
-  external create_certificate_handle : t -> Tls_certificate.t -> string option
-    = "ml_g_tls_database_create_certificate_handle"
   (** Create a handle string for the certificate. The database will only be able
-      to create a handle for certificates that originate from the database. In
-      cases where the database cannot create a handle for a certificate, %NULL
-      will be returned.
+  to create a handle for certificates that originate from the database. In
+  cases where the database cannot create a handle for a certificate, %NULL
+  will be returned.
 
-      This handle should be stable across various instances of the application,
-      and between applications. If a certificate is modified in the database,
-      then it is not guaranteed that this handle will continue to point to it.
-  *)
+  This handle should be stable across various instances of the application,
+  and between applications. If a certificate is modified in the database,
+  then it is not guaranteed that this handle will continue to point to it. *)
+  external create_certificate_handle : t -> Tls_certificate.t -> string option = "ml_g_tls_database_create_certificate_handle"
+
+
 end = struct
-  type t = [ `tls_database | `object_ ] Gobject.obj
+  type t = [`tls_database | `object_] Gobject.obj
 
   (* Methods *)
-
-  external verify_chain_finish :
-    t -> Async_result.t -> (Gio_enums.tlscertificateflags, GError.t) result
-    = "ml_g_tls_database_verify_chain_finish"
   (** Finish an asynchronous verify chain operation. See
   g_tls_database_verify_chain() for more information.
 
@@ -664,21 +582,8 @@ end = struct
   %G_TLS_CERTIFICATE_GENERIC_ERROR and @error will be set
   accordingly. @error is not set when @chain is successfully analyzed
   but found to be invalid. *)
+  external verify_chain_finish : t -> Async_result.t -> (Gio_enums.tlscertificateflags, GError.t) result = "ml_g_tls_database_verify_chain_finish"
 
-  external verify_chain :
-    t ->
-    Tls_certificate.t ->
-    string ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .Socket_connectable
-    .t
-    option ->
-    Tls_interaction.t option ->
-    Gio_enums.tlsdatabaseverifyflags ->
-    Cancellable.t option ->
-    (Gio_enums.tlscertificateflags, GError.t) result
-    = "ml_g_tls_database_verify_chain_bytecode"
-      "ml_g_tls_database_verify_chain_native"
   (** Determines the validity of a certificate chain, outside the context
   of a TLS session.
 
@@ -739,27 +644,16 @@ end = struct
 
   This function can block. Use g_tls_database_verify_chain_async() to
   perform the verification operation asynchronously. *)
+  external verify_chain : t -> Tls_certificate.t -> string -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_connectable.t option -> Tls_interaction.t option -> Gio_enums.tlsdatabaseverifyflags -> Cancellable.t option -> (Gio_enums.tlscertificateflags, GError.t) result = "ml_g_tls_database_verify_chain_bytecode" "ml_g_tls_database_verify_chain_native"
 
-  external lookup_certificates_issued_by_finish :
-    t -> Async_result.t -> (Tls_certificate.t list, GError.t) result
-    = "ml_g_tls_database_lookup_certificates_issued_by_finish"
   (** Finish an asynchronous lookup of certificates. See
-      g_tls_database_lookup_certificates_issued_by() for more information. *)
+  g_tls_database_lookup_certificates_issued_by() for more information. *)
+  external lookup_certificates_issued_by_finish : t -> Async_result.t -> (Tls_certificate.t list, GError.t) result = "ml_g_tls_database_lookup_certificates_issued_by_finish"
 
-  external lookup_certificate_issuer_finish :
-    t -> Async_result.t -> (Tls_certificate.t, GError.t) result
-    = "ml_g_tls_database_lookup_certificate_issuer_finish"
   (** Finish an asynchronous lookup issuer operation. See
-      g_tls_database_lookup_certificate_issuer() for more information. *)
+  g_tls_database_lookup_certificate_issuer() for more information. *)
+  external lookup_certificate_issuer_finish : t -> Async_result.t -> (Tls_certificate.t, GError.t) result = "ml_g_tls_database_lookup_certificate_issuer_finish"
 
-  external lookup_certificate_issuer :
-    t ->
-    Tls_certificate.t ->
-    Tls_interaction.t option ->
-    Gio_enums.tlsdatabaselookupflags ->
-    Cancellable.t option ->
-    (Tls_certificate.t, GError.t) result
-    = "ml_g_tls_database_lookup_certificate_issuer"
   (** Look up the issuer of @certificate in the database. The
   #GTlsCertificate:issuer property of @certificate is not modified, and
   the two certificates are not hooked into a chain.
@@ -780,130 +674,99 @@ end = struct
   certificate. Accordingly, this function cannot be used to make
   security-related decisions. Only GLib itself should make security
   decisions about TLS certificates. *)
+  external lookup_certificate_issuer : t -> Tls_certificate.t -> Tls_interaction.t option -> Gio_enums.tlsdatabaselookupflags -> Cancellable.t option -> (Tls_certificate.t, GError.t) result = "ml_g_tls_database_lookup_certificate_issuer"
 
-  external lookup_certificate_for_handle_finish :
-    t -> Async_result.t -> (Tls_certificate.t, GError.t) result
-    = "ml_g_tls_database_lookup_certificate_for_handle_finish"
   (** Finish an asynchronous lookup of a certificate by its handle. See
-      g_tls_database_lookup_certificate_for_handle() for more information.
+  g_tls_database_lookup_certificate_for_handle() for more information.
 
-      If the handle is no longer valid, or does not point to a certificate in
-      this database, then %NULL will be returned. *)
+  If the handle is no longer valid, or does not point to a certificate in
+  this database, then %NULL will be returned. *)
+  external lookup_certificate_for_handle_finish : t -> Async_result.t -> (Tls_certificate.t, GError.t) result = "ml_g_tls_database_lookup_certificate_for_handle_finish"
 
-  external lookup_certificate_for_handle :
-    t ->
-    string ->
-    Tls_interaction.t option ->
-    Gio_enums.tlsdatabaselookupflags ->
-    Cancellable.t option ->
-    (Tls_certificate.t option, GError.t) result
-    = "ml_g_tls_database_lookup_certificate_for_handle"
   (** Look up a certificate by its handle.
 
-      The handle should have been created by calling
-      g_tls_database_create_certificate_handle() on a #GTlsDatabase object of
-      the same TLS backend. The handle is designed to remain valid across
-      instantiations of the database.
+  The handle should have been created by calling
+  g_tls_database_create_certificate_handle() on a #GTlsDatabase object of
+  the same TLS backend. The handle is designed to remain valid across
+  instantiations of the database.
 
-      If the handle is no longer valid, or does not point to a certificate in
-      this database, then %NULL will be returned.
+  If the handle is no longer valid, or does not point to a certificate in
+  this database, then %NULL will be returned.
 
-      This function can block, use
-      g_tls_database_lookup_certificate_for_handle_async() to perform the lookup
-      operation asynchronously. *)
+  This function can block, use g_tls_database_lookup_certificate_for_handle_async() to perform
+  the lookup operation asynchronously. *)
+  external lookup_certificate_for_handle : t -> string -> Tls_interaction.t option -> Gio_enums.tlsdatabaselookupflags -> Cancellable.t option -> (Tls_certificate.t option, GError.t) result = "ml_g_tls_database_lookup_certificate_for_handle"
 
-  external create_certificate_handle : t -> Tls_certificate.t -> string option
-    = "ml_g_tls_database_create_certificate_handle"
   (** Create a handle string for the certificate. The database will only be able
-      to create a handle for certificates that originate from the database. In
-      cases where the database cannot create a handle for a certificate, %NULL
-      will be returned.
+  to create a handle for certificates that originate from the database. In
+  cases where the database cannot create a handle for a certificate, %NULL
+  will be returned.
 
-      This handle should be stable across various instances of the application,
-      and between applications. If a certificate is modified in the database,
-      then it is not guaranteed that this handle will continue to point to it.
-  *)
+  This handle should be stable across various instances of the application,
+  and between applications. If a certificate is modified in the database,
+  then it is not guaranteed that this handle will continue to point to it. *)
+  external create_certificate_handle : t -> Tls_certificate.t -> string option = "ml_g_tls_database_create_certificate_handle"
+
+
 end
 
-and Tls_interaction : sig
-  type t = [ `tls_interaction | `object_ ] Gobject.obj
+and Tls_interaction
+ : sig
+  type t = [`tls_interaction | `object_] Gobject.obj
 
   (* Methods *)
+  (** Complete a request certificate user interaction request. This should be once
+  the g_tls_interaction_request_certificate_async() completion callback is called.
 
-  external request_certificate_finish :
-    t -> Async_result.t -> (Gio_enums.tlsinteractionresult, GError.t) result
-    = "ml_g_tls_interaction_request_certificate_finish"
-  (** Complete a request certificate user interaction request. This should be
-      once the g_tls_interaction_request_certificate_async() completion callback
-      is called.
+  If %G_TLS_INTERACTION_HANDLED is returned, then the #GTlsConnection
+  passed to g_tls_interaction_request_certificate_async() will have had its
+  #GTlsConnection:certificate filled in.
 
-      If %G_TLS_INTERACTION_HANDLED is returned, then the #GTlsConnection passed
-      to g_tls_interaction_request_certificate_async() will have had its
-      #GTlsConnection:certificate filled in.
+  If the interaction is cancelled by the cancellation object, or by the
+  user then %G_TLS_INTERACTION_FAILED will be returned with an error that
+  contains a %G_IO_ERROR_CANCELLED error code. *)
+  external request_certificate_finish : t -> Async_result.t -> (Gio_enums.tlsinteractionresult, GError.t) result = "ml_g_tls_interaction_request_certificate_finish"
 
-      If the interaction is cancelled by the cancellation object, or by the user
-      then %G_TLS_INTERACTION_FAILED will be returned with an error that
-      contains a %G_IO_ERROR_CANCELLED error code. *)
-
-  external request_certificate :
-    t ->
-    Tls_connection.t ->
-    Gio_enums.tlscertificaterequestflags ->
-    Cancellable.t option ->
-    (Gio_enums.tlsinteractionresult, GError.t) result
-    = "ml_g_tls_interaction_request_certificate"
   (** Run synchronous interaction to ask the user to choose a certificate to use
-      with the connection. In general,
-      g_tls_interaction_invoke_request_certificate() should be used instead of
-      this function.
+  with the connection. In general, g_tls_interaction_invoke_request_certificate()
+  should be used instead of this function.
 
-      Derived subclasses usually implement a certificate selector, although they
-      may also choose to provide a certificate from elsewhere. Alternatively the
-      user may abort this certificate request, which will usually abort the TLS
-      connection.
+  Derived subclasses usually implement a certificate selector, although they may
+  also choose to provide a certificate from elsewhere. Alternatively the user may
+  abort this certificate request, which will usually abort the TLS connection.
 
-      If %G_TLS_INTERACTION_HANDLED is returned, then the #GTlsConnection passed
-      to g_tls_interaction_request_certificate() will have had its
-      #GTlsConnection:certificate filled in.
+  If %G_TLS_INTERACTION_HANDLED is returned, then the #GTlsConnection
+  passed to g_tls_interaction_request_certificate() will have had its
+  #GTlsConnection:certificate filled in.
 
-      If the interaction is cancelled by the cancellation object, or by the user
-      then %G_TLS_INTERACTION_FAILED will be returned with an error that
-      contains a %G_IO_ERROR_CANCELLED error code. Certain implementations may
-      not support immediate cancellation. *)
+  If the interaction is cancelled by the cancellation object, or by the
+  user then %G_TLS_INTERACTION_FAILED will be returned with an error that
+  contains a %G_IO_ERROR_CANCELLED error code. Certain implementations may
+  not support immediate cancellation. *)
+  external request_certificate : t -> Tls_connection.t -> Gio_enums.tlscertificaterequestflags -> Cancellable.t option -> (Gio_enums.tlsinteractionresult, GError.t) result = "ml_g_tls_interaction_request_certificate"
 
-  external invoke_request_certificate :
-    t ->
-    Tls_connection.t ->
-    Gio_enums.tlscertificaterequestflags ->
-    Cancellable.t option ->
-    (Gio_enums.tlsinteractionresult, GError.t) result
-    = "ml_g_tls_interaction_invoke_request_certificate"
-  (** Invoke the interaction to ask the user to choose a certificate to use with
-      the connection. It invokes this interaction in the main loop, specifically
-      the #GMainContext returned by g_main_context_get_thread_default() when the
-      interaction is created. This is called by called by #GTlsConnection when
-      the peer requests a certificate during the handshake.
+  (** Invoke the interaction to ask the user to choose a certificate to
+  use with the connection. It invokes this interaction in the main
+  loop, specifically the #GMainContext returned by
+  g_main_context_get_thread_default() when the interaction is
+  created. This is called by called by #GTlsConnection when the peer
+  requests a certificate during the handshake.
 
-      Derived subclasses usually implement a certificate selector, although they
-      may also choose to provide a certificate from elsewhere. Alternatively the
-      user may abort this certificate request, which may or may not abort the
-      TLS connection.
+  Derived subclasses usually implement a certificate selector,
+  although they may also choose to provide a certificate from
+  elsewhere. Alternatively the user may abort this certificate
+  request, which may or may not abort the TLS connection.
 
-      The implementation can either be a synchronous (eg: modal dialog) or an
-      asynchronous one (eg: modeless dialog). This function will take care of
-      calling which ever one correctly.
+  The implementation can either be a synchronous (eg: modal dialog) or an
+  asynchronous one (eg: modeless dialog). This function will take care of
+  calling which ever one correctly.
 
-      If the interaction is cancelled by the cancellation object, or by the user
-      then %G_TLS_INTERACTION_FAILED will be returned with an error that
-      contains a %G_IO_ERROR_CANCELLED error code. Certain implementations may
-      not support immediate cancellation. *)
+  If the interaction is cancelled by the cancellation object, or by the
+  user then %G_TLS_INTERACTION_FAILED will be returned with an error that
+  contains a %G_IO_ERROR_CANCELLED error code. Certain implementations may
+  not support immediate cancellation. *)
+  external invoke_request_certificate : t -> Tls_connection.t -> Gio_enums.tlscertificaterequestflags -> Cancellable.t option -> (Gio_enums.tlsinteractionresult, GError.t) result = "ml_g_tls_interaction_invoke_request_certificate"
 
-  external invoke_ask_password :
-    t ->
-    Tls_password.t ->
-    Cancellable.t option ->
-    (Gio_enums.tlsinteractionresult, GError.t) result
-    = "ml_g_tls_interaction_invoke_ask_password"
   (** Invoke the interaction to ask the user for a password. It invokes this
   interaction in the main loop, specifically the #GMainContext returned by
   g_main_context_get_thread_default() when the interaction is created. This
@@ -923,26 +786,19 @@ and Tls_interaction : sig
   user then %G_TLS_INTERACTION_FAILED will be returned with an error that
   contains a %G_IO_ERROR_CANCELLED error code. Certain implementations may
   not support immediate cancellation. *)
+  external invoke_ask_password : t -> Tls_password.t -> Cancellable.t option -> (Gio_enums.tlsinteractionresult, GError.t) result = "ml_g_tls_interaction_invoke_ask_password"
 
-  external ask_password_finish :
-    t -> Async_result.t -> (Gio_enums.tlsinteractionresult, GError.t) result
-    = "ml_g_tls_interaction_ask_password_finish"
-  (** Complete an ask password user interaction request. This should be once the
-      g_tls_interaction_ask_password_async() completion callback is called.
+  (** Complete an ask password user interaction request. This should be once
+  the g_tls_interaction_ask_password_async() completion callback is called.
 
-      If %G_TLS_INTERACTION_HANDLED is returned, then the #GTlsPassword passed
-      to g_tls_interaction_ask_password() will have its password filled in.
+  If %G_TLS_INTERACTION_HANDLED is returned, then the #GTlsPassword passed
+  to g_tls_interaction_ask_password() will have its password filled in.
 
-      If the interaction is cancelled by the cancellation object, or by the user
-      then %G_TLS_INTERACTION_FAILED will be returned with an error that
-      contains a %G_IO_ERROR_CANCELLED error code. *)
+  If the interaction is cancelled by the cancellation object, or by the
+  user then %G_TLS_INTERACTION_FAILED will be returned with an error that
+  contains a %G_IO_ERROR_CANCELLED error code. *)
+  external ask_password_finish : t -> Async_result.t -> (Gio_enums.tlsinteractionresult, GError.t) result = "ml_g_tls_interaction_ask_password_finish"
 
-  external ask_password :
-    t ->
-    Tls_password.t ->
-    Cancellable.t option ->
-    (Gio_enums.tlsinteractionresult, GError.t) result
-    = "ml_g_tls_interaction_ask_password"
   (** Run synchronous interaction to ask the user for a password. In general,
   g_tls_interaction_invoke_ask_password() should be used instead of this
   function.
@@ -956,85 +812,65 @@ and Tls_interaction : sig
   user then %G_TLS_INTERACTION_FAILED will be returned with an error that
   contains a %G_IO_ERROR_CANCELLED error code. Certain implementations may
   not support immediate cancellation. *)
+  external ask_password : t -> Tls_password.t -> Cancellable.t option -> (Gio_enums.tlsinteractionresult, GError.t) result = "ml_g_tls_interaction_ask_password"
+
+
 end = struct
-  type t = [ `tls_interaction | `object_ ] Gobject.obj
+  type t = [`tls_interaction | `object_] Gobject.obj
 
   (* Methods *)
+  (** Complete a request certificate user interaction request. This should be once
+  the g_tls_interaction_request_certificate_async() completion callback is called.
 
-  external request_certificate_finish :
-    t -> Async_result.t -> (Gio_enums.tlsinteractionresult, GError.t) result
-    = "ml_g_tls_interaction_request_certificate_finish"
-  (** Complete a request certificate user interaction request. This should be
-      once the g_tls_interaction_request_certificate_async() completion callback
-      is called.
+  If %G_TLS_INTERACTION_HANDLED is returned, then the #GTlsConnection
+  passed to g_tls_interaction_request_certificate_async() will have had its
+  #GTlsConnection:certificate filled in.
 
-      If %G_TLS_INTERACTION_HANDLED is returned, then the #GTlsConnection passed
-      to g_tls_interaction_request_certificate_async() will have had its
-      #GTlsConnection:certificate filled in.
+  If the interaction is cancelled by the cancellation object, or by the
+  user then %G_TLS_INTERACTION_FAILED will be returned with an error that
+  contains a %G_IO_ERROR_CANCELLED error code. *)
+  external request_certificate_finish : t -> Async_result.t -> (Gio_enums.tlsinteractionresult, GError.t) result = "ml_g_tls_interaction_request_certificate_finish"
 
-      If the interaction is cancelled by the cancellation object, or by the user
-      then %G_TLS_INTERACTION_FAILED will be returned with an error that
-      contains a %G_IO_ERROR_CANCELLED error code. *)
-
-  external request_certificate :
-    t ->
-    Tls_connection.t ->
-    Gio_enums.tlscertificaterequestflags ->
-    Cancellable.t option ->
-    (Gio_enums.tlsinteractionresult, GError.t) result
-    = "ml_g_tls_interaction_request_certificate"
   (** Run synchronous interaction to ask the user to choose a certificate to use
-      with the connection. In general,
-      g_tls_interaction_invoke_request_certificate() should be used instead of
-      this function.
+  with the connection. In general, g_tls_interaction_invoke_request_certificate()
+  should be used instead of this function.
 
-      Derived subclasses usually implement a certificate selector, although they
-      may also choose to provide a certificate from elsewhere. Alternatively the
-      user may abort this certificate request, which will usually abort the TLS
-      connection.
+  Derived subclasses usually implement a certificate selector, although they may
+  also choose to provide a certificate from elsewhere. Alternatively the user may
+  abort this certificate request, which will usually abort the TLS connection.
 
-      If %G_TLS_INTERACTION_HANDLED is returned, then the #GTlsConnection passed
-      to g_tls_interaction_request_certificate() will have had its
-      #GTlsConnection:certificate filled in.
+  If %G_TLS_INTERACTION_HANDLED is returned, then the #GTlsConnection
+  passed to g_tls_interaction_request_certificate() will have had its
+  #GTlsConnection:certificate filled in.
 
-      If the interaction is cancelled by the cancellation object, or by the user
-      then %G_TLS_INTERACTION_FAILED will be returned with an error that
-      contains a %G_IO_ERROR_CANCELLED error code. Certain implementations may
-      not support immediate cancellation. *)
+  If the interaction is cancelled by the cancellation object, or by the
+  user then %G_TLS_INTERACTION_FAILED will be returned with an error that
+  contains a %G_IO_ERROR_CANCELLED error code. Certain implementations may
+  not support immediate cancellation. *)
+  external request_certificate : t -> Tls_connection.t -> Gio_enums.tlscertificaterequestflags -> Cancellable.t option -> (Gio_enums.tlsinteractionresult, GError.t) result = "ml_g_tls_interaction_request_certificate"
 
-  external invoke_request_certificate :
-    t ->
-    Tls_connection.t ->
-    Gio_enums.tlscertificaterequestflags ->
-    Cancellable.t option ->
-    (Gio_enums.tlsinteractionresult, GError.t) result
-    = "ml_g_tls_interaction_invoke_request_certificate"
-  (** Invoke the interaction to ask the user to choose a certificate to use with
-      the connection. It invokes this interaction in the main loop, specifically
-      the #GMainContext returned by g_main_context_get_thread_default() when the
-      interaction is created. This is called by called by #GTlsConnection when
-      the peer requests a certificate during the handshake.
+  (** Invoke the interaction to ask the user to choose a certificate to
+  use with the connection. It invokes this interaction in the main
+  loop, specifically the #GMainContext returned by
+  g_main_context_get_thread_default() when the interaction is
+  created. This is called by called by #GTlsConnection when the peer
+  requests a certificate during the handshake.
 
-      Derived subclasses usually implement a certificate selector, although they
-      may also choose to provide a certificate from elsewhere. Alternatively the
-      user may abort this certificate request, which may or may not abort the
-      TLS connection.
+  Derived subclasses usually implement a certificate selector,
+  although they may also choose to provide a certificate from
+  elsewhere. Alternatively the user may abort this certificate
+  request, which may or may not abort the TLS connection.
 
-      The implementation can either be a synchronous (eg: modal dialog) or an
-      asynchronous one (eg: modeless dialog). This function will take care of
-      calling which ever one correctly.
+  The implementation can either be a synchronous (eg: modal dialog) or an
+  asynchronous one (eg: modeless dialog). This function will take care of
+  calling which ever one correctly.
 
-      If the interaction is cancelled by the cancellation object, or by the user
-      then %G_TLS_INTERACTION_FAILED will be returned with an error that
-      contains a %G_IO_ERROR_CANCELLED error code. Certain implementations may
-      not support immediate cancellation. *)
+  If the interaction is cancelled by the cancellation object, or by the
+  user then %G_TLS_INTERACTION_FAILED will be returned with an error that
+  contains a %G_IO_ERROR_CANCELLED error code. Certain implementations may
+  not support immediate cancellation. *)
+  external invoke_request_certificate : t -> Tls_connection.t -> Gio_enums.tlscertificaterequestflags -> Cancellable.t option -> (Gio_enums.tlsinteractionresult, GError.t) result = "ml_g_tls_interaction_invoke_request_certificate"
 
-  external invoke_ask_password :
-    t ->
-    Tls_password.t ->
-    Cancellable.t option ->
-    (Gio_enums.tlsinteractionresult, GError.t) result
-    = "ml_g_tls_interaction_invoke_ask_password"
   (** Invoke the interaction to ask the user for a password. It invokes this
   interaction in the main loop, specifically the #GMainContext returned by
   g_main_context_get_thread_default() when the interaction is created. This
@@ -1054,26 +890,19 @@ end = struct
   user then %G_TLS_INTERACTION_FAILED will be returned with an error that
   contains a %G_IO_ERROR_CANCELLED error code. Certain implementations may
   not support immediate cancellation. *)
+  external invoke_ask_password : t -> Tls_password.t -> Cancellable.t option -> (Gio_enums.tlsinteractionresult, GError.t) result = "ml_g_tls_interaction_invoke_ask_password"
 
-  external ask_password_finish :
-    t -> Async_result.t -> (Gio_enums.tlsinteractionresult, GError.t) result
-    = "ml_g_tls_interaction_ask_password_finish"
-  (** Complete an ask password user interaction request. This should be once the
-      g_tls_interaction_ask_password_async() completion callback is called.
+  (** Complete an ask password user interaction request. This should be once
+  the g_tls_interaction_ask_password_async() completion callback is called.
 
-      If %G_TLS_INTERACTION_HANDLED is returned, then the #GTlsPassword passed
-      to g_tls_interaction_ask_password() will have its password filled in.
+  If %G_TLS_INTERACTION_HANDLED is returned, then the #GTlsPassword passed
+  to g_tls_interaction_ask_password() will have its password filled in.
 
-      If the interaction is cancelled by the cancellation object, or by the user
-      then %G_TLS_INTERACTION_FAILED will be returned with an error that
-      contains a %G_IO_ERROR_CANCELLED error code. *)
+  If the interaction is cancelled by the cancellation object, or by the
+  user then %G_TLS_INTERACTION_FAILED will be returned with an error that
+  contains a %G_IO_ERROR_CANCELLED error code. *)
+  external ask_password_finish : t -> Async_result.t -> (Gio_enums.tlsinteractionresult, GError.t) result = "ml_g_tls_interaction_ask_password_finish"
 
-  external ask_password :
-    t ->
-    Tls_password.t ->
-    Cancellable.t option ->
-    (Gio_enums.tlsinteractionresult, GError.t) result
-    = "ml_g_tls_interaction_ask_password"
   (** Run synchronous interaction to ask the user for a password. In general,
   g_tls_interaction_invoke_ask_password() should be used instead of this
   function.
@@ -1087,4 +916,7 @@ end = struct
   user then %G_TLS_INTERACTION_FAILED will be returned with an error that
   contains a %G_IO_ERROR_CANCELLED error code. Certain implementations may
   not support immediate cancellation. *)
+  external ask_password : t -> Tls_password.t -> Cancellable.t option -> (Gio_enums.tlsinteractionresult, GError.t) result = "ml_g_tls_interaction_ask_password"
+
+
 end

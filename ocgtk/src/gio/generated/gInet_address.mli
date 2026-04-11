@@ -1,19 +1,19 @@
 class type inet_address_t = object
-  method equal : inet_address_t -> bool
-  method get_family : unit -> Gio_enums.socketfamily
-  method get_is_any : unit -> bool
-  method get_is_link_local : unit -> bool
-  method get_is_loopback : unit -> bool
-  method get_is_mc_global : unit -> bool
-  method get_is_mc_link_local : unit -> bool
-  method get_is_mc_node_local : unit -> bool
-  method get_is_mc_org_local : unit -> bool
-  method get_is_mc_site_local : unit -> bool
-  method get_is_multicast : unit -> bool
-  method get_is_site_local : unit -> bool
-  method get_native_size : unit -> Gsize.t
-  method to_string : unit -> string
-  method as_inet_address : Inet_address.t
+    method equal : inet_address_t -> bool
+    method get_family : unit -> Gio_enums.socketfamily
+    method get_is_any : unit -> bool
+    method get_is_link_local : unit -> bool
+    method get_is_loopback : unit -> bool
+    method get_is_mc_global : unit -> bool
+    method get_is_mc_link_local : unit -> bool
+    method get_is_mc_node_local : unit -> bool
+    method get_is_mc_org_local : unit -> bool
+    method get_is_mc_site_local : unit -> bool
+    method get_is_multicast : unit -> bool
+    method get_is_site_local : unit -> bool
+    method get_native_size : unit -> Gsize.t
+    method to_string : unit -> string
+    method as_inet_address : Inet_address.t
 end
 
 class inet_address : Inet_address.t -> inet_address_t
