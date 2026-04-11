@@ -1,11 +1,23 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DatagramBased: DatagramBased *)
 
-type t = [`datagram_based] Gobject.obj
+type t = [ `datagram_based ] Gobject.obj
 
-external from_gobject : 'a Gobject.obj -> t = "ml_gio_datagram_based_from_gobject"
+external from_gobject : 'a Gobject.obj -> t
+  = "ml_gio_datagram_based_from_gobject"
 
 (* Methods *)
+
+external send_messages :
+  t ->
+  Output_message.t array ->
+  int ->
+  int ->
+  int64 ->
+  Cancellable.t option ->
+  (int, GError.t) result
+  = "ml_g_datagram_based_send_messages_bytecode"
+    "ml_g_datagram_based_send_messages_native"
 (** Send one or more data messages from @datagram_based in one go.
 
 @messages must point to an array of #GOutputMessage structs and
@@ -47,8 +59,17 @@ On error -1 is returned and @error is set accordingly. An error will only
 be returned if zero messages could be sent; otherwise the number of messages
 successfully sent before the error will be returned. If @cancellable is
 cancelled, %G_IO_ERROR_CANCELLED is returned as with any other error. *)
-external send_messages : t -> Output_message.t array -> int -> int -> int64 -> Cancellable.t option -> (int, GError.t) result = "ml_g_datagram_based_send_messages_bytecode" "ml_g_datagram_based_send_messages_native"
 
+external receive_messages :
+  t ->
+  Input_message.t array ->
+  int ->
+  int ->
+  int64 ->
+  Cancellable.t option ->
+  (int, GError.t) result
+  = "ml_g_datagram_based_receive_messages_bytecode"
+    "ml_g_datagram_based_receive_messages_native"
 (** Receive one or more data messages from @datagram_based in one go.
 
 @messages must point to an array of #GInputMessage structs and
@@ -99,5 +120,3 @@ be returned if zero messages could be received; otherwise the number of
 messages successfully received before the error will be returned. If
 @cancellable is cancelled, %G_IO_ERROR_CANCELLED is returned as with any
 other error. *)
-external receive_messages : t -> Input_message.t array -> int -> int -> int64 -> Cancellable.t option -> (int, GError.t) result = "ml_g_datagram_based_receive_messages_bytecode" "ml_g_datagram_based_receive_messages_native"
-

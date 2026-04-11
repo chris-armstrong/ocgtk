@@ -1,99 +1,114 @@
 (* Signal class defined in gdrive_signals.ml *)
 
 class type drive_t = object
-    inherit Gdrive_signals.drive_signals
-    method can_eject : unit -> bool
-    method can_poll_for_media : unit -> bool
-    method can_start : unit -> bool
-    method can_start_degraded : unit -> bool
-    method can_stop : unit -> bool
-    method enumerate_identifiers : unit -> string array
-    method get_icon : unit -> GIcon.icon_t
-    method get_identifier : string -> string option
-    method get_name : unit -> string
-    method get_sort_key : unit -> string option
-    method get_start_stop_type : unit -> Gio_enums.drivestartstoptype
-    method get_symbolic_icon : unit -> GIcon.icon_t
-    method has_media : unit -> bool
-    method has_volumes : unit -> bool
-    method is_media_check_automatic : unit -> bool
-    method is_media_removable : unit -> bool
-    method is_removable : unit -> bool
-    method as_drive : Drive.t
+  inherit Gdrive_signals.drive_signals
+  method can_eject : unit -> bool
+  method can_poll_for_media : unit -> bool
+  method can_start : unit -> bool
+  method can_start_degraded : unit -> bool
+  method can_stop : unit -> bool
+  method eject_finish : GAsync_result.async_result_t -> (bool, GError.t) result
+
+  method eject_with_operation_finish :
+    GAsync_result.async_result_t -> (bool, GError.t) result
+
+  method enumerate_identifiers : unit -> string array
+  method get_icon : unit -> GIcon.icon_t
+  method get_identifier : string -> string option
+  method get_name : unit -> string
+  method get_sort_key : unit -> string option
+  method get_start_stop_type : unit -> Gio_enums.drivestartstoptype
+  method get_symbolic_icon : unit -> GIcon.icon_t
+  method has_media : unit -> bool
+  method has_volumes : unit -> bool
+  method is_media_check_automatic : unit -> bool
+  method is_media_removable : unit -> bool
+  method is_removable : unit -> bool
+
+  method poll_for_media_finish :
+    GAsync_result.async_result_t -> (bool, GError.t) result
+
+  method start_finish : GAsync_result.async_result_t -> (bool, GError.t) result
+  method stop_finish : GAsync_result.async_result_t -> (bool, GError.t) result
+  method as_drive : Drive.t
 end
 
 (* High-level class for Drive *)
-class drive (obj : Drive.t) : drive_t = object (self)
-  inherit Gdrive_signals.drive_signals obj
+class drive (obj : Drive.t) : drive_t =
+  object (self)
+    inherit Gdrive_signals.drive_signals obj
+    method can_eject : unit -> bool = fun () -> Drive.can_eject obj
 
-  method can_eject : unit -> bool =
-    fun () ->
-      (Drive.can_eject obj)
+    method can_poll_for_media : unit -> bool =
+      fun () -> Drive.can_poll_for_media obj
 
-  method can_poll_for_media : unit -> bool =
-    fun () ->
-      (Drive.can_poll_for_media obj)
+    method can_start : unit -> bool = fun () -> Drive.can_start obj
 
-  method can_start : unit -> bool =
-    fun () ->
-      (Drive.can_start obj)
+    method can_start_degraded : unit -> bool =
+      fun () -> Drive.can_start_degraded obj
 
-  method can_start_degraded : unit -> bool =
-    fun () ->
-      (Drive.can_start_degraded obj)
+    method can_stop : unit -> bool = fun () -> Drive.can_stop obj
 
-  method can_stop : unit -> bool =
-    fun () ->
-      (Drive.can_stop obj)
+    method eject_finish :
+        GAsync_result.async_result_t -> (bool, GError.t) result =
+      fun result ->
+        let result = result#as_async_result in
+        Drive.eject_finish obj result
 
-  method enumerate_identifiers : unit -> string array =
-    fun () ->
-      (Drive.enumerate_identifiers obj)
+    method eject_with_operation_finish :
+        GAsync_result.async_result_t -> (bool, GError.t) result =
+      fun result ->
+        let result = result#as_async_result in
+        Drive.eject_with_operation_finish obj result
 
-  method get_icon : unit -> GIcon.icon_t =
-    fun () ->
-      new  GIcon.icon(Drive.get_icon obj)
+    method enumerate_identifiers : unit -> string array =
+      fun () -> Drive.enumerate_identifiers obj
 
-  method get_identifier : string -> string option =
-    fun kind ->
-      (Drive.get_identifier obj kind)
+    method get_icon : unit -> GIcon.icon_t =
+      fun () -> new GIcon.icon (Drive.get_icon obj)
 
-  method get_name : unit -> string =
-    fun () ->
-      (Drive.get_name obj)
+    method get_identifier : string -> string option =
+      fun kind -> Drive.get_identifier obj kind
 
-  method get_sort_key : unit -> string option =
-    fun () ->
-      (Drive.get_sort_key obj)
+    method get_name : unit -> string = fun () -> Drive.get_name obj
 
-  method get_start_stop_type : unit -> Gio_enums.drivestartstoptype =
-    fun () ->
-      (Drive.get_start_stop_type obj)
+    method get_sort_key : unit -> string option =
+      fun () -> Drive.get_sort_key obj
 
-  method get_symbolic_icon : unit -> GIcon.icon_t =
-    fun () ->
-      new  GIcon.icon(Drive.get_symbolic_icon obj)
+    method get_start_stop_type : unit -> Gio_enums.drivestartstoptype =
+      fun () -> Drive.get_start_stop_type obj
 
-  method has_media : unit -> bool =
-    fun () ->
-      (Drive.has_media obj)
+    method get_symbolic_icon : unit -> GIcon.icon_t =
+      fun () -> new GIcon.icon (Drive.get_symbolic_icon obj)
 
-  method has_volumes : unit -> bool =
-    fun () ->
-      (Drive.has_volumes obj)
+    method has_media : unit -> bool = fun () -> Drive.has_media obj
+    method has_volumes : unit -> bool = fun () -> Drive.has_volumes obj
 
-  method is_media_check_automatic : unit -> bool =
-    fun () ->
-      (Drive.is_media_check_automatic obj)
+    method is_media_check_automatic : unit -> bool =
+      fun () -> Drive.is_media_check_automatic obj
 
-  method is_media_removable : unit -> bool =
-    fun () ->
-      (Drive.is_media_removable obj)
+    method is_media_removable : unit -> bool =
+      fun () -> Drive.is_media_removable obj
 
-  method is_removable : unit -> bool =
-    fun () ->
-      (Drive.is_removable obj)
+    method is_removable : unit -> bool = fun () -> Drive.is_removable obj
+
+    method poll_for_media_finish :
+        GAsync_result.async_result_t -> (bool, GError.t) result =
+      fun result ->
+        let result = result#as_async_result in
+        Drive.poll_for_media_finish obj result
+
+    method start_finish :
+        GAsync_result.async_result_t -> (bool, GError.t) result =
+      fun result ->
+        let result = result#as_async_result in
+        Drive.start_finish obj result
+
+    method stop_finish : GAsync_result.async_result_t -> (bool, GError.t) result
+        =
+      fun result ->
+        let result = result#as_async_result in
+        Drive.stop_finish obj result
 
     method as_drive = obj
-end
-
+  end

@@ -1,111 +1,175 @@
-
 class type application_t = object
-    inherit Ocgtk_gio.Gio.Application.application_t
-    inherit Gapplication_signals.application_signals
-    method add_window : window_t -> unit
-    method get_accels_for_action : string -> string array
-    method get_actions_for_accel : string -> string array
-    method get_active_window : unit -> window_t option
-    method get_menu_by_id : string -> Ocgtk_gio.Gio.Menu.menu_t option
-    method get_menubar : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
-    method get_window_by_id : int -> window_t option
-    method get_windows : unit -> Application_and__window_and__window_group.Window.t list
-    method inhibit : window_t option -> Gtk_enums.applicationinhibitflags -> string option -> int
-    method list_action_descriptions : unit -> string array
-    method remove_window : window_t -> unit
-    method set_accels_for_action : string -> string array -> unit
-    method set_menubar : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
-    method uninhibit : int -> unit
-    method register_session : bool
-    method set_register_session : bool -> unit
-    method screensaver_active : bool
+  inherit Ocgtk_gio.Gio.Application.application_t
+  inherit Gapplication_signals.application_signals
+  method add_window : window_t -> unit
+  method get_accels_for_action : string -> string array
+  method get_actions_for_accel : string -> string array
+  method get_active_window : unit -> window_t option
+  method get_menu_by_id : string -> Ocgtk_gio.Gio.Menu.menu_t option
+  method get_menubar : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
+  method get_window_by_id : int -> window_t option
+
+  method get_windows :
+    unit -> Application_and__window_and__window_group.Window.t list
+
+  method inhibit :
+    window_t option -> Gtk_enums.applicationinhibitflags -> string option -> int
+
+  method list_action_descriptions : unit -> string array
+  method remove_window : window_t -> unit
+  method set_accels_for_action : string -> string array -> unit
+  method set_menubar : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
+  method uninhibit : int -> unit
+  method register_session : bool
+  method set_register_session : bool -> unit
+  method screensaver_active : bool
 end
 
 and window_t = object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
-    inherit GNative.native_t
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.root_t
-    inherit GShortcut_manager.shortcut_manager_t
-    inherit Gwindow_signals.window_signals
-    method close : unit -> unit
-    method destroy : unit -> unit
-    method fullscreen : unit -> unit
-    method fullscreen_on_monitor : Ocgtk_gdk.Gdk.Monitor.monitor_t -> unit
-    method get_application : unit -> application_t option
-    method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
-    method get_decorated : unit -> bool
-    method get_default_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
-    method get_deletable : unit -> bool
-    method get_destroy_with_parent : unit -> bool
-    method get_focus_visible : unit -> bool
-    method get_group : unit -> window_group_t
-    method get_handle_menubar_accel : unit -> bool
-    method get_hide_on_close : unit -> bool
-    method get_icon_name : unit -> string option
-    method get_mnemonics_visible : unit -> bool
-    method get_modal : unit -> bool
-    method get_resizable : unit -> bool
-    method get_title : unit -> string option
-    method get_titlebar : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
-    method get_transient_for : unit -> window_t option
-    method has_group : unit -> bool
-    method is_active : unit -> bool
-    method is_fullscreen : unit -> bool
-    method is_maximized : unit -> bool
-    method is_suspended : unit -> bool
-    method maximize : unit -> unit
-    method minimize : unit -> unit
-    method present : unit -> unit
-    method present_with_time : UInt32.t -> unit
-    method set_application : application_t option -> unit
-    method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
-    method set_decorated : bool -> unit
-    method set_default_size : int -> int -> unit
-    method set_default_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
-    method set_deletable : bool -> unit
-    method set_destroy_with_parent : bool -> unit
-    method set_display : Ocgtk_gdk.Gdk.Display.display_t -> unit
-    method set_focus_visible : bool -> unit
-    method set_handle_menubar_accel : bool -> unit
-    method set_hide_on_close : bool -> unit
-    method set_icon_name : string option -> unit
-    method set_mnemonics_visible : bool -> unit
-    method set_modal : bool -> unit
-    method set_resizable : bool -> unit
-    method set_startup_id : string -> unit
-    method set_title : string option -> unit
-    method set_titlebar : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
-    method set_transient_for : window_t option -> unit
-    method unfullscreen : unit -> unit
-    method unmaximize : unit -> unit
-    method unminimize : unit -> unit
-    method default_height : int
-    method set_default_height : int -> unit
-    method default_width : int
-    method set_default_width : int -> unit
-    method focus_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
-    method set_focus_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit
-    method fullscreened : bool
-    method set_fullscreened : bool -> unit
-    method maximized : bool
-    method set_maximized : bool -> unit
-    method suspended : bool
-    method as_window : Application_and__window_and__window_group.Window.t
+  inherit
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .widget_t
+
+  inherit GNative.native_t
+
+  inherit
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .root_t
+
+  inherit GShortcut_manager.shortcut_manager_t
+  inherit Gwindow_signals.window_signals
+  method close : unit -> unit
+  method destroy : unit -> unit
+  method fullscreen : unit -> unit
+  method fullscreen_on_monitor : Ocgtk_gdk.Gdk.Monitor.monitor_t -> unit
+  method get_application : unit -> application_t option
+
+  method get_child :
+    unit ->
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .widget_t
+    option
+
+  method get_decorated : unit -> bool
+
+  method get_default_widget :
+    unit ->
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .widget_t
+    option
+
+  method get_deletable : unit -> bool
+  method get_destroy_with_parent : unit -> bool
+  method get_focus_visible : unit -> bool
+  method get_group : unit -> window_group_t
+  method get_handle_menubar_accel : unit -> bool
+  method get_hide_on_close : unit -> bool
+  method get_icon_name : unit -> string option
+  method get_mnemonics_visible : unit -> bool
+  method get_modal : unit -> bool
+  method get_resizable : unit -> bool
+  method get_title : unit -> string option
+
+  method get_titlebar :
+    unit ->
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .widget_t
+    option
+
+  method get_transient_for : unit -> window_t option
+  method has_group : unit -> bool
+  method is_active : unit -> bool
+  method is_fullscreen : unit -> bool
+  method is_maximized : unit -> bool
+  method is_suspended : unit -> bool
+  method maximize : unit -> unit
+  method minimize : unit -> unit
+  method present : unit -> unit
+  method present_with_time : UInt32.t -> unit
+  method set_application : application_t option -> unit
+
+  method set_child :
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .widget_t
+    option ->
+    unit
+
+  method set_decorated : bool -> unit
+  method set_default_size : int -> int -> unit
+
+  method set_default_widget :
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .widget_t
+    option ->
+    unit
+
+  method set_deletable : bool -> unit
+  method set_destroy_with_parent : bool -> unit
+  method set_display : Ocgtk_gdk.Gdk.Display.display_t -> unit
+  method set_focus_visible : bool -> unit
+  method set_handle_menubar_accel : bool -> unit
+  method set_hide_on_close : bool -> unit
+  method set_icon_name : string option -> unit
+  method set_mnemonics_visible : bool -> unit
+  method set_modal : bool -> unit
+  method set_resizable : bool -> unit
+  method set_startup_id : string -> unit
+  method set_title : string option -> unit
+
+  method set_titlebar :
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .widget_t
+    option ->
+    unit
+
+  method set_transient_for : window_t option -> unit
+  method unfullscreen : unit -> unit
+  method unmaximize : unit -> unit
+  method unminimize : unit -> unit
+  method default_height : int
+  method set_default_height : int -> unit
+  method default_width : int
+  method set_default_width : int -> unit
+
+  method focus_widget :
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .widget_t
+
+  method set_focus_widget :
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .widget_t ->
+    unit
+
+  method fullscreened : bool
+  method set_fullscreened : bool -> unit
+  method maximized : bool
+  method set_maximized : bool -> unit
+  method suspended : bool
+  method as_window : Application_and__window_and__window_group.Window.t
 end
 
 and window_group_t = object
-    method add_window : window_t -> unit
-    method list_windows : unit -> Application_and__window_and__window_group.Window.t list
-    method remove_window : window_t -> unit
-    method as_window_group : Application_and__window_and__window_group.Window_group.t
+  method add_window : window_t -> unit
+
+  method list_windows :
+    unit -> Application_and__window_and__window_group.Window.t list
+
+  method remove_window : window_t -> unit
+
+  method as_window_group :
+    Application_and__window_and__window_group.Window_group.t
 end
 
-
-class application : Application_and__window_and__window_group.Application.t -> application_t
+class application :
+  Application_and__window_and__window_group.Application.t ->
+  application_t
 
 and window : Application_and__window_and__window_group.Window.t -> window_t
 
-and window_group : Application_and__window_and__window_group.Window_group.t -> window_group_t
+and window_group :
+  Application_and__window_and__window_group.Window_group.t ->
+  window_group_t
+
 val new_ : unit -> window_t
 val new_ : string option -> Ocgtk_gio.Gio.applicationflags -> application_t
 val new_ : unit -> window_group_t

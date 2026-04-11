@@ -1,11 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AsyncResult: AsyncResult *)
 
-type t = [`async_result] Gobject.obj
+type t = [ `async_result ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_async_result_from_gobject"
 
 (* Methods *)
+
+external legacy_propagate_error : t -> (bool, GError.t) result
+  = "ml_g_async_result_legacy_propagate_error"
 (** If @res is a #GSimpleAsyncResult, this is equivalent to
 g_simple_async_result_propagate_error(). Otherwise it returns
 %FALSE.
@@ -16,8 +19,7 @@ error returns themselves rather than calling into the virtual method.
 This should not be used in new code; #GAsyncResult errors that are
 set by virtual methods should also be extracted by virtual methods,
 to enable subclasses to chain up correctly. *)
-external legacy_propagate_error : t -> (bool, GError.t) result = "ml_g_async_result_legacy_propagate_error"
 
+external get_source_object : t -> [ `object_ ] Gobject.obj option
+  = "ml_g_async_result_get_source_object"
 (** Gets the source object from a #GAsyncResult. *)
-external get_source_object : t -> [`object_] Gobject.obj option = "ml_g_async_result_get_source_object"
-

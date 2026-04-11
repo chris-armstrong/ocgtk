@@ -1,15 +1,18 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* UnixFDList: UnixFDList *)
 
-type t = [`unix_fd_list | `object_] Gobject.obj
+type t = [ `unix_fd_list | `object_ ] Gobject.obj
 
-(** Create a new UnixFDList *)
 external new_ : unit -> t = "ml_g_unix_fd_list_new"
-
 (** Create a new UnixFDList *)
-external new_from_array : int array -> int -> t = "ml_g_unix_fd_list_new_from_array"
+
+external new_from_array : int array -> int -> t
+  = "ml_g_unix_fd_list_new_from_array"
+(** Create a new UnixFDList *)
 
 (* Methods *)
+
+external steal_fds : t -> int array * int = "ml_g_unix_fd_list_steal_fds"
 (** Returns the array of file descriptors that is contained in this
 object.
 
@@ -28,8 +31,8 @@ terminated with -1.
 
 This function never returns %NULL. In case there are no file
 descriptors contained in @list, an empty array is returned. *)
-external steal_fds : t -> int array * int = "ml_g_unix_fd_list_steal_fds"
 
+external peek_fds : t -> int array * int = "ml_g_unix_fd_list_peek_fds"
 (** Returns the array of file descriptors that is contained in this
 object.
 
@@ -43,12 +46,12 @@ terminated with -1.
 
 This function never returns %NULL. In case there are no file
 descriptors contained in @list, an empty array is returned. *)
-external peek_fds : t -> int array * int = "ml_g_unix_fd_list_peek_fds"
 
+external get_length : t -> int = "ml_g_unix_fd_list_get_length"
 (** Gets the length of @list (ie: the number of file descriptors
 contained within). *)
-external get_length : t -> int = "ml_g_unix_fd_list_get_length"
 
+external get : t -> int -> (int, GError.t) result = "ml_g_unix_fd_list_get"
 (** Gets a file descriptor out of @list.
 
 @index_ specifies the index of the file descriptor to get.  It is a
@@ -61,8 +64,9 @@ when you are done.
 
 A possible cause of failure is exceeding the per-process or
 system-wide file descriptor limit. *)
-external get : t -> int -> (int, GError.t) result = "ml_g_unix_fd_list_get"
 
+external append : t -> int -> (int, GError.t) result
+  = "ml_g_unix_fd_list_append"
 (** Adds a file descriptor to @list.
 
 The file descriptor is duplicated using dup(). You keep your copy
@@ -75,5 +79,3 @@ system-wide file descriptor limit.
 The index of the file descriptor in the list is returned.  If you use
 this index with g_unix_fd_list_get() then you will receive back a
 duplicated copy of the same file descriptor. *)
-external append : t -> int -> (int, GError.t) result = "ml_g_unix_fd_list_append"
-

@@ -51,4 +51,6 @@ let () =
       ("Interface Parsing", Test_interface_parsing.test_suite);
       ("From GObject Generation", Test_from_gobject_gen.test_suite);
       ("Interface Inheritance (Phase 4)", Test_interface_inheritance.test_suite);
+      ( "Interface Method Types (Phase 7)",
+        Test_interface_method_types.test_suite );
     ]

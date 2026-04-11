@@ -1,36 +1,37 @@
 class type map_list_model_t = object
-    inherit Ocgtk_gio.Gio.List_model.list_model_t
-    inherit GSection_model.section_model_t
-    method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
-    method has_map : unit -> bool
-    method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
-    method item_type : int
-    method n_items : int
-    method as_map_list_model : Map_list_model.t
+  inherit Ocgtk_gio.Gio.List_model.list_model_t
+  inherit GSection_model.section_model_t
+  method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
+  method has_map : unit -> bool
+  method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
+  method item_type : int
+  method n_items : int
+  method as_map_list_model : Map_list_model.t
 end
 
 (* High-level class for MapListModel *)
-class map_list_model (obj : Map_list_model.t) : map_list_model_t = object (self)
-  inherit Ocgtk_gio.Gio.List_model.list_model (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
-  inherit GSection_model.section_model (Section_model.from_gobject obj)
+class map_list_model (obj : Map_list_model.t) : map_list_model_t =
+  object (self)
+    inherit
+      Ocgtk_gio.Gio.List_model.list_model
+        (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
 
-  method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option =
-    fun () ->
-      Option.map (fun ret -> new Ocgtk_gio.Gio.List_model.list_model ret) (Map_list_model.get_model obj)
+    inherit GSection_model.section_model (Section_model.from_gobject obj)
 
-  method has_map : unit -> bool =
-    fun () ->
-      (Map_list_model.has_map obj)
+    method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option =
+      fun () ->
+        Option.map
+          (fun ret -> new Ocgtk_gio.Gio.List_model.list_model ret)
+          (Map_list_model.get_model obj)
 
-  method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit =
-    fun model ->
-      let model = Option.map (fun (c) -> c#as_list_model) model in
-      (Map_list_model.set_model obj model)
+    method has_map : unit -> bool = fun () -> Map_list_model.has_map obj
 
-  method item_type = Map_list_model.get_item_type obj
+    method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit =
+      fun model ->
+        let model = Option.map (fun c -> c#as_list_model) model in
+        Map_list_model.set_model obj model
 
-  method n_items = Map_list_model.get_n_items obj
-
+    method item_type = Map_list_model.get_item_type obj
+    method n_items = Map_list_model.get_n_items obj
     method as_map_list_model = obj
-end
-
+  end

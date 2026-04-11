@@ -2,10 +2,9 @@
 (* Top-level library module with direct references to all classes and enumerations *)
 
 (** {1 Layer 1 Module Wrappers}
-    
-    This submodule provides aliases to the layer 1 (low-level) modules.
-    These are the modules containing external declarations and basic bindings.
- *)
+
+    This submodule provides aliases to the layer 1 (low-level) modules. These
+    are the modules containing external declarations and basic bindings. *)
 module Wrappers : sig
   module At_context = At_context_and__accessible.At_context
   module About_dialog = About_dialog
@@ -51,9 +50,15 @@ module Wrappers : sig
   module Callback_action = Callback_action
   module Cell_area = Cell_area_and__cell_area_context_and__cell_layout.Cell_area
   module Cell_area_box = Cell_area_box
-  module Cell_area_context = Cell_area_and__cell_area_context_and__cell_layout.Cell_area_context
+
+  module Cell_area_context =
+    Cell_area_and__cell_area_context_and__cell_layout.Cell_area_context
+
   module Cell_editable = Cell_editable
-  module Cell_layout = Cell_area_and__cell_area_context_and__cell_layout.Cell_layout
+
+  module Cell_layout =
+    Cell_area_and__cell_area_context_and__cell_layout.Cell_layout
+
   module Cell_renderer = Cell_renderer
   module Cell_renderer_accel = Cell_renderer_accel
   module Cell_renderer_combo = Cell_renderer_combo
@@ -76,7 +81,10 @@ module Wrappers : sig
   module Color_dialog_button = Color_dialog_button
   module Column_view = Column_view_and__column_view_column.Column_view
   module Column_view_cell = Column_view_cell
-  module Column_view_column = Column_view_and__column_view_column.Column_view_column
+
+  module Column_view_column =
+    Column_view_and__column_view_column.Column_view_column
+
   module Column_view_row = Column_view_row
   module Column_view_sorter = Column_view_sorter
   module Combo_box = Combo_box
@@ -109,7 +117,11 @@ module Wrappers : sig
   module Entry = Entry
   module Entry_buffer = Entry_buffer
   module Entry_completion = Entry_completion
-  module Event_controller = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller
+
+  module Event_controller =
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .Event_controller
+
   module Event_controller_focus = Event_controller_focus
   module Event_controller_key = Event_controller_key
   module Event_controller_legacy = Event_controller_legacy
@@ -169,8 +181,15 @@ module Wrappers : sig
   module Inscription = Inscription
   module Keyval_trigger = Keyval_trigger
   module Label = Label
-  module Layout_child = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_child
-  module Layout_manager = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Layout_manager
+
+  module Layout_child =
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .Layout_child
+
+  module Layout_manager =
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .Layout_manager
+
   module Level_bar = Level_bar
   module Link_button = Link_button
   module List_base = List_base
@@ -236,7 +255,11 @@ module Wrappers : sig
   module Requested_size = Requested_size
   module Requisition = Requisition
   module Revealer = Revealer
-  module Root = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Root
+
+  module Root =
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .Root
+
   module Scale = Scale
   module Scale_button = Scale_button
   module Scroll_info = Scroll_info
@@ -314,7 +337,11 @@ module Wrappers : sig
   module Video = Video
   module Viewport = Viewport
   module Volume_button = Volume_button
-  module Widget = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget
+
+  module Widget =
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .Widget
+
   module Widget_paintable = Widget_paintable
   module Window = Application_and__window_and__window_group.Window
   module Window_controls = Window_controls

@@ -1,6 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusInterfaceVTable: DBusInterfaceVTable *)
 
+type t = [ `d_bus_interface_v_table ] Gobject.obj
 (** Virtual table for handling properties and method calls for a D-Bus
 interface.
 
@@ -42,6 +43,5 @@ If you have writable properties specified in your interface info,
 you must ensure that you either provide a non-%NULL @set_property()
 function or provide an implementation of the `Set` call. If implementing
 the call, you must return the value of type %G_VARIANT_TYPE_UNIT. *)
-type t = [`d_bus_interface_v_table] Gobject.obj
 
 (* Methods *)

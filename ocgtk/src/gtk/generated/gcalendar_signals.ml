@@ -1,23 +1,26 @@
 (* Signal handlers for Calendar *)
-class calendar_signals (obj : Calendar.t) = object
-  (** Emitted when the user selects a day. *)
-  method on_day_selected ~callback =
-    Gobject.Signal.connect_simple obj ~name:"day-selected" ~callback ~after:false
+class calendar_signals (obj : Calendar.t) =
+  object
+    method on_day_selected ~callback =
+      Gobject.Signal.connect_simple obj ~name:"day-selected" ~callback
+        ~after:false
+    (** Emitted when the user selects a day. *)
 
-  (** Emitted when the user switched to the next month. *)
-  method on_next_month ~callback =
-    Gobject.Signal.connect_simple obj ~name:"next-month" ~callback ~after:false
+    method on_next_month ~callback =
+      Gobject.Signal.connect_simple obj ~name:"next-month" ~callback
+        ~after:false
+    (** Emitted when the user switched to the next month. *)
 
-  (** Emitted when user switched to the next year. *)
-  method on_next_year ~callback =
-    Gobject.Signal.connect_simple obj ~name:"next-year" ~callback ~after:false
+    method on_next_year ~callback =
+      Gobject.Signal.connect_simple obj ~name:"next-year" ~callback ~after:false
+    (** Emitted when user switched to the next year. *)
 
-  (** Emitted when the user switched to the previous month. *)
-  method on_prev_month ~callback =
-    Gobject.Signal.connect_simple obj ~name:"prev-month" ~callback ~after:false
+    method on_prev_month ~callback =
+      Gobject.Signal.connect_simple obj ~name:"prev-month" ~callback
+        ~after:false
+    (** Emitted when the user switched to the previous month. *)
 
-  (** Emitted when user switched to the previous year. *)
-  method on_prev_year ~callback =
-    Gobject.Signal.connect_simple obj ~name:"prev-year" ~callback ~after:false
-
-end
+    method on_prev_year ~callback =
+      Gobject.Signal.connect_simple obj ~name:"prev-year" ~callback ~after:false
+    (** Emitted when user switched to the previous year. *)
+  end
