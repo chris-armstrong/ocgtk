@@ -33,6 +33,11 @@
 ; (libraries ocgtk alcotest))
 
 (test
+ (name test_gio_volume_monitor)
+ (modules test_gio_volume_monitor)
+ (libraries ocgtk.gio alcotest))
+
+(test
  (name test_gobject_stress)
  (modules test_gobject_stress)
  (libraries ocgtk alcotest))
