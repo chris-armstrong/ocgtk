@@ -1,6 +1,8 @@
 (* Signal class defined in gd_bus_connection_signals.ml *)
 
 class type d_bus_connection_t = object
+    inherit GAsync_initable.async_initable_t
+    inherit GInitable.initable_t
     inherit Gd_bus_connection_signals.d_bus_connection_signals
     method close_sync : GCancellable.cancellable_t option -> (bool, GError.t) result
     method export_menu_model : string -> GMenu_link_iter_and__menu_model.menu_model_t -> (int, GError.t) result
@@ -21,14 +23,14 @@ class type d_bus_connection_t = object
     method unexport_menu_model : int -> unit
     method unregister_object : int -> bool
     method unregister_subtree : int -> bool
-    method address : string
-    method authentication_observer : GD_bus_auth_observer.d_bus_auth_observer_t
     method closed : bool
     method as_d_bus_connection : D_bus_connection.t
 end
 
 (* High-level class for DBusConnection *)
 class d_bus_connection (obj : D_bus_connection.t) : d_bus_connection_t = object (self)
+  inherit GAsync_initable.async_initable (Async_initable.from_gobject obj)
+  inherit GInitable.initable (Initable.from_gobject obj)
   inherit Gd_bus_connection_signals.d_bus_connection_signals obj
 
   method close_sync : GCancellable.cancellable_t option -> (bool, GError.t) result =
@@ -109,10 +111,6 @@ class d_bus_connection (obj : D_bus_connection.t) : d_bus_connection_t = object 
   method unregister_subtree : int -> bool =
     fun registration_id ->
       (D_bus_connection.unregister_subtree obj registration_id)
-
-  method address = D_bus_connection.get_address obj
-
-  method authentication_observer = new GD_bus_auth_observer.d_bus_auth_observer (D_bus_connection.get_authentication_observer obj)
 
   method closed = D_bus_connection.get_closed obj
 

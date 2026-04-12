@@ -3,6 +3,8 @@
 
 type t = [`tree_model] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_tree_model_from_gobject"
+
 (* Methods *)
 (** Lets the tree unref the node.
 

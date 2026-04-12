@@ -1,6 +1,8 @@
 (* Signal class defined in gapplication_signals.ml *)
 
 class type application_t = object
+    inherit GAction_group.action_group_t
+    inherit GAction_map.action_map_t
     inherit Gapplication_signals.application_signals
     method activate : unit -> unit
     method bind_busy_property : [`object_] Gobject.obj -> string -> unit
@@ -16,7 +18,7 @@ class type application_t = object
     method get_version : unit -> string option
     method hold : unit -> unit
     method mark_busy : unit -> unit
-    method open_ : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t array -> int -> string -> unit
+    method open_ : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t array -> int -> string -> unit
     method quit : unit -> unit
     method register : GCancellable.cancellable_t option -> (bool, GError.t) result
     method release : unit -> unit
@@ -39,6 +41,8 @@ end
 
 (* High-level class for Application *)
 class application (obj : Application.t) : application_t = object (self)
+  inherit GAction_group.action_group (Action_group.from_gobject obj)
+  inherit GAction_map.action_map (Action_map.from_gobject obj)
   inherit Gapplication_signals.application_signals obj
 
   method activate : unit -> unit =
@@ -97,7 +101,7 @@ class application (obj : Application.t) : application_t = object (self)
     fun () ->
       (Application.mark_busy obj)
 
-  method open_ : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t array -> int -> string -> unit =
+  method open_ : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t array -> int -> string -> unit =
     fun files n_files hint ->
       (Application.open_ obj files n_files hint)
 

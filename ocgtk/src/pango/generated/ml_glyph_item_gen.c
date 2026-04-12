@@ -98,7 +98,6 @@ CAMLparam3(self, arg1, arg2);
 CAMLlocal3(result, item, cell);
     GList* c_result = pango_glyph_item_apply_attrs(PangoGlyphItem_val(self), String_val(arg1), PangoAttrList_val(arg2));
 Val_GSList_with(c_result, result, item, cell, Val_PangoGlyphItem((gpointer)_tmp->data));
-    g_slist_foreach(c_result, (GFunc)g_object_unref, NULL);
     g_slist_free(c_result);
     CAMLreturn(result);
 }

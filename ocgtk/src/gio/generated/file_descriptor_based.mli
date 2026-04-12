@@ -3,6 +3,8 @@
 
 type t = [`file_descriptor_based] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_file_descriptor_based_from_gobject"
+
 (* Methods *)
 (** Gets the underlying file descriptor. *)
 external get_fd : t -> int = "ml_g_file_descriptor_based_get_fd"

@@ -1,13 +1,13 @@
 (* Signal class defined in gd_bus_interface_skeleton_signals.ml *)
 
 class type d_bus_interface_skeleton_t = object
+    inherit GD_bus_interface_and__d_bus_object.d_bus_interface_t
     inherit Gd_bus_interface_skeleton_signals.d_bus_interface_skeleton_signals
     method export : GD_bus_connection.d_bus_connection_t -> string -> (bool, GError.t) result
     method flush : unit -> unit
     method get_connection : unit -> GD_bus_connection.d_bus_connection_t option
     method get_connections : unit -> D_bus_connection.t list
     method get_flags : unit -> Gio_enums.dbusinterfaceskeletonflags
-    method get_info : unit -> D_bus_interface_info.t
     method get_object_path : unit -> string option
     method get_vtable : unit -> D_bus_interface_v_table.t
     method has_connection : GD_bus_connection.d_bus_connection_t -> bool
@@ -21,6 +21,7 @@ end
 
 (* High-level class for DBusInterfaceSkeleton *)
 class d_bus_interface_skeleton (obj : D_bus_interface_skeleton.t) : d_bus_interface_skeleton_t = object (self)
+  inherit GD_bus_interface_and__d_bus_object.d_bus_interface (D_bus_interface_and__d_bus_object.D_bus_interface.from_gobject obj)
   inherit Gd_bus_interface_skeleton_signals.d_bus_interface_skeleton_signals obj
 
   method export : GD_bus_connection.d_bus_connection_t -> string -> (bool, GError.t) result =
@@ -43,10 +44,6 @@ class d_bus_interface_skeleton (obj : D_bus_interface_skeleton.t) : d_bus_interf
   method get_flags : unit -> Gio_enums.dbusinterfaceskeletonflags =
     fun () ->
       (D_bus_interface_skeleton.get_flags obj)
-
-  method get_info : unit -> D_bus_interface_info.t =
-    fun () ->
-      (D_bus_interface_skeleton.get_info obj)
 
   method get_object_path : unit -> string option =
     fun () ->

@@ -104,3 +104,17 @@ CAMLparam1(self);
 GtkBitset* result = gtk_selection_model_get_selection(GtkSelectionModel_val(self));
 CAMLreturn(Val_GtkBitset(result));
 }
+CAMLexport CAMLprim value ml_gtk_selection_model_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_SELECTION_MODEL)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkSelectionModel");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GtkSelectionModel((GtkSelectionModel*)gobj));
+}

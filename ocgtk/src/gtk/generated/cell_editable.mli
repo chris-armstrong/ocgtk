@@ -3,6 +3,8 @@
 
 type t = [`cell_editable] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_cell_editable_from_gobject"
+
 (* Methods *)
 (** Begins editing on a @cell_editable.
 

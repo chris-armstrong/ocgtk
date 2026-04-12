@@ -1,9 +1,8 @@
 class type property_action_t = object
+    inherit GAction.action_t
     method enabled : bool
     method invert_boolean : bool
     method name : string
-    method object_ : [`object_] Gobject.obj
-    method property_name : string
     method as_property_action : Property_action.t
 end
 

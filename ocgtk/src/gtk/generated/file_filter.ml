@@ -54,12 +54,3 @@ external add_mime_type : t -> string -> unit = "ml_gtk_file_filter_add_mime_type
 
 (* Properties *)
 
-(** Get property: mime-types *)
-external get_mime_types : t -> string array = "ml_gtk_file_filter_get_mime_types"
-
-(** Get property: patterns *)
-external get_patterns : t -> string array = "ml_gtk_file_filter_get_patterns"
-
-(** Get property: suffixes *)
-external get_suffixes : t -> string array = "ml_gtk_file_filter_get_suffixes"
-

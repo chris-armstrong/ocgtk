@@ -3,6 +3,8 @@
 
 type t = [`orientable] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_orientable_from_gobject"
+
 (* Methods *)
 (** Sets the orientation of the @orientable. *)
 external set_orientation : t -> Gtk_enums.orientation -> unit = "ml_gtk_orientable_set_orientation"

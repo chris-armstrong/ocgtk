@@ -36,9 +36,6 @@ external get_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t = "ml_gtk_
 (** Set property: attributes *)
 external set_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t -> unit = "ml_gtk_cell_renderer_text_set_attributes"
 
-(** Get property: background *)
-external get_background : t -> string = "ml_gtk_cell_renderer_text_get_background"
-
 (** Set property: background *)
 external set_background : t -> string -> unit = "ml_gtk_cell_renderer_text_set_background"
 
@@ -102,9 +99,6 @@ external get_font_desc : t -> Ocgtk_pango.Pango.Wrappers.Font_description.t = "m
 (** Set property: font-desc *)
 external set_font_desc : t -> Ocgtk_pango.Pango.Wrappers.Font_description.t -> unit = "ml_gtk_cell_renderer_text_set_font_desc"
 
-(** Get property: foreground *)
-external get_foreground : t -> string = "ml_gtk_cell_renderer_text_get_foreground"
-
 (** Set property: foreground *)
 external set_foreground : t -> string -> unit = "ml_gtk_cell_renderer_text_set_foreground"
 
@@ -131,9 +125,6 @@ external get_language_set : t -> bool = "ml_gtk_cell_renderer_text_get_language_
 
 (** Set property: language-set *)
 external set_language_set : t -> bool -> unit = "ml_gtk_cell_renderer_text_set_language_set"
-
-(** Get property: markup *)
-external get_markup : t -> string = "ml_gtk_cell_renderer_text_get_markup"
 
 (** Set property: markup *)
 external set_markup : t -> string -> unit = "ml_gtk_cell_renderer_text_set_markup"

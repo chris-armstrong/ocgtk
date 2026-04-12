@@ -1,4 +1,5 @@
 class type constraint_guide_t = object
+    inherit GConstraint_target.constraint_target_t
     method get_name : unit -> string option
     method get_strength : unit -> Gtk_enums.constraintstrength
     method set_max_size : int -> int -> unit
@@ -23,6 +24,7 @@ end
 
 (* High-level class for ConstraintGuide *)
 class constraint_guide (obj : Constraint_guide.t) : constraint_guide_t = object (self)
+  inherit GConstraint_target.constraint_target (Constraint_target.from_gobject obj)
 
   method get_name : unit -> string option =
     fun () ->

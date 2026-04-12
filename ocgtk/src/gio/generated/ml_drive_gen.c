@@ -130,6 +130,18 @@ gboolean result = g_drive_has_media(GDrive_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_g_drive_get_volumes(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = g_drive_get_volumes(GDrive_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GVolume((gpointer)_tmp->data));
+    g_list_foreach(c_result, (GFunc)g_object_unref, NULL);
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 #if GLIB_CHECK_VERSION(2,34,0)
 
 CAMLexport CAMLprim value ml_g_drive_get_symbolic_icon(value self)
@@ -345,4 +357,18 @@ CAMLparam1(self);
 
 gboolean result = g_drive_can_eject(GDrive_val(self));
 CAMLreturn(Val_bool(result));
+}
+CAMLexport CAMLprim value ml_gio_drive_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_DRIVE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GDrive");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GDrive((GDrive*)gobj));
 }

@@ -1,4 +1,5 @@
 class type media_stream_t = object
+    inherit Ocgtk_gdk.Gdk.Paintable.paintable_t
     method get_ended : unit -> bool
     method get_loop : unit -> bool
     method get_muted : unit -> bool
@@ -30,6 +31,7 @@ end
 
 (* High-level class for MediaStream *)
 class media_stream (obj : Media_stream.t) : media_stream_t = object (self)
+  inherit Ocgtk_gdk.Gdk.Paintable.paintable (Ocgtk_gdk.Gdk.Wrappers.Paintable.from_gobject obj)
 
   method get_ended : unit -> bool =
     fun () ->

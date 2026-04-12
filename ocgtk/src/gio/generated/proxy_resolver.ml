@@ -3,6 +3,8 @@
 
 type t = [`proxy_resolver] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_proxy_resolver_from_gobject"
+
 (* Methods *)
 (** Call this function to obtain the array of proxy URIs when
 g_proxy_resolver_lookup_async() is complete. See

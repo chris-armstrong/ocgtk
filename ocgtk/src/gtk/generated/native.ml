@@ -3,6 +3,8 @@
 
 type t = [`native] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_native_from_gobject"
+
 (* Methods *)
 (** Unrealizes a `GtkNative`.
 

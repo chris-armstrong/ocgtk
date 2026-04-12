@@ -2,6 +2,8 @@
 
 class type combo_box_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GCell_editable.cell_editable_t
+    inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
     inherit Gcombo_box_signals.combo_box_signals
     method get_active : unit -> int
     method get_active_id : unit -> string option
@@ -32,6 +34,8 @@ end
 (* High-level class for ComboBox *)
 class combo_box (obj : Combo_box.t) : combo_box_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GCell_editable.cell_editable (Cell_editable.from_gobject obj)
+  inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout (Cell_area_and__cell_area_context_and__cell_layout.Cell_layout.from_gobject obj)
   inherit Gcombo_box_signals.combo_box_signals obj
 
   method get_active : unit -> int =

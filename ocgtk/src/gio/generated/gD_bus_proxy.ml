@@ -1,6 +1,9 @@
 (* Signal class defined in gd_bus_proxy_signals.ml *)
 
 class type d_bus_proxy_t = object
+    inherit GAsync_initable.async_initable_t
+    inherit GD_bus_interface_and__d_bus_object.d_bus_interface_t
+    inherit GInitable.initable_t
     inherit Gd_bus_proxy_signals.d_bus_proxy_signals
     method get_cached_property_names : unit -> string array option
     method get_connection : unit -> GD_bus_connection.d_bus_connection_t
@@ -13,7 +16,6 @@ class type d_bus_proxy_t = object
     method get_object_path : unit -> string
     method set_default_timeout : int -> unit
     method set_interface_info : D_bus_interface_info.t option -> unit
-    method g_bus_type : Gio_enums.bustype
     method g_connection : GD_bus_connection.d_bus_connection_t
     method g_default_timeout : int
     method set_g_default_timeout : int -> unit
@@ -29,6 +31,9 @@ end
 
 (* High-level class for DBusProxy *)
 class d_bus_proxy (obj : D_bus_proxy.t) : d_bus_proxy_t = object (self)
+  inherit GAsync_initable.async_initable (Async_initable.from_gobject obj)
+  inherit GD_bus_interface_and__d_bus_object.d_bus_interface (D_bus_interface_and__d_bus_object.D_bus_interface.from_gobject obj)
+  inherit GInitable.initable (Initable.from_gobject obj)
   inherit Gd_bus_proxy_signals.d_bus_proxy_signals obj
 
   method get_cached_property_names : unit -> string array option =
@@ -74,8 +79,6 @@ class d_bus_proxy (obj : D_bus_proxy.t) : d_bus_proxy_t = object (self)
   method set_interface_info : D_bus_interface_info.t option -> unit =
     fun info ->
       (D_bus_proxy.set_interface_info obj info)
-
-  method g_bus_type = D_bus_proxy.get_g_bus_type obj
 
   method g_connection = new GD_bus_connection.d_bus_connection (D_bus_proxy.get_g_connection obj)
 

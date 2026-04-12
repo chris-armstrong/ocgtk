@@ -1,4 +1,5 @@
 class type simple_async_result_t = object
+    inherit GAsync_result.async_result_t
     method complete : unit -> unit
     method complete_in_idle : unit -> unit
     method get_op_res_gboolean : unit -> bool

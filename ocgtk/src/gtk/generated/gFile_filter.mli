@@ -1,5 +1,6 @@
 class type file_filter_t = object
     inherit GFilter.filter_t
+    inherit GBuildable.buildable_t
     method add_mime_type : string -> unit
     method add_pattern : string -> unit
     method add_pixbuf_formats : unit -> unit
@@ -7,9 +8,6 @@ class type file_filter_t = object
     method get_attributes : unit -> string array
     method get_name : unit -> string option
     method set_name : string option -> unit
-    method mime_types : string array
-    method patterns : string array
-    method suffixes : string array
     method as_file_filter : File_filter.t
 end
 

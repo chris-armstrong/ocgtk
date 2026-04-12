@@ -18,8 +18,30 @@
 
 #if GTK_CHECK_VERSION(4,6,0)
 
+CAMLexport CAMLprim value ml_gtk_symbolic_paintable_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_SYMBOLIC_PAINTABLE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkSymbolicPaintable");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GtkSymbolicPaintable((GtkSymbolicPaintable*)gobj));
+}
 
 #else
+
+CAMLexport CAMLprim value ml_gtk_symbolic_paintable_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    (void)obj;
+    caml_failwith("SymbolicPaintable requires GTK >= 4.6");
+    return Val_unit;
+}
 
 
 #endif

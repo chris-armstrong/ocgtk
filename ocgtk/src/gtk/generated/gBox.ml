@@ -1,5 +1,6 @@
 class type box_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GOrientable.orientable_t
     method append : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit
     method get_baseline_child : unit -> int
     method get_baseline_position : unit -> Gtk_enums.baselineposition
@@ -19,6 +20,7 @@ end
 (* High-level class for Box *)
 class box (obj : Box.t) : box_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GOrientable.orientable (Orientable.from_gobject obj)
 
   method append : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit =
     fun child ->

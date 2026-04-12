@@ -1,7 +1,10 @@
 class type volume_monitor_t = object
     inherit Gvolume_monitor_signals.volume_monitor_signals
-    method get_mount_for_uuid : string -> GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.mount_t option
-    method get_volume_for_uuid : string -> GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.volume_t option
+    method get_connected_drives : unit -> App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.Drive.t list
+    method get_mount_for_uuid : string -> GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.mount_t option
+    method get_mounts : unit -> App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.Mount.t list
+    method get_volume_for_uuid : string -> GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.volume_t option
+    method get_volumes : unit -> App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.Volume.t list
     method as_volume_monitor : Volume_monitor.t
 end
 

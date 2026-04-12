@@ -3,4 +3,6 @@
 
 type t = [`accessible_range] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_accessible_range_from_gobject"
+
 (* Methods *)

@@ -5,6 +5,7 @@ class type d_bus_object_manager_t = object
     method get_interface : string -> string -> GD_bus_interface_and__d_bus_object.d_bus_interface_t option
     method get_object : string -> GD_bus_interface_and__d_bus_object.d_bus_object_t option
     method get_object_path : unit -> string
+    method get_objects : unit -> D_bus_interface_and__d_bus_object.D_bus_object.t list
     method as_d_bus_object_manager : D_bus_object_manager.t
 end
 
@@ -23,6 +24,10 @@ class d_bus_object_manager (obj : D_bus_object_manager.t) : d_bus_object_manager
   method get_object_path : unit -> string =
     fun () ->
       (D_bus_object_manager.get_object_path obj)
+
+  method get_objects : unit -> D_bus_interface_and__d_bus_object.D_bus_object.t list =
+    fun () ->
+      (D_bus_object_manager.get_objects obj)
 
     method as_d_bus_object_manager = obj
 end

@@ -1,4 +1,5 @@
 class type zlib_decompressor_t = object
+    inherit GConverter.converter_t
     method get_file_info : unit -> GFile_info.file_info_t option
     method format : Gio_enums.zlibcompressorformat
     method as_zlib_decompressor : Zlib_decompressor.t

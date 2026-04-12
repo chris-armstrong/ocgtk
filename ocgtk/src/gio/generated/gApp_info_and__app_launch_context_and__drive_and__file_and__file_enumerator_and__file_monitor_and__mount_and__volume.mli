@@ -1,5 +1,63 @@
 
-class type file_t = object
+class type app_info_t = object
+    method add_supports_type : string -> (bool, GError.t) result
+    method can_delete : unit -> bool
+    method can_remove_supports_type : unit -> bool
+    method delete : unit -> bool
+    method dup : unit -> app_info_t
+    method get_commandline : unit -> string option
+    method get_description : unit -> string option
+    method get_display_name : unit -> string
+    method get_executable : unit -> string
+    method get_icon : unit -> GIcon.icon_t option
+    method get_id : unit -> string option
+    method get_name : unit -> string
+    method get_supported_types : unit -> string array
+    method launch : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t list option -> app_launch_context_t option -> (bool, GError.t) result
+    method launch_uris : string list option -> app_launch_context_t option -> (bool, GError.t) result
+    method remove_supports_type : string -> (bool, GError.t) result
+    method set_as_default_for_extension : string -> (bool, GError.t) result
+    method set_as_default_for_type : string -> (bool, GError.t) result
+    method set_as_last_used_for_type : string -> (bool, GError.t) result
+    method should_show : unit -> bool
+    method supports_files : unit -> bool
+    method supports_uris : unit -> bool
+    method as_app_info : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.App_info.t
+end
+
+and app_launch_context_t = object
+    inherit Gapp_launch_context_signals.app_launch_context_signals
+    method get_environment : unit -> string array
+    method launch_failed : string -> unit
+    method setenv : string -> string -> unit
+    method unsetenv : string -> unit
+    method as_app_launch_context : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.App_launch_context.t
+end
+
+and drive_t = object
+    inherit Gdrive_signals.drive_signals
+    method can_eject : unit -> bool
+    method can_poll_for_media : unit -> bool
+    method can_start : unit -> bool
+    method can_start_degraded : unit -> bool
+    method can_stop : unit -> bool
+    method enumerate_identifiers : unit -> string array
+    method get_icon : unit -> GIcon.icon_t
+    method get_identifier : string -> string option
+    method get_name : unit -> string
+    method get_sort_key : unit -> string option
+    method get_start_stop_type : unit -> Gio_enums.drivestartstoptype
+    method get_symbolic_icon : unit -> GIcon.icon_t
+    method get_volumes : unit -> App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.Volume.t list
+    method has_media : unit -> bool
+    method has_volumes : unit -> bool
+    method is_media_check_automatic : unit -> bool
+    method is_media_removable : unit -> bool
+    method is_removable : unit -> bool
+    method as_drive : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.Drive.t
+end
+
+and file_t = object
     method append_to : Gio_enums.filecreateflags -> GCancellable.cancellable_t option -> (GFile_output_stream.file_output_stream_t, GError.t) result
     method build_attribute_list_for_copy : Gio_enums.filecopyflags -> GCancellable.cancellable_t option -> (string, GError.t) result
     method create : Gio_enums.filecreateflags -> GCancellable.cancellable_t option -> (GFile_output_stream.file_output_stream_t, GError.t) result
@@ -27,7 +85,7 @@ class type file_t = object
     method monitor_file : Gio_enums.filemonitorflags -> GCancellable.cancellable_t option -> (file_monitor_t, GError.t) result
     method open_readwrite : GCancellable.cancellable_t option -> (GFile_io_stream.file_io_stream_t, GError.t) result
     method peek_path : unit -> string option
-    method query_default_handler : GCancellable.cancellable_t option -> (GApp_info_and__app_launch_context.app_info_t, GError.t) result
+    method query_default_handler : GCancellable.cancellable_t option -> (app_info_t, GError.t) result
     method query_exists : GCancellable.cancellable_t option -> bool
     method query_file_type : Gio_enums.filequeryinfoflags -> GCancellable.cancellable_t option -> Gio_enums.filetype
     method query_filesystem_info : string -> GCancellable.cancellable_t option -> (GFile_info.file_info_t, GError.t) result
@@ -44,7 +102,7 @@ class type file_t = object
     method set_display_name : string -> GCancellable.cancellable_t option -> (file_t, GError.t) result
     method supports_thread_contexts : unit -> bool
     method trash : GCancellable.cancellable_t option -> (bool, GError.t) result
-    method as_file : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t
+    method as_file : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t
 end
 
 and file_enumerator_t = object
@@ -55,7 +113,7 @@ and file_enumerator_t = object
     method is_closed : unit -> bool
     method next_file : GCancellable.cancellable_t option -> (GFile_info.file_info_t option, GError.t) result
     method set_pending : bool -> unit
-    method as_file_enumerator : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File_enumerator.t
+    method as_file_enumerator : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File_enumerator.t
 end
 
 and file_monitor_t = object
@@ -64,7 +122,7 @@ and file_monitor_t = object
     method is_cancelled : unit -> bool
     method set_rate_limit : int -> unit
     method cancelled : bool
-    method as_file_monitor : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File_monitor.t
+    method as_file_monitor : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File_monitor.t
 end
 
 and mount_t = object
@@ -72,7 +130,7 @@ and mount_t = object
     method can_eject : unit -> bool
     method can_unmount : unit -> bool
     method get_default_location : unit -> file_t
-    method get_drive : unit -> GDrive.drive_t option
+    method get_drive : unit -> drive_t option
     method get_icon : unit -> GIcon.icon_t
     method get_name : unit -> string
     method get_root : unit -> file_t
@@ -84,7 +142,7 @@ and mount_t = object
     method is_shadowed : unit -> bool
     method shadow : unit -> unit
     method unshadow : unit -> unit
-    method as_mount : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.Mount.t
+    method as_mount : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.Mount.t
 end
 
 and volume_t = object
@@ -93,7 +151,7 @@ and volume_t = object
     method can_mount : unit -> bool
     method enumerate_identifiers : unit -> string array
     method get_activation_root : unit -> file_t option
-    method get_drive : unit -> GDrive.drive_t option
+    method get_drive : unit -> drive_t option
     method get_icon : unit -> GIcon.icon_t
     method get_identifier : string -> string option
     method get_mount : unit -> mount_t option
@@ -102,16 +160,23 @@ and volume_t = object
     method get_symbolic_icon : unit -> GIcon.icon_t
     method get_uuid : unit -> string option
     method should_automount : unit -> bool
-    method as_volume : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.Volume.t
+    method as_volume : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.Volume.t
 end
 
 
-class file : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t -> file_t
+class app_info : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.App_info.t -> app_info_t
 
-and file_enumerator : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File_enumerator.t -> file_enumerator_t
+and app_launch_context : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.App_launch_context.t -> app_launch_context_t
 
-and file_monitor : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File_monitor.t -> file_monitor_t
+and drive : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.Drive.t -> drive_t
 
-and mount : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.Mount.t -> mount_t
+and file : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t -> file_t
 
-and volume : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.Volume.t -> volume_t
+and file_enumerator : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File_enumerator.t -> file_enumerator_t
+
+and file_monitor : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File_monitor.t -> file_monitor_t
+
+and mount : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.Mount.t -> mount_t
+
+and volume : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.Volume.t -> volume_t
+val new_ : unit -> app_launch_context_t

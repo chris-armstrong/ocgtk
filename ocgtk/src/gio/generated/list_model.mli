@@ -3,6 +3,8 @@
 
 type t = [`list_model] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_list_model_from_gobject"
+
 (* Methods *)
 (** Emits the #GListModel::items-changed signal on @list.
 

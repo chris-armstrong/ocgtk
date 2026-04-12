@@ -3,6 +3,8 @@
 
 type t = [`icon] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_icon_from_gobject"
+
 (* Methods *)
 (** Generates a textual representation of @icon that can be used for
 serialization such as when passing @icon to a different process or

@@ -139,7 +139,7 @@ of the invocation of @cmdline.
 This differs from g_file_new_for_commandline_arg() in that it
 resolves relative pathnames using the current working directory of
 the invoking process rather than the local process. *)
-external create_file_for_arg : t -> string -> File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t = "ml_g_application_command_line_create_file_for_arg"
+external create_file_for_arg : t -> string -> App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t = "ml_g_application_command_line_create_file_for_arg"
 
 (* Properties *)
 

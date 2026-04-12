@@ -63,3 +63,14 @@ class constraint_ (obj : Constraint.t) : constraint__t = object (self)
     method as_constraint_ = obj
 end
 
+let new_ (target : GConstraint_target.constraint_target_t option) (target_attribute : Gtk_enums.constraintattribute) (relation : Gtk_enums.constraintrelation) (source : GConstraint_target.constraint_target_t option) (source_attribute : Gtk_enums.constraintattribute) (multiplier : float) (constant : float) (strength : int) : constraint__t =
+  let target = Option.map (fun c -> c#as_constraint_target) target in
+  let source = Option.map (fun c -> c#as_constraint_target) source in
+  let obj_ = Constraint.new_ target target_attribute relation source source_attribute multiplier constant strength in
+  new constraint_ obj_
+
+let new_constant (target : GConstraint_target.constraint_target_t option) (target_attribute : Gtk_enums.constraintattribute) (relation : Gtk_enums.constraintrelation) (constant : float) (strength : int) : constraint__t =
+  let target = Option.map (fun c -> c#as_constraint_target) target in
+  let obj_ = Constraint.new_constant target target_attribute relation constant strength in
+  new constraint_ obj_
+

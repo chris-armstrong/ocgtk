@@ -1,5 +1,5 @@
 (* Signal handlers for Volume *)
-class volume_signals (obj : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.Volume.t) = object
+class volume_signals (obj : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.Volume.t) = object
   (** Emitted when the volume has been changed. *)
   method on_changed ~callback =
     Gobject.Signal.connect_simple obj ~name:"changed" ~callback ~after:false

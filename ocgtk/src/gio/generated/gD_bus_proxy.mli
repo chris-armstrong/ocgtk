@@ -1,4 +1,7 @@
 class type d_bus_proxy_t = object
+    inherit GAsync_initable.async_initable_t
+    inherit GD_bus_interface_and__d_bus_object.d_bus_interface_t
+    inherit GInitable.initable_t
     inherit Gd_bus_proxy_signals.d_bus_proxy_signals
     method get_cached_property_names : unit -> string array option
     method get_connection : unit -> GD_bus_connection.d_bus_connection_t
@@ -11,7 +14,6 @@ class type d_bus_proxy_t = object
     method get_object_path : unit -> string
     method set_default_timeout : int -> unit
     method set_interface_info : D_bus_interface_info.t option -> unit
-    method g_bus_type : Gio_enums.bustype
     method g_connection : GD_bus_connection.d_bus_connection_t
     method g_default_timeout : int
     method set_g_default_timeout : int -> unit

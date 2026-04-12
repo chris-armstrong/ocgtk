@@ -3,6 +3,8 @@
 
 type t = [`action] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_action_from_gobject"
+
 (* Methods *)
 (** Queries the name of @action. *)
 external get_name : t -> string = "ml_g_action_get_name"

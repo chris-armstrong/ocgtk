@@ -1,4 +1,6 @@
 class type map_list_model_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
+    inherit GSection_model.section_model_t
     method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
     method has_map : unit -> bool
     method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit

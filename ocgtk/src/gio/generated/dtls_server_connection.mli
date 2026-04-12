@@ -3,6 +3,8 @@
 
 type t = [`dtls_server_connection] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_dtls_server_connection_from_gobject"
+
 (* Methods *)
 (* Properties *)
 

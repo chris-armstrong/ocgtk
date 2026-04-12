@@ -1,6 +1,5 @@
 class type shortcuts_shortcut_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
-    method accel_size_group : GSize_group.size_group_t
     method set_accel_size_group : GSize_group.size_group_t -> unit
     method accelerator : string
     method set_accelerator : string -> unit
@@ -19,7 +18,6 @@ class type shortcuts_shortcut_t = object
     method set_subtitle_set : bool -> unit
     method title : string
     method set_title : string -> unit
-    method title_size_group : GSize_group.size_group_t
     method set_title_size_group : GSize_group.size_group_t -> unit
     method as_shortcuts_shortcut : Shortcuts_shortcut.t
 end
@@ -28,7 +26,6 @@ end
 class shortcuts_shortcut (obj : Shortcuts_shortcut.t) : shortcuts_shortcut_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
 
-  method accel_size_group = new GSize_group.size_group (Shortcuts_shortcut.get_accel_size_group obj)
   method set_accel_size_group : GSize_group.size_group_t -> unit  = fun v ->  Shortcuts_shortcut.set_accel_size_group obj v#as_size_group
 
   method accelerator = Shortcuts_shortcut.get_accelerator obj
@@ -57,7 +54,6 @@ class shortcuts_shortcut (obj : Shortcuts_shortcut.t) : shortcuts_shortcut_t = o
   method title = Shortcuts_shortcut.get_title obj
   method set_title v =  Shortcuts_shortcut.set_title obj v
 
-  method title_size_group = new GSize_group.size_group (Shortcuts_shortcut.get_title_size_group obj)
   method set_title_size_group : GSize_group.size_group_t -> unit  = fun v ->  Shortcuts_shortcut.set_title_size_group obj v#as_size_group
 
     method as_shortcuts_shortcut = obj

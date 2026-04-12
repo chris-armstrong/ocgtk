@@ -312,7 +312,7 @@ for this functionality, you should use "".
 
 The application must be registered before calling this function
 and it must have the %G_APPLICATION_HANDLES_OPEN flag set. *)
-external open_ : t -> File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t array -> int -> string -> unit = "ml_g_application_open"
+external open_ : t -> App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t array -> int -> string -> unit = "ml_g_application_open"
 
 (** Increases the busy count of @application.
 

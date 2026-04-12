@@ -6,7 +6,6 @@ class type cell_renderer_pixbuf_t = object
     method set_icon_name : string -> unit
     method icon_size : Gtk_enums.iconsize
     method set_icon_size : Gtk_enums.iconsize -> unit
-    method pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.Pixbuf.pixbuf_t
     method set_pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.Pixbuf.pixbuf_t -> unit
     method pixbuf_expander_closed : Ocgtk_gdkpixbuf.GdkPixbuf.Pixbuf.pixbuf_t
     method set_pixbuf_expander_closed : Ocgtk_gdkpixbuf.GdkPixbuf.Pixbuf.pixbuf_t -> unit
@@ -30,7 +29,6 @@ class cell_renderer_pixbuf (obj : Cell_renderer_pixbuf.t) : cell_renderer_pixbuf
   method icon_size = Cell_renderer_pixbuf.get_icon_size obj
   method set_icon_size v =  Cell_renderer_pixbuf.set_icon_size obj v
 
-  method pixbuf = new Ocgtk_gdkpixbuf.GdkPixbuf.Pixbuf.pixbuf (Cell_renderer_pixbuf.get_pixbuf obj)
   method set_pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.Pixbuf.pixbuf_t -> unit  = fun v ->  Cell_renderer_pixbuf.set_pixbuf obj v#as_pixbuf
 
   method pixbuf_expander_closed = new Ocgtk_gdkpixbuf.GdkPixbuf.Pixbuf.pixbuf (Cell_renderer_pixbuf.get_pixbuf_expander_closed obj)

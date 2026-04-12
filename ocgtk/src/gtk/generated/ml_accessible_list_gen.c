@@ -36,7 +36,47 @@ value Val_GtkAccessibleList_option(const GtkAccessibleList *ptr) {
 #if GTK_CHECK_VERSION(4,14,0)
 
 
+CAMLexport CAMLprim value ml_gtk_accessible_list_new_from_list(value arg1)
+{
+CAMLparam1(arg1);
+    GList* arg1_list = NULL;
+    GList_val_with(arg1, arg1_list, (gpointer)GtkAccessible_val(Field(_iter, 0)));
+
+GtkAccessibleList *obj = gtk_accessible_list_new_from_list(arg1_list);
+
+    g_list_free(arg1_list);
+CAMLreturn(Val_GtkAccessibleList(obj));
+}
+CAMLexport CAMLprim value ml_gtk_accessible_list_get_objects(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = gtk_accessible_list_get_objects(GtkAccessibleList_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GtkAccessible((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 #else
+
+
+CAMLexport CAMLprim value ml_gtk_accessible_list_new_from_list(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("AccessibleList requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_accessible_list_get_objects(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("AccessibleList requires GTK >= 4.14");
+return Val_unit;
+}
 
 
 #endif

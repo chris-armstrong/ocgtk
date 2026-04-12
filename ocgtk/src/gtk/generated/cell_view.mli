@@ -7,7 +7,7 @@ type t = [`cell_view | `widget | `initially_unowned | `object_] Gobject.obj
 external new_ : unit -> t = "ml_gtk_cell_view_new"
 
 (** Create a new CellView *)
-external new_with_context : Cell_area_and__cell_area_context.Cell_area.t -> Cell_area_and__cell_area_context.Cell_area_context.t -> t = "ml_gtk_cell_view_new_with_context"
+external new_with_context : Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area_context.t -> t = "ml_gtk_cell_view_new_with_context"
 
 (** Create a new CellView *)
 external new_with_markup : string -> t = "ml_gtk_cell_view_new_with_markup"
@@ -65,8 +65,8 @@ external get_displayed_row : t -> Tree_path.t option = "ml_gtk_cell_view_get_dis
 (* Properties *)
 
 (** Get property: cell-area *)
-external get_cell_area : t -> Cell_area_and__cell_area_context.Cell_area.t = "ml_gtk_cell_view_get_cell_area"
+external get_cell_area : t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t = "ml_gtk_cell_view_get_cell_area"
 
 (** Get property: cell-area-context *)
-external get_cell_area_context : t -> Cell_area_and__cell_area_context.Cell_area_context.t = "ml_gtk_cell_view_get_cell_area_context"
+external get_cell_area_context : t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area_context.t = "ml_gtk_cell_view_get_cell_area_context"
 

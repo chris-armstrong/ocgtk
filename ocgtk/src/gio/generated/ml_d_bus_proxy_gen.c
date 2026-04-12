@@ -176,23 +176,6 @@ gchar** result = g_dbus_proxy_get_cached_property_names(GDBusProxy_val(self));
 CAMLreturn(ml_result);
 }
 
-CAMLexport CAMLprim value ml_g_d_bus_proxy_get_g_bus_type(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GDBusProxy *obj = (GDBusProxy *)GDBusProxy_val(self);
-    GBusType prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "g-bus-type");
-if (pspec == NULL) caml_failwith("ml_g_d_bus_proxy_get_g_bus_type: property 'g-bus-type' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "g-bus-type", &prop_gvalue);
-          prop_value = (GBusType)g_value_get_enum(&prop_gvalue);
-
-      result = Val_GioBusType(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
 CAMLexport CAMLprim value ml_g_d_bus_proxy_get_g_connection(value self)
 {
     CAMLparam1(self);
@@ -506,15 +489,6 @@ CAMLexport CAMLprim value ml_g_dbus_proxy_set_interface_info(value self, value a
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("DBusProxy requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_d_bus_proxy_get_g_bus_type(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("DBusProxy requires GLib >= 2.26");
 return Val_unit;
 }

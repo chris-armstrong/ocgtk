@@ -1,11 +1,11 @@
 class type task_t = object
+    inherit GAsync_result.async_result_t
     method get_cancellable : unit -> GCancellable.cancellable_t option
     method get_check_cancellable : unit -> bool
     method get_completed : unit -> bool
     method get_name : unit -> string option
     method get_priority : unit -> int
     method get_return_on_cancel : unit -> bool
-    method get_source_object : unit -> [`object_] Gobject.obj option
     method had_error : unit -> bool
     method propagate_boolean : unit -> (bool, GError.t) result
     method return_boolean : bool -> unit
@@ -20,6 +20,7 @@ end
 
 (* High-level class for Task *)
 class task (obj : Task.t) : task_t = object (self)
+  inherit GAsync_result.async_result (Async_result.from_gobject obj)
 
   method get_cancellable : unit -> GCancellable.cancellable_t option =
     fun () ->
@@ -44,10 +45,6 @@ class task (obj : Task.t) : task_t = object (self)
   method get_return_on_cancel : unit -> bool =
     fun () ->
       (Task.get_return_on_cancel obj)
-
-  method get_source_object : unit -> [`object_] Gobject.obj option =
-    fun () ->
-      (Task.get_source_object obj)
 
   method had_error : unit -> bool =
     fun () ->

@@ -39,6 +39,7 @@ CAMLlocal3(result, item, cell);
     GList* c_result = g_file_enumerator_next_files_finish(GFileEnumerator_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) {
         Val_GList_with(c_result, result, item, cell, Val_GFileInfo((gpointer)_tmp->data));
+    g_list_foreach(c_result, (GFunc)g_object_unref, NULL);
     g_list_free(c_result);
         CAMLreturn(Res_Ok(result));
     } else CAMLreturn(Res_Error(Val_GError(error)));

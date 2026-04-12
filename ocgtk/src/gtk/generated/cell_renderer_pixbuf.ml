@@ -27,9 +27,6 @@ external get_icon_size : t -> Gtk_enums.iconsize = "ml_gtk_cell_renderer_pixbuf_
 (** Set property: icon-size *)
 external set_icon_size : t -> Gtk_enums.iconsize -> unit = "ml_gtk_cell_renderer_pixbuf_set_icon_size"
 
-(** Get property: pixbuf *)
-external get_pixbuf : t -> Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t = "ml_gtk_cell_renderer_pixbuf_get_pixbuf"
-
 (** Set property: pixbuf *)
 external set_pixbuf : t -> Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t -> unit = "ml_gtk_cell_renderer_pixbuf_set_pixbuf"
 

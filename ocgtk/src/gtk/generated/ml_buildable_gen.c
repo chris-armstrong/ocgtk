@@ -24,3 +24,17 @@ CAMLparam1(self);
 const char* result = gtk_buildable_get_buildable_id(GtkBuildable_val(self));
 CAMLreturn(Val_option_string(result));
 }
+CAMLexport CAMLprim value ml_gtk_buildable_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_BUILDABLE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkBuildable");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GtkBuildable((GtkBuildable*)gobj));
+}

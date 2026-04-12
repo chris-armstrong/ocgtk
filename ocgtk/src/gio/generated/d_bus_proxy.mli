@@ -70,9 +70,6 @@ external get_cached_property_names : t -> string array option = "ml_g_dbus_proxy
 
 (* Properties *)
 
-(** Get property: g-bus-type *)
-external get_g_bus_type : t -> Gio_enums.bustype = "ml_g_d_bus_proxy_get_g_bus_type"
-
 (** Get property: g-connection *)
 external get_g_connection : t -> D_bus_connection.t = "ml_g_d_bus_proxy_get_g_connection"
 

@@ -1,5 +1,7 @@
 class type progress_bar_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GAccessible_range.accessible_range_t
+    inherit GOrientable.orientable_t
     method get_ellipsize : unit -> Ocgtk_pango.Pango.ellipsizemode
     method get_fraction : unit -> float
     method get_inverted : unit -> bool

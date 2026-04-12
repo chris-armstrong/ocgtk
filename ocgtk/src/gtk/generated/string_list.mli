@@ -57,6 +57,3 @@ external append : t -> string -> unit = "ml_gtk_string_list_append"
 (** Get property: n-items *)
 external get_n_items : t -> int = "ml_gtk_string_list_get_n_items"
 
-(** Get property: strings *)
-external get_strings : t -> string array = "ml_gtk_string_list_get_strings"
-

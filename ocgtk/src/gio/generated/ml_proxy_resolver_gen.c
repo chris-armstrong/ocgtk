@@ -71,6 +71,20 @@ CAMLparam1(self);
 gboolean result = g_proxy_resolver_is_supported(GProxyResolver_val(self));
 CAMLreturn(Val_bool(result));
 }
+CAMLexport CAMLprim value ml_gio_proxy_resolver_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_PROXY_RESOLVER)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GProxyResolver");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GProxyResolver((GProxyResolver*)gobj));
+}
 
 #else
 
@@ -102,6 +116,14 @@ CAMLparam2(self, arg1);
 (void)arg1;
 caml_failwith("ProxyResolver requires GLib >= 2.26");
 return Val_unit;
+}
+
+CAMLexport CAMLprim value ml_gio_proxy_resolver_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    (void)obj;
+    caml_failwith("ProxyResolver requires GTK >= 2.26");
+    return Val_unit;
 }
 
 

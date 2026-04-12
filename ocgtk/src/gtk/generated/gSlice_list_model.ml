@@ -1,4 +1,6 @@
 class type slice_list_model_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
+    inherit GSection_model.section_model_t
     method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
     method get_offset : unit -> int
     method get_size : unit -> int
@@ -11,6 +13,8 @@ end
 
 (* High-level class for SliceListModel *)
 class slice_list_model (obj : Slice_list_model.t) : slice_list_model_t = object (self)
+  inherit Ocgtk_gio.Gio.List_model.list_model (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
+  inherit GSection_model.section_model (Section_model.from_gobject obj)
 
   method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option =
     fun () ->

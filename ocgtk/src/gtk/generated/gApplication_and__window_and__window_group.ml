@@ -3,6 +3,8 @@
 
 class type application_t = object
     inherit Ocgtk_gio.Gio.Application.application_t
+    inherit Ocgtk_gio.Gio.Action_group.action_group_t
+    inherit Ocgtk_gio.Gio.Action_map.action_map_t
     inherit Gapplication_signals.application_signals
     method add_window : window_t -> unit
     method get_accels_for_action : string -> string array
@@ -25,6 +27,9 @@ end
 
 and window_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GNative.native_t
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.root_t
+    inherit GShortcut_manager.shortcut_manager_t
     inherit Gwindow_signals.window_signals
     method close : unit -> unit
     method destroy : unit -> unit
@@ -36,7 +41,6 @@ and window_t = object
     method get_default_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
     method get_deletable : unit -> bool
     method get_destroy_with_parent : unit -> bool
-    method get_focus : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
     method get_focus_visible : unit -> bool
     method get_group : unit -> window_group_t
     method get_handle_menubar_accel : unit -> bool
@@ -64,7 +68,6 @@ and window_t = object
     method set_deletable : bool -> unit
     method set_destroy_with_parent : bool -> unit
     method set_display : Ocgtk_gdk.Gdk.Display.display_t -> unit
-    method set_focus : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
     method set_focus_visible : bool -> unit
     method set_handle_menubar_accel : bool -> unit
     method set_hide_on_close : bool -> unit
@@ -105,6 +108,8 @@ end
 
 class application (obj : Application_and__window_and__window_group.Application.t) : application_t = object (self)
   inherit Ocgtk_gio.Gio.Application.application (obj :> Ocgtk_gio.Gio.Wrappers.Application.t)
+  inherit Ocgtk_gio.Gio.Action_group.action_group (Ocgtk_gio.Gio.Wrappers.Action_group.from_gobject obj)
+  inherit Ocgtk_gio.Gio.Action_map.action_map (Ocgtk_gio.Gio.Wrappers.Action_map.from_gobject obj)
   inherit Gapplication_signals.application_signals obj
 
   method add_window : window_t -> unit =
@@ -178,6 +183,9 @@ end
 
 and window (obj : Application_and__window_and__window_group.Window.t) : window_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GNative.native (Native.from_gobject obj)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.root (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Root.from_gobject obj)
+  inherit GShortcut_manager.shortcut_manager (Shortcut_manager.from_gobject obj)
   inherit Gwindow_signals.window_signals obj
 
   method close : unit -> unit =
@@ -220,10 +228,6 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
   method get_destroy_with_parent : unit -> bool =
     fun () ->
       (Application_and__window_and__window_group.Window.get_destroy_with_parent obj)
-
-  method get_focus : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
-    fun () ->
-      Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Application_and__window_and__window_group.Window.get_focus obj)
 
   method get_focus_visible : unit -> bool =
     fun () ->
@@ -336,11 +340,6 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
     fun display ->
       let display = display#as_display in
       (Application_and__window_and__window_group.Window.set_display obj display)
-
-  method set_focus : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
-    fun focus ->
-      let focus = Option.map (fun (c) -> c#as_widget) focus in
-      (Application_and__window_and__window_group.Window.set_focus obj focus)
 
   method set_focus_visible : bool -> unit =
     fun setting ->

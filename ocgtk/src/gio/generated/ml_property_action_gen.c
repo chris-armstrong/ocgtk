@@ -97,40 +97,6 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
-CAMLexport CAMLprim value ml_g_property_action_get_object(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GPropertyAction *obj = (GPropertyAction *)GPropertyAction_val(self);
-    GObject* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "object");
-if (pspec == NULL) caml_failwith("ml_g_property_action_get_object: property 'object' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "object", &prop_gvalue);
-          prop_value = (GObject*)g_value_get_pointer(&prop_gvalue);
-
-      result = ml_gobject_val_of_ext(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
-CAMLexport CAMLprim value ml_g_property_action_get_property_name(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GPropertyAction *obj = (GPropertyAction *)GPropertyAction_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "property-name");
-if (pspec == NULL) caml_failwith("ml_g_property_action_get_property_name: property 'property-name' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "property-name", &prop_gvalue);
-          prop_value = g_value_get_string(&prop_gvalue);
-
-      result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
 #else
 
 
@@ -164,24 +130,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_property_action_get_name(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PropertyAction requires GLib >= 2.38");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_property_action_get_object(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PropertyAction requires GLib >= 2.38");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_property_action_get_property_name(value self)
 {
 CAMLparam1(self);
 (void)self;

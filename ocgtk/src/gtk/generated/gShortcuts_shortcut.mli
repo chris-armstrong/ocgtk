@@ -1,6 +1,5 @@
 class type shortcuts_shortcut_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
-    method accel_size_group : GSize_group.size_group_t
     method set_accel_size_group : GSize_group.size_group_t -> unit
     method accelerator : string
     method set_accelerator : string -> unit
@@ -19,7 +18,6 @@ class type shortcuts_shortcut_t = object
     method set_subtitle_set : bool -> unit
     method title : string
     method set_title : string -> unit
-    method title_size_group : GSize_group.size_group_t
     method set_title_size_group : GSize_group.size_group_t -> unit
     method as_shortcuts_shortcut : Shortcuts_shortcut.t
 end

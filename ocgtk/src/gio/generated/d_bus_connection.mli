@@ -194,12 +194,6 @@ external close_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_d
 
 (* Properties *)
 
-(** Get property: address *)
-external get_address : t -> string = "ml_g_d_bus_connection_get_address"
-
-(** Get property: authentication-observer *)
-external get_authentication_observer : t -> D_bus_auth_observer.t = "ml_g_d_bus_connection_get_authentication_observer"
-
 (** Get property: closed *)
 external get_closed : t -> bool = "ml_g_d_bus_connection_get_closed"
 
