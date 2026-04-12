@@ -696,6 +696,9 @@ let method_body_calls_function (expr : expression) (module_name : string) (func_
     | Pexp_match (expr, cases) ->
         check_expression expr
         || List.exists (fun case -> check_expression case.pc_rhs) cases
+    | Pexp_function (_, _, Pfunction_body body) -> check_expression body
+    | Pexp_function (_, _, Pfunction_cases (cases, _, _)) ->
+        List.exists (fun case -> check_expression case.pc_rhs) cases
     | _ -> false
   in
   check_expression expr
