@@ -27,13 +27,13 @@ let method_signature_for_comparison (meth : gir_method) : string =
 
 (* Get all methods from a class *)
 let get_class_methods ~ctx class_name : gir_method list =
-  match List.find_opt ~f:(fun cls -> cls.class_name = class_name) ctx.classes with
+  match List.find_opt ~f:(fun cls -> String.equal cls.class_name class_name) ctx.classes with
   | Some cls -> cls.methods
   | None -> []
 
 (* Helper: Get parent name from class if it exists *)
 let get_parent_name_opt ~ctx class_name : string option =
-  match List.find_opt ~f:(fun cls -> cls.class_name = class_name) ctx.classes with
+  match List.find_opt ~f:(fun cls -> String.equal cls.class_name class_name) ctx.classes with
   | None -> None
   | Some cls -> cls.parent
 
@@ -85,7 +85,7 @@ let detect_method_conflicts ~ctx ~class_name ~c_type ~methods : StringSet.t =
 
 (* Get properties for a class *)
 let get_class_properties ~ctx class_name : gir_property list =
-  match List.find_opt ~f:(fun cls -> cls.class_name = class_name) ctx.classes with
+  match List.find_opt ~f:(fun cls -> String.equal cls.class_name class_name) ctx.classes with
   | Some cls -> cls.properties
   | None -> []
 
@@ -97,6 +97,17 @@ let property_method_names (prop : gir_property) : string list =
   if prop.writable && not prop.construct_only then [getter; setter]
   else [getter]
 
+(** Return true if any class in the transitive parent chain of [class_name]
+    lists [iface_name] in its implements. Used to detect diamond interface
+    inheritance so the child can skip re-emitting an interface already provided
+    by a parent, avoiding OCaml warning 7 (method-override). *)
+let parent_chain_provides_interface ~ctx ~class_name iface_name : bool =
+  let parent_chain = build_parent_chain ~ctx class_name in
+  List.exists parent_chain ~f:(fun ancestor ->
+    match List.find_opt ~f:(fun cls -> String.equal cls.class_name ancestor) ctx.classes with
+    | None -> false
+    | Some cls -> List.exists cls.implements ~f:(fun i -> String.equal i iface_name))
+
 (* Collect all OCaml method names inherited from ancestors (methods + properties).
    Used to detect conflicts when inheriting from the parent class type. *)
 let collect_inherited_method_names ~ctx ~class_name : StringSet.t =
@@ -105,7 +116,7 @@ let collect_inherited_method_names ~ctx ~class_name : StringSet.t =
   (* Add method names from all ancestors *)
   let names = List.fold_left parent_chain ~init:names ~f:(fun acc parent_name ->
     let methods = get_class_methods ~ctx parent_name in
-    let parent_c_type = match List.find_opt ~f:(fun cls -> cls.class_name = parent_name) ctx.classes with
+    let parent_c_type = match List.find_opt ~f:(fun cls -> String.equal cls.class_name parent_name) ctx.classes with
       | Some cls -> cls.c_type
       | None -> ""
     in
@@ -118,5 +129,21 @@ let collect_inherited_method_names ~ctx ~class_name : StringSet.t =
     List.fold_left props ~init:acc ~f:(fun acc prop ->
       List.fold_left (property_method_names prop) ~init:acc ~f:(fun acc n ->
         StringSet.add n acc))
+  ) in
+  (* Also collect method names from implemented interfaces (interface methods
+     are provided via `inherit GIface.iface_t`, so we must not re-emit them) *)
+  let class_implements =
+    match List.find_opt ~f:(fun cls -> String.equal cls.class_name class_name) ctx.classes with
+    | Some cls -> cls.implements
+    | None -> []
+  in
+  let names = List.fold_left class_implements ~init:names ~f:(fun acc iface_name ->
+    match List.find_opt ~f:(fun iface -> String.equal iface.interface_name iface_name) ctx.interfaces with
+    | None -> acc
+    | Some iface ->
+        List.fold_left iface.methods ~init:acc ~f:(fun acc meth ->
+          StringSet.add
+            (ocaml_method_name ~class_name:iface_name ~c_type:iface.c_type meth)
+            acc)
   ) in
   names

@@ -49,6 +49,9 @@
     test_override_e2e
     test_override_integration
     test_enum_member_version
+    test_interface_parsing
+    test_from_gobject_gen
+    test_interface_inheritance
     test_gir_gen
    type_factory)
  (deps %{exe:../gir_gen/gir_gen.exe})

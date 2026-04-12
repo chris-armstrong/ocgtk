@@ -122,49 +122,14 @@ let array_lacks_length_info (arr : gir_array) =
   && (not arr.zero_terminated) && (not is_string) && (not is_pointer_element)
   && Option.is_none arr.length
 
-(** Check if an element type is an interface (which we don't fully generate yet)
-*)
-let is_interface_type ~ctx (elem_type : Types.gir_type) =
-  (* Check if it's a cross-namespace interface reference like "Gio.File" *)
-  let parts = String.split_on_char ~sep:'.' elem_type.name in
-  match parts with
-  | [ namespace; name ] -> (
-      (* Cross-namespace type - check cross-references *)
-      match StringMap.find_opt namespace ctx.cross_references with
-      | Some ncr -> (
-          match StringMap.find_opt name ncr.ncr_entities with
-          | Some cr -> (
-              match cr.cr_type with Crt_Interface -> true | _ -> false)
-          | None -> false)
-      | None -> false)
-  | [ name ] ->
-      (* Same namespace - check local interfaces *)
-      List.exists ctx.interfaces ~f:(fun (iface : Types.gir_interface) ->
-          String.equal iface.interface_name name)
-  | _ -> false
-
-(** Check if a GList/GSList has an interface element type. We can't generate
-    proper C stubs for interface element types yet. *)
-let list_has_interface_element ~ctx (gir_type : Types.gir_type) =
-  match gir_type.array with
-  | Some arr -> (
-      match arr.array_name with
-      | Some "GLib.List" | Some "GLib.SList" ->
-          is_interface_type ~ctx arr.element_type
-      | _ -> false)
-  | None -> false
-
 (** Check if a method has any array (in parameters or return type) that would
     cause the C code generator to fail due to missing length information.
 
     GList and GSList types are always supported since they use macro-based
     conversion and don't need explicit length information.
 
-    GLib.HashTable is not an array type and should not be checked as such.
-
-    Interface element types are excluded since we don't fully generate
-    interfaces. *)
-let method_has_unsupported_arrays ~ctx (meth : gir_method) =
+    GLib.HashTable is not an array type and should not be checked as such. *)
+let method_has_unsupported_arrays ~ctx:_ (meth : gir_method) =
   (* Check if the array type is a GList/GSList - these are always supported *)
   let is_glist_or_gslist (arr : gir_array) =
     match arr.array_name with
@@ -175,16 +140,10 @@ let method_has_unsupported_arrays ~ctx (meth : gir_method) =
   let is_hash_table (arr : gir_array) =
     match arr.array_name with Some "GLib.HashTable" -> true | _ -> false
   in
-  (* Check if element type is an interface *)
-  let has_interface_element (arr : gir_array) =
-    is_interface_type ~ctx arr.element_type
-  in
   let return_array_unsupported =
     match meth.return_type.array with
-    | Some arr when is_glist_or_gslist arr && has_interface_element arr ->
-        true (* Exclude interface element types *)
     | Some arr when is_glist_or_gslist arr ->
-        false (* GList/GSList with class/record elements are supported *)
+        false (* GList/GSList with any element type is supported *)
     | Some arr when is_hash_table arr -> false (* HashTable is not an array *)
     | Some arr -> array_lacks_length_info arr
     | None -> false
@@ -192,10 +151,6 @@ let method_has_unsupported_arrays ~ctx (meth : gir_method) =
   let param_array_unsupported =
     List.exists meth.parameters ~f:(fun (p : gir_param) ->
         match p.param_type.array with
-        | Some arr
-          when p.direction = In && is_glist_or_gslist arr
-               && has_interface_element arr ->
-            true (* Exclude interface element types *)
         | Some arr when p.direction = In && is_glist_or_gslist arr ->
             false (* GList/GSList params are supported *)
         | Some arr when p.direction = In && is_hash_table arr ->
@@ -238,22 +193,14 @@ let should_skip_method_binding ~ctx (meth : gir_method) =
   let has_unsupported_out_arrays = method_has_unsupported_out_arrays meth in
   (* Check for arrays (params or return) missing length info for C generation *)
   let has_unsupported_arrays = method_has_unsupported_arrays ~ctx meth in
-  (* Check for GList/GSList with interface element types *)
-  let has_list_with_interface_element =
-    list_has_interface_element ~ctx meth.return_type
-    || List.exists meth.parameters ~f:(fun p ->
-        list_has_interface_element ~ctx p.param_type)
-  in
-
   Logs.debug (fun m ->
-      m "should_skip_method_name: %s -> %b %b %b %b %b %b\n"
+      m "should_skip_method_name: %s -> %b %b %b %b %b\n"
         meth.c_identifier is_variadic has_unknown_type
         is_not_introspectable has_unsupported_out_arrays
-        has_unsupported_arrays has_list_with_interface_element);
+        has_unsupported_arrays);
 
   is_variadic || has_unknown_type || is_not_introspectable
   || has_unsupported_out_arrays || has_unsupported_arrays
-  || has_list_with_interface_element
 
 let constructor_has_varargs (ctor : gir_constructor) =
   List.exists ctor.ctor_parameters ~f:(fun p -> p.varargs)
@@ -261,23 +208,16 @@ let constructor_has_varargs (ctor : gir_constructor) =
 (* Check if a constructor should be generated based on multiple criteria:
    - Not throwing GError
    - No varargs
-   - No unknown parameter types
-   - No GList/GSList with interface element types *)
+   - No unknown parameter types *)
 let should_generate_constructor ~ctx (ctor : gir_constructor) =
   let has_unknown_type =
     Exclude_list.should_skip_constructor
       ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx)
       ~enums:ctx.enums ~bitfields:ctx.bitfields ctor
   in
-  (* Check for GList/GSList with interface element types in parameters *)
-  let has_list_with_interface_element =
-    List.exists ctor.ctor_parameters ~f:(fun p ->
-        list_has_interface_element ~ctx p.param_type)
-  in
   ctor.ctor_introspectable
   && (not (constructor_has_varargs ctor))
-  && (not has_unknown_type)
-  && not has_list_with_interface_element
+  && not has_unknown_type
 
 (* Check if a record name ends with "Private" - these are typically internal
    GObject private data structures that don't appear in public headers *)

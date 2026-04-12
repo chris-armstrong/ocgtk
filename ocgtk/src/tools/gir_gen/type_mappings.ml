@@ -293,7 +293,8 @@ let lookup_interface interfaces lookup_str =
   List.find_opt
     ~f:(fun (iface : Types.gir_interface) ->
       let normalized_name = Utils.normalize_class_name iface.interface_name in
-      String.equal iface.c_type normalized_lookup
+      String.equal iface.interface_name normalized_lookup
+      || String.equal iface.c_type normalized_lookup
       || String.equal (iface.c_type ^ "*") lookup_str
       || String.equal ("Gtk" ^ normalized_name) normalized_lookup
       || String.equal ("Gtk" ^ normalized_name ^ "*") lookup_str)

@@ -85,32 +85,30 @@ module SCC = struct
     List.rev !sccs
 end
 
+(* Check if a name is a same-namespace entity *)
+let is_same_ns_entity (ctx: generation_context) name : bool =
+  List.exists ~f:(fun cls -> cls.class_name = name) ctx.classes
+  || List.exists ~f:(fun intf -> intf.interface_name = name) ctx.interfaces
+  || List.exists ~f:(fun rec_ -> rec_.record_name = name) ctx.records
+
 (* Dependency extraction from types *)
 let extract_dependencies_from_type (ctx: generation_context) (gir_type: gir_type) : string list =
   let type_name = gir_type.name in
 
-  (* Check if it's a class *)
-  let class_deps =
-    if List.exists ~f:(fun cls -> cls.class_name = type_name) ctx.classes then
-      [type_name]
-    else []
+  (* For GList/GSList, also extract the element type as a dependency *)
+  let list_elem_deps =
+    match gir_type.array with
+    | Some arr when (type_name = "GLib.List" || type_name = "GLib.SList") ->
+        let elem_name = arr.element_type.name in
+        if is_same_ns_entity ctx elem_name then [elem_name] else []
+    | _ -> []
   in
 
-  (* Check if it's an interface *)
-  let interface_deps =
-    if List.exists ~f:(fun intf -> intf.interface_name = type_name) ctx.interfaces then
-      [type_name]
-    else []
+  let direct_deps =
+    if is_same_ns_entity ctx type_name then [type_name] else []
   in
 
-  (* Check if it's a record *)
-  let record_deps =
-    if List.exists ~f:(fun rec_ -> rec_.record_name = type_name) ctx.records then
-      [type_name]
-    else []
-  in
-
-  class_deps @ interface_deps @ record_deps
+  direct_deps @ list_elem_deps
 
 (* Extract all dependencies from parameters *)
 let extract_param_dependencies (ctx: generation_context) (params: gir_param list) : string list =

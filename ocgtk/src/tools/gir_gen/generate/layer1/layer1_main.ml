@@ -41,8 +41,13 @@ let generate_properties_section ~ctx ~class_name ~methods ~properties buf =
 
 let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ~base_type ?c_symbol_prefix
-    ?(is_record = false) buf =
+    ?(is_record = false) ?from_gobject_c_name buf =
   generate_type_declaration ~output_mode ~is_record ~base_type buf;
+  (match from_gobject_c_name with
+  | Some c_name ->
+      bprintf buf "external from_gobject : 'a Gobject.obj -> t = \"%s\"\n\n"
+        c_name
+  | None -> ());
   generate_constructors_section ~ctx ~class_name ~constructors buf;
   generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix ~is_record
     ~methods buf;
@@ -50,7 +55,7 @@ let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
 
 let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
     ~parent_chain ~constructors ~methods ~properties ?c_symbol_prefix
-    ?record_base_type ?(is_record = false) () =
+    ?record_base_type ?(is_record = false) ?from_gobject_c_name () =
   let buf = Buffer.create 1024 in
 
   let class_type_name, base_type =
@@ -66,7 +71,7 @@ let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
   | None -> ());
   generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ?c_symbol_prefix ~base_type ~is_record
-    buf;
+    ?from_gobject_c_name buf;
   Buffer.contents buf
 
 (** Format module declaration (module rec X | and X) *)
@@ -75,7 +80,7 @@ let format_module_declaration buf module_name is_start =
   else bprintf buf "\nand %s\n" module_name
 
 (** Generate module signature for a single entity *)
-let generate_module_signature ~ctx ~entity ~base_type buf =
+let generate_module_signature ~ctx ~entity ~base_type ?from_gobject_c_name buf =
   let signature_contents =
     let inner_buf = Buffer.create 1024 in
     generate_ml_interface_internal ~ctx ~output_mode:Layer1_helpers.Interface
@@ -83,13 +88,15 @@ let generate_module_signature ~ctx ~entity ~base_type buf =
       ~constructors:
         (if List.length entity.constructors > 0 then Some entity.constructors
          else None)
-      ~methods:entity.methods ~properties:entity.properties ~base_type inner_buf;
+      ~methods:entity.methods ~properties:entity.properties ~base_type
+      ?from_gobject_c_name inner_buf;
     Buffer.contents inner_buf
   in
   Layer1_helpers.print_indent signature_contents buf
 
 (** Generate module implementation for a single entity *)
-let generate_module_implementation ~ctx ~output_mode ~entity ~base_type buf =
+let generate_module_implementation ~ctx ~output_mode ~entity ~base_type
+    ?from_gobject_c_name buf =
   let single_content =
     let inner_buf = Buffer.create 1024 in
     generate_ml_interface_internal ~ctx ~output_mode ~class_name:entity.name
@@ -97,14 +104,15 @@ let generate_module_implementation ~ctx ~output_mode ~entity ~base_type buf =
       ~constructors:
         (if List.length entity.constructors > 0 then Some entity.constructors
          else None)
-      ~methods:entity.methods ~properties:entity.properties inner_buf;
+      ~methods:entity.methods ~properties:entity.properties
+      ?from_gobject_c_name inner_buf;
     Buffer.contents inner_buf
   in
   Layer1_helpers.print_indent single_content buf
 
 (** Generate a single combined module entity *)
 let generate_combined_module_entity ~ctx ~output_mode ~entity
-    ~parent_chain_for_entity ~index buf =
+    ~parent_chain_for_entity ~index ~from_gobject_c_name_for_entity buf =
   let parent_chain = parent_chain_for_entity entity.name in
   let class_name = entity.name in
   let _, base_type =
@@ -118,24 +126,27 @@ let generate_combined_module_entity ~ctx ~output_mode ~entity
     | Layer1_helpers.Interface -> false
   in
   let is_start = index = 0 in
+  let from_gobject_c_name = from_gobject_c_name_for_entity entity in
 
   format_module_declaration buf module_name is_start;
 
   if is_impl then begin
     bprintf buf " : sig\n";
-    generate_module_signature ~ctx ~entity ~base_type buf;
+    generate_module_signature ~ctx ~entity ~base_type ?from_gobject_c_name buf;
     bprintf buf "end = struct\n"
   end
   else begin
     bprintf buf " : sig\n"
   end;
 
-  generate_module_implementation ~ctx ~output_mode ~entity ~base_type buf;
+  generate_module_implementation ~ctx ~output_mode ~entity ~base_type
+    ?from_gobject_c_name buf;
   bprintf buf "end\n"
 
 (* Generate combined modules for cyclic dependencies *)
 let generate_combined_ml_modules ~ctx ~output_mode ~entities
-    ~parent_chain_for_entity () =
+    ~parent_chain_for_entity
+    ?(from_gobject_c_name_for_entity = fun _ -> None) () =
   let buf = Buffer.create 4096 in
 
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
@@ -148,7 +159,7 @@ let generate_combined_ml_modules ~ctx ~output_mode ~entities
   List.iteri
     ~f:(fun i entity ->
       generate_combined_module_entity ~ctx ~output_mode ~entity
-        ~parent_chain_for_entity ~index:i buf)
+        ~parent_chain_for_entity ~index:i ~from_gobject_c_name_for_entity buf)
     sorted_entities;
 
   Buffer.contents buf

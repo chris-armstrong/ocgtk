@@ -48,4 +48,7 @@ let () =
       ("Override E2E", Test_override_e2e.test_suite);
       ("Override Integration", Test_override_integration.test_suite);
       ("Enum Member Version Guards", Test_enum_member_version.test_suite);
+      ("Interface Parsing", Test_interface_parsing.test_suite);
+      ("From GObject Generation", Test_from_gobject_gen.test_suite);
+      ("Interface Inheritance (Phase 4)", Test_interface_inheritance.test_suite);
     ]
