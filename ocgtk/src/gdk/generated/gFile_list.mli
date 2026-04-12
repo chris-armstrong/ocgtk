@@ -1,5 +1,5 @@
 class type file_list_t = object
-    method get_files : unit -> Ocgtk_gio.Gio.Wrappers.File.t list
+    method get_files : unit -> Ocgtk_gio.Gio.File.file_t list
     method as_file_list : File_list.t
 end
 

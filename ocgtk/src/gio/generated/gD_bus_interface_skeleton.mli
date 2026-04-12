@@ -4,7 +4,7 @@ class type d_bus_interface_skeleton_t = object
     method export : GD_bus_connection.d_bus_connection_t -> string -> (bool, GError.t) result
     method flush : unit -> unit
     method get_connection : unit -> GD_bus_connection.d_bus_connection_t option
-    method get_connections : unit -> D_bus_connection.t list
+    method get_connections : unit -> GD_bus_connection.d_bus_connection_t list
     method get_flags : unit -> Gio_enums.dbusinterfaceskeletonflags
     method get_object_path : unit -> string option
     method get_vtable : unit -> D_bus_interface_v_table.t

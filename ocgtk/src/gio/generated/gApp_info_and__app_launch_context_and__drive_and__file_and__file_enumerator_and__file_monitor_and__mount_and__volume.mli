@@ -13,7 +13,7 @@ class type app_info_t = object
     method get_id : unit -> string option
     method get_name : unit -> string
     method get_supported_types : unit -> string array
-    method launch : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t list option -> app_launch_context_t option -> (bool, GError.t) result
+    method launch : file_t list option -> app_launch_context_t option -> (bool, GError.t) result
     method launch_uris : string list option -> app_launch_context_t option -> (bool, GError.t) result
     method remove_supports_type : string -> (bool, GError.t) result
     method set_as_default_for_extension : string -> (bool, GError.t) result
@@ -48,7 +48,7 @@ and drive_t = object
     method get_sort_key : unit -> string option
     method get_start_stop_type : unit -> Gio_enums.drivestartstoptype
     method get_symbolic_icon : unit -> GIcon.icon_t
-    method get_volumes : unit -> App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.Volume.t list
+    method get_volumes : unit -> volume_t list
     method has_media : unit -> bool
     method has_volumes : unit -> bool
     method is_media_check_automatic : unit -> bool

@@ -131,7 +131,7 @@ and widget_t = object
     method is_sensitive : unit -> bool
     method is_visible : unit -> bool
     method keynav_failed : Gtk_enums.directiontype -> bool
-    method list_mnemonic_labels : unit -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t list
+    method list_mnemonic_labels : unit -> widget_t list
     method map : unit -> unit
     method mnemonic_activate : bool -> bool
     method observe_children : unit -> Ocgtk_gio.Gio.List_model.list_model_t

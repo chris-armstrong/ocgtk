@@ -11,7 +11,7 @@ class type flow_box_t = object
     method get_max_children_per_line : unit -> int
     method get_min_children_per_line : unit -> int
     method get_row_spacing : unit -> int
-    method get_selected_children : unit -> Flow_box_child.t list
+    method get_selected_children : unit -> GFlow_box_child.flow_box_child_t list
     method get_selection_mode : unit -> Gtk_enums.selectionmode
     method insert : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int -> unit
     method invalidate_filter : unit -> unit

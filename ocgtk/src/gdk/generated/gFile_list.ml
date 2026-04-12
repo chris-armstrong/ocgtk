@@ -1,14 +1,14 @@
 class type file_list_t = object
-    method get_files : unit -> Ocgtk_gio.Gio.Wrappers.File.t list
+    method get_files : unit -> Ocgtk_gio.Gio.File.file_t list
     method as_file_list : File_list.t
 end
 
 (* High-level class for FileList *)
 class file_list (obj : File_list.t) : file_list_t = object (self)
 
-  method get_files : unit -> Ocgtk_gio.Gio.Wrappers.File.t list =
+  method get_files : unit -> Ocgtk_gio.Gio.File.file_t list =
     fun () ->
-      (File_list.get_files obj)
+      (List.map (fun ret -> new Ocgtk_gio.Gio.File.file ret))(File_list.get_files obj)
 
     method as_file_list = obj
 end

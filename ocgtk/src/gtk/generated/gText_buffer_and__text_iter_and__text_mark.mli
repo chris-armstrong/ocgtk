@@ -118,13 +118,13 @@ and text_iter_t = object
     method get_line : unit -> int
     method get_line_index : unit -> int
     method get_line_offset : unit -> int
-    method get_marks : unit -> Text_buffer_and__text_iter_and__text_mark.Text_mark.t list
+    method get_marks : unit -> text_mark_t list
     method get_offset : unit -> int
     method get_paintable : unit -> Ocgtk_gdk.Gdk.Paintable.paintable_t option
     method get_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
-    method get_tags : unit -> Text_tag.t list
+    method get_tags : unit -> GText_tag.text_tag_t list
     method get_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
-    method get_toggled_tags : bool -> Text_tag.t list
+    method get_toggled_tags : bool -> GText_tag.text_tag_t list
     method get_visible_line_index : unit -> int
     method get_visible_line_offset : unit -> int
     method get_visible_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
