@@ -29,7 +29,6 @@ CAMLparam1(self);
 CAMLlocal3(result, item, cell);
     GList* c_result = g_volume_monitor_get_volumes(GVolumeMonitor_val(self));
 Val_GList_with(c_result, result, item, cell, Val_GVolume((gpointer)_tmp->data));
-    g_list_foreach(c_result, (GFunc)g_object_unref, NULL);
     g_list_free(c_result);
     CAMLreturn(result);
 }
@@ -49,7 +48,6 @@ CAMLparam1(self);
 CAMLlocal3(result, item, cell);
     GList* c_result = g_volume_monitor_get_mounts(GVolumeMonitor_val(self));
 Val_GList_with(c_result, result, item, cell, Val_GMount((gpointer)_tmp->data));
-    g_list_foreach(c_result, (GFunc)g_object_unref, NULL);
     g_list_free(c_result);
     CAMLreturn(result);
 }
@@ -69,7 +67,6 @@ CAMLparam1(self);
 CAMLlocal3(result, item, cell);
     GList* c_result = g_volume_monitor_get_connected_drives(GVolumeMonitor_val(self));
 Val_GList_with(c_result, result, item, cell, Val_GDrive((gpointer)_tmp->data));
-    g_list_foreach(c_result, (GFunc)g_object_unref, NULL);
     g_list_free(c_result);
     CAMLreturn(result);
 }

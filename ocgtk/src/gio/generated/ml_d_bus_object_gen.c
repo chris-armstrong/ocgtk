@@ -52,7 +52,6 @@ CAMLparam1(self);
 CAMLlocal3(result, item, cell);
     GList* c_result = g_dbus_object_get_interfaces(GDBusObject_val(self));
 Val_GList_with(c_result, result, item, cell, Val_GDBusInterface((gpointer)_tmp->data));
-    g_list_foreach(c_result, (GFunc)g_object_unref, NULL);
     g_list_free(c_result);
     CAMLreturn(result);
 }

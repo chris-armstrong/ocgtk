@@ -137,7 +137,6 @@ CAMLparam1(self);
 CAMLlocal3(result, item, cell);
     GList* c_result = g_drive_get_volumes(GDrive_val(self));
 Val_GList_with(c_result, result, item, cell, Val_GVolume((gpointer)_tmp->data));
-    g_list_foreach(c_result, (GFunc)g_object_unref, NULL);
     g_list_free(c_result);
     CAMLreturn(result);
 }
