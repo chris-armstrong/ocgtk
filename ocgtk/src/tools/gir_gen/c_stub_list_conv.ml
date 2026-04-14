@@ -60,7 +60,7 @@ let element_converter_name ~(ctx : generation_context) (elem_type : gir_type) : 
     - TransferContainer: Caller owns the list, elements still owned by original
     - TransferFull: Caller owns both list and elements (must unref GObject elements)
     - TransferFloating: Like Full, but used for floating references *)
-let generate_list_cleanup ~(ctx : generation_context) ~(kind : list_kind) ~var ~(xfer : transfer_ownership) ~(elem_type : gir_type) =
+let generate_list_cleanup ~ctx:(_ctx : generation_context) ~(kind : list_kind) ~var ~(xfer : transfer_ownership) ~elem_type:(_elem_type : gir_type) =
   let free_func =
     match kind with
     | `GList -> "g_list_free"
@@ -71,19 +71,12 @@ let generate_list_cleanup ~(ctx : generation_context) ~(kind : list_kind) ~var ~
       (* Just free the list nodes, not the data *)
       sprintf "%s(%s);" free_func var
   | TransferFull | TransferFloating ->
-      (* Need to unref GObject elements (classes and interfaces) and free the list *)
-      let is_gobject =
-        match Type_mappings.classify_type ~ctx elem_type with
-        | Type_mappings.Tk_Class | Type_mappings.Tk_Interface -> true
-        | _ -> false
-      in
-      if is_gobject then
-        sprintf
-          "%s(%s, (GFunc)g_object_unref, NULL);\n    %s(%s);"
-          (match kind with `GList -> "g_list_foreach" | `GSList -> "g_slist_foreach")
-          var free_func var
-      else
-        sprintf "%s(%s);" free_func var
+      (* For GObject elements, ownership transfers to the OCaml custom block's
+         finalizer (finalize_gobject calls g_object_unref). We must NOT also
+         call g_list_foreach(..., g_object_unref) here — that would double-unref
+         every element, causing a use-after-free when the finalizer later runs.
+         We only need to free the list nodes themselves. *)
+      sprintf "%s(%s);" free_func var
 
 (** Generate C code for converting a GList/GSList return value to OCaml list.
     
