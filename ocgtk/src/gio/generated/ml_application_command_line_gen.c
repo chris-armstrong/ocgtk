@@ -133,6 +133,27 @@ return Val_unit;
 
 #if GLIB_CHECK_VERSION(2,28,0)
 
+CAMLexport CAMLprim value ml_g_application_command_line_get_platform_data(value self)
+{
+CAMLparam1(self);
+
+GVariant* result = g_application_command_line_get_platform_data(GApplicationCommandLine_val(self));
+CAMLreturn(Val_option(result, Val_GVariant));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_application_command_line_get_platform_data(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ApplicationCommandLine requires GLib >= 2.28");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
+
 CAMLexport CAMLprim value ml_g_application_command_line_get_is_remote(value self)
 {
 CAMLparam1(self);

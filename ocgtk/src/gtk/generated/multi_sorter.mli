@@ -21,6 +21,9 @@ external append : t -> Sorter.t -> unit = "ml_gtk_multi_sorter_append"
 
 (* Properties *)
 
+(** Get property: item-type *)
+external get_item_type : t -> int = "ml_gtk_multi_sorter_get_item_type"
+
 (** Get property: n-items *)
 external get_n_items : t -> int = "ml_gtk_multi_sorter_get_n_items"
 

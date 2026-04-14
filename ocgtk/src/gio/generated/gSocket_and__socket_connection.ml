@@ -10,6 +10,7 @@ class type socket_t = object
     method close : unit -> (bool, GError.t) result
     method connect : GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_address_t -> GCancellable.cancellable_t option -> (bool, GError.t) result
     method connection_factory_create_connection : unit -> socket_connection_t
+    method get_available_bytes : unit -> int
     method get_blocking : unit -> bool
     method get_broadcast : unit -> bool
     method get_credentials : unit -> (GCredentials.credentials_t, GError.t) result
@@ -32,6 +33,8 @@ class type socket_t = object
     method leave_multicast_group : GInet_address.inet_address_t -> bool -> string option -> (bool, GError.t) result
     method leave_multicast_group_ssm : GInet_address.inet_address_t -> GInet_address.inet_address_t option -> string option -> (bool, GError.t) result
     method listen : unit -> (bool, GError.t) result
+    method receive_bytes : Gsize.t -> int64 -> GCancellable.cancellable_t option -> (Glib_bytes.t, GError.t) result
+    method send_message : GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_address_t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> GCancellable.cancellable_t option -> (int, GError.t) result
     method set_blocking : bool -> unit
     method set_broadcast : bool -> unit
     method set_keepalive : bool -> unit
@@ -50,6 +53,7 @@ end
 and socket_connection_t = object
     inherit GIo_stream.io_stream_t
     method connect : GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_address_t -> GCancellable.cancellable_t option -> (bool, GError.t) result
+    method connect_finish : GAsync_result.async_result_t -> (bool, GError.t) result
     method get_local_address : unit -> (GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_address_t, GError.t) result
     method get_remote_address : unit -> (GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_address_t, GError.t) result
     method get_socket : unit -> socket_t
@@ -89,6 +93,10 @@ class socket (obj : Socket_and__socket_connection.Socket.t) : socket_t = object 
   method connection_factory_create_connection : unit -> socket_connection_t =
     fun () ->
       new  socket_connection(Socket_and__socket_connection.Socket.connection_factory_create_connection obj)
+
+  method get_available_bytes : unit -> int =
+    fun () ->
+      (Socket_and__socket_connection.Socket.get_available_bytes obj)
 
   method get_blocking : unit -> bool =
     fun () ->
@@ -184,6 +192,17 @@ class socket (obj : Socket_and__socket_connection.Socket.t) : socket_t = object 
     fun () ->
       (Socket_and__socket_connection.Socket.listen obj)
 
+  method receive_bytes : Gsize.t -> int64 -> GCancellable.cancellable_t option -> (Glib_bytes.t, GError.t) result =
+    fun size timeout_us cancellable ->
+      let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
+      (Socket_and__socket_connection.Socket.receive_bytes obj size timeout_us cancellable)
+
+  method send_message : GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_address_t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> GCancellable.cancellable_t option -> (int, GError.t) result =
+    fun address vectors num_vectors messages num_messages flags cancellable ->
+      let address = Option.map (fun (c) -> c#as_socket_address) address in
+      let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
+      (Socket_and__socket_connection.Socket.send_message obj address vectors num_vectors messages num_messages flags cancellable)
+
   method set_blocking : bool -> unit =
     fun blocking ->
       (Socket_and__socket_connection.Socket.set_blocking obj blocking)
@@ -241,6 +260,11 @@ and socket_connection (obj : Socket_and__socket_connection.Socket_connection.t) 
       let address = address#as_socket_address in
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Socket_and__socket_connection.Socket_connection.connect obj address cancellable)
+
+  method connect_finish : GAsync_result.async_result_t -> (bool, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (Socket_and__socket_connection.Socket_connection.connect_finish obj result)
 
   method get_local_address : unit -> (GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_address_t, GError.t) result =
     fun () ->

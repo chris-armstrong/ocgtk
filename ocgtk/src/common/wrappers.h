@@ -23,6 +23,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#include <ocaml_integers.h>
 
 /* For value blocks containing copied C structs */
 #define MLPointer_val(val) \
@@ -188,6 +189,29 @@ CAMLexport const void* ext_of_val(const value val);
 #define Val_GType(t) (Val_long(t))
 
 /* ==================================================================== */
+/* Bounded integer types (private int representation)                   */
+/* ==================================================================== */
+
+/* Bounded integer types — all backed by OCaml int (private int representation).
+ * The cast on read (UInt16_val, etc.) handles sign/zero extension from OCaml's
+ * tagged int correctly. The cast on write (Val_uint16, etc.) ensures the value
+ * is stored with the correct bit pattern before tagging. */
+#define UInt8_val(v)           ((uint8_t)(Long_val(v)))
+#define Val_uint8(x)           (Val_long((uint8_t)(x)))
+#define Int8_val(v)            ((int8_t)(Long_val(v)))
+#define Val_int8(x)            (Val_long((int8_t)(x)))
+#define UInt16_val(v)          ((uint16_t)(Long_val(v)))
+#define Val_uint16(x)          (Val_long((uint16_t)(x)))
+#define Int16_val(v)           ((int16_t)(Long_val(v)))
+#define Val_int16(x)           (Val_long((int16_t)(x)))
+#define UInt32_val(v)          ((uint32_t)(Long_val(v)))
+#define Val_uint32(x)          (Val_long((uint32_t)(x)))
+#define Int32_val_bounded(v)   ((int32_t)(Long_val(v)))   /* avoids clash with caml Int32_val */
+#define Val_int32_bounded(x)   (Val_long((int32_t)(x)))
+#define Gsize_val(v)           ((gsize)(Long_val(v)))
+#define Val_gsize(x)           (Val_long((gsize)(x)))
+
+/* ==================================================================== */
 /* String Utilities */
 /* ==================================================================== */
 
@@ -325,6 +349,29 @@ value Val_GError(GError *error);
 
 CAMLprim GValue *GValue_val(value val);
 
+/* ==================================================================== */
+/* GVariant                                                             */
+/* ==================================================================== */
+
+/* Defined in ml_gvariant.c - wrap/unwrap GVariant with ref counting */
+CAMLexport value Val_GVariant(GVariant *variant);
+#define GVariant_val(val) (*((GVariant**)Data_custom_val(val)))
+
+/* ==================================================================== */
+/* GVariantType                                                         */
+/* ==================================================================== */
+
+/* Defined in ml_gvariant_type.c - wrap/unwrap GVariantType with copy/free */
+CAMLexport value Val_GVariantType(const GVariantType *type);
+#define GVariantType_val(val) (*((GVariantType**)Data_custom_val(val)))
+
+/* ==================================================================== */
+/* GBytes                                                                */
+/* ==================================================================== */
+
+/* Defined in ml_glib_bytes.c - wrap/unwrap GBytes with ref counting */
+CAMLexport value Val_GBytes(GBytes *bytes);
+#define GBytes_val(val) (*((GBytes**)Data_custom_val(val)))
 
 typedef gchar utf8;
 

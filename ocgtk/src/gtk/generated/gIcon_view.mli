@@ -40,6 +40,7 @@ class type icon_view_t = object
     method set_item_width : int -> unit
     method set_margin : int -> unit
     method set_markup_column : int -> unit
+    method set_model : GTree_model.tree_model_t option -> unit
     method set_pixbuf_column : int -> unit
     method set_reorderable : bool -> unit
     method set_row_spacing : int -> unit

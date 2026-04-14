@@ -128,6 +128,29 @@ const char* result = gtk_recent_info_get_mime_type(GtkRecentInfo_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_recent_info_get_groups(value self)
+{
+CAMLparam1(self);
+gsize out1;
+
+char** result = gtk_recent_info_get_groups(GtkRecentInfo_val(self), &out1);
+    int result_length = out1;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+    for (int i = 0; i < result_length; i++) {
+      g_free((gpointer)result[i]);
+    }
+    g_free(result);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, ml_result);
+    Store_field(ret, 1, Val_gsize(out1));
+    CAMLreturn(ret);
+}
+
 CAMLexport CAMLprim value ml_gtk_recent_info_get_gicon(value self)
 {
 CAMLparam1(self);
@@ -150,6 +173,29 @@ CAMLparam1(self);
 
 const char* result = gtk_recent_info_get_description(GtkRecentInfo_val(self));
 CAMLreturn(caml_copy_string(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_recent_info_get_applications(value self)
+{
+CAMLparam1(self);
+gsize out1;
+
+char** result = gtk_recent_info_get_applications(GtkRecentInfo_val(self), &out1);
+    int result_length = out1;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+    for (int i = 0; i < result_length; i++) {
+      g_free((gpointer)result[i]);
+    }
+    g_free(result);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, ml_result);
+    Store_field(ret, 1, Val_gsize(out1));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gtk_recent_info_get_age(value self)

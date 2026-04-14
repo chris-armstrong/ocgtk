@@ -13,6 +13,10 @@ class accessible_list (obj : Accessible_list.t) : accessible_list_t = object (se
     method as_accessible_list = obj
 end
 
+let new_from_array (accessibles : At_context_and__accessible.Accessible.t array) (n_accessibles : Gsize.t) : accessible_list_t =
+  let obj_ = Accessible_list.new_from_array accessibles n_accessibles in
+  new accessible_list obj_
+
 let new_from_list (list : At_context_and__accessible.Accessible.t list) : accessible_list_t =
   let obj_ = Accessible_list.new_from_list list in
   new accessible_list obj_

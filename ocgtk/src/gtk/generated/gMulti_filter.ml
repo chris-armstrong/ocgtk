@@ -4,6 +4,7 @@ class type multi_filter_t = object
     inherit GBuildable.buildable_t
     method append : GFilter.filter_t -> unit
     method remove : int -> unit
+    method item_type : int
     method n_items : int
     method as_multi_filter : Multi_filter.t
 end
@@ -22,6 +23,8 @@ class multi_filter (obj : Multi_filter.t) : multi_filter_t = object (self)
   method remove : int -> unit =
     fun position ->
       (Multi_filter.remove obj position)
+
+  method item_type = Multi_filter.get_item_type obj
 
   method n_items = Multi_filter.get_n_items obj
 

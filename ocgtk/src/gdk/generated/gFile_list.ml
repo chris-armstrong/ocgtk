@@ -13,6 +13,10 @@ class file_list (obj : File_list.t) : file_list_t = object (self)
     method as_file_list = obj
 end
 
+let new_from_array (files : Ocgtk_gio.Gio.Wrappers.File.t array) (n_files : Gsize.t) : file_list_t =
+  let obj_ = File_list.new_from_array files n_files in
+  new file_list obj_
+
 let new_from_list (files : Ocgtk_gio.Gio.Wrappers.File.t list) : file_list_t =
   let obj_ = File_list.new_from_list files in
   new file_list obj_

@@ -16,6 +16,35 @@
 #include "gdk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gdk_content_provider_new_for_bytes(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+
+GdkContentProvider *obj = gdk_content_provider_new_for_bytes(String_val(arg1), GBytes_val(arg2));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GdkContentProvider(obj));
+}
+CAMLexport CAMLprim value ml_gdk_content_provider_new_union(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+    int arg1_length = 0;
+    GdkContentProvider** c_arg1 = NULL;
+    
+    if (Is_some(arg1)) {
+        value array = Some_val(arg1);
+        arg1_length = Wosize_val(array);
+        c_arg1 = (GdkContentProvider**)g_malloc(sizeof(GdkContentProvider*) * arg1_length);
+        for (int i = 0; i < arg1_length; i++) {
+          c_arg1[i] = GdkContentProvider_val(Field(array, i));
+        }
+    }
+
+GdkContentProvider *obj = gdk_content_provider_new_union(c_arg1, Gsize_val(arg2));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GdkContentProvider(obj));
+}
 CAMLexport CAMLprim value ml_gdk_content_provider_write_mime_type_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);

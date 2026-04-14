@@ -8,6 +8,7 @@ class type shortcut_controller_t = object
     method remove_shortcut : GShortcut.shortcut_t -> unit
     method set_mnemonics_modifiers : Ocgtk_gdk.Gdk.modifiertype -> unit
     method set_scope : Gtk_enums.shortcutscope -> unit
+    method item_type : int
     method mnemonic_modifiers : Ocgtk_gdk.Gdk.modifiertype
     method set_mnemonic_modifiers : Ocgtk_gdk.Gdk.modifiertype -> unit
     method n_items : int

@@ -6,6 +6,7 @@ class type bookmark_list_t = object
     method is_loading : unit -> bool
     method set_attributes : string option -> unit
     method set_io_priority : int -> unit
+    method item_type : int
     method loading : bool
     method n_items : int
     method as_bookmark_list : Bookmark_list.t
@@ -38,6 +39,8 @@ class bookmark_list (obj : Bookmark_list.t) : bookmark_list_t = object (self)
   method set_io_priority : int -> unit =
     fun io_priority ->
       (Bookmark_list.set_io_priority obj io_priority)
+
+  method item_type = Bookmark_list.get_item_type obj
 
   method loading = Bookmark_list.get_loading obj
 

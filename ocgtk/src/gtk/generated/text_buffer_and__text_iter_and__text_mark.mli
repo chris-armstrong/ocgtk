@@ -844,6 +844,17 @@ and Text_iter
   including the paragraph delimiters. *)
   external get_chars_in_line : t -> int = "ml_gtk_text_iter_get_chars_in_line"
 
+  (** The Unicode character at this iterator is returned.
+
+  Equivalent to operator* on a C++ iterator. If the element at
+  this iterator is a non-character element, such as an image
+  embedded in the buffer, the Unicode “unknown” character 0xFFFC
+  is returned. If invoked on the end iterator, zero is returned;
+  zero is not a valid Unicode character.
+
+  So you can write a loop which ends when this function returns 0. *)
+  external get_char : t -> int = "ml_gtk_text_iter_get_char"
+
   (** Returns the number of bytes in the line containing @iter,
   including the paragraph delimiters. *)
   external get_bytes_in_line : t -> int = "ml_gtk_text_iter_get_bytes_in_line"

@@ -20,6 +20,9 @@ external get_mime_type : t -> string = "ml_gdk_content_deserializer_get_mime_typ
 This is the stream that was passed to [func@Gdk.content_deserialize_async]. *)
 external get_input_stream : t -> Ocgtk_gio.Gio.Wrappers.Input_stream.t = "ml_gdk_content_deserializer_get_input_stream"
 
+(** Gets the `GType` to create an instance of. *)
+external get_gtype : t -> int = "ml_gdk_content_deserializer_get_gtype"
+
 (** Gets the cancellable for the current operation.
 
 This is the `GCancellable` that was passed to [func@Gdk.content_deserialize_async]. *)

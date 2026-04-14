@@ -13,6 +13,9 @@ external new_from_file_with_password : string -> string -> (t, GError.t) result 
 external new_from_files : string -> string -> (t, GError.t) result = "ml_g_tls_certificate_new_from_files"
 
 (** Create a new TlsCertificate *)
+external new_from_pem : string -> int -> (t, GError.t) result = "ml_g_tls_certificate_new_from_pem"
+
+(** Create a new TlsCertificate *)
 external new_from_pkcs11_uris : string -> string option -> (t, GError.t) result = "ml_g_tls_certificate_new_from_pkcs11_uris"
 
 (* Methods *)

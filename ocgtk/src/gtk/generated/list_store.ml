@@ -3,10 +3,23 @@
 
 type t = [`list_store | `object_] Gobject.obj
 
+(** Create a new ListStore *)
+external newv : int -> int array -> t = "ml_gtk_list_store_newv"
+
 (* Methods *)
 (** Swaps @a and @b in @store. Note that this function only works with
 unsorted stores. *)
 external swap : t -> Tree_iter.t -> Tree_iter.t -> unit = "ml_gtk_list_store_swap"
+
+(** Sets the types of the columns of a list store.
+
+This function is meant primarily for objects that inherit
+from `GtkListStore`, and should only be used when constructing
+a new instance.
+
+This function cannot be called after a row has been added, or
+a method on the `GtkTreeModel` interface is called. *)
+external set_column_types : t -> int -> int array -> unit = "ml_gtk_list_store_set_column_types"
 
 (** Removes the given row from the list store.  After being removed,
 @iter is set to be the next valid row, or invalidated if it pointed

@@ -3,6 +3,9 @@ class type property_action_t = object
     method enabled : bool
     method invert_boolean : bool
     method name : string
+    method parameter_type : Gvariant_type.t
+    method state : Gvariant.t
+    method state_type : Gvariant_type.t
     method as_property_action : Property_action.t
 end
 

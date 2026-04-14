@@ -427,6 +427,15 @@ and Window
   as relevant. *)
   external set_application : t -> Application.t option -> unit = "ml_gtk_window_set_application"
 
+  (** Presents a window to the user in response to an user interaction.
+
+  See [method@Gtk.Window.present] for more details.
+
+  The timestamp should be gathered when the window was requested
+  to be shown (when clicking a link for example), rather than once
+  the window is ready to be shown. *)
+  external present_with_time : t -> UInt32.t -> unit = "ml_gtk_window_present_with_time"
+
   (** Presents a window to the user.
 
   This may mean raising the window in the stacking order,

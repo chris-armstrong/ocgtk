@@ -75,9 +75,11 @@ and tree_view_t = object
     method set_hover_expand : bool -> unit
     method set_hover_selection : bool -> unit
     method set_level_indentation : int -> unit
+    method set_model : GTree_model.tree_model_t option -> unit
     method set_reorderable : bool -> unit
     method set_rubber_banding : bool -> unit
     method set_search_column : int -> unit
+    method set_search_entry : GEditable.editable_t option -> unit
     method set_show_expanders : bool -> unit
     method set_tooltip_cell : GTooltip.tooltip_t -> Tree_path.t option -> GTree_view_column.tree_view_column_t option -> GCell_renderer.cell_renderer_t option -> unit
     method set_tooltip_column : int -> unit

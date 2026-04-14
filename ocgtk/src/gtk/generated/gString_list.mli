@@ -6,6 +6,7 @@ class type string_list_t = object
     method remove : int -> unit
     method splice : int -> int -> string array option -> unit
     method take : string -> unit
+    method item_type : int
     method n_items : int
     method as_string_list : String_list.t
 end

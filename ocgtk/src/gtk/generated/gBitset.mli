@@ -10,6 +10,8 @@ class type bitset_t = object
     method get_maximum : unit -> int
     method get_minimum : unit -> int
     method get_nth : int -> int
+    method get_size : unit -> UInt64.t
+    method get_size_in_range : int -> int -> UInt64.t
     method intersect : Bitset.t -> unit
     method is_empty : unit -> bool
     method ref : unit -> Bitset.t

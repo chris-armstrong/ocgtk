@@ -5,6 +5,7 @@ class type tree_view_column_t = object
     inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
     inherit Gtree_view_column_signals.tree_view_column_signals
     method cell_is_visible : unit -> bool
+    method cell_set_cell_data : GTree_model.tree_model_t -> Tree_iter.t -> bool -> bool -> unit
     method clicked : unit -> unit
     method focus_cell : GCell_renderer.cell_renderer_t -> unit
     method get_alignment : unit -> float
@@ -57,6 +58,11 @@ class tree_view_column (obj : Tree_view_column.t) : tree_view_column_t = object 
   method cell_is_visible : unit -> bool =
     fun () ->
       (Tree_view_column.cell_is_visible obj)
+
+  method cell_set_cell_data : GTree_model.tree_model_t -> Tree_iter.t -> bool -> bool -> unit =
+    fun tree_model iter is_expander is_expanded ->
+      let tree_model = tree_model#as_tree_model in
+      (Tree_view_column.cell_set_cell_data obj tree_model iter is_expander is_expanded)
 
   method clicked : unit -> unit =
     fun () ->

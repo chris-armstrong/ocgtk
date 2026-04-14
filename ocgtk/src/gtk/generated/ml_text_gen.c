@@ -99,6 +99,14 @@ gtk_text_set_max_length(GtkText_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_text_set_invisible_char(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_text_set_invisible_char(GtkText_val(self), Long_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_text_set_input_purpose(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -179,6 +187,14 @@ gboolean result = gtk_text_get_truncate_multiline(GtkText_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_text_get_text_length(value self)
+{
+CAMLparam1(self);
+
+guint16 result = gtk_text_get_text_length(GtkText_val(self));
+CAMLreturn(Val_uint16(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_text_get_tabs(value self)
 {
 CAMLparam1(self);
@@ -218,6 +234,14 @@ CAMLparam1(self);
 
 int result = gtk_text_get_max_length(GtkText_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_text_get_invisible_char(value self)
+{
+CAMLparam1(self);
+
+gunichar result = gtk_text_get_invisible_char(GtkText_val(self));
+CAMLreturn(Val_long(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_get_input_purpose(value self)
@@ -278,6 +302,34 @@ CAMLparam1(self);
 gboolean result = gtk_text_get_activates_default(GtkText_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#if GTK_CHECK_VERSION(4,4,0)
+
+CAMLexport CAMLprim value ml_gtk_text_compute_cursor_extents(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+graphene_rect_t out2;
+graphene_rect_t out3;
+
+gtk_text_compute_cursor_extents(GtkText_val(self), Gsize_val(arg1), &out2, &out3);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_graphene_rect_t(&out2));
+    Store_field(ret, 1, Val_graphene_rect_t(&out3));
+    CAMLreturn(ret);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_text_compute_cursor_extents(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Text requires GTK >= 4.4");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_text_get_im_module(value self)
 {

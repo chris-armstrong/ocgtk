@@ -283,6 +283,23 @@ GError *error = NULL;
 gboolean result = g_dtls_connection_close(GDtlsConnection_val(self), Option_val(arg1, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+
+CAMLexport CAMLprim value ml_g_dtls_connection_get_base_socket(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GDtlsConnection *obj = (GDtlsConnection *)GDtlsConnection_val(self);
+    GDatagramBased *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "base-socket");
+if (pspec == NULL) caml_failwith("ml_g_dtls_connection_get_base_socket: property 'base-socket' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "base-socket", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GDatagramBased(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
 CAMLexport CAMLprim value ml_gio_dtls_connection_from_gobject(value obj)
 {
     CAMLparam1(obj);
@@ -519,6 +536,15 @@ CAMLexport CAMLprim value ml_g_dtls_connection_shutdown_finish(value self, value
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
+caml_failwith("DtlsConnection requires GLib >= 2.48");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dtls_connection_get_base_socket(value self)
+{
+CAMLparam1(self);
+(void)self;
 caml_failwith("DtlsConnection requires GLib >= 2.48");
 return Val_unit;
 }

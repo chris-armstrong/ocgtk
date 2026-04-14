@@ -3,6 +3,9 @@
 
 type t = [`list_store | `object_] Gobject.obj
 
+(** Create a new ListStore *)
+external new_ : int -> t = "ml_g_list_store_new"
+
 (* Methods *)
 (** Changes @store by removing @n_removals items and adding @n_additions
 items to it. @additions must contain @n_additions items of type
@@ -56,6 +59,9 @@ efficiently. *)
 external append : t -> [`object_] Gobject.obj -> unit = "ml_g_list_store_append"
 
 (* Properties *)
+
+(** Get property: item-type *)
+external get_item_type : t -> int = "ml_g_list_store_get_item_type"
 
 (** Get property: n-items *)
 external get_n_items : t -> int = "ml_g_list_store_get_n_items"

@@ -371,7 +371,7 @@ type gir_repository = {
 }
 
 type cross_reference_type =
-  | Crt_Class of { parent : string option }
+  | Crt_Class of { parent : string option; implements : string list [@sexp.list] }
   | Crt_Interface
   | Crt_Record of { opaque : bool }
   | Crt_Enum

@@ -13,6 +13,7 @@ class type grid_view_t = object
     method set_factory : GList_item_factory.list_item_factory_t option -> unit
     method set_max_columns : int -> unit
     method set_min_columns : int -> unit
+    method set_model : GSelection_model.selection_model_t option -> unit
     method set_single_click_activate : bool -> unit
     method set_tab_behavior : Gtk_enums.listtabbehavior -> unit
     method as_grid_view : Grid_view.t

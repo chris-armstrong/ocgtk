@@ -1,8 +1,6 @@
 
 class type application_t = object
     inherit Ocgtk_gio.Gio.Application.application_t
-    inherit Ocgtk_gio.Gio.Action_group.action_group_t
-    inherit Ocgtk_gio.Gio.Action_map.action_map_t
     inherit Gapplication_signals.application_signals
     method add_window : window_t -> unit
     method get_accels_for_action : string -> string array
@@ -58,6 +56,7 @@ and window_t = object
     method maximize : unit -> unit
     method minimize : unit -> unit
     method present : unit -> unit
+    method present_with_time : UInt32.t -> unit
     method set_application : application_t option -> unit
     method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
     method set_decorated : bool -> unit

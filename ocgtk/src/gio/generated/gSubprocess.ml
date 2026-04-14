@@ -14,6 +14,8 @@ class type subprocess_t = object
     method send_signal : int -> unit
     method wait : GCancellable.cancellable_t option -> (bool, GError.t) result
     method wait_check : GCancellable.cancellable_t option -> (bool, GError.t) result
+    method wait_check_finish : GAsync_result.async_result_t -> (bool, GError.t) result
+    method wait_finish : GAsync_result.async_result_t -> (bool, GError.t) result
     method as_subprocess : Subprocess.t
 end
 
@@ -78,6 +80,16 @@ class subprocess (obj : Subprocess.t) : subprocess_t = object (self)
     fun cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (Subprocess.wait_check obj cancellable)
+
+  method wait_check_finish : GAsync_result.async_result_t -> (bool, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (Subprocess.wait_check_finish obj result)
+
+  method wait_finish : GAsync_result.async_result_t -> (bool, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      (Subprocess.wait_finish obj result)
 
     method as_subprocess = obj
 end

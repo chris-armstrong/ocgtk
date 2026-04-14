@@ -129,6 +129,9 @@ and Font_family
 
   (* Properties *)
 
+  (** Get property: item-type *)
+  external get_item_type : t -> int = "ml_pango_font_family_get_item_type"
+
   (** Get property: n-items *)
   external get_n_items : t -> int = "ml_pango_font_family_get_n_items"
 
@@ -183,6 +186,9 @@ end = struct
   external get_face : t -> string option -> Font_face.t option = "ml_pango_font_family_get_face"
 
   (* Properties *)
+
+  (** Get property: item-type *)
+  external get_item_type : t -> int = "ml_pango_font_family_get_item_type"
 
   (** Get property: n-items *)
   external get_n_items : t -> int = "ml_pango_font_family_get_n_items"

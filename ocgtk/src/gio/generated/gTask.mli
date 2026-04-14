@@ -8,8 +8,10 @@ class type task_t = object
     method get_return_on_cancel : unit -> bool
     method had_error : unit -> bool
     method propagate_boolean : unit -> (bool, GError.t) result
+    method propagate_int : unit -> (int, GError.t) result
     method return_boolean : bool -> unit
     method return_error_if_cancelled : unit -> bool
+    method return_int : int -> unit
     method set_check_cancellable : bool -> unit
     method set_name : string option -> unit
     method set_priority : int -> unit

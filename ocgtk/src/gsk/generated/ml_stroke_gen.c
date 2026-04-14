@@ -91,6 +91,26 @@ gsk_stroke_set_dash_offset(GskStroke_val(self), Double_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gsk_stroke_set_dash(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+    int arg1_length = 0;
+    float* c_arg1 = NULL;
+    
+    if (Is_some(arg1)) {
+        value array = Some_val(arg1);
+        arg1_length = Wosize_val(array);
+        c_arg1 = (float*)g_malloc(sizeof(float) * arg1_length);
+        for (int i = 0; i < arg1_length; i++) {
+          c_arg1[i] = Double_val(Field(array, i));
+        }
+    }
+
+gsk_stroke_set_dash(GskStroke_val(self), c_arg1, Gsize_val(arg2));
+    if (c_arg1) g_free(c_arg1);
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gsk_stroke_get_miter_limit(value self)
 {
 CAMLparam1(self);
@@ -129,6 +149,25 @@ CAMLparam1(self);
 
 float result = gsk_stroke_get_dash_offset(GskStroke_val(self));
 CAMLreturn(caml_copy_double(result));
+}
+
+CAMLexport CAMLprim value ml_gsk_stroke_get_dash(value self)
+{
+CAMLparam1(self);
+gsize out1;
+
+const float* result = gsk_stroke_get_dash(GskStroke_val(self), &out1);
+    int result_length = out1;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_double(result[i]));
+    }
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, ml_result);
+    Store_field(ret, 1, Val_gsize(out1));
+    CAMLreturn(ret);
 }
 
 CAMLexport CAMLprim value ml_gsk_stroke_free(value self)
@@ -177,6 +216,15 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gsk_stroke_get_dash(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_gsk_stroke_get_dash_offset(value self)
 {
 CAMLparam1(self);
@@ -217,6 +265,17 @@ CAMLexport CAMLprim value ml_gsk_stroke_get_miter_limit(value self)
 {
 CAMLparam1(self);
 (void)self;
+caml_failwith("Stroke requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gsk_stroke_set_dash(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
 caml_failwith("Stroke requires GTK >= 4.14");
 return Val_unit;
 }

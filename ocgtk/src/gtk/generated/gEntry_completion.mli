@@ -18,6 +18,7 @@ class type entry_completion_t = object
     method set_inline_completion : bool -> unit
     method set_inline_selection : bool -> unit
     method set_minimum_key_length : int -> unit
+    method set_model : GTree_model.tree_model_t option -> unit
     method set_popup_completion : bool -> unit
     method set_popup_set_width : bool -> unit
     method set_popup_single_match : bool -> unit

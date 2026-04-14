@@ -4,6 +4,7 @@ class type multi_selection_t = object
     inherit GSelection_model.selection_model_t
     method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
     method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
+    method item_type : int
     method n_items : int
     method as_multi_selection : Multi_selection.t
 end
@@ -22,6 +23,8 @@ class multi_selection (obj : Multi_selection.t) : multi_selection_t = object (se
     fun model ->
       let model = Option.map (fun (c) -> c#as_list_model) model in
       (Multi_selection.set_model obj model)
+
+  method item_type = Multi_selection.get_item_type obj
 
   method n_items = Multi_selection.get_n_items obj
 

@@ -3,11 +3,15 @@ class type pixbuf_t = object
     inherit Ocgtk_gio.Gio.Loadable_icon.loadable_icon_t
     method apply_embedded_orientation : unit -> pixbuf_t option
     method composite : pixbuf_t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> unit
+    method composite_color : pixbuf_t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> UInt32.t -> UInt32.t -> unit
+    method composite_color_simple : int -> int -> Gdkpixbuf_enums.interptype -> int -> int -> UInt32.t -> UInt32.t -> pixbuf_t option
     method copy : unit -> pixbuf_t option
     method copy_area : int -> int -> int -> int -> pixbuf_t -> int -> int -> unit
     method copy_options : pixbuf_t -> bool
+    method fill : UInt32.t -> unit
     method flip : bool -> pixbuf_t option
     method get_bits_per_sample : unit -> int
+    method get_byte_length : unit -> Gsize.t
     method get_colorspace : unit -> Gdkpixbuf_enums.colorspace
     method get_has_alpha : unit -> bool
     method get_height : unit -> int
@@ -16,6 +20,7 @@ class type pixbuf_t = object
     method get_rowstride : unit -> int
     method get_width : unit -> int
     method new_subpixbuf : int -> int -> int -> int -> pixbuf_t
+    method read_pixel_bytes : unit -> Glib_bytes.t
     method remove_option : string -> bool
     method rotate_simple : Gdkpixbuf_enums.pixbufrotation -> pixbuf_t option
     method saturate_and_pixelate : pixbuf_t -> float -> bool -> unit
@@ -24,6 +29,7 @@ class type pixbuf_t = object
     method scale : pixbuf_t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> unit
     method scale_simple : int -> int -> Gdkpixbuf_enums.interptype -> pixbuf_t option
     method set_option : string -> string -> bool
+    method pixel_bytes : Glib_bytes.t
     method as_pixbuf : Pixbuf.t
 end
 
@@ -41,6 +47,15 @@ class pixbuf (obj : Pixbuf.t) : pixbuf_t = object (self)
       let dest = dest#as_pixbuf in
       (Pixbuf.composite obj dest dest_x dest_y dest_width dest_height offset_x offset_y scale_x scale_y interp_type overall_alpha)
 
+  method composite_color : pixbuf_t -> int -> int -> int -> int -> float -> float -> float -> float -> Gdkpixbuf_enums.interptype -> int -> int -> int -> int -> UInt32.t -> UInt32.t -> unit =
+    fun dest dest_x dest_y dest_width dest_height offset_x offset_y scale_x scale_y interp_type overall_alpha check_x check_y check_size color1 color2 ->
+      let dest = dest#as_pixbuf in
+      (Pixbuf.composite_color obj dest dest_x dest_y dest_width dest_height offset_x offset_y scale_x scale_y interp_type overall_alpha check_x check_y check_size color1 color2)
+
+  method composite_color_simple : int -> int -> Gdkpixbuf_enums.interptype -> int -> int -> UInt32.t -> UInt32.t -> pixbuf_t option =
+    fun dest_width dest_height interp_type overall_alpha check_size color1 color2 ->
+      Option.map (fun ret -> new pixbuf ret) (Pixbuf.composite_color_simple obj dest_width dest_height interp_type overall_alpha check_size color1 color2)
+
   method copy : unit -> pixbuf_t option =
     fun () ->
       Option.map (fun ret -> new pixbuf ret) (Pixbuf.copy obj)
@@ -55,6 +70,10 @@ class pixbuf (obj : Pixbuf.t) : pixbuf_t = object (self)
       let dest_pixbuf = dest_pixbuf#as_pixbuf in
       (Pixbuf.copy_options obj dest_pixbuf)
 
+  method fill : UInt32.t -> unit =
+    fun pixel ->
+      (Pixbuf.fill obj pixel)
+
   method flip : bool -> pixbuf_t option =
     fun horizontal ->
       Option.map (fun ret -> new pixbuf ret) (Pixbuf.flip obj horizontal)
@@ -62,6 +81,10 @@ class pixbuf (obj : Pixbuf.t) : pixbuf_t = object (self)
   method get_bits_per_sample : unit -> int =
     fun () ->
       (Pixbuf.get_bits_per_sample obj)
+
+  method get_byte_length : unit -> Gsize.t =
+    fun () ->
+      (Pixbuf.get_byte_length obj)
 
   method get_colorspace : unit -> Gdkpixbuf_enums.colorspace =
     fun () ->
@@ -94,6 +117,10 @@ class pixbuf (obj : Pixbuf.t) : pixbuf_t = object (self)
   method new_subpixbuf : int -> int -> int -> int -> pixbuf_t =
     fun src_x src_y width height ->
       new  pixbuf(Pixbuf.new_subpixbuf obj src_x src_y width height)
+
+  method read_pixel_bytes : unit -> Glib_bytes.t =
+    fun () ->
+      (Pixbuf.read_pixel_bytes obj)
 
   method remove_option : string -> bool =
     fun key ->
@@ -131,11 +158,17 @@ class pixbuf (obj : Pixbuf.t) : pixbuf_t = object (self)
     fun key value ->
       (Pixbuf.set_option obj key value)
 
+  method pixel_bytes = Pixbuf.get_pixel_bytes obj
+
     method as_pixbuf = obj
 end
 
 let new_ (colorspace : Gdkpixbuf_enums.colorspace) (has_alpha : bool) (bits_per_sample : int) (width : int) (height : int) : pixbuf_t =
   let obj_ = Pixbuf.new_ colorspace has_alpha bits_per_sample width height in
+  new pixbuf obj_
+
+let new_from_bytes (data : Glib_bytes.t) (colorspace : Gdkpixbuf_enums.colorspace) (has_alpha : bool) (bits_per_sample : int) (width : int) (height : int) (rowstride : int) : pixbuf_t =
+  let obj_ = Pixbuf.new_from_bytes data colorspace has_alpha bits_per_sample width height rowstride in
   new pixbuf obj_
 
 let new_from_file (filename : string) : (pixbuf_t, GError.t) result =

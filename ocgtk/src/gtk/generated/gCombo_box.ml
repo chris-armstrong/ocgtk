@@ -24,6 +24,7 @@ class type combo_box_t = object
     method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
     method set_entry_text_column : int -> unit
     method set_id_column : int -> unit
+    method set_model : GTree_model.tree_model_t option -> unit
     method set_popup_fixed_width : bool -> unit
     method has_frame : bool
     method set_has_frame : bool -> unit
@@ -115,6 +116,11 @@ class combo_box (obj : Combo_box.t) : combo_box_t = object (self)
   method set_id_column : int -> unit =
     fun id_column ->
       (Combo_box.set_id_column obj id_column)
+
+  method set_model : GTree_model.tree_model_t option -> unit =
+    fun model ->
+      let model = Option.map (fun (c) -> c#as_tree_model) model in
+      (Combo_box.set_model obj model)
 
   method set_popup_fixed_width : bool -> unit =
     fun fixed ->

@@ -13,6 +13,9 @@ external new_with_mime_type : string -> (t, GError.t) result = "ml_gdk_pixbuf_lo
 external new_with_type : string -> (t, GError.t) result = "ml_gdk_pixbuf_loader_new_with_type"
 
 (* Methods *)
+(** Parses the next contents of the given image buffer. *)
+external write_bytes : t -> Glib_bytes.t -> (bool, GError.t) result = "ml_gdk_pixbuf_loader_write_bytes"
+
 (** Causes the image to be scaled while it is loaded.
 
 The desired image size can be determined relative to the original

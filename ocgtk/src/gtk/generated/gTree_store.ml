@@ -11,6 +11,7 @@ class type tree_store_t = object
     method move_after : Tree_iter.t -> Tree_iter.t option -> unit
     method move_before : Tree_iter.t -> Tree_iter.t option -> unit
     method remove : Tree_iter.t -> bool
+    method set_column_types : int -> int array -> unit
     method swap : Tree_iter.t -> Tree_iter.t -> unit
     method as_tree_store : Tree_store.t
 end
@@ -51,10 +52,18 @@ class tree_store (obj : Tree_store.t) : tree_store_t = object (self)
     fun iter ->
       (Tree_store.remove obj iter)
 
+  method set_column_types : int -> int array -> unit =
+    fun n_columns types ->
+      (Tree_store.set_column_types obj n_columns types)
+
   method swap : Tree_iter.t -> Tree_iter.t -> unit =
     fun a b ->
       (Tree_store.swap obj a b)
 
     method as_tree_store = obj
 end
+
+let newv (n_columns : int) (types : int array) : tree_store_t =
+  let obj_ = Tree_store.newv n_columns types in
+  new tree_store obj_
 

@@ -42,6 +42,7 @@ class type icon_view_t = object
     method set_item_width : int -> unit
     method set_margin : int -> unit
     method set_markup_column : int -> unit
+    method set_model : GTree_model.tree_model_t option -> unit
     method set_pixbuf_column : int -> unit
     method set_reorderable : bool -> unit
     method set_row_spacing : int -> unit
@@ -215,6 +216,11 @@ class icon_view (obj : Icon_view.t) : icon_view_t = object (self)
   method set_markup_column : int -> unit =
     fun column ->
       (Icon_view.set_markup_column obj column)
+
+  method set_model : GTree_model.tree_model_t option -> unit =
+    fun model ->
+      let model = Option.map (fun (c) -> c#as_tree_model) model in
+      (Icon_view.set_model obj model)
 
   method set_pixbuf_column : int -> unit =
     fun column ->

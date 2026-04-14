@@ -47,6 +47,46 @@ GdkFrameTimings* result = gdk_frame_timings_ref(GdkFrameTimings_val(self));
 CAMLreturn(Val_GdkFrameTimings(result));
 }
 
+CAMLexport CAMLprim value ml_gdk_frame_timings_get_refresh_interval(value self)
+{
+CAMLparam1(self);
+
+gint64 result = gdk_frame_timings_get_refresh_interval(GdkFrameTimings_val(self));
+CAMLreturn(caml_copy_int64(result));
+}
+
+CAMLexport CAMLprim value ml_gdk_frame_timings_get_presentation_time(value self)
+{
+CAMLparam1(self);
+
+gint64 result = gdk_frame_timings_get_presentation_time(GdkFrameTimings_val(self));
+CAMLreturn(caml_copy_int64(result));
+}
+
+CAMLexport CAMLprim value ml_gdk_frame_timings_get_predicted_presentation_time(value self)
+{
+CAMLparam1(self);
+
+gint64 result = gdk_frame_timings_get_predicted_presentation_time(GdkFrameTimings_val(self));
+CAMLreturn(caml_copy_int64(result));
+}
+
+CAMLexport CAMLprim value ml_gdk_frame_timings_get_frame_time(value self)
+{
+CAMLparam1(self);
+
+gint64 result = gdk_frame_timings_get_frame_time(GdkFrameTimings_val(self));
+CAMLreturn(caml_copy_int64(result));
+}
+
+CAMLexport CAMLprim value ml_gdk_frame_timings_get_frame_counter(value self)
+{
+CAMLparam1(self);
+
+gint64 result = gdk_frame_timings_get_frame_counter(GdkFrameTimings_val(self));
+CAMLreturn(caml_copy_int64(result));
+}
+
 CAMLexport CAMLprim value ml_gdk_frame_timings_get_complete(value self)
 {
 CAMLparam1(self);

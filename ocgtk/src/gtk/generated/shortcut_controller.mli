@@ -58,6 +58,9 @@ external add_shortcut : t -> Shortcut.t -> unit = "ml_gtk_shortcut_controller_ad
 
 (* Properties *)
 
+(** Get property: item-type *)
+external get_item_type : t -> int = "ml_gtk_shortcut_controller_get_item_type"
+
 (** Get property: mnemonic-modifiers *)
 external get_mnemonic_modifiers : t -> Ocgtk_gdk.Gdk.modifiertype = "ml_gtk_shortcut_controller_get_mnemonic_modifiers"
 

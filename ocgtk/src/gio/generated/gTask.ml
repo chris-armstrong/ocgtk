@@ -8,8 +8,10 @@ class type task_t = object
     method get_return_on_cancel : unit -> bool
     method had_error : unit -> bool
     method propagate_boolean : unit -> (bool, GError.t) result
+    method propagate_int : unit -> (int, GError.t) result
     method return_boolean : bool -> unit
     method return_error_if_cancelled : unit -> bool
+    method return_int : int -> unit
     method set_check_cancellable : bool -> unit
     method set_name : string option -> unit
     method set_priority : int -> unit
@@ -54,6 +56,10 @@ class task (obj : Task.t) : task_t = object (self)
     fun () ->
       (Task.propagate_boolean obj)
 
+  method propagate_int : unit -> (int, GError.t) result =
+    fun () ->
+      (Task.propagate_int obj)
+
   method return_boolean : bool -> unit =
     fun result ->
       (Task.return_boolean obj result)
@@ -61,6 +67,10 @@ class task (obj : Task.t) : task_t = object (self)
   method return_error_if_cancelled : unit -> bool =
     fun () ->
       (Task.return_error_if_cancelled obj)
+
+  method return_int : int -> unit =
+    fun result ->
+      (Task.return_int obj result)
 
   method set_check_cancellable : bool -> unit =
     fun check_cancellable ->

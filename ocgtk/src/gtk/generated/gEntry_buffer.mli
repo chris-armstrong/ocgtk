@@ -3,6 +3,7 @@ class type entry_buffer_t = object
     method delete_text : int -> int -> int
     method emit_deleted_text : int -> int -> unit
     method emit_inserted_text : int -> string -> int -> unit
+    method get_bytes : unit -> Gsize.t
     method get_length : unit -> int
     method get_max_length : unit -> int
     method get_text : unit -> string

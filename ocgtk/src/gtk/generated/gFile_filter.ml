@@ -8,6 +8,7 @@ class type file_filter_t = object
     method get_attributes : unit -> string array
     method get_name : unit -> string option
     method set_name : string option -> unit
+    method to_gvariant : unit -> Gvariant.t
     method as_file_filter : File_filter.t
 end
 
@@ -44,9 +45,17 @@ class file_filter (obj : File_filter.t) : file_filter_t = object (self)
     fun name ->
       (File_filter.set_name obj name)
 
+  method to_gvariant : unit -> Gvariant.t =
+    fun () ->
+      (File_filter.to_gvariant obj)
+
     method as_file_filter = obj
 end
 
 let new_ () : file_filter_t =
   new file_filter (File_filter.new_ ())
+
+let new_from_gvariant (variant : Gvariant.t) : file_filter_t =
+  let obj_ = File_filter.new_from_gvariant variant in
+  new file_filter obj_
 

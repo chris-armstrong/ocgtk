@@ -18,7 +18,7 @@ let create_context_with_cross_references ~namespace ~deps =
         let cr =
           {
             cr_name = "TestClass";
-            cr_type = Crt_Class { parent = None };
+            cr_type = Crt_Class { parent = None; implements = [] };
             cr_c_type = dep_ns ^ "TestClass";
           }
         in
@@ -165,14 +165,14 @@ let test_get_dependency_namespaces_extracts_unique_namespaces () =
   let cr1 =
     {
       cr_name = "Class1";
-      cr_type = Crt_Class { parent = None };
+      cr_type = Crt_Class { parent = None; implements = [] };
       cr_c_type = "GdkClass1";
     }
   in
   let cr2 =
     {
       cr_name = "Class2";
-      cr_type = Crt_Class { parent = None };
+      cr_type = Crt_Class { parent = None; implements = [] };
       cr_c_type = "GdkClass2";
     }
   in

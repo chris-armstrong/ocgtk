@@ -6,7 +6,9 @@ class type texture_t = object
     method get_height : unit -> int
     method get_width : unit -> int
     method save_to_png : string -> bool
+    method save_to_png_bytes : unit -> Glib_bytes.t
     method save_to_tiff : string -> bool
+    method save_to_tiff_bytes : unit -> Glib_bytes.t
     method as_texture : Texture.t
 end
 
@@ -32,9 +34,17 @@ class texture (obj : Texture.t) : texture_t = object (self)
     fun filename ->
       (Texture.save_to_png obj filename)
 
+  method save_to_png_bytes : unit -> Glib_bytes.t =
+    fun () ->
+      (Texture.save_to_png_bytes obj)
+
   method save_to_tiff : string -> bool =
     fun filename ->
       (Texture.save_to_tiff obj filename)
+
+  method save_to_tiff_bytes : unit -> Glib_bytes.t =
+    fun () ->
+      (Texture.save_to_tiff_bytes obj)
 
     method as_texture = obj
 end
@@ -43,6 +53,10 @@ let new_for_pixbuf (pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.Pixbuf.pixbuf_t) : textur
   let pixbuf = pixbuf#as_pixbuf in
   let obj_ = Texture.new_for_pixbuf pixbuf in
   new texture obj_
+
+let new_from_bytes (bytes : Glib_bytes.t) : (texture_t, GError.t) result =
+  let obj_ = Texture.new_from_bytes bytes in
+Result.map (fun obj_ ->  new texture obj_) obj_
 
 let new_from_file (file : Ocgtk_gio.Gio.File.file_t) : (texture_t, GError.t) result =
   let file = file#as_file in

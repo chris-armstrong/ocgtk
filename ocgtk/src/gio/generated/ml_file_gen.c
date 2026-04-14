@@ -180,12 +180,48 @@ gboolean result = g_file_set_attributes_from_info(GFile_val(self), GFileInfo_val
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+CAMLexport CAMLprim value ml_g_file_set_attribute_uint64(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+GError *error = NULL;
+
+gboolean result = g_file_set_attribute_uint64(GFile_val(self), String_val(arg1), Uint64_val(arg2), GioFileQueryInfoFlags_val(arg3), Option_val(arg4, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_file_set_attribute_uint32(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+GError *error = NULL;
+
+gboolean result = g_file_set_attribute_uint32(GFile_val(self), String_val(arg1), UInt32_val(arg2), GioFileQueryInfoFlags_val(arg3), Option_val(arg4, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_file_set_attribute_string(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 GError *error = NULL;
 
 gboolean result = g_file_set_attribute_string(GFile_val(self), String_val(arg1), String_val(arg2), GioFileQueryInfoFlags_val(arg3), Option_val(arg4, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_file_set_attribute_int64(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+GError *error = NULL;
+
+gboolean result = g_file_set_attribute_int64(GFile_val(self), String_val(arg1), Int64_val(arg2), GioFileQueryInfoFlags_val(arg3), Option_val(arg4, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_file_set_attribute_int32(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+GError *error = NULL;
+
+gboolean result = g_file_set_attribute_int32(GFile_val(self), String_val(arg1), Int32_val_bounded(arg2), GioFileQueryInfoFlags_val(arg3), Option_val(arg4, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
@@ -577,6 +613,38 @@ CAMLparam3(self, arg1, arg2);
 (void)arg1;
 (void)arg2;
 caml_failwith("File requires GLib >= 2.18");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,38,0)
+
+CAMLexport CAMLprim value ml_g_file_measure_disk_usage_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+guint64 out2;
+guint64 out3;
+guint64 out4;
+
+gboolean result = g_file_measure_disk_usage_finish(GFile_val(self), GAsyncResult_val(arg1), &out2, &out3, &out4, &error);
+CAMLlocal1(ret);
+    ret = caml_alloc(4, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, integers_copy_uint64(out2));
+    Store_field(ret, 2, integers_copy_uint64(out3));
+    Store_field(ret, 3, integers_copy_uint64(out4));
+    if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_file_measure_disk_usage_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("File requires GLib >= 2.38");
 return Val_unit;
 }
 #endif

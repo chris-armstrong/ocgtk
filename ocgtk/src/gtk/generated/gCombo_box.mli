@@ -22,6 +22,7 @@ class type combo_box_t = object
     method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
     method set_entry_text_column : int -> unit
     method set_id_column : int -> unit
+    method set_model : GTree_model.tree_model_t option -> unit
     method set_popup_fixed_width : bool -> unit
     method has_frame : bool
     method set_has_frame : bool -> unit

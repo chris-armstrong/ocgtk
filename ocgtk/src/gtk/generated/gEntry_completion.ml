@@ -20,6 +20,7 @@ class type entry_completion_t = object
     method set_inline_completion : bool -> unit
     method set_inline_selection : bool -> unit
     method set_minimum_key_length : int -> unit
+    method set_model : GTree_model.tree_model_t option -> unit
     method set_popup_completion : bool -> unit
     method set_popup_set_width : bool -> unit
     method set_popup_single_match : bool -> unit
@@ -97,6 +98,11 @@ class entry_completion (obj : Entry_completion.t) : entry_completion_t = object 
   method set_minimum_key_length : int -> unit =
     fun length ->
       (Entry_completion.set_minimum_key_length obj length)
+
+  method set_model : GTree_model.tree_model_t option -> unit =
+    fun model ->
+      let model = Option.map (fun (c) -> c#as_tree_model) model in
+      (Entry_completion.set_model obj model)
 
   method set_popup_completion : bool -> unit =
     fun popup_completion ->

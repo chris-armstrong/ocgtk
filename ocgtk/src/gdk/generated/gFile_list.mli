@@ -5,4 +5,5 @@ end
 
 class file_list : File_list.t -> file_list_t
 
+val new_from_array : Ocgtk_gio.Gio.Wrappers.File.t array -> Gsize.t -> file_list_t
 val new_from_list : Ocgtk_gio.Gio.Wrappers.File.t list -> file_list_t

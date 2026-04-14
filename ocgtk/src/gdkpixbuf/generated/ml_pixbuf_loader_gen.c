@@ -58,6 +58,29 @@ if (obj) g_object_ref_sink(obj);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GdkPixbufLoader(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+#if GDK_PIXBUF_CHECK_VERSION(2,30,0)
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_loader_write_bytes(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+gboolean result = gdk_pixbuf_loader_write_bytes(GdkPixbufLoader_val(self), GBytes_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_pixbuf_loader_write_bytes(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("PixbufLoader requires GdkPixbuf >= 2.30");
+return Val_unit;
+}
+#endif
+
 #if GDK_PIXBUF_CHECK_VERSION(2,2,0)
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_loader_set_size(value self, value arg1, value arg2)

@@ -26,6 +26,24 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkFileFilter(obj));
 }
+CAMLexport CAMLprim value ml_gtk_file_filter_new_from_gvariant(value arg1)
+{
+CAMLparam1(arg1);
+
+GtkFileFilter *obj = gtk_file_filter_new_from_gvariant(GVariant_val(arg1));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkFileFilter(obj));
+}
+CAMLexport CAMLprim value ml_gtk_file_filter_to_gvariant(value self)
+{
+CAMLparam1(self);
+
+GVariant* result = gtk_file_filter_to_gvariant(GtkFileFilter_val(self));
+if (result) g_variant_ref(result);
+CAMLreturn(Val_GVariant(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_file_filter_set_name(value self, value arg1)
 {
 CAMLparam2(self, arg1);

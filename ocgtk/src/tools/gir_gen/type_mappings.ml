@@ -244,6 +244,157 @@ let type_mappings : (string * Types.type_mapping) list =
         c_type = "GSList*";
         is_value_type_record = false;
       } );
+    (* GLib.Variant - Opaque boxed type with reference counting *)
+    ( "GLib.Variant",
+      {
+        ocaml_type = "Gvariant.t";
+        c_to_ml = "Val_GVariant";
+        ml_to_c = "GVariant_val";
+        layer2_class = None;
+        c_type = "GVariant*";
+        is_value_type_record = false;
+      } );
+    (* GLib.VariantType - Immutable type description for GVariant *)
+    ( "GLib.VariantType",
+      {
+        ocaml_type = "Gvariant_type.t";
+        c_to_ml = "Val_GVariantType";
+        ml_to_c = "GVariantType_val";
+        layer2_class = None;
+        c_type = "GVariantType*";
+        is_value_type_record = false;
+      } );
+    (* GLib.Bytes - Immutable reference-counted byte buffer *)
+    ( "GLib.Bytes",
+      {
+        ocaml_type = "Glib_bytes.t";
+        c_to_ml = "Val_GBytes";
+        ml_to_c = "GBytes_val";
+        layer2_class = None;
+        c_type = "GBytes*";
+        is_value_type_record = false;
+      } );
+    (* GLib/GObject primitive integer types — not generated from GIR, mapped to
+       standard OCaml C API converters. All c:type values match the GIR name
+       exactly so a single entry per type is sufficient.
+       Note: guint8 is intentionally omitted — it is used primarily as the
+       element type of byte-buffer arrays (gpointer/void* C type), which
+       require length-erasure infrastructure not yet implemented. *)
+    ( "gsize",
+      {
+        ocaml_type = "Gsize.t";
+        c_to_ml = "Val_gsize";
+        ml_to_c = "Gsize_val";
+        layer2_class = None;
+        c_type = "gsize";
+        is_value_type_record = false;
+      } );
+    ( "gssize",
+      {
+        ocaml_type = "int";
+        c_to_ml = "Val_long";
+        ml_to_c = "Long_val";
+        layer2_class = None;
+        c_type = "gssize";
+        is_value_type_record = false;
+      } );
+    (* GType is typedef gsize — macros Val_GType/GType_val already in wrappers.h *)
+    ( "GType",
+      {
+        ocaml_type = "int";
+        c_to_ml = "Val_GType";
+        ml_to_c = "GType_val";
+        layer2_class = None;
+        c_type = "GType";
+        is_value_type_record = false;
+      } );
+    ( "guint16",
+      {
+        ocaml_type = "UInt16.t";
+        c_to_ml = "Val_uint16";
+        ml_to_c = "UInt16_val";
+        layer2_class = None;
+        c_type = "guint16";
+        is_value_type_record = false;
+      } );
+    ( "gint16",
+      {
+        ocaml_type = "Int16.t";
+        c_to_ml = "Val_int16";
+        ml_to_c = "Int16_val";
+        layer2_class = None;
+        c_type = "gint16";
+        is_value_type_record = false;
+      } );
+    ( "gint32",
+      {
+        ocaml_type = "Int32.t";
+        c_to_ml = "Val_int32_bounded";
+        ml_to_c = "Int32_val_bounded";
+        layer2_class = None;
+        c_type = "gint32";
+        is_value_type_record = false;
+      } );
+    (* guint32 mapped to UInt32.t (bounded private int) — OCaml int is 63-bit on
+       64-bit platforms so it covers the full uint32 range without boxing *)
+    ( "guint32",
+      {
+        ocaml_type = "UInt32.t";
+        c_to_ml = "Val_uint32";
+        ml_to_c = "UInt32_val";
+        layer2_class = None;
+        c_type = "guint32";
+        is_value_type_record = false;
+      } );
+    ( "gint64",
+      {
+        ocaml_type = "int64";
+        c_to_ml = "caml_copy_int64";
+        ml_to_c = "Int64_val";
+        layer2_class = None;
+        c_type = "gint64";
+        is_value_type_record = false;
+      } );
+    (* guint64 uses the integers library (already a dependency via GVariant).
+       wrappers.h includes <ocaml_integers.h> to expose Uint64_val/integers_copy_uint64.
+       Exposed as UInt64.t (via src/common/uInt64.ml) for consistency with the other
+       bounded integer modules — the underlying type is still Unsigned.UInt64.t. *)
+    ( "guint64",
+      {
+        ocaml_type = "UInt64.t";
+        c_to_ml = "integers_copy_uint64";
+        ml_to_c = "Uint64_val";
+        layer2_class = None;
+        c_type = "guint64";
+        is_value_type_record = false;
+      } );
+    ( "gulong",
+      {
+        ocaml_type = "int";
+        c_to_ml = "Val_long";
+        ml_to_c = "Long_val";
+        layer2_class = None;
+        c_type = "gulong";
+        is_value_type_record = false;
+      } );
+    ( "gunichar",
+      {
+        ocaml_type = "int";
+        c_to_ml = "Val_long";
+        ml_to_c = "Long_val";
+        layer2_class = None;
+        c_type = "gunichar";
+        is_value_type_record = false;
+      } );
+    ( "gchar",
+      {
+        ocaml_type = "int";
+        c_to_ml = "Val_int";
+        ml_to_c = "Int_val";
+        layer2_class = None;
+        c_type = "gchar";
+        is_value_type_record = false;
+      } );
   ]
 
 let normalize_c_pointer_type lookup_str =

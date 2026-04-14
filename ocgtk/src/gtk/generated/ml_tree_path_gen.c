@@ -48,6 +48,20 @@ GtkTreePath *obj = gtk_tree_path_new_first();
 
 CAMLreturn(Val_GtkTreePath(obj));
 }
+CAMLexport CAMLprim value ml_gtk_tree_path_new_from_indicesv(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+    int arg1_length = Wosize_val(arg1);
+    int* c_arg1 = (int*)g_malloc(sizeof(int) * arg1_length);
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = Int_val(Field(arg1, i));
+    }
+
+GtkTreePath *obj = gtk_tree_path_new_from_indicesv(c_arg1, Gsize_val(arg2));
+
+    g_free(c_arg1);
+CAMLreturn(Val_GtkTreePath(obj));
+}
 CAMLexport CAMLprim value ml_gtk_tree_path_new_from_string(value arg1)
 {
 CAMLparam1(arg1);

@@ -39,6 +39,93 @@ value Val_GSrvTarget_option(const GSrvTarget *ptr) {
 
 #if GLIB_CHECK_VERSION(2,22,0)
 
+CAMLexport CAMLprim value ml_g_srv_target_new(value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam4(arg1, arg2, arg3, arg4);
+
+GSrvTarget *obj = g_srv_target_new(String_val(arg1), UInt16_val(arg2), UInt16_val(arg3), UInt16_val(arg4));
+
+CAMLreturn(Val_GSrvTarget(obj));
+}
+#else
+
+CAMLexport CAMLprim value ml_g_srv_target_new(value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam4(arg1, arg2, arg3, arg4);
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("SrvTarget requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
+
+CAMLexport CAMLprim value ml_g_srv_target_get_weight(value self)
+{
+CAMLparam1(self);
+
+guint16 result = g_srv_target_get_weight(GSrvTarget_val(self));
+CAMLreturn(Val_uint16(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_srv_target_get_weight(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SrvTarget requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
+
+CAMLexport CAMLprim value ml_g_srv_target_get_priority(value self)
+{
+CAMLparam1(self);
+
+guint16 result = g_srv_target_get_priority(GSrvTarget_val(self));
+CAMLreturn(Val_uint16(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_srv_target_get_priority(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SrvTarget requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
+
+CAMLexport CAMLprim value ml_g_srv_target_get_port(value self)
+{
+CAMLparam1(self);
+
+guint16 result = g_srv_target_get_port(GSrvTarget_val(self));
+CAMLreturn(Val_uint16(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_srv_target_get_port(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SrvTarget requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
+
 CAMLexport CAMLprim value ml_g_srv_target_get_hostname(value self)
 {
 CAMLparam1(self);

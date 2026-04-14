@@ -9,6 +9,7 @@ class type cell_view_t = object
     method set_displayed_row : Tree_path.t option -> unit
     method set_draw_sensitive : bool -> unit
     method set_fit_model : bool -> unit
+    method set_model : GTree_model.tree_model_t option -> unit
     method cell_area : GCell_area_and__cell_area_context_and__cell_layout.cell_area_t
     method cell_area_context : GCell_area_and__cell_area_context_and__cell_layout.cell_area_context_t
     method as_cell_view : Cell_view.t
@@ -47,6 +48,11 @@ class cell_view (obj : Cell_view.t) : cell_view_t = object (self)
   method set_fit_model : bool -> unit =
     fun fit_model ->
       (Cell_view.set_fit_model obj fit_model)
+
+  method set_model : GTree_model.tree_model_t option -> unit =
+    fun model ->
+      let model = Option.map (fun (c) -> c#as_tree_model) model in
+      (Cell_view.set_model obj model)
 
   method cell_area = new GCell_area_and__cell_area_context_and__cell_layout.cell_area (Cell_view.get_cell_area obj)
 

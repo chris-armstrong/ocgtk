@@ -10,6 +10,7 @@ class type sort_list_model_t = object
     method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
     method set_section_sorter : GSorter.sorter_t option -> unit
     method set_sorter : GSorter.sorter_t option -> unit
+    method item_type : int
     method n_items : int
     method as_sort_list_model : Sort_list_model.t
 end

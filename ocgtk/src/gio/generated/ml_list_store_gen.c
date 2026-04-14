@@ -24,6 +24,28 @@
 
 #if GLIB_CHECK_VERSION(2,44,0)
 
+CAMLexport CAMLprim value ml_g_list_store_new(value arg1)
+{
+CAMLparam1(arg1);
+
+GListStore *obj = g_list_store_new(GType_val(arg1));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GListStore(obj));
+}
+#else
+
+CAMLexport CAMLprim value ml_g_list_store_new(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("ListStore requires GLib >= 2.44");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,44,0)
+
 CAMLexport CAMLprim value ml_g_list_store_splice(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -163,6 +185,36 @@ CAMLexport CAMLprim value ml_g_list_store_append(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
+caml_failwith("ListStore requires GLib >= 2.44");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,44,0)
+
+CAMLexport CAMLprim value ml_g_list_store_get_item_type(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GListStore *obj = (GListStore *)GListStore_val(self);
+    GType *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "item-type");
+if (pspec == NULL) caml_failwith("ml_g_list_store_get_item_type: property 'item-type' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "item-type", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GType(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_g_list_store_get_item_type(value self)
+{
+CAMLparam1(self);
+(void)self;
 caml_failwith("ListStore requires GLib >= 2.44");
 return Val_unit;
 }

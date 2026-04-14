@@ -2,6 +2,8 @@
 
 class type socket_listener_t = object
     inherit Gsocket_listener_signals.socket_listener_signals
+    method add_any_inet_port : [`object_] Gobject.obj option -> (UInt16.t, GError.t) result
+    method add_inet_port : UInt16.t -> [`object_] Gobject.obj option -> (bool, GError.t) result
     method add_socket : GSocket_and__socket_connection.socket_t -> [`object_] Gobject.obj option -> (bool, GError.t) result
     method close : unit -> unit
     method set_backlog : int -> unit
@@ -13,6 +15,14 @@ end
 (* High-level class for SocketListener *)
 class socket_listener (obj : Socket_listener.t) : socket_listener_t = object (self)
   inherit Gsocket_listener_signals.socket_listener_signals obj
+
+  method add_any_inet_port : [`object_] Gobject.obj option -> (UInt16.t, GError.t) result =
+    fun source_object ->
+      (Socket_listener.add_any_inet_port obj source_object)
+
+  method add_inet_port : UInt16.t -> [`object_] Gobject.obj option -> (bool, GError.t) result =
+    fun port source_object ->
+      (Socket_listener.add_inet_port obj port source_object)
 
   method add_socket : GSocket_and__socket_connection.socket_t -> [`object_] Gobject.obj option -> (bool, GError.t) result =
     fun socket source_object ->

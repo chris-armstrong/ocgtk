@@ -12,6 +12,7 @@ class type list_view_t = object
     method set_enable_rubberband : bool -> unit
     method set_factory : GList_item_factory.list_item_factory_t option -> unit
     method set_header_factory : GList_item_factory.list_item_factory_t option -> unit
+    method set_model : GSelection_model.selection_model_t option -> unit
     method set_show_separators : bool -> unit
     method set_single_click_activate : bool -> unit
     method set_tab_behavior : Gtk_enums.listtabbehavior -> unit

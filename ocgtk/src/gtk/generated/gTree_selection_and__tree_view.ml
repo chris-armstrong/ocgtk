@@ -77,9 +77,11 @@ and tree_view_t = object
     method set_hover_expand : bool -> unit
     method set_hover_selection : bool -> unit
     method set_level_indentation : int -> unit
+    method set_model : GTree_model.tree_model_t option -> unit
     method set_reorderable : bool -> unit
     method set_rubber_banding : bool -> unit
     method set_search_column : int -> unit
+    method set_search_entry : GEditable.editable_t option -> unit
     method set_show_expanders : bool -> unit
     method set_tooltip_cell : GTooltip.tooltip_t -> Tree_path.t option -> GTree_view_column.tree_view_column_t option -> GCell_renderer.cell_renderer_t option -> unit
     method set_tooltip_column : int -> unit
@@ -387,6 +389,11 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t = 
     fun indentation ->
       (Tree_selection_and__tree_view.Tree_view.set_level_indentation obj indentation)
 
+  method set_model : GTree_model.tree_model_t option -> unit =
+    fun model ->
+      let model = Option.map (fun (c) -> c#as_tree_model) model in
+      (Tree_selection_and__tree_view.Tree_view.set_model obj model)
+
   method set_reorderable : bool -> unit =
     fun reorderable ->
       (Tree_selection_and__tree_view.Tree_view.set_reorderable obj reorderable)
@@ -398,6 +405,11 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t = 
   method set_search_column : int -> unit =
     fun column ->
       (Tree_selection_and__tree_view.Tree_view.set_search_column obj column)
+
+  method set_search_entry : GEditable.editable_t option -> unit =
+    fun entry ->
+      let entry = Option.map (fun (c) -> c#as_editable) entry in
+      (Tree_selection_and__tree_view.Tree_view.set_search_entry obj entry)
 
   method set_show_expanders : bool -> unit =
     fun enabled ->

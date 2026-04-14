@@ -23,12 +23,14 @@ class type entry_t = object
     method get_icon_tooltip_text : Gtk_enums.entryiconposition -> string option
     method get_input_hints : unit -> Gtk_enums.inputhints
     method get_input_purpose : unit -> Gtk_enums.inputpurpose
+    method get_invisible_char : unit -> int
     method get_max_length : unit -> int
     method get_overwrite_mode : unit -> bool
     method get_placeholder_text : unit -> string option
     method get_progress_fraction : unit -> float
     method get_progress_pulse_step : unit -> float
     method get_tabs : unit -> Ocgtk_pango.Pango.Tab_array.tab_array_t option
+    method get_text_length : unit -> UInt16.t
     method get_visibility : unit -> bool
     method grab_focus_without_selecting : unit -> bool
     method progress_pulse : unit -> unit
@@ -49,6 +51,7 @@ class type entry_t = object
     method set_icon_tooltip_text : Gtk_enums.entryiconposition -> string option -> unit
     method set_input_hints : Gtk_enums.inputhints -> unit
     method set_input_purpose : Gtk_enums.inputpurpose -> unit
+    method set_invisible_char : int -> unit
     method set_max_length : int -> unit
     method set_overwrite_mode : bool -> unit
     method set_placeholder_text : string option -> unit
@@ -180,6 +183,10 @@ class entry (obj : Entry.t) : entry_t = object (self)
     fun () ->
       (Entry.get_input_purpose obj)
 
+  method get_invisible_char : unit -> int =
+    fun () ->
+      (Entry.get_invisible_char obj)
+
   method get_max_length : unit -> int =
     fun () ->
       (Entry.get_max_length obj)
@@ -203,6 +210,10 @@ class entry (obj : Entry.t) : entry_t = object (self)
   method get_tabs : unit -> Ocgtk_pango.Pango.Tab_array.tab_array_t option =
     fun () ->
       Option.map (fun ret -> new Ocgtk_pango.Pango.Tab_array.tab_array ret) (Entry.get_tabs obj)
+
+  method get_text_length : unit -> UInt16.t =
+    fun () ->
+      (Entry.get_text_length obj)
 
   method get_visibility : unit -> bool =
     fun () ->
@@ -290,6 +301,10 @@ class entry (obj : Entry.t) : entry_t = object (self)
   method set_input_purpose : Gtk_enums.inputpurpose -> unit =
     fun purpose ->
       (Entry.set_input_purpose obj purpose)
+
+  method set_invisible_char : int -> unit =
+    fun ch ->
+      (Entry.set_invisible_char obj ch)
 
   method set_max_length : int -> unit =
     fun max ->

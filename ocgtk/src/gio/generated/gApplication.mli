@@ -22,6 +22,7 @@ class type application_t = object
     method release : unit -> unit
     method run : int -> string array option -> int
     method send_notification : string option -> GNotification.notification_t -> unit
+    method set_action_group : GAction_group.action_group_t option -> unit
     method set_application_id : string option -> unit
     method set_default : unit -> unit
     method set_flags : Gio_enums.applicationflags -> unit

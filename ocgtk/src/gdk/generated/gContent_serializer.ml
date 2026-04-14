@@ -1,6 +1,7 @@
 class type content_serializer_t = object
     inherit Ocgtk_gio.Gio.Async_result.async_result_t
     method get_cancellable : unit -> Ocgtk_gio.Gio.Cancellable.cancellable_t option
+    method get_gtype : unit -> int
     method get_mime_type : unit -> string
     method get_output_stream : unit -> Ocgtk_gio.Gio.Output_stream.output_stream_t
     method get_priority : unit -> int
@@ -15,6 +16,10 @@ class content_serializer (obj : Content_serializer.t) : content_serializer_t = o
   method get_cancellable : unit -> Ocgtk_gio.Gio.Cancellable.cancellable_t option =
     fun () ->
       Option.map (fun ret -> new Ocgtk_gio.Gio.Cancellable.cancellable ret) (Content_serializer.get_cancellable obj)
+
+  method get_gtype : unit -> int =
+    fun () ->
+      (Content_serializer.get_gtype obj)
 
   method get_mime_type : unit -> string =
     fun () ->

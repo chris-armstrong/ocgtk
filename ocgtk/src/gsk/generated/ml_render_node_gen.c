@@ -33,6 +33,14 @@ gsk_render_node_unref(GskRenderNode_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gsk_render_node_serialize(value self)
+{
+CAMLparam1(self);
+
+GBytes* result = gsk_render_node_serialize(GskRenderNode_val(self));
+CAMLreturn(Val_GBytes(result));
+}
+
 CAMLexport CAMLprim value ml_gsk_render_node_ref(value self)
 {
 CAMLparam1(self);

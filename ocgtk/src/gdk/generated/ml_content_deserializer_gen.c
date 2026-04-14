@@ -49,6 +49,14 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GInputStream(result));
 }
 
+CAMLexport CAMLprim value ml_gdk_content_deserializer_get_gtype(value self)
+{
+CAMLparam1(self);
+
+GType result = gdk_content_deserializer_get_gtype(GdkContentDeserializer_val(self));
+CAMLreturn(Val_GType(result));
+}
+
 CAMLexport CAMLprim value ml_gdk_content_deserializer_get_cancellable(value self)
 {
 CAMLparam1(self);

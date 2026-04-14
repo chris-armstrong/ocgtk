@@ -92,6 +92,14 @@ g_dbus_proxy_set_default_timeout(GDBusProxy_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_dbus_proxy_set_cached_property(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_dbus_proxy_set_cached_property(GDBusProxy_val(self), String_val(arg1), Option_val(arg2, GVariant_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_dbus_proxy_get_object_path(value self)
 {
 CAMLparam1(self);
@@ -174,6 +182,37 @@ gchar** result = g_dbus_proxy_get_cached_property_names(GDBusProxy_val(self));
     }
     g_free(result);
 CAMLreturn(ml_result);
+}
+
+CAMLexport CAMLprim value ml_g_dbus_proxy_get_cached_property(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GVariant* result = g_dbus_proxy_get_cached_property(GDBusProxy_val(self), String_val(arg1));
+CAMLreturn(Val_option(result, Val_GVariant));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_proxy_call_sync_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam1(arg5);
+GError *error = NULL;
+
+GVariant* result = g_dbus_proxy_call_sync(GDBusProxy_val(self), String_val(arg1), Option_val(arg2, GVariant_val, NULL), GioDBusCallFlags_val(arg3), Int_val(arg4), Option_val(arg5, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GVariant(result))); else CAMLreturn(Res_Error(Val_GError(error)));}
+
+CAMLexport CAMLprim value ml_g_dbus_proxy_call_sync_bytecode(value * argv, int argn)
+{
+return ml_g_dbus_proxy_call_sync_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+}
+
+CAMLexport CAMLprim value ml_g_dbus_proxy_call_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GVariant* result = g_dbus_proxy_call_finish(GDBusProxy_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GVariant(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_d_bus_proxy_get_g_connection(value self)
@@ -393,6 +432,40 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_g_dbus_proxy_call_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusProxy requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_proxy_call_sync(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+caml_failwith("DBusProxy requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_proxy_get_cached_property(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusProxy requires GLib >= 2.26");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_dbus_proxy_get_cached_property_names(value self)
 {
 CAMLparam1(self);
@@ -469,6 +542,17 @@ CAMLexport CAMLprim value ml_g_dbus_proxy_get_object_path(value self)
 {
 CAMLparam1(self);
 (void)self;
+caml_failwith("DBusProxy requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_proxy_set_cached_property(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
 caml_failwith("DBusProxy requires GLib >= 2.26");
 return Val_unit;
 }

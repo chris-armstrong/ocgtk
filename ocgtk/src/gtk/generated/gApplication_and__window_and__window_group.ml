@@ -3,8 +3,6 @@
 
 class type application_t = object
     inherit Ocgtk_gio.Gio.Application.application_t
-    inherit Ocgtk_gio.Gio.Action_group.action_group_t
-    inherit Ocgtk_gio.Gio.Action_map.action_map_t
     inherit Gapplication_signals.application_signals
     method add_window : window_t -> unit
     method get_accels_for_action : string -> string array
@@ -60,6 +58,7 @@ and window_t = object
     method maximize : unit -> unit
     method minimize : unit -> unit
     method present : unit -> unit
+    method present_with_time : UInt32.t -> unit
     method set_application : application_t option -> unit
     method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
     method set_decorated : bool -> unit
@@ -108,8 +107,6 @@ end
 
 class application (obj : Application_and__window_and__window_group.Application.t) : application_t = object (self)
   inherit Ocgtk_gio.Gio.Application.application (obj :> Ocgtk_gio.Gio.Wrappers.Application.t)
-  inherit Ocgtk_gio.Gio.Action_group.action_group (Ocgtk_gio.Gio.Wrappers.Action_group.from_gobject obj)
-  inherit Ocgtk_gio.Gio.Action_map.action_map (Ocgtk_gio.Gio.Wrappers.Action_map.from_gobject obj)
   inherit Gapplication_signals.application_signals obj
 
   method add_window : window_t -> unit =
@@ -304,6 +301,10 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
   method present : unit -> unit =
     fun () ->
       (Application_and__window_and__window_group.Window.present obj)
+
+  method present_with_time : UInt32.t -> unit =
+    fun timestamp ->
+      (Application_and__window_and__window_group.Window.present_with_time obj timestamp)
 
   method set_application : application_t option -> unit =
     fun application ->

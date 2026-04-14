@@ -9,6 +9,7 @@ class type cell_view_t = object
     method set_displayed_row : Tree_path.t option -> unit
     method set_draw_sensitive : bool -> unit
     method set_fit_model : bool -> unit
+    method set_model : GTree_model.tree_model_t option -> unit
     method cell_area : GCell_area_and__cell_area_context_and__cell_layout.cell_area_t
     method cell_area_context : GCell_area_and__cell_area_context_and__cell_layout.cell_area_context_t
     method as_cell_view : Cell_view.t

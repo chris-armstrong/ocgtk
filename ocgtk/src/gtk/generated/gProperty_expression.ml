@@ -15,3 +15,8 @@ class property_expression (obj : Property_expression.t) : property_expression_t 
     method as_property_expression = obj
 end
 
+let new_ (this_type : int) (expression : GExpression.expression_t option) (property_name : string) : property_expression_t =
+  let expression = Option.map (fun c -> c#as_expression) expression in
+  let obj_ = Property_expression.new_ this_type expression property_name in
+  new property_expression obj_
+

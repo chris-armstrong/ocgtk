@@ -8,6 +8,7 @@ class type socket_t = object
     method close : unit -> (bool, GError.t) result
     method connect : GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_address_t -> GCancellable.cancellable_t option -> (bool, GError.t) result
     method connection_factory_create_connection : unit -> socket_connection_t
+    method get_available_bytes : unit -> int
     method get_blocking : unit -> bool
     method get_broadcast : unit -> bool
     method get_credentials : unit -> (GCredentials.credentials_t, GError.t) result
@@ -30,6 +31,8 @@ class type socket_t = object
     method leave_multicast_group : GInet_address.inet_address_t -> bool -> string option -> (bool, GError.t) result
     method leave_multicast_group_ssm : GInet_address.inet_address_t -> GInet_address.inet_address_t option -> string option -> (bool, GError.t) result
     method listen : unit -> (bool, GError.t) result
+    method receive_bytes : Gsize.t -> int64 -> GCancellable.cancellable_t option -> (Glib_bytes.t, GError.t) result
+    method send_message : GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_address_t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> GCancellable.cancellable_t option -> (int, GError.t) result
     method set_blocking : bool -> unit
     method set_broadcast : bool -> unit
     method set_keepalive : bool -> unit
@@ -48,6 +51,7 @@ end
 and socket_connection_t = object
     inherit GIo_stream.io_stream_t
     method connect : GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_address_t -> GCancellable.cancellable_t option -> (bool, GError.t) result
+    method connect_finish : GAsync_result.async_result_t -> (bool, GError.t) result
     method get_local_address : unit -> (GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_address_t, GError.t) result
     method get_remote_address : unit -> (GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_address_t, GError.t) result
     method get_socket : unit -> socket_t

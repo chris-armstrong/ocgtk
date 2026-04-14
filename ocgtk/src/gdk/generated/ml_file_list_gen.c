@@ -37,6 +37,34 @@ value Val_GdkFileList_option(const GdkFileList *ptr) {
 
 #if GTK_CHECK_VERSION(4,8,0)
 
+CAMLexport CAMLprim value ml_gdk_file_list_new_from_array(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+    int arg1_length = Wosize_val(arg1);
+    GFile** c_arg1 = (GFile**)g_malloc(sizeof(GFile*) * arg1_length);
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = GFile_val(Field(arg1, i));
+    }
+
+GdkFileList *obj = gdk_file_list_new_from_array(c_arg1, Gsize_val(arg2));
+
+    g_free(c_arg1);
+CAMLreturn(Val_GdkFileList(obj));
+}
+#else
+
+CAMLexport CAMLprim value ml_gdk_file_list_new_from_array(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+(void)arg1;
+(void)arg2;
+caml_failwith("FileList requires GTK >= 4.8");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,8,0)
+
 CAMLexport CAMLprim value ml_gdk_file_list_new_from_list(value arg1)
 {
 CAMLparam1(arg1);
@@ -71,6 +99,16 @@ Val_GSList_with(c_result, result, item, cell, Val_GFile((gpointer)_tmp->data));
 }
 
 #else
+
+
+CAMLexport CAMLprim value ml_gdk_file_list_new_from_array(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+(void)arg1;
+(void)arg2;
+caml_failwith("FileList requires GTK >= 4.6");
+return Val_unit;
+}
 
 
 CAMLexport CAMLprim value ml_gdk_file_list_new_from_list(value arg1)

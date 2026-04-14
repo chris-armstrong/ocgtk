@@ -6,6 +6,7 @@ class type tree_list_model_t = object
     method get_passthrough : unit -> bool
     method get_row : int -> GTree_list_row.tree_list_row_t option
     method set_autoexpand : bool -> unit
+    method item_type : int
     method n_items : int
     method as_tree_list_model : Tree_list_model.t
 end
@@ -37,6 +38,8 @@ class tree_list_model (obj : Tree_list_model.t) : tree_list_model_t = object (se
   method set_autoexpand : bool -> unit =
     fun autoexpand ->
       (Tree_list_model.set_autoexpand obj autoexpand)
+
+  method item_type = Tree_list_model.get_item_type obj
 
   method n_items = Tree_list_model.get_n_items obj
 

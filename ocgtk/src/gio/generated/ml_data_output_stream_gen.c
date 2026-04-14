@@ -39,12 +39,66 @@ g_data_output_stream_set_byte_order(GDataOutputStream_val(self), GioDataStreamBy
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_data_output_stream_put_uint64(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+
+gboolean result = g_data_output_stream_put_uint64(GDataOutputStream_val(self), Uint64_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_data_output_stream_put_uint32(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+
+gboolean result = g_data_output_stream_put_uint32(GDataOutputStream_val(self), UInt32_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_data_output_stream_put_uint16(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+
+gboolean result = g_data_output_stream_put_uint16(GDataOutputStream_val(self), UInt16_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_data_output_stream_put_string(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
 GError *error = NULL;
 
 gboolean result = g_data_output_stream_put_string(GDataOutputStream_val(self), String_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_data_output_stream_put_int64(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+
+gboolean result = g_data_output_stream_put_int64(GDataOutputStream_val(self), Int64_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_data_output_stream_put_int32(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+
+gboolean result = g_data_output_stream_put_int32(GDataOutputStream_val(self), Int32_val_bounded(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_data_output_stream_put_int16(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+
+gboolean result = g_data_output_stream_put_int16(GDataOutputStream_val(self), Int16_val(arg1), Option_val(arg2, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 

@@ -65,6 +65,7 @@ class type print_settings_t = object
     method set_scale : float -> unit
     method set_use_color : bool -> unit
     method to_file : string -> (bool, GError.t) result
+    method to_gvariant : unit -> Gvariant.t
     method unset : string -> unit
     method as_print_settings : Print_settings.t
 end
@@ -73,3 +74,4 @@ class print_settings : Print_settings.t -> print_settings_t
 
 val new_ : unit -> print_settings_t
 val new_from_file : string -> (print_settings_t, GError.t) result
+val new_from_gvariant : Gvariant.t -> print_settings_t

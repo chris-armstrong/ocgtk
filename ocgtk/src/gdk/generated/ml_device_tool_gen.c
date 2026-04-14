@@ -24,6 +24,22 @@ GdkDeviceToolType result = gdk_device_tool_get_tool_type(GdkDeviceTool_val(self)
 CAMLreturn(Val_GdkDeviceToolType(result));
 }
 
+CAMLexport CAMLprim value ml_gdk_device_tool_get_serial(value self)
+{
+CAMLparam1(self);
+
+guint64 result = gdk_device_tool_get_serial(GdkDeviceTool_val(self));
+CAMLreturn(integers_copy_uint64(result));
+}
+
+CAMLexport CAMLprim value ml_gdk_device_tool_get_hardware_id(value self)
+{
+CAMLparam1(self);
+
+guint64 result = gdk_device_tool_get_hardware_id(GdkDeviceTool_val(self));
+CAMLreturn(integers_copy_uint64(result));
+}
+
 CAMLexport CAMLprim value ml_gdk_device_tool_get_axes(value self)
 {
 CAMLparam1(self);

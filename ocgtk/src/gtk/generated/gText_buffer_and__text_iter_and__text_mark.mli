@@ -112,6 +112,7 @@ and text_iter_t = object
     method free : unit -> unit
     method get_buffer : unit -> text_buffer_t
     method get_bytes_in_line : unit -> int
+    method get_char : unit -> int
     method get_chars_in_line : unit -> int
     method get_child_anchor : unit -> GText_child_anchor.text_child_anchor_t option
     method get_language : unit -> Ocgtk_pango.Pango.Language.language_t

@@ -8,6 +8,7 @@ class type cell_area_t = object
     method activate_cell : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> GCell_renderer.cell_renderer_t -> Ocgtk_gdk.Gdk.Event.event_t -> Ocgtk_gdk.Gdk.Rectangle.rectangle_t -> Gtk_enums.cellrendererstate -> bool
     method add : GCell_renderer.cell_renderer_t -> unit
     method add_focus_sibling : GCell_renderer.cell_renderer_t -> GCell_renderer.cell_renderer_t -> unit
+    method apply_attributes : GTree_model.tree_model_t -> Tree_iter.t -> bool -> bool -> unit
     method attribute_connect : GCell_renderer.cell_renderer_t -> string -> int -> unit
     method attribute_disconnect : GCell_renderer.cell_renderer_t -> string -> unit
     method attribute_get_column : GCell_renderer.cell_renderer_t -> string -> int
@@ -90,6 +91,11 @@ class cell_area (obj : Cell_area_and__cell_area_context_and__cell_layout.Cell_ar
       let renderer = renderer#as_cell_renderer in
       let sibling = sibling#as_cell_renderer in
       (Cell_area_and__cell_area_context_and__cell_layout.Cell_area.add_focus_sibling obj renderer sibling)
+
+  method apply_attributes : GTree_model.tree_model_t -> Tree_iter.t -> bool -> bool -> unit =
+    fun tree_model iter is_expander is_expanded ->
+      let tree_model = tree_model#as_tree_model in
+      (Cell_area_and__cell_area_context_and__cell_layout.Cell_area.apply_attributes obj tree_model iter is_expander is_expanded)
 
   method attribute_connect : GCell_renderer.cell_renderer_t -> string -> int -> unit =
     fun renderer attribute column ->

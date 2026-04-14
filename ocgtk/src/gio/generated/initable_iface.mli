@@ -1,8 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* InitableIface: InitableIface *)
 
-(** Provides an interface for initializing object such that initialization
-may fail. *)
-type t = [`initable_iface] Gobject.obj
+type t = [ `initable_iface ] Gobject.obj
+(** Provides an interface for initializing object such that initialization may
+    fail. *)
 
 (* Methods *)

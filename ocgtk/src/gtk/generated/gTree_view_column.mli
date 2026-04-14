@@ -3,6 +3,7 @@ class type tree_view_column_t = object
     inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
     inherit Gtree_view_column_signals.tree_view_column_signals
     method cell_is_visible : unit -> bool
+    method cell_set_cell_data : GTree_model.tree_model_t -> Tree_iter.t -> bool -> bool -> unit
     method clicked : unit -> unit
     method focus_cell : GCell_renderer.cell_renderer_t -> unit
     method get_alignment : unit -> float

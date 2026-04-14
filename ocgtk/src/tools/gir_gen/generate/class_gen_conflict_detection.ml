@@ -97,16 +97,66 @@ let property_method_names (prop : gir_property) : string list =
   if prop.writable && not prop.construct_only then [getter; setter]
   else [getter]
 
+(** Look up a cross-namespace class entry by "Namespace.Name" in the cross-references map. *)
+let lookup_cross_ns_class ~ctx qualified_name : cross_reference_type option =
+  match String.split_on_char ~sep:'.' qualified_name with
+  | [ namespace; name ] ->
+    let ncr = StringMap.find_opt namespace ctx.cross_references in
+    let entity = Option.bind ncr (fun n -> StringMap.find_opt name n.ncr_entities) in
+    Option.map (fun cr -> cr.cr_type) entity
+  | _ -> None
+
+(** Strip namespace qualifier from a name, returning the bare name.
+    e.g. "Gio.ActionGroup" -> "ActionGroup", "ActionGroup" -> "ActionGroup" *)
+let bare_name qualified =
+  match String.split_on_char ~sep:'.' qualified with
+  | [ _; bare ] -> bare
+  | _ -> qualified
+
+(** Return true if [iface_name] and [candidate] refer to the same interface,
+    comparing bare names to handle mixed qualified/unqualified forms. *)
+let iface_names_match iface_name candidate =
+  String.equal (bare_name iface_name) (bare_name candidate)
+
+(** Check whether a cross-namespace class (by "Namespace.Name") or any of its
+    ancestors provides [iface_name]. Traverses same-namespace parents within
+    the foreign namespace by qualifying them with the current namespace.
+    Depth-limited to 100 to avoid loops on malformed data. *)
+let rec cross_ns_class_provides_interface ~ctx ~depth ~ns qualified_class_name iface_name =
+  if depth > 100 then false
+  else
+    match lookup_cross_ns_class ~ctx qualified_class_name with
+    | None | Some Crt_Interface | Some Crt_Record _ | Some Crt_Enum | Some Crt_Bitfield -> false
+    | Some (Crt_Class { implements; parent }) ->
+      let implements_match = List.exists ~f:(iface_names_match iface_name) implements in
+      let parent_match =
+        match parent with
+        | None -> false
+        | Some p when String.contains p '.' ->
+          cross_ns_class_provides_interface ~ctx ~depth:(depth + 1) ~ns p iface_name
+        | Some p ->
+          (* Same-namespace parent within the foreign namespace — qualify and recurse *)
+          cross_ns_class_provides_interface ~ctx ~depth:(depth + 1) ~ns (ns ^ "." ^ p) iface_name
+      in
+      implements_match || parent_match
+
 (** Return true if any class in the transitive parent chain of [class_name]
     lists [iface_name] in its implements. Used to detect diamond interface
     inheritance so the child can skip re-emitting an interface already provided
-    by a parent, avoiding OCaml warning 7 (method-override). *)
+    by a parent, avoiding OCaml warning 7 (method-override).
+
+    Traverses cross-namespace parents via the cross-references map when the
+    parent name contains a dot (e.g. "Gio.Application"). *)
 let parent_chain_provides_interface ~ctx ~class_name iface_name : bool =
   let parent_chain = build_parent_chain ~ctx class_name in
   List.exists parent_chain ~f:(fun ancestor ->
-    match List.find_opt ~f:(fun cls -> String.equal cls.class_name ancestor) ctx.classes with
-    | None -> false
-    | Some cls -> List.exists cls.implements ~f:(fun i -> String.equal i iface_name))
+    if String.contains ancestor '.' then
+      let ancestor_ns = String.sub ancestor ~pos:0 ~len:(String.index ancestor '.') in
+      cross_ns_class_provides_interface ~ctx ~depth:0 ~ns:ancestor_ns ancestor iface_name
+    else
+      match List.find_opt ~f:(fun cls -> String.equal cls.class_name ancestor) ctx.classes with
+      | None -> false
+      | Some cls -> List.exists cls.implements ~f:(iface_names_match iface_name))
 
 (* Collect all OCaml method names inherited from ancestors (methods + properties).
    Used to detect conflicts when inheriting from the parent class type. *)

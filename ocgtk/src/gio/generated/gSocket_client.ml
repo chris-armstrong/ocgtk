@@ -3,7 +3,14 @@
 class type socket_client_t = object
     inherit Gsocket_client_signals.socket_client_signals
     method add_application_proxy : string -> unit
+    method connect : GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_connectable_t -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result
+    method connect_finish : GAsync_result.async_result_t -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result
+    method connect_to_host : string -> UInt16.t -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result
+    method connect_to_host_finish : GAsync_result.async_result_t -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result
     method connect_to_service : string -> string -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result
+    method connect_to_service_finish : GAsync_result.async_result_t -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result
+    method connect_to_uri : string -> UInt16.t -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result
+    method connect_to_uri_finish : GAsync_result.async_result_t -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result
     method get_enable_proxy : unit -> bool
     method get_family : unit -> Gio_enums.socketfamily
     method get_local_address : unit -> GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_address_t option
@@ -17,6 +24,7 @@ class type socket_client_t = object
     method set_family : Gio_enums.socketfamily -> unit
     method set_local_address : GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_address_t option -> unit
     method set_protocol : Gio_enums.socketprotocol -> unit
+    method set_proxy_resolver : GProxy_resolver.proxy_resolver_t option -> unit
     method set_socket_type : Gio_enums.sockettype -> unit
     method set_timeout : int -> unit
     method set_tls : bool -> unit
@@ -34,10 +42,46 @@ class socket_client (obj : Socket_client.t) : socket_client_t = object (self)
     fun protocol ->
       (Socket_client.add_application_proxy obj protocol)
 
+  method connect : GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_connectable_t -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result =
+    fun connectable cancellable ->
+      let connectable = connectable#as_socket_connectable in
+      let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
+      Result.map (fun ret -> new GSocket_and__socket_connection.socket_connection ret)(Socket_client.connect obj connectable cancellable)
+
+  method connect_finish : GAsync_result.async_result_t -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      Result.map (fun ret -> new GSocket_and__socket_connection.socket_connection ret)(Socket_client.connect_finish obj result)
+
+  method connect_to_host : string -> UInt16.t -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result =
+    fun host_and_port default_port cancellable ->
+      let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
+      Result.map (fun ret -> new GSocket_and__socket_connection.socket_connection ret)(Socket_client.connect_to_host obj host_and_port default_port cancellable)
+
+  method connect_to_host_finish : GAsync_result.async_result_t -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      Result.map (fun ret -> new GSocket_and__socket_connection.socket_connection ret)(Socket_client.connect_to_host_finish obj result)
+
   method connect_to_service : string -> string -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result =
     fun domain service cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       Result.map (fun ret -> new GSocket_and__socket_connection.socket_connection ret)(Socket_client.connect_to_service obj domain service cancellable)
+
+  method connect_to_service_finish : GAsync_result.async_result_t -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      Result.map (fun ret -> new GSocket_and__socket_connection.socket_connection ret)(Socket_client.connect_to_service_finish obj result)
+
+  method connect_to_uri : string -> UInt16.t -> GCancellable.cancellable_t option -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result =
+    fun uri default_port cancellable ->
+      let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
+      Result.map (fun ret -> new GSocket_and__socket_connection.socket_connection ret)(Socket_client.connect_to_uri obj uri default_port cancellable)
+
+  method connect_to_uri_finish : GAsync_result.async_result_t -> (GSocket_and__socket_connection.socket_connection_t, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      Result.map (fun ret -> new GSocket_and__socket_connection.socket_connection ret)(Socket_client.connect_to_uri_finish obj result)
 
   method get_enable_proxy : unit -> bool =
     fun () ->
@@ -91,6 +135,11 @@ class socket_client (obj : Socket_client.t) : socket_client_t = object (self)
   method set_protocol : Gio_enums.socketprotocol -> unit =
     fun protocol ->
       (Socket_client.set_protocol obj protocol)
+
+  method set_proxy_resolver : GProxy_resolver.proxy_resolver_t option -> unit =
+    fun proxy_resolver ->
+      let proxy_resolver = Option.map (fun (c) -> c#as_proxy_resolver) proxy_resolver in
+      (Socket_client.set_proxy_resolver obj proxy_resolver)
 
   method set_socket_type : Gio_enums.sockettype -> unit =
     fun type_ ->

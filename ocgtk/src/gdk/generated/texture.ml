@@ -7,6 +7,9 @@ type t = [`texture | `object_] Gobject.obj
 external new_for_pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t -> t = "ml_gdk_texture_new_for_pixbuf"
 
 (** Create a new Texture *)
+external new_from_bytes : Glib_bytes.t -> (t, GError.t) result = "ml_gdk_texture_new_from_bytes"
+
+(** Create a new Texture *)
 external new_from_file : Ocgtk_gio.Gio.Wrappers.File.t -> (t, GError.t) result = "ml_gdk_texture_new_from_file"
 
 (** Create a new Texture *)
@@ -16,10 +19,40 @@ external new_from_filename : string -> (t, GError.t) result = "ml_gdk_texture_ne
 external new_from_resource : string -> t = "ml_gdk_texture_new_from_resource"
 
 (* Methods *)
+(** Store the given @texture in memory as a TIFF file.
+
+Use [ctor@Gdk.Texture.new_from_bytes] to read it back.
+
+This function is intended to store a representation of the
+texture's data that is as accurate as possible. This is
+particularly relevant when working with high dynamic range
+images and floating-point texture data.
+
+If that is not your concern and you are interested in a
+smaller size and a more portable format, you might want to
+use [method@Gdk.Texture.save_to_png_bytes]. *)
+external save_to_tiff_bytes : t -> Glib_bytes.t = "ml_gdk_texture_save_to_tiff_bytes"
+
 (** Store the given @texture to the @filename as a TIFF file.
 
 GTK will attempt to store data without loss. *)
 external save_to_tiff : t -> string -> bool = "ml_gdk_texture_save_to_tiff"
+
+(** Store the given @texture in memory as a PNG file.
+
+Use [ctor@Gdk.Texture.new_from_bytes] to read it back.
+
+If you want to serialize a texture, this is a convenient and
+portable way to do that.
+
+If you need more control over the generated image, such as
+attaching metadata, you should look into an image handling
+library such as the gdk-pixbuf library.
+
+If you are dealing with high dynamic range float data, you
+might also want to consider [method@Gdk.Texture.save_to_tiff_bytes]
+instead. *)
+external save_to_png_bytes : t -> Glib_bytes.t = "ml_gdk_texture_save_to_png_bytes"
 
 (** Store the given @texture to the @filename as a PNG file.
 
