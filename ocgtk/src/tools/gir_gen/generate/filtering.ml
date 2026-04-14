@@ -180,10 +180,9 @@ let should_skip_method_binding ~ctx (meth : gir_method) =
   (* Check for arrays (params or return) missing length info for C generation *)
   let has_unsupported_arrays = method_has_unsupported_arrays ~ctx meth in
   Logs.debug (fun m ->
-      m "should_skip_method_name: %s -> %b %b %b %b %b\n"
-        meth.c_identifier is_variadic has_unknown_type
-        is_not_introspectable has_unsupported_out_arrays
-        has_unsupported_arrays);
+      m "should_skip_method_name: %s -> %b %b %b %b %b\n" meth.c_identifier
+        is_variadic has_unknown_type is_not_introspectable
+        has_unsupported_out_arrays has_unsupported_arrays);
 
   is_variadic || has_unknown_type || is_not_introspectable
   || has_unsupported_out_arrays || has_unsupported_arrays
