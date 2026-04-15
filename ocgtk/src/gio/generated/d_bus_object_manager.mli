@@ -6,6 +6,9 @@ type t = [`d_bus_object_manager] Gobject.obj
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_d_bus_object_manager_from_gobject"
 
 (* Methods *)
+(** Gets all #GDBusObject objects known to @manager. *)
+external get_objects : t -> D_bus_interface_and__d_bus_object.D_bus_object.t list = "ml_g_dbus_object_manager_get_objects"
+
 (** Gets the object path that @manager is for. *)
 external get_object_path : t -> string = "ml_g_dbus_object_manager_get_object_path"
 

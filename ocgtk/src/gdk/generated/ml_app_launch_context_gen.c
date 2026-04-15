@@ -50,9 +50,17 @@ CAMLreturn(Val_unit);
 
 CAMLexport CAMLprim value ml_gdk_app_launch_context_get_display(value self)
 {
-CAMLparam1(self);
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GdkAppLaunchContext *obj = (GdkAppLaunchContext *)GdkAppLaunchContext_val(self);
+    GdkDisplay *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "display");
+if (pspec == NULL) caml_failwith("ml_gdk_app_launch_context_get_display: property 'display' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "display", &prop_gvalue);
+          prop_value = (GdkDisplay*)g_value_get_object(&prop_gvalue);
 
-GdkDisplay* result = gdk_app_launch_context_get_display(GdkAppLaunchContext_val(self));
-if (result) g_object_ref_sink(result);
-CAMLreturn(Val_GdkDisplay(result));
-}
+      result = Val_GdkDisplay(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}

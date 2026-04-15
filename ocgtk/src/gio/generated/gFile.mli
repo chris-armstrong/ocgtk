@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Shim module for File from cyclic group File_and__file_enumerator_and__file_monitor_and__mount_and__volume *)
+(* Shim module for File from cyclic group App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume *)
 
-class type file_t = GFile_and__file_enumerator_and__file_monitor_and__mount_and__volume.file_t
+class type file_t = GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.file_t
 
-class file : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t -> file_t
+class file : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t -> file_t
 

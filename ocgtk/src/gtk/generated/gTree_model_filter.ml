@@ -7,6 +7,7 @@ class type tree_model_filter_t = object
     method get_model : unit -> GTree_model.tree_model_t
     method refilter : unit -> unit
     method set_visible_column : int -> unit
+    method child_model : GTree_model.tree_model_t
     method virtual_root : Tree_path.t
     method as_tree_model_filter : Tree_model_filter.t
 end
@@ -39,6 +40,8 @@ class tree_model_filter (obj : Tree_model_filter.t) : tree_model_filter_t = obje
   method set_visible_column : int -> unit =
     fun column ->
       (Tree_model_filter.set_visible_column obj column)
+
+  method child_model = new GTree_model.tree_model (Tree_model_filter.get_child_model obj)
 
   method virtual_root = Tree_model_filter.get_virtual_root obj
 

@@ -25,6 +25,7 @@ class type dtls_connection_t = object
     method set_require_close_notify : bool -> unit
     method shutdown : bool -> bool -> GCancellable.cancellable_t option -> (bool, GError.t) result
     method shutdown_finish : GAsync_result.async_result_t -> (bool, GError.t) result
+    method base_socket : GDatagram_based.datagram_based_t
     method as_dtls_connection : Dtls_connection.t
 end
 
@@ -133,6 +134,8 @@ class dtls_connection (obj : Dtls_connection.t) : dtls_connection_t = object (se
     fun result ->
       let result = result#as_async_result in
       (Dtls_connection.shutdown_finish obj result)
+
+  method base_socket = new GDatagram_based.datagram_based (Dtls_connection.get_base_socket obj)
 
     method as_dtls_connection = obj
 end

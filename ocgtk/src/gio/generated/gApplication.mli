@@ -16,7 +16,7 @@ class type application_t = object
     method get_version : unit -> string option
     method hold : unit -> unit
     method mark_busy : unit -> unit
-    method open_ : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t array -> int -> string -> unit
+    method open_ : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t array -> int -> string -> unit
     method quit : unit -> unit
     method register : GCancellable.cancellable_t option -> (bool, GError.t) result
     method release : unit -> unit

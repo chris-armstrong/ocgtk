@@ -3,6 +3,12 @@
 
 type t = [`constraint_ | `object_] Gobject.obj
 
+(** Create a new Constraint *)
+external new_ : Constraint_target.t option -> Gtk_enums.constraintattribute -> Gtk_enums.constraintrelation -> Constraint_target.t option -> Gtk_enums.constraintattribute -> float -> float -> int -> t = "ml_gtk_constraint_new_bytecode" "ml_gtk_constraint_new_native"
+
+(** Create a new Constraint *)
+external new_constant : Constraint_target.t option -> Gtk_enums.constraintattribute -> Gtk_enums.constraintrelation -> float -> int -> t = "ml_gtk_constraint_new_constant"
+
 (* Methods *)
 (** Checks whether the constraint is a required relation for solving the
 constraint layout. *)

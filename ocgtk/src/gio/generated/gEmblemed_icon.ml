@@ -2,8 +2,9 @@ class type emblemed_icon_t = object
     inherit GIcon.icon_t
     method add_emblem : GEmblem.emblem_t -> unit
     method clear_emblems : unit -> unit
-    method get_emblems : unit -> Emblem.t list
+    method get_emblems : unit -> GEmblem.emblem_t list
     method get_icon : unit -> GIcon.icon_t
+    method gicon : GIcon.icon_t
     method as_emblemed_icon : Emblemed_icon.t
 end
 
@@ -20,13 +21,15 @@ class emblemed_icon (obj : Emblemed_icon.t) : emblemed_icon_t = object (self)
     fun () ->
       (Emblemed_icon.clear_emblems obj)
 
-  method get_emblems : unit -> Emblem.t list =
+  method get_emblems : unit -> GEmblem.emblem_t list =
     fun () ->
-      (Emblemed_icon.get_emblems obj)
+      (List.map (fun ret -> new GEmblem.emblem ret))(Emblemed_icon.get_emblems obj)
 
   method get_icon : unit -> GIcon.icon_t =
     fun () ->
       new  GIcon.icon(Emblemed_icon.get_icon obj)
+
+  method gicon = new GIcon.icon (Emblemed_icon.get_gicon obj)
 
     method as_emblemed_icon = obj
 end

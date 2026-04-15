@@ -21,3 +21,6 @@ external add_emblem : t -> Emblem.t -> unit = "ml_g_emblemed_icon_add_emblem"
 
 (* Properties *)
 
+(** Get property: gicon *)
+external get_gicon : t -> Icon.t = "ml_g_emblemed_icon_get_gicon"
+

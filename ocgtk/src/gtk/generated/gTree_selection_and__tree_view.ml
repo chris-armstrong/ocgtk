@@ -36,7 +36,7 @@ and tree_view_t = object
     method expand_to_path : Tree_path.t -> unit
     method get_activate_on_single_click : unit -> bool
     method get_column : int -> GTree_view_column.tree_view_column_t option
-    method get_columns : unit -> Tree_view_column.t list
+    method get_columns : unit -> GTree_view_column.tree_view_column_t list
     method get_enable_search : unit -> bool
     method get_enable_tree_lines : unit -> bool
     method get_expander_column : unit -> GTree_view_column.tree_view_column_t option
@@ -216,9 +216,9 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t = 
     fun n ->
       Option.map (fun ret -> new GTree_view_column.tree_view_column ret) (Tree_selection_and__tree_view.Tree_view.get_column obj n)
 
-  method get_columns : unit -> Tree_view_column.t list =
+  method get_columns : unit -> GTree_view_column.tree_view_column_t list =
     fun () ->
-      (Tree_selection_and__tree_view.Tree_view.get_columns obj)
+      (List.map (fun ret -> new GTree_view_column.tree_view_column ret))(Tree_selection_and__tree_view.Tree_view.get_columns obj)
 
   method get_enable_search : unit -> bool =
     fun () ->

@@ -55,16 +55,37 @@ let resolve_layer2_class_name ~ctx ~current_layer2_module ~(gir_type : gir_type)
     representation with proper nullable handling. Returns None if no type
     mapping exists. *)
 let resolve_ocaml_type ~ctx ~current_layer2_module ~(gir_type : gir_type) =
-  (match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
-    | Some { layer2_class = Some layer2_class; _ } ->
-        let qualified =
-          if String.equal current_layer2_module layer2_class.class_module then
-            layer2_class.class_type
-          else layer2_class.class_module ^ "." ^ layer2_class.class_type
-        in
-        Some qualified
-    | Some mapping -> Some mapping.ocaml_type
-    | None -> None)
+  (* Special case: GList/GSList where the element type has a Layer 2 class.
+     Return the L2 class type list rather than the raw L1 type list. *)
+  let list_l2_type =
+    if Type_mappings.is_list_type gir_type then
+      match gir_type.array with
+      | Some arr ->
+          (match Type_mappings.find_type_mapping_for_gir_type ~ctx arr.element_type with
+           | Some { layer2_class = Some lc; _ } ->
+               let qualified =
+                 if String.equal current_layer2_module lc.class_module then
+                   lc.class_type
+                 else lc.class_module ^ "." ^ lc.class_type
+               in
+               Some (qualified ^ " list")
+           | _ -> None)
+      | None -> None
+    else None
+  in
+  (match list_l2_type with
+   | Some t -> Some t
+   | None ->
+       (match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
+        | Some { layer2_class = Some layer2_class; _ } ->
+            let qualified =
+              if String.equal current_layer2_module layer2_class.class_module then
+                layer2_class.class_type
+              else layer2_class.class_module ^ "." ^ layer2_class.class_type
+            in
+            Some qualified
+        | Some mapping -> Some mapping.ocaml_type
+        | None -> None))
   |> Option.map (fun base ->
       if gir_type.nullable then base ^ " option" else base)
 

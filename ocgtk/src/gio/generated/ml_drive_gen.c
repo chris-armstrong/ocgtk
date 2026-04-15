@@ -130,6 +130,17 @@ gboolean result = g_drive_has_media(GDrive_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_g_drive_get_volumes(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = g_drive_get_volumes(GDrive_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GVolume((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
 #if GLIB_CHECK_VERSION(2,34,0)
 
 CAMLexport CAMLprim value ml_g_drive_get_symbolic_icon(value self)

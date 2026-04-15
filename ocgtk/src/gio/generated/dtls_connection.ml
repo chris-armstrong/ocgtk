@@ -234,3 +234,6 @@ external close : t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_dt
 
 (* Properties *)
 
+(** Get property: base-socket *)
+external get_base_socket : t -> Datagram_based.t = "ml_g_dtls_connection_get_base_socket"
+

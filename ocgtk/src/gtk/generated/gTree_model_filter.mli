@@ -7,6 +7,7 @@ class type tree_model_filter_t = object
     method get_model : unit -> GTree_model.tree_model_t
     method refilter : unit -> unit
     method set_visible_column : int -> unit
+    method child_model : GTree_model.tree_model_t
     method virtual_root : Tree_path.t
     method as_tree_model_filter : Tree_model_filter.t
 end

@@ -15,6 +15,12 @@ external get_has_entry : t -> bool = "ml_gtk_cell_renderer_combo_get_has_entry"
 (** Set property: has-entry *)
 external set_has_entry : t -> bool -> unit = "ml_gtk_cell_renderer_combo_set_has_entry"
 
+(** Get property: model *)
+external get_model : t -> Tree_model.t = "ml_gtk_cell_renderer_combo_get_model"
+
+(** Set property: model *)
+external set_model : t -> Tree_model.t -> unit = "ml_gtk_cell_renderer_combo_set_model"
+
 (** Get property: text-column *)
 external get_text_column : t -> int = "ml_gtk_cell_renderer_combo_get_text_column"
 

@@ -37,11 +37,36 @@ let generate_constructor_c_call_args ~ctx ~ctor_parameters =
     List.fold_left ctor_parameters ~init:([], 0)
       ~f:(fun (args, idx) (p : gir_param) ->
         let next_idx = idx + 1 in
-        (* Check if this is an array parameter first *)
-        match p.param_type.array with
+        let arg_name = sprintf "arg%d" next_idx in
+        (* Check for GList/GSList types first - they use list conversion, not array *)
+        if Type_mappings.is_list_type p.param_type then (
+          match C_stub_list_conv.generate_param_list_conversion ~ctx
+                  ~ocaml_var:arg_name ~gir_type:p.param_type with
+          | Some (c_var, conversion_code) ->
+              Buffer.add_string decls (sprintf "    %s\n" conversion_code);
+              let list_kind =
+                if String.equal p.param_type.name "GLib.List" then "g_list_free"
+                else "g_slist_free"
+              in
+              let cleanup =
+                match p.param_type.transfer_ownership with
+                | TransferNone | TransferContainer ->
+                    sprintf "%s(%s);" list_kind c_var
+                | TransferFull | TransferFloating ->
+                    sprintf
+                      "%s(%s, (GFunc)g_object_unref, NULL);\n    %s(%s);"
+                      (if String.equal list_kind "g_list_free" then
+                         "g_list_foreach"
+                       else "g_slist_foreach")
+                      c_var list_kind c_var
+              in
+              cleanups := cleanup :: !cleanups;
+              (args @ [ c_var ], next_idx)
+          | None -> (args @ [ arg_name ], next_idx))
+        (* Check if this is a non-list array parameter *)
+        else match p.param_type.array with
         | Some array_info -> (
             (* Handle array parameter with inline conversion *)
-            let arg_name = sprintf "arg%d" next_idx in
             match
               Type_mappings.find_type_mapping_for_gir_type ~ctx
                 array_info.element_type
@@ -71,7 +96,6 @@ let generate_constructor_c_call_args ~ctx ~ctor_parameters =
                      array_info.element_type.name))
         | None -> (
             (* Regular parameter - use existing type mapping *)
-            let arg_name = sprintf "arg%d" next_idx in
             match
               Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type
             with
@@ -89,7 +113,7 @@ let generate_constructor_c_call_args ~ctx ~ctor_parameters =
                 (args @ [ arg_expr ], next_idx)
             | None ->
                 (* This should never happen now that we filter constructors with unknown types *)
-                (args @ [ sprintf "arg%d" next_idx ], next_idx)))
+                (args @ [ arg_name ], next_idx)))
   in
   (arg_exprs, List.rev !cleanups, decls)
 

@@ -1245,6 +1245,158 @@ let test_cyclic_cluster_skips_parent_inherit () =
          (String.concat "; " inherit_clauses))
 
 (* ========================================================================= *)
+(* Tests: GList return / parameter wrapping with Layer 2 element types *)
+(* ========================================================================= *)
+
+(* Helper: build a GLib.List<Widget> gir_type *)
+let make_glist_of_widget ?(nullable = false) () =
+  let elem = make_gir_type ~name:"Widget" ~c_type:"GtkWidget*" () in
+  let arr =
+    make_gir_array ~array_name:"GLib.List"
+      ~element_type:elem ()
+  in
+  make_gir_type ~name:"GLib.List" ~c_type:"GList*" ~nullable ~array:arr ()
+
+(** A method that returns GLib.List<Widget> should:
+    - have signature returning GWidget.widget_t list
+    - have body that calls List.map to wrap each element *)
+let test_glist_return_wrapping () =
+  let ctx = create_test_context () in
+
+  let get_children_method =
+    make_gir_method ~method_name:"get_children"
+      ~c_identifier:"gtk_container_get_children"
+      ~return_type:(make_glist_of_widget ())
+      ()
+  in
+
+  let ml_code =
+    Gir_gen_lib.Generate.Class_gen.generate_class_module ~ctx
+      ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
+      ~methods:[ get_children_method ] ~properties:[] ~signals:[]
+      ~constructors:[]
+  in
+  let mli_code =
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+      ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
+      ~methods:[ get_children_method ] ~properties:[] ~signals:[]
+      ~constructors:[]
+  in
+
+  Printf.eprintf "GList return wrapping .ml:\n%s\n\n" ml_code;
+  Printf.eprintf "GList return wrapping .mli:\n%s\n\n" mli_code;
+
+  let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
+  let mli_ast = Ml_ast_helpers.parse_interface mli_code in
+
+  (* Verify .mli signature uses Layer 2 type *)
+  Layer2_helpers.validate_method_type_annotation_sig ~signature:mli_ast
+    ~class_name:"container_t" ~method_name:"get_children"
+    ~expected_type:"unit -> GWidget.widget_t list";
+
+  (* Verify .ml method body calls List.map to wrap elements *)
+  let container_class = find_class ml_ast "container" in
+  let get_children_field = find_method container_class "get_children" in
+  let body = get_method_body get_children_field in
+  if not (Ml_ast_helpers.method_body_calls_function body "List" "map") then
+    Alcotest.fail
+      "get_children body should call List.map to wrap GList elements in L2 \
+       class objects"
+
+(** A method that throws AND returns GLib.List<Widget> should:
+    - have signature returning (GWidget.widget_t list, GError.t) result
+    - have body that calls Result.map with a List.map *)
+let test_glist_return_throws_wrapping () =
+  let ctx = create_test_context () in
+
+  let lookup_method =
+    make_gir_method ~method_name:"lookup_widgets"
+      ~c_identifier:"gtk_container_lookup_widgets"
+      ~return_type:(make_glist_of_widget ())
+      ~throws:true ()
+  in
+
+  let mli_code =
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+      ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
+      ~methods:[ lookup_method ] ~properties:[] ~signals:[] ~constructors:[]
+  in
+  let ml_code =
+    Gir_gen_lib.Generate.Class_gen.generate_class_module ~ctx
+      ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
+      ~methods:[ lookup_method ] ~properties:[] ~signals:[] ~constructors:[]
+  in
+
+  Printf.eprintf "GList throws return wrapping .mli:\n%s\n\n" mli_code;
+
+  let mli_ast = Ml_ast_helpers.parse_interface mli_code in
+  let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
+
+  (* Verify .mli signature returns a result type *)
+  Layer2_helpers.validate_method_type_annotation_sig ~signature:mli_ast
+    ~class_name:"container_t" ~method_name:"lookup_widgets"
+    ~expected_type:"unit -> (GWidget.widget_t list, GError.t) result";
+
+  (* Verify .ml body calls Result.map *)
+  let container_class = find_class ml_ast "container" in
+  let lookup_field = find_method container_class "lookup_widgets" in
+  let body = get_method_body lookup_field in
+  if not (Ml_ast_helpers.method_body_calls_function body "Result" "map") then
+    Alcotest.fail
+      "lookup_widgets body should call Result.map to wrap throws+GList return"
+
+(** A method that accepts GLib.List<Widget> as a parameter should:
+    - have signature accepting GWidget.widget_t list
+    - have body with a List.map let-binding to unwrap to Layer 1 before the call *)
+let test_glist_param_unwrapping () =
+  let ctx = create_test_context () in
+
+  let set_children_method =
+    make_gir_method ~method_name:"set_children"
+      ~c_identifier:"gtk_container_set_children"
+      ~return_type:void_type
+      ~parameters:
+        [
+          make_gir_param ~param_name:"children"
+            ~param_type:(make_glist_of_widget ())
+            ();
+        ]
+      ()
+  in
+
+  let ml_code =
+    Gir_gen_lib.Generate.Class_gen.generate_class_module ~ctx
+      ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
+      ~methods:[ set_children_method ] ~properties:[] ~signals:[]
+      ~constructors:[]
+  in
+  let mli_code =
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+      ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
+      ~methods:[ set_children_method ] ~properties:[] ~signals:[]
+      ~constructors:[]
+  in
+
+  Printf.eprintf "GList param unwrapping .ml:\n%s\n\n" ml_code;
+  Printf.eprintf "GList param unwrapping .mli:\n%s\n\n" mli_code;
+
+  let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
+  let mli_ast = Ml_ast_helpers.parse_interface mli_code in
+
+  (* Verify .mli signature accepts Layer 2 type *)
+  Layer2_helpers.validate_method_type_annotation_sig ~signature:mli_ast
+    ~class_name:"container_t" ~method_name:"set_children"
+    ~expected_type:"GWidget.widget_t list -> unit";
+
+  (* Verify .ml body uses List.map to unwrap the L2 list to L1 *)
+  let container_class = find_class ml_ast "container" in
+  let set_children_field = find_method container_class "set_children" in
+  let body = get_method_body set_children_field in
+  if not (Ml_ast_helpers.method_body_calls_function body "List" "map") then
+    Alcotest.fail
+      "set_children body should call List.map to unwrap L2 list param to L1"
+
+(* ========================================================================= *)
 (* Test Suite *)
 (* ========================================================================= *)
 
@@ -1284,4 +1436,8 @@ let tests =
       test_parent_inherit_in_class_type;
     Alcotest.test_case "Cyclic cluster skips parent inherit" `Quick
       test_cyclic_cluster_skips_parent_inherit;
+    Alcotest.test_case "GList return wrapping" `Quick test_glist_return_wrapping;
+    Alcotest.test_case "GList throws return wrapping" `Quick
+      test_glist_return_throws_wrapping;
+    Alcotest.test_case "GList param unwrapping" `Quick test_glist_param_unwrapping;
   ]

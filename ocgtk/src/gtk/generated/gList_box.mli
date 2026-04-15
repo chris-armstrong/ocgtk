@@ -9,7 +9,7 @@ class type list_box_t = object
     method get_row_at_index : int -> GList_box_row.list_box_row_t option
     method get_row_at_y : int -> GList_box_row.list_box_row_t option
     method get_selected_row : unit -> GList_box_row.list_box_row_t option
-    method get_selected_rows : unit -> List_box_row.t list
+    method get_selected_rows : unit -> GList_box_row.list_box_row_t list
     method get_selection_mode : unit -> Gtk_enums.selectionmode
     method get_show_separators : unit -> bool
     method insert : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int -> unit

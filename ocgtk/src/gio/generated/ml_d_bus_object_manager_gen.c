@@ -24,6 +24,30 @@
 
 #if GLIB_CHECK_VERSION(2,30,0)
 
+CAMLexport CAMLprim value ml_g_dbus_object_manager_get_objects(value self)
+{
+CAMLparam1(self);
+
+CAMLlocal3(result, item, cell);
+    GList* c_result = g_dbus_object_manager_get_objects(GDBusObjectManager_val(self));
+Val_GList_with(c_result, result, item, cell, Val_GDBusObject((gpointer)_tmp->data));
+    g_list_free(c_result);
+    CAMLreturn(result);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_dbus_object_manager_get_objects(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusObjectManager requires GLib >= 2.30");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,30,0)
+
 CAMLexport CAMLprim value ml_g_dbus_object_manager_get_object_path(value self)
 {
 CAMLparam1(self);

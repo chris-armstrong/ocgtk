@@ -33,7 +33,7 @@ and tls_database_t = object
     method lookup_certificate_for_handle_finish : GAsync_result.async_result_t -> (GTls_certificate.tls_certificate_t, GError.t) result
     method lookup_certificate_issuer : GTls_certificate.tls_certificate_t -> tls_interaction_t option -> Gio_enums.tlsdatabaselookupflags -> GCancellable.cancellable_t option -> (GTls_certificate.tls_certificate_t, GError.t) result
     method lookup_certificate_issuer_finish : GAsync_result.async_result_t -> (GTls_certificate.tls_certificate_t, GError.t) result
-    method lookup_certificates_issued_by_finish : GAsync_result.async_result_t -> (Tls_certificate.t list, GError.t) result
+    method lookup_certificates_issued_by_finish : GAsync_result.async_result_t -> (GTls_certificate.tls_certificate_t list, GError.t) result
     method verify_chain : GTls_certificate.tls_certificate_t -> string -> GSocket_address_and__socket_address_enumerator_and__socket_connectable.socket_connectable_t option -> tls_interaction_t option -> Gio_enums.tlsdatabaseverifyflags -> GCancellable.cancellable_t option -> (Gio_enums.tlscertificateflags, GError.t) result
     method verify_chain_finish : GAsync_result.async_result_t -> (Gio_enums.tlscertificateflags, GError.t) result
     method as_tls_database : Tls_connection_and__tls_database_and__tls_interaction.Tls_database.t

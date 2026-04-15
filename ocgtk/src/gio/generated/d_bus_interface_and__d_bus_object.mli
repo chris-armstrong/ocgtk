@@ -32,6 +32,9 @@ and D_bus_object
   (** Gets the object path for @object. *)
   external get_object_path : t -> string = "ml_g_dbus_object_get_object_path"
 
+  (** Gets the D-Bus interfaces associated with @object. *)
+  external get_interfaces : t -> D_bus_interface.t list = "ml_g_dbus_object_get_interfaces"
+
   (** Gets the D-Bus interface with name @interface_name associated with
   @object, if any. *)
   external get_interface : t -> string -> D_bus_interface.t option = "ml_g_dbus_object_get_interface"

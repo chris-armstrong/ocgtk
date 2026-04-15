@@ -11,6 +11,7 @@ end
 and d_bus_object_t = object
     inherit Gd_bus_object_signals.d_bus_object_signals
     method get_interface : string -> d_bus_interface_t option
+    method get_interfaces : unit -> d_bus_interface_t list
     method get_object_path : unit -> string
     method as_d_bus_object : D_bus_interface_and__d_bus_object.D_bus_object.t
 end
@@ -42,6 +43,10 @@ and d_bus_object (obj : D_bus_interface_and__d_bus_object.D_bus_object.t) : d_bu
   method get_interface : string -> d_bus_interface_t option =
     fun interface_name ->
       Option.map (fun ret -> new d_bus_interface ret) (D_bus_interface_and__d_bus_object.D_bus_object.get_interface obj interface_name)
+
+  method get_interfaces : unit -> d_bus_interface_t list =
+    fun () ->
+      (List.map (fun ret -> new d_bus_interface ret))(D_bus_interface_and__d_bus_object.D_bus_object.get_interfaces obj)
 
   method get_object_path : unit -> string =
     fun () ->

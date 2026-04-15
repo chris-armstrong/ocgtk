@@ -23,6 +23,7 @@ class type dtls_connection_t = object
     method set_require_close_notify : bool -> unit
     method shutdown : bool -> bool -> GCancellable.cancellable_t option -> (bool, GError.t) result
     method shutdown_finish : GAsync_result.async_result_t -> (bool, GError.t) result
+    method base_socket : GDatagram_based.datagram_based_t
     method as_dtls_connection : Dtls_connection.t
 end
 

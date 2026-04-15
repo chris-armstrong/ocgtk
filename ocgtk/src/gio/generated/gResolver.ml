@@ -5,10 +5,10 @@ class type resolver_t = object
     method get_timeout : unit -> int
     method lookup_by_address : GInet_address.inet_address_t -> GCancellable.cancellable_t option -> (string, GError.t) result
     method lookup_by_address_finish : GAsync_result.async_result_t -> (string, GError.t) result
-    method lookup_by_name : string -> GCancellable.cancellable_t option -> (Inet_address.t list, GError.t) result
-    method lookup_by_name_finish : GAsync_result.async_result_t -> (Inet_address.t list, GError.t) result
-    method lookup_by_name_with_flags : string -> Gio_enums.resolvernamelookupflags -> GCancellable.cancellable_t option -> (Inet_address.t list, GError.t) result
-    method lookup_by_name_with_flags_finish : GAsync_result.async_result_t -> (Inet_address.t list, GError.t) result
+    method lookup_by_name : string -> GCancellable.cancellable_t option -> (GInet_address.inet_address_t list, GError.t) result
+    method lookup_by_name_finish : GAsync_result.async_result_t -> (GInet_address.inet_address_t list, GError.t) result
+    method lookup_by_name_with_flags : string -> Gio_enums.resolvernamelookupflags -> GCancellable.cancellable_t option -> (GInet_address.inet_address_t list, GError.t) result
+    method lookup_by_name_with_flags_finish : GAsync_result.async_result_t -> (GInet_address.inet_address_t list, GError.t) result
     method lookup_records : string -> Gio_enums.resolverrecordtype -> GCancellable.cancellable_t option -> (Gvariant.t list, GError.t) result
     method lookup_records_finish : GAsync_result.async_result_t -> (Gvariant.t list, GError.t) result
     method lookup_service : string -> string -> string -> GCancellable.cancellable_t option -> (Srv_target.t list, GError.t) result
@@ -37,25 +37,25 @@ class resolver (obj : Resolver.t) : resolver_t = object (self)
       let result = result#as_async_result in
       (Resolver.lookup_by_address_finish obj result)
 
-  method lookup_by_name : string -> GCancellable.cancellable_t option -> (Inet_address.t list, GError.t) result =
+  method lookup_by_name : string -> GCancellable.cancellable_t option -> (GInet_address.inet_address_t list, GError.t) result =
     fun hostname cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
-      (Resolver.lookup_by_name obj hostname cancellable)
+      Result.map (List.map (fun ret -> new GInet_address.inet_address ret))(Resolver.lookup_by_name obj hostname cancellable)
 
-  method lookup_by_name_finish : GAsync_result.async_result_t -> (Inet_address.t list, GError.t) result =
+  method lookup_by_name_finish : GAsync_result.async_result_t -> (GInet_address.inet_address_t list, GError.t) result =
     fun result ->
       let result = result#as_async_result in
-      (Resolver.lookup_by_name_finish obj result)
+      Result.map (List.map (fun ret -> new GInet_address.inet_address ret))(Resolver.lookup_by_name_finish obj result)
 
-  method lookup_by_name_with_flags : string -> Gio_enums.resolvernamelookupflags -> GCancellable.cancellable_t option -> (Inet_address.t list, GError.t) result =
+  method lookup_by_name_with_flags : string -> Gio_enums.resolvernamelookupflags -> GCancellable.cancellable_t option -> (GInet_address.inet_address_t list, GError.t) result =
     fun hostname flags cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
-      (Resolver.lookup_by_name_with_flags obj hostname flags cancellable)
+      Result.map (List.map (fun ret -> new GInet_address.inet_address ret))(Resolver.lookup_by_name_with_flags obj hostname flags cancellable)
 
-  method lookup_by_name_with_flags_finish : GAsync_result.async_result_t -> (Inet_address.t list, GError.t) result =
+  method lookup_by_name_with_flags_finish : GAsync_result.async_result_t -> (GInet_address.inet_address_t list, GError.t) result =
     fun result ->
       let result = result#as_async_result in
-      (Resolver.lookup_by_name_with_flags_finish obj result)
+      Result.map (List.map (fun ret -> new GInet_address.inet_address ret))(Resolver.lookup_by_name_with_flags_finish obj result)
 
   method lookup_records : string -> Gio_enums.resolverrecordtype -> GCancellable.cancellable_t option -> (Gvariant.t list, GError.t) result =
     fun rrname record_type cancellable ->

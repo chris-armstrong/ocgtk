@@ -51,10 +51,10 @@ module rec App_launch_context : sig
   be the current workspace. *)
   external set_desktop : t -> int -> unit = "ml_gdk_app_launch_context_set_desktop"
 
-  (** Gets the `GdkDisplay` that @context is for. *)
-  external get_display : t -> Display.t = "ml_gdk_app_launch_context_get_display"
-
   (* Properties *)
+
+  (** Get property: display *)
+  external get_display : t -> Display.t = "ml_gdk_app_launch_context_get_display"
 
 
 end = struct
@@ -107,10 +107,10 @@ end = struct
   be the current workspace. *)
   external set_desktop : t -> int -> unit = "ml_gdk_app_launch_context_set_desktop"
 
-  (** Gets the `GdkDisplay` that @context is for. *)
-  external get_display : t -> Display.t = "ml_gdk_app_launch_context_get_display"
-
   (* Properties *)
+
+  (** Get property: display *)
+  external get_display : t -> Display.t = "ml_gdk_app_launch_context_get_display"
 
 
 end

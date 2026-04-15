@@ -15,3 +15,5 @@ end
 
 class constraint_ : Constraint.t -> constraint__t
 
+val new_ : GConstraint_target.constraint_target_t option -> Gtk_enums.constraintattribute -> Gtk_enums.constraintrelation -> GConstraint_target.constraint_target_t option -> Gtk_enums.constraintattribute -> float -> float -> int -> constraint__t
+val new_constant : GConstraint_target.constraint_target_t option -> Gtk_enums.constraintattribute -> Gtk_enums.constraintrelation -> float -> int -> constraint__t

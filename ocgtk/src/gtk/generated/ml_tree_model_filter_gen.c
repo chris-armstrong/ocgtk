@@ -88,6 +88,23 @@ gtk_tree_model_filter_clear_cache(GtkTreeModelFilter_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_model_filter_get_child_model(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkTreeModelFilter *obj = (GtkTreeModelFilter *)GtkTreeModelFilter_val(self);
+    GtkTreeModel *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "child-model");
+if (pspec == NULL) caml_failwith("ml_gtk_tree_model_filter_get_child_model: property 'child-model' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "child-model", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GtkTreeModel(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
 CAMLexport CAMLprim value ml_gtk_tree_model_filter_get_virtual_root(value self)
 {
     CAMLparam1(self);
