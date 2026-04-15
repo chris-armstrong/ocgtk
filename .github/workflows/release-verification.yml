@@ -252,7 +252,8 @@ jobs:
           xvfb-run -a dune runtest
 
   # ── FreeBSD 14 ───────────────────────────────────────────────────────────────
-  # Disabled: gdesktopappinfo.h not available — see KNOWN_BUGS.md
+  # Disabled: FreeBSD runs on QEMU on GitHub runners which lack processor
+  # virtualisation extensions, making it too slow and prone to timeouts.
   freebsd:
     name: FreeBSD 14
     if: false
@@ -299,7 +300,9 @@ jobs:
   # setup-ocaml by default) with PKG_CONFIG_PATH pointing at MSYS2's
   # MinGW64 .pc files.
   #
-  # Disabled: gdesktopappinfo.h not available — see KNOWN_BUGS.md
+  # Disabled: GTK4 is not available as a Cygwin package, and building against
+  # MSYS2 MinGW64 libraries from a Cygwin OCaml compiler requires a custom
+  # setup that is not yet worked out.
   windows:
     name: Windows
     if: false
