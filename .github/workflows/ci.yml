@@ -25,7 +25,7 @@ jobs:
         uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
-          dune-cache: true
+          dune-cache: false  # temporarily disabled to diagnose setup-ocaml opam binary download failure
 
       - name: Install external dependencies
         run: |
