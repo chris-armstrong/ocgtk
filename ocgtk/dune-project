@@ -2,7 +2,7 @@
 
 (name ocgtk)
 
-(version 0.1~preview0)
+(version 0.1~preview1)
 
 (generate_opam_files true)
 
