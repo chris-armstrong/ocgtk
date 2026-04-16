@@ -1,0 +1,338 @@
+{
+  "plan_id": "test-remediation-phase1",
+  "title": "Test Suite Remediation — Phase 1: Directory Restructure and File Moves",
+  "source": "/home/deploy/projects/ocgtk/ocgtk/docs/plans/test-suite-remediation.md (Phase 1 only, subphases 1.1–1.8)",
+  "baseline": {
+    "build_passes": true,
+    "tests_pass": true,
+    "known_failures": [],
+    "notes": "Baseline recorded before any changes. dune build and xvfb-run dune runtest both pass cleanly on branch tests-cleanup at commit bafeb1ea. The class_generation/ subdirectory already exists (created previously) but contains only a README.md — no .ml files. All other target subdirectories (cross_namespace/, interface/) may not yet exist and must be created as part of the relevant stages. Reuse audit: this phase is purely structural (file moves + dune module renames + runner reference updates); no new logic is introduced and no reuse decisions are required. The single dune stanza uses (include_subdirs unqualified) so module names derive from filenames only, not paths — moving foo.ml to subdir/bar.ml requires renaming the dune modules entry from foo to bar AND updating test_gir_gen.ml references from Foo to Bar."
+  },
+  "epochs": [
+    {
+      "epoch": 1,
+      "title": "Phase 1 — Directory restructure and file moves",
+      "status": "pending",
+      "replanned": false,
+      "description": "Pure structural moves: create subdirectories, copy file contents verbatim, delete old files, update the dune modules list, and update test_gir_gen.ml runner references. No logic changes. Each stage maps to one subphase from the plan document.",
+      "stages": [
+        {
+          "stage": 1,
+          "title": "1.1 Move method_wrapper_tests.ml and constructor_wrapper_tests.ml to class_generation/",
+          "status": "committed",
+          "replanned": false,
+          "description": "method_wrapper_tests.ml and constructor_wrapper_tests.ml are Layer 2 (class generation) unit tests currently at the root of test_gir_gen/. The class_generation/ directory already exists (with only a README.md). Move both files there. Module names do NOT change (filenames stay the same), so dune modules entries and runner references remain unchanged.",
+          "files_to_modify": [
+            "ocgtk/src/tools/test_gir_gen/dune"
+          ],
+          "files_to_create": [
+            "ocgtk/src/tools/test_gir_gen/class_generation/method_wrapper_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/class_generation/constructor_wrapper_tests.ml"
+          ],
+          "files_to_delete": [
+            "ocgtk/src/tools/test_gir_gen/method_wrapper_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/constructor_wrapper_tests.ml"
+          ],
+          "depends_on": [],
+          "implementation_notes": "Because dune uses (include_subdirs unqualified) and the filenames do not change, the module names Method_wrapper_tests and Constructor_wrapper_tests remain the same. The dune (modules ...) list entries 'method_wrapper_tests' and 'constructor_wrapper_tests' stay as-is. The test_gir_gen.ml runner entries referencing Method_wrapper_tests and Constructor_wrapper_tests remain unchanged. The only actions are: (1) copy file contents verbatim to the new location, (2) delete the old files. Do NOT regenerate file contents — copy them exactly. Use Read to read the source files, then Write to the destination, then Bash to delete the originals.",
+          "coding_guidelines_to_emphasize": [],
+          "test_requirements": {
+            "existing_tests": [
+              "ocgtk/src/tools/test_gir_gen/class_generation/method_wrapper_tests.ml — the moved file itself contains the tests; they should still run after the move",
+              "ocgtk/src/tools/test_gir_gen/class_generation/constructor_wrapper_tests.ml — same"
+            ],
+            "new_tests": [],
+            "test_command": "cd ocgtk && dune build && xvfb-run dune runtest"
+          },
+          "acceptance_criteria": [
+            "dune build succeeds",
+            "xvfb-run dune runtest passes (all tests still pass)",
+            "method_wrapper_tests.ml and constructor_wrapper_tests.ml exist only in class_generation/, not at the root",
+            "dune modules list is unchanged (filenames stayed the same)"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "1.2 Create overrides/ subdirectory and move 8 override/version-guard test files",
+          "status": "pending",
+          "replanned": false,
+          "description": "Eight files testing the override/version-guard system live at the root with inconsistent naming. Create overrides/ and move+rename all 8 files to use the _tests suffix convention. Six are renamed (strip test_ prefix), one keeps its name (version_guard_tests.ml), one is renamed (test_enum_member_version.ml -> enum_member_version_tests.ml). Because filenames change, both the dune modules entries AND the test_gir_gen.ml runner references must be updated.",
+          "files_to_modify": [
+            "ocgtk/src/tools/test_gir_gen/dune",
+            "ocgtk/src/tools/test_gir_gen/test_gir_gen.ml"
+          ],
+          "files_to_create": [
+            "ocgtk/src/tools/test_gir_gen/overrides/types_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/overrides/parser_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/overrides/apply_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/overrides/extractor_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/overrides/e2e_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/overrides/overrides_integration_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/overrides/version_guard_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/overrides/enum_member_version_tests.ml"
+          ],
+          "files_to_delete": [
+            "ocgtk/src/tools/test_gir_gen/test_override_types.ml",
+            "ocgtk/src/tools/test_gir_gen/test_override_parser.ml",
+            "ocgtk/src/tools/test_gir_gen/test_override_apply.ml",
+            "ocgtk/src/tools/test_gir_gen/test_override_extractor.ml",
+            "ocgtk/src/tools/test_gir_gen/test_override_e2e.ml",
+            "ocgtk/src/tools/test_gir_gen/test_override_integration.ml",
+            "ocgtk/src/tools/test_gir_gen/version_guard_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/test_enum_member_version.ml"
+          ],
+          "depends_on": [],
+          "implementation_notes": "Rename mapping (old module name -> new module name):\n  test_override_types.ml       -> Test_override_types       -> types_tests.ml       -> Types_tests\n  test_override_parser.ml      -> Test_override_parser      -> parser_tests.ml      -> Parser_tests\n  test_override_apply.ml       -> Test_override_apply       -> apply_tests.ml       -> Apply_tests\n  test_override_extractor.ml   -> Test_override_extractor   -> extractor_tests.ml   -> Extractor_tests\n  test_override_e2e.ml         -> Test_override_e2e         -> e2e_tests.ml         -> E2e_tests\n  test_override_integration.ml -> Test_override_integration -> overrides_integration_tests.ml -> Overrides_integration_tests\n  version_guard_tests.ml       -> Version_guard_tests       -> version_guard_tests.ml -> Version_guard_tests  (UNCHANGED — same name)\n  test_enum_member_version.ml  -> Test_enum_member_version  -> enum_member_version_tests.ml -> Enum_member_version_tests\n\nIMPORTANT: 'integration_tests.ml' already exists in cross_namespace/. Under (include_subdirs unqualified) this means both would produce an Integration_tests module — a naming collision. Check whether cross_namespace/ already uses the module name Integration_tests in the dune modules list. If so, the overrides/ copy of integration_tests.ml will cause a duplicate module error. To avoid this, name the overrides file 'overrides_integration_tests.ml' instead and update the dune + runner entry accordingly.\n\nSimilarly, 'parser_tests.ml' may collide if integration/ already has a parser_tests.ml after stage 5. Since stages are applied sequentially, check for collisions against the CURRENT state (not the post-stage-5 state). At the time this stage runs, integration/ still has parser.ml (not parser_tests.ml), so no collision yet.\n\nFor dune modules list: replace each old entry (e.g. 'test_override_types') with the new name (e.g. 'types_tests'). For version_guard_tests: it keeps the same module name so the dune entry stays 'version_guard_tests'.\n\nFor test_gir_gen.ml: replace each old module reference with the new capitalized module name:\n  Test_override_types -> Types_tests\n  Test_override_parser -> Parser_tests (or Parser_tests — check no collision)\n  Test_override_apply -> Apply_tests\n  Test_override_extractor -> Extractor_tests\n  Test_override_e2e -> E2e_tests\n  Test_override_integration -> Overrides_integration_tests\n  Version_guard_tests -> Version_guard_tests (unchanged)\n  Test_enum_member_version -> Enum_member_version_tests\n\nNote: The test_gir_gen.ml runner also exposes two separate test suites from Test_override_parser: test_suite and test_suite_roundtrip. After renaming to Parser_tests, both references must be updated to Parser_tests.test_suite and Parser_tests.test_suite_roundtrip.\n\nDo NOT regenerate file contents. Read each source file, Write it verbatim to the destination, then delete the source.",
+          "coding_guidelines_to_emphasize": [],
+          "test_requirements": {
+            "existing_tests": [
+              "The 8 moved files contain all tests for the override/version-guard system; they must still pass after the rename"
+            ],
+            "new_tests": [],
+            "test_command": "cd ocgtk && dune build && xvfb-run dune runtest"
+          },
+          "acceptance_criteria": [
+            "dune build succeeds with no duplicate module errors",
+            "xvfb-run dune runtest passes",
+            "All 8 old root files are deleted",
+            "All 8 new overrides/ files exist",
+            "dune modules list updated with new module names",
+            "test_gir_gen.ml references updated to new module names"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "1.3 Move infrastructure/c_validation_tests.ml to c_stubs/c_validation_tests.ml",
+          "status": "pending",
+          "replanned": false,
+          "description": "c_validation_tests.ml lives in infrastructure/ which is reserved for test support code only. Move it to c_stubs/ where it belongs alongside other C-level tests. The filename stays the same so the module name does not change.",
+          "files_to_modify": [
+            "ocgtk/src/tools/test_gir_gen/dune"
+          ],
+          "files_to_create": [
+            "ocgtk/src/tools/test_gir_gen/c_stubs/c_validation_tests.ml"
+          ],
+          "files_to_delete": [
+            "ocgtk/src/tools/test_gir_gen/infrastructure/c_validation_tests.ml"
+          ],
+          "depends_on": [],
+          "implementation_notes": "The filename c_validation_tests.ml stays the same so the dune modules entry 'c_validation_tests' and the test_gir_gen.ml reference C_validation_tests are both unchanged. The only action is to copy the file verbatim to its new location and delete the old file. Note that infrastructure/ already contains c_validation.ml (the module being tested) and c_validation.mli — those do NOT move.",
+          "coding_guidelines_to_emphasize": [],
+          "test_requirements": {
+            "existing_tests": [
+              "ocgtk/src/tools/test_gir_gen/c_stubs/c_validation_tests.ml — the moved file contains the C_validation tests"
+            ],
+            "new_tests": [],
+            "test_command": "cd ocgtk && dune build && xvfb-run dune runtest"
+          },
+          "acceptance_criteria": [
+            "dune build succeeds",
+            "xvfb-run dune runtest passes",
+            "c_validation_tests.ml exists only in c_stubs/, not in infrastructure/",
+            "dune modules entry 'c_validation_tests' is unchanged"
+          ]
+        },
+        {
+          "stage": 4,
+          "title": "1.4 Move c_stubs/cross_namespace_tests.ml to cross_namespace/c_stub_tests.ml",
+          "status": "pending",
+          "replanned": false,
+          "description": "c_stubs/cross_namespace_tests.ml tests cross-namespace type references in C stubs. The canonical home for cross-namespace tests is cross_namespace/. The file is renamed from cross_namespace_tests.ml to c_stub_tests.ml. Because the filename changes, the dune entry and runner reference must be updated.",
+          "files_to_modify": [
+            "ocgtk/src/tools/test_gir_gen/dune",
+            "ocgtk/src/tools/test_gir_gen/test_gir_gen.ml"
+          ],
+          "files_to_create": [
+            "ocgtk/src/tools/test_gir_gen/cross_namespace/c_stub_tests.ml"
+          ],
+          "files_to_delete": [
+            "ocgtk/src/tools/test_gir_gen/c_stubs/cross_namespace_tests.ml"
+          ],
+          "depends_on": [],
+          "implementation_notes": "Old module name: Cross_namespace_tests (from cross_namespace_tests.ml). New module name: C_stub_tests (from c_stub_tests.ml). In dune: replace 'cross_namespace_tests' with 'c_stub_tests' in the modules list. In test_gir_gen.ml: replace Cross_namespace_tests with C_stub_tests. Do NOT regenerate file contents.",
+          "coding_guidelines_to_emphasize": [],
+          "test_requirements": {
+            "existing_tests": [
+              "ocgtk/src/tools/test_gir_gen/cross_namespace/c_stub_tests.ml — the moved file contains cross-namespace C stub tests"
+            ],
+            "new_tests": [],
+            "test_command": "cd ocgtk && dune build && xvfb-run dune runtest"
+          },
+          "acceptance_criteria": [
+            "dune build succeeds",
+            "xvfb-run dune runtest passes",
+            "cross_namespace_tests.ml no longer exists in c_stubs/",
+            "c_stub_tests.ml exists in cross_namespace/",
+            "dune modules entry updated from 'cross_namespace_tests' to 'c_stub_tests'",
+            "test_gir_gen.ml updated from Cross_namespace_tests to C_stub_tests"
+          ]
+        },
+        {
+          "stage": 5,
+          "title": "1.5 Rename integration/ files and split core.ml into 4 files",
+          "status": "pending",
+          "replanned": false,
+          "description": "All integration/ test files currently use plain noun names (core.ml, parser.ml, signals.ml, etc.) with no _tests suffix, which is inconsistent with every other directory. Additionally core.ml bundles four unrelated concerns and must be split. Actions: (1) split core.ml into 4 files, (2) rename 6 other integration files to add _tests suffix, (3) delete core.ml. All filenames change so all dune entries and runner references must be updated.",
+          "files_to_modify": [
+            "ocgtk/src/tools/test_gir_gen/dune",
+            "ocgtk/src/tools/test_gir_gen/test_gir_gen.ml"
+          ],
+          "files_to_create": [
+            "ocgtk/src/tools/test_gir_gen/integration/gir_parsing_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/integration/widget_generation_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/integration/nullable_generation_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/integration/cli_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/integration/gir_parser_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/integration/signals_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/integration/enums_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/integration/records_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/integration/properties_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/integration/edge_cases_tests.ml"
+          ],
+          "files_to_delete": [
+            "ocgtk/src/tools/test_gir_gen/integration/core.ml",
+            "ocgtk/src/tools/test_gir_gen/integration/parser.ml",
+            "ocgtk/src/tools/test_gir_gen/integration/signals.ml",
+            "ocgtk/src/tools/test_gir_gen/integration/enums.ml",
+            "ocgtk/src/tools/test_gir_gen/integration/records.ml",
+            "ocgtk/src/tools/test_gir_gen/integration/properties.ml",
+            "ocgtk/src/tools/test_gir_gen/integration/edge_cases.ml"
+          ],
+          "depends_on": [],
+          "implementation_notes": "SPLITTING core.ml: Read core.ml in full, then create 4 new files from its content:\n\n  gir_parsing_tests.ml — contains: simple_class_gir let-binding, test_gir_parsing, test_c_code_generation, test_generated_code_quality (quality test is concerned with C code generation so belongs here), and a 'let tests = [...]' list with those test cases.\n\n  widget_generation_tests.ml — contains: widget_with_methods_gir, many_methods_gir, many_params_gir let-bindings, test_widget_generation, test_all_methods_generated, test_camlparam_limitation, and a 'let tests = [...]' list.\n\n  nullable_generation_tests.ml — contains: nullable_params_gir let-binding, test_nullable_parameters, and a 'let tests = [...]' list.\n\n  cli_tests.ml — contains: test_help_output (the function is named test_help_output in the file, not test_help_text as the plan document states — use the actual function name), and a 'let tests = [...]' list.\n\nEach new file must include 'open Helpers' and 'open Printf' if the original uses them. Carefully check which GIR constants and which open statements each split file needs — do not include unused ones. Do NOT add new logic or change any function bodies.\n\nRENAMING existing files: For parser.ml, signals.ml, enums.ml, records.ml, properties.ml, edge_cases.ml — read each file verbatim and write to the _tests.ml destination. Do not change any content.\n\nIMPORTANT name collision check: 'parser_tests.ml' in integration/ will have module name Parser_tests. Stage 2 may also create an overrides/parser_tests.ml with module name Parser_tests. If stage 2 is already applied when this stage runs, there will be a collision. However, since each stage is applied independently and stages are applied in order, by the time stage 5 runs, stage 2 will have already resolved any overrides/ collision. Check whether overrides/ already has parser_tests.ml after stage 2 and if so, verify the module names don't collide — they would both be Parser_tests which IS a problem. If there is a collision, the integration/ file should be named integration_parser_tests.ml. Executor must check the state of overrides/ before creating integration/parser_tests.ml.\n\nDune modules list changes:\n  Remove: core, parser, signals, enums, records, properties, edge_cases\n  Add: gir_parsing_tests, widget_generation_tests, nullable_generation_tests, cli_tests, gir_parser_tests, signals_tests, enums_tests, records_tests, properties_tests, edge_cases_tests\n\ntest_gir_gen.ml changes:\n  Remove: (\"Core\", Core.tests) and (\"Parser\", Parser.tests)\n  Add entries for each new module. The runner label should describe the content: e.g. (\"GIR Parsing\", Gir_parsing_tests.tests), (\"Widget Generation\", Widget_generation_tests.tests), (\"Nullable Generation\", Nullable_generation_tests.tests), (\"CLI\", Cli_tests.tests), (\"GIR Parser\", Gir_parser_tests.tests)\n  Rename: Signals -> Signals_tests, Enums -> Enums_tests, Records -> Records_tests, Properties -> Properties_tests, Edge_cases -> Edge_cases_tests",
+          "coding_guidelines_to_emphasize": [
+            "code-reuse.md: Do not duplicate shared let-bindings (e.g. simple_class_gir) across split files — only include each constant in the file that uses it",
+            "module-boundaries.md: Each new file is a separate module; ensure each has correct open statements for the helpers it actually uses"
+          ],
+          "test_requirements": {
+            "existing_tests": [
+              "All tests from core.ml must survive the split and still run from their new files",
+              "All tests in parser.ml, signals.ml, enums.ml, records.ml, properties.ml, edge_cases.ml must still pass after simple rename"
+            ],
+            "new_tests": [],
+            "test_command": "cd ocgtk && dune build && xvfb-run dune runtest"
+          },
+          "acceptance_criteria": [
+            "dune build succeeds",
+            "xvfb-run dune runtest passes with identical test count to before this stage",
+            "core.ml, parser.ml, signals.ml, enums.ml, records.ml, properties.ml, edge_cases.ml are all deleted",
+            "10 new _tests.ml files exist in integration/",
+            "No duplicate module name errors from dune",
+            "dune modules list updated",
+            "test_gir_gen.ml runner references updated"
+          ]
+        },
+        {
+          "stage": 6,
+          "title": "1.6 Rename c_stubs/c_stubs_tests.ml to c_stubs/generation_tests.ml",
+          "status": "pending",
+          "replanned": false,
+          "description": "The filename c_stubs_tests.ml inside directory c_stubs/ is redundant. Rename to generation_tests.ml to describe what it actually tests (general C stub generation). The filename changes so the dune modules entry and runner reference must be updated.",
+          "files_to_modify": [
+            "ocgtk/src/tools/test_gir_gen/dune",
+            "ocgtk/src/tools/test_gir_gen/test_gir_gen.ml"
+          ],
+          "files_to_create": [
+            "ocgtk/src/tools/test_gir_gen/c_stubs/generation_tests.ml"
+          ],
+          "files_to_delete": [
+            "ocgtk/src/tools/test_gir_gen/c_stubs/c_stubs_tests.ml"
+          ],
+          "depends_on": [],
+          "implementation_notes": "Old module name: C_stubs_tests (from c_stubs_tests.ml). New module name: Generation_tests (from generation_tests.ml). In dune: replace 'c_stubs_tests' with 'generation_tests'. In test_gir_gen.ml: replace C_stubs_tests with Generation_tests. Read the source file verbatim and write to destination — do NOT regenerate content.",
+          "coding_guidelines_to_emphasize": [],
+          "test_requirements": {
+            "existing_tests": [
+              "ocgtk/src/tools/test_gir_gen/c_stubs/generation_tests.ml — the renamed file contains C stub generation tests"
+            ],
+            "new_tests": [],
+            "test_command": "cd ocgtk && dune build && xvfb-run dune runtest"
+          },
+          "acceptance_criteria": [
+            "dune build succeeds",
+            "xvfb-run dune runtest passes",
+            "c_stubs_tests.ml no longer exists in c_stubs/",
+            "generation_tests.ml exists in c_stubs/",
+            "dune modules entry updated from 'c_stubs_tests' to 'generation_tests'",
+            "test_gir_gen.ml updated from C_stubs_tests to Generation_tests"
+          ]
+        },
+        {
+          "stage": 7,
+          "title": "1.7 Reorganise runner registration order in test_gir_gen.ml with comment separators",
+          "status": "pending",
+          "replanned": false,
+          "description": "test_gir_gen.ml currently lists 55 test suite entries in a mixed order with no grouping. Reorganise to match the documented layer hierarchy and add comment separators between groups. This stage modifies only test_gir_gen.ml — no file moves, no dune changes. This stage depends on stages 1–6 having been applied so all module names are final.",
+          "files_to_modify": [
+            "ocgtk/src/tools/test_gir_gen/test_gir_gen.ml"
+          ],
+          "files_to_create": [],
+          "files_to_delete": [],
+          "depends_on": [1, 2, 3, 4, 5, 6],
+          "implementation_notes": "Reorder the Alcotest.run list into 7 groups with OCaml comment lines between them. The groups and their members (using post-stages-1-6 module names) are:\n\n  (* Layer 0 — C Stub Generation *)\n  Generation_tests, Header_naming_tests, Header_generation_tests, C_validation_tests, Nullable_tests, Error_handling_tests, Out_params_tests, Array_tests, Type_conversion_tests, C_stub_version_guard_tests\n\n  (* Layer 1 — ML Generation *)\n  Type_definition_tests, External_decl_tests, Signature_tests\n\n  (* Layer 2 — Class Generation *)\n  Method_wrapper_tests, Constructor_wrapper_tests\n  (Interface inheritance and interface method types entries will be added in stage 8)\n\n  (* Interface Parsing and C Stubs *)\n  (entries from stage 8)\n\n  (* Integration — End-to-end subprocess *)\n  Gir_parsing_tests, Widget_generation_tests, Nullable_generation_tests, Cli_tests, Parser_tests (or Integration_parser_tests), Signals_tests, Enums_tests, Records_tests, Properties_tests, Edge_cases_tests\n\n  (* Cross-namespace *)\n  C_stub_tests, C_stub_include_tests, Classify_type_tests, Dependency_includes_tests, Dependency_exclusion_tests, No_external_enum_decls_tests, No_external_bitfield_decls_tests, Integration_tests, Compilation_tests\n\n  (* Override system *)\n  Types_tests, Parser_tests (overrides — watch for collision), Apply_tests, Extractor_tests, E2e_tests, Integration_tests (overrides — watch for collision), Version_guard_tests, Enum_member_version_tests\n\nNOTE on the Interface group: stage 8 will add entries here. Leave a placeholder comment in stage 7 so stage 8 knows where to insert them, or leave the group empty and stage 8 fills it in.\n\nDo not change any logic — only reorder the list entries and add comment strings. The test_suite and test_suite_roundtrip split for Parser_tests (overrides) must be preserved. Verify the total entry count matches before and after reordering.",
+          "coding_guidelines_to_emphasize": [
+            "naming-and-intermediates.md: Comment separators should be descriptive and consistent with the layer names used in GIR_GEN_TESTING.md"
+          ],
+          "test_requirements": {
+            "existing_tests": [
+              "All existing tests must still be registered — the total number of test suite entries in the Alcotest.run list must be unchanged"
+            ],
+            "new_tests": [],
+            "test_command": "cd ocgtk && dune build && xvfb-run dune runtest"
+          },
+          "acceptance_criteria": [
+            "dune build succeeds",
+            "xvfb-run dune runtest passes with same test results",
+            "test_gir_gen.ml has 7 comment-separated groups",
+            "No test suite entries added or removed — only reordered"
+          ]
+        },
+        {
+          "stage": 8,
+          "title": "1.8 Move 4 interface test files to interface/ and class_generation/",
+          "status": "pending",
+          "replanned": false,
+          "description": "Four files testing the interface-support feature landed at the root of test_gir_gen/ with the inconsistent test_ prefix. Move 2 to a new interface/ subdirectory and 2 to class_generation/ (which already has files from stage 1). All filenames change so dune entries and runner references must be updated.",
+          "files_to_modify": [
+            "ocgtk/src/tools/test_gir_gen/dune",
+            "ocgtk/src/tools/test_gir_gen/test_gir_gen.ml"
+          ],
+          "files_to_create": [
+            "ocgtk/src/tools/test_gir_gen/interface/parsing_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/interface/from_gobject_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/class_generation/interface_inheritance_tests.ml",
+            "ocgtk/src/tools/test_gir_gen/class_generation/interface_method_types_tests.ml"
+          ],
+          "files_to_delete": [
+            "ocgtk/src/tools/test_gir_gen/test_interface_parsing.ml",
+            "ocgtk/src/tools/test_gir_gen/test_from_gobject_gen.ml",
+            "ocgtk/src/tools/test_gir_gen/test_interface_inheritance.ml",
+            "ocgtk/src/tools/test_gir_gen/test_interface_method_types.ml"
+          ],
+          "depends_on": [7],
+          "implementation_notes": "The interface/ subdirectory does NOT currently exist — it must be created (simply writing a file into it will cause dune to find it; no explicit mkdir needed if using Write tool, but verify the directory is created). Rename mapping:\n  test_interface_parsing.ml       -> Test_interface_parsing       -> interface/parsing_tests.ml              -> Parsing_tests\n  test_from_gobject_gen.ml        -> Test_from_gobject_gen         -> interface/from_gobject_tests.ml          -> From_gobject_tests\n  test_interface_inheritance.ml   -> Test_interface_inheritance    -> class_generation/interface_inheritance_tests.ml -> Interface_inheritance_tests\n  test_interface_method_types.ml  -> Test_interface_method_types   -> class_generation/interface_method_types_tests.ml -> Interface_method_types_tests\n\nDune modules list: replace each old entry with new:\n  test_interface_parsing -> parsing_tests\n  test_from_gobject_gen -> from_gobject_tests\n  test_interface_inheritance -> interface_inheritance_tests\n  test_interface_method_types -> interface_method_types_tests\n\ntest_gir_gen.ml: replace each old module reference:\n  Test_interface_parsing -> Parsing_tests (into the Interface Parsing group from stage 7)\n  Test_from_gobject_gen -> From_gobject_tests (into the Interface Parsing group)\n  Test_interface_inheritance -> Interface_inheritance_tests (into Layer 2 group)\n  Test_interface_method_types -> Interface_method_types_tests (into Layer 2 group)\n\nName collision check: Parsing_tests — verify no other file is named parsing_tests.ml anywhere in the tree. From_gobject_tests — verify no collision. Interface_inheritance_tests and Interface_method_types_tests — verify no collision.\n\nIMPORTANT: Do NOT regenerate file contents. Read each source file, Write verbatim to destination, delete source.",
+          "coding_guidelines_to_emphasize": [],
+          "test_requirements": {
+            "existing_tests": [
+              "interface/parsing_tests.ml — must contain same tests as test_interface_parsing.ml",
+              "interface/from_gobject_tests.ml — must contain same tests as test_from_gobject_gen.ml",
+              "class_generation/interface_inheritance_tests.ml — must contain same tests as test_interface_inheritance.ml",
+              "class_generation/interface_method_types_tests.ml — must contain same tests as test_interface_method_types.ml"
+            ],
+            "new_tests": [],
+            "test_command": "cd ocgtk && dune build && xvfb-run dune runtest"
+          },
+          "acceptance_criteria": [
+            "dune build succeeds",
+            "xvfb-run dune runtest passes",
+            "All 4 old root test_ files are deleted",
+            "interface/ directory exists with parsing_tests.ml and from_gobject_tests.ml",
+            "class_generation/ has interface_inheritance_tests.ml and interface_method_types_tests.ml",
+            "dune modules list updated with 4 new module names",
+            "test_gir_gen.ml references updated with 4 new module names in correct groups"
+          ]
+        }
+      ]
+    }
+  ]
+}

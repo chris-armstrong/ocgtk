@@ -1,6 +1,8 @@
 # Test Suite Remediation Plan
 
 **Status: 🔲 NOT STARTED (2026-04-09)**
+**Last revised: 2026-04-16** — rebased onto main (`bafeb1ea`); four interface-support
+test files and infrastructure helpers arrived; Phase 5 dune comments partly done.
 
 ## Overview
 
@@ -10,6 +12,33 @@ files, naming inconsistencies, string-based assertion violations, factory bypass
 code duplication. This plan addresses all five in dependency order.
 
 The audit was performed on branch `tests-cleanup` at commit `65c0d51d`.
+The plan was revised after merging main at `bafeb1ea` (2026-04-16).
+
+### What changed in main since the plan was written
+
+**New test files at `test_gir_gen/` root** (all use `test_` prefix — inconsistent
+with planned `_tests` suffix convention):
+- `test_interface_parsing.ml` — interface GIR parsing (Phase 1 of interface support)
+- `test_from_gobject_gen.ml` — `from_gobject` C stub generation for interfaces
+- `test_interface_inheritance.ml` — Layer 2 interface inheritance (Phase 4)
+- `test_interface_method_types.ml` — Layer 2 interface method types (Phase 7)
+
+**New infrastructure helpers added (already correct — AST-based):**
+- `ml_ast_helpers.ml`: class type declaration helpers (`find_class_type_declaration_impl`,
+  `find_class_definition`, `get_class_type_inherit_names`, `get_class_inherit_names`, etc.)
+- `ml_validation.ml`: class inheritance validators (`assert_class_type_inherits`,
+  `assert_class_type_not_inherits_prefix`, `assert_class_impl_inherits`)
+
+**`ocgtk/tests/dune` already updated:** disabled-test comments greatly improved;
+categorisation from Phase 5.1 is largely reflected in the comments already.
+New tests enabled: `test_gvariant`, `test_gvariant_type`, `test_glib_bytes`,
+`test_bounded_int`, `test_gio_volume_monitor`.
+
+**`ocgtk/tests/gtk/`:** `test_interface.ml` added (already uses `Helpers.require_gtk`);
+`test_button.ml` already uses `Helpers.require_gtk` — partial Phase 4.3 done.
+
+**Not yet done:** Phase 2.1 `.mli` signature helpers, all file moves, AST migration,
+factory consistency, deduplication, Phase 5 file/stanza deletions.
 
 ---
 
@@ -114,19 +143,39 @@ called `c_stubs/`. The file tests general C stub generation.
 - [ ] Update `dune` modules list
 - [ ] Update `test_gir_gen.ml` runner reference (`C_stubs_tests` → `Generation_tests`)
 
+### 1.8 Move interface support test files *(new — arrived in main after plan was written)*
+
+Four files testing the interface-support feature landed at the root of `test_gir_gen/`
+with the inconsistent `test_` prefix. They need to be placed in the correct layer
+directories using the `_tests` suffix convention.
+
+**Actions:**
+- [ ] Move `test_interface_parsing.ml` → `interface/parsing_tests.ml` *(new subdir)*
+- [ ] Move `test_from_gobject_gen.ml` → `interface/from_gobject_tests.ml`
+- [ ] Move `test_interface_inheritance.ml` → `class_generation/interface_inheritance_tests.ml`
+- [ ] Move `test_interface_method_types.ml` → `class_generation/interface_method_types_tests.ml`
+- [ ] Update `dune` modules list
+- [ ] Update `test_gir_gen.ml` runner references (module names change)
+
+---
+
 ### 1.7 Reorganise runner registration order
 
-`test_gir_gen.ml` has 51 entries in an order that mixes layers with no grouping.
+`test_gir_gen.ml` now has 55 entries (4 new interface entries added since the plan
+was written) in an order that mixes layers with no grouping.
 Reorganise to match the documented layer hierarchy with comment separators.
 
 **Actions:**
 - [ ] Group entries in `test_gir_gen.ml` as:
   1. Layer 0 — C Stub Generation (`c_stubs/`)
   2. Layer 1 — ML Generation (`ml_generation/`)
-  3. Layer 2 — Class Generation (`class_generation/`)
-  4. Integration — End-to-end subprocess (`integration/`)
-  5. Cross-namespace (`cross_namespace/`)
-  6. Override system (`overrides/`)
+  3. Layer 2 — Class Generation (`class_generation/`) — includes interface inheritance
+     and interface method types entries (moved in Phase 1.8)
+  4. Interface Parsing & C Stubs (`interface/`) — includes parsing and from_gobject
+     entries (moved in Phase 1.8)
+  5. Integration — End-to-end subprocess (`integration/`)
+  6. Cross-namespace (`cross_namespace/`)
+  7. Override system (`overrides/`)
 - [ ] Add comment lines between groups
 
 ---
@@ -140,6 +189,10 @@ Reorganise to match the documented layer hierarchy with comment separators.
 
 The existing `Ml_validation` helpers work against `.ml` structures. Integration
 tests read `.mli` files and need signature-level variants.
+
+Note: Class-type inheritance helpers (`assert_class_type_inherits`, etc.) were
+already added to `ml_validation.ml` in the interface-support work on main. The
+`.mli` signature helpers below are separate and still needed.
 
 **Actions:**
 - [ ] Add `assert_value_exists_sig : signature -> string -> unit` to `ml_validation.ml`
@@ -330,14 +383,29 @@ method → generate C → parse → find function.
 
 ### 4.3 GTK init deduplication in `ocgtk/tests/` (~65 lines saved)
 
-`tests/gtk/gtk_test_helpers.ml` already defines `require_gtk`. The identical 5-line
-GTK availability check is copy-pasted into 13 other test files that don't use it.
+`tests/gtk/gtk_test_helpers.ml` defines `require_gtk` and `require_gtk_version`.
+`test_button.ml` and `test_interface.ml` already use `Helpers.require_gtk` — done.
+The remaining active files still define `gtk_available`/`require_gtk` inline:
+
+Active files to fix (compiled, must change):
+- `tests/gtk/test_box.ml`
+- `tests/gtk/test_widget.ml`
+- `tests/gtk/test_string_list.ml`
+- `tests/gtk/test_range.ml`
+- `tests/gtk/test_variance.ml`
+- `tests/test_gobject_stress.ml` (in root `tests/`, uses own GMain inline)
+
+Disabled files (not compiled — fix if reactivated, not blocking):
+- `tests/test_grid.ml`, `test_window.ml`, `test_clipboard.ml`,
+  `tests/test_gobject.ml`, `tests/test_containers.ml`, `tests/test_gpack.ml`
 
 **Actions:**
-- [ ] Remove the duplicate GTK init block from each of the 13 files that define it
-  inline
-- [ ] Replace with `let require_gtk = Gtk_test_helpers.require_gtk` or open the module
-- [ ] Verify no test files still define their own `gtk_available`/`require_gtk`
+- [ ] Remove the duplicate GTK init block from each of the 6 active files above
+- [ ] Replace with `let require_gtk = Gtk_test_helpers.require_gtk` (in `gtk/`) or
+  equivalent import
+- [ ] Note: `test_gobject_stress.ml` is in `tests/` not `tests/gtk/`, so needs
+  `ocgtk.gtk` dep added to its dune stanza if it imports `gtk_test_helpers`
+- [ ] Verify no active test files still define their own `gtk_available`/`require_gtk`
 
 ### 4.4 `EventControllerKey` GIR constant (~15 lines saved)
 
@@ -367,44 +435,45 @@ and `integration/signals_tests.ml` as a namespace filler.
 The `ocgtk/tests/dune` file has ~26 commented-out test stanzas. Test files exist on
 disk but are unreachable, making coverage opaque.
 
-### 5.1 Categorise each disabled test
+**Update (2026-04-16):** Phase 5.1 categorisation is now largely reflected in the
+dune comments already (done in main). The actions below address what remains.
 
-For each disabled `.ml` file, determine:
+### 5.1 Categorise each disabled test *(mostly done in dune comments)*
 
-**Delete** — tested functionality no longer exists in this form:
-- `test_enum_roundtrip.ml`, `test_enum_values.ml`, `test_all_enums.ml` — used `Conv`
-  module (enum conversion now at C level); the round-trip property is covered by
-  generated C converters tested in `test_gir_gen/integration/enums_tests.ml`
-- `test_ffi_integration.ml` — `Conv` module; check whether FFI integration is covered
-  by `test_integration.ml` before deleting
-- `test_glib.ml`, `test_gobject.ml`, `test_gdk.ml` — `Conv` module; verify equivalent
-  coverage elsewhere
+**Delete** — dune comments already say "DISABLED: Uses Conv module":
+- `test_enum_roundtrip.ml`, `test_enum_values.ml`, `test_all_enums.ml`
+- `test_ffi_integration.ml`, `test_glib.ml`, `test_gobject.ml`, `test_gdk.ml`
+- `.ml` files and commented stanzas still exist on disk — removal pending (Phase 5.2)
 
-**Rewrite** — functionality exists but API changed:
-- `test_gpack.ml` — GPack module needs rewrite for new API
-- `test_window.ml` — GWindow module needs rewrite
+**Rewrite** — dune comments already say "DISABLED: needs to be rewritten for new API":
+- `test_gpack.ml` — GPack module
+- `test_window.ml` — GWindow module
+- No `#NNN` tracking issue references yet
 
-**Re-enable when APIs land** — keep disabled, improve comment:
-- `test_event_controller.ml`, `test_grid.ml`, `test_containers.ml` — missing generated
-  APIs; add explicit `(* Blocked: API X not yet generated *)` comment
+**Re-enable when APIs land** — dune says "Some APIs missing / need to be generated":
+- `test_event_controller.ml`, `test_event_controller_runtime.ml`
+- `test_grid.ml`, `test_containers.ml`
+- Comments do not yet name the specific blocking API
 
-**Verify moved** — stale stanzas for tests moved to `gtk/`:
-- `test_widget.ml`, `test_box.ml`, `test_button.ml`, `test_range.ml` — confirm
-  `tests/gtk/` equivalents are enabled in `tests/gtk/dune`, then delete stale stanzas
+**Verify moved** — dune says "Tests moved to gtk/ subdirectory":
+- `test_widget.ml`, `test_box.ml`, `test_button.ml`, `test_range.ml`
+- Confirmed active in `tests/gtk/dune` — stale stanzas and `.ml` files can be deleted
 
-**Unclear** — read and categorise:
+**Unclear** — still have plain `;` comment with no explanation:
 - `test_gdkpixbuf.ml`, `test_pango.ml`, `test_clipboard.ml`, `test_snapshot.ml`,
   `test_gobj.ml`
+- Read each file and assign to Delete / Rewrite / Re-enable category
 
 ### 5.2 Clean up `ocgtk/tests/dune`
 
 **Actions:**
-- [ ] For each test in "Delete" category: remove `.ml` file and dune stanza
+- [ ] For each test in "Delete" category: remove `.ml` file and commented dune stanza
 - [ ] For each test in "Rewrite" category: create a tracking issue; add explicit
   `(* TODO #NNN: rewrite for new API *)` comment in dune
-- [ ] For each test in "Re-enable" category: improve comment to name the blocking API
-- [ ] For each test in "Verify moved" category: confirm gtk/ equivalent is active,
-  delete stale stanza and `.ml` file
+- [ ] For each test in "Re-enable" category: update comment to name the specific
+  blocking API (e.g. `(* Blocked: GtkGrid bindings not yet generated *)`)
+- [ ] For each test in "Verify moved" category: delete stale stanza and `.ml` file
+- [ ] For each test in "Unclear" category: read the file, assign category, apply above
 
 ---
 
@@ -448,7 +517,13 @@ test_gir_gen/
   class_generation/            ← Layer 2 unit tests (new)
     method_wrapper_tests.ml
     constructor_wrapper_tests.ml
-    signal_wrapper_tests.ml    ← extracted from integration/signals
+    signal_wrapper_tests.ml         ← extracted from integration/signals
+    interface_inheritance_tests.ml  ← was test_interface_inheritance.ml (new)
+    interface_method_types_tests.ml ← was test_interface_method_types.ml (new)
+
+  interface/                   ← Interface parsing & C stubs (new)
+    parsing_tests.ml           ← was test_interface_parsing.ml (new)
+    from_gobject_tests.ml      ← was test_from_gobject_gen.ml (new)
 
   overrides/                   ← Override system tests (new)
     types_tests.ml
@@ -490,7 +565,7 @@ test_gir_gen/
 
 Phases are partially independent but the recommended order is:
 
-1. **Phase 1** (structural moves) — unblocks accurate naming everywhere else
+1. **Phase 1** (structural moves, including new Phase 1.8) — unblocks accurate naming everywhere else
 2. **Phase 2.1** (add `Ml_validation` helpers) — unblocks Phase 2.2–2.8
 3. **Phase 4.1–4.4** (deduplication helpers) — can run in parallel with Phase 2
 4. **Phase 2.2–2.8** (AST migration) — after helpers exist
