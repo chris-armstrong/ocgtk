@@ -164,25 +164,24 @@ let generate_method_wrappers ~ctx ~property_method_names:_
         let list_l2_wrapper =
           if Type_mappings.is_list_type meth.return_type then
             match meth.return_type.array with
-            | Some arr ->
-                (match
-                   Class_gen_type_resolution.resolve_layer2_class_name ~ctx
-                     ~current_layer2_module ~gir_type:arr.element_type
-                 with
-                 | Some class_name ->
-                     let mapper =
-                       sprintf "(List.map (fun ret -> new %s ret))" class_name
-                     in
-                     if meth.throws && meth.return_type.nullable then
-                       Some
-                         (sprintf
-                            "Result.map (fun r -> Option.map %s r)" mapper)
-                     else if meth.throws then
-                       Some (sprintf "Result.map %s" mapper)
-                     else if meth.return_type.nullable then
-                       Some (sprintf "Option.map %s" mapper)
-                     else Some (sprintf "%s" mapper)
-                 | None -> None)
+            | Some arr -> (
+                match
+                  Class_gen_type_resolution.resolve_layer2_class_name ~ctx
+                    ~current_layer2_module ~gir_type:arr.element_type
+                with
+                | Some class_name ->
+                    let mapper =
+                      sprintf "(List.map (fun ret -> new %s ret))" class_name
+                    in
+                    if meth.throws && meth.return_type.nullable then
+                      Some
+                        (sprintf "Result.map (fun r -> Option.map %s r)" mapper)
+                    else if meth.throws then
+                      Some (sprintf "Result.map %s" mapper)
+                    else if meth.return_type.nullable then
+                      Some (sprintf "Option.map %s" mapper)
+                    else Some (sprintf "%s" mapper)
+                | None -> None)
             | None -> None
           else None
         in
@@ -196,7 +195,8 @@ let generate_method_wrappers ~ctx ~property_method_names:_
             | Some class_name ->
                 if meth.throws && meth.return_type.nullable then
                   sprintf
-                    "Result.map (fun ret -> Option.map (fun ret -> new %s ret) ret)"
+                    "Result.map (fun ret -> Option.map (fun ret -> new %s ret) \
+                     ret)"
                     class_name
                 else if meth.throws then
                   sprintf "Result.map (fun ret -> new %s ret)" class_name
@@ -309,12 +309,10 @@ let generate_method_wrappers ~ctx ~property_method_names:_
                         sprintf "(List.map (fun c -> c#%s))" accessor
                       in
                       if p.nullable || p.param_type.nullable then
-                        bprintf buf
-                          "      let %s = Option.map %s %s in\n" name mapper
-                          name
+                        bprintf buf "      let %s = Option.map %s %s in\n" name
+                          mapper name
                       else
-                        bprintf buf "      let %s = %s %s in\n" name mapper
-                          name
+                        bprintf buf "      let %s = %s %s in\n" name mapper name
                   | _ -> ())
               | None -> ())
           | _ -> ());

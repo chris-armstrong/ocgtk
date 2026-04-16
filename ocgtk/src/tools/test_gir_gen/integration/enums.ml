@@ -2,7 +2,9 @@
 
 open Helpers
 
-let enum_gir = wrap_namespace {|
+let enum_gir =
+  wrap_namespace
+    {|
     <enumeration name="WrapMode" c:type="GtkWrapMode">
       <member name="none" value="0" c:identifier="GTK_WRAP_NONE"/>
       <member name="char" value="1" c:identifier="GTK_WRAP_CHAR"/>
@@ -14,7 +16,9 @@ let enum_gir = wrap_namespace {|
     </class>
 |}
 
-let bitfield_gir = wrap_namespace {|
+let bitfield_gir =
+  wrap_namespace
+    {|
     <bitfield name="StateFlags" c:type="GtkStateFlags">
       <member name="normal" value="0" c:identifier="GTK_STATE_FLAG_NORMAL"/>
       <member name="active" value="1" c:identifier="GTK_STATE_FLAG_ACTIVE"/>
@@ -26,7 +30,9 @@ let bitfield_gir = wrap_namespace {|
     </class>
 |}
 
-let multiple_enums_gir = wrap_namespace {|
+let multiple_enums_gir =
+  wrap_namespace
+    {|
     <enumeration name="Align" c:type="GtkAlign">
       <member name="fill" value="0" c:identifier="GTK_ALIGN_FILL"/>
       <member name="start" value="1" c:identifier="GTK_ALIGN_START"/>
@@ -45,7 +51,9 @@ let multiple_enums_gir = wrap_namespace {|
     </class>
 |}
 
-let single_enum_gir = wrap_namespace {|
+let single_enum_gir =
+  wrap_namespace
+    {|
     <enumeration name="SingleValue" c:type="GtkSingleValue">
       <member name="only" value="0" c:identifier="GTK_SINGLE_VALUE_ONLY"/>
     </enumeration>
@@ -180,8 +188,10 @@ let test_enum_naming_conventions () =
 let tests =
   [
     Alcotest.test_case "Enum generation (Phase 5.3)" `Quick test_enum_generation;
-    Alcotest.test_case "Bitfield generation (Phase 5.3)" `Quick test_bitfield_generation;
+    Alcotest.test_case "Bitfield generation (Phase 5.3)" `Quick
+      test_bitfield_generation;
     Alcotest.test_case "Multiple enums in one file" `Quick test_multiple_enums;
     Alcotest.test_case "Single value enum" `Quick test_single_value_enum;
-    Alcotest.test_case "Enum naming conventions" `Quick test_enum_naming_conventions;
+    Alcotest.test_case "Enum naming conventions" `Quick
+      test_enum_naming_conventions;
   ]

@@ -4,15 +4,64 @@ open StdLabels
 open Printf
 open Types
 
-let ocaml_keywords = [
-  "and"; "as"; "assert"; "begin"; "class"; "constraint"; "do"; "done";
-  "downto"; "else"; "end"; "exception"; "external"; "false"; "for"; "fun";
-  "function"; "functor"; "if"; "in"; "include"; "inherit"; "initializer";
-  "land"; "lazy"; "let"; "lor"; "lsl"; "lsr"; "lxor"; "match"; "method";
-  "mod"; "module"; "mutable"; "new"; "nonrec"; "object"; "of"; "open";
-  "or"; "private"; "rec"; "sig"; "struct"; "then"; "to"; "true"; "try";
-  "type"; "val"; "virtual"; "when"; "while"; "with";
-]
+let ocaml_keywords =
+  [
+    "and";
+    "as";
+    "assert";
+    "begin";
+    "class";
+    "constraint";
+    "do";
+    "done";
+    "downto";
+    "else";
+    "end";
+    "exception";
+    "external";
+    "false";
+    "for";
+    "fun";
+    "function";
+    "functor";
+    "if";
+    "in";
+    "include";
+    "inherit";
+    "initializer";
+    "land";
+    "lazy";
+    "let";
+    "lor";
+    "lsl";
+    "lsr";
+    "lxor";
+    "match";
+    "method";
+    "mod";
+    "module";
+    "mutable";
+    "new";
+    "nonrec";
+    "object";
+    "of";
+    "open";
+    "or";
+    "private";
+    "rec";
+    "sig";
+    "struct";
+    "then";
+    "to";
+    "true";
+    "try";
+    "type";
+    "val";
+    "virtual";
+    "when";
+    "while";
+    "with";
+  ]
 
 let sanitize_signal_name name =
   let base =
@@ -20,13 +69,17 @@ let sanitize_signal_name name =
     |> String.map ~f:(function '-' -> '_' | c -> c)
     |> Utils.to_snake_case
   in
-  "on_" ^ if List.exists ocaml_keywords ~f:(String.equal base) then base ^ "_" else base
+  "on_"
+  ^
+  if List.exists ocaml_keywords ~f:(String.equal base) then base ^ "_" else base
 
 let has_widget_parent class_name parent_chain =
-  let normalized_class = Utils.normalize_class_name class_name |> String.lowercase_ascii in
-  normalized_class = "widget" ||
-  List.exists parent_chain ~f:(fun p ->
-    String.lowercase_ascii (Utils.normalize_class_name p) = "widget")
+  let normalized_class =
+    Utils.normalize_class_name class_name |> String.lowercase_ascii
+  in
+  normalized_class = "widget"
+  || List.exists parent_chain ~f:(fun p ->
+      String.lowercase_ascii (Utils.normalize_class_name p) = "widget")
 
 let connect_target_expr ~has_widget_parent:_ = "obj"
 
@@ -65,25 +118,29 @@ let generate_signal_class ~ctx ~class_name ~signals ~parent_chain =
 
   let supported, skipped =
     List.partition signals ~f:(fun s ->
-      is_void_signal s && List.length s.sig_parameters = 0)
+        is_void_signal s && List.length s.sig_parameters = 0)
   in
 
   List.iter skipped ~f:(fun s ->
-    eprintf "Skipping signal '%s' for %s (non-void return or parameters not supported yet)\n"
-      s.signal_name class_name);
+      eprintf
+        "Skipping signal '%s' for %s (non-void return or parameters not \
+         supported yet)\n"
+        s.signal_name class_name);
 
   if List.length supported = 0 then
     bprintf buf "  (* No parameterless void signals parsed from GIR *)\n"
   else
     List.iter supported ~f:(fun (signal : gir_signal) ->
-      let method_name = sanitize_signal_name signal.signal_name in
-      (match signal.doc with
-      | Some doc -> bprintf buf "  (** %s *)\n" (Utils.sanitize_doc (String.trim doc))
-      | None -> ());
-      bprintf buf "  method %s ~callback =\n" method_name;
-      bprintf buf "    Gobject.Signal.connect_simple %s ~name:\"%s\" ~callback ~after:false\n\n"
-        target_expr signal.signal_name;
-    );
+        let method_name = sanitize_signal_name signal.signal_name in
+        (match signal.doc with
+        | Some doc ->
+            bprintf buf "  (** %s *)\n" (Utils.sanitize_doc (String.trim doc))
+        | None -> ());
+        bprintf buf "  method %s ~callback =\n" method_name;
+        bprintf buf
+          "    Gobject.Signal.connect_simple %s ~name:\"%s\" ~callback \
+           ~after:false\n\n"
+          target_expr signal.signal_name);
 
   bprintf buf "end\n";
   Buffer.contents buf

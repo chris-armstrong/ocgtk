@@ -11,9 +11,8 @@
 (*                                                                        *)
 (**************************************************************************)
 
-(** Unsigned 64-bit integer type for GLib [guint64] values.
-    This is an alias for [Unsigned.UInt64] from the [integers] library,
-    exposed under the consistent [UInt64] name used by ocgtk's bounded
-    integer module family. *)
+(** Unsigned 64-bit integer type for GLib [guint64] values. This is an alias for
+    [Unsigned.UInt64] from the [integers] library, exposed under the consistent
+    [UInt64] name used by ocgtk's bounded integer module family. *)
 
 include module type of Unsigned.UInt64

@@ -10,11 +10,14 @@ let editable_set_text obj text = Wrappers.Editable.set_text (Obj.magic obj) text
 
 (* close-request returns bool — not yet supported by signal generator *)
 let on_close_request window_obj callback =
-  let closure = Gobject.Closure.create (fun argv ->
-    callback ();
-    Gobject.Value.set_boolean (Gobject.Closure.result argv) false
-  ) in
-  ignore (Gobject.Signal.connect window_obj ~name:"close-request" ~callback:closure ~after:false)
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        callback ();
+        Gobject.Value.set_boolean (Gobject.Closure.result argv) false)
+  in
+  ignore
+    (Gobject.Signal.connect window_obj ~name:"close-request" ~callback:closure
+       ~after:false)
 
 let () =
   ignore (GMain.init ());
@@ -30,7 +33,9 @@ let () =
   window#set_child (Some (vbox :> Widget.widget_t));
 
   (* Title *)
-  let title_label = new Label.label (Wrappers.Label.new_ (Some "Please log in")) in
+  let title_label =
+    new Label.label (Wrappers.Label.new_ (Some "Please log in"))
+  in
   title_label#set_markup "<big><b>Please log in</b></big>";
   vbox#append (title_label :> Widget.widget_t);
 
@@ -38,7 +43,9 @@ let () =
   let username_box = new Box.box (Wrappers.Box.new_ `HORIZONTAL 10) in
   vbox#append (username_box :> Widget.widget_t);
 
-  let username_label = new Label.label (Wrappers.Label.new_ (Some "Username:")) in
+  let username_label =
+    new Label.label (Wrappers.Label.new_ (Some "Username:"))
+  in
   username_box#append (username_label :> Widget.widget_t);
 
   let username_entry_obj = Wrappers.Entry.new_ () in
@@ -50,7 +57,9 @@ let () =
   let password_box = new Box.box (Wrappers.Box.new_ `HORIZONTAL 10) in
   vbox#append (password_box :> Widget.widget_t);
 
-  let password_label = new Label.label (Wrappers.Label.new_ (Some "Password:")) in
+  let password_label =
+    new Label.label (Wrappers.Label.new_ (Some "Password:"))
+  in
   password_box#append (password_label :> Widget.widget_t);
 
   let password_entry_obj = Wrappers.Password_entry.new_ () in
@@ -60,7 +69,10 @@ let () =
   password_box#append (password_entry :> Widget.widget_t);
 
   (* Remember me checkbox *)
-  let remember_check = new Check_button.check_button (Wrappers.Check_button.new_with_label (Some "Remember me")) in
+  let remember_check =
+    new Check_button.check_button
+      (Wrappers.Check_button.new_with_label (Some "Remember me"))
+  in
   vbox#append (remember_check :> Widget.widget_t);
 
   (* Status label *)
@@ -76,30 +88,35 @@ let () =
   let login_btn = new Button.button (Wrappers.Button.new_with_label "Login") in
   button_box#append (login_btn :> Widget.widget_t);
 
-  ignore (login_btn#on_clicked ~callback:(fun () ->
-    let username = editable_get_text username_entry_obj in
-    let password = editable_get_text password_entry_obj in
+  ignore
+    (login_btn#on_clicked ~callback:(fun () ->
+         let username = editable_get_text username_entry_obj in
+         let password = editable_get_text password_entry_obj in
 
-    if username = "" || password = "" then
-      status_label#set_label "Please fill in all fields"
-    else if username = "admin" && password = "password" then begin
-      status_label#set_markup "<span foreground='green'>Login successful!</span>";
-      Printf.printf "Logged in as: %s (Remember me: %b)\n"
-        username (remember_check#get_active ())
-    end else
-      status_label#set_markup "<span foreground='red'>Invalid credentials</span>"
-  ));
+         if username = "" || password = "" then
+           status_label#set_label "Please fill in all fields"
+         else if username = "admin" && password = "password" then begin
+           status_label#set_markup
+             "<span foreground='green'>Login successful!</span>";
+           Printf.printf "Logged in as: %s (Remember me: %b)\n" username
+             (remember_check#get_active ())
+         end
+         else
+           status_label#set_markup
+             "<span foreground='red'>Invalid credentials</span>"));
 
   (* Cancel button *)
-  let cancel_btn = new Button.button (Wrappers.Button.new_with_label "Cancel") in
+  let cancel_btn =
+    new Button.button (Wrappers.Button.new_with_label "Cancel")
+  in
   button_box#append (cancel_btn :> Widget.widget_t);
 
-  ignore (cancel_btn#on_clicked ~callback:(fun () ->
-    editable_set_text username_entry_obj "";
-    editable_set_text password_entry_obj "";
-    status_label#set_label "";
-    remember_check#set_active false
-  ));
+  ignore
+    (cancel_btn#on_clicked ~callback:(fun () ->
+         editable_set_text username_entry_obj "";
+         editable_set_text password_entry_obj "";
+         status_label#set_label "";
+         remember_check#set_active false));
 
   (* Show window and run main loop *)
   window#present ();

@@ -1,8 +1,8 @@
 (** Tests for GTK4 Event Controller System (Phase 3.3)
 
-    Note: These tests verify API compilation and structure.
-    Runtime tests with actual GTK objects will be added in Phase 4+
-    when gtk_init is available in the bindings. *)
+    Note: These tests verify API compilation and structure. Runtime tests with
+    actual GTK objects will be added in Phase 4+ when gtk_init is available in
+    the bindings. *)
 
 open Alcotest
 
@@ -30,25 +30,53 @@ let test_gestureclick_module_exists () =
 
 let test_propagation_phase_variants () =
   (* Verify propagation phase variants compile *)
-  let phases = [`NONE; `CAPTURE; `BUBBLE; `TARGET] in
+  let phases = [ `NONE; `CAPTURE; `BUBBLE; `TARGET ] in
   check int "all propagation phases defined" 4 (List.length phases)
 
 let test_propagation_limit_variants () =
   (* Verify propagation limit variants compile *)
-  let limits = [`NONE; `SAME_NATIVE] in
+  let limits = [ `NONE; `SAME_NATIVE ] in
   check int "all propagation limits defined" 2 (List.length limits)
 
 (** {2 API Signature Tests} *)
 
 let test_base_methods_exist () =
   (* Verify Event_controller module methods exist by checking they compile *)
-  let _ = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.get_widget in
-  let _ = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.get_propagation_phase in
-  let _ = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.set_propagation_phase in
-  let _ = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.get_propagation_limit in
-  let _ = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.set_propagation_limit in
-  let _ = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.reset in
-  let _ = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.get_current_event in
+  let _ =
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .Event_controller
+    .get_widget
+  in
+  let _ =
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .Event_controller
+    .get_propagation_phase
+  in
+  let _ =
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .Event_controller
+    .set_propagation_phase
+  in
+  let _ =
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .Event_controller
+    .get_propagation_limit
+  in
+  let _ =
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .Event_controller
+    .set_propagation_limit
+  in
+  let _ =
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .Event_controller
+    .reset
+  in
+  let _ =
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .Event_controller
+    .get_current_event
+  in
   check bool "Event_controller module methods exist" true true
 
 let test_key_controller_methods_exist () =
@@ -79,38 +107,42 @@ let test_gesture_click_methods_exist () =
 
 let test_key_pressed_callback_signature () =
   (* Verify key-pressed callback signature compiles *)
-  let _callback : keyval:int -> keycode:int -> state:Gdk.Tags.modifier_type list -> bool =
-    fun ~keyval:_ ~keycode:_ ~state:_ -> false in
+  let _callback :
+      keyval:int -> keycode:int -> state:Gdk.Tags.modifier_type list -> bool =
+   fun ~keyval:_ ~keycode:_ ~state:_ -> false
+  in
   check bool "key-pressed signature correct" true true
 
 let test_key_released_callback_signature () =
   (* Verify key-released callback signature compiles *)
-  let _callback : keyval:int -> keycode:int -> state:Gdk.Tags.modifier_type list -> unit =
-    fun ~keyval:_ ~keycode:_ ~state:_ -> () in
+  let _callback :
+      keyval:int -> keycode:int -> state:Gdk.Tags.modifier_type list -> unit =
+   fun ~keyval:_ ~keycode:_ ~state:_ -> ()
+  in
   check bool "key-released signature correct" true true
 
 let test_modifiers_callback_signature () =
   (* Verify modifiers callback signature compiles *)
   let _callback : state:Gdk.Tags.modifier_type list -> bool =
-    fun ~state:_ -> false in
+   fun ~state:_ -> false
+  in
   check bool "modifiers signature correct" true true
 
 let test_click_pressed_callback_signature () =
   (* Verify click-pressed callback signature compiles *)
   let _callback : n_press:int -> x:float -> y:float -> unit =
-    fun ~n_press:_ ~x:_ ~y:_ -> () in
+   fun ~n_press:_ ~x:_ ~y:_ -> ()
+  in
   check bool "pressed signature correct" true true
 
 let test_motion_callback_signature () =
   (* Verify motion callback signature compiles *)
-  let _callback : x:float -> y:float -> unit =
-    fun ~x:_ ~y:_ -> () in
+  let _callback : x:float -> y:float -> unit = fun ~x:_ ~y:_ -> () in
   check bool "motion signature correct" true true
 
 let test_leave_callback_signature () =
   (* Verify leave callback signature compiles *)
-  let _callback : unit -> unit =
-    fun () -> () in
+  let _callback : unit -> unit = fun () -> () in
   check bool "leave signature correct" true true
 
 (** {2 GTK4 API Compatibility Tests} *)
@@ -121,14 +153,16 @@ let test_controller_methods_return_handler_ids () =
 
 let test_propagation_phase_gtk4_values () =
   (* Verify we have all GTK4 propagation phases *)
-  let phases = [`NONE; `CAPTURE; `BUBBLE; `TARGET] in
+  let phases = [ `NONE; `CAPTURE; `BUBBLE; `TARGET ] in
   check bool "has CAPTURE phase" true (List.mem `CAPTURE phases);
   check bool "has BUBBLE phase" true (List.mem `BUBBLE phases);
   check bool "has TARGET phase" true (List.mem `TARGET phases)
 
 (** {2 Widget Integration Tests} *)
 
-module Widget = Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget
+module Widget =
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  .Widget
 
 let test_widget_add_controller_method () =
   (* Verify Widget.add_controller exists *)
@@ -143,42 +177,56 @@ let test_widget_remove_controller_method () =
 (** {2 Test Suite} *)
 
 let () =
-  run "Event Controller Tests (Phase 3.3)" [
-    "module_structure", [
-      test_case "EventController module" `Quick test_eventcontroller_module_exists;
-      test_case "Event_controller_key module" `Quick test_eventcontrollerkey_module_exists;
-      test_case "Event_controller_motion module" `Quick test_eventcontrollermotion_module_exists;
-      test_case "Gesture_click module" `Quick test_gestureclick_module_exists;
-    ];
-
-    "type_system", [
-      test_case "propagation_phase variants" `Quick test_propagation_phase_variants;
-      test_case "propagation_limit variants" `Quick test_propagation_limit_variants;
-    ];
-
-    "api_signatures", [
-      test_case "Base methods" `Quick test_base_methods_exist;
-      test_case "Event_controller_key methods" `Quick test_key_controller_methods_exist;
-      test_case "Event_controller_motion methods" `Quick test_motion_controller_methods_exist;
-      test_case "Gesture_click methods" `Quick test_gesture_click_methods_exist;
-    ];
-
-    "callback_signatures", [
-      test_case "key-pressed" `Quick test_key_pressed_callback_signature;
-      test_case "key-released" `Quick test_key_released_callback_signature;
-      test_case "modifiers" `Quick test_modifiers_callback_signature;
-      test_case "click-pressed" `Quick test_click_pressed_callback_signature;
-      test_case "motion" `Quick test_motion_callback_signature;
-      test_case "leave" `Quick test_leave_callback_signature;
-    ];
-
-    "gtk4_compat", [
-      test_case "handler_id returns" `Quick test_controller_methods_return_handler_ids;
-      test_case "propagation phases" `Quick test_propagation_phase_gtk4_values;
-    ];
-
-    "widget_integration", [
-      test_case "add_controller" `Quick test_widget_add_controller_method;
-      test_case "remove_controller" `Quick test_widget_remove_controller_method;
-    ];
-  ]
+  run "Event Controller Tests (Phase 3.3)"
+    [
+      ( "module_structure",
+        [
+          test_case "EventController module" `Quick
+            test_eventcontroller_module_exists;
+          test_case "Event_controller_key module" `Quick
+            test_eventcontrollerkey_module_exists;
+          test_case "Event_controller_motion module" `Quick
+            test_eventcontrollermotion_module_exists;
+          test_case "Gesture_click module" `Quick
+            test_gestureclick_module_exists;
+        ] );
+      ( "type_system",
+        [
+          test_case "propagation_phase variants" `Quick
+            test_propagation_phase_variants;
+          test_case "propagation_limit variants" `Quick
+            test_propagation_limit_variants;
+        ] );
+      ( "api_signatures",
+        [
+          test_case "Base methods" `Quick test_base_methods_exist;
+          test_case "Event_controller_key methods" `Quick
+            test_key_controller_methods_exist;
+          test_case "Event_controller_motion methods" `Quick
+            test_motion_controller_methods_exist;
+          test_case "Gesture_click methods" `Quick
+            test_gesture_click_methods_exist;
+        ] );
+      ( "callback_signatures",
+        [
+          test_case "key-pressed" `Quick test_key_pressed_callback_signature;
+          test_case "key-released" `Quick test_key_released_callback_signature;
+          test_case "modifiers" `Quick test_modifiers_callback_signature;
+          test_case "click-pressed" `Quick test_click_pressed_callback_signature;
+          test_case "motion" `Quick test_motion_callback_signature;
+          test_case "leave" `Quick test_leave_callback_signature;
+        ] );
+      ( "gtk4_compat",
+        [
+          test_case "handler_id returns" `Quick
+            test_controller_methods_return_handler_ids;
+          test_case "propagation phases" `Quick
+            test_propagation_phase_gtk4_values;
+        ] );
+      ( "widget_integration",
+        [
+          test_case "add_controller" `Quick test_widget_add_controller_method;
+          test_case "remove_controller" `Quick
+            test_widget_remove_controller_method;
+        ] );
+    ]

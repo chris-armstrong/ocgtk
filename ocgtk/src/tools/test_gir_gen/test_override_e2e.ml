@@ -97,7 +97,13 @@ let test_e2e_ignore_class_and_method () =
   Fun.protect
     ~finally:(fun () -> Sys.remove tmp)
     (fun () ->
-      let _repository, _namespace, classes, interfaces, enums, bitfields, records =
+      let ( _repository,
+            _namespace,
+            classes,
+            interfaces,
+            enums,
+            bitfields,
+            records ) =
         Gir_gen_lib.Parse.Gir_parser.parse_gir_file tmp []
       in
       let result =
@@ -127,7 +133,8 @@ let test_e2e_ignore_class_and_method () =
             String.equal c.class_name "Widget")
           result.classes
       in
-      Alcotest.(check bool) "Widget present in classes" true
+      Alcotest.(check bool)
+        "Widget present in classes" true
         (Option.is_some widget_opt);
 
       (* Widget.create should be absent from Widget's methods *)
@@ -138,8 +145,8 @@ let test_e2e_ignore_class_and_method () =
             String.equal m.method_name "create")
           widget.methods
       in
-      Alcotest.(check bool) "Widget.create absent from methods" false
-        create_present;
+      Alcotest.(check bool)
+        "Widget.create absent from methods" false create_present;
 
       (* Widget.show should still be present *)
       let show_present =

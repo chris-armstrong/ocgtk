@@ -2,12 +2,16 @@
 
 open Helpers
 
-let empty_class_gir = wrap_namespace {|
+let empty_class_gir =
+  wrap_namespace
+    {|
     <class name="EmptyWidget" c:type="GtkEmptyWidget" parent="Widget">
     </class>
 |}
 
-let no_constructor_gir = wrap_namespace {|
+let no_constructor_gir =
+  wrap_namespace
+    {|
     <class name="NoConstructor" c:type="GtkNoConstructor" parent="Widget">
       <method name="do_something" c:identifier="gtk_no_constructor_do_something">
         <return-value><type name="none" c:type="void"/></return-value>
@@ -21,7 +25,7 @@ let test_empty_class () =
   let output_dir = "/tmp/test_empty_class_output" in
 
   create_gir_file test_gir empty_class_gir;
-  create_filter_file test_filter ["EmptyWidget"];
+  create_filter_file test_filter [ "EmptyWidget" ];
   ensure_output_dir output_dir;
 
   let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
@@ -39,7 +43,7 @@ let test_no_constructor_class () =
   let output_dir = "/tmp/test_no_constructor_output" in
 
   create_gir_file test_gir no_constructor_gir;
-  create_filter_file test_filter ["NoConstructor"];
+  create_filter_file test_filter [ "NoConstructor" ];
   ensure_output_dir output_dir;
 
   let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
@@ -55,5 +59,6 @@ let test_no_constructor_class () =
 let tests =
   [
     Alcotest.test_case "Empty class generation" `Quick test_empty_class;
-    Alcotest.test_case "Class with no constructor" `Quick test_no_constructor_class;
+    Alcotest.test_case "Class with no constructor" `Quick
+      test_no_constructor_class;
   ]

@@ -4,5 +4,5 @@
 class type sphere_t = GBox_and__sphere.sphere_t
 
 class sphere : Box_and__sphere.Sphere.t -> sphere_t
-val alloc : unit -> sphere_t
 
+val alloc : unit -> sphere_t

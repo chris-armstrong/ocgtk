@@ -1,15 +1,17 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GlyphItem: GlyphItem *)
 
-(** A `PangoGlyphItem` is a pair of a `PangoItem` and the glyphs
-resulting from shaping the items text.
+type t = [ `glyph_item ] Gobject.obj
+(** A `PangoGlyphItem` is a pair of a `PangoItem` and the glyphs resulting from
+    shaping the items text.
 
-As an example of the usage of `PangoGlyphItem`, the results
-of shaping text with `PangoLayout` is a list of `PangoLayoutLine`,
-each of which contains a list of `PangoGlyphItem`. *)
-type t = [`glyph_item] Gobject.obj
+    As an example of the usage of `PangoGlyphItem`, the results of shaping text
+    with `PangoLayout` is a list of `PangoLayoutLine`, each of which contains a
+    list of `PangoGlyphItem`. *)
 
 (* Methods *)
+
+external split : t -> string -> int -> t option = "ml_pango_glyph_item_split"
 (** Modifies @orig to cover only the text after @split_index, and
 returns a new item that covers the text before @split_index that
 used to be in @orig.
@@ -21,14 +23,15 @@ assigned to each item, you can't create a zero-length item).
 
 This function is similar in function to pango_item_split() (and uses
 it internally.) *)
-external split : t -> string -> int -> t option = "ml_pango_glyph_item_split"
 
-(** Frees a `PangoGlyphItem` and resources to which it points. *)
 external free : t -> unit = "ml_pango_glyph_item_free"
+(** Frees a `PangoGlyphItem` and resources to which it points. *)
 
-(** Make a deep copy of an existing `PangoGlyphItem` structure. *)
 external copy : t -> t option = "ml_pango_glyph_item_copy"
+(** Make a deep copy of an existing `PangoGlyphItem` structure. *)
 
+external apply_attrs : t -> string -> Attr_list.t -> t list
+  = "ml_pango_glyph_item_apply_attrs"
 (** Splits a shaped item (`PangoGlyphItem`) into multiple items based
 on an attribute list.
 
@@ -46,5 +49,3 @@ result items can have multiple attributes of the same type.
 
 This function takes ownership of @glyph_item; it will be reused
 as one of the elements in the list. *)
-external apply_attrs : t -> string -> Attr_list.t -> t list = "ml_pango_glyph_item_apply_attrs"
-

@@ -23,6 +23,4 @@ external compile_micro : unit -> int = "ml_gtk_compile_micro_version"
 
 let runtime () = (runtime_major (), runtime_minor (), runtime_micro ())
 let compile_time () = (compile_major (), compile_minor (), compile_micro ())
-
-let runtime_at_least major minor micro =
-  runtime () >= (major, minor, micro)
+let runtime_at_least major minor micro = runtime () >= (major, minor, micro)

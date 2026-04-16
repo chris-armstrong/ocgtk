@@ -39,9 +39,11 @@ let generate_constructor_c_call_args ~ctx ~ctor_parameters =
         let next_idx = idx + 1 in
         let arg_name = sprintf "arg%d" next_idx in
         (* Check for GList/GSList types first - they use list conversion, not array *)
-        if Type_mappings.is_list_type p.param_type then (
-          match C_stub_list_conv.generate_param_list_conversion ~ctx
-                  ~ocaml_var:arg_name ~gir_type:p.param_type with
+        if Type_mappings.is_list_type p.param_type then
+          match
+            C_stub_list_conv.generate_param_list_conversion ~ctx
+              ~ocaml_var:arg_name ~gir_type:p.param_type
+          with
           | Some (c_var, conversion_code) ->
               Buffer.add_string decls (sprintf "    %s\n" conversion_code);
               let list_kind =
@@ -53,8 +55,7 @@ let generate_constructor_c_call_args ~ctx ~ctor_parameters =
                 | TransferNone | TransferContainer ->
                     sprintf "%s(%s);" list_kind c_var
                 | TransferFull | TransferFloating ->
-                    sprintf
-                      "%s(%s, (GFunc)g_object_unref, NULL);\n    %s(%s);"
+                    sprintf "%s(%s, (GFunc)g_object_unref, NULL);\n    %s(%s);"
                       (if String.equal list_kind "g_list_free" then
                          "g_list_foreach"
                        else "g_slist_foreach")
@@ -62,58 +63,59 @@ let generate_constructor_c_call_args ~ctx ~ctor_parameters =
               in
               cleanups := cleanup :: !cleanups;
               (args @ [ c_var ], next_idx)
-          | None -> (args @ [ arg_name ], next_idx))
+          | None -> (args @ [ arg_name ], next_idx)
         (* Check if this is a non-list array parameter *)
-        else match p.param_type.array with
-        | Some array_info -> (
-            (* Handle array parameter with inline conversion *)
-            match
-              Type_mappings.find_type_mapping_for_gir_type ~ctx
-                array_info.element_type
-            with
-            | Some element_mapping ->
-                (* Use element's c:type directly for modifiable local array *)
-                let element_c_type =
-                  match array_info.element_type.c_type with
-                  | Some ct -> ct
-                  | None -> element_mapping.c_type
-                in
-                let nullable = p.nullable || p.param_type.nullable in
-                let conv_code, c_array_var, _length_var, cleanup_code =
-                  C_stub_helpers.generate_array_ml_to_c ~ctx ~var:arg_name
-                    ~array_info ~element_mapping ~element_c_type
-                    ~transfer_ownership:p.param_type.transfer_ownership
-                    ~nullable
-                in
-                Buffer.add_string decls (sprintf "    %s\n" conv_code);
-                if String.length cleanup_code > 0 then
-                  cleanups := cleanup_code :: !cleanups;
-                (args @ [ c_array_var ], next_idx)
-            | None ->
-                failwith
-                  (sprintf
-                     "Array element type '%s' not supported in constructor"
-                     array_info.element_type.name))
-        | None -> (
-            (* Regular parameter - use existing type mapping *)
-            match
-              Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type
-            with
-            | Some mapping ->
-                let param_type =
-                  {
-                    p.param_type with
-                    nullable = p.nullable || p.param_type.nullable;
-                  }
-                in
-                let arg_expr =
-                  C_stub_helpers.nullable_ml_to_c_expr ~var:arg_name
-                    ~gir_type:param_type ~mapping
-                in
-                (args @ [ arg_expr ], next_idx)
-            | None ->
-                (* This should never happen now that we filter constructors with unknown types *)
-                (args @ [ arg_name ], next_idx)))
+          else
+          match p.param_type.array with
+          | Some array_info -> (
+              (* Handle array parameter with inline conversion *)
+              match
+                Type_mappings.find_type_mapping_for_gir_type ~ctx
+                  array_info.element_type
+              with
+              | Some element_mapping ->
+                  (* Use element's c:type directly for modifiable local array *)
+                  let element_c_type =
+                    match array_info.element_type.c_type with
+                    | Some ct -> ct
+                    | None -> element_mapping.c_type
+                  in
+                  let nullable = p.nullable || p.param_type.nullable in
+                  let conv_code, c_array_var, _length_var, cleanup_code =
+                    C_stub_helpers.generate_array_ml_to_c ~ctx ~var:arg_name
+                      ~array_info ~element_mapping ~element_c_type
+                      ~transfer_ownership:p.param_type.transfer_ownership
+                      ~nullable
+                  in
+                  Buffer.add_string decls (sprintf "    %s\n" conv_code);
+                  if String.length cleanup_code > 0 then
+                    cleanups := cleanup_code :: !cleanups;
+                  (args @ [ c_array_var ], next_idx)
+              | None ->
+                  failwith
+                    (sprintf
+                       "Array element type '%s' not supported in constructor"
+                       array_info.element_type.name))
+          | None -> (
+              (* Regular parameter - use existing type mapping *)
+              match
+                Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type
+              with
+              | Some mapping ->
+                  let param_type =
+                    {
+                      p.param_type with
+                      nullable = p.nullable || p.param_type.nullable;
+                    }
+                  in
+                  let arg_expr =
+                    C_stub_helpers.nullable_ml_to_c_expr ~var:arg_name
+                      ~gir_type:param_type ~mapping
+                  in
+                  (args @ [ arg_expr ], next_idx)
+              | None ->
+                  (* This should never happen now that we filter constructors with unknown types *)
+                  (args @ [ arg_name ], next_idx)))
   in
   (arg_exprs, List.rev !cleanups, decls)
 
@@ -136,25 +138,22 @@ let generate_multi_param_function ~ml_name ~params ~param_names body_code =
         chunk :: chunk_params remaining
   in
   let xparam_chunks = chunk_params rest in
-  let xparam_lines = String.concat ~sep:"\n"
-    (List.map ~f:(fun chunk ->
-      sprintf "CAMLxparam%d(%s);" (List.length chunk) (String.concat ~sep:", " chunk))
-    xparam_chunks)
+  let xparam_lines =
+    String.concat ~sep:"\n"
+      (List.map
+         ~f:(fun chunk ->
+           sprintf "CAMLxparam%d(%s);" (List.length chunk)
+             (String.concat ~sep:", " chunk))
+         xparam_chunks)
   in
 
   let native_func =
     sprintf
-      "\n\
-       CAMLexport CAMLprim value %s_native(%s)\n\
-       {\n\
-       CAMLparam5(%s);\n\
-       %s\n\
-       %s}\n"
+      "\nCAMLexport CAMLprim value %s_native(%s)\n{\nCAMLparam5(%s);\n%s\n%s}\n"
       ml_name
       (String.concat ~sep:", " params)
       (String.concat ~sep:", " first_five)
-      xparam_lines
-      body_code
+      xparam_lines body_code
   in
 
   let bytecode_func =
@@ -215,7 +214,7 @@ let build_constructor_return ~c_type ~class_name (ctor : gir_constructor)
 
   if param_count > 5 then
     let body_code =
-      sprintf "%s%s\n%s *%s = %s(%s);%s\n%s\n%s" array_decls_str error_decl 
+      sprintf "%s%s\n%s *%s = %s(%s);%s\n%s\n%s" array_decls_str error_decl
         c_type var_name c_name c_call_args ref_sink_stmt cleanup_section
         return_stmt
     in
@@ -264,8 +263,9 @@ let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
       }
     in
     match Type_mappings.find_type_mapping_for_gir_type ~ctx dummy_gir_type with
-    | Some mapping when Option.is_some mapping.layer2_class
-                        && not mapping.is_value_type_record ->
+    | Some mapping
+      when Option.is_some mapping.layer2_class
+           && not mapping.is_value_type_record ->
         (* This is a GObject type (class or interface) - always need ref_sink for constructors *)
         sprintf "\nif (%s) g_object_ref_sink(%s);" var_name var_name
     | _ -> ""
@@ -285,9 +285,11 @@ let generate_c_constructor ~ctx ~c_type ~class_name (ctor : gir_constructor) =
   let c_call_args = build_constructor_call c_args ctor.throws in
 
   (* Build the complete constructor function with return handling *)
-  let real_stub = build_constructor_return ~c_type ~class_name ctor param_count params
-    param_names c_call_args ref_sink_stmt val_macro var_name ~array_decls
-    ~cleanup_code in
+  let real_stub =
+    build_constructor_return ~c_type ~class_name ctor param_count params
+      param_names c_call_args ref_sink_stmt val_macro var_name ~array_decls
+      ~cleanup_code
+  in
 
   (* Note: Version guards should only be emitted at the class level in gir_gen.ml
      If we are here, it means the class has no version but this member does.

@@ -30,13 +30,30 @@ type g_closure
 (** {2 Fundamental Types} *)
 
 type fundamental_type =
-  [ `INVALID | `NONE | `INTERFACE | `CHAR | `UCHAR | `BOOLEAN | `INT
-  | `UINT | `LONG | `ULONG | `INT64 | `UINT64 | `ENUM | `FLAGS
-  | `FLOAT | `DOUBLE | `STRING | `POINTER | `BOXED | `PARAM | `OBJECT ]
+  [ `INVALID
+  | `NONE
+  | `INTERFACE
+  | `CHAR
+  | `UCHAR
+  | `BOOLEAN
+  | `INT
+  | `UINT
+  | `LONG
+  | `ULONG
+  | `INT64
+  | `UINT64
+  | `ENUM
+  | `FLAGS
+  | `FLOAT
+  | `DOUBLE
+  | `STRING
+  | `POINTER
+  | `BOXED
+  | `PARAM
+  | `OBJECT ]
 (** Fundamental GType categories *)
 
-type signal_type =
-  [ `RUN_FIRST | `RUN_LAST | `NO_RECURSE | `ACTION | `NO_HOOKS ]
+type signal_type = [ `RUN_FIRST | `RUN_LAST | `NO_RECURSE | `ACTION | `NO_HOOKS ]
 (** Signal emission phases *)
 
 (** {2 Object Operations} *)
@@ -65,7 +82,8 @@ val get_ref_count : 'a obj -> int
 (** {2 Test Helpers} *)
 
 val is_custom_block : 'a obj -> bool
-(** Test helper: check if value is custom block (for testing GObject finalizers) *)
+(** Test helper: check if value is custom block (for testing GObject finalizers)
+*)
 
 val is_gobject : 'a obj -> bool
 (** Test helper: check if pointer is a valid GObject *)
@@ -118,22 +136,16 @@ module Value : sig
 
   val get_int : t -> int
   val set_int : t -> int -> unit
-
   val get_uint : t -> int
   val set_uint : t -> int -> unit
-
   val get_boolean : t -> bool
   val set_boolean : t -> bool -> unit
-
   val get_string : t -> string
   val set_string : t -> string -> unit
-
   val get_float : t -> float
   val set_float : t -> float -> unit
-
   val get_double : t -> float
   val set_double : t -> float -> unit
-
   val get_object : t -> 'a obj option
   val set_object : t -> 'a obj option -> unit
 end
@@ -168,11 +180,7 @@ module Closure : sig
   type args
   (** Opaque type for closure arguments *)
 
-  type argv = {
-    result : g_value;
-    nargs : int;
-    args : args;
-  }
+  type argv = { result : g_value; nargs : int; args : args }
   (** Closure invocation context *)
 
   val create : (argv -> unit) -> t
@@ -200,10 +208,12 @@ module Signal : sig
   type handler_id = int
   (** Signal handler identifier *)
 
-  val connect : 'a obj -> name:string -> callback:g_closure -> after:bool -> handler_id
+  val connect :
+    'a obj -> name:string -> callback:g_closure -> after:bool -> handler_id
   (** Connect a closure to a signal *)
 
-  val connect_simple : 'a obj -> name:string -> callback:(unit -> unit) -> after:bool -> handler_id
+  val connect_simple :
+    'a obj -> name:string -> callback:(unit -> unit) -> after:bool -> handler_id
   (** Connect a simple callback with no arguments *)
 
   val disconnect : 'a obj -> handler_id -> unit
@@ -227,10 +237,10 @@ end
 module Data : sig
   (** Enum and flags conversion *)
 
-  val enum : ([>  ] as 'a) Gpointer.variant_table -> (int -> 'a) * ('a -> int)
+  val enum : ([> ] as 'a) Gpointer.variant_table -> (int -> 'a) * ('a -> int)
   (** Create decoder/encoder pair for enum types *)
 
-  val flags : ([>  ] as 'a) Gpointer.variant_table -> (int -> 'a) * ('a -> int)
+  val flags : ([> ] as 'a) Gpointer.variant_table -> (int -> 'a) * ('a -> int)
   (** Create decoder/encoder pair for flags types *)
 end
 

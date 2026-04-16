@@ -43,7 +43,7 @@ let activate app =
   window#present ()
 
 let () =
-  let app = Application.new_ (Some "org.ocgtk.Counter") [`DEFAULT_FLAGS] in
+  let app = Application.new_ (Some "org.ocgtk.Counter") [ `DEFAULT_FLAGS ] in
   ignore (app#on_activate ~callback:(fun () -> activate app));
   let status = app#run 0 None in
   exit status

@@ -17,46 +17,45 @@
 
 exception Error of string
 
+val init : ?setlocale:bool -> unit -> string array
 (** Initialize GTK.
 
-    This must be called before using any GTK functions.
-    Returns the remaining command-line arguments after GTK processes its options.
+    This must be called before using any GTK functions. Returns the remaining
+    command-line arguments after GTK processes its options.
 
     @param argv Command-line arguments (typically Sys.argv)
     @raise Error if initialization fails
 
     Example:
     {[
-      let () =
-        let _ = GMain.init () in
-        (* ... create widgets ... *)
-        GMain.main ()
-    ]}
-*)
-val init : ?setlocale:bool -> unit -> string array
+    let () =
+      let _ = GMain.init () in
+      (* ... create widgets ... *)
+      GMain.main ()
+    ]} *)
 
 (** {2 Main Loop} *)
 
-(** Start the GTK main event loop.
-    This function blocks until {!quit} is called. *)
 val main : unit -> unit
+(** Start the GTK main event loop. This function blocks until {!quit} is called.
+*)
 
-(** Exit the main event loop.
-    Typically called from a signal handler or callback. *)
 val quit : unit -> unit
+(** Exit the main event loop. Typically called from a signal handler or
+    callback. *)
 
-(** Run one iteration of the main loop.
-    @param block If true, wait for events; if false, return immediately if no events
-    @return true if more events are pending *)
 val iteration : bool -> bool
+(** Run one iteration of the main loop.
+    @param block
+      If true, wait for events; if false, return immediately if no events
+    @return true if more events are pending *)
 
 (** {2 Deprecated - Use GtkApplication Instead}
 
-    Note: For new GTK4 applications, GtkApplication is preferred over
-    the main loop functions. However, these are provided for:
+    Note: For new GTK4 applications, GtkApplication is preferred over the main
+    loop functions. However, these are provided for:
     - Testing during development
     - Simple examples
     - Migration from GTK3
 
-    Full GtkApplication support will be added in Phase 6.2.
-*)
+    Full GtkApplication support will be added in Phase 6.2. *)

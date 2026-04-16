@@ -1,11 +1,15 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CellEditable: CellEditable *)
 
-type t = [`cell_editable] Gobject.obj
+type t = [ `cell_editable ] Gobject.obj
 
-external from_gobject : 'a Gobject.obj -> t = "ml_gtk_cell_editable_from_gobject"
+external from_gobject : 'a Gobject.obj -> t
+  = "ml_gtk_cell_editable_from_gobject"
 
 (* Methods *)
+
+external start_editing : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t option -> unit
+  = "ml_gtk_cell_editable_start_editing"
 (** Begins editing on a @cell_editable.
 
 The `GtkCellRenderer` for the cell creates and returns a `GtkCellEditable` from
@@ -16,19 +20,19 @@ editing a cell, e.g. making the Esc key emit `GtkCellEditable::editing-done`.
 
 Note that the @cell_editable is created on-demand for the current edit; its
 lifetime is temporary and does not persist across other edits and/or cells. *)
-external start_editing : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t option -> unit = "ml_gtk_cell_editable_start_editing"
 
-(** Emits the `GtkCellEditable::remove-widget` signal. *)
 external remove_widget : t -> unit = "ml_gtk_cell_editable_remove_widget"
+(** Emits the `GtkCellEditable::remove-widget` signal. *)
 
-(** Emits the `GtkCellEditable::editing-done` signal. *)
 external editing_done : t -> unit = "ml_gtk_cell_editable_editing_done"
+(** Emits the `GtkCellEditable::editing-done` signal. *)
 
 (* Properties *)
 
+external get_editing_canceled : t -> bool
+  = "ml_gtk_cell_editable_get_editing_canceled"
 (** Get property: editing-canceled *)
-external get_editing_canceled : t -> bool = "ml_gtk_cell_editable_get_editing_canceled"
 
+external set_editing_canceled : t -> bool -> unit
+  = "ml_gtk_cell_editable_set_editing_canceled"
 (** Set property: editing-canceled *)
-external set_editing_canceled : t -> bool -> unit = "ml_gtk_cell_editable_set_editing_canceled"
-

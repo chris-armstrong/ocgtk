@@ -13,8 +13,7 @@
 
 (** Signed 16-bit integer ([gint16]).
 
-    Backed by [private int] — no heap allocation.
-    Range: [-32768, 32767]. *)
+    Backed by [private int] — no heap allocation. Range: [-32768, 32767]. *)
 
 type t = private int
 

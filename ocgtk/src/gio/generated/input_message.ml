@@ -1,6 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* InputMessage: InputMessage *)
 
+type t = [ `input_message ] Gobject.obj
 (** Structure used for scatter/gather data input when receiving multiple
 messages or packets in one go. You generally pass in an array of empty
 #GInputVectors and the operation will use all the buffers as if they
@@ -20,6 +21,5 @@ this array, which may be zero.
 
 Flags relevant to this message will be returned in @flags. For example,
 `MSG_EOR` or `MSG_TRUNC`. *)
-type t = [`input_message] Gobject.obj
 
 (* Methods *)

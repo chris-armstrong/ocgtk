@@ -143,7 +143,8 @@ external to_string : t -> string = "ml_g_variant_get_string"
 (** Get the string value. Raises Failure if the variant is not a string. *)
 
 external of_object_path : string -> t = "ml_g_variant_new_object_path"
-(** D-Bus object path - validated to be a valid object path; use to_string to read back *)
+(** D-Bus object path - validated to be a valid object path; use to_string to
+    read back *)
 
 external of_signature : string -> t = "ml_g_variant_new_signature"
 (** D-Bus type signature; use to_string to read back *)
@@ -162,7 +163,8 @@ external of_variant : t -> t = "ml_g_variant_new_variant"
 (** Create a variant containing another variant (type 'v'). *)
 
 external to_variant : t -> t = "ml_g_variant_get_variant"
-(** Unwrap a variant inside a variant. Raises Failure if the variant is not a variant type. *)
+(** Unwrap a variant inside a variant. Raises Failure if the variant is not a
+    variant type. *)
 
 (** {2 Maybe (Nullable)} *)
 
@@ -171,8 +173,8 @@ external of_maybe : Gvariant_type.t -> t option -> t = "ml_g_variant_new_maybe"
     [of_maybe ty (Some v)] wraps the value. *)
 
 external to_maybe : t -> t option = "ml_g_variant_get_maybe"
-(** Unwrap a maybe type variant. Returns [None] for null, [Some v] for wrapped value.
-    Raises Failure if the variant is not a maybe type. *)
+(** Unwrap a maybe type variant. Returns [None] for null, [Some v] for wrapped
+    value. Raises Failure if the variant is not a maybe type. *)
 
 (** {2 Arrays} *)
 
@@ -180,13 +182,15 @@ external of_string_array : string array -> t = "ml_g_variant_new_strv"
 (** Create a string array variant. *)
 
 external to_string_array : t -> string array = "ml_g_variant_get_strv"
-(** Get the string array value. Raises Failure if the variant is not a string array. *)
+(** Get the string array value. Raises Failure if the variant is not a string
+    array. *)
 
 external of_object_path_array : string array -> t = "ml_g_variant_new_objv"
 (** Create an object path array variant. *)
 
 external to_object_path_array : t -> string array = "ml_g_variant_get_objv"
-(** Get the object path array value. Raises Failure if the variant is not an object path array. *)
+(** Get the object path array value. Raises Failure if the variant is not an
+    object path array. *)
 
 (** {2 Dictionary Lookups (a{sv} pattern)}
 
@@ -196,44 +200,68 @@ external to_object_path_array : t -> string array = "ml_g_variant_get_objv"
     For dictionaries with different value types, use [get_child_value] with the appropriate index.
 *)
 
-external lookup_string : t -> string -> string option = "ml_g_variant_lookup_string"
-(** Lookup a string value in a dictionary. Returns [None] if the key is not found or the value is not a string. *)
+external lookup_string : t -> string -> string option
+  = "ml_g_variant_lookup_string"
+(** Lookup a string value in a dictionary. Returns [None] if the key is not
+    found or the value is not a string. *)
 
-external lookup_int32 : t -> string -> int32 option = "ml_g_variant_lookup_int32"
-(** Lookup an int32 value in a dictionary. Returns [None] if the key is not found or the value is not an int32. *)
+external lookup_int32 : t -> string -> int32 option
+  = "ml_g_variant_lookup_int32"
+(** Lookup an int32 value in a dictionary. Returns [None] if the key is not
+    found or the value is not an int32. *)
 
-external lookup_boolean : t -> string -> bool option = "ml_g_variant_lookup_boolean"
-(** Lookup a boolean value in a dictionary. Returns [None] if the key is not found or the value is not a boolean. *)
+external lookup_boolean : t -> string -> bool option
+  = "ml_g_variant_lookup_boolean"
+(** Lookup a boolean value in a dictionary. Returns [None] if the key is not
+    found or the value is not a boolean. *)
 
 external lookup_byte : t -> string -> int option = "ml_g_variant_lookup_byte"
-(** Lookup a byte (uint8) value in a dictionary. Returns [None] if the key is not found or the value is not a byte. *)
+(** Lookup a byte (uint8) value in a dictionary. Returns [None] if the key is
+    not found or the value is not a byte. *)
 
 external lookup_int16 : t -> string -> int option = "ml_g_variant_lookup_int16"
-(** Lookup an int16 value in a dictionary. Returns [None] if the key is not found or the value is not an int16. *)
+(** Lookup an int16 value in a dictionary. Returns [None] if the key is not
+    found or the value is not an int16. *)
 
-external lookup_uint16 : t -> string -> int option = "ml_g_variant_lookup_uint16"
-(** Lookup a uint16 value in a dictionary. Returns [None] if the key is not found or the value is not a uint16. *)
+external lookup_uint16 : t -> string -> int option
+  = "ml_g_variant_lookup_uint16"
+(** Lookup a uint16 value in a dictionary. Returns [None] if the key is not
+    found or the value is not a uint16. *)
 
-external lookup_uint32 : t -> string -> uint32 option = "ml_g_variant_lookup_uint32"
-(** Lookup a uint32 value in a dictionary. Returns [None] if the key is not found or the value is not a uint32. *)
+external lookup_uint32 : t -> string -> uint32 option
+  = "ml_g_variant_lookup_uint32"
+(** Lookup a uint32 value in a dictionary. Returns [None] if the key is not
+    found or the value is not a uint32. *)
 
-external lookup_int64 : t -> string -> int64 option = "ml_g_variant_lookup_int64"
-(** Lookup an int64 value in a dictionary. Returns [None] if the key is not found or the value is not an int64. *)
+external lookup_int64 : t -> string -> int64 option
+  = "ml_g_variant_lookup_int64"
+(** Lookup an int64 value in a dictionary. Returns [None] if the key is not
+    found or the value is not an int64. *)
 
-external lookup_uint64 : t -> string -> uint64 option = "ml_g_variant_lookup_uint64"
-(** Lookup a uint64 value in a dictionary. Returns [None] if the key is not found or the value is not a uint64. *)
+external lookup_uint64 : t -> string -> uint64 option
+  = "ml_g_variant_lookup_uint64"
+(** Lookup a uint64 value in a dictionary. Returns [None] if the key is not
+    found or the value is not a uint64. *)
 
-external lookup_double : t -> string -> float option = "ml_g_variant_lookup_double"
-(** Lookup a double value in a dictionary. Returns [None] if the key is not found or the value is not a double. *)
+external lookup_double : t -> string -> float option
+  = "ml_g_variant_lookup_double"
+(** Lookup a double value in a dictionary. Returns [None] if the key is not
+    found or the value is not a double. *)
 
-external lookup_object_path : t -> string -> string option = "ml_g_variant_lookup_object_path"
-(** Lookup an object path value in a dictionary. Returns [None] if the key is not found or the value is not an object path. *)
+external lookup_object_path : t -> string -> string option
+  = "ml_g_variant_lookup_object_path"
+(** Lookup an object path value in a dictionary. Returns [None] if the key is
+    not found or the value is not an object path. *)
 
-external lookup_signature : t -> string -> string option = "ml_g_variant_lookup_signature"
-(** Lookup a signature value in a dictionary. Returns [None] if the key is not found or the value is not a signature. *)
+external lookup_signature : t -> string -> string option
+  = "ml_g_variant_lookup_signature"
+(** Lookup a signature value in a dictionary. Returns [None] if the key is not
+    found or the value is not a signature. *)
 
-external lookup_handle : t -> string -> int option = "ml_g_variant_lookup_handle"
-(** Lookup a handle (file descriptor) value in a dictionary. Returns [None] if the key is not found or the value is not a handle. *)
+external lookup_handle : t -> string -> int option
+  = "ml_g_variant_lookup_handle"
+(** Lookup a handle (file descriptor) value in a dictionary. Returns [None] if
+    the key is not found or the value is not a handle. *)
 
 (** {2 Child Access} *)
 
@@ -241,15 +269,15 @@ external n_children : t -> int = "ml_g_variant_n_children"
 (** Get the number of children in a tuple, array, or dictionary *)
 
 external get_child_value : t -> int -> t = "ml_g_variant_get_child_value"
-(** Get the nth child value. The returned value is a new reference and
-    must be unreferenced by the caller (handled by GC). *)
+(** Get the nth child value. The returned value is a new reference and must be
+    unreferenced by the caller (handled by GC). *)
 
 (** {2 Serialization} *)
 
 external print : t -> bool -> string = "ml_g_variant_print"
-(** Print the variant in GVariant text format.
-    First arg is the variant, second is whether to annotate types. *)
+(** Print the variant in GVariant text format. First arg is the variant, second
+    is whether to annotate types. *)
 
 external parse : string -> t = "ml_g_variant_parse"
-(** Parse a GVariant from its text format representation.
-    Raises Failure on parse error. *)
+(** Parse a GVariant from its text format representation. Raises Failure on
+    parse error. *)

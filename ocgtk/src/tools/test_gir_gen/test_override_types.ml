@@ -16,11 +16,14 @@ let test_override_action_eq () =
   let v410 = { vs_version = "4.10"; vs_namespace = None } in
   let v412 = { vs_version = "4.12"; vs_namespace = None } in
   Alcotest.(check bool) "ignore eq" true (equal_override_action Ignore Ignore);
-  Alcotest.(check bool) "version eq" true
+  Alcotest.(check bool)
+    "version eq" true
     (equal_override_action (Set_version v410) (Set_version v410));
-  Alcotest.(check bool) "version neq" false
+  Alcotest.(check bool)
+    "version neq" false
     (equal_override_action (Set_version v410) (Set_version v412));
-  Alcotest.(check bool) "ignore neq version" false
+  Alcotest.(check bool)
+    "ignore neq version" false
     (equal_override_action Ignore (Set_version v410))
 
 let test_component_override_construction () =
@@ -56,7 +59,13 @@ let test_interface_override_construction () =
       interface_name = "Actionable";
       interface_action = None;
       methods = [];
-      properties = [ { component_name = "action_name"; action = Set_version { vs_version = "4.12"; vs_namespace = None } } ];
+      properties =
+        [
+          {
+            component_name = "action_name";
+            action = Set_version { vs_version = "4.12"; vs_namespace = None };
+          };
+        ];
       signals = [];
     }
   in
@@ -93,7 +102,8 @@ let test_bitfield_override_construction () =
   let b =
     {
       bitfield_name = "StateFlags";
-      bitfield_action = Some (Set_version { vs_version = "4.10"; vs_namespace = None });
+      bitfield_action =
+        Some (Set_version { vs_version = "4.10"; vs_namespace = None });
       flags = [ { component_name = "ACTIVE"; action = Ignore } ];
     }
   in
@@ -119,8 +129,17 @@ let test_library_overrides_eq () =
   let ov1 =
     {
       library_name = "Gtk";
-      classes = [ { class_name = "Widget"; class_action = Some Ignore;
-        constructors = []; methods = []; properties = []; signals = [] } ];
+      classes =
+        [
+          {
+            class_name = "Widget";
+            class_action = Some Ignore;
+            constructors = [];
+            methods = [];
+            properties = [];
+            signals = [];
+          };
+        ];
       interfaces = [];
       records = [];
       enums = [];
@@ -129,9 +148,7 @@ let test_library_overrides_eq () =
     }
   in
   let ov2 = ov1 in
-  let ov3 =
-    { ov1 with library_name = "Gdk" }
-  in
+  let ov3 = { ov1 with library_name = "Gdk" } in
   Alcotest.(check bool) "eq" true (equal_library_overrides ov1 ov2);
   Alcotest.(check bool) "neq" false (equal_library_overrides ov1 ov3)
 
@@ -140,13 +157,21 @@ let test_suite =
     ("override_action_ignore", `Quick, test_override_action_ignore);
     ("override_action_version", `Quick, test_override_action_version);
     ("override_action_eq", `Quick, test_override_action_eq);
-    ("component_override_construction", `Quick, test_component_override_construction);
+    ( "component_override_construction",
+      `Quick,
+      test_component_override_construction );
     ("component_override_eq", `Quick, test_component_override_eq);
     ("class_override_construction", `Quick, test_class_override_construction);
-    ("interface_override_construction", `Quick, test_interface_override_construction);
+    ( "interface_override_construction",
+      `Quick,
+      test_interface_override_construction );
     ("record_override_construction", `Quick, test_record_override_construction);
     ("enum_override_construction", `Quick, test_enum_override_construction);
-    ("bitfield_override_construction", `Quick, test_bitfield_override_construction);
-    ("library_overrides_construction", `Quick, test_library_overrides_construction);
+    ( "bitfield_override_construction",
+      `Quick,
+      test_bitfield_override_construction );
+    ( "library_overrides_construction",
+      `Quick,
+      test_library_overrides_construction );
     ("library_overrides_eq", `Quick, test_library_overrides_eq);
   ]

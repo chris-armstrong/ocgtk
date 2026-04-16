@@ -1,12 +1,16 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* InputStream: InputStream *)
 
-type t = [`input_stream | `object_] Gobject.obj
+type t = [ `input_stream | `object_ ] Gobject.obj
 
 (* Methods *)
-(** Finishes a stream skip operation. *)
-external skip_finish : t -> Async_result.t -> (int, GError.t) result = "ml_g_input_stream_skip_finish"
 
+external skip_finish : t -> Async_result.t -> (int, GError.t) result
+  = "ml_g_input_stream_skip_finish"
+(** Finishes a stream skip operation. *)
+
+external skip : t -> Gsize.t -> Cancellable.t option -> (int, GError.t) result
+  = "ml_g_input_stream_skip"
 (** Tries to skip @count bytes from the stream. Will block during the operation.
 
 This is identical to g_input_stream_read(), from a behaviour standpoint,
@@ -21,19 +25,25 @@ triggering the cancellable object from another thread. If the operation
 was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. If an
 operation was partially finished when the operation was cancelled the
 partial result will be returned, without an error. *)
-external skip : t -> Gsize.t -> Cancellable.t option -> (int, GError.t) result = "ml_g_input_stream_skip"
 
+external set_pending : t -> (bool, GError.t) result
+  = "ml_g_input_stream_set_pending"
 (** Sets @stream to have actions pending. If the pending flag is
 already set or @stream is closed, it will return %FALSE and set
 @error. *)
-external set_pending : t -> (bool, GError.t) result = "ml_g_input_stream_set_pending"
 
+external read_finish : t -> Async_result.t -> (int, GError.t) result
+  = "ml_g_input_stream_read_finish"
 (** Finishes an asynchronous stream read operation. *)
-external read_finish : t -> Async_result.t -> (int, GError.t) result = "ml_g_input_stream_read_finish"
 
+external read_bytes_finish :
+  t -> Async_result.t -> (Glib_bytes.t, GError.t) result
+  = "ml_g_input_stream_read_bytes_finish"
 (** Finishes an asynchronous stream read-into-#GBytes operation. *)
-external read_bytes_finish : t -> Async_result.t -> (Glib_bytes.t, GError.t) result = "ml_g_input_stream_read_bytes_finish"
 
+external read_bytes :
+  t -> Gsize.t -> Cancellable.t option -> (Glib_bytes.t, GError.t) result
+  = "ml_g_input_stream_read_bytes"
 (** Like g_input_stream_read(), this tries to read @count bytes from
 the stream in a blocking fashion. However, rather than reading into
 a user-supplied buffer, this will create a new #GBytes containing
@@ -57,8 +67,10 @@ operation was partially finished when the operation was cancelled the
 partial result will be returned, without an error.
 
 On error %NULL is returned and @error is set accordingly. *)
-external read_bytes : t -> Gsize.t -> Cancellable.t option -> (Glib_bytes.t, GError.t) result = "ml_g_input_stream_read_bytes"
 
+external read_all_finish :
+  t -> Async_result.t -> (bool * Gsize.t, GError.t) result
+  = "ml_g_input_stream_read_all_finish"
 (** Finishes an asynchronous stream read operation started with
 g_input_stream_read_all_async().
 
@@ -68,17 +80,20 @@ use #GError, if this function returns %FALSE (and sets @error) then
 read before the error was encountered.  This functionality is only
 available from C.  If you need it from another language then you must
 write your own loop around g_input_stream_read_async(). *)
-external read_all_finish : t -> Async_result.t -> (bool * Gsize.t, GError.t) result = "ml_g_input_stream_read_all_finish"
 
-(** Checks if an input stream is closed. *)
 external is_closed : t -> bool = "ml_g_input_stream_is_closed"
+(** Checks if an input stream is closed. *)
 
-(** Checks if an input stream has pending actions. *)
 external has_pending : t -> bool = "ml_g_input_stream_has_pending"
+(** Checks if an input stream has pending actions. *)
 
-(** Finishes closing a stream asynchronously, started from g_input_stream_close_async(). *)
-external close_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_input_stream_close_finish"
+external close_finish : t -> Async_result.t -> (bool, GError.t) result
+  = "ml_g_input_stream_close_finish"
+(** Finishes closing a stream asynchronously, started from
+    g_input_stream_close_async(). *)
 
+external close : t -> Cancellable.t option -> (bool, GError.t) result
+  = "ml_g_input_stream_close"
 (** Closes the stream, releasing resources related to it.
 
 Once the stream is closed, all other operations will return %G_IO_ERROR_CLOSED.
@@ -102,8 +117,6 @@ triggering the cancellable object from another thread. If the operation
 was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
 Cancelling a close will still leave the stream closed, but some streams
 can use a faster close that doesn't block to e.g. check errors. *)
-external close : t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_input_stream_close"
 
-(** Clears the pending flag on @stream. *)
 external clear_pending : t -> unit = "ml_g_input_stream_clear_pending"
-
+(** Clears the pending flag on @stream. *)

@@ -11,7 +11,6 @@
 open Alcotest
 open Ocgtk_gtk.Gtk
 module GMain = Ocgtk_gtk.GMain
-
 module Widget = Wrappers.Widget
 
 (* Layer 1 (raw) box functions *)

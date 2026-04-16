@@ -23,9 +23,7 @@ let activate app =
 
 let () =
   ignore (Ocgtk_gtk.GMain.init ());
-  let app =
-    Application.new_ (Some "org.ocgtk.Calculator") [ `DEFAULT_FLAGS ]
-  in
+  let app = Application.new_ (Some "org.ocgtk.Calculator") [ `DEFAULT_FLAGS ] in
   ignore (app#on_activate ~callback:(fun () -> activate app));
   let status = app#run 0 None in
   exit status

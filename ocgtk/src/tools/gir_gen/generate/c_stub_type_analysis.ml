@@ -84,8 +84,8 @@ module Type_analysis = struct
     @ long_types @ ulong_types @ ssize_types @ float_types @ double_types
     @ pointer_types
 
-  (** Check if a C type is a string type.
-      Delegates to the canonical definition in [Filtering]. *)
+  (** Check if a C type is a string type. Delegates to the canonical definition
+      in [Filtering]. *)
   let is_string_type = Filtering.is_string_type
 
   (** Analyze property type and extract GValue conversion information *)
@@ -120,8 +120,12 @@ module Type_analysis = struct
     let record_info = Type_mappings.lookup_record ctx.records gir_type.name in
     let class_info = Type_mappings.lookup_class ctx.classes gir_type.name in
     let type_kind = Type_mappings.classify_type ~ctx gir_type in
-    let is_enum = match type_kind with Type_mappings.Tk_Enum -> true | _ -> false in
-    let is_bitfield = match type_kind with Type_mappings.Tk_Bitfield -> true | _ -> false in
+    let is_enum =
+      match type_kind with Type_mappings.Tk_Enum -> true | _ -> false
+    in
+    let is_bitfield =
+      match type_kind with Type_mappings.Tk_Bitfield -> true | _ -> false
+    in
     let pointer_like =
       has_pointer
       || List.exists pointer_types ~f:(fun candidate ->

@@ -50,5 +50,5 @@ val generate_combined_ml_modules :
 (** Generate combined ML modules for entities with cyclic dependencies. This
     creates a module rec ... and ... structure containing all entities sorted
     alphabetically by name. Each entity's from_gobject C name is derived
-    independently via from_gobject_c_name_for_entity, defaulting to None for
-    all entities. *)
+    independently via from_gobject_c_name_for_entity, defaulting to None for all
+    entities. *)

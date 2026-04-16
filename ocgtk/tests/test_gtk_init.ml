@@ -26,14 +26,13 @@ let test_gtk_init_with_display () =
   skip ()
 
 let () =
-  run "GTK Initialization Tests" [
-    "api", [
-      test_case "GMain module" `Quick test_gmain_module_exists;
-      test_case "init exists" `Quick test_gtk_init_api_exists;
-      test_case "main loop exists" `Quick test_main_loop_api_exists;
-    ];
-
-    "runtime", [
-      test_case "gtk_init" `Quick test_gtk_init_with_display;
-    ];
-  ]
+  run "GTK Initialization Tests"
+    [
+      ( "api",
+        [
+          test_case "GMain module" `Quick test_gmain_module_exists;
+          test_case "init exists" `Quick test_gtk_init_api_exists;
+          test_case "main loop exists" `Quick test_main_loop_api_exists;
+        ] );
+      ("runtime", [ test_case "gtk_init" `Quick test_gtk_init_with_display ]);
+    ]

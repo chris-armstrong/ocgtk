@@ -13,8 +13,7 @@
 
 (** Signed 8-bit integer ([gint8]).
 
-    Backed by [private int] — no heap allocation.
-    Range: [-128, 127]. *)
+    Backed by [private int] — no heap allocation. Range: [-128, 127]. *)
 
 type t = private int
 

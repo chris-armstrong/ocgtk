@@ -3,5 +3,6 @@
 
 class type fontset_t = GContext_and__font_and__font_map_and__fontset.fontset_t
 
-class fontset : Context_and__font_and__font_map_and__fontset.Fontset.t -> fontset_t
-
+class fontset :
+  Context_and__font_and__font_map_and__fontset.Fontset.t ->
+  fontset_t

@@ -1,13 +1,10 @@
 (* Override Extractor: Version extraction from GIR doc strings *)
 
-(** Extract a "Since X.Y[.Z]" version string from a doc comment.
-    Matches patterns where the literal word "Since" (capital S) is followed
-    by an optional colon and a version number:
-      "Since 2.26"
-      "Since: 2.74"
-      "(Since: 1.16)."
-    Does NOT match lowercase "since" or "available since". Returns None if
-    no matching pattern is found. *)
+(** Extract a "Since X.Y[.Z]" version string from a doc comment. Matches
+    patterns where the literal word "Since" (capital S) is followed by an
+    optional colon and a version number: "Since 2.26" "Since: 2.74" "(Since:
+    1.16)." Does NOT match lowercase "since" or "available since". Returns None
+    if no matching pattern is found. *)
 let extract_since_version doc_text =
   let re =
     Re.(
@@ -30,6 +27,4 @@ let extract_since_version doc_text =
   in
   match Re.exec_opt re doc_text with
   | None -> None
-  | Some groups -> (
-      try Some (Re.Group.get groups 1)
-      with Not_found -> None)
+  | Some groups -> ( try Some (Re.Group.get groups 1) with Not_found -> None)

@@ -13,8 +13,7 @@
 
 (** Unsigned 8-bit integer ([guint8]).
 
-    Backed by [private int] — no heap allocation.
-    Range: [0, 255]. *)
+    Backed by [private int] — no heap allocation. Range: [0, 255]. *)
 
 type t = private int
 

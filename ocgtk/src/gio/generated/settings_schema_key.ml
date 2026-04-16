@@ -1,27 +1,32 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SettingsSchemaKey: SettingsSchemaKey *)
 
+type t = [ `settings_schema_key ] Gobject.obj
 (** #GSettingsSchemaKey is an opaque data structure and can only be accessed
-using the following functions. *)
-type t = [`settings_schema_key] Gobject.obj
+    using the following functions. *)
 
 (* Methods *)
-(** Decrease the reference count of @key, possibly freeing it. *)
+
 external unref : t -> unit = "ml_g_settings_schema_key_unref"
+(** Decrease the reference count of @key, possibly freeing it. *)
 
-(** Increase the reference count of @key, returning a new reference. *)
 external ref : t -> t = "ml_g_settings_schema_key_ref"
+(** Increase the reference count of @key, returning a new reference. *)
 
+external range_check : t -> Gvariant.t -> bool
+  = "ml_g_settings_schema_key_range_check"
 (** Checks if the given @value is within the
 permitted range for @key.
 
 It is a programmer error if @value is not of the correct type — you
 must check for this first. *)
-external range_check : t -> Gvariant.t -> bool = "ml_g_settings_schema_key_range_check"
 
+external get_value_type : t -> Gvariant_type.t
+  = "ml_g_settings_schema_key_get_value_type"
 (** Gets the #GVariantType of @key. *)
-external get_value_type : t -> Gvariant_type.t = "ml_g_settings_schema_key_get_value_type"
 
+external get_summary : t -> string option
+  = "ml_g_settings_schema_key_get_summary"
 (** Gets the summary for @key.
 
 If no summary has been provided in the schema for @key, returns
@@ -35,8 +40,8 @@ This function is slow.  The summary and description information for
 the schemas is not stored in the compiled schema database so this
 function has to parse all of the source XML files in the schema
 directory. *)
-external get_summary : t -> string option = "ml_g_settings_schema_key_get_summary"
 
+external get_range : t -> Gvariant.t = "ml_g_settings_schema_key_get_range"
 (** Queries the range of a key.
 
 This function will return a #GVariant that fully describes the range
@@ -73,11 +78,12 @@ forms may be added to the possibilities described above.
 
 You should free the returned value with g_variant_unref() when it is
 no longer needed. *)
-external get_range : t -> Gvariant.t = "ml_g_settings_schema_key_get_range"
 
-(** Gets the name of @key. *)
 external get_name : t -> string = "ml_g_settings_schema_key_get_name"
+(** Gets the name of @key. *)
 
+external get_description : t -> string option
+  = "ml_g_settings_schema_key_get_description"
 (** Gets the description for @key.
 
 If no description has been provided in the schema for @key, returns
@@ -92,11 +98,10 @@ This function is slow.  The summary and description information for
 the schemas is not stored in the compiled schema database so this
 function has to parse all of the source XML files in the schema
 directory. *)
-external get_description : t -> string option = "ml_g_settings_schema_key_get_description"
 
+external get_default_value : t -> Gvariant.t
+  = "ml_g_settings_schema_key_get_default_value"
 (** Gets the default value for @key.
 
 Note that this is the default value according to the schema.  System
 administrator defaults and lockdown are not visible via this API. *)
-external get_default_value : t -> Gvariant.t = "ml_g_settings_schema_key_get_default_value"
-
