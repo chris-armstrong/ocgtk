@@ -5,9 +5,9 @@ open Printf
 open Types
 open C_stub_helpers
 
-(** Check if a method should be generated in the interface.
-    Delegates to the shared [Filtering.should_skip_method_binding] so that
-    layer 0 (C stubs) and layer 1 (OCaml externals) agree on what is emitted. *)
+(** Check if a method should be generated in the interface. Delegates to the
+    shared [Filtering.should_skip_method_binding] so that layer 0 (C stubs) and
+    layer 1 (OCaml externals) agree on what is emitted. *)
 let should_generate_method ~ctx ~is_record (meth : gir_method) =
   (not (Filtering.should_skip_method_binding ~ctx meth))
   && not (is_record && is_copy_or_free meth)

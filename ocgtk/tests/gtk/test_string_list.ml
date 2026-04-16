@@ -334,7 +334,8 @@ let () =
         ] );
       ( "Creation",
         [
-          test_case "empty_list" `Quick (require_gtk_414 test_creation_empty_list);
+          test_case "empty_list" `Quick
+            (require_gtk_414 test_creation_empty_list);
           test_case "empty_string" `Quick
             (require_gtk_414 test_creation_with_empty_string);
         ] );
@@ -351,7 +352,8 @@ let () =
       ( "Append Method",
         [
           test_case "basic" `Quick (require_gtk_414 test_append_basic);
-          test_case "append_vs_take" `Quick (require_gtk_414 test_append_vs_take);
+          test_case "append_vs_take" `Quick
+            (require_gtk_414 test_append_vs_take);
         ] );
       ( "Get String (Extraction)",
         [

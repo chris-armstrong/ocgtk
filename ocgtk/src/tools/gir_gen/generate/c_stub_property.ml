@@ -133,7 +133,8 @@ let generate_property_wrapper ~ctx ~c_type (prop : gir_property) class_name
    heap allocated based on property type analysis. Handles arrays with inline conversion.
    Wraps with version guards if the class or property has a version.
    Returns the complete C function code. *)
-let generate_c_property_getter_impl ~ctx ~c_type (prop : gir_property) class_name =
+let generate_c_property_getter_impl ~ctx ~c_type (prop : gir_property)
+    class_name =
   match prop.prop_type.array with
   | Some array_info ->
       (* Handle array property with inline conversion *)
@@ -161,8 +162,9 @@ let generate_c_property_getter_impl ~ctx ~c_type (prop : gir_property) class_nam
          as const char** and array indexing gives const char*, making NULL
          comparison and caml_copy_string calls well-typed. *)
       let effective_element_c_type =
-        if String.equal element_mapping.c_to_ml "caml_copy_string"
-           && not (String.contains element_c_type '*')
+        if
+          String.equal element_mapping.c_to_ml "caml_copy_string"
+          && not (String.contains element_c_type '*')
         then "const char*"
         else element_c_type
       in
@@ -200,8 +202,8 @@ let generate_c_property_getter_impl ~ctx ~c_type (prop : gir_property) class_nam
          CAMLreturn(%s);\n\
          }"
         prop_name c_type c_type c_cast prop.prop_name prop_name prop.prop_name
-        prop.prop_name effective_element_c_type c_array_var effective_element_c_type
-        conv_code ml_array_var_name
+        prop.prop_name effective_element_c_type c_array_var
+        effective_element_c_type conv_code ml_array_var_name
   | None ->
       (* Regular property - use existing type mapping *)
       let type_info =
@@ -231,7 +233,8 @@ let generate_c_property_getter_impl ~ctx ~c_type (prop : gir_property) class_nam
    initializes GValue for the property, stores converted value in GValue, calls g_object_set_property,
    and unsets the GValue. Optimizes string types using const string declarations. Handles arrays
    with inline conversion. Returns the complete C function code (unwrapped). *)
-let generate_c_property_setter_impl ~ctx ~c_type (prop : gir_property) class_name =
+let generate_c_property_setter_impl ~ctx ~c_type (prop : gir_property)
+    class_name =
   match prop.prop_type.array with
   | Some array_info ->
       (* Handle array property with inline conversion *)
@@ -311,12 +314,12 @@ let generate_c_property_setter_impl ~ctx ~c_type (prop : gir_property) class_nam
         ~caml_params:"value self, value new_value"
         ~caml_locals:"    CAMLparam2(self, new_value);\n"
 
-(** Public getter function - emits impl without wrapping
-    (version guards are handled at class level in gir_gen.ml) *)
+(** Public getter function - emits impl without wrapping (version guards are
+    handled at class level in gir_gen.ml) *)
 let generate_c_property_getter ~ctx ~c_type (prop : gir_property) class_name =
   generate_c_property_getter_impl ~ctx ~c_type prop class_name
 
-(** Public setter function - emits impl without wrapping
-    (version guards are handled at class level in gir_gen.ml) *)
+(** Public setter function - emits impl without wrapping (version guards are
+    handled at class level in gir_gen.ml) *)
 let generate_c_property_setter ~ctx ~c_type (prop : gir_property) class_name =
   generate_c_property_setter_impl ~ctx ~c_type prop class_name

@@ -20,14 +20,10 @@ let gtk_available =
   try
     let _ = GMain.init () in
     true
-  with
-  | GMain.Error _ -> false
+  with GMain.Error _ -> false
 
 (* Helper to skip tests when GTK is not available *)
-let require_gtk f () =
-  if not gtk_available then skip ()
-  else f ()
-
+let require_gtk f () = if not gtk_available then skip () else f ()
 
 (* ==================================================================== *)
 (* Test Type System *)
@@ -78,8 +74,8 @@ let test_type_parent () =
     (* Get parent chain *)
     let parent = Gobject.Type.parent window_type in
     check bool "GtkWindow has parent" true (parent <> 0)
-  end else
-    skip ()
+  end
+  else skip ()
 
 let test_type_is_a () =
   (* Test type hierarchy checks *)
@@ -90,7 +86,8 @@ let test_type_is_a () =
   check bool "type is_a itself" true (Gobject.Type.is_a int_type int_type);
 
   (* Different fundamental types should not be compatible *)
-  check bool "int not is_a string" false (Gobject.Type.is_a int_type string_type)
+  check bool "int not is_a string" false
+    (Gobject.Type.is_a int_type string_type)
 
 (* ==================================================================== *)
 (* Test GValue Operations *)
@@ -188,18 +185,14 @@ let test_gvalue_create_empty () =
 let test_signal_closure_creation () =
   (* Test closure creation *)
   let called = ref false in
-  let closure = Gobject.Closure.create (fun _argv ->
-    called := true
-  ) in
+  let closure = Gobject.Closure.create (fun _argv -> called := true) in
   (* Closure should be a valid pointer (not null) *)
   check bool "Closure created" true (Obj.magic closure <> 0)
 
 let test_closure_invocation_void () =
   (* Test that we can invoke a closure and it updates OCaml values *)
   let called = ref false in
-  let closure = Gobject.Closure.create (fun _argv ->
-    called := true
-  ) in
+  let closure = Gobject.Closure.create (fun _argv -> called := true) in
 
   (* Initially not called *)
   check bool "Closure not yet called" false !called;
@@ -213,11 +206,12 @@ let test_closure_invocation_void () =
 let test_closure_invocation_int () =
   (* Test that closures can receive integer arguments *)
   let received_value = ref 0 in
-  let closure = Gobject.Closure.create (fun argv ->
-    (* The first argument after the instance is at position 1 *)
-    let gval = Gobject.Closure.nth argv ~pos:0 in
-    received_value := Gobject.Value.get_int gval
-  ) in
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        (* The first argument after the instance is at position 1 *)
+        let gval = Gobject.Closure.nth argv ~pos:0 in
+        received_value := Gobject.Value.get_int gval)
+  in
 
   (* Invoke with an integer *)
   Gobject.Test.invoke_closure_int closure 42;
@@ -232,10 +226,11 @@ let test_closure_invocation_int () =
 let test_closure_invocation_string () =
   (* Test that closures can receive string arguments *)
   let received_value = ref "" in
-  let closure = Gobject.Closure.create (fun argv ->
-    let gval = Gobject.Closure.nth argv ~pos:0 in
-    received_value := Gobject.Value.get_string gval
-  ) in
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let gval = Gobject.Closure.nth argv ~pos:0 in
+        received_value := Gobject.Value.get_string gval)
+  in
 
   (* Invoke with a string *)
   Gobject.Test.invoke_closure_string closure "Hello, GTK4!";
@@ -250,9 +245,7 @@ let test_closure_invocation_string () =
 let test_closure_multiple_invocations () =
   (* Test that a closure can be invoked multiple times *)
   let call_count = ref 0 in
-  let closure = Gobject.Closure.create (fun _argv ->
-    incr call_count
-  ) in
+  let closure = Gobject.Closure.create (fun _argv -> incr call_count) in
 
   (* Invoke multiple times *)
   for i = 1 to 5 do
@@ -267,11 +260,12 @@ let test_closure_multiple_invocations () =
 let test_closure_multiple_params () =
   (* Test closure with 2 parameters *)
   let sum = ref 0 in
-  let closure = Gobject.Closure.create (fun argv ->
-    let val1 = Gobject.Closure.nth argv ~pos:0 in
-    let val2 = Gobject.Closure.nth argv ~pos:1 in
-    sum := Gobject.Value.get_int val1 + Gobject.Value.get_int val2
-  ) in
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let val1 = Gobject.Closure.nth argv ~pos:0 in
+        let val2 = Gobject.Closure.nth argv ~pos:1 in
+        sum := Gobject.Value.get_int val1 + Gobject.Value.get_int val2)
+  in
 
   Gobject.Test.invoke_closure_two_ints closure 10 20;
   check int "Sum of two parameters" 30 !sum;
@@ -283,10 +277,11 @@ let test_closure_multiple_params () =
 let test_closure_boolean_param () =
   (* Test boolean parameter *)
   let received = ref false in
-  let closure = Gobject.Closure.create (fun argv ->
-    let gval = Gobject.Closure.nth argv ~pos:0 in
-    received := Gobject.Value.get_boolean gval
-  ) in
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let gval = Gobject.Closure.nth argv ~pos:0 in
+        received := Gobject.Value.get_boolean gval)
+  in
 
   Gobject.Test.invoke_closure_boolean closure true;
   check bool "Received boolean true" true !received;
@@ -297,10 +292,11 @@ let test_closure_boolean_param () =
 let test_closure_double_param () =
   (* Test double/float parameter *)
   let received = ref 0.0 in
-  let closure = Gobject.Closure.create (fun argv ->
-    let gval = Gobject.Closure.nth argv ~pos:0 in
-    received := Gobject.Value.get_double gval
-  ) in
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let gval = Gobject.Closure.nth argv ~pos:0 in
+        received := Gobject.Value.get_double gval)
+  in
 
   Gobject.Test.invoke_closure_double closure 3.14;
   check (float 0.001) "Received float" 3.14 !received;
@@ -310,9 +306,9 @@ let test_closure_double_param () =
 
 let test_closure_exception_handling () =
   (* Test what happens when closure raises exception *)
-  let closure = Gobject.Closure.create (fun _argv ->
-    failwith "Intentional test error"
-  ) in
+  let closure =
+    Gobject.Closure.create (fun _argv -> failwith "Intentional test error")
+  in
 
   (* The exception should propagate through caml_callback_exn *)
   (* For now, we just verify the closure can be created with exception code *)
@@ -321,13 +317,13 @@ let test_closure_exception_handling () =
 let test_closure_out_of_bounds_access () =
   (* Test accessing argument out of bounds *)
   let exception_raised = ref false in
-  let closure = Gobject.Closure.create (fun argv ->
-    try
-      let _gval = Gobject.Closure.nth argv ~pos:5 in
-      ()
-    with Invalid_argument _ ->
-      exception_raised := true
-  ) in
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        try
+          let _gval = Gobject.Closure.nth argv ~pos:5 in
+          ()
+        with Invalid_argument _ -> exception_raised := true)
+  in
 
   Gobject.Test.invoke_closure_int closure 42;
   check bool "Out of bounds access raised exception" true !exception_raised
@@ -360,10 +356,11 @@ let test_multiple_closures_simultaneously () =
 let test_closure_empty_string () =
   (* Test empty string parameter *)
   let received = ref "default" in
-  let closure = Gobject.Closure.create (fun argv ->
-    let gval = Gobject.Closure.nth argv ~pos:0 in
-    received := Gobject.Value.get_string gval
-  ) in
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let gval = Gobject.Closure.nth argv ~pos:0 in
+        received := Gobject.Value.get_string gval)
+  in
 
   Gobject.Test.invoke_closure_string closure "";
   check string "Empty string" "" !received
@@ -371,10 +368,11 @@ let test_closure_empty_string () =
 let test_closure_unicode_string () =
   (* Test Unicode string parameter *)
   let received = ref "" in
-  let closure = Gobject.Closure.create (fun argv ->
-    let gval = Gobject.Closure.nth argv ~pos:0 in
-    received := Gobject.Value.get_string gval
-  ) in
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let gval = Gobject.Closure.nth argv ~pos:0 in
+        received := Gobject.Value.get_string gval)
+  in
 
   Gobject.Test.invoke_closure_string closure "Hello 世界 🎉";
   check string "Unicode string" "Hello 世界 🎉" !received
@@ -382,44 +380,48 @@ let test_closure_unicode_string () =
 let test_closure_large_int () =
   (* Test large integer value (within gint/int32 range) *)
   let received = ref 0 in
-  let closure = Gobject.Closure.create (fun argv ->
-    let gval = Gobject.Closure.nth argv ~pos:0 in
-    received := Gobject.Value.get_int gval
-  ) in
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let gval = Gobject.Closure.nth argv ~pos:0 in
+        received := Gobject.Value.get_int gval)
+  in
 
   (* GLib uses gint (32-bit), so test with values in that range *)
-  let large_positive = 2_147_483_647 in  (* G_MAXINT *)
+  let large_positive = 2_147_483_647 in
+  (* G_MAXINT *)
   Gobject.Test.invoke_closure_int closure large_positive;
   check int "Large positive int" large_positive !received
 
 let test_closure_negative_int () =
   (* Test negative integer *)
   let received = ref 0 in
-  let closure = Gobject.Closure.create (fun argv ->
-    let gval = Gobject.Closure.nth argv ~pos:0 in
-    received := Gobject.Value.get_int gval
-  ) in
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let gval = Gobject.Closure.nth argv ~pos:0 in
+        received := Gobject.Value.get_int gval)
+  in
 
   Gobject.Test.invoke_closure_int closure (-42);
   check int "Negative int" (-42) !received;
 
   (* GLib uses gint (32-bit) *)
-  let large_negative = -2_147_483_648 in  (* G_MININT *)
+  let large_negative = -2_147_483_648 in
+  (* G_MININT *)
   Gobject.Test.invoke_closure_int closure large_negative;
   check int "Large negative int" large_negative !received
 
 let test_closure_wrong_type_access () =
   (* Test accessing value as wrong type *)
   let exception_raised = ref false in
-  let closure = Gobject.Closure.create (fun argv ->
-    try
-      let gval = Gobject.Closure.nth argv ~pos:0 in
-      (* Try to get int as string *)
-      let _ = Gobject.Value.get_string gval in
-      ()
-    with Invalid_argument _ ->
-      exception_raised := true
-  ) in
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        try
+          let gval = Gobject.Closure.nth argv ~pos:0 in
+          (* Try to get int as string *)
+          let _ = Gobject.Value.get_string gval in
+          ()
+        with Invalid_argument _ -> exception_raised := true)
+  in
 
   Gobject.Test.invoke_closure_int closure 42;
   check bool "Wrong type access raised exception" true !exception_raised
@@ -438,9 +440,9 @@ let test_closure_survives_gc () =
    *
    * TODO: Investigate alternative closure storage for stress testing scenarios.
    *)
-  skip ()  (* Disable test to avoid crash *)
+  skip () (* Disable test to avoid crash *)
 
-  (* Original test code (disabled):
+(* Original test code (disabled):
   let received = ref 0 in
   let closure = Gobject.Closure.create (fun argv ->
     let gval = Gobject.Closure.nth argv ~pos:0 in
@@ -461,7 +463,7 @@ let test_closure_survives_gc () =
 
 let test_data_enum () =
   (* Test enum conversion using Gtk.Align as example *)
-  let (decode, encode) = Gtk4Enums.Conv.align in
+  let decode, encode = Gtk4Enums.Conv.align in
 
   (* Test encoding/decoding roundtrip for FILL *)
   let encoded = encode `FILL in
@@ -480,7 +482,7 @@ let test_data_enum () =
 
 let test_data_flags () =
   (* Test flags conversion using GLib log_level *)
-  let (decode, encode) = GlibEnums.Conv.log_level in
+  let decode, encode = GlibEnums.Conv.log_level in
 
   (* Test encoding/decoding *)
   let encoded = encode `ERROR in
@@ -496,7 +498,7 @@ let test_gobject_enums_accessible () =
 
 let test_data_enum_gobject () =
   (* Conv.signal_type already returns an encoder/decoder pair *)
-  let (decode, encode) = GobjectEnums.Conv.signal_type in
+  let decode, encode = GobjectEnums.Conv.signal_type in
 
   (* Test round-trip conversion *)
   let test_signal sig_type =
@@ -513,7 +515,7 @@ let test_data_enum_gobject () =
 
 let test_data_flags_gobject () =
   (* Conv.connect_flags already returns an encoder/decoder pair for flags *)
-  let (decode, encode) = GobjectEnums.Conv.connect_flags in
+  let decode, encode = GobjectEnums.Conv.connect_flags in
 
   (* Test individual flag values *)
   let test_flag flag =
@@ -526,7 +528,7 @@ let test_data_flags_gobject () =
   test_flag `SWAPPED
 
 let test_fundamental_types () =
-  let (decode, encode) = GobjectEnums.Conv.fundamental_type in
+  let decode, encode = GobjectEnums.Conv.fundamental_type in
 
   (* Test basic types that every GObject system needs *)
   let test_type gtype =
@@ -584,75 +586,97 @@ let test_gvalue_type_mismatch () =
   try
     let _ = Gobject.Value.get_string gval in
     fail "Should have raised exception for type mismatch"
-  with Invalid_argument _ ->
-    ()
+  with Invalid_argument _ -> ()
 
 (* ==================================================================== *)
 (* Test Suite *)
 (* ==================================================================== *)
 
 let () =
-  run "GObject Module Tests (Phase 2.2)" [
-    "Type System", [
-      test_case "Fundamental types" `Quick (require_gtk test_type_fundamental);
-      test_case "Type names" `Quick (require_gtk test_type_name);
-      test_case "Type from name" `Quick (require_gtk test_type_from_name);
-      test_case "Type hierarchy" `Quick (require_gtk test_type_parent);
-      test_case "Type is_a check" `Quick (require_gtk test_type_is_a);
-    ];
-
-    "GValue Operations", [
-      test_case "GValue int" `Quick (require_gtk test_gvalue_int);
-      test_case "GValue boolean" `Quick (require_gtk test_gvalue_boolean);
-      test_case "GValue string" `Quick (require_gtk test_gvalue_string);
-      test_case "GValue float" `Quick (require_gtk test_gvalue_float);
-      test_case "GValue double" `Quick (require_gtk test_gvalue_double);
-      test_case "GValue reset" `Quick (require_gtk test_gvalue_reset);
-      test_case "GValue get_type" `Quick (require_gtk test_gvalue_get_type);
-      test_case "GValue create_empty" `Quick (require_gtk test_gvalue_create_empty);
-    ];
-
-    "Signals and Closures", [
-      test_case "Closure creation" `Quick (require_gtk test_signal_closure_creation);
-      test_case "Closure invocation (void)" `Quick (require_gtk test_closure_invocation_void);
-      test_case "Closure invocation (int)" `Quick (require_gtk test_closure_invocation_int);
-      test_case "Closure invocation (string)" `Quick (require_gtk test_closure_invocation_string);
-      test_case "Multiple closure invocations" `Quick (require_gtk test_closure_multiple_invocations);
-    ];
-
-    "Closure Critical Tests", [
-      test_case "Multiple parameters" `Quick (require_gtk test_closure_multiple_params);
-      test_case "Boolean parameter" `Quick (require_gtk test_closure_boolean_param);
-      test_case "Double parameter" `Quick (require_gtk test_closure_double_param);
-      test_case "Exception handling" `Quick (require_gtk test_closure_exception_handling);
-      test_case "Out of bounds access" `Quick (require_gtk test_closure_out_of_bounds_access);
-      test_case "Multiple closures simultaneously" `Quick (require_gtk test_multiple_closures_simultaneously);
-    ];
-
-    "Closure Edge Cases", [
-      test_case "Empty string" `Quick (require_gtk test_closure_empty_string);
-      test_case "Unicode string" `Quick (require_gtk test_closure_unicode_string);
-      test_case "Large int (32-bit range)" `Quick (require_gtk test_closure_large_int);
-      test_case "Negative int" `Quick (require_gtk test_closure_negative_int);
-      test_case "Wrong type access" `Quick (require_gtk test_closure_wrong_type_access);
-      test_case "Survives GC" `Quick (require_gtk test_closure_survives_gc);
-    ];
-
-    "Data Conversions", [
-      test_case "Enum conversion (Gtk4)" `Quick (require_gtk test_data_enum);
-      test_case "Flags conversion (GLib)" `Quick (require_gtk test_data_flags);
-      test_case "GObject enums accessible" `Quick (require_gtk test_gobject_enums_accessible);
-      test_case "Signal type enum" `Quick (require_gtk test_data_enum_gobject);
-      test_case "Connect flags" `Quick (require_gtk test_data_flags_gobject);
-      test_case "Fundamental types" `Quick (require_gtk test_fundamental_types);
-    ];
-
-    "Object Operations", [
-      test_case "Object coerce" `Quick (require_gtk test_object_coerce);
-    ];
-
-    "Error Handling", [
-      test_case "Type not found" `Quick (require_gtk test_type_not_found);
-      test_case "GValue type mismatch" `Quick (require_gtk test_gvalue_type_mismatch);
-    ];
-  ]
+  run "GObject Module Tests (Phase 2.2)"
+    [
+      ( "Type System",
+        [
+          test_case "Fundamental types" `Quick
+            (require_gtk test_type_fundamental);
+          test_case "Type names" `Quick (require_gtk test_type_name);
+          test_case "Type from name" `Quick (require_gtk test_type_from_name);
+          test_case "Type hierarchy" `Quick (require_gtk test_type_parent);
+          test_case "Type is_a check" `Quick (require_gtk test_type_is_a);
+        ] );
+      ( "GValue Operations",
+        [
+          test_case "GValue int" `Quick (require_gtk test_gvalue_int);
+          test_case "GValue boolean" `Quick (require_gtk test_gvalue_boolean);
+          test_case "GValue string" `Quick (require_gtk test_gvalue_string);
+          test_case "GValue float" `Quick (require_gtk test_gvalue_float);
+          test_case "GValue double" `Quick (require_gtk test_gvalue_double);
+          test_case "GValue reset" `Quick (require_gtk test_gvalue_reset);
+          test_case "GValue get_type" `Quick (require_gtk test_gvalue_get_type);
+          test_case "GValue create_empty" `Quick
+            (require_gtk test_gvalue_create_empty);
+        ] );
+      ( "Signals and Closures",
+        [
+          test_case "Closure creation" `Quick
+            (require_gtk test_signal_closure_creation);
+          test_case "Closure invocation (void)" `Quick
+            (require_gtk test_closure_invocation_void);
+          test_case "Closure invocation (int)" `Quick
+            (require_gtk test_closure_invocation_int);
+          test_case "Closure invocation (string)" `Quick
+            (require_gtk test_closure_invocation_string);
+          test_case "Multiple closure invocations" `Quick
+            (require_gtk test_closure_multiple_invocations);
+        ] );
+      ( "Closure Critical Tests",
+        [
+          test_case "Multiple parameters" `Quick
+            (require_gtk test_closure_multiple_params);
+          test_case "Boolean parameter" `Quick
+            (require_gtk test_closure_boolean_param);
+          test_case "Double parameter" `Quick
+            (require_gtk test_closure_double_param);
+          test_case "Exception handling" `Quick
+            (require_gtk test_closure_exception_handling);
+          test_case "Out of bounds access" `Quick
+            (require_gtk test_closure_out_of_bounds_access);
+          test_case "Multiple closures simultaneously" `Quick
+            (require_gtk test_multiple_closures_simultaneously);
+        ] );
+      ( "Closure Edge Cases",
+        [
+          test_case "Empty string" `Quick
+            (require_gtk test_closure_empty_string);
+          test_case "Unicode string" `Quick
+            (require_gtk test_closure_unicode_string);
+          test_case "Large int (32-bit range)" `Quick
+            (require_gtk test_closure_large_int);
+          test_case "Negative int" `Quick
+            (require_gtk test_closure_negative_int);
+          test_case "Wrong type access" `Quick
+            (require_gtk test_closure_wrong_type_access);
+          test_case "Survives GC" `Quick (require_gtk test_closure_survives_gc);
+        ] );
+      ( "Data Conversions",
+        [
+          test_case "Enum conversion (Gtk4)" `Quick (require_gtk test_data_enum);
+          test_case "Flags conversion (GLib)" `Quick
+            (require_gtk test_data_flags);
+          test_case "GObject enums accessible" `Quick
+            (require_gtk test_gobject_enums_accessible);
+          test_case "Signal type enum" `Quick
+            (require_gtk test_data_enum_gobject);
+          test_case "Connect flags" `Quick (require_gtk test_data_flags_gobject);
+          test_case "Fundamental types" `Quick
+            (require_gtk test_fundamental_types);
+        ] );
+      ( "Object Operations",
+        [ test_case "Object coerce" `Quick (require_gtk test_object_coerce) ] );
+      ( "Error Handling",
+        [
+          test_case "Type not found" `Quick (require_gtk test_type_not_found);
+          test_case "GValue type mismatch" `Quick
+            (require_gtk test_gvalue_type_mismatch);
+        ] );
+    ]

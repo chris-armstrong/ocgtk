@@ -1,7 +1,6 @@
 (** Unit tests for calc_expr.ml using Alcotest
 
-    Run with: dune runtest examples/calculator
-*)
+    Run with: dune runtest examples/calculator *)
 
 open Containers
 open Calc_core
@@ -20,7 +19,9 @@ let check_ok expected s =
   match evaluate s with
   | Ok v -> v
   | Error msg ->
-      Alcotest.fail (Printf.sprintf "Expected Ok %f for '%s' but got Error: %s" expected s msg)
+      Alcotest.fail
+        (Printf.sprintf "Expected Ok %f for '%s' but got Error: %s" expected s
+           msg)
 
 (* Helper to check Error result *)
 let check_error s =
@@ -103,7 +104,9 @@ let test_whitespace () =
   Alcotest.(check testable_float) "  2 + 3  " 5.0 (check_ok 5.0 "  2 + 3  ");
   Alcotest.(check testable_float) "2 +3" 5.0 (check_ok 5.0 "2 +3");
   Alcotest.(check testable_float) "2+ 3" 5.0 (check_ok 5.0 "2+ 3");
-  Alcotest.(check testable_float) " 2 + 3 * 4 " 14.0 (check_ok 14.0 " 2 + 3 * 4 ")
+  Alcotest.(check testable_float)
+    " 2 + 3 * 4 " 14.0
+    (check_ok 14.0 " 2 + 3 * 4 ")
 
 (* Negative numbers *)
 let test_negative_numbers () =
@@ -151,40 +154,92 @@ let test_multiple_unclosed_parens () =
 
 (* Deeply nested expressions *)
 let test_deeply_nested () =
-  Alcotest.(check testable_float) "3 levels" 9.0 (check_ok 9.0 "((1+2)+(3+4))-1");
-  Alcotest.(check testable_float) "4 levels" 10.0 (check_ok 10.0 "(((1+2)+3)+4)");
-  Alcotest.(check testable_float) "mixed" 21.0 (check_ok 21.0 "(1+(2+(3+(4+5+6))))")
+  Alcotest.(check testable_float)
+    "3 levels" 9.0
+    (check_ok 9.0 "((1+2)+(3+4))-1");
+  Alcotest.(check testable_float)
+    "4 levels" 10.0
+    (check_ok 10.0 "(((1+2)+3)+4)");
+  Alcotest.(check testable_float)
+    "mixed" 21.0
+    (check_ok 21.0 "(1+(2+(3+(4+5+6))))")
 
 (* Safe evaluate - catches exceptions *)
 let test_safe_evaluate () =
-  Alcotest.(check testable_float) "valid expr" 5.0 
-    (match safe_evaluate "2+3" with Ok v -> v | Error _ -> Alcotest.fail "should succeed");
-  Alcotest.(check testable_float) "auto-close" 14.0
-    (match safe_evaluate "2*(3+4" with Ok v -> v | Error _ -> Alcotest.fail "should auto-close");
+  Alcotest.(check testable_float)
+    "valid expr" 5.0
+    (match safe_evaluate "2+3" with
+    | Ok v -> v
+    | Error _ -> Alcotest.fail "should succeed");
+  Alcotest.(check testable_float)
+    "auto-close" 14.0
+    (match safe_evaluate "2*(3+4" with
+    | Ok v -> v
+    | Error _ -> Alcotest.fail "should auto-close");
   check_error ""
 
 (* Test suite *)
 let () =
   Alcotest.run "calc_expr"
     [
-      ("basic-addition", [ Alcotest.test_case "basic addition" `Quick test_basic_addition ]);
-      ("basic-subtraction", [ Alcotest.test_case "basic subtraction" `Quick test_basic_subtraction ]);
-      ("basic-multiplication", [ Alcotest.test_case "basic multiplication" `Quick test_basic_multiplication ]);
-      ("basic-division", [ Alcotest.test_case "basic division" `Quick test_basic_division ]);
-      ("operator-precedence", [ Alcotest.test_case "operator precedence" `Quick test_precedence ]);
-      ("parentheses", [ Alcotest.test_case "parentheses" `Quick test_parentheses ]);
-      ("auto-close-parens", [ Alcotest.test_case "auto-close parentheses" `Quick test_auto_close_parens ]);
-      ("division-by-zero", [ Alcotest.test_case "division by zero" `Quick test_division_by_zero ]);
-      ("empty-expression", [ Alcotest.test_case "empty expression" `Quick test_empty_expression ]);
-      ("invalid-auto-close", [ Alcotest.test_case "invalid auto-close" `Quick test_invalid_auto_close ]);
+      ( "basic-addition",
+        [ Alcotest.test_case "basic addition" `Quick test_basic_addition ] );
+      ( "basic-subtraction",
+        [ Alcotest.test_case "basic subtraction" `Quick test_basic_subtraction ]
+      );
+      ( "basic-multiplication",
+        [
+          Alcotest.test_case "basic multiplication" `Quick
+            test_basic_multiplication;
+        ] );
+      ( "basic-division",
+        [ Alcotest.test_case "basic division" `Quick test_basic_division ] );
+      ( "operator-precedence",
+        [ Alcotest.test_case "operator precedence" `Quick test_precedence ] );
+      ( "parentheses",
+        [ Alcotest.test_case "parentheses" `Quick test_parentheses ] );
+      ( "auto-close-parens",
+        [
+          Alcotest.test_case "auto-close parentheses" `Quick
+            test_auto_close_parens;
+        ] );
+      ( "division-by-zero",
+        [ Alcotest.test_case "division by zero" `Quick test_division_by_zero ]
+      );
+      ( "empty-expression",
+        [ Alcotest.test_case "empty expression" `Quick test_empty_expression ]
+      );
+      ( "invalid-auto-close",
+        [
+          Alcotest.test_case "invalid auto-close" `Quick test_invalid_auto_close;
+        ] );
       ("decimals", [ Alcotest.test_case "decimals" `Quick test_decimals ]);
-      ("whitespace", [ Alcotest.test_case "whitespace tolerance" `Quick test_whitespace ]);
-      ("negative-numbers", [ Alcotest.test_case "negative numbers" `Quick test_negative_numbers ]);
+      ( "whitespace",
+        [ Alcotest.test_case "whitespace tolerance" `Quick test_whitespace ] );
+      ( "negative-numbers",
+        [ Alcotest.test_case "negative numbers" `Quick test_negative_numbers ]
+      );
       ("edge-cases", [ Alcotest.test_case "edge cases" `Quick test_edge_cases ]);
-      ("format-result", [ Alcotest.test_case "format result" `Quick test_format_result ]);
-      ("incomplete-expression", [ Alcotest.test_case "incomplete expression" `Quick test_incomplete_expression ]);
-      ("get-display-text", [ Alcotest.test_case "get display text" `Quick test_get_display_text ]);
-      ("multiple-unclosed-parens", [ Alcotest.test_case "multiple unclosed parens" `Quick test_multiple_unclosed_parens ]);
-      ("deeply-nested", [ Alcotest.test_case "deeply nested expressions" `Quick test_deeply_nested ]);
-      ("safe-evaluate", [ Alcotest.test_case "safe evaluate" `Quick test_safe_evaluate ]);
+      ( "format-result",
+        [ Alcotest.test_case "format result" `Quick test_format_result ] );
+      ( "incomplete-expression",
+        [
+          Alcotest.test_case "incomplete expression" `Quick
+            test_incomplete_expression;
+        ] );
+      ( "get-display-text",
+        [ Alcotest.test_case "get display text" `Quick test_get_display_text ]
+      );
+      ( "multiple-unclosed-parens",
+        [
+          Alcotest.test_case "multiple unclosed parens" `Quick
+            test_multiple_unclosed_parens;
+        ] );
+      ( "deeply-nested",
+        [
+          Alcotest.test_case "deeply nested expressions" `Quick
+            test_deeply_nested;
+        ] );
+      ( "safe-evaluate",
+        [ Alcotest.test_case "safe evaluate" `Quick test_safe_evaluate ] );
     ]

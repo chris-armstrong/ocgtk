@@ -13,8 +13,8 @@
 
 (** GLib.Bytes - Immutable reference-counted byte buffer
 
-    GBytes wraps an immutable block of memory with reference counting.
-    Used for texture data, file contents, serialized data, etc. *)
+    GBytes wraps an immutable block of memory with reference counting. Used for
+    texture data, file contents, serialized data, etc. *)
 
 type t
 (** Opaque GBytes type - backed by GBytes* with g_bytes_unref finalizer *)

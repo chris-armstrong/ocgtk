@@ -17,8 +17,7 @@
     - Main event loop
     - Timeout and idle callbacks
     - Character set conversion (UTF-8)
-    - String utilities
-*)
+    - String utilities *)
 
 type unichar = int
 type unistring = unichar array
@@ -30,7 +29,7 @@ let () = Callback.register_exception "gerror" (GError "")
 (** {2 Main Event Loop} *)
 
 module Main = struct
-  type t  (* Abstract type for GMainLoop *)
+  type t (* Abstract type for GMainLoop *)
 
   external create : bool -> t = "ml_g_main_new"
   external run : t -> unit = "ml_g_main_run"
@@ -41,10 +40,10 @@ module Main = struct
   external destroy : t -> unit = "ml_g_main_destroy"
 end
 
-(** Priority levels for timeouts and idle callbacks *)
 external int_of_priority :
-  [< `HIGH | `DEFAULT | `HIGH_IDLE | `DEFAULT_IDLE | `LOW] -> int
+  [< `HIGH | `DEFAULT | `HIGH_IDLE | `DEFAULT_IDLE | `LOW ] -> int
   = "ml_g_int_of_priority"
+(** Priority levels for timeouts and idle callbacks *)
 
 (** {2 Timeout Callbacks} *)
 
@@ -66,8 +65,7 @@ end
 module Idle = struct
   type id = int
 
-  external add_full : int option -> (unit -> bool) -> id
-    = "ml_g_idle_add"
+  external add_full : int option -> (unit -> bool) -> id = "ml_g_idle_add"
 
   let add ?prio callback =
     let prio_opt = match prio with Some p -> Some p | None -> None in
@@ -89,8 +87,7 @@ module Convert = struct
 
   exception Error of error * string
 
-  let () = Callback.register_exception "glib_convert_error"
-      (Error (FAILED, ""))
+  let () = Callback.register_exception "glib_convert_error" (Error (FAILED, ""))
 
   external convert :
     string -> to_codeset:string -> from_codeset:string -> string
@@ -113,10 +110,11 @@ end
 
 external get_prgname : unit -> string option = "ml_g_get_prgname"
 external set_prgname : string -> unit = "ml_g_set_prgname"
+
 external get_application_name : unit -> string option
   = "ml_g_get_application_name"
-external set_application_name : string -> unit
-  = "ml_g_set_application_name"
+
+external set_application_name : string -> unit = "ml_g_set_application_name"
 
 (* Initialize GLib error handling *)
 external glib_init : unit -> unit = "ml_glib_init"

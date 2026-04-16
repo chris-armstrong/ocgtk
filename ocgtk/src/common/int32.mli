@@ -13,11 +13,11 @@
 
 (** Signed 32-bit integer ([gint32]).
 
-    Backed by [private int] — no heap allocation.
-    Range: [-2147483648, 2147483647].
+    Backed by [private int] — no heap allocation. Range:
+    [-2147483648, 2147483647].
 
-    This module intentionally shadows [Stdlib.Int32]. Use [Stdlib.Int32]
-    when you need OCaml's boxed [int32] type. *)
+    This module intentionally shadows [Stdlib.Int32]. Use [Stdlib.Int32] when
+    you need OCaml's boxed [int32] type. *)
 
 type t = private int
 

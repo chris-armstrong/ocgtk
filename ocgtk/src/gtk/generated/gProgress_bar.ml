@@ -1,84 +1,80 @@
 class type progress_bar_t = object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
-    inherit GAccessible_range.accessible_range_t
-    inherit GOrientable.orientable_t
-    method get_ellipsize : unit -> Ocgtk_pango.Pango.ellipsizemode
-    method get_fraction : unit -> float
-    method get_inverted : unit -> bool
-    method get_pulse_step : unit -> float
-    method get_show_text : unit -> bool
-    method get_text : unit -> string option
-    method pulse : unit -> unit
-    method set_ellipsize : Ocgtk_pango.Pango.ellipsizemode -> unit
-    method set_fraction : float -> unit
-    method set_inverted : bool -> unit
-    method set_pulse_step : float -> unit
-    method set_show_text : bool -> unit
-    method set_text : string option -> unit
-    method as_progress_bar : Progress_bar.t
+  inherit
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .widget_t
+
+  inherit GAccessible_range.accessible_range_t
+  inherit GOrientable.orientable_t
+  method get_ellipsize : unit -> Ocgtk_pango.Pango.ellipsizemode
+  method get_fraction : unit -> float
+  method get_inverted : unit -> bool
+  method get_pulse_step : unit -> float
+  method get_show_text : unit -> bool
+  method get_text : unit -> string option
+  method pulse : unit -> unit
+  method set_ellipsize : Ocgtk_pango.Pango.ellipsizemode -> unit
+  method set_fraction : float -> unit
+  method set_inverted : bool -> unit
+  method set_pulse_step : float -> unit
+  method set_show_text : bool -> unit
+  method set_text : string option -> unit
+  method as_progress_bar : Progress_bar.t
 end
 
 (* High-level class for ProgressBar *)
-class progress_bar (obj : Progress_bar.t) : progress_bar_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
-  inherit GAccessible_range.accessible_range (Accessible_range.from_gobject obj)
-  inherit GOrientable.orientable (Orientable.from_gobject obj)
+class progress_bar (obj : Progress_bar.t) : progress_bar_t =
+  object (self)
+    inherit
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      .widget
+        (obj
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+             .Widget
+             .t)
 
-  method get_ellipsize : unit -> Ocgtk_pango.Pango.ellipsizemode =
-    fun () ->
-      (Progress_bar.get_ellipsize obj)
+    inherit
+      GAccessible_range.accessible_range (Accessible_range.from_gobject obj)
 
-  method get_fraction : unit -> float =
-    fun () ->
-      (Progress_bar.get_fraction obj)
+    inherit GOrientable.orientable (Orientable.from_gobject obj)
 
-  method get_inverted : unit -> bool =
-    fun () ->
-      (Progress_bar.get_inverted obj)
+    method get_ellipsize : unit -> Ocgtk_pango.Pango.ellipsizemode =
+      fun () -> Progress_bar.get_ellipsize obj
 
-  method get_pulse_step : unit -> float =
-    fun () ->
-      (Progress_bar.get_pulse_step obj)
+    method get_fraction : unit -> float =
+      fun () -> Progress_bar.get_fraction obj
 
-  method get_show_text : unit -> bool =
-    fun () ->
-      (Progress_bar.get_show_text obj)
+    method get_inverted : unit -> bool = fun () -> Progress_bar.get_inverted obj
 
-  method get_text : unit -> string option =
-    fun () ->
-      (Progress_bar.get_text obj)
+    method get_pulse_step : unit -> float =
+      fun () -> Progress_bar.get_pulse_step obj
 
-  method pulse : unit -> unit =
-    fun () ->
-      (Progress_bar.pulse obj)
+    method get_show_text : unit -> bool =
+      fun () -> Progress_bar.get_show_text obj
 
-  method set_ellipsize : Ocgtk_pango.Pango.ellipsizemode -> unit =
-    fun mode ->
-      (Progress_bar.set_ellipsize obj mode)
+    method get_text : unit -> string option =
+      fun () -> Progress_bar.get_text obj
 
-  method set_fraction : float -> unit =
-    fun fraction ->
-      (Progress_bar.set_fraction obj fraction)
+    method pulse : unit -> unit = fun () -> Progress_bar.pulse obj
 
-  method set_inverted : bool -> unit =
-    fun inverted ->
-      (Progress_bar.set_inverted obj inverted)
+    method set_ellipsize : Ocgtk_pango.Pango.ellipsizemode -> unit =
+      fun mode -> Progress_bar.set_ellipsize obj mode
 
-  method set_pulse_step : float -> unit =
-    fun fraction ->
-      (Progress_bar.set_pulse_step obj fraction)
+    method set_fraction : float -> unit =
+      fun fraction -> Progress_bar.set_fraction obj fraction
 
-  method set_show_text : bool -> unit =
-    fun show_text ->
-      (Progress_bar.set_show_text obj show_text)
+    method set_inverted : bool -> unit =
+      fun inverted -> Progress_bar.set_inverted obj inverted
 
-  method set_text : string option -> unit =
-    fun text ->
-      (Progress_bar.set_text obj text)
+    method set_pulse_step : float -> unit =
+      fun fraction -> Progress_bar.set_pulse_step obj fraction
+
+    method set_show_text : bool -> unit =
+      fun show_text -> Progress_bar.set_show_text obj show_text
+
+    method set_text : string option -> unit =
+      fun text -> Progress_bar.set_text obj text
 
     method as_progress_bar = obj
-end
+  end
 
-let new_ () : progress_bar_t =
-  new progress_bar (Progress_bar.new_ ())
-
+let new_ () : progress_bar_t = new progress_bar (Progress_bar.new_ ())

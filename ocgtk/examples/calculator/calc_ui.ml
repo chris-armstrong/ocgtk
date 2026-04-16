@@ -135,16 +135,16 @@ let handle_button_click ui text () =
 
 (* GDK keysym constants for non-printable keys.
    GDK_KEY_* constants are not yet generated (Milestone 4), hardcode for now. *)
-let gdk_key_return     = 0xff0d
-let gdk_key_kp_enter   = 0xff8d
-let gdk_key_escape     = 0xff1b
-let gdk_key_backspace  = 0xff08
-let gdk_key_kp_multiply  = 0xffaa
-let gdk_key_kp_add       = 0xffab
-let gdk_key_kp_subtract  = 0xffad
-let gdk_key_kp_decimal   = 0xffae
-let gdk_key_kp_divide    = 0xffaf
-let gdk_key_kp_0         = 0xffb0
+let gdk_key_return = 0xff0d
+let gdk_key_kp_enter = 0xff8d
+let gdk_key_escape = 0xff1b
+let gdk_key_backspace = 0xff08
+let gdk_key_kp_multiply = 0xffaa
+let gdk_key_kp_add = 0xffab
+let gdk_key_kp_subtract = 0xffad
+let gdk_key_kp_decimal = 0xffae
+let gdk_key_kp_divide = 0xffaf
+let gdk_key_kp_0 = 0xffb0
 
 let numpad_char keyval =
   if keyval >= gdk_key_kp_0 && keyval <= gdk_key_kp_0 + 9 then
@@ -163,16 +163,14 @@ let handle_key ui keyval =
     if keyval >= 0x20 && keyval <= 0x7e then
       (* Printable ASCII: keyval maps directly to char code *)
       match Char.chr keyval with
-      | '0' .. '9' | '.' | '+' | '-' | '*' | '/' | '(' | ')' as c ->
+      | ('0' .. '9' | '.' | '+' | '-' | '*' | '/' | '(' | ')') as c ->
           (append_char state c, true)
       | '=' -> (evaluate state, true)
       | _ -> (state, false)
     else if keyval = gdk_key_return || keyval = gdk_key_kp_enter then
       (evaluate state, true)
-    else if keyval = gdk_key_escape then
-      (clear (), true)
-    else if keyval = gdk_key_backspace then
-      (backspace state, true)
+    else if keyval = gdk_key_escape then (clear (), true)
+    else if keyval = gdk_key_backspace then (backspace state, true)
     else
       match numpad_char keyval with
       | Some c -> (append_char state c, true)
@@ -188,11 +186,12 @@ let setup_keyboard ui (window : Window.window_t) =
   key_controller#set_propagation_phase `CAPTURE;
   (* key-pressed has a complex signature (keyval, keycode, modifiers -> bool)
      so it is not auto-generated. Connect manually via Gobject.Signal. *)
-  let closure = Gobject.Closure.create (fun argv ->
-    let keyval = Gobject.Value.get_uint (Gobject.Closure.nth argv ~pos:1) in
-    let handled = handle_key ui keyval in
-    Gobject.Value.set_boolean (Gobject.Closure.result argv) handled
-  ) in
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let keyval = Gobject.Value.get_uint (Gobject.Closure.nth argv ~pos:1) in
+        let handled = handle_key ui keyval in
+        Gobject.Value.set_boolean (Gobject.Closure.result argv) handled)
+  in
   ignore
     (Gobject.Signal.connect key_controller#as_event_controller_key
        ~name:"key-pressed" ~callback:closure ~after:false);

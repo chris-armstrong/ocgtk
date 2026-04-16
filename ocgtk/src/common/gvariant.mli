@@ -73,7 +73,7 @@ val of_boolean : bool -> t
 (** Create a boolean variant. *)
 
 val to_boolean : t -> bool
-(** Get the boolean value. 
+(** Get the boolean value.
     @raise Failure if the variant is not a boolean. *)
 
 (** {2 Byte (uint8)} *)
@@ -180,7 +180,8 @@ val of_maybe : Gvariant_type.t -> t option -> t
     [of_maybe ty (Some v)] wraps the value. *)
 
 val to_maybe : t -> t option
-(** Unwrap a maybe type variant. Returns [None] for null, [Some v] for wrapped value.
+(** Unwrap a maybe type variant. Returns [None] for null, [Some v] for wrapped
+    value.
     @raise Failure if the variant is not a maybe type. *)
 
 (** {2 Arrays} *)
@@ -208,43 +209,56 @@ val to_object_path_array : t -> string array
 *)
 
 val lookup_string : t -> string -> string option
-(** Lookup a string value in a dictionary. Returns [None] if the key is not found or the value is not a string. *)
+(** Lookup a string value in a dictionary. Returns [None] if the key is not
+    found or the value is not a string. *)
 
 val lookup_int32 : t -> string -> int32 option
-(** Lookup an int32 value in a dictionary. Returns [None] if the key is not found or the value is not an int32. *)
+(** Lookup an int32 value in a dictionary. Returns [None] if the key is not
+    found or the value is not an int32. *)
 
 val lookup_boolean : t -> string -> bool option
-(** Lookup a boolean value in a dictionary. Returns [None] if the key is not found or the value is not a boolean. *)
+(** Lookup a boolean value in a dictionary. Returns [None] if the key is not
+    found or the value is not a boolean. *)
 
 val lookup_byte : t -> string -> int option
-(** Lookup a byte (uint8) value in a dictionary. Returns [None] if the key is not found or the value is not a byte. *)
+(** Lookup a byte (uint8) value in a dictionary. Returns [None] if the key is
+    not found or the value is not a byte. *)
 
 val lookup_int16 : t -> string -> int option
-(** Lookup an int16 value in a dictionary. Returns [None] if the key is not found or the value is not an int16. *)
+(** Lookup an int16 value in a dictionary. Returns [None] if the key is not
+    found or the value is not an int16. *)
 
 val lookup_uint16 : t -> string -> int option
-(** Lookup a uint16 value in a dictionary. Returns [None] if the key is not found or the value is not a uint16. *)
+(** Lookup a uint16 value in a dictionary. Returns [None] if the key is not
+    found or the value is not a uint16. *)
 
 val lookup_uint32 : t -> string -> uint32 option
-(** Lookup a uint32 value in a dictionary. Returns [None] if the key is not found or the value is not a uint32. *)
+(** Lookup a uint32 value in a dictionary. Returns [None] if the key is not
+    found or the value is not a uint32. *)
 
 val lookup_int64 : t -> string -> int64 option
-(** Lookup an int64 value in a dictionary. Returns [None] if the key is not found or the value is not an int64. *)
+(** Lookup an int64 value in a dictionary. Returns [None] if the key is not
+    found or the value is not an int64. *)
 
 val lookup_uint64 : t -> string -> uint64 option
-(** Lookup a uint64 value in a dictionary. Returns [None] if the key is not found or the value is not a uint64. *)
+(** Lookup a uint64 value in a dictionary. Returns [None] if the key is not
+    found or the value is not a uint64. *)
 
 val lookup_double : t -> string -> float option
-(** Lookup a double value in a dictionary. Returns [None] if the key is not found or the value is not a double. *)
+(** Lookup a double value in a dictionary. Returns [None] if the key is not
+    found or the value is not a double. *)
 
 val lookup_object_path : t -> string -> string option
-(** Lookup an object path value in a dictionary. Returns [None] if the key is not found or the value is not an object path. *)
+(** Lookup an object path value in a dictionary. Returns [None] if the key is
+    not found or the value is not an object path. *)
 
 val lookup_signature : t -> string -> string option
-(** Lookup a signature value in a dictionary. Returns [None] if the key is not found or the value is not a signature. *)
+(** Lookup a signature value in a dictionary. Returns [None] if the key is not
+    found or the value is not a signature. *)
 
 val lookup_handle : t -> string -> int option
-(** Lookup a handle (file descriptor) value in a dictionary. Returns [None] if the key is not found or the value is not a handle. *)
+(** Lookup a handle (file descriptor) value in a dictionary. Returns [None] if
+    the key is not found or the value is not a handle. *)
 
 (** {2 Child Access} *)
 
@@ -252,15 +266,15 @@ val n_children : t -> int
 (** Get the number of children in a tuple, array, or dictionary *)
 
 val get_child_value : t -> int -> t
-(** Get the nth child value. The returned value is a new reference and
-    must be unreferenced by the caller (handled by GC). *)
+(** Get the nth child value. The returned value is a new reference and must be
+    unreferenced by the caller (handled by GC). *)
 
 (** {2 Serialization} *)
 
 val print : t -> bool -> string
-(** Print the variant in GVariant text format.
-    First arg is the variant, second is whether to annotate types. *)
+(** Print the variant in GVariant text format. First arg is the variant, second
+    is whether to annotate types. *)
 
 val parse : string -> t
-(** Parse a GVariant from its text format representation.
-    Raises Failure on parse error. *)
+(** Parse a GVariant from its text format representation. Raises Failure on
+    parse error. *)

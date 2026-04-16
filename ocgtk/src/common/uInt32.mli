@@ -13,8 +13,7 @@
 
 (** Unsigned 32-bit integer ([guint32]).
 
-    Backed by [private int] — no heap allocation.
-    Range: [0, 4294967295].
+    Backed by [private int] — no heap allocation. Range: [0, 4294967295].
 
     Requires a 64-bit OCaml runtime. ocgtk does not support 32-bit targets. *)
 

@@ -45,9 +45,9 @@ let gir_versioned_interface =
 (* Runner helper: run gir_gen and return the parsed C AST for entity_name    *)
 (* ========================================================================= *)
 
-(** Run gir_gen.exe on [gir_content], return the raw C file text and the
-    parsed C AST for the entity whose snake_case name is [entity_snake].
-    Cleans up temp files on exit (success or failure). *)
+(** Run gir_gen.exe on [gir_content], return the raw C file text and the parsed
+    C AST for the entity whose snake_case name is [entity_snake]. Cleans up temp
+    files on exit (success or failure). *)
 let run_and_parse_c gir_content entity_snake =
   let gir_file = Filename.temp_file "test_from_gobject" ".gir" in
   let output_dir = Filename.temp_file "test_from_gobject_out" "" in
@@ -63,12 +63,12 @@ let run_and_parse_c gir_content entity_snake =
            (Sys.readdir generated_dir);
          Unix.rmdir generated_dir
        with _ -> ());
-      (try
-         Array.iter
-           (fun f -> Sys.remove (Filename.concat output_dir f))
-           (Sys.readdir output_dir);
-         Unix.rmdir output_dir
-       with _ -> ()))
+      try
+        Array.iter
+          (fun f -> Sys.remove (Filename.concat output_dir f))
+          (Sys.readdir output_dir);
+        Unix.rmdir output_dir
+      with _ -> ())
     (fun () ->
       Helpers.create_gir_file gir_file gir_content;
       Helpers.ensure_output_dir output_dir;
@@ -84,43 +84,43 @@ let run_and_parse_c gir_content entity_snake =
 (* ========================================================================= *)
 
 let test_gtype_macro_gtk_editable () =
-  Alcotest.(check string) "GtkEditable → GTK_TYPE_EDITABLE"
-    "GTK_TYPE_EDITABLE"
+  Alcotest.(check string)
+    "GtkEditable → GTK_TYPE_EDITABLE" "GTK_TYPE_EDITABLE"
     (Gir_gen_lib.Utils.gtype_macro_of_type_name "GtkEditable")
 
 let test_gtype_macro_gtk_selection_model () =
-  Alcotest.(check string) "GtkSelectionModel → GTK_TYPE_SELECTION_MODEL"
-    "GTK_TYPE_SELECTION_MODEL"
+  Alcotest.(check string)
+    "GtkSelectionModel → GTK_TYPE_SELECTION_MODEL" "GTK_TYPE_SELECTION_MODEL"
     (Gir_gen_lib.Utils.gtype_macro_of_type_name "GtkSelectionModel")
 
 let test_gtype_macro_gdk_paintable () =
-  Alcotest.(check string) "GdkPaintable → GDK_TYPE_PAINTABLE"
-    "GDK_TYPE_PAINTABLE"
+  Alcotest.(check string)
+    "GdkPaintable → GDK_TYPE_PAINTABLE" "GDK_TYPE_PAINTABLE"
     (Gir_gen_lib.Utils.gtype_macro_of_type_name "GdkPaintable")
 
 let test_gtype_macro_gtk_orientable () =
-  Alcotest.(check string) "GtkOrientable → GTK_TYPE_ORIENTABLE"
-    "GTK_TYPE_ORIENTABLE"
+  Alcotest.(check string)
+    "GtkOrientable → GTK_TYPE_ORIENTABLE" "GTK_TYPE_ORIENTABLE"
     (Gir_gen_lib.Utils.gtype_macro_of_type_name "GtkOrientable")
 
 let test_cast_macro_gtk_editable () =
-  Alcotest.(check string) "GtkEditable → GTK_EDITABLE"
-    "GTK_EDITABLE"
+  Alcotest.(check string)
+    "GtkEditable → GTK_EDITABLE" "GTK_EDITABLE"
     (Gir_gen_lib.Utils.cast_macro_of_type_name "GtkEditable")
 
 let test_cast_macro_gtk_selection_model () =
-  Alcotest.(check string) "GtkSelectionModel → GTK_SELECTION_MODEL"
-    "GTK_SELECTION_MODEL"
+  Alcotest.(check string)
+    "GtkSelectionModel → GTK_SELECTION_MODEL" "GTK_SELECTION_MODEL"
     (Gir_gen_lib.Utils.cast_macro_of_type_name "GtkSelectionModel")
 
 let test_cast_macro_gdk_paintable () =
-  Alcotest.(check string) "GdkPaintable → GDK_PAINTABLE"
-    "GDK_PAINTABLE"
+  Alcotest.(check string)
+    "GdkPaintable → GDK_PAINTABLE" "GDK_PAINTABLE"
     (Gir_gen_lib.Utils.cast_macro_of_type_name "GdkPaintable")
 
 let test_cast_macro_gtk_orientable () =
-  Alcotest.(check string) "GtkOrientable → GTK_ORIENTABLE"
-    "GTK_ORIENTABLE"
+  Alcotest.(check string)
+    "GtkOrientable → GTK_ORIENTABLE" "GTK_ORIENTABLE"
     (Gir_gen_lib.Utils.cast_macro_of_type_name "GtkOrientable")
 
 (* ========================================================================= *)
@@ -149,7 +149,8 @@ let test_editable_gtype_macro_from_real_gir () =
     | Some n -> n
   in
   let result = Gir_gen_lib.Utils.gtype_macro_of_type_name type_name in
-  Alcotest.(check string) "GtkEditable → GTK_TYPE_EDITABLE" "GTK_TYPE_EDITABLE" result
+  Alcotest.(check string)
+    "GtkEditable → GTK_TYPE_EDITABLE" "GTK_TYPE_EDITABLE" result
 
 (* ========================================================================= *)
 (* 3. Generated file content tests (via gir_gen.exe)                         *)
@@ -166,44 +167,47 @@ let test_editable_gtype_macro_from_real_gir () =
 let test_from_gobject_present_when_type_name_set () =
   let _content, functions = run_and_parse_c gir_with_type_name "my_iface" in
   let fn_name = "ml_gtk_my_iface_from_gobject" in
-  let f = match C_ast.find_function functions fn_name with
+  let f =
+    match C_ast.find_function functions fn_name with
     | None -> Alcotest.failf "%s not found in parsed C AST" fn_name
     | Some f -> f
   in
-  Alcotest.(check bool) "has CAMLreturn" true
-    (C_validation.has_caml_return f);
-  Alcotest.(check bool) "returns Val_GtkMyIface" true
+  Alcotest.(check bool) "has CAMLreturn" true (C_validation.has_caml_return f);
+  Alcotest.(check bool)
+    "returns Val_GtkMyIface" true
     (C_validation.uses_correct_return_macro f "Val_GtkMyIface");
-  Alcotest.(check bool) "calls caml_failwith" true
+  Alcotest.(check bool)
+    "calls caml_failwith" true
     (C_ast.function_calls_function f "caml_failwith")
 
-(** When glib:type-name is absent the from_gobject function must be absent.
-    We verify via the C AST that the function does not appear. *)
+(** When glib:type-name is absent the from_gobject function must be absent. We
+    verify via the C AST that the function does not appear. *)
 let test_from_gobject_absent_when_no_type_name () =
   let _content, functions = run_and_parse_c gir_without_type_name "my_iface" in
   let fn_name = "ml_gtk_my_iface_from_gobject" in
-  Alcotest.(check bool) "from_gobject function absent" true
+  Alcotest.(check bool)
+    "from_gobject function absent" true
     (Option.is_none (C_ast.find_function functions fn_name))
 
 (** For a versioned interface, the from_gobject function must appear inside a
-    GTK_CHECK_VERSION guard.  We check:
+    GTK_CHECK_VERSION guard. We check:
     - the version guard string is present (preprocessor — not in C AST)
     - the from_gobject function is present in the C AST
     - the function has the correct return macro (structural correctness) *)
 let test_from_gobject_inside_version_guard () =
-  let content, functions =
-    run_and_parse_c gir_versioned_interface "my_iface"
-  in
+  let content, functions = run_and_parse_c gir_versioned_interface "my_iface" in
   (* Preprocessor guard: must appear as a string (not in the C AST) *)
   if not (Helpers.string_contains content "GTK_CHECK_VERSION(4,12,0)") then
     Alcotest.fail "version guard GTK_CHECK_VERSION(4,12,0) not found in output";
   (* C AST: function must be present and structurally correct *)
   let fn_name = "ml_gtk_my_iface_from_gobject" in
-  let f = match C_ast.find_function functions fn_name with
+  let f =
+    match C_ast.find_function functions fn_name with
     | None -> Alcotest.failf "%s not found in parsed C AST" fn_name
     | Some f -> f
   in
-  Alcotest.(check bool) "returns Val_GtkMyIface inside guard" true
+  Alcotest.(check bool)
+    "returns Val_GtkMyIface inside guard" true
     (C_validation.uses_correct_return_macro f "Val_GtkMyIface")
 
 (* ========================================================================= *)
@@ -211,8 +215,8 @@ let test_from_gobject_inside_version_guard () =
 (* ========================================================================= *)
 
 (** Run gir_gen.exe on [gir_content], return the raw .mli text and the parsed
-    signature AST for the entity whose snake_case name is [entity_snake].
-    Cleans up temp files on exit (success or failure). *)
+    signature AST for the entity whose snake_case name is [entity_snake]. Cleans
+    up temp files on exit (success or failure). *)
 let run_and_parse_l1_mli gir_content entity_snake =
   let gir_file = Filename.temp_file "test_from_gobject_l1" ".gir" in
   let output_dir = Filename.temp_file "test_from_gobject_l1_out" "" in
@@ -228,18 +232,19 @@ let run_and_parse_l1_mli gir_content entity_snake =
            (Sys.readdir generated_dir);
          Unix.rmdir generated_dir
        with _ -> ());
-      (try
-         Array.iter
-           (fun f -> Sys.remove (Filename.concat output_dir f))
-           (Sys.readdir output_dir);
-         Unix.rmdir output_dir
-       with _ -> ()))
+      try
+        Array.iter
+          (fun f -> Sys.remove (Filename.concat output_dir f))
+          (Sys.readdir output_dir);
+        Unix.rmdir output_dir
+      with _ -> ())
     (fun () ->
       Helpers.create_gir_file gir_file gir_content;
       Helpers.ensure_output_dir output_dir;
       ignore (Helpers.run_gir_gen gir_file output_dir);
       let mli_path =
-        Filename.concat (Helpers.generated_dir output_dir)
+        Filename.concat
+          (Helpers.generated_dir output_dir)
           (entity_snake ^ ".mli")
       in
       if not (Helpers.file_exists mli_path) then
@@ -248,8 +253,8 @@ let run_and_parse_l1_mli gir_content entity_snake =
       (content, Ml_ast_helpers.parse_interface content))
 
 (** Run gir_gen.exe on [gir_content], return the raw .ml text and the parsed
-    structure AST for the entity whose snake_case name is [entity_snake].
-    Cleans up temp files on exit (success or failure). *)
+    structure AST for the entity whose snake_case name is [entity_snake]. Cleans
+    up temp files on exit (success or failure). *)
 let run_and_parse_l1_ml gir_content entity_snake =
   let gir_file = Filename.temp_file "test_from_gobject_l1ml" ".gir" in
   let output_dir = Filename.temp_file "test_from_gobject_l1ml_out" "" in
@@ -265,19 +270,18 @@ let run_and_parse_l1_ml gir_content entity_snake =
            (Sys.readdir generated_dir);
          Unix.rmdir generated_dir
        with _ -> ());
-      (try
-         Array.iter
-           (fun f -> Sys.remove (Filename.concat output_dir f))
-           (Sys.readdir output_dir);
-         Unix.rmdir output_dir
-       with _ -> ()))
+      try
+        Array.iter
+          (fun f -> Sys.remove (Filename.concat output_dir f))
+          (Sys.readdir output_dir);
+        Unix.rmdir output_dir
+      with _ -> ())
     (fun () ->
       Helpers.create_gir_file gir_file gir_content;
       Helpers.ensure_output_dir output_dir;
       ignore (Helpers.run_gir_gen gir_file output_dir);
       let ml_path =
-        Filename.concat (Helpers.generated_dir output_dir)
-          (entity_snake ^ ".ml")
+        Filename.concat (Helpers.generated_dir output_dir) (entity_snake ^ ".ml")
       in
       if not (Helpers.file_exists ml_path) then
         Alcotest.failf "Expected .ml file not found: %s" ml_path;
@@ -367,7 +371,8 @@ let test_suite =
     ( "generated: from_gobject absent when no glib:type-name",
       `Quick,
       test_from_gobject_absent_when_no_type_name );
-    ( "generated: versioned interface wraps from_gobject in GTK_CHECK_VERSION guard",
+    ( "generated: versioned interface wraps from_gobject in GTK_CHECK_VERSION \
+       guard",
       `Quick,
       test_from_gobject_inside_version_guard );
     (* Phase 3: from_gobject external in Layer 1 .mli / .ml files *)

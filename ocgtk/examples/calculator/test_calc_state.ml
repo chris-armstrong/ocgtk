@@ -25,7 +25,9 @@ let test_append_digit () =
   let s = Calc_state.append_char s '1' in
   let s = Calc_state.append_char s '2' in
   let s = Calc_state.append_char s '3' in
-  Alcotest.(check string) "expression is 123" "123" (Calc_state.get_expression s)
+  Alcotest.(check string)
+    "expression is 123" "123"
+    (Calc_state.get_expression s)
 
 let test_backspace () =
   let s = Calc_state.create () in
@@ -125,19 +127,27 @@ let test_parentheses () =
 
 let test_get_expression_display () =
   let s = Calc_state.create () in
-  Alcotest.(check string) "empty shows 0" "0" (Calc_state.get_expression_display s);
+  Alcotest.(check string)
+    "empty shows 0" "0"
+    (Calc_state.get_expression_display s);
   let s = Calc_state.append_char s '1' in
-  Alcotest.(check string) "shows expression" "1" (Calc_state.get_expression_display s)
+  Alcotest.(check string)
+    "shows expression" "1"
+    (Calc_state.get_expression_display s)
 
 let test_get_result_display () =
   let s = Calc_state.create () in
-  Alcotest.(check string) "no eval shows 0" "0" (Calc_state.get_result_display s);
+  Alcotest.(check string)
+    "no eval shows 0" "0"
+    (Calc_state.get_result_display s);
   (* Create error state. *)
   let s = Calc_state.append_char s '1' in
   let s = Calc_state.append_char s '/' in
   let s = Calc_state.append_char s '0' in
   let s = Calc_state.evaluate s in
-  Alcotest.(check string) "error shows Error" "Error" (Calc_state.get_result_display s)
+  Alcotest.(check string)
+    "error shows Error" "Error"
+    (Calc_state.get_result_display s)
 
 let test_decimal_point () =
   let s = Calc_state.create () in
@@ -145,12 +155,15 @@ let test_decimal_point () =
   let s = Calc_state.append_char s '.' in
   let s = Calc_state.append_char s '1' in
   let s = Calc_state.append_char s '4' in
-  Alcotest.(check string) "expression is 3.14" "3.14" (Calc_state.get_expression s)
+  Alcotest.(check string)
+    "expression is 3.14" "3.14"
+    (Calc_state.get_expression s)
 
 let test_leading_plus_rejected () =
   let s = Calc_state.create () in
   let s = Calc_state.append_char s '+' in
-  Alcotest.(check bool) "plus rejected as first char" true (Calc_state.is_empty s)
+  Alcotest.(check bool)
+    "plus rejected as first char" true (Calc_state.is_empty s)
 
 let test_multiple_consecutive_operators () =
   let s = Calc_state.create () in
@@ -158,7 +171,9 @@ let test_multiple_consecutive_operators () =
   let s = Calc_state.append_char s '+' in
   let s = Calc_state.append_char s '-' in
   let s = Calc_state.append_char s '*' in
-  Alcotest.(check string) "last operator wins" "2*" (Calc_state.get_expression s)
+  Alcotest.(check string)
+    "last operator wins" "2*"
+    (Calc_state.get_expression s)
 
 let test_double_decimal_rejected () =
   let s = Calc_state.create () in
@@ -179,7 +194,8 @@ let test_decimal_allowed_in_second_operand () =
   let s = Calc_state.append_char s '2' in
   let s = Calc_state.append_char s '.' in
   let s = Calc_state.append_char s '5' in
-  Alcotest.(check string) "expression is 1.5+2.5" "1.5+2.5"
+  Alcotest.(check string)
+    "expression is 1.5+2.5" "1.5+2.5"
     (Calc_state.get_expression s)
 
 let () =
@@ -190,12 +206,17 @@ let () =
         [
           Alcotest.test_case "digits" `Quick test_append_digit;
           Alcotest.test_case "decimal" `Quick test_decimal_point;
-          Alcotest.test_case "double decimal rejected" `Quick test_double_decimal_rejected;
-          Alcotest.test_case "decimal in second operand" `Quick test_decimal_allowed_in_second_operand;
-          Alcotest.test_case "consecutive operators" `Quick test_consecutive_operators;
+          Alcotest.test_case "double decimal rejected" `Quick
+            test_double_decimal_rejected;
+          Alcotest.test_case "decimal in second operand" `Quick
+            test_decimal_allowed_in_second_operand;
+          Alcotest.test_case "consecutive operators" `Quick
+            test_consecutive_operators;
           Alcotest.test_case "leading minus" `Quick test_leading_minus_allowed;
-          Alcotest.test_case "leading plus rejected" `Quick test_leading_plus_rejected;
-          Alcotest.test_case "multiple operators" `Quick test_multiple_consecutive_operators;
+          Alcotest.test_case "leading plus rejected" `Quick
+            test_leading_plus_rejected;
+          Alcotest.test_case "multiple operators" `Quick
+            test_multiple_consecutive_operators;
         ] );
       ( "backspace",
         [
@@ -207,13 +228,16 @@ let () =
         [
           Alcotest.test_case "basic" `Quick test_evaluate_basic;
           Alcotest.test_case "incomplete" `Quick test_evaluate_incomplete;
-          Alcotest.test_case "error blocks append" `Quick test_error_blocks_append;
-          Alcotest.test_case "precedence" `Quick test_evaluate_operator_precedence;
+          Alcotest.test_case "error blocks append" `Quick
+            test_error_blocks_append;
+          Alcotest.test_case "precedence" `Quick
+            test_evaluate_operator_precedence;
           Alcotest.test_case "parentheses" `Quick test_parentheses;
         ] );
       ( "display",
         [
-          Alcotest.test_case "expression display" `Quick test_get_expression_display;
+          Alcotest.test_case "expression display" `Quick
+            test_get_expression_display;
           Alcotest.test_case "result display" `Quick test_get_result_display;
         ] );
     ]

@@ -2,7 +2,9 @@
 
 open Helpers
 
-let record_gir = wrap_namespace {|
+let record_gir =
+  wrap_namespace
+    {|
     <record name="TestRecord" c:type="GtkTestRecord" glib:type-name="GtkTestRecord" glib:get-type="gtk_test_record_get_type">
       <field name="width"><type name="gint" c:type="gint"/></field>
     </record>
@@ -39,7 +41,7 @@ let test_record_support () =
   let output_dir = "/tmp/test_record_output" in
 
   create_gir_file test_gir record_gir;
-  create_filter_file test_filter ["RecordUser"];
+  create_filter_file test_filter [ "RecordUser" ];
   ensure_output_dir output_dir;
 
   let _, _, classes, _, _, _, records =
@@ -71,7 +73,9 @@ let test_non_opaque_record_functions () =
   let test_filter = "/tmp/test_non_opaque_filter.conf" in
   let output_dir = "/tmp/test_non_opaque_output" in
 
-  let gir_content = wrap_namespace {|
+  let gir_content =
+    wrap_namespace
+      {|
     <record name="WidgetClass" c:type="GtkWidgetClass">
       <field name="parent_class">
         <type name="GObject.InitiallyUnownedClass" c:type="GInitiallyUnownedClass"/>
@@ -83,17 +87,21 @@ let test_non_opaque_record_functions () =
         </parameters>
       </method>
     </record>
-  |} in
+  |}
+  in
 
   create_gir_file test_gir gir_content;
-  create_filter_file test_filter ["WidgetClass"];
+  create_filter_file test_filter [ "WidgetClass" ];
   ensure_output_dir output_dir;
 
   let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
-  assert_true "Non-opaque record generator should exit successfully" (exit_code = 0);
+  assert_true "Non-opaque record generator should exit successfully"
+    (exit_code = 0);
 
   (* Check that forward declarations are generated as functions, not macros *)
-  let header_file = Filename.concat (Filename.concat output_dir "generated") "gtk_decls.h" in
+  let header_file =
+    Filename.concat (Filename.concat output_dir "generated") "gtk_decls.h"
+  in
   assert_true "gtk_decls.h should exist" (file_exists header_file);
   let header_content = read_file header_file in
 
@@ -102,12 +110,12 @@ let test_non_opaque_record_functions () =
     "GtkWidgetClass *GtkWidgetClass_val(value val);";
   assert_contains "Should declare Val_GtkWidgetClass function" header_content
     "value Val_GtkWidgetClass(const GtkWidgetClass *ptr);";
-  assert_contains "Should declare Val_GtkWidgetClass_option function" header_content
-    "value Val_GtkWidgetClass_option(const GtkWidgetClass *ptr);";
+  assert_contains "Should declare Val_GtkWidgetClass_option function"
+    header_content "value Val_GtkWidgetClass_option(const GtkWidgetClass *ptr);";
 
   (* Should NOT have macro definitions for non-opaque records *)
-  assert_not_contains "Should not define GtkWidgetClass_val as macro in header" header_content
-    "#define GtkWidgetClass_val("
+  assert_not_contains "Should not define GtkWidgetClass_val as macro in header"
+    header_content "#define GtkWidgetClass_val("
 
 let test_non_opaque_vs_opaque_records () =
   (* Test that opaque records still use macros while non-opaque use functions *)
@@ -115,7 +123,9 @@ let test_non_opaque_vs_opaque_records () =
   let test_filter = "/tmp/test_opaque_filter.conf" in
   let output_dir = "/tmp/test_opaque_output" in
 
-  let gir_content = wrap_namespace {|
+  let gir_content =
+    wrap_namespace
+      {|
     <record name="OpaqueRecord" c:type="GtkOpaqueRecord" disguised="1">
       <method name="new" c:identifier="gtk_opaque_record_new">
         <return-value><type name="OpaqueRecord" c:type="GtkOpaqueRecord*"/></return-value>
@@ -127,29 +137,33 @@ let test_non_opaque_vs_opaque_records () =
         <return-value><type name="NonOpaqueRecord" c:type="GtkNonOpaqueRecord*"/></return-value>
       </method>
     </record>
-  |} in
+  |}
+  in
 
   create_gir_file test_gir gir_content;
-  create_filter_file test_filter ["OpaqueRecord"; "NonOpaqueRecord"];
+  create_filter_file test_filter [ "OpaqueRecord"; "NonOpaqueRecord" ];
   ensure_output_dir output_dir;
 
   let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
   assert_true "Should generate successfully" (exit_code = 0);
 
-  let header_file = Filename.concat (Filename.concat output_dir "generated") "gtk_decls.h" in
+  let header_file =
+    Filename.concat (Filename.concat output_dir "generated") "gtk_decls.h"
+  in
   let header_content = read_file header_file in
 
   (* Both records are non-opaque (no disguised="1" attribute) so they use function declarations *)
   (* Opaque records (with disguised="1") also use functions in current implementation *)
-  assert_contains "Opaque record should have function declaration" header_content
-    "GtkOpaqueRecord *GtkOpaqueRecord_val(value val);";
+  assert_contains "Opaque record should have function declaration"
+    header_content "GtkOpaqueRecord *GtkOpaqueRecord_val(value val);";
   assert_contains "Opaque record should have Val function" header_content
     "value Val_GtkOpaqueRecord(const GtkOpaqueRecord *ptr);";
 
   (* Non-opaque record should use function declarations *)
-  assert_contains "Non-opaque record should have function declaration" header_content
-    "GtkNonOpaqueRecord *GtkNonOpaqueRecord_val(value val);";
-  assert_contains "Non-opaque record should have Val function declaration" header_content
+  assert_contains "Non-opaque record should have function declaration"
+    header_content "GtkNonOpaqueRecord *GtkNonOpaqueRecord_val(value val);";
+  assert_contains "Non-opaque record should have Val function declaration"
+    header_content
     "value Val_GtkNonOpaqueRecord(const GtkNonOpaqueRecord *ptr);"
 
 let test_non_opaque_record_in_property () =
@@ -158,7 +172,9 @@ let test_non_opaque_record_in_property () =
   let test_filter = "/tmp/test_non_opaque_prop_filter.conf" in
   let output_dir = "/tmp/test_non_opaque_prop_output" in
 
-  let gir_content = wrap_namespace {|
+  let gir_content =
+    wrap_namespace
+      {|
     <record name="Rectangle" c:type="GtkRectangle" glib:type-name="GtkRectangle" glib:get-type="gtk_rectangle_get_type">
       <field name="x"><type name="gint" c:type="gint"/></field>
       <field name="y"><type name="gint" c:type="gint"/></field>
@@ -171,10 +187,11 @@ let test_non_opaque_record_in_property () =
         <type name="Rectangle" c:type="GtkRectangle*"/>
       </property>
     </class>
-  |} in
+  |}
+  in
 
   create_gir_file test_gir gir_content;
-  create_filter_file test_filter ["RectWidget"];
+  create_filter_file test_filter [ "RectWidget" ];
   ensure_output_dir output_dir;
 
   let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
@@ -194,7 +211,10 @@ let test_non_opaque_record_in_property () =
 let tests =
   [
     Alcotest.test_case "Record type support" `Quick test_record_support;
-    Alcotest.test_case "Non-opaque record functions" `Quick test_non_opaque_record_functions;
-    Alcotest.test_case "Opaque vs non-opaque records" `Quick test_non_opaque_vs_opaque_records;
-    Alcotest.test_case "Non-opaque record in property" `Quick test_non_opaque_record_in_property;
+    Alcotest.test_case "Non-opaque record functions" `Quick
+      test_non_opaque_record_functions;
+    Alcotest.test_case "Opaque vs non-opaque records" `Quick
+      test_non_opaque_vs_opaque_records;
+    Alcotest.test_case "Non-opaque record in property" `Quick
+      test_non_opaque_record_in_property;
   ]

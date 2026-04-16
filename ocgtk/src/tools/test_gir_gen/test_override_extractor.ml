@@ -5,36 +5,51 @@
 let test_since_plain () =
   match Gir_gen_lib.Override_extractor.extract_since_version "Since 2.26" with
   | Some "2.26" -> ()
-  | other -> Alcotest.fail (Printf.sprintf "Expected Some \"2.26\", got %s"
-      (match other with Some s -> "Some \"" ^ s ^ "\"" | None -> "None"))
+  | other ->
+      Alcotest.fail
+        (Printf.sprintf "Expected Some \"2.26\", got %s"
+           (match other with Some s -> "Some \"" ^ s ^ "\"" | None -> "None"))
 
 let test_since_colon () =
   match Gir_gen_lib.Override_extractor.extract_since_version "Since: 2.74" with
   | Some "2.74" -> ()
-  | other -> Alcotest.fail (Printf.sprintf "Expected Some \"2.74\", got %s"
-      (match other with Some s -> "Some \"" ^ s ^ "\"" | None -> "None"))
+  | other ->
+      Alcotest.fail
+        (Printf.sprintf "Expected Some \"2.74\", got %s"
+           (match other with Some s -> "Some \"" ^ s ^ "\"" | None -> "None"))
 
 let test_since_in_parens () =
-  match Gir_gen_lib.Override_extractor.extract_since_version "Some text (Since: 1.16)." with
+  match
+    Gir_gen_lib.Override_extractor.extract_since_version
+      "Some text (Since: 1.16)."
+  with
   | Some "1.16" -> ()
-  | other -> Alcotest.fail (Printf.sprintf "Expected Some \"1.16\", got %s"
-      (match other with Some s -> "Some \"" ^ s ^ "\"" | None -> "None"))
+  | other ->
+      Alcotest.fail
+        (Printf.sprintf "Expected Some \"1.16\", got %s"
+           (match other with Some s -> "Some \"" ^ s ^ "\"" | None -> "None"))
 
 let test_since_three_part () =
   match Gir_gen_lib.Override_extractor.extract_since_version "Since 4.14.0" with
   | Some "4.14.0" -> ()
-  | other -> Alcotest.fail (Printf.sprintf "Expected Some \"4.14.0\", got %s"
-      (match other with Some s -> "Some \"" ^ s ^ "\"" | None -> "None"))
+  | other ->
+      Alcotest.fail
+        (Printf.sprintf "Expected Some \"4.14.0\", got %s"
+           (match other with Some s -> "Some \"" ^ s ^ "\"" | None -> "None"))
 
 let test_since_end_of_multiline () =
   let doc = "A long description.\n\nSome more text.\nSince 1.50" in
   match Gir_gen_lib.Override_extractor.extract_since_version doc with
   | Some "1.50" -> ()
-  | other -> Alcotest.fail (Printf.sprintf "Expected Some \"1.50\", got %s"
-      (match other with Some s -> "Some \"" ^ s ^ "\"" | None -> "None"))
+  | other ->
+      Alcotest.fail
+        (Printf.sprintf "Expected Some \"1.50\", got %s"
+           (match other with Some s -> "Some \"" ^ s ^ "\"" | None -> "None"))
 
 let test_since_none () =
-  match Gir_gen_lib.Override_extractor.extract_since_version "No version info here." with
+  match
+    Gir_gen_lib.Override_extractor.extract_since_version "No version info here."
+  with
   | None -> ()
   | Some s -> Alcotest.fail (Printf.sprintf "Expected None, got Some \"%s\"" s)
 
@@ -47,7 +62,8 @@ let test_since_empty () =
    We test parse_doc_text indirectly by checking that parsing a minimal
    GIR XML with <member><doc>...</doc></member> populates member_doc. *)
 
-let ns_attrs = {|name="Test" version="1.0" shared-library="libtest.so" c:identifier-prefixes="Test" c:symbol-prefixes="test"|}
+let ns_attrs =
+  {|name="Test" version="1.0" shared-library="libtest.so" c:identifier-prefixes="Test" c:symbol-prefixes="test"|}
 
 let minimal_gir_with_enum_doc =
   Printf.sprintf
@@ -150,19 +166,25 @@ let test_enum_member_doc_plain () =
       let members = enm.Gir_gen_lib.Types.members in
       (* Members come out in reverse order *)
       let find name =
-        match List.find_opt (fun m -> m.Gir_gen_lib.Types.member_name = name) members with
+        match
+          List.find_opt
+            (fun m -> m.Gir_gen_lib.Types.member_name = name)
+            members
+        with
         | None -> Alcotest.fail (Printf.sprintf "Member %s not found" name)
         | Some m -> m
       in
       let a = find "value_a" in
       let b = find "value_b" in
       let c = find "value_c" in
-      Alcotest.(check (option string)) "value_a doc"
-        (Some "The first value. Since 4.10") a.member_doc;
-      Alcotest.(check (option string)) "value_b doc"
-        (Some "No version here.") b.member_doc;
+      Alcotest.(check (option string))
+        "value_a doc" (Some "The first value. Since 4.10") a.member_doc;
+      Alcotest.(check (option string))
+        "value_b doc" (Some "No version here.") b.member_doc;
       Alcotest.(check (option string)) "value_c doc" None c.member_doc
-  | other -> Alcotest.fail (Printf.sprintf "Expected 1 enum, got %d" (List.length other))
+  | other ->
+      Alcotest.fail
+        (Printf.sprintf "Expected 1 enum, got %d" (List.length other))
 
 let test_enum_member_doc_with_nested_elements () =
   (* parse_doc_text should skip nested XML elements (like <link>) and
@@ -171,22 +193,33 @@ let test_enum_member_doc_with_nested_elements () =
     parse_gir minimal_gir_with_doc_nested_elements
   in
   match enums with
-  | [ enm ] ->
+  | [ enm ] -> (
       let members = enm.Gir_gen_lib.Types.members in
-      let a = match List.find_opt (fun m -> m.Gir_gen_lib.Types.member_name = "value_a") members with
+      let a =
+        match
+          List.find_opt
+            (fun m -> m.Gir_gen_lib.Types.member_name = "value_a")
+            members
+        with
         | None -> Alcotest.fail "Member value_a not found"
         | Some m -> m
       in
       (* The doc text should contain "See " and ". Since: 2.30" but not the link content *)
-      (match a.Gir_gen_lib.Types.member_doc with
-       | None -> Alcotest.fail "Expected Some doc, got None"
-       | Some doc ->
-           (* Should contain Since version *)
-           (match Gir_gen_lib.Override_extractor.extract_since_version doc with
-            | Some "2.30" -> ()
-            | other -> Alcotest.fail (Printf.sprintf "Expected Since 2.30 from doc, got %s"
-                (match other with Some s -> "Some \"" ^ s ^ "\"" | None -> "None"))))
-  | other -> Alcotest.fail (Printf.sprintf "Expected 1 enum, got %d" (List.length other))
+      match a.Gir_gen_lib.Types.member_doc with
+      | None -> Alcotest.fail "Expected Some doc, got None"
+      | Some doc -> (
+          (* Should contain Since version *)
+          match Gir_gen_lib.Override_extractor.extract_since_version doc with
+          | Some "2.30" -> ()
+          | other ->
+              Alcotest.fail
+                (Printf.sprintf "Expected Since 2.30 from doc, got %s"
+                   (match other with
+                   | Some s -> "Some \"" ^ s ^ "\""
+                   | None -> "None"))))
+  | other ->
+      Alcotest.fail
+        (Printf.sprintf "Expected 1 enum, got %d" (List.length other))
 
 let test_bitfield_flag_doc () =
   let _repo, _ns, _classes, _ifaces, _enums, bitfields, _records =
@@ -196,16 +229,20 @@ let test_bitfield_flag_doc () =
   | [ bf ] ->
       let flags = bf.Gir_gen_lib.Types.flags in
       let find name =
-        match List.find_opt (fun f -> f.Gir_gen_lib.Types.flag_name = name) flags with
+        match
+          List.find_opt (fun f -> f.Gir_gen_lib.Types.flag_name = name) flags
+        with
         | None -> Alcotest.fail (Printf.sprintf "Flag %s not found" name)
         | Some f -> f
       in
       let a = find "flag_a" in
       let b = find "flag_b" in
-      Alcotest.(check (option string)) "flag_a doc"
-        (Some "Flag A. Since 3.12") a.flag_doc;
+      Alcotest.(check (option string))
+        "flag_a doc" (Some "Flag A. Since 3.12") a.flag_doc;
       Alcotest.(check (option string)) "flag_b doc" None b.flag_doc
-  | other -> Alcotest.fail (Printf.sprintf "Expected 1 bitfield, got %d" (List.length other))
+  | other ->
+      Alcotest.fail
+        (Printf.sprintf "Expected 1 bitfield, got %d" (List.length other))
 
 let test_record_field_doc () =
   let _repo, _ns, _classes, _ifaces, _enums, _bitfields, records =
@@ -215,16 +252,20 @@ let test_record_field_doc () =
   | [ rec_ ] ->
       let fields = rec_.Gir_gen_lib.Types.fields in
       let find name =
-        match List.find_opt (fun f -> f.Gir_gen_lib.Types.field_name = name) fields with
+        match
+          List.find_opt (fun f -> f.Gir_gen_lib.Types.field_name = name) fields
+        with
         | None -> Alcotest.fail (Printf.sprintf "Field %s not found" name)
         | Some f -> f
       in
       let x = find "x" in
       let y = find "y" in
-      Alcotest.(check (option string)) "x field doc"
-        (Some "The x coordinate. Since 1.20") x.field_doc;
+      Alcotest.(check (option string))
+        "x field doc" (Some "The x coordinate. Since 1.20") x.field_doc;
       Alcotest.(check (option string)) "y field doc" None y.field_doc
-  | other -> Alcotest.fail (Printf.sprintf "Expected 1 record, got %d" (List.length other))
+  | other ->
+      Alcotest.fail
+        (Printf.sprintf "Expected 1 record, got %d" (List.length other))
 
 let test_suite =
   [
@@ -236,7 +277,9 @@ let test_suite =
     ("since_none", `Quick, test_since_none);
     ("since_empty", `Quick, test_since_empty);
     ("enum_member_doc_plain", `Quick, test_enum_member_doc_plain);
-    ("enum_member_doc_with_nested_elements", `Quick, test_enum_member_doc_with_nested_elements);
+    ( "enum_member_doc_with_nested_elements",
+      `Quick,
+      test_enum_member_doc_with_nested_elements );
     ("bitfield_flag_doc", `Quick, test_bitfield_flag_doc);
     ("record_field_doc", `Quick, test_record_field_doc);
   ]

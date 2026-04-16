@@ -4,11 +4,14 @@ module GMain = Ocgtk_gtk.GMain
    Demonstrates: TextView, TextBuffer, Entry, ScrolledWindow, Button *)
 
 let on_close_request window_obj callback =
-  let closure = Gobject.Closure.create (fun argv ->
-    callback ();
-    Gobject.Value.set_boolean (Gobject.Closure.result argv) false
-  ) in
-  ignore (Gobject.Signal.connect window_obj ~name:"close-request" ~callback:closure ~after:false)
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        callback ();
+        Gobject.Value.set_boolean (Gobject.Closure.result argv) false)
+  in
+  ignore
+    (Gobject.Signal.connect window_obj ~name:"close-request" ~callback:closure
+       ~after:false)
 
 let () =
   ignore (GMain.init ());
@@ -31,7 +34,9 @@ let () =
   text_view#set_wrap_mode `WORD;
 
   (* Add scrolled window for text view *)
-  let scrolled = new Scrolled_window.scrolled_window (Wrappers.Scrolled_window.new_ ()) in
+  let scrolled =
+    new Scrolled_window.scrolled_window (Wrappers.Scrolled_window.new_ ())
+  in
   scrolled#set_child (Some (text_view :> Widget.widget_t));
   vbox#append (scrolled :> Widget.widget_t);
 
@@ -49,7 +54,9 @@ let () =
   vbox#append (button_box :> Widget.widget_t);
 
   (* Insert text button *)
-  let insert_btn = new Button.button (Wrappers.Button.new_with_label "Insert Text") in
+  let insert_btn =
+    new Button.button (Wrappers.Button.new_with_label "Insert Text")
+  in
   button_box#append (insert_btn :> Widget.widget_t);
 
   ignore
@@ -62,12 +69,12 @@ let () =
          end));
 
   (* Clear button *)
-  let clear_btn = new Button.button (Wrappers.Button.new_with_label "Clear All") in
+  let clear_btn =
+    new Button.button (Wrappers.Button.new_with_label "Clear All")
+  in
   button_box#append (clear_btn :> Widget.widget_t);
 
-  ignore
-    (clear_btn#on_clicked ~callback:(fun () ->
-         buffer#set_text "" (-1)));
+  ignore (clear_btn#on_clicked ~callback:(fun () -> buffer#set_text "" (-1)));
 
   (* Status label - updates on buffer changes *)
   let status_label = new Label.label (Wrappers.Label.new_ None) in

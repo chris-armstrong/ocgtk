@@ -18,7 +18,8 @@ let test_with_minor_gc () =
     for i = 1 to 10 do
       let closure = Gobject.Closure.create (fun _argv -> incr counter) in
       Gobject.Test.invoke_closure_void closure;
-      Gc.minor ();  (* Force minor GC *)
+      Gc.minor ();
+      (* Force minor GC *)
       Printf.printf "  Iteration %d: GC passed, counter=%d\n%!" i !counter
     done;
     Printf.printf "✓ Completed with GC: counter=%d\n\n%!" !counter
@@ -35,7 +36,8 @@ let test_with_delayed_gc () =
       Gobject.Test.invoke_closure_void closure;
       if i mod 10 = 0 then begin
         Gc.minor ();
-        Printf.printf "  After %d closures: GC passed, counter=%d\n%!" i !counter
+        Printf.printf "  After %d closures: GC passed, counter=%d\n%!" i
+          !counter
       end
     done;
     Printf.printf "✓ Completed: counter=%d\n\n%!" !counter

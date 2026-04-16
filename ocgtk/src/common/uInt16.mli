@@ -13,8 +13,7 @@
 
 (** Unsigned 16-bit integer ([guint16]).
 
-    Backed by [private int] — no heap allocation.
-    Range: [0, 65535]. *)
+    Backed by [private int] — no heap allocation. Range: [0, 65535]. *)
 
 type t = private int
 

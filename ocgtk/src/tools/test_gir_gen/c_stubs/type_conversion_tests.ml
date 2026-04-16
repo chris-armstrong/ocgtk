@@ -18,11 +18,8 @@ let generate_c_method = Gir_gen_lib.Generate.C_stub_method.generate_c_method
 let test_gboolean_conversion () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"get_visible"
-      ~c_identifier:"gtk_widget_get_visible"
-      ~return_type:gboolean_type
-      ()
+    make_gir_method ~method_name:"get_visible"
+      ~c_identifier:"gtk_widget_get_visible" ~return_type:gboolean_type ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -40,11 +37,8 @@ let test_gboolean_conversion () =
 let test_gint_conversion () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"get_width"
-      ~c_identifier:"gtk_widget_get_width"
-      ~return_type:gint_type
-      ()
+    make_gir_method ~method_name:"get_width"
+      ~c_identifier:"gtk_widget_get_width" ~return_type:gint_type ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -62,11 +56,8 @@ let test_gint_conversion () =
 let test_gdouble_conversion () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"get_opacity"
-      ~c_identifier:"gtk_widget_get_opacity"
-      ~return_type:gdouble_type
-      ()
+    make_gir_method ~method_name:"get_opacity"
+      ~c_identifier:"gtk_widget_get_opacity" ~return_type:gdouble_type ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -84,11 +75,8 @@ let test_gdouble_conversion () =
 let test_utf8_string_conversion () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"get_name"
-      ~c_identifier:"gtk_widget_get_name"
-      ~return_type:utf8_type
-      ()
+    make_gir_method ~method_name:"get_name" ~c_identifier:"gtk_widget_get_name"
+      ~return_type:utf8_type ()
   in
 
   let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
@@ -106,11 +94,9 @@ let test_utf8_string_conversion () =
 let test_utf8_string_parameter () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"set_name"
-      ~c_identifier:"gtk_widget_set_name"
+    make_gir_method ~method_name:"set_name" ~c_identifier:"gtk_widget_set_name"
       ~return_type:void_type
-      ~parameters:[make_string_param ~param_name:"name" ()]
+      ~parameters:[ make_string_param ~param_name:"name" () ]
       ()
   in
 
@@ -127,10 +113,8 @@ let test_utf8_string_parameter () =
 let test_object_type_conversion () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"get_parent"
-      ~c_identifier:"gtk_widget_get_parent"
-      ~return_type:(make_widget_type ())
+    make_gir_method ~method_name:"get_parent"
+      ~c_identifier:"gtk_widget_get_parent" ~return_type:(make_widget_type ())
       ()
   in
 
@@ -152,10 +136,8 @@ let test_enum_type_conversion () =
     make_gir_type ~name:"TextDirection" ~c_type:"GtkTextDirection" ()
   in
   let meth =
-    make_gir_method
-      ~method_name:"get_direction"
-      ~c_identifier:"gtk_widget_get_direction"
-      ~return_type:text_direction_type
+    make_gir_method ~method_name:"get_direction"
+      ~c_identifier:"gtk_widget_get_direction" ~return_type:text_direction_type
       ()
   in
 
@@ -176,11 +158,9 @@ let test_enum_type_conversion () =
 let test_gboolean_parameter () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"set_visible"
-      ~c_identifier:"gtk_widget_set_visible"
-      ~return_type:void_type
-      ~parameters:[make_bool_param ~param_name:"visible" ()]
+    make_gir_method ~method_name:"set_visible"
+      ~c_identifier:"gtk_widget_set_visible" ~return_type:void_type
+      ~parameters:[ make_bool_param ~param_name:"visible" () ]
       ()
   in
 
@@ -197,12 +177,13 @@ let test_gboolean_parameter () =
 let test_multiple_type_conversions () =
   let ctx = Helpers.create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"set_size_request"
-      ~c_identifier:"gtk_widget_set_size_request"
-      ~return_type:void_type
+    make_gir_method ~method_name:"set_size_request"
+      ~c_identifier:"gtk_widget_set_size_request" ~return_type:void_type
       ~parameters:
-        [make_int_param ~param_name:"width" (); make_int_param ~param_name:"height" ()]
+        [
+          make_int_param ~param_name:"width" ();
+          make_int_param ~param_name:"height" ();
+        ]
       ()
   in
 

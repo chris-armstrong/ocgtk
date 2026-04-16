@@ -4,4 +4,3 @@
 class type font_t = GContext_and__font_and__font_map_and__fontset.font_t
 
 class font : Context_and__font_and__font_map_and__fontset.Font.t -> font_t
-

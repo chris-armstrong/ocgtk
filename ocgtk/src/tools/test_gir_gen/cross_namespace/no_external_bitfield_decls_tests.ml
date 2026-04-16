@@ -49,7 +49,6 @@ let create_context_with_external_bitfield () =
     }
   in
 
-
   {
     namespace;
     repository =

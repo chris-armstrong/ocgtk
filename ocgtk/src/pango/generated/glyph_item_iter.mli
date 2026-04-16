@@ -1,6 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GlyphItemIter: GlyphItemIter *)
 
+type t = [ `glyph_item_iter ] Gobject.obj
 (** A `PangoGlyphItemIter` is an iterator over the clusters in a
 `PangoGlyphItem`.
 
@@ -41,33 +42,34 @@ the start variables is included in the cluster while the one pointed at by
 end variables is not.
 
 None of the members of a `PangoGlyphItemIter` should be modified manually. *)
-type t = [`glyph_item_iter] Gobject.obj
 
 (* Methods *)
-(** Moves the iterator to the preceding cluster in the glyph item.
-See `PangoGlyphItemIter` for details of cluster orders. *)
-external prev_cluster : t -> bool = "ml_pango_glyph_item_iter_prev_cluster"
 
+external prev_cluster : t -> bool = "ml_pango_glyph_item_iter_prev_cluster"
+(** Moves the iterator to the preceding cluster in the glyph item. See
+    `PangoGlyphItemIter` for details of cluster orders. *)
+
+external next_cluster : t -> bool = "ml_pango_glyph_item_iter_next_cluster"
 (** Advances the iterator to the next cluster in the glyph item.
 
-See `PangoGlyphItemIter` for details of cluster orders. *)
-external next_cluster : t -> bool = "ml_pango_glyph_item_iter_next_cluster"
+    See `PangoGlyphItemIter` for details of cluster orders. *)
 
-(** Initializes a `PangoGlyphItemIter` structure to point to the
-first cluster in a glyph item.
+external init_start : t -> Glyph_item.t -> string -> bool
+  = "ml_pango_glyph_item_iter_init_start"
+(** Initializes a `PangoGlyphItemIter` structure to point to the first cluster
+    in a glyph item.
 
-See `PangoGlyphItemIter` for details of cluster orders. *)
-external init_start : t -> Glyph_item.t -> string -> bool = "ml_pango_glyph_item_iter_init_start"
+    See `PangoGlyphItemIter` for details of cluster orders. *)
 
-(** Initializes a `PangoGlyphItemIter` structure to point to the
-last cluster in a glyph item.
+external init_end : t -> Glyph_item.t -> string -> bool
+  = "ml_pango_glyph_item_iter_init_end"
+(** Initializes a `PangoGlyphItemIter` structure to point to the last cluster in
+    a glyph item.
 
-See `PangoGlyphItemIter` for details of cluster orders. *)
-external init_end : t -> Glyph_item.t -> string -> bool = "ml_pango_glyph_item_iter_init_end"
+    See `PangoGlyphItemIter` for details of cluster orders. *)
 
-(** Frees a `PangoGlyphItem`Iter. *)
 external free : t -> unit = "ml_pango_glyph_item_iter_free"
+(** Frees a `PangoGlyphItem`Iter. *)
 
-(** Make a shallow copy of an existing `PangoGlyphItemIter` structure. *)
 external copy : t -> t option = "ml_pango_glyph_item_iter_copy"
-
+(** Make a shallow copy of an existing `PangoGlyphItemIter` structure. *)

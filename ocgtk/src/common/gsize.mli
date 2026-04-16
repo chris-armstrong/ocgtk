@@ -11,8 +11,9 @@
 (*                                                                        *)
 (**************************************************************************)
 
-(** A non-negative integer representing a GLib [gsize] (equivalent to C [size_t]).
-    Values are guaranteed to be non-negative; use {!of_int} to construct. *)
+(** A non-negative integer representing a GLib [gsize] (equivalent to C
+    [size_t]). Values are guaranteed to be non-negative; use {!of_int} to
+    construct. *)
 
 type t = private int
 

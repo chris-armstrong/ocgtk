@@ -67,7 +67,14 @@ let make_gir_function ~function_name ~c_identifier ~return_type ?parameters ?doc
 
 let make_gir_signal ~signal_name ~return_type ?(sig_parameters = []) ?doc
     ?version () =
-  { signal_name; return_type; sig_parameters; doc; version; version_namespace = None }
+  {
+    signal_name;
+    return_type;
+    sig_parameters;
+    doc;
+    version;
+    version_namespace = None;
+  }
 
 let make_gir_constructor ~ctor_name ~c_identifier ?(ctor_parameters = [])
     ?ctor_doc ?throws ?ctor_introspectable ?version () =
@@ -97,7 +104,14 @@ let make_gir_property ~prop_name ~prop_type ?(readable = true)
 
 let make_gir_record_field ~field_name ?field_type ?(readable = true)
     ?(writable = false) ?field_doc () =
-  { field_name; field_type; readable; writable; field_doc; field_version = None }
+  {
+    field_name;
+    field_type;
+    readable;
+    writable;
+    field_doc;
+    field_version = None;
+  }
 
 let make_gir_record ?(record_name = "TestRecord") ?(c_type = "TestRecord")
     ?glib_type_name ?glib_get_type ?(opaque = false) ?(disguised = false)
@@ -158,12 +172,9 @@ let make_gir_class ?(class_name = "TestClass") ?(c_type = "TestClass") ?parent
 
 let make_gir_interface ?(interface_name = "TestInterface")
     ?(c_type = "TestInterface") ?(c_symbol_prefix = "test_interface")
-    ?(glib_type_name = None)
-    ?(glib_get_type = None)
-    ?(prerequisites = [])
-    ?(introspectable = true)
-    ?(methods = []) ?(properties = []) ?(signals = []) ?interface_doc ?version
-    () =
+    ?(glib_type_name = None) ?(glib_get_type = None) ?(prerequisites = [])
+    ?(introspectable = true) ?(methods = []) ?(properties = []) ?(signals = [])
+    ?interface_doc ?version () =
   {
     interface_name;
     c_type;

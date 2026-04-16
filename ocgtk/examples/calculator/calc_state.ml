@@ -1,8 +1,8 @@
 open Containers
 (** Calculator state machine
 
-    Manages the current expression, result display, and error state.
-    Handles input validation and delegates expression evaluation to Calc_expr. *)
+    Manages the current expression, result display, and error state. Handles
+    input validation and delegates expression evaluation to Calc_expr. *)
 
 type t = {
   expression : string;
@@ -11,7 +11,8 @@ type t = {
   just_evaluated : bool;
 }
 
-let create () = { expression = ""; result = "0"; error = false; just_evaluated = false }
+let create () =
+  { expression = ""; result = "0"; error = false; just_evaluated = false }
 
 (** Check if a character is an operator. *)
 let is_operator = function '+' | '-' | '*' | '/' -> true | _ -> false
@@ -68,10 +69,8 @@ let append_char t c =
   (* After evaluate: digits/decimal/parens start fresh, operators chain *)
   let t =
     if t.just_evaluated then
-      if is_operator c then
-        { t with just_evaluated = false }
-      else
-        { t with expression = ""; just_evaluated = false }
+      if is_operator c then { t with just_evaluated = false }
+      else { t with expression = ""; just_evaluated = false }
     else t
   in
   match validate_append t c with
@@ -125,20 +124,26 @@ let evaluate t =
             | Error _ -> "Error"
           in
           let error = String.equal result_str "Error" in
-          if error then { t with result = result_str; error; just_evaluated = false }
-          else { expression = result_str; result = result_str; error; just_evaluated = true }
+          if error then
+            { t with result = result_str; error; just_evaluated = false }
+          else
+            {
+              expression = result_str;
+              result = result_str;
+              error;
+              just_evaluated = true;
+            }
 
 let get_expression t = t.expression
-
 let get_result t = t.result
 let is_error t = t.error
 let is_empty t = String.is_empty t.expression
 
-(** Get the display text for the expression row.
-    Returns the expression or "0" if empty. *)
+(** Get the display text for the expression row. Returns the expression or "0"
+    if empty. *)
 let get_expression_display t =
   if String.is_empty t.expression then "0" else t.expression
 
-(** Get the display text for the result row.
-    Returns the result or "0" if empty/no evaluation yet. *)
+(** Get the display text for the result row. Returns the result or "0" if
+    empty/no evaluation yet. *)
 let get_result_display t = if is_error t then "Error" else t.result

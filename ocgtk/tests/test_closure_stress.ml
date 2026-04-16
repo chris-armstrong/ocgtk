@@ -9,8 +9,7 @@ let () =
   for i = 1 to 1000 do
     let closure = Gobject.Closure.create (fun _argv -> ()) in
     closures := closure :: !closures;
-    if i mod 100 = 0 then
-      Printf.printf "  Created %d closures\n%!" i
+    if i mod 100 = 0 then Printf.printf "  Created %d closures\n%!" i
   done;
 
   Printf.printf "Test 1: ✓ Created 1000 closures successfully\n%!";
@@ -28,7 +27,8 @@ let () =
   Printf.printf "Test 2: ✓ Counter reached %d\n%!" !counter;
 
   (* Test 3: Rapid allocation/deallocation by letting closures go out of scope *)
-  Printf.printf "\nTest 3: Rapid allocation (closures going out of scope)...\n%!";
+  Printf.printf
+    "\nTest 3: Rapid allocation (closures going out of scope)...\n%!";
   for round = 1 to 10 do
     for _i = 1 to 100 do
       let _ = Gobject.Closure.create (fun _argv -> ()) in
@@ -44,12 +44,13 @@ let () =
   let results = ref [] in
   for i = 1 to 100 do
     let expected = i * 2 in
-    let closure = Gobject.Closure.create (fun argv ->
-      let gval = Gobject.Closure.nth argv ~pos:0 in
-      let received = Gobject.Value.get_int gval in
-      results := (received = expected) :: !results
-    ) in
-    Gobject.Test.invoke_closure_int closure expected;
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let gval = Gobject.Closure.nth argv ~pos:0 in
+          let received = Gobject.Value.get_int gval in
+          results := (received = expected) :: !results)
+    in
+    Gobject.Test.invoke_closure_int closure expected
   done;
 
   let all_correct = List.for_all (fun x -> x) !results in
