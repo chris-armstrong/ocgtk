@@ -1166,7 +1166,7 @@ let test_fixed_size_array_out_param () =
   (* Critical: verify the out variable is declared as a fixed-size array, NOT as "= NULL"
      The bug was: graphene_vec3_t out1 = NULL;
      The fix should be: graphene_vec3_t out1[8];
-     
+
      Note: The lightweight C parser extracts the array dimension as part of the type,
      so we check for the type containing "[N]" and the name being the clean variable name. *)
   let var_decls = C_ast.get_var_decls func in

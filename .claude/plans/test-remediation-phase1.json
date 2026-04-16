@@ -135,7 +135,7 @@
         {
           "stage": 4,
           "title": "1.4 Move c_stubs/cross_namespace_tests.ml to cross_namespace/c_stub_tests.ml",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "c_stubs/cross_namespace_tests.ml tests cross-namespace type references in C stubs. The canonical home for cross-namespace tests is cross_namespace/. The file is renamed from cross_namespace_tests.ml to c_stub_tests.ml. Because the filename changes, the dune entry and runner reference must be updated.",
           "files_to_modify": [
