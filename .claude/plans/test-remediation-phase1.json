@@ -54,7 +54,7 @@
         {
           "stage": 2,
           "title": "1.2 Create overrides/ subdirectory and move 8 override/version-guard test files",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "Eight files testing the override/version-guard system live at the root with inconsistent naming. Create overrides/ and move+rename all 8 files to use the _tests suffix convention. Six are renamed (strip test_ prefix), one keeps its name (version_guard_tests.ml), one is renamed (test_enum_member_version.ml -> enum_member_version_tests.ml). Because filenames change, both the dune modules entries AND the test_gir_gen.ml runner references must be updated.",
           "files_to_modify": [

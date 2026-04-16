@@ -42,13 +42,13 @@
   compilation_tests
   version_guard_tests
   c_stub_version_guard_tests
-  test_override_types
-  test_override_parser
-  test_override_apply
-  test_override_extractor
-  test_override_e2e
-  test_override_integration
-  test_enum_member_version
+  types_tests
+  parser_tests
+  apply_tests
+  extractor_tests
+  e2e_tests
+  overrides_integration_tests
+  enum_member_version_tests
   test_interface_parsing
   test_from_gobject_gen
   test_interface_inheritance
