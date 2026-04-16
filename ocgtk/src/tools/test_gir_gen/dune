@@ -4,8 +4,16 @@
  (name test_gir_gen)
  (modules
   helpers
-  core
-  parser
+  gir_parsing_tests
+  widget_generation_tests
+  nullable_generation_tests
+  cli_tests
+  gir_parser_tests
+  signals_tests
+  enums_tests
+  records_tests
+  properties_tests
+  edge_cases_tests
   c_ast
   c_parser
   c_validation
@@ -24,11 +32,6 @@
   type_definition_tests
   external_decl_tests
   signature_tests
-  properties
-  signals
-  enums
-  records
-  edge_cases
   method_wrapper_tests
   constructor_wrapper_tests
   c_stub_tests

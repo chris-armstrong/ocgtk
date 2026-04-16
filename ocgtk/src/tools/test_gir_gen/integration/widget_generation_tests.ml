@@ -1,30 +1,10 @@
-(* Core GIR parsing and code generation tests *)
+(* Widget generation tests *)
 
-open Printf
 open Helpers
 
 (* ========================================================================= *)
 (* Test GIR Content *)
 (* ========================================================================= *)
-
-let simple_class_gir =
-  wrap_namespace
-    {|
-    <class name="EventControllerKey"
-           c:type="GtkEventControllerKey"
-           parent="EventController">
-      <constructor name="new" c:identifier="gtk_event_controller_key_new"/>
-      <method name="forward" c:identifier="gtk_event_controller_key_forward">
-        <return-value><type name="gboolean" c:type="gboolean"/></return-value>
-        <parameters>
-          <parameter name="widget"><type name="Widget" c:type="GtkWidget*"/></parameter>
-        </parameters>
-      </method>
-      <method name="get_group" c:identifier="gtk_event_controller_key_get_group">
-        <return-value><type name="guint" c:type="guint"/></return-value>
-      </method>
-    </class>
-|}
 
 let widget_with_methods_gir =
   wrap_namespace
@@ -119,68 +99,9 @@ let many_params_gir =
     </class>
 |}
 
-let nullable_params_gir =
-  wrap_namespace
-    {|
-    <class name="TestWidget" c:type="GtkTestWidget" parent="Widget">
-      <constructor name="new" c:identifier="gtk_test_widget_new">
-        <parameters>
-          <parameter name="label" nullable="1">
-            <type name="utf8" c:type="const gchar*"/>
-          </parameter>
-        </parameters>
-      </constructor>
-      <method name="set_group" c:identifier="gtk_test_widget_set_group">
-        <return-value><type name="none" c:type="void"/></return-value>
-        <parameters>
-          <parameter name="group" nullable="1">
-            <type name="Widget" c:type="GtkWidget*"/>
-          </parameter>
-        </parameters>
-      </method>
-    </class>
-|}
-
 (* ========================================================================= *)
 (* Test Cases *)
 (* ========================================================================= *)
-
-let test_gir_parsing () =
-  let test_gir = "/tmp/test_gir_gen.gir" in
-  let output_dir = "/tmp/test_gir_output" in
-
-  create_gir_file test_gir simple_class_gir;
-  ensure_output_dir output_dir;
-
-  let exit_code = run_gir_gen test_gir output_dir in
-  assert_true "Generator should exit successfully" (exit_code = 0);
-
-  let c_file = stub_c_file output_dir "EventControllerKey" in
-  assert_true "C file should be created" (file_exists c_file);
-
-  let content = read_file c_file in
-  assert_contains "C file should have header" content "GENERATED CODE";
-  assert_contains "C file should have constructor" content
-    "ml_gtk_event_controller_key_new"
-
-let test_c_code_generation () =
-  let test_gir = "/tmp/test_gir_gen.gir" in
-  let output_dir = "/tmp/test_gir_output" in
-
-  create_gir_file test_gir simple_class_gir;
-  ensure_output_dir output_dir;
-
-  let _ = run_gir_gen test_gir output_dir in
-
-  let c_file = stub_c_file output_dir "EventControllerKey" in
-  if file_exists c_file then begin
-    let content = read_file c_file in
-    assert_contains "Should use CAMLparam" content "CAMLparam";
-    assert_contains "Should use CAMLreturn" content "CAMLreturn";
-    assert_contains "Should define type converter macros" content
-      "GtkEventControllerKey_val"
-  end
-  else Alcotest.fail "C file not generated"
 
 let test_widget_generation () =
   let test_gir = "/tmp/test_widget_gen.gir" in
@@ -245,57 +166,6 @@ let test_all_methods_generated () =
   assert_contains "Method 7 should be generated" content "method7";
   assert_contains "Method 8 should be generated" content "method8"
 
-let test_camlparam_limitation () =
-  let test_gir = "/tmp/test_many_params.gir" in
-  let output_dir = "/tmp/test_many_params_output" in
-
-  create_gir_file test_gir many_params_gir;
-  ensure_output_dir output_dir;
-
-  let exit_code = run_gir_gen test_gir output_dir in
-  assert_true "CAMLparam test should exit successfully" (exit_code = 0);
-
-  let mli = mli_file output_dir "many_params" in
-  let content = read_file mli in
-
-  (* Method with 3 params should be generated *)
-  assert_contains "Method with 3 params should be generated" content
-    "with_three_params";
-
-  (* CURRENT BEHAVIOR: Method with 6 params IS generated with bytecode/native pattern *)
-  if string_contains content "with_six_params" then begin
-    (* Verify it uses bytecode/native pattern *)
-    assert_contains "Method with 6 params should use bytecode/native pattern"
-      content "ml_gtk_many_params_with_six_params_bytecode";
-    assert_contains "Method with 6 params should use bytecode/native pattern"
-      content "ml_gtk_many_params_with_six_params_native"
-  end
-
-let test_nullable_parameters () =
-  let test_gir = "/tmp/test_nullable_gen.gir" in
-  let test_filter = "/tmp/test_nullable_filter.conf" in
-  let output_dir = "/tmp/test_nullable_output" in
-
-  create_gir_file test_gir nullable_params_gir;
-  create_filter_file test_filter [ "TestWidget" ];
-  ensure_output_dir output_dir;
-
-  let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
-  assert_true "Nullable generator should exit successfully" (exit_code = 0);
-
-  let mli = mli_file output_dir "test_widget" in
-  let content = read_file mli in
-
-  (* Check OCaml interface uses option types *)
-  assert_contains "Constructor should have string option parameter" content
-    "string option";
-
-  (* Check C code uses option-aware conversions *)
-  let c_file = stub_c_file output_dir "TestWidget" in
-  let c_content = read_file c_file in
-  assert_contains "C should use option helper for string" c_content
-    "String_option_val"
-
 let test_generated_code_quality () =
   let test_gir = "/tmp/test_quality.gir" in
   let test_filter = "/tmp/test_quality_filter.conf" in
@@ -325,22 +195,31 @@ let test_generated_code_quality () =
   then
     Alcotest.fail "Generated code may have memory leaks (malloc without free)"
 
-let test_help_output () =
-  let tools_dir = get_tools_dir () in
-  let cmd = sprintf "%s/gir_gen/gir_gen.exe generate --help 2>&1" tools_dir in
-  let ic = Unix.open_process_in cmd in
-  let output = Buffer.create 1024 in
-  (try
-     while true do
-       Buffer.add_string output (input_line ic);
-       Buffer.add_char output '\n'
-     done
-   with End_of_file -> ());
-  let _ = Unix.close_process_in ic in
-  let help_text = Buffer.contents output in
-  assert_contains "Help should mention filter option" help_text "--filter";
-  assert_contains "Help should mention GIR_FILE argument" help_text "GIR_FILE";
-  assert_contains "Help should show examples" help_text "EXAMPLES"
+let test_camlparam_limitation () =
+  let test_gir = "/tmp/test_many_params.gir" in
+  let output_dir = "/tmp/test_many_params_output" in
+
+  create_gir_file test_gir many_params_gir;
+  ensure_output_dir output_dir;
+
+  let exit_code = run_gir_gen test_gir output_dir in
+  assert_true "CAMLparam test should exit successfully" (exit_code = 0);
+
+  let mli = mli_file output_dir "many_params" in
+  let content = read_file mli in
+
+  (* Method with 3 params should be generated *)
+  assert_contains "Method with 3 params should be generated" content
+    "with_three_params";
+
+  (* CURRENT BEHAVIOR: Method with 6 params IS generated with bytecode/native pattern *)
+  if string_contains content "with_six_params" then begin
+    (* Verify it uses bytecode/native pattern *)
+    assert_contains "Method with 6 params should use bytecode/native pattern"
+      content "ml_gtk_many_params_with_six_params_bytecode";
+    assert_contains "Method with 6 params should use bytecode/native pattern"
+      content "ml_gtk_many_params_with_six_params_native"
+  end
 
 (* ========================================================================= *)
 (* Test Suite *)
@@ -348,16 +227,11 @@ let test_help_output () =
 
 let tests =
   [
-    Alcotest.test_case "GIR file parsing" `Quick test_gir_parsing;
-    Alcotest.test_case "C code generation" `Quick test_c_code_generation;
     Alcotest.test_case "Widget generation" `Quick test_widget_generation;
     Alcotest.test_case "All methods generated (Phase 5.2)" `Quick
       test_all_methods_generated;
     Alcotest.test_case "CAMLparam limitation (>5 params)" `Quick
       test_camlparam_limitation;
-    Alcotest.test_case "Nullable parameters (Phase 5.3)" `Quick
-      test_nullable_parameters;
     Alcotest.test_case "Generated code quality" `Quick
       test_generated_code_quality;
-    Alcotest.test_case "Help output" `Quick test_help_output;
   ]

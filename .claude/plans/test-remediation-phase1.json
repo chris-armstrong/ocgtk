@@ -170,7 +170,7 @@
         {
           "stage": 5,
           "title": "1.5 Rename integration/ files and split core.ml into 4 files",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "All integration/ test files currently use plain noun names (core.ml, parser.ml, signals.ml, etc.) with no _tests suffix, which is inconsistent with every other directory. Additionally core.ml bundles four unrelated concerns and must be split. Actions: (1) split core.ml into 4 files, (2) rename 6 other integration files to add _tests suffix, (3) delete core.ml. All filenames change so all dune entries and runner references must be updated.",
           "files_to_modify": [

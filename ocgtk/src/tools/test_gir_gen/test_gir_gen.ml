@@ -7,8 +7,11 @@
 let () =
   Alcotest.run "GIR Generator"
     [
-      ("Core", Core.tests);
-      ("Parser", Parser.tests);
+      ("GIR Parsing", Gir_parsing_tests.tests);
+      ("Widget Generation", Widget_generation_tests.tests);
+      ("Nullable Generation", Nullable_generation_tests.tests);
+      ("CLI", Cli_tests.tests);
+      ("GIR Parser", Gir_parser_tests.tests);
       ("C Validation", C_validation_tests.tests);
       ("C Stubs", C_stubs_tests.tests);
       ("Header Naming", Header_naming_tests.tests);
@@ -21,11 +24,11 @@ let () =
       ("Type Definitions (ML)", Type_definition_tests.tests);
       ("External Declarations (ML)", External_decl_tests.tests);
       ("Signatures (ML)", Signature_tests.tests);
-      ("Properties", Properties.tests);
-      ("Signals", Signals.tests);
-      ("Enums", Enums.tests);
-      ("Records", Records.tests);
-      ("Edge Cases", Edge_cases.tests);
+      ("Properties", Properties_tests.tests);
+      ("Signals", Signals_tests.tests);
+      ("Enums", Enums_tests.tests);
+      ("Records", Records_tests.tests);
+      ("Edge Cases", Edge_cases_tests.tests);
       ("Layer2 Method Wrappers", Method_wrapper_tests.tests);
       ("Constructor Wrappers", Constructor_wrapper_tests.tests);
       ("Cross-Namespace", C_stub_tests.tests);
