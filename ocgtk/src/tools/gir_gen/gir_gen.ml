@@ -1427,7 +1427,8 @@ let generate_references gir_file output_file overrides_file =
     |> List.map ~f:(fun cls ->
         {
           cr_name = cls.class_name;
-          cr_type = Crt_Class { parent = cls.parent; implements = cls.implements };
+          cr_type =
+            Crt_Class { parent = cls.parent; implements = cls.implements };
           cr_c_type = cls.c_type;
         }))
     @ (interfaces

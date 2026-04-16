@@ -1,14 +1,13 @@
 (** Test suite for GObj high-level widget wrapper (Phase 3.4)
 
     Note: Most tests are skipped as they require GTK initialization (gtk_init),
-    which is not yet available in the bindings. Runtime tests will be added
-    in Phase 4+ when gtk_init is implemented.
+    which is not yet available in the bindings. Runtime tests will be added in
+    Phase 4+ when gtk_init is implemented.
 
     This test file verifies:
     - Module compiles and types are accessible
     - API structure matches GTK4 patterns
-    - No deprecated GTK3 patterns present
-    *)
+    - No deprecated GTK3 patterns present *)
 
 open Alcotest
 
@@ -29,9 +28,9 @@ let test_controller_ops_api_structure () =
 let test_widget_impl_api_structure () =
   (* Verify widget_impl method signatures *)
   (* Check that labeled arguments are used correctly *)
-
   let _size_req_sig : width:int -> height:int -> unit =
-    fun ~width:_ ~height:_ -> () in
+   fun ~width:_ ~height:_ -> ()
+  in
 
   check bool "widget_impl uses labeled arguments" true true
 
@@ -135,43 +134,47 @@ let test_signal_connection () =
 (** {2 Test Suite} *)
 
 let () =
-  run "GObj Tests (Phase 3.4)" [
-    "type_system", [
-      test_case "type accessibility" `Quick test_type_accessibility;
-    ];
-
-    "api_structure", [
-      test_case "controller_ops API" `Quick test_controller_ops_api_structure;
-      test_case "widget_impl API" `Quick test_widget_impl_api_structure;
-    ];
-
-    "gtk4_compat", [
-      test_case "uses focusable" `Quick test_uses_focusable_not_can_focus;
-      test_case "CSS classes available" `Quick test_css_classes_api_available;
-      test_case "no event_ops" `Quick test_no_event_ops_class;
-    ];
-
-    "runtime_controller_ops", [
-      test_case "creation" `Quick test_controller_ops_creation;
-      test_case "on_key_pressed" `Quick test_on_key_pressed_creates_controller;
-      test_case "on_click" `Quick test_on_click_creates_gesture;
-      test_case "on_motion" `Quick test_on_motion_creates_controller;
-      test_case "controllers tracking" `Quick test_controllers_tracking;
-    ];
-
-    "runtime_widget_methods", [
-      test_case "visibility" `Quick test_widget_visibility_methods;
-      test_case "size" `Quick test_widget_size_methods;
-      test_case "focus" `Quick test_widget_focus_methods;
-      test_case "css_classes" `Quick test_widget_css_classes;
-      test_case "state" `Quick test_widget_state_methods;
-      test_case "hierarchy" `Quick test_widget_hierarchy_methods;
-      test_case "drawing" `Quick test_widget_drawing_methods;
-      test_case "add/remove controller" `Quick test_widget_add_remove_controller;
-    ];
-
-    "runtime_widget_full", [
-      test_case "integration" `Quick test_widget_full_integration;
-      test_case "signal connection" `Quick test_signal_connection;
-    ];
-  ]
+  run "GObj Tests (Phase 3.4)"
+    [
+      ( "type_system",
+        [ test_case "type accessibility" `Quick test_type_accessibility ] );
+      ( "api_structure",
+        [
+          test_case "controller_ops API" `Quick
+            test_controller_ops_api_structure;
+          test_case "widget_impl API" `Quick test_widget_impl_api_structure;
+        ] );
+      ( "gtk4_compat",
+        [
+          test_case "uses focusable" `Quick test_uses_focusable_not_can_focus;
+          test_case "CSS classes available" `Quick
+            test_css_classes_api_available;
+          test_case "no event_ops" `Quick test_no_event_ops_class;
+        ] );
+      ( "runtime_controller_ops",
+        [
+          test_case "creation" `Quick test_controller_ops_creation;
+          test_case "on_key_pressed" `Quick
+            test_on_key_pressed_creates_controller;
+          test_case "on_click" `Quick test_on_click_creates_gesture;
+          test_case "on_motion" `Quick test_on_motion_creates_controller;
+          test_case "controllers tracking" `Quick test_controllers_tracking;
+        ] );
+      ( "runtime_widget_methods",
+        [
+          test_case "visibility" `Quick test_widget_visibility_methods;
+          test_case "size" `Quick test_widget_size_methods;
+          test_case "focus" `Quick test_widget_focus_methods;
+          test_case "css_classes" `Quick test_widget_css_classes;
+          test_case "state" `Quick test_widget_state_methods;
+          test_case "hierarchy" `Quick test_widget_hierarchy_methods;
+          test_case "drawing" `Quick test_widget_drawing_methods;
+          test_case "add/remove controller" `Quick
+            test_widget_add_remove_controller;
+        ] );
+      ( "runtime_widget_full",
+        [
+          test_case "integration" `Quick test_widget_full_integration;
+          test_case "signal connection" `Quick test_signal_connection;
+        ] );
+    ]

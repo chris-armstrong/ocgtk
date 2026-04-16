@@ -44,7 +44,10 @@ let check_unknown_entity_names ~entity_kind ~get_override_name ~get_entity_name
     overrides entities =
   List.filter_map
     (fun ov ->
-      if List.exists (fun e -> String.equal (get_entity_name e) (get_override_name ov)) entities
+      if
+        List.exists
+          (fun e -> String.equal (get_entity_name e) (get_override_name ov))
+          entities
       then None
       else
         Some
@@ -54,11 +57,9 @@ let check_unknown_entity_names ~entity_kind ~get_override_name ~get_entity_name
 
 (* Apply component-level overrides to a single component list.
    Returns the filtered-and-versioned list. *)
-let apply_components_by_name
-    ~(get_name : 'a -> string)
+let apply_components_by_name ~(get_name : 'a -> string)
     ~(set_version : version_spec -> 'a -> 'a)
-    ~(overrides : component_override list)
-    (components : 'a list) : 'a list =
+    ~(overrides : component_override list) (components : 'a list) : 'a list =
   List.filter_map
     (fun item ->
       match find_component_override (get_name item) overrides with
@@ -74,28 +75,44 @@ let apply_class_components (ov : class_override) (cls : gir_class) : gir_class =
     apply_components_by_name
       ~get_name:(fun (c : gir_constructor) -> c.ctor_name)
       ~set_version:(fun vs (c : gir_constructor) ->
-        { c with version = Some vs.vs_version; version_namespace = vs.vs_namespace })
+        {
+          c with
+          version = Some vs.vs_version;
+          version_namespace = vs.vs_namespace;
+        })
       ~overrides:ov.constructors cls.constructors
   in
   let methods =
     apply_components_by_name
       ~get_name:(fun (m : gir_method) -> m.method_name)
       ~set_version:(fun vs (m : gir_method) ->
-        { m with version = Some vs.vs_version; version_namespace = vs.vs_namespace })
+        {
+          m with
+          version = Some vs.vs_version;
+          version_namespace = vs.vs_namespace;
+        })
       ~overrides:ov.methods cls.methods
   in
   let properties =
     apply_components_by_name
       ~get_name:(fun (p : gir_property) -> p.prop_name)
       ~set_version:(fun vs (p : gir_property) ->
-        { p with version = Some vs.vs_version; version_namespace = vs.vs_namespace })
+        {
+          p with
+          version = Some vs.vs_version;
+          version_namespace = vs.vs_namespace;
+        })
       ~overrides:ov.properties cls.properties
   in
   let signals =
     apply_components_by_name
       ~get_name:(fun (s : gir_signal) -> s.signal_name)
       ~set_version:(fun vs (s : gir_signal) ->
-        { s with version = Some vs.vs_version; version_namespace = vs.vs_namespace })
+        {
+          s with
+          version = Some vs.vs_version;
+          version_namespace = vs.vs_namespace;
+        })
       ~overrides:ov.signals cls.signals
   in
   { cls with constructors; methods; properties; signals }
@@ -106,52 +123,77 @@ let apply_interface_components (ov : interface_override) (intf : gir_interface)
     apply_components_by_name
       ~get_name:(fun (m : gir_method) -> m.method_name)
       ~set_version:(fun vs (m : gir_method) ->
-        { m with version = Some vs.vs_version; version_namespace = vs.vs_namespace })
+        {
+          m with
+          version = Some vs.vs_version;
+          version_namespace = vs.vs_namespace;
+        })
       ~overrides:ov.methods intf.methods
   in
   let properties =
     apply_components_by_name
       ~get_name:(fun (p : gir_property) -> p.prop_name)
       ~set_version:(fun vs (p : gir_property) ->
-        { p with version = Some vs.vs_version; version_namespace = vs.vs_namespace })
+        {
+          p with
+          version = Some vs.vs_version;
+          version_namespace = vs.vs_namespace;
+        })
       ~overrides:ov.properties intf.properties
   in
   let signals =
     apply_components_by_name
       ~get_name:(fun (s : gir_signal) -> s.signal_name)
       ~set_version:(fun vs (s : gir_signal) ->
-        { s with version = Some vs.vs_version; version_namespace = vs.vs_namespace })
+        {
+          s with
+          version = Some vs.vs_version;
+          version_namespace = vs.vs_namespace;
+        })
       ~overrides:ov.signals intf.signals
   in
   { intf with methods; properties; signals }
 
-let apply_record_components (ov : record_override) (rec_ : gir_record)
-    : gir_record =
+let apply_record_components (ov : record_override) (rec_ : gir_record) :
+    gir_record =
   let fields =
     apply_components_by_name
       ~get_name:(fun (f : gir_record_field) -> f.field_name)
-      ~set_version:(fun vs (f : gir_record_field) -> { f with field_version = Some vs.vs_version })
+      ~set_version:(fun vs (f : gir_record_field) ->
+        { f with field_version = Some vs.vs_version })
       ~overrides:ov.fields rec_.fields
   in
   let constructors =
     apply_components_by_name
       ~get_name:(fun (c : gir_constructor) -> c.ctor_name)
       ~set_version:(fun vs (c : gir_constructor) ->
-        { c with version = Some vs.vs_version; version_namespace = vs.vs_namespace })
+        {
+          c with
+          version = Some vs.vs_version;
+          version_namespace = vs.vs_namespace;
+        })
       ~overrides:ov.constructors rec_.constructors
   in
   let methods =
     apply_components_by_name
       ~get_name:(fun (m : gir_method) -> m.method_name)
       ~set_version:(fun vs (m : gir_method) ->
-        { m with version = Some vs.vs_version; version_namespace = vs.vs_namespace })
+        {
+          m with
+          version = Some vs.vs_version;
+          version_namespace = vs.vs_namespace;
+        })
       ~overrides:ov.methods rec_.methods
   in
   let functions =
     apply_components_by_name
       ~get_name:(fun (f : gir_function) -> f.function_name)
       ~set_version:(fun vs (f : gir_function) ->
-        { f with version = Some vs.vs_version; version_namespace = vs.vs_namespace })
+        {
+          f with
+          version = Some vs.vs_version;
+          version_namespace = vs.vs_namespace;
+        })
       ~overrides:ov.functions rec_.functions
   in
   { rec_ with fields; constructors; methods; functions }
@@ -160,24 +202,30 @@ let apply_enum_components (ov : enum_override) (enm : gir_enum) : gir_enum =
   let members =
     apply_components_by_name
       ~get_name:(fun (m : gir_enum_member) -> m.member_name)
-      ~set_version:(fun vs (m : gir_enum_member) -> { m with member_version = Some vs.vs_version })
+      ~set_version:(fun vs (m : gir_enum_member) ->
+        { m with member_version = Some vs.vs_version })
       ~overrides:ov.members enm.members
   in
   let functions =
     apply_components_by_name
       ~get_name:(fun (f : gir_function) -> f.function_name)
       ~set_version:(fun vs (f : gir_function) ->
-        { f with version = Some vs.vs_version; version_namespace = vs.vs_namespace })
+        {
+          f with
+          version = Some vs.vs_version;
+          version_namespace = vs.vs_namespace;
+        })
       ~overrides:ov.functions enm.functions
   in
   { enm with members; functions }
 
-let apply_bitfield_components (ov : bitfield_override) (bf : gir_bitfield)
-    : gir_bitfield =
+let apply_bitfield_components (ov : bitfield_override) (bf : gir_bitfield) :
+    gir_bitfield =
   let flags =
     apply_components_by_name
       ~get_name:(fun (f : gir_bitfield_member) -> f.flag_name)
-      ~set_version:(fun vs (f : gir_bitfield_member) -> { f with flag_version = Some vs.vs_version })
+      ~set_version:(fun vs (f : gir_bitfield_member) ->
+        { f with flag_version = Some vs.vs_version })
       ~overrides:ov.flags bf.flags
   in
   { bf with flags }
@@ -188,9 +236,8 @@ let apply_bitfield_components (ov : bitfield_override) (bf : gir_bitfield)
    ~set_version: applies a version string to the entity record
    ~apply_components: applies all component-level overrides to a surviving entity
    ~check_components: emits component-level unknown-name warnings for one entity *)
-let apply_entity_overrides ~get_entity_name ~get_override_name
-    ~get_action ~set_version ~apply_components ~check_components all_entities
-    overrides =
+let apply_entity_overrides ~get_entity_name ~get_override_name ~get_action
+    ~set_version ~apply_components ~check_components all_entities overrides =
   let ignored = ref [] in
   let warnings = ref [] in
   let process entity =
@@ -222,13 +269,15 @@ let apply_entity_overrides ~get_entity_name ~get_override_name
               check_components ~entity_name:(get_override_name ov) entity ov
                 ~warnings)
             (List.find_opt
-               (fun e -> String.equal (get_entity_name e) (get_override_name ov))
+               (fun e ->
+                 String.equal (get_entity_name e) (get_override_name ov))
                all_entities))
     overrides;
   (processed, !ignored, !warnings)
 
 let apply_class_overrides ~class_overrides all_classes =
-  apply_entity_overrides ~get_entity_name:(fun (c : gir_class) -> c.class_name)
+  apply_entity_overrides
+    ~get_entity_name:(fun (c : gir_class) -> c.class_name)
     ~get_override_name:(fun (o : class_override) -> o.class_name)
     ~get_action:(fun (o : class_override) -> o.class_action)
     ~set_version:(fun v (c : gir_class) -> { c with version = Some v })
@@ -253,7 +302,8 @@ let apply_class_overrides ~class_overrides all_classes =
     all_classes class_overrides
 
 let apply_interface_overrides ~interface_overrides all_interfaces =
-  apply_entity_overrides ~get_entity_name:(fun (i : gir_interface) -> i.interface_name)
+  apply_entity_overrides
+    ~get_entity_name:(fun (i : gir_interface) -> i.interface_name)
     ~get_override_name:(fun (o : interface_override) -> o.interface_name)
     ~get_action:(fun (o : interface_override) -> o.interface_action)
     ~set_version:(fun v (i : gir_interface) -> { i with version = Some v })
@@ -274,7 +324,8 @@ let apply_interface_overrides ~interface_overrides all_interfaces =
     all_interfaces interface_overrides
 
 let apply_record_overrides ~record_overrides all_records =
-  apply_entity_overrides ~get_entity_name:(fun (r : gir_record) -> r.record_name)
+  apply_entity_overrides
+    ~get_entity_name:(fun (r : gir_record) -> r.record_name)
     ~get_override_name:(fun (o : record_override) -> o.record_name)
     ~get_action:(fun (o : record_override) -> o.record_action)
     ~set_version:(fun v (r : gir_record) -> { r with version = Some v })
@@ -299,7 +350,8 @@ let apply_record_overrides ~record_overrides all_records =
     all_records record_overrides
 
 let apply_enum_overrides ~enum_overrides all_enums =
-  apply_entity_overrides ~get_entity_name:(fun (e : gir_enum) -> e.enum_name)
+  apply_entity_overrides
+    ~get_entity_name:(fun (e : gir_enum) -> e.enum_name)
     ~get_override_name:(fun (o : enum_override) -> o.enum_name)
     ~get_action:(fun (o : enum_override) -> o.enum_action)
     ~set_version:(fun v (e : gir_enum) -> { e with enum_version = Some v })
@@ -316,10 +368,12 @@ let apply_enum_overrides ~enum_overrides all_enums =
     all_enums enum_overrides
 
 let apply_bitfield_overrides ~bitfield_overrides all_bitfields =
-  apply_entity_overrides ~get_entity_name:(fun (b : gir_bitfield) -> b.bitfield_name)
+  apply_entity_overrides
+    ~get_entity_name:(fun (b : gir_bitfield) -> b.bitfield_name)
     ~get_override_name:(fun (o : bitfield_override) -> o.bitfield_name)
     ~get_action:(fun (o : bitfield_override) -> o.bitfield_action)
-    ~set_version:(fun v (b : gir_bitfield) -> { b with bitfield_version = Some v })
+    ~set_version:(fun v (b : gir_bitfield) ->
+      { b with bitfield_version = Some v })
     ~apply_components:apply_bitfield_components
     ~check_components:(fun ~entity_name bf ov ~warnings ->
       warn_unknown_components ~entity_name ~entity_kind:"bitfield"
@@ -341,7 +395,12 @@ let apply_function_overrides ~(function_overrides : component_override list)
             ignored := fn.function_name :: !ignored;
             None
         | Some { action = Set_version vs; _ } ->
-            Some { fn with version = Some vs.vs_version; version_namespace = vs.vs_namespace }
+            Some
+              {
+                fn with
+                version = Some vs.vs_version;
+                version_namespace = vs.vs_namespace;
+              }
         | None -> Some fn)
       functions
   in

@@ -4,8 +4,7 @@
     - GtkFixed: Absolute positioning container
     - GtkPaned: Two-child container with resizable divider
     - GtkNotebook: Tabbed container
-    - GtkStack: Layered container
-    *)
+    - GtkStack: Layered container *)
 
 open Alcotest
 
@@ -14,14 +13,10 @@ let gtk_available =
   try
     let _ = GMain.init () in
     true
-  with
-  | GMain.Error _ -> false
+  with GMain.Error _ -> false
 
 (* Helper to skip tests when GTK is not available *)
-let require_gtk f () =
-  if not gtk_available then skip ()
-  else f ()
-
+let require_gtk f () = if not gtk_available then skip () else f ()
 
 (* ========== GtkFixed Tests ========== *)
 
@@ -255,7 +250,9 @@ let test_stack_children () =
     let _ = Stack.add_named stack (Box.as_widget child1) (Some "page1") in
 
     (* Add titled child *)
-    let _ = Stack.add_titled stack (Box.as_widget child2) (Some "page2") "Page 2" in
+    let _ =
+      Stack.add_titled stack (Box.as_widget child2) (Some "page2") "Page 2"
+    in
 
     (* Set visible child *)
     Stack.set_visible_child_name stack "page1";
@@ -278,7 +275,8 @@ let test_stack_transitions () =
     (* Transition type *)
     Stack.set_transition_type stack `SLIDE_LEFT;
     check bool "Transition type set"
-      (`SLIDE_LEFT = Stack.get_transition_type stack) true;
+      (`SLIDE_LEFT = Stack.get_transition_type stack)
+      true;
 
     (* Transition duration *)
     Stack.set_transition_duration stack 500;
@@ -296,14 +294,14 @@ let test_gfixed_wrapper () =
     let child = new GBox.box (Box.new_ `HORIZONTAL 0) in
 
     (* Test high-level put *)
-    fixed#put (child) 25.0 35.0 ;
-    let (x, y) = fixed#get_child_position (child) in
+    fixed#put child 25.0 35.0;
+    let x, y = fixed#get_child_position child in
     check (float 0.01) "GFixed x" 25.0 x;
     check (float 0.01) "GFixed y" 35.0 y;
 
     (* Test high-level move *)
-    fixed#move (child) 50.0 60.0 ;
-    let (x2, y2) = fixed#get_first_child ()#get_position (child :> GObj.widget) in
+    fixed#move child 50.0 60.0;
+    let x2, y2 = fixed#get_first_child ()#get_position (child :> GObj.widget) in
     check (float 0.01) "GFixed moved x" 50.0 x2;
     check (float 0.01) "GFixed moved y" 60.0 y2;
 
@@ -399,7 +397,8 @@ let test_gstack_wrapper () =
     (* Test transitions *)
     stack#set_transition_type `CROSSFADE;
     check bool "GStack transition type"
-      (`CROSSFADE = stack#transition_type) true;
+      (`CROSSFADE = stack#transition_type)
+      true;
 
     stack#set_transition_duration 300;
     check int "GStack duration" 300 stack#transition_duration
@@ -417,7 +416,6 @@ let test_nested_containers () =
        Paned with:
        - Start: Notebook with 2 pages (each has a box)
        - End: Stack with 2 children (each has a grid) *)
-
     let paned = GPaned.hpaned () in
 
     (* Create notebook for start pane *)
@@ -469,13 +467,13 @@ let test_fixed_with_containers () =
     fixed#put ~x:200.0 ~y:10.0 (notebook :> GObj.widget);
 
     (* Verify positions *)
-    let (x1, _y1) = fixed#get_child_position (box :> GObj.widget) in
+    let x1, _y1 = fixed#get_child_position (box :> GObj.widget) in
     check (float 0.01) "Fixed box x" 10.0 x1;
 
-    let (x2, _y2) = fixed#get_child_position (grid :> GObj.widget) in
+    let x2, _y2 = fixed#get_child_position (grid :> GObj.widget) in
     check (float 0.01) "Fixed grid x" 100.0 x2;
 
-    let (x3, _y3) = fixed#get_child_position (notebook :> GObj.widget) in
+    let x3, _y3 = fixed#get_child_position (notebook :> GObj.widget) in
     check (float 0.01) "Fixed notebook x" 200.0 x3;
 
     check bool "Fixed with containers works" true true
@@ -489,20 +487,44 @@ let test_all_transitions () =
     let stack = GStack.new_ () in
 
     (* Test all transition types *)
-    let transitions = [
-      `NONE; `CROSSFADE; `SLIDE_RIGHT; `SLIDE_LEFT;
-      `SLIDE_UP; `SLIDE_DOWN; `SLIDE_LEFT_RIGHT; `SLIDE_UP_DOWN;
-      `OVER_UP; `OVER_DOWN; `OVER_LEFT; `OVER_RIGHT;
-      `UNDER_UP; `UNDER_DOWN; `UNDER_LEFT; `UNDER_RIGHT;
-      `OVER_UP_DOWN; `OVER_DOWN_UP; `OVER_LEFT_RIGHT; `OVER_RIGHT_LEFT;
-      `ROTATE_LEFT; `ROTATE_RIGHT; `ROTATE_LEFT_RIGHT
-    ] in
+    let transitions =
+      [
+        `NONE;
+        `CROSSFADE;
+        `SLIDE_RIGHT;
+        `SLIDE_LEFT;
+        `SLIDE_UP;
+        `SLIDE_DOWN;
+        `SLIDE_LEFT_RIGHT;
+        `SLIDE_UP_DOWN;
+        `OVER_UP;
+        `OVER_DOWN;
+        `OVER_LEFT;
+        `OVER_RIGHT;
+        `UNDER_UP;
+        `UNDER_DOWN;
+        `UNDER_LEFT;
+        `UNDER_RIGHT;
+        `OVER_UP_DOWN;
+        `OVER_DOWN_UP;
+        `OVER_LEFT_RIGHT;
+        `OVER_RIGHT_LEFT;
+        `ROTATE_LEFT;
+        `ROTATE_RIGHT;
+        `ROTATE_LEFT_RIGHT;
+      ]
+    in
 
     let test_transition tt =
       stack#set_transition_type tt;
-      check bool (Printf.sprintf "Transition %s"
-        (match tt with `CROSSFADE -> "CROSSFADE" | `SLIDE_LEFT -> "SLIDE_LEFT" | _ -> "other"))
-        (tt = stack#transition_type) true
+      check bool
+        (Printf.sprintf "Transition %s"
+           (match tt with
+           | `CROSSFADE -> "CROSSFADE"
+           | `SLIDE_LEFT -> "SLIDE_LEFT"
+           | _ -> "other"))
+        (tt = stack#transition_type)
+        true
     in
 
     List.iter test_transition transitions;
@@ -512,46 +534,57 @@ let test_all_transitions () =
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =
-  run "Comprehensive Container Tests (Phase 4.4)" [
-    "Fixed - Low Level", [
-      test_case "module_accessible" `Quick test_fixed_module_accessible;
-      test_case "creation" `Quick (require_gtk test_fixed_creation);
-      test_case "put_move_remove" `Quick (require_gtk test_fixed_put_move);
-    ];
-    "Fixed - High Level", [
-      test_case "gfixed_wrapper" `Quick (require_gtk test_gfixed_wrapper);
-    ];
-    "Paned - Low Level", [
-      test_case "module_accessible" `Quick test_paned_module_accessible;
-      test_case "creation" `Quick (require_gtk test_paned_creation);
-      test_case "children" `Quick (require_gtk test_paned_children);
-      test_case "properties" `Quick (require_gtk test_paned_properties);
-    ];
-    "Paned - High Level", [
-      test_case "gpaned_wrapper" `Quick (require_gtk test_gpaned_wrapper);
-    ];
-    "Notebook - Low Level", [
-      test_case "module_accessible" `Quick test_notebook_module_accessible;
-      test_case "creation" `Quick (require_gtk test_notebook_creation);
-      test_case "pages" `Quick (require_gtk test_notebook_pages);
-      test_case "navigation" `Quick (require_gtk test_notebook_navigation);
-      test_case "properties" `Quick (require_gtk test_notebook_properties);
-    ];
-    "Notebook - High Level", [
-      test_case "gnotebook_wrapper" `Quick (require_gtk test_gnotebook_wrapper);
-    ];
-    "Stack - Low Level", [
-      test_case "module_accessible" `Quick test_stack_module_accessible;
-      test_case "creation" `Quick (require_gtk test_stack_creation);
-      test_case "children" `Quick (require_gtk test_stack_children);
-      test_case "transitions" `Quick (require_gtk test_stack_transitions);
-    ];
-    "Stack - High Level", [
-      test_case "gstack_wrapper" `Quick (require_gtk test_gstack_wrapper);
-      test_case "all_transitions" `Quick (require_gtk test_all_transitions);
-    ];
-    "Integration Tests", [
-      test_case "nested_containers" `Quick (require_gtk test_nested_containers);
-      test_case "fixed_with_containers" `Quick (require_gtk test_fixed_with_containers);
-    ];
-  ]
+  run "Comprehensive Container Tests (Phase 4.4)"
+    [
+      ( "Fixed - Low Level",
+        [
+          test_case "module_accessible" `Quick test_fixed_module_accessible;
+          test_case "creation" `Quick (require_gtk test_fixed_creation);
+          test_case "put_move_remove" `Quick (require_gtk test_fixed_put_move);
+        ] );
+      ( "Fixed - High Level",
+        [ test_case "gfixed_wrapper" `Quick (require_gtk test_gfixed_wrapper) ]
+      );
+      ( "Paned - Low Level",
+        [
+          test_case "module_accessible" `Quick test_paned_module_accessible;
+          test_case "creation" `Quick (require_gtk test_paned_creation);
+          test_case "children" `Quick (require_gtk test_paned_children);
+          test_case "properties" `Quick (require_gtk test_paned_properties);
+        ] );
+      ( "Paned - High Level",
+        [ test_case "gpaned_wrapper" `Quick (require_gtk test_gpaned_wrapper) ]
+      );
+      ( "Notebook - Low Level",
+        [
+          test_case "module_accessible" `Quick test_notebook_module_accessible;
+          test_case "creation" `Quick (require_gtk test_notebook_creation);
+          test_case "pages" `Quick (require_gtk test_notebook_pages);
+          test_case "navigation" `Quick (require_gtk test_notebook_navigation);
+          test_case "properties" `Quick (require_gtk test_notebook_properties);
+        ] );
+      ( "Notebook - High Level",
+        [
+          test_case "gnotebook_wrapper" `Quick
+            (require_gtk test_gnotebook_wrapper);
+        ] );
+      ( "Stack - Low Level",
+        [
+          test_case "module_accessible" `Quick test_stack_module_accessible;
+          test_case "creation" `Quick (require_gtk test_stack_creation);
+          test_case "children" `Quick (require_gtk test_stack_children);
+          test_case "transitions" `Quick (require_gtk test_stack_transitions);
+        ] );
+      ( "Stack - High Level",
+        [
+          test_case "gstack_wrapper" `Quick (require_gtk test_gstack_wrapper);
+          test_case "all_transitions" `Quick (require_gtk test_all_transitions);
+        ] );
+      ( "Integration Tests",
+        [
+          test_case "nested_containers" `Quick
+            (require_gtk test_nested_containers);
+          test_case "fixed_with_containers" `Quick
+            (require_gtk test_fixed_with_containers);
+        ] );
+    ]

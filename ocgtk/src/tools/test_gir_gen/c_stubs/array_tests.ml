@@ -8,7 +8,6 @@ let create_test_context = Helpers.create_test_context
 let parse_c_string = C_parser.parse_c_code
 let find_function = C_ast.find_function
 let generate_c_method = Gir_gen_lib.Generate.C_stub_method.generate_c_method
-
 let utf8_element = make_gir_type ~name:"utf8" ~c_type:"char*" ()
 let gint_element = make_gir_type ~name:"gint" ~c_type:"gint" ()
 
@@ -19,16 +18,16 @@ let gint_element = make_gir_type ~name:"gint" ~c_type:"gint" ()
 let test_zero_terminated_string_array_input () =
   let ctx = create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"set_authors"
-      ~c_identifier:"gtk_about_dialog_set_authors"
-      ~return_type:void_type
+    make_gir_method ~method_name:"set_authors"
+      ~c_identifier:"gtk_about_dialog_set_authors" ~return_type:void_type
       ~parameters:
         [
           make_gir_param ~param_name:"authors"
             ~param_type:
               (make_gir_type ~name:"utf8" ~c_type:"const char**"
-                 ~array:(make_gir_array ~zero_terminated:false ~element_type:utf8_element ())
+                 ~array:
+                   (make_gir_array ~zero_terminated:false
+                      ~element_type:utf8_element ())
                  ())
             ~direction:In ();
         ]
@@ -67,15 +66,15 @@ let test_zero_terminated_string_array_input () =
 let test_zero_terminated_string_array_return () =
   let ctx = create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"get_artists"
+    make_gir_method ~method_name:"get_artists"
       ~c_identifier:"gtk_about_dialog_get_artists"
       ~return_type:
         (make_gir_type ~name:"utf8" ~c_type:"const char* const*"
-           ~array:(make_gir_array ~zero_terminated:false ~element_type:utf8_element ())
+           ~array:
+             (make_gir_array ~zero_terminated:false ~element_type:utf8_element
+                ())
            ())
-      ~parameters:[]
-      ()
+      ~parameters:[] ()
   in
 
   let c_code =
@@ -111,20 +110,19 @@ let test_zero_terminated_string_array_return () =
 let test_array_with_length_parameter () =
   let ctx = create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"set_items"
-      ~c_identifier:"gtk_list_set_items"
+    make_gir_method ~method_name:"set_items" ~c_identifier:"gtk_list_set_items"
       ~return_type:void_type
       ~parameters:
         [
           make_gir_param ~param_name:"items"
             ~param_type:
               (make_gir_type ~name:"gint" ~c_type:"gint*"
-                 ~array:(make_gir_array ~length:1 ~zero_terminated:false ~element_type:gint_element ())
+                 ~array:
+                   (make_gir_array ~length:1 ~zero_terminated:false
+                      ~element_type:gint_element ())
                  ())
             ~direction:In ();
-          make_gir_param ~param_name:"n_items"
-            ~param_type:gint_type
+          make_gir_param ~param_name:"n_items" ~param_type:gint_type
             ~direction:In ();
         ]
       ()
@@ -162,21 +160,20 @@ let test_array_with_length_parameter () =
 let test_out_parameter_array_with_length () =
   let ctx = create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"get_selection"
-      ~c_identifier:"gtk_list_get_selection"
-      ~return_type:void_type
+    make_gir_method ~method_name:"get_selection"
+      ~c_identifier:"gtk_list_get_selection" ~return_type:void_type
       ~parameters:
         [
           make_gir_param ~param_name:"indices"
             ~param_type:
               (make_gir_type ~name:"gint" ~c_type:"gint*"
                  ~transfer_ownership:TransferFull
-                 ~array:(make_gir_array ~length:1 ~zero_terminated:false ~element_type:gint_element ())
+                 ~array:
+                   (make_gir_array ~length:1 ~zero_terminated:false
+                      ~element_type:gint_element ())
                  ())
             ~direction:Out ();
-          make_gir_param ~param_name:"n_indices"
-            ~param_type:gint_type
+          make_gir_param ~param_name:"n_indices" ~param_type:gint_type
             ~direction:Out ();
         ]
       ()
@@ -206,21 +203,20 @@ let test_out_parameter_array_with_length () =
 let test_out_parameter_string_array () =
   let ctx = create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"get_names"
-      ~c_identifier:"gtk_widget_get_names"
-      ~return_type:void_type
+    make_gir_method ~method_name:"get_names"
+      ~c_identifier:"gtk_widget_get_names" ~return_type:void_type
       ~parameters:
         [
           make_gir_param ~param_name:"names"
             ~param_type:
               (make_gir_type ~name:"utf8" ~c_type:"char**"
                  ~transfer_ownership:TransferFull
-                 ~array:(make_gir_array ~length:1 ~zero_terminated:false ~element_type:utf8_element ())
+                 ~array:
+                   (make_gir_array ~length:1 ~zero_terminated:false
+                      ~element_type:utf8_element ())
                  ())
             ~direction:Out ();
-          make_gir_param ~param_name:"n_names"
-            ~param_type:gint_type
+          make_gir_param ~param_name:"n_names" ~param_type:gint_type
             ~direction:Out ();
         ]
       ()
@@ -261,16 +257,16 @@ let test_out_parameter_string_array () =
 let test_array_cleanup_transfer_none () =
   let ctx = create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"set_values"
-      ~c_identifier:"gtk_widget_set_values"
-      ~return_type:void_type
+    make_gir_method ~method_name:"set_values"
+      ~c_identifier:"gtk_widget_set_values" ~return_type:void_type
       ~parameters:
         [
           make_gir_param ~param_name:"values"
             ~param_type:
               (make_gir_type ~name:"utf8" ~c_type:"const char**"
-                 ~array:(make_gir_array ~zero_terminated:true ~element_type:utf8_element ())
+                 ~array:
+                   (make_gir_array ~zero_terminated:true
+                      ~element_type:utf8_element ())
                  ())
             ~direction:In ();
         ]
@@ -292,17 +288,17 @@ let test_array_cleanup_transfer_none () =
 let test_array_cleanup_transfer_full () =
   let ctx = create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"set_owned_values"
-      ~c_identifier:"gtk_widget_set_owned_values"
-      ~return_type:void_type
+    make_gir_method ~method_name:"set_owned_values"
+      ~c_identifier:"gtk_widget_set_owned_values" ~return_type:void_type
       ~parameters:
         [
           make_gir_param ~param_name:"values"
             ~param_type:
               (make_gir_type ~name:"utf8" ~c_type:"char**"
                  ~transfer_ownership:TransferFull
-                 ~array:(make_gir_array ~zero_terminated:true ~element_type:utf8_element ())
+                 ~array:
+                   (make_gir_array ~zero_terminated:true
+                      ~element_type:utf8_element ())
                  ())
             ~direction:In ();
         ]
@@ -330,17 +326,20 @@ let test_array_cleanup_transfer_full () =
 let test_gptr_array_return () =
   let ctx = create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"get_element_stack"
+    make_gir_method ~method_name:"get_element_stack"
       ~c_identifier:"gtk_buildable_parse_context_get_element_stack"
       ~return_type:
         (make_gir_type ~name:"utf8" ~c_type:"GPtrArray*"
-           ~array:(make_gir_array ~zero_terminated:false ~element_type:utf8_element ())
+           ~array:
+             (make_gir_array ~zero_terminated:false ~element_type:utf8_element
+                ())
            ())
       ~parameters:
         [
           make_gir_param ~param_name:"context"
-            ~param_type:(make_gir_type ~name:"BuildableParseContext" ~c_type:"GtkBuildableParseContext*" ())
+            ~param_type:
+              (make_gir_type ~name:"BuildableParseContext"
+                 ~c_type:"GtkBuildableParseContext*" ())
             ~direction:In ();
         ]
       ()
@@ -377,20 +376,25 @@ let test_gptr_array_return () =
 
 let test_gptr_array_transfer_full () =
   let ctx = create_test_context () in
-  let ginet_address_element = make_gir_type ~name:"GInetAddress" ~c_type:"GInetAddress*" () in
+  let ginet_address_element =
+    make_gir_type ~name:"GInetAddress" ~c_type:"GInetAddress*" ()
+  in
   let meth =
-    make_gir_method
-      ~method_name:"get_ip_addresses"
+    make_gir_method ~method_name:"get_ip_addresses"
       ~c_identifier:"g_tls_certificate_get_ip_addresses"
       ~return_type:
         (make_gir_type ~name:"GInetAddress" ~c_type:"GPtrArray*"
            ~transfer_ownership:TransferFull
-           ~array:(make_gir_array ~zero_terminated:false ~element_type:ginet_address_element ())
+           ~array:
+             (make_gir_array ~zero_terminated:false
+                ~element_type:ginet_address_element ())
            ())
       ~parameters:
         [
           make_gir_param ~param_name:"cert"
-            ~param_type:(make_gir_type ~name:"GTlsCertificate" ~c_type:"GTlsCertificate*" ())
+            ~param_type:
+              (make_gir_type ~name:"GTlsCertificate" ~c_type:"GTlsCertificate*"
+                 ())
             ~direction:In ();
         ]
       ()
@@ -424,14 +428,17 @@ let test_gptr_array_transfer_full () =
 
 let test_gptr_array_with_incompatible_element_type () =
   let ctx = create_test_context () in
-  let gdk_time_coord_element = make_gir_type ~name:"GdkTimeCoord" ~c_type:"GdkTimeCoord*" () in
+  let gdk_time_coord_element =
+    make_gir_type ~name:"GdkTimeCoord" ~c_type:"GdkTimeCoord*" ()
+  in
   let meth =
-    make_gir_method
-      ~method_name:"get_time_coords"
+    make_gir_method ~method_name:"get_time_coords"
       ~c_identifier:"gdk_event_get_history"
       ~return_type:
         (make_gir_type ~name:"GdkTimeCoord" ~c_type:"GPtrArray*"
-           ~array:(make_gir_array ~zero_terminated:false ~element_type:gdk_time_coord_element ())
+           ~array:
+             (make_gir_array ~zero_terminated:false
+                ~element_type:gdk_time_coord_element ())
            ())
       ~parameters:
         [
@@ -471,15 +478,15 @@ let test_gptr_array_with_incompatible_element_type () =
 let test_nonpointer_array_without_length_raises () =
   let ctx = create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"get_values"
+    make_gir_method ~method_name:"get_values"
       ~c_identifier:"gtk_widget_get_values"
       ~return_type:
         (make_gir_type ~name:"gint" ~c_type:"gint*"
-           ~array:(make_gir_array ~zero_terminated:false ~element_type:gint_element ())
+           ~array:
+             (make_gir_array ~zero_terminated:false ~element_type:gint_element
+                ())
            ())
-      ~parameters:[]
-      ()
+      ~parameters:[] ()
   in
 
   Alcotest.check_raises "Fails for non-pointer array without length"
@@ -492,15 +499,14 @@ let test_nonpointer_array_without_length_raises () =
 let test_pointer_array_without_length_uses_null_termination () =
   let ctx = create_test_context () in
   let meth =
-    make_gir_method
-      ~method_name:"get_tags"
-      ~c_identifier:"gtk_widget_get_tags"
+    make_gir_method ~method_name:"get_tags" ~c_identifier:"gtk_widget_get_tags"
       ~return_type:
         (make_gir_type ~name:"utf8" ~c_type:"const char**"
-           ~array:(make_gir_array ~zero_terminated:false ~element_type:utf8_element ())
+           ~array:
+             (make_gir_array ~zero_terminated:false ~element_type:utf8_element
+                ())
            ())
-      ~parameters:[]
-      ()
+      ~parameters:[] ()
   in
 
   (* Pointer arrays without length should use NULL-termination, not raise *)
@@ -524,25 +530,22 @@ let test_generate_methods_skips_failing_method () =
 
   (* Valid method - simple void return *)
   let valid_method =
-    make_gir_method
-      ~method_name:"do_something"
-      ~c_identifier:"gtk_widget_do_something"
-      ~return_type:void_type
-      ~parameters:[]
-      ()
+    make_gir_method ~method_name:"do_something"
+      ~c_identifier:"gtk_widget_do_something" ~return_type:void_type
+      ~parameters:[] ()
   in
 
   (* Failing method - returns gint array without length info (will raise Failure) *)
   let failing_method =
-    make_gir_method
-      ~method_name:"get_values"
+    make_gir_method ~method_name:"get_values"
       ~c_identifier:"gtk_widget_get_values"
       ~return_type:
         (make_gir_type ~name:"gint" ~c_type:"gint*"
-           ~array:(make_gir_array ~zero_terminated:false ~element_type:gint_element ())
+           ~array:
+             (make_gir_array ~zero_terminated:false ~element_type:gint_element
+                ())
            ())
-      ~parameters:[]
-      ()
+      ~parameters:[] ()
   in
 
   (* Generate methods - should NOT raise, should skip failing method *)

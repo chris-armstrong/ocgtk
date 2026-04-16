@@ -7,14 +7,10 @@ let gtk_available =
   try
     let _ = GMain.init () in
     true
-  with
-  | GMain.Error _ -> false
+  with GMain.Error _ -> false
 
 (* Helper to skip tests when GTK is not available *)
-let require_gtk f () =
-  if not gtk_available then skip ()
-  else f ()
-
+let require_gtk f () = if not gtk_available then skip () else f ()
 
 (* Test box packing conveniences *)
 
@@ -35,8 +31,10 @@ let test_hbox_pack_with_widgets () =
     let widget2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let widget3 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
-    let box = GPack.hbox_pack ~spacing:10 ~homogeneous:true
-                [widget1; widget2; widget3] in
+    let box =
+      GPack.hbox_pack ~spacing:10 ~homogeneous:true
+        [ widget1; widget2; widget3 ]
+    in
 
     check int "spacing" 10 box#spacing;
     check bool "homogeneous" true box#homogeneous
@@ -60,7 +58,7 @@ let test_vbox_pack_with_widgets () =
     let widget1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let widget2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
-    let box = GPack.vbox_pack ~spacing:5 [widget1; widget2] in
+    let box = GPack.vbox_pack ~spacing:5 [ widget1; widget2 ] in
 
     check int "spacing" 5 box#spacing;
     check bool "homogeneous" false box#homogeneous
@@ -87,16 +85,11 @@ let test_grid_attach_with_widgets () =
     let widget2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let widget3 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
-    let grid = GPack.grid_attach
-                 ~row_spacing:5
-                 ~column_spacing:10
-                 ~row_homogeneous:true
-                 ~column_homogeneous:false
-                 [
-                   (widget1, 0, 0, 1, 1);
-                   (widget2, 1, 0, 1, 1);
-                   (widget3, 0, 1, 2, 1);
-                 ] in
+    let grid =
+      GPack.grid_attach ~row_spacing:5 ~column_spacing:10 ~row_homogeneous:true
+        ~column_homogeneous:false
+        [ (widget1, 0, 0, 1, 1); (widget2, 1, 0, 1, 1); (widget3, 0, 1, 2, 1) ]
+    in
 
     check int "row_spacing" 5 grid#row_spacing;
     check int "column_spacing" 10 grid#column_spacing;
@@ -123,7 +116,9 @@ let test_hpaned_with_children () =
     let child1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let child2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
-    let paned = GPack.hpaned ~start_child:child1 ~end_child:child2 ~position:100 () in
+    let paned =
+      GPack.hpaned ~start_child:child1 ~end_child:child2 ~position:100 ()
+    in
 
     check int "position" 100 paned#position
   with
@@ -145,7 +140,9 @@ let test_vpaned_with_children () =
     let child1 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let child2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
-    let paned = GPack.vpaned ~start_child:child1 ~end_child:child2 ~position:200 () in
+    let paned =
+      GPack.vpaned ~start_child:child1 ~end_child:child2 ~position:200 ()
+    in
 
     check int "position" 200 paned#position
   with
@@ -172,14 +169,10 @@ let test_notebook_with_pages () =
     let page2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let page3 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
-    let nb = GPack.notebook
-               ~show_tabs:false
-               ~show_border:false
-               [
-                 (page1, None);
-                 (page2, None);
-                 (page3, None);
-               ] in
+    let nb =
+      GPack.notebook ~show_tabs:false ~show_border:false
+        [ (page1, None); (page2, None); (page3, None) ]
+    in
 
     check int "n_pages" 3 nb#n_pages;
     check bool "show_tabs" false nb#show_tabs;
@@ -198,9 +191,11 @@ let test_composition_hbox_in_vbox () =
     let widget3 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let widget4 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
-    let hbox = GPack.hbox_pack ~spacing:5 [widget1; widget2] in
-    let hbox_as_widget = new GObj.widget (hbox#as_widget) in
-    let vbox = GPack.vbox_pack ~spacing:10 [hbox_as_widget; widget3; widget4] in
+    let hbox = GPack.hbox_pack ~spacing:5 [ widget1; widget2 ] in
+    let hbox_as_widget = new GObj.widget hbox#as_widget in
+    let vbox =
+      GPack.vbox_pack ~spacing:10 [ hbox_as_widget; widget3; widget4 ]
+    in
 
     check int "vbox_spacing" 10 vbox#spacing;
     check int "hbox_spacing" 5 hbox#spacing
@@ -215,9 +210,13 @@ let test_composition_grid_in_paned () =
     let widget2 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let widget3 = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
 
-    let grid = GPack.grid_attach [(widget1, 0, 0, 1, 1); (widget2, 1, 0, 1, 1)] in
-    let grid_as_widget = new GObj.widget (grid#as_widget) in
-    let _paned = GPack.hpaned ~start_child:grid_as_widget ~end_child:widget3 () in
+    let grid =
+      GPack.grid_attach [ (widget1, 0, 0, 1, 1); (widget2, 1, 0, 1, 1) ]
+    in
+    let grid_as_widget = new GObj.widget grid#as_widget in
+    let _paned =
+      GPack.hpaned ~start_child:grid_as_widget ~end_child:widget3 ()
+    in
 
     ()
   with
@@ -235,7 +234,7 @@ let test_window_convenience () =
     let window = GPack.window ~title:"Test" ~width:400 ~height:300 box in
 
     check string "GPack window title" "Test" window#title;
-    let (w, h) = window#get_default_size in
+    let w, h = window#get_default_size in
     check int "GPack window width" 400 w;
     check int "GPack window height" 300 h
   with
@@ -250,7 +249,7 @@ let test_scrolled_convenience () =
     let box = new GObj.widget (Fixed.as_widget (Fixed.create ())) in
     let sw = GPack.scrolled ~hpolicy:`ALWAYS ~vpolicy:`AUTOMATIC box in
 
-    let (h, v) = sw#policy in
+    let h, v = sw#policy in
     check bool "GPack scrolled hpolicy" (`ALWAYS = h) true;
     check bool "GPack scrolled vpolicy" (`AUTOMATIC = v) true
   with
@@ -258,33 +257,51 @@ let test_scrolled_convenience () =
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =
-  run "GPack Module Tests (Phase 4.5)" [
-    "Box Packing", [
-      test_case "hbox_pack empty" `Quick (require_gtk test_hbox_pack_empty);
-      test_case "hbox_pack with widgets" `Quick (require_gtk test_hbox_pack_with_widgets);
-      test_case "vbox_pack empty" `Quick (require_gtk test_vbox_pack_empty);
-      test_case "vbox_pack with widgets" `Quick (require_gtk test_vbox_pack_with_widgets);
-    ];
-    "Grid Packing", [
-      test_case "grid_attach empty" `Quick (require_gtk test_grid_attach_empty);
-      test_case "grid_attach with widgets" `Quick (require_gtk test_grid_attach_with_widgets);
-    ];
-    "Paned Conveniences", [
-      test_case "hpaned empty" `Quick (require_gtk test_hpaned_empty);
-      test_case "hpaned with children" `Quick (require_gtk test_hpaned_with_children);
-      test_case "vpaned empty" `Quick (require_gtk test_vpaned_empty);
-      test_case "vpaned with children" `Quick (require_gtk test_vpaned_with_children);
-    ];
-    "Notebook Conveniences", [
-      test_case "notebook empty" `Quick (require_gtk test_notebook_empty);
-      test_case "notebook with pages" `Quick (require_gtk test_notebook_with_pages);
-    ];
-    "Window and Scrolled_window Conveniences (Phase 4.2)", [
-      test_case "window convenience" `Quick (require_gtk test_window_convenience);
-      test_case "scrolled window convenience" `Quick (require_gtk test_scrolled_convenience);
-    ];
-    "Complex Composition", [
-      test_case "hbox in vbox" `Quick (require_gtk test_composition_hbox_in_vbox);
-      test_case "grid in paned" `Quick (require_gtk test_composition_grid_in_paned);
-    ];
-  ]
+  run "GPack Module Tests (Phase 4.5)"
+    [
+      ( "Box Packing",
+        [
+          test_case "hbox_pack empty" `Quick (require_gtk test_hbox_pack_empty);
+          test_case "hbox_pack with widgets" `Quick
+            (require_gtk test_hbox_pack_with_widgets);
+          test_case "vbox_pack empty" `Quick (require_gtk test_vbox_pack_empty);
+          test_case "vbox_pack with widgets" `Quick
+            (require_gtk test_vbox_pack_with_widgets);
+        ] );
+      ( "Grid Packing",
+        [
+          test_case "grid_attach empty" `Quick
+            (require_gtk test_grid_attach_empty);
+          test_case "grid_attach with widgets" `Quick
+            (require_gtk test_grid_attach_with_widgets);
+        ] );
+      ( "Paned Conveniences",
+        [
+          test_case "hpaned empty" `Quick (require_gtk test_hpaned_empty);
+          test_case "hpaned with children" `Quick
+            (require_gtk test_hpaned_with_children);
+          test_case "vpaned empty" `Quick (require_gtk test_vpaned_empty);
+          test_case "vpaned with children" `Quick
+            (require_gtk test_vpaned_with_children);
+        ] );
+      ( "Notebook Conveniences",
+        [
+          test_case "notebook empty" `Quick (require_gtk test_notebook_empty);
+          test_case "notebook with pages" `Quick
+            (require_gtk test_notebook_with_pages);
+        ] );
+      ( "Window and Scrolled_window Conveniences (Phase 4.2)",
+        [
+          test_case "window convenience" `Quick
+            (require_gtk test_window_convenience);
+          test_case "scrolled window convenience" `Quick
+            (require_gtk test_scrolled_convenience);
+        ] );
+      ( "Complex Composition",
+        [
+          test_case "hbox in vbox" `Quick
+            (require_gtk test_composition_hbox_in_vbox);
+          test_case "grid in paned" `Quick
+            (require_gtk test_composition_grid_in_paned);
+        ] );
+    ]

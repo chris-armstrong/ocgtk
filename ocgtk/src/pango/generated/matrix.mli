@@ -1,23 +1,24 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Matrix: Matrix *)
 
-(** A `PangoMatrix` specifies a transformation between user-space
-and device coordinates.
+type t = [ `matrix ] Gobject.obj
+(** A `PangoMatrix` specifies a transformation between user-space and device
+    coordinates.
 
-The transformation is given by
+    The transformation is given by
 
-```
-x_device = x_user * matrix->xx + y_user * matrix->xy + matrix->x0;
-y_device = x_user * matrix->yx + y_user * matrix->yy + matrix->y0;
-``` *)
-type t = [`matrix] Gobject.obj
+    ``` x_device = x_user * matrix->xx + y_user * matrix->xy + matrix->x0;
+    y_device = x_user * matrix->yx + y_user * matrix->yy + matrix->y0; ``` *)
 
 (* Methods *)
+
+external translate : t -> float -> float -> unit = "ml_pango_matrix_translate"
 (** Changes the transformation represented by @matrix to be the
 transformation given by first translating by (@tx, @ty)
 then applying the original transformation. *)
-external translate : t -> float -> float -> unit = "ml_pango_matrix_translate"
 
+external transform_rectangle : t -> Rectangle.t -> unit
+  = "ml_pango_matrix_transform_rectangle"
 (** First transforms @rect using @matrix, then calculates the bounding box
 of the transformed rectangle.
 
@@ -36,11 +37,13 @@ However, there are valid reasons that you may want to convert
 to pixels first and then transform, for example when the transformed
 coordinates may overflow in Pango units (large matrix translation for
 example). *)
-external transform_rectangle : t -> Rectangle.t -> unit = "ml_pango_matrix_transform_rectangle"
 
+external transform_point : t -> float -> float -> unit
+  = "ml_pango_matrix_transform_point"
 (** Transforms the point (@x, @y) by @matrix. *)
-external transform_point : t -> float -> float -> unit = "ml_pango_matrix_transform_point"
 
+external transform_pixel_rectangle : t -> Rectangle.t -> unit
+  = "ml_pango_matrix_transform_pixel_rectangle"
 (** First transforms the @rect using @matrix, then calculates the bounding box
 of the transformed rectangle.
 
@@ -51,8 +54,9 @@ should be and how much you should shift the layout when rendering.
 For better accuracy, you should use [method@Pango.Matrix.transform_rectangle]
 on original rectangle in Pango units and convert to pixels afterward
 using [func@extents_to_pixels]'s first argument. *)
-external transform_pixel_rectangle : t -> Rectangle.t -> unit = "ml_pango_matrix_transform_pixel_rectangle"
 
+external transform_distance : t -> float -> float -> unit
+  = "ml_pango_matrix_transform_distance"
 (** Transforms the distance vector (@dx,@dy) by @matrix.
 
 This is similar to [method@Pango.Matrix.transform_point],
@@ -68,29 +72,29 @@ Affine transformations are position invariant, so the same vector
 always transforms to the same vector. If (@x1,@y1) transforms
 to (@x2,@y2) then (@x1+@dx1,@y1+@dy1) will transform to
 (@x1+@dx2,@y1+@dy2) for all values of @x1 and @x2. *)
-external transform_distance : t -> float -> float -> unit = "ml_pango_matrix_transform_distance"
 
+external scale : t -> float -> float -> unit = "ml_pango_matrix_scale"
 (** Changes the transformation represented by @matrix to be the
 transformation given by first scaling by @sx in the X direction
 and @sy in the Y direction then applying the original
 transformation. *)
-external scale : t -> float -> float -> unit = "ml_pango_matrix_scale"
 
+external rotate : t -> float -> unit = "ml_pango_matrix_rotate"
 (** Changes the transformation represented by @matrix to be the
 transformation given by first rotating by @degrees degrees
 counter-clockwise then applying the original transformation. *)
-external rotate : t -> float -> unit = "ml_pango_matrix_rotate"
 
+external get_slant_ratio : t -> float = "ml_pango_matrix_get_slant_ratio"
 (** Gets the slant ratio of a matrix.
 
-For a simple shear matrix in the form:
+    For a simple shear matrix in the form:
 
-    1 λ
-    0 1
+    1 λ 0 1
 
-this is simply λ. *)
-external get_slant_ratio : t -> float = "ml_pango_matrix_get_slant_ratio"
+    this is simply λ. *)
 
+external get_font_scale_factors : t -> float * float
+  = "ml_pango_matrix_get_font_scale_factors"
 (** Calculates the scale factor of a matrix on the width and height of the font.
 
 That is, @xscale is the scale factor in the direction of the X coordinate,
@@ -98,23 +102,22 @@ and @yscale is the scale factor in the direction perpendicular to the
 vector that the X coordinate is mapped to.
 
 Note that output numbers will always be non-negative. *)
-external get_font_scale_factors : t -> float * float = "ml_pango_matrix_get_font_scale_factors"
 
+external get_font_scale_factor : t -> float
+  = "ml_pango_matrix_get_font_scale_factor"
 (** Returns the scale factor of a matrix on the height of the font.
 
-That is, the scale factor in the direction perpendicular to the
-vector that the X coordinate is mapped to.  If the scale in the X
-coordinate is needed as well, use [method@Pango.Matrix.get_font_scale_factors]. *)
-external get_font_scale_factor : t -> float = "ml_pango_matrix_get_font_scale_factor"
+    That is, the scale factor in the direction perpendicular to the vector that
+    the X coordinate is mapped to. If the scale in the X coordinate is needed as
+    well, use [method@Pango.Matrix.get_font_scale_factors]. *)
 
-(** Free a `PangoMatrix`. *)
 external free : t -> unit = "ml_pango_matrix_free"
+(** Free a `PangoMatrix`. *)
 
-(** Copies a `PangoMatrix`. *)
 external copy : t -> t option = "ml_pango_matrix_copy"
+(** Copies a `PangoMatrix`. *)
 
+external concat : t -> t -> unit = "ml_pango_matrix_concat"
 (** Changes the transformation represented by @matrix to be the
 transformation given by first applying transformation
 given by @new_matrix then applying the original transformation. *)
-external concat : t -> t -> unit = "ml_pango_matrix_concat"
-

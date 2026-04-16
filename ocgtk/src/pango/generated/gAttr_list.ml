@@ -1,73 +1,51 @@
 class type attr_list_t = object
-    method change : Attribute.t -> unit
-    method copy : unit -> Attr_list.t option
-    method equal : Attr_list.t -> bool
-    method get_attributes : unit -> Attribute.t list
-    method get_iterator : unit -> Attr_iterator.t
-    method insert : Attribute.t -> unit
-    method insert_before : Attribute.t -> unit
-    method ref : unit -> Attr_list.t
-    method splice : Attr_list.t -> int -> int -> unit
-    method to_string : unit -> string
-    method unref : unit -> unit
-    method update : int -> int -> int -> unit
-    method as_attr_list : Attr_list.t
+  method change : Attribute.t -> unit
+  method copy : unit -> Attr_list.t option
+  method equal : Attr_list.t -> bool
+  method get_attributes : unit -> Attribute.t list
+  method get_iterator : unit -> Attr_iterator.t
+  method insert : Attribute.t -> unit
+  method insert_before : Attribute.t -> unit
+  method ref : unit -> Attr_list.t
+  method splice : Attr_list.t -> int -> int -> unit
+  method to_string : unit -> string
+  method unref : unit -> unit
+  method update : int -> int -> int -> unit
+  method as_attr_list : Attr_list.t
 end
 
 (* High-level class for AttrList *)
-class attr_list (obj : Attr_list.t) : attr_list_t = object (self)
+class attr_list (obj : Attr_list.t) : attr_list_t =
+  object (self)
+    method change : Attribute.t -> unit = fun attr -> Attr_list.change obj attr
+    method copy : unit -> Attr_list.t option = fun () -> Attr_list.copy obj
 
-  method change : Attribute.t -> unit =
-    fun attr ->
-      (Attr_list.change obj attr)
+    method equal : Attr_list.t -> bool =
+      fun other_list -> Attr_list.equal obj other_list
 
-  method copy : unit -> Attr_list.t option =
-    fun () ->
-      (Attr_list.copy obj)
+    method get_attributes : unit -> Attribute.t list =
+      fun () -> Attr_list.get_attributes obj
 
-  method equal : Attr_list.t -> bool =
-    fun other_list ->
-      (Attr_list.equal obj other_list)
+    method get_iterator : unit -> Attr_iterator.t =
+      fun () -> Attr_list.get_iterator obj
 
-  method get_attributes : unit -> Attribute.t list =
-    fun () ->
-      (Attr_list.get_attributes obj)
+    method insert : Attribute.t -> unit = fun attr -> Attr_list.insert obj attr
 
-  method get_iterator : unit -> Attr_iterator.t =
-    fun () ->
-      (Attr_list.get_iterator obj)
+    method insert_before : Attribute.t -> unit =
+      fun attr -> Attr_list.insert_before obj attr
 
-  method insert : Attribute.t -> unit =
-    fun attr ->
-      (Attr_list.insert obj attr)
+    method ref : unit -> Attr_list.t = fun () -> Attr_list.ref obj
 
-  method insert_before : Attribute.t -> unit =
-    fun attr ->
-      (Attr_list.insert_before obj attr)
+    method splice : Attr_list.t -> int -> int -> unit =
+      fun other pos len -> Attr_list.splice obj other pos len
 
-  method ref : unit -> Attr_list.t =
-    fun () ->
-      (Attr_list.ref obj)
+    method to_string : unit -> string = fun () -> Attr_list.to_string obj
+    method unref : unit -> unit = fun () -> Attr_list.unref obj
 
-  method splice : Attr_list.t -> int -> int -> unit =
-    fun other pos len ->
-      (Attr_list.splice obj other pos len)
-
-  method to_string : unit -> string =
-    fun () ->
-      (Attr_list.to_string obj)
-
-  method unref : unit -> unit =
-    fun () ->
-      (Attr_list.unref obj)
-
-  method update : int -> int -> int -> unit =
-    fun pos remove add ->
-      (Attr_list.update obj pos remove add)
+    method update : int -> int -> int -> unit =
+      fun pos remove add -> Attr_list.update obj pos remove add
 
     method as_attr_list = obj
-end
+  end
 
-let new_ () : attr_list_t =
-  new attr_list (Attr_list.new_ ())
-
+let new_ () : attr_list_t = new attr_list (Attr_list.new_ ())

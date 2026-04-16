@@ -30,8 +30,10 @@ open Types
     @return String containing forward declarations for enum converters *)
 let emit_version_guard_open buf ~namespace version_str =
   let ( let* ) = Result.bind in
-  match (let* version = Version_guard.parse_version version_str in
-         Version_guard.emit_c_guard namespace version ~is_opening:true) with
+  match
+    let* version = Version_guard.parse_version version_str in
+    Version_guard.emit_c_guard namespace version ~is_opening:true
+  with
   | Error msg -> failwith msg
   | Ok guard -> Buffer.add_string buf (guard ^ "\n")
 
@@ -43,12 +45,16 @@ let generate_forward_decls ~namespace_prefix ~gtk_enums =
     Buffer.add_string buf "/* Forward declarations for enum converters */\n";
     List.iter
       ~f:(fun (enum : gir_enum) ->
-        Option.iter (emit_version_guard_open buf ~namespace:namespace_prefix) enum.enum_version;
+        Option.iter
+          (emit_version_guard_open buf ~namespace:namespace_prefix)
+          enum.enum_version;
         bprintf buf "value Val_%s%s(%s val);\n" namespace_prefix enum.enum_name
           enum.enum_c_type;
         bprintf buf "%s %s%s_val(value val);\n" enum.enum_c_type
           namespace_prefix enum.enum_name;
-        Option.iter (fun _ -> Buffer.add_string buf "#endif\n") enum.enum_version)
+        Option.iter
+          (fun _ -> Buffer.add_string buf "#endif\n")
+          enum.enum_version)
       gtk_enums;
     Buffer.add_string buf "\n"
   end;

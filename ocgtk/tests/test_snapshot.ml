@@ -1,13 +1,13 @@
 (** Test suite for GtkSnapshot and Graphene (Phase 3.2)
 
-    Note: Most snapshot tests are skipped as they require actual widget instances
-    and a rendering context, which need concrete widget types from Phase 4/5.
+    Note: Most snapshot tests are skipped as they require actual widget
+    instances and a rendering context, which need concrete widget types from
+    Phase 4/5.
 
     This test file verifies:
     - Graphene types compile and work correctly
     - GtkSnapshot module types are accessible
-    - Gdk.RGBA record type works correctly
-    *)
+    - Gdk.RGBA record type works correctly *)
 
 open Alcotest
 
@@ -37,8 +37,10 @@ let test_graphene_rect_contains () =
   let inside = Graphene.Point.make ~x:50.0 ~y:50.0 in
   let outside = Graphene.Point.make ~x:5.0 ~y:5.0 in
 
-  check bool "contains inside point" true (Graphene.Rect.contains_point r inside);
-  check bool "doesn't contain outside point" false (Graphene.Rect.contains_point r outside)
+  check bool "contains inside point" true
+    (Graphene.Rect.contains_point r inside);
+  check bool "doesn't contain outside point" false
+    (Graphene.Rect.contains_point r outside)
 
 let test_graphene_rect_intersects () =
   let r1 = Graphene.Rect.make ~x:0.0 ~y:0.0 ~width:100.0 ~height:100.0 in
@@ -105,27 +107,29 @@ let test_snapshot_cairo_skipped () =
   skip ()
 
 let () =
-  run "GtkSnapshot and Graphene Tests (Phase 3.2)" [
-    "Graphene.Point", [
-      test_case "make and accessors" `Quick test_graphene_point;
-    ];
-    "Graphene.Rect", [
-      test_case "make and accessors" `Quick test_graphene_rect;
-      test_case "contains_point" `Quick test_graphene_rect_contains;
-      test_case "intersects" `Quick test_graphene_rect_intersects;
-    ];
-    "Graphene.Size", [
-      test_case "make and accessors" `Quick test_graphene_size;
-    ];
-    "Gdk.RGBA", [
-      test_case "record type" `Quick test_rgba_record;
-      test_case "constants" `Quick test_rgba_constants;
-      test_case "to_string" `Quick test_rgba_to_string;
-      test_case "parse" `Quick test_rgba_parse;
-    ];
-    "GtkSnapshot", [
-      test_case "types accessible" `Quick test_snapshot_types_accessible;
-      test_case "rendering" `Quick test_snapshot_rendering_skipped;
-      test_case "cairo integration" `Quick test_snapshot_cairo_skipped;
-    ];
-  ]
+  run "GtkSnapshot and Graphene Tests (Phase 3.2)"
+    [
+      ( "Graphene.Point",
+        [ test_case "make and accessors" `Quick test_graphene_point ] );
+      ( "Graphene.Rect",
+        [
+          test_case "make and accessors" `Quick test_graphene_rect;
+          test_case "contains_point" `Quick test_graphene_rect_contains;
+          test_case "intersects" `Quick test_graphene_rect_intersects;
+        ] );
+      ( "Graphene.Size",
+        [ test_case "make and accessors" `Quick test_graphene_size ] );
+      ( "Gdk.RGBA",
+        [
+          test_case "record type" `Quick test_rgba_record;
+          test_case "constants" `Quick test_rgba_constants;
+          test_case "to_string" `Quick test_rgba_to_string;
+          test_case "parse" `Quick test_rgba_parse;
+        ] );
+      ( "GtkSnapshot",
+        [
+          test_case "types accessible" `Quick test_snapshot_types_accessible;
+          test_case "rendering" `Quick test_snapshot_rendering_skipped;
+          test_case "cairo integration" `Quick test_snapshot_cairo_skipped;
+        ] );
+    ]

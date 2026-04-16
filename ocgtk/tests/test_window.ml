@@ -7,8 +7,7 @@
     - Window actions (present, close, destroy)
     - GtkScrolled_window functionality
     - GtkFrame functionality
-    - High-level wrappers for all three
-    *)
+    - High-level wrappers for all three *)
 
 open Alcotest
 
@@ -17,19 +16,17 @@ let gtk_available =
   try
     let _ = GMain.init () in
     true
-  with
-  | GMain.Error _ -> false
+  with GMain.Error _ -> false
 
 (* Helper to skip tests when GTK is not available *)
-let require_gtk f () =
-  if not gtk_available then skip ()
-  else f ()
-
+let require_gtk f () = if not gtk_available then skip () else f ()
 
 (* ========== GtkWindow Tests ========== *)
 
 let test_window_module_accessible () =
-  let _window_type : Application_and__window_and__window_group.Window.t option = None in
+  let _window_type : Application_and__window_and__window_group.Window.t option =
+    None
+  in
   check bool "Window module accessible" true true
 
 let test_window_creation () =
@@ -38,7 +35,9 @@ let test_window_creation () =
     let window = Application_and__window_and__window_group.Window.new_ () in
     check bool "Window created" true true;
 
-    let _widget = Application_and__window_and__window_group.Window.as_widget window in
+    let _widget =
+      Application_and__window_and__window_group.Window.as_widget window
+    in
     check bool "Window as_widget works" true true
   with
   | GMain.Error _ -> skip ()
@@ -61,7 +60,7 @@ let test_window_default_size () =
     let window = Window.create () in
 
     Window.set_default_size window ~width:800 ~height:600;
-    let (w, h) = Window.get_default_size window in
+    let w, h = Window.get_default_size window in
     check int "Window width" 800 w;
     check int "Window height" 600 h
   with
@@ -104,16 +103,14 @@ let test_window_child () =
     let box_widget = Box.as_widget box in
 
     Window.set_child window (Some box_widget);
-    let has_child = match Window.get_child window with
-      | Some _ -> true
-      | None -> false
+    let has_child =
+      match Window.get_child window with Some _ -> true | None -> false
     in
     check bool "Window has child" true has_child;
 
     Window.set_child window None;
-    let child_removed = match Window.get_child window with
-      | None -> true
-      | Some _ -> false
+    let child_removed =
+      match Window.get_child window with None -> true | Some _ -> false
     in
     check bool "Window child removed" true child_removed
   with
@@ -152,7 +149,7 @@ let test_gwindow_wrapper () =
     window#set_title "New Title";
     check string "GWindow title updated" "New Title" window#title;
 
-    let (w, h) = window#get_default_size in
+    let w, h = window#get_default_size in
     check int "GWindow width" 400 w;
     check int "GWindow height" 300 h;
 
@@ -173,16 +170,12 @@ let test_gwindow_child () =
     let box = GBox.vbox ~spacing:5 () in
 
     window#add (box :> GObj.widget);
-    let has_child = match window#child with
-      | Some _ -> true
-      | None -> false
-    in
+    let has_child = match window#child with Some _ -> true | None -> false in
     check bool "GWindow has child" true has_child;
 
     window#set_child None;
-    let child_removed = match window#child with
-      | None -> true
-      | Some _ -> false
+    let child_removed =
+      match window#child with None -> true | Some _ -> false
     in
     check bool "GWindow child removed" true child_removed
   with
@@ -233,7 +226,8 @@ let test_scrolled_window_min_content_size () =
     check int "Min content width" 200 (Scrolled_window.get_min_content_width sw);
 
     Scrolled_window.set_min_content_height sw 150;
-    check int "Min content height" 150 (Scrolled_window.get_min_content_height sw)
+    check int "Min content height" 150
+      (Scrolled_window.get_min_content_height sw)
   with
   | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -246,16 +240,14 @@ let test_scrolled_window_child () =
     let box_widget = Box.as_widget box in
 
     Scrolled_window.set_child sw (Some box_widget);
-    let has_child = match Scrolled_window.get_child sw with
-      | Some _ -> true
-      | None -> false
+    let has_child =
+      match Scrolled_window.get_child sw with Some _ -> true | None -> false
     in
     check bool "Scrolled_window has child" true has_child;
 
     Scrolled_window.set_child sw None;
-    let child_removed = match Scrolled_window.get_child sw with
-      | None -> true
-      | Some _ -> false
+    let child_removed =
+      match Scrolled_window.get_child sw with None -> true | Some _ -> false
     in
     check bool "Scrolled_window child removed" true child_removed
   with
@@ -281,14 +273,12 @@ let test_gscrolled_window_wrapper () =
   try
     let _ = GMain.init () in
 
-    let sw = GScrolledWindow.scrolled_window
-               ~hpolicy:`ALWAYS
-               ~vpolicy:`AUTOMATIC
-               ~min_content_width:300
-               ~min_content_height:200
-               () in
+    let sw =
+      GScrolledWindow.scrolled_window ~hpolicy:`ALWAYS ~vpolicy:`AUTOMATIC
+        ~min_content_width:300 ~min_content_height:200 ()
+    in
 
-    let (h, v) = sw#policy in
+    let h, v = sw#policy in
     check bool "GScrolledWindow hpolicy" (`ALWAYS = h) true;
     check bool "GScrolledWindow vpolicy" (`AUTOMATIC = v) true;
 
@@ -296,8 +286,10 @@ let test_gscrolled_window_wrapper () =
     check int "GScrolledWindow min height" 200 sw#min_content_height;
 
     sw#set_policy ~hpolicy:`NEVER ~vpolicy:`NEVER;
-    let (h2, v2) = sw#policy in
-    check bool "GScrolledWindow policy updated" (`NEVER = h2 && `NEVER = v2) true
+    let h2, v2 = sw#policy in
+    check bool "GScrolledWindow policy updated"
+      (`NEVER = h2 && `NEVER = v2)
+      true
   with
   | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -334,9 +326,8 @@ let test_frame_label () =
     | None -> check bool "Frame label not set" false true);
 
     Frame.set_label frame_test None;
-    let label_removed = match Frame.get_label frame_test with
-      | None -> true
-      | Some _ -> false
+    let label_removed =
+      match Frame.get_label frame_test with None -> true | Some _ -> false
     in
     check bool "Frame label removed" true label_removed
   with
@@ -352,7 +343,8 @@ let test_frame_label_xalign () =
     check (float 0.01) "Frame label xalign" 0.5 (Frame.get_label_xalign frame);
 
     Frame.set_label_xalign frame 1.0;
-    check (float 0.01) "Frame label xalign right" 1.0 (Frame.get_label_xalign frame)
+    check (float 0.01) "Frame label xalign right" 1.0
+      (Frame.get_label_xalign frame)
   with
   | GMain.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
@@ -365,16 +357,14 @@ let test_frame_child () =
     let box_widget = Box.as_widget box in
 
     Frame.set_child frame (Some box_widget);
-    let has_child = match Frame.get_child frame with
-      | Some _ -> true
-      | None -> false
+    let has_child =
+      match Frame.get_child frame with Some _ -> true | None -> false
     in
     check bool "Frame has child" true has_child;
 
     Frame.set_child frame None;
-    let child_removed = match Frame.get_child frame with
-      | None -> true
-      | Some _ -> false
+    let child_removed =
+      match Frame.get_child frame with None -> true | Some _ -> false
     in
     check bool "Frame child removed" true child_removed
   with
@@ -412,14 +402,13 @@ let test_window_with_box () =
   try
     let _ = GMain.init () in
 
-    let window = GWindow.window ~title:"Window with Box" ~width:400 ~height:300 () in
+    let window =
+      GWindow.window ~title:"Window with Box" ~width:400 ~height:300 ()
+    in
     let box = GBox.vbox ~spacing:10 () in
     window#add (box :> GObj.widget);
 
-    let has_child = match window#child with
-      | Some _ -> true
-      | None -> false
-    in
+    let has_child = match window#child with Some _ -> true | None -> false in
     check bool "Window contains box" true has_child
   with
   | GMain.Error _ -> skip ()
@@ -430,7 +419,9 @@ let test_window_with_scrolled_window () =
     let _ = GMain.init () in
 
     let window = GWindow.window ~title:"Window with Scrolled" () in
-    let sw = GScrolledWindow.scrolled_window ~hpolicy:`AUTOMATIC ~vpolicy:`AUTOMATIC () in
+    let sw =
+      GScrolledWindow.scrolled_window ~hpolicy:`AUTOMATIC ~vpolicy:`AUTOMATIC ()
+    in
     let box = GBox.vbox () in
 
     sw#add (box :> GObj.widget);
@@ -461,7 +452,9 @@ let test_complex_nesting () =
   try
     let _ = GMain.init () in
 
-    let window = GWindow.window ~title:"Complex Layout" ~width:800 ~height:600 () in
+    let window =
+      GWindow.window ~title:"Complex Layout" ~width:800 ~height:600 ()
+    in
     let vbox = GBox.vbox ~spacing:5 () in
     let sw = GScrolledWindow.scrolled_window () in
     let frame = GFrame.frame ~label:"Content" () in
@@ -478,46 +471,60 @@ let test_complex_nesting () =
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =
-  run "Single-Child Container Tests (Phase 4.2)" [
-    "Window - Low Level", [
-      test_case "module_accessible" `Quick test_window_module_accessible;
-      test_case "creation" `Quick (require_gtk test_window_creation);
-      test_case "title" `Quick (require_gtk test_window_title);
-      test_case "default_size" `Quick (require_gtk test_window_default_size);
-      test_case "resizable" `Quick (require_gtk test_window_resizable);
-      test_case "modal" `Quick (require_gtk test_window_modal);
-      test_case "child" `Quick (require_gtk test_window_child);
-      test_case "actions" `Quick (require_gtk test_window_actions);
-    ];
-    "Window - High Level", [
-      test_case "gwindow_wrapper" `Quick (require_gtk test_gwindow_wrapper);
-      test_case "gwindow_child" `Quick (require_gtk test_gwindow_child);
-    ];
-    "Scrolled_window - Low Level", [
-      test_case "module_accessible" `Quick test_scrolled_window_module_accessible;
-      test_case "creation" `Quick (require_gtk test_scrolled_window_creation);
-      test_case "policy" `Quick (require_gtk test_scrolled_window_policy);
-      test_case "min_content_size" `Quick (require_gtk test_scrolled_window_min_content_size);
-      test_case "child" `Quick (require_gtk test_scrolled_window_child);
-      test_case "scrollbars" `Quick (require_gtk test_scrolled_window_scrollbars);
-    ];
-    "Scrolled_window - High Level", [
-      test_case "gscrolled_window_wrapper" `Quick (require_gtk test_gscrolled_window_wrapper);
-    ];
-    "Frame - Low Level", [
-      test_case "module_accessible" `Quick test_frame_module_accessible;
-      test_case "creation" `Quick (require_gtk test_frame_creation);
-      test_case "label" `Quick (require_gtk test_frame_label);
-      test_case "label_xalign" `Quick (require_gtk test_frame_label_xalign);
-      test_case "child" `Quick (require_gtk test_frame_child);
-    ];
-    "Frame - High Level", [
-      test_case "gframe_wrapper" `Quick (require_gtk test_gframe_wrapper);
-    ];
-    "Integration", [
-      test_case "window_with_box" `Quick (require_gtk test_window_with_box);
-      test_case "window_with_scrolled_window" `Quick (require_gtk test_window_with_scrolled_window);
-      test_case "window_with_frame" `Quick (require_gtk test_window_with_frame);
-      test_case "complex_nesting" `Quick (require_gtk test_complex_nesting);
-    ];
-  ]
+  run "Single-Child Container Tests (Phase 4.2)"
+    [
+      ( "Window - Low Level",
+        [
+          test_case "module_accessible" `Quick test_window_module_accessible;
+          test_case "creation" `Quick (require_gtk test_window_creation);
+          test_case "title" `Quick (require_gtk test_window_title);
+          test_case "default_size" `Quick (require_gtk test_window_default_size);
+          test_case "resizable" `Quick (require_gtk test_window_resizable);
+          test_case "modal" `Quick (require_gtk test_window_modal);
+          test_case "child" `Quick (require_gtk test_window_child);
+          test_case "actions" `Quick (require_gtk test_window_actions);
+        ] );
+      ( "Window - High Level",
+        [
+          test_case "gwindow_wrapper" `Quick (require_gtk test_gwindow_wrapper);
+          test_case "gwindow_child" `Quick (require_gtk test_gwindow_child);
+        ] );
+      ( "Scrolled_window - Low Level",
+        [
+          test_case "module_accessible" `Quick
+            test_scrolled_window_module_accessible;
+          test_case "creation" `Quick
+            (require_gtk test_scrolled_window_creation);
+          test_case "policy" `Quick (require_gtk test_scrolled_window_policy);
+          test_case "min_content_size" `Quick
+            (require_gtk test_scrolled_window_min_content_size);
+          test_case "child" `Quick (require_gtk test_scrolled_window_child);
+          test_case "scrollbars" `Quick
+            (require_gtk test_scrolled_window_scrollbars);
+        ] );
+      ( "Scrolled_window - High Level",
+        [
+          test_case "gscrolled_window_wrapper" `Quick
+            (require_gtk test_gscrolled_window_wrapper);
+        ] );
+      ( "Frame - Low Level",
+        [
+          test_case "module_accessible" `Quick test_frame_module_accessible;
+          test_case "creation" `Quick (require_gtk test_frame_creation);
+          test_case "label" `Quick (require_gtk test_frame_label);
+          test_case "label_xalign" `Quick (require_gtk test_frame_label_xalign);
+          test_case "child" `Quick (require_gtk test_frame_child);
+        ] );
+      ( "Frame - High Level",
+        [ test_case "gframe_wrapper" `Quick (require_gtk test_gframe_wrapper) ]
+      );
+      ( "Integration",
+        [
+          test_case "window_with_box" `Quick (require_gtk test_window_with_box);
+          test_case "window_with_scrolled_window" `Quick
+            (require_gtk test_window_with_scrolled_window);
+          test_case "window_with_frame" `Quick
+            (require_gtk test_window_with_frame);
+          test_case "complex_nesting" `Quick (require_gtk test_complex_nesting);
+        ] );
+    ]

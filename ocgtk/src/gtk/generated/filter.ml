@@ -1,12 +1,15 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Filter: Filter *)
 
-type t = [`filter | `object_] Gobject.obj
+type t = [ `filter | `object_ ] Gobject.obj
 
 (* Methods *)
-(** Checks if the given @item is matched by the filter or not. *)
-external match_ : t -> [`object_] Gobject.obj -> bool = "ml_gtk_filter_match"
 
+external match_ : t -> [ `object_ ] Gobject.obj -> bool = "ml_gtk_filter_match"
+(** Checks if the given @item is matched by the filter or not. *)
+
+external get_strictness : t -> Gtk_enums.filtermatch
+  = "ml_gtk_filter_get_strictness"
 (** Gets the known strictness of @filters.
 
 If the strictness is not known, %GTK_FILTER_MATCH_SOME is returned.
@@ -16,8 +19,8 @@ signal.
 
 This function is meant purely for optimization purposes, filters can
 choose to omit implementing it, but `GtkFilterListModel` uses it. *)
-external get_strictness : t -> Gtk_enums.filtermatch = "ml_gtk_filter_get_strictness"
 
+external changed : t -> Gtk_enums.filterchange -> unit = "ml_gtk_filter_changed"
 (** Notifies all users of the filter that it has changed.
 
 This emits the [signal@Gtk.Filter::changed] signal. Users
@@ -30,5 +33,3 @@ documentation for details.
 
 This function is intended for implementers of `GtkFilter`
 subclasses and should not be called from other functions. *)
-external changed : t -> Gtk_enums.filterchange -> unit = "ml_gtk_filter_changed"
-

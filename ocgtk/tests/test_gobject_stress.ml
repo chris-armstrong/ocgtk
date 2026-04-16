@@ -17,13 +17,10 @@ let gtk_available =
   try
     let _ = GMain.init () in
     true
-  with
-  | GMain.Error _ -> false
+  with GMain.Error _ -> false
 
 (* Helper to skip tests when GTK is not available *)
-let require_gtk f () =
-  if not gtk_available then skip ()
-  else f ()
+let require_gtk f () = if not gtk_available then skip () else f ()
 
 (* ==================================================================== *)
 (* GValue Lifecycle Stress Test *)
@@ -89,25 +86,33 @@ let test_gvalue_multiple_types () =
   Gobject.Value.set_boolean bool_gval true;
 
   check int "Multiple GValues - int" 100 (Gobject.Value.get_int int_gval);
-  check string "Multiple GValues - string" "test" (Gobject.Value.get_string str_gval);
-  check bool "Multiple GValues - bool" true (Gobject.Value.get_boolean bool_gval);
+  check string "Multiple GValues - string" "test"
+    (Gobject.Value.get_string str_gval);
+  check bool "Multiple GValues - bool" true
+    (Gobject.Value.get_boolean bool_gval);
 
   (* Trigger minor GC while GValues are still in scope *)
   Gc.minor ();
 
   (* Verify values still accessible after minor GC *)
   check int "GValue survives minor GC" 100 (Gobject.Value.get_int int_gval);
-  check string "GValue string survives minor GC" "test" (Gobject.Value.get_string str_gval)
+  check string "GValue string survives minor GC" "test"
+    (Gobject.Value.get_string str_gval)
 
 (* ==================================================================== *)
 (* Test Suite *)
 (* ==================================================================== *)
 
 let () =
-  run "GObject Memory Stress Tests (KNOWN TO SEGFAULT)" [
-    "GValue GC Stress", [
-      test_case "GValue lifecycle with GC" `Quick (require_gtk test_gvalue_lifecycle);
-      test_case "GC interaction" `Quick (require_gtk test_gvalue_gc_interaction);
-      test_case "Multiple GValue types with GC" `Quick (require_gtk test_gvalue_multiple_types);
-    ];
-  ]
+  run "GObject Memory Stress Tests (KNOWN TO SEGFAULT)"
+    [
+      ( "GValue GC Stress",
+        [
+          test_case "GValue lifecycle with GC" `Quick
+            (require_gtk test_gvalue_lifecycle);
+          test_case "GC interaction" `Quick
+            (require_gtk test_gvalue_gc_interaction);
+          test_case "Multiple GValue types with GC" `Quick
+            (require_gtk test_gvalue_multiple_types);
+        ] );
+    ]

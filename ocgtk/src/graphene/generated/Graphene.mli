@@ -2,27 +2,43 @@
 (* Top-level library module with direct references to all classes and enumerations *)
 
 (** {1 Layer 1 Module Wrappers}
-    
-    This submodule provides aliases to the layer 1 (low-level) modules.
-    These are the modules containing external declarations and basic bindings.
- *)
+
+    This submodule provides aliases to the layer 1 (low-level) modules. These
+    are the modules containing external declarations and basic bindings. *)
 module Wrappers : sig
   module Box = Box_and__sphere.Box
-  module Euler = Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler
+
+  module Euler =
+    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler
+
   module Frustum = Frustum
-  module Matrix = Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix
-  module Plane = Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane
+
+  module Matrix =
+    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix
+
+  module Plane =
+    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane
+
   module Point = Point
   module Point3_d = Point3_d
   module Quad = Quad
-  module Quaternion = Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Quaternion
-  module Ray = Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray
+
+  module Quaternion =
+    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle
+    .Quaternion
+
+  module Ray =
+    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray
+
   module Rect = Rect
   module Simd4_f = Simd4_f
   module Simd4_x4_f = Simd4_x4_f
   module Size = Size
   module Sphere = Box_and__sphere.Sphere
-  module Triangle = Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle
+
+  module Triangle =
+    Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Triangle
+
   module Vec2 = Vec2
   module Vec3 = Vec3_and__vec4.Vec3
   module Vec4 = Vec3_and__vec4.Vec4

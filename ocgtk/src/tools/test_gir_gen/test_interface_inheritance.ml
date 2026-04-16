@@ -21,9 +21,9 @@ open Ppxlib.Parsetree
 (* GIR XML fixtures                                                           *)
 (* ========================================================================= *)
 
-(** Interface + class that implements it, in the same namespace.
-    MyIface has glib:type-name (so from_gobject exists in Layer 1).
-    MyClass has <implements name="MyIface"/>. *)
+(** Interface + class that implements it, in the same namespace. MyIface has
+    glib:type-name (so from_gobject exists in Layer 1). MyClass has <implements
+    name="MyIface"/>. *)
 let gir_class_implements_iface =
   Helpers.wrap_namespace ~version:"4.0"
     {|<interface name="MyIface"
@@ -68,8 +68,8 @@ let gir_class_no_implements =
       </class>|}
 
 (** Class + interface where BOTH define a method with the same name.
-    MyClass.do_thing and MyIface.do_thing both exist.
-    The class's own do_thing should be suppressed (interface's inherit provides it). *)
+    MyClass.do_thing and MyIface.do_thing both exist. The class's own do_thing
+    should be suppressed (interface's inherit provides it). *)
 let gir_method_conflict =
   Helpers.wrap_namespace ~version:"4.0"
     {|<interface name="MyIface"
@@ -107,9 +107,9 @@ let gir_method_conflict =
 (* Runner helper: run gir_gen and return parsed Layer 2 .ml AST              *)
 (* ========================================================================= *)
 
-(** Run gir_gen.exe on [gir_content], return (raw_content, ml_ast) for the
-    Layer 2 g<ClassName>.ml file.  [class_name] is the GIR class name (e.g.
-    "MyClass").  Cleans up temp files on exit. *)
+(** Run gir_gen.exe on [gir_content], return (raw_content, ml_ast) for the Layer
+    2 g<ClassName>.ml file. [class_name] is the GIR class name (e.g. "MyClass").
+    Cleans up temp files on exit. *)
 let run_and_parse_layer2_ml gir_content class_name =
   let gir_file = Filename.temp_file "test_iface_inherit" ".gir" in
   let output_dir = Filename.temp_file "test_iface_inherit_out" "" in
@@ -125,12 +125,12 @@ let run_and_parse_layer2_ml gir_content class_name =
            (Sys.readdir generated_dir);
          Unix.rmdir generated_dir
        with _ -> ());
-      (try
-         Array.iter
-           (fun f -> Sys.remove (Filename.concat output_dir f))
-           (Sys.readdir output_dir);
-         Unix.rmdir output_dir
-       with _ -> ()))
+      try
+        Array.iter
+          (fun f -> Sys.remove (Filename.concat output_dir f))
+          (Sys.readdir output_dir);
+        Unix.rmdir output_dir
+      with _ -> ())
     (fun () ->
       Helpers.create_gir_file gir_file gir_content;
       Helpers.ensure_output_dir output_dir;
@@ -150,16 +150,17 @@ let test_class_type_inherits_interface_type () =
   let _content, ml_ast =
     run_and_parse_layer2_ml gir_class_implements_iface "MyClass"
   in
-  Ml_validation.assert_class_type_inherits ml_ast
-    ~class_type:"my_class_t" ~parent:"GMy_iface.my_iface_t"
+  Ml_validation.assert_class_type_inherits ml_ast ~class_type:"my_class_t"
+    ~parent:"GMy_iface.my_iface_t"
 
-(** The class implementation must inherit the interface class (with from_gobject). *)
+(** The class implementation must inherit the interface class (with
+    from_gobject). *)
 let test_class_impl_inherits_interface_class () =
   let _content, ml_ast =
     run_and_parse_layer2_ml gir_class_implements_iface "MyClass"
   in
-  Ml_validation.assert_class_impl_inherits ml_ast
-    ~class_name:"my_class" ~parent_class_name:"GMy_iface.my_iface"
+  Ml_validation.assert_class_impl_inherits ml_ast ~class_name:"my_class"
+    ~parent_class_name:"GMy_iface.my_iface"
 
 (* ========================================================================= *)
 (* Tests: class without implements has no interface inherits                  *)
@@ -184,27 +185,31 @@ let test_method_conflict_not_duplicated () =
     run_and_parse_layer2_ml gir_method_conflict "MyClass"
   in
   (* The class type should still inherit the interface type *)
-  Ml_validation.assert_class_type_inherits ml_ast
-    ~class_type:"my_class_t" ~parent:"GMy_iface.my_iface_t";
+  Ml_validation.assert_class_type_inherits ml_ast ~class_type:"my_class_t"
+    ~parent:"GMy_iface.my_iface_t";
   (* do_thing must NOT appear as a separate method declaration in my_class_t,
      since it comes via inheritance — verify by checking the ctd has no
      method fields named do_thing *)
   let ctd =
-    match Ml_ast_helpers.find_class_type_declaration_impl ml_ast "my_class_t" with
+    match
+      Ml_ast_helpers.find_class_type_declaration_impl ml_ast "my_class_t"
+    with
     | None -> Alcotest.fail "my_class_t not found"
     | Some c -> c
   in
   let has_own_do_thing =
     match ctd.pci_expr.pcty_desc with
     | Pcty_signature { pcsig_fields; _ } ->
-        List.exists (fun field ->
-          match field.pctf_desc with
-          | Pctf_method ({ txt; _ }, _, _, _) -> String.equal txt "do_thing"
-          | _ -> false
-        ) pcsig_fields
+        List.exists
+          (fun field ->
+            match field.pctf_desc with
+            | Pctf_method ({ txt; _ }, _, _, _) -> String.equal txt "do_thing"
+            | _ -> false)
+          pcsig_fields
     | _ -> false
   in
-  Alcotest.(check bool) "do_thing not re-declared in my_class_t (comes via inherit)" false
+  Alcotest.(check bool)
+    "do_thing not re-declared in my_class_t (comes via inherit)" false
     has_own_do_thing
 
 (* ========================================================================= *)
@@ -212,7 +217,8 @@ let test_method_conflict_not_duplicated () =
 (* ========================================================================= *)
 
 let test_suite =
-  [ ( "class type inherits interface class type",
+  [
+    ( "class type inherits interface class type",
       `Quick,
       test_class_type_inherits_interface_type );
     ( "class implementation inherits interface class with from_gobject",
@@ -223,4 +229,5 @@ let test_suite =
       test_class_without_implements_has_no_iface_inherit );
     ( "method conflict: do_thing not re-declared in class type",
       `Quick,
-      test_method_conflict_not_duplicated ) ]
+      test_method_conflict_not_duplicated );
+  ]

@@ -1,99 +1,86 @@
 (* Signal class defined in gtree_model_signals.ml *)
 
 class type tree_model_t = object
-    inherit Gtree_model_signals.tree_model_signals
-    method filter_new : Tree_path.t option -> tree_model_t
-    method get_column_type : int -> int
-    method get_flags : unit -> Gtk_enums.treemodelflags
-    method get_n_columns : unit -> int
-    method get_path : Tree_iter.t -> Tree_path.t
-    method get_string_from_iter : Tree_iter.t -> string option
-    method iter_has_child : Tree_iter.t -> bool
-    method iter_n_children : Tree_iter.t option -> int
-    method iter_next : Tree_iter.t -> bool
-    method iter_previous : Tree_iter.t -> bool
-    method ref_node : Tree_iter.t -> unit
-    method row_changed : Tree_path.t -> Tree_iter.t -> unit
-    method row_deleted : Tree_path.t -> unit
-    method row_has_child_toggled : Tree_path.t -> Tree_iter.t -> unit
-    method row_inserted : Tree_path.t -> Tree_iter.t -> unit
-    method rows_reordered_with_length : Tree_path.t -> Tree_iter.t option -> int array -> int -> unit
-    method unref_node : Tree_iter.t -> unit
-    method as_tree_model : Tree_model.t
+  inherit Gtree_model_signals.tree_model_signals
+  method filter_new : Tree_path.t option -> tree_model_t
+  method get_column_type : int -> int
+  method get_flags : unit -> Gtk_enums.treemodelflags
+  method get_n_columns : unit -> int
+  method get_path : Tree_iter.t -> Tree_path.t
+  method get_string_from_iter : Tree_iter.t -> string option
+  method iter_has_child : Tree_iter.t -> bool
+  method iter_n_children : Tree_iter.t option -> int
+  method iter_next : Tree_iter.t -> bool
+  method iter_previous : Tree_iter.t -> bool
+  method ref_node : Tree_iter.t -> unit
+  method row_changed : Tree_path.t -> Tree_iter.t -> unit
+  method row_deleted : Tree_path.t -> unit
+  method row_has_child_toggled : Tree_path.t -> Tree_iter.t -> unit
+  method row_inserted : Tree_path.t -> Tree_iter.t -> unit
+
+  method rows_reordered_with_length :
+    Tree_path.t -> Tree_iter.t option -> int array -> int -> unit
+
+  method unref_node : Tree_iter.t -> unit
+  method as_tree_model : Tree_model.t
 end
 
 (* High-level class for TreeModel *)
-class tree_model (obj : Tree_model.t) : tree_model_t = object (self)
-  inherit Gtree_model_signals.tree_model_signals obj
+class tree_model (obj : Tree_model.t) : tree_model_t =
+  object (self)
+    inherit Gtree_model_signals.tree_model_signals obj
 
-  method filter_new : Tree_path.t option -> tree_model_t =
-    fun root ->
-      new  tree_model(Tree_model.filter_new obj root)
+    method filter_new : Tree_path.t option -> tree_model_t =
+      fun root -> new tree_model (Tree_model.filter_new obj root)
 
-  method get_column_type : int -> int =
-    fun index_ ->
-      (Tree_model.get_column_type obj index_)
+    method get_column_type : int -> int =
+      fun index_ -> Tree_model.get_column_type obj index_
 
-  method get_flags : unit -> Gtk_enums.treemodelflags =
-    fun () ->
-      (Tree_model.get_flags obj)
+    method get_flags : unit -> Gtk_enums.treemodelflags =
+      fun () -> Tree_model.get_flags obj
 
-  method get_n_columns : unit -> int =
-    fun () ->
-      (Tree_model.get_n_columns obj)
+    method get_n_columns : unit -> int = fun () -> Tree_model.get_n_columns obj
 
-  method get_path : Tree_iter.t -> Tree_path.t =
-    fun iter ->
-      (Tree_model.get_path obj iter)
+    method get_path : Tree_iter.t -> Tree_path.t =
+      fun iter -> Tree_model.get_path obj iter
 
-  method get_string_from_iter : Tree_iter.t -> string option =
-    fun iter ->
-      (Tree_model.get_string_from_iter obj iter)
+    method get_string_from_iter : Tree_iter.t -> string option =
+      fun iter -> Tree_model.get_string_from_iter obj iter
 
-  method iter_has_child : Tree_iter.t -> bool =
-    fun iter ->
-      (Tree_model.iter_has_child obj iter)
+    method iter_has_child : Tree_iter.t -> bool =
+      fun iter -> Tree_model.iter_has_child obj iter
 
-  method iter_n_children : Tree_iter.t option -> int =
-    fun iter ->
-      (Tree_model.iter_n_children obj iter)
+    method iter_n_children : Tree_iter.t option -> int =
+      fun iter -> Tree_model.iter_n_children obj iter
 
-  method iter_next : Tree_iter.t -> bool =
-    fun iter ->
-      (Tree_model.iter_next obj iter)
+    method iter_next : Tree_iter.t -> bool =
+      fun iter -> Tree_model.iter_next obj iter
 
-  method iter_previous : Tree_iter.t -> bool =
-    fun iter ->
-      (Tree_model.iter_previous obj iter)
+    method iter_previous : Tree_iter.t -> bool =
+      fun iter -> Tree_model.iter_previous obj iter
 
-  method ref_node : Tree_iter.t -> unit =
-    fun iter ->
-      (Tree_model.ref_node obj iter)
+    method ref_node : Tree_iter.t -> unit =
+      fun iter -> Tree_model.ref_node obj iter
 
-  method row_changed : Tree_path.t -> Tree_iter.t -> unit =
-    fun path iter ->
-      (Tree_model.row_changed obj path iter)
+    method row_changed : Tree_path.t -> Tree_iter.t -> unit =
+      fun path iter -> Tree_model.row_changed obj path iter
 
-  method row_deleted : Tree_path.t -> unit =
-    fun path ->
-      (Tree_model.row_deleted obj path)
+    method row_deleted : Tree_path.t -> unit =
+      fun path -> Tree_model.row_deleted obj path
 
-  method row_has_child_toggled : Tree_path.t -> Tree_iter.t -> unit =
-    fun path iter ->
-      (Tree_model.row_has_child_toggled obj path iter)
+    method row_has_child_toggled : Tree_path.t -> Tree_iter.t -> unit =
+      fun path iter -> Tree_model.row_has_child_toggled obj path iter
 
-  method row_inserted : Tree_path.t -> Tree_iter.t -> unit =
-    fun path iter ->
-      (Tree_model.row_inserted obj path iter)
+    method row_inserted : Tree_path.t -> Tree_iter.t -> unit =
+      fun path iter -> Tree_model.row_inserted obj path iter
 
-  method rows_reordered_with_length : Tree_path.t -> Tree_iter.t option -> int array -> int -> unit =
-    fun path iter new_order length ->
-      (Tree_model.rows_reordered_with_length obj path iter new_order length)
+    method rows_reordered_with_length :
+        Tree_path.t -> Tree_iter.t option -> int array -> int -> unit =
+      fun path iter new_order length ->
+        Tree_model.rows_reordered_with_length obj path iter new_order length
 
-  method unref_node : Tree_iter.t -> unit =
-    fun iter ->
-      (Tree_model.unref_node obj iter)
+    method unref_node : Tree_iter.t -> unit =
+      fun iter -> Tree_model.unref_node obj iter
 
     method as_tree_model = obj
-end
-
+  end

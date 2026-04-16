@@ -73,77 +73,75 @@ let rec parse_doc_text input ?(text = "") () =
 (* Shared: Parse enumeration element *)
 let parse_enumeration input ?parse_functions attrs =
   match (get_attr "name" attrs, get_attr "c:type" attrs) with
-  | Some name, Some c_type ->
-      begin
-        let members = ref [] in
-        let functions = ref [] in
+  | Some name, Some c_type -> begin
+      let members = ref [] in
+      let functions = ref [] in
 
-        let rec parse_enum_contents () =
-          match Xmlm.input input with
-          | `El_start ((_, tag), member_attrs) when local_name tag = "member"
-            -> (
-              match
-                ( get_attr "name" member_attrs,
-                  get_attr "value" member_attrs,
-                  get_attr "c:identifier" member_attrs )
-              with
-              | Some member_name, Some value_str, Some c_id ->
-                  let value = try int_of_string value_str with _ -> 0 in
-                  let member_doc = ref None in
-                  let rec parse_member_contents () =
-                    match Xmlm.input input with
-                    | `El_start ((_, tag), _) when local_name tag = "doc" ->
-                        member_doc := parse_doc_text input ();
-                        parse_member_contents ()
-                    | `El_start _ ->
-                        skip_element input 1;
-                        parse_member_contents ()
-                    | `El_end -> ()
-                    | `Data _ | `Dtd _ -> parse_member_contents ()
-                  in
-                  parse_member_contents ();
-                  members :=
-                    {
-                      member_name;
-                      member_value = value;
-                      c_identifier = c_id;
-                      member_doc = !member_doc;
-                      member_version = get_attr "version" member_attrs;
-                    }
-                    :: !members;
-                  parse_enum_contents ()
-              | _ ->
-                  skip_element input 1;
-                  parse_enum_contents ())
-          | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "function"
-            -> (
-              match parse_functions with
-              | Some parse_fn ->
-                  let function_ = parse_fn input attrs in
-                  functions := function_ :: !functions;
-                  parse_enum_contents ()
-              | None ->
-                  skip_element input 1;
-                  parse_enum_contents ())
-          | `El_start _ ->
-              skip_element input 1;
-              parse_enum_contents ()
-          | `El_end -> ()
-          | `Data _ -> parse_enum_contents ()
-          | `Dtd _ -> parse_enum_contents ()
-        in
+      let rec parse_enum_contents () =
+        match Xmlm.input input with
+        | `El_start ((_, tag), member_attrs) when local_name tag = "member" -> (
+            match
+              ( get_attr "name" member_attrs,
+                get_attr "value" member_attrs,
+                get_attr "c:identifier" member_attrs )
+            with
+            | Some member_name, Some value_str, Some c_id ->
+                let value = try int_of_string value_str with _ -> 0 in
+                let member_doc = ref None in
+                let rec parse_member_contents () =
+                  match Xmlm.input input with
+                  | `El_start ((_, tag), _) when local_name tag = "doc" ->
+                      member_doc := parse_doc_text input ();
+                      parse_member_contents ()
+                  | `El_start _ ->
+                      skip_element input 1;
+                      parse_member_contents ()
+                  | `El_end -> ()
+                  | `Data _ | `Dtd _ -> parse_member_contents ()
+                in
+                parse_member_contents ();
+                members :=
+                  {
+                    member_name;
+                    member_value = value;
+                    c_identifier = c_id;
+                    member_doc = !member_doc;
+                    member_version = get_attr "version" member_attrs;
+                  }
+                  :: !members;
+                parse_enum_contents ()
+            | _ ->
+                skip_element input 1;
+                parse_enum_contents ())
+        | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "function"
+          -> (
+            match parse_functions with
+            | Some parse_fn ->
+                let function_ = parse_fn input attrs in
+                functions := function_ :: !functions;
+                parse_enum_contents ()
+            | None ->
+                skip_element input 1;
+                parse_enum_contents ())
+        | `El_start _ ->
+            skip_element input 1;
+            parse_enum_contents ()
+        | `El_end -> ()
+        | `Data _ -> parse_enum_contents ()
+        | `Dtd _ -> parse_enum_contents ()
+      in
 
-        parse_enum_contents ();
-        Some
-          {
-            enum_name = name;
-            enum_c_type = c_type;
-            members = List.rev !members;
-            enum_doc = None;
-            functions = !functions;
-            enum_version = get_attr "version" attrs;
-          }
-      end
+      parse_enum_contents ();
+      Some
+        {
+          enum_name = name;
+          enum_c_type = c_type;
+          members = List.rev !members;
+          enum_doc = None;
+          functions = !functions;
+          enum_version = get_attr "version" attrs;
+        }
+    end
   | _ ->
       skip_element input 1;
       None
@@ -161,64 +159,63 @@ let merge_methods concrete virtuals =
 (* Shared: Parse bitfield element *)
 let parse_bitfield input attrs =
   match (get_attr "name" attrs, get_attr "c:type" attrs) with
-  | Some name, Some c_type ->
-      begin
-        let flags = ref [] in
+  | Some name, Some c_type -> begin
+      let flags = ref [] in
 
-        let rec parse_bitfield_contents () =
-          match Xmlm.input input with
-          | `El_start ((_, "member"), member_attrs) -> (
-              match
-                ( get_attr "name" member_attrs,
-                  get_attr "value" member_attrs,
-                  get_attr "c:identifier" member_attrs )
-              with
-              | Some flag_name, Some value_str, Some c_id ->
-                  let value = try int_of_string value_str with _ -> 0 in
-                  let flag_doc = ref None in
-                  let rec parse_flag_contents () =
-                    match Xmlm.input input with
-                    | `El_start ((_, tag), _) when local_name tag = "doc" ->
-                        flag_doc := parse_doc_text input ();
-                        parse_flag_contents ()
-                    | `El_start _ ->
-                        skip_element input 1;
-                        parse_flag_contents ()
-                    | `El_end -> ()
-                    | `Data _ | `Dtd _ -> parse_flag_contents ()
-                  in
-                  parse_flag_contents ();
-                  flags :=
-                    {
-                      flag_name;
-                      flag_value = value;
-                      flag_c_identifier = c_id;
-                      flag_doc = !flag_doc;
-                      flag_version = get_attr "version" member_attrs;
-                    }
-                    :: !flags;
-                  parse_bitfield_contents ()
-              | _ ->
-                  skip_element input 1;
-                  parse_bitfield_contents ())
-          | `El_start _ ->
-              skip_element input 1;
-              parse_bitfield_contents ()
-          | `El_end -> ()
-          | `Data _ -> parse_bitfield_contents ()
-          | `Dtd _ -> parse_bitfield_contents ()
-        in
+      let rec parse_bitfield_contents () =
+        match Xmlm.input input with
+        | `El_start ((_, "member"), member_attrs) -> (
+            match
+              ( get_attr "name" member_attrs,
+                get_attr "value" member_attrs,
+                get_attr "c:identifier" member_attrs )
+            with
+            | Some flag_name, Some value_str, Some c_id ->
+                let value = try int_of_string value_str with _ -> 0 in
+                let flag_doc = ref None in
+                let rec parse_flag_contents () =
+                  match Xmlm.input input with
+                  | `El_start ((_, tag), _) when local_name tag = "doc" ->
+                      flag_doc := parse_doc_text input ();
+                      parse_flag_contents ()
+                  | `El_start _ ->
+                      skip_element input 1;
+                      parse_flag_contents ()
+                  | `El_end -> ()
+                  | `Data _ | `Dtd _ -> parse_flag_contents ()
+                in
+                parse_flag_contents ();
+                flags :=
+                  {
+                    flag_name;
+                    flag_value = value;
+                    flag_c_identifier = c_id;
+                    flag_doc = !flag_doc;
+                    flag_version = get_attr "version" member_attrs;
+                  }
+                  :: !flags;
+                parse_bitfield_contents ()
+            | _ ->
+                skip_element input 1;
+                parse_bitfield_contents ())
+        | `El_start _ ->
+            skip_element input 1;
+            parse_bitfield_contents ()
+        | `El_end -> ()
+        | `Data _ -> parse_bitfield_contents ()
+        | `Dtd _ -> parse_bitfield_contents ()
+      in
 
-        parse_bitfield_contents ();
-        Some
-          {
-            bitfield_name = name;
-            bitfield_c_type = c_type;
-            flags = List.rev !flags;
-            bitfield_doc = None;
-            bitfield_version = get_attr "version" attrs;
-          }
-      end
+      parse_bitfield_contents ();
+      Some
+        {
+          bitfield_name = name;
+          bitfield_c_type = c_type;
+          flags = List.rev !flags;
+          bitfield_doc = None;
+          bitfield_version = get_attr "version" attrs;
+        }
+    end
   | _ ->
       skip_element input 1;
       None
@@ -327,12 +324,12 @@ let parse_gir_file filename filter_classes =
           | `El_start ((_, raw_tag), tag_attrs) -> (
               let tag = local_name raw_tag in
               match tag with
-              | "implements" -> (
+              | "implements" ->
                   (match get_attr "name" tag_attrs with
                   | Some iface_name -> implements := iface_name :: !implements
                   | None -> ());
                   skip_element input 1;
-                  parse_class_contents ())
+                  parse_class_contents ()
               | "constructor" -> (
                   match
                     ( get_attr "name" tag_attrs,
@@ -763,7 +760,9 @@ let parse_gir_file filename filter_classes =
               match Xmlm.input input with
               | `El_start ((_, "type"), elem_attrs) ->
                   let elem_name =
-                    match get_attr "name" elem_attrs with Some n -> n | None -> "unknown"
+                    match get_attr "name" elem_attrs with
+                    | Some n -> n
+                    | None -> "unknown"
                   in
                   let elem_c_type = get_attr "c:type" elem_attrs in
                   element_type_ref :=
@@ -785,8 +784,7 @@ let parse_gir_file filename filter_classes =
             in
             parse_element_type ()
           end
-          else
-            skip_element input 1;
+          else skip_element input 1;
           type_info :=
             {
               name = type_name;
@@ -954,7 +952,9 @@ let parse_gir_file filename filter_classes =
                     match Xmlm.input input with
                     | `El_start ((_, "type"), elem_attrs) ->
                         let elem_name =
-                          match get_attr "name" elem_attrs with Some n -> n | None -> "unknown"
+                          match get_attr "name" elem_attrs with
+                          | Some n -> n
+                          | None -> "unknown"
                         in
                         let elem_c_type = get_attr "c:type" elem_attrs in
                         element_type_ref :=
@@ -963,7 +963,7 @@ let parse_gir_file filename filter_classes =
                               name = elem_name;
                               c_type = elem_c_type;
                               nullable = false;
-                              transfer_ownership = transfer_ownership;
+                              transfer_ownership;
                               array = None;
                             };
                         skip_element input 1;
@@ -976,8 +976,7 @@ let parse_gir_file filename filter_classes =
                   in
                   parse_element_type ()
                 end
-                else
-                  skip_element input 1;
+                else skip_element input 1;
                 type_ :=
                   {
                     name = type_name;
@@ -1022,7 +1021,15 @@ let parse_gir_file filename filter_classes =
           in
           let param_type, varargs = parse_param_contents () in
           params :=
-            { param_name; param_type; direction; nullable; varargs; caller_allocates } :: !params;
+            {
+              param_name;
+              param_type;
+              direction;
+              nullable;
+              varargs;
+              caller_allocates;
+            }
+            :: !params;
           parse_params_contents ()
       | `El_start ((_, "instance-parameter"), _) ->
           skip_element input 1;
@@ -1228,41 +1235,41 @@ let parse_gir_file filename filter_classes =
               | _ ->
                   skip_element input 1;
                   parse_record_contents ())
-           | `El_start ((_, raw_tag), tag_attrs)
-             when local_name raw_tag = "method" -> (
-               match
-                 (get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs)
-               with
-               | Some method_name, Some c_id ->
-                   let throws =
-                     get_attr "throws" tag_attrs |> Utils.parse_bool
-                   in
-                   let introspectable =
-                     get_attr "introspectable" tag_attrs
-                     |> Utils.parse_bool ~default:true
-                   in
-                   let return_type, params, doc, get_property, set_property =
-                     parse_method tag_attrs
-                   in
-                   methods :=
-                     {
-                       method_name;
-                       c_identifier = c_id;
-                       return_type;
-                       parameters = params;
-                       doc;
-                       throws;
-                       get_property;
-                       set_property;
-                       introspectable;
-                       version = get_attr "version" tag_attrs;
-                       version_namespace = None;
-                     }
-                     :: !methods;
-                   parse_record_contents ()
-               | _ ->
-                   skip_element input 1;
-                   parse_record_contents ())
+          | `El_start ((_, raw_tag), tag_attrs)
+            when local_name raw_tag = "method" -> (
+              match
+                (get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs)
+              with
+              | Some method_name, Some c_id ->
+                  let throws =
+                    get_attr "throws" tag_attrs |> Utils.parse_bool
+                  in
+                  let introspectable =
+                    get_attr "introspectable" tag_attrs
+                    |> Utils.parse_bool ~default:true
+                  in
+                  let return_type, params, doc, get_property, set_property =
+                    parse_method tag_attrs
+                  in
+                  methods :=
+                    {
+                      method_name;
+                      c_identifier = c_id;
+                      return_type;
+                      parameters = params;
+                      doc;
+                      throws;
+                      get_property;
+                      set_property;
+                      introspectable;
+                      version = get_attr "version" tag_attrs;
+                      version_namespace = None;
+                    }
+                    :: !methods;
+                  parse_record_contents ()
+              | _ ->
+                  skip_element input 1;
+                  parse_record_contents ())
           | `El_start ((_, raw_tag), _tag_attrs) when local_name raw_tag = "doc"
             ->
               record_doc := element_data input ();
@@ -1307,152 +1314,155 @@ let parse_gir_file filename filter_classes =
         skip_element input 1;
         None
     | Some name ->
-    let c_type =
-      match get_attr "c:type" attrs with
-      | Some t -> t
-      | None ->
-          (* Use namespace c:identifier-prefixes, fallback to "Gtk" if not available *)
-          let prefix =
-            match !namespace with
-            | Some ns -> ns.namespace_c_identifier_prefixes
-            | None -> "Gtk"
-          in
-          prefix ^ name
-    in
-    let introspectable =
-      get_attr "introspectable" attrs |> Utils.parse_bool ~default:true
-    in
-    let methods = ref [] in
-    let virtual_methods = ref [] in
-    let properties = ref [] in
-    let signals = ref [] in
-    let prerequisites = ref [] in
-    let rec parse_class_contents () =
-      match Xmlm.input input with
-      | `El_start ((_, raw_tag), tag_attrs) -> (
-          let tag = local_name raw_tag in
-          match tag with
-          | "signal" -> (
-              match parse_signal tag_attrs with
-              | Some signal ->
-                  signals := signal :: !signals;
-                  parse_class_contents ()
-              | None ->
+        let c_type =
+          match get_attr "c:type" attrs with
+          | Some t -> t
+          | None ->
+              (* Use namespace c:identifier-prefixes, fallback to "Gtk" if not available *)
+              let prefix =
+                match !namespace with
+                | Some ns -> ns.namespace_c_identifier_prefixes
+                | None -> "Gtk"
+              in
+              prefix ^ name
+        in
+        let introspectable =
+          get_attr "introspectable" attrs |> Utils.parse_bool ~default:true
+        in
+        let methods = ref [] in
+        let virtual_methods = ref [] in
+        let properties = ref [] in
+        let signals = ref [] in
+        let prerequisites = ref [] in
+        let rec parse_class_contents () =
+          match Xmlm.input input with
+          | `El_start ((_, raw_tag), tag_attrs) -> (
+              let tag = local_name raw_tag in
+              match tag with
+              | "signal" -> (
+                  match parse_signal tag_attrs with
+                  | Some signal ->
+                      signals := signal :: !signals;
+                      parse_class_contents ()
+                  | None ->
+                      skip_element input 1;
+                      parse_class_contents ())
+              | "method" -> (
+                  match
+                    ( get_attr "name" tag_attrs,
+                      get_attr "c:identifier" tag_attrs )
+                  with
+                  | Some method_name, Some c_id ->
+                      let throws =
+                        get_attr "throws" tag_attrs |> Utils.parse_bool
+                      in
+                      let introspectable =
+                        get_attr "introspectable" tag_attrs
+                        |> Utils.parse_bool ~default:true
+                      in
+                      let return_type, params, doc, get_property, set_property =
+                        parse_method tag_attrs
+                      in
+                      methods :=
+                        {
+                          method_name;
+                          c_identifier = c_id;
+                          return_type;
+                          parameters = params;
+                          doc;
+                          throws;
+                          get_property;
+                          set_property;
+                          introspectable;
+                          version = get_attr "version" tag_attrs;
+                          version_namespace = None;
+                        }
+                        :: !methods;
+                      parse_class_contents ()
+                  | _ ->
+                      skip_element input 1;
+                      parse_class_contents ())
+              | "virtual-method" -> (
+                  match
+                    ( get_attr "name" tag_attrs,
+                      get_attr "c:identifier" tag_attrs )
+                  with
+                  | Some method_name, Some c_id ->
+                      let throws =
+                        get_attr "throws" tag_attrs |> Utils.parse_bool
+                      in
+                      let introspectable =
+                        get_attr "introspectable" tag_attrs
+                        |> Utils.parse_bool ~default:true
+                      in
+                      let return_type, params, doc, get_property, set_property =
+                        parse_method tag_attrs
+                      in
+                      virtual_methods :=
+                        {
+                          method_name;
+                          c_identifier = c_id;
+                          return_type;
+                          parameters = params;
+                          doc;
+                          throws;
+                          get_property;
+                          set_property;
+                          introspectable;
+                          version = get_attr "version" tag_attrs;
+                          version_namespace = None;
+                        }
+                        :: !virtual_methods;
+                      parse_class_contents ()
+                  | _ ->
+                      skip_element input 1;
+                      parse_class_contents ())
+              | "property" -> (
+                  match get_attr "name" tag_attrs with
+                  | Some prop_name ->
+                      let prop = parse_property prop_name tag_attrs in
+                      properties := prop :: !properties;
+                      parse_class_contents ()
+                  | None ->
+                      skip_element input 1;
+                      parse_class_contents ())
+              | "prerequisite" ->
+                  (match get_attr "name" tag_attrs with
+                  | Some prereq_name ->
+                      prerequisites := prereq_name :: !prerequisites
+                  | None -> ());
                   skip_element input 1;
-                  parse_class_contents ())
-          | "method" -> (
-              match
-                (get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs)
-              with
-              | Some method_name, Some c_id ->
-                  let throws =
-                    get_attr "throws" tag_attrs |> Utils.parse_bool
-                  in
-                  let introspectable =
-                    get_attr "introspectable" tag_attrs
-                    |> Utils.parse_bool ~default:true
-                  in
-                  let return_type, params, doc, get_property, set_property =
-                    parse_method tag_attrs
-                  in
-                  methods :=
-                    {
-                      method_name;
-                      c_identifier = c_id;
-                      return_type;
-                      parameters = params;
-                      doc;
-                      throws;
-                      get_property;
-                      set_property;
-                      introspectable;
-                      version = get_attr "version" tag_attrs;
-                      version_namespace = None;
-                    }
-                    :: !methods;
                   parse_class_contents ()
               | _ ->
                   skip_element input 1;
                   parse_class_contents ())
-          | "virtual-method" -> (
-              match
-                (get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs)
-              with
-              | Some method_name, Some c_id ->
-                  let throws =
-                    get_attr "throws" tag_attrs |> Utils.parse_bool
-                  in
-                  let introspectable =
-                    get_attr "introspectable" tag_attrs
-                    |> Utils.parse_bool ~default:true
-                  in
-                  let return_type, params, doc, get_property, set_property =
-                    parse_method tag_attrs
-                  in
-                  virtual_methods :=
-                    {
-                      method_name;
-                      c_identifier = c_id;
-                      return_type;
-                      parameters = params;
-                      doc;
-                      throws;
-                      get_property;
-                      set_property;
-                      introspectable;
-                      version = get_attr "version" tag_attrs;
-                      version_namespace = None;
-                    }
-                    :: !virtual_methods;
-                  parse_class_contents ()
-              | _ ->
-                  skip_element input 1;
-                  parse_class_contents ())
-          | "property" -> (
-              match get_attr "name" tag_attrs with
-              | Some prop_name ->
-                  let prop = parse_property prop_name tag_attrs in
-                  properties := prop :: !properties;
-                  parse_class_contents ()
-              | None ->
-                  skip_element input 1;
-                  parse_class_contents ())
-          | "prerequisite" -> (
-              (match get_attr "name" tag_attrs with
-              | Some prereq_name -> prerequisites := prereq_name :: !prerequisites
-              | None -> ());
-              skip_element input 1;
-              parse_class_contents ())
-          | _ ->
-              skip_element input 1;
-              parse_class_contents ())
-      | `El_end -> ()
-      | `Data _ -> parse_class_contents ()
-      | `Dtd _ -> parse_class_contents ()
-    in
+          | `El_end -> ()
+          | `Data _ -> parse_class_contents ()
+          | `Dtd _ -> parse_class_contents ()
+        in
 
-    parse_class_contents ();
-    let methods =
-      merge_methods (List.rev !methods) (List.rev !virtual_methods)
-    in
-    Some
-      {
-        interface_name = name;
-        c_type;
-        c_symbol_prefix =
-          (match get_attr "c:symbol-prefix" attrs with
-          | Some p -> p
-          | None -> String.lowercase_ascii name);
-        glib_type_name = get_attr "glib:type-name" attrs;
-        glib_get_type = get_attr "glib:get-type" attrs;
-        prerequisites = List.rev !prerequisites;
-        introspectable;
-        methods;
-        properties = List.rev !properties;
-        signals = List.rev !signals;
-        interface_doc = None;
-        version = get_attr "version" attrs;
-      }
+        parse_class_contents ();
+        let methods =
+          merge_methods (List.rev !methods) (List.rev !virtual_methods)
+        in
+        Some
+          {
+            interface_name = name;
+            c_type;
+            c_symbol_prefix =
+              (match get_attr "c:symbol-prefix" attrs with
+              | Some p -> p
+              | None -> String.lowercase_ascii name);
+            glib_type_name = get_attr "glib:type-name" attrs;
+            glib_get_type = get_attr "glib:get-type" attrs;
+            prerequisites = List.rev !prerequisites;
+            introspectable;
+            methods;
+            properties = List.rev !properties;
+            signals = List.rev !signals;
+            interface_doc = None;
+            version = get_attr "version" attrs;
+          }
   in
 
   (* Main parsing loop *)

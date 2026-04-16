@@ -2,7 +2,9 @@
 
 open Helpers
 
-let properties_gir = wrap_namespace {|
+let properties_gir =
+  wrap_namespace
+    {|
     <class name="TestWidget" c:type="GtkTestWidget" parent="Widget">
       <constructor name="new" c:identifier="gtk_test_widget_new"/>
       <property name="read-only-prop" readable="1">
@@ -17,7 +19,9 @@ let properties_gir = wrap_namespace {|
     </class>
 |}
 
-let properties_only_gir = wrap_namespace {|
+let properties_only_gir =
+  wrap_namespace
+    {|
     <class name="PropertiesOnly" c:type="GtkPropertiesOnly" parent="Widget">
       <property name="label" readable="1" writable="1">
         <type name="utf8" c:type="const gchar*"/>
@@ -34,7 +38,7 @@ let test_property_generation () =
   let output_dir = "/tmp/test_property_output" in
 
   create_gir_file test_gir properties_gir;
-  create_filter_file test_filter ["TestWidget"];
+  create_filter_file test_filter [ "TestWidget" ];
   ensure_output_dir output_dir;
 
   let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
@@ -68,7 +72,7 @@ let test_c_property_generation () =
   let output_dir = "/tmp/test_c_property_output" in
 
   create_gir_file test_gir properties_gir;
-  create_filter_file test_filter ["TestWidget"];
+  create_filter_file test_filter [ "TestWidget" ];
   ensure_output_dir output_dir;
 
   let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
@@ -100,7 +104,7 @@ let test_properties_only_class () =
   let output_dir = "/tmp/test_properties_only_output" in
 
   create_gir_file test_gir properties_only_gir;
-  create_filter_file test_filter ["PropertiesOnly"];
+  create_filter_file test_filter [ "PropertiesOnly" ];
   ensure_output_dir output_dir;
 
   let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
@@ -118,6 +122,7 @@ let test_properties_only_class () =
 let tests =
   [
     Alcotest.test_case "Property generation" `Quick test_property_generation;
-    Alcotest.test_case "C property generation (Phase 5.2)" `Quick test_c_property_generation;
+    Alcotest.test_case "C property generation (Phase 5.2)" `Quick
+      test_c_property_generation;
     Alcotest.test_case "Properties-only class" `Quick test_properties_only_class;
   ]

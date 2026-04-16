@@ -6,8 +6,7 @@
     - Child management (attach, attach_next_to, remove)
     - Grid properties (spacing, homogeneous, baseline_row)
     - Row/column insertion and removal
-    - High-level GGrid wrapper functionality
-    *)
+    - High-level GGrid wrapper functionality *)
 
 open Alcotest
 
@@ -16,14 +15,10 @@ let gtk_available =
   try
     let _ = GMain.init () in
     true
-  with
-  | GMain.Error _ -> false
+  with GMain.Error _ -> false
 
 (* Helper to skip tests when GTK is not available *)
-let require_gtk f () =
-  if not gtk_available then skip ()
-  else f ()
-
+let require_gtk f () = if not gtk_available then skip () else f ()
 
 (* Test that Grid module is accessible and types compile *)
 let test_module_accessible () =
@@ -54,12 +49,11 @@ let test_grid_creation () =
     check int "grid row spacing" 0 (Grid.get_row_spacing grid);
     check int "grid column spacing" 0 (Grid.get_column_spacing grid);
     check bool "grid row not homogeneous" false (Grid.get_row_homogeneous grid);
-    check bool "grid column not homogeneous" false (Grid.get_column_homogeneous grid)
+    check bool "grid column not homogeneous" false
+      (Grid.get_column_homogeneous grid)
   with
-  | GMain.Error _ ->
-      skip ()  (* No display available *)
-  | e ->
-      fail ("Unexpected error: " ^ Printexc.to_string e)
+  | GMain.Error _ -> skip () (* No display available *)
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test grid properties *)
 let test_grid_properties () =
@@ -77,20 +71,20 @@ let test_grid_properties () =
 
     (* Test row homogeneous *)
     Grid.set_row_homogeneous grid true;
-    check bool "row homogeneous set to true" true (Grid.get_row_homogeneous grid);
+    check bool "row homogeneous set to true" true
+      (Grid.get_row_homogeneous grid);
 
     (* Test column homogeneous *)
     Grid.set_column_homogeneous grid true;
-    check bool "column homogeneous set to true" true (Grid.get_column_homogeneous grid);
+    check bool "column homogeneous set to true" true
+      (Grid.get_column_homogeneous grid);
 
     (* Test baseline row *)
     Grid.set_baseline_row grid 2;
     check int "baseline row set to 2" 2 (Grid.get_baseline_row grid)
   with
-  | GMain.Error _ ->
-      skip ()
-  | e ->
-      fail ("Unexpected error: " ^ Printexc.to_string e)
+  | GMain.Error _ -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test grid child attach *)
 let test_child_attach () =
@@ -108,10 +102,8 @@ let test_child_attach () =
     | Some _ -> check bool "child found at position" true true
     | None -> fail "child not found at position (0,0)"
   with
-  | GMain.Error _ ->
-      skip ()
-  | e ->
-      fail ("Unexpected error: " ^ Printexc.to_string e)
+  | GMain.Error _ -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test grid child removal *)
 let test_child_removal () =
@@ -130,10 +122,8 @@ let test_child_removal () =
     | None -> check bool "child removed" true true
     | Some _ -> fail "child still present after removal"
   with
-  | GMain.Error _ ->
-      skip ()
-  | e ->
-      fail ("Unexpected error: " ^ Printexc.to_string e)
+  | GMain.Error _ -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test row/column insertion and removal *)
 let test_row_column_operations () =
@@ -157,10 +147,8 @@ let test_row_column_operations () =
 
     check bool "row/column operations successful" true true
   with
-  | GMain.Error _ ->
-      skip ()
-  | e ->
-      fail ("Unexpected error: " ^ Printexc.to_string e)
+  | GMain.Error _ -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test attach_next_to *)
 let test_attach_next_to () =
@@ -176,14 +164,13 @@ let test_attach_next_to () =
     Grid.attach grid ~child:child1_widget ~column:0 ~row:0 ~width:1 ~height:1;
 
     (* Attach second child next to first *)
-    Grid.attach_next_to grid ~child:child2_widget ~sibling:(Some child1_widget) ~side:`RIGHT ~width:1 ~height:1;
+    Grid.attach_next_to grid ~child:child2_widget ~sibling:(Some child1_widget)
+      ~side:`RIGHT ~width:1 ~height:1;
 
     check bool "attach_next_to successful" true true
   with
-  | GMain.Error _ ->
-      skip ()
-  | e ->
-      fail ("Unexpected error: " ^ Printexc.to_string e)
+  | GMain.Error _ -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test insert_next_to *)
 let test_insert_next_to () =
@@ -204,10 +191,8 @@ let test_insert_next_to () =
 
     check bool "insert_next_to successful" true true
   with
-  | GMain.Error _ ->
-      skip ()
-  | e ->
-      fail ("Unexpected error: " ^ Printexc.to_string e)
+  | GMain.Error _ -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test high-level GGrid wrapper *)
 let test_ggrid_wrapper () =
@@ -232,10 +217,8 @@ let test_ggrid_wrapper () =
     grid#set_column_homogeneous true;
     check bool "ggrid column homogeneous" true grid#column_homogeneous
   with
-  | GMain.Error _ ->
-      skip ()
-  | e ->
-      fail ("Unexpected error: " ^ Printexc.to_string e)
+  | GMain.Error _ -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* Test as_widget function *)
 let test_as_widget () =
@@ -248,10 +231,8 @@ let test_as_widget () =
     Widget.set_name widget "test_grid";
     check string "converted widget name" "test_grid" (Widget.get_name widget)
   with
-  | GMain.Error _ ->
-      skip ()
-  | e ->
-      fail ("Unexpected error: " ^ Printexc.to_string e)
+  | GMain.Error _ -> skip ()
+  | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* ========== Comprehensive GGrid Tests ========== *)
 
@@ -346,36 +327,44 @@ let test_ggrid_with_nested_containers () =
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =
-  run "Comprehensive Gtk.Grid Tests (Phase 4.3)" [
-    "module", [
-      test_case "module_accessible" `Quick test_module_accessible;
-      test_case "type_constructors" `Quick test_type_constructors;
-    ];
-    "creation", [
-      test_case "grid_creation" `Quick (require_gtk test_grid_creation);
-    ];
-    "properties", [
-      test_case "grid_properties" `Quick (require_gtk test_grid_properties);
-    ];
-    "children - Low Level", [
-      test_case "child_attach" `Quick (require_gtk test_child_attach);
-      test_case "child_removal" `Quick (require_gtk test_child_removal);
-      test_case "attach_next_to" `Quick (require_gtk test_attach_next_to);
-    ];
-    "row_column", [
-      test_case "row_column_operations" `Quick (require_gtk test_row_column_operations);
-      test_case "insert_next_to" `Quick (require_gtk test_insert_next_to);
-    ];
-    "high_level - Basic", [
-      test_case "ggrid_wrapper" `Quick (require_gtk test_ggrid_wrapper);
-    ];
-    "high_level - Comprehensive", [
-      test_case "ggrid_attach_multiple" `Quick (require_gtk test_ggrid_attach_multiple);
-      test_case "ggrid_homogeneous" `Quick (require_gtk test_ggrid_homogeneous);
-      test_case "ggrid_baseline" `Quick (require_gtk test_ggrid_baseline);
-      test_case "ggrid_with_nested_containers" `Quick (require_gtk test_ggrid_with_nested_containers);
-    ];
-    "as_widget", [
-      test_case "as_widget_conversion" `Quick (require_gtk test_as_widget);
-    ];
-  ]
+  run "Comprehensive Gtk.Grid Tests (Phase 4.3)"
+    [
+      ( "module",
+        [
+          test_case "module_accessible" `Quick test_module_accessible;
+          test_case "type_constructors" `Quick test_type_constructors;
+        ] );
+      ( "creation",
+        [ test_case "grid_creation" `Quick (require_gtk test_grid_creation) ] );
+      ( "properties",
+        [
+          test_case "grid_properties" `Quick (require_gtk test_grid_properties);
+        ] );
+      ( "children - Low Level",
+        [
+          test_case "child_attach" `Quick (require_gtk test_child_attach);
+          test_case "child_removal" `Quick (require_gtk test_child_removal);
+          test_case "attach_next_to" `Quick (require_gtk test_attach_next_to);
+        ] );
+      ( "row_column",
+        [
+          test_case "row_column_operations" `Quick
+            (require_gtk test_row_column_operations);
+          test_case "insert_next_to" `Quick (require_gtk test_insert_next_to);
+        ] );
+      ( "high_level - Basic",
+        [ test_case "ggrid_wrapper" `Quick (require_gtk test_ggrid_wrapper) ] );
+      ( "high_level - Comprehensive",
+        [
+          test_case "ggrid_attach_multiple" `Quick
+            (require_gtk test_ggrid_attach_multiple);
+          test_case "ggrid_homogeneous" `Quick
+            (require_gtk test_ggrid_homogeneous);
+          test_case "ggrid_baseline" `Quick (require_gtk test_ggrid_baseline);
+          test_case "ggrid_with_nested_containers" `Quick
+            (require_gtk test_ggrid_with_nested_containers);
+        ] );
+      ( "as_widget",
+        [ test_case "as_widget_conversion" `Quick (require_gtk test_as_widget) ]
+      );
+    ]

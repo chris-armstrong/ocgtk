@@ -11,8 +11,8 @@
 (*                                                                        *)
 (**************************************************************************)
 
-(** Tests for bounded integer wrapper types: UInt8, Int8, UInt16, Int16,
-    UInt32, Int32. *)
+(** Tests for bounded integer wrapper types: UInt8, Int8, UInt16, Int16, UInt32,
+    Int32. *)
 
 (** {2 UInt8 tests} *)
 
@@ -26,18 +26,18 @@ let test_uint8_max_value_accepted () =
 
 let test_uint8_below_min_rejected () =
   Alcotest.check_raises "UInt8 below min raises"
-    (Invalid_argument "UInt8.of_int: -1 is out of range [0, 255]")
-    (fun () -> ignore (UInt8.of_int (UInt8.min_value - 1)))
+    (Invalid_argument "UInt8.of_int: -1 is out of range [0, 255]") (fun () ->
+      ignore (UInt8.of_int (UInt8.min_value - 1)))
 
 let test_uint8_above_max_rejected () =
   Alcotest.check_raises "UInt8 above max raises"
-    (Invalid_argument "UInt8.of_int: 256 is out of range [0, 255]")
-    (fun () -> ignore (UInt8.of_int (UInt8.max_value + 1)))
+    (Invalid_argument "UInt8.of_int: 256 is out of range [0, 255]") (fun () ->
+      ignore (UInt8.of_int (UInt8.max_value + 1)))
 
 let test_uint8_negative_rejected () =
   Alcotest.check_raises "UInt8 negative rejected"
-    (Invalid_argument "UInt8.of_int: -1 is out of range [0, 255]")
-    (fun () -> ignore (UInt8.of_int (-1)))
+    (Invalid_argument "UInt8.of_int: -1 is out of range [0, 255]") (fun () ->
+      ignore (UInt8.of_int (-1)))
 
 let test_uint8_roundtrip () =
   List.iter
@@ -72,8 +72,8 @@ let test_int8_below_min_rejected () =
 
 let test_int8_above_max_rejected () =
   Alcotest.check_raises "Int8 above max raises"
-    (Invalid_argument "Int8.of_int: 128 is out of range [-128, 127]")
-    (fun () -> ignore (Int8.of_int (Int8.max_value + 1)))
+    (Invalid_argument "Int8.of_int: 128 is out of range [-128, 127]") (fun () ->
+      ignore (Int8.of_int (Int8.max_value + 1)))
 
 let test_int8_roundtrip () =
   List.iter
@@ -103,8 +103,8 @@ let test_uint16_max_value_accepted () =
 
 let test_uint16_below_min_rejected () =
   Alcotest.check_raises "UInt16 below min raises"
-    (Invalid_argument "UInt16.of_int: -1 is out of range [0, 65535]")
-    (fun () -> ignore (UInt16.of_int (UInt16.min_value - 1)))
+    (Invalid_argument "UInt16.of_int: -1 is out of range [0, 65535]") (fun () ->
+      ignore (UInt16.of_int (UInt16.min_value - 1)))
 
 let test_uint16_above_max_rejected () =
   Alcotest.check_raises "UInt16 above max raises"
@@ -113,8 +113,8 @@ let test_uint16_above_max_rejected () =
 
 let test_uint16_negative_rejected () =
   Alcotest.check_raises "UInt16 negative rejected"
-    (Invalid_argument "UInt16.of_int: -1 is out of range [0, 65535]")
-    (fun () -> ignore (UInt16.of_int (-1)))
+    (Invalid_argument "UInt16.of_int: -1 is out of range [0, 65535]") (fun () ->
+      ignore (UInt16.of_int (-1)))
 
 let test_uint16_roundtrip () =
   List.iter
@@ -128,7 +128,8 @@ let test_uint16_roundtrip () =
 let test_uint16_constants () =
   Alcotest.(check int) "UInt16 zero = 0" 0 (UInt16.to_int UInt16.zero);
   Alcotest.(check int) "UInt16 min_int = 0" 0 (UInt16.to_int UInt16.min_int);
-  Alcotest.(check int) "UInt16 max_int = 65535" 65535
+  Alcotest.(check int)
+    "UInt16 max_int = 65535" 65535
     (UInt16.to_int UInt16.max_int);
   Alcotest.(check int) "UInt16 min_value = 0" 0 UInt16.min_value;
   Alcotest.(check int) "UInt16 max_value = 65535" 65535 UInt16.max_value
@@ -163,11 +164,14 @@ let test_int16_roundtrip () =
     [ -32768; -1; 0; 1; 32767 ]
 
 let test_int16_constants () =
-  Alcotest.(check int) "Int16 minus_one = -1" (-1)
+  Alcotest.(check int)
+    "Int16 minus_one = -1" (-1)
     (Int16.to_int Int16.minus_one);
-  Alcotest.(check int) "Int16 min_int = -32768" (-32768)
+  Alcotest.(check int)
+    "Int16 min_int = -32768" (-32768)
     (Int16.to_int Int16.min_int);
-  Alcotest.(check int) "Int16 max_int = 32767" 32767
+  Alcotest.(check int)
+    "Int16 max_int = 32767" 32767
     (Int16.to_int Int16.max_int);
   Alcotest.(check int) "Int16 min_value = -32768" (-32768) Int16.min_value;
   Alcotest.(check int) "Int16 max_value = 32767" 32767 Int16.max_value
@@ -184,20 +188,18 @@ let test_uint32_max_value_accepted () =
 
 let test_uint32_below_min_rejected () =
   Alcotest.check_raises "UInt32 below min raises"
-    (Invalid_argument
-       "UInt32.of_int: -1 is out of range [0, 4294967295]")
+    (Invalid_argument "UInt32.of_int: -1 is out of range [0, 4294967295]")
     (fun () -> ignore (UInt32.of_int (UInt32.min_value - 1)))
 
 let test_uint32_above_max_rejected () =
   Alcotest.check_raises "UInt32 above max raises"
     (Invalid_argument
-       "UInt32.of_int: 4294967296 is out of range [0, 4294967295]")
-    (fun () -> ignore (UInt32.of_int (UInt32.max_value + 1)))
+       "UInt32.of_int: 4294967296 is out of range [0, 4294967295]") (fun () ->
+      ignore (UInt32.of_int (UInt32.max_value + 1)))
 
 let test_uint32_negative_rejected () =
   Alcotest.check_raises "UInt32 negative rejected"
-    (Invalid_argument
-       "UInt32.of_int: -1 is out of range [0, 4294967295]")
+    (Invalid_argument "UInt32.of_int: -1 is out of range [0, 4294967295]")
     (fun () -> ignore (UInt32.of_int (-1)))
 
 let test_uint32_roundtrip () =
@@ -212,11 +214,12 @@ let test_uint32_roundtrip () =
 let test_uint32_constants () =
   Alcotest.(check int) "UInt32 zero = 0" 0 (UInt32.to_int UInt32.zero);
   Alcotest.(check int) "UInt32 min_int = 0" 0 (UInt32.to_int UInt32.min_int);
-  Alcotest.(check int) "UInt32 max_int = 4294967295" 4294967295
+  Alcotest.(check int)
+    "UInt32 max_int = 4294967295" 4294967295
     (UInt32.to_int UInt32.max_int);
   Alcotest.(check int) "UInt32 min_value = 0" 0 UInt32.min_value;
-  Alcotest.(check int) "UInt32 max_value = 4294967295" 4294967295
-    UInt32.max_value
+  Alcotest.(check int)
+    "UInt32 max_value = 4294967295" 4294967295 UInt32.max_value
 
 (** {2 Int32 tests} *)
 
@@ -250,16 +253,18 @@ let test_int32_roundtrip () =
     [ -2147483648; -1; 0; 1; 2147483647 ]
 
 let test_int32_constants () =
-  Alcotest.(check int) "Int32 minus_one = -1" (-1)
+  Alcotest.(check int)
+    "Int32 minus_one = -1" (-1)
     (Int32.to_int Int32.minus_one);
-  Alcotest.(check int) "Int32 min_int = -2147483648" (-2147483648)
+  Alcotest.(check int)
+    "Int32 min_int = -2147483648" (-2147483648)
     (Int32.to_int Int32.min_int);
-  Alcotest.(check int) "Int32 max_int = 2147483647" 2147483647
+  Alcotest.(check int)
+    "Int32 max_int = 2147483647" 2147483647
     (Int32.to_int Int32.max_int);
-  Alcotest.(check int) "Int32 min_value = -2147483648" (-2147483648)
-    Int32.min_value;
-  Alcotest.(check int) "Int32 max_value = 2147483647" 2147483647
-    Int32.max_value
+  Alcotest.(check int)
+    "Int32 min_value = -2147483648" (-2147483648) Int32.min_value;
+  Alcotest.(check int) "Int32 max_value = 2147483647" 2147483647 Int32.max_value
 
 (** {2 Gsize tests} *)
 
@@ -273,20 +278,19 @@ let test_gsize_max_int_accepted () =
 
 let test_gsize_negative_rejected () =
   Alcotest.check_raises "Gsize negative rejected"
-    (Invalid_argument "Gsize.of_int: value -1 is negative")
-    (fun () -> ignore (Gsize.of_int (-1)))
+    (Invalid_argument "Gsize.of_int: value -1 is negative") (fun () ->
+      ignore (Gsize.of_int (-1)))
 
 let test_gsize_roundtrip () =
-  Alcotest.(check int) "Gsize roundtrip 42" 42
-    (Gsize.to_int (Gsize.of_int 42))
+  Alcotest.(check int) "Gsize roundtrip 42" 42 (Gsize.to_int (Gsize.of_int 42))
 
 let test_gsize_zero_constant () =
   Alcotest.(check int) "Gsize to_int zero = 0" 0 (Gsize.to_int Gsize.zero)
 
 let test_gsize_constants () =
   Alcotest.(check int) "Gsize min_value = 0" 0 Gsize.min_value;
-  Alcotest.(check int) "Gsize max_value = Stdlib.max_int" Stdlib.max_int
-    Gsize.max_value
+  Alcotest.(check int)
+    "Gsize max_value = Stdlib.max_int" Stdlib.max_int Gsize.max_value
 
 (** {2 Test Suite} *)
 

@@ -4,8 +4,10 @@ open StdLabels
 open Printf
 open Types
 
-module Log = (val Logs.src_log (Logs.Src.create "gir_gen.exclude_list" ~doc:"Exclusion lists and filtering logic for GIR Code Generator"))
-
+module Log =
+  (val Logs.src_log
+         (Logs.Src.create "gir_gen.exclude_list"
+            ~doc:"Exclusion lists and filtering logic for GIR Code Generator"))
 
 let should_skip_method ~find_type_mapping ~enums:_ ~bitfields:_
     (meth : Types.gir_method) =
@@ -36,9 +38,10 @@ let should_skip_method ~find_type_mapping ~enums:_ ~bitfields:_
       meth.Types.parameters
   in
 
-  Log.debug (fun m -> m "Exclude_list.should_skip_method: %s -> %s=%b %b\n"
-    meth.Types.method_name meth.Types.return_type.name has_unknown_return
-    has_unknown_params);
+  Log.debug (fun m ->
+      m "Exclude_list.should_skip_method: %s -> %s=%b %b\n"
+        meth.Types.method_name meth.Types.return_type.name has_unknown_return
+        has_unknown_params);
   has_unknown_return || has_unknown_params
 
 let should_skip_constructor ~find_type_mapping ~enums:_ ~bitfields:_
@@ -50,7 +53,8 @@ let should_skip_constructor ~find_type_mapping ~enums:_ ~bitfields:_
         match find_type_mapping p.Types.param_type with
         | None ->
             eprintf
-              "Skipping constructor %s: unknown parameter type %s for parameter %s\n"
+              "Skipping constructor %s: unknown parameter type %s for \
+               parameter %s\n"
               ctor.Types.ctor_name p.Types.param_type.Types.name
               p.Types.param_name;
             true
@@ -58,6 +62,7 @@ let should_skip_constructor ~find_type_mapping ~enums:_ ~bitfields:_
       ctor.Types.ctor_parameters
   in
 
-  Log.debug (fun m -> m "Exclude_list.should_skip_constructor: %s -> %b\n"
-    ctor.Types.ctor_name has_unknown_params);
+  Log.debug (fun m ->
+      m "Exclude_list.should_skip_constructor: %s -> %b\n" ctor.Types.ctor_name
+        has_unknown_params);
   has_unknown_params

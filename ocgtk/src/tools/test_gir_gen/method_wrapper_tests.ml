@@ -1251,10 +1251,7 @@ let test_cyclic_cluster_skips_parent_inherit () =
 (* Helper: build a GLib.List<Widget> gir_type *)
 let make_glist_of_widget ?(nullable = false) () =
   let elem = make_gir_type ~name:"Widget" ~c_type:"GtkWidget*" () in
-  let arr =
-    make_gir_array ~array_name:"GLib.List"
-      ~element_type:elem ()
-  in
+  let arr = make_gir_array ~array_name:"GLib.List" ~element_type:elem () in
   make_gir_type ~name:"GLib.List" ~c_type:"GList*" ~nullable ~array:arr ()
 
 (** A method that returns GLib.List<Widget> should:
@@ -1266,8 +1263,7 @@ let test_glist_return_wrapping () =
   let get_children_method =
     make_gir_method ~method_name:"get_children"
       ~c_identifier:"gtk_container_get_children"
-      ~return_type:(make_glist_of_widget ())
-      ()
+      ~return_type:(make_glist_of_widget ()) ()
   in
 
   let ml_code =
@@ -1312,8 +1308,7 @@ let test_glist_return_throws_wrapping () =
   let lookup_method =
     make_gir_method ~method_name:"lookup_widgets"
       ~c_identifier:"gtk_container_lookup_widgets"
-      ~return_type:(make_glist_of_widget ())
-      ~throws:true ()
+      ~return_type:(make_glist_of_widget ()) ~throws:true ()
   in
 
   let mli_code =
@@ -1347,19 +1342,18 @@ let test_glist_return_throws_wrapping () =
 
 (** A method that accepts GLib.List<Widget> as a parameter should:
     - have signature accepting GWidget.widget_t list
-    - have body with a List.map let-binding to unwrap to Layer 1 before the call *)
+    - have body with a List.map let-binding to unwrap to Layer 1 before the call
+*)
 let test_glist_param_unwrapping () =
   let ctx = create_test_context () in
 
   let set_children_method =
     make_gir_method ~method_name:"set_children"
-      ~c_identifier:"gtk_container_set_children"
-      ~return_type:void_type
+      ~c_identifier:"gtk_container_set_children" ~return_type:void_type
       ~parameters:
         [
           make_gir_param ~param_name:"children"
-            ~param_type:(make_glist_of_widget ())
-            ();
+            ~param_type:(make_glist_of_widget ()) ();
         ]
       ()
   in
@@ -1439,5 +1433,6 @@ let tests =
     Alcotest.test_case "GList return wrapping" `Quick test_glist_return_wrapping;
     Alcotest.test_case "GList throws return wrapping" `Quick
       test_glist_return_throws_wrapping;
-    Alcotest.test_case "GList param unwrapping" `Quick test_glist_param_unwrapping;
+    Alcotest.test_case "GList param unwrapping" `Quick
+      test_glist_param_unwrapping;
   ]

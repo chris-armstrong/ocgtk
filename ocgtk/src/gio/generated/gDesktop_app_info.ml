@@ -1,90 +1,99 @@
 class type desktop_app_info_t = object
-    inherit GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.app_info_t
-    method get_action_name : string -> string
-    method get_boolean : string -> bool
-    method get_categories : unit -> string option
-    method get_filename : unit -> string option
-    method get_generic_name : unit -> string option
-    method get_is_hidden : unit -> bool
-    method get_keywords : unit -> string array
-    method get_locale_string : string -> string option
-    method get_nodisplay : unit -> bool
-    method get_show_in : string option -> bool
-    method get_startup_wm_class : unit -> string option
-    method get_string : string -> string option
-    method has_key : string -> bool
-    method launch_action : string -> GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.app_launch_context_t option -> unit
-    method list_actions : unit -> string array
-    method as_desktop_app_info : Desktop_app_info.t
+  inherit
+    GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+    .app_info_t
+
+  method get_action_name : string -> string
+  method get_boolean : string -> bool
+  method get_categories : unit -> string option
+  method get_filename : unit -> string option
+  method get_generic_name : unit -> string option
+  method get_is_hidden : unit -> bool
+  method get_keywords : unit -> string array
+  method get_locale_string : string -> string option
+  method get_nodisplay : unit -> bool
+  method get_show_in : string option -> bool
+  method get_startup_wm_class : unit -> string option
+  method get_string : string -> string option
+  method has_key : string -> bool
+
+  method launch_action :
+    string ->
+    GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+    .app_launch_context_t
+    option ->
+    unit
+
+  method list_actions : unit -> string array
+  method as_desktop_app_info : Desktop_app_info.t
 end
 
 (* High-level class for DesktopAppInfo *)
-class desktop_app_info (obj : Desktop_app_info.t) : desktop_app_info_t = object (self)
-  inherit GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.app_info (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.App_info.from_gobject obj)
+class desktop_app_info (obj : Desktop_app_info.t) : desktop_app_info_t =
+  object (self)
+    inherit
+      GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .app_info
+        (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+         .App_info
+         .from_gobject obj)
 
-  method get_action_name : string -> string =
-    fun action_name ->
-      (Desktop_app_info.get_action_name obj action_name)
+    method get_action_name : string -> string =
+      fun action_name -> Desktop_app_info.get_action_name obj action_name
 
-  method get_boolean : string -> bool =
-    fun key ->
-      (Desktop_app_info.get_boolean obj key)
+    method get_boolean : string -> bool =
+      fun key -> Desktop_app_info.get_boolean obj key
 
-  method get_categories : unit -> string option =
-    fun () ->
-      (Desktop_app_info.get_categories obj)
+    method get_categories : unit -> string option =
+      fun () -> Desktop_app_info.get_categories obj
 
-  method get_filename : unit -> string option =
-    fun () ->
-      (Desktop_app_info.get_filename obj)
+    method get_filename : unit -> string option =
+      fun () -> Desktop_app_info.get_filename obj
 
-  method get_generic_name : unit -> string option =
-    fun () ->
-      (Desktop_app_info.get_generic_name obj)
+    method get_generic_name : unit -> string option =
+      fun () -> Desktop_app_info.get_generic_name obj
 
-  method get_is_hidden : unit -> bool =
-    fun () ->
-      (Desktop_app_info.get_is_hidden obj)
+    method get_is_hidden : unit -> bool =
+      fun () -> Desktop_app_info.get_is_hidden obj
 
-  method get_keywords : unit -> string array =
-    fun () ->
-      (Desktop_app_info.get_keywords obj)
+    method get_keywords : unit -> string array =
+      fun () -> Desktop_app_info.get_keywords obj
 
-  method get_locale_string : string -> string option =
-    fun key ->
-      (Desktop_app_info.get_locale_string obj key)
+    method get_locale_string : string -> string option =
+      fun key -> Desktop_app_info.get_locale_string obj key
 
-  method get_nodisplay : unit -> bool =
-    fun () ->
-      (Desktop_app_info.get_nodisplay obj)
+    method get_nodisplay : unit -> bool =
+      fun () -> Desktop_app_info.get_nodisplay obj
 
-  method get_show_in : string option -> bool =
-    fun desktop_env ->
-      (Desktop_app_info.get_show_in obj desktop_env)
+    method get_show_in : string option -> bool =
+      fun desktop_env -> Desktop_app_info.get_show_in obj desktop_env
 
-  method get_startup_wm_class : unit -> string option =
-    fun () ->
-      (Desktop_app_info.get_startup_wm_class obj)
+    method get_startup_wm_class : unit -> string option =
+      fun () -> Desktop_app_info.get_startup_wm_class obj
 
-  method get_string : string -> string option =
-    fun key ->
-      (Desktop_app_info.get_string obj key)
+    method get_string : string -> string option =
+      fun key -> Desktop_app_info.get_string obj key
 
-  method has_key : string -> bool =
-    fun key ->
-      (Desktop_app_info.has_key obj key)
+    method has_key : string -> bool =
+      fun key -> Desktop_app_info.has_key obj key
 
-  method launch_action : string -> GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.app_launch_context_t option -> unit =
-    fun action_name launch_context ->
-      let launch_context = Option.map (fun (c) -> c#as_app_launch_context) launch_context in
-      (Desktop_app_info.launch_action obj action_name launch_context)
+    method launch_action :
+        string ->
+        GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+        .app_launch_context_t
+        option ->
+        unit =
+      fun action_name launch_context ->
+        let launch_context =
+          Option.map (fun c -> c#as_app_launch_context) launch_context
+        in
+        Desktop_app_info.launch_action obj action_name launch_context
 
-  method list_actions : unit -> string array =
-    fun () ->
-      (Desktop_app_info.list_actions obj)
+    method list_actions : unit -> string array =
+      fun () -> Desktop_app_info.list_actions obj
 
     method as_desktop_app_info = obj
-end
+  end
 
 let new_ (desktop_id : string) : desktop_app_info_t =
   let obj_ = Desktop_app_info.new_ desktop_id in
@@ -93,4 +102,3 @@ let new_ (desktop_id : string) : desktop_app_info_t =
 let new_from_filename (filename : string) : desktop_app_info_t =
   let obj_ = Desktop_app_info.new_from_filename filename in
   new desktop_app_info obj_
-

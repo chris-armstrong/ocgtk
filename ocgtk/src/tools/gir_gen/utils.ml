@@ -166,20 +166,20 @@ let internal_namespace_to_module_name (namespace : string) : string =
     in
     first ^ rest
 
-(** Convert a namespace name to the dune library wrapper name.
-    This is the lowercase form used for filenames and dune library names.
-    e.g., "Cairo" -> "ocgtk_cairo", "PangoCairo" -> "ocgtk_pangocairo" *)
+(** Convert a namespace name to the dune library wrapper name. This is the
+    lowercase form used for filenames and dune library names. e.g., "Cairo" ->
+    "ocgtk_cairo", "PangoCairo" -> "ocgtk_pangocairo" *)
 let library_wrapper_name (namespace : string) : string =
   "ocgtk_" ^ String.lowercase_ascii namespace
 
 (** Convert a namespace name to a fully-qualified module path for external
     references. The wrapper module re-exports the library module as a submodule,
-    so the path is [Ocgtk_<ns>.<Ns>].
-    e.g., "Cairo" -> "Ocgtk_cairo.Cairo", "Gdk" -> "Ocgtk_gdk.Gdk",
-    "GdkPixbuf" -> "Ocgtk_gdkpixbuf.GdkPixbuf" *)
+    so the path is [Ocgtk_<ns>.<Ns>]. e.g., "Cairo" -> "Ocgtk_cairo.Cairo",
+    "Gdk" -> "Ocgtk_gdk.Gdk", "GdkPixbuf" -> "Ocgtk_gdkpixbuf.GdkPixbuf" *)
 let external_namespace_to_module_name (namespace : string) : string =
   String.capitalize_ascii (library_wrapper_name namespace)
-  ^ "." ^ String.capitalize_ascii namespace
+  ^ "."
+  ^ String.capitalize_ascii namespace
 
 (* Get the name of the enums module (FIXME: doesn't handle cross-namespace enums) *)
 let enums_module_name (ctx : Types.generation_context) (_ : Types.gir_enum) =
@@ -324,10 +324,12 @@ let gtype_macro_of_type_name type_name =
   let screaming = type_name |> to_snake_case |> String.uppercase_ascii in
   (* Insert _TYPE_ after the first word (namespace prefix) *)
   match String.index_opt screaming '_' with
-  | None -> screaming  (* no underscore — use as-is *)
+  | None -> screaming (* no underscore — use as-is *)
   | Some i ->
       let prefix = String.sub screaming ~pos:0 ~len:i in
-      let rest = String.sub screaming ~pos:(i + 1) ~len:(String.length screaming - i - 1) in
+      let rest =
+        String.sub screaming ~pos:(i + 1) ~len:(String.length screaming - i - 1)
+      in
       prefix ^ "_TYPE_" ^ rest
 
 (** Convert a GLib type name (e.g. "GtkEditable") to its GObject cast macro
@@ -371,20 +373,20 @@ let ocaml_bitfield_name (bitfield : Types.gir_bitfield) =
 let ocaml_enum_name (enum : Types.gir_enum) =
   String.lowercase_ascii enum.enum_name
 
-(** Layer 2 module name for a class: "G" ^ Module_name.
-    e.g., "Button" -> "GButton", "Window" -> "GWindow" *)
+(** Layer 2 module name for a class: "G" ^ Module_name. e.g., "Button" ->
+    "GButton", "Window" -> "GWindow" *)
 let layer2_module_name class_name = "G" ^ module_name_of_class class_name
 
-(** Layer 2 module filename (lowercase first char): "g" ^ Module_name.
-    e.g., "Button" -> "gButton", "Window" -> "gWindow" *)
+(** Layer 2 module filename (lowercase first char): "g" ^ Module_name. e.g.,
+    "Button" -> "gButton", "Window" -> "gWindow" *)
 let layer2_module_filename class_name = "g" ^ module_name_of_class class_name
 
-(** Class type name with _t suffix from a class name.
-    e.g., "Button" -> "button_t", "TextView" -> "text_view_t" *)
+(** Class type name with _t suffix from a class name. e.g., "Button" ->
+    "button_t", "TextView" -> "text_view_t" *)
 let class_type_name class_name = ocaml_class_name class_name ^ "_t"
 
-(** Layer 1 accessor method name.
-    e.g., "Button" -> "as_button", "TextView" -> "as_text_view" *)
+(** Layer 1 accessor method name. e.g., "Button" -> "as_button", "TextView" ->
+    "as_text_view" *)
 let accessor_name class_name = "as_" ^ ocaml_class_name class_name
 
 let name_to_parts ~(ctx : Types.generation_context) name =

@@ -3,7 +3,6 @@
 open Alcotest
 open Ocgtk_gtk.Gtk
 module GMain = Ocgtk_gtk.GMain
-
 module Progress_bar = Wrappers.Progress_bar
 module Scale = Wrappers.Scale
 module Range = Wrappers.Range
@@ -14,20 +13,18 @@ let gtk_available =
   try
     let _ = GMain.init () in
     true
-  with
-  | GMain.Error _ -> false
+  with GMain.Error _ -> false
 
 (* Helper to skip tests when GTK is not available *)
-let require_gtk f () =
-  if not gtk_available then skip ()
-  else f ()
+let require_gtk f () = if not gtk_available then skip () else f ()
 
 (* ========== ProgressBar Tests ========== *)
 
 let test_progress_bar_creation () =
   let pb = Progress_bar.new_ () in
   check bool "progress bar created" true (pb != Obj.magic 0);
-  check (float 0.01) "initial fraction is 0.0" 0.0 (Progress_bar.get_fraction pb)
+  check (float 0.01) "initial fraction is 0.0" 0.0
+    (Progress_bar.get_fraction pb)
 
 let test_progress_bar_fraction () =
   let pb = Progress_bar.new_ () in
@@ -47,7 +44,8 @@ let test_progress_bar_pulse () =
 let test_progress_bar_text () =
   let pb = Progress_bar.new_ () in
   Progress_bar.set_text pb (Some "Loading...");
-  check (option string) "text set" (Some "Loading...") (Progress_bar.get_text pb);
+  check (option string) "text set" (Some "Loading...")
+    (Progress_bar.get_text pb);
   Progress_bar.set_show_text pb true;
   check bool "show_text enabled" true (Progress_bar.get_show_text pb)
 
@@ -180,41 +178,51 @@ let test_level_bar_inverted () =
 
 (* Test suite *)
 let () =
-  run "Range Widget Tests" [
-    "progress_bar", [
-      test_case "creation" `Quick (require_gtk test_progress_bar_creation);
-      test_case "fraction" `Quick (require_gtk test_progress_bar_fraction);
-      test_case "pulse" `Quick (require_gtk test_progress_bar_pulse);
-      test_case "text" `Quick (require_gtk test_progress_bar_text);
-      test_case "inverted" `Quick (require_gtk test_progress_bar_inverted);
-    ];
-    "range", [
-      test_case "fill_level" `Quick (require_gtk test_range_fill_level);
-      test_case "inverted" `Quick (require_gtk test_range_inverted);
-      test_case "restrict_to_fill_level" `Quick (require_gtk test_range_restrict_to_fill_level);
-      test_case "round_digits" `Quick (require_gtk test_range_round_digits);
-      test_case "show_fill_level" `Quick (require_gtk test_range_show_fill_level);
-      test_case "slider_size_fixed" `Quick (require_gtk test_range_slider_size_fixed);
-      test_case "flippable" `Quick (require_gtk test_range_flippable);
-    ];
-    "scale", [
-      test_case "creation_horizontal" `Quick (require_gtk test_scale_creation_horizontal);
-      test_case "creation_vertical" `Quick (require_gtk test_scale_creation_vertical);
-      test_case "digits" `Quick (require_gtk test_scale_digits);
-      test_case "draw_value" `Quick (require_gtk test_scale_draw_value);
-      test_case "has_origin" `Quick (require_gtk test_scale_has_origin);
-      (* test_case "value_pos" `Quick (require_gtk test_scale_value_pos); *)
-      test_case "marks" `Quick (require_gtk test_scale_marks);
-    ];
-    "level_bar", [
-      test_case "creation" `Quick (require_gtk test_level_bar_creation);
-      test_case "value" `Quick (require_gtk test_level_bar_value);
-      test_case "min_max" `Quick (require_gtk test_level_bar_min_max);
-      test_case "inverted" `Quick (require_gtk test_level_bar_inverted);
-    ];
-    (* "high_level", [
+  run "Range Widget Tests"
+    [
+      ( "progress_bar",
+        [
+          test_case "creation" `Quick (require_gtk test_progress_bar_creation);
+          test_case "fraction" `Quick (require_gtk test_progress_bar_fraction);
+          test_case "pulse" `Quick (require_gtk test_progress_bar_pulse);
+          test_case "text" `Quick (require_gtk test_progress_bar_text);
+          test_case "inverted" `Quick (require_gtk test_progress_bar_inverted);
+        ] );
+      ( "range",
+        [
+          test_case "fill_level" `Quick (require_gtk test_range_fill_level);
+          test_case "inverted" `Quick (require_gtk test_range_inverted);
+          test_case "restrict_to_fill_level" `Quick
+            (require_gtk test_range_restrict_to_fill_level);
+          test_case "round_digits" `Quick (require_gtk test_range_round_digits);
+          test_case "show_fill_level" `Quick
+            (require_gtk test_range_show_fill_level);
+          test_case "slider_size_fixed" `Quick
+            (require_gtk test_range_slider_size_fixed);
+          test_case "flippable" `Quick (require_gtk test_range_flippable);
+        ] );
+      ( "scale",
+        [
+          test_case "creation_horizontal" `Quick
+            (require_gtk test_scale_creation_horizontal);
+          test_case "creation_vertical" `Quick
+            (require_gtk test_scale_creation_vertical);
+          test_case "digits" `Quick (require_gtk test_scale_digits);
+          test_case "draw_value" `Quick (require_gtk test_scale_draw_value);
+          test_case "has_origin" `Quick (require_gtk test_scale_has_origin);
+          (* test_case "value_pos" `Quick (require_gtk test_scale_value_pos); *)
+          test_case "marks" `Quick (require_gtk test_scale_marks);
+        ] );
+      ( "level_bar",
+        [
+          test_case "creation" `Quick (require_gtk test_level_bar_creation);
+          test_case "value" `Quick (require_gtk test_level_bar_value);
+          test_case "min_max" `Quick (require_gtk test_level_bar_min_max);
+          test_case "inverted" `Quick (require_gtk test_level_bar_inverted);
+        ] );
+      (* "high_level", [
       test_case "progress_bar" `Quick (require_gtk test_high_level_progress_bar);
       test_case "scale" `Quick (require_gtk test_high_level_scale);
       test_case "level_bar" `Quick (require_gtk test_high_level_level_bar);
     ]; *)
-  ]
+    ]

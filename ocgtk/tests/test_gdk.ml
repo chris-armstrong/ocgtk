@@ -28,13 +28,17 @@ let test_gdk_enums_accessible () =
   ()
 
 let test_gravity_roundtrip () =
-  let (decode, encode) = Gdk4Enums.Conv.gravity in
+  let decode, encode = Gdk4Enums.Conv.gravity in
 
   let test_gravity g =
     let c_val = encode g in
     let g' = decode c_val in
-    check bool (Format.asprintf "gravity %s roundtrip"
-      (match g with `NORTH_WEST -> "NORTH_WEST" | `CENTER -> "CENTER" | _ -> "other"))
+    check bool
+      (Format.asprintf "gravity %s roundtrip"
+         (match g with
+         | `NORTH_WEST -> "NORTH_WEST"
+         | `CENTER -> "CENTER"
+         | _ -> "other"))
       true (g = g')
   in
 
@@ -45,7 +49,7 @@ let test_gravity_roundtrip () =
   test_gravity `STATIC
 
 let test_modifier_type_roundtrip () =
-  let (decode, encode) = Gdk4Enums.Conv.modifier_type in
+  let decode, encode = Gdk4Enums.Conv.modifier_type in
 
   let test_mod m =
     let c_val = encode m in
@@ -60,7 +64,7 @@ let test_modifier_type_roundtrip () =
   test_mod `BUTTON1_MASK
 
 let test_scroll_direction_roundtrip () =
-  let (decode, encode) = Gdk4Enums.Conv.scroll_direction in
+  let decode, encode = Gdk4Enums.Conv.scroll_direction in
 
   let test_dir d =
     let c_val = encode d in
@@ -75,7 +79,7 @@ let test_scroll_direction_roundtrip () =
   test_dir `SMOOTH
 
 let test_input_source_roundtrip () =
-  let (decode, encode) = Gdk4Enums.Conv.input_source in
+  let decode, encode = Gdk4Enums.Conv.input_source in
 
   let test_source s =
     let c_val = encode s in
@@ -132,75 +136,73 @@ let test_display_beep () =
 let test_seat_get_default () =
   match Gdk.Display.get_default () with
   | None -> check bool "skip in headless" true true
-  | Some display ->
+  | Some display -> (
       match Gdk.Display.get_default_seat display with
       | None ->
           (* It's possible there's no default seat *)
           check bool "no default seat" true true
-      | Some _seat ->
-          check bool "has default seat" true true
+      | Some _seat -> check bool "has default seat" true true)
 
 let test_seat_get_pointer () =
   match Gdk.Display.get_default () with
   | None -> check bool "skip in headless" true true
-  | Some display ->
+  | Some display -> (
       match Gdk.Display.get_default_seat display with
       | None -> check bool "no seat" true true
-      | Some seat ->
+      | Some seat -> (
           match Gdk.Seat.get_pointer seat with
           | None ->
               (* It's possible there's no pointer device *)
               check bool "no pointer device" true true
-          | Some _device ->
-              check bool "has pointer device" true true
+          | Some _device -> check bool "has pointer device" true true))
 
 let test_seat_get_keyboard () =
   match Gdk.Display.get_default () with
   | None -> check bool "skip in headless" true true
-  | Some display ->
+  | Some display -> (
       match Gdk.Display.get_default_seat display with
       | None -> check bool "no seat" true true
-      | Some seat ->
+      | Some seat -> (
           match Gdk.Seat.get_keyboard seat with
           | None ->
               (* It's possible there's no keyboard device *)
               check bool "no keyboard device" true true
-          | Some _device ->
-              check bool "has keyboard device" true true
+          | Some _device -> check bool "has keyboard device" true true))
 
 let test_seat_get_display () =
   match Gdk.Display.get_default () with
   | None -> check bool "skip in headless" true true
-  | Some display ->
+  | Some display -> (
       match Gdk.Display.get_default_seat display with
       | None -> check bool "no seat" true true
       | Some seat ->
           let seat_display = Gdk.Seat.get_display seat in
           (* The seat's display should be the same as the original *)
-          check bool "seat display matches" true (seat_display == display)
+          check bool "seat display matches" true (seat_display == display))
 
 (** {2 Device Tests} *)
 
 let test_device_get_name () =
   match Gdk.Display.get_default () with
   | None -> check bool "skip in headless" true true
-  | Some display ->
+  | Some display -> (
       match Gdk.Display.get_default_seat display with
       | None -> check bool "no seat" true true
-      | Some seat ->
+      | Some seat -> (
           match Gdk.Seat.get_pointer seat with
           | None -> check bool "no pointer" true true
           | Some device ->
               let name = Gdk.Device.get_name device in
-              check bool "device has non-empty name" true (String.length name > 0)
+              check bool "device has non-empty name" true
+                (String.length name > 0)))
 
 let test_device_get_source () =
   match Gdk.Display.get_default () with
   | None -> check bool "skip in headless" true true
-  | Some display ->
+  | Some display -> (
       match Gdk.Display.get_default_seat display with
       | None -> check bool "no seat" true true
-      | Some seat ->
+      | Some seat -> (
           match Gdk.Seat.get_pointer seat with
           | None -> check bool "no pointer" true true
           | Some device ->
@@ -208,35 +210,37 @@ let test_device_get_source () =
               (* Pointer device should have a valid source type *)
               check bool "device has source" true
                 (match source with
-                 | `MOUSE | `PEN | `TOUCHSCREEN | `TOUCHPAD | `TRACKPOINT | _ -> true)
+                | `MOUSE | `PEN | `TOUCHSCREEN | `TOUCHPAD | `TRACKPOINT | _ ->
+                    true)))
 
 let test_device_get_seat () =
   match Gdk.Display.get_default () with
   | None -> check bool "skip in headless" true true
-  | Some display ->
+  | Some display -> (
       match Gdk.Display.get_default_seat display with
       | None -> check bool "no seat" true true
-      | Some seat ->
+      | Some seat -> (
           match Gdk.Seat.get_pointer seat with
           | None -> check bool "no pointer" true true
           | Some device ->
               let device_seat = Gdk.Device.get_seat device in
               (* The device's seat should be the same as the original *)
-              check bool "device seat matches" true (device_seat == seat)
+              check bool "device seat matches" true (device_seat == seat)))
 
 let test_device_get_display () =
   match Gdk.Display.get_default () with
   | None -> check bool "skip in headless" true true
-  | Some display ->
+  | Some display -> (
       match Gdk.Display.get_default_seat display with
       | None -> check bool "no seat" true true
-      | Some seat ->
+      | Some seat -> (
           match Gdk.Seat.get_pointer seat with
           | None -> check bool "no pointer" true true
           | Some device ->
               let device_display = Gdk.Device.get_display device in
               (* The device's display should be the same as the original *)
-              check bool "device display matches" true (device_display == display)
+              check bool "device display matches" true
+                (device_display == display)))
 
 (** {2 Rectangle Tests} *)
 
@@ -306,7 +310,8 @@ let test_rgba_to_string () =
   (* GdkRGBA to_string formats as "rgb(r,g,b)" or "rgba(r,g,b,a)" *)
   check bool "to_string not empty" true (String.length str > 0);
   check bool "to_string contains rgb" true
-    (String.contains str 'r' && String.contains str 'g' && String.contains str 'b')
+    (String.contains str 'r' && String.contains str 'g'
+   && String.contains str 'b')
 
 let test_rgba_parse () =
   match Gdk.RGBA.parse "rgb(255,0,0)" with
@@ -327,24 +332,24 @@ let test_rgba_parse_invalid () =
 let test_cursor_create_from_name () =
   match Gdk.Display.get_default () with
   | None -> check bool "skip in headless" true true
-  | Some display ->
+  | Some display -> (
       (* Try to create a standard cursor *)
       match Gdk.Cursor.create_from_name "default" display with
       | None ->
           (* It's OK if cursor creation fails in some environments *)
           check bool "cursor creation may fail" true true
-      | Some _cursor ->
-          check bool "cursor created" true true
+      | Some _cursor -> check bool "cursor created" true true)
 
 let test_cursor_create_various_names () =
   match Gdk.Display.get_default () with
   | None -> check bool "skip in headless" true true
   | Some display ->
-      let cursor_names = ["pointer"; "hand"; "wait"; "text"; "crosshair"] in
-      List.iter (fun name ->
-        match Gdk.Cursor.create_from_name name display with
-        | None | Some _ -> () (* Both outcomes are acceptable *)
-      ) cursor_names;
+      let cursor_names = [ "pointer"; "hand"; "wait"; "text"; "crosshair" ] in
+      List.iter
+        (fun name ->
+          match Gdk.Cursor.create_from_name name display with
+          | None | Some _ -> () (* Both outcomes are acceptable *))
+        cursor_names;
       check bool "cursor creation attempts complete" true true
 
 (** {2 Integration Tests} *)
@@ -353,10 +358,10 @@ let test_display_to_device_chain () =
   (* Test the chain: Display -> Seat -> Device *)
   match Gdk.Display.get_default () with
   | None -> check bool "skip in headless" true true
-  | Some display ->
+  | Some display -> (
       match Gdk.Display.get_default_seat display with
       | None -> check bool "no seat" true true
-      | Some seat ->
+      | Some seat -> (
           match Gdk.Seat.get_pointer seat with
           | None -> check bool "no pointer" true true
           | Some device ->
@@ -364,84 +369,91 @@ let test_display_to_device_chain () =
               let device_display = Gdk.Device.get_display device in
               let device_seat = Gdk.Device.get_seat device in
               check bool "display chain" true (device_display == display);
-              check bool "seat chain" true (device_seat == seat)
+              check bool "seat chain" true (device_seat == seat)))
 
 let test_dual_device_access () =
   (* Test accessing both pointer and keyboard from same seat *)
   match Gdk.Display.get_default () with
   | None -> check bool "skip in headless" true true
-  | Some display ->
+  | Some display -> (
       match Gdk.Display.get_default_seat display with
       | None -> check bool "no seat" true true
-      | Some seat ->
+      | Some seat -> (
           let pointer = Gdk.Seat.get_pointer seat in
           let keyboard = Gdk.Seat.get_keyboard seat in
-          match pointer, keyboard with
+          match (pointer, keyboard) with
           | Some p, Some k ->
               (* Both devices should have same display *)
               let p_display = Gdk.Device.get_display p in
               let k_display = Gdk.Device.get_display k in
               check bool "same display" true (p_display == k_display)
-          | _ ->
-              check bool "devices may not exist" true true
+          | _ -> check bool "devices may not exist" true true))
 
 (** {2 Test Suite} *)
 
 let () =
-  Alcotest.run "GDK Module Tests (Phase 2.4)" [
-    "Enums (Phase 1.3)", [
-      test_case "enum modules accessible" `Quick test_gdk_enums_accessible;
-      test_case "gravity roundtrip" `Quick test_gravity_roundtrip;
-      test_case "modifier type roundtrip" `Quick test_modifier_type_roundtrip;
-      test_case "scroll direction roundtrip" `Quick test_scroll_direction_roundtrip;
-      test_case "input source roundtrip" `Quick test_input_source_roundtrip;
-    ];
-
-    "Display Management", [
-      test_case "get default display" `Quick test_display_get_default;
-      test_case "display name" `Quick test_display_name;
-      test_case "display flush" `Quick test_display_flush;
-      test_case "display beep" `Quick test_display_beep;
-    ];
-
-    "Seat Management (GDK4)", [
-      test_case "get default seat" `Quick test_seat_get_default;
-      test_case "seat get pointer" `Quick test_seat_get_pointer;
-      test_case "seat get keyboard" `Quick test_seat_get_keyboard;
-      test_case "seat get display" `Quick test_seat_get_display;
-    ];
-
-    "Device Management", [
-      test_case "device get name" `Quick test_device_get_name;
-      test_case "device get source" `Quick test_device_get_source;
-      test_case "device get seat" `Quick test_device_get_seat;
-      test_case "device get display" `Quick test_device_get_display;
-    ];
-
-    "Rectangle Utilities", [
-      test_case "create rectangle" `Quick test_rectangle_create;
-      test_case "intersect with overlap" `Quick test_rectangle_intersect_overlap;
-      test_case "intersect no overlap" `Quick test_rectangle_intersect_no_overlap;
-      test_case "union rectangles" `Quick test_rectangle_union;
-    ];
-
-    "RGBA Color Operations", [
-      test_case "create RGBA" `Quick test_rgba_create;
-      test_case "white color" `Quick test_rgba_white;
-      test_case "black color" `Quick test_rgba_black;
-      test_case "transparent color" `Quick test_rgba_transparent;
-      test_case "to_string" `Quick test_rgba_to_string;
-      test_case "parse RGB" `Quick test_rgba_parse;
-      test_case "parse invalid" `Quick test_rgba_parse_invalid;
-    ];
-
-    "Cursor Management", [
-      test_case "create from name" `Quick test_cursor_create_from_name;
-      test_case "various cursor names" `Quick test_cursor_create_various_names;
-    ];
-
-    "Integration Tests", [
-      test_case "display to device chain" `Quick test_display_to_device_chain;
-      test_case "dual device access" `Quick test_dual_device_access;
-    ];
-  ]
+  Alcotest.run "GDK Module Tests (Phase 2.4)"
+    [
+      ( "Enums (Phase 1.3)",
+        [
+          test_case "enum modules accessible" `Quick test_gdk_enums_accessible;
+          test_case "gravity roundtrip" `Quick test_gravity_roundtrip;
+          test_case "modifier type roundtrip" `Quick
+            test_modifier_type_roundtrip;
+          test_case "scroll direction roundtrip" `Quick
+            test_scroll_direction_roundtrip;
+          test_case "input source roundtrip" `Quick test_input_source_roundtrip;
+        ] );
+      ( "Display Management",
+        [
+          test_case "get default display" `Quick test_display_get_default;
+          test_case "display name" `Quick test_display_name;
+          test_case "display flush" `Quick test_display_flush;
+          test_case "display beep" `Quick test_display_beep;
+        ] );
+      ( "Seat Management (GDK4)",
+        [
+          test_case "get default seat" `Quick test_seat_get_default;
+          test_case "seat get pointer" `Quick test_seat_get_pointer;
+          test_case "seat get keyboard" `Quick test_seat_get_keyboard;
+          test_case "seat get display" `Quick test_seat_get_display;
+        ] );
+      ( "Device Management",
+        [
+          test_case "device get name" `Quick test_device_get_name;
+          test_case "device get source" `Quick test_device_get_source;
+          test_case "device get seat" `Quick test_device_get_seat;
+          test_case "device get display" `Quick test_device_get_display;
+        ] );
+      ( "Rectangle Utilities",
+        [
+          test_case "create rectangle" `Quick test_rectangle_create;
+          test_case "intersect with overlap" `Quick
+            test_rectangle_intersect_overlap;
+          test_case "intersect no overlap" `Quick
+            test_rectangle_intersect_no_overlap;
+          test_case "union rectangles" `Quick test_rectangle_union;
+        ] );
+      ( "RGBA Color Operations",
+        [
+          test_case "create RGBA" `Quick test_rgba_create;
+          test_case "white color" `Quick test_rgba_white;
+          test_case "black color" `Quick test_rgba_black;
+          test_case "transparent color" `Quick test_rgba_transparent;
+          test_case "to_string" `Quick test_rgba_to_string;
+          test_case "parse RGB" `Quick test_rgba_parse;
+          test_case "parse invalid" `Quick test_rgba_parse_invalid;
+        ] );
+      ( "Cursor Management",
+        [
+          test_case "create from name" `Quick test_cursor_create_from_name;
+          test_case "various cursor names" `Quick
+            test_cursor_create_various_names;
+        ] );
+      ( "Integration Tests",
+        [
+          test_case "display to device chain" `Quick
+            test_display_to_device_chain;
+          test_case "dual device access" `Quick test_dual_device_access;
+        ] );
+    ]

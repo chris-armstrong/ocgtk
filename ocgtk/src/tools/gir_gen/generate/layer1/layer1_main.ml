@@ -104,8 +104,8 @@ let generate_module_implementation ~ctx ~output_mode ~entity ~base_type
       ~constructors:
         (if List.length entity.constructors > 0 then Some entity.constructors
          else None)
-      ~methods:entity.methods ~properties:entity.properties
-      ?from_gobject_c_name inner_buf;
+      ~methods:entity.methods ~properties:entity.properties ?from_gobject_c_name
+      inner_buf;
     Buffer.contents inner_buf
   in
   Layer1_helpers.print_indent single_content buf
@@ -145,8 +145,8 @@ let generate_combined_module_entity ~ctx ~output_mode ~entity
 
 (* Generate combined modules for cyclic dependencies *)
 let generate_combined_ml_modules ~ctx ~output_mode ~entities
-    ~parent_chain_for_entity
-    ?(from_gobject_c_name_for_entity = fun _ -> None) () =
+    ~parent_chain_for_entity ?(from_gobject_c_name_for_entity = fun _ -> None)
+    () =
   let buf = Buffer.create 4096 in
 
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";

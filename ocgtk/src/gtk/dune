@@ -52,4 +52,9 @@
    -Wno-int-conversion))
  (c_library_flags
   (:include clink-gtk4.sexp))
- (libraries ocgtk_common ocgtk_gtk_generated_stubs threads ocgtk_gdk ocgtk_pango))
+ (libraries
+  ocgtk_common
+  ocgtk_gtk_generated_stubs
+  threads
+  ocgtk_gdk
+  ocgtk_pango))

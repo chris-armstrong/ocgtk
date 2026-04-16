@@ -13,11 +13,10 @@
 
 (** GVariantType - Type description for GVariant
 
-    GVariantType describes the type of a GVariant value.
-    It is used for type checking and construction of complex types.
-    
-    This is an immutable type that uses g_variant_type_copy/free.
-*)
+    GVariantType describes the type of a GVariant value. It is used for type
+    checking and construction of complex types.
+
+    This is an immutable type that uses g_variant_type_copy/free. *)
 
 (** {2 Types} *)
 

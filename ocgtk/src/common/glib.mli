@@ -17,8 +17,7 @@
     - Main event loop
     - Timeout and idle callbacks
     - Character set conversion (UTF-8)
-    - String utilities
-*)
+    - String utilities *)
 
 type unichar = int
 (** Unicode character (UTF-32 code point) *)
@@ -38,16 +37,16 @@ module Main : sig
   (** Main loop handle *)
 
   val create : bool -> t
-  (** [create is_running] creates a new main loop.
-      If [is_running] is [true], the loop is immediately marked as running. *)
+  (** [create is_running] creates a new main loop. If [is_running] is [true],
+      the loop is immediately marked as running. *)
 
   val run : t -> unit
   (** [run loop] runs the main loop until {!quit} is called. *)
 
   val iteration : bool -> bool
-  (** [iteration may_block] runs a single iteration of the main context.
-      If [may_block] is [true], the iteration can block waiting for events.
-      Returns [true] if events were processed. *)
+  (** [iteration may_block] runs a single iteration of the main context. If
+      [may_block] is [true], the iteration can block waiting for events. Returns
+      [true] if events were processed. *)
 
   val pending : unit -> bool
   (** Returns [true] if events are pending in the main loop *)
@@ -59,13 +58,13 @@ module Main : sig
   (** [quit loop] stops a running main loop *)
 
   val destroy : t -> unit
-  (** [destroy loop] decrements the reference count on the loop.
-      When the reference count drops to zero, the loop is freed. *)
+  (** [destroy loop] decrements the reference count on the loop. When the
+      reference count drops to zero, the loop is freed. *)
 end
 
 (** Priority levels for timeouts and idle callbacks *)
 val int_of_priority :
-  [< `HIGH | `DEFAULT | `HIGH_IDLE | `DEFAULT_IDLE | `LOW] -> int
+  [< `HIGH | `DEFAULT | `HIGH_IDLE | `DEFAULT_IDLE | `LOW ] -> int
 (** Convert priority variant to integer value *)
 
 (** {2 Timeout Callbacks} *)
@@ -77,9 +76,9 @@ module Timeout : sig
   (** Timeout source ID *)
 
   val add : ?prio:int -> ms:int -> callback:(unit -> bool) -> unit -> id
-  (** [add ~ms ~callback] adds a timeout function that will be called
-      every [ms] milliseconds. The [callback] should return [true] to
-      continue being called, or [false] to be removed.
+  (** [add ~ms ~callback] adds a timeout function that will be called every [ms]
+      milliseconds. The [callback] should return [true] to continue being
+      called, or [false] to be removed.
 
       @param prio Optional priority (default: G_PRIORITY_DEFAULT)
       @param ms Interval in milliseconds
@@ -98,9 +97,9 @@ module Idle : sig
   (** Idle source ID *)
 
   val add : ?prio:int -> (unit -> bool) -> id
-  (** [add callback] adds a function to be called whenever there are
-      no higher priority events pending in the main loop. The [callback]
-      should return [true] to continue being called, or [false] to be removed.
+  (** [add callback] adds a function to be called whenever there are no higher
+      priority events pending in the main loop. The [callback] should return
+      [true] to continue being called, or [false] to be removed.
 
       @param prio Optional priority (default: G_PRIORITY_DEFAULT_IDLE) *)
 
@@ -114,32 +113,31 @@ end
     @see <https://docs.gtk.org/glib/convert.html> Character Set Conversion *)
 module Convert : sig
   type error =
-    | NO_CONVERSION (** Conversion between character sets not supported *)
-    | ILLEGAL_SEQUENCE (** Invalid byte sequence in conversion input *)
-    | FAILED (** Conversion failed for some reason *)
-    | PARTIAL_INPUT (** Partial character sequence at end of input *)
-    | BAD_URI (** URI is invalid *)
-    | NOT_ABSOLUTE_PATH (** Pathname is not an absolute path *)
+    | NO_CONVERSION  (** Conversion between character sets not supported *)
+    | ILLEGAL_SEQUENCE  (** Invalid byte sequence in conversion input *)
+    | FAILED  (** Conversion failed for some reason *)
+    | PARTIAL_INPUT  (** Partial character sequence at end of input *)
+    | BAD_URI  (** URI is invalid *)
+    | NOT_ABSOLUTE_PATH  (** Pathname is not an absolute path *)
 
   exception Error of error * string
   (** Exception raised when conversion fails *)
 
-  val convert :
-    string -> to_codeset:string -> from_codeset:string -> string
-  (** [convert str ~to_codeset ~from_codeset] converts [str] from
-      [from_codeset] to [to_codeset].
+  val convert : string -> to_codeset:string -> from_codeset:string -> string
+  (** [convert str ~to_codeset ~from_codeset] converts [str] from [from_codeset]
+      to [to_codeset].
       @raise Error if conversion fails *)
 
   val locale_to_utf8 : string -> string
-  (** [locale_to_utf8 str] converts [str] from the current locale's
-      encoding to UTF-8. If the locale is already UTF-8, validates
-      and returns the string unmodified.
+  (** [locale_to_utf8 str] converts [str] from the current locale's encoding to
+      UTF-8. If the locale is already UTF-8, validates and returns the string
+      unmodified.
       @raise Error if conversion fails or string is invalid *)
 
   val locale_from_utf8 : string -> string
-  (** [locale_from_utf8 str] converts [str] from UTF-8 to the current
-      locale's encoding. If the locale is already UTF-8, validates
-      and returns the string unmodified.
+  (** [locale_from_utf8 str] converts [str] from UTF-8 to the current locale's
+      encoding. If the locale is already UTF-8, validates and returns the string
+      unmodified.
       @raise Error if conversion fails or string is invalid UTF-8 *)
 
   val filename_to_utf8 : string -> string
@@ -148,14 +146,14 @@ module Convert : sig
       @raise Error if conversion fails *)
 
   val filename_from_utf8 : string -> string
-  (** [filename_from_utf8 filename] converts a filename from UTF-8 to
-      the filesystem encoding.
+  (** [filename_from_utf8 filename] converts a filename from UTF-8 to the
+      filesystem encoding.
       @raise Error if conversion fails *)
 
   val get_charset : unit -> bool * string
-  (** [get_charset ()] returns [(is_utf8, charset)] where [is_utf8]
-      is [true] if the current locale uses UTF-8 encoding, and
-      [charset] is the name of the character set. *)
+  (** [get_charset ()] returns [(is_utf8, charset)] where [is_utf8] is [true] if
+      the current locale uses UTF-8 encoding, and [charset] is the name of the
+      character set. *)
 end
 
 (** {2 UTF-8 String Utilities} *)
@@ -170,16 +168,16 @@ end
 (** {2 Application and Program Names} *)
 
 val get_prgname : unit -> string option
-(** Get the name of the program. This is typically argv[0].
-    Returns [None] if the program name has not been set. *)
+(** Get the name of the program. This is typically argv[0]. Returns [None] if
+    the program name has not been set. *)
 
 val set_prgname : string -> unit
 (** Set the name of the program. This name should not be localized. *)
 
 val get_application_name : unit -> string option
-(** Get the human-readable application name for display in the UI.
-    Returns [None] if the application name has not been set. *)
+(** Get the human-readable application name for display in the UI. Returns
+    [None] if the application name has not been set. *)
 
 val set_application_name : string -> unit
-(** Set a human-readable name for the application. This name should
-    be localized if possible and is intended for display to the user. *)
+(** Set a human-readable name for the application. This name should be localized
+    if possible and is intended for display to the user. *)

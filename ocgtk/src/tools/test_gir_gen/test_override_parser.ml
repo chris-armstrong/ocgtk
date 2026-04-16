@@ -6,21 +6,19 @@ let parse_ok content =
   match Gir_gen_lib.Override_parser.parse_overrides_from_string content with
   | Ok ov -> ov
   | Error e ->
-      Alcotest.fail (Printf.sprintf "Parse failed: %s" (Gir_gen_lib.Override_parser.format_error e))
+      Alcotest.fail
+        (Printf.sprintf "Parse failed: %s"
+           (Gir_gen_lib.Override_parser.format_error e))
 
 let parse_err content =
   match Gir_gen_lib.Override_parser.parse_overrides_from_string content with
   | Ok _ -> Alcotest.fail "Expected parse error but got Ok"
   | Error e -> e
 
-let hd_exn msg = function
-  | [] -> Alcotest.fail msg
-  | x :: _ -> x
+let hd_exn msg = function [] -> Alcotest.fail msg | x :: _ -> x
 
 let find_exn msg pred list =
-  match List.find_opt pred list with
-  | None -> Alcotest.fail msg
-  | Some x -> x
+  match List.find_opt pred list with None -> Alcotest.fail msg | Some x -> x
 
 let test_minimal () =
   let ov = parse_ok "(overrides (library \"Gtk\"))" in
@@ -45,27 +43,35 @@ let test_class_ignore () =
 let test_class_with_method_overrides () =
   let ov =
     parse_ok
-      "(overrides (library \"Gtk\") \
-       (class Widget \
-         (method create (ignore)) \
-         (method notify_destroy (version \"4.53\"))))"
+      "(overrides (library \"Gtk\") (class Widget (method create (ignore)) \
+       (method notify_destroy (version \"4.53\"))))"
   in
   Alcotest.(check int) "classes" 1 (List.length ov.classes);
   let c = hd_exn "Expected one class" ov.classes in
   Alcotest.(check int) "methods" 2 (List.length c.methods);
-  let m1 = find_exn "Expected method 'create'" (fun m -> String.equal m.component_name "create") c.methods in
-  let m2 = find_exn "Expected method 'notify_destroy'" (fun m -> String.equal m.component_name "notify_destroy") c.methods in
-  Alcotest.(check bool) "create ignored" true (equal_override_action m1.action Ignore);
-  Alcotest.(check bool) "notify_destroy version" true
-    (equal_override_action m2.action (Set_version { vs_version = "4.53"; vs_namespace = None }))
+  let m1 =
+    find_exn "Expected method 'create'"
+      (fun m -> String.equal m.component_name "create")
+      c.methods
+  in
+  let m2 =
+    find_exn "Expected method 'notify_destroy'"
+      (fun m -> String.equal m.component_name "notify_destroy")
+      c.methods
+  in
+  Alcotest.(check bool)
+    "create ignored" true
+    (equal_override_action m1.action Ignore);
+  Alcotest.(check bool)
+    "notify_destroy version" true
+    (equal_override_action m2.action
+       (Set_version { vs_version = "4.53"; vs_namespace = None }))
 
 let test_class_with_constructor_and_property () =
   let ov =
     parse_ok
-      "(overrides (library \"Gtk\") \
-       (class Button \
-         (constructor new (ignore)) \
-         (property sensitive (version \"4.10\"))))"
+      "(overrides (library \"Gtk\") (class Button (constructor new (ignore)) \
+       (property sensitive (version \"4.10\"))))"
   in
   let c = hd_exn "Expected one class" ov.classes in
   Alcotest.(check int) "constructors" 1 (List.length c.constructors);
@@ -78,8 +84,7 @@ let test_class_with_constructor_and_property () =
 let test_class_with_signal () =
   let ov =
     parse_ok
-      "(overrides (library \"Gtk\") \
-       (class Widget (signal destroy (ignore))))"
+      "(overrides (library \"Gtk\") (class Widget (signal destroy (ignore))))"
   in
   let c = hd_exn "Expected one class" ov.classes in
   Alcotest.(check int) "signals" 1 (List.length c.signals)
@@ -87,10 +92,8 @@ let test_class_with_signal () =
 let test_interface_override () =
   let ov =
     parse_ok
-      "(overrides (library \"Gtk\") \
-       (interface Actionable \
-         (method get_action_name (ignore)) \
-         (property action_name (version \"4.12\"))))"
+      "(overrides (library \"Gtk\") (interface Actionable (method \
+       get_action_name (ignore)) (property action_name (version \"4.12\"))))"
   in
   Alcotest.(check int) "interfaces" 1 (List.length ov.interfaces);
   let i = hd_exn "Expected one interface" ov.interfaces in
@@ -101,13 +104,9 @@ let test_interface_override () =
 let test_record_override () =
   let ov =
     parse_ok
-      "(overrides (library \"Gtk\") \
-       (record TextIter \
-         (field user_data (ignore)) \
-         (field start (version \"4.14\")) \
-         (constructor new (ignore)) \
-         (method get_text (version \"4.14\")) \
-         (function get_slice (ignore))))"
+      "(overrides (library \"Gtk\") (record TextIter (field user_data \
+       (ignore)) (field start (version \"4.14\")) (constructor new (ignore)) \
+       (method get_text (version \"4.14\")) (function get_slice (ignore))))"
   in
   Alcotest.(check int) "records" 1 (List.length ov.records);
   let r = hd_exn "Expected one record" ov.records in
@@ -120,11 +119,8 @@ let test_record_override () =
 let test_enum_override () =
   let ov =
     parse_ok
-      "(overrides (library \"Gtk\") \
-       (enumeration RGBA \
-         (member RED (ignore)) \
-         (member GREEN (version \"4.14\")) \
-         (function parse (ignore))))"
+      "(overrides (library \"Gtk\") (enumeration RGBA (member RED (ignore)) \
+       (member GREEN (version \"4.14\")) (function parse (ignore))))"
   in
   Alcotest.(check int) "enums" 1 (List.length ov.enums);
   let e = hd_exn "Expected one enum" ov.enums in
@@ -135,10 +131,8 @@ let test_enum_override () =
 let test_bitfield_override () =
   let ov =
     parse_ok
-      "(overrides (library \"Gtk\") \
-       (bitfield StateFlags \
-         (member ACTIVE (ignore)) \
-         (member BACKDROP (version \"4.14\"))))"
+      "(overrides (library \"Gtk\") (bitfield StateFlags (member ACTIVE \
+       (ignore)) (member BACKDROP (version \"4.14\"))))"
   in
   Alcotest.(check int) "bitfields" 1 (List.length ov.bitfields);
   let b = hd_exn "Expected one bitfield" ov.bitfields in
@@ -147,9 +141,7 @@ let test_bitfield_override () =
 
 let test_standalone_function () =
   let ov =
-    parse_ok
-      "(overrides (library \"Gtk\") \
-       (function gtk_show_uri (ignore)))"
+    parse_ok "(overrides (library \"Gtk\") (function gtk_show_uri (ignore)))"
   in
   Alcotest.(check int) "functions" 1 (List.length ov.functions);
   let f = hd_exn "Expected one function" ov.functions in
@@ -158,10 +150,8 @@ let test_standalone_function () =
 let test_multiple_entities () =
   let ov =
     parse_ok
-      "(overrides (library \"Gtk\") \
-       (class Widget (ignore)) \
-       (class Button (ignore)) \
-       (interface Actionable (ignore)))"
+      "(overrides (library \"Gtk\") (class Widget (ignore)) (class Button \
+       (ignore)) (interface Actionable (ignore)))"
   in
   Alcotest.(check int) "classes" 2 (List.length ov.classes);
   Alcotest.(check int) "interfaces" 1 (List.length ov.interfaces)
@@ -169,8 +159,8 @@ let test_multiple_entities () =
 let test_class_ignore_precedence () =
   let ov =
     parse_ok
-      "(overrides (library \"Gtk\") \
-       (class Widget (ignore) (method foo (ignore))))"
+      "(overrides (library \"Gtk\") (class Widget (ignore) (method foo \
+       (ignore))))"
   in
   let c = hd_exn "Expected one class" ov.classes in
   Alcotest.(check bool) "class ignored" true (Option.is_some c.class_action);
@@ -179,64 +169,63 @@ let test_class_ignore_precedence () =
 let test_duplicate_class () =
   let err =
     parse_err
-      "(overrides (library \"Gtk\") \
-       (class Widget (ignore)) \
-       (class Widget (ignore)))"
+      "(overrides (library \"Gtk\") (class Widget (ignore)) (class Widget \
+       (ignore)))"
   in
   match err with
   | Duplicate_entity { kind; name } ->
       Alcotest.(check string) "kind" "class" kind;
       Alcotest.(check string) "name" "Widget" name
   | e ->
-      Alcotest.fail (Printf.sprintf "Expected Duplicate_entity, got: %s" (Gir_gen_lib.Override_parser.format_error e))
+      Alcotest.fail
+        (Printf.sprintf "Expected Duplicate_entity, got: %s"
+           (Gir_gen_lib.Override_parser.format_error e))
 
 let test_duplicate_interface () =
   let err =
     parse_err
-      "(overrides (library \"Gtk\") \
-       (interface Actionable (ignore)) \
-       (interface Actionable (ignore)))"
+      "(overrides (library \"Gtk\") (interface Actionable (ignore)) (interface \
+       Actionable (ignore)))"
   in
   match err with
   | Duplicate_entity { kind; name } ->
       Alcotest.(check string) "kind" "interface" kind;
       Alcotest.(check string) "name" "Actionable" name
   | e ->
-      Alcotest.fail (Printf.sprintf "Expected Duplicate_entity, got: %s" (Gir_gen_lib.Override_parser.format_error e))
+      Alcotest.fail
+        (Printf.sprintf "Expected Duplicate_entity, got: %s"
+           (Gir_gen_lib.Override_parser.format_error e))
 
 let test_duplicate_function () =
   let err =
     parse_err
-      "(overrides (library \"Gtk\") \
-        (function gtk_show_uri (ignore)) \
-        (function gtk_show_uri (ignore)))"
+      "(overrides (library \"Gtk\") (function gtk_show_uri (ignore)) (function \
+       gtk_show_uri (ignore)))"
   in
   match err with
   | Duplicate_entity { kind; name } ->
       Alcotest.(check string) "kind" "function" kind;
       Alcotest.(check string) "name" "gtk_show_uri" name
   | e ->
-      Alcotest.fail (Printf.sprintf "Expected Duplicate_entity, got: %s" (Gir_gen_lib.Override_parser.format_error e))
+      Alcotest.fail
+        (Printf.sprintf "Expected Duplicate_entity, got: %s"
+           (Gir_gen_lib.Override_parser.format_error e))
 
 let test_unknown_entity () =
-  let err =
-    parse_err
-      "(overrides (library \"Gtk\") \
-       (widget Foo (ignore)))"
-  in
+  let err = parse_err "(overrides (library \"Gtk\") (widget Foo (ignore)))" in
   match err with
-  | Unknown_entity_kind kind ->
-      Alcotest.(check string) "kind" "widget" kind
+  | Unknown_entity_kind kind -> Alcotest.(check string) "kind" "widget" kind
   | e ->
-      Alcotest.fail (Printf.sprintf "Expected Unknown_entity_kind, got: %s" (Gir_gen_lib.Override_parser.format_error e))
+      Alcotest.fail
+        (Printf.sprintf "Expected Unknown_entity_kind, got: %s"
+           (Gir_gen_lib.Override_parser.format_error e))
 
 let test_bare_name_member_in_enum () =
   (* (foo (version "X.Y")) is missing the "member" keyword — should error *)
   let err =
     parse_err
-      "(overrides (library \"Gtk\") \
-       (enumeration StateFlags \
-         (foo (version \"4.14\"))))"
+      "(overrides (library \"Gtk\") (enumeration StateFlags (foo (version \
+       \"4.14\"))))"
   in
   match err with
   | Unknown_component_kind { entity_name; kind; _ } ->
@@ -250,9 +239,8 @@ let test_bare_name_member_in_enum () =
 let test_bare_name_member_in_bitfield () =
   let err =
     parse_err
-      "(overrides (library \"Gtk\") \
-       (bitfield StateFlags \
-         (focused (version \"4.16\"))))"
+      "(overrides (library \"Gtk\") (bitfield StateFlags (focused (version \
+       \"4.16\"))))"
   in
   match err with
   | Unknown_component_kind { entity_name; kind; _ } ->
@@ -267,9 +255,7 @@ let test_wrong_kind_in_class () =
   (* "field" is not valid inside a class body *)
   let err =
     parse_err
-      "(overrides (library \"Gtk\") \
-       (class Widget \
-         (field foo (ignore))))"
+      "(overrides (library \"Gtk\") (class Widget (field foo (ignore))))"
   in
   match err with
   | Unknown_component_kind { entity_name; kind; _ } ->
@@ -284,9 +270,8 @@ let test_wrong_kind_in_record () =
   (* "signal" is not valid inside a record body *)
   let err =
     parse_err
-      "(overrides (library \"Gtk\") \
-       (record TextIter \
-         (signal changed (ignore))))"
+      "(overrides (library \"Gtk\") (record TextIter (signal changed \
+       (ignore))))"
   in
   match err with
   | Unknown_component_kind { entity_name; kind; _ } ->
@@ -300,42 +285,48 @@ let test_wrong_kind_in_record () =
 let test_invalid_version () =
   let err =
     parse_err
-      "(overrides (library \"Gtk\") \
-       (class Widget (method foo (version \"bad\"))))"
+      "(overrides (library \"Gtk\") (class Widget (method foo (version \
+       \"bad\"))))"
   in
   match err with
   | Invalid_version { name; version; _ } ->
       Alcotest.(check string) "name" "foo" name;
       Alcotest.(check string) "version" "bad" version
   | e ->
-      Alcotest.fail (Printf.sprintf "Expected Invalid_version, got: %s" (Gir_gen_lib.Override_parser.format_error e))
+      Alcotest.fail
+        (Printf.sprintf "Expected Invalid_version, got: %s"
+           (Gir_gen_lib.Override_parser.format_error e))
 
 let test_malformed_sexp () =
   let err = parse_err "(((" in
   match err with
   | Invalid_format _ -> ()
   | e ->
-      Alcotest.fail (Printf.sprintf "Expected Invalid_format, got: %s" (Gir_gen_lib.Override_parser.format_error e))
+      Alcotest.fail
+        (Printf.sprintf "Expected Invalid_format, got: %s"
+           (Gir_gen_lib.Override_parser.format_error e))
 
 let test_not_overrides_form () =
   let err = parse_err "(class Widget (ignore))" in
   match err with
   | Invalid_format { message; _ } ->
-      Alcotest.(check bool) "mentions overrides" true
-        (String.length message > 0)
+      Alcotest.(check bool) "mentions overrides" true (String.length message > 0)
   | e ->
-      Alcotest.fail (Printf.sprintf "Expected Invalid_format, got: %s" (Gir_gen_lib.Override_parser.format_error e))
+      Alcotest.fail
+        (Printf.sprintf "Expected Invalid_format, got: %s"
+           (Gir_gen_lib.Override_parser.format_error e))
 
 let test_bad_component_action () =
   let err =
     parse_err
-      "(overrides (library \"Gtk\") \
-       (class Widget (method foo (rename bar))))"
+      "(overrides (library \"Gtk\") (class Widget (method foo (rename bar))))"
   in
   match err with
   | Invalid_format _ -> ()
   | e ->
-      Alcotest.fail (Printf.sprintf "Expected Invalid_format, got: %s" (Gir_gen_lib.Override_parser.format_error e))
+      Alcotest.fail
+        (Printf.sprintf "Expected Invalid_format, got: %s"
+           (Gir_gen_lib.Override_parser.format_error e))
 
 let test_empty_class () =
   let ov = parse_ok "(overrides (library \"Gtk\") (class Widget))" in
@@ -346,16 +337,11 @@ let test_empty_class () =
 let test_many_components () =
   let ov =
     parse_ok
-      "(overrides (library \"Gtk\") \
-       (class Widget \
-         (constructor new (ignore)) \
-         (constructor new_with_label (version \"4.10\")) \
-         (method foo (ignore)) \
-         (method bar (version \"4.12\")) \
-         (property visible (ignore)) \
-         (property sensitive (version \"4.10\")) \
-         (signal destroy (ignore)) \
-         (signal show (version \"4.8\"))))"
+      "(overrides (library \"Gtk\") (class Widget (constructor new (ignore)) \
+       (constructor new_with_label (version \"4.10\")) (method foo (ignore)) \
+       (method bar (version \"4.12\")) (property visible (ignore)) (property \
+       sensitive (version \"4.10\")) (signal destroy (ignore)) (signal show \
+       (version \"4.8\"))))"
   in
   let c = hd_exn "Expected one class" ov.classes in
   Alcotest.(check int) "constructors" 2 (List.length c.constructors);
@@ -366,7 +352,9 @@ let test_many_components () =
 let roundtrip original =
   let sexp = sexp_of_library_overrides original in
   let sexp_str = Sexplib.Sexp.to_string sexp in
-  let roundtripped = library_overrides_of_sexp (Sexplib.Sexp.of_string sexp_str) in
+  let roundtripped =
+    library_overrides_of_sexp (Sexplib.Sexp.of_string sexp_str)
+  in
   Alcotest.(check bool)
     "roundtrip equality" true
     (equal_library_overrides original roundtripped)
@@ -376,108 +364,76 @@ let test_roundtrip_minimal () =
   roundtrip original
 
 let test_roundtrip_class_ignore () =
-  let original = parse_ok "(overrides (library \"Gtk\") (class Widget (ignore)))" in
+  let original =
+    parse_ok "(overrides (library \"Gtk\") (class Widget (ignore)))"
+  in
   roundtrip original
 
 let test_roundtrip_class_components () =
   let original =
     parse_ok
-      "(overrides (library \"Gtk\") \
-       (class Widget \
-         (constructor new (ignore)) \
-         (constructor new_with_label (version \"4.10\")) \
-         (method foo (ignore)) \
-         (method bar (version \"4.12\")) \
-         (property visible (ignore)) \
-         (property sensitive (version \"4.10\")) \
-         (signal destroy (ignore)) \
-         (signal show (version \"4.8\"))))"
+      "(overrides (library \"Gtk\") (class Widget (constructor new (ignore)) \
+       (constructor new_with_label (version \"4.10\")) (method foo (ignore)) \
+       (method bar (version \"4.12\")) (property visible (ignore)) (property \
+       sensitive (version \"4.10\")) (signal destroy (ignore)) (signal show \
+       (version \"4.8\"))))"
   in
   roundtrip original
 
 let test_roundtrip_interface () =
   let original =
     parse_ok
-      "(overrides (library \"Gtk\") \
-       (interface Actionable \
-         (method get_action_name (ignore)) \
-         (property action_name (version \"4.12\")) \
-         (signal activated (ignore))))"
+      "(overrides (library \"Gtk\") (interface Actionable (method \
+       get_action_name (ignore)) (property action_name (version \"4.12\")) \
+       (signal activated (ignore))))"
   in
   roundtrip original
 
 let test_roundtrip_record () =
   let original =
     parse_ok
-      "(overrides (library \"Gtk\") \
-       (record TextIter \
-         (field user_data (ignore)) \
-         (field start (version \"4.14\")) \
-         (constructor new (ignore)) \
-         (method get_text (version \"4.14\")) \
-         (function get_slice (ignore))))"
+      "(overrides (library \"Gtk\") (record TextIter (field user_data \
+       (ignore)) (field start (version \"4.14\")) (constructor new (ignore)) \
+       (method get_text (version \"4.14\")) (function get_slice (ignore))))"
   in
   roundtrip original
 
 let test_roundtrip_enum () =
   let original =
     parse_ok
-      "(overrides (library \"Gtk\") \
-       (enumeration RGBA \
-         (member RED (ignore)) \
-         (member GREEN (version \"4.14\")) \
-         (function parse (ignore))))"
+      "(overrides (library \"Gtk\") (enumeration RGBA (member RED (ignore)) \
+       (member GREEN (version \"4.14\")) (function parse (ignore))))"
   in
   roundtrip original
 
 let test_roundtrip_bitfield () =
   let original =
     parse_ok
-      "(overrides (library \"Gtk\") \
-       (bitfield StateFlags \
-         (member ACTIVE (ignore)) \
-         (member BACKDROP (version \"4.14\"))))"
+      "(overrides (library \"Gtk\") (bitfield StateFlags (member ACTIVE \
+       (ignore)) (member BACKDROP (version \"4.14\"))))"
   in
   roundtrip original
 
 let test_roundtrip_standalone_function () =
   let original =
-    parse_ok
-      "(overrides (library \"Gtk\") \
-       (function gtk_show_uri (ignore)))"
+    parse_ok "(overrides (library \"Gtk\") (function gtk_show_uri (ignore)))"
   in
   roundtrip original
 
 let test_roundtrip_complex () =
   let original =
     parse_ok
-      "(overrides (library \"Gtk\") \
-       (class Widget \
-         (ignore) \
-         (constructor new (ignore)) \
-         (method show (version \"4.8\")) \
-         (property visible (ignore)) \
-         (signal destroy (ignore))) \
-       (class Button \
-         (method clicked (version \"4.10\")) \
-         (property label (ignore))) \
-       (interface Actionable \
-         (method get_action_name (version \"4.12\")) \
-         (property action_name (ignore))) \
-       (record TextIter \
-         (field user_data (ignore)) \
-         (constructor new (ignore)) \
-         (method get_text (version \"4.14\")) \
-         (function slice (ignore))) \
-       (enumeration Align \
-         (member START (ignore)) \
-         (member END (version \"4.0\")) \
-         (function from_string (ignore))) \
-       (bitfield StateFlags \
-         (member ACTIVE (ignore)) \
-         (member FOCUSED (version \"4.2\"))) \
-       (function gtk_init (ignore)) \
-       (function gtk_main (version \"4.0\")))"
+      "(overrides (library \"Gtk\") (class Widget (ignore) (constructor new \
+       (ignore)) (method show (version \"4.8\")) (property visible (ignore)) \
+       (signal destroy (ignore))) (class Button (method clicked (version \
+       \"4.10\")) (property label (ignore))) (interface Actionable (method \
+       get_action_name (version \"4.12\")) (property action_name (ignore))) \
+       (record TextIter (field user_data (ignore)) (constructor new (ignore)) \
+       (method get_text (version \"4.14\")) (function slice (ignore))) \
+       (enumeration Align (member START (ignore)) (member END (version \
+       \"4.0\")) (function from_string (ignore))) (bitfield StateFlags (member \
+       ACTIVE (ignore)) (member FOCUSED (version \"4.2\"))) (function gtk_init \
+       (ignore)) (function gtk_main (version \"4.0\")))"
   in
   roundtrip original
 
@@ -500,7 +456,9 @@ let test_suite =
     ("no_library", `Quick, test_no_library);
     ("class_ignore", `Quick, test_class_ignore);
     ("class_with_method_overrides", `Quick, test_class_with_method_overrides);
-    ("class_with_constructor_and_property", `Quick, test_class_with_constructor_and_property);
+    ( "class_with_constructor_and_property",
+      `Quick,
+      test_class_with_constructor_and_property );
     ("class_with_signal", `Quick, test_class_with_signal);
     ("interface_override", `Quick, test_interface_override);
     ("record_override", `Quick, test_record_override);

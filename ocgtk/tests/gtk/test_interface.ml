@@ -38,12 +38,16 @@ let test_entry_inherits_editable_position () =
 
 let test_from_gobject_succeeds_for_entry () =
   let entry_obj = Wrappers.Entry.new_ () in
-  let _editable : Wrappers.Editable.t = Wrappers.Editable.from_gobject entry_obj in
+  let _editable : Wrappers.Editable.t =
+    Wrappers.Editable.from_gobject entry_obj
+  in
   ()
 
 let test_from_gobject_succeeds_for_spin_button () =
   let spin_obj = Wrappers.Spin_button.new_with_range 0.0 100.0 1.0 in
-  let _editable : Wrappers.Editable.t = Wrappers.Editable.from_gobject spin_obj in
+  let _editable : Wrappers.Editable.t =
+    Wrappers.Editable.from_gobject spin_obj
+  in
   ()
 
 (* ------------------------------------------------------------------ *)
@@ -84,7 +88,7 @@ let test_layer1_editable_select_region_and_get_selection_bounds () =
   let editable = Wrappers.Editable.from_gobject entry_obj in
   Wrappers.Editable.set_text editable "hello world";
   Wrappers.Editable.select_region editable 6 11;
-  let (has_selection, start_pos, end_pos) =
+  let has_selection, start_pos, end_pos =
     Wrappers.Editable.get_selection_bounds editable
   in
   check bool "has_selection is true after select_region" true has_selection;
@@ -131,9 +135,12 @@ let () =
         [
           test_case "succeeds for implementing class (Entry → Editable)" `Quick
             (require_gtk test_from_gobject_succeeds_for_entry);
-          test_case "succeeds for second implementing class (SpinButton → Editable)" `Quick
+          test_case
+            "succeeds for second implementing class (SpinButton → Editable)"
+            `Quick
             (require_gtk test_from_gobject_succeeds_for_spin_button);
-          test_case "fails for non-implementing class (Button → Editable)" `Quick
+          test_case "fails for non-implementing class (Button → Editable)"
+            `Quick
             (require_gtk test_from_gobject_fails_for_button);
         ] );
       ( "Layer 1 interface methods",

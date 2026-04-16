@@ -30,12 +30,29 @@ type g_closure
 (** Abstract type for GClosure *)
 
 type fundamental_type =
-  [ `INVALID | `NONE | `INTERFACE | `CHAR | `UCHAR | `BOOLEAN | `INT
-  | `UINT | `LONG | `ULONG | `INT64 | `UINT64 | `ENUM | `FLAGS
-  | `FLOAT | `DOUBLE | `STRING | `POINTER | `BOXED | `PARAM | `OBJECT ]
+  [ `INVALID
+  | `NONE
+  | `INTERFACE
+  | `CHAR
+  | `UCHAR
+  | `BOOLEAN
+  | `INT
+  | `UINT
+  | `LONG
+  | `ULONG
+  | `INT64
+  | `UINT64
+  | `ENUM
+  | `FLAGS
+  | `FLOAT
+  | `DOUBLE
+  | `STRING
+  | `POINTER
+  | `BOXED
+  | `PARAM
+  | `OBJECT ]
 
-type signal_type =
-  [ `RUN_FIRST | `RUN_LAST | `NO_RECURSE | `ACTION | `NO_HOOKS ]
+type signal_type = [ `RUN_FIRST | `RUN_LAST | `NO_RECURSE | `ACTION | `NO_HOOKS ]
 
 (** {2 Object Operations} *)
 
@@ -140,28 +157,20 @@ module Value = struct
 
   external get_int : t -> int = "ml_g_value_get_int"
   external set_int : t -> int -> unit = "ml_g_value_set_int"
-
   external get_uint : t -> int = "ml_g_value_get_uint"
   external set_uint : t -> int -> unit = "ml_g_value_set_uint"
-
   external get_boolean : t -> bool = "ml_g_value_get_boolean"
   external set_boolean : t -> bool -> unit = "ml_g_value_set_boolean"
-
   external get_string : t -> string = "ml_g_value_get_string"
   external set_string : t -> string -> unit = "ml_g_value_set_string"
-
   external get_float : t -> float = "ml_g_value_get_float"
   external set_float : t -> float -> unit = "ml_g_value_set_float"
-
   external get_double : t -> float = "ml_g_value_get_double"
   external set_double : t -> float -> unit = "ml_g_value_set_double"
-
   external get_object_internal : t -> 'a obj = "ml_g_value_get_object"
   external set_object_internal : t -> 'a obj -> unit = "ml_g_value_set_object"
 
-  let get_object v =
-    try Some (get_object_internal v)
-    with _ -> None
+  let get_object v = try Some (get_object_internal v) with _ -> None
 
   let set_object v = function
     | Some obj -> set_object_internal v obj
@@ -171,9 +180,14 @@ end
 (** {2 Properties} *)
 
 module Property = struct
-  external get_value : 'a obj -> name:string -> g_value -> unit = "ml_g_object_get_property"
-  external set_value : 'a obj -> name:string -> g_value -> unit = "ml_g_object_set_property"
-  external get_type : 'a obj -> name:string -> g_type = "ml_g_object_get_property_type"
+  external get_value : 'a obj -> name:string -> g_value -> unit
+    = "ml_g_object_get_property"
+
+  external set_value : 'a obj -> name:string -> g_value -> unit
+    = "ml_g_object_set_property"
+
+  external get_type : 'a obj -> name:string -> g_type
+    = "ml_g_object_get_property_type"
 
   external freeze_notify : 'a obj -> unit = "ml_g_object_freeze_notify"
   external thaw_notify : 'a obj -> unit = "ml_g_object_thaw_notify"
@@ -184,13 +198,8 @@ end
 
 module Closure = struct
   type t = g_closure
-
   type args
-  type argv = {
-    result : g_value;
-    nargs : int;
-    args : args;
-  }
+  type argv = { result : g_value; nargs : int; args : args }
 
   external create : (argv -> unit) -> t = "ml_g_closure_new"
   external nth : argv -> pos:int -> g_value = "ml_g_closure_get_arg"
@@ -205,26 +214,35 @@ end
 module Signal = struct
   type handler_id = int
 
-  external connect : 'a obj -> name:string -> callback:g_closure -> after:bool -> handler_id
+  external connect :
+    'a obj -> name:string -> callback:g_closure -> after:bool -> handler_id
     = "ml_g_signal_connect_closure"
 
   let connect_simple obj ~name ~callback ~after =
     let closure = Closure.create (fun _argv -> callback ()) in
     connect obj ~name ~callback:closure ~after
 
-  external disconnect : 'a obj -> handler_id -> unit = "ml_g_signal_handler_disconnect"
-  external handler_block : 'a obj -> handler_id -> unit = "ml_g_signal_handler_block"
-  external handler_unblock : 'a obj -> handler_id -> unit = "ml_g_signal_handler_unblock"
-  external handler_is_connected : 'a obj -> handler_id -> bool = "ml_g_signal_handler_is_connected"
-  external emit_by_name : 'a obj -> name:string -> unit = "ml_g_signal_emit_by_name"
+  external disconnect : 'a obj -> handler_id -> unit
+    = "ml_g_signal_handler_disconnect"
+
+  external handler_block : 'a obj -> handler_id -> unit
+    = "ml_g_signal_handler_block"
+
+  external handler_unblock : 'a obj -> handler_id -> unit
+    = "ml_g_signal_handler_unblock"
+
+  external handler_is_connected : 'a obj -> handler_id -> bool
+    = "ml_g_signal_handler_is_connected"
+
+  external emit_by_name : 'a obj -> name:string -> unit
+    = "ml_g_signal_emit_by_name"
 end
 
 (** {2 Data Conversions} *)
 
 module Data = struct
   (* enum: creates encoder/decoder pair for simple enumerations *)
-  let enum tbl =
-    (Gpointer.decode_variant tbl, Gpointer.encode_variant tbl)
+  let enum tbl = (Gpointer.decode_variant tbl, Gpointer.encode_variant tbl)
 
   (* flags: creates decoder/encoder pair for flag-type enumerations *)
   let flags tbl =
@@ -243,10 +261,21 @@ end
 
 (* These functions are for testing closure invocation only *)
 module Test = struct
-  external invoke_closure_void : g_closure -> unit = "ml_test_invoke_closure_void"
-  external invoke_closure_int : g_closure -> int -> unit = "ml_test_invoke_closure_int"
-  external invoke_closure_string : g_closure -> string -> unit = "ml_test_invoke_closure_string"
-  external invoke_closure_two_ints : g_closure -> int -> int -> unit = "ml_test_invoke_closure_two_ints"
-  external invoke_closure_boolean : g_closure -> bool -> unit = "ml_test_invoke_closure_boolean"
-  external invoke_closure_double : g_closure -> float -> unit = "ml_test_invoke_closure_double"
+  external invoke_closure_void : g_closure -> unit
+    = "ml_test_invoke_closure_void"
+
+  external invoke_closure_int : g_closure -> int -> unit
+    = "ml_test_invoke_closure_int"
+
+  external invoke_closure_string : g_closure -> string -> unit
+    = "ml_test_invoke_closure_string"
+
+  external invoke_closure_two_ints : g_closure -> int -> int -> unit
+    = "ml_test_invoke_closure_two_ints"
+
+  external invoke_closure_boolean : g_closure -> bool -> unit
+    = "ml_test_invoke_closure_boolean"
+
+  external invoke_closure_double : g_closure -> float -> unit
+    = "ml_test_invoke_closure_double"
 end

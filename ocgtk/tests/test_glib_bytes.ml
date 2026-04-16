@@ -7,8 +7,7 @@
     - Binary data with null bytes
     - Large buffers
     - GC stress testing
-    - Unicode data
-*)
+    - Unicode data *)
 
 (** {2 Basic Roundtrip Tests} *)
 
@@ -36,9 +35,7 @@ let test_size_matches_string_length () =
   let s = "the quick brown fox" in
   let b = Glib_bytes.create s in
   Alcotest.(check int)
-    "size matches string length"
-    (String.length s)
-    (Glib_bytes.size b)
+    "size matches string length" (String.length s) (Glib_bytes.size b)
 
 (** {2 Binary Data Tests} *)
 
@@ -67,7 +64,8 @@ let test_binary_all_byte_values () =
 (** {2 Large Buffer Test} *)
 
 let test_large_buffer () =
-  let size = 1024 * 1024 in (* 1 MB *)
+  let size = 1024 * 1024 in
+  (* 1 MB *)
   let s = String.make size 'x' in
   let b = Glib_bytes.create s in
   Alcotest.(check int) "large buffer size" size (Glib_bytes.size b);
@@ -89,7 +87,8 @@ let test_gc_stress () =
 
 let test_unicode_roundtrip () =
   (* UTF-8 encoded string with multi-byte characters *)
-  let s = "Hello, \xc3\xa9\xc3\xa0\xc3\xbc\xc3\xb6!" in (* é à ü ö *)
+  let s = "Hello, \xc3\xa9\xc3\xa0\xc3\xbc\xc3\xb6!" in
+  (* é à ü ö *)
   let b = Glib_bytes.create s in
   let result = Glib_bytes.to_string b in
   Alcotest.(check string) "unicode data roundtrip" s result
@@ -139,16 +138,12 @@ let () =
         [
           Alcotest.test_case "null bytes roundtrip" `Quick
             test_binary_null_bytes;
-          Alcotest.test_case "null bytes size" `Quick test_binary_null_bytes_size;
+          Alcotest.test_case "null bytes size" `Quick
+            test_binary_null_bytes_size;
           Alcotest.test_case "all byte values roundtrip" `Quick
             test_binary_all_byte_values;
         ] );
-      ( "large",
-        [
-          Alcotest.test_case "1MB buffer" `Slow test_large_buffer;
-        ] );
+      ("large", [ Alcotest.test_case "1MB buffer" `Slow test_large_buffer ]);
       ( "gc",
-        [
-          Alcotest.test_case "gc stress 10000 objects" `Slow test_gc_stress;
-        ] );
+        [ Alcotest.test_case "gc stress 10000 objects" `Slow test_gc_stress ] );
     ]
