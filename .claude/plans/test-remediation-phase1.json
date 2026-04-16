@@ -103,7 +103,7 @@
         {
           "stage": 3,
           "title": "1.3 Move infrastructure/c_validation_tests.ml to c_stubs/c_validation_tests.ml",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "c_validation_tests.ml lives in infrastructure/ which is reserved for test support code only. Move it to c_stubs/ where it belongs alongside other C-level tests. The filename stays the same so the module name does not change.",
           "files_to_modify": [
