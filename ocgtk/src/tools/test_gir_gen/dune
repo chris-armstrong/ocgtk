@@ -21,7 +21,7 @@
   ml_ast_helpers
   ml_validation
   layer2_helpers
-  c_stubs_tests
+  generation_tests
   header_naming_tests
   header_generation_tests
   nullable_tests

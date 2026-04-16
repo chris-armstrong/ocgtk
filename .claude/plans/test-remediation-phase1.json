@@ -225,7 +225,7 @@
         {
           "stage": 6,
           "title": "1.6 Rename c_stubs/c_stubs_tests.ml to c_stubs/generation_tests.ml",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "The filename c_stubs_tests.ml inside directory c_stubs/ is redundant. Rename to generation_tests.ml to describe what it actually tests (general C stub generation). The filename changes so the dune modules entry and runner reference must be updated.",
           "files_to_modify": [
