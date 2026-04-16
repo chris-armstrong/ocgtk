@@ -83,11 +83,27 @@ gdk_dmabuf_texture_builder_set_n_planes(GdkDmabufTextureBuilder_val(self), Int_v
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_set_modifier(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gdk_dmabuf_texture_builder_set_modifier(GdkDmabufTextureBuilder_val(self), Uint64_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_set_height(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gdk_dmabuf_texture_builder_set_height(GdkDmabufTextureBuilder_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_set_fourcc(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gdk_dmabuf_texture_builder_set_fourcc(GdkDmabufTextureBuilder_val(self), UInt32_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -164,12 +180,28 @@ unsigned int result = gdk_dmabuf_texture_builder_get_n_planes(GdkDmabufTextureBu
 CAMLreturn(Val_int(result));
 }
 
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_modifier(value self)
+{
+CAMLparam1(self);
+
+guint64 result = gdk_dmabuf_texture_builder_get_modifier(GdkDmabufTextureBuilder_val(self));
+CAMLreturn(integers_copy_uint64(result));
+}
+
 CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_height(value self)
 {
 CAMLparam1(self);
 
 unsigned int result = gdk_dmabuf_texture_builder_get_height(GdkDmabufTextureBuilder_val(self));
 CAMLreturn(Val_int(result));
+}
+
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_fourcc(value self)
+{
+CAMLparam1(self);
+
+guint32 result = gdk_dmabuf_texture_builder_get_fourcc(GdkDmabufTextureBuilder_val(self));
+CAMLreturn(Val_uint32(result));
 }
 
 CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_fd(value self, value arg1)
@@ -220,7 +252,25 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_fourcc(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DmabufTextureBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_height(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DmabufTextureBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_modifier(value self)
 {
 CAMLparam1(self);
 (void)self;
@@ -315,7 +365,27 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_set_fourcc(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DmabufTextureBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_set_height(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DmabufTextureBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_set_modifier(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 (void)self;

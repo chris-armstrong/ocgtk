@@ -52,6 +52,9 @@ external clear_cache : t -> unit = "ml_gtk_tree_model_filter_clear_cache"
 
 (* Properties *)
 
+(** Get property: child-model *)
+external get_child_model : t -> Tree_model.t = "ml_gtk_tree_model_filter_get_child_model"
+
 (** Get property: virtual-root *)
 external get_virtual_root : t -> Tree_path.t = "ml_gtk_tree_model_filter_get_virtual_root"
 

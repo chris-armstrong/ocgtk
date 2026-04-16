@@ -25,6 +25,20 @@ CAMLparam1(self);
 cairo_scaled_font_t* result = pango_cairo_font_get_scaled_font(PangoCairoFont_val(self));
 CAMLreturn(Val_option(result, Val_cairo_scaled_font_t));
 }
+CAMLexport CAMLprim value ml_pangocairo_font_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), PANGO_TYPE_CAIRO_FONT)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "PangoCairoFont");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_PangoCairoFont((PangoCairoFont*)gobj));
+}
 
 #else
 
@@ -35,6 +49,14 @@ CAMLparam1(self);
 (void)self;
 caml_failwith("Font requires Pango >= 1.18");
 return Val_unit;
+}
+
+CAMLexport CAMLprim value ml_pangocairo_font_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    (void)obj;
+    caml_failwith("Font requires GTK >= 1.18");
+    return Val_unit;
 }
 
 

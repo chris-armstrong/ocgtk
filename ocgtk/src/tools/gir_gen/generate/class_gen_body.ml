@@ -70,6 +70,64 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name
       | None -> ())
   | None -> ());
 
+  (* Interface inheritance: look up class implements from ctx *)
+  let class_implements =
+    match List.find_opt ~f:(fun cls -> String.equal cls.class_name class_name) ctx.classes with
+    | Some cls -> cls.implements
+    | None -> []  (* interfaces/records have no implements *)
+  in
+  List.iter class_implements ~f:(fun iface_name ->
+    (* Skip if: (a) the interface is in the same cyclic cluster (OCaml class
+       types cannot mutually recurse within a combined module), or (b) a class in
+       the parent chain already provides this interface (diamond inheritance —
+       would trigger warning 7 treated as error). *)
+    let in_same_cycle = List.exists same_cluster_classes
+      ~f:(fun n -> String.equal n iface_name) in
+    let parent_provides =
+      Class_gen_conflict_detection.parent_chain_provides_interface
+        ~ctx ~class_name iface_name in
+    if not in_same_cycle && not parent_provides then begin
+      (* Look up the c_type for same-namespace interfaces (implements uses GIR
+         interface_name, but type_mappings lookup uses c_type). Cross-namespace
+         interfaces include a "." and are looked up as-is. *)
+      let lookup_name =
+        if String.contains iface_name '.' then iface_name
+        else
+          match List.find_opt ~f:(fun iface -> String.equal iface.interface_name iface_name) ctx.interfaces with
+          | Some iface -> iface.c_type
+          | None -> iface_name  (* fallback; will likely not find a mapping *)
+      in
+      let iface_gir_type = { Types.name = lookup_name; c_type = None; nullable = false;
+                             transfer_ownership = Types.TransferNone; array = None } in
+      match Type_mappings.find_type_mapping_for_gir_type ~ctx iface_gir_type with
+      | Some { layer2_class = Some lc; ocaml_type; _ } ->
+          (* Derive the Layer 2 class name by stripping _t suffix from class_type *)
+          let iface_class_name =
+            let ct = lc.class_type in
+            if String.length ct > 2 &&
+               String.equal (String.sub ct ~pos:(String.length ct - 2) ~len:2) "_t"
+            then String.sub ct ~pos:0 ~len:(String.length ct - 2)
+            else ct
+          in
+          (* Qualify with module prefix unless we're in the same Layer 2 module *)
+          let module_prefix =
+            if String.equal current_layer2_module lc.class_module then ""
+            else lc.class_module ^ "."
+          in
+          (* Layer 1 module: strip ".t" from ocaml_type *)
+          let l1_module =
+            if String.length ocaml_type > 2 &&
+               String.equal (String.sub ocaml_type ~pos:(String.length ocaml_type - 2) ~len:2) ".t"
+            then String.sub ocaml_type ~pos:0 ~len:(String.length ocaml_type - 2)
+            else ocaml_type
+          in
+          bprintf buf "  inherit %s%s (%s.from_gobject obj)\n"
+            module_prefix iface_class_name l1_module
+      | Some { layer2_class = None; _ } -> ()  (* interface has no L2 class — skip *)
+      | None -> ()  (* interface not in type mappings (filtered out) — skip *)
+    end
+  );
+
   (* Signal handlers via inherit *)
   if has_any_signals then begin
     let signal_module = get_signal_module_name class_snake in
@@ -148,6 +206,41 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_
           bprintf buf "    inherit %s\n" parent_class_type
       | None -> ())
   | None -> ());
+
+  (* Interface class types in the class type definition *)
+  let class_implements =
+    match List.find_opt ~f:(fun cls -> String.equal cls.class_name class_name) ctx.classes with
+    | Some cls -> cls.implements
+    | None -> []
+  in
+  List.iter class_implements ~f:(fun iface_name ->
+    (* Same cycle and diamond-inheritance guards as in generate_class_module_body *)
+    let in_same_cycle = List.exists same_cluster_classes
+      ~f:(fun n -> String.equal n iface_name) in
+    let parent_provides =
+      Class_gen_conflict_detection.parent_chain_provides_interface
+        ~ctx ~class_name iface_name in
+    if not in_same_cycle && not parent_provides then begin
+      let lookup_name =
+        if String.contains iface_name '.' then iface_name
+        else
+          match List.find_opt ~f:(fun iface -> String.equal iface.interface_name iface_name) ctx.interfaces with
+          | Some iface -> iface.c_type
+          | None -> iface_name
+      in
+      let iface_gir_type = { Types.name = lookup_name; c_type = None; nullable = false;
+                             transfer_ownership = Types.TransferNone; array = None } in
+      match Type_mappings.find_type_mapping_for_gir_type ~ctx iface_gir_type with
+      | Some { layer2_class = Some lc; _ } ->
+          let module_prefix =
+            if String.equal current_layer2_module lc.class_module then ""
+            else lc.class_module ^ "."
+          in
+          bprintf buf "    inherit %s%s\n" module_prefix lc.class_type
+      | Some { layer2_class = None; _ } -> ()
+      | None -> ()
+    end
+  );
 
   (* Signal handlers via inherit *)
   if has_any_signals then begin

@@ -1,13 +1,16 @@
 class type file_output_stream_t = object
     inherit GOutput_stream.output_stream_t
+    inherit GSeekable.seekable_t
     method get_etag : unit -> string option
     method query_info : string -> GCancellable.cancellable_t option -> (GFile_info.file_info_t, GError.t) result
+    method query_info_finish : GAsync_result.async_result_t -> (GFile_info.file_info_t, GError.t) result
     method as_file_output_stream : File_output_stream.t
 end
 
 (* High-level class for FileOutputStream *)
 class file_output_stream (obj : File_output_stream.t) : file_output_stream_t = object (self)
   inherit GOutput_stream.output_stream (obj :> Output_stream.t)
+  inherit GSeekable.seekable (Seekable.from_gobject obj)
 
   method get_etag : unit -> string option =
     fun () ->
@@ -17,6 +20,11 @@ class file_output_stream (obj : File_output_stream.t) : file_output_stream_t = o
     fun attributes cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       Result.map (fun ret -> new GFile_info.file_info ret)(File_output_stream.query_info obj attributes cancellable)
+
+  method query_info_finish : GAsync_result.async_result_t -> (GFile_info.file_info_t, GError.t) result =
+    fun result ->
+      let result = result#as_async_result in
+      Result.map (fun ret -> new GFile_info.file_info ret)(File_output_stream.query_info_finish obj result)
 
     method as_file_output_stream = obj
 end

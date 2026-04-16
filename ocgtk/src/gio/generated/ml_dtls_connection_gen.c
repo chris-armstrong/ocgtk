@@ -284,6 +284,37 @@ gboolean result = g_dtls_connection_close(GDtlsConnection_val(self), Option_val(
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+CAMLexport CAMLprim value ml_g_dtls_connection_get_base_socket(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GDtlsConnection *obj = (GDtlsConnection *)GDtlsConnection_val(self);
+    GDatagramBased *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "base-socket");
+if (pspec == NULL) caml_failwith("ml_g_dtls_connection_get_base_socket: property 'base-socket' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "base-socket", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GDatagramBased(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+CAMLexport CAMLprim value ml_gio_dtls_connection_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_DTLS_CONNECTION)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GDtlsConnection");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GDtlsConnection((GDtlsConnection*)gobj));
+}
+
 #else
 
 
@@ -507,6 +538,23 @@ CAMLparam2(self, arg1);
 (void)arg1;
 caml_failwith("DtlsConnection requires GLib >= 2.48");
 return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dtls_connection_get_base_socket(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DtlsConnection requires GLib >= 2.48");
+return Val_unit;
+}
+
+CAMLexport CAMLprim value ml_gio_dtls_connection_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    (void)obj;
+    caml_failwith("DtlsConnection requires GTK >= 2.48");
+    return Val_unit;
 }
 
 

@@ -1,4 +1,6 @@
 class type sort_list_model_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
+    inherit GSection_model.section_model_t
     method get_incremental : unit -> bool
     method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
     method get_pending : unit -> int
@@ -8,12 +10,15 @@ class type sort_list_model_t = object
     method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
     method set_section_sorter : GSorter.sorter_t option -> unit
     method set_sorter : GSorter.sorter_t option -> unit
+    method item_type : int
     method n_items : int
     method as_sort_list_model : Sort_list_model.t
 end
 
 (* High-level class for SortListModel *)
 class sort_list_model (obj : Sort_list_model.t) : sort_list_model_t = object (self)
+  inherit Ocgtk_gio.Gio.List_model.list_model (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
+  inherit GSection_model.section_model (Section_model.from_gobject obj)
 
   method get_incremental : unit -> bool =
     fun () ->
@@ -53,6 +58,8 @@ class sort_list_model (obj : Sort_list_model.t) : sort_list_model_t = object (se
     fun sorter ->
       let sorter = Option.map (fun (c) -> c#as_sorter) sorter in
       (Sort_list_model.set_sorter obj sorter)
+
+  method item_type = Sort_list_model.get_item_type obj
 
   method n_items = Sort_list_model.get_n_items obj
 

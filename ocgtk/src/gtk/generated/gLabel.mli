@@ -1,5 +1,6 @@
 class type label_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GAccessible_text.accessible_text_t
     inherit Glabel_signals.label_signals
     method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
     method get_current_uri : unit -> string option

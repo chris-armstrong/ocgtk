@@ -4,6 +4,49 @@
 type t = [`d_bus_method_invocation | `object_] Gobject.obj
 
 (* Methods *)
+(** Like g_dbus_method_invocation_return_value() but also takes a #GUnixFDList.
+
+This method is only available on UNIX.
+
+This method will take ownership of @invocation. See
+#GDBusInterfaceVTable for more information about the ownership of
+@invocation. *)
+external return_value_with_unix_fd_list : t -> Gvariant.t option -> Unix_fd_list.t option -> unit = "ml_g_dbus_method_invocation_return_value_with_unix_fd_list"
+
+(** Finishes handling a D-Bus method call by returning @parameters.
+If the @parameters GVariant is floating, it is consumed.
+
+It is an error if @parameters is not of the right format: it must be a tuple
+containing the out-parameters of the D-Bus method. Even if the method has a
+single out-parameter, it must be contained in a tuple. If the method has no
+out-parameters, @parameters may be %NULL or an empty tuple.
+
+|[<!-- language="C" -->
+GDBusMethodInvocation *invocation = some_invocation;
+g_autofree gchar *result_string = NULL;
+g_autoptr (GError) error = NULL;
+
+result_string = calculate_result (&error);
+
+if (error != NULL)
+  g_dbus_method_invocation_return_gerror (invocation, error);
+else
+  g_dbus_method_invocation_return_value (invocation,
+                                         g_variant_new ("(s)", result_string));
+
+// Do not free @invocation here; returning a value does that
+]|
+
+This method will take ownership of @invocation. See
+#GDBusInterfaceVTable for more information about the ownership of
+@invocation.
+
+Since 2.48, if the method call requested for a reply not to be sent
+then this call will sink @parameters and free @invocation, but
+otherwise do nothing (as per the recommendations of the D-Bus
+specification). *)
+external return_value : t -> Gvariant.t option -> unit = "ml_g_dbus_method_invocation_return_value"
+
 (** Finishes handling a D-Bus method call by returning an error.
 
 This method will take ownership of @invocation. See
@@ -26,6 +69,10 @@ See #GDBusInterfaceVTable for more information.
 
 If the call was GetAll, %NULL will be returned. *)
 external get_property_info : t -> D_bus_property_info.t option = "ml_g_dbus_method_invocation_get_property_info"
+
+(** Gets the parameters of the method invocation. If there are no input
+parameters then this will return a GVariant with 0 children rather than NULL. *)
+external get_parameters : t -> Gvariant.t = "ml_g_dbus_method_invocation_get_parameters"
 
 (** Gets the object path the method was invoked on. *)
 external get_object_path : t -> string = "ml_g_dbus_method_invocation_get_object_path"

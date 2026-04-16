@@ -34,23 +34,6 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkWidget(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_message_dialog_get_buttons(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GtkMessageDialog *obj = (GtkMessageDialog *)GtkMessageDialog_val(self);
-    GtkButtonsType prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "buttons");
-if (pspec == NULL) caml_failwith("ml_gtk_message_dialog_get_buttons: property 'buttons' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "buttons", &prop_gvalue);
-          prop_value = (GtkButtonsType)g_value_get_enum(&prop_gvalue);
-
-      result = Val_GtkButtonsType(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
 CAMLexport CAMLprim value ml_gtk_message_dialog_get_message_type(value self)
 {
     CAMLparam1(self);

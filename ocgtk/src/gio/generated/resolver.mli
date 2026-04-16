@@ -49,6 +49,28 @@ to create a #GNetworkService and use its #GSocketConnectable
 interface. *)
 external lookup_service : t -> string -> string -> string -> Cancellable.t option -> (Srv_target.t list, GError.t) result = "ml_g_resolver_lookup_service"
 
+(** Retrieves the result of a previous call to
+g_resolver_lookup_records_async(). Returns a non-empty list of records as
+#GVariant tuples. See #GResolverRecordType for information on what the
+records contain.
+
+If the DNS resolution failed, @error (if non-%NULL) will be set to
+a value from #GResolverError. If the operation was cancelled,
+@error will be set to %G_IO_ERROR_CANCELLED. *)
+external lookup_records_finish : t -> Async_result.t -> (Gvariant.t list, GError.t) result = "ml_g_resolver_lookup_records_finish"
+
+(** Synchronously performs a DNS record lookup for the given @rrname and returns
+a list of records as #GVariant tuples. See #GResolverRecordType for
+information on what the records contain for each @record_type.
+
+If the DNS resolution fails, @error (if non-%NULL) will be set to
+a value from #GResolverError and %NULL will be returned.
+
+If @cancellable is non-%NULL, it can be used to cancel the
+operation, in which case @error (if non-%NULL) will be set to
+%G_IO_ERROR_CANCELLED. *)
+external lookup_records : t -> string -> Gio_enums.resolverrecordtype -> Cancellable.t option -> (Gvariant.t list, GError.t) result = "ml_g_resolver_lookup_records"
+
 (** Retrieves the result of a call to
 g_resolver_lookup_by_name_with_flags_async().
 

@@ -117,6 +117,18 @@ gboolean result = g_app_info_launch_uris(GAppInfo_val(self), arg1_list, Option_v
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+CAMLexport CAMLprim value ml_g_app_info_launch(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+    GList* arg1_list = NULL;
+    GList_val_with(arg1, arg1_list, (gpointer)GFile_val(Field(_iter, 0)));
+
+gboolean result = g_app_info_launch(GAppInfo_val(self), arg1_list, Option_val(arg2, GAppLaunchContext_val, NULL), &error);
+    g_list_free(arg1_list);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 #if GLIB_CHECK_VERSION(2,34,0)
 
 CAMLexport CAMLprim value ml_g_app_info_get_supported_types(value self)
@@ -301,4 +313,18 @@ GError *error = NULL;
 
 gboolean result = g_app_info_add_supports_type(GAppInfo_val(self), String_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+CAMLexport CAMLprim value ml_gio_app_info_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_APP_INFO)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GAppInfo");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GAppInfo((GAppInfo*)gobj));
 }

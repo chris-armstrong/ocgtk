@@ -3,6 +3,8 @@
 
 type t = [`tree_model] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_tree_model_from_gobject"
+
 (* Methods *)
 (** Lets the tree unref the node.
 
@@ -161,6 +163,9 @@ The flags are a bitwise combination of `GtkTreeModel`Flags.
 The flags supported should not change during the lifetime
 of the @tree_model. *)
 external get_flags : t -> Gtk_enums.treemodelflags = "ml_gtk_tree_model_get_flags"
+
+(** Returns the type of the column. *)
+external get_column_type : t -> int -> int = "ml_gtk_tree_model_get_column_type"
 
 (** Creates a new `GtkTreeModel`, with @child_model as the child_model
 and @root as the virtual root. *)

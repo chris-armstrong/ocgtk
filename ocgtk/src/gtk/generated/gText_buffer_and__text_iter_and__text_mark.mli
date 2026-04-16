@@ -112,19 +112,20 @@ and text_iter_t = object
     method free : unit -> unit
     method get_buffer : unit -> text_buffer_t
     method get_bytes_in_line : unit -> int
+    method get_char : unit -> int
     method get_chars_in_line : unit -> int
     method get_child_anchor : unit -> GText_child_anchor.text_child_anchor_t option
     method get_language : unit -> Ocgtk_pango.Pango.Language.language_t
     method get_line : unit -> int
     method get_line_index : unit -> int
     method get_line_offset : unit -> int
-    method get_marks : unit -> Text_buffer_and__text_iter_and__text_mark.Text_mark.t list
+    method get_marks : unit -> text_mark_t list
     method get_offset : unit -> int
     method get_paintable : unit -> Ocgtk_gdk.Gdk.Paintable.paintable_t option
     method get_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
-    method get_tags : unit -> Text_tag.t list
+    method get_tags : unit -> GText_tag.text_tag_t list
     method get_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
-    method get_toggled_tags : bool -> Text_tag.t list
+    method get_toggled_tags : bool -> GText_tag.text_tag_t list
     method get_visible_line_index : unit -> int
     method get_visible_line_offset : unit -> int
     method get_visible_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string

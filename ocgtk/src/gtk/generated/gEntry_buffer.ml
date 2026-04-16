@@ -5,6 +5,7 @@ class type entry_buffer_t = object
     method delete_text : int -> int -> int
     method emit_deleted_text : int -> int -> unit
     method emit_inserted_text : int -> string -> int -> unit
+    method get_bytes : unit -> Gsize.t
     method get_length : unit -> int
     method get_max_length : unit -> int
     method get_text : unit -> string
@@ -29,6 +30,10 @@ class entry_buffer (obj : Entry_buffer.t) : entry_buffer_t = object (self)
   method emit_inserted_text : int -> string -> int -> unit =
     fun position chars n_chars ->
       (Entry_buffer.emit_inserted_text obj position chars n_chars)
+
+  method get_bytes : unit -> Gsize.t =
+    fun () ->
+      (Entry_buffer.get_bytes obj)
 
   method get_length : unit -> int =
     fun () ->

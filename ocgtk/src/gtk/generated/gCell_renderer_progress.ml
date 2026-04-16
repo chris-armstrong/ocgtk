@@ -1,5 +1,6 @@
 class type cell_renderer_progress_t = object
     inherit GCell_renderer.cell_renderer_t
+    inherit GOrientable.orientable_t
     method inverted : bool
     method set_inverted : bool -> unit
     method pulse : int
@@ -18,6 +19,7 @@ end
 (* High-level class for CellRendererProgress *)
 class cell_renderer_progress (obj : Cell_renderer_progress.t) : cell_renderer_progress_t = object (self)
   inherit GCell_renderer.cell_renderer (obj :> Cell_renderer.t)
+  inherit GOrientable.orientable (Orientable.from_gobject obj)
 
   method inverted = Cell_renderer_progress.get_inverted obj
   method set_inverted v =  Cell_renderer_progress.set_inverted obj v

@@ -2,6 +2,9 @@
 
 class type toplevel_t = object
     inherit Gtoplevel_signals.toplevel_signals
+    method begin_move : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.device_t -> int -> float -> float -> UInt32.t -> unit
+    method begin_resize : Gdk_enums.surfaceedge -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.device_t option -> int -> float -> float -> UInt32.t -> unit
+    method focus : UInt32.t -> unit
     method get_state : unit -> Gdk_enums.toplevelstate
     method inhibit_system_shortcuts : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event_t option -> unit
     method lower : unit -> bool
@@ -10,7 +13,7 @@ class type toplevel_t = object
     method restore_system_shortcuts : unit -> unit
     method set_decorated : bool -> unit
     method set_deletable : bool -> unit
-    method set_icon_list : Texture.t list -> unit
+    method set_icon_list : GTexture.texture_t list -> unit
     method set_modal : bool -> unit
     method set_startup_id : string -> unit
     method set_title : string -> unit
@@ -27,6 +30,20 @@ end
 (* High-level class for Toplevel *)
 class toplevel (obj : Toplevel.t) : toplevel_t = object (self)
   inherit Gtoplevel_signals.toplevel_signals obj
+
+  method begin_move : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.device_t -> int -> float -> float -> UInt32.t -> unit =
+    fun device button x y timestamp ->
+      let device = device#as_device in
+      (Toplevel.begin_move obj device button x y timestamp)
+
+  method begin_resize : Gdk_enums.surfaceedge -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.device_t option -> int -> float -> float -> UInt32.t -> unit =
+    fun edge device button x y timestamp ->
+      let device = Option.map (fun (c) -> c#as_device) device in
+      (Toplevel.begin_resize obj edge device button x y timestamp)
+
+  method focus : UInt32.t -> unit =
+    fun timestamp ->
+      (Toplevel.focus obj timestamp)
 
   method get_state : unit -> Gdk_enums.toplevelstate =
     fun () ->
@@ -61,8 +78,9 @@ class toplevel (obj : Toplevel.t) : toplevel_t = object (self)
     fun deletable ->
       (Toplevel.set_deletable obj deletable)
 
-  method set_icon_list : Texture.t list -> unit =
+  method set_icon_list : GTexture.texture_t list -> unit =
     fun surfaces ->
+      let surfaces = (List.map (fun c -> c#as_texture)) surfaces in
       (Toplevel.set_icon_list obj surfaces)
 
   method set_modal : bool -> unit =

@@ -77,23 +77,6 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GDBusConnection(result));
 }
 
-CAMLexport CAMLprim value ml_g_d_bus_object_manager_client_get_bus_type(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GDBusObjectManagerClient *obj = (GDBusObjectManagerClient *)GDBusObjectManagerClient_val(self);
-    GBusType prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "bus-type");
-if (pspec == NULL) caml_failwith("ml_g_d_bus_object_manager_client_get_bus_type: property 'bus-type' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "bus-type", &prop_gvalue);
-          prop_value = (GBusType)g_value_get_enum(&prop_gvalue);
-
-      result = Val_GioBusType(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
 CAMLexport CAMLprim value ml_g_d_bus_object_manager_client_get_object_path(value self)
 {
     CAMLparam1(self);
@@ -160,15 +143,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_dbus_object_manager_client_get_name_owner(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusObjectManagerClient requires GLib >= 2.30");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_d_bus_object_manager_client_get_bus_type(value self)
 {
 CAMLparam1(self);
 (void)self;

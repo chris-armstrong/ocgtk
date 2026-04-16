@@ -27,13 +27,13 @@ let method_signature_for_comparison (meth : gir_method) : string =
 
 (* Get all methods from a class *)
 let get_class_methods ~ctx class_name : gir_method list =
-  match List.find_opt ~f:(fun cls -> cls.class_name = class_name) ctx.classes with
+  match List.find_opt ~f:(fun cls -> String.equal cls.class_name class_name) ctx.classes with
   | Some cls -> cls.methods
   | None -> []
 
 (* Helper: Get parent name from class if it exists *)
 let get_parent_name_opt ~ctx class_name : string option =
-  match List.find_opt ~f:(fun cls -> cls.class_name = class_name) ctx.classes with
+  match List.find_opt ~f:(fun cls -> String.equal cls.class_name class_name) ctx.classes with
   | None -> None
   | Some cls -> cls.parent
 
@@ -85,7 +85,7 @@ let detect_method_conflicts ~ctx ~class_name ~c_type ~methods : StringSet.t =
 
 (* Get properties for a class *)
 let get_class_properties ~ctx class_name : gir_property list =
-  match List.find_opt ~f:(fun cls -> cls.class_name = class_name) ctx.classes with
+  match List.find_opt ~f:(fun cls -> String.equal cls.class_name class_name) ctx.classes with
   | Some cls -> cls.properties
   | None -> []
 
@@ -97,6 +97,67 @@ let property_method_names (prop : gir_property) : string list =
   if prop.writable && not prop.construct_only then [getter; setter]
   else [getter]
 
+(** Look up a cross-namespace class entry by "Namespace.Name" in the cross-references map. *)
+let lookup_cross_ns_class ~ctx qualified_name : cross_reference_type option =
+  match String.split_on_char ~sep:'.' qualified_name with
+  | [ namespace; name ] ->
+    let ncr = StringMap.find_opt namespace ctx.cross_references in
+    let entity = Option.bind ncr (fun n -> StringMap.find_opt name n.ncr_entities) in
+    Option.map (fun cr -> cr.cr_type) entity
+  | _ -> None
+
+(** Strip namespace qualifier from a name, returning the bare name.
+    e.g. "Gio.ActionGroup" -> "ActionGroup", "ActionGroup" -> "ActionGroup" *)
+let bare_name qualified =
+  match String.split_on_char ~sep:'.' qualified with
+  | [ _; bare ] -> bare
+  | _ -> qualified
+
+(** Return true if [iface_name] and [candidate] refer to the same interface,
+    comparing bare names to handle mixed qualified/unqualified forms. *)
+let iface_names_match iface_name candidate =
+  String.equal (bare_name iface_name) (bare_name candidate)
+
+(** Check whether a cross-namespace class (by "Namespace.Name") or any of its
+    ancestors provides [iface_name]. Traverses same-namespace parents within
+    the foreign namespace by qualifying them with the current namespace.
+    Depth-limited to 100 to avoid loops on malformed data. *)
+let rec cross_ns_class_provides_interface ~ctx ~depth ~ns qualified_class_name iface_name =
+  if depth > 100 then false
+  else
+    match lookup_cross_ns_class ~ctx qualified_class_name with
+    | None | Some Crt_Interface | Some Crt_Record _ | Some Crt_Enum | Some Crt_Bitfield -> false
+    | Some (Crt_Class { implements; parent }) ->
+      let implements_match = List.exists ~f:(iface_names_match iface_name) implements in
+      let parent_match =
+        match parent with
+        | None -> false
+        | Some p when String.contains p '.' ->
+          cross_ns_class_provides_interface ~ctx ~depth:(depth + 1) ~ns p iface_name
+        | Some p ->
+          (* Same-namespace parent within the foreign namespace — qualify and recurse *)
+          cross_ns_class_provides_interface ~ctx ~depth:(depth + 1) ~ns (ns ^ "." ^ p) iface_name
+      in
+      implements_match || parent_match
+
+(** Return true if any class in the transitive parent chain of [class_name]
+    lists [iface_name] in its implements. Used to detect diamond interface
+    inheritance so the child can skip re-emitting an interface already provided
+    by a parent, avoiding OCaml warning 7 (method-override).
+
+    Traverses cross-namespace parents via the cross-references map when the
+    parent name contains a dot (e.g. "Gio.Application"). *)
+let parent_chain_provides_interface ~ctx ~class_name iface_name : bool =
+  let parent_chain = build_parent_chain ~ctx class_name in
+  List.exists parent_chain ~f:(fun ancestor ->
+    if String.contains ancestor '.' then
+      let ancestor_ns = String.sub ancestor ~pos:0 ~len:(String.index ancestor '.') in
+      cross_ns_class_provides_interface ~ctx ~depth:0 ~ns:ancestor_ns ancestor iface_name
+    else
+      match List.find_opt ~f:(fun cls -> String.equal cls.class_name ancestor) ctx.classes with
+      | None -> false
+      | Some cls -> List.exists cls.implements ~f:(iface_names_match iface_name))
+
 (* Collect all OCaml method names inherited from ancestors (methods + properties).
    Used to detect conflicts when inheriting from the parent class type. *)
 let collect_inherited_method_names ~ctx ~class_name : StringSet.t =
@@ -105,7 +166,7 @@ let collect_inherited_method_names ~ctx ~class_name : StringSet.t =
   (* Add method names from all ancestors *)
   let names = List.fold_left parent_chain ~init:names ~f:(fun acc parent_name ->
     let methods = get_class_methods ~ctx parent_name in
-    let parent_c_type = match List.find_opt ~f:(fun cls -> cls.class_name = parent_name) ctx.classes with
+    let parent_c_type = match List.find_opt ~f:(fun cls -> String.equal cls.class_name parent_name) ctx.classes with
       | Some cls -> cls.c_type
       | None -> ""
     in
@@ -118,5 +179,21 @@ let collect_inherited_method_names ~ctx ~class_name : StringSet.t =
     List.fold_left props ~init:acc ~f:(fun acc prop ->
       List.fold_left (property_method_names prop) ~init:acc ~f:(fun acc n ->
         StringSet.add n acc))
+  ) in
+  (* Also collect method names from implemented interfaces (interface methods
+     are provided via `inherit GIface.iface_t`, so we must not re-emit them) *)
+  let class_implements =
+    match List.find_opt ~f:(fun cls -> String.equal cls.class_name class_name) ctx.classes with
+    | Some cls -> cls.implements
+    | None -> []
+  in
+  let names = List.fold_left class_implements ~init:names ~f:(fun acc iface_name ->
+    match List.find_opt ~f:(fun iface -> String.equal iface.interface_name iface_name) ctx.interfaces with
+    | None -> acc
+    | Some iface ->
+        List.fold_left iface.methods ~init:acc ~f:(fun acc meth ->
+          StringSet.add
+            (ocaml_method_name ~class_name:iface_name ~c_type:iface.c_type meth)
+            acc)
   ) in
   names

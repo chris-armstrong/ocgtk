@@ -3,6 +3,8 @@
 
 type t = [`font_chooser] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_font_chooser_from_gobject"
+
 (* Methods *)
 (** Shows or hides the editable preview entry. *)
 external set_show_preview_entry : t -> bool -> unit = "ml_gtk_font_chooser_set_show_preview_entry"

@@ -106,6 +106,19 @@ gboolean result = gtk_im_context_filter_keypress(GtkIMContext_val(self), GdkEven
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_im_context_filter_key_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam3(arg5, arg6, arg7);
+
+gboolean result = gtk_im_context_filter_key(GtkIMContext_val(self), Bool_val(arg1), GdkSurface_val(arg2), GdkDevice_val(arg3), UInt32_val(arg4), Int_val(arg5), GdkModifierType_val(arg6), Int_val(arg7));
+CAMLreturn(Val_bool(result));}
+
+CAMLexport CAMLprim value ml_gtk_im_context_filter_key_bytecode(value * argv, int argn)
+{
+return ml_gtk_im_context_filter_key_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7]);
+}
+
 CAMLexport CAMLprim value ml_gtk_im_context_delete_surrounding(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);

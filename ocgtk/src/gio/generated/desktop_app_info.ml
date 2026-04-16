@@ -32,11 +32,16 @@ actions, as per the desktop file specification.
 
 As with g_app_info_launch() there is no way to detect failures that
 occur while using this function. *)
-external launch_action : t -> string -> App_info_and__app_launch_context.App_launch_context.t option -> unit = "ml_g_desktop_app_info_launch_action"
+external launch_action : t -> string -> App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.App_launch_context.t option -> unit = "ml_g_desktop_app_info_launch_action"
 
 (** Returns whether @key exists in the "Desktop Entry" group
 of the keyfile backing @info. *)
 external has_key : t -> string -> bool = "ml_g_desktop_app_info_has_key"
+
+(** Looks up a string list value in the keyfile backing @info.
+
+The @key is looked up in the "Desktop Entry" group. *)
+external get_string_list : t -> string -> string array * Gsize.t = "ml_g_desktop_app_info_get_string_list"
 
 (** Looks up a string value in the keyfile backing @info.
 

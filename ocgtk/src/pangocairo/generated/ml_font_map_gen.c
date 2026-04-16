@@ -75,6 +75,20 @@ caml_failwith("FontMap requires Pango >= 1.18");
 return Val_unit;
 }
 #endif
+CAMLexport CAMLprim value ml_pangocairo_font_map_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), PANGO_TYPE_CAIRO_FONT_MAP)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "PangoCairoFontMap");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_PangoCairoFontMap((PangoCairoFontMap*)gobj));
+}
 
 #else
 
@@ -113,6 +127,14 @@ CAMLparam2(self, arg1);
 (void)arg1;
 caml_failwith("FontMap requires Pango >= 1.10");
 return Val_unit;
+}
+
+CAMLexport CAMLprim value ml_pangocairo_font_map_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    (void)obj;
+    caml_failwith("FontMap requires GTK >= 1.10");
+    return Val_unit;
 }
 
 

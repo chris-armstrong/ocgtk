@@ -45,10 +45,20 @@ external set_offset : t -> int -> int -> unit = "ml_gdk_dmabuf_texture_builder_s
 (** Sets the number of planes of the texture. *)
 external set_n_planes : t -> int -> unit = "ml_gdk_dmabuf_texture_builder_set_n_planes"
 
+(** Sets the modifier. *)
+external set_modifier : t -> UInt64.t -> unit = "ml_gdk_dmabuf_texture_builder_set_modifier"
+
 (** Sets the height of the texture.
 
 The height must be set before calling [method@Gdk.GLTextureBuilder.build]. *)
 external set_height : t -> int -> unit = "ml_gdk_dmabuf_texture_builder_set_height"
+
+(** Sets the format of the texture.
+
+The format is specified as a fourcc code.
+
+The format must be set before calling [method@Gdk.GLTextureBuilder.build]. *)
+external set_fourcc : t -> UInt32.t -> unit = "ml_gdk_dmabuf_texture_builder_set_fourcc"
 
 (** Sets the file descriptor for a plane. *)
 external set_fd : t -> int -> int -> unit = "ml_gdk_dmabuf_texture_builder_set_fd"
@@ -84,9 +94,18 @@ external get_offset : t -> int -> int = "ml_gdk_dmabuf_texture_builder_get_offse
 (** Gets the number of planes. *)
 external get_n_planes : t -> int = "ml_gdk_dmabuf_texture_builder_get_n_planes"
 
+(** Gets the modifier value. *)
+external get_modifier : t -> UInt64.t = "ml_gdk_dmabuf_texture_builder_get_modifier"
+
 (** Gets the height previously set via gdk_dmabuf_texture_builder_set_height() or
 0 if the height wasn't set. *)
 external get_height : t -> int = "ml_gdk_dmabuf_texture_builder_get_height"
+
+(** Gets the format previously set via gdk_dmabuf_texture_builder_set_fourcc()
+or 0 if the format wasn't set.
+
+The format is specified as a fourcc code. *)
+external get_fourcc : t -> UInt32.t = "ml_gdk_dmabuf_texture_builder_get_fourcc"
 
 (** Gets the file descriptor for a plane. *)
 external get_fd : t -> int -> int = "ml_gdk_dmabuf_texture_builder_get_fd"

@@ -1,5 +1,6 @@
 class type check_button_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GActionable.actionable_t
     inherit Gcheck_button_signals.check_button_signals
     method get_active : unit -> bool
     method get_child : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option

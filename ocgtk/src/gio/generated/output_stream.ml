@@ -4,6 +4,107 @@
 type t = [`output_stream | `object_] Gobject.obj
 
 (* Methods *)
+(** Finishes a stream writev operation. *)
+external writev_finish : t -> Async_result.t -> (bool * Gsize.t, GError.t) result = "ml_g_output_stream_writev_finish"
+
+(** Finishes an asynchronous stream write operation started with
+g_output_stream_writev_all_async().
+
+As a special exception to the normal conventions for functions that
+use #GError, if this function returns %FALSE (and sets @error) then
+@bytes_written will be set to the number of bytes that were
+successfully written before the error was encountered.  This
+functionality is only available from C.  If you need it from another
+language then you must write your own loop around
+g_output_stream_writev_async(). *)
+external writev_all_finish : t -> Async_result.t -> (bool * Gsize.t, GError.t) result = "ml_g_output_stream_writev_all_finish"
+
+(** Tries to write the bytes contained in the @n_vectors @vectors into the
+stream. Will block during the operation.
+
+This function is similar to g_output_stream_writev(), except it tries to
+write as many bytes as requested, only stopping on an error.
+
+On a successful write of all @n_vectors vectors, %TRUE is returned, and
+@bytes_written is set to the sum of all the sizes of @vectors.
+
+If there is an error during the operation %FALSE is returned and @error
+is set to indicate the error status.
+
+As a special exception to the normal conventions for functions that
+use #GError, if this function returns %FALSE (and sets @error) then
+@bytes_written will be set to the number of bytes that were
+successfully written before the error was encountered.  This
+functionality is only available from C. If you need it from another
+language then you must write your own loop around
+g_output_stream_write().
+
+The content of the individual elements of @vectors might be changed by this
+function. *)
+external writev_all : t -> Output_vector.t array -> Gsize.t -> Cancellable.t option -> (bool * Gsize.t, GError.t) result = "ml_g_output_stream_writev_all"
+
+(** Tries to write the bytes contained in the @n_vectors @vectors into the
+stream. Will block during the operation.
+
+If @n_vectors is 0 or the sum of all bytes in @vectors is 0, returns 0 and
+does nothing.
+
+On success, the number of bytes written to the stream is returned.
+It is not an error if this is not the same as the requested size, as it
+can happen e.g. on a partial I/O error, or if there is not enough
+storage in the stream. All writes block until at least one byte
+is written or an error occurs; 0 is never returned (unless
+@n_vectors is 0 or the sum of all bytes in @vectors is 0).
+
+If @cancellable is not %NULL, then the operation can be cancelled by
+triggering the cancellable object from another thread. If the operation
+was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. If an
+operation was partially finished when the operation was cancelled the
+partial result will be returned, without an error.
+
+Some implementations of g_output_stream_writev() may have limitations on the
+aggregate buffer size, and will return %G_IO_ERROR_INVALID_ARGUMENT if these
+are exceeded. For example, when writing to a local file on UNIX platforms,
+the aggregate buffer size must not exceed %G_MAXSSIZE bytes. *)
+external writev : t -> Output_vector.t array -> Gsize.t -> Cancellable.t option -> (bool * Gsize.t, GError.t) result = "ml_g_output_stream_writev"
+
+(** Finishes a stream write operation. *)
+external write_finish : t -> Async_result.t -> (int, GError.t) result = "ml_g_output_stream_write_finish"
+
+(** Finishes a stream write-from-#GBytes operation. *)
+external write_bytes_finish : t -> Async_result.t -> (int, GError.t) result = "ml_g_output_stream_write_bytes_finish"
+
+(** A wrapper function for g_output_stream_write() which takes a
+#GBytes as input.  This can be more convenient for use by language
+bindings or in other cases where the refcounted nature of #GBytes
+is helpful over a bare pointer interface.
+
+However, note that this function may still perform partial writes,
+just like g_output_stream_write().  If that occurs, to continue
+writing, you will need to create a new #GBytes containing just the
+remaining bytes, using g_bytes_new_from_bytes(). Passing the same
+#GBytes instance multiple times potentially can result in duplicated
+data in the output stream. *)
+external write_bytes : t -> Glib_bytes.t -> Cancellable.t option -> (int, GError.t) result = "ml_g_output_stream_write_bytes"
+
+(** Finishes an asynchronous stream write operation started with
+g_output_stream_write_all_async().
+
+As a special exception to the normal conventions for functions that
+use #GError, if this function returns %FALSE (and sets @error) then
+@bytes_written will be set to the number of bytes that were
+successfully written before the error was encountered.  This
+functionality is only available from C.  If you need it from another
+language then you must write your own loop around
+g_output_stream_write_async(). *)
+external write_all_finish : t -> Async_result.t -> (bool * Gsize.t, GError.t) result = "ml_g_output_stream_write_all_finish"
+
+(** Finishes an asynchronous stream splice operation. *)
+external splice_finish : t -> Async_result.t -> (int, GError.t) result = "ml_g_output_stream_splice_finish"
+
+(** Splices an input stream into an output stream. *)
+external splice : t -> Input_stream.t -> Gio_enums.outputstreamspliceflags -> Cancellable.t option -> (int, GError.t) result = "ml_g_output_stream_splice"
+
 (** Sets @stream to have actions pending. If the pending flag is
 already set or @stream is closed, it will return %FALSE and set
 @error. *)

@@ -9,7 +9,13 @@ external new_ : unit -> t = "ml_gtk_page_setup_new"
 (** Create a new PageSetup *)
 external new_from_file : string -> (t, GError.t) result = "ml_gtk_page_setup_new_from_file"
 
+(** Create a new PageSetup *)
+external new_from_gvariant : Gvariant.t -> t = "ml_gtk_page_setup_new_from_gvariant"
+
 (* Methods *)
+(** Serialize page setup to an a{sv} variant. *)
+external to_gvariant : t -> Gvariant.t = "ml_gtk_page_setup_to_gvariant"
+
 (** This function saves the information from @setup to @file_name. *)
 external to_file : t -> string -> (bool, GError.t) result = "ml_gtk_page_setup_to_file"
 

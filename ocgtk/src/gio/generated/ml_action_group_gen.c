@@ -78,6 +78,94 @@ return Val_unit;
 
 #if GLIB_CHECK_VERSION(2,28,0)
 
+CAMLexport CAMLprim value ml_g_action_group_get_action_state_type(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+const GVariantType* result = g_action_group_get_action_state_type(GActionGroup_val(self), String_val(arg1));
+CAMLreturn(Val_option(result, Val_GVariantType));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_action_group_get_action_state_type(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ActionGroup requires GLib >= 2.28");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
+
+CAMLexport CAMLprim value ml_g_action_group_get_action_state_hint(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GVariant* result = g_action_group_get_action_state_hint(GActionGroup_val(self), String_val(arg1));
+CAMLreturn(Val_option(result, Val_GVariant));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_action_group_get_action_state_hint(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ActionGroup requires GLib >= 2.28");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
+
+CAMLexport CAMLprim value ml_g_action_group_get_action_state(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GVariant* result = g_action_group_get_action_state(GActionGroup_val(self), String_val(arg1));
+CAMLreturn(Val_option(result, Val_GVariant));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_action_group_get_action_state(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ActionGroup requires GLib >= 2.28");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
+
+CAMLexport CAMLprim value ml_g_action_group_get_action_parameter_type(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+const GVariantType* result = g_action_group_get_action_parameter_type(GActionGroup_val(self), String_val(arg1));
+CAMLreturn(Val_option(result, Val_GVariantType));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_action_group_get_action_parameter_type(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ActionGroup requires GLib >= 2.28");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
+
 CAMLexport CAMLprim value ml_g_action_group_get_action_enabled(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -93,6 +181,75 @@ CAMLexport CAMLprim value ml_g_action_group_get_action_enabled(value self, value
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
+caml_failwith("ActionGroup requires GLib >= 2.28");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
+
+CAMLexport CAMLprim value ml_g_action_group_change_action_state(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_action_group_change_action_state(GActionGroup_val(self), String_val(arg1), GVariant_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_action_group_change_action_state(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("ActionGroup requires GLib >= 2.28");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
+
+CAMLexport CAMLprim value ml_g_action_group_activate_action(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_action_group_activate_action(GActionGroup_val(self), String_val(arg1), Option_val(arg2, GVariant_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_action_group_activate_action(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("ActionGroup requires GLib >= 2.28");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,28,0)
+
+CAMLexport CAMLprim value ml_g_action_group_action_state_changed(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+g_action_group_action_state_changed(GActionGroup_val(self), String_val(arg1), GVariant_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_action_group_action_state_changed(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
 caml_failwith("ActionGroup requires GLib >= 2.28");
 return Val_unit;
 }
@@ -164,3 +321,17 @@ caml_failwith("ActionGroup requires GLib >= 2.28");
 return Val_unit;
 }
 #endif
+CAMLexport CAMLprim value ml_gio_action_group_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_ACTION_GROUP)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GActionGroup");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GActionGroup((GActionGroup*)gobj));
+}

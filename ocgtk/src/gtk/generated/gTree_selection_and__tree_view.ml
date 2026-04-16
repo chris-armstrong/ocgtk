@@ -22,6 +22,7 @@ end
 
 and tree_view_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GScrollable.scrollable_t
     inherit Gtree_view_signals.tree_view_signals
     method append_column : GTree_view_column.tree_view_column_t -> int
     method collapse_all : unit -> unit
@@ -35,7 +36,7 @@ and tree_view_t = object
     method expand_to_path : Tree_path.t -> unit
     method get_activate_on_single_click : unit -> bool
     method get_column : int -> GTree_view_column.tree_view_column_t option
-    method get_columns : unit -> Tree_view_column.t list
+    method get_columns : unit -> GTree_view_column.tree_view_column_t list
     method get_enable_search : unit -> bool
     method get_enable_tree_lines : unit -> bool
     method get_expander_column : unit -> GTree_view_column.tree_view_column_t option
@@ -76,9 +77,11 @@ and tree_view_t = object
     method set_hover_expand : bool -> unit
     method set_hover_selection : bool -> unit
     method set_level_indentation : int -> unit
+    method set_model : GTree_model.tree_model_t option -> unit
     method set_reorderable : bool -> unit
     method set_rubber_banding : bool -> unit
     method set_search_column : int -> unit
+    method set_search_entry : GEditable.editable_t option -> unit
     method set_show_expanders : bool -> unit
     method set_tooltip_cell : GTooltip.tooltip_t -> Tree_path.t option -> GTree_view_column.tree_view_column_t option -> GCell_renderer.cell_renderer_t option -> unit
     method set_tooltip_column : int -> unit
@@ -159,6 +162,7 @@ end
 
 and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GScrollable.scrollable (Scrollable.from_gobject obj)
   inherit Gtree_view_signals.tree_view_signals obj
 
   method append_column : GTree_view_column.tree_view_column_t -> int =
@@ -212,9 +216,9 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t = 
     fun n ->
       Option.map (fun ret -> new GTree_view_column.tree_view_column ret) (Tree_selection_and__tree_view.Tree_view.get_column obj n)
 
-  method get_columns : unit -> Tree_view_column.t list =
+  method get_columns : unit -> GTree_view_column.tree_view_column_t list =
     fun () ->
-      (Tree_selection_and__tree_view.Tree_view.get_columns obj)
+      (List.map (fun ret -> new GTree_view_column.tree_view_column ret))(Tree_selection_and__tree_view.Tree_view.get_columns obj)
 
   method get_enable_search : unit -> bool =
     fun () ->
@@ -385,6 +389,11 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t = 
     fun indentation ->
       (Tree_selection_and__tree_view.Tree_view.set_level_indentation obj indentation)
 
+  method set_model : GTree_model.tree_model_t option -> unit =
+    fun model ->
+      let model = Option.map (fun (c) -> c#as_tree_model) model in
+      (Tree_selection_and__tree_view.Tree_view.set_model obj model)
+
   method set_reorderable : bool -> unit =
     fun reorderable ->
       (Tree_selection_and__tree_view.Tree_view.set_reorderable obj reorderable)
@@ -396,6 +405,11 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t = 
   method set_search_column : int -> unit =
     fun column ->
       (Tree_selection_and__tree_view.Tree_view.set_search_column obj column)
+
+  method set_search_entry : GEditable.editable_t option -> unit =
+    fun entry ->
+      let entry = Option.map (fun (c) -> c#as_editable) entry in
+      (Tree_selection_and__tree_view.Tree_view.set_search_entry obj entry)
 
   method set_show_expanders : bool -> unit =
     fun enabled ->

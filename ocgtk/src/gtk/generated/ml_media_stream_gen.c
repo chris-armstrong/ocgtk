@@ -17,6 +17,14 @@
 #include "gtk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gtk_media_stream_update(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_media_stream_update(GtkMediaStream_val(self), Int64_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_media_stream_unrealize(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -41,6 +49,31 @@ CAMLexport CAMLprim value ml_gtk_media_stream_stream_unprepared(value self)
 {
 CAMLparam1(self);
 (void)self;
+caml_failwith("MediaStream requires GTK >= 4.4");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,4,0)
+
+CAMLexport CAMLprim value ml_gtk_media_stream_stream_prepared(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+
+gtk_media_stream_stream_prepared(GtkMediaStream_val(self), Bool_val(arg1), Bool_val(arg2), Bool_val(arg3), Int64_val(arg4));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_media_stream_stream_prepared(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
 caml_failwith("MediaStream requires GTK >= 4.4");
 return Val_unit;
 }
@@ -112,6 +145,14 @@ CAMLexport CAMLprim value ml_gtk_media_stream_seek_failed(value self)
 CAMLparam1(self);
 
 gtk_media_stream_seek_failed(GtkMediaStream_val(self));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_media_stream_seek(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_media_stream_seek(GtkMediaStream_val(self), Int64_val(arg1));
 CAMLreturn(Val_unit);
 }
 
@@ -187,6 +228,14 @@ double result = gtk_media_stream_get_volume(GtkMediaStream_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_media_stream_get_timestamp(value self)
+{
+CAMLparam1(self);
+
+gint64 result = gtk_media_stream_get_timestamp(GtkMediaStream_val(self));
+CAMLreturn(caml_copy_int64(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_media_stream_get_playing(value self)
 {
 CAMLparam1(self);
@@ -217,6 +266,14 @@ CAMLparam1(self);
 
 gboolean result = gtk_media_stream_get_ended(GtkMediaStream_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_media_stream_get_duration(value self)
+{
+CAMLparam1(self);
+
+gint64 result = gtk_media_stream_get_duration(GtkMediaStream_val(self));
+CAMLreturn(caml_copy_int64(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_media_stream_get_prepared(value self)

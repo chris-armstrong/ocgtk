@@ -221,10 +221,32 @@ GtkTreeModelFlags result = gtk_tree_model_get_flags(GtkTreeModel_val(self));
 CAMLreturn(Val_GtkTreeModelFlags(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_model_get_column_type(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GType result = gtk_tree_model_get_column_type(GtkTreeModel_val(self), Int_val(arg1));
+CAMLreturn(Val_GType(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_model_filter_new(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 GtkTreeModel* result = gtk_tree_model_filter_new(GtkTreeModel_val(self), Option_val(arg1, GtkTreePath_val, NULL));
 CAMLreturn(Val_GtkTreeModel(result));
+}
+CAMLexport CAMLprim value ml_gtk_tree_model_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GTK_TYPE_TREE_MODEL)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GtkTreeModel");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GtkTreeModel((GtkTreeModel*)gobj));
 }

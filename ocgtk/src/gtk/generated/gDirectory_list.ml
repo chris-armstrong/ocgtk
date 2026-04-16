@@ -1,4 +1,5 @@
 class type directory_list_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
     method get_attributes : unit -> string option
     method get_file : unit -> Ocgtk_gio.Gio.File.file_t option
     method get_io_priority : unit -> int
@@ -8,6 +9,7 @@ class type directory_list_t = object
     method set_file : Ocgtk_gio.Gio.File.file_t option -> unit
     method set_io_priority : int -> unit
     method set_monitored : bool -> unit
+    method item_type : int
     method loading : bool
     method n_items : int
     method as_directory_list : Directory_list.t
@@ -15,6 +17,7 @@ end
 
 (* High-level class for DirectoryList *)
 class directory_list (obj : Directory_list.t) : directory_list_t = object (self)
+  inherit Ocgtk_gio.Gio.List_model.list_model (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
 
   method get_attributes : unit -> string option =
     fun () ->
@@ -52,6 +55,8 @@ class directory_list (obj : Directory_list.t) : directory_list_t = object (self)
   method set_monitored : bool -> unit =
     fun monitored ->
       (Directory_list.set_monitored obj monitored)
+
+  method item_type = Directory_list.get_item_type obj
 
   method loading = Directory_list.get_loading obj
 

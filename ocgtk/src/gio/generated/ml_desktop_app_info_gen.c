@@ -113,6 +113,43 @@ return Val_unit;
 }
 #endif
 
+#if GLIB_CHECK_VERSION(2,60,0)
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_string_list(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+gsize out2;
+
+gchar** result = g_desktop_app_info_get_string_list(GDesktopAppInfo_val(self), String_val(arg1), &out2);
+    int result_length = out2;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, caml_copy_string(result[i]));
+    }
+    for (int i = 0; i < result_length; i++) {
+      g_free((gpointer)result[i]);
+    }
+    g_free(result);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, ml_result);
+    Store_field(ret, 1, Val_gsize(out2));
+    CAMLreturn(ret);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_string_list(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DesktopAppInfo requires GLib >= 2.60");
+return Val_unit;
+}
+#endif
+
 #if GLIB_CHECK_VERSION(2,36,0)
 
 CAMLexport CAMLprim value ml_g_desktop_app_info_get_string(value self, value arg1)

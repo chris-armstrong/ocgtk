@@ -6,7 +6,13 @@ type t = [`file_filter | `filter | `object_] Gobject.obj
 (** Create a new FileFilter *)
 external new_ : unit -> t = "ml_gtk_file_filter_new"
 
+(** Create a new FileFilter *)
+external new_from_gvariant : Gvariant.t -> t = "ml_gtk_file_filter_new_from_gvariant"
+
 (* Methods *)
+(** Serialize a file filter to an `a{sv}` variant. *)
+external to_gvariant : t -> Gvariant.t = "ml_gtk_file_filter_to_gvariant"
+
 (** Sets a human-readable name of the filter.
 
 This is the string that will be displayed in the file chooser
@@ -53,13 +59,4 @@ external add_pattern : t -> string -> unit = "ml_gtk_file_filter_add_pattern"
 external add_mime_type : t -> string -> unit = "ml_gtk_file_filter_add_mime_type"
 
 (* Properties *)
-
-(** Get property: mime-types *)
-external get_mime_types : t -> string array = "ml_gtk_file_filter_get_mime_types"
-
-(** Get property: patterns *)
-external get_patterns : t -> string array = "ml_gtk_file_filter_get_patterns"
-
-(** Get property: suffixes *)
-external get_suffixes : t -> string array = "ml_gtk_file_filter_get_suffixes"
 

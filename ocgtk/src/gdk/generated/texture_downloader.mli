@@ -34,6 +34,15 @@ external get_format : t -> Gdk_enums.memoryformat = "ml_gdk_texture_downloader_g
 (** Frees the given downloader and all its associated resources. *)
 external free : t -> unit = "ml_gdk_texture_downloader_free"
 
+(** Downloads the given texture pixels into a `GBytes`. The rowstride will
+be stored in the stride value.
+
+This function will abort if it tries to download a large texture and
+fails to allocate memory. If you think that may happen, you should handle
+memory allocation yourself and use [method@Gdk.TextureDownloader.download_into]
+once allocation succeeded. *)
+external download_bytes : t -> Glib_bytes.t * Gsize.t = "ml_gdk_texture_downloader_download_bytes"
+
 (** Creates a copy of the downloader.
 
 This function is meant for language bindings. *)

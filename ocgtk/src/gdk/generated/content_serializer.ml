@@ -20,6 +20,9 @@ external get_output_stream : t -> Ocgtk_gio.Gio.Wrappers.Output_stream.t = "ml_g
 (** Gets the mime type to serialize to. *)
 external get_mime_type : t -> string = "ml_gdk_content_serializer_get_mime_type"
 
+(** Gets the `GType` to of the object to serialize. *)
+external get_gtype : t -> int = "ml_gdk_content_serializer_get_gtype"
+
 (** Gets the cancellable for the current operation.
 
 This is the `GCancellable` that was passed to [func@content_serialize_async]. *)

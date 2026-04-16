@@ -3,11 +3,16 @@ class type snapshot_t = object
     method append_border : Ocgtk_gsk.Gsk.Rounded_rect.rounded_rect_t -> float array -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array -> unit
     method append_cairo : Ocgtk_graphene.Graphene.Rect.rect_t -> Ocgtk_cairo.Cairo.Context.context_t
     method append_color : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> Ocgtk_graphene.Graphene.Rect.rect_t -> unit
+    method append_conic_gradient : Ocgtk_graphene.Graphene.Rect.rect_t -> Ocgtk_graphene.Graphene.Point.point_t -> float -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> Gsize.t -> unit
     method append_fill : Ocgtk_gsk.Gsk.Path.path_t -> Ocgtk_gsk.Gsk.fillrule -> Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
     method append_inset_shadow : Ocgtk_gsk.Gsk.Rounded_rect.rounded_rect_t -> Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> float -> float -> float -> float -> unit
     method append_layout : Ocgtk_pango.Pango.Layout.layout_t -> Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
+    method append_linear_gradient : Ocgtk_graphene.Graphene.Rect.rect_t -> Ocgtk_graphene.Graphene.Point.point_t -> Ocgtk_graphene.Graphene.Point.point_t -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> Gsize.t -> unit
     method append_node : Ocgtk_gsk.Gsk.Render_node.render_node_t -> unit
     method append_outset_shadow : Ocgtk_gsk.Gsk.Rounded_rect.rounded_rect_t -> Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> float -> float -> float -> float -> unit
+    method append_radial_gradient : Ocgtk_graphene.Graphene.Rect.rect_t -> Ocgtk_graphene.Graphene.Point.point_t -> float -> float -> float -> float -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> Gsize.t -> unit
+    method append_repeating_linear_gradient : Ocgtk_graphene.Graphene.Rect.rect_t -> Ocgtk_graphene.Graphene.Point.point_t -> Ocgtk_graphene.Graphene.Point.point_t -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> Gsize.t -> unit
+    method append_repeating_radial_gradient : Ocgtk_graphene.Graphene.Rect.rect_t -> Ocgtk_graphene.Graphene.Point.point_t -> float -> float -> float -> float -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> Gsize.t -> unit
     method append_scaled_texture : Ocgtk_gdk.Gdk.Texture.texture_t -> Ocgtk_gsk.Gsk.scalingfilter -> Ocgtk_graphene.Graphene.Rect.rect_t -> unit
     method append_stroke : Ocgtk_gsk.Gsk.Path.path_t -> Ocgtk_gsk.Gsk.Stroke.stroke_t -> Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
     method append_texture : Ocgtk_gdk.Gdk.Texture.texture_t -> Ocgtk_graphene.Graphene.Rect.rect_t -> unit
@@ -20,10 +25,12 @@ class type snapshot_t = object
     method push_color_matrix : Ocgtk_graphene.Graphene.Matrix.matrix_t -> Ocgtk_graphene.Graphene.Vec4.vec4_t -> unit
     method push_cross_fade : float -> unit
     method push_fill : Ocgtk_gsk.Gsk.Path.path_t -> Ocgtk_gsk.Gsk.fillrule -> unit
+    method push_gl_shader : Ocgtk_gsk.Gsk.Gl_shader.gl_shader_t -> Ocgtk_graphene.Graphene.Rect.rect_t -> Glib_bytes.t -> unit
     method push_mask : Ocgtk_gsk.Gsk.maskmode -> unit
     method push_opacity : float -> unit
     method push_repeat : Ocgtk_graphene.Graphene.Rect.rect_t -> Ocgtk_graphene.Graphene.Rect.rect_t option -> unit
     method push_rounded_clip : Ocgtk_gsk.Gsk.Rounded_rect.rounded_rect_t -> unit
+    method push_shadow : Ocgtk_gsk.Gsk.Wrappers.Shadow.t array -> Gsize.t -> unit
     method push_stroke : Ocgtk_gsk.Gsk.Path.path_t -> Ocgtk_gsk.Gsk.Stroke.stroke_t -> unit
     method render_background : GStyle_context.style_context_t -> float -> float -> float -> float -> unit
     method render_focus : GStyle_context.style_context_t -> float -> float -> float -> float -> unit
@@ -64,6 +71,12 @@ class snapshot (obj : Snapshot.t) : snapshot_t = object (self)
       let bounds = bounds#as_rect in
       (Snapshot.append_color obj color bounds)
 
+  method append_conic_gradient : Ocgtk_graphene.Graphene.Rect.rect_t -> Ocgtk_graphene.Graphene.Point.point_t -> float -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> Gsize.t -> unit =
+    fun bounds center rotation stops n_stops ->
+      let bounds = bounds#as_rect in
+      let center = center#as_point in
+      (Snapshot.append_conic_gradient obj bounds center rotation stops n_stops)
+
   method append_fill : Ocgtk_gsk.Gsk.Path.path_t -> Ocgtk_gsk.Gsk.fillrule -> Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit =
     fun path fill_rule color ->
       let path = path#as_path in
@@ -82,6 +95,13 @@ class snapshot (obj : Snapshot.t) : snapshot_t = object (self)
       let color = color#as_rgb_a in
       (Snapshot.append_layout obj layout color)
 
+  method append_linear_gradient : Ocgtk_graphene.Graphene.Rect.rect_t -> Ocgtk_graphene.Graphene.Point.point_t -> Ocgtk_graphene.Graphene.Point.point_t -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> Gsize.t -> unit =
+    fun bounds start_point end_point stops n_stops ->
+      let bounds = bounds#as_rect in
+      let start_point = start_point#as_point in
+      let end_point = end_point#as_point in
+      (Snapshot.append_linear_gradient obj bounds start_point end_point stops n_stops)
+
   method append_node : Ocgtk_gsk.Gsk.Render_node.render_node_t -> unit =
     fun node ->
       let node = node#as_render_node in
@@ -92,6 +112,25 @@ class snapshot (obj : Snapshot.t) : snapshot_t = object (self)
       let outline = outline#as_rounded_rect in
       let color = color#as_rgb_a in
       (Snapshot.append_outset_shadow obj outline color dx dy spread blur_radius)
+
+  method append_radial_gradient : Ocgtk_graphene.Graphene.Rect.rect_t -> Ocgtk_graphene.Graphene.Point.point_t -> float -> float -> float -> float -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> Gsize.t -> unit =
+    fun bounds center hradius vradius start end_ stops n_stops ->
+      let bounds = bounds#as_rect in
+      let center = center#as_point in
+      (Snapshot.append_radial_gradient obj bounds center hradius vradius start end_ stops n_stops)
+
+  method append_repeating_linear_gradient : Ocgtk_graphene.Graphene.Rect.rect_t -> Ocgtk_graphene.Graphene.Point.point_t -> Ocgtk_graphene.Graphene.Point.point_t -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> Gsize.t -> unit =
+    fun bounds start_point end_point stops n_stops ->
+      let bounds = bounds#as_rect in
+      let start_point = start_point#as_point in
+      let end_point = end_point#as_point in
+      (Snapshot.append_repeating_linear_gradient obj bounds start_point end_point stops n_stops)
+
+  method append_repeating_radial_gradient : Ocgtk_graphene.Graphene.Rect.rect_t -> Ocgtk_graphene.Graphene.Point.point_t -> float -> float -> float -> float -> Ocgtk_gsk.Gsk.Wrappers.Color_stop.t array -> Gsize.t -> unit =
+    fun bounds center hradius vradius start end_ stops n_stops ->
+      let bounds = bounds#as_rect in
+      let center = center#as_point in
+      (Snapshot.append_repeating_radial_gradient obj bounds center hradius vradius start end_ stops n_stops)
 
   method append_scaled_texture : Ocgtk_gdk.Gdk.Texture.texture_t -> Ocgtk_gsk.Gsk.scalingfilter -> Ocgtk_graphene.Graphene.Rect.rect_t -> unit =
     fun texture filter bounds ->
@@ -152,6 +191,12 @@ class snapshot (obj : Snapshot.t) : snapshot_t = object (self)
       let path = path#as_path in
       (Snapshot.push_fill obj path fill_rule)
 
+  method push_gl_shader : Ocgtk_gsk.Gsk.Gl_shader.gl_shader_t -> Ocgtk_graphene.Graphene.Rect.rect_t -> Glib_bytes.t -> unit =
+    fun shader bounds take_args ->
+      let shader = shader#as_gl_shader in
+      let bounds = bounds#as_rect in
+      (Snapshot.push_gl_shader obj shader bounds take_args)
+
   method push_mask : Ocgtk_gsk.Gsk.maskmode -> unit =
     fun mask_mode ->
       (Snapshot.push_mask obj mask_mode)
@@ -170,6 +215,10 @@ class snapshot (obj : Snapshot.t) : snapshot_t = object (self)
     fun bounds ->
       let bounds = bounds#as_rounded_rect in
       (Snapshot.push_rounded_clip obj bounds)
+
+  method push_shadow : Ocgtk_gsk.Gsk.Wrappers.Shadow.t array -> Gsize.t -> unit =
+    fun shadow n_shadows ->
+      (Snapshot.push_shadow obj shadow n_shadows)
 
   method push_stroke : Ocgtk_gsk.Gsk.Path.path_t -> Ocgtk_gsk.Gsk.Stroke.stroke_t -> unit =
     fun path stroke ->

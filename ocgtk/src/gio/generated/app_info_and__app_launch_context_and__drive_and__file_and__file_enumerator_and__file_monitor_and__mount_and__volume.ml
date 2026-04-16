@@ -1,8 +1,579 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Combined modules for cyclic dependencies *)
 
-module rec File : sig
+module rec App_info : sig
+  type t = [`app_info] Gobject.obj
+
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_app_info_from_gobject"
+
+  (* Methods *)
+  (** Checks if the application supports reading files and directories from URIs. *)
+  external supports_uris : t -> bool = "ml_g_app_info_supports_uris"
+
+  (** Checks if the application accepts files as arguments. *)
+  external supports_files : t -> bool = "ml_g_app_info_supports_files"
+
+  (** Checks if the application info should be shown in menus that
+  list available applications. *)
+  external should_show : t -> bool = "ml_g_app_info_should_show"
+
+  (** Sets the application as the last used application for a given type.
+  This will make the application appear as first in the list returned
+  by g_app_info_get_recommended_for_type(), regardless of the default
+  application for that content type. *)
+  external set_as_last_used_for_type : t -> string -> (bool, GError.t) result = "ml_g_app_info_set_as_last_used_for_type"
+
+  (** Sets the application as the default handler for a given type. *)
+  external set_as_default_for_type : t -> string -> (bool, GError.t) result = "ml_g_app_info_set_as_default_for_type"
+
+  (** Sets the application as the default handler for the given file extension. *)
+  external set_as_default_for_extension : t -> string -> (bool, GError.t) result = "ml_g_app_info_set_as_default_for_extension"
+
+  (** Removes a supported type from an application, if possible. *)
+  external remove_supports_type : t -> string -> (bool, GError.t) result = "ml_g_app_info_remove_supports_type"
+
+  (** Finishes a g_app_info_launch_uris_async() operation. *)
+  external launch_uris_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_app_info_launch_uris_finish"
+
+  (** Launches the application. This passes the @uris to the launched application
+  as arguments, using the optional @context to get information
+  about the details of the launcher (like what screen it is on).
+  On error, @error will be set accordingly. If the application only supports
+  one URI per invocation as part of their command-line, multiple instances
+  of the application will be spawned.
+
+  To launch the application without arguments pass a %NULL @uris list.
+
+  Note that even if the launch is successful the application launched
+  can fail to start if it runs into problems during startup. There is
+  no way to detect this. *)
+  external launch_uris : t -> string list option -> App_launch_context.t option -> (bool, GError.t) result = "ml_g_app_info_launch_uris"
+
+  (** Launches the application. Passes @files to the launched application
+  as arguments, using the optional @context to get information
+  about the details of the launcher (like what screen it is on).
+  On error, @error will be set accordingly.
+
+  To launch the application without arguments pass a %NULL @files list.
+
+  Note that even if the launch is successful the application launched
+  can fail to start if it runs into problems during startup. There is
+  no way to detect this.
+
+  Some URIs can be changed when passed through a GFile (for instance
+  unsupported URIs with strange formats like mailto:), so if you have
+  a textual URI you want to pass in as argument, consider using
+  g_app_info_launch_uris() instead.
+
+  The launched application inherits the environment of the launching
+  process, but it can be modified with g_app_launch_context_setenv()
+  and g_app_launch_context_unsetenv().
+
+  On UNIX, this function sets the `GIO_LAUNCHED_DESKTOP_FILE`
+  environment variable with the path of the launched desktop file and
+  `GIO_LAUNCHED_DESKTOP_FILE_PID` to the process id of the launched
+  process. This can be used to ignore `GIO_LAUNCHED_DESKTOP_FILE`,
+  should it be inherited by further processes. The `DISPLAY`,
+  `XDG_ACTIVATION_TOKEN` and `DESKTOP_STARTUP_ID` environment
+  variables are also set, based on information provided in @context. *)
+  external launch : t -> File.t list option -> App_launch_context.t option -> (bool, GError.t) result = "ml_g_app_info_launch"
+
+  (** Retrieves the list of content types that @app_info claims to support.
+  If this information is not provided by the environment, this function
+  will return %NULL.
+  This function does not take in consideration associations added with
+  g_app_info_add_supports_type(), but only those exported directly by
+  the application. *)
+  external get_supported_types : t -> string array = "ml_g_app_info_get_supported_types"
+
+  (** Gets the installed name of the application. *)
+  external get_name : t -> string = "ml_g_app_info_get_name"
+
+  (** Gets the ID of an application. An id is a string that
+  identifies the application. The exact format of the id is
+  platform dependent. For instance, on Unix this is the
+  desktop file id from the xdg menu specification.
+
+  Note that the returned ID may be %NULL, depending on how
+  the @appinfo has been constructed. *)
+  external get_id : t -> string option = "ml_g_app_info_get_id"
+
+  (** Gets the icon for the application. *)
+  external get_icon : t -> Icon.t option = "ml_g_app_info_get_icon"
+
+  (** Gets the executable's name for the installed application.
+
+  This is intended to be used for debugging or labelling what program is going
+  to be run. To launch the executable, use g_app_info_launch() and related
+  functions, rather than spawning the return value from this function. *)
+  external get_executable : t -> string = "ml_g_app_info_get_executable"
+
+  (** Gets the display name of the application. The display name is often more
+  descriptive to the user than the name itself. *)
+  external get_display_name : t -> string = "ml_g_app_info_get_display_name"
+
+  (** Gets a human-readable description of an installed application. *)
+  external get_description : t -> string option = "ml_g_app_info_get_description"
+
+  (** Gets the commandline with which the application will be
+  started. *)
+  external get_commandline : t -> string option = "ml_g_app_info_get_commandline"
+
+  (** Checks if two #GAppInfos are equal.
+
+  Note that the check *may not* compare each individual
+  field, and only does an identity check. In case detecting changes in the
+  contents is needed, program code must additionally compare relevant fields. *)
+  external equal : t -> t -> bool = "ml_g_app_info_equal"
+
+  (** Creates a duplicate of a #GAppInfo. *)
+  external dup : t -> t = "ml_g_app_info_dup"
+
+  (** Tries to delete a #GAppInfo.
+
+  On some platforms, there may be a difference between user-defined
+  #GAppInfos which can be deleted, and system-wide ones which cannot.
+  See g_app_info_can_delete(). *)
+  external delete : t -> bool = "ml_g_app_info_delete"
+
+  (** Checks if a supported content type can be removed from an application. *)
+  external can_remove_supports_type : t -> bool = "ml_g_app_info_can_remove_supports_type"
+
+  (** Obtains the information whether the #GAppInfo can be deleted.
+  See g_app_info_delete(). *)
+  external can_delete : t -> bool = "ml_g_app_info_can_delete"
+
+  (** Adds a content type to the application information to indicate the
+  application is capable of opening files with the given content type. *)
+  external add_supports_type : t -> string -> (bool, GError.t) result = "ml_g_app_info_add_supports_type"
+
+
+end = struct
+  type t = [`app_info] Gobject.obj
+
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_app_info_from_gobject"
+
+  (* Methods *)
+  (** Checks if the application supports reading files and directories from URIs. *)
+  external supports_uris : t -> bool = "ml_g_app_info_supports_uris"
+
+  (** Checks if the application accepts files as arguments. *)
+  external supports_files : t -> bool = "ml_g_app_info_supports_files"
+
+  (** Checks if the application info should be shown in menus that
+  list available applications. *)
+  external should_show : t -> bool = "ml_g_app_info_should_show"
+
+  (** Sets the application as the last used application for a given type.
+  This will make the application appear as first in the list returned
+  by g_app_info_get_recommended_for_type(), regardless of the default
+  application for that content type. *)
+  external set_as_last_used_for_type : t -> string -> (bool, GError.t) result = "ml_g_app_info_set_as_last_used_for_type"
+
+  (** Sets the application as the default handler for a given type. *)
+  external set_as_default_for_type : t -> string -> (bool, GError.t) result = "ml_g_app_info_set_as_default_for_type"
+
+  (** Sets the application as the default handler for the given file extension. *)
+  external set_as_default_for_extension : t -> string -> (bool, GError.t) result = "ml_g_app_info_set_as_default_for_extension"
+
+  (** Removes a supported type from an application, if possible. *)
+  external remove_supports_type : t -> string -> (bool, GError.t) result = "ml_g_app_info_remove_supports_type"
+
+  (** Finishes a g_app_info_launch_uris_async() operation. *)
+  external launch_uris_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_app_info_launch_uris_finish"
+
+  (** Launches the application. This passes the @uris to the launched application
+  as arguments, using the optional @context to get information
+  about the details of the launcher (like what screen it is on).
+  On error, @error will be set accordingly. If the application only supports
+  one URI per invocation as part of their command-line, multiple instances
+  of the application will be spawned.
+
+  To launch the application without arguments pass a %NULL @uris list.
+
+  Note that even if the launch is successful the application launched
+  can fail to start if it runs into problems during startup. There is
+  no way to detect this. *)
+  external launch_uris : t -> string list option -> App_launch_context.t option -> (bool, GError.t) result = "ml_g_app_info_launch_uris"
+
+  (** Launches the application. Passes @files to the launched application
+  as arguments, using the optional @context to get information
+  about the details of the launcher (like what screen it is on).
+  On error, @error will be set accordingly.
+
+  To launch the application without arguments pass a %NULL @files list.
+
+  Note that even if the launch is successful the application launched
+  can fail to start if it runs into problems during startup. There is
+  no way to detect this.
+
+  Some URIs can be changed when passed through a GFile (for instance
+  unsupported URIs with strange formats like mailto:), so if you have
+  a textual URI you want to pass in as argument, consider using
+  g_app_info_launch_uris() instead.
+
+  The launched application inherits the environment of the launching
+  process, but it can be modified with g_app_launch_context_setenv()
+  and g_app_launch_context_unsetenv().
+
+  On UNIX, this function sets the `GIO_LAUNCHED_DESKTOP_FILE`
+  environment variable with the path of the launched desktop file and
+  `GIO_LAUNCHED_DESKTOP_FILE_PID` to the process id of the launched
+  process. This can be used to ignore `GIO_LAUNCHED_DESKTOP_FILE`,
+  should it be inherited by further processes. The `DISPLAY`,
+  `XDG_ACTIVATION_TOKEN` and `DESKTOP_STARTUP_ID` environment
+  variables are also set, based on information provided in @context. *)
+  external launch : t -> File.t list option -> App_launch_context.t option -> (bool, GError.t) result = "ml_g_app_info_launch"
+
+  (** Retrieves the list of content types that @app_info claims to support.
+  If this information is not provided by the environment, this function
+  will return %NULL.
+  This function does not take in consideration associations added with
+  g_app_info_add_supports_type(), but only those exported directly by
+  the application. *)
+  external get_supported_types : t -> string array = "ml_g_app_info_get_supported_types"
+
+  (** Gets the installed name of the application. *)
+  external get_name : t -> string = "ml_g_app_info_get_name"
+
+  (** Gets the ID of an application. An id is a string that
+  identifies the application. The exact format of the id is
+  platform dependent. For instance, on Unix this is the
+  desktop file id from the xdg menu specification.
+
+  Note that the returned ID may be %NULL, depending on how
+  the @appinfo has been constructed. *)
+  external get_id : t -> string option = "ml_g_app_info_get_id"
+
+  (** Gets the icon for the application. *)
+  external get_icon : t -> Icon.t option = "ml_g_app_info_get_icon"
+
+  (** Gets the executable's name for the installed application.
+
+  This is intended to be used for debugging or labelling what program is going
+  to be run. To launch the executable, use g_app_info_launch() and related
+  functions, rather than spawning the return value from this function. *)
+  external get_executable : t -> string = "ml_g_app_info_get_executable"
+
+  (** Gets the display name of the application. The display name is often more
+  descriptive to the user than the name itself. *)
+  external get_display_name : t -> string = "ml_g_app_info_get_display_name"
+
+  (** Gets a human-readable description of an installed application. *)
+  external get_description : t -> string option = "ml_g_app_info_get_description"
+
+  (** Gets the commandline with which the application will be
+  started. *)
+  external get_commandline : t -> string option = "ml_g_app_info_get_commandline"
+
+  (** Checks if two #GAppInfos are equal.
+
+  Note that the check *may not* compare each individual
+  field, and only does an identity check. In case detecting changes in the
+  contents is needed, program code must additionally compare relevant fields. *)
+  external equal : t -> t -> bool = "ml_g_app_info_equal"
+
+  (** Creates a duplicate of a #GAppInfo. *)
+  external dup : t -> t = "ml_g_app_info_dup"
+
+  (** Tries to delete a #GAppInfo.
+
+  On some platforms, there may be a difference between user-defined
+  #GAppInfos which can be deleted, and system-wide ones which cannot.
+  See g_app_info_can_delete(). *)
+  external delete : t -> bool = "ml_g_app_info_delete"
+
+  (** Checks if a supported content type can be removed from an application. *)
+  external can_remove_supports_type : t -> bool = "ml_g_app_info_can_remove_supports_type"
+
+  (** Obtains the information whether the #GAppInfo can be deleted.
+  See g_app_info_delete(). *)
+  external can_delete : t -> bool = "ml_g_app_info_can_delete"
+
+  (** Adds a content type to the application information to indicate the
+  application is capable of opening files with the given content type. *)
+  external add_supports_type : t -> string -> (bool, GError.t) result = "ml_g_app_info_add_supports_type"
+
+
+end
+
+and App_launch_context
+ : sig
+  type t = [`app_launch_context | `object_] Gobject.obj
+
+  (** Create a new AppLaunchContext *)
+  external new_ : unit -> t = "ml_g_app_launch_context_new"
+
+  (* Methods *)
+  (** Arranges for @variable to be unset in the child's environment
+  when @context is used to launch an application. *)
+  external unsetenv : t -> string -> unit = "ml_g_app_launch_context_unsetenv"
+
+  (** Arranges for @variable to be set to @value in the child's
+  environment when @context is used to launch an application. *)
+  external setenv : t -> string -> string -> unit = "ml_g_app_launch_context_setenv"
+
+  (** Called when an application has failed to launch, so that it can cancel
+  the application startup notification started in g_app_launch_context_get_startup_notify_id(). *)
+  external launch_failed : t -> string -> unit = "ml_g_app_launch_context_launch_failed"
+
+  (** Initiates startup notification for the application and returns the
+  `XDG_ACTIVATION_TOKEN` or `DESKTOP_STARTUP_ID` for the launched operation,
+  if supported.
+
+  The returned token may be referred to equivalently as an ‘activation token’
+  (using Wayland terminology) or a ‘startup sequence ID’ (using X11 terminology).
+  The two [are interoperable](https://gitlab.freedesktop.org/wayland/wayland-protocols/-/blob/main/staging/xdg-activation/x11-interoperation.rst).
+
+  Activation tokens are defined in the [XDG Activation Protocol](https://wayland.app/protocols/xdg-activation-v1),
+  and startup notification IDs are defined in the
+  [freedesktop.org Startup Notification Protocol](http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
+
+  Support for the XDG Activation Protocol was added in GLib 2.76. *)
+  external get_startup_notify_id : t -> App_info.t -> File.t list -> string option = "ml_g_app_launch_context_get_startup_notify_id"
+
+  (** Gets the complete environment variable list to be passed to
+  the child process when @context is used to launch an application.
+  This is a %NULL-terminated array of strings, where each string has
+  the form `KEY=VALUE`. *)
+  external get_environment : t -> string array = "ml_g_app_launch_context_get_environment"
+
+  (** Gets the display string for the @context. This is used to ensure new
+  applications are started on the same display as the launching
+  application, by setting the `DISPLAY` environment variable. *)
+  external get_display : t -> App_info.t -> File.t list -> string option = "ml_g_app_launch_context_get_display"
+
+
+end = struct
+  type t = [`app_launch_context | `object_] Gobject.obj
+
+  (** Create a new AppLaunchContext *)
+  external new_ : unit -> t = "ml_g_app_launch_context_new"
+
+  (* Methods *)
+  (** Arranges for @variable to be unset in the child's environment
+  when @context is used to launch an application. *)
+  external unsetenv : t -> string -> unit = "ml_g_app_launch_context_unsetenv"
+
+  (** Arranges for @variable to be set to @value in the child's
+  environment when @context is used to launch an application. *)
+  external setenv : t -> string -> string -> unit = "ml_g_app_launch_context_setenv"
+
+  (** Called when an application has failed to launch, so that it can cancel
+  the application startup notification started in g_app_launch_context_get_startup_notify_id(). *)
+  external launch_failed : t -> string -> unit = "ml_g_app_launch_context_launch_failed"
+
+  (** Initiates startup notification for the application and returns the
+  `XDG_ACTIVATION_TOKEN` or `DESKTOP_STARTUP_ID` for the launched operation,
+  if supported.
+
+  The returned token may be referred to equivalently as an ‘activation token’
+  (using Wayland terminology) or a ‘startup sequence ID’ (using X11 terminology).
+  The two [are interoperable](https://gitlab.freedesktop.org/wayland/wayland-protocols/-/blob/main/staging/xdg-activation/x11-interoperation.rst).
+
+  Activation tokens are defined in the [XDG Activation Protocol](https://wayland.app/protocols/xdg-activation-v1),
+  and startup notification IDs are defined in the
+  [freedesktop.org Startup Notification Protocol](http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
+
+  Support for the XDG Activation Protocol was added in GLib 2.76. *)
+  external get_startup_notify_id : t -> App_info.t -> File.t list -> string option = "ml_g_app_launch_context_get_startup_notify_id"
+
+  (** Gets the complete environment variable list to be passed to
+  the child process when @context is used to launch an application.
+  This is a %NULL-terminated array of strings, where each string has
+  the form `KEY=VALUE`. *)
+  external get_environment : t -> string array = "ml_g_app_launch_context_get_environment"
+
+  (** Gets the display string for the @context. This is used to ensure new
+  applications are started on the same display as the launching
+  application, by setting the `DISPLAY` environment variable. *)
+  external get_display : t -> App_info.t -> File.t list -> string option = "ml_g_app_launch_context_get_display"
+
+
+end
+
+and Drive
+ : sig
+  type t = [`drive] Gobject.obj
+
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_drive_from_gobject"
+
+  (* Methods *)
+  (** Finishes stopping a drive. *)
+  external stop_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_stop_finish"
+
+  (** Finishes starting a drive. *)
+  external start_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_start_finish"
+
+  (** Finishes an operation started with g_drive_poll_for_media() on a drive. *)
+  external poll_for_media_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_poll_for_media_finish"
+
+  (** Checks if the #GDrive and/or its media is considered removable by the user.
+  See g_drive_is_media_removable(). *)
+  external is_removable : t -> bool = "ml_g_drive_is_removable"
+
+  (** Checks if the @drive supports removable media. *)
+  external is_media_removable : t -> bool = "ml_g_drive_is_media_removable"
+
+  (** Checks if @drive is capable of automatically detecting media changes. *)
+  external is_media_check_automatic : t -> bool = "ml_g_drive_is_media_check_automatic"
+
+  (** Check if @drive has any mountable volumes. *)
+  external has_volumes : t -> bool = "ml_g_drive_has_volumes"
+
+  (** Checks if the @drive has media. Note that the OS may not be polling
+  the drive for media changes; see g_drive_is_media_check_automatic()
+  for more details. *)
+  external has_media : t -> bool = "ml_g_drive_has_media"
+
+  (** Get a list of mountable volumes for @drive.
+
+  The returned list should be freed with g_list_free(), after
+  its elements have been unreffed with g_object_unref(). *)
+  external get_volumes : t -> Volume.t list = "ml_g_drive_get_volumes"
+
+  (** Gets the icon for @drive. *)
+  external get_symbolic_icon : t -> Icon.t = "ml_g_drive_get_symbolic_icon"
+
+  (** Gets a hint about how a drive can be started/stopped. *)
+  external get_start_stop_type : t -> Gio_enums.drivestartstoptype = "ml_g_drive_get_start_stop_type"
+
+  (** Gets the sort key for @drive, if any. *)
+  external get_sort_key : t -> string option = "ml_g_drive_get_sort_key"
+
+  (** Gets the name of @drive. *)
+  external get_name : t -> string = "ml_g_drive_get_name"
+
+  (** Gets the identifier of the given kind for @drive. The only
+  identifier currently available is
+  %G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE. *)
+  external get_identifier : t -> string -> string option = "ml_g_drive_get_identifier"
+
+  (** Gets the icon for @drive. *)
+  external get_icon : t -> Icon.t = "ml_g_drive_get_icon"
+
+  (** Gets the kinds of identifiers that @drive has.
+  Use g_drive_get_identifier() to obtain the identifiers
+  themselves. *)
+  external enumerate_identifiers : t -> string array = "ml_g_drive_enumerate_identifiers"
+
+  (** Finishes ejecting a drive. If any errors occurred during the operation,
+  @error will be set to contain the errors and %FALSE will be returned. *)
+  external eject_with_operation_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_eject_with_operation_finish"
+
+  (** Finishes ejecting a drive. *)
+  external eject_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_eject_finish"
+
+  (** Checks if a drive can be stopped. *)
+  external can_stop : t -> bool = "ml_g_drive_can_stop"
+
+  (** Checks if a drive can be started degraded. *)
+  external can_start_degraded : t -> bool = "ml_g_drive_can_start_degraded"
+
+  (** Checks if a drive can be started. *)
+  external can_start : t -> bool = "ml_g_drive_can_start"
+
+  (** Checks if a drive can be polled for media changes. *)
+  external can_poll_for_media : t -> bool = "ml_g_drive_can_poll_for_media"
+
+  (** Checks if a drive can be ejected. *)
+  external can_eject : t -> bool = "ml_g_drive_can_eject"
+
+
+end = struct
+  type t = [`drive] Gobject.obj
+
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_drive_from_gobject"
+
+  (* Methods *)
+  (** Finishes stopping a drive. *)
+  external stop_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_stop_finish"
+
+  (** Finishes starting a drive. *)
+  external start_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_start_finish"
+
+  (** Finishes an operation started with g_drive_poll_for_media() on a drive. *)
+  external poll_for_media_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_poll_for_media_finish"
+
+  (** Checks if the #GDrive and/or its media is considered removable by the user.
+  See g_drive_is_media_removable(). *)
+  external is_removable : t -> bool = "ml_g_drive_is_removable"
+
+  (** Checks if the @drive supports removable media. *)
+  external is_media_removable : t -> bool = "ml_g_drive_is_media_removable"
+
+  (** Checks if @drive is capable of automatically detecting media changes. *)
+  external is_media_check_automatic : t -> bool = "ml_g_drive_is_media_check_automatic"
+
+  (** Check if @drive has any mountable volumes. *)
+  external has_volumes : t -> bool = "ml_g_drive_has_volumes"
+
+  (** Checks if the @drive has media. Note that the OS may not be polling
+  the drive for media changes; see g_drive_is_media_check_automatic()
+  for more details. *)
+  external has_media : t -> bool = "ml_g_drive_has_media"
+
+  (** Get a list of mountable volumes for @drive.
+
+  The returned list should be freed with g_list_free(), after
+  its elements have been unreffed with g_object_unref(). *)
+  external get_volumes : t -> Volume.t list = "ml_g_drive_get_volumes"
+
+  (** Gets the icon for @drive. *)
+  external get_symbolic_icon : t -> Icon.t = "ml_g_drive_get_symbolic_icon"
+
+  (** Gets a hint about how a drive can be started/stopped. *)
+  external get_start_stop_type : t -> Gio_enums.drivestartstoptype = "ml_g_drive_get_start_stop_type"
+
+  (** Gets the sort key for @drive, if any. *)
+  external get_sort_key : t -> string option = "ml_g_drive_get_sort_key"
+
+  (** Gets the name of @drive. *)
+  external get_name : t -> string = "ml_g_drive_get_name"
+
+  (** Gets the identifier of the given kind for @drive. The only
+  identifier currently available is
+  %G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE. *)
+  external get_identifier : t -> string -> string option = "ml_g_drive_get_identifier"
+
+  (** Gets the icon for @drive. *)
+  external get_icon : t -> Icon.t = "ml_g_drive_get_icon"
+
+  (** Gets the kinds of identifiers that @drive has.
+  Use g_drive_get_identifier() to obtain the identifiers
+  themselves. *)
+  external enumerate_identifiers : t -> string array = "ml_g_drive_enumerate_identifiers"
+
+  (** Finishes ejecting a drive. If any errors occurred during the operation,
+  @error will be set to contain the errors and %FALSE will be returned. *)
+  external eject_with_operation_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_eject_with_operation_finish"
+
+  (** Finishes ejecting a drive. *)
+  external eject_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_drive_eject_finish"
+
+  (** Checks if a drive can be stopped. *)
+  external can_stop : t -> bool = "ml_g_drive_can_stop"
+
+  (** Checks if a drive can be started degraded. *)
+  external can_start_degraded : t -> bool = "ml_g_drive_can_start_degraded"
+
+  (** Checks if a drive can be started. *)
+  external can_start : t -> bool = "ml_g_drive_can_start"
+
+  (** Checks if a drive can be polled for media changes. *)
+  external can_poll_for_media : t -> bool = "ml_g_drive_can_poll_for_media"
+
+  (** Checks if a drive can be ejected. *)
+  external can_eject : t -> bool = "ml_g_drive_can_eject"
+
+
+end
+
+and File
+ : sig
   type t = [`file] Gobject.obj
+
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_file_from_gobject"
 
   (* Methods *)
   (** Finishes an unmount operation,
@@ -87,6 +658,22 @@ module rec File : sig
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
   external set_attributes_from_info : t -> File_info.t -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attributes_from_info"
 
+  (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_UINT64 to @value.
+  If @attribute is of a different type, this operation will fail.
+
+  If @cancellable is not %NULL, then the operation can be cancelled by
+  triggering the cancellable object from another thread. If the operation
+  was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+  external set_attribute_uint64 : t -> string -> UInt64.t -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_uint64"
+
+  (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_UINT32 to @value.
+  If @attribute is of a different type, this operation will fail.
+
+  If @cancellable is not %NULL, then the operation can be cancelled by
+  triggering the cancellable object from another thread. If the operation
+  was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+  external set_attribute_uint32 : t -> string -> UInt32.t -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_uint32"
+
   (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_STRING to @value.
   If @attribute is of a different type, this operation will fail.
 
@@ -94,6 +681,22 @@ module rec File : sig
   triggering the cancellable object from another thread. If the operation
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
   external set_attribute_string : t -> string -> string -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_string"
+
+  (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_INT64 to @value.
+  If @attribute is of a different type, this operation will fail.
+
+  If @cancellable is not %NULL, then the operation can be cancelled by
+  triggering the cancellable object from another thread. If the operation
+  was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+  external set_attribute_int64 : t -> string -> int64 -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_int64"
+
+  (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_INT32 to @value.
+  If @attribute is of a different type, this operation will fail.
+
+  If @cancellable is not %NULL, then the operation can be cancelled by
+  triggering the cancellable object from another thread. If the operation
+  was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+  external set_attribute_int32 : t -> string -> Int32.t -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_int32"
 
   (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING to @value.
   If @attribute is of a different type, this operation will fail,
@@ -312,7 +915,7 @@ module rec File : sig
   external query_exists : t -> Cancellable.t option -> bool = "ml_g_file_query_exists"
 
   (** Finishes a g_file_query_default_handler_async() operation. *)
-  external query_default_handler_finish : t -> Async_result.t -> (App_info_and__app_launch_context.App_info.t, GError.t) result = "ml_g_file_query_default_handler_finish"
+  external query_default_handler_finish : t -> Async_result.t -> (App_info.t, GError.t) result = "ml_g_file_query_default_handler_finish"
 
   (** Returns the #GAppInfo that is registered as the default
   application to handle the file specified by @file.
@@ -320,7 +923,7 @@ module rec File : sig
   If @cancellable is not %NULL, then the operation can be cancelled by
   triggering the cancellable object from another thread. If the operation
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
-  external query_default_handler : t -> Cancellable.t option -> (App_info_and__app_launch_context.App_info.t, GError.t) result = "ml_g_file_query_default_handler"
+  external query_default_handler : t -> Cancellable.t option -> (App_info.t, GError.t) result = "ml_g_file_query_default_handler"
 
   (** Finishes a poll operation. See g_file_poll_mountable() for details.
 
@@ -409,6 +1012,11 @@ module rec File : sig
   triggering the cancellable object from another thread. If the operation
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
   external monitor : t -> Gio_enums.filemonitorflags -> Cancellable.t option -> (File_monitor.t, GError.t) result = "ml_g_file_monitor"
+
+  (** Collects the results from an earlier call to
+  g_file_measure_disk_usage_async().  See g_file_measure_disk_usage() for
+  more information. *)
+  external measure_disk_usage_finish : t -> Async_result.t -> (bool * UInt64.t * UInt64.t * UInt64.t, GError.t) result = "ml_g_file_measure_disk_usage_finish"
 
   (** Finishes an asynchronous symbolic link creation, started with
   g_file_make_symbolic_link_async(). *)
@@ -795,6 +1403,8 @@ module rec File : sig
 end = struct
   type t = [`file] Gobject.obj
 
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_file_from_gobject"
+
   (* Methods *)
   (** Finishes an unmount operation,
   see g_file_unmount_mountable_with_operation() for details.
@@ -878,6 +1488,22 @@ end = struct
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
   external set_attributes_from_info : t -> File_info.t -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attributes_from_info"
 
+  (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_UINT64 to @value.
+  If @attribute is of a different type, this operation will fail.
+
+  If @cancellable is not %NULL, then the operation can be cancelled by
+  triggering the cancellable object from another thread. If the operation
+  was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+  external set_attribute_uint64 : t -> string -> UInt64.t -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_uint64"
+
+  (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_UINT32 to @value.
+  If @attribute is of a different type, this operation will fail.
+
+  If @cancellable is not %NULL, then the operation can be cancelled by
+  triggering the cancellable object from another thread. If the operation
+  was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+  external set_attribute_uint32 : t -> string -> UInt32.t -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_uint32"
+
   (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_STRING to @value.
   If @attribute is of a different type, this operation will fail.
 
@@ -885,6 +1511,22 @@ end = struct
   triggering the cancellable object from another thread. If the operation
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
   external set_attribute_string : t -> string -> string -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_string"
+
+  (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_INT64 to @value.
+  If @attribute is of a different type, this operation will fail.
+
+  If @cancellable is not %NULL, then the operation can be cancelled by
+  triggering the cancellable object from another thread. If the operation
+  was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+  external set_attribute_int64 : t -> string -> int64 -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_int64"
+
+  (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_INT32 to @value.
+  If @attribute is of a different type, this operation will fail.
+
+  If @cancellable is not %NULL, then the operation can be cancelled by
+  triggering the cancellable object from another thread. If the operation
+  was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
+  external set_attribute_int32 : t -> string -> Int32.t -> Gio_enums.filequeryinfoflags -> Cancellable.t option -> (bool, GError.t) result = "ml_g_file_set_attribute_int32"
 
   (** Sets @attribute of type %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING to @value.
   If @attribute is of a different type, this operation will fail,
@@ -1103,7 +1745,7 @@ end = struct
   external query_exists : t -> Cancellable.t option -> bool = "ml_g_file_query_exists"
 
   (** Finishes a g_file_query_default_handler_async() operation. *)
-  external query_default_handler_finish : t -> Async_result.t -> (App_info_and__app_launch_context.App_info.t, GError.t) result = "ml_g_file_query_default_handler_finish"
+  external query_default_handler_finish : t -> Async_result.t -> (App_info.t, GError.t) result = "ml_g_file_query_default_handler_finish"
 
   (** Returns the #GAppInfo that is registered as the default
   application to handle the file specified by @file.
@@ -1111,7 +1753,7 @@ end = struct
   If @cancellable is not %NULL, then the operation can be cancelled by
   triggering the cancellable object from another thread. If the operation
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
-  external query_default_handler : t -> Cancellable.t option -> (App_info_and__app_launch_context.App_info.t, GError.t) result = "ml_g_file_query_default_handler"
+  external query_default_handler : t -> Cancellable.t option -> (App_info.t, GError.t) result = "ml_g_file_query_default_handler"
 
   (** Finishes a poll operation. See g_file_poll_mountable() for details.
 
@@ -1200,6 +1842,11 @@ end = struct
   triggering the cancellable object from another thread. If the operation
   was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. *)
   external monitor : t -> Gio_enums.filemonitorflags -> Cancellable.t option -> (File_monitor.t, GError.t) result = "ml_g_file_monitor"
+
+  (** Collects the results from an earlier call to
+  g_file_measure_disk_usage_async().  See g_file_measure_disk_usage() for
+  more information. *)
+  external measure_disk_usage_finish : t -> Async_result.t -> (bool * UInt64.t * UInt64.t * UInt64.t, GError.t) result = "ml_g_file_measure_disk_usage_finish"
 
   (** Finishes an asynchronous symbolic link creation, started with
   g_file_make_symbolic_link_async(). *)
@@ -1793,6 +2440,8 @@ and Mount
  : sig
   type t = [`mount] Gobject.obj
 
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_mount_from_gobject"
+
   (* Methods *)
   (** Decrements the shadow count on @mount. Usually used by
   #GVolumeMonitor implementations when destroying a shadow mount for
@@ -1913,6 +2562,8 @@ and Mount
 
 end = struct
   type t = [`mount] Gobject.obj
+
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_mount_from_gobject"
 
   (* Methods *)
   (** Decrements the shadow count on @mount. Usually used by
@@ -2038,6 +2689,8 @@ and Volume
  : sig
   type t = [`volume] Gobject.obj
 
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_volume_from_gobject"
+
   (* Methods *)
   (** Returns whether the volume should be automatically mounted. *)
   external should_automount : t -> bool = "ml_g_volume_should_automount"
@@ -2129,6 +2782,8 @@ and Volume
 
 end = struct
   type t = [`volume] Gobject.obj
+
+  external from_gobject : 'a Gobject.obj -> t = "ml_gio_volume_from_gobject"
 
   (* Methods *)
   (** Returns whether the volume should be automatically mounted. *)

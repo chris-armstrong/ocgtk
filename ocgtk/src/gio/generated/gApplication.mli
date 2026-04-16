@@ -1,4 +1,6 @@
 class type application_t = object
+    inherit GAction_group.action_group_t
+    inherit GAction_map.action_map_t
     inherit Gapplication_signals.application_signals
     method activate : unit -> unit
     method bind_busy_property : [`object_] Gobject.obj -> string -> unit
@@ -14,12 +16,13 @@ class type application_t = object
     method get_version : unit -> string option
     method hold : unit -> unit
     method mark_busy : unit -> unit
-    method open_ : File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t array -> int -> string -> unit
+    method open_ : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t array -> int -> string -> unit
     method quit : unit -> unit
     method register : GCancellable.cancellable_t option -> (bool, GError.t) result
     method release : unit -> unit
     method run : int -> string array option -> int
     method send_notification : string option -> GNotification.notification_t -> unit
+    method set_action_group : GAction_group.action_group_t option -> unit
     method set_application_id : string option -> unit
     method set_default : unit -> unit
     method set_flags : Gio_enums.applicationflags -> unit

@@ -10,10 +10,12 @@ class type font_face_t = object
 end
 
 and font_family_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
     method get_face : string option -> font_face_t option
     method get_name : unit -> string
     method is_monospace : unit -> bool
     method is_variable : unit -> bool
+    method item_type : int
     method n_items : int
     method as_font_family : Font_face_and__font_family.Font_family.t
 end
@@ -41,6 +43,7 @@ class font_face (obj : Font_face_and__font_family.Font_face.t) : font_face_t = o
 end
 
 and font_family (obj : Font_face_and__font_family.Font_family.t) : font_family_t = object (self)
+  inherit Ocgtk_gio.Gio.List_model.list_model (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
 
   method get_face : string option -> font_face_t option =
     fun name ->
@@ -57,6 +60,8 @@ and font_family (obj : Font_face_and__font_family.Font_family.t) : font_family_t
   method is_variable : unit -> bool =
     fun () ->
       (Font_face_and__font_family.Font_family.is_variable obj)
+
+  method item_type = Font_face_and__font_family.Font_family.get_item_type obj
 
   method n_items = Font_face_and__font_family.Font_family.get_n_items obj
 

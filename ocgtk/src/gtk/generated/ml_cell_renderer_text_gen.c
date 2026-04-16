@@ -130,23 +130,6 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_background(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "background");
-if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_background: property 'background' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "background", &prop_gvalue);
-          prop_value = g_value_get_string(&prop_gvalue);
-
-      result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
 CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_background(value self, value new_value)
 {
     CAMLparam2(self, new_value);
@@ -482,23 +465,6 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_foreground(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "foreground");
-if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_foreground: property 'foreground' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "foreground", &prop_gvalue);
-          prop_value = g_value_get_string(&prop_gvalue);
-
-      result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
 CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_foreground(value self, value new_value)
 {
     CAMLparam2(self, new_value);
@@ -641,23 +607,6 @@ g_object_set_property(G_OBJECT(obj), "language-set", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
-
-CAMLexport CAMLprim value ml_gtk_cell_renderer_text_get_markup(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GtkCellRendererText *obj = (GtkCellRendererText *)GtkCellRendererText_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "markup");
-if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_text_get_markup: property 'markup' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "markup", &prop_gvalue);
-          prop_value = g_value_get_string(&prop_gvalue);
-
-      result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_gtk_cell_renderer_text_set_markup(value self, value new_value)
 {

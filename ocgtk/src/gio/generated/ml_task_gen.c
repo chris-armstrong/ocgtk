@@ -134,6 +134,28 @@ return Val_unit;
 
 #if GLIB_CHECK_VERSION(2,36,0)
 
+CAMLexport CAMLprim value ml_g_task_return_int(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_task_return_int(GTask_val(self), Long_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_task_return_int(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Task requires GLib >= 2.36");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,36,0)
+
 CAMLexport CAMLprim value ml_g_task_return_error_if_cancelled(value self)
 {
 CAMLparam1(self);
@@ -170,6 +192,28 @@ CAMLexport CAMLprim value ml_g_task_return_boolean(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
+caml_failwith("Task requires GLib >= 2.36");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,36,0)
+
+CAMLexport CAMLprim value ml_g_task_propagate_int(value self)
+{
+CAMLparam1(self);
+GError *error = NULL;
+
+gssize result = g_task_propagate_int(GTask_val(self), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_long(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_task_propagate_int(value self)
+{
+CAMLparam1(self);
+(void)self;
 caml_failwith("Task requires GLib >= 2.36");
 return Val_unit;
 }

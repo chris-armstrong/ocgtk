@@ -1,10 +1,12 @@
 class type bookmark_list_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
     method get_attributes : unit -> string option
     method get_filename : unit -> string
     method get_io_priority : unit -> int
     method is_loading : unit -> bool
     method set_attributes : string option -> unit
     method set_io_priority : int -> unit
+    method item_type : int
     method loading : bool
     method n_items : int
     method as_bookmark_list : Bookmark_list.t

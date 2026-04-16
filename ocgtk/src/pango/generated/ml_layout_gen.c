@@ -112,6 +112,15 @@ pango_layout_set_single_paragraph_mode(PangoLayout_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_pango_layout_set_markup_with_accel(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+gunichar out4;
+
+pango_layout_set_markup_with_accel(PangoLayout_val(self), String_val(arg1), Int_val(arg2), Long_val(arg3), &out4);
+CAMLreturn(Val_long(out4));
+}
+
 CAMLexport CAMLprim value ml_pango_layout_set_markup(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -269,6 +278,28 @@ CAMLparam2(self, arg1);
 pango_layout_set_alignment(PangoLayout_val(self), PangoAlignment_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#if PANGO_VERSION_CHECK(1,50,0)
+
+CAMLexport CAMLprim value ml_pango_layout_serialize(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+GBytes* result = pango_layout_serialize(PangoLayout_val(self), PangoLayoutSerializeFlags_val(arg1));
+CAMLreturn(Val_GBytes(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_pango_layout_serialize(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Layout requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_layout_move_cursor_visually(value self, value arg1, value arg2, value arg3, value arg4)
 {

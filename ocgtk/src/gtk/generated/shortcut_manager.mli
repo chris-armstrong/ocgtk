@@ -3,4 +3,6 @@
 
 type t = [`shortcut_manager] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_shortcut_manager_from_gobject"
+
 (* Methods *)

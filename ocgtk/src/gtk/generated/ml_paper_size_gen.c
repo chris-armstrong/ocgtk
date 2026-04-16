@@ -48,6 +48,14 @@ GtkPaperSize *obj = gtk_paper_size_new_custom(String_val(arg1), String_val(arg2)
 
 CAMLreturn(Val_GtkPaperSize(obj));
 }
+CAMLexport CAMLprim value ml_gtk_paper_size_new_from_gvariant(value arg1)
+{
+CAMLparam1(arg1);
+
+GtkPaperSize *obj = gtk_paper_size_new_from_gvariant(GVariant_val(arg1));
+
+CAMLreturn(Val_GtkPaperSize(obj));
+}
 CAMLexport CAMLprim value ml_gtk_paper_size_new_from_ipp(value arg1, value arg2, value arg3)
 {
 CAMLparam3(arg1, arg2, arg3);
@@ -64,6 +72,15 @@ GtkPaperSize *obj = gtk_paper_size_new_from_ppd(String_val(arg1), String_val(arg
 
 CAMLreturn(Val_GtkPaperSize(obj));
 }
+CAMLexport CAMLprim value ml_gtk_paper_size_to_gvariant(value self)
+{
+CAMLparam1(self);
+
+GVariant* result = gtk_paper_size_to_gvariant(GtkPaperSize_val(self));
+if (result) g_variant_ref(result);
+CAMLreturn(Val_GVariant(result));
+}
+
 CAMLexport CAMLprim value ml_gtk_paper_size_set_size(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);

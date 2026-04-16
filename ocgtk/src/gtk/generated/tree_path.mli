@@ -11,6 +11,9 @@ external new_ : unit -> t = "ml_gtk_tree_path_new"
 external new_first : unit -> t = "ml_gtk_tree_path_new_first"
 
 (** Create a new TreePath *)
+external new_from_indicesv : int array -> Gsize.t -> t = "ml_gtk_tree_path_new_from_indicesv"
+
+(** Create a new TreePath *)
 external new_from_string : string -> t = "ml_gtk_tree_path_new_from_string"
 
 (* Methods *)

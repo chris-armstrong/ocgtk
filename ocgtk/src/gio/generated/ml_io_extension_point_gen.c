@@ -37,6 +37,22 @@ value Val_GIOExtensionPoint_option(const GIOExtensionPoint *ptr) {
 }
 
 
+CAMLexport CAMLprim value ml_g_io_extension_point_set_required_type(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_io_extension_point_set_required_type(GIOExtensionPoint_val(self), GType_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_g_io_extension_point_get_required_type(value self)
+{
+CAMLparam1(self);
+
+GType result = g_io_extension_point_get_required_type(GIOExtensionPoint_val(self));
+CAMLreturn(Val_GType(result));
+}
+
 CAMLexport CAMLprim value ml_g_io_extension_point_get_extensions(value self)
 {
 CAMLparam1(self);

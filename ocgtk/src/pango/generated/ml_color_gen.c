@@ -45,6 +45,33 @@ return Val_unit;
 }
 #endif
 
+#if PANGO_VERSION_CHECK(1,46,0)
+
+CAMLexport CAMLprim value ml_pango_color_parse_with_alpha(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+guint16 out1;
+
+gboolean result = pango_color_parse_with_alpha(PangoColor_val(self), &out1, String_val(arg1));
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_uint16(out1));
+    CAMLreturn(ret);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_pango_color_parse_with_alpha(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Color requires Pango >= 1.46");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_pango_color_parse(value self, value arg1)
 {
 CAMLparam2(self, arg1);

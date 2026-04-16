@@ -30,9 +30,6 @@ external append_name : t -> string -> unit = "ml_g_themed_icon_append_name"
 
 (* Properties *)
 
-(** Get property: name *)
-external get_name : t -> string = "ml_g_themed_icon_get_name"
-
 (** Get property: use-default-fallbacks *)
 external get_use_default_fallbacks : t -> bool = "ml_g_themed_icon_get_use_default_fallbacks"
 

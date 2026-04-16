@@ -3,6 +3,8 @@
 
 type t = [`proxy] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_proxy_from_gobject"
+
 (* Methods *)
 (** Some proxy protocols expect to be passed a hostname, which they
 will resolve to an IP address themselves. Others, like SOCKS4, do

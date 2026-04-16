@@ -3,6 +3,8 @@
 
 type t = [`paintable] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gdk_paintable_from_gobject"
+
 (* Methods *)
 (** Snapshots the given paintable with the given @width and @height.
 

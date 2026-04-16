@@ -2,14 +2,14 @@
 
 (name ocgtk)
 
-(version 0.1~preview0)
+(version 0.1~preview1)
 
 (generate_opam_files true)
 
 (source
  (github chris-armstrong/ocgtk))
 
-(license LGPL-2.1-or-later WITH OCaml-LGPL-linking-exception)
+(license "LGPL-2.1-or-later WITH OCaml-LGPL-linking-exception")
 
 (authors "Chris Armstrong")
 
@@ -26,14 +26,14 @@
    (>= 3.13))
   conf-gtk4
   (integers (>= 0.7.0))
-  xmlm
-  fmt
-  logs
-  containers
-  re
-  sexplib
-  ppx_sexp_conv
-  ppx_deriving
-  cmdliner
-  ppxlib
-  (alcotest :with-test)))
+  (containers :build)
+  (xmlm :build)
+  (re :build)
+  (fmt :build)
+  (logs :build)
+  (cmdliner :build)
+  (alcotest :with-test)
+  (ppxlib :with-test)
+  (sexplib :build)
+  (ppx_sexp_conv :build)
+  (ppx_deriving :build)))

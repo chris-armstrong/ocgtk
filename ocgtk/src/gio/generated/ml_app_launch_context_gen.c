@@ -84,6 +84,17 @@ g_app_launch_context_launch_failed(GAppLaunchContext_val(self), String_val(arg1)
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_app_launch_context_get_startup_notify_id(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+    GList* arg2_list = NULL;
+    GList_val_with(arg2, arg2_list, (gpointer)GFile_val(Field(_iter, 0)));
+
+char* result = g_app_launch_context_get_startup_notify_id(GAppLaunchContext_val(self), GAppInfo_val(arg1), arg2_list);
+    g_list_free(arg2_list);
+CAMLreturn(Val_option_string(result));
+}
+
 #if GLIB_CHECK_VERSION(2,32,0)
 
 CAMLexport CAMLprim value ml_g_app_launch_context_get_environment(value self)
@@ -115,3 +126,14 @@ caml_failwith("AppLaunchContext requires GLib >= 2.32");
 return Val_unit;
 }
 #endif
+
+CAMLexport CAMLprim value ml_g_app_launch_context_get_display(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+    GList* arg2_list = NULL;
+    GList_val_with(arg2, arg2_list, (gpointer)GFile_val(Field(_iter, 0)));
+
+char* result = g_app_launch_context_get_display(GAppLaunchContext_val(self), GAppInfo_val(arg1), arg2_list);
+    g_list_free(arg2_list);
+CAMLreturn(Val_option_string(result));
+}

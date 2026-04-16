@@ -3,6 +3,8 @@
 
 type t = [`icon] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_icon_from_gobject"
+
 (* Methods *)
 (** Generates a textual representation of @icon that can be used for
 serialization such as when passing @icon to a different process or
@@ -21,6 +23,13 @@ in the following two cases
 - If @icon is a #GThemedIcon with exactly one name and no fallbacks,
   the encoding is simply the name (such as `network-server`). *)
 external to_string : t -> string option = "ml_g_icon_to_string"
+
+(** Serializes a #GIcon into a #GVariant. An equivalent #GIcon can be retrieved
+back by calling g_icon_deserialize() on the returned value.
+As serialization will avoid using raw icon data when possible, it only
+makes sense to transfer the #GVariant between processes on the same machine,
+(as opposed to over the network), and within the same file system namespace. *)
+external serialize : t -> Gvariant.t option = "ml_g_icon_serialize"
 
 (** Gets a hash for an icon. *)
 external hash : t -> int = "ml_g_icon_hash"

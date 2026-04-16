@@ -8,7 +8,6 @@ class type text_tag_t = object
     method set_allow_breaks : bool -> unit
     method allow_breaks_set : bool
     method set_allow_breaks_set : bool -> unit
-    method background : string
     method set_background : string -> unit
     method background_full_height : bool
     method set_background_full_height : bool -> unit
@@ -40,7 +39,6 @@ class type text_tag_t = object
     method set_font_features : string -> unit
     method font_features_set : bool
     method set_font_features_set : bool -> unit
-    method foreground : string
     method set_foreground : string -> unit
     method foreground_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
     method set_foreground_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
@@ -87,7 +85,6 @@ class type text_tag_t = object
     method set_overline_rgba_set : bool -> unit
     method overline_set : bool
     method set_overline_set : bool -> unit
-    method paragraph_background : string
     method set_paragraph_background : string -> unit
     method paragraph_background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
     method set_paragraph_background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit

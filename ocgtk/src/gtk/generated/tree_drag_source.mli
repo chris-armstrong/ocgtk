@@ -3,6 +3,8 @@
 
 type t = [`tree_drag_source] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_tree_drag_source_from_gobject"
+
 (* Methods *)
 (** Asks the `GtkTreeDragSource` whether a particular row can be used as
 the source of a DND operation. If the source doesn’t implement

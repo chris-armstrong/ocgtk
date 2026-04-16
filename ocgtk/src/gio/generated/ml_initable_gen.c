@@ -32,6 +32,20 @@ GError *error = NULL;
 gboolean result = g_initable_init(GInitable_val(self), Option_val(arg1, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+CAMLexport CAMLprim value ml_gio_initable_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_INITABLE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GInitable");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GInitable((GInitable*)gobj));
+}
 
 #else
 
@@ -43,6 +57,14 @@ CAMLparam2(self, arg1);
 (void)arg1;
 caml_failwith("Initable requires GLib >= 2.22");
 return Val_unit;
+}
+
+CAMLexport CAMLprim value ml_gio_initable_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    (void)obj;
+    caml_failwith("Initable requires GTK >= 2.22");
+    return Val_unit;
 }
 
 

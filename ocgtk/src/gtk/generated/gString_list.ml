@@ -1,16 +1,20 @@
 class type string_list_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
+    inherit GBuildable.buildable_t
     method append : string -> unit
     method get_string : int -> string option
     method remove : int -> unit
     method splice : int -> int -> string array option -> unit
     method take : string -> unit
+    method item_type : int
     method n_items : int
-    method strings : string array
     method as_string_list : String_list.t
 end
 
 (* High-level class for StringList *)
 class string_list (obj : String_list.t) : string_list_t = object (self)
+  inherit Ocgtk_gio.Gio.List_model.list_model (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
+  inherit GBuildable.buildable (Buildable.from_gobject obj)
 
   method append : string -> unit =
     fun string ->
@@ -32,9 +36,9 @@ class string_list (obj : String_list.t) : string_list_t = object (self)
     fun string ->
       (String_list.take obj string)
 
-  method n_items = String_list.get_n_items obj
+  method item_type = String_list.get_item_type obj
 
-  method strings = String_list.get_strings obj
+  method n_items = String_list.get_n_items obj
 
     method as_string_list = obj
 end

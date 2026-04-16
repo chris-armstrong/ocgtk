@@ -3,6 +3,8 @@
 
 type t = [`toplevel] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gdk_toplevel_from_gobject"
+
 (* Methods *)
 external titlebar_gesture : t -> Gdk_enums.titlebargesture -> bool = "ml_gdk_toplevel_titlebar_gesture"
 
@@ -132,6 +134,23 @@ external inhibit_system_shortcuts : t -> App_launch_context_and__cairo_context_a
 (** Gets the bitwise or of the currently active surface state flags,
 from the `GdkToplevelState` enumeration. *)
 external get_state : t -> Gdk_enums.toplevelstate = "ml_gdk_toplevel_get_state"
+
+(** Sets keyboard focus to @surface.
+
+In most cases, [gtk_window_present_with_time()](../gtk4/method.Window.present_with_time.html)
+should be used on a [GtkWindow](../gtk4/class.Window.html), rather than
+calling this function. *)
+external focus : t -> UInt32.t -> unit = "ml_gdk_toplevel_focus"
+
+(** Begins an interactive resize operation.
+
+You might use this function to implement a “window resize grip.” *)
+external begin_resize : t -> Gdk_enums.surfaceedge -> App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Device.t option -> int -> float -> float -> UInt32.t -> unit = "ml_gdk_toplevel_begin_resize_bytecode" "ml_gdk_toplevel_begin_resize_native"
+
+(** Begins an interactive move operation.
+
+You might use this function to implement draggable titlebars. *)
+external begin_move : t -> App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Device.t -> int -> float -> float -> UInt32.t -> unit = "ml_gdk_toplevel_begin_move_bytecode" "ml_gdk_toplevel_begin_move_native"
 
 (* Properties *)
 

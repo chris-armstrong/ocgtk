@@ -2,31 +2,41 @@ class type d_bus_message_t = object
     method copy : unit -> (d_bus_message_t, GError.t) result
     method get_arg0 : unit -> string option
     method get_arg0_path : unit -> string option
+    method get_body : unit -> Gvariant.t option
     method get_byte_order : unit -> Gio_enums.dbusmessagebyteorder
     method get_destination : unit -> string option
     method get_error_name : unit -> string option
     method get_flags : unit -> Gio_enums.dbusmessageflags
+    method get_header : Gio_enums.dbusmessageheaderfield -> Gvariant.t option
     method get_interface : unit -> string option
     method get_locked : unit -> bool
     method get_member : unit -> string option
     method get_message_type : unit -> Gio_enums.dbusmessagetype
+    method get_num_unix_fds : unit -> UInt32.t
     method get_path : unit -> string option
+    method get_reply_serial : unit -> UInt32.t
     method get_sender : unit -> string option
+    method get_serial : unit -> UInt32.t
     method get_signature : unit -> string
     method get_unix_fd_list : unit -> GUnix_fd_list.unix_fd_list_t option
     method lock : unit -> unit
     method new_method_error_literal : string -> string -> d_bus_message_t
     method new_method_reply : unit -> d_bus_message_t
     method print : int -> string
+    method set_body : Gvariant.t -> unit
     method set_byte_order : Gio_enums.dbusmessagebyteorder -> unit
     method set_destination : string option -> unit
     method set_error_name : string -> unit
     method set_flags : Gio_enums.dbusmessageflags -> unit
+    method set_header : Gio_enums.dbusmessageheaderfield -> Gvariant.t option -> unit
     method set_interface : string option -> unit
     method set_member : string option -> unit
     method set_message_type : Gio_enums.dbusmessagetype -> unit
+    method set_num_unix_fds : UInt32.t -> unit
     method set_path : string option -> unit
+    method set_reply_serial : UInt32.t -> unit
     method set_sender : string option -> unit
+    method set_serial : UInt32.t -> unit
     method set_signature : string option -> unit
     method set_unix_fd_list : GUnix_fd_list.unix_fd_list_t option -> unit
     method to_gerror : unit -> (bool, GError.t) result
@@ -48,6 +58,10 @@ class d_bus_message (obj : D_bus_message.t) : d_bus_message_t = object (self)
     fun () ->
       (D_bus_message.get_arg0_path obj)
 
+  method get_body : unit -> Gvariant.t option =
+    fun () ->
+      (D_bus_message.get_body obj)
+
   method get_byte_order : unit -> Gio_enums.dbusmessagebyteorder =
     fun () ->
       (D_bus_message.get_byte_order obj)
@@ -63,6 +77,10 @@ class d_bus_message (obj : D_bus_message.t) : d_bus_message_t = object (self)
   method get_flags : unit -> Gio_enums.dbusmessageflags =
     fun () ->
       (D_bus_message.get_flags obj)
+
+  method get_header : Gio_enums.dbusmessageheaderfield -> Gvariant.t option =
+    fun header_field ->
+      (D_bus_message.get_header obj header_field)
 
   method get_interface : unit -> string option =
     fun () ->
@@ -80,13 +98,25 @@ class d_bus_message (obj : D_bus_message.t) : d_bus_message_t = object (self)
     fun () ->
       (D_bus_message.get_message_type obj)
 
+  method get_num_unix_fds : unit -> UInt32.t =
+    fun () ->
+      (D_bus_message.get_num_unix_fds obj)
+
   method get_path : unit -> string option =
     fun () ->
       (D_bus_message.get_path obj)
 
+  method get_reply_serial : unit -> UInt32.t =
+    fun () ->
+      (D_bus_message.get_reply_serial obj)
+
   method get_sender : unit -> string option =
     fun () ->
       (D_bus_message.get_sender obj)
+
+  method get_serial : unit -> UInt32.t =
+    fun () ->
+      (D_bus_message.get_serial obj)
 
   method get_signature : unit -> string =
     fun () ->
@@ -112,6 +142,10 @@ class d_bus_message (obj : D_bus_message.t) : d_bus_message_t = object (self)
     fun indent ->
       (D_bus_message.print obj indent)
 
+  method set_body : Gvariant.t -> unit =
+    fun body ->
+      (D_bus_message.set_body obj body)
+
   method set_byte_order : Gio_enums.dbusmessagebyteorder -> unit =
     fun byte_order ->
       (D_bus_message.set_byte_order obj byte_order)
@@ -128,6 +162,10 @@ class d_bus_message (obj : D_bus_message.t) : d_bus_message_t = object (self)
     fun flags ->
       (D_bus_message.set_flags obj flags)
 
+  method set_header : Gio_enums.dbusmessageheaderfield -> Gvariant.t option -> unit =
+    fun header_field value ->
+      (D_bus_message.set_header obj header_field value)
+
   method set_interface : string option -> unit =
     fun value ->
       (D_bus_message.set_interface obj value)
@@ -140,13 +178,25 @@ class d_bus_message (obj : D_bus_message.t) : d_bus_message_t = object (self)
     fun type_ ->
       (D_bus_message.set_message_type obj type_)
 
+  method set_num_unix_fds : UInt32.t -> unit =
+    fun value ->
+      (D_bus_message.set_num_unix_fds obj value)
+
   method set_path : string option -> unit =
     fun value ->
       (D_bus_message.set_path obj value)
 
+  method set_reply_serial : UInt32.t -> unit =
+    fun value ->
+      (D_bus_message.set_reply_serial obj value)
+
   method set_sender : string option -> unit =
     fun value ->
       (D_bus_message.set_sender obj value)
+
+  method set_serial : UInt32.t -> unit =
+    fun serial ->
+      (D_bus_message.set_serial obj serial)
 
   method set_signature : string option -> unit =
     fun value ->

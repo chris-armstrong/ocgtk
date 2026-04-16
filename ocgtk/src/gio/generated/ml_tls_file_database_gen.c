@@ -55,6 +55,20 @@ g_object_set_property(G_OBJECT(obj), "anchors", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
+CAMLexport CAMLprim value ml_gio_tls_file_database_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_TLS_FILE_DATABASE)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GTlsFileDatabase");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GTlsFileDatabase((GTlsFileDatabase*)gobj));
+}
 
 #else
 
@@ -75,6 +89,14 @@ CAMLparam2(self, arg1);
 (void)arg1;
 caml_failwith("TlsFileDatabase requires GLib >= 2.30");
 return Val_unit;
+}
+
+CAMLexport CAMLprim value ml_gio_tls_file_database_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    (void)obj;
+    caml_failwith("TlsFileDatabase requires GTK >= 2.30");
+    return Val_unit;
 }
 
 

@@ -3,6 +3,8 @@
 
 type t = [`list_model] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_list_model_from_gobject"
+
 (* Methods *)
 (** Emits the #GListModel::items-changed signal on @list.
 
@@ -46,4 +48,14 @@ Depending on the model implementation, calling this function may be
 less efficient than iterating the list with increasing values for
 @position until g_list_model_get_item() returns %NULL. *)
 external get_n_items : t -> int = "ml_g_list_model_get_n_items"
+
+(** Gets the type of the items in @list.
+
+All items returned from g_list_model_get_item() are of the type
+returned by this function, or a subtype, or if the type is an
+interface, they are an implementation of that interface.
+
+The item type of a #GListModel can not change during the life of the
+model. *)
+external get_item_type : t -> int = "ml_g_list_model_get_item_type"
 

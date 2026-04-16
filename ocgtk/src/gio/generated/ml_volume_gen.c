@@ -216,3 +216,17 @@ CAMLparam1(self);
 gboolean result = g_volume_can_eject(GVolume_val(self));
 CAMLreturn(Val_bool(result));
 }
+CAMLexport CAMLprim value ml_gio_volume_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_VOLUME)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GVolume");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GVolume((GVolume*)gobj));
+}

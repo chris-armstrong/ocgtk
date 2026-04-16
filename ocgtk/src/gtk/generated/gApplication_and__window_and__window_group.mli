@@ -9,7 +9,7 @@ class type application_t = object
     method get_menu_by_id : string -> Ocgtk_gio.Gio.Menu.menu_t option
     method get_menubar : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
     method get_window_by_id : int -> window_t option
-    method get_windows : unit -> Application_and__window_and__window_group.Window.t list
+    method get_windows : unit -> window_t list
     method inhibit : window_t option -> Gtk_enums.applicationinhibitflags -> string option -> int
     method list_action_descriptions : unit -> string array
     method remove_window : window_t -> unit
@@ -23,6 +23,9 @@ end
 
 and window_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GNative.native_t
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.root_t
+    inherit GShortcut_manager.shortcut_manager_t
     inherit Gwindow_signals.window_signals
     method close : unit -> unit
     method destroy : unit -> unit
@@ -34,7 +37,6 @@ and window_t = object
     method get_default_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
     method get_deletable : unit -> bool
     method get_destroy_with_parent : unit -> bool
-    method get_focus : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
     method get_focus_visible : unit -> bool
     method get_group : unit -> window_group_t
     method get_handle_menubar_accel : unit -> bool
@@ -54,6 +56,7 @@ and window_t = object
     method maximize : unit -> unit
     method minimize : unit -> unit
     method present : unit -> unit
+    method present_with_time : UInt32.t -> unit
     method set_application : application_t option -> unit
     method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
     method set_decorated : bool -> unit
@@ -62,7 +65,6 @@ and window_t = object
     method set_deletable : bool -> unit
     method set_destroy_with_parent : bool -> unit
     method set_display : Ocgtk_gdk.Gdk.Display.display_t -> unit
-    method set_focus : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
     method set_focus_visible : bool -> unit
     method set_handle_menubar_accel : bool -> unit
     method set_hide_on_close : bool -> unit
@@ -93,7 +95,7 @@ end
 
 and window_group_t = object
     method add_window : window_t -> unit
-    method list_windows : unit -> Application_and__window_and__window_group.Window.t list
+    method list_windows : unit -> window_t list
     method remove_window : window_t -> unit
     method as_window_group : Application_and__window_and__window_group.Window_group.t
 end

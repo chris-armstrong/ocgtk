@@ -1,15 +1,17 @@
 class type task_t = object
+    inherit GAsync_result.async_result_t
     method get_cancellable : unit -> GCancellable.cancellable_t option
     method get_check_cancellable : unit -> bool
     method get_completed : unit -> bool
     method get_name : unit -> string option
     method get_priority : unit -> int
     method get_return_on_cancel : unit -> bool
-    method get_source_object : unit -> [`object_] Gobject.obj option
     method had_error : unit -> bool
     method propagate_boolean : unit -> (bool, GError.t) result
+    method propagate_int : unit -> (int, GError.t) result
     method return_boolean : bool -> unit
     method return_error_if_cancelled : unit -> bool
+    method return_int : int -> unit
     method set_check_cancellable : bool -> unit
     method set_name : string option -> unit
     method set_priority : int -> unit

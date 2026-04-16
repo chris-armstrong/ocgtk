@@ -162,6 +162,59 @@ module rec Socket : sig
   successfully sent before the error will be returned. *)
   external send_messages : t -> Output_message.t array -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_send_messages"
 
+  (** This behaves exactly the same as g_socket_send_message(), except that
+  the choice of timeout behavior is determined by the @timeout_us argument
+  rather than by @socket's properties.
+
+  On error %G_POLLABLE_RETURN_FAILED is returned and @error is set accordingly, or
+  if the socket is currently not writable %G_POLLABLE_RETURN_WOULD_BLOCK is
+  returned. @bytes_written will contain 0 in both cases. *)
+  external send_message_with_timeout : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> int64 -> Cancellable.t option -> (Gio_enums.pollablereturn * Gsize.t, GError.t) result = "ml_g_socket_send_message_with_timeout_bytecode" "ml_g_socket_send_message_with_timeout_native"
+
+  (** Send data to @address on @socket.  For sending multiple messages see
+  g_socket_send_messages(); for easier use, see
+  g_socket_send() and g_socket_send_to().
+
+  If @address is %NULL then the message is sent to the default receiver
+  (set by g_socket_connect()).
+
+  @vectors must point to an array of #GOutputVector structs and
+  @num_vectors must be the length of this array. (If @num_vectors is -1,
+  then @vectors is assumed to be terminated by a #GOutputVector with a
+  %NULL buffer pointer.) The #GOutputVector structs describe the buffers
+  that the sent data will be gathered from. Using multiple
+  #GOutputVectors is more memory-efficient than manually copying
+  data from multiple sources into a single buffer, and more
+  network-efficient than making multiple calls to g_socket_send().
+
+  @messages, if non-%NULL, is taken to point to an array of @num_messages
+  #GSocketControlMessage instances. These correspond to the control
+  messages to be sent on the socket.
+  If @num_messages is -1 then @messages is treated as a %NULL-terminated
+  array.
+
+  @flags modify how the message is sent. The commonly available arguments
+  for this are available in the #GSocketMsgFlags enum, but the
+  values there are the same as the system values, and the flags
+  are passed in as-is, so you can pass in system-specific flags too.
+
+  If the socket is in blocking mode the call will block until there is
+  space for the data in the socket queue. If there is no space available
+  and the socket is in non-blocking mode a %G_IO_ERROR_WOULD_BLOCK error
+  will be returned. To be notified when space is available, wait for the
+  %G_IO_OUT condition. Note though that you may still receive
+  %G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
+  notified of a %G_IO_OUT condition. (On Windows in particular, this is
+  very common due to the way the underlying APIs work.)
+
+  The sum of the sizes of each #GOutputVector in vectors must not be
+  greater than %G_MAXSSIZE. If the message can be larger than this,
+  then it is mandatory to use the g_socket_send_message_with_timeout()
+  function.
+
+  On error -1 is returned and @error is set accordingly. *)
+  external send_message : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_send_message_bytecode" "ml_g_socket_send_message_native"
+
   (** Receive multiple data messages from @socket in one go.  This is the most
   complicated and fully-featured version of this call. For easier use, see
   g_socket_receive(), g_socket_receive_from(), and g_socket_receive_message().
@@ -211,6 +264,17 @@ module rec Socket : sig
   be returned if zero messages could be received; otherwise the number of
   messages successfully received before the error will be returned. *)
   external receive_messages : t -> Input_message.t array -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_receive_messages"
+
+  (** Receives data (up to @size bytes) from a socket.
+
+  This function is a variant of [method@Gio.Socket.receive] which returns a
+  [struct@GLib.Bytes] rather than a plain buffer.
+
+  Pass `-1` to @timeout_us to block indefinitely until data is received (or
+  the connection is closed, or there is an error). Pass `0` to use the default
+  timeout from [property@Gio.Socket:timeout], or pass a positive number to wait
+  for that many microseconds for data before returning `G_IO_ERROR_TIMED_OUT`. *)
+  external receive_bytes : t -> Gsize.t -> int64 -> Cancellable.t option -> (Glib_bytes.t, GError.t) result = "ml_g_socket_receive_bytes"
 
   (** Marks the socket as a server socket, i.e. a socket that is used
   to accept incoming requests using g_socket_accept().
@@ -299,7 +363,7 @@ module rec Socket : sig
 
   (** Try to get the remote address of a connected socket. This is only
   useful for connection oriented sockets that have been connected. *)
-  external get_remote_address : t -> (Socket_address.t, GError.t) result = "ml_g_socket_get_remote_address"
+  external get_remote_address : t -> (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t, GError.t) result = "ml_g_socket_get_remote_address"
 
   (** Gets the socket protocol id the socket was created with.
   In case the protocol is unknown, -1 is returned. *)
@@ -332,7 +396,7 @@ module rec Socket : sig
   (** Try to get the local address of a bound socket. This is only
   useful if the socket has been bound to a local address,
   either explicitly or implicitly when connecting. *)
-  external get_local_address : t -> (Socket_address.t, GError.t) result = "ml_g_socket_get_local_address"
+  external get_local_address : t -> (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t, GError.t) result = "ml_g_socket_get_local_address"
 
   (** Gets the listen backlog setting of the socket. For details on this,
   see g_socket_set_listen_backlog(). *)
@@ -383,6 +447,20 @@ module rec Socket : sig
   see g_socket_set_blocking(). *)
   external get_blocking : t -> bool = "ml_g_socket_get_blocking"
 
+  (** Get the amount of data pending in the OS input buffer, without blocking.
+
+  If @socket is a UDP or SCTP socket, this will return the size of
+  just the next packet, even if additional packets are buffered after
+  that one.
+
+  Note that on Windows, this function is rather inefficient in the
+  UDP case, and so if you know any plausible upper bound on the size
+  of the incoming packet, it is better to just do a
+  g_socket_receive() with a buffer of that size, rather than calling
+  g_socket_get_available_bytes() first and then doing a receive of
+  exactly the right size. *)
+  external get_available_bytes : t -> int = "ml_g_socket_get_available_bytes"
+
   (** Creates a #GSocketConnection subclass of the right type for
   @socket. *)
   external connection_factory_create_connection : t -> Socket_connection.t = "ml_g_socket_connection_factory_create_connection"
@@ -403,7 +481,7 @@ module rec Socket : sig
   and the user can be notified of the connection finishing by waiting
   for the G_IO_OUT condition. The result of the connection must then be
   checked with g_socket_check_connect_result(). *)
-  external connect : t -> Socket_address.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_socket_connect"
+  external connect : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_socket_connect"
 
   (** Closes the socket, shutting down any active connection.
 
@@ -464,7 +542,7 @@ module rec Socket : sig
   same address, and they will all receive all of the multicast and
   broadcast packets sent to that address. (The behavior of unicast
   UDP packets to an address with multiple listeners is not defined.) *)
-  external bind : t -> Socket_address.t -> bool -> (bool, GError.t) result = "ml_g_socket_bind"
+  external bind : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t -> bool -> (bool, GError.t) result = "ml_g_socket_bind"
 
   (** Accept incoming connections on a connection-based socket. This removes
   the first outstanding connection request from the listening socket and
@@ -508,16 +586,16 @@ and Socket_connection
   address that will be used for the connection.  This allows
   applications to print e.g. "Connecting to example.com
   (10.42.77.3)...". *)
-  external get_remote_address : t -> (Socket_address.t, GError.t) result = "ml_g_socket_connection_get_remote_address"
+  external get_remote_address : t -> (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t, GError.t) result = "ml_g_socket_connection_get_remote_address"
 
   (** Try to get the local address of a socket connection. *)
-  external get_local_address : t -> (Socket_address.t, GError.t) result = "ml_g_socket_connection_get_local_address"
+  external get_local_address : t -> (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t, GError.t) result = "ml_g_socket_connection_get_local_address"
 
   (** Gets the result of a g_socket_connection_connect_async() call. *)
   external connect_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_socket_connection_connect_finish"
 
   (** Connect @connection to the specified remote address. *)
-  external connect : t -> Socket_address.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_socket_connection_connect"
+  external connect : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_socket_connection_connect"
 
   (* Properties *)
 

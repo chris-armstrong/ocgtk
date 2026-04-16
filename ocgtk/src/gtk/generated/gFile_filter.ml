@@ -1,5 +1,6 @@
 class type file_filter_t = object
     inherit GFilter.filter_t
+    inherit GBuildable.buildable_t
     method add_mime_type : string -> unit
     method add_pattern : string -> unit
     method add_pixbuf_formats : unit -> unit
@@ -7,15 +8,14 @@ class type file_filter_t = object
     method get_attributes : unit -> string array
     method get_name : unit -> string option
     method set_name : string option -> unit
-    method mime_types : string array
-    method patterns : string array
-    method suffixes : string array
+    method to_gvariant : unit -> Gvariant.t
     method as_file_filter : File_filter.t
 end
 
 (* High-level class for FileFilter *)
 class file_filter (obj : File_filter.t) : file_filter_t = object (self)
   inherit GFilter.filter (obj :> Filter.t)
+  inherit GBuildable.buildable (Buildable.from_gobject obj)
 
   method add_mime_type : string -> unit =
     fun mime_type ->
@@ -45,15 +45,17 @@ class file_filter (obj : File_filter.t) : file_filter_t = object (self)
     fun name ->
       (File_filter.set_name obj name)
 
-  method mime_types = File_filter.get_mime_types obj
-
-  method patterns = File_filter.get_patterns obj
-
-  method suffixes = File_filter.get_suffixes obj
+  method to_gvariant : unit -> Gvariant.t =
+    fun () ->
+      (File_filter.to_gvariant obj)
 
     method as_file_filter = obj
 end
 
 let new_ () : file_filter_t =
   new file_filter (File_filter.new_ ())
+
+let new_from_gvariant (variant : Gvariant.t) : file_filter_t =
+  let obj_ = File_filter.new_from_gvariant variant in
+  new file_filter obj_
 

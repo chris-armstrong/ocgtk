@@ -2,6 +2,8 @@
 
 class type icon_view_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
+    inherit GScrollable.scrollable_t
     inherit Gicon_view_signals.icon_view_signals
     method create_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.Paintable.paintable_t option
     method enable_model_drag_dest : Ocgtk_gdk.Gdk.Content_formats.content_formats_t -> Ocgtk_gdk.Gdk.dragaction -> unit
@@ -40,6 +42,7 @@ class type icon_view_t = object
     method set_item_width : int -> unit
     method set_margin : int -> unit
     method set_markup_column : int -> unit
+    method set_model : GTree_model.tree_model_t option -> unit
     method set_pixbuf_column : int -> unit
     method set_reorderable : bool -> unit
     method set_row_spacing : int -> unit
@@ -53,13 +56,15 @@ class type icon_view_t = object
     method unselect_path : Tree_path.t -> unit
     method unset_model_drag_dest : unit -> unit
     method unset_model_drag_source : unit -> unit
-    method cell_area : GCell_area_and__cell_area_context.cell_area_t
+    method cell_area : GCell_area_and__cell_area_context_and__cell_layout.cell_area_t
     method as_icon_view : Icon_view.t
 end
 
 (* High-level class for IconView *)
 class icon_view (obj : Icon_view.t) : icon_view_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout (Cell_area_and__cell_area_context_and__cell_layout.Cell_layout.from_gobject obj)
+  inherit GScrollable.scrollable (Scrollable.from_gobject obj)
   inherit Gicon_view_signals.icon_view_signals obj
 
   method create_drag_icon : Tree_path.t -> Ocgtk_gdk.Gdk.Paintable.paintable_t option =
@@ -212,6 +217,11 @@ class icon_view (obj : Icon_view.t) : icon_view_t = object (self)
     fun column ->
       (Icon_view.set_markup_column obj column)
 
+  method set_model : GTree_model.tree_model_t option -> unit =
+    fun model ->
+      let model = Option.map (fun (c) -> c#as_tree_model) model in
+      (Icon_view.set_model obj model)
+
   method set_pixbuf_column : int -> unit =
     fun column ->
       (Icon_view.set_pixbuf_column obj column)
@@ -267,7 +277,7 @@ class icon_view (obj : Icon_view.t) : icon_view_t = object (self)
     fun () ->
       (Icon_view.unset_model_drag_source obj)
 
-  method cell_area = new GCell_area_and__cell_area_context.cell_area (Icon_view.get_cell_area obj)
+  method cell_area = new GCell_area_and__cell_area_context_and__cell_layout.cell_area (Icon_view.get_cell_area obj)
 
     method as_icon_view = obj
 end
@@ -275,7 +285,7 @@ end
 let new_ () : icon_view_t =
   new icon_view (Icon_view.new_ ())
 
-let new_with_area (area : GCell_area_and__cell_area_context.cell_area_t) : icon_view_t =
+let new_with_area (area : GCell_area_and__cell_area_context_and__cell_layout.cell_area_t) : icon_view_t =
   let area = area#as_cell_area in
   let obj_ = Icon_view.new_with_area area in
   new icon_view obj_

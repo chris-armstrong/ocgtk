@@ -320,12 +320,19 @@ let parse_gir_file filename filter_classes =
         let virtual_methods = ref [] in
         let properties = ref [] in
         let signals = ref [] in
+        let implements = ref [] in
 
         let rec parse_class_contents () =
           match Xmlm.input input with
           | `El_start ((_, raw_tag), tag_attrs) -> (
               let tag = local_name raw_tag in
               match tag with
+              | "implements" -> (
+                  (match get_attr "name" tag_attrs with
+                  | Some iface_name -> implements := iface_name :: !implements
+                  | None -> ());
+                  skip_element input 1;
+                  parse_class_contents ())
               | "constructor" -> (
                   match
                     ( get_attr "name" tag_attrs,
@@ -460,7 +467,7 @@ let parse_gir_file filename filter_classes =
             class_name = name;
             c_type;
             parent;
-            implements = [];
+            implements = List.rev !implements;
             introspectable;
             constructors = List.rev !constructors;
             methods;
@@ -474,6 +481,9 @@ let parse_gir_file filename filter_classes =
         None
   (* Parse property element *)
   and parse_property prop_name attrs =
+    let readable =
+      match get_attr "readable" attrs with Some "0" -> false | _ -> true
+    in
     let writable =
       match get_attr "writable" attrs with Some "1" -> true | _ -> false
     in
@@ -547,7 +557,7 @@ let parse_gir_file filename filter_classes =
     {
       prop_name;
       prop_type = !prop_type;
-      readable = true;
+      readable;
       writable;
       construct_only;
       prop_doc = None;
@@ -1292,7 +1302,11 @@ let parse_gir_file filename filter_classes =
         skip_element input 1;
         None
   and parse_interface attrs () =
-    let name = get_attr "name" attrs |> Option.get in
+    match get_attr "name" attrs with
+    | None ->
+        skip_element input 1;
+        None
+    | Some name ->
     let c_type =
       match get_attr "c:type" attrs with
       | Some t -> t
@@ -1305,10 +1319,14 @@ let parse_gir_file filename filter_classes =
           in
           prefix ^ name
     in
+    let introspectable =
+      get_attr "introspectable" attrs |> Utils.parse_bool ~default:true
+    in
     let methods = ref [] in
     let virtual_methods = ref [] in
     let properties = ref [] in
     let signals = ref [] in
+    let prerequisites = ref [] in
     let rec parse_class_contents () =
       match Xmlm.input input with
       | `El_start ((_, raw_tag), tag_attrs) -> (
@@ -1399,6 +1417,12 @@ let parse_gir_file filename filter_classes =
               | None ->
                   skip_element input 1;
                   parse_class_contents ())
+          | "prerequisite" -> (
+              (match get_attr "name" tag_attrs with
+              | Some prereq_name -> prerequisites := prereq_name :: !prerequisites
+              | None -> ());
+              skip_element input 1;
+              parse_class_contents ())
           | _ ->
               skip_element input 1;
               parse_class_contents ())
@@ -1415,7 +1439,14 @@ let parse_gir_file filename filter_classes =
       {
         interface_name = name;
         c_type;
-        c_symbol_prefix = name;
+        c_symbol_prefix =
+          (match get_attr "c:symbol-prefix" attrs with
+          | Some p -> p
+          | None -> String.lowercase_ascii name);
+        glib_type_name = get_attr "glib:type-name" attrs;
+        glib_get_type = get_attr "glib:get-type" attrs;
+        prerequisites = List.rev !prerequisites;
+        introspectable;
         methods;
         properties = List.rev !properties;
         signals = List.rev !signals;

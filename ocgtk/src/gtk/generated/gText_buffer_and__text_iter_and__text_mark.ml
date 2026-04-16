@@ -114,19 +114,20 @@ and text_iter_t = object
     method free : unit -> unit
     method get_buffer : unit -> text_buffer_t
     method get_bytes_in_line : unit -> int
+    method get_char : unit -> int
     method get_chars_in_line : unit -> int
     method get_child_anchor : unit -> GText_child_anchor.text_child_anchor_t option
     method get_language : unit -> Ocgtk_pango.Pango.Language.language_t
     method get_line : unit -> int
     method get_line_index : unit -> int
     method get_line_offset : unit -> int
-    method get_marks : unit -> Text_buffer_and__text_iter_and__text_mark.Text_mark.t list
+    method get_marks : unit -> text_mark_t list
     method get_offset : unit -> int
     method get_paintable : unit -> Ocgtk_gdk.Gdk.Paintable.paintable_t option
     method get_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
-    method get_tags : unit -> Text_tag.t list
+    method get_tags : unit -> GText_tag.text_tag_t list
     method get_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
-    method get_toggled_tags : bool -> Text_tag.t list
+    method get_toggled_tags : bool -> GText_tag.text_tag_t list
     method get_visible_line_index : unit -> int
     method get_visible_line_offset : unit -> int
     method get_visible_slice : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string
@@ -615,6 +616,10 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) : te
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_bytes_in_line obj)
 
+  method get_char : unit -> int =
+    fun () ->
+      (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_char obj)
+
   method get_chars_in_line : unit -> int =
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_chars_in_line obj)
@@ -639,9 +644,9 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) : te
     fun () ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_line_offset obj)
 
-  method get_marks : unit -> Text_buffer_and__text_iter_and__text_mark.Text_mark.t list =
+  method get_marks : unit -> text_mark_t list =
     fun () ->
-      (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_marks obj)
+      (List.map (fun ret -> new text_mark ret))(Text_buffer_and__text_iter_and__text_mark.Text_iter.get_marks obj)
 
   method get_offset : unit -> int =
     fun () ->
@@ -655,17 +660,17 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) : te
     fun end_ ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_slice obj end_)
 
-  method get_tags : unit -> Text_tag.t list =
+  method get_tags : unit -> GText_tag.text_tag_t list =
     fun () ->
-      (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_tags obj)
+      (List.map (fun ret -> new GText_tag.text_tag ret))(Text_buffer_and__text_iter_and__text_mark.Text_iter.get_tags obj)
 
   method get_text : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> string =
     fun end_ ->
       (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_text obj end_)
 
-  method get_toggled_tags : bool -> Text_tag.t list =
+  method get_toggled_tags : bool -> GText_tag.text_tag_t list =
     fun toggled_on ->
-      (Text_buffer_and__text_iter_and__text_mark.Text_iter.get_toggled_tags obj toggled_on)
+      (List.map (fun ret -> new GText_tag.text_tag ret))(Text_buffer_and__text_iter_and__text_mark.Text_iter.get_toggled_tags obj toggled_on)
 
   method get_visible_line_index : unit -> int =
     fun () ->

@@ -8,7 +8,6 @@ class type text_tag_t = object
     method set_allow_breaks : bool -> unit
     method allow_breaks_set : bool
     method set_allow_breaks_set : bool -> unit
-    method background : string
     method set_background : string -> unit
     method background_full_height : bool
     method set_background_full_height : bool -> unit
@@ -40,7 +39,6 @@ class type text_tag_t = object
     method set_font_features : string -> unit
     method font_features_set : bool
     method set_font_features_set : bool -> unit
-    method foreground : string
     method set_foreground : string -> unit
     method foreground_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
     method set_foreground_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
@@ -87,7 +85,6 @@ class type text_tag_t = object
     method set_overline_rgba_set : bool -> unit
     method overline_set : bool
     method set_overline_set : bool -> unit
-    method paragraph_background : string
     method set_paragraph_background : string -> unit
     method paragraph_background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
     method set_paragraph_background_rgba : Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit
@@ -206,7 +203,6 @@ class text_tag (obj : Text_tag.t) : text_tag_t = object (self)
   method allow_breaks_set = Text_tag.get_allow_breaks_set obj
   method set_allow_breaks_set v =  Text_tag.set_allow_breaks_set obj v
 
-  method background = Text_tag.get_background obj
   method set_background v =  Text_tag.set_background obj v
 
   method background_full_height = Text_tag.get_background_full_height obj
@@ -254,7 +250,6 @@ class text_tag (obj : Text_tag.t) : text_tag_t = object (self)
   method font_features_set = Text_tag.get_font_features_set obj
   method set_font_features_set v =  Text_tag.set_font_features_set obj v
 
-  method foreground = Text_tag.get_foreground obj
   method set_foreground v =  Text_tag.set_foreground obj v
 
   method foreground_rgba = new Ocgtk_gdk.Gdk.Rgb_a.rgb_a (Text_tag.get_foreground_rgba obj)
@@ -325,7 +320,6 @@ class text_tag (obj : Text_tag.t) : text_tag_t = object (self)
   method overline_set = Text_tag.get_overline_set obj
   method set_overline_set v =  Text_tag.set_overline_set obj v
 
-  method paragraph_background = Text_tag.get_paragraph_background obj
   method set_paragraph_background v =  Text_tag.set_paragraph_background obj v
 
   method paragraph_background_rgba = new Ocgtk_gdk.Gdk.Rgb_a.rgb_a (Text_tag.get_paragraph_background_rgba obj)

@@ -22,6 +22,12 @@ That means a call to [method@Gtk.Expression.watch] is not necessary because
 it will never trigger a notify. *)
 external is_static : t -> bool = "ml_gtk_expression_is_static"
 
+(** Gets the `GType` that this expression evaluates to.
+
+This type is constant and will not change over the lifetime
+of this expression. *)
+external get_value_type : t -> int = "ml_gtk_expression_get_value_type"
+
 (** Bind `target`'s property named `property` to `self`.
 
 The value that `self` evaluates to is set via `g_object_set()` on

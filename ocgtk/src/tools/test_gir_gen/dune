@@ -40,16 +40,20 @@
   classify_type_tests
   integration_tests
   compilation_tests
-   version_guard_tests
-   c_stub_version_guard_tests
-    test_override_types
-    test_override_parser
-    test_override_apply
-    test_override_extractor
-    test_override_e2e
-    test_override_integration
-    test_enum_member_version
-    test_gir_gen
-   type_factory)
+  version_guard_tests
+  c_stub_version_guard_tests
+  test_override_types
+  test_override_parser
+  test_override_apply
+  test_override_extractor
+  test_override_e2e
+  test_override_integration
+  test_enum_member_version
+  test_interface_parsing
+  test_from_gobject_gen
+  test_interface_inheritance
+  test_interface_method_types
+  test_gir_gen
+  type_factory)
  (deps %{exe:../gir_gen/gir_gen.exe})
  (libraries str unix gir_gen_lib alcotest ppxlib sexplib))

@@ -5,6 +5,7 @@ class type event_controller_t = object
     method get_current_event : unit -> Ocgtk_gdk.Gdk.Event.event_t option
     method get_current_event_device : unit -> Ocgtk_gdk.Gdk.Device.device_t option
     method get_current_event_state : unit -> Ocgtk_gdk.Gdk.modifiertype
+    method get_current_event_time : unit -> UInt32.t
     method get_name : unit -> string option
     method get_propagation_limit : unit -> Gtk_enums.propagationlimit
     method get_propagation_phase : unit -> Gtk_enums.propagationphase
@@ -40,9 +41,13 @@ and root_t = object
 end
 
 and widget_t = object
+    inherit GAt_context_and__accessible.accessible_t
+    inherit GBuildable.buildable_t
+    inherit GConstraint_target.constraint_target_t
     inherit Gwidget_signals.widget_signals
     method action_set_enabled : string -> bool -> unit
     method activate : unit -> bool
+    method activate_action_variant : string -> Gvariant.t option -> bool
     method activate_default : unit -> unit
     method add_controller : event_controller_t -> unit
     method add_css_class : string -> unit
@@ -53,11 +58,13 @@ and widget_t = object
     method contains : float -> float -> bool
     method create_pango_context : unit -> Ocgtk_pango.Pango.Context.context_t
     method create_pango_layout : string option -> Ocgtk_pango.Pango.Layout.layout_t
+    method dispose_template : int -> unit
     method drag_check_threshold : int -> int -> int -> int -> bool
     method error_bell : unit -> unit
     method get_allocated_baseline : unit -> int
     method get_allocated_height : unit -> int
     method get_allocated_width : unit -> int
+    method get_ancestor : int -> widget_t option
     method get_baseline : unit -> int
     method get_can_focus : unit -> bool
     method get_can_target : unit -> bool
@@ -106,6 +113,7 @@ and widget_t = object
     method get_size : Gtk_enums.orientation -> int
     method get_state_flags : unit -> Gtk_enums.stateflags
     method get_style_context : unit -> GStyle_context.style_context_t
+    method get_template_child : int -> string -> [`object_] Gobject.obj
     method get_tooltip_markup : unit -> string option
     method get_tooltip_text : unit -> string option
     method get_valign : unit -> Gtk_enums.align
@@ -130,7 +138,7 @@ and widget_t = object
     method is_sensitive : unit -> bool
     method is_visible : unit -> bool
     method keynav_failed : Gtk_enums.directiontype -> bool
-    method list_mnemonic_labels : unit -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t list
+    method list_mnemonic_labels : unit -> widget_t list
     method map : unit -> unit
     method mnemonic_activate : bool -> bool
     method observe_children : unit -> Ocgtk_gio.Gio.List_model.list_model_t
@@ -208,6 +216,10 @@ class event_controller (obj : Event_controller_and__layout_child_and__layout_man
   method get_current_event_state : unit -> Ocgtk_gdk.Gdk.modifiertype =
     fun () ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.get_current_event_state obj)
+
+  method get_current_event_time : unit -> UInt32.t =
+    fun () ->
+      (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Event_controller.get_current_event_time obj)
 
   method get_name : unit -> string option =
     fun () ->
@@ -309,6 +321,9 @@ end
 
 
 and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t) : widget_t = object (self)
+  inherit GAt_context_and__accessible.accessible (At_context_and__accessible.Accessible.from_gobject obj)
+  inherit GBuildable.buildable (Buildable.from_gobject obj)
+  inherit GConstraint_target.constraint_target (Constraint_target.from_gobject obj)
   inherit Gwidget_signals.widget_signals obj
 
   method action_set_enabled : string -> bool -> unit =
@@ -318,6 +333,10 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
   method activate : unit -> bool =
     fun () ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.activate obj)
+
+  method activate_action_variant : string -> Gvariant.t option -> bool =
+    fun name args ->
+      (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.activate_action_variant obj name args)
 
   method activate_default : unit -> unit =
     fun () ->
@@ -362,6 +381,10 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun text ->
       new  Ocgtk_pango.Pango.Layout.layout(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.create_pango_layout obj text)
 
+  method dispose_template : int -> unit =
+    fun widget_type ->
+      (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.dispose_template obj widget_type)
+
   method drag_check_threshold : int -> int -> int -> int -> bool =
     fun start_x start_y current_x current_y ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.drag_check_threshold obj start_x start_y current_x current_y)
@@ -381,6 +404,10 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
   method get_allocated_width : unit -> int =
     fun () ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_allocated_width obj)
+
+  method get_ancestor : int -> widget_t option =
+    fun widget_type ->
+      Option.map (fun ret -> new widget ret) (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_ancestor obj widget_type)
 
   method get_baseline : unit -> int =
     fun () ->
@@ -574,6 +601,10 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun () ->
       new  GStyle_context.style_context(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_style_context obj)
 
+  method get_template_child : int -> string -> [`object_] Gobject.obj =
+    fun widget_type name ->
+      (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_template_child obj widget_type name)
+
   method get_tooltip_markup : unit -> string option =
     fun () ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.get_tooltip_markup obj)
@@ -676,9 +707,9 @@ and widget (obj : Event_controller_and__layout_child_and__layout_manager_and__ro
     fun direction ->
       (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.keynav_failed obj direction)
 
-  method list_mnemonic_labels : unit -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t list =
+  method list_mnemonic_labels : unit -> widget_t list =
     fun () ->
-      (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.list_mnemonic_labels obj)
+      (List.map (fun ret -> new widget ret))(Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.list_mnemonic_labels obj)
 
   method map : unit -> unit =
     fun () ->

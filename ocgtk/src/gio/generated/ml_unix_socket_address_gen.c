@@ -44,6 +44,72 @@ return Val_unit;
 }
 #endif
 
+CAMLexport CAMLprim value ml_g_unix_socket_address_new_abstract(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+    int arg1_length = Wosize_val(arg1);
+    gchar* c_arg1 = (gchar*)g_malloc(sizeof(gchar) * arg1_length);
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = Int_val(Field(arg1, i));
+    }
+
+GUnixSocketAddress *obj = g_unix_socket_address_new_abstract(c_arg1, Int_val(arg2));
+if (obj) g_object_ref_sink(obj);
+
+    g_free(c_arg1);
+CAMLreturn(Val_GUnixSocketAddress(obj));
+}
+#if GLIB_CHECK_VERSION(2,26,0)
+
+CAMLexport CAMLprim value ml_g_unix_socket_address_new_with_type(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+    int arg1_length = Wosize_val(arg1);
+    gchar* c_arg1 = (gchar*)g_malloc(sizeof(gchar) * arg1_length);
+    for (int i = 0; i < arg1_length; i++) {
+      c_arg1[i] = Int_val(Field(arg1, i));
+    }
+
+GUnixSocketAddress *obj = g_unix_socket_address_new_with_type(c_arg1, Int_val(arg2), GioUnixSocketAddressType_val(arg3));
+if (obj) g_object_ref_sink(obj);
+
+    g_free(c_arg1);
+CAMLreturn(Val_GUnixSocketAddress(obj));
+}
+#else
+
+CAMLexport CAMLprim value ml_g_unix_socket_address_new_with_type(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("UnixSocketAddress requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
+
+CAMLexport CAMLprim value ml_g_unix_socket_address_get_path_len(value self)
+{
+CAMLparam1(self);
+
+gsize result = g_unix_socket_address_get_path_len(GUnixSocketAddress_val(self));
+CAMLreturn(Val_gsize(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_unix_socket_address_get_path_len(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixSocketAddress requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
 #if GLIB_CHECK_VERSION(2,22,0)
 
 CAMLexport CAMLprim value ml_g_unix_socket_address_get_path(value self)

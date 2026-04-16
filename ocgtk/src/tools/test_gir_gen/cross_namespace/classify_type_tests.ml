@@ -40,7 +40,9 @@ let base_ctx () =
   in
   let scrollable_iface =
     { interface_name = "Scrollable"; c_type = "GtkScrollable";
-      c_symbol_prefix = "scrollable"; methods = []; properties = [];
+      c_symbol_prefix = "scrollable"; glib_type_name = None;
+      glib_get_type = None; prerequisites = []; introspectable = true;
+      methods = []; properties = [];
       signals = []; interface_doc = None; version = None }
   in
   let text_direction_enum =
@@ -76,7 +78,7 @@ let add_cross_refs ctx =
            cr_c_type = "GdkModifierType" }
     |> StringMap.add "Texture"
          { cr_name = "Texture";
-           cr_type = Crt_Class { parent = Some "Paintable" };
+           cr_type = Crt_Class { parent = Some "Paintable"; implements = [] };
            cr_c_type = "GdkTexture*" }
     |> StringMap.add "ContentFormats"
          { cr_name = "ContentFormats";

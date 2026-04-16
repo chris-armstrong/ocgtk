@@ -75,7 +75,7 @@ specified address (if not %NULL) before connecting.
 This is useful if you want to ensure that the local
 side of the connection is on a specific port, or on
 a specific interface. *)
-external set_local_address : t -> Socket_address.t option -> unit = "ml_g_socket_client_set_local_address"
+external set_local_address : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t option -> unit = "ml_g_socket_client_set_local_address"
 
 (** Sets the socket family of the socket client.
 If this is set to something other than %G_SOCKET_FAMILY_INVALID
@@ -130,7 +130,7 @@ external get_protocol : t -> Gio_enums.socketprotocol = "ml_g_socket_client_get_
 (** Gets the local address of the socket client.
 
 See g_socket_client_set_local_address() for details. *)
-external get_local_address : t -> Socket_address.t option = "ml_g_socket_client_get_local_address"
+external get_local_address : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t option = "ml_g_socket_client_get_local_address"
 
 (** Gets the socket family of the socket client.
 
@@ -142,6 +142,29 @@ external get_enable_proxy : t -> bool = "ml_g_socket_client_get_enable_proxy"
 
 (** Finishes an async connect operation. See g_socket_client_connect_to_uri_async() *)
 external connect_to_uri_finish : t -> Async_result.t -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_uri_finish"
+
+(** This is a helper function for g_socket_client_connect().
+
+Attempts to create a TCP connection with a network URI.
+
+@uri may be any valid URI containing an "authority" (hostname/port)
+component. If a port is not specified in the URI, @default_port
+will be used. TLS will be negotiated if #GSocketClient:tls is %TRUE.
+(#GSocketClient does not know to automatically assume TLS for
+certain URI schemes.)
+
+Using this rather than g_socket_client_connect() or
+g_socket_client_connect_to_host() allows #GSocketClient to
+determine when to use application-specific proxy protocols.
+
+Upon a successful connection, a new #GSocketConnection is constructed
+and returned.  The caller owns this new object and must drop their
+reference to it when finished with it.
+
+In the event of any failure (DNS error, service not found, no hosts
+connectable) %NULL is returned and @error (if non-%NULL) is set
+accordingly. *)
+external connect_to_uri : t -> string -> UInt16.t -> Cancellable.t option -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_uri"
 
 (** Finishes an async connect operation. See g_socket_client_connect_to_service_async() *)
 external connect_to_service_finish : t -> Async_result.t -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_service_finish"
@@ -165,6 +188,38 @@ external connect_to_service : t -> string -> string -> Cancellable.t option -> (
 (** Finishes an async connect operation. See g_socket_client_connect_to_host_async() *)
 external connect_to_host_finish : t -> Async_result.t -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_host_finish"
 
+(** This is a helper function for g_socket_client_connect().
+
+Attempts to create a TCP connection to the named host.
+
+@host_and_port may be in any of a number of recognized formats; an IPv6
+address, an IPv4 address, or a domain name (in which case a DNS
+lookup is performed).  Quoting with [] is supported for all address
+types.  A port override may be specified in the usual way with a
+colon.  Ports may be given as decimal numbers or symbolic names (in
+which case an /etc/services lookup is performed).
+
+If no port override is given in @host_and_port then @default_port will be
+used as the port number to connect to.
+
+In general, @host_and_port is expected to be provided by the user (allowing
+them to give the hostname, and a port override if necessary) and
+@default_port is expected to be provided by the application.
+
+In the case that an IP address is given, a single connection
+attempt is made.  In the case that a name is given, multiple
+connection attempts may be made, in turn and according to the
+number of address records in DNS, until a connection succeeds.
+
+Upon a successful connection, a new #GSocketConnection is constructed
+and returned.  The caller owns this new object and must drop their
+reference to it when finished with it.
+
+In the event of any failure (DNS error, service not found, no hosts
+connectable) %NULL is returned and @error (if non-%NULL) is set
+accordingly. *)
+external connect_to_host : t -> string -> UInt16.t -> Cancellable.t option -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_to_host"
+
 (** Finishes an async connect operation. See g_socket_client_connect_async() *)
 external connect_finish : t -> Async_result.t -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect_finish"
 
@@ -186,7 +241,7 @@ g_socket_client_set_socket_type().
 
 If a local address is specified with g_socket_client_set_local_address() the
 socket will be bound to this address before connecting. *)
-external connect : t -> Socket_connectable.t -> Cancellable.t option -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect"
+external connect : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_connectable.t -> Cancellable.t option -> (Socket_and__socket_connection.Socket_connection.t, GError.t) result = "ml_g_socket_client_connect"
 
 (** Enable proxy protocols to be handled by the application. When the
 indicated proxy protocol is returned by the #GProxyResolver,

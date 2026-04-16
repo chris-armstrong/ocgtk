@@ -2,6 +2,7 @@
 
 class type flow_box_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GOrientable.orientable_t
     inherit Gflow_box_signals.flow_box_signals
     method append : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit
     method get_activate_on_single_click : unit -> bool
@@ -12,7 +13,7 @@ class type flow_box_t = object
     method get_max_children_per_line : unit -> int
     method get_min_children_per_line : unit -> int
     method get_row_spacing : unit -> int
-    method get_selected_children : unit -> Flow_box_child.t list
+    method get_selected_children : unit -> GFlow_box_child.flow_box_child_t list
     method get_selection_mode : unit -> Gtk_enums.selectionmode
     method insert : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> int -> unit
     method invalidate_filter : unit -> unit
@@ -41,6 +42,7 @@ end
 (* High-level class for FlowBox *)
 class flow_box (obj : Flow_box.t) : flow_box_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GOrientable.orientable (Orientable.from_gobject obj)
   inherit Gflow_box_signals.flow_box_signals obj
 
   method append : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t -> unit =
@@ -80,9 +82,9 @@ class flow_box (obj : Flow_box.t) : flow_box_t = object (self)
     fun () ->
       (Flow_box.get_row_spacing obj)
 
-  method get_selected_children : unit -> Flow_box_child.t list =
+  method get_selected_children : unit -> GFlow_box_child.flow_box_child_t list =
     fun () ->
-      (Flow_box.get_selected_children obj)
+      (List.map (fun ret -> new GFlow_box_child.flow_box_child ret))(Flow_box.get_selected_children obj)
 
   method get_selection_mode : unit -> Gtk_enums.selectionmode =
     fun () ->

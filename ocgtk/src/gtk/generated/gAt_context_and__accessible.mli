@@ -19,6 +19,8 @@ and accessible_t = object
     method reset_property : Gtk_enums.accessibleproperty -> unit
     method reset_relation : Gtk_enums.accessiblerelation -> unit
     method reset_state : Gtk_enums.accessiblestate -> unit
+    method set_accessible_parent : accessible_t option -> accessible_t option -> unit
+    method update_next_accessible_sibling : accessible_t option -> unit
     method as_accessible : At_context_and__accessible.Accessible.t
 end
 

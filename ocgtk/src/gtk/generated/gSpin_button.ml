@@ -2,6 +2,10 @@
 
 class type spin_button_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GAccessible_range.accessible_range_t
+    inherit GCell_editable.cell_editable_t
+    inherit GEditable.editable_t
+    inherit GOrientable.orientable_t
     inherit Gspin_button_signals.spin_button_signals
     method configure : GAdjustment.adjustment_t option -> float -> int -> unit
     method get_activates_default : unit -> bool
@@ -33,6 +37,10 @@ end
 (* High-level class for SpinButton *)
 class spin_button (obj : Spin_button.t) : spin_button_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GAccessible_range.accessible_range (Accessible_range.from_gobject obj)
+  inherit GCell_editable.cell_editable (Cell_editable.from_gobject obj)
+  inherit GEditable.editable (Editable.from_gobject obj)
+  inherit GOrientable.orientable (Orientable.from_gobject obj)
   inherit Gspin_button_signals.spin_button_signals obj
 
   method configure : GAdjustment.adjustment_t option -> float -> int -> unit =

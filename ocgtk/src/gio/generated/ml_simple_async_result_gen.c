@@ -22,6 +22,14 @@
 #include "gio_decls.h"
 
 
+CAMLexport CAMLprim value ml_g_simple_async_result_set_op_res_gssize(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_simple_async_result_set_op_res_gssize(GSimpleAsyncResult_val(self), Long_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_simple_async_result_set_op_res_gboolean(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -67,6 +75,14 @@ GError *error = NULL;
 
 gboolean result = g_simple_async_result_propagate_error(GSimpleAsyncResult_val(self), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_simple_async_result_get_op_res_gssize(value self)
+{
+CAMLparam1(self);
+
+gssize result = g_simple_async_result_get_op_res_gssize(GSimpleAsyncResult_val(self));
+CAMLreturn(Val_long(result));
 }
 
 CAMLexport CAMLprim value ml_g_simple_async_result_get_op_res_gboolean(value self)

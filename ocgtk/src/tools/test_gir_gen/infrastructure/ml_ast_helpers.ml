@@ -696,6 +696,9 @@ let method_body_calls_function (expr : expression) (module_name : string) (func_
     | Pexp_match (expr, cases) ->
         check_expression expr
         || List.exists (fun case -> check_expression case.pc_rhs) cases
+    | Pexp_function (_, _, Pfunction_body body) -> check_expression body
+    | Pexp_function (_, _, Pfunction_cases (cases, _, _)) ->
+        List.exists (fun case -> check_expression case.pc_rhs) cases
     | _ -> false
   in
   check_expression expr
@@ -806,3 +809,87 @@ let validate_method_is_commented_out ~(class_expr : class_expr) ~(class_code : s
 let validate_method_is_generated ~(class_expr : class_expr) ~(method_name : string) : unit =
   if not (method_exists_as_definition class_expr method_name) then
     Alcotest.fail (Printf.sprintf "Method '%s' should be generated but is not present" method_name)
+
+(* ========================================================================= *)
+(* Class Type Declaration Helpers (for Layer 2 class type validation)        *)
+(* ========================================================================= *)
+
+(** Format a Longident to a dot-separated string. *)
+let rec longident_to_string_phase4 = function
+  | Longident.Lident s -> s
+  | Longident.Ldot (lid, s) -> longident_to_string_phase4 lid ^ "." ^ s
+  | Longident.Lapply (l, r) -> longident_to_string_phase4 l ^ "(" ^ longident_to_string_phase4 r ^ ")"
+
+(** Extract a dotted-name string from a class_type node. Returns None if the
+    node is not a simple constr reference. *)
+let class_type_constr_name (cty : class_type) : string option =
+  match cty.pcty_desc with
+  | Pcty_constr ({ txt; _ }, _) -> Some (longident_to_string_phase4 txt)
+  | _ -> None
+
+(** Find a class type declaration by name in a structure (.ml). *)
+let find_class_type_declaration_impl (ast : structure) (name : string)
+    : class_type_declaration option =
+  List.find_map (fun item ->
+    match item.pstr_desc with
+    | Pstr_class_type ctds ->
+        List.find_opt (fun ctd -> String.equal ctd.pci_name.txt name) ctds
+    | _ -> None
+  ) ast
+
+(** Find a class type declaration by name in a signature (.mli). *)
+let find_class_type_declaration_sig2 (ast : signature) (name : string)
+    : class_type_declaration option =
+  List.find_map (fun item ->
+    match item.psig_desc with
+    | Psig_class_type ctds ->
+        List.find_opt (fun ctd -> String.equal ctd.pci_name.txt name) ctds
+    | _ -> None
+  ) ast
+
+(** Extract the list of inherited class type names from a class_type_declaration. *)
+let get_class_type_inherit_names (ctd : class_type_declaration)
+    : string list =
+  match ctd.pci_expr.pcty_desc with
+  | Pcty_signature { pcsig_fields; _ } ->
+      List.filter_map (fun field ->
+        match field.pctf_desc with
+        | Pctf_inherit cty -> class_type_constr_name cty
+        | _ -> None
+      ) pcsig_fields
+  | _ -> []
+
+(** Find a class definition by name in a structure (.ml). *)
+let find_class_definition (ast : structure) (name : string)
+    : class_declaration option =
+  List.find_map (fun item ->
+    match item.pstr_desc with
+    | Pstr_class cds ->
+        List.find_opt (fun cd -> String.equal cd.pci_name.txt name) cds
+    | _ -> None
+  ) ast
+
+(** Collect inherit names from a class expression (the rhs of class foo = ...). *)
+let rec collect_class_expr_inherits (cexpr : class_expr)
+    : string list =
+  match cexpr.pcl_desc with
+  | Pcl_structure { pcstr_fields; _ } ->
+      List.filter_map (fun field ->
+        match field.pcf_desc with
+        | Pcf_inherit (_, ce, _) -> (
+            match ce.pcl_desc with
+            | Pcl_apply (fn, _) -> (
+                match fn.pcl_desc with
+                | Pcl_constr ({ txt; _ }, _) -> Some (longident_to_string_phase4 txt)
+                | _ -> None)
+            | Pcl_constr ({ txt; _ }, _) -> Some (longident_to_string_phase4 txt)
+            | _ -> None)
+        | _ -> None
+      ) pcstr_fields
+  | Pcl_fun (_, _, _, body) -> collect_class_expr_inherits body
+  | Pcl_constraint (ce, _) -> collect_class_expr_inherits ce
+  | _ -> []
+
+(** Get the list of inherited class names from a class declaration's body. *)
+let get_class_inherit_names (cd : class_declaration) : string list =
+  collect_class_expr_inherits cd.pci_expr

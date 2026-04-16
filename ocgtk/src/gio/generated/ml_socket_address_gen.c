@@ -24,6 +24,27 @@
 
 #if GLIB_CHECK_VERSION(2,22,0)
 
+CAMLexport CAMLprim value ml_g_socket_address_get_native_size(value self)
+{
+CAMLparam1(self);
+
+gssize result = g_socket_address_get_native_size(GSocketAddress_val(self));
+CAMLreturn(Val_long(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_socket_address_get_native_size(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("SocketAddress requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,22,0)
+
 CAMLexport CAMLprim value ml_g_socket_address_get_family(value self)
 {
 CAMLparam1(self);

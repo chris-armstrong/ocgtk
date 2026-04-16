@@ -1,8 +1,9 @@
 class type entry_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GCell_editable.cell_editable_t
+    inherit GEditable.editable_t
     inherit Gentry_signals.entry_signals
     method get_activates_default : unit -> bool
-    method get_alignment : unit -> float
     method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
     method get_buffer : unit -> GEntry_buffer.entry_buffer_t
     method get_completion : unit -> GEntry_completion.entry_completion_t option
@@ -20,18 +21,19 @@ class type entry_t = object
     method get_icon_tooltip_text : Gtk_enums.entryiconposition -> string option
     method get_input_hints : unit -> Gtk_enums.inputhints
     method get_input_purpose : unit -> Gtk_enums.inputpurpose
+    method get_invisible_char : unit -> int
     method get_max_length : unit -> int
     method get_overwrite_mode : unit -> bool
     method get_placeholder_text : unit -> string option
     method get_progress_fraction : unit -> float
     method get_progress_pulse_step : unit -> float
     method get_tabs : unit -> Ocgtk_pango.Pango.Tab_array.tab_array_t option
+    method get_text_length : unit -> UInt16.t
     method get_visibility : unit -> bool
     method grab_focus_without_selecting : unit -> bool
     method progress_pulse : unit -> unit
     method reset_im_context : unit -> unit
     method set_activates_default : bool -> unit
-    method set_alignment : float -> unit
     method set_attributes : Ocgtk_pango.Pango.Attr_list.attr_list_t -> unit
     method set_buffer : GEntry_buffer.entry_buffer_t -> unit
     method set_completion : GEntry_completion.entry_completion_t option -> unit
@@ -47,6 +49,7 @@ class type entry_t = object
     method set_icon_tooltip_text : Gtk_enums.entryiconposition -> string option -> unit
     method set_input_hints : Gtk_enums.inputhints -> unit
     method set_input_purpose : Gtk_enums.inputpurpose -> unit
+    method set_invisible_char : int -> unit
     method set_max_length : int -> unit
     method set_overwrite_mode : bool -> unit
     method set_placeholder_text : string option -> unit

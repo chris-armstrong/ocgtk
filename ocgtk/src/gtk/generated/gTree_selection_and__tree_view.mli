@@ -20,6 +20,7 @@ end
 
 and tree_view_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GScrollable.scrollable_t
     inherit Gtree_view_signals.tree_view_signals
     method append_column : GTree_view_column.tree_view_column_t -> int
     method collapse_all : unit -> unit
@@ -33,7 +34,7 @@ and tree_view_t = object
     method expand_to_path : Tree_path.t -> unit
     method get_activate_on_single_click : unit -> bool
     method get_column : int -> GTree_view_column.tree_view_column_t option
-    method get_columns : unit -> Tree_view_column.t list
+    method get_columns : unit -> GTree_view_column.tree_view_column_t list
     method get_enable_search : unit -> bool
     method get_enable_tree_lines : unit -> bool
     method get_expander_column : unit -> GTree_view_column.tree_view_column_t option
@@ -74,9 +75,11 @@ and tree_view_t = object
     method set_hover_expand : bool -> unit
     method set_hover_selection : bool -> unit
     method set_level_indentation : int -> unit
+    method set_model : GTree_model.tree_model_t option -> unit
     method set_reorderable : bool -> unit
     method set_rubber_banding : bool -> unit
     method set_search_column : int -> unit
+    method set_search_entry : GEditable.editable_t option -> unit
     method set_show_expanders : bool -> unit
     method set_tooltip_cell : GTooltip.tooltip_t -> Tree_path.t option -> GTree_view_column.tree_view_column_t option -> GCell_renderer.cell_renderer_t option -> unit
     method set_tooltip_column : int -> unit

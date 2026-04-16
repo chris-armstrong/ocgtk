@@ -1,4 +1,6 @@
 class type sort_list_model_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
+    inherit GSection_model.section_model_t
     method get_incremental : unit -> bool
     method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
     method get_pending : unit -> int
@@ -8,6 +10,7 @@ class type sort_list_model_t = object
     method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
     method set_section_sorter : GSorter.sorter_t option -> unit
     method set_sorter : GSorter.sorter_t option -> unit
+    method item_type : int
     method n_items : int
     method as_sort_list_model : Sort_list_model.t
 end

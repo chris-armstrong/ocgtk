@@ -37,6 +37,14 @@ value Val_GIOExtension_option(const GIOExtension *ptr) {
 }
 
 
+CAMLexport CAMLprim value ml_g_io_extension_get_type(value self)
+{
+CAMLparam1(self);
+
+GType result = g_io_extension_get_type(GIOExtension_val(self));
+CAMLreturn(Val_GType(result));
+}
+
 CAMLexport CAMLprim value ml_g_io_extension_get_priority(value self)
 {
 CAMLparam1(self);

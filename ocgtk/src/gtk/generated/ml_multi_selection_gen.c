@@ -45,6 +45,36 @@ CAMLreturn(Val_option(result, Val_GListModel));
 
 #if GTK_CHECK_VERSION(4,8,0)
 
+CAMLexport CAMLprim value ml_gtk_multi_selection_get_item_type(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkMultiSelection *obj = (GtkMultiSelection *)GtkMultiSelection_val(self);
+    GType *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "item-type");
+if (pspec == NULL) caml_failwith("ml_gtk_multi_selection_get_item_type: property 'item-type' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "item-type", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GType(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_multi_selection_get_item_type(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("MultiSelection requires GTK >= 4.8");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,8,0)
+
 CAMLexport CAMLprim value ml_gtk_multi_selection_get_n_items(value self)
 {
     CAMLparam1(self);

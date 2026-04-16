@@ -3,6 +3,8 @@
 
 type t = [`dtls_client_connection] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_dtls_client_connection_from_gobject"
+
 (* Methods *)
 (** Sets @conn's validation flags, to override the default set of
 checks performed when validating a server certificate. By default,
@@ -17,7 +19,7 @@ external set_validation_flags : t -> Gio_enums.tlscertificateflags -> unit = "ml
 servers on virtual hosts which certificate to present, and also
 to let @conn know what name to look for in the certificate when
 performing %G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled. *)
-external set_server_identity : t -> Socket_connectable.t -> unit = "ml_g_dtls_client_connection_set_server_identity"
+external set_server_identity : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_connectable.t -> unit = "ml_g_dtls_client_connection_set_server_identity"
 
 (** Gets @conn's validation flags
 
@@ -27,7 +29,7 @@ information. *)
 external get_validation_flags : t -> Gio_enums.tlscertificateflags = "ml_g_dtls_client_connection_get_validation_flags"
 
 (** Gets @conn's expected server identity *)
-external get_server_identity : t -> Socket_connectable.t = "ml_g_dtls_client_connection_get_server_identity"
+external get_server_identity : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_connectable.t = "ml_g_dtls_client_connection_get_server_identity"
 
 (* Properties *)
 

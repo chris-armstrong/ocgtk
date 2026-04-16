@@ -4,6 +4,15 @@
 type t = [`media_stream | `object_] Gobject.obj
 
 (* Methods *)
+(** Media stream implementations should regularly call this
+function to update the timestamp reported by the stream.
+
+It is up to implementations to call this at the frequency
+they deem appropriate.
+
+The media stream must be prepared when this function is called. *)
+external update : t -> int64 -> unit = "ml_gtk_media_stream_update"
+
 (** Undoes a previous call to gtk_media_stream_realize().
 
 This causes the stream to release all resources it had
@@ -16,6 +25,18 @@ external unrealize : t -> Ocgtk_gdk.Gdk.Wrappers.Surface.t -> unit = "ml_gtk_med
 
 This function will also reset any error state the stream was in. *)
 external stream_unprepared : t -> unit = "ml_gtk_media_stream_stream_unprepared"
+
+(** Called by `GtkMediaStream` implementations to advertise the stream
+being ready to play and providing details about the stream.
+
+Note that the arguments are hints. If the stream implementation
+cannot determine the correct values, it is better to err on the
+side of caution and return %TRUE. User interfaces will use those
+values to determine what controls to show.
+
+This function may not be called again until the stream has been
+reset via [method@Gtk.MediaStream.stream_unprepared]. *)
+external stream_prepared : t -> bool -> bool -> bool -> int64 -> unit = "ml_gtk_media_stream_stream_prepared"
 
 (** Pauses the media stream and marks it as ended.
 
@@ -79,6 +100,19 @@ See [method@Gtk.MediaStream.seek_success] for the other way of
 ending a seek. *)
 external seek_failed : t -> unit = "ml_gtk_media_stream_seek_failed"
 
+(** Start a seek operation on @self to @timestamp.
+
+If @timestamp is out of range, it will be clamped.
+
+Seek operations may not finish instantly. While a
+seek operation is in process, the [property@Gtk.MediaStream:seeking]
+property will be set.
+
+When calling gtk_media_stream_seek() during an
+ongoing seek operation, the new seek will override
+any pending seek. *)
+external seek : t -> int64 -> unit = "ml_gtk_media_stream_seek"
+
 (** Called by users to attach the media stream to a `GdkSurface` they manage.
 
 The stream can then access the resources of @surface for its
@@ -137,6 +171,9 @@ external has_audio : t -> bool = "ml_gtk_media_stream_has_audio"
 See [method@Gtk.MediaStream.set_volume] for details. *)
 external get_volume : t -> float = "ml_gtk_media_stream_get_volume"
 
+(** Returns the current presentation timestamp in microseconds. *)
+external get_timestamp : t -> int64 = "ml_gtk_media_stream_get_timestamp"
+
 (** Return whether the stream is currently playing. *)
 external get_playing : t -> bool = "ml_gtk_media_stream_get_playing"
 
@@ -152,6 +189,11 @@ external get_loop : t -> bool = "ml_gtk_media_stream_get_loop"
 
 (** Returns whether the streams playback is finished. *)
 external get_ended : t -> bool = "ml_gtk_media_stream_get_ended"
+
+(** Gets the duration of the stream.
+
+If the duration is not known, 0 will be returned. *)
+external get_duration : t -> int64 = "ml_gtk_media_stream_get_duration"
 
 (* Properties *)
 

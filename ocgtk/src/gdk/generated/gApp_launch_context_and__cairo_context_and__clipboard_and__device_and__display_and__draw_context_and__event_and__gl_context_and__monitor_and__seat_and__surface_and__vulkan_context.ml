@@ -3,10 +3,11 @@
 
 class type app_launch_context_t = object
     inherit Ocgtk_gio.Gio.App_launch_context.app_launch_context_t
-    method get_display : unit -> display_t
     method set_desktop : int -> unit
     method set_icon : Ocgtk_gio.Gio.Icon.icon_t option -> unit
     method set_icon_name : string option -> unit
+    method set_timestamp : UInt32.t -> unit
+    method display : display_t
 end
 
 and cairo_context_t = object
@@ -43,6 +44,7 @@ and device_t = object
     method get_scroll_lock_state : unit -> bool
     method get_seat : unit -> seat_t
     method get_source : unit -> Gdk_enums.inputsource
+    method get_timestamp : unit -> UInt32.t
     method get_vendor_id : unit -> string option
     method has_bidi_layouts : unit -> bool
     method n_axes : int
@@ -69,7 +71,7 @@ and display_t = object
     method is_closed : unit -> bool
     method is_composited : unit -> bool
     method is_rgba : unit -> bool
-    method list_seats : unit -> App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Seat.t list
+    method list_seats : unit -> seat_t list
     method notify_startup_complete : string -> unit
     method prepare_gl : unit -> (bool, GError.t) result
     method put_event : event_t -> unit
@@ -103,6 +105,7 @@ and event_t = object
     method get_pointer_emulated : unit -> bool
     method get_seat : unit -> seat_t option
     method get_surface : unit -> surface_t option
+    method get_time : unit -> UInt32.t
     method ref : unit -> event_t
     method triggers_context_menu : unit -> bool
     method unref : unit -> unit
@@ -149,11 +152,11 @@ end
 and seat_t = object
     inherit Gseat_signals.seat_signals
     method get_capabilities : unit -> Gdk_enums.seatcapabilities
-    method get_devices : Gdk_enums.seatcapabilities -> App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Device.t list
+    method get_devices : Gdk_enums.seatcapabilities -> device_t list
     method get_display : unit -> display_t
     method get_keyboard : unit -> device_t option
     method get_pointer : unit -> device_t option
-    method get_tools : unit -> Device_tool.t list
+    method get_tools : unit -> GDevice_tool.device_tool_t list
     method as_seat : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Seat.t
 end
 
@@ -186,6 +189,7 @@ and surface_t = object
 end
 
 and vulkan_context_t = object
+    inherit Ocgtk_gio.Gio.Initable.initable_t
     inherit Gvulkan_context_signals.vulkan_context_signals
     method as_vulkan_context : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Vulkan_context.t
 end
@@ -193,10 +197,6 @@ end
 
 class app_launch_context (obj : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.App_launch_context.t) : app_launch_context_t = object (self)
   inherit Ocgtk_gio.Gio.App_launch_context.app_launch_context (obj :> Ocgtk_gio.Gio.Wrappers.App_launch_context.t)
-
-  method get_display : unit -> display_t =
-    fun () ->
-      new  display(App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.App_launch_context.get_display obj)
 
   method set_desktop : int -> unit =
     fun desktop ->
@@ -210,6 +210,12 @@ class app_launch_context (obj : App_launch_context_and__cairo_context_and__clipb
   method set_icon_name : string option -> unit =
     fun icon_name ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.App_launch_context.set_icon_name obj icon_name)
+
+  method set_timestamp : UInt32.t -> unit =
+    fun timestamp ->
+      (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.App_launch_context.set_timestamp obj timestamp)
+
+  method display = new display (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.App_launch_context.get_display obj)
 
 end
 
@@ -325,6 +331,10 @@ and device (obj : App_launch_context_and__cairo_context_and__clipboard_and__devi
     fun () ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Device.get_source obj)
 
+  method get_timestamp : unit -> UInt32.t =
+    fun () ->
+      (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Device.get_timestamp obj)
+
   method get_vendor_id : unit -> string option =
     fun () ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Device.get_vendor_id obj)
@@ -415,9 +425,9 @@ and display (obj : App_launch_context_and__cairo_context_and__clipboard_and__dev
     fun () ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Display.is_rgba obj)
 
-  method list_seats : unit -> App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Seat.t list =
+  method list_seats : unit -> seat_t list =
     fun () ->
-      (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Display.list_seats obj)
+      (List.map (fun ret -> new seat ret))(App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Display.list_seats obj)
 
   method notify_startup_complete : string -> unit =
     fun startup_id ->
@@ -522,6 +532,10 @@ and event (obj : App_launch_context_and__cairo_context_and__clipboard_and__devic
   method get_surface : unit -> surface_t option =
     fun () ->
       Option.map (fun ret -> new surface ret) (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Event.get_surface obj)
+
+  method get_time : unit -> UInt32.t =
+    fun () ->
+      (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Event.get_time obj)
 
   method ref : unit -> event_t =
     fun () ->
@@ -671,9 +685,9 @@ and seat (obj : App_launch_context_and__cairo_context_and__clipboard_and__device
     fun () ->
       (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Seat.get_capabilities obj)
 
-  method get_devices : Gdk_enums.seatcapabilities -> App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Device.t list =
+  method get_devices : Gdk_enums.seatcapabilities -> device_t list =
     fun capabilities ->
-      (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Seat.get_devices obj capabilities)
+      (List.map (fun ret -> new device ret))(App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Seat.get_devices obj capabilities)
 
   method get_display : unit -> display_t =
     fun () ->
@@ -687,9 +701,9 @@ and seat (obj : App_launch_context_and__cairo_context_and__clipboard_and__device
     fun () ->
       Option.map (fun ret -> new device ret) (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Seat.get_pointer obj)
 
-  method get_tools : unit -> Device_tool.t list =
+  method get_tools : unit -> GDevice_tool.device_tool_t list =
     fun () ->
-      (App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Seat.get_tools obj)
+      (List.map (fun ret -> new GDevice_tool.device_tool ret))(App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Seat.get_tools obj)
 
     method as_seat = obj
 end
@@ -803,6 +817,7 @@ end
 
 
 and vulkan_context (obj : App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Vulkan_context.t) : vulkan_context_t = object (self)
+  inherit Ocgtk_gio.Gio.Initable.initable (Ocgtk_gio.Gio.Wrappers.Initable.from_gobject obj)
   inherit Gvulkan_context_signals.vulkan_context_signals obj
 
     method as_vulkan_context = obj

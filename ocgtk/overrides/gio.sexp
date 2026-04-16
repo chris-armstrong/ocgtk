@@ -5,6 +5,7 @@
   ;; including gsettingsbackend.h — not suitable for general use
   (class SettingsBackend (ignore))
 
+
   (enumeration DBusError
     (member unknown_object (version "2.42"))
     (member unknown_interface (version "2.42"))

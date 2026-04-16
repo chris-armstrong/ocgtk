@@ -58,6 +58,38 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_renderer_combo_get_model(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkCellRendererCombo *obj = (GtkCellRendererCombo *)GtkCellRendererCombo_val(self);
+    GtkTreeModel *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "model");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_combo_get_model: property 'model' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "model", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GtkTreeModel(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+CAMLexport CAMLprim value ml_gtk_cell_renderer_combo_set_model(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkCellRendererCombo *obj = (GtkCellRendererCombo *)GtkCellRendererCombo_val(self);
+    GtkTreeModel *c_value = GtkTreeModel_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "model");
+if (pspec == NULL) caml_failwith("ml_gtk_cell_renderer_combo_set_model: property 'model' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          caml_failwith("unsupported property type");
+g_object_set_property(G_OBJECT(obj), "model", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_renderer_combo_get_text_column(value self)
 {
     CAMLparam1(self);

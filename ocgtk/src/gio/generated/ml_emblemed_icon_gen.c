@@ -133,3 +133,33 @@ caml_failwith("EmblemedIcon requires GLib >= 2.18");
 return Val_unit;
 }
 #endif
+
+#if GLIB_CHECK_VERSION(2,18,0)
+
+CAMLexport CAMLprim value ml_g_emblemed_icon_get_gicon(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GEmblemedIcon *obj = (GEmblemedIcon *)GEmblemedIcon_val(self);
+    GIcon *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gicon");
+if (pspec == NULL) caml_failwith("ml_g_emblemed_icon_get_gicon: property 'gicon' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "gicon", &prop_gvalue);
+          caml_failwith("unsupported property type");
+
+      result = Val_GIcon(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_g_emblemed_icon_get_gicon(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("EmblemedIcon requires GLib >= 2.18");
+return Val_unit;
+}
+#endif

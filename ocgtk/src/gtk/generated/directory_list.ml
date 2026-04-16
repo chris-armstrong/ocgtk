@@ -65,6 +65,9 @@ external get_attributes : t -> string option = "ml_gtk_directory_list_get_attrib
 
 (* Properties *)
 
+(** Get property: item-type *)
+external get_item_type : t -> int = "ml_gtk_directory_list_get_item_type"
+
 (** Get property: loading *)
 external get_loading : t -> bool = "ml_gtk_directory_list_get_loading"
 

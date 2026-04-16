@@ -11,7 +11,7 @@ class type application_t = object
     method get_menu_by_id : string -> Ocgtk_gio.Gio.Menu.menu_t option
     method get_menubar : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
     method get_window_by_id : int -> window_t option
-    method get_windows : unit -> Application_and__window_and__window_group.Window.t list
+    method get_windows : unit -> window_t list
     method inhibit : window_t option -> Gtk_enums.applicationinhibitflags -> string option -> int
     method list_action_descriptions : unit -> string array
     method remove_window : window_t -> unit
@@ -25,6 +25,9 @@ end
 
 and window_t = object
     inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
+    inherit GNative.native_t
+    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.root_t
+    inherit GShortcut_manager.shortcut_manager_t
     inherit Gwindow_signals.window_signals
     method close : unit -> unit
     method destroy : unit -> unit
@@ -36,7 +39,6 @@ and window_t = object
     method get_default_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
     method get_deletable : unit -> bool
     method get_destroy_with_parent : unit -> bool
-    method get_focus : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option
     method get_focus_visible : unit -> bool
     method get_group : unit -> window_group_t
     method get_handle_menubar_accel : unit -> bool
@@ -56,6 +58,7 @@ and window_t = object
     method maximize : unit -> unit
     method minimize : unit -> unit
     method present : unit -> unit
+    method present_with_time : UInt32.t -> unit
     method set_application : application_t option -> unit
     method set_child : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
     method set_decorated : bool -> unit
@@ -64,7 +67,6 @@ and window_t = object
     method set_deletable : bool -> unit
     method set_destroy_with_parent : bool -> unit
     method set_display : Ocgtk_gdk.Gdk.Display.display_t -> unit
-    method set_focus : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit
     method set_focus_visible : bool -> unit
     method set_handle_menubar_accel : bool -> unit
     method set_hide_on_close : bool -> unit
@@ -95,7 +97,7 @@ end
 
 and window_group_t = object
     method add_window : window_t -> unit
-    method list_windows : unit -> Application_and__window_and__window_group.Window.t list
+    method list_windows : unit -> window_t list
     method remove_window : window_t -> unit
     method as_window_group : Application_and__window_and__window_group.Window_group.t
 end
@@ -136,9 +138,9 @@ class application (obj : Application_and__window_and__window_group.Application.t
     fun id ->
       Option.map (fun ret -> new window ret) (Application_and__window_and__window_group.Application.get_window_by_id obj id)
 
-  method get_windows : unit -> Application_and__window_and__window_group.Window.t list =
+  method get_windows : unit -> window_t list =
     fun () ->
-      (Application_and__window_and__window_group.Application.get_windows obj)
+      (List.map (fun ret -> new window ret))(Application_and__window_and__window_group.Application.get_windows obj)
 
   method inhibit : window_t option -> Gtk_enums.applicationinhibitflags -> string option -> int =
     fun window flags reason ->
@@ -178,6 +180,9 @@ end
 
 and window (obj : Application_and__window_and__window_group.Window.t) : window_t = object (self)
   inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+  inherit GNative.native (Native.from_gobject obj)
+  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.root (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Root.from_gobject obj)
+  inherit GShortcut_manager.shortcut_manager (Shortcut_manager.from_gobject obj)
   inherit Gwindow_signals.window_signals obj
 
   method close : unit -> unit =
@@ -220,10 +225,6 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
   method get_destroy_with_parent : unit -> bool =
     fun () ->
       (Application_and__window_and__window_group.Window.get_destroy_with_parent obj)
-
-  method get_focus : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option =
-    fun () ->
-      Option.map (fun ret -> new GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget ret) (Application_and__window_and__window_group.Window.get_focus obj)
 
   method get_focus_visible : unit -> bool =
     fun () ->
@@ -301,6 +302,10 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
     fun () ->
       (Application_and__window_and__window_group.Window.present obj)
 
+  method present_with_time : UInt32.t -> unit =
+    fun timestamp ->
+      (Application_and__window_and__window_group.Window.present_with_time obj timestamp)
+
   method set_application : application_t option -> unit =
     fun application ->
       let application = Option.map (fun (c) -> c#as_application) application in
@@ -336,11 +341,6 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
     fun display ->
       let display = display#as_display in
       (Application_and__window_and__window_group.Window.set_display obj display)
-
-  method set_focus : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t option -> unit =
-    fun focus ->
-      let focus = Option.map (fun (c) -> c#as_widget) focus in
-      (Application_and__window_and__window_group.Window.set_focus obj focus)
 
   method set_focus_visible : bool -> unit =
     fun setting ->
@@ -427,9 +427,9 @@ and window_group (obj : Application_and__window_and__window_group.Window_group.t
       let window = window#as_window in
       (Application_and__window_and__window_group.Window_group.add_window obj window)
 
-  method list_windows : unit -> Application_and__window_and__window_group.Window.t list =
+  method list_windows : unit -> window_t list =
     fun () ->
-      (Application_and__window_and__window_group.Window_group.list_windows obj)
+      (List.map (fun ret -> new window ret))(Application_and__window_and__window_group.Window_group.list_windows obj)
 
   method remove_window : window_t -> unit =
     fun window ->

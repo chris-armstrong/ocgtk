@@ -1,4 +1,7 @@
 class type single_selection_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
+    inherit GSection_model.section_model_t
+    inherit GSelection_model.selection_model_t
     method get_autoselect : unit -> bool
     method get_can_unselect : unit -> bool
     method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
@@ -8,12 +11,16 @@ class type single_selection_t = object
     method set_can_unselect : bool -> unit
     method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
     method set_selected : int -> unit
+    method item_type : int
     method n_items : int
     method as_single_selection : Single_selection.t
 end
 
 (* High-level class for SingleSelection *)
 class single_selection (obj : Single_selection.t) : single_selection_t = object (self)
+  inherit Ocgtk_gio.Gio.List_model.list_model (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
+  inherit GSection_model.section_model (Section_model.from_gobject obj)
+  inherit GSelection_model.selection_model (Selection_model.from_gobject obj)
 
   method get_autoselect : unit -> bool =
     fun () ->
@@ -51,6 +58,8 @@ class single_selection (obj : Single_selection.t) : single_selection_t = object 
   method set_selected : int -> unit =
     fun position ->
       (Single_selection.set_selected obj position)
+
+  method item_type = Single_selection.get_item_type obj
 
   method n_items = Single_selection.get_n_items obj
 

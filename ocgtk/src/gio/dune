@@ -28,6 +28,6 @@
  (foreign_stubs
   (language c)
   (names ml_gio)
-  (flags :standard -Igenerated -Icore (:include c_flags.sexp)))
+  (flags :standard -Igenerated -Icore -I../common (:include c_flags.sexp)))
 
  (libraries ocgtk.common ocgtk_gio_generated_stubs))

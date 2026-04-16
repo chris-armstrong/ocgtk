@@ -33,6 +33,11 @@
 ; (libraries ocgtk alcotest))
 
 (test
+ (name test_gio_volume_monitor)
+ (modules test_gio_volume_monitor)
+ (libraries ocgtk.gio alcotest))
+
+(test
  (name test_gobject_stress)
  (modules test_gobject_stress)
  (libraries ocgtk alcotest))
@@ -152,3 +157,23 @@
 ;  (name test_range)
 ;  (modules test_range)
 ;  (libraries ocgtk.gtk alcotest))
+
+(test
+ (name test_gvariant)
+ (modules test_gvariant)
+ (libraries ocgtk alcotest integers))
+
+(test
+ (name test_gvariant_type)
+ (modules test_gvariant_type)
+ (libraries ocgtk alcotest))
+
+(test
+ (name test_glib_bytes)
+ (modules test_glib_bytes)
+ (libraries ocgtk alcotest))
+
+(test
+ (name test_bounded_int)
+ (modules test_bounded_int)
+ (libraries ocgtk alcotest))

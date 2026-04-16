@@ -158,25 +158,52 @@ let generate_method_wrappers ~ctx ~property_method_names:_
             ~current_layer2_module ~gir_type:meth.return_type
       in
       let ret_wrapper =
-        match
-          Class_gen_type_resolution.resolve_layer2_class_name ~ctx
-            ~current_layer2_module ~gir_type:meth.return_type
-        with
-        | Some class_name ->
-            if meth.throws && meth.return_type.nullable then
-              sprintf
-                "Result.map (fun ret -> Option.map (fun ret -> new %s ret) ret)"
-                class_name (* Check if method throws (returns result type) *)
-            else if meth.throws then
-              (* Result type with class wrapping: Result.map (fun ret -> new ClassName ret) *)
-              sprintf "Result.map (fun ret -> new %s ret)" class_name
-            else if meth.return_type.nullable then
-              (* Optional type with class wrapping: Option.map (fun ret -> new ClassName ret) *)
-              sprintf "Option.map (fun ret -> new %s ret) " class_name
-            else
-              (* Non-optional, non-result type: new ClassName *)
-              sprintf "new  %s" class_name
-        | _ -> ""
+        (* Check first for GList/GSList with a Layer 2 element type.
+           These need List.map wrapping, combined with Result.map/Option.map
+           for throws/nullable. *)
+        let list_l2_wrapper =
+          if Type_mappings.is_list_type meth.return_type then
+            match meth.return_type.array with
+            | Some arr ->
+                (match
+                   Class_gen_type_resolution.resolve_layer2_class_name ~ctx
+                     ~current_layer2_module ~gir_type:arr.element_type
+                 with
+                 | Some class_name ->
+                     let mapper =
+                       sprintf "(List.map (fun ret -> new %s ret))" class_name
+                     in
+                     if meth.throws && meth.return_type.nullable then
+                       Some
+                         (sprintf
+                            "Result.map (fun r -> Option.map %s r)" mapper)
+                     else if meth.throws then
+                       Some (sprintf "Result.map %s" mapper)
+                     else if meth.return_type.nullable then
+                       Some (sprintf "Option.map %s" mapper)
+                     else Some (sprintf "%s" mapper)
+                 | None -> None)
+            | None -> None
+          else None
+        in
+        match list_l2_wrapper with
+        | Some wrapper -> wrapper
+        | None -> (
+            match
+              Class_gen_type_resolution.resolve_layer2_class_name ~ctx
+                ~current_layer2_module ~gir_type:meth.return_type
+            with
+            | Some class_name ->
+                if meth.throws && meth.return_type.nullable then
+                  sprintf
+                    "Result.map (fun ret -> Option.map (fun ret -> new %s ret) ret)"
+                    class_name
+                else if meth.throws then
+                  sprintf "Result.map (fun ret -> new %s ret)" class_name
+                else if meth.return_type.nullable then
+                  sprintf "Option.map (fun ret -> new %s ret) " class_name
+                else sprintf "new  %s" class_name
+            | _ -> "")
       in
 
       (* Convert #Module.class_type to partial object type for .ml files *)
@@ -260,12 +287,36 @@ let generate_method_wrappers ~ctx ~property_method_names:_
             Type_mappings.find_type_mapping_for_gir_type ~ctx p.param_type
           with
           | Some { layer2_class = Some layer2_class; _ } ->
+              (* Direct L2 class param: unwrap via accessor *)
               let accessor = layer2_class.class_layer1_accessor in
               if p.nullable || p.param_type.nullable then
                 bprintf buf
                   "      let %s = Option.map (fun (c) -> c#%s) %s in\n" name
                   accessor name
               else bprintf buf "      let %s = %s#%s in\n" name name accessor
+          | Some { layer2_class = None; _ }
+            when Type_mappings.is_list_type p.param_type -> (
+              (* GList/GSList param: check if element type has an L2 class *)
+              match p.param_type.array with
+              | Some arr -> (
+                  match
+                    Type_mappings.find_type_mapping_for_gir_type ~ctx
+                      arr.element_type
+                  with
+                  | Some { layer2_class = Some layer2_class; _ } ->
+                      let accessor = layer2_class.class_layer1_accessor in
+                      let mapper =
+                        sprintf "(List.map (fun c -> c#%s))" accessor
+                      in
+                      if p.nullable || p.param_type.nullable then
+                        bprintf buf
+                          "      let %s = Option.map %s %s in\n" name mapper
+                          name
+                      else
+                        bprintf buf "      let %s = %s %s in\n" name mapper
+                          name
+                  | _ -> ())
+              | None -> ())
           | _ -> ());
       bprintf buf "      %s(%s.%s obj" ret_wrapper module_name
         ocaml_function_name;

@@ -111,6 +111,29 @@ return Val_unit;
 }
 #endif
 
+#if PANGO_VERSION_CHECK(1,50,0)
+
+CAMLexport CAMLprim value ml_pango_tab_array_set_decimal_point(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+pango_tab_array_set_decimal_point(PangoTabArray_val(self), Int_val(arg1), Long_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_pango_tab_array_set_decimal_point(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("TabArray requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_pango_tab_array_resize(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -148,6 +171,28 @@ CAMLparam1(self);
 gboolean result = pango_tab_array_get_positions_in_pixels(PangoTabArray_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#if PANGO_VERSION_CHECK(1,50,0)
+
+CAMLexport CAMLprim value ml_pango_tab_array_get_decimal_point(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gunichar result = pango_tab_array_get_decimal_point(PangoTabArray_val(self), Int_val(arg1));
+CAMLreturn(Val_long(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_pango_tab_array_get_decimal_point(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TabArray requires Pango >= 1.50");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_tab_array_free(value self)
 {

@@ -1,4 +1,7 @@
 class type single_selection_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
+    inherit GSection_model.section_model_t
+    inherit GSelection_model.selection_model_t
     method get_autoselect : unit -> bool
     method get_can_unselect : unit -> bool
     method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
@@ -8,6 +11,7 @@ class type single_selection_t = object
     method set_can_unselect : bool -> unit
     method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
     method set_selected : int -> unit
+    method item_type : int
     method n_items : int
     method as_single_selection : Single_selection.t
 end

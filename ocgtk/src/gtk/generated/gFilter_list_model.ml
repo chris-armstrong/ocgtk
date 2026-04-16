@@ -1,4 +1,6 @@
 class type filter_list_model_t = object
+    inherit Ocgtk_gio.Gio.List_model.list_model_t
+    inherit GSection_model.section_model_t
     method get_filter : unit -> GFilter.filter_t option
     method get_incremental : unit -> bool
     method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
@@ -6,12 +8,15 @@ class type filter_list_model_t = object
     method set_filter : GFilter.filter_t option -> unit
     method set_incremental : bool -> unit
     method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
+    method item_type : int
     method n_items : int
     method as_filter_list_model : Filter_list_model.t
 end
 
 (* High-level class for FilterListModel *)
 class filter_list_model (obj : Filter_list_model.t) : filter_list_model_t = object (self)
+  inherit Ocgtk_gio.Gio.List_model.list_model (Ocgtk_gio.Gio.Wrappers.List_model.from_gobject obj)
+  inherit GSection_model.section_model (Section_model.from_gobject obj)
 
   method get_filter : unit -> GFilter.filter_t option =
     fun () ->
@@ -42,6 +47,8 @@ class filter_list_model (obj : Filter_list_model.t) : filter_list_model_t = obje
     fun model ->
       let model = Option.map (fun (c) -> c#as_list_model) model in
       (Filter_list_model.set_model obj model)
+
+  method item_type = Filter_list_model.get_item_type obj
 
   method n_items = Filter_list_model.get_n_items obj
 

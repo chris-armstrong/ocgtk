@@ -1,4 +1,6 @@
 class type entry_completion_t = object
+    inherit GBuildable.buildable_t
+    inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
     inherit Gentry_completion_signals.entry_completion_signals
     method complete : unit -> unit
     method compute_prefix : string -> string option
@@ -16,15 +18,16 @@ class type entry_completion_t = object
     method set_inline_completion : bool -> unit
     method set_inline_selection : bool -> unit
     method set_minimum_key_length : int -> unit
+    method set_model : GTree_model.tree_model_t option -> unit
     method set_popup_completion : bool -> unit
     method set_popup_set_width : bool -> unit
     method set_popup_single_match : bool -> unit
     method set_text_column : int -> unit
-    method cell_area : GCell_area_and__cell_area_context.cell_area_t
+    method cell_area : GCell_area_and__cell_area_context_and__cell_layout.cell_area_t
     method as_entry_completion : Entry_completion.t
 end
 
 class entry_completion : Entry_completion.t -> entry_completion_t
 
 val new_ : unit -> entry_completion_t
-val new_with_area : GCell_area_and__cell_area_context.cell_area_t -> entry_completion_t
+val new_with_area : GCell_area_and__cell_area_context_and__cell_layout.cell_area_t -> entry_completion_t

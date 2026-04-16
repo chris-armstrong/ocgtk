@@ -3,6 +3,8 @@
 
 type t = [`dtls_connection] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_dtls_connection_from_gobject"
+
 (* Methods *)
 (** Finish an asynchronous TLS shutdown operation. See
 g_dtls_connection_shutdown() for more information. *)
@@ -231,4 +233,7 @@ g_dtls_connection_close() again to complete closing the #GDtlsConnection. *)
 external close : t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_dtls_connection_close"
 
 (* Properties *)
+
+(** Get property: base-socket *)
+external get_base_socket : t -> Datagram_based.t = "ml_g_dtls_connection_get_base_socket"
 

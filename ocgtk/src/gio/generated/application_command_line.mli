@@ -69,6 +69,19 @@ future, support may be expanded to other platforms.
 You must only call this function once per commandline invocation. *)
 external get_stdin : t -> Input_stream.t option = "ml_g_application_command_line_get_stdin"
 
+(** Gets the platform data associated with the invocation of @cmdline.
+
+This is a #GVariant dictionary containing information about the
+context in which the invocation occurred.  It typically contains
+information like the current working directory and the startup
+notification ID.
+
+It comes from an untrusted external process and hence the types of all
+values must be validated before being used.
+
+For local invocation, it will be %NULL. *)
+external get_platform_data : t -> Gvariant.t option = "ml_g_application_command_line_get_platform_data"
+
 (** Determines if @cmdline represents a remote invocation. *)
 external get_is_remote : t -> bool = "ml_g_application_command_line_get_is_remote"
 
@@ -139,7 +152,7 @@ of the invocation of @cmdline.
 This differs from g_file_new_for_commandline_arg() in that it
 resolves relative pathnames using the current working directory of
 the invoking process rather than the local process. *)
-external create_file_for_arg : t -> string -> File_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t = "ml_g_application_command_line_create_file_for_arg"
+external create_file_for_arg : t -> string -> App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File.t = "ml_g_application_command_line_create_file_for_arg"
 
 (* Properties *)
 

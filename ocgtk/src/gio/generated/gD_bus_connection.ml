@@ -1,19 +1,29 @@
 (* Signal class defined in gd_bus_connection_signals.ml *)
 
 class type d_bus_connection_t = object
+    inherit GAsync_initable.async_initable_t
+    inherit GInitable.initable_t
     inherit Gd_bus_connection_signals.d_bus_connection_signals
+    method call_finish : GAsync_result.async_result_t -> (Gvariant.t, GError.t) result
+    method call_sync : string option -> string -> string -> string -> Gvariant.t option -> Gvariant_type.t option -> Gio_enums.dbuscallflags -> int -> GCancellable.cancellable_t option -> (Gvariant.t, GError.t) result
+    method close_finish : GAsync_result.async_result_t -> (bool, GError.t) result
     method close_sync : GCancellable.cancellable_t option -> (bool, GError.t) result
+    method emit_signal : string option -> string -> string -> string -> Gvariant.t option -> (bool, GError.t) result
+    method export_action_group : string -> GAction_group.action_group_t -> (int, GError.t) result
     method export_menu_model : string -> GMenu_link_iter_and__menu_model.menu_model_t -> (int, GError.t) result
+    method flush_finish : GAsync_result.async_result_t -> (bool, GError.t) result
     method flush_sync : GCancellable.cancellable_t option -> (bool, GError.t) result
     method get_capabilities : unit -> Gio_enums.dbuscapabilityflags
     method get_exit_on_close : unit -> bool
     method get_flags : unit -> Gio_enums.dbusconnectionflags
     method get_guid : unit -> string
+    method get_last_serial : unit -> UInt32.t
     method get_peer_credentials : unit -> GCredentials.credentials_t option
     method get_stream : unit -> GIo_stream.io_stream_t
     method get_unique_name : unit -> string option
     method is_closed : unit -> bool
     method remove_filter : int -> unit
+    method send_message_with_reply_finish : GAsync_result.async_result_t -> (GD_bus_message.d_bus_message_t, GError.t) result
     method set_exit_on_close : bool -> unit
     method signal_unsubscribe : int -> unit
     method start_message_processing : unit -> unit
@@ -21,25 +31,54 @@ class type d_bus_connection_t = object
     method unexport_menu_model : int -> unit
     method unregister_object : int -> bool
     method unregister_subtree : int -> bool
-    method address : string
-    method authentication_observer : GD_bus_auth_observer.d_bus_auth_observer_t
     method closed : bool
     method as_d_bus_connection : D_bus_connection.t
 end
 
 (* High-level class for DBusConnection *)
 class d_bus_connection (obj : D_bus_connection.t) : d_bus_connection_t = object (self)
+  inherit GAsync_initable.async_initable (Async_initable.from_gobject obj)
+  inherit GInitable.initable (Initable.from_gobject obj)
   inherit Gd_bus_connection_signals.d_bus_connection_signals obj
+
+  method call_finish : GAsync_result.async_result_t -> (Gvariant.t, GError.t) result =
+    fun res ->
+      let res = res#as_async_result in
+      (D_bus_connection.call_finish obj res)
+
+  method call_sync : string option -> string -> string -> string -> Gvariant.t option -> Gvariant_type.t option -> Gio_enums.dbuscallflags -> int -> GCancellable.cancellable_t option -> (Gvariant.t, GError.t) result =
+    fun bus_name object_path interface_name method_name parameters reply_type flags timeout_msec cancellable ->
+      let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
+      (D_bus_connection.call_sync obj bus_name object_path interface_name method_name parameters reply_type flags timeout_msec cancellable)
+
+  method close_finish : GAsync_result.async_result_t -> (bool, GError.t) result =
+    fun res ->
+      let res = res#as_async_result in
+      (D_bus_connection.close_finish obj res)
 
   method close_sync : GCancellable.cancellable_t option -> (bool, GError.t) result =
     fun cancellable ->
       let cancellable = Option.map (fun (c) -> c#as_cancellable) cancellable in
       (D_bus_connection.close_sync obj cancellable)
 
+  method emit_signal : string option -> string -> string -> string -> Gvariant.t option -> (bool, GError.t) result =
+    fun destination_bus_name object_path interface_name signal_name parameters ->
+      (D_bus_connection.emit_signal obj destination_bus_name object_path interface_name signal_name parameters)
+
+  method export_action_group : string -> GAction_group.action_group_t -> (int, GError.t) result =
+    fun object_path action_group ->
+      let action_group = action_group#as_action_group in
+      (D_bus_connection.export_action_group obj object_path action_group)
+
   method export_menu_model : string -> GMenu_link_iter_and__menu_model.menu_model_t -> (int, GError.t) result =
     fun object_path menu ->
       let menu = menu#as_menu_model in
       (D_bus_connection.export_menu_model obj object_path menu)
+
+  method flush_finish : GAsync_result.async_result_t -> (bool, GError.t) result =
+    fun res ->
+      let res = res#as_async_result in
+      (D_bus_connection.flush_finish obj res)
 
   method flush_sync : GCancellable.cancellable_t option -> (bool, GError.t) result =
     fun cancellable ->
@@ -62,6 +101,10 @@ class d_bus_connection (obj : D_bus_connection.t) : d_bus_connection_t = object 
     fun () ->
       (D_bus_connection.get_guid obj)
 
+  method get_last_serial : unit -> UInt32.t =
+    fun () ->
+      (D_bus_connection.get_last_serial obj)
+
   method get_peer_credentials : unit -> GCredentials.credentials_t option =
     fun () ->
       Option.map (fun ret -> new GCredentials.credentials ret) (D_bus_connection.get_peer_credentials obj)
@@ -81,6 +124,11 @@ class d_bus_connection (obj : D_bus_connection.t) : d_bus_connection_t = object 
   method remove_filter : int -> unit =
     fun filter_id ->
       (D_bus_connection.remove_filter obj filter_id)
+
+  method send_message_with_reply_finish : GAsync_result.async_result_t -> (GD_bus_message.d_bus_message_t, GError.t) result =
+    fun res ->
+      let res = res#as_async_result in
+      Result.map (fun ret -> new GD_bus_message.d_bus_message ret)(D_bus_connection.send_message_with_reply_finish obj res)
 
   method set_exit_on_close : bool -> unit =
     fun exit_on_close ->
@@ -109,10 +157,6 @@ class d_bus_connection (obj : D_bus_connection.t) : d_bus_connection_t = object 
   method unregister_subtree : int -> bool =
     fun registration_id ->
       (D_bus_connection.unregister_subtree obj registration_id)
-
-  method address = D_bus_connection.get_address obj
-
-  method authentication_observer = new GD_bus_auth_observer.d_bus_auth_observer (D_bus_connection.get_authentication_observer obj)
 
   method closed = D_bus_connection.get_closed obj
 

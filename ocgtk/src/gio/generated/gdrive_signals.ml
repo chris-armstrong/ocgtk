@@ -1,5 +1,5 @@
 (* Signal handlers for Drive *)
-class drive_signals (obj : Drive.t) = object
+class drive_signals (obj : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.Drive.t) = object
   (** Emitted when the drive's state has changed. *)
   method on_changed ~callback =
     Gobject.Signal.connect_simple obj ~name:"changed" ~callback ~after:false

@@ -49,6 +49,20 @@ GError *error = NULL;
 GIOStream* result = g_proxy_connect(GProxy_val(self), GIOStream_val(arg1), GProxyAddress_val(arg2), Option_val(arg3, GCancellable_val, NULL), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GIOStream(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+CAMLexport CAMLprim value ml_gio_proxy_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), G_TYPE_PROXY)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GProxy");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GProxy((GProxy*)gobj));
+}
 
 #else
 
@@ -81,6 +95,14 @@ CAMLparam1(self);
 (void)self;
 caml_failwith("Proxy requires GLib >= 2.26");
 return Val_unit;
+}
+
+CAMLexport CAMLprim value ml_gio_proxy_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    (void)obj;
+    caml_failwith("Proxy requires GTK >= 2.26");
+    return Val_unit;
 }
 
 

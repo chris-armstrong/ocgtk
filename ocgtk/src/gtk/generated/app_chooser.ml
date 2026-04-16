@@ -3,6 +3,8 @@
 
 type t = [`app_chooser] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_app_chooser_from_gobject"
+
 (* Methods *)
 (** Reloads the list of applications. *)
 external refresh : t -> unit = "ml_gtk_app_chooser_refresh"

@@ -161,6 +161,40 @@ GdkToplevelState result = gdk_toplevel_get_state(GdkToplevel_val(self));
 CAMLreturn(Val_GdkToplevelState(result));
 }
 
+CAMLexport CAMLprim value ml_gdk_toplevel_focus(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gdk_toplevel_focus(GdkToplevel_val(self), UInt32_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gdk_toplevel_begin_resize_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam2(arg5, arg6);
+
+gdk_toplevel_begin_resize(GdkToplevel_val(self), GdkSurfaceEdge_val(arg1), Option_val(arg2, GdkDevice_val, NULL), Int_val(arg3), Double_val(arg4), Double_val(arg5), UInt32_val(arg6));
+CAMLreturn(Val_unit);}
+
+CAMLexport CAMLprim value ml_gdk_toplevel_begin_resize_bytecode(value * argv, int argn)
+{
+return ml_gdk_toplevel_begin_resize_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
+}
+
+CAMLexport CAMLprim value ml_gdk_toplevel_begin_move_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam1(arg5);
+
+gdk_toplevel_begin_move(GdkToplevel_val(self), GdkDevice_val(arg1), Int_val(arg2), Double_val(arg3), Double_val(arg4), UInt32_val(arg5));
+CAMLreturn(Val_unit);}
+
+CAMLexport CAMLprim value ml_gdk_toplevel_begin_move_bytecode(value * argv, int argn)
+{
+return ml_gdk_toplevel_begin_move_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+}
+
 CAMLexport CAMLprim value ml_gdk_toplevel_get_fullscreen_mode(value self)
 {
     CAMLparam1(self);
@@ -209,3 +243,17 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+CAMLexport CAMLprim value ml_gdk_toplevel_from_gobject(value obj)
+{
+    CAMLparam1(obj);
+    GObject *gobj = GObject_ext_of_val(obj);
+    if (!g_type_is_a(G_OBJECT_TYPE(gobj), GDK_TYPE_TOPLEVEL)) {
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+            "from_gobject: object of type '%s' does not implement %s",
+            G_OBJECT_TYPE_NAME(gobj), "GdkToplevel");
+        caml_failwith(msg);
+    }
+    g_object_ref(gobj);
+    CAMLreturn(Val_GdkToplevel((GdkToplevel*)gobj));
+}

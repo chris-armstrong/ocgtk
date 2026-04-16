@@ -31,12 +31,28 @@ value Val_GskShaderArgsBuilder_option(const GskShaderArgsBuilder *ptr) {
 }
 
 
+CAMLexport CAMLprim value ml_gsk_shader_args_builder_new(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+
+GskShaderArgsBuilder *obj = gsk_shader_args_builder_new(GskGLShader_val(arg1), Option_val(arg2, GBytes_val, NULL));
+
+CAMLreturn(Val_GskShaderArgsBuilder(obj));
+}
 CAMLexport CAMLprim value ml_gsk_shader_args_builder_unref(value self)
 {
 CAMLparam1(self);
 
 gsk_shader_args_builder_unref(GskShaderArgsBuilder_val(self));
 CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gsk_shader_args_builder_to_args(value self)
+{
+CAMLparam1(self);
+
+GBytes* result = gsk_shader_args_builder_to_args(GskShaderArgsBuilder_val(self));
+CAMLreturn(Val_GBytes(result));
 }
 
 CAMLexport CAMLprim value ml_gsk_shader_args_builder_set_vec4(value self, value arg1, value arg2)
@@ -60,6 +76,22 @@ CAMLexport CAMLprim value ml_gsk_shader_args_builder_set_vec2(value self, value 
 CAMLparam3(self, arg1, arg2);
 
 gsk_shader_args_builder_set_vec2(GskShaderArgsBuilder_val(self), Int_val(arg1), graphene_vec2_t_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gsk_shader_args_builder_set_uint(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gsk_shader_args_builder_set_uint(GskShaderArgsBuilder_val(self), Int_val(arg1), UInt32_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gsk_shader_args_builder_set_int(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gsk_shader_args_builder_set_int(GskShaderArgsBuilder_val(self), Int_val(arg1), Int32_val_bounded(arg2));
 CAMLreturn(Val_unit);
 }
 

@@ -3,6 +3,8 @@
 
 type t = [`tree_sortable] Gobject.obj
 
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_tree_sortable_from_gobject"
+
 (* Methods *)
 (** Emits a `GtkTreeSortable::sort-column-changed` signal on @sortable. *)
 external sort_column_changed : t -> unit = "ml_gtk_tree_sortable_sort_column_changed"

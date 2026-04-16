@@ -148,6 +148,20 @@ g_dbus_connection_set_exit_on_close(GDBusConnection_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_dbus_connection_send_message_with_reply_sync(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+GError *error = NULL;
+volatile guint32 out4;
+
+GDBusMessage* result = g_dbus_connection_send_message_with_reply_sync(GDBusConnection_val(self), GDBusMessage_val(arg1), GioDBusSendMessageFlags_val(arg2), Int_val(arg3), &out4, Option_val(arg4, GCancellable_val, NULL), &error);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_GDBusMessage(result));
+    Store_field(ret, 1, Val_uint32(out4));
+    if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_g_dbus_connection_send_message_with_reply_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -155,6 +169,20 @@ GError *error = NULL;
 
 GDBusMessage* result = g_dbus_connection_send_message_with_reply_finish(GDBusConnection_val(self), GAsyncResult_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GDBusMessage(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
+CAMLexport CAMLprim value ml_g_dbus_connection_send_message(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+volatile guint32 out3;
+
+gboolean result = g_dbus_connection_send_message(GDBusConnection_val(self), GDBusMessage_val(arg1), GioDBusSendMessageFlags_val(arg2), &out3, &error);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_uint32(out3));
+    if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_g_dbus_connection_remove_filter(value self, value arg1)
@@ -198,6 +226,27 @@ GCredentials* result = g_dbus_connection_get_peer_credentials(GDBusConnection_va
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GCredentials));
 }
+
+#if GLIB_CHECK_VERSION(2,34,0)
+
+CAMLexport CAMLprim value ml_g_dbus_connection_get_last_serial(value self)
+{
+CAMLparam1(self);
+
+guint32 result = g_dbus_connection_get_last_serial(GDBusConnection_val(self));
+CAMLreturn(Val_uint32(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_dbus_connection_get_last_serial(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusConnection requires GLib >= 2.34");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_dbus_connection_get_guid(value self)
 {
@@ -310,6 +359,20 @@ return Val_unit;
 }
 #endif
 
+CAMLexport CAMLprim value ml_g_dbus_connection_emit_signal_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam1(arg5);
+GError *error = NULL;
+
+gboolean result = g_dbus_connection_emit_signal(GDBusConnection_val(self), String_option_val(arg1), String_val(arg2), String_val(arg3), String_val(arg4), Option_val(arg5, GVariant_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));}
+
+CAMLexport CAMLprim value ml_g_dbus_connection_emit_signal_bytecode(value * argv, int argn)
+{
+return ml_g_dbus_connection_emit_signal_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+}
+
 CAMLexport CAMLprim value ml_g_dbus_connection_close_sync(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -328,39 +391,28 @@ gboolean result = g_dbus_connection_close_finish(GDBusConnection_val(self), GAsy
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-CAMLexport CAMLprim value ml_g_d_bus_connection_get_address(value self)
+CAMLexport CAMLprim value ml_g_dbus_connection_call_sync_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8, value arg9)
 {
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GDBusConnection *obj = (GDBusConnection *)GDBusConnection_val(self);
-    gchar* *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "address");
-if (pspec == NULL) caml_failwith("ml_g_d_bus_connection_get_address: property 'address' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "address", &prop_gvalue);
-          prop_value = g_value_get_string(&prop_gvalue);
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam5(arg5, arg6, arg7, arg8, arg9);
+GError *error = NULL;
 
-      result = caml_copy_string(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
+GVariant* result = g_dbus_connection_call_sync(GDBusConnection_val(self), String_option_val(arg1), String_val(arg2), String_val(arg3), String_val(arg4), Option_val(arg5, GVariant_val, NULL), Option_val(arg6, GVariantType_val, NULL), GioDBusCallFlags_val(arg7), Int_val(arg8), Option_val(arg9, GCancellable_val, NULL), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GVariant(result))); else CAMLreturn(Res_Error(Val_GError(error)));}
 
-CAMLexport CAMLprim value ml_g_d_bus_connection_get_authentication_observer(value self)
+CAMLexport CAMLprim value ml_g_dbus_connection_call_sync_bytecode(value * argv, int argn)
 {
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GDBusConnection *obj = (GDBusConnection *)GDBusConnection_val(self);
-    GDBusAuthObserver *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "authentication-observer");
-if (pspec == NULL) caml_failwith("ml_g_d_bus_connection_get_authentication_observer: property 'authentication-observer' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "authentication-observer", &prop_gvalue);
-          prop_value = (GDBusAuthObserver*)g_value_get_object(&prop_gvalue);
+return ml_g_dbus_connection_call_sync_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7], argv[8], argv[9]);
+}
 
-      result = Val_GDBusAuthObserver(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
+CAMLexport CAMLprim value ml_g_dbus_connection_call_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+GVariant* result = g_dbus_connection_call_finish(GDBusConnection_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GVariant(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
 
 CAMLexport CAMLprim value ml_g_d_bus_connection_get_closed(value self)
 {
@@ -425,6 +477,34 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_g_dbus_connection_call_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusConnection requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_connection_call_sync(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8, value arg9)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+(void)arg6;
+(void)arg7;
+(void)arg8;
+(void)arg9;
+caml_failwith("DBusConnection requires GLib >= 2.26");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_dbus_connection_close_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -440,6 +520,20 @@ CAMLexport CAMLprim value ml_g_dbus_connection_close_sync(value self, value arg1
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
+caml_failwith("DBusConnection requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_connection_emit_signal(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
 caml_failwith("DBusConnection requires GLib >= 2.26");
 return Val_unit;
 }
@@ -523,6 +617,15 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_g_dbus_connection_get_last_serial(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusConnection requires GLib >= 2.26");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_dbus_connection_get_peer_credentials(value self)
 {
 CAMLparam1(self);
@@ -569,11 +672,35 @@ return Val_unit;
 }
 
 
+CAMLexport CAMLprim value ml_g_dbus_connection_send_message(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("DBusConnection requires GLib >= 2.26");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_dbus_connection_send_message_with_reply_finish(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
+caml_failwith("DBusConnection requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_connection_send_message_with_reply_sync(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
 caml_failwith("DBusConnection requires GLib >= 2.26");
 return Val_unit;
 }
@@ -643,24 +770,6 @@ CAMLexport CAMLprim value ml_g_dbus_connection_unregister_subtree(value self, va
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_d_bus_connection_get_address(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusConnection requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_d_bus_connection_get_authentication_observer(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("DBusConnection requires GLib >= 2.26");
 return Val_unit;
 }

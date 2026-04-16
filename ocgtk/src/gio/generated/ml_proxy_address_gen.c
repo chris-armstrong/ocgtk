@@ -24,6 +24,21 @@
 #if GLIB_CHECK_VERSION(2,26,0)
 
 
+CAMLexport CAMLprim value ml_g_proxy_address_new_native(value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7)
+{
+CAMLparam5(arg1, arg2, arg3, arg4, arg5);
+CAMLxparam2(arg6, arg7);
+
+GProxyAddress *obj = g_proxy_address_new(GInetAddress_val(arg1), UInt16_val(arg2), String_val(arg3), String_val(arg4), UInt16_val(arg5), String_option_val(arg6), String_option_val(arg7));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GProxyAddress(obj));}
+
+CAMLexport CAMLprim value ml_g_proxy_address_new_bytecode(value * argv, int argn)
+{
+return ml_g_proxy_address_new_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
+}
+
 CAMLexport CAMLprim value ml_g_proxy_address_get_username(value self)
 {
 CAMLparam1(self);
@@ -90,6 +105,14 @@ return Val_unit;
 }
 #endif
 
+CAMLexport CAMLprim value ml_g_proxy_address_get_destination_port(value self)
+{
+CAMLparam1(self);
+
+guint16 result = g_proxy_address_get_destination_port(GProxyAddress_val(self));
+CAMLreturn(Val_uint16(result));
+}
+
 CAMLexport CAMLprim value ml_g_proxy_address_get_destination_hostname(value self)
 {
 CAMLparam1(self);
@@ -101,7 +124,31 @@ CAMLreturn(caml_copy_string(result));
 #else
 
 
+CAMLexport CAMLprim value ml_g_proxy_address_new(value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7)
+{
+CAMLparam7(arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+(void)arg6;
+(void)arg7;
+caml_failwith("ProxyAddress requires GLib >= 2.26");
+return Val_unit;
+}
+
+
 CAMLexport CAMLprim value ml_g_proxy_address_get_destination_hostname(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ProxyAddress requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_proxy_address_get_destination_port(value self)
 {
 CAMLparam1(self);
 (void)self;
