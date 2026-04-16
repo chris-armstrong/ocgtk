@@ -252,8 +252,11 @@ jobs:
           xvfb-run -a dune runtest
 
   # ── FreeBSD 14 ───────────────────────────────────────────────────────────────
+  # Disabled: FreeBSD runs on QEMU on GitHub runners which lack processor
+  # virtualisation extensions, making it too slow and prone to timeouts.
   freebsd:
     name: FreeBSD 14
+    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -296,8 +299,13 @@ jobs:
   # conf-gtk4 checks for GTK4 using Cygwin's pkg-config (installed by
   # setup-ocaml by default) with PKG_CONFIG_PATH pointing at MSYS2's
   # MinGW64 .pc files.
+  #
+  # Disabled: GTK4 is not available as a Cygwin package, and building against
+  # MSYS2 MinGW64 libraries from a Cygwin OCaml compiler requires a custom
+  # setup that is not yet worked out.
   windows:
     name: Windows
+    if: false
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
