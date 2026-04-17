@@ -55,5 +55,7 @@
   test_interface_method_types
   test_gir_gen
   type_factory)
- (deps %{exe:../gir_gen/gir_gen.exe})
+ (deps
+  %{exe:../gir_gen/gir_gen.exe}
+  (source_tree %{project_root}/gir))
  (libraries str unix gir_gen_lib alcotest ppxlib sexplib))
