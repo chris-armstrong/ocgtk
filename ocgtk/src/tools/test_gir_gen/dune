@@ -42,6 +42,7 @@
   compilation_tests
   version_guard_tests
   c_stub_version_guard_tests
+  test_override_fixtures
   test_override_types
   test_override_parser
   test_override_apply

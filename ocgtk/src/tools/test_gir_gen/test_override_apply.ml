@@ -223,6 +223,22 @@ let make_empty_overrides library_name =
     functions = [];
   }
 
+let make_class_override ?(action = None) ?(os = None) ?(constructors = [])
+    ?(methods = []) ?(properties = []) ?(signals = []) name =
+  {
+    class_name = name;
+    class_action = action;
+    class_os = os;
+    constructors;
+    methods;
+    properties;
+    signals;
+  }
+
+let make_overrides_with_classes ?(interfaces = []) ?(records = []) ?(enums = [])
+    ?(bitfields = []) ?(functions = []) library_name classes =
+  { library_name; classes; interfaces; records; enums; bitfields; functions }
+
 (* Tests: Class overrides *)
 
 let test_class_ignore () =
@@ -231,21 +247,8 @@ let test_class_ignore () =
       ~properties:[] ~signals:[]
   in
   let overrides =
-    {
-      (make_empty_overrides "Gtk") with
-      classes =
-        [
-          {
-            class_name = "Widget";
-            class_action = Some Ignore;
-            class_os = None;
-            constructors = [];
-            methods = [];
-            properties = [];
-            signals = [];
-          };
-        ];
-    }
+    make_overrides_with_classes "Gtk"
+      [ make_class_override ~action:(Some Ignore) "Widget" ]
   in
   let result =
     Gir_gen_lib.Override_apply.apply_overrides ~overrides ~classes:[ cls ]
@@ -266,21 +269,8 @@ let test_class_ignore_preserves_surviving () =
       ~properties:[] ~signals:[]
   in
   let overrides =
-    {
-      (make_empty_overrides "Gtk") with
-      classes =
-        [
-          {
-            class_name = "Widget";
-            class_action = Some Ignore;
-            class_os = None;
-            constructors = [];
-            methods = [];
-            properties = [];
-            signals = [];
-          };
-        ];
-    }
+    make_overrides_with_classes "Gtk"
+      [ make_class_override ~action:(Some Ignore) "Widget" ]
   in
   let result =
     Gir_gen_lib.Override_apply.apply_overrides ~overrides
@@ -302,22 +292,12 @@ let test_method_ignore () =
       ~constructors:[] ~properties:[] ~signals:[]
   in
   let overrides =
-    {
-      (make_empty_overrides "Gtk") with
-      classes =
-        [
-          {
-            class_name = "Widget";
-            class_action = None;
-            class_os = None;
-            constructors = [];
-            methods =
-              [ { component_name = "show"; action = Some Ignore; os = None } ];
-            properties = [];
-            signals = [];
-          };
-        ];
-    }
+    make_overrides_with_classes "Gtk"
+      [
+        make_class_override "Widget"
+          ~methods:
+            [ { component_name = "show"; action = Some Ignore; os = None } ];
+      ]
   in
   let result =
     Gir_gen_lib.Override_apply.apply_overrides ~overrides ~classes:[ cls ]
@@ -337,30 +317,20 @@ let test_method_version_override () =
       ~constructors:[] ~properties:[] ~signals:[]
   in
   let overrides =
-    {
-      (make_empty_overrides "Gtk") with
-      classes =
-        [
-          {
-            class_name = "Widget";
-            class_action = None;
-            class_os = None;
-            constructors = [];
-            methods =
-              [
-                {
-                  component_name = "show";
-                  action =
-                    Some
-                      (Set_version { vs_version = "4.10"; vs_namespace = None });
-                  os = None;
-                };
-              ];
-            properties = [];
-            signals = [];
-          };
-        ];
-    }
+    make_overrides_with_classes "Gtk"
+      [
+        make_class_override "Widget"
+          ~methods:
+            [
+              {
+                component_name = "show";
+                action =
+                  Some
+                    (Set_version { vs_version = "4.10"; vs_namespace = None });
+                os = None;
+              };
+            ];
+      ]
   in
   let result =
     Gir_gen_lib.Override_apply.apply_overrides ~overrides ~classes:[ cls ]
@@ -377,30 +347,20 @@ let test_method_version_replaces_existing () =
       ~constructors:[] ~properties:[] ~signals:[]
   in
   let overrides =
-    {
-      (make_empty_overrides "Gtk") with
-      classes =
-        [
-          {
-            class_name = "Widget";
-            class_action = None;
-            class_os = None;
-            constructors = [];
-            methods =
-              [
-                {
-                  component_name = "show";
-                  action =
-                    Some
-                      (Set_version { vs_version = "4.12"; vs_namespace = None });
-                  os = None;
-                };
-              ];
-            properties = [];
-            signals = [];
-          };
-        ];
-    }
+    make_overrides_with_classes "Gtk"
+      [
+        make_class_override "Widget"
+          ~methods:
+            [
+              {
+                component_name = "show";
+                action =
+                  Some
+                    (Set_version { vs_version = "4.12"; vs_namespace = None });
+                os = None;
+              };
+            ];
+      ]
   in
   let result =
     Gir_gen_lib.Override_apply.apply_overrides ~overrides ~classes:[ cls ]
@@ -417,22 +377,12 @@ let test_constructor_ignore () =
       ~properties:[] ~signals:[]
   in
   let overrides =
-    {
-      (make_empty_overrides "Gtk") with
-      classes =
-        [
-          {
-            class_name = "Widget";
-            class_action = None;
-            class_os = None;
-            constructors =
-              [ { component_name = "new"; action = Some Ignore; os = None } ];
-            methods = [];
-            properties = [];
-            signals = [];
-          };
-        ];
-    }
+    make_overrides_with_classes "Gtk"
+      [
+        make_class_override "Widget"
+          ~constructors:
+            [ { component_name = "new"; action = Some Ignore; os = None } ];
+      ]
   in
   let result =
     Gir_gen_lib.Override_apply.apply_overrides ~overrides ~classes:[ cls ]
@@ -450,30 +400,20 @@ let test_property_version_override () =
       ~signals:[]
   in
   let overrides =
-    {
-      (make_empty_overrides "Gtk") with
-      classes =
-        [
-          {
-            class_name = "Widget";
-            class_action = None;
-            class_os = None;
-            constructors = [];
-            methods = [];
-            properties =
-              [
-                {
-                  component_name = "sensitive";
-                  action =
-                    Some
-                      (Set_version { vs_version = "4.10"; vs_namespace = None });
-                  os = None;
-                };
-              ];
-            signals = [];
-          };
-        ];
-    }
+    make_overrides_with_classes "Gtk"
+      [
+        make_class_override "Widget"
+          ~properties:
+            [
+              {
+                component_name = "sensitive";
+                action =
+                  Some
+                    (Set_version { vs_version = "4.10"; vs_namespace = None });
+                os = None;
+              };
+            ];
+      ]
   in
   let result =
     Gir_gen_lib.Override_apply.apply_overrides ~overrides ~classes:[ cls ]
@@ -490,24 +430,12 @@ let test_signal_ignore () =
       ~signals:[ make_signal ~name:"destroy" ~version:None ]
   in
   let overrides =
-    {
-      (make_empty_overrides "Gtk") with
-      classes =
-        [
-          {
-            class_name = "Widget";
-            class_action = None;
-            class_os = None;
-            constructors = [];
-            methods = [];
-            properties = [];
-            signals =
-              [
-                { component_name = "destroy"; action = Some Ignore; os = None };
-              ];
-          };
-        ];
-    }
+    make_overrides_with_classes "Gtk"
+      [
+        make_class_override "Widget"
+          ~signals:
+            [ { component_name = "destroy"; action = Some Ignore; os = None } ];
+      ]
   in
   let result =
     Gir_gen_lib.Override_apply.apply_overrides ~overrides ~classes:[ cls ]
@@ -912,21 +840,8 @@ let test_empty_overrides_no_changes () =
 
 let test_unknown_class_warning () =
   let overrides =
-    {
-      (make_empty_overrides "Gtk") with
-      classes =
-        [
-          {
-            class_name = "NonExistent";
-            class_action = Some Ignore;
-            class_os = None;
-            constructors = [];
-            methods = [];
-            properties = [];
-            signals = [];
-          };
-        ];
-    }
+    make_overrides_with_classes "Gtk"
+      [ make_class_override ~action:(Some Ignore) "NonExistent" ]
   in
   let result =
     Gir_gen_lib.Override_apply.apply_overrides ~overrides ~classes:[]
@@ -946,28 +861,18 @@ let test_unknown_component_warning () =
       ~constructors:[] ~properties:[] ~signals:[]
   in
   let overrides =
-    {
-      (make_empty_overrides "Gtk") with
-      classes =
-        [
-          {
-            class_name = "Widget";
-            class_action = None;
-            class_os = None;
-            constructors = [];
-            methods =
-              [
-                {
-                  component_name = "nonexistent_method";
-                  action = Some Ignore;
-                  os = None;
-                };
-              ];
-            properties = [];
-            signals = [];
-          };
-        ];
-    }
+    make_overrides_with_classes "Gtk"
+      [
+        make_class_override "Widget"
+          ~methods:
+            [
+              {
+                component_name = "nonexistent_method";
+                action = Some Ignore;
+                os = None;
+              };
+            ];
+      ]
   in
   let result =
     Gir_gen_lib.Override_apply.apply_overrides ~overrides ~classes:[ cls ]
@@ -984,28 +889,18 @@ let test_class_ignore_no_component_warnings () =
       ~properties:[] ~signals:[]
   in
   let overrides =
-    {
-      (make_empty_overrides "Gtk") with
-      classes =
-        [
-          {
-            class_name = "Widget";
-            class_action = Some Ignore;
-            class_os = None;
-            constructors = [];
-            methods =
-              [
-                {
-                  component_name = "nonexistent";
-                  action = Some Ignore;
-                  os = None;
-                };
-              ];
-            properties = [];
-            signals = [];
-          };
-        ];
-    }
+    make_overrides_with_classes "Gtk"
+      [
+        make_class_override ~action:(Some Ignore) "Widget"
+          ~methods:
+            [
+              {
+                component_name = "nonexistent";
+                action = Some Ignore;
+                os = None;
+              };
+            ];
+      ]
   in
   let result =
     Gir_gen_lib.Override_apply.apply_overrides ~overrides ~classes:[ cls ]
@@ -1032,33 +927,13 @@ let test_combined_class_and_component () =
       ~constructors:[] ~properties:[] ~signals:[]
   in
   let overrides =
-    {
-      (make_empty_overrides "Gtk") with
-      classes =
-        [
-          {
-            class_name = "Widget";
-            class_action = Some Ignore;
-            class_os = None;
-            constructors = [];
-            methods = [];
-            properties = [];
-            signals = [];
-          };
-          {
-            class_name = "Button";
-            class_action = None;
-            class_os = None;
-            constructors = [];
-            methods =
-              [
-                { component_name = "activate"; action = Some Ignore; os = None };
-              ];
-            properties = [];
-            signals = [];
-          };
-        ];
-    }
+    make_overrides_with_classes "Gtk"
+      [
+        make_class_override ~action:(Some Ignore) "Widget";
+        make_class_override "Button"
+          ~methods:
+            [ { component_name = "activate"; action = Some Ignore; os = None } ];
+      ]
   in
   let result =
     Gir_gen_lib.Override_apply.apply_overrides ~overrides
