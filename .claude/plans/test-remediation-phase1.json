@@ -260,7 +260,7 @@
         {
           "stage": 7,
           "title": "1.7 Reorganise runner registration order in test_gir_gen.ml with comment separators",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "test_gir_gen.ml currently lists 55 test suite entries in a mixed order with no grouping. Reorganise to match the documented layer hierarchy and add comment separators between groups. This stage modifies only test_gir_gen.ml — no file moves, no dune changes. This stage depends on stages 1–6 having been applied so all module names are final.",
           "files_to_modify": [
