@@ -24,6 +24,8 @@
 #include "gio_decls.h"
 
 
+#ifdef __linux__
+
 CAMLexport CAMLprim value ml_g_desktop_app_info_lookup_get_default_for_uri_scheme(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -45,3 +47,18 @@ CAMLexport CAMLprim value ml_gio_desktop_app_info_lookup_from_gobject(value obj)
     g_object_ref(gobj);
     CAMLreturn(Val_GDesktopAppInfoLookup((GDesktopAppInfoLookup*)gobj));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_lookup_get_default_for_uri_scheme(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DesktopAppInfoLookup is only available on Linux");
+return Val_unit;
+}
+
+
+#endif /* __linux__ */

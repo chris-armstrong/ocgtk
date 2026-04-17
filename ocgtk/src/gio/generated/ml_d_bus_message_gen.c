@@ -62,6 +62,8 @@ gboolean result = g_dbus_message_to_gerror(GDBusMessage_val(self), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#ifdef __linux__
+
 CAMLexport CAMLprim value ml_g_dbus_message_set_unix_fd_list(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -69,6 +71,19 @@ CAMLparam2(self, arg1);
 g_dbus_message_set_unix_fd_list(GDBusMessage_val(self), Option_val(arg1, GUnixFDList_val, NULL));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_dbus_message_set_unix_fd_list(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DBusMessage is only available on Linux");
+return Val_unit;
+}
+
+#endif /* __linux__ */
 
 CAMLexport CAMLprim value ml_g_dbus_message_set_signature(value self, value arg1)
 {
@@ -222,6 +237,8 @@ g_dbus_message_lock(GDBusMessage_val(self));
 CAMLreturn(Val_unit);
 }
 
+#ifdef __linux__
+
 CAMLexport CAMLprim value ml_g_dbus_message_get_unix_fd_list(value self)
 {
 CAMLparam1(self);
@@ -230,6 +247,18 @@ GUnixFDList* result = g_dbus_message_get_unix_fd_list(GDBusMessage_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GUnixFDList));
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_dbus_message_get_unix_fd_list(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DBusMessage is only available on Linux");
+return Val_unit;
+}
+
+#endif /* __linux__ */
 
 CAMLexport CAMLprim value ml_g_dbus_message_get_signature(value self)
 {

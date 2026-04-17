@@ -10,6 +10,7 @@
   ;; Bindings are generated but wrapped in #ifdef __linux__ guards so they
   ;; raise caml_failwith at runtime on other platforms.
   (class DesktopAppInfo (os "linux"))
+  (interface DesktopAppInfoLookup (os "linux"))
   (interface FileDescriptorBased (os "linux"))
   (class UnixConnection (os "linux"))
   (class UnixCredentialsMessage (os "linux"))
@@ -21,6 +22,14 @@
   (record UnixMountPoint (os "linux"))
   (class UnixOutputStream (os "linux"))
   (class UnixSocketAddress (os "linux"))
+
+  ;; DBusMessage and DBusMethodInvocation methods that take GUnixFDList
+  ;; parameters are Linux-only because GUnixFDList is from gio-unix-2.0.
+  (class DBusMessage
+    (method set_unix_fd_list (os "linux"))
+    (method get_unix_fd_list (os "linux")))
+  (class DBusMethodInvocation
+    (method return_value_with_unix_fd_list (os "linux")))
 
 
   (enumeration DBusError

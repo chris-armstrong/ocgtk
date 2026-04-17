@@ -26,6 +26,8 @@
 #if GLIB_CHECK_VERSION(2,26,0)
 
 
+#ifdef __linux__
+
 #if GLIB_CHECK_VERSION(2,30,0)
 
 CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_value_with_unix_fd_list(value self, value arg1, value arg2)
@@ -48,6 +50,20 @@ caml_failwith("DBusMethodInvocation requires GLib >= 2.30");
 return Val_unit;
 }
 #endif
+
+#else
+
+CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_value_with_unix_fd_list(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("DBusMethodInvocation is only available on Linux");
+return Val_unit;
+}
+
+#endif /* __linux__ */
 
 CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_value(value self, value arg1)
 {

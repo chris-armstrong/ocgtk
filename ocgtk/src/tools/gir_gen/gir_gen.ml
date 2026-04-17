@@ -83,13 +83,36 @@ let entity_generator_by_entity_type =
               let ml_name =
                 Gir_gen_lib.Utils.ml_method_name ~class_name:entity.name meth
               in
-              C_stub_helpers.emit_with_member_guard ~ctx
-                ~version_namespace:meth.version_namespace
-                ~class_version:entity.version ~member_version:meth.version ~stub
-                buf ~fallback:(fun v ->
-                  C_stub_helpers.emit_fallback_method_stub ~ctx
-                    ~c_type:entity.c_type ~class_name:entity.name ~ml_name
-                    ~c_identifier:meth.c_identifier ~version:v meth)
+              (* For method-level OS guards, use a temp buffer so we can wrap *)
+              match meth.os with
+              | None ->
+                  C_stub_helpers.emit_with_member_guard ~ctx
+                    ~version_namespace:meth.version_namespace
+                    ~class_version:entity.version ~member_version:meth.version
+                    ~stub buf ~fallback:(fun v ->
+                      C_stub_helpers.emit_fallback_method_stub ~ctx
+                        ~c_type:entity.c_type ~class_name:entity.name ~ml_name
+                        ~c_identifier:meth.c_identifier ~version:v meth)
+              | Some os_val ->
+                  (* Generate version-guarded content into temp buffer *)
+                  let method_buf = Buffer.create 256 in
+                  C_stub_helpers.emit_with_member_guard ~ctx
+                    ~version_namespace:meth.version_namespace
+                    ~class_version:entity.version ~member_version:meth.version
+                    ~stub method_buf ~fallback:(fun v ->
+                      C_stub_helpers.emit_fallback_method_stub ~ctx
+                        ~c_type:entity.c_type ~class_name:entity.name ~ml_name
+                        ~c_identifier:meth.c_identifier ~version:v meth);
+                  let method_content = Buffer.contents method_buf in
+                  let os_fallback =
+                    Gir_gen_lib.Generate.C_stub_helpers
+                    .emit_os_fallback_method_stub ~ctx ~c_type:entity.c_type
+                      ~class_name:entity.name ~ml_name
+                      ~c_identifier:meth.c_identifier ~os:os_val meth
+                  in
+                  Gir_gen_lib.Generate.C_stub_helpers.emit_with_os_guard
+                    ~os:(Some os_val) ~failwith_stub:os_fallback
+                    ~stub:method_content buf
             with Failure msg ->
               eprintf "  Warning: skipping method %s: %s\n" meth.method_name msg)
         (List.rev entity.methods)

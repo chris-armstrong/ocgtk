@@ -749,11 +749,13 @@
 #endif /* Val_GDebugController */
 
 #endif
+#ifdef __linux__
 #ifndef Val_GDesktopAppInfoLookup
 #define GDesktopAppInfoLookup_val(val) ((GDesktopAppInfoLookup*)ml_gobject_ext_of_val(val))
 #define Val_GDesktopAppInfoLookup(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDesktopAppInfoLookup */
 
+#endif /* __linux__ */
 #ifndef Val_GDrive
 #define GDrive_val(val) ((GDrive*)ml_gobject_ext_of_val(val))
 #define Val_GDrive(obj) ((value)(ml_gobject_val_of_ext(obj)))

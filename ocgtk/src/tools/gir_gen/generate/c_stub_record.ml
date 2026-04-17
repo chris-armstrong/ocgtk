@@ -119,6 +119,10 @@ let generate_opaque_record_conversions ~namespace_prefix ~buf
     (record : gir_record) =
   (* Generate public conversion functions for opaque records *)
   Option.iter
+    (fun os ->
+      Buffer.add_string buf (C_stub_helpers.os_to_c_guard_open os ^ "\n"))
+    record.os;
+  Option.iter
     (emit_version_guard_open buf ~namespace:namespace_prefix)
     record.version;
   bprintf buf
@@ -143,11 +147,19 @@ let generate_opaque_record_conversions ~namespace_prefix ~buf
   bprintf buf "  return Val_some(Val_%s(ptr));\n" record.c_type;
   bprintf buf "}\n";
   Option.iter (fun _ -> Buffer.add_string buf "#endif\n") record.version;
+  Option.iter
+    (fun os ->
+      Buffer.add_string buf (C_stub_helpers.os_to_c_guard_close os ^ "\n"))
+    record.os;
   bprintf buf "\n"
 
 let generate_value_record_conversions ~namespace_prefix ~buf
     (record : gir_record) =
   (* Generate copy function for value-like records *)
+  Option.iter
+    (fun os ->
+      Buffer.add_string buf (C_stub_helpers.os_to_c_guard_open os ^ "\n"))
+    record.os;
   Option.iter
     (emit_version_guard_open buf ~namespace:namespace_prefix)
     record.version;
@@ -183,6 +195,10 @@ let generate_value_record_conversions ~namespace_prefix ~buf
       bprintf buf "  return ml_gir_record_val_ptr(copy);\n";
       bprintf buf "}\n");
   Option.iter (fun _ -> Buffer.add_string buf "#endif\n") record.version;
+  Option.iter
+    (fun os ->
+      Buffer.add_string buf (C_stub_helpers.os_to_c_guard_close os ^ "\n"))
+    record.os;
   bprintf buf "\n"
 
 let generate_record_converters ~namespace_prefix ~buf (record : gir_record) =
