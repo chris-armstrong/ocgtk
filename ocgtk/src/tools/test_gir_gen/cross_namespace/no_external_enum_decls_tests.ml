@@ -35,6 +35,7 @@ let create_context_with_external_enum () =
             c_identifier = "GTK_WRAP_NONE";
             member_doc = None;
             member_version = None;
+            member_os = None;
           };
           {
             member_name = "WORD";
@@ -42,11 +43,13 @@ let create_context_with_external_enum () =
             c_identifier = "GTK_WRAP_WORD";
             member_doc = None;
             member_version = None;
+            member_os = None;
           };
         ];
       functions = [];
       enum_doc = None;
       enum_version = None;
+      enum_os = None;
     }
   in
 
@@ -78,7 +81,7 @@ let test_header_does_not_contain_external_enum_decls () =
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
       ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
-      ~interfaces:[]
+      ~interfaces:[] ()
   in
 
   Helpers.log_generated_c_code "gtk_decls.h (Stage 2 test)" header_content;
@@ -104,6 +107,7 @@ let test_generate_forward_decls_only_local_enums () =
       functions = [];
       enum_doc = None;
       enum_version = None;
+      enum_os = None;
     }
   in
 
@@ -116,6 +120,7 @@ let test_generate_forward_decls_only_local_enums () =
       functions = [];
       enum_doc = None;
       enum_version = None;
+      enum_os = None;
     }
   in
 
@@ -154,7 +159,7 @@ let test_emit_enum_proto_not_exported () =
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
       ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
-      ~interfaces:[]
+      ~interfaces:[] ()
   in
 
   (* The external enum forward declarations are verified to not exist via

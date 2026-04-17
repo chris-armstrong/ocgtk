@@ -35,6 +35,7 @@ let create_context_with_external_bitfield () =
             flag_c_identifier = "GTK_STATE_FLAG_NORMAL";
             flag_doc = None;
             flag_version = None;
+            flag_os = None;
           };
           {
             flag_name = "ACTIVE";
@@ -42,10 +43,12 @@ let create_context_with_external_bitfield () =
             flag_c_identifier = "GTK_STATE_FLAG_ACTIVE";
             flag_doc = None;
             flag_version = None;
+            flag_os = None;
           };
         ];
       bitfield_doc = None;
       bitfield_version = None;
+      bitfield_os = None;
     }
   in
 
@@ -77,7 +80,7 @@ let test_header_does_not_contain_external_bitfield_decls () =
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
       ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
-      ~interfaces:[]
+      ~interfaces:[] ()
   in
 
   Helpers.log_generated_c_code "gtk_decls.h (Stage 3 test)" header_content;
@@ -102,6 +105,7 @@ let test_generate_forward_decls_only_local_bitfields () =
       flags = [];
       bitfield_doc = None;
       bitfield_version = None;
+      bitfield_os = None;
     }
   in
 
@@ -113,6 +117,7 @@ let test_generate_forward_decls_only_local_bitfields () =
       flags = [];
       bitfield_doc = None;
       bitfield_version = None;
+      bitfield_os = None;
     }
   in
 
@@ -152,7 +157,7 @@ let test_emit_bitfield_proto_not_exported () =
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
       ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
-      ~interfaces:[]
+      ~interfaces:[] ()
   in
 
   (* The external bitfield forward declarations are verified to not exist via

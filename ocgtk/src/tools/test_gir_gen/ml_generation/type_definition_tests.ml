@@ -84,6 +84,7 @@ let test_constructor_external_declaration () =
       ctor_introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -156,6 +157,7 @@ let test_method_with_nullable_param () =
       introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -212,6 +214,7 @@ let test_method_with_return_value () =
       introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -263,6 +266,7 @@ let test_nullable_return_value () =
       introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 

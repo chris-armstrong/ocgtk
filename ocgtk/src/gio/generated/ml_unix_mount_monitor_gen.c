@@ -11,16 +11,20 @@
 #include <caml/custom.h>
 #include "wrappers.h"
 
+#include <gio/gio.h>
+#ifdef __linux__
 #include <gio/gunixoutputstream.h>
 #include <gio/gunixmounts.h>
 #include <gio/gunixinputstream.h>
 #include <gio/gunixfdmessage.h>
-#include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
 #include <gio/gdesktopappinfo.h>
+#endif /* __linux__ */
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+
+#ifdef __linux__
 
 CAMLexport CAMLprim value ml_g_unix_mount_monitor_new(value unit)
 {
@@ -52,3 +56,27 @@ caml_failwith("UnixMountMonitor requires GLib >= 2.18");
 return Val_unit;
 }
 #endif
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_unix_mount_monitor_new(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("UnixMountMonitor is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_mount_monitor_set_rate_limit(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("UnixMountMonitor is only available on Linux");
+return Val_unit;
+}
+
+
+#endif /* __linux__ */

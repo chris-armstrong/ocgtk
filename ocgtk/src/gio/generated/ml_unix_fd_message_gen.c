@@ -11,16 +11,20 @@
 #include <caml/custom.h>
 #include "wrappers.h"
 
+#include <gio/gio.h>
+#ifdef __linux__
 #include <gio/gunixoutputstream.h>
 #include <gio/gunixmounts.h>
 #include <gio/gunixinputstream.h>
 #include <gio/gunixfdmessage.h>
-#include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
 #include <gio/gdesktopappinfo.h>
+#endif /* __linux__ */
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+
+#ifdef __linux__
 
 #if GLIB_CHECK_VERSION(2,22,0)
 
@@ -143,3 +147,54 @@ caml_failwith("UnixFDMessage requires GLib >= 2.22");
 return Val_unit;
 }
 #endif
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_unix_fd_message_new(value unit)
+{
+CAMLparam1(unit);
+(void)unit;
+caml_failwith("UnixFDMessage is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_fd_message_new_with_fd_list(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("UnixFDMessage is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_fd_message_append_fd(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("UnixFDMessage is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_fd_message_get_fd_list(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixFDMessage is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_fd_message_steal_fds(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixFDMessage is only available on Linux");
+return Val_unit;
+}
+
+
+#endif /* __linux__ */

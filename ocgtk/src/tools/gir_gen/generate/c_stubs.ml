@@ -43,7 +43,7 @@ let generate_dependency_includes dependency_namespaces =
 
 (* Generate common header file with forward declarations for enum/bitfield converters *)
 let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
-    ~records =
+    ~records ?(header_overrides = []) () =
   let buf = Buffer.create 4096 in
   let ns_lower = String.lowercase_ascii ctx.namespace.namespace_name in
   Buffer.add_string buf "/* GENERATED CODE - DO NOT EDIT */\n";
@@ -54,11 +54,58 @@ let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
   bprintf buf "#ifndef _%s_decls_h_\n" ns_lower;
   bprintf buf "#define _%s_decls_h_\n" ns_lower;
   Buffer.add_string buf "\n";
-  (* Include all C headers from the repository (parsed from GIR) *)
+  (* Include C headers from the repository (parsed from GIR).
+     Headers with an (os ...) override in the library's override file are
+     wrapped in the appropriate #ifdef guard (e.g. #ifdef __linux__). *)
+  let find_header_os path =
+    List.find_map
+      ~f:(fun { Override_types.header_path = hp; header_os } ->
+        if String.equal hp path then header_os else None)
+      header_overrides
+  in
+  (* Group headers by their OS guard (None = unconditional) *)
+  let unconditional, conditional =
+    List.partition
+      ~f:(fun h -> find_header_os h = None)
+      ctx.repository.repository_c_includes
+  in
   List.iter
     ~f:(fun c_include ->
       Buffer.add_string buf (sprintf "#include <%s>\n" c_include))
-    ctx.repository.repository_c_includes;
+    unconditional;
+  (* Emit conditional headers grouped by OS guard *)
+  let os_groups =
+    List.filter_map
+      ~f:(fun h ->
+        match find_header_os h with Some os -> Some (os, h) | None -> None)
+      conditional
+  in
+  (* Collect unique OS values in order *)
+  let seen_os = Hashtbl.create 4 in
+  let ordered_os =
+    List.filter_map
+      ~f:(fun (os, _) ->
+        if Hashtbl.mem seen_os os then None
+        else begin
+          Hashtbl.add seen_os os ();
+          Some os
+        end)
+      os_groups
+  in
+  List.iter
+    ~f:(fun os ->
+      let headers_for_os =
+        List.filter_map
+          ~f:(fun (g_os, h) -> if String.equal g_os os then Some h else None)
+          os_groups
+      in
+      Buffer.add_string buf (C_stub_helpers.os_to_c_guard_open os ^ "\n");
+      List.iter
+        ~f:(fun c_include ->
+          Buffer.add_string buf (sprintf "#include <%s>\n" c_include))
+        headers_for_os;
+      Buffer.add_string buf (C_stub_helpers.os_to_c_guard_close os ^ "\n"))
+    ordered_os;
   Buffer.add_string buf "#include <caml/mlvalues.h>\n";
   Buffer.add_string buf "\n";
 

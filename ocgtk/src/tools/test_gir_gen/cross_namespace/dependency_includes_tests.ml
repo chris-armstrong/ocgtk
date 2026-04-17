@@ -79,7 +79,7 @@ let test_header_includes_dependency_headers () =
   (* Generate the header file *)
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
+      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
   in
 
   Helpers.log_generated_c_code "gtk_decls.h (Stage 4 dependency includes test)"
@@ -103,7 +103,7 @@ let test_dependency_headers_sorted_alphabetically () =
   (* Generate the header file *)
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
+      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
   in
 
   (* Find positions of includes in the output using AST-based validation *)
@@ -148,7 +148,7 @@ let test_include_uses_lowercase_namespace () =
   (* Generate the header file *)
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
+      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
   in
 
   (* Verify lowercase is used using AST-based validation *)
@@ -201,7 +201,7 @@ let test_no_includes_when_no_dependencies () =
   (* Generate the header file *)
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
+      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
   in
 
   (* Verify no cross-namespace dependency includes are present.

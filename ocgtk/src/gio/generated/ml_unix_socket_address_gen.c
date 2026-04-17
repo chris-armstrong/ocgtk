@@ -11,16 +11,20 @@
 #include <caml/custom.h>
 #include "wrappers.h"
 
+#include <gio/gio.h>
+#ifdef __linux__
 #include <gio/gunixoutputstream.h>
 #include <gio/gunixmounts.h>
 #include <gio/gunixinputstream.h>
 #include <gio/gunixfdmessage.h>
-#include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
 #include <gio/gdesktopappinfo.h>
+#endif /* __linux__ */
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+
+#ifdef __linux__
 
 #if GLIB_CHECK_VERSION(2,22,0)
 
@@ -189,3 +193,83 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_bool(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_unix_socket_address_new(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("UnixSocketAddress is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_socket_address_new_abstract(value arg1, value arg2)
+{
+CAMLparam2(arg1, arg2);
+(void)arg1;
+(void)arg2;
+caml_failwith("UnixSocketAddress is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_socket_address_new_with_type(value arg1, value arg2, value arg3)
+{
+CAMLparam3(arg1, arg2, arg3);
+(void)arg1;
+(void)arg2;
+(void)arg3;
+caml_failwith("UnixSocketAddress is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_socket_address_get_address_type(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixSocketAddress is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_socket_address_get_is_abstract(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixSocketAddress is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_socket_address_get_path(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixSocketAddress is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_socket_address_get_path_len(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixSocketAddress is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_socket_address_get_abstract(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixSocketAddress is only available on Linux");
+return Val_unit;
+}
+
+
+#endif /* __linux__ */

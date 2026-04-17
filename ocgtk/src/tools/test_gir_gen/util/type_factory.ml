@@ -49,6 +49,7 @@ let make_gir_method ~method_name ~c_identifier ~return_type ?parameters ?doc
     set_property;
     version;
     version_namespace = None;
+    os = None;
   }
 
 let make_gir_function ~function_name ~c_identifier ~return_type ?parameters ?doc
@@ -63,6 +64,7 @@ let make_gir_function ~function_name ~c_identifier ~return_type ?parameters ?doc
     introspectable = Option.value introspectable ~default:true;
     version;
     version_namespace = None;
+    os = None;
   }
 
 let make_gir_signal ~signal_name ~return_type ?(sig_parameters = []) ?doc
@@ -74,6 +76,7 @@ let make_gir_signal ~signal_name ~return_type ?(sig_parameters = []) ?doc
     doc;
     version;
     version_namespace = None;
+    os = None;
   }
 
 let make_gir_constructor ~ctor_name ~c_identifier ?(ctor_parameters = [])
@@ -87,6 +90,7 @@ let make_gir_constructor ~ctor_name ~c_identifier ?(ctor_parameters = [])
     ctor_introspectable = Option.value ctor_introspectable ~default:true;
     version;
     version_namespace = None;
+    os = None;
   }
 
 let make_gir_property ~prop_name ~prop_type ?(readable = true)
@@ -100,6 +104,7 @@ let make_gir_property ~prop_name ~prop_type ?(readable = true)
     prop_doc;
     version;
     version_namespace = None;
+    os = None;
   }
 
 let make_gir_record_field ~field_name ?field_type ?(readable = true)
@@ -111,6 +116,7 @@ let make_gir_record_field ~field_name ?field_type ?(readable = true)
     writable;
     field_doc;
     field_version = None;
+    field_os = None;
   }
 
 let make_gir_record ?(record_name = "TestRecord") ?(c_type = "TestRecord")
@@ -134,24 +140,54 @@ let make_gir_record ?(record_name = "TestRecord") ?(c_type = "TestRecord")
     functions;
     record_doc;
     version;
+    os = None;
   }
 
 let make_gir_enum_member ?(member_name = "NONE") ?(member_value = 0)
     ?(c_identifier = "TEST_NONE") ?member_doc () =
-  { member_name; member_value; c_identifier; member_doc; member_version = None }
+  {
+    member_name;
+    member_value;
+    c_identifier;
+    member_doc;
+    member_version = None;
+    member_os = None;
+  }
 
 let make_gir_enum ?(enum_name = "TestEnum") ?(enum_c_type = "TestEnum")
     ?(members = []) ?(functions = []) ?enum_doc ?enum_version () =
-  { enum_name; enum_c_type; members; functions; enum_doc; enum_version }
+  {
+    enum_name;
+    enum_c_type;
+    members;
+    functions;
+    enum_doc;
+    enum_version;
+    enum_os = None;
+  }
 
 let make_gir_bitfield_member ?(flag_name = "NONE") ?(flag_value = 0)
     ?(flag_c_identifier = "TEST_NONE") ?flag_doc () =
-  { flag_name; flag_value; flag_c_identifier; flag_doc; flag_version = None }
+  {
+    flag_name;
+    flag_value;
+    flag_c_identifier;
+    flag_doc;
+    flag_version = None;
+    flag_os = None;
+  }
 
 let make_gir_bitfield ?(bitfield_name = "TestFlags")
     ?(bitfield_c_type = "TestFlags") ?(flags = []) ?bitfield_doc
     ?bitfield_version () =
-  { bitfield_name; bitfield_c_type; flags; bitfield_doc; bitfield_version }
+  {
+    bitfield_name;
+    bitfield_c_type;
+    flags;
+    bitfield_doc;
+    bitfield_version;
+    bitfield_os = None;
+  }
 
 let make_gir_class ?(class_name = "TestClass") ?(c_type = "TestClass") ?parent
     ?(implements = []) ?(introspectable = true) ?(constructors = [])
@@ -168,6 +204,7 @@ let make_gir_class ?(class_name = "TestClass") ?(c_type = "TestClass") ?parent
     signals;
     class_doc;
     version;
+    os = None;
   }
 
 let make_gir_interface ?(interface_name = "TestInterface")
@@ -188,12 +225,13 @@ let make_gir_interface ?(interface_name = "TestInterface")
     signals;
     interface_doc;
     version;
+    os = None;
   }
 
 let make_entity ?(kind = Class (make_gir_class ())) ?(name = "TestEntity")
     ?(c_type = "TestEntity") ?doc ?parent ?(implements = [])
     ?(constructors = []) ?(methods = []) ?(properties = []) ?(signals = [])
-    ?version () =
+    ?version ?(os = None) () =
   {
     kind;
     name;
@@ -206,6 +244,7 @@ let make_entity ?(kind = Class (make_gir_class ())) ?(name = "TestEntity")
     properties;
     signals;
     version;
+    os;
   }
 
 let make_ocaml_class ?(class_module = "Test") ?(class_type = "test")

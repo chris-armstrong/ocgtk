@@ -127,7 +127,7 @@ let test_cast_macro_gtk_orientable () =
 (* 2. Real GIR file: GtkEditable glib_type_name round-trips through utility  *)
 (* ========================================================================= *)
 
-let real_gir_file = "/usr/share/gir-1.0/Gtk-4.0.gir"
+let real_gir_file = Filename.concat (Helpers.gir_data_dir ()) "Gtk-4.0.gir"
 
 let test_editable_gtype_macro_from_real_gir () =
   let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records =

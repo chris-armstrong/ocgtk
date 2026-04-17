@@ -211,6 +211,27 @@ let run_gir_gen ?filter_file gir_file output_dir =
 let ensure_output_dir dir =
   try Unix.mkdir dir 0o755 with Unix.Unix_error _ -> ()
 
+(** Return the path to the bundled GIR data directory. Checks the [GIR_DATA_DIR]
+    environment variable first, then walks up from the build tree to find
+    [ocgtk/gir/]. Falls back to [/usr/share/gir-1.0] if not found. Set by the
+    dune test stanza via [(env GIR_DATA_DIR ...)]. *)
+let gir_data_dir () =
+  match Sys.getenv_opt "GIR_DATA_DIR" with
+  | Some d -> d
+  | None ->
+      let rec find_root dir =
+        let candidate = Filename.concat dir "gir" in
+        if
+          try (Unix.stat candidate).Unix.st_kind = Unix.S_DIR
+          with Unix.Unix_error _ -> false
+        then candidate
+        else
+          let parent = Filename.dirname dir in
+          if String.equal parent dir then "/usr/share/gir-1.0"
+          else find_root parent
+      in
+      find_root (Sys.getcwd ())
+
 (* ========================================================================= *)
 (* Test Context Creation *)
 (* ========================================================================= *)
@@ -250,6 +271,7 @@ let create_test_context () =
       signals = [];
       class_doc = None;
       version = None;
+      os = None;
     }
   in
 
@@ -267,6 +289,7 @@ let create_test_context () =
       signals = [];
       class_doc = None;
       version = None;
+      os = None;
     }
   in
 
@@ -284,6 +307,7 @@ let create_test_context () =
       signals = [];
       class_doc = None;
       version = None;
+      os = None;
     }
   in
 
@@ -301,6 +325,7 @@ let create_test_context () =
       signals = [];
       class_doc = None;
       version = None;
+      os = None;
     }
   in
 
@@ -312,6 +337,7 @@ let create_test_context () =
       members = [];
       enum_doc = None;
       enum_version = None;
+      enum_os = None;
       functions = [];
     }
   in
@@ -334,6 +360,7 @@ let create_test_context () =
       functions = [];
       record_doc = None;
       version = None;
+      os = None;
     }
   in
 
@@ -355,6 +382,7 @@ let create_test_context () =
       functions = [];
       record_doc = None;
       version = None;
+      os = None;
     }
   in
 

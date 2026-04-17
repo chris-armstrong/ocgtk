@@ -11,16 +11,20 @@
 #include <caml/custom.h>
 #include "wrappers.h"
 
+#include <gio/gio.h>
+#ifdef __linux__
 #include <gio/gunixoutputstream.h>
 #include <gio/gunixmounts.h>
 #include <gio/gunixinputstream.h>
 #include <gio/gunixfdmessage.h>
-#include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
 #include <gio/gdesktopappinfo.h>
+#endif /* __linux__ */
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+
+#ifdef __linux__
 #if GLIB_CHECK_VERSION(2,22,0)
 
 
@@ -199,3 +203,69 @@ return Val_unit;
 
 
 #endif
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_unix_connection_receive_credentials(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("UnixConnection is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_connection_receive_credentials_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("UnixConnection is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_connection_receive_fd(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("UnixConnection is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_connection_send_credentials(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("UnixConnection is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_connection_send_credentials_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("UnixConnection is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_connection_send_fd(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("UnixConnection is only available on Linux");
+return Val_unit;
+}
+
+
+#endif /* __linux__ */

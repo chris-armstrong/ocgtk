@@ -11,16 +11,20 @@
 #include <caml/custom.h>
 #include "wrappers.h"
 
+#include <gio/gio.h>
+#ifdef __linux__
 #include <gio/gunixoutputstream.h>
 #include <gio/gunixmounts.h>
 #include <gio/gunixinputstream.h>
 #include <gio/gunixfdmessage.h>
-#include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
 #include <gio/gdesktopappinfo.h>
+#endif /* __linux__ */
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+
+#ifdef __linux__
 
 CAMLexport CAMLprim value ml_g_desktop_app_info_new(value arg1)
 {
@@ -374,3 +378,179 @@ caml_failwith("DesktopAppInfo requires GLib >= 2.38");
 return Val_unit;
 }
 #endif
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_new(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_new_from_filename(value arg1)
+{
+CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_action_name(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_boolean(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_categories(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_filename(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_generic_name(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_is_hidden(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_keywords(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_locale_string(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_nodisplay(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_show_in(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_startup_wm_class(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_string(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_get_string_list(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_has_key(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_launch_action(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_desktop_app_info_list_actions(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DesktopAppInfo is only available on Linux");
+return Val_unit;
+}
+
+
+#endif /* __linux__ */

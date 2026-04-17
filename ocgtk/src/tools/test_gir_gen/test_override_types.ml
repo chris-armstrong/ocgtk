@@ -27,14 +27,16 @@ let test_override_action_eq () =
     (equal_override_action Ignore (Set_version v410))
 
 let test_component_override_construction () =
-  let c = { component_name = "foo"; action = Ignore } in
+  let c = { component_name = "foo"; action = Some Ignore; os = None } in
   Alcotest.(check string) "name" "foo" c.component_name;
-  Alcotest.(check bool) "action" true (equal_override_action c.action Ignore)
+  Alcotest.(check bool)
+    "action" true
+    (Option.equal equal_override_action c.action (Some Ignore))
 
 let test_component_override_eq () =
-  let c1 = { component_name = "foo"; action = Ignore } in
-  let c2 = { component_name = "foo"; action = Ignore } in
-  let c3 = { component_name = "bar"; action = Ignore } in
+  let c1 = { component_name = "foo"; action = Some Ignore; os = None } in
+  let c2 = { component_name = "foo"; action = Some Ignore; os = None } in
+  let c3 = { component_name = "bar"; action = Some Ignore; os = None } in
   Alcotest.(check bool) "eq" true (equal_component_override c1 c2);
   Alcotest.(check bool) "neq" false (equal_component_override c1 c3)
 
@@ -43,8 +45,9 @@ let test_class_override_construction () =
     {
       class_name = "Widget";
       class_action = Some Ignore;
+      class_os = None;
       constructors = [];
-      methods = [ { component_name = "foo"; action = Ignore } ];
+      methods = [ { component_name = "foo"; action = Some Ignore; os = None } ];
       properties = [];
       signals = [];
     }
@@ -58,12 +61,15 @@ let test_interface_override_construction () =
     {
       interface_name = "Actionable";
       interface_action = None;
+      interface_os = None;
       methods = [];
       properties =
         [
           {
             component_name = "action_name";
-            action = Set_version { vs_version = "4.12"; vs_namespace = None };
+            action =
+              Some (Set_version { vs_version = "4.12"; vs_namespace = None });
+            os = None;
           };
         ];
       signals = [];
@@ -77,7 +83,9 @@ let test_record_override_construction () =
     {
       record_name = "TextIter";
       record_action = None;
-      fields = [ { component_name = "user_data"; action = Ignore } ];
+      record_os = None;
+      fields =
+        [ { component_name = "user_data"; action = Some Ignore; os = None } ];
       constructors = [];
       methods = [];
       functions = [];
@@ -91,7 +99,8 @@ let test_enum_override_construction () =
     {
       enum_name = "RGBA";
       enum_action = None;
-      members = [ { component_name = "RED"; action = Ignore } ];
+      enum_os = None;
+      members = [ { component_name = "RED"; action = Some Ignore; os = None } ];
       functions = [];
     }
   in
@@ -104,7 +113,8 @@ let test_bitfield_override_construction () =
       bitfield_name = "StateFlags";
       bitfield_action =
         Some (Set_version { vs_version = "4.10"; vs_namespace = None });
-      flags = [ { component_name = "ACTIVE"; action = Ignore } ];
+      bitfield_os = None;
+      flags = [ { component_name = "ACTIVE"; action = Some Ignore; os = None } ];
     }
   in
   Alcotest.(check string) "name" "StateFlags" b.bitfield_name;
@@ -119,7 +129,9 @@ let test_library_overrides_construction () =
       records = [];
       enums = [];
       bitfields = [];
-      functions = [ { component_name = "gtk_show_uri"; action = Ignore } ];
+      functions =
+        [ { component_name = "gtk_show_uri"; action = Some Ignore; os = None } ];
+      headers = [];
     }
   in
   Alcotest.(check string) "library" "Gtk" ov.library_name;
@@ -134,6 +146,7 @@ let test_library_overrides_eq () =
           {
             class_name = "Widget";
             class_action = Some Ignore;
+            class_os = None;
             constructors = [];
             methods = [];
             properties = [];
@@ -145,6 +158,7 @@ let test_library_overrides_eq () =
       enums = [];
       bitfields = [];
       functions = [];
+      headers = [];
     }
   in
   let ov2 = ov1 in

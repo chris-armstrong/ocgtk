@@ -72,10 +72,34 @@ module Code_gen = struct
     if String.equal (String.lowercase_ascii ctx.namespace.namespace_name) "gtk"
     then Buffer.add_string buf "#include \"converters.h\"\n";
     Buffer.add_string buf "\n";
+    (* Linux-only GIO headers are guarded so the stub file compiles on macOS/FreeBSD. *)
+    let is_linux_only_header h =
+      let starts_with prefix s =
+        let n = String.length prefix in
+        String.length s >= n && String.equal (String.sub s ~pos:0 ~len:n) prefix
+      in
+      starts_with "gio/gunix" h
+      || String.equal h "gio/gdesktopappinfo.h"
+      || String.equal h "gio/gfiledescriptorbased.h"
+    in
+    let regular_includes, linux_only_includes =
+      List.partition
+        ~f:(fun h -> not (is_linux_only_header h))
+        ctx.repository.repository_c_includes
+    in
     List.iter
       ~f:(fun c_include ->
         Buffer.add_string buf (sprintf "#include <%s>\n" c_include))
-      ctx.repository.repository_c_includes;
+      regular_includes;
+    (match linux_only_includes with
+    | [] -> ()
+    | _ ->
+        Buffer.add_string buf "#ifdef __linux__\n";
+        List.iter
+          ~f:(fun c_include ->
+            Buffer.add_string buf (sprintf "#include <%s>\n" c_include))
+          linux_only_includes;
+        Buffer.add_string buf "#endif /* __linux__ */\n");
 
     (* Include library-specific header for type conversions and forward declarations *)
     Buffer.add_string buf
@@ -217,18 +241,9 @@ module Forward_decl = struct
 end
 
 (* Re-export commonly used functions at top level for backward compatibility *)
-(* Define the type directly so record fields are accessible *)
-type property_gvalue_info = {
-  base_type : string;
-  base_lower : string;
-  has_pointer : bool;
-  pointer_like : bool;
-  record_info : (Types.gir_record * bool * bool) option;
-  class_info : Types.gir_class option;
-  is_enum : bool;
-  is_bitfield : bool;
-  stack_allocated : bool;
-}
+(* Type alias — shares the definition with Type_analysis, no conversion needed *)
+type property_gvalue_info =
+  C_stub_type_analysis.Type_analysis.property_gvalue_info
 
 (* Accumulator for parameter processing - kept at top level for record field access *)
 type param_acc = {
@@ -238,22 +253,8 @@ type param_acc = {
   cleanups : string list;
 }
 
-(* Convert from internal type to public type *)
 let analyze_property_type ~ctx (gir_type : Types.gir_type) =
-  let internal =
-    C_stub_type_analysis.Type_analysis.analyze_property_type ~ctx gir_type
-  in
-  {
-    base_type = internal.base_type;
-    base_lower = internal.base_lower;
-    has_pointer = internal.has_pointer;
-    pointer_like = internal.pointer_like;
-    record_info = internal.record_info;
-    class_info = internal.class_info;
-    is_enum = internal.is_enum;
-    is_bitfield = internal.is_bitfield;
-    stack_allocated = internal.stack_allocated;
-  }
+  C_stub_type_analysis.Type_analysis.analyze_property_type ~ctx gir_type
 
 let is_copy_method = C_stub_type_analysis.Type_analysis.is_copy_method
 let is_free_method = C_stub_type_analysis.Type_analysis.is_free_method
@@ -265,42 +266,15 @@ let generate_array_ml_to_c = C_stub_array_conv.Array_conv.generate_array_ml_to_c
 let generate_array_c_to_ml = C_stub_array_conv.Array_conv.generate_array_c_to_ml
 let is_string_array = Filtering.is_string_array
 
-(* Convert prop_info from internal type to public type and call GValue function *)
-let generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name
-    ~prop_info:public_prop_info =
-  let internal_prop_info =
-    {
-      C_stub_type_analysis.Type_analysis.base_type = public_prop_info.base_type;
-      base_lower = public_prop_info.base_lower;
-      has_pointer = public_prop_info.has_pointer;
-      pointer_like = public_prop_info.pointer_like;
-      record_info = public_prop_info.record_info;
-      class_info = public_prop_info.class_info;
-      is_enum = public_prop_info.is_enum;
-      is_bitfield = public_prop_info.is_bitfield;
-      stack_allocated = public_prop_info.stack_allocated;
-    }
-  in
+(* No conversion needed — property_gvalue_info is now a type alias *)
+let generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name ~prop_info =
   C_stub_gvalue.GValue.generate_gvalue_getter_assignment ~ml_name ~prop
-    ~c_type_name ~prop_info:internal_prop_info
+    ~c_type_name ~prop_info
 
 (* Generate setter without the unused prop parameter *)
-let generate_gvalue_setter_assignment ~ml_name ~prop_info:public_prop_info =
-  let internal_prop_info =
-    {
-      C_stub_type_analysis.Type_analysis.base_type = public_prop_info.base_type;
-      base_lower = public_prop_info.base_lower;
-      has_pointer = public_prop_info.has_pointer;
-      pointer_like = public_prop_info.pointer_like;
-      record_info = public_prop_info.record_info;
-      class_info = public_prop_info.class_info;
-      is_enum = public_prop_info.is_enum;
-      is_bitfield = public_prop_info.is_bitfield;
-      stack_allocated = public_prop_info.stack_allocated;
-    }
-  in
+let generate_gvalue_setter_assignment ~ml_name ~prop_info =
   C_stub_gvalue.GValue.generate_gvalue_setter_assignment ~ml_name ~prop:()
-    ~prop_info:internal_prop_info
+    ~prop_info
 
 let generate_c_file_header = Code_gen.generate_c_file_header
 let base_c_type_of = Code_gen.base_c_type_of
@@ -375,6 +349,48 @@ let generate_forward_decl_section = Forward_decl.generate_section
 
 (* {1 Version Guard Support} *)
 
+(** Build a CAMLprim failwith stub. [params] and [param_names] must correspond.
+    [param_count_for_caml] controls how many names appear in CAMLparam. *)
+let emit_failwith_stub_core ~ml_name ~params ~param_names ~param_count_for_caml
+    ~failwith_msg =
+  let param_names_for_caml = CCList.take param_count_for_caml param_names in
+  let buf = Buffer.create 256 in
+  bprintf buf "\nCAMLexport CAMLprim value %s(%s)\n{\n" ml_name
+    (String.concat ~sep:", " params);
+  bprintf buf "CAMLparam%d(%s);\n" param_count_for_caml
+    (String.concat ~sep:", " param_names_for_caml);
+  List.iter ~f:(fun pname -> bprintf buf "(void)%s;\n" pname) param_names;
+  bprintf buf "caml_failwith(\"%s\");\n" failwith_msg;
+  bprintf buf "return Val_unit;\n}\n";
+  Buffer.contents buf
+
+(** Build params and param_names for a constructor with [n] parameters. *)
+let make_constructor_params param_count =
+  let param_names =
+    match param_count with
+    | 0 -> [ "unit" ]
+    | n -> List.init ~len:n ~f:(fun i -> sprintf "arg%d" (i + 1))
+  in
+  let params =
+    match param_count with
+    | 0 -> [ "value unit" ]
+    | n -> List.init ~len:n ~f:(fun i -> sprintf "value arg%d" (i + 1))
+  in
+  (params, param_names)
+
+(** Build params and param_names for a method with [n] in-parameters plus self.
+*)
+let make_method_params in_param_count =
+  let param_names =
+    "self"
+    :: List.init ~len:in_param_count ~f:(fun i -> sprintf "arg%d" (i + 1))
+  in
+  let params =
+    "value self"
+    :: List.init ~len:in_param_count ~f:(fun i -> sprintf "value arg%d" (i + 1))
+  in
+  (params, param_names)
+
 (** Get the display name for a namespace for use in failwith messages *)
 let namespace_display_name namespace_name =
   match namespace_name with
@@ -399,40 +415,15 @@ let format_version_for_message (version : Version_guard.version) =
 let emit_fallback_constructor_stub ~ctx ~c_type:_ ~class_name ~ml_name
     ~c_identifier:_ ~version (ctor : gir_constructor) =
   let param_count = List.length ctor.ctor_parameters in
-  let param_names =
-    match param_count with
-    | 0 -> [ "unit" ]
-    | n -> List.init ~len:n ~f:(fun i -> sprintf "arg%d" (i + 1))
-  in
-  let params =
-    match param_count with
-    | 0 -> [ "value unit" ]
-    | n -> List.init ~len:n ~f:(fun i -> sprintf "value arg%d" (i + 1))
-  in
-
-  (* Emit the function signature *)
-  let buf = Buffer.create 256 in
-  bprintf buf "\nCAMLexport CAMLprim value %s(%s)\n{\n" ml_name
-    (String.concat ~sep:", " params);
-
-  (* CAMLparam declaration *)
+  let params, param_names = make_constructor_params param_count in
   let param_count_for_caml = if param_count = 0 then 1 else param_count in
-  bprintf buf "CAMLparam%d(%s);\n" param_count_for_caml
-    (String.concat ~sep:", " param_names);
-
-  (* Suppress unused parameter warnings *)
-  List.iter ~f:(fun pname -> bprintf buf "(void)%s;\n" pname) param_names;
-
-  (* Build failwith message *)
   let display_ns = namespace_display_name ctx.namespace.namespace_name in
   let failwith_msg =
     sprintf "%s requires %s >= %s" class_name display_ns
       (format_version_for_message version)
   in
-  bprintf buf "caml_failwith(\"%s\");\n" failwith_msg;
-  bprintf buf "return Val_unit;\n}\n";
-
-  Buffer.contents buf
+  emit_failwith_stub_core ~ml_name ~params ~param_names ~param_count_for_caml
+    ~failwith_msg
 
 (** Emit a class-level fallback stub for a method. *)
 let emit_fallback_method_stub ~ctx ~c_type:_ ~class_name ~ml_name
@@ -443,77 +434,38 @@ let emit_fallback_method_stub ~ctx ~c_type:_ ~class_name ~ml_name
       meth.parameters
   in
   let param_count = 1 + List.length in_params in
-  let param_names =
-    "self"
-    :: List.init ~len:(List.length in_params) ~f:(fun i ->
-        sprintf "arg%d" (i + 1))
-  in
-  let params =
-    "value self"
-    :: List.init ~len:(List.length in_params) ~f:(fun i ->
-        sprintf "value arg%d" (i + 1))
-  in
-
-  let buf = Buffer.create 256 in
-  bprintf buf "\nCAMLexport CAMLprim value %s(%s)\n{\n" ml_name
-    (String.concat ~sep:", " params);
-
+  let params, param_names = make_method_params (List.length in_params) in
   let param_count_for_caml = if param_count = 0 then 1 else min param_count 5 in
-  let param_names_for_caml = CCList.take param_count_for_caml param_names in
-  bprintf buf "CAMLparam%d(%s);\n" param_count_for_caml
-    (String.concat ~sep:", " param_names_for_caml);
-
-  (* Suppress unused parameter warnings *)
-  List.iter ~f:(fun pname -> bprintf buf "(void)%s;\n" pname) param_names;
-
-  (* Build failwith message *)
   let display_ns = namespace_display_name ctx.namespace.namespace_name in
   let failwith_msg =
     sprintf "%s requires %s >= %s" class_name display_ns
       (format_version_for_message version)
   in
-  bprintf buf "caml_failwith(\"%s\");\n" failwith_msg;
-  bprintf buf "return Val_unit;\n}\n";
-
-  Buffer.contents buf
+  emit_failwith_stub_core ~ml_name ~params ~param_names ~param_count_for_caml
+    ~failwith_msg
 
 (** Emit a class-level fallback stub for a property getter. *)
 let emit_fallback_property_getter_stub ~ctx ~c_type:_ ~class_name ~ml_name
     ~version (_prop : gir_property) =
-  let buf = Buffer.create 256 in
-  bprintf buf "\nCAMLexport CAMLprim value %s(value self)\n{\n" ml_name;
-  bprintf buf "CAMLparam1(self);\n";
-  bprintf buf "(void)self;\n";
-
   let display_ns = namespace_display_name ctx.namespace.namespace_name in
   let failwith_msg =
     sprintf "%s requires %s >= %s" class_name display_ns
       (format_version_for_message version)
   in
-  bprintf buf "caml_failwith(\"%s\");\n" failwith_msg;
-  bprintf buf "return Val_unit;\n}\n";
-
-  Buffer.contents buf
+  emit_failwith_stub_core ~ml_name ~params:[ "value self" ]
+    ~param_names:[ "self" ] ~param_count_for_caml:1 ~failwith_msg
 
 (** Emit a class-level fallback stub for a property setter. *)
 let emit_fallback_property_setter_stub ~ctx ~c_type:_ ~class_name ~ml_name
     ~version (_prop : gir_property) =
-  let buf = Buffer.create 256 in
-  bprintf buf "\nCAMLexport CAMLprim value %s(value self, value arg1)\n{\n"
-    ml_name;
-  bprintf buf "CAMLparam2(self, arg1);\n";
-  bprintf buf "(void)self;\n";
-  bprintf buf "(void)arg1;\n";
-
   let display_ns = namespace_display_name ctx.namespace.namespace_name in
   let failwith_msg =
     sprintf "%s requires %s >= %s" class_name display_ns
       (format_version_for_message version)
   in
-  bprintf buf "caml_failwith(\"%s\");\n" failwith_msg;
-  bprintf buf "return Val_unit;\n}\n";
-
-  Buffer.contents buf
+  emit_failwith_stub_core ~ml_name
+    ~params:[ "value self"; "value arg1" ]
+    ~param_names:[ "self"; "arg1" ] ~param_count_for_caml:2 ~failwith_msg
 
 (** Emit a class-level fallback stub for a record method. *)
 let emit_fallback_record_method_stub ~ctx ~c_type:_ ~class_name ~ml_name
@@ -524,38 +476,108 @@ let emit_fallback_record_method_stub ~ctx ~c_type:_ ~class_name ~ml_name
       meth.parameters
   in
   let param_count = 1 + List.length in_params in
-  let param_names =
-    "self"
-    :: List.init ~len:(List.length in_params) ~f:(fun i ->
-        sprintf "arg%d" (i + 1))
-  in
-  let params =
-    "value self"
-    :: List.init ~len:(List.length in_params) ~f:(fun i ->
-        sprintf "value arg%d" (i + 1))
-  in
-
-  let buf = Buffer.create 256 in
-  bprintf buf "\nCAMLexport CAMLprim value %s(%s)\n{\n" ml_name
-    (String.concat ~sep:", " params);
-
+  let params, param_names = make_method_params (List.length in_params) in
   let param_count_for_caml = if param_count = 0 then 1 else min param_count 5 in
-  let param_names_for_caml = CCList.take param_count_for_caml param_names in
-  bprintf buf "CAMLparam%d(%s);\n" param_count_for_caml
-    (String.concat ~sep:", " param_names_for_caml);
-
-  (* Suppress unused parameter warnings *)
-  List.iter ~f:(fun pname -> bprintf buf "(void)%s;\n" pname) param_names;
-
   let display_ns = namespace_display_name ctx.namespace.namespace_name in
   let failwith_msg =
     sprintf "%s requires %s >= %s" class_name display_ns
       (format_version_for_message version)
   in
-  bprintf buf "caml_failwith(\"%s\");\n" failwith_msg;
-  bprintf buf "return Val_unit;\n}\n";
+  emit_failwith_stub_core ~ml_name ~params ~param_names ~param_count_for_caml
+    ~failwith_msg
 
-  Buffer.contents buf
+(* {1 OS Guard Support} *)
+
+(** Map an OS string to the opening C preprocessor guard. *)
+let os_to_c_guard_open = function
+  | "linux" -> "#ifdef __linux__"
+  | "macos" -> "#if defined(__APPLE__) && defined(__MACH__)"
+  | "freebsd" -> "#ifdef __FreeBSD__"
+  | "unix" -> "#ifdef G_OS_UNIX"
+  | os -> sprintf "#ifdef OS_%s" (String.uppercase_ascii os)
+
+(** Map an OS string to the closing C preprocessor guard. *)
+let os_to_c_guard_close = function
+  | "linux" -> "#endif /* __linux__ */"
+  | "macos" -> "#endif /* __APPLE__ */"
+  | "freebsd" -> "#endif /* __FreeBSD__ */"
+  | "unix" -> "#endif /* G_OS_UNIX */"
+  | os -> sprintf "#endif /* OS_%s */" (String.uppercase_ascii os)
+
+(** Human-readable display name for an OS string (for failwith messages). *)
+let os_display_name = function
+  | "linux" -> "Linux"
+  | "macos" -> "macOS"
+  | "freebsd" -> "FreeBSD"
+  | "unix" -> "Unix"
+  | os -> os
+
+(** Wrap a generated stub in an OS guard. [os]: OS string (e.g. ["linux"]), or
+    [None] to emit stub as-is. [failwith_stub]: string placed in the [#else]
+    branch. [stub]: the actual implementation placed in the [#ifdef] branch. *)
+let emit_with_os_guard ~os ~failwith_stub ~stub buf =
+  match os with
+  | None -> Buffer.add_string buf stub
+  | Some os_val ->
+      Buffer.add_char buf '\n';
+      Buffer.add_string buf (os_to_c_guard_open os_val);
+      Buffer.add_char buf '\n';
+      Buffer.add_string buf stub;
+      Buffer.add_char buf '\n';
+      Buffer.add_string buf "#else\n";
+      Buffer.add_string buf failwith_stub;
+      Buffer.add_char buf '\n';
+      Buffer.add_string buf (os_to_c_guard_close os_val);
+      Buffer.add_char buf '\n'
+
+(** Emit an OS-fallback constructor stub that raises [caml_failwith]. Used in
+    the [#else] branch of an OS guard. *)
+let emit_os_fallback_constructor_stub ~ctx:_ ~c_type:_ ~class_name ~ml_name
+    ~c_identifier:_ ~os (ctor : gir_constructor) =
+  let param_count = List.length ctor.ctor_parameters in
+  let params, param_names = make_constructor_params param_count in
+  let param_count_for_caml = if param_count = 0 then 1 else param_count in
+  let failwith_msg =
+    sprintf "%s is only available on %s" class_name (os_display_name os)
+  in
+  emit_failwith_stub_core ~ml_name ~params ~param_names ~param_count_for_caml
+    ~failwith_msg
+
+(** Emit an OS-fallback method stub that raises [caml_failwith]. *)
+let emit_os_fallback_method_stub ~ctx:_ ~c_type:_ ~class_name ~ml_name
+    ~c_identifier:_ ~os (meth : gir_method) =
+  let in_params =
+    List.filter
+      ~f:(fun p -> match p.direction with Out -> false | _ -> true)
+      meth.parameters
+  in
+  let param_count = 1 + List.length in_params in
+  let params, param_names = make_method_params (List.length in_params) in
+  let param_count_for_caml = if param_count = 0 then 1 else min param_count 5 in
+  let failwith_msg =
+    sprintf "%s is only available on %s" class_name (os_display_name os)
+  in
+  emit_failwith_stub_core ~ml_name ~params ~param_names ~param_count_for_caml
+    ~failwith_msg
+
+(** Emit an OS-fallback property getter stub that raises [caml_failwith]. *)
+let emit_os_fallback_property_getter_stub ~ctx:_ ~c_type:_ ~class_name ~ml_name
+    ~os (_prop : gir_property) =
+  let failwith_msg =
+    sprintf "%s is only available on %s" class_name (os_display_name os)
+  in
+  emit_failwith_stub_core ~ml_name ~params:[ "value self" ]
+    ~param_names:[ "self" ] ~param_count_for_caml:1 ~failwith_msg
+
+(** Emit an OS-fallback property setter stub that raises [caml_failwith]. *)
+let emit_os_fallback_property_setter_stub ~ctx:_ ~c_type:_ ~class_name ~ml_name
+    ~os (_prop : gir_property) =
+  let failwith_msg =
+    sprintf "%s is only available on %s" class_name (os_display_name os)
+  in
+  emit_failwith_stub_core ~ml_name
+    ~params:[ "value self"; "value arg1" ]
+    ~param_names:[ "self"; "arg1" ] ~param_count_for_caml:2 ~failwith_msg
 
 (** Wrap a generated stub in a member-level version guard when [resolve_guard]
     returns [Member_guard]. [fallback v] is called with the member version to

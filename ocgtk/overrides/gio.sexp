@@ -5,6 +5,42 @@
   ;; including gsettingsbackend.h — not suitable for general use
   (class SettingsBackend (ignore))
 
+  ;; Linux-only C headers from gio-unix-2.0. These are not present in
+  ;; Homebrew's GLib on macOS or in FreeBSD's gio. The generator wraps
+  ;; them in #ifdef __linux__ in the generated gio_decls.h.
+  (header "gio/gunixoutputstream.h" (os "linux"))
+  (header "gio/gunixmounts.h" (os "linux"))
+  (header "gio/gunixinputstream.h" (os "linux"))
+  (header "gio/gunixfdmessage.h" (os "linux"))
+  (header "gio/gfiledescriptorbased.h" (os "linux"))
+  (header "gio/gdesktopappinfo.h" (os "linux"))
+
+  ;; Linux-only GIO classes (from gio-unix-2.0 / gio/gunix*.h).
+  ;; These headers are not available on macOS (Homebrew) or FreeBSD.
+  ;; Bindings are generated but wrapped in #ifdef __linux__ guards so they
+  ;; raise caml_failwith at runtime on other platforms.
+  (class DesktopAppInfo (os "linux"))
+  (interface DesktopAppInfoLookup (os "linux"))
+  (interface FileDescriptorBased (os "linux"))
+  (class UnixConnection (os "linux"))
+  (class UnixCredentialsMessage (os "linux"))
+  (class UnixFDList (os "linux"))
+  (class UnixFDMessage (os "linux"))
+  (class UnixInputStream (os "linux"))
+  (record UnixMountEntry (os "linux"))
+  (class UnixMountMonitor (os "linux"))
+  (record UnixMountPoint (os "linux"))
+  (class UnixOutputStream (os "linux"))
+  (class UnixSocketAddress (os "linux"))
+
+  ;; DBusMessage and DBusMethodInvocation methods that take GUnixFDList
+  ;; parameters are Linux-only because GUnixFDList is from gio-unix-2.0.
+  (class DBusMessage
+    (method set_unix_fd_list (os "linux"))
+    (method get_unix_fd_list (os "linux")))
+  (class DBusMethodInvocation
+    (method return_value_with_unix_fd_list (os "linux")))
+
 
   (enumeration DBusError
     (member unknown_object (version "2.42"))

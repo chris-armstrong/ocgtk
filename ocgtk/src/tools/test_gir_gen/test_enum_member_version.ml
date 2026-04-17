@@ -42,6 +42,7 @@ let make_member ~name ~c_identifier ~value ?member_version () =
     c_identifier;
     member_doc = None;
     member_version;
+    member_os = None;
   }
 
 let make_enum ~name ~c_type members =
@@ -52,6 +53,7 @@ let make_enum ~name ~c_type members =
     functions = [];
     enum_doc = None;
     enum_version = None;
+    enum_os = None;
   }
 
 (* ========================================================================= *)
@@ -65,6 +67,7 @@ let make_flag ~name ~c_identifier ~value ?flag_version () =
     flag_c_identifier = c_identifier;
     flag_doc = None;
     flag_version;
+    flag_os = None;
   }
 
 let make_bitfield ~name ~c_type flags =
@@ -74,6 +77,7 @@ let make_bitfield ~name ~c_type flags =
     flags;
     bitfield_doc = None;
     bitfield_version = None;
+    bitfield_os = None;
   }
 
 (* ========================================================================= *)
