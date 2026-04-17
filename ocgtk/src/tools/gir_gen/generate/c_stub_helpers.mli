@@ -6,20 +6,11 @@
 val include_header_for_namespace : string -> string
 (** Get C include header for a namespace. *)
 
-type property_gvalue_info = {
-  base_type : string;  (** Base C type name *)
-  base_lower : string;  (** Lowercase base type name *)
-  has_pointer : bool;  (** True if type has pointer indirection *)
-  pointer_like : bool;  (** True if type behaves like a pointer *)
-  record_info : (Types.gir_record * bool * bool) option;
-      (** Record type info if applicable *)
-  class_info : Types.gir_class option;  (** Class type info if applicable *)
-  is_enum : bool;  (** True if enum type *)
-  is_bitfield : bool;  (** True if bitfield type *)
-  stack_allocated : bool;
-      (** True if stack-allocated (enums, bitfields, primitives) *)
-}
-(** Property type analysis *)
+type property_gvalue_info =
+  C_stub_type_analysis.Type_analysis.property_gvalue_info
+(** Property type analysis. Fields: base_type, base_lower, has_pointer,
+    pointer_like, record_info, class_info, is_enum, is_bitfield,
+    stack_allocated. *)
 
 val analyze_property_type :
   ctx:Types.generation_context -> Types.gir_type -> property_gvalue_info

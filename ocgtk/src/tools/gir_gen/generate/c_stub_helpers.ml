@@ -241,18 +241,9 @@ module Forward_decl = struct
 end
 
 (* Re-export commonly used functions at top level for backward compatibility *)
-(* Define the type directly so record fields are accessible *)
-type property_gvalue_info = {
-  base_type : string;
-  base_lower : string;
-  has_pointer : bool;
-  pointer_like : bool;
-  record_info : (Types.gir_record * bool * bool) option;
-  class_info : Types.gir_class option;
-  is_enum : bool;
-  is_bitfield : bool;
-  stack_allocated : bool;
-}
+(* Type alias — shares the definition with Type_analysis, no conversion needed *)
+type property_gvalue_info =
+  C_stub_type_analysis.Type_analysis.property_gvalue_info
 
 (* Accumulator for parameter processing - kept at top level for record field access *)
 type param_acc = {
@@ -262,22 +253,8 @@ type param_acc = {
   cleanups : string list;
 }
 
-(* Convert from internal type to public type *)
 let analyze_property_type ~ctx (gir_type : Types.gir_type) =
-  let internal =
-    C_stub_type_analysis.Type_analysis.analyze_property_type ~ctx gir_type
-  in
-  {
-    base_type = internal.base_type;
-    base_lower = internal.base_lower;
-    has_pointer = internal.has_pointer;
-    pointer_like = internal.pointer_like;
-    record_info = internal.record_info;
-    class_info = internal.class_info;
-    is_enum = internal.is_enum;
-    is_bitfield = internal.is_bitfield;
-    stack_allocated = internal.stack_allocated;
-  }
+  C_stub_type_analysis.Type_analysis.analyze_property_type ~ctx gir_type
 
 let is_copy_method = C_stub_type_analysis.Type_analysis.is_copy_method
 let is_free_method = C_stub_type_analysis.Type_analysis.is_free_method
@@ -289,42 +266,15 @@ let generate_array_ml_to_c = C_stub_array_conv.Array_conv.generate_array_ml_to_c
 let generate_array_c_to_ml = C_stub_array_conv.Array_conv.generate_array_c_to_ml
 let is_string_array = Filtering.is_string_array
 
-(* Convert prop_info from internal type to public type and call GValue function *)
-let generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name
-    ~prop_info:public_prop_info =
-  let internal_prop_info =
-    {
-      C_stub_type_analysis.Type_analysis.base_type = public_prop_info.base_type;
-      base_lower = public_prop_info.base_lower;
-      has_pointer = public_prop_info.has_pointer;
-      pointer_like = public_prop_info.pointer_like;
-      record_info = public_prop_info.record_info;
-      class_info = public_prop_info.class_info;
-      is_enum = public_prop_info.is_enum;
-      is_bitfield = public_prop_info.is_bitfield;
-      stack_allocated = public_prop_info.stack_allocated;
-    }
-  in
+(* No conversion needed — property_gvalue_info is now a type alias *)
+let generate_gvalue_getter_assignment ~ml_name ~prop ~c_type_name ~prop_info =
   C_stub_gvalue.GValue.generate_gvalue_getter_assignment ~ml_name ~prop
-    ~c_type_name ~prop_info:internal_prop_info
+    ~c_type_name ~prop_info
 
 (* Generate setter without the unused prop parameter *)
-let generate_gvalue_setter_assignment ~ml_name ~prop_info:public_prop_info =
-  let internal_prop_info =
-    {
-      C_stub_type_analysis.Type_analysis.base_type = public_prop_info.base_type;
-      base_lower = public_prop_info.base_lower;
-      has_pointer = public_prop_info.has_pointer;
-      pointer_like = public_prop_info.pointer_like;
-      record_info = public_prop_info.record_info;
-      class_info = public_prop_info.class_info;
-      is_enum = public_prop_info.is_enum;
-      is_bitfield = public_prop_info.is_bitfield;
-      stack_allocated = public_prop_info.stack_allocated;
-    }
-  in
+let generate_gvalue_setter_assignment ~ml_name ~prop_info =
   C_stub_gvalue.GValue.generate_gvalue_setter_assignment ~ml_name ~prop:()
-    ~prop_info:internal_prop_info
+    ~prop_info
 
 let generate_c_file_header = Code_gen.generate_c_file_header
 let base_c_type_of = Code_gen.base_c_type_of

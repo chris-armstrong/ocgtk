@@ -72,55 +72,70 @@ let apply_components_by_name ~(get_name : 'a -> string)
       | None -> Some item)
     components
 
+(* Per-type set_version helpers — eliminate repeated inline lambdas. *)
+
+let method_set_version vs (m : gir_method) =
+  { m with version = Some vs.vs_version; version_namespace = vs.vs_namespace }
+
+let constructor_set_version vs (c : gir_constructor) =
+  { c with version = Some vs.vs_version; version_namespace = vs.vs_namespace }
+
+let property_set_version vs (p : gir_property) =
+  { p with version = Some vs.vs_version; version_namespace = vs.vs_namespace }
+
+let signal_set_version vs (s : gir_signal) =
+  { s with version = Some vs.vs_version; version_namespace = vs.vs_namespace }
+
+let field_set_version vs (f : gir_record_field) =
+  { f with field_version = Some vs.vs_version }
+
+let function_set_version vs (f : gir_function) =
+  { f with version = Some vs.vs_version; version_namespace = vs.vs_namespace }
+
+let enum_member_set_version vs (m : gir_enum_member) =
+  { m with member_version = Some vs.vs_version }
+
+let bitfield_member_set_version vs (f : gir_bitfield_member) =
+  { f with flag_version = Some vs.vs_version }
+
+(* Per-type set_os helpers — eliminate repeated inline lambdas. *)
+
+let method_set_os o (m : gir_method) = { m with os = Some o }
+let constructor_set_os o (c : gir_constructor) = { c with os = Some o }
+let property_set_os o (p : gir_property) = { p with os = Some o }
+let signal_set_os o (s : gir_signal) = { s with os = Some o }
+let field_set_os o (f : gir_record_field) = { f with field_os = Some o }
+let function_set_os o (f : gir_function) = { f with os = Some o }
+let enum_member_set_os o (m : gir_enum_member) = { m with member_os = Some o }
+
+let bitfield_member_set_os o (f : gir_bitfield_member) =
+  { f with flag_os = Some o }
+
 (* Per-entity helpers: apply component overrides to a surviving entity. *)
 
 let apply_class_components (ov : class_override) (cls : gir_class) : gir_class =
   let constructors =
     apply_components_by_name
       ~get_name:(fun (c : gir_constructor) -> c.ctor_name)
-      ~set_version:(fun vs (c : gir_constructor) ->
-        {
-          c with
-          version = Some vs.vs_version;
-          version_namespace = vs.vs_namespace;
-        })
-      ~set_os:(fun o (c : gir_constructor) -> { c with os = Some o })
+      ~set_version:constructor_set_version ~set_os:constructor_set_os
       ~overrides:ov.constructors cls.constructors
   in
   let methods =
     apply_components_by_name
       ~get_name:(fun (m : gir_method) -> m.method_name)
-      ~set_version:(fun vs (m : gir_method) ->
-        {
-          m with
-          version = Some vs.vs_version;
-          version_namespace = vs.vs_namespace;
-        })
-      ~set_os:(fun o (m : gir_method) -> { m with os = Some o })
+      ~set_version:method_set_version ~set_os:method_set_os
       ~overrides:ov.methods cls.methods
   in
   let properties =
     apply_components_by_name
       ~get_name:(fun (p : gir_property) -> p.prop_name)
-      ~set_version:(fun vs (p : gir_property) ->
-        {
-          p with
-          version = Some vs.vs_version;
-          version_namespace = vs.vs_namespace;
-        })
-      ~set_os:(fun o (p : gir_property) -> { p with os = Some o })
+      ~set_version:property_set_version ~set_os:property_set_os
       ~overrides:ov.properties cls.properties
   in
   let signals =
     apply_components_by_name
       ~get_name:(fun (s : gir_signal) -> s.signal_name)
-      ~set_version:(fun vs (s : gir_signal) ->
-        {
-          s with
-          version = Some vs.vs_version;
-          version_namespace = vs.vs_namespace;
-        })
-      ~set_os:(fun o (s : gir_signal) -> { s with os = Some o })
+      ~set_version:signal_set_version ~set_os:signal_set_os
       ~overrides:ov.signals cls.signals
   in
   { cls with constructors; methods; properties; signals }
@@ -130,37 +145,19 @@ let apply_interface_components (ov : interface_override) (intf : gir_interface)
   let methods =
     apply_components_by_name
       ~get_name:(fun (m : gir_method) -> m.method_name)
-      ~set_version:(fun vs (m : gir_method) ->
-        {
-          m with
-          version = Some vs.vs_version;
-          version_namespace = vs.vs_namespace;
-        })
-      ~set_os:(fun o (m : gir_method) -> { m with os = Some o })
+      ~set_version:method_set_version ~set_os:method_set_os
       ~overrides:ov.methods intf.methods
   in
   let properties =
     apply_components_by_name
       ~get_name:(fun (p : gir_property) -> p.prop_name)
-      ~set_version:(fun vs (p : gir_property) ->
-        {
-          p with
-          version = Some vs.vs_version;
-          version_namespace = vs.vs_namespace;
-        })
-      ~set_os:(fun o (p : gir_property) -> { p with os = Some o })
+      ~set_version:property_set_version ~set_os:property_set_os
       ~overrides:ov.properties intf.properties
   in
   let signals =
     apply_components_by_name
       ~get_name:(fun (s : gir_signal) -> s.signal_name)
-      ~set_version:(fun vs (s : gir_signal) ->
-        {
-          s with
-          version = Some vs.vs_version;
-          version_namespace = vs.vs_namespace;
-        })
-      ~set_os:(fun o (s : gir_signal) -> { s with os = Some o })
+      ~set_version:signal_set_version ~set_os:signal_set_os
       ~overrides:ov.signals intf.signals
   in
   { intf with methods; properties; signals }
@@ -170,45 +167,25 @@ let apply_record_components (ov : record_override) (rec_ : gir_record) :
   let fields =
     apply_components_by_name
       ~get_name:(fun (f : gir_record_field) -> f.field_name)
-      ~set_version:(fun vs (f : gir_record_field) ->
-        { f with field_version = Some vs.vs_version })
-      ~set_os:(fun o (f : gir_record_field) -> { f with field_os = Some o })
-      ~overrides:ov.fields rec_.fields
+      ~set_version:field_set_version ~set_os:field_set_os ~overrides:ov.fields
+      rec_.fields
   in
   let constructors =
     apply_components_by_name
       ~get_name:(fun (c : gir_constructor) -> c.ctor_name)
-      ~set_version:(fun vs (c : gir_constructor) ->
-        {
-          c with
-          version = Some vs.vs_version;
-          version_namespace = vs.vs_namespace;
-        })
-      ~set_os:(fun o (c : gir_constructor) -> { c with os = Some o })
+      ~set_version:constructor_set_version ~set_os:constructor_set_os
       ~overrides:ov.constructors rec_.constructors
   in
   let methods =
     apply_components_by_name
       ~get_name:(fun (m : gir_method) -> m.method_name)
-      ~set_version:(fun vs (m : gir_method) ->
-        {
-          m with
-          version = Some vs.vs_version;
-          version_namespace = vs.vs_namespace;
-        })
-      ~set_os:(fun o (m : gir_method) -> { m with os = Some o })
+      ~set_version:method_set_version ~set_os:method_set_os
       ~overrides:ov.methods rec_.methods
   in
   let functions =
     apply_components_by_name
       ~get_name:(fun (f : gir_function) -> f.function_name)
-      ~set_version:(fun vs (f : gir_function) ->
-        {
-          f with
-          version = Some vs.vs_version;
-          version_namespace = vs.vs_namespace;
-        })
-      ~set_os:(fun o (f : gir_function) -> { f with os = Some o })
+      ~set_version:function_set_version ~set_os:function_set_os
       ~overrides:ov.functions rec_.functions
   in
   { rec_ with fields; constructors; methods; functions }
@@ -217,21 +194,13 @@ let apply_enum_components (ov : enum_override) (enm : gir_enum) : gir_enum =
   let members =
     apply_components_by_name
       ~get_name:(fun (m : gir_enum_member) -> m.member_name)
-      ~set_version:(fun vs (m : gir_enum_member) ->
-        { m with member_version = Some vs.vs_version })
-      ~set_os:(fun o (m : gir_enum_member) -> { m with member_os = Some o })
+      ~set_version:enum_member_set_version ~set_os:enum_member_set_os
       ~overrides:ov.members enm.members
   in
   let functions =
     apply_components_by_name
       ~get_name:(fun (f : gir_function) -> f.function_name)
-      ~set_version:(fun vs (f : gir_function) ->
-        {
-          f with
-          version = Some vs.vs_version;
-          version_namespace = vs.vs_namespace;
-        })
-      ~set_os:(fun o (f : gir_function) -> { f with os = Some o })
+      ~set_version:function_set_version ~set_os:function_set_os
       ~overrides:ov.functions enm.functions
   in
   { enm with members; functions }
@@ -241,9 +210,7 @@ let apply_bitfield_components (ov : bitfield_override) (bf : gir_bitfield) :
   let flags =
     apply_components_by_name
       ~get_name:(fun (f : gir_bitfield_member) -> f.flag_name)
-      ~set_version:(fun vs (f : gir_bitfield_member) ->
-        { f with flag_version = Some vs.vs_version })
-      ~set_os:(fun o (f : gir_bitfield_member) -> { f with flag_os = Some o })
+      ~set_version:bitfield_member_set_version ~set_os:bitfield_member_set_os
       ~overrides:ov.flags bf.flags
   in
   { bf with flags }

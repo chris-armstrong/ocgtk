@@ -59,6 +59,8 @@
   %{exe:../gir_gen/gir_gen.exe}
   (source_tree %{project_root}/ocgtk/gir))
  (action
-  (setenv "GIR_DATA_DIR" "%{project_root}/ocgtk/gir"
-    (run %{test})))
+  (setenv
+   "GIR_DATA_DIR"
+   "%{project_root}/ocgtk/gir"
+   (run %{test})))
  (libraries str unix gir_gen_lib alcotest ppxlib sexplib))
