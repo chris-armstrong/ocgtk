@@ -10,9 +10,9 @@ set -e
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-GIR_PATH="${1:-${GIR_PATH:-$REPO_ROOT/ocgtk/gir}}"
 # The dune workspace is in the ocgtk subdirectory, NOT the repository root
 WORKSPACE_ROOT="$REPO_ROOT/ocgtk"
+GIR_PATH="${1:-${GIR_PATH:-$WORKSPACE_ROOT/ocgtk/gir}}"
 BUILD_DIR="$WORKSPACE_ROOT/_build/references"
 GIR_GEN="$WORKSPACE_ROOT/_build/default/src/tools/gir_gen/gir_gen.exe"
 OVERRIDES_DIR="$WORKSPACE_ROOT/overrides"

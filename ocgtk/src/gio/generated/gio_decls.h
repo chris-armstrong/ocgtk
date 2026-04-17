@@ -785,6 +785,7 @@
 #define Val_GFile(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFile */
 
+#ifdef __linux__
 #if GLIB_CHECK_VERSION(2,24,0)
 #ifndef Val_GFileDescriptorBased
 #define GFileDescriptorBased_val(val) ((GFileDescriptorBased*)ml_gobject_ext_of_val(val))
@@ -792,6 +793,7 @@
 #endif /* Val_GFileDescriptorBased */
 
 #endif
+#endif /* __linux__ */
 #ifndef Val_GIcon
 #define GIcon_val(val) ((GIcon*)ml_gobject_ext_of_val(val))
 #define Val_GIcon(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -1100,15 +1102,19 @@ GStaticResource *GStaticResource_val(value val);
 value Val_GStaticResource(const GStaticResource *ptr);
 value Val_GStaticResource_option(const GStaticResource *ptr);
 
+#ifdef __linux__
 /* Forward declarations for GUnixMountEntry converters */
 GUnixMountEntry *GUnixMountEntry_val(value val);
 value Val_GUnixMountEntry(const GUnixMountEntry *ptr);
 value Val_GUnixMountEntry_option(const GUnixMountEntry *ptr);
+#endif /* __linux__ */
 
+#ifdef __linux__
 /* Forward declarations for GUnixMountPoint converters */
 GUnixMountPoint *GUnixMountPoint_val(value val);
 value Val_GUnixMountPoint(const GUnixMountPoint *ptr);
 value Val_GUnixMountPoint_option(const GUnixMountPoint *ptr);
+#endif /* __linux__ */
 
 /* Const-safe string extraction for setters */
 #define ML_DECL_CONST_STRING(name, expr) const gchar *name = (const gchar *)(expr)

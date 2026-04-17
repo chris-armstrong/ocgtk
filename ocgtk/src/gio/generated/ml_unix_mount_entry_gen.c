@@ -38,3 +38,10 @@ value Val_GUnixMountEntry_option(const GUnixMountEntry *ptr) {
   return Val_some(Val_GUnixMountEntry(ptr));
 }
 
+
+#ifdef __linux__
+
+#else
+
+
+#endif /* __linux__ */

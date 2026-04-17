@@ -39,6 +39,8 @@ value Val_GUnixMountPoint_option(const GUnixMountPoint *ptr) {
 }
 
 
+#ifdef __linux__
+
 CAMLexport CAMLprim value ml_g_unix_mount_point_is_user_mountable(value self)
 {
 CAMLparam1(self);
@@ -189,3 +191,135 @@ CAMLparam2(self, arg1);
 gint result = g_unix_mount_point_compare(GUnixMountPoint_val(self), GUnixMountPoint_val(arg1));
 CAMLreturn(Val_int(result));
 }
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_compare(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("UnixMountPoint is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_copy(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixMountPoint is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_free(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixMountPoint is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_get_device_path(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixMountPoint is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_get_fs_type(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixMountPoint is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_get_mount_path(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixMountPoint is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_get_options(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixMountPoint is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_guess_can_eject(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixMountPoint is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_guess_icon(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixMountPoint is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_guess_name(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixMountPoint is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_guess_symbolic_icon(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixMountPoint is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_is_loopback(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixMountPoint is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_is_readonly(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixMountPoint is only available on Linux");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_unix_mount_point_is_user_mountable(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("UnixMountPoint is only available on Linux");
+return Val_unit;
+}
+
+
+#endif /* __linux__ */

@@ -23,6 +23,8 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
+
+#ifdef __linux__
 #if GLIB_CHECK_VERSION(2,24,0)
 
 
@@ -69,3 +71,17 @@ CAMLexport CAMLprim value ml_gio_file_descriptor_based_from_gobject(value obj)
 
 
 #endif
+
+#else
+
+
+CAMLexport CAMLprim value ml_g_file_descriptor_based_get_fd(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FileDescriptorBased is only available on Linux");
+return Val_unit;
+}
+
+
+#endif /* __linux__ */

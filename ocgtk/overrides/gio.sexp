@@ -10,15 +10,15 @@
   ;; Bindings are generated but wrapped in #ifdef __linux__ guards so they
   ;; raise caml_failwith at runtime on other platforms.
   (class DesktopAppInfo (os "linux"))
-  (class FileDescriptorBased (os "linux"))
+  (interface FileDescriptorBased (os "linux"))
   (class UnixConnection (os "linux"))
   (class UnixCredentialsMessage (os "linux"))
   (class UnixFDList (os "linux"))
   (class UnixFDMessage (os "linux"))
   (class UnixInputStream (os "linux"))
-  (class UnixMountEntry (os "linux"))
+  (record UnixMountEntry (os "linux"))
   (class UnixMountMonitor (os "linux"))
-  (class UnixMountPoint (os "linux"))
+  (record UnixMountPoint (os "linux"))
   (class UnixOutputStream (os "linux"))
   (class UnixSocketAddress (os "linux"))
 

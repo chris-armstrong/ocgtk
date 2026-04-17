@@ -96,6 +96,9 @@ let generate_forward_decls ~namespace_prefix ~records =
   List.iter
     ~f:(fun (record : gir_record) ->
       Option.iter
+        (fun os -> bprintf buf "%s\n" (C_stub_helpers.os_to_c_guard_open os))
+        record.os;
+      Option.iter
         (emit_version_guard_open buf ~namespace:namespace_prefix)
         record.version;
       bprintf buf "/* Forward declarations for %s converters */\n" record.c_type;
@@ -104,6 +107,9 @@ let generate_forward_decls ~namespace_prefix ~records =
       bprintf buf "value Val_%s_option(const %s *ptr);\n" record.c_type
         record.c_type;
       Option.iter (fun _ -> Buffer.add_string buf "#endif\n") record.version;
+      Option.iter
+        (fun os -> bprintf buf "%s\n" (C_stub_helpers.os_to_c_guard_close os))
+        record.os;
       bprintf buf "\n")
     non_value_like_records;
 
