@@ -290,7 +290,7 @@
         {
           "stage": 8,
           "title": "1.8 Move 4 interface test files to interface/ and class_generation/",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "Four files testing the interface-support feature landed at the root of test_gir_gen/ with the inconsistent test_ prefix. Move 2 to a new interface/ subdirectory and 2 to class_generation/ (which already has files from stage 1). All filenames change so dune entries and runner references must be updated.",
           "files_to_modify": [

@@ -25,14 +25,12 @@ let () =
       (* Layer 2 — Class Generation *)
       ("Layer2 Method Wrappers", Method_wrapper_tests.tests);
       ("Constructor Wrappers", Constructor_wrapper_tests.tests);
-      (* interface entries added in stage 8 *)
-      ("Interface Inheritance (Phase 4)", Test_interface_inheritance.test_suite);
+      ("Interface Inheritance (Phase 4)", Interface_inheritance_tests.test_suite);
       ( "Interface Method Types (Phase 7)",
-        Test_interface_method_types.test_suite );
+        Interface_method_types_tests.test_suite );
       (* Interface Parsing *)
-      (* entries added in stage 8 *)
-      ("Interface Parsing", Test_interface_parsing.test_suite);
-      ("From GObject Generation", Test_from_gobject_gen.test_suite);
+      ("Interface Parsing", Parsing_tests.test_suite);
+      ("From GObject Generation", From_gobject_tests.test_suite);
       (* Integration — End-to-end subprocess *)
       ("GIR Parsing", Gir_parsing_tests.tests);
       ("Widget Generation", Widget_generation_tests.tests);

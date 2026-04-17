@@ -52,10 +52,10 @@
   e2e_tests
   overrides_integration_tests
   enum_member_version_tests
-  test_interface_parsing
-  test_from_gobject_gen
-  test_interface_inheritance
-  test_interface_method_types
+  parsing_tests
+  from_gobject_tests
+  interface_inheritance_tests
+  interface_method_types_tests
   test_gir_gen
   type_factory)
  (deps %{exe:../gir_gen/gir_gen.exe})
