@@ -76,8 +76,7 @@ module Code_gen = struct
     let is_linux_only_header h =
       let starts_with prefix s =
         let n = String.length prefix in
-        String.length s >= n
-        && String.equal (String.sub s ~pos:0 ~len:n) prefix
+        String.length s >= n && String.equal (String.sub s ~pos:0 ~len:n) prefix
       in
       starts_with "gio/gunix" h
       || String.equal h "gio/gdesktopappinfo.h"
@@ -608,10 +607,9 @@ let os_display_name = function
   | "unix" -> "Unix"
   | os -> os
 
-(** Wrap a generated stub in an OS guard.
-    [os]: OS string (e.g. ["linux"]), or [None] to emit stub as-is.
-    [failwith_stub]: string placed in the [#else] branch.
-    [stub]: the actual implementation placed in the [#ifdef] branch. *)
+(** Wrap a generated stub in an OS guard. [os]: OS string (e.g. ["linux"]), or
+    [None] to emit stub as-is. [failwith_stub]: string placed in the [#else]
+    branch. [stub]: the actual implementation placed in the [#ifdef] branch. *)
 let emit_with_os_guard ~os ~failwith_stub ~stub buf =
   match os with
   | None -> Buffer.add_string buf stub
@@ -627,8 +625,8 @@ let emit_with_os_guard ~os ~failwith_stub ~stub buf =
       Buffer.add_string buf (os_to_c_guard_close os_val);
       Buffer.add_char buf '\n'
 
-(** Emit an OS-fallback constructor stub that raises [caml_failwith].
-    Used in the [#else] branch of an OS guard. *)
+(** Emit an OS-fallback constructor stub that raises [caml_failwith]. Used in
+    the [#else] branch of an OS guard. *)
 let emit_os_fallback_constructor_stub ~ctx:_ ~c_type:_ ~class_name ~ml_name
     ~c_identifier:_ ~os (ctor : gir_constructor) =
   let param_count = List.length ctor.ctor_parameters in
@@ -702,8 +700,8 @@ let emit_os_fallback_property_getter_stub ~ctx:_ ~c_type:_ ~class_name ~ml_name
 let emit_os_fallback_property_setter_stub ~ctx:_ ~c_type:_ ~class_name ~ml_name
     ~os (_prop : gir_property) =
   let buf = Buffer.create 256 in
-  bprintf buf
-    "\nCAMLexport CAMLprim value %s(value self, value arg1)\n{\n" ml_name;
+  bprintf buf "\nCAMLexport CAMLprim value %s(value self, value arg1)\n{\n"
+    ml_name;
   bprintf buf "CAMLparam2(self, arg1);\n";
   bprintf buf "(void)self;\n";
   bprintf buf "(void)arg1;\n";

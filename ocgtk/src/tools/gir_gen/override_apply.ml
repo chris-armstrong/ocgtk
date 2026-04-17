@@ -66,15 +66,9 @@ let apply_components_by_name ~(get_name : 'a -> string)
       | Some { action = Some Ignore; _ } -> None
       | Some { action = Some (Set_version vs); os = comp_os; _ } ->
           let item' = set_version vs item in
-          Some
-            (match comp_os with
-            | Some o -> set_os o item'
-            | None -> item')
+          Some (match comp_os with Some o -> set_os o item' | None -> item')
       | Some { action = None; os = comp_os; _ } ->
-          Some
-            (match comp_os with
-            | Some o -> set_os o item
-            | None -> item)
+          Some (match comp_os with Some o -> set_os o item | None -> item)
       | None -> Some item)
     components
 
@@ -288,8 +282,7 @@ let apply_entity_overrides ~get_entity_name ~get_override_name ~get_action
             Some
               (maybe_apply_os
                  (apply_components ov (set_version vs.vs_version entity)))
-        | None ->
-            Some (maybe_apply_os (apply_components ov entity)))
+        | None -> Some (maybe_apply_os (apply_components ov entity)))
   in
   let processed = List.filter_map process all_entities in
   (* Warn using the ORIGINAL entity list so that successfully-ignored components

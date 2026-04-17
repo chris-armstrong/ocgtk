@@ -35,7 +35,7 @@ let create_context_with_external_bitfield () =
             flag_c_identifier = "GTK_STATE_FLAG_NORMAL";
             flag_doc = None;
             flag_version = None;
-          flag_os = None;
+            flag_os = None;
           };
           {
             flag_name = "ACTIVE";
@@ -43,7 +43,7 @@ let create_context_with_external_bitfield () =
             flag_c_identifier = "GTK_STATE_FLAG_ACTIVE";
             flag_doc = None;
             flag_version = None;
-          flag_os = None;
+            flag_os = None;
           };
         ];
       bitfield_doc = None;

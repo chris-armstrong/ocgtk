@@ -1,52 +1,61 @@
 (* Signal class defined in gpassword_entry_signals.ml *)
 
 class type password_entry_t = object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
-    inherit GEditable.editable_t
-    inherit Gpassword_entry_signals.password_entry_signals
-    method get_extra_menu : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
-    method get_show_peek_icon : unit -> bool
-    method set_extra_menu : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
-    method set_show_peek_icon : bool -> unit
-    method activates_default : bool
-    method set_activates_default : bool -> unit
-    method placeholder_text : string
-    method set_placeholder_text : string -> unit
-    method as_password_entry : Password_entry.t
+  inherit
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .widget_t
+
+  inherit GEditable.editable_t
+  inherit Gpassword_entry_signals.password_entry_signals
+  method get_extra_menu : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
+  method get_show_peek_icon : unit -> bool
+  method set_extra_menu : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
+  method set_show_peek_icon : bool -> unit
+  method activates_default : bool
+  method set_activates_default : bool -> unit
+  method placeholder_text : string
+  method set_placeholder_text : string -> unit
+  method as_password_entry : Password_entry.t
 end
 
 (* High-level class for PasswordEntry *)
-class password_entry (obj : Password_entry.t) : password_entry_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
-  inherit GEditable.editable (Editable.from_gobject obj)
-  inherit Gpassword_entry_signals.password_entry_signals obj
+class password_entry (obj : Password_entry.t) : password_entry_t =
+  object (self)
+    inherit
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      .widget
+        (obj
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+             .Widget
+             .t)
 
-  method get_extra_menu : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option =
-    fun () ->
-      Option.map (fun ret -> new Ocgtk_gio.Gio.Menu_model.menu_model ret) (Password_entry.get_extra_menu obj)
+    inherit GEditable.editable (Editable.from_gobject obj)
+    inherit Gpassword_entry_signals.password_entry_signals obj
 
-  method get_show_peek_icon : unit -> bool =
-    fun () ->
-      (Password_entry.get_show_peek_icon obj)
+    method get_extra_menu : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
+        =
+      fun () ->
+        Option.map
+          (fun ret -> new Ocgtk_gio.Gio.Menu_model.menu_model ret)
+          (Password_entry.get_extra_menu obj)
 
-  method set_extra_menu : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit =
-    fun model ->
-      let model = Option.map (fun (c) -> c#as_menu_model) model in
-      (Password_entry.set_extra_menu obj model)
+    method get_show_peek_icon : unit -> bool =
+      fun () -> Password_entry.get_show_peek_icon obj
 
-  method set_show_peek_icon : bool -> unit =
-    fun show_peek_icon ->
-      (Password_entry.set_show_peek_icon obj show_peek_icon)
+    method set_extra_menu : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
+        =
+      fun model ->
+        let model = Option.map (fun c -> c#as_menu_model) model in
+        Password_entry.set_extra_menu obj model
 
-  method activates_default = Password_entry.get_activates_default obj
-  method set_activates_default v =  Password_entry.set_activates_default obj v
+    method set_show_peek_icon : bool -> unit =
+      fun show_peek_icon -> Password_entry.set_show_peek_icon obj show_peek_icon
 
-  method placeholder_text = Password_entry.get_placeholder_text obj
-  method set_placeholder_text v =  Password_entry.set_placeholder_text obj v
-
+    method activates_default = Password_entry.get_activates_default obj
+    method set_activates_default v = Password_entry.set_activates_default obj v
+    method placeholder_text = Password_entry.get_placeholder_text obj
+    method set_placeholder_text v = Password_entry.set_placeholder_text obj v
     method as_password_entry = obj
-end
+  end
 
-let new_ () : password_entry_t =
-  new password_entry (Password_entry.new_ ())
-
+let new_ () : password_entry_t = new password_entry (Password_entry.new_ ())

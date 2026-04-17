@@ -1,16 +1,18 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Orientable: Orientable *)
 
-type t = [`orientable] Gobject.obj
+type t = [ `orientable ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gtk_orientable_from_gobject"
 
 (* Methods *)
-(** Sets the orientation of the @orientable. *)
-external set_orientation : t -> Gtk_enums.orientation -> unit = "ml_gtk_orientable_set_orientation"
 
+external set_orientation : t -> Gtk_enums.orientation -> unit
+  = "ml_gtk_orientable_set_orientation"
+(** Sets the orientation of the @orientable. *)
+
+external get_orientation : t -> Gtk_enums.orientation
+  = "ml_gtk_orientable_get_orientation"
 (** Retrieves the orientation of the @orientable. *)
-external get_orientation : t -> Gtk_enums.orientation = "ml_gtk_orientable_get_orientation"
 
 (* Properties *)
-

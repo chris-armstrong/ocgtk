@@ -1,6 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SettingsSchema: SettingsSchema *)
 
+type t = [ `settings_schema ] Gobject.obj
 (** The [struct@Gio.SettingsSchemaSource] and `GSettingsSchema` APIs provide a
 mechanism for advanced control over the loading of schemas and a
 mechanism for introspecting their content.
@@ -91,31 +92,33 @@ It's also possible that the plugin system expects the schema source
 files (ie: `.gschema.xml` files) instead of a `gschemas.compiled` file.
 In that case, the plugin loading system must compile the schemas for
 itself before attempting to create the settings source. *)
-type t = [`settings_schema] Gobject.obj
 
 (* Methods *)
-(** Decrease the reference count of @schema, possibly freeing it. *)
+
 external unref : t -> unit = "ml_g_settings_schema_unref"
+(** Decrease the reference count of @schema, possibly freeing it. *)
 
-(** Increase the reference count of @schema, returning a new reference. *)
 external ref : t -> t = "ml_g_settings_schema_ref"
+(** Increase the reference count of @schema, returning a new reference. *)
 
+external list_keys : t -> string array = "ml_g_settings_schema_list_keys"
 (** Introspects the list of keys on @schema.
 
 You should probably not be calling this function from "normal" code
 (since you should already know what keys are in your schema).  This
 function is intended for introspection reasons. *)
-external list_keys : t -> string array = "ml_g_settings_schema_list_keys"
 
+external list_children : t -> string array
+  = "ml_g_settings_schema_list_children"
 (** Gets the list of children in @schema.
 
 You should free the return value with g_strfreev() when you are done
 with it. *)
-external list_children : t -> string array = "ml_g_settings_schema_list_children"
 
-(** Checks if @schema has a key named @name. *)
 external has_key : t -> string -> bool = "ml_g_settings_schema_has_key"
+(** Checks if @schema has a key named @name. *)
 
+external get_path : t -> string option = "ml_g_settings_schema_get_path"
 (** Gets the path associated with @schema, or %NULL.
 
 Schemas may be single-instance or relocatable.  Single-instance
@@ -125,14 +128,13 @@ database: those located at the path returned by this function.
 Relocatable schemas can be referenced by other schemas and can
 therefore describe multiple sets of keys at different locations.  For
 relocatable schemas, this function will return %NULL. *)
-external get_path : t -> string option = "ml_g_settings_schema_get_path"
 
+external get_key : t -> string -> Settings_schema_key.t
+  = "ml_g_settings_schema_get_key"
 (** Gets the key named @name from @schema.
 
 It is a programmer error to request a key that does not exist.  See
 g_settings_schema_list_keys(). *)
-external get_key : t -> string -> Settings_schema_key.t = "ml_g_settings_schema_get_key"
 
-(** Get the ID of @schema. *)
 external get_id : t -> string = "ml_g_settings_schema_get_id"
-
+(** Get the ID of @schema. *)

@@ -14,8 +14,8 @@ type override_action = Ignore | Set_version of version_spec
 type os_spec = string [@@deriving sexp, eq]
 (** OS/platform restriction. Supported values: "linux", "macos", "freebsd",
     "unix". The generator emits [#ifdef __linux__] / [#else caml_failwith] /
-    [#endif] guards in the C stubs. Can be combined with [(version ...)] on
-    the same entity or component. *)
+    [#endif] guards in the C stubs. Can be combined with [(version ...)] on the
+    same entity or component. *)
 
 type component_override = {
   component_name : string;

@@ -160,7 +160,8 @@ let extract_os_marker body =
 
 (** Validate that every list-form element in an entity body starts with one of
     [valid_kinds] (or is an action marker like [ignore] / [version] / [os]).
-    Returns [Error (Unknown_component_kind ...)] on the first unrecognised kind. *)
+    Returns [Error (Unknown_component_kind ...)] on the first unrecognised kind.
+*)
 let validate_body_elements ~entity_name ~valid_kinds body =
   let rec check = function
     | [] -> Ok ()
@@ -171,10 +172,8 @@ let validate_body_elements ~entity_name ~valid_kinds body =
         | Sexp.List [] -> check rest
         | Sexp.List (Sexp.Atom k :: _) ->
             if
-              List.mem k valid_kinds
-              || String.equal k "ignore"
-              || String.equal k "version"
-              || String.equal k "os"
+              List.mem k valid_kinds || String.equal k "ignore"
+              || String.equal k "version" || String.equal k "os"
             then check rest
             else
               Error

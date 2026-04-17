@@ -68,7 +68,8 @@ let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
     || String.equal h "gio/gfiledescriptorbased.h"
   in
   let regular_includes, linux_only_includes =
-    List.partition ~f:(fun h -> not (is_linux_only_header h))
+    List.partition
+      ~f:(fun h -> not (is_linux_only_header h))
       ctx.repository.repository_c_includes
   in
   List.iter

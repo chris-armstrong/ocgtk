@@ -35,7 +35,7 @@ let create_context_with_external_enum () =
             c_identifier = "GTK_WRAP_NONE";
             member_doc = None;
             member_version = None;
-          member_os = None;
+            member_os = None;
           };
           {
             member_name = "WORD";
@@ -43,7 +43,7 @@ let create_context_with_external_enum () =
             c_identifier = "GTK_WRAP_WORD";
             member_doc = None;
             member_version = None;
-          member_os = None;
+            member_os = None;
           };
         ];
       functions = [];

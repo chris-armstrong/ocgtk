@@ -1,41 +1,44 @@
 class type window_controls_t = object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget_t
-    method get_decoration_layout : unit -> string option
-    method get_empty : unit -> bool
-    method get_side : unit -> Gtk_enums.packtype
-    method set_decoration_layout : string option -> unit
-    method set_side : Gtk_enums.packtype -> unit
-    method as_window_controls : Window_controls.t
+  inherit
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    .widget_t
+
+  method get_decoration_layout : unit -> string option
+  method get_empty : unit -> bool
+  method get_side : unit -> Gtk_enums.packtype
+  method set_decoration_layout : string option -> unit
+  method set_side : Gtk_enums.packtype -> unit
+  method as_window_controls : Window_controls.t
 end
 
 (* High-level class for WindowControls *)
-class window_controls (obj : Window_controls.t) : window_controls_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t)
+class window_controls (obj : Window_controls.t) : window_controls_t =
+  object (self)
+    inherit
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      .widget
+        (obj
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+             .Widget
+             .t)
 
-  method get_decoration_layout : unit -> string option =
-    fun () ->
-      (Window_controls.get_decoration_layout obj)
+    method get_decoration_layout : unit -> string option =
+      fun () -> Window_controls.get_decoration_layout obj
 
-  method get_empty : unit -> bool =
-    fun () ->
-      (Window_controls.get_empty obj)
+    method get_empty : unit -> bool = fun () -> Window_controls.get_empty obj
 
-  method get_side : unit -> Gtk_enums.packtype =
-    fun () ->
-      (Window_controls.get_side obj)
+    method get_side : unit -> Gtk_enums.packtype =
+      fun () -> Window_controls.get_side obj
 
-  method set_decoration_layout : string option -> unit =
-    fun layout ->
-      (Window_controls.set_decoration_layout obj layout)
+    method set_decoration_layout : string option -> unit =
+      fun layout -> Window_controls.set_decoration_layout obj layout
 
-  method set_side : Gtk_enums.packtype -> unit =
-    fun side ->
-      (Window_controls.set_side obj side)
+    method set_side : Gtk_enums.packtype -> unit =
+      fun side -> Window_controls.set_side obj side
 
     method as_window_controls = obj
-end
+  end
 
 let new_ (side : Gtk_enums.packtype) : window_controls_t =
   let obj_ = Window_controls.new_ side in
   new window_controls obj_
-

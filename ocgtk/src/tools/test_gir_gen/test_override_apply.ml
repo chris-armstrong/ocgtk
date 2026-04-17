@@ -311,7 +311,8 @@ let test_method_ignore () =
             class_action = None;
             class_os = None;
             constructors = [];
-            methods = [ { component_name = "show"; action = Some Ignore; os = None } ];
+            methods =
+              [ { component_name = "show"; action = Some Ignore; os = None } ];
             properties = [];
             signals = [];
           };
@@ -350,8 +351,9 @@ let test_method_version_override () =
                 {
                   component_name = "show";
                   action =
-                    Some (Set_version { vs_version = "4.10"; vs_namespace = None });
-                    os = None;
+                    Some
+                      (Set_version { vs_version = "4.10"; vs_namespace = None });
+                  os = None;
                 };
               ];
             properties = [];
@@ -389,8 +391,9 @@ let test_method_version_replaces_existing () =
                 {
                   component_name = "show";
                   action =
-                    Some (Set_version { vs_version = "4.12"; vs_namespace = None });
-                    os = None;
+                    Some
+                      (Set_version { vs_version = "4.12"; vs_namespace = None });
+                  os = None;
                 };
               ];
             properties = [];
@@ -422,7 +425,8 @@ let test_constructor_ignore () =
             class_name = "Widget";
             class_action = None;
             class_os = None;
-            constructors = [ { component_name = "new"; action = Some Ignore; os = None } ];
+            constructors =
+              [ { component_name = "new"; action = Some Ignore; os = None } ];
             methods = [];
             properties = [];
             signals = [];
@@ -461,8 +465,9 @@ let test_property_version_override () =
                 {
                   component_name = "sensitive";
                   action =
-                    Some (Set_version { vs_version = "4.10"; vs_namespace = None });
-                    os = None;
+                    Some
+                      (Set_version { vs_version = "4.10"; vs_namespace = None });
+                  os = None;
                 };
               ];
             signals = [];
@@ -496,7 +501,10 @@ let test_signal_ignore () =
             constructors = [];
             methods = [];
             properties = [];
-            signals = [ { component_name = "destroy"; action = Some Ignore; os = None } ];
+            signals =
+              [
+                { component_name = "destroy"; action = Some Ignore; os = None };
+              ];
           };
         ];
     }
@@ -530,7 +538,13 @@ let test_interface_method_ignore () =
             interface_action = None;
             interface_os = None;
             methods =
-              [ { component_name = "get_action_name"; action = Some Ignore; os = None } ];
+              [
+                {
+                  component_name = "get_action_name";
+                  action = Some Ignore;
+                  os = None;
+                };
+              ];
             properties = [];
             signals = [];
           };
@@ -594,7 +608,14 @@ let test_record_field_ignore () =
             record_name = "TextIter";
             record_action = None;
             record_os = None;
-            fields = [ { component_name = "user_data"; action = Some Ignore; os = None } ];
+            fields =
+              [
+                {
+                  component_name = "user_data";
+                  action = Some Ignore;
+                  os = None;
+                };
+              ];
             constructors = [];
             methods = [];
             functions = [];
@@ -631,8 +652,9 @@ let test_record_field_version_override () =
                 {
                   component_name = "start";
                   action =
-                    Some (Set_version { vs_version = "4.14"; vs_namespace = None });
-                    os = None;
+                    Some
+                      (Set_version { vs_version = "4.14"; vs_namespace = None });
+                  os = None;
                 };
               ];
             constructors = [];
@@ -699,7 +721,8 @@ let test_enum_member_ignore () =
             enum_name = "RGBA";
             enum_action = None;
             enum_os = None;
-            members = [ { component_name = "RED"; action = Some Ignore; os = None } ];
+            members =
+              [ { component_name = "RED"; action = Some Ignore; os = None } ];
             functions = [];
           };
         ];
@@ -734,8 +757,9 @@ let test_enum_member_version_override () =
                 {
                   component_name = "RED";
                   action =
-                    Some (Set_version { vs_version = "4.14"; vs_namespace = None });
-                    os = None;
+                    Some
+                      (Set_version { vs_version = "4.14"; vs_namespace = None });
+                  os = None;
                 };
               ];
             functions = [];
@@ -794,7 +818,8 @@ let test_bitfield_member_ignore () =
             bitfield_name = "StateFlags";
             bitfield_action = None;
             bitfield_os = None;
-            flags = [ { component_name = "ACTIVE"; action = Some Ignore; os = None } ];
+            flags =
+              [ { component_name = "ACTIVE"; action = Some Ignore; os = None } ];
           };
         ];
     }
@@ -827,8 +852,9 @@ let test_bitfield_member_version_override () =
                 {
                   component_name = "ACTIVE";
                   action =
-                    Some (Set_version { vs_version = "4.14"; vs_namespace = None });
-                    os = None;
+                    Some
+                      (Set_version { vs_version = "4.14"; vs_namespace = None });
+                  os = None;
                 };
               ];
           };
@@ -850,7 +876,8 @@ let test_function_ignore () =
   let overrides =
     {
       (make_empty_overrides "Gtk") with
-      functions = [ { component_name = "gtk_show_uri"; action = Some Ignore; os = None } ];
+      functions =
+        [ { component_name = "gtk_show_uri"; action = Some Ignore; os = None } ];
     }
   in
   let result =
@@ -929,7 +956,13 @@ let test_unknown_component_warning () =
             class_os = None;
             constructors = [];
             methods =
-              [ { component_name = "nonexistent_method"; action = Some Ignore; os = None } ];
+              [
+                {
+                  component_name = "nonexistent_method";
+                  action = Some Ignore;
+                  os = None;
+                };
+              ];
             properties = [];
             signals = [];
           };
@@ -960,7 +993,14 @@ let test_class_ignore_no_component_warnings () =
             class_action = Some Ignore;
             class_os = None;
             constructors = [];
-            methods = [ { component_name = "nonexistent"; action = Some Ignore; os = None } ];
+            methods =
+              [
+                {
+                  component_name = "nonexistent";
+                  action = Some Ignore;
+                  os = None;
+                };
+              ];
             properties = [];
             signals = [];
           };
@@ -1010,7 +1050,10 @@ let test_combined_class_and_component () =
             class_action = None;
             class_os = None;
             constructors = [];
-            methods = [ { component_name = "activate"; action = Some Ignore; os = None } ];
+            methods =
+              [
+                { component_name = "activate"; action = Some Ignore; os = None };
+              ];
             properties = [];
             signals = [];
           };

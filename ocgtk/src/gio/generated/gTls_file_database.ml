@@ -1,15 +1,13 @@
 class type tls_file_database_t = object
-    method anchors : string
-    method set_anchors : string -> unit
-    method as_tls_file_database : Tls_file_database.t
+  method anchors : string
+  method set_anchors : string -> unit
+  method as_tls_file_database : Tls_file_database.t
 end
 
 (* High-level class for TlsFileDatabase *)
-class tls_file_database (obj : Tls_file_database.t) : tls_file_database_t = object (self)
-
-  method anchors = Tls_file_database.get_anchors obj
-  method set_anchors v =  Tls_file_database.set_anchors obj v
-
+class tls_file_database (obj : Tls_file_database.t) : tls_file_database_t =
+  object (self)
+    method anchors = Tls_file_database.get_anchors obj
+    method set_anchors v = Tls_file_database.set_anchors obj v
     method as_tls_file_database = obj
-end
-
+  end

@@ -2,8 +2,8 @@
 
     Overrides are s-expression-based configuration entries that control
     generation behaviour per-entity (ignore, version override, OS guard). They
-    are parsed by {!Override_parser} and applied by {!Override_apply} before
-    the generation pipeline builds its type-mapping context. *)
+    are parsed by {!Override_parser} and applied by {!Override_apply} before the
+    generation pipeline builds its type-mapping context. *)
 
 type version_spec = { vs_version : string; vs_namespace : string option }
 [@@deriving sexp, eq]
@@ -18,8 +18,8 @@ type override_action = Ignore | Set_version of version_spec
 type os_spec = string [@@deriving sexp, eq]
 (** OS/platform restriction. Supported values: "linux", "macos", "freebsd",
     "unix". The generator emits [#ifdef __linux__] / [#else caml_failwith] /
-    [#endif] guards in the C stubs. Can be combined with [(version ...)] on
-    the same entity or component. *)
+    [#endif] guards in the C stubs. Can be combined with [(version ...)] on the
+    same entity or component. *)
 
 type component_override = {
   component_name : string;

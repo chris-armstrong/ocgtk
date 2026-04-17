@@ -81,7 +81,8 @@ let test_overrides =
           class_action = None;
           class_os = None;
           constructors = [];
-          methods = [ { component_name = "create"; action = Some Ignore; os = None } ];
+          methods =
+            [ { component_name = "create"; action = Some Ignore; os = None } ];
           properties = [];
           signals = [];
         };

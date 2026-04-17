@@ -3,14 +3,14 @@
 # Usage: ./scripts/generate-bindings.sh [GIR_PATH]
 #
 # Set GIR_PATH to override the default location of GIR files
-# Default: /usr/share/gir-1.0
+# Default: bundled ocgtk/gir/ directory in this repository
 
 set -e
 
 # Configuration
-GIR_PATH="${1:-${GIR_PATH:-/usr/share/gir-1.0}}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+GIR_PATH="${1:-${GIR_PATH:-$REPO_ROOT/ocgtk/gir}}"
 # The dune workspace is in the ocgtk subdirectory, NOT the repository root
 WORKSPACE_ROOT="$REPO_ROOT/ocgtk"
 BUILD_DIR="$WORKSPACE_ROOT/_build/references"

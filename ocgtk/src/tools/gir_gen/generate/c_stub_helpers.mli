@@ -260,26 +260,21 @@ val emit_with_member_guard :
 (** {1 OS Guard Support} *)
 
 val os_to_c_guard_open : string -> string
-(** Map an OS string to the opening C preprocessor guard.
-    E.g. ["linux"] -> ["#ifdef __linux__"]. *)
+(** Map an OS string to the opening C preprocessor guard. E.g. ["linux"] ->
+    ["#ifdef __linux__"]. *)
 
 val os_to_c_guard_close : string -> string
-(** Map an OS string to the closing C preprocessor guard.
-    E.g. ["linux"] -> ["#endif /* __linux__ */"]. *)
+(** Map an OS string to the closing C preprocessor guard. E.g. ["linux"] ->
+    ["#endif /* __linux__ */"]. *)
 
 val os_display_name : string -> string
-(** Human-readable display name for an OS string (for failwith messages).
-    E.g. ["linux"] -> ["Linux"]. *)
+(** Human-readable display name for an OS string (for failwith messages). E.g.
+    ["linux"] -> ["Linux"]. *)
 
 val emit_with_os_guard :
-  os:string option ->
-  failwith_stub:string ->
-  stub:string ->
-  Buffer.t ->
-  unit
-(** Wrap a generated stub in an OS guard.
-    [os]: OS string (e.g. ["linux"]), or [None] to emit stub as-is.
-    [failwith_stub]: content for the [#else] branch.
+  os:string option -> failwith_stub:string -> stub:string -> Buffer.t -> unit
+(** Wrap a generated stub in an OS guard. [os]: OS string (e.g. ["linux"]), or
+    [None] to emit stub as-is. [failwith_stub]: content for the [#else] branch.
     [stub]: the actual implementation in the [#ifdef] branch. *)
 
 val emit_os_fallback_constructor_stub :
@@ -312,7 +307,8 @@ val emit_os_fallback_property_getter_stub :
   os:string ->
   Types.gir_property ->
   string
-(** Emit a fallback property getter stub for the [#else] branch of an OS guard. *)
+(** Emit a fallback property getter stub for the [#else] branch of an OS guard.
+*)
 
 val emit_os_fallback_property_setter_stub :
   ctx:Types.generation_context ->
@@ -322,4 +318,5 @@ val emit_os_fallback_property_setter_stub :
   os:string ->
   Types.gir_property ->
   string
-(** Emit a fallback property setter stub for the [#else] branch of an OS guard. *)
+(** Emit a fallback property setter stub for the [#else] branch of an OS guard.
+*)

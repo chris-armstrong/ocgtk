@@ -470,8 +470,8 @@ let generate_c_stub ~ctx ~output_dir entity =
               Buffer.add_string os_fallback_buf
                 (Gir_gen_lib.Generate.C_stub_helpers
                  .emit_os_fallback_method_stub ~ctx ~c_type:entity.c_type
-                   ~class_name:entity.name ~ml_name ~c_identifier:meth.c_identifier
-                   ~os:os_val meth);
+                   ~class_name:entity.name ~ml_name
+                   ~c_identifier:meth.c_identifier ~os:os_val meth);
               Buffer.add_string os_fallback_buf "\n"))
           entity.methods;
         List.iter
@@ -479,8 +479,8 @@ let generate_c_stub ~ctx ~output_dir entity =
             if
               Gir_gen_lib.Generate.Filtering.should_generate_property ~ctx
                 ~class_name:entity.name ~methods:entity.methods prop
-            then begin
-              if prop.readable then (
+            then
+              begin if prop.readable then (
                 let ml_name =
                   Gir_gen_lib.Utils.ml_property_name ~ctx
                     ~class_name:entity.name prop
@@ -502,7 +502,7 @@ let generate_c_stub ~ctx ~output_dir entity =
                        ~c_type:entity.c_type ~class_name:entity.name ~ml_name
                        ~os:os_val prop);
                   Buffer.add_string os_fallback_buf "\n"))
-            end)
+              end)
           entity.properties;
         let os_fallback = Buffer.contents os_fallback_buf in
         Buffer.add_char buf '\n';
@@ -1583,8 +1583,7 @@ let render_component ~kind (c : Gir_gen_lib.Override_types.component_override) =
       sprintf "    (%s %s (ignore))" kind c.component_name
   | Some (Gir_gen_lib.Override_types.Set_version vs) ->
       sprintf "    (%s %s (version \"%s\"))" kind c.component_name vs.vs_version
-  | None ->
-      sprintf "    (%s %s)" kind c.component_name
+  | None -> sprintf "    (%s %s)" kind c.component_name
 
 (* Render an enum override entry, merging existing ignores with fresh version data.
    [ignore_components]: component-level ignores to preserve from the existing file.

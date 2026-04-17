@@ -1,14 +1,13 @@
 class type io_module_t = object
-    method as_io_module : Io_module.t
+  method as_io_module : Io_module.t
 end
 
 (* High-level class for IOModule *)
-class io_module (obj : Io_module.t) : io_module_t = object (self)
-
+class io_module (obj : Io_module.t) : io_module_t =
+  object (self)
     method as_io_module = obj
-end
+  end
 
 let new_ (filename : string) : io_module_t =
   let obj_ = Io_module.new_ filename in
   new io_module obj_
-
