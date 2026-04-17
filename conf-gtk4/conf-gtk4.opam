@@ -23,8 +23,7 @@ depexts: [
   ["gtk4-devel"] {os-distribution = "fedora"}
   ["gtk4-devel"] {os-distribution = "rhel"}
   ["gtk4-devel"] {os-distribution = "centos"}
-  # OpenSUSE: also install pkgconf to ensure pkg-config binary is available
-  ["gtk4-devel" "pkgconf"] {os-distribution = "opensuse-leap" | os-distribution = "opensuse-tumbleweed"}
+  ["gtk4-devel"] {os-distribution = "opensuse-leap" | os-distribution = "opensuse-tumbleweed"}
 
   # Arch Linux
   ["gtk4"] {os-distribution = "arch"}
@@ -44,9 +43,11 @@ depexts: [
 ]
 
 # Check that pkg-config can find gtk4 (any version — compatibility handled via version guards)
+# openSUSE provides pkgconf but may not install the pkg-config compat shim; call pkgconf directly.
 build: [
   ["pkgconf" "--personality=x86_64-w64-mingw32" "--print-errors" "--exists" "gtk4"] {os = "win32" & os-distribution != "cygwinports" & host-arch-x86_64:installed}
-  ["pkg-config" "--short-errors" "--print-errors" "gtk4"] {os != "win32" | os-distribution = "cygwinports"}
+  ["pkgconf" "--short-errors" "--print-errors" "gtk4"] {os-distribution = "opensuse-leap" | os-distribution = "opensuse-tumbleweed"}
+  ["pkg-config" "--short-errors" "--print-errors" "gtk4"] {(os != "win32" | os-distribution = "cygwinports") & os-distribution != "opensuse-leap" & os-distribution != "opensuse-tumbleweed"}
 ]
 
 flags: conf
