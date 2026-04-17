@@ -13,6 +13,7 @@
   (header "gio/gunixinputstream.h" (os "linux"))
   (header "gio/gunixfdmessage.h" (os "linux"))
   (header "gio/gfiledescriptorbased.h" (os "linux"))
+  (header "gio/gdesktopappinfo.h" (os "linux"))
 
   ;; Linux-only GIO classes (from gio-unix-2.0 / gio/gunix*.h).
   ;; These headers are not available on macOS (Homebrew) or FreeBSD.
