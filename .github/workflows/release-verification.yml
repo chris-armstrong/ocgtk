@@ -222,7 +222,7 @@ jobs:
       - name: Install system dependencies
         run: |
           zypper install -y \
-            gcc make m4 patch unzip bzip2 gzip tar pkg-config perl diffutils which rsync \
+            gcc make m4 patch unzip bzip2 gzip tar pkg-config pkgconf perl diffutils which rsync \
             gtk4-devel cairo-devel pango-devel gdk-pixbuf-devel glib2-devel \
             gobject-introspection-devel xorg-x11-server-Xvfb xvfb-run
       - name: Install opam
