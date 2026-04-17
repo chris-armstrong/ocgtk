@@ -19,11 +19,12 @@ depexts: [
   # Debian/Ubuntu
   ["libgtk-4-dev"] {os-family = "debian"}
 
-  # Fedora/RHEL/CentOS/OpenSUSE
+  # Fedora/RHEL/CentOS
   ["gtk4-devel"] {os-distribution = "fedora"}
   ["gtk4-devel"] {os-distribution = "rhel"}
   ["gtk4-devel"] {os-distribution = "centos"}
-  ["gtk4-devel"] {os-distribution = "opensuse-leap" | os-distribution = "opensuse-tumbleweed"}
+  # OpenSUSE: also install pkgconf to ensure pkg-config binary is available
+  ["gtk4-devel" "pkgconf"] {os-distribution = "opensuse-leap" | os-distribution = "opensuse-tumbleweed"}
 
   # Arch Linux
   ["gtk4"] {os-distribution = "arch"}
