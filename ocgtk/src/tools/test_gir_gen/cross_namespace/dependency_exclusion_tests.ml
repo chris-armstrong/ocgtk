@@ -90,7 +90,7 @@ let test_glib_not_included_as_dependency () =
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
       ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
-      ~interfaces:[]
+      ~interfaces:[] ()
   in
 
   Helpers.log_generated_c_code "gtk_decls.h (Stage 4 exclusion test)"
@@ -108,7 +108,7 @@ let test_gmodule_not_included_as_dependency () =
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
       ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
-      ~interfaces:[]
+      ~interfaces:[] ()
   in
 
   (* Verify GModule header is NOT included using AST-based validation *)
@@ -123,7 +123,7 @@ let test_gobject_not_included_as_dependency () =
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
       ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
-      ~interfaces:[]
+      ~interfaces:[] ()
   in
 
   (* Verify GObject header is NOT included using AST-based validation *)
@@ -138,7 +138,7 @@ let test_non_base_namespaces_are_included () =
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
       ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
-      ~interfaces:[]
+      ~interfaces:[] ()
   in
 
   (* Verify Gdk header IS included using AST-based validation *)

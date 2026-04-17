@@ -93,6 +93,11 @@ type bitfield_override = {
     The sexp format uses [(member NAME ...)] for bitfield members, matching the
     enum keyword. The parser maps this to the [flags] field. *)
 
+type header_override = { header_path : string; header_os : os_spec option }
+[@@deriving sexp, eq]
+(** Override for a C [#include] header emitted in the generated [*_decls.h]
+    file. [header_os = Some "linux"] wraps the include in [#ifdef __linux__]. *)
+
 type library_overrides = {
   library_name : string;
   classes : class_override list;
@@ -104,6 +109,8 @@ type library_overrides = {
       (** Standalone namespace-level functions. Parsed from [(function ...)] at
           the top level of the [(overrides ...)] form, not nested inside any
           entity. *)
+  headers : header_override list;
+      (** C [#include] headers with optional OS guards. *)
 }
 [@@deriving sexp, eq]
 (** Top-level overrides container. *)

@@ -131,6 +131,7 @@ let test_library_overrides_construction () =
       bitfields = [];
       functions =
         [ { component_name = "gtk_show_uri"; action = Some Ignore; os = None } ];
+      headers = [];
     }
   in
   Alcotest.(check string) "library" "Gtk" ov.library_name;
@@ -157,6 +158,7 @@ let test_library_overrides_eq () =
       enums = [];
       bitfields = [];
       functions = [];
+      headers = [];
     }
   in
   let ov2 = ov1 in

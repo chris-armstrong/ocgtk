@@ -80,7 +80,7 @@ let test_header_does_not_contain_external_bitfield_decls () =
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
       ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
-      ~interfaces:[]
+      ~interfaces:[] ()
   in
 
   Helpers.log_generated_c_code "gtk_decls.h (Stage 3 test)" header_content;
@@ -157,7 +157,7 @@ let test_emit_bitfield_proto_not_exported () =
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
       ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
-      ~interfaces:[]
+      ~interfaces:[] ()
   in
 
   (* The external bitfield forward declarations are verified to not exist via

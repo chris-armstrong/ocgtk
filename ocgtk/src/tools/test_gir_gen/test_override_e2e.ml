@@ -38,6 +38,7 @@ let test_overrides =
     enums = [];
     bitfields = [];
     functions = [];
+    headers = [];
   }
 
 (* E2E test: parse synthetic GIR, apply overrides, check results. *)

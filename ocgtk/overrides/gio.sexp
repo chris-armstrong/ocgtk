@@ -5,6 +5,15 @@
   ;; including gsettingsbackend.h — not suitable for general use
   (class SettingsBackend (ignore))
 
+  ;; Linux-only C headers from gio-unix-2.0. These are not present in
+  ;; Homebrew's GLib on macOS or in FreeBSD's gio. The generator wraps
+  ;; them in #ifdef __linux__ in the generated gio_decls.h.
+  (header "gio/gunixoutputstream.h" (os "linux"))
+  (header "gio/gunixmounts.h" (os "linux"))
+  (header "gio/gunixinputstream.h" (os "linux"))
+  (header "gio/gunixfdmessage.h" (os "linux"))
+  (header "gio/gfiledescriptorbased.h" (os "linux"))
+
   ;; Linux-only GIO classes (from gio-unix-2.0 / gio/gunix*.h).
   ;; These headers are not available on macOS (Homebrew) or FreeBSD.
   ;; Bindings are generated but wrapped in #ifdef __linux__ guards so they

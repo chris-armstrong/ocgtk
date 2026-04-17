@@ -117,6 +117,7 @@ let ignore_button_overrides =
     enums = [];
     bitfields = [];
     functions = [];
+    headers = [];
   }
 
 let ignore_create_overrides =
@@ -140,6 +141,7 @@ let ignore_create_overrides =
     enums = [];
     bitfields = [];
     functions = [];
+    headers = [];
   }
 
 let version_widget_overrides =
@@ -163,6 +165,7 @@ let version_widget_overrides =
     enums = [];
     bitfields = [];
     functions = [];
+    headers = [];
   }
 
 (* ========================================================================= *)
@@ -337,6 +340,7 @@ let test_empty_overrides_preserve_all_classes () =
       enums = [];
       bitfields = [];
       functions = [];
+      headers = [];
     }
   in
   let result = parse_and_apply empty_overrides in

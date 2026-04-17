@@ -221,6 +221,7 @@ let make_empty_overrides library_name =
     enums = [];
     bitfields = [];
     functions = [];
+    headers = [];
   }
 
 let make_class_override ?(action = None) ?(os = None) ?(constructors = [])
@@ -237,7 +238,16 @@ let make_class_override ?(action = None) ?(os = None) ?(constructors = [])
 
 let make_overrides_with_classes ?(interfaces = []) ?(records = []) ?(enums = [])
     ?(bitfields = []) ?(functions = []) library_name classes =
-  { library_name; classes; interfaces; records; enums; bitfields; functions }
+  {
+    library_name;
+    classes;
+    interfaces;
+    records;
+    enums;
+    bitfields;
+    functions;
+    headers = [];
+  }
 
 (* Tests: Class overrides *)
 

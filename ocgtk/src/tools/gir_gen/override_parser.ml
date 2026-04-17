@@ -328,10 +328,27 @@ let extract_library_name body =
     directly (no duplicate check). For entities: validates kind, checks for
     duplicates, type-specific parse + accumulate. For library declarations:
     skipped. *)
+let parse_header_override sexp =
+  match sexp with
+  | Sexp.List (Sexp.Atom "header" :: Sexp.Atom path :: rest) ->
+      let header_os = extract_os_marker rest in
+      Ok { header_path = path; header_os }
+  | _ ->
+      Error
+        (Invalid_format
+           {
+             location = "header";
+             message = "Expected (header \"path\" [(os \"...\")]";
+           })
+
 let process_element ~seen ~errors ~classes ~interfaces ~records ~enums
-    ~bitfields ~functions sexp =
+    ~bitfields ~functions ~headers sexp =
   match sexp with
   | Sexp.List [ Sexp.Atom "library"; _ ] -> ()
+  | Sexp.List (Sexp.Atom "header" :: _) -> (
+      match parse_header_override sexp with
+      | Ok h -> headers := h :: !headers
+      | Error e -> errors := e :: !errors)
   | Sexp.List (Sexp.Atom "function" :: Sexp.Atom name :: _) ->
       let key = ("function", name) in
       if Hashtbl.mem seen key then
@@ -386,13 +403,13 @@ let process_element ~seen ~errors ~classes ~interfaces ~records ~enums
 
 (** Walk all elements in the overrides body, stopping at the first error. *)
 let collect_overrides ~seen ~errors ~classes ~interfaces ~records ~enums
-    ~bitfields ~functions body =
+    ~bitfields ~functions ~headers body =
   List.iter
     (fun sexp ->
       if List.length !errors > 0 then ()
       else
         process_element ~seen ~errors ~classes ~interfaces ~records ~enums
-          ~bitfields ~functions sexp)
+          ~bitfields ~functions ~headers sexp)
     body
 
 let parse_overrides_sexp sexp =
@@ -405,10 +422,11 @@ let parse_overrides_sexp sexp =
       let enums = ref [] in
       let bitfields = ref [] in
       let functions = ref [] in
+      let headers = ref [] in
       let errors = ref [] in
       let seen = Hashtbl.create 16 in
       collect_overrides ~seen ~errors ~classes ~interfaces ~records ~enums
-        ~bitfields ~functions body;
+        ~bitfields ~functions ~headers body;
       match !errors with
       | e :: _ -> Error e
       | [] ->
@@ -421,6 +439,7 @@ let parse_overrides_sexp sexp =
               enums = List.rev !enums;
               bitfields = List.rev !bitfields;
               functions = List.rev !functions;
+              headers = List.rev !headers;
             })
   | _ ->
       Error

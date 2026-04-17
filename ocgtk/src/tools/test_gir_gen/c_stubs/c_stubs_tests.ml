@@ -712,7 +712,7 @@ let test_header_file_naming () =
   in
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
+      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
   in
 
   (* Parse header guards using AST-based validation *)
@@ -751,7 +751,7 @@ let test_header_guard_format () =
 
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
+      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
   in
 
   (* Parse header guards using AST-based validation *)

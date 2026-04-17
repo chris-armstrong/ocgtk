@@ -73,6 +73,11 @@ type bitfield_override = {
 }
 [@@deriving sexp, eq]
 
+type header_override = { header_path : string; header_os : os_spec option }
+[@@deriving sexp, eq]
+(** Override for a C `#include` header emitted in the generated `*_decls.h`
+    file. [header_os = Some "linux"] wraps the include in [#ifdef __linux__]. *)
+
 type library_overrides = {
   library_name : string;
   classes : class_override list;
@@ -81,5 +86,6 @@ type library_overrides = {
   enums : enum_override list;
   bitfields : bitfield_override list;
   functions : component_override list;
+  headers : header_override list;
 }
 [@@deriving sexp, eq]

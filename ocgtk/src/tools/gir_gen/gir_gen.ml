@@ -1046,9 +1046,14 @@ let generate_bindings filter_file gir_file output_dir reference_files
   (* Apply overrides before building type-mapping context. Ignored entities
      must be absent from ctx so that find_type_mapping_for_gir_type returns
      None for their types. *)
-  let classes, interfaces, gtk_enums, gtk_bitfields, gtk_records =
+  let ( classes,
+        interfaces,
+        gtk_enums,
+        gtk_bitfields,
+        gtk_records,
+        header_overrides ) =
     match overrides_file with
-    | None -> (classes, interfaces, gtk_enums, gtk_bitfields, gtk_records)
+    | None -> (classes, interfaces, gtk_enums, gtk_bitfields, gtk_records, [])
     | Some file -> (
         printf "Loading overrides from %s\n" file;
         match Gir_gen_lib.Override_parser.parse_overrides file with
@@ -1073,7 +1078,8 @@ let generate_bindings filter_file gir_file output_dir reference_files
               result.interfaces,
               result.enums,
               result.bitfields,
-              result.records ))
+              result.records,
+              ov.headers ))
   in
 
   (* ==== PREPROCESSING STAGE ==== *)
@@ -1243,8 +1249,9 @@ let generate_bindings filter_file gir_file output_dir reference_files
   in
   printf "\n";
   let header_content =
-    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
-      ~gtk_enums ~gtk_bitfields ~records:ctx.records ~interfaces:ctx.interfaces
+    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~header_overrides
+      ~classes:ctx.classes ~gtk_enums ~gtk_bitfields ~records:ctx.records
+      ~interfaces:ctx.interfaces ()
   in
   write_file ~path:header_file ~content:header_content;
 
@@ -1730,6 +1737,7 @@ let generate_overrides gir_file output_file =
             enums = [];
             bitfields = [];
             functions = [];
+            headers = [];
           }
     end
     else
@@ -1741,6 +1749,7 @@ let generate_overrides gir_file output_file =
         enums = [];
         bitfields = [];
         functions = [];
+        headers = [];
       }
   in
 

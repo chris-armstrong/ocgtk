@@ -43,7 +43,7 @@ let generate_dependency_includes dependency_namespaces =
 
 (* Generate common header file with forward declarations for enum/bitfield converters *)
 let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
-    ~records =
+    ~records ?(header_overrides = []) () =
   let buf = Buffer.create 4096 in
   let ns_lower = String.lowercase_ascii ctx.namespace.namespace_name in
   Buffer.add_string buf "/* GENERATED CODE - DO NOT EDIT */\n";
@@ -55,35 +55,57 @@ let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
   bprintf buf "#define _%s_decls_h_\n" ns_lower;
   Buffer.add_string buf "\n";
   (* Include C headers from the repository (parsed from GIR).
-     Linux-only GIO headers (gio/gunix*.h, gio/gdesktopappinfo.h,
-     gio/gfiledescriptorbased.h) are guarded with #ifdef __linux__ because
-     they are not present in Homebrew's GLib on macOS or on FreeBSD. *)
-  let is_linux_only_header h =
-    let starts_with prefix s =
-      let n = String.length prefix in
-      String.length s >= n && String.equal (String.sub s ~pos:0 ~len:n) prefix
-    in
-    starts_with "gio/gunix" h
-    || String.equal h "gio/gdesktopappinfo.h"
-    || String.equal h "gio/gfiledescriptorbased.h"
+     Headers with an (os ...) override in the library's override file are
+     wrapped in the appropriate #ifdef guard (e.g. #ifdef __linux__). *)
+  let find_header_os path =
+    List.find_map
+      ~f:(fun { Override_types.header_path = hp; header_os } ->
+        if String.equal hp path then header_os else None)
+      header_overrides
   in
-  let regular_includes, linux_only_includes =
+  (* Group headers by their OS guard (None = unconditional) *)
+  let unconditional, conditional =
     List.partition
-      ~f:(fun h -> not (is_linux_only_header h))
+      ~f:(fun h -> find_header_os h = None)
       ctx.repository.repository_c_includes
   in
   List.iter
     ~f:(fun c_include ->
       Buffer.add_string buf (sprintf "#include <%s>\n" c_include))
-    regular_includes;
-  if linux_only_includes <> [] then begin
-    Buffer.add_string buf "#ifdef __linux__\n";
-    List.iter
-      ~f:(fun c_include ->
-        Buffer.add_string buf (sprintf "#include <%s>\n" c_include))
-      linux_only_includes;
-    Buffer.add_string buf "#endif /* __linux__ */\n"
-  end;
+    unconditional;
+  (* Emit conditional headers grouped by OS guard *)
+  let os_groups =
+    List.filter_map
+      ~f:(fun h ->
+        match find_header_os h with Some os -> Some (os, h) | None -> None)
+      conditional
+  in
+  (* Collect unique OS values in order *)
+  let seen_os = Hashtbl.create 4 in
+  let ordered_os =
+    List.filter_map
+      ~f:(fun (os, _) ->
+        if Hashtbl.mem seen_os os then None
+        else begin
+          Hashtbl.add seen_os os ();
+          Some os
+        end)
+      os_groups
+  in
+  List.iter
+    ~f:(fun os ->
+      let headers_for_os =
+        List.filter_map
+          ~f:(fun (g_os, h) -> if String.equal g_os os then Some h else None)
+          os_groups
+      in
+      Buffer.add_string buf (C_stub_helpers.os_to_c_guard_open os ^ "\n");
+      List.iter
+        ~f:(fun c_include ->
+          Buffer.add_string buf (sprintf "#include <%s>\n" c_include))
+        headers_for_os;
+      Buffer.add_string buf (C_stub_helpers.os_to_c_guard_close os ^ "\n"))
+    ordered_os;
   Buffer.add_string buf "#include <caml/mlvalues.h>\n";
   Buffer.add_string buf "\n";
 
