@@ -67,6 +67,7 @@ let base_ctx () =
       signals = [];
       class_doc = None;
       version = None;
+      os = None;
     }
   in
   let scrollable_iface =
@@ -83,6 +84,7 @@ let base_ctx () =
       signals = [];
       interface_doc = None;
       version = None;
+      os = None;
     }
   in
   let text_direction_enum =
@@ -93,6 +95,7 @@ let base_ctx () =
       enum_doc = None;
       functions = [];
       enum_version = None;
+      enum_os = None;
     }
   in
   let state_flags_bitfield =
@@ -102,6 +105,7 @@ let base_ctx () =
       flags = [];
       bitfield_doc = None;
       bitfield_version = None;
+      bitfield_os = None;
     }
   in
   let text_iter_record =
@@ -121,6 +125,7 @@ let base_ctx () =
       functions = [];
       record_doc = None;
       version = None;
+      os = None;
     }
   in
   {

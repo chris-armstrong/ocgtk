@@ -2,56 +2,49 @@
 (* Combined modules for cyclic dependencies *)
 
 module rec Layout : sig
-  type t = [ `layout | `object_ ] Gobject.obj
+  type t = [`layout | `object_] Gobject.obj
 
-  external new_ : Context_and__font_and__font_map_and__fontset.Context.t -> t
-    = "ml_pango_layout_new"
   (** Create a new Layout *)
+  external new_ : Context_and__font_and__font_map_and__fontset.Context.t -> t = "ml_pango_layout_new"
 
   (* Methods *)
-
-  external xy_to_index : t -> int -> int -> bool * int * int
-    = "ml_pango_layout_xy_to_index"
   (** Converts from X and Y position within a layout to the byte index to the
-      character at that logical position.
+  character at that logical position.
 
-      If the Y position is not inside the layout, the closest position is chosen
-      (the position will be clamped inside the layout). If the X position is not
-      within the layout, then the start or the end of the line is chosen as
-      described for [method@Pango.LayoutLine.x_to_index]. If either the X or Y
-      positions were not inside the layout, then the function returns %FALSE; on
-      an exact hit, it returns %TRUE. *)
+  If the Y position is not inside the layout, the closest position is
+  chosen (the position will be clamped inside the layout). If the X position
+  is not within the layout, then the start or the end of the line is
+  chosen as described for [method@Pango.LayoutLine.x_to_index]. If either
+  the X or Y positions were not inside the layout, then the function returns
+  %FALSE; on an exact hit, it returns %TRUE. *)
+  external xy_to_index : t -> int -> int -> bool * int * int = "ml_pango_layout_xy_to_index"
 
-  external write_to_file :
-    t -> Pango_enums.layoutserializeflags -> string -> (bool, GError.t) result
-    = "ml_pango_layout_write_to_file"
   (** A convenience method to serialize a layout to a file.
 
-      It is equivalent to calling [method@Pango.Layout.serialize] followed by
-      [func@GLib.file_set_contents].
+  It is equivalent to calling [method@Pango.Layout.serialize]
+  followed by [func@GLib.file_set_contents].
 
-      See those two functions for details on the arguments.
+  See those two functions for details on the arguments.
 
-      It is mostly intended for use inside a debugger to quickly dump a layout
-      to a file for later inspection. *)
+  It is mostly intended for use inside a debugger to quickly dump
+  a layout to a file for later inspection. *)
+  external write_to_file : t -> Pango_enums.layoutserializeflags -> string -> (bool, GError.t) result = "ml_pango_layout_write_to_file"
 
-  external set_wrap : t -> Pango_enums.wrapmode -> unit
-    = "ml_pango_layout_set_wrap"
   (** Sets the wrap mode.
 
-      The wrap mode only has effect if a width is set on the layout with
-      [method@Pango.Layout.set_width]. To turn off wrapping, set the width to
-      -1.
+  The wrap mode only has effect if a width is set on the layout
+  with [method@Pango.Layout.set_width]. To turn off wrapping,
+  set the width to -1.
 
-      The default value is %PANGO_WRAP_WORD. *)
+  The default value is %PANGO_WRAP_WORD. *)
+  external set_wrap : t -> Pango_enums.wrapmode -> unit = "ml_pango_layout_set_wrap"
 
-  external set_width : t -> int -> unit = "ml_pango_layout_set_width"
   (** Sets the width to which the lines of the `PangoLayout` should wrap or
-      ellipsized.
+  ellipsized.
 
-      The default value is -1: no width set. *)
+  The default value is -1: no width set. *)
+  external set_width : t -> int -> unit = "ml_pango_layout_set_width"
 
-  external set_text : t -> string -> int -> unit = "ml_pango_layout_set_text"
   (** Sets the text of the layout.
 
   This function validates @text and renders invalid UTF-8
@@ -62,9 +55,8 @@ module rec Layout : sig
   may want to call [method@Pango.Layout.set_attributes] to clear the
   attributes set on the layout from the markup as this function does
   not clear attributes. *)
+  external set_text : t -> string -> int -> unit = "ml_pango_layout_set_text"
 
-  external set_tabs : t -> Tab_array.t option -> unit
-    = "ml_pango_layout_set_tabs"
   (** Sets the tabs to use for @layout, overriding the default tabs.
 
   `PangoLayout` will place content at the next tab position
@@ -78,8 +70,8 @@ module rec Layout : sig
   Justification will move content away from its tab-aligned
   positions. The same is true for alignments other than
   %PANGO_ALIGN_LEFT. *)
+  external set_tabs : t -> Tab_array.t option -> unit = "ml_pango_layout_set_tabs"
 
-  external set_spacing : t -> int -> unit = "ml_pango_layout_set_spacing"
   (** Sets the amount of spacing in Pango units between
   the lines of the layout.
 
@@ -96,9 +88,8 @@ module rec Layout : sig
 
   Note: for semantics that are closer to the CSS line-height
   property, see [func@Pango.attr_line_height_new]. *)
+  external set_spacing : t -> int -> unit = "ml_pango_layout_set_spacing"
 
-  external set_single_paragraph_mode : t -> bool -> unit
-    = "ml_pango_layout_set_single_paragraph_mode"
   (** Sets the single paragraph mode of @layout.
 
   If @setting is %TRUE, do not treat newlines and similar characters
@@ -107,9 +98,8 @@ module rec Layout : sig
   you want to allow editing of newlines on a single text line.
 
   The default value is %FALSE. *)
+  external set_single_paragraph_mode : t -> bool -> unit = "ml_pango_layout_set_single_paragraph_mode"
 
-  external set_markup_with_accel : t -> string -> int -> int -> int
-    = "ml_pango_layout_set_markup_with_accel"
   (** Sets the layout text and attribute list from marked-up text.
 
   See [Pango Markup](pango_markup.html)).
@@ -123,20 +113,18 @@ module rec Layout : sig
   and the first character so marked will be returned in @accel_char.
   Two @accel_marker characters following each other produce a single
   literal @accel_marker character. *)
+  external set_markup_with_accel : t -> string -> int -> int -> int = "ml_pango_layout_set_markup_with_accel"
 
-  external set_markup : t -> string -> int -> unit
-    = "ml_pango_layout_set_markup"
   (** Sets the layout text and attribute list from marked-up text.
 
-      See [Pango Markup](pango_markup.html)).
+  See [Pango Markup](pango_markup.html)).
 
-      Replaces the current text and attribute list.
+  Replaces the current text and attribute list.
 
-      This is the same as [method@Pango.Layout.set_markup_with_accel], but the
-      markup text isn't scanned for accelerators. *)
+  This is the same as [method@Pango.Layout.set_markup_with_accel],
+  but the markup text isn't scanned for accelerators. *)
+  external set_markup : t -> string -> int -> unit = "ml_pango_layout_set_markup"
 
-  external set_line_spacing : t -> float -> unit
-    = "ml_pango_layout_set_line_spacing"
   (** Sets a factor for line spacing.
 
   Typical values are: 0, 1, 1.5, 2. The default values is 0.
@@ -153,36 +141,36 @@ module rec Layout : sig
 
   Note: for semantics that are closer to the CSS line-height
   property, see [func@Pango.attr_line_height_new]. *)
+  external set_line_spacing : t -> float -> unit = "ml_pango_layout_set_line_spacing"
 
-  external set_justify_last_line : t -> bool -> unit
-    = "ml_pango_layout_set_justify_last_line"
-  (** Sets whether the last line should be stretched to fill the entire width of
-      the layout.
+  (** Sets whether the last line should be stretched to fill the
+  entire width of the layout.
 
-      This only has an effect if [method@Pango.Layout.set_justify] has been
-      called as well.
+  This only has an effect if [method@Pango.Layout.set_justify] has
+  been called as well.
 
-      The default value is %FALSE. *)
+  The default value is %FALSE. *)
+  external set_justify_last_line : t -> bool -> unit = "ml_pango_layout_set_justify_last_line"
 
+  (** Sets whether each complete line should be stretched to fill the
+  entire width of the layout.
+
+  Stretching is typically done by adding whitespace, but for some scripts
+  (such as Arabic), the justification may be done in more complex ways,
+  like extending the characters.
+
+  Note that this setting is not implemented and so is ignored in
+  Pango older than 1.18.
+
+  Note that tabs and justification conflict with each other:
+  Justification will move content away from its tab-aligned
+  positions.
+
+  The default value is %FALSE.
+
+  Also see [method@Pango.Layout.set_justify_last_line]. *)
   external set_justify : t -> bool -> unit = "ml_pango_layout_set_justify"
-  (** Sets whether each complete line should be stretched to fill the entire
-      width of the layout.
 
-      Stretching is typically done by adding whitespace, but for some scripts
-      (such as Arabic), the justification may be done in more complex ways, like
-      extending the characters.
-
-      Note that this setting is not implemented and so is ignored in Pango older
-      than 1.18.
-
-      Note that tabs and justification conflict with each other: Justification
-      will move content away from its tab-aligned positions.
-
-      The default value is %FALSE.
-
-      Also see [method@Pango.Layout.set_justify_last_line]. *)
-
-  external set_indent : t -> int -> unit = "ml_pango_layout_set_indent"
   (** Sets the width in Pango units to indent each paragraph.
 
   A negative value of @indent will produce a hanging indentation.
@@ -193,8 +181,8 @@ module rec Layout : sig
   %PANGO_ALIGN_CENTER.
 
   The default value is 0. *)
+  external set_indent : t -> int -> unit = "ml_pango_layout_set_indent"
 
-  external set_height : t -> int -> unit = "ml_pango_layout_set_height"
   (** Sets the height to which the `PangoLayout` should be ellipsized at.
 
   There are two different behaviors, based on whether @height is positive
@@ -220,16 +208,14 @@ module rec Layout : sig
   The behavior is undefined if a height other than -1 is set and
   ellipsization mode is set to %PANGO_ELLIPSIZE_NONE, and may change in the
   future. *)
+  external set_height : t -> int -> unit = "ml_pango_layout_set_height"
 
-  external set_font_description : t -> Font_description.t option -> unit
-    = "ml_pango_layout_set_font_description"
   (** Sets the default font description for the layout.
 
-      If no font description is set on the layout, the font description from the
-      layout's context is used. *)
+  If no font description is set on the layout, the
+  font description from the layout's context is used. *)
+  external set_font_description : t -> Font_description.t option -> unit = "ml_pango_layout_set_font_description"
 
-  external set_ellipsize : t -> Pango_enums.ellipsizemode -> unit
-    = "ml_pango_layout_set_ellipsize"
   (** Sets the type of ellipsization being performed for @layout.
 
   Depending on the ellipsization mode @ellipsize text is
@@ -245,8 +231,8 @@ module rec Layout : sig
   The default value is %PANGO_ELLIPSIZE_NONE.
 
   See [method@Pango.Layout.set_height] for details. *)
+  external set_ellipsize : t -> Pango_enums.ellipsizemode -> unit = "ml_pango_layout_set_ellipsize"
 
-  external set_auto_dir : t -> bool -> unit = "ml_pango_layout_set_auto_dir"
   (** Sets whether to calculate the base direction
   for the layout according to its contents.
 
@@ -263,22 +249,19 @@ module rec Layout : sig
   When the auto-computed direction of a paragraph differs from the
   base direction of the context, the interpretation of
   %PANGO_ALIGN_LEFT and %PANGO_ALIGN_RIGHT are swapped. *)
+  external set_auto_dir : t -> bool -> unit = "ml_pango_layout_set_auto_dir"
 
-  external set_attributes : t -> Attr_list.t option -> unit
-    = "ml_pango_layout_set_attributes"
   (** Sets the text attributes for a layout object.
 
   References @attrs, so the caller can unref its reference. *)
+  external set_attributes : t -> Attr_list.t option -> unit = "ml_pango_layout_set_attributes"
 
-  external set_alignment : t -> Pango_enums.alignment -> unit
-    = "ml_pango_layout_set_alignment"
-  (** Sets the alignment for the layout: how partial lines are positioned within
-      the horizontal space available.
+  (** Sets the alignment for the layout: how partial lines are
+  positioned within the horizontal space available.
 
-      The default alignment is %PANGO_ALIGN_LEFT. *)
+  The default alignment is %PANGO_ALIGN_LEFT. *)
+  external set_alignment : t -> Pango_enums.alignment -> unit = "ml_pango_layout_set_alignment"
 
-  external serialize : t -> Pango_enums.layoutserializeflags -> Glib_bytes.t
-    = "ml_pango_layout_serialize"
   (** Serializes the @layout for later deserialization via [func@Pango.Layout.deserialize].
 
   There are no guarantees about the format of the output across different
@@ -287,9 +270,8 @@ module rec Layout : sig
 
   The intended use of this function is testing, benchmarking and debugging.
   The format is not meant as a permanent storage format. *)
+  external serialize : t -> Pango_enums.layoutserializeflags -> Glib_bytes.t = "ml_pango_layout_serialize"
 
-  external move_cursor_visually : t -> bool -> int -> int -> int -> int * int
-    = "ml_pango_layout_move_cursor_visually"
   (** Computes a new cursor position from an old position and a direction.
 
   If @direction is positive, then the new position will cause the strong
@@ -305,86 +287,82 @@ module rec Layout : sig
   Motion here is in cursor positions, not in characters, so a single
   call to this function may move the cursor over multiple characters
   when multiple characters combine to form a single grapheme. *)
+  external move_cursor_visually : t -> bool -> int -> int -> int -> int * int = "ml_pango_layout_move_cursor_visually"
 
-  external is_wrapped : t -> bool = "ml_pango_layout_is_wrapped"
   (** Queries whether the layout had to wrap any paragraphs.
 
   This returns %TRUE if a positive width is set on @layout,
   ellipsization mode of @layout is set to %PANGO_ELLIPSIZE_NONE,
   and there are paragraphs exceeding the layout width that have
   to be wrapped. *)
+  external is_wrapped : t -> bool = "ml_pango_layout_is_wrapped"
 
-  external is_ellipsized : t -> bool = "ml_pango_layout_is_ellipsized"
   (** Queries whether the layout had to ellipsize any paragraphs.
 
   This returns %TRUE if the ellipsization mode for @layout
   is not %PANGO_ELLIPSIZE_NONE, a positive width is set on @layout,
   and there are paragraphs exceeding that width that have to be
   ellipsized. *)
+  external is_ellipsized : t -> bool = "ml_pango_layout_is_ellipsized"
 
-  external index_to_pos : t -> int -> Rectangle.t
-    = "ml_pango_layout_index_to_pos"
   (** Converts from an index within a `PangoLayout` to the onscreen position
-      corresponding to the grapheme at that index.
+  corresponding to the grapheme at that index.
 
-      The returns is represented as rectangle. Note that `pos->x` is always the
-      leading edge of the grapheme and `pos->x + pos->width` the trailing edge
-      of the grapheme. If the directionality of the grapheme is right-to-left,
-      then `pos->width` will be negative. *)
+  The returns is represented as rectangle. Note that `pos->x` is
+  always the leading edge of the grapheme and `pos->x + pos->width` the
+  trailing edge of the grapheme. If the directionality of the grapheme
+  is right-to-left, then `pos->width` will be negative. *)
+  external index_to_pos : t -> int -> Rectangle.t = "ml_pango_layout_index_to_pos"
 
-  external index_to_line_x : t -> int -> bool -> int * int
-    = "ml_pango_layout_index_to_line_x"
   (** Converts from byte @index_ within the @layout to line and X position.
 
   The X position is measured from the left edge of the line. *)
+  external index_to_line_x : t -> int -> bool -> int * int = "ml_pango_layout_index_to_line_x"
 
-  external get_wrap : t -> Pango_enums.wrapmode = "ml_pango_layout_get_wrap"
   (** Gets the wrap mode for the layout.
 
-      Use [method@Pango.Layout.is_wrapped] to query whether any paragraphs were
-      actually wrapped. *)
+  Use [method@Pango.Layout.is_wrapped] to query whether
+  any paragraphs were actually wrapped. *)
+  external get_wrap : t -> Pango_enums.wrapmode = "ml_pango_layout_get_wrap"
 
-  external get_width : t -> int = "ml_pango_layout_get_width"
   (** Gets the width to which the lines of the `PangoLayout` should wrap. *)
+  external get_width : t -> int = "ml_pango_layout_get_width"
 
-  external get_unknown_glyphs_count : t -> int
-    = "ml_pango_layout_get_unknown_glyphs_count"
   (** Counts the number of unknown glyphs in @layout.
 
   This function can be used to determine if there are any fonts
   available to render all characters in a certain string, or when
   used in combination with %PANGO_ATTR_FALLBACK, to check if a
   certain font supports all the characters in the string. *)
+  external get_unknown_glyphs_count : t -> int = "ml_pango_layout_get_unknown_glyphs_count"
 
-  external get_text : t -> string = "ml_pango_layout_get_text"
   (** Gets the text in the layout.
 
-      The returned text should not be freed or modified. *)
+  The returned text should not be freed or modified. *)
+  external get_text : t -> string = "ml_pango_layout_get_text"
 
-  external get_tabs : t -> Tab_array.t option = "ml_pango_layout_get_tabs"
   (** Gets the current `PangoTabArray` used by this layout.
 
-      If no `PangoTabArray` has been set, then the default tabs are in use and
-      %NULL is returned. Default tabs are every 8 spaces.
+  If no `PangoTabArray` has been set, then the default tabs are
+  in use and %NULL is returned. Default tabs are every 8 spaces.
 
-      The return value should be freed with [method@Pango.TabArray.free]. *)
+  The return value should be freed with [method@Pango.TabArray.free]. *)
+  external get_tabs : t -> Tab_array.t option = "ml_pango_layout_get_tabs"
 
-  external get_spacing : t -> int = "ml_pango_layout_get_spacing"
   (** Gets the amount of spacing between the lines of the layout. *)
+  external get_spacing : t -> int = "ml_pango_layout_get_spacing"
 
+  (** Determines the logical width and height of a `PangoLayout` in Pango
+  units.
+
+  This is simply a convenience function around [method@Pango.Layout.get_extents]. *)
   external get_size : t -> int * int = "ml_pango_layout_get_size"
-  (** Determines the logical width and height of a `PangoLayout` in Pango units.
 
-      This is simply a convenience function around
-      [method@Pango.Layout.get_extents]. *)
-
-  external get_single_paragraph_mode : t -> bool
-    = "ml_pango_layout_get_single_paragraph_mode"
   (** Obtains whether @layout is in single paragraph mode.
 
   See [method@Pango.Layout.set_single_paragraph_mode]. *)
+  external get_single_paragraph_mode : t -> bool = "ml_pango_layout_get_single_paragraph_mode"
 
-  external get_serial : t -> int = "ml_pango_layout_get_serial"
   (** Returns the current serial number of @layout.
 
   The serial number is initialized to an small number larger than zero
@@ -397,26 +375,24 @@ module rec Layout : sig
   and is useful for example to decide whether a layout needs redrawing.
   To force the serial to be increased, use
   [method@Pango.Layout.context_changed]. *)
+  external get_serial : t -> int = "ml_pango_layout_get_serial"
 
-  external get_pixel_size : t -> int * int = "ml_pango_layout_get_pixel_size"
   (** Determines the logical width and height of a `PangoLayout` in device
-      units.
+  units.
 
-      [method@Pango.Layout.get_size] returns the width and height scaled by
-      %PANGO_SCALE. This is simply a convenience function around
-      [method@Pango.Layout.get_pixel_extents]. *)
+  [method@Pango.Layout.get_size] returns the width and height
+  scaled by %PANGO_SCALE. This is simply a convenience function
+  around [method@Pango.Layout.get_pixel_extents]. *)
+  external get_pixel_size : t -> int * int = "ml_pango_layout_get_pixel_size"
 
-  external get_pixel_extents : t -> Rectangle.t * Rectangle.t
-    = "ml_pango_layout_get_pixel_extents"
   (** Computes the logical and ink extents of @layout in device units.
 
   This function just calls [method@Pango.Layout.get_extents] followed by
   two [func@extents_to_pixels] calls, rounding @ink_rect and @logical_rect
   such that the rounded rectangles fully contain the unrounded one (that is,
   passes them as first argument to [func@Pango.extents_to_pixels]). *)
+  external get_pixel_extents : t -> Rectangle.t * Rectangle.t = "ml_pango_layout_get_pixel_extents"
 
-  external get_log_attrs_readonly : t -> Log_attr.t array * int
-    = "ml_pango_layout_get_log_attrs_readonly"
   (** Retrieves an array of logical attributes for each character in
   the @layout.
 
@@ -428,77 +404,70 @@ module rec Layout : sig
   than the total number of characters in the layout, since there
   need to be attributes corresponding to both the position before
   the first character and the position after the last character. *)
+  external get_log_attrs_readonly : t -> Log_attr.t array * int = "ml_pango_layout_get_log_attrs_readonly"
 
-  external get_log_attrs : t -> Log_attr.t array * int
-    = "ml_pango_layout_get_log_attrs"
   (** Retrieves an array of logical attributes for each character in
   the @layout. *)
+  external get_log_attrs : t -> Log_attr.t array * int = "ml_pango_layout_get_log_attrs"
 
-  external get_lines_readonly : t -> Layout_line.t list
-    = "ml_pango_layout_get_lines_readonly"
   (** Returns the lines of the @layout as a list.
 
   This is a faster alternative to [method@Pango.Layout.get_lines],
   but the user is not expected to modify the contents of the lines
   (glyphs, glyph widths, etc.). *)
+  external get_lines_readonly : t -> Layout_line.t list = "ml_pango_layout_get_lines_readonly"
 
-  external get_lines : t -> Layout_line.t list = "ml_pango_layout_get_lines"
   (** Returns the lines of the @layout as a list.
 
   Use the faster [method@Pango.Layout.get_lines_readonly] if you do not
   plan to modify the contents of the lines (glyphs, glyph widths, etc.). *)
+  external get_lines : t -> Layout_line.t list = "ml_pango_layout_get_lines"
 
-  external get_line_spacing : t -> float = "ml_pango_layout_get_line_spacing"
   (** Gets the line spacing factor of @layout.
 
   See [method@Pango.Layout.set_line_spacing]. *)
+  external get_line_spacing : t -> float = "ml_pango_layout_get_line_spacing"
 
-  external get_line_readonly : t -> int -> Layout_line.t option
-    = "ml_pango_layout_get_line_readonly"
   (** Retrieves a particular line from a `PangoLayout`.
 
-      This is a faster alternative to [method@Pango.Layout.get_line], but the
-      user is not expected to modify the contents of the line (glyphs, glyph
-      widths, etc.). *)
+  This is a faster alternative to [method@Pango.Layout.get_line],
+  but the user is not expected to modify the contents of the line
+  (glyphs, glyph widths, etc.). *)
+  external get_line_readonly : t -> int -> Layout_line.t option = "ml_pango_layout_get_line_readonly"
 
-  external get_line_count : t -> int = "ml_pango_layout_get_line_count"
   (** Retrieves the count of lines for the @layout. *)
+  external get_line_count : t -> int = "ml_pango_layout_get_line_count"
 
-  external get_line : t -> int -> Layout_line.t option
-    = "ml_pango_layout_get_line"
   (** Retrieves a particular line from a `PangoLayout`.
 
-      Use the faster [method@Pango.Layout.get_line_readonly] if you do not plan
-      to modify the contents of the line (glyphs, glyph widths, etc.). *)
+  Use the faster [method@Pango.Layout.get_line_readonly] if you do not
+  plan to modify the contents of the line (glyphs, glyph widths, etc.). *)
+  external get_line : t -> int -> Layout_line.t option = "ml_pango_layout_get_line"
 
-  external get_justify_last_line : t -> bool
-    = "ml_pango_layout_get_justify_last_line"
-  (** Gets whether the last line should be stretched to fill the entire width of
-      the layout. *)
+  (** Gets whether the last line should be stretched
+  to fill the entire width of the layout. *)
+  external get_justify_last_line : t -> bool = "ml_pango_layout_get_justify_last_line"
 
-  external get_justify : t -> bool = "ml_pango_layout_get_justify"
   (** Gets whether each complete line should be stretched to fill the entire
-      width of the layout. *)
+  width of the layout. *)
+  external get_justify : t -> bool = "ml_pango_layout_get_justify"
 
-  external get_iter : t -> Layout_iter.t = "ml_pango_layout_get_iter"
   (** Returns an iterator to iterate over the visual extents of the layout. *)
+  external get_iter : t -> Layout_iter.t = "ml_pango_layout_get_iter"
 
-  external get_indent : t -> int = "ml_pango_layout_get_indent"
   (** Gets the paragraph indent width in Pango units.
 
-      A negative value indicates a hanging indentation. *)
+  A negative value indicates a hanging indentation. *)
+  external get_indent : t -> int = "ml_pango_layout_get_indent"
 
-  external get_height : t -> int = "ml_pango_layout_get_height"
   (** Gets the height of layout used for ellipsization.
 
-      See [method@Pango.Layout.set_height] for details. *)
+  See [method@Pango.Layout.set_height] for details. *)
+  external get_height : t -> int = "ml_pango_layout_get_height"
 
-  external get_font_description : t -> Font_description.t option
-    = "ml_pango_layout_get_font_description"
   (** Gets the font description for the layout, if any. *)
+  external get_font_description : t -> Font_description.t option = "ml_pango_layout_get_font_description"
 
-  external get_extents : t -> Rectangle.t * Rectangle.t
-    = "ml_pango_layout_get_extents"
   (** Computes the logical and ink extents of @layout.
 
   Logical extents are usually what you want for positioning things. Note
@@ -509,152 +478,142 @@ module rec Layout : sig
 
   The extents are given in layout coordinates and in Pango units; layout
   coordinates begin at the top left corner of the layout. *)
+  external get_extents : t -> Rectangle.t * Rectangle.t = "ml_pango_layout_get_extents"
 
-  external get_ellipsize : t -> Pango_enums.ellipsizemode
-    = "ml_pango_layout_get_ellipsize"
   (** Gets the type of ellipsization being performed for @layout.
 
   See [method@Pango.Layout.set_ellipsize].
 
   Use [method@Pango.Layout.is_ellipsized] to query whether any
   paragraphs were actually ellipsized. *)
+  external get_ellipsize : t -> Pango_enums.ellipsizemode = "ml_pango_layout_get_ellipsize"
 
-  external get_direction : t -> int -> Pango_enums.direction
-    = "ml_pango_layout_get_direction"
   (** Gets the text direction at the given character position in @layout. *)
+  external get_direction : t -> int -> Pango_enums.direction = "ml_pango_layout_get_direction"
 
-  external get_cursor_pos : t -> int -> Rectangle.t * Rectangle.t
-    = "ml_pango_layout_get_cursor_pos"
   (** Given an index within a layout, determines the positions that of the
-      strong and weak cursors if the insertion point is at that index.
+  strong and weak cursors if the insertion point is at that index.
 
-      The position of each cursor is stored as a zero-width rectangle with the
-      height of the run extents.
+  The position of each cursor is stored as a zero-width rectangle
+  with the height of the run extents.
 
-      <picture> <source srcset="cursor-positions-dark.png"
-      media="(prefers-color-scheme: dark)"> <img alt="Cursor positions"
-      src="cursor-positions-light.png"> </picture>
+  <picture>
+    <source srcset="cursor-positions-dark.png" media="(prefers-color-scheme: dark)">
+    <img alt="Cursor positions" src="cursor-positions-light.png">
+  </picture>
 
-      The strong cursor location is the location where characters of the
-      directionality equal to the base direction of the layout are inserted. The
-      weak cursor location is the location where characters of the
-      directionality opposite to the base direction of the layout are inserted.
+  The strong cursor location is the location where characters of the
+  directionality equal to the base direction of the layout are inserted.
+  The weak cursor location is the location where characters of the
+  directionality opposite to the base direction of the layout are inserted.
 
-      The following example shows text with both a strong and a weak cursor.
+  The following example shows text with both a strong and a weak cursor.
 
-      <picture> <source srcset="split-cursor-dark.png"
-      media="(prefers-color-scheme: dark)"> <img alt="Strong and weak cursors"
-      src="split-cursor-light.png"> </picture>
+  <picture>
+    <source srcset="split-cursor-dark.png" media="(prefers-color-scheme: dark)">
+    <img alt="Strong and weak cursors" src="split-cursor-light.png">
+  </picture>
 
-      The strong cursor has a little arrow pointing to the right, the weak
-      cursor to the left. Typing a 'c' in this situation will insert the
-      character after the 'b', and typing another Hebrew character, like 'ג',
-      will insert it at the end. *)
+  The strong cursor has a little arrow pointing to the right, the weak
+  cursor to the left. Typing a 'c' in this situation will insert the
+  character after the 'b', and typing another Hebrew character, like 'ג',
+  will insert it at the end. *)
+  external get_cursor_pos : t -> int -> Rectangle.t * Rectangle.t = "ml_pango_layout_get_cursor_pos"
 
-  external get_context :
-    t -> Context_and__font_and__font_map_and__fontset.Context.t
-    = "ml_pango_layout_get_context"
   (** Retrieves the `PangoContext` used for this layout. *)
+  external get_context : t -> Context_and__font_and__font_map_and__fontset.Context.t = "ml_pango_layout_get_context"
 
-  external get_character_count : t -> int
-    = "ml_pango_layout_get_character_count"
   (** Returns the number of Unicode characters in the
   the text of @layout. *)
+  external get_character_count : t -> int = "ml_pango_layout_get_character_count"
 
-  external get_caret_pos : t -> int -> Rectangle.t * Rectangle.t
-    = "ml_pango_layout_get_caret_pos"
   (** Given an index within a layout, determines the positions that of the
-      strong and weak cursors if the insertion point is at that index.
+  strong and weak cursors if the insertion point is at that index.
 
-      This is a variant of [method@Pango.Layout.get_cursor_pos] that applies
-      font metric information about caret slope and offset to the positions it
-      returns.
+  This is a variant of [method@Pango.Layout.get_cursor_pos] that applies
+  font metric information about caret slope and offset to the positions
+  it returns.
 
-      <picture> <source srcset="caret-metrics-dark.png"
-      media="(prefers-color-scheme: dark)"> <img alt="Caret metrics"
-      src="caret-metrics-light.png"> </picture> *)
+  <picture>
+    <source srcset="caret-metrics-dark.png" media="(prefers-color-scheme: dark)">
+    <img alt="Caret metrics" src="caret-metrics-light.png">
+  </picture> *)
+  external get_caret_pos : t -> int -> Rectangle.t * Rectangle.t = "ml_pango_layout_get_caret_pos"
 
-  external get_baseline : t -> int = "ml_pango_layout_get_baseline"
   (** Gets the Y position of baseline of the first line in @layout. *)
+  external get_baseline : t -> int = "ml_pango_layout_get_baseline"
 
+  (** Gets whether to calculate the base direction for the layout
+  according to its contents.
+
+  See [method@Pango.Layout.set_auto_dir]. *)
   external get_auto_dir : t -> bool = "ml_pango_layout_get_auto_dir"
-  (** Gets whether to calculate the base direction for the layout according to
-      its contents.
 
-      See [method@Pango.Layout.set_auto_dir]. *)
-
-  external get_attributes : t -> Attr_list.t option
-    = "ml_pango_layout_get_attributes"
   (** Gets the attribute list for the layout, if any. *)
+  external get_attributes : t -> Attr_list.t option = "ml_pango_layout_get_attributes"
 
-  external get_alignment : t -> Pango_enums.alignment
-    = "ml_pango_layout_get_alignment"
-  (** Gets the alignment for the layout: how partial lines are positioned within
-      the horizontal space available. *)
+  (** Gets the alignment for the layout: how partial lines are
+  positioned within the horizontal space available. *)
+  external get_alignment : t -> Pango_enums.alignment = "ml_pango_layout_get_alignment"
 
-  external copy : t -> t = "ml_pango_layout_copy"
   (** Creates a deep copy-by-value of the layout.
 
-      The attribute list, tab array, and text from the original layout are all
-      copied by value. *)
+  The attribute list, tab array, and text from the original layout
+  are all copied by value. *)
+  external copy : t -> t = "ml_pango_layout_copy"
 
+  (** Forces recomputation of any state in the `PangoLayout` that
+  might depend on the layout's context.
+
+  This function should be called if you make changes to the context
+  subsequent to creating the layout. *)
   external context_changed : t -> unit = "ml_pango_layout_context_changed"
-  (** Forces recomputation of any state in the `PangoLayout` that might depend
-      on the layout's context.
 
-      This function should be called if you make changes to the context
-      subsequent to creating the layout. *)
+
 end = struct
-  type t = [ `layout | `object_ ] Gobject.obj
+  type t = [`layout | `object_] Gobject.obj
 
-  external new_ : Context_and__font_and__font_map_and__fontset.Context.t -> t
-    = "ml_pango_layout_new"
   (** Create a new Layout *)
+  external new_ : Context_and__font_and__font_map_and__fontset.Context.t -> t = "ml_pango_layout_new"
 
   (* Methods *)
-
-  external xy_to_index : t -> int -> int -> bool * int * int
-    = "ml_pango_layout_xy_to_index"
   (** Converts from X and Y position within a layout to the byte index to the
-      character at that logical position.
+  character at that logical position.
 
-      If the Y position is not inside the layout, the closest position is chosen
-      (the position will be clamped inside the layout). If the X position is not
-      within the layout, then the start or the end of the line is chosen as
-      described for [method@Pango.LayoutLine.x_to_index]. If either the X or Y
-      positions were not inside the layout, then the function returns %FALSE; on
-      an exact hit, it returns %TRUE. *)
+  If the Y position is not inside the layout, the closest position is
+  chosen (the position will be clamped inside the layout). If the X position
+  is not within the layout, then the start or the end of the line is
+  chosen as described for [method@Pango.LayoutLine.x_to_index]. If either
+  the X or Y positions were not inside the layout, then the function returns
+  %FALSE; on an exact hit, it returns %TRUE. *)
+  external xy_to_index : t -> int -> int -> bool * int * int = "ml_pango_layout_xy_to_index"
 
-  external write_to_file :
-    t -> Pango_enums.layoutserializeflags -> string -> (bool, GError.t) result
-    = "ml_pango_layout_write_to_file"
   (** A convenience method to serialize a layout to a file.
 
-      It is equivalent to calling [method@Pango.Layout.serialize] followed by
-      [func@GLib.file_set_contents].
+  It is equivalent to calling [method@Pango.Layout.serialize]
+  followed by [func@GLib.file_set_contents].
 
-      See those two functions for details on the arguments.
+  See those two functions for details on the arguments.
 
-      It is mostly intended for use inside a debugger to quickly dump a layout
-      to a file for later inspection. *)
+  It is mostly intended for use inside a debugger to quickly dump
+  a layout to a file for later inspection. *)
+  external write_to_file : t -> Pango_enums.layoutserializeflags -> string -> (bool, GError.t) result = "ml_pango_layout_write_to_file"
 
-  external set_wrap : t -> Pango_enums.wrapmode -> unit
-    = "ml_pango_layout_set_wrap"
   (** Sets the wrap mode.
 
-      The wrap mode only has effect if a width is set on the layout with
-      [method@Pango.Layout.set_width]. To turn off wrapping, set the width to
-      -1.
+  The wrap mode only has effect if a width is set on the layout
+  with [method@Pango.Layout.set_width]. To turn off wrapping,
+  set the width to -1.
 
-      The default value is %PANGO_WRAP_WORD. *)
+  The default value is %PANGO_WRAP_WORD. *)
+  external set_wrap : t -> Pango_enums.wrapmode -> unit = "ml_pango_layout_set_wrap"
 
-  external set_width : t -> int -> unit = "ml_pango_layout_set_width"
   (** Sets the width to which the lines of the `PangoLayout` should wrap or
-      ellipsized.
+  ellipsized.
 
-      The default value is -1: no width set. *)
+  The default value is -1: no width set. *)
+  external set_width : t -> int -> unit = "ml_pango_layout_set_width"
 
-  external set_text : t -> string -> int -> unit = "ml_pango_layout_set_text"
   (** Sets the text of the layout.
 
   This function validates @text and renders invalid UTF-8
@@ -665,9 +624,8 @@ end = struct
   may want to call [method@Pango.Layout.set_attributes] to clear the
   attributes set on the layout from the markup as this function does
   not clear attributes. *)
+  external set_text : t -> string -> int -> unit = "ml_pango_layout_set_text"
 
-  external set_tabs : t -> Tab_array.t option -> unit
-    = "ml_pango_layout_set_tabs"
   (** Sets the tabs to use for @layout, overriding the default tabs.
 
   `PangoLayout` will place content at the next tab position
@@ -681,8 +639,8 @@ end = struct
   Justification will move content away from its tab-aligned
   positions. The same is true for alignments other than
   %PANGO_ALIGN_LEFT. *)
+  external set_tabs : t -> Tab_array.t option -> unit = "ml_pango_layout_set_tabs"
 
-  external set_spacing : t -> int -> unit = "ml_pango_layout_set_spacing"
   (** Sets the amount of spacing in Pango units between
   the lines of the layout.
 
@@ -699,9 +657,8 @@ end = struct
 
   Note: for semantics that are closer to the CSS line-height
   property, see [func@Pango.attr_line_height_new]. *)
+  external set_spacing : t -> int -> unit = "ml_pango_layout_set_spacing"
 
-  external set_single_paragraph_mode : t -> bool -> unit
-    = "ml_pango_layout_set_single_paragraph_mode"
   (** Sets the single paragraph mode of @layout.
 
   If @setting is %TRUE, do not treat newlines and similar characters
@@ -710,9 +667,8 @@ end = struct
   you want to allow editing of newlines on a single text line.
 
   The default value is %FALSE. *)
+  external set_single_paragraph_mode : t -> bool -> unit = "ml_pango_layout_set_single_paragraph_mode"
 
-  external set_markup_with_accel : t -> string -> int -> int -> int
-    = "ml_pango_layout_set_markup_with_accel"
   (** Sets the layout text and attribute list from marked-up text.
 
   See [Pango Markup](pango_markup.html)).
@@ -726,20 +682,18 @@ end = struct
   and the first character so marked will be returned in @accel_char.
   Two @accel_marker characters following each other produce a single
   literal @accel_marker character. *)
+  external set_markup_with_accel : t -> string -> int -> int -> int = "ml_pango_layout_set_markup_with_accel"
 
-  external set_markup : t -> string -> int -> unit
-    = "ml_pango_layout_set_markup"
   (** Sets the layout text and attribute list from marked-up text.
 
-      See [Pango Markup](pango_markup.html)).
+  See [Pango Markup](pango_markup.html)).
 
-      Replaces the current text and attribute list.
+  Replaces the current text and attribute list.
 
-      This is the same as [method@Pango.Layout.set_markup_with_accel], but the
-      markup text isn't scanned for accelerators. *)
+  This is the same as [method@Pango.Layout.set_markup_with_accel],
+  but the markup text isn't scanned for accelerators. *)
+  external set_markup : t -> string -> int -> unit = "ml_pango_layout_set_markup"
 
-  external set_line_spacing : t -> float -> unit
-    = "ml_pango_layout_set_line_spacing"
   (** Sets a factor for line spacing.
 
   Typical values are: 0, 1, 1.5, 2. The default values is 0.
@@ -756,36 +710,36 @@ end = struct
 
   Note: for semantics that are closer to the CSS line-height
   property, see [func@Pango.attr_line_height_new]. *)
+  external set_line_spacing : t -> float -> unit = "ml_pango_layout_set_line_spacing"
 
-  external set_justify_last_line : t -> bool -> unit
-    = "ml_pango_layout_set_justify_last_line"
-  (** Sets whether the last line should be stretched to fill the entire width of
-      the layout.
+  (** Sets whether the last line should be stretched to fill the
+  entire width of the layout.
 
-      This only has an effect if [method@Pango.Layout.set_justify] has been
-      called as well.
+  This only has an effect if [method@Pango.Layout.set_justify] has
+  been called as well.
 
-      The default value is %FALSE. *)
+  The default value is %FALSE. *)
+  external set_justify_last_line : t -> bool -> unit = "ml_pango_layout_set_justify_last_line"
 
+  (** Sets whether each complete line should be stretched to fill the
+  entire width of the layout.
+
+  Stretching is typically done by adding whitespace, but for some scripts
+  (such as Arabic), the justification may be done in more complex ways,
+  like extending the characters.
+
+  Note that this setting is not implemented and so is ignored in
+  Pango older than 1.18.
+
+  Note that tabs and justification conflict with each other:
+  Justification will move content away from its tab-aligned
+  positions.
+
+  The default value is %FALSE.
+
+  Also see [method@Pango.Layout.set_justify_last_line]. *)
   external set_justify : t -> bool -> unit = "ml_pango_layout_set_justify"
-  (** Sets whether each complete line should be stretched to fill the entire
-      width of the layout.
 
-      Stretching is typically done by adding whitespace, but for some scripts
-      (such as Arabic), the justification may be done in more complex ways, like
-      extending the characters.
-
-      Note that this setting is not implemented and so is ignored in Pango older
-      than 1.18.
-
-      Note that tabs and justification conflict with each other: Justification
-      will move content away from its tab-aligned positions.
-
-      The default value is %FALSE.
-
-      Also see [method@Pango.Layout.set_justify_last_line]. *)
-
-  external set_indent : t -> int -> unit = "ml_pango_layout_set_indent"
   (** Sets the width in Pango units to indent each paragraph.
 
   A negative value of @indent will produce a hanging indentation.
@@ -796,8 +750,8 @@ end = struct
   %PANGO_ALIGN_CENTER.
 
   The default value is 0. *)
+  external set_indent : t -> int -> unit = "ml_pango_layout_set_indent"
 
-  external set_height : t -> int -> unit = "ml_pango_layout_set_height"
   (** Sets the height to which the `PangoLayout` should be ellipsized at.
 
   There are two different behaviors, based on whether @height is positive
@@ -823,16 +777,14 @@ end = struct
   The behavior is undefined if a height other than -1 is set and
   ellipsization mode is set to %PANGO_ELLIPSIZE_NONE, and may change in the
   future. *)
+  external set_height : t -> int -> unit = "ml_pango_layout_set_height"
 
-  external set_font_description : t -> Font_description.t option -> unit
-    = "ml_pango_layout_set_font_description"
   (** Sets the default font description for the layout.
 
-      If no font description is set on the layout, the font description from the
-      layout's context is used. *)
+  If no font description is set on the layout, the
+  font description from the layout's context is used. *)
+  external set_font_description : t -> Font_description.t option -> unit = "ml_pango_layout_set_font_description"
 
-  external set_ellipsize : t -> Pango_enums.ellipsizemode -> unit
-    = "ml_pango_layout_set_ellipsize"
   (** Sets the type of ellipsization being performed for @layout.
 
   Depending on the ellipsization mode @ellipsize text is
@@ -848,8 +800,8 @@ end = struct
   The default value is %PANGO_ELLIPSIZE_NONE.
 
   See [method@Pango.Layout.set_height] for details. *)
+  external set_ellipsize : t -> Pango_enums.ellipsizemode -> unit = "ml_pango_layout_set_ellipsize"
 
-  external set_auto_dir : t -> bool -> unit = "ml_pango_layout_set_auto_dir"
   (** Sets whether to calculate the base direction
   for the layout according to its contents.
 
@@ -866,22 +818,19 @@ end = struct
   When the auto-computed direction of a paragraph differs from the
   base direction of the context, the interpretation of
   %PANGO_ALIGN_LEFT and %PANGO_ALIGN_RIGHT are swapped. *)
+  external set_auto_dir : t -> bool -> unit = "ml_pango_layout_set_auto_dir"
 
-  external set_attributes : t -> Attr_list.t option -> unit
-    = "ml_pango_layout_set_attributes"
   (** Sets the text attributes for a layout object.
 
   References @attrs, so the caller can unref its reference. *)
+  external set_attributes : t -> Attr_list.t option -> unit = "ml_pango_layout_set_attributes"
 
-  external set_alignment : t -> Pango_enums.alignment -> unit
-    = "ml_pango_layout_set_alignment"
-  (** Sets the alignment for the layout: how partial lines are positioned within
-      the horizontal space available.
+  (** Sets the alignment for the layout: how partial lines are
+  positioned within the horizontal space available.
 
-      The default alignment is %PANGO_ALIGN_LEFT. *)
+  The default alignment is %PANGO_ALIGN_LEFT. *)
+  external set_alignment : t -> Pango_enums.alignment -> unit = "ml_pango_layout_set_alignment"
 
-  external serialize : t -> Pango_enums.layoutserializeflags -> Glib_bytes.t
-    = "ml_pango_layout_serialize"
   (** Serializes the @layout for later deserialization via [func@Pango.Layout.deserialize].
 
   There are no guarantees about the format of the output across different
@@ -890,9 +839,8 @@ end = struct
 
   The intended use of this function is testing, benchmarking and debugging.
   The format is not meant as a permanent storage format. *)
+  external serialize : t -> Pango_enums.layoutserializeflags -> Glib_bytes.t = "ml_pango_layout_serialize"
 
-  external move_cursor_visually : t -> bool -> int -> int -> int -> int * int
-    = "ml_pango_layout_move_cursor_visually"
   (** Computes a new cursor position from an old position and a direction.
 
   If @direction is positive, then the new position will cause the strong
@@ -908,86 +856,82 @@ end = struct
   Motion here is in cursor positions, not in characters, so a single
   call to this function may move the cursor over multiple characters
   when multiple characters combine to form a single grapheme. *)
+  external move_cursor_visually : t -> bool -> int -> int -> int -> int * int = "ml_pango_layout_move_cursor_visually"
 
-  external is_wrapped : t -> bool = "ml_pango_layout_is_wrapped"
   (** Queries whether the layout had to wrap any paragraphs.
 
   This returns %TRUE if a positive width is set on @layout,
   ellipsization mode of @layout is set to %PANGO_ELLIPSIZE_NONE,
   and there are paragraphs exceeding the layout width that have
   to be wrapped. *)
+  external is_wrapped : t -> bool = "ml_pango_layout_is_wrapped"
 
-  external is_ellipsized : t -> bool = "ml_pango_layout_is_ellipsized"
   (** Queries whether the layout had to ellipsize any paragraphs.
 
   This returns %TRUE if the ellipsization mode for @layout
   is not %PANGO_ELLIPSIZE_NONE, a positive width is set on @layout,
   and there are paragraphs exceeding that width that have to be
   ellipsized. *)
+  external is_ellipsized : t -> bool = "ml_pango_layout_is_ellipsized"
 
-  external index_to_pos : t -> int -> Rectangle.t
-    = "ml_pango_layout_index_to_pos"
   (** Converts from an index within a `PangoLayout` to the onscreen position
-      corresponding to the grapheme at that index.
+  corresponding to the grapheme at that index.
 
-      The returns is represented as rectangle. Note that `pos->x` is always the
-      leading edge of the grapheme and `pos->x + pos->width` the trailing edge
-      of the grapheme. If the directionality of the grapheme is right-to-left,
-      then `pos->width` will be negative. *)
+  The returns is represented as rectangle. Note that `pos->x` is
+  always the leading edge of the grapheme and `pos->x + pos->width` the
+  trailing edge of the grapheme. If the directionality of the grapheme
+  is right-to-left, then `pos->width` will be negative. *)
+  external index_to_pos : t -> int -> Rectangle.t = "ml_pango_layout_index_to_pos"
 
-  external index_to_line_x : t -> int -> bool -> int * int
-    = "ml_pango_layout_index_to_line_x"
   (** Converts from byte @index_ within the @layout to line and X position.
 
   The X position is measured from the left edge of the line. *)
+  external index_to_line_x : t -> int -> bool -> int * int = "ml_pango_layout_index_to_line_x"
 
-  external get_wrap : t -> Pango_enums.wrapmode = "ml_pango_layout_get_wrap"
   (** Gets the wrap mode for the layout.
 
-      Use [method@Pango.Layout.is_wrapped] to query whether any paragraphs were
-      actually wrapped. *)
+  Use [method@Pango.Layout.is_wrapped] to query whether
+  any paragraphs were actually wrapped. *)
+  external get_wrap : t -> Pango_enums.wrapmode = "ml_pango_layout_get_wrap"
 
-  external get_width : t -> int = "ml_pango_layout_get_width"
   (** Gets the width to which the lines of the `PangoLayout` should wrap. *)
+  external get_width : t -> int = "ml_pango_layout_get_width"
 
-  external get_unknown_glyphs_count : t -> int
-    = "ml_pango_layout_get_unknown_glyphs_count"
   (** Counts the number of unknown glyphs in @layout.
 
   This function can be used to determine if there are any fonts
   available to render all characters in a certain string, or when
   used in combination with %PANGO_ATTR_FALLBACK, to check if a
   certain font supports all the characters in the string. *)
+  external get_unknown_glyphs_count : t -> int = "ml_pango_layout_get_unknown_glyphs_count"
 
-  external get_text : t -> string = "ml_pango_layout_get_text"
   (** Gets the text in the layout.
 
-      The returned text should not be freed or modified. *)
+  The returned text should not be freed or modified. *)
+  external get_text : t -> string = "ml_pango_layout_get_text"
 
-  external get_tabs : t -> Tab_array.t option = "ml_pango_layout_get_tabs"
   (** Gets the current `PangoTabArray` used by this layout.
 
-      If no `PangoTabArray` has been set, then the default tabs are in use and
-      %NULL is returned. Default tabs are every 8 spaces.
+  If no `PangoTabArray` has been set, then the default tabs are
+  in use and %NULL is returned. Default tabs are every 8 spaces.
 
-      The return value should be freed with [method@Pango.TabArray.free]. *)
+  The return value should be freed with [method@Pango.TabArray.free]. *)
+  external get_tabs : t -> Tab_array.t option = "ml_pango_layout_get_tabs"
 
-  external get_spacing : t -> int = "ml_pango_layout_get_spacing"
   (** Gets the amount of spacing between the lines of the layout. *)
+  external get_spacing : t -> int = "ml_pango_layout_get_spacing"
 
+  (** Determines the logical width and height of a `PangoLayout` in Pango
+  units.
+
+  This is simply a convenience function around [method@Pango.Layout.get_extents]. *)
   external get_size : t -> int * int = "ml_pango_layout_get_size"
-  (** Determines the logical width and height of a `PangoLayout` in Pango units.
 
-      This is simply a convenience function around
-      [method@Pango.Layout.get_extents]. *)
-
-  external get_single_paragraph_mode : t -> bool
-    = "ml_pango_layout_get_single_paragraph_mode"
   (** Obtains whether @layout is in single paragraph mode.
 
   See [method@Pango.Layout.set_single_paragraph_mode]. *)
+  external get_single_paragraph_mode : t -> bool = "ml_pango_layout_get_single_paragraph_mode"
 
-  external get_serial : t -> int = "ml_pango_layout_get_serial"
   (** Returns the current serial number of @layout.
 
   The serial number is initialized to an small number larger than zero
@@ -1000,26 +944,24 @@ end = struct
   and is useful for example to decide whether a layout needs redrawing.
   To force the serial to be increased, use
   [method@Pango.Layout.context_changed]. *)
+  external get_serial : t -> int = "ml_pango_layout_get_serial"
 
-  external get_pixel_size : t -> int * int = "ml_pango_layout_get_pixel_size"
   (** Determines the logical width and height of a `PangoLayout` in device
-      units.
+  units.
 
-      [method@Pango.Layout.get_size] returns the width and height scaled by
-      %PANGO_SCALE. This is simply a convenience function around
-      [method@Pango.Layout.get_pixel_extents]. *)
+  [method@Pango.Layout.get_size] returns the width and height
+  scaled by %PANGO_SCALE. This is simply a convenience function
+  around [method@Pango.Layout.get_pixel_extents]. *)
+  external get_pixel_size : t -> int * int = "ml_pango_layout_get_pixel_size"
 
-  external get_pixel_extents : t -> Rectangle.t * Rectangle.t
-    = "ml_pango_layout_get_pixel_extents"
   (** Computes the logical and ink extents of @layout in device units.
 
   This function just calls [method@Pango.Layout.get_extents] followed by
   two [func@extents_to_pixels] calls, rounding @ink_rect and @logical_rect
   such that the rounded rectangles fully contain the unrounded one (that is,
   passes them as first argument to [func@Pango.extents_to_pixels]). *)
+  external get_pixel_extents : t -> Rectangle.t * Rectangle.t = "ml_pango_layout_get_pixel_extents"
 
-  external get_log_attrs_readonly : t -> Log_attr.t array * int
-    = "ml_pango_layout_get_log_attrs_readonly"
   (** Retrieves an array of logical attributes for each character in
   the @layout.
 
@@ -1031,77 +973,70 @@ end = struct
   than the total number of characters in the layout, since there
   need to be attributes corresponding to both the position before
   the first character and the position after the last character. *)
+  external get_log_attrs_readonly : t -> Log_attr.t array * int = "ml_pango_layout_get_log_attrs_readonly"
 
-  external get_log_attrs : t -> Log_attr.t array * int
-    = "ml_pango_layout_get_log_attrs"
   (** Retrieves an array of logical attributes for each character in
   the @layout. *)
+  external get_log_attrs : t -> Log_attr.t array * int = "ml_pango_layout_get_log_attrs"
 
-  external get_lines_readonly : t -> Layout_line.t list
-    = "ml_pango_layout_get_lines_readonly"
   (** Returns the lines of the @layout as a list.
 
   This is a faster alternative to [method@Pango.Layout.get_lines],
   but the user is not expected to modify the contents of the lines
   (glyphs, glyph widths, etc.). *)
+  external get_lines_readonly : t -> Layout_line.t list = "ml_pango_layout_get_lines_readonly"
 
-  external get_lines : t -> Layout_line.t list = "ml_pango_layout_get_lines"
   (** Returns the lines of the @layout as a list.
 
   Use the faster [method@Pango.Layout.get_lines_readonly] if you do not
   plan to modify the contents of the lines (glyphs, glyph widths, etc.). *)
+  external get_lines : t -> Layout_line.t list = "ml_pango_layout_get_lines"
 
-  external get_line_spacing : t -> float = "ml_pango_layout_get_line_spacing"
   (** Gets the line spacing factor of @layout.
 
   See [method@Pango.Layout.set_line_spacing]. *)
+  external get_line_spacing : t -> float = "ml_pango_layout_get_line_spacing"
 
-  external get_line_readonly : t -> int -> Layout_line.t option
-    = "ml_pango_layout_get_line_readonly"
   (** Retrieves a particular line from a `PangoLayout`.
 
-      This is a faster alternative to [method@Pango.Layout.get_line], but the
-      user is not expected to modify the contents of the line (glyphs, glyph
-      widths, etc.). *)
+  This is a faster alternative to [method@Pango.Layout.get_line],
+  but the user is not expected to modify the contents of the line
+  (glyphs, glyph widths, etc.). *)
+  external get_line_readonly : t -> int -> Layout_line.t option = "ml_pango_layout_get_line_readonly"
 
-  external get_line_count : t -> int = "ml_pango_layout_get_line_count"
   (** Retrieves the count of lines for the @layout. *)
+  external get_line_count : t -> int = "ml_pango_layout_get_line_count"
 
-  external get_line : t -> int -> Layout_line.t option
-    = "ml_pango_layout_get_line"
   (** Retrieves a particular line from a `PangoLayout`.
 
-      Use the faster [method@Pango.Layout.get_line_readonly] if you do not plan
-      to modify the contents of the line (glyphs, glyph widths, etc.). *)
+  Use the faster [method@Pango.Layout.get_line_readonly] if you do not
+  plan to modify the contents of the line (glyphs, glyph widths, etc.). *)
+  external get_line : t -> int -> Layout_line.t option = "ml_pango_layout_get_line"
 
-  external get_justify_last_line : t -> bool
-    = "ml_pango_layout_get_justify_last_line"
-  (** Gets whether the last line should be stretched to fill the entire width of
-      the layout. *)
+  (** Gets whether the last line should be stretched
+  to fill the entire width of the layout. *)
+  external get_justify_last_line : t -> bool = "ml_pango_layout_get_justify_last_line"
 
-  external get_justify : t -> bool = "ml_pango_layout_get_justify"
   (** Gets whether each complete line should be stretched to fill the entire
-      width of the layout. *)
+  width of the layout. *)
+  external get_justify : t -> bool = "ml_pango_layout_get_justify"
 
-  external get_iter : t -> Layout_iter.t = "ml_pango_layout_get_iter"
   (** Returns an iterator to iterate over the visual extents of the layout. *)
+  external get_iter : t -> Layout_iter.t = "ml_pango_layout_get_iter"
 
-  external get_indent : t -> int = "ml_pango_layout_get_indent"
   (** Gets the paragraph indent width in Pango units.
 
-      A negative value indicates a hanging indentation. *)
+  A negative value indicates a hanging indentation. *)
+  external get_indent : t -> int = "ml_pango_layout_get_indent"
 
-  external get_height : t -> int = "ml_pango_layout_get_height"
   (** Gets the height of layout used for ellipsization.
 
-      See [method@Pango.Layout.set_height] for details. *)
+  See [method@Pango.Layout.set_height] for details. *)
+  external get_height : t -> int = "ml_pango_layout_get_height"
 
-  external get_font_description : t -> Font_description.t option
-    = "ml_pango_layout_get_font_description"
   (** Gets the font description for the layout, if any. *)
+  external get_font_description : t -> Font_description.t option = "ml_pango_layout_get_font_description"
 
-  external get_extents : t -> Rectangle.t * Rectangle.t
-    = "ml_pango_layout_get_extents"
   (** Computes the logical and ink extents of @layout.
 
   Logical extents are usually what you want for positioning things. Note
@@ -1112,347 +1047,331 @@ end = struct
 
   The extents are given in layout coordinates and in Pango units; layout
   coordinates begin at the top left corner of the layout. *)
+  external get_extents : t -> Rectangle.t * Rectangle.t = "ml_pango_layout_get_extents"
 
-  external get_ellipsize : t -> Pango_enums.ellipsizemode
-    = "ml_pango_layout_get_ellipsize"
   (** Gets the type of ellipsization being performed for @layout.
 
   See [method@Pango.Layout.set_ellipsize].
 
   Use [method@Pango.Layout.is_ellipsized] to query whether any
   paragraphs were actually ellipsized. *)
+  external get_ellipsize : t -> Pango_enums.ellipsizemode = "ml_pango_layout_get_ellipsize"
 
-  external get_direction : t -> int -> Pango_enums.direction
-    = "ml_pango_layout_get_direction"
   (** Gets the text direction at the given character position in @layout. *)
+  external get_direction : t -> int -> Pango_enums.direction = "ml_pango_layout_get_direction"
 
-  external get_cursor_pos : t -> int -> Rectangle.t * Rectangle.t
-    = "ml_pango_layout_get_cursor_pos"
   (** Given an index within a layout, determines the positions that of the
-      strong and weak cursors if the insertion point is at that index.
+  strong and weak cursors if the insertion point is at that index.
 
-      The position of each cursor is stored as a zero-width rectangle with the
-      height of the run extents.
+  The position of each cursor is stored as a zero-width rectangle
+  with the height of the run extents.
 
-      <picture> <source srcset="cursor-positions-dark.png"
-      media="(prefers-color-scheme: dark)"> <img alt="Cursor positions"
-      src="cursor-positions-light.png"> </picture>
+  <picture>
+    <source srcset="cursor-positions-dark.png" media="(prefers-color-scheme: dark)">
+    <img alt="Cursor positions" src="cursor-positions-light.png">
+  </picture>
 
-      The strong cursor location is the location where characters of the
-      directionality equal to the base direction of the layout are inserted. The
-      weak cursor location is the location where characters of the
-      directionality opposite to the base direction of the layout are inserted.
+  The strong cursor location is the location where characters of the
+  directionality equal to the base direction of the layout are inserted.
+  The weak cursor location is the location where characters of the
+  directionality opposite to the base direction of the layout are inserted.
 
-      The following example shows text with both a strong and a weak cursor.
+  The following example shows text with both a strong and a weak cursor.
 
-      <picture> <source srcset="split-cursor-dark.png"
-      media="(prefers-color-scheme: dark)"> <img alt="Strong and weak cursors"
-      src="split-cursor-light.png"> </picture>
+  <picture>
+    <source srcset="split-cursor-dark.png" media="(prefers-color-scheme: dark)">
+    <img alt="Strong and weak cursors" src="split-cursor-light.png">
+  </picture>
 
-      The strong cursor has a little arrow pointing to the right, the weak
-      cursor to the left. Typing a 'c' in this situation will insert the
-      character after the 'b', and typing another Hebrew character, like 'ג',
-      will insert it at the end. *)
+  The strong cursor has a little arrow pointing to the right, the weak
+  cursor to the left. Typing a 'c' in this situation will insert the
+  character after the 'b', and typing another Hebrew character, like 'ג',
+  will insert it at the end. *)
+  external get_cursor_pos : t -> int -> Rectangle.t * Rectangle.t = "ml_pango_layout_get_cursor_pos"
 
-  external get_context :
-    t -> Context_and__font_and__font_map_and__fontset.Context.t
-    = "ml_pango_layout_get_context"
   (** Retrieves the `PangoContext` used for this layout. *)
+  external get_context : t -> Context_and__font_and__font_map_and__fontset.Context.t = "ml_pango_layout_get_context"
 
-  external get_character_count : t -> int
-    = "ml_pango_layout_get_character_count"
   (** Returns the number of Unicode characters in the
   the text of @layout. *)
+  external get_character_count : t -> int = "ml_pango_layout_get_character_count"
 
-  external get_caret_pos : t -> int -> Rectangle.t * Rectangle.t
-    = "ml_pango_layout_get_caret_pos"
   (** Given an index within a layout, determines the positions that of the
-      strong and weak cursors if the insertion point is at that index.
+  strong and weak cursors if the insertion point is at that index.
 
-      This is a variant of [method@Pango.Layout.get_cursor_pos] that applies
-      font metric information about caret slope and offset to the positions it
-      returns.
+  This is a variant of [method@Pango.Layout.get_cursor_pos] that applies
+  font metric information about caret slope and offset to the positions
+  it returns.
 
-      <picture> <source srcset="caret-metrics-dark.png"
-      media="(prefers-color-scheme: dark)"> <img alt="Caret metrics"
-      src="caret-metrics-light.png"> </picture> *)
+  <picture>
+    <source srcset="caret-metrics-dark.png" media="(prefers-color-scheme: dark)">
+    <img alt="Caret metrics" src="caret-metrics-light.png">
+  </picture> *)
+  external get_caret_pos : t -> int -> Rectangle.t * Rectangle.t = "ml_pango_layout_get_caret_pos"
 
-  external get_baseline : t -> int = "ml_pango_layout_get_baseline"
   (** Gets the Y position of baseline of the first line in @layout. *)
+  external get_baseline : t -> int = "ml_pango_layout_get_baseline"
 
+  (** Gets whether to calculate the base direction for the layout
+  according to its contents.
+
+  See [method@Pango.Layout.set_auto_dir]. *)
   external get_auto_dir : t -> bool = "ml_pango_layout_get_auto_dir"
-  (** Gets whether to calculate the base direction for the layout according to
-      its contents.
 
-      See [method@Pango.Layout.set_auto_dir]. *)
-
-  external get_attributes : t -> Attr_list.t option
-    = "ml_pango_layout_get_attributes"
   (** Gets the attribute list for the layout, if any. *)
+  external get_attributes : t -> Attr_list.t option = "ml_pango_layout_get_attributes"
 
-  external get_alignment : t -> Pango_enums.alignment
-    = "ml_pango_layout_get_alignment"
-  (** Gets the alignment for the layout: how partial lines are positioned within
-      the horizontal space available. *)
+  (** Gets the alignment for the layout: how partial lines are
+  positioned within the horizontal space available. *)
+  external get_alignment : t -> Pango_enums.alignment = "ml_pango_layout_get_alignment"
 
-  external copy : t -> t = "ml_pango_layout_copy"
   (** Creates a deep copy-by-value of the layout.
 
-      The attribute list, tab array, and text from the original layout are all
-      copied by value. *)
+  The attribute list, tab array, and text from the original layout
+  are all copied by value. *)
+  external copy : t -> t = "ml_pango_layout_copy"
 
+  (** Forces recomputation of any state in the `PangoLayout` that
+  might depend on the layout's context.
+
+  This function should be called if you make changes to the context
+  subsequent to creating the layout. *)
   external context_changed : t -> unit = "ml_pango_layout_context_changed"
-  (** Forces recomputation of any state in the `PangoLayout` that might depend
-      on the layout's context.
 
-      This function should be called if you make changes to the context
-      subsequent to creating the layout. *)
+
 end
 
-and Layout_iter : sig
-  type t = [ `layout_iter ] Gobject.obj
+and Layout_iter
+ : sig
+  type t = [`layout_iter] Gobject.obj
 
   (* Methods *)
-
-  external next_run : t -> bool = "ml_pango_layout_iter_next_run"
   (** Moves @iter forward to the next run in visual order.
 
   If @iter was already at the end of the layout, returns %FALSE. *)
+  external next_run : t -> bool = "ml_pango_layout_iter_next_run"
 
-  external next_line : t -> bool = "ml_pango_layout_iter_next_line"
   (** Moves @iter forward to the start of the next line.
 
   If @iter is already on the last line, returns %FALSE. *)
+  external next_line : t -> bool = "ml_pango_layout_iter_next_line"
 
-  external next_cluster : t -> bool = "ml_pango_layout_iter_next_cluster"
   (** Moves @iter forward to the next cluster in visual order.
 
   If @iter was already at the end of the layout, returns %FALSE. *)
+  external next_cluster : t -> bool = "ml_pango_layout_iter_next_cluster"
 
-  external next_char : t -> bool = "ml_pango_layout_iter_next_char"
   (** Moves @iter forward to the next character in visual order.
 
   If @iter was already at the end of the layout, returns %FALSE. *)
+  external next_char : t -> bool = "ml_pango_layout_iter_next_char"
 
-  external get_run_extents : t -> Rectangle.t * Rectangle.t
-    = "ml_pango_layout_iter_get_run_extents"
   (** Gets the extents of the current run in layout coordinates.
 
-      Layout coordinates have the origin at the top left of the entire layout.
-  *)
+  Layout coordinates have the origin at the top left of the entire layout. *)
+  external get_run_extents : t -> Rectangle.t * Rectangle.t = "ml_pango_layout_iter_get_run_extents"
 
+  (** Gets the Y position of the current run's baseline, in layout
+  coordinates.
+
+  Layout coordinates have the origin at the top left of the entire layout.
+
+  The run baseline can be different from the line baseline, for
+  example due to superscript or subscript positioning. *)
   external get_run_baseline : t -> int = "ml_pango_layout_iter_get_run_baseline"
-  (** Gets the Y position of the current run's baseline, in layout coordinates.
 
-      Layout coordinates have the origin at the top left of the entire layout.
-
-      The run baseline can be different from the line baseline, for example due
-      to superscript or subscript positioning. *)
-
-  external get_line_yrange : t -> int * int
-    = "ml_pango_layout_iter_get_line_yrange"
   (** Divides the vertical space in the `PangoLayout` being iterated over
-      between the lines in the layout, and returns the space belonging to the
-      current line.
+  between the lines in the layout, and returns the space belonging to
+  the current line.
 
-      A line's range includes the line's logical extents. plus half of the
-      spacing above and below the line, if [method@Pango.Layout.set_spacing] has
-      been called to set layout spacing. The Y positions are in layout
-      coordinates (origin at top left of the entire layout).
+  A line's range includes the line's logical extents. plus half of the
+  spacing above and below the line, if [method@Pango.Layout.set_spacing]
+  has been called to set layout spacing. The Y positions are in layout
+  coordinates (origin at top left of the entire layout).
 
-      Note: Since 1.44, Pango uses line heights for placing lines, and there may
-      be gaps between the ranges returned by this function. *)
+  Note: Since 1.44, Pango uses line heights for placing lines, and there
+  may be gaps between the ranges returned by this function. *)
+  external get_line_yrange : t -> int * int = "ml_pango_layout_iter_get_line_yrange"
 
-  external get_line_readonly : t -> Layout_line.t option
-    = "ml_pango_layout_iter_get_line_readonly"
   (** Gets the current line for read-only access.
 
-      This is a faster alternative to [method@Pango.LayoutIter.get_line], but
-      the user is not expected to modify the contents of the line (glyphs, glyph
-      widths, etc.). *)
+  This is a faster alternative to [method@Pango.LayoutIter.get_line],
+  but the user is not expected to modify the contents of the line
+  (glyphs, glyph widths, etc.). *)
+  external get_line_readonly : t -> Layout_line.t option = "ml_pango_layout_iter_get_line_readonly"
 
-  external get_line_extents : t -> Rectangle.t * Rectangle.t
-    = "ml_pango_layout_iter_get_line_extents"
   (** Obtains the extents of the current line.
 
-      Extents are in layout coordinates (origin is the top-left corner of the
-      entire `PangoLayout`). Thus the extents returned by this function will be
-      the same width/height but not at the same x/y as the extents returned from
-      [method@Pango.LayoutLine.get_extents]. *)
+  Extents are in layout coordinates (origin is the top-left corner
+  of the entire `PangoLayout`). Thus the extents returned by this
+  function will be the same width/height but not at the same x/y
+  as the extents returned from [method@Pango.LayoutLine.get_extents]. *)
+  external get_line_extents : t -> Rectangle.t * Rectangle.t = "ml_pango_layout_iter_get_line_extents"
 
-  external get_line : t -> Layout_line.t option
-    = "ml_pango_layout_iter_get_line"
   (** Gets the current line.
 
-      Use the faster [method@Pango.LayoutIter.get_line_readonly] if you do not
-      plan to modify the contents of the line (glyphs, glyph widths, etc.). *)
+  Use the faster [method@Pango.LayoutIter.get_line_readonly] if
+  you do not plan to modify the contents of the line (glyphs,
+  glyph widths, etc.). *)
+  external get_line : t -> Layout_line.t option = "ml_pango_layout_iter_get_line"
 
-  external get_layout_extents : t -> Rectangle.t * Rectangle.t
-    = "ml_pango_layout_iter_get_layout_extents"
   (** Obtains the extents of the `PangoLayout` being iterated over. *)
+  external get_layout_extents : t -> Rectangle.t * Rectangle.t = "ml_pango_layout_iter_get_layout_extents"
 
-  external get_layout : t -> Layout.t option = "ml_pango_layout_iter_get_layout"
   (** Gets the layout associated with a `PangoLayoutIter`. *)
+  external get_layout : t -> Layout.t option = "ml_pango_layout_iter_get_layout"
 
-  external get_index : t -> int = "ml_pango_layout_iter_get_index"
   (** Gets the current byte index.
 
-      Note that iterating forward by char moves in visual order, not logical
-      order, so indexes may not be sequential. Also, the index may be equal to
-      the length of the text in the layout, if on the %NULL run (see
-      [method@Pango.LayoutIter.get_run]). *)
+  Note that iterating forward by char moves in visual order,
+  not logical order, so indexes may not be sequential. Also,
+  the index may be equal to the length of the text in the
+  layout, if on the %NULL run (see [method@Pango.LayoutIter.get_run]). *)
+  external get_index : t -> int = "ml_pango_layout_iter_get_index"
 
-  external get_cluster_extents : t -> Rectangle.t * Rectangle.t
-    = "ml_pango_layout_iter_get_cluster_extents"
   (** Gets the extents of the current cluster, in layout coordinates.
 
-      Layout coordinates have the origin at the top left of the entire layout.
-  *)
+  Layout coordinates have the origin at the top left of the entire layout. *)
+  external get_cluster_extents : t -> Rectangle.t * Rectangle.t = "ml_pango_layout_iter_get_cluster_extents"
 
-  external get_char_extents : t -> Rectangle.t
-    = "ml_pango_layout_iter_get_char_extents"
   (** Gets the extents of the current character, in layout coordinates.
 
-      Layout coordinates have the origin at the top left of the entire layout.
+  Layout coordinates have the origin at the top left of the entire layout.
 
-      Only logical extents can sensibly be obtained for characters; ink extents
-      make sense only down to the level of clusters. *)
+  Only logical extents can sensibly be obtained for characters;
+  ink extents make sense only down to the level of clusters. *)
+  external get_char_extents : t -> Rectangle.t = "ml_pango_layout_iter_get_char_extents"
 
+  (** Gets the Y position of the current line's baseline, in layout
+  coordinates.
+
+  Layout coordinates have the origin at the top left of the entire layout. *)
   external get_baseline : t -> int = "ml_pango_layout_iter_get_baseline"
-  (** Gets the Y position of the current line's baseline, in layout coordinates.
 
-      Layout coordinates have the origin at the top left of the entire layout.
-  *)
-
-  external free : t -> unit = "ml_pango_layout_iter_free"
   (** Frees an iterator that's no longer in use. *)
+  external free : t -> unit = "ml_pango_layout_iter_free"
 
-  external copy : t -> t option = "ml_pango_layout_iter_copy"
   (** Copies a `PangoLayoutIter`. *)
+  external copy : t -> t option = "ml_pango_layout_iter_copy"
 
-  external at_last_line : t -> bool = "ml_pango_layout_iter_at_last_line"
   (** Determines whether @iter is on the last line of the layout. *)
+  external at_last_line : t -> bool = "ml_pango_layout_iter_at_last_line"
+
+
 end = struct
-  type t = [ `layout_iter ] Gobject.obj
+  type t = [`layout_iter] Gobject.obj
 
   (* Methods *)
-
-  external next_run : t -> bool = "ml_pango_layout_iter_next_run"
   (** Moves @iter forward to the next run in visual order.
 
   If @iter was already at the end of the layout, returns %FALSE. *)
+  external next_run : t -> bool = "ml_pango_layout_iter_next_run"
 
-  external next_line : t -> bool = "ml_pango_layout_iter_next_line"
   (** Moves @iter forward to the start of the next line.
 
   If @iter is already on the last line, returns %FALSE. *)
+  external next_line : t -> bool = "ml_pango_layout_iter_next_line"
 
-  external next_cluster : t -> bool = "ml_pango_layout_iter_next_cluster"
   (** Moves @iter forward to the next cluster in visual order.
 
   If @iter was already at the end of the layout, returns %FALSE. *)
+  external next_cluster : t -> bool = "ml_pango_layout_iter_next_cluster"
 
-  external next_char : t -> bool = "ml_pango_layout_iter_next_char"
   (** Moves @iter forward to the next character in visual order.
 
   If @iter was already at the end of the layout, returns %FALSE. *)
+  external next_char : t -> bool = "ml_pango_layout_iter_next_char"
 
-  external get_run_extents : t -> Rectangle.t * Rectangle.t
-    = "ml_pango_layout_iter_get_run_extents"
   (** Gets the extents of the current run in layout coordinates.
 
-      Layout coordinates have the origin at the top left of the entire layout.
-  *)
+  Layout coordinates have the origin at the top left of the entire layout. *)
+  external get_run_extents : t -> Rectangle.t * Rectangle.t = "ml_pango_layout_iter_get_run_extents"
 
+  (** Gets the Y position of the current run's baseline, in layout
+  coordinates.
+
+  Layout coordinates have the origin at the top left of the entire layout.
+
+  The run baseline can be different from the line baseline, for
+  example due to superscript or subscript positioning. *)
   external get_run_baseline : t -> int = "ml_pango_layout_iter_get_run_baseline"
-  (** Gets the Y position of the current run's baseline, in layout coordinates.
 
-      Layout coordinates have the origin at the top left of the entire layout.
-
-      The run baseline can be different from the line baseline, for example due
-      to superscript or subscript positioning. *)
-
-  external get_line_yrange : t -> int * int
-    = "ml_pango_layout_iter_get_line_yrange"
   (** Divides the vertical space in the `PangoLayout` being iterated over
-      between the lines in the layout, and returns the space belonging to the
-      current line.
+  between the lines in the layout, and returns the space belonging to
+  the current line.
 
-      A line's range includes the line's logical extents. plus half of the
-      spacing above and below the line, if [method@Pango.Layout.set_spacing] has
-      been called to set layout spacing. The Y positions are in layout
-      coordinates (origin at top left of the entire layout).
+  A line's range includes the line's logical extents. plus half of the
+  spacing above and below the line, if [method@Pango.Layout.set_spacing]
+  has been called to set layout spacing. The Y positions are in layout
+  coordinates (origin at top left of the entire layout).
 
-      Note: Since 1.44, Pango uses line heights for placing lines, and there may
-      be gaps between the ranges returned by this function. *)
+  Note: Since 1.44, Pango uses line heights for placing lines, and there
+  may be gaps between the ranges returned by this function. *)
+  external get_line_yrange : t -> int * int = "ml_pango_layout_iter_get_line_yrange"
 
-  external get_line_readonly : t -> Layout_line.t option
-    = "ml_pango_layout_iter_get_line_readonly"
   (** Gets the current line for read-only access.
 
-      This is a faster alternative to [method@Pango.LayoutIter.get_line], but
-      the user is not expected to modify the contents of the line (glyphs, glyph
-      widths, etc.). *)
+  This is a faster alternative to [method@Pango.LayoutIter.get_line],
+  but the user is not expected to modify the contents of the line
+  (glyphs, glyph widths, etc.). *)
+  external get_line_readonly : t -> Layout_line.t option = "ml_pango_layout_iter_get_line_readonly"
 
-  external get_line_extents : t -> Rectangle.t * Rectangle.t
-    = "ml_pango_layout_iter_get_line_extents"
   (** Obtains the extents of the current line.
 
-      Extents are in layout coordinates (origin is the top-left corner of the
-      entire `PangoLayout`). Thus the extents returned by this function will be
-      the same width/height but not at the same x/y as the extents returned from
-      [method@Pango.LayoutLine.get_extents]. *)
+  Extents are in layout coordinates (origin is the top-left corner
+  of the entire `PangoLayout`). Thus the extents returned by this
+  function will be the same width/height but not at the same x/y
+  as the extents returned from [method@Pango.LayoutLine.get_extents]. *)
+  external get_line_extents : t -> Rectangle.t * Rectangle.t = "ml_pango_layout_iter_get_line_extents"
 
-  external get_line : t -> Layout_line.t option
-    = "ml_pango_layout_iter_get_line"
   (** Gets the current line.
 
-      Use the faster [method@Pango.LayoutIter.get_line_readonly] if you do not
-      plan to modify the contents of the line (glyphs, glyph widths, etc.). *)
+  Use the faster [method@Pango.LayoutIter.get_line_readonly] if
+  you do not plan to modify the contents of the line (glyphs,
+  glyph widths, etc.). *)
+  external get_line : t -> Layout_line.t option = "ml_pango_layout_iter_get_line"
 
-  external get_layout_extents : t -> Rectangle.t * Rectangle.t
-    = "ml_pango_layout_iter_get_layout_extents"
   (** Obtains the extents of the `PangoLayout` being iterated over. *)
+  external get_layout_extents : t -> Rectangle.t * Rectangle.t = "ml_pango_layout_iter_get_layout_extents"
 
-  external get_layout : t -> Layout.t option = "ml_pango_layout_iter_get_layout"
   (** Gets the layout associated with a `PangoLayoutIter`. *)
+  external get_layout : t -> Layout.t option = "ml_pango_layout_iter_get_layout"
 
-  external get_index : t -> int = "ml_pango_layout_iter_get_index"
   (** Gets the current byte index.
 
-      Note that iterating forward by char moves in visual order, not logical
-      order, so indexes may not be sequential. Also, the index may be equal to
-      the length of the text in the layout, if on the %NULL run (see
-      [method@Pango.LayoutIter.get_run]). *)
+  Note that iterating forward by char moves in visual order,
+  not logical order, so indexes may not be sequential. Also,
+  the index may be equal to the length of the text in the
+  layout, if on the %NULL run (see [method@Pango.LayoutIter.get_run]). *)
+  external get_index : t -> int = "ml_pango_layout_iter_get_index"
 
-  external get_cluster_extents : t -> Rectangle.t * Rectangle.t
-    = "ml_pango_layout_iter_get_cluster_extents"
   (** Gets the extents of the current cluster, in layout coordinates.
 
-      Layout coordinates have the origin at the top left of the entire layout.
-  *)
+  Layout coordinates have the origin at the top left of the entire layout. *)
+  external get_cluster_extents : t -> Rectangle.t * Rectangle.t = "ml_pango_layout_iter_get_cluster_extents"
 
-  external get_char_extents : t -> Rectangle.t
-    = "ml_pango_layout_iter_get_char_extents"
   (** Gets the extents of the current character, in layout coordinates.
 
-      Layout coordinates have the origin at the top left of the entire layout.
+  Layout coordinates have the origin at the top left of the entire layout.
 
-      Only logical extents can sensibly be obtained for characters; ink extents
-      make sense only down to the level of clusters. *)
+  Only logical extents can sensibly be obtained for characters;
+  ink extents make sense only down to the level of clusters. *)
+  external get_char_extents : t -> Rectangle.t = "ml_pango_layout_iter_get_char_extents"
 
+  (** Gets the Y position of the current line's baseline, in layout
+  coordinates.
+
+  Layout coordinates have the origin at the top left of the entire layout. *)
   external get_baseline : t -> int = "ml_pango_layout_iter_get_baseline"
-  (** Gets the Y position of the current line's baseline, in layout coordinates.
 
-      Layout coordinates have the origin at the top left of the entire layout.
-  *)
-
-  external free : t -> unit = "ml_pango_layout_iter_free"
   (** Frees an iterator that's no longer in use. *)
+  external free : t -> unit = "ml_pango_layout_iter_free"
 
-  external copy : t -> t option = "ml_pango_layout_iter_copy"
   (** Copies a `PangoLayoutIter`. *)
+  external copy : t -> t option = "ml_pango_layout_iter_copy"
 
-  external at_last_line : t -> bool = "ml_pango_layout_iter_at_last_line"
   (** Determines whether @iter is on the last line of the layout. *)
+  external at_last_line : t -> bool = "ml_pango_layout_iter_at_last_line"
+
+
 end

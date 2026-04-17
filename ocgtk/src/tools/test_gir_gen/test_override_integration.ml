@@ -158,6 +158,7 @@ let ignore_button_overrides =
         {
           class_name = "Button";
           class_action = Some Ignore;
+          class_os = None;
           constructors = [];
           methods = [];
           properties = [];
@@ -179,8 +180,9 @@ let ignore_create_overrides =
         {
           class_name = "Widget";
           class_action = None;
+          class_os = None;
           constructors = [];
-          methods = [ { component_name = "create"; action = Ignore } ];
+          methods = [ { component_name = "create"; action = Some Ignore; os = None } ];
           properties = [];
           signals = [];
         };
@@ -201,6 +203,7 @@ let version_widget_overrides =
           class_name = "Widget";
           class_action =
             Some (Set_version { vs_version = "4.10"; vs_namespace = None });
+            class_os = None;
           constructors = [];
           methods = [];
           properties = [];

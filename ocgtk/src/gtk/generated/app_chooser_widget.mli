@@ -1,68 +1,59 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AppChooserWidget: AppChooserWidget *)
 
-type t =
-  [ `app_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj
+type t = [`app_chooser_widget | `widget | `initially_unowned | `object_] Gobject.obj
 
-external new_ : string -> t = "ml_gtk_app_chooser_widget_new"
 (** Create a new AppChooserWidget *)
+external new_ : string -> t = "ml_gtk_app_chooser_widget_new"
 
 (* Methods *)
+(** Sets whether the app chooser should show recommended applications
+for the content type in a separate section. *)
+external set_show_recommended : t -> bool -> unit = "ml_gtk_app_chooser_widget_set_show_recommended"
 
-external set_show_recommended : t -> bool -> unit
-  = "ml_gtk_app_chooser_widget_set_show_recommended"
-(** Sets whether the app chooser should show recommended applications for the
-    content type in a separate section. *)
+(** Sets whether the app chooser should show applications
+which are unrelated to the content type. *)
+external set_show_other : t -> bool -> unit = "ml_gtk_app_chooser_widget_set_show_other"
 
-external set_show_other : t -> bool -> unit
-  = "ml_gtk_app_chooser_widget_set_show_other"
-(** Sets whether the app chooser should show applications which are unrelated to
-    the content type. *)
+(** Sets whether the app chooser should show related applications
+for the content type in a separate section. *)
+external set_show_fallback : t -> bool -> unit = "ml_gtk_app_chooser_widget_set_show_fallback"
 
-external set_show_fallback : t -> bool -> unit
-  = "ml_gtk_app_chooser_widget_set_show_fallback"
-(** Sets whether the app chooser should show related applications for the
-    content type in a separate section. *)
+(** Sets whether the app chooser should show the default handler
+for the content type in a separate section. *)
+external set_show_default : t -> bool -> unit = "ml_gtk_app_chooser_widget_set_show_default"
 
-external set_show_default : t -> bool -> unit
-  = "ml_gtk_app_chooser_widget_set_show_default"
-(** Sets whether the app chooser should show the default handler for the content
-    type in a separate section. *)
+(** Sets whether the app chooser should show all applications
+in a flat list. *)
+external set_show_all : t -> bool -> unit = "ml_gtk_app_chooser_widget_set_show_all"
 
-external set_show_all : t -> bool -> unit
-  = "ml_gtk_app_chooser_widget_set_show_all"
-(** Sets whether the app chooser should show all applications in a flat list. *)
+(** Sets the text that is shown if there are not applications
+that can handle the content type. *)
+external set_default_text : t -> string -> unit = "ml_gtk_app_chooser_widget_set_default_text"
 
-external set_default_text : t -> string -> unit
-  = "ml_gtk_app_chooser_widget_set_default_text"
-(** Sets the text that is shown if there are not applications that can handle
-    the content type. *)
+(** Gets whether the app chooser should show recommended applications
+for the content type in a separate section. *)
+external get_show_recommended : t -> bool = "ml_gtk_app_chooser_widget_get_show_recommended"
 
-external get_show_recommended : t -> bool
-  = "ml_gtk_app_chooser_widget_get_show_recommended"
-(** Gets whether the app chooser should show recommended applications for the
-    content type in a separate section. *)
-
+(** Gets whether the app chooser should show applications
+which are unrelated to the content type. *)
 external get_show_other : t -> bool = "ml_gtk_app_chooser_widget_get_show_other"
-(** Gets whether the app chooser should show applications which are unrelated to
-    the content type. *)
 
-external get_show_fallback : t -> bool
-  = "ml_gtk_app_chooser_widget_get_show_fallback"
-(** Gets whether the app chooser should show related applications for the
-    content type in a separate section. *)
+(** Gets whether the app chooser should show related applications
+for the content type in a separate section. *)
+external get_show_fallback : t -> bool = "ml_gtk_app_chooser_widget_get_show_fallback"
 
-external get_show_default : t -> bool
-  = "ml_gtk_app_chooser_widget_get_show_default"
-(** Gets whether the app chooser should show the default handler for the content
-    type in a separate section. *)
+(** Gets whether the app chooser should show the default handler
+for the content type in a separate section. *)
+external get_show_default : t -> bool = "ml_gtk_app_chooser_widget_get_show_default"
 
+(** Gets whether the app chooser should show all applications
+in a flat list. *)
 external get_show_all : t -> bool = "ml_gtk_app_chooser_widget_get_show_all"
-(** Gets whether the app chooser should show all applications in a flat list. *)
 
-external get_default_text : t -> string option
-  = "ml_gtk_app_chooser_widget_get_default_text"
-(** Returns the text that is shown if there are not applications that can handle
-    the content type. *)
+(** Returns the text that is shown if there are not applications
+that can handle the content type. *)
+external get_default_text : t -> string option = "ml_gtk_app_chooser_widget_get_default_text"
 
 (* Properties *)
+

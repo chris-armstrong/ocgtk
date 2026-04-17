@@ -41,6 +41,7 @@ let create_context_with_mixed_enums () =
             c_identifier = "GTK_WRAP_NONE";
             member_doc = None;
             member_version = None;
+            member_os = None;
           };
           {
             member_name = "WORD";
@@ -48,11 +49,13 @@ let create_context_with_mixed_enums () =
             c_identifier = "GTK_WRAP_WORD";
             member_doc = None;
             member_version = None;
+            member_os = None;
           };
         ];
       functions = [];
       enum_doc = None;
       enum_version = None;
+      enum_os = None;
     }
   in
 
@@ -101,6 +104,7 @@ let create_context_with_mixed_bitfields () =
             flag_c_identifier = "GTK_STATE_FLAG_NORMAL";
             flag_doc = None;
             flag_version = None;
+            flag_os = None;
           };
           {
             flag_name = "ACTIVE";
@@ -108,10 +112,12 @@ let create_context_with_mixed_bitfields () =
             flag_c_identifier = "GTK_STATE_FLAG_ACTIVE";
             flag_doc = None;
             flag_version = None;
+            flag_os = None;
           };
         ];
       bitfield_doc = None;
       bitfield_version = None;
+      bitfield_os = None;
     }
   in
 

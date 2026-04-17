@@ -1,18 +1,16 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Item: Item *)
 
-type t = [ `item ] Gobject.obj
 (** The `PangoItem` structure stores information about a segment of text.
 
-    You typically obtain `PangoItems` by itemizing a piece of text with
-    [func@itemize]. *)
+You typically obtain `PangoItems` by itemizing a piece of text
+with [func@itemize]. *)
+type t = [`item] Gobject.obj
 
-external new_ : unit -> t = "ml_pango_item_new"
 (** Create a new Item *)
+external new_ : unit -> t = "ml_pango_item_new"
 
 (* Methods *)
-
-external split : t -> int -> int -> t = "ml_pango_item_split"
 (** Modifies @orig to cover only the text after @split_index, and
 returns a new item that covers the text before @split_index that
 used to be in @orig.
@@ -25,15 +23,14 @@ assigned to each item, you can't create a zero-length item).
 provided because the text used to generate the item isn't available,
 so `pango_item_split()` can't count the char length of the split items
 itself. *)
+external split : t -> int -> int -> t = "ml_pango_item_split"
 
-external free : t -> unit = "ml_pango_item_free"
 (** Free a `PangoItem` and all associated memory. *)
+external free : t -> unit = "ml_pango_item_free"
 
-external copy : t -> t option = "ml_pango_item_copy"
 (** Copy an existing `PangoItem` structure. *)
+external copy : t -> t option = "ml_pango_item_copy"
 
-external apply_attrs : t -> Attr_iterator.t -> unit
-  = "ml_pango_item_apply_attrs"
 (** Add attributes to a `PangoItem`.
 
 The idea is that you have attributes that don't affect itemization,
@@ -45,3 +42,5 @@ The @iter should be positioned before the range of the item,
 and will be advanced past it. This function is meant to be called
 in a loop over the items resulting from itemization, while passing
 the iter to each call. *)
+external apply_attrs : t -> Attr_iterator.t -> unit = "ml_pango_item_apply_attrs"
+

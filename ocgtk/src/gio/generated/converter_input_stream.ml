@@ -1,18 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ConverterInputStream: ConverterInputStream *)
 
-type t =
-  [ `converter_input_stream | `filter_input_stream | `input_stream | `object_ ]
-  Gobject.obj
+type t = [`converter_input_stream | `filter_input_stream | `input_stream | `object_] Gobject.obj
 
-external new_ : Input_stream.t -> Converter.t -> t
-  = "ml_g_converter_input_stream_new"
 (** Create a new ConverterInputStream *)
+external new_ : Input_stream.t -> Converter.t -> t = "ml_g_converter_input_stream_new"
 
 (* Methods *)
-
-external get_converter : t -> Converter.t
-  = "ml_g_converter_input_stream_get_converter"
 (** Gets the #GConverter that is used by @converter_stream. *)
+external get_converter : t -> Converter.t = "ml_g_converter_input_stream_get_converter"
 
 (* Properties *)
+

@@ -1,10 +1,6 @@
 (* Signal handlers for CellEditable *)
-class cell_editable_signals (obj : Cell_editable.t) =
-  object
-    method on_editing_done ~callback =
-      Gobject.Signal.connect_simple obj ~name:"editing-done" ~callback
-        ~after:false
-    (** This signal is a sign for the cell renderer to update its
+class cell_editable_signals (obj : Cell_editable.t) = object
+  (** This signal is a sign for the cell renderer to update its
 value from the @cell_editable.
 
 Implementations of `GtkCellEditable` are responsible for
@@ -15,11 +11,10 @@ disconnect the @cell_editable from signals on the `GtkCellRenderer`, etc.
 
 gtk_cell_editable_editing_done() is a convenience method
 for emitting `GtkCellEditable::editing-done`. *)
+  method on_editing_done ~callback =
+    Gobject.Signal.connect_simple obj ~name:"editing-done" ~callback ~after:false
 
-    method on_remove_widget ~callback =
-      Gobject.Signal.connect_simple obj ~name:"remove-widget" ~callback
-        ~after:false
-    (** This signal is meant to indicate that the cell is finished
+  (** This signal is meant to indicate that the cell is finished
 editing, and the @cell_editable widget is being removed and may
 subsequently be destroyed.
 
@@ -31,4 +26,7 @@ before the widget is removed.
 
 gtk_cell_editable_remove_widget() is a convenience method
 for emitting `GtkCellEditable::remove-widget`. *)
-  end
+  method on_remove_widget ~callback =
+    Gobject.Signal.connect_simple obj ~name:"remove-widget" ~callback ~after:false
+
+end

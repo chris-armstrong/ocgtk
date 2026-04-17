@@ -70,6 +70,7 @@ let test_overrides =
         {
           class_name = "Button";
           class_action = Some Ignore;
+          class_os = None;
           constructors = [];
           methods = [];
           properties = [];
@@ -78,8 +79,9 @@ let test_overrides =
         {
           class_name = "Widget";
           class_action = None;
+          class_os = None;
           constructors = [];
-          methods = [ { component_name = "create"; action = Ignore } ];
+          methods = [ { component_name = "create"; action = Some Ignore; os = None } ];
           properties = [];
           signals = [];
         };

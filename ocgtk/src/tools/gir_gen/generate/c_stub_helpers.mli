@@ -256,3 +256,70 @@ val emit_with_member_guard :
     returns [Member_guard]. [fallback v] is called with the member version to
     produce the [#else] stub. Falls through to plain emit on parse errors or
     when no guard is needed. *)
+
+(** {1 OS Guard Support} *)
+
+val os_to_c_guard_open : string -> string
+(** Map an OS string to the opening C preprocessor guard.
+    E.g. ["linux"] -> ["#ifdef __linux__"]. *)
+
+val os_to_c_guard_close : string -> string
+(** Map an OS string to the closing C preprocessor guard.
+    E.g. ["linux"] -> ["#endif /* __linux__ */"]. *)
+
+val os_display_name : string -> string
+(** Human-readable display name for an OS string (for failwith messages).
+    E.g. ["linux"] -> ["Linux"]. *)
+
+val emit_with_os_guard :
+  os:string option ->
+  failwith_stub:string ->
+  stub:string ->
+  Buffer.t ->
+  unit
+(** Wrap a generated stub in an OS guard.
+    [os]: OS string (e.g. ["linux"]), or [None] to emit stub as-is.
+    [failwith_stub]: content for the [#else] branch.
+    [stub]: the actual implementation in the [#ifdef] branch. *)
+
+val emit_os_fallback_constructor_stub :
+  ctx:Types.generation_context ->
+  c_type:string ->
+  class_name:string ->
+  ml_name:string ->
+  c_identifier:string ->
+  os:string ->
+  Types.gir_constructor ->
+  string
+(** Emit a fallback constructor stub for the [#else] branch of an OS guard. *)
+
+val emit_os_fallback_method_stub :
+  ctx:Types.generation_context ->
+  c_type:string ->
+  class_name:string ->
+  ml_name:string ->
+  c_identifier:string ->
+  os:string ->
+  Types.gir_method ->
+  string
+(** Emit a fallback method stub for the [#else] branch of an OS guard. *)
+
+val emit_os_fallback_property_getter_stub :
+  ctx:Types.generation_context ->
+  c_type:string ->
+  class_name:string ->
+  ml_name:string ->
+  os:string ->
+  Types.gir_property ->
+  string
+(** Emit a fallback property getter stub for the [#else] branch of an OS guard. *)
+
+val emit_os_fallback_property_setter_stub :
+  ctx:Types.generation_context ->
+  c_type:string ->
+  class_name:string ->
+  ml_name:string ->
+  os:string ->
+  Types.gir_property ->
+  string
+(** Emit a fallback property setter stub for the [#else] branch of an OS guard. *)

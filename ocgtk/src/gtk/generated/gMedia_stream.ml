@@ -1,107 +1,160 @@
 class type media_stream_t = object
-  inherit Ocgtk_gdk.Gdk.Paintable.paintable_t
-  method get_duration : unit -> int64
-  method get_ended : unit -> bool
-  method get_loop : unit -> bool
-  method get_muted : unit -> bool
-  method get_playing : unit -> bool
-  method get_timestamp : unit -> int64
-  method get_volume : unit -> float
-  method has_audio : unit -> bool
-  method has_video : unit -> bool
-  method is_prepared : unit -> bool
-  method is_seekable : unit -> bool
-  method is_seeking : unit -> bool
-  method pause : unit -> unit
-  method play : unit -> unit
-  method realize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit
-  method seek : int64 -> unit
-  method seek_failed : unit -> unit
-  method seek_success : unit -> unit
-  method set_loop : bool -> unit
-  method set_muted : bool -> unit
-  method set_playing : bool -> unit
-  method set_volume : float -> unit
-  method stream_ended : unit -> unit
-  method stream_prepared : bool -> bool -> bool -> int64 -> unit
-  method stream_unprepared : unit -> unit
-  method unrealize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit
-  method update : int64 -> unit
-  method prepared : bool
-  method set_prepared : bool -> unit
-  method seekable : bool
-  method seeking : bool
-  method as_media_stream : Media_stream.t
+    inherit Ocgtk_gdk.Gdk.Paintable.paintable_t
+    method get_duration : unit -> int64
+    method get_ended : unit -> bool
+    method get_loop : unit -> bool
+    method get_muted : unit -> bool
+    method get_playing : unit -> bool
+    method get_timestamp : unit -> int64
+    method get_volume : unit -> float
+    method has_audio : unit -> bool
+    method has_video : unit -> bool
+    method is_prepared : unit -> bool
+    method is_seekable : unit -> bool
+    method is_seeking : unit -> bool
+    method pause : unit -> unit
+    method play : unit -> unit
+    method realize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit
+    method seek : int64 -> unit
+    method seek_failed : unit -> unit
+    method seek_success : unit -> unit
+    method set_loop : bool -> unit
+    method set_muted : bool -> unit
+    method set_playing : bool -> unit
+    method set_volume : float -> unit
+    method stream_ended : unit -> unit
+    method stream_prepared : bool -> bool -> bool -> int64 -> unit
+    method stream_unprepared : unit -> unit
+    method unrealize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit
+    method update : int64 -> unit
+    method prepared : bool
+    method set_prepared : bool -> unit
+    method seekable : bool
+    method seeking : bool
+    method as_media_stream : Media_stream.t
 end
 
 (* High-level class for MediaStream *)
-class media_stream (obj : Media_stream.t) : media_stream_t =
-  object (self)
-    inherit
-      Ocgtk_gdk.Gdk.Paintable.paintable
-        (Ocgtk_gdk.Gdk.Wrappers.Paintable.from_gobject obj)
+class media_stream (obj : Media_stream.t) : media_stream_t = object (self)
+  inherit Ocgtk_gdk.Gdk.Paintable.paintable (Ocgtk_gdk.Gdk.Wrappers.Paintable.from_gobject obj)
 
-    method get_duration : unit -> int64 =
-      fun () -> Media_stream.get_duration obj
+  method get_duration : unit -> int64 =
+    fun () ->
+      (Media_stream.get_duration obj)
 
-    method get_ended : unit -> bool = fun () -> Media_stream.get_ended obj
-    method get_loop : unit -> bool = fun () -> Media_stream.get_loop obj
-    method get_muted : unit -> bool = fun () -> Media_stream.get_muted obj
-    method get_playing : unit -> bool = fun () -> Media_stream.get_playing obj
+  method get_ended : unit -> bool =
+    fun () ->
+      (Media_stream.get_ended obj)
 
-    method get_timestamp : unit -> int64 =
-      fun () -> Media_stream.get_timestamp obj
+  method get_loop : unit -> bool =
+    fun () ->
+      (Media_stream.get_loop obj)
 
-    method get_volume : unit -> float = fun () -> Media_stream.get_volume obj
-    method has_audio : unit -> bool = fun () -> Media_stream.has_audio obj
-    method has_video : unit -> bool = fun () -> Media_stream.has_video obj
-    method is_prepared : unit -> bool = fun () -> Media_stream.is_prepared obj
-    method is_seekable : unit -> bool = fun () -> Media_stream.is_seekable obj
-    method is_seeking : unit -> bool = fun () -> Media_stream.is_seeking obj
-    method pause : unit -> unit = fun () -> Media_stream.pause obj
-    method play : unit -> unit = fun () -> Media_stream.play obj
+  method get_muted : unit -> bool =
+    fun () ->
+      (Media_stream.get_muted obj)
 
-    method realize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit =
-      fun surface ->
-        let surface = surface#as_surface in
-        Media_stream.realize obj surface
+  method get_playing : unit -> bool =
+    fun () ->
+      (Media_stream.get_playing obj)
 
-    method seek : int64 -> unit =
-      fun timestamp -> Media_stream.seek obj timestamp
+  method get_timestamp : unit -> int64 =
+    fun () ->
+      (Media_stream.get_timestamp obj)
 
-    method seek_failed : unit -> unit = fun () -> Media_stream.seek_failed obj
-    method seek_success : unit -> unit = fun () -> Media_stream.seek_success obj
-    method set_loop : bool -> unit = fun loop -> Media_stream.set_loop obj loop
+  method get_volume : unit -> float =
+    fun () ->
+      (Media_stream.get_volume obj)
 
-    method set_muted : bool -> unit =
-      fun muted -> Media_stream.set_muted obj muted
+  method has_audio : unit -> bool =
+    fun () ->
+      (Media_stream.has_audio obj)
 
-    method set_playing : bool -> unit =
-      fun playing -> Media_stream.set_playing obj playing
+  method has_video : unit -> bool =
+    fun () ->
+      (Media_stream.has_video obj)
 
-    method set_volume : float -> unit =
-      fun volume -> Media_stream.set_volume obj volume
+  method is_prepared : unit -> bool =
+    fun () ->
+      (Media_stream.is_prepared obj)
 
-    method stream_ended : unit -> unit = fun () -> Media_stream.stream_ended obj
+  method is_seekable : unit -> bool =
+    fun () ->
+      (Media_stream.is_seekable obj)
 
-    method stream_prepared : bool -> bool -> bool -> int64 -> unit =
-      fun has_audio has_video seekable duration ->
-        Media_stream.stream_prepared obj has_audio has_video seekable duration
+  method is_seeking : unit -> bool =
+    fun () ->
+      (Media_stream.is_seeking obj)
 
-    method stream_unprepared : unit -> unit =
-      fun () -> Media_stream.stream_unprepared obj
+  method pause : unit -> unit =
+    fun () ->
+      (Media_stream.pause obj)
 
-    method unrealize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit =
-      fun surface ->
-        let surface = surface#as_surface in
-        Media_stream.unrealize obj surface
+  method play : unit -> unit =
+    fun () ->
+      (Media_stream.play obj)
 
-    method update : int64 -> unit =
-      fun timestamp -> Media_stream.update obj timestamp
+  method realize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit =
+    fun surface ->
+      let surface = surface#as_surface in
+      (Media_stream.realize obj surface)
 
-    method prepared = Media_stream.get_prepared obj
-    method set_prepared v = Media_stream.set_prepared obj v
-    method seekable = Media_stream.get_seekable obj
-    method seeking = Media_stream.get_seeking obj
+  method seek : int64 -> unit =
+    fun timestamp ->
+      (Media_stream.seek obj timestamp)
+
+  method seek_failed : unit -> unit =
+    fun () ->
+      (Media_stream.seek_failed obj)
+
+  method seek_success : unit -> unit =
+    fun () ->
+      (Media_stream.seek_success obj)
+
+  method set_loop : bool -> unit =
+    fun loop ->
+      (Media_stream.set_loop obj loop)
+
+  method set_muted : bool -> unit =
+    fun muted ->
+      (Media_stream.set_muted obj muted)
+
+  method set_playing : bool -> unit =
+    fun playing ->
+      (Media_stream.set_playing obj playing)
+
+  method set_volume : float -> unit =
+    fun volume ->
+      (Media_stream.set_volume obj volume)
+
+  method stream_ended : unit -> unit =
+    fun () ->
+      (Media_stream.stream_ended obj)
+
+  method stream_prepared : bool -> bool -> bool -> int64 -> unit =
+    fun has_audio has_video seekable duration ->
+      (Media_stream.stream_prepared obj has_audio has_video seekable duration)
+
+  method stream_unprepared : unit -> unit =
+    fun () ->
+      (Media_stream.stream_unprepared obj)
+
+  method unrealize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit =
+    fun surface ->
+      let surface = surface#as_surface in
+      (Media_stream.unrealize obj surface)
+
+  method update : int64 -> unit =
+    fun timestamp ->
+      (Media_stream.update obj timestamp)
+
+  method prepared = Media_stream.get_prepared obj
+  method set_prepared v =  Media_stream.set_prepared obj v
+
+  method seekable = Media_stream.get_seekable obj
+
+  method seeking = Media_stream.get_seeking obj
+
     method as_media_stream = obj
-  end
+end
+

@@ -2,8 +2,8 @@
 (* cairo Enumeration and Bitfield Types *)
 
 (* Status - enumeration *)
-type status =
-  [ `SUCCESS
+type status = [
+  | `SUCCESS
   | `NO_MEMORY
   | `INVALID_RESTORE
   | `INVALID_POP_GROUP
@@ -41,14 +41,19 @@ type status =
   | `DEVICE_ERROR
   | `INVALID_MESH_CONSTRUCTION
   | `DEVICE_FINISHED
-  | `JBIG2_GLOBAL_MISSING ]
+  | `JBIG2_GLOBAL_MISSING
+]
 
 (* Content - enumeration *)
-type content = [ `COLOR | `ALPHA | `COLOR_ALPHA ]
+type content = [
+  | `COLOR
+  | `ALPHA
+  | `COLOR_ALPHA
+]
 
 (* Operator - enumeration *)
-type operator =
-  [ `CLEAR
+type operator = [
+  | `CLEAR
   | `SOURCE
   | `OVER
   | `IN
@@ -76,51 +81,116 @@ type operator =
   | `HSL_HUE
   | `HSL_SATURATION
   | `HSL_COLOR
-  | `HSL_LUMINOSITY ]
+  | `HSL_LUMINOSITY
+]
 
 (* Antialias - enumeration *)
-type antialias = [ `DEFAULT | `NONE | `GRAY | `SUBPIXEL | `FAST | `GOOD | `BEST ]
+type antialias = [
+  | `DEFAULT
+  | `NONE
+  | `GRAY
+  | `SUBPIXEL
+  | `FAST
+  | `GOOD
+  | `BEST
+]
 
 (* FillRule - enumeration *)
-type fillrule = [ `WINDING | `EVEN_ODD ]
+type fillrule = [
+  | `WINDING
+  | `EVEN_ODD
+]
 
 (* LineCap - enumeration *)
-type linecap = [ `BUTT | `ROUND | `SQUARE ]
+type linecap = [
+  | `BUTT
+  | `ROUND
+  | `SQUARE
+]
 
 (* LineJoin - enumeration *)
-type linejoin = [ `MITER | `ROUND | `BEVEL ]
+type linejoin = [
+  | `MITER
+  | `ROUND
+  | `BEVEL
+]
 
 (* TextClusterFlags - enumeration *)
-type textclusterflags = [ `BACKWARD ]
+type textclusterflags = [
+  | `BACKWARD
+]
 
 (* FontSlant - enumeration *)
-type fontslant = [ `NORMAL | `ITALIC | `OBLIQUE ]
+type fontslant = [
+  | `NORMAL
+  | `ITALIC
+  | `OBLIQUE
+]
 
 (* FontWeight - enumeration *)
-type fontweight = [ `NORMAL | `BOLD ]
+type fontweight = [
+  | `NORMAL
+  | `BOLD
+]
 
 (* SubpixelOrder - enumeration *)
-type subpixelorder = [ `DEFAULT | `RGB | `BGR | `VRGB | `VBGR ]
+type subpixelorder = [
+  | `DEFAULT
+  | `RGB
+  | `BGR
+  | `VRGB
+  | `VBGR
+]
 
 (* HintStyle - enumeration *)
-type hintstyle = [ `DEFAULT | `NONE | `SLIGHT | `MEDIUM | `FULL ]
+type hintstyle = [
+  | `DEFAULT
+  | `NONE
+  | `SLIGHT
+  | `MEDIUM
+  | `FULL
+]
 
 (* HintMetrics - enumeration *)
-type hintmetrics = [ `DEFAULT | `OFF | `ON ]
+type hintmetrics = [
+  | `DEFAULT
+  | `OFF
+  | `ON
+]
 
 (* FontType - enumeration *)
-type fonttype = [ `TOY | `FT | `WIN32 | `QUARTZ | `USER ]
+type fonttype = [
+  | `TOY
+  | `FT
+  | `WIN32
+  | `QUARTZ
+  | `USER
+]
 
 (* PathDataType - enumeration *)
-type pathdatatype = [ `MOVE_TO | `LINE_TO | `CURVE_TO | `CLOSE_PATH ]
+type pathdatatype = [
+  | `MOVE_TO
+  | `LINE_TO
+  | `CURVE_TO
+  | `CLOSE_PATH
+]
 
 (* DeviceType - enumeration *)
-type devicetype =
-  [ `DRM | `GL | `SCRIPT | `XCB | `XLIB | `XML | `COGL | `WIN32 | `INVALID ]
+type devicetype = [
+  | `DRM
+  | `GL
+  | `SCRIPT
+  | `XCB
+  | `XLIB
+  | `XML
+  | `COGL
+  | `WIN32
+  | `INVALID
+]
 
 (* SurfaceType - enumeration *)
-type surfacetype =
-  [ `IMAGE
+type surfacetype = [
+  | `IMAGE
   | `PDF
   | `PS
   | `XLIB
@@ -144,20 +214,52 @@ type surfacetype =
   | `XML
   | `SKIA
   | `SUBSURFACE
-  | `COGL ]
+  | `COGL
+]
 
 (* Format - enumeration *)
-type format = [ `INVALID | `ARGB32 | `RGB24 | `A8 | `A1 | `RGB16_565 | `RGB30 ]
+type format = [
+  | `INVALID
+  | `ARGB32
+  | `RGB24
+  | `A8
+  | `A1
+  | `RGB16_565
+  | `RGB30
+]
 
 (* PatternType - enumeration *)
-type patterntype =
-  [ `SOLID | `SURFACE | `LINEAR | `RADIAL | `MESH | `RASTER_SOURCE ]
+type patterntype = [
+  | `SOLID
+  | `SURFACE
+  | `LINEAR
+  | `RADIAL
+  | `MESH
+  | `RASTER_SOURCE
+]
 
 (* Extend - enumeration *)
-type extend = [ `NONE | `REPEAT | `REFLECT | `PAD ]
+type extend = [
+  | `NONE
+  | `REPEAT
+  | `REFLECT
+  | `PAD
+]
 
 (* Filter - enumeration *)
-type filter = [ `FAST | `GOOD | `BEST | `NEAREST | `BILINEAR | `GAUSSIAN ]
+type filter = [
+  | `FAST
+  | `GOOD
+  | `BEST
+  | `NEAREST
+  | `BILINEAR
+  | `GAUSSIAN
+]
 
 (* RegionOverlap - enumeration *)
-type regionoverlap = [ `IN | `OUT | `PART ]
+type regionoverlap = [
+  | `IN
+  | `OUT
+  | `PART
+]
+

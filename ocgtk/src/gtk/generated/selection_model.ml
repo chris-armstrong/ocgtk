@@ -1,26 +1,20 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SelectionModel: SelectionModel *)
 
-type t = [ `selection_model ] Gobject.obj
+type t = [`selection_model] Gobject.obj
 
-external from_gobject : 'a Gobject.obj -> t
-  = "ml_gtk_selection_model_from_gobject"
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_selection_model_from_gobject"
 
 (* Methods *)
-
-external unselect_range : t -> int -> int -> bool
-  = "ml_gtk_selection_model_unselect_range"
 (** Requests to unselect a range of items in the model. *)
+external unselect_range : t -> int -> int -> bool = "ml_gtk_selection_model_unselect_range"
 
-external unselect_item : t -> int -> bool
-  = "ml_gtk_selection_model_unselect_item"
 (** Requests to unselect an item in the model. *)
+external unselect_item : t -> int -> bool = "ml_gtk_selection_model_unselect_item"
 
-external unselect_all : t -> bool = "ml_gtk_selection_model_unselect_all"
 (** Requests to unselect all items in the model. *)
+external unselect_all : t -> bool = "ml_gtk_selection_model_unselect_all"
 
-external set_selection : t -> Bitset.t -> Bitset.t -> bool
-  = "ml_gtk_selection_model_set_selection"
 (** Make selection changes.
 
 This is the most advanced selection updating method that allows
@@ -54,41 +48,39 @@ gtk_selection_model_selection_changed (model,
 @mask and @selected must not be modified. They may refer to the
 same bitset, which would mean that every item in the set should
 be selected. *)
+external set_selection : t -> Bitset.t -> Bitset.t -> bool = "ml_gtk_selection_model_set_selection"
 
-external selection_changed : t -> int -> int -> unit
-  = "ml_gtk_selection_model_selection_changed"
 (** Helper function for implementations of `GtkSelectionModel`.
 
-    Call this when the selection changes to emit the
-    [signal@Gtk.SelectionModel::selection-changed] signal. *)
+Call this when the selection changes to emit the
+[signal@Gtk.SelectionModel::selection-changed] signal. *)
+external selection_changed : t -> int -> int -> unit = "ml_gtk_selection_model_selection_changed"
 
-external select_range : t -> int -> int -> bool -> bool
-  = "ml_gtk_selection_model_select_range"
 (** Requests to select a range of items in the model. *)
+external select_range : t -> int -> int -> bool -> bool = "ml_gtk_selection_model_select_range"
 
-external select_item : t -> int -> bool -> bool
-  = "ml_gtk_selection_model_select_item"
 (** Requests to select an item in the model. *)
+external select_item : t -> int -> bool -> bool = "ml_gtk_selection_model_select_item"
 
-external select_all : t -> bool = "ml_gtk_selection_model_select_all"
 (** Requests to select all items in the model. *)
+external select_all : t -> bool = "ml_gtk_selection_model_select_all"
 
-external is_selected : t -> int -> bool = "ml_gtk_selection_model_is_selected"
 (** Checks if the given item is selected. *)
+external is_selected : t -> int -> bool = "ml_gtk_selection_model_is_selected"
 
-external get_selection_in_range : t -> int -> int -> Bitset.t
-  = "ml_gtk_selection_model_get_selection_in_range"
 (** Gets the set of selected items in a range.
 
-    This function is an optimization for
-    [method@Gtk.SelectionModel.get_selection] when you are only interested in
-    part of the model's selected state. A common use case is in response to the
-    [signal@Gtk.SelectionModel::selection-changed] signal. *)
+This function is an optimization for
+[method@Gtk.SelectionModel.get_selection] when you are only
+interested in part of the model's selected state. A common use
+case is in response to the [signal@Gtk.SelectionModel::selection-changed]
+signal. *)
+external get_selection_in_range : t -> int -> int -> Bitset.t = "ml_gtk_selection_model_get_selection_in_range"
 
-external get_selection : t -> Bitset.t = "ml_gtk_selection_model_get_selection"
 (** Gets the set containing all currently selected items in the model.
 
-    This function may be slow, so if you are only interested in single item,
-    consider using [method@Gtk.SelectionModel.is_selected] or if you are only
-    interested in a few, consider
-    [method@Gtk.SelectionModel.get_selection_in_range]. *)
+This function may be slow, so if you are only interested in single item,
+consider using [method@Gtk.SelectionModel.is_selected] or if you are only
+interested in a few, consider [method@Gtk.SelectionModel.get_selection_in_range]. *)
+external get_selection : t -> Bitset.t = "ml_gtk_selection_model_get_selection"
+

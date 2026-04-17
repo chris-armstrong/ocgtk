@@ -3,6 +3,5 @@
 
 class type font_map_t = GContext_and__font_and__font_map_and__fontset.font_map_t
 
-class font_map :
-  Context_and__font_and__font_map_and__fontset.Font_map.t ->
-  font_map_t
+class font_map : Context_and__font_and__font_map_and__fontset.Font_map.t -> font_map_t
+

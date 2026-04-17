@@ -54,11 +54,35 @@ let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
   bprintf buf "#ifndef _%s_decls_h_\n" ns_lower;
   bprintf buf "#define _%s_decls_h_\n" ns_lower;
   Buffer.add_string buf "\n";
-  (* Include all C headers from the repository (parsed from GIR) *)
+  (* Include C headers from the repository (parsed from GIR).
+     Linux-only GIO headers (gio/gunix*.h, gio/gdesktopappinfo.h,
+     gio/gfiledescriptorbased.h) are guarded with #ifdef __linux__ because
+     they are not present in Homebrew's GLib on macOS or on FreeBSD. *)
+  let is_linux_only_header h =
+    let starts_with prefix s =
+      let n = String.length prefix in
+      String.length s >= n && String.equal (String.sub s ~pos:0 ~len:n) prefix
+    in
+    starts_with "gio/gunix" h
+    || String.equal h "gio/gdesktopappinfo.h"
+    || String.equal h "gio/gfiledescriptorbased.h"
+  in
+  let regular_includes, linux_only_includes =
+    List.partition ~f:(fun h -> not (is_linux_only_header h))
+      ctx.repository.repository_c_includes
+  in
   List.iter
     ~f:(fun c_include ->
       Buffer.add_string buf (sprintf "#include <%s>\n" c_include))
-    ctx.repository.repository_c_includes;
+    regular_includes;
+  if linux_only_includes <> [] then begin
+    Buffer.add_string buf "#ifdef __linux__\n";
+    List.iter
+      ~f:(fun c_include ->
+        Buffer.add_string buf (sprintf "#include <%s>\n" c_include))
+      linux_only_includes;
+    Buffer.add_string buf "#endif /* __linux__ */\n"
+  end;
   Buffer.add_string buf "#include <caml/mlvalues.h>\n";
   Buffer.add_string buf "\n";
 

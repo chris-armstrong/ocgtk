@@ -1,31 +1,21 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MenuItem: MenuItem *)
 
-type t = [ `menu_item | `object_ ] Gobject.obj
+type t = [`menu_item | `object_] Gobject.obj
 
+(** Create a new MenuItem *)
 external new_ : string option -> string option -> t = "ml_g_menu_item_new"
-(** Create a new MenuItem *)
 
-external new_from_model :
-  Menu_link_iter_and__menu_model.Menu_model.t -> int -> t
-  = "ml_g_menu_item_new_from_model"
 (** Create a new MenuItem *)
+external new_from_model : Menu_link_iter_and__menu_model.Menu_model.t -> int -> t = "ml_g_menu_item_new_from_model"
 
-external new_section :
-  string option -> Menu_link_iter_and__menu_model.Menu_model.t -> t
-  = "ml_g_menu_item_new_section"
 (** Create a new MenuItem *)
+external new_section : string option -> Menu_link_iter_and__menu_model.Menu_model.t -> t = "ml_g_menu_item_new_section"
 
-external new_submenu :
-  string option -> Menu_link_iter_and__menu_model.Menu_model.t -> t
-  = "ml_g_menu_item_new_submenu"
 (** Create a new MenuItem *)
+external new_submenu : string option -> Menu_link_iter_and__menu_model.Menu_model.t -> t = "ml_g_menu_item_new_submenu"
 
 (* Methods *)
-
-external set_submenu :
-  t -> Menu_link_iter_and__menu_model.Menu_model.t option -> unit
-  = "ml_g_menu_item_set_submenu"
 (** Sets or unsets the "submenu" link of @menu_item to @submenu.
 
 If @submenu is non-%NULL, it is linked to.  If it is %NULL then the
@@ -33,10 +23,8 @@ link is unset.
 
 The effect of having one menu appear as a submenu of another is
 exactly as it sounds. *)
+external set_submenu : t -> Menu_link_iter_and__menu_model.Menu_model.t option -> unit = "ml_g_menu_item_set_submenu"
 
-external set_section :
-  t -> Menu_link_iter_and__menu_model.Menu_model.t option -> unit
-  = "ml_g_menu_item_set_section"
 (** Sets or unsets the "section" link of @menu_item to @section.
 
 The effect of having one menu appear as a section of another is
@@ -44,10 +32,8 @@ exactly as it sounds: the items from @section become a direct part of
 the menu that @menu_item is added to.  See g_menu_item_new_section()
 for more information about what it means for a menu item to be a
 section. *)
+external set_section : t -> Menu_link_iter_and__menu_model.Menu_model.t option -> unit = "ml_g_menu_item_set_section"
 
-external set_link :
-  t -> string -> Menu_link_iter_and__menu_model.Menu_model.t option -> unit
-  = "ml_g_menu_item_set_link"
 (** Creates a link from @menu_item to @model if non-%NULL, or unsets it.
 
 Links are used to establish a relationship between a particular menu
@@ -58,14 +44,14 @@ is no guarantee that clients will be able to make sense of them.
 Link types are restricted to lowercase characters, numbers
 and '-'. Furthermore, the names must begin with a lowercase character,
 must not end with a '-', and must not contain consecutive dashes. *)
+external set_link : t -> string -> Menu_link_iter_and__menu_model.Menu_model.t option -> unit = "ml_g_menu_item_set_link"
 
-external set_label : t -> string option -> unit = "ml_g_menu_item_set_label"
 (** Sets or unsets the "label" attribute of @menu_item.
 
 If @label is non-%NULL it is used as the label for the menu item.  If
 it is %NULL then the label attribute is unset. *)
+external set_label : t -> string option -> unit = "ml_g_menu_item_set_label"
 
-external set_icon : t -> Icon.t -> unit = "ml_g_menu_item_set_icon"
 (** Sets (or unsets) the icon on @menu_item.
 
 This call is the same as calling g_icon_serialize() and using the
@@ -78,9 +64,8 @@ menu items corresponding to verbs (eg: stock icons for 'Save' or
 'Quit').
 
 If @icon is %NULL then the icon is unset. *)
+external set_icon : t -> Icon.t -> unit = "ml_g_menu_item_set_icon"
 
-external set_detailed_action : t -> string -> unit
-  = "ml_g_menu_item_set_detailed_action"
 (** Sets the "action" and possibly the "target" attribute of @menu_item.
 
 The format of @detailed_action is the same format parsed by
@@ -92,9 +77,8 @@ slightly less convenient) alternatives.
 
 See also g_menu_item_set_action_and_target_value() for a description of
 the semantics of the action and target attributes. *)
+external set_detailed_action : t -> string -> unit = "ml_g_menu_item_set_detailed_action"
 
-external set_attribute_value : t -> string -> Gvariant.t option -> unit
-  = "ml_g_menu_item_set_attribute_value"
 (** Sets or unsets an attribute on @menu_item.
 
 The attribute to set or unset is specified by @attribute. This
@@ -114,10 +98,8 @@ the @value #GVariant is floating, it is consumed.
 
 See also g_menu_item_set_attribute() for a more convenient way to do
 the same. *)
+external set_attribute_value : t -> string -> Gvariant.t option -> unit = "ml_g_menu_item_set_attribute_value"
 
-external set_action_and_target_value :
-  t -> string option -> Gvariant.t option -> unit
-  = "ml_g_menu_item_set_action_and_target_value"
 (** Sets or unsets the "action" and "target" attributes of @menu_item.
 
 If @action is %NULL then both the "action" and "target" attributes
@@ -154,17 +136,15 @@ state is equal to the value of the @target property.
 See g_menu_item_set_action_and_target() or
 g_menu_item_set_detailed_action() for two equivalent calls that are
 probably more convenient for most uses. *)
+external set_action_and_target_value : t -> string option -> Gvariant.t option -> unit = "ml_g_menu_item_set_action_and_target_value"
 
-external get_link :
-  t -> string -> Menu_link_iter_and__menu_model.Menu_model.t option
-  = "ml_g_menu_item_get_link"
 (** Queries the named @link on @menu_item. *)
+external get_link : t -> string -> Menu_link_iter_and__menu_model.Menu_model.t option = "ml_g_menu_item_get_link"
 
-external get_attribute_value :
-  t -> string -> Gvariant_type.t option -> Gvariant.t option
-  = "ml_g_menu_item_get_attribute_value"
 (** Queries the named @attribute on @menu_item.
 
 If @expected_type is specified and the attribute does not have this
 type, %NULL is returned.  %NULL is also returned if the attribute
 simply does not exist. *)
+external get_attribute_value : t -> string -> Gvariant_type.t option -> Gvariant.t option = "ml_g_menu_item_get_attribute_value"
+

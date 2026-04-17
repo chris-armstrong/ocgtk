@@ -4,13 +4,15 @@
 #ifndef _gio_decls_h_
 #define _gio_decls_h_
 
+#include <gio/gio.h>
+#ifdef __linux__
 #include <gio/gunixoutputstream.h>
 #include <gio/gunixmounts.h>
 #include <gio/gunixinputstream.h>
 #include <gio/gunixfdmessage.h>
-#include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
 #include <gio/gdesktopappinfo.h>
+#endif /* __linux__ */
 #include <caml/mlvalues.h>
 
 /* Class-specific conversion macros (shared) */
@@ -186,11 +188,13 @@
 #endif /* Val_GDebugControllerDBus */
 
 #endif
+#ifdef __linux__
 #ifndef Val_GDesktopAppInfo
 #define GDesktopAppInfo_val(val) ((GDesktopAppInfo*)ml_gobject_ext_of_val(val))
 #define Val_GDesktopAppInfo(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GDesktopAppInfo */
 
+#endif /* __linux__ */
 #ifndef Val_GEmblem
 #define GEmblem_val(val) ((GEmblem*)ml_gobject_ext_of_val(val))
 #define Val_GEmblem(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -592,6 +596,7 @@
 #endif /* Val_GTlsPassword */
 
 #endif
+#ifdef __linux__
 #if GLIB_CHECK_VERSION(2,22,0)
 #ifndef Val_GUnixConnection
 #define GUnixConnection_val(val) ((GUnixConnection*)ml_gobject_ext_of_val(val))
@@ -599,6 +604,8 @@
 #endif /* Val_GUnixConnection */
 
 #endif
+#endif /* __linux__ */
+#ifdef __linux__
 #if GLIB_CHECK_VERSION(2,26,0)
 #ifndef Val_GUnixCredentialsMessage
 #define GUnixCredentialsMessage_val(val) ((GUnixCredentialsMessage*)ml_gobject_ext_of_val(val))
@@ -606,36 +613,49 @@
 #endif /* Val_GUnixCredentialsMessage */
 
 #endif
+#endif /* __linux__ */
+#ifdef __linux__
 #ifndef Val_GUnixFDList
 #define GUnixFDList_val(val) ((GUnixFDList*)ml_gobject_ext_of_val(val))
 #define Val_GUnixFDList(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GUnixFDList */
 
+#endif /* __linux__ */
+#ifdef __linux__
 #ifndef Val_GUnixFDMessage
 #define GUnixFDMessage_val(val) ((GUnixFDMessage*)ml_gobject_ext_of_val(val))
 #define Val_GUnixFDMessage(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GUnixFDMessage */
 
+#endif /* __linux__ */
+#ifdef __linux__
 #ifndef Val_GUnixInputStream
 #define GUnixInputStream_val(val) ((GUnixInputStream*)ml_gobject_ext_of_val(val))
 #define Val_GUnixInputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GUnixInputStream */
 
+#endif /* __linux__ */
+#ifdef __linux__
 #ifndef Val_GUnixMountMonitor
 #define GUnixMountMonitor_val(val) ((GUnixMountMonitor*)ml_gobject_ext_of_val(val))
 #define Val_GUnixMountMonitor(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GUnixMountMonitor */
 
+#endif /* __linux__ */
+#ifdef __linux__
 #ifndef Val_GUnixOutputStream
 #define GUnixOutputStream_val(val) ((GUnixOutputStream*)ml_gobject_ext_of_val(val))
 #define Val_GUnixOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GUnixOutputStream */
 
+#endif /* __linux__ */
+#ifdef __linux__
 #ifndef Val_GUnixSocketAddress
 #define GUnixSocketAddress_val(val) ((GUnixSocketAddress*)ml_gobject_ext_of_val(val))
 #define Val_GUnixSocketAddress(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GUnixSocketAddress */
 
+#endif /* __linux__ */
 #ifndef Val_GVfs
 #define GVfs_val(val) ((GVfs*)ml_gobject_ext_of_val(val))
 #define Val_GVfs(obj) ((value)(ml_gobject_val_of_ext(obj)))

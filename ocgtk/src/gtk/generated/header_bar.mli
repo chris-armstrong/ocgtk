@@ -1,101 +1,75 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* HeaderBar: HeaderBar *)
 
-type t = [ `header_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
+type t = [`header_bar | `widget | `initially_unowned | `object_] Gobject.obj
 
-external new_ : unit -> t = "ml_gtk_header_bar_new"
 (** Create a new HeaderBar *)
+external new_ : unit -> t = "ml_gtk_header_bar_new"
 
 (* Methods *)
-
-external set_title_widget :
-  t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
-  .Widget
-  .t
-  option ->
-  unit = "ml_gtk_header_bar_set_title_widget"
 (** Sets the title for the `GtkHeaderBar`.
 
-    When set to %NULL, the headerbar will display the title of the window it is
-    contained in.
+When set to %NULL, the headerbar will display the title of
+the window it is contained in.
 
-    The title should help a user identify the current view. To achieve the same
-    style as the builtin title, use the “title” style class.
+The title should help a user identify the current view.
+To achieve the same style as the builtin title, use the
+“title” style class.
 
-    You should set the title widget to %NULL, for the window title label to be
-    visible again. *)
+You should set the title widget to %NULL, for the window
+title label to be visible again. *)
+external set_title_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option -> unit = "ml_gtk_header_bar_set_title_widget"
 
-external set_show_title_buttons : t -> bool -> unit
-  = "ml_gtk_header_bar_set_show_title_buttons"
-(** Sets whether this header bar shows the standard window title buttons. *)
+(** Sets whether this header bar shows the standard window
+title buttons. *)
+external set_show_title_buttons : t -> bool -> unit = "ml_gtk_header_bar_set_show_title_buttons"
 
-external set_decoration_layout : t -> string option -> unit
-  = "ml_gtk_header_bar_set_decoration_layout"
 (** Sets the decoration layout for this header bar.
 
-    This property overrides the [property@Gtk.Settings:gtk-decoration-layout]
-    setting.
+This property overrides the
+[property@Gtk.Settings:gtk-decoration-layout] setting.
 
-    There can be valid reasons for overriding the setting, such as a header bar
-    design that does not allow for buttons to take room on the right, or only
-    offers room for a single close button. Split header bars are another example
-    for overriding the setting.
+There can be valid reasons for overriding the setting, such
+as a header bar design that does not allow for buttons to take
+room on the right, or only offers room for a single close button.
+Split header bars are another example for overriding the setting.
 
-    The format of the string is button names, separated by commas. A colon
-    separates the buttons that should appear on the left from those on the
-    right. Recognized button names are minimize, maximize, close and icon (the
-    window icon).
+The format of the string is button names, separated by commas.
+A colon separates the buttons that should appear on the left
+from those on the right. Recognized button names are minimize,
+maximize, close and icon (the window icon).
 
-    For example, “icon:minimize,maximize,close” specifies an icon on the left,
-    and minimize, maximize and close buttons on the right. *)
+For example, “icon:minimize,maximize,close” specifies an icon
+on the left, and minimize, maximize and close buttons on the right. *)
+external set_decoration_layout : t -> string option -> unit = "ml_gtk_header_bar_set_decoration_layout"
 
-external remove :
-  t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
-  .Widget
-  .t ->
-  unit = "ml_gtk_header_bar_remove"
 (** Removes a child from the `GtkHeaderBar`.
 
-    The child must have been added with [method@Gtk.HeaderBar.pack_start],
-    [method@Gtk.HeaderBar.pack_end] or [method@Gtk.HeaderBar.set_title_widget].
-*)
+The child must have been added with
+[method@Gtk.HeaderBar.pack_start],
+[method@Gtk.HeaderBar.pack_end] or
+[method@Gtk.HeaderBar.set_title_widget]. *)
+external remove : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_header_bar_remove"
 
-external pack_start :
-  t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
-  .Widget
-  .t ->
-  unit = "ml_gtk_header_bar_pack_start"
 (** Adds @child to @bar, packed with reference to the
 start of the @bar. *)
+external pack_start : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_header_bar_pack_start"
 
-external pack_end :
-  t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
-  .Widget
-  .t ->
-  unit = "ml_gtk_header_bar_pack_end"
 (** Adds @child to @bar, packed with reference to the
 end of the @bar. *)
+external pack_end : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t -> unit = "ml_gtk_header_bar_pack_end"
 
-external get_title_widget :
-  t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
-  .Widget
-  .t
-  option = "ml_gtk_header_bar_get_title_widget"
 (** Retrieves the title widget of the header.
 
-    See [method@Gtk.HeaderBar.set_title_widget]. *)
+See [method@Gtk.HeaderBar.set_title_widget]. *)
+external get_title_widget : t -> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget.Widget.t option = "ml_gtk_header_bar_get_title_widget"
 
-external get_show_title_buttons : t -> bool
-  = "ml_gtk_header_bar_get_show_title_buttons"
-(** Returns whether this header bar shows the standard window title buttons. *)
+(** Returns whether this header bar shows the standard window
+title buttons. *)
+external get_show_title_buttons : t -> bool = "ml_gtk_header_bar_get_show_title_buttons"
 
-external get_decoration_layout : t -> string option
-  = "ml_gtk_header_bar_get_decoration_layout"
 (** Gets the decoration layout of the `GtkHeaderBar`. *)
+external get_decoration_layout : t -> string option = "ml_gtk_header_bar_get_decoration_layout"
 
 (* Properties *)
+

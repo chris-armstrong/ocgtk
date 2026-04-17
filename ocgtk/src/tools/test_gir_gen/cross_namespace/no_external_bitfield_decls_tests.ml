@@ -35,6 +35,7 @@ let create_context_with_external_bitfield () =
             flag_c_identifier = "GTK_STATE_FLAG_NORMAL";
             flag_doc = None;
             flag_version = None;
+          flag_os = None;
           };
           {
             flag_name = "ACTIVE";
@@ -42,10 +43,12 @@ let create_context_with_external_bitfield () =
             flag_c_identifier = "GTK_STATE_FLAG_ACTIVE";
             flag_doc = None;
             flag_version = None;
+          flag_os = None;
           };
         ];
       bitfield_doc = None;
       bitfield_version = None;
+      bitfield_os = None;
     }
   in
 
@@ -102,6 +105,7 @@ let test_generate_forward_decls_only_local_bitfields () =
       flags = [];
       bitfield_doc = None;
       bitfield_version = None;
+      bitfield_os = None;
     }
   in
 
@@ -113,6 +117,7 @@ let test_generate_forward_decls_only_local_bitfields () =
       flags = [];
       bitfield_doc = None;
       bitfield_version = None;
+      bitfield_os = None;
     }
   in
 

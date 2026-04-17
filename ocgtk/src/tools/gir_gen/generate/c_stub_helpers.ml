@@ -72,10 +72,35 @@ module Code_gen = struct
     if String.equal (String.lowercase_ascii ctx.namespace.namespace_name) "gtk"
     then Buffer.add_string buf "#include \"converters.h\"\n";
     Buffer.add_string buf "\n";
+    (* Linux-only GIO headers are guarded so the stub file compiles on macOS/FreeBSD. *)
+    let is_linux_only_header h =
+      let starts_with prefix s =
+        let n = String.length prefix in
+        String.length s >= n
+        && String.equal (String.sub s ~pos:0 ~len:n) prefix
+      in
+      starts_with "gio/gunix" h
+      || String.equal h "gio/gdesktopappinfo.h"
+      || String.equal h "gio/gfiledescriptorbased.h"
+    in
+    let regular_includes, linux_only_includes =
+      List.partition
+        ~f:(fun h -> not (is_linux_only_header h))
+        ctx.repository.repository_c_includes
+    in
     List.iter
       ~f:(fun c_include ->
         Buffer.add_string buf (sprintf "#include <%s>\n" c_include))
-      ctx.repository.repository_c_includes;
+      regular_includes;
+    (match linux_only_includes with
+    | [] -> ()
+    | _ ->
+        Buffer.add_string buf "#ifdef __linux__\n";
+        List.iter
+          ~f:(fun c_include ->
+            Buffer.add_string buf (sprintf "#include <%s>\n" c_include))
+          linux_only_includes;
+        Buffer.add_string buf "#endif /* __linux__ */\n");
 
     (* Include library-specific header for type conversions and forward declarations *)
     Buffer.add_string buf
@@ -555,6 +580,136 @@ let emit_fallback_record_method_stub ~ctx ~c_type:_ ~class_name ~ml_name
   bprintf buf "caml_failwith(\"%s\");\n" failwith_msg;
   bprintf buf "return Val_unit;\n}\n";
 
+  Buffer.contents buf
+
+(* {1 OS Guard Support} *)
+
+(** Map an OS string to the opening C preprocessor guard. *)
+let os_to_c_guard_open = function
+  | "linux" -> "#ifdef __linux__"
+  | "macos" -> "#if defined(__APPLE__) && defined(__MACH__)"
+  | "freebsd" -> "#ifdef __FreeBSD__"
+  | "unix" -> "#ifdef G_OS_UNIX"
+  | os -> sprintf "#ifdef OS_%s" (String.uppercase_ascii os)
+
+(** Map an OS string to the closing C preprocessor guard. *)
+let os_to_c_guard_close = function
+  | "linux" -> "#endif /* __linux__ */"
+  | "macos" -> "#endif /* __APPLE__ */"
+  | "freebsd" -> "#endif /* __FreeBSD__ */"
+  | "unix" -> "#endif /* G_OS_UNIX */"
+  | os -> sprintf "#endif /* OS_%s */" (String.uppercase_ascii os)
+
+(** Human-readable display name for an OS string (for failwith messages). *)
+let os_display_name = function
+  | "linux" -> "Linux"
+  | "macos" -> "macOS"
+  | "freebsd" -> "FreeBSD"
+  | "unix" -> "Unix"
+  | os -> os
+
+(** Wrap a generated stub in an OS guard.
+    [os]: OS string (e.g. ["linux"]), or [None] to emit stub as-is.
+    [failwith_stub]: string placed in the [#else] branch.
+    [stub]: the actual implementation placed in the [#ifdef] branch. *)
+let emit_with_os_guard ~os ~failwith_stub ~stub buf =
+  match os with
+  | None -> Buffer.add_string buf stub
+  | Some os_val ->
+      Buffer.add_char buf '\n';
+      Buffer.add_string buf (os_to_c_guard_open os_val);
+      Buffer.add_char buf '\n';
+      Buffer.add_string buf stub;
+      Buffer.add_char buf '\n';
+      Buffer.add_string buf "#else\n";
+      Buffer.add_string buf failwith_stub;
+      Buffer.add_char buf '\n';
+      Buffer.add_string buf (os_to_c_guard_close os_val);
+      Buffer.add_char buf '\n'
+
+(** Emit an OS-fallback constructor stub that raises [caml_failwith].
+    Used in the [#else] branch of an OS guard. *)
+let emit_os_fallback_constructor_stub ~ctx:_ ~c_type:_ ~class_name ~ml_name
+    ~c_identifier:_ ~os (ctor : gir_constructor) =
+  let param_count = List.length ctor.ctor_parameters in
+  let param_names =
+    match param_count with
+    | 0 -> [ "unit" ]
+    | n -> List.init ~len:n ~f:(fun i -> sprintf "arg%d" (i + 1))
+  in
+  let params =
+    match param_count with
+    | 0 -> [ "value unit" ]
+    | n -> List.init ~len:n ~f:(fun i -> sprintf "value arg%d" (i + 1))
+  in
+  let buf = Buffer.create 256 in
+  bprintf buf "\nCAMLexport CAMLprim value %s(%s)\n{\n" ml_name
+    (String.concat ~sep:", " params);
+  let param_count_for_caml = if param_count = 0 then 1 else param_count in
+  bprintf buf "CAMLparam%d(%s);\n" param_count_for_caml
+    (String.concat ~sep:", " param_names);
+  List.iter ~f:(fun pname -> bprintf buf "(void)%s;\n" pname) param_names;
+  bprintf buf "caml_failwith(\"%s is only available on %s\");\n" class_name
+    (os_display_name os);
+  bprintf buf "return Val_unit;\n}\n";
+  Buffer.contents buf
+
+(** Emit an OS-fallback method stub that raises [caml_failwith]. *)
+let emit_os_fallback_method_stub ~ctx:_ ~c_type:_ ~class_name ~ml_name
+    ~c_identifier:_ ~os (meth : gir_method) =
+  let in_params =
+    List.filter
+      ~f:(fun p -> match p.direction with Out -> false | _ -> true)
+      meth.parameters
+  in
+  let param_count = 1 + List.length in_params in
+  let param_names =
+    "self"
+    :: List.init ~len:(List.length in_params) ~f:(fun i ->
+        sprintf "arg%d" (i + 1))
+  in
+  let params =
+    "value self"
+    :: List.init ~len:(List.length in_params) ~f:(fun i ->
+        sprintf "value arg%d" (i + 1))
+  in
+  let buf = Buffer.create 256 in
+  bprintf buf "\nCAMLexport CAMLprim value %s(%s)\n{\n" ml_name
+    (String.concat ~sep:", " params);
+  let param_count_for_caml = if param_count = 0 then 1 else min param_count 5 in
+  let param_names_for_caml = CCList.take param_count_for_caml param_names in
+  bprintf buf "CAMLparam%d(%s);\n" param_count_for_caml
+    (String.concat ~sep:", " param_names_for_caml);
+  List.iter ~f:(fun pname -> bprintf buf "(void)%s;\n" pname) param_names;
+  bprintf buf "caml_failwith(\"%s is only available on %s\");\n" class_name
+    (os_display_name os);
+  bprintf buf "return Val_unit;\n}\n";
+  Buffer.contents buf
+
+(** Emit an OS-fallback property getter stub that raises [caml_failwith]. *)
+let emit_os_fallback_property_getter_stub ~ctx:_ ~c_type:_ ~class_name ~ml_name
+    ~os (_prop : gir_property) =
+  let buf = Buffer.create 256 in
+  bprintf buf "\nCAMLexport CAMLprim value %s(value self)\n{\n" ml_name;
+  bprintf buf "CAMLparam1(self);\n";
+  bprintf buf "(void)self;\n";
+  bprintf buf "caml_failwith(\"%s is only available on %s\");\n" class_name
+    (os_display_name os);
+  bprintf buf "return Val_unit;\n}\n";
+  Buffer.contents buf
+
+(** Emit an OS-fallback property setter stub that raises [caml_failwith]. *)
+let emit_os_fallback_property_setter_stub ~ctx:_ ~c_type:_ ~class_name ~ml_name
+    ~os (_prop : gir_property) =
+  let buf = Buffer.create 256 in
+  bprintf buf
+    "\nCAMLexport CAMLprim value %s(value self, value arg1)\n{\n" ml_name;
+  bprintf buf "CAMLparam2(self, arg1);\n";
+  bprintf buf "(void)self;\n";
+  bprintf buf "(void)arg1;\n";
+  bprintf buf "caml_failwith(\"%s is only available on %s\");\n" class_name
+    (os_display_name os);
+  bprintf buf "return Val_unit;\n}\n";
   Buffer.contents buf
 
 (** Wrap a generated stub in a member-level version guard when [resolve_guard]

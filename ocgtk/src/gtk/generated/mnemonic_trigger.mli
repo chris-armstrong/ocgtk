@@ -1,14 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MnemonicTrigger: MnemonicTrigger *)
 
-type t = [ `mnemonic_trigger | `shortcut_trigger | `object_ ] Gobject.obj
+type t = [`mnemonic_trigger | `shortcut_trigger | `object_] Gobject.obj
 
-external new_ : int -> t = "ml_gtk_mnemonic_trigger_new"
 (** Create a new MnemonicTrigger *)
+external new_ : int -> t = "ml_gtk_mnemonic_trigger_new"
 
 (* Methods *)
-
-external get_keyval : t -> int = "ml_gtk_mnemonic_trigger_get_keyval"
 (** Gets the keyval that must be pressed to succeed triggering @self. *)
+external get_keyval : t -> int = "ml_gtk_mnemonic_trigger_get_keyval"
 
 (* Properties *)
+

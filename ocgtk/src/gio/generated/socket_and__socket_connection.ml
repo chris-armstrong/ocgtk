@@ -2,32 +2,26 @@
 (* Combined modules for cyclic dependencies *)
 
 module rec Socket : sig
-  type t = [ `socket | `object_ ] Gobject.obj
+  type t = [`socket | `object_] Gobject.obj
 
-  external new_ :
-    Gio_enums.socketfamily ->
-    Gio_enums.sockettype ->
-    Gio_enums.socketprotocol ->
-    (t, GError.t) result = "ml_g_socket_new"
   (** Create a new Socket *)
+  external new_ : Gio_enums.socketfamily -> Gio_enums.sockettype -> Gio_enums.socketprotocol -> (t, GError.t) result = "ml_g_socket_new"
 
+  (** Create a new Socket *)
   external new_from_fd : int -> (t, GError.t) result = "ml_g_socket_new_from_fd"
-  (** Create a new Socket *)
 
   (* Methods *)
-
-  external speaks_ipv4 : t -> bool = "ml_g_socket_speaks_ipv4"
   (** Checks if a socket is capable of speaking IPv4.
 
-      IPv4 sockets are capable of speaking IPv4. On some operating systems and
-      under some combinations of circumstances IPv6 sockets are also capable of
-      speaking IPv4. See RFC 3493 section 3.7 for more information.
+  IPv4 sockets are capable of speaking IPv4.  On some operating systems
+  and under some combinations of circumstances IPv6 sockets are also
+  capable of speaking IPv4.  See RFC 3493 section 3.7 for more
+  information.
 
-      No other types of sockets are currently considered as being capable of
-      speaking IPv4. *)
+  No other types of sockets are currently considered as being capable
+  of speaking IPv4. *)
+  external speaks_ipv4 : t -> bool = "ml_g_socket_speaks_ipv4"
 
-  external shutdown : t -> bool -> bool -> (bool, GError.t) result
-    = "ml_g_socket_shutdown"
   (** Shut down part or all of a full-duplex connection.
 
   If @shutdown_read is %TRUE then the receiving side of the connection
@@ -42,12 +36,12 @@ module rec Socket : sig
   graceful disconnect for TCP connections where you close the sending side,
   then wait for the other side to close the connection, thus ensuring that the
   other side saw all sent data. *)
+  external shutdown : t -> bool -> bool -> (bool, GError.t) result = "ml_g_socket_shutdown"
 
-  external set_ttl : t -> int -> unit = "ml_g_socket_set_ttl"
   (** Sets the time-to-live for outgoing unicast packets on @socket.
   By default the platform-specific default value is used. *)
+  external set_ttl : t -> int -> unit = "ml_g_socket_set_ttl"
 
-  external set_timeout : t -> int -> unit = "ml_g_socket_set_timeout"
   (** Sets the time in seconds after which I/O operations on @socket will
   time out if they have not yet completed.
 
@@ -68,9 +62,8 @@ module rec Socket : sig
 
   Note that if an I/O operation is interrupted by a signal, this may
   cause the timeout to be reset. *)
+  external set_timeout : t -> int -> unit = "ml_g_socket_set_timeout"
 
-  external set_option : t -> int -> int -> int -> (bool, GError.t) result
-    = "ml_g_socket_set_option"
   (** Sets the value of an integer-valued option on @socket, as with
   setsockopt(). (If you need to set a non-integer-valued option,
   you will need to call setsockopt() directly.)
@@ -80,67 +73,59 @@ module rec Socket : sig
   standard/portable socket options. For unusual socket protocols or
   platform-dependent options, you may need to include additional
   headers. *)
+  external set_option : t -> int -> int -> int -> (bool, GError.t) result = "ml_g_socket_set_option"
 
-  external set_multicast_ttl : t -> int -> unit
-    = "ml_g_socket_set_multicast_ttl"
   (** Sets the time-to-live for outgoing multicast datagrams on @socket.
   By default, this is 1, meaning that multicast packets will not leave
   the local network. *)
+  external set_multicast_ttl : t -> int -> unit = "ml_g_socket_set_multicast_ttl"
 
-  external set_multicast_loopback : t -> bool -> unit
-    = "ml_g_socket_set_multicast_loopback"
   (** Sets whether outgoing multicast packets will be received by sockets
-      listening on that multicast address on the same host. This is %TRUE by
-      default. *)
+  listening on that multicast address on the same host. This is %TRUE
+  by default. *)
+  external set_multicast_loopback : t -> bool -> unit = "ml_g_socket_set_multicast_loopback"
 
-  external set_listen_backlog : t -> int -> unit
-    = "ml_g_socket_set_listen_backlog"
-  (** Sets the maximum number of outstanding connections allowed when listening
-      on this socket. If more clients than this are connecting to the socket and
-      the application is not handling them on time then the new connections will
-      be refused.
+  (** Sets the maximum number of outstanding connections allowed
+  when listening on this socket. If more clients than this are
+  connecting to the socket and the application is not handling them
+  on time then the new connections will be refused.
 
-      Note that this must be called before g_socket_listen() and has no effect
-      if called after that. *)
+  Note that this must be called before g_socket_listen() and has no
+  effect if called after that. *)
+  external set_listen_backlog : t -> int -> unit = "ml_g_socket_set_listen_backlog"
 
+  (** Sets or unsets the %SO_KEEPALIVE flag on the underlying socket. When
+  this flag is set on a socket, the system will attempt to verify that the
+  remote socket endpoint is still present if a sufficiently long period of
+  time passes with no data being exchanged. If the system is unable to
+  verify the presence of the remote endpoint, it will automatically close
+  the connection.
+
+  This option is only functional on certain kinds of sockets. (Notably,
+  %G_SOCKET_PROTOCOL_TCP sockets.)
+
+  The exact time between pings is system- and protocol-dependent, but will
+  normally be at least two hours. Most commonly, you would set this flag
+  on a server socket if you want to allow clients to remain idle for long
+  periods of time, but also want to ensure that connections are eventually
+  garbage-collected if clients crash or become unreachable. *)
   external set_keepalive : t -> bool -> unit = "ml_g_socket_set_keepalive"
-  (** Sets or unsets the %SO_KEEPALIVE flag on the underlying socket. When this
-      flag is set on a socket, the system will attempt to verify that the remote
-      socket endpoint is still present if a sufficiently long period of time
-      passes with no data being exchanged. If the system is unable to verify the
-      presence of the remote endpoint, it will automatically close the
-      connection.
 
-      This option is only functional on certain kinds of sockets. (Notably,
-      %G_SOCKET_PROTOCOL_TCP sockets.)
-
-      The exact time between pings is system- and protocol-dependent, but will
-      normally be at least two hours. Most commonly, you would set this flag on
-      a server socket if you want to allow clients to remain idle for long
-      periods of time, but also want to ensure that connections are eventually
-      garbage-collected if clients crash or become unreachable. *)
-
-  external set_broadcast : t -> bool -> unit = "ml_g_socket_set_broadcast"
   (** Sets whether @socket should allow sending to broadcast addresses.
   This is %FALSE by default. *)
+  external set_broadcast : t -> bool -> unit = "ml_g_socket_set_broadcast"
 
+  (** Sets the blocking mode of the socket. In blocking mode
+  all operations (which don’t take an explicit blocking parameter) block until
+  they succeed or there is an error. In
+  non-blocking mode all functions return results immediately or
+  with a %G_IO_ERROR_WOULD_BLOCK error.
+
+  All sockets are created in blocking mode. However, note that the
+  platform level socket is always non-blocking, and blocking mode
+  is a GSocket level feature. *)
   external set_blocking : t -> bool -> unit = "ml_g_socket_set_blocking"
-  (** Sets the blocking mode of the socket. In blocking mode all operations
-      (which don’t take an explicit blocking parameter) block until they succeed
-      or there is an error. In non-blocking mode all functions return results
-      immediately or with a %G_IO_ERROR_WOULD_BLOCK error.
 
-      All sockets are created in blocking mode. However, note that the platform
-      level socket is always non-blocking, and blocking mode is a GSocket level
-      feature. *)
-
-  external send_messages :
-    t ->
-    Output_message.t array ->
-    int ->
-    int ->
-    Cancellable.t option ->
-    (int, GError.t) result = "ml_g_socket_send_messages"
   (** Send multiple data messages from @socket in one go.  This is the most
   complicated and fully-featured version of this call. For easier use, see
   g_socket_send(), g_socket_send_to(), and g_socket_send_message().
@@ -175,23 +160,8 @@ module rec Socket : sig
   On error -1 is returned and @error is set accordingly. An error will only
   be returned if zero messages could be sent; otherwise the number of messages
   successfully sent before the error will be returned. *)
+  external send_messages : t -> Output_message.t array -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_send_messages"
 
-  external send_message_with_timeout :
-    t ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .Socket_address
-    .t
-    option ->
-    Output_vector.t array ->
-    int ->
-    Socket_control_message.t array option ->
-    int ->
-    int ->
-    int64 ->
-    Cancellable.t option ->
-    (Gio_enums.pollablereturn * Gsize.t, GError.t) result
-    = "ml_g_socket_send_message_with_timeout_bytecode"
-      "ml_g_socket_send_message_with_timeout_native"
   (** This behaves exactly the same as g_socket_send_message(), except that
   the choice of timeout behavior is determined by the @timeout_us argument
   rather than by @socket's properties.
@@ -199,21 +169,8 @@ module rec Socket : sig
   On error %G_POLLABLE_RETURN_FAILED is returned and @error is set accordingly, or
   if the socket is currently not writable %G_POLLABLE_RETURN_WOULD_BLOCK is
   returned. @bytes_written will contain 0 in both cases. *)
+  external send_message_with_timeout : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> int64 -> Cancellable.t option -> (Gio_enums.pollablereturn * Gsize.t, GError.t) result = "ml_g_socket_send_message_with_timeout_bytecode" "ml_g_socket_send_message_with_timeout_native"
 
-  external send_message :
-    t ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .Socket_address
-    .t
-    option ->
-    Output_vector.t array ->
-    int ->
-    Socket_control_message.t array option ->
-    int ->
-    int ->
-    Cancellable.t option ->
-    (int, GError.t) result
-    = "ml_g_socket_send_message_bytecode" "ml_g_socket_send_message_native"
   (** Send data to @address on @socket.  For sending multiple messages see
   g_socket_send_messages(); for easier use, see
   g_socket_send() and g_socket_send_to().
@@ -256,14 +213,8 @@ module rec Socket : sig
   function.
 
   On error -1 is returned and @error is set accordingly. *)
+  external send_message : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_send_message_bytecode" "ml_g_socket_send_message_native"
 
-  external receive_messages :
-    t ->
-    Input_message.t array ->
-    int ->
-    int ->
-    Cancellable.t option ->
-    (int, GError.t) result = "ml_g_socket_receive_messages"
   (** Receive multiple data messages from @socket in one go.  This is the most
   complicated and fully-featured version of this call. For easier use, see
   g_socket_receive(), g_socket_receive_from(), and g_socket_receive_message().
@@ -312,13 +263,8 @@ module rec Socket : sig
   On error -1 is returned and @error is set accordingly. An error will only
   be returned if zero messages could be received; otherwise the number of
   messages successfully received before the error will be returned. *)
+  external receive_messages : t -> Input_message.t array -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_receive_messages"
 
-  external receive_bytes :
-    t ->
-    Gsize.t ->
-    int64 ->
-    Cancellable.t option ->
-    (Glib_bytes.t, GError.t) result = "ml_g_socket_receive_bytes"
   (** Receives data (up to @size bytes) from a socket.
 
   This function is a variant of [method@Gio.Socket.receive] which returns a
@@ -328,33 +274,26 @@ module rec Socket : sig
   the connection is closed, or there is an error). Pass `0` to use the default
   timeout from [property@Gio.Socket:timeout], or pass a positive number to wait
   for that many microseconds for data before returning `G_IO_ERROR_TIMED_OUT`. *)
+  external receive_bytes : t -> Gsize.t -> int64 -> Cancellable.t option -> (Glib_bytes.t, GError.t) result = "ml_g_socket_receive_bytes"
 
+  (** Marks the socket as a server socket, i.e. a socket that is used
+  to accept incoming requests using g_socket_accept().
+
+  Before calling this the socket must be bound to a local address using
+  g_socket_bind().
+
+  To set the maximum amount of outstanding clients, use
+  g_socket_set_listen_backlog(). *)
   external listen : t -> (bool, GError.t) result = "ml_g_socket_listen"
-  (** Marks the socket as a server socket, i.e. a socket that is used to accept
-      incoming requests using g_socket_accept().
 
-      Before calling this the socket must be bound to a local address using
-      g_socket_bind().
-
-      To set the maximum amount of outstanding clients, use
-      g_socket_set_listen_backlog(). *)
-
-  external leave_multicast_group_ssm :
-    t ->
-    Inet_address.t ->
-    Inet_address.t option ->
-    string option ->
-    (bool, GError.t) result = "ml_g_socket_leave_multicast_group_ssm"
   (** Removes @socket from the multicast group defined by @group, @iface,
   and @source_specific (which must all have the same values they had
   when you joined the group).
 
   @socket remains bound to its address and port, and can still receive
   unicast messages after calling this. *)
+  external leave_multicast_group_ssm : t -> Inet_address.t -> Inet_address.t option -> string option -> (bool, GError.t) result = "ml_g_socket_leave_multicast_group_ssm"
 
-  external leave_multicast_group :
-    t -> Inet_address.t -> bool -> string option -> (bool, GError.t) result
-    = "ml_g_socket_leave_multicast_group"
   (** Removes @socket from the multicast group defined by @group, @iface,
   and @source_specific (which must all have the same values they had
   when you joined the group).
@@ -364,13 +303,8 @@ module rec Socket : sig
 
   To unbind to a given source-specific multicast address, use
   g_socket_leave_multicast_group_ssm() instead. *)
+  external leave_multicast_group : t -> Inet_address.t -> bool -> string option -> (bool, GError.t) result = "ml_g_socket_leave_multicast_group"
 
-  external join_multicast_group_ssm :
-    t ->
-    Inet_address.t ->
-    Inet_address.t option ->
-    string option ->
-    (bool, GError.t) result = "ml_g_socket_join_multicast_group_ssm"
   (** Registers @socket to receive multicast messages sent to @group.
   @socket must be a %G_SOCKET_TYPE_DATAGRAM socket, and must have
   been bound to an appropriate interface and port with
@@ -386,10 +320,8 @@ module rec Socket : sig
   Note that this function can be called multiple times for the same
   @group with different @source_specific in order to receive multicast
   packets from more than one source. *)
+  external join_multicast_group_ssm : t -> Inet_address.t -> Inet_address.t option -> string option -> (bool, GError.t) result = "ml_g_socket_join_multicast_group_ssm"
 
-  external join_multicast_group :
-    t -> Inet_address.t -> bool -> string option -> (bool, GError.t) result
-    = "ml_g_socket_join_multicast_group"
   (** Registers @socket to receive multicast messages sent to @group.
   @socket must be a %G_SOCKET_TYPE_DATAGRAM socket, and must have
   been bound to an appropriate interface and port with
@@ -404,48 +336,39 @@ module rec Socket : sig
 
   To bind to a given source-specific multicast address, use
   g_socket_join_multicast_group_ssm() instead. *)
+  external join_multicast_group : t -> Inet_address.t -> bool -> string option -> (bool, GError.t) result = "ml_g_socket_join_multicast_group"
 
-  external is_connected : t -> bool = "ml_g_socket_is_connected"
   (** Check whether the socket is connected. This is only useful for
-      connection-oriented sockets.
+  connection-oriented sockets.
 
-      If using g_socket_shutdown(), this function will return %TRUE until the
-      socket has been shut down for reading and writing. If you do a
-      non-blocking connect, this function will not return %TRUE until after you
-      call g_socket_check_connect_result(). *)
+  If using g_socket_shutdown(), this function will return %TRUE until the
+  socket has been shut down for reading and writing. If you do a non-blocking
+  connect, this function will not return %TRUE until after you call
+  g_socket_check_connect_result(). *)
+  external is_connected : t -> bool = "ml_g_socket_is_connected"
 
-  external is_closed : t -> bool = "ml_g_socket_is_closed"
   (** Checks whether a socket is closed. *)
+  external is_closed : t -> bool = "ml_g_socket_is_closed"
 
-  external get_ttl : t -> int = "ml_g_socket_get_ttl"
   (** Gets the unicast time-to-live setting on @socket; see
   g_socket_set_ttl() for more details. *)
+  external get_ttl : t -> int = "ml_g_socket_get_ttl"
 
-  external get_timeout : t -> int = "ml_g_socket_get_timeout"
   (** Gets the timeout setting of the socket. For details on this, see
-      g_socket_set_timeout(). *)
+  g_socket_set_timeout(). *)
+  external get_timeout : t -> int = "ml_g_socket_get_timeout"
 
-  external get_socket_type : t -> Gio_enums.sockettype
-    = "ml_g_socket_get_socket_type"
   (** Gets the socket type of the socket. *)
+  external get_socket_type : t -> Gio_enums.sockettype = "ml_g_socket_get_socket_type"
 
-  external get_remote_address :
-    t ->
-    ( Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .Socket_address
-      .t,
-      GError.t )
-    result = "ml_g_socket_get_remote_address"
-  (** Try to get the remote address of a connected socket. This is only useful
-      for connection oriented sockets that have been connected. *)
+  (** Try to get the remote address of a connected socket. This is only
+  useful for connection oriented sockets that have been connected. *)
+  external get_remote_address : t -> (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t, GError.t) result = "ml_g_socket_get_remote_address"
 
-  external get_protocol : t -> Gio_enums.socketprotocol
-    = "ml_g_socket_get_protocol"
-  (** Gets the socket protocol id the socket was created with. In case the
-      protocol is unknown, -1 is returned. *)
+  (** Gets the socket protocol id the socket was created with.
+  In case the protocol is unknown, -1 is returned. *)
+  external get_protocol : t -> Gio_enums.socketprotocol = "ml_g_socket_get_protocol"
 
-  external get_option : t -> int -> int -> (bool * int, GError.t) result
-    = "ml_g_socket_get_option"
   (** Gets the value of an integer-valued option on @socket, as with
   getsockopt(). (If you need to fetch a  non-integer-valued option,
   you will need to call getsockopt() directly.)
@@ -459,76 +382,71 @@ module rec Socket : sig
   Note that even for socket options that are a single byte in size,
   @value is still a pointer to a #gint variable, not a #guchar;
   g_socket_get_option() will handle the conversion internally. *)
+  external get_option : t -> int -> int -> (bool * int, GError.t) result = "ml_g_socket_get_option"
 
-  external get_multicast_ttl : t -> int = "ml_g_socket_get_multicast_ttl"
   (** Gets the multicast time-to-live setting on @socket; see
   g_socket_set_multicast_ttl() for more details. *)
+  external get_multicast_ttl : t -> int = "ml_g_socket_get_multicast_ttl"
 
-  external get_multicast_loopback : t -> bool
-    = "ml_g_socket_get_multicast_loopback"
   (** Gets the multicast loopback setting on @socket; if %TRUE (the
   default), outgoing multicast packets will be looped back to
   multicast listeners on the same host. *)
+  external get_multicast_loopback : t -> bool = "ml_g_socket_get_multicast_loopback"
 
-  external get_local_address :
-    t ->
-    ( Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .Socket_address
-      .t,
-      GError.t )
-    result = "ml_g_socket_get_local_address"
-  (** Try to get the local address of a bound socket. This is only useful if the
-      socket has been bound to a local address, either explicitly or implicitly
-      when connecting. *)
+  (** Try to get the local address of a bound socket. This is only
+  useful if the socket has been bound to a local address,
+  either explicitly or implicitly when connecting. *)
+  external get_local_address : t -> (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t, GError.t) result = "ml_g_socket_get_local_address"
 
+  (** Gets the listen backlog setting of the socket. For details on this,
+  see g_socket_set_listen_backlog(). *)
   external get_listen_backlog : t -> int = "ml_g_socket_get_listen_backlog"
-  (** Gets the listen backlog setting of the socket. For details on this, see
-      g_socket_set_listen_backlog(). *)
 
+  (** Gets the keepalive mode of the socket. For details on this,
+  see g_socket_set_keepalive(). *)
   external get_keepalive : t -> bool = "ml_g_socket_get_keepalive"
-  (** Gets the keepalive mode of the socket. For details on this, see
-      g_socket_set_keepalive(). *)
 
+  (** Returns the underlying OS socket object. On unix this
+  is a socket file descriptor, and on Windows this is
+  a Winsock2 SOCKET handle. This may be useful for
+  doing platform specific or otherwise unusual operations
+  on the socket. *)
   external get_fd : t -> int = "ml_g_socket_get_fd"
-  (** Returns the underlying OS socket object. On unix this is a socket file
-      descriptor, and on Windows this is a Winsock2 SOCKET handle. This may be
-      useful for doing platform specific or otherwise unusual operations on the
-      socket. *)
 
-  external get_family : t -> Gio_enums.socketfamily = "ml_g_socket_get_family"
   (** Gets the socket family of the socket. *)
+  external get_family : t -> Gio_enums.socketfamily = "ml_g_socket_get_family"
 
-  external get_credentials : t -> (Credentials.t, GError.t) result
-    = "ml_g_socket_get_credentials"
-  (** Returns the credentials of the foreign process connected to this socket,
-      if any (e.g. it is only supported for %G_SOCKET_FAMILY_UNIX sockets).
+  (** Returns the credentials of the foreign process connected to this
+  socket, if any (e.g. it is only supported for %G_SOCKET_FAMILY_UNIX
+  sockets).
 
-      If this operation isn't supported on the OS, the method fails with the
-      %G_IO_ERROR_NOT_SUPPORTED error. On Linux this is implemented by reading
-      the %SO_PEERCRED option on the underlying socket.
+  If this operation isn't supported on the OS, the method fails with
+  the %G_IO_ERROR_NOT_SUPPORTED error. On Linux this is implemented
+  by reading the %SO_PEERCRED option on the underlying socket.
 
-      This method can be expected to be available on the following platforms:
+  This method can be expected to be available on the following platforms:
 
-      - Linux since GLib 2.26
-      - OpenBSD since GLib 2.30
-      - Solaris, Illumos and OpenSolaris since GLib 2.40
-      - NetBSD since GLib 2.42
-      - macOS, tvOS, iOS since GLib 2.66
+  - Linux since GLib 2.26
+  - OpenBSD since GLib 2.30
+  - Solaris, Illumos and OpenSolaris since GLib 2.40
+  - NetBSD since GLib 2.42
+  - macOS, tvOS, iOS since GLib 2.66
 
-      Other ways to obtain credentials from a foreign peer includes the
-      #GUnixCredentialsMessage type and g_unix_connection_send_credentials() /
-      g_unix_connection_receive_credentials() functions. *)
+  Other ways to obtain credentials from a foreign peer includes the
+  #GUnixCredentialsMessage type and
+  g_unix_connection_send_credentials() /
+  g_unix_connection_receive_credentials() functions. *)
+  external get_credentials : t -> (Credentials.t, GError.t) result = "ml_g_socket_get_credentials"
 
-  external get_broadcast : t -> bool = "ml_g_socket_get_broadcast"
   (** Gets the broadcast setting on @socket; if %TRUE,
   it is possible to send packets to broadcast
   addresses. *)
+  external get_broadcast : t -> bool = "ml_g_socket_get_broadcast"
 
+  (** Gets the blocking mode of the socket. For details on blocking I/O,
+  see g_socket_set_blocking(). *)
   external get_blocking : t -> bool = "ml_g_socket_get_blocking"
-  (** Gets the blocking mode of the socket. For details on blocking I/O, see
-      g_socket_set_blocking(). *)
 
-  external get_available_bytes : t -> int = "ml_g_socket_get_available_bytes"
   (** Get the amount of data pending in the OS input buffer, without blocking.
 
   If @socket is a UDP or SCTP socket, this will return the size of
@@ -541,19 +459,12 @@ module rec Socket : sig
   g_socket_receive() with a buffer of that size, rather than calling
   g_socket_get_available_bytes() first and then doing a receive of
   exactly the right size. *)
+  external get_available_bytes : t -> int = "ml_g_socket_get_available_bytes"
 
-  external connection_factory_create_connection : t -> Socket_connection.t
-    = "ml_g_socket_connection_factory_create_connection"
   (** Creates a #GSocketConnection subclass of the right type for
   @socket. *)
+  external connection_factory_create_connection : t -> Socket_connection.t = "ml_g_socket_connection_factory_create_connection"
 
-  external connect :
-    t ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .Socket_address
-    .t ->
-    Cancellable.t option ->
-    (bool, GError.t) result = "ml_g_socket_connect"
   (** Connect the socket to the specified remote address.
 
   For connection oriented socket this generally means we attempt to make
@@ -570,8 +481,8 @@ module rec Socket : sig
   and the user can be notified of the connection finishing by waiting
   for the G_IO_OUT condition. The result of the connection must then be
   checked with g_socket_check_connect_result(). *)
+  external connect : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_socket_connect"
 
-  external close : t -> (bool, GError.t) result = "ml_g_socket_close"
   (** Closes the socket, shutting down any active connection.
 
   Closing a socket does not wait for all outstanding I/O operations
@@ -601,20 +512,13 @@ module rec Socket : sig
   g_tcp_connection_set_graceful_disconnect(). But of course, this
   only works if the client will close its connection after the server
   does.) *)
+  external close : t -> (bool, GError.t) result = "ml_g_socket_close"
 
-  external check_connect_result : t -> (bool, GError.t) result
-    = "ml_g_socket_check_connect_result"
-  (** Checks and resets the pending connect error for the socket. This is used
-      to check for errors when g_socket_connect() is used in non-blocking mode.
-  *)
+  (** Checks and resets the pending connect error for the socket.
+  This is used to check for errors when g_socket_connect() is
+  used in non-blocking mode. *)
+  external check_connect_result : t -> (bool, GError.t) result = "ml_g_socket_check_connect_result"
 
-  external bind :
-    t ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .Socket_address
-    .t ->
-    bool ->
-    (bool, GError.t) result = "ml_g_socket_bind"
   (** When a socket is created it is attached to an address family, but it
   doesn't have an address in this family. g_socket_bind() assigns the
   address (sometimes called name) of the socket.
@@ -638,9 +542,8 @@ module rec Socket : sig
   same address, and they will all receive all of the multicast and
   broadcast packets sent to that address. (The behavior of unicast
   UDP packets to an address with multiple listeners is not defined.) *)
+  external bind : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t -> bool -> (bool, GError.t) result = "ml_g_socket_bind"
 
-  external accept : t -> Cancellable.t option -> (t, GError.t) result
-    = "ml_g_socket_accept"
   (** Accept incoming connections on a connection-based socket. This removes
   the first outstanding connection request from the listening socket and
   creates a #GSocket object for it.
@@ -651,38 +554,35 @@ module rec Socket : sig
   If there are no outstanding connections then the operation will block
   or return %G_IO_ERROR_WOULD_BLOCK if non-blocking I/O is enabled.
   To be notified of an incoming connection, wait for the %G_IO_IN condition. *)
+  external accept : t -> Cancellable.t option -> (t, GError.t) result = "ml_g_socket_accept"
 
   (* Properties *)
 
-  external get_type : t -> Gio_enums.sockettype = "ml_g_socket_get_type"
   (** Get property: type *)
+  external get_type : t -> Gio_enums.sockettype = "ml_g_socket_get_type"
+
+
 end = struct
-  type t = [ `socket | `object_ ] Gobject.obj
+  type t = [`socket | `object_] Gobject.obj
 
-  external new_ :
-    Gio_enums.socketfamily ->
-    Gio_enums.sockettype ->
-    Gio_enums.socketprotocol ->
-    (t, GError.t) result = "ml_g_socket_new"
   (** Create a new Socket *)
+  external new_ : Gio_enums.socketfamily -> Gio_enums.sockettype -> Gio_enums.socketprotocol -> (t, GError.t) result = "ml_g_socket_new"
 
+  (** Create a new Socket *)
   external new_from_fd : int -> (t, GError.t) result = "ml_g_socket_new_from_fd"
-  (** Create a new Socket *)
 
   (* Methods *)
-
-  external speaks_ipv4 : t -> bool = "ml_g_socket_speaks_ipv4"
   (** Checks if a socket is capable of speaking IPv4.
 
-      IPv4 sockets are capable of speaking IPv4. On some operating systems and
-      under some combinations of circumstances IPv6 sockets are also capable of
-      speaking IPv4. See RFC 3493 section 3.7 for more information.
+  IPv4 sockets are capable of speaking IPv4.  On some operating systems
+  and under some combinations of circumstances IPv6 sockets are also
+  capable of speaking IPv4.  See RFC 3493 section 3.7 for more
+  information.
 
-      No other types of sockets are currently considered as being capable of
-      speaking IPv4. *)
+  No other types of sockets are currently considered as being capable
+  of speaking IPv4. *)
+  external speaks_ipv4 : t -> bool = "ml_g_socket_speaks_ipv4"
 
-  external shutdown : t -> bool -> bool -> (bool, GError.t) result
-    = "ml_g_socket_shutdown"
   (** Shut down part or all of a full-duplex connection.
 
   If @shutdown_read is %TRUE then the receiving side of the connection
@@ -697,12 +597,12 @@ end = struct
   graceful disconnect for TCP connections where you close the sending side,
   then wait for the other side to close the connection, thus ensuring that the
   other side saw all sent data. *)
+  external shutdown : t -> bool -> bool -> (bool, GError.t) result = "ml_g_socket_shutdown"
 
-  external set_ttl : t -> int -> unit = "ml_g_socket_set_ttl"
   (** Sets the time-to-live for outgoing unicast packets on @socket.
   By default the platform-specific default value is used. *)
+  external set_ttl : t -> int -> unit = "ml_g_socket_set_ttl"
 
-  external set_timeout : t -> int -> unit = "ml_g_socket_set_timeout"
   (** Sets the time in seconds after which I/O operations on @socket will
   time out if they have not yet completed.
 
@@ -723,9 +623,8 @@ end = struct
 
   Note that if an I/O operation is interrupted by a signal, this may
   cause the timeout to be reset. *)
+  external set_timeout : t -> int -> unit = "ml_g_socket_set_timeout"
 
-  external set_option : t -> int -> int -> int -> (bool, GError.t) result
-    = "ml_g_socket_set_option"
   (** Sets the value of an integer-valued option on @socket, as with
   setsockopt(). (If you need to set a non-integer-valued option,
   you will need to call setsockopt() directly.)
@@ -735,67 +634,59 @@ end = struct
   standard/portable socket options. For unusual socket protocols or
   platform-dependent options, you may need to include additional
   headers. *)
+  external set_option : t -> int -> int -> int -> (bool, GError.t) result = "ml_g_socket_set_option"
 
-  external set_multicast_ttl : t -> int -> unit
-    = "ml_g_socket_set_multicast_ttl"
   (** Sets the time-to-live for outgoing multicast datagrams on @socket.
   By default, this is 1, meaning that multicast packets will not leave
   the local network. *)
+  external set_multicast_ttl : t -> int -> unit = "ml_g_socket_set_multicast_ttl"
 
-  external set_multicast_loopback : t -> bool -> unit
-    = "ml_g_socket_set_multicast_loopback"
   (** Sets whether outgoing multicast packets will be received by sockets
-      listening on that multicast address on the same host. This is %TRUE by
-      default. *)
+  listening on that multicast address on the same host. This is %TRUE
+  by default. *)
+  external set_multicast_loopback : t -> bool -> unit = "ml_g_socket_set_multicast_loopback"
 
-  external set_listen_backlog : t -> int -> unit
-    = "ml_g_socket_set_listen_backlog"
-  (** Sets the maximum number of outstanding connections allowed when listening
-      on this socket. If more clients than this are connecting to the socket and
-      the application is not handling them on time then the new connections will
-      be refused.
+  (** Sets the maximum number of outstanding connections allowed
+  when listening on this socket. If more clients than this are
+  connecting to the socket and the application is not handling them
+  on time then the new connections will be refused.
 
-      Note that this must be called before g_socket_listen() and has no effect
-      if called after that. *)
+  Note that this must be called before g_socket_listen() and has no
+  effect if called after that. *)
+  external set_listen_backlog : t -> int -> unit = "ml_g_socket_set_listen_backlog"
 
+  (** Sets or unsets the %SO_KEEPALIVE flag on the underlying socket. When
+  this flag is set on a socket, the system will attempt to verify that the
+  remote socket endpoint is still present if a sufficiently long period of
+  time passes with no data being exchanged. If the system is unable to
+  verify the presence of the remote endpoint, it will automatically close
+  the connection.
+
+  This option is only functional on certain kinds of sockets. (Notably,
+  %G_SOCKET_PROTOCOL_TCP sockets.)
+
+  The exact time between pings is system- and protocol-dependent, but will
+  normally be at least two hours. Most commonly, you would set this flag
+  on a server socket if you want to allow clients to remain idle for long
+  periods of time, but also want to ensure that connections are eventually
+  garbage-collected if clients crash or become unreachable. *)
   external set_keepalive : t -> bool -> unit = "ml_g_socket_set_keepalive"
-  (** Sets or unsets the %SO_KEEPALIVE flag on the underlying socket. When this
-      flag is set on a socket, the system will attempt to verify that the remote
-      socket endpoint is still present if a sufficiently long period of time
-      passes with no data being exchanged. If the system is unable to verify the
-      presence of the remote endpoint, it will automatically close the
-      connection.
 
-      This option is only functional on certain kinds of sockets. (Notably,
-      %G_SOCKET_PROTOCOL_TCP sockets.)
-
-      The exact time between pings is system- and protocol-dependent, but will
-      normally be at least two hours. Most commonly, you would set this flag on
-      a server socket if you want to allow clients to remain idle for long
-      periods of time, but also want to ensure that connections are eventually
-      garbage-collected if clients crash or become unreachable. *)
-
-  external set_broadcast : t -> bool -> unit = "ml_g_socket_set_broadcast"
   (** Sets whether @socket should allow sending to broadcast addresses.
   This is %FALSE by default. *)
+  external set_broadcast : t -> bool -> unit = "ml_g_socket_set_broadcast"
 
+  (** Sets the blocking mode of the socket. In blocking mode
+  all operations (which don’t take an explicit blocking parameter) block until
+  they succeed or there is an error. In
+  non-blocking mode all functions return results immediately or
+  with a %G_IO_ERROR_WOULD_BLOCK error.
+
+  All sockets are created in blocking mode. However, note that the
+  platform level socket is always non-blocking, and blocking mode
+  is a GSocket level feature. *)
   external set_blocking : t -> bool -> unit = "ml_g_socket_set_blocking"
-  (** Sets the blocking mode of the socket. In blocking mode all operations
-      (which don’t take an explicit blocking parameter) block until they succeed
-      or there is an error. In non-blocking mode all functions return results
-      immediately or with a %G_IO_ERROR_WOULD_BLOCK error.
 
-      All sockets are created in blocking mode. However, note that the platform
-      level socket is always non-blocking, and blocking mode is a GSocket level
-      feature. *)
-
-  external send_messages :
-    t ->
-    Output_message.t array ->
-    int ->
-    int ->
-    Cancellable.t option ->
-    (int, GError.t) result = "ml_g_socket_send_messages"
   (** Send multiple data messages from @socket in one go.  This is the most
   complicated and fully-featured version of this call. For easier use, see
   g_socket_send(), g_socket_send_to(), and g_socket_send_message().
@@ -830,23 +721,8 @@ end = struct
   On error -1 is returned and @error is set accordingly. An error will only
   be returned if zero messages could be sent; otherwise the number of messages
   successfully sent before the error will be returned. *)
+  external send_messages : t -> Output_message.t array -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_send_messages"
 
-  external send_message_with_timeout :
-    t ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .Socket_address
-    .t
-    option ->
-    Output_vector.t array ->
-    int ->
-    Socket_control_message.t array option ->
-    int ->
-    int ->
-    int64 ->
-    Cancellable.t option ->
-    (Gio_enums.pollablereturn * Gsize.t, GError.t) result
-    = "ml_g_socket_send_message_with_timeout_bytecode"
-      "ml_g_socket_send_message_with_timeout_native"
   (** This behaves exactly the same as g_socket_send_message(), except that
   the choice of timeout behavior is determined by the @timeout_us argument
   rather than by @socket's properties.
@@ -854,21 +730,8 @@ end = struct
   On error %G_POLLABLE_RETURN_FAILED is returned and @error is set accordingly, or
   if the socket is currently not writable %G_POLLABLE_RETURN_WOULD_BLOCK is
   returned. @bytes_written will contain 0 in both cases. *)
+  external send_message_with_timeout : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> int64 -> Cancellable.t option -> (Gio_enums.pollablereturn * Gsize.t, GError.t) result = "ml_g_socket_send_message_with_timeout_bytecode" "ml_g_socket_send_message_with_timeout_native"
 
-  external send_message :
-    t ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .Socket_address
-    .t
-    option ->
-    Output_vector.t array ->
-    int ->
-    Socket_control_message.t array option ->
-    int ->
-    int ->
-    Cancellable.t option ->
-    (int, GError.t) result
-    = "ml_g_socket_send_message_bytecode" "ml_g_socket_send_message_native"
   (** Send data to @address on @socket.  For sending multiple messages see
   g_socket_send_messages(); for easier use, see
   g_socket_send() and g_socket_send_to().
@@ -911,14 +774,8 @@ end = struct
   function.
 
   On error -1 is returned and @error is set accordingly. *)
+  external send_message : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t option -> Output_vector.t array -> int -> Socket_control_message.t array option -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_send_message_bytecode" "ml_g_socket_send_message_native"
 
-  external receive_messages :
-    t ->
-    Input_message.t array ->
-    int ->
-    int ->
-    Cancellable.t option ->
-    (int, GError.t) result = "ml_g_socket_receive_messages"
   (** Receive multiple data messages from @socket in one go.  This is the most
   complicated and fully-featured version of this call. For easier use, see
   g_socket_receive(), g_socket_receive_from(), and g_socket_receive_message().
@@ -967,13 +824,8 @@ end = struct
   On error -1 is returned and @error is set accordingly. An error will only
   be returned if zero messages could be received; otherwise the number of
   messages successfully received before the error will be returned. *)
+  external receive_messages : t -> Input_message.t array -> int -> int -> Cancellable.t option -> (int, GError.t) result = "ml_g_socket_receive_messages"
 
-  external receive_bytes :
-    t ->
-    Gsize.t ->
-    int64 ->
-    Cancellable.t option ->
-    (Glib_bytes.t, GError.t) result = "ml_g_socket_receive_bytes"
   (** Receives data (up to @size bytes) from a socket.
 
   This function is a variant of [method@Gio.Socket.receive] which returns a
@@ -983,33 +835,26 @@ end = struct
   the connection is closed, or there is an error). Pass `0` to use the default
   timeout from [property@Gio.Socket:timeout], or pass a positive number to wait
   for that many microseconds for data before returning `G_IO_ERROR_TIMED_OUT`. *)
+  external receive_bytes : t -> Gsize.t -> int64 -> Cancellable.t option -> (Glib_bytes.t, GError.t) result = "ml_g_socket_receive_bytes"
 
+  (** Marks the socket as a server socket, i.e. a socket that is used
+  to accept incoming requests using g_socket_accept().
+
+  Before calling this the socket must be bound to a local address using
+  g_socket_bind().
+
+  To set the maximum amount of outstanding clients, use
+  g_socket_set_listen_backlog(). *)
   external listen : t -> (bool, GError.t) result = "ml_g_socket_listen"
-  (** Marks the socket as a server socket, i.e. a socket that is used to accept
-      incoming requests using g_socket_accept().
 
-      Before calling this the socket must be bound to a local address using
-      g_socket_bind().
-
-      To set the maximum amount of outstanding clients, use
-      g_socket_set_listen_backlog(). *)
-
-  external leave_multicast_group_ssm :
-    t ->
-    Inet_address.t ->
-    Inet_address.t option ->
-    string option ->
-    (bool, GError.t) result = "ml_g_socket_leave_multicast_group_ssm"
   (** Removes @socket from the multicast group defined by @group, @iface,
   and @source_specific (which must all have the same values they had
   when you joined the group).
 
   @socket remains bound to its address and port, and can still receive
   unicast messages after calling this. *)
+  external leave_multicast_group_ssm : t -> Inet_address.t -> Inet_address.t option -> string option -> (bool, GError.t) result = "ml_g_socket_leave_multicast_group_ssm"
 
-  external leave_multicast_group :
-    t -> Inet_address.t -> bool -> string option -> (bool, GError.t) result
-    = "ml_g_socket_leave_multicast_group"
   (** Removes @socket from the multicast group defined by @group, @iface,
   and @source_specific (which must all have the same values they had
   when you joined the group).
@@ -1019,13 +864,8 @@ end = struct
 
   To unbind to a given source-specific multicast address, use
   g_socket_leave_multicast_group_ssm() instead. *)
+  external leave_multicast_group : t -> Inet_address.t -> bool -> string option -> (bool, GError.t) result = "ml_g_socket_leave_multicast_group"
 
-  external join_multicast_group_ssm :
-    t ->
-    Inet_address.t ->
-    Inet_address.t option ->
-    string option ->
-    (bool, GError.t) result = "ml_g_socket_join_multicast_group_ssm"
   (** Registers @socket to receive multicast messages sent to @group.
   @socket must be a %G_SOCKET_TYPE_DATAGRAM socket, and must have
   been bound to an appropriate interface and port with
@@ -1041,10 +881,8 @@ end = struct
   Note that this function can be called multiple times for the same
   @group with different @source_specific in order to receive multicast
   packets from more than one source. *)
+  external join_multicast_group_ssm : t -> Inet_address.t -> Inet_address.t option -> string option -> (bool, GError.t) result = "ml_g_socket_join_multicast_group_ssm"
 
-  external join_multicast_group :
-    t -> Inet_address.t -> bool -> string option -> (bool, GError.t) result
-    = "ml_g_socket_join_multicast_group"
   (** Registers @socket to receive multicast messages sent to @group.
   @socket must be a %G_SOCKET_TYPE_DATAGRAM socket, and must have
   been bound to an appropriate interface and port with
@@ -1059,48 +897,39 @@ end = struct
 
   To bind to a given source-specific multicast address, use
   g_socket_join_multicast_group_ssm() instead. *)
+  external join_multicast_group : t -> Inet_address.t -> bool -> string option -> (bool, GError.t) result = "ml_g_socket_join_multicast_group"
 
-  external is_connected : t -> bool = "ml_g_socket_is_connected"
   (** Check whether the socket is connected. This is only useful for
-      connection-oriented sockets.
+  connection-oriented sockets.
 
-      If using g_socket_shutdown(), this function will return %TRUE until the
-      socket has been shut down for reading and writing. If you do a
-      non-blocking connect, this function will not return %TRUE until after you
-      call g_socket_check_connect_result(). *)
+  If using g_socket_shutdown(), this function will return %TRUE until the
+  socket has been shut down for reading and writing. If you do a non-blocking
+  connect, this function will not return %TRUE until after you call
+  g_socket_check_connect_result(). *)
+  external is_connected : t -> bool = "ml_g_socket_is_connected"
 
-  external is_closed : t -> bool = "ml_g_socket_is_closed"
   (** Checks whether a socket is closed. *)
+  external is_closed : t -> bool = "ml_g_socket_is_closed"
 
-  external get_ttl : t -> int = "ml_g_socket_get_ttl"
   (** Gets the unicast time-to-live setting on @socket; see
   g_socket_set_ttl() for more details. *)
+  external get_ttl : t -> int = "ml_g_socket_get_ttl"
 
-  external get_timeout : t -> int = "ml_g_socket_get_timeout"
   (** Gets the timeout setting of the socket. For details on this, see
-      g_socket_set_timeout(). *)
+  g_socket_set_timeout(). *)
+  external get_timeout : t -> int = "ml_g_socket_get_timeout"
 
-  external get_socket_type : t -> Gio_enums.sockettype
-    = "ml_g_socket_get_socket_type"
   (** Gets the socket type of the socket. *)
+  external get_socket_type : t -> Gio_enums.sockettype = "ml_g_socket_get_socket_type"
 
-  external get_remote_address :
-    t ->
-    ( Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .Socket_address
-      .t,
-      GError.t )
-    result = "ml_g_socket_get_remote_address"
-  (** Try to get the remote address of a connected socket. This is only useful
-      for connection oriented sockets that have been connected. *)
+  (** Try to get the remote address of a connected socket. This is only
+  useful for connection oriented sockets that have been connected. *)
+  external get_remote_address : t -> (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t, GError.t) result = "ml_g_socket_get_remote_address"
 
-  external get_protocol : t -> Gio_enums.socketprotocol
-    = "ml_g_socket_get_protocol"
-  (** Gets the socket protocol id the socket was created with. In case the
-      protocol is unknown, -1 is returned. *)
+  (** Gets the socket protocol id the socket was created with.
+  In case the protocol is unknown, -1 is returned. *)
+  external get_protocol : t -> Gio_enums.socketprotocol = "ml_g_socket_get_protocol"
 
-  external get_option : t -> int -> int -> (bool * int, GError.t) result
-    = "ml_g_socket_get_option"
   (** Gets the value of an integer-valued option on @socket, as with
   getsockopt(). (If you need to fetch a  non-integer-valued option,
   you will need to call getsockopt() directly.)
@@ -1114,76 +943,71 @@ end = struct
   Note that even for socket options that are a single byte in size,
   @value is still a pointer to a #gint variable, not a #guchar;
   g_socket_get_option() will handle the conversion internally. *)
+  external get_option : t -> int -> int -> (bool * int, GError.t) result = "ml_g_socket_get_option"
 
-  external get_multicast_ttl : t -> int = "ml_g_socket_get_multicast_ttl"
   (** Gets the multicast time-to-live setting on @socket; see
   g_socket_set_multicast_ttl() for more details. *)
+  external get_multicast_ttl : t -> int = "ml_g_socket_get_multicast_ttl"
 
-  external get_multicast_loopback : t -> bool
-    = "ml_g_socket_get_multicast_loopback"
   (** Gets the multicast loopback setting on @socket; if %TRUE (the
   default), outgoing multicast packets will be looped back to
   multicast listeners on the same host. *)
+  external get_multicast_loopback : t -> bool = "ml_g_socket_get_multicast_loopback"
 
-  external get_local_address :
-    t ->
-    ( Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .Socket_address
-      .t,
-      GError.t )
-    result = "ml_g_socket_get_local_address"
-  (** Try to get the local address of a bound socket. This is only useful if the
-      socket has been bound to a local address, either explicitly or implicitly
-      when connecting. *)
+  (** Try to get the local address of a bound socket. This is only
+  useful if the socket has been bound to a local address,
+  either explicitly or implicitly when connecting. *)
+  external get_local_address : t -> (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t, GError.t) result = "ml_g_socket_get_local_address"
 
+  (** Gets the listen backlog setting of the socket. For details on this,
+  see g_socket_set_listen_backlog(). *)
   external get_listen_backlog : t -> int = "ml_g_socket_get_listen_backlog"
-  (** Gets the listen backlog setting of the socket. For details on this, see
-      g_socket_set_listen_backlog(). *)
 
+  (** Gets the keepalive mode of the socket. For details on this,
+  see g_socket_set_keepalive(). *)
   external get_keepalive : t -> bool = "ml_g_socket_get_keepalive"
-  (** Gets the keepalive mode of the socket. For details on this, see
-      g_socket_set_keepalive(). *)
 
+  (** Returns the underlying OS socket object. On unix this
+  is a socket file descriptor, and on Windows this is
+  a Winsock2 SOCKET handle. This may be useful for
+  doing platform specific or otherwise unusual operations
+  on the socket. *)
   external get_fd : t -> int = "ml_g_socket_get_fd"
-  (** Returns the underlying OS socket object. On unix this is a socket file
-      descriptor, and on Windows this is a Winsock2 SOCKET handle. This may be
-      useful for doing platform specific or otherwise unusual operations on the
-      socket. *)
 
-  external get_family : t -> Gio_enums.socketfamily = "ml_g_socket_get_family"
   (** Gets the socket family of the socket. *)
+  external get_family : t -> Gio_enums.socketfamily = "ml_g_socket_get_family"
 
-  external get_credentials : t -> (Credentials.t, GError.t) result
-    = "ml_g_socket_get_credentials"
-  (** Returns the credentials of the foreign process connected to this socket,
-      if any (e.g. it is only supported for %G_SOCKET_FAMILY_UNIX sockets).
+  (** Returns the credentials of the foreign process connected to this
+  socket, if any (e.g. it is only supported for %G_SOCKET_FAMILY_UNIX
+  sockets).
 
-      If this operation isn't supported on the OS, the method fails with the
-      %G_IO_ERROR_NOT_SUPPORTED error. On Linux this is implemented by reading
-      the %SO_PEERCRED option on the underlying socket.
+  If this operation isn't supported on the OS, the method fails with
+  the %G_IO_ERROR_NOT_SUPPORTED error. On Linux this is implemented
+  by reading the %SO_PEERCRED option on the underlying socket.
 
-      This method can be expected to be available on the following platforms:
+  This method can be expected to be available on the following platforms:
 
-      - Linux since GLib 2.26
-      - OpenBSD since GLib 2.30
-      - Solaris, Illumos and OpenSolaris since GLib 2.40
-      - NetBSD since GLib 2.42
-      - macOS, tvOS, iOS since GLib 2.66
+  - Linux since GLib 2.26
+  - OpenBSD since GLib 2.30
+  - Solaris, Illumos and OpenSolaris since GLib 2.40
+  - NetBSD since GLib 2.42
+  - macOS, tvOS, iOS since GLib 2.66
 
-      Other ways to obtain credentials from a foreign peer includes the
-      #GUnixCredentialsMessage type and g_unix_connection_send_credentials() /
-      g_unix_connection_receive_credentials() functions. *)
+  Other ways to obtain credentials from a foreign peer includes the
+  #GUnixCredentialsMessage type and
+  g_unix_connection_send_credentials() /
+  g_unix_connection_receive_credentials() functions. *)
+  external get_credentials : t -> (Credentials.t, GError.t) result = "ml_g_socket_get_credentials"
 
-  external get_broadcast : t -> bool = "ml_g_socket_get_broadcast"
   (** Gets the broadcast setting on @socket; if %TRUE,
   it is possible to send packets to broadcast
   addresses. *)
+  external get_broadcast : t -> bool = "ml_g_socket_get_broadcast"
 
+  (** Gets the blocking mode of the socket. For details on blocking I/O,
+  see g_socket_set_blocking(). *)
   external get_blocking : t -> bool = "ml_g_socket_get_blocking"
-  (** Gets the blocking mode of the socket. For details on blocking I/O, see
-      g_socket_set_blocking(). *)
 
-  external get_available_bytes : t -> int = "ml_g_socket_get_available_bytes"
   (** Get the amount of data pending in the OS input buffer, without blocking.
 
   If @socket is a UDP or SCTP socket, this will return the size of
@@ -1196,19 +1020,12 @@ end = struct
   g_socket_receive() with a buffer of that size, rather than calling
   g_socket_get_available_bytes() first and then doing a receive of
   exactly the right size. *)
+  external get_available_bytes : t -> int = "ml_g_socket_get_available_bytes"
 
-  external connection_factory_create_connection : t -> Socket_connection.t
-    = "ml_g_socket_connection_factory_create_connection"
   (** Creates a #GSocketConnection subclass of the right type for
   @socket. *)
+  external connection_factory_create_connection : t -> Socket_connection.t = "ml_g_socket_connection_factory_create_connection"
 
-  external connect :
-    t ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .Socket_address
-    .t ->
-    Cancellable.t option ->
-    (bool, GError.t) result = "ml_g_socket_connect"
   (** Connect the socket to the specified remote address.
 
   For connection oriented socket this generally means we attempt to make
@@ -1225,8 +1042,8 @@ end = struct
   and the user can be notified of the connection finishing by waiting
   for the G_IO_OUT condition. The result of the connection must then be
   checked with g_socket_check_connect_result(). *)
+  external connect : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_socket_connect"
 
-  external close : t -> (bool, GError.t) result = "ml_g_socket_close"
   (** Closes the socket, shutting down any active connection.
 
   Closing a socket does not wait for all outstanding I/O operations
@@ -1256,20 +1073,13 @@ end = struct
   g_tcp_connection_set_graceful_disconnect(). But of course, this
   only works if the client will close its connection after the server
   does.) *)
+  external close : t -> (bool, GError.t) result = "ml_g_socket_close"
 
-  external check_connect_result : t -> (bool, GError.t) result
-    = "ml_g_socket_check_connect_result"
-  (** Checks and resets the pending connect error for the socket. This is used
-      to check for errors when g_socket_connect() is used in non-blocking mode.
-  *)
+  (** Checks and resets the pending connect error for the socket.
+  This is used to check for errors when g_socket_connect() is
+  used in non-blocking mode. *)
+  external check_connect_result : t -> (bool, GError.t) result = "ml_g_socket_check_connect_result"
 
-  external bind :
-    t ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .Socket_address
-    .t ->
-    bool ->
-    (bool, GError.t) result = "ml_g_socket_bind"
   (** When a socket is created it is attached to an address family, but it
   doesn't have an address in this family. g_socket_bind() assigns the
   address (sometimes called name) of the socket.
@@ -1293,9 +1103,8 @@ end = struct
   same address, and they will all receive all of the multicast and
   broadcast packets sent to that address. (The behavior of unicast
   UDP packets to an address with multiple listeners is not defined.) *)
+  external bind : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t -> bool -> (bool, GError.t) result = "ml_g_socket_bind"
 
-  external accept : t -> Cancellable.t option -> (t, GError.t) result
-    = "ml_g_socket_accept"
   (** Accept incoming connections on a connection-based socket. This removes
   the first outstanding connection request from the listening socket and
   creates a #GSocket object for it.
@@ -1306,115 +1115,85 @@ end = struct
   If there are no outstanding connections then the operation will block
   or return %G_IO_ERROR_WOULD_BLOCK if non-blocking I/O is enabled.
   To be notified of an incoming connection, wait for the %G_IO_IN condition. *)
+  external accept : t -> Cancellable.t option -> (t, GError.t) result = "ml_g_socket_accept"
 
   (* Properties *)
 
-  external get_type : t -> Gio_enums.sockettype = "ml_g_socket_get_type"
   (** Get property: type *)
+  external get_type : t -> Gio_enums.sockettype = "ml_g_socket_get_type"
+
+
 end
 
-and Socket_connection : sig
-  type t = [ `socket_connection | `io_stream | `object_ ] Gobject.obj
+and Socket_connection
+ : sig
+  type t = [`socket_connection | `io_stream | `object_] Gobject.obj
 
   (* Methods *)
-
-  external is_connected : t -> bool = "ml_g_socket_connection_is_connected"
   (** Checks if @connection is connected. This is equivalent to calling
   g_socket_is_connected() on @connection's underlying #GSocket. *)
+  external is_connected : t -> bool = "ml_g_socket_connection_is_connected"
 
+  (** Gets the underlying #GSocket object of the connection.
+  This can be useful if you want to do something unusual on it
+  not supported by the #GSocketConnection APIs. *)
   external get_socket : t -> Socket.t = "ml_g_socket_connection_get_socket"
-  (** Gets the underlying #GSocket object of the connection. This can be useful
-      if you want to do something unusual on it not supported by the
-      #GSocketConnection APIs. *)
 
-  external get_remote_address :
-    t ->
-    ( Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .Socket_address
-      .t,
-      GError.t )
-    result = "ml_g_socket_connection_get_remote_address"
   (** Try to get the remote address of a socket connection.
 
-      Since GLib 2.40, when used with g_socket_client_connect() or
-      g_socket_client_connect_async(), during emission of
-      %G_SOCKET_CLIENT_CONNECTING, this function will return the remote address
-      that will be used for the connection. This allows applications to print
-      e.g. "Connecting to example.com (10.42.77.3)...". *)
+  Since GLib 2.40, when used with g_socket_client_connect() or
+  g_socket_client_connect_async(), during emission of
+  %G_SOCKET_CLIENT_CONNECTING, this function will return the remote
+  address that will be used for the connection.  This allows
+  applications to print e.g. "Connecting to example.com
+  (10.42.77.3)...". *)
+  external get_remote_address : t -> (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t, GError.t) result = "ml_g_socket_connection_get_remote_address"
 
-  external get_local_address :
-    t ->
-    ( Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .Socket_address
-      .t,
-      GError.t )
-    result = "ml_g_socket_connection_get_local_address"
   (** Try to get the local address of a socket connection. *)
+  external get_local_address : t -> (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t, GError.t) result = "ml_g_socket_connection_get_local_address"
 
-  external connect_finish : t -> Async_result.t -> (bool, GError.t) result
-    = "ml_g_socket_connection_connect_finish"
   (** Gets the result of a g_socket_connection_connect_async() call. *)
+  external connect_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_socket_connection_connect_finish"
 
-  external connect :
-    t ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .Socket_address
-    .t ->
-    Cancellable.t option ->
-    (bool, GError.t) result = "ml_g_socket_connection_connect"
   (** Connect @connection to the specified remote address. *)
+  external connect : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_socket_connection_connect"
 
   (* Properties *)
+
+
 end = struct
-  type t = [ `socket_connection | `io_stream | `object_ ] Gobject.obj
+  type t = [`socket_connection | `io_stream | `object_] Gobject.obj
 
   (* Methods *)
-
-  external is_connected : t -> bool = "ml_g_socket_connection_is_connected"
   (** Checks if @connection is connected. This is equivalent to calling
   g_socket_is_connected() on @connection's underlying #GSocket. *)
+  external is_connected : t -> bool = "ml_g_socket_connection_is_connected"
 
+  (** Gets the underlying #GSocket object of the connection.
+  This can be useful if you want to do something unusual on it
+  not supported by the #GSocketConnection APIs. *)
   external get_socket : t -> Socket.t = "ml_g_socket_connection_get_socket"
-  (** Gets the underlying #GSocket object of the connection. This can be useful
-      if you want to do something unusual on it not supported by the
-      #GSocketConnection APIs. *)
 
-  external get_remote_address :
-    t ->
-    ( Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .Socket_address
-      .t,
-      GError.t )
-    result = "ml_g_socket_connection_get_remote_address"
   (** Try to get the remote address of a socket connection.
 
-      Since GLib 2.40, when used with g_socket_client_connect() or
-      g_socket_client_connect_async(), during emission of
-      %G_SOCKET_CLIENT_CONNECTING, this function will return the remote address
-      that will be used for the connection. This allows applications to print
-      e.g. "Connecting to example.com (10.42.77.3)...". *)
+  Since GLib 2.40, when used with g_socket_client_connect() or
+  g_socket_client_connect_async(), during emission of
+  %G_SOCKET_CLIENT_CONNECTING, this function will return the remote
+  address that will be used for the connection.  This allows
+  applications to print e.g. "Connecting to example.com
+  (10.42.77.3)...". *)
+  external get_remote_address : t -> (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t, GError.t) result = "ml_g_socket_connection_get_remote_address"
 
-  external get_local_address :
-    t ->
-    ( Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .Socket_address
-      .t,
-      GError.t )
-    result = "ml_g_socket_connection_get_local_address"
   (** Try to get the local address of a socket connection. *)
+  external get_local_address : t -> (Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t, GError.t) result = "ml_g_socket_connection_get_local_address"
 
-  external connect_finish : t -> Async_result.t -> (bool, GError.t) result
-    = "ml_g_socket_connection_connect_finish"
   (** Gets the result of a g_socket_connection_connect_async() call. *)
+  external connect_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_socket_connection_connect_finish"
 
-  external connect :
-    t ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .Socket_address
-    .t ->
-    Cancellable.t option ->
-    (bool, GError.t) result = "ml_g_socket_connection_connect"
   (** Connect @connection to the specified remote address. *)
+  external connect : t -> Socket_address_and__socket_address_enumerator_and__socket_connectable.Socket_address.t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_socket_connection_connect"
 
   (* Properties *)
+
+
 end

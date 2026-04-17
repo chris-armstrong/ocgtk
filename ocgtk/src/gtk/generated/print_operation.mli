@@ -1,15 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PrintOperation: PrintOperation *)
 
-type t = [ `print_operation | `object_ ] Gobject.obj
+type t = [`print_operation | `object_] Gobject.obj
 
-external new_ : unit -> t = "ml_gtk_print_operation_new"
 (** Create a new PrintOperation *)
+external new_ : unit -> t = "ml_gtk_print_operation_new"
 
 (* Methods *)
-
-external set_use_full_page : t -> bool -> unit
-  = "ml_gtk_print_operation_set_use_full_page"
 (** If @full_page is %TRUE, the transformation for the cairo context
 obtained from `GtkPrintContext` puts the origin at the top left
 corner of the page.
@@ -17,41 +14,36 @@ corner of the page.
 This may not be the top left corner of the sheet, depending on page
 orientation and the number of pages per sheet). Otherwise, the origin
 is at the top left corner of the imageable area (i.e. inside the margins). *)
+external set_use_full_page : t -> bool -> unit = "ml_gtk_print_operation_set_use_full_page"
 
-external set_unit : t -> Gtk_enums.unit -> unit
-  = "ml_gtk_print_operation_set_unit"
 (** Sets up the transformation for the cairo context obtained from
 `GtkPrintContext` in such a way that distances are measured in
 units of @unit. *)
+external set_unit : t -> Gtk_enums.unit -> unit = "ml_gtk_print_operation_set_unit"
 
-external set_track_print_status : t -> bool -> unit
-  = "ml_gtk_print_operation_set_track_print_status"
-(** If track_status is %TRUE, the print operation will try to continue report on
-    the status of the print job in the printer queues and printer.
+(** If track_status is %TRUE, the print operation will try to continue
+report on the status of the print job in the printer queues and printer.
 
-    This can allow your application to show things like “out of paper” issues,
-    and when the print job actually reaches the printer.
+This can allow your application to show things like “out of paper”
+issues, and when the print job actually reaches the printer.
 
-    This function is often implemented using some form of polling, so it should
-    not be enabled unless needed. *)
+This function is often implemented using some form of polling,
+so it should not be enabled unless needed. *)
+external set_track_print_status : t -> bool -> unit = "ml_gtk_print_operation_set_track_print_status"
 
-external set_support_selection : t -> bool -> unit
-  = "ml_gtk_print_operation_set_support_selection"
 (** Sets whether selection is supported by `GtkPrintOperation`. *)
+external set_support_selection : t -> bool -> unit = "ml_gtk_print_operation_set_support_selection"
 
-external set_show_progress : t -> bool -> unit
-  = "ml_gtk_print_operation_set_show_progress"
 (** If @show_progress is %TRUE, the print operation will show
 a progress dialog during the print operation. *)
+external set_show_progress : t -> bool -> unit = "ml_gtk_print_operation_set_show_progress"
 
-external set_print_settings : t -> Print_settings.t option -> unit
-  = "ml_gtk_print_operation_set_print_settings"
 (** Sets the print settings for @op.
 
 This is typically used to re-establish print settings
 from a previous print operation, see [method@Gtk.PrintOperation.run]. *)
+external set_print_settings : t -> Print_settings.t option -> unit = "ml_gtk_print_operation_set_print_settings"
 
-external set_n_pages : t -> int -> unit = "ml_gtk_print_operation_set_n_pages"
 (** Sets the number of pages in the document.
 
 This must be set to a positive number before the rendering
@@ -63,46 +55,41 @@ Note that the page numbers passed to the
 and [signal@Gtk.PrintOperation::draw-page] signals are 0-based, i.e.
 if the user chooses to print all pages, the last ::draw-page signal
 will be for page @n_pages - 1. *)
+external set_n_pages : t -> int -> unit = "ml_gtk_print_operation_set_n_pages"
 
-external set_job_name : t -> string -> unit
-  = "ml_gtk_print_operation_set_job_name"
 (** Sets the name of the print job.
 
-    The name is used to identify the job (e.g. in monitoring applications like
-    eggcups).
+The name is used to identify the job (e.g. in monitoring
+applications like eggcups).
 
-    If you don’t set a job name, GTK picks a default one by numbering successive
-    print jobs. *)
+If you don’t set a job name, GTK picks a default one by
+numbering successive print jobs. *)
+external set_job_name : t -> string -> unit = "ml_gtk_print_operation_set_job_name"
 
-external set_has_selection : t -> bool -> unit
-  = "ml_gtk_print_operation_set_has_selection"
 (** Sets whether there is a selection to print.
 
-    Application has to set number of pages to which the selection will draw by
-    [method@Gtk.PrintOperation.set_n_pages] in a handler for the
-    [signal@Gtk.PrintOperation::begin-print] signal. *)
+Application has to set number of pages to which the selection
+will draw by [method@Gtk.PrintOperation.set_n_pages] in a handler
+for the [signal@Gtk.PrintOperation::begin-print] signal. *)
+external set_has_selection : t -> bool -> unit = "ml_gtk_print_operation_set_has_selection"
 
-external set_export_filename : t -> string -> unit
-  = "ml_gtk_print_operation_set_export_filename"
-(** Sets up the `GtkPrintOperation` to generate a file instead of showing the
-    print dialog.
+(** Sets up the `GtkPrintOperation` to generate a file instead
+of showing the print dialog.
 
-    The intended use of this function is for implementing “Export to PDF”
-    actions. Currently, PDF is the only supported format.
+The intended use of this function is for implementing
+“Export to PDF” actions. Currently, PDF is the only supported
+format.
 
-    “Print to PDF” support is independent of this and is done by letting the
-    user pick the “Print to PDF” item from the list of printers in the print
-    dialog. *)
+“Print to PDF” support is independent of this and is done
+by letting the user pick the “Print to PDF” item from the list
+of printers in the print dialog. *)
+external set_export_filename : t -> string -> unit = "ml_gtk_print_operation_set_export_filename"
 
-external set_embed_page_setup : t -> bool -> unit
-  = "ml_gtk_print_operation_set_embed_page_setup"
 (** Embed page size combo box and orientation combo box into page setup page.
 
-    Selected page setup is stored as default page setup in `GtkPrintOperation`.
-*)
+Selected page setup is stored as default page setup in `GtkPrintOperation`. *)
+external set_embed_page_setup : t -> bool -> unit = "ml_gtk_print_operation_set_embed_page_setup"
 
-external set_defer_drawing : t -> unit
-  = "ml_gtk_print_operation_set_defer_drawing"
 (** Sets up the `GtkPrintOperation` to wait for calling of
 [method@Gtk.PrintOperation.draw_page_finish from application.
 
@@ -110,41 +97,33 @@ This can be used for drawing page in another thread.
 
 This function must be called in the callback of the
 [signal@Gtk.PrintOperation::draw-page] signal. *)
+external set_defer_drawing : t -> unit = "ml_gtk_print_operation_set_defer_drawing"
 
-external set_default_page_setup : t -> Page_setup.t option -> unit
-  = "ml_gtk_print_operation_set_default_page_setup"
 (** Makes @default_page_setup the default page setup for @op.
 
 This page setup will be used by [method@Gtk.PrintOperation.run],
 but it can be overridden on a per-page basis by connecting
 to the [signal@Gtk.PrintOperation::request-page-setup] signal. *)
+external set_default_page_setup : t -> Page_setup.t option -> unit = "ml_gtk_print_operation_set_default_page_setup"
 
-external set_custom_tab_label : t -> string option -> unit
-  = "ml_gtk_print_operation_set_custom_tab_label"
 (** Sets the label for the tab holding custom widgets. *)
+external set_custom_tab_label : t -> string option -> unit = "ml_gtk_print_operation_set_custom_tab_label"
 
-external set_current_page : t -> int -> unit
-  = "ml_gtk_print_operation_set_current_page"
 (** Sets the current page.
 
-    If this is called before [method@Gtk.PrintOperation.run], the user will be
-    able to select to print only the current page.
+If this is called before [method@Gtk.PrintOperation.run],
+the user will be able to select to print only the current page.
 
-    Note that this only makes sense for pre-paginated documents. *)
+Note that this only makes sense for pre-paginated documents. *)
+external set_current_page : t -> int -> unit = "ml_gtk_print_operation_set_current_page"
 
-external set_allow_async : t -> bool -> unit
-  = "ml_gtk_print_operation_set_allow_async"
-(** Sets whether gtk_print_operation_run() may return before the print operation
-    is completed.
+(** Sets whether gtk_print_operation_run() may return
+before the print operation is completed.
 
-    Note that some platforms may not allow asynchronous operation. *)
+Note that some platforms may not allow asynchronous
+operation. *)
+external set_allow_async : t -> bool -> unit = "ml_gtk_print_operation_set_allow_async"
 
-external run :
-  t ->
-  Gtk_enums.printoperationaction ->
-  Application_and__window_and__window_group.Window.t option ->
-  (Gtk_enums.printoperationresult, GError.t) result
-  = "ml_gtk_print_operation_run"
 (** Runs the print operation.
 
 Normally that this function does not return until the rendering
@@ -200,95 +179,89 @@ g_object_unref (settings);
 
 Note that gtk_print_operation_run() can only be called once on a
 given `GtkPrintOperation`. *)
+external run : t -> Gtk_enums.printoperationaction -> Application_and__window_and__window_group.Window.t option -> (Gtk_enums.printoperationresult, GError.t) result = "ml_gtk_print_operation_run"
 
+(** A convenience function to find out if the print operation
+is finished.
+
+a print operation is finished if its status is either
+%GTK_PRINT_STATUS_FINISHED or %GTK_PRINT_STATUS_FINISHED_ABORTED.
+
+Note: when you enable print status tracking the print operation
+can be in a non-finished state even after done has been called, as
+the operation status then tracks the print job status on the printer. *)
 external is_finished : t -> bool = "ml_gtk_print_operation_is_finished"
-(** A convenience function to find out if the print operation is finished.
 
-    a print operation is finished if its status is either
-    %GTK_PRINT_STATUS_FINISHED or %GTK_PRINT_STATUS_FINISHED_ABORTED.
-
-    Note: when you enable print status tracking the print operation can be in a
-    non-finished state even after done has been called, as the operation status
-    then tracks the print job status on the printer. *)
-
-external get_support_selection : t -> bool
-  = "ml_gtk_print_operation_get_support_selection"
 (** Gets whether the application supports print of selection *)
+external get_support_selection : t -> bool = "ml_gtk_print_operation_get_support_selection"
 
-external get_status_string : t -> string
-  = "ml_gtk_print_operation_get_status_string"
-(** Returns a string representation of the status of the print operation.
+(** Returns a string representation of the status of the
+print operation.
 
-    The string is translated and suitable for displaying the print status e.g.
-    in a `GtkStatusbar`.
+The string is translated and suitable for displaying
+the print status e.g. in a `GtkStatusbar`.
 
-    Use [method@Gtk.PrintOperation.get_status] to obtain a status value that is
-    suitable for programmatic use. *)
+Use [method@Gtk.PrintOperation.get_status] to obtain
+a status value that is suitable for programmatic use. *)
+external get_status_string : t -> string = "ml_gtk_print_operation_get_status_string"
 
-external get_status : t -> Gtk_enums.printstatus
-  = "ml_gtk_print_operation_get_status"
 (** Returns the status of the print operation.
 
-    Also see [method@Gtk.PrintOperation.get_status_string]. *)
+Also see [method@Gtk.PrintOperation.get_status_string]. *)
+external get_status : t -> Gtk_enums.printstatus = "ml_gtk_print_operation_get_status"
 
-external get_print_settings : t -> Print_settings.t option
-  = "ml_gtk_print_operation_get_print_settings"
 (** Returns the current print settings.
 
-    Note that the return value is %NULL until either
-    [method@Gtk.PrintOperation.set_print_settings] or
-    [method@Gtk.PrintOperation.run] have been called. *)
+Note that the return value is %NULL until either
+[method@Gtk.PrintOperation.set_print_settings] or
+[method@Gtk.PrintOperation.run] have been called. *)
+external get_print_settings : t -> Print_settings.t option = "ml_gtk_print_operation_get_print_settings"
 
-external get_n_pages_to_print : t -> int
-  = "ml_gtk_print_operation_get_n_pages_to_print"
 (** Returns the number of pages that will be printed.
 
-    Note that this value is set during print preparation phase
-    (%GTK_PRINT_STATUS_PREPARING), so this function should never be called
-    before the data generation phase (%GTK_PRINT_STATUS_GENERATING_DATA). You
-    can connect to the [signal@Gtk.PrintOperation::status-changed] signal and
-    call gtk_print_operation_get_n_pages_to_print() when print status is
-    %GTK_PRINT_STATUS_GENERATING_DATA.
+Note that this value is set during print preparation phase
+(%GTK_PRINT_STATUS_PREPARING), so this function should never be
+called before the data generation phase (%GTK_PRINT_STATUS_GENERATING_DATA).
+You can connect to the [signal@Gtk.PrintOperation::status-changed]
+signal and call gtk_print_operation_get_n_pages_to_print() when
+print status is %GTK_PRINT_STATUS_GENERATING_DATA.
 
-    This is typically used to track the progress of print operation. *)
+This is typically used to track the progress of print operation. *)
+external get_n_pages_to_print : t -> int = "ml_gtk_print_operation_get_n_pages_to_print"
 
-external get_has_selection : t -> bool
-  = "ml_gtk_print_operation_get_has_selection"
 (** Gets whether there is a selection. *)
+external get_has_selection : t -> bool = "ml_gtk_print_operation_get_has_selection"
 
-external get_error : t -> (unit, GError.t) result
-  = "ml_gtk_print_operation_get_error"
 (** Call this when the result of a print operation is
-    %GTK_PRINT_OPERATION_RESULT_ERROR.
+%GTK_PRINT_OPERATION_RESULT_ERROR.
 
-    It can be called either after [method@Gtk.PrintOperation.run] returns, or in
-    the [signal@Gtk.PrintOperation::done] signal handler.
+It can be called either after [method@Gtk.PrintOperation.run]
+returns, or in the [signal@Gtk.PrintOperation::done] signal
+handler.
 
-    The returned `GError` will contain more details on what went wrong. *)
+The returned `GError` will contain more details on what went wrong. *)
+external get_error : t -> (unit, GError.t) result = "ml_gtk_print_operation_get_error"
 
-external get_embed_page_setup : t -> bool
-  = "ml_gtk_print_operation_get_embed_page_setup"
 (** Gets whether page setup selection combos are embedded *)
+external get_embed_page_setup : t -> bool = "ml_gtk_print_operation_get_embed_page_setup"
 
-external get_default_page_setup : t -> Page_setup.t
-  = "ml_gtk_print_operation_get_default_page_setup"
 (** Returns the default page setup. *)
+external get_default_page_setup : t -> Page_setup.t = "ml_gtk_print_operation_get_default_page_setup"
 
-external draw_page_finish : t -> unit
-  = "ml_gtk_print_operation_draw_page_finish"
 (** Signal that drawing of particular page is complete.
 
-    It is called after completion of page drawing (e.g. drawing in another
-    thread). If [method@Gtk.PrintOperation.set_defer_drawing] was called before,
-    then this function has to be called by application. Otherwise it is called
-    by GTK itself. *)
+It is called after completion of page drawing (e.g. drawing
+in another thread). If [method@Gtk.PrintOperation.set_defer_drawing]
+was called before, then this function has to be called by application.
+Otherwise it is called by GTK itself. *)
+external draw_page_finish : t -> unit = "ml_gtk_print_operation_draw_page_finish"
 
-external cancel : t -> unit = "ml_gtk_print_operation_cancel"
 (** Cancels a running print operation.
 
-    This function may be called from a [signal@Gtk.PrintOperation::begin-print],
-    [signal@Gtk.PrintOperation::paginate] or
-    [signal@Gtk.PrintOperation::draw-page] signal handler to stop the currently
-    running print operation. *)
+This function may be called from a [signal@Gtk.PrintOperation::begin-print],
+[signal@Gtk.PrintOperation::paginate] or [signal@Gtk.PrintOperation::draw-page]
+signal handler to stop the currently running print operation. *)
+external cancel : t -> unit = "ml_gtk_print_operation_cancel"
 
 (* Properties *)
+

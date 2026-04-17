@@ -1,20 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PollableOutputStream: PollableOutputStream *)
 
-type t = [ `pollable_output_stream ] Gobject.obj
+type t = [`pollable_output_stream] Gobject.obj
 
-external from_gobject : 'a Gobject.obj -> t
-  = "ml_gio_pollable_output_stream_from_gobject"
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_pollable_output_stream_from_gobject"
 
 (* Methods *)
-
-external writev_nonblocking :
-  t ->
-  Output_vector.t array ->
-  Gsize.t ->
-  Cancellable.t option ->
-  (Gio_enums.pollablereturn * Gsize.t, GError.t) result
-  = "ml_g_pollable_output_stream_writev_nonblocking"
 (** Attempts to write the bytes contained in the @n_vectors @vectors to @stream,
 as with g_output_stream_writev(). If @stream is not currently writable,
 this will immediately return %@G_POLLABLE_RETURN_WOULD_BLOCK, and you can
@@ -34,8 +25,8 @@ transports like D/TLS require that you re-send the same @vectors and
 
 The behaviour of this method is undefined if
 g_pollable_output_stream_can_poll() returns %FALSE for @stream. *)
+external writev_nonblocking : t -> Output_vector.t array -> Gsize.t -> Cancellable.t option -> (Gio_enums.pollablereturn * Gsize.t, GError.t) result = "ml_g_pollable_output_stream_writev_nonblocking"
 
-external is_writable : t -> bool = "ml_g_pollable_output_stream_is_writable"
 (** Checks if @stream can be written.
 
 Note that some stream types may not be able to implement this 100%
@@ -47,8 +38,8 @@ g_pollable_output_stream_write_nonblocking(), which will return a
 
 The behaviour of this method is undefined if
 g_pollable_output_stream_can_poll() returns %FALSE for @stream. *)
+external is_writable : t -> bool = "ml_g_pollable_output_stream_is_writable"
 
-external can_poll : t -> bool = "ml_g_pollable_output_stream_can_poll"
 (** Checks if @stream is actually pollable. Some classes may implement
 #GPollableOutputStream but have only certain instances of that
 class be pollable. If this method returns %FALSE, then the behavior
@@ -56,3 +47,5 @@ of other #GPollableOutputStream methods is undefined.
 
 For any given stream, the value returned by this method is constant;
 a stream cannot switch from pollable to non-pollable or vice versa. *)
+external can_poll : t -> bool = "ml_g_pollable_output_stream_can_poll"
+

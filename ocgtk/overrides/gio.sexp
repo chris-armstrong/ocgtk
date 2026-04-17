@@ -5,6 +5,23 @@
   ;; including gsettingsbackend.h — not suitable for general use
   (class SettingsBackend (ignore))
 
+  ;; Linux-only GIO classes (from gio-unix-2.0 / gio/gunix*.h).
+  ;; These headers are not available on macOS (Homebrew) or FreeBSD.
+  ;; Bindings are generated but wrapped in #ifdef __linux__ guards so they
+  ;; raise caml_failwith at runtime on other platforms.
+  (class DesktopAppInfo (os "linux"))
+  (class FileDescriptorBased (os "linux"))
+  (class UnixConnection (os "linux"))
+  (class UnixCredentialsMessage (os "linux"))
+  (class UnixFDList (os "linux"))
+  (class UnixFDMessage (os "linux"))
+  (class UnixInputStream (os "linux"))
+  (class UnixMountEntry (os "linux"))
+  (class UnixMountMonitor (os "linux"))
+  (class UnixMountPoint (os "linux"))
+  (class UnixOutputStream (os "linux"))
+  (class UnixSocketAddress (os "linux"))
+
 
   (enumeration DBusError
     (member unknown_object (version "2.42"))

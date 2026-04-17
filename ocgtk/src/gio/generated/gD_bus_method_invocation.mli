@@ -1,22 +1,18 @@
 class type d_bus_method_invocation_t = object
-  method get_connection : unit -> GD_bus_connection.d_bus_connection_t
-  method get_interface_name : unit -> string
-  method get_message : unit -> GD_bus_message.d_bus_message_t
-  method get_method_info : unit -> D_bus_method_info.t option
-  method get_method_name : unit -> string
-  method get_object_path : unit -> string
-  method get_parameters : unit -> Gvariant.t
-  method get_property_info : unit -> D_bus_property_info.t option
-  method get_sender : unit -> string
-  method return_dbus_error : string -> string -> unit
-  method return_value : Gvariant.t option -> unit
-
-  method return_value_with_unix_fd_list :
-    Gvariant.t option -> GUnix_fd_list.unix_fd_list_t option -> unit
-
-  method as_d_bus_method_invocation : D_bus_method_invocation.t
+    method get_connection : unit -> GD_bus_connection.d_bus_connection_t
+    method get_interface_name : unit -> string
+    method get_message : unit -> GD_bus_message.d_bus_message_t
+    method get_method_info : unit -> D_bus_method_info.t option
+    method get_method_name : unit -> string
+    method get_object_path : unit -> string
+    method get_parameters : unit -> Gvariant.t
+    method get_property_info : unit -> D_bus_property_info.t option
+    method get_sender : unit -> string
+    method return_dbus_error : string -> string -> unit
+    method return_value : Gvariant.t option -> unit
+    method return_value_with_unix_fd_list : Gvariant.t option -> GUnix_fd_list.unix_fd_list_t option -> unit
+    method as_d_bus_method_invocation : D_bus_method_invocation.t
 end
 
-class d_bus_method_invocation :
-  D_bus_method_invocation.t ->
-  d_bus_method_invocation_t
+class d_bus_method_invocation : D_bus_method_invocation.t -> d_bus_method_invocation_t
+

@@ -1,9 +1,7 @@
 class type motion_event_t = object
-  inherit
-    GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .event_t
-
-  method as_motion_event : Motion_event.t
+    inherit GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event_t
+    method as_motion_event : Motion_event.t
 end
 
 class motion_event : Motion_event.t -> motion_event_t
+

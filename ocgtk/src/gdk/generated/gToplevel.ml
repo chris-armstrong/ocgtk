@@ -1,164 +1,123 @@
 (* Signal class defined in gtoplevel_signals.ml *)
 
 class type toplevel_t = object
-  inherit Gtoplevel_signals.toplevel_signals
-
-  method begin_move :
-    GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .device_t ->
-    int ->
-    float ->
-    float ->
-    UInt32.t ->
-    unit
-
-  method begin_resize :
-    Gdk_enums.surfaceedge ->
-    GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .device_t
-    option ->
-    int ->
-    float ->
-    float ->
-    UInt32.t ->
-    unit
-
-  method focus : UInt32.t -> unit
-  method get_state : unit -> Gdk_enums.toplevelstate
-
-  method inhibit_system_shortcuts :
-    GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .event_t
-    option ->
-    unit
-
-  method lower : unit -> bool
-  method minimize : unit -> bool
-  method present : Toplevel_layout.t -> unit
-  method restore_system_shortcuts : unit -> unit
-  method set_decorated : bool -> unit
-  method set_deletable : bool -> unit
-  method set_icon_list : GTexture.texture_t list -> unit
-  method set_modal : bool -> unit
-  method set_startup_id : string -> unit
-  method set_title : string -> unit
-
-  method set_transient_for :
-    GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .surface_t ->
-    unit
-
-  method show_window_menu :
-    GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .event_t ->
-    bool
-
-  method supports_edge_constraints : unit -> bool
-  method titlebar_gesture : Gdk_enums.titlebargesture -> bool
-  method fullscreen_mode : Gdk_enums.fullscreenmode
-  method set_fullscreen_mode : Gdk_enums.fullscreenmode -> unit
-  method shortcuts_inhibited : bool
-  method as_toplevel : Toplevel.t
+    inherit Gtoplevel_signals.toplevel_signals
+    method begin_move : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.device_t -> int -> float -> float -> UInt32.t -> unit
+    method begin_resize : Gdk_enums.surfaceedge -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.device_t option -> int -> float -> float -> UInt32.t -> unit
+    method focus : UInt32.t -> unit
+    method get_state : unit -> Gdk_enums.toplevelstate
+    method inhibit_system_shortcuts : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event_t option -> unit
+    method lower : unit -> bool
+    method minimize : unit -> bool
+    method present : Toplevel_layout.t -> unit
+    method restore_system_shortcuts : unit -> unit
+    method set_decorated : bool -> unit
+    method set_deletable : bool -> unit
+    method set_icon_list : GTexture.texture_t list -> unit
+    method set_modal : bool -> unit
+    method set_startup_id : string -> unit
+    method set_title : string -> unit
+    method set_transient_for : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.surface_t -> unit
+    method show_window_menu : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event_t -> bool
+    method supports_edge_constraints : unit -> bool
+    method titlebar_gesture : Gdk_enums.titlebargesture -> bool
+    method fullscreen_mode : Gdk_enums.fullscreenmode
+    method set_fullscreen_mode : Gdk_enums.fullscreenmode -> unit
+    method shortcuts_inhibited : bool
+    method as_toplevel : Toplevel.t
 end
 
 (* High-level class for Toplevel *)
-class toplevel (obj : Toplevel.t) : toplevel_t =
-  object (self)
-    inherit Gtoplevel_signals.toplevel_signals obj
+class toplevel (obj : Toplevel.t) : toplevel_t = object (self)
+  inherit Gtoplevel_signals.toplevel_signals obj
 
-    method begin_move :
-        GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-        .device_t ->
-        int ->
-        float ->
-        float ->
-        UInt32.t ->
-        unit =
-      fun device button x y timestamp ->
-        let device = device#as_device in
-        Toplevel.begin_move obj device button x y timestamp
+  method begin_move : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.device_t -> int -> float -> float -> UInt32.t -> unit =
+    fun device button x y timestamp ->
+      let device = device#as_device in
+      (Toplevel.begin_move obj device button x y timestamp)
 
-    method begin_resize :
-        Gdk_enums.surfaceedge ->
-        GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-        .device_t
-        option ->
-        int ->
-        float ->
-        float ->
-        UInt32.t ->
-        unit =
-      fun edge device button x y timestamp ->
-        let device = Option.map (fun c -> c#as_device) device in
-        Toplevel.begin_resize obj edge device button x y timestamp
+  method begin_resize : Gdk_enums.surfaceedge -> GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.device_t option -> int -> float -> float -> UInt32.t -> unit =
+    fun edge device button x y timestamp ->
+      let device = Option.map (fun (c) -> c#as_device) device in
+      (Toplevel.begin_resize obj edge device button x y timestamp)
 
-    method focus : UInt32.t -> unit =
-      fun timestamp -> Toplevel.focus obj timestamp
+  method focus : UInt32.t -> unit =
+    fun timestamp ->
+      (Toplevel.focus obj timestamp)
 
-    method get_state : unit -> Gdk_enums.toplevelstate =
-      fun () -> Toplevel.get_state obj
+  method get_state : unit -> Gdk_enums.toplevelstate =
+    fun () ->
+      (Toplevel.get_state obj)
 
-    method inhibit_system_shortcuts :
-        GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-        .event_t
-        option ->
-        unit =
-      fun event ->
-        let event = Option.map (fun c -> c#as_event) event in
-        Toplevel.inhibit_system_shortcuts obj event
+  method inhibit_system_shortcuts : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event_t option -> unit =
+    fun event ->
+      let event = Option.map (fun (c) -> c#as_event) event in
+      (Toplevel.inhibit_system_shortcuts obj event)
 
-    method lower : unit -> bool = fun () -> Toplevel.lower obj
-    method minimize : unit -> bool = fun () -> Toplevel.minimize obj
+  method lower : unit -> bool =
+    fun () ->
+      (Toplevel.lower obj)
 
-    method present : Toplevel_layout.t -> unit =
-      fun layout -> Toplevel.present obj layout
+  method minimize : unit -> bool =
+    fun () ->
+      (Toplevel.minimize obj)
 
-    method restore_system_shortcuts : unit -> unit =
-      fun () -> Toplevel.restore_system_shortcuts obj
+  method present : Toplevel_layout.t -> unit =
+    fun layout ->
+      (Toplevel.present obj layout)
 
-    method set_decorated : bool -> unit =
-      fun decorated -> Toplevel.set_decorated obj decorated
+  method restore_system_shortcuts : unit -> unit =
+    fun () ->
+      (Toplevel.restore_system_shortcuts obj)
 
-    method set_deletable : bool -> unit =
-      fun deletable -> Toplevel.set_deletable obj deletable
+  method set_decorated : bool -> unit =
+    fun decorated ->
+      (Toplevel.set_decorated obj decorated)
 
-    method set_icon_list : GTexture.texture_t list -> unit =
-      fun surfaces ->
-        let surfaces = (List.map (fun c -> c#as_texture)) surfaces in
-        Toplevel.set_icon_list obj surfaces
+  method set_deletable : bool -> unit =
+    fun deletable ->
+      (Toplevel.set_deletable obj deletable)
 
-    method set_modal : bool -> unit = fun modal -> Toplevel.set_modal obj modal
+  method set_icon_list : GTexture.texture_t list -> unit =
+    fun surfaces ->
+      let surfaces = (List.map (fun c -> c#as_texture)) surfaces in
+      (Toplevel.set_icon_list obj surfaces)
 
-    method set_startup_id : string -> unit =
-      fun startup_id -> Toplevel.set_startup_id obj startup_id
+  method set_modal : bool -> unit =
+    fun modal ->
+      (Toplevel.set_modal obj modal)
 
-    method set_title : string -> unit =
-      fun title -> Toplevel.set_title obj title
+  method set_startup_id : string -> unit =
+    fun startup_id ->
+      (Toplevel.set_startup_id obj startup_id)
 
-    method set_transient_for :
-        GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-        .surface_t ->
-        unit =
-      fun parent ->
-        let parent = parent#as_surface in
-        Toplevel.set_transient_for obj parent
+  method set_title : string -> unit =
+    fun title ->
+      (Toplevel.set_title obj title)
 
-    method show_window_menu :
-        GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-        .event_t ->
-        bool =
-      fun event ->
-        let event = event#as_event in
-        Toplevel.show_window_menu obj event
+  method set_transient_for : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.surface_t -> unit =
+    fun parent ->
+      let parent = parent#as_surface in
+      (Toplevel.set_transient_for obj parent)
 
-    method supports_edge_constraints : unit -> bool =
-      fun () -> Toplevel.supports_edge_constraints obj
+  method show_window_menu : GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.event_t -> bool =
+    fun event ->
+      let event = event#as_event in
+      (Toplevel.show_window_menu obj event)
 
-    method titlebar_gesture : Gdk_enums.titlebargesture -> bool =
-      fun gesture -> Toplevel.titlebar_gesture obj gesture
+  method supports_edge_constraints : unit -> bool =
+    fun () ->
+      (Toplevel.supports_edge_constraints obj)
 
-    method fullscreen_mode = Toplevel.get_fullscreen_mode obj
-    method set_fullscreen_mode v = Toplevel.set_fullscreen_mode obj v
-    method shortcuts_inhibited = Toplevel.get_shortcuts_inhibited obj
+  method titlebar_gesture : Gdk_enums.titlebargesture -> bool =
+    fun gesture ->
+      (Toplevel.titlebar_gesture obj gesture)
+
+  method fullscreen_mode = Toplevel.get_fullscreen_mode obj
+  method set_fullscreen_mode v =  Toplevel.set_fullscreen_mode obj v
+
+  method shortcuts_inhibited = Toplevel.get_shortcuts_inhibited obj
+
     method as_toplevel = obj
-  end
+end
+

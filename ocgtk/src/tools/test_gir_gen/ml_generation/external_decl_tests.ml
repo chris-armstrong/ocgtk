@@ -63,6 +63,7 @@ let test_method_multiple_params () =
       introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -137,6 +138,7 @@ let test_method_with_object_param () =
       introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -209,6 +211,7 @@ let test_method_with_bool_param () =
       introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -264,6 +267,7 @@ let test_method_with_int_return () =
       introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -339,6 +343,7 @@ let test_constructor_with_multiple_params () =
       ctor_introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -413,6 +418,7 @@ let test_method_with_nullable_object () =
       introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -467,6 +473,7 @@ let test_property_getter () =
       introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -534,6 +541,7 @@ let test_property_setter () =
       introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -586,6 +594,7 @@ let test_property_getter_nullable () =
       introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 

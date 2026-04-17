@@ -61,11 +61,11 @@ let test_class_with_method_overrides () =
   in
   Alcotest.(check bool)
     "create ignored" true
-    (equal_override_action m1.action Ignore);
+    (Option.equal equal_override_action m1.action (Some Ignore));
   Alcotest.(check bool)
     "notify_destroy version" true
-    (equal_override_action m2.action
-       (Set_version { vs_version = "4.53"; vs_namespace = None }))
+    (Option.equal equal_override_action m2.action
+       (Some (Set_version { vs_version = "4.53"; vs_namespace = None })))
 
 let test_class_with_constructor_and_property () =
   let ov =

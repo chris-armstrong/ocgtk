@@ -1,23 +1,21 @@
 class type cell_renderer_progress_t = object
-  inherit GCell_renderer.cell_renderer_t
-  inherit GOrientable.orientable_t
-  method inverted : bool
-  method set_inverted : bool -> unit
-  method pulse : int
-  method set_pulse : int -> unit
-  method text : string
-  method set_text : string -> unit
-  method text_xalign : float
-  method set_text_xalign : float -> unit
-  method text_yalign : float
-  method set_text_yalign : float -> unit
-  method value : int
-  method set_value : int -> unit
-  method as_cell_renderer_progress : Cell_renderer_progress.t
+    inherit GCell_renderer.cell_renderer_t
+    inherit GOrientable.orientable_t
+    method inverted : bool
+    method set_inverted : bool -> unit
+    method pulse : int
+    method set_pulse : int -> unit
+    method text : string
+    method set_text : string -> unit
+    method text_xalign : float
+    method set_text_xalign : float -> unit
+    method text_yalign : float
+    method set_text_yalign : float -> unit
+    method value : int
+    method set_value : int -> unit
+    method as_cell_renderer_progress : Cell_renderer_progress.t
 end
 
-class cell_renderer_progress :
-  Cell_renderer_progress.t ->
-  cell_renderer_progress_t
+class cell_renderer_progress : Cell_renderer_progress.t -> cell_renderer_progress_t
 
 val new_ : unit -> cell_renderer_progress_t

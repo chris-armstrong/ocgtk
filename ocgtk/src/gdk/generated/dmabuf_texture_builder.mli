@@ -1,146 +1,118 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DmabufTextureBuilder: DmabufTextureBuilder *)
 
-type t = [ `dmabuf_texture_builder | `object_ ] Gobject.obj
+type t = [`dmabuf_texture_builder | `object_] Gobject.obj
 
-external new_ : unit -> t = "ml_gdk_dmabuf_texture_builder_new"
 (** Create a new DmabufTextureBuilder *)
+external new_ : unit -> t = "ml_gdk_dmabuf_texture_builder_new"
 
 (* Methods *)
-
-external set_width : t -> int -> unit
-  = "ml_gdk_dmabuf_texture_builder_set_width"
 (** Sets the width of the texture.
 
-    The width must be set before calling [method@Gdk.GLTextureBuilder.build]. *)
+The width must be set before calling [method@Gdk.GLTextureBuilder.build]. *)
+external set_width : t -> int -> unit = "ml_gdk_dmabuf_texture_builder_set_width"
 
-external set_update_texture : t -> Texture.t option -> unit
-  = "ml_gdk_dmabuf_texture_builder_set_update_texture"
 (** Sets the texture to be updated by this texture. See
-    [method@Gdk.DmabufTextureBuilder.set_update_region] for an explanation. *)
+[method@Gdk.DmabufTextureBuilder.set_update_region] for an explanation. *)
+external set_update_texture : t -> Texture.t option -> unit = "ml_gdk_dmabuf_texture_builder_set_update_texture"
 
-external set_update_region :
-  t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option -> unit
-  = "ml_gdk_dmabuf_texture_builder_set_update_region"
 (** Sets the region to be updated by this texture. Together with
-    [property@Gdk.DmabufTextureBuilder:update-texture] this describes an update
-    of a previous texture.
+[property@Gdk.DmabufTextureBuilder:update-texture] this describes an
+update of a previous texture.
 
-    When rendering animations of large textures, it is possible that consecutive
-    textures are only updating contents in parts of the texture. It is then
-    possible to describe this update via these two properties, so that GTK can
-    avoid rerendering parts that did not change.
+When rendering animations of large textures, it is possible that
+consecutive textures are only updating contents in parts of the texture.
+It is then possible to describe this update via these two properties,
+so that GTK can avoid rerendering parts that did not change.
 
-    An example would be a screen recording where only the mouse pointer moves.
-*)
+An example would be a screen recording where only the mouse pointer moves. *)
+external set_update_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option -> unit = "ml_gdk_dmabuf_texture_builder_set_update_region"
 
-external set_stride : t -> int -> int -> unit
-  = "ml_gdk_dmabuf_texture_builder_set_stride"
 (** Sets the stride for a plane.
 
-    The stride must be set for all planes before calling
-    [method@Gdk.GLTextureBuilder.build]. *)
+The stride must be set for all planes before calling [method@Gdk.GLTextureBuilder.build]. *)
+external set_stride : t -> int -> int -> unit = "ml_gdk_dmabuf_texture_builder_set_stride"
 
-external set_premultiplied : t -> bool -> unit
-  = "ml_gdk_dmabuf_texture_builder_set_premultiplied"
 (** Sets whether the data is premultiplied.
 
-    Unless otherwise specified, all formats including alpha channels are assumed
-    to be premultiplied. *)
+Unless otherwise specified, all formats including alpha channels are assumed
+to be premultiplied. *)
+external set_premultiplied : t -> bool -> unit = "ml_gdk_dmabuf_texture_builder_set_premultiplied"
 
-external set_offset : t -> int -> int -> unit
-  = "ml_gdk_dmabuf_texture_builder_set_offset"
 (** Sets the offset for a plane. *)
+external set_offset : t -> int -> int -> unit = "ml_gdk_dmabuf_texture_builder_set_offset"
 
-external set_n_planes : t -> int -> unit
-  = "ml_gdk_dmabuf_texture_builder_set_n_planes"
 (** Sets the number of planes of the texture. *)
+external set_n_planes : t -> int -> unit = "ml_gdk_dmabuf_texture_builder_set_n_planes"
 
-external set_modifier : t -> UInt64.t -> unit
-  = "ml_gdk_dmabuf_texture_builder_set_modifier"
 (** Sets the modifier. *)
+external set_modifier : t -> UInt64.t -> unit = "ml_gdk_dmabuf_texture_builder_set_modifier"
 
-external set_height : t -> int -> unit
-  = "ml_gdk_dmabuf_texture_builder_set_height"
 (** Sets the height of the texture.
 
-    The height must be set before calling [method@Gdk.GLTextureBuilder.build].
-*)
+The height must be set before calling [method@Gdk.GLTextureBuilder.build]. *)
+external set_height : t -> int -> unit = "ml_gdk_dmabuf_texture_builder_set_height"
 
-external set_fourcc : t -> UInt32.t -> unit
-  = "ml_gdk_dmabuf_texture_builder_set_fourcc"
 (** Sets the format of the texture.
 
-    The format is specified as a fourcc code.
+The format is specified as a fourcc code.
 
-    The format must be set before calling [method@Gdk.GLTextureBuilder.build].
-*)
+The format must be set before calling [method@Gdk.GLTextureBuilder.build]. *)
+external set_fourcc : t -> UInt32.t -> unit = "ml_gdk_dmabuf_texture_builder_set_fourcc"
 
-external set_fd : t -> int -> int -> unit
-  = "ml_gdk_dmabuf_texture_builder_set_fd"
 (** Sets the file descriptor for a plane. *)
+external set_fd : t -> int -> int -> unit = "ml_gdk_dmabuf_texture_builder_set_fd"
 
-external set_display :
-  t ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Display
-  .t ->
-  unit = "ml_gdk_dmabuf_texture_builder_set_display"
-(** Sets the display that this texture builder is associated with.
+(** Sets the display that this texture builder is
+associated with.
 
-    The display is used to determine the supported dma-buf formats. *)
+The display is used to determine the supported
+dma-buf formats. *)
+external set_display : t -> App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Display.t -> unit = "ml_gdk_dmabuf_texture_builder_set_display"
 
-external get_width : t -> int = "ml_gdk_dmabuf_texture_builder_get_width"
 (** Gets the width previously set via gdk_dmabuf_texture_builder_set_width() or
-    0 if the width wasn't set. *)
+0 if the width wasn't set. *)
+external get_width : t -> int = "ml_gdk_dmabuf_texture_builder_get_width"
 
-external get_update_texture : t -> Texture.t option
-  = "ml_gdk_dmabuf_texture_builder_get_update_texture"
-(** Gets the texture previously set via
-    gdk_dmabuf_texture_builder_set_update_texture() or %NULL if none was set. *)
+(** Gets the texture previously set via gdk_dmabuf_texture_builder_set_update_texture() or
+%NULL if none was set. *)
+external get_update_texture : t -> Texture.t option = "ml_gdk_dmabuf_texture_builder_get_update_texture"
 
-external get_update_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option
-  = "ml_gdk_dmabuf_texture_builder_get_update_region"
-(** Gets the region previously set via
-    gdk_dmabuf_texture_builder_set_update_region() or %NULL if none was set. *)
+(** Gets the region previously set via gdk_dmabuf_texture_builder_set_update_region() or
+%NULL if none was set. *)
+external get_update_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option = "ml_gdk_dmabuf_texture_builder_get_update_region"
 
-external get_stride : t -> int -> int
-  = "ml_gdk_dmabuf_texture_builder_get_stride"
 (** Gets the stride value for a plane. *)
+external get_stride : t -> int -> int = "ml_gdk_dmabuf_texture_builder_get_stride"
 
-external get_premultiplied : t -> bool
-  = "ml_gdk_dmabuf_texture_builder_get_premultiplied"
 (** Whether the data is premultiplied. *)
+external get_premultiplied : t -> bool = "ml_gdk_dmabuf_texture_builder_get_premultiplied"
 
-external get_offset : t -> int -> int
-  = "ml_gdk_dmabuf_texture_builder_get_offset"
 (** Gets the offset value for a plane. *)
+external get_offset : t -> int -> int = "ml_gdk_dmabuf_texture_builder_get_offset"
 
-external get_n_planes : t -> int = "ml_gdk_dmabuf_texture_builder_get_n_planes"
 (** Gets the number of planes. *)
+external get_n_planes : t -> int = "ml_gdk_dmabuf_texture_builder_get_n_planes"
 
-external get_modifier : t -> UInt64.t
-  = "ml_gdk_dmabuf_texture_builder_get_modifier"
 (** Gets the modifier value. *)
+external get_modifier : t -> UInt64.t = "ml_gdk_dmabuf_texture_builder_get_modifier"
 
+(** Gets the height previously set via gdk_dmabuf_texture_builder_set_height() or
+0 if the height wasn't set. *)
 external get_height : t -> int = "ml_gdk_dmabuf_texture_builder_get_height"
-(** Gets the height previously set via gdk_dmabuf_texture_builder_set_height()
-    or 0 if the height wasn't set. *)
 
-external get_fourcc : t -> UInt32.t = "ml_gdk_dmabuf_texture_builder_get_fourcc"
 (** Gets the format previously set via gdk_dmabuf_texture_builder_set_fourcc()
-    or 0 if the format wasn't set.
+or 0 if the format wasn't set.
 
-    The format is specified as a fourcc code. *)
+The format is specified as a fourcc code. *)
+external get_fourcc : t -> UInt32.t = "ml_gdk_dmabuf_texture_builder_get_fourcc"
 
-external get_fd : t -> int -> int = "ml_gdk_dmabuf_texture_builder_get_fd"
 (** Gets the file descriptor for a plane. *)
+external get_fd : t -> int -> int = "ml_gdk_dmabuf_texture_builder_get_fd"
 
-external get_display :
-  t ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Display
-  .t = "ml_gdk_dmabuf_texture_builder_get_display"
-(** Returns the display that this texture builder is associated with. *)
+(** Returns the display that this texture builder is
+associated with. *)
+external get_display : t -> App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Display.t = "ml_gdk_dmabuf_texture_builder_get_display"
 
 (* Properties *)
+

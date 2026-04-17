@@ -1,29 +1,27 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Language: Language *)
 
-type t = [ `language ] Gobject.obj
-(** The `PangoLanguage` structure is used to represent a language.
+(** The `PangoLanguage` structure is used to
+represent a language.
 
-    `PangoLanguage` pointers can be efficiently copied and compared with each
-    other. *)
+`PangoLanguage` pointers can be efficiently
+copied and compared with each other. *)
+type t = [`language] Gobject.obj
 
 (* Methods *)
-
-external to_string : t -> string = "ml_pango_language_to_string"
 (** Gets the RFC-3066 format string representing the given language tag.
 
-    Returns (transfer none): a string representing the language tag *)
+Returns (transfer none): a string representing the language tag *)
+external to_string : t -> string = "ml_pango_language_to_string"
 
+(** Checks if a language tag matches one of the elements in a list of
+language ranges.
+
+A language tag is considered to match a range in the list if the
+range is '*', the range is exactly the tag, or the range is a prefix
+of the tag, and the character after it in the tag is '-'. *)
 external matches : t -> string -> bool = "ml_pango_language_matches"
-(** Checks if a language tag matches one of the elements in a list of language
-    ranges.
 
-    A language tag is considered to match a range in the list if the range is
-    '*', the range is exactly the tag, or the range is a prefix of the tag, and
-    the character after it in the tag is '-'. *)
-
-external includes_script : t -> Pango_enums.script -> bool
-  = "ml_pango_language_includes_script"
 (** Determines if @script is one of the scripts used to
 write @language.
 
@@ -37,9 +35,8 @@ a particular section of text. It probably is not useful
 for applications in most circumstances.
 
 This function uses [method@Pango.Language.get_scripts] internally. *)
+external includes_script : t -> Pango_enums.script -> bool = "ml_pango_language_includes_script"
 
-external get_scripts : t -> Pango_enums.script array option * int
-  = "ml_pango_language_get_scripts"
 (** Determines the scripts used to to write @language.
 
 If nothing is known about the language tag @language,
@@ -63,8 +60,8 @@ function internally.
 Note: while the return value is declared as `PangoScript`, the
 returned values are from the `GUnicodeScript` enumeration, which
 may have more values. Callers need to handle unknown values. *)
+external get_scripts : t -> Pango_enums.script array option * int = "ml_pango_language_get_scripts"
 
-external get_sample_string : t -> string = "ml_pango_language_get_sample_string"
 (** Get a string that is representative of the characters needed to
 render a particular language.
 
@@ -84,3 +81,5 @@ language code "xx".  That is, compare to:
 ```
 pango_language_get_sample_string (pango_language_from_string ("xx"))
 ``` *)
+external get_sample_string : t -> string = "ml_pango_language_get_sample_string"
+

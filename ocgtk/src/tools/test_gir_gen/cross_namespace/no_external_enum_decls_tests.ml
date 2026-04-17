@@ -35,6 +35,7 @@ let create_context_with_external_enum () =
             c_identifier = "GTK_WRAP_NONE";
             member_doc = None;
             member_version = None;
+          member_os = None;
           };
           {
             member_name = "WORD";
@@ -42,11 +43,13 @@ let create_context_with_external_enum () =
             c_identifier = "GTK_WRAP_WORD";
             member_doc = None;
             member_version = None;
+          member_os = None;
           };
         ];
       functions = [];
       enum_doc = None;
       enum_version = None;
+      enum_os = None;
     }
   in
 
@@ -104,6 +107,7 @@ let test_generate_forward_decls_only_local_enums () =
       functions = [];
       enum_doc = None;
       enum_version = None;
+      enum_os = None;
     }
   in
 
@@ -116,6 +120,7 @@ let test_generate_forward_decls_only_local_enums () =
       functions = [];
       enum_doc = None;
       enum_version = None;
+      enum_os = None;
     }
   in
 

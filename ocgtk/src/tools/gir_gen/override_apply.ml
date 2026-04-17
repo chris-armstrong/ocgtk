@@ -58,13 +58,23 @@ let check_unknown_entity_names ~entity_kind ~get_override_name ~get_entity_name
 (* Apply component-level overrides to a single component list.
    Returns the filtered-and-versioned list. *)
 let apply_components_by_name ~(get_name : 'a -> string)
-    ~(set_version : version_spec -> 'a -> 'a)
+    ~(set_version : version_spec -> 'a -> 'a) ~(set_os : string -> 'a -> 'a)
     ~(overrides : component_override list) (components : 'a list) : 'a list =
   List.filter_map
     (fun item ->
       match find_component_override (get_name item) overrides with
-      | Some { action = Ignore; _ } -> None
-      | Some { action = Set_version vs; _ } -> Some (set_version vs item)
+      | Some { action = Some Ignore; _ } -> None
+      | Some { action = Some (Set_version vs); os = comp_os; _ } ->
+          let item' = set_version vs item in
+          Some
+            (match comp_os with
+            | Some o -> set_os o item'
+            | None -> item')
+      | Some { action = None; os = comp_os; _ } ->
+          Some
+            (match comp_os with
+            | Some o -> set_os o item
+            | None -> item)
       | None -> Some item)
     components
 
@@ -80,6 +90,7 @@ let apply_class_components (ov : class_override) (cls : gir_class) : gir_class =
           version = Some vs.vs_version;
           version_namespace = vs.vs_namespace;
         })
+      ~set_os:(fun o (c : gir_constructor) -> { c with os = Some o })
       ~overrides:ov.constructors cls.constructors
   in
   let methods =
@@ -91,6 +102,7 @@ let apply_class_components (ov : class_override) (cls : gir_class) : gir_class =
           version = Some vs.vs_version;
           version_namespace = vs.vs_namespace;
         })
+      ~set_os:(fun o (m : gir_method) -> { m with os = Some o })
       ~overrides:ov.methods cls.methods
   in
   let properties =
@@ -102,6 +114,7 @@ let apply_class_components (ov : class_override) (cls : gir_class) : gir_class =
           version = Some vs.vs_version;
           version_namespace = vs.vs_namespace;
         })
+      ~set_os:(fun o (p : gir_property) -> { p with os = Some o })
       ~overrides:ov.properties cls.properties
   in
   let signals =
@@ -113,6 +126,7 @@ let apply_class_components (ov : class_override) (cls : gir_class) : gir_class =
           version = Some vs.vs_version;
           version_namespace = vs.vs_namespace;
         })
+      ~set_os:(fun o (s : gir_signal) -> { s with os = Some o })
       ~overrides:ov.signals cls.signals
   in
   { cls with constructors; methods; properties; signals }
@@ -128,6 +142,7 @@ let apply_interface_components (ov : interface_override) (intf : gir_interface)
           version = Some vs.vs_version;
           version_namespace = vs.vs_namespace;
         })
+      ~set_os:(fun o (m : gir_method) -> { m with os = Some o })
       ~overrides:ov.methods intf.methods
   in
   let properties =
@@ -139,6 +154,7 @@ let apply_interface_components (ov : interface_override) (intf : gir_interface)
           version = Some vs.vs_version;
           version_namespace = vs.vs_namespace;
         })
+      ~set_os:(fun o (p : gir_property) -> { p with os = Some o })
       ~overrides:ov.properties intf.properties
   in
   let signals =
@@ -150,6 +166,7 @@ let apply_interface_components (ov : interface_override) (intf : gir_interface)
           version = Some vs.vs_version;
           version_namespace = vs.vs_namespace;
         })
+      ~set_os:(fun o (s : gir_signal) -> { s with os = Some o })
       ~overrides:ov.signals intf.signals
   in
   { intf with methods; properties; signals }
@@ -161,6 +178,7 @@ let apply_record_components (ov : record_override) (rec_ : gir_record) :
       ~get_name:(fun (f : gir_record_field) -> f.field_name)
       ~set_version:(fun vs (f : gir_record_field) ->
         { f with field_version = Some vs.vs_version })
+      ~set_os:(fun o (f : gir_record_field) -> { f with field_os = Some o })
       ~overrides:ov.fields rec_.fields
   in
   let constructors =
@@ -172,6 +190,7 @@ let apply_record_components (ov : record_override) (rec_ : gir_record) :
           version = Some vs.vs_version;
           version_namespace = vs.vs_namespace;
         })
+      ~set_os:(fun o (c : gir_constructor) -> { c with os = Some o })
       ~overrides:ov.constructors rec_.constructors
   in
   let methods =
@@ -183,6 +202,7 @@ let apply_record_components (ov : record_override) (rec_ : gir_record) :
           version = Some vs.vs_version;
           version_namespace = vs.vs_namespace;
         })
+      ~set_os:(fun o (m : gir_method) -> { m with os = Some o })
       ~overrides:ov.methods rec_.methods
   in
   let functions =
@@ -194,6 +214,7 @@ let apply_record_components (ov : record_override) (rec_ : gir_record) :
           version = Some vs.vs_version;
           version_namespace = vs.vs_namespace;
         })
+      ~set_os:(fun o (f : gir_function) -> { f with os = Some o })
       ~overrides:ov.functions rec_.functions
   in
   { rec_ with fields; constructors; methods; functions }
@@ -204,6 +225,7 @@ let apply_enum_components (ov : enum_override) (enm : gir_enum) : gir_enum =
       ~get_name:(fun (m : gir_enum_member) -> m.member_name)
       ~set_version:(fun vs (m : gir_enum_member) ->
         { m with member_version = Some vs.vs_version })
+      ~set_os:(fun o (m : gir_enum_member) -> { m with member_os = Some o })
       ~overrides:ov.members enm.members
   in
   let functions =
@@ -215,6 +237,7 @@ let apply_enum_components (ov : enum_override) (enm : gir_enum) : gir_enum =
           version = Some vs.vs_version;
           version_namespace = vs.vs_namespace;
         })
+      ~set_os:(fun o (f : gir_function) -> { f with os = Some o })
       ~overrides:ov.functions enm.functions
   in
   { enm with members; functions }
@@ -226,18 +249,22 @@ let apply_bitfield_components (ov : bitfield_override) (bf : gir_bitfield) :
       ~get_name:(fun (f : gir_bitfield_member) -> f.flag_name)
       ~set_version:(fun vs (f : gir_bitfield_member) ->
         { f with flag_version = Some vs.vs_version })
+      ~set_os:(fun o (f : gir_bitfield_member) -> { f with flag_os = Some o })
       ~overrides:ov.flags bf.flags
   in
   { bf with flags }
 
-(* Generic: entity-level ignore/version and component overrides.
+(* Generic: entity-level ignore/version/os and component overrides.
    ~get_entity_name / ~get_override_name: name accessors for entity and override types
    ~get_action: extracts the entity-level action from an override record
+   ~get_os: extracts the entity-level os from an override record
    ~set_version: applies a version string to the entity record
+   ~set_os: applies an os string to the entity record
    ~apply_components: applies all component-level overrides to a surviving entity
    ~check_components: emits component-level unknown-name warnings for one entity *)
 let apply_entity_overrides ~get_entity_name ~get_override_name ~get_action
-    ~set_version ~apply_components ~check_components all_entities overrides =
+    ~get_os ~set_version ~set_os ~apply_components ~check_components
+    all_entities overrides =
   let ignored = ref [] in
   let warnings = ref [] in
   let process entity =
@@ -248,13 +275,21 @@ let apply_entity_overrides ~get_entity_name ~get_override_name ~get_action
     with
     | None -> Some entity
     | Some ov -> (
+        let maybe_apply_os entity' =
+          match get_os ov with
+          | Some os_val -> set_os os_val entity'
+          | None -> entity'
+        in
         match get_action ov with
         | Some Ignore ->
             ignored := get_entity_name entity :: !ignored;
             None
         | Some (Set_version vs) ->
-            Some (apply_components ov (set_version vs.vs_version entity))
-        | None -> Some (apply_components ov entity))
+            Some
+              (maybe_apply_os
+                 (apply_components ov (set_version vs.vs_version entity)))
+        | None ->
+            Some (maybe_apply_os (apply_components ov entity)))
   in
   let processed = List.filter_map process all_entities in
   (* Warn using the ORIGINAL entity list so that successfully-ignored components
@@ -280,7 +315,9 @@ let apply_class_overrides ~class_overrides all_classes =
     ~get_entity_name:(fun (c : gir_class) -> c.class_name)
     ~get_override_name:(fun (o : class_override) -> o.class_name)
     ~get_action:(fun (o : class_override) -> o.class_action)
+    ~get_os:(fun (o : class_override) -> o.class_os)
     ~set_version:(fun v (c : gir_class) -> { c with version = Some v })
+    ~set_os:(fun o (c : gir_class) -> { c with os = Some o })
     ~apply_components:apply_class_components
     ~check_components:(fun ~entity_name cls ov ~warnings ->
       warn_unknown_components ~entity_name ~entity_kind:"class"
@@ -306,7 +343,9 @@ let apply_interface_overrides ~interface_overrides all_interfaces =
     ~get_entity_name:(fun (i : gir_interface) -> i.interface_name)
     ~get_override_name:(fun (o : interface_override) -> o.interface_name)
     ~get_action:(fun (o : interface_override) -> o.interface_action)
+    ~get_os:(fun (o : interface_override) -> o.interface_os)
     ~set_version:(fun v (i : gir_interface) -> { i with version = Some v })
+    ~set_os:(fun o (i : gir_interface) -> { i with os = Some o })
     ~apply_components:apply_interface_components
     ~check_components:(fun ~entity_name intf ov ~warnings ->
       warn_unknown_components ~entity_name ~entity_kind:"interface"
@@ -328,7 +367,9 @@ let apply_record_overrides ~record_overrides all_records =
     ~get_entity_name:(fun (r : gir_record) -> r.record_name)
     ~get_override_name:(fun (o : record_override) -> o.record_name)
     ~get_action:(fun (o : record_override) -> o.record_action)
+    ~get_os:(fun (o : record_override) -> o.record_os)
     ~set_version:(fun v (r : gir_record) -> { r with version = Some v })
+    ~set_os:(fun o (r : gir_record) -> { r with os = Some o })
     ~apply_components:apply_record_components
     ~check_components:(fun ~entity_name rec_ ov ~warnings ->
       warn_unknown_components ~entity_name ~entity_kind:"record"
@@ -354,7 +395,9 @@ let apply_enum_overrides ~enum_overrides all_enums =
     ~get_entity_name:(fun (e : gir_enum) -> e.enum_name)
     ~get_override_name:(fun (o : enum_override) -> o.enum_name)
     ~get_action:(fun (o : enum_override) -> o.enum_action)
+    ~get_os:(fun (o : enum_override) -> o.enum_os)
     ~set_version:(fun v (e : gir_enum) -> { e with enum_version = Some v })
+    ~set_os:(fun o (e : gir_enum) -> { e with enum_os = Some o })
     ~apply_components:apply_enum_components
     ~check_components:(fun ~entity_name enm ov ~warnings ->
       warn_unknown_components ~entity_name ~entity_kind:"enumeration"
@@ -372,8 +415,10 @@ let apply_bitfield_overrides ~bitfield_overrides all_bitfields =
     ~get_entity_name:(fun (b : gir_bitfield) -> b.bitfield_name)
     ~get_override_name:(fun (o : bitfield_override) -> o.bitfield_name)
     ~get_action:(fun (o : bitfield_override) -> o.bitfield_action)
+    ~get_os:(fun (o : bitfield_override) -> o.bitfield_os)
     ~set_version:(fun v (b : gir_bitfield) ->
       { b with bitfield_version = Some v })
+    ~set_os:(fun o (b : gir_bitfield) -> { b with bitfield_os = Some o })
     ~apply_components:apply_bitfield_components
     ~check_components:(fun ~entity_name bf ov ~warnings ->
       warn_unknown_components ~entity_name ~entity_kind:"bitfield"
@@ -391,16 +436,26 @@ let apply_function_overrides ~(function_overrides : component_override list)
     List.filter_map
       (fun (fn : gir_function) ->
         match find_component_override fn.function_name function_overrides with
-        | Some { action = Ignore; _ } ->
+        | Some { action = Some Ignore; _ } ->
             ignored := fn.function_name :: !ignored;
             None
-        | Some { action = Set_version vs; _ } ->
-            Some
+        | Some { action = Some (Set_version vs); os = comp_os; _ } ->
+            let fn' =
               {
                 fn with
                 version = Some vs.vs_version;
                 version_namespace = vs.vs_namespace;
               }
+            in
+            Some
+              (match comp_os with
+              | Some o -> { fn' with os = Some o }
+              | None -> fn')
+        | Some { action = None; os = comp_os; _ } ->
+            Some
+              (match comp_os with
+              | Some o -> { fn with os = Some o }
+              | None -> fn)
         | None -> Some fn)
       functions
   in

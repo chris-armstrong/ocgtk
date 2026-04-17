@@ -1,35 +1,23 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColorChooser: ColorChooser *)
 
-type t = [ `color_chooser ] Gobject.obj
+type t = [`color_chooser] Gobject.obj
 
-external from_gobject : 'a Gobject.obj -> t
-  = "ml_gtk_color_chooser_from_gobject"
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_color_chooser_from_gobject"
 
 (* Methods *)
-
-external set_use_alpha : t -> bool -> unit
-  = "ml_gtk_color_chooser_set_use_alpha"
 (** Sets whether or not the color chooser should use the alpha channel. *)
+external set_use_alpha : t -> bool -> unit = "ml_gtk_color_chooser_set_use_alpha"
 
-external set_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit
-  = "ml_gtk_color_chooser_set_rgba"
 (** Sets the color. *)
+external set_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit = "ml_gtk_color_chooser_set_rgba"
 
-external get_use_alpha : t -> bool = "ml_gtk_color_chooser_get_use_alpha"
 (** Returns whether the color chooser shows the alpha channel. *)
+external get_use_alpha : t -> bool = "ml_gtk_color_chooser_get_use_alpha"
 
-external get_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
-  = "ml_gtk_color_chooser_get_rgba"
 (** Gets the currently-selected color. *)
+external get_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t = "ml_gtk_color_chooser_get_rgba"
 
-external add_palette :
-  t ->
-  Gtk_enums.orientation ->
-  int ->
-  int ->
-  Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array option ->
-  unit = "ml_gtk_color_chooser_add_palette"
 (** Adds a palette to the color chooser.
 
 If @orientation is horizontal, the colors are grouped in rows,
@@ -47,5 +35,7 @@ Calling this function for the first time has the side effect
 of removing the default color palette from the color chooser.
 
 If @colors is %NULL, removes all previously added palettes. *)
+external add_palette : t -> Gtk_enums.orientation -> int -> int -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array option -> unit = "ml_gtk_color_chooser_add_palette"
 
 (* Properties *)
+

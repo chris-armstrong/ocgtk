@@ -1,34 +1,29 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileChooser: FileChooser *)
 
-type t = [ `file_chooser ] Gobject.obj
+type t = [`file_chooser] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gtk_file_chooser_from_gobject"
 
 (* Methods *)
-
-external set_select_multiple : t -> bool -> unit
-  = "ml_gtk_file_chooser_set_select_multiple"
 (** Sets whether multiple files can be selected in the file chooser.
 
-    This is only relevant if the action is set to be
-    %GTK_FILE_CHOOSER_ACTION_OPEN or %GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER. *)
+This is only relevant if the action is set to be
+%GTK_FILE_CHOOSER_ACTION_OPEN or
+%GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER. *)
+external set_select_multiple : t -> bool -> unit = "ml_gtk_file_chooser_set_select_multiple"
 
-external set_filter : t -> File_filter.t -> unit
-  = "ml_gtk_file_chooser_set_filter"
 (** Sets the current filter.
 
-    Only the files that pass the filter will be displayed. If the
-    user-selectable list of filters is non-empty, then the filter should be one
-    of the filters in that list.
+Only the files that pass the filter will be displayed.
+If the user-selectable list of filters is non-empty, then
+the filter should be one of the filters in that list.
 
-    Setting the current filter when the list of filters is empty is useful if
-    you want to restrict the displayed set of files without letting the user
-    change it. *)
+Setting the current filter when the list of filters is
+empty is useful if you want to restrict the displayed
+set of files without letting the user change it. *)
+external set_filter : t -> File_filter.t -> unit = "ml_gtk_file_chooser_set_filter"
 
-external set_file :
-  t -> Ocgtk_gio.Gio.Wrappers.File.t -> (bool, GError.t) result
-  = "ml_gtk_file_chooser_set_file"
 (** Sets @file as the current filename for the file chooser.
 
 This includes changing to the file’s parent folder and actually selecting
@@ -71,9 +66,8 @@ prepare_file_chooser (GtkFileChooser *chooser,
     }
 }
 ``` *)
+external set_file : t -> Ocgtk_gio.Gio.Wrappers.File.t -> (bool, GError.t) result = "ml_gtk_file_chooser_set_file"
 
-external set_current_name : t -> string -> unit
-  = "ml_gtk_file_chooser_set_current_name"
 (** Sets the current name in the file selector, as if entered
 by the user.
 
@@ -87,63 +81,51 @@ use [method@Gtk.FileChooser.set_file] instead.
 
 Please see the documentation for those functions for an example
 of using [method@Gtk.FileChooser.set_current_name] as well. *)
+external set_current_name : t -> string -> unit = "ml_gtk_file_chooser_set_current_name"
 
-external set_current_folder :
-  t -> Ocgtk_gio.Gio.Wrappers.File.t option -> (bool, GError.t) result
-  = "ml_gtk_file_chooser_set_current_folder"
 (** Sets the current folder for @chooser from a `GFile`. *)
+external set_current_folder : t -> Ocgtk_gio.Gio.Wrappers.File.t option -> (bool, GError.t) result = "ml_gtk_file_chooser_set_current_folder"
 
-external set_create_folders : t -> bool -> unit
-  = "ml_gtk_file_chooser_set_create_folders"
 (** Sets whether file chooser will offer to create new folders.
 
-    This is only relevant if the action is not set to be
-    %GTK_FILE_CHOOSER_ACTION_OPEN. *)
+This is only relevant if the action is not set to be
+%GTK_FILE_CHOOSER_ACTION_OPEN. *)
+external set_create_folders : t -> bool -> unit = "ml_gtk_file_chooser_set_create_folders"
 
-external set_choice : t -> string -> string -> unit
-  = "ml_gtk_file_chooser_set_choice"
 (** Selects an option in a 'choice' that has been added with
-    gtk_file_chooser_add_choice().
+gtk_file_chooser_add_choice().
 
-    For a boolean choice, the possible options are "true" and "false". *)
+For a boolean choice, the possible options are "true" and "false". *)
+external set_choice : t -> string -> string -> unit = "ml_gtk_file_chooser_set_choice"
 
-external set_action : t -> Gtk_enums.filechooseraction -> unit
-  = "ml_gtk_file_chooser_set_action"
 (** Sets the type of operation that the chooser is performing.
 
-    The user interface is adapted to suit the selected action.
+The user interface is adapted to suit the selected action.
 
-    For example, an option to create a new folder might be shown if the action
-    is %GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
-    %GTK_FILE_CHOOSER_ACTION_OPEN. *)
+For example, an option to create a new folder might be shown
+if the action is %GTK_FILE_CHOOSER_ACTION_SAVE but not if the
+action is %GTK_FILE_CHOOSER_ACTION_OPEN. *)
+external set_action : t -> Gtk_enums.filechooseraction -> unit = "ml_gtk_file_chooser_set_action"
 
-external remove_shortcut_folder :
-  t -> Ocgtk_gio.Gio.Wrappers.File.t -> (bool, GError.t) result
-  = "ml_gtk_file_chooser_remove_shortcut_folder"
 (** Removes a folder from the shortcut folders in a file chooser. *)
+external remove_shortcut_folder : t -> Ocgtk_gio.Gio.Wrappers.File.t -> (bool, GError.t) result = "ml_gtk_file_chooser_remove_shortcut_folder"
 
-external remove_filter : t -> File_filter.t -> unit
-  = "ml_gtk_file_chooser_remove_filter"
 (** Removes @filter from the list of filters that the user can select between. *)
+external remove_filter : t -> File_filter.t -> unit = "ml_gtk_file_chooser_remove_filter"
 
-external remove_choice : t -> string -> unit
-  = "ml_gtk_file_chooser_remove_choice"
-(** Removes a 'choice' that has been added with gtk_file_chooser_add_choice().
-*)
+(** Removes a 'choice' that has been added with gtk_file_chooser_add_choice(). *)
+external remove_choice : t -> string -> unit = "ml_gtk_file_chooser_remove_choice"
 
-external get_shortcut_folders : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
-  = "ml_gtk_file_chooser_get_shortcut_folders"
 (** Queries the list of shortcut folders in the file chooser.
 
 You should not modify the returned list model. Future changes to
 @chooser may or may not affect the returned model. *)
+external get_shortcut_folders : t -> Ocgtk_gio.Gio.Wrappers.List_model.t = "ml_gtk_file_chooser_get_shortcut_folders"
 
-external get_select_multiple : t -> bool
-  = "ml_gtk_file_chooser_get_select_multiple"
-(** Gets whether multiple files can be selected in the file chooser. *)
+(** Gets whether multiple files can be selected in the file
+chooser. *)
+external get_select_multiple : t -> bool = "ml_gtk_file_chooser_get_select_multiple"
 
-external get_filters : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
-  = "ml_gtk_file_chooser_get_filters"
 (** Gets the current set of user-selectable filters, as a list model.
 
 See [method@Gtk.FileChooser.add_filter] and
@@ -151,56 +133,47 @@ See [method@Gtk.FileChooser.add_filter] and
 
 You should not modify the returned list model. Future changes to
 @chooser may or may not affect the returned model. *)
+external get_filters : t -> Ocgtk_gio.Gio.Wrappers.List_model.t = "ml_gtk_file_chooser_get_filters"
 
-external get_filter : t -> File_filter.t option
-  = "ml_gtk_file_chooser_get_filter"
 (** Gets the current filter. *)
+external get_filter : t -> File_filter.t option = "ml_gtk_file_chooser_get_filter"
 
-external get_files : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
-  = "ml_gtk_file_chooser_get_files"
 (** Lists all the selected files and subfolders in the current folder
 of @chooser as `GFile`. *)
+external get_files : t -> Ocgtk_gio.Gio.Wrappers.List_model.t = "ml_gtk_file_chooser_get_files"
 
-external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option
-  = "ml_gtk_file_chooser_get_file"
-(** Gets the `GFile` for the currently selected file in the file selector.
+(** Gets the `GFile` for the currently selected file in
+the file selector.
 
-    If multiple files are selected, one of the files will be returned at random.
+If multiple files are selected, one of the files will be
+returned at random.
 
-    If the file chooser is in folder mode, this function returns the selected
-    folder. *)
+If the file chooser is in folder mode, this function returns
+the selected folder. *)
+external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option = "ml_gtk_file_chooser_get_file"
 
-external get_current_name : t -> string option
-  = "ml_gtk_file_chooser_get_current_name"
 (** Gets the current name in the file selector, as entered by the user.
 
-    This is meant to be used in save dialogs, to get the currently typed
-    filename when the file itself does not exist yet. *)
+This is meant to be used in save dialogs, to get the currently typed
+filename when the file itself does not exist yet. *)
+external get_current_name : t -> string option = "ml_gtk_file_chooser_get_current_name"
 
-external get_current_folder : t -> Ocgtk_gio.Gio.Wrappers.File.t option
-  = "ml_gtk_file_chooser_get_current_folder"
 (** Gets the current folder of @chooser as `GFile`. *)
+external get_current_folder : t -> Ocgtk_gio.Gio.Wrappers.File.t option = "ml_gtk_file_chooser_get_current_folder"
 
-external get_create_folders : t -> bool
-  = "ml_gtk_file_chooser_get_create_folders"
 (** Gets whether file chooser will offer to create new folders. *)
+external get_create_folders : t -> bool = "ml_gtk_file_chooser_get_create_folders"
 
-external get_choice : t -> string -> string option
-  = "ml_gtk_file_chooser_get_choice"
 (** Gets the currently selected option in the 'choice' with the given ID. *)
+external get_choice : t -> string -> string option = "ml_gtk_file_chooser_get_choice"
 
-external get_action : t -> Gtk_enums.filechooseraction
-  = "ml_gtk_file_chooser_get_action"
 (** Gets the type of operation that the file chooser is performing. *)
+external get_action : t -> Gtk_enums.filechooseraction = "ml_gtk_file_chooser_get_action"
 
-external add_shortcut_folder :
-  t -> Ocgtk_gio.Gio.Wrappers.File.t -> (bool, GError.t) result
-  = "ml_gtk_file_chooser_add_shortcut_folder"
-(** Adds a folder to be displayed with the shortcut folders in a file chooser.
-*)
+(** Adds a folder to be displayed with the shortcut folders
+in a file chooser. *)
+external add_shortcut_folder : t -> Ocgtk_gio.Gio.Wrappers.File.t -> (bool, GError.t) result = "ml_gtk_file_chooser_add_shortcut_folder"
 
-external add_filter : t -> File_filter.t -> unit
-  = "ml_gtk_file_chooser_add_filter"
 (** Adds @filter to the list of filters that the user can select between.
 
 When a filter is selected, only files that are passed by that
@@ -208,16 +181,17 @@ filter are displayed.
 
 Note that the @chooser takes ownership of the filter if it is floating,
 so you have to ref and sink it if you want to keep a reference. *)
+external add_filter : t -> File_filter.t -> unit = "ml_gtk_file_chooser_add_filter"
 
-external add_choice :
-  t -> string -> string -> string array option -> string array option -> unit
-  = "ml_gtk_file_chooser_add_choice"
 (** Adds a 'choice' to the file chooser.
 
-    This is typically implemented as a combobox or, for boolean choices, as a
-    checkbutton. You can select a value using
-    [method@Gtk.FileChooser.set_choice] before the dialog is shown, and you can
-    obtain the user-selected value in the [signal@Gtk.Dialog::response] signal
-    handler using [method@Gtk.FileChooser.get_choice]. *)
+This is typically implemented as a combobox or, for boolean choices,
+as a checkbutton. You can select a value using
+[method@Gtk.FileChooser.set_choice] before the dialog is shown,
+and you can obtain the user-selected value in the
+[signal@Gtk.Dialog::response] signal handler using
+[method@Gtk.FileChooser.get_choice]. *)
+external add_choice : t -> string -> string -> string array option -> string array option -> unit = "ml_gtk_file_chooser_add_choice"
 
 (* Properties *)
+

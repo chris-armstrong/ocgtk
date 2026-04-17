@@ -11,13 +11,15 @@
 #include <caml/custom.h>
 #include "wrappers.h"
 
+#include <gio/gio.h>
+#ifdef __linux__
 #include <gio/gunixoutputstream.h>
 #include <gio/gunixmounts.h>
 #include <gio/gunixinputstream.h>
 #include <gio/gunixfdmessage.h>
-#include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
 #include <gio/gdesktopappinfo.h>
+#endif /* __linux__ */
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 

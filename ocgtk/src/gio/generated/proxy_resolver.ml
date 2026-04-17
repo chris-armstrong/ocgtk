@@ -1,22 +1,16 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ProxyResolver: ProxyResolver *)
 
-type t = [ `proxy_resolver ] Gobject.obj
+type t = [`proxy_resolver] Gobject.obj
 
-external from_gobject : 'a Gobject.obj -> t
-  = "ml_gio_proxy_resolver_from_gobject"
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_proxy_resolver_from_gobject"
 
 (* Methods *)
-
-external lookup_finish : t -> Async_result.t -> (string array, GError.t) result
-  = "ml_g_proxy_resolver_lookup_finish"
 (** Call this function to obtain the array of proxy URIs when
-    g_proxy_resolver_lookup_async() is complete. See g_proxy_resolver_lookup()
-    for more details. *)
+g_proxy_resolver_lookup_async() is complete. See
+g_proxy_resolver_lookup() for more details. *)
+external lookup_finish : t -> Async_result.t -> (string array, GError.t) result = "ml_g_proxy_resolver_lookup_finish"
 
-external lookup :
-  t -> string -> Cancellable.t option -> (string array, GError.t) result
-  = "ml_g_proxy_resolver_lookup"
 (** Looks into the system proxy configuration to determine what proxy,
 if any, to use to connect to @uri. The returned proxy URIs are of
 the form `<protocol>://[user[:password]@]host[:port]` or
@@ -32,8 +26,10 @@ In this case, the resolver might still return a generic proxy type
 `direct://` is used when no proxy is needed.
 Direct connection should not be attempted unless it is part of the
 returned array of proxies. *)
+external lookup : t -> string -> Cancellable.t option -> (string array, GError.t) result = "ml_g_proxy_resolver_lookup"
 
-external is_supported : t -> bool = "ml_g_proxy_resolver_is_supported"
 (** Checks if @resolver can be used on this system. (This is used
 internally; g_proxy_resolver_get_default() will only return a proxy
 resolver that returns %TRUE for this method.) *)
+external is_supported : t -> bool = "ml_g_proxy_resolver_is_supported"
+

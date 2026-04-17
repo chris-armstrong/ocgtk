@@ -2,24 +2,15 @@
 (* Top-level library module with direct references to all classes and enumerations *)
 
 (** {1 Layer 1 Module Wrappers}
-
-    This submodule provides aliases to the layer 1 (low-level) modules. These
-    are the modules containing external declarations and basic bindings. *)
+    
+    This submodule provides aliases to the layer 1 (low-level) modules.
+    These are the modules containing external declarations and basic bindings.
+ *)
 module Wrappers : sig
-  module App_launch_context =
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .App_launch_context
-
+  module App_launch_context = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.App_launch_context
   module Button_event = Button_event
-
-  module Cairo_context =
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Cairo_context
-
-  module Clipboard =
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Clipboard
-
+  module Cairo_context = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Cairo_context
+  module Clipboard = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Clipboard
   module Content_deserializer = Content_deserializer
   module Content_formats = Content_formats
   module Content_formats_builder = Content_formats_builder
@@ -29,18 +20,10 @@ module Wrappers : sig
   module Cursor = Cursor
   module Dnd_event = Dnd_event
   module Delete_event = Delete_event
-
-  module Device =
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Device
-
+  module Device = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Device
   module Device_pad = Device_pad
   module Device_tool = Device_tool
-
-  module Display =
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Display
-
+  module Display = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Display
   module Display_manager = Display_manager
   module Dmabuf_formats = Dmabuf_formats
   module Dmabuf_texture = Dmabuf_texture
@@ -48,38 +31,22 @@ module Wrappers : sig
   module Drag = Drag
   module Drag_surface = Drag_surface
   module Drag_surface_size = Drag_surface_size
-
-  module Draw_context =
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Draw_context
-
+  module Draw_context = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Draw_context
   module Drop = Drop
-
-  module Event =
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Event
-
+  module Event = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Event
   module Event_sequence = Event_sequence
   module File_list = File_list
   module Focus_event = Focus_event
   module Frame_clock = Frame_clock
   module Frame_timings = Frame_timings
-
-  module Gl_context =
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Gl_context
-
+  module Gl_context = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Gl_context
   module Gl_texture = Gl_texture
   module Gl_texture_builder = Gl_texture_builder
   module Grab_broken_event = Grab_broken_event
   module Key_event = Key_event
   module Keymap_key = Keymap_key
   module Memory_texture = Memory_texture
-
-  module Monitor =
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Monitor
-
+  module Monitor = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Monitor
   module Motion_event = Motion_event
   module Pad_event = Pad_event
   module Paintable = Paintable
@@ -89,17 +56,9 @@ module Wrappers : sig
   module Rgb_a = Rgb_a
   module Rectangle = Rectangle
   module Scroll_event = Scroll_event
-
-  module Seat =
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Seat
-
+  module Seat = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Seat
   module Snapshot = Snapshot
-
-  module Surface =
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Surface
-
+  module Surface = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Surface
   module Texture = Texture
   module Texture_downloader = Texture_downloader
   module Time_coord = Time_coord
@@ -108,10 +67,7 @@ module Wrappers : sig
   module Toplevel_size = Toplevel_size
   module Touch_event = Touch_event
   module Touchpad_event = Touchpad_event
-
-  module Vulkan_context =
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Vulkan_context
+  module Vulkan_context = App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context.Vulkan_context
 end
 
 (** {1 Classes and Interfaces} *)

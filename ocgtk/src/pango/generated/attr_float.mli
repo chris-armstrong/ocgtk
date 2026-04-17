@@ -1,8 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AttrFloat: AttrFloat *)
 
-type t = [ `attr_float ] Gobject.obj
-(** The `PangoAttrFloat` structure is used to represent attributes with a float
-    or double value. *)
+(** The `PangoAttrFloat` structure is used to represent attributes with
+a float or double value. *)
+type t = [`attr_float] Gobject.obj
 
 (* Methods *)

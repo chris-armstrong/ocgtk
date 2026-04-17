@@ -1,9 +1,6 @@
 (* Signal handlers for Cancellable *)
-class cancellable_signals (obj : Cancellable.t) =
-  object
-    method on_cancelled ~callback =
-      Gobject.Signal.connect_simple obj ~name:"cancelled" ~callback ~after:false
-    (** Emitted when the operation has been cancelled.
+class cancellable_signals (obj : Cancellable.t) = object
+  (** Emitted when the operation has been cancelled.
 
 Can be used by implementations of cancellable operations. If the
 operation is cancelled from another thread, the signal will be
@@ -54,4 +51,7 @@ An example of how to us this:
 Note that the cancelled signal is emitted in the thread that
 the user cancelled from, which may be the main thread. So, the
 cancellable signal should not do something that can block. *)
-  end
+  method on_cancelled ~callback =
+    Gobject.Signal.connect_simple obj ~name:"cancelled" ~callback ~after:false
+
+end

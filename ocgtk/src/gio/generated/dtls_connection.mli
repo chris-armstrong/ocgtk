@@ -1,21 +1,15 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DtlsConnection: DtlsConnection *)
 
-type t = [ `dtls_connection ] Gobject.obj
+type t = [`dtls_connection] Gobject.obj
 
-external from_gobject : 'a Gobject.obj -> t
-  = "ml_gio_dtls_connection_from_gobject"
+external from_gobject : 'a Gobject.obj -> t = "ml_gio_dtls_connection_from_gobject"
 
 (* Methods *)
-
-external shutdown_finish : t -> Async_result.t -> (bool, GError.t) result
-  = "ml_g_dtls_connection_shutdown_finish"
 (** Finish an asynchronous TLS shutdown operation. See
-    g_dtls_connection_shutdown() for more information. *)
+g_dtls_connection_shutdown() for more information. *)
+external shutdown_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_dtls_connection_shutdown_finish"
 
-external shutdown :
-  t -> bool -> bool -> Cancellable.t option -> (bool, GError.t) result
-  = "ml_g_dtls_connection_shutdown"
 (** Shut down part or all of a DTLS connection.
 
 If @shutdown_read is %TRUE then the receiving side of the connection is shut
@@ -32,9 +26,8 @@ is equivalent to calling g_dtls_connection_close().
 If @cancellable is cancelled, the #GDtlsConnection may be left
 partially-closed and any pending untransmitted data may be lost. Call
 g_dtls_connection_shutdown() again to complete closing the #GDtlsConnection. *)
+external shutdown : t -> bool -> bool -> Cancellable.t option -> (bool, GError.t) result = "ml_g_dtls_connection_shutdown"
 
-external set_require_close_notify : t -> bool -> unit
-  = "ml_g_dtls_connection_set_require_close_notify"
 (** Sets whether or not @conn expects a proper TLS close notification
 before the connection is closed. If this is %TRUE (the default),
 then @conn will expect to receive a TLS close notification from its
@@ -60,42 +53,35 @@ connection; when the application calls g_dtls_connection_close_async() on
 setting of this property. If you explicitly want to do an unclean
 close, you can close @conn's #GDtlsConnection:base-socket rather
 than closing @conn itself. *)
+external set_require_close_notify : t -> bool -> unit = "ml_g_dtls_connection_set_require_close_notify"
 
-external set_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode -> unit
-  = "ml_g_dtls_connection_set_rehandshake_mode"
-(** Since GLib 2.64, changing the rehandshake mode is no longer supported and
-    will have no effect. With TLS 1.3, rehandshaking has been removed from the
-    TLS protocol, replaced by separate post-handshake authentication and rekey
-    operations. *)
+(** Since GLib 2.64, changing the rehandshake mode is no longer supported
+and will have no effect. With TLS 1.3, rehandshaking has been removed from
+the TLS protocol, replaced by separate post-handshake authentication and
+rekey operations. *)
+external set_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode -> unit = "ml_g_dtls_connection_set_rehandshake_mode"
 
-external set_interaction :
-  t ->
-  Tls_connection_and__tls_database_and__tls_interaction.Tls_interaction.t option ->
-  unit = "ml_g_dtls_connection_set_interaction"
 (** Set the object that will be used to interact with the user. It will be used
 for things like prompting the user for passwords.
 
 The @interaction argument will normally be a derived subclass of
 #GTlsInteraction. %NULL can also be provided if no user interaction
 should occur for this connection. *)
+external set_interaction : t -> Tls_connection_and__tls_database_and__tls_interaction.Tls_interaction.t option -> unit = "ml_g_dtls_connection_set_interaction"
 
-external set_database :
-  t ->
-  Tls_connection_and__tls_database_and__tls_interaction.Tls_database.t option ->
-  unit = "ml_g_dtls_connection_set_database"
-(** Sets the certificate database that is used to verify peer certificates. This
-    is set to the default database by default. See
-    g_tls_backend_get_default_database(). If set to %NULL, then peer certificate
-    validation will always set the %G_TLS_CERTIFICATE_UNKNOWN_CA error (meaning
-    #GDtlsConnection::accept-certificate will always be emitted on client-side
-    connections, unless that bit is not set in
-    #GDtlsClientConnection:validation-flags).
+(** Sets the certificate database that is used to verify peer certificates.
+This is set to the default database by default. See
+g_tls_backend_get_default_database(). If set to %NULL, then
+peer certificate validation will always set the
+%G_TLS_CERTIFICATE_UNKNOWN_CA error (meaning
+#GDtlsConnection::accept-certificate will always be emitted on
+client-side connections, unless that bit is not set in
+#GDtlsClientConnection:validation-flags).
 
-    There are nonintuitive security implications when using a non-default
-    database. See #GDtlsConnection:database for details. *)
+There are nonintuitive security implications when using a non-default
+database. See #GDtlsConnection:database for details. *)
+external set_database : t -> Tls_connection_and__tls_database_and__tls_interaction.Tls_database.t option -> unit = "ml_g_dtls_connection_set_database"
 
-external set_certificate : t -> Tls_certificate.t -> unit
-  = "ml_g_dtls_connection_set_certificate"
 (** This sets the certificate that @conn will present to its peer
 during the TLS handshake. For a #GDtlsServerConnection, it is
 mandatory to set this, and that will normally be done at construct
@@ -114,9 +100,8 @@ or without a certificate; in that case, if you don't provide a
 certificate, you can tell that the server requested one by the fact
 that g_dtls_client_connection_get_accepted_cas() will return
 non-%NULL.) *)
+external set_certificate : t -> Tls_certificate.t -> unit = "ml_g_dtls_connection_set_certificate"
 
-external set_advertised_protocols : t -> string array option -> unit
-  = "ml_g_dtls_connection_set_advertised_protocols"
 (** Sets the list of application-layer protocols to advertise that the
 caller is willing to speak on this connection. The
 Application-Layer Protocol Negotiation (ALPN) extension will be
@@ -127,14 +112,12 @@ of @protocols will disable ALPN negotiation.
 
 See [IANA TLS ALPN Protocol IDs](https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
 for a list of registered protocol IDs. *)
+external set_advertised_protocols : t -> string array option -> unit = "ml_g_dtls_connection_set_advertised_protocols"
 
-external handshake_finish : t -> Async_result.t -> (bool, GError.t) result
-  = "ml_g_dtls_connection_handshake_finish"
 (** Finish an asynchronous TLS handshake operation. See
-    g_dtls_connection_handshake() for more information. *)
+g_dtls_connection_handshake() for more information. *)
+external handshake_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_dtls_connection_handshake_finish"
 
-external handshake : t -> Cancellable.t option -> (bool, GError.t) result
-  = "ml_g_dtls_connection_handshake"
 (** Attempts a TLS handshake on @conn.
 
 On the client side, it is never necessary to call this method;
@@ -161,39 +144,33 @@ the initial handshake will no longer do anything.
 
 #GDtlsConnection::accept_certificate may be emitted during the
 handshake. *)
+external handshake : t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_dtls_connection_handshake"
 
-external get_require_close_notify : t -> bool
-  = "ml_g_dtls_connection_get_require_close_notify"
 (** Tests whether or not @conn expects a proper TLS close notification
 when the connection is closed. See
 g_dtls_connection_set_require_close_notify() for details. *)
+external get_require_close_notify : t -> bool = "ml_g_dtls_connection_get_require_close_notify"
 
-external get_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode
-  = "ml_g_dtls_connection_get_rehandshake_mode"
 (** Gets @conn rehandshaking mode. See
 g_dtls_connection_set_rehandshake_mode() for details. *)
+external get_rehandshake_mode : t -> Gio_enums.tlsrehandshakemode = "ml_g_dtls_connection_get_rehandshake_mode"
 
-external get_protocol_version : t -> Gio_enums.tlsprotocolversion
-  = "ml_g_dtls_connection_get_protocol_version"
 (** Returns the current DTLS protocol version, which may be
-    %G_TLS_PROTOCOL_VERSION_UNKNOWN if the connection has not handshaked, or has
-    been closed, or if the TLS backend has implemented a protocol version that
-    is not a recognized #GTlsProtocolVersion. *)
+%G_TLS_PROTOCOL_VERSION_UNKNOWN if the connection has not handshaked, or
+has been closed, or if the TLS backend has implemented a protocol version
+that is not a recognized #GTlsProtocolVersion. *)
+external get_protocol_version : t -> Gio_enums.tlsprotocolversion = "ml_g_dtls_connection_get_protocol_version"
 
-external get_peer_certificate_errors : t -> Gio_enums.tlscertificateflags
-  = "ml_g_dtls_connection_get_peer_certificate_errors"
 (** Gets the errors associated with validating @conn's peer's
 certificate, after the handshake has completed or failed. (It is
 not set during the emission of #GDtlsConnection::accept-certificate.) *)
+external get_peer_certificate_errors : t -> Gio_enums.tlscertificateflags = "ml_g_dtls_connection_get_peer_certificate_errors"
 
-external get_peer_certificate : t -> Tls_certificate.t option
-  = "ml_g_dtls_connection_get_peer_certificate"
 (** Gets @conn's peer's certificate after the handshake has completed
 or failed. (It is not set during the emission of
 #GDtlsConnection::accept-certificate.) *)
+external get_peer_certificate : t -> Tls_certificate.t option = "ml_g_dtls_connection_get_peer_certificate"
 
-external get_negotiated_protocol : t -> string option
-  = "ml_g_dtls_connection_get_negotiated_protocol"
 (** Gets the name of the application-layer protocol negotiated during
 the handshake.
 
@@ -201,50 +178,39 @@ If the peer did not use the ALPN extension, or did not advertise a
 protocol that matched one of @conn's protocols, or the TLS backend
 does not support ALPN, then this will be %NULL. See
 g_dtls_connection_set_advertised_protocols(). *)
+external get_negotiated_protocol : t -> string option = "ml_g_dtls_connection_get_negotiated_protocol"
 
-external get_interaction :
-  t ->
-  Tls_connection_and__tls_database_and__tls_interaction.Tls_interaction.t option
-  = "ml_g_dtls_connection_get_interaction"
 (** Get the object that will be used to interact with the user. It will be used
-    for things like prompting the user for passwords. If %NULL is returned, then
-    no user interaction will occur for this connection. *)
+for things like prompting the user for passwords. If %NULL is returned, then
+no user interaction will occur for this connection. *)
+external get_interaction : t -> Tls_connection_and__tls_database_and__tls_interaction.Tls_interaction.t option = "ml_g_dtls_connection_get_interaction"
 
-external get_database :
-  t ->
-  Tls_connection_and__tls_database_and__tls_interaction.Tls_database.t option
-  = "ml_g_dtls_connection_get_database"
 (** Gets the certificate database that @conn uses to verify
 peer certificates. See g_dtls_connection_set_database(). *)
+external get_database : t -> Tls_connection_and__tls_database_and__tls_interaction.Tls_database.t option = "ml_g_dtls_connection_get_database"
 
-external get_ciphersuite_name : t -> string option
-  = "ml_g_dtls_connection_get_ciphersuite_name"
-(** Returns the name of the current DTLS ciphersuite, or %NULL if the connection
-    has not handshaked or has been closed. Beware that the TLS backend may use
-    any of multiple different naming conventions, because OpenSSL and GnuTLS
-    have their own ciphersuite naming conventions that are different from each
-    other and different from the standard, IANA- registered ciphersuite names.
-    The ciphersuite name is intended to be displayed to the user for informative
-    purposes only, and parsing it is not recommended. *)
+(** Returns the name of the current DTLS ciphersuite, or %NULL if the
+connection has not handshaked or has been closed. Beware that the TLS
+backend may use any of multiple different naming conventions, because
+OpenSSL and GnuTLS have their own ciphersuite naming conventions that
+are different from each other and different from the standard, IANA-
+registered ciphersuite names. The ciphersuite name is intended to be
+displayed to the user for informative purposes only, and parsing it
+is not recommended. *)
+external get_ciphersuite_name : t -> string option = "ml_g_dtls_connection_get_ciphersuite_name"
 
-external get_certificate : t -> Tls_certificate.t option
-  = "ml_g_dtls_connection_get_certificate"
 (** Gets @conn's certificate, as set by
 g_dtls_connection_set_certificate(). *)
+external get_certificate : t -> Tls_certificate.t option = "ml_g_dtls_connection_get_certificate"
 
-external emit_accept_certificate :
-  t -> Tls_certificate.t -> Gio_enums.tlscertificateflags -> bool
-  = "ml_g_dtls_connection_emit_accept_certificate"
 (** Used by #GDtlsConnection implementations to emit the
-    #GDtlsConnection::accept-certificate signal. *)
+#GDtlsConnection::accept-certificate signal. *)
+external emit_accept_certificate : t -> Tls_certificate.t -> Gio_enums.tlscertificateflags -> bool = "ml_g_dtls_connection_emit_accept_certificate"
 
-external close_finish : t -> Async_result.t -> (bool, GError.t) result
-  = "ml_g_dtls_connection_close_finish"
 (** Finish an asynchronous TLS close operation. See g_dtls_connection_close()
-    for more information. *)
+for more information. *)
+external close_finish : t -> Async_result.t -> (bool, GError.t) result = "ml_g_dtls_connection_close_finish"
 
-external close : t -> Cancellable.t option -> (bool, GError.t) result
-  = "ml_g_dtls_connection_close"
 (** Close the DTLS connection. This is equivalent to calling
 g_dtls_connection_shutdown() to shut down both sides of the connection.
 
@@ -264,9 +230,10 @@ released as early as possible.
 If @cancellable is cancelled, the #GDtlsConnection may be left
 partially-closed and any pending untransmitted data may be lost. Call
 g_dtls_connection_close() again to complete closing the #GDtlsConnection. *)
+external close : t -> Cancellable.t option -> (bool, GError.t) result = "ml_g_dtls_connection_close"
 
 (* Properties *)
 
-external get_base_socket : t -> Datagram_based.t
-  = "ml_g_dtls_connection_get_base_socket"
 (** Get property: base-socket *)
+external get_base_socket : t -> Datagram_based.t = "ml_g_dtls_connection_get_base_socket"
+

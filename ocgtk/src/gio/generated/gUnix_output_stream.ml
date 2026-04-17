@@ -1,34 +1,30 @@
 class type unix_output_stream_t = object
-  inherit GOutput_stream.output_stream_t
-  inherit GFile_descriptor_based.file_descriptor_based_t
-  inherit GPollable_output_stream.pollable_output_stream_t
-  method get_close_fd : unit -> bool
-  method set_close_fd : bool -> unit
-  method as_unix_output_stream : Unix_output_stream.t
+    inherit GOutput_stream.output_stream_t
+    inherit GFile_descriptor_based.file_descriptor_based_t
+    inherit GPollable_output_stream.pollable_output_stream_t
+    method get_close_fd : unit -> bool
+    method set_close_fd : bool -> unit
+    method as_unix_output_stream : Unix_output_stream.t
 end
 
 (* High-level class for UnixOutputStream *)
-class unix_output_stream (obj : Unix_output_stream.t) : unix_output_stream_t =
-  object (self)
-    inherit GOutput_stream.output_stream (obj :> Output_stream.t)
+class unix_output_stream (obj : Unix_output_stream.t) : unix_output_stream_t = object (self)
+  inherit GOutput_stream.output_stream (obj :> Output_stream.t)
+  inherit GFile_descriptor_based.file_descriptor_based (File_descriptor_based.from_gobject obj)
+  inherit GPollable_output_stream.pollable_output_stream (Pollable_output_stream.from_gobject obj)
 
-    inherit
-      GFile_descriptor_based.file_descriptor_based
-        (File_descriptor_based.from_gobject obj)
+  method get_close_fd : unit -> bool =
+    fun () ->
+      (Unix_output_stream.get_close_fd obj)
 
-    inherit
-      GPollable_output_stream.pollable_output_stream
-        (Pollable_output_stream.from_gobject obj)
-
-    method get_close_fd : unit -> bool =
-      fun () -> Unix_output_stream.get_close_fd obj
-
-    method set_close_fd : bool -> unit =
-      fun close_fd -> Unix_output_stream.set_close_fd obj close_fd
+  method set_close_fd : bool -> unit =
+    fun close_fd ->
+      (Unix_output_stream.set_close_fd obj close_fd)
 
     method as_unix_output_stream = obj
-  end
+end
 
 let new_ (fd : int) (close_fd : bool) : unix_output_stream_t =
   let obj_ = Unix_output_stream.new_ fd close_fd in
   new unix_output_stream obj_
+

@@ -1,12 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Shim module for FileEnumerator from cyclic group App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume *)
 
-class type file_enumerator_t =
-  GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-  .file_enumerator_t
+class type file_enumerator_t = GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.file_enumerator_t
 
-class file_enumerator :
-  App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-  .File_enumerator
-  .t ->
-  file_enumerator_t
+class file_enumerator : App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume.File_enumerator.t -> file_enumerator_t
+

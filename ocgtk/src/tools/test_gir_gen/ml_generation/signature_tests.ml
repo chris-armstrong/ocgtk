@@ -78,6 +78,7 @@ let test_constructor_signature_matches () =
       ctor_introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -159,6 +160,7 @@ let test_method_signature_matches () =
       introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -241,6 +243,7 @@ let test_multiple_methods_match () =
         introspectable = true;
         version = None;
         version_namespace = None;
+        os = None;
       };
       {
         method_name = "get_label";
@@ -261,6 +264,7 @@ let test_multiple_methods_match () =
         introspectable = true;
         version = None;
         version_namespace = None;
+        os = None;
       };
     ]
   in

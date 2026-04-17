@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CairoRenderer: CairoRenderer *)
 
-type t = [ `cairo_renderer | `renderer | `object_ ] Gobject.obj
+type t = [`cairo_renderer | `renderer | `object_] Gobject.obj
 
-external new_ : unit -> t = "ml_gsk_cairo_renderer_new"
 (** Create a new CairoRenderer *)
+external new_ : unit -> t = "ml_gsk_cairo_renderer_new"
 
 (* Methods *)
