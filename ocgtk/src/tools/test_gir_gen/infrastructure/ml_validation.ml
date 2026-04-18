@@ -209,6 +209,44 @@ let assert_value_exists (ast : structure) (value_name : string) =
           Alcotest.fail
             (sprintf "Value '%s' not found in implementation" value_name))
 
+(* Assert that a value (val or external) exists in a signature (.mli) AST *)
+let assert_value_exists_sig (ast : signature) (value_name : string) =
+  match Ml_ast_helpers.find_value_declaration_sig ast value_name with
+  | Some _ -> ()
+  | None ->
+      let available =
+        Ml_ast_helpers.get_all_value_declarations_sig ast
+        |> List.map fst |> String.concat ", "
+      in
+      Alcotest.fail
+        (sprintf "Value '%s' not found in signature. Available: [%s]" value_name
+           available)
+
+(* Assert that no value whose name satisfies [pred] exists in the signature *)
+let assert_no_value_matching_sig (ast : signature) (pred : string -> bool)
+    (label : string) =
+  let all = Ml_ast_helpers.get_all_value_declarations_sig ast |> List.map fst in
+  match List.find_opt pred all with
+  | Some name ->
+      Alcotest.fail
+        (sprintf "Expected no value matching '%s', but found '%s'" label name)
+  | None -> ()
+
+(* Assert that a type in a signature has a specific polymorphic variant tag *)
+let assert_type_has_variant_tag_sig (ast : signature) (type_name : string)
+    (tag : string) =
+  match Ml_ast_helpers.find_type_declaration_sig ast type_name with
+  | None ->
+      Alcotest.fail (sprintf "Type '%s' not found in signature" type_name)
+  | Some type_decl ->
+      let tags = Ml_ast_helpers.get_variant_tags type_decl in
+      if not (List.mem tag tags) then
+        Alcotest.fail
+          (sprintf
+             "Expected type '%s' in signature to have variant tag '%s', \
+              found: [%s]"
+             type_name tag (String.concat "; " tags))
+
 (* ========================================================================= *)
 (* Class Type Inheritance Validations                                         *)
 (* ========================================================================= *)

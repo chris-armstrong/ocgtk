@@ -46,16 +46,28 @@ let test_nullable_parameters () =
 
   let mli = mli_file output_dir "test_widget" in
   let content = read_file mli in
+  let sig_ast = Ml_ast_helpers.parse_interface content in
 
-  (* Check OCaml interface uses option types *)
-  assert_contains "Constructor should have string option parameter" content
-    "string option";
+  (* Check OCaml interface has a value declaration with a string option parameter *)
+  let all_vals = Ml_ast_helpers.get_all_value_declarations_sig sig_ast in
+  let has_string_option_param =
+    List.exists
+      (fun (_, ct) ->
+        List.exists Ml_ast_helpers.is_string_option_type
+          (Ml_ast_helpers.get_param_types ct))
+      all_vals
+  in
+  assert_true "Constructor should have string option parameter"
+    has_string_option_param;
 
   (* Check C code uses option-aware conversions *)
   let c_file = stub_c_file output_dir "TestWidget" in
   let c_content = read_file c_file in
-  assert_contains "C should use option helper for string" c_content
-    "String_option_val"
+  let c_functions = C_parser.parse_c_code c_content in
+  assert_true "C should use String_option_val helper for nullable string"
+    (List.exists
+       (fun f -> C_validation.calls_c_function f "String_option_val")
+       c_functions)
 
 (* ========================================================================= *)
 (* Test Suite *)

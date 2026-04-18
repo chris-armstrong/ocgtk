@@ -58,6 +58,7 @@ let rec find_call_in_expr expr func_name =
   | Call (name, _) when name = func_name -> true
   | Call (_, args) -> List.exists (fun e -> find_call_in_expr e func_name) args
   | Cast (_, e) -> find_call_in_expr e func_name
+  | Macro (name, _) when name = func_name -> true
   | Macro (_, args) -> List.exists (fun e -> find_call_in_expr e func_name) args
   | AddrOf e | Deref e -> find_call_in_expr e func_name
   | _ -> false

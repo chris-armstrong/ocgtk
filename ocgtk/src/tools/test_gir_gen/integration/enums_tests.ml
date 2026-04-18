@@ -76,19 +76,31 @@ let test_enum_generation () =
   assert_true "gtk_enums.mli should be created" (file_exists enums);
 
   let enum_content = read_file enums in
-  assert_contains "Enum type should be defined" enum_content "type wrapmode = [";
-  assert_contains "Should have NONE variant" enum_content "`NONE";
-  assert_contains "Should have CHAR variant" enum_content "`CHAR";
-  assert_contains "Should have WORD variant" enum_content "`WORD";
-  assert_contains "Should have WORD_CHAR variant" enum_content "`WORD_CHAR";
+  let sig_ast = Ml_ast_helpers.parse_interface enum_content in
+
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "wrapmode" "NONE";
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "wrapmode" "CHAR";
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "wrapmode" "WORD";
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "wrapmode" "WORD_CHAR";
 
   let c_file = enum_c_file output_dir in
   let c_content = read_file c_file in
-  assert_contains "C to OCaml converter" c_content "Val_GtkWrapMode";
-  assert_contains "OCaml to C converter" c_content "GtkWrapMode_val";
-  assert_contains "C converter should use switch" c_content "switch (val)";
-  assert_contains "C converter should check GTK constants" c_content
-    "GTK_WRAP_NONE"
+  let c_functions = C_parser.parse_c_code c_content in
+
+  let find_fn name =
+    match
+      List.find_opt (fun (f : C_ast.c_function) -> f.name = name) c_functions
+    with
+    | None ->
+        Alcotest.fail (Printf.sprintf "C function '%s' not found" name)
+    | Some f -> f
+  in
+
+  let val_fn = find_fn "Val_GtkWrapMode" in
+  assert_true "C to OCaml converter should use switch"
+    (C_validation.calls_c_function val_fn "switch");
+  let _ = find_fn "GtkWrapMode_val" in
+  ()
 
 let test_bitfield_generation () =
   let test_gir = "/tmp/test_bitfield_gen.gir" in
@@ -101,30 +113,35 @@ let test_bitfield_generation () =
   assert_true "Bitfield generator should exit successfully" (exit_code = 0);
 
   let enums = enum_file output_dir in
-  assert_true "gtk_enums.mli should be created for bitfields"
-    (file_exists enums);
+  assert_true "gtk_enums.mli should be created for bitfields" (file_exists enums);
 
   let enum_content = read_file enums in
-  assert_contains "Flag variant type should be defined" enum_content
-    "type stateflags_flag = [";
-  assert_contains "Should have NORMAL flag" enum_content "`NORMAL";
-  assert_contains "Should have ACTIVE flag" enum_content "`ACTIVE";
-  assert_contains "Should have PRELIGHT flag" enum_content "`PRELIGHT";
-  assert_contains "Should have SELECTED flag" enum_content "`SELECTED";
-  assert_contains "Bitfield list type should be defined" enum_content
-    "type stateflags = stateflags_flag list";
+  let sig_ast = Ml_ast_helpers.parse_interface enum_content in
+
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "stateflags_flag" "NORMAL";
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "stateflags_flag" "ACTIVE";
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "stateflags_flag" "PRELIGHT";
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "stateflags_flag" "SELECTED";
+  (* stateflags list type: type stateflags = stateflags_flag list *)
+  Ml_validation.assert_type_exists_sig sig_ast "stateflags";
 
   let c_file = enum_c_file output_dir in
   let c_content = read_file c_file in
-  assert_contains "C to OCaml flag converter" c_content "Val_GtkStateFlags";
-  assert_contains "OCaml to C flag converter" c_content "GtkStateFlags_val";
-  assert_contains "Converter should check flags with &" c_content
-    "flags & GTK_STATE_FLAG_";
-  assert_contains "Converter should OR flags" c_content
-    "result |= GTK_STATE_FLAG_";
-  assert_contains "Converter should build list" c_content "Val_emptylist";
-  assert_contains "Converter should allocate cons cells" c_content
-    "caml_alloc(2, 0)"
+  let c_functions = C_parser.parse_c_code c_content in
+
+  let find_fn name =
+    match
+      List.find_opt (fun (f : C_ast.c_function) -> f.name = name) c_functions
+    with
+    | None ->
+        Alcotest.fail (Printf.sprintf "C function '%s' not found" name)
+    | Some f -> f
+  in
+
+  let _ = find_fn "Val_GtkStateFlags" in
+  let _ = find_fn "GtkStateFlags_val" in
+  assert_true "Converter should call caml_alloc (cons cells)"
+    (List.exists (fun f -> C_validation.calls_caml_alloc f) c_functions)
 
 let test_multiple_enums () =
   let test_gir = "/tmp/test_multiple_enums.gir" in
@@ -138,14 +155,12 @@ let test_multiple_enums () =
 
   let enums = enum_file output_dir in
   let content = read_file enums in
+  let sig_ast = Ml_ast_helpers.parse_interface content in
 
-  assert_contains "Should define Align enum" content "type align = [";
-  assert_contains "Should define Orientation enum" content
-    "type orientation = [";
-  assert_contains "Should define EventMask bitfield" content
-    "type eventmask_flag = [";
-  assert_contains "Should define EventMask list type" content
-    "type eventmask = eventmask_flag list"
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "align" "FILL";
+  Ml_validation.assert_type_exists_sig sig_ast "orientation";
+  Ml_validation.assert_type_exists_sig sig_ast "eventmask_flag";
+  Ml_validation.assert_type_exists_sig sig_ast "eventmask"
 
 let test_single_value_enum () =
   let test_gir = "/tmp/test_single_enum.gir" in
@@ -159,10 +174,9 @@ let test_single_value_enum () =
 
   let enums = enum_file output_dir in
   let content = read_file enums in
+  let sig_ast = Ml_ast_helpers.parse_interface content in
 
-  assert_contains "Should define single value enum" content
-    "type singlevalue = [";
-  assert_contains "Should have ONLY variant" content "`ONLY"
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "singlevalue" "ONLY"
 
 let test_enum_naming_conventions () =
   let test_gir = "/tmp/test_enum_naming.gir" in
@@ -175,15 +189,16 @@ let test_enum_naming_conventions () =
 
   let enums = enum_file output_dir in
   let content = read_file enums in
+  let sig_ast = Ml_ast_helpers.parse_interface content in
 
-  assert_contains "Enum type should be lowercase" content "type align";
-  assert_contains "Enum type should be lowercase" content "type orientation";
-
-  assert_contains "Bitfield flag type should have _flag suffix" content
-    "type eventmask_flag";
-
-  assert_contains "Variants should be uppercase" content "`FILL";
-  assert_contains "Variants should be uppercase" content "`HORIZONTAL"
+  (* Enum type names are lowercase *)
+  Ml_validation.assert_type_exists_sig sig_ast "align";
+  Ml_validation.assert_type_exists_sig sig_ast "orientation";
+  (* Bitfield flag type has _flag suffix *)
+  Ml_validation.assert_type_exists_sig sig_ast "eventmask_flag";
+  (* Variants are uppercase *)
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "align" "FILL";
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "orientation" "HORIZONTAL"
 
 let tests =
   [

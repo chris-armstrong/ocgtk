@@ -25,6 +25,7 @@ let () =
       (* Layer 2 — Class Generation *)
       ("Layer2 Method Wrappers", Method_wrapper_tests.tests);
       ("Constructor Wrappers", Constructor_wrapper_tests.tests);
+      ("Signal Wrappers", Signal_wrapper_tests.tests);
       ("Interface Inheritance (Phase 4)", Interface_inheritance_tests.test_suite);
       ( "Interface Method Types (Phase 7)",
         Interface_method_types_tests.test_suite );

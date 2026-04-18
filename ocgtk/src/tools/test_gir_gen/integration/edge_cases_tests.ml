@@ -35,7 +35,8 @@ let test_empty_class () =
   assert_true "Empty widget file should be created" (file_exists mli);
 
   let content = read_file mli in
-  assert_contains "Should define type t" content "type t"
+  let sig_ast = Ml_ast_helpers.parse_interface content in
+  Ml_validation.assert_type_exists_sig sig_ast "t"
 
 let test_no_constructor_class () =
   let test_gir = "/tmp/test_no_constructor.gir" in
@@ -51,10 +52,13 @@ let test_no_constructor_class () =
 
   let mli = mli_file output_dir "no_constructor" in
   let content = read_file mli in
+  let sig_ast = Ml_ast_helpers.parse_interface content in
 
-  assert_contains "Should have do_something method" content "do_something";
-  if string_contains content "external new_" then
-    Alcotest.fail "Should not generate constructor when none defined"
+  Ml_validation.assert_value_exists_sig sig_ast "do_something";
+  Ml_validation.assert_no_value_matching_sig sig_ast
+    (fun name ->
+      String.length name >= 4 && String.equal (String.sub name 0 4) "new_")
+    "new_*"
 
 let tests =
   [

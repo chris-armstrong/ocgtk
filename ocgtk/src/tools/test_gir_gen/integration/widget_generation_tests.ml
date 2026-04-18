@@ -125,23 +125,32 @@ let test_widget_generation () =
   assert_true "Label.mli should be created" (file_exists label_file);
 
   let button_content = read_file button_file in
-  assert_contains "Button should have constructor" button_content
-    "external new_";
-  assert_contains "Button should have set_label" button_content "set_label";
+  let button_sig = Ml_ast_helpers.parse_interface button_content in
+  Ml_validation.assert_value_exists_sig button_sig "new_";
+  Ml_validation.assert_value_exists_sig button_sig "set_label";
 
   (* High-level wrapper generation *)
   let gbutton = g_wrapper_file output_dir "Button" in
   assert_true "gButton.ml should be created" (file_exists gbutton);
   let gbutton_content = read_file gbutton in
-  assert_contains "gButton should define skeleton" gbutton_content
-    "class button";
-  assert_contains "gButton should expose property getter" gbutton_content
-    "method get_label";
-  assert_contains "gButton should expose property setter" gbutton_content
-    "method set_label";
-  assert_not_contains
-    "gButton should not expose method wrapper that overlaps signal"
-    gbutton_content "method clicked"
+  let gbutton_ast = Ml_ast_helpers.parse_implementation gbutton_content in
+  (match Ml_ast_helpers.find_class_declaration gbutton_ast "button" with
+  | None -> Alcotest.fail "gButton.ml should define class 'button'"
+  | Some cls ->
+      (match Ml_ast_helpers.find_method_in_class cls.pci_expr "get_label" with
+      | None -> Alcotest.fail "gButton should expose method 'get_label'"
+      | Some _ -> ());
+      (match Ml_ast_helpers.find_method_in_class cls.pci_expr "set_label" with
+      | None -> Alcotest.fail "gButton should expose method 'set_label'"
+      | Some _ -> ());
+      (* Signal names must not appear as method wrappers — they are exposed via
+         the signals class only. *)
+      (match Ml_ast_helpers.find_method_in_class cls.pci_expr "clicked" with
+      | Some _ ->
+          Alcotest.fail
+            "gButton should NOT expose 'clicked' as a method wrapper (it is a \
+             signal)"
+      | None -> ()))
 
 let test_all_methods_generated () =
   let test_gir = "/tmp/test_many_methods.gir" in
@@ -157,14 +166,14 @@ let test_all_methods_generated () =
 
   let mli = mli_file output_dir "many_methods" in
   let content = read_file mli in
+  let sig_ast = Ml_ast_helpers.parse_interface content in
 
   (* Check that all 8 methods are generated (not just first 5) *)
-  assert_contains "Method 1 should be generated" content "method1";
-  assert_contains "Method 5 should be generated" content "method5";
-  assert_contains "Method 6 should be generated (beyond old 5-method limit)"
-    content "method6";
-  assert_contains "Method 7 should be generated" content "method7";
-  assert_contains "Method 8 should be generated" content "method8"
+  Ml_validation.assert_value_exists_sig sig_ast "method1";
+  Ml_validation.assert_value_exists_sig sig_ast "method5";
+  Ml_validation.assert_value_exists_sig sig_ast "method6";
+  Ml_validation.assert_value_exists_sig sig_ast "method7";
+  Ml_validation.assert_value_exists_sig sig_ast "method8"
 
 let test_generated_code_quality () =
   let test_gir = "/tmp/test_quality.gir" in
@@ -178,21 +187,26 @@ let test_generated_code_quality () =
   let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
   assert_true "Code quality test should exit successfully" (exit_code = 0);
 
-  (* Verify generated C code has proper memory management *)
   let c_file = stub_c_file output_dir "Button" in
   let c_content = read_file c_file in
+  let c_functions = C_parser.parse_c_code c_content in
 
-  (* Check for proper CAMLparam/CAMLlocal usage *)
-  assert_contains "Should use CAMLparam for all functions" c_content "CAMLparam";
-  assert_contains "Should use CAMLreturn" c_content "CAMLreturn";
+  assert_true "Should use CAMLparam for all functions"
+    (List.exists (fun f -> C_validation.has_caml_param_macro f) c_functions);
+  assert_true "Should use CAMLreturn"
+    (List.exists (fun f -> C_validation.has_caml_return f) c_functions);
+  assert_true "Should use String_val for string conversions"
+    (List.exists
+       (fun f -> C_validation.calls_c_function f "String_val")
+       c_functions);
 
-  (* Check that all string conversions are safe *)
-  assert_contains "Should use String_val" c_content "String_val";
-
-  (* Verify no obvious memory leaks *)
-  if
-    string_contains c_content "malloc" && not (string_contains c_content "free")
-  then
+  let any_malloc =
+    List.exists (fun f -> C_validation.calls_c_function f "malloc") c_functions
+  in
+  let any_free =
+    List.exists (fun f -> C_validation.calls_c_function f "free") c_functions
+  in
+  if any_malloc && not any_free then
     Alcotest.fail "Generated code may have memory leaks (malloc without free)"
 
 let test_camlparam_limitation () =
@@ -207,19 +221,29 @@ let test_camlparam_limitation () =
 
   let mli = mli_file output_dir "many_params" in
   let content = read_file mli in
+  let sig_ast = Ml_ast_helpers.parse_interface content in
 
-  (* Method with 3 params should be generated *)
-  assert_contains "Method with 3 params should be generated" content
-    "with_three_params";
+  (* Method with 3 params should always be generated *)
+  Ml_validation.assert_value_exists_sig sig_ast "with_three_params";
 
-  (* CURRENT BEHAVIOR: Method with 6 params IS generated with bytecode/native pattern *)
-  if string_contains content "with_six_params" then begin
-    (* Verify it uses bytecode/native pattern *)
-    assert_contains "Method with 6 params should use bytecode/native pattern"
-      content "ml_gtk_many_params_with_six_params_bytecode";
-    assert_contains "Method with 6 params should use bytecode/native pattern"
-      content "ml_gtk_many_params_with_six_params_native"
-  end
+  (* CURRENT BEHAVIOR: Method with 6 params IS generated with bytecode/native
+     pattern. If it appears in the signature, verify C defines both entry points. *)
+  (match Ml_ast_helpers.find_value_declaration_sig sig_ast "with_six_params" with
+  | Some _ ->
+      let c_file = stub_c_file output_dir "ManyParams" in
+      let c_content = read_file c_file in
+      let c_functions = C_parser.parse_c_code c_content in
+      assert_true "C should define bytecode entry for 6-param method"
+        (List.exists
+           (fun (f : C_ast.c_function) ->
+             f.name = "ml_gtk_many_params_with_six_params_bytecode")
+           c_functions);
+      assert_true "C should define native entry for 6-param method"
+        (List.exists
+           (fun (f : C_ast.c_function) ->
+             f.name = "ml_gtk_many_params_with_six_params_native")
+           c_functions)
+  | None -> ())
 
 (* ========================================================================= *)
 (* Test Suite *)
