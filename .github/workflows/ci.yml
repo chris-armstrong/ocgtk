@@ -49,3 +49,71 @@ jobs:
           # Use xvfb-run to provide virtual display for GTK runtime tests
           opam exec -- xvfb-run -a dune test
 
+  # ── macOS (Homebrew GTK4) ──────────────────────────────────────────────────
+  # Validates the cmdliner --help=plain fix on macOS. Apple Silicon only
+  # (macos-latest); macos-13 x86_64 runners no longer pick up public-repo jobs
+  # reliably, so we can't mirror the opam-ci amd64 variant directly here — the
+  # arm64 run still exercises the same cmdliner code path.
+  build-ocgtk-macos:
+    name: Build ocgtk (macOS ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest  # arm64 — Apple Silicon
+            ocaml-compiler: 5.4.x
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install GTK4 via Homebrew
+        run: |
+          brew update
+          brew install gtk4 gobject-introspection pkg-config cairo pango gdk-pixbuf
+
+      - name: Set up OCaml
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+          dune-cache: true
+
+      - name: Pin conf-gtk4 package
+        run: opam pin add -n conf-gtk4 conf-gtk4
+
+      - name: Install OCaml dependencies
+        working-directory: ocgtk
+        run: opam install . --deps-only --with-test
+
+      - name: Build ocgtk library
+        working-directory: ocgtk
+        run: opam exec -- dune build
+
+      # Replicate opam-ci's non-TTY build-sandbox conditions:
+      # stdout/stderr redirected (no isatty), TERM varied.
+      - name: Run tests (opam-ci-style, TERM=dumb)
+        working-directory: ocgtk
+        env:
+          TERM: dumb
+        run: |
+          opam exec -- dune runtest 2>&1 | tee test-output.log
+
+      - name: Run tests again with TERM=xterm-256color (CLI help regression check)
+        working-directory: ocgtk
+        env:
+          TERM: xterm-256color
+        run: |
+          opam exec -- dune runtest --force 2>&1 | tee test-output-xterm.log
+
+      - name: Upload test logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-${{ matrix.os }}-test-logs
+          path: |
+            ocgtk/test-output.log
+            ocgtk/test-output-xterm.log
+            ocgtk/_build/default/src/tools/test_gir_gen/_build/_tests/
+

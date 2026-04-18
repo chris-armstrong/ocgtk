@@ -7,9 +7,15 @@ open Helpers
 (* Test Cases *)
 (* ========================================================================= *)
 
+(* Use --help=plain to force cmdliner's plain renderer. The default
+   `auto` format may emit ANSI escape sequences (bold/underline) around
+   identifiers when stdout isn't a TTY but TERM is set — on macOS/opam-ci
+   this wrapping has broken substring matches for `--filter` in the past. *)
 let test_help_output () =
   let tools_dir = get_tools_dir () in
-  let cmd = sprintf "%s/gir_gen/gir_gen.exe generate --help 2>&1" tools_dir in
+  let cmd =
+    sprintf "%s/gir_gen/gir_gen.exe generate --help=plain 2>&1" tools_dir
+  in
   let ic = Unix.open_process_in cmd in
   let output = Buffer.create 1024 in
   (try
