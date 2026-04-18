@@ -4,6 +4,8 @@
  (name test_gir_gen)
  (modules
   helpers
+  pipeline_tmp
+  c_compiler
   gir_parsing_tests
   widget_generation_tests
   nullable_generation_tests
@@ -41,7 +43,7 @@
   dependency_exclusion_tests
   c_stub_include_tests
   classify_type_tests
-  integration_tests
+  header_pipeline_tests
   compilation_tests
   version_guard_tests
   c_stub_version_guard_tests
@@ -50,8 +52,8 @@
   parser_tests
   apply_tests
   extractor_tests
-  e2e_tests
-  overrides_integration_tests
+  apply_with_parsed_gir_tests
+  pipeline_tests
   enum_member_version_tests
   parsing_tests
   from_gobject_tests

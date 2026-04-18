@@ -1,4 +1,4 @@
-(* Shared fixtures for override test suites. *)
+(* Shared fixtures for override pipeline tests. *)
 
 let synthetic_gir_xml =
   {|<?xml version="1.0"?>
@@ -45,9 +45,7 @@ let synthetic_gir_xml =
   </namespace>
 </repository>|}
 
-let write_temp_file content =
-  let tmp = Filename.temp_file "test_gir" ".gir" in
-  let oc = open_out tmp in
-  output_string oc content;
-  close_out oc;
-  tmp
+(** Write [synthetic_gir_xml] to [pipeline_tmp/<test_name>/synthetic.gir] and
+    return the path. Pipeline-test discipline (Phase 1.5): no [/tmp] paths. *)
+let write_synthetic_gir ~test_name =
+  Pipeline_tmp.write_file ~test_name ~filename:"synthetic.gir" synthetic_gir_xml

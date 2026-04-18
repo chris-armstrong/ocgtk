@@ -1,8 +1,9 @@
 # Test Suite Remediation Plan
 
-**Status: 🔄 IN PROGRESS — Phase 1 complete (2026-04-18)**
-**Last revised: 2026-04-18** — Phase 1 (all file moves and runner reorganisation)
-complete on `tests-cleanup` branch; merged up to main (`d65507d8`); Phase 2+ pending.
+**Status: 🔄 IN PROGRESS — Phases 1 & 1.5 complete (2026-04-18)**
+**Last revised: 2026-04-18** — Phases 1 and 1.5 (file moves, runner
+reorganisation, test classification, pipeline-test discipline) complete on
+`tests-cleanup` branch; merged up to main (`d65507d8`); Phase 2+ pending.
 
 ## Overview
 
@@ -198,45 +199,48 @@ classification and tightens the rules pipeline tests must follow.*
 
 ### Pipeline-test discipline
 
-- [ ] Pipeline tests must write temp files under
-  `_build/<context>/pipeline_tmp/<test-name>/` (i.e. inside the dune build
-  tree). **No `/tmp` paths.** Add a helper in
-  `infrastructure/helpers.ml` — e.g. `pipeline_tmp_dir : string -> string`
-  — that creates and returns the per-test directory and is honoured by all
-  pipeline tests.
-- [ ] Pipeline tests that compile C must use the OCaml-configured C compiler
-  (`ocamlfind ocamlc -what` or `ocamlopt -config | grep ^c_compiler`) rather
-  than a hard-coded `cc` / `gcc`. Wrap the lookup in an
-  `infrastructure/c_compiler.ml` helper so call sites stay portable
-  (FreeBSD/macOS do not necessarily ship `gcc`).
+- [x] Pipeline tests write temp files under
+  `pipeline_tmp/<test-name>/` (which lands inside
+  `_build/<context>/src/tools/test_gir_gen/` when run via `dune runtest`).
+  **No `/tmp` paths.** Helper module `infrastructure/pipeline_tmp.ml`
+  exposes `make_dir : string -> string` and
+  `write_file : test_name:string -> filename:string -> string -> string`.
+  `overrides/fixtures.ml`'s `write_synthetic_gir ~test_name` is the
+  intended entry point for override pipeline tests.
+- [x] Pipeline tests that compile C must use the OCaml-configured C
+  compiler. Helper module `infrastructure/c_compiler.ml` exposes
+  `path : unit -> string` that parses the `c_compiler:` field of
+  `ocamlopt -config` and caches the result. Currently no test invokes
+  a C compiler, so no migration was necessary; the helper is in place
+  for future tier-2 / tier-4 tests.
 
 ### Integration-test discipline
 
-- [ ] The `integration/` dune stanza must declare an explicit dependency on
-  `gir_gen.exe` (`(deps %{exe:../gir_gen/gir_gen.exe})`) so the binary is
-  rebuilt before integration tests run. *(Note: already present in the
-  current root `dune` — verify and document.)*
+- [x] The shared `dune` stanza already declares
+  `(deps %{exe:../gir_gen/gir_gen.exe} ...)` — verified.
 - [ ] Pipeline and unit dune stanzas must NOT depend on `gir_gen.exe`.
+  *Deferred: requires splitting the single `(test (name test_gir_gen) ...)`
+  stanza into multiple stanzas (one per tier). Tracked here for a follow-up
+  Phase 1.6.*
 
 ### Renames to realise the classification
 
-- [ ] `overrides/overrides_integration_tests.ml` → `overrides/pipeline_tests.ml`
-- [ ] `overrides/e2e_tests.ml` → fold into `overrides/apply_tests.ml` (single
-  test that exercises `apply_overrides` against a parser-fed input rather than
-  a synthetic record), OR rename to
-  `overrides/apply_with_parsed_gir_tests.ml` if you prefer to keep it
-  separate
-- [ ] `cross_namespace/integration_tests.ml` → `cross_namespace/header_pipeline_tests.ml`
-- [ ] Update dune modules list and `test_gir_gen.ml` runner references
-- [ ] Drop the "e2e" label from `test_gir_gen/` entirely (the AT-SPI doc
-  outside this tree retains "e2e" because it genuinely is application-level)
+- [x] `overrides/overrides_integration_tests.ml` → `overrides/pipeline_tests.ml`
+- [x] `overrides/e2e_tests.ml` → `overrides/apply_with_parsed_gir_tests.ml`
+  (renamed rather than folded — single Alcotest `test_suite` list; the file
+  is small but holds a meaningfully distinct contract from `apply_tests.ml`,
+  which uses synthetic in-memory records rather than a parser-fed input)
+- [x] `cross_namespace/integration_tests.ml` → `cross_namespace/header_pipeline_tests.ml`
+- [x] Updated dune modules list and `test_gir_gen.ml` runner references
+- [x] Dropped the "e2e" label from `test_gir_gen/` entirely
 
 ### Smoke-test directory scaffold
 
-- [ ] Create `test_gir_gen/smoke/` with its own README that captures the
-  "no `gir_gen` dependency" rule
+- [x] Created `test_gir_gen/smoke/` with `README.md` capturing the
+  "no `gir_gen` dependency" rule and the other discipline rules
 - [ ] Move (or stage) any tests under `ocgtk/tests/` that only exercise
-  generated bindings — candidates surfaced by the Phase 5 audit
+  generated bindings — candidates surfaced by the Phase 5 audit *(deferred
+  to Phase 5)*
 
 ---
 

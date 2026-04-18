@@ -1,14 +1,16 @@
-(* Integration tests for the override pipeline.
+(* Pipeline tests for the override system (tier 2 — see Phase 1.5 of
+ * docs/plans/test-suite-remediation.md).
  *
  * Verifies that override-based filtering propagates correctly through the
- * complete pipeline:
+ * complete in-process pipeline:
  *   parse GIR → apply overrides → build generation_context
  *   → type-mapping lookups return None for ignored entities
  *
- * This is distinct from test_override_e2e.ml which only checks the
- * apply_overrides result. These tests go one level further and verify
- * that the ctx type-mapping is consistent with the filtering, so that
- * filtering.ml correctly skips methods referencing ignored types.
+ * Distinct from apply_with_parsed_gir_tests.ml, which only checks the
+ * apply_overrides result against a parsed GIR. These tests go one level
+ * further and verify that the ctx type-mapping is consistent with the
+ * filtering, so that filtering.ml correctly skips methods referencing
+ * ignored types.
  *)
 
 open Gir_gen_lib.Types
@@ -18,26 +20,15 @@ open Gir_gen_lib.Override_types
 (* Helpers *)
 (* ========================================================================= *)
 
-(** Parse the synthetic GIR and apply overrides. Returns the apply_result. *)
-let parse_and_apply overrides =
-  let tmp =
-    Fixtures.write_temp_file
-      Fixtures.synthetic_gir_xml
+(** Parse the synthetic GIR and apply overrides. Returns the apply_result.
+    [test_name] is used to name the per-test pipeline_tmp/ directory. *)
+let parse_and_apply ~test_name overrides =
+  let tmp = Fixtures.write_synthetic_gir ~test_name in
+  let _repository, _namespace, classes, interfaces, enums, bitfields, records =
+    Gir_gen_lib.Parse.Gir_parser.parse_gir_file tmp []
   in
-  Fun.protect
-    ~finally:(fun () -> Sys.remove tmp)
-    (fun () ->
-      let ( _repository,
-            _namespace,
-            classes,
-            interfaces,
-            enums,
-            bitfields,
-            records ) =
-        Gir_gen_lib.Parse.Gir_parser.parse_gir_file tmp []
-      in
-      Gir_gen_lib.Override_apply.apply_overrides ~overrides ~classes ~interfaces
-        ~enums ~bitfields ~records ~functions:[])
+  Gir_gen_lib.Override_apply.apply_overrides ~overrides ~classes ~interfaces
+    ~enums ~bitfields ~records ~functions:[]
 
 (** Minimal namespace for building a generation_context in tests. *)
 let test_namespace : gir_namespace =
@@ -176,7 +167,10 @@ let version_widget_overrides =
     filtering.ml skips methods that reference it via
     find_type_mapping_for_gir_type. *)
 let test_ignored_class_absent_from_ctx () =
-  let result = parse_and_apply ignore_button_overrides in
+  let result =
+    parse_and_apply ~test_name:"ignored_class_absent_from_ctx"
+      ignore_button_overrides
+  in
   let ctx = make_ctx result in
   let button_in_ctx =
     List.exists
@@ -191,7 +185,10 @@ let test_ignored_class_absent_from_ctx () =
     class. When Button is absent from ctx, the lookup returns None and those
     methods are skipped. *)
 let test_type_mapping_returns_none_for_ignored_class () =
-  let result = parse_and_apply ignore_button_overrides in
+  let result =
+    parse_and_apply ~test_name:"type_mapping_none_for_ignored_class"
+      ignore_button_overrides
+  in
   let ctx = make_ctx result in
   let mapping =
     Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type ~ctx
@@ -203,7 +200,10 @@ let test_type_mapping_returns_none_for_ignored_class () =
 (** Type-mapping lookup for a surviving class must return Some. Verifies that
     the None above is due to the ignore, not a general failure. *)
 let test_type_mapping_returns_some_for_surviving_class () =
-  let result = parse_and_apply ignore_button_overrides in
+  let result =
+    parse_and_apply ~test_name:"type_mapping_some_for_surviving_class"
+      ignore_button_overrides
+  in
   let ctx = make_ctx result in
   let mapping =
     Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type ~ctx
@@ -220,7 +220,10 @@ let test_type_mapping_returns_some_for_surviving_class () =
     the generation_context. This confirms that component-level overrides also
     propagate into the ctx that the generators use. *)
 let test_ignored_method_absent_from_ctx () =
-  let result = parse_and_apply ignore_create_overrides in
+  let result =
+    parse_and_apply ~test_name:"ignored_method_absent_from_ctx"
+      ignore_create_overrides
+  in
   let ctx = make_ctx result in
   let widget_opt =
     List.find_opt
@@ -250,7 +253,10 @@ let test_ignored_method_absent_from_ctx () =
 (** Entity-level version override must propagate into the class's version field
     inside the generation_context, which feeds into class-level C #if guards. *)
 let test_version_override_propagates_to_ctx () =
-  let result = parse_and_apply version_widget_overrides in
+  let result =
+    parse_and_apply ~test_name:"version_override_propagates_to_ctx"
+      version_widget_overrides
+  in
   let ctx = make_ctx result in
   let widget_opt =
     List.find_opt
@@ -271,7 +277,10 @@ let test_version_override_propagates_to_ctx () =
     that ignored entities are absent from the apply_result used for references,
     mirroring what generate_references does in gir_gen.ml. *)
 let test_references_excludes_ignored_class () =
-  let result = parse_and_apply ignore_button_overrides in
+  let result =
+    parse_and_apply ~test_name:"references_excludes_ignored_class"
+      ignore_button_overrides
+  in
   (* References generation uses result.classes directly — Button must be absent *)
   let button_in_refs =
     List.exists
@@ -308,7 +317,9 @@ let test_sexp_parse_to_ctx_integration () =
           (Gir_gen_lib.Override_parser.format_error e)
     | Ok ov -> ov
   in
-  let result = parse_and_apply overrides in
+  let result =
+    parse_and_apply ~test_name:"sexp_parse_to_ctx_integration" overrides
+  in
   let ctx = make_ctx result in
   let button_absent =
     not
@@ -343,7 +354,10 @@ let test_empty_overrides_preserve_all_classes () =
       headers = [];
     }
   in
-  let result = parse_and_apply empty_overrides in
+  let result =
+    parse_and_apply ~test_name:"empty_overrides_preserve_all_classes"
+      empty_overrides
+  in
   let ctx = make_ctx result in
   let class_count = List.length ctx.classes in
   Alcotest.(check int) "both classes present with empty overrides" 2 class_count;

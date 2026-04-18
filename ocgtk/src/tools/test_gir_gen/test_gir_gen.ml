@@ -51,7 +51,7 @@ let () =
       ("No External Enum Decls (Stage 2)", No_external_enum_decls_tests.tests);
       ( "No External Bitfield Decls (Stage 3)",
         No_external_bitfield_decls_tests.tests );
-      ("Integration Tests (Stage 8)", Integration_tests.tests);
+      ("Header Pipeline Tests (Stage 8)", Header_pipeline_tests.tests);
       ("Compilation Tests (Stage 8)", Compilation_tests.tests);
       (* Override system *)
       ("Override Types", Types_tests.test_suite);
@@ -59,8 +59,8 @@ let () =
       ("Override Parser Roundtrip", Parser_tests.test_suite_roundtrip);
       ("Override Apply", Apply_tests.test_suite);
       ("Override Extractor", Extractor_tests.test_suite);
-      ("Override E2E", E2e_tests.test_suite);
-      ("Override Integration", Overrides_integration_tests.test_suite);
+      ("Override Apply (parsed GIR)", Apply_with_parsed_gir_tests.test_suite);
+      ("Override Pipeline", Pipeline_tests.test_suite);
       ("Version Guard", Version_guard_tests.test_suite);
       ("Enum Member Version Guards", Enum_member_version_tests.test_suite);
     ]
