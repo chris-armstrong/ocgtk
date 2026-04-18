@@ -70,7 +70,7 @@ let test_header_generation_with_gdk_cross_references () =
   (* Generate the Gtk header *)
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
+      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
   in
 
   (* Verify header guard *)
@@ -134,7 +134,7 @@ let test_header_generation_with_multiple_dependencies () =
   (* Generate the header *)
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
+      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
   in
 
   (* Verify both dependencies are included *)
@@ -175,7 +175,7 @@ let test_header_no_dependencies_no_includes () =
   (* Generate the header *)
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
+      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
   in
 
   (* Verify no cross-namespace dependency includes are present.
@@ -236,7 +236,7 @@ let test_base_namespaces_filtered () =
   (* Generate the header *)
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
+      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
   in
 
   (* Verify GLib is NOT included (it's a base namespace) *)
@@ -288,7 +288,7 @@ let test_gsk_with_gdk_dependency () =
   (* Generate the header *)
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
+      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
   in
 
   (* Verify header structure *)
@@ -350,7 +350,7 @@ let test_complete_dependency_chain () =
   (* Generate the header *)
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
+      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
   in
 
   (* Verify all dependencies are included *)

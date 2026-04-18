@@ -83,13 +83,36 @@ let entity_generator_by_entity_type =
               let ml_name =
                 Gir_gen_lib.Utils.ml_method_name ~class_name:entity.name meth
               in
-              C_stub_helpers.emit_with_member_guard ~ctx
-                ~version_namespace:meth.version_namespace
-                ~class_version:entity.version ~member_version:meth.version ~stub
-                buf ~fallback:(fun v ->
-                  C_stub_helpers.emit_fallback_method_stub ~ctx
-                    ~c_type:entity.c_type ~class_name:entity.name ~ml_name
-                    ~c_identifier:meth.c_identifier ~version:v meth)
+              (* For method-level OS guards, use a temp buffer so we can wrap *)
+              match meth.os with
+              | None ->
+                  C_stub_helpers.emit_with_member_guard ~ctx
+                    ~version_namespace:meth.version_namespace
+                    ~class_version:entity.version ~member_version:meth.version
+                    ~stub buf ~fallback:(fun v ->
+                      C_stub_helpers.emit_fallback_method_stub ~ctx
+                        ~c_type:entity.c_type ~class_name:entity.name ~ml_name
+                        ~c_identifier:meth.c_identifier ~version:v meth)
+              | Some os_val ->
+                  (* Generate version-guarded content into temp buffer *)
+                  let method_buf = Buffer.create 256 in
+                  C_stub_helpers.emit_with_member_guard ~ctx
+                    ~version_namespace:meth.version_namespace
+                    ~class_version:entity.version ~member_version:meth.version
+                    ~stub method_buf ~fallback:(fun v ->
+                      C_stub_helpers.emit_fallback_method_stub ~ctx
+                        ~c_type:entity.c_type ~class_name:entity.name ~ml_name
+                        ~c_identifier:meth.c_identifier ~version:v meth);
+                  let method_content = Buffer.contents method_buf in
+                  let os_fallback =
+                    Gir_gen_lib.Generate.C_stub_helpers
+                    .emit_os_fallback_method_stub ~ctx ~c_type:entity.c_type
+                      ~class_name:entity.name ~ml_name
+                      ~c_identifier:meth.c_identifier ~os:os_val meth
+                  in
+                  Gir_gen_lib.Generate.C_stub_helpers.emit_with_os_guard
+                    ~os:(Some os_val) ~failwith_stub:os_fallback
+                    ~stub:method_content buf
             with Failure msg ->
               eprintf "  Warning: skipping method %s: %s\n" meth.method_name msg)
         (List.rev entity.methods)
@@ -292,10 +315,13 @@ let generate_c_stub ~ctx ~output_dir entity =
     | _ -> ());
 
     let body_content = Buffer.contents body_buf in
+
+    (* Apply version guard (inner) to produce version_guarded_content *)
+    let version_buf = Buffer.create 4096 in
     (match entity.version with
     | None ->
         (* No version, emit body as-is *)
-        Buffer.add_string buf body_content
+        Buffer.add_string version_buf body_content
     | Some version_str -> (
         (* Entity has version, wrap body with class-level guard *)
         match
@@ -304,24 +330,25 @@ let generate_c_stub ~ctx ~output_dir entity =
         with
         | Error _ ->
             (* If parsing fails, emit without guard *)
-            Buffer.add_string buf body_content
+            Buffer.add_string version_buf body_content
         | Ok Gir_gen_lib.Version_guard.No_guard ->
             (* No guard needed *)
-            Buffer.add_string buf body_content
+            Buffer.add_string version_buf body_content
         | Ok (Gir_gen_lib.Version_guard.Class_guard version) -> (
             (* Emit class-level guard *)
             match
               Gir_gen_lib.Version_guard.emit_c_guard
                 ctx.namespace.namespace_name version ~is_opening:true
             with
-            | Error _ -> Buffer.add_string buf body_content
+            | Error _ -> Buffer.add_string version_buf body_content
             | Ok guard_if -> (
-                Buffer.add_string buf guard_if;
-                Buffer.add_string buf "\n\n";
-                Buffer.add_string buf body_content;
-                Buffer.add_string buf "\n";
-                Buffer.add_string buf Gir_gen_lib.Version_guard.c_guard_else;
-                Buffer.add_string buf "\n\n";
+                Buffer.add_string version_buf guard_if;
+                Buffer.add_string version_buf "\n\n";
+                Buffer.add_string version_buf body_content;
+                Buffer.add_string version_buf "\n";
+                Buffer.add_string version_buf
+                  Gir_gen_lib.Version_guard.c_guard_else;
+                Buffer.add_string version_buf "\n\n";
 
                 (* Generate fallback stubs for all members *)
                 List.iter
@@ -334,13 +361,13 @@ let generate_c_stub ~ctx ~output_dir entity =
                         Gir_gen_lib.Utils.ml_constructor_name
                           ~class_name:entity.name ~constructor:ctor
                       in
-                      Buffer.add_string buf
+                      Buffer.add_string version_buf
                         (Gir_gen_lib.Generate.C_stub_helpers
                          .emit_fallback_constructor_stub ~ctx
                            ~c_type:entity.c_type ~class_name:entity.name
                            ~ml_name ~c_identifier:ctor.c_identifier ~version
                            ctor);
-                      Buffer.add_string buf "\n"))
+                      Buffer.add_string version_buf "\n"))
                   entity.constructors;
 
                 List.iter
@@ -354,12 +381,12 @@ let generate_c_stub ~ctx ~output_dir entity =
                         Gir_gen_lib.Utils.ml_method_name ~class_name:entity.name
                           meth
                       in
-                      Buffer.add_string buf
+                      Buffer.add_string version_buf
                         (Gir_gen_lib.Generate.C_stub_helpers
                          .emit_fallback_method_stub ~ctx ~c_type:entity.c_type
                            ~class_name:entity.name ~ml_name
                            ~c_identifier:meth.c_identifier ~version meth);
-                      Buffer.add_string buf "\n"))
+                      Buffer.add_string version_buf "\n"))
                   entity.methods;
 
                 List.iter
@@ -374,23 +401,23 @@ let generate_c_stub ~ctx ~output_dir entity =
                           Gir_gen_lib.Utils.ml_property_name ~ctx
                             ~class_name:entity.name prop
                         in
-                        Buffer.add_string buf
+                        Buffer.add_string version_buf
                           (Gir_gen_lib.Generate.C_stub_helpers
                            .emit_fallback_property_getter_stub ~ctx
                              ~c_type:entity.c_type ~class_name:entity.name
                              ~ml_name ~version prop);
-                        Buffer.add_string buf "\n";
+                        Buffer.add_string version_buf "\n";
                         if prop.writable && not prop.construct_only then (
                           let ml_name =
                             Gir_gen_lib.Utils.ml_property_setter_name ~ctx
                               ~class_name:entity.name prop
                           in
-                          Buffer.add_string buf
+                          Buffer.add_string version_buf
                             (Gir_gen_lib.Generate.C_stub_helpers
                              .emit_fallback_property_setter_stub ~ctx
                                ~c_type:entity.c_type ~class_name:entity.name
                                ~ml_name ~version prop);
-                          Buffer.add_string buf "\n"))
+                          Buffer.add_string version_buf "\n"))
                       end)
                   entity.properties;
 
@@ -403,7 +430,7 @@ let generate_c_stub ~ctx ~output_dir entity =
                         (String.lowercase_ascii ctx.namespace.namespace_name)
                         (Gir_gen_lib.Utils.to_snake_case entity.name)
                     in
-                    Buffer.add_string buf
+                    Buffer.add_string version_buf
                       (sprintf
                          {|CAMLexport CAMLprim value %s(value obj)
 {
@@ -414,19 +441,105 @@ let generate_c_stub ~ctx ~output_dir entity =
 }
 |}
                          fn_name entity.name version_str);
-                    Buffer.add_string buf "\n"
+                    Buffer.add_string version_buf "\n"
                 | _ -> ());
 
-                Buffer.add_string buf "\n";
+                Buffer.add_string version_buf "\n";
                 match
                   Gir_gen_lib.Version_guard.emit_c_guard
                     ctx.namespace.namespace_name version ~is_opening:false
                 with
-                | Error _ -> Buffer.add_string buf "#endif\n"
-                | Ok guard_endif -> Buffer.add_string buf (guard_endif ^ "\n")))
+                | Error _ -> Buffer.add_string version_buf "#endif\n"
+                | Ok guard_endif ->
+                    Buffer.add_string version_buf (guard_endif ^ "\n")))
         | Ok (Gir_gen_lib.Version_guard.Member_guard _) ->
             (* Member guard at class level doesn't make sense, emit without guard *)
-            Buffer.add_string buf body_content));
+            Buffer.add_string version_buf body_content));
+
+    (* Apply OS guard (outer) wrapping the version-guarded content *)
+    let version_guarded = Buffer.contents version_buf in
+    (match entity.os with
+    | None -> Buffer.add_string buf version_guarded
+    | Some os_val ->
+        (* Generate OS-fallback stubs for the #else branch *)
+        let os_fallback_buf = Buffer.create 2048 in
+        List.iter
+          ~f:(fun (ctor : gir_constructor) ->
+            if
+              Gir_gen_lib.Generate.Filtering.should_generate_constructor ~ctx
+                ctor
+            then (
+              let ml_name =
+                Gir_gen_lib.Utils.ml_constructor_name ~class_name:entity.name
+                  ~constructor:ctor
+              in
+              Buffer.add_string os_fallback_buf
+                (Gir_gen_lib.Generate.C_stub_helpers
+                 .emit_os_fallback_constructor_stub ~ctx ~c_type:entity.c_type
+                   ~class_name:entity.name ~ml_name
+                   ~c_identifier:ctor.c_identifier ~os:os_val ctor);
+              Buffer.add_string os_fallback_buf "\n"))
+          entity.constructors;
+        List.iter
+          ~f:(fun (meth : gir_method) ->
+            if
+              not
+                (Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx
+                   meth)
+            then (
+              let ml_name =
+                Gir_gen_lib.Utils.ml_method_name ~class_name:entity.name meth
+              in
+              Buffer.add_string os_fallback_buf
+                (Gir_gen_lib.Generate.C_stub_helpers
+                 .emit_os_fallback_method_stub ~ctx ~c_type:entity.c_type
+                   ~class_name:entity.name ~ml_name
+                   ~c_identifier:meth.c_identifier ~os:os_val meth);
+              Buffer.add_string os_fallback_buf "\n"))
+          entity.methods;
+        List.iter
+          ~f:(fun (prop : gir_property) ->
+            if
+              Gir_gen_lib.Generate.Filtering.should_generate_property ~ctx
+                ~class_name:entity.name ~methods:entity.methods prop
+            then
+              begin if prop.readable then (
+                let ml_name =
+                  Gir_gen_lib.Utils.ml_property_name ~ctx
+                    ~class_name:entity.name prop
+                in
+                Buffer.add_string os_fallback_buf
+                  (Gir_gen_lib.Generate.C_stub_helpers
+                   .emit_os_fallback_property_getter_stub ~ctx
+                     ~c_type:entity.c_type ~class_name:entity.name ~ml_name
+                     ~os:os_val prop);
+                Buffer.add_string os_fallback_buf "\n";
+                if prop.writable && not prop.construct_only then (
+                  let ml_name =
+                    Gir_gen_lib.Utils.ml_property_setter_name ~ctx
+                      ~class_name:entity.name prop
+                  in
+                  Buffer.add_string os_fallback_buf
+                    (Gir_gen_lib.Generate.C_stub_helpers
+                     .emit_os_fallback_property_setter_stub ~ctx
+                       ~c_type:entity.c_type ~class_name:entity.name ~ml_name
+                       ~os:os_val prop);
+                  Buffer.add_string os_fallback_buf "\n"))
+              end)
+          entity.properties;
+        let os_fallback = Buffer.contents os_fallback_buf in
+        Buffer.add_char buf '\n';
+        Buffer.add_string buf
+          (Gir_gen_lib.Generate.C_stub_helpers.os_to_c_guard_open os_val);
+        Buffer.add_char buf '\n';
+        Buffer.add_string buf version_guarded;
+        Buffer.add_char buf '\n';
+        Buffer.add_string buf "#else\n\n";
+        Buffer.add_string buf os_fallback;
+        Buffer.add_char buf '\n';
+        Buffer.add_string buf
+          (Gir_gen_lib.Generate.C_stub_helpers.os_to_c_guard_close os_val);
+        Buffer.add_char buf '\n');
 
     write_file ~path:c_file ~content:(Buffer.contents buf);
     Some stub_name
@@ -933,9 +1046,14 @@ let generate_bindings filter_file gir_file output_dir reference_files
   (* Apply overrides before building type-mapping context. Ignored entities
      must be absent from ctx so that find_type_mapping_for_gir_type returns
      None for their types. *)
-  let classes, interfaces, gtk_enums, gtk_bitfields, gtk_records =
+  let ( classes,
+        interfaces,
+        gtk_enums,
+        gtk_bitfields,
+        gtk_records,
+        header_overrides ) =
     match overrides_file with
-    | None -> (classes, interfaces, gtk_enums, gtk_bitfields, gtk_records)
+    | None -> (classes, interfaces, gtk_enums, gtk_bitfields, gtk_records, [])
     | Some file -> (
         printf "Loading overrides from %s\n" file;
         match Gir_gen_lib.Override_parser.parse_overrides file with
@@ -960,7 +1078,8 @@ let generate_bindings filter_file gir_file output_dir reference_files
               result.interfaces,
               result.enums,
               result.bitfields,
-              result.records ))
+              result.records,
+              ov.headers ))
   in
 
   (* ==== PREPROCESSING STAGE ==== *)
@@ -1130,8 +1249,9 @@ let generate_bindings filter_file gir_file output_dir reference_files
   in
   printf "\n";
   let header_content =
-    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
-      ~gtk_enums ~gtk_bitfields ~records:ctx.records ~interfaces:ctx.interfaces
+    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~header_overrides
+      ~classes:ctx.classes ~gtk_enums ~gtk_bitfields ~records:ctx.records
+      ~interfaces:ctx.interfaces ()
   in
   write_file ~path:header_file ~content:header_content;
 
@@ -1489,10 +1609,11 @@ let render_version_component ~kind (name : string) (version : string) =
 (* Render a single component override back to human-friendly sexp. *)
 let render_component ~kind (c : Gir_gen_lib.Override_types.component_override) =
   match c.action with
-  | Gir_gen_lib.Override_types.Ignore ->
+  | Some Gir_gen_lib.Override_types.Ignore ->
       sprintf "    (%s %s (ignore))" kind c.component_name
-  | Gir_gen_lib.Override_types.Set_version vs ->
+  | Some (Gir_gen_lib.Override_types.Set_version vs) ->
       sprintf "    (%s %s (version \"%s\"))" kind c.component_name vs.vs_version
+  | None -> sprintf "    (%s %s)" kind c.component_name
 
 (* Render an enum override entry, merging existing ignores with fresh version data.
    [ignore_components]: component-level ignores to preserve from the existing file.
@@ -1547,8 +1668,9 @@ let merge_version_entities ~entity_kind ~component_kind ~existing ~gir_versions
               List.filter
                 ~f:(fun (c : Gir_gen_lib.Override_types.component_override) ->
                   match c.action with
-                  | Gir_gen_lib.Override_types.Ignore -> true
-                  | Gir_gen_lib.Override_types.Set_version _ -> false)
+                  | Some Gir_gen_lib.Override_types.Ignore -> true
+                  | Some (Gir_gen_lib.Override_types.Set_version _) | None ->
+                      false)
                 (get_components ov)
             in
             (get_entity_action ov, ignores)
@@ -1615,6 +1737,7 @@ let generate_overrides gir_file output_file =
             enums = [];
             bitfields = [];
             functions = [];
+            headers = [];
           }
     end
     else
@@ -1626,6 +1749,7 @@ let generate_overrides gir_file output_file =
         enums = [];
         bitfields = [];
         functions = [];
+        headers = [];
       }
   in
 
@@ -1722,8 +1846,8 @@ let generate_overrides gir_file output_file =
          List.filter
            ~f:(fun (c : Gir_gen_lib.Override_types.component_override) ->
              match c.action with
-             | Gir_gen_lib.Override_types.Ignore -> true
-             | Gir_gen_lib.Override_types.Set_version _ -> false)
+             | Some Gir_gen_lib.Override_types.Ignore -> true
+             | Some (Gir_gen_lib.Override_types.Set_version _) | None -> false)
            o.fields));
 
   Buffer.add_string buf ")\n";

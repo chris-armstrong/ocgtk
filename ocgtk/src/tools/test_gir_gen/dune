@@ -45,6 +45,7 @@
   compilation_tests
   version_guard_tests
   c_stub_version_guard_tests
+  fixtures
   types_tests
   parser_tests
   apply_tests
@@ -58,5 +59,12 @@
   interface_method_types_tests
   test_gir_gen
   type_factory)
- (deps %{exe:../gir_gen/gir_gen.exe})
+ (deps
+  %{exe:../gir_gen/gir_gen.exe}
+  (source_tree %{project_root}/ocgtk/gir))
+ (action
+  (setenv
+   "GIR_DATA_DIR"
+   "%{project_root}/ocgtk/gir"
+   (run %{test})))
  (libraries str unix gir_gen_lib alcotest ppxlib sexplib))

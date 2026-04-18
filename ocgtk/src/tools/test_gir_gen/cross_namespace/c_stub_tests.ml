@@ -223,6 +223,7 @@ let test_copy_function_returns_copy_result () =
       introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
   let record =
@@ -242,6 +243,7 @@ let test_copy_function_returns_copy_result () =
       record_doc = None;
       introspectable = true;
       version = None;
+      os = None;
     }
   in
 
@@ -310,6 +312,7 @@ let test_record_copy_parses_successfully () =
       introspectable = true;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
   let record =
@@ -339,6 +342,7 @@ let test_record_copy_parses_successfully () =
             writable = true;
             field_doc = None;
             field_version = None;
+            field_os = None;
           };
         ];
       constructors = [];
@@ -348,6 +352,7 @@ let test_record_copy_parses_successfully () =
       record_doc = None;
       introspectable = true;
       version = None;
+      os = None;
     }
   in
 
@@ -424,6 +429,7 @@ let test_enum_module_name_matches_dune_convention () =
       functions = [];
       enum_doc = None;
       enum_version = None;
+      enum_os = None;
     }
   in
   (* Check that the module name follows dune convention *)
@@ -441,6 +447,7 @@ let test_enum_module_name_matches_dune_convention () =
       flags = [];
       bitfield_doc = None;
       bitfield_version = None;
+      bitfield_os = None;
     }
   in
   let bitfield_module_name =
@@ -516,11 +523,13 @@ let test_enum_array_element_conversion () =
             c_identifier = "PANGO_SCRIPT_INVALID";
             member_doc = None;
             member_version = None;
+            member_os = None;
           };
         ];
       functions = [];
       enum_doc = None;
       enum_version = None;
+      enum_os = None;
     }
   in
   let ctx = { (Helpers.create_test_context ()) with enums = [ script_enum ] } in
@@ -579,6 +588,7 @@ let test_enum_array_element_conversion () =
       set_property = None;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -670,10 +680,12 @@ let test_bitfield_array_element_conversion () =
             flag_c_identifier = "GTK_APPLICATION_INHIBIT_LOGOUT";
             flag_doc = None;
             flag_version = None;
+            flag_os = None;
           };
         ];
       bitfield_doc = None;
       bitfield_version = None;
+      bitfield_os = None;
     }
   in
   let ctx =
@@ -736,6 +748,7 @@ let test_bitfield_array_element_conversion () =
       set_property = None;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -826,6 +839,7 @@ let test_inout_record_param_pointer_type () =
             writable = true;
             field_doc = None;
             field_version = None;
+            field_os = None;
           };
         ];
       constructors = [];
@@ -834,6 +848,7 @@ let test_inout_record_param_pointer_type () =
       record_doc = None;
       introspectable = true;
       version = None;
+      os = None;
     }
   in
   let ctx =
@@ -895,6 +910,7 @@ let test_inout_record_param_pointer_type () =
       set_property = None;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -1060,6 +1076,7 @@ let test_fixed_size_array_out_param () =
       record_doc = None;
       introspectable = true;
       version = None;
+      os = None;
     }
   in
   let ctx =
@@ -1129,6 +1146,7 @@ let test_fixed_size_array_out_param () =
       set_property = None;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -1261,6 +1279,7 @@ let test_fixed_size_float_array_return () =
       set_property = None;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -1398,6 +1417,7 @@ let test_out_param_array_without_length_skipped () =
       set_property = None;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -1455,6 +1475,7 @@ let test_double_pointer_out_param_skipped () =
       set_property = None;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -1540,6 +1561,7 @@ let test_normal_out_param_not_skipped () =
       set_property = None;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -1569,6 +1591,7 @@ let test_gdkpixbuf_format_flags_guarded () =
             flag_c_identifier = "GDK_PIXBUF_FORMAT_WRITABLE";
             flag_doc = None;
             flag_version = None;
+            flag_os = None;
           };
           {
             flag_name = "SCALABLE";
@@ -1576,10 +1599,12 @@ let test_gdkpixbuf_format_flags_guarded () =
             flag_c_identifier = "GDK_PIXBUF_FORMAT_SCALABLE";
             flag_doc = None;
             flag_version = None;
+            flag_os = None;
           };
         ];
       bitfield_doc = None;
       bitfield_version = None;
+      bitfield_os = None;
     }
   in
 
@@ -1642,10 +1667,12 @@ let test_normal_bitfield_no_guard () =
             flag_c_identifier = "GTK_APPLICATION_INHIBIT_LOGOUT";
             flag_doc = None;
             flag_version = None;
+            flag_os = None;
           };
         ];
       bitfield_doc = None;
       bitfield_version = None;
+      bitfield_os = None;
     }
   in
 
@@ -1713,6 +1740,7 @@ let test_cross_namespace_c_converter_names () =
             functions = [];
             enum_doc = None;
             enum_version = None;
+            enum_os = None;
           };
         ];
       bitfields = [];
@@ -1763,6 +1791,7 @@ let test_cross_namespace_c_converter_names () =
       set_property = None;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 
@@ -1860,6 +1889,7 @@ let test_cross_namespace_enum_array_element_conversion () =
       set_property = None;
       version = None;
       version_namespace = None;
+      os = None;
     }
   in
 

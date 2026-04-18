@@ -50,6 +50,7 @@ type gir_method = {
   introspectable : bool;
   version : string option;
   version_namespace : string option;
+  os : string option;
 }
 
 type gir_function = {
@@ -62,6 +63,7 @@ type gir_function = {
   introspectable : bool;
   version : string option;
   version_namespace : string option;
+  os : string option;
 }
 
 type gir_signal = {
@@ -71,6 +73,7 @@ type gir_signal = {
   doc : string option;
   version : string option;
   version_namespace : string option;
+  os : string option;
 }
 
 type gir_constructor = {
@@ -82,6 +85,7 @@ type gir_constructor = {
   ctor_introspectable : bool;
   version : string option;
   version_namespace : string option;
+  os : string option;
 }
 
 type gir_property = {
@@ -93,6 +97,7 @@ type gir_property = {
   prop_doc : string option;
   version : string option;
   version_namespace : string option;
+  os : string option;
 }
 
 type gir_record_field = {
@@ -102,6 +107,7 @@ type gir_record_field = {
   writable : bool;
   field_doc : string option;
   field_version : string option;
+  field_os : string option;
 }
 
 type gir_record = {
@@ -121,6 +127,7 @@ type gir_record = {
   functions : gir_function list;
   record_doc : string option;
   version : string option;
+  os : string option;
 }
 
 type gir_enum_member = {
@@ -129,6 +136,7 @@ type gir_enum_member = {
   c_identifier : string;
   member_doc : string option;
   member_version : string option;
+  member_os : string option;
 }
 
 type gir_enum = {
@@ -138,6 +146,7 @@ type gir_enum = {
   functions : gir_function list;
   enum_doc : string option;
   enum_version : string option;
+  enum_os : string option;
 }
 
 type gir_bitfield_member = {
@@ -146,6 +155,7 @@ type gir_bitfield_member = {
   flag_c_identifier : string;
   flag_doc : string option;
   flag_version : string option;
+  flag_os : string option;
 }
 
 type gir_bitfield = {
@@ -154,6 +164,7 @@ type gir_bitfield = {
   flags : gir_bitfield_member list;
   bitfield_doc : string option;
   bitfield_version : string option;
+  bitfield_os : string option;
 }
 
 type gir_class = {
@@ -168,6 +179,7 @@ type gir_class = {
   signals : gir_signal list;
   class_doc : string option;
   version : string option;
+  os : string option;
 }
 
 type gir_interface = {
@@ -183,6 +195,7 @@ type gir_interface = {
   signals : gir_signal list;
   interface_doc : string option;
   version : string option;
+  os : string option;
 }
 
 (* Unified entity type for classes, interfaces, and records *)
@@ -203,6 +216,7 @@ type entity = {
   properties : gir_property list;
   signals : gir_signal list;
   version : string option;
+  os : string option;
 }
 
 let entity_of_class (cls : gir_class) : entity =
@@ -218,6 +232,7 @@ let entity_of_class (cls : gir_class) : entity =
     properties = cls.properties;
     signals = cls.signals;
     version = cls.version;
+    os = cls.os;
   }
 
 let entity_of_interface (intf : gir_interface) : entity =
@@ -233,6 +248,7 @@ let entity_of_interface (intf : gir_interface) : entity =
     properties = intf.properties;
     signals = intf.signals;
     version = intf.version;
+    os = intf.os;
   }
 
 let entity_of_record (rec_ : gir_record) : entity =
@@ -248,6 +264,7 @@ let entity_of_record (rec_ : gir_record) : entity =
     properties = [];
     signals = [];
     version = rec_.version;
+    os = rec_.os;
   }
 
 (* A generated OCaml class for a GIR Class or Interface *)

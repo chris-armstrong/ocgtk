@@ -11,12 +11,23 @@ type version_spec = { vs_version : string; vs_namespace : string option }
 type override_action = Ignore | Set_version of version_spec
 [@@deriving sexp, eq]
 
-type component_override = { component_name : string; action : override_action }
+type os_spec = string [@@deriving sexp, eq]
+(** OS/platform restriction. Supported values: "linux", "macos", "freebsd",
+    "unix". The generator emits [#ifdef __linux__] / [#else caml_failwith] /
+    [#endif] guards in the C stubs. Can be combined with [(version ...)] on the
+    same entity or component. *)
+
+type component_override = {
+  component_name : string;
+  action : override_action option;
+  os : os_spec option;
+}
 [@@deriving sexp, eq]
 
 type class_override = {
   class_name : string;
   class_action : override_action option;
+  class_os : os_spec option;
   constructors : component_override list;
   methods : component_override list;
   properties : component_override list;
@@ -27,6 +38,7 @@ type class_override = {
 type interface_override = {
   interface_name : string;
   interface_action : override_action option;
+  interface_os : os_spec option;
   methods : component_override list;
   properties : component_override list;
   signals : component_override list;
@@ -36,6 +48,7 @@ type interface_override = {
 type record_override = {
   record_name : string;
   record_action : override_action option;
+  record_os : os_spec option;
   fields : component_override list;
   constructors : component_override list;
   methods : component_override list;
@@ -46,6 +59,7 @@ type record_override = {
 type enum_override = {
   enum_name : string;
   enum_action : override_action option;
+  enum_os : os_spec option;
   members : component_override list;
   functions : component_override list;
 }
@@ -54,9 +68,15 @@ type enum_override = {
 type bitfield_override = {
   bitfield_name : string;
   bitfield_action : override_action option;
+  bitfield_os : os_spec option;
   flags : component_override list;
 }
 [@@deriving sexp, eq]
+
+type header_override = { header_path : string; header_os : os_spec option }
+[@@deriving sexp, eq]
+(** Override for a C `#include` header emitted in the generated `*_decls.h`
+    file. [header_os = Some "linux"] wraps the include in [#ifdef __linux__]. *)
 
 type library_overrides = {
   library_name : string;
@@ -66,5 +86,6 @@ type library_overrides = {
   enums : enum_override list;
   bitfields : bitfield_override list;
   functions : component_override list;
+  headers : header_override list;
 }
 [@@deriving sexp, eq]

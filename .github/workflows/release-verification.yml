@@ -222,7 +222,7 @@ jobs:
       - name: Install system dependencies
         run: |
           zypper install -y \
-            gcc make m4 patch unzip bzip2 gzip tar pkg-config perl diffutils which rsync \
+            gcc make m4 patch unzip bzip2 gzip tar pkg-config pkgconf perl diffutils which rsync \
             gtk4-devel cairo-devel pango-devel gdk-pixbuf-devel glib2-devel \
             gobject-introspection-devel xorg-x11-server-Xvfb xvfb-run
       - name: Install opam
@@ -250,6 +250,28 @@ jobs:
         run: |
           eval $(opam env)
           xvfb-run -a dune runtest
+
+  # ── macOS (Homebrew) ─────────────────────────────────────────────────────────
+  macos:
+    name: macOS (Homebrew)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install system dependencies
+        run: brew install gtk4 gobject-introspection pkgconf
+      - uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: ${{ env.OCAML_VERSION }}
+      - name: Pin conf-gtk4 and install dependencies
+        run: |
+          opam pin add -n conf-gtk4 conf-gtk4
+          opam install --deps-only --with-test -y ./ocgtk
+      - name: Build
+        working-directory: ocgtk
+        run: opam exec -- dune build
+      - name: Test
+        working-directory: ocgtk
+        run: opam exec -- dune runtest
 
   # ── FreeBSD 14 ───────────────────────────────────────────────────────────────
   # Disabled: FreeBSD runs on QEMU on GitHub runners which lack processor

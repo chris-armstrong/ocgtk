@@ -55,7 +55,7 @@ let test_header_file_naming_uses_namespace () =
   (* Act: Generate the header file content *)
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
+      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
   in
 
   (* Assert: Header guard should use namespace-based pattern *)
@@ -100,7 +100,7 @@ let test_header_guard_uses_correct_format () =
       let header_content =
         Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx
           ~classes:ctx.classes ~gtk_enums:[] ~gtk_bitfields:[] ~records:[]
-          ~interfaces:[]
+          ~interfaces:[] ()
       in
 
       (* Assert: Verify header guard uses _<namespace>_decls_h_ format *)
@@ -138,7 +138,7 @@ let test_header_guard_has_complete_structure () =
   (* Act: Generate the header content *)
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[]
+      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
   in
 
   (* Assert: Parse and verify complete guard structure *)

@@ -1,8 +1,8 @@
 # Test Suite Remediation Plan
 
-**Status: 🔲 NOT STARTED (2026-04-09)**
-**Last revised: 2026-04-16** — rebased onto main (`bafeb1ea`); four interface-support
-test files and infrastructure helpers arrived; Phase 5 dune comments partly done.
+**Status: 🔄 IN PROGRESS — Phase 1 complete (2026-04-18)**
+**Last revised: 2026-04-18** — Phase 1 (all file moves and runner reorganisation)
+complete on `tests-cleanup` branch; merged up to main (`d65507d8`); Phase 2+ pending.
 
 ## Overview
 
@@ -54,10 +54,10 @@ generation) unit tests currently stranded at the root of `test_gir_gen/`. The
 was never created.
 
 **Actions:**
-- [ ] Create `ocgtk/src/tools/test_gir_gen/class_generation/`
-- [ ] Move `method_wrapper_tests.ml` → `class_generation/method_wrapper_tests.ml`
-- [ ] Move `constructor_wrapper_tests.ml` → `class_generation/constructor_wrapper_tests.ml`
-- [ ] Update `dune` modules list
+- [x] Create `ocgtk/src/tools/test_gir_gen/class_generation/`
+- [x] Move `method_wrapper_tests.ml` → `class_generation/method_wrapper_tests.ml`
+- [x] Move `constructor_wrapper_tests.ml` → `class_generation/constructor_wrapper_tests.ml`
+- [x] Update `dune` modules list
 
 ### 1.2 Create `overrides/` subdirectory
 
@@ -66,8 +66,8 @@ no grouping. Six use a `test_` prefix, two use a `_tests` suffix — inconsisten
 within the group.
 
 **Actions:**
-- [ ] Create `ocgtk/src/tools/test_gir_gen/overrides/`
-- [ ] Move and rename each file (strip `test_` prefix, add `_tests` suffix for consistency):
+- [x] Create `ocgtk/src/tools/test_gir_gen/overrides/`
+- [x] Move and rename each file (strip `test_` prefix, add `_tests` suffix for consistency):
 
   | Current (root) | Target (overrides/) |
   |----------------|---------------------|
@@ -80,8 +80,8 @@ within the group.
   | `version_guard_tests.ml` | `version_guard_tests.ml` *(unchanged)* |
   | `test_enum_member_version.ml` | `enum_member_version_tests.ml` |
 
-- [ ] Update `dune` modules list (rename entries to match new module names)
-- [ ] Update `test_gir_gen.ml` runner references
+- [x] Update `dune` modules list (rename entries to match new module names)
+- [x] Update `test_gir_gen.ml` runner references
 
 ### 1.3 Move `c_validation_tests.ml` out of `infrastructure/`
 
@@ -90,8 +90,8 @@ reserved for test support code (helpers, parsers, validators). Tests of the
 `C_validation` module belong alongside the other C-level tests in `c_stubs/`.
 
 **Actions:**
-- [ ] Move `infrastructure/c_validation_tests.ml` → `c_stubs/c_validation_tests.ml`
-- [ ] Update `dune` modules list
+- [x] Move `infrastructure/c_validation_tests.ml` → `c_stubs/c_validation_tests.ml`
+- [x] Update `dune` modules list
 
 ### 1.4 Consolidate `c_stubs/cross_namespace_tests.ml` into `cross_namespace/`
 
@@ -101,9 +101,9 @@ cross-namespace test inside `c_stubs/` creates ambiguity about which is the cano
 home.
 
 **Actions:**
-- [ ] Move `c_stubs/cross_namespace_tests.ml` → `cross_namespace/c_stub_tests.ml`
-- [ ] Update `dune` modules list
-- [ ] Update `test_gir_gen.ml` runner reference
+- [x] Move `c_stubs/cross_namespace_tests.ml` → `cross_namespace/c_stub_tests.ml`
+- [x] Update `dune` modules list
+- [x] Update `test_gir_gen.ml` runner reference
 
 ### 1.5 Rename `integration/` files for consistency
 
@@ -116,22 +116,22 @@ Additionally, `core.ml` tests four unrelated concerns in one file and must be sp
 **Actions:**
 
 Split `core.ml` into four files:
-- [ ] `core.ml` → `gir_parsing_tests.ml` (test_gir_parsing, test_c_code_generation)
-- [ ] `core.ml` → `widget_generation_tests.ml` (test_widget_generation, test_many_methods_*)
-- [ ] `core.ml` → `nullable_generation_tests.ml` (test_nullable_*)
-- [ ] `core.ml` → `cli_tests.ml` (test_help_text)
-- [ ] Delete `core.ml`
+- [x] `core.ml` → `gir_parsing_tests.ml` (test_gir_parsing, test_c_code_generation)
+- [x] `core.ml` → `widget_generation_tests.ml` (test_widget_generation, test_many_methods_*)
+- [x] `core.ml` → `nullable_generation_tests.ml` (test_nullable_*)
+- [x] `core.ml` → `cli_tests.ml` (test_help_text)
+- [x] Delete `core.ml`
 
 Rename remaining integration files:
-- [ ] `parser.ml` → `parser_tests.ml`
-- [ ] `signals.ml` → `signals_tests.ml`
-- [ ] `enums.ml` → `enums_tests.ml`
-- [ ] `records.ml` → `records_tests.ml`
-- [ ] `properties.ml` → `properties_tests.ml`
-- [ ] `edge_cases.ml` → `edge_cases_tests.ml`
+- [x] `parser.ml` → `parser_tests.ml`
+- [x] `signals.ml` → `signals_tests.ml`
+- [x] `enums.ml` → `enums_tests.ml`
+- [x] `records.ml` → `records_tests.ml`
+- [x] `properties.ml` → `properties_tests.ml`
+- [x] `edge_cases.ml` → `edge_cases_tests.ml`
 
-- [ ] Update `dune` modules list for all renames
-- [ ] Update `test_gir_gen.ml` runner references
+- [x] Update `dune` modules list for all renames
+- [x] Update `test_gir_gen.ml` runner references
 
 ### 1.6 Rename `c_stubs/c_stubs_tests.ml`
 
@@ -139,9 +139,9 @@ The filename is redundant — a file called `c_stubs_tests.ml` inside a director
 called `c_stubs/`. The file tests general C stub generation.
 
 **Actions:**
-- [ ] Rename `c_stubs/c_stubs_tests.ml` → `c_stubs/generation_tests.ml`
-- [ ] Update `dune` modules list
-- [ ] Update `test_gir_gen.ml` runner reference (`C_stubs_tests` → `Generation_tests`)
+- [x] Rename `c_stubs/c_stubs_tests.ml` → `c_stubs/generation_tests.ml`
+- [x] Update `dune` modules list
+- [x] Update `test_gir_gen.ml` runner reference (`C_stubs_tests` → `Generation_tests`)
 
 ### 1.8 Move interface support test files *(new — arrived in main after plan was written)*
 
@@ -150,12 +150,12 @@ with the inconsistent `test_` prefix. They need to be placed in the correct laye
 directories using the `_tests` suffix convention.
 
 **Actions:**
-- [ ] Move `test_interface_parsing.ml` → `interface/parsing_tests.ml` *(new subdir)*
-- [ ] Move `test_from_gobject_gen.ml` → `interface/from_gobject_tests.ml`
-- [ ] Move `test_interface_inheritance.ml` → `class_generation/interface_inheritance_tests.ml`
-- [ ] Move `test_interface_method_types.ml` → `class_generation/interface_method_types_tests.ml`
-- [ ] Update `dune` modules list
-- [ ] Update `test_gir_gen.ml` runner references (module names change)
+- [x] Move `test_interface_parsing.ml` → `interface/parsing_tests.ml` *(new subdir)*
+- [x] Move `test_from_gobject_gen.ml` → `interface/from_gobject_tests.ml`
+- [x] Move `test_interface_inheritance.ml` → `class_generation/interface_inheritance_tests.ml`
+- [x] Move `test_interface_method_types.ml` → `class_generation/interface_method_types_tests.ml`
+- [x] Update `dune` modules list
+- [x] Update `test_gir_gen.ml` runner references (module names change)
 
 ---
 
@@ -166,7 +166,7 @@ was written) in an order that mixes layers with no grouping.
 Reorganise to match the documented layer hierarchy with comment separators.
 
 **Actions:**
-- [ ] Group entries in `test_gir_gen.ml` as:
+- [x] Group entries in `test_gir_gen.ml` as:
   1. Layer 0 — C Stub Generation (`c_stubs/`)
   2. Layer 1 — ML Generation (`ml_generation/`)
   3. Layer 2 — Class Generation (`class_generation/`) — includes interface inheritance
@@ -176,7 +176,7 @@ Reorganise to match the documented layer hierarchy with comment separators.
   5. Integration — End-to-end subprocess (`integration/`)
   6. Cross-namespace (`cross_namespace/`)
   7. Override system (`overrides/`)
-- [ ] Add comment lines between groups
+- [x] Add comment lines between groups
 
 ---
 

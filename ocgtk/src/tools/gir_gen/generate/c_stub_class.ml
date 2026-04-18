@@ -41,6 +41,11 @@ let generate_forward_decls ~namespace_prefix ~classes ~interfaces =
     ~f:(fun (cls : gir_class) ->
       if not (Hashtbl.mem seen cls.c_type) then begin
         Hashtbl.add seen cls.c_type ();
+        (* OS guard (outer) wraps both the version guard and the macros *)
+        Option.iter
+          (fun os ->
+            Buffer.add_string buf (C_stub_helpers.os_to_c_guard_open os ^ "\n"))
+          cls.os;
         Option.iter
           (emit_version_guard_open buf ~namespace:namespace_prefix)
           cls.version;
@@ -51,7 +56,11 @@ let generate_forward_decls ~namespace_prefix ~classes ~interfaces =
           "#define Val_%s(obj) ((value)(ml_gobject_val_of_ext(obj)))\n"
           cls.c_type;
         bprintf buf "#endif /* Val_%s */\n\n" cls.c_type;
-        Option.iter (fun _ -> Buffer.add_string buf "#endif\n") cls.version
+        Option.iter (fun _ -> Buffer.add_string buf "#endif\n") cls.version;
+        Option.iter
+          (fun os ->
+            Buffer.add_string buf (C_stub_helpers.os_to_c_guard_close os ^ "\n"))
+          cls.os
       end)
     classes;
 
@@ -61,6 +70,11 @@ let generate_forward_decls ~namespace_prefix ~classes ~interfaces =
     ~f:(fun (intf : gir_interface) ->
       if not (Hashtbl.mem seen intf.c_type) then begin
         Hashtbl.add seen intf.c_type ();
+        (* OS guard (outer) wraps both the version guard and the macros *)
+        Option.iter
+          (fun os ->
+            Buffer.add_string buf (C_stub_helpers.os_to_c_guard_open os ^ "\n"))
+          intf.os;
         Option.iter
           (emit_version_guard_open buf ~namespace:namespace_prefix)
           intf.version;
@@ -71,7 +85,11 @@ let generate_forward_decls ~namespace_prefix ~classes ~interfaces =
           "#define Val_%s(obj) ((value)(ml_gobject_val_of_ext(obj)))\n"
           intf.c_type;
         bprintf buf "#endif /* Val_%s */\n\n" intf.c_type;
-        Option.iter (fun _ -> Buffer.add_string buf "#endif\n") intf.version
+        Option.iter (fun _ -> Buffer.add_string buf "#endif\n") intf.version;
+        Option.iter
+          (fun os ->
+            Buffer.add_string buf (C_stub_helpers.os_to_c_guard_close os ^ "\n"))
+          intf.os
       end)
     interfaces;
 

@@ -73,8 +73,35 @@ let parse_version_spec ~comp_name sexp_args =
              message = "Expected (version \"X.Y\") or (version (lib \"X.Y\"))";
            })
 
+(** Parse optional qualifiers from a component body: (ignore), (version ...),
+    (os "..."). Returns [(action, os)] where both are options. *)
+let parse_component_qualifiers ~comp_name body =
+  let rec go action os = function
+    | [] -> Ok (action, os)
+    | Sexp.Atom "ignore" :: rest | Sexp.List [ Sexp.Atom "ignore" ] :: rest ->
+        go (Some Ignore) os rest
+    | Sexp.List (Sexp.Atom "version" :: args) :: rest -> (
+        match parse_version_spec ~comp_name args with
+        | Error e -> Error e
+        | Ok a -> go (Some a) os rest)
+    | Sexp.List [ Sexp.Atom "os"; Sexp.Atom os_val ] :: rest ->
+        go action (Some os_val) rest
+    | Sexp.List (Sexp.Atom k :: _) :: _ ->
+        Error
+          (Invalid_format
+             {
+               location = Printf.sprintf "%s" comp_name;
+               message =
+                 Printf.sprintf
+                   "Unknown qualifier '%s'; expected ignore, version, or os" k;
+             })
+    | _ :: rest -> go action os rest
+  in
+  go None None body
+
 let parse_component ~entity_name sexp =
   match sexp with
+  (* Legacy short form: (kind name ignore) *)
   | Sexp.List [ Sexp.Atom _comp_kind; Sexp.Atom comp_name; Sexp.Atom "ignore" ]
   | Sexp.List
       [
@@ -82,23 +109,21 @@ let parse_component ~entity_name sexp =
         Sexp.Atom comp_name;
         Sexp.List [ Sexp.Atom "ignore" ];
       ] ->
-      Ok { component_name = comp_name; action = Ignore }
-  | Sexp.List
-      (Sexp.Atom _comp_kind
-      :: Sexp.Atom comp_name
-      :: [ Sexp.List (Sexp.Atom "version" :: args) ]) -> (
-      match parse_version_spec ~comp_name args with
+      Ok { component_name = comp_name; action = Some Ignore; os = None }
+  (* General form: (kind name qualifier...) *)
+  | Sexp.List (Sexp.Atom _comp_kind :: Sexp.Atom comp_name :: body) -> (
+      match parse_component_qualifiers ~comp_name body with
       | Error e -> Error e
-      | Ok action -> Ok { component_name = comp_name; action })
-  | Sexp.List (Sexp.Atom _comp_kind :: Sexp.Atom comp_name :: _) ->
-      Error
-        (Invalid_format
-           {
-             location = Printf.sprintf "%s %s" entity_name comp_name;
-             message =
-               "Expected (ignore), (version \"X.Y\"), or (version (lib \
-                \"X.Y\"))";
-           })
+      | Ok (None, None) ->
+          Error
+            (Invalid_format
+               {
+                 location = Printf.sprintf "%s %s" entity_name comp_name;
+                 message =
+                   "Expected at least one qualifier: (ignore), (version \
+                    \"X.Y\"), or (os \"...\")";
+               })
+      | Ok (action, os) -> Ok { component_name = comp_name; action; os })
   | _ ->
       Error
         (Invalid_format
@@ -125,9 +150,18 @@ let has_ignore_marker body =
       | _ -> false)
     body
 
+(** Extract (os "...") from entity body, if present. *)
+let extract_os_marker body =
+  List.find_map
+    (function
+      | Sexp.List [ Sexp.Atom "os"; Sexp.Atom os_val ] -> Some os_val
+      | _ -> None)
+    body
+
 (** Validate that every list-form element in an entity body starts with one of
-    [valid_kinds] (or is an action marker like [ignore] / [version]). Returns
-    [Error (Unknown_component_kind ...)] on the first unrecognised kind. *)
+    [valid_kinds] (or is an action marker like [ignore] / [version] / [os]).
+    Returns [Error (Unknown_component_kind ...)] on the first unrecognised kind.
+*)
 let validate_body_elements ~entity_name ~valid_kinds body =
   let rec check = function
     | [] -> Ok ()
@@ -139,7 +173,7 @@ let validate_body_elements ~entity_name ~valid_kinds body =
         | Sexp.List (Sexp.Atom k :: _) ->
             if
               List.mem k valid_kinds || String.equal k "ignore"
-              || String.equal k "version"
+              || String.equal k "version" || String.equal k "os"
             then check rest
             else
               Error
@@ -148,151 +182,139 @@ let validate_body_elements ~entity_name ~valid_kinds body =
   in
   check body
 
-let parse_class_override sexp =
+(** Parse the common header shared by all entity overrides: the entity name and
+    optional ignore/action marker. Returns [(name, action_opt, body)] on
+    success. *)
+let parse_entity_header ~kind sexp =
   match sexp with
-  | Sexp.List (Sexp.Atom "class" :: Sexp.Atom name :: body) ->
-      let class_action = if has_ignore_marker body then Some Ignore else None in
-      let* () =
-        validate_body_elements ~entity_name:name
-          ~valid_kinds:[ "constructor"; "method"; "property"; "signal" ]
-          body
-      in
-      let* constructors =
-        parse_components_of_kind ~entity_name:name ~kind:"constructor" body
-      in
-      let* methods =
-        parse_components_of_kind ~entity_name:name ~kind:"method" body
-      in
-      let* properties =
-        parse_components_of_kind ~entity_name:name ~kind:"property" body
-      in
-      let* signals =
-        parse_components_of_kind ~entity_name:name ~kind:"signal" body
-      in
-      Ok
-        {
-          class_name = name;
-          class_action;
-          constructors;
-          methods;
-          properties;
-          signals;
-        }
-  | _ ->
-      Error
-        (Invalid_format
-           { location = "class"; message = "Expected (class Name ...)" })
-
-let parse_interface_override sexp =
-  match sexp with
-  | Sexp.List (Sexp.Atom "interface" :: Sexp.Atom name :: body) ->
-      let interface_action =
-        if has_ignore_marker body then Some Ignore else None
-      in
-      let* () =
-        validate_body_elements ~entity_name:name
-          ~valid_kinds:[ "method"; "property"; "signal" ]
-          body
-      in
-      let* methods =
-        parse_components_of_kind ~entity_name:name ~kind:"method" body
-      in
-      let* properties =
-        parse_components_of_kind ~entity_name:name ~kind:"property" body
-      in
-      let* signals =
-        parse_components_of_kind ~entity_name:name ~kind:"signal" body
-      in
-      Ok
-        {
-          interface_name = name;
-          interface_action;
-          methods;
-          properties;
-          signals;
-        }
-  | _ ->
-      Error
-        (Invalid_format
-           { location = "interface"; message = "Expected (interface Name ...)" })
-
-let parse_record_override sexp =
-  match sexp with
-  | Sexp.List (Sexp.Atom "record" :: Sexp.Atom name :: body) ->
-      let record_action =
-        if has_ignore_marker body then Some Ignore else None
-      in
-      let* () =
-        validate_body_elements ~entity_name:name
-          ~valid_kinds:[ "field"; "constructor"; "method"; "function" ]
-          body
-      in
-      let* fields =
-        parse_components_of_kind ~entity_name:name ~kind:"field" body
-      in
-      let* constructors =
-        parse_components_of_kind ~entity_name:name ~kind:"constructor" body
-      in
-      let* methods =
-        parse_components_of_kind ~entity_name:name ~kind:"method" body
-      in
-      let* functions =
-        parse_components_of_kind ~entity_name:name ~kind:"function" body
-      in
-      Ok
-        {
-          record_name = name;
-          record_action;
-          fields;
-          constructors;
-          methods;
-          functions;
-        }
-  | _ ->
-      Error
-        (Invalid_format
-           { location = "record"; message = "Expected (record Name ...)" })
-
-let parse_enum_override sexp =
-  match sexp with
-  | Sexp.List (Sexp.Atom "enumeration" :: Sexp.Atom name :: body) ->
-      let enum_action = if has_ignore_marker body then Some Ignore else None in
-      let* () =
-        validate_body_elements ~entity_name:name
-          ~valid_kinds:[ "member"; "function" ] body
-      in
-      let* members =
-        parse_components_of_kind ~entity_name:name ~kind:"member" body
-      in
-      let* functions =
-        parse_components_of_kind ~entity_name:name ~kind:"function" body
-      in
-      Ok { enum_name = name; enum_action; members; functions }
+  | Sexp.List (Sexp.Atom k :: Sexp.Atom name :: body) when String.equal k kind
+    ->
+      let action = if has_ignore_marker body then Some Ignore else None in
+      let os = extract_os_marker body in
+      Ok (name, action, os, body)
   | _ ->
       Error
         (Invalid_format
            {
-             location = "enumeration";
-             message = "Expected (enumeration Name ...)";
+             location = kind;
+             message = Printf.sprintf "Expected (%s Name ...)" kind;
            })
 
+let parse_class_override sexp =
+  let* name, class_action, class_os, body =
+    parse_entity_header ~kind:"class" sexp
+  in
+  let* () =
+    validate_body_elements ~entity_name:name
+      ~valid_kinds:[ "constructor"; "method"; "property"; "signal" ]
+      body
+  in
+  let* constructors =
+    parse_components_of_kind ~entity_name:name ~kind:"constructor" body
+  in
+  let* methods =
+    parse_components_of_kind ~entity_name:name ~kind:"method" body
+  in
+  let* properties =
+    parse_components_of_kind ~entity_name:name ~kind:"property" body
+  in
+  let* signals =
+    parse_components_of_kind ~entity_name:name ~kind:"signal" body
+  in
+  Ok
+    {
+      class_name = name;
+      class_action;
+      class_os;
+      constructors;
+      methods;
+      properties;
+      signals;
+    }
+
+let parse_interface_override sexp =
+  let* name, interface_action, interface_os, body =
+    parse_entity_header ~kind:"interface" sexp
+  in
+  let* () =
+    validate_body_elements ~entity_name:name
+      ~valid_kinds:[ "method"; "property"; "signal" ]
+      body
+  in
+  let* methods =
+    parse_components_of_kind ~entity_name:name ~kind:"method" body
+  in
+  let* properties =
+    parse_components_of_kind ~entity_name:name ~kind:"property" body
+  in
+  let* signals =
+    parse_components_of_kind ~entity_name:name ~kind:"signal" body
+  in
+  Ok
+    {
+      interface_name = name;
+      interface_action;
+      interface_os;
+      methods;
+      properties;
+      signals;
+    }
+
+let parse_record_override sexp =
+  let* name, record_action, record_os, body =
+    parse_entity_header ~kind:"record" sexp
+  in
+  let* () =
+    validate_body_elements ~entity_name:name
+      ~valid_kinds:[ "field"; "constructor"; "method"; "function" ]
+      body
+  in
+  let* fields = parse_components_of_kind ~entity_name:name ~kind:"field" body in
+  let* constructors =
+    parse_components_of_kind ~entity_name:name ~kind:"constructor" body
+  in
+  let* methods =
+    parse_components_of_kind ~entity_name:name ~kind:"method" body
+  in
+  let* functions =
+    parse_components_of_kind ~entity_name:name ~kind:"function" body
+  in
+  Ok
+    {
+      record_name = name;
+      record_action;
+      record_os;
+      fields;
+      constructors;
+      methods;
+      functions;
+    }
+
+let parse_enum_override sexp =
+  let* name, enum_action, enum_os, body =
+    parse_entity_header ~kind:"enumeration" sexp
+  in
+  let* () =
+    validate_body_elements ~entity_name:name
+      ~valid_kinds:[ "member"; "function" ] body
+  in
+  let* members =
+    parse_components_of_kind ~entity_name:name ~kind:"member" body
+  in
+  let* functions =
+    parse_components_of_kind ~entity_name:name ~kind:"function" body
+  in
+  Ok { enum_name = name; enum_action; enum_os; members; functions }
+
 let parse_bitfield_override sexp =
-  match sexp with
-  | Sexp.List (Sexp.Atom "bitfield" :: Sexp.Atom name :: body) ->
-      let bitfield_action =
-        if has_ignore_marker body then Some Ignore else None
-      in
-      let* () =
-        validate_body_elements ~entity_name:name ~valid_kinds:[ "member" ] body
-      in
-      let* flags =
-        parse_components_of_kind ~entity_name:name ~kind:"member" body
-      in
-      Ok { bitfield_name = name; bitfield_action; flags }
-  | _ ->
-      Error
-        (Invalid_format
-           { location = "bitfield"; message = "Expected (bitfield Name ...)" })
+  let* name, bitfield_action, bitfield_os, body =
+    parse_entity_header ~kind:"bitfield" sexp
+  in
+  let* () =
+    validate_body_elements ~entity_name:name ~valid_kinds:[ "member" ] body
+  in
+  let* flags = parse_components_of_kind ~entity_name:name ~kind:"member" body in
+  Ok { bitfield_name = name; bitfield_action; bitfield_os; flags }
 
 let extract_library_name body =
   List.find_map
@@ -306,10 +328,27 @@ let extract_library_name body =
     directly (no duplicate check). For entities: validates kind, checks for
     duplicates, type-specific parse + accumulate. For library declarations:
     skipped. *)
+let parse_header_override sexp =
+  match sexp with
+  | Sexp.List (Sexp.Atom "header" :: Sexp.Atom path :: rest) ->
+      let header_os = extract_os_marker rest in
+      Ok { header_path = path; header_os }
+  | _ ->
+      Error
+        (Invalid_format
+           {
+             location = "header";
+             message = "Expected (header \"path\" [(os \"...\")]";
+           })
+
 let process_element ~seen ~errors ~classes ~interfaces ~records ~enums
-    ~bitfields ~functions sexp =
+    ~bitfields ~functions ~headers sexp =
   match sexp with
   | Sexp.List [ Sexp.Atom "library"; _ ] -> ()
+  | Sexp.List (Sexp.Atom "header" :: _) -> (
+      match parse_header_override sexp with
+      | Ok h -> headers := h :: !headers
+      | Error e -> errors := e :: !errors)
   | Sexp.List (Sexp.Atom "function" :: Sexp.Atom name :: _) ->
       let key = ("function", name) in
       if Hashtbl.mem seen key then
@@ -364,13 +403,13 @@ let process_element ~seen ~errors ~classes ~interfaces ~records ~enums
 
 (** Walk all elements in the overrides body, stopping at the first error. *)
 let collect_overrides ~seen ~errors ~classes ~interfaces ~records ~enums
-    ~bitfields ~functions body =
+    ~bitfields ~functions ~headers body =
   List.iter
     (fun sexp ->
       if List.length !errors > 0 then ()
       else
         process_element ~seen ~errors ~classes ~interfaces ~records ~enums
-          ~bitfields ~functions sexp)
+          ~bitfields ~functions ~headers sexp)
     body
 
 let parse_overrides_sexp sexp =
@@ -383,10 +422,11 @@ let parse_overrides_sexp sexp =
       let enums = ref [] in
       let bitfields = ref [] in
       let functions = ref [] in
+      let headers = ref [] in
       let errors = ref [] in
       let seen = Hashtbl.create 16 in
       collect_overrides ~seen ~errors ~classes ~interfaces ~records ~enums
-        ~bitfields ~functions body;
+        ~bitfields ~functions ~headers body;
       match !errors with
       | e :: _ -> Error e
       | [] ->
@@ -399,6 +439,7 @@ let parse_overrides_sexp sexp =
               enums = List.rev !enums;
               bitfields = List.rev !bitfields;
               functions = List.rev !functions;
+              headers = List.rev !headers;
             })
   | _ ->
       Error

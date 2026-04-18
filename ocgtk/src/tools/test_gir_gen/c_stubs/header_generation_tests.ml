@@ -41,6 +41,7 @@ let create_context_with_mixed_enums () =
             c_identifier = "GTK_WRAP_NONE";
             member_doc = None;
             member_version = None;
+            member_os = None;
           };
           {
             member_name = "WORD";
@@ -48,11 +49,13 @@ let create_context_with_mixed_enums () =
             c_identifier = "GTK_WRAP_WORD";
             member_doc = None;
             member_version = None;
+            member_os = None;
           };
         ];
       functions = [];
       enum_doc = None;
       enum_version = None;
+      enum_os = None;
     }
   in
 
@@ -101,6 +104,7 @@ let create_context_with_mixed_bitfields () =
             flag_c_identifier = "GTK_STATE_FLAG_NORMAL";
             flag_doc = None;
             flag_version = None;
+            flag_os = None;
           };
           {
             flag_name = "ACTIVE";
@@ -108,10 +112,12 @@ let create_context_with_mixed_bitfields () =
             flag_c_identifier = "GTK_STATE_FLAG_ACTIVE";
             flag_doc = None;
             flag_version = None;
+            flag_os = None;
           };
         ];
       bitfield_doc = None;
       bitfield_version = None;
+      bitfield_os = None;
     }
   in
 
@@ -142,7 +148,7 @@ let test_local_enum_forward_decls_generated () =
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
       ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
-      ~interfaces:[]
+      ~interfaces:[] ()
   in
 
   (* Assert: Local enum forward declarations should be present *)
@@ -158,7 +164,7 @@ let test_external_enum_forward_decls_not_generated () =
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
       ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
-      ~interfaces:[]
+      ~interfaces:[] ()
   in
 
   (* Assert: External enum forward declarations should NOT be present *)
@@ -176,7 +182,7 @@ let test_local_bitfield_forward_decls_generated () =
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
       ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
-      ~interfaces:[]
+      ~interfaces:[] ()
   in
 
   (* Assert: Local bitfield forward declarations should be present *)
@@ -192,7 +198,7 @@ let test_external_bitfield_forward_decls_not_generated () =
   let header_content =
     Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:ctx.classes
       ~gtk_enums:ctx.enums ~gtk_bitfields:ctx.bitfields ~records:[]
-      ~interfaces:[]
+      ~interfaces:[] ()
   in
 
   (* Assert: External bitfield forward declarations should NOT be present *)

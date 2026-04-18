@@ -41,7 +41,7 @@ let find_iface name interfaces =
 (* Real GIR file: GtkEditable *)
 (* ========================================================================= *)
 
-let real_gir_file = "/usr/share/gir-1.0/Gtk-4.0.gir"
+let real_gir_file = Filename.concat (Helpers.gir_data_dir ()) "Gtk-4.0.gir"
 
 let test_editable_glib_type_name () =
   let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records =
