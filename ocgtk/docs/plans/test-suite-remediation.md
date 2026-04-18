@@ -180,6 +180,66 @@ Reorganise to match the documented layer hierarchy with comment separators.
 
 ---
 
+## Phase 1.5 — Test classification and pipeline-test discipline
+
+*Recorded as a decision (DECISIONS.md, 2026-04-18). Establishes a 5-tier
+classification of tests in this project. Renames exist files to match the
+classification and tightens the rules pipeline tests must follow.*
+
+### Classification
+
+| Tier | Definition | Where |
+|------|------------|-------|
+| **Unit** | Single function/module. No FS, no subprocess, no `cc` invocation. | All other directories under `test_gir_gen/`. |
+| **Pipeline** | Multiple in-process modules wired together. May write temp files; may invoke a C compiler. No `gir_gen.exe` subprocess. | Lives next to its domain (`overrides/pipeline_tests.ml`, `cross_namespace/header_pipeline_tests.ml`). |
+| **Integration** | Spawns the `gir_gen.exe` binary; asserts on artefacts on disk. Slow; runs as a group. | **Reserved** for `test_gir_gen/integration/`. |
+| **Smoke** | Validates the generated bindings themselves (compiles/links against generated output). Does NOT depend on or test `gir_gen`. | New `test_gir_gen/smoke/` directory. |
+| **E2E** | Application-level UI automation (e.g. AT-SPI) of full example apps. | Outside `test_gir_gen/`; documented in `docs/code_guidelines/atspi-e2e-testing.md`. |
+
+### Pipeline-test discipline
+
+- [ ] Pipeline tests must write temp files under
+  `_build/<context>/pipeline_tmp/<test-name>/` (i.e. inside the dune build
+  tree). **No `/tmp` paths.** Add a helper in
+  `infrastructure/helpers.ml` — e.g. `pipeline_tmp_dir : string -> string`
+  — that creates and returns the per-test directory and is honoured by all
+  pipeline tests.
+- [ ] Pipeline tests that compile C must use the OCaml-configured C compiler
+  (`ocamlfind ocamlc -what` or `ocamlopt -config | grep ^c_compiler`) rather
+  than a hard-coded `cc` / `gcc`. Wrap the lookup in an
+  `infrastructure/c_compiler.ml` helper so call sites stay portable
+  (FreeBSD/macOS do not necessarily ship `gcc`).
+
+### Integration-test discipline
+
+- [ ] The `integration/` dune stanza must declare an explicit dependency on
+  `gir_gen.exe` (`(deps %{exe:../gir_gen/gir_gen.exe})`) so the binary is
+  rebuilt before integration tests run. *(Note: already present in the
+  current root `dune` — verify and document.)*
+- [ ] Pipeline and unit dune stanzas must NOT depend on `gir_gen.exe`.
+
+### Renames to realise the classification
+
+- [ ] `overrides/overrides_integration_tests.ml` → `overrides/pipeline_tests.ml`
+- [ ] `overrides/e2e_tests.ml` → fold into `overrides/apply_tests.ml` (single
+  test that exercises `apply_overrides` against a parser-fed input rather than
+  a synthetic record), OR rename to
+  `overrides/apply_with_parsed_gir_tests.ml` if you prefer to keep it
+  separate
+- [ ] `cross_namespace/integration_tests.ml` → `cross_namespace/header_pipeline_tests.ml`
+- [ ] Update dune modules list and `test_gir_gen.ml` runner references
+- [ ] Drop the "e2e" label from `test_gir_gen/` entirely (the AT-SPI doc
+  outside this tree retains "e2e" because it genuinely is application-level)
+
+### Smoke-test directory scaffold
+
+- [ ] Create `test_gir_gen/smoke/` with its own README that captures the
+  "no `gir_gen` dependency" rule
+- [ ] Move (or stage) any tests under `ocgtk/tests/` that only exercise
+  generated bindings — candidates surfaced by the Phase 5 audit
+
+---
+
 ## Phase 2 — Integration test AST migration
 
 *Replaces banned string-matching assertions with AST-based validation per
@@ -566,11 +626,12 @@ test_gir_gen/
 Phases are partially independent but the recommended order is:
 
 1. **Phase 1** (structural moves, including new Phase 1.8) — unblocks accurate naming everywhere else
-2. **Phase 2.1** (add `Ml_validation` helpers) — unblocks Phase 2.2–2.8
-3. **Phase 4.1–4.4** (deduplication helpers) — can run in parallel with Phase 2
-4. **Phase 2.2–2.8** (AST migration) — after helpers exist
-5. **Phase 3** (factory consistency) — independent, can interleave with Phase 2
-6. **Phase 2.8** (remove deprecated helpers) — last step of Phase 2
-7. **Phase 5** (disabled tests audit) — fully independent, any time
+2. **Phase 1.5** (test classification + pipeline-test discipline) — establishes the principle so subsequent phases don't reintroduce `/tmp` paths or hard-coded `cc`
+3. **Phase 2.1** (add `Ml_validation` helpers) — unblocks Phase 2.2–2.8
+4. **Phase 4.1–4.4** (deduplication helpers) — can run in parallel with Phase 2; the new `pipeline_tmp_dir` and `c_compiler` helpers from Phase 1.5 belong in this group
+5. **Phase 2.2–2.8** (AST migration) — after helpers exist
+6. **Phase 3** (factory consistency) — independent, can interleave with Phase 2
+7. **Phase 2.8** (remove deprecated helpers) — last step of Phase 2
+8. **Phase 5** (disabled tests audit) — fully independent, any time
 
 Each phase should end with `cd ocgtk && dune build && xvfb-run dune runtest` passing.
