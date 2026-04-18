@@ -90,7 +90,7 @@ let test_assert_forward_decl_not_exists () =
   C_validation.assert_forward_decl_not_exists sample_header_without_decls
     "GdkTextureType_val" "";
 
-  (* Verify it also works when checking for declarations in the "with_decls" header 
+  (* Verify it also works when checking for declarations in the "with_decls" header
      for types that aren't there *)
   C_validation.assert_forward_decl_not_exists sample_header_with_decls
     "GdkEventMask" "Val_";

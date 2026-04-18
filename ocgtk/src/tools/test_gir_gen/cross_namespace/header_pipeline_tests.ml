@@ -1,8 +1,11 @@
-(* Integration Testing - Multi-Library Header Compilation (Stage 8)
+(* Header pipeline tests — multi-library header generation (Stage 8).
+   Tier 2 — pipeline test (see Phase 1.5 of
+   docs/plans/test-suite-remediation.md): in-process, multi-module, no
+   subprocess invocation of gir_gen.exe.
 
-   End-to-end tests that verify the complete cross-namespace header system
-   works correctly when multiple libraries are generated. These tests ensure:
-   
+   Verifies that the complete cross-namespace header system works
+   correctly when multiple libraries are generated:
+
    1. Header generation with cross-references works correctly
    2. Dependency headers are properly included
    3. C compilation patterns work with cross-namespace types
@@ -11,7 +14,7 @@
 open C_validation
 
 (* ========================================================================= *)
-(* Integration Test Cases *)
+(* Header Pipeline Test Cases *)
 (* ========================================================================= *)
 
 (* Stage 8 Test: Header generation with Gdk cross-references *)
