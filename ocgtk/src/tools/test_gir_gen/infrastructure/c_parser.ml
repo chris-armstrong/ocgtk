@@ -514,9 +514,20 @@ let parse_c_code code =
         | None -> funcs)
     | line :: rest -> (
         let line_stripped = strip line in
+        (* Strip trailing "{" that appears on same line as function signature
+           (e.g., enum converter functions: "value Val_Foo(Bar val) {") *)
+        let line_for_sig =
+          if
+            String.length line_stripped > 0
+            && line_stripped.[String.length line_stripped - 1] = '{'
+          then
+            String.sub line_stripped 0 (String.length line_stripped - 1)
+            |> strip
+          else line_stripped
+        in
 
         (* Check if this is a function signature line *)
-        match parse_function_signature line_stripped with
+        match parse_function_signature line_for_sig with
         | Some (ret_type, name, params) ->
             (* Save previous function if any *)
             let funcs =

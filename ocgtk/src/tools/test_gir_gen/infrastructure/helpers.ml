@@ -21,6 +21,18 @@ let string_contains s sub =
 
 let assert_true msg cond = Alcotest.(check bool) msg true cond
 
+(** [expect_some label opt f] calls [f] with the contents of [opt] when it is
+    [Some], or fails the test with [label] when it is [None]. Replaces the
+    common [match ... with Some x -> ... | None -> Alcotest.fail label]
+    boilerplate. *)
+let expect_some label opt f =
+  match opt with Some x -> f x | None -> Alcotest.fail label
+
+(** [assert_some label opt] asserts that [opt] is [Some _] without inspecting
+    the wrapped value. Shorthand for existence checks. *)
+let assert_some label opt =
+  match opt with Some _ -> () | None -> Alcotest.fail label
+
 let assert_contains msg haystack needle =
   (* DEPRECATED: Use C_validation.assert_forward_decl_exists or Ml_validation.assert_value_exists *)
   if not (string_contains haystack needle) then

@@ -266,19 +266,18 @@ let test_copy_function_returns_copy_result () =
     (C_validation.calls_c_function copy_func "test_format_copy");
 
   (* Positive: return expression wraps the copy variable, not g_new0 *)
-  let ret = C_ast.return_expr copy_func in
-  match ret with
-  | Some expr ->
-      (* The return should reference 'copy' variable *)
-      Alcotest.(check bool)
-        "Return uses copy variable" true
-        (C_ast.expr_uses_var expr "copy");
-      (* The return should NOT call g_new0 *)
-      let calls = C_ast.get_function_calls expr in
-      Alcotest.(check bool)
-        "Return does not call g_new0" false
-        (List.exists (fun s -> String.equal s "g_new0") calls)
-  | None -> Alcotest.fail "Copy function has no return statement"
+  Helpers.expect_some "Copy function has no return statement"
+    (C_ast.return_expr copy_func)
+  @@ fun expr ->
+  (* The return should reference 'copy' variable *)
+  Alcotest.(check bool)
+    "Return uses copy variable" true
+    (C_ast.expr_uses_var expr "copy");
+  (* The return should NOT call g_new0 *)
+  let calls = C_ast.get_function_calls expr in
+  Alcotest.(check bool)
+    "Return does not call g_new0" false
+    (List.exists (fun s -> String.equal s "g_new0") calls)
 
 (* Bug 7: Record copy function should have balanced parentheses in generated C code
    See ocgtk/docs/plans/fix_codegen_bugs.md lines 743-768 *)
@@ -376,14 +375,13 @@ let test_record_copy_parses_successfully () =
     (Option.is_some (C_ast.return_expr func));
 
   (* Positive: return expression wraps copy in ml_gir_record_val_ptr *)
-  let ret = C_ast.return_expr func in
-  match ret with
-  | Some expr ->
-      let calls = C_ast.get_function_calls expr in
-      Alcotest.(check bool)
-        "Return wraps in ml_gir_record_val_ptr" true
-        (List.mem "ml_gir_record_val_ptr" calls)
-  | None -> Alcotest.fail "Copy function missing return expression"
+  Helpers.expect_some "Copy function missing return expression"
+    (C_ast.return_expr func)
+  @@ fun expr ->
+  let calls = C_ast.get_function_calls expr in
+  Alcotest.(check bool)
+    "Return wraps in ml_gir_record_val_ptr" true
+    (List.mem "ml_gir_record_val_ptr" calls)
 
 (* Bug 10: Module name capitalization must match dune convention
    Dune lowercases all characters after the first in module names.

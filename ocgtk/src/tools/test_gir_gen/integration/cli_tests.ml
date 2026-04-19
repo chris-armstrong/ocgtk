@@ -26,9 +26,18 @@ let test_help_output () =
    with End_of_file -> ());
   let _ = Unix.close_process_in ic in
   let help_text = Buffer.contents output in
-  assert_contains "Help should mention filter option" help_text "--filter";
-  assert_contains "Help should mention GIR_FILE argument" help_text "GIR_FILE";
-  assert_contains "Help should show examples" help_text "EXAMPLES"
+  let text_has s =
+    let hl = String.length help_text and nl = String.length s in
+    try
+      for i = 0 to hl - nl do
+        if String.sub help_text i nl = s then raise Exit
+      done;
+      false
+    with Exit -> true
+  in
+  assert_true "Help should mention filter option" (text_has "--filter");
+  assert_true "Help should mention GIR_FILE argument" (text_has "GIR_FILE");
+  assert_true "Help should show examples" (text_has "EXAMPLES")
 
 (* ========================================================================= *)
 (* Test Suite *)

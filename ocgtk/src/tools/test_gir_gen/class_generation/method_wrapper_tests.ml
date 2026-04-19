@@ -7,26 +7,28 @@ open Ppxlib.Parsetree
 let create_test_context = Helpers.create_test_context_with_hierarchy
 
 let find_class ast class_name =
-  match Ml_ast_helpers.find_class_declaration ast class_name with
-  | None -> Alcotest.fail (Printf.sprintf "Class '%s' not found" class_name)
-  | Some decl -> decl
+  Helpers.expect_some
+    (Printf.sprintf "Class '%s' not found" class_name)
+    (Ml_ast_helpers.find_class_declaration ast class_name)
+    Fun.id
 
 let find_class_type ast class_name =
-  match Ml_ast_helpers.find_class_type_declaration ast class_name with
-  | None ->
-      Alcotest.fail (Printf.sprintf "Class type '%s' not found" class_name)
-  | Some decl -> decl
+  Helpers.expect_some
+    (Printf.sprintf "Class type '%s' not found" class_name)
+    (Ml_ast_helpers.find_class_type_declaration ast class_name)
+    Fun.id
 
 let find_method class_decl method_name =
-  match Ml_ast_helpers.find_method_in_class class_decl.pci_expr method_name with
-  | None -> Alcotest.fail (Printf.sprintf "Method '%s' not found" method_name)
-  | Some mf -> mf
+  Helpers.expect_some
+    (Printf.sprintf "Method '%s' not found" method_name)
+    (Ml_ast_helpers.find_method_in_class class_decl.pci_expr method_name)
+    Fun.id
 
 let extract_method_type class_decl method_name =
   let method_field = find_method class_decl method_name in
-  match Ml_ast_helpers.get_method_type method_field with
-  | None -> Alcotest.fail "Could not extract method type"
-  | Some t -> t
+  Helpers.expect_some "Could not extract method type"
+    (Ml_ast_helpers.get_method_type method_field)
+    Fun.id
 
 let validate_method_type ast class_name method_name ~expected =
   let method_type =
@@ -39,9 +41,9 @@ let validate_method_type ast class_name method_name ~expected =
          method_name type_str expected)
 
 let get_method_body method_field =
-  match Ml_ast_helpers.get_method_body method_field with
-  | None -> Alcotest.fail "Could not extract method body"
-  | Some body -> body
+  Helpers.expect_some "Could not extract method body"
+    (Ml_ast_helpers.get_method_body method_field)
+    Fun.id
 
 let assert_method_body_calls method_body module_name method_name =
   if
@@ -582,9 +584,9 @@ let test_method_conflict_detection () =
 
   (* Find the button class in the implementation AST *)
   let button_class_decl =
-    match Ml_ast_helpers.find_class_declaration ml_ast "button" with
-    | Some decl -> decl
-    | None -> Alcotest.fail "Class 'button' not found in generated .ml AST"
+    Helpers.expect_some "Class 'button' not found in generated .ml AST"
+      (Ml_ast_helpers.find_class_declaration ml_ast "button")
+      Fun.id
   in
   Printf.eprintf "Found class 'button' in .ml\n";
 
@@ -606,10 +608,9 @@ let test_method_conflict_detection () =
 
   (* Also check the signature (.mli) *)
   let button_class_type_decl =
-    match Ml_ast_helpers.find_class_type_declaration mli_ast "button_t" with
-    | Some decl -> decl
-    | None ->
-        Alcotest.fail "Class type 'button_t' not found in generated .mli AST"
+    Helpers.expect_some "Class type 'button_t' not found in generated .mli AST"
+      (Ml_ast_helpers.find_class_type_declaration mli_ast "button_t")
+      Fun.id
   in
   Printf.eprintf "Found class type 'button_t' in .mli\n";
 
@@ -693,17 +694,11 @@ let test_layer2_signature_consistency () =
     Ml_ast_helpers.find_class_type_declaration mli_ast "button_t"
   in
 
-  let () =
-    match ml_class_opt with
-    | Some _ -> Printf.eprintf "Found class 'button' in .ml\n"
-    | None -> Alcotest.fail "Class 'button' not found in .ml AST"
-  in
-
-  let () =
-    match mli_class_type_opt with
-    | Some _ -> Printf.eprintf "Found class type 'button_t' in .mli\n"
-    | None -> Alcotest.fail "Class type 'button_t' not found in .mli AST"
-  in
+  Helpers.assert_some "Class 'button' not found in .ml AST" ml_class_opt;
+  Printf.eprintf "Found class 'button' in .ml\n";
+  Helpers.assert_some "Class type 'button_t' not found in .mli AST"
+    mli_class_type_opt;
+  Printf.eprintf "Found class type 'button_t' in .mli\n";
 
   (* Validate that method signatures in .mli match method signatures in .ml using AST parsing *)
   List.iter
@@ -730,23 +725,19 @@ let test_layer2_signature_consistency () =
 
       (* Validate that both types were found *)
       let ml_method_type =
-        match ml_method_type_opt with
-        | Some t -> t
-        | None ->
-            Alcotest.fail
-              (Printf.sprintf "Method '%s' not found or has no type in .ml"
-                 method_name)
+        Helpers.expect_some
+          (Printf.sprintf "Method '%s' not found or has no type in .ml"
+             method_name)
+          ml_method_type_opt Fun.id
       in
       Printf.eprintf "  .ml method type: %s\n"
         (Ml_ast_helpers.core_type_to_string ml_method_type);
 
       let mli_method_type =
-        match mli_method_type_opt with
-        | Some t -> t
-        | None ->
-            Alcotest.fail
-              (Printf.sprintf "Method '%s' not found or has no type in .mli"
-                 method_name)
+        Helpers.expect_some
+          (Printf.sprintf "Method '%s' not found or has no type in .mli"
+             method_name)
+          mli_method_type_opt Fun.id
       in
       Printf.eprintf "  .mli method type: %s\n"
         (Ml_ast_helpers.core_type_to_string mli_method_type);
@@ -908,24 +899,15 @@ let test_combined_class_signature_consistency () =
           class_type_name
       in
 
-      let () =
-        match ml_class_opt with
-        | Some _ -> Printf.eprintf "  Found class '%s' in .ml\n" class_name
-        | None ->
-            Alcotest.fail
-              (Printf.sprintf "Class '%s' not found in combined .ml AST"
-                 class_name)
-      in
-
-      let () =
-        match mli_class_type_opt with
-        | Some _ ->
-            Printf.eprintf "  Found class type '%s' in .mli\n" class_type_name
-        | None ->
-            Alcotest.fail
-              (Printf.sprintf "Class type '%s' not found in combined .mli AST"
-                 class_type_name)
-      in
+      Helpers.assert_some
+        (Printf.sprintf "Class '%s' not found in combined .ml AST" class_name)
+        ml_class_opt;
+      Printf.eprintf "  Found class '%s' in .ml\n" class_name;
+      Helpers.assert_some
+        (Printf.sprintf "Class type '%s' not found in combined .mli AST"
+           class_type_name)
+        mli_class_type_opt;
+      Printf.eprintf "  Found class type '%s' in .mli\n" class_type_name;
 
       (* Extract method type from .ml implementation *)
       let ml_method_type_opt =
@@ -946,25 +928,19 @@ let test_combined_class_signature_consistency () =
 
       (* Validate that both types were found and match *)
       let ml_method_type =
-        match ml_method_type_opt with
-        | Some t -> t
-        | None ->
-            Alcotest.fail
-              (Printf.sprintf
-                 "Method '%s' not found or has no type in combined .ml"
-                 method_name)
+        Helpers.expect_some
+          (Printf.sprintf "Method '%s' not found or has no type in combined .ml"
+             method_name)
+          ml_method_type_opt Fun.id
       in
       Printf.eprintf "  .ml method type: %s\n"
         (Ml_ast_helpers.core_type_to_string ml_method_type);
 
       let mli_method_type =
-        match mli_method_type_opt with
-        | Some t -> t
-        | None ->
-            Alcotest.fail
-              (Printf.sprintf
-                 "Method '%s' not found or has no type in combined .mli"
-                 method_name)
+        Helpers.expect_some
+          (Printf.sprintf
+             "Method '%s' not found or has no type in combined .mli" method_name)
+          mli_method_type_opt Fun.id
       in
       Printf.eprintf "  .mli method type: %s\n"
         (Ml_ast_helpers.core_type_to_string mli_method_type);
@@ -1020,30 +996,25 @@ let test_throws_method_result_wrapping () =
 
   (* Find the class type declaration *)
   let class_type_decl =
-    match
-      Ml_ast_helpers.find_class_type_declaration mli_ast "file_chooser_t"
-    with
-    | Some decl -> decl
-    | None ->
-        Alcotest.fail
-          "Class type 'file_chooser_t' not found in generated .mli AST"
+    Helpers.expect_some
+      "Class type 'file_chooser_t' not found in generated .mli AST"
+      (Ml_ast_helpers.find_class_type_declaration mli_ast "file_chooser_t")
+      Fun.id
   in
 
   (* Find the load_file method in the class type *)
   let method_field =
-    match
-      Ml_ast_helpers.find_method_in_class_type class_type_decl.pci_expr
-        "load_file"
-    with
-    | Some field -> field
-    | None -> Alcotest.fail "Method 'load_file' not found in class type"
+    Helpers.expect_some "Method 'load_file' not found in class type"
+      (Ml_ast_helpers.find_method_in_class_type class_type_decl.pci_expr
+         "load_file")
+      Fun.id
   in
 
   (* Extract the method type *)
   let method_type =
-    match Ml_ast_helpers.get_method_type_from_class_type_field method_field with
-    | Some t -> t
-    | None -> Alcotest.fail "Could not extract type for load_file method"
+    Helpers.expect_some "Could not extract type for load_file method"
+      (Ml_ast_helpers.get_method_type_from_class_type_field method_field)
+      Fun.id
   in
   let method_type_str = Ml_ast_helpers.core_type_to_string method_type in
   Printf.eprintf "Method type: %s\n" method_type_str;
@@ -1083,31 +1054,24 @@ let test_throws_method_result_wrapping () =
 
   (* Validate the void-returning throws method *)
   let class_type_decl_void =
-    match
-      Ml_ast_helpers.find_class_type_declaration mli_ast_with_void
-        "file_chooser_t"
-    with
-    | Some decl -> decl
-    | None ->
-        Alcotest.fail
-          "Class type 'file_chooser_t' not found in generated .mli AST"
+    Helpers.expect_some
+      "Class type 'file_chooser_t' not found in generated .mli AST"
+      (Ml_ast_helpers.find_class_type_declaration mli_ast_with_void
+         "file_chooser_t")
+      Fun.id
   in
 
   let method_field_void =
-    match
-      Ml_ast_helpers.find_method_in_class_type class_type_decl_void.pci_expr
-        "create_directory"
-    with
-    | Some field -> field
-    | None -> Alcotest.fail "Method 'create_directory' not found in class type"
+    Helpers.expect_some "Method 'create_directory' not found in class type"
+      (Ml_ast_helpers.find_method_in_class_type class_type_decl_void.pci_expr
+         "create_directory")
+      Fun.id
   in
 
   let method_type_void =
-    match
-      Ml_ast_helpers.get_method_type_from_class_type_field method_field_void
-    with
-    | Some t -> t
-    | None -> Alcotest.fail "Could not extract type for create_directory method"
+    Helpers.expect_some "Could not extract type for create_directory method"
+      (Ml_ast_helpers.get_method_type_from_class_type_field method_field_void)
+      Fun.id
   in
   let method_type_str_void =
     Ml_ast_helpers.core_type_to_string method_type_void

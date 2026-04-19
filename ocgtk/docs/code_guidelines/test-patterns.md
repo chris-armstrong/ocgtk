@@ -73,6 +73,38 @@ let test_method_generation () =
   Alcotest.(check bool) "output is valid" true (validate output)
 ```
 
+### Preferred: `Helpers.expect_some` / `Helpers.assert_some`
+
+For option results that either feed into further assertions or are just
+required to be `Some _`, use the helpers in
+[`test_gir_gen/infrastructure/helpers.ml`][helpers]. They replace the noisy
+`match … with Some x -> … | None -> Alcotest.fail …` boilerplate and work
+for both unit-returning assertions and value-returning lookups (return type
+is polymorphic).
+
+```ocaml
+(* existence-only check *)
+Helpers.assert_some "expected get_text in signature"
+  (Ml_ast_helpers.find_value_declaration_sig mli "get_text")
+
+(* continue with the wrapped value *)
+Helpers.expect_some "get_text not found"
+  (Ml_ast_helpers.find_value_declaration_sig mli "get_text")
+@@ fun vd ->
+Ml_validation.assert_return_type vd "string"
+
+(* value-returning lookup helper (Fun.id keeps the inner value) *)
+let find_fn name =
+  Helpers.expect_some
+    (Printf.sprintf "C function '%s' not found" name)
+    (List.find_opt (fun f -> f.C_ast.name = name) c_functions)
+    Fun.id
+```
+
+Prefer `assert_some`/`expect_some` over inline `match` expressions: they fail
+loudly with a clear message on `None`, keep the continuation flat, and
+eliminate repetitive `Alcotest.fail` strings.
+
 ### Even better: Custom testables
 ```ocaml
 let generation_result =
@@ -87,6 +119,8 @@ let test_method_generation () =
   Alcotest.(check generation_result) "method generated"
     (Some expected_output) result
 ```
+
+[helpers]: ../../src/tools/test_gir_gen/infrastructure/helpers.ml
 
 ---
 
@@ -186,6 +220,7 @@ Before submitting test code, verify:
 - [ ] All validation uses AST parsing first (`Ml_ast_helpers.parse_*`, `C_validation.*`)
 - [ ] Reusing `Ml_validation` functions, not duplicating
 - [ ] Reusing `Ml_ast_helpers` functions, not duplicating
-- [ ] Tests use Alcotest assertions, not Option matching
+- [ ] Tests use `Helpers.expect_some` / `Helpers.assert_some` for option results,
+      not inline `match … with Some _ -> () | None -> Alcotest.fail …`
 - [ ] Test names describe what is tested and expected outcome
 - [ ] Tests follow Arrange-Act-Assert structure

@@ -48,23 +48,29 @@ let test_property_generation () =
   assert_true "TestWidget.mli should be created" (file_exists widget_file);
 
   let content = read_file widget_file in
-  assert_contains "Should generate getter for read-only property" content
-    "get_read_only_prop";
-  if string_contains content "set_read_only_prop" then
-    Alcotest.fail "Should not generate setter for read-only property";
+  let sig_ast = Ml_ast_helpers.parse_interface content in
 
-  assert_contains "Should generate getter for read-write property" content
-    "get_read_write_prop";
-  assert_contains "Should generate setter for read-write property" content
-    "set_read_write_prop";
+  Ml_validation.assert_value_exists_sig sig_ast "get_read_only_prop";
+  Ml_validation.assert_no_value_matching_sig sig_ast
+    (fun name -> name = "set_read_only_prop")
+    "set_read_only_prop";
 
-  assert_contains "Should generate getter for construct-only property" content
-    "get_construct_only_prop";
-  if string_contains content "set_construct_only_prop" then
-    Alcotest.fail "Should not generate setter for construct-only property";
+  Ml_validation.assert_value_exists_sig sig_ast "get_read_write_prop";
+  Ml_validation.assert_value_exists_sig sig_ast "set_read_write_prop";
 
-  assert_contains "Bool property should have bool type" content "t -> bool";
-  assert_contains "Int property should have int type" content "t -> int"
+  Ml_validation.assert_value_exists_sig sig_ast "get_construct_only_prop";
+  Ml_validation.assert_no_value_matching_sig sig_ast
+    (fun name -> name = "set_construct_only_prop")
+    "set_construct_only_prop";
+
+  (* Check property return types via AST *)
+  expect_some "get_read_write_prop not found"
+    (Ml_ast_helpers.find_value_declaration_sig sig_ast "get_read_write_prop")
+    (fun vd -> Ml_validation.assert_return_type vd "bool");
+
+  expect_some "get_construct_only_prop not found"
+    (Ml_ast_helpers.find_value_declaration_sig sig_ast "get_construct_only_prop")
+    (fun vd -> Ml_validation.assert_return_type vd "int")
 
 let test_c_property_generation () =
   let test_gir = "/tmp/test_c_property_gen.gir" in
@@ -82,21 +88,35 @@ let test_c_property_generation () =
   assert_true "C file should be created" (file_exists c_file);
 
   let c_content = read_file c_file in
-  assert_contains "C getter for read-only property" c_content
-    "ml_gtk_test_widget_get_read_only_prop";
-  assert_contains "C getter should use g_object_get" c_content "g_object_get";
+  let c_functions = C_parser.parse_c_code c_content in
 
-  assert_contains "C setter for read-write property" c_content
-    "ml_gtk_test_widget_set_read_write_prop";
-  assert_contains "C setter should use g_object_set" c_content "g_object_set";
+  let find_fn name =
+    expect_some
+      (Printf.sprintf "C function '%s' not found" name)
+      (List.find_opt (fun (f : C_ast.c_function) -> f.name = name) c_functions)
+      Fun.id
+  in
 
-  assert_contains "C code should use CAMLparam" c_content "CAMLparam";
-  assert_contains "C code should use CAMLreturn" c_content "CAMLreturn";
+  let getter = find_fn "ml_gtk_test_widget_get_read_only_prop" in
+  assert_true "C getter should call g_object_get_property"
+    (C_validation.calls_c_function getter "g_object_get_property");
 
-  assert_contains "C getter for construct-only property" c_content
-    "ml_gtk_test_widget_get_construct_only_prop";
-  if string_contains c_content "ml_gtk_test_widget_set_construct_only_prop" then
-    Alcotest.fail "Should not generate C setter for construct-only property"
+  let setter = find_fn "ml_gtk_test_widget_set_read_write_prop" in
+  assert_true "C setter should call g_object_set_property"
+    (C_validation.calls_c_function setter "g_object_set_property");
+
+  assert_true "C code should use CAMLparam"
+    (List.exists (fun f -> C_validation.has_caml_param_macro f) c_functions);
+  assert_true "C code should use CAMLreturn"
+    (List.exists (fun f -> C_validation.has_caml_return f) c_functions);
+
+  let _ = find_fn "ml_gtk_test_widget_get_construct_only_prop" in
+  assert_true "Should not generate C setter for construct-only property"
+    (not
+       (List.exists
+          (fun (f : C_ast.c_function) ->
+            f.name = "ml_gtk_test_widget_set_construct_only_prop")
+          c_functions))
 
 let test_properties_only_class () =
   let test_gir = "/tmp/test_properties_only.gir" in
@@ -113,11 +133,12 @@ let test_properties_only_class () =
 
   let mli = mli_file output_dir "properties_only" in
   let content = read_file mli in
+  let sig_ast = Ml_ast_helpers.parse_interface content in
 
-  assert_contains "Should have label getter" content "get_label";
-  assert_contains "Should have label setter" content "set_label";
-  assert_contains "Should have active getter" content "get_active";
-  assert_contains "Should have active setter" content "set_active"
+  Ml_validation.assert_value_exists_sig sig_ast "get_label";
+  Ml_validation.assert_value_exists_sig sig_ast "set_label";
+  Ml_validation.assert_value_exists_sig sig_ast "get_active";
+  Ml_validation.assert_value_exists_sig sig_ast "set_active"
 
 let tests =
   [

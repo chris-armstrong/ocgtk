@@ -36,6 +36,7 @@
   signature_tests
   method_wrapper_tests
   constructor_wrapper_tests
+  signal_wrapper_tests
   c_stub_tests
   no_external_enum_decls_tests
   no_external_bitfield_decls_tests

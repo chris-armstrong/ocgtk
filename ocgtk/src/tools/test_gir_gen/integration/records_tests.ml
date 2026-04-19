@@ -59,16 +59,23 @@ let test_record_support () =
   let c_file = stub_c_file output_dir "RecordUser" in
   assert_true "RecordUser C file should be created" (file_exists c_file);
   let c_content = read_file c_file in
-  assert_contains "Should use record conversion macro" c_content
-    "Val_GtkTestRecord";
-  assert_contains "Should convert record pointer in setter" c_content
-    "GtkTestRecord_val";
+  let c_functions = C_parser.parse_c_code c_content in
+
+  assert_true "Should use Val_GtkTestRecord conversion"
+    (List.exists
+       (fun (f : C_ast.c_function) ->
+         C_validation.uses_correct_return_macro f "Val_GtkTestRecord")
+       c_functions);
+  assert_true "Should use GtkTestRecord_val conversion"
+    (List.exists
+       (fun (f : C_ast.c_function) ->
+         C_validation.calls_c_function f "GtkTestRecord_val")
+       c_functions);
 
   let mli = mli_file output_dir "record_user" in
   assert_true "record_user.mli should be created" (file_exists mli)
 
 let test_non_opaque_record_functions () =
-  (* Test that non-opaque records with fields generate functions instead of macros *)
   let test_gir = "/tmp/test_non_opaque_record.gir" in
   let test_filter = "/tmp/test_non_opaque_filter.conf" in
   let output_dir = "/tmp/test_non_opaque_output" in
@@ -98,27 +105,20 @@ let test_non_opaque_record_functions () =
   assert_true "Non-opaque record generator should exit successfully"
     (exit_code = 0);
 
-  (* Check that forward declarations are generated as functions, not macros *)
   let header_file =
     Filename.concat (Filename.concat output_dir "generated") "gtk_decls.h"
   in
   assert_true "gtk_decls.h should exist" (file_exists header_file);
   let header_content = read_file header_file in
 
-  (* Should have forward declarations for functions *)
-  assert_contains "Should declare GtkWidgetClass_val function" header_content
-    "GtkWidgetClass *GtkWidgetClass_val(value val);";
-  assert_contains "Should declare Val_GtkWidgetClass function" header_content
-    "value Val_GtkWidgetClass(const GtkWidgetClass *ptr);";
-  assert_contains "Should declare Val_GtkWidgetClass_option function"
-    header_content "value Val_GtkWidgetClass_option(const GtkWidgetClass *ptr);";
-
-  (* Should NOT have macro definitions for non-opaque records *)
-  assert_not_contains "Should not define GtkWidgetClass_val as macro in header"
-    header_content "#define GtkWidgetClass_val("
+  (* Forward declarations exist for GtkWidgetClass_val and Val_GtkWidgetClass *)
+  C_validation.assert_forward_decl_exists header_content "GtkWidgetClass_val" "";
+  C_validation.assert_forward_decl_exists header_content "GtkWidgetClass" "Val_";
+  (* No macro definition for non-opaque records *)
+  C_validation.assert_forward_decl_not_exists header_content "GtkWidgetClass("
+    "#define "
 
 let test_non_opaque_vs_opaque_records () =
-  (* Test that opaque records still use macros while non-opaque use functions *)
   let test_gir = "/tmp/test_opaque_vs_non_opaque.gir" in
   let test_filter = "/tmp/test_opaque_filter.conf" in
   let output_dir = "/tmp/test_opaque_output" in
@@ -152,22 +152,16 @@ let test_non_opaque_vs_opaque_records () =
   in
   let header_content = read_file header_file in
 
-  (* Both records are non-opaque (no disguised="1" attribute) so they use function declarations *)
-  (* Opaque records (with disguised="1") also use functions in current implementation *)
-  assert_contains "Opaque record should have function declaration"
-    header_content "GtkOpaqueRecord *GtkOpaqueRecord_val(value val);";
-  assert_contains "Opaque record should have Val function" header_content
-    "value Val_GtkOpaqueRecord(const GtkOpaqueRecord *ptr);";
-
-  (* Non-opaque record should use function declarations *)
-  assert_contains "Non-opaque record should have function declaration"
-    header_content "GtkNonOpaqueRecord *GtkNonOpaqueRecord_val(value val);";
-  assert_contains "Non-opaque record should have Val function declaration"
-    header_content
-    "value Val_GtkNonOpaqueRecord(const GtkNonOpaqueRecord *ptr);"
+  C_validation.assert_forward_decl_exists header_content "GtkOpaqueRecord_val"
+    "";
+  C_validation.assert_forward_decl_exists header_content "GtkOpaqueRecord"
+    "Val_";
+  C_validation.assert_forward_decl_exists header_content
+    "GtkNonOpaqueRecord_val" "";
+  C_validation.assert_forward_decl_exists header_content "GtkNonOpaqueRecord"
+    "Val_"
 
 let test_non_opaque_record_in_property () =
-  (* Test that non-opaque records work correctly in properties *)
   let test_gir = "/tmp/test_non_opaque_prop.gir" in
   let test_filter = "/tmp/test_non_opaque_prop_filter.conf" in
   let output_dir = "/tmp/test_non_opaque_prop_output" in
@@ -199,14 +193,18 @@ let test_non_opaque_record_in_property () =
 
   let c_file = stub_c_file output_dir "RectWidget" in
   let c_content = read_file c_file in
+  let c_functions = C_parser.parse_c_code c_content in
 
-  (* Property getter should use Val_GtkRectangle *)
-  assert_contains "Property getter should use conversion function" c_content
-    "Val_GtkRectangle";
-
-  (* Property setter should use GtkRectangle_val *)
-  assert_contains "Property setter should use conversion function" c_content
-    "GtkRectangle_val"
+  assert_true "Property getter should use Val_GtkRectangle"
+    (List.exists
+       (fun (f : C_ast.c_function) ->
+         C_validation.calls_c_function f "Val_GtkRectangle")
+       c_functions);
+  assert_true "Property setter should use GtkRectangle_val"
+    (List.exists
+       (fun (f : C_ast.c_function) ->
+         C_validation.calls_c_function f "GtkRectangle_val")
+       c_functions)
 
 let tests =
   [

@@ -5,14 +5,16 @@ open Type_factory
 let create_test_context = Helpers.create_test_context_with_hierarchy
 
 let find_let_binding_or_fail ast name =
-  match Ml_ast_helpers.find_let_binding ast name with
-  | None -> Alcotest.fail (Printf.sprintf "Let binding '%s' not found" name)
-  | Some vb -> vb
+  Helpers.expect_some
+    (Printf.sprintf "Let binding '%s' not found" name)
+    (Ml_ast_helpers.find_let_binding ast name)
+    Fun.id
 
 let find_val_or_fail ast name =
-  match Ml_ast_helpers.find_value_declaration_sig ast name with
-  | None -> Alcotest.fail (Printf.sprintf "Val declaration '%s' not found" name)
-  | Some vd -> vd
+  Helpers.expect_some
+    (Printf.sprintf "Val declaration '%s' not found" name)
+    (Ml_ast_helpers.find_value_declaration_sig ast name)
+    Fun.id
 
 (* ========================================================================= *)
 (* Test 1: Zero-param constructor                                           *)

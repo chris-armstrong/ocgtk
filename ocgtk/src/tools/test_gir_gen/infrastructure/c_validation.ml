@@ -480,9 +480,11 @@ let extract_forward_decls header_content =
         | Some name ->
             if String.starts_with ~prefix:"Val_" name then Some name else None
         | None -> None
-      (* Pattern 3: Function declarations like "<Type> <Type>_val(...);" *)
+      (* Pattern 3: Function declarations like "<Type> <Type>_val(...);" or
+           "<Type> *<Type>_val(...);" (pointer return type) *)
         else
-        (* Try to match "GtkWrapMode GtkWrapMode_val(...);" pattern *)
+        (* Try to match "GtkWrapMode GtkWrapMode_val(...);" or
+           "GtkWidget *GtkWidget_val(...);" pattern *)
         match extract_identifier stripped with
         | Some type_name -> (
             let rest_after_type =
@@ -490,8 +492,19 @@ let extract_forward_decls header_content =
                 (String.length stripped - String.length type_name)
               |> String.trim
             in
+            (* Skip leading pointer stars and spaces for pointer return types
+               e.g., "*GtkWidget_val(..." -> "GtkWidget_val(..." *)
+            let rest_no_stars =
+              let rec skip s i =
+                if i >= String.length s then i
+                else match s.[i] with '*' | ' ' -> skip s (i + 1) | _ -> i
+              in
+              let start = skip rest_after_type 0 in
+              String.sub rest_after_type start
+                (String.length rest_after_type - start)
+            in
             (* Check if next token is <Type>_val *)
-            match extract_identifier rest_after_type with
+            match extract_identifier rest_no_stars with
             | Some func_name ->
                 if
                   String.ends_with ~suffix:"_val" func_name

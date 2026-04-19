@@ -48,9 +48,9 @@ let test_editable_glib_type_name () =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file real_gir_file []
   in
   let editable =
-    match find_iface "Editable" interfaces with
-    | None -> Alcotest.fail "Editable not found in parsed interfaces"
-    | Some i -> i
+    Helpers.expect_some "Editable not found in parsed interfaces"
+      (find_iface "Editable" interfaces)
+      Fun.id
   in
   Alcotest.(check (option string))
     "glib_type_name" (Some "GtkEditable") editable.glib_type_name
@@ -60,9 +60,9 @@ let test_editable_glib_get_type () =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file real_gir_file []
   in
   let editable =
-    match find_iface "Editable" interfaces with
-    | None -> Alcotest.fail "Editable not found"
-    | Some i -> i
+    Helpers.expect_some "Editable not found"
+      (find_iface "Editable" interfaces)
+      Fun.id
   in
   Alcotest.(check (option string))
     "glib_get_type" (Some "gtk_editable_get_type") editable.glib_get_type
@@ -72,9 +72,9 @@ let test_editable_prerequisites () =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file real_gir_file []
   in
   let editable =
-    match find_iface "Editable" interfaces with
-    | None -> Alcotest.fail "Editable not found"
-    | Some i -> i
+    Helpers.expect_some "Editable not found"
+      (find_iface "Editable" interfaces)
+      Fun.id
   in
   Alcotest.(check (list string))
     "prerequisites" [ "Widget" ] editable.prerequisites
@@ -84,9 +84,9 @@ let test_editable_introspectable () =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file real_gir_file []
   in
   let editable =
-    match find_iface "Editable" interfaces with
-    | None -> Alcotest.fail "Editable not found"
-    | Some i -> i
+    Helpers.expect_some "Editable not found"
+      (find_iface "Editable" interfaces)
+      Fun.id
   in
   Alcotest.(check bool) "introspectable" true editable.introspectable
 
@@ -95,9 +95,9 @@ let test_editable_methods_nonempty () =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file real_gir_file []
   in
   let editable =
-    match find_iface "Editable" interfaces with
-    | None -> Alcotest.fail "Editable not found"
-    | Some i -> i
+    Helpers.expect_some "Editable not found"
+      (find_iface "Editable" interfaces)
+      Fun.id
   in
   Alcotest.(check bool)
     "methods non-empty" true
@@ -108,9 +108,9 @@ let test_editable_properties_nonempty () =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file real_gir_file []
   in
   let editable =
-    match find_iface "Editable" interfaces with
-    | None -> Alcotest.fail "Editable not found"
-    | Some i -> i
+    Helpers.expect_some "Editable not found"
+      (find_iface "Editable" interfaces)
+      Fun.id
   in
   Alcotest.(check bool)
     "properties non-empty" true
@@ -135,9 +135,9 @@ let test_introspectable_false () =
     parse_gir_string non_introspectable_iface_xml
   in
   let iface =
-    match find_iface "MyIface" interfaces with
-    | None -> Alcotest.fail "MyIface not found"
-    | Some i -> i
+    Helpers.expect_some "MyIface not found"
+      (find_iface "MyIface" interfaces)
+      Fun.id
   in
   Alcotest.(check bool)
     "introspectable=false when attr is 0" false iface.introspectable
@@ -159,9 +159,9 @@ let test_no_prerequisites () =
     parse_gir_string no_prereqs_iface_xml
   in
   let iface =
-    match find_iface "MyIface" interfaces with
-    | None -> Alcotest.fail "MyIface not found"
-    | Some i -> i
+    Helpers.expect_some "MyIface not found"
+      (find_iface "MyIface" interfaces)
+      Fun.id
   in
   Alcotest.(check (list string)) "prerequisites empty" [] iface.prerequisites
 
@@ -184,9 +184,9 @@ let test_multiple_prerequisites () =
     parse_gir_string multi_prereqs_iface_xml
   in
   let iface =
-    match find_iface "MyIface" interfaces with
-    | None -> Alcotest.fail "MyIface not found"
-    | Some i -> i
+    Helpers.expect_some "MyIface not found"
+      (find_iface "MyIface" interfaces)
+      Fun.id
   in
   Alcotest.(check (list string))
     "multiple prerequisites in order" [ "Widget"; "Accessible" ]
@@ -207,9 +207,9 @@ let test_missing_glib_attrs_are_none () =
     parse_gir_string minimal_iface_xml
   in
   let iface =
-    match find_iface "MyIface" interfaces with
-    | None -> Alcotest.fail "MyIface not found"
-    | Some i -> i
+    Helpers.expect_some "MyIface not found"
+      (find_iface "MyIface" interfaces)
+      Fun.id
   in
   Alcotest.(check (option string))
     "glib_type_name None when absent" None iface.glib_type_name;
@@ -221,9 +221,9 @@ let test_introspectable_defaults_true () =
     parse_gir_string minimal_iface_xml
   in
   let iface =
-    match find_iface "MyIface" interfaces with
-    | None -> Alcotest.fail "MyIface not found"
-    | Some i -> i
+    Helpers.expect_some "MyIface not found"
+      (find_iface "MyIface" interfaces)
+      Fun.id
   in
   Alcotest.(check bool)
     "introspectable defaults to true when absent" true iface.introspectable

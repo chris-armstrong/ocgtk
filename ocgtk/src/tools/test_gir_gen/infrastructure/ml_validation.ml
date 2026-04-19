@@ -66,15 +66,14 @@ let returns_string_option (ext_decl : value_description) : bool =
 (* Assert external has expected C name *)
 let assert_external_c_name (ext_decl : value_description)
     (expected_c_name : string) =
-  match Ml_ast_helpers.get_external_c_name ext_decl with
-  | Some c_name ->
-      if c_name <> expected_c_name then
-        Alcotest.fail
-          (sprintf "Expected external '%s' to have C name '%s', got '%s'"
-             ext_decl.pval_name.txt expected_c_name c_name)
-  | None ->
-      Alcotest.fail
-        (sprintf "External '%s' has no C name" ext_decl.pval_name.txt)
+  Helpers.expect_some
+    (sprintf "External '%s' has no C name" ext_decl.pval_name.txt)
+    (Ml_ast_helpers.get_external_c_name ext_decl)
+  @@ fun c_name ->
+  if c_name <> expected_c_name then
+    Alcotest.fail
+      (sprintf "Expected external '%s' to have C name '%s', got '%s'"
+         ext_decl.pval_name.txt expected_c_name c_name)
 
 (* Assert external has expected number of parameters *)
 let assert_param_count (ext_decl : value_description) (expected_count : int) =
@@ -140,53 +139,48 @@ let assert_types_compatible (sig_type : core_type) (impl_type : core_type) =
 
 (* Assert that a type is defined in the AST *)
 let assert_type_exists (ast : structure) (type_name : string) =
-  match Ml_ast_helpers.find_type_declaration ast type_name with
-  | Some _ -> ()
-  | None ->
-      let available_types =
-        Ml_ast_helpers.get_all_type_declarations ast
-        |> List.map (fun td -> td.ptype_name.txt)
-        |> String.concat ", "
-      in
-      Alcotest.fail
-        (sprintf "Type '%s' not found. Available types: [%s]" type_name
-           available_types)
+  if Option.is_none (Ml_ast_helpers.find_type_declaration ast type_name) then
+    let available_types =
+      Ml_ast_helpers.get_all_type_declarations ast
+      |> List.map (fun td -> td.ptype_name.txt)
+      |> String.concat ", "
+    in
+    Alcotest.fail
+      (sprintf "Type '%s' not found. Available types: [%s]" type_name
+         available_types)
 
 (* Assert that an external is defined in the AST *)
 let assert_external_exists (ast : structure) (external_name : string) =
-  match Ml_ast_helpers.find_external ast external_name with
-  | Some _ -> ()
-  | None ->
-      let available_externals =
-        Ml_ast_helpers.get_all_externals ast
-        |> List.map (fun vd -> vd.pval_name.txt)
-        |> String.concat ", "
-      in
-      Alcotest.fail
-        (sprintf "External '%s' not found. Available externals: [%s]"
-           external_name available_externals)
+  if Option.is_none (Ml_ast_helpers.find_external ast external_name) then
+    let available_externals =
+      Ml_ast_helpers.get_all_externals ast
+      |> List.map (fun vd -> vd.pval_name.txt)
+      |> String.concat ", "
+    in
+    Alcotest.fail
+      (sprintf "External '%s' not found. Available externals: [%s]"
+         external_name available_externals)
 
 (* Assert that a type is defined in a signature AST *)
 let assert_type_exists_sig (ast : signature) (type_name : string) =
-  match Ml_ast_helpers.find_type_declaration_sig ast type_name with
-  | Some _ -> ()
-  | None -> Alcotest.fail (sprintf "Type '%s' not found in signature" type_name)
+  Helpers.assert_some
+    (sprintf "Type '%s' not found in signature" type_name)
+    (Ml_ast_helpers.find_type_declaration_sig ast type_name)
 
 (* Assert parameter type at specific index *)
 let assert_param_type (ext_decl : value_description) (param_idx : int)
     (expected_type : string) =
   let params = Ml_ast_helpers.get_param_types ext_decl.pval_type in
-  match List.nth_opt params param_idx with
-  | Some param_type ->
-      let actual_type = Ml_ast_helpers.core_type_to_string param_type in
-      if actual_type <> expected_type then
-        Alcotest.fail
-          (sprintf "Expected parameter %d of '%s' to be '%s', got '%s'"
-             param_idx ext_decl.pval_name.txt expected_type actual_type)
-  | None ->
-      Alcotest.fail
-        (sprintf "Parameter %d not found in '%s' (has %d params)" param_idx
-           ext_decl.pval_name.txt (List.length params))
+  Helpers.expect_some
+    (sprintf "Parameter %d not found in '%s' (has %d params)" param_idx
+       ext_decl.pval_name.txt (List.length params))
+    (List.nth_opt params param_idx)
+  @@ fun param_type ->
+  let actual_type = Ml_ast_helpers.core_type_to_string param_type in
+  if actual_type <> expected_type then
+    Alcotest.fail
+      (sprintf "Expected parameter %d of '%s' to be '%s', got '%s'" param_idx
+         ext_decl.pval_name.txt expected_type actual_type)
 
 (* Assert return type *)
 let assert_return_type (ext_decl : value_description) (expected_type : string) =
@@ -199,15 +193,47 @@ let assert_return_type (ext_decl : value_description) (expected_type : string) =
 
 (* Assert that a value (let binding or external) exists in implementation *)
 let assert_value_exists (ast : structure) (value_name : string) =
-  match Ml_ast_helpers.find_let_binding ast value_name with
-  | Some _ -> ()
-  | None -> (
-      (* Also check externals *)
-      match Ml_ast_helpers.find_external ast value_name with
-      | Some _ -> ()
-      | None ->
-          Alcotest.fail
-            (sprintf "Value '%s' not found in implementation" value_name))
+  if
+    Option.is_none (Ml_ast_helpers.find_let_binding ast value_name)
+    && Option.is_none (Ml_ast_helpers.find_external ast value_name)
+  then
+    Alcotest.fail (sprintf "Value '%s' not found in implementation" value_name)
+
+(* Assert that a value (val or external) exists in a signature (.mli) AST *)
+let assert_value_exists_sig (ast : signature) (value_name : string) =
+  if Option.is_none (Ml_ast_helpers.find_value_declaration_sig ast value_name)
+  then
+    let available =
+      Ml_ast_helpers.get_all_value_declarations_sig ast
+      |> List.map fst |> String.concat ", "
+    in
+    Alcotest.fail
+      (sprintf "Value '%s' not found in signature. Available: [%s]" value_name
+         available)
+
+(* Assert that no value whose name satisfies [pred] exists in the signature *)
+let assert_no_value_matching_sig (ast : signature) (pred : string -> bool)
+    (label : string) =
+  let all = Ml_ast_helpers.get_all_value_declarations_sig ast |> List.map fst in
+  match List.find_opt pred all with
+  | Some name ->
+      Alcotest.fail
+        (sprintf "Expected no value matching '%s', but found '%s'" label name)
+  | None -> ()
+
+(* Assert that a type in a signature has a specific polymorphic variant tag *)
+let assert_type_has_variant_tag_sig (ast : signature) (type_name : string)
+    (tag : string) =
+  Helpers.expect_some
+    (sprintf "Type '%s' not found in signature" type_name)
+    (Ml_ast_helpers.find_type_declaration_sig ast type_name)
+  @@ fun type_decl ->
+  let tags = Ml_ast_helpers.get_variant_tags type_decl in
+  if not (List.mem tag tags) then
+    Alcotest.fail
+      (sprintf
+         "Expected type '%s' in signature to have variant tag '%s', found: [%s]"
+         type_name tag (String.concat "; " tags))
 
 (* ========================================================================= *)
 (* Class Type Inheritance Validations                                         *)
@@ -216,48 +242,49 @@ let assert_value_exists (ast : structure) (value_name : string) =
 (** Assert that class type [class_type_name] in implementation [ast] inherits
     from [parent_name] (exact dotted name, e.g. "GMyIface.my_iface_t"). *)
 let assert_class_type_inherits (ast : structure) ~class_type ~parent =
-  match Ml_ast_helpers.find_class_type_declaration_impl ast class_type with
-  | None ->
-      Alcotest.failf "class type '%s' not found in implementation" class_type
-  | Some ctd ->
-      let inherits = Ml_ast_helpers.get_class_type_inherit_names ctd in
-      if not (List.mem parent inherits) then
-        Alcotest.failf "class type '%s' does not inherit '%s'; inherited: [%s]"
-          class_type parent
-          (String.concat "; " inherits)
+  Helpers.expect_some
+    (sprintf "class type '%s' not found in implementation" class_type)
+    (Ml_ast_helpers.find_class_type_declaration_impl ast class_type)
+  @@ fun ctd ->
+  let inherits = Ml_ast_helpers.get_class_type_inherit_names ctd in
+  if not (List.mem parent inherits) then
+    Alcotest.failf "class type '%s' does not inherit '%s'; inherited: [%s]"
+      class_type parent
+      (String.concat "; " inherits)
 
 (** Assert that class type [class_type_name] does NOT inherit anything with the
     given [parent_prefix] (e.g. "GMyIface"). *)
 let assert_class_type_not_inherits_prefix (ast : structure) ~class_type
     ~parent_prefix =
-  match Ml_ast_helpers.find_class_type_declaration_impl ast class_type with
-  | None ->
-      Alcotest.failf "class type '%s' not found in implementation" class_type
-  | Some ctd -> (
-      let inherits = Ml_ast_helpers.get_class_type_inherit_names ctd in
-      let offender =
-        List.find_opt
-          (fun inh ->
-            String.length inh >= String.length parent_prefix
-            && String.sub inh 0 (String.length parent_prefix) = parent_prefix)
-          inherits
-      in
-      match offender with
-      | Some bad ->
-          Alcotest.failf "class type '%s' should NOT inherit '%s' (prefix '%s')"
-            class_type bad parent_prefix
-      | None -> ())
+  Helpers.expect_some
+    (sprintf "class type '%s' not found in implementation" class_type)
+    (Ml_ast_helpers.find_class_type_declaration_impl ast class_type)
+  @@ fun ctd ->
+  let inherits = Ml_ast_helpers.get_class_type_inherit_names ctd in
+  let offender =
+    List.find_opt
+      (fun inh ->
+        String.length inh >= String.length parent_prefix
+        && String.sub inh 0 (String.length parent_prefix) = parent_prefix)
+      inherits
+  in
+  match offender with
+  | Some bad ->
+      Alcotest.failf "class type '%s' should NOT inherit '%s' (prefix '%s')"
+        class_type bad parent_prefix
+  | None -> ()
 
 (** Assert that class [class_name] in implementation [ast] inherits from a class
     whose name (fully qualified) equals [parent_class_name] — this checks the
     inherit in the object body (implementation inherit). *)
 let assert_class_impl_inherits (ast : structure) ~class_name ~parent_class_name
     =
-  match Ml_ast_helpers.find_class_definition ast class_name with
-  | None -> Alcotest.failf "class '%s' not found in implementation" class_name
-  | Some cd ->
-      let inherits = Ml_ast_helpers.get_class_inherit_names cd in
-      if not (List.mem parent_class_name inherits) then
-        Alcotest.failf "class '%s' does not inherit '%s'; inherited: [%s]"
-          class_name parent_class_name
-          (String.concat "; " inherits)
+  Helpers.expect_some
+    (sprintf "class '%s' not found in implementation" class_name)
+    (Ml_ast_helpers.find_class_definition ast class_name)
+  @@ fun cd ->
+  let inherits = Ml_ast_helpers.get_class_inherit_names cd in
+  if not (List.mem parent_class_name inherits) then
+    Alcotest.failf "class '%s' does not inherit '%s'; inherited: [%s]"
+      class_name parent_class_name
+      (String.concat "; " inherits)

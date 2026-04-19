@@ -775,20 +775,18 @@ let test_parse_array_return_type () =
     (Option.is_some method_.return_type.array)
     true;
 
-  match method_.return_type.array with
-  | Some array_info ->
-      Alcotest.(check bool)
-        "Array is not zero-terminated" false array_info.zero_terminated;
-      Alcotest.(check string)
-        "Array element type" "Widget" array_info.element_type.name;
-      Alcotest.(check (option string))
-        "Array element c:type" (Some "GtkWidget*")
-        array_info.element_type.c_type;
-      Alcotest.(check (option int))
-        "Array has no length parameter" None array_info.length;
-      Alcotest.(check (option int))
-        "Array has no fixed size" None array_info.fixed_size
-  | None -> Alcotest.fail "Array info should be present"
+  expect_some "Array info should be present" method_.return_type.array
+  @@ fun array_info ->
+  Alcotest.(check bool)
+    "Array is not zero-terminated" false array_info.zero_terminated;
+  Alcotest.(check string)
+    "Array element type" "Widget" array_info.element_type.name;
+  Alcotest.(check (option string))
+    "Array element c:type" (Some "GtkWidget*") array_info.element_type.c_type;
+  Alcotest.(check (option int))
+    "Array has no length parameter" None array_info.length;
+  Alcotest.(check (option int))
+    "Array has no fixed size" None array_info.fixed_size
 
 let test_parse_array_with_length () =
   let gir_xml =
@@ -815,13 +813,12 @@ let test_parse_array_with_length () =
   let list_class = List.hd classes in
   let method_ = List.hd list_class.methods in
 
-  match method_.return_type.array with
-  | Some array_info ->
-      Alcotest.(check (option int))
-        "Array length points to parameter 0" (Some 0) array_info.length;
-      Alcotest.(check string)
-        "Element type is utf8" "utf8" array_info.element_type.name
-  | None -> Alcotest.fail "Array info should be present"
+  expect_some "Array info should be present" method_.return_type.array
+  @@ fun array_info ->
+  Alcotest.(check (option int))
+    "Array length points to parameter 0" (Some 0) array_info.length;
+  Alcotest.(check string)
+    "Element type is utf8" "utf8" array_info.element_type.name
 
 let test_parse_array_zero_terminated () =
   let gir_xml =
@@ -843,13 +840,12 @@ let test_parse_array_zero_terminated () =
   let string_array = List.hd classes in
   let method_ = List.hd string_array.methods in
 
-  match method_.return_type.array with
-  | Some array_info ->
-      Alcotest.(check bool)
-        "Array is zero-terminated" true array_info.zero_terminated;
-      Alcotest.(check (option int))
-        "No explicit length parameter" None array_info.length
-  | None -> Alcotest.fail "Array info should be present"
+  expect_some "Array info should be present" method_.return_type.array
+  @@ fun array_info ->
+  Alcotest.(check bool)
+    "Array is zero-terminated" true array_info.zero_terminated;
+  Alcotest.(check (option int))
+    "No explicit length parameter" None array_info.length
 
 let test_parse_array_fixed_size () =
   let gir_xml =
@@ -869,19 +865,16 @@ let test_parse_array_fixed_size () =
   let point = List.hd records in
   let field = List.hd point.fields in
 
-  match field.field_type with
-  | Some field_type -> (
-      match field_type.array with
-      | Some array_info ->
-          Alcotest.(check (option int))
-            "Array has fixed size 3" (Some 3) array_info.fixed_size;
-          Alcotest.(check string)
-            "Element type is gdouble" "gdouble" array_info.element_type.name;
-          Alcotest.(check (option string))
-            "Element c:type is gdouble" (Some "gdouble")
-            array_info.element_type.c_type
-      | None -> Alcotest.fail "Array info should be present")
-  | None -> Alcotest.fail "Field type should be present"
+  expect_some "Field type should be present" field.field_type
+  @@ fun field_type ->
+  expect_some "Array info should be present" field_type.array
+  @@ fun array_info ->
+  Alcotest.(check (option int))
+    "Array has fixed size 3" (Some 3) array_info.fixed_size;
+  Alcotest.(check string)
+    "Element type is gdouble" "gdouble" array_info.element_type.name;
+  Alcotest.(check (option string))
+    "Element c:type is gdouble" (Some "gdouble") array_info.element_type.c_type
 
 let test_parse_array_parameter () =
   let gir_xml =
@@ -917,15 +910,15 @@ let test_parse_array_parameter () =
   Alcotest.(check string)
     "Parameter type name is array" "array" items_param.param_type.name;
 
-  match items_param.param_type.array with
-  | Some array_info ->
-      Alcotest.(check (option int))
-        "Array length is parameter 1" (Some 1) array_info.length;
-      Alcotest.(check bool)
-        "Array is not zero-terminated" false array_info.zero_terminated;
-      Alcotest.(check string)
-        "Element type is utf8" "utf8" array_info.element_type.name
-  | None -> Alcotest.fail "Array info should be present in parameter"
+  expect_some "Array info should be present in parameter"
+    items_param.param_type.array
+  @@ fun array_info ->
+  Alcotest.(check (option int))
+    "Array length is parameter 1" (Some 1) array_info.length;
+  Alcotest.(check bool)
+    "Array is not zero-terminated" false array_info.zero_terminated;
+  Alcotest.(check string)
+    "Element type is utf8" "utf8" array_info.element_type.name
 
 let test_parse_array_property () =
   let gir_xml =
@@ -948,13 +941,12 @@ let test_parse_array_property () =
   Alcotest.(check string)
     "Property type name is array" "array" prop.prop_type.name;
 
-  match prop.prop_type.array with
-  | Some array_info ->
-      Alcotest.(check bool)
-        "Array is zero-terminated" true array_info.zero_terminated;
-      Alcotest.(check string)
-        "Element type is utf8" "utf8" array_info.element_type.name
-  | None -> Alcotest.fail "Array info should be present in property"
+  expect_some "Array info should be present in property" prop.prop_type.array
+  @@ fun array_info ->
+  Alcotest.(check bool)
+    "Array is zero-terminated" true array_info.zero_terminated;
+  Alcotest.(check string)
+    "Element type is utf8" "utf8" array_info.element_type.name
 
 let test_parse_array_without_attributes () =
   let gir_xml =
@@ -976,16 +968,14 @@ let test_parse_array_without_attributes () =
   let simple_array = List.hd classes in
   let method_ = List.hd simple_array.methods in
 
-  match method_.return_type.array with
-  | Some array_info ->
-      Alcotest.(check bool)
-        "Array is not zero-terminated by default" false
-        array_info.zero_terminated;
-      Alcotest.(check (option int)) "No length parameter" None array_info.length;
-      Alcotest.(check (option int)) "No fixed size" None array_info.fixed_size;
-      Alcotest.(check string)
-        "Element type is gint" "gint" array_info.element_type.name
-  | None -> Alcotest.fail "Array info should be present"
+  expect_some "Array info should be present" method_.return_type.array
+  @@ fun array_info ->
+  Alcotest.(check bool)
+    "Array is not zero-terminated by default" false array_info.zero_terminated;
+  Alcotest.(check (option int)) "No length parameter" None array_info.length;
+  Alcotest.(check (option int)) "No fixed size" None array_info.fixed_size;
+  Alcotest.(check string)
+    "Element type is gint" "gint" array_info.element_type.name
 
 let test_parse_nested_array_type () =
   let gir_xml =
@@ -1017,15 +1007,14 @@ let test_parse_nested_array_type () =
   Alcotest.(check (option string))
     "Array c:type" (Some "gint*") method_.return_type.c_type;
 
-  match method_.return_type.array with
-  | Some array_info ->
-      Alcotest.(check (option int))
-        "Length parameter is 0" (Some 0) array_info.length;
-      Alcotest.(check string)
-        "Element type name" "gint" array_info.element_type.name;
-      Alcotest.(check (option string))
-        "Element c:type" (Some "gint") array_info.element_type.c_type
-  | None -> Alcotest.fail "Array info should be present"
+  expect_some "Array info should be present" method_.return_type.array
+  @@ fun array_info ->
+  Alcotest.(check (option int))
+    "Length parameter is 0" (Some 0) array_info.length;
+  Alcotest.(check string)
+    "Element type name" "gint" array_info.element_type.name;
+  Alcotest.(check (option string))
+    "Element c:type" (Some "gint") array_info.element_type.c_type
 
 (* ========================================================================= *)
 (* Nested Type Element Parsing Tests - for GList/GSList support *)
@@ -1060,16 +1049,16 @@ let test_parse_glist_return_type () =
     (Option.is_some method_.return_type.array)
     true;
 
-  match method_.return_type.array with
-  | Some array_info ->
-      Alcotest.(check string)
-        "Element type name is Window" "Window" array_info.element_type.name;
-      Alcotest.(check (option string))
-        "Element c:type is GtkWindow*" (Some "GtkWindow*")
-        array_info.element_type.c_type;
-      Alcotest.(check (option string))
-        "Array name is GLib.List" (Some "GLib.List") array_info.array_name
-  | None -> Alcotest.fail "Array info should be present for GList element"
+  expect_some "Array info should be present for GList element"
+    method_.return_type.array
+  @@ fun array_info ->
+  Alcotest.(check string)
+    "Element type name is Window" "Window" array_info.element_type.name;
+  Alcotest.(check (option string))
+    "Element c:type is GtkWindow*" (Some "GtkWindow*")
+    array_info.element_type.c_type;
+  Alcotest.(check (option string))
+    "Array name is GLib.List" (Some "GLib.List") array_info.array_name
 
 let test_parse_gslist_parameter () =
   let gir_xml =
@@ -1096,14 +1085,14 @@ let test_parse_gslist_parameter () =
   Alcotest.(check (option string))
     "C type is GSList*" (Some "GSList*") method_.return_type.c_type;
 
-  match method_.return_type.array with
-  | Some array_info ->
-      Alcotest.(check string)
-        "Element type name is Widget" "Widget" array_info.element_type.name;
-      Alcotest.(check (option string))
-        "Element c:type is GtkWidget*" (Some "GtkWidget*")
-        array_info.element_type.c_type
-  | None -> Alcotest.fail "Array info should be present for GSList element"
+  expect_some "Array info should be present for GSList element"
+    method_.return_type.array
+  @@ fun array_info ->
+  Alcotest.(check string)
+    "Element type name is Widget" "Widget" array_info.element_type.name;
+  Alcotest.(check (option string))
+    "Element c:type is GtkWidget*" (Some "GtkWidget*")
+    array_info.element_type.c_type
 
 let test_parse_generic_type_without_nested () =
   let gir_xml =
@@ -1166,15 +1155,13 @@ let test_parse_glist_with_cross_namespace_element () =
     (Option.is_some files_param.param_type.array)
     true;
 
-  match files_param.param_type.array with
-  | Some array_info ->
-      Alcotest.(check string)
-        "Element type name is Gio.File" "Gio.File" array_info.element_type.name;
-      Alcotest.(check (option string))
-        "Element c:type is None (not provided)" None
-        array_info.element_type.c_type
-  | None ->
-      Alcotest.fail "Array info should be present for cross-namespace element"
+  expect_some "Array info should be present for cross-namespace element"
+    files_param.param_type.array
+  @@ fun array_info ->
+  Alcotest.(check string)
+    "Element type name is Gio.File" "Gio.File" array_info.element_type.name;
+  Alcotest.(check (option string))
+    "Element c:type is None (not provided)" None array_info.element_type.c_type
 
 (* Test same-namespace element type parsing *)
 let test_parse_glist_with_same_namespace_element () =
@@ -1210,12 +1197,11 @@ let test_parse_glist_with_same_namespace_element () =
   Alcotest.(check string)
     "Parameter type is GLib.List" "GLib.List" surfaces_param.param_type.name;
 
-  match surfaces_param.param_type.array with
-  | Some array_info ->
-      Alcotest.(check string)
-        "Element type name is Texture" "Texture" array_info.element_type.name
-  | None ->
-      Alcotest.fail "Array info should be present for same-namespace element"
+  expect_some "Array info should be present for same-namespace element"
+    surfaces_param.param_type.array
+  @@ fun array_info ->
+  Alcotest.(check string)
+    "Element type name is Texture" "Texture" array_info.element_type.name
 
 (* ========================================================================= *)
 (* Test Suite *)
