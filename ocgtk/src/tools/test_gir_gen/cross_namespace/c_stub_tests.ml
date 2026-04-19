@@ -1026,15 +1026,14 @@ let test_value_record_has_complete_forward_decls () =
   let header = read_file header_path in
 
   (* Positive: copy function is declared *)
-  assert_contains "copy_ function declared" header
-    "value copy_TestNsRect(const TestNsRect *ptr)";
+  C_validation.assert_copy_func_decl_exists header "TestNsRect";
 
   (* Critical: Val_ macro MUST be defined using copy function.
      This is the bug - the macro was missing when method_name != "copy". *)
-  assert_contains "Val_TestNsRect macro defined" header "#define Val_TestNsRect";
+  C_validation.assert_forward_decl_exists header "TestNsRect" "Val_";
 
   (* Positive: _val macro is defined *)
-  assert_contains "TestNsRect_val macro defined" header "#define TestNsRect_val";
+  C_validation.assert_forward_decl_exists header "TestNsRect_val" "";
 
   (* Also verify the C stub file has the copy function *)
   let c_file_path = stub_c_file output_dir "TestRect" in
@@ -1614,40 +1613,19 @@ let test_gdkpixbuf_format_flags_guarded () =
   in
   Helpers.log_generated_c_code "gdkpixbuf_format_flags_guard" c_code;
 
-  (* Positive: contains guard start *)
-  Alcotest.(check bool)
-    "Contains #ifndef GDK_PIXBUF_FORMAT_WRITABLE guard start" true
-    (string_contains c_code "#ifndef GDK_PIXBUF_FORMAT_WRITABLE");
+  (* Positive: conditional compilation guard exists *)
+  C_validation.assert_conditional_guard_exists c_code
+    "GDK_PIXBUF_FORMAT_WRITABLE";
 
-  (* Positive: contains guard end *)
-  Alcotest.(check bool)
-    "Contains #endif guard end" true
-    (string_contains c_code "#endif");
-
-  (* Positive: contains converter prototypes *)
-  Alcotest.(check bool)
-    "Contains Val_GdkPixbufFormatFlags prototype" true
-    (string_contains c_code "Val_GdkPixbufFormatFlags");
-  Alcotest.(check bool)
-    "Contains GdkPixbufFormatFlags_val prototype" true
-    (string_contains c_code "GdkPixbufFormatFlags_val");
-
-  (* Critical: verify ordering - prototypes appear BETWEEN guard start and guard end *)
-  let guard_start =
-    Str.search_forward
-      (Str.regexp_string "#ifndef GDK_PIXBUF_FORMAT_WRITABLE")
-      c_code 0
+  (* Critical: verify converter prototypes appear INSIDE the guard *)
+  let guard_content =
+    C_validation.extract_conditional_guard_content c_code
+      "GDK_PIXBUF_FORMAT_WRITABLE"
   in
-  let prototype_pos =
-    Str.search_forward (Str.regexp_string "Val_GdkPixbufFormatFlags") c_code 0
-  in
-  let guard_end = Str.search_forward (Str.regexp_string "#endif") c_code 0 in
-  Alcotest.(check bool)
-    "Guard start < prototype position" true
-    (guard_start < prototype_pos);
-  Alcotest.(check bool)
-    "Prototype position < guard end" true
-    (prototype_pos < guard_end)
+  C_validation.assert_forward_decl_exists guard_content "GdkPixbufFormatFlags"
+    "Val_";
+  C_validation.assert_forward_decl_exists guard_content
+    "GdkPixbufFormatFlags_val" ""
 
 (* Test 2: Normal bitfield should NOT have the guard (negative control) *)
 let test_normal_bitfield_no_guard () =
@@ -1682,17 +1660,12 @@ let test_normal_bitfield_no_guard () =
   Helpers.log_generated_c_code "normal_bitfield_no_guard" c_code;
 
   (* Negative: should NOT contain the GdkPixbufFormatFlags guard *)
-  Alcotest.(check bool)
-    "Does NOT contain GDK_PIXBUF_FORMAT_WRITABLE guard" false
-    (string_contains c_code "#ifndef GDK_PIXBUF_FORMAT_WRITABLE");
+  C_validation.assert_conditional_guard_not_exists c_code
+    "GDK_PIXBUF_FORMAT_WRITABLE";
 
   (* Positive: should still contain the converter prototypes *)
-  Alcotest.(check bool)
-    "Contains Val_GtkInhibitFlags prototype" true
-    (string_contains c_code "Val_GtkInhibitFlags");
-  Alcotest.(check bool)
-    "Contains GtkInhibitFlags_val prototype" true
-    (string_contains c_code "GtkInhibitFlags_val")
+  C_validation.assert_forward_decl_exists c_code "GtkInhibitFlags" "Val_";
+  C_validation.assert_forward_decl_exists c_code "GtkInhibitFlags_val" ""
 
 (* Bug 11: C converter name casing for cross-namespace enums
    See ocgtk/docs/plans/fix_codegen_bugs_tests.md
@@ -1799,16 +1772,23 @@ let test_cross_namespace_c_converter_names () =
   in
   Helpers.log_generated_c_code "cross_namespace_c_converter" c_code;
 
+  let functions = C_parser.parse_c_code c_code in
+  let func =
+    Helpers.expect_some "ml_gdk_pixbuf_set_colorspace not found"
+      (C_ast.find_function functions "ml_gdk_pixbuf_set_colorspace")
+      Fun.id
+  in
+
   (* Critical: verify the generated code uses GdkPixbufColorspace_val (proper capitalization)
      NOT GdkpixbufColorspace_val (dune-lowercased, which is the bug) *)
   Alcotest.(check bool)
-    "Contains GdkPixbufColorspace_val (correct capitalization)" true
-    (string_contains c_code "GdkPixbufColorspace_val");
+    "Uses GdkPixbufColorspace_val (correct capitalization)" true
+    (C_validation.uses_macro func "GdkPixbufColorspace_val");
 
-  (* Negative: verify it does NOT contain the wrong lowercase version *)
+  (* Negative: verify it does NOT use the wrong lowercase version *)
   Alcotest.(check bool)
-    "Does NOT contain GdkpixbufColorspace_val (wrong lowercase)" false
-    (string_contains c_code "GdkpixbufColorspace_val")
+    "Does NOT use GdkpixbufColorspace_val (wrong lowercase)" false
+    (C_validation.uses_macro func "GdkpixbufColorspace_val")
 
 (* Cross-namespace enum array element conversion should not use address-of.
    Before the fix, c_stub_array_conv.ml only checked ctx.enums (same-namespace)

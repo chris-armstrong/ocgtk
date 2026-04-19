@@ -78,7 +78,54 @@ val assert_header_guard_format : string -> string -> unit
     @raise Alcotest.Test_error
       if no matching guard is found or if it's incomplete *)
 
+(** {1 Copy Function Declarations} *)
+
+val assert_copy_func_decl_exists : string -> string -> unit
+(** Assert that a copy function declaration exists for the given C type.
+
+    [assert_copy_func_decl_exists header_content c_type] checks for a
+    [value copy_<c_type>(] declaration line in the header, which is the
+    prototype for a value-like record's copy helper.
+
+    @raise Alcotest.Test_error if the declaration is not found *)
+
+(** {1 Conditional Compilation Guards} *)
+
+val assert_conditional_guard_exists : string -> string -> unit
+(** Assert that a conditional compilation guard exists with the given name.
+
+    [assert_conditional_guard_exists header_content guard_name] checks for a
+    [#ifndef GUARD_NAME] directive. Unlike include guards, the [#define] inside
+    the conditional block may protect something other than [guard_name], so only
+    the presence of [#ifndef] is required.
+
+    @raise Alcotest.Test_error if the guard is not found *)
+
+val assert_conditional_guard_not_exists : string -> string -> unit
+(** Assert that a conditional compilation guard does NOT exist.
+
+    [assert_conditional_guard_not_exists header_content guard_name] checks that
+    no [#ifndef GUARD_NAME] directive is present in the header.
+
+    @raise Alcotest.Test_error if [#ifndef GUARD_NAME] is present *)
+
+val extract_conditional_guard_content : string -> string -> string
+(** Extract the content between a conditional compilation guard's [#ifndef] and
+    its matching [#endif].
+
+    [extract_conditional_guard_content header_content guard_name] returns the
+    extracted lines joined with newlines; returns an empty string if the guard
+    is not found. *)
+
 (** {1 Function Validation} *)
+
+val uses_macro : C_ast.c_function -> string -> bool
+(** Check if any statement in the function body uses a specific macro.
+
+    [uses_macro f macro_name] returns [true] if [macro_name] appears anywhere in
+    the function body as a [Call] or [Macro] AST node. Useful for verifying that
+    type-converter macros (e.g. [GdkPixbufColorspace_val]) are generated with
+    the correct capitalisation. *)
 
 val uses_correct_return_macro : C_ast.c_function -> string -> bool
 (** Check if a function uses the correct return conversion macro *)

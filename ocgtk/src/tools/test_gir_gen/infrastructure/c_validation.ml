@@ -503,13 +503,14 @@ let extract_forward_decls header_content =
               String.sub rest_after_type start
                 (String.length rest_after_type - start)
             in
-            (* Check if next token is <Type>_val *)
+            (* Check if next token is <Type>_val.
+               Note: the C return type (type_name) may differ from the OCaml
+               function name prefix — e.g., GtkApplicationInhibitFlags
+               GtkInhibitFlags_val(…) — so we only require the _val suffix,
+               not strict equality between func_name and type_name ^ "_val". *)
             match extract_identifier rest_no_stars with
             | Some func_name ->
-                if
-                  String.ends_with ~suffix:"_val" func_name
-                  && func_name = type_name ^ "_val"
-                then Some func_name
+                if String.ends_with ~suffix:"_val" func_name then Some func_name
                 else None
             | None -> None)
         | None -> None)
@@ -680,6 +681,111 @@ let assert_local_include_not_exists header_content unexpected_path =
       (Printf.sprintf
          "Local include '%s' should NOT exist in header, but was found"
          unexpected_path)
+
+(* Assert that a copy function declaration exists for the given C type.
+   Looks for a "value copy_<c_type>(" line in the header, which is the prototype
+   for a value-like record's copy helper. *)
+let assert_copy_func_decl_exists header_content c_type =
+  let lines = String.split_on_char '\n' header_content in
+  let copy_func_name = "copy_" ^ c_type in
+  let found =
+    List.exists
+      (fun line ->
+        let stripped = String.trim line in
+        (* Match "value copy_<c_type>(" pattern *)
+        if String.starts_with ~prefix:"value " stripped then
+          let rest =
+            String.sub stripped 6 (String.length stripped - 6) |> String.trim
+          in
+          match extract_identifier rest with
+          | Some name -> name = copy_func_name
+          | None -> false
+        else false)
+      lines
+  in
+  if not found then
+    Alcotest.fail
+      (Printf.sprintf
+         "Copy function declaration 'value %s(...)' not found in header"
+         copy_func_name)
+
+(* Assert that a conditional compilation guard exists with the given name.
+   Unlike include guards (where #ifndef and #define use the same name),
+   conditional compilation guards only need a matching #ifndef; the
+   #define inside the guard protects the converter macros, not the guard name. *)
+let assert_conditional_guard_exists header_content guard_name =
+  let guards = parse_header_guards header_content in
+  let found =
+    List.exists (fun g -> g.guard_name = guard_name && g.has_ifndef) guards
+  in
+  if not found then
+    Alcotest.fail
+      (Printf.sprintf "Conditional guard '#ifndef %s' not found in header"
+         guard_name)
+
+(* Assert that a conditional compilation guard does NOT exist in the header. *)
+let assert_conditional_guard_not_exists header_content guard_name =
+  let guards = parse_header_guards header_content in
+  let found =
+    List.exists (fun g -> g.guard_name = guard_name && g.has_ifndef) guards
+  in
+  if found then
+    Alcotest.fail
+      (Printf.sprintf
+         "Conditional guard '#ifndef %s' should not exist in header, but was \
+          found"
+         guard_name)
+
+(* Extract the content lines that appear between a conditional compilation guard's
+   #ifndef and its matching #endif.  Returns the extracted content as a string.
+   Used to verify that forward declarations appear *inside* the guard rather than
+   merely somewhere in the file. *)
+let extract_conditional_guard_content header_content guard_name =
+  let lines = String.split_on_char '\n' header_content in
+  let guard_marker = "#ifndef " ^ guard_name in
+  let rec skip_to_guard = function
+    | [] -> []
+    | line :: rest ->
+        if String.trim line = guard_marker then rest else skip_to_guard rest
+  in
+  let rec take_until_endif = function
+    | [] -> []
+    | line :: rest ->
+        if String.starts_with ~prefix:"#endif" (String.trim line) then []
+        else line :: take_until_endif rest
+  in
+  let inside = skip_to_guard lines in
+  String.concat "\n" (take_until_endif inside)
+
+(* Check if any statement in the function body uses a specific macro (by name).
+   Returns true if the macro appears anywhere as a Call or Macro node.
+
+   Both matches enumerate every variant of [C_ast.c_expr] / [C_ast.c_stmt]
+   explicitly so that adding a new AST variant causes a compile-time warning
+   here rather than a silent false-negative. *)
+let uses_macro f macro_name =
+  let rec check_expr = function
+    | Macro (name, _) when name = macro_name -> true
+    | Call (name, _) when name = macro_name -> true
+    | Macro (_, args) -> List.exists check_expr args
+    | Call (_, args) -> List.exists check_expr args
+    | Cast (_, e) -> check_expr e
+    | AddrOf e | Deref e -> check_expr e
+    | Var _ | IntLiteral _ | StringLiteral _ -> false
+  in
+  let rec check_stmt = function
+    | VarDecl (_, _, Some e) -> check_expr e
+    | VarDecl (_, _, None) -> false
+    | Assign (_, e) -> check_expr e
+    | ExprStmt e -> check_expr e
+    | Return e -> check_expr e
+    | IfStmt (cond, then_stmts, else_stmts) ->
+        check_expr cond
+        || List.exists check_stmt then_stmts
+        || List.exists check_stmt else_stmts
+    | Empty -> false
+  in
+  List.exists check_stmt f.body
 
 (* Assert that a header guard exists with the expected pattern.
      [assert_header_guard_format header_content expected_pattern] validates that
