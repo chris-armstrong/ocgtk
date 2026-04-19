@@ -191,11 +191,9 @@ let test_method_conflict_not_duplicated () =
      since it comes via inheritance — verify by checking the ctd has no
      method fields named do_thing *)
   let ctd =
-    match
-      Ml_ast_helpers.find_class_type_declaration_impl ml_ast "my_class_t"
-    with
-    | None -> Alcotest.fail "my_class_t not found"
-    | Some c -> c
+    Helpers.expect_some "my_class_t not found"
+      (Ml_ast_helpers.find_class_type_declaration_impl ml_ast "my_class_t")
+      Fun.id
   in
   let has_own_do_thing =
     match ctd.pci_expr.pcty_desc with

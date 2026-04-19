@@ -236,34 +236,21 @@ let check_mli_vs_ml_consistency ~mli_ast ~ml_ast ~type_name =
 
 (* Check that all externals in .mli are implemented in .ml using AST *)
 let check_externals_consistency ~mli_ast ~ml_ast ~external_name =
-  (* Check that external exists in signature *)
-  (match Ml_ast_helpers.find_external_sig mli_ast external_name with
-  | Some _ -> ()
-  | None ->
-      Alcotest.fail
-        (sprintf "External '%s' not found in .mli file" external_name));
-
-  (* Check that external exists in implementation *)
-  match Ml_ast_helpers.find_external ml_ast external_name with
-  | Some _ -> ()
-  | None ->
-      Alcotest.fail
-        (sprintf "External '%s' not found in .ml file" external_name)
+  Helpers.assert_some
+    (sprintf "External '%s' not found in .mli file" external_name)
+    (Ml_ast_helpers.find_external_sig mli_ast external_name);
+  Helpers.assert_some
+    (sprintf "External '%s' not found in .ml file" external_name)
+    (Ml_ast_helpers.find_external ml_ast external_name)
 
 (* Validate that function signatures match between .mli and .ml using AST *)
 let validate_function_signature_consistency ~mli_ast ~ml_ast ~func_name =
-  (* Extract function signature from .mli *)
-  match Ml_ast_helpers.find_value_declaration_sig mli_ast func_name with
-  | Some _mli_func -> (
-      match Ml_ast_helpers.find_let_binding ml_ast func_name with
-      | Some _ ->
-          (* Signatures match if both exist *)
-          ()
-      | None ->
-          Alcotest.fail
-            (sprintf "Function '%s' not found in .ml file" func_name))
-  | None ->
-      Alcotest.fail (sprintf "Function '%s' not found in .mli file" func_name)
+  Helpers.assert_some
+    (sprintf "Function '%s' not found in .mli file" func_name)
+    (Ml_ast_helpers.find_value_declaration_sig mli_ast func_name);
+  Helpers.assert_some
+    (sprintf "Function '%s' not found in .ml file" func_name)
+    (Ml_ast_helpers.find_let_binding ml_ast func_name)
 
 (* ========================================================================= *)
 (* Hierarchy and Conversion Method Validation *)
@@ -310,84 +297,75 @@ let validate_gobject_wrapper ~ml_ast ~type_name =
 (* Validate structural type parameters like `<as_widget: Widget.t; ..>` *)
 let validate_structural_type_parameter ~mli_ast ~type_name ~field_name
     ~field_type =
-  match Ml_ast_helpers.find_type_declaration_sig mli_ast type_name with
-  | Some type_decl -> (
-      match type_decl.ptype_manifest with
-      | Some manifest ->
-          let type_str = Ml_ast_helpers.core_type_to_string manifest in
-          (* Check if the field name appears in the type string *)
-          if not (Helpers.string_contains type_str field_name) then
-            Alcotest.fail
-              (sprintf "Structural field '%s' not found in type '%s'" field_name
-                 type_name);
-          (* Check if the field type appears in the type string *)
-          if not (Helpers.string_contains type_str field_type) then
-            Alcotest.fail
-              (sprintf "Field type '%s' not found in type '%s'" field_type
-                 type_name)
-      | None ->
-          Alcotest.fail
-            (sprintf "Type '%s' has no manifest (not a structural type)"
-               type_name))
-  | None -> Alcotest.fail (sprintf "Type '%s' not found in signature" type_name)
+  Helpers.expect_some
+    (sprintf "Type '%s' not found in signature" type_name)
+    (Ml_ast_helpers.find_type_declaration_sig mli_ast type_name)
+  @@ fun type_decl ->
+  Helpers.expect_some
+    (sprintf "Type '%s' has no manifest (not a structural type)" type_name)
+    type_decl.ptype_manifest
+  @@ fun manifest ->
+  let type_str = Ml_ast_helpers.core_type_to_string manifest in
+  (* Check if the field name appears in the type string *)
+  if not (Helpers.string_contains type_str field_name) then
+    Alcotest.fail
+      (sprintf "Structural field '%s' not found in type '%s'" field_name
+         type_name);
+  (* Check if the field type appears in the type string *)
+  if not (Helpers.string_contains type_str field_type) then
+    Alcotest.fail
+      (sprintf "Field type '%s' not found in type '%s'" field_type type_name)
 
 (* Validate hierarchy coercion like (#widget -> Widget.t) *)
 let validate_hierarchy_coercion ~mli_ast ~function_name ~param_idx
     ~expected_coercion =
-  match Ml_ast_helpers.find_value_declaration_sig mli_ast function_name with
-  | Some func_decl -> (
-      let param_types = Ml_ast_helpers.get_param_types func_decl.pval_type in
-      match List.nth_opt param_types param_idx with
-      | Some param_type ->
-          let param_str = Ml_ast_helpers.core_type_to_string param_type in
-          if not (String.equal param_str expected_coercion) then
-            Alcotest.fail
-              (sprintf "Parameter %d of '%s' expected coercion '%s', got '%s'"
-                 param_idx function_name expected_coercion param_str)
-      | None ->
-          Alcotest.fail
-            (sprintf "Parameter %d not found in '%s'" param_idx function_name))
-  | None ->
-      Alcotest.fail
-        (sprintf "Function '%s' not found in signature" function_name)
+  Helpers.expect_some
+    (sprintf "Function '%s' not found in signature" function_name)
+    (Ml_ast_helpers.find_value_declaration_sig mli_ast function_name)
+  @@ fun func_decl ->
+  let param_types = Ml_ast_helpers.get_param_types func_decl.pval_type in
+  Helpers.expect_some
+    (sprintf "Parameter %d not found in '%s'" param_idx function_name)
+    (List.nth_opt param_types param_idx)
+  @@ fun param_type ->
+  let param_str = Ml_ast_helpers.core_type_to_string param_type in
+  if not (String.equal param_str expected_coercion) then
+    Alcotest.fail
+      (sprintf "Parameter %d of '%s' expected coercion '%s', got '%s'" param_idx
+         function_name expected_coercion param_str)
 
 (* Validate wrapped return values like (new ClassName ret) *)
 let validate_wrapped_return ~ml_ast ~function_name ~wrapper_class =
-  match Ml_ast_helpers.find_let_binding ml_ast function_name with
-  | Some binding ->
-      (* Check that the binding expression contains the wrapper class *)
-      let buf = Buffer.create 256 in
-      let fmt = Format.formatter_of_buffer buf in
-      Ppxlib.Pprintast.expression fmt binding.pvb_expr;
-      Format.pp_print_flush fmt ();
-      let binding_str = Buffer.contents buf in
-      if not (Helpers.string_contains binding_str wrapper_class) then
-        Alcotest.fail
-          (sprintf "Return value for '%s' not wrapped with '%s'" function_name
-             wrapper_class)
-  | None ->
-      Alcotest.fail
-        (sprintf "Function '%s' not found in implementation" function_name)
+  Helpers.expect_some
+    (sprintf "Function '%s' not found in implementation" function_name)
+    (Ml_ast_helpers.find_let_binding ml_ast function_name)
+  @@ fun binding ->
+  (* Check that the binding expression contains the wrapper class *)
+  let buf = Buffer.create 256 in
+  let fmt = Format.formatter_of_buffer buf in
+  Ppxlib.Pprintast.expression fmt binding.pvb_expr;
+  Format.pp_print_flush fmt ();
+  let binding_str = Buffer.contents buf in
+  if not (Helpers.string_contains binding_str wrapper_class) then
+    Alcotest.fail
+      (sprintf "Return value for '%s' not wrapped with '%s'" function_name
+         wrapper_class)
 
 (* Validate signal handler inheritance *)
 let validate_signal_handler_inheritance ~mli_ast ~signal_handler_name
     ~parent_signal =
-  match
-    Ml_ast_helpers.find_value_declaration_sig mli_ast signal_handler_name
-  with
-  | Some handler_decl ->
-      (* Check that the handler type references the parent signal *)
-      let handler_type_str =
-        Ml_ast_helpers.core_type_to_string handler_decl.pval_type
-      in
-      if not (Helpers.string_contains handler_type_str parent_signal) then
-        Alcotest.fail
-          (sprintf "Signal handler '%s' does not inherit from '%s'"
-             signal_handler_name parent_signal)
-  | None ->
-      Alcotest.fail
-        (sprintf "Signal handler '%s' not found in signature"
-           signal_handler_name)
+  Helpers.expect_some
+    (sprintf "Signal handler '%s' not found in signature" signal_handler_name)
+    (Ml_ast_helpers.find_value_declaration_sig mli_ast signal_handler_name)
+  @@ fun handler_decl ->
+  (* Check that the handler type references the parent signal *)
+  let handler_type_str =
+    Ml_ast_helpers.core_type_to_string handler_decl.pval_type
+  in
+  if not (Helpers.string_contains handler_type_str parent_signal) then
+    Alcotest.fail
+      (sprintf "Signal handler '%s' does not inherit from '%s'"
+         signal_handler_name parent_signal)
 
 (* ========================================================================= *)
 (* Signal Creation Helpers *)
@@ -459,35 +437,33 @@ let create_test_class_with_signals ~name ~c_type ~signals () =
 
 (* Validate that a class inherits from a specific parent using AST *)
 let validate_class_inherits ~structure ~class_name ~parent_class =
-  match Ml_ast_helpers.find_class_declaration structure class_name with
-  | Some class_decl ->
-      let inherit_clauses =
-        Ml_ast_helpers.get_class_inherit_clauses class_decl.pci_expr
-      in
-      if not (List.mem parent_class inherit_clauses) then
-        Alcotest.fail
-          (sprintf "Class '%s' does not inherit from '%s'. Inherits from: [%s]"
-             class_name parent_class
-             (String.concat "; " inherit_clauses))
-  | None ->
-      Alcotest.fail (sprintf "Class '%s' not found in structure" class_name)
+  Helpers.expect_some
+    (sprintf "Class '%s' not found in structure" class_name)
+    (Ml_ast_helpers.find_class_declaration structure class_name)
+  @@ fun class_decl ->
+  let inherit_clauses =
+    Ml_ast_helpers.get_class_inherit_clauses class_decl.pci_expr
+  in
+  if not (List.mem parent_class inherit_clauses) then
+    Alcotest.fail
+      (sprintf "Class '%s' does not inherit from '%s'. Inherits from: [%s]"
+         class_name parent_class
+         (String.concat "; " inherit_clauses))
 
 (* Validate that a class type inherits from a specific parent class type *)
 let validate_class_type_inherits ~signature ~class_name ~parent_class_type =
-  match Ml_ast_helpers.find_class_type_declaration signature class_name with
-  | Some ct_decl ->
-      let inherit_clauses =
-        Ml_ast_helpers.get_class_type_inherit_clauses ct_decl.pci_expr
-      in
-      if not (List.mem parent_class_type inherit_clauses) then
-        Alcotest.fail
-          (sprintf
-             "Class type '%s' does not inherit from '%s'. Inherits from: [%s]"
-             class_name parent_class_type
-             (String.concat "; " inherit_clauses))
-  | None ->
-      Alcotest.fail
-        (sprintf "Class type '%s' not found in signature" class_name)
+  Helpers.expect_some
+    (sprintf "Class type '%s' not found in signature" class_name)
+    (Ml_ast_helpers.find_class_type_declaration signature class_name)
+  @@ fun ct_decl ->
+  let inherit_clauses =
+    Ml_ast_helpers.get_class_type_inherit_clauses ct_decl.pci_expr
+  in
+  if not (List.mem parent_class_type inherit_clauses) then
+    Alcotest.fail
+      (sprintf "Class type '%s' does not inherit from '%s'. Inherits from: [%s]"
+         class_name parent_class_type
+         (String.concat "; " inherit_clauses))
 
 (* ========================================================================= *)
 (* Method Type Annotation Validation Helpers *)
@@ -496,63 +472,48 @@ let validate_class_type_inherits ~signature ~class_name ~parent_class_type =
 (* Validate that a method has a specific type annotation *)
 let validate_method_type_annotation ~structure ~class_name ~method_name
     ~expected_type =
-  match Ml_ast_helpers.find_class_declaration structure class_name with
-  | Some class_decl -> (
-      match
-        Ml_ast_helpers.find_method_in_class class_decl.pci_expr method_name
-      with
-      | Some method_field -> (
-          match Ml_ast_helpers.get_method_type method_field with
-          | Some actual_type ->
-              let actual_type_str =
-                Ml_ast_helpers.core_type_to_string actual_type
-              in
-              if not (String.equal actual_type_str expected_type) then
-                Alcotest.fail
-                  (sprintf
-                     "Method '%s.%s' has type annotation '%s', expected '%s'"
-                     class_name method_name actual_type_str expected_type)
-          | None ->
-              Alcotest.fail
-                (sprintf "Could not extract type annotation for method '%s.%s'"
-                   class_name method_name))
-      | None ->
-          Alcotest.fail
-            (sprintf "Method '%s' not found in class '%s'" method_name
-               class_name))
-  | None ->
-      Alcotest.fail (sprintf "Class '%s' not found in structure" class_name)
+  Helpers.expect_some
+    (sprintf "Class '%s' not found in structure" class_name)
+    (Ml_ast_helpers.find_class_declaration structure class_name)
+  @@ fun class_decl ->
+  Helpers.expect_some
+    (sprintf "Method '%s' not found in class '%s'" method_name class_name)
+    (Ml_ast_helpers.find_method_in_class class_decl.pci_expr method_name)
+  @@ fun method_field ->
+  Helpers.expect_some
+    (sprintf "Could not extract type annotation for method '%s.%s'" class_name
+       method_name)
+    (Ml_ast_helpers.get_method_type method_field)
+  @@ fun actual_type ->
+  let actual_type_str = Ml_ast_helpers.core_type_to_string actual_type in
+  if not (String.equal actual_type_str expected_type) then
+    Alcotest.fail
+      (sprintf "Method '%s.%s' has type annotation '%s', expected '%s'"
+         class_name method_name actual_type_str expected_type)
 
 (* Validate that a method in a signature has a specific type annotation *)
 let validate_method_type_annotation_sig
     ~(signature : Ppxlib.Parsetree.signature) ~class_name ~method_name
     ~expected_type =
-  match Ml_ast_helpers.find_class_type_declaration signature class_name with
-  | Some class_decl -> (
-      match
-        Ml_ast_helpers.find_method_in_class_type class_decl.pci_expr method_name
-      with
-      | Some method_field -> (
-          match method_field.pctf_desc with
-          | Pctf_method (_, _, _, actual_type) ->
-              let actual_type_str =
-                Ml_ast_helpers.core_type_to_string actual_type
-              in
-              if not (String.equal actual_type_str expected_type) then
-                Alcotest.fail
-                  (sprintf
-                     "Method '%s.%s' has type annotation '%s', expected '%s'"
-                     class_name method_name actual_type_str expected_type)
-          | _ ->
-              Alcotest.fail
-                (sprintf "Method '%s' in class '%s' is not a method field"
-                   method_name class_name))
-      | None ->
-          Alcotest.fail
-            (sprintf "Method '%s' not found in class '%s'" method_name
-               class_name))
-  | None ->
-      Alcotest.fail (sprintf "Class '%s' not found in signature" class_name)
+  Helpers.expect_some
+    (sprintf "Class '%s' not found in signature" class_name)
+    (Ml_ast_helpers.find_class_type_declaration signature class_name)
+  @@ fun class_decl ->
+  Helpers.expect_some
+    (sprintf "Method '%s' not found in class '%s'" method_name class_name)
+    (Ml_ast_helpers.find_method_in_class_type class_decl.pci_expr method_name)
+  @@ fun method_field ->
+  match method_field.pctf_desc with
+  | Pctf_method (_, _, _, actual_type) ->
+      let actual_type_str = Ml_ast_helpers.core_type_to_string actual_type in
+      if not (String.equal actual_type_str expected_type) then
+        Alcotest.fail
+          (sprintf "Method '%s.%s' has type annotation '%s', expected '%s'"
+             class_name method_name actual_type_str expected_type)
+  | _ ->
+      Alcotest.fail
+        (sprintf "Method '%s' in class '%s' is not a method field" method_name
+           class_name)
 
 (* ========================================================================= *)
 (* Code Generation Helpers *)

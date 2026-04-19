@@ -134,19 +134,16 @@ let test_editable_gtype_macro_from_real_gir () =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file real_gir_file []
   in
   let editable =
-    match
-      List.find_opt
-        (fun (i : Gir_gen_lib.Types.gir_interface) ->
-          String.equal i.interface_name "Editable")
-        interfaces
-    with
-    | None -> Alcotest.fail "Editable not found in parsed interfaces"
-    | Some i -> i
+    Helpers.expect_some "Editable not found in parsed interfaces"
+      (List.find_opt
+         (fun (i : Gir_gen_lib.Types.gir_interface) ->
+           String.equal i.interface_name "Editable")
+         interfaces)
+      Fun.id
   in
   let type_name =
-    match editable.glib_type_name with
-    | None -> Alcotest.fail "GtkEditable has no glib_type_name"
-    | Some n -> n
+    Helpers.expect_some "GtkEditable has no glib_type_name"
+      editable.glib_type_name Fun.id
   in
   let result = Gir_gen_lib.Utils.gtype_macro_of_type_name type_name in
   Alcotest.(check string)
@@ -168,9 +165,10 @@ let test_from_gobject_present_when_type_name_set () =
   let _content, functions = run_and_parse_c gir_with_type_name "my_iface" in
   let fn_name = "ml_gtk_my_iface_from_gobject" in
   let f =
-    match C_ast.find_function functions fn_name with
-    | None -> Alcotest.failf "%s not found in parsed C AST" fn_name
-    | Some f -> f
+    Helpers.expect_some
+      (Printf.sprintf "%s not found in parsed C AST" fn_name)
+      (C_ast.find_function functions fn_name)
+      Fun.id
   in
   Alcotest.(check bool) "has CAMLreturn" true (C_validation.has_caml_return f);
   Alcotest.(check bool)
@@ -202,9 +200,10 @@ let test_from_gobject_inside_version_guard () =
   (* C AST: function must be present and structurally correct *)
   let fn_name = "ml_gtk_my_iface_from_gobject" in
   let f =
-    match C_ast.find_function functions fn_name with
-    | None -> Alcotest.failf "%s not found in parsed C AST" fn_name
-    | Some f -> f
+    Helpers.expect_some
+      (Printf.sprintf "%s not found in parsed C AST" fn_name)
+      (C_ast.find_function functions fn_name)
+      Fun.id
   in
   Alcotest.(check bool)
     "returns Val_GtkMyIface inside guard" true
@@ -292,9 +291,9 @@ let run_and_parse_l1_ml gir_content entity_snake =
 let test_from_gobject_external_in_mli () =
   let _content, mli_ast = run_and_parse_l1_mli gir_with_type_name "my_iface" in
   let ext =
-    match Ml_ast_helpers.find_external_sig mli_ast "from_gobject" with
-    | None -> Alcotest.fail "from_gobject not found in .mli"
-    | Some e -> e
+    Helpers.expect_some "from_gobject not found in .mli"
+      (Ml_ast_helpers.find_external_sig mli_ast "from_gobject")
+      Fun.id
   in
   Ml_validation.assert_external_c_name ext "ml_gtk_my_iface_from_gobject"
 
@@ -302,9 +301,9 @@ let test_from_gobject_external_in_mli () =
 let test_from_gobject_external_in_ml () =
   let _content, ml_ast = run_and_parse_l1_ml gir_with_type_name "my_iface" in
   let ext =
-    match Ml_ast_helpers.find_external ml_ast "from_gobject" with
-    | None -> Alcotest.fail "from_gobject not found in .ml"
-    | Some e -> e
+    Helpers.expect_some "from_gobject not found in .ml"
+      (Ml_ast_helpers.find_external ml_ast "from_gobject")
+      Fun.id
   in
   Ml_validation.assert_external_c_name ext "ml_gtk_my_iface_from_gobject"
 
@@ -322,9 +321,9 @@ let test_type_t_before_from_gobject () =
   let _content, mli_ast = run_and_parse_l1_mli gir_with_type_name "my_iface" in
   Ml_validation.assert_type_exists_sig mli_ast "t";
   let ext =
-    match Ml_ast_helpers.find_external_sig mli_ast "from_gobject" with
-    | None -> Alcotest.fail "from_gobject not in .mli"
-    | Some e -> e
+    Helpers.expect_some "from_gobject not in .mli"
+      (Ml_ast_helpers.find_external_sig mli_ast "from_gobject")
+      Fun.id
   in
   Ml_validation.assert_external_c_name ext "ml_gtk_my_iface_from_gobject"
 

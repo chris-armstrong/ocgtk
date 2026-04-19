@@ -520,7 +520,9 @@ let parse_c_code code =
           if
             String.length line_stripped > 0
             && line_stripped.[String.length line_stripped - 1] = '{'
-          then String.sub line_stripped 0 (String.length line_stripped - 1) |> strip
+          then
+            String.sub line_stripped 0 (String.length line_stripped - 1)
+            |> strip
           else line_stripped
         in
 

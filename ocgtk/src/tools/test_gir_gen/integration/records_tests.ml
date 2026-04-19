@@ -152,10 +152,14 @@ let test_non_opaque_vs_opaque_records () =
   in
   let header_content = read_file header_file in
 
-  C_validation.assert_forward_decl_exists header_content "GtkOpaqueRecord_val" "";
-  C_validation.assert_forward_decl_exists header_content "GtkOpaqueRecord" "Val_";
-  C_validation.assert_forward_decl_exists header_content "GtkNonOpaqueRecord_val" "";
-  C_validation.assert_forward_decl_exists header_content "GtkNonOpaqueRecord" "Val_"
+  C_validation.assert_forward_decl_exists header_content "GtkOpaqueRecord_val"
+    "";
+  C_validation.assert_forward_decl_exists header_content "GtkOpaqueRecord"
+    "Val_";
+  C_validation.assert_forward_decl_exists header_content
+    "GtkNonOpaqueRecord_val" "";
+  C_validation.assert_forward_decl_exists header_content "GtkNonOpaqueRecord"
+    "Val_"
 
 let test_non_opaque_record_in_property () =
   let test_gir = "/tmp/test_non_opaque_prop.gir" in

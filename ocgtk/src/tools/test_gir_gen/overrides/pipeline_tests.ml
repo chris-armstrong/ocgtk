@@ -230,21 +230,20 @@ let test_ignored_method_absent_from_ctx () =
       (fun (c : gir_class) -> String.equal c.class_name "Widget")
       ctx.classes
   in
-  match widget_opt with
-  | None -> Alcotest.fail "Widget absent from ctx (unexpected)"
-  | Some widget ->
-      let create_in_ctx =
-        List.exists
-          (fun (m : gir_method) -> String.equal m.method_name "create")
-          widget.methods
-      in
-      Alcotest.(check bool) "Widget.create absent from ctx" false create_in_ctx;
-      let show_in_ctx =
-        List.exists
-          (fun (m : gir_method) -> String.equal m.method_name "show")
-          widget.methods
-      in
-      Alcotest.(check bool) "Widget.show present in ctx" true show_in_ctx
+  Helpers.expect_some "Widget absent from ctx (unexpected)" widget_opt
+  @@ fun widget ->
+  let create_in_ctx =
+    List.exists
+      (fun (m : gir_method) -> String.equal m.method_name "create")
+      widget.methods
+  in
+  Alcotest.(check bool) "Widget.create absent from ctx" false create_in_ctx;
+  let show_in_ctx =
+    List.exists
+      (fun (m : gir_method) -> String.equal m.method_name "show")
+      widget.methods
+  in
+  Alcotest.(check bool) "Widget.show present in ctx" true show_in_ctx
 
 (* ========================================================================= *)
 (* Tests: version override propagation *)
@@ -263,11 +262,10 @@ let test_version_override_propagates_to_ctx () =
       (fun (c : gir_class) -> String.equal c.class_name "Widget")
       ctx.classes
   in
-  match widget_opt with
-  | None -> Alcotest.fail "Widget absent from ctx (unexpected)"
-  | Some widget ->
-      Alcotest.(check (option string))
-        "Widget.version is Some 4.10" (Some "4.10") widget.version
+  Helpers.expect_some "Widget absent from ctx (unexpected)" widget_opt
+  @@ fun widget ->
+  Alcotest.(check (option string))
+    "Widget.version is Some 4.10" (Some "4.10") widget.version
 
 (* ========================================================================= *)
 (* Tests: references generation excludes ignored entities *)

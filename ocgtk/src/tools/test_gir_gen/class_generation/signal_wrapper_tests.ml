@@ -27,8 +27,13 @@ let parse_button () =
     Pipeline_tmp.write_file ~test_name:"signal_wrapper" ~filename:"button.gir"
       signals_gir_content
   in
-  let repository, namespace, classes, interfaces, gtk_enums, gtk_bitfields,
-      gtk_records =
+  let ( repository,
+        namespace,
+        classes,
+        interfaces,
+        gtk_enums,
+        gtk_bitfields,
+        gtk_records ) =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file []
   in
   let button =
@@ -36,9 +41,7 @@ let parse_button () =
       (fun (c : Gir_gen_lib.Types.gir_class) -> c.class_name = "Button")
       classes
   in
-  let parent_chain =
-    match button.parent with Some p -> [ p ] | None -> []
-  in
+  let parent_chain = match button.parent with Some p -> [ p ] | None -> [] in
   let ctx : Gir_gen_lib.Types.generation_context =
     {
       repository;
@@ -72,33 +75,26 @@ let test_signal_parsing () =
 let test_signal_class_generated () =
   let code = generate_code () in
   let ast = Ml_ast_helpers.parse_implementation code in
-  match Ml_ast_helpers.find_class_declaration ast "button_signals" with
-  | None -> Alcotest.fail "Expected class 'button_signals' in generated code"
-  | Some _ -> ()
+  Helpers.assert_some "Expected class 'button_signals' in generated code"
+    (Ml_ast_helpers.find_class_declaration ast "button_signals")
 
 let test_signal_methods_generated () =
   let code = generate_code () in
   let ast = Ml_ast_helpers.parse_implementation code in
-  let cls =
-    match Ml_ast_helpers.find_class_declaration ast "button_signals" with
-    | None -> Alcotest.fail "Expected class 'button_signals'"
-    | Some cd -> cd
-  in
-  (match Ml_ast_helpers.find_method_in_class cls.pci_expr "on_clicked" with
-  | None -> Alcotest.fail "Expected method 'on_clicked' in button_signals"
-  | Some _ -> ());
-  match Ml_ast_helpers.find_method_in_class cls.pci_expr "on_activate" with
-  | None -> Alcotest.fail "Expected method 'on_activate' in button_signals"
-  | Some _ -> ()
+  Helpers.expect_some "Expected class 'button_signals'"
+    (Ml_ast_helpers.find_class_declaration ast "button_signals")
+  @@ fun cls ->
+  Helpers.assert_some "Expected method 'on_clicked' in button_signals"
+    (Ml_ast_helpers.find_method_in_class cls.pci_expr "on_clicked");
+  Helpers.assert_some "Expected method 'on_activate' in button_signals"
+    (Ml_ast_helpers.find_method_in_class cls.pci_expr "on_activate")
 
 let test_signal_uses_connect_simple () =
   let code = generate_code () in
   let ast = Ml_ast_helpers.parse_implementation code in
-  let cls =
-    match Ml_ast_helpers.find_class_declaration ast "button_signals" with
-    | None -> Alcotest.fail "Expected class 'button_signals'"
-    | Some cd -> cd
-  in
+  Helpers.expect_some "Expected class 'button_signals'"
+    (Ml_ast_helpers.find_class_declaration ast "button_signals")
+  @@ fun cls ->
   let methods = Ml_ast_helpers.find_all_methods_in_class cls.pci_expr in
   let any_uses_connect_simple =
     List.exists

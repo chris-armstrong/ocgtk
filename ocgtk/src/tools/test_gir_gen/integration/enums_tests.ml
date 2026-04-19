@@ -88,12 +88,10 @@ let test_enum_generation () =
   let c_functions = C_parser.parse_c_code c_content in
 
   let find_fn name =
-    match
-      List.find_opt (fun (f : C_ast.c_function) -> f.name = name) c_functions
-    with
-    | None ->
-        Alcotest.fail (Printf.sprintf "C function '%s' not found" name)
-    | Some f -> f
+    expect_some
+      (Printf.sprintf "C function '%s' not found" name)
+      (List.find_opt (fun (f : C_ast.c_function) -> f.name = name) c_functions)
+      Fun.id
   in
 
   let val_fn = find_fn "Val_GtkWrapMode" in
@@ -113,15 +111,20 @@ let test_bitfield_generation () =
   assert_true "Bitfield generator should exit successfully" (exit_code = 0);
 
   let enums = enum_file output_dir in
-  assert_true "gtk_enums.mli should be created for bitfields" (file_exists enums);
+  assert_true "gtk_enums.mli should be created for bitfields"
+    (file_exists enums);
 
   let enum_content = read_file enums in
   let sig_ast = Ml_ast_helpers.parse_interface enum_content in
 
-  Ml_validation.assert_type_has_variant_tag_sig sig_ast "stateflags_flag" "NORMAL";
-  Ml_validation.assert_type_has_variant_tag_sig sig_ast "stateflags_flag" "ACTIVE";
-  Ml_validation.assert_type_has_variant_tag_sig sig_ast "stateflags_flag" "PRELIGHT";
-  Ml_validation.assert_type_has_variant_tag_sig sig_ast "stateflags_flag" "SELECTED";
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "stateflags_flag"
+    "NORMAL";
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "stateflags_flag"
+    "ACTIVE";
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "stateflags_flag"
+    "PRELIGHT";
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "stateflags_flag"
+    "SELECTED";
   (* stateflags list type: type stateflags = stateflags_flag list *)
   Ml_validation.assert_type_exists_sig sig_ast "stateflags";
 
@@ -130,12 +133,10 @@ let test_bitfield_generation () =
   let c_functions = C_parser.parse_c_code c_content in
 
   let find_fn name =
-    match
-      List.find_opt (fun (f : C_ast.c_function) -> f.name = name) c_functions
-    with
-    | None ->
-        Alcotest.fail (Printf.sprintf "C function '%s' not found" name)
-    | Some f -> f
+    expect_some
+      (Printf.sprintf "C function '%s' not found" name)
+      (List.find_opt (fun (f : C_ast.c_function) -> f.name = name) c_functions)
+      Fun.id
   in
 
   let _ = find_fn "Val_GtkStateFlags" in
@@ -198,7 +199,8 @@ let test_enum_naming_conventions () =
   Ml_validation.assert_type_exists_sig sig_ast "eventmask_flag";
   (* Variants are uppercase *)
   Ml_validation.assert_type_has_variant_tag_sig sig_ast "align" "FILL";
-  Ml_validation.assert_type_has_variant_tag_sig sig_ast "orientation" "HORIZONTAL"
+  Ml_validation.assert_type_has_variant_tag_sig sig_ast "orientation"
+    "HORIZONTAL"
 
 let tests =
   [

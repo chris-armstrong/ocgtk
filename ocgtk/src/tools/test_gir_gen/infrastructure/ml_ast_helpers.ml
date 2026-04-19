@@ -554,16 +554,17 @@ let has_hierarchy_parameter (class_field : class_field) : bool =
 
 (* Assert that a method in a class has a hierarchy parameter *)
 let assert_method_has_hierarchy_param ast class_name method_name =
-  match find_class_declaration ast class_name with
-  | None -> Alcotest.fail (Printf.sprintf "Class %s not found" class_name)
-  | Some cd -> (
-      match find_method_in_class cd.pci_expr method_name with
-      | None -> Alcotest.fail (Printf.sprintf "Method %s not found" method_name)
-      | Some cf ->
-          if not (has_hierarchy_parameter cf) then
-            Alcotest.fail
-              (Printf.sprintf "Method %s does not have hierarchy parameter"
-                 method_name))
+  Helpers.expect_some
+    (Printf.sprintf "Class %s not found" class_name)
+    (find_class_declaration ast class_name)
+  @@ fun cd ->
+  Helpers.expect_some
+    (Printf.sprintf "Method %s not found" method_name)
+    (find_method_in_class cd.pci_expr method_name)
+  @@ fun cf ->
+  if not (has_hierarchy_parameter cf) then
+    Alcotest.fail
+      (Printf.sprintf "Method %s does not have hierarchy parameter" method_name)
 
 (* ========================================================================= *)
 (* Structural Type Helpers (Ptyp_object) *)
@@ -633,31 +634,33 @@ let method_param_has_structural_type_with_field (class_field : class_field)
 
 (* Assert that a method in a class has a structural type parameter *)
 let assert_method_has_structural_type_param ast class_name method_name =
-  match find_class_declaration ast class_name with
-  | None -> Alcotest.fail (Printf.sprintf "Class %s not found" class_name)
-  | Some cd -> (
-      match find_method_in_class cd.pci_expr method_name with
-      | None -> Alcotest.fail (Printf.sprintf "Method %s not found" method_name)
-      | Some cf ->
-          if not (has_structural_type_parameter cf) then
-            Alcotest.fail
-              (Printf.sprintf
-                 "Method %s does not have structural type parameter" method_name)
-      )
+  Helpers.expect_some
+    (Printf.sprintf "Class %s not found" class_name)
+    (find_class_declaration ast class_name)
+  @@ fun cd ->
+  Helpers.expect_some
+    (Printf.sprintf "Method %s not found" method_name)
+    (find_method_in_class cd.pci_expr method_name)
+  @@ fun cf ->
+  if not (has_structural_type_parameter cf) then
+    Alcotest.fail
+      (Printf.sprintf "Method %s does not have structural type parameter"
+         method_name)
 
 (* Assert that a method has a structural type parameter with a specific field *)
 let assert_method_has_structural_field ast class_name method_name field_name =
-  match find_class_declaration ast class_name with
-  | None -> Alcotest.fail (Printf.sprintf "Class %s not found" class_name)
-  | Some cd -> (
-      match find_method_in_class cd.pci_expr method_name with
-      | None -> Alcotest.fail (Printf.sprintf "Method %s not found" method_name)
-      | Some cf ->
-          if not (method_param_has_structural_type_with_field cf field_name)
-          then
-            Alcotest.fail
-              (Printf.sprintf "Method %s does not have structural field '%s'"
-                 method_name field_name))
+  Helpers.expect_some
+    (Printf.sprintf "Class %s not found" class_name)
+    (find_class_declaration ast class_name)
+  @@ fun cd ->
+  Helpers.expect_some
+    (Printf.sprintf "Method %s not found" method_name)
+    (find_method_in_class cd.pci_expr method_name)
+  @@ fun cf ->
+  if not (method_param_has_structural_type_with_field cf field_name) then
+    Alcotest.fail
+      (Printf.sprintf "Method %s does not have structural field '%s'"
+         method_name field_name)
 
 (* ========================================================================= *)
 (* Function Call Validation Helpers *)
@@ -771,12 +774,13 @@ let method_body_calls_function (expr : expression) (module_name : string)
 
 (* Assert that a let binding contains a specific function call *)
 let assert_let_binding_calls_function ast func_name binding_name =
-  match find_let_binding ast binding_name with
-  | None -> Alcotest.fail (Printf.sprintf "Function %s not found" binding_name)
-  | Some binding ->
-      if not (contains_function_call binding.pvb_expr func_name) then
-        Alcotest.fail
-          (Printf.sprintf "Function %s does not call %s" binding_name func_name)
+  Helpers.expect_some
+    (Printf.sprintf "Function %s not found" binding_name)
+    (find_let_binding ast binding_name)
+  @@ fun binding ->
+  if not (contains_function_call binding.pvb_expr func_name) then
+    Alcotest.fail
+      (Printf.sprintf "Function %s does not call %s" binding_name func_name)
 
 (* Check if an expression contains a method send (#method_name) *)
 let rec contains_method_send (expr : expression) (method_name : string) : bool =
@@ -813,13 +817,13 @@ let rec contains_method_send (expr : expression) (method_name : string) : bool =
 
 (* Assert that a let binding contains a method send (#method_name) *)
 let assert_let_binding_sends_method ast method_name binding_name =
-  match find_let_binding ast binding_name with
-  | None -> Alcotest.fail (Printf.sprintf "Function %s not found" binding_name)
-  | Some binding ->
-      if not (contains_method_send binding.pvb_expr method_name) then
-        Alcotest.fail
-          (Printf.sprintf "Function %s does not send #%s" binding_name
-             method_name)
+  Helpers.expect_some
+    (Printf.sprintf "Function %s not found" binding_name)
+    (find_let_binding ast binding_name)
+  @@ fun binding ->
+  if not (contains_method_send binding.pvb_expr method_name) then
+    Alcotest.fail
+      (Printf.sprintf "Function %s does not send #%s" binding_name method_name)
 
 (* ========================================================================= *)
 (* Method Conflict Detection Helpers *)

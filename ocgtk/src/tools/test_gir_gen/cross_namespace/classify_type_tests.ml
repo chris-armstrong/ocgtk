@@ -294,67 +294,57 @@ let test_array_cross_ns_class_element () =
   let ctx = add_cross_refs (base_ctx ()) in
   let element_type = make_gir_type "Gdk.Texture" in
   let array_type = make_gir_type_with_array "" element_type in
-  match
-    Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type ~ctx array_type
-  with
-  | None -> Alcotest.fail "expected array type mapping for Gdk.Texture elements"
-  | Some tm ->
-      Alcotest.(check bool)
-        "ocaml_type ends with array" true
-        (Helpers.string_contains tm.ocaml_type "array");
-      Alcotest.(check bool)
-        "ocaml_type contains Ocgtk_gdk" true
-        (Helpers.string_contains tm.ocaml_type "Ocgtk_gdk")
+  Helpers.expect_some "expected array type mapping for Gdk.Texture elements"
+    (Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type ~ctx array_type)
+  @@ fun tm ->
+  Alcotest.(check bool)
+    "ocaml_type ends with array" true
+    (Helpers.string_contains tm.ocaml_type "array");
+  Alcotest.(check bool)
+    "ocaml_type contains Ocgtk_gdk" true
+    (Helpers.string_contains tm.ocaml_type "Ocgtk_gdk")
 
 let test_array_cross_ns_enum_element () =
   let ctx = add_cross_refs (base_ctx ()) in
   let element_type = make_gir_type "cairo.FontType" in
   let array_type = make_gir_type_with_array "" element_type in
-  match
-    Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type ~ctx array_type
-  with
-  | None ->
-      Alcotest.fail "expected array type mapping for cairo.FontType elements"
-  | Some tm ->
-      Alcotest.(check bool)
-        "ocaml_type ends with array" true
-        (Helpers.string_contains tm.ocaml_type "array");
-      Alcotest.(check bool)
-        "ocaml_type contains Ocgtk_cairo" true
-        (Helpers.string_contains tm.ocaml_type "Ocgtk_cairo")
+  Helpers.expect_some "expected array type mapping for cairo.FontType elements"
+    (Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type ~ctx array_type)
+  @@ fun tm ->
+  Alcotest.(check bool)
+    "ocaml_type ends with array" true
+    (Helpers.string_contains tm.ocaml_type "array");
+  Alcotest.(check bool)
+    "ocaml_type contains Ocgtk_cairo" true
+    (Helpers.string_contains tm.ocaml_type "Ocgtk_cairo")
 
 let test_array_cross_ns_record_element () =
   let ctx = add_cross_refs (base_ctx ()) in
   let element_type = make_gir_type "cairo.Surface" in
   let array_type = make_gir_type_with_array "" element_type in
-  match
-    Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type ~ctx array_type
-  with
-  | None ->
-      Alcotest.fail "expected array type mapping for cairo.Surface elements"
-  | Some tm ->
-      Alcotest.(check bool)
-        "ocaml_type ends with array" true
-        (Helpers.string_contains tm.ocaml_type "array");
-      Alcotest.(check bool)
-        "ocaml_type contains Ocgtk_cairo" true
-        (Helpers.string_contains tm.ocaml_type "Ocgtk_cairo")
+  Helpers.expect_some "expected array type mapping for cairo.Surface elements"
+    (Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type ~ctx array_type)
+  @@ fun tm ->
+  Alcotest.(check bool)
+    "ocaml_type ends with array" true
+    (Helpers.string_contains tm.ocaml_type "array");
+  Alcotest.(check bool)
+    "ocaml_type contains Ocgtk_cairo" true
+    (Helpers.string_contains tm.ocaml_type "Ocgtk_cairo")
 
 let test_array_same_ns_class_element () =
   let ctx = base_ctx () in
   let element_type = make_gir_type "Widget" in
   let array_type = make_gir_type_with_array "" element_type in
-  match
-    Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type ~ctx array_type
-  with
-  | None -> Alcotest.fail "expected array type mapping for Widget elements"
-  | Some tm ->
-      Alcotest.(check bool)
-        "ocaml_type ends with array" true
-        (Helpers.string_contains tm.ocaml_type "array");
-      Alcotest.(check bool)
-        "ocaml_type contains Widget" true
-        (Helpers.string_contains tm.ocaml_type "Widget")
+  Helpers.expect_some "expected array type mapping for Widget elements"
+    (Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type ~ctx array_type)
+  @@ fun tm ->
+  Alcotest.(check bool)
+    "ocaml_type ends with array" true
+    (Helpers.string_contains tm.ocaml_type "array");
+  Alcotest.(check bool)
+    "ocaml_type contains Widget" true
+    (Helpers.string_contains tm.ocaml_type "Widget")
 
 let test_array_unknown_element_returns_none () =
   let ctx = base_ctx () in

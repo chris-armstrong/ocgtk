@@ -134,23 +134,21 @@ let test_widget_generation () =
   assert_true "gButton.ml should be created" (file_exists gbutton);
   let gbutton_content = read_file gbutton in
   let gbutton_ast = Ml_ast_helpers.parse_implementation gbutton_content in
-  (match Ml_ast_helpers.find_class_declaration gbutton_ast "button" with
-  | None -> Alcotest.fail "gButton.ml should define class 'button'"
-  | Some cls ->
-      (match Ml_ast_helpers.find_method_in_class cls.pci_expr "get_label" with
-      | None -> Alcotest.fail "gButton should expose method 'get_label'"
-      | Some _ -> ());
-      (match Ml_ast_helpers.find_method_in_class cls.pci_expr "set_label" with
-      | None -> Alcotest.fail "gButton should expose method 'set_label'"
-      | Some _ -> ());
-      (* Signal names must not appear as method wrappers — they are exposed via
-         the signals class only. *)
-      (match Ml_ast_helpers.find_method_in_class cls.pci_expr "clicked" with
-      | Some _ ->
-          Alcotest.fail
-            "gButton should NOT expose 'clicked' as a method wrapper (it is a \
-             signal)"
-      | None -> ()))
+  expect_some "gButton.ml should define class 'button'"
+    (Ml_ast_helpers.find_class_declaration gbutton_ast "button")
+  @@ fun cls ->
+  assert_some "gButton should expose method 'get_label'"
+    (Ml_ast_helpers.find_method_in_class cls.pci_expr "get_label");
+  assert_some "gButton should expose method 'set_label'"
+    (Ml_ast_helpers.find_method_in_class cls.pci_expr "set_label");
+  (* Signal names must not appear as method wrappers — they are exposed via
+     the signals class only. *)
+  match Ml_ast_helpers.find_method_in_class cls.pci_expr "clicked" with
+  | Some _ ->
+      Alcotest.fail
+        "gButton should NOT expose 'clicked' as a method wrapper (it is a \
+         signal)"
+  | None -> ()
 
 let test_all_methods_generated () =
   let test_gir = "/tmp/test_many_methods.gir" in
@@ -228,7 +226,7 @@ let test_camlparam_limitation () =
 
   (* CURRENT BEHAVIOR: Method with 6 params IS generated with bytecode/native
      pattern. If it appears in the signature, verify C defines both entry points. *)
-  (match Ml_ast_helpers.find_value_declaration_sig sig_ast "with_six_params" with
+  match Ml_ast_helpers.find_value_declaration_sig sig_ast "with_six_params" with
   | Some _ ->
       let c_file = stub_c_file output_dir "ManyParams" in
       let c_content = read_file c_file in
@@ -243,7 +241,7 @@ let test_camlparam_limitation () =
            (fun (f : C_ast.c_function) ->
              f.name = "ml_gtk_many_params_with_six_params_native")
            c_functions)
-  | None -> ())
+  | None -> ()
 
 (* ========================================================================= *)
 (* Test Suite *)

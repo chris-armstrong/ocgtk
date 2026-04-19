@@ -70,23 +70,21 @@ let test_header_file_naming_uses_namespace () =
     List.find_opt (fun g -> g.guard_name = expected_guard_name) guards
   in
 
-  match guard_opt with
-  | None ->
-      Alcotest.fail
-        (sprintf "Header guard with namespace-based name '%s' not found"
-           expected_guard_name)
-  | Some guard ->
-      (* Verify it's not using old naming patterns *)
-      let has_old_naming =
-        String.starts_with ~prefix:"generated_forward_decls" guard.guard_name
-        || String.ends_with ~suffix:"generated_forward_decls" guard.guard_name
-        || String.starts_with ~prefix:"_generated_forward_decls"
-             guard.guard_name
-        || String.ends_with ~suffix:"_generated_forward_decls_" guard.guard_name
-      in
-      Alcotest.(check bool)
-        "Header guard uses new namespace-based naming, not old pattern" false
-        has_old_naming
+  Helpers.expect_some
+    (sprintf "Header guard with namespace-based name '%s' not found"
+       expected_guard_name)
+    guard_opt
+  @@ fun guard ->
+  (* Verify it's not using old naming patterns *)
+  let has_old_naming =
+    String.starts_with ~prefix:"generated_forward_decls" guard.guard_name
+    || String.ends_with ~suffix:"generated_forward_decls" guard.guard_name
+    || String.starts_with ~prefix:"_generated_forward_decls" guard.guard_name
+    || String.ends_with ~suffix:"_generated_forward_decls_" guard.guard_name
+  in
+  Alcotest.(check bool)
+    "Header guard uses new namespace-based naming, not old pattern" false
+    has_old_naming
 
 let test_header_guard_uses_correct_format () =
   (* Arrange: Create context with different namespaces to verify format works universally *)
@@ -112,21 +110,19 @@ let test_header_guard_uses_correct_format () =
         List.find_opt (fun g -> g.guard_name = expected_guard_name) guards
       in
 
-      match guard_opt with
-      | None ->
-          let available =
-            List.map (fun g -> g.guard_name) guards |> String.concat ", "
-          in
-          Alcotest.fail
-            (sprintf
-               "For namespace '%s': expected guard '%s' not found. Available: \
-                [%s]"
-               namespace expected_guard_name available)
-      | Some guard ->
-          (* Verify guard name exactly matches expected format *)
-          Alcotest.(check string)
-            (sprintf "Header guard for %s uses correct format" namespace)
-            expected_guard_name guard.guard_name)
+      Helpers.expect_some
+        (let available =
+           List.map (fun g -> g.guard_name) guards |> String.concat ", "
+         in
+         sprintf
+           "For namespace '%s': expected guard '%s' not found. Available: [%s]"
+           namespace expected_guard_name available)
+        guard_opt
+      @@ fun guard ->
+      (* Verify guard name exactly matches expected format *)
+      Alcotest.(check string)
+        (sprintf "Header guard for %s uses correct format" namespace)
+        expected_guard_name guard.guard_name)
     test_cases
 
 let test_header_guard_has_complete_structure () =

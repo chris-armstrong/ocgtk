@@ -161,9 +161,9 @@ let test_interface_return_method_is_generated () =
     run_and_parse_layer2_ml gir_method_returns_interface "MyClass"
   in
   let cd =
-    match Ml_ast_helpers.find_class_definition ml_ast "my_class" with
-    | None -> Alcotest.fail "class my_class not found"
-    | Some c -> c
+    Helpers.expect_some "class my_class not found"
+      (Ml_ast_helpers.find_class_definition ml_ast "my_class")
+      Fun.id
   in
   if not (Ml_ast_helpers.method_exists_as_definition cd.pci_expr "get_iface")
   then Alcotest.fail "method get_iface not generated"
@@ -184,19 +184,19 @@ let test_interface_return_wrapping () =
     run_and_parse_layer2_ml gir_method_returns_interface "MyClass"
   in
   let cd =
-    match Ml_ast_helpers.find_class_definition ml_ast "my_class" with
-    | None -> Alcotest.fail "class my_class not found"
-    | Some c -> c
+    Helpers.expect_some "class my_class not found"
+      (Ml_ast_helpers.find_class_definition ml_ast "my_class")
+      Fun.id
   in
   let method_field =
-    match Ml_ast_helpers.find_method_in_class cd.pci_expr "get_iface" with
-    | None -> Alcotest.fail "method get_iface not found"
-    | Some mf -> mf
+    Helpers.expect_some "method get_iface not found"
+      (Ml_ast_helpers.find_method_in_class cd.pci_expr "get_iface")
+      Fun.id
   in
   let body =
-    match Ml_ast_helpers.get_method_body method_field with
-    | None -> Alcotest.fail "could not extract method body"
-    | Some b -> b
+    Helpers.expect_some "could not extract method body"
+      (Ml_ast_helpers.get_method_body method_field)
+      Fun.id
   in
   (* The body should contain 'Option.map' (nullable return) *)
   if not (Ml_ast_helpers.contains_function_call body "Option.map") then
@@ -213,9 +213,9 @@ let test_interface_param_method_is_generated () =
     run_and_parse_layer2_ml gir_method_takes_interface "MyClass"
   in
   let cd =
-    match Ml_ast_helpers.find_class_definition ml_ast "my_class" with
-    | None -> Alcotest.fail "class my_class not found"
-    | Some c -> c
+    Helpers.expect_some "class my_class not found"
+      (Ml_ast_helpers.find_class_definition ml_ast "my_class")
+      Fun.id
   in
   if not (Ml_ast_helpers.method_exists_as_definition cd.pci_expr "set_iface")
   then Alcotest.fail "method set_iface not generated"
@@ -227,31 +227,26 @@ let test_interface_param_type_in_class_type () =
     run_and_parse_layer2_ml gir_method_takes_interface "MyClass"
   in
   let ctd =
-    match
-      Ml_ast_helpers.find_class_type_declaration_impl ml_ast "my_class_t"
-    with
-    | None -> Alcotest.fail "class type my_class_t not found"
-    | Some c -> c
+    Helpers.expect_some "class type my_class_t not found"
+      (Ml_ast_helpers.find_class_type_declaration_impl ml_ast "my_class_t")
+      Fun.id
   in
   (* Find the set_iface method in the class type *)
   let method_type_str =
     match ctd.pci_expr.pcty_desc with
     | Pcty_signature { pcsig_fields; _ } -> (
-        let field =
-          List.find_opt
-            (fun f ->
-              match f.pctf_desc with
-              | Pctf_method ({ txt; _ }, _, _, _) ->
-                  String.equal txt "set_iface"
-              | _ -> false)
-            pcsig_fields
-        in
-        match field with
-        | None -> Alcotest.fail "set_iface not in class type my_class_t"
-        | Some f -> (
-            match f.pctf_desc with
-            | Pctf_method (_, _, _, t) -> Ml_ast_helpers.core_type_to_string t
-            | _ -> Alcotest.fail "not a method field"))
+        Helpers.expect_some "set_iface not in class type my_class_t"
+          (List.find_opt
+             (fun f ->
+               match f.pctf_desc with
+               | Pctf_method ({ txt; _ }, _, _, _) ->
+                   String.equal txt "set_iface"
+               | _ -> false)
+             pcsig_fields)
+        @@ fun f ->
+        match f.pctf_desc with
+        | Pctf_method (_, _, _, t) -> Ml_ast_helpers.core_type_to_string t
+        | _ -> Alcotest.fail "not a method field")
     | _ -> Alcotest.fail "class type is not a signature"
   in
   if not (String.equal method_type_str "GMy_iface.my_iface_t -> unit") then
@@ -266,19 +261,19 @@ let test_interface_param_accessor_binding () =
     run_and_parse_layer2_ml gir_method_takes_interface "MyClass"
   in
   let cd =
-    match Ml_ast_helpers.find_class_definition ml_ast "my_class" with
-    | None -> Alcotest.fail "class my_class not found"
-    | Some c -> c
+    Helpers.expect_some "class my_class not found"
+      (Ml_ast_helpers.find_class_definition ml_ast "my_class")
+      Fun.id
   in
   let method_field =
-    match Ml_ast_helpers.find_method_in_class cd.pci_expr "set_iface" with
-    | None -> Alcotest.fail "method set_iface not found"
-    | Some mf -> mf
+    Helpers.expect_some "method set_iface not found"
+      (Ml_ast_helpers.find_method_in_class cd.pci_expr "set_iface")
+      Fun.id
   in
   let body =
-    match Ml_ast_helpers.get_method_body method_field with
-    | None -> Alcotest.fail "could not extract method body"
-    | Some b -> b
+    Helpers.expect_some "could not extract method body"
+      (Ml_ast_helpers.get_method_body method_field)
+      Fun.id
   in
   (* The body should send #as_my_iface to coerce the interface wrapper *)
   if not (Ml_ast_helpers.contains_method_send body "as_my_iface") then
@@ -291,19 +286,19 @@ let test_nullable_interface_param_accessor_binding () =
     run_and_parse_layer2_ml gir_method_takes_nullable_interface "MyClass"
   in
   let cd =
-    match Ml_ast_helpers.find_class_definition ml_ast "my_class" with
-    | None -> Alcotest.fail "class my_class not found"
-    | Some c -> c
+    Helpers.expect_some "class my_class not found"
+      (Ml_ast_helpers.find_class_definition ml_ast "my_class")
+      Fun.id
   in
   let method_field =
-    match Ml_ast_helpers.find_method_in_class cd.pci_expr "set_iface" with
-    | None -> Alcotest.fail "method set_iface not found"
-    | Some mf -> mf
+    Helpers.expect_some "method set_iface not found"
+      (Ml_ast_helpers.find_method_in_class cd.pci_expr "set_iface")
+      Fun.id
   in
   let body =
-    match Ml_ast_helpers.get_method_body method_field with
-    | None -> Alcotest.fail "could not extract method body"
-    | Some b -> b
+    Helpers.expect_some "could not extract method body"
+      (Ml_ast_helpers.get_method_body method_field)
+      Fun.id
   in
   (* The body should contain Option.map for the nullable param *)
   if not (Ml_ast_helpers.contains_function_call body "Option.map") then

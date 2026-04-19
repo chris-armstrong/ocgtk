@@ -64,13 +64,13 @@ let test_property_generation () =
     "set_construct_only_prop";
 
   (* Check property return types via AST *)
-  (match Ml_ast_helpers.find_value_declaration_sig sig_ast "get_read_write_prop" with
-  | None -> Alcotest.fail "get_read_write_prop not found"
-  | Some vd -> Ml_validation.assert_return_type vd "bool");
+  expect_some "get_read_write_prop not found"
+    (Ml_ast_helpers.find_value_declaration_sig sig_ast "get_read_write_prop")
+    (fun vd -> Ml_validation.assert_return_type vd "bool");
 
-  (match Ml_ast_helpers.find_value_declaration_sig sig_ast "get_construct_only_prop" with
-  | None -> Alcotest.fail "get_construct_only_prop not found"
-  | Some vd -> Ml_validation.assert_return_type vd "int")
+  expect_some "get_construct_only_prop not found"
+    (Ml_ast_helpers.find_value_declaration_sig sig_ast "get_construct_only_prop")
+    (fun vd -> Ml_validation.assert_return_type vd "int")
 
 let test_c_property_generation () =
   let test_gir = "/tmp/test_c_property_gen.gir" in
@@ -91,9 +91,10 @@ let test_c_property_generation () =
   let c_functions = C_parser.parse_c_code c_content in
 
   let find_fn name =
-    match List.find_opt (fun (f : C_ast.c_function) -> f.name = name) c_functions with
-    | None -> Alcotest.fail (Printf.sprintf "C function '%s' not found" name)
-    | Some f -> f
+    expect_some
+      (Printf.sprintf "C function '%s' not found" name)
+      (List.find_opt (fun (f : C_ast.c_function) -> f.name = name) c_functions)
+      Fun.id
   in
 
   let getter = find_fn "ml_gtk_test_widget_get_read_only_prop" in

@@ -97,13 +97,11 @@ let find_function functions name = C_ast.find_function functions name
 
 (* Check if a function exists *)
 let assert_function_exists functions name =
-  match find_function functions name with
-  | Some _ -> ()
-  | None ->
-      let available = List.map (fun f -> f.C_ast.name) functions in
-      Alcotest.fail
-        (sprintf "Function '%s' not found. Available: %s" name
-           (String.concat ", " available))
+  if Option.is_none (find_function functions name) then
+    let available = List.map (fun f -> f.C_ast.name) functions in
+    Alcotest.fail
+      (sprintf "Function '%s' not found. Available: %s" name
+         (String.concat ", " available))
 
 (* Get function name *)
 let get_function_name f = f.C_ast.name
@@ -422,13 +420,12 @@ let test_parameter_flow_to_return () =
 
   (* Check that 'obj' variable flows to return value *)
   let type_info = C_ast.extract_type_info func in
-  match type_info.return_expr with
-  | Some expr ->
-      (* The return should involve 'obj' *)
-      Alcotest.(check bool)
-        "Return expression uses obj variable" true
-        (C_ast.expr_uses_var expr "obj")
-  | None -> Alcotest.fail "No return expression found"
+  Helpers.expect_some "No return expression found" type_info.return_expr
+  @@ fun expr ->
+  (* The return should involve 'obj' *)
+  Alcotest.(check bool)
+    "Return expression uses obj variable" true
+    (C_ast.expr_uses_var expr "obj")
 
 let test_bytecode_calls_native () =
   let ctx = create_test_context () in
@@ -723,21 +720,20 @@ let test_header_file_naming () =
   let guard_opt = find_header_guard guards expected_suffix in
 
   (* Verify header guard exists with correct structure *)
-  (match guard_opt with
-  | None ->
-      Alcotest.fail
-        (sprintf "Header guard with suffix '%s' not found" expected_suffix)
-  | Some guard ->
-      (* Verify guard name format: _<ns>_decls_h_ *)
-      let expected_guard_name = sprintf "_%s_decls_h_" ns_name in
-      Alcotest.(check string)
-        "Header guard name uses _ns_decls_h_ format" expected_guard_name
-        guard.guard_name;
+  ( Helpers.expect_some
+      (sprintf "Header guard with suffix '%s' not found" expected_suffix)
+      guard_opt
+  @@ fun guard ->
+    (* Verify guard name format: _<ns>_decls_h_ *)
+    let expected_guard_name = sprintf "_%s_decls_h_" ns_name in
+    Alcotest.(check string)
+      "Header guard name uses _ns_decls_h_ format" expected_guard_name
+      guard.guard_name;
 
-      (* Verify guard has all required directives *)
-      Alcotest.(check bool) "Header has #ifndef" true guard.has_ifndef;
-      Alcotest.(check bool) "Header has #define" true guard.has_define;
-      Alcotest.(check bool) "Header has #endif" true guard.has_endif);
+    (* Verify guard has all required directives *)
+    Alcotest.(check bool) "Header has #ifndef" true guard.has_ifndef;
+    Alcotest.(check bool) "Header has #define" true guard.has_define;
+    Alcotest.(check bool) "Header has #endif" true guard.has_endif );
 
   (* Verify old naming pattern is NOT used *)
   Alcotest.(check bool)
@@ -763,14 +759,14 @@ let test_header_guard_format () =
     List.find_opt (fun g -> g.guard_name = expected_guard_name) guards
   in
 
-  match guard_opt with
-  | None ->
-      Alcotest.fail (sprintf "Header guard '%s' not found" expected_guard_name)
-  | Some guard ->
-      (* Verify guard has complete structure *)
-      Alcotest.(check bool) "Header guard has #ifndef" true guard.has_ifndef;
-      Alcotest.(check bool) "Header guard has #define" true guard.has_define;
-      Alcotest.(check bool) "Header guard has #endif" true guard.has_endif
+  Helpers.expect_some
+    (sprintf "Header guard '%s' not found" expected_guard_name)
+    guard_opt
+  @@ fun guard ->
+  (* Verify guard has complete structure *)
+  Alcotest.(check bool) "Header guard has #ifndef" true guard.has_ifndef;
+  Alcotest.(check bool) "Header guard has #define" true guard.has_define;
+  Alcotest.(check bool) "Header guard has #endif" true guard.has_endif
 
 (* ========================================================================= *)
 (* Test Suite *)

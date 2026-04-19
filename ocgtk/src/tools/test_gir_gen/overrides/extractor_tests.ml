@@ -166,13 +166,12 @@ let test_enum_member_doc_plain () =
       let members = enm.Gir_gen_lib.Types.members in
       (* Members come out in reverse order *)
       let find name =
-        match
-          List.find_opt
-            (fun m -> m.Gir_gen_lib.Types.member_name = name)
-            members
-        with
-        | None -> Alcotest.fail (Printf.sprintf "Member %s not found" name)
-        | Some m -> m
+        Helpers.expect_some
+          (Printf.sprintf "Member %s not found" name)
+          (List.find_opt
+             (fun m -> m.Gir_gen_lib.Types.member_name = name)
+             members)
+          Fun.id
       in
       let a = find "value_a" in
       let b = find "value_b" in
@@ -196,27 +195,25 @@ let test_enum_member_doc_with_nested_elements () =
   | [ enm ] -> (
       let members = enm.Gir_gen_lib.Types.members in
       let a =
-        match
-          List.find_opt
-            (fun m -> m.Gir_gen_lib.Types.member_name = "value_a")
-            members
-        with
-        | None -> Alcotest.fail "Member value_a not found"
-        | Some m -> m
+        Helpers.expect_some "Member value_a not found"
+          (List.find_opt
+             (fun m -> m.Gir_gen_lib.Types.member_name = "value_a")
+             members)
+          Fun.id
       in
       (* The doc text should contain "See " and ". Since: 2.30" but not the link content *)
-      match a.Gir_gen_lib.Types.member_doc with
-      | None -> Alcotest.fail "Expected Some doc, got None"
-      | Some doc -> (
-          (* Should contain Since version *)
-          match Gir_gen_lib.Override_extractor.extract_since_version doc with
-          | Some "2.30" -> ()
-          | other ->
-              Alcotest.fail
-                (Printf.sprintf "Expected Since 2.30 from doc, got %s"
-                   (match other with
-                   | Some s -> "Some \"" ^ s ^ "\""
-                   | None -> "None"))))
+      Helpers.expect_some "Expected Some doc, got None"
+        a.Gir_gen_lib.Types.member_doc
+      @@ fun doc ->
+      (* Should contain Since version *)
+      match Gir_gen_lib.Override_extractor.extract_since_version doc with
+      | Some "2.30" -> ()
+      | other ->
+          Alcotest.fail
+            (Printf.sprintf "Expected Since 2.30 from doc, got %s"
+               (match other with
+               | Some s -> "Some \"" ^ s ^ "\""
+               | None -> "None")))
   | other ->
       Alcotest.fail
         (Printf.sprintf "Expected 1 enum, got %d" (List.length other))
@@ -229,11 +226,10 @@ let test_bitfield_flag_doc () =
   | [ bf ] ->
       let flags = bf.Gir_gen_lib.Types.flags in
       let find name =
-        match
-          List.find_opt (fun f -> f.Gir_gen_lib.Types.flag_name = name) flags
-        with
-        | None -> Alcotest.fail (Printf.sprintf "Flag %s not found" name)
-        | Some f -> f
+        Helpers.expect_some
+          (Printf.sprintf "Flag %s not found" name)
+          (List.find_opt (fun f -> f.Gir_gen_lib.Types.flag_name = name) flags)
+          Fun.id
       in
       let a = find "flag_a" in
       let b = find "flag_b" in
@@ -252,11 +248,12 @@ let test_record_field_doc () =
   | [ rec_ ] ->
       let fields = rec_.Gir_gen_lib.Types.fields in
       let find name =
-        match
-          List.find_opt (fun f -> f.Gir_gen_lib.Types.field_name = name) fields
-        with
-        | None -> Alcotest.fail (Printf.sprintf "Field %s not found" name)
-        | Some f -> f
+        Helpers.expect_some
+          (Printf.sprintf "Field %s not found" name)
+          (List.find_opt
+             (fun f -> f.Gir_gen_lib.Types.field_name = name)
+             fields)
+          Fun.id
       in
       let x = find "x" in
       let y = find "y" in

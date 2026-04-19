@@ -79,9 +79,11 @@ let test_c_code_generation () =
       let decls = C_validation.extract_forward_decls header_content in
       List.exists
         (fun d ->
-          String.starts_with ~prefix:"Val_" d || String.ends_with ~suffix:"_val" d)
+          String.starts_with ~prefix:"Val_" d
+          || String.ends_with ~suffix:"_val" d)
         decls)
-  end else Alcotest.fail "C file not generated"
+  end
+  else Alcotest.fail "C file not generated"
 
 (* ========================================================================= *)
 (* Test Suite *)
