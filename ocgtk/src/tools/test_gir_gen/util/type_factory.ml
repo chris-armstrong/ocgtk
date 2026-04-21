@@ -296,6 +296,22 @@ let make_cross_reference_namespace ?(cr_namespace_name = "Test")
     cr_entities;
   }
 
+(** [make_cross_reference_map pairs] builds a [StringMap] of cross-namespace
+    references from an association list of [(namespace_name, ncr)] pairs.
+    Intended to be used with [Helpers.make_ncr]:
+
+    {[
+    make_cross_reference_map
+      [
+        Helpers.make_ncr "Gdk" gdk_entities;
+        Helpers.make_ncr "cairo" cairo_entities;
+      ]
+    ]} *)
+let make_cross_reference_map pairs =
+  List.fold_left
+    (fun acc (name, ncr) -> StringMap.add name ncr acc)
+    StringMap.empty pairs
+
 let make_generation_context ?(namespace = make_gir_namespace ())
     ?(repository = make_gir_repository ()) ?(classes = []) ?(interfaces = [])
     ?(enums = []) ?(bitfields = []) ?(records = []) ?module_groups

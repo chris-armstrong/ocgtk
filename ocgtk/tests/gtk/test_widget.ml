@@ -9,8 +9,8 @@
 
 open Alcotest
 open Ocgtk_gtk.Gtk
-module Widget = Wrappers.Widget
 module GMain = Ocgtk_gtk.GMain
+module Widget = Wrappers.Widget
 
 module Box = struct
   include Wrappers.Box
@@ -18,15 +18,7 @@ module Box = struct
   let as_widget (box : t) : Widget.t = (box :> Widget.t)
 end
 
-(* Try to initialize GTK once for all tests *)
-let gtk_available =
-  try
-    let _ = GMain.init () in
-    true
-  with GMain.Error _ -> false
-
-(* Helper to skip tests when GTK is not available *)
-let require_gtk f () = if not gtk_available then skip () else f ()
+let require_gtk = Gtk_test_helpers.require_gtk
 
 (* Test that module is accessible and types compile *)
 (* FIXME: relies on requisition which a struct that is not generated fully *)

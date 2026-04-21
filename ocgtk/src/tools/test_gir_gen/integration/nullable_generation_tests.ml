@@ -33,17 +33,10 @@ let nullable_params_gir =
 (* ========================================================================= *)
 
 let test_nullable_parameters () =
-  let test_gir = "/tmp/test_nullable_gen.gir" in
-  let test_filter = "/tmp/test_nullable_filter.conf" in
-  let output_dir = "/tmp/test_nullable_output" in
-
-  create_gir_file test_gir nullable_params_gir;
-  create_filter_file test_filter [ "TestWidget" ];
-  ensure_output_dir output_dir;
-
-  let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
-  assert_true "Nullable generator should exit successfully" (exit_code = 0);
-
+  let output_dir =
+    run_integration_test ~gir_content:nullable_params_gir
+      ~class_names:[ "TestWidget" ] ~test_name:"nullable_gen" ()
+  in
   let mli = mli_file output_dir "test_widget" in
   let content = read_file mli in
   let sig_ast = Ml_ast_helpers.parse_interface content in

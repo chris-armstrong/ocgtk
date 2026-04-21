@@ -13,7 +13,6 @@
 
 open Alcotest
 open Ocgtk_gtk.Gtk
-module GMain = Ocgtk_gtk.GMain
 module Helpers = Gtk_test_helpers
 
 (* Layer 1 (raw) string_list functions *)
@@ -23,16 +22,7 @@ let string_list_take = Wrappers.String_list.take
 let string_list_get_string = Wrappers.String_list.get_string
 let string_list_remove = Wrappers.String_list.remove
 let string_list_get_n_items = Wrappers.String_list.get_n_items
-
-(* Try to initialize GTK once for all tests *)
-let gtk_available =
-  try
-    let _ = GMain.init () in
-    true
-  with GMain.Error _ -> false
-
-(* Helper to skip tests when GTK is not available *)
-let require_gtk f () = if not gtk_available then skip () else f ()
+let require_gtk = Gtk_test_helpers.require_gtk
 
 (* Helper to skip tests that require GTK >= 4.14 (e.g. n-items property) *)
 let require_gtk_414 f = require_gtk (Helpers.require_gtk_version 4 14 0 f)

@@ -208,7 +208,6 @@ let test_constructor_many_params () =
 (* ========================================================================= *)
 
 let test_simple_method () =
-  let ctx = create_test_context () in
   let meth =
     make_gir_method ~method_name:"set_label"
       ~c_identifier:"gtk_button_set_label" ~return_type:void_type
@@ -216,40 +215,25 @@ let test_simple_method () =
       ()
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
-      ~c_type:"GtkButton" meth "Button"
+  let func =
+    Helpers.generate_and_find_c_method ~c_type:"GtkButton" ~class_name:"Button"
+      meth
   in
-
-  let functions = parse_c_string c_code in
-
-  Alcotest.(check int) "Should generate one function" 1 (List.length functions);
-
-  assert_function_exists functions "ml_gtk_button_set_label";
-
-  let func = Option.get (find_function functions "ml_gtk_button_set_label") in
   let param_count = count_function_params func in
 
   (* Should have 2 parameters: self + label *)
   Alcotest.(check int) "Should have 2 parameters (self + label)" 2 param_count
 
 let test_method_with_return_value () =
-  let ctx = create_test_context () in
   let meth =
     make_gir_method ~method_name:"get_label"
       ~c_identifier:"gtk_button_get_label" ~return_type:utf8_type ()
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
-      ~c_type:"GtkButton" meth "Button"
+  let func =
+    Helpers.generate_and_find_c_method ~c_type:"GtkButton" ~class_name:"Button"
+      meth
   in
-
-  let functions = parse_c_string c_code in
-
-  assert_function_exists functions "ml_gtk_button_get_label";
-
-  let func = Option.get (find_function functions "ml_gtk_button_get_label") in
 
   (* Should have a return statement *)
   Alcotest.(check bool)
@@ -358,7 +342,6 @@ let test_constructor_type_conversion () =
     (C_validation.validates_gtk_constructor func "GtkButton")
 
 let test_method_calls_c_function () =
-  let ctx = create_test_context () in
   let meth =
     make_gir_method ~method_name:"set_label"
       ~c_identifier:"gtk_button_set_label" ~return_type:void_type
@@ -366,13 +349,10 @@ let test_method_calls_c_function () =
       ()
   in
 
-  let c_code =
-    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
-      ~c_type:"GtkButton" meth "Button"
+  let func =
+    Helpers.generate_and_find_c_method ~c_type:"GtkButton" ~class_name:"Button"
+      meth
   in
-
-  let functions = parse_c_string c_code in
-  let func = Option.get (find_function functions "ml_gtk_button_set_label") in
 
   (* Should call gtk_button_set_label *)
   Alcotest.(check bool)

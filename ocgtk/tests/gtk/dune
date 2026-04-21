@@ -14,12 +14,12 @@
 (test
  (name test_box)
  (modules test_box)
- (libraries ocgtk.gtk alcotest))
+ (libraries ocgtk.gtk alcotest gtk_test_helpers))
 
 (test
  (name test_widget)
  (modules test_widget)
- (libraries ocgtk.gtk alcotest))
+ (libraries ocgtk.gtk alcotest gtk_test_helpers))
 
 (test
  (name test_button)
@@ -29,12 +29,12 @@
 (test
  (name test_range)
  (modules test_range)
- (libraries ocgtk.gtk alcotest))
+ (libraries ocgtk.gtk alcotest gtk_test_helpers))
 
 (test
  (name test_variance)
  (modules test_variance)
- (libraries ocgtk.gtk alcotest))
+ (libraries ocgtk.gtk alcotest gtk_test_helpers))
 
 (test
  (name test_interface)

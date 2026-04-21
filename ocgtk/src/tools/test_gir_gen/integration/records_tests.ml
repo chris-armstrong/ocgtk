@@ -36,14 +36,9 @@ let record_gir =
 |}
 
 let test_record_support () =
+  (* Write GIR file first so we can also parse it directly below *)
   let test_gir = "/tmp/test_record_gen.gir" in
-  let test_filter = "/tmp/test_record_filter.conf" in
-  let output_dir = "/tmp/test_record_output" in
-
   create_gir_file test_gir record_gir;
-  create_filter_file test_filter [ "RecordUser" ];
-  ensure_output_dir output_dir;
-
   let _, _, classes, _, _, _, records =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir []
   in
@@ -53,9 +48,10 @@ let test_record_support () =
        (fun (c : Gir_gen_lib.Types.gir_class) -> c.class_name = "RecordUser")
        classes);
 
-  let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
-  assert_true "Record generator should exit successfully" (exit_code = 0);
-
+  let output_dir =
+    run_integration_test ~gir_content:record_gir ~class_names:[ "RecordUser" ]
+      ~test_name:"record_gen" ()
+  in
   let c_file = stub_c_file output_dir "RecordUser" in
   assert_true "RecordUser C file should be created" (file_exists c_file);
   let c_content = read_file c_file in
@@ -76,10 +72,6 @@ let test_record_support () =
   assert_true "record_user.mli should be created" (file_exists mli)
 
 let test_non_opaque_record_functions () =
-  let test_gir = "/tmp/test_non_opaque_record.gir" in
-  let test_filter = "/tmp/test_non_opaque_filter.conf" in
-  let output_dir = "/tmp/test_non_opaque_output" in
-
   let gir_content =
     wrap_namespace
       {|
@@ -96,15 +88,10 @@ let test_non_opaque_record_functions () =
     </record>
   |}
   in
-
-  create_gir_file test_gir gir_content;
-  create_filter_file test_filter [ "WidgetClass" ];
-  ensure_output_dir output_dir;
-
-  let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
-  assert_true "Non-opaque record generator should exit successfully"
-    (exit_code = 0);
-
+  let output_dir =
+    run_integration_test ~gir_content ~class_names:[ "WidgetClass" ]
+      ~test_name:"non_opaque_record" ()
+  in
   let header_file =
     Filename.concat (Filename.concat output_dir "generated") "gtk_decls.h"
   in
@@ -119,10 +106,6 @@ let test_non_opaque_record_functions () =
     "#define "
 
 let test_non_opaque_vs_opaque_records () =
-  let test_gir = "/tmp/test_opaque_vs_non_opaque.gir" in
-  let test_filter = "/tmp/test_opaque_filter.conf" in
-  let output_dir = "/tmp/test_opaque_output" in
-
   let gir_content =
     wrap_namespace
       {|
@@ -139,14 +122,11 @@ let test_non_opaque_vs_opaque_records () =
     </record>
   |}
   in
-
-  create_gir_file test_gir gir_content;
-  create_filter_file test_filter [ "OpaqueRecord"; "NonOpaqueRecord" ];
-  ensure_output_dir output_dir;
-
-  let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
-  assert_true "Should generate successfully" (exit_code = 0);
-
+  let output_dir =
+    run_integration_test ~gir_content
+      ~class_names:[ "OpaqueRecord"; "NonOpaqueRecord" ]
+      ~test_name:"opaque_vs_non_opaque" ()
+  in
   let header_file =
     Filename.concat (Filename.concat output_dir "generated") "gtk_decls.h"
   in
@@ -162,10 +142,6 @@ let test_non_opaque_vs_opaque_records () =
     "Val_"
 
 let test_non_opaque_record_in_property () =
-  let test_gir = "/tmp/test_non_opaque_prop.gir" in
-  let test_filter = "/tmp/test_non_opaque_prop_filter.conf" in
-  let output_dir = "/tmp/test_non_opaque_prop_output" in
-
   let gir_content =
     wrap_namespace
       {|
@@ -183,14 +159,10 @@ let test_non_opaque_record_in_property () =
     </class>
   |}
   in
-
-  create_gir_file test_gir gir_content;
-  create_filter_file test_filter [ "RectWidget" ];
-  ensure_output_dir output_dir;
-
-  let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
-  assert_true "Should generate successfully" (exit_code = 0);
-
+  let output_dir =
+    run_integration_test ~gir_content ~class_names:[ "RectWidget" ]
+      ~test_name:"non_opaque_prop" ()
+  in
   let c_file = stub_c_file output_dir "RectWidget" in
   let c_content = read_file c_file in
   let c_functions = C_parser.parse_c_code c_content in

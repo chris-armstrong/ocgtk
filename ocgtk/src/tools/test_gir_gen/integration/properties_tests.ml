@@ -33,17 +33,10 @@ let properties_only_gir =
 |}
 
 let test_property_generation () =
-  let test_gir = "/tmp/test_property_gen.gir" in
-  let test_filter = "/tmp/test_property_filter.conf" in
-  let output_dir = "/tmp/test_property_output" in
-
-  create_gir_file test_gir properties_gir;
-  create_filter_file test_filter [ "TestWidget" ];
-  ensure_output_dir output_dir;
-
-  let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
-  assert_true "Property generator should exit successfully" (exit_code = 0);
-
+  let output_dir =
+    run_integration_test ~gir_content:properties_gir
+      ~class_names:[ "TestWidget" ] ~test_name:"property_gen" ()
+  in
   let widget_file = mli_file output_dir "test_widget" in
   assert_true "TestWidget.mli should be created" (file_exists widget_file);
 
@@ -73,17 +66,10 @@ let test_property_generation () =
     (fun vd -> Ml_validation.assert_return_type vd "int")
 
 let test_c_property_generation () =
-  let test_gir = "/tmp/test_c_property_gen.gir" in
-  let test_filter = "/tmp/test_c_property_filter.conf" in
-  let output_dir = "/tmp/test_c_property_output" in
-
-  create_gir_file test_gir properties_gir;
-  create_filter_file test_filter [ "TestWidget" ];
-  ensure_output_dir output_dir;
-
-  let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
-  assert_true "C property generator should exit successfully" (exit_code = 0);
-
+  let output_dir =
+    run_integration_test ~gir_content:properties_gir
+      ~class_names:[ "TestWidget" ] ~test_name:"c_property_gen" ()
+  in
   let c_file = stub_c_file output_dir "TestWidget" in
   assert_true "C file should be created" (file_exists c_file);
 
@@ -119,18 +105,10 @@ let test_c_property_generation () =
           c_functions))
 
 let test_properties_only_class () =
-  let test_gir = "/tmp/test_properties_only.gir" in
-  let test_filter = "/tmp/test_properties_only_filter.conf" in
-  let output_dir = "/tmp/test_properties_only_output" in
-
-  create_gir_file test_gir properties_only_gir;
-  create_filter_file test_filter [ "PropertiesOnly" ];
-  ensure_output_dir output_dir;
-
-  let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
-  assert_true "Properties-only generator should exit successfully"
-    (exit_code = 0);
-
+  let output_dir =
+    run_integration_test ~gir_content:properties_only_gir
+      ~class_names:[ "PropertiesOnly" ] ~test_name:"properties_only" ()
+  in
   let mli = mli_file output_dir "properties_only" in
   let content = read_file mli in
   let sig_ast = Ml_ast_helpers.parse_interface content in

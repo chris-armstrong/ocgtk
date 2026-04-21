@@ -30,15 +30,10 @@ let simple_class_gir =
 (* ========================================================================= *)
 
 let test_gir_parsing () =
-  let test_gir = "/tmp/test_gir_gen.gir" in
-  let output_dir = "/tmp/test_gir_output" in
-
-  create_gir_file test_gir simple_class_gir;
-  ensure_output_dir output_dir;
-
-  let exit_code = run_gir_gen test_gir output_dir in
-  assert_true "Generator should exit successfully" (exit_code = 0);
-
+  let output_dir =
+    run_integration_test ~gir_content:simple_class_gir ~class_names:[]
+      ~test_name:"gir_gen" ()
+  in
   let c_file = stub_c_file output_dir "EventControllerKey" in
   assert_true "C file should be created" (file_exists c_file);
 
@@ -51,14 +46,10 @@ let test_gir_parsing () =
        c_functions)
 
 let test_c_code_generation () =
-  let test_gir = "/tmp/test_gir_gen.gir" in
-  let output_dir = "/tmp/test_gir_output" in
-
-  create_gir_file test_gir simple_class_gir;
-  ensure_output_dir output_dir;
-
-  let _ = run_gir_gen test_gir output_dir in
-
+  let output_dir =
+    run_integration_test ~gir_content:simple_class_gir ~class_names:[]
+      ~test_name:"gir_gen_quality" ()
+  in
   let c_file = stub_c_file output_dir "EventControllerKey" in
   if file_exists c_file then begin
     let content = read_file c_file in

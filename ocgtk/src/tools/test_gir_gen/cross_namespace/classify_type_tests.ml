@@ -185,9 +185,11 @@ let add_cross_refs ctx =
          }
   in
   let cross_refs =
-    StringMap.empty
-    |> StringMap.add "Gdk" (snd (Helpers.make_ncr "Gdk" gdk_entities))
-    |> StringMap.add "cairo" (snd (Helpers.make_ncr "cairo" cairo_entities))
+    Type_factory.make_cross_reference_map
+      [
+        Helpers.make_ncr "Gdk" gdk_entities;
+        Helpers.make_ncr "cairo" cairo_entities;
+      ]
   in
   { ctx with cross_references = cross_refs }
 

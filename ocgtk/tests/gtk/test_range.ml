@@ -2,21 +2,12 @@
 
 open Alcotest
 open Ocgtk_gtk.Gtk
-module GMain = Ocgtk_gtk.GMain
 module Progress_bar = Wrappers.Progress_bar
 module Scale = Wrappers.Scale
 module Range = Wrappers.Range
 module Level_bar = Wrappers.Level_bar
 
-(* Try to initialize GTK once for all tests *)
-let gtk_available =
-  try
-    let _ = GMain.init () in
-    true
-  with GMain.Error _ -> false
-
-(* Helper to skip tests when GTK is not available *)
-let require_gtk f () = if not gtk_available then skip () else f ()
+let require_gtk = Gtk_test_helpers.require_gtk
 
 (* ========== ProgressBar Tests ========== *)
 
