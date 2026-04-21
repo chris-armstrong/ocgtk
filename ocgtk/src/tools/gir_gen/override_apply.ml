@@ -58,8 +58,9 @@ let check_unknown_entity_names ~entity_kind ~get_override_name ~get_entity_name
 (* Apply component-level overrides to a single component list.
    Returns the filtered-and-versioned list. *)
 let apply_components_by_name ~(get_name : 'a -> string)
-    ~(set_version : version_spec -> 'a -> 'a) ~(set_os : string -> 'a -> 'a)
-    ~(overrides : component_override list) (components : 'a list) : 'a list =
+    ~(set_version : version_spec -> 'a -> 'a)
+    ~(set_os : Os_filter.t -> 'a -> 'a) ~(overrides : component_override list)
+    (components : 'a list) : 'a list =
   List.filter_map
     (fun item ->
       match find_component_override (get_name item) overrides with
@@ -98,7 +99,8 @@ let enum_member_set_version vs (m : gir_enum_member) =
 let bitfield_member_set_version vs (f : gir_bitfield_member) =
   { f with flag_version = Some vs.vs_version }
 
-(* Per-type set_os helpers — eliminate repeated inline lambdas. *)
+(* Per-type set_os helpers — eliminate repeated inline lambdas.
+   All take [Os_filter.t] (not [string]). *)
 
 let method_set_os o (m : gir_method) = { m with os = Some o }
 let constructor_set_os o (c : gir_constructor) = { c with os = Some o }
@@ -277,7 +279,7 @@ let apply_class_overrides ~class_overrides all_classes =
     ~get_action:(fun (o : class_override) -> o.class_action)
     ~get_os:(fun (o : class_override) -> o.class_os)
     ~set_version:(fun v (c : gir_class) -> { c with version = Some v })
-    ~set_os:(fun o (c : gir_class) -> { c with os = Some o })
+    ~set_os:(fun (o : Os_filter.t) (c : gir_class) -> { c with os = Some o })
     ~apply_components:apply_class_components
     ~check_components:(fun ~entity_name cls ov ~warnings ->
       warn_unknown_components ~entity_name ~entity_kind:"class"

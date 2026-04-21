@@ -488,46 +488,61 @@ let emit_fallback_record_method_stub ~ctx ~c_type:_ ~class_name ~ml_name
 
 (* {1 OS Guard Support} *)
 
-(** Map an OS string to the opening C preprocessor guard. *)
+(** Map a single OS platform name to its C defined() expression. *)
+let os_name_to_c_expr = function
+  | "linux" -> "defined(__linux__)"
+  | "macos" -> "(defined(__APPLE__) && defined(__MACH__))"
+  | "freebsd" -> "defined(__FreeBSD__)"
+  | "unix" -> "defined(G_OS_UNIX)"
+  | "windows" -> "defined(_WIN32)"
+  | os -> sprintf "defined(OS_%s)" (String.uppercase_ascii os)
+
+(** Map an [Os_filter.t] to the opening C preprocessor guard line. *)
 let os_to_c_guard_open = function
-  | "linux" -> "#ifdef __linux__"
-  | "macos" -> "#if defined(__APPLE__) && defined(__MACH__)"
-  | "freebsd" -> "#ifdef __FreeBSD__"
-  | "unix" -> "#ifdef G_OS_UNIX"
-  | os -> sprintf "#ifdef OS_%s" (String.uppercase_ascii os)
+  | Os_filter.Os_only names ->
+      let parts = List.map ~f:os_name_to_c_expr names in
+      sprintf "#if %s" (String.concat ~sep:" || " parts)
+  | Os_filter.Os_except names ->
+      let parts =
+        List.map ~f:(fun n -> sprintf "!(%s)" (os_name_to_c_expr n)) names
+      in
+      sprintf "#if %s" (String.concat ~sep:" && " parts)
 
-(** Map an OS string to the closing C preprocessor guard. *)
+(** Map an [Os_filter.t] to the closing C preprocessor guard line. *)
 let os_to_c_guard_close = function
-  | "linux" -> "#endif /* __linux__ */"
-  | "macos" -> "#endif /* __APPLE__ */"
-  | "freebsd" -> "#endif /* __FreeBSD__ */"
-  | "unix" -> "#endif /* G_OS_UNIX */"
-  | os -> sprintf "#endif /* OS_%s */" (String.uppercase_ascii os)
+  | Os_filter.Os_only names ->
+      sprintf "#endif /* %s */" (String.concat ~sep:" || " names)
+  | Os_filter.Os_except names ->
+      sprintf "#endif /* not %s */" (String.concat ~sep:", " names)
 
-(** Human-readable display name for an OS string (for failwith messages). *)
+(** Human-readable display name for an [Os_filter.t] (used in failwith
+    messages). *)
 let os_display_name = function
-  | "linux" -> "Linux"
-  | "macos" -> "macOS"
-  | "freebsd" -> "FreeBSD"
-  | "unix" -> "Unix"
-  | os -> os
+  | Os_filter.Os_only [ "linux" ] -> "Linux"
+  | Os_filter.Os_only [ "macos" ] -> "macOS"
+  | Os_filter.Os_only [ "freebsd" ] -> "FreeBSD"
+  | Os_filter.Os_only [ "unix" ] -> "Unix"
+  | Os_filter.Os_only [ "windows" ] -> "Windows"
+  | Os_filter.Os_only names -> String.concat ~sep:" or " names
+  | Os_filter.Os_except names ->
+      sprintf "non-%s" (String.concat ~sep:"/non-" names)
 
-(** Wrap a generated stub in an OS guard. [os]: OS string (e.g. ["linux"]), or
-    [None] to emit stub as-is. [failwith_stub]: string placed in the [#else]
-    branch. [stub]: the actual implementation placed in the [#ifdef] branch. *)
+(** Wrap a generated stub in an OS guard. [os]: OS filter, or [None] to emit
+    stub as-is. [failwith_stub]: string placed in the [#else] branch. [stub]:
+    the actual implementation placed in the [#if] branch. *)
 let emit_with_os_guard ~os ~failwith_stub ~stub buf =
   match os with
   | None -> Buffer.add_string buf stub
-  | Some os_val ->
+  | Some os_filter ->
       Buffer.add_char buf '\n';
-      Buffer.add_string buf (os_to_c_guard_open os_val);
+      Buffer.add_string buf (os_to_c_guard_open os_filter);
       Buffer.add_char buf '\n';
       Buffer.add_string buf stub;
       Buffer.add_char buf '\n';
       Buffer.add_string buf "#else\n";
       Buffer.add_string buf failwith_stub;
       Buffer.add_char buf '\n';
-      Buffer.add_string buf (os_to_c_guard_close os_val);
+      Buffer.add_string buf (os_to_c_guard_close os_filter);
       Buffer.add_char buf '\n'
 
 (** Emit an OS-fallback constructor stub that raises [caml_failwith]. Used in

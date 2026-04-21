@@ -105,7 +105,9 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~module_names ~repository =
   bprintf buf "   %%{exe:../configurator/config_flags.exe}\n";
   List.iter
     ~f:(fun package_name ->
-      let flag = if is_optional package_name then "--pkg-optional" else "--pkg" in
+      let flag =
+        if is_optional package_name then "--pkg-optional" else "--pkg"
+      in
       bprintf buf "   %s\n   %s\n" flag package_name)
     all_packages;
   bprintf buf "   --cflags-out\n   %s\n" cflag_file;

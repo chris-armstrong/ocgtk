@@ -1,6 +1,7 @@
 (* Tests for Gir_gen_lib.Override_parser. *)
 
 open Gir_gen_lib.Override_types
+module Os_filter = Gir_gen_lib.Os_filter
 
 let parse_ok content =
   match Gir_gen_lib.Override_parser.parse_overrides_from_string content with
@@ -437,6 +438,105 @@ let test_roundtrip_complex () =
   in
   roundtrip original
 
+(* ---- Multi-OS and not_os tests ---- *)
+
+let test_single_os_on_method () =
+  let ov =
+    parse_ok
+      "(overrides (library \"Gio\") (class App (method get_pid (os \
+       \"linux\"))))"
+  in
+  let c = hd_exn "Expected one class" ov.classes in
+  let m = hd_exn "Expected one method" c.methods in
+  Alcotest.(check string) "method name" "get_pid" m.component_name;
+  match m.os with
+  | Some (Os_filter.Os_only [ "linux" ]) -> ()
+  | _ -> Alcotest.fail "Expected Os_only [\"linux\"]"
+
+let test_multi_os_on_method () =
+  let ov =
+    parse_ok
+      "(overrides (library \"Gio\") (class App (method get_pid (os \"linux\") \
+       (os \"macos\"))))"
+  in
+  let c = hd_exn "Expected one class" ov.classes in
+  let m = hd_exn "Expected one method" c.methods in
+  match m.os with
+  | Some (Os_filter.Os_only [ "linux"; "macos" ]) -> ()
+  | _ -> Alcotest.fail "Expected Os_only [\"linux\"; \"macos\"]"
+
+let test_not_os_single () =
+  let ov =
+    parse_ok
+      "(overrides (library \"Gio\") (class App (method get_pid (not_os \
+       \"windows\"))))"
+  in
+  let c = hd_exn "Expected one class" ov.classes in
+  let m = hd_exn "Expected one method" c.methods in
+  match m.os with
+  | Some (Os_filter.Os_except [ "windows" ]) -> ()
+  | _ -> Alcotest.fail "Expected Os_except [\"windows\"]"
+
+let test_not_os_multiple () =
+  let ov =
+    parse_ok
+      "(overrides (library \"Gio\") (class App (method get_pid (not_os \
+       \"windows\") (not_os \"macos\"))))"
+  in
+  let c = hd_exn "Expected one class" ov.classes in
+  let m = hd_exn "Expected one method" c.methods in
+  match m.os with
+  | Some (Os_filter.Os_except [ "windows"; "macos" ]) -> ()
+  | _ -> Alcotest.fail "Expected Os_except [\"windows\"; \"macos\"]"
+
+let test_entity_level_multi_os () =
+  let ov =
+    parse_ok
+      "(overrides (library \"Gio\") (class App (os \"linux\") (os \"freebsd\") \
+       (method get_pid (ignore))))"
+  in
+  let c = hd_exn "Expected one class" ov.classes in
+  match c.class_os with
+  | Some (Os_filter.Os_only [ "linux"; "freebsd" ]) -> ()
+  | _ -> Alcotest.fail "Expected Os_only [\"linux\"; \"freebsd\"] on class"
+
+let test_entity_level_not_os () =
+  let ov =
+    parse_ok
+      "(overrides (library \"Gio\") (class App (not_os \"windows\") (method \
+       get_pid (ignore))))"
+  in
+  let c = hd_exn "Expected one class" ov.classes in
+  match c.class_os with
+  | Some (Os_filter.Os_except [ "windows" ]) -> ()
+  | _ -> Alcotest.fail "Expected Os_except [\"windows\"] on class"
+
+let test_mix_os_and_not_os_on_component () =
+  let err =
+    parse_err
+      "(overrides (library \"Gio\") (class App (method get_pid (os \"linux\") \
+       (not_os \"windows\"))))"
+  in
+  match err with
+  | Invalid_format _ -> ()
+  | e ->
+      Alcotest.fail
+        (Printf.sprintf "Expected Invalid_format, got: %s"
+           (Gir_gen_lib.Override_parser.format_error e))
+
+let test_mix_os_and_not_os_on_entity () =
+  let err =
+    parse_err
+      "(overrides (library \"Gio\") (class App (os \"linux\") (not_os \
+       \"windows\")))"
+  in
+  match err with
+  | Invalid_format _ -> ()
+  | e ->
+      Alcotest.fail
+        (Printf.sprintf "Expected Invalid_format, got: %s"
+           (Gir_gen_lib.Override_parser.format_error e))
+
 let test_suite_roundtrip =
   [
     ("minimal", `Quick, test_roundtrip_minimal);
@@ -481,4 +581,14 @@ let test_suite =
     ("bad_component_action", `Quick, test_bad_component_action);
     ("empty_class", `Quick, test_empty_class);
     ("many_components", `Quick, test_many_components);
+    ("single_os_on_method", `Quick, test_single_os_on_method);
+    ("multi_os_on_method", `Quick, test_multi_os_on_method);
+    ("not_os_single", `Quick, test_not_os_single);
+    ("not_os_multiple", `Quick, test_not_os_multiple);
+    ("entity_level_multi_os", `Quick, test_entity_level_multi_os);
+    ("entity_level_not_os", `Quick, test_entity_level_not_os);
+    ( "mix_os_and_not_os_on_component",
+      `Quick,
+      test_mix_os_and_not_os_on_component );
+    ("mix_os_and_not_os_on_entity", `Quick, test_mix_os_and_not_os_on_entity);
   ]
