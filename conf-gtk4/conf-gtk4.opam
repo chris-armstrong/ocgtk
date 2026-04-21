@@ -35,13 +35,16 @@ depexts: [
   # macOS via MacPorts
   ["gtk4"] {os = "macos" & os-distribution = "macports"}
 
+  # MSYS2
+  ["mingw-w64-x86_64-gtk4"] {os-distribution = "msys2"}
+
   # FreeBSD
   ["gtk4"] {os = "freebsd"}
 ]
 
 build: [
-  ["pkg-config" "--short-errors" "--print-errors" "gtk4"] {os != "win32"}
+  ["pkg-config" "--short-errors" "--print-errors" "gtk4"] {os != "win32" | os-distribution = "msys2"}
 ]
 
-available: os != "win32"
+available: os != "win32" | os-distribution = "msys2"
 flags: conf
