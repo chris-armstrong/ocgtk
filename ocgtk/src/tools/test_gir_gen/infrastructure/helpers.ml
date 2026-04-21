@@ -440,3 +440,71 @@ let log_generated_c_code test_name c_code =
   Printf.printf "========================================\n";
   Printf.printf "%s\n" c_code;
   Printf.printf "========================================\n\n"
+
+(* ========================================================================= *)
+(* C Stub Generation Helpers *)
+(* ========================================================================= *)
+
+(** [generate_and_find_c_method ~c_type ~class_name meth] generates the C stub
+    for [meth] against [c_type]/[class_name], parses the result, and returns the
+    primary generated function (the one whose name is
+    ["ml_" ^ meth.c_identifier]). Fails the test if the function is not found in
+    the output. *)
+let generate_and_find_c_method ~c_type ~class_name
+    (meth : Gir_gen_lib.Types.gir_method) =
+  let ctx = create_test_context () in
+  let c_code =
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx ~c_type meth
+      class_name
+  in
+  let functions = C_parser.parse_c_code c_code in
+  let fn_name = "ml_" ^ meth.c_identifier in
+  match
+    List.find_opt
+      (fun (f : C_ast.c_function) -> String.equal f.name fn_name)
+      functions
+  with
+  | Some f -> f
+  | None ->
+      Alcotest.fail
+        (Printf.sprintf
+           "generate_and_find_c_method: expected function '%s' not found in \
+            generated code"
+           fn_name)
+
+(* ========================================================================= *)
+(* Shared GIR XML Snippets *)
+(* ========================================================================= *)
+
+(** Minimal EventControllerKey class stub used as a namespace filler in
+    integration tests that need at least one class in the GIR namespace. *)
+let eventcontroller_key_class_xml =
+  {|    <class name="EventControllerKey" c:type="GtkEventControllerKey" parent="EventController">
+      <constructor name="new" c:identifier="gtk_event_controller_key_new"/>
+    </class>|}
+
+(* ========================================================================= *)
+(* Integration Test Harness *)
+(* ========================================================================= *)
+
+(** [run_integration_test ~gir_content ~class_names ~test_name ()] runs
+    [gir_gen] on [gir_content] and asserts it exits successfully.
+
+    [gir_content] is written to [/tmp/test_<test_name>.gir]. When [class_names]
+    is non-empty a filter file is created at [/tmp/test_<test_name>_filter.conf]
+    and passed to [gir_gen]. Returns the output directory path. *)
+let run_integration_test ~gir_content ~class_names ~test_name () =
+  let test_gir = Printf.sprintf "/tmp/test_%s.gir" test_name in
+  let output_dir = Printf.sprintf "/tmp/test_%s_output" test_name in
+  create_gir_file test_gir gir_content;
+  ensure_output_dir output_dir;
+  let exit_code =
+    match class_names with
+    | [] -> run_gir_gen test_gir output_dir
+    | _ ->
+        let test_filter = Printf.sprintf "/tmp/test_%s_filter.conf" test_name in
+        create_filter_file test_filter class_names;
+        run_gir_gen ~filter_file:test_filter test_gir output_dir
+  in
+  assert_true "Generator should exit successfully" (exit_code = 0);
+  output_dir

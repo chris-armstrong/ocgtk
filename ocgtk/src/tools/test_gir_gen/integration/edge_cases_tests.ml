@@ -20,17 +20,10 @@ let no_constructor_gir =
 |}
 
 let test_empty_class () =
-  let test_gir = "/tmp/test_empty_class.gir" in
-  let test_filter = "/tmp/test_empty_class_filter.conf" in
-  let output_dir = "/tmp/test_empty_class_output" in
-
-  create_gir_file test_gir empty_class_gir;
-  create_filter_file test_filter [ "EmptyWidget" ];
-  ensure_output_dir output_dir;
-
-  let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
-  assert_true "Empty class generator should exit successfully" (exit_code = 0);
-
+  let output_dir =
+    run_integration_test ~gir_content:empty_class_gir
+      ~class_names:[ "EmptyWidget" ] ~test_name:"empty_class" ()
+  in
   let mli = mli_file output_dir "empty_widget" in
   assert_true "Empty widget file should be created" (file_exists mli);
 
@@ -39,17 +32,10 @@ let test_empty_class () =
   Ml_validation.assert_type_exists_sig sig_ast "t"
 
 let test_no_constructor_class () =
-  let test_gir = "/tmp/test_no_constructor.gir" in
-  let test_filter = "/tmp/test_no_constructor_filter.conf" in
-  let output_dir = "/tmp/test_no_constructor_output" in
-
-  create_gir_file test_gir no_constructor_gir;
-  create_filter_file test_filter [ "NoConstructor" ];
-  ensure_output_dir output_dir;
-
-  let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
-  assert_true "No-constructor generator should exit successfully" (exit_code = 0);
-
+  let output_dir =
+    run_integration_test ~gir_content:no_constructor_gir
+      ~class_names:[ "NoConstructor" ] ~test_name:"no_constructor" ()
+  in
   let mli = mli_file output_dir "no_constructor" in
   let content = read_file mli in
   let sig_ast = Ml_ast_helpers.parse_interface content in

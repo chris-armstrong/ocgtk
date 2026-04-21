@@ -10,17 +10,8 @@
    future work with more sophisticated GC handling. *)
 
 open Alcotest
-open Ocgtk_gtk
 
-(* Try to initialize GTK once for all tests *)
-let gtk_available =
-  try
-    let _ = GMain.init () in
-    true
-  with GMain.Error _ -> false
-
-(* Helper to skip tests when GTK is not available *)
-let require_gtk f () = if not gtk_available then skip () else f ()
+let require_gtk = Gtk_test_helpers.require_gtk
 
 (* ==================================================================== *)
 (* GValue Lifecycle Stress Test *)

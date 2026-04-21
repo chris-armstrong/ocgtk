@@ -40,7 +40,7 @@
 (test
  (name test_gobject_stress)
  (modules test_gobject_stress)
- (libraries ocgtk alcotest))
+ (libraries ocgtk alcotest gtk_test_helpers))
 
 ; DISABLED: Uses Conv module (see above)
 ;(test

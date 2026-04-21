@@ -40,7 +40,7 @@ let test_header_generation_with_gdk_cross_references () =
     |> StringMap.add "Surface" surface_cr
   in
   let cross_refs =
-    StringMap.add "Gdk" (snd (Helpers.make_ncr "Gdk" gdk_map)) StringMap.empty
+    Type_factory.make_cross_reference_map [ Helpers.make_ncr "Gdk" gdk_map ]
   in
 
   let ctx =
@@ -103,8 +103,8 @@ let test_header_generation_with_multiple_dependencies () =
   let gdk_map = StringMap.add "Texture" gdk_cr StringMap.empty in
   let gio_map = StringMap.add "File" gio_cr StringMap.empty in
   let cross_refs =
-    StringMap.add "Gdk" (snd (Helpers.make_ncr "Gdk" gdk_map)) StringMap.empty
-    |> StringMap.add "Gio" (snd (Helpers.make_ncr "Gio" gio_map))
+    Type_factory.make_cross_reference_map
+      [ Helpers.make_ncr "Gdk" gdk_map; Helpers.make_ncr "Gio" gio_map ]
   in
 
   let ctx =
@@ -204,9 +204,7 @@ let test_base_namespaces_filtered () =
   in
   let glib_map = StringMap.add "Object" glib_cr StringMap.empty in
   let cross_refs =
-    StringMap.add "GLib"
-      (snd (Helpers.make_ncr "GLib" glib_map))
-      StringMap.empty
+    Type_factory.make_cross_reference_map [ Helpers.make_ncr "GLib" glib_map ]
   in
 
   let ctx =
@@ -258,7 +256,7 @@ let test_gsk_with_gdk_dependency () =
   in
   let gdk_map = StringMap.add "Surface" renderer_cr StringMap.empty in
   let cross_refs =
-    StringMap.add "Gdk" (snd (Helpers.make_ncr "Gdk" gdk_map)) StringMap.empty
+    Type_factory.make_cross_reference_map [ Helpers.make_ncr "Gdk" gdk_map ]
   in
 
   let ctx =

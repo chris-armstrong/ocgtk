@@ -1,0 +1,16 @@
+# Generated enum .mli files contain doc comments on variant members
+# (Warning 50: unattached documentation comment) that ocamlformat
+# cannot handle. Exclude them from formatting.
+src/gdkpixbuf/generated/gdkpixbuf_enums.mli
+src/pango/generated/pango_enums.mli
+src/graphene/generated/graphene_enums.mli
+src/gdk/generated/gdk_enums.mli
+src/gsk/generated/gsk_enums.mli
+src/gtk/generated/gdk_enums.mli
+src/gtk/generated/gdkpixbuf_enums.mli
+src/gtk/generated/gobject_enums.mli
+src/gtk/generated/graphene_enums.mli
+src/gtk/generated/gsk_enums.mli
+src/gtk/generated/gtk_enums.mli
+src/gtk/generated/pango_enums.mli
+src/gio/generated/gio_enums.mli

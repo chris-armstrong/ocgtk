@@ -104,20 +104,10 @@ let many_params_gir =
 (* ========================================================================= *)
 
 let test_widget_generation () =
-  let test_gir = "/tmp/test_widget_gen.gir" in
-  let test_filter = "/tmp/test_widget_filter.conf" in
-  let output_dir = "/tmp/test_widget_output" in
-
-  create_gir_file test_gir widget_with_methods_gir;
-  create_filter_file test_filter [ "Button"; "Label" ];
-  ensure_output_dir output_dir;
-  delete_if_exists (mli_file output_dir "button");
-  delete_if_exists (ml_file output_dir "button");
-  delete_if_exists (g_wrapper_file output_dir "Button");
-
-  let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
-  assert_true "Widget generator should exit successfully" (exit_code = 0);
-
+  let output_dir =
+    run_integration_test ~gir_content:widget_with_methods_gir
+      ~class_names:[ "Button"; "Label" ] ~test_name:"widget_gen" ()
+  in
   let button_file = mli_file output_dir "button" in
   assert_true "Button.mli should be created" (file_exists button_file);
 
@@ -151,17 +141,10 @@ let test_widget_generation () =
   | None -> ()
 
 let test_all_methods_generated () =
-  let test_gir = "/tmp/test_many_methods.gir" in
-  let test_filter = "/tmp/test_many_methods_filter.conf" in
-  let output_dir = "/tmp/test_many_methods_output" in
-
-  create_gir_file test_gir many_methods_gir;
-  create_filter_file test_filter [ "ManyMethods" ];
-  ensure_output_dir output_dir;
-
-  let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
-  assert_true "Many methods generator should exit successfully" (exit_code = 0);
-
+  let output_dir =
+    run_integration_test ~gir_content:many_methods_gir
+      ~class_names:[ "ManyMethods" ] ~test_name:"many_methods" ()
+  in
   let mli = mli_file output_dir "many_methods" in
   let content = read_file mli in
   let sig_ast = Ml_ast_helpers.parse_interface content in
@@ -174,17 +157,10 @@ let test_all_methods_generated () =
   Ml_validation.assert_value_exists_sig sig_ast "method8"
 
 let test_generated_code_quality () =
-  let test_gir = "/tmp/test_quality.gir" in
-  let test_filter = "/tmp/test_quality_filter.conf" in
-  let output_dir = "/tmp/test_quality_output" in
-
-  create_gir_file test_gir widget_with_methods_gir;
-  create_filter_file test_filter [ "Button"; "Label" ];
-  ensure_output_dir output_dir;
-
-  let exit_code = run_gir_gen ~filter_file:test_filter test_gir output_dir in
-  assert_true "Code quality test should exit successfully" (exit_code = 0);
-
+  let output_dir =
+    run_integration_test ~gir_content:widget_with_methods_gir
+      ~class_names:[ "Button"; "Label" ] ~test_name:"quality" ()
+  in
   let c_file = stub_c_file output_dir "Button" in
   let c_content = read_file c_file in
   let c_functions = C_parser.parse_c_code c_content in
@@ -208,15 +184,10 @@ let test_generated_code_quality () =
     Alcotest.fail "Generated code may have memory leaks (malloc without free)"
 
 let test_camlparam_limitation () =
-  let test_gir = "/tmp/test_many_params.gir" in
-  let output_dir = "/tmp/test_many_params_output" in
-
-  create_gir_file test_gir many_params_gir;
-  ensure_output_dir output_dir;
-
-  let exit_code = run_gir_gen test_gir output_dir in
-  assert_true "CAMLparam test should exit successfully" (exit_code = 0);
-
+  let output_dir =
+    run_integration_test ~gir_content:many_params_gir ~class_names:[]
+      ~test_name:"many_params" ()
+  in
   let mli = mli_file output_dir "many_params" in
   let content = read_file mli in
   let sig_ast = Ml_ast_helpers.parse_interface content in

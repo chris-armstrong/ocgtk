@@ -10,8 +10,9 @@
 
 open Alcotest
 open Ocgtk_gtk.Gtk
-module GMain = Ocgtk_gtk.GMain
 module Widget = Wrappers.Widget
+
+let require_gtk = Gtk_test_helpers.require_gtk
 
 (* Layer 1 (raw) box functions *)
 let box_new = Wrappers.Box.new_
@@ -25,16 +26,6 @@ let box_append = Wrappers.Box.append
 let box_prepend = Wrappers.Box.prepend
 let box_remove = Wrappers.Box.remove
 let box_as_widget (box : Wrappers.Box.t) : Widget.t = (box :> Widget.t)
-
-(* Try to initialize GTK once for all tests *)
-let gtk_available =
-  try
-    let _ = GMain.init () in
-    true
-  with GMain.Error _ -> false
-
-(* Helper to skip tests when GTK is not available *)
-let require_gtk f () = if not gtk_available then skip () else f ()
 
 (* Test that Box module is accessible and types compile *)
 let test_module_accessible () =

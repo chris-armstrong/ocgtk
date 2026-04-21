@@ -12,22 +12,13 @@
 
 open Alcotest
 open Ocgtk_gtk.Gtk
-module GMain = Ocgtk_gtk.GMain
 
 (* Module aliases for clarity *)
 module Button = Wrappers.Button
 module Box = Wrappers.Box
 module Widget = Wrappers.Widget
 
-(* Try to initialize GTK once for all tests *)
-let gtk_available =
-  try
-    let _ = GMain.init () in
-    true
-  with GMain.Error _ -> false
-
-(* Helper to skip tests when GTK is not available *)
-let require_gtk f () = if not gtk_available then skip () else f ()
+let require_gtk = Gtk_test_helpers.require_gtk
 
 (** Test 1: Button.t upcasts to Widget.t
 
