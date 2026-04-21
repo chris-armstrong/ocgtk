@@ -659,8 +659,6 @@
   (run
    %{exe:../configurator/config_flags.exe}
    --pkg
-   gtk4
-   --pkg
    cairo-gobject
    --pkg
    gdk-pixbuf-2.0
@@ -670,6 +668,8 @@
    gio-unix-2.0
    --pkg
    graphene-gobject-1.0
+   --pkg
+   gtk4
    --pkg
    pango
    --pkg
