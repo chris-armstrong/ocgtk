@@ -23,7 +23,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
-#ifdef __linux__
+#if defined(__linux__)
 /* Conversion functions for GUnixMountEntry (opaque record with hidden fields) */
 GUnixMountEntry *GUnixMountEntry_val(value v) {
   return *(GUnixMountEntry **)Data_custom_val(v);
@@ -38,12 +38,12 @@ value Val_GUnixMountEntry_option(const GUnixMountEntry *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GUnixMountEntry(ptr));
 }
-#endif /* __linux__ */
+#endif /* linux */
 
 
-#ifdef __linux__
+#if defined(__linux__)
 
 #else
 
 
-#endif /* __linux__ */
+#endif /* linux */

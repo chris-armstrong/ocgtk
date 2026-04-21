@@ -24,7 +24,7 @@
 #include "gio_decls.h"
 
 
-#ifdef __linux__
+#if defined(__linux__)
 #if GLIB_CHECK_VERSION(2,24,0)
 
 
@@ -84,4 +84,4 @@ return Val_unit;
 }
 
 
-#endif /* __linux__ */
+#endif /* linux */

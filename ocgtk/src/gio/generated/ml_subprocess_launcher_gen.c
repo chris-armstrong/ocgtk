@@ -43,6 +43,8 @@ g_subprocess_launcher_unsetenv(GSubprocessLauncher_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if !(defined(_WIN32))
+
 CAMLexport CAMLprim value ml_g_subprocess_launcher_take_stdout_fd(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -50,6 +52,21 @@ CAMLparam2(self, arg1);
 g_subprocess_launcher_take_stdout_fd(GSubprocessLauncher_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_subprocess_launcher_take_stdout_fd(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SubprocessLauncher is only available on non-windows");
+return Val_unit;
+}
+
+#endif /* not windows */
+
+#if !(defined(_WIN32))
 
 CAMLexport CAMLprim value ml_g_subprocess_launcher_take_stdin_fd(value self, value arg1)
 {
@@ -59,6 +76,21 @@ g_subprocess_launcher_take_stdin_fd(GSubprocessLauncher_val(self), Int_val(arg1)
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_subprocess_launcher_take_stdin_fd(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SubprocessLauncher is only available on non-windows");
+return Val_unit;
+}
+
+#endif /* not windows */
+
+#if !(defined(_WIN32))
+
 CAMLexport CAMLprim value ml_g_subprocess_launcher_take_stderr_fd(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -66,6 +98,19 @@ CAMLparam2(self, arg1);
 g_subprocess_launcher_take_stderr_fd(GSubprocessLauncher_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_subprocess_launcher_take_stderr_fd(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SubprocessLauncher is only available on non-windows");
+return Val_unit;
+}
+
+#endif /* not windows */
 
 CAMLexport CAMLprim value ml_g_subprocess_launcher_take_fd(value self, value arg1, value arg2)
 {
@@ -99,6 +144,8 @@ g_subprocess_launcher_setenv(GSubprocessLauncher_val(self), String_val(arg1), St
 CAMLreturn(Val_unit);
 }
 
+#if !(defined(_WIN32))
+
 CAMLexport CAMLprim value ml_g_subprocess_launcher_set_stdout_file_path(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -106,6 +153,21 @@ CAMLparam2(self, arg1);
 g_subprocess_launcher_set_stdout_file_path(GSubprocessLauncher_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_subprocess_launcher_set_stdout_file_path(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SubprocessLauncher is only available on non-windows");
+return Val_unit;
+}
+
+#endif /* not windows */
+
+#if !(defined(_WIN32))
 
 CAMLexport CAMLprim value ml_g_subprocess_launcher_set_stdin_file_path(value self, value arg1)
 {
@@ -115,6 +177,21 @@ g_subprocess_launcher_set_stdin_file_path(GSubprocessLauncher_val(self), String_
 CAMLreturn(Val_unit);
 }
 
+#else
+
+CAMLexport CAMLprim value ml_g_subprocess_launcher_set_stdin_file_path(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SubprocessLauncher is only available on non-windows");
+return Val_unit;
+}
+
+#endif /* not windows */
+
+#if !(defined(_WIN32))
+
 CAMLexport CAMLprim value ml_g_subprocess_launcher_set_stderr_file_path(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -122,6 +199,19 @@ CAMLparam2(self, arg1);
 g_subprocess_launcher_set_stderr_file_path(GSubprocessLauncher_val(self), String_option_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_subprocess_launcher_set_stderr_file_path(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("SubprocessLauncher is only available on non-windows");
+return Val_unit;
+}
+
+#endif /* not windows */
 
 CAMLexport CAMLprim value ml_g_subprocess_launcher_set_flags(value self, value arg1)
 {

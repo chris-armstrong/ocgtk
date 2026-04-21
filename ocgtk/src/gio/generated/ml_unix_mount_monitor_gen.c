@@ -24,7 +24,7 @@
 #include "gio_decls.h"
 
 
-#ifdef __linux__
+#if defined(__linux__)
 
 CAMLexport CAMLprim value ml_g_unix_mount_monitor_new(value unit)
 {
@@ -79,4 +79,4 @@ return Val_unit;
 }
 
 
-#endif /* __linux__ */
+#endif /* linux */

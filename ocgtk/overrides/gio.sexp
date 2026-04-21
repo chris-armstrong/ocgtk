@@ -36,10 +36,10 @@
   ;; DBusMessage and DBusMethodInvocation methods that take GUnixFDList
   ;; parameters are Linux-only because GUnixFDList is from gio-unix-2.0.
   (class DBusMessage
-    (method set_unix_fd_list (os "linux"))
-    (method get_unix_fd_list (os "linux")))
+    (method set_unix_fd_list (not_os "windows"))
+    (method get_unix_fd_list (not_os "windows")))
   (class DBusMethodInvocation
-    (method return_value_with_unix_fd_list (os "linux")))
+    (method return_value_with_unix_fd_list (not_os "windows")))
 
 
   (enumeration DBusError
@@ -266,4 +266,29 @@
     (member solaris_ucred (version "2.40"))
     (member openbsd_sockpeercred (version "2.30"))
   )
+
+  ; Credentials and Subprocess have methods that are non-Windows
+  (class Credentials
+    (method get_unix_user (not_os "windows") )
+    (method set_unix_user (not_os "windows") )
+    (method get_unix_pid (not_os "windows") )
+    )
+
+  (class Subprocess
+    (method send_signal (not_os "windows"))
+    )
+
+  (class SubprocessLauncher
+    (method take_stdout_fd (not_os "windows"))
+    (method take_stderr_fd (not_os "windows"))
+    (method take_stdin_fd (not_os "windows"))
+    (method set_stdout_file_path (not_os "windows"))
+    (method set_stderr_file_path (not_os "windows"))
+    (method set_stdin_file_path (not_os "windows"))
+    )
+
+  (class DBusConnection
+    (method call_with_unix_fd_list (not_os "windows"))
+    (method call_with_unix_fd_list_sync (not_os "windows"))
+    )
 )

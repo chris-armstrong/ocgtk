@@ -416,10 +416,10 @@
  (action
   (run
    %{exe:../configurator/config_flags.exe}
-   --pkg-optional
-   gio-unix-2.0
    --pkg
    gio-2.0
+   --pkg-optional
+   gio-unix-2.0
    --cflags-out
    cflag-gio.sexp
    --libs-out

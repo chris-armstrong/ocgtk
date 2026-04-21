@@ -23,7 +23,7 @@
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
-#ifdef __linux__
+#if defined(__linux__)
 /* Conversion functions for GUnixMountPoint (opaque record with hidden fields) */
 GUnixMountPoint *GUnixMountPoint_val(value v) {
   return *(GUnixMountPoint **)Data_custom_val(v);
@@ -38,10 +38,10 @@ value Val_GUnixMountPoint_option(const GUnixMountPoint *ptr) {
   if (ptr == NULL) return Val_none;
   return Val_some(Val_GUnixMountPoint(ptr));
 }
-#endif /* __linux__ */
+#endif /* linux */
 
 
-#ifdef __linux__
+#if defined(__linux__)
 
 CAMLexport CAMLprim value ml_g_unix_mount_point_is_user_mountable(value self)
 {
@@ -324,4 +324,4 @@ return Val_unit;
 }
 
 
-#endif /* __linux__ */
+#endif /* linux */
