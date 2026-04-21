@@ -175,31 +175,27 @@
 
 (rule
  (targets cflag-gdk.sexp clink-gdk.sexp)
- (action (bash "\
-echo '' > cflag-gdk.sexp.tmp && \\
-echo '' > clink-gdk.sexp.tmp && \\
-pkg-config --cflags gtk4 >> cflag-gdk.sexp.tmp && \\
-pkg-config --libs gtk4 >> clink-gdk.sexp.tmp && \\
-pkg-config --cflags cairo-gobject >> cflag-gdk.sexp.tmp && \\
-pkg-config --libs cairo-gobject >> clink-gdk.sexp.tmp && \\
-pkg-config --cflags gdk-pixbuf-2.0 >> cflag-gdk.sexp.tmp && \\
-pkg-config --libs gdk-pixbuf-2.0 >> clink-gdk.sexp.tmp && \\
-pkg-config --cflags gio-2.0 >> cflag-gdk.sexp.tmp && \\
-pkg-config --libs gio-2.0 >> clink-gdk.sexp.tmp && \\
-pkg-config --cflags gio-unix-2.0 >> cflag-gdk.sexp.tmp && \\
-pkg-config --libs gio-unix-2.0 >> clink-gdk.sexp.tmp && \\
-pkg-config --cflags pango >> cflag-gdk.sexp.tmp && \\
-pkg-config --libs pango >> clink-gdk.sexp.tmp && \\
-pkg-config --cflags pangocairo >> cflag-gdk.sexp.tmp && \\
-pkg-config --libs pangocairo >> clink-gdk.sexp.tmp && \\
-echo \"(\" > cflag-gdk.sexp && \\
-tr ' ' '\\n' < cflag-gdk.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-gdk.sexp && \\
-echo \")\" >> cflag-gdk.sexp && \\
-echo \"(\" > clink-gdk.sexp && \\
-tr ' ' '\\n' < clink-gdk.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> clink-gdk.sexp && \\
-echo \")\" >> clink-gdk.sexp && \\
-rm cflag-gdk.sexp.tmp clink-gdk.sexp.tmp\\
-")))
+ (action
+  (run
+   %{exe:../configurator/config_flags.exe}
+   --pkg
+   gtk4
+   --pkg
+   cairo-gobject
+   --pkg
+   gdk-pixbuf-2.0
+   --pkg
+   gio-2.0
+   --pkg-optional
+   gio-unix-2.0
+   --pkg
+   pango
+   --pkg
+   pangocairo
+   --cflags-out
+   cflag-gdk.sexp
+   --libs-out
+   clink-gdk.sexp)))
 
 (library
  (name ocgtk_gdk_generated_stubs)

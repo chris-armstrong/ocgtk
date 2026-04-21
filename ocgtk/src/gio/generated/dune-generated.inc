@@ -413,21 +413,17 @@
 
 (rule
  (targets cflag-gio.sexp clink-gio.sexp)
- (action (bash "\
-echo '' > cflag-gio.sexp.tmp && \\
-echo '' > clink-gio.sexp.tmp && \\
-pkg-config --cflags gio-unix-2.0 >> cflag-gio.sexp.tmp && \\
-pkg-config --libs gio-unix-2.0 >> clink-gio.sexp.tmp && \\
-pkg-config --cflags gio-2.0 >> cflag-gio.sexp.tmp && \\
-pkg-config --libs gio-2.0 >> clink-gio.sexp.tmp && \\
-echo \"(\" > cflag-gio.sexp && \\
-tr ' ' '\\n' < cflag-gio.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-gio.sexp && \\
-echo \")\" >> cflag-gio.sexp && \\
-echo \"(\" > clink-gio.sexp && \\
-tr ' ' '\\n' < clink-gio.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> clink-gio.sexp && \\
-echo \")\" >> clink-gio.sexp && \\
-rm cflag-gio.sexp.tmp clink-gio.sexp.tmp\\
-")))
+ (action
+  (run
+   %{exe:../configurator/config_flags.exe}
+   --pkg-optional
+   gio-unix-2.0
+   --pkg
+   gio-2.0
+   --cflags-out
+   cflag-gio.sexp
+   --libs-out
+   clink-gio.sexp)))
 
 (library
  (name ocgtk_gio_generated_stubs)

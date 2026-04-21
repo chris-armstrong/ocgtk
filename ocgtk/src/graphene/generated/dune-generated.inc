@@ -98,19 +98,15 @@
 
 (rule
  (targets cflag-graphene.sexp clink-graphene.sexp)
- (action (bash "\
-echo '' > cflag-graphene.sexp.tmp && \\
-echo '' > clink-graphene.sexp.tmp && \\
-pkg-config --cflags graphene-gobject-1.0 >> cflag-graphene.sexp.tmp && \\
-pkg-config --libs graphene-gobject-1.0 >> clink-graphene.sexp.tmp && \\
-echo \"(\" > cflag-graphene.sexp && \\
-tr ' ' '\\n' < cflag-graphene.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-graphene.sexp && \\
-echo \")\" >> cflag-graphene.sexp && \\
-echo \"(\" > clink-graphene.sexp && \\
-tr ' ' '\\n' < clink-graphene.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> clink-graphene.sexp && \\
-echo \")\" >> clink-graphene.sexp && \\
-rm cflag-graphene.sexp.tmp clink-graphene.sexp.tmp\\
-")))
+ (action
+  (run
+   %{exe:../configurator/config_flags.exe}
+   --pkg
+   graphene-gobject-1.0
+   --cflags-out
+   cflag-graphene.sexp
+   --libs-out
+   clink-graphene.sexp)))
 
 (library
  (name ocgtk_graphene_generated_stubs)
