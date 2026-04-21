@@ -11,9 +11,12 @@
 (rule
  (targets c_flags.sexp)
  (action
-  (with-stdout-to
-   %{targets}
-   (bash "echo '(' && pkg-config --cflags graphene-1.0 && echo ')'"))))
+  (run
+   %{exe:../configurator/config_flags.exe}
+   --pkg
+   graphene-1.0
+   --cflags-out
+   c_flags.sexp)))
 
 ; Main Graphene library combining core and generated code
 

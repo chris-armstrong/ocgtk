@@ -11,10 +11,14 @@
 (rule
  (targets c_flags.sexp)
  (action
-  (with-stdout-to
-   %{targets}
-   (bash
-    "echo '(' && pkg-config --cflags gio-2.0 && echo '\n' && pkg-config --cflags gio-unix-2.0 && echo ')'"))))
+  (run
+   %{exe:../configurator/config_flags.exe}
+   --pkg
+   gio-2.0
+   --pkg-optional
+   gio-unix-2.0
+   --cflags-out
+   c_flags.sexp)))
 
 ; Code generation for GIO bindings
 ; To regenerate bindings from GIR files, run:
