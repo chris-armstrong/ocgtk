@@ -7,7 +7,7 @@
   (with-stdout-to dune-modules.sexp
     (progn
       (echo "Adjustment")
-      (echo "App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context")
+      (echo "App_launch_context_cycle_de440b34")
       (echo "Box")
       (echo "Button")
       (echo "Button_event")
@@ -43,7 +43,7 @@
       (echo "Frame_clock")
       (echo "Frame_timings")
       (echo "GApp_launch_context")
-      (echo "GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context")
+      (echo "GApp_launch_context_cycle_de440b34")
       (echo "GButton_event")
       (echo "GCairo_context")
       (echo "GClipboard")

@@ -30,13 +30,8 @@ external set_maximized : t -> bool -> unit
     presented. *)
 
 external set_fullscreen :
-  t ->
-  bool ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Monitor
-  .t
-  option ->
-  unit = "ml_gdk_toplevel_layout_set_fullscreen"
+  t -> bool -> App_launch_context_cycle_de440b34.Monitor.t option -> unit
+  = "ml_gdk_toplevel_layout_set_fullscreen"
 (** Sets whether the layout should cause the surface to be fullscreen when
     presented. *)
 
@@ -53,11 +48,8 @@ the value pointed to by @maximized is set to %TRUE if it should go
 fullscreen, or %FALSE, if it should go unmaximized. *)
 
 external get_fullscreen_monitor :
-  t ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Monitor
-  .t
-  option = "ml_gdk_toplevel_layout_get_fullscreen_monitor"
+  t -> App_launch_context_cycle_de440b34.Monitor.t option
+  = "ml_gdk_toplevel_layout_get_fullscreen_monitor"
 (** Returns the monitor that the layout is fullscreening the surface on. *)
 
 external get_fullscreen : t -> bool * bool

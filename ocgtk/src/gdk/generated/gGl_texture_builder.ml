@@ -1,9 +1,6 @@
 class type gl_texture_builder_t = object
   method get_context :
-    unit ->
-    GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .gl_context_t
-    option
+    unit -> GApp_launch_context_cycle_de440b34.gl_context_t option
 
   method get_format : unit -> Gdk_enums.memoryformat
   method get_has_mipmap : unit -> bool
@@ -14,10 +11,7 @@ class type gl_texture_builder_t = object
   method get_width : unit -> int
 
   method set_context :
-    GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .gl_context_t
-    option ->
-    unit
+    GApp_launch_context_cycle_de440b34.gl_context_t option -> unit
 
   method set_format : Gdk_enums.memoryformat -> unit
   method set_has_mipmap : bool -> unit
@@ -33,17 +27,10 @@ end
 class gl_texture_builder (obj : Gl_texture_builder.t) : gl_texture_builder_t =
   object (self)
     method get_context :
-        unit ->
-        GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-        .gl_context_t
-        option =
+        unit -> GApp_launch_context_cycle_de440b34.gl_context_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-              .gl_context
-              ret)
+          (fun ret -> new GApp_launch_context_cycle_de440b34.gl_context ret)
           (Gl_texture_builder.get_context obj)
 
     method get_format : unit -> Gdk_enums.memoryformat =
@@ -73,10 +60,7 @@ class gl_texture_builder (obj : Gl_texture_builder.t) : gl_texture_builder_t =
     method get_width : unit -> int = fun () -> Gl_texture_builder.get_width obj
 
     method set_context :
-        GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-        .gl_context_t
-        option ->
-        unit =
+        GApp_launch_context_cycle_de440b34.gl_context_t option -> unit =
       fun context ->
         let context = Option.map (fun c -> c#as_gl_context) context in
         Gl_texture_builder.set_context obj context

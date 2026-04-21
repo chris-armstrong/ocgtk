@@ -80,12 +80,8 @@ external set_fd : t -> int -> int -> unit
   = "ml_gdk_dmabuf_texture_builder_set_fd"
 (** Sets the file descriptor for a plane. *)
 
-external set_display :
-  t ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Display
-  .t ->
-  unit = "ml_gdk_dmabuf_texture_builder_set_display"
+external set_display : t -> App_launch_context_cycle_de440b34.Display.t -> unit
+  = "ml_gdk_dmabuf_texture_builder_set_display"
 (** Sets the display that this texture builder is associated with.
 
     The display is used to determine the supported dma-buf formats. *)
@@ -136,11 +132,8 @@ external get_fourcc : t -> UInt32.t = "ml_gdk_dmabuf_texture_builder_get_fourcc"
 external get_fd : t -> int -> int = "ml_gdk_dmabuf_texture_builder_get_fd"
 (** Gets the file descriptor for a plane. *)
 
-external get_display :
-  t ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Display
-  .t = "ml_gdk_dmabuf_texture_builder_get_display"
+external get_display : t -> App_launch_context_cycle_de440b34.Display.t
+  = "ml_gdk_dmabuf_texture_builder_get_display"
 (** Returns the display that this texture builder is associated with. *)
 
 (* Properties *)

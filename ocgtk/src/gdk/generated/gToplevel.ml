@@ -4,8 +4,7 @@ class type toplevel_t = object
   inherit Gtoplevel_signals.toplevel_signals
 
   method begin_move :
-    GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .device_t ->
+    GApp_launch_context_cycle_de440b34.device_t ->
     int ->
     float ->
     float ->
@@ -14,9 +13,7 @@ class type toplevel_t = object
 
   method begin_resize :
     Gdk_enums.surfaceedge ->
-    GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .device_t
-    option ->
+    GApp_launch_context_cycle_de440b34.device_t option ->
     int ->
     float ->
     float ->
@@ -27,10 +24,7 @@ class type toplevel_t = object
   method get_state : unit -> Gdk_enums.toplevelstate
 
   method inhibit_system_shortcuts :
-    GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .event_t
-    option ->
-    unit
+    GApp_launch_context_cycle_de440b34.event_t option -> unit
 
   method lower : unit -> bool
   method minimize : unit -> bool
@@ -44,15 +38,9 @@ class type toplevel_t = object
   method set_title : string -> unit
 
   method set_transient_for :
-    GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .surface_t ->
-    unit
+    GApp_launch_context_cycle_de440b34.surface_t -> unit
 
-  method show_window_menu :
-    GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .event_t ->
-    bool
-
+  method show_window_menu : GApp_launch_context_cycle_de440b34.event_t -> bool
   method supports_edge_constraints : unit -> bool
   method titlebar_gesture : Gdk_enums.titlebargesture -> bool
   method fullscreen_mode : Gdk_enums.fullscreenmode
@@ -67,8 +55,7 @@ class toplevel (obj : Toplevel.t) : toplevel_t =
     inherit Gtoplevel_signals.toplevel_signals obj
 
     method begin_move :
-        GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-        .device_t ->
+        GApp_launch_context_cycle_de440b34.device_t ->
         int ->
         float ->
         float ->
@@ -80,9 +67,7 @@ class toplevel (obj : Toplevel.t) : toplevel_t =
 
     method begin_resize :
         Gdk_enums.surfaceedge ->
-        GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-        .device_t
-        option ->
+        GApp_launch_context_cycle_de440b34.device_t option ->
         int ->
         float ->
         float ->
@@ -99,10 +84,7 @@ class toplevel (obj : Toplevel.t) : toplevel_t =
       fun () -> Toplevel.get_state obj
 
     method inhibit_system_shortcuts :
-        GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-        .event_t
-        option ->
-        unit =
+        GApp_launch_context_cycle_de440b34.event_t option -> unit =
       fun event ->
         let event = Option.map (fun c -> c#as_event) event in
         Toplevel.inhibit_system_shortcuts obj event
@@ -136,17 +118,13 @@ class toplevel (obj : Toplevel.t) : toplevel_t =
       fun title -> Toplevel.set_title obj title
 
     method set_transient_for :
-        GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-        .surface_t ->
-        unit =
+        GApp_launch_context_cycle_de440b34.surface_t -> unit =
       fun parent ->
         let parent = parent#as_surface in
         Toplevel.set_transient_for obj parent
 
-    method show_window_menu :
-        GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-        .event_t ->
-        bool =
+    method show_window_menu : GApp_launch_context_cycle_de440b34.event_t -> bool
+        =
       fun event ->
         let event = event#as_event in
         Toplevel.show_window_menu obj event

@@ -9,11 +9,7 @@ end
 
 and cairo_context_t = object
   method cairo_create : unit -> Ocgtk_cairo.Cairo.Context.context_t option
-
-  method as_cairo_context :
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Cairo_context
-    .t
+  method as_cairo_context : App_launch_context_cycle_de440b34.Cairo_context.t
 end
 
 and clipboard_t = object
@@ -37,11 +33,7 @@ and clipboard_t = object
     Ocgtk_gio.Gio.Async_result.async_result_t -> (bool, GError.t) result
 
   method local : bool
-
-  method as_clipboard :
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Clipboard
-    .t
+  method as_clipboard : App_launch_context_cycle_de440b34.Clipboard.t
 end
 
 and device_t = object
@@ -64,11 +56,7 @@ and device_t = object
   method has_bidi_layouts : unit -> bool
   method n_axes : int
   method tool : GDevice_tool.device_tool_t
-
-  method as_device :
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Device
-    .t
+  method as_device : App_launch_context_cycle_de440b34.Device.t
 end
 
 and display_t = object
@@ -101,11 +89,7 @@ and display_t = object
   method input_shapes : bool
   method rgba : bool
   method shadow_width : bool
-
-  method as_display :
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Display
-    .t
+  method as_display : App_launch_context_cycle_de440b34.Display.t
 end
 
 and draw_context_t = object
@@ -115,11 +99,7 @@ and draw_context_t = object
   method get_frame_region : unit -> Ocgtk_cairo.Cairo.Region.region_t option
   method get_surface : unit -> surface_t option
   method is_in_frame : unit -> bool
-
-  method as_draw_context :
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Draw_context
-    .t
+  method as_draw_context : App_launch_context_cycle_de440b34.Draw_context.t
 end
 
 and event_t = object
@@ -136,11 +116,7 @@ and event_t = object
   method ref : unit -> event_t
   method triggers_context_menu : unit -> bool
   method unref : unit -> unit
-
-  method as_event :
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Event
-    .t
+  method as_event : App_launch_context_cycle_de440b34.Event.t
 end
 
 and gl_context_t = object
@@ -159,11 +135,7 @@ and gl_context_t = object
   method set_forward_compatible : bool -> unit
   method set_required_version : int -> int -> unit
   method set_use_es : int -> unit
-
-  method as_gl_context :
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Gl_context
-    .t
+  method as_gl_context : App_launch_context_cycle_de440b34.Gl_context.t
 end
 
 and monitor_t = object
@@ -181,11 +153,7 @@ and monitor_t = object
   method get_width_mm : unit -> int
   method is_valid : unit -> bool
   method valid : bool
-
-  method as_monitor :
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Monitor
-    .t
+  method as_monitor : App_launch_context_cycle_de440b34.Monitor.t
 end
 
 and seat_t = object
@@ -196,11 +164,7 @@ and seat_t = object
   method get_keyboard : unit -> device_t option
   method get_pointer : unit -> device_t option
   method get_tools : unit -> GDevice_tool.device_tool_t list
-
-  method as_seat :
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Seat
-    .t
+  method as_seat : App_launch_context_cycle_de440b34.Seat.t
 end
 
 and surface_t = object
@@ -234,93 +198,45 @@ and surface_t = object
   method set_device_cursor : device_t -> GCursor.cursor_t -> unit
   method set_input_region : Ocgtk_cairo.Cairo.Region.region_t -> unit
   method set_opaque_region : Ocgtk_cairo.Cairo.Region.region_t option -> unit
-
-  method as_surface :
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Surface
-    .t
+  method as_surface : App_launch_context_cycle_de440b34.Surface.t
 end
 
 and vulkan_context_t = object
   inherit Ocgtk_gio.Gio.Initable.initable_t
   inherit Gvulkan_context_signals.vulkan_context_signals
-
-  method as_vulkan_context :
-    App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .Vulkan_context
-    .t
+  method as_vulkan_context : App_launch_context_cycle_de440b34.Vulkan_context.t
 end
 
 class app_launch_context :
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .App_launch_context
-  .t ->
+  App_launch_context_cycle_de440b34.App_launch_context.t ->
   app_launch_context_t
 
 and cairo_context :
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Cairo_context
-  .t ->
+  App_launch_context_cycle_de440b34.Cairo_context.t ->
   cairo_context_t
 
-and clipboard :
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Clipboard
-  .t ->
-  clipboard_t
+and clipboard : App_launch_context_cycle_de440b34.Clipboard.t -> clipboard_t
 
-and device :
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Device
-  .t ->
-  device_t
+and device : App_launch_context_cycle_de440b34.Device.t -> device_t
 
-and display :
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Display
-  .t ->
-  display_t
+and display : App_launch_context_cycle_de440b34.Display.t -> display_t
 
 and draw_context :
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Draw_context
-  .t ->
+  App_launch_context_cycle_de440b34.Draw_context.t ->
   draw_context_t
 
-and event :
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Event
-  .t ->
-  event_t
+and event : App_launch_context_cycle_de440b34.Event.t -> event_t
 
-and gl_context :
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Gl_context
-  .t ->
-  gl_context_t
+and gl_context : App_launch_context_cycle_de440b34.Gl_context.t -> gl_context_t
 
-and monitor :
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Monitor
-  .t ->
-  monitor_t
+and monitor : App_launch_context_cycle_de440b34.Monitor.t -> monitor_t
 
-and seat :
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Seat
-  .t ->
-  seat_t
+and seat : App_launch_context_cycle_de440b34.Seat.t -> seat_t
 
-and surface :
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Surface
-  .t ->
-  surface_t
+and surface : App_launch_context_cycle_de440b34.Surface.t -> surface_t
 
 and vulkan_context :
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Vulkan_context
-  .t ->
+  App_launch_context_cycle_de440b34.Vulkan_context.t ->
   vulkan_context_t
 
 val new_popup : surface_t -> bool -> surface_t

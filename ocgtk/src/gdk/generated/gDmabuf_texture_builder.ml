@@ -1,9 +1,5 @@
 class type dmabuf_texture_builder_t = object
-  method get_display :
-    unit ->
-    GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .display_t
-
+  method get_display : unit -> GApp_launch_context_cycle_de440b34.display_t
   method get_fd : int -> int
   method get_fourcc : unit -> UInt32.t
   method get_height : unit -> int
@@ -15,12 +11,7 @@ class type dmabuf_texture_builder_t = object
   method get_update_region : unit -> Ocgtk_cairo.Cairo.Region.region_t option
   method get_update_texture : unit -> GTexture.texture_t option
   method get_width : unit -> int
-
-  method set_display :
-    GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-    .display_t ->
-    unit
-
+  method set_display : GApp_launch_context_cycle_de440b34.display_t -> unit
   method set_fd : int -> int -> unit
   method set_fourcc : UInt32.t -> unit
   method set_height : int -> unit
@@ -39,14 +30,9 @@ end
 class dmabuf_texture_builder (obj : Dmabuf_texture_builder.t) :
   dmabuf_texture_builder_t =
   object (self)
-    method get_display :
-        unit ->
-        GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-        .display_t =
+    method get_display : unit -> GApp_launch_context_cycle_de440b34.display_t =
       fun () ->
-        new
-          GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-          .display
+        new GApp_launch_context_cycle_de440b34.display
           (Dmabuf_texture_builder.get_display obj)
 
     method get_fd : int -> int =
@@ -89,10 +75,7 @@ class dmabuf_texture_builder (obj : Dmabuf_texture_builder.t) :
     method get_width : unit -> int =
       fun () -> Dmabuf_texture_builder.get_width obj
 
-    method set_display :
-        GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-        .display_t ->
-        unit =
+    method set_display : GApp_launch_context_cycle_de440b34.display_t -> unit =
       fun display ->
         let display = display#as_display in
         Dmabuf_texture_builder.set_display obj display

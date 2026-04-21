@@ -215,7 +215,17 @@ let create_module_name_for_cycle (entities : entity list) : string =
   in
   (* Convert each class name to module name format *)
   let module_names = List.map names ~f:Utils.module_name_of_class in
-  String.concat ~sep:"_and_" module_names
+  let joined = String.concat ~sep:"_and_" module_names in
+  (* Long cycles (many members) produce filenames that exceed Windows MAX_PATH.
+     When the joined name is too long, fall back to first-name + short MD5 hash. *)
+  if String.length joined <= 150 then joined
+  else
+    let first_name = Utils.to_snake_case (List.hd names) in
+    let hash_input = String.concat ~sep:"," names in
+    let short_hash =
+      String.sub (Digest.to_hex (Digest.string hash_input)) ~pos:0 ~len:8
+    in
+    first_name ^ "_cycle_" ^ short_hash
 
 (* Compute SCC-based module groups *)
 let compute_module_groups (ctx : generation_context) (entities : entity list) :
