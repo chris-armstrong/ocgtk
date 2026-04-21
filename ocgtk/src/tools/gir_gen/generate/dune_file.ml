@@ -22,7 +22,9 @@ let pkg_config_name_of_namespace ~ctx namespace_name =
 (* Recursively collect all pkg-config packages from a namespace and its
    transitive includes. This is needed because C headers form a transitive
    inclusion chain (e.g. pangocairo_decls.h -> pango_decls.h -> gio_decls.h)
-   so all transitive pkg-config packages must be available for compilation. *)
+   so all transitive pkg-config packages must be available for compilation.
+   Dune does not propagate foreign-stub include flags between libraries, so
+   each generated stubs library must receive the full transitive cflag set. *)
 let rec collect_transitive_packages ~ctx ~visited namespace_name =
   let open Types in
   if
@@ -79,35 +81,35 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~module_names ~repository =
     |> List.flatten
     |> List.sort_uniq ~cmp:String.compare
   in
-  let all_packages = repository.repository_packages @ dep_packages in
+  let all_packages =
+    repository.repository_packages @ dep_packages
+    |> List.sort_uniq ~cmp:String.compare
+  in
 
+  (* Packages that are Linux-only (e.g. gio-unix-2.0 is absent on macOS /
+     FreeBSD where Homebrew GLib ships no separate .pc file). These are
+     queried with --pkg-optional so the configurator silently skips them
+     on platforms where they don't exist. *)
+  let optional_packages = [ "gio-unix-2.0" ] in
+  let is_optional p = List.mem ~eq:String.equal p optional_packages in
+  (* Emit the pkg-config rule, invoking the shared dune-configurator
+     executable (src/configurator/config_flags.exe) rather than running
+     pkg-config directly in bash. *)
   bprintf buf "(rule\n";
   bprintf buf " (targets %s %s)\n" cflag_file clink_file;
-  bprintf buf " (action (bash \"\\\n";
-  bprintf buf "echo '' > %s.tmp && \\\\\n" cflag_file;
-  bprintf buf "echo '' > %s.tmp && \\\\\n" clink_file;
-
+  bprintf buf " (action\n";
+  bprintf buf "  (run\n";
+  (* Path is relative to the parent library dune — the .inc is inlined via
+     (include generated/dune-generated.inc) from src/<ns>/dune, so paths
+     resolve from src/<ns>/, not src/<ns>/generated/. *)
+  bprintf buf "   %%{exe:../configurator/config_flags.exe}\n";
   List.iter
     ~f:(fun package_name ->
-      bprintf buf "pkg-config --cflags %s >> %s.tmp && \\\\\n" package_name
-        cflag_file;
-      bprintf buf "pkg-config --libs %s >> %s.tmp && \\\\\n" package_name
-        clink_file)
+      let flag = if is_optional package_name then "--pkg-optional" else "--pkg" in
+      bprintf buf "   %s\n   %s\n" flag package_name)
     all_packages;
-  bprintf buf "echo \\\"(\\\" > %s && \\\\\n" cflag_file;
-  bprintf buf
-    "tr ' ' '\\\\n' < %s.tmp | sed 's/^\\\\(.*\\\\)$/\\\\1/' | tr '\\\\n' ' ' \
-     >> %s && \\\\\n"
-    cflag_file cflag_file;
-  bprintf buf "echo \\\")\\\" >> %s && \\\\\n" cflag_file;
-  bprintf buf "echo \\\"(\\\" > %s && \\\\\n" clink_file;
-  bprintf buf
-    "tr ' ' '\\\\n' < %s.tmp | sed 's/^\\\\(.*\\\\)$/\\\\1/' | tr '\\\\n' ' ' \
-     >> %s && \\\\\n"
-    clink_file clink_file;
-  bprintf buf "echo \\\")\\\" >> %s && \\\\\n" clink_file;
-  bprintf buf "rm %s.tmp %s.tmp\\\\\n" cflag_file clink_file;
-  bprintf buf "\")))\n\n";
+  bprintf buf "   --cflags-out\n   %s\n" cflag_file;
+  bprintf buf "   --libs-out\n   %s)))\n\n" clink_file;
 
   Buffer.add_string buf "(library\n";
   Buffer.add_string buf

@@ -68,27 +68,23 @@
 
 (rule
  (targets cflag-pangocairo.sexp clink-pangocairo.sexp)
- (action (bash "\
-echo '' > cflag-pangocairo.sexp.tmp && \\
-echo '' > clink-pangocairo.sexp.tmp && \\
-pkg-config --cflags pangocairo >> cflag-pangocairo.sexp.tmp && \\
-pkg-config --libs pangocairo >> clink-pangocairo.sexp.tmp && \\
-pkg-config --cflags cairo-gobject >> cflag-pangocairo.sexp.tmp && \\
-pkg-config --libs cairo-gobject >> clink-pangocairo.sexp.tmp && \\
-pkg-config --cflags gio-2.0 >> cflag-pangocairo.sexp.tmp && \\
-pkg-config --libs gio-2.0 >> clink-pangocairo.sexp.tmp && \\
-pkg-config --cflags gio-unix-2.0 >> cflag-pangocairo.sexp.tmp && \\
-pkg-config --libs gio-unix-2.0 >> clink-pangocairo.sexp.tmp && \\
-pkg-config --cflags pango >> cflag-pangocairo.sexp.tmp && \\
-pkg-config --libs pango >> clink-pangocairo.sexp.tmp && \\
-echo \"(\" > cflag-pangocairo.sexp && \\
-tr ' ' '\\n' < cflag-pangocairo.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> cflag-pangocairo.sexp && \\
-echo \")\" >> cflag-pangocairo.sexp && \\
-echo \"(\" > clink-pangocairo.sexp && \\
-tr ' ' '\\n' < clink-pangocairo.sexp.tmp | sed 's/^\\(.*\\)$/\\1/' | tr '\\n' ' ' >> clink-pangocairo.sexp && \\
-echo \")\" >> clink-pangocairo.sexp && \\
-rm cflag-pangocairo.sexp.tmp clink-pangocairo.sexp.tmp\\
-")))
+ (action
+  (run
+   %{exe:../configurator/config_flags.exe}
+   --pkg
+   pangocairo
+   --pkg
+   cairo-gobject
+   --pkg
+   gio-2.0
+   --pkg-optional
+   gio-unix-2.0
+   --pkg
+   pango
+   --cflags-out
+   cflag-pangocairo.sexp
+   --libs-out
+   clink-pangocairo.sexp)))
 
 (library
  (name ocgtk_pango_cairo_generated_stubs)
