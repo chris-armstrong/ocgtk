@@ -21,11 +21,8 @@ This function should be called by drag destinations in response to
 not yet know the exact actions it supports, it should set any possible
 actions first and then later call this function again. *)
 
-external get_surface :
-  t ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Surface
-  .t = "ml_gdk_drop_get_surface"
+external get_surface : t -> App_launch_context_cycle_de440b34.Surface.t
+  = "ml_gdk_drop_get_surface"
 (** Returns the `GdkSurface` performing the drop. *)
 
 external get_formats : t -> Content_formats.t = "ml_gdk_drop_get_formats"
@@ -38,18 +35,12 @@ external get_drag : t -> Drag.t option = "ml_gdk_drop_get_drag"
 
     If it is not, %NULL is returned. *)
 
-external get_display :
-  t ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Display
-  .t = "ml_gdk_drop_get_display"
+external get_display : t -> App_launch_context_cycle_de440b34.Display.t
+  = "ml_gdk_drop_get_display"
 (** Gets the `GdkDisplay` that @self was created for. *)
 
-external get_device :
-  t ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Device
-  .t = "ml_gdk_drop_get_device"
+external get_device : t -> App_launch_context_cycle_de440b34.Device.t
+  = "ml_gdk_drop_get_device"
 (** Returns the `GdkDevice` performing the drop. *)
 
 external get_actions : t -> Gdk_enums.dragaction = "ml_gdk_drop_get_actions"

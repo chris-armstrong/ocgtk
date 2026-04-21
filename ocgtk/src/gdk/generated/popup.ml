@@ -45,12 +45,8 @@ external get_position_y : t -> int = "ml_gdk_popup_get_position_y"
 external get_position_x : t -> int = "ml_gdk_popup_get_position_x"
 (** Obtains the position of the popup relative to its parent. *)
 
-external get_parent :
-  t ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Surface
-  .t
-  option = "ml_gdk_popup_get_parent"
+external get_parent : t -> App_launch_context_cycle_de440b34.Surface.t option
+  = "ml_gdk_popup_get_parent"
 (** Returns the parent surface of a popup. *)
 
 external get_autohide : t -> bool = "ml_gdk_popup_get_autohide"

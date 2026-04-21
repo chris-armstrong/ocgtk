@@ -77,12 +77,8 @@ external set_format : t -> Gdk_enums.memoryformat -> unit
     usable in GSK's shaders. *)
 
 external set_context :
-  t ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Gl_context
-  .t
-  option ->
-  unit = "ml_gdk_gl_texture_builder_set_context"
+  t -> App_launch_context_cycle_de440b34.Gl_context.t option -> unit
+  = "ml_gdk_gl_texture_builder_set_context"
 (** Sets the context to be used for the texture. This is the context that owns
     the texture.
 
@@ -119,11 +115,8 @@ external get_format : t -> Gdk_enums.memoryformat
 (** Gets the format previously set via gdk_gl_texture_builder_set_format(). *)
 
 external get_context :
-  t ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Gl_context
-  .t
-  option = "ml_gdk_gl_texture_builder_get_context"
+  t -> App_launch_context_cycle_de440b34.Gl_context.t option
+  = "ml_gdk_gl_texture_builder_get_context"
 (** Gets the context previously set via gdk_gl_texture_builder_set_context() or
     %NULL if none was set. *)
 

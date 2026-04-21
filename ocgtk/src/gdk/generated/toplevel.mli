@@ -14,11 +14,8 @@ external supports_edge_constraints : t -> bool
 (** Returns whether the desktop environment supports tiled window states. *)
 
 external show_window_menu :
-  t ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Event
-  .t ->
-  bool = "ml_gdk_toplevel_show_window_menu"
+  t -> App_launch_context_cycle_de440b34.Event.t -> bool
+  = "ml_gdk_toplevel_show_window_menu"
 (** Asks the windowing system to show the window menu.
 
     The window menu is the menu shown when right-clicking the titlebar on
@@ -27,11 +24,8 @@ external show_window_menu :
     the window decorations. *)
 
 external set_transient_for :
-  t ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Surface
-  .t ->
-  unit = "ml_gdk_toplevel_set_transient_for"
+  t -> App_launch_context_cycle_de440b34.Surface.t -> unit
+  = "ml_gdk_toplevel_set_transient_for"
 (** Sets a transient-for parent.
 
 Indicates to the window manager that @surface is a transient
@@ -118,12 +112,8 @@ external lower : t -> bool = "ml_gdk_toplevel_lower"
 The windowing system may choose to ignore the request. *)
 
 external inhibit_system_shortcuts :
-  t ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Event
-  .t
-  option ->
-  unit = "ml_gdk_toplevel_inhibit_system_shortcuts"
+  t -> App_launch_context_cycle_de440b34.Event.t option -> unit
+  = "ml_gdk_toplevel_inhibit_system_shortcuts"
 (** Requests that the @toplevel inhibit the system shortcuts.
 
 This is asking the desktop environment/windowing system to let all
@@ -160,10 +150,7 @@ calling this function. *)
 external begin_resize :
   t ->
   Gdk_enums.surfaceedge ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Device
-  .t
-  option ->
+  App_launch_context_cycle_de440b34.Device.t option ->
   int ->
   float ->
   float ->
@@ -177,9 +164,7 @@ external begin_resize :
 
 external begin_move :
   t ->
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Device
-  .t ->
+  App_launch_context_cycle_de440b34.Device.t ->
   int ->
   float ->
   float ->

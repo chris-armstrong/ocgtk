@@ -1,12 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Shim module for CairoContext from cyclic group App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context *)
+(* Shim module for CairoContext from cyclic group App_launch_context_cycle_de440b34 *)
 
-class type cairo_context_t =
-  GApp_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .cairo_context_t
+class type cairo_context_t = GApp_launch_context_cycle_de440b34.cairo_context_t
 
 class cairo_context :
-  App_launch_context_and__cairo_context_and__clipboard_and__device_and__display_and__draw_context_and__event_and__gl_context_and__monitor_and__seat_and__surface_and__vulkan_context
-  .Cairo_context
-  .t ->
+  App_launch_context_cycle_de440b34.Cairo_context.t ->
   cairo_context_t
