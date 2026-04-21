@@ -11,9 +11,12 @@
 (rule
  (targets c_flags.sexp)
  (action
-  (with-stdout-to
-   %{targets}
-   (bash "echo '(' && pkg-config --cflags gtk4 && echo ')'"))))
+  (run
+   %{exe:../configurator/config_flags.exe}
+   --pkg
+   gtk4
+   --cflags-out
+   c_flags.sexp)))
 
 ; Code generation for GDK bindings
 ; To regenerate bindings from GIR files, run:

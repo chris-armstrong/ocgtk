@@ -11,9 +11,12 @@
 (rule
  (targets c_flags.sexp)
  (action
-  (with-stdout-to
-   %{targets}
-   (bash "echo '(' && pkg-config --cflags cairo-gobject && echo ')'"))))
+  (run
+   %{exe:../configurator/config_flags.exe}
+   --pkg
+   cairo-gobject
+   --cflags-out
+   c_flags.sexp)))
 
 ; Main Cairo library combining core and generated code
 

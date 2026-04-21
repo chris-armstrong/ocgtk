@@ -21,6 +21,7 @@ depends: [
   "cmdliner" {build}
   "alcotest" {with-test}
   "ppxlib" {with-test}
+  "dune-configurator" {build}
   "sexplib" {build}
   "ppx_sexp_conv" {build}
   "ppx_deriving" {build}
