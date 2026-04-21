@@ -460,7 +460,9 @@ let generate_and_find_c_method ~c_type ~class_name
   let functions = C_parser.parse_c_code c_code in
   let fn_name = "ml_" ^ meth.c_identifier in
   match
-    List.find_opt (fun (f : C_ast.c_function) -> f.name = fn_name) functions
+    List.find_opt
+      (fun (f : C_ast.c_function) -> String.equal f.name fn_name)
+      functions
   with
   | Some f -> f
   | None ->
@@ -497,11 +499,12 @@ let run_integration_test ~gir_content ~class_names ~test_name () =
   create_gir_file test_gir gir_content;
   ensure_output_dir output_dir;
   let exit_code =
-    if class_names = [] then run_gir_gen test_gir output_dir
-    else
-      let test_filter = Printf.sprintf "/tmp/test_%s_filter.conf" test_name in
-      create_filter_file test_filter class_names;
-      run_gir_gen ~filter_file:test_filter test_gir output_dir
+    match class_names with
+    | [] -> run_gir_gen test_gir output_dir
+    | _ ->
+        let test_filter = Printf.sprintf "/tmp/test_%s_filter.conf" test_name in
+        create_filter_file test_filter class_names;
+        run_gir_gen ~filter_file:test_filter test_gir output_dir
   in
   assert_true "Generator should exit successfully" (exit_code = 0);
   output_dir
