@@ -1,6 +1,5 @@
 (* Tests for Gir_gen_lib.Override_apply. *)
 
-open Gir_gen_lib.Types
 open Gir_gen_lib.Override_types
 
 (* Helpers *)
@@ -10,207 +9,71 @@ let hd_exn msg = function [] -> Alcotest.fail msg | x :: _ -> x
 let find_exn msg pred list =
   match List.find_opt pred list with None -> Alcotest.fail msg | Some x -> x
 
-(* Minimal GIR data constructors for testing *)
+(* Minimal GIR data constructors for testing — thin wrappers around Type_factory *)
 
 let make_method ~name ~version =
-  {
-    method_name = name;
-    c_identifier = "gtk_test_" ^ name;
-    return_type =
-      {
-        name = "void";
-        c_type = None;
-        nullable = false;
-        transfer_ownership = TransferNone;
-        array = None;
-      };
-    parameters = [];
-    doc = None;
-    throws = false;
-    get_property = None;
-    set_property = None;
-    introspectable = true;
-    version;
-    version_namespace = None;
-    os = None;
-  }
+  Type_factory.make_gir_method ~method_name:name
+    ~c_identifier:("gtk_test_" ^ name) ~return_type:Type_factory.void_type
+    ?version ()
 
 let make_constructor ~name ~version =
-  {
-    ctor_name = name;
-    c_identifier = "gtk_test_" ^ name;
-    ctor_parameters = [];
-    ctor_doc = None;
-    throws = false;
-    ctor_introspectable = true;
-    version;
-    version_namespace = None;
-    os = None;
-  }
+  Type_factory.make_gir_constructor ~ctor_name:name
+    ~c_identifier:("gtk_test_" ^ name) ?version ()
 
 let make_property ~name ~version =
-  {
-    prop_name = name;
-    prop_type =
-      {
-        name = "gboolean";
-        c_type = Some "gboolean";
-        nullable = false;
-        transfer_ownership = TransferNone;
-        array = None;
-      };
-    readable = true;
-    writable = true;
-    construct_only = false;
-    prop_doc = None;
-    version;
-    version_namespace = None;
-    os = None;
-  }
+  Type_factory.make_gir_property ~prop_name:name
+    ~prop_type:Type_factory.gboolean_type ?version ()
 
 let make_signal ~name ~version =
-  {
-    signal_name = name;
-    return_type =
-      {
-        name = "void";
-        c_type = None;
-        nullable = false;
-        transfer_ownership = TransferNone;
-        array = None;
-      };
-    sig_parameters = [];
-    doc = None;
-    version;
-    version_namespace = None;
-    os = None;
-  }
+  Type_factory.make_void_signal ~signal_name:name ?version ()
 
 let make_class ~name ~version ~methods ~constructors ~properties ~signals =
-  {
-    class_name = name;
-    c_type = "Gtk" ^ name;
-    parent = None;
-    implements = [];
-    introspectable = true;
-    constructors;
-    methods;
-    properties;
-    signals;
-    class_doc = None;
-    version;
-    os = None;
-  }
+  Type_factory.make_gir_class ~class_name:name ~c_type:("Gtk" ^ name) ~methods
+    ~constructors ~properties ~signals ?version ()
 
 let make_interface ~name ~version ~methods ~properties ~signals =
-  {
-    interface_name = name;
-    c_type = "Gtk" ^ name;
-    c_symbol_prefix = String.lowercase_ascii name;
-    glib_type_name = None;
-    glib_get_type = None;
-    prerequisites = [];
-    introspectable = true;
-    methods;
-    properties;
-    signals;
-    interface_doc = None;
-    version;
-    os = None;
-  }
+  Type_factory.make_gir_interface ~interface_name:name ~c_type:("Gtk" ^ name)
+    ~c_symbol_prefix:(String.lowercase_ascii name)
+    ~methods ~properties ~signals ?version ()
 
 let make_record_field ~name ~version =
   {
-    field_name = name;
-    field_type = None;
-    readable = true;
-    writable = true;
-    field_doc = None;
+    (Type_factory.make_gir_record_field ~field_name:name ~writable:true ()) with
     field_version = version;
-    field_os = None;
   }
 
 let make_record ~name ~version ~fields ~constructors ~methods ~functions =
-  {
-    record_name = name;
-    c_type = "Gtk" ^ name;
-    glib_type_name = None;
-    glib_get_type = None;
-    opaque = false;
-    disguised = false;
-    introspectable = true;
-    c_symbol_prefix = None;
-    is_gtype_struct_for = None;
-    fields;
-    constructors;
-    methods;
-    functions;
-    record_doc = None;
-    version;
-    os = None;
-  }
+  Type_factory.make_gir_record ~record_name:name ~c_type:("Gtk" ^ name) ~fields
+    ~constructors ~methods ~functions ?version ()
 
 let make_enum_member ~name ~version =
   {
-    member_name = name;
-    member_value = 0;
-    c_identifier = "GTK_TEST_" ^ name;
-    member_doc = None;
+    (Type_factory.make_gir_enum_member ~member_name:name
+       ~c_identifier:("GTK_TEST_" ^ name) ())
+    with
     member_version = version;
-    member_os = None;
   }
 
 let make_enum ~name ~version ~members ~functions =
-  {
-    enum_name = name;
-    enum_c_type = "Gtk" ^ name;
-    members;
-    functions;
-    enum_doc = None;
-    enum_version = version;
-    enum_os = None;
-  }
+  Type_factory.make_gir_enum ~enum_name:name ~enum_c_type:("Gtk" ^ name)
+    ~members ~functions ?enum_version:version ()
 
 let make_bitfield_member ~name ~version =
   {
-    flag_name = name;
-    flag_value = 1;
-    flag_c_identifier = "GTK_TEST_" ^ name;
-    flag_doc = None;
+    (Type_factory.make_gir_bitfield_member ~flag_name:name
+       ~flag_c_identifier:("GTK_TEST_" ^ name) ~flag_value:1 ())
+    with
     flag_version = version;
-    flag_os = None;
   }
 
 let make_bitfield ~name ~version ~flags =
-  {
-    bitfield_name = name;
-    bitfield_c_type = "Gtk" ^ name;
-    flags;
-    bitfield_doc = None;
-    bitfield_version = version;
-    bitfield_os = None;
-  }
+  Type_factory.make_gir_bitfield ~bitfield_name:name
+    ~bitfield_c_type:("Gtk" ^ name) ~flags ?bitfield_version:version ()
 
 let make_function ~name ~version =
-  {
-    function_name = name;
-    c_identifier = "gtk_test_" ^ name;
-    return_type =
-      {
-        name = "void";
-        c_type = None;
-        nullable = false;
-        transfer_ownership = TransferNone;
-        array = None;
-      };
-    parameters = [];
-    doc = None;
-    throws = false;
-    introspectable = true;
-    version;
-    version_namespace = None;
-    os = None;
-  }
+  Type_factory.make_gir_function ~function_name:name
+    ~c_identifier:("gtk_test_" ^ name) ~return_type:Type_factory.void_type
+    ?version ()
 
 let make_empty_overrides library_name =
   {

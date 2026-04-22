@@ -299,12 +299,14 @@ let test_array_cross_ns_class_element () =
   Helpers.expect_some "expected array type mapping for Gdk.Texture elements"
     (Gir_gen_lib.Type_mappings.find_type_mapping_for_gir_type ~ctx array_type)
   @@ fun tm ->
+  (* The ocaml_type field is a domain string value built by type_mappings.ml as
+     "<element_type> array". We validate its structure with stdlib predicates. *)
   Alcotest.(check bool)
     "ocaml_type ends with array" true
-    (Helpers.string_contains tm.ocaml_type "array");
+    (String.ends_with ~suffix:" array" tm.ocaml_type);
   Alcotest.(check bool)
-    "ocaml_type contains Ocgtk_gdk" true
-    (Helpers.string_contains tm.ocaml_type "Ocgtk_gdk")
+    "ocaml_type starts with Ocgtk_gdk" true
+    (String.starts_with ~prefix:"Ocgtk_gdk" tm.ocaml_type)
 
 let test_array_cross_ns_enum_element () =
   let ctx = add_cross_refs (base_ctx ()) in
@@ -315,10 +317,10 @@ let test_array_cross_ns_enum_element () =
   @@ fun tm ->
   Alcotest.(check bool)
     "ocaml_type ends with array" true
-    (Helpers.string_contains tm.ocaml_type "array");
+    (String.ends_with ~suffix:" array" tm.ocaml_type);
   Alcotest.(check bool)
-    "ocaml_type contains Ocgtk_cairo" true
-    (Helpers.string_contains tm.ocaml_type "Ocgtk_cairo")
+    "ocaml_type starts with Ocgtk_cairo" true
+    (String.starts_with ~prefix:"Ocgtk_cairo" tm.ocaml_type)
 
 let test_array_cross_ns_record_element () =
   let ctx = add_cross_refs (base_ctx ()) in
@@ -329,10 +331,10 @@ let test_array_cross_ns_record_element () =
   @@ fun tm ->
   Alcotest.(check bool)
     "ocaml_type ends with array" true
-    (Helpers.string_contains tm.ocaml_type "array");
+    (String.ends_with ~suffix:" array" tm.ocaml_type);
   Alcotest.(check bool)
-    "ocaml_type contains Ocgtk_cairo" true
-    (Helpers.string_contains tm.ocaml_type "Ocgtk_cairo")
+    "ocaml_type starts with Ocgtk_cairo" true
+    (String.starts_with ~prefix:"Ocgtk_cairo" tm.ocaml_type)
 
 let test_array_same_ns_class_element () =
   let ctx = base_ctx () in
@@ -343,10 +345,10 @@ let test_array_same_ns_class_element () =
   @@ fun tm ->
   Alcotest.(check bool)
     "ocaml_type ends with array" true
-    (Helpers.string_contains tm.ocaml_type "array");
+    (String.ends_with ~suffix:" array" tm.ocaml_type);
   Alcotest.(check bool)
-    "ocaml_type contains Widget" true
-    (Helpers.string_contains tm.ocaml_type "Widget")
+    "ocaml_type starts with Widget" true
+    (String.starts_with ~prefix:"Widget" tm.ocaml_type)
 
 let test_array_unknown_element_returns_none () =
   let ctx = base_ctx () in

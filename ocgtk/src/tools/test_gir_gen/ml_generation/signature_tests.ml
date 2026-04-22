@@ -1,6 +1,5 @@
 (* Signature Tests - Validates .mli and .ml consistency and method specifications *)
 
-open Gir_gen_lib.Types
 open Ppxlib.Parsetree
 
 let create_test_context = Helpers.create_test_context
@@ -52,34 +51,10 @@ let test_constructor_signature_matches () =
   let ctx = create_test_context () in
 
   let ctor =
-    {
-      ctor_name = "new_with_label";
-      c_identifier = "gtk_button_new_with_label";
-      ctor_parameters =
-        [
-          {
-            param_name = "label";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const gchar*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      ctor_doc = None;
-      throws = false;
-      ctor_introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+    Type_factory.make_gir_constructor ~ctor_name:"new_with_label"
+      ~c_identifier:"gtk_button_new_with_label"
+      ~ctor_parameters:[ Type_factory.make_string_param ~param_name:"label" () ]
+      ()
   in
 
   let mli_code =
@@ -124,44 +99,10 @@ let test_method_signature_matches () =
   let ctx = create_test_context () in
 
   let meth =
-    {
-      method_name = "set_label";
-      c_identifier = "gtk_button_set_label";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
-        [
-          {
-            param_name = "label";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const gchar*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      get_property = None;
-      set_property = None;
-      introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+    Type_factory.make_gir_method ~method_name:"set_label"
+      ~c_identifier:"gtk_button_set_label" ~return_type:Type_factory.void_type
+      ~parameters:[ Type_factory.make_string_param ~param_name:"label" () ]
+      ()
   in
 
   let mli_code =
@@ -207,65 +148,12 @@ let test_multiple_methods_match () =
 
   let methods =
     [
-      {
-        method_name = "set_label";
-        c_identifier = "gtk_button_set_label";
-        return_type =
-          {
-            name = "none";
-            c_type = Some "void";
-            nullable = false;
-            transfer_ownership = TransferNone;
-            array = None;
-          };
-        parameters =
-          [
-            {
-              param_name = "label";
-              param_type =
-                {
-                  name = "utf8";
-                  c_type = Some "const gchar*";
-                  nullable = false;
-                  transfer_ownership = TransferNone;
-                  array = None;
-                };
-              direction = In;
-              nullable = false;
-              varargs = false;
-              caller_allocates = false;
-            };
-          ];
-        doc = None;
-        throws = false;
-        get_property = None;
-        set_property = None;
-        introspectable = true;
-        version = None;
-        version_namespace = None;
-        os = None;
-      };
-      {
-        method_name = "get_label";
-        c_identifier = "gtk_button_get_label";
-        return_type =
-          {
-            name = "utf8";
-            c_type = Some "const gchar*";
-            nullable = false;
-            transfer_ownership = TransferNone;
-            array = None;
-          };
-        parameters = [];
-        doc = None;
-        throws = false;
-        get_property = None;
-        set_property = None;
-        introspectable = true;
-        version = None;
-        version_namespace = None;
-        os = None;
-      };
+      Type_factory.make_gir_method ~method_name:"set_label"
+        ~c_identifier:"gtk_button_set_label" ~return_type:Type_factory.void_type
+        ~parameters:[ Type_factory.make_string_param ~param_name:"label" () ]
+        ();
+      Type_factory.make_string_method ~method_name:"get_label"
+        ~c_identifier:"gtk_button_get_label" ();
     ]
   in
 

@@ -2,7 +2,6 @@
    Validates that generate_c_enum_converters and generate_c_bitfield_converters
    emit correct #if/#else/#endif guards when member_version / flag_version is set. *)
 
-open Gir_gen_lib.Types
 open Gir_gen_lib.Generate.Enum_code
 
 (* ========================================================================= *)
@@ -37,24 +36,14 @@ let assert_not_contains ~label ~unexpected actual =
 
 let make_member ~name ~c_identifier ~value ?member_version () =
   {
-    member_name = name;
-    member_value = value;
-    c_identifier;
-    member_doc = None;
+    (Type_factory.make_gir_enum_member ~member_name:name ~c_identifier
+       ~member_value:value ())
+    with
     member_version;
-    member_os = None;
   }
 
 let make_enum ~name ~c_type members =
-  {
-    enum_name = name;
-    enum_c_type = c_type;
-    members;
-    functions = [];
-    enum_doc = None;
-    enum_version = None;
-    enum_os = None;
-  }
+  Type_factory.make_gir_enum ~enum_name:name ~enum_c_type:c_type ~members ()
 
 (* ========================================================================= *)
 (* Bitfield member builders *)
@@ -62,23 +51,15 @@ let make_enum ~name ~c_type members =
 
 let make_flag ~name ~c_identifier ~value ?flag_version () =
   {
-    flag_name = name;
-    flag_value = value;
-    flag_c_identifier = c_identifier;
-    flag_doc = None;
+    (Type_factory.make_gir_bitfield_member ~flag_name:name
+       ~flag_c_identifier:c_identifier ~flag_value:value ())
+    with
     flag_version;
-    flag_os = None;
   }
 
 let make_bitfield ~name ~c_type flags =
-  {
-    bitfield_name = name;
-    bitfield_c_type = c_type;
-    flags;
-    bitfield_doc = None;
-    bitfield_version = None;
-    bitfield_os = None;
-  }
+  Type_factory.make_gir_bitfield ~bitfield_name:name ~bitfield_c_type:c_type
+    ~flags ()
 
 (* ========================================================================= *)
 (* Enum test 1: no versions at all → no guards *)
