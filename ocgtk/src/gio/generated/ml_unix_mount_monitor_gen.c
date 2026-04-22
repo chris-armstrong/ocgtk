@@ -24,7 +24,7 @@
 #include "gio_decls.h"
 
 
-#if defined(__linux__)
+#if !(defined(_WIN32))
 
 CAMLexport CAMLprim value ml_g_unix_mount_monitor_new(value unit)
 {
@@ -64,7 +64,7 @@ CAMLexport CAMLprim value ml_g_unix_mount_monitor_new(value unit)
 {
 CAMLparam1(unit);
 (void)unit;
-caml_failwith("UnixMountMonitor is only available on Linux");
+caml_failwith("UnixMountMonitor is only available on non-windows");
 return Val_unit;
 }
 
@@ -74,9 +74,9 @@ CAMLexport CAMLprim value ml_g_unix_mount_monitor_set_rate_limit(value self, val
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("UnixMountMonitor is only available on Linux");
+caml_failwith("UnixMountMonitor is only available on non-windows");
 return Val_unit;
 }
 
 
-#endif /* linux */
+#endif /* not windows */

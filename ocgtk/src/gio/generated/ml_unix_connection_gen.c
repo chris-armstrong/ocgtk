@@ -24,7 +24,7 @@
 #include "gio_decls.h"
 
 
-#if defined(__linux__)
+#if !(defined(_WIN32))
 #if GLIB_CHECK_VERSION(2,22,0)
 
 
@@ -212,7 +212,7 @@ CAMLexport CAMLprim value ml_g_unix_connection_receive_credentials(value self, v
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("UnixConnection is only available on Linux");
+caml_failwith("UnixConnection is only available on non-windows");
 return Val_unit;
 }
 
@@ -222,7 +222,7 @@ CAMLexport CAMLprim value ml_g_unix_connection_receive_credentials_finish(value 
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("UnixConnection is only available on Linux");
+caml_failwith("UnixConnection is only available on non-windows");
 return Val_unit;
 }
 
@@ -232,7 +232,7 @@ CAMLexport CAMLprim value ml_g_unix_connection_receive_fd(value self, value arg1
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("UnixConnection is only available on Linux");
+caml_failwith("UnixConnection is only available on non-windows");
 return Val_unit;
 }
 
@@ -242,7 +242,7 @@ CAMLexport CAMLprim value ml_g_unix_connection_send_credentials(value self, valu
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("UnixConnection is only available on Linux");
+caml_failwith("UnixConnection is only available on non-windows");
 return Val_unit;
 }
 
@@ -252,7 +252,7 @@ CAMLexport CAMLprim value ml_g_unix_connection_send_credentials_finish(value sel
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("UnixConnection is only available on Linux");
+caml_failwith("UnixConnection is only available on non-windows");
 return Val_unit;
 }
 
@@ -263,9 +263,9 @@ CAMLparam3(self, arg1, arg2);
 (void)self;
 (void)arg1;
 (void)arg2;
-caml_failwith("UnixConnection is only available on Linux");
+caml_failwith("UnixConnection is only available on non-windows");
 return Val_unit;
 }
 
 
-#endif /* linux */
+#endif /* not windows */

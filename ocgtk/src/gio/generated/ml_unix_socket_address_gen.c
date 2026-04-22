@@ -24,7 +24,7 @@
 #include "gio_decls.h"
 
 
-#if defined(__linux__)
+#if !(defined(_WIN32))
 
 #if GLIB_CHECK_VERSION(2,22,0)
 
@@ -201,7 +201,7 @@ CAMLexport CAMLprim value ml_g_unix_socket_address_new(value arg1)
 {
 CAMLparam1(arg1);
 (void)arg1;
-caml_failwith("UnixSocketAddress is only available on Linux");
+caml_failwith("UnixSocketAddress is only available on non-windows");
 return Val_unit;
 }
 
@@ -211,7 +211,7 @@ CAMLexport CAMLprim value ml_g_unix_socket_address_new_abstract(value arg1, valu
 CAMLparam2(arg1, arg2);
 (void)arg1;
 (void)arg2;
-caml_failwith("UnixSocketAddress is only available on Linux");
+caml_failwith("UnixSocketAddress is only available on non-windows");
 return Val_unit;
 }
 
@@ -222,7 +222,7 @@ CAMLparam3(arg1, arg2, arg3);
 (void)arg1;
 (void)arg2;
 (void)arg3;
-caml_failwith("UnixSocketAddress is only available on Linux");
+caml_failwith("UnixSocketAddress is only available on non-windows");
 return Val_unit;
 }
 
@@ -231,7 +231,7 @@ CAMLexport CAMLprim value ml_g_unix_socket_address_get_address_type(value self)
 {
 CAMLparam1(self);
 (void)self;
-caml_failwith("UnixSocketAddress is only available on Linux");
+caml_failwith("UnixSocketAddress is only available on non-windows");
 return Val_unit;
 }
 
@@ -240,7 +240,7 @@ CAMLexport CAMLprim value ml_g_unix_socket_address_get_is_abstract(value self)
 {
 CAMLparam1(self);
 (void)self;
-caml_failwith("UnixSocketAddress is only available on Linux");
+caml_failwith("UnixSocketAddress is only available on non-windows");
 return Val_unit;
 }
 
@@ -249,7 +249,7 @@ CAMLexport CAMLprim value ml_g_unix_socket_address_get_path(value self)
 {
 CAMLparam1(self);
 (void)self;
-caml_failwith("UnixSocketAddress is only available on Linux");
+caml_failwith("UnixSocketAddress is only available on non-windows");
 return Val_unit;
 }
 
@@ -258,7 +258,7 @@ CAMLexport CAMLprim value ml_g_unix_socket_address_get_path_len(value self)
 {
 CAMLparam1(self);
 (void)self;
-caml_failwith("UnixSocketAddress is only available on Linux");
+caml_failwith("UnixSocketAddress is only available on non-windows");
 return Val_unit;
 }
 
@@ -267,9 +267,9 @@ CAMLexport CAMLprim value ml_g_unix_socket_address_get_abstract(value self)
 {
 CAMLparam1(self);
 (void)self;
-caml_failwith("UnixSocketAddress is only available on Linux");
+caml_failwith("UnixSocketAddress is only available on non-windows");
 return Val_unit;
 }
 
 
-#endif /* linux */
+#endif /* not windows */

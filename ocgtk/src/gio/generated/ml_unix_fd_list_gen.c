@@ -24,8 +24,6 @@
 #include "gio_decls.h"
 
 
-#if defined(__linux__)
-
 #if GLIB_CHECK_VERSION(2,24,0)
 
 CAMLexport CAMLprim value ml_g_unix_fd_list_new(value unit)
@@ -208,74 +206,3 @@ caml_failwith("UnixFDList requires GLib >= 2.24");
 return Val_unit;
 }
 #endif
-
-#else
-
-
-CAMLexport CAMLprim value ml_g_unix_fd_list_new(value unit)
-{
-CAMLparam1(unit);
-(void)unit;
-caml_failwith("UnixFDList is only available on Linux");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_unix_fd_list_new_from_array(value arg1, value arg2)
-{
-CAMLparam2(arg1, arg2);
-(void)arg1;
-(void)arg2;
-caml_failwith("UnixFDList is only available on Linux");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_unix_fd_list_append(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("UnixFDList is only available on Linux");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_unix_fd_list_get(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-(void)self;
-(void)arg1;
-caml_failwith("UnixFDList is only available on Linux");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_unix_fd_list_get_length(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("UnixFDList is only available on Linux");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_unix_fd_list_peek_fds(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("UnixFDList is only available on Linux");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_unix_fd_list_steal_fds(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("UnixFDList is only available on Linux");
-return Val_unit;
-}
-
-
-#endif /* linux */

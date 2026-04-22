@@ -24,7 +24,7 @@
 #include "gio_decls.h"
 
 
-#if defined(__linux__)
+#if !(defined(_WIN32))
 #if GLIB_CHECK_VERSION(2,26,0)
 
 
@@ -94,7 +94,7 @@ CAMLexport CAMLprim value ml_g_unix_credentials_message_new(value unit)
 {
 CAMLparam1(unit);
 (void)unit;
-caml_failwith("UnixCredentialsMessage is only available on Linux");
+caml_failwith("UnixCredentialsMessage is only available on non-windows");
 return Val_unit;
 }
 
@@ -103,7 +103,7 @@ CAMLexport CAMLprim value ml_g_unix_credentials_message_new_with_credentials(val
 {
 CAMLparam1(arg1);
 (void)arg1;
-caml_failwith("UnixCredentialsMessage is only available on Linux");
+caml_failwith("UnixCredentialsMessage is only available on non-windows");
 return Val_unit;
 }
 
@@ -112,9 +112,9 @@ CAMLexport CAMLprim value ml_g_unix_credentials_message_get_credentials(value se
 {
 CAMLparam1(self);
 (void)self;
-caml_failwith("UnixCredentialsMessage is only available on Linux");
+caml_failwith("UnixCredentialsMessage is only available on non-windows");
 return Val_unit;
 }
 
 
-#endif /* linux */
+#endif /* not windows */
