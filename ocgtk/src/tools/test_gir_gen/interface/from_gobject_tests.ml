@@ -194,7 +194,10 @@ let test_from_gobject_absent_when_no_type_name () =
     - the function has the correct return macro (structural correctness) *)
 let test_from_gobject_inside_version_guard () =
   let content, functions = run_and_parse_c gir_versioned_interface "my_iface" in
-  (* Preprocessor guard: must appear as a string (not in the C AST) *)
+  (* Preprocessor guard: C_parser strips #if/#endif directives, so the C AST
+     cannot represent them. String search is the only available mechanism here.
+     This is the sole legitimate exception in this file — all other checks use
+     AST-based validation. *)
   if not (Helpers.string_contains content "GTK_CHECK_VERSION(4,12,0)") then
     Alcotest.fail "version guard GTK_CHECK_VERSION(4,12,0) not found in output";
   (* C AST: function must be present and structurally correct *)

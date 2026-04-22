@@ -515,7 +515,10 @@ let test_pointer_array_without_length_uses_null_termination () =
   Helpers.log_generated_c_code "pointer array without length" c_code;
 
   (* Should NOT raise - pointer arrays can use NULL-termination *)
-  (* Should contain NULL-termination check in generated code *)
+  (* The C_parser does not model while/for loop bodies or their conditions, so
+     there is no AST-based way to assert that a "!= NULL" termination check is
+     present. String search is the only available mechanism for this particular
+     structural pattern. This is an acknowledged exception for this one check. *)
   Alcotest.(check bool)
     "Uses NULL-termination for pointer array" true
     (Helpers.string_contains c_code "!= NULL")
@@ -557,15 +560,18 @@ let test_generate_methods_skips_failing_method () =
 
   (* Verify: No exception propagated (test would have failed if it did) *)
 
+  (* Parse the C output into an AST to check function presence and absence. *)
+  let output_functions = C_parser.parse_c_code output in
+
   (* Verify: Valid method IS in the output *)
-  Alcotest.(check bool)
-    "Valid method is in output" true
-    (Helpers.string_contains output "ml_gtk_widget_do_something");
+  Helpers.assert_some "Valid method is in output"
+    (C_ast.find_function output_functions "ml_gtk_widget_do_something");
 
   (* Verify: Failing method is NOT in the output *)
   Alcotest.(check bool)
-    "Failing method is NOT in output" false
-    (Helpers.string_contains output "ml_gtk_widget_get_values")
+    "Failing method is NOT in output" true
+    (Option.is_none
+       (C_ast.find_function output_functions "ml_gtk_widget_get_values"))
 
 (* =================================================================== *)
 (* Test Suite *)
