@@ -27,9 +27,14 @@ jobs:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
           dune-cache: true
 
+      - name: Route opam downloads through opam.ocaml.org cache
+        # Avoids transient failures when upstream archive hosts (notably
+        # erratique.ch) are unreachable; the CDN mirror serves every archive.
+        run: opam option --global archive-mirrors=https://opam.ocaml.org/cache
+
       - name: Install external dependencies
         run: |
-          sudo apt-get update && 
+          sudo apt-get update &&
           sudo apt-get install -y libcairo2-dev libgtk-4-dev xdot xvfb
 
       - name: Pin conf-gtk4 package
@@ -79,6 +84,9 @@ jobs:
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
           dune-cache: true
+
+      - name: Route opam downloads through opam.ocaml.org cache
+        run: opam option --global archive-mirrors=https://opam.ocaml.org/cache
 
       - name: Pin conf-gtk4 package
         run: opam pin add -n conf-gtk4 conf-gtk4
