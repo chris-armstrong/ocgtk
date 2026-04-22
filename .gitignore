@@ -3,7 +3,9 @@ _build
 *.install
 __pycache__/
 .claude/scratchpad/
+.claude/scheduled_tasks.lock
 .opencode/
+ocgtk/pipeline_tmp/
 
 # ctx managed entries
 .context/sessions/
