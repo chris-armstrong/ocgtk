@@ -79,6 +79,8 @@ gboolean result = g_subprocess_wait(GSubprocess_val(self), Option_val(arg1, GCan
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+#if !(defined(_WIN32))
+
 CAMLexport CAMLprim value ml_g_subprocess_send_signal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -86,6 +88,19 @@ CAMLparam2(self, arg1);
 g_subprocess_send_signal(GSubprocess_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#else
+
+CAMLexport CAMLprim value ml_g_subprocess_send_signal(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Subprocess is only available on non-windows");
+return Val_unit;
+}
+
+#endif /* not windows */
 
 CAMLexport CAMLprim value ml_g_subprocess_get_term_sig(value self)
 {

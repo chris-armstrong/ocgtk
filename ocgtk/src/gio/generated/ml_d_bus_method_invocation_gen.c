@@ -26,7 +26,7 @@
 #if GLIB_CHECK_VERSION(2,26,0)
 
 
-#ifdef __linux__
+#if !(defined(_WIN32))
 
 #if GLIB_CHECK_VERSION(2,30,0)
 
@@ -59,11 +59,11 @@ CAMLparam3(self, arg1, arg2);
 (void)self;
 (void)arg1;
 (void)arg2;
-caml_failwith("DBusMethodInvocation is only available on Linux");
+caml_failwith("DBusMethodInvocation is only available on non-windows");
 return Val_unit;
 }
 
-#endif /* __linux__ */
+#endif /* not windows */
 
 CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_value(value self, value arg1)
 {

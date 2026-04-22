@@ -24,7 +24,7 @@
 #include "gio_decls.h"
 
 
-#ifdef __linux__
+#if !(defined(_WIN32))
 
 #if GLIB_CHECK_VERSION(2,22,0)
 
@@ -155,7 +155,7 @@ CAMLexport CAMLprim value ml_g_unix_fd_message_new(value unit)
 {
 CAMLparam1(unit);
 (void)unit;
-caml_failwith("UnixFDMessage is only available on Linux");
+caml_failwith("UnixFDMessage is only available on non-windows");
 return Val_unit;
 }
 
@@ -164,7 +164,7 @@ CAMLexport CAMLprim value ml_g_unix_fd_message_new_with_fd_list(value arg1)
 {
 CAMLparam1(arg1);
 (void)arg1;
-caml_failwith("UnixFDMessage is only available on Linux");
+caml_failwith("UnixFDMessage is only available on non-windows");
 return Val_unit;
 }
 
@@ -174,7 +174,7 @@ CAMLexport CAMLprim value ml_g_unix_fd_message_append_fd(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("UnixFDMessage is only available on Linux");
+caml_failwith("UnixFDMessage is only available on non-windows");
 return Val_unit;
 }
 
@@ -183,7 +183,7 @@ CAMLexport CAMLprim value ml_g_unix_fd_message_get_fd_list(value self)
 {
 CAMLparam1(self);
 (void)self;
-caml_failwith("UnixFDMessage is only available on Linux");
+caml_failwith("UnixFDMessage is only available on non-windows");
 return Val_unit;
 }
 
@@ -192,9 +192,9 @@ CAMLexport CAMLprim value ml_g_unix_fd_message_steal_fds(value self)
 {
 CAMLparam1(self);
 (void)self;
-caml_failwith("UnixFDMessage is only available on Linux");
+caml_failwith("UnixFDMessage is only available on non-windows");
 return Val_unit;
 }
 
 
-#endif /* __linux__ */
+#endif /* not windows */

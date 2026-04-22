@@ -24,7 +24,7 @@
 #include "gio_decls.h"
 
 
-#ifdef __linux__
+#if !(defined(_WIN32))
 
 CAMLexport CAMLprim value ml_g_unix_output_stream_new(value arg1, value arg2)
 {
@@ -107,7 +107,7 @@ CAMLexport CAMLprim value ml_g_unix_output_stream_new(value arg1, value arg2)
 CAMLparam2(arg1, arg2);
 (void)arg1;
 (void)arg2;
-caml_failwith("UnixOutputStream is only available on Linux");
+caml_failwith("UnixOutputStream is only available on non-windows");
 return Val_unit;
 }
 
@@ -116,7 +116,7 @@ CAMLexport CAMLprim value ml_g_unix_output_stream_get_close_fd(value self)
 {
 CAMLparam1(self);
 (void)self;
-caml_failwith("UnixOutputStream is only available on Linux");
+caml_failwith("UnixOutputStream is only available on non-windows");
 return Val_unit;
 }
 
@@ -125,7 +125,7 @@ CAMLexport CAMLprim value ml_g_unix_output_stream_get_fd(value self)
 {
 CAMLparam1(self);
 (void)self;
-caml_failwith("UnixOutputStream is only available on Linux");
+caml_failwith("UnixOutputStream is only available on non-windows");
 return Val_unit;
 }
 
@@ -135,9 +135,9 @@ CAMLexport CAMLprim value ml_g_unix_output_stream_set_close_fd(value self, value
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("UnixOutputStream is only available on Linux");
+caml_failwith("UnixOutputStream is only available on non-windows");
 return Val_unit;
 }
 
 
-#endif /* __linux__ */
+#endif /* not windows */

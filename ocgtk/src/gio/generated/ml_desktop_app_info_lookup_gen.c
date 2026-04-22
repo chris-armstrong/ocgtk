@@ -24,7 +24,7 @@
 #include "gio_decls.h"
 
 
-#ifdef __linux__
+#if defined(__linux__)
 
 CAMLexport CAMLprim value ml_g_desktop_app_info_lookup_get_default_for_uri_scheme(value self, value arg1)
 {
@@ -61,4 +61,4 @@ return Val_unit;
 }
 
 
-#endif /* __linux__ */
+#endif /* linux */

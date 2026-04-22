@@ -158,8 +158,6 @@
   (run
    %{exe:../configurator/config_flags.exe}
    --pkg
-   gtk4
-   --pkg
    cairo-gobject
    --pkg
    gdk-pixbuf-2.0
@@ -169,6 +167,8 @@
    gio-unix-2.0
    --pkg
    graphene-gobject-1.0
+   --pkg
+   gtk4
    --pkg
    pango
    --pkg
@@ -236,3 +236,4 @@
   )
   (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gsk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gsk.sexp)))
+

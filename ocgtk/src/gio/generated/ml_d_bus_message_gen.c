@@ -62,7 +62,7 @@ gboolean result = g_dbus_message_to_gerror(GDBusMessage_val(self), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
-#ifdef __linux__
+#if !(defined(_WIN32))
 
 CAMLexport CAMLprim value ml_g_dbus_message_set_unix_fd_list(value self, value arg1)
 {
@@ -79,11 +79,11 @@ CAMLexport CAMLprim value ml_g_dbus_message_set_unix_fd_list(value self, value a
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("DBusMessage is only available on Linux");
+caml_failwith("DBusMessage is only available on non-windows");
 return Val_unit;
 }
 
-#endif /* __linux__ */
+#endif /* not windows */
 
 CAMLexport CAMLprim value ml_g_dbus_message_set_signature(value self, value arg1)
 {
@@ -237,7 +237,7 @@ g_dbus_message_lock(GDBusMessage_val(self));
 CAMLreturn(Val_unit);
 }
 
-#ifdef __linux__
+#if !(defined(_WIN32))
 
 CAMLexport CAMLprim value ml_g_dbus_message_get_unix_fd_list(value self)
 {
@@ -254,11 +254,11 @@ CAMLexport CAMLprim value ml_g_dbus_message_get_unix_fd_list(value self)
 {
 CAMLparam1(self);
 (void)self;
-caml_failwith("DBusMessage is only available on Linux");
+caml_failwith("DBusMessage is only available on non-windows");
 return Val_unit;
 }
 
-#endif /* __linux__ */
+#endif /* not windows */
 
 CAMLexport CAMLprim value ml_g_dbus_message_get_signature(value self)
 {

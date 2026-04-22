@@ -149,13 +149,13 @@
   (run
    %{exe:../configurator/config_flags.exe}
    --pkg
-   pango
-   --pkg
    cairo-gobject
    --pkg
    gio-2.0
    --pkg-optional
    gio-unix-2.0
+   --pkg
+   pango
    --cflags-out
    cflag-pango.sexp
    --libs-out
@@ -216,3 +216,4 @@
   )
   (flags -fPIC -Igenerated -Icore -I../common (:include cflag-pango.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-pango.sexp)))
+

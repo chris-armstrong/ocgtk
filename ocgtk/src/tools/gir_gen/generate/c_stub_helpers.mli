@@ -250,23 +250,24 @@ val emit_with_member_guard :
 
 (** {1 OS Guard Support} *)
 
-val os_to_c_guard_open : string -> string
-(** Map an OS string to the opening C preprocessor guard. E.g. ["linux"] ->
-    ["#ifdef __linux__"]. *)
+val os_to_c_guard_open : Os_filter.t -> string
+(** Map an [Os_filter.t] to the opening C preprocessor guard line. *)
 
-val os_to_c_guard_close : string -> string
-(** Map an OS string to the closing C preprocessor guard. E.g. ["linux"] ->
-    ["#endif /* __linux__ */"]. *)
+val os_to_c_guard_close : Os_filter.t -> string
+(** Map an [Os_filter.t] to the closing C preprocessor guard line. *)
 
-val os_display_name : string -> string
-(** Human-readable display name for an OS string (for failwith messages). E.g.
-    ["linux"] -> ["Linux"]. *)
+val os_display_name : Os_filter.t -> string
+(** Human-readable display name for an [Os_filter.t] (for failwith messages). *)
 
 val emit_with_os_guard :
-  os:string option -> failwith_stub:string -> stub:string -> Buffer.t -> unit
-(** Wrap a generated stub in an OS guard. [os]: OS string (e.g. ["linux"]), or
-    [None] to emit stub as-is. [failwith_stub]: content for the [#else] branch.
-    [stub]: the actual implementation in the [#ifdef] branch. *)
+  os:Os_filter.t option ->
+  failwith_stub:string ->
+  stub:string ->
+  Buffer.t ->
+  unit
+(** Wrap a generated stub in an OS guard. [os]: OS filter, or [None] to emit
+    stub as-is. [failwith_stub]: content for the [#else] branch. [stub]: the
+    actual implementation in the [#if] branch. *)
 
 val emit_os_fallback_constructor_stub :
   ctx:Types.generation_context ->
@@ -274,7 +275,7 @@ val emit_os_fallback_constructor_stub :
   class_name:string ->
   ml_name:string ->
   c_identifier:string ->
-  os:string ->
+  os:Os_filter.t ->
   Types.gir_constructor ->
   string
 (** Emit a fallback constructor stub for the [#else] branch of an OS guard. *)
@@ -285,7 +286,7 @@ val emit_os_fallback_method_stub :
   class_name:string ->
   ml_name:string ->
   c_identifier:string ->
-  os:string ->
+  os:Os_filter.t ->
   Types.gir_method ->
   string
 (** Emit a fallback method stub for the [#else] branch of an OS guard. *)
@@ -295,7 +296,7 @@ val emit_os_fallback_property_getter_stub :
   c_type:string ->
   class_name:string ->
   ml_name:string ->
-  os:string ->
+  os:Os_filter.t ->
   Types.gir_property ->
   string
 (** Emit a fallback property getter stub for the [#else] branch of an OS guard.
@@ -306,7 +307,7 @@ val emit_os_fallback_property_setter_stub :
   c_type:string ->
   class_name:string ->
   ml_name:string ->
-  os:string ->
+  os:Os_filter.t ->
   Types.gir_property ->
   string
 (** Emit a fallback property setter stub for the [#else] branch of an OS guard.

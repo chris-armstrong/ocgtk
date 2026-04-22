@@ -416,18 +416,18 @@
  (action
   (run
    %{exe:../configurator/config_flags.exe}
-   --pkg-optional
-   gio-unix-2.0
    --pkg
    gio-2.0
+   --pkg-optional
+   gio-unix-2.0
    --cflags-out
    cflag-gio.sexp
    --libs-out
    clink-gio.sexp)))
 
 (library
- (name ocgtk_gio_generated_stubs)
- (public_name ocgtk.gio.generated_stubs)
+ (name ocgtk_gio_generated_stubs_batch_0)
+ (public_name ocgtk.gio.generated_stubs_batch_0)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
  (libraries ocgtk_common)  ; Depend on common for header files
@@ -514,6 +514,19 @@
    ml_inet_address_mask_gen
    ml_inet_socket_address_gen
    ml_initable_gen
+  )
+  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gio.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+ (c_library_flags (:include clink-gio.sexp)))
+
+(library
+ (name ocgtk_gio_generated_stubs_batch_1)
+ (public_name ocgtk.gio.generated_stubs_batch_1)
+ (wrapped false)
+ (modules)  ; No OCaml modules, only C stubs
+ (libraries ocgtk_common)  ; Depend on common for header files
+ (foreign_stubs
+  (language c)
+  (names
    ml_input_message_gen
    ml_input_stream_gen
    ml_input_vector_gen
@@ -594,6 +607,19 @@
    ml_tls_client_connection_gen
    ml_tls_connection_gen
    ml_tls_database_gen
+  )
+  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gio.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+ (c_library_flags (:include clink-gio.sexp)))
+
+(library
+ (name ocgtk_gio_generated_stubs_batch_2)
+ (public_name ocgtk.gio.generated_stubs_batch_2)
+ (wrapped false)
+ (modules)  ; No OCaml modules, only C stubs
+ (libraries ocgtk_common)  ; Depend on common for header files
+ (foreign_stubs
+  (language c)
+  (names
    ml_tls_file_database_gen
    ml_tls_interaction_gen
    ml_tls_password_gen
@@ -616,3 +642,10 @@
   )
   (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gio.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gio.sexp)))
+
+(library
+ (name ocgtk_gio_generated_stubs)
+ (public_name ocgtk.gio.generated_stubs)
+ (wrapped false)
+ (modules)  ; No OCaml modules, only C stubs
+ (libraries ocgtk_gio_generated_stubs_batch_0 ocgtk_gio_generated_stubs_batch_1 ocgtk_gio_generated_stubs_batch_2))

@@ -80,7 +80,7 @@ let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
         match find_header_os h with Some os -> Some (os, h) | None -> None)
       conditional
   in
-  (* Collect unique OS values in order *)
+  (* Collect unique OS filter values in order *)
   let seen_os = Hashtbl.create 4 in
   let ordered_os =
     List.filter_map
@@ -96,7 +96,7 @@ let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
     ~f:(fun os ->
       let headers_for_os =
         List.filter_map
-          ~f:(fun (g_os, h) -> if String.equal g_os os then Some h else None)
+          ~f:(fun (g_os, h) -> if Os_filter.equal g_os os then Some h else None)
           os_groups
       in
       Buffer.add_string buf (C_stub_helpers.os_to_c_guard_open os ^ "\n");

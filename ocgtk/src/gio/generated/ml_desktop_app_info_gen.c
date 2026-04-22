@@ -24,7 +24,7 @@
 #include "gio_decls.h"
 
 
-#ifdef __linux__
+#if defined(__linux__)
 
 CAMLexport CAMLprim value ml_g_desktop_app_info_new(value arg1)
 {
@@ -553,4 +553,4 @@ return Val_unit;
 }
 
 
-#endif /* __linux__ */
+#endif /* linux */

@@ -8,11 +8,11 @@
   ;; Linux-only C headers from gio-unix-2.0. These are not present in
   ;; Homebrew's GLib on macOS or in FreeBSD's gio. The generator wraps
   ;; them in #ifdef __linux__ in the generated gio_decls.h.
-  (header "gio/gunixoutputstream.h" (os "linux"))
-  (header "gio/gunixmounts.h" (os "linux"))
-  (header "gio/gunixinputstream.h" (os "linux"))
-  (header "gio/gunixfdmessage.h" (os "linux"))
-  (header "gio/gfiledescriptorbased.h" (os "linux"))
+  (header "gio/gunixoutputstream.h" (not_os "windows"))
+  (header "gio/gunixmounts.h" (not_os "windows"))
+  (header "gio/gunixinputstream.h" (not_os "windows"))
+  (header "gio/gunixfdmessage.h" (not_os "windows"))
+  (header "gio/gfiledescriptorbased.h" (not_os "windows"))
   (header "gio/gdesktopappinfo.h" (os "linux"))
 
   ;; Linux-only GIO classes (from gio-unix-2.0 / gio/gunix*.h).
@@ -22,24 +22,25 @@
   (class DesktopAppInfo (os "linux"))
   (interface DesktopAppInfoLookup (os "linux"))
   (interface FileDescriptorBased (os "linux"))
-  (class UnixConnection (os "linux"))
-  (class UnixCredentialsMessage (os "linux"))
-  (class UnixFDList (os "linux"))
-  (class UnixFDMessage (os "linux"))
-  (class UnixInputStream (os "linux"))
-  (record UnixMountEntry (os "linux"))
-  (class UnixMountMonitor (os "linux"))
-  (record UnixMountPoint (os "linux"))
-  (class UnixOutputStream (os "linux"))
-  (class UnixSocketAddress (os "linux"))
+  (class UnixConnection (not_os "windows"))
+  (class UnixCredentialsMessage (not_os "windows"))
+  ; UNIXFDList should be available on Windows since 2.74, but we don't have a way of expressing this yet
+  ; UnixFDMessage is unix only
+  (class UnixFDMessage (not_os "windows"))
+  (class UnixInputStream (not_os "windows"))
+  (record UnixMountEntry (not_os "windows"))
+  (class UnixMountMonitor (not_os "windows"))
+  (record UnixMountPoint (not_os "windows"))
+  (class UnixOutputStream (not_os "windows"))
+  (class UnixSocketAddress (not_os "windows"))
 
   ;; DBusMessage and DBusMethodInvocation methods that take GUnixFDList
   ;; parameters are Linux-only because GUnixFDList is from gio-unix-2.0.
   (class DBusMessage
-    (method set_unix_fd_list (os "linux"))
-    (method get_unix_fd_list (os "linux")))
+    (method set_unix_fd_list (not_os "windows"))
+    (method get_unix_fd_list (not_os "windows")))
   (class DBusMethodInvocation
-    (method return_value_with_unix_fd_list (os "linux")))
+    (method return_value_with_unix_fd_list (not_os "windows")))
 
 
   (enumeration DBusError
@@ -266,4 +267,31 @@
     (member solaris_ucred (version "2.40"))
     (member openbsd_sockpeercred (version "2.30"))
   )
+
+  ; Credentials and Subprocess have methods that are non-Windows
+  (class Credentials
+    (method get_unix_user (not_os "windows") )
+    (method set_unix_user (not_os "windows") )
+    (method get_unix_pid (not_os "windows") )
+    )
+
+  (class Subprocess
+    (method send_signal (not_os "windows"))
+    )
+
+  (class SubprocessLauncher
+    (method take_fd (not_os "windows"))
+    (method close (not_os "windows"))
+    (method take_stdout_fd (not_os "windows"))
+    (method take_stderr_fd (not_os "windows"))
+    (method take_stdin_fd (not_os "windows"))
+    (method set_stdout_file_path (not_os "windows"))
+    (method set_stderr_file_path (not_os "windows"))
+    (method set_stdin_file_path (not_os "windows"))
+    )
+
+  (class DBusConnection
+    (method call_with_unix_fd_list (not_os "windows"))
+    (method call_with_unix_fd_list_sync (not_os "windows"))
+    )
 )

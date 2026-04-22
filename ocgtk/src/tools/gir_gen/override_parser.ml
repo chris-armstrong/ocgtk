@@ -73,19 +73,43 @@ let parse_version_spec ~comp_name sexp_args =
              message = "Expected (version \"X.Y\") or (version (lib \"X.Y\"))";
            })
 
+(** Build an [Os_filter.t option] from collected os/not_os name lists. Returns
+    [Error] if both lists are non-empty (mixing is forbidden). *)
+let build_os_filter ~context os_vals not_os_vals =
+  match (os_vals, not_os_vals) with
+  | [], [] -> Ok None
+  | names, [] -> Ok (Some (Os_filter.Os_only names))
+  | [], names -> Ok (Some (Os_filter.Os_except names))
+  | _ ->
+      Error
+        (Invalid_format
+           {
+             location = context;
+             message = "Cannot mix (os ...) and (not_os ...) on the same entity";
+           })
+
 (** Parse optional qualifiers from a component body: (ignore), (version ...),
-    (os "..."). Returns [(action, os)] where both are options. *)
+    (os "..."), (not_os "..."). Returns [(action, os)] where both are options.
+*)
 let parse_component_qualifiers ~comp_name body =
-  let rec go action os = function
-    | [] -> Ok (action, os)
+  let rec go action os_vals not_os_vals = function
+    | [] -> (
+        match
+          build_os_filter ~context:comp_name (List.rev os_vals)
+            (List.rev not_os_vals)
+        with
+        | Error e -> Error e
+        | Ok os -> Ok (action, os))
     | Sexp.Atom "ignore" :: rest | Sexp.List [ Sexp.Atom "ignore" ] :: rest ->
-        go (Some Ignore) os rest
+        go (Some Ignore) os_vals not_os_vals rest
     | Sexp.List (Sexp.Atom "version" :: args) :: rest -> (
         match parse_version_spec ~comp_name args with
         | Error e -> Error e
-        | Ok a -> go (Some a) os rest)
+        | Ok a -> go (Some a) os_vals not_os_vals rest)
     | Sexp.List [ Sexp.Atom "os"; Sexp.Atom os_val ] :: rest ->
-        go action (Some os_val) rest
+        go action (os_val :: os_vals) not_os_vals rest
+    | Sexp.List [ Sexp.Atom "not_os"; Sexp.Atom os_val ] :: rest ->
+        go action os_vals (os_val :: not_os_vals) rest
     | Sexp.List (Sexp.Atom k :: _) :: _ ->
         Error
           (Invalid_format
@@ -93,11 +117,13 @@ let parse_component_qualifiers ~comp_name body =
                location = Printf.sprintf "%s" comp_name;
                message =
                  Printf.sprintf
-                   "Unknown qualifier '%s'; expected ignore, version, or os" k;
+                   "Unknown qualifier '%s'; expected ignore, version, os, or \
+                    not_os"
+                   k;
              })
-    | _ :: rest -> go action os rest
+    | _ :: rest -> go action os_vals not_os_vals rest
   in
-  go None None body
+  go None [] [] body
 
 let parse_component ~entity_name sexp =
   match sexp with
@@ -150,13 +176,23 @@ let has_ignore_marker body =
       | _ -> false)
     body
 
-(** Extract (os "...") from entity body, if present. *)
-let extract_os_marker body =
-  List.find_map
-    (function
-      | Sexp.List [ Sexp.Atom "os"; Sexp.Atom os_val ] -> Some os_val
-      | _ -> None)
-    body
+(** Extract [(os "...")] / [(not_os "...")] markers from an entity body. Returns
+    [Ok (Some filter)] when present, [Ok None] when absent, or [Error] when both
+    [(os ...)] and [(not_os ...)] are mixed. *)
+let extract_os_from_body ~context body =
+  let os_vals =
+    List.filter_map
+      (function
+        | Sexp.List [ Sexp.Atom "os"; Sexp.Atom v ] -> Some v | _ -> None)
+      body
+  in
+  let not_os_vals =
+    List.filter_map
+      (function
+        | Sexp.List [ Sexp.Atom "not_os"; Sexp.Atom v ] -> Some v | _ -> None)
+      body
+  in
+  build_os_filter ~context os_vals not_os_vals
 
 (** Validate that every list-form element in an entity body starts with one of
     [valid_kinds] (or is an action marker like [ignore] / [version] / [os]).
@@ -174,6 +210,7 @@ let validate_body_elements ~entity_name ~valid_kinds body =
             if
               List.mem k valid_kinds || String.equal k "ignore"
               || String.equal k "version" || String.equal k "os"
+              || String.equal k "not_os"
             then check rest
             else
               Error
@@ -190,7 +227,7 @@ let parse_entity_header ~kind sexp =
   | Sexp.List (Sexp.Atom k :: Sexp.Atom name :: body) when String.equal k kind
     ->
       let action = if has_ignore_marker body then Some Ignore else None in
-      let os = extract_os_marker body in
+      let* os = extract_os_from_body ~context:name body in
       Ok (name, action, os, body)
   | _ ->
       Error
@@ -331,14 +368,15 @@ let extract_library_name body =
 let parse_header_override sexp =
   match sexp with
   | Sexp.List (Sexp.Atom "header" :: Sexp.Atom path :: rest) ->
-      let header_os = extract_os_marker rest in
+      let* header_os = extract_os_from_body ~context:path rest in
       Ok { header_path = path; header_os }
   | _ ->
       Error
         (Invalid_format
            {
              location = "header";
-             message = "Expected (header \"path\" [(os \"...\")]";
+             message =
+               "Expected (header \"path\" [(os \"...\") | (not_os \"...\")])";
            })
 
 let process_element ~seen ~errors ~classes ~interfaces ~records ~enums
