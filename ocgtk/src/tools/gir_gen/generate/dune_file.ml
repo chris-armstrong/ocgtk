@@ -3,6 +3,23 @@
 open ContainersLabels
 open Printf
 
+(* Maximum C stub files per batch library. Windows (CreateProcess) has a
+   32 767-char command-line limit; ~80 stubs × ~55-char path ≈ 4 400 chars,
+   leaving enough headroom for the ar/ld invocation. *)
+let stub_batch_size = 80
+
+(* Split a list into chunks of at most n elements, preserving order. *)
+let list_chunks n lst =
+  let rec go acc cur cnt = function
+    | [] ->
+        if List.is_empty cur then List.rev acc
+        else List.rev (List.rev cur :: acc)
+    | x :: rest ->
+        if cnt = n then go (List.rev cur :: acc) [ x ] 1 rest
+        else go acc (x :: cur) (cnt + 1) rest
+  in
+  go [] [] 0 lst
+
 (* Map GIR namespace names to pkg-config package names *)
 let pkg_config_name_of_namespace ~ctx namespace_name =
   let open Types in
@@ -49,10 +66,62 @@ let library_name_of_namespace namespace_name =
   let ns_lower = String.lowercase_ascii namespace_name in
   sprintf "ocgtk.%s" ns_lower
 
+(* Emit the pkg-config rule that generates cflag and clink sexp files. *)
+let emit_pkg_config_rule buf ~cflag_file ~clink_file ~all_packages ~is_optional
+    =
+  bprintf buf "(rule\n";
+  bprintf buf " (targets %s %s)\n" cflag_file clink_file;
+  bprintf buf " (action\n";
+  bprintf buf "  (run\n";
+  bprintf buf "   %%{exe:../configurator/config_flags.exe}\n";
+  List.iter
+    ~f:(fun package_name ->
+      let flag =
+        if is_optional package_name then "--pkg-optional" else "--pkg"
+      in
+      bprintf buf "   %s\n   %s\n" flag package_name)
+    all_packages;
+  bprintf buf "   --cflags-out\n   %s\n" cflag_file;
+  bprintf buf "   --libs-out\n   %s)))\n\n" clink_file
+
+(* Emit one library stanza containing C foreign stubs (either the single
+   stubs library or one batch of it). *)
+let emit_stub_library buf ~name ~public_name ~dep_libraries ~stub_names
+    ~cflag_file ~clink_file =
+  bprintf buf "(library\n";
+  bprintf buf " (name %s)\n" name;
+  (match public_name with
+  | Some pn -> bprintf buf " (public_name %s)\n" pn
+  | None -> ());
+  Buffer.add_string buf " (wrapped false)\n";
+  Buffer.add_string buf " (modules)  ; No OCaml modules, only C stubs\n";
+  let libraries_clause =
+    if String.equal dep_libraries "" then
+      " (libraries ocgtk_common)  ; Depend on common for header files\n"
+    else
+      sprintf
+        " (libraries %s ocgtk_common)  ; Dependencies and common for header \
+         files\n"
+        dep_libraries
+  in
+  Buffer.add_string buf libraries_clause;
+  Buffer.add_string buf " (foreign_stubs\n";
+  Buffer.add_string buf "  (language c)\n";
+  Buffer.add_string buf "  (names\n";
+  List.iter ~f:(fun s -> bprintf buf "   %s\n" s) stub_names;
+  Buffer.add_string buf "  )\n";
+  bprintf buf
+    "  (flags -fPIC -Igenerated -Icore -I../common (:include %s) \
+     -Wno-deprecated-declarations -Wno-incompatible-pointer-types \
+     -Wno-int-conversion))\n"
+    cflag_file;
+  bprintf buf " (c_library_flags (:include %s)))\n\n" clink_file
+
 (* Generate dune library stanza for generated C stubs *)
 let generate_dune_library ~ctx ~lib_name ~stub_names ~module_names ~repository =
   let buf = Buffer.create 2048 in
 
+  let lib_name_snake = lib_name |> Utils.to_snake_case in
   let cflag_file = sprintf "cflag-%s.sexp" (String.lowercase_ascii lib_name) in
   let clink_file = sprintf "clink-%s.sexp" (String.lowercase_ascii lib_name) in
 
@@ -92,38 +161,11 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~module_names ~repository =
      on platforms where they don't exist. *)
   let optional_packages = [ "gio-unix-2.0" ] in
   let is_optional p = List.mem ~eq:String.equal p optional_packages in
-  (* Emit the pkg-config rule, invoking the shared dune-configurator
-     executable (src/configurator/config_flags.exe) rather than running
-     pkg-config directly in bash. *)
-  bprintf buf "(rule\n";
-  bprintf buf " (targets %s %s)\n" cflag_file clink_file;
-  bprintf buf " (action\n";
-  bprintf buf "  (run\n";
-  (* Path is relative to the parent library dune — the .inc is inlined via
-     (include generated/dune-generated.inc) from src/<ns>/dune, so paths
-     resolve from src/<ns>/, not src/<ns>/generated/. *)
-  bprintf buf "   %%{exe:../configurator/config_flags.exe}\n";
-  List.iter
-    ~f:(fun package_name ->
-      let flag =
-        if is_optional package_name then "--pkg-optional" else "--pkg"
-      in
-      bprintf buf "   %s\n   %s\n" flag package_name)
-    all_packages;
-  bprintf buf "   --cflags-out\n   %s\n" cflag_file;
-  bprintf buf "   --libs-out\n   %s)))\n\n" clink_file;
 
-  Buffer.add_string buf "(library\n";
-  Buffer.add_string buf
-    (sprintf " (name ocgtk_%s_generated_stubs)\n"
-       (lib_name |> Utils.to_snake_case));
-  Buffer.add_string buf
-    (sprintf " (public_name ocgtk.%s.generated_stubs)\n"
-       (lib_name |> Utils.to_snake_case));
-  Buffer.add_string buf " (wrapped false)\n";
-  Buffer.add_string buf " (modules)  ; No OCaml modules, only C stubs\n";
-  (* Generate library dependencies for dependency namespaces, recursively
-     collecting transitive includes *)
+  emit_pkg_config_rule buf ~cflag_file ~clink_file ~all_packages ~is_optional;
+
+  (* Compute the dep_libraries string (used in C stubs (libraries ...) clause
+     for transitive header include paths). *)
   let rec collect_transitive_namespaces ~visited namespace_name =
     let open Types in
     if
@@ -152,34 +194,49 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~module_names ~repository =
     |> String.concat ~sep:" "
   in
 
-  (* Build libraries clause - dependencies first, then common *)
-  let libraries_clause =
-    if String.equal dep_libraries "" then
-      " (libraries ocgtk_common)  ; Depend on common for header files\n"
-    else
-      sprintf
-        " (libraries %s ocgtk_common)  ; Dependencies and common for header \
-         files\n"
-        dep_libraries
-  in
-  Buffer.add_string buf libraries_clause;
-  Buffer.add_string buf " (foreign_stubs\n";
-  Buffer.add_string buf "  (language c)\n";
-  Buffer.add_string buf "  (names\n";
-
-  List.iter
-    ~f:(fun name ->
-      (* Files are in the same directory as this dune file (generated/) *)
-      bprintf buf "   %s\n" name)
-    stub_names;
-
-  Buffer.add_string buf "  )\n";
-
-  bprintf buf
-    "  (flags -fPIC -Igenerated -Icore -I../common (:include %s) \
-     -Wno-deprecated-declarations -Wno-incompatible-pointer-types \
-     -Wno-int-conversion))\n"
-    cflag_file;
-  bprintf buf " (c_library_flags (:include %s)))\n" clink_file;
+  let n_stubs = List.length stub_names in
+  if n_stubs <= stub_batch_size then begin
+    (* Small enough to fit in a single library stanza *)
+    emit_stub_library buf
+      ~name:(sprintf "ocgtk_%s_generated_stubs" lib_name_snake)
+      ~public_name:(Some (sprintf "ocgtk.%s.generated_stubs" lib_name_snake))
+      ~dep_libraries ~stub_names ~cflag_file ~clink_file
+  end
+  else begin
+    (* Too many stubs for a single Windows command line — split into batches.
+       Each batch is a private library; a public facade library depends on all
+       of them so downstream consumers need only list the facade. *)
+    let batches = list_chunks stub_batch_size stub_names in
+    let batch_lib_names =
+      List.mapi
+        ~f:(fun i _ ->
+          sprintf "ocgtk_%s_generated_stubs_batch_%d" lib_name_snake i)
+        batches
+    in
+    let batch_public_names =
+      List.mapi
+        ~f:(fun i _ ->
+          sprintf "ocgtk.%s.generated_stubs_batch_%d" lib_name_snake i)
+        batches
+    in
+    (* Emit each batch library with a public name (required because the public
+       facade library lists them as dependencies). *)
+    List.iter2
+      ~f:(fun (batch_name, batch_public) batch_stubs ->
+        emit_stub_library buf ~name:batch_name ~public_name:(Some batch_public)
+          ~dep_libraries ~stub_names:batch_stubs ~cflag_file ~clink_file)
+      (List.combine batch_lib_names batch_public_names)
+      batches;
+    (* Emit the public facade library that depends on all batches.
+       The facade carries no C stubs itself; dune propagates the C archives
+       of the batch libraries transitively when linking downstream targets. *)
+    bprintf buf "(library\n";
+    bprintf buf " (name ocgtk_%s_generated_stubs)\n" lib_name_snake;
+    bprintf buf " (public_name ocgtk.%s.generated_stubs)\n" lib_name_snake;
+    Buffer.add_string buf " (wrapped false)\n";
+    Buffer.add_string buf " (modules)  ; No OCaml modules, only C stubs\n";
+    let batch_deps = String.concat ~sep:" " batch_lib_names in
+    bprintf buf " (libraries %s))\n" batch_deps
+  end;
 
   Buffer.contents buf

@@ -680,8 +680,8 @@
    clink-gtk.sexp)))
 
 (library
- (name ocgtk_gtk_generated_stubs)
- (public_name ocgtk.gtk.generated_stubs)
+ (name ocgtk_gtk_generated_stubs_batch_0)
+ (public_name ocgtk.gtk.generated_stubs_batch_0)
  (wrapped false)
  (modules)  ; No OCaml modules, only C stubs
  (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocgtk_common)  ; Dependencies and common for header files
@@ -768,6 +768,19 @@
    ml_constraint_layout_child_gen
    ml_constraint_layout_gen
    ml_constraint_target_gen
+  )
+  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gtk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+ (c_library_flags (:include clink-gtk.sexp)))
+
+(library
+ (name ocgtk_gtk_generated_stubs_batch_1)
+ (public_name ocgtk.gtk.generated_stubs_batch_1)
+ (wrapped false)
+ (modules)  ; No OCaml modules, only C stubs
+ (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocgtk_common)  ; Dependencies and common for header files
+ (foreign_stubs
+  (language c)
+  (names
    ml_css_location_gen
    ml_css_provider_gen
    ml_css_section_gen
@@ -848,6 +861,19 @@
    ml_im_multicontext_gen
    ml_image_gen
    ml_info_bar_gen
+  )
+  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gtk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+ (c_library_flags (:include clink-gtk.sexp)))
+
+(library
+ (name ocgtk_gtk_generated_stubs_batch_2)
+ (public_name ocgtk.gtk.generated_stubs_batch_2)
+ (wrapped false)
+ (modules)  ; No OCaml modules, only C stubs
+ (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocgtk_common)  ; Dependencies and common for header files
+ (foreign_stubs
+  (language c)
+  (names
    ml_inscription_gen
    ml_keyval_trigger_gen
    ml_label_gen
@@ -928,6 +954,19 @@
    ml_search_bar_gen
    ml_search_entry_gen
    ml_section_model_gen
+  )
+  (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gtk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
+ (c_library_flags (:include clink-gtk.sexp)))
+
+(library
+ (name ocgtk_gtk_generated_stubs_batch_3)
+ (public_name ocgtk.gtk.generated_stubs_batch_3)
+ (wrapped false)
+ (modules)  ; No OCaml modules, only C stubs
+ (libraries ocgtk.gdk ocgtk.gdkpixbuf ocgtk.gio ocgtk.graphene ocgtk.gsk ocgtk.pango ocgtk.pangocairo ocgtk.cairo ocgtk_common)  ; Dependencies and common for header files
+ (foreign_stubs
+  (language c)
+  (names
    ml_selection_filter_model_gen
    ml_selection_model_gen
    ml_separator_gen
@@ -1005,3 +1044,10 @@
   )
   (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gtk.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gtk.sexp)))
+
+(library
+ (name ocgtk_gtk_generated_stubs)
+ (public_name ocgtk.gtk.generated_stubs)
+ (wrapped false)
+ (modules)  ; No OCaml modules, only C stubs
+ (libraries ocgtk_gtk_generated_stubs_batch_0 ocgtk_gtk_generated_stubs_batch_1 ocgtk_gtk_generated_stubs_batch_2 ocgtk_gtk_generated_stubs_batch_3))
