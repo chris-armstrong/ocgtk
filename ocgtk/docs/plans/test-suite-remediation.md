@@ -1,9 +1,18 @@
 # Test Suite Remediation Plan
 
-**Status: 🔄 IN PROGRESS — Phases 1 & 1.5 complete (2026-04-18)**
-**Last revised: 2026-04-18** — Phases 1 and 1.5 (file moves, runner
-reorganisation, test classification, pipeline-test discipline) complete on
-`tests-cleanup` branch; merged up to main (`d65507d8`); Phase 2+ pending.
+**Status: 🔄 IN PROGRESS — Phases 1, 1.5, 2 (integration + partial 2.9), 3.1, 3.2, 3.3, 4.1, 4.3, 4.4, 5 complete (2026-04-22)**
+**Last revised: 2026-04-22** — Phases 1 and 1.5 complete (PR #100). Phase 2
+integration tests migrated via PR #106 (commit c3d612ea); 2.1 sig helpers done.
+Phase 4.1/4.3/4.4 deduplication done via PR #113. Phase 5 dune cleanup done
+(7 dead .ml files removed, comments actionable). Phase 2.9 partial: 4/7 unit-
+test files migrated (c_stubs/array_tests, cross_namespace/classify_type,
+interface/from_gobject done). Phase 3.2 complete: ml_generation/ tests migrated
+to Type_factory (440-line reduction). Phase 3.1 complete: override-test local
+factories delegate to Type_factory (195-line reduction). Phase 3.3 core helpers
+in place; per-namespace entity-map helper is optional follow-up. Phase 2.8 still
+blocked: deprecated helpers used in c_stub_version_guard_tests (18×),
+enum_member_version_tests (32×), layer2_helpers (4×). Remaining: Phase 2.8 +
+rest of 2.9, Phase 4.2 migration of C-stub tests, Phase 4.5 context builder.
 
 ## Overview
 
@@ -259,12 +268,12 @@ already added to `ml_validation.ml` in the interface-support work on main. The
 `.mli` signature helpers below are separate and still needed.
 
 **Actions:**
-- [ ] Add `assert_value_exists_sig : signature -> string -> unit` to `ml_validation.ml`
+- [x] Add `assert_value_exists_sig : signature -> string -> unit` to `ml_validation.ml`
   — checks that a `val name : ...` or `external name ...` exists in a `.mli` AST
-- [ ] Add `assert_type_has_variant_tag_sig : signature -> string -> string -> unit`
+- [x] Add `assert_type_has_variant_tag_sig : signature -> string -> string -> unit`
   — convenience: finds type by name in a signature, asserts it has the given
   polymorphic variant tag. Used by enum tests.
-- [ ] Update `infrastructure/ml_validation.mli` if it exists
+- [x] Update `infrastructure/ml_validation.mli` if it exists
 
 ### 2.2 Migrate `integration/signals_tests.ml`
 
@@ -273,19 +282,19 @@ This file calls `Gir_gen_lib.Generate.Signal_gen.generate_signal_class` directly
 the simplest file — good warmup.
 
 **Actions:**
-- [ ] Extract the in-process generation call and validate with
+- [x] Extract the in-process generation call and validate with
   `Ml_ast_helpers.parse_implementation` + `Ml_validation.assert_value_exists`
-- [ ] The subprocess path (if any is added) stays in `integration/`; the unit test
+- [x] The subprocess path (if any is added) stays in `integration/`; the unit test
   portion moves to `class_generation/signal_wrapper_tests.ml`
-- [ ] Remove all `assert_contains` / `string_contains` calls
+- [x] Remove all `assert_contains` / `string_contains` calls
 
 ### 2.3 Migrate `integration/edge_cases_tests.ml`
 
 Two `assert_contains` / one `string_contains` call — smallest integration file.
 
 **Actions:**
-- [ ] Replace `.mli` content checks with `parse_interface` + `assert_value_exists_sig`
-- [ ] Replace `.ml` content checks with `parse_implementation` + `assert_value_exists`
+- [x] Replace `.mli` content checks with `parse_interface` + `assert_value_exists_sig`
+- [x] Replace `.ml` content checks with `parse_implementation` + `assert_value_exists`
 
 ### 2.4 Migrate `integration/properties_tests.ml`
 
@@ -293,12 +302,12 @@ Two `assert_contains` / one `string_contains` call — smallest integration file
 (getter/setter existence, type signatures) and `.c` (function names, g_object_get/set).
 
 **Actions:**
-- [ ] `.mli` assertions: `parse_interface` → `assert_value_exists_sig`
-- [ ] Type signature assertions (`"t -> bool"`, `"t -> int"`): `find_value_declaration_sig`
+- [x] `.mli` assertions: `parse_interface` → `assert_value_exists_sig`
+- [x] Type signature assertions (`"t -> bool"`, `"t -> int"`): `find_value_declaration_sig`
   + `Ml_validation.assert_return_type`
-- [ ] `.c` assertions: `C_parser.parse_c_code` → `C_validation.calls_c_function`,
+- [x] `.c` assertions: `C_parser.parse_c_code` → `C_validation.calls_c_function`,
   `has_caml_return`
-- [ ] Remove all `assert_contains` / `string_contains` calls
+- [x] Remove all `assert_contains` / `string_contains` calls
 
 ### 2.5 Migrate `integration/enums_tests.ml`
 
@@ -306,11 +315,11 @@ Two `assert_contains` / one `string_contains` call — smallest integration file
 converter functions in `.c`.
 
 **Actions:**
-- [ ] `.mli` enum type assertions: `parse_interface` → `assert_type_has_variant_tag_sig`
+- [x] `.mli` enum type assertions: `parse_interface` → `assert_type_has_variant_tag_sig`
   (using new helper from 2.1)
-- [ ] `.c` assertions: `C_parser.parse_c_code` → find function by name, check
+- [x] `.c` assertions: `C_parser.parse_c_code` → find function by name, check
   `calls_c_function`
-- [ ] Remove all `assert_contains` / `string_contains` calls
+- [x] Remove all `assert_contains` / `string_contains` calls
 
 ### 2.6 Migrate `integration/records_tests.ml`
 
@@ -318,25 +327,54 @@ converter functions in `.c`.
 (e.g. `"GtkWidgetClass *GtkWidgetClass_val(value val);"`).
 
 **Actions:**
-- [ ] Header forward-declaration assertions: `C_validation.assert_forward_decl_exists`
+- [x] Header forward-declaration assertions: `C_validation.assert_forward_decl_exists`
   (already exists — direct replacement)
-- [ ] Exact C type signature assertions: accept structural check (name exists) as
+- [x] Exact C type signature assertions: accept structural check (name exists) as
   sufficient; the exact type format is covered by `c_stubs/` unit tests
-- [ ] `.c` assertions: `C_parser.parse_c_code` → `C_validation.*`
-- [ ] Remove all `assert_contains` / `assert_not_contains` calls
+- [x] `.c` assertions: `C_parser.parse_c_code` → `C_validation.*`
+- [x] Remove all `assert_contains` / `assert_not_contains` calls
 
 ### 2.7 Migrate `integration/gir_parsing_tests.ml` and `integration/widget_generation_tests.ml`
 
 (Post-split files from `core.ml`.) ~25 combined string-matching assertions.
 
 **Actions:**
-- [ ] `.c` assertions: `C_parser.parse_c_code` → `C_validation.has_caml_return`,
+- [x] `.c` assertions: `C_parser.parse_c_code` → `C_validation.has_caml_return`,
   `calls_c_function`
-- [ ] `.mli` assertions: `parse_interface` → `assert_value_exists_sig`
-- [ ] "GENERATED CODE" header comment check: acceptable to keep as
+- [x] `.mli` assertions: `parse_interface` → `assert_value_exists_sig`
+- [x] "GENERATED CODE" header comment check: acceptable to keep as
   `assert_contains` — this is a file-level comment, not a code structure check.
   Document the exception inline.
-- [ ] Remove remaining `assert_contains` / `string_contains` calls
+- [x] Remove remaining `assert_contains` / `string_contains` calls
+
+### 2.9 Migrate remaining unit tests using deprecated helpers *(discovered 2026-04-22)*
+
+After PR #106 cleaned integration tests, the following unit-test files were found
+still calling the deprecated helpers from `helpers.ml`:
+
+- `c_stubs/array_tests.ml`
+- `c_stubs/c_stub_version_guard_tests.ml`
+- `cross_namespace/classify_type_tests.ml`
+- `class_generation/method_wrapper_tests.ml`
+- `interface/from_gobject_tests.ml`
+- `overrides/enum_member_version_tests.ml` (defines its own local `assert_contains`)
+
+**Actions:**
+- [x] `c_stubs/array_tests.ml` — 2 of 3 calls migrated to C_parser/C_ast; 1 remains
+  documented (while-loop `!= NULL` check not modelled by C_parser)
+- [x] `cross_namespace/classify_type_tests.ml` — 8 calls migrated to
+  `String.starts_with`/`String.ends_with` (tm.ocaml_type is domain data, not
+  generated code)
+- [x] `interface/from_gobject_tests.ml` — 1 call remains documented (C_parser
+  strips `#if GTK_CHECK_VERSION(...)` preprocessor directives)
+- [ ] `c_stubs/c_stub_version_guard_tests.ml` — 18 calls, mostly C preprocessor
+  content; needs test-patterns.md exception analysis
+- [ ] `overrides/enum_member_version_tests.ml` — 32 calls (includes local
+  `assert_contains`/`assert_not_contains` definitions that must be removed);
+  mostly C preprocessor content
+- [ ] `infrastructure/layer2_helpers.ml` — 4 calls; this is infrastructure
+  code, not a test file; needs separate treatment
+- [ ] Once above are resolved, proceed to 2.8
 
 ### 2.8 Remove deprecated helpers from `helpers.ml`
 
@@ -365,11 +403,14 @@ lines 37–55) each define local `make_method`, `make_constructor`, `make_proper
 `Type_factory` functions. These won't track changes to factory signatures.
 
 **Actions:**
-- [ ] Audit local helper signatures against `Type_factory` equivalents
-- [ ] For each local helper: either replace call sites with `Type_factory.*` directly,
+- [x] Audit local helper signatures against `Type_factory` equivalents
+- [x] For each local helper: either replace call sites with `Type_factory.*` directly,
   or (if the local helper adds version-specific fields) add a version-aware variant
   to `Type_factory` and delete the local copy
-- [ ] Verify no local factories remain in override test files
+- [x] Verify no local factories remain in override test files
+  — *done 2026-04-22: all 13 helpers in `apply_tests.ml` and 4 in `enum_member_version_tests.ml`
+  now thin-wrap `Type_factory.*`; `{ record with version_field = v }` used where factory
+  doesn't expose the field; 195-line reduction*
 
 ### 3.2 Migrate `ml_generation/` tests to use `Type_factory`
 
@@ -377,23 +418,28 @@ All three `ml_generation/` test files construct GIR methods, constructors, and
 parameters using inline record syntax instead of factory functions.
 
 **Actions:**
-- [ ] `external_decl_tests.ml` lines 14–43, 81–102: replace inline `gir_method`
+- [x] `external_decl_tests.ml` lines 14–43, 81–102: replace inline `gir_method`
   records with `Type_factory.make_gir_method` + `make_gir_param`
-- [ ] `signature_tests.ml` lines 64–82, 135–150: replace inline `gir_constructor`
+- [x] `signature_tests.ml` lines 64–82, 135–150: replace inline `gir_constructor`
   and `gir_method` records with factory calls
-- [ ] `type_definition_tests.ml` lines 87–96: replace inline construction with factory
+- [x] `type_definition_tests.ml` lines 87–96: replace inline construction with factory
 
 ### 3.3 Migrate cross-namespace tests to use `Type_factory`
 
 `cross_namespace/classify_type_tests.ml` (lines 25–70) and
-`cross_namespace/integration_tests.ml` (lines 18–57) build `generation_context`
-manually with inline record syntax and `StringMap` construction.
+`cross_namespace/header_pipeline_tests.ml` (was `integration_tests.ml` pre-Phase 1.5)
+build `generation_context` manually with inline record syntax and `StringMap`
+construction.
 
 **Actions:**
-- [ ] Replace inline `generation_context` records with
+- [x] Replace inline `generation_context` records with
   `Type_factory.make_generation_context`
-- [ ] Add a `make_cross_reference_map` helper to `Type_factory` (takes an association
+- [x] Add a `make_cross_reference_map` helper to `Type_factory` (takes an association
   list, builds the `StringMap`) to eliminate the repeated manual map construction
+- [ ] Remaining: per-namespace entity maps still use inline
+  `StringMap.empty |> StringMap.add "Foo" { ... } |> ...` patterns. A
+  `make_entity_map : (string * cross_reference) list -> cross_reference StringMap.t`
+  helper would further reduce duplication — optional follow-up.
 
 ---
 
@@ -417,7 +463,7 @@ assert_true "Generator should exit successfully" (exit_code = 0);
 ```
 
 **Actions:**
-- [ ] Add to `infrastructure/helpers.ml`:
+- [x] Add to `infrastructure/helpers.ml`:
   ```ocaml
   val run_integration_test
     :  gir_content:string
@@ -427,7 +473,8 @@ assert_true "Generator should exit successfully" (exit_code = 0);
     -> unit
     -> string  (* returns output_dir *)
   ```
-- [ ] Replace all call sites across `integration/`
+- [x] Replace all call sites across `integration/`
+  — *done via PR #113 commit 44135ef9; 21 call sites across 7 integration test files*
 
 ### 4.2 C method generation + parse helper (~140 lines saved)
 
@@ -461,15 +508,15 @@ Active files to fix (compiled, must change):
 
 Disabled files (not compiled — fix if reactivated, not blocking):
 - `tests/test_grid.ml`, `test_window.ml`, `test_clipboard.ml`,
-  `tests/test_gobject.ml`, `tests/test_containers.ml`, `tests/test_gpack.ml`
+  `tests/test_containers.ml`, `tests/test_gpack.ml`
 
 **Actions:**
-- [ ] Remove the duplicate GTK init block from each of the 6 active files above
-- [ ] Replace with `let require_gtk = Gtk_test_helpers.require_gtk` (in `gtk/`) or
+- [x] Remove the duplicate GTK init block from each of the 6 active files above
+- [x] Replace with `let require_gtk = Gtk_test_helpers.require_gtk` (in `gtk/`) or
   equivalent import
-- [ ] Note: `test_gobject_stress.ml` is in `tests/` not `tests/gtk/`, so needs
+- [x] Note: `test_gobject_stress.ml` is in `tests/` not `tests/gtk/`, so needs
   `ocgtk.gtk` dep added to its dune stanza if it imports `gtk_test_helpers`
-- [ ] Verify no active test files still define their own `gtk_available`/`require_gtk`
+- [x] Verify no active test files still define their own `gtk_available`/`require_gtk`
 
 ### 4.4 `EventControllerKey` GIR constant (~15 lines saved)
 
@@ -477,8 +524,12 @@ The same stub class XML appears in `integration/core.ml`, `integration/enums_tes
 and `integration/signals_tests.ml` as a namespace filler.
 
 **Actions:**
-- [ ] Add `let eventcontroller_key_class_xml` constant to `infrastructure/helpers.ml`
-- [ ] Replace inline definitions in the 3+ files that repeat it
+- [x] Add `let eventcontroller_key_class_xml` constant to `infrastructure/helpers.ml`
+- [x] Replace inline definitions in the 3+ files that repeat it
+  — *done via PR #113 commit 44135ef9; `enums_tests.ml` now uses the helper 4×;
+  `gir_parsing_tests.ml` intentionally retains inline class XML with `forward`/
+  `get_group` methods because the test exercises specific method-generation paths
+  beyond namespace filler*
 
 ### 4.5 Cross-namespace context builder (~105 lines saved)
 
@@ -502,7 +553,7 @@ disk but are unreachable, making coverage opaque.
 **Update (2026-04-16):** Phase 5.1 categorisation is now largely reflected in the
 dune comments already (done in main). The actions below address what remains.
 
-### 5.1 Categorise each disabled test *(mostly done in dune comments)*
+### 5.1 Categorise each disabled test *(done 2026-04-22)*
 
 **Delete** — dune comments already say "DISABLED: Uses Conv module":
 - `test_enum_roundtrip.ml`, `test_enum_values.ml`, `test_all_enums.ml`
@@ -523,10 +574,12 @@ dune comments already (done in main). The actions below address what remains.
 - `test_widget.ml`, `test_box.ml`, `test_button.ml`, `test_range.ml`
 - Confirmed active in `tests/gtk/dune` — stale stanzas and `.ml` files can be deleted
 
-**Unclear** — still have plain `;` comment with no explanation:
-- `test_gdkpixbuf.ml`, `test_pango.ml`, `test_clipboard.ml`, `test_snapshot.ml`,
-  `test_gobj.ml`
-- Read each file and assign to Delete / Rewrite / Re-enable category
+**Unclear — now categorised (2026-04-22):**
+- `test_gdkpixbuf.ml` → **Re-enable**: tests GdkPixbuf API; compilable
+- `test_pango.ml` → **Re-enable**: tests Pango API; compilable
+- `test_clipboard.ml` → **Rewrite**: defines inline `gtk_available`/`require_gtk`; needs Gtk_test_helpers migration too
+- `test_snapshot.ml` → **Re-enable**: tests GtkSnapshot/Graphene; most tests skip for missing widget instances
+- `test_gobj.ml` → **Re-enable**: tests GObj types; most tests skip without GTK init
 
 ### 5.2 Clean up `ocgtk/tests/dune`
 
