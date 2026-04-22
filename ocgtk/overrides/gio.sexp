@@ -280,6 +280,8 @@
     )
 
   (class SubprocessLauncher
+    (method take_fd (not_os "windows"))
+    (method close (not_os "windows"))
     (method take_stdout_fd (not_os "windows"))
     (method take_stderr_fd (not_os "windows"))
     (method take_stdin_fd (not_os "windows"))
