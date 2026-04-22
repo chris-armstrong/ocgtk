@@ -5,9 +5,8 @@
    explicitly triggering minor GC. They are kept in a separate file for future
    investigation and should NOT be run in CI or normal test execution.
 
-   The core GValue functionality works correctly in normal usage (as shown by
-   the passing tests in test_gobject.ml). These stress tests may be fixed in
-   future work with more sophisticated GC handling. *)
+   The core GValue functionality works correctly in normal usage. These stress
+   tests may be fixed in future work with more sophisticated GC handling. *)
 
 open Alcotest
 
