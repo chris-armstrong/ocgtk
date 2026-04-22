@@ -1,7 +1,5 @@
 (* External Declaration Tests - Validates external function declarations in generated ML *)
 
-open Gir_gen_lib.Types
-
 let create_test_context = Helpers.create_test_context
 
 (* ========================================================================= *)
@@ -12,59 +10,17 @@ let test_method_multiple_params () =
   let ctx = create_test_context () in
 
   let meth =
-    {
-      method_name = "set_range";
-      c_identifier = "gtk_adjustment_set_range";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    Type_factory.make_gir_method ~method_name:"set_range"
+      ~c_identifier:"gtk_adjustment_set_range"
+      ~return_type:Type_factory.void_type
+      ~parameters:
         [
-          {
-            param_name = "lower";
-            param_type =
-              {
-                name = "gdouble";
-                c_type = Some "gdouble";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-          {
-            param_name = "upper";
-            param_type =
-              {
-                name = "gdouble";
-                c_type = Some "gdouble";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      get_property = None;
-      set_property = None;
-      introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+          Type_factory.make_gir_param ~param_name:"lower"
+            ~param_type:Type_factory.gdouble_type ();
+          Type_factory.make_gir_param ~param_name:"upper"
+            ~param_type:Type_factory.gdouble_type ();
+        ]
+      ()
   in
 
   let ml_code =
@@ -102,44 +58,14 @@ let test_method_with_object_param () =
   let ctx = create_test_context () in
 
   let meth =
-    {
-      method_name = "set_child";
-      c_identifier = "gtk_window_set_child";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    Type_factory.make_gir_method ~method_name:"set_child"
+      ~c_identifier:"gtk_window_set_child" ~return_type:Type_factory.void_type
+      ~parameters:
         [
-          {
-            param_name = "child";
-            param_type =
-              {
-                name = "Widget";
-                c_type = Some "GtkWidget*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      get_property = None;
-      set_property = None;
-      introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+          Type_factory.make_gir_param ~param_name:"child"
+            ~param_type:Type_factory.widget_type ();
+        ]
+      ()
   in
 
   let ml_code =
@@ -175,44 +101,10 @@ let test_method_with_bool_param () =
   let ctx = create_test_context () in
 
   let meth =
-    {
-      method_name = "set_visible";
-      c_identifier = "gtk_widget_set_visible";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
-        [
-          {
-            param_name = "visible";
-            param_type =
-              {
-                name = "gboolean";
-                c_type = Some "gboolean";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      get_property = None;
-      set_property = None;
-      introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+    Type_factory.make_gir_method ~method_name:"set_visible"
+      ~c_identifier:"gtk_widget_set_visible" ~return_type:Type_factory.void_type
+      ~parameters:[ Type_factory.make_bool_param ~param_name:"visible" () ]
+      ()
   in
 
   let ml_code =
@@ -248,27 +140,8 @@ let test_method_with_int_return () =
   let ctx = create_test_context () in
 
   let meth =
-    {
-      method_name = "get_width";
-      c_identifier = "gtk_widget_get_width";
-      return_type =
-        {
-          name = "gint";
-          c_type = Some "gint";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      get_property = None;
-      set_property = None;
-      introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+    Type_factory.make_int_method ~method_name:"get_width"
+      ~c_identifier:"gtk_widget_get_width" ()
   in
 
   let ml_code =
@@ -302,49 +175,14 @@ let test_constructor_with_multiple_params () =
   let ctx = create_test_context () in
 
   let ctor =
-    {
-      ctor_name = "new_with_label_and_mnemonic";
-      c_identifier = "gtk_button_new_with_label_and_mnemonic";
-      ctor_parameters =
+    Type_factory.make_gir_constructor ~ctor_name:"new_with_label_and_mnemonic"
+      ~c_identifier:"gtk_button_new_with_label_and_mnemonic"
+      ~ctor_parameters:
         [
-          {
-            param_name = "label";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const gchar*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-          {
-            param_name = "use_mnemonic";
-            param_type =
-              {
-                name = "gboolean";
-                c_type = Some "gboolean";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      ctor_doc = None;
-      throws = false;
-      ctor_introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+          Type_factory.make_string_param ~param_name:"label" ();
+          Type_factory.make_bool_param ~param_name:"use_mnemonic" ();
+        ]
+      ()
   in
 
   let ml_code =
@@ -382,44 +220,17 @@ let test_method_with_nullable_object () =
   let ctx = create_test_context () in
 
   let meth =
-    {
-      method_name = "set_parent";
-      c_identifier = "gtk_widget_set_parent";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    Type_factory.make_gir_method ~method_name:"set_parent"
+      ~c_identifier:"gtk_widget_set_parent" ~return_type:Type_factory.void_type
+      ~parameters:
         [
-          {
-            param_name = "parent";
-            param_type =
-              {
-                name = "Widget";
-                c_type = Some "GtkWidget*";
-                nullable = true;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = true;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      get_property = None;
-      set_property = None;
-      introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+          Type_factory.make_gir_param ~param_name:"parent"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"Widget" ~c_type:"GtkWidget*"
+                 ~nullable:true ())
+            ~nullable:true ();
+        ]
+      ()
   in
 
   let ml_code =
@@ -454,27 +265,9 @@ let test_property_getter () =
   let ctx = create_test_context () in
 
   let meth =
-    {
-      method_name = "get_label";
-      c_identifier = "gtk_button_get_label";
-      return_type =
-        {
-          name = "utf8";
-          c_type = Some "const gchar*";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      get_property = Some "label";
-      set_property = None;
-      introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+    Type_factory.make_gir_method ~method_name:"get_label"
+      ~c_identifier:"gtk_button_get_label" ~return_type:Type_factory.utf8_type
+      ~get_property:"label" ()
   in
 
   let ml_code =
@@ -505,44 +298,10 @@ let test_property_setter () =
   let ctx = create_test_context () in
 
   let meth =
-    {
-      method_name = "set_label";
-      c_identifier = "gtk_button_set_label";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
-        [
-          {
-            param_name = "label";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const gchar*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      get_property = None;
-      set_property = Some "label";
-      introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+    Type_factory.make_gir_method ~method_name:"set_label"
+      ~c_identifier:"gtk_button_set_label" ~return_type:Type_factory.void_type
+      ~parameters:[ Type_factory.make_string_param ~param_name:"label" () ]
+      ~set_property:"label" ()
   in
 
   let ml_code =
@@ -575,27 +334,12 @@ let test_property_getter_nullable () =
   let ctx = create_test_context () in
 
   let meth =
-    {
-      method_name = "get_tooltip_text";
-      c_identifier = "gtk_widget_get_tooltip_text";
-      return_type =
-        {
-          name = "utf8";
-          c_type = Some "gchar*";
-          nullable = true;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      get_property = Some "tooltip-text";
-      set_property = None;
-      introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+    Type_factory.make_gir_method ~method_name:"get_tooltip_text"
+      ~c_identifier:"gtk_widget_get_tooltip_text"
+      ~return_type:
+        (Type_factory.make_gir_type ~name:"utf8" ~c_type:"gchar*" ~nullable:true
+           ())
+      ~get_property:"tooltip-text" ()
   in
 
   let ml_code =

@@ -1,7 +1,5 @@
 (* Type Definition Tests - Validates generated OCaml type definitions using AST *)
 
-open Gir_gen_lib.Types
-
 (* ========================================================================= *)
 (* Test Context Setup *)
 (* ========================================================================= *)
@@ -75,17 +73,8 @@ let test_constructor_external_declaration () =
   let ctx = create_test_context () in
 
   let ctor =
-    {
-      ctor_name = "new";
-      c_identifier = "gtk_button_new";
-      ctor_parameters = [];
-      ctor_doc = None;
-      throws = false;
-      ctor_introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+    Type_factory.make_gir_constructor ~ctor_name:"new"
+      ~c_identifier:"gtk_button_new" ()
   in
 
   (* Generate .ml with constructor *)
@@ -121,44 +110,14 @@ let test_method_with_nullable_param () =
   let ctx = create_test_context () in
 
   let meth =
-    {
-      method_name = "set_label";
-      c_identifier = "gtk_button_set_label";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    Type_factory.make_gir_method ~method_name:"set_label"
+      ~c_identifier:"gtk_button_set_label" ~return_type:Type_factory.void_type
+      ~parameters:
         [
-          {
-            param_name = "label";
-            param_type =
-              {
-                name = "utf8";
-                c_type = Some "const gchar*";
-                nullable = true;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = true;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      get_property = None;
-      set_property = None;
-      introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+          Type_factory.make_gir_param ~param_name:"label"
+            ~param_type:Type_factory.string_option_type ~nullable:true ();
+        ]
+      ()
   in
 
   (* Generate .ml with method *)
@@ -195,27 +154,8 @@ let test_method_with_return_value () =
   let ctx = create_test_context () in
 
   let meth =
-    {
-      method_name = "get_label";
-      c_identifier = "gtk_button_get_label";
-      return_type =
-        {
-          name = "utf8";
-          c_type = Some "const gchar*";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      get_property = None;
-      set_property = None;
-      introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+    Type_factory.make_string_method ~method_name:"get_label"
+      ~c_identifier:"gtk_button_get_label" ()
   in
 
   (* Generate .ml with method *)
@@ -247,27 +187,9 @@ let test_nullable_return_value () =
   let ctx = create_test_context () in
 
   let meth =
-    {
-      method_name = "get_label";
-      c_identifier = "gtk_button_get_label";
-      return_type =
-        {
-          name = "utf8";
-          c_type = Some "const gchar*";
-          nullable = true;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      get_property = None;
-      set_property = None;
-      introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+    Type_factory.make_gir_method ~method_name:"get_label"
+      ~c_identifier:"gtk_button_get_label"
+      ~return_type:Type_factory.string_option_type ()
   in
 
   (* Generate .ml with method *)
