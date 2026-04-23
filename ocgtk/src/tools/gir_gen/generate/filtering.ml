@@ -219,24 +219,6 @@ let should_generate_record (record : gir_record) =
   (* Also filter out *Private records - internal structures not in public headers *)
   && not (should_skip_private_record record)
 
-(* Check if a method has a parameter with interface type *)
-let method_has_interface_param ~ctx (meth : gir_method) =
-  List.exists meth.parameters ~f:(fun p ->
-      let check_interface_by_name name =
-        if name = "" then false
-        else
-          match Type_mappings.lookup_interface ctx.interfaces name with
-          | Some _ -> true
-          | None -> false
-      in
-      let check_interface_by_c_type c_type_opt =
-        match c_type_opt with
-        | None -> false
-        | Some c_type -> check_interface_by_name c_type
-      in
-      check_interface_by_name p.param_type.name
-      || check_interface_by_c_type p.param_type.c_type)
-
 let should_generate_class (cls : gir_class) = cls.introspectable
 let should_generate_interface (_intf : gir_interface) = true
 

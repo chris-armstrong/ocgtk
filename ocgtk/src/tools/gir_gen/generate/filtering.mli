@@ -47,9 +47,6 @@ val should_generate_record : gir_record -> bool
 val should_generate_class : gir_class -> bool
 val should_generate_interface : gir_interface -> bool
 
-(* Check if a method has a parameter with interface type *)
-val method_has_interface_param : ctx:generation_context -> gir_method -> bool
-
 (* Check if a C type is a string type *)
 val is_string_type : string option -> bool
 
