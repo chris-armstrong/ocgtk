@@ -432,18 +432,19 @@ let log_generated_c_code test_name c_code =
 (* C Stub Generation Helpers *)
 (* ========================================================================= *)
 
-(** [generate_and_find_c_method ~c_type ~class_name meth] generates the C stub
-    for [meth] against [c_type]/[class_name], parses the result, and returns the
-    primary generated function (the one whose name is
+(** [generate_and_find_c_method ?ctx ?log_label ~c_type ~class_name meth]
+    generates the C stub for [meth] against [c_type]/[class_name], parses the
+    result, and returns the primary generated function (the one whose name is
     ["ml_" ^ meth.c_identifier]). Fails the test if the function is not found in
-    the output. *)
-let generate_and_find_c_method ~c_type ~class_name
-    (meth : Gir_gen_lib.Types.gir_method) =
-  let ctx = create_test_context () in
+    the output. Pass [~log_label] to echo the generated C to stdout for
+    debugging. Pass [~ctx] to override the default test context. *)
+let generate_and_find_c_method ?(ctx = create_test_context ()) ?log_label
+    ~c_type ~class_name (meth : Gir_gen_lib.Types.gir_method) =
   let c_code =
     Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx ~c_type meth
       class_name
   in
+  Option.iter (fun label -> log_generated_c_code label c_code) log_label;
   let functions = C_parser.parse_c_code c_code in
   let fn_name = "ml_" ^ meth.c_identifier in
   match

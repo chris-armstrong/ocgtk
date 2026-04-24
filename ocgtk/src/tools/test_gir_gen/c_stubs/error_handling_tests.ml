@@ -6,102 +6,67 @@ open Type_factory
 (* Methods under test *)
 (* =================================================================== *)
 
-let generate_c_method = Gir_gen_lib.Generate.C_stub_method.generate_c_method
-
 let generate_c_constructor =
   Gir_gen_lib.Generate.C_stub_constructor.generate_c_constructor
-
-(* ========================================================================= *)
-(* Test Helpers *)
-(* ========================================================================= *)
-
-let parse_c_string c_code = C_parser.parse_c_code c_code
-let find_function functions name = C_ast.find_function functions name
 
 (* ========================================================================= *)
 (* Error Handling Tests *)
 (* ========================================================================= *)
 
 let test_method_with_throws_declares_error () =
-  let ctx = Helpers.create_test_context () in
   let meth =
     make_gir_method ~method_name:"save_to_file"
       ~c_identifier:"gtk_widget_save_to_file" ~return_type:gboolean_type
       ~parameters:[ make_string_param ~param_name:"filename" () ]
       ~throws:true ()
   in
-
-  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
-
-  Helpers.log_generated_c_code "method with throws declares error" c_code;
-
-  let functions = parse_c_string c_code in
   let func =
-    Option.get (find_function functions "ml_gtk_widget_save_to_file")
+    Helpers.generate_and_find_c_method
+      ~log_label:"method with throws declares error" ~c_type:"GtkWidget"
+      ~class_name:"Widget" meth
   in
-
-  (* Should declare GError* error variable *)
   Alcotest.(check bool)
     "Declares GError variable" true
     (C_ast.has_var_decl func "error")
 
 let test_error_handling_uses_res_ok () =
-  let ctx = Helpers.create_test_context () in
   let meth =
     make_gir_method ~method_name:"load_file"
       ~c_identifier:"gtk_widget_load_file" ~return_type:gboolean_type
       ~parameters:[ make_string_param ~param_name:"filename" () ]
       ~throws:true ()
   in
-
-  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
-
-  Helpers.log_generated_c_code "error handling uses res ok" c_code;
-
-  let functions = parse_c_string c_code in
-  let func = Option.get (find_function functions "ml_gtk_widget_load_file") in
-
-  (* Should return result type with Res_Ok/Res_Error *)
+  let func =
+    Helpers.generate_and_find_c_method ~log_label:"error handling uses res ok"
+      ~c_type:"GtkWidget" ~class_name:"Widget" meth
+  in
   Alcotest.(check bool)
     "Returns result type" true
     (C_validation.returns_result_type func)
 
 let test_error_passed_by_reference () =
-  let ctx = Helpers.create_test_context () in
   let meth =
     make_gir_method ~method_name:"save" ~c_identifier:"gtk_widget_save"
       ~return_type:gboolean_type ~throws:true ()
   in
-
-  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
-
-  Helpers.log_generated_c_code "error passed by reference" c_code;
-
-  let functions = parse_c_string c_code in
-  let func = Option.get (find_function functions "ml_gtk_widget_save") in
-
-  (* Should pass error by reference (&error) to C function *)
+  let func =
+    Helpers.generate_and_find_c_method ~log_label:"error passed by reference"
+      ~c_type:"GtkWidget" ~class_name:"Widget" meth
+  in
   Alcotest.(check bool)
     "Error passed by reference" true
     (C_validation.out_param_passed_by_ref func "error" "gtk_widget_save")
 
 let test_error_initialized_to_null () =
-  let ctx = Helpers.create_test_context () in
   let meth =
     make_gir_method ~method_name:"open" ~c_identifier:"gtk_widget_open"
       ~return_type:gboolean_type ~throws:true ()
   in
-
-  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
-
-  Helpers.log_generated_c_code "error initialized to null" c_code;
-
-  let functions = parse_c_string c_code in
-  let func = Option.get (find_function functions "ml_gtk_widget_open") in
-
-  (* Error variable should be declared (initialization to NULL is implicit) *)
+  let func =
+    Helpers.generate_and_find_c_method ~log_label:"error initialized to null"
+      ~c_type:"GtkWidget" ~class_name:"Widget" meth
+  in
   let var_decls = C_ast.get_var_decls func in
-
   Alcotest.(check bool)
     "Error variable declared" true
     (List.exists
@@ -110,20 +75,14 @@ let test_error_initialized_to_null () =
        var_decls)
 
 let test_has_complete_error_handling () =
-  let ctx = Helpers.create_test_context () in
   let meth =
     make_gir_method ~method_name:"process" ~c_identifier:"gtk_widget_process"
       ~return_type:gboolean_type ~throws:true ()
   in
-
-  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
-
-  Helpers.log_generated_c_code "has complete error handling" c_code;
-
-  let functions = parse_c_string c_code in
-  let func = Option.get (find_function functions "ml_gtk_widget_process") in
-
-  (* Should have complete error handling infrastructure *)
+  let func =
+    Helpers.generate_and_find_c_method ~log_label:"has complete error handling"
+      ~c_type:"GtkWidget" ~class_name:"Widget" meth
+  in
   Alcotest.(check bool)
     "Has complete error handling" true
     (C_validation.has_error_handling func)
@@ -136,19 +95,14 @@ let test_constructor_with_throws () =
       ~ctor_parameters:[ make_string_param ~param_name:"filename" () ]
       ~throws:true ()
   in
-
   let c_code =
     generate_c_constructor ~ctx ~c_type:"GtkWidget" ~class_name:"Widget" ctor
   in
-
   Helpers.log_generated_c_code "constructor with throws" c_code;
-
-  let functions = parse_c_string c_code in
+  let functions = C_parser.parse_c_code c_code in
   let func =
-    Option.get (find_function functions "ml_gtk_widget_new_from_file")
+    Option.get (C_ast.find_function functions "ml_gtk_widget_new_from_file")
   in
-
-  (* Constructor with throws should also have error handling *)
   Alcotest.(check bool)
     "Constructor with throws has error handling" true
     (C_validation.has_error_handling func)

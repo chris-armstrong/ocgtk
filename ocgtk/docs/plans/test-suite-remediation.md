@@ -1,14 +1,13 @@
 # Test Suite Remediation Plan
 
-**Status: 🔄 IN PROGRESS — Phases 1, 1.5, 2, 3, 4.1, 4.3, 4.4, 5 complete (2026-04-23)**
-**Last revised: 2026-04-23** — Phase 2.8 complete: `assert_contains` and
-`assert_not_contains` deleted; `string_contains` redocumented as a controlled
-primitive (not deprecated) with inline exception comments at all 6 remaining
-call sites; `layer2_helpers.ml` documented. Phase 3.3 complete: `classify_type_tests`
-and `header_pipeline_tests` fully migrated to entity factories + `make_generation_context`;
-`header_pipeline_tests` gained `make_cr`/`make_single_ns_ctx`/`generate_header`
-shared helpers eliminating 5× repeated context blocks. Remaining: Phase 4.2
-(C-stub test helper), Phase 4.5 (context builder follow-up).
+**Status: ✅ COMPLETE — All phases done (2026-04-23)**
+**Last revised: 2026-04-23** — Phase 4.2 complete: `generate_and_find_c_method`
+helper added to `helpers.ml`; all eligible call sites in `nullable_tests.ml`,
+`type_conversion_tests.ml`, `error_handling_tests.ml`, `out_params_tests.ml`, and
+`array_tests.ml` migrated (~120 lines saved); 3 sites in `array_tests.ml` that use
+`generate_c_method` directly (check_raises, string check, callback) intentionally
+retained. Phase 4.5 complete: `header_pipeline_tests.ml` shared helpers
+(`make_cr`/`make_single_ns_ctx`/`generate_header`) done as part of Phase 3.3.
 
 ## Overview
 
@@ -480,15 +479,19 @@ assert_true "Generator should exit successfully" (exit_code = 0);
 method → generate C → parse → find function.
 
 **Actions:**
-- [ ] Add to `infrastructure/helpers.ml` or a new `c_stubs/c_stub_test_helpers.ml`:
+- [x] Add to `infrastructure/helpers.ml`:
   ```ocaml
   val generate_and_find_c_method
-    :  c_type:string
+    :  ?ctx:generation_context
+    -> ?log_label:string
+    -> c_type:string
     -> class_name:string
     -> gir_method
     -> c_function  (* parsed result, or fails test *)
   ```
-- [ ] Replace call sites across `c_stubs/`
+- [x] Replace call sites across `c_stubs/`: `nullable_tests.ml`,
+  `type_conversion_tests.ml`, `error_handling_tests.ml`, `out_params_tests.ml`,
+  `array_tests.ml` (10 of 13 tests; 3 retained for check_raises/string/callback use)
 
 ### 4.3 GTK init deduplication in `ocgtk/tests/` (~65 lines saved)
 
@@ -531,13 +534,15 @@ and `integration/signals_tests.ml` as a namespace filler.
 
 ### 4.5 Cross-namespace context builder (~105 lines saved)
 
-`cross_namespace/integration_tests.ml` builds a full `generation_context` with
-`StringMap` cross-references in every test function (~35 lines × 4 tests).
+`cross_namespace/integration_tests.ml` (now `header_pipeline_tests.ml`) builds a
+full `generation_context` with `StringMap` cross-references in every test function.
 
 **Actions:**
-- [ ] After Phase 3.3 (factory migration), verify `Type_factory.make_generation_context`
-  + the new `make_cross_reference_map` helper covers this case
-- [ ] Replace inline context construction in all 4 test functions
+- [x] After Phase 3.3 (factory migration), verify `Type_factory.make_generation_context`
+  + the new `make_cross_reference_map` helper covers this case — confirmed
+- [x] Replace inline context construction in all test functions — done as part of
+  Phase 3.3: `make_cr`/`make_single_ns_ctx`/`generate_header` file-local helpers
+  reduce each test from ~15 lines to 3–5 lines
 
 ---
 

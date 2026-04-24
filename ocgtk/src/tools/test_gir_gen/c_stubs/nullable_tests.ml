@@ -2,64 +2,36 @@
 
 open Type_factory
 
-(* =================================================================== *)
-(* Methods under test *)
-(* =================================================================== *)
-
-let generate_c_method = Gir_gen_lib.Generate.C_stub_method.generate_c_method
-
-(* ========================================================================= *)
-(* Test Helpers *)
-(* ========================================================================= *)
-
-(* Parse C code string and return our AST *)
-let parse_c_string c_code = C_parser.parse_c_code c_code
-
-(* Find a function by name *)
-let find_function functions name = C_ast.find_function functions name
-
 (* ========================================================================= *)
 (* Nullable String Parameter Tests *)
 (* ========================================================================= *)
 
 let test_nullable_string_param () =
-  let ctx = Helpers.create_test_context () in
   let meth =
     make_gir_method ~method_name:"set_title"
       ~c_identifier:"gtk_window_set_title" ~return_type:void_type
       ~parameters:[ make_string_param ~param_name:"title" ~nullable:true () ]
       ()
   in
-
-  let c_code = generate_c_method ~ctx ~c_type:"GtkWindow" meth "Window" in
-
-  Helpers.log_generated_c_code "nullable string parameter" c_code;
-
-  let functions = parse_c_string c_code in
-  let func = Option.get (find_function functions "ml_gtk_window_set_title") in
-
-  (* Should use String_option_val for nullable string *)
+  let func =
+    Helpers.generate_and_find_c_method ~log_label:"nullable string parameter"
+      ~c_type:"GtkWindow" ~class_name:"Window" meth
+  in
   Alcotest.(check bool)
     "Uses String_option_val for nullable string" true
     (C_validation.handles_nullable_param func "title")
 
 let test_nullable_object_param () =
-  let ctx = Helpers.create_test_context () in
   let meth =
     make_gir_method ~method_name:"set_parent"
       ~c_identifier:"gtk_widget_set_parent" ~return_type:void_type
       ~parameters:[ make_widget_param ~param_name:"parent" ~nullable:true () ]
       ()
   in
-
-  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
-
-  Helpers.log_generated_c_code "nullable object parameter" c_code;
-
-  let functions = parse_c_string c_code in
-  let func = Option.get (find_function functions "ml_gtk_widget_set_parent") in
-
-  (* Should use Option_val for nullable object *)
+  let func =
+    Helpers.generate_and_find_c_method ~log_label:"nullable object parameter"
+      ~c_type:"GtkWidget" ~class_name:"Widget" meth
+  in
   Alcotest.(check bool)
     "uses GtkWidget_val" true
     (C_validation.param_converted_with_val_macro func "arg1" "GtkWidget");
@@ -68,43 +40,31 @@ let test_nullable_object_param () =
     (C_validation.handles_nullable_param func "parent")
 
 let test_non_nullable_string () =
-  let ctx = Helpers.create_test_context () in
   let meth =
     make_gir_method ~method_name:"set_label"
       ~c_identifier:"gtk_button_set_label" ~return_type:void_type
       ~parameters:[ make_string_param ~param_name:"label" ~nullable:false () ]
       ()
   in
-
-  let c_code = generate_c_method ~ctx ~c_type:"GtkButton" meth "Button" in
-
-  Helpers.log_generated_c_code "non nullable string" c_code;
-
-  let functions = parse_c_string c_code in
-  let func = Option.get (find_function functions "ml_gtk_button_set_label") in
-
-  (* Should NOT use nullable handling for non-nullable param *)
+  let func =
+    Helpers.generate_and_find_c_method ~log_label:"non nullable string"
+      ~c_type:"GtkButton" ~class_name:"Button" meth
+  in
   Alcotest.(check bool)
     "Does not use nullable handling for non-nullable string" false
     (C_validation.handles_nullable_param func "label")
 
 let test_nullable_return_value () =
-  let ctx = Helpers.create_test_context () in
   let meth =
     make_gir_method ~method_name:"get_parent"
       ~c_identifier:"gtk_widget_get_parent"
       ~return_type:(make_widget_type ~nullable:true ())
       ()
   in
-
-  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
-
-  Helpers.log_generated_c_code "nullable return value" c_code;
-
-  let functions = parse_c_string c_code in
-  let func = Option.get (find_function functions "ml_gtk_widget_get_parent") in
-
-  (* Should have a return statement *)
+  let func =
+    Helpers.generate_and_find_c_method ~log_label:"nullable return value"
+      ~c_type:"GtkWidget" ~class_name:"Widget" meth
+  in
   Alcotest.(check bool)
     "Has return statement for nullable return" true
     (C_ast.has_return_stmt func.C_ast.body);
@@ -116,7 +76,6 @@ let test_nullable_return_value () =
     (C_validation.uses_correct_return_macro func "Val_GtkWidget")
 
 let test_multiple_nullable_params () =
-  let ctx = Helpers.create_test_context () in
   let meth =
     make_gir_method ~method_name:"set_data" ~c_identifier:"gtk_widget_set_data"
       ~return_type:void_type
@@ -127,38 +86,28 @@ let test_multiple_nullable_params () =
         ]
       ()
   in
-
-  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
-
-  Helpers.log_generated_c_code "multiple nullable params" c_code;
-
-  let functions = parse_c_string c_code in
-  let func = Option.get (find_function functions "ml_gtk_widget_set_data") in
-
-  (* Should handle both nullable params *)
-  let handles_key = C_validation.handles_nullable_param func "key" in
-  let handles_value = C_validation.handles_nullable_param func "value" in
-
-  Alcotest.(check bool) "Handles first nullable param" true handles_key;
-  Alcotest.(check bool) "Handles second nullable param" true handles_value
+  let func =
+    Helpers.generate_and_find_c_method ~log_label:"multiple nullable params"
+      ~c_type:"GtkWidget" ~class_name:"Widget" meth
+  in
+  Alcotest.(check bool)
+    "Handles first nullable param" true
+    (C_validation.handles_nullable_param func "key");
+  Alcotest.(check bool)
+    "Handles second nullable param" true
+    (C_validation.handles_nullable_param func "value")
 
 let test_nullable_param_count () =
-  let ctx = Helpers.create_test_context () in
   let meth =
     make_gir_method ~method_name:"set_title"
       ~c_identifier:"gtk_window_set_title" ~return_type:void_type
       ~parameters:[ make_string_param ~param_name:"title" ~nullable:true () ]
       ()
   in
-
-  let c_code = generate_c_method ~ctx ~c_type:"GtkWindow" meth "Window" in
-
-  Helpers.log_generated_c_code "nullable param count" c_code;
-
-  let functions = parse_c_string c_code in
-  let func = Option.get (find_function functions "ml_gtk_window_set_title") in
-
-  (* Should have 2 parameters: self + title *)
+  let func =
+    Helpers.generate_and_find_c_method ~log_label:"nullable param count"
+      ~c_type:"GtkWindow" ~class_name:"Window" meth
+  in
   Alcotest.(check int)
     "Has correct parameter count" 2
     (C_ast.get_param_count func)
