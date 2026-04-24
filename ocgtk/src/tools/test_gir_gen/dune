@@ -1,11 +1,96 @@
 (include_subdirs unqualified)
 
-(test
- (name test_gir_gen)
+; ---- Shared test-support library (no gir_gen.exe dependency) ---------------
+; Infrastructure helpers and factories used by both test stanzas.
+; (wrapped false) keeps module names unqualified (Helpers, C_parser, etc.)
+
+(library
+ (name test_gir_gen_helpers)
+ (wrapped false)
  (modules
   helpers
   pipeline_tmp
   c_compiler
+  c_ast
+  c_parser
+  c_validation
+  ml_ast_helpers
+  ml_validation
+  layer2_helpers
+  type_factory
+  fixtures)
+ (libraries gir_gen_lib alcotest ppxlib sexplib str unix))
+
+; ---- Unit and pipeline tests (no gir_gen.exe dependency) -------------------
+; These can run even if gir_gen.exe fails to build.
+
+(test
+ (name test_gir_gen)
+ (modules
+  test_gir_gen
+  ; Layer 0 — C Stub Generation
+  generation_tests
+  header_naming_tests
+  header_generation_tests
+  c_validation_tests
+  nullable_tests
+  error_handling_tests
+  out_params_tests
+  array_tests
+  type_conversion_tests
+  c_stub_version_guard_tests
+  ; Layer 1 — ML Generation
+  type_definition_tests
+  external_decl_tests
+  signature_tests
+  ; Layer 2 — Class Generation (pure unit/pipeline)
+  method_wrapper_tests
+  constructor_wrapper_tests
+  signal_wrapper_tests
+  ; Interface — parsing only (pure unit, no subprocess)
+  parsing_tests
+  ; Cross-namespace (pure unit/pipeline)
+  no_external_enum_decls_tests
+  no_external_bitfield_decls_tests
+  dependency_includes_tests
+  dependency_exclusion_tests
+  c_stub_include_tests
+  classify_type_tests
+  header_pipeline_tests
+  compilation_tests
+  ; Override system
+  types_tests
+  parser_tests
+  apply_tests
+  extractor_tests
+  apply_with_parsed_gir_tests
+  pipeline_tests
+  version_guard_tests
+  enum_member_version_tests)
+ (libraries
+  test_gir_gen_helpers
+  gir_gen_lib
+  alcotest
+  ppxlib
+  sexplib
+  str
+  unix))
+
+; ---- Integration tests (require gir_gen.exe) --------------------------------
+; Spawns gir_gen.exe as a subprocess or reads its output artefacts.
+
+(test
+ (name test_gir_gen_integration)
+ (modules
+  test_gir_gen_integration
+  ; Layer 2 — interface tests that call gir_gen.exe
+  interface_inheritance_tests
+  interface_method_types_tests
+  ; Interface — from_gobject C stub generation (calls gir_gen.exe)
+  from_gobject_tests
+  ; Cross-namespace regression test (calls gir_gen.exe)
+  c_stub_tests
+  ; Integration — end-to-end subprocess tests
   gir_parsing_tests
   widget_generation_tests
   nullable_generation_tests
@@ -15,53 +100,7 @@
   enums_tests
   records_tests
   properties_tests
-  edge_cases_tests
-  c_ast
-  c_parser
-  c_validation
-  c_validation_tests
-  ml_ast_helpers
-  ml_validation
-  layer2_helpers
-  generation_tests
-  header_naming_tests
-  header_generation_tests
-  nullable_tests
-  error_handling_tests
-  out_params_tests
-  array_tests
-  type_conversion_tests
-  type_definition_tests
-  external_decl_tests
-  signature_tests
-  method_wrapper_tests
-  constructor_wrapper_tests
-  signal_wrapper_tests
-  c_stub_tests
-  no_external_enum_decls_tests
-  no_external_bitfield_decls_tests
-  dependency_includes_tests
-  dependency_exclusion_tests
-  c_stub_include_tests
-  classify_type_tests
-  header_pipeline_tests
-  compilation_tests
-  version_guard_tests
-  c_stub_version_guard_tests
-  fixtures
-  types_tests
-  parser_tests
-  apply_tests
-  extractor_tests
-  apply_with_parsed_gir_tests
-  pipeline_tests
-  enum_member_version_tests
-  parsing_tests
-  from_gobject_tests
-  interface_inheritance_tests
-  interface_method_types_tests
-  test_gir_gen
-  type_factory)
+  edge_cases_tests)
  (deps
   %{exe:../gir_gen/gir_gen.exe}
   (source_tree %{project_root}/ocgtk/gir))
@@ -70,4 +109,11 @@
    "GIR_DATA_DIR"
    "%{project_root}/ocgtk/gir"
    (run %{test})))
- (libraries str unix gir_gen_lib alcotest ppxlib sexplib))
+ (libraries
+  test_gir_gen_helpers
+  gir_gen_lib
+  alcotest
+  ppxlib
+  sexplib
+  str
+  unix))
