@@ -1,18 +1,14 @@
 # Test Suite Remediation Plan
 
-**Status: 🔄 IN PROGRESS — Phases 1, 1.5, 2 (integration + partial 2.9), 3.1, 3.2, 3.3, 4.1, 4.3, 4.4, 5 complete (2026-04-22)**
-**Last revised: 2026-04-22** — Phases 1 and 1.5 complete (PR #100). Phase 2
-integration tests migrated via PR #106 (commit c3d612ea); 2.1 sig helpers done.
-Phase 4.1/4.3/4.4 deduplication done via PR #113. Phase 5 dune cleanup done
-(7 dead .ml files removed, comments actionable). Phase 2.9 partial: 4/7 unit-
-test files migrated (c_stubs/array_tests, cross_namespace/classify_type,
-interface/from_gobject done). Phase 3.2 complete: ml_generation/ tests migrated
-to Type_factory (440-line reduction). Phase 3.1 complete: override-test local
-factories delegate to Type_factory (195-line reduction). Phase 3.3 core helpers
-in place; per-namespace entity-map helper is optional follow-up. Phase 2.8 still
-blocked: deprecated helpers used in c_stub_version_guard_tests (18×),
-enum_member_version_tests (32×), layer2_helpers (4×). Remaining: Phase 2.8 +
-rest of 2.9, Phase 4.2 migration of C-stub tests, Phase 4.5 context builder.
+**Status: 🔄 IN PROGRESS — Phases 1, 1.5, 2, 3, 4.1, 4.3, 4.4, 5 complete (2026-04-23)**
+**Last revised: 2026-04-23** — Phase 2.8 complete: `assert_contains` and
+`assert_not_contains` deleted; `string_contains` redocumented as a controlled
+primitive (not deprecated) with inline exception comments at all 6 remaining
+call sites; `layer2_helpers.ml` documented. Phase 3.3 complete: `classify_type_tests`
+and `header_pipeline_tests` fully migrated to entity factories + `make_generation_context`;
+`header_pipeline_tests` gained `make_cr`/`make_single_ns_ctx`/`generate_header`
+shared helpers eliminating 5× repeated context blocks. Remaining: Phase 4.2
+(C-stub test helper), Phase 4.5 (context builder follow-up).
 
 ## Overview
 
@@ -378,14 +374,15 @@ still calling the deprecated helpers from `helpers.ml`:
 
 ### 2.8 Remove deprecated helpers from `helpers.ml`
 
-Once all callers are migrated, remove the deprecated functions.
-
 **Actions:**
-- [ ] Delete `string_contains` (lines 15–20 of `helpers.ml`)
-- [ ] Delete `assert_contains` (lines 24–27)
-- [ ] Delete `assert_not_contains` (lines 29–32)
-- [ ] Delete the DEPRECATED block comment (lines 9–13)
-- [ ] Verify build passes with no references remaining
+- [x] Delete `assert_contains` — zero callers, removed
+- [x] Delete `assert_not_contains` — zero callers, removed
+- [x] Delete the DEPRECATED block comment — replaced with a proper doc comment
+  on `string_contains` documenting when it is acceptable to use
+- [x] `string_contains` retained as a non-deprecated controlled primitive;
+  remaining 6 call sites all have inline comments explaining the exception
+  (C preprocessor directives / loop-body structure / Ppxlib manifest gaps)
+- [x] Verify build passes with no references remaining
 
 ---
 
@@ -436,10 +433,11 @@ construction.
   `Type_factory.make_generation_context`
 - [x] Add a `make_cross_reference_map` helper to `Type_factory` (takes an association
   list, builds the `StringMap`) to eliminate the repeated manual map construction
-- [ ] Remaining: per-namespace entity maps still use inline
-  `StringMap.empty |> StringMap.add "Foo" { ... } |> ...` patterns. A
-  `make_entity_map : (string * cross_reference) list -> cross_reference StringMap.t`
-  helper would further reduce duplication — optional follow-up.
+- [x] Remaining entity map inline records migrated to `make_cross_reference_entity`
+  + `make_cross_reference_type` in both files; `StringMap.add` calls kept for the
+  per-namespace key/value map (one-liner each — acceptable without a helper).
+  `header_pipeline_tests` gained `make_cr`/`make_single_ns_ctx`/`generate_header`
+  shared helpers reducing 5× repeated 15-line blocks to 3 lines each.
 
 ---
 

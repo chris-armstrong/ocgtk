@@ -12,6 +12,32 @@
 *)
 
 open C_validation
+open Gir_gen_lib.Types
+
+(* ========================================================================= *)
+(* Shared helpers *)
+(* ========================================================================= *)
+
+let make_cr ~cr_name ~cr_c_type cr_kind =
+  Type_factory.make_cross_reference_entity ~cr_name
+    ~cr_type:(Type_factory.make_cross_reference_type cr_kind)
+    ~cr_c_type ()
+
+let make_single_ns_ctx namespace_name cross_references =
+  Type_factory.make_generation_context
+    ~namespace:
+      (Type_factory.make_gir_namespace ~namespace_name ~namespace_version:"4.0"
+         ~namespace_shared_library:
+           (Printf.sprintf "lib%s-4.so.1"
+              (String.lowercase_ascii namespace_name))
+         ~namespace_c_identifier_prefixes:namespace_name
+         ~namespace_c_symbol_prefixes:(String.lowercase_ascii namespace_name)
+         ())
+    ~cross_references ()
+
+let generate_header ctx =
+  Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
+    ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
 
 (* ========================================================================= *)
 (* Header Pipeline Test Cases *)
@@ -19,168 +45,46 @@ open C_validation
 
 (* Stage 8 Test: Header generation with Gdk cross-references *)
 let test_header_generation_with_gdk_cross_references () =
-  (* Create context with Gdk cross-references simulating Gtk depending on Gdk *)
-  let open Gir_gen_lib.Types in
-  let texture_cr =
-    {
-      cr_name = "Texture";
-      cr_type = Crt_Class { parent = None; implements = [] };
-      cr_c_type = "GdkTexture";
-    }
-  in
-  let surface_cr =
-    {
-      cr_name = "Surface";
-      cr_type = Crt_Class { parent = None; implements = [] };
-      cr_c_type = "GdkSurface";
-    }
-  in
   let gdk_map =
-    StringMap.add "Texture" texture_cr StringMap.empty
-    |> StringMap.add "Surface" surface_cr
+    StringMap.add "Texture"
+      (make_cr ~cr_name:"Texture" ~cr_c_type:"GdkTexture" `Class)
+      StringMap.empty
+    |> StringMap.add "Surface"
+         (make_cr ~cr_name:"Surface" ~cr_c_type:"GdkSurface" `Class)
   in
   let cross_refs =
     Type_factory.make_cross_reference_map [ Helpers.make_ncr "Gdk" gdk_map ]
   in
-
-  let ctx =
-    {
-      namespace =
-        {
-          namespace_name = "Gtk";
-          namespace_version = "4.0";
-          namespace_shared_library = "libgtk-4.so.1";
-          namespace_c_identifier_prefixes = "Gtk";
-          namespace_c_symbol_prefixes = "gtk";
-        };
-      repository =
-        {
-          repository_c_includes = [];
-          repository_includes = [];
-          repository_packages = [];
-        };
-      classes = [];
-      interfaces = [];
-      enums = [];
-      bitfields = [];
-      records = [];
-      module_groups = Hashtbl.create 0;
-      current_cycle_classes = [];
-      cross_references = cross_refs;
-    }
-  in
-
-  (* Generate the Gtk header *)
-  let header_content =
-    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
-  in
-
-  (* Verify header guard *)
+  let ctx = make_single_ns_ctx "Gtk" cross_refs in
+  let header_content = generate_header ctx in
   assert_header_guard_format header_content "_gtk_decls_h_";
-
-  (* Critical: Verify gdk_decls.h is included *)
   assert_local_include_exists header_content "generated/gdk_decls.h"
 
 (* Stage 8 Test: Header generation with multiple dependencies *)
 let test_header_generation_with_multiple_dependencies () =
-  (* Create context with multiple cross-references *)
-  let open Gir_gen_lib.Types in
-  let gdk_cr =
-    {
-      cr_name = "Texture";
-      cr_type = Crt_Class { parent = None; implements = [] };
-      cr_c_type = "GdkTexture";
-    }
+  let gdk_map =
+    StringMap.add "Texture"
+      (make_cr ~cr_name:"Texture" ~cr_c_type:"GdkTexture" `Class)
+      StringMap.empty
   in
-  let gio_cr =
-    {
-      cr_name = "File";
-      cr_type = Crt_Class { parent = None; implements = [] };
-      cr_c_type = "GFile";
-    }
+  let gio_map =
+    StringMap.add "File"
+      (make_cr ~cr_name:"File" ~cr_c_type:"GFile" `Class)
+      StringMap.empty
   in
-  let gdk_map = StringMap.add "Texture" gdk_cr StringMap.empty in
-  let gio_map = StringMap.add "File" gio_cr StringMap.empty in
   let cross_refs =
     Type_factory.make_cross_reference_map
       [ Helpers.make_ncr "Gdk" gdk_map; Helpers.make_ncr "Gio" gio_map ]
   in
-
-  let ctx =
-    {
-      namespace =
-        {
-          namespace_name = "Gtk";
-          namespace_version = "4.0";
-          namespace_shared_library = "libgtk-4.so.1";
-          namespace_c_identifier_prefixes = "Gtk";
-          namespace_c_symbol_prefixes = "gtk";
-        };
-      repository =
-        {
-          repository_c_includes = [];
-          repository_includes = [];
-          repository_packages = [];
-        };
-      classes = [];
-      interfaces = [];
-      enums = [];
-      bitfields = [];
-      records = [];
-      module_groups = Hashtbl.create 0;
-      current_cycle_classes = [];
-      cross_references = cross_refs;
-    }
-  in
-
-  (* Generate the header *)
-  let header_content =
-    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
-  in
-
-  (* Verify both dependencies are included *)
+  let ctx = make_single_ns_ctx "Gtk" cross_refs in
+  let header_content = generate_header ctx in
   assert_local_include_exists header_content "generated/gdk_decls.h";
   assert_local_include_exists header_content "generated/gio_decls.h"
 
 (* Stage 8 Test: Header with no dependencies has no includes *)
 let test_header_no_dependencies_no_includes () =
-  (* Create context with no cross-references *)
-  let open Gir_gen_lib.Types in
-  let ctx =
-    {
-      namespace =
-        {
-          namespace_name = "Gdk";
-          namespace_version = "4.0";
-          namespace_shared_library = "libgdk-4.so.1";
-          namespace_c_identifier_prefixes = "Gdk";
-          namespace_c_symbol_prefixes = "gdk";
-        };
-      repository =
-        {
-          repository_c_includes = [];
-          repository_includes = [];
-          repository_packages = [];
-        };
-      classes = [];
-      interfaces = [];
-      enums = [];
-      bitfields = [];
-      records = [];
-      module_groups = Hashtbl.create 0;
-      current_cycle_classes = [];
-      cross_references = StringMap.empty;
-    }
-  in
-
-  (* Generate the header *)
-  let header_content =
-    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
-  in
-
+  let ctx = make_single_ns_ctx "Gdk" StringMap.empty in
+  let header_content = generate_header ctx in
   (* Verify no cross-namespace dependency includes are present.
      We check specifically that no generated/<ns>_decls.h includes appear,
      since that is the form all dependency includes take. The core header
@@ -193,168 +97,51 @@ let test_header_no_dependencies_no_includes () =
 
 (* Stage 8 Test: Base namespaces are filtered from dependencies *)
 let test_base_namespaces_filtered () =
-  (* Create context with base namespace cross-references *)
-  let open Gir_gen_lib.Types in
-  let glib_cr =
-    {
-      cr_name = "Object";
-      cr_type = Crt_Class { parent = None; implements = [] };
-      cr_c_type = "GObject";
-    }
+  let glib_map =
+    StringMap.add "Object"
+      (make_cr ~cr_name:"Object" ~cr_c_type:"GObject" `Class)
+      StringMap.empty
   in
-  let glib_map = StringMap.add "Object" glib_cr StringMap.empty in
   let cross_refs =
     Type_factory.make_cross_reference_map [ Helpers.make_ncr "GLib" glib_map ]
   in
-
-  let ctx =
-    {
-      namespace =
-        {
-          namespace_name = "Gtk";
-          namespace_version = "4.0";
-          namespace_shared_library = "libgtk-4.so.1";
-          namespace_c_identifier_prefixes = "Gtk";
-          namespace_c_symbol_prefixes = "gtk";
-        };
-      repository =
-        {
-          repository_c_includes = [];
-          repository_includes = [];
-          repository_packages = [];
-        };
-      classes = [];
-      interfaces = [];
-      enums = [];
-      bitfields = [];
-      records = [];
-      module_groups = Hashtbl.create 0;
-      current_cycle_classes = [];
-      cross_references = cross_refs;
-    }
-  in
-
-  (* Generate the header *)
-  let header_content =
-    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
-  in
-
-  (* Verify GLib is NOT included (it's a base namespace) *)
+  let ctx = make_single_ns_ctx "Gtk" cross_refs in
+  let header_content = generate_header ctx in
   assert_local_include_not_exists header_content "generated/glib_decls.h"
 
 (* Stage 8 Test: Gsk with Gdk dependency header structure *)
 let test_gsk_with_gdk_dependency () =
-  (* Create context simulating Gsk with Gdk dependency *)
-  let open Gir_gen_lib.Types in
-  let renderer_cr =
-    {
-      cr_name = "Renderer";
-      cr_type = Crt_Class { parent = None; implements = [] };
-      cr_c_type = "GdkSurface";
-    }
+  let gdk_map =
+    StringMap.add "Surface"
+      (make_cr ~cr_name:"Renderer" ~cr_c_type:"GdkSurface" `Class)
+      StringMap.empty
   in
-  let gdk_map = StringMap.add "Surface" renderer_cr StringMap.empty in
   let cross_refs =
     Type_factory.make_cross_reference_map [ Helpers.make_ncr "Gdk" gdk_map ]
   in
-
-  let ctx =
-    {
-      namespace =
-        {
-          namespace_name = "Gsk";
-          namespace_version = "4.0";
-          namespace_shared_library = "libgsk-4.so.1";
-          namespace_c_identifier_prefixes = "Gsk";
-          namespace_c_symbol_prefixes = "gsk";
-        };
-      repository =
-        {
-          repository_c_includes = [];
-          repository_includes = [];
-          repository_packages = [];
-        };
-      classes = [];
-      interfaces = [];
-      enums = [];
-      bitfields = [];
-      records = [];
-      module_groups = Hashtbl.create 0;
-      current_cycle_classes = [];
-      cross_references = cross_refs;
-    }
-  in
-
-  (* Generate the header *)
-  let header_content =
-    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
-  in
-
-  (* Verify header structure *)
+  let ctx = make_single_ns_ctx "Gsk" cross_refs in
+  let header_content = generate_header ctx in
   assert_header_guard_format header_content "_gsk_decls_h_";
   assert_local_include_exists header_content "generated/gdk_decls.h"
 
 (* Stage 8 Test: Complete dependency chain Gtk -> Gsk -> Gdk *)
 let test_complete_dependency_chain () =
-  (* Create context with complete Gtk dependency chain *)
-  let open Gir_gen_lib.Types in
-  let gsk_renderer_cr =
-    {
-      cr_name = "Renderer";
-      cr_type = Crt_Class { parent = None; implements = [] };
-      cr_c_type = "GskRenderer";
-    }
+  let gsk_map =
+    StringMap.add "Renderer"
+      (make_cr ~cr_name:"Renderer" ~cr_c_type:"GskRenderer" `Class)
+      StringMap.empty
   in
-  let gdk_texture_cr =
-    {
-      cr_name = "Texture";
-      cr_type = Crt_Class { parent = None; implements = [] };
-      cr_c_type = "GdkTexture";
-    }
+  let gdk_map =
+    StringMap.add "Texture"
+      (make_cr ~cr_name:"Texture" ~cr_c_type:"GdkTexture" `Class)
+      StringMap.empty
   in
-  let gsk_map = StringMap.add "Renderer" gsk_renderer_cr StringMap.empty in
-  let gdk_map = StringMap.add "Texture" gdk_texture_cr StringMap.empty in
   let cross_refs =
-    StringMap.add "Gsk" (snd (Helpers.make_ncr "Gsk" gsk_map)) StringMap.empty
-    |> StringMap.add "Gdk" (snd (Helpers.make_ncr "Gdk" gdk_map))
+    Type_factory.make_cross_reference_map
+      [ Helpers.make_ncr "Gsk" gsk_map; Helpers.make_ncr "Gdk" gdk_map ]
   in
-
-  let ctx =
-    {
-      namespace =
-        {
-          namespace_name = "Gtk";
-          namespace_version = "4.0";
-          namespace_shared_library = "libgtk-4.so.1";
-          namespace_c_identifier_prefixes = "Gtk";
-          namespace_c_symbol_prefixes = "gtk";
-        };
-      repository =
-        {
-          repository_c_includes = [];
-          repository_includes = [];
-          repository_packages = [];
-        };
-      classes = [];
-      interfaces = [];
-      enums = [];
-      bitfields = [];
-      records = [];
-      module_groups = Hashtbl.create 0;
-      current_cycle_classes = [];
-      cross_references = cross_refs;
-    }
-  in
-
-  (* Generate the header *)
-  let header_content =
-    Gir_gen_lib.Generate.C_stubs.generate_decls_header ~ctx ~classes:[]
-      ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
-  in
-
-  (* Verify all dependencies are included *)
+  let ctx = make_single_ns_ctx "Gtk" cross_refs in
+  let header_content = generate_header ctx in
   assert_local_include_exists header_content "generated/gdk_decls.h";
   assert_local_include_exists header_content "generated/gsk_decls.h"
 
