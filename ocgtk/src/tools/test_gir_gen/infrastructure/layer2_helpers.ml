@@ -306,12 +306,13 @@ let validate_structural_type_parameter ~mli_ast ~type_name ~field_name
     type_decl.ptype_manifest
   @@ fun manifest ->
   let type_str = Ml_ast_helpers.core_type_to_string manifest in
-  (* Check if the field name appears in the type string *)
+  (* Ppxlib has no structural accessor for object/record field names inside a
+     core_type manifest — substring search on the printed form is the only
+     available mechanism for this check. *)
   if not (Helpers.string_contains type_str field_name) then
     Alcotest.fail
       (sprintf "Structural field '%s' not found in type '%s'" field_name
          type_name);
-  (* Check if the field type appears in the type string *)
   if not (Helpers.string_contains type_str field_type) then
     Alcotest.fail
       (sprintf "Field type '%s' not found in type '%s'" field_type type_name)
@@ -346,6 +347,9 @@ let validate_wrapped_return ~ml_ast ~function_name ~wrapper_class =
   Ppxlib.Pprintast.expression fmt binding.pvb_expr;
   Format.pp_print_flush fmt ();
   let binding_str = Buffer.contents buf in
+  (* Ppxlib provides no structural accessor to find a specific constructor
+     application inside an arbitrary expression — substring search on the
+     Pprintast output is the only available mechanism here. *)
   if not (Helpers.string_contains binding_str wrapper_class) then
     Alcotest.fail
       (sprintf "Return value for '%s' not wrapped with '%s'" function_name
@@ -362,6 +366,9 @@ let validate_signal_handler_inheritance ~mli_ast ~signal_handler_name
   let handler_type_str =
     Ml_ast_helpers.core_type_to_string handler_decl.pval_type
   in
+  (* core_type_to_string produces a flat string representation; Ppxlib has no
+     structural API to check for a specific type alias reference inside an
+     arbitrary type expression, so substring search is used. *)
   if not (Helpers.string_contains handler_type_str parent_signal) then
     Alcotest.fail
       (sprintf "Signal handler '%s' does not inherit from '%s'"

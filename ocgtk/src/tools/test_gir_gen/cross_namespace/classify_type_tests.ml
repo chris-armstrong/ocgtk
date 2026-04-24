@@ -38,151 +38,69 @@ let make_gir_type_with_array name element_type =
 
 (* Build a test context with one of each type kind in the "Gtk" namespace *)
 let base_ctx () =
-  let namespace =
-    {
-      namespace_name = "Gtk";
-      namespace_version = "4.0";
-      namespace_shared_library = "libgtk-4.so.1";
-      namespace_c_identifier_prefixes = "Gtk";
-      namespace_c_symbol_prefixes = "gtk";
-    }
-  in
-  let repository =
-    {
-      repository_c_includes = [];
-      repository_includes = [];
-      repository_packages = [];
-    }
-  in
-  let widget_class =
-    {
-      class_name = "Widget";
-      c_type = "GtkWidget";
-      parent = None;
-      implements = [];
-      introspectable = true;
-      constructors = [];
-      methods = [];
-      properties = [];
-      signals = [];
-      class_doc = None;
-      version = None;
-      os = None;
-    }
-  in
-  let scrollable_iface =
-    {
-      interface_name = "Scrollable";
-      c_type = "GtkScrollable";
-      c_symbol_prefix = "scrollable";
-      glib_type_name = None;
-      glib_get_type = None;
-      prerequisites = [];
-      introspectable = true;
-      methods = [];
-      properties = [];
-      signals = [];
-      interface_doc = None;
-      version = None;
-      os = None;
-    }
-  in
-  let text_direction_enum =
-    {
-      enum_name = "TextDirection";
-      enum_c_type = "GtkTextDirection";
-      members = [];
-      enum_doc = None;
-      functions = [];
-      enum_version = None;
-      enum_os = None;
-    }
-  in
-  let state_flags_bitfield =
-    {
-      bitfield_name = "StateFlags";
-      bitfield_c_type = "GtkStateFlags";
-      flags = [];
-      bitfield_doc = None;
-      bitfield_version = None;
-      bitfield_os = None;
-    }
-  in
-  let text_iter_record =
-    {
-      record_name = "TextIter";
-      c_type = "GtkTextIter";
-      glib_type_name = None;
-      glib_get_type = None;
-      introspectable = true;
-      opaque = false;
-      disguised = false;
-      c_symbol_prefix = None;
-      is_gtype_struct_for = None;
-      fields = [];
-      constructors = [];
-      methods = [];
-      functions = [];
-      record_doc = None;
-      version = None;
-      os = None;
-    }
-  in
-  {
-    namespace;
-    repository;
-    classes = [ widget_class ];
-    interfaces = [ scrollable_iface ];
-    enums = [ text_direction_enum ];
-    bitfields = [ state_flags_bitfield ];
-    records = [ text_iter_record ];
-    module_groups = Hashtbl.create 0;
-    current_cycle_classes = [];
-    cross_references = StringMap.empty;
-  }
+  Type_factory.make_generation_context
+    ~namespace:
+      (Type_factory.make_gir_namespace ~namespace_name:"Gtk"
+         ~namespace_version:"4.0" ~namespace_shared_library:"libgtk-4.so.1"
+         ~namespace_c_identifier_prefixes:"Gtk"
+         ~namespace_c_symbol_prefixes:"gtk" ())
+    ~classes:
+      [
+        Type_factory.make_gir_class ~class_name:"Widget" ~c_type:"GtkWidget" ();
+      ]
+    ~interfaces:
+      [
+        Type_factory.make_gir_interface ~interface_name:"Scrollable"
+          ~c_type:"GtkScrollable" ~c_symbol_prefix:"scrollable" ();
+      ]
+    ~enums:
+      [
+        Type_factory.make_gir_enum ~enum_name:"TextDirection"
+          ~enum_c_type:"GtkTextDirection" ();
+      ]
+    ~bitfields:
+      [
+        Type_factory.make_gir_bitfield ~bitfield_name:"StateFlags"
+          ~bitfield_c_type:"GtkStateFlags" ();
+      ]
+    ~records:
+      [
+        Type_factory.make_gir_record ~record_name:"TextIter"
+          ~c_type:"GtkTextIter" ();
+      ]
+    ()
 
 let add_cross_refs ctx =
   let gdk_entities =
     StringMap.empty
     |> StringMap.add "ModifierType"
-         {
-           cr_name = "ModifierType";
-           cr_type = Crt_Bitfield;
-           cr_c_type = "GdkModifierType";
-         }
+         (Type_factory.make_cross_reference_entity ~cr_name:"ModifierType"
+            ~cr_type:(Type_factory.make_cross_reference_type `Bitfield)
+            ~cr_c_type:"GdkModifierType" ())
     |> StringMap.add "Texture"
-         {
-           cr_name = "Texture";
-           cr_type = Crt_Class { parent = Some "Paintable"; implements = [] };
-           cr_c_type = "GdkTexture*";
-         }
+         (Type_factory.make_cross_reference_entity ~cr_name:"Texture"
+            ~cr_type:
+              (Type_factory.make_cross_reference_type ~parent:"Paintable" `Class)
+            ~cr_c_type:"GdkTexture*" ())
     |> StringMap.add "ContentFormats"
-         {
-           cr_name = "ContentFormats";
-           cr_type = Crt_Record { opaque = true };
-           cr_c_type = "GdkContentFormats*";
-         }
+         (Type_factory.make_cross_reference_entity ~cr_name:"ContentFormats"
+            ~cr_type:(Type_factory.make_cross_reference_type (`Record true))
+            ~cr_c_type:"GdkContentFormats*" ())
     |> StringMap.add "Paintable"
-         {
-           cr_name = "Paintable";
-           cr_type = Crt_Interface;
-           cr_c_type = "GdkPaintable*";
-         }
+         (Type_factory.make_cross_reference_entity ~cr_name:"Paintable"
+            ~cr_type:(Type_factory.make_cross_reference_type `Interface)
+            ~cr_c_type:"GdkPaintable*" ())
   in
   let cairo_entities =
     StringMap.empty
     |> StringMap.add "FontType"
-         {
-           cr_name = "FontType";
-           cr_type = Crt_Enum;
-           cr_c_type = "cairo_font_type_t";
-         }
+         (Type_factory.make_cross_reference_entity ~cr_name:"FontType"
+            ~cr_type:(Type_factory.make_cross_reference_type `Enum)
+            ~cr_c_type:"cairo_font_type_t" ())
     |> StringMap.add "Surface"
-         {
-           cr_name = "Surface";
-           cr_type = Crt_Record { opaque = true };
-           cr_c_type = "cairo_surface_t*";
-         }
+         (Type_factory.make_cross_reference_entity ~cr_name:"Surface"
+            ~cr_type:(Type_factory.make_cross_reference_type (`Record true))
+            ~cr_c_type:"cairo_surface_t*" ())
   in
   let cross_refs =
     Type_factory.make_cross_reference_map
