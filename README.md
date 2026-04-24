@@ -27,15 +27,15 @@ The bindings are under active development and rapidly approaching a stable relea
 The following features are currently supported:
 * Code generation from GIR files
 * Bindings for GTK and its dependencies (GLib, GObject, Pango, Gdk, GdkPixbuf, GIO)
-* Support for classes, records, enumerations and bitfields
+* Support for classes, interfaces, records, enumerations and bitfields
 * Constructors, methods, properties and signals^[1]
 * Direct C bindings and stubs ("Layer 1")
 * OCaml-based class wrappers for GObject-based classes and records ("Layer 2")
+* GObject interface implementation in the type hierarchy (`:>` coercions work)
 
 Currently unsupported features:
-* No support for interfaces (and methods/properties/constructors that take them as parameters)
 * Signals with multiple parameters
-* Functions
+* Standalone namespace-level functions (e.g. `gtk_show_uri`)
 * Accessing fields of non-opaque record types
 * Callbacks
 

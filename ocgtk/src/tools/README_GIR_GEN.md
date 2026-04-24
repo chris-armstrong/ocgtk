@@ -231,6 +231,16 @@ exists per namespace (e.g. `overrides/gtk.sexp`, `overrides/gio.sexp`).
     (save (version "4.10"))
   )
 
+  ;; Cross-namespace version guard: guard on a DIFFERENT namespace's version.
+  ;; Useful when the binding depends on a dependency at a higher version than
+  ;; the containing namespace requires (e.g. a GTK property that uses a
+  ;; PangoTextTransform type introduced in Pango 1.50, but the GTK version
+  ;; guard alone is not sufficient because the distro may ship GTK >= 4.6
+  ;; with Pango < 1.50).
+  (class TextTag
+    (property text-transform (version (pango "1.50")))
+  )
+
   ;; Ignore a bitfield or record
   (bitfield PrintCapabilities (ignore))
   (record PrintBackend (ignore))
@@ -243,7 +253,8 @@ Supported sub-component directives: `method`, `constructor`, `property`, `signal
 
 Available actions:
 - `(ignore)` — skip generation of this entity or sub-component entirely
-- `(version "X.Y")` — emit a `#if NS_CHECK_VERSION(X, Y, 0)` guard around the C code
+- `(version "X.Y")` — emit a `#if NS_CHECK_VERSION(X, Y, 0)` guard using this namespace's version macro (e.g. `GTK_CHECK_VERSION` in `gtk.sexp`)
+- `(version (<ns> "X.Y"))` — emit a `#if <NS>_CHECK_VERSION(X, Y, 0)` guard using a **different** namespace's version macro; use when the binding depends on a dependency at a version higher than the containing namespace's own minimum (e.g. `(version (pango "1.50"))` in `gtk.sexp` emits `PANGO_CHECK_VERSION(1, 50, 0)`)
 
 ### Workflow: updating override files
 

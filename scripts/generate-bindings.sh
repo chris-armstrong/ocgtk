@@ -4,6 +4,14 @@
 #
 # Set GIR_PATH to override the default location of GIR files
 # Default: bundled ocgtk/gir/ directory in this repository
+#
+# Override files (ocgtk/overrides/<ns>.sexp) are committed to the repository
+# and passed via -o to both 'references' and 'generate' commands:
+#   - In 'references': ignored entities are excluded from the reference output
+#     so downstream namespaces don't try to map to types that won't be generated
+#   - In 'generate': ignored entities are skipped; version guards emit
+#     #if NS_CHECK_VERSION(...) guards in the generated C stubs
+# See ocgtk/src/tools/README_GIR_GEN.md#override-system for file format details.
 
 set -e
 
