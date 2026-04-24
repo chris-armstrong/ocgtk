@@ -1,7 +1,7 @@
-(* GIR Generator Test Suite (Phase 5)
+(* GIR Generator Unit and Pipeline Test Suite
  *
- * Entry point for all GIR code generator tests.
- * Tests are organized into modules by feature area.
+ * Entry point for unit and pipeline tests only — no gir_gen.exe subprocess.
+ * Integration tests (spawning gir_gen.exe) live in test_gir_gen_integration.ml.
  *)
 
 let () =
@@ -22,29 +22,13 @@ let () =
       ("Type Definitions (ML)", Type_definition_tests.tests);
       ("External Declarations (ML)", External_decl_tests.tests);
       ("Signatures (ML)", Signature_tests.tests);
-      (* Layer 2 — Class Generation *)
+      (* Layer 2 — Class Generation (pure unit/pipeline) *)
       ("Layer2 Method Wrappers", Method_wrapper_tests.tests);
       ("Constructor Wrappers", Constructor_wrapper_tests.tests);
       ("Signal Wrappers", Signal_wrapper_tests.tests);
-      ("Interface Inheritance (Phase 4)", Interface_inheritance_tests.test_suite);
-      ( "Interface Method Types (Phase 7)",
-        Interface_method_types_tests.test_suite );
-      (* Interface Parsing *)
+      (* Interface Parsing (pure unit — no gir_gen.exe) *)
       ("Interface Parsing", Parsing_tests.test_suite);
-      ("From GObject Generation", From_gobject_tests.test_suite);
-      (* Integration — End-to-end subprocess *)
-      ("GIR Parsing", Gir_parsing_tests.tests);
-      ("Widget Generation", Widget_generation_tests.tests);
-      ("Nullable Generation", Nullable_generation_tests.tests);
-      ("CLI", Cli_tests.tests);
-      ("GIR Parser", Gir_parser_tests.tests);
-      ("Signals", Signals_tests.tests);
-      ("Enums", Enums_tests.tests);
-      ("Records", Records_tests.tests);
-      ("Properties", Properties_tests.tests);
-      ("Edge Cases", Edge_cases_tests.tests);
-      (* Cross-namespace *)
-      ("Cross-Namespace", C_stub_tests.tests);
+      (* Cross-namespace (pure unit/pipeline) *)
       ("C Stub Header Include (Stage 5)", C_stub_include_tests.tests);
       ("classify_type + Array Resolution (Phase 6)", Classify_type_tests.tests);
       ("Dependency Includes (Stage 4)", Dependency_includes_tests.tests);

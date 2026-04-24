@@ -222,10 +222,14 @@ classification and tightens the rules pipeline tests must follow.*
 
 - [x] The shared `dune` stanza already declares
   `(deps %{exe:../gir_gen/gir_gen.exe} ...)` — verified.
-- [ ] Pipeline and unit dune stanzas must NOT depend on `gir_gen.exe`.
-  *Deferred: requires splitting the single `(test (name test_gir_gen) ...)`
-  stanza into multiple stanzas (one per tier). Tracked here for a follow-up
-  Phase 1.6.*
+- [x] Pipeline and unit dune stanzas must NOT depend on `gir_gen.exe`.
+  Implemented: `test_gir_gen_helpers` library holds shared infrastructure
+  (helpers, c_ast, c_parser, ml_validation, type_factory, fixtures, etc.);
+  `test_gir_gen` stanza is unit/pipeline only (no `gir_gen.exe` dep);
+  `test_gir_gen_integration` stanza holds `integration/` + the four files
+  that call `Helpers.run_gir_gen` (`interface_inheritance_tests`,
+  `interface_method_types_tests`, `from_gobject_tests`, `c_stub_tests`).
+  New runner: `test_gir_gen_integration.ml`. #done:2026-04-24
 
 ### Renames to realise the classification
 
