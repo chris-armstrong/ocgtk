@@ -244,17 +244,44 @@ exists per namespace (e.g. `overrides/gtk.sexp`, `overrides/gio.sexp`).
   ;; Ignore a bitfield or record
   (bitfield PrintCapabilities (ignore))
   (record PrintBackend (ignore))
+
+  ;; OS guard: generate this entity only on Linux
+  (class DesktopAppInfo (os "linux"))
+
+  ;; OS guard: generate this entity on all platforms except Windows
+  (class UnixInputStream (not_os "windows"))
+
+  ;; Conditional header include in <ns>_decls.h (only on Linux)
+  (header "gio/gdesktopappinfo.h" (os "linux"))
+  ;; Conditional header include excluded on Windows
+  (header "gio/gunixoutputstream.h" (not_os "windows"))
 )
 ```
 
 Supported entity kinds: `class`, `interface`, `enumeration`, `bitfield`, `record`.
 Supported sub-component directives: `method`, `constructor`, `property`, `signal`,
-`member` (enum member), `flag` (bitfield flag).
+`member` (enum member), `flag` (bitfield flag), `field` (record field).
 
 Available actions:
 - `(ignore)` — skip generation of this entity or sub-component entirely
 - `(version "X.Y")` — emit a `#if NS_CHECK_VERSION(X, Y, 0)` guard using this namespace's version macro (e.g. `GTK_CHECK_VERSION` in `gtk.sexp`)
 - `(version (<ns> "X.Y"))` — emit a `#if <NS>_CHECK_VERSION(X, Y, 0)` guard using a **different** namespace's version macro; use when the binding depends on a dependency at a version higher than the containing namespace's own minimum (e.g. `(version (pango "1.50"))` in `gtk.sexp` emits `PANGO_CHECK_VERSION(1, 50, 0)`)
+- `(os "<platform>")` — wrap the generated C stub in `#if defined(<MACRO>)` / `#else caml_failwith` so the binding compiles on all platforms but raises a runtime error on unsupported ones
+- `(not_os "<platform>")` — same, but the guard is `#if !defined(<MACRO>)`; cannot be mixed with `(os ...)`
+
+OS guard actions can be applied to top-level entities **and** to sub-component directives (`method`, `constructor`, `property`, etc.).
+
+Recognised platform names and the C macros they expand to:
+
+| Name | C guard |
+|------|---------|
+| `"linux"` | `defined(__linux__)` |
+| `"macos"` | `defined(__APPLE__) && defined(__MACH__)` |
+| `"freebsd"` | `defined(__FreeBSD__)` |
+| `"unix"` | `defined(G_OS_UNIX)` |
+| `"windows"` | `defined(_WIN32)` |
+
+The `(header "path" (os/not_os ...))` directive adds a header to `<ns>_decls.h` wrapped in the same platform guard. This is distinct from the per-entity `(os ...)` action — it controls C `#include` lines, not stub generation.
 
 ### Workflow: updating override files
 
