@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ocaml-compiler: [5.0.x, 5.3.x, 5.4.x]
+        ocaml-compiler: [5.4.x]
 
     steps:
       - name: Checkout code
@@ -37,22 +37,12 @@ jobs:
 
       - name: Install OCaml dependencies
         run: |
-          opam install ./ocgtk --deps-only --with-test
-          # gir_gen requires OCaml >= 5.3; skip on 5.0.x (ocgtk-only run)
-          if [[ "${{ matrix.ocaml-compiler }}" != "5.0.x" ]]; then
-            opam install ./gir_gen --deps-only --with-test
-          fi
+          opam install ./ocgtk ./gir_gen --deps-only --with-test
 
       - name: Build
-        run: |
-          if [[ "${{ matrix.ocaml-compiler }}" != "5.0.x" ]]; then
-            opam exec -- dune build
-          else
-            opam exec -- dune build ocgtk/
-          fi
+        run: opam exec -- dune build
 
       - name: Test gir_gen package
-        if: matrix.ocaml-compiler != '5.0.x'
         run: opam exec -- dune test gir_gen/
 
       - name: Test ocgtk package

@@ -107,7 +107,7 @@ This is a dune workspace with two projects: `ocgtk/` (GTK bindings) and `gir_gen
 
 ## Writing or refactoring Code or Rewriting Documentation
 
-**Always consult the [code guidelines](./ocgtk/docs/code_guidelines/index.md) for how to structure or restructure code.
+**Always consult the [code guidelines](./docs/code_guidelines/index.md) for how to structure or restructure code.
 
 **When moving code or documentation**: ALWAYS use tools to copy the code to a temporary file and write it to the destination file. DO NOT REGENERATE the code yourself - this will save your token usage. ALWAYS remove the old code files and update the `dune` file accordingly.
 
@@ -125,7 +125,7 @@ This project uses `dune` to compile code and run tests. NEVER compile code direc
 
 ## OCaml / C FFI Guidelines
 
-For instructions and best practices for writing and updating OCaml / C FFI, see [FFI Guidelines](./ocgtk/architecture/FFI_GUIDELINES.md).
+For instructions and best practices for writing and updating OCaml / C FFI, see [FFI Guidelines](./architecture/FFI_GUIDELINES.md).
 
 
 ## ocgtk Development Tools
@@ -147,7 +147,7 @@ reflected without rebuilding images.
 ```
 
 Version pins live in `ci/versions.env`. See
-[ocgtk/architecture/ci_distro_testing.md](ocgtk/architecture/ci_distro_testing.md)
+[architecture/ci_distro_testing.md](architecture/ci_distro_testing.md)
 for full documentation.
 
 ### GIR Code Generator

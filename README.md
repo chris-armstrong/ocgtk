@@ -73,7 +73,7 @@ This library is distributed under the terms of the GNU Library General Public Li
 
 ## Documentation
 
-📚 **[Architecture](ocgtk/architecture)** - architecture and design documentation (mix of LLM and manually written)
+📚 **[Architecture](architecture)** - architecture and design documentation (mix of LLM and manually written)
 
 ### Key Documents
 
@@ -81,7 +81,7 @@ This library is distributed under the terms of the GNU Library General Public Li
 - **Security Guidelines**: [SECURITY_GUIDELINES.md](SECURITY_GUIDELINES.md)
 - **GIR Code Generation**: [gir_gen/README.md](gir_gen/README.md)
 - **GIR Override Files**: [ocgtk/overrides/](ocgtk/overrides/) — per-namespace sexp files controlling entity ignores and version guards
-- **CI / Distro Testing**: [ocgtk/architecture/ci_distro_testing.md](ocgtk/architecture/ci_distro_testing.md) — Docker-based multi-distro build and test (`./ci/oci`)
+- **CI / Distro Testing**: [architecture/ci_distro_testing.md](architecture/ci_distro_testing.md) — Docker-based multi-distro build and test (`./ci/oci`)
 
 ## Resources
 

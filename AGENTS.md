@@ -103,7 +103,7 @@ If you are running in a clean container (e.g. Claude Code Web), you will need to
 
 This is a dune workspace with two projects: `ocgtk/` (GTK bindings) and `gir_gen/` (code generator). Run `dune build` and `dune test` from the repo root to cover both. For `ocamlformat`, `cd ocgtk` first (it has its own `.ocamlformat` config).
 
-[The architecture documentation](./ocgtk/architecture/README.md) describes the project layout and system architecture.
+[The architecture documentation](./architecture/README.md) describes the project layout and system architecture.
 
 ## CI / Distro Compatibility Testing
 
@@ -120,13 +120,13 @@ Debian 12, CentOS Stream 9, and OpenSUSE Leap 15.6. Use `./ci/oci` to manage the
 ```
 
 Version pins (opam, OCaml) live in `ci/versions.env`. See
-[ocgtk/architecture/ci_distro_testing.md](./ocgtk/architecture/ci_distro_testing.md)
+[ocgtk/architecture/ci_distro_testing.md](./architecture/ci_distro_testing.md)
 for full documentation.
 
 
 ## Code Guidelines - how to write or refactor code 
 
-**Always consult the [code guidelines](./ocgtk/docs/code_guidelines/index.md) for how to structure or restructure code.
+**Always consult the [code guidelines](./docs/code_guidelines/index.md) for how to structure or restructure code.
 
 **When moving code or documentation**: ALWAYS use tools to copy the code to a temporary file and write it to the destination file. DO NOT REGENERATE the code yourself - this will save your token usage. ALWAYS remove the old code files and update the `dune` file accordingly.
 
@@ -144,7 +144,7 @@ This project uses `dune` to compile code and run tests. NEVER compile code direc
 
 ## OCaml / C FFI Guidelines
 
-For instructions and best practices for writing and updating OCaml / C FFI, see [FFI Guidelines](./ocgtk/architecture/FFI_GUIDELINES.md).
+For instructions and best practices for writing and updating OCaml / C FFI, see [FFI Guidelines](./architecture/FFI_GUIDELINES.md).
 
 
 ## ocgtk Development Tools

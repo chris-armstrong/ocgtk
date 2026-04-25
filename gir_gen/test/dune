@@ -68,6 +68,13 @@
   pipeline_tests
   version_guard_tests
   enum_member_version_tests)
+ (deps
+  (source_tree %{workspace_root}/gir))
+ (action
+  (setenv
+   "GIR_DATA_DIR"
+   "%{workspace_root}/gir"
+   (run %{test})))
  (libraries
   test_gir_gen_helpers
   gir_gen_lib
