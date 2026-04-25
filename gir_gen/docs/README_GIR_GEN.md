@@ -53,11 +53,11 @@ Type_mappings.find_type_mapping_for_gir_type()
 ## Building
 
 ```bash
-# From ocgtk directory
+# From repository root
 dune build
 ```
 
-The executable is built to `_build/default/src/tools/gir_gen/gir_gen.exe`
+The executable is built to `_build/default/gir_gen/bin/gir_gen.exe`
 
 ## Running
 
@@ -69,28 +69,19 @@ gir_gen has three commands:
 - **`references`** - Generate cross-namespace reference list for type validation
 - **`overrides`** - Extract `Since` version annotations from a GIR file into an override sexp file
 
-### From the `ocgtk` directory
-
-**Recommended approach - run from the `ocgtk` directory:**
-
-```bash
-# Generate GTK bindings to src/gtk/generated/
-dune exec src/tools/gir_gen/gir_gen.exe -- generate /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
-```
-
 ### From the repository root directory
 
-If running from `/workspaces/ocgtk` (parent of `ocgtk`):
+**Recommended approach - run from the repository root:**
 
 ```bash
-cd ocgtk
-dune exec src/tools/gir_gen/gir_gen.exe -- generate /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+# Generate GTK bindings to ocgtk/src/gtk/generated/
+dune exec gir_gen -- generate gir/Gtk-4.0.gir ocgtk/src/gtk
 ```
 
 ### Generate Command Options
 
-- `GIR_FILE`: Path to GIR file (e.g. `/usr/share/gir-1.0/Gtk-4.0.gir`)
-- `OUTPUT_DIR`: Where to write generated files
+- `GIR_FILE`: Path to GIR file (e.g. `gir/Gtk-4.0.gir`)
+- `OUTPUT_DIR`: Where to write generated files (relative to repo root, e.g. `ocgtk/src/gtk`)
 - `-f, --filter FILE`: Optional filter file specifying which classes to generate
 - `-r, --reference FILE`: Optional reference file(s) for cross-namespace type validation (can be specified multiple times)
 - `-o, --overrides FILE`: Optional override sexp file controlling which entities are ignored and their version guards (see [Override System](#override-system))
@@ -103,12 +94,12 @@ dune exec src/tools/gir_gen/gir_gen.exe -- generate /usr/share/gir-1.0/Gtk-4.0.g
 
 ### Overrides Command
 
-Extracts `Since` version annotations from GIR documentation into a starter override file. The output should be committed to `overrides/<ns>.sexp` and then augmented with manually-authored `(ignore)` entries.
+Extracts `Since` version annotations from GIR documentation into a starter override file. The output should be committed to `ocgtk/overrides/<ns>.sexp` and then augmented with manually-authored `(ignore)` entries.
 
 ```bash
-# Extract version annotations for GTK into the overrides directory
-dune exec src/tools/gir_gen/gir_gen.exe -- overrides \
-  /usr/share/gir-1.0/Gtk-4.0.gir overrides/gtk.sexp
+# Extract version annotations for GTK into the overrides directory (from repo root)
+dune exec gir_gen -- overrides \
+  gir/Gtk-4.0.gir ocgtk/overrides/gtk.sexp
 ```
 
 ### ⚠️ IMPORTANT: Output Directory Convention
@@ -117,32 +108,32 @@ dune exec src/tools/gir_gen/gir_gen.exe -- overrides \
 
 The generator automatically creates a `generated/` subdirectory inside the output directory you specify.
 
-✅ **Correct:**
+✅ **Correct (from repo root):**
 ```bash
-dune exec gir_gen -- generate /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+dune exec gir_gen -- generate gir/Gtk-4.0.gir ocgtk/src/gtk
 ```
-This creates files in `src/gtk/generated/`
+This creates files in `ocgtk/src/gtk/generated/`
 
 ❌ **Wrong:**
 ```bash
-dune exec gir_gen -- generate /usr/share/gir-1.0/Gtk-4.0.gir src/gtk/generated
+dune exec gir_gen -- generate gir/Gtk-4.0.gir ocgtk/src/gtk/generated
 ```
-This creates files in `src/gtk/generated/generated/` (nested directory problem)
+This creates files in `ocgtk/src/gtk/generated/generated/` (nested directory problem)
 
-**Examples:**
-- For GTK: Use `src/gtk` → generates to `src/gtk/generated/`
-- For GDK: Use `src/gdk` → generates to `src/gdk/generated/`
-- For GIO: Use `src/gio` → generates to `src/gio/generated/`
+**Examples (from repo root):**
+- For GTK: Use `ocgtk/src/gtk` → generates to `ocgtk/src/gtk/generated/`
+- For GDK: Use `ocgtk/src/gdk` → generates to `ocgtk/src/gdk/generated/`
+- For GIO: Use `ocgtk/src/gio` → generates to `ocgtk/src/gio/generated/`
 
 ## Testing
 
 ### Quick Test
 ```bash
-# Generate test output
+# Generate test output (from repo root)
 mkdir -p output/test
 echo "Label" > output/test/filter.txt
-dune exec src/tools/gir_gen/gir_gen.exe -- generate -f output/test/filter.txt \
-  /usr/share/gir-1.0/Gtk-4.0.gir output/test
+dune exec gir_gen -- generate -f output/test/filter.txt \
+  gir/Gtk-4.0.gir output/test
 
 # Verify files generated
 ls output/test/generated/label.mli output/test/generated/ml_label_gen.c
@@ -158,36 +149,36 @@ gcc -c output/test/generated/ml_label_gen.c \
 
 ### Full Rebuild
 ```bash
-# Regenerate all GTK bindings and rebuild library (run from ocgtk directory)
-dune exec src/tools/gir_gen/gir_gen.exe -- generate /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+# Regenerate all GTK bindings and rebuild library (from repo root)
+dune exec gir_gen -- generate gir/Gtk-4.0.gir ocgtk/src/gtk
 dune build
 ```
 
 ### Generate Cross-Namespace References
 ```bash
-# Generate reference list for type validation
-dune exec src/tools/gir_gen/gir_gen.exe -- references \
-  /usr/share/gir-1.0/Gtk-4.0.gir gtk_refs.txt
+# Generate reference list for type validation (from repo root)
+dune exec gir_gen -- references \
+  gir/Gtk-4.0.gir gtk_refs.txt
 
 # Use references when generating bindings
-dune exec src/tools/gir_gen/gir_gen.exe -- generate \
+dune exec gir_gen -- generate \
   -r gtk_refs.txt -r gdk_refs.txt \
-  /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+  gir/Gtk-4.0.gir ocgtk/src/gtk
 ```
 
 ### Generate with Override File
 
 ```bash
-# Apply overrides while generating
-dune exec src/tools/gir_gen/gir_gen.exe -- generate \
-  -o overrides/gtk.sexp \
+# Apply overrides while generating (from repo root)
+dune exec gir_gen -- generate \
+  -o ocgtk/overrides/gtk.sexp \
   -r gdk_refs.txt \
-  /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+  gir/Gtk-4.0.gir ocgtk/src/gtk
 ```
 
 ## Output Files
 
-Generated files are written to `src/<ns>/generated/` (e.g., `src/gtk/generated/`):
+Generated files are written to `ocgtk/src/<ns>/generated/` (e.g., `ocgtk/src/gtk/generated/`):
 
 - **C FFI stubs**: `ml_*_gen.c` - C bindings for classes, interfaces, enums
 - **Layer 1 (low-level)**: `<class_name>.ml/.mli` - External declarations (snake_case)
@@ -205,7 +196,7 @@ generated without modifying the generator source. They replace the former hardco
 exclusion lists in `exclude_list.ml`, `filtering.ml`, and `library_module.ml`.
 
 Override files live in `ocgtk/overrides/` and are committed to the repository. One file
-exists per namespace (e.g. `overrides/gtk.sexp`, `overrides/gio.sexp`).
+exists per namespace (e.g. `ocgtk/overrides/gtk.sexp`, `ocgtk/overrides/gio.sexp`).
 
 ### Format
 
@@ -299,9 +290,9 @@ bash scripts/generate-bindings.sh
 To regenerate just the version-annotation portion for one namespace:
 
 ```bash
-cd ocgtk
-dune exec src/tools/gir_gen/gir_gen.exe -- overrides \
-  /usr/share/gir-1.0/Gtk-4.0.gir overrides/gtk.sexp
+# From repository root:
+dune exec gir_gen -- overrides \
+  gir/Gtk-4.0.gir ocgtk/overrides/gtk.sexp
 ```
 
 Then review the diff, keep any manual `(ignore)` entries you added, and commit.
@@ -355,12 +346,13 @@ linker still treats it as a single compilation unit.
 
 ## Common Issues
 
-**Error: "Program 'src/tools/gir_gen/gir_gen.exe' not found"**
-- Ensure you're in the `ocgtk` directory
+**Error: "Program 'gir_gen' not found"**
+- Ensure you're in the repository root (not the `ocgtk/` subdirectory)
 - Run `dune build` first
 
-**Error: "Don't know how to build src/tools/gir_gen/gir_gen.exe"**
-- Use `dune exec src/tools/gir_gen/gir_gen.exe` instead of `dune build src/tools/gir_gen/gir_gen.exe`
+**Error: "Don't know how to build gir_gen"**
+- Use `dune exec gir_gen --` from the repository root (where the dune-workspace file lives)
+- Do not use `dune exec src/tools/gir_gen/gir_gen.exe` — that path no longer exists
 
 ---
 

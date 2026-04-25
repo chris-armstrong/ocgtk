@@ -21,20 +21,10 @@
  (description "ocgtk provides OCaml bindings for GTK 4")
  (depends
   (ocaml
-   (>= 5.3))
+   (>= 5.0))
   (dune
    (>= 3.13))
   conf-gtk4
   (integers (>= 0.7.0))
-  (containers :build)
-  (xmlm :build)
-  (re :build)
-  (fmt :build)
-  (logs :build)
-  (cmdliner :build)
-  (alcotest :with-test)
-  (ppxlib :with-test)
   (dune-configurator :build)
-  (sexplib :build)
-  (ppx_sexp_conv :build)
-  (ppx_deriving :build)))
+  (alcotest :with-test)))

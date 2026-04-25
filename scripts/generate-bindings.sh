@@ -3,7 +3,7 @@
 # Usage: ./scripts/generate-bindings.sh [GIR_PATH]
 #
 # Set GIR_PATH to override the default location of GIR files
-# Default: bundled ocgtk/gir/ directory in this repository
+# Default: bundled gir/ directory at the repository root
 #
 # Override files (ocgtk/overrides/<ns>.sexp) are committed to the repository
 # and passed via -o to both 'references' and 'generate' commands:
@@ -11,35 +11,35 @@
 #     so downstream namespaces don't try to map to types that won't be generated
 #   - In 'generate': ignored entities are skipped; version guards emit
 #     #if NS_CHECK_VERSION(...) guards in the generated C stubs
-# See ocgtk/src/tools/README_GIR_GEN.md#override-system for file format details.
+# See gir_gen/docs/README_GIR_GEN.md#override-system for file format details.
 
 set -e
 
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-# The dune workspace is in the ocgtk subdirectory, NOT the repository root
-WORKSPACE_ROOT="$REPO_ROOT/ocgtk"
-GIR_PATH="${1:-${GIR_PATH:-$WORKSPACE_ROOT/ocgtk/gir}}"
-BUILD_DIR="$WORKSPACE_ROOT/_build/references"
-GIR_GEN="$WORKSPACE_ROOT/_build/default/src/tools/gir_gen/gir_gen.exe"
-OVERRIDES_DIR="$WORKSPACE_ROOT/overrides"
+# GIR data files live at the repository root
+GIR_PATH="${1:-${GIR_PATH:-$REPO_ROOT/gir}}"
+# The ocgtk subproject contains overrides, sources and build artefacts
+OCGTK_DIR="$REPO_ROOT/ocgtk"
+BUILD_DIR="$OCGTK_DIR/_build/references"
+GIR_GEN="$REPO_ROOT/_build/default/gir_gen/bin/gir_gen.exe"
+OVERRIDES_DIR="$OCGTK_DIR/overrides"
 
 echo "==================================="
 echo "OCaml GTK Bindings Generator"
 echo "==================================="
 echo "GIR files: $GIR_PATH"
 echo "Repository root: $REPO_ROOT"
-echo "Workspace root: $WORKSPACE_ROOT"
 echo ""
 
-# Change to workspace root (where dune-project is)
-cd "$WORKSPACE_ROOT"
+# Change to repository root (where dune-workspace is)
+cd "$REPO_ROOT"
 
 # Step 0: Build gir_gen tool
 echo "Step 0: Building gir_gen tool..."
 echo "-----------------------------------"
-dune build src/tools/gir_gen/gir_gen.exe
+dune build gir_gen/bin/gir_gen.exe
 
 if [ ! -f "$GIR_GEN" ]; then
     echo "Error: gir_gen not found at $GIR_GEN"
@@ -88,11 +88,11 @@ echo "Step 2: Generating OCaml bindings..."
 echo "-----------------------------------"
 
 echo "  [1/9] Generating Cairo bindings..."
-"$GIR_GEN" generate -o "$OVERRIDES_DIR/cairo.sexp" "$GIR_PATH/cairo-1.0.gir" src/cairo
+"$GIR_GEN" generate -o "$OVERRIDES_DIR/cairo.sexp" "$GIR_PATH/cairo-1.0.gir" "$OCGTK_DIR/src/cairo"
 
 echo ""
 echo "  [2/9] Generating GIO bindings..."
-"$GIR_GEN" generate -o "$OVERRIDES_DIR/gio.sexp" "$GIR_PATH/Gio-2.0.gir" src/gio
+"$GIR_GEN" generate -o "$OVERRIDES_DIR/gio.sexp" "$GIR_PATH/Gio-2.0.gir" "$OCGTK_DIR/src/gio"
 
 echo ""
 echo "  [3/9] Generating GDK bindings (with Cairo, GIO references)..."
@@ -104,14 +104,14 @@ echo "  [3/9] Generating GDK bindings (with Cairo, GIO references)..."
     -r "$BUILD_DIR/gdkpixbuf-references.sexp" \
     -r "$BUILD_DIR/gio-references.sexp" \
     "$GIR_PATH/Gdk-4.0.gir" \
-    src/gdk
+    "$OCGTK_DIR/src/gdk"
 
 echo ""
 echo "  [4/9] Generating Graphene bindings..."
 "$GIR_GEN" generate \
     -o "$OVERRIDES_DIR/graphene.sexp" \
     "$GIR_PATH/Graphene-1.0.gir" \
-    src/graphene
+    "$OCGTK_DIR/src/graphene"
 
 echo ""
 echo "  [5/9] Generating GdkPixbuf bindings (with GIO references)..."
@@ -119,7 +119,7 @@ echo "  [5/9] Generating GdkPixbuf bindings (with GIO references)..."
     -o "$OVERRIDES_DIR/gdkpixbuf.sexp" \
     -r "$BUILD_DIR/gio-references.sexp" \
     "$GIR_PATH/GdkPixbuf-2.0.gir" \
-    src/gdkpixbuf
+    "$OCGTK_DIR/src/gdkpixbuf"
 
 echo ""
 echo "  [6/9] Generating Pango bindings (with Cairo, GIO references)..."
@@ -128,7 +128,7 @@ echo "  [6/9] Generating Pango bindings (with Cairo, GIO references)..."
     -r "$BUILD_DIR/cairo-references.sexp" \
     -r "$BUILD_DIR/gio-references.sexp" \
     "$GIR_PATH/Pango-1.0.gir" \
-    src/pango
+    "$OCGTK_DIR/src/pango"
 
 echo ""
 echo "  [7/9] Generating PangoCairo bindings (with Cairo, Pango, GIO references)..."
@@ -138,7 +138,7 @@ echo "  [7/9] Generating PangoCairo bindings (with Cairo, Pango, GIO references)
     -r "$BUILD_DIR/pango-references.sexp" \
     -r "$BUILD_DIR/gio-references.sexp" \
     "$GIR_PATH/PangoCairo-1.0.gir" \
-    src/pangocairo
+    "$OCGTK_DIR/src/pangocairo"
 
 echo ""
 echo "  [8/9] Generating GSK bindings (with Cairo, GIO, GDK, Graphene references)..."
@@ -152,7 +152,7 @@ echo "  [8/9] Generating GSK bindings (with Cairo, GIO, GDK, Graphene references
     -r "$BUILD_DIR/gdkpixbuf-references.sexp" \
     -r "$BUILD_DIR/graphene-references.sexp" \
     "$GIR_PATH/Gsk-4.0.gir" \
-    src/gsk
+    "$OCGTK_DIR/src/gsk"
 
 echo ""
 echo "  [9/9] Generating GTK bindings (with all references)..."
@@ -167,7 +167,7 @@ echo "  [9/9] Generating GTK bindings (with all references)..."
     -r "$BUILD_DIR/pangocairo-references.sexp" \
     -r "$BUILD_DIR/gsk-references.sexp" \
     "$GIR_PATH/Gtk-4.0.gir" \
-    src/gtk
+    "$OCGTK_DIR/src/gtk"
 
 echo ""
 echo "==================================="
@@ -175,14 +175,14 @@ echo "✓ Code generation complete!"
 echo "==================================="
 echo ""
 echo "Generated files are in:"
-echo "  - src/cairo/generated/"
-echo "  - src/gio/generated/"
-echo "  - src/gdk/generated/"
-echo "  - src/graphene/generated/"
-echo "  - src/gdkpixbuf/generated/"
-echo "  - src/pango/generated/"
-echo "  - src/pangocairo/generated/"
-echo "  - src/gsk/generated/"
-echo "  - src/gtk/generated/"
+echo "  - ocgtk/src/cairo/generated/"
+echo "  - ocgtk/src/gio/generated/"
+echo "  - ocgtk/src/gdk/generated/"
+echo "  - ocgtk/src/graphene/generated/"
+echo "  - ocgtk/src/gdkpixbuf/generated/"
+echo "  - ocgtk/src/pango/generated/"
+echo "  - ocgtk/src/pangocairo/generated/"
+echo "  - ocgtk/src/gsk/generated/"
+echo "  - ocgtk/src/gtk/generated/"
 echo ""
 echo "You can now run: dune build"

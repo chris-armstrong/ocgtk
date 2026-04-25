@@ -244,7 +244,7 @@ The GIR generator emits it unconditionally in `gio_decls.h` because
 
 ### Fix Required
 
-The `gio_decls.h` generator (in `src/tools/gir_gen`) should wrap Unix-only headers
+The `gio_decls.h` generator (in `gir_gen/lib`) should wrap Unix-only headers
 in `#ifdef G_OS_UNIX` guards, or add a `GDesktopAppInfo`-related entry to
 `overrides/gio.sexp` to exclude the Unix-only types on non-Unix platforms.
 

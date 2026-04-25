@@ -1863,7 +1863,7 @@ let filter_arg =
   Arg.(value & opt (some file) None & info [ "f"; "filter" ] ~docv:"FILE" ~doc)
 
 let gir_file_arg =
-  let doc = "Path to GTK GIR file (e.g., /usr/share/gir-1.0/Gtk-4.0.gir)" in
+  let doc = "Path to GTK GIR file (e.g., gir/Gtk-4.0.gir)" in
   Arg.(required & pos 0 (some file) None & info [] ~docv:"GIR_FILE" ~doc)
 
 let output_dir_arg =
@@ -1910,15 +1910,15 @@ let generate_cmd =
          controllers and widgets.";
       `S Manpage.s_examples;
       `P "Generate event controller bindings:";
-      `Pre "  gir_gen generate /usr/share/gir-1.0/Gtk-4.0.gir ./output";
+      `Pre "  gir_gen generate gir/Gtk-4.0.gir ./output";
       `P "Generate with cross-namespace references:";
       `Pre
         "  gir_gen generate -r gtk_refs.txt -r gdk_refs.txt \
-         /usr/share/gir-1.0/Gtk-4.0.gir ./output";
+         gir/Gtk-4.0.gir ./output";
       `P "Generate with override file:";
       `Pre
-        "  gir_gen generate -o overrides/gtk.sexp \
-         /usr/share/gir-1.0/Gtk-4.0.gir ./output";
+        "  gir_gen generate -o ocgtk/overrides/gtk.sexp \
+         gir/Gtk-4.0.gir ./output";
     ]
   in
   let info = Cmd.info "generate" ~doc ~man in
@@ -1953,7 +1953,7 @@ let overrides_cmd =
       `S Manpage.s_examples;
       `P "Extract version overrides from GTK GIR:";
       `Pre
-        "  gir_gen overrides /usr/share/gir-1.0/Gtk-4.0.gir overrides/gtk.sexp";
+        "  gir_gen overrides gir/Gtk-4.0.gir ocgtk/overrides/gtk.sexp";
     ]
   in
   let info = Cmd.info "overrides" ~doc ~man in
@@ -1975,11 +1975,11 @@ let references_cmd =
          generation.";
       `S Manpage.s_examples;
       `P "Generate reference list:";
-      `Pre "  gir_gen references /usr/share/gir-1.0/Gtk-4.0.gir gtk_refs.txt";
+      `Pre "  gir_gen references gir/Gtk-4.0.gir gtk_refs.txt";
       `P "Generate reference list with overrides:";
       `Pre
-        "  gir_gen references -o overrides/gtk.sexp \
-         /usr/share/gir-1.0/Gtk-4.0.gir gtk_refs.txt";
+        "  gir_gen references -o ocgtk/overrides/gtk.sexp \
+         gir/Gtk-4.0.gir gtk_refs.txt";
     ]
   in
   let info = Cmd.info "references" ~doc ~man in

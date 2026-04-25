@@ -99,7 +99,6 @@ CAMLparam1(self);
 CAMLlocal3(result, item, cell);
     GList* c_result = gtk_application_get_windows(GtkApplication_val(self));
 Val_GList_with(c_result, result, item, cell, Val_GtkWindow((gpointer)_tmp->data));
-    g_list_free(c_result);
     CAMLreturn(result);
 }
 

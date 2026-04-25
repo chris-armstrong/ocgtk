@@ -16,6 +16,7 @@ let () =
       ("Error Handling", Error_handling_tests.tests);
       ("Out Params", Out_params_tests.tests);
       ("Arrays", Array_tests.tests);
+      ("GList Conversion", List_conv_tests.tests);
       ("Type Conversion", Type_conversion_tests.tests);
       ("C Stub Version Guards", C_stub_version_guard_tests.test_suite);
       (* Layer 1 — ML Generation *)

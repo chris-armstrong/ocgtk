@@ -193,7 +193,7 @@ Higher-level validation functions:
 Tests will be organized into subdirectories by layer and test type:
 
 ```
-src/tools/test_gir_gen/
+gir_gen/test/
 ├── test_gir_gen.ml              # Main test runner
 ├── GIR_GEN_TESTING.md           # This document
 ├── FAILING_TESTS_ANALYSIS.md    # Analysis of known failures
@@ -779,7 +779,7 @@ Helpers.log_generated_c_code "test description" c_code;
 This prints the generated C code to test output when running with `-v` flag:
 
 ```bash
-dune runtest src/tools/test_gir_gen -- -v
+dune runtest gir_gen/test -- -v
 ```
 
 ### Common Testing Patterns

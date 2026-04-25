@@ -16,7 +16,18 @@ type token =
   | LParen
   | RParen
   | EOF
-[@@deriving eq]
+
+let equal_token (a : token) (b : token) =
+  match (a, b) with
+  | Number x, Number y -> Float.equal x y
+  | Plus, Plus -> true
+  | Minus, Minus -> true
+  | Multiply, Multiply -> true
+  | Divide, Divide -> true
+  | LParen, LParen -> true
+  | RParen, RParen -> true
+  | EOF, EOF -> true
+  | _ -> false
 
 exception Parse_error of string
 

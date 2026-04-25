@@ -14,7 +14,7 @@ open Helpers
 let test_help_output () =
   let tools_dir = get_tools_dir () in
   let cmd =
-    sprintf "%s/gir_gen/gir_gen.exe generate --help=plain 2>&1" tools_dir
+    sprintf "%s/bin/gir_gen.exe generate --help=plain 2>&1" tools_dir
   in
   let ic = Unix.open_process_in cmd in
   let output = Buffer.create 1024 in

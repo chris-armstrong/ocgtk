@@ -131,7 +131,7 @@ Version guards appear at two granularities:
 - **Member-level**: wraps individual `case`/`else if` branches inside a converter
 
 See [`gir_gen/overrides.md`](gir_gen/overrides.md) for the design rationale and
-[`README_GIR_GEN.md`](../src/tools/README_GIR_GEN.md#override-system) for the file format.
+[`README_GIR_GEN.md`](../../gir_gen/docs/README_GIR_GEN.md#override-system) for the file format.
 
 ### Cross-Namespace Types
 
@@ -144,7 +144,7 @@ are excluded from reference output.
 
 ## Key Documentation
 
-- **[README_GIR_GEN.md](../src/tools/README_GIR_GEN.md)** - Complete generator usage and status
+- **[README_GIR_GEN.md](../../gir_gen/docs/README_GIR_GEN.md)** - Complete generator usage and status
 - **[FFI Guidelines](./FFI_GUIDELINES.md)** - OCaml/C binding best practices
 - **[SECURITY_GUIDELINES.md](../SECURITY_GUIDELINES.md)** - Security for C bindings
 - **[Code Guidelines](../docs/code_guidelines/index.md)** - OCaml coding standards

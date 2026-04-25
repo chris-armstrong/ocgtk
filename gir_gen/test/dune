@@ -37,6 +37,7 @@
   error_handling_tests
   out_params_tests
   array_tests
+  list_conv_tests
   type_conversion_tests
   c_stub_version_guard_tests
   ; Layer 1 — ML Generation
@@ -102,12 +103,12 @@
   properties_tests
   edge_cases_tests)
  (deps
-  %{exe:../gir_gen/gir_gen.exe}
-  (source_tree %{project_root}/ocgtk/gir))
+  %{exe:../bin/gir_gen.exe}
+  (source_tree %{workspace_root}/gir))
  (action
   (setenv
    "GIR_DATA_DIR"
-   "%{project_root}/ocgtk/gir"
+   "%{workspace_root}/gir"
    (run %{test})))
  (libraries
   test_gir_gen_helpers

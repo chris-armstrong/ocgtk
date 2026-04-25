@@ -5,7 +5,7 @@ This document provides a step-by-step plan for adding a new GObject Introspectio
 ## Prerequisites
 
 Before starting, ensure you have:
-- The GIR file for the library (usually in `/usr/share/gir-1.0/`)
+- The GIR file for the library (in `gir/` at the repo root, or installed to `/usr/share/gir-1.0/`)
 - Development packages installed (e.g., `libgio-2.0-dev`, `gir1.2-gio-2.0`)
 - pkg-config support for the library
 
@@ -25,34 +25,23 @@ If you need classes, interfaces, methods, properties, and signals from the libra
 
 ### Step 1: Identify the GIR File
 ```bash
-ls /usr/share/gir-1.0/ | grep -i <LibraryName>
+ls gir/ | grep -i <LibraryName>
 ```
 
-Example: `/usr/share/gir-1.0/Gio-2.0.gir`
+Example: `gir/Gio-2.0.gir`
 
 ### Step 2: Add to External Namespaces
 
-Edit `/workspaces/ocgtk/ocgtk/src/tools/gir_gen/main.ml` around line 411-417:
-
-```ocaml
-let external_namespaces = [
-  ("Gdk", "/usr/share/gir-1.0/Gdk-4.0.gir");
-  ("Pango", "/usr/share/gir-1.0/Pango-1.0.gir");
-  ("GdkPixbuf", "/usr/share/gir-1.0/GdkPixbuf-2.0.gir");
-  ("Gsk", "/usr/share/gir-1.0/Gsk-4.0.gir");
-  ("Graphene", "/usr/share/gir-1.0/Graphene-1.0.gir");
-  ("Gio", "/usr/share/gir-1.0/Gio-2.0.gir");  (* ADD THIS LINE *)
-] in
-```
+Edit `gir_gen/lib/gir_gen.ml` to add the library to the reference-file list.
 
 ### Step 3: Regenerate Gtk Bindings
 
 ```bash
-cd /workspaces/ocgtk/ocgtk
-dune exec src/tools/gir_gen/gir_gen.exe -- /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+# From repo root:
+dune exec gir_gen -- generate gir/Gtk-4.0.gir ocgtk/src/gtk
 ```
 
-This will generate `src/gtk/generated/gio_enums.mli` with all Gio enums and bitfields.
+This will generate `ocgtk/src/gtk/generated/gio_enums.mli` with all Gio enums and bitfields.
 
 ### Step 4: Build and Test
 
@@ -63,7 +52,7 @@ dune build
 ### Step 5: Commit Changes
 
 ```bash
-git add src/tools/gir_gen/main.ml src/gtk/generated/gio_enums.mli
+git add ocgtk/src/gtk/generated/gio_enums.mli
 git commit -m "Add Gio enum support to external namespaces"
 ```
 
@@ -75,7 +64,7 @@ git commit -m "Add Gio enum support to external namespaces"
 
 Check that the GIR file exists:
 ```bash
-ls -la /usr/share/gir-1.0/<Library>-<Version>.gir
+ls -la gir/<Library>-<Version>.gir
 ```
 
 Check pkg-config:
@@ -185,7 +174,7 @@ Example for Gio:
 
 ### Step 5: Add Type Mappings
 
-Edit `src/tools/gir_gen/type_mappings.ml` to add mappings for library-specific types.
+Edit `gir_gen/lib/type_mappings.ml` to add mappings for library-specific types.
 
 Add common type conversions around line 1-100:
 ```ocaml
@@ -205,7 +194,7 @@ This is the most time-consuming step and may require examining the GIR file to i
 
 ### Step 6: Update Exclude List (If Needed)
 
-Edit `src/tools/gir_gen/exclude_list.ml` to exclude platform-specific or problematic types:
+Edit `gir_gen/lib/exclude_list.ml` to exclude platform-specific or problematic types:
 
 ```ocaml
 let excluded_types = [
@@ -217,31 +206,23 @@ let excluded_types = [
 
 ### Step 7: Add Library to Main gir_gen Configuration (Optional)
 
-If you want the library to be aware of other library enums, update `external_namespaces` in `src/tools/gir_gen/main.ml`:
-
-```ocaml
-let external_namespaces = [
-  (* Add dependencies here *)
-  ("GLib", "/usr/share/gir-1.0/GLib-2.0.gir");
-  ("GObject", "/usr/share/gir-1.0/GObject-2.0.gir");
-] in
-```
+If you want the library to be aware of other library enums, update `external_namespaces` in `gir_gen/lib/gir_gen.ml`.
 
 ### Step 8: Run Code Generation
 
-Execute the gir_gen tool:
+Execute the gir_gen tool (from repo root):
 
 ```bash
-dune exec src/tools/gir_gen/gir_gen.exe -- \
-  /usr/share/gir-1.0/<Library>-<Version>.gir \
-  src/<library-name>
+dune exec gir_gen -- generate \
+  gir/<Library>-<Version>.gir \
+  ocgtk/src/<library-name>
 ```
 
 Example for Gio:
 ```bash
-dune exec src/tools/gir_gen/gir_gen.exe -- \
-  /usr/share/gir-1.0/Gio-2.0.gir \
-  src/gio
+dune exec gir_gen -- generate \
+  gir/Gio-2.0.gir \
+  ocgtk/src/gio
 ```
 
 This will generate:
@@ -306,7 +287,7 @@ Update relevant documentation:
 ### Step 13: Commit Changes
 
 ```bash
-git add src/<library>/ src/dune src/tools/gir_gen/
+git add ocgtk/src/<library>/
 git commit -m "Add <Library> bindings"
 ```
 
@@ -344,11 +325,11 @@ Three critical code generation bugs were discovered and fixed while adding GDK s
 
 1. **Constructor self-reference bug**: Constructor parameters that reference the same type being defined (e.g., `Cursor.new_from_name` taking `Cursor.t option` as fallback) were generating `Cursor.t` instead of `t`, causing "module is an alias for itself" errors.
    - **Fix**: Modified `ml_interface.ml` to apply `simplify_self_reference` to constructor parameter types (line 198)
-   - **File**: `src/tools/gir_gen/generate/ml_interface.ml`
+   - **File**: `gir_gen/lib/generate/ml_interface.ml`
 
 2. **Out parameter struct pointer bug**: Out parameters for struct types (like `GdkRectangle`) were being passed by value instead of by pointer to their conversion functions, causing type mismatches like "incompatible type for argument 1 of 'Val_GdkRectangle'".
    - **Fix**: Modified `nullable_c_to_ml_expr` in `c_stubs.ml` to detect struct types (conversion functions starting with `Val_Gdk` but not ending in `Type` or `Flags`) and pass their address using `&var` for out parameters
-   - **File**: `src/tools/gir_gen/generate/c_stubs.ml` (lines 24-45)
+   - **File**: `gir_gen/lib/generate/c_stubs.ml` (lines 24-45)
 
 3. **Opaque record types**: Records with no public methods/constructors (like `EventSequence`) need minimal module definitions when referenced by other types.
    - **Workaround**: Manually create minimal `.ml/.mli` files with `type t = Obj.t`

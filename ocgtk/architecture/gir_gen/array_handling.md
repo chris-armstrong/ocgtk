@@ -608,7 +608,7 @@ For `TransferFull` pointer arrays (non-string), we currently only free the conta
 
 ### Test Coverage (7 tests, all passing)
 
-**File**: `src/tools/test_gir_gen/c_stubs/array_tests.ml`
+**File**: `gir_gen/test/c_stubs/array_tests.ml`
 
 1. ✅ Zero-terminated string array input
 2. ✅ Zero-terminated string array return
@@ -623,7 +623,7 @@ For `TransferFull` pointer arrays (non-string), we currently only free the conta
 
 ### Test Helpers
 
-**File**: `src/tools/test_gir_gen/infrastructure/c_validation.ml`
+**File**: `gir_gen/test/infrastructure/c_validation.ml`
 
 Validation helpers for generated code:
 - `allocates_with_null_terminator`: Checks g_malloc calls
@@ -639,12 +639,11 @@ Validation helpers for generated code:
 ### Running Tests
 
 ```bash
-# Run all array tests
-cd ocgtk
-xvfb-run dune exec src/tools/test_gir_gen/test_gir_gen.exe -- test "Arrays"
+# Run all array tests (from repo root)
+xvfb-run dune exec gir_gen/test/test_gir_gen.exe -- test "Arrays"
 
 # Run specific test
-xvfb-run dune exec src/tools/test_gir_gen/test_gir_gen.exe -- test "Arrays" 0
+xvfb-run dune exec gir_gen/test/test_gir_gen.exe -- test "Arrays" 0
 ```
 
 ### Manual Testing
@@ -655,9 +654,9 @@ Generate bindings for classes with array methods:
 mkdir -p /tmp/array_test
 echo "AboutDialog" > /tmp/array_test/filter.txt
 
-dune exec src/tools/gir_gen/gir_gen.exe -- \
+dune exec gir_gen -- generate \
     -f /tmp/array_test/filter.txt \
-    /usr/share/gir-1.0/Gtk-4.0.gir \
+    gir/Gtk-4.0.gir \
     /tmp/array_test
 
 # Check generated signatures
@@ -742,23 +741,23 @@ For runtime memory safety testing, see `VALGRIND_TESTING.md`.
 
 ```bash
 # Find all array parameters
-grep -B 5 -A 10 '<array' /usr/share/gir-1.0/Gtk-4.0.gir | less
+grep -B 5 -A 10 '<array' gir/Gtk-4.0.gir | less
 
 # Find zero-terminated arrays
-grep -B 3 'zero-terminated="1"' /usr/share/gir-1.0/Gtk-4.0.gir
+grep -B 3 'zero-terminated="1"' gir/Gtk-4.0.gir
 
 # Find arrays with length parameters
-grep -B 3 'length="' /usr/share/gir-1.0/Gtk-4.0.gir
+grep -B 3 'length="' gir/Gtk-4.0.gir
 ```
 
 ### Understanding Transfer Ownership
 
 ```bash
 # Find transfer-full arrays
-grep -B 10 'transfer-ownership="full"' /usr/share/gir-1.0/Gtk-4.0.gir | grep -A 5 '<array'
+grep -B 10 'transfer-ownership="full"' gir/Gtk-4.0.gir | grep -A 5 '<array'
 
 # Find transfer-none arrays
-grep -B 10 'transfer-ownership="none"' /usr/share/gir-1.0/Gtk-4.0.gir | grep -A 5 '<array'
+grep -B 10 'transfer-ownership="none"' gir/Gtk-4.0.gir | grep -A 5 '<array'
 ```
 
 ## Related Documentation
@@ -773,17 +772,17 @@ grep -B 10 'transfer-ownership="none"' /usr/share/gir-1.0/Gtk-4.0.gir | grep -A 
 ### Key Files
 
 ```
-src/tools/gir_gen/
+gir_gen/lib/
 ├── type_mappings.ml                   - Array type detection
-├── generate/
-│   ├── c_stub_array_conv.ml          - Conversion code generation
-│   ├── c_stub_class.ml               - Method/constructor/property integration
-│   ├── c_stub_helpers.ml             - Re-exports array functions
-│   └── filtering.ml                  - Array-based filtering (workarounds)
-└── test/
-    └── test_gir_gen/
-        └── c_stubs/
-            └── array_tests.ml        - Comprehensive test suite
+└── generate/
+    ├── c_stub_array_conv.ml          - Conversion code generation
+    ├── c_stub_class.ml               - Method/constructor/property integration
+    ├── c_stub_helpers.ml             - Re-exports array functions
+    └── filtering.ml                  - Array-based filtering (workarounds)
+
+gir_gen/test/
+└── c_stubs/
+    └── array_tests.ml               - Comprehensive test suite
 ```
 
 ### Key Functions

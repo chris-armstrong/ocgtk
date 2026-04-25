@@ -18,7 +18,7 @@ ocgtk/overrides/          # One file per namespace, committed to the repo
   gsk.sexp
   gtk.sexp
 
-src/tools/gir_gen/
+gir_gen/lib/
   override_types.ml/.mli  # Override type definitions
   override_parser.ml/.mli # S-expression parser
   override_apply.ml/.mli  # Apply overrides to parsed GIR data
@@ -269,7 +269,7 @@ silently drop the namespace; a warning should be considered for a later phase.
 
 #### New file: `version_guard_tests.ml`
 
-Create `src/tools/test_gir_gen/version_guard_tests.ml` and register it in `dune`. Test:
+Create `gir_gen/test/version_guard_tests.ml` and register it in `dune`. Test:
 - `normalize_namespace "pango"` → `Ok "Pango"`
 - `normalize_namespace "PANGO"` → `Ok "Pango"` (case-insensitive)
 - `normalize_namespace "pango-cairo"` → `Ok "PangoCairo"`

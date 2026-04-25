@@ -1,9 +1,7 @@
 (library
  (name calc_core)
  (modules calc_expr calc_state)
- (libraries containers)
- (preprocess
-  (pps ppx_deriving.eq)))
+ (libraries containers))
 
 (executable
  (name calculator)

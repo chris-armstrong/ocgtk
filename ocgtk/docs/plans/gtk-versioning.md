@@ -107,7 +107,7 @@ The parser stores raw GIR `version` attributes. The generator resolves inheritan
 **Key rule**: the `#else` fallback for a class-level guard must provide fallback stubs for ALL members (regardless of their individual versions), because none of them exist if the class doesn't exist.
 
 **Implementation notes:**
-- New module `version_guard.ml` / `version_guard.mli` in `src/tools/gir_gen/`
+- New module `version_guard.ml` / `version_guard.mli` in `gir_gen/lib/`
 - `guard_kind` variant: `No_guard | Class_guard of version | Member_guard of version`
 - Internal `macro_kind` variant (`Standard of string | Cairo`) keeps Cairo special-case encapsulated; `Namespace` submodule not exposed in `.mli`
 - `emit_c_guard namespace version ~is_opening` produces `#if MACRO(M,m,u)` or `#endif`

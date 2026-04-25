@@ -349,11 +349,11 @@ These are separate work streams that would unlock far more methods than the rema
 3. **Phase C — Full Implementation** (2026-03-29): Created `c_stub_list_conv.ml`, wired into `c_stub_method.ml`, added type mappings and macros to `wrappers.h`.
 
 **Files created/modified:**
-- `src/tools/gir_gen/c_stub_list_conv.ml` (new — list conversion generation)
-- `src/tools/gir_gen/type_mappings.ml` (GLib.List/GLib.SList entries with `LIST_INLINE` marker)
-- `src/tools/gir_gen/generate/c_stub_method.ml` (`handle_list_return`, `handle_in_list_param`)
-- `src/tools/gir_gen/generate/filtering.ml` (`is_interface_type`, `list_has_interface_element`)
-- `src/tools/gir_gen/gir_parser.ml` (nested `<type>` element parsing)
+- `gir_gen/lib/c_stub_list_conv.ml` (new — list conversion generation)
+- `gir_gen/lib/type_mappings.ml` (GLib.List/GLib.SList entries with `LIST_INLINE` marker)
+- `gir_gen/lib/generate/c_stub_method.ml` (`handle_list_return`, `handle_in_list_param`)
+- `gir_gen/lib/generate/filtering.ml` (`is_interface_type`, `list_has_interface_element`)
+- `gir_gen/lib/parse/gir_parser.ml` (nested `<type>` element parsing)
 - `src/common/wrappers.h` (4 conversion macros)
 
 **Intersection test results:** 30+ methods unlocked across namespaces:

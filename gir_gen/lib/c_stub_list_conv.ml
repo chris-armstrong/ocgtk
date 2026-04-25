@@ -54,26 +54,22 @@ let element_converter_name ~(ctx : generation_context) (elem_type : gir_type) :
 (** Generate cleanup code for a GList based on transfer_ownership.
 
     Transfer ownership rules:
-    - TransferNone: Caller must free the list but NOT the elements
-    - TransferContainer: Caller owns the list, elements still owned by original
-    - TransferFull: Caller owns both list and elements (must unref GObject
-      elements)
-    - TransferFloating: Like Full, but used for floating references *)
+    - TransferNone: List is owned by the callee — caller must NOT free it
+    - TransferContainer: Caller owns the list nodes but not the elements
+    - TransferFull: Caller owns both list and elements (elements handled by
+      GObject finalizers — do not double-unref)
+    - TransferFloating: Like Full *)
 let generate_list_cleanup ~ctx:(_ctx : generation_context) ~(kind : list_kind)
     ~var ~(xfer : transfer_ownership) ~elem_type:(_elem_type : gir_type) =
   let free_func =
     match kind with `GList -> "g_list_free" | `GSList -> "g_slist_free"
   in
   match xfer with
-  | TransferNone | TransferContainer ->
-      (* Just free the list nodes, not the data *)
-      sprintf "%s(%s);" free_func var
-  | TransferFull | TransferFloating ->
-      (* For GObject elements, ownership transfers to the OCaml custom block's
-         finalizer (finalize_gobject calls g_object_unref). We must NOT also
-         call g_list_foreach(..., g_object_unref) here — that would double-unref
-         every element, causing a use-after-free when the finalizer later runs.
-         We only need to free the list nodes themselves. *)
+  | TransferNone ->
+      (* Callee still owns this list — freeing it would corrupt callee state *)
+      ""
+  | TransferContainer | TransferFull | TransferFloating ->
+      (* Free the list nodes; GObject element finalizers handle element memory *)
       sprintf "%s(%s);" free_func var
 
 (** Generate C code for converting a GList/GSList return value to OCaml list.
@@ -102,9 +98,15 @@ let generate_list_c_to_ml ~(ctx : generation_context) ~var
         "CAMLreturn(result);" )
   | Some elem_conv ->
       let cleanup = generate_list_cleanup ~ctx ~kind ~var ~xfer ~elem_type in
+      let conv_body =
+        if String.length cleanup > 0 then
+          sprintf "%s(%s, result, item, cell, %s);\n    %s" macro_name var
+            elem_conv cleanup
+        else
+          sprintf "%s(%s, result, item, cell, %s);" macro_name var elem_conv
+      in
       ( "CAMLlocal3(result, item, cell);",
-        sprintf "%s(%s, result, item, cell, %s);\n    %s" macro_name var
-          elem_conv cleanup,
+        conv_body,
         "CAMLreturn(result);" )
 
 (** Generate C code for converting an OCaml list parameter to GList/GSList.

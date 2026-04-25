@@ -176,7 +176,7 @@ let run_gir_gen ?filter_file gir_file output_dir =
     match filter_file with Some f -> sprintf "-f %s " f | None -> ""
   in
   let cmd =
-    sprintf "%s/gir_gen/gir_gen.exe generate %s%s %s" tools_dir filter_arg
+    sprintf "%s/bin/gir_gen.exe generate %s%s %s" tools_dir filter_arg
       gir_file output_dir
   in
   let result =
@@ -212,8 +212,8 @@ let ensure_output_dir dir =
 
 (** Return the path to the bundled GIR data directory. Checks the [GIR_DATA_DIR]
     environment variable first, then walks up from the build tree to find
-    [ocgtk/gir/]. Falls back to [/usr/share/gir-1.0] if not found. Set by the
-    dune test stanza via [(env GIR_DATA_DIR ...)]. *)
+    [gir/] at the repo root. Falls back to [/usr/share/gir-1.0] if not found.
+    Set by the dune test stanza via [(env GIR_DATA_DIR ...)]. *)
 let gir_data_dir () =
   match Sys.getenv_opt "GIR_DATA_DIR" with
   | Some d -> d

@@ -120,7 +120,7 @@ let test_method_generation () =
     (Some expected_output) result
 ```
 
-[helpers]: ../../src/tools/test_gir_gen/infrastructure/helpers.ml
+[helpers]: ../../../gir_gen/test/infrastructure/helpers.ml
 
 ---
 
