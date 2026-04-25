@@ -82,8 +82,8 @@ ctx add decision "Title" \
 
 ## MANDATORY: Development Essentials
 
-1. ALWAYS build the project after making changes with `cd ocgtk && dune build`. Always use its output in full - DO NOT FILTER its output with `head`/`grep`/`tail` because you will miss critical context.
-2. ALWAYS run tests with `cd ocgtk && xvfb-run dune runtest`
+1. ALWAYS build the project after making changes with `dune build` from the repo root. Always use its output in full - DO NOT FILTER its output with `head`/`grep`/`tail` because you will miss critical context.
+2. ALWAYS run tests with `dune test gir_gen/ && xvfb-run dune test ocgtk/` from the repo root
 3. ALWAYS write scripts and supporting code in OCaml
 4. ALWAYS refer to [STYLE_GUIDELINES.md](./STYLE_GUIDELINES.md) for OCaml code style and structure guidelines
 ### ast-grep
@@ -101,7 +101,7 @@ If you are running in a clean container (e.g. Claude Code Web), you will need to
 
 ## Project Layout and Architecture
 
-`ocgtk` lives in the `ocgtk` sub-directory i.e. ocgtk/ocgtk - remember to `cd ocgtk` before running tools like `dune` or `ocamlformat`.
+This is a dune workspace with two projects: `ocgtk/` (GTK bindings) and `gir_gen/` (code generator). Run `dune build` and `dune test` from the repo root to cover both. For `ocamlformat`, `cd ocgtk` first (it has its own `.ocamlformat` config).
 
 [The architecture documentation](./ocgtk/architecture/README.md) describes the project layout and system architecture.
 
@@ -138,9 +138,9 @@ for full documentation.
 
 This project uses `dune` to compile code and run tests. NEVER compile code directly with `ocamlc/ocamlc.opt`.
 
-* Use `cd ocgtk && dune build` to compile the code. IMPORTANT: Always check the return code grep for "error|warning|undefined reference". 
+* Use `dune build` from the repo root to compile both projects. IMPORTANT: Always check the return code and grep for "error|warning|undefined reference".
     DO NOT filter its output with `grep`/`head`/`tail` etc. unless you know what you are looking for AND have already checked the return code.
-* Use `cd ocgtk && xvfb-run dune runtest` to run all the unit and integration tests. ALWAYS check the return code to determine success - do not rely on the console output.
+* Use `dune test gir_gen/ && xvfb-run dune test ocgtk/` from the repo root to run all tests. ALWAYS check the return code to determine success - do not rely on the console output.
 
 ## OCaml / C FFI Guidelines
 

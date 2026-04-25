@@ -5,24 +5,28 @@ ocgtk generates OCaml bindings for GTK4 from GObject Introspection (GIR) files.
 ## Project Layout
 
 ```
-ocgtk/
-├── src/
-│   ├── common/              # Runtime: base classes, GObject system
-│   ├── cairo/               # Cairo bindings (handwritten + generated)
-│   ├── gdk/                 # GDK bindings
-│   ├── gio/                 # GIO bindings
-│   ├── graphene/            # Graphene bindings
-│   ├── gsk/                 # GSK bindings
-│   ├── gtk/                 # GTK4 bindings (main library)
-│   ├── pango/               # Pango bindings
-│   ├── pangocairo/          # PangoCairo bindings
-│   └── tools/
-│       ├── gir_gen/         # Code generator
-│       └── test_gir_gen/    # Generator tests
-└── docs/
-    ├── code_guidelines/     # [Coding standards](./code_guidelines/index.md)
-    └── testing/             # Test documentation
-
+<repo root>/
+├── dune-workspace           # Spans ocgtk/ and gir_gen/
+├── gir/                     # Bundled GIR data files (9 namespaces)
+├── gir_gen/                 # Code generator (separate dune project)
+│   ├── bin/                 # gir_gen executable entry point
+│   ├── lib/                 # Generator library (generate/, parse/)
+│   ├── test/                # Generator test suite
+│   └── docs/                # README_GIR_GEN.md
+└── ocgtk/                   # GTK bindings dune project
+    ├── src/
+    │   ├── common/          # Runtime: base classes, GObject system
+    │   ├── cairo/           # Cairo bindings (handwritten + generated)
+    │   ├── gdk/             # GDK bindings
+    │   ├── gio/             # GIO bindings
+    │   ├── graphene/        # Graphene bindings
+    │   ├── gsk/             # GSK bindings
+    │   ├── gtk/             # GTK4 bindings (main library)
+    │   ├── pango/           # Pango bindings
+    │   └── pangocairo/      # PangoCairo bindings
+    └── docs/
+        ├── code_guidelines/ # [Coding standards](./code_guidelines/index.md)
+        └── testing/         # Test documentation
 ```
 
 Generated code lives in `src/<namespace>/generated/`:
