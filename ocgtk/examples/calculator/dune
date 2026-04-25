@@ -1,7 +1,6 @@
 (library
  (name calc_core)
- (modules calc_expr calc_state)
- (libraries containers))
+ (modules calc_expr calc_state))
 
 (executable
  (name calculator)

@@ -151,7 +151,7 @@ For instructions and best practices for writing and updating OCaml / C FFI, see 
 
 ### GIR Code Generator
 For generating GTK bindings from GObject Introspection (GIR) files:
-- See [gir_gen/docs/README_GIR_GEN.md](gir_gen/docs/README_GIR_GEN.md) for complete usage instructions
+- See [gir_gen/README.md](gir_gen/README.md) for complete usage instructions
 - Generates C FFI bindings and OCaml interfaces for 9 namespaces: Cairo, Gio, Gdk, Graphene, GdkPixbuf, Pango, PangoCairo, Gsk, Gtk
 - Cross-namespace type resolution via reference files and `<ns>_decls.h` headers
 

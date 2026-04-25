@@ -13,7 +13,9 @@ they reach users.
 | `debian12`     | `debian:12`                    | GTK 4.8 / GLib 2.74 | |
 | `centos9`      | `quay.io/centos/centos:stream9`| GTK 4.x / GLib 2.68 | Pango < 1.50 — tests cross-namespace version guards |
 | `opensuse15`   | `opensuse/leap:15.6`           | GTK 4.x / Pango 1.50| GTK < 4.14 — StringList tests skip |
-| `fedora40`     | `fedora:40`                    | GTK 4.14+ / Pango 1.52 | Newest RHEL-family; all tests run |
+| `fedora40`     | `fedora:40`                    | GTK 4.14+ / Pango 1.52 | Newer RHEL-family; all tests run |
+| `fedora43`     | `fedora:43`                    | GTK 4.16+            | Latest Fedora |
+| `ubuntu25`     | `ubuntu:25.04`                 | GTK 4.16+            | Latest Ubuntu LTS |
 | `ubuntu24`     | `ubuntu:24.04`                 | GTK 4.14+            | **Opt-in only** — excluded from default `oci up/build/down` runs since the dev environment is Ubuntu 24.04 |
 
 Ubuntu 22.04 is the most important test target because GLib 2.72 is the boundary
@@ -35,14 +37,14 @@ ci/
   fedora40.Dockerfile
   scripts/
     build.sh             # dune build --build-dir /build
-    test.sh              # xvfb-run dune runtest --build-dir /build
+    test.sh              # dune test gir_gen/ then xvfb-run dune test ocgtk/ (both with --build-dir /build)
 ```
 
 Each Dockerfile:
 - Installs system packages (GTK 4 dev headers, GIR files, Xvfb)
 - Downloads and installs opam at `OPAM_VERSION`
 - Creates an OCaml switch at `OCAML_VERSION`
-- Pre-installs all opam dependencies from `ocgtk.opam`
+- Pre-installs all opam dependencies from `ocgtk.opam` and `gir_gen.opam`
 
 The source tree is **bind-mounted** at `/workspace` at runtime — no source copy in
 the image. Each service has a **named Docker volume** for its dune `_build` dir

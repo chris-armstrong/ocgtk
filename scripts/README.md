@@ -38,7 +38,7 @@ After generation, run `dune build` to compile the updated bindings.
 Per-namespace override files live in `ocgtk/overrides/` and are committed to the
 repository. They control which entities are skipped during generation and set GTK
 version guards on enum/bitfield members. See
-[README_GIR_GEN.md — Override System](../gir_gen/docs/README_GIR_GEN.md#override-system)
+[gir_gen/README.md — Override System](../gir_gen/README.md#override-system)
 for the file format and editing workflow.
 
 ### Requirements

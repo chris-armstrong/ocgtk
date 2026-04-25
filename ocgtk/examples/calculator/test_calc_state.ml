@@ -1,4 +1,3 @@
-open Containers
 open Calc_core
 
 let pp_state fmt state =

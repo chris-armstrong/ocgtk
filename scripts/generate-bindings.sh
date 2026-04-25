@@ -11,7 +11,7 @@
 #     so downstream namespaces don't try to map to types that won't be generated
 #   - In 'generate': ignored entities are skipped; version guards emit
 #     #if NS_CHECK_VERSION(...) guards in the generated C stubs
-# See gir_gen/docs/README_GIR_GEN.md#override-system for file format details.
+# See gir_gen/README.md#override-system for file format details.
 
 set -e
 

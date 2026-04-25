@@ -1,4 +1,3 @@
-open Containers
 (** Calculator state machine
 
     Manages the current expression, result display, and error state. Handles
@@ -23,8 +22,7 @@ let is_valid_char = function
   | _ -> false
 
 (** Get the last character of a string, if any. *)
-let last_char_opt s =
-  if String.is_empty s then None else Some s.[String.length s - 1]
+let last_char_opt s = if s = "" then None else Some s.[String.length s - 1]
 
 (** Check if the current number token (after the last operator/paren) already
     contains a decimal point. Prevents inputs like 1.2.3. *)
@@ -108,7 +106,7 @@ let evaluate t =
     t
   else
     let trimmed = String.trim t.expression in
-    if String.is_empty trimmed then { t with result = "0" }
+    if trimmed = "" then { t with result = "0" }
     else
       (* Check for incomplete expression (ends with operator). *)
       let last_c = last_char_opt trimmed in
@@ -137,12 +135,11 @@ let evaluate t =
 let get_expression t = t.expression
 let get_result t = t.result
 let is_error t = t.error
-let is_empty t = String.is_empty t.expression
+let is_empty t = t.expression = ""
 
 (** Get the display text for the expression row. Returns the expression or "0"
     if empty. *)
-let get_expression_display t =
-  if String.is_empty t.expression then "0" else t.expression
+let get_expression_display t = if t.expression = "" then "0" else t.expression
 
 (** Get the display text for the result row. Returns the result or "0" if
     empty/no evaluation yet. *)

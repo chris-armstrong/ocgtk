@@ -152,7 +152,7 @@ for full documentation.
 
 ### GIR Code Generator
 For generating GTK bindings from GObject Introspection (GIR) files:
-- See [gir_gen/docs/README_GIR_GEN.md](gir_gen/docs/README_GIR_GEN.md) for complete usage instructions
+- See [gir_gen/README.md](gir_gen/README.md) for complete usage instructions
 - Generates C FFI bindings and OCaml interfaces for 9 namespaces: Cairo, Gio, Gdk, Graphene, GdkPixbuf, Pango, PangoCairo, Gsk, Gtk
 - Cross-namespace type resolution via reference files and `<ns>_decls.h` headers
 
@@ -174,7 +174,7 @@ dune exec gir_gen -- generate \
 
 NOTE: For other libraries, use `ocgtk/src/<short_name>`. For example, ocgtk/src/pango for Pango, ocgtk/src/gsk for GSK, ocgtk/src/gdk for GDK, etc.
 
-**Override files** (`ocgtk/overrides/<ns>.sexp`) control which entities are ignored during generation and set version guards on enum/bitfield members. Pass `-o ocgtk/overrides/<ns>.sexp` to `generate` or `references`. See [README_GIR_GEN.md — Override System](gir_gen/docs/README_GIR_GEN.md#override-system).
+**Override files** (`ocgtk/overrides/<ns>.sexp`) control which entities are ignored during generation and set version guards on enum/bitfield members. Pass `-o ocgtk/overrides/<ns>.sexp` to `generate` or `references`. See [README_GIR_GEN.md — Override System](gir_gen/README.md#override-system).
 
 **⚠️ IMPORTANT:** Use `ocgtk/src/gtk` NOT `ocgtk/src/gtk/generated` as the output directory. The generator automatically creates the `generated/` subdirectory. Using `ocgtk/src/gtk/generated` will create a nested `src/gtk/generated/generated/` directory.
 
