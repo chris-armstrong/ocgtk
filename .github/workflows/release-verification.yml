@@ -368,7 +368,7 @@ jobs:
       - name: Pin conf-gtk4 and install OCaml dependencies
         run: |
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only -y ./ocgtk ./gir_gen
+          opam install --deps-only -y ./ocgtk
 
       - name: Build
         run: opam exec -- dune build
