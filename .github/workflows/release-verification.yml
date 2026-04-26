@@ -371,4 +371,4 @@ jobs:
           opam install --deps-only -y ./ocgtk
 
       - name: Build
-        run: opam exec -- dune build ocgtk/
+        run: opam exec -- dune build @ocgtk/install
