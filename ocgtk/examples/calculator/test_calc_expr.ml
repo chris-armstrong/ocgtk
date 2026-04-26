@@ -2,7 +2,6 @@
 
     Run with: dune runtest examples/calculator *)
 
-open Containers
 open Calc_core
 open Calc_expr
 

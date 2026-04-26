@@ -31,13 +31,13 @@ jobs:
       - name: Pin conf-gtk4 and install dependencies
         run: |
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk
+          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
       - name: Build
-        working-directory: ocgtk
         run: opam exec -- dune build
-      - name: Test
-        working-directory: ocgtk
-        run: opam exec -- xvfb-run -a dune runtest
+      - name: Test gir_gen
+        run: opam exec -- dune test gir_gen/
+      - name: Test ocgtk
+        run: opam exec -- xvfb-run -a dune test ocgtk/
 
   # ── Ubuntu 24.04 (native runner) ────────────────────────────────────────────
   ubuntu-24:
@@ -58,13 +58,13 @@ jobs:
       - name: Pin conf-gtk4 and install dependencies
         run: |
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk
+          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
       - name: Build
-        working-directory: ocgtk
         run: opam exec -- dune build
-      - name: Test
-        working-directory: ocgtk
-        run: opam exec -- xvfb-run -a dune runtest
+      - name: Test gir_gen
+        run: opam exec -- dune test gir_gen/
+      - name: Test ocgtk
+        run: opam exec -- xvfb-run -a dune test ocgtk/
 
   # ── APT-based containers (Ubuntu 25.04, Debian 12) ──────────────────────────
   linux-apt:
@@ -105,17 +105,19 @@ jobs:
         run: |
           eval $(opam env)
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk
+          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
       - name: Build
-        working-directory: ocgtk
         run: |
           eval $(opam env)
           dune build
-      - name: Test
-        working-directory: ocgtk
+      - name: Test gir_gen
         run: |
           eval $(opam env)
-          xvfb-run -a dune runtest
+          dune test gir_gen/
+      - name: Test ocgtk
+        run: |
+          eval $(opam env)
+          xvfb-run -a dune test ocgtk/
 
   # ── Fedora containers (Fedora 40, Fedora 43) ─────────────────────────────────
   linux-fedora:
@@ -154,17 +156,19 @@ jobs:
         run: |
           eval $(opam env)
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk
+          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
       - name: Build
-        working-directory: ocgtk
         run: |
           eval $(opam env)
           dune build
-      - name: Test
-        working-directory: ocgtk
+      - name: Test gir_gen
         run: |
           eval $(opam env)
-          xvfb-run -a dune runtest
+          dune test gir_gen/
+      - name: Test ocgtk
+        run: |
+          eval $(opam env)
+          xvfb-run -a dune test ocgtk/
 
   # ── CentOS Stream 9 ──────────────────────────────────────────────────────────
   centos-9:
@@ -198,17 +202,19 @@ jobs:
         run: |
           eval $(opam env)
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk
+          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
       - name: Build
-        working-directory: ocgtk
         run: |
           eval $(opam env)
           dune build
-      - name: Test
-        working-directory: ocgtk
+      - name: Test gir_gen
         run: |
           eval $(opam env)
-          xvfb-run -a dune runtest
+          dune test gir_gen/
+      - name: Test ocgtk
+        run: |
+          eval $(opam env)
+          xvfb-run -a dune test ocgtk/
 
   # ── openSUSE Leap 15.6 ───────────────────────────────────────────────────────
   opensuse-15:
@@ -239,17 +245,19 @@ jobs:
         run: |
           eval $(opam env)
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk
+          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
       - name: Build
-        working-directory: ocgtk
         run: |
           eval $(opam env)
           dune build
-      - name: Test
-        working-directory: ocgtk
+      - name: Test gir_gen
         run: |
           eval $(opam env)
-          xvfb-run -a dune runtest
+          dune test gir_gen/
+      - name: Test ocgtk
+        run: |
+          eval $(opam env)
+          xvfb-run -a dune test ocgtk/
 
   # ── macOS (Homebrew) ─────────────────────────────────────────────────────────
   macos:
@@ -265,13 +273,13 @@ jobs:
       - name: Pin conf-gtk4 and install dependencies
         run: |
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk
+          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
       - name: Build
-        working-directory: ocgtk
         run: opam exec -- dune build
-      - name: Test
-        working-directory: ocgtk
-        run: opam exec -- dune runtest
+      - name: Test gir_gen
+        run: opam exec -- dune test gir_gen/
+      - name: Test ocgtk
+        run: opam exec -- dune test ocgtk/
 
   # ── FreeBSD 14 ───────────────────────────────────────────────────────────────
   # Disabled: FreeBSD runs on QEMU on GitHub runners which lack processor
@@ -301,13 +309,13 @@ jobs:
             opam switch create default "ocaml-base-compiler.${{ env.OCAML_VERSION }}" -y
             eval $(opam env)
             opam pin add -n conf-gtk4 conf-gtk4
-            opam install --deps-only --with-test -y ./ocgtk
-            cd ocgtk
+            opam install --deps-only --with-test -y ./ocgtk ./gir_gen
             dune build
+            dune test gir_gen/
             # xvfb-run is not available on FreeBSD; start Xvfb manually
             Xvfb :99 -screen 0 1280x1024x24 &
             sleep 1
-            DISPLAY=:99 dune runtest
+            DISPLAY=:99 dune test ocgtk/
 
   # ── Windows ──────────────────────────────────────────────────────────────────
   #
@@ -367,13 +375,14 @@ jobs:
       - name: Pin conf-gtk4 and install OCaml dependencies
         run: |
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk
+          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
 
       - name: Build
-        working-directory: ocgtk
         run: opam exec -- dune build
 
-      - name: Test
-        working-directory: ocgtk
+      - name: Test gir_gen
+        run: opam exec -- dune test gir_gen/
+
+      - name: Test ocgtk
         # Windows runners have a native display; no virtual framebuffer needed
-        run: opam exec -- dune runtest
+        run: opam exec -- dune test ocgtk/

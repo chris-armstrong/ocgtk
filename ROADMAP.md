@@ -26,7 +26,7 @@ These items cut across multiple milestones and should be addressed first or in p
 
 Add type mappings for GObject.Value, GObject.Closure, and simple GLib types (Quark, String, IOCondition, SeekType). These unblock methods across all namespaces and are required for signal parameter marshalling (Milestone 2) and callback parameters (Milestone 4).
 
-**Plan**: `ocgtk/docs/plans/gobject_glib_type_mappings.md`
+**Plan**: `gir_gen/docs/plans/gobject_glib_type_mappings.md`
 
 ### P2. Elide Length-Linked Array Parameters
 

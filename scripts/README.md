@@ -8,7 +8,7 @@ GdkPixbuf, Pango, PangoCairo, GSK, GTK) from GIR (GObject Introspection) files.
 ### Usage
 
 ```bash
-# Use default GIR path (/usr/share/gir-1.0)
+# Use default GIR path (gir/ at repository root)
 ./scripts/generate-bindings.sh
 
 # Override GIR path
@@ -38,7 +38,7 @@ After generation, run `dune build` to compile the updated bindings.
 Per-namespace override files live in `ocgtk/overrides/` and are committed to the
 repository. They control which entities are skipped during generation and set GTK
 version guards on enum/bitfield members. See
-[README_GIR_GEN.md — Override System](../ocgtk/src/tools/README_GIR_GEN.md#override-system)
+[gir_gen/README.md — Override System](../gir_gen/README.md#override-system)
 for the file format and editing workflow.
 
 ### Requirements

@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ocaml-compiler: [5.3.x, 5.4.x]
+        ocaml-compiler: [5.4.x]
 
     steps:
       - name: Checkout code
@@ -29,25 +29,26 @@ jobs:
 
       - name: Install external dependencies
         run: |
-          sudo apt-get update && 
+          sudo apt-get update &&
           sudo apt-get install -y libcairo2-dev libgtk-4-dev xdot xvfb
 
       - name: Pin conf-gtk4 package
         run: opam pin add -n conf-gtk4 conf-gtk4
 
       - name: Install OCaml dependencies
-        working-directory: ocgtk
-        run: opam install . --deps-only --with-test 
+        run: |
+          opam install ./ocgtk ./gir_gen --deps-only --with-test
 
-      - name: Build octk library
-        working-directory: ocgtk
+      - name: Build
         run: opam exec -- dune build
 
-      - name: Run all tests
-        working-directory: ocgtk
+      - name: Test gir_gen package
+        run: opam exec -- dune test gir_gen/
+
+      - name: Test ocgtk package
         run: |
           # Use xvfb-run to provide virtual display for GTK runtime tests
-          opam exec -- xvfb-run -a dune test
+          opam exec -- xvfb-run -a dune test ocgtk/
 
   # ── macOS (Homebrew GTK4) ──────────────────────────────────────────────────
   # Validates the cmdliner --help=plain fix on macOS. Apple Silicon only
@@ -84,28 +85,27 @@ jobs:
         run: opam pin add -n conf-gtk4 conf-gtk4
 
       - name: Install OCaml dependencies
-        working-directory: ocgtk
-        run: opam install . --deps-only --with-test
+        run: |
+          opam install ./ocgtk --deps-only --with-test
+          opam install ./gir_gen --deps-only --with-test
 
-      - name: Build ocgtk library
-        working-directory: ocgtk
+      - name: Build both packages
         run: opam exec -- dune build
 
       # Replicate opam-ci's non-TTY build-sandbox conditions:
       # stdout/stderr redirected (no isatty), TERM varied.
       - name: Run tests (opam-ci-style, TERM=dumb)
-        working-directory: ocgtk
         env:
           TERM: dumb
         run: |
-          opam exec -- dune runtest 2>&1 | tee test-output.log
+          opam exec -- dune test gir_gen/ 2>&1 | tee test-output-gir-gen.log
+          opam exec -- dune test ocgtk/ 2>&1 | tee test-output.log
 
       - name: Run tests again with TERM=xterm-256color (CLI help regression check)
-        working-directory: ocgtk
         env:
           TERM: xterm-256color
         run: |
-          opam exec -- dune runtest --force 2>&1 | tee test-output-xterm.log
+          opam exec -- dune test --force ocgtk/ 2>&1 | tee test-output-xterm.log
 
       - name: Upload test logs on failure
         if: failure()
@@ -113,7 +113,8 @@ jobs:
         with:
           name: macos-${{ matrix.os }}-test-logs
           path: |
-            ocgtk/test-output.log
-            ocgtk/test-output-xterm.log
-            ocgtk/_build/default/src/tools/test_gir_gen/_build/_tests/
+            test-output-gir-gen.log
+            test-output.log
+            test-output-xterm.log
+            _build/default/gir_gen/test/_build/_tests/
 

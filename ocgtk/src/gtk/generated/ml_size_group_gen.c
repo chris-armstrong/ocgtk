@@ -49,7 +49,6 @@ CAMLparam1(self);
 CAMLlocal3(result, item, cell);
     GList* c_result = gtk_size_group_get_widgets(GtkSizeGroup_val(self));
 Val_GSList_with(c_result, result, item, cell, Val_GtkWidget((gpointer)_tmp->data));
-    g_slist_free(c_result);
     CAMLreturn(result);
 }
 

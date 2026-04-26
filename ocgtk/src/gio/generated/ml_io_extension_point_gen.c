@@ -62,7 +62,6 @@ CAMLparam1(self);
 CAMLlocal3(result, item, cell);
     GList* c_result = g_io_extension_point_get_extensions(GIOExtensionPoint_val(self));
 Val_GList_with(c_result, result, item, cell, Val_GIOExtension((gpointer)_tmp->data));
-    g_list_free(c_result);
     CAMLreturn(result);
 }
 

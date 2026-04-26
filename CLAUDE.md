@@ -83,8 +83,8 @@ ctx add decision "Title" \
 
 ## MANDATORY: Development Essentials
 
-1. ALWAYS build the project after making changes with `cd ocgtk && dune build`. Always use its output in full - DO NOT FILTER its output with `head`/`grep`/`tail` because you will miss critical context.
-2. ALWAYS run tests with `cd ocgtk && xvfb-run dune runtest`
+1. ALWAYS build the project after making changes with `dune build` from the repo root. Always use its output in full - DO NOT FILTER its output with `head`/`grep`/`tail` because you will miss critical context.
+2. ALWAYS run tests with `dune test gir_gen/ && xvfb-run dune test ocgtk/` from the repo root
 3. ALWAYS write scripts and supporting code in OCaml
 4. ALWAYS refer to [STYLE_GUIDELINES.md](./STYLE_GUIDELINES.md) for OCaml code style and structure guidelines
 ### ast-grep
@@ -102,12 +102,12 @@ If you are running in a clean container (e.g. Claude Code Web), you will need to
 
 ## Code Layout
 
-`ocgtk` lives in the `ocgtk` sub-directory i.e. ocgtk/ocgtk - remember to `cd ocgtk` before running tools like `dune` or `ocamlformat`.
+This is a dune workspace with two projects: `ocgtk/` (GTK bindings) and `gir_gen/` (code generator). Run `dune build` and `dune test` from the repo root to cover both. For `ocamlformat`, `cd ocgtk` first (it has its own `.ocamlformat` config).
 
 
 ## Writing or refactoring Code or Rewriting Documentation
 
-**Always consult the [code guidelines](./ocgtk/docs/code_guidelines/index.md) for how to structure or restructure code.
+**Always consult the [code guidelines](./docs/code_guidelines/index.md) for how to structure or restructure code.
 
 **When moving code or documentation**: ALWAYS use tools to copy the code to a temporary file and write it to the destination file. DO NOT REGENERATE the code yourself - this will save your token usage. ALWAYS remove the old code files and update the `dune` file accordingly.
 
@@ -119,13 +119,13 @@ If you are running in a clean container (e.g. Claude Code Web), you will need to
 
 This project uses `dune` to compile code and run tests. NEVER compile code directly with `ocamlc/ocamlc.opt`.
 
-* Use `cd ocgtk && dune build` to compile the code. IMPORTANT: Always check the return code grep for "error|warning|undefined reference". 
+* Use `dune build` from the repo root to compile both projects. IMPORTANT: Always check the return code and grep for "error|warning|undefined reference".
     DO NOT filter its output with `grep`/`head`/`tail` etc. unless you know what you are looking for AND have already checked the return code.
-* Use `cd ocgtk && xvfb-run dune runtest` to run all the unit and integration tests. ALWAYS check the return code to determine success - do not rely on the console output.
+* Use `dune test gir_gen/ && xvfb-run dune test ocgtk/` from the repo root to run all tests. ALWAYS check the return code to determine success - do not rely on the console output.
 
 ## OCaml / C FFI Guidelines
 
-For instructions and best practices for writing and updating OCaml / C FFI, see [FFI Guidelines](./ocgtk/architecture/FFI_GUIDELINES.md).
+For instructions and best practices for writing and updating OCaml / C FFI, see [FFI Guidelines](./architecture/FFI_GUIDELINES.md).
 
 
 ## ocgtk Development Tools
@@ -147,12 +147,12 @@ reflected without rebuilding images.
 ```
 
 Version pins live in `ci/versions.env`. See
-[ocgtk/architecture/ci_distro_testing.md](ocgtk/architecture/ci_distro_testing.md)
+[architecture/ci_distro_testing.md](architecture/ci_distro_testing.md)
 for full documentation.
 
 ### GIR Code Generator
 For generating GTK bindings from GObject Introspection (GIR) files:
-- See [ocgtk/src/tools/README_GIR_GEN.md](ocgtk/src/tools/README_GIR_GEN.md) for complete usage instructions
+- See [gir_gen/README.md](gir_gen/README.md) for complete usage instructions
 - Generates C FFI bindings and OCaml interfaces for 9 namespaces: Cairo, Gio, Gdk, Graphene, GdkPixbuf, Pango, PangoCairo, Gsk, Gtk
 - Cross-namespace type resolution via reference files and `<ns>_decls.h` headers
 
@@ -166,17 +166,17 @@ This builds the generator, generates reference files for all 9 namespaces, then 
 
 **To regenerate a single library manually:**
 ```bash
-cd ocgtk
-dune exec src/tools/gir_gen/gir_gen.exe -- generate \
-  -o overrides/gtk.sexp \
-  /usr/share/gir-1.0/Gtk-4.0.gir src/gtk
+# From repository root:
+dune exec gir_gen -- generate \
+  -o ocgtk/overrides/gtk.sexp \
+  gir/Gtk-4.0.gir ocgtk/src/gtk
 ```
 
-NOTE: For other libraries, use `src/<short_name>`. For example, src/pango for Pango, src/gsk for GSK, src/gdk for GDK, etc.
+NOTE: For other libraries, use `ocgtk/src/<short_name>`. For example, ocgtk/src/pango for Pango, ocgtk/src/gsk for GSK, ocgtk/src/gdk for GDK, etc.
 
-**Override files** (`ocgtk/overrides/<ns>.sexp`) control which entities are ignored during generation and set version guards on enum/bitfield members. Pass `-o overrides/<ns>.sexp` to `generate` or `references`. See [README_GIR_GEN.md — Override System](ocgtk/src/tools/README_GIR_GEN.md#override-system).
+**Override files** (`ocgtk/overrides/<ns>.sexp`) control which entities are ignored during generation and set version guards on enum/bitfield members. Pass `-o ocgtk/overrides/<ns>.sexp` to `generate` or `references`. See [README_GIR_GEN.md — Override System](gir_gen/README.md#override-system).
 
-**⚠️ IMPORTANT:** Use `src/gtk` NOT `src/gtk/generated` as the output directory. The generator automatically creates the `generated/` subdirectory. Using `src/gtk/generated` will create a nested `src/gtk/generated/generated/` directory.
+**⚠️ IMPORTANT:** Use `ocgtk/src/gtk` NOT `ocgtk/src/gtk/generated` as the output directory. The generator automatically creates the `generated/` subdirectory. Using `ocgtk/src/gtk/generated` will create a nested `src/gtk/generated/generated/` directory.
 
 
 ## Security Guidelines

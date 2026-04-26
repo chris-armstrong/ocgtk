@@ -1,4 +1,3 @@
-open Containers
 (** Expression tokenizer, parser, and evaluator
 
     Pure OCaml - no GTK dependency. Supports:
@@ -16,7 +15,18 @@ type token =
   | LParen
   | RParen
   | EOF
-[@@deriving eq]
+
+let equal_token (a : token) (b : token) =
+  match (a, b) with
+  | Number x, Number y -> Float.equal x y
+  | Plus, Plus -> true
+  | Minus, Minus -> true
+  | Multiply, Multiply -> true
+  | Divide, Divide -> true
+  | LParen, LParen -> true
+  | RParen, RParen -> true
+  | EOF, EOF -> true
+  | _ -> false
 
 exception Parse_error of string
 
@@ -197,7 +207,7 @@ let format_result = function
 (* Helper to check if expression ends with incomplete operator *)
 let is_incomplete_expression s =
   let trimmed = String.trim s in
-  if String.is_empty trimmed then true
+  if String.equal trimmed "" then true
   else
     let last_char = trimmed.[String.length trimmed - 1] in
     match last_char with '+' | '-' | '*' | '/' -> true | _ -> false
@@ -205,4 +215,4 @@ let is_incomplete_expression s =
 (* Get display text for incomplete expressions *)
 let get_display_text expr =
   let trimmed = String.trim expr in
-  if String.is_empty trimmed then "0" else trimmed
+  if String.equal trimmed "" then "0" else trimmed

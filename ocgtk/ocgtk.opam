@@ -9,22 +9,12 @@ license: "LGPL-2.1-or-later WITH OCaml-LGPL-linking-exception"
 homepage: "https://github.com/chris-armstrong/ocgtk"
 bug-reports: "https://github.com/chris-armstrong/ocgtk/issues"
 depends: [
-  "ocaml" {>= "5.3"}
+  "ocaml" {>= "5.0"}
   "dune" {>= "3.13" & >= "3.13"}
   "conf-gtk4"
   "integers" {>= "0.7.0"}
-  "containers" {build}
-  "xmlm" {build}
-  "re" {build}
-  "fmt" {build}
-  "logs" {build}
-  "cmdliner" {build}
-  "alcotest" {with-test}
-  "ppxlib" {with-test}
   "dune-configurator" {build}
-  "sexplib" {build}
-  "ppx_sexp_conv" {build}
-  "ppx_deriving" {build}
+  "alcotest" {with-test}
   "odoc" {with-doc}
 ]
 build: [

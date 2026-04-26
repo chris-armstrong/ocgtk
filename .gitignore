@@ -18,3 +18,4 @@ ocgtk/pipeline_tmp/
 ocgtk/.claude/settings.local.json
 .claude/worktrees/
 ocgtk/.claude/worktrees/
+*.bak

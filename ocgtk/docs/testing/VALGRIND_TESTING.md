@@ -11,9 +11,9 @@ cat > /tmp/valgrind_test/filter.txt << EOF
 AboutDialog
 EOF
 
-dune exec src/tools/gir_gen/gir_gen.exe -- generate \
+dune exec gir_gen -- generate \
     -f /tmp/valgrind_test/filter.txt \
-    /usr/share/gir-1.0/Gtk-4.0.gir \
+    gir/Gtk-4.0.gir \
     /tmp/valgrind_test
 ```
 
@@ -166,7 +166,7 @@ cd "$TEST_DIR"
 
 # Generate bindings
 echo "AboutDialog" > filter.txt
-ocgtk-gen -f filter.txt /usr/share/gir-1.0/Gtk-4.0.gir .
+dune exec gir_gen -- generate -f filter.txt gir/Gtk-4.0.gir .
 
 # Create test program (embed OCaml code)
 cat > test.ml << 'OCAML'
@@ -209,7 +209,7 @@ fi
 Add to your test suite:
 
 ```scheme
-; In src/tools/test_gir_gen/valgrind/dune
+; In gir_gen/test/valgrind/dune
 
 (executable
  (name array_runtime_test)
@@ -230,7 +230,7 @@ Add to your test suite:
 Then create `array_runtime_test.ml`:
 
 ```ocaml
-(* src/tools/test_gir_gen/valgrind/array_runtime_test.ml *)
+(* gir_gen/test/valgrind/array_runtime_test.ml *)
 
 let test_string_arrays () =
   Gtk.init ();
@@ -290,9 +290,9 @@ jobs:
 
       - name: Generate test bindings
         run: |
-          dune exec src/tools/gir_gen/gir_gen.exe -- generate \
+          dune exec gir_gen -- generate \
             -f filter.txt \
-            /usr/share/gir-1.0/Gtk-4.0.gir \
+            gir/Gtk-4.0.gir \
             _test_bindings
 
       - name: Run valgrind tests
