@@ -15,12 +15,6 @@ let escape_pango_markup s =
     s;
   Buffer.contents b
 
-(* CssProvider implements GtkStyleProvider interface. Both share the same
-   underlying GObject pointer, so Obj.magic is safe here — no conversion needed. *)
-let css_provider_as_style_provider :
-    Wrappers.Css_provider.t -> Wrappers.Style_provider.t =
-  Obj.magic
-
 let css_theme =
   {css|
 .calculator-expression {
@@ -92,11 +86,7 @@ let setup_css_provider () =
 let apply_css_provider (provider : Css_provider.css_provider_t)
     (widget : Widget.widget_t) =
   let style_ctx = widget#get_style_context () in
-  let style_provider =
-    css_provider_as_style_provider provider#as_css_provider
-  in
-  Wrappers.Style_context.add_provider style_ctx#as_style_context style_provider
-    600
+  style_ctx#add_provider (provider :> Style_provider.style_provider_t) 600
 
 let set_expression_text ui text =
   let markup =

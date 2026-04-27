@@ -77,9 +77,7 @@ A simple text editor with insert and clear functionality. Shows how to use Scrol
 ### 4. Login Form (`login_form.ml`)
 **Demonstrates:** Entry, PasswordEntry, Button, Label with markup
 
-A login form with username/password fields. Shows PasswordEntry with peek icon, Label markup, and form validation.
-
-**Note:** Uses `Obj.magic` to access the `Editable` interface on Entry/PasswordEntry for text retrieval, since our bindings don't yet model GTK interface implementation.
+A login form with username/password fields. Shows PasswordEntry with peek icon, Label markup, and form validation. Entry and PasswordEntry expose the `GtkEditable` interface methods (`get_text`, `set_text`) directly via L2 inheritance.
 
 Test credentials: username=`admin`, password=`password`
 

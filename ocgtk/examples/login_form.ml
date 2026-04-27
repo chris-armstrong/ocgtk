@@ -3,11 +3,6 @@ module GMain = Ocgtk_gtk.GMain
 (* Login Form Application
    Demonstrates: Entry, PasswordEntry, Button, Label with markup *)
 
-(* PasswordEntry and Entry implement GtkEditable but our L2 types don't model
-   interface implementation yet, so we use Obj.magic for Editable text access *)
-let editable_get_text obj = Wrappers.Editable.get_text (Obj.magic obj)
-let editable_set_text obj text = Wrappers.Editable.set_text (Obj.magic obj) text
-
 (* close-request returns bool — not yet supported by signal generator *)
 let on_close_request window_obj callback =
   let closure =
@@ -48,8 +43,7 @@ let () =
   in
   username_box#append (username_label :> Widget.widget_t);
 
-  let username_entry_obj = Wrappers.Entry.new_ () in
-  let username_entry = new Entry.entry username_entry_obj in
+  let username_entry = new Entry.entry (Wrappers.Entry.new_ ()) in
   username_entry#set_placeholder_text (Some "Enter username");
   username_box#append (username_entry :> Widget.widget_t);
 
@@ -62,8 +56,9 @@ let () =
   in
   password_box#append (password_label :> Widget.widget_t);
 
-  let password_entry_obj = Wrappers.Password_entry.new_ () in
-  let password_entry = new Password_entry.password_entry password_entry_obj in
+  let password_entry =
+    new Password_entry.password_entry (Wrappers.Password_entry.new_ ())
+  in
   password_entry#set_placeholder_text "Enter password";
   password_entry#set_show_peek_icon true;
   password_box#append (password_entry :> Widget.widget_t);
@@ -90,8 +85,8 @@ let () =
 
   ignore
     (login_btn#on_clicked ~callback:(fun () ->
-         let username = editable_get_text username_entry_obj in
-         let password = editable_get_text password_entry_obj in
+         let username = username_entry#get_text () in
+         let password = password_entry#get_text () in
 
          if username = "" || password = "" then
            status_label#set_label "Please fill in all fields"
@@ -113,8 +108,8 @@ let () =
 
   ignore
     (cancel_btn#on_clicked ~callback:(fun () ->
-         editable_set_text username_entry_obj "";
-         editable_set_text password_entry_obj "";
+         username_entry#set_text "";
+         password_entry#set_text "";
          status_label#set_label "";
          remember_check#set_active false));
 
