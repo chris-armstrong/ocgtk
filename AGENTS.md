@@ -120,7 +120,7 @@ Debian 12, CentOS Stream 9, and OpenSUSE Leap 15.6. Use `./ci/oci` to manage the
 ```
 
 Version pins (opam, OCaml) live in `ci/versions.env`. See
-[ocgtk/architecture/ci_distro_testing.md](./architecture/ci_distro_testing.md)
+[architecture/ci_distro_testing.md](./architecture/ci_distro_testing.md)
 for full documentation.
 
 

@@ -3,11 +3,11 @@
 ## Code Guidelines
 
 All code written in this plan must follow the project code guidelines:
-- **OCaml style**: [`ocgtk/docs/code_guidelines/index.md`](../code_guidelines/index.md)
-- **Test patterns**: [`ocgtk/docs/code_guidelines/test-patterns.md`](../code_guidelines/test-patterns.md)
+- **OCaml style**: [`docs/code_guidelines/index.md`](../../../../docs/code_guidelines/index.md)
+- **Test patterns**: [`docs/code_guidelines/test-patterns.md`](../../../../docs/code_guidelines/test-patterns.md)
   — Use C AST validation (`C_parser`/`C_validation`) for C output; use ML AST validation
   (`Ml_validation`) for OCaml output. Never use string search for structural assertions.
-- **FFI**: [`ocgtk/architecture/FFI_GUIDELINES.md`](../../architecture/FFI_GUIDELINES.md)
+- **FFI**: [`architecture/FFI_GUIDELINES.md`](../../../../architecture/FFI_GUIDELINES.md)
 
 ---
 

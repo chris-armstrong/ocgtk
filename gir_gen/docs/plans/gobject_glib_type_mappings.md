@@ -616,7 +616,7 @@ Widget.set_something widget 70000
 Widget.set_something widget (UInt16.of_int 70000)
 ```
 
-**Architecture reference:** See `ocgtk/architecture/integer_type_design.md` for full rationale.
+**Architecture reference:** See `architecture/integer_type_design.md` for full rationale.
 
 #### Task 3.4: GLib.DateTime (90 hits)
 

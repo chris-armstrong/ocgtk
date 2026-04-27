@@ -1159,7 +1159,7 @@ new `override_action` variants.
 ## Code Style Requirements
 
 All code must adhere to:
-- **[Code Guidelines Index](../code_guidelines/index.md)** and all linked sub-documents
+- **[Code Guidelines Index](../../../../docs/code_guidelines/index.md)** and all linked sub-documents
 - **Max 2 levels of nesting** — use `let*`/`let+` bind operators
 - **Result over exceptions** — parse errors as `Result`
 - **Named intermediates** — no 3+ stage anonymous pipelines

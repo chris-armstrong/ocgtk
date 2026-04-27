@@ -1,6 +1,6 @@
 (* Tests apply_overrides against a parser-fed GIR (rather than synthetic
  * in-memory records). Tier 2 — pipeline test (see Phase 1.5 of
- * docs/plans/test-suite-remediation.md).
+ * docs/plans/completed/test-suite-remediation.md).
  *
  * For full multi-module pipeline coverage (parser → apply_overrides →
  * generation_context), see pipeline_tests.ml in this directory.

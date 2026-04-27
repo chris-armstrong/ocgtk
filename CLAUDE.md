@@ -174,7 +174,7 @@ dune exec gir_gen -- generate \
 
 NOTE: For other libraries, use `ocgtk/src/<short_name>`. For example, ocgtk/src/pango for Pango, ocgtk/src/gsk for GSK, ocgtk/src/gdk for GDK, etc.
 
-**Override files** (`ocgtk/overrides/<ns>.sexp`) control which entities are ignored during generation and set version guards on enum/bitfield members. Pass `-o ocgtk/overrides/<ns>.sexp` to `generate` or `references`. See [README_GIR_GEN.md — Override System](gir_gen/README.md#override-system).
+**Override files** (`ocgtk/overrides/<ns>.sexp`) control which entities are ignored during generation and set version guards on enum/bitfield members. Pass `-o ocgtk/overrides/<ns>.sexp` to `generate` or `references`. See [gir_gen/README.md — Override System](gir_gen/README.md#override-system).
 
 **⚠️ IMPORTANT:** Use `ocgtk/src/gtk` NOT `ocgtk/src/gtk/generated` as the output directory. The generator automatically creates the `generated/` subdirectory. Using `ocgtk/src/gtk/generated` will create a nested `src/gtk/generated/generated/` directory.
 

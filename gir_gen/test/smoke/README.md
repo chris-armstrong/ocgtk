@@ -1,7 +1,7 @@
 # Smoke tests
 
 Tier 4 in the test classification (see Phase 1.5 of
-[`docs/plans/test-suite-remediation.md`](../../../../docs/plans/test-suite-remediation.md)).
+[`docs/plans/completed/test-suite-remediation.md`](../../docs/plans/completed/test-suite-remediation.md)).
 
 ## Definition
 

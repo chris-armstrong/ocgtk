@@ -1,6 +1,6 @@
 (* Header pipeline tests — multi-library header generation (Stage 8).
    Tier 2 — pipeline test (see Phase 1.5 of
-   docs/plans/test-suite-remediation.md): in-process, multi-module, no
+   docs/plans/completed/test-suite-remediation.md): in-process, multi-module, no
    subprocess invocation of gir_gen.exe.
 
    Verifies that the complete cross-namespace header system works

@@ -1,5 +1,5 @@
 (* Pipeline tests for the override system (tier 2 — see Phase 1.5 of
- * docs/plans/test-suite-remediation.md).
+ * docs/plans/completed/test-suite-remediation.md).
  *
  * Verifies that override-based filtering propagates correctly through the
  * complete in-process pipeline:
