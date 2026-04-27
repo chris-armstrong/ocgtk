@@ -75,12 +75,20 @@ within the GTK namespace alone, plus the analogous gains in Gdk/Gio/Pango.
   **Verified by direct read.**
   The OCaml-visible `Gobject.Value.get_*/set_*` API, however, currently
   exposes only `int`, `uint`, `boolean`, `string`, `float`, `double`,
-  `object` (and `gtype` getter). **Enum and flags GValues are NOT
-  reachable from OCaml today** — `g_value_get_enum` / `g_value_get_flags`
-  exist in GLib but have no `ml_g_value_get_enum/flags` wrapper. This is
-  why `calc_ui.ml:181` extracts `keyval` (a `guint`) but never reads
-  `state` (`Gdk.ModifierType`, a flags type) — the manual code dodges
-  the gap rather than crossing it.
+  `object` (and `gtype` getter). **Enum, flags, and variant GValues are
+  NOT reachable from OCaml today** — `g_value_get_enum`,
+  `g_value_get_flags`, and `g_value_get_variant` exist in GLib but have
+  no `ml_g_value_get_*` wrapper. This is why `calc_ui.ml:181` extracts
+  `keyval` (a `guint`) but never reads `state` (`Gdk.ModifierType`, a
+  flags type) — the manual code dodges the gap rather than crossing it.
+- **Signal-param type census (across 462 GTK/Gdk/Gio/Pango/Gsk
+  signals).** Top non-primitive types: `Gtk.TextIter` (13),
+  `Gtk.TreeIter` (12), `Gtk.TreePath` (11), `GtkWidget`/`GObject` (~20
+  combined — already supported via `get_object`), `GLib.Variant` (9),
+  enum/flags (~50 combined), `Gdk.EventSequence` (6), `GLib.Error` (2),
+  `GLib.Array` (1). The boxed iter/path types are the largest single
+  unsupported category; they are explicitly deferred (see deferred
+  table below).
 - **Hand-written precedent.** `ocgtk/examples/calculator/calc_ui.ml:179-187`
   already wires `key-pressed` (bool return + 3 primitive params) and
   `ocgtk/examples/login_form.ml:7-15` wires `close-request` (bool return,
@@ -179,18 +187,64 @@ type marshaller = {
 
 Cases:
 
-| GIR type | `ocaml_type` | getter | setter |
-|----------|--------------|--------|--------|
-| `gboolean` | `bool` | `get_boolean` | `set_boolean` |
-| `gint`, `glong` | `int` | `get_int` | `set_int` |
-| `guint`, `gulong` | `int` | `get_uint` | `set_uint` |
-| `gdouble`, `gfloat` | `float` | `get_double`/`get_float` | `set_double`/`set_float` |
-| `utf8`, `filename`, `gchar*` | `string` | `get_string` | `set_string` |
-| GObject (class/interface) | `<NS>.<Cls>.t obj` | `get_object` | `set_object` |
-| Enum | `<NS>.<Enum>.t` | `get_int` ∘ decoder | encoder ∘ `set_int` |
-| Flags | `<NS>.<Flags>.t list` | `get_int` ∘ decoder | encoder ∘ `set_int` |
-| `none`/void | `unit` | n/a | n/a |
-| `<callback>`, `GArray`, `GVariant`, struct-by-value | UNSUPPORTED — fall through to skipped log | — | — |
+**Signal-param census across all 466 signals** in the seven GIR files
+shows a remarkably narrow primitive footprint: only `gint` (48),
+`guint` (28), `gint64` (2), `gboolean` (105), `gdouble` (57),
+`gfloat` (0), `utf8` (53), `gpointer` (2 — GIR bugs). **No
+occurrences** of `gint8/16/32`, `guint8/16/32/64`, `glong`, `gulong`,
+`gchar`, `guchar`, `gsize`, `gssize`, `goffset`, `gunichar`,
+`gunichar2`. Coverage policy below lists every primitive explicitly,
+not just the ones that happen to appear, so the design has a defensible
+answer for every GIR primitive name.
+
+**Supported (Phase 1b — no new runtime work):**
+
+| GIR type | `ocaml_type` | getter | setter | Notes |
+|----------|--------------|--------|--------|-------|
+| `gboolean` | `bool` | `get_boolean` | `set_boolean` | |
+| `gint` | `int` | `get_int` | `set_int` | |
+| `gint8`, `gint16`, `gint32` | `int` | `get_int` | `set_int` | GLib stores as `G_TYPE_INT`; existing wrapper round-trips. |
+| `guint` | `int` | `get_uint` | `set_uint` | |
+| `guint8`, `guint16`, `guint32`, `gunichar` | `int` | `get_uint` | `set_uint` | GLib stores as `G_TYPE_UINT`. |
+| `gdouble`, `gfloat` | `float` | `get_double`/`get_float` | `set_double`/`set_float` | |
+| `utf8`, `filename`, `gchar*` | `string` | `get_string` | `set_string` | |
+| GObject (class/interface) | `<NS>.<Cls>.t obj` | `get_object` | `set_object` | Nullable params yield `option`. |
+| `none`/void | `unit` | n/a | n/a | |
+
+**Supported (Phase 1a — new runtime wrappers):**
+
+| GIR type | `ocaml_type` | getter | setter | Notes |
+|----------|--------------|--------|--------|-------|
+| Enum | `<NS>.<Enum>.t` | `get_enum` ∘ decoder | encoder ∘ `set_enum` | New C wrapper. |
+| Flags | `<NS>.<Flags>.t list` | `get_flags` ∘ decoder | encoder ∘ `set_flags` | New C wrapper. |
+| `GLib.Variant` | `Gvariant.t` | `get_variant` | `set_variant` | New C wrapper; reuses existing GVariant binding. |
+| `gint64` | `Int64.t` | `get_int64` | `set_int64` | 2 signals depend; new `g_value_get_int64` wrapper. |
+
+**Deferred — no signal usage and distinct `GType`** (fall through to
+"skipped" log; not on the milestone-2 critical path):
+
+| GIR type | GValue path | Why deferred |
+|----------|-------------|--------------|
+| `glong`, `gulong` | `G_TYPE_LONG`/`ULONG` | Zero signal usages; on LP64 they alias to `gint64`/`guint64` so adding them later is straightforward. |
+| `guint64` | `G_TYPE_UINT64` | Zero signal usages. Add when needed. |
+| `gchar`, `guchar` | `G_TYPE_CHAR`/`UCHAR` | Zero signal usages. |
+| `gsize`, `gssize`, `goffset` | platform-dependent (`G_TYPE_INT64` on 64-bit) | Zero signal usages; portability-sensitive — preserve until a real signal forces the platform decision. |
+| `gpointer` (raw) | `G_TYPE_POINTER` | Two GIR-tagged-as-`gint`-but-`c:type=gpointer` signals look like GIR bugs; not pursuing. |
+
+**Unsupported — long-tail GValue categories:**
+
+| GIR type | Why deferred |
+|----------|--------------|
+| `<callback>` types | Depends on `<callback>` parsing in Milestone 4. |
+| `GLib.Array` | 1 signal; no standalone GArray binding exists either. Milestone 4. |
+| Boxed iter/path types (`Gtk.TextIter`, `Gtk.TreeIter`, `Gtk.TreePath`, `GLib.Error`, `Gdk.EventSequence`) | 36+ signal-param refs but each is a distinct boxed `GType` requiring its own typed wrapper. Captured in Phase 9 (deferred to Milestone 3/4). |
+| `<param>` (GParamSpec), opaque `<record>` struct-by-value | Negligible signal usage; defer indefinitely. |
+
+When `Signal_marshaller.value_getter` encounters a deferred or
+unsupported type it returns `Unsupported`, the generator logs the
+skip on stderr (preserving today's diagnostic), and the signal
+remains absent from the generated `*_signals` class — never silently
+emitted with wrong types.
 
 The fall-through behaviour preserves today's logging-on-skip semantics so
 the code base never silently drops a signal — a regression in coverage
@@ -216,11 +270,14 @@ categories that signals expose but the runtime currently doesn't:
 
 | Category | Why we need it (milestone signals) | Defer? |
 |----------|------------------------------------|--------|
-| `enum` (`get_enum`/`set_enum`) | `icon-press` (`EntryIconPosition`), `response` if typed as enum, many widget-state signals | **No — required** |
+| `enum` (`get_enum`/`set_enum`) | `icon-press` (`EntryIconPosition`), many widget-state signals | **No — required** |
 | `flags` (`get_flags`/`set_flags`) | `key-pressed` `state: Gdk.ModifierType`, `key-released`, `modifiers` | **No — required** |
-| `int64`, `uint64` | None of the four target categories use these in GTK 4. | Yes |
+| `variant` (`get_variant`/`set_variant`) | 9 signals across bindings (mostly Gio DBus); standalone `Gvariant` bindings already exist, only the GValue bridge is missing | **No — required** |
+| `int64`, `uint64` | None of the four target categories use these. | Yes |
 | `long`, `ulong` | Handful of `gulong` timestamp params; not in form example. | Yes |
-| `char`, `uchar`, `pointer`, `boxed`, `param`, `variant` | Hard-cases bucket. | Yes |
+| `char`, `uchar`, `pointer`, `param` | Not used in any milestone-target signal. | Yes |
+| Boxed iter/path types (`TextIter`, `TreeIter`, `TreePath`, `GError`) | 36+ signal-param refs across `TextView`/`TreeView`/tree-model signals — each is a distinct boxed GType, so no generic `get_boxed` works. Largest remaining post-milestone gap. | **Yes — Milestone 3/4** |
+| `GArray` | 1 signal across all bindings (Gio); no standalone GArray binding exists either, so cost is disproportionate. | **Yes — Milestone 4** |
 
 That's 4 tiny C wrappers (≈10 lines each) plus 4 `external`s in
 `gobject.ml` and 4 `val` lines in `gobject.mli`. All of them follow the
@@ -239,35 +296,56 @@ today's filter handles unhandled signals — no silent regressions.
 Each phase is independently testable and ships behind a working build.
 Tests are added in the same phase as the production change.
 
-### Phase 1a — Runtime: enum & flags GValue wrappers
+### Phase 1a — Runtime: enum, flags, variant, and int64 GValue wrappers
 
-**Goal.** Make `Gdk.ModifierType` and any GTK enum reachable from a
-closure callback.
+**Goal.** Make `Gdk.ModifierType` (flags), GTK enums, `GLib.Variant`,
+and 64-bit signed integer parameters reachable from a closure callback.
+These are the four GValue categories that real signals use today and
+have no OCaml-visible getter/setter.
 
 - Add to `ocgtk/src/common/ml_gobject.c`:
   - `ml_g_value_get_enum`, `ml_g_value_set_enum` (use `G_VALUE_HOLDS_ENUM`
     + `g_value_get_enum`/`g_value_set_enum`).
   - `ml_g_value_get_flags`, `ml_g_value_set_flags` (use
     `G_VALUE_HOLDS_FLAGS` + `g_value_get_flags`/`g_value_set_flags`).
-  - All four return/accept `int` (raw integer; OCaml-side decoder
-    converts to/from polymorphic variants).
+  - `ml_g_value_get_variant`, `ml_g_value_set_variant` (use
+    `G_VALUE_HOLDS_VARIANT` + `g_value_get_variant`/`g_value_set_variant`).
+    Wrap the returned `GVariant*` using the existing custom-block
+    scheme in `ml_gvariant.c` (`Val_GVariant_new` ref-sinks the
+    variant before returning it to OCaml; setter takes ownership of
+    the supplied variant via `g_variant_ref_sink` per
+    `g_value_take_variant` semantics).
+  - `ml_g_value_get_int64`, `ml_g_value_set_int64` (use
+    `G_VALUE_HOLDS_INT64` + `g_value_get_int64`/`g_value_set_int64`).
+    Return/accept OCaml `Int64.t` via `caml_copy_int64` /
+    `Int64_val` — the standard pattern.
+  - Enum/flags wrappers return/accept `int` (raw integer; OCaml-side
+    decoder converts to/from polymorphic variants).
 - Add `external`s in `ocgtk/src/common/gobject.ml` and corresponding
   `val` lines in `gobject.mli` under the existing
   `module Value` block:
   ```ocaml
-  val get_enum  : t -> int
-  val set_enum  : t -> int -> unit
-  val get_flags : t -> int
-  val set_flags : t -> int -> unit
+  val get_enum    : t -> int
+  val set_enum    : t -> int -> unit
+  val get_flags   : t -> int
+  val set_flags   : t -> int -> unit
+  val get_variant : t -> Gvariant.t
+  val set_variant : t -> Gvariant.t -> unit
+  val get_int64   : t -> Int64.t
+  val set_int64   : t -> Int64.t -> unit
   ```
 - Tests in a new `ocgtk/tests/test_signal_value_enum_flags.ml`:
   - Manually create a `GValue` of an enum GType (e.g.
     `Gtk.Orientation`) via `Value.create`, store/round-trip a value.
   - Same for a flags GType (`Gdk.ModifierType`).
+  - Round-trip a GVariant value (e.g. `Gvariant.new_string "hello"`)
+    through `Value.set_variant`/`get_variant`.
+  - Round-trip an `Int64.t` value through `Value.set_int64`/`get_int64`
+    (including `Int64.max_int` to confirm width preservation).
   - Negative test: `get_enum` on an int GValue raises
     `Invalid_argument` (mirroring existing `get_int` semantics).
 
-**Exit criteria.** `xvfb-run dune test ocgtk/` green; the four new
+**Exit criteria.** `xvfb-run dune test ocgtk/` green; the eight new
 wrappers are exercised end-to-end.
 
 ### Phase 1b — Marshaller helper module (`gir_gen/lib/generate/signal_marshaller.ml`)
@@ -465,6 +543,44 @@ should be fixed before this milestone closes.
 where appropriate (spot-check `Gtk_window#close-request`,
 `Gtk_widget#realize`); a `notify::*` detailed connection round-trips
 in the runtime test.
+
+### Phase 9 — Boxed iter/path Value bridges (DEFERRED — Milestone 3 or 4)
+
+**Not in this milestone.** Captured here so future planning has a
+record of the actual scope and the path forward.
+
+The signal-param census shows boxed-type usage concentrated in tree-
+model and text-buffer signals:
+
+| Boxed type | Signal-param refs | Affected signals (examples) |
+|------------|-------------------:|------------------------------|
+| `Gtk.TextIter` | 13 | `GtkTextBuffer::insert-text`, `mark-set`, `apply-tag`, `delete-range` |
+| `Gtk.TreeIter` | 12 | `GtkTreeModel::row-inserted`, `row-deleted`, `row-changed` |
+| `Gtk.TreePath` | 11 | `GtkTreeModel::row-inserted`, `row-deleted`, `rows-reordered` |
+| `GLib.Error` | 2 | DBus-style error-signal patterns in Gio |
+| `Gdk.EventSequence` | 6 | gesture sequence tracking |
+
+Each of these is a distinct boxed `GType` — `g_value_get_boxed`
+returns an opaque `gpointer` that must be cast to the correct C type
+and then wrapped/copied into the corresponding OCaml binding. There
+is no generic `get_boxed` that could serve all of them, so each type
+needs its own typed `Gobject.Value.get_<boxed_type>` /
+`set_<boxed_type>` pair plus a lightweight OCaml-side wrapper if one
+doesn't already exist. (TextIter and TreeIter, for instance, have
+existing manual bindings; TreePath does not.)
+
+**Why deferred:**
+- None of the milestone-2 form-example signals use a boxed type.
+- Bundling 4–5 boxed-type bindings inflates milestone-2 scope past
+  its goal (parameterised and non-void signals).
+- The work is independent of the closure machinery — it only needs
+  the Phase-1b marshaller dispatcher to learn one more case.
+
+**Suggested grouping for the follow-up milestone:** treat
+TextIter/TreeIter/TreePath as a single tranche ("tree-model and
+text-buffer signal coverage") and ship them with the related
+`<callback>` parsing work that unblocks `GtkTreeModelFilter` and
+similar APIs.
 
 ### Phase 8 — Migrate hand-written closures, document, archive plan
 
