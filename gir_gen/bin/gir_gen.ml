@@ -599,17 +599,13 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
   write_file ~path:ml_file ~content
 
 (* Generate both .mli and .ml files for an entity *)
-let generate_ml_interfaces ~ctx ~output_dir ~generated_modules ~parent_chain
-    entity =
+let generate_ml_interfaces ~ctx ~output_dir ~parent_chain entity =
   match entity.kind with
   | Gir_gen_lib.Types.Class clazz ->
       if Gir_gen_lib.Generate.Filtering.should_generate_class clazz then begin
         generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain entity;
         generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain
-          entity;
-        generated_modules :=
-          Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
-          :: !generated_modules
+          entity
       end
   | Gir_gen_lib.Types.Interface intf ->
       if Gir_gen_lib.Generate.Filtering.should_generate_interface intf then begin
@@ -625,24 +621,17 @@ let generate_ml_interfaces ~ctx ~output_dir ~generated_modules ~parent_chain
         generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain
           ?from_gobject_c_name entity;
         generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain
-          ?from_gobject_c_name entity;
-        generated_modules :=
-          Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
-          :: !generated_modules
+          ?from_gobject_c_name entity
       end
   | Gir_gen_lib.Types.Record record ->
       if Gir_gen_lib.Generate.Filtering.should_generate_record record then begin
         generate_ml_file ~ctx ~output_dir ~kind:Interface ~parent_chain entity;
         generate_ml_file ~ctx ~output_dir ~kind:Implementation ~parent_chain
-          entity;
-        generated_modules :=
-          Gir_gen_lib.Utils.module_name_of_class entity.Gir_gen_lib.Types.name
-          :: !generated_modules
+          entity
       end
 
 (* Generate high-level wrapper class (g<Widget>.ml) for a class entity *)
-let generate_high_level_class ~ctx ~output_dir ~generated_modules entity
-    parent_chain =
+let generate_high_level_class ~ctx ~output_dir entity parent_chain =
   let generate_ () =
     let g_file =
       Filename.concat
@@ -680,9 +669,6 @@ let generate_high_level_class ~ctx ~output_dir ~generated_modules entity
            ~properties:entity.Gir_gen_lib.Types.properties
            ~signals:entity.Gir_gen_lib.Types.signals
            ~constructors:entity.Gir_gen_lib.Types.constructors);
-    generated_modules :=
-      Gir_gen_lib.Utils.layer2_module_filename entity.Gir_gen_lib.Types.name
-      :: !generated_modules;
 
     (* Always overwrite signature files too *)
     let g_sig_exists = output_under_src && Sys.file_exists g_sig_file in
@@ -751,7 +737,7 @@ let generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class
     entities
 
 (* Generate combined .ml + .mli for cyclic Layer 1 modules *)
-let generate_combined_ml_files ~ctx ~output_dir ~generated_modules ~module_group
+let generate_combined_ml_files ~ctx ~output_dir ~module_group
     ~parent_chain_for_class =
   let entities =
     Gir_gen_lib.Dependency_analysis.entities_of_group module_group
@@ -804,12 +790,11 @@ let generate_combined_ml_files ~ctx ~output_dir ~generated_modules ~module_group
   in
 
   write_file ~path:mli_path ~content:mli_content;
-  write_file ~path:ml_path ~content:ml_content;
-  generated_modules := combined_name :: !generated_modules
+  write_file ~path:ml_path ~content:ml_content
 
 (* Generate combined g*.ml + g*.mli for cyclic Layer 2 classes *)
-let generate_combined_class_files ~ctx ~output_dir ~generated_modules
-    ~module_group ~parent_chain_for_class =
+let generate_combined_class_files ~ctx ~output_dir ~module_group
+    ~parent_chain_for_class =
   let entities =
     Gir_gen_lib.Dependency_analysis.entities_of_group module_group
   in
@@ -842,13 +827,10 @@ let generate_combined_class_files ~ctx ~output_dir ~generated_modules
   in
 
   write_file ~path:g_file ~content:g_content;
-  write_file ~path:g_sig_file ~content:g_sig;
-  generated_modules :=
-    Gir_gen_lib.Utils.layer2_module_filename combined_name :: !generated_modules
+  write_file ~path:g_sig_file ~content:g_sig
 
 (* Generate shim modules for entities in cyclic groups *)
-let generate_cyclic_shim_files ~ctx ~output_dir ~generated_modules
-    ~combined_module_name ~entity =
+let generate_cyclic_shim_files ~ctx ~output_dir ~combined_module_name ~entity =
   let open Gir_gen_lib in
   let open Gir_gen_lib.Generate in
   (* Get the shim module names (gWindow, gApplication, etc.) *)
@@ -877,12 +859,10 @@ let generate_cyclic_shim_files ~ctx ~output_dir ~generated_modules
 
   (* Write files *)
   write_file ~path:shim_file ~content:ml_content;
-  write_file ~path:shim_sig_file ~content:mli_content;
-  generated_modules := shim_module_name :: !generated_modules
+  write_file ~path:shim_sig_file ~content:mli_content
 
 (* Generate enum and bitfield files for a namespace *)
-let generate_enum_files ~output_dir ~generated_stubs ~generated_modules
-    namespace enums bitfields =
+let generate_enum_files ~output_dir ~generated_stubs namespace enums bitfields =
   if List.length enums = 0 && List.length bitfields = 0 then ()
   else begin
     (* Generate OCaml .mli file with type definitions *)
@@ -964,10 +944,7 @@ let generate_enum_files ~output_dir ~generated_stubs ~generated_modules
     in
     write_file ~path:c_file ~content:(String.concat ~sep:"" c_content_parts);
 
-    generated_stubs := stub_name :: !generated_stubs;
-    generated_modules :=
-      String.capitalize_ascii (namespace.prefix ^ "_enums")
-      :: !generated_modules
+    generated_stubs := stub_name :: !generated_stubs
   end
 
 let load_reference_files reference_files =
@@ -1007,9 +984,8 @@ let generate_bindings filter_file gir_file output_dir reference_files
   (* Ensure generated/ directory exists *)
   ensure_generated_dir output_dir;
 
-  (* Track generated C stub files and OCaml modules *)
+  (* Track generated C stub files *)
   let generated_stubs = ref [] in
-  let generated_modules = ref [] in
 
   (* Read filter file if specified *)
   let filter_classes =
@@ -1263,8 +1239,8 @@ let generate_bindings filter_file gir_file output_dir reference_files
         Gir_gen_lib.Generate.C_stubs.include_header_for_namespace ns_name;
     }
   in
-  generate_enum_files ~output_dir ~generated_stubs ~generated_modules
-    current_namespace gtk_enums gtk_bitfields;
+  generate_enum_files ~output_dir ~generated_stubs current_namespace gtk_enums
+    gtk_bitfields;
 
   (* Generate C files for all entities (classes and interfaces and records only) *)
   generate_all_c_stubs ~ctx ~output_dir ~generated_stubs entities;
@@ -1291,16 +1267,15 @@ let generate_bindings filter_file gir_file output_dir reference_files
           let parent_chain =
             parent_chain_for_class entity.Gir_gen_lib.Types.name
           in
-          generate_ml_interfaces ~ctx ~output_dir ~generated_modules
-            ~parent_chain entity
+          generate_ml_interfaces ~ctx ~output_dir ~parent_chain entity
       | Gir_gen_lib.Dependency_analysis.Cycle cycle_entities ->
           let names =
             String.concat ~sep:", "
               (List.map cycle_entities ~f:(fun e -> e.Gir_gen_lib.Types.name))
           in
           printf "  Generating combined module for cycle: %s\n" names;
-          generate_combined_ml_files ~ctx ~output_dir ~generated_modules
-            ~module_group:group ~parent_chain_for_class)
+          generate_combined_ml_files ~ctx ~output_dir ~module_group:group
+            ~parent_chain_for_class)
     module_groups_list;
 
   (* Generate Layer 2 files (high-level wrapper classes) *)
@@ -1312,23 +1287,22 @@ let generate_bindings filter_file gir_file output_dir reference_files
           let parent_chain =
             parent_chain_for_class entity.Gir_gen_lib.Types.name
           in
-          generate_high_level_class ~ctx ~output_dir ~generated_modules entity
-            parent_chain
+          generate_high_level_class ~ctx ~output_dir entity parent_chain
       | Gir_gen_lib.Dependency_analysis.Cycle cycle_entities ->
           let names =
             String.concat ~sep:", "
               (List.map cycle_entities ~f:(fun e -> e.Gir_gen_lib.Types.name))
           in
           printf "  Generating combined class for cycle: %s\n" names;
-          generate_combined_class_files ~ctx ~output_dir ~generated_modules
-            ~module_group:group ~parent_chain_for_class;
+          generate_combined_class_files ~ctx ~output_dir ~module_group:group
+            ~parent_chain_for_class;
           (* Generate shim modules for each entity in the cycle *)
           let combined_module_name =
             Gir_gen_lib.Dependency_analysis.module_name_of_group group
           in
           List.iter cycle_entities ~f:(fun entity ->
-              generate_cyclic_shim_files ~ctx ~output_dir ~generated_modules
-                ~combined_module_name ~entity))
+              generate_cyclic_shim_files ~ctx ~output_dir ~combined_module_name
+                ~entity))
     module_groups_list;
 
   (* Generate signal classes for all entities (classes and interfaces) *)
@@ -1342,65 +1316,6 @@ let generate_bindings filter_file gir_file output_dir reference_files
   in
   printf "\n";
   let stub_list = List.rev !generated_stubs |> List.sort ~cmp:String.compare in
-  let base_modules =
-    [
-      "gError";
-      "gpointer";
-      "gaux";
-      "gobject";
-      "glib";
-      "gdk";
-      "gdkPixbuf";
-      "gdkClipboard";
-      "pango";
-      "graphene";
-      "gtk";
-      "gtkSnapshot";
-      "eventController";
-      "eventControllerKey";
-      "eventControllerMotion";
-      "gestureClick";
-      (* OLD varcc enum modules - REMOVED during migration *)
-      (* "Gtk4Enums"; "Gdk4Enums"; "GlibEnums"; "pangoEnums"; "GobjectEnums"; *)
-      (* NEW gir_gen enum modules - using lowercase_with_underscore convention *)
-      "gtk_enums";
-      "gdk_enums";
-      "pango_enums";
-      "gtkButton";
-      "gtkCheckButton";
-      "gtkToggleButton";
-      "entry";
-      "search_entry";
-      "password_entry";
-      "spin_button";
-      "label";
-      "image";
-      "link_button";
-      "menu_button";
-      "switch";
-      "text_buffer";
-      "text_view";
-      "text_tag";
-      "text_tag_table";
-      "button";
-      "check_button";
-      "toggle_button";
-      "adjustment";
-      "range";
-      "progress_bar";
-      "level_bar";
-      "scale";
-      "box";
-      "grid";
-      "fixed";
-      "paned";
-      "notebook";
-      "stack";
-      "scrolled_window";
-      "frame";
-      (* NOTE: "editable", "widget", "window" removed - they are generated as part of recursive modules *)
-    ]
-  in
 
   (* ==== LIBRARY TOP-LEVEL MODULE ==== *)
   printf "Generating library top-level module...\n";
@@ -1416,7 +1331,6 @@ let generate_bindings filter_file gir_file output_dir reference_files
   in
   write_file ~path:lib_ml_file ~content:lib_ml_content;
   write_file ~path:lib_mli_file ~content:lib_mli_content;
-  generated_modules := lib_name :: !generated_modules;
 
   (* ==== LIBRARY WRAPPER MODULE ==== *)
   (* Generate ocgtk_<ns>.ml that re-exports the library module as the
@@ -1454,18 +1368,10 @@ let generate_bindings filter_file gir_file output_dir reference_files
       (String.concat ~sep:"\n" core_module_lines)
   in
   write_file ~path:wrapper_ml_file ~content:wrapper_content;
-  generated_modules :=
-    String.capitalize_ascii wrapper_name :: !generated_modules;
 
-  let module_list =
-    base_modules @ !generated_modules
-    |> List.map ~f:String.capitalize_ascii
-    |> List.sort_uniq ~cmp:String.compare
-  in
   let dune_content =
     Gir_gen_lib.Generate.Dune_file.generate_dune_library ~ctx
-      ~stub_names:stub_list ~lib_name:namespace.namespace_name
-      ~module_names:module_list ~repository
+      ~stub_names:stub_list ~lib_name:namespace.namespace_name ~repository
   in
   write_file ~path:dune_file ~content:dune_content;
 

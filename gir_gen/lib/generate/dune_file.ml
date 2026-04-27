@@ -118,7 +118,7 @@ let emit_stub_library buf ~name ~public_name ~dep_libraries ~stub_names
   bprintf buf " (c_library_flags (:include %s)))\n\n" clink_file
 
 (* Generate dune library stanza for generated C stubs *)
-let generate_dune_library ~ctx ~lib_name ~stub_names ~module_names ~repository =
+let generate_dune_library ~ctx ~lib_name ~stub_names ~repository =
   let buf = Buffer.create 2048 in
 
   let lib_name_snake = lib_name |> Utils.to_snake_case in
@@ -127,18 +127,6 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~module_names ~repository =
 
   Buffer.add_string buf "; Auto-generated library for generated C bindings\n";
   Buffer.add_string buf "; Regenerate by running gir_gen\n\n";
-
-  (* Rule to emit the generated module list for inclusion in the main library stanza *)
-  Buffer.add_string buf "(rule\n";
-  Buffer.add_string buf " (targets dune-modules.sexp)\n";
-  Buffer.add_string buf " (action\n";
-  Buffer.add_string buf "  (with-stdout-to dune-modules.sexp\n";
-  Buffer.add_string buf "    (progn\n";
-  List.iter
-    ~f:(fun name -> bprintf buf "      (echo \"%s\")\n" name)
-    module_names;
-  Buffer.add_string buf "    )))\n";
-  Buffer.add_string buf ")\n\n";
 
   (* Collect pkg-config packages from dependencies, recursively following
      cross-namespace includes to pick up transitive pkg-config deps *)
