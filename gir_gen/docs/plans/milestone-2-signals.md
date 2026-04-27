@@ -579,9 +579,61 @@ commits the generator to either Option 2 or Option 3.
   emitted) → fall back to Option 2 (per-type pure-OCaml decoders) and
   document why.
 
-**Exit criteria.** A short written record (commit message or plan
-amendment) stating which option Phase 1a will use and the evidence
-behind the choice.
+**Phase 0 results (2026-04-27, verified by direct read).**
+
+✅ `Gpointer.variant_table` is real (`gpointer.ml:24`) and backed by
+`lookup_info { value key; int data; }` (`wrappers.h:87`). Enum
+encoder/decoder work end-to-end via `lookup_from_c_direct` / `lookup_to_c_direct` (`wrappers.c:30, 41`), wrapped at `:57, :68`,
+exposed via `decode_variant` / `encode_variant`.
+
+✅ `Gobject.Data.enum` (`gobject.ml:245`) wires it correctly.
+
+❌ **`Gobject.Data.flags` is stubbed.** `gobject.ml:248-257` body
+admits "For now, decode as single value — full implementation would
+decode bits/combine bits". A flags int of `0x6` would fail or return
+the wrong tag.
+
+❌ **`decode_flags` / `encode_flags` externals are commented out**
+(`gpointer.ml:28-33`). The matching C symbols (`ml_lookup_flags_from_c`,
+`ml_lookup_flags_to_c`) **do not exist** anywhere in the source.
+
+❌ **Zero in-tree users.** No production code references `Data.enum`,
+`Data.flags`, or `variant_table` — only the definitions. Adopting the
+infrastructure makes us the first user; latent-bug risk is non-zero.
+
+❌ **No generator emission of `lookup_info` arrays exists today.**
+
+**Critical realisation about Option 3 cost.** Materialising a per-type
+`variant_table` on the OCaml side requires **one C accessor symbol
+per type** (`ml_<typename>_table()` returning the static lookup_info
+array), per the lablgtk pattern. That's ~300 per-type C symbols
+(half of Option 1's 600, but still per-type). **Option 3 does not
+actually win on the metric that drove the original rejection of
+Option 1.** Option 2 has **zero** per-type C symbols.
+
+**Decision: adopt Option 2** for this milestone. Concretely:
+
+| | Option 2 (adopted) | Option 3 (rejected) |
+|--|---|---|
+| Per-type C symbols | 0 | ~300 (table getters) |
+| Per-type OCaml | ~300 pure functions | ~300 small data values |
+| New runtime code | none beyond `enum_int`/`flags_int` dispatchers | new flags lookup C primitive (≈ 60 LoC) + un-stub `Data.flags` |
+| In-tree precedent | none (greenfield) | none (would be first user of dormant infra) |
+| Source-of-truth for bit values | OCaml `<ns>_enums.ml` *and* existing C `Val_<T>` | the `lookup_info` table only |
+
+Option 3 wins on the "single source of truth" axis. Option 2 wins on
+all three of (a) per-type C-symbol count, (b) shipping cost, (c)
+latent-bug risk. Symbol count was the originating concern; Option 2
+honours it directly.
+
+**Follow-up cleanup (out of scope this milestone):** consider
+migrating method stubs to the OCaml `<ns>_enums` decoders and
+removing the existing C `Val_<T>` / `<T>_val` outright. That collapses
+Option 2's two-sources-of-truth into one and is the natural sequel.
+
+**Exit criteria.** Phase 1a commits to **Option 2** as designed in
+this plan. The Option 3 investigation result is recorded in the
+plan and the matching follow-up task is added to TASKS.md.
 
 ---
 
