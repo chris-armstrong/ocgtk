@@ -3,6 +3,11 @@ name: Release Verification
 # Manually triggered, or automatically on release tags.
 on:
   workflow_dispatch:
+    inputs:
+      windows_only:
+        description: 'Run Windows job only (skip all other platforms)'
+        type: boolean
+        default: false
   push:
     tags: ['v*']
 
@@ -15,6 +20,7 @@ jobs:
   # ── Ubuntu 22.04 (native runner) ────────────────────────────────────────────
   ubuntu-22:
     name: Ubuntu 22.04
+    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -42,6 +48,7 @@ jobs:
   # ── Ubuntu 24.04 (native runner) ────────────────────────────────────────────
   ubuntu-24:
     name: Ubuntu 24.04
+    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -69,6 +76,7 @@ jobs:
   # ── APT-based containers (Ubuntu 25.04, Debian 12) ──────────────────────────
   linux-apt:
     name: ${{ matrix.name }}
+    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-latest
     container: ${{ matrix.image }}
     env:
@@ -122,6 +130,7 @@ jobs:
   # ── Fedora containers (Fedora 40, Fedora 43) ─────────────────────────────────
   linux-fedora:
     name: ${{ matrix.name }}
+    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-latest
     container: ${{ matrix.image }}
     strategy:
@@ -173,6 +182,7 @@ jobs:
   # ── CentOS Stream 9 ──────────────────────────────────────────────────────────
   centos-9:
     name: CentOS Stream 9
+    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-latest
     container: quay.io/centos/centos:stream9
     steps:
@@ -219,6 +229,7 @@ jobs:
   # ── openSUSE Leap 15.6 ───────────────────────────────────────────────────────
   opensuse-15:
     name: openSUSE Leap 15.6
+    if: ${{ !inputs.windows_only }}
     runs-on: ubuntu-latest
     container: opensuse/leap:15.6
     steps:
@@ -262,6 +273,7 @@ jobs:
   # ── macOS (Homebrew) ─────────────────────────────────────────────────────────
   macos:
     name: macOS (Homebrew)
+    if: ${{ !inputs.windows_only }}
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
@@ -319,31 +331,21 @@ jobs:
 
   # ── Windows ──────────────────────────────────────────────────────────────────
   #
-  # Setup model: Cygwin shell + MinGW64 compiler + MSYS2 GTK4 libraries.
+  # Setup model: MSYS2 shell + MinGW64 compiler + MSYS2 GTK4 libraries.
   #
-  # setup-ocaml uses Cygwin only as the build shell; with windows-compiler:
-  # mingw, the OCaml compiler and its output target the MinGW64 ABI
-  # (x86_64-w64-mingw32), making it binary-compatible with MSYS2 MINGW64
-  # libraries including GTK4.
+  # windows-environment: msys2 tells setup-ocaml to use the pre-installed MSYS2
+  # on the GitHub runner instead of Cygwin. Combined with windows-compiler: mingw,
+  # the OCaml compiler, shell, and GTK4 libraries all live in the same MSYS2
+  # MINGW64 prefix — no cross-environment pkg-config bridging required.
   #
-  # conf-gtk4 checks for GTK4 using Cygwin's pkg-config (installed by
-  # setup-ocaml by default) with PKG_CONFIG_PATH pointing at MSYS2's
-  # MinGW64 .pc files.
-  #
-  # Disabled: GTK4 is not available as a Cygwin package, and building against
-  # MSYS2 MinGW64 libraries from a Cygwin OCaml compiler requires a custom
-  # setup that is not yet worked out.
+  # Build only: GTK tests require a display; Windows CI validates compilation.
   windows:
-    name: Windows
-    if: false
+    name: Windows (MSYS2/MinGW64)
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
 
       # Install GTK4 and its dependencies into the MSYS2 MINGW64 prefix.
-      # The GitHub Actions Windows runner ships MSYS2 at C:\msys64 so these
-      # packages land in C:\msys64\mingw64\ where the MinGW64 linker can find
-      # them.
       - name: Install GTK4 via MSYS2 MINGW64
         uses: msys2/setup-msys2@v2
         with:
@@ -354,35 +356,19 @@ jobs:
             mingw-w64-x86_64-gobject-introspection
             mingw-w64-x86_64-pkgconf
 
-      # Set up OCaml via opam on Windows.
-      # windows-compiler: mingw  → OCaml built with MinGW64 GCC (native Windows
-      #                            binaries, no cygwin1.dll dependency)
-      # windows-environment: cygwin (default) → Cygwin provides the POSIX shell
-      #                            and build utilities (bash, make, patch, …)
-      - name: Set up OCaml (MinGW64 compiler, Cygwin shell)
+      # windows-environment: msys2 uses the pre-installed MSYS2 as the build
+      # shell, so pkg-config sees MINGW64 packages without any path bridging.
+      - name: Set up OCaml (MinGW64 compiler, MSYS2 shell)
         uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: ${{ env.OCAML_VERSION }}
           windows-compiler: mingw
-
-      # Tell Cygwin's pkg-config where to find GTK4's .pc files from the
-      # MSYS2 MinGW64 prefix.
-      - name: Configure pkg-config paths for MSYS2 GTK4
-        shell: bash
-        run: |
-          echo "PKG_CONFIG_PATH=C:/msys64/mingw64/lib/pkgconfig" >> "$GITHUB_ENV"
+          windows-environment: msys2
 
       - name: Pin conf-gtk4 and install OCaml dependencies
         run: |
           opam pin add -n conf-gtk4 conf-gtk4
-          opam install --deps-only --with-test -y ./ocgtk ./gir_gen
+          opam install --deps-only -y ./ocgtk
 
       - name: Build
-        run: opam exec -- dune build
-
-      - name: Test gir_gen
-        run: opam exec -- dune test gir_gen/
-
-      - name: Test ocgtk
-        # Windows runners have a native display; no virtual framebuffer needed
-        run: opam exec -- dune test ocgtk/
+        run: opam exec -- dune build @ocgtk/install
