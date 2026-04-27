@@ -80,6 +80,41 @@ Top non-primitive types: `Gtk.TextIter` (13), `Gtk.TreeIter` (12),
 via `get_object`), `GLib.Variant` (9), enum/flags (~50 combined),
 `Gdk.EventSequence` (6), `GLib.Error` (2), `GLib.Array` (1).
 
+### Existing closure-marshaller test coverage
+
+`ocgtk/tests/test_closure_stress.ml` and `test_closure_with_gc.ml`
+together cover allocation at scale (1000 closures), void/0-param
+invocation, single int-param dispatch via
+`Gobject.Test.invoke_closure_int`, and Gc.minor interaction. **They
+do not exercise** multi-param dispatch (despite
+`Gobject.Test.invoke_closure_two_ints` existing at `gobject.mli:260`,
+no test calls it), mixed-type params, GObject params, exception
+escape, or — critically — **the non-void return-value copy-back path
+at `ml_gobject.c:629-633`**. The marshaller is correct on inspection
+(verified by direct read in this milestone's research), but the parts
+that Strategy 2 actually relies on are not under test today. **Phase 4
+treats closing this gap as a hard prerequisite**, not just an
+end-to-end check on generated code.
+
+### Records in signals
+
+The census shows ~60 record-type references across all 466 signals,
+and **all of them are boxed `<record>` types or opaque structs**:
+TextIter (13), TreeIter (12), TreePath (11), EventSequence (6),
+Rectangle (2), Error (2), RGBA (1), CssSection (1), VariantDict (1),
+plus a handful of opaque structs without registered GTypes
+(DragSurfaceSize, ToplevelSize). One signal passes `GObject.Value` —
+treated as a special-case boxed param.
+
+**No record signal-param needs new design beyond what Phase 9
+already covers** for the iter/path tranche. Each requires a per-type
+`Gobject.Value.get_<RecordType>` wrapper that pulls
+`g_value_get_boxed`, casts to the typed `*` pointer, and hands off
+to the existing OCaml record binding (where one exists). The
+generator already emits OCaml record wrappers for most of these; the
+gap is only the GValue ↔ record bridge. Phase 9 captures the work;
+this milestone explicitly defers all of it.
+
 ### What already works
 
 - **Parser.** `Gir_parser.parse_signal` (`gir_gen/lib/parse/gir_parser.ml:613-664`)
@@ -179,8 +214,9 @@ method on_key_pressed
                         (Gobject.Closure.nth argv ~pos:1) in
         let keycode = Gobject.Value.get_uint
                         (Gobject.Closure.nth argv ~pos:2) in
-        let state   = Ocgtk_gdk.Gdk_enums.modifiertype_get_value
-                        (Gobject.Closure.nth argv ~pos:3) in
+        let state   = Ocgtk_gdk.Gdk_enums.modifiertype_of_int
+                        (Gobject.Value.get_flags_int
+                           (Gobject.Closure.nth argv ~pos:3)) in
         let result  = callback ~keyval ~keycode ~state in
         Gobject.Value.set_boolean (Gobject.Closure.result argv) result)
   in
@@ -201,47 +237,124 @@ Notes on the shape:
   (e.g. `Gdk_enums.modifiertype_get_value`) introduced in Phase 1a —
   *not* through a nonexistent `Modifier_type.of_int` chain.
 
-### Per-type GValue helper layer
+### Enum/bitfield → OCaml decoder layer (no per-type C symbols)
 
-Because enum/bitfield converters are C-only today, we extend the
-enum/bitfield C-stub generator to emit, for every enum and bitfield
-across all 9 namespaces, a pair of GValue-aware wrappers alongside the
-existing `Val_<T>` / `<T>_val` functions:
+A naive design would emit per-type GValue helpers
+(`ml_g_value_get_<EnumName>`/`_set_<EnumName>`) alongside the existing
+`Val_<T>` / `<T>_val` C converters — that would roughly double the
+C-symbol count for enums/bitfields (≈ 600 new C entry points across
+the 9 namespaces). **Rejected** for symbol-table cost.
+
+Adopted design: **two generic C dispatchers + per-type OCaml
+decoders.** This pushes the variant-tag conversion from C into OCaml
+while keeping type safety and adding only **two** new C symbols total.
+
+**C side — two new functions, total, shared across all namespaces.**
+Live in `ocgtk/src/common/ml_gobject.c`:
 
 ```c
-/* In ml_<ns>_enums_gen.c, alongside existing Val_GdkModifierType */
-CAMLprim value ml_g_value_get_GdkModifierType(value gv_val) {
+CAMLprim value ml_g_value_get_enum_int(value gv_val) {
     CAMLparam1(gv_val);
     GValue *gv = GValue_val(gv_val);
-    if (!G_VALUE_HOLDS_FLAGS(gv))
-        caml_invalid_argument(
-            "g_value_get_GdkModifierType: not a flags value");
-    CAMLreturn(Val_GdkModifierType(
-        (GdkModifierType)g_value_get_flags(gv)));
+    if (!G_VALUE_HOLDS_ENUM(gv))
+        caml_invalid_argument("get_enum_int: not an enum GValue");
+    CAMLreturn(Val_int(g_value_get_enum(gv)));
 }
 
-CAMLprim value ml_g_value_set_GdkModifierType(value gv_val, value list) {
-    CAMLparam2(gv_val, list);
-    g_value_set_flags(GValue_val(gv_val), GdkModifierType_val(list));
+CAMLprim value ml_g_value_set_enum_int(value gv_val, value v) {
+    CAMLparam2(gv_val, v);
+    g_value_set_enum(GValue_val(gv_val), Int_val(v));
     CAMLreturn(Val_unit);
 }
+/* ml_g_value_get_flags_int / ml_g_value_set_flags_int analogous. */
 ```
 
-(The enum variant uses `G_VALUE_HOLDS_ENUM` and `g_value_get_enum` / `g_value_set_enum`.)
-
-These per-type wrappers are exposed on the OCaml side via `external`
-declarations in `<ns>_enums.ml` (which today does not exist — see
-Phase 1a step (3) for the dune lift):
+Exposed on the OCaml side as a small extension of `module Value` in
+`gobject.{ml,mli}`:
 
 ```ocaml
-external modifiertype_get_value : Gobject.g_value -> modifiertype
-  = "ml_g_value_get_GdkModifierType"
-external modifiertype_set_value : Gobject.g_value -> modifiertype -> unit
-  = "ml_g_value_set_GdkModifierType"
+val get_enum_int  : t -> int
+val set_enum_int  : t -> int -> unit
+val get_flags_int : t -> int
+val set_flags_int : t -> int -> unit
 ```
 
-Cost across the 9 namespaces: ~100 enums + ~50 bitfields ≈ 300 small C
-wrappers, all uniform; zero hand-maintained.
+**OCaml side — per-type pure-OCaml decoders generated into
+`<ns>_enums.ml`.** The generator already knows every enum's int values
+and every bitfield's flag bits (`Types.gir_enum.members.value` and
+`Types.gir_bitfield.flags.flag_value`), so it emits, for every
+enum/bitfield, a typed `_of_int` / `_to_int` function pair:
+
+```ocaml
+(* Generated in gdk_enums.ml *)
+let modifiertype_of_int (n : int) : modifiertype =
+  let acc = ref [] in
+  if n land 0x1 <> 0 then acc := `SHIFT_MASK :: !acc;
+  if n land 0x2 <> 0 then acc := `LOCK_MASK :: !acc;
+  if n land 0x4 <> 0 then acc := `CONTROL_MASK :: !acc;
+  (* ... one branch per flag, version-guarded where needed ... *)
+  !acc
+
+let modifiertype_to_int (flags : modifiertype) : int =
+  List.fold_left (fun acc -> function
+    | `SHIFT_MASK   -> acc lor 0x1
+    | `LOCK_MASK    -> acc lor 0x2
+    | `CONTROL_MASK -> acc lor 0x4
+    (* ... *)
+    ) 0 flags
+
+(* Enum variant — single tag rather than list *)
+let orientation_of_int = function
+  | 0 -> `HORIZONTAL
+  | 1 -> `VERTICAL
+  | n -> failwith (Printf.sprintf "Gtk.Orientation: bad int %d" n)
+let orientation_to_int = function
+  | `HORIZONTAL -> 0
+  | `VERTICAL   -> 1
+```
+
+Generator-emitted signal callsite then composes the pieces:
+
+```ocaml
+let state =
+  Gdk_enums.modifiertype_of_int
+    (Gobject.Value.get_flags_int (Gobject.Closure.nth argv ~pos:3))
+in
+```
+
+**Cost analysis.**
+
+| Aspect | Per-type C symbols (rejected) | Generic dispatcher + OCaml decoders (adopted) |
+|--------|-------------------------------|-----------------------------------------------|
+| New C symbols | ~600 (2 per enum/bitfield × ~300) | **4** (`ml_g_value_get_enum_int`, `_set_enum_int`, `_get_flags_int`, `_set_flags_int`) |
+| New OCaml `external` decls | ~600 | **4** |
+| New OCaml functions per type | 0 | 2 (pure: `_of_int`, `_to_int`) — generated bytes, not symbols |
+| Per-call cost | one indirect function call | identical (one extern + one branch on int) |
+| Type safety at FFI boundary | full | full (decoders typed; no `Obj.magic`) |
+
+**Why not a runtime registry / `Obj.magic` dispatcher?** A `GType`-keyed
+registry collapses C symbols similarly but loses type safety at the
+OCaml boundary — every callsite must `Obj.magic` the result and the
+generator carries the responsibility for soundness. The decoder
+approach achieves the same symbol-cost win without erasing types.
+
+**Why not just call the existing `Val_GdkModifierType` from OCaml via a
+per-type `external`?** That's the per-type-symbol design we just
+rejected — same cost.
+
+**Two-source-of-truth concern.** Bit values now appear both in C
+(existing `Val_<T>` / `<T>_val` used by method stubs) and in OCaml
+(new decoders used by signal stubs). Both are emitted by the same
+generator pass from the same `Types.gir_bitfield` source data, so
+divergence requires breaking the generator — not a maintenance
+concern. A follow-up could migrate method stubs to also use the
+OCaml decoders and remove the C `Val_<T>` / `<T>_val` outright; that
+is post-milestone scope.
+
+**Version-guarded members.** The generator already knows version
+guards (`Types.gir_bitfield_flag.version`); the OCaml decoder emits
+`[@@if Gtk_version.gtk4_14_or_later]`-style annotations or runtime
+checks matching what the C side does at `ml_gdk_enums_gen.c:1386-1394`.
 
 ### Param-type → marshaller mapping
 
@@ -274,12 +387,12 @@ type result =
 
 **Supported (Phase 1a — new runtime wrappers)**
 
-| GIR type | `ocaml_type` | getter | setter | Source |
-|----------|--------------|--------|--------|--------|
-| Enum (`<NS>.<EnumName>`) | `<NS>_enums.<enumname>` | `<NS>_enums.<enumname>_get_value` | `<NS>_enums.<enumname>_set_value` | per-enum, generated alongside `Val_<EnumName>` |
-| Bitfield (`<NS>.<FlagsName>`) | `<NS>_enums.<flagsname>` | `<NS>_enums.<flagsname>_get_value` | `<NS>_enums.<flagsname>_set_value` | per-bitfield, generated alongside `Val_<FlagsName>` |
-| `GLib.Variant` | `Gvariant.t` | `Gobject.Value.get_variant` | `set_variant` | new generic wrapper |
-| `gint64` | `Int64.t` | `Gobject.Value.get_int64` | `set_int64` | new generic wrapper; 2 signals depend |
+| GIR type | `ocaml_type` | getter expression | setter expression | Source |
+|----------|--------------|-------------------|--------------------|--------|
+| Enum (`<NS>.<EnumName>`) | `<NS>_enums.<enumname>` | `<NS>_enums.<enumname>_of_int (Gobject.Value.get_enum_int gv)` | `Gobject.Value.set_enum_int gv (<NS>_enums.<enumname>_to_int v)` | 2 generic C dispatchers + per-type pure-OCaml decoders in `<ns>_enums.ml` |
+| Bitfield (`<NS>.<FlagsName>`) | `<NS>_enums.<flagsname>` | `<NS>_enums.<flagsname>_of_int (Gobject.Value.get_flags_int gv)` | `Gobject.Value.set_flags_int gv (<NS>_enums.<flagsname>_to_int v)` | as above |
+| `GLib.Variant` | `Gvariant.t` | `Gobject.Value.get_variant gv` | `Gobject.Value.set_variant gv v` | new generic C wrapper |
+| `gint64` | `Int64.t` | `Gobject.Value.get_int64 gv` | `Gobject.Value.set_int64 gv v` | new generic C wrapper; 2 signals depend |
 
 **Deferred — no signal usage** (fall through to skipped log)
 
@@ -335,44 +448,61 @@ cases** with concrete assertions.
 
 | File | Line | Change |
 |------|------|--------|
-| `ocgtk/src/common/ml_gobject.c` | new code after line 440 | Add 6 new C wrappers: `ml_g_value_get_int64`, `ml_g_value_set_int64`, `ml_g_value_get_variant`, `ml_g_value_set_variant`, `ml_g_value_get_enum`, `ml_g_value_set_enum`, `ml_g_value_get_flags`, `ml_g_value_set_flags`. Last four are *generic* (return raw `int`/`Int64`) — used directly only by generator-internal code paths if needed; per-type wrappers (below) are the public face. |
-| `ocgtk/src/common/gobject.ml` | extend `module Value` block (lines 145-178) | Add `external get_int64 / set_int64 / get_variant / set_variant`. |
-| `ocgtk/src/common/gobject.mli` | extend `module Value` (lines 117-151) | Add matching `val` lines: `val get_int64 : t -> Int64.t`, `val set_int64 : t -> Int64.t -> unit`, `val get_variant : t -> Gvariant.t`, `val set_variant : t -> Gvariant.t -> unit`. |
-| `gir_gen/lib/generate/c_stub_enum.ml` | after line 53 (alongside `Val_<T>` / `<T>_val` prototypes) | For each enum, emit two additional C functions in both the prototype list and the implementation: `value ml_g_value_get_<EnumName>(value gv)` and `value ml_g_value_set_<EnumName>(value gv, value v)`. |
-| `gir_gen/lib/generate/c_stub_bitfield.ml` | after lines 39 and 86 (both prototype emissions) | Same — for each bitfield, emit `ml_g_value_get_<FlagsName>` and `ml_g_value_set_<FlagsName>` using `g_value_get_flags`/`g_value_set_flags`. |
-| `gir_gen/lib/generate/enum_code.ml` | currently emits the `.mli` only; extend to also emit `.ml` | Generate a `<ns>_enums.ml` containing `external <type>_get_value : Gobject.g_value -> <type> = "ml_g_value_get_<CType>"` and `external <type>_set_value : Gobject.g_value -> <type> -> unit = "ml_g_value_set_<CType>"` for every enum/bitfield. Add corresponding `val` lines to the `.mli` emission. |
-| `ocgtk/src/<ns>/dune` (×9) | line 30/35/37/39 (varies — see grep below) | **Remove** `(modules_without_implementation <ns>_enums)`. Locations: `cairo/dune:30`, `gdkpixbuf/dune:30`, `gdk/dune:35`, `gio/dune:37`, `graphene/dune:30`, `gsk/dune:30`, `gtk/dune:39`, `pango/dune:30`. |
-| `ocgtk/src/<ns>/dune` (×9) | parent `library` stanza | Generated `<ns>_enums` will need access to `Ocgtk_common.Gobject`. The dependency is already present in every namespace's `(libraries …)`; verify (`grep "ocgtk.common" ocgtk/src/*/dune`). |
+| `ocgtk/src/common/ml_gobject.c` | new code after line 440 | Add 8 new C wrappers (**generic, total — not per-type**): `ml_g_value_get_int64` / `_set_int64`, `ml_g_value_get_variant` / `_set_variant`, `ml_g_value_get_enum_int` / `_set_enum_int`, `ml_g_value_get_flags_int` / `_set_flags_int`. The last four return/accept raw `int`; OCaml-side decoders convert to typed variants. |
+| `ocgtk/src/common/gobject.ml` | extend `module Value` block (lines 145-178) | Add eight `external` declarations matching the C entries. |
+| `ocgtk/src/common/gobject.mli` | extend `module Value` (lines 117-151) | Add matching `val` lines: `val get_int64 / set_int64 / get_variant / set_variant / get_enum_int / set_enum_int / get_flags_int / set_flags_int`. |
+| `gir_gen/lib/generate/enum_code.ml` | currently emits the `.mli` only; extend to also emit `.ml` | For every enum, generate two pure-OCaml functions: `<lower>_of_int : int -> <type>` (matches on int, yields polymorphic-variant tag) and `<lower>_to_int : <type> -> int` (reverse). For every bitfield, generate `<lower>_of_int : int -> <type>` (bit-tests yielding flag list) and `<lower>_to_int : <type> -> int` (folds flags via `lor`). Honour version guards via `[@@if Gtk_version.<gate>]` annotations on individual branches, mirroring the C side at `ml_gdk_enums_gen.c:1386-1394`. Add `val` lines to the `.mli` emission. |
+| `gir_gen/lib/generate/c_stub_enum.ml` | unchanged | Existing `Val_<T>`/`<T>_val` C functions remain — used by method stubs. No new per-type C symbols. |
+| `gir_gen/lib/generate/c_stub_bitfield.ml` | unchanged | Same. |
+| `ocgtk/src/<ns>/dune` (×9) | one line per namespace | **Remove** `(modules_without_implementation <ns>_enums)` from each of the 9 namespaces — `<ns>_enums.ml` now exists. Locations grep: `cairo/dune:30`, `gdkpixbuf/dune:30`, `gdk/dune:35`, `gio/dune:37`, `graphene/dune:30`, `gsk/dune:30`, `gtk/dune:39`, `pango/dune:30`, plus one more (run `grep -rn modules_without_implementation ocgtk/src/`). For namespaces with **zero** enums and bitfields (Cairo/Graphene if applicable), keep the clause and skip generating `.ml`. |
 
 **Validation outputs**
 
 After regeneration via `bash scripts/generate-bindings.sh`, the implementer
 must confirm:
 
-1. `ocgtk/src/gdk/generated/gdk_enums.ml` **exists** and contains:
+1. `ocgtk/src/gdk/generated/gdk_enums.ml` **exists** and contains pure-OCaml
+   decoders, e.g.:
    ```ocaml
-   external modifiertype_get_value :
-     Gobject.g_value -> modifiertype = "ml_g_value_get_GdkModifierType"
-   external modifiertype_set_value :
-     Gobject.g_value -> modifiertype -> unit = "ml_g_value_set_GdkModifierType"
+   let modifiertype_of_int (n : int) : modifiertype =
+     let acc = ref [] in
+     if n land 0x1 <> 0 then acc := `SHIFT_MASK :: !acc;
+     ...
+     !acc
+
+   let orientation_of_int = function
+     | 0 -> `HORIZONTAL
+     | 1 -> `VERTICAL
+     | n -> failwith (Printf.sprintf "Gtk.Orientation: bad int %d" n)
    ```
 
-2. `ocgtk/src/gdk/generated/ml_gdk_enums_gen.c` contains, after the existing
-   `Val_GdkModifierType`/`GdkModifierType_val` block, both
-   `ml_g_value_get_GdkModifierType` and `ml_g_value_set_GdkModifierType`,
-   each calling through to `Val_GdkModifierType`/`GdkModifierType_val`.
+2. `ocgtk/src/common/ml_gobject.c` contains the 8 new generic dispatchers
+   only — **no per-type symbols added** anywhere in the generated C.
+   Verify: `grep -c "ml_g_value_get_" ocgtk/src/common/ml_gobject.c`
+   should jump from its current value by exactly 8 (4 getters, 4
+   setters), and
+   `grep -c "ml_g_value_get_" ocgtk/src/*/generated/*.c`
+   should remain **0**.
 
-3. `dune build` succeeds across all 9 namespaces with no link errors —
-   confirms the OCaml `external` declarations match the C symbols.
+3. `dune build` succeeds across all 9 namespaces with no link errors.
 
-4. Spot-check a random non-bitfield enum (e.g.
-   `ocgtk/src/gtk/generated/gtk_enums.ml` — `align_get_value`,
-   `orientation_get_value`) to verify the generator handles enum and
-   bitfield branches symmetrically.
+4. Spot-check a non-bitfield enum (e.g. `Gtk_enums.orientation_of_int`,
+   `Gtk_enums.align_of_int`) and a bitfield (e.g.
+   `Gdk_enums.modifiertype_of_int`) to confirm both forms are emitted.
 
-5. `grep -c "external .*_get_value" ocgtk/src/*/generated/*_enums.ml`
-   should equal the total enum + bitfield count (≈ 150 per the existing
-   `Val_*` count).
+5. **C-symbol-cost target**: total new C symbols introduced by Phase 1a
+   is exactly **8**, regardless of enum/bitfield count. This is the
+   primary acceptance criterion.
+
+6. `grep -c "_of_int\\|_to_int" ocgtk/src/*/generated/*_enums.ml` should
+   equal **2 ×** (total enum + bitfield count) (≈ 300 functions, all
+   pure OCaml).
+
+7. **Round-trip property check**: for every enum `T`,
+   `T_of_int (T_to_int v) = v`; for every bitfield `T` and any subset
+   `s` of declared flags, `T_of_int (T_to_int s)` is `s` modulo flag
+   ordering. (Generator emits this as an alcotest QuickCheck-style
+   smoke test per type — see Phase 1a tests below.)
 
 **Test cases**
 
@@ -381,13 +511,16 @@ In `ocgtk/tests/test_signal_value_enum_flags.ml` (new file; add to
 
 | # | Name | Setup | Assertion |
 |---|------|-------|-----------|
-| 1 | `enum round-trip via per-type helper` | `Gobject.Value.create (g_type_for "GtkOrientation"); Gtk_enums.orientation_set_value v `VERTICAL` | `Gtk_enums.orientation_get_value v = `VERTICAL` |
-| 2 | `flags round-trip via per-type helper` | Same with `Gdk.ModifierType` and `[`SHIFT_MASK; `CONTROL_MASK]` | round-trip preserves all bits |
-| 3 | `flags empty list` | Set with `[]`, get | returns `[]` |
+| 1 | `enum round-trip via decoder` | `Gobject.Value.create (g_type_for "GtkOrientation"); Value.set_enum_int v (Gtk_enums.orientation_to_int `VERTICAL)` | `Gtk_enums.orientation_of_int (Value.get_enum_int v) = `VERTICAL` |
+| 2 | `flags round-trip via decoder` | `Value.set_flags_int v (Gdk_enums.modifiertype_to_int [`SHIFT_MASK; `CONTROL_MASK])` | `of_int (get_flags_int v)` preserves both bits |
+| 3 | `flags empty list` | `set_flags_int v 0` | `of_int 0 = []` |
 | 4 | `variant round-trip` | `Gvariant.new_string "hello"` set, get | `Gvariant.get_string` matches |
 | 5 | `int64 round-trip` | `Value.set_int64 v Int64.max_int` | `Value.get_int64 v = Int64.max_int` |
-| 6 | `negative — wrong type` | `set_int v 5; get_flags` (raw helper) | raises `Invalid_argument` |
-| 7 | `negative — wrong type via per-type helper` | Set int GValue, call `modifiertype_get_value` | raises `Invalid_argument` from `G_VALUE_HOLDS_FLAGS` check |
+| 6 | `enum decoder fails on out-of-range int` | `Gtk_enums.orientation_of_int 99` | raises `Failure` |
+| 7 | `enum decoder property: of_int ∘ to_int = id` | foreach declared variant `v` of `Gtk.Orientation` | `of_int (to_int v) = v` |
+| 8 | `bitfield decoder property: of_int ∘ to_int preserves set` | `[\`SHIFT_MASK; \`CONTROL_MASK]` and 5 other random subsets | `of_int (to_int s) = s` modulo order |
+| 9 | `negative — wrong GValue type` | `set_int v 5; get_flags_int v` | raises `Invalid_argument` from `G_VALUE_HOLDS_FLAGS` check |
+| 10 | `version-guarded flag honoured` | On a system with GTK ≥ 4.14, `of_int` correctly returns `\`NO_MODIFIER_MASK` | passes |
 
 Existing test pattern for reference: `ocgtk/tests/test_gobj.ml` (alcotest;
 GTK init via `GMain.init` not required for pure GValue tests).
@@ -429,8 +562,8 @@ In `gir_gen/test/class_generation/signal_marshaller_tests.ml` (new):
 | 4 | `gint64` | `"Int64.t"` | `Gobject.Value.get_int64` |
 | 5 | `gdouble` | `"float"` | `Gobject.Value.get_double` |
 | 6 | `utf8` | `"string"` | `Gobject.Value.get_string` |
-| 7 | Enum `Gtk.Orientation` (same-NS) | `"Gtk_enums.orientation"` | `Gtk_enums.orientation_get_value` |
-| 8 | Bitfield `Gdk.ModifierType` (cross-NS, from Gtk ctx) | `"Ocgtk_gdk.Gdk_enums.modifiertype"` | `Ocgtk_gdk.Gdk_enums.modifiertype_get_value` |
+| 7 | Enum `Gtk.Orientation` (same-NS) | `"Gtk_enums.orientation"` | `Gtk_enums.orientation_of_int` and `Gobject.Value.get_enum_int` |
+| 8 | Bitfield `Gdk.ModifierType` (cross-NS, from Gtk ctx) | `"Ocgtk_gdk.Gdk_enums.modifiertype"` | `Ocgtk_gdk.Gdk_enums.modifiertype_of_int` and `Gobject.Value.get_flags_int` |
 | 9 | `GLib.Variant` | `"Gvariant.t"` | `Gobject.Value.get_variant` |
 | 10 | GObject class `GtkWidget` (same-NS) | `"Gtk.Widget.t Gobject.obj"` | `Gobject.Value.get_object` |
 | 11 | Cross-NS GObject (Gio.File from Gtk) | `"Ocgtk_gio.Gio.File.t Gobject.obj"` | `Gobject.Value.get_object` |
@@ -557,7 +690,7 @@ After regeneration:
 | 2 | `void primitive params uses Closure.create` | synthetic `pressed` (`gint, gdouble, gdouble`) | AST contains `Gobject.Closure.create` and three `Gobject.Closure.nth` calls; method has labelled args `n_press / x / y` of types `int / float / float`; uses `Signal.connect` |
 | 3 | `bool return zero-param uses Closure.create` | synthetic `close-request` | AST shows `Closure.create`, body sets `Value.set_boolean` on the result, uses `Signal.connect` |
 | 4 | `bool return primitive param round-trip` | synthetic `state-set` (`gboolean -> gboolean`) | callback sig is `state:bool -> bool`; closure body extracts `pos:1` and sets bool result |
-| 5 | `mixed bool return + 3 params` | `key-pressed`-shaped (`guint, guint, GdkModifierType -> gboolean`) | three `nth` extractions at pos 1/2/3; the third uses `Gdk_enums.modifiertype_get_value` (cross-NS) |
+| 5 | `mixed bool return + 3 params` | `key-pressed`-shaped (`guint, guint, GdkModifierType -> gboolean`) | three `nth` extractions at pos 1/2/3; the third composes `Gobject.Value.get_flags_int` and `Ocgtk_gdk.Gdk_enums.modifiertype_of_int` (cross-NS) |
 | 6 | `unsupported → skipped + warning` | synthetic signal with `<callback>` param | method does **not** appear in generated class; `eprintf` invocation captured via mock |
 | 7 | `sender at pos:0 invariant` | inspect closure body | no `nth` call uses `pos:0` (sender is implicit) |
 | 8 | `param keyword sanitisation` | synthetic signal with parameter named `type` | generated method uses `~type_` not `~type` |
@@ -584,16 +717,16 @@ qualified getter.
 
 | File | Line | Change |
 |------|------|--------|
-| `gir_gen/lib/generate/signal_marshaller.ml` (from Phase 1b) | enum/bitfield branch | When `classify_type` returns a foreign-namespace enum/bitfield, use `Utils.external_namespace_to_module_name` to compute the prefix and emit `<prefix>.<NS>_enums.<lower>_get_value`. Same for setter. |
+| `gir_gen/lib/generate/signal_marshaller.ml` (from Phase 1b) | enum/bitfield branch | When `classify_type` returns a foreign-namespace enum/bitfield, use `Utils.external_namespace_to_module_name` to compute the prefix; emit `<prefix>.<NS>_enums.<lower>_of_int` composed with `Gobject.Value.get_enum_int`/`get_flags_int`. Setter form mirrors. |
 
 **Validation outputs**
 
 1. `ocgtk/src/gtk/generated/event_controller_key_signals.ml` —
-   `on_key_pressed`'s body contains the literal token
-   `Ocgtk_gdk.Gdk_enums.modifiertype_get_value` (cross-namespace
-   qualified path). Inspect via `grep`:
+   `on_key_pressed`'s body contains both the cross-namespace decoder
+   call and the generic dispatcher:
    ```
-   grep -n modifiertype_get_value ocgtk/src/gtk/generated/event_controller_key_signals.ml
+   grep -n "Ocgtk_gdk.Gdk_enums.modifiertype_of_int\\|Gobject.Value.get_flags_int" \
+     ocgtk/src/gtk/generated/event_controller_key_signals.ml
    ```
 
 2. `dune build` resolves the dependency — confirms the Gtk library
@@ -611,10 +744,10 @@ qualified getter.
 
 | # | Name | Setup | Assertion |
 |---|------|-------|-----------|
-| 1 | `cross-NS bitfield param uses qualified getter` | Synthetic Gtk class with signal taking `Gdk.ModifierType` parameter | AST shows `Ocgtk_gdk.Gdk_enums.modifiertype_get_value` token |
-| 2 | `same-NS bitfield param uses bare module` | Synthetic Gtk class with signal taking `Gtk.AccessibleRole` | AST shows bare `Gtk_enums.accessiblerole_get_value` (no `Ocgtk_gtk` prefix) |
-| 3 | `cross-NS enum param` | Synthetic Gtk signal taking `Gdk.MemoryFormat` | qualified getter |
-| 4 | `cross-NS enum return` | Synthetic Gtk signal returning `Gdk.MemoryFormat` | setter is qualified `Ocgtk_gdk.Gdk_enums.memoryformat_set_value` |
+| 1 | `cross-NS bitfield param uses qualified decoder` | Synthetic Gtk class with signal taking `Gdk.ModifierType` parameter | AST shows `Ocgtk_gdk.Gdk_enums.modifiertype_of_int` and `Gobject.Value.get_flags_int` |
+| 2 | `same-NS bitfield param uses bare module` | Synthetic Gtk class with signal taking `Gtk.AccessibleRole` | AST shows bare `Gtk_enums.accessiblerole_of_int` (no `Ocgtk_gtk` prefix) |
+| 3 | `cross-NS enum param` | Synthetic Gtk signal taking `Gdk.MemoryFormat` | `Ocgtk_gdk.Gdk_enums.memoryformat_of_int` + `Gobject.Value.get_enum_int` |
+| 4 | `cross-NS enum return` | Synthetic Gtk signal returning `Gdk.MemoryFormat` | encoder composed: `Gobject.Value.set_enum_int … (Ocgtk_gdk.Gdk_enums.memoryformat_to_int …)` |
 
 Cross-NS test pattern is established in
 `gir_gen/test/cross_namespace/` already — use the same `gir_data_dir`
@@ -629,8 +762,28 @@ param is the cross-namespace flag-list type and the OCaml file compiles.
 ### Phase 4 — Runtime end-to-end marshalling test
 
 **Goal.** Prove the generated code actually round-trips parameters and
-results through the C marshaller — i.e., that what the generator emits
-links and runs.
+results through the C marshaller, **and close the existing test-coverage
+gap on `ml_closure_marshal`** ("Existing closure-marshaller test
+coverage" above). Multi-param dispatch and non-void return copy-back are
+both used by every Strategy-2 signal but unexercised today.
+
+**Marshaller-level test cases** (independent of generated code, exercise
+`ml_closure_marshal` directly via existing or extended test helpers):
+
+| # | Name | Setup | Assertion |
+|---|------|-------|-----------|
+| M1 | `two-int dispatch round-trip` | Build closure that reads `nth ~pos:0` and `~pos:1` as ints, sums them | `Test.invoke_closure_two_ints` (already exists, never called by tests) yields expected sum captured into a ref |
+| M2 | `four-mixed-type dispatch` | Add a new `Test.invoke_closure_mixed : g_closure -> int -> string -> bool -> float -> unit` test helper; closure pulls each typed value | All four values round-trip |
+| M3 | `non-void int return copy-back` | Add `Test.invoke_closure_returning_int : g_closure -> int` helper; closure sets `Closure.result` via `Value.set_int` | Helper observes the int written back to the GValue array |
+| M4 | `non-void bool return copy-back` | Same shape, returning bool | observed |
+| M5 | `non-void string return copy-back` | Same shape, returning string | observed; string encoding preserved |
+| M6 | `exception in callback is logged but not propagated` | Build closure that raises `Failure "boom"`; invoke | `g_warning` log message captured (mock `Printexc.to_string` callback or assert via stderr capture); host process not killed |
+| M7 | `enum_int / flags_int round-trip` | Use new Phase-1a helpers: set a flags GValue, callback reads via `get_flags_int`; conversely, set via `set_flags_int`, host C reads back | bit pattern preserved |
+
+These tests live in `ocgtk/tests/test_closure_marshalling.ml` (new),
+sibling to the existing `test_closure_stress.ml`. The new
+`Test.invoke_closure_*` helpers go into `ocgtk/src/common/gobject.{ml,mli}`
+test-helper section (lines 250-268) and `ml_gobject.c`.
 
 **Files to create**
 
@@ -638,7 +791,8 @@ links and runs.
 |------|---------|
 | `ocgtk/tests/test_signal_marshalling.ml` (new) | Runtime alcotest suite. Add to `ocgtk/tests/dune` test names list. |
 
-**Test cases**
+**End-to-end test cases via real GTK widgets** (in addition to M1-M7
+above):
 
 | # | Name | Setup | Assertion |
 |---|------|-------|-----------|
