@@ -203,6 +203,7 @@ example for `EventControllerKey::key-pressed`
 
 ```ocaml
 method on_key_pressed
+    ?(after = false)
     ~(callback :
         keyval:int ->
         keycode:int ->
@@ -221,7 +222,7 @@ method on_key_pressed
         Gobject.Value.set_boolean (Gobject.Closure.result argv) result)
   in
   Gobject.Signal.connect obj ~name:"key-pressed" ~callback:closure
-    ~after:false
+    ~after
 ```
 
 Notes on the shape:
@@ -237,17 +238,63 @@ Notes on the shape:
   (e.g. `Gdk_enums.modifiertype_get_value`) introduced in Phase 1a —
   *not* through a nonexistent `Modifier_type.of_int` chain.
 
-### Enum/bitfield → OCaml decoder layer (no per-type C symbols)
+### Enum/bitfield decoder layer — three options weighed
 
-A naive design would emit per-type GValue helpers
-(`ml_g_value_get_<EnumName>`/`_set_<EnumName>`) alongside the existing
-`Val_<T>` / `<T>_val` C converters — that would roughly double the
+Three designs were considered for converting between an `int`-shaped
+GValue and the OCaml polymorphic-variant types declared in
+`<ns>_enums.mli`. The trade-off is C-symbol count vs. OCaml-symbol
+count vs. reuse of existing infrastructure.
+
+**Option 1 — per-type GValue C wrappers** (`ml_g_value_get_<EnumName>` /
+`_set_<EnumName>`) alongside existing `Val_<T>` / `<T>_val`. Doubles
 C-symbol count for enums/bitfields (≈ 600 new C entry points across
 the 9 namespaces). **Rejected** for symbol-table cost.
 
-Adopted design: **two generic C dispatchers + per-type OCaml
-decoders.** This pushes the variant-tag conversion from C into OCaml
-while keeping type safety and adding only **two** new C symbols total.
+**Option 2 — generic C dispatchers + per-type pure-OCaml decoders.**
+4 generic C entry points (`get_enum_int`/`set_enum_int`/
+`get_flags_int`/`set_flags_int`) plus per-type pure-OCaml
+`<lower>_of_int`/`<lower>_to_int` functions in `<ns>_enums.ml`. C cost
+fixed at 4. OCaml cost: ≈ 300 functions emitting bit-test logic that
+mirrors the existing C `Val_<T>` / `<T>_val`. Two sources of truth
+for the bit values, both generated from the same `Types.gir_bitfield`
+data so divergence requires breaking the generator.
+
+**Option 3 (preferred — pending Phase 0 investigation) — generic C
+dispatchers + reuse of the existing `Gpointer.variant_table` /
+`Gobject.Data.{enum,flags}` infrastructure.** The codebase already
+has `Gpointer.variant_table` (`ocgtk/src/common/gpointer.ml:24-27`),
+`external decode_variant : 'a variant_table -> int -> 'a =
+"ml_lookup_from_c"` (binary search over a C static table in
+`wrappers.c:57-73`), and `Gobject.Data.enum` / `Gobject.Data.flags`
+(`gobject.mli:240-244`) which produce `(int -> 'a) * ('a -> int)`
+decoder/encoder pairs from a `variant_table`. If this infrastructure
+is fully wired (especially the bitfield variant — the Opus review
+noted possible stubbing of `decode_flags`/`encode_flags`), then the
+generator can:
+
+1. Emit a per-type **data table** in C (a `variant_table` literal —
+   pure data, smaller than a function symbol) generated alongside
+   the existing `Val_<T>` / `<T>_val` in `ml_<ns>_enums_gen.c`.
+2. Emit, in `<ns>_enums.ml`, *one let-binding* per enum/bitfield
+   that calls `Gobject.Data.enum table` (or `flags table`) to
+   materialise the `_of_int` / `_to_int` pair as the table's
+   `decode_variant` / `encode_variant` partial application.
+
+Option 3 collapses the two-sources-of-truth concern (the table
+becomes the **single** source of truth, used by both method stubs
+and signal stubs), shrinks the OCaml output (≈ 300 small data
+values rather than ≈ 300 function bodies), and reuses code paths
+that have already been hardened by the lablgtk lineage.
+
+**Phase 0 (new — must run before Phase 1a)** verifies whether
+Option 3 is achievable today. See "Phase 0 — Verify
+`Gobject.Data` infrastructure" below.
+
+**Adopted design (provisional).** Option 3 if Phase 0 confirms the
+runtime is wired; otherwise fall back to Option 2. The C-symbol
+budget is identical for both; the difference is only in where the
+per-type information lives (C data table vs. OCaml function body).
+Either way, **per-type C entry points are avoided**.
 
 **C side — two new functions, total, shared across all namespaces.**
 Live in `ocgtk/src/common/ml_gobject.c`:
@@ -358,8 +405,11 @@ checks matching what the C side does at `ml_gdk_enums_gen.c:1386-1394`.
 
 ### Param-type → marshaller mapping
 
-The `Signal_marshaller` module (Phase 1b) takes `Types.gir_type` and
-context and returns one of three branches:
+`Signal_marshaller` (Phase 1b) **does not take `Types.gir_type` alone**
+— it must see direction, nullability, transfer-ownership, and varargs,
+because GIR `<parameter>` carries those *outside* the `<type>` element
+and they materially change correctness. The module takes a `gir_param`
+for parameters and a return-spec triple for returns:
 
 ```ocaml
 type marshaller =
@@ -371,7 +421,61 @@ type marshaller =
 type result =
   | Supported   of marshaller
   | Unsupported of string  (* reason — logged in stderr skip message *)
+
+val for_param :
+  ctx:generation_context -> namespace:string -> gir_param -> result
+val for_return :
+  ctx:generation_context -> namespace:string ->
+  gir_type * transfer_ownership * nullable:bool -> result
 ```
+
+`for_param` returns `Unsupported` immediately, before any type
+classification, when:
+
+- `param.direction <> In` — `Unsupported "direction=out signal
+  parameter not supported"`. Verified-real cases:
+  - `GtkSpinButton::input` (`gir/Gtk-4.0.gir:136016`) declares
+    `direction="out" caller-allocates="0" transfer-ownership="full"
+    <type name="gdouble" c:type="gpointer"/>` for parameter
+    `new_value`.
+  - `GtkEditable::insert-text` (`gir/Gtk-4.0.gir:48692-48731`) has
+    `direction="inout"` on `position`.
+- `param.varargs = true` — never legal in real GLib signals (only on
+  `<callback>` and `<function>`); cheap guard.
+- `param.param_name = ""` — fallback to `arg<N>` and continue.
+
+`for_return` returns `Unsupported` when:
+
+- The return is a GObject with `transfer_ownership = Full` — needs
+  `g_value_take_object` semantics not yet wired. Verified-real cases:
+  - `GtkComboBox::format-entry-text` returns `transfer-ownership="full"`
+    `utf8`. (For string returns the existing `g_value_set_string`
+    copies, so transfer-full strings are *accidentally* correct; we
+    accept them but document the subtlety.)
+  - `GtkDragSource::prepare` returns
+    `transfer-ownership="full" nullable="1"` `Gdk.ContentProvider`.
+    On the hot drag path, leaks one ref per emission today.
+  - `GtkGLArea::create-context` returns `transfer-ownership="full"`
+    `Gdk.GLContext`.
+- The return type's `array <> None` — array returns are deferred.
+
+`for_param` *and* `for_return` honour `nullable`:
+
+- Nullable GObject parameters: `ocaml_type` is wrapped in `option`;
+  the existing C `ml_g_value_get_object` returns NULL → `caml_failwith`
+  → caught by `gobject.ml` `try Some _ with _ -> None`. Reading works.
+- Nullable GObject returns: **blocked by a pre-existing bug in
+  `set_object`**. `ocgtk/src/common/gobject.ml:175-177` defines
+  `set_object v None = ()` — a no-op that leaves the result GValue
+  uninitialised. Phase 1a fixes this (see Phase 1a → "Pre-existing
+  bug fix" subsection).
+
+**`allow-none` normalisation.** Older GIR (Gio uses it) writes
+`allow-none="1"` instead of `nullable="1"`. The parser at
+`gir_gen/lib/parse/gir_parser.ml` should normalise both into
+`gir_type.nullable` (or its parameter-level equivalent). Verify before
+Phase 1b: `grep allow-none gir/*.gir` shows Gio uses it; GTK 4 GIR
+uses `nullable` consistently.
 
 **Supported (Phase 1b — no new runtime work)**
 
@@ -439,10 +543,63 @@ section below names the **files to modify** with line numbers, **validation
 outputs** the implementer should inspect after the change, and **test
 cases** with concrete assertions.
 
+### Phase 0 — Verify `Gobject.Data` infrastructure
+
+**Goal.** Establish whether Option 3 (reuse `Gpointer.variant_table` /
+`Gobject.Data.{enum,flags}`) is achievable today, before Phase 1a
+commits the generator to either Option 2 or Option 3.
+
+**Investigation steps**
+
+1. Read `ocgtk/src/common/gpointer.ml` and `gpointer.mli` end-to-end.
+   Confirm `variant_table` is a real type (not opaque-stub) and
+   `decode_variant` / `encode_variant` reach a working C primitive
+   in `wrappers.c:57-73`.
+2. Read `ocgtk/src/common/gobject.{ml,mli}` lines around 240
+   (`Data.enum`, `Data.flags`). Confirm both branches actually
+   construct decoders (or note which is stubbed).
+3. Search for an existing in-tree user: `grep -rn "Gobject.Data.enum\\|Gobject.Data.flags" ocgtk/`. If lablgtk or current
+   methods use it for something, the path is hardened.
+4. Check whether `variant_table` literals can be emitted from the
+   generator — i.e., whether the C-side static table representation
+   is documented and stable.
+5. Check whether version-guarded flag members can be expressed in a
+   `variant_table` (some entries conditionally absent at compile
+   time). The C `Val_GdkModifierType` uses `#if GTK_CHECK_VERSION`
+   (`ml_gdk_enums_gen.c:1386-1394`); the static table would need the
+   same.
+
+**Outcome decision**
+
+- **Option 3 viable** if all of (1)-(5) check out → commit Phase 1a
+  to Option 3.
+- **Option 3 partially viable** (e.g. enums work, flags stubbed) →
+  un-stub the missing branch as part of Phase 1a, then commit.
+- **Option 3 not viable** (e.g. variant_table cannot be generator-
+  emitted) → fall back to Option 2 (per-type pure-OCaml decoders) and
+  document why.
+
+**Exit criteria.** A short written record (commit message or plan
+amendment) stating which option Phase 1a will use and the evidence
+behind the choice.
+
+---
+
 ### Phase 1a — Runtime: per-type enum/flags GValue wrappers + variant + int64
 
 **Goal.** Make `Gdk.ModifierType` (flags), GTK enums, `GLib.Variant`, and
 `gint64` parameters reachable from a closure callback.
+
+**Pre-existing bug fix (REQUIRED — must land in Phase 1a).**
+`ocgtk/src/common/gobject.ml:175-177` defines `set_object v None = ()`,
+a no-op that leaves the GValue uninitialised. This silently breaks
+**every** signal whose return is a nullable GObject — most notably
+`GtkDragSource::prepare`. Fix: implement NULL-set via
+`g_value_set_object(gv, NULL)` in a small new C primitive
+`ml_g_value_set_object_null` (~5 lines in `ml_gobject.c`); update
+`gobject.ml` `set_object` to dispatch on the `option` constructor.
+Add a regression test in `ocgtk/tests/test_gobj.ml` that reads back
+`None` after setting `None`.
 
 **Files to modify**
 
@@ -767,6 +924,23 @@ gap on `ml_closure_marshal`** ("Existing closure-marshaller test
 coverage" above). Multi-param dispatch and non-void return copy-back are
 both used by every Strategy-2 signal but unexercised today.
 
+**Important correction on the existing `Test.invoke_closure_*`
+helpers.** `ml_test_invoke_closure_int` (`ml_gobject.c:811-828`) and
+its siblings build a GValue array with the typed value at slot **0**
+— there is no sender slot, by design (these are pure marshaller
+exercises). Production signal dispatch via `g_signal_emit` puts the
+sender at slot 0 and the first user param at slot 1, which is what the
+generated code's `nth ~pos:1+` indexing expects.
+
+So Phase-4 marshaller tests can use `Test.invoke_closure_*` only when
+the test's closure also extracts at `pos:0` — i.e., they validate the
+generic dispatch mechanism, not the production indexing convention.
+Tests that need to validate "what generated code actually does" must
+emit through a real GObject via `g_signal_emit_by_name`. The two test
+families are kept distinct in the table below: M-tests exercise the
+marshaller; W-tests exercise the wired signal path through real
+widgets.
+
 **Marshaller-level test cases** (independent of generated code, exercise
 `ml_closure_marshal` directly via existing or extended test helpers):
 
@@ -791,8 +965,9 @@ test-helper section (lines 250-268) and `ml_gobject.c`.
 |------|---------|
 | `ocgtk/tests/test_signal_marshalling.ml` (new) | Runtime alcotest suite. Add to `ocgtk/tests/dune` test names list. |
 
-**End-to-end test cases via real GTK widgets** (in addition to M1-M7
-above):
+**Wired-signal test cases** via real GTK widgets — these validate
+`pos:1+` production indexing through real `g_signal_emit_by_name`,
+not the marshaller-test helpers (in addition to M1-M7 above):
 
 | # | Name | Setup | Assertion |
 |---|------|-------|-----------|
@@ -867,50 +1042,73 @@ calculator pattern):
 ### Phase 7 — Signal flag propagation
 
 **Goal.** Capture GIR `<glib:signal>` flags
-(`when="first|last|cleanup"`, `action`, `no-recurse`, `no-hooks`,
-`detailed`) end-to-end so `~after` defaults are sensible and detailed
-signals are connectable.
+(`when="first|last"`, `action`, `no-recurse`, `no-hooks`) in the parser
+so they're available to future generation passes. **Detailed signals
+(`notify::*`) are excluded from this milestone** — see "Detailed
+signals deferred to a separate sub-milestone" below.
+
+**Scope decision: `~after` policy.** The plan's earlier draft defaulted
+`~after:true` for `when="last"` signals. **Withdrawn.** The lablgtk
+tradition is `~after:false` regardless of `when=`, leaving the user to
+opt into after-default-handler delivery via an explicit argument.
+Forcing `~after:true` on every `RUN_LAST` signal makes the common
+"override the default class handler" pattern require an explicit
+override on every connection — the wrong default for application code.
+
+The generated method exposes `?after:bool` as an **optional argument**
+with a default of `false`. The captured `when_phase` is recorded in
+the docstring for the user's reference but does not drive the default.
+
+**Scope decision: `\`Cleanup` removed.** GTK 4 GIR contains zero
+signals with `when="cleanup"` (verified: `grep when=\"cleanup\"
+gir/Gtk-4.0.gir` returns no matches). Drop the case from the parser's
+`when_phase` decoder rather than carry untested code.
+
+**Detailed signals deferred to a separate sub-milestone.** `notify::*`
+is widely used and warrants careful design (the `notify` signal lives
+on `GObject.Object` whose GIR is in `GObject-2.0.gir`, **not currently
+parsed by `gir_gen`** — verified by `Glob gir/*.gir`). Properly
+supporting detailed signals requires either parsing GObject GIR or
+hand-writing the connector. That work is its own concern. This
+milestone does **not** ship detailed signals, and the form example
+uses `Editable::changed` rather than `notify::text` for live
+validation.
 
 **Files to modify**
 
 | File | Line | Change |
 |------|------|--------|
-| `gir_gen/lib/types.ml` | 69-77 | Extend `gir_signal` with `when_phase`, `action`, `no_recurse`, `no_hooks`, `detailed` fields. |
-| `gir_gen/lib/parse/gir_parser.ml` | 613-664 | Read each new attribute via `get_attr "when"`, `get_attr "action"`, etc. Default `when_phase` to `\`Last` (matches GLib default). |
-| `gir_gen/lib/generate/signal_gen.ml` | inside both emit functions | Default `~after:` to `true` for `\`Last`/`\`Cleanup`, `false` for `\`First`. Document choice in generated docstring. |
-| `gir_gen/lib/generate/signal_gen.ml` | new emit branch | For `detailed=true` signals, emit a `~detail:string option` argument; if `Some d`, format name as `<name>::<d>` and call new `Gobject.Signal.connect_detailed`. |
-| `ocgtk/src/common/gobject.{ml,mli}` | extend `module Signal` | Add `val connect_detailed : 'a obj -> name:string -> detail:string -> callback:g_closure -> after:bool -> handler_id`. Implementation in C: format name as `name::detail` and call existing `g_signal_connect_closure`. |
+| `gir_gen/lib/types.ml` | 69-77 | Extend `gir_signal` with `when_phase : [\`First \| \`Last] option`, `action : bool`, `no_recurse : bool`, `no_hooks : bool`. (No `detailed` — out of scope.) |
+| `gir_gen/lib/parse/gir_parser.ml` | 613-664 | Read each new attribute. Default `when_phase = Some \`Last` if missing. |
+| `gir_gen/lib/generate/signal_gen.ml` | both emit functions | Change emitted `~after:false` literal to `?after:bool` optional arg with default `false`. Generated method becomes `method on_X ?(after = false) ~callback = ...`. |
 | `gir_gen/lib/generate/signal_gen.ml` | optional emit (gated on `action=true`) | Generate a sibling `emit_<name> : <typed args> -> unit` per action signal that calls `Gobject.Signal.emit_by_name`. Defer if typed-vararg marshalling proves awkward. |
 
 **Validation outputs**
 
-1. `git grep "~after:true" ocgtk/src/gtk/generated/*_signals.ml | wc -l`
-   should jump from 0 to ≈ 180 (signals with `when="last"`, which is the
-   GLib default and the majority).
+1. `grep -c "?after" ocgtk/src/gtk/generated/*_signals.ml` should equal
+   the count of generated signal methods — every method exposes
+   `?after`.
 
-2. `ocgtk/src/gtk/generated/widget_signals.ml` (or wherever `notify` lives
-   on GObject) contains an `on_notify` method with `?detail:string`
-   parameter.
+2. `grep -c "~after:" ocgtk/src/gtk/generated/*_signals.ml` should be
+   **0** (no fixed `~after:bool` literals in generated code; the
+   defaulting happens via `?(after = false)`).
 
-3. `Gobject.Signal.connect_detailed` exported from `gobject.mli`.
+3. (No detailed-signal validation — out of scope.)
 
 **Test cases** — add to `signal_wrapper_tests.ml`:
 
 | # | Name | GIR fixture | Assertion |
 |---|------|-------------|-----------|
-| 1 | `~after:true defaults from when=last` | synthetic signal `when="last"` | emitted code contains `~after:true` |
-| 2 | `~after:false defaults from when=first` | synthetic signal `when="first"` | emitted code contains `~after:false` |
-| 3 | `detailed signal exposes ~detail` | synthetic signal `detailed="1"` | method has optional `?detail` argument; uses `connect_detailed` when `Some _` |
-| 4 | `action signal emits emit_* companion` (if step 4 ships) | synthetic `action="1"` | sibling method `emit_<name>` exists |
+| 1 | `?after exposed as optional arg` | any synthetic signal | emitted method signature contains `?(after = false)` |
+| 2 | `when_phase captured into gir_signal` | synthetic `when="last"` | parser produces `when_phase = Some \`Last`; not surfaced in generated method (docstring only) |
+| 3 | `when="cleanup" rejected at parse` | synthetic `when="cleanup"` | parser raises or normalises to `\`Last` (decision: log warning + treat as `\`Last`) |
+| 4 | `action signal emits emit_* companion` (if optional step ships) | synthetic `action="1"` | sibling method `emit_<name>` exists |
 
-Plus a runtime test in `test_signal_marshalling.ml`:
+(Detailed-signal tests deferred to the separate sub-milestone.)
 
-| # | Name | Assertion |
-|---|------|-----------|
-| 5 | `notify::label round-trip` | Connect `on_notify ~detail:"label" ~callback:…`; call `widget#set_label`; observe callback fired |
-
-**Exit criteria.** Generated bindings show `~after:true` defaults where
-appropriate; `notify::*` detailed connection round-trips in runtime test.
+**Exit criteria.** All generated methods expose `?after`; no
+`~after:` literals remain in generated code; `when_phase` is captured
+in `gir_signal` for future use.
 
 ---
 
@@ -976,6 +1174,39 @@ case.
 
 ---
 
+### Phase 6 — Signal-corpus regression test
+
+**Goal.** Catch "we forgot a category" coverage regressions when GTK
+4.16 (or later) adds a new signal shape, without manually re-curating
+the test set.
+
+**Files to create**
+
+| File | Purpose |
+|------|---------|
+| `gir_gen/test/integration/signal_corpus_coverage.ml` (new) | Walks every parsed GIR namespace, classifies every `<glib:signal>` via `Signal_marshaller`, and emits a coverage matrix. Fails if a previously-supported shape becomes `Unsupported`. |
+
+**Test case**
+
+A single property-style alcotest: parse all 7 production GIR files
+(`gir/Gtk-4.0.gir`, `Gdk-4.0.gir`, `Gio-2.0.gir`, `Pango-1.0.gir`,
+`Gsk-4.0.gir`, `GdkPixbuf-2.0.gir`, `Graphene-1.0.gir`); for every
+signal, run `Signal_marshaller.for_param` on each parameter and
+`for_return` on the return; produce a histogram bucketed by
+`Supported` (per `ocaml_type`) and `Unsupported` (per reason). Compare
+against a checked-in baseline at
+`gir_gen/test/integration/signal_corpus_baseline.txt`. Diff is the
+test failure.
+
+When the baseline genuinely needs to move (new signal shape ships in
+GTK 4.16, or a new category becomes supported), the implementer
+updates the baseline file in the same commit as the generator change.
+
+**Exit criteria.** Baseline file exists; coverage histogram matches
+the milestone goal numbers (≥ 250 GTK signals supported); test passes.
+
+---
+
 ## Risks & open questions
 
 - **Param naming collisions.** GIR uses `type` and `class` as parameter
@@ -1002,8 +1233,30 @@ case.
   Both already live in `ocgtk/src/common/`; the dune library lists
   both modules already, so no new circular dep — but verify.
 - **Generated code volume.** Coverage jump 141 → ~268 ≈ +900 LoC
-  generated across 9 namespaces, plus 300 small per-type GValue
-  wrappers in C. All uniform; review burden is low.
+  generated across 9 namespaces. Phase 1a adds 4 generic C
+  dispatchers (Option 2/3 — total, not per-type) and either ~300
+  pure-OCaml decoder functions (Option 2) or ~300 OCaml data values
+  (Option 3) — Phase 0 chooses. All uniform; review burden is low.
+- **Build-size impact.** ~1800 OCaml top-level symbols across the
+  nine `<ns>_enums.ml` files (≈ 6 per type × ~300 types if Option 2:
+  `_of_int`, `_to_int`, plus generated equality / show / compare
+  helpers if any ppx is invoked). OCaml symbols are cheap at link
+  time but **inflate compiled `.cmxa` size noticeably** and slow
+  every dependent module's recompilation. Option 3 reduces this to
+  ~300 small data values and is preferable on this metric.
+- **`Gvariant.t` exposure circular-dep risk.** `gobject.mli` adding
+  `val get_variant : t -> Gvariant.t` introduces a new dep from
+  `Ocgtk.common.Gobject` on `Ocgtk.common.Gvariant`. Both already
+  live in `ocgtk/src/common/`. Verify in Phase 1a: `grep -n "Gobject"
+  ocgtk/src/common/gvariant.ml` should show no Gobject references
+  (else cycle). If `Gvariant.of_value` exists and uses Gobject, move
+  `get_variant` to `Gvariant` instead.
+- **Empty parameter names.** GIR rarely emits `<parameter name="">`
+  but it is legal. Generator falls back to `arg<N>` where `N` is the
+  positional index. Implement in `sanitize_param_name`.
+- **`varargs` guard.** GLib does not allow va_list in real signals,
+  but the parser still reads the attribute. Marshaller asserts
+  `not p.varargs` and emits `Unsupported` if violated.
 
 ---
 
@@ -1063,13 +1316,15 @@ Replace under "Milestone 2 - Signal Handling":
 ```markdown
 ### Milestone 2 - Signal Handling `#priority:high` `#started:2026-04-27`
 Plan: `gir_gen/docs/plans/milestone-2-signals.md`
-- [ ] Phase 1a: per-type enum/flags GValue wrappers + variant + int64 (C + OCaml + tests)
-- [ ] Phase 1b: Signal_marshaller module + unit tests
+- [ ] Phase 0: Verify Gobject.Data infrastructure; choose Option 2 vs 3
+- [ ] Phase 1a: enum/flags + variant + int64 GValue wrappers + set_object null fix
+- [ ] Phase 1b: Signal_marshaller module (gir_param input; direction/transfer/nullable handling)
 - [ ] Phase 2: Closure-based emission for params + non-void returns
 - [ ] Phase 3: Cross-namespace enum/flags resolution for signals
-- [ ] Phase 4: Runtime end-to-end marshalling tests
+- [ ] Phase 4: Runtime marshaller tests (M1-M7) + wired-signal end-to-end tests
 - [ ] Phase 5: form_example.ml + example dune entry + README
-- [ ] Phase 7: Signal flag propagation (when/action/detailed parser + defaults)
+- [ ] Phase 6: Signal-corpus regression test
+- [ ] Phase 7: when/action parser + ?after policy (detailed signals deferred)
 - [ ] Phase 8: Migrate hand-written closures, archive plan
 ```
 
