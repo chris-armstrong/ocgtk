@@ -98,22 +98,72 @@ end-to-end check on generated code.
 
 ### Records in signals
 
-The census shows ~60 record-type references across all 466 signals,
-and **all of them are boxed `<record>` types or opaque structs**:
+The census shows ~60 record-type references across all 466 signals:
 TextIter (13), TreeIter (12), TreePath (11), EventSequence (6),
 Rectangle (2), Error (2), RGBA (1), CssSection (1), VariantDict (1),
 plus a handful of opaque structs without registered GTypes
-(DragSurfaceSize, ToplevelSize). One signal passes `GObject.Value` —
-treated as a special-case boxed param.
+(DragSurfaceSize, ToplevelSize). One signal passes `GObject.Value`.
 
-**No record signal-param needs new design beyond what Phase 9
-already covers** for the iter/path tranche. Each requires a per-type
-`Gobject.Value.get_<RecordType>` wrapper that pulls
-`g_value_get_boxed`, casts to the typed `*` pointer, and hands off
-to the existing OCaml record binding (where one exists). The
-generator already emits OCaml record wrappers for most of these; the
-gap is only the GValue ↔ record bridge. Phase 9 captures the work;
-this milestone explicitly defers all of it.
+**Important correction to the original plan:** records are not stored
+per-type. The codebase represents every record as `'a Gobject.obj`
+backed by a single shared custom-block layout (verified — see
+`ocgtk/src/gdk/generated/rectangle.mli:4` and `tree_iter.mli:4`,
+both type as `[ \`tag ] Gobject.obj`). The custom-block infrastructure
+in `ocgtk/src/common/wrappers.c` provides:
+
+- **`gir_record_custom_ops`** (`wrappers.c:110-118`) with finalizer
+  `finalize_gir_record` (`:104-108`) that auto-`g_free`s the wrapped
+  pointer at GC time. Used by `ml_gir_record_val_ptr` (`:120`).
+- **`gobject_custom_ops`** (`wrappers.c:163-172`) with finalizer
+  `finalize_gobject` (`:153-161`) that auto-`g_object_unref`s.
+
+**Records auto-free already** — exposed `tree_iter#free` /
+`rectangle#free` externals (e.g. `tree_iter.mli:13`) are
+**redundant and a double-free hazard**: the GC finalizer will
+`g_free` the same pointer the user already freed. Captured in
+TASKS.md as a separate cleanup; out of scope for this milestone.
+
+**Implication for signal marshalling.** Boxed records do **not**
+require per-type wrappers. A single `ml_g_value_get_boxed` C
+function:
+
+1. Pulls `g_value_get_boxed(gv)` — returns transfer-none `gpointer`.
+2. Calls `g_boxed_copy(G_VALUE_TYPE(gv), p)` to take an owned copy.
+3. Wraps the copy in a new custom block whose ops record's
+   finalizer calls `g_boxed_free(captured_GType, ptr)` correctly.
+4. Returns the block as `value`; OCaml side declares the external
+   at type `'a Gobject.obj` and the signal generator emits a type
+   ascription at the use site (e.g.
+   `let iter : Gtk.Tree_iter.t = Gobject.Value.get_boxed …`).
+
+**Why a new ops record (not reuse `gir_record_custom_ops`):** the
+existing record finalizer calls `g_free` (`wrappers.c:107`), which
+is wrong for proper boxed types — `gtk_tree_path_free` does work
+that `g_free` doesn't. Reusing the existing ops would perpetuate
+this under-free. Adding a new GType-aware ops record (storing
+`(GType, gpointer)` in the block) means signals get correct
+`g_boxed_free` semantics without changing the existing record
+bindings (filed for cleanup separately).
+
+**Cost.** 1 new C function (`ml_g_value_get_boxed`), 1 matching
+setter (`ml_g_value_set_boxed`), 1 new custom-block ops record,
+1 OCaml `external` per direction. Mirrors the existing
+`get_object`/`set_object` path. **Zero per-type symbols.**
+
+This collapses Phase 9 from "deferred to Milestone 3/4" to a small
+sub-step of Phase 1a. Coverage increases by another ~49 signal-param
+references (TextIter, TreeIter, TreePath, EventSequence, Rectangle,
+Error, RGBA, CssSection, VariantDict).
+
+**Out of scope (filed in TASKS.md):**
+- Removing the redundant `_free` externals from generated record
+  bindings.
+- Fixing `gir_record_custom_ops`'s finalizer to use `g_boxed_free`
+  for boxed types instead of `g_free`.
+- Removing the leftover `printf` debug output in
+  `wrappers.c:106, 159`.
+- Rebinding value-type records (Rectangle, RGBA, etc.) as inline-
+  struct custom blocks to remove the double-dereference inefficiency.
 
 ### What already works
 
@@ -588,6 +638,7 @@ uses `nullable` consistently.
 | Bitfield (`<NS>.<FlagsName>`) | `<NS>_enums.<flagsname>` | `<NS>_enums.<flagsname>_of_int (Gobject.Value.get_flags_int gv)` | `Gobject.Value.set_flags_int gv (<NS>_enums.<flagsname>_to_int v)` | as above |
 | `GLib.Variant` | `Gvariant.t` | `Gobject.Value.get_variant gv` | `Gobject.Value.set_variant gv v` | new generic C wrapper |
 | `gint64` | `Int64.t` | `Gobject.Value.get_int64 gv` | `Gobject.Value.set_int64 gv v` | new generic C wrapper; 2 signals depend |
+| Boxed `<record>` (e.g. `Gtk.TreeIter`, `Gtk.TextIter`, `Gdk.Rectangle`, `GLib.Error`) | `<NS>.<Record>.t` (= `'a Gobject.obj`) | `(Gobject.Value.get_boxed gv : <NS>.<Record>.t)` | `Gobject.Value.set_boxed gv (v :> 'a Gobject.obj)` | new generic C wrapper + new `ml_boxed_record_custom_ops` whose finalizer calls `g_boxed_free` keyed by GType |
 
 **Deferred — no signal usage** (fall through to skipped log)
 
@@ -602,8 +653,8 @@ uses `nullable` consistently.
 |----------|--------------|
 | `<callback>` | Depends on `<callback>` parsing — Milestone 4. |
 | `GLib.Array` | 1 signal; no standalone GArray binding either — Milestone 4. |
-| Boxed iter/path types (`TextIter`, `TreeIter`, `TreePath`, `GError`, `EventSequence`) | 36+ signal-param refs across tree-model and text-buffer signals — Phase 9 (deferred to Milestone 3/4). |
-| `<param>` (GParamSpec), opaque struct-by-value | Negligible; defer indefinitely. |
+| `<param>` (GParamSpec) | Negligible signal usage; defer indefinitely. |
+| Inline value-type records (would need per-type `memcpy` getters) | None today — every record is bound as `'a Gobject.obj`. When value-type records are rebound as inline-struct custom blocks, per-type getters become genuinely necessary; tracked separately in TASKS.md. |
 
 When `Signal_marshaller.value_getter` returns `Unsupported`, the
 generator logs the skip on stderr (preserving today's diagnostic) and
@@ -748,9 +799,10 @@ Add a regression test in `ocgtk/tests/test_gobj.ml` that reads back
 
 | File | Line | Change |
 |------|------|--------|
-| `ocgtk/src/common/ml_gobject.c` | new code after line 440 | Add 8 new C wrappers (**generic, total — not per-type**): `ml_g_value_get_int64` / `_set_int64`, `ml_g_value_get_variant` / `_set_variant`, `ml_g_value_get_enum_int` / `_set_enum_int`, `ml_g_value_get_flags_int` / `_set_flags_int`. The last four return/accept raw `int`; OCaml-side decoders convert to typed variants. |
-| `ocgtk/src/common/gobject.ml` | extend `module Value` block (lines 145-178) | Add eight `external` declarations matching the C entries. |
-| `ocgtk/src/common/gobject.mli` | extend `module Value` (lines 117-151) | Add matching `val` lines: `val get_int64 / set_int64 / get_variant / set_variant / get_enum_int / set_enum_int / get_flags_int / set_flags_int`. |
+| `ocgtk/src/common/ml_gobject.c` | new code after line 440 | Add 10 new C wrappers (**generic, total — not per-type**): `ml_g_value_get_int64` / `_set_int64`, `ml_g_value_get_variant` / `_set_variant`, `ml_g_value_get_enum_int` / `_set_enum_int`, `ml_g_value_get_flags_int` / `_set_flags_int`, `ml_g_value_get_boxed` / `_set_boxed`. Enum/flags wrappers return/accept raw `int` (OCaml-side decoders convert). The boxed pair takes `g_boxed_copy(G_VALUE_TYPE(gv), ptr)` of the GValue payload and wraps it in a new GType-aware custom block; the finalizer reads the captured GType and calls `g_boxed_free` correctly (avoiding the `g_free`-on-boxed under-free in the existing `gir_record_custom_ops` at `wrappers.c:107`). |
+| `ocgtk/src/common/gobject.ml` | extend `module Value` block (lines 145-178) | Add ten `external` declarations matching the C entries. The boxed external is typed `external get_boxed : t -> 'a obj = "ml_g_value_get_boxed"` — polymorphic; OCaml-side type ascription at the call site. |
+| `ocgtk/src/common/gobject.mli` | extend `module Value` (lines 117-151) | Add matching `val` lines: `val get_int64 / set_int64 / get_variant / set_variant / get_enum_int / set_enum_int / get_flags_int / set_flags_int / get_boxed / set_boxed`. |
+| `ocgtk/src/common/wrappers.{c,h}` | new ops record + helpers | Add `ml_boxed_record_custom_ops` (a new record paralleling `gir_record_custom_ops` at `wrappers.c:110-118`) whose finalizer reads `(GType, gpointer)` from the block and calls `g_boxed_free`. Plus `ml_boxed_record_val` / `ml_boxed_record_ext` accessors. The existing `gir_record_custom_ops` is unchanged — its `g_free`-finalizer bug is filed separately. |
 | `gir_gen/lib/generate/enum_code.ml` | currently emits the `.mli` only; extend to also emit `.ml` | For every enum, generate two pure-OCaml functions: `<lower>_of_int : int -> <type>` (matches on int, yields polymorphic-variant tag) and `<lower>_to_int : <type> -> int` (reverse). For every bitfield, generate `<lower>_of_int : int -> <type>` (bit-tests yielding flag list) and `<lower>_to_int : <type> -> int` (folds flags via `lor`). Honour version guards via `[@@if Gtk_version.<gate>]` annotations on individual branches, mirroring the C side at `ml_gdk_enums_gen.c:1386-1394`. Add `val` lines to the `.mli` emission. |
 | `gir_gen/lib/generate/c_stub_enum.ml` | unchanged | Existing `Val_<T>`/`<T>_val` C functions remain — used by method stubs. No new per-type C symbols. |
 | `gir_gen/lib/generate/c_stub_bitfield.ml` | unchanged | Same. |
@@ -1150,6 +1202,9 @@ not the marshaller-test helpers (in addition to M1-M7 above):
 | 5 | `pressed on GestureClick observes int + double + double` | `Gtk.Gesture_click`; `on_pressed ~callback:…`; synthetic emit | params delivered as `(1, 10.0, 20.0)` |
 | 6 | `param-name keyword sanitisation does not break call` | A signal with parameter named `type`; calling `~type_:5` from a generated method | compiles and runs |
 | 7 | `Variant param delivered correctly` | A signal with `GLib.Variant` param (synthetic if no real signal in tests) | callback receives `Gvariant.t` whose `.get_string` matches the emitted value |
+| 8 | `boxed Rectangle param round-trips by value` | Synthetic signal taking `Gdk.Rectangle`; emit via `g_signal_emit_by_name` with a populated rectangle | callback observes correct `x/y/width/height`; OCaml-side block is GC-collectable; no use-after-free under `Gc.minor` after callback returns |
+| 9 | `boxed TreeIter handler completes without leaking` | Synthetic signal taking `Gtk.TreeIter`; emit 1000 times under heavy GC pressure | no crash; `g_boxed_free` called once per emission (verified via test mock or by counting `gtk_tree_iter_free` invocations) |
+| 10 | `boxed return path` | Synthetic signal returning `Gdk.Rectangle` | OCaml callback constructs a rectangle; the GValue holds an owned copy; no crash on subsequent emit |
 
 Build pattern reference: `ocgtk/tests/test_event_controller_runtime.ml`
 already opens GTK windows and exercises event controllers under xvfb.
@@ -1319,34 +1374,36 @@ on a freshly-run repo (idempotency); all examples run; plan moved.
 
 ---
 
-### Phase 9 — Boxed iter/path Value bridges (DEFERRED — Milestone 3 or 4)
+### Phase 9 — (collapsed) Boxed-record GValue bridge
 
-**Not in this milestone.** Captured here so future planning has a
-record of the actual scope and the path forward.
+**Status: merged into Phase 1a.** Originally framed as deferred to
+Milestone 3/4 because per-type wrappers seemed necessary; verified
+later that the existing record representation is uniform
+(`'a Gobject.obj` backed by a shared custom-block layout — see
+"Records in signals" in the Architecture section). One generic
+`ml_g_value_get_boxed` / `_set_boxed` pair handles every boxed type;
+finalizer dispatches via the captured GType.
 
-The signal-param census shows boxed-type usage concentrated in tree-
-model and text-buffer signals:
+The signal-param census of boxed-type usage:
 
 | Boxed type | Signal-param refs | Affected signals (examples) |
 |------------|-------------------:|------------------------------|
 | `Gtk.TextIter` | 13 | `GtkTextBuffer::insert-text`, `mark-set`, `apply-tag`, `delete-range` |
 | `Gtk.TreeIter` | 12 | `GtkTreeModel::row-inserted`, `row-deleted`, `row-changed` |
 | `Gtk.TreePath` | 11 | `GtkTreeModel::row-inserted`, `row-deleted`, `rows-reordered` |
-| `GLib.Error` | 2 | DBus-style error-signal patterns in Gio |
 | `Gdk.EventSequence` | 6 | gesture sequence tracking |
+| `Gdk.Rectangle` | 2 | `Gdk.Surface::layout` |
+| `GLib.Error` | 2 | DBus-style error-signal patterns in Gio |
+| `Gdk.RGBA`, `CssSection`, `GLib.VariantDict` | 1 each | misc |
 
-Each is a distinct boxed `GType` — `g_value_get_boxed` returns an
-opaque `gpointer` that must be cast to the correct C type and wrapped
-into the corresponding OCaml binding. There is no generic `get_boxed`
-that could serve all of them, so each type needs its own typed
-`Gobject.Value.get_<boxed_type>` / `set_<boxed_type>` pair plus a
-lightweight OCaml-side wrapper if one doesn't already exist.
+**All ~49 references covered by the single generic getter.**
 
-**Why deferred.** None of the milestone-2 form-example signals use a
-boxed type; bundling 4-5 boxed-type bindings inflates milestone-2
-scope past its goal; the work is independent of the closure machinery
-and only needs the Phase-1b marshaller dispatcher to learn one more
-case.
+The Phase 1a file table includes the new C entry points and the new
+custom-block ops record; the marshaller's "Supported (Phase 1a)"
+table grows by one row (boxed → `Gobject.Value.get_boxed`); the
+Param-type-marshaller dispatch checks `is_value_type_record` /
+`<record>` GIR shape to route to the boxed getter. No separate
+sub-milestone deferral.
 
 ---
 
