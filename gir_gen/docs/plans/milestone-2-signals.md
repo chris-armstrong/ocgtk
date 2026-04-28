@@ -16,7 +16,7 @@ event-handling surface either unreachable or dependent on hand-written
 
 This milestone fills that gap. Signals with primitive parameters and signals
 with `gboolean`/`gint`/`gint64`/`gdouble`/`utf8` return values become
-first-class generated methods on the existing `*_signals` classes, and a new
+first-class generated free functions in the per-class L1 modules (with one-line L2 method forwarders that proxy to L1), and a new
 form-example app demonstrates the four most common signal patterns end-to-end.
 
 ### Goal
@@ -185,25 +185,50 @@ this milestone explicitly defers all of it.
 
 ## Architecture
 
+### Layering — signals are L1, L2 mirrors
+
+**Signal connectors are emitted at Layer 1** as free functions inside
+the existing per-class L1 module, alongside the class's `external`
+methods. **No separate `_signals` files, classes, or modules.** The L2
+class wrapper gains a one-line method forwarder per signal that
+delegates to the L1 free function.
+
+This replaces the current 156 generated `g<class>_signals.{ml,mli}`
+file pairs across all 9 namespaces with entries spliced into the
+existing per-class L1 sig/impl. The L2 class type loses its
+`inherit G<Class>_signals.<class>_signals` line and gains direct
+forwarder methods that proxy to L1.
+
 ### Strategy 1 — `connect_simple` (unchanged)
 
-For signals that return void and take zero parameters:
+For signals that return void and take zero parameters, the L1 free
+function and L2 forwarder are:
 
 ```ocaml
-method on_changed ~callback =
-  Gobject.Signal.connect_simple obj ~name:"changed" ~callback ~after:false
+(* L1 — in application_and__window_and__window_group.ml, inside `and Window = struct … end` *)
+let on_changed ?(after = false) (obj : t) ~callback =
+  Gobject.Signal.connect_simple obj ~name:"changed" ~callback ~after
+
+(* L1 sig — in the matching `.mli` *)
+val on_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+(* L2 forwarder — in gApplication_and__window_and__window_group.ml *)
+method on_changed ?after ~callback =
+  Window.on_changed ?after self#as_window ~callback
 ```
 
 ### Strategy 2 — `Closure`-based dispatch
 
-For all other supported signals. The OCaml-side callback receives typed
-arguments and (for non-void signals) returns the typed result. Concrete
-example for `EventControllerKey::key-pressed`
+For all other supported signals. Concrete example for
+`EventControllerKey::key-pressed`
 (`gboolean (guint keyval, guint keycode, GdkModifierType state)`):
 
 ```ocaml
-method on_key_pressed
+(* L1 free function *)
+let on_key_pressed
     ?(after = false)
+    (obj : t)
     ~(callback :
         keyval:int ->
         keycode:int ->
@@ -221,22 +246,88 @@ method on_key_pressed
         let result  = callback ~keyval ~keycode ~state in
         Gobject.Value.set_boolean (Gobject.Closure.result argv) result)
   in
-  Gobject.Signal.connect obj ~name:"key-pressed" ~callback:closure
-    ~after
+  Gobject.Signal.connect obj ~name:"key-pressed" ~callback:closure ~after
+
+(* L1 sig *)
+val on_key_pressed :
+  ?after:bool ->
+  t ->
+  callback:(keyval:int -> keycode:int -> state:Gdk_enums.modifiertype -> bool) ->
+  Gobject.Signal.handler_id
+
+(* L2 forwarder *)
+method on_key_pressed ?after ~callback =
+  Event_controller_key.on_key_pressed
+    ?after self#as_event_controller_key ~callback
 ```
 
 Notes on the shape:
-- `pos:0` is the sender (instance) — params start at `pos:1`. (Confirmed
-  by `calc_ui.ml:181` extracting `keyval` at `pos:1`.)
-- Param names from GIR map directly to labelled OCaml arguments. Reserved
-  keywords (`type`, `class`, `method`, etc.) get a trailing underscore
-  via the same logic as `Signal_gen.sanitize_signal_name`
-  (`signal_gen.ml:66-74`).
+- L1 takes the typed obj as a positional `t` argument; tag-based
+  poly-variant constraints follow the existing L1 method idiom.
+- `pos:0` in the GValue array is the sender (instance) — params start
+  at `pos:1`. (Confirmed by `calc_ui.ml:181` extracting `keyval` at
+  `pos:1`.)
+- Param names from GIR map directly to labelled OCaml arguments.
+  Reserved keywords (`type`, `class`, `method`, etc.) get a trailing
+  underscore via the same logic as `Signal_gen.sanitize_signal_name`
+  (`signal_gen.ml:66-74`); empty names fall back to `arg<N>`.
 - For non-void signals, generator emits `Signal.connect` rather than
   `Signal.connect_simple`.
-- Enum/flags conversion goes through the **per-type GValue helper**
-  (e.g. `Gdk_enums.modifiertype_get_value`) introduced in Phase 1a —
-  *not* through a nonexistent `Modifier_type.of_int` chain.
+- Enum/flags conversion goes through the per-type pure-OCaml decoder
+  (Phase 1a Option 2) — `Gdk_enums.modifiertype_of_int`.
+- The L2 forwarder is a one-line proxy. It contains no marshaller
+  logic, no closure construction, and no `Gobject.Signal.connect`
+  — every concern lives at L1.
+
+### Code sharing across L1 and L2: a single typed model
+
+The generator computes one record per signal and consumes it twice —
+once for L1 emission and once for L2 forwarder emission. The record
+is pure data; the per-layer renderers are pure functions over it.
+
+```ocaml
+(* gir_gen/lib/generate/signal_gen.ml — public API *)
+
+type signal_emission = {
+  signal              : Types.gir_signal;
+  method_name         : string;                 (* "on_close_request"  *)
+  raw_signal_name     : string;                 (* "close-request"     *)
+  param_marshallers   : (Types.gir_param * Signal_marshaller.marshaller) list;
+  return_marshaller   : Signal_marshaller.marshaller option;
+  ocaml_callback_type : string;                 (* "keyval:int -> ... -> bool" *)
+  strategy            : [ `Connect_simple | `Closure ];
+}
+
+val classify :
+  ctx:Types.generation_context ->
+  namespace:string ->
+  Types.gir_signal ->
+  (signal_emission, string) Result.t
+(* Error reason fed into the existing stderr skip log *)
+
+val emit_l1_val    : signal_emission -> string  (* one .mli entry *)
+val emit_l1_let    : signal_emission -> string  (* one .ml  entry *)
+val emit_l2_method : signal_emission -> string  (* one L2 method  *)
+```
+
+Why this carve-up is the right axis for code sharing:
+
+- **Single source of truth for the OCaml signature.** `ocaml_callback_type`
+  is computed once. `emit_l1_val` produces
+  `?after:bool -> t -> callback:(<type>) -> handler_id`;
+  `emit_l2_method` produces `?after -> callback:<type>` (drops the obj
+  position) and forwards to the L1 function. Mechanical adjustment, no
+  re-derivation.
+- **Marshaller composition is pure data.** `param_marshallers` and
+  `return_marshaller` are computed once. The L1 `let` body uses them
+  to build the closure. The L2 forwarder ignores them entirely (it
+  delegates to L1).
+- **Unsupported path is shared.** `classify` returns `Error reason`
+  once; the per-class emitter logs once and skips the signal in both
+  layers.
+- **Future-proof.** Phase 9 boxed types extend `Signal_marshaller`;
+  both emitters get the new support automatically — `signal_gen.ml`
+  doesn't care.
 
 ### Enum/bitfield decoder layer — three options weighed
 
@@ -516,7 +607,7 @@ uses `nullable` consistently.
 
 When `Signal_marshaller.value_getter` returns `Unsupported`, the
 generator logs the skip on stderr (preserving today's diagnostic) and
-omits the signal from the generated `*_signals` class — never silently
+omits the signal from both L1 emission and the L2 forwarder — never silently
 emitted with wrong types.
 
 ### Cross-namespace type qualification
@@ -792,19 +883,23 @@ callers yet.
 
 ---
 
-### Phase 2 — Generator: signals with primitive params and non-void returns
+### Phase 2 — Generator: emit signals at L1, mirror at L2
 
-**Goal.** Replace `signal_gen.ml:119-122` with a per-signal classifier that
-emits Strategy 1 or Strategy 2.
+**Goal.** Move signal connector generation into the per-class L1
+pipeline. Eliminate the standalone `_signals` files and the L2 class
+inheritance from them. Emit one-line L2 forwarders alongside existing
+L2 methods.
 
 **Files to modify**
 
 | File | Line | Change |
 |------|------|--------|
-| `gir_gen/lib/generate/signal_gen.ml` | 119-122 | Drop the partition-and-skip; iterate every signal and dispatch via `Signal_marshaller`. |
-| `gir_gen/lib/generate/signal_gen.ml` | 130-143 | Split out `emit_simple_signal_method` (current shape, lines 139-143) and add `emit_closure_signal_method` (Strategy 2). |
-| `gir_gen/lib/generate/signal_gen.ml` | 124-128 | Keep the stderr skip log — but populate it from `Signal_marshaller.Unsupported reason` instead of "non-void return or parameters". |
-| `gir_gen/lib/generate/signal_gen.ml` | new helper above 108 | `sanitize_param_name` mirroring `sanitize_signal_name` (lines 66-74) — keyword list reused. |
+| `gir_gen/lib/generate/signal_gen.ml` | full file rewrite | Replace the file-writing class emitter with the pure-data API documented in "Code sharing across L1 and L2" above. New public functions: `classify`, `emit_l1_val`, `emit_l1_let`, `emit_l2_method`. The current `generate_signal_class` function (lines 108-146) goes away. The OCaml-keyword list and `sanitize_signal_name` (lines 7-74) are kept and reused. New `sanitize_param_name` mirroring it. |
+| `gir_gen/lib/generate/class_gen_method.ml` (or wherever methods are spliced into a class's L1 sig/impl) | extend the per-class emission loop | After emitting the class's `external` methods, iterate `class.signals`, call `Signal_gen.classify` per signal; on `Ok emission`, splice `Signal_gen.emit_l1_val emission` into the `.mli` and `Signal_gen.emit_l1_let emission` into the `.ml`; on `Error reason`, log via stderr (preserving today's diagnostic). Stash the `Ok emissions` for the L2 generator. |
+| `gir_gen/lib/generate/class_gen.ml` (or `class_gen_body.ml` — wherever L2 class bodies are built) | extend the per-class L2 emission | After emitting L2 method forwarders, iterate the stashed signal emissions and emit `Signal_gen.emit_l2_method emission` for each. The L2 forwarder type signature drops the obj parameter from the L1 `ocaml_callback_type` and forwards through `self#as_<class>`. |
+| `gir_gen/lib/generate/class_gen.ml` | inheritance list emission | Remove the `inherit G<Class>_signals.<class>_signals` line that today's emitter produces. Verify no other code path produces this inheritance. |
+| `gir_gen/lib/generate/dune_file.ml` | dune output | Stop emitting `g<class>_signals.{ml,mli}` entries in the generated `dune-generated.inc` files. The 156 existing `_signals` file pairs should not be regenerated. |
+| `gir_gen/bin/gir_gen.ml` | top-level pipeline | Remove any code that writes `_signals.{ml,mli}` files standalone. The `signal_gen` module is now consumed by `class_gen_method`/`class_gen` rather than driving its own file output. |
 
 The new `emit_closure_signal_method` body (sketch — implementer fills in
 proper `Buffer.add_string` calls):
@@ -861,54 +956,77 @@ let emit_closure_signal_method ~ctx ~target_expr signal marshallers
 
 After regeneration:
 
-1. `ocgtk/src/gtk/generated/event_controller_key_signals.ml` exists and
-   contains a method `on_key_pressed` whose body matches the
-   "Strategy 2 — `Closure`-based dispatch" template in the architecture
-   section above. **Spot-check the file**: the closure body extracts
-   `keyval`, `keycode`, `state` at positions 1, 2, 3.
+1. **Zero `*_signals.{ml,mli}` files generated.**
+   `find ocgtk/src/*/generated -name "*_signals.ml" -o -name "*_signals.mli"`
+   should return **zero results** (today's count: 156 pairs across all
+   namespaces). All entries are spliced into the per-class L1
+   sig/impl files.
 
-2. `ocgtk/src/gtk/generated/window_signals.ml` contains `on_close_request`
-   that uses `Gobject.Signal.connect` (not `connect_simple`) and sets a
-   boolean result.
+2. **L1 signal entries present in the per-class L1 sig.** Spot-check
+   `application_and__window_and__window_group.mli`: `grep -n "val on_close_request\|val on_activate_default" ocgtk/src/gtk/generated/application_and__window_and__window_group.mli` returns hits in the `and Window : sig … end` block.
 
-3. `ocgtk/src/gtk/generated/switch_signals.ml` contains `on_state_set`
-   with `~callback:(state:bool -> bool)`.
+3. **L1 closure body shape.** In
+   `application_and__window_and__window_group.ml`, the
+   `on_key_pressed` let-binding for `Event_controller_key`'s namespace
+   extracts `keyval`, `keycode`, `state` at positions 1, 2, 3 of the
+   closure argv.
 
-4. `ocgtk/src/gtk/generated/gesture_click_signals.ml` contains
-   `on_pressed` with `~callback:(n_press:int -> x:float -> y:float -> unit)`.
+4. **L2 forwarder shape.** In `gApplication_and__window_and__window_group.ml`,
+   the L2 `window_t` class contains a `method on_close_request ?after
+   ~callback = Window.on_close_request ?after self#as_window ~callback`
+   one-line forwarder. The historical `inherit Gwindow_signals.window_signals`
+   line is gone.
 
-5. **Stderr-skip count**: `bash scripts/generate-bindings.sh 2>&1 |
-   grep -c "Skipping signal"` should drop from its current value (~205
-   for GTK alone) to roughly 60-80 (covering only the long-tail boxed/
-   GArray/callback types).
+5. **Switch's `state-set` (Strategy 2 with bool param + bool return)**
+   appears at L1 with `~callback:(state:bool -> bool)`.
 
-6. **Total `connect_simple` count** in `ocgtk/src/gtk/generated/`:
-   `grep -rh connect_simple ocgtk/src/gtk/generated/ | wc -l` should
-   stay roughly at 27 (Category A signals).
+6. **GestureClick's `pressed`** (Strategy 2 with three primitive params)
+   appears at L1 with `~callback:(n_press:int -> x:float -> y:float -> unit)`.
 
-7. **Total `Signal.connect` count**:
-   `grep -rh "Gobject.Signal.connect [^_]" ocgtk/src/gtk/generated/ | wc -l`
-   should jump from 0 to ≈ 180.
+7. **Stderr-skip count.** `bash scripts/generate-bindings.sh 2>&1 |
+   grep -c "Skipping signal"` should drop from ~205 (GTK alone) to
+   roughly 60-80 (covering only long-tail boxed / GArray / callback /
+   transfer-full GObject return / non-In-direction signals).
+
+8. **Total `connect_simple` count** in
+   `ocgtk/src/gtk/generated/`: `grep -rh connect_simple
+   ocgtk/src/gtk/generated/ | wc -l` ≈ 27 (Category A signals,
+   void/zero-param).
+
+9. **Total `Gobject.Signal.connect [^_]` (non-`_simple`) count**: jumps
+   from 0 to ≈ 180.
+
+10. **L2 inherit count drops.**
+    `grep -c "inherit G.*_signals" ocgtk/src/gtk/generated/*.mli`
+    should drop from its current value to **0**.
 
 **Test cases** — extend
-`gir_gen/test/class_generation/signal_wrapper_tests.ml`:
+`gir_gen/test/class_generation/signal_wrapper_tests.ml`. Tests now
+inspect the **per-class L1 sig and impl** for `val on_<sig>` /
+`let on_<sig>` entries, plus the **L2 class** for the corresponding
+forwarder method, rather than a separate `_signals` class.
 
 | # | Name | GIR fixture | Assertion |
 |---|------|-------------|-----------|
-| 1 | `void zero-param uses connect_simple` (existing) | `clicked` on synthetic Button | unchanged |
-| 2 | `void primitive params uses Closure.create` | synthetic `pressed` (`gint, gdouble, gdouble`) | AST contains `Gobject.Closure.create` and three `Gobject.Closure.nth` calls; method has labelled args `n_press / x / y` of types `int / float / float`; uses `Signal.connect` |
-| 3 | `bool return zero-param uses Closure.create` | synthetic `close-request` | AST shows `Closure.create`, body sets `Value.set_boolean` on the result, uses `Signal.connect` |
-| 4 | `bool return primitive param round-trip` | synthetic `state-set` (`gboolean -> gboolean`) | callback sig is `state:bool -> bool`; closure body extracts `pos:1` and sets bool result |
-| 5 | `mixed bool return + 3 params` | `key-pressed`-shaped (`guint, guint, GdkModifierType -> gboolean`) | three `nth` extractions at pos 1/2/3; the third composes `Gobject.Value.get_flags_int` and `Ocgtk_gdk.Gdk_enums.modifiertype_of_int` (cross-NS) |
-| 6 | `unsupported → skipped + warning` | synthetic signal with `<callback>` param | method does **not** appear in generated class; `eprintf` invocation captured via mock |
-| 7 | `sender at pos:0 invariant` | inspect closure body | no `nth` call uses `pos:0` (sender is implicit) |
-| 8 | `param keyword sanitisation` | synthetic signal with parameter named `type` | generated method uses `~type_` not `~type` |
+| 1 | `void zero-param emits L1 let-binding using connect_simple` | `clicked` on synthetic Button | parsed L1 .ml AST contains a top-level `let on_clicked …` whose body calls `Gobject.Signal.connect_simple`; matching `val` in .mli |
+| 2 | `void primitive params uses Closure.create` | synthetic `pressed` (`gint, gdouble, gdouble`) | L1 `let on_pressed` body contains `Gobject.Closure.create` and three `Gobject.Closure.nth` calls; type signature has labelled args `n_press / x / y` of types `int / float / float`; uses `Signal.connect` (not `connect_simple`) |
+| 3 | `bool return zero-param uses Closure.create` | synthetic `close-request` | L1 body shows `Closure.create`, sets `Value.set_boolean` on the result, uses `Signal.connect` |
+| 4 | `bool return primitive param round-trip` | synthetic `state-set` (`gboolean -> gboolean`) | L1 callback sig is `state:bool -> bool`; closure body extracts `pos:1` and sets bool result |
+| 5 | `mixed bool return + 3 params` | `key-pressed`-shaped (`guint, guint, GdkModifierType -> gboolean`) | L1 body has three `nth` extractions at pos 1/2/3; the third composes `Gobject.Value.get_flags_int` and `Ocgtk_gdk.Gdk_enums.modifiertype_of_int` (cross-NS) |
+| 6 | `unsupported → skipped + warning` | synthetic signal with `<callback>` param | no `val on_X` or `let on_X` in L1; no L2 forwarder for X; stderr `eprintf` invocation captured |
+| 7 | `sender at pos:0 invariant` | inspect any closure body | no `nth` call uses `pos:0` (sender is implicit) |
+| 8 | `param keyword sanitisation` | synthetic signal with parameter named `type` | generated callback uses `~type_` not `~type` |
 | 9 | `int64 param` | synthetic signal with `gint64` param | callback type is `Int64.t`; getter is `get_int64` |
 | 10 | `Variant param` | synthetic signal with `GLib.Variant` param | callback type is `Gvariant.t`; getter is `get_variant` |
+| 11 | `L2 forwarder shape` | synthetic Window with `clicked` signal | L2 class type contains `method on_clicked : ?after:bool -> callback:(unit -> unit) -> _`; L2 .ml contains `Window.on_clicked ?after self#as_window ~callback` body |
+| 12 | `L1 obj is positional, not labelled` | any signal | L1 sig is `?after:bool -> t -> callback:… -> handler_id` (obj as positional `t`, not `~obj:t`) — matches the existing L1 method idiom |
+| 13 | `no _signals files generated` | parse a synthetic class with multiple signals; capture all generator-written file paths | none ends in `_signals.ml` or `_signals.mli` |
+| 14 | `L2 has no inherit-_signals line` | L2 class type AST | the class type `inherit` list contains no entry whose name ends in `_signals` |
 
 Use existing `Ml_ast_helpers` (`gir_gen/test/utils/ml_ast_helpers.ml`)
-for AST inspection. The pattern is established in
-`signal_wrapper_tests.ml:92-114`; cases 2-10 follow the same shape.
+for AST inspection. Cases 1-12 follow the existing per-method test
+pattern (L1 toplevel let / L2 class method). Cases 13 and 14 are
+new shape tests for the layering invariant.
 
 **Exit criteria.** Test suite green; `dune build` across all 9 namespaces
 clean; stderr skip count drops; total signal coverage per namespace
@@ -930,23 +1048,21 @@ qualified getter.
 
 **Validation outputs**
 
-1. `ocgtk/src/gtk/generated/event_controller_key_signals.ml` —
-   `on_key_pressed`'s body contains both the cross-namespace decoder
-   call and the generic dispatcher:
+1. The per-class L1 module containing `Event_controller_key` —
+   `on_key_pressed`'s let-binding body contains both the cross-namespace
+   decoder call and the generic dispatcher:
    ```
-   grep -n "Ocgtk_gdk.Gdk_enums.modifiertype_of_int\\|Gobject.Value.get_flags_int" \
-     ocgtk/src/gtk/generated/event_controller_key_signals.ml
+   grep -rn "Ocgtk_gdk.Gdk_enums.modifiertype_of_int\\|Gobject.Value.get_flags_int" \
+     ocgtk/src/gtk/generated/
    ```
 
 2. `dune build` resolves the dependency — confirms the Gtk library
    already declares `ocgtk.gdk` in its `libraries` (it does; verify
    `grep "ocgtk.gdk" ocgtk/src/gtk/dune`).
 
-3. `ocgtk/src/gio/generated/*_signals.ml` contains at least one
-   cross-namespace flags reference (Gio's `socket-listener::event` uses
-   `Gio.SocketListenerEvent` — same-NS — but DBus signals reference
-   `GDBusObjectManagerClient.Flags` which is intra-Gio; spot-check
-   anyway).
+3. Cross-namespace flags references in Gio's per-class L1 modules
+   (DBus signals using `Gio.DBusObjectManagerClient.Flags` etc.) appear
+   correctly qualified.
 
 **Test cases** — new file
 `gir_gen/test/cross_namespace/cross_ns_signal_tests.ml`:
@@ -962,9 +1078,13 @@ Cross-NS test pattern is established in
 `gir_gen/test/cross_namespace/` already — use the same `gir_data_dir`
 helpers.
 
-**Exit criteria.** `Event_controller_key.event_controller_key_signals`
-in the regenerated bindings has a typed `on_key_pressed` whose `state`
-param is the cross-namespace flag-list type and the OCaml file compiles.
+**Exit criteria.** `Event_controller_key.on_key_pressed` (L1 free
+function) in the regenerated bindings has the typed signature
+`?after:bool -> t -> callback:(keyval:int -> keycode:int ->
+state:Ocgtk_gdk.Gdk_enums.modifiertype -> bool) ->
+Gobject.Signal.handler_id`; the L2 `event_controller_key_t` class
+exposes a forwarder method that proxies through it; the OCaml files
+compile.
 
 ---
 
@@ -1132,18 +1252,20 @@ validation.
 |------|------|--------|
 | `gir_gen/lib/types.ml` | 69-77 | Extend `gir_signal` with `when_phase : [\`First \| \`Last] option`, `action : bool`, `no_recurse : bool`, `no_hooks : bool`. (No `detailed` — out of scope.) |
 | `gir_gen/lib/parse/gir_parser.ml` | 613-664 | Read each new attribute. Default `when_phase = Some \`Last` if missing. |
-| `gir_gen/lib/generate/signal_gen.ml` | both emit functions | Change emitted `~after:false` literal to `?after:bool` optional arg with default `false`. Generated method becomes `method on_X ?(after = false) ~callback = ...`. |
+| `gir_gen/lib/generate/signal_gen.ml` | `emit_l1_let` / `emit_l1_val` / `emit_l2_method` | Change emitted `~after:false` literal to `?after:bool` optional arg with default `false`. The L1 let-binding becomes `let on_X ?(after = false) (obj : t) ~callback = ...`; L1 val becomes `?after:bool -> t -> callback:… -> handler_id`; L2 forwarder becomes `method on_X ?after ~callback = <Class>.on_X ?after self#as_<class> ~callback`. |
 | `gir_gen/lib/generate/signal_gen.ml` | optional emit (gated on `action=true`) | Generate a sibling `emit_<name> : <typed args> -> unit` per action signal that calls `Gobject.Signal.emit_by_name`. Defer if typed-vararg marshalling proves awkward. |
 
 **Validation outputs**
 
-1. `grep -c "?after" ocgtk/src/gtk/generated/*_signals.ml` should equal
-   the count of generated signal methods — every method exposes
-   `?after`.
+1. `grep -rh "?(after = false)" ocgtk/src/*/generated/ | wc -l` should
+   roughly equal the count of generated signal connectors (one
+   `?(after = false)` per L1 `let on_X` binding); every L2 forwarder
+   exposes `?after` as well.
 
-2. `grep -c "~after:" ocgtk/src/gtk/generated/*_signals.ml` should be
-   **0** (no fixed `~after:bool` literals in generated code; the
-   defaulting happens via `?(after = false)`).
+2. `grep -rh "~after:false\\|~after:true" ocgtk/src/*/generated/ | wc -l`
+   should be **0** (no fixed `~after:bool` literals in generated code;
+   the defaulting happens via `?(after = false)` at L1 and propagation
+   at L2).
 
 3. (No detailed-signal validation — out of scope.)
 
@@ -1170,11 +1292,11 @@ in `gir_signal` for future use.
 
 | File | Change |
 |------|--------|
-| `ocgtk/examples/login_form.ml:7-15` | Delete `on_close_request` helper; use `window#on_close_request ~callback:…` from generated `window_signals`. |
-| `ocgtk/examples/calculator/calc_ui.ml:179-188` | Delete the manual `Gobject.Closure.create` block; use `key_controller#on_key_pressed ~callback:…` from generated `event_controller_key_signals`. |
+| `ocgtk/examples/login_form.ml:7-15` | Delete `on_close_request` helper; replace with the generated L1 free function: `Window.on_close_request window_obj ~callback:…`. (L2 form `window#on_close_request ~callback:…` also works since the L2 class now has the forwarder; either is fine.) |
+| `ocgtk/examples/calculator/calc_ui.ml:179-188` | Delete the manual `Gobject.Closure.create` block; replace with `Event_controller_key.on_key_pressed key_controller_obj ~callback:…` (L1) or `key_controller#on_key_pressed ~callback:…` (L2 forwarder). |
 | `ocgtk/examples/text_editor.ml`, `settings_panel.ml` | Same as login_form. |
-| `gir_gen/README.md` "Supported features" | Update signal coverage entry from "void/zero-param only" to "all primitive params + bool/int/string returns; flags/enum via per-namespace decoders". |
-| `/home/deploy/projects/ocgtk-context/LEARNINGS.md` | Mark the consolidated learning "Signal generator only supports void/zero-param signals — manual wiring pattern" as **Superseded by Milestone 2 (PR/commit X)**. |
+| `gir_gen/README.md` "Supported features" | Update signal coverage entry from "void/zero-param only on L2 _signals class" to "L1 free functions for all primitive params + bool/int/string returns; flags/enum via per-namespace decoders; L2 class methods proxy to L1". |
+| `/home/deploy/projects/ocgtk-context/LEARNINGS.md` | Mark the consolidated learning "Signal generator only supports void/zero-param signals — manual wiring pattern" as **Superseded by Milestone 2 (PR/commit X)**. Add a learning that signal connectors live at L1, not in a separate `_signals` module/class. |
 | `gir_gen/docs/plans/milestone-2-signals.md` | Move to `gir_gen/docs/plans/completed/`. |
 
 **Validation outputs**
@@ -1182,8 +1304,10 @@ in `gir_signal` for future use.
 1. `grep -rn "Gobject.Closure.create" ocgtk/examples/ | wc -l` → 0 hits
    (or only deliberately illustrative ones).
 2. `grep -rn "Gobject.Signal.connect [^_]" ocgtk/examples/ | wc -l` → 0
-   hits (callers go through generated methods).
-3. All examples build and run under `xvfb-run dune exec`.
+   hits (callers go through the generated L1 functions or L2 forwarders).
+3. `grep -rn "\.on_close_request\\|\.on_key_pressed" ocgtk/examples/`
+   shows the migrated callsites at the L1 free-function form.
+4. All examples build and run under `xvfb-run dune exec`.
 
 **Test cases**
 
