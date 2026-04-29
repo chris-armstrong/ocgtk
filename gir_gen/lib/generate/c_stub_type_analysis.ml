@@ -32,11 +32,18 @@ module Type_analysis = struct
     let lower_cid = String.lowercase_ascii meth.c_identifier in
     String.equal lower_name "copy" || ends_with ~suffix:"_copy" lower_cid
 
-  (* Check if a method is a free method that should be skipped in bindings *)
+  (* Check if a method is a free or unref method that should be skipped in
+     bindings. Both _free (boxed records) and _unref (refcounted records) are
+     destructive and would race the custom-block finalizer; for refcounted
+     boxed types g_boxed_free already runs unref, so manual unref is a
+     double-free. *)
   let is_free_method (meth : gir_method) =
     let lower_name = String.lowercase_ascii meth.method_name in
     let lower_cid = String.lowercase_ascii meth.c_identifier in
-    String.equal lower_name "free" || ends_with ~suffix:"_free" lower_cid
+    String.equal lower_name "free"
+    || String.equal lower_name "unref"
+    || ends_with ~suffix:"_free" lower_cid
+    || ends_with ~suffix:"_unref" lower_cid
 
   (* Check if a method is a copy or free method that should be skipped in bindings *)
   let is_copy_or_free meth = is_copy_method meth || is_free_method meth

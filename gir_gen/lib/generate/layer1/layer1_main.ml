@@ -88,8 +88,8 @@ let generate_module_signature ~ctx ~entity ~base_type ?from_gobject_c_name buf =
       ~constructors:
         (if List.length entity.constructors > 0 then Some entity.constructors
          else None)
-      ~methods:entity.methods ~properties:entity.properties ~base_type
-      ?from_gobject_c_name inner_buf;
+      ~methods:(Filtering.methods_for_emission entity)
+      ~properties:entity.properties ~base_type ?from_gobject_c_name inner_buf;
     Buffer.contents inner_buf
   in
   Layer1_helpers.print_indent signature_contents buf
@@ -104,8 +104,8 @@ let generate_module_implementation ~ctx ~output_mode ~entity ~base_type
       ~constructors:
         (if List.length entity.constructors > 0 then Some entity.constructors
          else None)
-      ~methods:entity.methods ~properties:entity.properties ?from_gobject_c_name
-      inner_buf;
+      ~methods:(Filtering.methods_for_emission entity)
+      ~properties:entity.properties ?from_gobject_c_name inner_buf;
     Buffer.contents inner_buf
   in
   Layer1_helpers.print_indent single_content buf

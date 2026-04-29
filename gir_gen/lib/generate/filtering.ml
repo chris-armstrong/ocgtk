@@ -224,3 +224,37 @@ let should_generate_interface (_intf : gir_interface) = true
 
 (* Check if a standalone function should be generated *)
 let should_generate_function (func : gir_function) = func.introspectable
+
+(* Filter copy/free/unref methods out for record entities. The
+   gir_record custom-block finalizer already disposes of the wrapped
+   pointer (g_boxed_free for boxed types, g_free otherwise), so
+   exposing manual free or unref is a double-free hazard and copy is
+   redundant for callers who can simply hold a fresh OCaml binding.
+   Classes and interfaces emit these methods unchanged.
+
+   The predicate is duplicated here (rather than importing
+   [C_stub_type_analysis.is_copy_or_free]) to avoid a module dependency
+   cycle: [C_stub_type_analysis] already depends on [Filtering] for
+   [is_string_type]. *)
+let methods_for_emission (entity : Types.entity) =
+  match entity.kind with
+  | Types.Record _ ->
+      let is_copy_free_or_unref (m : Types.gir_method) =
+        let lower_name = String.lowercase_ascii m.method_name in
+        let lower_cid = String.lowercase_ascii m.c_identifier in
+        let ends_with ~suffix str =
+          let ls = String.length suffix and lt = String.length str in
+          lt >= ls
+          && String.equal (String.sub str ~pos:(lt - ls) ~len:ls) suffix
+        in
+        String.equal lower_name "copy"
+        || String.equal lower_name "free"
+        || String.equal lower_name "unref"
+        || ends_with ~suffix:"_copy" lower_cid
+        || ends_with ~suffix:"_free" lower_cid
+        || ends_with ~suffix:"_unref" lower_cid
+      in
+      List.filter
+        ~f:(fun m -> not (is_copy_free_or_unref m))
+        entity.Types.methods
+  | _ -> entity.Types.methods

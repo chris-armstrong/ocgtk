@@ -239,7 +239,8 @@ let generate_combined_entities ~ctx ~combined_module_name ~entities
       in
       let class_snake = sanitize_name entity.name in
       generate_entity ~buf ~i ~class_snake ~module_name ~current_layer2_module
-        ~class_name:entity.name ~c_type:entity.c_type ~methods:entity.methods
+        ~class_name:entity.name ~c_type:entity.c_type
+        ~methods:(Filtering.methods_for_emission entity)
         ~properties:entity.properties ~signals:entity.signals
         ~same_cluster_classes ~parent_name)
     sorted_entities;

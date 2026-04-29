@@ -58,3 +58,10 @@ val array_lacks_length_info : gir_array -> bool
 
 (* Check if a standalone function should be generated *)
 val should_generate_function : gir_function -> bool
+
+(* Filter the methods of an entity to those that should be emitted by Layer 1
+   and Layer 2 generators. For records this drops copy/free/unref methods
+   because the custom-block finalizer already disposes of the wrapped pointer
+   (manual free/unref is a double-free, manual copy is redundant). For
+   classes and interfaces the methods list is returned unchanged. *)
+val methods_for_emission : entity -> gir_method list

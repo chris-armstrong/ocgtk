@@ -592,7 +592,7 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
         (if List.length entity.Gir_gen_lib.Types.constructors > 0 then
            Some entity.Gir_gen_lib.Types.constructors
          else None)
-      ~methods:entity.Gir_gen_lib.Types.methods
+      ~methods:(Gir_gen_lib.Generate.Filtering.methods_for_emission entity)
       ~properties:entity.Gir_gen_lib.Types.properties ?from_gobject_c_name ()
   in
 
@@ -660,12 +660,15 @@ let generate_high_level_class ~ctx ~output_dir entity parent_chain =
       printf "Overwriting %s (wholesale regeneration enabled)\n" g_file
     else printf "Creating %s\n" g_file;
 
+    let emission_methods =
+      Gir_gen_lib.Generate.Filtering.methods_for_emission entity
+    in
     write_file ~path:g_file
       ~content:
         (Gir_gen_lib.Generate.Class_gen.generate_class_module ~ctx
            ~c_type:entity.Gir_gen_lib.Types.c_type
            ~class_name:entity.Gir_gen_lib.Types.name ~parent_chain
-           ~methods:entity.Gir_gen_lib.Types.methods
+           ~methods:emission_methods
            ~properties:entity.Gir_gen_lib.Types.properties
            ~signals:entity.Gir_gen_lib.Types.signals
            ~constructors:entity.Gir_gen_lib.Types.constructors);
@@ -680,7 +683,7 @@ let generate_high_level_class ~ctx ~output_dir entity parent_chain =
         (Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
            ~c_type:entity.Gir_gen_lib.Types.c_type
            ~class_name:entity.Gir_gen_lib.Types.name ~parent_chain
-           ~methods:entity.Gir_gen_lib.Types.methods
+           ~methods:emission_methods
            ~properties:entity.Gir_gen_lib.Types.properties
            ~signals:entity.Gir_gen_lib.Types.signals
            ~constructors:entity.Gir_gen_lib.Types.constructors)
