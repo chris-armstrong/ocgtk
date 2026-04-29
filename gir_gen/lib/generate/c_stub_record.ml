@@ -16,6 +16,18 @@ let is_non_opaque_record (record : gir_record) =
 let is_value_like_record (record : gir_record) =
   is_non_opaque_record record && has_copy_method record
 
+(* Build the C call expression that wraps an owned pointer in an OCaml
+   custom block. Records that expose glib:get-type are registered with
+   the GType system (typically as boxed types) and need GType-aware
+   finalization so g_boxed_free runs the per-type destructor. Records
+   without glib:get-type fall through to the legacy entry point, whose
+   finalizer uses g_free. *)
+let val_ptr_call_for_record (record : gir_record) ~ptr_expr =
+  match record.glib_get_type with
+  | Some get_type_func when not record.disguised ->
+      sprintf "ml_gir_record_val_ptr_with_type(%s(), %s)" get_type_func ptr_expr
+  | _ -> sprintf "ml_gir_record_val_ptr(%s)" ptr_expr
+
 (** Generate forward declarations for record converters.
 
     This function generates declarations only for records in the current
@@ -137,7 +149,7 @@ let generate_opaque_record_conversions ~namespace_prefix ~buf
   (* Val_X function *)
   bprintf buf "value Val_%s(const %s *ptr) {\n" record.c_type record.c_type;
   bprintf buf "  if (ptr == NULL) return Val_none;\n";
-  bprintf buf "  return ml_gir_record_val_ptr(ptr);\n";
+  bprintf buf "  return %s;\n" (val_ptr_call_for_record record ~ptr_expr:"ptr");
   bprintf buf "}\n\n";
 
   (* Val_X_option function *)
@@ -182,7 +194,8 @@ let generate_value_record_conversions ~namespace_prefix ~buf
       bprintf buf "  if (ptr == NULL) return Val_none;\n";
       bprintf buf "  %s *copy = %s((%s*)ptr);\n" record.c_type
         copy_meth.c_identifier record.c_type;
-      bprintf buf "  return ml_gir_record_val_ptr(copy);\n";
+      bprintf buf "  return %s;\n"
+        (val_ptr_call_for_record record ~ptr_expr:"copy");
       bprintf buf "}\n"
   | None ->
       (* Fallback: generate a simple memcpy-based copy *)
@@ -192,7 +205,8 @@ let generate_value_record_conversions ~namespace_prefix ~buf
       bprintf buf "  %s *copy = g_malloc(sizeof(%s));\n" record.c_type
         record.c_type;
       bprintf buf "  memcpy(copy, ptr, sizeof(%s));\n" record.c_type;
-      bprintf buf "  return ml_gir_record_val_ptr(copy);\n";
+      bprintf buf "  return %s;\n"
+        (val_ptr_call_for_record record ~ptr_expr:"copy");
       bprintf buf "}\n");
   Option.iter (fun _ -> Buffer.add_string buf "#endif\n") record.version;
   Option.iter
