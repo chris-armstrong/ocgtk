@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoScriptIter (opaque record with hidden fields) */
 PangoScriptIter *PangoScriptIter_val(value v) {
-  return *(PangoScriptIter **)Data_custom_val(v);
+  return (PangoScriptIter *)ml_gir_record_ptr_val(v, "PangoScriptIter");
 }
 
 value Val_PangoScriptIter(const PangoScriptIter *ptr) {

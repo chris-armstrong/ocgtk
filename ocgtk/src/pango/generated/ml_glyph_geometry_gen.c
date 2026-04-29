@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoGlyphGeometry (opaque record with hidden fields) */
 PangoGlyphGeometry *PangoGlyphGeometry_val(value v) {
-  return *(PangoGlyphGeometry **)Data_custom_val(v);
+  return (PangoGlyphGeometry *)ml_gir_record_ptr_val(v, "PangoGlyphGeometry");
 }
 
 value Val_PangoGlyphGeometry(const PangoGlyphGeometry *ptr) {

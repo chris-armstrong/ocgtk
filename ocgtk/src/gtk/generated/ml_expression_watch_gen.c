@@ -18,7 +18,7 @@
 
 /* Conversion functions for GtkExpressionWatch (opaque record with hidden fields) */
 GtkExpressionWatch *GtkExpressionWatch_val(value v) {
-  return *(GtkExpressionWatch **)Data_custom_val(v);
+  return (GtkExpressionWatch *)ml_gir_record_ptr_val(v, "GtkExpressionWatch");
 }
 
 value Val_GtkExpressionWatch(const GtkExpressionWatch *ptr) {

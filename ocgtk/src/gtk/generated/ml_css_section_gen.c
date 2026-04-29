@@ -18,7 +18,7 @@
 
 /* Conversion functions for GtkCssSection (opaque record with hidden fields) */
 GtkCssSection *GtkCssSection_val(value v) {
-  return *(GtkCssSection **)Data_custom_val(v);
+  return (GtkCssSection *)ml_gir_record_ptr_val(v, "GtkCssSection");
 }
 
 value Val_GtkCssSection(const GtkCssSection *ptr) {

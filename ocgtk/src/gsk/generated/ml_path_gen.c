@@ -18,7 +18,7 @@
 #if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GskPath (opaque record with hidden fields) */
 GskPath *GskPath_val(value v) {
-  return *(GskPath **)Data_custom_val(v);
+  return (GskPath *)ml_gir_record_ptr_val(v, "GskPath");
 }
 
 value Val_GskPath(const GskPath *ptr) {

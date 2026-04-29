@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoAttrSize (opaque record with hidden fields) */
 PangoAttrSize *PangoAttrSize_val(value v) {
-  return *(PangoAttrSize **)Data_custom_val(v);
+  return (PangoAttrSize *)ml_gir_record_ptr_val(v, "PangoAttrSize");
 }
 
 value Val_PangoAttrSize(const PangoAttrSize *ptr) {

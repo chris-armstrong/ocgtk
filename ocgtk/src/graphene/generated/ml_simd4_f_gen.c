@@ -17,7 +17,7 @@
 
 /* Conversion functions for graphene_simd4f_t (opaque record with hidden fields) */
 graphene_simd4f_t *graphene_simd4f_t_val(value v) {
-  return *(graphene_simd4f_t **)Data_custom_val(v);
+  return (graphene_simd4f_t *)ml_gir_record_ptr_val(v, "graphene_simd4f_t");
 }
 
 value Val_graphene_simd4f_t(const graphene_simd4f_t *ptr) {

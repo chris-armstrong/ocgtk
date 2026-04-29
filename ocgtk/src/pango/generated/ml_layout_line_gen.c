@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoLayoutLine (opaque record with hidden fields) */
 PangoLayoutLine *PangoLayoutLine_val(value v) {
-  return *(PangoLayoutLine **)Data_custom_val(v);
+  return (PangoLayoutLine *)ml_gir_record_ptr_val(v, "PangoLayoutLine");
 }
 
 value Val_PangoLayoutLine(const PangoLayoutLine *ptr) {

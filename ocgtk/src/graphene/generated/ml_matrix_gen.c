@@ -17,7 +17,7 @@
 
 /* Conversion functions for graphene_matrix_t (opaque record with hidden fields) */
 graphene_matrix_t *graphene_matrix_t_val(value v) {
-  return *(graphene_matrix_t **)Data_custom_val(v);
+  return (graphene_matrix_t *)ml_gir_record_ptr_val(v, "graphene_matrix_t");
 }
 
 value Val_graphene_matrix_t(const graphene_matrix_t *ptr) {

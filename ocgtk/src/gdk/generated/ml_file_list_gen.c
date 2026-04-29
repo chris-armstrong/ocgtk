@@ -18,7 +18,7 @@
 #if GTK_CHECK_VERSION(4,6,0)
 /* Conversion functions for GdkFileList (opaque record with hidden fields) */
 GdkFileList *GdkFileList_val(value v) {
-  return *(GdkFileList **)Data_custom_val(v);
+  return (GdkFileList *)ml_gir_record_ptr_val(v, "GdkFileList");
 }
 
 value Val_GdkFileList(const GdkFileList *ptr) {

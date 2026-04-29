@@ -17,7 +17,7 @@
 
 /* Conversion functions for GdkRectangle (opaque record with hidden fields) */
 GdkRectangle *GdkRectangle_val(value v) {
-  return *(GdkRectangle **)Data_custom_val(v);
+  return (GdkRectangle *)ml_gir_record_ptr_val(v, "GdkRectangle");
 }
 
 value Val_GdkRectangle(const GdkRectangle *ptr) {

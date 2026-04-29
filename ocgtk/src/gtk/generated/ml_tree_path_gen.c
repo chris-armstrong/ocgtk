@@ -18,7 +18,7 @@
 
 /* Conversion functions for GtkTreePath (opaque record with hidden fields) */
 GtkTreePath *GtkTreePath_val(value v) {
-  return *(GtkTreePath **)Data_custom_val(v);
+  return (GtkTreePath *)ml_gir_record_ptr_val(v, "GtkTreePath");
 }
 
 value Val_GtkTreePath(const GtkTreePath *ptr) {

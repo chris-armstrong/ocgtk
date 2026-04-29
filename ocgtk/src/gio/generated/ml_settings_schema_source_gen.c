@@ -26,7 +26,7 @@
 #if GLIB_CHECK_VERSION(2,32,0)
 /* Conversion functions for GSettingsSchemaSource (opaque record with hidden fields) */
 GSettingsSchemaSource *GSettingsSchemaSource_val(value v) {
-  return *(GSettingsSchemaSource **)Data_custom_val(v);
+  return (GSettingsSchemaSource *)ml_gir_record_ptr_val(v, "GSettingsSchemaSource");
 }
 
 value Val_GSettingsSchemaSource(const GSettingsSchemaSource *ptr) {

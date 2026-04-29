@@ -17,7 +17,7 @@
 
 /* Conversion functions for GskShaderArgsBuilder (opaque record with hidden fields) */
 GskShaderArgsBuilder *GskShaderArgsBuilder_val(value v) {
-  return *(GskShaderArgsBuilder **)Data_custom_val(v);
+  return (GskShaderArgsBuilder *)ml_gir_record_ptr_val(v, "GskShaderArgsBuilder");
 }
 
 value Val_GskShaderArgsBuilder(const GskShaderArgsBuilder *ptr) {

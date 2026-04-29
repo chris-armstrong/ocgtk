@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoFontMetrics (opaque record with hidden fields) */
 PangoFontMetrics *PangoFontMetrics_val(value v) {
-  return *(PangoFontMetrics **)Data_custom_val(v);
+  return (PangoFontMetrics *)ml_gir_record_ptr_val(v, "PangoFontMetrics");
 }
 
 value Val_PangoFontMetrics(const PangoFontMetrics *ptr) {

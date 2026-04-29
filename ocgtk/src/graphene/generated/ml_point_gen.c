@@ -18,7 +18,7 @@
 #if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 /* Conversion functions for graphene_point_t (opaque record with hidden fields) */
 graphene_point_t *graphene_point_t_val(value v) {
-  return *(graphene_point_t **)Data_custom_val(v);
+  return (graphene_point_t *)ml_gir_record_ptr_val(v, "graphene_point_t");
 }
 
 value Val_graphene_point_t(const graphene_point_t *ptr) {

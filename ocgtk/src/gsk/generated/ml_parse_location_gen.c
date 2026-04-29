@@ -17,7 +17,7 @@
 
 /* Conversion functions for GskParseLocation (opaque record with hidden fields) */
 GskParseLocation *GskParseLocation_val(value v) {
-  return *(GskParseLocation **)Data_custom_val(v);
+  return (GskParseLocation *)ml_gir_record_ptr_val(v, "GskParseLocation");
 }
 
 value Val_GskParseLocation(const GskParseLocation *ptr) {

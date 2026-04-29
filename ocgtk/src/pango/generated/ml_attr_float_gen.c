@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoAttrFloat (opaque record with hidden fields) */
 PangoAttrFloat *PangoAttrFloat_val(value v) {
-  return *(PangoAttrFloat **)Data_custom_val(v);
+  return (PangoAttrFloat *)ml_gir_record_ptr_val(v, "PangoAttrFloat");
 }
 
 value Val_PangoAttrFloat(const PangoAttrFloat *ptr) {

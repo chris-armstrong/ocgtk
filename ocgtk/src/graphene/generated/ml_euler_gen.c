@@ -18,7 +18,7 @@
 #if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 /* Conversion functions for graphene_euler_t (opaque record with hidden fields) */
 graphene_euler_t *graphene_euler_t_val(value v) {
-  return *(graphene_euler_t **)Data_custom_val(v);
+  return (graphene_euler_t *)ml_gir_record_ptr_val(v, "graphene_euler_t");
 }
 
 value Val_graphene_euler_t(const graphene_euler_t *ptr) {

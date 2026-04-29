@@ -17,7 +17,7 @@
 
 /* Conversion functions for GdkToplevelLayout (opaque record with hidden fields) */
 GdkToplevelLayout *GdkToplevelLayout_val(value v) {
-  return *(GdkToplevelLayout **)Data_custom_val(v);
+  return (GdkToplevelLayout *)ml_gir_record_ptr_val(v, "GdkToplevelLayout");
 }
 
 value Val_GdkToplevelLayout(const GdkToplevelLayout *ptr) {

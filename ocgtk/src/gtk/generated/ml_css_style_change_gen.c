@@ -18,7 +18,7 @@
 
 /* Conversion functions for GtkCssStyleChange (opaque record with hidden fields) */
 GtkCssStyleChange *GtkCssStyleChange_val(value v) {
-  return *(GtkCssStyleChange **)Data_custom_val(v);
+  return (GtkCssStyleChange *)ml_gir_record_ptr_val(v, "GtkCssStyleChange");
 }
 
 value Val_GtkCssStyleChange(const GtkCssStyleChange *ptr) {

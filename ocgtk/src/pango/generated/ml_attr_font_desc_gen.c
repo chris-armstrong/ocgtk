@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoAttrFontDesc (opaque record with hidden fields) */
 PangoAttrFontDesc *PangoAttrFontDesc_val(value v) {
-  return *(PangoAttrFontDesc **)Data_custom_val(v);
+  return (PangoAttrFontDesc *)ml_gir_record_ptr_val(v, "PangoAttrFontDesc");
 }
 
 value Val_PangoAttrFontDesc(const PangoAttrFontDesc *ptr) {

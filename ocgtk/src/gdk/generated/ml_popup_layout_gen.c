@@ -17,7 +17,7 @@
 
 /* Conversion functions for GdkPopupLayout (opaque record with hidden fields) */
 GdkPopupLayout *GdkPopupLayout_val(value v) {
-  return *(GdkPopupLayout **)Data_custom_val(v);
+  return (GdkPopupLayout *)ml_gir_record_ptr_val(v, "GdkPopupLayout");
 }
 
 value Val_GdkPopupLayout(const GdkPopupLayout *ptr) {

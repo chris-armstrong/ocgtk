@@ -26,7 +26,7 @@
 #if !(defined(_WIN32))
 /* Conversion functions for GUnixMountEntry (opaque record with hidden fields) */
 GUnixMountEntry *GUnixMountEntry_val(value v) {
-  return *(GUnixMountEntry **)Data_custom_val(v);
+  return (GUnixMountEntry *)ml_gir_record_ptr_val(v, "GUnixMountEntry");
 }
 
 value Val_GUnixMountEntry(const GUnixMountEntry *ptr) {

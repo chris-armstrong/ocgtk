@@ -26,7 +26,7 @@
 #if GLIB_CHECK_VERSION(2,22,0)
 /* Conversion functions for GOutputVector (opaque record with hidden fields) */
 GOutputVector *GOutputVector_val(value v) {
-  return *(GOutputVector **)Data_custom_val(v);
+  return (GOutputVector *)ml_gir_record_ptr_val(v, "GOutputVector");
 }
 
 value Val_GOutputVector(const GOutputVector *ptr) {

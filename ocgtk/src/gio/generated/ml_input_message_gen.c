@@ -26,7 +26,7 @@
 #if GLIB_CHECK_VERSION(2,48,0)
 /* Conversion functions for GInputMessage (opaque record with hidden fields) */
 GInputMessage *GInputMessage_val(value v) {
-  return *(GInputMessage **)Data_custom_val(v);
+  return (GInputMessage *)ml_gir_record_ptr_val(v, "GInputMessage");
 }
 
 value Val_GInputMessage(const GInputMessage *ptr) {

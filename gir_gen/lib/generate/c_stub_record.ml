@@ -141,9 +141,12 @@ let generate_opaque_record_conversions ~namespace_prefix ~buf
     "/* Conversion functions for %s (opaque record with hidden fields) */\n"
     record.c_type;
 
-  (* X_val function *)
+  (* X_val function — must route through ml_gir_record_ptr_val so it reads
+     the wrapped pointer from the gir_record_box (GType + void* pointer)
+     custom-block payload instead of dereferencing the GType slot. *)
   bprintf buf "%s *%s_val(value v) {\n" record.c_type record.c_type;
-  bprintf buf "  return *(%s **)Data_custom_val(v);\n" record.c_type;
+  bprintf buf "  return (%s *)ml_gir_record_ptr_val(v, \"%s\");\n" record.c_type
+    record.c_type;
   bprintf buf "}\n\n";
 
   (* Val_X function *)

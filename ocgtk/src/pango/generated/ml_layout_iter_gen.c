@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoLayoutIter (opaque record with hidden fields) */
 PangoLayoutIter *PangoLayoutIter_val(value v) {
-  return *(PangoLayoutIter **)Data_custom_val(v);
+  return (PangoLayoutIter *)ml_gir_record_ptr_val(v, "PangoLayoutIter");
 }
 
 value Val_PangoLayoutIter(const PangoLayoutIter *ptr) {

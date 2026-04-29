@@ -18,7 +18,7 @@
 
 /* Conversion functions for GtkTreeRowReference (opaque record with hidden fields) */
 GtkTreeRowReference *GtkTreeRowReference_val(value v) {
-  return *(GtkTreeRowReference **)Data_custom_val(v);
+  return (GtkTreeRowReference *)ml_gir_record_ptr_val(v, "GtkTreeRowReference");
 }
 
 value Val_GtkTreeRowReference(const GtkTreeRowReference *ptr) {

@@ -17,7 +17,7 @@
 
 /* Conversion functions for cairo_scaled_font_t (opaque record with hidden fields) */
 cairo_scaled_font_t *cairo_scaled_font_t_val(value v) {
-  return *(cairo_scaled_font_t **)Data_custom_val(v);
+  return (cairo_scaled_font_t *)ml_gir_record_ptr_val(v, "cairo_scaled_font_t");
 }
 
 value Val_cairo_scaled_font_t(const cairo_scaled_font_t *ptr) {

@@ -26,7 +26,7 @@
 #if GLIB_CHECK_VERSION(2,26,0)
 /* Conversion functions for GDBusArgInfo (opaque record with hidden fields) */
 GDBusArgInfo *GDBusArgInfo_val(value v) {
-  return *(GDBusArgInfo **)Data_custom_val(v);
+  return (GDBusArgInfo *)ml_gir_record_ptr_val(v, "GDBusArgInfo");
 }
 
 value Val_GDBusArgInfo(const GDBusArgInfo *ptr) {

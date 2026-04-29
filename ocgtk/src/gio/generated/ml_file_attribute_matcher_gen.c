@@ -25,7 +25,7 @@
 
 /* Conversion functions for GFileAttributeMatcher (opaque record with hidden fields) */
 GFileAttributeMatcher *GFileAttributeMatcher_val(value v) {
-  return *(GFileAttributeMatcher **)Data_custom_val(v);
+  return (GFileAttributeMatcher *)ml_gir_record_ptr_val(v, "GFileAttributeMatcher");
 }
 
 value Val_GFileAttributeMatcher(const GFileAttributeMatcher *ptr) {

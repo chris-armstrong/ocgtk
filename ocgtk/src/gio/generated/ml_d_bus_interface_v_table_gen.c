@@ -26,7 +26,7 @@
 #if GLIB_CHECK_VERSION(2,26,0)
 /* Conversion functions for GDBusInterfaceVTable (opaque record with hidden fields) */
 GDBusInterfaceVTable *GDBusInterfaceVTable_val(value v) {
-  return *(GDBusInterfaceVTable **)Data_custom_val(v);
+  return (GDBusInterfaceVTable *)ml_gir_record_ptr_val(v, "GDBusInterfaceVTable");
 }
 
 value Val_GDBusInterfaceVTable(const GDBusInterfaceVTable *ptr) {

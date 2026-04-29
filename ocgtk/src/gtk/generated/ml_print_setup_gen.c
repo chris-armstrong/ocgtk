@@ -19,7 +19,7 @@
 #if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GtkPrintSetup (opaque record with hidden fields) */
 GtkPrintSetup *GtkPrintSetup_val(value v) {
-  return *(GtkPrintSetup **)Data_custom_val(v);
+  return (GtkPrintSetup *)ml_gir_record_ptr_val(v, "GtkPrintSetup");
 }
 
 value Val_GtkPrintSetup(const GtkPrintSetup *ptr) {

@@ -25,7 +25,7 @@
 
 /* Conversion functions for GIOSchedulerJob (opaque record with hidden fields) */
 GIOSchedulerJob *GIOSchedulerJob_val(value v) {
-  return *(GIOSchedulerJob **)Data_custom_val(v);
+  return (GIOSchedulerJob *)ml_gir_record_ptr_val(v, "GIOSchedulerJob");
 }
 
 value Val_GIOSchedulerJob(const GIOSchedulerJob *ptr) {

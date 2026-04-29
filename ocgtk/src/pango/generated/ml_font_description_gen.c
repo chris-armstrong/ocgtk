@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoFontDescription (opaque record with hidden fields) */
 PangoFontDescription *PangoFontDescription_val(value v) {
-  return *(PangoFontDescription **)Data_custom_val(v);
+  return (PangoFontDescription *)ml_gir_record_ptr_val(v, "PangoFontDescription");
 }
 
 value Val_PangoFontDescription(const PangoFontDescription *ptr) {

@@ -17,7 +17,7 @@
 
 /* Conversion functions for graphene_vec4_t (opaque record with hidden fields) */
 graphene_vec4_t *graphene_vec4_t_val(value v) {
-  return *(graphene_vec4_t **)Data_custom_val(v);
+  return (graphene_vec4_t *)ml_gir_record_ptr_val(v, "graphene_vec4_t");
 }
 
 value Val_graphene_vec4_t(const graphene_vec4_t *ptr) {

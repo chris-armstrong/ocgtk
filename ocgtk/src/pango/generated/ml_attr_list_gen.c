@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoAttrList (opaque record with hidden fields) */
 PangoAttrList *PangoAttrList_val(value v) {
-  return *(PangoAttrList **)Data_custom_val(v);
+  return (PangoAttrList *)ml_gir_record_ptr_val(v, "PangoAttrList");
 }
 
 value Val_PangoAttrList(const PangoAttrList *ptr) {

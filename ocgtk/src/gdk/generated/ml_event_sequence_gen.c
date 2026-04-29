@@ -17,7 +17,7 @@
 
 /* Conversion functions for GdkEventSequence (opaque record with hidden fields) */
 GdkEventSequence *GdkEventSequence_val(value v) {
-  return *(GdkEventSequence **)Data_custom_val(v);
+  return (GdkEventSequence *)ml_gir_record_ptr_val(v, "GdkEventSequence");
 }
 
 value Val_GdkEventSequence(const GdkEventSequence *ptr) {

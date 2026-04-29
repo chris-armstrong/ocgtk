@@ -18,7 +18,7 @@
 
 /* Conversion functions for GtkPageRange (opaque record with hidden fields) */
 GtkPageRange *GtkPageRange_val(value v) {
-  return *(GtkPageRange **)Data_custom_val(v);
+  return (GtkPageRange *)ml_gir_record_ptr_val(v, "GtkPageRange");
 }
 
 value Val_GtkPageRange(const GtkPageRange *ptr) {

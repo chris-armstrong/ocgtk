@@ -17,7 +17,7 @@
 
 /* Conversion functions for cairo_rectangle_int_t (opaque record with hidden fields) */
 cairo_rectangle_int_t *cairo_rectangle_int_t_val(value v) {
-  return *(cairo_rectangle_int_t **)Data_custom_val(v);
+  return (cairo_rectangle_int_t *)ml_gir_record_ptr_val(v, "cairo_rectangle_int_t");
 }
 
 value Val_cairo_rectangle_int_t(const cairo_rectangle_int_t *ptr) {

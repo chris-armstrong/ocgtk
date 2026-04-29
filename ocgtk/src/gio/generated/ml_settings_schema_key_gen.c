@@ -25,7 +25,7 @@
 
 /* Conversion functions for GSettingsSchemaKey (opaque record with hidden fields) */
 GSettingsSchemaKey *GSettingsSchemaKey_val(value v) {
-  return *(GSettingsSchemaKey **)Data_custom_val(v);
+  return (GSettingsSchemaKey *)ml_gir_record_ptr_val(v, "GSettingsSchemaKey");
 }
 
 value Val_GSettingsSchemaKey(const GSettingsSchemaKey *ptr) {

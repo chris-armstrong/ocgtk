@@ -18,7 +18,7 @@
 #if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 /* Conversion functions for graphene_frustum_t (opaque record with hidden fields) */
 graphene_frustum_t *graphene_frustum_t_val(value v) {
-  return *(graphene_frustum_t **)Data_custom_val(v);
+  return (graphene_frustum_t *)ml_gir_record_ptr_val(v, "graphene_frustum_t");
 }
 
 value Val_graphene_frustum_t(const graphene_frustum_t *ptr) {

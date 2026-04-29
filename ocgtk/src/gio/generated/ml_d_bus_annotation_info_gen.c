@@ -26,7 +26,7 @@
 #if GLIB_CHECK_VERSION(2,26,0)
 /* Conversion functions for GDBusAnnotationInfo (opaque record with hidden fields) */
 GDBusAnnotationInfo *GDBusAnnotationInfo_val(value v) {
-  return *(GDBusAnnotationInfo **)Data_custom_val(v);
+  return (GDBusAnnotationInfo *)ml_gir_record_ptr_val(v, "GDBusAnnotationInfo");
 }
 
 value Val_GDBusAnnotationInfo(const GDBusAnnotationInfo *ptr) {

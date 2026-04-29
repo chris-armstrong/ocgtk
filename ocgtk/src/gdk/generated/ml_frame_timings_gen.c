@@ -17,7 +17,7 @@
 
 /* Conversion functions for GdkFrameTimings (opaque record with hidden fields) */
 GdkFrameTimings *GdkFrameTimings_val(value v) {
-  return *(GdkFrameTimings **)Data_custom_val(v);
+  return (GdkFrameTimings *)ml_gir_record_ptr_val(v, "GdkFrameTimings");
 }
 
 value Val_GdkFrameTimings(const GdkFrameTimings *ptr) {

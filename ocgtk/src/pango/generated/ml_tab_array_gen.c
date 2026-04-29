@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoTabArray (opaque record with hidden fields) */
 PangoTabArray *PangoTabArray_val(value v) {
-  return *(PangoTabArray **)Data_custom_val(v);
+  return (PangoTabArray *)ml_gir_record_ptr_val(v, "PangoTabArray");
 }
 
 value Val_PangoTabArray(const PangoTabArray *ptr) {

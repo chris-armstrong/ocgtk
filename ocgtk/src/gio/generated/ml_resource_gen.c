@@ -26,7 +26,7 @@
 #if GLIB_CHECK_VERSION(2,32,0)
 /* Conversion functions for GResource (opaque record with hidden fields) */
 GResource *GResource_val(value v) {
-  return *(GResource **)Data_custom_val(v);
+  return (GResource *)ml_gir_record_ptr_val(v, "GResource");
 }
 
 value Val_GResource(const GResource *ptr) {

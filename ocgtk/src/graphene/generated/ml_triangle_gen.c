@@ -18,7 +18,7 @@
 #if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 /* Conversion functions for graphene_triangle_t (opaque record with hidden fields) */
 graphene_triangle_t *graphene_triangle_t_val(value v) {
-  return *(graphene_triangle_t **)Data_custom_val(v);
+  return (graphene_triangle_t *)ml_gir_record_ptr_val(v, "graphene_triangle_t");
 }
 
 value Val_graphene_triangle_t(const graphene_triangle_t *ptr) {

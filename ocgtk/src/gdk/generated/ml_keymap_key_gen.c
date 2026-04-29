@@ -17,7 +17,7 @@
 
 /* Conversion functions for GdkKeymapKey (opaque record with hidden fields) */
 GdkKeymapKey *GdkKeymapKey_val(value v) {
-  return *(GdkKeymapKey **)Data_custom_val(v);
+  return (GdkKeymapKey *)ml_gir_record_ptr_val(v, "GdkKeymapKey");
 }
 
 value Val_GdkKeymapKey(const GdkKeymapKey *ptr) {

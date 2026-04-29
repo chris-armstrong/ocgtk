@@ -17,7 +17,7 @@
 
 /* Conversion functions for cairo_font_face_t (opaque record with hidden fields) */
 cairo_font_face_t *cairo_font_face_t_val(value v) {
-  return *(cairo_font_face_t **)Data_custom_val(v);
+  return (cairo_font_face_t *)ml_gir_record_ptr_val(v, "cairo_font_face_t");
 }
 
 value Val_cairo_font_face_t(const cairo_font_face_t *ptr) {

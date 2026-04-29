@@ -18,7 +18,7 @@
 
 /* Conversion functions for GtkBuildableParseContext (opaque record with hidden fields) */
 GtkBuildableParseContext *GtkBuildableParseContext_val(value v) {
-  return *(GtkBuildableParseContext **)Data_custom_val(v);
+  return (GtkBuildableParseContext *)ml_gir_record_ptr_val(v, "GtkBuildableParseContext");
 }
 
 value Val_GtkBuildableParseContext(const GtkBuildableParseContext *ptr) {

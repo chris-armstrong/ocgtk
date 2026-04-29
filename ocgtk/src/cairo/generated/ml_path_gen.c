@@ -17,7 +17,7 @@
 
 /* Conversion functions for cairo_path_t (opaque record with hidden fields) */
 cairo_path_t *cairo_path_t_val(value v) {
-  return *(cairo_path_t **)Data_custom_val(v);
+  return (cairo_path_t *)ml_gir_record_ptr_val(v, "cairo_path_t");
 }
 
 value Val_cairo_path_t(const cairo_path_t *ptr) {

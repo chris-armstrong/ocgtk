@@ -25,7 +25,7 @@
 
 /* Conversion functions for GIOExtension (opaque record with hidden fields) */
 GIOExtension *GIOExtension_val(value v) {
-  return *(GIOExtension **)Data_custom_val(v);
+  return (GIOExtension *)ml_gir_record_ptr_val(v, "GIOExtension");
 }
 
 value Val_GIOExtension(const GIOExtension *ptr) {

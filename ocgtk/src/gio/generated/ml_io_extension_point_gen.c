@@ -25,7 +25,7 @@
 
 /* Conversion functions for GIOExtensionPoint (opaque record with hidden fields) */
 GIOExtensionPoint *GIOExtensionPoint_val(value v) {
-  return *(GIOExtensionPoint **)Data_custom_val(v);
+  return (GIOExtensionPoint *)ml_gir_record_ptr_val(v, "GIOExtensionPoint");
 }
 
 value Val_GIOExtensionPoint(const GIOExtensionPoint *ptr) {

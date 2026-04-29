@@ -17,7 +17,7 @@
 
 /* Conversion functions for GdkTimeCoord (opaque record with hidden fields) */
 GdkTimeCoord *GdkTimeCoord_val(value v) {
-  return *(GdkTimeCoord **)Data_custom_val(v);
+  return (GdkTimeCoord *)ml_gir_record_ptr_val(v, "GdkTimeCoord");
 }
 
 value Val_GdkTimeCoord(const GdkTimeCoord *ptr) {

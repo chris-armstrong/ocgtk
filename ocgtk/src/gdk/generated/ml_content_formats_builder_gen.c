@@ -17,7 +17,7 @@
 
 /* Conversion functions for GdkContentFormatsBuilder (opaque record with hidden fields) */
 GdkContentFormatsBuilder *GdkContentFormatsBuilder_val(value v) {
-  return *(GdkContentFormatsBuilder **)Data_custom_val(v);
+  return (GdkContentFormatsBuilder *)ml_gir_record_ptr_val(v, "GdkContentFormatsBuilder");
 }
 
 value Val_GdkContentFormatsBuilder(const GdkContentFormatsBuilder *ptr) {

@@ -26,7 +26,7 @@
 #if GLIB_CHECK_VERSION(2,30,0)
 /* Conversion functions for GIOModuleScope (opaque record with hidden fields) */
 GIOModuleScope *GIOModuleScope_val(value v) {
-  return *(GIOModuleScope **)Data_custom_val(v);
+  return (GIOModuleScope *)ml_gir_record_ptr_val(v, "GIOModuleScope");
 }
 
 value Val_GIOModuleScope(const GIOModuleScope *ptr) {

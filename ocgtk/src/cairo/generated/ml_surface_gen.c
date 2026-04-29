@@ -17,7 +17,7 @@
 
 /* Conversion functions for cairo_surface_t (opaque record with hidden fields) */
 cairo_surface_t *cairo_surface_t_val(value v) {
-  return *(cairo_surface_t **)Data_custom_val(v);
+  return (cairo_surface_t *)ml_gir_record_ptr_val(v, "cairo_surface_t");
 }
 
 value Val_cairo_surface_t(const cairo_surface_t *ptr) {

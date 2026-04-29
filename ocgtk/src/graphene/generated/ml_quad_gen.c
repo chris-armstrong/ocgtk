@@ -18,7 +18,7 @@
 #if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 /* Conversion functions for graphene_quad_t (opaque record with hidden fields) */
 graphene_quad_t *graphene_quad_t_val(value v) {
-  return *(graphene_quad_t **)Data_custom_val(v);
+  return (graphene_quad_t *)ml_gir_record_ptr_val(v, "graphene_quad_t");
 }
 
 value Val_graphene_quad_t(const graphene_quad_t *ptr) {

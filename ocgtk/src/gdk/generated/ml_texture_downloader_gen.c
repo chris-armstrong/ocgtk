@@ -18,7 +18,7 @@
 #if GTK_CHECK_VERSION(4,10,0)
 /* Conversion functions for GdkTextureDownloader (opaque record with hidden fields) */
 GdkTextureDownloader *GdkTextureDownloader_val(value v) {
-  return *(GdkTextureDownloader **)Data_custom_val(v);
+  return (GdkTextureDownloader *)ml_gir_record_ptr_val(v, "GdkTextureDownloader");
 }
 
 value Val_GdkTextureDownloader(const GdkTextureDownloader *ptr) {

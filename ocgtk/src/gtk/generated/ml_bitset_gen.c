@@ -18,7 +18,7 @@
 
 /* Conversion functions for GtkBitset (opaque record with hidden fields) */
 GtkBitset *GtkBitset_val(value v) {
-  return *(GtkBitset **)Data_custom_val(v);
+  return (GtkBitset *)ml_gir_record_ptr_val(v, "GtkBitset");
 }
 
 value Val_GtkBitset(const GtkBitset *ptr) {

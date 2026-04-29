@@ -25,7 +25,7 @@
 
 /* Conversion functions for GSrvTarget (opaque record with hidden fields) */
 GSrvTarget *GSrvTarget_val(value v) {
-  return *(GSrvTarget **)Data_custom_val(v);
+  return (GSrvTarget *)ml_gir_record_ptr_val(v, "GSrvTarget");
 }
 
 value Val_GSrvTarget(const GSrvTarget *ptr) {

@@ -18,7 +18,7 @@
 #if PANGO_VERSION_CHECK(1,38,0)
 /* Conversion functions for PangoAttrFontFeatures (opaque record with hidden fields) */
 PangoAttrFontFeatures *PangoAttrFontFeatures_val(value v) {
-  return *(PangoAttrFontFeatures **)Data_custom_val(v);
+  return (PangoAttrFontFeatures *)ml_gir_record_ptr_val(v, "PangoAttrFontFeatures");
 }
 
 value Val_PangoAttrFontFeatures(const PangoAttrFontFeatures *ptr) {

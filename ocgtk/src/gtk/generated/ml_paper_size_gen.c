@@ -18,7 +18,7 @@
 
 /* Conversion functions for GtkPaperSize (opaque record with hidden fields) */
 GtkPaperSize *GtkPaperSize_val(value v) {
-  return *(GtkPaperSize **)Data_custom_val(v);
+  return (GtkPaperSize *)ml_gir_record_ptr_val(v, "GtkPaperSize");
 }
 
 value Val_GtkPaperSize(const GtkPaperSize *ptr) {

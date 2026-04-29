@@ -18,7 +18,7 @@
 #if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GdkDmabufFormats (opaque record with hidden fields) */
 GdkDmabufFormats *GdkDmabufFormats_val(value v) {
-  return *(GdkDmabufFormats **)Data_custom_val(v);
+  return (GdkDmabufFormats *)ml_gir_record_ptr_val(v, "GdkDmabufFormats");
 }
 
 value Val_GdkDmabufFormats(const GdkDmabufFormats *ptr) {

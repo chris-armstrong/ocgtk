@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoAttrLanguage (opaque record with hidden fields) */
 PangoAttrLanguage *PangoAttrLanguage_val(value v) {
-  return *(PangoAttrLanguage **)Data_custom_val(v);
+  return (PangoAttrLanguage *)ml_gir_record_ptr_val(v, "PangoAttrLanguage");
 }
 
 value Val_PangoAttrLanguage(const PangoAttrLanguage *ptr) {

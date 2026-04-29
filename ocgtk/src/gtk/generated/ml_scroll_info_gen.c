@@ -19,7 +19,7 @@
 #if GTK_CHECK_VERSION(4,12,0)
 /* Conversion functions for GtkScrollInfo (opaque record with hidden fields) */
 GtkScrollInfo *GtkScrollInfo_val(value v) {
-  return *(GtkScrollInfo **)Data_custom_val(v);
+  return (GtkScrollInfo *)ml_gir_record_ptr_val(v, "GtkScrollInfo");
 }
 
 value Val_GtkScrollInfo(const GtkScrollInfo *ptr) {

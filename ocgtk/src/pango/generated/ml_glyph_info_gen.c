@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoGlyphInfo (opaque record with hidden fields) */
 PangoGlyphInfo *PangoGlyphInfo_val(value v) {
-  return *(PangoGlyphInfo **)Data_custom_val(v);
+  return (PangoGlyphInfo *)ml_gir_record_ptr_val(v, "PangoGlyphInfo");
 }
 
 value Val_PangoGlyphInfo(const PangoGlyphInfo *ptr) {

@@ -17,7 +17,7 @@
 
 /* Conversion functions for GskColorStop (opaque record with hidden fields) */
 GskColorStop *GskColorStop_val(value v) {
-  return *(GskColorStop **)Data_custom_val(v);
+  return (GskColorStop *)ml_gir_record_ptr_val(v, "GskColorStop");
 }
 
 value Val_GskColorStop(const GskColorStop *ptr) {

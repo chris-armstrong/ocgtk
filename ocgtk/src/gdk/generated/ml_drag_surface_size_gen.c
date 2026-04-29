@@ -18,7 +18,7 @@
 #if GTK_CHECK_VERSION(4,12,0)
 /* Conversion functions for GdkDragSurfaceSize (opaque record with hidden fields) */
 GdkDragSurfaceSize *GdkDragSurfaceSize_val(value v) {
-  return *(GdkDragSurfaceSize **)Data_custom_val(v);
+  return (GdkDragSurfaceSize *)ml_gir_record_ptr_val(v, "GdkDragSurfaceSize");
 }
 
 value Val_GdkDragSurfaceSize(const GdkDragSurfaceSize *ptr) {

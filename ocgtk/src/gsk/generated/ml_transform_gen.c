@@ -17,7 +17,7 @@
 
 /* Conversion functions for GskTransform (opaque record with hidden fields) */
 GskTransform *GskTransform_val(value v) {
-  return *(GskTransform **)Data_custom_val(v);
+  return (GskTransform *)ml_gir_record_ptr_val(v, "GskTransform");
 }
 
 value Val_GskTransform(const GskTransform *ptr) {

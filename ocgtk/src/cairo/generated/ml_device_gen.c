@@ -17,7 +17,7 @@
 
 /* Conversion functions for cairo_device_t (opaque record with hidden fields) */
 cairo_device_t *cairo_device_t_val(value v) {
-  return *(cairo_device_t **)Data_custom_val(v);
+  return (cairo_device_t *)ml_gir_record_ptr_val(v, "cairo_device_t");
 }
 
 value Val_cairo_device_t(const cairo_device_t *ptr) {

@@ -25,7 +25,7 @@
 
 /* Conversion functions for GIOStreamAdapter (opaque record with hidden fields) */
 GIOStreamAdapter *GIOStreamAdapter_val(value v) {
-  return *(GIOStreamAdapter **)Data_custom_val(v);
+  return (GIOStreamAdapter *)ml_gir_record_ptr_val(v, "GIOStreamAdapter");
 }
 
 value Val_GIOStreamAdapter(const GIOStreamAdapter *ptr) {

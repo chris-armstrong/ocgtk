@@ -18,7 +18,7 @@
 #if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GskStroke (opaque record with hidden fields) */
 GskStroke *GskStroke_val(value v) {
-  return *(GskStroke **)Data_custom_val(v);
+  return (GskStroke *)ml_gir_record_ptr_val(v, "GskStroke");
 }
 
 value Val_GskStroke(const GskStroke *ptr) {
