@@ -21,7 +21,6 @@ val generate_ml_interface :
   methods:Types.gir_method list ->
   properties:Types.gir_property list ->
   ?c_symbol_prefix:string ->
-  ?record_base_type:string ->
   ?is_record:bool ->
   ?from_gobject_c_name:string ->
   unit ->
@@ -41,8 +40,13 @@ val generate_ml_interface :
     - methods: List of methods to generate
     - properties: List of properties to generate
     - c_symbol_prefix: Optional C symbol prefix for this class
-    - record_base_type: Optional base type for record types
-    - is_record: Whether this is a record type (default: false)
+    - is_record: Whether this entity is a record. The flag is forwarded to
+      the central [Filtering.should_skip_method_binding] predicate so that
+      copy/free/unref methods are filtered out for records (the gir_record
+      custom-block finalizer owns the wrapped pointer's lifetime; manual
+      destruction would race the GC). It does not affect the type-declaration
+      shape — records are emitted as [\[ \`tag... \] Gobject.obj] like
+      classes. Defaults to false.
     - from_gobject_c_name: Optional C function name for the from_gobject
       external
 

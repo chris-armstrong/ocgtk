@@ -583,6 +583,11 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
     | Implementation -> Gir_gen_lib.Generate.Ml_interface.Implementation
   in
 
+  let is_record =
+    match entity.Gir_gen_lib.Types.kind with
+    | Gir_gen_lib.Types.Record _ -> true
+    | _ -> false
+  in
   let content =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx ~output_mode
       ~class_name:entity.Gir_gen_lib.Types.name
@@ -592,7 +597,7 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
         (if List.length entity.Gir_gen_lib.Types.constructors > 0 then
            Some entity.Gir_gen_lib.Types.constructors
          else None)
-      ~methods:(Gir_gen_lib.Generate.Filtering.methods_for_emission entity)
+      ~methods:entity.Gir_gen_lib.Types.methods ~is_record
       ~properties:entity.Gir_gen_lib.Types.properties ?from_gobject_c_name ()
   in
 

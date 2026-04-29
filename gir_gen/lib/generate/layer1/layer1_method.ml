@@ -3,14 +3,14 @@
 open StdLabels
 open Printf
 open Types
-open C_stub_helpers
 
 (** Check if a method should be generated in the interface. Delegates to the
     shared [Filtering.should_skip_method_binding] so that layer 0 (C stubs) and
-    layer 1 (OCaml externals) agree on what is emitted. *)
+    layer 1 (OCaml externals) agree on what is emitted. The [is_record] flag
+    is forwarded so the predicate folds in the record copy/free/unref filter
+    in one place. *)
 let should_generate_method ~ctx ~is_record (meth : gir_method) =
-  (not (Filtering.should_skip_method_binding ~ctx meth))
-  && not (is_record && is_copy_or_free meth)
+  not (Filtering.should_skip_method_binding ~ctx ~is_record meth)
 
 (** Build the OCaml method signature type string *)
 let build_method_signature ~ctx ~class_name (meth : gir_method) =

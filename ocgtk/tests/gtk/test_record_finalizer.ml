@@ -1,31 +1,29 @@
 (** Test suite for the GType-aware gir_record finalizer.
 
     The custom-block finalizer in [ocgtk/src/common/wrappers.c] dispatches by
-    GType: boxed records (those whose GIR carries [glib:get-type]) are freed
-    via [g_boxed_free] so per-type destructors run; plain records fall back
-    to [g_free]. The generator threads the get-type call through
+    GType: boxed records (those whose GIR carries [glib:get-type]) are freed via
+    [g_boxed_free] so per-type destructors run; plain records fall back to
+    [g_free]. The generator threads the get-type call through
     [ml_gir_record_val_ptr_with_type], so [Val_GtkTreePath] et al. now record
-    the GType at allocation time. This file exercises the runtime side of
-    that contract using [GtkTreePath] — the canonical example called out in
-    the milestone-2 plan because [g_free] does not run [gtk_tree_path_free],
+    the GType at allocation time. This file exercises the runtime side of that
+    contract using [GtkTreePath] — the canonical example called out in the
+    milestone-2 plan because [g_free] does not run [gtk_tree_path_free],
     silently leaking the path's internal indices array.
 
     What the test would have caught had it run before the cleanup:
 
-    - The original bug. Allocating a path under [g_free]-only finalisation
-      leaks [path->indices] on every drop. The leak is silent under glibc
-      malloc; the boxed contract requires [gtk_tree_path_free] for
-      correctness because GTK may add internal bookkeeping that [g_free]
-      won't release.
+    - The original bug. Allocating a path under [g_free]-only finalisation leaks
+      [path->indices] on every drop. The leak is silent under glibc malloc; the
+      boxed contract requires [gtk_tree_path_free] for correctness because GTK
+      may add internal bookkeeping that [g_free] won't release.
 
-    - The layout regression I almost shipped. Switching the custom-block
-      payload from [void*] to [{GType, void*}] left the per-record
-      [<X>_val] accessor reading the GType slot and reinterpreting it as a
-      pointer. Any subsequent method call dereferences a tagged-int as a C
-      pointer and crashes. The accessor now routes through
-      [ml_gir_record_ptr_val] which knows the new layout. Running this test
-      against the regression set produces a SIGSEGV in the very first
-      method call; the fix lights it green. *)
+    - The layout regression I almost shipped. Switching the custom-block payload
+      from [void*] to [{GType, void*}] left the per-record [<X>_val] accessor
+      reading the GType slot and reinterpreting it as a pointer. Any subsequent
+      method call dereferences a tagged-int as a C pointer and crashes. The
+      accessor now routes through [ml_gir_record_ptr_val] which knows the new
+      layout. Running this test against the regression set produces a SIGSEGV in
+      the very first method call; the fix lights it green. *)
 
 open Alcotest
 open Ocgtk_gtk.Gtk
@@ -145,7 +143,8 @@ let () =
     [
       ( "TreePath round-trip",
         [
-          test_case "depth round-trip" `Quick (require_gtk test_depth_round_trip);
+          test_case "depth round-trip" `Quick
+            (require_gtk test_depth_round_trip);
           test_case "to_string" `Quick (require_gtk test_to_string);
         ] );
       ( "TreePath GC survival",

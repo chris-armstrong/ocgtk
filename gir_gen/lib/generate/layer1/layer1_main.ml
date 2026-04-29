@@ -4,11 +4,11 @@ open StdLabels
 open Printf
 open Types
 
-(** Generate type declaration for the module *)
-let generate_type_declaration ~output_mode ~is_record ~base_type buf =
-  match (is_record, output_mode) with
-  | true, Layer1_helpers.Interface -> bprintf buf "type t\n\n"
-  | _ -> bprintf buf "type t = %s\n\n" base_type
+(** Generate type declaration for the module. Both records and classes are
+    represented as [\[ tag... \] Gobject.obj], computed by the caller; we
+    just emit it. *)
+let generate_type_declaration ~output_mode:_ ~base_type buf =
+  bprintf buf "type t = %s\n\n" base_type
 
 (** Generate constructors section *)
 let generate_constructors_section ~ctx ~class_name ~constructors buf =
@@ -42,7 +42,7 @@ let generate_properties_section ~ctx ~class_name ~methods ~properties buf =
 let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ~base_type ?c_symbol_prefix
     ?(is_record = false) ?from_gobject_c_name buf =
-  generate_type_declaration ~output_mode ~is_record ~base_type buf;
+  generate_type_declaration ~output_mode ~base_type buf;
   (match from_gobject_c_name with
   | Some c_name ->
       bprintf buf "external from_gobject : 'a Gobject.obj -> t = \"%s\"\n\n"
@@ -55,12 +55,12 @@ let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
 
 let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
     ~parent_chain ~constructors ~methods ~properties ?c_symbol_prefix
-    ?record_base_type ?(is_record = false) ?from_gobject_c_name () =
+    ?(is_record = false) ?from_gobject_c_name () =
   let buf = Buffer.create 1024 in
 
   let class_type_name, base_type =
     Layer1_helpers.detect_class_hierarchy_names ~ctx ~class_name ~parent_chain
-      ?record_base_type ~is_record ()
+      ()
   in
 
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
@@ -79,6 +79,9 @@ let format_module_declaration buf module_name is_start =
   if is_start then bprintf buf "module rec %s" module_name
   else bprintf buf "\nand %s\n" module_name
 
+let entity_is_record (entity : entity) =
+  match entity.kind with Record _ -> true | _ -> false
+
 (** Generate module signature for a single entity *)
 let generate_module_signature ~ctx ~entity ~base_type ?from_gobject_c_name buf =
   let signature_contents =
@@ -88,7 +91,7 @@ let generate_module_signature ~ctx ~entity ~base_type ?from_gobject_c_name buf =
       ~constructors:
         (if List.length entity.constructors > 0 then Some entity.constructors
          else None)
-      ~methods:(Filtering.methods_for_emission entity)
+      ~methods:entity.methods ~is_record:(entity_is_record entity)
       ~properties:entity.properties ~base_type ?from_gobject_c_name inner_buf;
     Buffer.contents inner_buf
   in
@@ -104,7 +107,7 @@ let generate_module_implementation ~ctx ~output_mode ~entity ~base_type
       ~constructors:
         (if List.length entity.constructors > 0 then Some entity.constructors
          else None)
-      ~methods:(Filtering.methods_for_emission entity)
+      ~methods:entity.methods ~is_record:(entity_is_record entity)
       ~properties:entity.properties ?from_gobject_c_name inner_buf;
     Buffer.contents inner_buf
   in

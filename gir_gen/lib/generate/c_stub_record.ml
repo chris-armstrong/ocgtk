@@ -271,8 +271,7 @@ let generate_record_c_code ~ctx (record : gir_record) =
 
   C_stub_helpers.generate_methods ~ctx ~c_type:record.c_type
     ~class_name:record.record_name ~buf
-    ~generator:generate_record_method_with_guards
-    ~extra_filter:(fun meth -> not (C_stub_helpers.is_copy_or_free meth))
+    ~generator:generate_record_method_with_guards ~is_record:true
     record.methods;
 
   Buffer.contents buf
