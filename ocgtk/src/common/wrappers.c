@@ -103,7 +103,6 @@ CAMLexport value copy_memblock_indirected(void *src, asize_t size)
 
 static void finalize_gir_record(value v) {
     void *ptr = *((void**)Data_custom_val(v));
-    printf("[d] %p\n", (void*)v);
     if (ptr != NULL) g_free(ptr);
 }
 
@@ -153,10 +152,7 @@ CAMLexport const void *ml_gir_record_ptr_val(value v, const char *type_name) {
 static void finalize_gobject(value v) {
     void *ptr = *((void**)Data_custom_val(v));
     if (ptr != NULL) {
-        GObject* gobj = G_OBJECT(ptr);
-        GType type = G_OBJECT_TYPE(gobj);
-        g_object_unref(gobj);
-        printf("[f][obj]  %s %p\n", g_type_name(type), ptr);
+        g_object_unref(G_OBJECT(ptr));
     }
 }
 
