@@ -721,12 +721,6 @@ and Layout_iter : sig
       Layout coordinates have the origin at the top left of the entire layout.
   *)
 
-  external free : t -> unit = "ml_pango_layout_iter_free"
-  (** Frees an iterator that's no longer in use. *)
-
-  external copy : t -> t option = "ml_pango_layout_iter_copy"
-  (** Copies a `PangoLayoutIter`. *)
-
   external at_last_line : t -> bool = "ml_pango_layout_iter_at_last_line"
   (** Determines whether @iter is on the last line of the layout. *)
 end

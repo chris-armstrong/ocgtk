@@ -30,7 +30,7 @@ GSettingsSchemaKey *GSettingsSchemaKey_val(value v) {
 
 value Val_GSettingsSchemaKey(const GSettingsSchemaKey *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_settings_schema_key_get_type(), ptr);
 }
 
 value Val_GSettingsSchemaKey_option(const GSettingsSchemaKey *ptr) {

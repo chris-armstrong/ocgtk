@@ -1,7 +1,6 @@
 class type vec3_t = object
   method dot : Vec3_and__vec4.Vec3.t -> float
   method equal : Vec3_and__vec4.Vec3.t -> bool
-  method free : unit -> unit
   method get_x : unit -> float
   method get_y : unit -> float
   method get_z : unit -> float
@@ -16,7 +15,6 @@ end
 and vec4_t = object
   method dot : Vec3_and__vec4.Vec4.t -> float
   method equal : Vec3_and__vec4.Vec4.t -> bool
-  method free : unit -> unit
   method get_w : unit -> float
   method get_x : unit -> float
   method get_y : unit -> float

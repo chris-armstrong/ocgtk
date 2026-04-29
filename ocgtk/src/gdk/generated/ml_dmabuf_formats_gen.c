@@ -23,7 +23,7 @@ GdkDmabufFormats *GdkDmabufFormats_val(value v) {
 
 value Val_GdkDmabufFormats(const GdkDmabufFormats *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gdk_dmabuf_formats_get_type(), ptr);
 }
 
 value Val_GdkDmabufFormats_option(const GdkDmabufFormats *ptr) {

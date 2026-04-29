@@ -31,7 +31,7 @@ GDBusInterfaceInfo *GDBusInterfaceInfo_val(value v) {
 
 value Val_GDBusInterfaceInfo(const GDBusInterfaceInfo *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_dbus_interface_info_get_type(), ptr);
 }
 
 value Val_GDBusInterfaceInfo_option(const GDBusInterfaceInfo *ptr) {

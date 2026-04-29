@@ -22,7 +22,7 @@ PangoLanguage *PangoLanguage_val(value v) {
 
 value Val_PangoLanguage(const PangoLanguage *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(pango_language_get_type(), ptr);
 }
 
 value Val_PangoLanguage_option(const PangoLanguage *ptr) {

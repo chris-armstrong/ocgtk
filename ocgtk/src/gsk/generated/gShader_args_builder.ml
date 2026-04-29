@@ -8,7 +8,6 @@ class type shader_args_builder_t = object
   method set_vec3 : int -> Ocgtk_graphene.Graphene.Vec3.vec3_t -> unit
   method set_vec4 : int -> Ocgtk_graphene.Graphene.Vec4.vec4_t -> unit
   method to_args : unit -> Glib_bytes.t
-  method unref : unit -> unit
   method as_shader_args_builder : Shader_args_builder.t
 end
 
@@ -49,7 +48,6 @@ class shader_args_builder (obj : Shader_args_builder.t) : shader_args_builder_t
     method to_args : unit -> Glib_bytes.t =
       fun () -> Shader_args_builder.to_args obj
 
-    method unref : unit -> unit = fun () -> Shader_args_builder.unref obj
     method as_shader_args_builder = obj
   end
 

@@ -30,7 +30,7 @@ GFileAttributeMatcher *GFileAttributeMatcher_val(value v) {
 
 value Val_GFileAttributeMatcher(const GFileAttributeMatcher *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_file_attribute_matcher_get_type(), ptr);
 }
 
 value Val_GFileAttributeMatcher_option(const GFileAttributeMatcher *ptr) {

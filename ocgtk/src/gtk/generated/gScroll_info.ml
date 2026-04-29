@@ -4,7 +4,6 @@ class type scroll_info_t = object
   method ref : unit -> Scroll_info.t
   method set_enable_horizontal : bool -> unit
   method set_enable_vertical : bool -> unit
-  method unref : unit -> unit
   method as_scroll_info : Scroll_info.t
 end
 
@@ -25,7 +24,6 @@ class scroll_info (obj : Scroll_info.t) : scroll_info_t =
     method set_enable_vertical : bool -> unit =
       fun vertical -> Scroll_info.set_enable_vertical obj vertical
 
-    method unref : unit -> unit = fun () -> Scroll_info.unref obj
     method as_scroll_info = obj
   end
 

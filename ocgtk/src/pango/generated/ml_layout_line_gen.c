@@ -22,7 +22,7 @@ PangoLayoutLine *PangoLayoutLine_val(value v) {
 
 value Val_PangoLayoutLine(const PangoLayoutLine *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(pango_layout_line_get_type(), ptr);
 }
 
 value Val_PangoLayoutLine_option(const PangoLayoutLine *ptr) {

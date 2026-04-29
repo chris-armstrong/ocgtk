@@ -21,7 +21,7 @@ value copy_GtkBorder(const GtkBorder *ptr)
 {
   if (ptr == NULL) return Val_none;
   GtkBorder *copy = gtk_border_copy((GtkBorder*)ptr);
-  return ml_gir_record_val_ptr(copy);
+  return ml_gir_record_val_ptr_with_type(gtk_border_get_type(), copy);
 }
 
 

@@ -10,9 +10,3 @@ external new_ : unit -> t = "ml_gtk_border_new"
 (** Create a new Border *)
 
 (* Methods *)
-
-external free : t -> unit = "ml_gtk_border_free"
-(** Frees a `GtkBorder`. *)
-
-external copy : t -> t = "ml_gtk_border_copy"
-(** Copies a `GtkBorder`. *)

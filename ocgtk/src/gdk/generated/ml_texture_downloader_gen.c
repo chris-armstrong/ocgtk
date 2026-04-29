@@ -23,7 +23,7 @@ GdkTextureDownloader *GdkTextureDownloader_val(value v) {
 
 value Val_GdkTextureDownloader(const GdkTextureDownloader *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gdk_texture_downloader_get_type(), ptr);
 }
 
 value Val_GdkTextureDownloader_option(const GdkTextureDownloader *ptr) {

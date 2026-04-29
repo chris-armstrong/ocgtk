@@ -6,11 +6,6 @@ module rec Path : sig
 
   (* Methods *)
 
-  external unref : t -> unit = "ml_gsk_path_unref"
-  (** Decreases the reference count of a `GskPath` by one.
-
-      If the resulting reference count is zero, frees the path. *)
-
   external to_string : t -> string = "ml_gsk_path_to_string"
   (** Converts the path into a string that is suitable for printing.
 
@@ -114,11 +109,6 @@ and Path_measure : sig
 
   (* Methods *)
 
-  external unref : t -> unit = "ml_gsk_path_measure_unref"
-  (** Decreases the reference count of a `GskPathMeasure` by one.
-
-      If the resulting reference count is zero, frees the object. *)
-
   external ref : t -> t = "ml_gsk_path_measure_ref"
   (** Increases the reference count of a `GskPathMeasure` by one. *)
 
@@ -211,8 +201,6 @@ and Path_point : sig
     <img alt="Osculating circle" src="curvature-light.png">
   </picture> *)
 
-  external free : t -> unit = "ml_gsk_path_point_free"
-
   external equal : t -> t -> bool = "ml_gsk_path_point_equal"
   (** Returns whether the two path points refer to the same location on all
       paths.
@@ -221,8 +209,6 @@ and Path_point : sig
       nonequal according to this definition. Use [method@Gsk.Path.is_closed] to
       find out if the start- and endpoint of a concrete path refer to the same
       location. *)
-
-  external copy : t -> t = "ml_gsk_path_point_copy"
 
   external compare : t -> t -> int = "ml_gsk_path_point_compare"
   (** Returns whether @point1 is before or after @point2. *)

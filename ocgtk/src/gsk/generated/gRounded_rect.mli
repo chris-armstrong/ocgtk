@@ -10,8 +10,6 @@ class type rounded_rect_t = object
     Ocgtk_graphene.Graphene.Size.size_t ->
     Rounded_rect.t
 
-  method init_copy : Rounded_rect.t -> Rounded_rect.t
-
   method init_from_rect :
     Ocgtk_graphene.Graphene.Rect.rect_t -> float -> Rounded_rect.t
 

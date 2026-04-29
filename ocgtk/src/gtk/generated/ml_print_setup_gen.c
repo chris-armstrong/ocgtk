@@ -24,7 +24,7 @@ GtkPrintSetup *GtkPrintSetup_val(value v) {
 
 value Val_GtkPrintSetup(const GtkPrintSetup *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gtk_print_setup_get_type(), ptr);
 }
 
 value Val_GtkPrintSetup_option(const GtkPrintSetup *ptr) {

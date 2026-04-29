@@ -5,7 +5,6 @@ class type box_t = object
   method contains_box : Box_and__sphere.Box.t -> bool
   method contains_point : Point3_d.t -> bool
   method equal : Box_and__sphere.Box.t -> bool
-  method free : unit -> unit
   method get_depth : unit -> float
   method get_height : unit -> float
   method get_width : unit -> float
@@ -28,7 +27,6 @@ and sphere_t = object
   method contains_point : Point3_d.t -> bool
   method distance : Point3_d.t -> float
   method equal : Box_and__sphere.Sphere.t -> bool
-  method free : unit -> unit
   method get_radius : unit -> float
   method init : Point3_d.t option -> float -> Box_and__sphere.Sphere.t
 
@@ -55,8 +53,6 @@ class box (obj : Box_and__sphere.Box.t) : box_t =
 
     method equal : Box_and__sphere.Box.t -> bool =
       fun b -> Box_and__sphere.Box.equal obj b
-
-    method free : unit -> unit = fun () -> Box_and__sphere.Box.free obj
 
     method get_depth : unit -> float =
       fun () -> Box_and__sphere.Box.get_depth obj
@@ -102,8 +98,6 @@ and sphere (obj : Box_and__sphere.Sphere.t) : sphere_t =
 
     method equal : Box_and__sphere.Sphere.t -> bool =
       fun b -> Box_and__sphere.Sphere.equal obj b
-
-    method free : unit -> unit = fun () -> Box_and__sphere.Sphere.free obj
 
     method get_radius : unit -> float =
       fun () -> Box_and__sphere.Sphere.get_radius obj

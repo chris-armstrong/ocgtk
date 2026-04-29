@@ -23,7 +23,7 @@ graphene_euler_t *graphene_euler_t_val(value v) {
 
 value Val_graphene_euler_t(const graphene_euler_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(graphene_euler_get_type(), ptr);
 }
 
 value Val_graphene_euler_t_option(const graphene_euler_t *ptr) {

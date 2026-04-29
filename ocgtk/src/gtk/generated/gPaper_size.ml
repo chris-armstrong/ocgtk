@@ -1,6 +1,4 @@
 class type paper_size_t = object
-  method copy : unit -> Paper_size.t
-  method free : unit -> unit
   method get_default_bottom_margin : Gtk_enums.unit -> float
   method get_default_left_margin : Gtk_enums.unit -> float
   method get_default_right_margin : Gtk_enums.unit -> float
@@ -21,9 +19,6 @@ end
 (* High-level class for PaperSize *)
 class paper_size (obj : Paper_size.t) : paper_size_t =
   object (self)
-    method copy : unit -> Paper_size.t = fun () -> Paper_size.copy obj
-    method free : unit -> unit = fun () -> Paper_size.free obj
-
     method get_default_bottom_margin : Gtk_enums.unit -> float =
       fun unit -> Paper_size.get_default_bottom_margin obj unit
 

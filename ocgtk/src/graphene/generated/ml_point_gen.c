@@ -23,7 +23,7 @@ graphene_point_t *graphene_point_t_val(value v) {
 
 value Val_graphene_point_t(const graphene_point_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(graphene_point_get_type(), ptr);
 }
 
 value Val_graphene_point_t_option(const graphene_point_t *ptr) {

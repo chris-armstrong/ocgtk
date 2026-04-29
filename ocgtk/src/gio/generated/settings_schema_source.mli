@@ -10,9 +10,6 @@ external new_from_directory : string -> t option -> bool -> (t, GError.t) result
 
 (* Methods *)
 
-external unref : t -> unit = "ml_g_settings_schema_source_unref"
-(** Decrease the reference count of @source, possibly freeing it. *)
-
 external ref : t -> t = "ml_g_settings_schema_source_ref"
 (** Increase the reference count of @source, returning a new reference. *)
 

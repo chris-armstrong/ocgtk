@@ -22,7 +22,7 @@ PangoLayoutIter *PangoLayoutIter_val(value v) {
 
 value Val_PangoLayoutIter(const PangoLayoutIter *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(pango_layout_iter_get_type(), ptr);
 }
 
 value Val_PangoLayoutIter_option(const PangoLayoutIter *ptr) {

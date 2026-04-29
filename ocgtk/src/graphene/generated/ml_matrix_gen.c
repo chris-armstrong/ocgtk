@@ -22,7 +22,7 @@ graphene_matrix_t *graphene_matrix_t_val(value v) {
 
 value Val_graphene_matrix_t(const graphene_matrix_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(graphene_matrix_get_type(), ptr);
 }
 
 value Val_graphene_matrix_t_option(const graphene_matrix_t *ptr) {

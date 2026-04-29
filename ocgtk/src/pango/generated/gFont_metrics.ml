@@ -9,7 +9,6 @@ class type font_metrics_t = object
   method get_underline_position : unit -> int
   method get_underline_thickness : unit -> int
   method ref : unit -> Font_metrics.t option
-  method unref : unit -> unit
   method as_font_metrics : Font_metrics.t
 end
 
@@ -39,6 +38,5 @@ class font_metrics (obj : Font_metrics.t) : font_metrics_t =
       fun () -> Font_metrics.get_underline_thickness obj
 
     method ref : unit -> Font_metrics.t option = fun () -> Font_metrics.ref obj
-    method unref : unit -> unit = fun () -> Font_metrics.unref obj
     method as_font_metrics = obj
   end

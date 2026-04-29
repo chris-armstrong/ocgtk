@@ -179,9 +179,6 @@ external get_bottom_left : t -> Point.t = "ml_graphene_rect_get_bottom_left"
 external get_area : t -> float = "ml_graphene_rect_get_area"
 (** Compute the area of given normalized rectangle. *)
 
-external free : t -> unit = "ml_graphene_rect_free"
-(** Frees the resources allocated by graphene_rect_alloc(). *)
-
 external expand : t -> Point.t -> t = "ml_graphene_rect_expand"
 (** Expands a #graphene_rect_t to contain the given #graphene_point_t. *)
 

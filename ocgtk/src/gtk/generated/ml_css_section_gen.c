@@ -23,7 +23,7 @@ GtkCssSection *GtkCssSection_val(value v) {
 
 value Val_GtkCssSection(const GtkCssSection *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gtk_css_section_get_type(), ptr);
 }
 
 value Val_GtkCssSection_option(const GtkCssSection *ptr) {

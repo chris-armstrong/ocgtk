@@ -1,6 +1,4 @@
 class type pixbuf_format_t = object
-  method copy : unit -> Pixbuf_format.t
-  method free : unit -> unit
   method get_description : unit -> string
   method get_extensions : unit -> string array
   method get_license : unit -> string

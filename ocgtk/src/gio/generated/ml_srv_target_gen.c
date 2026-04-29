@@ -30,7 +30,7 @@ GSrvTarget *GSrvTarget_val(value v) {
 
 value Val_GSrvTarget(const GSrvTarget *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_srv_target_get_type(), ptr);
 }
 
 value Val_GSrvTarget_option(const GSrvTarget *ptr) {

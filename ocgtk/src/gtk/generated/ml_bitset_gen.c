@@ -23,7 +23,7 @@ GtkBitset *GtkBitset_val(value v) {
 
 value Val_GtkBitset(const GtkBitset *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gtk_bitset_get_type(), ptr);
 }
 
 value Val_GtkBitset_option(const GtkBitset *ptr) {

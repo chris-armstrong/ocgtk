@@ -22,7 +22,7 @@ GdkContentFormatsBuilder *GdkContentFormatsBuilder_val(value v) {
 
 value Val_GdkContentFormatsBuilder(const GdkContentFormatsBuilder *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gdk_content_formats_builder_get_type(), ptr);
 }
 
 value Val_GdkContentFormatsBuilder_option(const GdkContentFormatsBuilder *ptr) {

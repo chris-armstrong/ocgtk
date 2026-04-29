@@ -23,7 +23,7 @@ GtkTreePath *GtkTreePath_val(value v) {
 
 value Val_GtkTreePath(const GtkTreePath *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gtk_tree_path_get_type(), ptr);
 }
 
 value Val_GtkTreePath_option(const GtkTreePath *ptr) {

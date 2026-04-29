@@ -21,7 +21,7 @@ value copy_GtkRequisition(const GtkRequisition *ptr)
 {
   if (ptr == NULL) return Val_none;
   GtkRequisition *copy = gtk_requisition_copy((GtkRequisition*)ptr);
-  return ml_gir_record_val_ptr(copy);
+  return ml_gir_record_val_ptr_with_type(gtk_requisition_get_type(), copy);
 }
 
 

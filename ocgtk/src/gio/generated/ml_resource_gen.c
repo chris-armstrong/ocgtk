@@ -31,7 +31,7 @@ GResource *GResource_val(value v) {
 
 value Val_GResource(const GResource *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_resource_get_type(), ptr);
 }
 
 value Val_GResource_option(const GResource *ptr) {

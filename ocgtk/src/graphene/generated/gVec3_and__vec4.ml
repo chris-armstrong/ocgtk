@@ -4,7 +4,6 @@
 class type vec3_t = object
   method dot : Vec3_and__vec4.Vec3.t -> float
   method equal : Vec3_and__vec4.Vec3.t -> bool
-  method free : unit -> unit
   method get_x : unit -> float
   method get_y : unit -> float
   method get_z : unit -> float
@@ -19,7 +18,6 @@ end
 and vec4_t = object
   method dot : Vec3_and__vec4.Vec4.t -> float
   method equal : Vec3_and__vec4.Vec4.t -> bool
-  method free : unit -> unit
   method get_w : unit -> float
   method get_x : unit -> float
   method get_y : unit -> float
@@ -45,7 +43,6 @@ class vec3 (obj : Vec3_and__vec4.Vec3.t) : vec3_t =
     method equal : Vec3_and__vec4.Vec3.t -> bool =
       fun v2 -> Vec3_and__vec4.Vec3.equal obj v2
 
-    method free : unit -> unit = fun () -> Vec3_and__vec4.Vec3.free obj
     method get_x : unit -> float = fun () -> Vec3_and__vec4.Vec3.get_x obj
     method get_y : unit -> float = fun () -> Vec3_and__vec4.Vec3.get_y obj
     method get_z : unit -> float = fun () -> Vec3_and__vec4.Vec3.get_z obj
@@ -75,7 +72,6 @@ and vec4 (obj : Vec3_and__vec4.Vec4.t) : vec4_t =
     method equal : Vec3_and__vec4.Vec4.t -> bool =
       fun v2 -> Vec3_and__vec4.Vec4.equal obj v2
 
-    method free : unit -> unit = fun () -> Vec3_and__vec4.Vec4.free obj
     method get_w : unit -> float = fun () -> Vec3_and__vec4.Vec4.get_w obj
     method get_x : unit -> float = fun () -> Vec3_and__vec4.Vec4.get_x obj
     method get_y : unit -> float = fun () -> Vec3_and__vec4.Vec4.get_y obj

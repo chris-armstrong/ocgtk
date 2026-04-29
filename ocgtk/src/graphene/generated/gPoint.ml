@@ -1,6 +1,5 @@
 class type point_t = object
   method equal : Point.t -> bool
-  method free : unit -> unit
   method init : float -> float -> Point.t
   method init_from_point : Point.t -> Point.t
   method init_from_vec2 : Vec2.t -> Point.t
@@ -12,7 +11,6 @@ end
 class point (obj : Point.t) : point_t =
   object (self)
     method equal : Point.t -> bool = fun b -> Point.equal obj b
-    method free : unit -> unit = fun () -> Point.free obj
     method init : float -> float -> Point.t = fun x y -> Point.init obj x y
 
     method init_from_point : Point.t -> Point.t =

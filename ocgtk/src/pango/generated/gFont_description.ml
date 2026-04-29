@@ -1,9 +1,7 @@
 class type font_description_t = object
   method better_match : Font_description.t option -> Font_description.t -> bool
-  method copy : unit -> Font_description.t option
   method copy_static : unit -> Font_description.t option
   method equal : Font_description.t -> bool
-  method free : unit -> unit
   method get_family : unit -> string option
   method get_gravity : unit -> Pango_enums.gravity
   method get_set_fields : unit -> Pango_enums.fontmask
@@ -42,16 +40,11 @@ class font_description (obj : Font_description.t) : font_description_t =
       fun old_match new_match ->
         Font_description.better_match obj old_match new_match
 
-    method copy : unit -> Font_description.t option =
-      fun () -> Font_description.copy obj
-
     method copy_static : unit -> Font_description.t option =
       fun () -> Font_description.copy_static obj
 
     method equal : Font_description.t -> bool =
       fun desc2 -> Font_description.equal obj desc2
-
-    method free : unit -> unit = fun () -> Font_description.free obj
 
     method get_family : unit -> string option =
       fun () -> Font_description.get_family obj

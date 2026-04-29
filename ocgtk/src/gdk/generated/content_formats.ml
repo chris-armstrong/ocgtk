@@ -43,11 +43,6 @@ external new_for_gtype : int -> t = "ml_gdk_content_formats_new_for_gtype"
 
 (* Methods *)
 
-external unref : t -> unit = "ml_gdk_content_formats_unref"
-(** Decreases the reference count of a `GdkContentFormats` by one.
-
-    If the resulting reference count is zero, frees the formats. *)
-
 external union_serialize_mime_types : t -> t
   = "ml_gdk_content_formats_union_serialize_mime_types"
 (** Add mime types for GTypes in @formats for which serializers are

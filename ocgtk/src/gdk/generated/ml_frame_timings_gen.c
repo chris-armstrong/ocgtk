@@ -22,7 +22,7 @@ GdkFrameTimings *GdkFrameTimings_val(value v) {
 
 value Val_GdkFrameTimings(const GdkFrameTimings *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gdk_frame_timings_get_type(), ptr);
 }
 
 value Val_GdkFrameTimings_option(const GdkFrameTimings *ptr) {

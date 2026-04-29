@@ -4,7 +4,6 @@ class type content_formats_builder_t = object
   method add_mime_type : string -> unit
   method ref : unit -> Content_formats_builder.t
   method to_formats : unit -> Content_formats.t
-  method unref : unit -> unit
   method as_content_formats_builder : Content_formats_builder.t
 end
 
@@ -27,7 +26,6 @@ class content_formats_builder (obj : Content_formats_builder.t) :
     method to_formats : unit -> Content_formats.t =
       fun () -> Content_formats_builder.to_formats obj
 
-    method unref : unit -> unit = fun () -> Content_formats_builder.unref obj
     method as_content_formats_builder = obj
   end
 

@@ -28,9 +28,6 @@ external equal : t -> t -> bool = "ml_pango_attribute_equal"
 external destroy : t -> unit = "ml_pango_attribute_destroy"
 (** Destroy a `PangoAttribute` and free all associated memory. *)
 
-external copy : t -> t = "ml_pango_attribute_copy"
-(** Make a copy of an attribute. *)
-
 external as_string : t -> Attr_string.t option = "ml_pango_attribute_as_string"
 (** Returns the attribute cast to `PangoAttrString`.
 

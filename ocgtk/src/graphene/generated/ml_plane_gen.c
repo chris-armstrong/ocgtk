@@ -23,7 +23,7 @@ graphene_plane_t *graphene_plane_t_val(value v) {
 
 value Val_graphene_plane_t(const graphene_plane_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(graphene_plane_get_type(), ptr);
 }
 
 value Val_graphene_plane_t_option(const graphene_plane_t *ptr) {

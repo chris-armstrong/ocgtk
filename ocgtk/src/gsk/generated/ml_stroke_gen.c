@@ -23,7 +23,7 @@ GskStroke *GskStroke_val(value v) {
 
 value Val_GskStroke(const GskStroke *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gsk_stroke_get_type(), ptr);
 }
 
 value Val_GskStroke_option(const GskStroke *ptr) {

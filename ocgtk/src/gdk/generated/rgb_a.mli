@@ -64,13 +64,5 @@ external hash : t -> int = "ml_gdk_rgba_hash"
 (** A hash function suitable for using for a hash table that stores `GdkRGBA`s.
 *)
 
-external free : t -> unit = "ml_gdk_rgba_free"
-(** Frees a `GdkRGBA`. *)
-
 external equal : t -> t -> bool = "ml_gdk_rgba_equal"
 (** Compares two `GdkRGBA` colors. *)
-
-external copy : t -> t = "ml_gdk_rgba_copy"
-(** Makes a copy of a `GdkRGBA`.
-
-    The result must be freed through [method@Gdk.RGBA.free]. *)

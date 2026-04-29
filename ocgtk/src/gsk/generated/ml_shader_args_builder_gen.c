@@ -22,7 +22,7 @@ GskShaderArgsBuilder *GskShaderArgsBuilder_val(value v) {
 
 value Val_GskShaderArgsBuilder(const GskShaderArgsBuilder *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gsk_shader_args_builder_get_type(), ptr);
 }
 
 value Val_GskShaderArgsBuilder_option(const GskShaderArgsBuilder *ptr) {

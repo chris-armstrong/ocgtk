@@ -81,9 +81,6 @@ module rec Box : sig
   (** Computes the bounding #graphene_sphere_t capable of containing the given
       #graphene_box_t. *)
 
-  external free : t -> unit = "ml_graphene_box_free"
-  (** Frees the resources allocated by graphene_box_alloc(). *)
-
   external expand_vec3 : t -> Vec3_and__vec4.Vec3.t -> t
     = "ml_graphene_box_expand_vec3"
   (** Expands the dimensions of @box to include the coordinates of the
@@ -188,9 +185,6 @@ end = struct
   (** Computes the bounding #graphene_sphere_t capable of containing the given
       #graphene_box_t. *)
 
-  external free : t -> unit = "ml_graphene_box_free"
-  (** Frees the resources allocated by graphene_box_alloc(). *)
-
   external expand_vec3 : t -> Vec3_and__vec4.Vec3.t -> t
     = "ml_graphene_box_expand_vec3"
   (** Expands the dimensions of @box to include the coordinates of the
@@ -264,9 +258,6 @@ and Sphere : sig
   (** Computes the bounding box capable of containing the given
       #graphene_sphere_t. *)
 
-  external free : t -> unit = "ml_graphene_sphere_free"
-  (** Frees the resources allocated by graphene_sphere_alloc(). *)
-
   external equal : t -> t -> bool = "ml_graphene_sphere_equal"
   (** Checks whether two #graphene_sphere_t are equal. *)
 
@@ -324,9 +315,6 @@ end = struct
   external get_bounding_box : t -> Box.t = "ml_graphene_sphere_get_bounding_box"
   (** Computes the bounding box capable of containing the given
       #graphene_sphere_t. *)
-
-  external free : t -> unit = "ml_graphene_sphere_free"
-  (** Frees the resources allocated by graphene_sphere_alloc(). *)
 
   external equal : t -> t -> bool = "ml_graphene_sphere_equal"
   (** Checks whether two #graphene_sphere_t are equal. *)

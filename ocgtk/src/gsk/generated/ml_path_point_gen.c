@@ -21,7 +21,7 @@ value copy_GskPathPoint(const GskPathPoint *ptr)
 {
   if (ptr == NULL) return Val_none;
   GskPathPoint *copy = gsk_path_point_copy((GskPathPoint*)ptr);
-  return ml_gir_record_val_ptr(copy);
+  return ml_gir_record_val_ptr_with_type(gsk_path_point_get_type(), copy);
 }
 #endif
 

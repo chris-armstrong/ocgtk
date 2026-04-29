@@ -31,7 +31,7 @@ GSettingsSchemaSource *GSettingsSchemaSource_val(value v) {
 
 value Val_GSettingsSchemaSource(const GSettingsSchemaSource *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_settings_schema_source_get_type(), ptr);
 }
 
 value Val_GSettingsSchemaSource_option(const GSettingsSchemaSource *ptr) {

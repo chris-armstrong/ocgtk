@@ -21,7 +21,7 @@ value copy_PangoMatrix(const PangoMatrix *ptr)
 {
   if (ptr == NULL) return Val_none;
   PangoMatrix *copy = pango_matrix_copy((PangoMatrix*)ptr);
-  return ml_gir_record_val_ptr(copy);
+  return ml_gir_record_val_ptr_with_type(pango_matrix_get_type(), copy);
 }
 #endif
 

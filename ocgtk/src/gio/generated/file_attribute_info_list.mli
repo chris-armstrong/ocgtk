@@ -10,10 +10,6 @@ external new_ : unit -> t = "ml_g_file_attribute_info_list_new"
 
 (* Methods *)
 
-external unref : t -> unit = "ml_g_file_attribute_info_list_unref"
-(** Removes a reference from the given @list. If the reference count
-falls to zero, the @list is deleted. *)
-
 external ref : t -> t = "ml_g_file_attribute_info_list_ref"
 (** References a file attribute info list. *)
 

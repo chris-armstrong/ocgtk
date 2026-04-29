@@ -22,7 +22,7 @@ PangoAttrList *PangoAttrList_val(value v) {
 
 value Val_PangoAttrList(const PangoAttrList *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(pango_attr_list_get_type(), ptr);
 }
 
 value Val_PangoAttrList_option(const PangoAttrList *ptr) {

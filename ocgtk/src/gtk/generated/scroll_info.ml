@@ -14,11 +14,6 @@ external new_ : unit -> t = "ml_gtk_scroll_info_new"
 
 (* Methods *)
 
-external unref : t -> unit = "ml_gtk_scroll_info_unref"
-(** Decreases the reference count of a `GtkScrollInfo` by one.
-
-    If the resulting reference count is zero, frees the self. *)
-
 external set_enable_vertical : t -> bool -> unit
   = "ml_gtk_scroll_info_set_enable_vertical"
 (** Turns vertical scrolling on or off. *)

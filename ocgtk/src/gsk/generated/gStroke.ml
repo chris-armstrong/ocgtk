@@ -1,6 +1,4 @@
 class type stroke_t = object
-  method copy : unit -> Stroke.t
-  method free : unit -> unit
   method get_dash_offset : unit -> float
   method get_line_cap : unit -> Gsk_enums.linecap
   method get_line_join : unit -> Gsk_enums.linejoin
@@ -19,9 +17,6 @@ end
 (* High-level class for Stroke *)
 class stroke (obj : Stroke.t) : stroke_t =
   object (self)
-    method copy : unit -> Stroke.t = fun () -> Stroke.copy obj
-    method free : unit -> unit = fun () -> Stroke.free obj
-
     method get_dash_offset : unit -> float =
       fun () -> Stroke.get_dash_offset obj
 

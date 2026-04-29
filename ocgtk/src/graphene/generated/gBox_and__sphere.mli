@@ -2,7 +2,6 @@ class type box_t = object
   method contains_box : Box_and__sphere.Box.t -> bool
   method contains_point : Point3_d.t -> bool
   method equal : Box_and__sphere.Box.t -> bool
-  method free : unit -> unit
   method get_depth : unit -> float
   method get_height : unit -> float
   method get_width : unit -> float
@@ -25,7 +24,6 @@ and sphere_t = object
   method contains_point : Point3_d.t -> bool
   method distance : Point3_d.t -> float
   method equal : Box_and__sphere.Sphere.t -> bool
-  method free : unit -> unit
   method get_radius : unit -> float
   method init : Point3_d.t option -> float -> Box_and__sphere.Sphere.t
 

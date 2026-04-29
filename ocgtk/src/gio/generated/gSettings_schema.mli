@@ -6,7 +6,6 @@ class type settings_schema_t = object
   method list_children : unit -> string array
   method list_keys : unit -> string array
   method ref : unit -> Settings_schema.t
-  method unref : unit -> unit
   method as_settings_schema : Settings_schema.t
 end
 

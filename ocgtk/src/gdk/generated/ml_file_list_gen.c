@@ -23,7 +23,7 @@ GdkFileList *GdkFileList_val(value v) {
 
 value Val_GdkFileList(const GdkFileList *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gdk_file_list_get_type(), ptr);
 }
 
 value Val_GdkFileList_option(const GdkFileList *ptr) {

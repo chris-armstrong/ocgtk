@@ -31,7 +31,7 @@ GDBusPropertyInfo *GDBusPropertyInfo_val(value v) {
 
 value Val_GDBusPropertyInfo(const GDBusPropertyInfo *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_dbus_property_info_get_type(), ptr);
 }
 
 value Val_GDBusPropertyInfo_option(const GDBusPropertyInfo *ptr) {

@@ -44,7 +44,6 @@ class type path_builder_t = object
     float -> float -> float -> bool -> bool -> float -> float -> unit
 
   method to_path : unit -> Path_and__path_measure_and__path_point.Path.t
-  method unref : unit -> unit
   method as_path_builder : Path_builder.t
 end
 
@@ -157,7 +156,6 @@ class path_builder (obj : Path_builder.t) : path_builder_t =
     method to_path : unit -> Path_and__path_measure_and__path_point.Path.t =
       fun () -> Path_builder.to_path obj
 
-    method unref : unit -> unit = fun () -> Path_builder.unref obj
     method as_path_builder = obj
   end
 

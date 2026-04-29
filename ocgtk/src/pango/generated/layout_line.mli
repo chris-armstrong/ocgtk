@@ -25,11 +25,6 @@ left of the line results in @index_ pointing to the (logical) last grapheme
 in the line and @trailing being set to the number of characters in that
 grapheme. The reverse is true for a left-to-right line. *)
 
-external unref : t -> unit = "ml_pango_layout_line_unref"
-(** Decrease the reference count of a `PangoLayoutLine` by one.
-
-    If the result is zero, the line and all associated memory will be freed. *)
-
 external ref : t -> t option = "ml_pango_layout_line_ref"
 (** Increase the reference count of a `PangoLayoutLine` by one. *)
 

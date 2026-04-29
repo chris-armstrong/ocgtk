@@ -23,7 +23,7 @@ graphene_triangle_t *graphene_triangle_t_val(value v) {
 
 value Val_graphene_triangle_t(const graphene_triangle_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(graphene_triangle_get_type(), ptr);
 }
 
 value Val_graphene_triangle_t_option(const graphene_triangle_t *ptr) {

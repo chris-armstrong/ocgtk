@@ -231,9 +231,6 @@ external get_family : t -> string option
 
     See [method@Pango.FontDescription.set_family]. *)
 
-external free : t -> unit = "ml_pango_font_description_free"
-(** Frees a font description. *)
-
 external equal : t -> t -> bool = "ml_pango_font_description_equal"
 (** Compares two font descriptions for equality.
 
@@ -250,9 +247,6 @@ This is like [method@Pango.FontDescription.copy], but only a shallow
 copy is made of the family name and other allocated fields. The result
 can only be used until @desc is modified or freed. This is meant
 to be used when the copy is only needed temporarily. *)
-
-external copy : t -> t option = "ml_pango_font_description_copy"
-(** Make a copy of a `PangoFontDescription`. *)
 
 external better_match : t -> t option -> t -> bool
   = "ml_pango_font_description_better_match"

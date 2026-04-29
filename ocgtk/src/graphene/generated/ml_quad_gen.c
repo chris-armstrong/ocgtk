@@ -23,7 +23,7 @@ graphene_quad_t *graphene_quad_t_val(value v) {
 
 value Val_graphene_quad_t(const graphene_quad_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(graphene_quad_get_type(), ptr);
 }
 
 value Val_graphene_quad_t_option(const graphene_quad_t *ptr) {

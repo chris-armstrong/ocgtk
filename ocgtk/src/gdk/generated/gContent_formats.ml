@@ -11,7 +11,6 @@ class type content_formats_t = object
   method union_deserialize_mime_types : unit -> Content_formats.t
   method union_serialize_gtypes : unit -> Content_formats.t
   method union_serialize_mime_types : unit -> Content_formats.t
-  method unref : unit -> unit
   method as_content_formats : Content_formats.t
 end
 
@@ -51,7 +50,6 @@ class content_formats (obj : Content_formats.t) : content_formats_t =
     method union_serialize_mime_types : unit -> Content_formats.t =
       fun () -> Content_formats.union_serialize_mime_types obj
 
-    method unref : unit -> unit = fun () -> Content_formats.unref obj
     method as_content_formats = obj
   end
 

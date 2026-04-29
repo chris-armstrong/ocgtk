@@ -1,7 +1,5 @@
 class type unix_mount_point_t = object
   method compare : Unix_mount_point.t -> int
-  method copy : unit -> Unix_mount_point.t
-  method free : unit -> unit
   method get_device_path : unit -> string
   method get_fs_type : unit -> string
   method get_mount_path : unit -> string
@@ -21,11 +19,6 @@ class unix_mount_point (obj : Unix_mount_point.t) : unix_mount_point_t =
   object (self)
     method compare : Unix_mount_point.t -> int =
       fun mount2 -> Unix_mount_point.compare obj mount2
-
-    method copy : unit -> Unix_mount_point.t =
-      fun () -> Unix_mount_point.copy obj
-
-    method free : unit -> unit = fun () -> Unix_mount_point.free obj
 
     method get_device_path : unit -> string =
       fun () -> Unix_mount_point.get_device_path obj

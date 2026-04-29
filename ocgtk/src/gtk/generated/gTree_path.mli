@@ -1,9 +1,7 @@
 class type tree_path_t = object
   method append_index : int -> unit
   method compare : Tree_path.t -> int
-  method copy : unit -> Tree_path.t
   method down : unit -> unit
-  method free : unit -> unit
   method get_depth : unit -> int
   method is_ancestor : Tree_path.t -> bool
   method is_descendant : Tree_path.t -> bool

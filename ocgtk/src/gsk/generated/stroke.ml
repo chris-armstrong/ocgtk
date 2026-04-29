@@ -96,9 +96,3 @@ external get_dash_offset : t -> float = "ml_gsk_stroke_get_dash_offset"
 
 external get_dash : t -> float array option * Gsize.t = "ml_gsk_stroke_get_dash"
 (** Gets the dash array in use or `NULL` if dashing is disabled. *)
-
-external free : t -> unit = "ml_gsk_stroke_free"
-(** Frees a `GskStroke`. *)
-
-external copy : t -> t = "ml_gsk_stroke_copy"
-(** Creates a copy of the given @other stroke. *)

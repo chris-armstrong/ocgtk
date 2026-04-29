@@ -21,7 +21,7 @@ value copy_GdkPixbufFormat(const GdkPixbufFormat *ptr)
 {
   if (ptr == NULL) return Val_none;
   GdkPixbufFormat *copy = gdk_pixbuf_format_copy((GdkPixbufFormat*)ptr);
-  return ml_gir_record_val_ptr(copy);
+  return ml_gir_record_val_ptr_with_type(gdk_pixbuf_format_get_type(), copy);
 }
 #endif
 

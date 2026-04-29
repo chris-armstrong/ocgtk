@@ -32,9 +32,6 @@ external init : t -> float -> float -> t = "ml_graphene_point_init"
 
 It's safe to call this function multiple times. *)
 
-external free : t -> unit = "ml_graphene_point_free"
-(** Frees the resources allocated by graphene_point_alloc(). *)
-
 external equal : t -> t -> bool = "ml_graphene_point_equal"
 (** Checks if the two points @a and @b point to the same
 coordinates.

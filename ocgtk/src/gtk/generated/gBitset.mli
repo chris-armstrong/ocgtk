@@ -4,7 +4,6 @@ class type bitset_t = object
   method add_range_closed : int -> int -> unit
   method add_rectangle : int -> int -> int -> int -> unit
   method contains : int -> bool
-  method copy : unit -> Bitset.t
   method difference : Bitset.t -> unit
   method equals : Bitset.t -> bool
   method get_maximum : unit -> int
@@ -25,7 +24,6 @@ class type bitset_t = object
   method splice : int -> int -> int -> unit
   method subtract : Bitset.t -> unit
   method union : Bitset.t -> unit
-  method unref : unit -> unit
   method as_bitset : Bitset.t
 end
 

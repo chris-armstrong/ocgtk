@@ -10,8 +10,6 @@ class type rounded_rect_t = object
     Ocgtk_graphene.Graphene.Size.size_t ->
     Rounded_rect.t
 
-  method init_copy : Rounded_rect.t -> Rounded_rect.t
-
   method init_from_rect :
     Ocgtk_graphene.Graphene.Rect.rect_t -> float -> Rounded_rect.t
 
@@ -50,9 +48,6 @@ class rounded_rect (obj : Rounded_rect.t) : rounded_rect_t =
         let bottom_right = bottom_right#as_size in
         let bottom_left = bottom_left#as_size in
         Rounded_rect.init obj bounds top_left top_right bottom_right bottom_left
-
-    method init_copy : Rounded_rect.t -> Rounded_rect.t =
-      fun src -> Rounded_rect.init_copy obj src
 
     method init_from_rect :
         Ocgtk_graphene.Graphene.Rect.rect_t -> float -> Rounded_rect.t =

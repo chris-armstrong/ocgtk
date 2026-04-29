@@ -23,7 +23,7 @@ graphene_box_t *graphene_box_t_val(value v) {
 
 value Val_graphene_box_t(const graphene_box_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(graphene_box_get_type(), ptr);
 }
 
 value Val_graphene_box_t_option(const graphene_box_t *ptr) {

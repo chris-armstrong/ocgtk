@@ -5,7 +5,6 @@ class type css_section_t = object
   method get_start_location : unit -> Css_location.t
   method ref : unit -> Css_section.t
   method to_string : unit -> string
-  method unref : unit -> unit
   method as_css_section : Css_section.t
 end
 
@@ -29,7 +28,6 @@ class css_section (obj : Css_section.t) : css_section_t =
 
     method ref : unit -> Css_section.t = fun () -> Css_section.ref obj
     method to_string : unit -> string = fun () -> Css_section.to_string obj
-    method unref : unit -> unit = fun () -> Css_section.unref obj
     method as_css_section = obj
   end
 

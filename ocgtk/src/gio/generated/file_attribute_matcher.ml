@@ -9,10 +9,6 @@ external new_ : string -> t = "ml_g_file_attribute_matcher_new"
 
 (* Methods *)
 
-external unref : t -> unit = "ml_g_file_attribute_matcher_unref"
-(** Unreferences @matcher. If the reference count falls below 1,
-the @matcher is automatically freed. *)
-
 external to_string : t -> string = "ml_g_file_attribute_matcher_to_string"
 (** Prints what the matcher is matching against. The format will be equal to the
     format passed to g_file_attribute_matcher_new(). The output however, might

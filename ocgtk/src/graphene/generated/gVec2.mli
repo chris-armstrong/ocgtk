@@ -1,7 +1,6 @@
 class type vec2_t = object
   method dot : Vec2.t -> float
   method equal : Vec2.t -> bool
-  method free : unit -> unit
   method get_x : unit -> float
   method get_y : unit -> float
   method init : float -> float -> Vec2.t

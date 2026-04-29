@@ -31,7 +31,7 @@ GDBusNodeInfo *GDBusNodeInfo_val(value v) {
 
 value Val_GDBusNodeInfo(const GDBusNodeInfo *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_dbus_node_info_get_type(), ptr);
 }
 
 value Val_GDBusNodeInfo_option(const GDBusNodeInfo *ptr) {

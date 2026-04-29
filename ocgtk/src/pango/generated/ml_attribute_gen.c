@@ -20,7 +20,7 @@ value copy_PangoAttribute(const PangoAttribute *ptr)
 {
   if (ptr == NULL) return Val_none;
   PangoAttribute *copy = pango_attribute_copy((PangoAttribute*)ptr);
-  return ml_gir_record_val_ptr(copy);
+  return ml_gir_record_val_ptr_with_type(pango_attribute_get_type(), copy);
 }
 
 

@@ -23,7 +23,7 @@ GtkExpressionWatch *GtkExpressionWatch_val(value v) {
 
 value Val_GtkExpressionWatch(const GtkExpressionWatch *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gtk_expression_watch_get_type(), ptr);
 }
 
 value Val_GtkExpressionWatch_option(const GtkExpressionWatch *ptr) {

@@ -20,7 +20,7 @@ value copy_PangoGlyphString(const PangoGlyphString *ptr)
 {
   if (ptr == NULL) return Val_none;
   PangoGlyphString *copy = pango_glyph_string_copy((PangoGlyphString*)ptr);
-  return ml_gir_record_val_ptr(copy);
+  return ml_gir_record_val_ptr_with_type(pango_glyph_string_get_type(), copy);
 }
 
 

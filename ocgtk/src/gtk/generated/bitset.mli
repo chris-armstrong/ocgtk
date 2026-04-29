@@ -28,12 +28,6 @@ external new_range : int -> int -> t = "ml_gtk_bitset_new_range"
 
 (* Methods *)
 
-external unref : t -> unit = "ml_gtk_bitset_unref"
-(** Releases a reference on the given `GtkBitset`.
-
-If the reference was the last, the resources associated to the @self are
-freed. *)
-
 external union : t -> t -> unit = "ml_gtk_bitset_union"
 (** Sets @self to be the union of @self and @other.
 
@@ -151,9 +145,6 @@ This operation is also called an XOR.
 
 It is allowed for @self and @other to be the same bitset. The bitset
 will be emptied in that case. *)
-
-external copy : t -> t = "ml_gtk_bitset_copy"
-(** Creates a copy of @self. *)
 
 external contains : t -> int -> bool = "ml_gtk_bitset_contains"
 (** Checks if the given @value has been added to @self *)

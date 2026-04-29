@@ -10,11 +10,6 @@ external new_ : Gl_shader.t -> Glib_bytes.t option -> t
 
 (* Methods *)
 
-external unref : t -> unit = "ml_gsk_shader_args_builder_unref"
-(** Decreases the reference count of a `GskShaderArgBuilder` by one.
-
-    If the resulting reference count is zero, frees the builder. *)
-
 external to_args : t -> Glib_bytes.t = "ml_gsk_shader_args_builder_to_args"
 (** Creates a new `GBytes` args from the current state of the
 given @builder.

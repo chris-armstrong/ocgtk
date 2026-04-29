@@ -22,7 +22,7 @@ cairo_font_face_t *cairo_font_face_t_val(value v) {
 
 value Val_cairo_font_face_t(const cairo_font_face_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(cairo_gobject_font_face_get_type(), ptr);
 }
 
 value Val_cairo_font_face_t_option(const cairo_font_face_t *ptr) {

@@ -22,7 +22,7 @@ cairo_region_t *cairo_region_t_val(value v) {
 
 value Val_cairo_region_t(const cairo_region_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(cairo_gobject_region_get_type(), ptr);
 }
 
 value Val_cairo_region_t_option(const cairo_region_t *ptr) {

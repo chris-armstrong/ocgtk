@@ -1,6 +1,4 @@
 class type tab_array_t = object
-  method copy : unit -> Tab_array.t
-  method free : unit -> unit
   method get_decimal_point : int -> int
   method get_positions_in_pixels : unit -> bool
   method get_size : unit -> int

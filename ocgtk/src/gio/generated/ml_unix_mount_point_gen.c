@@ -31,7 +31,7 @@ GUnixMountPoint *GUnixMountPoint_val(value v) {
 
 value Val_GUnixMountPoint(const GUnixMountPoint *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_unix_mount_point_get_type(), ptr);
 }
 
 value Val_GUnixMountPoint_option(const GUnixMountPoint *ptr) {

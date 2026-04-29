@@ -69,9 +69,3 @@ external get_decimal_point : t -> int -> int
 
     The default value of 0 means that Pango will use the decimal point according
     to the current locale. *)
-
-external free : t -> unit = "ml_pango_tab_array_free"
-(** Frees a tab array and associated resources. *)
-
-external copy : t -> t = "ml_pango_tab_array_copy"
-(** Copies a `PangoTabArray`. *)

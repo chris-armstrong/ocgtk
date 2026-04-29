@@ -1,9 +1,7 @@
 class type tree_path_t = object
   method append_index : int -> unit
   method compare : Tree_path.t -> int
-  method copy : unit -> Tree_path.t
   method down : unit -> unit
-  method free : unit -> unit
   method get_depth : unit -> int
   method is_ancestor : Tree_path.t -> bool
   method is_descendant : Tree_path.t -> bool
@@ -22,9 +20,7 @@ class tree_path (obj : Tree_path.t) : tree_path_t =
       fun index_ -> Tree_path.append_index obj index_
 
     method compare : Tree_path.t -> int = fun b -> Tree_path.compare obj b
-    method copy : unit -> Tree_path.t = fun () -> Tree_path.copy obj
     method down : unit -> unit = fun () -> Tree_path.down obj
-    method free : unit -> unit = fun () -> Tree_path.free obj
     method get_depth : unit -> int = fun () -> Tree_path.get_depth obj
 
     method is_ancestor : Tree_path.t -> bool =

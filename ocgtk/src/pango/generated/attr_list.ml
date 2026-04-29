@@ -36,12 +36,6 @@ range are shortened to reflect the removal.
 Attributes start and end positions are updated if they are
 behind @pos + @remove. *)
 
-external unref : t -> unit = "ml_pango_attr_list_unref"
-(** Decrease the reference count of the given attribute list by one.
-
-    If the result is zero, free the attribute list and the attributes it
-    contains. *)
-
 external to_string : t -> string = "ml_pango_attr_list_to_string"
 (** Serializes a `PangoAttrList` to a string.
 
@@ -126,9 +120,6 @@ same ranges.
 
 Beware that this will return wrong values if any list
 contains duplicates. *)
-
-external copy : t -> t option = "ml_pango_attr_list_copy"
-(** Copy @list and return an identical new list. *)
 
 external change : t -> Attribute.t -> unit = "ml_pango_attr_list_change"
 (** Insert the given attribute into the `PangoAttrList`.

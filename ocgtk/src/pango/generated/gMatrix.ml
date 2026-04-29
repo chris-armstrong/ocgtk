@@ -1,7 +1,5 @@
 class type matrix_t = object
   method concat : Matrix.t -> unit
-  method copy : unit -> Matrix.t option
-  method free : unit -> unit
   method get_font_scale_factor : unit -> float
   method get_slant_ratio : unit -> float
   method rotate : float -> unit
@@ -15,9 +13,6 @@ class matrix (obj : Matrix.t) : matrix_t =
   object (self)
     method concat : Matrix.t -> unit =
       fun new_matrix -> Matrix.concat obj new_matrix
-
-    method copy : unit -> Matrix.t option = fun () -> Matrix.copy obj
-    method free : unit -> unit = fun () -> Matrix.free obj
 
     method get_font_scale_factor : unit -> float =
       fun () -> Matrix.get_font_scale_factor obj

@@ -22,7 +22,7 @@ PangoTabArray *PangoTabArray_val(value v) {
 
 value Val_PangoTabArray(const PangoTabArray *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(pango_tab_array_get_type(), ptr);
 }
 
 value Val_PangoTabArray_option(const PangoTabArray *ptr) {

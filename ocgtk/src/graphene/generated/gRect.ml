@@ -2,7 +2,6 @@ class type rect_t = object
   method contains_point : Point.t -> bool
   method contains_rect : Rect.t -> bool
   method equal : Rect.t -> bool
-  method free : unit -> unit
   method get_area : unit -> float
   method get_height : unit -> float
   method get_width : unit -> float
@@ -23,7 +22,6 @@ class rect (obj : Rect.t) : rect_t =
     method contains_point : Point.t -> bool = fun p -> Rect.contains_point obj p
     method contains_rect : Rect.t -> bool = fun b -> Rect.contains_rect obj b
     method equal : Rect.t -> bool = fun b -> Rect.equal obj b
-    method free : unit -> unit = fun () -> Rect.free obj
     method get_area : unit -> float = fun () -> Rect.get_area obj
     method get_height : unit -> float = fun () -> Rect.get_height obj
     method get_width : unit -> float = fun () -> Rect.get_width obj

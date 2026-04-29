@@ -22,7 +22,7 @@ cairo_scaled_font_t *cairo_scaled_font_t_val(value v) {
 
 value Val_cairo_scaled_font_t(const cairo_scaled_font_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(cairo_gobject_scaled_font_get_type(), ptr);
 }
 
 value Val_cairo_scaled_font_t_option(const cairo_scaled_font_t *ptr) {

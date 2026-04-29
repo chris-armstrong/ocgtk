@@ -23,7 +23,7 @@ GskPath *GskPath_val(value v) {
 
 value Val_GskPath(const GskPath *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gsk_path_get_type(), ptr);
 }
 
 value Val_GskPath_option(const GskPath *ptr) {

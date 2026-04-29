@@ -24,7 +24,7 @@ GtkScrollInfo *GtkScrollInfo_val(value v) {
 
 value Val_GtkScrollInfo(const GtkScrollInfo *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gtk_scroll_info_get_type(), ptr);
 }
 
 value Val_GtkScrollInfo_option(const GtkScrollInfo *ptr) {

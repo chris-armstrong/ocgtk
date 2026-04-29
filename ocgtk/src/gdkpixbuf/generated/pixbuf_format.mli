@@ -62,10 +62,3 @@ external get_extensions : t -> string array
 
 external get_description : t -> string = "ml_gdk_pixbuf_format_get_description"
 (** Returns a description of the format. *)
-
-external free : t -> unit = "ml_gdk_pixbuf_format_free"
-(** Frees the resources allocated when copying a `GdkPixbufFormat` using
-    gdk_pixbuf_format_copy() *)
-
-external copy : t -> t = "ml_gdk_pixbuf_format_copy"
-(** Creates a copy of `format`. *)

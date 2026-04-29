@@ -4,7 +4,6 @@ class type bitset_t = object
   method add_range_closed : int -> int -> unit
   method add_rectangle : int -> int -> int -> int -> unit
   method contains : int -> bool
-  method copy : unit -> Bitset.t
   method difference : Bitset.t -> unit
   method equals : Bitset.t -> bool
   method get_maximum : unit -> int
@@ -25,7 +24,6 @@ class type bitset_t = object
   method splice : int -> int -> int -> unit
   method subtract : Bitset.t -> unit
   method union : Bitset.t -> unit
-  method unref : unit -> unit
   method as_bitset : Bitset.t
 end
 
@@ -45,7 +43,6 @@ class bitset (obj : Bitset.t) : bitset_t =
         Bitset.add_rectangle obj start width height stride
 
     method contains : int -> bool = fun value -> Bitset.contains obj value
-    method copy : unit -> Bitset.t = fun () -> Bitset.copy obj
 
     method difference : Bitset.t -> unit =
       fun other -> Bitset.difference obj other
@@ -87,7 +84,6 @@ class bitset (obj : Bitset.t) : bitset_t =
 
     method subtract : Bitset.t -> unit = fun other -> Bitset.subtract obj other
     method union : Bitset.t -> unit = fun other -> Bitset.union obj other
-    method unref : unit -> unit = fun () -> Bitset.unref obj
     method as_bitset = obj
   end
 

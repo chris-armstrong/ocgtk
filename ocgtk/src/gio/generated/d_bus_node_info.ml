@@ -10,11 +10,6 @@ external new_for_xml : string -> (t, GError.t) result
 
 (* Methods *)
 
-external unref : t -> unit = "ml_g_dbus_node_info_unref"
-(** If @info is statically allocated, does nothing. Otherwise decreases
-the reference count of @info. When its reference count drops to 0,
-the memory used is freed. *)
-
 external ref : t -> t = "ml_g_dbus_node_info_ref"
 (** If @info is statically allocated does nothing. Otherwise increases
 the reference count. *)

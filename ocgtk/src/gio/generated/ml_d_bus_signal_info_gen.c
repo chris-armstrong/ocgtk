@@ -31,7 +31,7 @@ GDBusSignalInfo *GDBusSignalInfo_val(value v) {
 
 value Val_GDBusSignalInfo(const GDBusSignalInfo *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_dbus_signal_info_get_type(), ptr);
 }
 
 value Val_GDBusSignalInfo_option(const GDBusSignalInfo *ptr) {

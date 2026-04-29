@@ -23,7 +23,7 @@ GtkRecentInfo *GtkRecentInfo_val(value v) {
 
 value Val_GtkRecentInfo(const GtkRecentInfo *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gtk_recent_info_get_type(), ptr);
 }
 
 value Val_GtkRecentInfo_option(const GtkRecentInfo *ptr) {

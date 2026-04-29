@@ -1,6 +1,4 @@
 class type srv_target_t = object
-  method copy : unit -> Srv_target.t
-  method free : unit -> unit
   method get_hostname : unit -> string
   method get_port : unit -> UInt16.t
   method get_priority : unit -> UInt16.t

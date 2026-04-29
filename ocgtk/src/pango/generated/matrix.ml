@@ -111,12 +111,6 @@ external get_font_scale_factor : t -> float
     the X coordinate is mapped to. If the scale in the X coordinate is needed as
     well, use [method@Pango.Matrix.get_font_scale_factors]. *)
 
-external free : t -> unit = "ml_pango_matrix_free"
-(** Free a `PangoMatrix`. *)
-
-external copy : t -> t option = "ml_pango_matrix_copy"
-(** Copies a `PangoMatrix`. *)
-
 external concat : t -> t -> unit = "ml_pango_matrix_concat"
 (** Changes the transformation represented by @matrix to be the
 transformation given by first applying transformation

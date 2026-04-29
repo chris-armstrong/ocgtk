@@ -22,7 +22,7 @@ GdkEventSequence *GdkEventSequence_val(value v) {
 
 value Val_GdkEventSequence(const GdkEventSequence *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gdk_event_sequence_get_type(), ptr);
 }
 
 value Val_GdkEventSequence_option(const GdkEventSequence *ptr) {

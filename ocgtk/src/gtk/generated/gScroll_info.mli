@@ -4,7 +4,6 @@ class type scroll_info_t = object
   method ref : unit -> Scroll_info.t
   method set_enable_horizontal : bool -> unit
   method set_enable_vertical : bool -> unit
-  method unref : unit -> unit
   method as_scroll_info : Scroll_info.t
 end
 

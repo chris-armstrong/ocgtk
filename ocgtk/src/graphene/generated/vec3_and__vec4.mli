@@ -89,9 +89,6 @@ module rec Vec3 : sig
   external get_x : t -> float = "ml_graphene_vec3_get_x"
   (** Retrieves the first component of the given vector @v. *)
 
-  external free : t -> unit = "ml_graphene_vec3_free"
-  (** Frees the resources allocated by @v *)
-
   external equal : t -> t -> bool = "ml_graphene_vec3_equal"
   (** Checks whether the two given #graphene_vec3_t are equal. *)
 
@@ -204,9 +201,6 @@ and Vec4 : sig
   external get_w : t -> float = "ml_graphene_vec4_get_w"
   (** Retrieves the value of the fourth component of the given #graphene_vec4_t.
   *)
-
-  external free : t -> unit = "ml_graphene_vec4_free"
-  (** Frees the resources allocated by @v *)
 
   external equal : t -> t -> bool = "ml_graphene_vec4_equal"
   (** Checks whether the two given #graphene_vec4_t are equal. *)

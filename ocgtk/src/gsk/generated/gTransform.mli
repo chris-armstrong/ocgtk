@@ -20,7 +20,6 @@ class type transform_t = object
   method translate_3d :
     Ocgtk_graphene.Graphene.Point3_d.point3_d_t -> Transform.t option
 
-  method unref : unit -> unit
   method as_transform : Transform.t
 end
 

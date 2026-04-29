@@ -21,7 +21,7 @@ value copy_GtkTextIter(const GtkTextIter *ptr)
 {
   if (ptr == NULL) return Val_none;
   GtkTextIter *copy = gtk_text_iter_copy((GtkTextIter*)ptr);
-  return ml_gir_record_val_ptr(copy);
+  return ml_gir_record_val_ptr_with_type(gtk_text_iter_get_type(), copy);
 }
 
 
