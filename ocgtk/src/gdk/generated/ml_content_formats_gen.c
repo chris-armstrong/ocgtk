@@ -59,14 +59,6 @@ GdkContentFormats *obj = gdk_content_formats_new_for_gtype(GType_val(arg1));
 
 CAMLreturn(Val_GdkContentFormats(obj));
 }
-CAMLexport CAMLprim value ml_gdk_content_formats_unref(value self)
-{
-CAMLparam1(self);
-
-gdk_content_formats_unref(GdkContentFormats_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gdk_content_formats_union_serialize_mime_types(value self)
 {
 CAMLparam1(self);

@@ -39,14 +39,6 @@ GdkToplevelLayout *obj = gdk_toplevel_layout_new();
 
 CAMLreturn(Val_GdkToplevelLayout(obj));
 }
-CAMLexport CAMLprim value ml_gdk_toplevel_layout_unref(value self)
-{
-CAMLparam1(self);
-
-gdk_toplevel_layout_unref(GdkToplevelLayout_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gdk_toplevel_layout_set_resizable(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -128,12 +120,4 @@ CAMLparam2(self, arg1);
 
 gboolean result = gdk_toplevel_layout_equal(GdkToplevelLayout_val(self), GdkToplevelLayout_val(arg1));
 CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gdk_toplevel_layout_copy(value self)
-{
-CAMLparam1(self);
-
-GdkToplevelLayout* result = gdk_toplevel_layout_copy(GdkToplevelLayout_val(self));
-CAMLreturn(Val_GdkToplevelLayout(result));
 }

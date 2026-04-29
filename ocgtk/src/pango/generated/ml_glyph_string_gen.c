@@ -122,14 +122,6 @@ return Val_unit;
 }
 #endif
 
-CAMLexport CAMLprim value ml_pango_glyph_string_free(value self)
-{
-CAMLparam1(self);
-
-pango_glyph_string_free(PangoGlyphString_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_pango_glyph_string_extents_range(value self, value arg1, value arg2, value arg3)
 {
 CAMLparam4(self, arg1, arg2, arg3);
@@ -156,12 +148,4 @@ CAMLlocal1(ret);
     Store_field(ret, 0, Val_PangoRectangle(&out2));
     Store_field(ret, 1, Val_PangoRectangle(&out3));
     CAMLreturn(ret);
-}
-
-CAMLexport CAMLprim value ml_pango_glyph_string_copy(value self)
-{
-CAMLparam1(self);
-
-PangoGlyphString* result = pango_glyph_string_copy(PangoGlyphString_val(self));
-CAMLreturn(Val_option(result, Val_PangoGlyphString));
 }

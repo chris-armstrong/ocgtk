@@ -52,14 +52,6 @@ GDBusNodeInfo *obj = g_dbus_node_info_new_for_xml(String_val(arg1), &error);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GDBusNodeInfo(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-CAMLexport CAMLprim value ml_g_dbus_node_info_unref(value self)
-{
-CAMLparam1(self);
-
-g_dbus_node_info_unref(GDBusNodeInfo_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_g_dbus_node_info_ref(value self)
 {
 CAMLparam1(self);
@@ -99,15 +91,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_dbus_node_info_ref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusNodeInfo requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_node_info_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

@@ -41,27 +41,6 @@ value Val_GSettingsSchemaKey_option(const GSettingsSchemaKey *ptr) {
 
 #if GLIB_CHECK_VERSION(2,40,0)
 
-CAMLexport CAMLprim value ml_g_settings_schema_key_unref(value self)
-{
-CAMLparam1(self);
-
-g_settings_schema_key_unref(GSettingsSchemaKey_val(self));
-CAMLreturn(Val_unit);
-}
-
-#else
-
-CAMLexport CAMLprim value ml_g_settings_schema_key_unref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SettingsSchemaKey requires GLib >= 2.40");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,40,0)
-
 CAMLexport CAMLprim value ml_g_settings_schema_key_ref(value self)
 {
 CAMLparam1(self);

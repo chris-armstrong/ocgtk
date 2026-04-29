@@ -73,24 +73,3 @@ caml_failwith("ScriptIter requires Pango >= 1.4");
 return Val_unit;
 }
 #endif
-
-#if PANGO_VERSION_CHECK(1,4,0)
-
-CAMLexport CAMLprim value ml_pango_script_iter_free(value self)
-{
-CAMLparam1(self);
-
-pango_script_iter_free(PangoScriptIter_val(self));
-CAMLreturn(Val_unit);
-}
-
-#else
-
-CAMLexport CAMLprim value ml_pango_script_iter_free(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("ScriptIter requires Pango >= 1.4");
-return Val_unit;
-}
-#endif

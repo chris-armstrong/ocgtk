@@ -63,11 +63,16 @@ let resolve_parent_gir_type ~same_cluster_classes ~parent_name =
       if List.exists ~f:(String.equal parent) same_cluster_classes then None
       else Some (gir_type_of_name parent)
 
-(* Helper to determine if a method should be skipped during generation *)
-let should_skip_method ~ctx (meth : gir_method) =
+(* Helper to determine if a method should be skipped during generation. The
+   [entity_kind] is forwarded to the central
+   [Filtering.should_skip_method_binding] so the record copy/free/unref
+   filter is folded into the same answer. *)
+let should_skip_method ~ctx ~entity_kind (meth : gir_method) =
   let has_out_param =
     List.exists meth.parameters ~f:(fun p ->
         p.direction = Out || p.direction = InOut)
   in
-  let should_skip_binding = Filtering.should_skip_method_binding ~ctx meth in
+  let should_skip_binding =
+    Filtering.should_skip_method_binding ~ctx ~entity_kind meth
+  in
   should_skip_binding || has_out_param

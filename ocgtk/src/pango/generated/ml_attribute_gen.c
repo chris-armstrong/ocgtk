@@ -62,14 +62,6 @@ pango_attribute_destroy(PangoAttribute_val(self));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_pango_attribute_copy(value self)
-{
-CAMLparam1(self);
-
-PangoAttribute* result = pango_attribute_copy(PangoAttribute_val(self));
-CAMLreturn(Val_PangoAttribute(result));
-}
-
 #if PANGO_VERSION_CHECK(1,50,0)
 
 CAMLexport CAMLprim value ml_pango_attribute_as_string(value self)

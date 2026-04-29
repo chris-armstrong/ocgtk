@@ -40,22 +40,6 @@ PangoItem* result = pango_item_split(PangoItem_val(self), Int_val(arg1), Int_val
 CAMLreturn(Val_PangoItem(result));
 }
 
-CAMLexport CAMLprim value ml_pango_item_free(value self)
-{
-CAMLparam1(self);
-
-pango_item_free(PangoItem_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_pango_item_copy(value self)
-{
-CAMLparam1(self);
-
-PangoItem* result = pango_item_copy(PangoItem_val(self));
-CAMLreturn(Val_option(result, Val_PangoItem));
-}
-
 #if PANGO_VERSION_CHECK(1,44,0)
 
 CAMLexport CAMLprim value ml_pango_item_apply_attrs(value self, value arg1)

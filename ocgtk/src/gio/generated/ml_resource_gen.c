@@ -52,14 +52,6 @@ GResource *obj = g_resource_new_from_data(GBytes_val(arg1), &error);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GResource(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-CAMLexport CAMLprim value ml_g_resource_unref(value self)
-{
-CAMLparam1(self);
-
-g_resource_unref(GResource_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_g_resource_ref(value self)
 {
 CAMLparam1(self);
@@ -213,15 +205,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_resource_ref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Resource requires GLib >= 2.32");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_resource_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

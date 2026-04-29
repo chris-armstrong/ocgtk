@@ -39,14 +39,6 @@ GskTransform *obj = gsk_transform_new();
 
 CAMLreturn(Val_GskTransform(obj));
 }
-CAMLexport CAMLprim value ml_gsk_transform_unref(value self)
-{
-CAMLparam1(self);
-
-gsk_transform_unref(GskTransform_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gsk_transform_translate_3d(value self, value arg1)
 {
 CAMLparam2(self, arg1);

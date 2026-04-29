@@ -64,26 +64,10 @@ guint result = gdk_rgba_hash(GdkRGBA_val(self));
 CAMLreturn(Val_int(result));
 }
 
-CAMLexport CAMLprim value ml_gdk_rgba_free(value self)
-{
-CAMLparam1(self);
-
-gdk_rgba_free(GdkRGBA_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gdk_rgba_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gboolean result = gdk_rgba_equal(GdkRGBA_val(self), GdkRGBA_val(arg1));
 CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gdk_rgba_copy(value self)
-{
-CAMLparam1(self);
-
-GdkRGBA* result = gdk_rgba_copy(GdkRGBA_val(self));
-CAMLreturn(Val_GdkRGBA(result));
 }

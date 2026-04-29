@@ -122,14 +122,6 @@ graphene_sphere_get_bounding_box(graphene_sphere_t_val(self), &out1);
 CAMLreturn(Val_graphene_box_t(&out1));
 }
 
-CAMLexport CAMLprim value ml_graphene_sphere_free(value self)
-{
-CAMLparam1(self);
-
-graphene_sphere_free(graphene_sphere_t_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_graphene_sphere_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -191,15 +183,6 @@ CAMLexport CAMLprim value ml_graphene_sphere_equal(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("Sphere requires Graphene >= 1.2");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_sphere_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Sphere requires Graphene >= 1.2");
 return Val_unit;
 }

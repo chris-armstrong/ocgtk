@@ -43,14 +43,6 @@ GskPathBuilder *obj = gsk_path_builder_new();
 
 CAMLreturn(Val_GskPathBuilder(obj));
 }
-CAMLexport CAMLprim value ml_gsk_path_builder_unref(value self)
-{
-CAMLparam1(self);
-
-gsk_path_builder_unref(GskPathBuilder_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gsk_path_builder_to_path(value self)
 {
 CAMLparam1(self);
@@ -652,15 +644,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_gsk_path_builder_to_path(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PathBuilder requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_path_builder_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

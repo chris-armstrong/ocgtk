@@ -52,14 +52,6 @@ GSettingsSchemaSource *obj = g_settings_schema_source_new_from_directory(String_
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GSettingsSchemaSource(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-CAMLexport CAMLprim value ml_g_settings_schema_source_unref(value self)
-{
-CAMLparam1(self);
-
-g_settings_schema_source_unref(GSettingsSchemaSource_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_g_settings_schema_source_ref(value self)
 {
 CAMLparam1(self);
@@ -102,15 +94,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_settings_schema_source_ref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SettingsSchemaSource requires GLib >= 2.32");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_settings_schema_source_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

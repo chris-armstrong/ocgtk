@@ -220,14 +220,6 @@ float result = graphene_triangle_get_area(graphene_triangle_t_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
-CAMLexport CAMLprim value ml_graphene_triangle_free(value self)
-{
-CAMLparam1(self);
-
-graphene_triangle_free(graphene_triangle_t_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_graphene_triangle_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -271,15 +263,6 @@ CAMLexport CAMLprim value ml_graphene_triangle_equal(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("Triangle requires Graphene >= 1.2");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_triangle_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Triangle requires Graphene >= 1.2");
 return Val_unit;
 }

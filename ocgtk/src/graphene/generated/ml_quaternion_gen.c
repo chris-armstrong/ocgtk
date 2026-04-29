@@ -292,14 +292,6 @@ graphene_quaternion_t* result = graphene_quaternion_init(graphene_quaternion_t_v
 CAMLreturn(Val_graphene_quaternion_t(result));
 }
 
-CAMLexport CAMLprim value ml_graphene_quaternion_free(value self)
-{
-CAMLparam1(self);
-
-graphene_quaternion_free(graphene_quaternion_t_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_graphene_quaternion_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -376,15 +368,6 @@ CAMLexport CAMLprim value ml_graphene_quaternion_equal(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("Quaternion requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_quaternion_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Quaternion requires Graphene >= 1.0");
 return Val_unit;
 }

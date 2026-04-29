@@ -95,14 +95,6 @@ const graphene_point_t* result = graphene_quad_get_point(graphene_quad_t_val(sel
 CAMLreturn(Val_graphene_point_t(result));
 }
 
-CAMLexport CAMLprim value ml_graphene_quad_free(value self)
-{
-CAMLparam1(self);
-
-graphene_quad_free(graphene_quad_t_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_graphene_quad_contains(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -146,15 +138,6 @@ CAMLexport CAMLprim value ml_graphene_quad_contains(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("Quad requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_quad_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Quad requires Graphene >= 1.0");
 return Val_unit;
 }

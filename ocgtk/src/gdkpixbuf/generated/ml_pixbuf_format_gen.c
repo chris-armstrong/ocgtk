@@ -197,67 +197,7 @@ gchar* result = gdk_pixbuf_format_get_description(GdkPixbufFormat_val(self));
 CAMLreturn(caml_copy_string(result));
 }
 
-#if GDK_PIXBUF_CHECK_VERSION(2,22,0)
-
-CAMLexport CAMLprim value ml_gdk_pixbuf_format_free(value self)
-{
-CAMLparam1(self);
-
-gdk_pixbuf_format_free(GdkPixbufFormat_val(self));
-CAMLreturn(Val_unit);
-}
-
 #else
-
-CAMLexport CAMLprim value ml_gdk_pixbuf_format_free(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PixbufFormat requires GdkPixbuf >= 2.22");
-return Val_unit;
-}
-#endif
-
-#if GDK_PIXBUF_CHECK_VERSION(2,22,0)
-
-CAMLexport CAMLprim value ml_gdk_pixbuf_format_copy(value self)
-{
-CAMLparam1(self);
-
-GdkPixbufFormat* result = gdk_pixbuf_format_copy(GdkPixbufFormat_val(self));
-CAMLreturn(Val_GdkPixbufFormat(result));
-}
-
-#else
-
-CAMLexport CAMLprim value ml_gdk_pixbuf_format_copy(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PixbufFormat requires GdkPixbuf >= 2.22");
-return Val_unit;
-}
-#endif
-
-#else
-
-
-CAMLexport CAMLprim value ml_gdk_pixbuf_format_copy(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PixbufFormat requires GdkPixbuf >= 2.2");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_pixbuf_format_free(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PixbufFormat requires GdkPixbuf >= 2.2");
-return Val_unit;
-}
 
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_format_get_description(value self)

@@ -120,14 +120,6 @@ graphene_point_t* result = graphene_point_init(graphene_point_t_val(self), Doubl
 CAMLreturn(Val_graphene_point_t(result));
 }
 
-CAMLexport CAMLprim value ml_graphene_point_free(value self)
-{
-CAMLparam1(self);
-
-graphene_point_free(graphene_point_t_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_graphene_point_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -178,15 +170,6 @@ CAMLexport CAMLprim value ml_graphene_point_equal(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("Point requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_point_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Point requires Graphene >= 1.0");
 return Val_unit;
 }

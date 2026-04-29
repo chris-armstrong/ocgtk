@@ -349,14 +349,6 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkTextBuffer(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_text_iter_free(value self)
-{
-CAMLparam1(self);
-
-gtk_text_iter_free(GtkTextIter_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_text_iter_forward_word_ends(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -570,14 +562,6 @@ CAMLparam2(self, arg1);
 
 gboolean result = gtk_text_iter_editable(GtkTextIter_val(self), Bool_val(arg1));
 CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_text_iter_copy(value self)
-{
-CAMLparam1(self);
-
-GtkTextIter* result = gtk_text_iter_copy(GtkTextIter_val(self));
-CAMLreturn(Val_GtkTextIter(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_text_iter_compare(value self, value arg1)

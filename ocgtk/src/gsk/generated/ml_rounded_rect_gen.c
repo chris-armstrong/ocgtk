@@ -73,14 +73,6 @@ GskRoundedRect* result = gsk_rounded_rect_init_from_rect(GskRoundedRect_val(self
 CAMLreturn(Val_GskRoundedRect(result));
 }
 
-CAMLexport CAMLprim value ml_gsk_rounded_rect_init_copy(value self, value arg1)
-{
-CAMLparam2(self, arg1);
-
-GskRoundedRect* result = gsk_rounded_rect_init_copy(GskRoundedRect_val(self), GskRoundedRect_val(arg1));
-CAMLreturn(Val_GskRoundedRect(result));
-}
-
 CAMLexport CAMLprim value ml_gsk_rounded_rect_init_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);

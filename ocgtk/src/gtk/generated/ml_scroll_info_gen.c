@@ -44,14 +44,6 @@ GtkScrollInfo *obj = gtk_scroll_info_new();
 
 CAMLreturn(Val_GtkScrollInfo(obj));
 }
-CAMLexport CAMLprim value ml_gtk_scroll_info_unref(value self)
-{
-CAMLparam1(self);
-
-gtk_scroll_info_unref(GtkScrollInfo_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_scroll_info_set_enable_vertical(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -146,15 +138,6 @@ CAMLexport CAMLprim value ml_gtk_scroll_info_set_enable_vertical(value self, val
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("ScrollInfo requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_scroll_info_unref(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("ScrollInfo requires GTK >= 4.12");
 return Val_unit;
 }

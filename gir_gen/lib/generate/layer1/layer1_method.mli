@@ -5,7 +5,7 @@ val generate_method_decl :
   class_name:string ->
   c_type:string ->
   c_symbol_prefix:string option ->
-  is_record:bool ->
+  entity_kind:Filtering.entity_kind ->
   buf:Buffer.t ->
   Types.gir_method ->
   unit

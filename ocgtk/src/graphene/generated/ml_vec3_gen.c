@@ -556,27 +556,6 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
-
-CAMLexport CAMLprim value ml_graphene_vec3_free(value self)
-{
-CAMLparam1(self);
-
-graphene_vec3_free(graphene_vec3_t_val(self));
-CAMLreturn(Val_unit);
-}
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec3_free(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Vec3 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
 #if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 
 CAMLexport CAMLprim value ml_graphene_vec3_equal(value self, value arg1)

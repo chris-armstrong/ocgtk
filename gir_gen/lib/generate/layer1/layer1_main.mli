@@ -10,7 +10,7 @@ val generate_ml_interface_internal :
   properties:Types.gir_property list ->
   base_type:string ->
   ?c_symbol_prefix:string ->
-  ?is_record:bool ->
+  entity_kind:Filtering.entity_kind ->
   ?from_gobject_c_name:string ->
   Buffer.t ->
   unit
@@ -30,17 +30,16 @@ val generate_ml_interface :
   methods:Types.gir_method list ->
   properties:Types.gir_property list ->
   ?c_symbol_prefix:string ->
-  ?is_record:bool ->
+  entity_kind:Filtering.entity_kind ->
   ?from_gobject_c_name:string ->
   unit ->
   string
 (** Generate a complete OCaml interface (.mli) or implementation (.ml) for a
-    class. Returns the generated code as a string, including documentation
-    header. [is_record] tells the layer-1 generator the entity is a record so
-    the central [Filtering.should_skip_method_binding] predicate filters out
-    its copy/free/unref methods (which would otherwise race the custom-block
-    finalizer). It does not affect type-declaration shape: records are
-    emitted as [\[ \`tag... \] Gobject.obj] just like classes. *)
+    class/interface/record. Returns the generated code as a string, including
+    documentation header. [entity_kind] is the discriminator that the central
+    [Filtering.should_skip_method_binding] uses to decide which methods to
+    filter; it does not affect type-declaration shape (records and classes
+    are both emitted as [\[ \`tag... \] Gobject.obj]). *)
 
 val generate_combined_ml_modules :
   ctx:Types.generation_context ->

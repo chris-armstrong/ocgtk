@@ -72,9 +72,12 @@ let entity_generator_by_entity_type =
     in
     let generate_c_stub_methods =
      fun ~ctx ~(entity : entity) buf ->
+      let entity_kind = Filtering.entity_kind_of_entity entity in
       List.iter
         ~f:(fun (meth : gir_method) ->
-          if not (Filtering.should_skip_method_binding ~ctx meth) then
+          if
+            not (Filtering.should_skip_method_binding ~ctx ~entity_kind meth)
+          then
             try
               let stub =
                 C_stub_method.generate_c_method ~ctx ~c_type:entity.c_type meth
@@ -370,12 +373,15 @@ let generate_c_stub ~ctx ~output_dir entity =
                       Buffer.add_string version_buf "\n"))
                   entity.constructors;
 
+                let entity_kind =
+                  Gir_gen_lib.Generate.Filtering.entity_kind_of_entity entity
+                in
                 List.iter
                   ~f:(fun (meth : gir_method) ->
                     if
                       not
                         (Gir_gen_lib.Generate.Filtering
-                         .should_skip_method_binding ~ctx meth)
+                         .should_skip_method_binding ~ctx ~entity_kind meth)
                     then (
                       let ml_name =
                         Gir_gen_lib.Utils.ml_method_name ~class_name:entity.name
@@ -480,12 +486,15 @@ let generate_c_stub ~ctx ~output_dir entity =
                    ~c_identifier:ctor.c_identifier ~os:os_val ctor);
               Buffer.add_string os_fallback_buf "\n"))
           entity.constructors;
+        let entity_kind =
+          Gir_gen_lib.Generate.Filtering.entity_kind_of_entity entity
+        in
         List.iter
           ~f:(fun (meth : gir_method) ->
             if
               not
                 (Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx
-                   meth)
+                   ~entity_kind meth)
             then (
               let ml_name =
                 Gir_gen_lib.Utils.ml_method_name ~class_name:entity.name meth
@@ -583,11 +592,7 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
     | Implementation -> Gir_gen_lib.Generate.Ml_interface.Implementation
   in
 
-  let is_record =
-    match entity.Gir_gen_lib.Types.kind with
-    | Gir_gen_lib.Types.Record _ -> true
-    | _ -> false
-  in
+  let entity_kind = Gir_gen_lib.Generate.Filtering.entity_kind_of_entity entity in
   let content =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx ~output_mode
       ~class_name:entity.Gir_gen_lib.Types.name
@@ -597,7 +602,7 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
         (if List.length entity.Gir_gen_lib.Types.constructors > 0 then
            Some entity.Gir_gen_lib.Types.constructors
          else None)
-      ~methods:entity.Gir_gen_lib.Types.methods ~is_record
+      ~methods:entity.Gir_gen_lib.Types.methods ~entity_kind
       ~properties:entity.Gir_gen_lib.Types.properties ?from_gobject_c_name ()
   in
 
@@ -665,15 +670,15 @@ let generate_high_level_class ~ctx ~output_dir entity parent_chain =
       printf "Overwriting %s (wholesale regeneration enabled)\n" g_file
     else printf "Creating %s\n" g_file;
 
-    let emission_methods =
-      Gir_gen_lib.Generate.Filtering.methods_for_emission entity
+    let entity_kind =
+      Gir_gen_lib.Generate.Filtering.entity_kind_of_entity entity
     in
     write_file ~path:g_file
       ~content:
         (Gir_gen_lib.Generate.Class_gen.generate_class_module ~ctx
            ~c_type:entity.Gir_gen_lib.Types.c_type
            ~class_name:entity.Gir_gen_lib.Types.name ~parent_chain
-           ~methods:emission_methods
+           ~methods:entity.Gir_gen_lib.Types.methods ~entity_kind
            ~properties:entity.Gir_gen_lib.Types.properties
            ~signals:entity.Gir_gen_lib.Types.signals
            ~constructors:entity.Gir_gen_lib.Types.constructors);
@@ -688,7 +693,7 @@ let generate_high_level_class ~ctx ~output_dir entity parent_chain =
         (Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
            ~c_type:entity.Gir_gen_lib.Types.c_type
            ~class_name:entity.Gir_gen_lib.Types.name ~parent_chain
-           ~methods:emission_methods
+           ~methods:entity.Gir_gen_lib.Types.methods ~entity_kind
            ~properties:entity.Gir_gen_lib.Types.properties
            ~signals:entity.Gir_gen_lib.Types.signals
            ~constructors:entity.Gir_gen_lib.Types.constructors)

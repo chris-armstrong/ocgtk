@@ -170,22 +170,6 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
-CAMLexport CAMLprim value ml_gsk_stroke_free(value self)
-{
-CAMLparam1(self);
-
-gsk_stroke_free(GskStroke_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gsk_stroke_copy(value self)
-{
-CAMLparam1(self);
-
-GskStroke* result = gsk_stroke_copy(GskStroke_val(self));
-CAMLreturn(Val_GskStroke(result));
-}
-
 #else
 
 
@@ -193,24 +177,6 @@ CAMLexport CAMLprim value ml_gsk_stroke_new(value arg1)
 {
 CAMLparam1(arg1);
 (void)arg1;
-caml_failwith("Stroke requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_stroke_copy(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Stroke requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_stroke_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Stroke requires GTK >= 4.14");
 return Val_unit;
 }

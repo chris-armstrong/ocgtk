@@ -230,35 +230,6 @@ int result = pango_layout_iter_get_baseline(PangoLayoutIter_val(self));
 CAMLreturn(Val_int(result));
 }
 
-CAMLexport CAMLprim value ml_pango_layout_iter_free(value self)
-{
-CAMLparam1(self);
-
-pango_layout_iter_free(PangoLayoutIter_val(self));
-CAMLreturn(Val_unit);
-}
-
-#if PANGO_VERSION_CHECK(1,20,0)
-
-CAMLexport CAMLprim value ml_pango_layout_iter_copy(value self)
-{
-CAMLparam1(self);
-
-PangoLayoutIter* result = pango_layout_iter_copy(PangoLayoutIter_val(self));
-CAMLreturn(Val_option(result, Val_PangoLayoutIter));
-}
-
-#else
-
-CAMLexport CAMLprim value ml_pango_layout_iter_copy(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("LayoutIter requires Pango >= 1.20");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_pango_layout_iter_at_last_line(value self)
 {
 CAMLparam1(self);

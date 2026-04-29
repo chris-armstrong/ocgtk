@@ -47,14 +47,6 @@ GFileAttributeInfoList *obj = g_file_attribute_info_list_new();
 
 CAMLreturn(Val_GFileAttributeInfoList(obj));
 }
-CAMLexport CAMLprim value ml_g_file_attribute_info_list_unref(value self)
-{
-CAMLparam1(self);
-
-g_file_attribute_info_list_unref(GFileAttributeInfoList_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_g_file_attribute_info_list_ref(value self)
 {
 CAMLparam1(self);

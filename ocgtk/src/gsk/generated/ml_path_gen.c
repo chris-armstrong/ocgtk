@@ -35,14 +35,6 @@ value Val_GskPath_option(const GskPath *ptr) {
 #if GTK_CHECK_VERSION(4,14,0)
 
 
-CAMLexport CAMLprim value ml_gsk_path_unref(value self)
-{
-CAMLparam1(self);
-
-gsk_path_unref(GskPath_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gsk_path_to_string(value self)
 {
 CAMLparam1(self);
@@ -258,15 +250,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_gsk_path_to_string(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Path requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_path_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

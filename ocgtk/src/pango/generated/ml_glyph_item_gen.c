@@ -47,48 +47,6 @@ return Val_unit;
 }
 #endif
 
-#if PANGO_VERSION_CHECK(1,6,0)
-
-CAMLexport CAMLprim value ml_pango_glyph_item_free(value self)
-{
-CAMLparam1(self);
-
-pango_glyph_item_free(PangoGlyphItem_val(self));
-CAMLreturn(Val_unit);
-}
-
-#else
-
-CAMLexport CAMLprim value ml_pango_glyph_item_free(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("GlyphItem requires Pango >= 1.6");
-return Val_unit;
-}
-#endif
-
-#if PANGO_VERSION_CHECK(1,20,0)
-
-CAMLexport CAMLprim value ml_pango_glyph_item_copy(value self)
-{
-CAMLparam1(self);
-
-PangoGlyphItem* result = pango_glyph_item_copy(PangoGlyphItem_val(self));
-CAMLreturn(Val_option(result, Val_PangoGlyphItem));
-}
-
-#else
-
-CAMLexport CAMLprim value ml_pango_glyph_item_copy(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("GlyphItem requires Pango >= 1.20");
-return Val_unit;
-}
-#endif
-
 #if PANGO_VERSION_CHECK(1,2,0)
 
 CAMLexport CAMLprim value ml_pango_glyph_item_apply_attrs(value self, value arg1, value arg2)

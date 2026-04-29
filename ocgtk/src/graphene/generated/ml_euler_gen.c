@@ -260,14 +260,6 @@ return Val_unit;
 }
 #endif
 
-CAMLexport CAMLprim value ml_graphene_euler_free(value self)
-{
-CAMLparam1(self);
-
-graphene_euler_free(graphene_euler_t_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_graphene_euler_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -293,15 +285,6 @@ CAMLexport CAMLprim value ml_graphene_euler_equal(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("Euler requires Graphene >= 1.2");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_euler_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Euler requires Graphene >= 1.2");
 return Val_unit;
 }

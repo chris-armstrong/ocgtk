@@ -191,10 +191,12 @@ let test_non_introspectable_method_skipped () =
   let ctx = create_test_context () in
   Alcotest.(check bool)
     "Good method should be generated" false
-    (Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx good_method);
+    (Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx
+       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class good_method);
   Alcotest.(check bool)
     "Bad method should NOT be generated" true
-    (Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx bad_method)
+    (Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx
+       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class bad_method)
 
 (* Bug 3: Copy function should return the copy result, not g_new0
    See ocgtk/docs/plans/fix_codegen_bugs.md lines 553-592 *)
@@ -1420,7 +1422,8 @@ let test_out_param_array_without_length_skipped () =
 
   (* Critical: should_skip_method_binding should return true for this case *)
   let skipped =
-    Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx meth
+    Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx
+      ~entity_kind:Gir_gen_lib.Generate.Filtering.Class meth
   in
   Alcotest.(check bool)
     "Out-param array without length should be skipped" true skipped
@@ -1478,7 +1481,7 @@ let test_double_pointer_out_param_skipped () =
 
   (* Critical: should_skip_method_binding should return true for double-pointer out params *)
   let skipped =
-    Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx meth
+    Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx ~entity_kind:Gir_gen_lib.Generate.Filtering.Class meth
   in
   Alcotest.(check bool)
     "Double-pointer out param should be skipped" true skipped
@@ -1564,7 +1567,7 @@ let test_normal_out_param_not_skipped () =
 
   (* Critical: should_skip_method_binding should return false for out-param with length *)
   let skipped =
-    Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx meth
+    Gir_gen_lib.Generate.Filtering.should_skip_method_binding ~ctx ~entity_kind:Gir_gen_lib.Generate.Filtering.Class meth
   in
   Alcotest.(check bool)
     "Out-param array WITH length should NOT be skipped" false skipped

@@ -47,14 +47,6 @@ GFileAttributeMatcher *obj = g_file_attribute_matcher_new(String_val(arg1));
 
 CAMLreturn(Val_GFileAttributeMatcher(obj));
 }
-CAMLexport CAMLprim value ml_g_file_attribute_matcher_unref(value self)
-{
-CAMLparam1(self);
-
-g_file_attribute_matcher_unref(GFileAttributeMatcher_val(self));
-CAMLreturn(Val_unit);
-}
-
 #if GLIB_CHECK_VERSION(2,32,0)
 
 CAMLexport CAMLprim value ml_g_file_attribute_matcher_to_string(value self)

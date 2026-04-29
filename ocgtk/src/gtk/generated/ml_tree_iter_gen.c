@@ -24,19 +24,3 @@ value copy_GtkTreeIter(const GtkTreeIter *ptr)
   return ml_gir_record_val_ptr_with_type(gtk_tree_iter_get_type(), copy);
 }
 
-
-CAMLexport CAMLprim value ml_gtk_tree_iter_free(value self)
-{
-CAMLparam1(self);
-
-gtk_tree_iter_free(GtkTreeIter_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_iter_copy(value self)
-{
-CAMLparam1(self);
-
-GtkTreeIter* result = gtk_tree_iter_copy(GtkTreeIter_val(self));
-CAMLreturn(Val_GtkTreeIter(result));
-}

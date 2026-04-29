@@ -1487,27 +1487,6 @@ return Val_unit;
 }
 #endif
 
-#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
-
-CAMLexport CAMLprim value ml_graphene_matrix_free(value self)
-{
-CAMLparam1(self);
-
-graphene_matrix_free(graphene_matrix_t_val(self));
-CAMLreturn(Val_unit);
-}
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_matrix_free(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Matrix requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
 #if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,10,0)
 
 CAMLexport CAMLprim value ml_graphene_matrix_equal_fast(value self, value arg1)

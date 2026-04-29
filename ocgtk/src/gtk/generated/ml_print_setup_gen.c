@@ -36,14 +36,6 @@ value Val_GtkPrintSetup_option(const GtkPrintSetup *ptr) {
 #if GTK_CHECK_VERSION(4,14,0)
 
 
-CAMLexport CAMLprim value ml_gtk_print_setup_unref(value self)
-{
-CAMLparam1(self);
-
-gtk_print_setup_unref(GtkPrintSetup_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_print_setup_ref(value self)
 {
 CAMLparam1(self);
@@ -92,15 +84,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_gtk_print_setup_ref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PrintSetup requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_print_setup_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

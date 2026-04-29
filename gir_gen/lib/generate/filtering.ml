@@ -166,12 +166,24 @@ let method_has_unsupported_out_arrays (meth : gir_method) =
               | None -> false))
       | In -> false)
 
-(* ========== Method-name predicates ========== *)
+(* ========== Entity kind ADT ==========
 
-(* The original definitions lived in [C_stub_type_analysis.Type_analysis]
-   and the inline duplicate in [methods_for_emission] consolidated them
-   here. [C_stub_type_analysis] now re-exports these to keep the existing
-   call sites compiling without changes. *)
+   Carries the "what kind of entity is being emitted" signal through the
+   generator without dragging the full [Types.entity_kind] payload, and
+   lets the central method-skip predicate fold the record-destructor
+   filter into its single answer. The ADT is intentionally non-optional
+   at every call site so a future entity kind (e.g. boxed enum) cannot
+   silently inherit the wrong filter. *)
+
+type entity_kind = Class | Interface | Record
+
+let entity_kind_of_entity (entity : Types.entity) : entity_kind =
+  match entity.Types.kind with
+  | Types.Class _ -> Class
+  | Types.Interface _ -> Interface
+  | Types.Record _ -> Record
+
+(* ========== Method-name predicates ========== *)
 
 let private_ends_with ~suffix str =
   let ls = String.length suffix and lt = String.length str in
@@ -202,12 +214,10 @@ let is_copy_or_free meth = is_copy_method meth || is_free_method meth
 (* ========== Per-method emission predicate ========== *)
 
 (* Single source of truth for "should we drop this method from emission".
-   The optional [is_record] flag tells the predicate the calling entity is
-   a Record so the record-specific copy/free/unref hazard is folded into
-   the same answer. The flag defaults to [false] so existing callers that
-   are unaware of records (or are emitting class methods) keep their
-   prior behaviour. *)
-let should_skip_method_binding ~ctx ?(is_record = false) (meth : gir_method) =
+   [entity_kind] tells the predicate which entity flavour the method
+   belongs to so record-specific hazards (copy/free/unref) can be folded
+   into the same answer. *)
+let should_skip_method_binding ~ctx ~entity_kind (meth : gir_method) =
   let has_unknown_type =
     Exclude_list.should_skip_method
       ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx)
@@ -217,7 +227,11 @@ let should_skip_method_binding ~ctx ?(is_record = false) (meth : gir_method) =
   let is_not_introspectable = not meth.introspectable in
   let has_unsupported_out_arrays = method_has_unsupported_out_arrays meth in
   let has_unsupported_arrays = method_has_unsupported_arrays ~ctx meth in
-  let is_record_destructor = is_record && is_copy_or_free meth in
+  let is_record_destructor =
+    match entity_kind with
+    | Record -> is_copy_or_free meth
+    | Class | Interface -> false
+  in
   Logs.debug (fun m ->
       m "should_skip_method_binding: %s -> %b %b %b %b %b %b\n"
         meth.c_identifier is_variadic has_unknown_type is_not_introspectable
@@ -265,18 +279,3 @@ let should_generate_interface (_intf : gir_interface) = true
 (* Check if a standalone function should be generated *)
 let should_generate_function (func : gir_function) = func.introspectable
 
-(* Filter copy/free/unref methods out for record entities. The
-   gir_record custom-block finalizer already disposes of the wrapped
-   pointer (g_boxed_free for boxed types, g_free otherwise), so
-   exposing manual free or unref is a double-free hazard and copy is
-   redundant for callers who can simply hold a fresh OCaml binding.
-   Classes and interfaces emit these methods unchanged.
-
-   This is a list-level convenience for Layer 2 emission paths that
-   don't iterate through [should_skip_method_binding]; both share the
-   same underlying [is_copy_or_free] predicate. *)
-let methods_for_emission (entity : Types.entity) =
-  match entity.kind with
-  | Types.Record _ ->
-      List.filter ~f:(fun m -> not (is_copy_or_free m)) entity.Types.methods
-  | _ -> entity.Types.methods

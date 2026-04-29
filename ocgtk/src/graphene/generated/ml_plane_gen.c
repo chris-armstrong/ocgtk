@@ -142,14 +142,6 @@ float result = graphene_plane_get_constant(graphene_plane_t_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
-CAMLexport CAMLprim value ml_graphene_plane_free(value self)
-{
-CAMLparam1(self);
-
-graphene_plane_free(graphene_plane_t_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_graphene_plane_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -193,15 +185,6 @@ CAMLexport CAMLprim value ml_graphene_plane_equal(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("Plane requires Graphene >= 1.2");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_plane_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Plane requires Graphene >= 1.2");
 return Val_unit;
 }

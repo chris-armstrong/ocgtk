@@ -31,14 +31,6 @@ value Val_GdkFrameTimings_option(const GdkFrameTimings *ptr) {
 }
 
 
-CAMLexport CAMLprim value ml_gdk_frame_timings_unref(value self)
-{
-CAMLparam1(self);
-
-gdk_frame_timings_unref(GdkFrameTimings_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gdk_frame_timings_ref(value self)
 {
 CAMLparam1(self);

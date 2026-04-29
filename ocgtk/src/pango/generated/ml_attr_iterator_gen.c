@@ -92,11 +92,3 @@ CAMLparam1(self);
 pango_attr_iterator_destroy(PangoAttrIterator_val(self));
 CAMLreturn(Val_unit);
 }
-
-CAMLexport CAMLprim value ml_pango_attr_iterator_copy(value self)
-{
-CAMLparam1(self);
-
-PangoAttrIterator* result = pango_attr_iterator_copy(PangoAttrIterator_val(self));
-CAMLreturn(Val_PangoAttrIterator(result));
-}

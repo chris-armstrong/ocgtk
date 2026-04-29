@@ -51,14 +51,6 @@ GskPathMeasure *obj = gsk_path_measure_new_with_tolerance(GskPath_val(arg1), Dou
 
 CAMLreturn(Val_GskPathMeasure(obj));
 }
-CAMLexport CAMLprim value ml_gsk_path_measure_unref(value self)
-{
-CAMLparam1(self);
-
-gsk_path_measure_unref(GskPathMeasure_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gsk_path_measure_ref(value self)
 {
 CAMLparam1(self);
@@ -164,15 +156,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_gsk_path_measure_ref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PathMeasure requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_path_measure_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

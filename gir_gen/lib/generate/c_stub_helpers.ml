@@ -192,15 +192,16 @@ module Code_gen = struct
       constructors
 
   (** Generate C code for methods by iterating and filtering. Applies the
-      central [Filtering.should_skip_method_binding] (forwarding the
-      [is_record] flag so the record-destructor filter is folded in), then
-      appends generated code to the buffer. Methods are processed in reverse
-      order (List.rev). *)
-  let generate_methods ~ctx ~c_type ~class_name ~buf ~generator
-      ?(is_record = false) methods =
+      central [Filtering.should_skip_method_binding], passing [entity_kind]
+      so the record copy/free/unref filter is folded into the same answer
+      as varargs / unsupported arrays / non-introspectable etc. Methods are
+      processed in reverse order (List.rev). *)
+  let generate_methods ~ctx ~c_type ~class_name ~buf ~generator ~entity_kind
+      methods =
     List.iter
       ~f:(fun (meth : gir_method) ->
-        if not (Filtering.should_skip_method_binding ~ctx ~is_record meth) then
+        if not (Filtering.should_skip_method_binding ~ctx ~entity_kind meth)
+        then
           try Buffer.add_string buf (generator ~ctx ~c_type meth class_name)
           with Failure msg ->
             eprintf "  Warning: skipping method %s: %s\n" meth.method_name msg)

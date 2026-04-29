@@ -27,7 +27,7 @@ let test_method_multiple_params () =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
       ~output_mode:Implementation ~class_name:"Adjustment" ~class_doc:None
       ~c_type:"GtkAdjustment" ~parent_chain:[ "Widget" ] ~constructors:None
-      ~methods:[ meth ] ~properties:[] ()
+      ~methods:[ meth ] ~properties:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
   in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -72,7 +72,7 @@ let test_method_with_object_param () =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
       ~output_mode:Implementation ~class_name:"Window" ~class_doc:None
       ~c_type:"GtkWindow" ~parent_chain:[ "Widget" ] ~constructors:None
-      ~methods:[ meth ] ~properties:[] ()
+      ~methods:[ meth ] ~properties:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
   in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -111,7 +111,7 @@ let test_method_with_bool_param () =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
       ~output_mode:Implementation ~class_name:"Widget" ~class_doc:None
       ~c_type:"GtkWidget" ~parent_chain:[] ~constructors:None ~methods:[ meth ]
-      ~properties:[] ()
+      ~properties:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
   in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -148,7 +148,7 @@ let test_method_with_int_return () =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
       ~output_mode:Implementation ~class_name:"Widget" ~class_doc:None
       ~c_type:"GtkWidget" ~parent_chain:[] ~constructors:None ~methods:[ meth ]
-      ~properties:[] ()
+      ~properties:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
   in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -189,7 +189,7 @@ let test_constructor_with_multiple_params () =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
       ~output_mode:Implementation ~class_name:"Button" ~class_doc:None
       ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
-      ~constructors:(Some [ ctor ]) ~methods:[] ~properties:[] ()
+      ~constructors:(Some [ ctor ]) ~methods:[] ~properties:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
   in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -237,7 +237,7 @@ let test_method_with_nullable_object () =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
       ~output_mode:Implementation ~class_name:"Widget" ~class_doc:None
       ~c_type:"GtkWidget" ~parent_chain:[] ~constructors:None ~methods:[ meth ]
-      ~properties:[] ()
+      ~properties:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
   in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -274,7 +274,7 @@ let test_property_getter () =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
       ~output_mode:Implementation ~class_name:"Button" ~class_doc:None
       ~c_type:"GtkButton" ~parent_chain:[ "Widget" ] ~constructors:None
-      ~methods:[ meth ] ~properties:[] ()
+      ~methods:[ meth ] ~properties:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
   in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -308,7 +308,7 @@ let test_property_setter () =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
       ~output_mode:Implementation ~class_name:"Button" ~class_doc:None
       ~c_type:"GtkButton" ~parent_chain:[ "Widget" ] ~constructors:None
-      ~methods:[ meth ] ~properties:[] ()
+      ~methods:[ meth ] ~properties:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
   in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in
@@ -346,7 +346,7 @@ let test_property_getter_nullable () =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
       ~output_mode:Implementation ~class_name:"Widget" ~class_doc:None
       ~c_type:"GtkWidget" ~parent_chain:[] ~constructors:None ~methods:[ meth ]
-      ~properties:[] ()
+      ~properties:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
   in
 
   let ast = Ml_ast_helpers.parse_implementation ml_code in

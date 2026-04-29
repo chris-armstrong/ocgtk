@@ -32,14 +32,6 @@ value Val_GtkRecentInfo_option(const GtkRecentInfo *ptr) {
 }
 
 
-CAMLexport CAMLprim value ml_gtk_recent_info_unref(value self)
-{
-CAMLparam1(self);
-
-gtk_recent_info_unref(GtkRecentInfo_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_recent_info_ref(value self)
 {
 CAMLparam1(self);

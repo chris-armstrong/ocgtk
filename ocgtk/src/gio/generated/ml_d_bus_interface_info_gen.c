@@ -43,14 +43,6 @@ value Val_GDBusInterfaceInfo_option(const GDBusInterfaceInfo *ptr) {
 #if GLIB_CHECK_VERSION(2,26,0)
 
 
-CAMLexport CAMLprim value ml_g_dbus_interface_info_unref(value self)
-{
-CAMLparam1(self);
-
-g_dbus_interface_info_unref(GDBusInterfaceInfo_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_g_dbus_interface_info_ref(value self)
 {
 CAMLparam1(self);
@@ -177,15 +169,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_dbus_interface_info_ref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusInterfaceInfo requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_interface_info_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

@@ -193,19 +193,3 @@ caml_failwith("TabArray requires Pango >= 1.50");
 return Val_unit;
 }
 #endif
-
-CAMLexport CAMLprim value ml_pango_tab_array_free(value self)
-{
-CAMLparam1(self);
-
-pango_tab_array_free(PangoTabArray_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_pango_tab_array_copy(value self)
-{
-CAMLparam1(self);
-
-PangoTabArray* result = pango_tab_array_copy(PangoTabArray_val(self));
-CAMLreturn(Val_PangoTabArray(result));
-}

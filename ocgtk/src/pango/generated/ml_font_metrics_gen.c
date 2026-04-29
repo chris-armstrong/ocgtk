@@ -31,14 +31,6 @@ value Val_PangoFontMetrics_option(const PangoFontMetrics *ptr) {
 }
 
 
-CAMLexport CAMLprim value ml_pango_font_metrics_unref(value self)
-{
-CAMLparam1(self);
-
-pango_font_metrics_unref(PangoFontMetrics_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_pango_font_metrics_ref(value self)
 {
 CAMLparam1(self);

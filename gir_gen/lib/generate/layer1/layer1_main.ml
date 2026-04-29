@@ -20,12 +20,12 @@ let generate_constructors_section ~ctx ~class_name ~constructors buf =
 
 (** Generate methods section *)
 let generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix
-    ~is_record ~methods buf =
+    ~entity_kind ~methods buf =
   bprintf buf "(* Methods *)\n";
   List.iter
     ~f:(fun (meth : gir_method) ->
       Layer1_method.generate_method_decl ~ctx ~class_name ~c_type
-        ~c_symbol_prefix ~is_record ~buf meth)
+        ~c_symbol_prefix ~entity_kind ~buf meth)
     (List.rev methods)
 
 (** Generate properties section *)
@@ -40,8 +40,8 @@ let generate_properties_section ~ctx ~class_name ~methods ~properties buf =
   end
 
 let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
-    ~constructors ~methods ~properties ~base_type ?c_symbol_prefix
-    ?(is_record = false) ?from_gobject_c_name buf =
+    ~constructors ~methods ~properties ~base_type ?c_symbol_prefix ~entity_kind
+    ?from_gobject_c_name buf =
   generate_type_declaration ~output_mode ~base_type buf;
   (match from_gobject_c_name with
   | Some c_name ->
@@ -49,13 +49,13 @@ let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
         c_name
   | None -> ());
   generate_constructors_section ~ctx ~class_name ~constructors buf;
-  generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix ~is_record
-    ~methods buf;
+  generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix
+    ~entity_kind ~methods buf;
   generate_properties_section ~ctx ~class_name ~methods ~properties buf
 
 let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
     ~parent_chain ~constructors ~methods ~properties ?c_symbol_prefix
-    ?(is_record = false) ?from_gobject_c_name () =
+    ~entity_kind ?from_gobject_c_name () =
   let buf = Buffer.create 1024 in
 
   let class_type_name, base_type =
@@ -70,7 +70,7 @@ let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
   | Some doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc)
   | None -> ());
   generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
-    ~constructors ~methods ~properties ?c_symbol_prefix ~base_type ~is_record
+    ~constructors ~methods ~properties ?c_symbol_prefix ~base_type ~entity_kind
     ?from_gobject_c_name buf;
   Buffer.contents buf
 
@@ -78,9 +78,6 @@ let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
 let format_module_declaration buf module_name is_start =
   if is_start then bprintf buf "module rec %s" module_name
   else bprintf buf "\nand %s\n" module_name
-
-let entity_is_record (entity : entity) =
-  match entity.kind with Record _ -> true | _ -> false
 
 (** Generate module signature for a single entity *)
 let generate_module_signature ~ctx ~entity ~base_type ?from_gobject_c_name buf =
@@ -91,7 +88,8 @@ let generate_module_signature ~ctx ~entity ~base_type ?from_gobject_c_name buf =
       ~constructors:
         (if List.length entity.constructors > 0 then Some entity.constructors
          else None)
-      ~methods:entity.methods ~is_record:(entity_is_record entity)
+      ~methods:entity.methods
+      ~entity_kind:(Filtering.entity_kind_of_entity entity)
       ~properties:entity.properties ~base_type ?from_gobject_c_name inner_buf;
     Buffer.contents inner_buf
   in
@@ -107,7 +105,8 @@ let generate_module_implementation ~ctx ~output_mode ~entity ~base_type
       ~constructors:
         (if List.length entity.constructors > 0 then Some entity.constructors
          else None)
-      ~methods:entity.methods ~is_record:(entity_is_record entity)
+      ~methods:entity.methods
+      ~entity_kind:(Filtering.entity_kind_of_entity entity)
       ~properties:entity.properties ?from_gobject_c_name inner_buf;
     Buffer.contents inner_buf
   in

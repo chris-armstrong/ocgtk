@@ -75,28 +75,12 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
-CAMLexport CAMLprim value ml_gsk_path_point_free(value self)
-{
-CAMLparam1(self);
-
-gsk_path_point_free(GskPathPoint_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gsk_path_point_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gboolean result = gsk_path_point_equal(GskPathPoint_val(self), GskPathPoint_val(arg1));
 CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gsk_path_point_copy(value self)
-{
-CAMLparam1(self);
-
-GskPathPoint* result = gsk_path_point_copy(GskPathPoint_val(self));
-CAMLreturn(Val_GskPathPoint(result));
 }
 
 CAMLexport CAMLprim value ml_gsk_path_point_compare(value self, value arg1)
@@ -120,29 +104,11 @@ return Val_unit;
 }
 
 
-CAMLexport CAMLprim value ml_gsk_path_point_copy(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PathPoint requires GTK >= 4.14");
-return Val_unit;
-}
-
-
 CAMLexport CAMLprim value ml_gsk_path_point_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("PathPoint requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_path_point_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("PathPoint requires GTK >= 4.14");
 return Val_unit;
 }

@@ -379,14 +379,6 @@ return Val_unit;
 }
 #endif
 
-CAMLexport CAMLprim value ml_graphene_rect_free(value self)
-{
-CAMLparam1(self);
-
-graphene_rect_free(graphene_rect_t_val(self));
-CAMLreturn(Val_unit);
-}
-
 #if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,4,0)
 
 CAMLexport CAMLprim value ml_graphene_rect_expand(value self, value arg1)
@@ -472,15 +464,6 @@ CAMLexport CAMLprim value ml_graphene_rect_expand(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("Rect requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_rect_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Rect requires Graphene >= 1.0");
 return Val_unit;
 }

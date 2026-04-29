@@ -157,35 +157,6 @@ const char* result = g_unix_mount_point_get_device_path(GUnixMountPoint_val(self
 CAMLreturn(caml_copy_string(result));
 }
 
-CAMLexport CAMLprim value ml_g_unix_mount_point_free(value self)
-{
-CAMLparam1(self);
-
-g_unix_mount_point_free(GUnixMountPoint_val(self));
-CAMLreturn(Val_unit);
-}
-
-#if GLIB_CHECK_VERSION(2,54,0)
-
-CAMLexport CAMLprim value ml_g_unix_mount_point_copy(value self)
-{
-CAMLparam1(self);
-
-GUnixMountPoint* result = g_unix_mount_point_copy(GUnixMountPoint_val(self));
-CAMLreturn(Val_GUnixMountPoint(result));
-}
-
-#else
-
-CAMLexport CAMLprim value ml_g_unix_mount_point_copy(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("UnixMountPoint requires GLib >= 2.54");
-return Val_unit;
-}
-#endif
-
 CAMLexport CAMLprim value ml_g_unix_mount_point_compare(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -202,24 +173,6 @@ CAMLexport CAMLprim value ml_g_unix_mount_point_compare(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("UnixMountPoint is only available on non-windows");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_unix_mount_point_copy(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("UnixMountPoint is only available on non-windows");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_unix_mount_point_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("UnixMountPoint is only available on non-windows");
 return Val_unit;
 }

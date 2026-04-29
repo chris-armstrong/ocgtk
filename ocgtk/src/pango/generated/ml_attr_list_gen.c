@@ -63,14 +63,6 @@ return Val_unit;
 }
 #endif
 
-CAMLexport CAMLprim value ml_pango_attr_list_unref(value self)
-{
-CAMLparam1(self);
-
-pango_attr_list_unref(PangoAttrList_val(self));
-CAMLreturn(Val_unit);
-}
-
 #if PANGO_VERSION_CHECK(1,50,0)
 
 CAMLexport CAMLprim value ml_pango_attr_list_to_string(value self)
@@ -190,14 +182,6 @@ caml_failwith("AttrList requires Pango >= 1.46");
 return Val_unit;
 }
 #endif
-
-CAMLexport CAMLprim value ml_pango_attr_list_copy(value self)
-{
-CAMLparam1(self);
-
-PangoAttrList* result = pango_attr_list_copy(PangoAttrList_val(self));
-CAMLreturn(Val_option(result, Val_PangoAttrList));
-}
 
 CAMLexport CAMLprim value ml_pango_attr_list_change(value self, value arg1)
 {

@@ -104,14 +104,6 @@ graphene_frustum_get_planes(graphene_frustum_t_val(self), out1);
 CAMLreturn(ml_out1);
 }
 
-CAMLexport CAMLprim value ml_graphene_frustum_free(value self)
-{
-CAMLparam1(self);
-
-graphene_frustum_free(graphene_frustum_t_val(self));
-CAMLreturn(Val_unit);
-}
-
 #if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,6,0)
 
 CAMLexport CAMLprim value ml_graphene_frustum_equal(value self, value arg1)
@@ -169,15 +161,6 @@ CAMLexport CAMLprim value ml_graphene_frustum_equal(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("Frustum requires Graphene >= 1.2");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_frustum_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Frustum requires Graphene >= 1.2");
 return Val_unit;
 }

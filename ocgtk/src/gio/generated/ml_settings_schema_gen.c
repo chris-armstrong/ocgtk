@@ -43,14 +43,6 @@ value Val_GSettingsSchema_option(const GSettingsSchema *ptr) {
 #if GLIB_CHECK_VERSION(2,32,0)
 
 
-CAMLexport CAMLprim value ml_g_settings_schema_unref(value self)
-{
-CAMLparam1(self);
-
-g_settings_schema_unref(GSettingsSchema_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_g_settings_schema_ref(value self)
 {
 CAMLparam1(self);
@@ -243,15 +235,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_settings_schema_ref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SettingsSchema requires GLib >= 2.32");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_settings_schema_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

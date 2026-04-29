@@ -46,14 +46,6 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
-CAMLexport CAMLprim value ml_pango_layout_line_unref(value self)
-{
-CAMLparam1(self);
-
-pango_layout_line_unref(PangoLayoutLine_val(self));
-CAMLreturn(Val_unit);
-}
-
 #if PANGO_VERSION_CHECK(1,10,0)
 
 CAMLexport CAMLprim value ml_pango_layout_line_ref(value self)

@@ -118,9 +118,9 @@ let generate_hierarchy_param_binding buf name p accessor =
 let generate_method_wrappers ~ctx ~property_method_names:_
     ~property_base_names:_ ~module_name ~class_name ~c_type ~seen
     ~current_layer2_module ~same_cluster_classes ~conflicting_methods
-    (meth : gir_method) =
+    ~entity_kind (meth : gir_method) =
   (* Determine if method should be skipped *)
-  let should_skip = should_skip_method ~ctx meth in
+  let should_skip = should_skip_method ~ctx ~entity_kind meth in
   if should_skip then ("", seen)
   else
     let ocaml_name = ocaml_method_name ~class_name ~c_type meth in
@@ -361,9 +361,10 @@ let generate_signature_content ~ctx ~same_cluster_classes ~current_layer2_module
 
 let generate_method_signatures ~ctx ~property_method_names:_
     ~property_base_names:_ ~class_name ~c_type ~seen ~current_layer2_module
-    ~same_cluster_classes ~conflicting_methods (meth : gir_method) =
+    ~same_cluster_classes ~conflicting_methods ~entity_kind
+    (meth : gir_method) =
   (* Determine if method should be skipped *)
-  let should_skip = should_skip_method ~ctx meth in
+  let should_skip = should_skip_method ~ctx ~entity_kind meth in
   let ocaml_name = ocaml_method_name ~class_name ~c_type meth in
   let is_duplicate = StringSet.mem ocaml_name seen in
   let is_conflict = StringSet.mem ocaml_name conflicting_methods in

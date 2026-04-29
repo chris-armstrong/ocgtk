@@ -39,14 +39,6 @@ GskShaderArgsBuilder *obj = gsk_shader_args_builder_new(GskGLShader_val(arg1), O
 
 CAMLreturn(Val_GskShaderArgsBuilder(obj));
 }
-CAMLexport CAMLprim value ml_gsk_shader_args_builder_unref(value self)
-{
-CAMLparam1(self);
-
-gsk_shader_args_builder_unref(GskShaderArgsBuilder_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gsk_shader_args_builder_to_args(value self)
 {
 CAMLparam1(self);

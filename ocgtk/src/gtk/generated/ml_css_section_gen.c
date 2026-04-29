@@ -40,14 +40,6 @@ GtkCssSection *obj = gtk_css_section_new(Option_val(arg1, GFile_val, NULL), GtkC
 
 CAMLreturn(Val_GtkCssSection(obj));
 }
-CAMLexport CAMLprim value ml_gtk_css_section_unref(value self)
-{
-CAMLparam1(self);
-
-gtk_css_section_unref(GtkCssSection_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_css_section_to_string(value self)
 {
 CAMLparam1(self);

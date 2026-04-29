@@ -266,14 +266,6 @@ graphene_ray_get_closest_point_to_point(graphene_ray_t_val(self), graphene_point
 CAMLreturn(Val_graphene_point3d_t(&out2));
 }
 
-CAMLexport CAMLprim value ml_graphene_ray_free(value self)
-{
-CAMLparam1(self);
-
-graphene_ray_free(graphene_ray_t_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_graphene_ray_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -299,15 +291,6 @@ CAMLexport CAMLprim value ml_graphene_ray_equal(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("Ray requires Graphene >= 1.4");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_ray_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Ray requires Graphene >= 1.4");
 return Val_unit;
 }

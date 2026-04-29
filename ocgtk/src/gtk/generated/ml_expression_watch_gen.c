@@ -40,14 +40,6 @@ gtk_expression_watch_unwatch(GtkExpressionWatch_val(self));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_gtk_expression_watch_unref(value self)
-{
-CAMLparam1(self);
-
-gtk_expression_watch_unref(GtkExpressionWatch_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_expression_watch_ref(value self)
 {
 CAMLparam1(self);

@@ -79,19 +79,3 @@ CAMLparam2(self, arg1);
 gboolean result = pango_color_parse(PangoColor_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
 }
-
-CAMLexport CAMLprim value ml_pango_color_free(value self)
-{
-CAMLparam1(self);
-
-pango_color_free(PangoColor_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_pango_color_copy(value self)
-{
-CAMLparam1(self);
-
-PangoColor* result = pango_color_copy(PangoColor_val(self));
-CAMLreturn(Val_option(result, Val_PangoColor));
-}
