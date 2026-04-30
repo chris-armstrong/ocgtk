@@ -58,14 +58,8 @@ The array should not be freed. *)
 external get_depth : t -> int = "ml_gtk_tree_path_get_depth"
 (** Returns the current depth of @path. *)
 
-external free : t -> unit = "ml_gtk_tree_path_free"
-(** Frees @path. If @path is %NULL, it simply returns. *)
-
 external down : t -> unit = "ml_gtk_tree_path_down"
 (** Moves @path to point to the first child of the current path. *)
-
-external copy : t -> t = "ml_gtk_tree_path_copy"
-(** Creates a new `GtkTreePath` as a copy of @path. *)
 
 external compare : t -> t -> int = "ml_gtk_tree_path_compare"
 (** Compares two paths.

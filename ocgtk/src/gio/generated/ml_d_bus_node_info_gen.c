@@ -26,12 +26,12 @@
 #if GLIB_CHECK_VERSION(2,26,0)
 /* Conversion functions for GDBusNodeInfo (opaque record with hidden fields) */
 GDBusNodeInfo *GDBusNodeInfo_val(value v) {
-  return *(GDBusNodeInfo **)Data_custom_val(v);
+  return (GDBusNodeInfo *)ml_gir_record_ptr_val(v, "GDBusNodeInfo");
 }
 
 value Val_GDBusNodeInfo(const GDBusNodeInfo *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_dbus_node_info_get_type(), ptr);
 }
 
 value Val_GDBusNodeInfo_option(const GDBusNodeInfo *ptr) {
@@ -52,14 +52,6 @@ GDBusNodeInfo *obj = g_dbus_node_info_new_for_xml(String_val(arg1), &error);
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GDBusNodeInfo(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-CAMLexport CAMLprim value ml_g_dbus_node_info_unref(value self)
-{
-CAMLparam1(self);
-
-g_dbus_node_info_unref(GDBusNodeInfo_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_g_dbus_node_info_ref(value self)
 {
 CAMLparam1(self);
@@ -99,15 +91,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_dbus_node_info_ref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusNodeInfo requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_node_info_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

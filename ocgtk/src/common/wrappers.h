@@ -37,11 +37,19 @@ CAMLexport value copy_memblock_indirected(void *src, asize_t size);
 /* GIR record helpers                                                   */
 /* ==================================================================== */
 
-/* Store a GObject allocated pointed in a custom block
- * that frees the copy with g_free when collected.
+/* Wrap an owned C pointer in a custom block. The custom-block finalizer
+ * dispatches by GType: if [type] is a registered boxed type the wrapped
+ * pointer is freed with g_boxed_free (so per-type destructors like
+ * gtk_tree_path_free run); otherwise it falls back to g_free. Pass
+ * type == 0 for plain (non-boxed) records.
  *
- * This should only be used when you are assuming ownership of the pointer
- * for OCaml.
+ * This should only be used when you are assuming ownership of the
+ * pointer for OCaml.
+ */
+CAMLexport value ml_gir_record_val_ptr_with_type(GType type, const void *src);
+
+/* Convenience wrapper for records without a registered GType. Equivalent
+ * to ml_gir_record_val_ptr_with_type(0, src) — the finalizer uses g_free.
  */
 CAMLexport value ml_gir_record_val_ptr(const void *src);
 

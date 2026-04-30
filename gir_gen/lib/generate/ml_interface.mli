@@ -21,8 +21,7 @@ val generate_ml_interface :
   methods:Types.gir_method list ->
   properties:Types.gir_property list ->
   ?c_symbol_prefix:string ->
-  ?record_base_type:string ->
-  ?is_record:bool ->
+  entity_kind:Filtering.entity_kind ->
   ?from_gobject_c_name:string ->
   unit ->
   string
@@ -41,8 +40,12 @@ val generate_ml_interface :
     - methods: List of methods to generate
     - properties: List of properties to generate
     - c_symbol_prefix: Optional C symbol prefix for this class
-    - record_base_type: Optional base type for record types
-    - is_record: Whether this is a record type (default: false)
+    - entity_kind: [Filtering.entity_kind] tag identifying whether the
+      entity is a Class, Interface, or Record. Forwarded to the central
+      [Filtering.should_skip_method_binding] so the record copy/free/unref
+      filter is folded into the same answer as varargs/unsupported-arrays
+      etc. Does NOT affect the type-declaration shape — records and
+      classes both emit [\[ \`tag... \] Gobject.obj].
     - from_gobject_c_name: Optional C function name for the from_gobject
       external
 

@@ -14,7 +14,6 @@ class type resource_t = object
     (GInput_stream.input_stream_t, GError.t) result
 
   method ref : unit -> Resource.t
-  method unref : unit -> unit
   method as_resource : Resource.t
 end
 

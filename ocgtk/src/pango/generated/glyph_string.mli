@@ -57,9 +57,6 @@ However, since this only computes the width, it's much faster. This
 is in fact only a convenience function that computes the sum of
 @geometry.width for each glyph in the @glyphs. *)
 
-external free : t -> unit = "ml_pango_glyph_string_free"
-(** Free a glyph string and associated storage. *)
-
 external extents_range :
   t ->
   int ->
@@ -84,6 +81,3 @@ external extents :
     Examples of logical (red) and ink (green) rects:
 
     ![](rects1.png) ![](rects2.png) *)
-
-external copy : t -> t option = "ml_pango_glyph_string_copy"
-(** Copy a glyph string and associated storage. *)

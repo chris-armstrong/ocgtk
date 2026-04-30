@@ -17,12 +17,12 @@
 
 /* Conversion functions for PangoLayoutLine (opaque record with hidden fields) */
 PangoLayoutLine *PangoLayoutLine_val(value v) {
-  return *(PangoLayoutLine **)Data_custom_val(v);
+  return (PangoLayoutLine *)ml_gir_record_ptr_val(v, "PangoLayoutLine");
 }
 
 value Val_PangoLayoutLine(const PangoLayoutLine *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(pango_layout_line_get_type(), ptr);
 }
 
 value Val_PangoLayoutLine_option(const PangoLayoutLine *ptr) {
@@ -44,14 +44,6 @@ CAMLlocal1(ret);
     Store_field(ret, 1, Val_int(out2));
     Store_field(ret, 2, Val_int(out3));
     CAMLreturn(ret);
-}
-
-CAMLexport CAMLprim value ml_pango_layout_line_unref(value self)
-{
-CAMLparam1(self);
-
-pango_layout_line_unref(PangoLayoutLine_val(self));
-CAMLreturn(Val_unit);
 }
 
 #if PANGO_VERSION_CHECK(1,10,0)

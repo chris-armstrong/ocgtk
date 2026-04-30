@@ -17,12 +17,12 @@
 
 /* Conversion functions for PangoFontMetrics (opaque record with hidden fields) */
 PangoFontMetrics *PangoFontMetrics_val(value v) {
-  return *(PangoFontMetrics **)Data_custom_val(v);
+  return (PangoFontMetrics *)ml_gir_record_ptr_val(v, "PangoFontMetrics");
 }
 
 value Val_PangoFontMetrics(const PangoFontMetrics *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(pango_font_metrics_get_type(), ptr);
 }
 
 value Val_PangoFontMetrics_option(const PangoFontMetrics *ptr) {
@@ -30,14 +30,6 @@ value Val_PangoFontMetrics_option(const PangoFontMetrics *ptr) {
   return Val_some(Val_PangoFontMetrics(ptr));
 }
 
-
-CAMLexport CAMLprim value ml_pango_font_metrics_unref(value self)
-{
-CAMLparam1(self);
-
-pango_font_metrics_unref(PangoFontMetrics_val(self));
-CAMLreturn(Val_unit);
-}
 
 CAMLexport CAMLprim value ml_pango_font_metrics_ref(value self)
 {

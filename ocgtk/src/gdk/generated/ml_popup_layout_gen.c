@@ -17,12 +17,12 @@
 
 /* Conversion functions for GdkPopupLayout (opaque record with hidden fields) */
 GdkPopupLayout *GdkPopupLayout_val(value v) {
-  return *(GdkPopupLayout **)Data_custom_val(v);
+  return (GdkPopupLayout *)ml_gir_record_ptr_val(v, "GdkPopupLayout");
 }
 
 value Val_GdkPopupLayout(const GdkPopupLayout *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gdk_popup_layout_get_type(), ptr);
 }
 
 value Val_GdkPopupLayout_option(const GdkPopupLayout *ptr) {
@@ -39,14 +39,6 @@ GdkPopupLayout *obj = gdk_popup_layout_new(GdkRectangle_val(arg1), GdkGravity_va
 
 CAMLreturn(Val_GdkPopupLayout(obj));
 }
-CAMLexport CAMLprim value ml_gdk_popup_layout_unref(value self)
-{
-CAMLparam1(self);
-
-gdk_popup_layout_unref(GdkPopupLayout_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gdk_popup_layout_set_surface_anchor(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -203,12 +195,4 @@ CAMLparam2(self, arg1);
 
 gboolean result = gdk_popup_layout_equal(GdkPopupLayout_val(self), GdkPopupLayout_val(arg1));
 CAMLreturn(Val_bool(result));
-}
-
-CAMLexport CAMLprim value ml_gdk_popup_layout_copy(value self)
-{
-CAMLparam1(self);
-
-GdkPopupLayout* result = gdk_popup_layout_copy(GdkPopupLayout_val(self));
-CAMLreturn(Val_GdkPopupLayout(result));
 }

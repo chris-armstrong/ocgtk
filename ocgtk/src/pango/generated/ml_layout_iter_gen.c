@@ -17,12 +17,12 @@
 
 /* Conversion functions for PangoLayoutIter (opaque record with hidden fields) */
 PangoLayoutIter *PangoLayoutIter_val(value v) {
-  return *(PangoLayoutIter **)Data_custom_val(v);
+  return (PangoLayoutIter *)ml_gir_record_ptr_val(v, "PangoLayoutIter");
 }
 
 value Val_PangoLayoutIter(const PangoLayoutIter *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(pango_layout_iter_get_type(), ptr);
 }
 
 value Val_PangoLayoutIter_option(const PangoLayoutIter *ptr) {
@@ -229,35 +229,6 @@ CAMLparam1(self);
 int result = pango_layout_iter_get_baseline(PangoLayoutIter_val(self));
 CAMLreturn(Val_int(result));
 }
-
-CAMLexport CAMLprim value ml_pango_layout_iter_free(value self)
-{
-CAMLparam1(self);
-
-pango_layout_iter_free(PangoLayoutIter_val(self));
-CAMLreturn(Val_unit);
-}
-
-#if PANGO_VERSION_CHECK(1,20,0)
-
-CAMLexport CAMLprim value ml_pango_layout_iter_copy(value self)
-{
-CAMLparam1(self);
-
-PangoLayoutIter* result = pango_layout_iter_copy(PangoLayoutIter_val(self));
-CAMLreturn(Val_option(result, Val_PangoLayoutIter));
-}
-
-#else
-
-CAMLexport CAMLprim value ml_pango_layout_iter_copy(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("LayoutIter requires Pango >= 1.20");
-return Val_unit;
-}
-#endif
 
 CAMLexport CAMLprim value ml_pango_layout_iter_at_last_line(value self)
 {

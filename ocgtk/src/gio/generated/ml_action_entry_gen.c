@@ -25,7 +25,7 @@
 
 /* Conversion functions for GActionEntry (opaque record with hidden fields) */
 GActionEntry *GActionEntry_val(value v) {
-  return *(GActionEntry **)Data_custom_val(v);
+  return (GActionEntry *)ml_gir_record_ptr_val(v, "GActionEntry");
 }
 
 value Val_GActionEntry(const GActionEntry *ptr) {

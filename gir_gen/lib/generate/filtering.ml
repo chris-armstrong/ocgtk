@@ -166,26 +166,80 @@ let method_has_unsupported_out_arrays (meth : gir_method) =
               | None -> false))
       | In -> false)
 
-let should_skip_method_binding ~ctx (meth : gir_method) =
+(* ========== Entity kind ADT ==========
+
+   Carries the "what kind of entity is being emitted" signal through the
+   generator without dragging the full [Types.entity_kind] payload, and
+   lets the central method-skip predicate fold the record-destructor
+   filter into its single answer. The ADT is intentionally non-optional
+   at every call site so a future entity kind (e.g. boxed enum) cannot
+   silently inherit the wrong filter. *)
+
+type entity_kind = Class | Interface | Record
+
+let entity_kind_of_entity (entity : Types.entity) : entity_kind =
+  match entity.Types.kind with
+  | Types.Class _ -> Class
+  | Types.Interface _ -> Interface
+  | Types.Record _ -> Record
+
+(* ========== Method-name predicates ========== *)
+
+let private_ends_with ~suffix str =
+  let ls = String.length suffix and lt = String.length str in
+  lt >= ls && String.equal (String.sub str ~pos:(lt - ls) ~len:ls) suffix
+
+(* A copy method — record's [_copy] symbol or a method literally named
+   "copy". Records own their lifetime via the gir_record custom-block
+   finalizer, so an exposed [copy] is redundant noise. *)
+let is_copy_method (meth : gir_method) =
+  let lower_name = String.lowercase_ascii meth.method_name in
+  let lower_cid = String.lowercase_ascii meth.c_identifier in
+  String.equal lower_name "copy" || private_ends_with ~suffix:"_copy" lower_cid
+
+(* A free or unref method on a record — _free for boxed records, _unref for
+   refcounted ones. Both fight the custom-block finalizer (which calls
+   g_boxed_free, which itself dispatches to _unref for refcounted boxed
+   types) and so manual invocation is a double-free hazard. *)
+let is_free_method (meth : gir_method) =
+  let lower_name = String.lowercase_ascii meth.method_name in
+  let lower_cid = String.lowercase_ascii meth.c_identifier in
+  String.equal lower_name "free"
+  || String.equal lower_name "unref"
+  || private_ends_with ~suffix:"_free" lower_cid
+  || private_ends_with ~suffix:"_unref" lower_cid
+
+let is_copy_or_free meth = is_copy_method meth || is_free_method meth
+
+(* ========== Per-method emission predicate ========== *)
+
+(* Single source of truth for "should we drop this method from emission".
+   [entity_kind] tells the predicate which entity flavour the method
+   belongs to so record-specific hazards (copy/free/unref) can be folded
+   into the same answer. *)
+let should_skip_method_binding ~ctx ~entity_kind (meth : gir_method) =
   let has_unknown_type =
     Exclude_list.should_skip_method
       ~find_type_mapping:(Type_mappings.find_type_mapping_for_gir_type ~ctx)
       ~enums:ctx.enums ~bitfields:ctx.bitfields meth
   in
   let is_variadic = List.exists meth.parameters ~f:(fun p -> p.varargs) in
-  (* Check if method is marked as non-introspectable *)
   let is_not_introspectable = not meth.introspectable in
-  (* Check for out-param arrays that can't be safely converted *)
   let has_unsupported_out_arrays = method_has_unsupported_out_arrays meth in
-  (* Check for arrays (params or return) missing length info for C generation *)
   let has_unsupported_arrays = method_has_unsupported_arrays ~ctx meth in
+  let is_record_destructor =
+    match entity_kind with
+    | Record -> is_copy_or_free meth
+    | Class | Interface -> false
+  in
   Logs.debug (fun m ->
-      m "should_skip_method_name: %s -> %b %b %b %b %b\n" meth.c_identifier
-        is_variadic has_unknown_type is_not_introspectable
-        has_unsupported_out_arrays has_unsupported_arrays);
+      m "should_skip_method_binding: %s -> %b %b %b %b %b %b\n"
+        meth.c_identifier is_variadic has_unknown_type is_not_introspectable
+        has_unsupported_out_arrays has_unsupported_arrays is_record_destructor);
 
   is_variadic || has_unknown_type || is_not_introspectable
   || has_unsupported_out_arrays || has_unsupported_arrays
+  || is_record_destructor
 
 let constructor_has_varargs (ctor : gir_constructor) =
   List.exists ctor.ctor_parameters ~f:(fun p -> p.varargs)
@@ -224,3 +278,4 @@ let should_generate_interface (_intf : gir_interface) = true
 
 (* Check if a standalone function should be generated *)
 let should_generate_function (func : gir_function) = func.introspectable
+

@@ -18,7 +18,7 @@
 
 /* Conversion functions for GtkRecentData (opaque record with hidden fields) */
 GtkRecentData *GtkRecentData_val(value v) {
-  return *(GtkRecentData **)Data_custom_val(v);
+  return (GtkRecentData *)ml_gir_record_ptr_val(v, "GtkRecentData");
 }
 
 value Val_GtkRecentData(const GtkRecentData *ptr) {

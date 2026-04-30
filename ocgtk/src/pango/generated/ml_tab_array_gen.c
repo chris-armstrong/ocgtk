@@ -17,12 +17,12 @@
 
 /* Conversion functions for PangoTabArray (opaque record with hidden fields) */
 PangoTabArray *PangoTabArray_val(value v) {
-  return *(PangoTabArray **)Data_custom_val(v);
+  return (PangoTabArray *)ml_gir_record_ptr_val(v, "PangoTabArray");
 }
 
 value Val_PangoTabArray(const PangoTabArray *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(pango_tab_array_get_type(), ptr);
 }
 
 value Val_PangoTabArray_option(const PangoTabArray *ptr) {
@@ -193,19 +193,3 @@ caml_failwith("TabArray requires Pango >= 1.50");
 return Val_unit;
 }
 #endif
-
-CAMLexport CAMLprim value ml_pango_tab_array_free(value self)
-{
-CAMLparam1(self);
-
-pango_tab_array_free(PangoTabArray_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_pango_tab_array_copy(value self)
-{
-CAMLparam1(self);
-
-PangoTabArray* result = pango_tab_array_copy(PangoTabArray_val(self));
-CAMLreturn(Val_PangoTabArray(result));
-}

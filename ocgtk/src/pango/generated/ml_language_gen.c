@@ -17,12 +17,12 @@
 
 /* Conversion functions for PangoLanguage (opaque record with hidden fields) */
 PangoLanguage *PangoLanguage_val(value v) {
-  return *(PangoLanguage **)Data_custom_val(v);
+  return (PangoLanguage *)ml_gir_record_ptr_val(v, "PangoLanguage");
 }
 
 value Val_PangoLanguage(const PangoLanguage *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(pango_language_get_type(), ptr);
 }
 
 value Val_PangoLanguage_option(const PangoLanguage *ptr) {

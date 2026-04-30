@@ -25,7 +25,7 @@
 
 /* Conversion functions for GStaticResource (opaque record with hidden fields) */
 GStaticResource *GStaticResource_val(value v) {
-  return *(GStaticResource **)Data_custom_val(v);
+  return (GStaticResource *)ml_gir_record_ptr_val(v, "GStaticResource");
 }
 
 value Val_GStaticResource(const GStaticResource *ptr) {

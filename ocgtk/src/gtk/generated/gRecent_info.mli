@@ -18,7 +18,6 @@ class type recent_info_t = object
   method last_application : unit -> string
   method match_ : Recent_info.t -> bool
   method ref : unit -> Recent_info.t
-  method unref : unit -> unit
   method as_recent_info : Recent_info.t
 end
 

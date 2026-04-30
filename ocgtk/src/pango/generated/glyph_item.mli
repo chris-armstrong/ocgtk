@@ -24,12 +24,6 @@ assigned to each item, you can't create a zero-length item).
 This function is similar in function to pango_item_split() (and uses
 it internally.) *)
 
-external free : t -> unit = "ml_pango_glyph_item_free"
-(** Frees a `PangoGlyphItem` and resources to which it points. *)
-
-external copy : t -> t option = "ml_pango_glyph_item_copy"
-(** Make a deep copy of an existing `PangoGlyphItem` structure. *)
-
 external apply_attrs : t -> string -> Attr_list.t -> t list
   = "ml_pango_glyph_item_apply_attrs"
 (** Splits a shaped item (`PangoGlyphItem`) into multiple items based

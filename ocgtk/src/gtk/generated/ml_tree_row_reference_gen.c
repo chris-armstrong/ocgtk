@@ -18,12 +18,12 @@
 
 /* Conversion functions for GtkTreeRowReference (opaque record with hidden fields) */
 GtkTreeRowReference *GtkTreeRowReference_val(value v) {
-  return *(GtkTreeRowReference **)Data_custom_val(v);
+  return (GtkTreeRowReference *)ml_gir_record_ptr_val(v, "GtkTreeRowReference");
 }
 
 value Val_GtkTreeRowReference(const GtkTreeRowReference *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gtk_tree_row_reference_get_type(), ptr);
 }
 
 value Val_GtkTreeRowReference_option(const GtkTreeRowReference *ptr) {
@@ -71,20 +71,4 @@ CAMLparam1(self);
 GtkTreeModel* result = gtk_tree_row_reference_get_model(GtkTreeRowReference_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkTreeModel(result));
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_row_reference_free(value self)
-{
-CAMLparam1(self);
-
-gtk_tree_row_reference_free(GtkTreeRowReference_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_row_reference_copy(value self)
-{
-CAMLparam1(self);
-
-GtkTreeRowReference* result = gtk_tree_row_reference_copy(GtkTreeRowReference_val(self));
-CAMLreturn(Val_GtkTreeRowReference(result));
 }

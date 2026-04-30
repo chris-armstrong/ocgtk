@@ -27,8 +27,8 @@ let generate_section ~buf ~items_seen ~items ~generator_fn ~add_newline =
 
 (** Generate the body of a class module (implementation) *)
 let generate_class_module_body ~ctx ~buf ~layer1_module_name
-    ~current_layer2_module ~class_name ~class_snake ~c_type ~methods ~properties
-    ~signals ~same_cluster_classes ~parent_name () =
+    ~current_layer2_module ~class_name ~class_snake ~c_type ~methods
+    ~entity_kind ~properties ~signals ~same_cluster_classes ~parent_name () =
   let has_any_signals = List.length signals > 0 in
   let property_filters =
     Class_gen_helpers.get_property_filters ~ctx ~class_name ~methods properties
@@ -177,7 +177,8 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name
         ~property_method_names:property_filters.method_names
         ~property_base_names:property_filters.base_names
         ~module_name:layer1_module_name ~class_name ~c_type ~seen
-        ~current_layer2_module ~same_cluster_classes ~conflicting_methods m
+        ~current_layer2_module ~same_cluster_classes ~conflicting_methods
+        ~entity_kind m
     in
     generate_section ~buf ~items_seen:seen ~items:methods ~generator_fn:generate
       ~add_newline:true
@@ -210,8 +211,8 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name
 
 (** Generate the body of a class signature *)
 let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_
-    ~current_layer2_module ~class_name ~class_snake ~c_type ~methods ~properties
-    ~signals ~same_cluster_classes ~parent_name () =
+    ~current_layer2_module ~class_name ~class_snake ~c_type ~methods
+    ~entity_kind ~properties ~signals ~same_cluster_classes ~parent_name () =
   let has_any_signals = List.length signals > 0 in
   let property_filters =
     Class_gen_helpers.get_property_filters ~ctx ~class_name ~methods properties
@@ -306,14 +307,15 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_
   (* Methods *)
   let _seen =
     let generate seen meth =
-      if Filtering.should_skip_method_binding ~ctx meth then ("", seen)
+      if Filtering.should_skip_method_binding ~ctx ~entity_kind meth then
+        ("", seen)
       else
         let chunk, seen =
           Class_gen_method.generate_method_signatures ~ctx
             ~property_method_names:property_filters.method_names
             ~property_base_names:property_filters.base_names ~class_name ~c_type
             ~seen ~current_layer2_module ~same_cluster_classes
-            ~conflicting_methods meth
+            ~conflicting_methods ~entity_kind meth
         in
         (chunk, seen)
     in

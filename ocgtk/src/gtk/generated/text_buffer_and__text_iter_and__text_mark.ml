@@ -1558,13 +1558,6 @@ and Text_iter : sig
   external get_buffer : t -> Text_buffer.t = "ml_gtk_text_iter_get_buffer"
   (** Returns the `GtkTextBuffer` this iterator is associated with. *)
 
-  external free : t -> unit = "ml_gtk_text_iter_free"
-  (** Free an iterator allocated on the heap.
-
-      This function is intended for use in language bindings, and is not
-      especially useful for applications, because iterators can simply be
-      allocated on the stack. *)
-
   external forward_word_ends : t -> int -> bool
     = "ml_gtk_text_iter_forward_word_ends"
   (** Calls [method@Gtk.TextIter.forward_word_end] up to @count times. *)
@@ -1813,14 +1806,6 @@ and Text_iter : sig
   know whether a new character inserted at @iter would be inside an
   editable range. Use [method@Gtk.TextIter.can_insert] to handle this
   case. *)
-
-  external copy : t -> t = "ml_gtk_text_iter_copy"
-  (** Creates a dynamically-allocated copy of an iterator.
-
-      This function is not useful in applications, because iterators can be
-      copied with a simple assignment (`GtkTextIter i = j;`).
-
-      The function is used by language bindings. *)
 
   external compare : t -> t -> int = "ml_gtk_text_iter_compare"
   (** A qsort()-style function that returns negative if @lhs is less than
@@ -2289,13 +2274,6 @@ end = struct
   external get_buffer : t -> Text_buffer.t = "ml_gtk_text_iter_get_buffer"
   (** Returns the `GtkTextBuffer` this iterator is associated with. *)
 
-  external free : t -> unit = "ml_gtk_text_iter_free"
-  (** Free an iterator allocated on the heap.
-
-      This function is intended for use in language bindings, and is not
-      especially useful for applications, because iterators can simply be
-      allocated on the stack. *)
-
   external forward_word_ends : t -> int -> bool
     = "ml_gtk_text_iter_forward_word_ends"
   (** Calls [method@Gtk.TextIter.forward_word_end] up to @count times. *)
@@ -2544,14 +2522,6 @@ end = struct
   know whether a new character inserted at @iter would be inside an
   editable range. Use [method@Gtk.TextIter.can_insert] to handle this
   case. *)
-
-  external copy : t -> t = "ml_gtk_text_iter_copy"
-  (** Creates a dynamically-allocated copy of an iterator.
-
-      This function is not useful in applications, because iterators can be
-      copied with a simple assignment (`GtkTextIter i = j;`).
-
-      The function is used by language bindings. *)
 
   external compare : t -> t -> int = "ml_gtk_text_iter_compare"
   (** A qsort()-style function that returns negative if @lhs is less than

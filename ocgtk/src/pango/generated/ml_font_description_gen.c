@@ -17,12 +17,12 @@
 
 /* Conversion functions for PangoFontDescription (opaque record with hidden fields) */
 PangoFontDescription *PangoFontDescription_val(value v) {
-  return *(PangoFontDescription **)Data_custom_val(v);
+  return (PangoFontDescription *)ml_gir_record_ptr_val(v, "PangoFontDescription");
 }
 
 value Val_PangoFontDescription(const PangoFontDescription *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(pango_font_description_get_type(), ptr);
 }
 
 value Val_PangoFontDescription_option(const PangoFontDescription *ptr) {
@@ -350,14 +350,6 @@ const char* result = pango_font_description_get_family(PangoFontDescription_val(
 CAMLreturn(Val_option_string(result));
 }
 
-CAMLexport CAMLprim value ml_pango_font_description_free(value self)
-{
-CAMLparam1(self);
-
-pango_font_description_free(PangoFontDescription_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_pango_font_description_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -371,14 +363,6 @@ CAMLexport CAMLprim value ml_pango_font_description_copy_static(value self)
 CAMLparam1(self);
 
 PangoFontDescription* result = pango_font_description_copy_static(PangoFontDescription_val(self));
-CAMLreturn(Val_option(result, Val_PangoFontDescription));
-}
-
-CAMLexport CAMLprim value ml_pango_font_description_copy(value self)
-{
-CAMLparam1(self);
-
-PangoFontDescription* result = pango_font_description_copy(PangoFontDescription_val(self));
 CAMLreturn(Val_option(result, Val_PangoFontDescription));
 }
 

@@ -19,7 +19,7 @@
 #if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GtkAccessibleTextRange (opaque record with hidden fields) */
 GtkAccessibleTextRange *GtkAccessibleTextRange_val(value v) {
-  return *(GtkAccessibleTextRange **)Data_custom_val(v);
+  return (GtkAccessibleTextRange *)ml_gir_record_ptr_val(v, "GtkAccessibleTextRange");
 }
 
 value Val_GtkAccessibleTextRange(const GtkAccessibleTextRange *ptr) {

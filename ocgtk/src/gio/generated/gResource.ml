@@ -14,7 +14,6 @@ class type resource_t = object
     (GInput_stream.input_stream_t, GError.t) result
 
   method ref : unit -> Resource.t
-  method unref : unit -> unit
   method as_resource : Resource.t
 end
 
@@ -46,7 +45,6 @@ class resource (obj : Resource.t) : resource_t =
           (Resource.open_stream obj path lookup_flags)
 
     method ref : unit -> Resource.t = fun () -> Resource.ref obj
-    method unref : unit -> unit = fun () -> Resource.unref obj
     method as_resource = obj
   end
 

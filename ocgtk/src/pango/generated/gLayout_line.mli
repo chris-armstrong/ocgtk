@@ -4,7 +4,6 @@ class type layout_line_t = object
   method get_start_index : unit -> int
   method is_paragraph_start : unit -> bool
   method ref : unit -> Layout_line.t option
-  method unref : unit -> unit
   method as_layout_line : Layout_line.t
 end
 

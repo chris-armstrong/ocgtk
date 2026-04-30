@@ -17,12 +17,12 @@
 
 /* Conversion functions for PangoScriptIter (opaque record with hidden fields) */
 PangoScriptIter *PangoScriptIter_val(value v) {
-  return *(PangoScriptIter **)Data_custom_val(v);
+  return (PangoScriptIter *)ml_gir_record_ptr_val(v, "PangoScriptIter");
 }
 
 value Val_PangoScriptIter(const PangoScriptIter *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(pango_script_iter_get_type(), ptr);
 }
 
 value Val_PangoScriptIter_option(const PangoScriptIter *ptr) {
@@ -66,27 +66,6 @@ CAMLreturn(Val_bool(result));
 #else
 
 CAMLexport CAMLprim value ml_pango_script_iter_next(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("ScriptIter requires Pango >= 1.4");
-return Val_unit;
-}
-#endif
-
-#if PANGO_VERSION_CHECK(1,4,0)
-
-CAMLexport CAMLprim value ml_pango_script_iter_free(value self)
-{
-CAMLparam1(self);
-
-pango_script_iter_free(PangoScriptIter_val(self));
-CAMLreturn(Val_unit);
-}
-
-#else
-
-CAMLexport CAMLprim value ml_pango_script_iter_free(value self)
 {
 CAMLparam1(self);
 (void)self;

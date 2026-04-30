@@ -25,12 +25,12 @@
 
 /* Conversion functions for GSrvTarget (opaque record with hidden fields) */
 GSrvTarget *GSrvTarget_val(value v) {
-  return *(GSrvTarget **)Data_custom_val(v);
+  return (GSrvTarget *)ml_gir_record_ptr_val(v, "GSrvTarget");
 }
 
 value Val_GSrvTarget(const GSrvTarget *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_srv_target_get_type(), ptr);
 }
 
 value Val_GSrvTarget_option(const GSrvTarget *ptr) {
@@ -139,48 +139,6 @@ CAMLreturn(caml_copy_string(result));
 #else
 
 CAMLexport CAMLprim value ml_g_srv_target_get_hostname(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SrvTarget requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,22,0)
-
-CAMLexport CAMLprim value ml_g_srv_target_free(value self)
-{
-CAMLparam1(self);
-
-g_srv_target_free(GSrvTarget_val(self));
-CAMLreturn(Val_unit);
-}
-
-#else
-
-CAMLexport CAMLprim value ml_g_srv_target_free(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SrvTarget requires GLib >= 2.22");
-return Val_unit;
-}
-#endif
-
-#if GLIB_CHECK_VERSION(2,22,0)
-
-CAMLexport CAMLprim value ml_g_srv_target_copy(value self)
-{
-CAMLparam1(self);
-
-GSrvTarget* result = g_srv_target_copy(GSrvTarget_val(self));
-CAMLreturn(Val_GSrvTarget(result));
-}
-
-#else
-
-CAMLexport CAMLprim value ml_g_srv_target_copy(value self)
 {
 CAMLparam1(self);
 (void)self;

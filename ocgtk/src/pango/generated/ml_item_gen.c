@@ -20,7 +20,7 @@ value copy_PangoItem(const PangoItem *ptr)
 {
   if (ptr == NULL) return Val_none;
   PangoItem *copy = pango_item_copy((PangoItem*)ptr);
-  return ml_gir_record_val_ptr(copy);
+  return ml_gir_record_val_ptr_with_type(pango_item_get_type(), copy);
 }
 
 
@@ -38,22 +38,6 @@ CAMLparam3(self, arg1, arg2);
 
 PangoItem* result = pango_item_split(PangoItem_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_PangoItem(result));
-}
-
-CAMLexport CAMLprim value ml_pango_item_free(value self)
-{
-CAMLparam1(self);
-
-pango_item_free(PangoItem_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_pango_item_copy(value self)
-{
-CAMLparam1(self);
-
-PangoItem* result = pango_item_copy(PangoItem_val(self));
-CAMLreturn(Val_option(result, Val_PangoItem));
 }
 
 #if PANGO_VERSION_CHECK(1,44,0)

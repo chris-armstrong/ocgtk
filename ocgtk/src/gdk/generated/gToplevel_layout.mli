@@ -1,5 +1,4 @@
 class type toplevel_layout_t = object
-  method copy : unit -> Toplevel_layout.t
   method equal : Toplevel_layout.t -> bool
 
   method get_fullscreen_monitor :
@@ -13,7 +12,6 @@ class type toplevel_layout_t = object
 
   method set_maximized : bool -> unit
   method set_resizable : bool -> unit
-  method unref : unit -> unit
   method as_toplevel_layout : Toplevel_layout.t
 end
 

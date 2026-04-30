@@ -436,6 +436,7 @@ let test_generate_methods_skips_failing_method () =
   in
   Gir_gen_lib.Generate.C_stub_helpers.generate_methods ~ctx ~c_type:"GtkWidget"
     ~class_name:"Widget" ~buf ~generator:generate_c_method
+    ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
     [ valid_method; failing_method ];
   let output = Buffer.contents buf in
   let output_functions = C_parser.parse_c_code output in

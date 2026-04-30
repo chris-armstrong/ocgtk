@@ -28,9 +28,3 @@ external get_path : t -> Tree_path.t option
 
 external get_model : t -> Tree_model.t = "ml_gtk_tree_row_reference_get_model"
 (** Returns the model that the row reference is monitoring. *)
-
-external free : t -> unit = "ml_gtk_tree_row_reference_free"
-(** Free’s @reference. @reference may be %NULL *)
-
-external copy : t -> t = "ml_gtk_tree_row_reference_copy"
-(** Copies a `GtkTreeRowReference`. *)

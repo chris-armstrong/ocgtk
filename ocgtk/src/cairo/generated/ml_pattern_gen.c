@@ -17,12 +17,12 @@
 
 /* Conversion functions for cairo_pattern_t (opaque record with hidden fields) */
 cairo_pattern_t *cairo_pattern_t_val(value v) {
-  return *(cairo_pattern_t **)Data_custom_val(v);
+  return (cairo_pattern_t *)ml_gir_record_ptr_val(v, "cairo_pattern_t");
 }
 
 value Val_cairo_pattern_t(const cairo_pattern_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(cairo_gobject_pattern_get_type(), ptr);
 }
 
 value Val_cairo_pattern_t_option(const cairo_pattern_t *ptr) {

@@ -160,12 +160,6 @@ external new_from_data : Glib_bytes.t -> (t, GError.t) result
 
 (* Methods *)
 
-external unref : t -> unit = "ml_g_resource_unref"
-(** Atomically decrements the reference count of @resource by one. If the
-reference count drops to 0, all memory allocated by the resource is
-released. This function is MT-safe and may be called from any
-thread. *)
-
 external ref : t -> t = "ml_g_resource_ref"
 (** Atomically increments the reference count of @resource by one. This
 function is MT-safe and may be called from any thread. *)

@@ -17,12 +17,6 @@ external new_ : unit -> t = "ml_gsk_transform_new"
 
 (* Methods *)
 
-external unref : t -> unit = "ml_gsk_transform_unref"
-(** Releases a reference on the given `GskTransform`.
-
-If the reference was the last, the resources associated to the @self are
-freed. *)
-
 external translate_3d :
   t -> Ocgtk_graphene.Graphene.Wrappers.Point3_d.t -> t option
   = "ml_gsk_transform_translate_3d"

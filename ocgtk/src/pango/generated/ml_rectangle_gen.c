@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoRectangle (opaque record with hidden fields) */
 PangoRectangle *PangoRectangle_val(value v) {
-  return *(PangoRectangle **)Data_custom_val(v);
+  return (PangoRectangle *)ml_gir_record_ptr_val(v, "PangoRectangle");
 }
 
 value Val_PangoRectangle(const PangoRectangle *ptr) {

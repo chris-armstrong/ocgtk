@@ -101,10 +101,25 @@ CAMLexport value copy_memblock_indirected(void *src, asize_t size)
 /* GIR record helpers                                                   */
 /* ==================================================================== */
 
+/* Custom-block payload: GType captured at allocation time + boxed pointer.
+ * type == 0 means "no registered GType" — the finalizer falls back to
+ * g_free, preserving the historical behaviour for plain (non-boxed)
+ * records. When type is set and registered as a boxed type, the
+ * finalizer dispatches to g_boxed_free so per-type destructors run
+ * (e.g. gtk_tree_path_free, not g_free). */
+typedef struct {
+    GType type;
+    void *ptr;
+} gir_record_box;
+
 static void finalize_gir_record(value v) {
-    void *ptr = *((void**)Data_custom_val(v));
-    printf("[d] %p\n", (void*)v);
-    if (ptr != NULL) g_free(ptr);
+    gir_record_box *box = (gir_record_box*)Data_custom_val(v);
+    if (box->ptr == NULL) return;
+    if (box->type != 0 && G_TYPE_IS_BOXED(box->type)) {
+        g_boxed_free(box->type, box->ptr);
+    } else {
+        g_free(box->ptr);
+    }
 }
 
 static struct custom_operations gir_record_custom_ops = {
@@ -117,16 +132,22 @@ static struct custom_operations gir_record_custom_ops = {
     custom_compare_ext_default
 };
 
-CAMLexport value ml_gir_record_val_ptr(const void *src) {
+CAMLexport value ml_gir_record_val_ptr_with_type(GType type, const void *src) {
     CAMLparam0();
     CAMLlocal1(v);
 
-    if (src == NULL) caml_failwith("ml_gir_record_alloc: NULL source");
-    
-    v = caml_alloc_custom(&gir_record_custom_ops, sizeof(void*), 0, 1);
-    *((const void**)Data_custom_val(v)) = src;
-    
+    if (src == NULL) caml_failwith("ml_gir_record_val_ptr_with_type: NULL source");
+
+    v = caml_alloc_custom(&gir_record_custom_ops, sizeof(gir_record_box), 0, 1);
+    gir_record_box *box = (gir_record_box*)Data_custom_val(v);
+    box->type = type;
+    box->ptr = (void*)src;
+
     CAMLreturn(v);
+}
+
+CAMLexport value ml_gir_record_val_ptr(const void *src) {
+    return ml_gir_record_val_ptr_with_type(0, src);
 }
 
 CAMLexport const void *ml_gir_record_ptr_val(value v, const char *type_name) {
@@ -136,7 +157,7 @@ CAMLexport const void *ml_gir_record_ptr_val(value v, const char *type_name) {
     (void)type_name;
 
     if (Tag_val(v) == Custom_tag)
-        ptr = *((const void**)Data_custom_val(v));
+        ptr = ((gir_record_box*)Data_custom_val(v))->ptr;
     else
         ptr = ext_of_val(v);
 
@@ -153,10 +174,7 @@ CAMLexport const void *ml_gir_record_ptr_val(value v, const char *type_name) {
 static void finalize_gobject(value v) {
     void *ptr = *((void**)Data_custom_val(v));
     if (ptr != NULL) {
-        GObject* gobj = G_OBJECT(ptr);
-        GType type = G_OBJECT_TYPE(gobj);
-        g_object_unref(gobj);
-        printf("[f][obj]  %s %p\n", g_type_name(type), ptr);
+        g_object_unref(G_OBJECT(ptr));
     }
 }
 

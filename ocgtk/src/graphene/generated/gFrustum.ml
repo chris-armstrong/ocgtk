@@ -1,7 +1,6 @@
 class type frustum_t = object
   method contains_point : Point3_d.t -> bool
   method equal : Frustum.t -> bool
-  method free : unit -> unit
 
   method init :
     Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t ->
@@ -30,7 +29,6 @@ class frustum (obj : Frustum.t) : frustum_t =
       fun point -> Frustum.contains_point obj point
 
     method equal : Frustum.t -> bool = fun b -> Frustum.equal obj b
-    method free : unit -> unit = fun () -> Frustum.free obj
 
     method init :
         Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle

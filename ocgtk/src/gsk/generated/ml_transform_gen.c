@@ -17,12 +17,12 @@
 
 /* Conversion functions for GskTransform (opaque record with hidden fields) */
 GskTransform *GskTransform_val(value v) {
-  return *(GskTransform **)Data_custom_val(v);
+  return (GskTransform *)ml_gir_record_ptr_val(v, "GskTransform");
 }
 
 value Val_GskTransform(const GskTransform *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gsk_transform_get_type(), ptr);
 }
 
 value Val_GskTransform_option(const GskTransform *ptr) {
@@ -39,14 +39,6 @@ GskTransform *obj = gsk_transform_new();
 
 CAMLreturn(Val_GskTransform(obj));
 }
-CAMLexport CAMLprim value ml_gsk_transform_unref(value self)
-{
-CAMLparam1(self);
-
-gsk_transform_unref(GskTransform_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gsk_transform_translate_3d(value self, value arg1)
 {
 CAMLparam2(self, arg1);

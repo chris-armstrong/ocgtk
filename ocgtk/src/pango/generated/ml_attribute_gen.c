@@ -20,7 +20,7 @@ value copy_PangoAttribute(const PangoAttribute *ptr)
 {
   if (ptr == NULL) return Val_none;
   PangoAttribute *copy = pango_attribute_copy((PangoAttribute*)ptr);
-  return ml_gir_record_val_ptr(copy);
+  return ml_gir_record_val_ptr_with_type(pango_attribute_get_type(), copy);
 }
 
 
@@ -60,14 +60,6 @@ CAMLparam1(self);
 
 pango_attribute_destroy(PangoAttribute_val(self));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_pango_attribute_copy(value self)
-{
-CAMLparam1(self);
-
-PangoAttribute* result = pango_attribute_copy(PangoAttribute_val(self));
-CAMLreturn(Val_PangoAttribute(result));
 }
 
 #if PANGO_VERSION_CHECK(1,50,0)

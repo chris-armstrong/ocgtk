@@ -41,9 +41,6 @@ external new_ : Rectangle.t -> Gdk_enums.gravity -> Gdk_enums.gravity -> t
 
 (* Methods *)
 
-external unref : t -> unit = "ml_gdk_popup_layout_unref"
-(** Decreases the reference count of @value. *)
-
 external set_surface_anchor : t -> Gdk_enums.gravity -> unit
   = "ml_gdk_popup_layout_set_surface_anchor"
 (** Set the anchor on the popup surface. *)
@@ -105,6 +102,3 @@ external get_anchor_hints : t -> Gdk_enums.anchorhints
 
 external equal : t -> t -> bool = "ml_gdk_popup_layout_equal"
 (** Check whether @layout and @other has identical layout properties. *)
-
-external copy : t -> t = "ml_gdk_popup_layout_copy"
-(** Makes a copy of @layout. *)

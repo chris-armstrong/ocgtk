@@ -17,12 +17,12 @@
 
 /* Conversion functions for GdkContentFormatsBuilder (opaque record with hidden fields) */
 GdkContentFormatsBuilder *GdkContentFormatsBuilder_val(value v) {
-  return *(GdkContentFormatsBuilder **)Data_custom_val(v);
+  return (GdkContentFormatsBuilder *)ml_gir_record_ptr_val(v, "GdkContentFormatsBuilder");
 }
 
 value Val_GdkContentFormatsBuilder(const GdkContentFormatsBuilder *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gdk_content_formats_builder_get_type(), ptr);
 }
 
 value Val_GdkContentFormatsBuilder_option(const GdkContentFormatsBuilder *ptr) {
@@ -39,14 +39,6 @@ GdkContentFormatsBuilder *obj = gdk_content_formats_builder_new();
 
 CAMLreturn(Val_GdkContentFormatsBuilder(obj));
 }
-CAMLexport CAMLprim value ml_gdk_content_formats_builder_unref(value self)
-{
-CAMLparam1(self);
-
-gdk_content_formats_builder_unref(GdkContentFormatsBuilder_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gdk_content_formats_builder_to_formats(value self)
 {
 CAMLparam1(self);

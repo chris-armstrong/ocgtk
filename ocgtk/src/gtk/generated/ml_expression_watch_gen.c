@@ -18,12 +18,12 @@
 
 /* Conversion functions for GtkExpressionWatch (opaque record with hidden fields) */
 GtkExpressionWatch *GtkExpressionWatch_val(value v) {
-  return *(GtkExpressionWatch **)Data_custom_val(v);
+  return (GtkExpressionWatch *)ml_gir_record_ptr_val(v, "GtkExpressionWatch");
 }
 
 value Val_GtkExpressionWatch(const GtkExpressionWatch *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gtk_expression_watch_get_type(), ptr);
 }
 
 value Val_GtkExpressionWatch_option(const GtkExpressionWatch *ptr) {
@@ -37,14 +37,6 @@ CAMLexport CAMLprim value ml_gtk_expression_watch_unwatch(value self)
 CAMLparam1(self);
 
 gtk_expression_watch_unwatch(GtkExpressionWatch_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_expression_watch_unref(value self)
-{
-CAMLparam1(self);
-
-gtk_expression_watch_unref(GtkExpressionWatch_val(self));
 CAMLreturn(Val_unit);
 }
 

@@ -19,12 +19,12 @@
 #if GTK_CHECK_VERSION(4,12,0)
 /* Conversion functions for GtkScrollInfo (opaque record with hidden fields) */
 GtkScrollInfo *GtkScrollInfo_val(value v) {
-  return *(GtkScrollInfo **)Data_custom_val(v);
+  return (GtkScrollInfo *)ml_gir_record_ptr_val(v, "GtkScrollInfo");
 }
 
 value Val_GtkScrollInfo(const GtkScrollInfo *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gtk_scroll_info_get_type(), ptr);
 }
 
 value Val_GtkScrollInfo_option(const GtkScrollInfo *ptr) {
@@ -44,14 +44,6 @@ GtkScrollInfo *obj = gtk_scroll_info_new();
 
 CAMLreturn(Val_GtkScrollInfo(obj));
 }
-CAMLexport CAMLprim value ml_gtk_scroll_info_unref(value self)
-{
-CAMLparam1(self);
-
-gtk_scroll_info_unref(GtkScrollInfo_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_scroll_info_set_enable_vertical(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -146,15 +138,6 @@ CAMLexport CAMLprim value ml_gtk_scroll_info_set_enable_vertical(value self, val
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("ScrollInfo requires GTK >= 4.12");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_scroll_info_unref(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("ScrollInfo requires GTK >= 4.12");
 return Val_unit;
 }

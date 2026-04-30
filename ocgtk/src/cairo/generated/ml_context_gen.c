@@ -17,12 +17,12 @@
 
 /* Conversion functions for cairo_t (opaque record with hidden fields) */
 cairo_t *cairo_t_val(value v) {
-  return *(cairo_t **)Data_custom_val(v);
+  return (cairo_t *)ml_gir_record_ptr_val(v, "cairo_t");
 }
 
 value Val_cairo_t(const cairo_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(cairo_gobject_context_get_type(), ptr);
 }
 
 value Val_cairo_t_option(const cairo_t *ptr) {

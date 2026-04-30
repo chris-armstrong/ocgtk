@@ -7,12 +7,6 @@ type t = [ `recent_info ] Gobject.obj
 
 (* Methods *)
 
-external unref : t -> unit = "ml_gtk_recent_info_unref"
-(** Decreases the reference count of @info by one.
-
-If the reference count reaches zero, @info is
-deallocated, and the memory freed. *)
-
 external ref : t -> t = "ml_gtk_recent_info_ref"
 (** Increases the reference count of @recent_info by one. *)
 

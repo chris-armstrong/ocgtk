@@ -18,7 +18,7 @@ let test_abstract_type_in_interface () =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
       ~output_mode:Interface ~class_name:"Button" ~class_doc:None
       ~c_type:"GtkButton" ~parent_chain:[ "Widget" ] ~constructors:None
-      ~methods:[] ~properties:[] ()
+      ~methods:[] ~properties:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
   in
 
   (* Parse using OCaml's built-in parser *)
@@ -48,7 +48,7 @@ let test_polymorphic_variant_type () =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
       ~output_mode:Implementation ~class_name:"Button" ~class_doc:None
       ~c_type:"GtkButton" ~parent_chain:[ "Widget" ] ~constructors:None
-      ~methods:[] ~properties:[] ()
+      ~methods:[] ~properties:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
   in
 
   (* Parse the generated code *)
@@ -82,7 +82,7 @@ let test_constructor_external_declaration () =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
       ~output_mode:Implementation ~class_name:"Button" ~class_doc:None
       ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
-      ~constructors:(Some [ ctor ]) ~methods:[] ~properties:[] ()
+      ~constructors:(Some [ ctor ]) ~methods:[] ~properties:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
   in
 
   (* Parse the code *)
@@ -125,7 +125,7 @@ let test_method_with_nullable_param () =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
       ~output_mode:Implementation ~class_name:"Button" ~class_doc:None
       ~c_type:"GtkButton" ~parent_chain:[ "Widget" ] ~constructors:None
-      ~methods:[ meth ] ~properties:[] ()
+      ~methods:[ meth ] ~properties:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
   in
 
   (* Parse the code *)
@@ -163,7 +163,7 @@ let test_method_with_return_value () =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
       ~output_mode:Implementation ~class_name:"Button" ~class_doc:None
       ~c_type:"GtkButton" ~parent_chain:[ "Widget" ] ~constructors:None
-      ~methods:[ meth ] ~properties:[] ()
+      ~methods:[ meth ] ~properties:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
   in
 
   (* Parse the code *)
@@ -197,7 +197,7 @@ let test_nullable_return_value () =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx
       ~output_mode:Implementation ~class_name:"Button" ~class_doc:None
       ~c_type:"GtkButton" ~parent_chain:[ "Widget" ] ~constructors:None
-      ~methods:[ meth ] ~properties:[] ()
+      ~methods:[ meth ] ~properties:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
   in
 
   (* Parse the code *)

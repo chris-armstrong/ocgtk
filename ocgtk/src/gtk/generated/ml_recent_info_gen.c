@@ -18,12 +18,12 @@
 
 /* Conversion functions for GtkRecentInfo (opaque record with hidden fields) */
 GtkRecentInfo *GtkRecentInfo_val(value v) {
-  return *(GtkRecentInfo **)Data_custom_val(v);
+  return (GtkRecentInfo *)ml_gir_record_ptr_val(v, "GtkRecentInfo");
 }
 
 value Val_GtkRecentInfo(const GtkRecentInfo *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gtk_recent_info_get_type(), ptr);
 }
 
 value Val_GtkRecentInfo_option(const GtkRecentInfo *ptr) {
@@ -31,14 +31,6 @@ value Val_GtkRecentInfo_option(const GtkRecentInfo *ptr) {
   return Val_some(Val_GtkRecentInfo(ptr));
 }
 
-
-CAMLexport CAMLprim value ml_gtk_recent_info_unref(value self)
-{
-CAMLparam1(self);
-
-gtk_recent_info_unref(GtkRecentInfo_val(self));
-CAMLreturn(Val_unit);
-}
 
 CAMLexport CAMLprim value ml_gtk_recent_info_ref(value self)
 {

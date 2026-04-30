@@ -17,12 +17,12 @@
 
 /* Conversion functions for graphene_matrix_t (opaque record with hidden fields) */
 graphene_matrix_t *graphene_matrix_t_val(value v) {
-  return *(graphene_matrix_t **)Data_custom_val(v);
+  return (graphene_matrix_t *)ml_gir_record_ptr_val(v, "graphene_matrix_t");
 }
 
 value Val_graphene_matrix_t(const graphene_matrix_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(graphene_matrix_get_type(), ptr);
 }
 
 value Val_graphene_matrix_t_option(const graphene_matrix_t *ptr) {
@@ -1482,27 +1482,6 @@ CAMLexport CAMLprim value ml_graphene_matrix_get_row(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("Matrix requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
-
-CAMLexport CAMLprim value ml_graphene_matrix_free(value self)
-{
-CAMLparam1(self);
-
-graphene_matrix_free(graphene_matrix_t_val(self));
-CAMLreturn(Val_unit);
-}
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_matrix_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Matrix requires Graphene >= 1.0");
 return Val_unit;
 }

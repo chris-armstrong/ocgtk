@@ -95,9 +95,6 @@ itself before attempting to create the settings source. *)
 
 (* Methods *)
 
-external unref : t -> unit = "ml_g_settings_schema_unref"
-(** Decrease the reference count of @schema, possibly freeing it. *)
-
 external ref : t -> t = "ml_g_settings_schema_ref"
 (** Increase the reference count of @schema, returning a new reference. *)
 

@@ -18,12 +18,12 @@
 #if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,4,0)
 /* Conversion functions for graphene_ray_t (opaque record with hidden fields) */
 graphene_ray_t *graphene_ray_t_val(value v) {
-  return *(graphene_ray_t **)Data_custom_val(v);
+  return (graphene_ray_t *)ml_gir_record_ptr_val(v, "graphene_ray_t");
 }
 
 value Val_graphene_ray_t(const graphene_ray_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(graphene_ray_get_type(), ptr);
 }
 
 value Val_graphene_ray_t_option(const graphene_ray_t *ptr) {
@@ -266,14 +266,6 @@ graphene_ray_get_closest_point_to_point(graphene_ray_t_val(self), graphene_point
 CAMLreturn(Val_graphene_point3d_t(&out2));
 }
 
-CAMLexport CAMLprim value ml_graphene_ray_free(value self)
-{
-CAMLparam1(self);
-
-graphene_ray_free(graphene_ray_t_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_graphene_ray_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -299,15 +291,6 @@ CAMLexport CAMLprim value ml_graphene_ray_equal(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("Ray requires Graphene >= 1.4");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_ray_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Ray requires Graphene >= 1.4");
 return Val_unit;
 }

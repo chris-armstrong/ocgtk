@@ -69,9 +69,6 @@ external get_y : t -> float = "ml_graphene_vec2_get_y"
 external get_x : t -> float = "ml_graphene_vec2_get_x"
 (** Retrieves the X component of the #graphene_vec2_t. *)
 
-external free : t -> unit = "ml_graphene_vec2_free"
-(** Frees the resources allocated by @v *)
-
 external equal : t -> t -> bool = "ml_graphene_vec2_equal"
 (** Checks whether the two given #graphene_vec2_t are equal. *)
 

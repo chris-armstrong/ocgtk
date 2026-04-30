@@ -25,7 +25,7 @@
 
 /* Conversion functions for GFileAttributeInfo (opaque record with hidden fields) */
 GFileAttributeInfo *GFileAttributeInfo_val(value v) {
-  return *(GFileAttributeInfo **)Data_custom_val(v);
+  return (GFileAttributeInfo *)ml_gir_record_ptr_val(v, "GFileAttributeInfo");
 }
 
 value Val_GFileAttributeInfo(const GFileAttributeInfo *ptr) {

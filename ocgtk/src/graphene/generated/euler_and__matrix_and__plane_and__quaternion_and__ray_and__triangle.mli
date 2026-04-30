@@ -128,9 +128,6 @@ module rec Euler : sig
 
       See also: graphene_euler_get_x() *)
 
-  external free : t -> unit = "ml_graphene_euler_free"
-  (** Frees the resources allocated by graphene_euler_alloc(). *)
-
   external equal : t -> t -> bool = "ml_graphene_euler_equal"
   (** Checks if two #graphene_euler_t are equal. *)
 end
@@ -498,9 +495,6 @@ and Matrix : sig
     = "ml_graphene_matrix_get_row"
   (** Retrieves the given row vector at @index_ inside a matrix. *)
 
-  external free : t -> unit = "ml_graphene_matrix_free"
-  (** Frees the resources allocated by graphene_matrix_alloc(). *)
-
   external equal_fast : t -> t -> bool = "ml_graphene_matrix_equal_fast"
   (** Checks whether the two given #graphene_matrix_t matrices are byte-by-byte
       equal.
@@ -603,9 +597,6 @@ and Plane : sig
   (** Retrieves the distance along the normal vector of the given
       #graphene_plane_t from the origin. *)
 
-  external free : t -> unit = "ml_graphene_plane_free"
-  (** Frees the resources allocated by graphene_plane_alloc(). *)
-
   external equal : t -> t -> bool = "ml_graphene_plane_equal"
   (** Checks whether the two given #graphene_plane_t are equal. *)
 
@@ -705,9 +696,6 @@ and Quaternion : sig
   external init : t -> float -> float -> float -> float -> t
     = "ml_graphene_quaternion_init"
   (** Initializes a #graphene_quaternion_t using the given four values. *)
-
-  external free : t -> unit = "ml_graphene_quaternion_free"
-  (** Releases the resources allocated by graphene_quaternion_alloc(). *)
 
   external equal : t -> t -> bool = "ml_graphene_quaternion_equal"
   (** Checks whether the given quaternions are equal. *)
@@ -814,9 +802,6 @@ and Ray : sig
   (** Computes the point on the given #graphene_ray_t that is closest to the
   given point @p. *)
 
-  external free : t -> unit = "ml_graphene_ray_free"
-  (** Frees the resources allocated by graphene_ray_alloc(). *)
-
   external equal : t -> t -> bool = "ml_graphene_ray_equal"
   (** Checks whether the two given #graphene_ray_t are equal. *)
 end
@@ -915,9 +900,6 @@ and Triangle : sig
 
   external get_area : t -> float = "ml_graphene_triangle_get_area"
   (** Computes the area of the given #graphene_triangle_t. *)
-
-  external free : t -> unit = "ml_graphene_triangle_free"
-  (** Frees the resources allocated by graphene_triangle_alloc(). *)
 
   external equal : t -> t -> bool = "ml_graphene_triangle_equal"
   (** Checks whether the two given #graphene_triangle_t are equal. *)

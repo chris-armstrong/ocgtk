@@ -17,7 +17,7 @@
 
 /* Conversion functions for GskShadow (opaque record with hidden fields) */
 GskShadow *GskShadow_val(value v) {
-  return *(GskShadow **)Data_custom_val(v);
+  return (GskShadow *)ml_gir_record_ptr_val(v, "GskShadow");
 }
 
 value Val_GskShadow(const GskShadow *ptr) {

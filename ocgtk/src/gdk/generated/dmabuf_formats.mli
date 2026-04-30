@@ -23,12 +23,6 @@ type t = [ `dmabuf_formats ] Gobject.obj
 
 (* Methods *)
 
-external unref : t -> unit = "ml_gdk_dmabuf_formats_unref"
-(** Decreases the reference count of @formats.
-
-When the reference count reaches zero,
-the object is freed. *)
-
 external ref : t -> t = "ml_gdk_dmabuf_formats_ref"
 (** Increases the reference count of @formats. *)
 

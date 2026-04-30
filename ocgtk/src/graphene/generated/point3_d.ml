@@ -52,9 +52,6 @@ external init_from_point : t -> t -> t = "ml_graphene_point3d_init_from_point"
 external init : t -> float -> float -> float -> t = "ml_graphene_point3d_init"
 (** Initializes a #graphene_point3d_t with the given coordinates. *)
 
-external free : t -> unit = "ml_graphene_point3d_free"
-(** Frees the resources allocated via graphene_point3d_alloc(). *)
-
 external equal : t -> t -> bool = "ml_graphene_point3d_equal"
 (** Checks whether two given points are equal. *)
 

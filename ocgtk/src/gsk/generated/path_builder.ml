@@ -47,9 +47,6 @@ external new_ : unit -> t = "ml_gsk_path_builder_new"
 
 (* Methods *)
 
-external unref : t -> unit = "ml_gsk_path_builder_unref"
-(** Releases a reference on the given builder. *)
-
 external to_path : t -> Path_and__path_measure_and__path_point.Path.t
   = "ml_gsk_path_builder_to_path"
 (** Creates a new `GskPath` from the given builder.

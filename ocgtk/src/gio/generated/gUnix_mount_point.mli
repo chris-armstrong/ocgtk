@@ -1,7 +1,5 @@
 class type unix_mount_point_t = object
   method compare : Unix_mount_point.t -> int
-  method copy : unit -> Unix_mount_point.t
-  method free : unit -> unit
   method get_device_path : unit -> string
   method get_fs_type : unit -> string
   method get_mount_path : unit -> string

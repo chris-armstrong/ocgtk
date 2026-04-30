@@ -4,11 +4,11 @@ open StdLabels
 open Printf
 open Types
 
-(** Generate type declaration for the module *)
-let generate_type_declaration ~output_mode ~is_record ~base_type buf =
-  match (is_record, output_mode) with
-  | true, Layer1_helpers.Interface -> bprintf buf "type t\n\n"
-  | _ -> bprintf buf "type t = %s\n\n" base_type
+(** Generate type declaration for the module. Both records and classes are
+    represented as [\[ tag... \] Gobject.obj], computed by the caller; we
+    just emit it. *)
+let generate_type_declaration ~output_mode:_ ~base_type buf =
+  bprintf buf "type t = %s\n\n" base_type
 
 (** Generate constructors section *)
 let generate_constructors_section ~ctx ~class_name ~constructors buf =
@@ -20,12 +20,12 @@ let generate_constructors_section ~ctx ~class_name ~constructors buf =
 
 (** Generate methods section *)
 let generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix
-    ~is_record ~methods buf =
+    ~entity_kind ~methods buf =
   bprintf buf "(* Methods *)\n";
   List.iter
     ~f:(fun (meth : gir_method) ->
       Layer1_method.generate_method_decl ~ctx ~class_name ~c_type
-        ~c_symbol_prefix ~is_record ~buf meth)
+        ~c_symbol_prefix ~entity_kind ~buf meth)
     (List.rev methods)
 
 (** Generate properties section *)
@@ -40,27 +40,27 @@ let generate_properties_section ~ctx ~class_name ~methods ~properties buf =
   end
 
 let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
-    ~constructors ~methods ~properties ~base_type ?c_symbol_prefix
-    ?(is_record = false) ?from_gobject_c_name buf =
-  generate_type_declaration ~output_mode ~is_record ~base_type buf;
+    ~constructors ~methods ~properties ~base_type ?c_symbol_prefix ~entity_kind
+    ?from_gobject_c_name buf =
+  generate_type_declaration ~output_mode ~base_type buf;
   (match from_gobject_c_name with
   | Some c_name ->
       bprintf buf "external from_gobject : 'a Gobject.obj -> t = \"%s\"\n\n"
         c_name
   | None -> ());
   generate_constructors_section ~ctx ~class_name ~constructors buf;
-  generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix ~is_record
-    ~methods buf;
+  generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix
+    ~entity_kind ~methods buf;
   generate_properties_section ~ctx ~class_name ~methods ~properties buf
 
 let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
     ~parent_chain ~constructors ~methods ~properties ?c_symbol_prefix
-    ?record_base_type ?(is_record = false) ?from_gobject_c_name () =
+    ~entity_kind ?from_gobject_c_name () =
   let buf = Buffer.create 1024 in
 
   let class_type_name, base_type =
     Layer1_helpers.detect_class_hierarchy_names ~ctx ~class_name ~parent_chain
-      ?record_base_type ~is_record ()
+      ()
   in
 
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
@@ -70,7 +70,7 @@ let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
   | Some doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc)
   | None -> ());
   generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
-    ~constructors ~methods ~properties ?c_symbol_prefix ~base_type ~is_record
+    ~constructors ~methods ~properties ?c_symbol_prefix ~base_type ~entity_kind
     ?from_gobject_c_name buf;
   Buffer.contents buf
 
@@ -88,8 +88,9 @@ let generate_module_signature ~ctx ~entity ~base_type ?from_gobject_c_name buf =
       ~constructors:
         (if List.length entity.constructors > 0 then Some entity.constructors
          else None)
-      ~methods:entity.methods ~properties:entity.properties ~base_type
-      ?from_gobject_c_name inner_buf;
+      ~methods:entity.methods
+      ~entity_kind:(Filtering.entity_kind_of_entity entity)
+      ~properties:entity.properties ~base_type ?from_gobject_c_name inner_buf;
     Buffer.contents inner_buf
   in
   Layer1_helpers.print_indent signature_contents buf
@@ -104,8 +105,9 @@ let generate_module_implementation ~ctx ~output_mode ~entity ~base_type
       ~constructors:
         (if List.length entity.constructors > 0 then Some entity.constructors
          else None)
-      ~methods:entity.methods ~properties:entity.properties ?from_gobject_c_name
-      inner_buf;
+      ~methods:entity.methods
+      ~entity_kind:(Filtering.entity_kind_of_entity entity)
+      ~properties:entity.properties ?from_gobject_c_name inner_buf;
     Buffer.contents inner_buf
   in
   Layer1_helpers.print_indent single_content buf

@@ -18,12 +18,12 @@
 #if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,2,0)
 /* Conversion functions for graphene_euler_t (opaque record with hidden fields) */
 graphene_euler_t *graphene_euler_t_val(value v) {
-  return *(graphene_euler_t **)Data_custom_val(v);
+  return (graphene_euler_t *)ml_gir_record_ptr_val(v, "graphene_euler_t");
 }
 
 value Val_graphene_euler_t(const graphene_euler_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(graphene_euler_get_type(), ptr);
 }
 
 value Val_graphene_euler_t_option(const graphene_euler_t *ptr) {
@@ -260,14 +260,6 @@ return Val_unit;
 }
 #endif
 
-CAMLexport CAMLprim value ml_graphene_euler_free(value self)
-{
-CAMLparam1(self);
-
-graphene_euler_free(graphene_euler_t_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_graphene_euler_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -293,15 +285,6 @@ CAMLexport CAMLprim value ml_graphene_euler_equal(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("Euler requires Graphene >= 1.2");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_euler_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Euler requires Graphene >= 1.2");
 return Val_unit;
 }

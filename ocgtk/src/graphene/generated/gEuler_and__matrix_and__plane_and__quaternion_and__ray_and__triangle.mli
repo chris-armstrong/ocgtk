@@ -3,7 +3,6 @@ class type euler_t = object
     Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Euler.t ->
     bool
 
-  method free : unit -> unit
   method get_alpha : unit -> float
   method get_beta : unit -> float
   method get_gamma : unit -> float
@@ -71,7 +70,6 @@ and matrix_t = object
     Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t ->
     bool
 
-  method free : unit -> unit
   method get_value : int -> int -> float
   method get_x_scale : unit -> float
   method get_x_translation : unit -> float
@@ -202,7 +200,6 @@ and plane_t = object
     Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t ->
     bool
 
-  method free : unit -> unit
   method get_constant : unit -> float
 
   method init :
@@ -245,8 +242,6 @@ and quaternion_t = object
     .Quaternion
     .t ->
     bool
-
-  method free : unit -> unit
 
   method init :
     float ->
@@ -323,8 +318,6 @@ and ray_t = object
     Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Ray.t ->
     bool
 
-  method free : unit -> unit
-
   method get_distance_to_plane :
     Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Plane.t ->
     float
@@ -365,7 +358,6 @@ and triangle_t = object
     .t ->
     bool
 
-  method free : unit -> unit
   method get_area : unit -> float
 
   method init_from_float :

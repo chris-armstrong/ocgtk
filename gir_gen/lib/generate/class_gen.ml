@@ -141,7 +141,7 @@ let generate_constructor_sig ~ctx ~buf ~class_type_name ~current_layer2_module
 
 (** Generate a class module (implementation) *)
 let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
-    ~properties ~signals ~constructors =
+    ~entity_kind ~properties ~signals ~constructors =
   let buf = Buffer.create 2048 in
   let module_names = get_module_names ~ctx class_name in
   let class_snake = sanitize_name class_name in
@@ -158,8 +158,8 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
   generate_class_signature_body ~ctx ~buf
     ~layer1_module_name:module_names.layer1
     ~current_layer2_module:module_names.layer2 ~class_name ~class_snake ~c_type
-    ~methods ~properties ~signals ~same_cluster_classes:[ class_name ]
-    ~parent_name ();
+    ~methods ~entity_kind ~properties ~signals
+    ~same_cluster_classes:[ class_name ] ~parent_name ();
 
   bprintf buf "end\n\n";
 
@@ -170,8 +170,8 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
 
   generate_class_module_body ~ctx ~buf ~layer1_module_name:module_names.layer1
     ~current_layer2_module:module_names.layer2 ~class_name ~class_snake ~c_type
-    ~methods ~properties ~signals ~same_cluster_classes:[ class_name ]
-    ~parent_name ();
+    ~methods ~entity_kind ~properties ~signals
+    ~same_cluster_classes:[ class_name ] ~parent_name ();
 
   bprintf buf "end\n\n";
 
@@ -186,7 +186,7 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
 
 (** Generate a class signature *)
 let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain ~methods
-    ~properties ~signals ~constructors =
+    ~entity_kind ~properties ~signals ~constructors =
   let buf = Buffer.create 1024 in
   let module_names = get_module_names ~ctx class_name in
   let class_snake = sanitize_name class_name in
@@ -199,8 +199,8 @@ let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain ~methods
   generate_class_signature_body ~ctx ~buf
     ~layer1_module_name:module_names.layer1
     ~current_layer2_module:module_names.layer2 ~class_name ~class_snake ~c_type
-    ~methods ~properties ~signals ~same_cluster_classes:[ class_name ]
-    ~parent_name ();
+    ~methods ~entity_kind ~properties ~signals
+    ~same_cluster_classes:[ class_name ] ~parent_name ();
 
   bprintf buf "end\n\n";
 
@@ -240,6 +240,7 @@ let generate_combined_entities ~ctx ~combined_module_name ~entities
       let class_snake = sanitize_name entity.name in
       generate_entity ~buf ~i ~class_snake ~module_name ~current_layer2_module
         ~class_name:entity.name ~c_type:entity.c_type ~methods:entity.methods
+        ~entity_kind:(Filtering.entity_kind_of_entity entity)
         ~properties:entity.properties ~signals:entity.signals
         ~same_cluster_classes ~parent_name)
     sorted_entities;
@@ -256,8 +257,8 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
 
   (* Pass 1: class type definitions *)
   let generate_class_type ~buf ~i ~class_snake ~module_name:_
-      ~current_layer2_module ~class_name ~c_type ~methods ~properties ~signals
-      ~same_cluster_classes ~parent_name =
+      ~current_layer2_module ~class_name ~c_type ~methods ~entity_kind
+      ~properties ~signals ~same_cluster_classes ~parent_name =
     let class_type_name = Utils.class_type_name class_name in
     if i = 0 then bprintf buf "class type %s = object\n" class_type_name
     else bprintf buf "\nand %s = object\n" class_type_name;
@@ -266,7 +267,7 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
       ~layer1_module_name:
         (Class_utils.get_qualified_module_name ~ctx class_name)
       ~current_layer2_module ~class_name ~class_snake ~c_type ~methods
-      ~properties ~signals ~same_cluster_classes ~parent_name ();
+      ~entity_kind ~properties ~signals ~same_cluster_classes ~parent_name ();
 
     bprintf buf "end\n"
   in
@@ -281,8 +282,8 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
 
   (* Pass 2: class implementations *)
   let generate_class_impl ~buf ~i ~class_snake ~module_name
-      ~current_layer2_module ~class_name ~c_type ~methods ~properties ~signals
-      ~same_cluster_classes ~parent_name =
+      ~current_layer2_module ~class_name ~c_type ~methods ~entity_kind
+      ~properties ~signals ~same_cluster_classes ~parent_name =
     let class_type_name = Utils.class_type_name class_name in
     let has_any_signals = signals <> [] in
     if has_any_signals then
@@ -297,7 +298,7 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
 
     generate_class_module_body ~ctx ~buf ~layer1_module_name:module_name
       ~current_layer2_module ~class_name ~class_snake ~c_type ~methods
-      ~properties ~signals ~same_cluster_classes ~parent_name ();
+      ~entity_kind ~properties ~signals ~same_cluster_classes ~parent_name ();
 
     bprintf buf "end\n"
   in
@@ -331,8 +332,8 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
 
   (* Pass 1: class type definitions *)
   let generate_class_type ~buf ~i ~class_snake ~module_name:_
-      ~current_layer2_module ~class_name ~c_type ~methods ~properties ~signals
-      ~same_cluster_classes ~parent_name =
+      ~current_layer2_module ~class_name ~c_type ~methods ~entity_kind
+      ~properties ~signals ~same_cluster_classes ~parent_name =
     let class_type_name = Utils.class_type_name class_name in
     if i = 0 then bprintf buf "class type %s = object\n" class_type_name
     else bprintf buf "\nand %s = object\n" class_type_name;
@@ -341,7 +342,7 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
       ~layer1_module_name:
         (Class_utils.get_qualified_module_name ~ctx class_name)
       ~current_layer2_module ~class_name ~class_snake ~c_type ~methods
-      ~properties ~signals ~same_cluster_classes ~parent_name ();
+      ~entity_kind ~properties ~signals ~same_cluster_classes ~parent_name ();
 
     bprintf buf "end\n"
   in
@@ -356,8 +357,8 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
 
   (* Pass 2: class declarations referencing class types *)
   let generate_class_decl ~buf ~i ~class_snake ~module_name
-      ~current_layer2_module:_ ~class_name ~c_type:_ ~methods:_ ~properties:_
-      ~signals:_ ~same_cluster_classes:_ ~parent_name:_ =
+      ~current_layer2_module:_ ~class_name ~c_type:_ ~methods:_ ~entity_kind:_
+      ~properties:_ ~signals:_ ~same_cluster_classes:_ ~parent_name:_ =
     let class_type_name = Utils.class_type_name class_name in
     if i = 0 then
       bprintf buf "class %s : %s.t -> %s\n" class_snake module_name

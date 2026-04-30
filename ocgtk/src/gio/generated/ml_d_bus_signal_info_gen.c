@@ -26,12 +26,12 @@
 #if GLIB_CHECK_VERSION(2,26,0)
 /* Conversion functions for GDBusSignalInfo (opaque record with hidden fields) */
 GDBusSignalInfo *GDBusSignalInfo_val(value v) {
-  return *(GDBusSignalInfo **)Data_custom_val(v);
+  return (GDBusSignalInfo *)ml_gir_record_ptr_val(v, "GDBusSignalInfo");
 }
 
 value Val_GDBusSignalInfo(const GDBusSignalInfo *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_dbus_signal_info_get_type(), ptr);
 }
 
 value Val_GDBusSignalInfo_option(const GDBusSignalInfo *ptr) {
@@ -42,14 +42,6 @@ value Val_GDBusSignalInfo_option(const GDBusSignalInfo *ptr) {
 
 #if GLIB_CHECK_VERSION(2,26,0)
 
-
-CAMLexport CAMLprim value ml_g_dbus_signal_info_unref(value self)
-{
-CAMLparam1(self);
-
-g_dbus_signal_info_unref(GDBusSignalInfo_val(self));
-CAMLreturn(Val_unit);
-}
 
 CAMLexport CAMLprim value ml_g_dbus_signal_info_ref(value self)
 {
@@ -63,15 +55,6 @@ CAMLreturn(Val_GDBusSignalInfo(result));
 
 
 CAMLexport CAMLprim value ml_g_dbus_signal_info_ref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusSignalInfo requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_signal_info_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

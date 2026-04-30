@@ -25,12 +25,12 @@
 
 /* Conversion functions for GFileAttributeInfoList (opaque record with hidden fields) */
 GFileAttributeInfoList *GFileAttributeInfoList_val(value v) {
-  return *(GFileAttributeInfoList **)Data_custom_val(v);
+  return (GFileAttributeInfoList *)ml_gir_record_ptr_val(v, "GFileAttributeInfoList");
 }
 
 value Val_GFileAttributeInfoList(const GFileAttributeInfoList *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_file_attribute_info_list_get_type(), ptr);
 }
 
 value Val_GFileAttributeInfoList_option(const GFileAttributeInfoList *ptr) {
@@ -47,14 +47,6 @@ GFileAttributeInfoList *obj = g_file_attribute_info_list_new();
 
 CAMLreturn(Val_GFileAttributeInfoList(obj));
 }
-CAMLexport CAMLprim value ml_g_file_attribute_info_list_unref(value self)
-{
-CAMLparam1(self);
-
-g_file_attribute_info_list_unref(GFileAttributeInfoList_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_g_file_attribute_info_list_ref(value self)
 {
 CAMLparam1(self);

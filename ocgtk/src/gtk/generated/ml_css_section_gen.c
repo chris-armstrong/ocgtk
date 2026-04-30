@@ -18,12 +18,12 @@
 
 /* Conversion functions for GtkCssSection (opaque record with hidden fields) */
 GtkCssSection *GtkCssSection_val(value v) {
-  return *(GtkCssSection **)Data_custom_val(v);
+  return (GtkCssSection *)ml_gir_record_ptr_val(v, "GtkCssSection");
 }
 
 value Val_GtkCssSection(const GtkCssSection *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gtk_css_section_get_type(), ptr);
 }
 
 value Val_GtkCssSection_option(const GtkCssSection *ptr) {
@@ -40,14 +40,6 @@ GtkCssSection *obj = gtk_css_section_new(Option_val(arg1, GFile_val, NULL), GtkC
 
 CAMLreturn(Val_GtkCssSection(obj));
 }
-CAMLexport CAMLprim value ml_gtk_css_section_unref(value self)
-{
-CAMLparam1(self);
-
-gtk_css_section_unref(GtkCssSection_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_css_section_to_string(value self)
 {
 CAMLparam1(self);

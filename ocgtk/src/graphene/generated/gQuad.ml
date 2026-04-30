@@ -1,6 +1,5 @@
 class type quad_t = object
   method contains : Point.t -> bool
-  method free : unit -> unit
   method get_point : int -> Point.t
   method init : Point.t -> Point.t -> Point.t -> Point.t -> Quad.t
   method init_from_points : Point.t array -> Quad.t
@@ -12,7 +11,6 @@ end
 class quad (obj : Quad.t) : quad_t =
   object (self)
     method contains : Point.t -> bool = fun p -> Quad.contains obj p
-    method free : unit -> unit = fun () -> Quad.free obj
     method get_point : int -> Point.t = fun index_ -> Quad.get_point obj index_
 
     method init : Point.t -> Point.t -> Point.t -> Point.t -> Quad.t =

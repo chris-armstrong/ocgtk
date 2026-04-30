@@ -18,7 +18,7 @@
 
 /* Conversion functions for GtkPadActionEntry (opaque record with hidden fields) */
 GtkPadActionEntry *GtkPadActionEntry_val(value v) {
-  return *(GtkPadActionEntry **)Data_custom_val(v);
+  return (GtkPadActionEntry *)ml_gir_record_ptr_val(v, "GtkPadActionEntry");
 }
 
 value Val_GtkPadActionEntry(const GtkPadActionEntry *ptr) {

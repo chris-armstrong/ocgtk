@@ -10,7 +10,6 @@ class type path_t = object
   method ref : unit -> Path_and__path_measure_and__path_point.Path.t
   method to_cairo : Ocgtk_cairo.Cairo.Context.context_t -> unit
   method to_string : unit -> string
-  method unref : unit -> unit
   method as_path : Path_and__path_measure_and__path_point.Path.t
 end
 
@@ -19,15 +18,12 @@ and path_measure_t = object
   method get_path : unit -> Path_and__path_measure_and__path_point.Path.t
   method get_tolerance : unit -> float
   method ref : unit -> Path_and__path_measure_and__path_point.Path_measure.t
-  method unref : unit -> unit
   method as_path_measure : Path_and__path_measure_and__path_point.Path_measure.t
 end
 
 and path_point_t = object
   method compare : Path_and__path_measure_and__path_point.Path_point.t -> int
-  method copy : unit -> Path_and__path_measure_and__path_point.Path_point.t
   method equal : Path_and__path_measure_and__path_point.Path_point.t -> bool
-  method free : unit -> unit
 
   method get_distance :
     Path_and__path_measure_and__path_point.Path_measure.t -> float
@@ -65,9 +61,6 @@ class path (obj : Path_and__path_measure_and__path_point.Path.t) : path_t =
     method to_string : unit -> string =
       fun () -> Path_and__path_measure_and__path_point.Path.to_string obj
 
-    method unref : unit -> unit =
-      fun () -> Path_and__path_measure_and__path_point.Path.unref obj
-
     method as_path = obj
   end
 
@@ -88,9 +81,6 @@ and path_measure (obj : Path_and__path_measure_and__path_point.Path_measure.t) :
     method ref : unit -> Path_and__path_measure_and__path_point.Path_measure.t =
       fun () -> Path_and__path_measure_and__path_point.Path_measure.ref obj
 
-    method unref : unit -> unit =
-      fun () -> Path_and__path_measure_and__path_point.Path_measure.unref obj
-
     method as_path_measure = obj
   end
 
@@ -102,15 +92,9 @@ and path_point (obj : Path_and__path_measure_and__path_point.Path_point.t) :
       fun point2 ->
         Path_and__path_measure_and__path_point.Path_point.compare obj point2
 
-    method copy : unit -> Path_and__path_measure_and__path_point.Path_point.t =
-      fun () -> Path_and__path_measure_and__path_point.Path_point.copy obj
-
     method equal : Path_and__path_measure_and__path_point.Path_point.t -> bool =
       fun point2 ->
         Path_and__path_measure_and__path_point.Path_point.equal obj point2
-
-    method free : unit -> unit =
-      fun () -> Path_and__path_measure_and__path_point.Path_point.free obj
 
     method get_distance :
         Path_and__path_measure_and__path_point.Path_measure.t -> float =

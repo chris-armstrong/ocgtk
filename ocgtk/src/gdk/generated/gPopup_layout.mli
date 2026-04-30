@@ -1,5 +1,4 @@
 class type popup_layout_t = object
-  method copy : unit -> Popup_layout.t
   method equal : Popup_layout.t -> bool
   method get_anchor_hints : unit -> Gdk_enums.anchorhints
   method get_anchor_rect : unit -> Rectangle.t
@@ -12,7 +11,6 @@ class type popup_layout_t = object
   method set_rect_anchor : Gdk_enums.gravity -> unit
   method set_shadow_width : int -> int -> int -> int -> unit
   method set_surface_anchor : Gdk_enums.gravity -> unit
-  method unref : unit -> unit
   method as_popup_layout : Popup_layout.t
 end
 

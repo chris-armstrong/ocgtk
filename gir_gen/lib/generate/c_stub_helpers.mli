@@ -117,13 +117,14 @@ val generate_methods :
     Types.gir_method ->
     string ->
     string) ->
-  ?extra_filter:(Types.gir_method -> bool) ->
+  entity_kind:Filtering.entity_kind ->
   Types.gir_method list ->
   unit
 (** Generate C code for methods by iterating and filtering. Applies
-    [Filtering.should_skip_method_binding] filter plus an optional extra filter
-    predicate, then appends generated code to the buffer. Methods are processed
-    in reverse order (List.rev). *)
+    [Filtering.should_skip_method_binding] with the supplied [entity_kind]
+    so the record copy/free/unref filter is folded into the same answer
+    as varargs / unsupported arrays / non-introspectable. Methods are
+    processed in reverse order (List.rev). *)
 
 val default_type_mapping : Types.type_mapping
 (** Default type mapping for when no mapping is found *)

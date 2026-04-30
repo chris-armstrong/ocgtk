@@ -17,7 +17,7 @@
 
 /* Conversion functions for cairo_matrix_t (opaque record with hidden fields) */
 cairo_matrix_t *cairo_matrix_t_val(value v) {
-  return *(cairo_matrix_t **)Data_custom_val(v);
+  return (cairo_matrix_t *)ml_gir_record_ptr_val(v, "cairo_matrix_t");
 }
 
 value Val_cairo_matrix_t(const cairo_matrix_t *ptr) {

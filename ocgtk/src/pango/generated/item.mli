@@ -26,12 +26,6 @@ provided because the text used to generate the item isn't available,
 so `pango_item_split()` can't count the char length of the split items
 itself. *)
 
-external free : t -> unit = "ml_pango_item_free"
-(** Free a `PangoItem` and all associated memory. *)
-
-external copy : t -> t option = "ml_pango_item_copy"
-(** Copy an existing `PangoItem` structure. *)
-
 external apply_attrs : t -> Attr_iterator.t -> unit
   = "ml_pango_item_apply_attrs"
 (** Add attributes to a `PangoItem`.

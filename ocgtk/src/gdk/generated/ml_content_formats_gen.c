@@ -17,12 +17,12 @@
 
 /* Conversion functions for GdkContentFormats (opaque record with hidden fields) */
 GdkContentFormats *GdkContentFormats_val(value v) {
-  return *(GdkContentFormats **)Data_custom_val(v);
+  return (GdkContentFormats *)ml_gir_record_ptr_val(v, "GdkContentFormats");
 }
 
 value Val_GdkContentFormats(const GdkContentFormats *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gdk_content_formats_get_type(), ptr);
 }
 
 value Val_GdkContentFormats_option(const GdkContentFormats *ptr) {
@@ -59,14 +59,6 @@ GdkContentFormats *obj = gdk_content_formats_new_for_gtype(GType_val(arg1));
 
 CAMLreturn(Val_GdkContentFormats(obj));
 }
-CAMLexport CAMLprim value ml_gdk_content_formats_unref(value self)
-{
-CAMLparam1(self);
-
-gdk_content_formats_unref(GdkContentFormats_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gdk_content_formats_union_serialize_mime_types(value self)
 {
 CAMLparam1(self);

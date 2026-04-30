@@ -191,19 +191,17 @@ module Code_gen = struct
               msg)
       constructors
 
-  (** Generate C code for methods by iterating and filtering. Applies
-      [Filtering.should_skip_method_binding] filter plus an optional extra
-      filter predicate, then appends generated code to the buffer. Methods are
+  (** Generate C code for methods by iterating and filtering. Applies the
+      central [Filtering.should_skip_method_binding], passing [entity_kind]
+      so the record copy/free/unref filter is folded into the same answer
+      as varargs / unsupported arrays / non-introspectable etc. Methods are
       processed in reverse order (List.rev). *)
-  let generate_methods ~ctx ~c_type ~class_name ~buf ~generator ?extra_filter
+  let generate_methods ~ctx ~c_type ~class_name ~buf ~generator ~entity_kind
       methods =
     List.iter
       ~f:(fun (meth : gir_method) ->
-        let should_skip = Filtering.should_skip_method_binding ~ctx meth in
-        let passes_extra_filter =
-          match extra_filter with None -> true | Some f -> f meth
-        in
-        if (not should_skip) && passes_extra_filter then
+        if not (Filtering.should_skip_method_binding ~ctx ~entity_kind meth)
+        then
           try Buffer.add_string buf (generator ~ctx ~c_type meth class_name)
           with Failure msg ->
             eprintf "  Warning: skipping method %s: %s\n" meth.method_name msg)
@@ -256,9 +254,9 @@ type param_acc = {
 let analyze_property_type ~ctx (gir_type : Types.gir_type) =
   C_stub_type_analysis.Type_analysis.analyze_property_type ~ctx gir_type
 
-let is_copy_method = C_stub_type_analysis.Type_analysis.is_copy_method
-let is_free_method = C_stub_type_analysis.Type_analysis.is_free_method
-let is_copy_or_free = C_stub_type_analysis.Type_analysis.is_copy_or_free
+let is_copy_method = Filtering.is_copy_method
+let is_free_method = Filtering.is_free_method
+let is_copy_or_free = Filtering.is_copy_or_free
 let fold_mapi = C_stub_type_analysis.Type_analysis.fold_mapi
 let list_contains = C_stub_type_analysis.Type_analysis.list_contains
 let is_string_type = Filtering.is_string_type

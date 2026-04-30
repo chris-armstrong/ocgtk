@@ -40,3 +40,8 @@
  (name test_interface)
  (modules test_interface)
  (libraries ocgtk.gtk alcotest gtk_test_helpers))
+
+(test
+ (name test_record_finalizer)
+ (modules test_record_finalizer)
+ (libraries ocgtk.gtk alcotest gtk_test_helpers))

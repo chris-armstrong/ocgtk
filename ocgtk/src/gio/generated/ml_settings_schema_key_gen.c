@@ -25,12 +25,12 @@
 
 /* Conversion functions for GSettingsSchemaKey (opaque record with hidden fields) */
 GSettingsSchemaKey *GSettingsSchemaKey_val(value v) {
-  return *(GSettingsSchemaKey **)Data_custom_val(v);
+  return (GSettingsSchemaKey *)ml_gir_record_ptr_val(v, "GSettingsSchemaKey");
 }
 
 value Val_GSettingsSchemaKey(const GSettingsSchemaKey *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_settings_schema_key_get_type(), ptr);
 }
 
 value Val_GSettingsSchemaKey_option(const GSettingsSchemaKey *ptr) {
@@ -38,27 +38,6 @@ value Val_GSettingsSchemaKey_option(const GSettingsSchemaKey *ptr) {
   return Val_some(Val_GSettingsSchemaKey(ptr));
 }
 
-
-#if GLIB_CHECK_VERSION(2,40,0)
-
-CAMLexport CAMLprim value ml_g_settings_schema_key_unref(value self)
-{
-CAMLparam1(self);
-
-g_settings_schema_key_unref(GSettingsSchemaKey_val(self));
-CAMLreturn(Val_unit);
-}
-
-#else
-
-CAMLexport CAMLprim value ml_g_settings_schema_key_unref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SettingsSchemaKey requires GLib >= 2.40");
-return Val_unit;
-}
-#endif
 
 #if GLIB_CHECK_VERSION(2,40,0)
 

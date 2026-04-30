@@ -6,7 +6,6 @@ class type frame_timings_t = object
   method get_presentation_time : unit -> int64
   method get_refresh_interval : unit -> int64
   method ref : unit -> Frame_timings.t
-  method unref : unit -> unit
   method as_frame_timings : Frame_timings.t
 end
 
@@ -32,6 +31,5 @@ class frame_timings (obj : Frame_timings.t) : frame_timings_t =
       fun () -> Frame_timings.get_refresh_interval obj
 
     method ref : unit -> Frame_timings.t = fun () -> Frame_timings.ref obj
-    method unref : unit -> unit = fun () -> Frame_timings.unref obj
     method as_frame_timings = obj
   end

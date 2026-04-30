@@ -14,10 +14,6 @@ external new_ :
 
 (* Methods *)
 
-external unref : t -> unit = "ml_gtk_css_section_unref"
-(** Decrements the reference count on `section`, freeing the structure if the
-    reference count reaches 0. *)
-
 external to_string : t -> string = "ml_gtk_css_section_to_string"
 (** Prints the section into a human-readable text form using
     [method@Gtk.CssSection.print]. *)

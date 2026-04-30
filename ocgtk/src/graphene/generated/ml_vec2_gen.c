@@ -17,12 +17,12 @@
 
 /* Conversion functions for graphene_vec2_t (opaque record with hidden fields) */
 graphene_vec2_t *graphene_vec2_t_val(value v) {
-  return *(graphene_vec2_t **)Data_custom_val(v);
+  return (graphene_vec2_t *)ml_gir_record_ptr_val(v, "graphene_vec2_t");
 }
 
 value Val_graphene_vec2_t(const graphene_vec2_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(graphene_vec2_get_type(), ptr);
 }
 
 value Val_graphene_vec2_t_option(const graphene_vec2_t *ptr) {
@@ -415,27 +415,6 @@ CAMLreturn(caml_copy_double(result));
 #else
 
 CAMLexport CAMLprim value ml_graphene_vec2_get_x(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Vec2 requires Graphene >= 1.0");
-return Val_unit;
-}
-#endif
-
-#if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
-
-CAMLexport CAMLprim value ml_graphene_vec2_free(value self)
-{
-CAMLparam1(self);
-
-graphene_vec2_free(graphene_vec2_t_val(self));
-CAMLreturn(Val_unit);
-}
-
-#else
-
-CAMLexport CAMLprim value ml_graphene_vec2_free(value self)
 {
 CAMLparam1(self);
 (void)self;

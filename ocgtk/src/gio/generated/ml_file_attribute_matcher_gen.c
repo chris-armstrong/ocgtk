@@ -25,12 +25,12 @@
 
 /* Conversion functions for GFileAttributeMatcher (opaque record with hidden fields) */
 GFileAttributeMatcher *GFileAttributeMatcher_val(value v) {
-  return *(GFileAttributeMatcher **)Data_custom_val(v);
+  return (GFileAttributeMatcher *)ml_gir_record_ptr_val(v, "GFileAttributeMatcher");
 }
 
 value Val_GFileAttributeMatcher(const GFileAttributeMatcher *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_file_attribute_matcher_get_type(), ptr);
 }
 
 value Val_GFileAttributeMatcher_option(const GFileAttributeMatcher *ptr) {
@@ -47,14 +47,6 @@ GFileAttributeMatcher *obj = g_file_attribute_matcher_new(String_val(arg1));
 
 CAMLreturn(Val_GFileAttributeMatcher(obj));
 }
-CAMLexport CAMLprim value ml_g_file_attribute_matcher_unref(value self)
-{
-CAMLparam1(self);
-
-g_file_attribute_matcher_unref(GFileAttributeMatcher_val(self));
-CAMLreturn(Val_unit);
-}
-
 #if GLIB_CHECK_VERSION(2,32,0)
 
 CAMLexport CAMLprim value ml_g_file_attribute_matcher_to_string(value self)

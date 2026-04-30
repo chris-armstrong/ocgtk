@@ -14,11 +14,5 @@ external unwatch : t -> unit = "ml_gtk_expression_watch_unwatch"
 
     See [method@Gtk.Expression.watch] for how the watch was established. *)
 
-external unref : t -> unit = "ml_gtk_expression_watch_unref"
-(** Releases a reference on the given `GtkExpressionWatch`.
-
-    If the reference was the last, the resources associated to `self` are freed.
-*)
-
 external ref : t -> t = "ml_gtk_expression_watch_ref"
 (** Acquires a reference on the given `GtkExpressionWatch`. *)

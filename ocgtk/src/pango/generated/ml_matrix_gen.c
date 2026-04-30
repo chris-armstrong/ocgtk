@@ -21,7 +21,7 @@ value copy_PangoMatrix(const PangoMatrix *ptr)
 {
   if (ptr == NULL) return Val_none;
   PangoMatrix *copy = pango_matrix_copy((PangoMatrix*)ptr);
-  return ml_gir_record_val_ptr(copy);
+  return ml_gir_record_val_ptr_with_type(pango_matrix_get_type(), copy);
 }
 #endif
 
@@ -227,22 +227,6 @@ return Val_unit;
 }
 #endif
 
-CAMLexport CAMLprim value ml_pango_matrix_free(value self)
-{
-CAMLparam1(self);
-
-pango_matrix_free(PangoMatrix_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_pango_matrix_copy(value self)
-{
-CAMLparam1(self);
-
-PangoMatrix* result = pango_matrix_copy(PangoMatrix_val(self));
-CAMLreturn(Val_option(result, Val_PangoMatrix));
-}
-
 CAMLexport CAMLprim value ml_pango_matrix_concat(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -259,24 +243,6 @@ CAMLexport CAMLprim value ml_pango_matrix_concat(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("Matrix requires Pango >= 1.6");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_pango_matrix_copy(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Matrix requires Pango >= 1.6");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_pango_matrix_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Matrix requires Pango >= 1.6");
 return Val_unit;
 }

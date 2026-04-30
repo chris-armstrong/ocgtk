@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoAnalysis (opaque record with hidden fields) */
 PangoAnalysis *PangoAnalysis_val(value v) {
-  return *(PangoAnalysis **)Data_custom_val(v);
+  return (PangoAnalysis *)ml_gir_record_ptr_val(v, "PangoAnalysis");
 }
 
 value Val_PangoAnalysis(const PangoAnalysis *ptr) {

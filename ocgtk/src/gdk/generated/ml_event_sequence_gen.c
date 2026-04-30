@@ -17,12 +17,12 @@
 
 /* Conversion functions for GdkEventSequence (opaque record with hidden fields) */
 GdkEventSequence *GdkEventSequence_val(value v) {
-  return *(GdkEventSequence **)Data_custom_val(v);
+  return (GdkEventSequence *)ml_gir_record_ptr_val(v, "GdkEventSequence");
 }
 
 value Val_GdkEventSequence(const GdkEventSequence *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gdk_event_sequence_get_type(), ptr);
 }
 
 value Val_GdkEventSequence_option(const GdkEventSequence *ptr) {

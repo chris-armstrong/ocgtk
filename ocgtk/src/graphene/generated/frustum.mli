@@ -51,9 +51,6 @@ external get_planes :
   array = "ml_graphene_frustum_get_planes"
 (** Retrieves the planes that define the given #graphene_frustum_t. *)
 
-external free : t -> unit = "ml_graphene_frustum_free"
-(** Frees the resources allocated by graphene_frustum_alloc(). *)
-
 external equal : t -> t -> bool = "ml_graphene_frustum_equal"
 (** Checks whether the two given #graphene_frustum_t are equal. *)
 

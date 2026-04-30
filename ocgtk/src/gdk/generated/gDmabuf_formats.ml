@@ -3,7 +3,6 @@ class type dmabuf_formats_t = object
   method equal : Dmabuf_formats.t option -> bool
   method get_n_formats : unit -> Gsize.t
   method ref : unit -> Dmabuf_formats.t
-  method unref : unit -> unit
   method as_dmabuf_formats : Dmabuf_formats.t
 end
 
@@ -20,6 +19,5 @@ class dmabuf_formats (obj : Dmabuf_formats.t) : dmabuf_formats_t =
       fun () -> Dmabuf_formats.get_n_formats obj
 
     method ref : unit -> Dmabuf_formats.t = fun () -> Dmabuf_formats.ref obj
-    method unref : unit -> unit = fun () -> Dmabuf_formats.unref obj
     method as_dmabuf_formats = obj
   end

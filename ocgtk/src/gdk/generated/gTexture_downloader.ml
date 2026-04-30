@@ -1,6 +1,4 @@
 class type texture_downloader_t = object
-  method copy : unit -> Texture_downloader.t
-  method free : unit -> unit
   method get_format : unit -> Gdk_enums.memoryformat
   method get_texture : unit -> GTexture.texture_t
   method set_format : Gdk_enums.memoryformat -> unit
@@ -11,11 +9,6 @@ end
 (* High-level class for TextureDownloader *)
 class texture_downloader (obj : Texture_downloader.t) : texture_downloader_t =
   object (self)
-    method copy : unit -> Texture_downloader.t =
-      fun () -> Texture_downloader.copy obj
-
-    method free : unit -> unit = fun () -> Texture_downloader.free obj
-
     method get_format : unit -> Gdk_enums.memoryformat =
       fun () -> Texture_downloader.get_format obj
 

@@ -7,9 +7,6 @@ type t = [ `settings_schema_key ] Gobject.obj
 
 (* Methods *)
 
-external unref : t -> unit = "ml_g_settings_schema_key_unref"
-(** Decrease the reference count of @key, possibly freeing it. *)
-
 external ref : t -> t = "ml_g_settings_schema_key_ref"
 (** Increase the reference count of @key, returning a new reference. *)
 

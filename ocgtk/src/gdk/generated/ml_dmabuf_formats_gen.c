@@ -18,12 +18,12 @@
 #if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GdkDmabufFormats (opaque record with hidden fields) */
 GdkDmabufFormats *GdkDmabufFormats_val(value v) {
-  return *(GdkDmabufFormats **)Data_custom_val(v);
+  return (GdkDmabufFormats *)ml_gir_record_ptr_val(v, "GdkDmabufFormats");
 }
 
 value Val_GdkDmabufFormats(const GdkDmabufFormats *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gdk_dmabuf_formats_get_type(), ptr);
 }
 
 value Val_GdkDmabufFormats_option(const GdkDmabufFormats *ptr) {
@@ -34,14 +34,6 @@ value Val_GdkDmabufFormats_option(const GdkDmabufFormats *ptr) {
 
 #if GTK_CHECK_VERSION(4,14,0)
 
-
-CAMLexport CAMLprim value ml_gdk_dmabuf_formats_unref(value self)
-{
-CAMLparam1(self);
-
-gdk_dmabuf_formats_unref(GdkDmabufFormats_val(self));
-CAMLreturn(Val_unit);
-}
 
 CAMLexport CAMLprim value ml_gdk_dmabuf_formats_ref(value self)
 {
@@ -133,15 +125,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_gdk_dmabuf_formats_ref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DmabufFormats requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gdk_dmabuf_formats_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

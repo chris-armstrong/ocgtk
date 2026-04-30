@@ -84,9 +84,3 @@ external get_default_left_margin : t -> Gtk_enums.unit -> float
 external get_default_bottom_margin : t -> Gtk_enums.unit -> float
   = "ml_gtk_paper_size_get_default_bottom_margin"
 (** Gets the default bottom margin for the `GtkPaperSize`. *)
-
-external free : t -> unit = "ml_gtk_paper_size_free"
-(** Free the given `GtkPaperSize` object. *)
-
-external copy : t -> t = "ml_gtk_paper_size_copy"
-(** Copies an existing `GtkPaperSize`. *)

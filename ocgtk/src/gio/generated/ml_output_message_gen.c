@@ -26,7 +26,7 @@
 #if GLIB_CHECK_VERSION(2,44,0)
 /* Conversion functions for GOutputMessage (opaque record with hidden fields) */
 GOutputMessage *GOutputMessage_val(value v) {
-  return *(GOutputMessage **)Data_custom_val(v);
+  return (GOutputMessage *)ml_gir_record_ptr_val(v, "GOutputMessage");
 }
 
 value Val_GOutputMessage(const GOutputMessage *ptr) {

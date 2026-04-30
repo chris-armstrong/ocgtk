@@ -1,9 +1,7 @@
 class type font_description_t = object
   method better_match : Font_description.t option -> Font_description.t -> bool
-  method copy : unit -> Font_description.t option
   method copy_static : unit -> Font_description.t option
   method equal : Font_description.t -> bool
-  method free : unit -> unit
   method get_family : unit -> string option
   method get_gravity : unit -> Pango_enums.gravity
   method get_set_fields : unit -> Pango_enums.fontmask

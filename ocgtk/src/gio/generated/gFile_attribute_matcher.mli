@@ -9,7 +9,6 @@ class type file_attribute_matcher_t = object
     File_attribute_matcher.t option -> File_attribute_matcher.t option
 
   method to_string : unit -> string
-  method unref : unit -> unit
   method as_file_attribute_matcher : File_attribute_matcher.t
 end
 

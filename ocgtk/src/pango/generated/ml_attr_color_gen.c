@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoAttrColor (opaque record with hidden fields) */
 PangoAttrColor *PangoAttrColor_val(value v) {
-  return *(PangoAttrColor **)Data_custom_val(v);
+  return (PangoAttrColor *)ml_gir_record_ptr_val(v, "PangoAttrColor");
 }
 
 value Val_PangoAttrColor(const PangoAttrColor *ptr) {

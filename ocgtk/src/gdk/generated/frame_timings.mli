@@ -14,11 +14,6 @@ type t = [ `frame_timings ] Gobject.obj
 
 (* Methods *)
 
-external unref : t -> unit = "ml_gdk_frame_timings_unref"
-(** Decreases the reference count of @timings.
-
-If @timings is no longer referenced, it will be freed. *)
-
 external ref : t -> t = "ml_gdk_frame_timings_ref"
 (** Increases the reference count of @timings. *)
 

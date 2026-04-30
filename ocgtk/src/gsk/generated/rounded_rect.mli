@@ -59,12 +59,6 @@ external init_from_rect :
 (** Initializes @self to the given @bounds and sets the radius
 of all four corners to @radius. *)
 
-external init_copy : t -> t -> t = "ml_gsk_rounded_rect_init_copy"
-(** Initializes @self using the given @src rectangle.
-
-This function will not normalize the `GskRoundedRect`,
-so make sure the source is normalized. *)
-
 external init :
   t ->
   Ocgtk_graphene.Graphene.Wrappers.Rect.t ->

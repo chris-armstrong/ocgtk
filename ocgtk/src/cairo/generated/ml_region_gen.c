@@ -17,12 +17,12 @@
 
 /* Conversion functions for cairo_region_t (opaque record with hidden fields) */
 cairo_region_t *cairo_region_t_val(value v) {
-  return *(cairo_region_t **)Data_custom_val(v);
+  return (cairo_region_t *)ml_gir_record_ptr_val(v, "cairo_region_t");
 }
 
 value Val_cairo_region_t(const cairo_region_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(cairo_gobject_region_get_type(), ptr);
 }
 
 value Val_cairo_region_t_option(const cairo_region_t *ptr) {

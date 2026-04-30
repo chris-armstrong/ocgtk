@@ -1,6 +1,4 @@
 class type tab_array_t = object
-  method copy : unit -> Tab_array.t
-  method free : unit -> unit
   method get_decimal_point : int -> int
   method get_positions_in_pixels : unit -> bool
   method get_size : unit -> int
@@ -16,9 +14,6 @@ end
 (* High-level class for TabArray *)
 class tab_array (obj : Tab_array.t) : tab_array_t =
   object (self)
-    method copy : unit -> Tab_array.t = fun () -> Tab_array.copy obj
-    method free : unit -> unit = fun () -> Tab_array.free obj
-
     method get_decimal_point : int -> int =
       fun tab_index -> Tab_array.get_decimal_point obj tab_index
 

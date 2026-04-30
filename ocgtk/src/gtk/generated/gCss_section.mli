@@ -5,7 +5,6 @@ class type css_section_t = object
   method get_start_location : unit -> Css_location.t
   method ref : unit -> Css_section.t
   method to_string : unit -> string
-  method unref : unit -> unit
   method as_css_section : Css_section.t
 end
 

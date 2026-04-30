@@ -26,12 +26,12 @@
 #if GLIB_CHECK_VERSION(2,32,0)
 /* Conversion functions for GSettingsSchema (opaque record with hidden fields) */
 GSettingsSchema *GSettingsSchema_val(value v) {
-  return *(GSettingsSchema **)Data_custom_val(v);
+  return (GSettingsSchema *)ml_gir_record_ptr_val(v, "GSettingsSchema");
 }
 
 value Val_GSettingsSchema(const GSettingsSchema *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_settings_schema_get_type(), ptr);
 }
 
 value Val_GSettingsSchema_option(const GSettingsSchema *ptr) {
@@ -42,14 +42,6 @@ value Val_GSettingsSchema_option(const GSettingsSchema *ptr) {
 
 #if GLIB_CHECK_VERSION(2,32,0)
 
-
-CAMLexport CAMLprim value ml_g_settings_schema_unref(value self)
-{
-CAMLparam1(self);
-
-g_settings_schema_unref(GSettingsSchema_val(self));
-CAMLreturn(Val_unit);
-}
 
 CAMLexport CAMLprim value ml_g_settings_schema_ref(value self)
 {
@@ -243,15 +235,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_settings_schema_ref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SettingsSchema requires GLib >= 2.32");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_settings_schema_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

@@ -208,7 +208,6 @@ and text_iter_t = object
   method backward_word_starts : int -> bool
   method can_insert : bool -> bool
   method compare : Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> int
-  method copy : unit -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t
   method editable : bool -> bool
   method ends_line : unit -> bool
   method ends_sentence : unit -> bool
@@ -234,7 +233,6 @@ and text_iter_t = object
   method forward_visible_word_ends : int -> bool
   method forward_word_end : unit -> bool
   method forward_word_ends : int -> bool
-  method free : unit -> unit
   method get_buffer : unit -> text_buffer_t
   method get_bytes_in_line : unit -> int
   method get_char : unit -> int
@@ -809,10 +807,6 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) :
       fun rhs ->
         Text_buffer_and__text_iter_and__text_mark.Text_iter.compare obj rhs
 
-    method copy : unit -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t
-        =
-      fun () -> Text_buffer_and__text_iter_and__text_mark.Text_iter.copy obj
-
     method editable : bool -> bool =
       fun default_setting ->
         Text_buffer_and__text_iter_and__text_mark.Text_iter.editable obj
@@ -931,9 +925,6 @@ and text_iter (obj : Text_buffer_and__text_iter_and__text_mark.Text_iter.t) :
       fun count ->
         Text_buffer_and__text_iter_and__text_mark.Text_iter.forward_word_ends
           obj count
-
-    method free : unit -> unit =
-      fun () -> Text_buffer_and__text_iter_and__text_mark.Text_iter.free obj
 
     method get_buffer : unit -> text_buffer_t =
       fun () ->

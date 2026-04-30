@@ -26,7 +26,7 @@
 #if GLIB_CHECK_VERSION(2,22,0)
 /* Conversion functions for GInputVector (opaque record with hidden fields) */
 GInputVector *GInputVector_val(value v) {
-  return *(GInputVector **)Data_custom_val(v);
+  return (GInputVector *)ml_gir_record_ptr_val(v, "GInputVector");
 }
 
 value Val_GInputVector(const GInputVector *ptr) {

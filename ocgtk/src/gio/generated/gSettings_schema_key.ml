@@ -7,7 +7,6 @@ class type settings_schema_key_t = object
   method get_value_type : unit -> Gvariant_type.t
   method range_check : Gvariant.t -> bool
   method ref : unit -> Settings_schema_key.t
-  method unref : unit -> unit
   method as_settings_schema_key : Settings_schema_key.t
 end
 
@@ -39,6 +38,5 @@ class settings_schema_key (obj : Settings_schema_key.t) : settings_schema_key_t
     method ref : unit -> Settings_schema_key.t =
       fun () -> Settings_schema_key.ref obj
 
-    method unref : unit -> unit = fun () -> Settings_schema_key.unref obj
     method as_settings_schema_key = obj
   end

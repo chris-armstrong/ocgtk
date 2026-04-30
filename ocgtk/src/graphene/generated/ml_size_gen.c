@@ -18,12 +18,12 @@
 #if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 /* Conversion functions for graphene_size_t (opaque record with hidden fields) */
 graphene_size_t *graphene_size_t_val(value v) {
-  return *(graphene_size_t **)Data_custom_val(v);
+  return (graphene_size_t *)ml_gir_record_ptr_val(v, "graphene_size_t");
 }
 
 value Val_graphene_size_t(const graphene_size_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(graphene_size_get_type(), ptr);
 }
 
 value Val_graphene_size_t_option(const graphene_size_t *ptr) {
@@ -77,14 +77,6 @@ graphene_size_t* result = graphene_size_init(graphene_size_t_val(self), Double_v
 CAMLreturn(Val_graphene_size_t(result));
 }
 
-CAMLexport CAMLprim value ml_graphene_size_free(value self)
-{
-CAMLparam1(self);
-
-graphene_size_free(graphene_size_t_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_graphene_size_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -110,15 +102,6 @@ CAMLexport CAMLprim value ml_graphene_size_equal(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("Size requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_size_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Size requires Graphene >= 1.0");
 return Val_unit;
 }

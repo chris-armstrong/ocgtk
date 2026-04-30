@@ -17,12 +17,12 @@
 
 /* Conversion functions for GdkRectangle (opaque record with hidden fields) */
 GdkRectangle *GdkRectangle_val(value v) {
-  return *(GdkRectangle **)Data_custom_val(v);
+  return (GdkRectangle *)ml_gir_record_ptr_val(v, "GdkRectangle");
 }
 
 value Val_GdkRectangle(const GdkRectangle *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gdk_rectangle_get_type(), ptr);
 }
 
 value Val_GdkRectangle_option(const GdkRectangle *ptr) {

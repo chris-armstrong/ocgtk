@@ -18,12 +18,12 @@
 
 /* Conversion functions for GtkBitsetIter (opaque record with hidden fields) */
 GtkBitsetIter *GtkBitsetIter_val(value v) {
-  return *(GtkBitsetIter **)Data_custom_val(v);
+  return (GtkBitsetIter *)ml_gir_record_ptr_val(v, "GtkBitsetIter");
 }
 
 value Val_GtkBitsetIter(const GtkBitsetIter *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gtk_bitset_iter_get_type(), ptr);
 }
 
 value Val_GtkBitsetIter_option(const GtkBitsetIter *ptr) {

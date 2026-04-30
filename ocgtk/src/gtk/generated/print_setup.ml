@@ -16,12 +16,6 @@ type t = [ `print_setup ] Gobject.obj
 
 (* Methods *)
 
-external unref : t -> unit = "ml_gtk_print_setup_unref"
-(** Decrease the reference count of @setup.
-
-If the reference count reaches zero,
-the object is freed. *)
-
 external ref : t -> t = "ml_gtk_print_setup_ref"
 (** Increase the reference count of @setup. *)
 

@@ -17,12 +17,12 @@
 
 /* Conversion functions for GskShaderArgsBuilder (opaque record with hidden fields) */
 GskShaderArgsBuilder *GskShaderArgsBuilder_val(value v) {
-  return *(GskShaderArgsBuilder **)Data_custom_val(v);
+  return (GskShaderArgsBuilder *)ml_gir_record_ptr_val(v, "GskShaderArgsBuilder");
 }
 
 value Val_GskShaderArgsBuilder(const GskShaderArgsBuilder *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gsk_shader_args_builder_get_type(), ptr);
 }
 
 value Val_GskShaderArgsBuilder_option(const GskShaderArgsBuilder *ptr) {
@@ -39,14 +39,6 @@ GskShaderArgsBuilder *obj = gsk_shader_args_builder_new(GskGLShader_val(arg1), O
 
 CAMLreturn(Val_GskShaderArgsBuilder(obj));
 }
-CAMLexport CAMLprim value ml_gsk_shader_args_builder_unref(value self)
-{
-CAMLparam1(self);
-
-gsk_shader_args_builder_unref(GskShaderArgsBuilder_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gsk_shader_args_builder_to_args(value self)
 {
 CAMLparam1(self);

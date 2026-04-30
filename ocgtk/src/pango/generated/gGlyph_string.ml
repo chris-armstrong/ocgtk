@@ -1,6 +1,4 @@
 class type glyph_string_t = object
-  method copy : unit -> Glyph_string.t option
-  method free : unit -> unit
   method get_width : unit -> int
   method set_size : int -> unit
   method as_glyph_string : Glyph_string.t
@@ -9,10 +7,6 @@ end
 (* High-level class for GlyphString *)
 class glyph_string (obj : Glyph_string.t) : glyph_string_t =
   object (self)
-    method copy : unit -> Glyph_string.t option =
-      fun () -> Glyph_string.copy obj
-
-    method free : unit -> unit = fun () -> Glyph_string.free obj
     method get_width : unit -> int = fun () -> Glyph_string.get_width obj
 
     method set_size : int -> unit =

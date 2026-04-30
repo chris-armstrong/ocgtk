@@ -17,12 +17,12 @@
 
 /* Conversion functions for GdkFrameTimings (opaque record with hidden fields) */
 GdkFrameTimings *GdkFrameTimings_val(value v) {
-  return *(GdkFrameTimings **)Data_custom_val(v);
+  return (GdkFrameTimings *)ml_gir_record_ptr_val(v, "GdkFrameTimings");
 }
 
 value Val_GdkFrameTimings(const GdkFrameTimings *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gdk_frame_timings_get_type(), ptr);
 }
 
 value Val_GdkFrameTimings_option(const GdkFrameTimings *ptr) {
@@ -30,14 +30,6 @@ value Val_GdkFrameTimings_option(const GdkFrameTimings *ptr) {
   return Val_some(Val_GdkFrameTimings(ptr));
 }
 
-
-CAMLexport CAMLprim value ml_gdk_frame_timings_unref(value self)
-{
-CAMLparam1(self);
-
-gdk_frame_timings_unref(GdkFrameTimings_val(self));
-CAMLreturn(Val_unit);
-}
 
 CAMLexport CAMLprim value ml_gdk_frame_timings_ref(value self)
 {

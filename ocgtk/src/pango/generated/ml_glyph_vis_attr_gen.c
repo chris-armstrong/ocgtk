@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoGlyphVisAttr (opaque record with hidden fields) */
 PangoGlyphVisAttr *PangoGlyphVisAttr_val(value v) {
-  return *(PangoGlyphVisAttr **)Data_custom_val(v);
+  return (PangoGlyphVisAttr *)ml_gir_record_ptr_val(v, "PangoGlyphVisAttr");
 }
 
 value Val_PangoGlyphVisAttr(const PangoGlyphVisAttr *ptr) {

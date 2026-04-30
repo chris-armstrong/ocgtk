@@ -21,7 +21,7 @@ value copy_GtkRequisition(const GtkRequisition *ptr)
 {
   if (ptr == NULL) return Val_none;
   GtkRequisition *copy = gtk_requisition_copy((GtkRequisition*)ptr);
-  return ml_gir_record_val_ptr(copy);
+  return ml_gir_record_val_ptr_with_type(gtk_requisition_get_type(), copy);
 }
 
 
@@ -32,19 +32,4 @@ CAMLparam1(unit);
 GtkRequisition *obj = gtk_requisition_new();
 
 CAMLreturn(Val_GtkRequisition(obj));
-}
-CAMLexport CAMLprim value ml_gtk_requisition_free(value self)
-{
-CAMLparam1(self);
-
-gtk_requisition_free(GtkRequisition_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_requisition_copy(value self)
-{
-CAMLparam1(self);
-
-GtkRequisition* result = gtk_requisition_copy(GtkRequisition_val(self));
-CAMLreturn(Val_GtkRequisition(result));
 }

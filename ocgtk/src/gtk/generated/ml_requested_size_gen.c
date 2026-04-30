@@ -18,7 +18,7 @@
 
 /* Conversion functions for GtkRequestedSize (opaque record with hidden fields) */
 GtkRequestedSize *GtkRequestedSize_val(value v) {
-  return *(GtkRequestedSize **)Data_custom_val(v);
+  return (GtkRequestedSize *)ml_gir_record_ptr_val(v, "GtkRequestedSize");
 }
 
 value Val_GtkRequestedSize(const GtkRequestedSize *ptr) {

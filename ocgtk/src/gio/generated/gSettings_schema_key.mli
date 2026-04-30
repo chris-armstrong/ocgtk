@@ -7,7 +7,6 @@ class type settings_schema_key_t = object
   method get_value_type : unit -> Gvariant_type.t
   method range_check : Gvariant.t -> bool
   method ref : unit -> Settings_schema_key.t
-  method unref : unit -> unit
   method as_settings_schema_key : Settings_schema_key.t
 end
 

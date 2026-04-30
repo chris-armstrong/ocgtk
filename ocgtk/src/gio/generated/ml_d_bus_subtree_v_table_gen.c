@@ -26,7 +26,7 @@
 #if GLIB_CHECK_VERSION(2,26,0)
 /* Conversion functions for GDBusSubtreeVTable (opaque record with hidden fields) */
 GDBusSubtreeVTable *GDBusSubtreeVTable_val(value v) {
-  return *(GDBusSubtreeVTable **)Data_custom_val(v);
+  return (GDBusSubtreeVTable *)ml_gir_record_ptr_val(v, "GDBusSubtreeVTable");
 }
 
 value Val_GDBusSubtreeVTable(const GDBusSubtreeVTable *ptr) {

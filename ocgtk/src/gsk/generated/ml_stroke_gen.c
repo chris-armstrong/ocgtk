@@ -18,12 +18,12 @@
 #if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GskStroke (opaque record with hidden fields) */
 GskStroke *GskStroke_val(value v) {
-  return *(GskStroke **)Data_custom_val(v);
+  return (GskStroke *)ml_gir_record_ptr_val(v, "GskStroke");
 }
 
 value Val_GskStroke(const GskStroke *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gsk_stroke_get_type(), ptr);
 }
 
 value Val_GskStroke_option(const GskStroke *ptr) {
@@ -170,22 +170,6 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
-CAMLexport CAMLprim value ml_gsk_stroke_free(value self)
-{
-CAMLparam1(self);
-
-gsk_stroke_free(GskStroke_val(self));
-CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gsk_stroke_copy(value self)
-{
-CAMLparam1(self);
-
-GskStroke* result = gsk_stroke_copy(GskStroke_val(self));
-CAMLreturn(Val_GskStroke(result));
-}
-
 #else
 
 
@@ -193,24 +177,6 @@ CAMLexport CAMLprim value ml_gsk_stroke_new(value arg1)
 {
 CAMLparam1(arg1);
 (void)arg1;
-caml_failwith("Stroke requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_stroke_copy(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Stroke requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_stroke_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Stroke requires GTK >= 4.14");
 return Val_unit;
 }

@@ -67,9 +67,3 @@ external init_end : t -> Glyph_item.t -> string -> bool
     a glyph item.
 
     See `PangoGlyphItemIter` for details of cluster orders. *)
-
-external free : t -> unit = "ml_pango_glyph_item_iter_free"
-(** Frees a `PangoGlyphItem`Iter. *)
-
-external copy : t -> t option = "ml_pango_glyph_item_iter_copy"
-(** Make a shallow copy of an existing `PangoGlyphItemIter` structure. *)

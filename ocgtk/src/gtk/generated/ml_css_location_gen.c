@@ -18,7 +18,7 @@
 
 /* Conversion functions for GtkCssLocation (opaque record with hidden fields) */
 GtkCssLocation *GtkCssLocation_val(value v) {
-  return *(GtkCssLocation **)Data_custom_val(v);
+  return (GtkCssLocation *)ml_gir_record_ptr_val(v, "GtkCssLocation");
 }
 
 value Val_GtkCssLocation(const GtkCssLocation *ptr) {

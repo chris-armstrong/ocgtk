@@ -26,7 +26,7 @@
 #if GLIB_CHECK_VERSION(2,26,0)
 /* Conversion functions for GDBusErrorEntry (opaque record with hidden fields) */
 GDBusErrorEntry *GDBusErrorEntry_val(value v) {
-  return *(GDBusErrorEntry **)Data_custom_val(v);
+  return (GDBusErrorEntry *)ml_gir_record_ptr_val(v, "GDBusErrorEntry");
 }
 
 value Val_GDBusErrorEntry(const GDBusErrorEntry *ptr) {

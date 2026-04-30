@@ -43,11 +43,5 @@ external get_fs_type : t -> string = "ml_g_unix_mount_point_get_fs_type"
 external get_device_path : t -> string = "ml_g_unix_mount_point_get_device_path"
 (** Gets the device path for a unix mount point. *)
 
-external free : t -> unit = "ml_g_unix_mount_point_free"
-(** Frees a unix mount point. *)
-
-external copy : t -> t = "ml_g_unix_mount_point_copy"
-(** Makes a copy of @mount_point. *)
-
 external compare : t -> t -> int = "ml_g_unix_mount_point_compare"
 (** Compares two unix mount points. *)

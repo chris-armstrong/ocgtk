@@ -43,9 +43,3 @@ external get_hostname : t -> string = "ml_g_srv_target_get_hostname"
 this to the user, you should use g_hostname_is_ascii_encoded() to
 check if it contains encoded Unicode segments, and use
 g_hostname_to_unicode() to convert it if it does.) *)
-
-external free : t -> unit = "ml_g_srv_target_free"
-(** Frees @target *)
-
-external copy : t -> t = "ml_g_srv_target_copy"
-(** Copies @target *)

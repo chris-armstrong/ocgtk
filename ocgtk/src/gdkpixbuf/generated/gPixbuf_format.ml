@@ -1,6 +1,4 @@
 class type pixbuf_format_t = object
-  method copy : unit -> Pixbuf_format.t
-  method free : unit -> unit
   method get_description : unit -> string
   method get_extensions : unit -> string array
   method get_license : unit -> string
@@ -17,9 +15,6 @@ end
 (* High-level class for PixbufFormat *)
 class pixbuf_format (obj : Pixbuf_format.t) : pixbuf_format_t =
   object (self)
-    method copy : unit -> Pixbuf_format.t = fun () -> Pixbuf_format.copy obj
-    method free : unit -> unit = fun () -> Pixbuf_format.free obj
-
     method get_description : unit -> string =
       fun () -> Pixbuf_format.get_description obj
 

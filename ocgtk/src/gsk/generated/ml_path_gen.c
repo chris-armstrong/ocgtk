@@ -18,12 +18,12 @@
 #if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GskPath (opaque record with hidden fields) */
 GskPath *GskPath_val(value v) {
-  return *(GskPath **)Data_custom_val(v);
+  return (GskPath *)ml_gir_record_ptr_val(v, "GskPath");
 }
 
 value Val_GskPath(const GskPath *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gsk_path_get_type(), ptr);
 }
 
 value Val_GskPath_option(const GskPath *ptr) {
@@ -34,14 +34,6 @@ value Val_GskPath_option(const GskPath *ptr) {
 
 #if GTK_CHECK_VERSION(4,14,0)
 
-
-CAMLexport CAMLprim value ml_gsk_path_unref(value self)
-{
-CAMLparam1(self);
-
-gsk_path_unref(GskPath_val(self));
-CAMLreturn(Val_unit);
-}
 
 CAMLexport CAMLprim value ml_gsk_path_to_string(value self)
 {
@@ -258,15 +250,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_gsk_path_to_string(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Path requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_path_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

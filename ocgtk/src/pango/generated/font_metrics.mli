@@ -18,11 +18,6 @@ type t = [ `font_metrics ] Gobject.obj
 
 (* Methods *)
 
-external unref : t -> unit = "ml_pango_font_metrics_unref"
-(** Decrease the reference count of a font metrics structure by one.
-
-    If the result is zero, frees the structure and any associated memory. *)
-
 external ref : t -> t option = "ml_pango_font_metrics_ref"
 (** Increase the reference count of a font metrics structure by one. *)
 

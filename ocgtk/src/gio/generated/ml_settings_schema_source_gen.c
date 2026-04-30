@@ -26,12 +26,12 @@
 #if GLIB_CHECK_VERSION(2,32,0)
 /* Conversion functions for GSettingsSchemaSource (opaque record with hidden fields) */
 GSettingsSchemaSource *GSettingsSchemaSource_val(value v) {
-  return *(GSettingsSchemaSource **)Data_custom_val(v);
+  return (GSettingsSchemaSource *)ml_gir_record_ptr_val(v, "GSettingsSchemaSource");
 }
 
 value Val_GSettingsSchemaSource(const GSettingsSchemaSource *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_settings_schema_source_get_type(), ptr);
 }
 
 value Val_GSettingsSchemaSource_option(const GSettingsSchemaSource *ptr) {
@@ -52,14 +52,6 @@ GSettingsSchemaSource *obj = g_settings_schema_source_new_from_directory(String_
 
 if (error == NULL) CAMLreturn(Res_Ok(Val_GSettingsSchemaSource(obj))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
-CAMLexport CAMLprim value ml_g_settings_schema_source_unref(value self)
-{
-CAMLparam1(self);
-
-g_settings_schema_source_unref(GSettingsSchemaSource_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_g_settings_schema_source_ref(value self)
 {
 CAMLparam1(self);
@@ -102,15 +94,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_settings_schema_source_ref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("SettingsSchemaSource requires GLib >= 2.32");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_settings_schema_source_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

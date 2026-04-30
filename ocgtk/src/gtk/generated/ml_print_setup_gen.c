@@ -19,12 +19,12 @@
 #if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GtkPrintSetup (opaque record with hidden fields) */
 GtkPrintSetup *GtkPrintSetup_val(value v) {
-  return *(GtkPrintSetup **)Data_custom_val(v);
+  return (GtkPrintSetup *)ml_gir_record_ptr_val(v, "GtkPrintSetup");
 }
 
 value Val_GtkPrintSetup(const GtkPrintSetup *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gtk_print_setup_get_type(), ptr);
 }
 
 value Val_GtkPrintSetup_option(const GtkPrintSetup *ptr) {
@@ -35,14 +35,6 @@ value Val_GtkPrintSetup_option(const GtkPrintSetup *ptr) {
 
 #if GTK_CHECK_VERSION(4,14,0)
 
-
-CAMLexport CAMLprim value ml_gtk_print_setup_unref(value self)
-{
-CAMLparam1(self);
-
-gtk_print_setup_unref(GtkPrintSetup_val(self));
-CAMLreturn(Val_unit);
-}
 
 CAMLexport CAMLprim value ml_gtk_print_setup_ref(value self)
 {
@@ -92,15 +84,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_gtk_print_setup_ref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PrintSetup requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gtk_print_setup_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

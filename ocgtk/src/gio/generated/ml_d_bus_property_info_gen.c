@@ -26,12 +26,12 @@
 #if GLIB_CHECK_VERSION(2,26,0)
 /* Conversion functions for GDBusPropertyInfo (opaque record with hidden fields) */
 GDBusPropertyInfo *GDBusPropertyInfo_val(value v) {
-  return *(GDBusPropertyInfo **)Data_custom_val(v);
+  return (GDBusPropertyInfo *)ml_gir_record_ptr_val(v, "GDBusPropertyInfo");
 }
 
 value Val_GDBusPropertyInfo(const GDBusPropertyInfo *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(g_dbus_property_info_get_type(), ptr);
 }
 
 value Val_GDBusPropertyInfo_option(const GDBusPropertyInfo *ptr) {
@@ -42,14 +42,6 @@ value Val_GDBusPropertyInfo_option(const GDBusPropertyInfo *ptr) {
 
 #if GLIB_CHECK_VERSION(2,26,0)
 
-
-CAMLexport CAMLprim value ml_g_dbus_property_info_unref(value self)
-{
-CAMLparam1(self);
-
-g_dbus_property_info_unref(GDBusPropertyInfo_val(self));
-CAMLreturn(Val_unit);
-}
 
 CAMLexport CAMLprim value ml_g_dbus_property_info_ref(value self)
 {
@@ -63,15 +55,6 @@ CAMLreturn(Val_GDBusPropertyInfo(result));
 
 
 CAMLexport CAMLprim value ml_g_dbus_property_info_ref(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusPropertyInfo requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_dbus_property_info_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

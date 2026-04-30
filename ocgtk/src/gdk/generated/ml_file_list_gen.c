@@ -18,12 +18,12 @@
 #if GTK_CHECK_VERSION(4,6,0)
 /* Conversion functions for GdkFileList (opaque record with hidden fields) */
 GdkFileList *GdkFileList_val(value v) {
-  return *(GdkFileList **)Data_custom_val(v);
+  return (GdkFileList *)ml_gir_record_ptr_val(v, "GdkFileList");
 }
 
 value Val_GdkFileList(const GdkFileList *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gdk_file_list_get_type(), ptr);
 }
 
 value Val_GdkFileList_option(const GdkFileList *ptr) {

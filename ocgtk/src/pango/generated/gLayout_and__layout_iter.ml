@@ -64,8 +64,6 @@ end
 
 and layout_iter_t = object
   method at_last_line : unit -> bool
-  method copy : unit -> Layout_and__layout_iter.Layout_iter.t option
-  method free : unit -> unit
   method get_baseline : unit -> int
   method get_index : unit -> int
   method get_layout : unit -> layout_t option
@@ -251,12 +249,6 @@ and layout_iter (obj : Layout_and__layout_iter.Layout_iter.t) : layout_iter_t =
   object (self)
     method at_last_line : unit -> bool =
       fun () -> Layout_and__layout_iter.Layout_iter.at_last_line obj
-
-    method copy : unit -> Layout_and__layout_iter.Layout_iter.t option =
-      fun () -> Layout_and__layout_iter.Layout_iter.copy obj
-
-    method free : unit -> unit =
-      fun () -> Layout_and__layout_iter.Layout_iter.free obj
 
     method get_baseline : unit -> int =
       fun () -> Layout_and__layout_iter.Layout_iter.get_baseline obj

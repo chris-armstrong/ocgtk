@@ -27,9 +27,6 @@ external init : t -> Point.t -> Point.t -> Point.t -> Point.t -> t
 external get_point : t -> int -> Point.t = "ml_graphene_quad_get_point"
 (** Retrieves the point of a #graphene_quad_t at the given index. *)
 
-external free : t -> unit = "ml_graphene_quad_free"
-(** Frees the resources allocated by graphene_quad_alloc() *)
-
 external contains : t -> Point.t -> bool = "ml_graphene_quad_contains"
 (** Checks if the given #graphene_quad_t contains the given #graphene_point_t.
 *)

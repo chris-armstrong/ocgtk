@@ -8,7 +8,6 @@ class type attribute_t = object
   method as_shape : unit -> Attr_shape.t option
   method as_size : unit -> Attr_size.t option
   method as_string : unit -> Attr_string.t option
-  method copy : unit -> Attribute.t
   method destroy : unit -> unit
   method equal : Attribute.t -> bool
   method init : Attr_class.t -> unit

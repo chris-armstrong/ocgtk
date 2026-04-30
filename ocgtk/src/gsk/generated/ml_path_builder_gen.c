@@ -18,12 +18,12 @@
 #if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GskPathBuilder (opaque record with hidden fields) */
 GskPathBuilder *GskPathBuilder_val(value v) {
-  return *(GskPathBuilder **)Data_custom_val(v);
+  return (GskPathBuilder *)ml_gir_record_ptr_val(v, "GskPathBuilder");
 }
 
 value Val_GskPathBuilder(const GskPathBuilder *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gsk_path_builder_get_type(), ptr);
 }
 
 value Val_GskPathBuilder_option(const GskPathBuilder *ptr) {
@@ -43,14 +43,6 @@ GskPathBuilder *obj = gsk_path_builder_new();
 
 CAMLreturn(Val_GskPathBuilder(obj));
 }
-CAMLexport CAMLprim value ml_gsk_path_builder_unref(value self)
-{
-CAMLparam1(self);
-
-gsk_path_builder_unref(GskPathBuilder_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gsk_path_builder_to_path(value self)
 {
 CAMLparam1(self);
@@ -652,15 +644,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_gsk_path_builder_to_path(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("PathBuilder requires GTK >= 4.14");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_gsk_path_builder_unref(value self)
 {
 CAMLparam1(self);
 (void)self;

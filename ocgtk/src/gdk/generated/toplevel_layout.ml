@@ -16,9 +16,6 @@ external new_ : unit -> t = "ml_gdk_toplevel_layout_new"
 
 (* Methods *)
 
-external unref : t -> unit = "ml_gdk_toplevel_layout_unref"
-(** Decreases the reference count of @layout. *)
-
 external set_resizable : t -> bool -> unit
   = "ml_gdk_toplevel_layout_set_resizable"
 (** Sets whether the layout should allow the user to resize the surface after it
@@ -60,6 +57,3 @@ fullscreen, or %FALSE, if it should go unfullscreen. *)
 
 external equal : t -> t -> bool = "ml_gdk_toplevel_layout_equal"
 (** Check whether @layout and @other has identical layout properties. *)
-
-external copy : t -> t = "ml_gdk_toplevel_layout_copy"
-(** Create a new `GdkToplevelLayout` and copy the contents of @layout into it. *)

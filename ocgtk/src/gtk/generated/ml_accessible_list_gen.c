@@ -19,12 +19,12 @@
 #if GTK_CHECK_VERSION(4,14,0)
 /* Conversion functions for GtkAccessibleList (opaque record with hidden fields) */
 GtkAccessibleList *GtkAccessibleList_val(value v) {
-  return *(GtkAccessibleList **)Data_custom_val(v);
+  return (GtkAccessibleList *)ml_gir_record_ptr_val(v, "GtkAccessibleList");
 }
 
 value Val_GtkAccessibleList(const GtkAccessibleList *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gtk_accessible_list_get_type(), ptr);
 }
 
 value Val_GtkAccessibleList_option(const GtkAccessibleList *ptr) {

@@ -18,12 +18,12 @@
 
 /* Conversion functions for GtkTreePath (opaque record with hidden fields) */
 GtkTreePath *GtkTreePath_val(value v) {
-  return *(GtkTreePath **)Data_custom_val(v);
+  return (GtkTreePath *)ml_gir_record_ptr_val(v, "GtkTreePath");
 }
 
 value Val_GtkTreePath(const GtkTreePath *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(gtk_tree_path_get_type(), ptr);
 }
 
 value Val_GtkTreePath_option(const GtkTreePath *ptr) {
@@ -153,28 +153,12 @@ int result = gtk_tree_path_get_depth(GtkTreePath_val(self));
 CAMLreturn(Val_int(result));
 }
 
-CAMLexport CAMLprim value ml_gtk_tree_path_free(value self)
-{
-CAMLparam1(self);
-
-gtk_tree_path_free(GtkTreePath_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_gtk_tree_path_down(value self)
 {
 CAMLparam1(self);
 
 gtk_tree_path_down(GtkTreePath_val(self));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_tree_path_copy(value self)
-{
-CAMLparam1(self);
-
-GtkTreePath* result = gtk_tree_path_copy(GtkTreePath_val(self));
-CAMLreturn(Val_GtkTreePath(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_tree_path_compare(value self, value arg1)

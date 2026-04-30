@@ -18,12 +18,12 @@
 #if GRAPHENE_VERSION >= GRAPHENE_ENCODE_VERSION(1,0,0)
 /* Conversion functions for graphene_quad_t (opaque record with hidden fields) */
 graphene_quad_t *graphene_quad_t_val(value v) {
-  return *(graphene_quad_t **)Data_custom_val(v);
+  return (graphene_quad_t *)ml_gir_record_ptr_val(v, "graphene_quad_t");
 }
 
 value Val_graphene_quad_t(const graphene_quad_t *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(graphene_quad_get_type(), ptr);
 }
 
 value Val_graphene_quad_t_option(const graphene_quad_t *ptr) {
@@ -95,14 +95,6 @@ const graphene_point_t* result = graphene_quad_get_point(graphene_quad_t_val(sel
 CAMLreturn(Val_graphene_point_t(result));
 }
 
-CAMLexport CAMLprim value ml_graphene_quad_free(value self)
-{
-CAMLparam1(self);
-
-graphene_quad_free(graphene_quad_t_val(self));
-CAMLreturn(Val_unit);
-}
-
 CAMLexport CAMLprim value ml_graphene_quad_contains(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -146,15 +138,6 @@ CAMLexport CAMLprim value ml_graphene_quad_contains(value self, value arg1)
 CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
-caml_failwith("Quad requires Graphene >= 1.0");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_graphene_quad_free(value self)
-{
-CAMLparam1(self);
-(void)self;
 caml_failwith("Quad requires Graphene >= 1.0");
 return Val_unit;
 }

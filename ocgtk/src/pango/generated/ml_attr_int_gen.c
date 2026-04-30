@@ -17,7 +17,7 @@
 
 /* Conversion functions for PangoAttrInt (opaque record with hidden fields) */
 PangoAttrInt *PangoAttrInt_val(value v) {
-  return *(PangoAttrInt **)Data_custom_val(v);
+  return (PangoAttrInt *)ml_gir_record_ptr_val(v, "PangoAttrInt");
 }
 
 value Val_PangoAttrInt(const PangoAttrInt *ptr) {

@@ -17,12 +17,12 @@
 
 /* Conversion functions for PangoAttrIterator (opaque record with hidden fields) */
 PangoAttrIterator *PangoAttrIterator_val(value v) {
-  return *(PangoAttrIterator **)Data_custom_val(v);
+  return (PangoAttrIterator *)ml_gir_record_ptr_val(v, "PangoAttrIterator");
 }
 
 value Val_PangoAttrIterator(const PangoAttrIterator *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(pango_attr_iterator_get_type(), ptr);
 }
 
 value Val_PangoAttrIterator_option(const PangoAttrIterator *ptr) {
@@ -91,12 +91,4 @@ CAMLparam1(self);
 
 pango_attr_iterator_destroy(PangoAttrIterator_val(self));
 CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_pango_attr_iterator_copy(value self)
-{
-CAMLparam1(self);
-
-PangoAttrIterator* result = pango_attr_iterator_copy(PangoAttrIterator_val(self));
-CAMLreturn(Val_PangoAttrIterator(result));
 }

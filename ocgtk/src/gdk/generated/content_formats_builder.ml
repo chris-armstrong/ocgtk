@@ -10,9 +10,6 @@ external new_ : unit -> t = "ml_gdk_content_formats_builder_new"
 
 (* Methods *)
 
-external unref : t -> unit = "ml_gdk_content_formats_builder_unref"
-(** Releases a reference on the given @builder. *)
-
 external to_formats : t -> Content_formats.t
   = "ml_gdk_content_formats_builder_to_formats"
 (** Creates a new `GdkContentFormats` from the given @builder.

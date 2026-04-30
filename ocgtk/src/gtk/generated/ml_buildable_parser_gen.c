@@ -18,7 +18,7 @@
 
 /* Conversion functions for GtkBuildableParser (opaque record with hidden fields) */
 GtkBuildableParser *GtkBuildableParser_val(value v) {
-  return *(GtkBuildableParser **)Data_custom_val(v);
+  return (GtkBuildableParser *)ml_gir_record_ptr_val(v, "GtkBuildableParser");
 }
 
 value Val_GtkBuildableParser(const GtkBuildableParser *ptr) {

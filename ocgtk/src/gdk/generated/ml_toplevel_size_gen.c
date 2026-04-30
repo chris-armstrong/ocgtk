@@ -17,7 +17,7 @@
 
 /* Conversion functions for GdkToplevelSize (opaque record with hidden fields) */
 GdkToplevelSize *GdkToplevelSize_val(value v) {
-  return *(GdkToplevelSize **)Data_custom_val(v);
+  return (GdkToplevelSize *)ml_gir_record_ptr_val(v, "GdkToplevelSize");
 }
 
 value Val_GdkToplevelSize(const GdkToplevelSize *ptr) {

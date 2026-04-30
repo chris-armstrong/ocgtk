@@ -17,12 +17,12 @@
 
 /* Conversion functions for PangoAttrList (opaque record with hidden fields) */
 PangoAttrList *PangoAttrList_val(value v) {
-  return *(PangoAttrList **)Data_custom_val(v);
+  return (PangoAttrList *)ml_gir_record_ptr_val(v, "PangoAttrList");
 }
 
 value Val_PangoAttrList(const PangoAttrList *ptr) {
   if (ptr == NULL) return Val_none;
-  return ml_gir_record_val_ptr(ptr);
+  return ml_gir_record_val_ptr_with_type(pango_attr_list_get_type(), ptr);
 }
 
 value Val_PangoAttrList_option(const PangoAttrList *ptr) {
@@ -62,14 +62,6 @@ caml_failwith("AttrList requires Pango >= 1.44");
 return Val_unit;
 }
 #endif
-
-CAMLexport CAMLprim value ml_pango_attr_list_unref(value self)
-{
-CAMLparam1(self);
-
-pango_attr_list_unref(PangoAttrList_val(self));
-CAMLreturn(Val_unit);
-}
 
 #if PANGO_VERSION_CHECK(1,50,0)
 
@@ -190,14 +182,6 @@ caml_failwith("AttrList requires Pango >= 1.46");
 return Val_unit;
 }
 #endif
-
-CAMLexport CAMLprim value ml_pango_attr_list_copy(value self)
-{
-CAMLparam1(self);
-
-PangoAttrList* result = pango_attr_list_copy(PangoAttrList_val(self));
-CAMLreturn(Val_option(result, Val_PangoAttrList));
-}
 
 CAMLexport CAMLprim value ml_pango_attr_list_change(value self, value arg1)
 {
