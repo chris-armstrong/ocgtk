@@ -47,8 +47,14 @@ carry a unique `struct custom_operations *` reachable via
 `Custom_ops_val(v)`. Treating that pointer as an authoritative kind
 discriminator — exposed via a public registry header and asserting
 accessor macros — gives every dynamic-dispatch site a fast, type-checked
-way to ask "what am I holding?" without breaking source compatibility for
-the dozens of `<X>_val` / `Val_<X>` macros already in flight.
+way to ask "what am I holding?".
+
+The per-class `<X>_val` / `Val_<X>` macros that already exist are
+generated and hand-written, used internally only — no published API
+contract constrains them. Where the registry approach lets us simplify
+or eliminate them outright, we do; we don't preserve them for their
+own sake. (Confirmed with reviewer on PR #126: "no one currently
+depends on these macros except for internal library references".)
 
 ### Goal
 
@@ -82,11 +88,6 @@ A small, additive registry layer in `ocgtk/src/common/` that:
   records" entry, deferred to Milestone 3. This plan **enables** that
   work by giving the new boxed-struct ops struct a natural home in the
   registry.
-- Migrating all of `ml_gtk.c`'s hand-written widget glue away from
-  `val_of_ext`/`ext_of_val`. We retire those helpers in a later phase
-  once nothing depends on them.
-- Removing `Val_pointer`/`Pointer_val`. They're flagged as legacy in
-  `FFI_GUIDELINES.md` already; cleanup is opportunistic, not in scope.
 
 ---
 
@@ -294,11 +295,14 @@ Migration in this phase is purely structural:
 | `gvalue_ops` | `ocgtk_gvalue_ops` |
 | `ml_custom_GClosure` | `ocgtk_gclosure_ops` |
 
-`cops->identifier` strings are **not** changed (they're load-bearing for
-the OCaml runtime's serialiser / deserialiser registry — even though we
-use the defaults, changing them is gratuitous churn). They remain
-`"ocgtk.gobject"`, `"ocgtk.gir_record"`, etc. New ones get the
-`"ocgtk.<kind>"` prefix to match.
+`cops->identifier` strings are **standardised** to a uniform
+`"ocgtk.<kind>"` scheme — `"ocgtk.gobject"`, `"ocgtk.gir_record"`,
+`"ocgtk.gvariant"`, `"ocgtk.gvariant_type"`, `"ocgtk.gbytes"`,
+`"ocgtk.gvalue"`, `"ocgtk.gclosure"`. We use the default
+serialise/deserialise hooks (no custom serialiser registered for any
+kind), so renaming is safe. (Confirmed with reviewer on PR #126:
+"these can change to be made consistent. We don't rely on them outside
+of ocgtk".)
 
 **Build/test verification**: `dune build` from repo root must pass
 unchanged. `dune test gir_gen/ && xvfb-run dune test ocgtk/` must pass
@@ -433,26 +437,45 @@ the broken pattern.
 **Build/test verification**: full build + tests; new tree-path test
 must pass.
 
-### Phase 6 — (Deferred) Wider migration off `val_of_ext`/`ext_of_val`
+### Phase 6 — Sequester `val_of_ext`/`ext_of_val` (in scope; reviewer-loosened)
 
-Tracked here for completeness; **not in scope of this plan's MR**.
+After Phase 0 + Phase 3 land, the only remaining consumers of the
+bare `val_of_ext`/`ext_of_val` are:
 
-Targets:
+1. `wrappers.c:60,71` — `Lookup_info_val` (which delegates to
+   `ext_of_val`) inside `lookup_from_c_direct`/`lookup_to_c_direct`.
+2. `ml_glib.c:297-311` — `Val_GMainLoop` / `GMainLoop_val` (private
+   helpers; only `ml_g_main_*` consume them).
 
-- `ocgtk/src/gtk/core/ml_gtk.c` `GtkWidget_val`/`Val_GtkWidget` →
-  use `ml_gobject_*_of_val` (Custom block). Risk: the hand-written
-  glue may rely on the Abstract-block layout in places we haven't
-  located. Audit before changing.
-- `ocgtk/src/common/ml_glib.c:301` GMainLoop wrap → introduce a tiny
-  custom block (no finalizer needed if we don't own the loop).
-- `ocgtk/src/gtk/core/converters.c:29` widget option → same path as
-  `ml_gtk.c`.
-- `ocgtk/src/common/wrappers.h:189-190` → delete after confirming no
-  consumer.
-- `ocgtk/src/common/wrappers.h:96-97` `Val_lookup_info`/`Lookup_info_val`
-  → can stay (read-only static tables, no GC root, no finalizer
-  needed) but document that this is the *only* sanctioned use of the
-  Abstract-block path.
+Both are translation-unit-internal subsystems. Reviewer (PR #126
+comment on line 507) confirmed these can be sequestered rather than
+left as global helpers.
+
+Concrete plan:
+
+- **Inline the lookup_info path.** Replace the `Val_lookup_info`/
+  `Lookup_info_val` macros at `wrappers.h:96-97` with two `static
+  inline` helpers in `wrappers.c` adjacent to
+  `lookup_from_c_direct`/`lookup_to_c_direct`. The `lookup_info` type
+  itself stays in `wrappers.h` (its layout is referenced by
+  generated `lookup_info[]` tables).
+- **Inline the GMainLoop path.** Make the existing `Val_GMainLoop`
+  and `GMainLoop_val` `static inline` (already `static`) in
+  `ml_glib.c` and stop calling out to `val_of_ext`/`ext_of_val`. The
+  helpers become `caml_alloc(1, Abstract_tag)` + `Field(val, 0) =
+  (value)loop` writers and `(GMainLoop*)Field(val, 0)` readers
+  inline, **or** are migrated to a 1-word custom block (no
+  finalizer; the OCaml-level `Glib.Main_loop.destroy` already calls
+  `g_main_loop_unref`). Custom block is the cleaner choice; both are
+  acceptable.
+- **Delete `val_of_ext` / `ext_of_val` entirely** from `wrappers.h`
+  and `wrappers.c`. Verify with `git grep` that nothing references
+  them after the two inlinings. The 1-field Abstract-block layout
+  ceases to exist in the codebase.
+
+This phase becomes one MR after Phase 5, gated on the same
+build/test discipline as the others. The deferred-into-the-future
+character is gone.
 
 ### Phase 7 — (Deferred) Use `ocgtk_classify` from Signal_marshaller
 
@@ -474,7 +497,7 @@ enables.
 | 3 | Stage 2 | `c_stub_record.ml`, `<ns>_decls.h` (regen) | Generator unit test passes; regen diff is exactly the ~14 expected macros; full build + tests green; manual app smoke OK |
 | 4 | Stage 3 | `architecture/FFI_GUIDELINES.md` | Doc-only; reviewer signoff |
 | 5 | (independent) | `c_stub_array_conv.ml`, regen, `tests/gtk/test_tree_path.ml` | New test passes; full build + tests green |
-| 6 | Stage 4 | `ml_glib.c` (migrate `Val_GMainLoop` to a custom block) | Out of this plan's scope; nominal follow-up MR |
+| 6 | Stage 5 | `wrappers.{c,h}` (inline `Lookup_info` accessors), `ml_glib.c` (migrate `Val_GMainLoop` to a custom block or inline the Abstract-block path), delete `val_of_ext`/`ext_of_val` | `git grep` for `val_of_ext`/`ext_of_val` returns no matches; full build + tests green; the 1-field Abstract-block representation is gone from the codebase |
 | 7 | Milestone 2 Phase 1b | Signal_marshaller | Out of this plan's scope |
 
 ## Risks and Mitigations
@@ -504,9 +527,10 @@ enables.
   generator and hand-written code, loses per-kind finalizer specialisation
   that already works correctly. Registry approach captures the same
   win additively.
-- **Eliminating `val_of_ext`/`ext_of_val` entirely.** Possible long-term
-  but out of scope: the `lookup_info` use is benign (read-only static
-  tables), and migrating `ml_gtk.c` widget glue is a separate audit.
+- **Eliminating `val_of_ext`/`ext_of_val` entirely.** Now in scope as
+  Phase 6 (reviewer-loosened). The two remaining consumers
+  (`lookup_info` accessors and `Val_GMainLoop`) inline cleanly into
+  their respective TUs, after which both helpers are deleted.
 - **Inline-struct boxed records (Milestone 3).** Will register a new
   `ocgtk_inline_struct_ops` (or one ops struct per type) in this same
   registry. The plan explicitly leaves a `kind` slot for this.
@@ -524,6 +548,11 @@ enables.
    modules. ocgtk has no dynamic loading today, so pointer comparison
    wins. Document this choice.
 3. **Should `Lookup_info_val` migrate to a custom block or stay
-   Abstract?** Tables are static, immutable, and never freed. A custom
-   block adds two words per table for no gain. Recommend leaving as-is
-   and documenting it as the lone sanctioned Abstract-block consumer.
+   Abstract?** ~~Recommend leaving as-is.~~ **Resolved on PR #126**:
+   reviewer asked to sequester the Abstract-block path so it stops
+   being a globally available footgun. Phase 6 inlines the
+   `Lookup_info` accessors directly into `wrappers.c` (the only TU
+   that uses them) — the layout becomes a pure internal implementation
+   detail of the enum-lookup machinery. The 1-field Abstract block
+   stops being a sanctioned representation; it becomes an unnamed
+   layout used only between adjacent functions in one file.
