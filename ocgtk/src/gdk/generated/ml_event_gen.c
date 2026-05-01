@@ -103,16 +103,21 @@ CAMLparam1(self);
 guint out1;
 
 GdkTimeCoord* result = gdk_event_get_history(GdkEvent_val(self), &out1);
-    int result_length = out1;
-    CAMLlocal1(ml_result);
-    ml_result = caml_alloc(result_length, 0);
-    for (int i = 0; i < result_length; i++) {
-      Store_field(ml_result, i, Val_GdkTimeCoord(&result[i]));
+    CAMLlocal2(ml_result, ml_result_opt);
+    if (result == NULL) {
+      ml_result_opt = Val_none;
+    } else {
+      int result_length = out1;
+      ml_result = caml_alloc(result_length, 0);
+      for (int i = 0; i < result_length; i++) {
+        Store_field(ml_result, i, Val_GdkTimeCoord(&result[i]));
+      }
+      ml_result_opt = Val_some(ml_result);
+            g_free(result);
     }
-    g_free(result);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
-    Store_field(ret, 0, ml_result);
+    Store_field(ret, 0, ml_result_opt);
     Store_field(ret, 1, Val_int(out1));
     CAMLreturn(ret);
 }

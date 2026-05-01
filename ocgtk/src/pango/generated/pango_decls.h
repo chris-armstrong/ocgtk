@@ -79,46 +79,46 @@ value copy_PangoMatrix(const PangoMatrix *ptr);
 #endif
 
 #ifndef Val_PangoAttribute
-#define PangoAttribute_val(val) ((PangoAttribute*)ext_of_val(val))
+#define PangoAttribute_val(val) ((PangoAttribute*)ml_gir_record_ptr_val((val), "PangoAttribute"))
 #define Val_PangoAttribute(obj) copy_PangoAttribute((obj))
 #define Val_PangoAttribute_option(ptr) ((ptr) ? Val_some(copy_PangoAttribute(ptr)) : Val_none)
 #endif /* Val_PangoAttribute */
 
 #ifndef Val_PangoColor
-#define PangoColor_val(val) ((PangoColor*)ext_of_val(val))
+#define PangoColor_val(val) ((PangoColor*)ml_gir_record_ptr_val((val), "PangoColor"))
 #define Val_PangoColor(obj) copy_PangoColor((obj))
 #define Val_PangoColor_option(ptr) ((ptr) ? Val_some(copy_PangoColor(ptr)) : Val_none)
 #endif /* Val_PangoColor */
 
 #ifndef Val_PangoGlyphItem
-#define PangoGlyphItem_val(val) ((PangoGlyphItem*)ext_of_val(val))
+#define PangoGlyphItem_val(val) ((PangoGlyphItem*)ml_gir_record_ptr_val((val), "PangoGlyphItem"))
 #define Val_PangoGlyphItem(obj) copy_PangoGlyphItem((obj))
 #define Val_PangoGlyphItem_option(ptr) ((ptr) ? Val_some(copy_PangoGlyphItem(ptr)) : Val_none)
 #endif /* Val_PangoGlyphItem */
 
 #if PANGO_VERSION_CHECK(1,22,0)
 #ifndef Val_PangoGlyphItemIter
-#define PangoGlyphItemIter_val(val) ((PangoGlyphItemIter*)ext_of_val(val))
+#define PangoGlyphItemIter_val(val) ((PangoGlyphItemIter*)ml_gir_record_ptr_val((val), "PangoGlyphItemIter"))
 #define Val_PangoGlyphItemIter(obj) copy_PangoGlyphItemIter((obj))
 #define Val_PangoGlyphItemIter_option(ptr) ((ptr) ? Val_some(copy_PangoGlyphItemIter(ptr)) : Val_none)
 #endif /* Val_PangoGlyphItemIter */
 
 #endif
 #ifndef Val_PangoGlyphString
-#define PangoGlyphString_val(val) ((PangoGlyphString*)ext_of_val(val))
+#define PangoGlyphString_val(val) ((PangoGlyphString*)ml_gir_record_ptr_val((val), "PangoGlyphString"))
 #define Val_PangoGlyphString(obj) copy_PangoGlyphString((obj))
 #define Val_PangoGlyphString_option(ptr) ((ptr) ? Val_some(copy_PangoGlyphString(ptr)) : Val_none)
 #endif /* Val_PangoGlyphString */
 
 #ifndef Val_PangoItem
-#define PangoItem_val(val) ((PangoItem*)ext_of_val(val))
+#define PangoItem_val(val) ((PangoItem*)ml_gir_record_ptr_val((val), "PangoItem"))
 #define Val_PangoItem(obj) copy_PangoItem((obj))
 #define Val_PangoItem_option(ptr) ((ptr) ? Val_some(copy_PangoItem(ptr)) : Val_none)
 #endif /* Val_PangoItem */
 
 #if PANGO_VERSION_CHECK(1,6,0)
 #ifndef Val_PangoMatrix
-#define PangoMatrix_val(val) ((PangoMatrix*)ext_of_val(val))
+#define PangoMatrix_val(val) ((PangoMatrix*)ml_gir_record_ptr_val((val), "PangoMatrix"))
 #define Val_PangoMatrix(obj) copy_PangoMatrix((obj))
 #define Val_PangoMatrix_option(ptr) ((ptr) ? Val_some(copy_PangoMatrix(ptr)) : Val_none)
 #endif /* Val_PangoMatrix */

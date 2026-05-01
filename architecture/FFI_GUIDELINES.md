@@ -1,41 +1,121 @@
 ## FFI Guidelines
 
+## Canonical FFI Paths
+
+Every OCaml-visible FFI value in ocgtk falls into one of seven Custom-block
+kinds, each identified by a stable `struct custom_operations` pointer.  The
+table below is the authoritative reference; use it when writing new bindings
+or reading existing ones.
+
+| Kind | ops struct (extern) | identifier | Allocator | Reader |
+|------|---------------------|------------|-----------|--------|
+| GObject | `ocgtk_gobject_ops` | `"ocgtk.gobject"` | `ml_gobject_val_of_ext` | `ml_gobject_ext_of_val` (or per-class `<X>_val` macros from generated `<ns>_decls.h`) |
+| GIR record (opaque or boxed) | `ocgtk_gir_record_ops` | `"ocgtk.gir_record"` | `ml_gir_record_val_ptr` / `ml_gir_record_val_ptr_with_type` | `ml_gir_record_ptr_val(v, "<TypeName>")` (or per-record `<X>_val` macros) |
+| GVariant | `ocgtk_gvariant_ops` | `"ocgtk.gvariant"` | `Val_GVariant` | `GVariant_val` |
+| GVariantType | `ocgtk_gvariant_type_ops` | `"ocgtk.gvariant_type"` | `Val_GVariantType` | `GVariantType_val` |
+| GBytes | `ocgtk_gbytes_ops` | `"ocgtk.gbytes"` | `Val_GBytes` | `GBytes_val` |
+| GValue | `ocgtk_gvalue_ops` | `"ocgtk.gvalue"` | (internal — `GObject.Value` module) | `GValue_val` |
+| GClosure | `ocgtk_gclosure_ops` | `"ocgtk.gclosure"` | (internal — signal infrastructure) | `GClosure_val` |
+
+All seven `extern struct custom_operations ocgtk_<kind>_ops` declarations are
+in `ocgtk/src/common/value_kinds.h`.  Include that header to access them.
+
+## The Registry and `ocgtk_classify`
+
+`ocgtk/src/common/value_kinds.h` exposes the seven extern `custom_operations`
+structs described above, along with the `ocgtk_kind` enum and the
+`ocgtk_classify(value v) -> ocgtk_kind` function (implemented in
+`ocgtk/src/common/wrappers.c`).  `ocgtk_classify` is the canonical way to ask
+"what kind of FFI value am I holding?" at dynamic-dispatch sites — for example
+signal marshallers and `GValue`↔OCaml decoders.
+
+**Pointer comparison is preferred** over identifier-string comparison:
+
+```c
+/* Preferred — single pointer load, no strcmp */
+if (Custom_ops_val(v) == &ocgtk_gobject_ops) { ... }
+
+/* Also available — but slower and unnecessary in this codebase */
+if (strcmp(Custom_ops_val(v)->identifier, "ocgtk.gobject") == 0) { ... }
+```
+
+Pointer comparison is faster, it is stronger (it proves the value came through
+the same translation-unit chain as the ops struct definition), and ocgtk has no
+dynamic loading where string comparison would be safer.
+
+The `OCGTK_ASSERT_OPS(v, ops_ptr)` macro (defined in `value_kinds.h`) is
+provided for asserting accessors.  In `NDEBUG` builds it compiles away; the
+load is a single pointer comparison.
+
+## FFI History — Retired Abstractions
+
+The following helpers have been deleted from the codebase.  Do not reintroduce
+them.
+
+**`val_of_ext` / `ext_of_val`** (1-field Abstract block, payload at
+`Data_abstract_val`) — retired in **Phase 6** of the value-kinds-registry plan.
+Their two remaining callers were inlined into their respective translation units:
+
+- `Val_lookup_info` / `Lookup_info_val` replaced by `static inline
+  val_lookup_info` / `lookup_info_val` in `wrappers.c` (TU-internal, used by
+  `ml_lookup_from_c` and `ml_lookup_to_c`).
+- `Val_GMainLoop` / `GMainLoop_val` in `ml_glib.c` migrated to direct
+  `caml_alloc(1, Abstract_tag)` + `Data_abstract_val` reads, with writer and
+  reader now consistent (the old reader incorrectly used `Field(val, 0)`).
+
+**`Val_pointer` / `Pointer_val`** (2-field Abstract block, payload at field 1)
+— a separate, incompatible Abstract-block layout — **was deleted in Phase 0a**
+of the value-kinds-registry plan.  The two Abstract-block layouts (1-field and
+2-field) are NOT interchangeable, and neither is compatible with Custom blocks.
+Do not reintroduce `Val_pointer` / `Pointer_val`.
+
+## Adding a New Kind (Recipe)
+
+Follow these steps when adding a new custom-block kind to the registry.
+
+1. **Define the ops struct** in the appropriate `.c` file with
+   `"ocgtk.<kind>"` as the identifier and the correct finalizer:
+   ```c
+   struct custom_operations ocgtk_<kind>_ops = {
+       "ocgtk.<kind>",
+       finalize_<kind>,
+       custom_compare_default,
+       custom_hash_default,
+       custom_serialize_default,
+       custom_deserialize_default,
+       custom_compare_ext_default
+   };
+   ```
+
+2. **Promote to `extern`** and add the declaration to `value_kinds.h`:
+   ```c
+   extern struct custom_operations ocgtk_<kind>_ops;  /* "ocgtk.<kind>" */
+   ```
+
+3. **Add an enum value** `OCGTK_KIND_<KIND>` to the `ocgtk_kind` enum in
+   `value_kinds.h`, before `OCGTK_KIND_OPAQUE_BLOCK`.
+
+4. **Extend the switch** in `ocgtk_classify` (in `wrappers.c`) to return the
+   new kind for the new ops pointer:
+   ```c
+   if (ops == &ocgtk_<kind>_ops) return OCGTK_KIND_<KIND>;
+   ```
+
+5. **Write an asserting accessor** — typical form is a pointer cast through
+   `Data_custom_val`, guarded by `OCGTK_ASSERT_OPS`:
+   ```c
+   static inline <C type>* <kind>_val(value v) {
+       OCGTK_ASSERT_OPS(v, ocgtk_<kind>_ops);
+       return (<C type>*)Data_custom_val(v);
+   }
+   ```
+
+6. **Add a test case** to `ocgtk/tests/gtk/test_value_kinds.ml` covering the
+   classification round-trip for the new kind.
+
 ## OCaml/C FFI Critical Lessons
 
-### 1. Pointer Wrapping is NOT Trivial
-
-**Problem**: `Val_pointer`/`Pointer_val` macros in ocgtk wrappers.h are incompatible:
-```c
-#define Val_pointer(p) ((value)(p))          // Just casts pointer to value
-#define Pointer_val(val) ((void*)Field(val,1)) // Expects a block, accesses field 1!
-```
-
-**Solution**: Create proper wrapper functions like lablgtk3:
-```c
-/* Proper way to wrap pointers */
-static value Val_GClosure_wrapped(GClosure *closure)
-{
-    CAMLparam0();
-    CAMLlocal1(val);
-    val = caml_alloc_small(1, Abstract_tag);
-    Field(val, 0) = (value)closure;
-    CAMLreturn(val);
-}
-
-static GClosure *GClosure_val_wrapped(value val)
-{
-    return (GClosure *)Field(val, 0);
-}
-```
-
-**Key Insight**: For closure data storage, can cast pointers directly when storing in GLib structures:
-```c
-/* In closure->data, direct cast works */
-Store_field(argv_val, 2, (value)param_values);  // Direct cast
-const GValue *params = (const GValue *)Field(argv_val, 2);  // Direct extract
-```
-
-### 2. GValue Memory Management
+### 1. GValue Memory Management
 
 **Critical**: GValues cannot be shallow-copied with memcpy. Use g_value_copy:
 
@@ -56,7 +136,7 @@ typedef struct {
 } ml_gvalue;
 ```
 
-### 3. GClosure Pattern (from lablgtk3)
+### 2. GClosure Pattern (from lablgtk3)
 
 Store OCaml closure **directly** in `closure->data`:
 ```c
@@ -79,7 +159,7 @@ In invalidate notifier:
 caml_remove_global_root((value*)&closure->data);  // Cleanup
 ```
 
-### 4. Debugging FFI Issues
+### 3. Debugging FFI Issues
 
 **File-based debugging** when stderr doesn't work:
 ```c
@@ -96,7 +176,7 @@ fprintf(f, "Created: %p, Received: %p\n", original_ptr, received_ptr);
 // If different, wrapping/unwrapping is broken!
 ```
 
-### 5. GC Safety: Always Use CAMLlocal for Local `value` Variables
+### 4. GC Safety: Always Use CAMLlocal for Local `value` Variables
 
 **Rule**: Every local C variable of type `value` MUST be declared with `CAMLlocal1` (or `CAMLlocal2`, etc.), not as a plain C stack variable.
 
@@ -129,12 +209,17 @@ CAMLprim value ml_g_variant_get_variant(value v) {
 
 **Note on C pointers (`GVariant*`, `GObject*`, etc.)**: These are GLib-managed heap pointers, not OCaml values. The OCaml GC does not move or collect them. Only OCaml `value` variables need GC root registration.
 
-### 6. Common Pitfalls
+### 5. Common Pitfalls
 
 | Pitfall | Symptom | Solution |
 |---------|---------|----------|
-| Using Val_pointer/Pointer_val incorrectly | Garbage pointer values | Create proper wrapper functions |
 | memcpy GValues | Segfault on access/finalization | Use g_value_init + g_value_copy |
 | Forgetting ml_gvalue.initialized flag | Segfault in finalizer | Always set after initialization |
 | `value result = Val_*(...)` without CAMLlocal | Silent GC corruption if allocation added later | Always use `CAMLlocal1(result)` |
 | Not checking lablgtk3 | Hours of debugging | **ALWAYS check lablgtk3 first!** |
+
+**Note**: All GObject/record/variant values use Custom blocks — use the
+allocator and reader listed in the **Canonical FFI Paths** table at the top of
+this document.  `Val_pointer`/`Pointer_val` (deleted in phase-0a) and
+`val_of_ext`/`ext_of_val` (legacy, phase-6 retirement) are covered in the
+**Legacy Paths** section above.

@@ -11,6 +11,12 @@
 /*                                                                        */
 /**************************************************************************/
 
+/* converters.c — GTK-specific type converters.
+ * Val_GtkWidget_option was removed (phase-0a dead-code excision) as it
+ * had zero call sites outside this TU. Value-like record copy functions
+ * are generated in ml_*_record_gen.c files.
+ */
+
 #include <gtk/gtk.h>
 #include <caml/mlvalues.h>
 #include <caml/memory.h>
@@ -18,19 +24,3 @@
 
 #include "wrappers.h"
 #include "converters.h"
-
-/* ==================================================================== */
-/* GTK Widget Option Type Converter */
-/* ==================================================================== */
-
-CAMLexport value Val_GtkWidget_option(GtkWidget *widget) {
-    CAMLparam0();
-    if (widget == NULL) CAMLreturn(Val_none);
-    CAMLreturn(Val_some(val_of_ext(widget)));
-}
-
-/* ==================================================================== */
-/* Copies for value-returning GTK structs                              */
-/* ==================================================================== */
-
-/* Value-like record copy functions are now generated in ml_*_record_gen.c files */

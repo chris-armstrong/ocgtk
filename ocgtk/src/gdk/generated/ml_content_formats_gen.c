@@ -145,15 +145,20 @@ CAMLparam1(self);
 gsize out1;
 
 const char* const* result = gdk_content_formats_get_mime_types(GdkContentFormats_val(self), &out1);
-    int result_length = out1;
-    CAMLlocal1(ml_result);
-    ml_result = caml_alloc(result_length, 0);
-    for (int i = 0; i < result_length; i++) {
-      Store_field(ml_result, i, caml_copy_string(result[i]));
-    }
+    CAMLlocal2(ml_result, ml_result_opt);
+    if (result == NULL) {
+      ml_result_opt = Val_none;
+    } else {
+      int result_length = out1;
+      ml_result = caml_alloc(result_length, 0);
+      for (int i = 0; i < result_length; i++) {
+        Store_field(ml_result, i, caml_copy_string(result[i]));
+      }
+      ml_result_opt = Val_some(ml_result);
+          }
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
-    Store_field(ret, 0, ml_result);
+    Store_field(ret, 0, ml_result_opt);
     Store_field(ret, 1, Val_gsize(out1));
     CAMLreturn(ret);
 }
@@ -164,15 +169,20 @@ CAMLparam1(self);
 gsize out1;
 
 const GType* result = gdk_content_formats_get_gtypes(GdkContentFormats_val(self), &out1);
-    int result_length = out1;
-    CAMLlocal1(ml_result);
-    ml_result = caml_alloc(result_length, 0);
-    for (int i = 0; i < result_length; i++) {
-      Store_field(ml_result, i, Val_GType(result[i]));
-    }
+    CAMLlocal2(ml_result, ml_result_opt);
+    if (result == NULL) {
+      ml_result_opt = Val_none;
+    } else {
+      int result_length = out1;
+      ml_result = caml_alloc(result_length, 0);
+      for (int i = 0; i < result_length; i++) {
+        Store_field(ml_result, i, Val_GType(result[i]));
+      }
+      ml_result_opt = Val_some(ml_result);
+          }
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
-    Store_field(ret, 0, ml_result);
+    Store_field(ret, 0, ml_result_opt);
     Store_field(ret, 1, Val_gsize(out1));
     CAMLreturn(ret);
 }

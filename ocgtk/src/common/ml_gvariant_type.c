@@ -30,6 +30,7 @@
 #include <caml/custom.h>
 
 #include "wrappers.h"
+#include "value_kinds.h"
 
 /* ==================================================================== */
 /* GVariantType custom block with free finalizer                        */
@@ -42,7 +43,7 @@ static void finalize_gvariant_type(value v) {
     }
 }
 
-static struct custom_operations gvariant_type_custom_ops = {
+struct custom_operations ocgtk_gvariant_type_ops = {
     "ocgtk.gvariant_type",
     finalize_gvariant_type,
     custom_compare_default,
@@ -64,7 +65,7 @@ CAMLexport value Val_GVariantType(const GVariantType *type) {
         caml_failwith("Val_GVariantType: NULL type");
     }
 
-    v = caml_alloc_custom(&gvariant_type_custom_ops, sizeof(GVariantType*), 0, 1);
+    v = caml_alloc_custom(&ocgtk_gvariant_type_ops, sizeof(GVariantType*), 0, 1);
     *((GVariantType**)Data_custom_val(v)) = g_variant_type_copy(type);
 
     CAMLreturn(v);

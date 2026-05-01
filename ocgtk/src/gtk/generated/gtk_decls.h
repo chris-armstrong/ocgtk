@@ -1511,25 +1511,25 @@ value copy_GtkTextIter(const GtkTextIter *ptr);
 value copy_GtkTreeIter(const GtkTreeIter *ptr);
 
 #ifndef Val_GtkBorder
-#define GtkBorder_val(val) ((GtkBorder*)ext_of_val(val))
+#define GtkBorder_val(val) ((GtkBorder*)ml_gir_record_ptr_val((val), "GtkBorder"))
 #define Val_GtkBorder(obj) copy_GtkBorder((obj))
 #define Val_GtkBorder_option(ptr) ((ptr) ? Val_some(copy_GtkBorder(ptr)) : Val_none)
 #endif /* Val_GtkBorder */
 
 #ifndef Val_GtkRequisition
-#define GtkRequisition_val(val) ((GtkRequisition*)ext_of_val(val))
+#define GtkRequisition_val(val) ((GtkRequisition*)ml_gir_record_ptr_val((val), "GtkRequisition"))
 #define Val_GtkRequisition(obj) copy_GtkRequisition((obj))
 #define Val_GtkRequisition_option(ptr) ((ptr) ? Val_some(copy_GtkRequisition(ptr)) : Val_none)
 #endif /* Val_GtkRequisition */
 
 #ifndef Val_GtkTextIter
-#define GtkTextIter_val(val) ((GtkTextIter*)ext_of_val(val))
+#define GtkTextIter_val(val) ((GtkTextIter*)ml_gir_record_ptr_val((val), "GtkTextIter"))
 #define Val_GtkTextIter(obj) copy_GtkTextIter((obj))
 #define Val_GtkTextIter_option(ptr) ((ptr) ? Val_some(copy_GtkTextIter(ptr)) : Val_none)
 #endif /* Val_GtkTextIter */
 
 #ifndef Val_GtkTreeIter
-#define GtkTreeIter_val(val) ((GtkTreeIter*)ext_of_val(val))
+#define GtkTreeIter_val(val) ((GtkTreeIter*)ml_gir_record_ptr_val((val), "GtkTreeIter"))
 #define Val_GtkTreeIter(obj) copy_GtkTreeIter((obj))
 #define Val_GtkTreeIter_option(ptr) ((ptr) ? Val_some(copy_GtkTreeIter(ptr)) : Val_none)
 #endif /* Val_GtkTreeIter */

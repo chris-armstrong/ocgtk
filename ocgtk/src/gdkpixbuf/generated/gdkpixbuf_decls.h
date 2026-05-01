@@ -49,7 +49,7 @@ value copy_GdkPixbufFormat(const GdkPixbufFormat *ptr);
 
 #if GDK_PIXBUF_CHECK_VERSION(2,2,0)
 #ifndef Val_GdkPixbufFormat
-#define GdkPixbufFormat_val(val) ((GdkPixbufFormat*)ext_of_val(val))
+#define GdkPixbufFormat_val(val) ((GdkPixbufFormat*)ml_gir_record_ptr_val((val), "GdkPixbufFormat"))
 #define Val_GdkPixbufFormat(obj) copy_GdkPixbufFormat((obj))
 #define Val_GdkPixbufFormat_option(ptr) ((ptr) ? Val_some(copy_GdkPixbufFormat(ptr)) : Val_none)
 #endif /* Val_GdkPixbufFormat */

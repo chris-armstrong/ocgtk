@@ -21,6 +21,14 @@
 #include <glib.h>
 
 #include "wrappers.h"
+#include "value_kinds.h"
+
+/* Read a lookup_info pointer from a 1-word Abstract block. The matching
+ * writer is unused — generated enum tables are compiled-in C arrays, not
+ * OCaml-side allocations. */
+static inline const lookup_info *lookup_info_val(value v) {
+    return *((const lookup_info **)Data_abstract_val(v));
+}
 
 /* Enum/variant conversion functions */
 
@@ -57,7 +65,7 @@ int lookup_to_c_direct (const lookup_info *table, value key)
 CAMLexport value ml_lookup_from_c (value table_val, value data_val)
 {
     CAMLparam2(table_val, data_val);
-    const lookup_info *table = Lookup_info_val(table_val);
+    const lookup_info *table = lookup_info_val(table_val);
     int data = Int_val(data_val);
     CAMLreturn(lookup_from_c_direct(table, data));
 }
@@ -68,33 +76,8 @@ CAMLexport value ml_lookup_from_c (value table_val, value data_val)
 CAMLexport value ml_lookup_to_c (value table_val, value key)
 {
     CAMLparam2(table_val, key);
-    const lookup_info *table = Lookup_info_val(table_val);
+    const lookup_info *table = lookup_info_val(table_val);
     CAMLreturn(Val_int(lookup_to_c_direct(table, key)));
-}
-
-/* Copy a C struct into an OCaml abstract block
- * Layout: [header | unused | marker=2 | data...]
- * Field 0: unused (for alignment/compatibility)
- * Field 1: marker value 2
- * Field 2+: actual struct data
- */
-CAMLexport value copy_memblock_indirected(void *src, asize_t size)
-{
-    CAMLparam0();
-    CAMLlocal1(ret);
-    mlsize_t wosize;
-
-    if (!src) caml_failwith("copy_memblock_indirected: NULL pointer");
-
-    /* Calculate size in words for the data */
-    wosize = (size + sizeof(value) - 1) / sizeof(value);
-
-    /* Allocate: 1 unused + 1 marker + wosize for data = wosize + 2 */
-    ret = caml_alloc(wosize + 2, Abstract_tag);
-    Field(ret, 1) = (value)2;  /* Marker at Field 1 */
-    memcpy((void*)&Field(ret, 2), src, size);  /* Data starts at Field 2 */
-
-    CAMLreturn(ret);
 }
 
 /* ==================================================================== */
@@ -122,7 +105,7 @@ static void finalize_gir_record(value v) {
     }
 }
 
-static struct custom_operations gir_record_custom_ops = {
+struct custom_operations ocgtk_gir_record_ops = {
     "ocgtk.gir_record",
     finalize_gir_record,
     custom_compare_default,
@@ -138,7 +121,7 @@ CAMLexport value ml_gir_record_val_ptr_with_type(GType type, const void *src) {
 
     if (src == NULL) caml_failwith("ml_gir_record_val_ptr_with_type: NULL source");
 
-    v = caml_alloc_custom(&gir_record_custom_ops, sizeof(gir_record_box), 0, 1);
+    v = caml_alloc_custom(&ocgtk_gir_record_ops, sizeof(gir_record_box), 0, 1);
     gir_record_box *box = (gir_record_box*)Data_custom_val(v);
     box->type = type;
     box->ptr = (void*)src;
@@ -152,19 +135,25 @@ CAMLexport value ml_gir_record_val_ptr(const void *src) {
 
 CAMLexport const void *ml_gir_record_ptr_val(value v, const char *type_name) {
     CAMLparam1(v);
-    const void *ptr;
 
-    (void)type_name;
+    if (Tag_val(v) != Custom_tag ||
+        Custom_ops_val(v) != &ocgtk_gir_record_ops) {
+        char msg[256];
+        const char *actual =
+            (Tag_val(v) == Custom_tag)
+            ? Custom_ops_val(v)->identifier
+            : "non-custom block";
+        snprintf(msg, sizeof(msg),
+            "ml_gir_record_ptr_val: expected gir_record custom block for %s, got %s",
+            type_name, actual);
+        caml_failwith(msg);
+    }
 
-    if (Tag_val(v) == Custom_tag)
-        ptr = ((gir_record_box*)Data_custom_val(v))->ptr;
-    else
-        ptr = ext_of_val(v);
-
-    if (ptr == NULL)
+    const gir_record_box *box = (const gir_record_box*)Data_custom_val(v);
+    if (box->ptr == NULL)
         caml_failwith("ml_gir_record_ptr_val: NULL record pointer");
 
-    CAMLreturnT(const void*, ptr);
+    CAMLreturnT(const void*, box->ptr);
 }
 
 /* ==================================================================== */
@@ -178,7 +167,7 @@ static void finalize_gobject(value v) {
     }
 }
 
-static struct custom_operations gobject_custom_ops = {
+struct custom_operations ocgtk_gobject_ops = {
     "ocgtk.gobject",
     finalize_gobject,
     custom_compare_default,
@@ -199,7 +188,7 @@ CAMLexport value ml_gobject_val_of_ext(const void *gobject) {
 
     /* Just wrap the pointer in a custom block with finalizer.
        Caller is responsible for managing refcount based on transfer-ownership. */
-    v = caml_alloc_custom(&gobject_custom_ops, sizeof(void*), 0, 1);
+    v = caml_alloc_custom(&ocgtk_gobject_ops, sizeof(void*), 0, 1);
     *((void**)Data_custom_val(v)) = (void*)gobject;
 
     CAMLreturn(v);
@@ -223,35 +212,6 @@ CAMLexport value ml_gobject_val_of_ext_option(const void *gobject) {
     CAMLreturn(some);
 }
 
-/* Wrap a C pointer in an Abstract block for OCaml 5.0+ compatibility.
- * This prevents the GC from scanning C pointers as if they were heap values.
- * Layout: [header | unused | pointer]
- * Field 0: unused (for alignment)
- * Field 1: the actual C pointer
- */
-CAMLexport value Val_pointer(void *ptr)
-{
-    CAMLparam0();
-    CAMLlocal1(ret);
-    ret = caml_alloc_small(2, Abstract_tag);
-    Field(ret, 1) = (value)ptr;
-    CAMLreturn(ret);
-}
-
-value val_of_ext(const void *widget) {
-    CAMLparam0();
-    CAMLlocal1(v);
-    v = caml_alloc(1, Abstract_tag);
-    /* Cast away const - safe because we only read via ext_of_val which preserves const */
-    *((void**)Data_abstract_val(v)) = (void*)widget;
-    CAMLreturn(v);
-}
-
-const void* ext_of_val(value val) {
-    CAMLparam1(val);
-    CAMLreturnT(const void*, *((const void**)Data_abstract_val(val)));
-}
-
 /* ========================================================================= */
 /* Error Handling - Result type support for GError                          */
 /* ========================================================================= */
@@ -272,6 +232,39 @@ value Res_Error(value v) {
     result = caml_alloc(1, 1);  /* Error is tag 1 */
     Store_field(result, 0, v);
     CAMLreturn(result);
+}
+
+/* ==================================================================== */
+/* Value-kinds registry classifier                                      */
+/* ==================================================================== */
+
+/* Returns the kind of an arbitrary OCaml value.
+ * Fast path: Is_long for immediates. Custom blocks dispatch by ops-pointer
+ * identity against the seven registered structs. Any other heap block
+ * returns OCGTK_KIND_OPAQUE_BLOCK. Safe to call on any value. */
+CAMLprim value caml_ocgtk_classify(value v)
+{
+    CAMLparam1(v);
+    CAMLreturn(Val_int((int)ocgtk_classify(v)));
+}
+
+ocgtk_kind ocgtk_classify(value v)
+{
+    if (Is_long(v))
+        return OCGTK_KIND_INT;
+
+    if (Is_block(v) && Tag_val(v) == Custom_tag) {
+        const struct custom_operations *ops = Custom_ops_val(v);
+        if (ops == &ocgtk_gobject_ops)       return OCGTK_KIND_GOBJECT;
+        if (ops == &ocgtk_gir_record_ops)    return OCGTK_KIND_GIR_RECORD;
+        if (ops == &ocgtk_gvariant_ops)      return OCGTK_KIND_GVARIANT;
+        if (ops == &ocgtk_gvariant_type_ops) return OCGTK_KIND_GVARIANT_TYPE;
+        if (ops == &ocgtk_gbytes_ops)        return OCGTK_KIND_GBYTES;
+        if (ops == &ocgtk_gvalue_ops)        return OCGTK_KIND_GVALUE;
+        if (ops == &ocgtk_gclosure_ops)      return OCGTK_KIND_GCLOSURE;
+    }
+
+    return OCGTK_KIND_OPAQUE_BLOCK;
 }
 
 /* Convert GError to OCaml GError.t record and free the GError */

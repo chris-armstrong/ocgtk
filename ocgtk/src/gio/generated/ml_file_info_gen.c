@@ -297,18 +297,23 @@ CAMLexport CAMLprim value ml_g_file_info_list_attributes(value self, value arg1)
 CAMLparam2(self, arg1);
 
 char** result = g_file_info_list_attributes(GFileInfo_val(self), String_option_val(arg1));
-    int result_length = 0;
+    CAMLlocal2(ml_result, ml_result_opt);
+    if (result == NULL) {
+      ml_result_opt = Val_none;
+    } else {
+      int result_length = 0;
     while (result[result_length] != NULL) result_length++;
-    CAMLlocal1(ml_result);
-    ml_result = caml_alloc(result_length, 0);
-    for (int i = 0; i < result_length; i++) {
-      Store_field(ml_result, i, caml_copy_string(result[i]));
-    }
-    for (int i = 0; i < result_length; i++) {
+      ml_result = caml_alloc(result_length, 0);
+      for (int i = 0; i < result_length; i++) {
+        Store_field(ml_result, i, caml_copy_string(result[i]));
+      }
+      ml_result_opt = Val_some(ml_result);
+            for (int i = 0; i < result_length; i++) {
       g_free((gpointer)result[i]);
     }
     g_free(result);
-CAMLreturn(ml_result);
+    }
+CAMLreturn(ml_result_opt);
 }
 
 #if GLIB_CHECK_VERSION(2,22,0)
@@ -499,14 +504,19 @@ CAMLexport CAMLprim value ml_g_file_info_get_attribute_stringv(value self, value
 CAMLparam2(self, arg1);
 
 char** result = g_file_info_get_attribute_stringv(GFileInfo_val(self), String_val(arg1));
-    int result_length = 0;
+    CAMLlocal2(ml_result, ml_result_opt);
+    if (result == NULL) {
+      ml_result_opt = Val_none;
+    } else {
+      int result_length = 0;
     while (result[result_length] != NULL) result_length++;
-    CAMLlocal1(ml_result);
-    ml_result = caml_alloc(result_length, 0);
-    for (int i = 0; i < result_length; i++) {
-      Store_field(ml_result, i, caml_copy_string(result[i]));
-    }
-CAMLreturn(ml_result);
+      ml_result = caml_alloc(result_length, 0);
+      for (int i = 0; i < result_length; i++) {
+        Store_field(ml_result, i, caml_copy_string(result[i]));
+      }
+      ml_result_opt = Val_some(ml_result);
+          }
+CAMLreturn(ml_result_opt);
 }
 
 #else

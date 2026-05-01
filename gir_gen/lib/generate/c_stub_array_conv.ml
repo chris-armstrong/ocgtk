@@ -281,9 +281,13 @@ module Array_conv = struct
     | Some name -> String.equal name "GLib.PtrArray"
     | None -> false
 
-  (* Generate inline code for converting C array to OCaml array *)
+  (* Generate inline code for converting C array to OCaml array.
+     When [nullable] is true the C pointer can be NULL; the generated code
+     emits a NULL guard and returns either [Val_none] or [Val_some(array)].
+     The returned [ml_array_var] name is the option-wrapping variable in that
+     case so callers can use it uniformly. *)
   let generate_array_c_to_ml ~ctx ~var ~(array_info : gir_array) ~length_expr
-      ~element_c_type ~transfer_ownership =
+      ~element_c_type ~transfer_ownership ?(nullable = false) () =
     match
       Type_mappings.find_type_mapping_for_gir_type ~ctx array_info.element_type
     with
@@ -293,6 +297,7 @@ module Array_conv = struct
              array_info.element_type.name)
     | Some element_tm ->
         let ml_array_var = "ml_" ^ var in
+        let ml_opt_var = ml_array_var ^ "_opt" in
         let length_var = var ^ "_length" in
         let is_pointer_array = String.contains element_c_type '*' in
 
@@ -350,9 +355,34 @@ module Array_conv = struct
           if is_pointer_array || is_value_type then "" else "&"
         in
 
-        let conversion_code =
+        (* Inner body: array alloc + loop, WITHOUT the CAMLlocal1 declaration.
+           Used inside the nullable else-branch where ml_array_var is already
+           declared by CAMLlocal2. *)
+        let inner_body_code =
           if is_gptr_array then
-            (* GPtrArray: cast pdata elements to correct type *)
+            sprintf
+              "%s\n\
+              \      %s = caml_alloc(%s, 0);\n\
+              \      for (int i = 0; i < %s; i++) {\n\
+              \        Store_field(%s, i, %s((%s)%s[i]));\n\
+              \      }"
+              length_code ml_array_var length_var length_var ml_array_var
+              element_tm.c_to_ml element_c_type data_var
+          else
+            sprintf
+              "%s\n\
+              \      %s = caml_alloc(%s, 0);\n\
+              \      for (int i = 0; i < %s; i++) {\n\
+              \        Store_field(%s, i, %s(%s%s[i]));\n\
+              \      }"
+              length_code ml_array_var length_var length_var ml_array_var
+              element_tm.c_to_ml addr_prefix data_var
+        in
+
+        (* Inner conversion WITH CAMLlocal1: used in the non-nullable path where
+           no outer CAMLlocal declaration exists for ml_array_var. *)
+        let inner_conversion_code_with_local =
+          if is_gptr_array then
             sprintf
               "%s\n\
               \    CAMLlocal1(%s);\n\
@@ -374,8 +404,8 @@ module Array_conv = struct
               ml_array_var element_tm.c_to_ml addr_prefix data_var
         in
 
-        (* Generate cleanup code if we own the array (TransferFull or TransferContainer) *)
-        let cleanup_code =
+        (* Cleanup expression for non-nullable path (appended after the call) *)
+        let outer_cleanup_code =
           match transfer_ownership with
           | Types.TransferNone | Types.TransferFloating ->
               (* GTK owns the array - don't free it *)
@@ -396,5 +426,36 @@ module Array_conv = struct
                   ~length_var ~var
         in
 
-        (conversion_code, ml_array_var, cleanup_code)
+        (* When nullable, wrap the inner body in a NULL guard and return an
+           option (Val_none / Val_some).  CAMLlocal2 declares both ml_array_var
+           and ml_opt_var so the inner body must NOT redeclare ml_array_var.
+
+           Cleanup code (if any) uses result_length which is declared inside the
+           else-block, so it must be emitted inside the else-branch rather than
+           appended after the if/else.  We return an empty cleanup string for the
+           nullable path so callers don't append it again at the wrong scope. *)
+        let conversion_code, result_var, cleanup_code =
+          if nullable then
+            let inline_cleanup =
+              if String.length outer_cleanup_code > 0 then
+                sprintf "      %s\n" outer_cleanup_code
+              else ""
+            in
+            ( sprintf
+                "CAMLlocal2(%s, %s);\n\
+                \    if (%s == NULL) {\n\
+                \      %s = Val_none;\n\
+                \    } else {\n\
+                \      %s\n\
+                \      %s = Val_some(%s);\n\
+                \      %s    }"
+                ml_array_var ml_opt_var var ml_opt_var inner_body_code
+                ml_opt_var ml_array_var inline_cleanup,
+              ml_opt_var,
+              "" (* cleanup already inlined above *) )
+          else
+            (inner_conversion_code_with_local, ml_array_var, outer_cleanup_code)
+        in
+
+        (conversion_code, result_var, cleanup_code)
 end

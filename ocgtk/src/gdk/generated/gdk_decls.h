@@ -256,7 +256,7 @@
 value copy_GdkRGBA(const GdkRGBA *ptr);
 
 #ifndef Val_GdkRGBA
-#define GdkRGBA_val(val) ((GdkRGBA*)ext_of_val(val))
+#define GdkRGBA_val(val) ((GdkRGBA*)ml_gir_record_ptr_val((val), "GdkRGBA"))
 #define Val_GdkRGBA(obj) copy_GdkRGBA((obj))
 #define Val_GdkRGBA_option(ptr) ((ptr) ? Val_some(copy_GdkRGBA(ptr)) : Val_none)
 #endif /* Val_GdkRGBA */

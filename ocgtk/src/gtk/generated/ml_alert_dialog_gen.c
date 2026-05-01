@@ -127,14 +127,19 @@ CAMLexport CAMLprim value ml_gtk_alert_dialog_get_buttons(value self)
 CAMLparam1(self);
 
 const char* const* result = gtk_alert_dialog_get_buttons(GtkAlertDialog_val(self));
-    int result_length = 0;
+    CAMLlocal2(ml_result, ml_result_opt);
+    if (result == NULL) {
+      ml_result_opt = Val_none;
+    } else {
+      int result_length = 0;
     while (result[result_length] != NULL) result_length++;
-    CAMLlocal1(ml_result);
-    ml_result = caml_alloc(result_length, 0);
-    for (int i = 0; i < result_length; i++) {
-      Store_field(ml_result, i, caml_copy_string(result[i]));
-    }
-CAMLreturn(ml_result);
+      ml_result = caml_alloc(result_length, 0);
+      for (int i = 0; i < result_length; i++) {
+        Store_field(ml_result, i, caml_copy_string(result[i]));
+      }
+      ml_result_opt = Val_some(ml_result);
+          }
+CAMLreturn(ml_result_opt);
 }
 
 CAMLexport CAMLprim value ml_gtk_alert_dialog_choose_finish(value self, value arg1)

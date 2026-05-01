@@ -9,11 +9,8 @@
 
 /* Dependency headers for cross-namespace types */
 #include "generated/gdk_decls.h"
-#include "generated/gdkpixbuf_decls.h"
 #include "generated/gio_decls.h"
 #include "generated/graphene_decls.h"
-#include "generated/pango_decls.h"
-#include "generated/pangocairo_decls.h"
 #include "generated/cairo_decls.h"
 
 /* Class-specific conversion macros (shared) */
@@ -206,14 +203,14 @@ value copy_GskRoundedRect(const GskRoundedRect *ptr);
 
 #if GTK_CHECK_VERSION(4,14,0)
 #ifndef Val_GskPathPoint
-#define GskPathPoint_val(val) ((GskPathPoint*)ext_of_val(val))
+#define GskPathPoint_val(val) ((GskPathPoint*)ml_gir_record_ptr_val((val), "GskPathPoint"))
 #define Val_GskPathPoint(obj) copy_GskPathPoint((obj))
 #define Val_GskPathPoint_option(ptr) ((ptr) ? Val_some(copy_GskPathPoint(ptr)) : Val_none)
 #endif /* Val_GskPathPoint */
 
 #endif
 #ifndef Val_GskRoundedRect
-#define GskRoundedRect_val(val) ((GskRoundedRect*)ext_of_val(val))
+#define GskRoundedRect_val(val) ((GskRoundedRect*)ml_gir_record_ptr_val((val), "GskRoundedRect"))
 #define Val_GskRoundedRect(obj) copy_GskRoundedRect((obj))
 #define Val_GskRoundedRect_option(ptr) ((ptr) ? Val_some(copy_GskRoundedRect(ptr)) : Val_none)
 #endif /* Val_GskRoundedRect */

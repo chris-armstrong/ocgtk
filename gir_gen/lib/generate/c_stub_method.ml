@@ -348,6 +348,7 @@ let handle_array_return ~ctx ~(meth : gir_method) ~c_name ~args
     C_stub_helpers.generate_array_c_to_ml ~ctx ~var:"result" ~array_info
       ~length_expr ~element_c_type
       ~transfer_ownership:meth.return_type.transfer_ownership
+      ~nullable:meth.return_type.nullable ()
   in
   let c_call_base = sprintf "%s result = %s(%s);" ret_type c_name args in
   let c_call =

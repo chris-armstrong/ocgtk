@@ -84,8 +84,9 @@ let generate_forward_decls ~namespace_prefix ~records =
                 (emit_version_guard_open buf ~namespace:namespace_prefix)
                 record.version;
               bprintf buf "#ifndef Val_%s\n" record.c_type;
-              bprintf buf "#define %s_val(val) ((%s*)ext_of_val(val))\n"
-                record.c_type record.c_type;
+              bprintf buf
+                "#define %s_val(val) ((%s*)ml_gir_record_ptr_val((val), %S))\n"
+                record.c_type record.c_type record.c_type;
               bprintf buf "#define Val_%s(obj) copy_%s((obj))\n" record.c_type
                 record.c_type;
               bprintf buf
@@ -271,7 +272,7 @@ let generate_record_c_code ~ctx (record : gir_record) =
 
   C_stub_helpers.generate_methods ~ctx ~c_type:record.c_type
     ~class_name:record.record_name ~buf
-    ~generator:generate_record_method_with_guards
-    ~entity_kind:Filtering.Record record.methods;
+    ~generator:generate_record_method_with_guards ~entity_kind:Filtering.Record
+    record.methods;
 
   Buffer.contents buf
