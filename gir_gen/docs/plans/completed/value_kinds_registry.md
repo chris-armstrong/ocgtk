@@ -1,9 +1,9 @@
 # Value-Kinds Registry: Disciplined Runtime Discrimination of FFI Values
 
-**Status: DRAFT**
+**Status: COMPLETED 2026-05-01**
 **Created: 2026-04-30**
-**Branch: TBD (recommended `refactor/value-kinds-registry`)**
-**Depends on / unblocks: `feat/milestone-2-signals` (Phase 1b Signal_marshaller)**
+**Branch: `worktree-bridge-cse_01RbnpbDken6333sbkFEx5dx` (PR #126)**
+**Phases 0a–6 landed in commits e000db9d → 3106fa7d. Phase 7 (Signal_marshaller integration) deferred to Milestone 2 Phase 1b.**
 
 ## Overview
 
