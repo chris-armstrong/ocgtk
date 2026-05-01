@@ -172,18 +172,23 @@ CAMLexport CAMLprim value ml_g_dbus_proxy_get_cached_property_names(value self)
 CAMLparam1(self);
 
 gchar** result = g_dbus_proxy_get_cached_property_names(GDBusProxy_val(self));
-    int result_length = 0;
+    CAMLlocal2(ml_result, ml_result_opt);
+    if (result == NULL) {
+      ml_result_opt = Val_none;
+    } else {
+      int result_length = 0;
     while (result[result_length] != NULL) result_length++;
-    CAMLlocal1(ml_result);
-    ml_result = caml_alloc(result_length, 0);
-    for (int i = 0; i < result_length; i++) {
-      Store_field(ml_result, i, caml_copy_string(result[i]));
-    }
-    for (int i = 0; i < result_length; i++) {
+      ml_result = caml_alloc(result_length, 0);
+      for (int i = 0; i < result_length; i++) {
+        Store_field(ml_result, i, caml_copy_string(result[i]));
+      }
+      ml_result_opt = Val_some(ml_result);
+            for (int i = 0; i < result_length; i++) {
       g_free((gpointer)result[i]);
     }
     g_free(result);
-CAMLreturn(ml_result);
+    }
+CAMLreturn(ml_result_opt);
 }
 
 CAMLexport CAMLprim value ml_g_dbus_proxy_get_cached_property(value self, value arg1)

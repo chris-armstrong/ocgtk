@@ -170,6 +170,25 @@ echo "  [9/9] Generating GTK bindings (with all references)..."
     "$OCGTK_DIR/src/gtk"
 
 echo ""
+echo "Step 3: Formatting generated OCaml..."
+echo "-----------------------------------"
+# Generated .ml/.mli output is unformatted; ocamlformat normalises long
+# signatures and wrapping so the diff against committed bindings stays
+# bounded to genuine semantic changes.
+if command -v ocamlformat >/dev/null 2>&1; then
+    for ns in cairo gio gdk graphene gdkpixbuf pango pangocairo gsk gtk; do
+        gen_dir="$OCGTK_DIR/src/$ns/generated"
+        if [ -d "$gen_dir" ]; then
+            (cd "$gen_dir" && ocamlformat -i *.ml *.mli 2>/dev/null) || true
+        fi
+    done
+    echo "  ocamlformat applied to all generated .ml/.mli files."
+else
+    echo "  ocamlformat not on PATH; skipping format step."
+    echo "  Run 'cd ocgtk && ocamlformat -i src/*/generated/*.ml*' manually."
+fi
+
+echo ""
 echo "==================================="
 echo "✓ Code generation complete!"
 echo "==================================="
