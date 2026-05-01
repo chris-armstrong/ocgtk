@@ -147,7 +147,7 @@
         },
         {
           "id": "phase-2",
-          "status": "pending",
+          "status": "committed",
           "title": "Harden ml_gir_record_ptr_val — remove cross-kind fallback (closes task #2)",
           "description": "Replace the body of ml_gir_record_ptr_val in wrappers.c with a strict check: if the value is not a Custom block with ops == &ocgtk_gir_record_ops, raise caml_failwithf with the actual ops->identifier string. Remove the ext_of_val fallback path entirely. Extend the existing test_record_finalizer.ml with a cross-kind rejection test.",
           "files_touched": [

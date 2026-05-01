@@ -28,6 +28,7 @@
 open Alcotest
 open Ocgtk_gtk.Gtk
 module Helpers = Gtk_test_helpers
+module Gvariant = Ocgtk_common.Gvariant
 
 (* Layer 1 (raw) tree_path bindings. Pulling these locally documents the
    contract that [Tree_path.free]/[Tree_path.copy] no longer exist as
@@ -37,6 +38,11 @@ let path_append = Wrappers.Tree_path.append_index
 let path_get_depth = Wrappers.Tree_path.get_depth
 let path_to_string = Wrappers.Tree_path.to_string
 let require_gtk = Helpers.require_gtk
+
+(* Cross-kind rejection: routes through ml_gir_record_ptr_val internally.
+   Bypasses the OCaml type system via the polymorphic external to pass a
+   wrong-kind custom block to a gir_record-expecting binding. *)
+external raw_tree_path_get_depth : 'a -> int = "ml_gtk_tree_path_get_depth"
 
 (* ========== Compile-time absence of free/copy/unref externals ==========
 
@@ -136,6 +142,49 @@ let test_stress_alloc_drop () =
   Gc.full_major ();
   check bool "1000-iteration stress loop completed" true true
 
+(* ========== Cross-kind rejection ==========
+
+   Pass a GVariant (ocgtk.gvariant custom block, in ocgtk_common) to a
+   binding that expects a gir_record (GtkTreePath). The call routes through
+   ml_gir_record_ptr_val which now performs a strict Custom_ops_val identity
+   check. Before phase-2 the fallback ext_of_val path would silently read
+   garbage; after phase-2 the strict check raises Failure with a descriptive
+   message naming both the expected type ("GtkTreePath") and the actual kind
+   ("ocgtk.gvariant").
+
+   We use GVariant rather than a GObject (Box) because GVariant lives in
+   ocgtk_common and avoids a pre-existing cross-batch linker issue that
+   surfaces when test_record_finalizer is linked against the gtk batch stubs
+   containing Box but not the enum stubs they depend on. *)
+
+let string_contains ~sub s =
+  let sub_len = String.length sub and s_len = String.length s in
+  if sub_len = 0 then true
+  else if sub_len > s_len then false
+  else
+    let limit = s_len - sub_len in
+    let found = ref false in
+    let i = ref 0 in
+    while (not !found) && !i <= limit do
+      if String.sub s !i sub_len = sub then found := true;
+      incr i
+    done;
+    !found
+
+let test_cross_kind_ml_gir_record_ptr_val_rejects_wrong_kind () =
+  let wrong_kind = Gvariant.of_string "hello" in
+  match
+    (try Ok (raw_tree_path_get_depth wrong_kind) with Failure msg -> Error msg)
+  with
+  | Error msg ->
+    check bool "failure message mentions gir_record" true
+      (string_contains ~sub:"gir_record" msg);
+    check bool "failure message mentions ocgtk.gvariant" true
+      (string_contains ~sub:"ocgtk.gvariant" msg)
+  | Ok _ ->
+    fail
+      "expected Failure but got a result — cross-kind check was not enforced"
+
 (* ========== Test Suite Registration ========== *)
 
 let () =
@@ -153,5 +202,12 @@ let () =
             (require_gtk test_survives_gc_single);
           test_case "stress 1000 alloc/drop" `Slow
             (require_gtk test_stress_alloc_drop);
+        ] );
+      ( "Cross-kind rejection",
+        [
+          test_case "rejects non-record kind (GVariant) where gir_record expected"
+            `Quick
+            (require_gtk
+               test_cross_kind_ml_gir_record_ptr_val_rejects_wrong_kind);
         ] );
     ]

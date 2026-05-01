@@ -128,19 +128,25 @@ CAMLexport value ml_gir_record_val_ptr(const void *src) {
 
 CAMLexport const void *ml_gir_record_ptr_val(value v, const char *type_name) {
     CAMLparam1(v);
-    const void *ptr;
 
-    (void)type_name;
+    if (Tag_val(v) != Custom_tag ||
+        Custom_ops_val(v) != &ocgtk_gir_record_ops) {
+        char msg[256];
+        const char *actual =
+            (Tag_val(v) == Custom_tag)
+            ? Custom_ops_val(v)->identifier
+            : "non-custom block";
+        snprintf(msg, sizeof(msg),
+            "ml_gir_record_ptr_val: expected gir_record custom block for %s, got %s",
+            type_name, actual);
+        caml_failwith(msg);
+    }
 
-    if (Tag_val(v) == Custom_tag)
-        ptr = ((gir_record_box*)Data_custom_val(v))->ptr;
-    else
-        ptr = ext_of_val(v);
-
-    if (ptr == NULL)
+    const gir_record_box *box = (const gir_record_box*)Data_custom_val(v);
+    if (box->ptr == NULL)
         caml_failwith("ml_gir_record_ptr_val: NULL record pointer");
 
-    CAMLreturnT(const void*, ptr);
+    CAMLreturnT(const void*, box->ptr);
 }
 
 /* ==================================================================== */
