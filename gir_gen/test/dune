@@ -37,6 +37,7 @@
   error_handling_tests
   out_params_tests
   array_tests
+  record_macro_tests
   list_conv_tests
   type_conversion_tests
   c_stub_version_guard_tests

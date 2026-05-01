@@ -182,7 +182,7 @@
         },
         {
           "id": "phase-3",
-          "status": "pending",
+          "status": "committed",
           "title": "Generator emits ml_gir_record_ptr_val for value-like record _val macros (closes task #1) + regen",
           "description": "Fix c_stub_record.ml line 87: the generated <X>_val macro for value-like records currently uses ext_of_val (buggy 1-field Abstract-block read). Change it to use ml_gir_record_ptr_val so both value-like and opaque records route through the same hardened helper. Regenerate all 9 namespaces. Expect ~14 changed <ns>_decls.h files. Add a generator unit test asserting the new macro form is emitted.",
           "files_touched": [
