@@ -47,22 +47,21 @@ The `OCGTK_ASSERT_OPS(v, ops_ptr)` macro (defined in `value_kinds.h`) is
 provided for asserting accessors.  In `NDEBUG` builds it compiles away; the
 load is a single pointer comparison.
 
-## Legacy Paths (Sanctioned Residuals)
+## FFI History — Retired Abstractions
 
-Two pre-registry helper pairs remain in the codebase for specific, isolated
-uses only:
+The following helpers have been deleted from the codebase.  Do not reintroduce
+them.
 
-**`val_of_ext` / `ext_of_val`** (1-field Abstract block, payload at field 0):
+**`val_of_ext` / `ext_of_val`** (1-field Abstract block, payload at
+`Data_abstract_val`) — retired in **Phase 6** of the value-kinds-registry plan.
+Their two remaining callers were inlined into their respective translation units:
 
-- `Val_lookup_info` / `Lookup_info_val` in `wrappers.c` — read-only, static
-  enum tables for polymorphic-variant conversion.
-- `Val_GMainLoop` / `GMainLoop_val` in `ml_glib.c` — private to the
-  `GMainLoop` subsystem.
-
-These are **sanctioned ONLY for those two uses**.  New code must not introduce
-additional callers.  **Phase 6 of the value-kinds-registry plan will retire
-`val_of_ext`/`ext_of_val` entirely** by inlining both uses into their
-respective translation units.
+- `Val_lookup_info` / `Lookup_info_val` replaced by `static inline
+  val_lookup_info` / `lookup_info_val` in `wrappers.c` (TU-internal, used by
+  `ml_lookup_from_c` and `ml_lookup_to_c`).
+- `Val_GMainLoop` / `GMainLoop_val` in `ml_glib.c` migrated to direct
+  `caml_alloc(1, Abstract_tag)` + `Data_abstract_val` reads, with writer and
+  reader now consistent (the old reader incorrectly used `Field(val, 0)`).
 
 **`Val_pointer` / `Pointer_val`** (2-field Abstract block, payload at field 1)
 — a separate, incompatible Abstract-block layout — **was deleted in Phase 0a**

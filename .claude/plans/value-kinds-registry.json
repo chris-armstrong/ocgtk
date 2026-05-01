@@ -298,7 +298,7 @@
         },
         {
           "id": "phase-6",
-          "status": "pending",
+          "status": "committed",
           "title": "Sequester and delete val_of_ext / ext_of_val (retire the 1-field Abstract-block layout)",
           "description": "After phases 0-5, the only remaining callers of val_of_ext/ext_of_val are: lookup_info accessors in wrappers.c (Val_lookup_info/Lookup_info_val macros) and Val_GMainLoop/GMainLoop_val in ml_glib.c. Inline both into their respective translation units so neither calls the global helpers, then delete val_of_ext/ext_of_val from wrappers.h and wrappers.c. The 1-field Abstract-block representation ceases to exist as a public API.",
           "files_touched": [

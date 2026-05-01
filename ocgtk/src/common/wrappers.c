@@ -23,6 +23,13 @@
 #include "wrappers.h"
 #include "value_kinds.h"
 
+/* Read a lookup_info pointer from a 1-word Abstract block. The matching
+ * writer is unused — generated enum tables are compiled-in C arrays, not
+ * OCaml-side allocations. */
+static inline const lookup_info *lookup_info_val(value v) {
+    return *((const lookup_info **)Data_abstract_val(v));
+}
+
 /* Enum/variant conversion functions */
 
 /* Internal C variant - accepts lookup table pointer directly
@@ -58,7 +65,7 @@ int lookup_to_c_direct (const lookup_info *table, value key)
 CAMLexport value ml_lookup_from_c (value table_val, value data_val)
 {
     CAMLparam2(table_val, data_val);
-    const lookup_info *table = Lookup_info_val(table_val);
+    const lookup_info *table = lookup_info_val(table_val);
     int data = Int_val(data_val);
     CAMLreturn(lookup_from_c_direct(table, data));
 }
@@ -69,7 +76,7 @@ CAMLexport value ml_lookup_from_c (value table_val, value data_val)
 CAMLexport value ml_lookup_to_c (value table_val, value key)
 {
     CAMLparam2(table_val, key);
-    const lookup_info *table = Lookup_info_val(table_val);
+    const lookup_info *table = lookup_info_val(table_val);
     CAMLreturn(Val_int(lookup_to_c_direct(table, key)));
 }
 
@@ -203,20 +210,6 @@ CAMLexport value ml_gobject_val_of_ext_option(const void *gobject) {
     some = caml_alloc(1, 0);
     Store_field(some, 0, ml_gobject_val_of_ext(gobject));
     CAMLreturn(some);
-}
-
-value val_of_ext(const void *widget) {
-    CAMLparam0();
-    CAMLlocal1(v);
-    v = caml_alloc(1, Abstract_tag);
-    /* Cast away const - safe because we only read via ext_of_val which preserves const */
-    *((void**)Data_abstract_val(v)) = (void*)widget;
-    CAMLreturn(v);
-}
-
-const void* ext_of_val(value val) {
-    CAMLparam1(val);
-    CAMLreturnT(const void*, *((const void**)Data_abstract_val(val)));
 }
 
 /* ========================================================================= */

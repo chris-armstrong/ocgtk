@@ -45,8 +45,8 @@ CAMLexport value ml_gir_record_val_ptr_with_type(GType type, const void *src);
  */
 CAMLexport value ml_gir_record_val_ptr(const void *src);
 
-/* Extract a C pointer from a custom block
- * with a fallback to ext_of_val for older representations.
+/* Extract a C pointer from a gir_record custom block.
+ * Raises Failure if the value is not a gir_record custom block or has a NULL pointer.
  */
 CAMLexport const void *ml_gir_record_ptr_val(value v, const char *type_name);
 
@@ -77,8 +77,6 @@ CAMLexport value ml_gobject_val_of_ext_option(const void *gobject);
 /* ==================================================================== */
 
 typedef struct { value key; int data; } lookup_info;
-#define Val_lookup_info(v) (val_of_ext(v))
-#define Lookup_info_val(v) ((const lookup_info*)ext_of_val(v))
 
 /* Enum conversion functions (implemented in wrappers.c) */
 /* Internal C variants - accept lookup table pointers directly */
@@ -111,13 +109,6 @@ CAMLexport value ml_lookup_to_c (value table, value key);
 
 /* Helper macro for option types */
 #define Val_option(ptr, wrapper) ((ptr) ? Val_some(wrapper(ptr)) : Val_none)
-
-/* ==================================================================== */
-/* Abstract value conversions (common for all libraries) */
-/* ==================================================================== */
-
-CAMLexport value val_of_ext(const void *ext);
-CAMLexport const void* ext_of_val(const value val);
 
 /* ==================================================================== */
 /* GObject/GLib Type Conversions (common for all libraries) */

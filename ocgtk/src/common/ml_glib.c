@@ -293,21 +293,23 @@ value copy_string_check(const char *str)
 /* Main Event Loop */
 /* ==================================================================== */
 
-/* Helper: Wrap GMainLoop pointer in OCaml abstract block */
+/* Helper: Wrap GMainLoop pointer in OCaml abstract block.
+ * Uses a 1-word Abstract block; reader and writer both use Data_abstract_val
+ * for consistency (the old reader used Field(val,0) which happened to coincide
+ * on 64-bit but was technically incorrect). */
 static value Val_GMainLoop(GMainLoop *loop)
 {
     CAMLparam0();
     CAMLlocal1(val);
-    val = val_of_ext(loop);
-    // val = caml_alloc_small(1, Abstract_tag);
-    // Field(val, 0) = (value)loop;
+    val = caml_alloc(1, Abstract_tag);
+    *((GMainLoop **)Data_abstract_val(val)) = loop;
     CAMLreturn(val);
 }
 
-/* Helper: Extract GMainLoop pointer from OCaml value */
+/* Helper: Extract GMainLoop pointer from OCaml abstract block */
 static GMainLoop *GMainLoop_val(value val)
 {
-    return (GMainLoop *)Field(val, 0);
+    return *((GMainLoop **)Data_abstract_val(val));
 }
 
 /* Create a new main loop */
