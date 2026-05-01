@@ -91,7 +91,8 @@
         },
         {
           "id": "phase-1",
-          "status": "pending",
+          "status": "committed",
+          "scope_change": "Test simplified to cover only the four pure-data kinds (INT, GVARIANT, GVARIANT_TYPE, GBYTES) directly, with no GTK display dependency and no link-anchor hacks. The original executor produced ~57 minutes of work that included an unnecessary OCaml Value_kinds module in ocgtk_common, an Allocators submodule, and 35 lines of black-magic linker-anchor code in gtk_test_helpers.ml — all discarded as the wrong layer of solution. GObject and GIR_record kinds are already exercised by test_record_finalizer.ml and the interface tests; GValue and GClosure have no public standalone allocator and will be covered indirectly via Milestone 2 signal infrastructure.",
           "title": "Registry header: value_kinds.h + de-static ops structs + ocgtk_classify",
           "description": "Create ocgtk/src/common/value_kinds.h declaring the seven extern ops structs with stable names (ocgtk_gobject_ops, ocgtk_gir_record_ops, ocgtk_gvariant_ops, ocgtk_gvariant_type_ops, ocgtk_gbytes_ops, ocgtk_gvalue_ops, ocgtk_gclosure_ops), the ocgtk_kind enum, and the ocgtk_classify function prototype plus the OCGTK_ASSERT_OPS macro. De-static each ops struct in its defining .c file and rename to the registry name. Standardise cops->identifier strings to 'ocgtk.<kind>'. Add the ocgtk_classify implementation to wrappers.c. Add a unit test in ocgtk/tests/gtk/test_value_kinds.ml. This phase is purely structural — no behaviour change.",
           "files_touched": [

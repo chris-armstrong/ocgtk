@@ -36,7 +36,7 @@
    -Wno-deprecated-declarations))
  (c_library_flags
   (:include clink-gtk4.sexp))
- (install_c_headers wrappers)
+ (install_c_headers wrappers value_kinds)
  ; UInt8/UInt16/UInt32/UInt64 come from uInt8.ml/uInt16.ml/uInt32.ml/uInt64.ml respectively.
  ; Int8/Int16/Int32 come from int8.ml/int16.ml/int32.ml respectively.
  (modules

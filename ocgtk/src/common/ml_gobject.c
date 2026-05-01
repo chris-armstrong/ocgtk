@@ -35,6 +35,7 @@
 #include <caml/custom.h>
 
 #include "wrappers.h"
+#include "value_kinds.h"
 
 /* ==================================================================== */
 /* GObject Reference Counting */
@@ -235,8 +236,8 @@ static void finalize_gvalue(value val)
     }
 }
 
-static struct custom_operations gvalue_ops = {
-    "org.lablgtk.gvalue",
+struct custom_operations ocgtk_gvalue_ops = {
+    "ocgtk.gvalue",
     finalize_gvalue,
     custom_compare_default,
     custom_hash_default,
@@ -251,7 +252,7 @@ CAMLprim value ml_g_value_new(void)
     CAMLparam0();
     CAMLlocal1(val);
 
-    val = caml_alloc_custom(&gvalue_ops, sizeof(ml_gvalue), 0, 1);
+    val = caml_alloc_custom(&ocgtk_gvalue_ops, sizeof(ml_gvalue), 0, 1);
     ml_gvalue *mlgv = (ml_gvalue *)Data_custom_val(val);
     memset(&mlgv->gvalue, 0, sizeof(GValue));
     mlgv->initialized = 0;
@@ -524,8 +525,8 @@ void finalise_gclosure(value v) {
 }
 
 
-static struct custom_operations ml_custom_GClosure = {
-    "GClosure/4.0/",
+struct custom_operations ocgtk_gclosure_ops = {
+    "ocgtk.gclosure",
     finalise_gclosure,
     custom_compare_default,
     custom_hash_default,
@@ -550,7 +551,7 @@ static value Val_GClosure_sink(GClosure *closure)
     g_closure_sink(closure);
 
     /* Create custom block WITHOUT finalizer */
-    ret = caml_alloc_custom(&ml_custom_GClosure, sizeof(GClosure*), 0, 1);
+    ret = caml_alloc_custom(&ocgtk_gclosure_ops, sizeof(GClosure*), 0, 1);
     GClosure_val(ret) = closure;
 
     CAMLreturn(ret);

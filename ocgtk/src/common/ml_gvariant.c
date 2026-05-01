@@ -44,6 +44,7 @@
 #include <caml/custom.h>
 
 #include "wrappers.h"
+#include "value_kinds.h"
 #include <ocaml_integers.h>
 
 /* ==================================================================== */
@@ -94,7 +95,7 @@ static intnat hash_gvariant(value v) {
     return (intnat)h;
 }
 
-static struct custom_operations gvariant_custom_ops = {
+struct custom_operations ocgtk_gvariant_ops = {
     "ocgtk.gvariant",
     finalize_gvariant,
     compare_gvariant,
@@ -120,7 +121,7 @@ CAMLexport value Val_GVariant(GVariant *variant) {
         caml_failwith("Val_GVariant: NULL variant");
     }
 
-    v = caml_alloc_custom(&gvariant_custom_ops, sizeof(GVariant*), 0, 1);
+    v = caml_alloc_custom(&ocgtk_gvariant_ops, sizeof(GVariant*), 0, 1);
     *((GVariant**)Data_custom_val(v)) = variant;
 
     CAMLreturn(v);

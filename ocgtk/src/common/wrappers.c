@@ -21,6 +21,7 @@
 #include <glib.h>
 
 #include "wrappers.h"
+#include "value_kinds.h"
 
 /* Enum/variant conversion functions */
 
@@ -97,7 +98,7 @@ static void finalize_gir_record(value v) {
     }
 }
 
-static struct custom_operations gir_record_custom_ops = {
+struct custom_operations ocgtk_gir_record_ops = {
     "ocgtk.gir_record",
     finalize_gir_record,
     custom_compare_default,
@@ -113,7 +114,7 @@ CAMLexport value ml_gir_record_val_ptr_with_type(GType type, const void *src) {
 
     if (src == NULL) caml_failwith("ml_gir_record_val_ptr_with_type: NULL source");
 
-    v = caml_alloc_custom(&gir_record_custom_ops, sizeof(gir_record_box), 0, 1);
+    v = caml_alloc_custom(&ocgtk_gir_record_ops, sizeof(gir_record_box), 0, 1);
     gir_record_box *box = (gir_record_box*)Data_custom_val(v);
     box->type = type;
     box->ptr = (void*)src;
@@ -153,7 +154,7 @@ static void finalize_gobject(value v) {
     }
 }
 
-static struct custom_operations gobject_custom_ops = {
+struct custom_operations ocgtk_gobject_ops = {
     "ocgtk.gobject",
     finalize_gobject,
     custom_compare_default,
@@ -174,7 +175,7 @@ CAMLexport value ml_gobject_val_of_ext(const void *gobject) {
 
     /* Just wrap the pointer in a custom block with finalizer.
        Caller is responsible for managing refcount based on transfer-ownership. */
-    v = caml_alloc_custom(&gobject_custom_ops, sizeof(void*), 0, 1);
+    v = caml_alloc_custom(&ocgtk_gobject_ops, sizeof(void*), 0, 1);
     *((void**)Data_custom_val(v)) = (void*)gobject;
 
     CAMLreturn(v);
@@ -232,6 +233,39 @@ value Res_Error(value v) {
     result = caml_alloc(1, 1);  /* Error is tag 1 */
     Store_field(result, 0, v);
     CAMLreturn(result);
+}
+
+/* ==================================================================== */
+/* Value-kinds registry classifier                                      */
+/* ==================================================================== */
+
+/* Returns the kind of an arbitrary OCaml value.
+ * Fast path: Is_long for immediates. Custom blocks dispatch by ops-pointer
+ * identity against the seven registered structs. Any other heap block
+ * returns OCGTK_KIND_OPAQUE_BLOCK. Safe to call on any value. */
+CAMLprim value caml_ocgtk_classify(value v)
+{
+    CAMLparam1(v);
+    CAMLreturn(Val_int((int)ocgtk_classify(v)));
+}
+
+ocgtk_kind ocgtk_classify(value v)
+{
+    if (Is_long(v))
+        return OCGTK_KIND_INT;
+
+    if (Is_block(v) && Tag_val(v) == Custom_tag) {
+        const struct custom_operations *ops = Custom_ops_val(v);
+        if (ops == &ocgtk_gobject_ops)       return OCGTK_KIND_GOBJECT;
+        if (ops == &ocgtk_gir_record_ops)    return OCGTK_KIND_GIR_RECORD;
+        if (ops == &ocgtk_gvariant_ops)      return OCGTK_KIND_GVARIANT;
+        if (ops == &ocgtk_gvariant_type_ops) return OCGTK_KIND_GVARIANT_TYPE;
+        if (ops == &ocgtk_gbytes_ops)        return OCGTK_KIND_GBYTES;
+        if (ops == &ocgtk_gvalue_ops)        return OCGTK_KIND_GVALUE;
+        if (ops == &ocgtk_gclosure_ops)      return OCGTK_KIND_GCLOSURE;
+    }
+
+    return OCGTK_KIND_OPAQUE_BLOCK;
 }
 
 /* Convert GError to OCaml GError.t record and free the GError */

@@ -27,6 +27,7 @@
 #include <caml/custom.h>
 
 #include "wrappers.h"
+#include "value_kinds.h"
 
 /* ==================================================================== */
 /* GBytes custom block with reference counting                          */
@@ -47,7 +48,7 @@ static intnat hash_gbytes(value v) {
     return (intnat)g_bytes_hash(GBytes_val(v));
 }
 
-static struct custom_operations gbytes_custom_ops = {
+struct custom_operations ocgtk_gbytes_ops = {
     "ocgtk.gbytes",
     finalize_gbytes,
     compare_gbytes,
@@ -72,7 +73,7 @@ CAMLexport value Val_GBytes(GBytes *bytes) {
         caml_failwith("Val_GBytes: NULL bytes");
     }
 
-    result = caml_alloc_custom(&gbytes_custom_ops, sizeof(GBytes*), 0, 1);
+    result = caml_alloc_custom(&ocgtk_gbytes_ops, sizeof(GBytes*), 0, 1);
     *((GBytes**)Data_custom_val(result)) = bytes;
 
     CAMLreturn(result);
@@ -98,7 +99,7 @@ CAMLprim value ml_g_bytes_new(value ml_str) {
     GBytes *bytes = g_bytes_new(data, (gsize)len);
 
     /* Now allocate the custom block - takes ownership, no extra ref needed */
-    result = caml_alloc_custom(&gbytes_custom_ops, sizeof(GBytes*), 0, 1);
+    result = caml_alloc_custom(&ocgtk_gbytes_ops, sizeof(GBytes*), 0, 1);
     *((GBytes**)Data_custom_val(result)) = bytes;
 
     CAMLreturn(result);
