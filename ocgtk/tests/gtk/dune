@@ -50,3 +50,8 @@
  (name test_value_kinds)
  (modules test_value_kinds)
  (libraries ocgtk.common alcotest))
+
+(test
+ (name test_tree_path)
+ (modules test_tree_path)
+ (libraries ocgtk.gtk alcotest gtk_test_helpers))

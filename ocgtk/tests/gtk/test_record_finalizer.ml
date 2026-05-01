@@ -63,12 +63,13 @@ external raw_tree_path_get_depth : 'a -> int = "ml_gtk_tree_path_get_depth"
    layout regression every call would dereference a GType slot as a
    pointer and segfault before reaching the assertions.
 
-   We deliberately avoid [get_indices_with_depth]. That binding currently
-   has a pre-existing wrapper bug (the [int array option * int] return
-   value is constructed without the [Some] wrapper on the C side, so
-   [Array.length] crashes when called on the resulting word). See the
-   TASKS.md entry on length-linked array params. [get_depth] and
-   [to_string] both round-trip cleanly and exercise the same lookup. *)
+   We deliberately avoid [get_indices_with_depth] here to keep this test
+   focused on the finalizer contract. That binding had a pre-existing bug
+   (the [int array option * int] return value was constructed without the
+   [Some] wrapper on the C side); it was fixed in phase-5 of the
+   value-kinds-registry plan and is now exercised in [test_tree_path.ml].
+   [get_depth] and [to_string] both round-trip cleanly and exercise the
+   same lookup. *)
 
 let test_depth_round_trip () =
   let path = path_new () in
@@ -174,16 +175,16 @@ let string_contains ~sub s =
 let test_cross_kind_ml_gir_record_ptr_val_rejects_wrong_kind () =
   let wrong_kind = Gvariant.of_string "hello" in
   match
-    (try Ok (raw_tree_path_get_depth wrong_kind) with Failure msg -> Error msg)
+    try Ok (raw_tree_path_get_depth wrong_kind) with Failure msg -> Error msg
   with
   | Error msg ->
-    check bool "failure message mentions gir_record" true
-      (string_contains ~sub:"gir_record" msg);
-    check bool "failure message mentions ocgtk.gvariant" true
-      (string_contains ~sub:"ocgtk.gvariant" msg)
+      check bool "failure message mentions gir_record" true
+        (string_contains ~sub:"gir_record" msg);
+      check bool "failure message mentions ocgtk.gvariant" true
+        (string_contains ~sub:"ocgtk.gvariant" msg)
   | Ok _ ->
-    fail
-      "expected Failure but got a result — cross-kind check was not enforced"
+      fail
+        "expected Failure but got a result — cross-kind check was not enforced"
 
 (* ========== Test Suite Registration ========== *)
 
@@ -205,7 +206,8 @@ let () =
         ] );
       ( "Cross-kind rejection",
         [
-          test_case "rejects non-record kind (GVariant) where gir_record expected"
+          test_case
+            "rejects non-record kind (GVariant) where gir_record expected"
             `Quick
             (require_gtk
                test_cross_kind_ml_gir_record_ptr_val_rejects_wrong_kind);

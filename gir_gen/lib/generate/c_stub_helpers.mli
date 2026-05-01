@@ -56,9 +56,13 @@ val generate_array_c_to_ml :
   length_expr:string option ->
   element_c_type:string ->
   transfer_ownership:Types.transfer_ownership ->
+  ?nullable:bool ->
+  unit ->
   string * string * string
-(** Array conversion - generate conversion code for C array to OCaml array.
-    Returns (conversion_code, ml_array_var, cleanup_code) *)
+(** Array conversion - generate conversion code for C array to OCaml array. When
+    [nullable] is true (default false) the C pointer may be NULL and the
+    generated code wraps the result in [Val_none]/[Val_some]. Returns
+    (conversion_code, ml_array_var_or_opt_var, cleanup_code) *)
 
 val is_string_array : Types.gir_array -> bool
 (** Check if an array contains string elements *)
@@ -121,10 +125,10 @@ val generate_methods :
   Types.gir_method list ->
   unit
 (** Generate C code for methods by iterating and filtering. Applies
-    [Filtering.should_skip_method_binding] with the supplied [entity_kind]
-    so the record copy/free/unref filter is folded into the same answer
-    as varargs / unsupported arrays / non-introspectable. Methods are
-    processed in reverse order (List.rev). *)
+    [Filtering.should_skip_method_binding] with the supplied [entity_kind] so
+    the record copy/free/unref filter is folded into the same answer as varargs
+    / unsupported arrays / non-introspectable. Methods are processed in reverse
+    order (List.rev). *)
 
 val default_type_mapping : Types.type_mapping
 (** Default type mapping for when no mapping is found *)

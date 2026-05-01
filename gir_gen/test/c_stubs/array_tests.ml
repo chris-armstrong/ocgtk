@@ -451,6 +451,80 @@ let test_generate_methods_skips_failing_method () =
 (* Test Suite *)
 (* =================================================================== *)
 
+(* =================================================================== *)
+(* Nullable Array Return Value Tests *)
+(* =================================================================== *)
+
+(* Simulates gtk_tree_path_get_indices_with_depth:
+   - Returns int ptr that can be NULL (nullable="1" in GIR)
+   - Has a length out-parameter (the depth int ptr)
+   - OCaml signature: int array option paired with int
+   The generator must emit Val_none/Val_some wrapping. *)
+let test_nullable_length_linked_array_return_emits_val_none () =
+  let meth =
+    make_gir_method ~method_name:"get_indices_with_depth"
+      ~c_identifier:"gtk_tree_path_get_indices_with_depth"
+      ~return_type:
+        (make_gir_type ~name:"gint" ~c_type:"int*" ~nullable:true
+           ~array:
+             (make_gir_array ~length:0 ~zero_terminated:false
+                ~element_type:gint_element ())
+           ())
+      ~parameters:
+        [
+          make_gir_param ~param_name:"depth" ~param_type:gint_type
+            ~direction:Out ();
+        ]
+      ()
+  in
+  let ctx = create_test_context () in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkTreePath" meth "TreePath" in
+  Helpers.log_generated_c_code
+    "nullable length-linked array return emits Val_none" c_code;
+  (* Val_none and Val_some appear as identifiers inside a multi-line if/else
+     block that the C_parser line-by-line model does not parse as IfStmt.
+     String search is the only available mechanism for this structural pattern.
+     This is an acknowledged exception, analogous to the != NULL check in
+     test_pointer_array_without_length_uses_null_termination. *)
+  Alcotest.(check bool)
+    "Emits Val_none for NULL case" true
+    (Helpers.string_contains c_code "Val_none");
+  Alcotest.(check bool)
+    "Emits Val_some for non-NULL case" true
+    (Helpers.string_contains c_code "Val_some")
+
+(* Non-nullable length-linked array return: no option wrapping should appear. *)
+let test_non_nullable_length_linked_array_return_no_val_none () =
+  let meth =
+    make_gir_method ~method_name:"get_values"
+      ~c_identifier:"gtk_widget_get_values"
+      ~return_type:
+        (make_gir_type ~name:"gint" ~c_type:"int*" ~nullable:false
+           ~array:
+             (make_gir_array ~length:0 ~zero_terminated:false
+                ~element_type:gint_element ())
+           ())
+      ~parameters:
+        [
+          make_gir_param ~param_name:"n_values" ~param_type:gint_type
+            ~direction:Out ();
+        ]
+      ()
+  in
+  let ctx = create_test_context () in
+  let c_code = generate_c_method ~ctx ~c_type:"GtkWidget" meth "Widget" in
+  (* See comment in test_nullable_length_linked_array_return_emits_val_none for
+     why string search is used here. *)
+  Alcotest.(check bool)
+    "Non-nullable array return does NOT emit Val_none" false
+    (Helpers.string_contains c_code "Val_none");
+  Alcotest.(check bool)
+    "Non-nullable array return does NOT emit Val_some" false
+    (Helpers.string_contains c_code "Val_some");
+  Alcotest.(check bool)
+    "Non-nullable array return still allocates OCaml array" true
+    (Helpers.string_contains c_code "caml_alloc")
+
 let tests =
   [
     Alcotest.test_case "Zero-terminated string array input" `Quick
@@ -479,4 +553,10 @@ let tests =
       `Quick test_pointer_array_without_length_uses_null_termination;
     Alcotest.test_case "generate_methods skips failing method" `Quick
       test_generate_methods_skips_failing_method;
+    Alcotest.test_case
+      "Nullable length-linked array return emits Val_none/Val_some" `Quick
+      test_nullable_length_linked_array_return_emits_val_none;
+    Alcotest.test_case
+      "Non-nullable length-linked array return has no Val_none/Val_some" `Quick
+      test_non_nullable_length_linked_array_return_no_val_none;
   ]

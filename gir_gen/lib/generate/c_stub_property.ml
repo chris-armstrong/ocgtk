@@ -179,7 +179,7 @@ let generate_c_property_getter_impl ~ctx ~c_type (prop : gir_property)
       let conv_code, ml_array_var_name, _cleanup_code =
         C_stub_helpers.generate_array_c_to_ml ~ctx ~var:c_array_var ~array_info
           ~length_expr:None ~element_c_type:effective_element_c_type
-          ~transfer_ownership:prop.prop_type.transfer_ownership
+          ~transfer_ownership:prop.prop_type.transfer_ownership ()
       in
 
       (* Generate property getter with array handling.

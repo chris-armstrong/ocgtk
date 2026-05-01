@@ -253,7 +253,8 @@
         },
         {
           "id": "phase-5",
-          "status": "pending",
+          "status": "committed",
+          "scope_change": "Initial regen captured unrelated drift: 13 unrelated GTK functions across ml_alert_dialog_gen.c, ml_drop_target_gen.c, ml_icon_theme_gen.c were deleted because the generator's filter logic has shifted since the last full regen. Detected because external declarations in the corresponding .ml/.mli still reference those C symbols — build passes (OCaml does not link-check externals at compile time) but runtime calls would fail. Recovered by restoring all 13 functions and keeping only the intended NULL-guard wraps for the five affected nullable-length-linked-array out-params: get_indices_with_depth (tree_path), get_buttons (alert_dialog), get_gtypes (drop_target), get_search_path + get_resource_path (icon_theme).",
           "title": "Fix length-linked array out-param: nullable array in option wrapper (task #3, independent)",
           "description": "Fix the generator so length-linked array out-params with a nullable result pointer emit the array inside Some/Val_none rather than unwrapped. The concrete broken binding is Gtk.Tree_path.get_indices_with_depth (ml_tree_path_gen.c:129-146 builds (int array, int) but OCaml signature is int array option * int). Add a runtime test for get_indices_with_depth on empty and non-empty paths.",
           "files_touched": [
