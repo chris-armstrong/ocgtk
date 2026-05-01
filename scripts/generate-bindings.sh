@@ -39,7 +39,7 @@ cd "$REPO_ROOT"
 # Step 0: Build gir_gen tool
 echo "Step 0: Building gir_gen tool..."
 echo "-----------------------------------"
-dune build gir_gen/bin/gir_gen.exe
+dune build --root . gir_gen/bin/gir_gen.exe
 
 if [ ! -f "$GIR_GEN" ]; then
     echo "Error: gir_gen not found at $GIR_GEN"
