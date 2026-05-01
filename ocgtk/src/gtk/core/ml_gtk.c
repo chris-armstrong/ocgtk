@@ -20,38 +20,6 @@
 
 #include "wrappers.h"
 
-#define GtkWidget_val(val) ((GtkWidget*)ext_of_val(val))
-#define Val_GtkWidget(obj) ((value)(val_of_ext(obj)))
-
-/* Widget type conversions are defined in wrappers.h */
-
-
-/* ========== Destruction ========== */
-
-/* Note: In GTK4, gtk_widget_destroy is deprecated.
- * Widgets are destroyed via container removal or reference counting.
- * We provide this for API compatibility but issue a warning. */
-CAMLprim value ml_gtk_widget_destroy(value widget)
-{
-  CAMLparam1(widget);
-  GtkWidget *w = GtkWidget_val(widget);
-  GtkWidget *parent;
-
-  /* Security: Check for NULL pointer */
-  if (w == NULL) {
-    CAMLreturn(Val_unit);
-  }
-
-  parent = gtk_widget_get_parent(w);
-  if (parent) {
-    /* GTK4: widget removal requires container-specific API
-     * For now, just unparent if possible */
-    gtk_widget_unparent(w);
-  }
-
-  CAMLreturn(Val_unit);
-}
-
 /* ========== Initialization and Main Loop ========== */
 
 /* GTK4 Note: gtk_init_check() no longer takes argc/argv parameters.

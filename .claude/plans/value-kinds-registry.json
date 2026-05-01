@@ -63,7 +63,8 @@
         },
         {
           "id": "phase-0b",
-          "status": "pending",
+          "status": "committed",
+          "scope_change": "Replaced 'fix shadow defines to point at ml_gobject_*_of_val' with 'delete ml_gtk_widget_destroy and its shadow defines outright'. Investigation post-executor revealed the function is dead C code: zero OCaml callers (no external = ml_gtk_widget_destroy anywhere), no GTK 4 API to bind to (gtk_widget_destroy was removed in GTK 4), and the underlying gtk_widget_unparent is already exposed via the generated Widget.unparent binding. Top-level destroy is Window.destroy (also generated). The Custom-block-vs-Abstract-block bug becomes moot once the only consumer is gone.",
           "title": "Fix ml_gtk.c widget shadow defines (ml_gtk_widget_destroy bug)",
           "description": "ml_gtk.c lines 23-24 define GtkWidget_val and Val_GtkWidget using the 1-field Abstract-block layout (via val_of_ext/ext_of_val), which is incompatible with the generated Custom-block widgets passed in from OCaml. Replace these shadow defines with #include of the generated gtk_decls.h so GtkWidget_val / Val_GtkWidget resolve to the ml_gobject_*_of_val Custom-block path. Verify ml_gtk_widget_destroy compiles and works. This is separated from phase-0a because it has a genuine behaviour change (reading a Custom block via ext_of_val produces garbage; after the fix it reads correctly).",
           "files_touched": [
