@@ -1,5 +1,119 @@
 ## FFI Guidelines
 
+## Canonical FFI Paths
+
+Every OCaml-visible FFI value in ocgtk falls into one of seven Custom-block
+kinds, each identified by a stable `struct custom_operations` pointer.  The
+table below is the authoritative reference; use it when writing new bindings
+or reading existing ones.
+
+| Kind | ops struct (extern) | identifier | Allocator | Reader |
+|------|---------------------|------------|-----------|--------|
+| GObject | `ocgtk_gobject_ops` | `"ocgtk.gobject"` | `ml_gobject_val_of_ext` | `ml_gobject_ext_of_val` (or per-class `<X>_val` macros from generated `<ns>_decls.h`) |
+| GIR record (opaque or boxed) | `ocgtk_gir_record_ops` | `"ocgtk.gir_record"` | `ml_gir_record_val_ptr` / `ml_gir_record_val_ptr_with_type` | `ml_gir_record_ptr_val(v, "<TypeName>")` (or per-record `<X>_val` macros) |
+| GVariant | `ocgtk_gvariant_ops` | `"ocgtk.gvariant"` | `Val_GVariant` | `GVariant_val` |
+| GVariantType | `ocgtk_gvariant_type_ops` | `"ocgtk.gvariant_type"` | `Val_GVariantType` | `GVariantType_val` |
+| GBytes | `ocgtk_gbytes_ops` | `"ocgtk.gbytes"` | `Val_GBytes` | `GBytes_val` |
+| GValue | `ocgtk_gvalue_ops` | `"ocgtk.gvalue"` | (internal — `GObject.Value` module) | `GValue_val` |
+| GClosure | `ocgtk_gclosure_ops` | `"ocgtk.gclosure"` | (internal — signal infrastructure) | `GClosure_val` |
+
+All seven `extern struct custom_operations ocgtk_<kind>_ops` declarations are
+in `ocgtk/src/common/value_kinds.h`.  Include that header to access them.
+
+## The Registry and `ocgtk_classify`
+
+`ocgtk/src/common/value_kinds.h` exposes the seven extern `custom_operations`
+structs described above, along with the `ocgtk_kind` enum and the
+`ocgtk_classify(value v) -> ocgtk_kind` function (implemented in
+`ocgtk/src/common/wrappers.c`).  `ocgtk_classify` is the canonical way to ask
+"what kind of FFI value am I holding?" at dynamic-dispatch sites — for example
+signal marshallers and `GValue`↔OCaml decoders.
+
+**Pointer comparison is preferred** over identifier-string comparison:
+
+```c
+/* Preferred — single pointer load, no strcmp */
+if (Custom_ops_val(v) == &ocgtk_gobject_ops) { ... }
+
+/* Also available — but slower and unnecessary in this codebase */
+if (strcmp(Custom_ops_val(v)->identifier, "ocgtk.gobject") == 0) { ... }
+```
+
+Pointer comparison is faster, it is stronger (it proves the value came through
+the same translation-unit chain as the ops struct definition), and ocgtk has no
+dynamic loading where string comparison would be safer.
+
+The `OCGTK_ASSERT_OPS(v, ops_ptr)` macro (defined in `value_kinds.h`) is
+provided for asserting accessors.  In `NDEBUG` builds it compiles away; the
+load is a single pointer comparison.
+
+## Legacy Paths (Sanctioned Residuals)
+
+Two pre-registry helper pairs remain in the codebase for specific, isolated
+uses only:
+
+**`val_of_ext` / `ext_of_val`** (1-field Abstract block, payload at field 0):
+
+- `Val_lookup_info` / `Lookup_info_val` in `wrappers.c` — read-only, static
+  enum tables for polymorphic-variant conversion.
+- `Val_GMainLoop` / `GMainLoop_val` in `ml_glib.c` — private to the
+  `GMainLoop` subsystem.
+
+These are **sanctioned ONLY for those two uses**.  New code must not introduce
+additional callers.  **Phase 6 of the value-kinds-registry plan will retire
+`val_of_ext`/`ext_of_val` entirely** by inlining both uses into their
+respective translation units.
+
+**`Val_pointer` / `Pointer_val`** (2-field Abstract block, payload at field 1)
+— a separate, incompatible Abstract-block layout — **was deleted in Phase 0a**
+of the value-kinds-registry plan.  The two Abstract-block layouts (1-field and
+2-field) are NOT interchangeable, and neither is compatible with Custom blocks.
+Do not reintroduce `Val_pointer` / `Pointer_val`.
+
+## Adding a New Kind (Recipe)
+
+Follow these steps when adding a new custom-block kind to the registry.
+
+1. **Define the ops struct** in the appropriate `.c` file with
+   `"ocgtk.<kind>"` as the identifier and the correct finalizer:
+   ```c
+   struct custom_operations ocgtk_<kind>_ops = {
+       "ocgtk.<kind>",
+       finalize_<kind>,
+       custom_compare_default,
+       custom_hash_default,
+       custom_serialize_default,
+       custom_deserialize_default,
+       custom_compare_ext_default
+   };
+   ```
+
+2. **Promote to `extern`** and add the declaration to `value_kinds.h`:
+   ```c
+   extern struct custom_operations ocgtk_<kind>_ops;  /* "ocgtk.<kind>" */
+   ```
+
+3. **Add an enum value** `OCGTK_KIND_<KIND>` to the `ocgtk_kind` enum in
+   `value_kinds.h`, before `OCGTK_KIND_OPAQUE_BLOCK`.
+
+4. **Extend the switch** in `ocgtk_classify` (in `wrappers.c`) to return the
+   new kind for the new ops pointer:
+   ```c
+   if (ops == &ocgtk_<kind>_ops) return OCGTK_KIND_<KIND>;
+   ```
+
+5. **Write an asserting accessor** — typical form is a pointer cast through
+   `Data_custom_val`, guarded by `OCGTK_ASSERT_OPS`:
+   ```c
+   static inline <C type>* <kind>_val(value v) {
+       OCGTK_ASSERT_OPS(v, ocgtk_<kind>_ops);
+       return (<C type>*)Data_custom_val(v);
+   }
+   ```
+
+6. **Add a test case** to `ocgtk/tests/gtk/test_value_kinds.ml` covering the
+   classification round-trip for the new kind.
+
 ## OCaml/C FFI Critical Lessons
 
 ### 1. GValue Memory Management
@@ -105,4 +219,8 @@ CAMLprim value ml_g_variant_get_variant(value v) {
 | `value result = Val_*(...)` without CAMLlocal | Silent GC corruption if allocation added later | Always use `CAMLlocal1(result)` |
 | Not checking lablgtk3 | Hours of debugging | **ALWAYS check lablgtk3 first!** |
 
-**Note**: `Val_pointer`/`Pointer_val` (a 2-field Abstract-block layout) were deleted in phase-0a as dead code. Do not reintroduce them. All GObject/record/variant values use Custom blocks — use the `ml_gobject_*`/`ml_gir_record_*` helpers and their per-class `<X>_val`/`Val_<X>` macros.
+**Note**: All GObject/record/variant values use Custom blocks — use the
+allocator and reader listed in the **Canonical FFI Paths** table at the top of
+this document.  `Val_pointer`/`Pointer_val` (deleted in phase-0a) and
+`val_of_ext`/`ext_of_val` (legacy, phase-6 retirement) are covered in the
+**Legacy Paths** section above.

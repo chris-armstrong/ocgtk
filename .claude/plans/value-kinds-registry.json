@@ -232,7 +232,7 @@
         },
         {
           "id": "phase-4",
-          "status": "pending",
+          "status": "committed",
           "title": "Document canonical FFI paths in architecture/FFI_GUIDELINES.md",
           "description": "Update architecture/FFI_GUIDELINES.md with: a canonical-paths table per kind (allocator + reader); a note that val_of_ext/ext_of_val are legacy paths kept only for lookup_info and GMainLoop (to be removed in phase-6); a note that Val_pointer/Pointer_val used a different Abstract-block layout and are now deleted; the recommended pattern for adding a new custom-block kind. Documentation-only change.",
           "files_touched": [
