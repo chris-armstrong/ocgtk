@@ -25,14 +25,6 @@
 #include <glib-object.h>
 #include <ocaml_integers.h>
 
-/* For value blocks containing copied C structs */
-#define MLPointer_val(val) \
-        ((int)Field(val,1) == 2 ? &Field(val,2) : (void*)Field(val,1))
-
-/* Helper for creating OCaml values from C structs */
-CAMLexport value copy_memblock_indirected(void *src, asize_t size);
-#define Val_copy(val) copy_memblock_indirected(&val, sizeof(val))
-
 /* ==================================================================== */
 /* GIR record helpers                                                   */
 /* ==================================================================== */
@@ -81,14 +73,6 @@ CAMLexport const void* ml_gobject_ext_of_val(value val);
 CAMLexport value ml_gobject_val_of_ext_option(const void *gobject);
 
 /* ==================================================================== */
-/* Pointer Wrapping (OCaml 5.0+ compatible) */
-/* ==================================================================== */
-
-/* Wrap C pointers in Abstract blocks to prevent GC scanning */
-CAMLexport value Val_pointer(void *ptr);
-#define Pointer_val(val) ((void*)Field(val,1))
-
-/* ==================================================================== */
 /* Enums <-> Polymorphic Variants */
 /* ==================================================================== */
 
@@ -128,52 +112,6 @@ CAMLexport value ml_lookup_to_c (value table, value key);
 /* Helper macro for option types */
 #define Val_option(ptr, wrapper) ((ptr) ? Val_some(wrapper(ptr)) : Val_none)
 
-/* Helper macro to generate Val_option_T functions */
-#define Make_Val_option(T) \
-value Val_option_##T(T* v) { return v ? Val_some(Val_##T(v)) : Val_none; }
-
-/* Helper macros for wrapping C functions */
-#define Ignore(x)
-#define Unit(x) (((void)x), Val_unit)
-
-#define ML_1(cname, conv1, conv) \
-CAMLprim value ml_##cname (value arg1) { return conv (cname (conv1 (arg1))); }
-
-#define ML_2(cname, conv1, conv2, conv) \
-CAMLprim value ml_##cname (value arg1, value arg2) { return conv (cname (conv1(arg1), conv2(arg2))); }
-
-#define ML_4(cname, conv1, conv2, conv3, conv4, conv) \
-CAMLprim value ml_##cname (value arg1, value arg2, value arg3, value arg4) { return conv (cname (conv1(arg1), conv2(arg2), conv3(arg3), conv4(arg4))); }
-
-#define ML_5(cname, conv1, conv2, conv3, conv4, conv5, conv) \
-CAMLprim value ml_##cname (value arg1, value arg2, value arg3, value arg4, value arg5) \
-{ return conv (cname (conv1(arg1), conv2(arg2), conv3(arg3), conv4(arg4), conv5(arg5))); }
-
-#define ML_8(cname, conv1, conv2, conv3, conv4, conv5, conv6, conv7, conv8, conv) \
-CAMLprim value ml_##cname (value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8) \
-{ return conv (cname (conv1(arg1), conv2(arg2), conv3(arg3), conv4(arg4), conv5(arg5), conv6(arg6), conv7(arg7), conv8(arg8))); }
-
-#define ML_11(cname, conv1, conv2, conv3, conv4, conv5, conv6, conv7, conv8, conv9, conv10, conv11, conv) \
-CAMLprim value ml_##cname (value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8, value arg9, value arg10, value arg11) \
-{ return conv (cname (conv1(arg1), conv2(arg2), conv3(arg3), conv4(arg4), conv5(arg5), conv6(arg6), conv7(arg7), conv8(arg8), conv9(arg9), conv10(arg10), conv11(arg11))); }
-
-#define ML_12(cname, conv1, conv2, conv3, conv4, conv5, conv6, conv7, conv8, conv9, conv10, conv11, conv12, conv) \
-CAMLprim value ml_##cname (value arg1, value arg2, value arg3, value arg4, value arg5, value arg6, value arg7, value arg8, value arg9, value arg10, value arg11, value arg12) \
-{ return conv (cname (conv1(arg1), conv2(arg2), conv3(arg3), conv4(arg4), conv5(arg5), conv6(arg6), conv7(arg7), conv8(arg8), conv9(arg9), conv10(arg10), conv11(arg11), conv12(arg12))); }
-
-/* Bytecode variants for functions with >5 args */
-#define ML_bc8(fname) \
-CAMLprim value fname##_bc(value *argv, int argn) \
-{ return fname(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7]); }
-
-#define ML_bc11(fname) \
-CAMLprim value fname##_bc(value *argv, int argn) \
-{ return fname(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7], argv[8], argv[9], argv[10]); }
-
-#define ML_bc12(fname) \
-CAMLprim value fname##_bc(value *argv, int argn) \
-{ return fname(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7], argv[8], argv[9], argv[10], argv[11]); }
-
 /* ==================================================================== */
 /* Abstract value conversions (common for all libraries) */
 /* ==================================================================== */
@@ -184,10 +122,6 @@ CAMLexport const void* ext_of_val(const value val);
 /* ==================================================================== */
 /* GObject/GLib Type Conversions (common for all libraries) */
 /* ==================================================================== */
-
-/* GObject - use direct cast */
-#define GObject_val(val) ((GObject*)(ext_of_val(val)))
-#define Val_GObject(obj) (val_of_ext(obj))
 
 /* GClosure - custom block with finalizer (defined in ml_gobject.c) */
 #define GClosure_val(val) (*((GClosure**)Data_custom_val(val)))

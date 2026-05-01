@@ -1,0 +1,329 @@
+{
+  "plan_id": "value-kinds-registry",
+  "title": "Value-Kinds Registry — disciplined runtime FFI discrimination",
+  "source_plan": "gir_gen/docs/plans/value_kinds_registry.md",
+  "branch": "worktree-bridge-cse_01RbnpbDken6333sbkFEx5dx",
+  "pr": 126,
+  "baseline": {
+    "head": "179cfb68",
+    "build": "pass",
+    "tests": "pass (344 gir_gen tests + full ocgtk suite)",
+    "tree": "clean",
+    "notes": "No stage-0 fix work needed. The plan's Phase 5 (length-linked array out-param) is independent of the registry chain; it is listed after the registry stages by plan convention but has no technical dependency on any of them."
+  },
+  "coding_guidelines_to_emphasize": [
+    "architecture/FFI_GUIDELINES.md",
+    "docs/code_guidelines/test-patterns.md",
+    "docs/code_guidelines/type-safety.md",
+    "docs/code_guidelines/error-handling.md",
+    "docs/code_guidelines/module-boundaries.md"
+  ],
+  "reviewer_constraints": [
+    "Per-class <X>_val / Val_<X> macros are internal — executor may simplify or eliminate them where the registry approach is cleaner.",
+    "cops->identifier strings are standardised to 'ocgtk.<kind>' scheme — renames are safe because no external code relies on these strings.",
+    "val_of_ext / ext_of_val retirement (Phase 6) is in scope, not deferred."
+  ],
+  "epochs": [
+    {
+      "id": "ffi-cleanup",
+      "title": "FFI infrastructure cleanup, registry, and bug fixes",
+      "description": "Seven sequential stages (Phases 0-6) that shrink the FFI surface, introduce the value-kinds registry, harden accessors, fix two latent bugs, regenerate bindings, document canonical paths, and retire the legacy Abstract-block val_of_ext/ext_of_val helpers. Phase 5 (array out-param fix) is listed last but is technically independent and can be applied at any point.",
+      "stages": [
+        {
+          "id": "phase-0a",
+          "status": "committed",
+          "title": "Dead-code excision from wrappers.h / wrappers.c / converters.c",
+          "description": "Remove all zero-call-site macros and helpers from wrappers.h, wrappers.c, and converters.c: MLPointer_val, Val_copy/copy_memblock_indirected, Val_pointer/Pointer_val (both the 2-field Abstract-block macro and its implementing function), Make_Val_option, Ignore, Unit, ML_1..ML_12, ML_bc8/bc11/bc12, GObject_val/Val_GObject, and Val_GtkWidget_option. The file converters.c becomes empty of all functions (leave it as a stub with banner comment or remove from dune rules). Also remove references to deleted macros from SECURITY_GUIDELINES.md and architecture/FFI_GUIDELINES.md. This phase is split from the widget bug fix (phase-0b) because the deletions are purely mechanical and carry no behaviour risk, while the ml_gtk.c fix has one behavioural consequence worth isolating.",
+          "files_touched": [
+            "ocgtk/src/common/wrappers.h",
+            "ocgtk/src/common/wrappers.c",
+            "ocgtk/src/gtk/core/converters.c",
+            "ocgtk/src/gtk/core/converters.h",
+            "SECURITY_GUIDELINES.md",
+            "architecture/FFI_GUIDELINES.md"
+          ],
+          "files_created": [],
+          "implementation_notes": "Delete in order: (1) wrappers.h lines 28-34 (MLPointer_val, copy_memblock_indirected decl, Val_copy), lines 86-89 (Val_pointer decl, Pointer_val macro), lines 131-133 (Make_Val_option), lines 136-137 (Ignore, Unit), lines 139-175 (ML_1..ML_12, ML_bc8..bc12), lines 188-190 (GObject_val, Val_GObject). (2) wrappers.c lines 81-92 (copy_memblock_indirected body) and lines 226-239 (Val_pointer body). (3) converters.c: delete Val_GtkWidget_option function body — either leave the .c as a stub or remove it from the dune rules if converters.h has no remaining declarations that reference it. Check whether converters.h still needs to exist after removal. (4) Remove any documentation references to Val_pointer, Pointer_val, copy_memblock_indirected from SECURITY_GUIDELINES.md and architecture/FFI_GUIDELINES.md. Run `git grep -E '\\b(MLPointer_val|Val_copy|Val_pointer|Pointer_val|Make_Val_option|GObject_val|Val_GObject)\\b'` to confirm no production matches remain. Do NOT remove val_of_ext/ext_of_val — those survive until phase-6.",
+          "coding_guidelines_to_emphasize": [
+            "architecture/FFI_GUIDELINES.md — pitfalls table: Val_pointer/Pointer_val are the exact macros being deleted"
+          ],
+          "test_requirements": {
+            "preserves": [
+              "Full dune build from worktree root must exit 0 — any latent caller of a removed symbol surfaces as a link error and must be investigated",
+              "dune test --root . gir_gen/ && xvfb-run dune test --root . ocgtk/ — all 344+ tests must still pass"
+            ],
+            "new_tests": []
+          },
+          "acceptance": "git grep for all seven dead-code categories returns no production matches. converters.c empty of all functions. SECURITY_GUIDELINES.md and FFI_GUIDELINES.md contain no references to the deleted macros. dune build + tests green.",
+          "risks": [
+            "converters.h may be included by other TUs — check before deleting and update dune rules accordingly",
+            "If any generated file includes wrappers.h and references a removed macro, the build will fail cleanly as a link/compile error, not silently"
+          ],
+          "depends_on": []
+        },
+        {
+          "id": "phase-0b",
+          "status": "pending",
+          "title": "Fix ml_gtk.c widget shadow defines (ml_gtk_widget_destroy bug)",
+          "description": "ml_gtk.c lines 23-24 define GtkWidget_val and Val_GtkWidget using the 1-field Abstract-block layout (via val_of_ext/ext_of_val), which is incompatible with the generated Custom-block widgets passed in from OCaml. Replace these shadow defines with #include of the generated gtk_decls.h so GtkWidget_val / Val_GtkWidget resolve to the ml_gobject_*_of_val Custom-block path. Verify ml_gtk_widget_destroy compiles and works. This is separated from phase-0a because it has a genuine behaviour change (reading a Custom block via ext_of_val produces garbage; after the fix it reads correctly).",
+          "files_touched": [
+            "ocgtk/src/gtk/core/ml_gtk.c"
+          ],
+          "files_created": [],
+          "implementation_notes": "Replace lines 23-24 (`#define GtkWidget_val(val) ((GtkWidget*)ext_of_val(val))` and `#define Val_GtkWidget(obj) ((value)(val_of_ext(obj)))`) with a single `#include \"../generated/gtk_decls.h\"`. The generated gtk_decls.h contains the correct ml_gobject_*_of_val-backed macros. Manually smoke-test the calculator app and form-example app focusing on window close/destroy paths, since ml_gtk_widget_destroy is the only call site of the old shadow defines inside this TU.",
+          "coding_guidelines_to_emphasize": [
+            "architecture/FFI_GUIDELINES.md — Pointer Wrapping is NOT Trivial section; GC Safety section"
+          ],
+          "test_requirements": {
+            "preserves": [
+              "dune build + xvfb-run dune test ocgtk/ — all GTK tests pass",
+              "Manual: calculator app and form-example close/destroy path exercised"
+            ],
+            "new_tests": []
+          },
+          "acceptance": "ml_gtk.c no longer redefines GtkWidget_val / Val_GtkWidget. gtk_decls.h is included instead. dune build + tests green. ml_gtk_widget_destroy compiles and links correctly.",
+          "risks": [
+            "gtk_decls.h include path relative to ml_gtk.c must be correct — verify with dune build output",
+            "If gtk_decls.h itself includes wrappers.h (which it does transitively), there must be no circular include. Verify with a trial build."
+          ],
+          "depends_on": ["phase-0a"]
+        },
+        {
+          "id": "phase-1",
+          "status": "pending",
+          "title": "Registry header: value_kinds.h + de-static ops structs + ocgtk_classify",
+          "description": "Create ocgtk/src/common/value_kinds.h declaring the seven extern ops structs with stable names (ocgtk_gobject_ops, ocgtk_gir_record_ops, ocgtk_gvariant_ops, ocgtk_gvariant_type_ops, ocgtk_gbytes_ops, ocgtk_gvalue_ops, ocgtk_gclosure_ops), the ocgtk_kind enum, and the ocgtk_classify function prototype plus the OCGTK_ASSERT_OPS macro. De-static each ops struct in its defining .c file and rename to the registry name. Standardise cops->identifier strings to 'ocgtk.<kind>'. Add the ocgtk_classify implementation to wrappers.c. Add a unit test in ocgtk/tests/gtk/test_value_kinds.ml. This phase is purely structural — no behaviour change.",
+          "files_touched": [
+            "ocgtk/src/common/wrappers.c",
+            "ocgtk/src/common/wrappers.h",
+            "ocgtk/src/common/ml_gvariant.c",
+            "ocgtk/src/common/ml_gvariant_type.c",
+            "ocgtk/src/common/ml_gobject.c",
+            "ocgtk/src/common/ml_glib_bytes.c"
+          ],
+          "files_created": [
+            "ocgtk/src/common/value_kinds.h",
+            "ocgtk/tests/gtk/test_value_kinds.ml"
+          ],
+          "implementation_notes": "1. Write value_kinds.h with the exact content specified in the plan (extern decls, ocgtk_kind enum, ocgtk_classify prototype, OCGTK_ASSERT_OPS macro). 2. In each defining .c file: remove `static` keyword from the ops struct and rename it: gobject_custom_ops -> ocgtk_gobject_ops (wrappers.c), gir_record_custom_ops -> ocgtk_gir_record_ops (wrappers.c), gvariant_custom_ops -> ocgtk_gvariant_ops (ml_gvariant.c), gvariant_type_custom_ops -> ocgtk_gvariant_type_ops (ml_gvariant_type.c), gbytes_custom_ops -> ocgtk_gbytes_ops (ml_glib_bytes.c), gvalue_ops -> ocgtk_gvalue_ops (ml_gobject.c), ml_custom_GClosure -> ocgtk_gclosure_ops (ml_gobject.c). Standardise .identifier strings: 'ocgtk.gobject', 'ocgtk.gir_record', 'ocgtk.gvariant', 'ocgtk.gvariant_type', 'ocgtk.gbytes', 'ocgtk.gvalue', 'ocgtk.gclosure'. 3. Add #include \"value_kinds.h\" to each modified .c file. 4. Add ocgtk_classify() implementation to wrappers.c — fast-path Is_long, then dispatch on Custom_ops_val pointer identity against the seven extern pointers, return OCGTK_KIND_OPAQUE_BLOCK for unrecognised custom blocks. 5. Add test_value_kinds.ml: allocates one value of each kind using existing OCaml API, passes through an external C stub that calls ocgtk_classify, asserts returned kind. Add C stub and dune entry for the test. Run `nm` on the resulting .so to confirm the seven ocgtk_*_ops symbols are exported and no name clashes with other ocgtk_ symbols.",
+          "coding_guidelines_to_emphasize": [
+            "architecture/FFI_GUIDELINES.md — GC Safety: Always Use CAMLlocal for Local value Variables",
+            "docs/code_guidelines/test-patterns.md — Alcotest assertions, not Option; test naming conventions",
+            "docs/code_guidelines/type-safety.md — Type Witnesses for Runtime Discrimination (the ocgtk_kind enum mirrors this pattern at the C level)"
+          ],
+          "test_requirements": {
+            "preserves": [
+              "dune build + dune test --root . gir_gen/ + xvfb-run dune test --root . ocgtk/ — all existing tests pass unchanged"
+            ],
+            "new_tests": [
+              {
+                "file": "ocgtk/tests/gtk/test_value_kinds.ml",
+                "test_name": "test_classify_gobject_returns_gobject_kind",
+                "description": "Allocate a GObject via an existing OCaml binding, pass to C stub calling ocgtk_classify, assert OCGTK_KIND_GOBJECT returned",
+                "asserts": "ocgtk_classify on a gobject custom block returns OCGTK_KIND_GOBJECT"
+              },
+              {
+                "file": "ocgtk/tests/gtk/test_value_kinds.ml",
+                "test_name": "test_classify_gir_record_returns_gir_record_kind",
+                "description": "Allocate a gir_record (e.g. GtkTreePath) and pass to ocgtk_classify stub",
+                "asserts": "ocgtk_classify returns OCGTK_KIND_GIR_RECORD"
+              },
+              {
+                "file": "ocgtk/tests/gtk/test_value_kinds.ml",
+                "test_name": "test_classify_int_returns_int_kind",
+                "description": "Pass Val_int(42) to ocgtk_classify stub",
+                "asserts": "ocgtk_classify returns OCGTK_KIND_INT"
+              }
+            ]
+          },
+          "acceptance": "dune build + tests green. The seven ocgtk_*_ops symbols are extern (visible in nm output). new test_value_kinds.ml passes. No regen needed.",
+          "risks": [
+            "Symbol-name collisions: the ocgtk_ prefix is new — audit with nm after build to confirm no clashes",
+            "If any .c file used the old static ops struct name directly in a non-extern context (e.g. a second local reference), renaming will produce a compile error — fix by updating that reference"
+          ],
+          "depends_on": ["phase-0b"]
+        },
+        {
+          "id": "phase-2",
+          "status": "pending",
+          "title": "Harden ml_gir_record_ptr_val — remove cross-kind fallback (closes task #2)",
+          "description": "Replace the body of ml_gir_record_ptr_val in wrappers.c with a strict check: if the value is not a Custom block with ops == &ocgtk_gir_record_ops, raise caml_failwithf with the actual ops->identifier string. Remove the ext_of_val fallback path entirely. Extend the existing test_record_finalizer.ml with a cross-kind rejection test.",
+          "files_touched": [
+            "ocgtk/src/common/wrappers.c",
+            "ocgtk/tests/gtk/test_record_finalizer.ml"
+          ],
+          "files_created": [],
+          "implementation_notes": "Replace ml_gir_record_ptr_val with the exact implementation shown in the plan: check Tag_val == Custom_tag AND Custom_ops_val == &ocgtk_gir_record_ops; on failure call caml_failwithf naming the type_name arg and the actual kind from Custom_ops_val(v)->identifier (or 'non-custom block' if not Custom_tag); also check box->ptr != NULL. Remove the legacy ext_of_val branch at the original line 162. Use caml_failwithf (preferred over caml_failwith for descriptive error messages naming the offending kind). In test_record_finalizer.ml, add test_cross_kind_ml_gir_record_ptr_val_rejects_gobject: allocate a GObject (e.g. via Widget.new_ or Box.new_), attempt to pass it to a function that calls ml_gir_record_ptr_val (e.g. a record method expecting a GtkTreePath), assert that a Failure exception is raised. Use Alcotest.check_raises or try/with.",
+          "coding_guidelines_to_emphasize": [
+            "architecture/FFI_GUIDELINES.md — GC Safety: CAMLparam/CAMLreturn discipline",
+            "docs/code_guidelines/test-patterns.md — use Alcotest.check_raises for expected exceptions; test naming conventions",
+            "docs/code_guidelines/error-handling.md — explicit error messages over silent failures"
+          ],
+          "test_requirements": {
+            "preserves": [
+              "All existing test_record_finalizer tests (depth round-trip, to_string, gc-survival, stress) continue to pass"
+            ],
+            "new_tests": [
+              {
+                "file": "ocgtk/tests/gtk/test_record_finalizer.ml",
+                "test_name": "test_cross_kind_ml_gir_record_ptr_val_rejects_gobject",
+                "description": "Allocate a GObject-backed value and pass it to a binding that internally calls ml_gir_record_ptr_val (expecting a gir_record). Assert that Failure is raised.",
+                "asserts": "caml_failwithf fires with a message mentioning 'gir_record' and the actual ops identifier ('ocgtk.gobject')"
+              }
+            ]
+          },
+          "acceptance": "Cross-kind rejection test fails before phase-2 (returns garbage or crashes) and passes after. All existing record finalizer tests still pass. dune build + full tests green.",
+          "risks": [
+            "caml_failwithf raises async — there is a small chance some site silently relied on the garbage read (reading the GType slot as a pointer, producing NULL, then null-checking). Any such site will now produce a clear Failure exception rather than silent breakage. Monitor for unexpected test failures."
+          ],
+          "depends_on": ["phase-1"]
+        },
+        {
+          "id": "phase-3",
+          "status": "pending",
+          "title": "Generator emits ml_gir_record_ptr_val for value-like record _val macros (closes task #1) + regen",
+          "description": "Fix c_stub_record.ml line 87: the generated <X>_val macro for value-like records currently uses ext_of_val (buggy 1-field Abstract-block read). Change it to use ml_gir_record_ptr_val so both value-like and opaque records route through the same hardened helper. Regenerate all 9 namespaces. Expect ~14 changed <ns>_decls.h files. Add a generator unit test asserting the new macro form is emitted.",
+          "files_touched": [
+            "gir_gen/lib/generate/c_stub_record.ml",
+            "ocgtk/src/cairo/generated/cairo_decls.h",
+            "ocgtk/src/gio/generated/gio_decls.h",
+            "ocgtk/src/gdk/generated/gdk_decls.h",
+            "ocgtk/src/graphene/generated/graphene_decls.h",
+            "ocgtk/src/gdk_pixbuf/generated/gdk_pixbuf_decls.h",
+            "ocgtk/src/pango/generated/pango_decls.h",
+            "ocgtk/src/pango_cairo/generated/pango_cairo_decls.h",
+            "ocgtk/src/gsk/generated/gsk_decls.h",
+            "ocgtk/src/gtk/generated/gtk_decls.h"
+          ],
+          "files_created": [],
+          "implementation_notes": "In c_stub_record.ml, locate the generate_forward_decls function and the bprintf that emits `#define %s_val(val) ((%s*)ext_of_val(val))` (line 87 in the plan audit, currently line 88 in the actual source given the surrounding context). Change it to: `bprintf buf \"#define %s_val(val) ((%s*)ml_gir_record_ptr_val((val), %S))\\n\" record.c_type record.c_type record.c_type`. The %S format specifier produces a C string literal from the OCaml string. Val_<X> and Val_<X>_option macros are UNCHANGED — they write via copy_<X> which already uses ml_gir_record_val_ptr_with_type. After the generator change, run `bash scripts/generate-bindings.sh` from the worktree root. Inspect the diff — expect only the ~14 value-like record macro lines in <ns>_decls.h files to change. If the diff is larger, stop, investigate, do not commit. Spot-check that ml_widget_gen.c and other GObject stubs are UNCHANGED. Add a generator unit test in gir_gen/test/c_stubs/ (extend generation_tests.ml or create record_macro_tests.ml) that calls generate_forward_decls with a synthetic value-like record (one with glib:get-type set) and asserts via AST/string scan that the emitted macro uses ml_gir_record_ptr_val and does NOT contain ext_of_val.",
+          "coding_guidelines_to_emphasize": [
+            "docs/code_guidelines/test-patterns.md — AST-based validation is REQUIRED; use C_validation.* or string search on generated C output; do NOT use string_contains for structural validation of generated code",
+            "docs/code_guidelines/test-patterns.md — Helpers.expect_some / assert_some for option results"
+          ],
+          "test_requirements": {
+            "preserves": [
+              "All 344+ gir_gen tests pass after generator change and regen",
+              "xvfb-run dune test ocgtk/ — all GTK tests pass with regenerated bindings"
+            ],
+            "new_tests": [
+              {
+                "file": "gir_gen/test/c_stubs/record_macro_tests.ml (new or extend generation_tests.ml)",
+                "test_name": "test_value_like_record_val_macro_uses_ml_gir_record_ptr_val",
+                "description": "Given a synthetic value-like record (non-opaque, has copy method, has glib:get-type), call generate_forward_decls and assert the <X>_val macro uses ml_gir_record_ptr_val(...) and does NOT use ext_of_val",
+                "asserts": "Generated header string contains ml_gir_record_ptr_val and does not contain ext_of_val for value-like record _val macros"
+              },
+              {
+                "file": "gir_gen/test/c_stubs/record_macro_tests.ml",
+                "test_name": "test_value_like_record_val_macro_does_not_emit_ext_of_val",
+                "description": "Negative test confirming ext_of_val is absent from generated value-like record _val macros after the fix",
+                "asserts": "Generated output for value-like record does not contain ext_of_val"
+              }
+            ]
+          },
+          "acceptance": "Generator unit tests pass. Regen diff is exactly the ~14 expected macro changes in <ns>_decls.h files. No other generated files changed. dune build + full tests green. Manual smoke: calculator app and form-example exercise GdkRGBA / PangoColor / GtkTreeIter / GtkTextIter paths.",
+          "risks": [
+            "If regen produces more changes than expected (e.g. formatting drift), stop and investigate before committing",
+            "The new macro form calls ml_gir_record_ptr_val at runtime — ensure the function declaration is visible from every <ns>_decls.h. It is declared in wrappers.h which is included by all generated .c files; the .h declaration is inherited. Verify with a trial build."
+          ],
+          "depends_on": ["phase-2"]
+        },
+        {
+          "id": "phase-4",
+          "status": "pending",
+          "title": "Document canonical FFI paths in architecture/FFI_GUIDELINES.md",
+          "description": "Update architecture/FFI_GUIDELINES.md with: a canonical-paths table per kind (allocator + reader); a note that val_of_ext/ext_of_val are legacy paths kept only for lookup_info and GMainLoop (to be removed in phase-6); a note that Val_pointer/Pointer_val used a different Abstract-block layout and are now deleted; the recommended pattern for adding a new custom-block kind. Documentation-only change.",
+          "files_touched": [
+            "architecture/FFI_GUIDELINES.md"
+          ],
+          "files_created": [],
+          "implementation_notes": "Add a 'Canonical FFI Paths' section near the top of FFI_GUIDELINES.md with the table from the plan: each of the 7 custom-block kinds with its ops struct name, identifier string, allocator function, and asserting reader macro. Add a 'Legacy paths' section noting val_of_ext/ext_of_val are sanctioned ONLY for lookup_info (wrappers.c) and Val_GMainLoop (ml_glib.c), and will be removed in a follow-up stage. Add a 'Adding a new kind' recipe: define ops struct, expose extern in value_kinds.h, extend ocgtk_classify switch, add asserting accessor macro. Note that pointer comparison (Custom_ops_val == &ops) is preferred over identifier string comparison because ocgtk has no dynamic loading.",
+          "coding_guidelines_to_emphasize": [],
+          "test_requirements": {
+            "preserves": [
+              "dune build + tests green (documentation-only, no code change)"
+            ],
+            "new_tests": []
+          },
+          "acceptance": "Reviewer signoff on documentation. FFI_GUIDELINES.md contains the canonical-paths table, legacy-paths note, and add-new-kind recipe. dune build green.",
+          "risks": [],
+          "depends_on": ["phase-3"]
+        },
+        {
+          "id": "phase-5",
+          "status": "pending",
+          "title": "Fix length-linked array out-param: nullable array in option wrapper (task #3, independent)",
+          "description": "Fix the generator so length-linked array out-params with a nullable result pointer emit the array inside Some/Val_none rather than unwrapped. The concrete broken binding is Gtk.Tree_path.get_indices_with_depth (ml_tree_path_gen.c:129-146 builds (int array, int) but OCaml signature is int array option * int). Add a runtime test for get_indices_with_depth on empty and non-empty paths.",
+          "files_touched": [
+            "gir_gen/lib/generate/c_stub_array_conv.ml",
+            "ocgtk/src/gtk/generated/ml_tree_path_gen.c"
+          ],
+          "files_created": [
+            "ocgtk/tests/gtk/test_tree_path.ml"
+          ],
+          "implementation_notes": "Before making changes: grep the generator output for the broken pattern to get a full list of affected functions beyond get_indices_with_depth. The fix site is in c_stub_array_conv.ml — the code path that generates the return-value conversion for length-linked array out-params. When the C result pointer is nullable (the array pointer can be NULL when depth==0), the generated code must wrap the OCaml array in Val_some or return Val_none. Locate the specific emitter function handling `<array length=\"N\">` return types and add a NULL guard that returns Val_none when the C pointer is NULL. After the generator fix, regenerate affected namespaces (likely just Gtk). Inspect the diff to confirm scope. In test_tree_path.ml: test get_indices_with_depth on (1) a freshly allocated empty path (depth 0, indices NULL -> expect (None, 0)) and (2) a path with appended indices (expect (Some [|..|], depth)). Add test_tree_path to ocgtk/tests/gtk/dune.",
+          "coding_guidelines_to_emphasize": [
+            "docs/code_guidelines/test-patterns.md — Alcotest check with typed testable for option * int result; test naming: describe scenario and expected outcome",
+            "docs/code_guidelines/pattern-matching.md — exhaustive match on option result; no catch-all"
+          ],
+          "test_requirements": {
+            "preserves": [
+              "All existing test_record_finalizer tests pass (they avoid get_indices_with_depth deliberately)",
+              "dune build + full gir_gen and ocgtk test suites green"
+            ],
+            "new_tests": [
+              {
+                "file": "ocgtk/tests/gtk/test_tree_path.ml",
+                "test_name": "test_get_indices_with_depth_empty_path_returns_none",
+                "description": "Allocate an empty GtkTreePath (depth 0), call get_indices_with_depth, assert result is (None, 0)",
+                "asserts": "First element is None; second element is 0"
+              },
+              {
+                "file": "ocgtk/tests/gtk/test_tree_path.ml",
+                "test_name": "test_get_indices_with_depth_non_empty_path_returns_some_array",
+                "description": "Allocate a GtkTreePath with known indices appended, call get_indices_with_depth, assert result is (Some [|...|], depth) with correct values",
+                "asserts": "First element is Some with the correct int array; second element matches the appended depth"
+              }
+            ]
+          },
+          "acceptance": "New tree_path tests pass. dune build + full tests green. Regen diff for affected namespaces is scoped to the nullable array out-param pattern. Note: test_record_finalizer.ml already has a comment documenting that get_indices_with_depth was deliberately avoided due to this bug — update that comment to reference the fix after this stage lands.",
+          "risks": [
+            "The affected generator code path may touch more bindings than get_indices_with_depth — audit the full regen diff before committing",
+            "If the empty-path test surfaces a GTK API subtlety (e.g. NULL vs empty array at depth 0), adjust the expected value based on actual GTK behavior"
+          ],
+          "depends_on": []
+        },
+        {
+          "id": "phase-6",
+          "status": "pending",
+          "title": "Sequester and delete val_of_ext / ext_of_val (retire the 1-field Abstract-block layout)",
+          "description": "After phases 0-5, the only remaining callers of val_of_ext/ext_of_val are: lookup_info accessors in wrappers.c (Val_lookup_info/Lookup_info_val macros) and Val_GMainLoop/GMainLoop_val in ml_glib.c. Inline both into their respective translation units so neither calls the global helpers, then delete val_of_ext/ext_of_val from wrappers.h and wrappers.c. The 1-field Abstract-block representation ceases to exist as a public API.",
+          "files_touched": [
+            "ocgtk/src/common/wrappers.h",
+            "ocgtk/src/common/wrappers.c",
+            "ocgtk/src/common/ml_glib.c"
+          ],
+          "files_created": [],
+          "implementation_notes": "1. Lookup_info path: replace the Val_lookup_info and Lookup_info_val macros in wrappers.h with nothing (or move them to a private static inline in wrappers.c adjacent to lookup_from_c_direct/lookup_to_c_direct). The lookup_info struct type itself stays in wrappers.h because generated enum tables reference it. The macros become static inline functions in wrappers.c: `static inline value val_lookup_info(const lookup_info *v) { CAMLparam0(); CAMLlocal1(r); r = caml_alloc(1, Abstract_tag); *((const lookup_info**)Data_abstract_val(r)) = v; CAMLreturn(r); }` and `static inline const lookup_info* lookup_info_val(value v) { return *((const lookup_info**)Data_abstract_val(v)); }`. Update ml_lookup_from_c and ml_lookup_to_c to call these statics instead of the macros. 2. GMainLoop path (choose one): Option A — inline the alloc/read directly in Val_GMainLoop and GMainLoop_val without calling val_of_ext: `val = caml_alloc(1, Abstract_tag); *((GMainLoop**)Data_abstract_val(val)) = loop;` and `(GMainLoop*)Data_abstract_val(val)`. Option B — migrate to a 1-word custom block (no finalizer; g_main_loop_unref is called by OCaml-level destroy). Custom block is the cleaner choice per the plan. 3. Delete val_of_ext and ext_of_val from wrappers.h (declarations) and wrappers.c (implementations). 4. Run `git grep 'val_of_ext\\|ext_of_val'` — must return zero production matches (only this plan file and docs). 5. Run full build + tests.",
+          "coding_guidelines_to_emphasize": [
+            "architecture/FFI_GUIDELINES.md — GC Safety: CAMLlocal for local value variables; Abstract block layout details",
+            "docs/code_guidelines/module-boundaries.md — keep static inline helpers in the .c file, not the .h, when they are TU-internal"
+          ],
+          "test_requirements": {
+            "preserves": [
+              "dune build + full gir_gen and ocgtk test suites green",
+              "Any existing ml_glib test (GMainLoop create/run/destroy) continues to pass"
+            ],
+            "new_tests": []
+          },
+          "acceptance": "git grep for val_of_ext and ext_of_val returns no production matches. The 1-field Abstract-block representation is gone from the public API. dune build + tests green. Commit message: 'refactor(ffi): retire val_of_ext/ext_of_val — sequester lookup_info and GMainLoop into their TUs'.",
+          "risks": [
+            "GMainLoop_val currently reads Field(val, 0) directly (not via Data_abstract_val) — this is technically the same as *((GMainLoop**)Data_abstract_val(v)) on most platforms but should be unified with the macro form for correctness",
+            "If any generated code (unlikely but possible) calls val_of_ext via a generated wrapper, it will surface as a compile error — investigate before restoring"
+          ],
+          "depends_on": ["phase-5", "phase-4"]
+        }
+      ]
+    }
+  ]
+}

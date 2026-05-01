@@ -324,7 +324,7 @@ CAMLprim value ml_get_string(value unit) {
 **Bad:**
 ```c
 GObject *obj = g_object_new(type, NULL);
-return Val_pointer(obj);  // Crash if obj is NULL
+return ml_gobject_val_of_ext(obj);  // Crash if obj is NULL
 ```
 
 **Good:**
@@ -333,7 +333,7 @@ GObject *obj = g_object_new(type, NULL);
 if (obj == NULL) {
     caml_failwith("g_object_new: failed to create object");
 }
-return Val_pointer(obj);
+return ml_gobject_val_of_ext(obj);
 ```
 
 ### 4.2 Handle GError Properly
@@ -425,12 +425,12 @@ CAMLprim value ml_create_widget(value unit) {
     // GTK widgets are initially floating
     // g_object_ref_sink() takes ownership
     g_object_ref_sink(widget);
-    return Val_GObject(widget);
+    return ml_gobject_val_of_ext(widget);
 }
 
 // In finalizer:
 static void finalize_gobject(value val) {
-    GObject *obj = GObject_val(val);
+    GObject *obj = (GObject*)ml_gobject_ext_of_val(val);
     if (obj != NULL) {
         g_object_unref(obj);
     }
@@ -452,7 +452,7 @@ static void finalize_gobject(value val) {
 **Bad:**
 ```c
 CAMLprim value ml_get_property(value obj, value name) {
-    GObject *gobj = GObject_val(obj);
+    GObject *gobj = (GObject*)ml_gobject_ext_of_val(obj);
     return get_property(gobj, String_val(name));  // gobj might be NULL
 }
 ```
@@ -462,18 +462,18 @@ CAMLprim value ml_get_property(value obj, value name) {
 CAMLprim value ml_get_property(value obj, value name) {
     CAMLparam2(obj, name);
 
-    if (obj == Val_unit || Pointer_val(obj) == NULL) {
+    GObject *gobj = (GObject*)ml_gobject_ext_of_val(obj);
+    if (gobj == NULL) {
         caml_invalid_argument("ml_get_property: NULL object");
     }
 
-    GObject *gobj = GObject_val(obj);
     CAMLreturn(get_property(gobj, String_val(name)));
 }
 ```
 
 **Rule**: Validate pointer arguments before use:
-- Check `Val_unit` for option types
-- Check `Pointer_val() == NULL`
+- Check `Val_none` for option types
+- Check the extracted pointer for NULL after unwrapping
 - Raise `caml_invalid_argument()` with descriptive message
 
 ### 5.2 Use Appropriate Exception Types

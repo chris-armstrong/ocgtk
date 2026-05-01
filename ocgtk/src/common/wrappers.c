@@ -72,31 +72,6 @@ CAMLexport value ml_lookup_to_c (value table_val, value key)
     CAMLreturn(Val_int(lookup_to_c_direct(table, key)));
 }
 
-/* Copy a C struct into an OCaml abstract block
- * Layout: [header | unused | marker=2 | data...]
- * Field 0: unused (for alignment/compatibility)
- * Field 1: marker value 2
- * Field 2+: actual struct data
- */
-CAMLexport value copy_memblock_indirected(void *src, asize_t size)
-{
-    CAMLparam0();
-    CAMLlocal1(ret);
-    mlsize_t wosize;
-
-    if (!src) caml_failwith("copy_memblock_indirected: NULL pointer");
-
-    /* Calculate size in words for the data */
-    wosize = (size + sizeof(value) - 1) / sizeof(value);
-
-    /* Allocate: 1 unused + 1 marker + wosize for data = wosize + 2 */
-    ret = caml_alloc(wosize + 2, Abstract_tag);
-    Field(ret, 1) = (value)2;  /* Marker at Field 1 */
-    memcpy((void*)&Field(ret, 2), src, size);  /* Data starts at Field 2 */
-
-    CAMLreturn(ret);
-}
-
 /* ==================================================================== */
 /* GIR record helpers                                                   */
 /* ==================================================================== */
@@ -221,21 +196,6 @@ CAMLexport value ml_gobject_val_of_ext_option(const void *gobject) {
     some = caml_alloc(1, 0);
     Store_field(some, 0, ml_gobject_val_of_ext(gobject));
     CAMLreturn(some);
-}
-
-/* Wrap a C pointer in an Abstract block for OCaml 5.0+ compatibility.
- * This prevents the GC from scanning C pointers as if they were heap values.
- * Layout: [header | unused | pointer]
- * Field 0: unused (for alignment)
- * Field 1: the actual C pointer
- */
-CAMLexport value Val_pointer(void *ptr)
-{
-    CAMLparam0();
-    CAMLlocal1(ret);
-    ret = caml_alloc_small(2, Abstract_tag);
-    Field(ret, 1) = (value)ptr;
-    CAMLreturn(ret);
 }
 
 value val_of_ext(const void *widget) {

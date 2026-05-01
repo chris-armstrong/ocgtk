@@ -2,40 +2,7 @@
 
 ## OCaml/C FFI Critical Lessons
 
-### 1. Pointer Wrapping is NOT Trivial
-
-**Problem**: `Val_pointer`/`Pointer_val` macros in ocgtk wrappers.h are incompatible:
-```c
-#define Val_pointer(p) ((value)(p))          // Just casts pointer to value
-#define Pointer_val(val) ((void*)Field(val,1)) // Expects a block, accesses field 1!
-```
-
-**Solution**: Create proper wrapper functions like lablgtk3:
-```c
-/* Proper way to wrap pointers */
-static value Val_GClosure_wrapped(GClosure *closure)
-{
-    CAMLparam0();
-    CAMLlocal1(val);
-    val = caml_alloc_small(1, Abstract_tag);
-    Field(val, 0) = (value)closure;
-    CAMLreturn(val);
-}
-
-static GClosure *GClosure_val_wrapped(value val)
-{
-    return (GClosure *)Field(val, 0);
-}
-```
-
-**Key Insight**: For closure data storage, can cast pointers directly when storing in GLib structures:
-```c
-/* In closure->data, direct cast works */
-Store_field(argv_val, 2, (value)param_values);  // Direct cast
-const GValue *params = (const GValue *)Field(argv_val, 2);  // Direct extract
-```
-
-### 2. GValue Memory Management
+### 1. GValue Memory Management
 
 **Critical**: GValues cannot be shallow-copied with memcpy. Use g_value_copy:
 
@@ -56,7 +23,7 @@ typedef struct {
 } ml_gvalue;
 ```
 
-### 3. GClosure Pattern (from lablgtk3)
+### 2. GClosure Pattern (from lablgtk3)
 
 Store OCaml closure **directly** in `closure->data`:
 ```c
@@ -79,7 +46,7 @@ In invalidate notifier:
 caml_remove_global_root((value*)&closure->data);  // Cleanup
 ```
 
-### 4. Debugging FFI Issues
+### 3. Debugging FFI Issues
 
 **File-based debugging** when stderr doesn't work:
 ```c
@@ -96,7 +63,7 @@ fprintf(f, "Created: %p, Received: %p\n", original_ptr, received_ptr);
 // If different, wrapping/unwrapping is broken!
 ```
 
-### 5. GC Safety: Always Use CAMLlocal for Local `value` Variables
+### 4. GC Safety: Always Use CAMLlocal for Local `value` Variables
 
 **Rule**: Every local C variable of type `value` MUST be declared with `CAMLlocal1` (or `CAMLlocal2`, etc.), not as a plain C stack variable.
 
@@ -129,12 +96,13 @@ CAMLprim value ml_g_variant_get_variant(value v) {
 
 **Note on C pointers (`GVariant*`, `GObject*`, etc.)**: These are GLib-managed heap pointers, not OCaml values. The OCaml GC does not move or collect them. Only OCaml `value` variables need GC root registration.
 
-### 6. Common Pitfalls
+### 5. Common Pitfalls
 
 | Pitfall | Symptom | Solution |
 |---------|---------|----------|
-| Using Val_pointer/Pointer_val incorrectly | Garbage pointer values | Create proper wrapper functions |
 | memcpy GValues | Segfault on access/finalization | Use g_value_init + g_value_copy |
 | Forgetting ml_gvalue.initialized flag | Segfault in finalizer | Always set after initialization |
 | `value result = Val_*(...)` without CAMLlocal | Silent GC corruption if allocation added later | Always use `CAMLlocal1(result)` |
 | Not checking lablgtk3 | Hours of debugging | **ALWAYS check lablgtk3 first!** |
+
+**Note**: `Val_pointer`/`Pointer_val` (a 2-field Abstract-block layout) were deleted in phase-0a as dead code. Do not reintroduce them. All GObject/record/variant values use Custom blocks — use the `ml_gobject_*`/`ml_gir_record_*` helpers and their per-class `<X>_val`/`Val_<X>` macros.
