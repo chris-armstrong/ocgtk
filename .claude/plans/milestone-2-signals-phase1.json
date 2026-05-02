@@ -348,7 +348,7 @@
         {
           "stage": 7,
           "title": "Create signal_marshaller.{ml,mli} and wire into gir_gen/lib/dune",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "Implement the pure Signal_marshaller module in gir_gen/lib/generate/. This module takes a Types.gir_type and a generation_context and returns `Supported of marshaller | Unsupported of string`. It dispatches using Type_mappings.classify_type and an is_glib_variant predicate. For enum/bitfield types, it calls the cross-namespace resolver and returns getter/setter expressions referencing <NS>_enums.<lower>_of_int and the new Gobject.Value.get_enum_int / get_flags_int. The module has no side effects — it is purely functional.",
           "files_to_modify": [
