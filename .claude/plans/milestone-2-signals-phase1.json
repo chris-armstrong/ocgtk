@@ -134,7 +134,7 @@
         {
           "stage": 4,
           "title": "Extend enum_code.ml to emit pure-OCaml _of_int / _to_int functions in <ns>_enums.ml",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "Add two new functions to gir_gen/lib/generate/enum_code.ml: generate_ocaml_enum_impl (emits <lower>_of_int and <lower>_to_int for an enum) and generate_ocaml_bitfield_impl (emits <lower>_of_int and <lower>_to_int for a bitfield). Extend gir_gen/bin/gir_gen.ml to write the new .ml file alongside the existing .mli. Extend the .mli emission to add the val declarations for the new functions. Version-guarded members use [@@if Gtk_version.<gate>] annotations on individual match branches (OCaml ppx_if syntax, mirroring the C guard pattern).",
           "files_to_modify": [

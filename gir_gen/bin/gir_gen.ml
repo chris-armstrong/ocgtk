@@ -896,6 +896,27 @@ let generate_enum_files ~output_dir ~generated_stubs namespace enums bitfields =
     write_file ~path:enum_file
       ~content:(String.concat ~sep:"" ocaml_content_parts);
 
+    (* Generate OCaml .ml file with pure-OCaml _of_int/_to_int implementations *)
+    let enum_ml_file =
+      Filename.concat
+        (generated_output_dir output_dir)
+        (sprintf "%s_enums.ml" namespace.prefix)
+    in
+    let ocaml_ml_content_parts =
+      [
+        "(* GENERATED CODE - DO NOT EDIT *)\n";
+        sprintf "(* %s Enumeration and Bitfield Converters *)\n\n" namespace.name;
+      ]
+      @ List.map
+          ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_enum_impl
+          enums
+      @ List.map
+          ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_bitfield_impl
+          bitfields
+    in
+    write_file ~path:enum_ml_file
+      ~content:(String.concat ~sep:"" ocaml_ml_content_parts);
+
     (* Generate C converter file *)
     let stub_name = sprintf "ml_%s_enums_gen" namespace.prefix in
     let c_file =

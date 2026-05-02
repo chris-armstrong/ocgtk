@@ -170,6 +170,64 @@ let test_enum_naming_conventions () =
   Ml_validation.assert_type_has_variant_tag_sig sig_ast "orientation"
     "HORIZONTAL"
 
+(* ========================================================================= *)
+(* Stage 4: .ml file emission tests                                           *)
+(* ========================================================================= *)
+
+(** Verify that the generator emits a <ns>_enums.ml alongside the .mli. *)
+let test_enum_ml_file_emitted () =
+  let output_dir =
+    run_integration_test ~gir_content:multiple_enums_gir ~class_names:[]
+      ~test_name:"enum_ml_emitted" ()
+  in
+  let ml_path = enum_ml_file output_dir in
+  assert_true "gtk_enums.ml should be created" (file_exists ml_path);
+  let content = read_file ml_path in
+  assert_true "gtk_enums.ml should be non-empty"
+    (String.length content > 0)
+
+(** Verify that orientation_of_int is present in the generated .ml. *)
+let test_enum_of_int_function_in_ml () =
+  let output_dir =
+    run_integration_test ~gir_content:multiple_enums_gir ~class_names:[]
+      ~test_name:"enum_of_int_ml" ()
+  in
+  let ml_content = read_file (enum_ml_file output_dir) in
+  let ml_ast = Ml_ast_helpers.parse_implementation ml_content in
+  Ml_validation.assert_value_exists ml_ast "orientation_of_int"
+
+(** Verify that orientation_to_int is present in the generated .ml. *)
+let test_enum_to_int_function_in_ml () =
+  let output_dir =
+    run_integration_test ~gir_content:multiple_enums_gir ~class_names:[]
+      ~test_name:"enum_to_int_ml" ()
+  in
+  let ml_content = read_file (enum_ml_file output_dir) in
+  let ml_ast = Ml_ast_helpers.parse_implementation ml_content in
+  Ml_validation.assert_value_exists ml_ast "orientation_to_int"
+
+(** Verify that eventmask_of_int (bitfield) is present in the generated .ml. *)
+let test_bitfield_of_int_function_in_ml () =
+  let output_dir =
+    run_integration_test ~gir_content:multiple_enums_gir ~class_names:[]
+      ~test_name:"bitfield_of_int_ml" ()
+  in
+  let ml_content = read_file (enum_ml_file output_dir) in
+  let ml_ast = Ml_ast_helpers.parse_implementation ml_content in
+  Ml_validation.assert_value_exists ml_ast "eventmask_of_int"
+
+(** Verify that val orientation_of_int : int -> orientation is declared in the
+    generated .mli. *)
+let test_mli_has_val_for_of_int () =
+  let output_dir =
+    run_integration_test ~gir_content:multiple_enums_gir ~class_names:[]
+      ~test_name:"enum_mli_val" ()
+  in
+  let mli_content = read_file (enum_file output_dir) in
+  let sig_ast = Ml_ast_helpers.parse_interface mli_content in
+  Ml_validation.assert_value_exists_sig sig_ast "orientation_of_int";
+  Ml_validation.assert_value_exists_sig sig_ast "orientation_to_int"
+
 let tests =
   [
     Alcotest.test_case "Enum generation (Phase 5.3)" `Quick test_enum_generation;
@@ -179,4 +237,14 @@ let tests =
     Alcotest.test_case "Single value enum" `Quick test_single_value_enum;
     Alcotest.test_case "Enum naming conventions" `Quick
       test_enum_naming_conventions;
+    Alcotest.test_case "Enum .ml file emitted alongside .mli" `Quick
+      test_enum_ml_file_emitted;
+    Alcotest.test_case "Enum of_int function present in .ml" `Quick
+      test_enum_of_int_function_in_ml;
+    Alcotest.test_case "Enum to_int function present in .ml" `Quick
+      test_enum_to_int_function_in_ml;
+    Alcotest.test_case "Bitfield of_int function present in .ml" `Quick
+      test_bitfield_of_int_function_in_ml;
+    Alcotest.test_case "Val for of_int declared in .mli" `Quick
+      test_mli_has_val_for_of_int;
   ]
