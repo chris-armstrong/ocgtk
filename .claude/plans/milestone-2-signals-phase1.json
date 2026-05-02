@@ -508,5 +508,68 @@
         }
       ]
     }
+  ],
+  "status": "completed",
+  "completed_at": "2026-05-02",
+  "merge_branch": "worktree-bridge-cse_01Ca8Z6A17qevapNUGXL6mnE",
+  "pull_request": "https://github.com/chris-armstrong/ocgtk/pull/129",
+  "final_baseline": {
+    "head": "03b5d06b",
+    "build_passes": true,
+    "gir_gen_tests": 364,
+    "ocgtk_ok_count": 329,
+    "ocgtk_fail_count": 0
+  },
+  "follow_ups": [
+    {
+      "id": "D1",
+      "title": "Add G_VALUE_HOLDS_BOXED guard to ml_g_value_set_boxed",
+      "severity": "should-fix-before-phase-2",
+      "originating_stage": 2,
+      "originating_review": "stage-2 reviewer + phase-1a end-of-epoch reviewer",
+      "description": "ml_g_value_set_boxed at ml_gobject.c around line 575 calls g_value_set_boxed without first checking G_VALUE_HOLDS_BOXED(gv). Get-side already guards. Set-side gap is currently masked by absence of production callers; the signal emitter (Phase 2) will be the first caller. Add a G_VALUE_HOLDS_BOXED check raising caml_invalid_argument before any Phase 2 emission lands.",
+      "rationale": "Calling g_value_set_boxed on a non-boxed GValue invokes undefined behaviour in GLib. Phase 1b's signal_marshaller emits set_boxed in code; once Phase 2 wires that emission, untyped callers become reachable."
+    },
+    {
+      "id": "D2",
+      "title": "Add G_VALUE_HOLDS_INT64 / G_VALUE_HOLDS_VARIANT guards to setter wrappers",
+      "severity": "minor-style-consistency",
+      "originating_stage": 2,
+      "originating_review": "stage-2 reviewer + phase-1a end-of-epoch reviewer",
+      "description": "ml_g_value_set_int64 and ml_g_value_set_variant lack G_VALUE_HOLDS_* guards on the setter side. Mirrors pre-existing peer style for set_int/set_uint/set_boolean/set_float/set_double, but inconsistent with the new set_enum_int and set_flags_int which do guard. Low risk because GLib asserts in debug builds, but adding the guards yields a uniform set of new wrappers.",
+      "rationale": "Style consistency across the new wrappers; defence in depth."
+    },
+    {
+      "id": "D3",
+      "title": "Runtime test for get_boxed / set_boxed round-trip",
+      "severity": "test-gap",
+      "originating_stage": 6,
+      "originating_review": "phase-1a end-of-epoch reviewer",
+      "description": "Stage 6 added 10 cases covering int64, variant, enum_int, flags_int but no boxed round-trip case. The boxed pair is verified by build-time linkage only. A minimal test would create a GValue of GTK_TYPE_TREE_ITER (or any registered boxed type), set a wrapped record via set_boxed, read back via get_boxed, and assert the result is non-null. Naturally lands alongside the Phase 2 signal_marshaller integration tests, where a real boxed signal arg flows end-to-end."
+    },
+    {
+      "id": "D4",
+      "title": "Replace Stdlib.compare in test_signal_value_enum_flags.ml List.sort",
+      "severity": "minor-style",
+      "originating_stage": 6,
+      "originating_review": "phase-1a end-of-epoch reviewer",
+      "description": "test_signal_value_enum_flags.ml at lines around 191 uses List.sort Stdlib.compare on modifiertype_flag variants. Stdlib.compare is a sort comparator (not equality, so partial-functions.md does not strictly apply), but a type-specific comparator via modifiertype_to_int would be more idiomatic. Trivial to fix in any later cleanup pass."
+    },
+    {
+      "id": "D5",
+      "title": "Update milestone-2-signals.md plan doc to reflect 8-10 (not exactly 8) new C wrappers",
+      "severity": "doc-drift",
+      "originating_stage": 2,
+      "originating_review": "phase-1a end-of-epoch reviewer",
+      "description": "Plan doc gir_gen/docs/plans/milestone-2-signals.md line 832 (validation output #2) says 'should jump from its current value by exactly 8'. Implementation has 10 new ml_g_value_get_/set_ symbols (5 pairs). Decision was 'ballpark', captured in this JSON's replanning of Stage 2. Update the plan doc post-hoc so future readers do not chase a stale numeric target."
+    },
+    {
+      "id": "D6",
+      "title": "NO_MODIFIER_MASK round-trip semantic limitation",
+      "severity": "informational",
+      "originating_stage": 6,
+      "originating_review": "stage-5 reviewer + stage-6 executor",
+      "description": "Gdk_enums.modifiertype's NO_MODIFIER_MASK has integer value 0. Bitfield decoders cannot round-trip a value-0 flag because `flags land 0 <> 0` is permanently false. Faithful to existing C generator. Stage 6 case 10 was rephrased as a compile-time witness + to_int = 0 check. Documented; no action required unless the API contract is renegotiated."
+    }
   ]
 }
