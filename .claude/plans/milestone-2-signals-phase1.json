@@ -102,7 +102,7 @@
         {
           "stage": 3,
           "title": "Add OCaml external declarations and val signatures for the new C wrappers",
-          "status": "pending",
+          "status": "committed",
           "replanned": true,
           "description": "Extend gobject.ml module Value with external declarations matching the C functions added in Stage 2. Extend gobject.mli module Value with matching val declarations. This makes the C functions callable from OCaml. No boxed-specific accessor externals are needed beyond the get_boxed/set_boxed pair — there is no separate ops record to expose.",
           "files_to_modify": [

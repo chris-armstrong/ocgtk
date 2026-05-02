@@ -146,6 +146,59 @@ module Value : sig
   val set_float : t -> float -> unit
   val get_double : t -> float
   val set_double : t -> float -> unit
+
+  val get_int64 : t -> int64
+  (** Get a 64-bit integer from a GValue of G_TYPE_INT64. *)
+
+  val set_int64 : t -> int64 -> unit
+  (** Set a 64-bit integer on a GValue of G_TYPE_INT64. *)
+
+  val get_variant : t -> Gvariant.t
+  (** Get a GVariant from a GValue of G_TYPE_VARIANT. The returned value is a
+      new reference (ref-counted); the caller may use it freely and the OCaml GC
+      will unref it when the value is collected. *)
+
+  val set_variant : t -> Gvariant.t -> unit
+  (** Set a GVariant on a GValue of G_TYPE_VARIANT. Transfer-none: the GValue
+      takes its own reference. *)
+
+  val get_enum_int : t -> int
+  (** Get the raw integer value of a GValue holding an enum type. Raises
+      [Invalid_argument] if the GValue does not hold an enum type. *)
+
+  val set_enum_int : t -> int -> unit
+  (** Set the raw integer value of a GValue holding an enum type. Raises
+      [Invalid_argument] if the GValue does not hold an enum type. *)
+
+  val get_flags_int : t -> int
+  (** Get the raw integer bitmask of a GValue holding a flags type. Raises
+      [Invalid_argument] if the GValue does not hold a flags type. *)
+
+  val set_flags_int : t -> int -> unit
+  (** Set the raw integer bitmask of a GValue holding a flags type. Raises
+      [Invalid_argument] if the GValue does not hold a flags type. *)
+
+  val get_boxed : t -> 'a obj
+  (** Get a boxed GIR record from a GValue holding a boxed GType. Returns a
+      gir_record custom block (ocgtk_gir_record_ops) carrying the GType and an
+      owned copy of the boxed data (g_boxed_copy was called). The existing
+      gir_record finalizer calls g_boxed_free when the block is collected. The
+      caller must ascribe the correct record type at the call site, e.g.
+      [(Gobject.Value.get_boxed v : Gtk.Tree_iter.t)]. Raises [Invalid_argument]
+      if the GValue does not hold a boxed type. *)
+
+  val set_boxed : t -> 'a obj -> unit
+  (** Set a boxed GIR record on a GValue holding a boxed GType. The argument
+      must be a gir_record custom block created by the ocgtk GIR record
+      infrastructure and backed by a registered boxed GType (i.e.
+      [G_TYPE_IS_BOXED(type)] must be true for the record's GType). Passing a
+      plain non-boxed GIR record yields type confusion at GValue finalization
+      because [g_value_set_boxed] will call [g_boxed_copy] and [g_boxed_free]
+      internally using the GType stored in the GValue, not the record's own
+      type. Transfer-none: the GValue copies the data via [g_boxed_copy]
+      internally. The caller must ascribe the correct record type at the call
+      site. *)
+
   val get_object : t -> 'a obj option
   val set_object : t -> 'a obj option -> unit
 end
