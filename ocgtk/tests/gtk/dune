@@ -67,5 +67,6 @@
  (foreign_stubs
   (language c)
   (names test_signal_value_enum_flags_stubs)
-  (flags (:include %{project_root}/src/gtk/cflag-gtk4.sexp)))
+  (flags
+   (:include %{project_root}/src/gtk/cflag-gtk4.sexp)))
  (libraries ocgtk.common ocgtk.gtk ocgtk.gdk alcotest gtk_test_helpers))

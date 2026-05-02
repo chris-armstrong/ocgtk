@@ -17,6 +17,7 @@ module Gtk_enums = Ocgtk_gtk__Gtk_enums
 module Gdk_enums = Ocgtk_gdk__Gdk_enums
 module Gvariant = Ocgtk_common.Gvariant
 module Helpers = Gtk_test_helpers
+module Rectangle = Ocgtk_gdk__Rectangle
 
 let require_gtk = Helpers.require_gtk
 
@@ -38,6 +39,18 @@ external gtk_orientation_get_type : unit -> Gobject.g_type
     [_get_type()] function. The wrapper in
     [test_signal_value_enum_flags_stubs.c] converts the raw C [GType] (gulong)
     to an OCaml integer via [Val_long], matching [Gobject.g_type = int]. *)
+
+external gdk_rectangle_get_type : unit -> Gobject.g_type
+  = "ml_gdk_rectangle_get_type"
+(** Direct binding to [gdk_rectangle_get_type] via a thin C stub in
+    [test_signal_value_enum_flags_stubs.c]. Converts the raw C [GType] (gulong)
+    to an OCaml integer via [Val_long], matching [Gobject.g_type = int]. *)
+
+external gdk_rectangle_create : int -> int -> int -> int -> Rectangle.t
+  = "ml_gdk_rectangle_create"
+(** Create a [GdkRectangle] with the given x, y, width, height fields and wrap
+    it as a gir_record custom block. The pointer is heap-allocated with [g_new]
+    so the finalizer (which calls [g_boxed_free]) can free it correctly. *)
 
 (** {2 Case 1 — Enum round-trip via decoder} *)
 
@@ -228,6 +241,22 @@ let test_version_guarded_no_modifier_mask_compile_time () =
   let encoded = Gdk_enums.modifiertype_to_int [ `NO_MODIFIER_MASK ] in
   check int "NO_MODIFIER_MASK to_int is 0" 0 encoded
 
+(** {2 Case 11 — Boxed GValue round-trip via gir_record bridge} *)
+
+(** Create a [GdkRectangle] with known fields, store it in a GValue typed as
+    [gdk_rectangle_get_type()], read it back via [get_boxed], and compare with
+    the original using [Rectangle.equal]. [get_boxed] calls [g_boxed_copy]
+    internally, so the returned value is a fresh copy; pointer identity is not
+    expected and is not tested. *)
+let test_boxed_rectangle_roundtrip () =
+  let gtype_rect = gdk_rectangle_get_type () in
+  let original = gdk_rectangle_create 10 20 30 40 in
+  let v = Gobject.Value.create gtype_rect in
+  Gobject.Value.set_boxed v original;
+  let result = (Gobject.Value.get_boxed v : Rectangle.t) in
+  check bool "boxed round-trip: result equals original via Rectangle.equal" true
+    (Rectangle.equal result original)
+
 (** {2 Test Suite} *)
 
 let () =
@@ -270,5 +299,10 @@ let () =
         [
           test_case "NO_MODIFIER_MASK compile-time check" `Quick
             test_version_guarded_no_modifier_mask_compile_time;
+        ] );
+      ( "boxed_gvalue",
+        [
+          test_case "boxed round-trip via gir_record bridge" `Quick
+            (require_gtk test_boxed_rectangle_roundtrip);
         ] );
     ]

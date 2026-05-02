@@ -465,6 +465,8 @@ CAMLprim value ml_g_value_set_int64(value val, value v)
 {
     CAMLparam2(val, v);
     GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_INT64(gv))
+        caml_invalid_argument("g_value_set_int64: not an int64 value");
     g_value_set_int64(gv, Int64_val(v));
     CAMLreturn(Val_unit);
 }
@@ -493,6 +495,8 @@ CAMLprim value ml_g_value_set_variant(value val, value v)
 {
     CAMLparam2(val, v);
     GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_VARIANT(gv))
+        caml_invalid_argument("g_value_set_variant: not a variant value");
     /* transfer-none: GValue takes its own reference */
     g_value_set_variant(gv, GVariant_val(v));
     CAMLreturn(Val_unit);
@@ -576,6 +580,8 @@ CAMLprim value ml_g_value_set_boxed(value val, value v)
 {
     CAMLparam2(val, v);
     GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_BOXED(gv))
+        caml_invalid_argument("g_value_set_boxed: not a boxed value");
     /* transfer-none: GValue takes its own copy via g_boxed_copy internally */
     const void *ptr = ml_gir_record_ptr_val(v, "set_boxed");
     g_value_set_boxed(gv, ptr);
