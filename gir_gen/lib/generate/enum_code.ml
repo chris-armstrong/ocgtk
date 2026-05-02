@@ -288,8 +288,18 @@ let generate_ocaml_enum_impl enum =
     let buf = Buffer.create 512 in
     let lower_name = Utils.ocaml_enum_name enum in
 
+    (* Emit type declaration so the .ml is self-contained *)
+    bprintf buf "type %s = [\n" lower_name;
+    List.iteri
+      ~f:(fun i member ->
+        let vname = variant_name_of_member member.member_name in
+        bprintf buf "  | `%s" vname;
+        if i < List.length enum.members - 1 then bprintf buf "\n"
+        else bprintf buf "\n]\n\n")
+      enum.members;
+
     (* _of_int: match on integer values *)
-    bprintf buf "let %s_of_int (n : int) : %s =\n" lower_name lower_name;
+    bprintf buf "let %s_of_int n =\n" lower_name;
     bprintf buf "  match n with\n";
 
     (* Track seen integer values to avoid duplicate match arms *)
@@ -307,7 +317,7 @@ let generate_ocaml_enum_impl enum =
       enum.enum_name;
 
     (* _to_int: match on polymorphic variant tags *)
-    bprintf buf "let %s_to_int (v : %s) : int =\n" lower_name lower_name;
+    bprintf buf "let %s_to_int v =\n" lower_name;
     bprintf buf "  match v with\n";
     List.iter
       ~f:(fun member ->
@@ -331,8 +341,19 @@ let generate_ocaml_bitfield_impl bitfield =
     let buf = Buffer.create 512 in
     let lower_name = Utils.ocaml_bitfield_name bitfield in
 
+    (* Emit type declarations so the .ml is self-contained *)
+    bprintf buf "type %s_flag = [\n" lower_name;
+    List.iteri
+      ~f:(fun i flag ->
+        let vname = variant_name_of_member flag.flag_name in
+        bprintf buf "  | `%s" vname;
+        if i < List.length bitfield.flags - 1 then bprintf buf "\n"
+        else bprintf buf "\n]\n\n")
+      bitfield.flags;
+    bprintf buf "type %s = %s_flag list\n\n" lower_name lower_name;
+
     (* _of_int: iterate over flags testing each bit, build up acc list *)
-    bprintf buf "let %s_of_int (flags : int) : %s =\n" lower_name lower_name;
+    bprintf buf "let %s_of_int flags =\n" lower_name;
     bprintf buf "  let acc = [] in\n";
     List.iter
       ~f:(fun flag ->
@@ -343,7 +364,7 @@ let generate_ocaml_bitfield_impl bitfield =
     bprintf buf "  acc\n\n";
 
     (* _to_int: fold the flag list with lor *)
-    bprintf buf "let %s_to_int (flags : %s) : int =\n" lower_name lower_name;
+    bprintf buf "let %s_to_int flags =\n" lower_name;
     bprintf buf "  List.fold_left\n";
     bprintf buf "    (fun acc flag ->\n";
     bprintf buf "      match flag with\n";

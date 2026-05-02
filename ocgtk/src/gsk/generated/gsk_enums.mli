@@ -40,6 +40,9 @@ type blendmode = [
   | `LUMINOSITY
 ]
 
+val blendmode_of_int : int -> blendmode
+val blendmode_to_int : blendmode -> int
+
 (* Corner - enumeration *)
 type corner = [
   (** The top left corner *)
@@ -51,6 +54,9 @@ type corner = [
   (** The bottom left corner *)
   | `BOTTOM_LEFT
 ]
+
+val corner_of_int : int -> corner
+val corner_to_int : corner -> int
 
 (* FillRule - enumeration *)
 type fillrule = [
@@ -66,6 +72,9 @@ type fillrule = [
   filled. *)
   | `EVEN_ODD
 ]
+
+val fillrule_of_int : int -> fillrule
+val fillrule_to_int : fillrule -> int
 
 (* GLUniformType - enumeration *)
 type gluniformtype = [
@@ -87,6 +96,9 @@ type gluniformtype = [
   | `VEC4
 ]
 
+val gluniformtype_of_int : int -> gluniformtype
+val gluniformtype_to_int : gluniformtype -> int
+
 (* LineCap - enumeration *)
 type linecap = [
   (** Start and stop the line exactly at the start
@@ -100,6 +112,9 @@ type linecap = [
   | `SQUARE
 ]
 
+val linecap_of_int : int -> linecap
+val linecap_to_int : linecap -> int
+
 (* LineJoin - enumeration *)
 type linejoin = [
   (** Use a sharp angled corner *)
@@ -111,6 +126,9 @@ type linejoin = [
   the line width from the joint point *)
   | `BEVEL
 ]
+
+val linejoin_of_int : int -> linejoin
+val linejoin_to_int : linejoin -> int
 
 (* MaskMode - enumeration *)
 type maskmode = [
@@ -125,6 +143,9 @@ type maskmode = [
     multiplied by mask alpha *)
   | `INVERTED_LUMINANCE
 ]
+
+val maskmode_of_int : int -> maskmode
+val maskmode_to_int : maskmode -> int
 
 (* PathDirection - enumeration *)
 type pathdirection = [
@@ -141,6 +162,9 @@ type pathdirection = [
   side of the path *)
   | `FROM_END
 ]
+
+val pathdirection_of_int : int -> pathdirection
+val pathdirection_to_int : pathdirection -> int
 
 (* PathOperation - enumeration *)
 type pathoperation = [
@@ -165,6 +189,9 @@ type pathoperation = [
   curve will be passed, too. *)
   | `CONIC
 ]
+
+val pathoperation_of_int : int -> pathoperation
+val pathoperation_to_int : pathoperation -> int
 
 (* RenderNodeType - enumeration *)
 type rendernodetype = [
@@ -232,6 +259,9 @@ type rendernodetype = [
   | `SUBSURFACE_NODE
 ]
 
+val rendernodetype_of_int : int -> rendernodetype
+val rendernodetype_to_int : rendernodetype -> int
+
 (* ScalingFilter - enumeration *)
 type scalingfilter = [
   (** linear interpolation filter *)
@@ -244,6 +274,9 @@ type scalingfilter = [
   | `TRILINEAR
 ]
 
+val scalingfilter_of_int : int -> scalingfilter
+val scalingfilter_to_int : scalingfilter -> int
+
 (* SerializationError - enumeration *)
 type serializationerror = [
   (** The format can not be identified *)
@@ -255,6 +288,9 @@ type serializationerror = [
   a proper serialization *)
   | `INVALID_DATA
 ]
+
+val serializationerror_of_int : int -> serializationerror
+val serializationerror_to_int : serializationerror -> int
 
 (* TransformCategory - enumeration *)
 type transformcategory = [
@@ -281,6 +317,9 @@ type transformcategory = [
   | `IDENTITY
 ]
 
+val transformcategory_of_int : int -> transformcategory
+val transformcategory_to_int : transformcategory -> int
+
 (* PathForeachFlags - bitfield/flags *)
 type pathforeachflags_flag = [
   (** The default behavior, only allow lines. *)
@@ -294,4 +333,7 @@ type pathforeachflags_flag = [
 ]
 
 type pathforeachflags = pathforeachflags_flag list
+
+val pathforeachflags_of_int : int -> pathforeachflags
+val pathforeachflags_to_int : pathforeachflags -> int
 

@@ -199,7 +199,7 @@
         {
           "stage": 5,
           "title": "Regenerate all 9 namespace bindings and remove modules_without_implementation from dune files",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "Run `bash scripts/generate-bindings.sh` to regenerate all 9 namespace binding sets (Cairo, Gdk, GdkPixbuf, Gio, Graphene, Gsk, Gtk, Pango, PangoCairo). Each namespace now gets a <ns>_enums.ml in its generated/ subdirectory. Remove the `modules_without_implementation` clause from each namespace dune file where the corresponding .ml now exists. For Cairo and Graphene (if they produce zero enums/bitfields), keep the clause. For all other namespaces, remove it only after verifying the .ml was actually produced.",
           "files_to_modify": [
