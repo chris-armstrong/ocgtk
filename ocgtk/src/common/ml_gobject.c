@@ -440,6 +440,16 @@ CAMLprim value ml_g_value_set_object(value val, value obj)
     CAMLreturn(Val_unit);
 }
 
+CAMLprim value ml_g_value_set_object_null(value val)
+{
+    CAMLparam1(val);
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_OBJECT(gv))
+        caml_invalid_argument("g_value_set_object_null: not an object");
+    g_value_set_object(gv, NULL);
+    CAMLreturn(Val_unit);
+}
+
 /* ==================================================================== */
 /* Property Operations */
 /* ==================================================================== */

@@ -169,12 +169,13 @@ module Value = struct
   external set_double : t -> float -> unit = "ml_g_value_set_double"
   external get_object_internal : t -> 'a obj = "ml_g_value_get_object"
   external set_object_internal : t -> 'a obj -> unit = "ml_g_value_set_object"
+  external set_object_null : t -> unit = "ml_g_value_set_object_null"
 
   let get_object v = try Some (get_object_internal v) with _ -> None
 
   let set_object v = function
     | Some obj -> set_object_internal v obj
-    | None -> () (* Set NULL *)
+    | None -> set_object_null v
 end
 
 (** {2 Properties} *)

@@ -64,11 +64,10 @@
 ;  (modules test_event_controller_runtime)
 ;  (libraries ocgtk alcotest))
 
-; Blocked: GObj module API not yet generated
-; (test
-;  (name test_gobj)
-;  (modules test_gobj)
-;  (libraries ocgtk alcotest))
+(test
+ (name test_gobj)
+ (modules test_gobj)
+ (libraries ocgtk alcotest))
 
 (test
  (name test_integration)
