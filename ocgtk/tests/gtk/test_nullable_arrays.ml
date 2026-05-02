@@ -31,6 +31,10 @@ module Helpers = Gtk_test_helpers
 
 let require_gtk = Helpers.require_gtk
 
+(* Alcotest testables for option-wrapped arrays. *)
+let string_array_option = option (array string)
+let int_array_option = option (array int)
+
 (* ========== Drop_target.get_gtypes : t -> int array option * Gsize.t ========== *)
 
 let test_drop_target_get_gtypes_set_none_round_trips () =
@@ -41,14 +45,8 @@ let test_drop_target_get_gtypes_set_none_round_trips () =
   Wrappers.Drop_target.set_gtypes dt None Gsize.zero;
   let arr_opt, n = Wrappers.Drop_target.get_gtypes dt in
   check int "count is 0 after set_gtypes None" 0 (Gsize.to_int n);
-  match arr_opt with
-  | None -> ()
-  | Some arr ->
-      fail
-        (Printf.sprintf
-           "expected None after set_gtypes None but got Some(array of length \
-            %d)"
-           (Array.length arr))
+  check int_array_option "get_gtypes returns None after set_gtypes None" None
+    arr_opt
 
 let test_drop_target_get_gtypes_set_some_round_trips () =
   let dt = Wrappers.Drop_target.new_ (Gobject.Type.from_name "gchararray") [] in
@@ -59,69 +57,42 @@ let test_drop_target_get_gtypes_set_some_round_trips () =
     (Gsize.of_int (Array.length expected));
   let arr_opt, n = Wrappers.Drop_target.get_gtypes dt in
   check int "count matches set" (Array.length expected) (Gsize.to_int n);
-  match arr_opt with
-  | None -> fail "expected Some after set_gtypes Some but got None"
-  | Some arr ->
-      check int "array length matches count" (Gsize.to_int n) (Array.length arr);
-      Array.iteri
-        (fun i v -> check int (Printf.sprintf "gtypes[%d]" i) expected.(i) v)
-        arr
+  check int_array_option "get_gtypes returns the array we set" (Some expected)
+    arr_opt
 
 (* ========== Icon_theme.get_search_path : t -> string array option ========== *)
 
 let test_icon_theme_get_search_path_set_none_round_trips () =
   let theme = Wrappers.Icon_theme.new_ () in
   Wrappers.Icon_theme.set_search_path theme None;
-  match Wrappers.Icon_theme.get_search_path theme with
-  | None -> ()
-  | Some arr ->
-      fail
-        (Printf.sprintf
-           "expected None after set_search_path None but got Some(array of \
-            length %d)"
-           (Array.length arr))
+  check string_array_option
+    "get_search_path returns None after set_search_path None" None
+    (Wrappers.Icon_theme.get_search_path theme)
 
 let test_icon_theme_get_search_path_set_some_round_trips () =
   let theme = Wrappers.Icon_theme.new_ () in
   let expected = [| "/tmp/icons-a"; "/tmp/icons-b" |] in
   Wrappers.Icon_theme.set_search_path theme (Some expected);
-  match Wrappers.Icon_theme.get_search_path theme with
-  | None -> fail "expected Some after set_search_path Some but got None"
-  | Some arr ->
-      check int "search path length matches" (Array.length expected)
-        (Array.length arr);
-      Array.iteri
-        (fun i v ->
-          check string (Printf.sprintf "search_path[%d]" i) expected.(i) v)
-        arr
+  check string_array_option "get_search_path returns the array we set"
+    (Some expected)
+    (Wrappers.Icon_theme.get_search_path theme)
 
 (* ========== Icon_theme.get_resource_path : t -> string array option ========== *)
 
 let test_icon_theme_get_resource_path_set_none_round_trips () =
   let theme = Wrappers.Icon_theme.new_ () in
   Wrappers.Icon_theme.set_resource_path theme None;
-  match Wrappers.Icon_theme.get_resource_path theme with
-  | None -> ()
-  | Some arr ->
-      fail
-        (Printf.sprintf
-           "expected None after set_resource_path None but got Some(array of \
-            length %d)"
-           (Array.length arr))
+  check string_array_option
+    "get_resource_path returns None after set_resource_path None" None
+    (Wrappers.Icon_theme.get_resource_path theme)
 
 let test_icon_theme_get_resource_path_set_some_round_trips () =
   let theme = Wrappers.Icon_theme.new_ () in
   let expected = [| "/org/example/icons"; "/org/example/more-icons" |] in
   Wrappers.Icon_theme.set_resource_path theme (Some expected);
-  match Wrappers.Icon_theme.get_resource_path theme with
-  | None -> fail "expected Some after set_resource_path Some but got None"
-  | Some arr ->
-      check int "resource path length matches" (Array.length expected)
-        (Array.length arr);
-      Array.iteri
-        (fun i v ->
-          check string (Printf.sprintf "resource_path[%d]" i) expected.(i) v)
-        arr
+  check string_array_option "get_resource_path returns the array we set"
+    (Some expected)
+    (Wrappers.Icon_theme.get_resource_path theme)
 
 (* ========== Test Suite ========== *)
 
