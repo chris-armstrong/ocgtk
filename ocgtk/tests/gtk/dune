@@ -60,3 +60,12 @@
  (name test_nullable_arrays)
  (modules test_nullable_arrays)
  (libraries ocgtk.gtk alcotest gtk_test_helpers))
+
+(test
+ (name test_signal_value_enum_flags)
+ (modules test_signal_value_enum_flags)
+ (foreign_stubs
+  (language c)
+  (names test_signal_value_enum_flags_stubs)
+  (flags (:include %{project_root}/src/gtk/cflag-gtk4.sexp)))
+ (libraries ocgtk.common ocgtk.gtk ocgtk.gdk alcotest gtk_test_helpers))

@@ -247,7 +247,7 @@
         {
           "stage": 6,
           "title": "Add runtime test suite test_signal_value_enum_flags.ml (10 test cases)",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "Create ocgtk/tests/test_signal_value_enum_flags.ml with the 10 test cases from the plan (lines 866-875). Register it in ocgtk/tests/dune. This stage requires the regenerated bindings from Stage 5 and the OCaml externals from Stage 3.",
           "files_to_modify": [
