@@ -476,7 +476,7 @@
         {
           "stage": 8,
           "title": "Register signal_marshaller_tests.ml in gir_gen/test/dune",
-          "status": "pending",
+          "status": "committed",
           "replanned": false,
           "description": "Add signal_marshaller_tests to the test_gir_gen test stanza in gir_gen/test/dune. The test file was created in Stage 7 but must be registered to actually run.",
           "files_to_modify": [
