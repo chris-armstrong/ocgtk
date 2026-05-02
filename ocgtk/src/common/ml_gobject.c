@@ -450,6 +450,138 @@ CAMLprim value ml_g_value_set_object_null(value val)
     CAMLreturn(Val_unit);
 }
 
+/* --- int64 --- */
+
+CAMLprim value ml_g_value_get_int64(value val)
+{
+    CAMLparam1(val);
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_INT64(gv))
+        caml_invalid_argument("g_value_get_int64: not an int64");
+    CAMLreturn(caml_copy_int64(g_value_get_int64(gv)));
+}
+
+CAMLprim value ml_g_value_set_int64(value val, value v)
+{
+    CAMLparam2(val, v);
+    GValue *gv = GValue_val(val);
+    g_value_set_int64(gv, Int64_val(v));
+    CAMLreturn(Val_unit);
+}
+
+/* --- GVariant --- */
+
+CAMLprim value ml_g_value_get_variant(value val)
+{
+    CAMLparam1(val);
+    CAMLlocal1(result);
+
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_VARIANT(gv))
+        caml_invalid_argument("g_value_get_variant: not a variant");
+
+    GVariant *p = g_value_get_variant(gv);
+    /* g_value_get_variant returns a borrowed pointer; ref to take ownership */
+    if (p == NULL)
+        caml_failwith("g_value_get_variant: NULL variant");
+    result = Val_GVariant(g_variant_ref(p));
+
+    CAMLreturn(result);
+}
+
+CAMLprim value ml_g_value_set_variant(value val, value v)
+{
+    CAMLparam2(val, v);
+    GValue *gv = GValue_val(val);
+    /* transfer-none: GValue takes its own reference */
+    g_value_set_variant(gv, GVariant_val(v));
+    CAMLreturn(Val_unit);
+}
+
+/* --- enum (raw int round-trip) --- */
+
+CAMLprim value ml_g_value_get_enum_int(value val)
+{
+    CAMLparam1(val);
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_ENUM(gv))
+        caml_invalid_argument("g_value_get_enum_int: not an enum");
+    CAMLreturn(Val_int(g_value_get_enum(gv)));
+}
+
+CAMLprim value ml_g_value_set_enum_int(value val, value v)
+{
+    CAMLparam2(val, v);
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_ENUM(gv))
+        caml_invalid_argument("g_value_set_enum_int: not an enum");
+    g_value_set_enum(gv, Int_val(v));
+    CAMLreturn(Val_unit);
+}
+
+/* --- flags (raw int round-trip) --- */
+
+CAMLprim value ml_g_value_get_flags_int(value val)
+{
+    CAMLparam1(val);
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_FLAGS(gv))
+        caml_invalid_argument("g_value_get_flags_int: not a flags value");
+    CAMLreturn(Val_int((int)g_value_get_flags(gv)));
+}
+
+CAMLprim value ml_g_value_set_flags_int(value val, value v)
+{
+    CAMLparam2(val, v);
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_FLAGS(gv))
+        caml_invalid_argument("g_value_set_flags_int: not a flags value");
+    g_value_set_flags(gv, (guint)Int_val(v));
+    CAMLreturn(Val_unit);
+}
+
+/* --- boxed record bridge ---
+ * get_boxed: copies the boxed value out of the GValue via g_boxed_copy and
+ * wraps it in a gir_record custom block (ocgtk_gir_record_ops).  The
+ * existing finalizer (finalize_gir_record in wrappers.c) dispatches on
+ * G_TYPE_IS_BOXED and calls g_boxed_free, so the copy is freed correctly
+ * when the OCaml block is collected.
+ *
+ * set_boxed: extracts the pointer from the gir_record custom block and
+ * passes it to g_value_set_boxed (transfer-none; the GValue copies
+ * internally via g_boxed_copy).
+ */
+
+CAMLprim value ml_g_value_get_boxed(value val)
+{
+    CAMLparam1(val);
+    CAMLlocal1(result);
+
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_BOXED(gv))
+        caml_invalid_argument("g_value_get_boxed: not a boxed value");
+
+    void *p = g_value_get_boxed(gv);
+    if (p == NULL)
+        caml_failwith("g_value_get_boxed: NULL boxed pointer");
+
+    /* Take an owned copy so OCaml controls the lifetime via gir_record_box */
+    void *copy = g_boxed_copy(G_VALUE_TYPE(gv), p);
+    result = ml_gir_record_val_ptr_with_type(G_VALUE_TYPE(gv), copy);
+
+    CAMLreturn(result);
+}
+
+CAMLprim value ml_g_value_set_boxed(value val, value v)
+{
+    CAMLparam2(val, v);
+    GValue *gv = GValue_val(val);
+    /* transfer-none: GValue takes its own copy via g_boxed_copy internally */
+    const void *ptr = ml_gir_record_ptr_val(v, "set_boxed");
+    g_value_set_boxed(gv, ptr);
+    CAMLreturn(Val_unit);
+}
+
 /* ==================================================================== */
 /* Property Operations */
 /* ==================================================================== */

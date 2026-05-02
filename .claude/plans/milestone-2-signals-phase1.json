@@ -61,7 +61,7 @@
         {
           "stage": 2,
           "title": "Add approximately 8-10 new generic C wrappers in ml_gobject.c (int64, variant, enum_int, flags_int, boxed)",
-          "status": "pending",
+          "status": "committed",
           "replanned": true,
           "description": "Add 5 new getter/setter pairs in ml_gobject.c: get_int64/set_int64, get_variant/set_variant, get_enum_int/set_enum_int, get_flags_int/set_flags_int, and get_boxed/set_boxed. All 10 functions live entirely in ml_gobject.c — no changes to wrappers.c or wrappers.h. The boxed pair reuses the existing gir_record_custom_ops infrastructure: ml_g_value_get_boxed calls g_value_get_boxed + g_boxed_copy then wraps via ml_gir_record_val_ptr_with_type; ml_g_value_set_boxed extracts the pointer via ml_gir_record_ptr_val and calls g_value_set_boxed (transfer-none). This stage is C-only; OCaml bindings come in Stage 3.",
           "files_to_modify": [
