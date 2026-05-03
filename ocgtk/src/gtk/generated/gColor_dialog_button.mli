@@ -3,7 +3,7 @@ class type color_dialog_button_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
-  inherit Gcolor_dialog_button_signals.color_dialog_button_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_dialog : unit -> GColor_dialog.color_dialog_t option
   method get_rgba : unit -> Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
   method set_dialog : GColor_dialog.color_dialog_t -> unit

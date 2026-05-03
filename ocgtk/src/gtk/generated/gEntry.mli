@@ -5,7 +5,16 @@ class type entry_t = object
 
   inherit GCell_editable.cell_editable_t
   inherit GEditable.editable_t
-  inherit Gentry_signals.entry_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_icon_press :
+    callback:(icon_pos:Gtk_enums.entryiconposition -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_icon_release :
+    callback:(icon_pos:Gtk_enums.entryiconposition -> unit) ->
+    Gobject.Signal.handler_id
+
   method get_activates_default : unit -> bool
   method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
   method get_buffer : unit -> GEntry_buffer.entry_buffer_t

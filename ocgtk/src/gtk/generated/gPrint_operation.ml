@@ -1,8 +1,13 @@
-(* Signal class defined in gprint_operation_signals.ml *)
-
 class type print_operation_t = object
   inherit GPrint_operation_preview.print_operation_preview_t
-  inherit Gprint_operation_signals.print_operation_signals
+
+  method on_done_ :
+    callback:(result:Gtk_enums.printoperationresult -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_status_changed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
   method cancel : unit -> unit
   method draw_page_finish : unit -> unit
   method get_default_page_setup : unit -> GPage_setup.page_setup_t
@@ -47,7 +52,12 @@ class print_operation (obj : Print_operation.t) : print_operation_t =
       GPrint_operation_preview.print_operation_preview
         (Print_operation_preview.from_gobject obj)
 
-    inherit Gprint_operation_signals.print_operation_signals obj
+    method on_done_ ~callback =
+      Print_operation.on_done_ self#as_print_operation ~callback
+
+    method on_status_changed ~callback =
+      Print_operation.on_status_changed self#as_print_operation ~callback
+
     method cancel : unit -> unit = fun () -> Print_operation.cancel obj
 
     method draw_page_finish : unit -> unit =

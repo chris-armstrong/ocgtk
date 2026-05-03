@@ -98,3 +98,9 @@ external get_can_shrink : t -> bool = "ml_gtk_button_get_can_shrink"
     contents. *)
 
 (* Properties *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_clicked :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

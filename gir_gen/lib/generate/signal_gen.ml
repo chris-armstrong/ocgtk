@@ -201,7 +201,8 @@ let classify ~ctx (signal : gir_signal) : (signal_emission, string) result =
 (* ================================================================= *)
 
 let emit_l1_val (e : signal_emission) : string =
-  sprintf "val %s : ?after:bool -> t -> callback:(%s) -> Gobject.handler_id\n"
+  sprintf
+    "val %s : ?after:bool -> t -> callback:(%s) -> Gobject.Signal.handler_id\n"
     e.method_name e.ocaml_callback_type
 
 (* ================================================================= *)
@@ -266,7 +267,8 @@ let emit_l1_let (e : signal_emission) : string =
       let buf = Buffer.create 256 in
       bprintf buf "let %s ?after obj ~callback =\n" e.method_name;
       bprintf buf "  let closure = %s in\n" (emit_closure_body e);
-      bprintf buf "  Gobject.Signal.connect obj ~name:\"%s\" ~closure\n"
+      bprintf buf
+        "  Gobject.Signal.connect obj ~name:\"%s\" ~callback:closure\n"
         e.raw_signal_name;
       bprintf buf "    ~after:(Option.value after ~default:false)\n\n";
       Buffer.contents buf
@@ -277,8 +279,7 @@ let emit_l1_let (e : signal_emission) : string =
 
 let emit_l2_method (e : signal_emission) ~layer1_module_name ~class_snake :
     string =
-  sprintf
-    "  method %s ?after ~callback =\n    %s.%s ?after self#as_%s ~callback\n\n"
+  sprintf "  method %s ~callback =\n    %s.%s self#as_%s ~callback\n\n"
     e.method_name layer1_module_name e.method_name class_snake
 
 (* ================================================================= *)
@@ -289,5 +290,5 @@ let emit_l2_method (e : signal_emission) ~layer1_module_name ~class_snake :
     type body (.mli / class type definition). Unlike [emit_l2_method] (which
     emits a concrete method body), this emits only the method type. *)
 let emit_l2_method_sig (e : signal_emission) : string =
-  sprintf "    method %s : ?after:bool -> callback:(%s) -> Gobject.handler_id\n"
+  sprintf "    method %s : callback:(%s) -> Gobject.Signal.handler_id\n"
     e.method_name e.ocaml_callback_type

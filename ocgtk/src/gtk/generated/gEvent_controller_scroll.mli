@@ -3,7 +3,14 @@ class type event_controller_scroll_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .event_controller_t
 
-  inherit Gevent_controller_scroll_signals.event_controller_scroll_signals
+  method on_decelerate :
+    callback:(vel_x:float -> vel_y:float -> unit) -> Gobject.Signal.handler_id
+
+  method on_scroll :
+    callback:(dx:float -> dy:float -> bool) -> Gobject.Signal.handler_id
+
+  method on_scroll_begin : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_scroll_end : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_flags : unit -> Gtk_enums.eventcontrollerscrollflags
   method get_unit : unit -> Ocgtk_gdk.Gdk.scrollunit
   method set_flags : Gtk_enums.eventcontrollerscrollflags -> unit

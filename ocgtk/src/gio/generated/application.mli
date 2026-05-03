@@ -456,3 +456,15 @@ external activate : t -> unit = "ml_g_application_activate"
     The application must be registered before calling this function. *)
 
 (* Properties *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_name_lost :
+  ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+val on_shutdown :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_startup :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

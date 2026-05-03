@@ -2,7 +2,14 @@ class type d_bus_proxy_t = object
   inherit GAsync_initable.async_initable_t
   inherit GD_bus_interface_and__d_bus_object.d_bus_interface_t
   inherit GInitable.initable_t
-  inherit Gd_bus_proxy_signals.d_bus_proxy_signals
+
+  method on_g_signal :
+    callback:
+      (sender_name:string ->
+      signal_name:string ->
+      parameters:Gvariant.t ->
+      unit) ->
+    Gobject.Signal.handler_id
 
   method call_finish :
     GAsync_result.async_result_t -> (Gvariant.t, GError.t) result

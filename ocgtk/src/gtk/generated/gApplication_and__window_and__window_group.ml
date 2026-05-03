@@ -3,7 +3,7 @@
 
 class type application_t = object
   inherit Ocgtk_gio.Gio.Application.application_t
-  inherit Gapplication_signals.application_signals
+  method on_query_end : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method add_window : window_t -> unit
   method get_accels_for_action : string -> string array
   method get_actions_for_accel : string -> string array
@@ -38,7 +38,19 @@ and window_t = object
     .root_t
 
   inherit GShortcut_manager.shortcut_manager_t
-  inherit Gwindow_signals.window_signals
+
+  method on_activate_default :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate_focus :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_close_request : callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  method on_enable_debugging :
+    callback:(toggle:bool -> bool) -> Gobject.Signal.handler_id
+
+  method on_keys_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method close : unit -> unit
   method destroy : unit -> unit
   method fullscreen : unit -> unit
@@ -158,8 +170,6 @@ and window_group_t = object
     Application_and__window_and__window_group.Window_group.t
 end
 
-(* Signal class defined in gapplication_signals.ml *)
-
 class application
   (obj : Application_and__window_and__window_group.Application.t) :
   application_t =
@@ -168,7 +178,9 @@ class application
       Ocgtk_gio.Gio.Application.application
         (obj :> Ocgtk_gio.Gio.Wrappers.Application.t)
 
-    inherit Gapplication_signals.application_signals obj
+    method on_query_end ~callback =
+      Application_and__window_and__window_group.Application.on_query_end
+        self#as_application ~callback
 
     method add_window : window_t -> unit =
       fun window ->
@@ -266,7 +278,7 @@ class application
     method screensaver_active =
       Application_and__window_and__window_group.Application
       .get_screensaver_active obj
-  end (* Signal class defined in gwindow_signals.ml *)
+  end
 
 and window (obj : Application_and__window_and__window_group.Window.t) : window_t
   =
@@ -291,7 +303,25 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
     inherit
       GShortcut_manager.shortcut_manager (Shortcut_manager.from_gobject obj)
 
-    inherit Gwindow_signals.window_signals obj
+    method on_activate_default ~callback =
+      Application_and__window_and__window_group.Window.on_activate_default
+        self#as_window ~callback
+
+    method on_activate_focus ~callback =
+      Application_and__window_and__window_group.Window.on_activate_focus
+        self#as_window ~callback
+
+    method on_close_request ~callback =
+      Application_and__window_and__window_group.Window.on_close_request
+        self#as_window ~callback
+
+    method on_enable_debugging ~callback =
+      Application_and__window_and__window_group.Window.on_enable_debugging
+        self#as_window ~callback
+
+    method on_keys_changed ~callback =
+      Application_and__window_and__window_group.Window.on_keys_changed
+        self#as_window ~callback
 
     method close : unit -> unit =
       fun () -> Application_and__window_and__window_group.Window.close obj

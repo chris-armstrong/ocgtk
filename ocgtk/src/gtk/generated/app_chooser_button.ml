@@ -73,3 +73,23 @@ external append_custom_item :
     See also [method@Gtk.AppChooserButton.append_separator]. *)
 
 (* Properties *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"changed" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_custom_item_activated ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let item_name =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        callback ~item_name)
+  in
+  Gobject.Signal.connect obj ~name:"custom-item-activated" ~callback:closure
+    ~after:(Option.value after ~default:false)

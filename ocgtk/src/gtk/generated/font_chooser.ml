@@ -128,3 +128,15 @@ external get_font : t -> string option = "ml_gtk_font_chooser_get_font"
     descriptions. *)
 
 (* Properties *)
+
+let on_font_activated ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let fontname =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        callback ~fontname)
+  in
+  Gobject.Signal.connect obj ~name:"font-activated" ~callback:closure
+    ~after:(Option.value after ~default:false)

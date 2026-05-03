@@ -44,3 +44,20 @@ external get_keycode : t -> int = "ml_gtk_cell_renderer_accel_get_keycode"
 external set_keycode : t -> int -> unit
   = "ml_gtk_cell_renderer_accel_set_keycode"
 (** Set property: keycode *)
+
+val on_accel_cleared :
+  ?after:bool ->
+  t ->
+  callback:(path_string:string -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_accel_edited :
+  ?after:bool ->
+  t ->
+  callback:
+    (path_string:string ->
+    accel_key:int ->
+    accel_mods:Ocgtk_gdk.Gdk_enums.modifiertype ->
+    hardware_keycode:int ->
+    unit) ->
+  Gobject.Signal.handler_id

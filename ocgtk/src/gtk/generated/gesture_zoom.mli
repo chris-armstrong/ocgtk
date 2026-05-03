@@ -15,3 +15,9 @@ If @gesture is active, this function returns the zooming
 difference since the gesture was recognized (hence the
 starting point is considered 1:1). If @gesture is not
 active, 1 is returned. *)
+
+val on_scale_changed :
+  ?after:bool ->
+  t ->
+  callback:(scale:float -> unit) ->
+  Gobject.Signal.handler_id

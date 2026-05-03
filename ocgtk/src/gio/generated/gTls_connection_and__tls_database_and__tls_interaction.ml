@@ -3,7 +3,6 @@
 
 class type tls_connection_t = object
   inherit GIo_stream.io_stream_t
-  inherit Gtls_connection_signals.tls_connection_signals
 
   method emit_accept_certificate :
     GTls_certificate.tls_certificate_t -> Gio_enums.tlscertificateflags -> bool
@@ -126,14 +125,11 @@ and tls_interaction_t = object
     Tls_connection_and__tls_database_and__tls_interaction.Tls_interaction.t
 end
 
-(* Signal class defined in gtls_connection_signals.ml *)
-
 class tls_connection
   (obj : Tls_connection_and__tls_database_and__tls_interaction.Tls_connection.t) :
   tls_connection_t =
   object (self)
     inherit GIo_stream.io_stream (obj :> Io_stream.t)
-    inherit Gtls_connection_signals.tls_connection_signals obj
 
     method emit_accept_certificate :
         GTls_certificate.tls_certificate_t ->

@@ -186,3 +186,53 @@ external set_has_frame : t -> bool -> unit = "ml_gtk_combo_box_set_has_frame"
 
 external get_popup_shown : t -> bool = "ml_gtk_combo_box_get_popup_shown"
 (** Get property: popup-shown *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"changed" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_format_entry_text ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let path =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        let result = callback ~path in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_string v x)
+  in
+  Gobject.Signal.connect obj ~name:"format-entry-text" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_move_active ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let scroll_type =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.scrolltype_of_int (Gobject.Value.get_enum_int v)
+        in
+        callback ~scroll_type)
+  in
+  Gobject.Signal.connect obj ~name:"move-active" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_popdown ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let result = callback () in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"popdown" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_popup ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"popup" ~callback
+    ~after:(Option.value after ~default:false)

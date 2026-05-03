@@ -1,7 +1,7 @@
-(* Signal class defined in gcontent_provider_signals.ml *)
-
 class type content_provider_t = object
-  inherit Gcontent_provider_signals.content_provider_signals
+  method on_content_changed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
   method content_changed : unit -> unit
   method ref_formats : unit -> Content_formats.t
   method ref_storable_formats : unit -> Content_formats.t
@@ -17,7 +17,8 @@ end
 (* High-level class for ContentProvider *)
 class content_provider (obj : Content_provider.t) : content_provider_t =
   object (self)
-    inherit Gcontent_provider_signals.content_provider_signals obj
+    method on_content_changed ~callback =
+      Content_provider.on_content_changed self#as_content_provider ~callback
 
     method content_changed : unit -> unit =
       fun () -> Content_provider.content_changed obj

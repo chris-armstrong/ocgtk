@@ -223,6 +223,9 @@ and Clipboard : sig
 
   external get_local : t -> bool = "ml_gdk_clipboard_get_local"
   (** Get property: local *)
+
+  val on_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
   type t = [ `clipboard | `object_ ] Gobject.obj
 
@@ -293,6 +296,10 @@ end = struct
 
   external get_local : t -> bool = "ml_gdk_clipboard_get_local"
   (** Get property: local *)
+
+  let on_changed ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"changed" ~callback
+      ~after:(Option.value after ~default:false)
 end
 
 and Device : sig
@@ -420,6 +427,9 @@ and Device : sig
 
   external get_tool : t -> Device_tool.t = "ml_gdk_device_get_tool"
   (** Get property: tool *)
+
+  val on_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
   type t = [ `device | `object_ ] Gobject.obj
 
@@ -545,6 +555,10 @@ end = struct
 
   external get_tool : t -> Device_tool.t = "ml_gdk_device_get_tool"
   (** Get property: tool *)
+
+  let on_changed ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"changed" ~callback
+      ~after:(Option.value after ~default:false)
 end
 
 and Display : sig
@@ -809,6 +823,21 @@ and Display : sig
 
   external get_shadow_width : t -> bool = "ml_gdk_display_get_shadow_width"
   (** Get property: shadow-width *)
+
+  val on_closed :
+    ?after:bool ->
+    t ->
+    callback:(is_error:bool -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_opened :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_setting_changed :
+    ?after:bool ->
+    t ->
+    callback:(setting:string -> unit) ->
+    Gobject.Signal.handler_id
 end = struct
   type t = [ `display | `object_ ] Gobject.obj
 
@@ -1071,6 +1100,34 @@ end = struct
 
   external get_shadow_width : t -> bool = "ml_gdk_display_get_shadow_width"
   (** Get property: shadow-width *)
+
+  let on_closed ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let is_error =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_boolean v
+          in
+          callback ~is_error)
+    in
+    Gobject.Signal.connect obj ~name:"closed" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_opened ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"opened" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_setting_changed ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let setting =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_string v
+          in
+          callback ~setting)
+    in
+    Gobject.Signal.connect obj ~name:"setting-changed" ~callback:closure
+      ~after:(Option.value after ~default:false)
 end
 
 and Draw_context : sig
@@ -1870,6 +1927,9 @@ and Monitor : sig
 
   external get_valid : t -> bool = "ml_gdk_monitor_get_valid"
   (** Get property: valid *)
+
+  val on_invalidate :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
   type t = [ `monitor | `object_ ] Gobject.obj
 
@@ -1957,6 +2017,10 @@ end = struct
 
   external get_valid : t -> bool = "ml_gdk_monitor_get_valid"
   (** Get property: valid *)
+
+  let on_invalidate ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"invalidate" ~callback
+      ~after:(Option.value after ~default:false)
 end
 
 and Seat : sig
@@ -2250,6 +2314,12 @@ and Surface : sig
   emits a short beep on the display just as [method@Gdk.Display.beep]. *)
 
   (* Properties *)
+
+  val on_layout :
+    ?after:bool ->
+    t ->
+    callback:(width:int -> height:int -> unit) ->
+    Gobject.Signal.handler_id
 end = struct
   type t = [ `surface | `object_ ] Gobject.obj
 
@@ -2487,14 +2557,35 @@ end = struct
   emits a short beep on the display just as [method@Gdk.Display.beep]. *)
 
   (* Properties *)
+
+  let on_layout ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let width =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_int v
+          in
+          let height =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            Gobject.Value.get_int v
+          in
+          callback ~width ~height)
+    in
+    Gobject.Signal.connect obj ~name:"layout" ~callback:closure
+      ~after:(Option.value after ~default:false)
 end
 
 and Vulkan_context : sig
   type t = [ `vulkan_context | `draw_context | `object_ ] Gobject.obj
 
   (* Methods *)
+  val on_images_updated :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
   type t = [ `vulkan_context | `draw_context | `object_ ] Gobject.obj
 
   (* Methods *)
+  let on_images_updated ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"images-updated" ~callback
+      ~after:(Option.value after ~default:false)
 end

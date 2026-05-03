@@ -226,3 +226,10 @@ external get_g_name_owner : t -> string = "ml_g_d_bus_proxy_get_g_name_owner"
 
 external get_g_object_path : t -> string = "ml_g_d_bus_proxy_get_g_object_path"
 (** Get property: g-object-path *)
+
+val on_g_signal :
+  ?after:bool ->
+  t ->
+  callback:
+    (sender_name:string -> signal_name:string -> parameters:Gvariant.t -> unit) ->
+  Gobject.Signal.handler_id

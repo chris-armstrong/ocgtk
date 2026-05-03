@@ -74,3 +74,9 @@ external destroy : t -> unit = "ml_gtk_native_dialog_destroy"
     system to the `GtkNativeDialog`. *)
 
 (* Properties *)
+
+val on_response :
+  ?after:bool ->
+  t ->
+  callback:(response_id:int -> unit) ->
+  Gobject.Signal.handler_id

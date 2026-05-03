@@ -32,3 +32,9 @@ external get_show_editor : t -> bool = "ml_gtk_color_button_get_show_editor"
 external set_show_editor : t -> bool -> unit
   = "ml_gtk_color_button_set_show_editor"
 (** Set property: show-editor *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_color_set :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

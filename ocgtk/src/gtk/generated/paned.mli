@@ -101,3 +101,30 @@ external get_position_set : t -> bool = "ml_gtk_paned_get_position_set"
 
 external set_position_set : t -> bool -> unit = "ml_gtk_paned_set_position_set"
 (** Set property: position-set *)
+
+val on_accept_position :
+  ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+val on_cancel_position :
+  ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+val on_cycle_child_focus :
+  ?after:bool ->
+  t ->
+  callback:(reversed:bool -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_cycle_handle_focus :
+  ?after:bool ->
+  t ->
+  callback:(reversed:bool -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_move_handle :
+  ?after:bool ->
+  t ->
+  callback:(scroll_type:Gtk_enums.scrolltype -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_toggle_handle_focus :
+  ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id

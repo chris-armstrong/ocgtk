@@ -26,3 +26,21 @@ external get_flags : t -> Gtk_enums.eventcontrollerscrollflags
 (** Gets the flags conditioning the scroll controller behavior. *)
 
 (* Properties *)
+
+val on_decelerate :
+  ?after:bool ->
+  t ->
+  callback:(vel_x:float -> vel_y:float -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_scroll :
+  ?after:bool ->
+  t ->
+  callback:(dx:float -> dy:float -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_scroll_begin :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_scroll_end :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

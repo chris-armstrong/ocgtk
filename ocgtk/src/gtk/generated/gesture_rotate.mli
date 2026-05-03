@@ -15,3 +15,9 @@ external get_angle_delta : t -> float = "ml_gtk_gesture_rotate_get_angle_delta"
 If @gesture is active, this function returns the angle difference
 in radians since the gesture was first recognized. If @gesture is
 not active, 0 is returned. *)
+
+val on_angle_changed :
+  ?after:bool ->
+  t ->
+  callback:(angle:float -> angle_delta:float -> unit) ->
+  Gobject.Signal.handler_id

@@ -1,8 +1,9 @@
-(* Signal class defined in gdialog_signals.ml *)
-
 class type dialog_t = object
   inherit GApplication_and__window_and__window_group.window_t
-  inherit Gdialog_signals.dialog_signals
+  method on_close : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_response :
+    callback:(response_id:int -> unit) -> Gobject.Signal.handler_id
 
   method add_action_widget :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -44,7 +45,8 @@ class dialog (obj : Dialog.t) : dialog_t =
       GApplication_and__window_and__window_group.window
         (obj :> Application_and__window_and__window_group.Window.t)
 
-    inherit Gdialog_signals.dialog_signals obj
+    method on_close ~callback = Dialog.on_close self#as_dialog ~callback
+    method on_response ~callback = Dialog.on_response self#as_dialog ~callback
 
     method add_action_widget :
         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget

@@ -4,7 +4,28 @@ class type flow_box_t = object
     .widget_t
 
   inherit GOrientable.orientable_t
-  inherit Gflow_box_signals.flow_box_signals
+
+  method on_activate_cursor_child :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_move_cursor :
+    callback:
+      (step:Gtk_enums.movementstep ->
+      count:int ->
+      extend:bool ->
+      modify:bool ->
+      bool) ->
+    Gobject.Signal.handler_id
+
+  method on_select_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_selected_children_changed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_toggle_cursor_child :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_unselect_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
 
   method append :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget

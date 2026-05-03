@@ -30,6 +30,9 @@ module rec At_context : sig
   external set_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t -> unit
     = "ml_gtk_at_context_set_display"
   (** Set property: display *)
+
+  val on_state_change :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
   type t = [ `at_context | `object_ ] Gobject.obj
 
@@ -59,6 +62,10 @@ end = struct
   external set_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t -> unit
     = "ml_gtk_at_context_set_display"
   (** Set property: display *)
+
+  let on_state_change ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"state-change" ~callback
+      ~after:(Option.value after ~default:false)
 end
 
 and Accessible : sig

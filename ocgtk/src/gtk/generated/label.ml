@@ -384,3 +384,46 @@ external get_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option
     (self))`. *)
 
 (* Properties *)
+
+let on_activate_current_link ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate-current-link" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_activate_link ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let uri =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        let result = callback ~uri in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"activate-link" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_copy_clipboard ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"copy-clipboard" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_move_cursor ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let step =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.movementstep_of_int (Gobject.Value.get_enum_int v)
+        in
+        let count =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        let extend_selection =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_boolean v
+        in
+        callback ~step ~count ~extend_selection)
+  in
+  Gobject.Signal.connect obj ~name:"move-cursor" ~callback:closure
+    ~after:(Option.value after ~default:false)

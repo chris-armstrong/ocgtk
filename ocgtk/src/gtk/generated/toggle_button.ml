@@ -49,3 +49,7 @@ external get_active : t -> bool = "ml_gtk_toggle_button_get_active"
 *)
 
 (* Properties *)
+
+let on_toggled ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"toggled" ~callback
+    ~after:(Option.value after ~default:false)

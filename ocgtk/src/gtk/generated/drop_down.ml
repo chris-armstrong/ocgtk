@@ -103,3 +103,7 @@ external get_enable_search : t -> bool = "ml_gtk_drop_down_get_enable_search"
 (** Returns whether search is enabled. *)
 
 (* Properties *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)

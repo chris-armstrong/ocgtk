@@ -1,7 +1,4 @@
-(* Signal class defined in gsocket_client_signals.ml *)
-
 class type socket_client_t = object
-  inherit Gsocket_client_signals.socket_client_signals
   method add_application_proxy : string -> unit
 
   method connect :
@@ -82,8 +79,6 @@ end
 (* High-level class for SocketClient *)
 class socket_client (obj : Socket_client.t) : socket_client_t =
   object (self)
-    inherit Gsocket_client_signals.socket_client_signals obj
-
     method add_application_proxy : string -> unit =
       fun protocol -> Socket_client.add_application_proxy obj protocol
 

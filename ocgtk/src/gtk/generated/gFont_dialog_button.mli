@@ -3,7 +3,7 @@ class type font_dialog_button_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
-  inherit Gfont_dialog_button_signals.font_dialog_button_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_dialog : unit -> GFont_dialog.font_dialog_t option
 
   method get_font_desc :

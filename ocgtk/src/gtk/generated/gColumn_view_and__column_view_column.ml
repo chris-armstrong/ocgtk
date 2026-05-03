@@ -7,7 +7,10 @@ class type column_view_t = object
     .widget_t
 
   inherit GScrollable.scrollable_t
-  inherit Gcolumn_view_signals.column_view_signals
+
+  method on_activate :
+    callback:(position:int -> unit) -> Gobject.Signal.handler_id
+
   method append_column : column_view_column_t -> unit
   method get_columns : unit -> Ocgtk_gio.Gio.List_model.list_model_t
   method get_enable_rubberband : unit -> bool
@@ -77,8 +80,6 @@ and column_view_column_t = object
     Column_view_and__column_view_column.Column_view_column.t
 end
 
-(* Signal class defined in gcolumn_view_signals.ml *)
-
 class column_view (obj : Column_view_and__column_view_column.Column_view.t) :
   column_view_t =
   object (self)
@@ -91,7 +92,10 @@ class column_view (obj : Column_view_and__column_view_column.Column_view.t) :
              .t)
 
     inherit GScrollable.scrollable (Scrollable.from_gobject obj)
-    inherit Gcolumn_view_signals.column_view_signals obj
+
+    method on_activate ~callback =
+      Column_view_and__column_view_column.Column_view.on_activate
+        self#as_column_view ~callback
 
     method append_column : column_view_column_t -> unit =
       fun column ->

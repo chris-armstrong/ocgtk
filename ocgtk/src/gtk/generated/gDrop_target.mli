@@ -3,7 +3,16 @@ class type drop_target_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .event_controller_t
 
-  inherit Gdrop_target_signals.drop_target_signals
+  method on_enter :
+    callback:(x:float -> y:float -> Ocgtk_gdk.Gdk_enums.dragaction) ->
+    Gobject.Signal.handler_id
+
+  method on_leave : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_motion :
+    callback:(x:float -> y:float -> Ocgtk_gdk.Gdk_enums.dragaction) ->
+    Gobject.Signal.handler_id
+
   method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction
   method get_current_drop : unit -> Ocgtk_gdk.Gdk.Drop.drop_t option
   method get_drop : unit -> Ocgtk_gdk.Gdk.Drop.drop_t option

@@ -17,3 +17,19 @@ external get_velocity : t -> bool * float * float
 If the gesture is recognized, this function returns %TRUE and fills
 in @velocity_x and @velocity_y with the recorded velocity, as per the
 last events processed. *)
+
+let on_swipe ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let velocity_x =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_double v
+        in
+        let velocity_y =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_double v
+        in
+        callback ~velocity_x ~velocity_y)
+  in
+  Gobject.Signal.connect obj ~name:"swipe" ~callback:closure
+    ~after:(Option.value after ~default:false)

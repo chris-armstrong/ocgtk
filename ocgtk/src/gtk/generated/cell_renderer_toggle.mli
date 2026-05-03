@@ -48,3 +48,9 @@ external get_inconsistent : t -> bool
 external set_inconsistent : t -> bool -> unit
   = "ml_gtk_cell_renderer_toggle_set_inconsistent"
 (** Set property: inconsistent *)
+
+val on_toggled :
+  ?after:bool ->
+  t ->
+  callback:(path:string -> unit) ->
+  Gobject.Signal.handler_id

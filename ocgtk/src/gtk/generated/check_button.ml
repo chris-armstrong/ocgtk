@@ -96,3 +96,11 @@ external get_active : t -> bool = "ml_gtk_check_button_get_active"
 (** Returns whether the check button is active. *)
 
 (* Properties *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_toggled ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"toggled" ~callback
+    ~after:(Option.value after ~default:false)

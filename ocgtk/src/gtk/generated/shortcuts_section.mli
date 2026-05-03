@@ -46,3 +46,9 @@ external get_view_name : t -> string = "ml_gtk_shortcuts_section_get_view_name"
 external set_view_name : t -> string -> unit
   = "ml_gtk_shortcuts_section_set_view_name"
 (** Set property: view-name *)
+
+val on_change_current_page :
+  ?after:bool ->
+  t ->
+  callback:(object_:int -> bool) ->
+  Gobject.Signal.handler_id

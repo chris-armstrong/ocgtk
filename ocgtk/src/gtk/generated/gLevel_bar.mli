@@ -5,7 +5,10 @@ class type level_bar_t = object
 
   inherit GAccessible_range.accessible_range_t
   inherit GOrientable.orientable_t
-  inherit Glevel_bar_signals.level_bar_signals
+
+  method on_offset_changed :
+    callback:(name:string -> unit) -> Gobject.Signal.handler_id
+
   method add_offset_value : string -> float -> unit
   method get_inverted : unit -> bool
   method get_max_value : unit -> float

@@ -1,9 +1,7 @@
-(* Signal class defined in gtree_view_column_signals.ml *)
-
 class type tree_view_column_t = object
   inherit GBuildable.buildable_t
   inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
-  inherit Gtree_view_column_signals.tree_view_column_signals
+  method on_clicked : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method cell_is_visible : unit -> bool
 
   method cell_set_cell_data :
@@ -87,7 +85,8 @@ class tree_view_column (obj : Tree_view_column.t) : tree_view_column_t =
         (Cell_area_and__cell_area_context_and__cell_layout.Cell_layout
          .from_gobject obj)
 
-    inherit Gtree_view_column_signals.tree_view_column_signals obj
+    method on_clicked ~callback =
+      Tree_view_column.on_clicked self#as_tree_view_column ~callback
 
     method cell_is_visible : unit -> bool =
       fun () -> Tree_view_column.cell_is_visible obj

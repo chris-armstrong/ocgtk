@@ -1,6 +1,4 @@
 class type display_manager_t = object
-  inherit Gdisplay_manager_signals.display_manager_signals
-
   method get_default_display :
     unit -> GApp_launch_context_cycle_de440b34.display_t option
 

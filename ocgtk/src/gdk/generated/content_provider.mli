@@ -46,3 +46,6 @@ external get_formats : t -> Content_formats.t
 external get_storable_formats : t -> Content_formats.t
   = "ml_gdk_content_provider_get_storable_formats"
 (** Get property: storable-formats *)
+
+val on_content_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

@@ -1,8 +1,4 @@
-(* Signal class defined in gcolor_chooser_signals.ml *)
-
 class type color_chooser_t = object
-  inherit Gcolor_chooser_signals.color_chooser_signals
-
   method add_palette :
     Gtk_enums.orientation ->
     int ->
@@ -19,8 +15,6 @@ end
 (* High-level class for ColorChooser *)
 class color_chooser (obj : Color_chooser.t) : color_chooser_t =
   object (self)
-    inherit Gcolor_chooser_signals.color_chooser_signals obj
-
     method add_palette :
         Gtk_enums.orientation ->
         int ->

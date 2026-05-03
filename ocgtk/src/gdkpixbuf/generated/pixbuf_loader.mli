@@ -79,3 +79,21 @@ external close : t -> (bool, GError.t) result = "ml_gdk_pixbuf_loader_close"
 
     Remember that this function does not release a reference on the loader, so
     you will need to explicitly release any reference you hold. *)
+
+val on_area_prepared :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_area_updated :
+  ?after:bool ->
+  t ->
+  callback:(x:int -> y:int -> width:int -> height:int -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_closed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_size_prepared :
+  ?after:bool ->
+  t ->
+  callback:(width:int -> height:int -> unit) ->
+  Gobject.Signal.handler_id

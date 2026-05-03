@@ -71,7 +71,7 @@ val emit_l1_val : signal_emission -> string
     Example output:
     {[
     val on_clicked :
-      ?after:bool -> t -> callback:(unit -> unit) -> Gobject.handler_id
+      ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
     ]}
 
     The [t] argument is the L1 module's own [t] (positional, not labelled). *)
@@ -99,8 +99,8 @@ val emit_l2_method :
     Example output for [~layer1_module_name:"Window"] and
     [~class_snake:"window"]:
     {[
-      method on_close_request ?after ~callback =
-        Window.on_close_request ?after self#as_window ~callback
+      method on_close_request ~callback =
+        Window.on_close_request self#as_window ~callback
     ]}
 
     The returned string ends with a blank line. *)
@@ -116,5 +116,5 @@ val emit_l2_method_sig : signal_emission -> string
 
     Example output:
     {[
-      method on_close_request : ?after:bool -> callback:(unit -> bool) -> Gobject.handler_id
+      method on_close_request : callback:(unit -> bool) -> Gobject.Signal.handler_id
     ]} *)

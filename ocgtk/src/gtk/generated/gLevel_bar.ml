@@ -1,5 +1,3 @@
-(* Signal class defined in glevel_bar_signals.ml *)
-
 class type level_bar_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -7,7 +5,10 @@ class type level_bar_t = object
 
   inherit GAccessible_range.accessible_range_t
   inherit GOrientable.orientable_t
-  inherit Glevel_bar_signals.level_bar_signals
+
+  method on_offset_changed :
+    callback:(name:string -> unit) -> Gobject.Signal.handler_id
+
   method add_offset_value : string -> float -> unit
   method get_inverted : unit -> bool
   method get_max_value : unit -> float
@@ -38,7 +39,9 @@ class level_bar (obj : Level_bar.t) : level_bar_t =
       GAccessible_range.accessible_range (Accessible_range.from_gobject obj)
 
     inherit GOrientable.orientable (Orientable.from_gobject obj)
-    inherit Glevel_bar_signals.level_bar_signals obj
+
+    method on_offset_changed ~callback =
+      Level_bar.on_offset_changed self#as_level_bar ~callback
 
     method add_offset_value : string -> float -> unit =
       fun name value -> Level_bar.add_offset_value obj name value

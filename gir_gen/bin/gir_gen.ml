@@ -1350,13 +1350,29 @@ let generate_bindings filter_file gir_file output_dir reference_files
   let core_module_lines =
     List.map core_modules ~f:(fun m -> sprintf "module %s = %s" m m)
   in
+  let enums_module_name =
+    Gir_gen_lib.Utils.internal_namespace_to_module_name
+      namespace.namespace_name
+    ^ "_enums"
+  in
+  let enums_ml_path =
+    Filename.concat
+      (generated_output_dir output_dir)
+      (String.lowercase_ascii namespace.namespace_name ^ "_enums.ml")
+  in
+  let enums_alias_line =
+    if Sys.file_exists enums_ml_path then
+      sprintf "module %s = %s\n" enums_module_name enums_module_name
+    else ""
+  in
   let wrapper_content =
     sprintf
       "(* GENERATED CODE - DO NOT EDIT *)\n\
        (* Library wrapper module - re-exports %s as the public API *)\n\n\
        module %s = %s\n\
+       %s\
        %s\n"
-      lib_name lib_name lib_name
+      lib_name lib_name lib_name enums_alias_line
       (String.concat ~sep:"\n" core_module_lines)
   in
   write_file ~path:wrapper_ml_file ~content:wrapper_content;

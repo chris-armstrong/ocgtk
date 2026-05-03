@@ -1,7 +1,10 @@
 class type application_t = object
   inherit GAction_group.action_group_t
   inherit GAction_map.action_map_t
-  inherit Gapplication_signals.application_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_name_lost : callback:(unit -> bool) -> Gobject.Signal.handler_id
+  method on_shutdown : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_startup : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method activate : unit -> unit
   method bind_busy_property : [ `object_ ] Gobject.obj -> string -> unit
   method get_application_id : unit -> string option

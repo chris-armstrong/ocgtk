@@ -4,7 +4,10 @@ class type column_view_t = object
     .widget_t
 
   inherit GScrollable.scrollable_t
-  inherit Gcolumn_view_signals.column_view_signals
+
+  method on_activate :
+    callback:(position:int -> unit) -> Gobject.Signal.handler_id
+
   method append_column : column_view_column_t -> unit
   method get_columns : unit -> Ocgtk_gio.Gio.List_model.list_model_t
   method get_enable_rubberband : unit -> bool

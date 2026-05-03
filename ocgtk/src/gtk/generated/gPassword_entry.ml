@@ -1,12 +1,10 @@
-(* Signal class defined in gpassword_entry_signals.ml *)
-
 class type password_entry_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
   inherit GEditable.editable_t
-  inherit Gpassword_entry_signals.password_entry_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_extra_menu : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
   method get_show_peek_icon : unit -> bool
   method set_extra_menu : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
@@ -30,7 +28,9 @@ class password_entry (obj : Password_entry.t) : password_entry_t =
              .t)
 
     inherit GEditable.editable (Editable.from_gobject obj)
-    inherit Gpassword_entry_signals.password_entry_signals obj
+
+    method on_activate ~callback =
+      Password_entry.on_activate self#as_password_entry ~callback
 
     method get_extra_menu : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
         =

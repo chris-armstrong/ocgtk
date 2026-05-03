@@ -634,3 +634,123 @@ external get_im_module : t -> string = "ml_gtk_text_view_get_im_module"
 
 external set_im_module : t -> string -> unit = "ml_gtk_text_view_set_im_module"
 (** Set property: im-module *)
+
+let on_backspace ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"backspace" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_copy_clipboard ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"copy-clipboard" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_cut_clipboard ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"cut-clipboard" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_delete_from_cursor ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let type_ =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.deletetype_of_int (Gobject.Value.get_enum_int v)
+        in
+        let count =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        callback ~type_ ~count)
+  in
+  Gobject.Signal.connect obj ~name:"delete-from-cursor" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_insert_at_cursor ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let string =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        callback ~string)
+  in
+  Gobject.Signal.connect obj ~name:"insert-at-cursor" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_insert_emoji ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"insert-emoji" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_move_cursor ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let step =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.movementstep_of_int (Gobject.Value.get_enum_int v)
+        in
+        let count =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        let extend_selection =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_boolean v
+        in
+        callback ~step ~count ~extend_selection)
+  in
+  Gobject.Signal.connect obj ~name:"move-cursor" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_move_viewport ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let step =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.scrollstep_of_int (Gobject.Value.get_enum_int v)
+        in
+        let count =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        callback ~step ~count)
+  in
+  Gobject.Signal.connect obj ~name:"move-viewport" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_paste_clipboard ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"paste-clipboard" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_preedit_changed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let preedit =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        callback ~preedit)
+  in
+  Gobject.Signal.connect obj ~name:"preedit-changed" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_select_all ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let select =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_boolean v
+        in
+        callback ~select)
+  in
+  Gobject.Signal.connect obj ~name:"select-all" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_set_anchor ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"set-anchor" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_toggle_cursor_visible ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"toggle-cursor-visible" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_toggle_overwrite ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"toggle-overwrite" ~callback
+    ~after:(Option.value after ~default:false)

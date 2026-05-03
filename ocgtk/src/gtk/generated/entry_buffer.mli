@@ -76,3 +76,15 @@ Note that the positions are specified in characters,
 not bytes. *)
 
 (* Properties *)
+
+val on_deleted_text :
+  ?after:bool ->
+  t ->
+  callback:(position:int -> n_chars:int -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_inserted_text :
+  ?after:bool ->
+  t ->
+  callback:(position:int -> chars:string -> n_chars:int -> unit) ->
+  Gobject.Signal.handler_id

@@ -1,7 +1,6 @@
-(* Signal class defined in gadjustment_signals.ml *)
-
 class type adjustment_t = object
-  inherit Gadjustment_signals.adjustment_signals
+  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_value_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method clamp_page : float -> float -> unit
   method configure : float -> float -> float -> float -> float -> float -> unit
   method get_lower : unit -> float
@@ -23,7 +22,11 @@ end
 (* High-level class for Adjustment *)
 class adjustment (obj : Adjustment.t) : adjustment_t =
   object (self)
-    inherit Gadjustment_signals.adjustment_signals obj
+    method on_changed ~callback =
+      Adjustment.on_changed self#as_adjustment ~callback
+
+    method on_value_changed ~callback =
+      Adjustment.on_value_changed self#as_adjustment ~callback
 
     method clamp_page : float -> float -> unit =
       fun lower upper -> Adjustment.clamp_page obj lower upper

@@ -24,3 +24,9 @@ external get_orientation : t -> Gtk_enums.orientation
 (** Returns the orientation of the pan gestures that this @gesture expects. *)
 
 (* Properties *)
+
+val on_pan :
+  ?after:bool ->
+  t ->
+  callback:(direction:Gtk_enums.pandirection -> offset:float -> unit) ->
+  Gobject.Signal.handler_id

@@ -25,3 +25,21 @@ external get_offset : t -> bool * float * float
 If the @gesture is active, this function returns %TRUE and
 fills in @x and @y with the coordinates of the current point,
 as an offset to the starting drag point. *)
+
+val on_drag_begin :
+  ?after:bool ->
+  t ->
+  callback:(start_x:float -> start_y:float -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_drag_end :
+  ?after:bool ->
+  t ->
+  callback:(offset_x:float -> offset_y:float -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_drag_update :
+  ?after:bool ->
+  t ->
+  callback:(offset_x:float -> offset_y:float -> unit) ->
+  Gobject.Signal.handler_id

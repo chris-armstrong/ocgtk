@@ -1657,4 +1657,55 @@ and Widget : sig
   external set_width_request : t -> int -> unit
     = "ml_gtk_widget_set_width_request"
   (** Set property: width-request *)
+
+  val on_destroy :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_direction_changed :
+    ?after:bool ->
+    t ->
+    callback:(previous_direction:Gtk_enums.textdirection -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_hide :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_keynav_failed :
+    ?after:bool ->
+    t ->
+    callback:(direction:Gtk_enums.directiontype -> bool) ->
+    Gobject.Signal.handler_id
+
+  val on_map :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_mnemonic_activate :
+    ?after:bool ->
+    t ->
+    callback:(group_cycling:bool -> bool) ->
+    Gobject.Signal.handler_id
+
+  val on_move_focus :
+    ?after:bool ->
+    t ->
+    callback:(direction:Gtk_enums.directiontype -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_realize :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_show :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_state_flags_changed :
+    ?after:bool ->
+    t ->
+    callback:(flags:Gtk_enums.stateflags -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_unmap :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_unrealize :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end

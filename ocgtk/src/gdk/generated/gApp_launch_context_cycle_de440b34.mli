@@ -13,7 +13,7 @@ and cairo_context_t = object
 end
 
 and clipboard_t = object
-  inherit Gclipboard_signals.clipboard_signals
+  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_content : unit -> GContent_provider.content_provider_t option
   method get_display : unit -> display_t
   method get_formats : unit -> Content_formats.t
@@ -37,7 +37,7 @@ and clipboard_t = object
 end
 
 and device_t = object
-  inherit Gdevice_signals.device_signals
+  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_caps_lock_state : unit -> bool
   method get_device_tool : unit -> GDevice_tool.device_tool_t option
   method get_direction : unit -> Ocgtk_pango.Pango.direction
@@ -60,7 +60,14 @@ and device_t = object
 end
 
 and display_t = object
-  inherit Gdisplay_signals.display_signals
+  method on_closed :
+    callback:(is_error:bool -> unit) -> Gobject.Signal.handler_id
+
+  method on_opened : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_setting_changed :
+    callback:(setting:string -> unit) -> Gobject.Signal.handler_id
+
   method beep : unit -> unit
   method close : unit -> unit
   method create_gl_context : unit -> (gl_context_t, GError.t) result
@@ -139,7 +146,7 @@ and gl_context_t = object
 end
 
 and monitor_t = object
-  inherit Gmonitor_signals.monitor_signals
+  method on_invalidate : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_connector : unit -> string option
   method get_description : unit -> string option
   method get_display : unit -> display_t
@@ -157,7 +164,6 @@ and monitor_t = object
 end
 
 and seat_t = object
-  inherit Gseat_signals.seat_signals
   method get_capabilities : unit -> Gdk_enums.seatcapabilities
   method get_devices : Gdk_enums.seatcapabilities -> device_t list
   method get_display : unit -> display_t
@@ -168,7 +174,9 @@ and seat_t = object
 end
 
 and surface_t = object
-  inherit Gsurface_signals.surface_signals
+  method on_layout :
+    callback:(width:int -> height:int -> unit) -> Gobject.Signal.handler_id
+
   method beep : unit -> unit
   method create_cairo_context : unit -> cairo_context_t
   method create_gl_context : unit -> (gl_context_t, GError.t) result
@@ -203,7 +211,10 @@ end
 
 and vulkan_context_t = object
   inherit Ocgtk_gio.Gio.Initable.initable_t
-  inherit Gvulkan_context_signals.vulkan_context_signals
+
+  method on_images_updated :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
   method as_vulkan_context : App_launch_context_cycle_de440b34.Vulkan_context.t
 end
 

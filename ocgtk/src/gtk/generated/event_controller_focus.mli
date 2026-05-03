@@ -16,3 +16,9 @@ external contains_focus : t -> bool
 (** Returns %TRUE if focus is within @self or one of its children. *)
 
 (* Properties *)
+
+val on_enter :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_leave :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

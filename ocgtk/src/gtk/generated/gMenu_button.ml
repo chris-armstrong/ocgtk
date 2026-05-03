@@ -1,11 +1,9 @@
-(* Signal class defined in gmenu_button_signals.ml *)
-
 class type menu_button_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
-  inherit Gmenu_button_signals.menu_button_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_active : unit -> bool
   method get_always_show_arrow : unit -> bool
   method get_can_shrink : unit -> bool
@@ -62,7 +60,9 @@ class menu_button (obj : Menu_button.t) : menu_button_t =
              .Widget
              .t)
 
-    inherit Gmenu_button_signals.menu_button_signals obj
+    method on_activate ~callback =
+      Menu_button.on_activate self#as_menu_button ~callback
+
     method get_active : unit -> bool = fun () -> Menu_button.get_active obj
 
     method get_always_show_arrow : unit -> bool =

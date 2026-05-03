@@ -46,3 +46,7 @@ external get_formats : t -> Content_formats.t
 external get_storable_formats : t -> Content_formats.t
   = "ml_gdk_content_provider_get_storable_formats"
 (** Get property: storable-formats *)
+
+let on_content_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"content-changed" ~callback
+    ~after:(Option.value after ~default:false)

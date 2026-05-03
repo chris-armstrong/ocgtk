@@ -238,3 +238,27 @@ external get_window_placement : t -> Gtk_enums.cornertype
 external set_window_placement : t -> Gtk_enums.cornertype -> unit
   = "ml_gtk_scrolled_window_set_window_placement"
 (** Set property: window-placement *)
+
+val on_edge_overshot :
+  ?after:bool ->
+  t ->
+  callback:(pos:Gtk_enums.positiontype -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_edge_reached :
+  ?after:bool ->
+  t ->
+  callback:(pos:Gtk_enums.positiontype -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_move_focus_out :
+  ?after:bool ->
+  t ->
+  callback:(direction_type:Gtk_enums.directiontype -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_scroll_child :
+  ?after:bool ->
+  t ->
+  callback:(scroll:Gtk_enums.scrolltype -> horizontal:bool -> bool) ->
+  Gobject.Signal.handler_id

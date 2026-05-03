@@ -73,3 +73,9 @@ If another offset marker named @name exists, its value will be
 replaced by @value. *)
 
 (* Properties *)
+
+val on_offset_changed :
+  ?after:bool ->
+  t ->
+  callback:(name:string -> unit) ->
+  Gobject.Signal.handler_id

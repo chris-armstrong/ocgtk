@@ -1,8 +1,9 @@
-(* Signal class defined in glist_view_signals.ml *)
-
 class type list_view_t = object
   inherit GList_base.list_base_t
-  inherit Glist_view_signals.list_view_signals
+
+  method on_activate :
+    callback:(position:int -> unit) -> Gobject.Signal.handler_id
+
   method get_enable_rubberband : unit -> bool
   method get_factory : unit -> GList_item_factory.list_item_factory_t option
 
@@ -34,7 +35,9 @@ end
 class list_view (obj : List_view.t) : list_view_t =
   object (self)
     inherit GList_base.list_base (obj :> List_base.t)
-    inherit Glist_view_signals.list_view_signals obj
+
+    method on_activate ~callback =
+      List_view.on_activate self#as_list_view ~callback
 
     method get_enable_rubberband : unit -> bool =
       fun () -> List_view.get_enable_rubberband obj

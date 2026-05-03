@@ -1,5 +1,3 @@
-(* Signal class defined in gtext_signals.ml *)
-
 class type text_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -7,7 +5,36 @@ class type text_t = object
 
   inherit GAccessible_text.accessible_text_t
   inherit GEditable.editable_t
-  inherit Gtext_signals.text_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_backspace : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_copy_clipboard :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_cut_clipboard : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_delete_from_cursor :
+    callback:(type_:Gtk_enums.deletetype -> count:int -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_insert_at_cursor :
+    callback:(string:string -> unit) -> Gobject.Signal.handler_id
+
+  method on_insert_emoji : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_move_cursor :
+    callback:(step:Gtk_enums.movementstep -> count:int -> extend:bool -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_paste_clipboard :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_preedit_changed :
+    callback:(preedit:string -> unit) -> Gobject.Signal.handler_id
+
+  method on_toggle_overwrite :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
   method get_activates_default : unit -> bool
   method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
   method get_buffer : unit -> GEntry_buffer.entry_buffer_t
@@ -62,7 +89,34 @@ class text (obj : Text.t) : text_t =
 
     inherit GAccessible_text.accessible_text (Accessible_text.from_gobject obj)
     inherit GEditable.editable (Editable.from_gobject obj)
-    inherit Gtext_signals.text_signals obj
+    method on_activate ~callback = Text.on_activate self#as_text ~callback
+    method on_backspace ~callback = Text.on_backspace self#as_text ~callback
+
+    method on_copy_clipboard ~callback =
+      Text.on_copy_clipboard self#as_text ~callback
+
+    method on_cut_clipboard ~callback =
+      Text.on_cut_clipboard self#as_text ~callback
+
+    method on_delete_from_cursor ~callback =
+      Text.on_delete_from_cursor self#as_text ~callback
+
+    method on_insert_at_cursor ~callback =
+      Text.on_insert_at_cursor self#as_text ~callback
+
+    method on_insert_emoji ~callback =
+      Text.on_insert_emoji self#as_text ~callback
+
+    method on_move_cursor ~callback = Text.on_move_cursor self#as_text ~callback
+
+    method on_paste_clipboard ~callback =
+      Text.on_paste_clipboard self#as_text ~callback
+
+    method on_preedit_changed ~callback =
+      Text.on_preedit_changed self#as_text ~callback
+
+    method on_toggle_overwrite ~callback =
+      Text.on_toggle_overwrite self#as_text ~callback
 
     method get_activates_default : unit -> bool =
       fun () -> Text.get_activates_default obj

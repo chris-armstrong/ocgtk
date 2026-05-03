@@ -1,12 +1,11 @@
-(* Signal class defined in gbutton_signals.ml *)
-
 class type button_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
   inherit GActionable.actionable_t
-  inherit Gbutton_signals.button_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_clicked : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_can_shrink : unit -> bool
 
   method get_child :
@@ -46,7 +45,8 @@ class button (obj : Button.t) : button_t =
              .t)
 
     inherit GActionable.actionable (Actionable.from_gobject obj)
-    inherit Gbutton_signals.button_signals obj
+    method on_activate ~callback = Button.on_activate self#as_button ~callback
+    method on_clicked ~callback = Button.on_clicked self#as_button ~callback
     method get_can_shrink : unit -> bool = fun () -> Button.get_can_shrink obj
 
     method get_child :

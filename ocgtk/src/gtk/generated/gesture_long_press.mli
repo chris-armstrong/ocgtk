@@ -26,3 +26,12 @@ external get_delay_factor : t -> float
 (** Returns the delay factor. *)
 
 (* Properties *)
+
+val on_cancelled :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_pressed :
+  ?after:bool ->
+  t ->
+  callback:(x:float -> y:float -> unit) ->
+  Gobject.Signal.handler_id

@@ -136,3 +136,21 @@ external configure : t -> Adjustment.t option -> float -> int -> unit
     accordingly. *)
 
 (* Properties *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_change_value :
+  ?after:bool ->
+  t ->
+  callback:(scroll:Gtk_enums.scrolltype -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_output :
+  ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+val on_value_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_wrapped :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

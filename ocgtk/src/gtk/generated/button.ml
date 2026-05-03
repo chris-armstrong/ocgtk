@@ -98,3 +98,11 @@ external get_can_shrink : t -> bool = "ml_gtk_button_get_can_shrink"
     contents. *)
 
 (* Properties *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_clicked ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"clicked" ~callback
+    ~after:(Option.value after ~default:false)

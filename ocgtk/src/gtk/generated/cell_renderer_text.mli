@@ -355,3 +355,9 @@ external get_wrap_width : t -> int = "ml_gtk_cell_renderer_text_get_wrap_width"
 external set_wrap_width : t -> int -> unit
   = "ml_gtk_cell_renderer_text_set_wrap_width"
 (** Set property: wrap-width *)
+
+val on_edited :
+  ?after:bool ->
+  t ->
+  callback:(path:string -> new_text:string -> unit) ->
+  Gobject.Signal.handler_id

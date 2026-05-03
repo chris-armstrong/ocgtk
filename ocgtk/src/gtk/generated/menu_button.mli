@@ -169,3 +169,6 @@ external get_active : t -> bool = "ml_gtk_menu_button_get_active"
 (** Returns whether the menu button is active. *)
 
 (* Properties *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

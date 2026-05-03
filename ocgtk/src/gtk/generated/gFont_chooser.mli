@@ -1,5 +1,7 @@
 class type font_chooser_t = object
-  inherit Gfont_chooser_signals.font_chooser_signals
+  method on_font_activated :
+    callback:(fontname:string -> unit) -> Gobject.Signal.handler_id
+
   method get_font : unit -> string option
 
   method get_font_desc :

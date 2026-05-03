@@ -8,7 +8,6 @@ class type d_bus_interface_t = object
 end
 
 and d_bus_object_t = object
-  inherit Gd_bus_object_signals.d_bus_object_signals
   method get_interface : string -> d_bus_interface_t option
   method get_interfaces : unit -> d_bus_interface_t list
   method get_object_path : unit -> string

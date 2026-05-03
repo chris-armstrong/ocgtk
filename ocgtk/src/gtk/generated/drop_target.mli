@@ -60,3 +60,18 @@ external get_actions : t -> Ocgtk_gdk.Gdk.dragaction
 (** Gets the actions that this drop target supports. *)
 
 (* Properties *)
+
+val on_enter :
+  ?after:bool ->
+  t ->
+  callback:(x:float -> y:float -> Ocgtk_gdk.Gdk_enums.dragaction) ->
+  Gobject.Signal.handler_id
+
+val on_leave :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_motion :
+  ?after:bool ->
+  t ->
+  callback:(x:float -> y:float -> Ocgtk_gdk.Gdk_enums.dragaction) ->
+  Gobject.Signal.handler_id

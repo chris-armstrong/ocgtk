@@ -1,7 +1,7 @@
-(* Signal class defined in gfilename_completer_signals.ml *)
-
 class type filename_completer_t = object
-  inherit Gfilename_completer_signals.filename_completer_signals
+  method on_got_completion_data :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
   method get_completion_suffix : string -> string option
   method get_completions : string -> string array
   method set_dirs_only : bool -> unit
@@ -11,7 +11,9 @@ end
 (* High-level class for FilenameCompleter *)
 class filename_completer (obj : Filename_completer.t) : filename_completer_t =
   object (self)
-    inherit Gfilename_completer_signals.filename_completer_signals obj
+    method on_got_completion_data ~callback =
+      Filename_completer.on_got_completion_data self#as_filename_completer
+        ~callback
 
     method get_completion_suffix : string -> string option =
       fun initial_text ->

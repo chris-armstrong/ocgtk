@@ -1,8 +1,4 @@
-(* Signal class defined in gdisplay_manager_signals.ml *)
-
 class type display_manager_t = object
-  inherit Gdisplay_manager_signals.display_manager_signals
-
   method get_default_display :
     unit -> GApp_launch_context_cycle_de440b34.display_t option
 
@@ -21,8 +17,6 @@ end
 (* High-level class for DisplayManager *)
 class display_manager (obj : Display_manager.t) : display_manager_t =
   object (self)
-    inherit Gdisplay_manager_signals.display_manager_signals obj
-
     method get_default_display :
         unit -> GApp_launch_context_cycle_de440b34.display_t option =
       fun () ->

@@ -1,5 +1,7 @@
 class type filename_completer_t = object
-  inherit Gfilename_completer_signals.filename_completer_signals
+  method on_got_completion_data :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
   method get_completion_suffix : string -> string option
   method get_completions : string -> string array
   method set_dirs_only : bool -> unit

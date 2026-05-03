@@ -73,3 +73,9 @@ trying to do multicast DNS on the local network), so if you do not
 want to block, you should use g_network_monitor_can_reach_async(). *)
 
 (* Properties *)
+
+val on_network_changed :
+  ?after:bool ->
+  t ->
+  callback:(network_available:bool -> unit) ->
+  Gobject.Signal.handler_id

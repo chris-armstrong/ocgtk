@@ -68,6 +68,9 @@ module rec Tree_selection : sig
   (** Returns the number of rows that have been selected in @tree. *)
 
   (* Properties *)
+
+  val on_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end
 
 and Tree_view : sig
@@ -586,4 +589,48 @@ and Tree_view : sig
   external set_enable_grid_lines : t -> Gtk_enums.treeviewgridlines -> unit
     = "ml_gtk_tree_view_set_enable_grid_lines"
   (** Set property: enable-grid-lines *)
+
+  val on_columns_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_cursor_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_expand_collapse_cursor_row :
+    ?after:bool ->
+    t ->
+    callback:(object_:bool -> p0:bool -> p1:bool -> bool) ->
+    Gobject.Signal.handler_id
+
+  val on_move_cursor :
+    ?after:bool ->
+    t ->
+    callback:
+      (step:Gtk_enums.movementstep ->
+      direction:int ->
+      extend:bool ->
+      modify:bool ->
+      bool) ->
+    Gobject.Signal.handler_id
+
+  val on_select_all :
+    ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  val on_select_cursor_parent :
+    ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  val on_select_cursor_row :
+    ?after:bool ->
+    t ->
+    callback:(object_:bool -> bool) ->
+    Gobject.Signal.handler_id
+
+  val on_start_interactive_search :
+    ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  val on_toggle_cursor_row :
+    ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  val on_unselect_all :
+    ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
 end
