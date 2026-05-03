@@ -1,0 +1,575 @@
+{
+  "plan_id": "milestone-2-signals-phase1",
+  "title": "Milestone 2 Signals — Phase 1a (runtime wrappers + enum ML emission) + Phase 1b (signal_marshaller module)",
+  "source": "gir_gen/docs/plans/milestone-2-signals.md — Phase 1a (lines 782-884) and Phase 1b (lines 886-934)",
+  "baseline": {
+    "build_passes": true,
+    "tests_pass": true,
+    "known_failures": [],
+    "notes": "Clean baseline at commit e6cef391. `dune build --root .` exits 0 (warnings only, pre-existing deprecation). `dune test --root . gir_gen/` exits 0 (349 tests pass). `xvfb-run dune test --root . ocgtk/` exits 0. Git tree clean on branch worktree-bridge-cse_01Ca8Z6A17qevapNUGXL6mnE.\n\nREUSE AUDIT:\n- ml_gobject.c already implements get/set pairs for int, uint, bool, string, float, double, object (existing code lines ~158-177). The 5 new pairs (int64, variant, enum_int, flags_int, boxed) are genuinely new.\n- Boxed record infrastructure: gir_record_box (wrappers.c:93-130) already stores GType+ptr and already dispatches g_boxed_free vs g_free in its finalizer. ml_gir_record_val_ptr_with_type(GType, const void*) is already exported in wrappers.h:41 and implemented in wrappers.c:118-130. The value-kinds-registry change (value_kinds.h, merged on main) uses ocgtk_gir_record_ops as the single ops struct for all gir records; OCGTK_KIND_GIR_RECORD covers both plain and boxed records. No separate ml_boxed_record_custom_ops is needed. For ml_g_value_get_boxed: call g_value_get_boxed(gv), g_boxed_copy(G_VALUE_TYPE(gv), p), then wrap via ml_gir_record_val_ptr_with_type(G_VALUE_TYPE(gv), copy). For ml_g_value_set_boxed: extract the pointer via ml_gir_record_ptr_val and call g_value_set_boxed (transfer-none; GValue copies internally). Both functions live entirely in ml_gobject.c — no changes to wrappers.c or wrappers.h.\n- enum_code.ml currently emits only the .mli (types + no converters). The .ml emission (pure OCaml _of_int/_to_int) is entirely new.\n- Type_factory (gir_gen/test/util/type_factory.ml) provides make_gir_type, make_gir_signal, make_generation_context etc. — sufficient for signal_marshaller unit tests without parsing GIR.\n- classify_type (type_mappings.ml:630) already implements the Tk_Enum / Tk_Bitfield / Tk_Class / Tk_Interface / Tk_Record / Tk_Primitive dispatch that signal_marshaller will need.\n\nOPEN QUESTIONS — all resolved by user:\n1. C SYMBOL COUNT: ballpark only. Accepted wording is 'approximately 8-10 new C symbols, no per-type symbols'. Stage 2 title and acceptance criteria updated accordingly.\n2. set_object None bug fix: dedicated Stage 1 as planned.\n3. BOXED OPS RECORD: reuse existing gir_record_custom_ops infrastructure. ml_g_value_get_boxed and ml_g_value_set_boxed live in ml_gobject.c only. No new ops struct, no changes to wrappers.c or wrappers.h. Stages 2 and 3 updated; marked replanned: true.\n4. DUNE CLEANUP SCOPE: modules_without_implementation kept only for namespaces whose generator produces zero <ns>_enums.ml. Stage 5 acceptance criteria clarified."
+  },
+  "epochs": [
+    {
+      "epoch": 1,
+      "title": "Phase 1a — Runtime wrappers, enum ML emission, dune cleanup, and regeneration",
+      "status": "pending",
+      "replanned": false,
+      "description": "All of Phase 1a from the milestone plan: fix the set_object None bug, add approximately 8-10 new generic C wrappers in ml_gobject.c (no changes to wrappers.c or wrappers.h), add matching OCaml externals, extend enum_code.ml to also emit _of_int/_to_int pure-OCaml functions in a new .ml file, remove modules_without_implementation from namespace dune files where .ml files are now generated, regenerate bindings, and add runtime tests.",
+      "stages": [
+        {
+          "stage": 1,
+          "title": "Fix set_object None no-op bug",
+          "status": "committed",
+          "replanned": false,
+          "description": "The existing `set_object v None = ()` in gobject.ml:175-177 is a no-op that leaves a GValue uninitialised, silently breaking every signal whose return type is a nullable GObject. Fix by adding a 5-line C primitive `ml_g_value_set_object_null` in ml_gobject.c and updating gobject.ml to dispatch on the option constructor. Add a regression test to ocgtk/tests/test_gobj.ml and enable the blocked test stanza in ocgtk/tests/dune.",
+          "files_to_modify": [
+            "ocgtk/src/common/ml_gobject.c",
+            "ocgtk/src/common/gobject.ml",
+            "ocgtk/tests/test_gobj.ml",
+            "ocgtk/tests/dune"
+          ],
+          "files_to_create": [],
+          "depends_on": [],
+          "implementation_notes": "In gobject.ml, the relevant region is module Value (lines 145-178). The set_object_internal external is at line 171; set_object is at lines 175-177 with the None branch currently `| None -> ()`. In ml_gobject.c, add after the ml_g_value_set_object function: `CAMLprim value ml_g_value_set_object_null(value val) { CAMLparam1(val); GValue *gv = GValue_val(val); if (!G_VALUE_HOLDS_OBJECT(gv)) caml_invalid_argument(\"g_value_set_object_null: not an object\"); g_value_set_object(gv, NULL); CAMLreturn(Val_unit); }`. In gobject.ml, add `external set_object_null : t -> unit = \"ml_g_value_set_object_null\"` inside module Value, then change the None branch of set_object to call `set_object_null v`. In gobject.mli, the `set_object` signature `val set_object : t -> 'a obj option -> unit` is unchanged externally. In test_gobj.ml, add a test `test_set_object_none_stores_null` that creates a GValue of object type, calls `set_object v None`, then reads it back with `get_object v` and asserts `= None`. In ocgtk/tests/dune, remove the `; Blocked` comment and re-enable the `(test (name test_gobj) ...)` stanza with `(libraries ocgtk alcotest)`.",
+          "coding_guidelines_to_emphasize": [
+            "FFI_GUIDELINES.md: CAMLparam/CAMLreturn usage, NULL pointer safety checks before dereferencing",
+            "pattern-matching.md: exhaustive option matching in the OCaml dispatch — no catch-all",
+            "test-patterns.md: use Alcotest.check testable not Option pattern matching; test name must describe scenario and expected outcome",
+            "partial-functions.md: the C function must guard G_VALUE_HOLDS_OBJECT before calling g_value_set_object"
+          ],
+          "test_requirements": {
+            "existing_tests": [
+              "ocgtk/tests/test_gobj.ml — existing structure tests pass unmodified (type accessibility, api structure tests)"
+            ],
+            "new_tests": [
+              {
+                "file": "ocgtk/tests/test_gobj.ml",
+                "test_name": "test_set_object_none_stores_null",
+                "description": "Create a GValue of G_TYPE_OBJECT, set it to None via Value.set_object, read back with Value.get_object and assert result is None",
+                "asserts": "Value.get_object v = None after Value.set_object v None"
+              }
+            ],
+            "test_command": "xvfb-run dune test --root . ocgtk/"
+          },
+          "acceptance_criteria": [
+            "dune build --root . succeeds",
+            "xvfb-run dune test --root . ocgtk/ passes including the newly enabled test_gobj stanza",
+            "ml_g_value_set_object_null exists in ml_gobject.c",
+            "gobject.ml set_object dispatches on option constructor, None branch calls set_object_null"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "Add approximately 8-10 new generic C wrappers in ml_gobject.c (int64, variant, enum_int, flags_int, boxed)",
+          "status": "committed",
+          "replanned": true,
+          "description": "Add 5 new getter/setter pairs in ml_gobject.c: get_int64/set_int64, get_variant/set_variant, get_enum_int/set_enum_int, get_flags_int/set_flags_int, and get_boxed/set_boxed. All 10 functions live entirely in ml_gobject.c — no changes to wrappers.c or wrappers.h. The boxed pair reuses the existing gir_record_custom_ops infrastructure: ml_g_value_get_boxed calls g_value_get_boxed + g_boxed_copy then wraps via ml_gir_record_val_ptr_with_type; ml_g_value_set_boxed extracts the pointer via ml_gir_record_ptr_val and calls g_value_set_boxed (transfer-none). This stage is C-only; OCaml bindings come in Stage 3.",
+          "files_to_modify": [
+            "ocgtk/src/common/ml_gobject.c"
+          ],
+          "files_to_create": [],
+          "depends_on": [1],
+          "implementation_notes": "In ml_gobject.c, add after the existing set_object_null (from Stage 1), before the property operations section:\n\n1. ml_g_value_get_int64: `CAMLprim value ml_g_value_get_int64(value val) { CAMLparam1(val); GValue *gv = GValue_val(val); CAMLreturn(caml_copy_int64(g_value_get_int64(gv))); }`. ml_g_value_set_int64: `CAMLprim value ml_g_value_set_int64(value val, value v) { CAMLparam2(val, v); g_value_set_int64(GValue_val(val), Int64_val(v)); CAMLreturn(Val_unit); }`.\n\n2. ml_g_value_get_variant: call g_value_get_variant(gv) — returns a borrowed GVariant* — then g_variant_ref(p) to take ownership, then wrap via Val_GVariant(p). ml_g_value_set_variant: call g_value_set_variant(gv, GVariant_val(v)) — GValue takes a reference, transfer-none into GValue.\n\n3. ml_g_value_get_enum_int: guard with `if (!G_VALUE_HOLDS_ENUM(gv)) caml_invalid_argument(...)`, return Val_int(g_value_get_enum(gv)). ml_g_value_set_enum_int: guard with G_VALUE_HOLDS_ENUM, call g_value_set_enum(gv, Int_val(v)).\n\n4. ml_g_value_get_flags_int: guard with G_VALUE_HOLDS_FLAGS, return Val_int((int)g_value_get_flags(gv)). ml_g_value_set_flags_int: guard with G_VALUE_HOLDS_FLAGS, call g_value_set_flags(gv, (guint)Int_val(v)).\n\n5. ml_g_value_get_boxed: `void *p = g_value_get_boxed(gv); if (p == NULL) caml_failwith(\"g_value_get_boxed: NULL\"); void *copy = g_boxed_copy(G_VALUE_TYPE(gv), p); CAMLreturn(ml_gir_record_val_ptr_with_type(G_VALUE_TYPE(gv), copy));`. The existing finalizer in gir_record_box checks G_TYPE_IS_BOXED(box->type) and calls g_boxed_free — so this copy will be freed correctly when the OCaml block is collected. ml_g_value_set_boxed: `const void *ptr = ml_gir_record_ptr_val(v, \"set_boxed\"); g_value_set_boxed(gv, ptr);` — transfer-none; GValue copies internally via g_boxed_copy.\n\nIMPORTANT: All enum/flags C functions must check G_VALUE_HOLDS_*/G_VALUE_HOLDS_FLAGS and raise caml_invalid_argument on type mismatch — this is tested by Stage 6 test case 9.\n\nNo changes to wrappers.c or wrappers.h are required. The ml_gir_record_val_ptr_with_type and ml_gir_record_ptr_val helpers are already declared in wrappers.h (lines 41 and 51) and are available to ml_gobject.c via `#include \"wrappers.h\"`.",
+          "coding_guidelines_to_emphasize": [
+            "FFI_GUIDELINES.md: CAMLparam for every GC-allocated value, CAMLlocal for intermediates, no raw pointer use after allocations",
+            "FFI_GUIDELINES.md: GValue memory — never retain a GValue pointer across an allocation",
+            "partial-functions.md: every enum/flags C function must guard with G_VALUE_HOLDS_*/G_VALUE_HOLDS_FLAGS before extracting",
+            "naming-and-intermediates.md: name intermediate C variables descriptively (e.g. 'copy' for the g_boxed_copy result)"
+          ],
+          "test_requirements": {
+            "existing_tests": [
+              "dune build --root . acts as a compile-time test for the C functions"
+            ],
+            "new_tests": [
+              {
+                "file": "ocgtk/tests/test_signal_value_enum_flags.ml",
+                "test_name": "Not yet fully written — partial stubs only; full tests come in Stage 6 after regeneration",
+                "description": "The test file is created in Stage 6. In this stage, it is acceptable to create a stub file (empty test list) to confirm the OCaml bindings compile.",
+                "asserts": "Build succeeds — no runtime assertions in this stage"
+              }
+            ],
+            "test_command": "dune build --root ."
+          },
+          "acceptance_criteria": [
+            "dune build --root . succeeds after adding C functions (no link errors)",
+            "ml_gobject.c contains approximately 8-10 new ml_g_value_get_*/ml_g_value_set_* symbols (int64, variant, enum_int, flags_int, boxed pairs); no per-type symbols in generated C files",
+            "The boxed pair (ml_g_value_get_boxed / ml_g_value_set_boxed) is implemented entirely in ml_gobject.c with no changes to wrappers.c or wrappers.h",
+            "ml_g_value_get_boxed uses g_boxed_copy and ml_gir_record_val_ptr_with_type (reusing ocgtk_gir_record_ops / gir_record_box infrastructure)",
+            "ml_g_value_set_boxed extracts the pointer via ml_gir_record_ptr_val and calls g_value_set_boxed (transfer-none)",
+            "All enum/flags functions guard with G_VALUE_HOLDS_ENUM / G_VALUE_HOLDS_FLAGS before accessing the GValue"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "Add OCaml external declarations and val signatures for the new C wrappers",
+          "status": "committed",
+          "replanned": true,
+          "description": "Extend gobject.ml module Value with external declarations matching the C functions added in Stage 2. Extend gobject.mli module Value with matching val declarations. This makes the C functions callable from OCaml. No boxed-specific accessor externals are needed beyond the get_boxed/set_boxed pair — there is no separate ops record to expose.",
+          "files_to_modify": [
+            "ocgtk/src/common/gobject.ml",
+            "ocgtk/src/common/gobject.mli"
+          ],
+          "files_to_create": [],
+          "depends_on": [2],
+          "implementation_notes": "In gobject.ml inside module Value (after the existing get_double/set_double externals at lines 168-169), add:\n  `external get_int64 : t -> int64 = \"ml_g_value_get_int64\"`\n  `external set_int64 : t -> int64 -> unit = \"ml_g_value_set_int64\"`\n  `external get_variant : t -> Gvariant.t = \"ml_g_value_get_variant\"`\n  `external set_variant : t -> Gvariant.t -> unit = \"ml_g_value_set_variant\"`\n  `external get_enum_int : t -> int = \"ml_g_value_get_enum_int\"`\n  `external set_enum_int : t -> int -> unit = \"ml_g_value_set_enum_int\"`\n  `external get_flags_int : t -> int = \"ml_g_value_get_flags_int\"`\n  `external set_flags_int : t -> int -> unit = \"ml_g_value_set_flags_int\"`\n  `external get_boxed : t -> 'a obj = \"ml_g_value_get_boxed\"`\n  `external set_boxed : t -> 'a obj -> unit = \"ml_g_value_set_boxed\"`\n\nIn gobject.mli, add the corresponding val declarations in module Value (after set_double, before get_object). The get_boxed type is polymorphic `val get_boxed : t -> 'a obj` — OCaml-side type ascription at call site will pin it. Include a doc comment noting that get_boxed returns a gir_record custom block (ocgtk_gir_record_ops) carrying the GType, and that the caller must ascribe the correct record type. The returned block is an owned copy (g_boxed_copy was called); the existing gir_record finalizer will call g_boxed_free when collected.\n\nNOTE: No additional externals for 'boxed ops' or custom-block accessors are needed because the boxed pair shares the existing gir_record custom-block layout (gir_record_box: GType + void*) and the existing ocgtk_gir_record_ops finalizer.",
+          "coding_guidelines_to_emphasize": [
+            "module-boundaries.md: every public function in the .mli must have a doc comment describing its contract",
+            "module-boundaries.md: expose minimal interface — do not expose internal C helpers",
+            "type-safety.md: the polymorphic 'a obj type for get_boxed/set_boxed is intentional; document the type ascription requirement at the call site"
+          ],
+          "test_requirements": {
+            "existing_tests": [
+              "dune build --root . verifies the externals link against the C symbols"
+            ],
+            "new_tests": [],
+            "test_command": "dune build --root ."
+          },
+          "acceptance_criteria": [
+            "dune build --root . succeeds",
+            "gobject.mli module Value contains val declarations for all new functions (get_int64, set_int64, get_variant, set_variant, get_enum_int, set_enum_int, get_flags_int, set_flags_int, get_boxed, set_boxed)",
+            "gobject.ml module Value contains external declarations for all new functions with matching C string names",
+            "No additional 'boxed ops' externals are added — the boxed pair reuses the gir_record custom-block layout"
+          ]
+        },
+        {
+          "stage": 4,
+          "title": "Extend enum_code.ml to emit pure-OCaml _of_int / _to_int functions in <ns>_enums.ml",
+          "status": "committed",
+          "replanned": false,
+          "description": "Add two new functions to gir_gen/lib/generate/enum_code.ml: generate_ocaml_enum_impl (emits <lower>_of_int and <lower>_to_int for an enum) and generate_ocaml_bitfield_impl (emits <lower>_of_int and <lower>_to_int for a bitfield). Extend gir_gen/bin/gir_gen.ml to write the new .ml file alongside the existing .mli. Extend the .mli emission to add the val declarations for the new functions. Version-guarded members use [@@if Gtk_version.<gate>] annotations on individual match branches (OCaml ppx_if syntax, mirroring the C guard pattern).",
+          "files_to_modify": [
+            "gir_gen/lib/generate/enum_code.ml",
+            "gir_gen/bin/gir_gen.ml"
+          ],
+          "files_to_create": [],
+          "depends_on": [3],
+          "implementation_notes": "In enum_code.ml, add `generate_ocaml_enum_impl enum`: for each member, emit `| <value> -> \\`<VARIANT>` in the match body of `<lower>_of_int`. Use the same variant_name derivation as generate_ocaml_enum (uppercase, digit prefix). Version-guarded members should emit `[@@if Gtk_version.<gate>]` after the arm if the member has a member_version. The to_int direction is a plain match on the polymorphic variant returning the C integer. For out-of-range integers in _of_int, the final branch should `failwith (Printf.sprintf \"<TypeName>: unknown int %d\" n)`. Also add `generate_ocaml_bitfield_impl bitfield`: _of_int iterates over flags testing each bit with `land`, accumulates into a list; _to_int folds with `lor` over the list. Version-guarded flag members emit `[@@if Gtk_version.<gate>]`. Also add matching `val <lower>_of_int : int -> <type>` and `val <lower>_to_int : <type> -> int` lines to the existing .mli emission in generate_ocaml_enum / generate_ocaml_bitfield (or separately, per the approach chosen). In gir_gen.ml, after writing enum_file (.mli), also write `<ns>_enums.ml` using generate_ocaml_enum_impl / generate_ocaml_bitfield_impl. Do NOT use a ppx for version guards — the plan specifies `[@@if Gtk_version.<gate>]` which requires the ppx_if preprocessor. Verify whether ppx_if is available in the ocgtk dune libraries; if not, emit plain `#if`-style ifdefs in a separate C-style attribute — clarify with user which ppx is in use (gdk/dune flags include `-w -6-7-9-10-27-32-33-34-35-36-50-52`). RISK: if ppx_if is not available, version-guarded members in the OCaml .ml must use a different mechanism (e.g., always emit both branches and let the version check happen at runtime, or omit version-guarded members from the OCaml decoder and only support them in the C path).",
+          "coding_guidelines_to_emphasize": [
+            "pattern-matching.md: the _of_int function must NOT use a catch-all — it must have an explicit final branch for the unknown-int error case with a descriptive failwith message",
+            "partial-functions.md: failwith is acceptable here as the unknown-int case IS a programming error (GLib returned a value not in the enum definition)",
+            "naming-and-intermediates.md: name the intermediate list accumulator in the bitfield _of_int function (e.g., acc)",
+            "code-reuse.md: the variant_name normalization logic (uppercase, digit prefix) is shared between generate_ocaml_enum and generate_ocaml_enum_impl — extract it to a named helper rather than duplicating"
+          ],
+          "test_requirements": {
+            "existing_tests": [
+              "gir_gen/test/integration/enums_tests.ml — existing enum generation tests should continue to pass (they test the .mli emission; must not be broken)"
+            ],
+            "new_tests": [
+              {
+                "file": "gir_gen/test/integration/enums_tests.ml",
+                "test_name": "test_enum_ml_file_emitted",
+                "description": "After generating a namespace with at least one enum, verify that <ns>_enums.ml exists in the generated output directory",
+                "asserts": "File exists and is non-empty"
+              },
+              {
+                "file": "gir_gen/test/integration/enums_tests.ml",
+                "test_name": "test_enum_of_int_function_in_ml",
+                "description": "Parse the generated <ns>_enums.ml with Ml_ast_helpers.parse_implementation and assert orientation_of_int value exists using Ml_validation.assert_value_exists",
+                "asserts": "orientation_of_int is a defined value in the AST"
+              },
+              {
+                "file": "gir_gen/test/integration/enums_tests.ml",
+                "test_name": "test_bitfield_of_int_function_in_ml",
+                "description": "Parse the generated <ns>_enums.ml and assert modifiertype_of_int value exists",
+                "asserts": "modifiertype_of_int is a defined value in the AST"
+              },
+              {
+                "file": "gir_gen/test/integration/enums_tests.ml",
+                "test_name": "test_enum_to_int_function_in_ml",
+                "description": "Parse the generated <ns>_enums.ml and assert orientation_to_int exists",
+                "asserts": "orientation_to_int is a defined value in the AST"
+              },
+              {
+                "file": "gir_gen/test/integration/enums_tests.ml",
+                "test_name": "test_mli_has_val_for_of_int",
+                "description": "Parse the generated <ns>_enums.mli and assert val orientation_of_int exists using Ml_validation.find_value_declaration_sig",
+                "asserts": "val orientation_of_int : int -> orientation exists in the .mli"
+              }
+            ],
+            "test_command": "dune test --root . gir_gen/"
+          },
+          "acceptance_criteria": [
+            "dune build --root . succeeds",
+            "dune test --root . gir_gen/ passes all 349+ tests",
+            "generate_ocaml_enum_impl and generate_ocaml_bitfield_impl exist in enum_code.ml",
+            "gir_gen.ml writes both <ns>_enums.mli and <ns>_enums.ml",
+            "The .ml functions follow the exhaustive-match pattern for enums and the bit-test accumulator pattern for bitfields"
+          ]
+        },
+        {
+          "stage": 5,
+          "title": "Regenerate all 9 namespace bindings and remove modules_without_implementation from dune files",
+          "status": "committed",
+          "replanned": false,
+          "description": "Run `bash scripts/generate-bindings.sh` to regenerate all 9 namespace binding sets (Cairo, Gdk, GdkPixbuf, Gio, Graphene, Gsk, Gtk, Pango, PangoCairo). Each namespace now gets a <ns>_enums.ml in its generated/ subdirectory. Remove the `modules_without_implementation` clause from each namespace dune file where the corresponding .ml now exists. For Cairo and Graphene (if they produce zero enums/bitfields), keep the clause. For all other namespaces, remove it only after verifying the .ml was actually produced.",
+          "files_to_modify": [
+            "ocgtk/src/cairo/dune",
+            "ocgtk/src/gdk/dune",
+            "ocgtk/src/gdkpixbuf/dune",
+            "ocgtk/src/gio/dune",
+            "ocgtk/src/graphene/dune",
+            "ocgtk/src/gsk/dune",
+            "ocgtk/src/gtk/dune",
+            "ocgtk/src/pango/dune",
+            "ocgtk/src/generated (pangocairo if applicable)"
+          ],
+          "files_to_create": [
+            "ocgtk/src/cairo/generated/cairo_enums.ml (if Cairo has enums)",
+            "ocgtk/src/gdk/generated/gdk_enums.ml",
+            "ocgtk/src/gdkpixbuf/generated/gdkpixbuf_enums.ml",
+            "ocgtk/src/gio/generated/gio_enums.ml",
+            "ocgtk/src/graphene/generated/graphene_enums.ml (if Graphene has enums)",
+            "ocgtk/src/gsk/generated/gsk_enums.ml",
+            "ocgtk/src/gtk/generated/gtk_enums.ml",
+            "ocgtk/src/pango/generated/pango_enums.ml"
+          ],
+          "depends_on": [4],
+          "implementation_notes": "Run `bash scripts/generate-bindings.sh` from the repository root. After generation, for each namespace check whether <ns>_enums.ml was created. If yes, remove the corresponding `modules_without_implementation` line from the namespace's dune file (or the relevant entry from the gtk/dune multi-namespace list). Note: gtk/dune has 7 enums under one modules_without_implementation clause — it must be fully removed if ALL 7 are now implemented, or adjusted to keep only the ones with zero enums/bitfields. Run `dune build --root .` and fix any build errors (likely missing modules or type conflicts between the old .mli-only declarations and the new .ml). Validation steps from the plan: (1) confirm gdk/generated/gdk_enums.ml exists and contains modifiertype_of_int and orientation_of_int; (2) grep -c 'ml_g_value_get_' ocgtk/src/common/ml_gobject.c should be approximately baseline+5 (the ~5 new getters from Stage 2: int64, variant, enum_int, flags_int, boxed); (3) grep -c 'ml_g_value_get_' ocgtk/src/*/generated/*.c should remain 0; (4) dune build succeeds across all 9 namespaces.",
+          "coding_guidelines_to_emphasize": [
+            "No generated code should be manually edited — all changes must go through enum_code.ml and gir_gen.ml"
+          ],
+          "test_requirements": {
+            "existing_tests": [
+              "xvfb-run dune test --root . ocgtk/ — all existing ocgtk tests must continue to pass after regeneration"
+            ],
+            "new_tests": [],
+            "test_command": "dune build --root . && xvfb-run dune test --root . ocgtk/"
+          },
+          "acceptance_criteria": [
+            "dune build --root . succeeds across all 9 namespaces with no link errors",
+            "ocgtk/src/gdk/generated/gdk_enums.ml exists and contains modifiertype_of_int (bitfield) and orientation_of_int (enum)",
+            "grep -c ml_g_value_get_ ocgtk/src/common/ml_gobject.c equals approximately baseline plus 5 (int64, variant, enum_int, flags_int, boxed getters); no per-type symbols in generated C files",
+            "grep -c ml_g_value_get_ across ocgtk/src/*/generated/*.c equals 0 (zero per-type symbols)",
+            "modules_without_implementation removed from all namespace dune files whose generator produced a <ns>_enums.ml; kept only for namespaces whose generator produces zero <ns>_enums.ml (e.g. Cairo if it has no enums, Graphene if it has no enums)",
+            "xvfb-run dune test --root . ocgtk/ passes"
+          ]
+        },
+        {
+          "stage": 6,
+          "title": "Add runtime test suite test_signal_value_enum_flags.ml (10 test cases)",
+          "status": "committed",
+          "replanned": false,
+          "description": "Create ocgtk/tests/test_signal_value_enum_flags.ml with the 10 test cases from the plan (lines 866-875). Register it in ocgtk/tests/dune. This stage requires the regenerated bindings from Stage 5 and the OCaml externals from Stage 3.",
+          "files_to_modify": [
+            "ocgtk/tests/dune"
+          ],
+          "files_to_create": [
+            "ocgtk/tests/test_signal_value_enum_flags.ml"
+          ],
+          "depends_on": [5],
+          "implementation_notes": "The test file uses Alcotest. It does NOT require gtk_init (pure GValue tests). Libraries needed: `ocgtk` (for Gobject.Value), `ocgtk.gtk` (for Gtk_enums), `ocgtk.gdk` (for Gdk_enums), `alcotest`. GType values for GtkOrientation and GdkModifierType can be obtained via `Gobject.Type.of_string \"GtkOrientation\"` and `\"GdkModifierType\"` respectively, or via `Gobject.Type.fundamental`. Alternatively use `Gobject.Type.g_type_for` if that exists. Follow the test structure of ocgtk/tests/test_gvariant.ml as the nearest comparable test. Test cases:\n  1. enum round-trip via decoder: set_enum_int then get_enum_int round-trips through orientation_to_int/of_int.\n  2. flags round-trip via decoder: set_flags_int with modifiertype_to_int, get_flags_int, apply of_int.\n  3. flags empty list: set_flags_int 0, get_flags_int = 0, modifiertype_of_int 0 = [].\n  4. variant round-trip: Gvariant.of_string 'hello' set via set_variant, retrieved via get_variant, Gvariant.to_string matches.\n  5. int64 round-trip: set_int64 Int64.max_int, get_int64 = Int64.max_int.\n  6. enum decoder fails: Gtk_enums.orientation_of_int 99 raises Failure.\n  7. enum property of_int o to_int = id: for each variant of orientation.\n  8. bitfield property of_int o to_int: for [`SHIFT_MASK; `CONTROL_MASK] and other subsets.\n  9. wrong GValue type negative: set_int then get_flags_int raises Invalid_argument.\n  10. version-guarded flag: conditional on GTK >= 4.14, Gdk_enums.modifiertype_of_int for NO_MODIFIER_MASK int returns [`NO_MODIFIER_MASK].\nFor test 10, use Gobject.version_at_least or a GTK version check macro equivalent; if no OCaml API exists for version checking, skip the test with Alcotest.skip () on older versions.",
+          "coding_guidelines_to_emphasize": [
+            "test-patterns.md: use Alcotest check combinators, not option pattern matching; test names must describe scenario and expected outcome",
+            "error-handling.md: use Alcotest.check_raises for tests that expect exceptions (tests 6, 9)",
+            "naming-and-intermediates.md: name the intermediate value (`let v = Value.create gtype in ...`) before asserting"
+          ],
+          "test_requirements": {
+            "existing_tests": [],
+            "new_tests": [
+              {
+                "file": "ocgtk/tests/test_signal_value_enum_flags.ml",
+                "test_name": "test_enum_roundtrip_via_decoder",
+                "description": "Create GValue of GtkOrientation type, set via set_enum_int (orientation_to_int `VERTICAL), get via get_enum_int, apply orientation_of_int, assert equals `VERTICAL",
+                "asserts": "orientation_of_int (get_enum_int v) = `VERTICAL"
+              },
+              {
+                "file": "ocgtk/tests/test_signal_value_enum_flags.ml",
+                "test_name": "test_flags_roundtrip_via_decoder",
+                "description": "Create GValue of GdkModifierType flags, set via set_flags_int (modifiertype_to_int [`SHIFT_MASK; `CONTROL_MASK]), get via get_flags_int, apply of_int, assert set membership",
+                "asserts": "Result contains `SHIFT_MASK and `CONTROL_MASK"
+              },
+              {
+                "file": "ocgtk/tests/test_signal_value_enum_flags.ml",
+                "test_name": "test_flags_empty_list",
+                "description": "set_flags_int v 0, get_flags_int v = 0, modifiertype_of_int 0 = []",
+                "asserts": "empty list returned for flags int 0"
+              },
+              {
+                "file": "ocgtk/tests/test_signal_value_enum_flags.ml",
+                "test_name": "test_variant_roundtrip",
+                "description": "Create GValue of GVariant type, set via set_variant (Gvariant.of_string 'hello'), get via get_variant, assert Gvariant.to_string = 'hello'",
+                "asserts": "String content preserved through GValue round-trip"
+              },
+              {
+                "file": "ocgtk/tests/test_signal_value_enum_flags.ml",
+                "test_name": "test_int64_roundtrip",
+                "description": "Create GValue of gint64 type, set via set_int64 Int64.max_int, get via get_int64, assert equality",
+                "asserts": "get_int64 v = Int64.max_int"
+              },
+              {
+                "file": "ocgtk/tests/test_signal_value_enum_flags.ml",
+                "test_name": "test_enum_decoder_fails_on_out_of_range",
+                "description": "Call Gtk_enums.orientation_of_int 99 and assert it raises Failure",
+                "asserts": "Failure exception raised with message containing 'Orientation'"
+              },
+              {
+                "file": "ocgtk/tests/test_signal_value_enum_flags.ml",
+                "test_name": "test_enum_of_int_to_int_identity",
+                "description": "For each variant of Gtk.Orientation ([`HORIZONTAL; `VERTICAL]), assert orientation_of_int (orientation_to_int v) = v",
+                "asserts": "of_int o to_int = identity for all declared variants"
+              },
+              {
+                "file": "ocgtk/tests/test_signal_value_enum_flags.ml",
+                "test_name": "test_bitfield_of_int_to_int_preserves_set",
+                "description": "For subsets [`SHIFT_MASK; `CONTROL_MASK] and at least 4 other subsets, assert of_int (to_int s) is a permutation of s",
+                "asserts": "Round-trip preserves flag set membership (order may differ)"
+              },
+              {
+                "file": "ocgtk/tests/test_signal_value_enum_flags.ml",
+                "test_name": "test_wrong_gvalue_type_raises",
+                "description": "Create GValue of gint type, set_int v 5, then call get_flags_int v and assert Invalid_argument is raised",
+                "asserts": "Invalid_argument raised when get_flags_int is called on non-flags GValue"
+              },
+              {
+                "file": "ocgtk/tests/test_signal_value_enum_flags.ml",
+                "test_name": "test_version_guarded_flag_honoured",
+                "description": "On GTK >= 4.14, Gdk_enums.modifiertype_of_int for the NO_MODIFIER_MASK integer returns [`NO_MODIFIER_MASK]; skip on older GTK",
+                "asserts": "Version-guarded flag is correctly decoded on supported GTK versions"
+              }
+            ],
+            "test_command": "xvfb-run dune test --root . ocgtk/"
+          },
+          "acceptance_criteria": [
+            "xvfb-run dune test --root . ocgtk/ passes all 10 new test cases",
+            "All 9 regenerated <ns>_enums.ml files are present and compilable",
+            "Total new C symbols introduced in Phase 1a is approximately 8-10 (all in ml_gobject.c), with zero per-type symbols in generated C files",
+            "grep -c '_of_int\\|_to_int' across ocgtk/src/*/generated/*_enums.ml equals 2 times the total enum + bitfield count"
+          ]
+        }
+      ]
+    },
+    {
+      "epoch": 2,
+      "title": "Phase 1b — Signal_marshaller helper module",
+      "status": "pending",
+      "replanned": false,
+      "description": "Add the pure gir_gen/lib/generate/signal_marshaller.{ml,mli} module that maps Types.gir_type to Supported/Unsupported marshaller records. Wire into the gir_gen library dune file. Add 15-case unit test in gir_gen/test.",
+      "stages": [
+        {
+          "stage": 7,
+          "title": "Create signal_marshaller.{ml,mli} and wire into gir_gen/lib/dune",
+          "status": "committed",
+          "replanned": false,
+          "description": "Implement the pure Signal_marshaller module in gir_gen/lib/generate/. This module takes a Types.gir_type and a generation_context and returns `Supported of marshaller | Unsupported of string`. It dispatches using Type_mappings.classify_type and an is_glib_variant predicate. For enum/bitfield types, it calls the cross-namespace resolver and returns getter/setter expressions referencing <NS>_enums.<lower>_of_int and the new Gobject.Value.get_enum_int / get_flags_int. The module has no side effects — it is purely functional.",
+          "files_to_modify": [
+            "gir_gen/lib/dune"
+          ],
+          "files_to_create": [
+            "gir_gen/lib/generate/signal_marshaller.ml",
+            "gir_gen/lib/generate/signal_marshaller.mli"
+          ],
+          "depends_on": [6],
+          "implementation_notes": "signal_marshaller.mli should define: `type marshaller = { ocaml_type : string; getter_expr : argv:string -> pos:int -> string; setter_expr : argv:string -> value_var:string -> string; }` and `type result = Supported of marshaller | Unsupported of string`. Public function: `val classify : ctx:Gir_gen_lib.Types.generation_context -> gir_type:Gir_gen_lib.Types.gir_type -> result`. The .ml implements classify by: (1) handling none/void type as `Supported { ocaml_type = \"unit\"; getter_expr = ...; setter_expr = ... }` (return-only path); (2) checking is_glib_variant (name = 'GLib.Variant' or c_type = 'GVariant*') -> Supported with get_variant; (3) calling Type_mappings.classify_type ~ctx gir_type and dispatching on Tk_Primitive (using type_mappings for bool/int/uint/int64/float/double/string), Tk_Enum (returning get_enum_int + <ns>_enums.lower_of_int), Tk_Bitfield (returning get_flags_int + <ns>_enums.lower_of_int), Tk_Class / Tk_Interface (returning get_object), Tk_Record (returning get_boxed — uses the existing gir_record custom-block layout, returned by ml_g_value_get_boxed from Stage 2), Tk_Unknown -> Unsupported. For callback types (varargs=true or name contains 'callback'), return Unsupported 'callback parameters require Milestone 4'. For array types (gir_type.array <> None), return Unsupported 'GArray not yet supported'. In gir_gen/lib/dune, signal_marshaller is added automatically via `(modules :standard)` — no explicit listing needed (the library uses :standard). Verify by checking gir_gen/lib/dune which uses `(modules :standard)`. The getter_expr for enum types should produce `<ns>_enums.<lower>_of_int (Gobject.Value.get_enum_int (Array.get argv <pos>))`. IMPORTANT: The cross-namespace name resolution for enum/bitfield types must use the same logic as Type_mappings.find_type_mapping_for_gir_type (which already computes the OCaml module prefix for cross-namespace types). Look at type_mappings.ml lines ~580-620 for the enum/bitfield lookup and namespace derivation pattern.",
+          "coding_guidelines_to_emphasize": [
+            "abstractions.md: interface-first design — write the .mli before the .ml; the marshaller record type should be defined in the .mli",
+            "module-boundaries.md: the module has one clear responsibility (type -> marshaller mapping); do NOT add side effects or code-emission logic here",
+            "pattern-matching.md: the dispatch on type_kind must be exhaustive — all 7 Tk_ variants must be explicitly handled, no catch-all except for Tk_Unknown",
+            "error-handling.md: use Result only if the classify function can fail in multiple distinct ways; since it returns Unsupported for all failure modes, the current return type is appropriate",
+            "naming-and-intermediates.md: name the intermediate classify_type result before matching on it"
+          ],
+          "test_requirements": {
+            "existing_tests": [
+              "dune test --root . gir_gen/ — all 349 existing tests must continue to pass"
+            ],
+            "new_tests": [
+              {
+                "file": "gir_gen/test/class_generation/signal_marshaller_tests.ml",
+                "test_name": "test_gboolean_maps_to_bool",
+                "description": "classify with gboolean gir_type returns Supported with ocaml_type = 'bool' and getter_expr containing 'Gobject.Value.get_boolean'",
+                "asserts": "Supported { ocaml_type = 'bool'; getter_expr contains 'Gobject.Value.get_boolean' }"
+              },
+              {
+                "file": "gir_gen/test/class_generation/signal_marshaller_tests.ml",
+                "test_name": "test_gint_maps_to_int",
+                "description": "gint type returns Supported with ocaml_type = 'int' and getter_expr containing 'Gobject.Value.get_int'",
+                "asserts": "ocaml_type = 'int'"
+              },
+              {
+                "file": "gir_gen/test/class_generation/signal_marshaller_tests.ml",
+                "test_name": "test_guint_maps_to_int",
+                "description": "guint type returns Supported with ocaml_type = 'int' and getter_expr containing 'Gobject.Value.get_uint'",
+                "asserts": "ocaml_type = 'int', getter_expr uses get_uint"
+              },
+              {
+                "file": "gir_gen/test/class_generation/signal_marshaller_tests.ml",
+                "test_name": "test_gint64_maps_to_int64",
+                "description": "gint64 type returns Supported with ocaml_type = 'Int64.t' and getter_expr containing 'Gobject.Value.get_int64'",
+                "asserts": "ocaml_type = 'Int64.t'"
+              },
+              {
+                "file": "gir_gen/test/class_generation/signal_marshaller_tests.ml",
+                "test_name": "test_gdouble_maps_to_float",
+                "description": "gdouble type returns Supported with ocaml_type = 'float' and getter_expr containing 'Gobject.Value.get_double'",
+                "asserts": "ocaml_type = 'float'"
+              },
+              {
+                "file": "gir_gen/test/class_generation/signal_marshaller_tests.ml",
+                "test_name": "test_utf8_maps_to_string",
+                "description": "utf8 type returns Supported with ocaml_type = 'string' and getter_expr containing 'Gobject.Value.get_string'",
+                "asserts": "ocaml_type = 'string'"
+              },
+              {
+                "file": "gir_gen/test/class_generation/signal_marshaller_tests.ml",
+                "test_name": "test_same_ns_enum_orientation",
+                "description": "Enum Gtk.Orientation in a Gtk-namespace context returns Supported with ocaml_type = 'Gtk_enums.orientation' and getter_expr containing 'Gtk_enums.orientation_of_int' and 'Gobject.Value.get_enum_int'",
+                "asserts": "ocaml_type = 'Gtk_enums.orientation', getter_expr uses get_enum_int + orientation_of_int"
+              },
+              {
+                "file": "gir_gen/test/class_generation/signal_marshaller_tests.ml",
+                "test_name": "test_cross_ns_bitfield_modifiertype",
+                "description": "Bitfield Gdk.ModifierType in a Gtk-namespace context (with Gdk cross-reference) returns Supported with ocaml_type = 'Ocgtk_gdk.Gdk_enums.modifiertype' and getter_expr containing 'Ocgtk_gdk.Gdk_enums.modifiertype_of_int' and 'Gobject.Value.get_flags_int'",
+                "asserts": "cross-namespace enum prefix is resolved correctly"
+              },
+              {
+                "file": "gir_gen/test/class_generation/signal_marshaller_tests.ml",
+                "test_name": "test_glib_variant_maps_to_gvariant",
+                "description": "GLib.Variant type returns Supported with ocaml_type = 'Gvariant.t' and getter_expr containing 'Gobject.Value.get_variant'",
+                "asserts": "ocaml_type = 'Gvariant.t'"
+              },
+              {
+                "file": "gir_gen/test/class_generation/signal_marshaller_tests.ml",
+                "test_name": "test_same_ns_gobject_class",
+                "description": "GtkWidget class in a Gtk-namespace context returns Supported with ocaml_type = 'Gtk.Widget.t Gobject.obj' and getter_expr containing 'Gobject.Value.get_object'",
+                "asserts": "ocaml_type ends with 'Gobject.obj', getter uses get_object"
+              },
+              {
+                "file": "gir_gen/test/class_generation/signal_marshaller_tests.ml",
+                "test_name": "test_cross_ns_gobject_gio_file",
+                "description": "Gio.File class in a Gtk-namespace context with Gio cross-reference returns Supported with ocaml_type = 'Ocgtk_gio.Gio.File.t Gobject.obj'",
+                "asserts": "cross-namespace GObject class prefix is resolved correctly"
+              },
+              {
+                "file": "gir_gen/test/class_generation/signal_marshaller_tests.ml",
+                "test_name": "test_garray_is_unsupported",
+                "description": "GLib.Array type returns Unsupported with message containing 'GArray not yet supported'",
+                "asserts": "Unsupported result with appropriate message"
+              },
+              {
+                "file": "gir_gen/test/class_generation/signal_marshaller_tests.ml",
+                "test_name": "test_boxed_textiter_is_unsupported",
+                "description": "Gtk.TextIter boxed type returns Unsupported with message mentioning 'TextIter'",
+                "asserts": "Unsupported result"
+              },
+              {
+                "file": "gir_gen/test/class_generation/signal_marshaller_tests.ml",
+                "test_name": "test_callback_type_is_unsupported",
+                "description": "A gir_type representing a callback type returns Unsupported with message containing 'Milestone 4'",
+                "asserts": "Unsupported result with milestone reference"
+              },
+              {
+                "file": "gir_gen/test/class_generation/signal_marshaller_tests.ml",
+                "test_name": "test_void_none_return",
+                "description": "none/void type returns Supported with ocaml_type = 'unit'",
+                "asserts": "ocaml_type = 'unit'"
+              }
+            ],
+            "test_command": "dune test --root . gir_gen/"
+          },
+          "acceptance_criteria": [
+            "dune build --root . succeeds",
+            "dune test --root . gir_gen/ passes all 15 new signal_marshaller tests plus all 349 pre-existing tests",
+            "signal_marshaller.mli defines the marshaller type and classify function",
+            "signal_marshaller has no production callers (only the test exercises it)",
+            "The module is independently importable from other gir_gen modules"
+          ]
+        },
+        {
+          "stage": 8,
+          "title": "Register signal_marshaller_tests.ml in gir_gen/test/dune",
+          "status": "committed",
+          "replanned": false,
+          "description": "Add signal_marshaller_tests to the test_gir_gen test stanza in gir_gen/test/dune. The test file was created in Stage 7 but must be registered to actually run.",
+          "files_to_modify": [
+            "gir_gen/test/dune"
+          ],
+          "files_to_create": [],
+          "depends_on": [7],
+          "implementation_notes": "In gir_gen/test/dune, in the `(test (name test_gir_gen) ...)` stanza under the `(modules ...)` list, add `signal_marshaller_tests` in the `; Layer 2 — Class Generation (pure unit/pipeline)` section alongside method_wrapper_tests, constructor_wrapper_tests, signal_wrapper_tests. Note: gir_gen/test/dune uses `(include_subdirs unqualified)` which means all .ml files in subdirectories are visible — signal_marshaller_tests.ml should be placed in gir_gen/test/class_generation/ alongside signal_wrapper_tests.ml. Verify the module name matches the filename exactly.",
+          "coding_guidelines_to_emphasize": [],
+          "test_requirements": {
+            "existing_tests": [
+              "All 349 pre-existing tests in dune test --root . gir_gen/ must continue to pass"
+            ],
+            "new_tests": [
+              {
+                "file": "gir_gen/test/class_generation/signal_marshaller_tests.ml",
+                "test_name": "All 15 test cases from Stage 7",
+                "description": "Registration in dune causes all 15 tests to execute in the test runner",
+                "asserts": "dune test --root . gir_gen/ reports 15 additional passing tests"
+              }
+            ],
+            "test_command": "dune test --root . gir_gen/"
+          },
+          "acceptance_criteria": [
+            "dune test --root . gir_gen/ passes with signal_marshaller_tests registered",
+            "Total test count in gir_gen/ is 349 + 15 = 364 or higher",
+            "signal_marshaller_tests module is listed in the test_gir_gen stanza in gir_gen/test/dune"
+          ]
+        }
+      ]
+    }
+  ],
+  "status": "completed",
+  "completed_at": "2026-05-02",
+  "merge_branch": "worktree-bridge-cse_01Ca8Z6A17qevapNUGXL6mnE",
+  "pull_request": "https://github.com/chris-armstrong/ocgtk/pull/129",
+  "final_baseline": {
+    "head": "03b5d06b",
+    "build_passes": true,
+    "gir_gen_tests": 364,
+    "ocgtk_ok_count": 329,
+    "ocgtk_fail_count": 0
+  },
+  "follow_ups": [
+    {
+      "id": "D1",
+      "title": "Add G_VALUE_HOLDS_BOXED guard to ml_g_value_set_boxed",
+      "severity": "should-fix-before-phase-2",
+      "originating_stage": 2,
+      "originating_review": "stage-2 reviewer + phase-1a end-of-epoch reviewer",
+      "description": "ml_g_value_set_boxed at ml_gobject.c around line 575 calls g_value_set_boxed without first checking G_VALUE_HOLDS_BOXED(gv). Get-side already guards. Set-side gap is currently masked by absence of production callers; the signal emitter (Phase 2) will be the first caller. Add a G_VALUE_HOLDS_BOXED check raising caml_invalid_argument before any Phase 2 emission lands.",
+      "rationale": "Calling g_value_set_boxed on a non-boxed GValue invokes undefined behaviour in GLib. Phase 1b's signal_marshaller emits set_boxed in code; once Phase 2 wires that emission, untyped callers become reachable."
+    },
+    {
+      "id": "D2",
+      "title": "Add G_VALUE_HOLDS_INT64 / G_VALUE_HOLDS_VARIANT guards to setter wrappers",
+      "severity": "minor-style-consistency",
+      "originating_stage": 2,
+      "originating_review": "stage-2 reviewer + phase-1a end-of-epoch reviewer",
+      "description": "ml_g_value_set_int64 and ml_g_value_set_variant lack G_VALUE_HOLDS_* guards on the setter side. Mirrors pre-existing peer style for set_int/set_uint/set_boolean/set_float/set_double, but inconsistent with the new set_enum_int and set_flags_int which do guard. Low risk because GLib asserts in debug builds, but adding the guards yields a uniform set of new wrappers.",
+      "rationale": "Style consistency across the new wrappers; defence in depth."
+    },
+    {
+      "id": "D3",
+      "title": "Runtime test for get_boxed / set_boxed round-trip",
+      "severity": "test-gap",
+      "originating_stage": 6,
+      "originating_review": "phase-1a end-of-epoch reviewer",
+      "description": "Stage 6 added 10 cases covering int64, variant, enum_int, flags_int but no boxed round-trip case. The boxed pair is verified by build-time linkage only. A minimal test would create a GValue of GTK_TYPE_TREE_ITER (or any registered boxed type), set a wrapped record via set_boxed, read back via get_boxed, and assert the result is non-null. Naturally lands alongside the Phase 2 signal_marshaller integration tests, where a real boxed signal arg flows end-to-end."
+    },
+    {
+      "id": "D4",
+      "title": "Replace Stdlib.compare in test_signal_value_enum_flags.ml List.sort",
+      "severity": "minor-style",
+      "originating_stage": 6,
+      "originating_review": "phase-1a end-of-epoch reviewer",
+      "description": "test_signal_value_enum_flags.ml at lines around 191 uses List.sort Stdlib.compare on modifiertype_flag variants. Stdlib.compare is a sort comparator (not equality, so partial-functions.md does not strictly apply), but a type-specific comparator via modifiertype_to_int would be more idiomatic. Trivial to fix in any later cleanup pass."
+    },
+    {
+      "id": "D5",
+      "title": "Update milestone-2-signals.md plan doc to reflect 8-10 (not exactly 8) new C wrappers",
+      "severity": "doc-drift",
+      "originating_stage": 2,
+      "originating_review": "phase-1a end-of-epoch reviewer",
+      "description": "Plan doc gir_gen/docs/plans/milestone-2-signals.md line 832 (validation output #2) says 'should jump from its current value by exactly 8'. Implementation has 10 new ml_g_value_get_/set_ symbols (5 pairs). Decision was 'ballpark', captured in this JSON's replanning of Stage 2. Update the plan doc post-hoc so future readers do not chase a stale numeric target."
+    },
+    {
+      "id": "D6",
+      "title": "NO_MODIFIER_MASK round-trip semantic limitation",
+      "severity": "informational",
+      "originating_stage": 6,
+      "originating_review": "stage-5 reviewer + stage-6 executor",
+      "description": "Gdk_enums.modifiertype's NO_MODIFIER_MASK has integer value 0. Bitfield decoders cannot round-trip a value-0 flag because `flags land 0 <> 0` is permanently false. Faithful to existing C generator. Stage 6 case 10 was rephrased as a compile-time witness + to_int = 0 check. Documented; no action required unless the API contract is renegotiated."
+    }
+  ]
+}

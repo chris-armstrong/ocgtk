@@ -4,6 +4,15 @@ open StdLabels
 open Printf
 open Types
 
+(** Derive the canonical uppercase variant name from a raw member name,
+    prefixing digit-leading names with "V". This is shared between .mli and .ml
+    emission so both always agree on the tag spelling. *)
+let variant_name_of_member name =
+  let upper = String.uppercase_ascii name in
+  if String.length upper > 0 && upper.[0] >= '0' && upper.[0] <= '9' then
+    "V" ^ upper
+  else upper
+
 (** Emit a single converter branch, optionally wrapped in a per-member version
     guard. [~class_version]: the enum/bitfield entity-level version (outer
     guard, if any) [~member_version]: this specific member's version override
@@ -28,73 +37,62 @@ let emit_member_branch ~namespace ~class_version ~member_version ~fallback_line
           | Ok guard_endif -> Buffer.add_string buf (guard_endif ^ "\n")
           | Error _ -> Buffer.add_string buf "#endif\n"))
 
-(* Generate OCaml enum type definition *)
+(* Generate OCaml enum type definition plus val declarations for converters *)
 let generate_ocaml_enum enum =
   let buf = Buffer.create 512 in
+  let lower_name = Utils.ocaml_enum_name enum in
 
   bprintf buf "(* %s - enumeration *)\n" enum.enum_name;
   (match enum.enum_doc with
   | Some doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc)
   | None -> ());
 
-  bprintf buf "type %s = [\n" (Utils.ocaml_enum_name enum);
+  bprintf buf "type %s = [\n" lower_name;
 
   List.iteri
     ~f:(fun i member ->
-      let variant_name = String.uppercase_ascii member.member_name in
-      (* Prefix variant names that start with a digit *)
-      let variant_name =
-        if
-          String.length variant_name > 0
-          && variant_name.[0] >= '0'
-          && variant_name.[0] <= '9'
-        then "V" ^ variant_name
-        else variant_name
-      in
+      let vname = variant_name_of_member member.member_name in
       (match member.member_doc with
       | Some doc -> bprintf buf "  (** %s *)\n" (Utils.sanitize_doc doc)
       | None -> ());
-      bprintf buf "  | `%s" variant_name;
+      bprintf buf "  | `%s" vname;
       if i < List.length enum.members - 1 then bprintf buf "\n"
       else bprintf buf "\n]\n\n")
     enum.members;
 
+  bprintf buf "val %s_of_int : int -> %s\n" lower_name lower_name;
+  bprintf buf "val %s_to_int : %s -> int\n\n" lower_name lower_name;
+
   Buffer.contents buf
 
-(* Generate OCaml bitfield type definition *)
+(* Generate OCaml bitfield type definition plus val declarations for
+   converters *)
 let generate_ocaml_bitfield bitfield =
   let buf = Buffer.create 512 in
+  let lower_name = Utils.ocaml_bitfield_name bitfield in
 
   bprintf buf "(* %s - bitfield/flags *)\n" bitfield.bitfield_name;
   (match bitfield.bitfield_doc with
   | Some doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc)
   | None -> ());
 
-  bprintf buf "type %s_flag = [\n" (Utils.ocaml_bitfield_name bitfield);
+  bprintf buf "type %s_flag = [\n" lower_name;
 
   List.iteri
     ~f:(fun i flag ->
-      let variant_name = String.uppercase_ascii flag.flag_name in
-      (* Prefix variant names that start with a digit *)
-      let variant_name =
-        if
-          String.length variant_name > 0
-          && variant_name.[0] >= '0'
-          && variant_name.[0] <= '9'
-        then "V" ^ variant_name
-        else variant_name
-      in
+      let vname = variant_name_of_member flag.flag_name in
       (match flag.flag_doc with
       | Some doc -> bprintf buf "  (** %s *)\n" (Utils.sanitize_doc doc)
       | None -> ());
-      bprintf buf "  | `%s" variant_name;
+      bprintf buf "  | `%s" vname;
       if i < List.length bitfield.flags - 1 then bprintf buf "\n"
       else bprintf buf "\n]\n\n")
     bitfield.flags;
 
-  bprintf buf "type %s = %s_flag list\n\n"
-    (Utils.ocaml_bitfield_name bitfield)
-    (Utils.ocaml_bitfield_name bitfield);
+  bprintf buf "type %s = %s_flag list\n\n" lower_name lower_name;
+
+  bprintf buf "val %s_of_int : int -> %s\n" lower_name lower_name;
+  bprintf buf "val %s_to_int : %s -> int\n\n" lower_name lower_name;
 
   Buffer.contents buf
 
@@ -117,16 +115,7 @@ let generate_c_enum_converters ~namespace ~class_version enum =
       ~f:(fun enum_member ->
         if not (Hashtbl.mem seen_values enum_member.member_value) then begin
           Hashtbl.add seen_values enum_member.member_value true;
-          let variant_name = String.uppercase_ascii enum_member.member_name in
-          (* Prefix variant names that start with a digit *)
-          let variant_name =
-            if
-              String.length variant_name > 0
-              && variant_name.[0] >= '0'
-              && variant_name.[0] <= '9'
-            then "V" ^ variant_name
-            else variant_name
-          in
+          let variant_name = variant_name_of_member enum_member.member_name in
           let case_line =
             sprintf "    case %s: return caml_hash_variant(\"%s\"); /* `%s */\n"
               enum_member.c_identifier variant_name variant_name
@@ -154,16 +143,7 @@ let generate_c_enum_converters ~namespace ~class_version enum =
 
     List.iteri
       ~f:(fun i enum_member ->
-        let variant_name = String.uppercase_ascii enum_member.member_name in
-        (* Prefix variant names that start with a digit *)
-        let variant_name =
-          if
-            String.length variant_name > 0
-            && variant_name.[0] >= '0'
-            && variant_name.[0] <= '9'
-          then "V" ^ variant_name
-          else variant_name
-        in
+        let variant_name = variant_name_of_member enum_member.member_name in
         let fallback_line =
           match enum_member.member_version with
           | None -> None
@@ -234,16 +214,7 @@ let generate_c_bitfield_converters ~namespace ~class_version bitfield =
     (* Check each flag bit and add to list if set *)
     List.iter
       ~f:(fun flag ->
-        let variant_name = String.uppercase_ascii flag.flag_name in
-        (* Prefix variant names that start with a digit *)
-        let variant_name =
-          if
-            String.length variant_name > 0
-            && variant_name.[0] >= '0'
-            && variant_name.[0] <= '9'
-          then "V" ^ variant_name
-          else variant_name
-        in
+        let variant_name = variant_name_of_member flag.flag_name in
         let branch =
           sprintf
             "  if (flags & %s) {\n\
@@ -271,16 +242,7 @@ let generate_c_bitfield_converters ~namespace ~class_version bitfield =
 
     List.iteri
       ~f:(fun i flag ->
-        let variant_name = String.uppercase_ascii flag.flag_name in
-        (* Prefix variant names that start with a digit *)
-        let variant_name =
-          if
-            String.length variant_name > 0
-            && variant_name.[0] >= '0'
-            && variant_name.[0] <= '9'
-          then "V" ^ variant_name
-          else variant_name
-        in
+        let variant_name = variant_name_of_member flag.flag_name in
         let fallback_line =
           match flag.flag_version with
           | None -> None
@@ -309,6 +271,110 @@ let generate_c_bitfield_converters ~namespace ~class_version bitfield =
     bprintf buf "  }\n";
     bprintf buf "  return result;\n";
     bprintf buf "}\n\n";
+
+    Buffer.contents buf
+  end
+
+(** Generate the pure-OCaml [<lower>_of_int] and [<lower>_to_int] functions for
+    an enum. The [_of_int] function is an exhaustive match on integer values;
+    unknown integers raise [Failure] with a descriptive message. The [_to_int]
+    function is a plain reverse match. Members with duplicate integer values emit
+    only one arm in [_of_int] (first occurrence wins, matching the C behaviour).
+    Version-guarded members are emitted unconditionally because the [.mli] lists
+    all tags and there is no OCaml-side ppx for conditional compilation. *)
+let generate_ocaml_enum_impl enum =
+  if List.length enum.members = 0 then ""
+  else begin
+    let buf = Buffer.create 512 in
+    let lower_name = Utils.ocaml_enum_name enum in
+
+    (* Emit type declaration so the .ml is self-contained *)
+    bprintf buf "type %s = [\n" lower_name;
+    List.iteri
+      ~f:(fun i member ->
+        let vname = variant_name_of_member member.member_name in
+        bprintf buf "  | `%s" vname;
+        if i < List.length enum.members - 1 then bprintf buf "\n"
+        else bprintf buf "\n]\n\n")
+      enum.members;
+
+    (* _of_int: match on integer values *)
+    bprintf buf "let %s_of_int n =\n" lower_name;
+    bprintf buf "  match n with\n";
+
+    (* Track seen integer values to avoid duplicate match arms *)
+    let seen_values = Hashtbl.create 16 in
+    List.iter
+      ~f:(fun member ->
+        if not (Hashtbl.mem seen_values member.member_value) then begin
+          Hashtbl.add seen_values member.member_value true;
+          let vname = variant_name_of_member member.member_name in
+          bprintf buf "  | %d -> `%s\n" member.member_value vname
+        end)
+      enum.members;
+
+    bprintf buf "  | n -> failwith (Printf.sprintf \"%s: unknown int %%d\" n)\n\n"
+      enum.enum_name;
+
+    (* _to_int: match on polymorphic variant tags *)
+    bprintf buf "let %s_to_int v =\n" lower_name;
+    bprintf buf "  match v with\n";
+    List.iter
+      ~f:(fun member ->
+        let vname = variant_name_of_member member.member_name in
+        bprintf buf "  | `%s -> %d\n" vname member.member_value)
+      enum.members;
+
+    bprintf buf "\n";
+    Buffer.contents buf
+  end
+
+(** Generate the pure-OCaml [<lower>_of_int] and [<lower>_to_int] functions for
+    a bitfield. The [_of_int] function tests each known bit and accumulates a
+    list of matching tags (empty for 0). The [_to_int] function folds the list
+    with [lor]. Version-guarded members are emitted unconditionally (same
+    rationale as {!generate_ocaml_enum_impl}). The round-trip property
+    [to_int (of_int n) = n] holds for any [n] whose bits are all known. *)
+let generate_ocaml_bitfield_impl bitfield =
+  if List.length bitfield.flags = 0 then ""
+  else begin
+    let buf = Buffer.create 512 in
+    let lower_name = Utils.ocaml_bitfield_name bitfield in
+
+    (* Emit type declarations so the .ml is self-contained *)
+    bprintf buf "type %s_flag = [\n" lower_name;
+    List.iteri
+      ~f:(fun i flag ->
+        let vname = variant_name_of_member flag.flag_name in
+        bprintf buf "  | `%s" vname;
+        if i < List.length bitfield.flags - 1 then bprintf buf "\n"
+        else bprintf buf "\n]\n\n")
+      bitfield.flags;
+    bprintf buf "type %s = %s_flag list\n\n" lower_name lower_name;
+
+    (* _of_int: iterate over flags testing each bit, build up acc list *)
+    bprintf buf "let %s_of_int flags =\n" lower_name;
+    bprintf buf "  let acc = [] in\n";
+    List.iter
+      ~f:(fun flag ->
+        let vname = variant_name_of_member flag.flag_name in
+        bprintf buf "  let acc = if flags land %d <> 0 then `%s :: acc else acc in\n"
+          flag.flag_value vname)
+      bitfield.flags;
+    bprintf buf "  acc\n\n";
+
+    (* _to_int: fold the flag list with lor *)
+    bprintf buf "let %s_to_int flags =\n" lower_name;
+    bprintf buf "  List.fold_left\n";
+    bprintf buf "    (fun acc flag ->\n";
+    bprintf buf "      match flag with\n";
+    List.iter
+      ~f:(fun flag ->
+        let vname = variant_name_of_member flag.flag_name in
+        bprintf buf "      | `%s -> acc lor %d\n" vname flag.flag_value)
+      bitfield.flags;
+    bprintf buf "    )\n";
+    bprintf buf "    0 flags\n\n";
 
     Buffer.contents buf
   end

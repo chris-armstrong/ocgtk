@@ -11,6 +11,9 @@ type alignment = [
   | `RIGHT
 ]
 
+val alignment_of_int : int -> alignment
+val alignment_to_int : alignment -> int
+
 (* AttrType - enumeration *)
 type attrtype = [
   (** does not happen *)
@@ -90,6 +93,9 @@ type attrtype = [
   | `FONT_SCALE
 ]
 
+val attrtype_of_int : int -> attrtype
+val attrtype_to_int : attrtype -> int
+
 (* BaselineShift - enumeration *)
 type baselineshift = [
   (** Leave the baseline unchanged *)
@@ -101,6 +107,9 @@ type baselineshift = [
   relative to the previous run *)
   | `SUBSCRIPT
 ]
+
+val baselineshift_of_int : int -> baselineshift
+val baselineshift_to_int : baselineshift -> int
 
 (* BidiType - enumeration *)
 type biditype = [
@@ -152,6 +161,9 @@ type biditype = [
   | `PDI
 ]
 
+val biditype_of_int : int -> biditype
+val biditype_to_int : biditype -> int
+
 (* CoverageLevel - enumeration *)
 type coveragelevel = [
   (** The character is not representable with
@@ -171,6 +183,9 @@ type coveragelevel = [
   correct graphical form. *)
   | `EXACT
 ]
+
+val coveragelevel_of_int : int -> coveragelevel
+val coveragelevel_to_int : coveragelevel -> int
 
 (* Direction - enumeration *)
 type direction = [
@@ -192,6 +207,9 @@ type direction = [
   | `NEUTRAL
 ]
 
+val direction_of_int : int -> direction
+val direction_to_int : direction -> int
+
 (* EllipsizeMode - enumeration *)
 type ellipsizemode = [
   (** No ellipsization *)
@@ -204,6 +222,9 @@ type ellipsizemode = [
   | `END
 ]
 
+val ellipsizemode_of_int : int -> ellipsizemode
+val ellipsizemode_to_int : ellipsizemode -> int
+
 (* FontScale - enumeration *)
 type fontscale = [
   (** Leave the font size unchanged *)
@@ -215,6 +236,9 @@ type fontscale = [
   (** Change the font to a size suitable for Small Caps *)
   | `SMALL_CAPS
 ]
+
+val fontscale_of_int : int -> fontscale
+val fontscale_to_int : fontscale -> int
 
 (* Gravity - enumeration *)
 type gravity = [
@@ -229,6 +253,9 @@ type gravity = [
   (** Gravity is resolved from the context matrix *)
   | `AUTO
 ]
+
+val gravity_of_int : int -> gravity
+val gravity_to_int : gravity -> int
 
 (* GravityHint - enumeration *)
 type gravityhint = [
@@ -245,6 +272,9 @@ type gravityhint = [
   | `LINE
 ]
 
+val gravityhint_of_int : int -> gravityhint
+val gravityhint_to_int : gravityhint -> int
+
 (* LayoutDeserializeError - enumeration *)
 type layoutdeserializeerror = [
   (** Unspecified error *)
@@ -257,6 +287,9 @@ type layoutdeserializeerror = [
   | `MISSING_VALUE
 ]
 
+val layoutdeserializeerror_of_int : int -> layoutdeserializeerror
+val layoutdeserializeerror_to_int : layoutdeserializeerror -> int
+
 (* Overline - enumeration *)
 type overline = [
   (** no overline should be drawn *)
@@ -265,6 +298,9 @@ type overline = [
   extents of the text being underlined. *)
   | `SINGLE
 ]
+
+val overline_of_int : int -> overline
+val overline_to_int : overline -> int
 
 (* RenderPart - enumeration *)
 type renderpart = [
@@ -279,6 +315,9 @@ type renderpart = [
   (** overlines *)
   | `OVERLINE
 ]
+
+val renderpart_of_int : int -> renderpart
+val renderpart_to_int : renderpart -> int
 
 (* Script - enumeration *)
 type script = [
@@ -521,6 +560,9 @@ base glyph to which it is attached *)
   | `SIGNWRITING
 ]
 
+val script_of_int : int -> script
+val script_to_int : script -> int
+
 (* Stretch - enumeration *)
 type stretch = [
   (** ultra condensed width *)
@@ -543,6 +585,9 @@ type stretch = [
   | `ULTRA_EXPANDED
 ]
 
+val stretch_of_int : int -> stretch
+val stretch_to_int : stretch -> int
+
 (* Style - enumeration *)
 type style = [
   (** the font is upright. *)
@@ -552,6 +597,9 @@ type style = [
   (** the font is slanted in an italic style. *)
   | `ITALIC
 ]
+
+val style_of_int : int -> style
+val style_to_int : style -> int
 
 (* TabAlign - enumeration *)
 type tabalign = [
@@ -569,6 +617,9 @@ type tabalign = [
   | `DECIMAL
 ]
 
+val tabalign_of_int : int -> tabalign
+val tabalign_to_int : tabalign -> int
+
 (* TextTransform - enumeration *)
 type texttransform = [
   (** Leave text unchanged *)
@@ -581,6 +632,9 @@ type texttransform = [
   in titlecase *)
   | `CAPITALIZE
 ]
+
+val texttransform_of_int : int -> texttransform
+val texttransform_to_int : texttransform -> int
 
 (* Underline - enumeration *)
 type underline = [
@@ -620,6 +674,9 @@ type underline = [
   | `ERROR_LINE
 ]
 
+val underline_of_int : int -> underline
+val underline_to_int : underline -> int
+
 (* Variant - enumeration *)
 type variant = [
   (** A normal font. *)
@@ -645,6 +702,9 @@ type variant = [
   are more suitable for all-uppercase titles. Since: 1.50 *)
   | `TITLE_CAPS
 ]
+
+val variant_of_int : int -> variant
+val variant_to_int : variant -> int
 
 (* Weight - enumeration *)
 type weight = [
@@ -674,6 +734,9 @@ type weight = [
   | `ULTRAHEAVY
 ]
 
+val weight_of_int : int -> weight
+val weight_to_int : weight -> int
+
 (* WrapMode - enumeration *)
 type wrapmode = [
   (** wrap lines at word boundaries. *)
@@ -684,6 +747,9 @@ type wrapmode = [
   character boundaries if there is not enough space for a full word. *)
   | `WORD_CHAR
 ]
+
+val wrapmode_of_int : int -> wrapmode
+val wrapmode_to_int : wrapmode -> int
 
 (* FontMask - bitfield/flags *)
 type fontmask_flag = [
@@ -707,6 +773,9 @@ type fontmask_flag = [
 
 type fontmask = fontmask_flag list
 
+val fontmask_of_int : int -> fontmask
+val fontmask_to_int : fontmask -> int
+
 (* LayoutDeserializeFlags - bitfield/flags *)
 type layoutdeserializeflags_flag = [
   (** Default behavior *)
@@ -717,6 +786,9 @@ type layoutdeserializeflags_flag = [
 ]
 
 type layoutdeserializeflags = layoutdeserializeflags_flag list
+
+val layoutdeserializeflags_of_int : int -> layoutdeserializeflags
+val layoutdeserializeflags_to_int : layoutdeserializeflags -> int
 
 (* LayoutSerializeFlags - bitfield/flags *)
 type layoutserializeflags_flag = [
@@ -730,6 +802,9 @@ type layoutserializeflags_flag = [
 
 type layoutserializeflags = layoutserializeflags_flag list
 
+val layoutserializeflags_of_int : int -> layoutserializeflags
+val layoutserializeflags_to_int : layoutserializeflags -> int
+
 (* ShapeFlags - bitfield/flags *)
 type shapeflags_flag = [
   (** Default value *)
@@ -740,6 +815,9 @@ type shapeflags_flag = [
 ]
 
 type shapeflags = shapeflags_flag list
+
+val shapeflags_of_int : int -> shapeflags
+val shapeflags_to_int : shapeflags -> int
 
 (* ShowFlags - bitfield/flags *)
 type showflags_flag = [
@@ -755,4 +833,7 @@ type showflags_flag = [
 ]
 
 type showflags = showflags_flag list
+
+val showflags_of_int : int -> showflags
+val showflags_to_int : showflags -> int
 
