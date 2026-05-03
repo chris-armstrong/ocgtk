@@ -75,8 +75,7 @@ let entity_generator_by_entity_type =
       let entity_kind = Filtering.entity_kind_of_entity entity in
       List.iter
         ~f:(fun (meth : gir_method) ->
-          if
-            not (Filtering.should_skip_method_binding ~ctx ~entity_kind meth)
+          if not (Filtering.should_skip_method_binding ~ctx ~entity_kind meth)
           then
             try
               let stub =
@@ -592,7 +591,9 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
     | Implementation -> Gir_gen_lib.Generate.Ml_interface.Implementation
   in
 
-  let entity_kind = Gir_gen_lib.Generate.Filtering.entity_kind_of_entity entity in
+  let entity_kind =
+    Gir_gen_lib.Generate.Filtering.entity_kind_of_entity entity
+  in
   let content =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx ~output_mode
       ~class_name:entity.Gir_gen_lib.Types.name
@@ -603,7 +604,8 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
            Some entity.Gir_gen_lib.Types.constructors
          else None)
       ~methods:entity.Gir_gen_lib.Types.methods ~entity_kind
-      ~properties:entity.Gir_gen_lib.Types.properties ?from_gobject_c_name ()
+      ~properties:entity.Gir_gen_lib.Types.properties
+      ~signals:entity.Gir_gen_lib.Types.signals ?from_gobject_c_name ()
   in
 
   write_file ~path:ml_file ~content
@@ -880,13 +882,12 @@ let generate_enum_files ~output_dir ~generated_stubs namespace enums bitfields =
     let ocaml_ml_content_parts =
       [
         "(* GENERATED CODE - DO NOT EDIT *)\n";
-        sprintf "(* %s Enumeration and Bitfield Converters *)\n\n" namespace.name;
+        sprintf "(* %s Enumeration and Bitfield Converters *)\n\n"
+          namespace.name;
       ]
-      @ List.map
-          ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_enum_impl
+      @ List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_enum_impl
           enums
-      @ List.map
-          ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_bitfield_impl
+      @ List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_bitfield_impl
           bitfields
     in
     write_file ~path:enum_ml_file
@@ -1828,12 +1829,12 @@ let generate_cmd =
       `Pre "  gir_gen generate gir/Gtk-4.0.gir ./output";
       `P "Generate with cross-namespace references:";
       `Pre
-        "  gir_gen generate -r gtk_refs.txt -r gdk_refs.txt \
-         gir/Gtk-4.0.gir ./output";
+        "  gir_gen generate -r gtk_refs.txt -r gdk_refs.txt gir/Gtk-4.0.gir \
+         ./output";
       `P "Generate with override file:";
       `Pre
-        "  gir_gen generate -o ocgtk/overrides/gtk.sexp \
-         gir/Gtk-4.0.gir ./output";
+        "  gir_gen generate -o ocgtk/overrides/gtk.sexp gir/Gtk-4.0.gir \
+         ./output";
     ]
   in
   let info = Cmd.info "generate" ~doc ~man in
@@ -1867,8 +1868,7 @@ let overrides_cmd =
          manually-authored ignore entries to form a complete override file.";
       `S Manpage.s_examples;
       `P "Extract version overrides from GTK GIR:";
-      `Pre
-        "  gir_gen overrides gir/Gtk-4.0.gir ocgtk/overrides/gtk.sexp";
+      `Pre "  gir_gen overrides gir/Gtk-4.0.gir ocgtk/overrides/gtk.sexp";
     ]
   in
   let info = Cmd.info "overrides" ~doc ~man in
@@ -1893,8 +1893,8 @@ let references_cmd =
       `Pre "  gir_gen references gir/Gtk-4.0.gir gtk_refs.txt";
       `P "Generate reference list with overrides:";
       `Pre
-        "  gir_gen references -o ocgtk/overrides/gtk.sexp \
-         gir/Gtk-4.0.gir gtk_refs.txt";
+        "  gir_gen references -o ocgtk/overrides/gtk.sexp gir/Gtk-4.0.gir \
+         gtk_refs.txt";
     ]
   in
   let info = Cmd.info "references" ~doc ~man in

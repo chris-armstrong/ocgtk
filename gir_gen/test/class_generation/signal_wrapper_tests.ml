@@ -605,6 +605,52 @@ let test_l2_has_no_inherit_signals_line () =
       "L2 method output should not contain any 'inherit *_signals' clause"
 
 (* ========================================================================= *)
+(* Stage 2 integration: generate_ml_interface emits L1 signal bindings       *)
+(* ========================================================================= *)
+
+module Ml_interface = Gir_gen_lib.Generate.Ml_interface
+
+(** Synthetic Button class used for L1 module generator integration tests. *)
+let make_button_with_clicked_signal () =
+  Type_factory.make_gir_signal ~signal_name:"clicked"
+    ~return_type:Type_factory.void_type ()
+
+let test_l1_val_in_generated_module_interface () =
+  (* Arrange: minimal Gtk context and one void zero-param signal *)
+  let ctx = gtk_ctx () in
+  let clicked_signal = make_button_with_clicked_signal () in
+  (* Act: call the L1 interface generator in Interface mode with the signal *)
+  let mli_content =
+    Ml_interface.generate_ml_interface ~ctx ~output_mode:Ml_interface.Interface
+      ~class_name:"Button" ~class_doc:None ~c_type:"GtkButton"
+      ~parent_chain:[ "Widget" ] ~constructors:None ~methods:[] ~properties:[]
+      ~signals:[ clicked_signal ]
+      ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
+  in
+  (* Assert: val on_clicked present in the module signature *)
+  let ast = Ml_ast_helpers.parse_interface mli_content in
+  Helpers.assert_some "val on_clicked should appear in generated .mli"
+    (Ml_ast_helpers.find_value_declaration_sig ast "on_clicked")
+
+let test_l1_let_in_generated_module_impl () =
+  (* Arrange: minimal Gtk context and one void zero-param signal *)
+  let ctx = gtk_ctx () in
+  let clicked_signal = make_button_with_clicked_signal () in
+  (* Act: call the L1 interface generator in Implementation mode with the
+     signal *)
+  let ml_content =
+    Ml_interface.generate_ml_interface ~ctx
+      ~output_mode:Ml_interface.Implementation ~class_name:"Button"
+      ~class_doc:None ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
+      ~constructors:None ~methods:[] ~properties:[] ~signals:[ clicked_signal ]
+      ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
+  in
+  (* Assert: let on_clicked present in the module body *)
+  let ast = Ml_ast_helpers.parse_implementation ml_content in
+  Helpers.assert_some "let on_clicked should appear in generated .ml"
+    (Ml_ast_helpers.find_let_binding ast "on_clicked")
+
+(* ========================================================================= *)
 (* Test suite                                                                 *)
 (* ========================================================================= *)
 
@@ -640,4 +686,10 @@ let tests =
       `Quick test_no_signals_files_generated;
     Alcotest.test_case "L2 method output has no inherit _signals line" `Quick
       test_l2_has_no_inherit_signals_line;
+    Alcotest.test_case
+      "generate_ml_interface Interface mode emits val on_clicked" `Quick
+      test_l1_val_in_generated_module_interface;
+    Alcotest.test_case
+      "generate_ml_interface Implementation mode emits let on_clicked" `Quick
+      test_l1_let_in_generated_module_impl;
   ]
