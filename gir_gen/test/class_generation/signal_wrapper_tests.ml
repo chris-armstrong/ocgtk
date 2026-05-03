@@ -651,6 +651,115 @@ let test_l1_let_in_generated_module_impl () =
     (Ml_ast_helpers.find_let_binding ast "on_clicked")
 
 (* ========================================================================= *)
+(* Stage 3: class_gen body contains on_signal method forwarders               *)
+(* ========================================================================= *)
+
+module Class_gen = Gir_gen_lib.Generate.Class_gen
+
+(** Build a Gtk ctx with Button registered as a class (required for type
+    resolution inside the class body generators). *)
+let gtk_ctx_with_button () =
+  let button_class =
+    Type_factory.make_gir_class ~class_name:"Button" ~c_type:"GtkButton" ()
+  in
+  { (gtk_ctx ()) with classes = [ button_class ] }
+
+let test_l2_class_body_contains_on_signal_method () =
+  (* Arrange: Button class with a void zero-param 'clicked' signal *)
+  let ctx = gtk_ctx_with_button () in
+  let clicked_signal =
+    Type_factory.make_gir_signal ~signal_name:"clicked"
+      ~return_type:Type_factory.void_type ()
+  in
+  (* Act: generate the L2 class module (.ml) *)
+  let ml_code =
+    Class_gen.generate_class_module ~ctx ~class_name:"Button"
+      ~c_type:"GtkButton" ~parent_chain:[] ~methods:[] ~properties:[]
+      ~signals:[ clicked_signal ] ~constructors:[]
+      ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+  in
+  let ast = Ml_ast_helpers.parse_implementation ml_code in
+  (* Assert: the 'button' class exists and contains method on_clicked *)
+  Helpers.expect_some "class 'button' not found in generated .ml"
+    (Ml_ast_helpers.find_class_declaration ast "button")
+  @@ fun cd ->
+  Helpers.expect_some "method 'on_clicked' not found in class 'button'"
+    (Ml_ast_helpers.find_method_in_class cd.pci_expr "on_clicked")
+  @@ fun cf ->
+  Helpers.expect_some "could not extract body of method 'on_clicked'"
+    (Ml_ast_helpers.get_method_body cf)
+  @@ fun body ->
+  (* Body must forward to Button.on_clicked *)
+  if not (Ml_ast_helpers.method_body_calls_function body "Button" "on_clicked")
+  then
+    Alcotest.fail
+      "on_clicked body should call Button.on_clicked (L1 forwarder missing)";
+  (* Body must reference self#as_button *)
+  if not (Ml_ast_helpers.contains_method_send body "as_button") then
+    Alcotest.fail "on_clicked body should reference self#as_button"
+
+let test_l2_class_type_contains_on_signal_method_sig () =
+  (* Arrange: same Button with clicked signal *)
+  let ctx = gtk_ctx_with_button () in
+  let clicked_signal =
+    Type_factory.make_gir_signal ~signal_name:"clicked"
+      ~return_type:Type_factory.void_type ()
+  in
+  (* Act: generate the L2 class signature (.mli) *)
+  let mli_code =
+    Class_gen.generate_class_signature ~ctx ~class_name:"Button"
+      ~c_type:"GtkButton" ~parent_chain:[] ~methods:[] ~properties:[]
+      ~signals:[ clicked_signal ] ~constructors:[]
+      ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+  in
+  let sig_ast = Ml_ast_helpers.parse_interface mli_code in
+  (* Assert: the 'button_t' class type contains method on_clicked *)
+  Helpers.expect_some "class type 'button_t' not found in generated .mli"
+    (Ml_ast_helpers.find_class_type_declaration sig_ast "button_t")
+  @@ fun ctd ->
+  if not (Ml_ast_helpers.method_signature_exists ctd.pci_expr "on_clicked") then
+    Alcotest.fail
+      "method 'on_clicked' signature not found in class type 'button_t'";
+  (* No inherit _signals in the output *)
+  let inherit_names =
+    Ml_ast_helpers.get_class_type_inherit_clauses ctd.pci_expr
+  in
+  let has_signals_inherit =
+    List.exists (fun name -> String.mem ~sub:"_signals" name) inherit_names
+  in
+  if has_signals_inherit then
+    Alcotest.fail
+      "class type 'button_t' should not contain any 'inherit *_signals' clause"
+
+let test_l2_no_inherit_signals_in_generated_class () =
+  (* Arrange: Button class with a void zero-param 'clicked' signal *)
+  let ctx = gtk_ctx_with_button () in
+  let clicked_signal =
+    Type_factory.make_gir_signal ~signal_name:"clicked"
+      ~return_type:Type_factory.void_type ()
+  in
+  (* Act: generate the L2 class module (.ml) *)
+  let ml_code =
+    Class_gen.generate_class_module ~ctx ~class_name:"Button"
+      ~c_type:"GtkButton" ~parent_chain:[] ~methods:[] ~properties:[]
+      ~signals:[ clicked_signal ] ~constructors:[]
+      ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+  in
+  let ast = Ml_ast_helpers.parse_implementation ml_code in
+  (* Assert: no Pcf_inherit references a name ending in _signals *)
+  Helpers.expect_some "class 'button' not found in generated .ml"
+    (Ml_ast_helpers.find_class_declaration ast "button")
+  @@ fun cd ->
+  let inherit_names = Ml_ast_helpers.get_class_inherit_clauses cd.pci_expr in
+  let has_signals_inherit =
+    List.exists (fun name -> String.mem ~sub:"_signals" name) inherit_names
+  in
+  if has_signals_inherit then
+    Alcotest.fail
+      "generated class 'button' must not contain any 'inherit G*_signals' \
+       clause"
+
+(* ========================================================================= *)
 (* Test suite                                                                 *)
 (* ========================================================================= *)
 
@@ -692,4 +801,11 @@ let tests =
     Alcotest.test_case
       "generate_ml_interface Implementation mode emits let on_clicked" `Quick
       test_l1_let_in_generated_module_impl;
+    Alcotest.test_case "L2 class body contains on_clicked method forwarder"
+      `Quick test_l2_class_body_contains_on_signal_method;
+    Alcotest.test_case "L2 class type contains on_clicked method signature"
+      `Quick test_l2_class_type_contains_on_signal_method_sig;
+    Alcotest.test_case
+      "L2 generated class has no inherit G*_signals in class body" `Quick
+      test_l2_no_inherit_signals_in_generated_class;
   ]

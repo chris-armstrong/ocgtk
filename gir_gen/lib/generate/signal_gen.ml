@@ -280,3 +280,14 @@ let emit_l2_method (e : signal_emission) ~layer1_module_name ~class_snake :
   sprintf
     "  method %s ?after ~callback =\n    %s.%s ?after self#as_%s ~callback\n\n"
     e.method_name layer1_module_name e.method_name class_snake
+
+(* ================================================================= *)
+(* emit_l2_method_sig                                                 *)
+(* ================================================================= *)
+
+(** Emit a class type method signature for insertion into a generated L2 class
+    type body (.mli / class type definition). Unlike [emit_l2_method] (which
+    emits a concrete method body), this emits only the method type. *)
+let emit_l2_method_sig (e : signal_emission) : string =
+  sprintf "    method %s : ?after:bool -> callback:(%s) -> Gobject.handler_id\n"
+    e.method_name e.ocaml_callback_type

@@ -196,7 +196,7 @@
         {
           "stage": 3,
           "title": "Wire L2 signal forwarder emission into class_gen_body.ml; remove old inherit G<class>_signals lines",
-          "status": "pending",
+          "status": "completed",
           "replanned": false,
           "description": "Replace the `inherit G<class>_signals.something_signals obj` emit in `generate_class_module_body` (and the corresponding `inherit G<class>_signals.something_signals` in `generate_class_signature_body`) with inline L2 method forwarder emission using `Signal_gen.emit_l2_method`. Also update the two analogous paths in `class_gen.ml`'s combined/cyclic class generators. After this stage, no generated L2 class body or class type inherits from a `_signals` module.",
           "files_to_modify": [
