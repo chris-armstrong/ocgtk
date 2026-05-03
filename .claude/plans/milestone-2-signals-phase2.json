@@ -251,7 +251,7 @@
         {
           "stage": 4,
           "title": "Remove generate_signal_class pipeline from gir_gen.ml; clean up dead helpers in class_gen_helpers.ml",
-          "status": "pending",
+          "status": "completed",
           "replanned": false,
           "description": "Remove the `generate_signal_class` and `generate_all_signal_classes` functions from gir_gen/bin/gir_gen.ml (lines 713-750) and the call to `generate_all_signal_classes` from the generate command's execution body. Remove the now-dead `signal_class_name` and `get_signal_module_name` helpers from class_gen_helpers.ml (these were only consumed by class_gen_body.ml which no longer calls them after Stage 3). Remove the stub `generate_signal_bindings` from layer1_helpers.ml.",
           "files_to_modify": [

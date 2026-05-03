@@ -711,21 +711,6 @@ let generate_high_level_class ~ctx ~output_dir entity parent_chain =
       if Gir_gen_lib.Generate.Filtering.should_generate_record record then
         generate_ ()
 
-(* Generate signal class file for a single entity.
-   NOTE: Stage 1 removed Signal_gen.generate_signal_class; this function is a
-   no-op pending Stage 4 cleanup of the full pipeline removal. *)
-let generate_signal_class ~ctx:_ ~output_dir:_ ~parent_chain:_ _entity = ()
-
-(* Generate signal classes for all entities *)
-let generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class
-    entities =
-  printf "\nGenerating signal classes...\n";
-  List.iter
-    ~f:(fun entity ->
-      let parent_chain = parent_chain_for_class entity.Gir_gen_lib.Types.name in
-      generate_signal_class ~ctx ~output_dir ~parent_chain entity)
-    entities
-
 (* Generate combined .ml + .mli for cyclic Layer 1 modules *)
 let generate_combined_ml_files ~ctx ~output_dir ~module_group
     ~parent_chain_for_class =
@@ -1314,9 +1299,6 @@ let generate_bindings filter_file gir_file output_dir reference_files
               generate_cyclic_shim_files ~ctx ~output_dir ~combined_module_name
                 ~entity))
     module_groups_list;
-
-  (* Generate signal classes for all entities (classes and interfaces) *)
-  generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class entities;
 
   (* ==== BUILD CONFIGURATION ==== *)
 
