@@ -331,7 +331,7 @@
         {
           "stage": 6,
           "title": "Verify and finalize: ensure all 14 test cases pass; update test runner if needed",
-          "status": "pending",
+          "status": "completed",
           "replanned": false,
           "description": "Verify that all 14 test cases from the plan are implemented and passing in `signal_wrapper_tests.ml`. Add any missing test cases not yet covered by Stages 1-3. Verify the test runner (gir_gen/test/dune) includes `signal_wrapper_tests` in the test_gir_gen modules list (it is already there from Phase 1). If any integration-level tests are appropriate for the integration test binary (signals_tests.ml), add them. Run the full test suite as a final gate.",
           "files_to_modify": [
