@@ -709,35 +709,10 @@ let generate_high_level_class ~ctx ~output_dir entity parent_chain =
       if Gir_gen_lib.Generate.Filtering.should_generate_record record then
         generate_ ()
 
-(* Generate signal class file for a single entity *)
-let generate_signal_class ~ctx ~output_dir ~parent_chain entity =
-  let generate_ () =
-    let signal_code =
-      Gir_gen_lib.Generate.Signal_gen.generate_signal_class ~ctx
-        ~class_name:entity.Gir_gen_lib.Types.name
-        ~signals:entity.Gir_gen_lib.Types.signals ~parent_chain
-    in
-
-    let signal_file =
-      Filename.concat
-        (generated_output_dir output_dir)
-        (sprintf "g%s_signals.ml"
-           (Gir_gen_lib.Utils.to_snake_case entity.Gir_gen_lib.Types.name))
-    in
-    write_file ~path:signal_file ~content:signal_code
-  in
-  if List.length entity.Gir_gen_lib.Types.signals = 0 then ()
-  else
-    match entity.kind with
-    | Gir_gen_lib.Types.Class clazz ->
-        if Gir_gen_lib.Generate.Filtering.should_generate_class clazz then
-          generate_ ()
-    | Gir_gen_lib.Types.Interface intf ->
-        if Gir_gen_lib.Generate.Filtering.should_generate_interface intf then
-          generate_ ()
-    | Gir_gen_lib.Types.Record record ->
-        if Gir_gen_lib.Generate.Filtering.should_generate_record record then
-          generate_ ()
+(* Generate signal class file for a single entity.
+   NOTE: Stage 1 removed Signal_gen.generate_signal_class; this function is a
+   no-op pending Stage 4 cleanup of the full pipeline removal. *)
+let generate_signal_class ~ctx:_ ~output_dir:_ ~parent_chain:_ _entity = ()
 
 (* Generate signal classes for all entities *)
 let generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class

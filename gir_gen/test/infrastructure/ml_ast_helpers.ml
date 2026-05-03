@@ -993,3 +993,159 @@ let rec collect_class_expr_inherits (cexpr : class_expr) : string list =
 (** Get the list of inherited class names from a class declaration's body. *)
 let get_class_inherit_names (cd : class_declaration) : string list =
   collect_class_expr_inherits cd.pci_expr
+
+(* ========================================================================= *)
+(* Arrow Type Label and Parameter Helpers                                     *)
+(* ========================================================================= *)
+
+(** Extract all (arg_label, core_type) pairs from a function type, in order.
+    Stops at the final return type. *)
+let rec get_arrow_params_with_labels (ct : core_type) :
+    (arg_label * core_type) list =
+  match ct.ptyp_desc with
+  | Ptyp_arrow (lbl, param_type, rest) ->
+      (lbl, param_type) :: get_arrow_params_with_labels rest
+  | _ -> []
+
+(** Find the labelled parameter with the given name in a function type. Matches
+    both [Labelled name] and [Optional name]. *)
+let find_labelled_param (ct : core_type) (label : string) : core_type option =
+  let params = get_arrow_params_with_labels ct in
+  List.find_map
+    (fun (lbl, param_ct) ->
+      match lbl with
+      | Labelled l when l = label -> Some param_ct
+      | Optional l when l = label -> Some param_ct
+      | _ -> None)
+    params
+
+(** Check whether the labelled parameter [label] exists in the function type
+    with a [core_type] whose string representation matches [type_str]. *)
+let has_labelled_param_with_type (ct : core_type) (label : string)
+    (type_str : string) : bool =
+  match find_labelled_param ct label with
+  | None -> false
+  | Some param_ct -> String.equal (core_type_to_string param_ct) type_str
+
+(** Check that no positional ([Nolabel]) parameter in a function type has a
+    label — i.e. check [label] does not appear as any arrow label in [ct]. *)
+let has_no_labelled_param (ct : core_type) (label : string) : bool =
+  let params = get_arrow_params_with_labels ct in
+  not
+    (List.exists
+       (fun (lbl, _) ->
+         match lbl with
+         | Labelled l | Optional l -> String.equal l label
+         | Nolabel -> false)
+       params)
+
+(* ========================================================================= *)
+(* Closure.nth Position Helpers                                               *)
+(* ========================================================================= *)
+
+(** Collect the integer values of all [~pos:N] labels in [Gobject.Closure.nth]
+    calls within [expr]. Returns the list of positions found. *)
+let collect_closure_nth_positions (expr : expression) : int list =
+  let positions = ref [] in
+  let rec scan (e : expression) =
+    match e.pexp_desc with
+    | Pexp_apply (func_expr, args) ->
+        (* Check if the function being called is Gobject.Closure.nth *)
+        let is_closure_nth =
+          match func_expr.pexp_desc with
+          | Pexp_ident { txt = Longident.Ldot (parent, "nth"); _ } ->
+              longident_to_string parent = "Gobject.Closure"
+          | _ -> false
+        in
+        if is_closure_nth then
+          List.iter
+            (fun (lbl, arg_expr) ->
+              match lbl with
+              | Labelled "pos" -> (
+                  match arg_expr.pexp_desc with
+                  | Pexp_constant (Pconst_integer (s, _)) ->
+                      positions := int_of_string s :: !positions
+                  | _ -> ())
+              | _ -> ())
+            args;
+        scan func_expr;
+        List.iter (fun (_, arg) -> scan arg) args
+    | Pexp_let (_, bindings, body) ->
+        List.iter (fun vb -> scan vb.pvb_expr) bindings;
+        scan body
+    | Pexp_sequence (e1, e2) ->
+        scan e1;
+        scan e2
+    | Pexp_function (_, _, Pfunction_body body) -> scan body
+    | Pexp_function (_, _, Pfunction_cases (cases, _, _)) ->
+        List.iter (fun case -> scan case.pc_rhs) cases
+    | Pexp_match (scrutinee, cases) ->
+        scan scrutinee;
+        List.iter (fun case -> scan case.pc_rhs) cases
+    | Pexp_ifthenelse (cond, if_true, if_false_opt) ->
+        scan cond;
+        scan if_true;
+        Option.iter scan if_false_opt
+    | Pexp_tuple exprs | Pexp_array exprs -> List.iter scan exprs
+    | Pexp_constraint (inner, _) -> scan inner
+    | Pexp_coerce (inner, _, _) -> scan inner
+    | _ -> ()
+  in
+  scan expr;
+  !positions
+
+(** Return [true] iff no [Gobject.Closure.nth] call in [expr] uses [~pos:0]. *)
+let no_closure_nth_at_pos_zero (expr : expression) : bool =
+  let positions = collect_closure_nth_positions expr in
+  not (List.mem 0 positions)
+
+(* ========================================================================= *)
+(* Callback Labelled-Arg Helpers                                              *)
+(* ========================================================================= *)
+
+(** Collect all labelled argument names used in applications of [func_name]
+    within [expr]. Returns the list of label strings. *)
+let collect_labelled_args_of_call (expr : expression) (func_name : string) :
+    string list =
+  let labels = ref [] in
+  let rec scan (e : expression) =
+    match e.pexp_desc with
+    | Pexp_apply (func_expr, args) ->
+        let is_target =
+          match func_expr.pexp_desc with
+          | Pexp_ident { txt = Longident.Lident name; _ } ->
+              String.equal name func_name
+          | _ -> false
+        in
+        if is_target then
+          List.iter
+            (fun (lbl, _) ->
+              match lbl with
+              | Labelled l | Optional l -> labels := l :: !labels
+              | Nolabel -> ())
+            args;
+        scan func_expr;
+        List.iter (fun (_, arg) -> scan arg) args
+    | Pexp_let (_, bindings, body) ->
+        List.iter (fun vb -> scan vb.pvb_expr) bindings;
+        scan body
+    | Pexp_sequence (e1, e2) ->
+        scan e1;
+        scan e2
+    | Pexp_function (_, _, Pfunction_body body) -> scan body
+    | Pexp_function (_, _, Pfunction_cases (cases, _, _)) ->
+        List.iter (fun case -> scan case.pc_rhs) cases
+    | Pexp_match (scrutinee, cases) ->
+        scan scrutinee;
+        List.iter (fun case -> scan case.pc_rhs) cases
+    | Pexp_ifthenelse (cond, if_true, if_false_opt) ->
+        scan cond;
+        scan if_true;
+        Option.iter scan if_false_opt
+    | Pexp_tuple exprs | Pexp_array exprs -> List.iter scan exprs
+    | Pexp_constraint (inner, _) -> scan inner
+    | Pexp_coerce (inner, _, _) -> scan inner
+    | _ -> ()
+  in
+  scan expr;
+  !labels
