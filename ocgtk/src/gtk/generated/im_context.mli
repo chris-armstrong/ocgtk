@@ -136,3 +136,24 @@ external get_input_purpose : t -> Gtk_enums.inputpurpose
 external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit
   = "ml_gtk_im_context_set_input_purpose"
 (** Set property: input-purpose *)
+
+val on_commit :
+  ?after:bool -> t -> callback:(str:string -> unit) -> Gobject.Signal.handler_id
+
+val on_delete_surrounding :
+  ?after:bool ->
+  t ->
+  callback:(offset:int -> n_chars:int -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_preedit_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_preedit_end :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_preedit_start :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_retrieve_surrounding :
+  ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id

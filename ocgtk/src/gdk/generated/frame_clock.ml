@@ -78,3 +78,31 @@ external begin_updating : t -> unit = "ml_gdk_frame_clock_begin_updating"
     %GDK_FRAME_CLOCK_PHASE_UPDATE phase. This function may be called multiple
     times and frames will be requested until gdk_frame_clock_end_updating() is
     called the same number of times. *)
+
+let on_after_paint ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"after-paint" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_before_paint ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"before-paint" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_flush_events ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"flush-events" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_layout ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"layout" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_paint ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"paint" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_resume_events ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"resume-events" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_update ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"update" ~callback
+    ~after:(Option.value after ~default:false)

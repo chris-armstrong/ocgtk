@@ -52,3 +52,27 @@ external get_parameter_type : t -> Gvariant_type.t
 external get_state_type : t -> Gvariant_type.t
   = "ml_g_simple_action_get_state_type"
 (** Get property: state-type *)
+
+let on_activate ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let parameter =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_variant v
+        in
+        callback ~parameter)
+  in
+  Gobject.Signal.connect obj ~name:"activate" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_change_state ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let value =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_variant v
+        in
+        callback ~value)
+  in
+  Gobject.Signal.connect obj ~name:"change-state" ~callback:closure
+    ~after:(Option.value after ~default:false)

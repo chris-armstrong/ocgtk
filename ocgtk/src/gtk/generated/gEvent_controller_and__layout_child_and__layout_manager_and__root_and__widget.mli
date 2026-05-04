@@ -57,7 +57,35 @@ and widget_t = object
   inherit GAt_context_and__accessible.accessible_t
   inherit GBuildable.buildable_t
   inherit GConstraint_target.constraint_target_t
-  inherit Gwidget_signals.widget_signals
+  method on_destroy : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_direction_changed :
+    callback:(previous_direction:Gtk_enums.textdirection -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_hide : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_keynav_failed :
+    callback:(direction:Gtk_enums.directiontype -> bool) ->
+    Gobject.Signal.handler_id
+
+  method on_map : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_mnemonic_activate :
+    callback:(group_cycling:bool -> bool) -> Gobject.Signal.handler_id
+
+  method on_move_focus :
+    callback:(direction:Gtk_enums.directiontype -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_realize : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_show : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_state_flags_changed :
+    callback:(flags:Gtk_enums.stateflags -> unit) -> Gobject.Signal.handler_id
+
+  method on_unmap : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_unrealize : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method action_set_enabled : string -> bool -> unit
   method activate : unit -> bool
   method activate_action_variant : string -> Gvariant.t option -> bool

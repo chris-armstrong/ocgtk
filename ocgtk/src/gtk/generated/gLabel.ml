@@ -1,12 +1,27 @@
-(* Signal class defined in glabel_signals.ml *)
-
 class type label_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
   inherit GAccessible_text.accessible_text_t
-  inherit Glabel_signals.label_signals
+
+  method on_activate_current_link :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate_link :
+    callback:(uri:string -> bool) -> Gobject.Signal.handler_id
+
+  method on_copy_clipboard :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_move_cursor :
+    callback:
+      (step:Gtk_enums.movementstep ->
+      count:int ->
+      extend_selection:bool ->
+      unit) ->
+    Gobject.Signal.handler_id
+
   method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
   method get_current_uri : unit -> string option
   method get_ellipsize : unit -> Ocgtk_pango.Pango.ellipsizemode
@@ -81,7 +96,18 @@ class label (obj : Label.t) : label_t =
              .t)
 
     inherit GAccessible_text.accessible_text (Accessible_text.from_gobject obj)
-    inherit Glabel_signals.label_signals obj
+
+    method on_activate_current_link ~callback =
+      Label.on_activate_current_link self#as_label ~callback
+
+    method on_activate_link ~callback =
+      Label.on_activate_link self#as_label ~callback
+
+    method on_copy_clipboard ~callback =
+      Label.on_copy_clipboard self#as_label ~callback
+
+    method on_move_cursor ~callback =
+      Label.on_move_cursor self#as_label ~callback
 
     method get_attributes :
         unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option =

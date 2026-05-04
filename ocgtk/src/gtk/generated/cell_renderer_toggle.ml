@@ -48,3 +48,15 @@ external get_inconsistent : t -> bool
 external set_inconsistent : t -> bool -> unit
   = "ml_gtk_cell_renderer_toggle_set_inconsistent"
 (** Set property: inconsistent *)
+
+let on_toggled ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let path =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        callback ~path)
+  in
+  Gobject.Signal.connect obj ~name:"toggled" ~callback:closure
+    ~after:(Option.value after ~default:false)

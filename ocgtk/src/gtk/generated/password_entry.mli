@@ -46,3 +46,6 @@ external get_placeholder_text : t -> string
 external set_placeholder_text : t -> string -> unit
   = "ml_gtk_password_entry_set_placeholder_text"
 (** Set property: placeholder-text *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

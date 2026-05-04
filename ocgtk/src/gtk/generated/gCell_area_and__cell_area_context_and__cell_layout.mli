@@ -1,6 +1,5 @@
 class type cell_area_t = object
   inherit GBuildable.buildable_t
-  inherit Gcell_area_signals.cell_area_signals
 
   method activate :
     cell_area_context_t ->

@@ -413,3 +413,42 @@ external get_schema_id : t -> string = "ml_g_settings_get_schema_id"
 external get_settings_schema : t -> Settings_schema.t
   = "ml_g_settings_get_settings_schema"
 (** Get property: settings-schema *)
+
+let on_changed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let key =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        callback ~key)
+  in
+  Gobject.Signal.connect obj ~name:"changed" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_writable_change_event ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let key =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_uint v
+        in
+        let result = callback ~key in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"writable-change-event" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_writable_changed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let key =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        callback ~key)
+  in
+  Gobject.Signal.connect obj ~name:"writable-changed" ~callback:closure
+    ~after:(Option.value after ~default:false)

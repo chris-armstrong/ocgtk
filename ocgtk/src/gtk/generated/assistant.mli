@@ -191,3 +191,15 @@ external add_action_widget :
 
 external get_use_header_bar : t -> int = "ml_gtk_assistant_get_use_header_bar"
 (** Get property: use-header-bar *)
+
+val on_apply :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_cancel :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_close :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_escape :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

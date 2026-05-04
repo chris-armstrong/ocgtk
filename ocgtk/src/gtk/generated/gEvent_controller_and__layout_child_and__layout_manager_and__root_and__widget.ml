@@ -60,7 +60,35 @@ and widget_t = object
   inherit GAt_context_and__accessible.accessible_t
   inherit GBuildable.buildable_t
   inherit GConstraint_target.constraint_target_t
-  inherit Gwidget_signals.widget_signals
+  method on_destroy : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_direction_changed :
+    callback:(previous_direction:Gtk_enums.textdirection -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_hide : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_keynav_failed :
+    callback:(direction:Gtk_enums.directiontype -> bool) ->
+    Gobject.Signal.handler_id
+
+  method on_map : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_mnemonic_activate :
+    callback:(group_cycling:bool -> bool) -> Gobject.Signal.handler_id
+
+  method on_move_focus :
+    callback:(direction:Gtk_enums.directiontype -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_realize : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_show : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_state_flags_changed :
+    callback:(flags:Gtk_enums.stateflags -> unit) -> Gobject.Signal.handler_id
+
+  method on_unmap : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_unrealize : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method action_set_enabled : string -> bool -> unit
   method activate : unit -> bool
   method activate_action_variant : string -> Gvariant.t option -> bool
@@ -432,7 +460,7 @@ and root
         .set_focus obj focus
 
     method as_root = obj
-  end (* Signal class defined in gwidget_signals.ml *)
+  end
 
 and widget
   (obj :
@@ -450,7 +478,65 @@ and widget
     inherit
       GConstraint_target.constraint_target (Constraint_target.from_gobject obj)
 
-    inherit Gwidget_signals.widget_signals obj
+    method on_destroy ~callback =
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      .Widget
+      .on_destroy self#as_widget ~callback
+
+    method on_direction_changed ~callback =
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      .Widget
+      .on_direction_changed self#as_widget ~callback
+
+    method on_hide ~callback =
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      .Widget
+      .on_hide self#as_widget ~callback
+
+    method on_keynav_failed ~callback =
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      .Widget
+      .on_keynav_failed self#as_widget ~callback
+
+    method on_map ~callback =
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      .Widget
+      .on_map self#as_widget ~callback
+
+    method on_mnemonic_activate ~callback =
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      .Widget
+      .on_mnemonic_activate self#as_widget ~callback
+
+    method on_move_focus ~callback =
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      .Widget
+      .on_move_focus self#as_widget ~callback
+
+    method on_realize ~callback =
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      .Widget
+      .on_realize self#as_widget ~callback
+
+    method on_show ~callback =
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      .Widget
+      .on_show self#as_widget ~callback
+
+    method on_state_flags_changed ~callback =
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      .Widget
+      .on_state_flags_changed self#as_widget ~callback
+
+    method on_unmap ~callback =
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      .Widget
+      .on_unmap self#as_widget ~callback
+
+    method on_unrealize ~callback =
+      Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      .Widget
+      .on_unrealize self#as_widget ~callback
 
     method action_set_enabled : string -> bool -> unit =
       fun action_name enabled ->

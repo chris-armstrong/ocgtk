@@ -1,8 +1,6 @@
-(* Signal class defined in gtoggle_button_signals.ml *)
-
 class type toggle_button_t = object
   inherit GButton.button_t
-  inherit Gtoggle_button_signals.toggle_button_signals
+  method on_toggled : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_active : unit -> bool
   method set_active : bool -> unit
   method set_group : toggle_button_t option -> unit
@@ -14,7 +12,10 @@ end
 class toggle_button (obj : Toggle_button.t) : toggle_button_t =
   object (self)
     inherit GButton.button (obj :> Button.t)
-    inherit Gtoggle_button_signals.toggle_button_signals obj
+
+    method on_toggled ~callback =
+      Toggle_button.on_toggled self#as_toggle_button ~callback
+
     method get_active : unit -> bool = fun () -> Toggle_button.get_active obj
 
     method set_active : bool -> unit =

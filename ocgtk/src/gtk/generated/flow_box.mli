@@ -205,3 +205,29 @@ external get_accept_unpaired_release : t -> bool
 external set_accept_unpaired_release : t -> bool -> unit
   = "ml_gtk_flow_box_set_accept_unpaired_release"
 (** Set property: accept-unpaired-release *)
+
+val on_activate_cursor_child :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_move_cursor :
+  ?after:bool ->
+  t ->
+  callback:
+    (step:Gtk_enums.movementstep ->
+    count:int ->
+    extend:bool ->
+    modify:bool ->
+    bool) ->
+  Gobject.Signal.handler_id
+
+val on_select_all :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_selected_children_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_toggle_cursor_child :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_unselect_all :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

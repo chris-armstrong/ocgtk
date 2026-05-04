@@ -83,3 +83,27 @@ external get_activates_default : t -> bool
 external set_activates_default : t -> bool -> unit
   = "ml_gtk_search_entry_set_activates_default"
 (** Set property: activates-default *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_next_match ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"next-match" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_previous_match ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"previous-match" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_search_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"search-changed" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_search_started ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"search-started" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_stop_search ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"stop-search" ~callback
+    ~after:(Option.value after ~default:false)

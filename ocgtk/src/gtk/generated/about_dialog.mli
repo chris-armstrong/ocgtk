@@ -160,3 +160,6 @@ external add_credit_section : t -> string -> string array -> unit
 (** Creates a new section in the "Credits" page. *)
 
 (* Properties *)
+
+val on_activate_link :
+  ?after:bool -> t -> callback:(uri:string -> bool) -> Gobject.Signal.handler_id

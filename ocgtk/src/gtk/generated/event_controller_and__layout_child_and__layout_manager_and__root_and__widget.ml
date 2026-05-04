@@ -1817,6 +1817,57 @@ and Widget : sig
   external set_width_request : t -> int -> unit
     = "ml_gtk_widget_set_width_request"
   (** Set property: width-request *)
+
+  val on_destroy :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_direction_changed :
+    ?after:bool ->
+    t ->
+    callback:(previous_direction:Gtk_enums.textdirection -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_hide :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_keynav_failed :
+    ?after:bool ->
+    t ->
+    callback:(direction:Gtk_enums.directiontype -> bool) ->
+    Gobject.Signal.handler_id
+
+  val on_map :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_mnemonic_activate :
+    ?after:bool ->
+    t ->
+    callback:(group_cycling:bool -> bool) ->
+    Gobject.Signal.handler_id
+
+  val on_move_focus :
+    ?after:bool ->
+    t ->
+    callback:(direction:Gtk_enums.directiontype -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_realize :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_show :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_state_flags_changed :
+    ?after:bool ->
+    t ->
+    callback:(flags:Gtk_enums.stateflags -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_unmap :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_unrealize :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
   type t = [ `widget | `initially_unowned | `object_ ] Gobject.obj
 
@@ -3305,4 +3356,98 @@ end = struct
   external set_width_request : t -> int -> unit
     = "ml_gtk_widget_set_width_request"
   (** Set property: width-request *)
+
+  let on_destroy ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"destroy" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_direction_changed ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let previous_direction =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gtk_enums.textdirection_of_int (Gobject.Value.get_enum_int v)
+          in
+          callback ~previous_direction)
+    in
+    Gobject.Signal.connect obj ~name:"direction-changed" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_hide ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"hide" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_keynav_failed ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let direction =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gtk_enums.directiontype_of_int (Gobject.Value.get_enum_int v)
+          in
+          let result = callback ~direction in
+          let v = Gobject.Closure.result argv in
+          let x = result in
+          Gobject.Value.set_boolean v x)
+    in
+    Gobject.Signal.connect obj ~name:"keynav-failed" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_map ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"map" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_mnemonic_activate ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let group_cycling =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_boolean v
+          in
+          let result = callback ~group_cycling in
+          let v = Gobject.Closure.result argv in
+          let x = result in
+          Gobject.Value.set_boolean v x)
+    in
+    Gobject.Signal.connect obj ~name:"mnemonic-activate" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_move_focus ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let direction =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gtk_enums.directiontype_of_int (Gobject.Value.get_enum_int v)
+          in
+          callback ~direction)
+    in
+    Gobject.Signal.connect obj ~name:"move-focus" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_realize ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"realize" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_show ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"show" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_state_flags_changed ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let flags =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gtk_enums.stateflags_of_int (Gobject.Value.get_flags_int v)
+          in
+          callback ~flags)
+    in
+    Gobject.Signal.connect obj ~name:"state-flags-changed" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_unmap ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"unmap" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_unrealize ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"unrealize" ~callback
+      ~after:(Option.value after ~default:false)
 end

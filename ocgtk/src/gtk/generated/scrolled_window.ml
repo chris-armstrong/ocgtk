@@ -238,3 +238,58 @@ external get_window_placement : t -> Gtk_enums.cornertype
 external set_window_placement : t -> Gtk_enums.cornertype -> unit
   = "ml_gtk_scrolled_window_set_window_placement"
 (** Set property: window-placement *)
+
+let on_edge_overshot ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let pos =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.positiontype_of_int (Gobject.Value.get_enum_int v)
+        in
+        callback ~pos)
+  in
+  Gobject.Signal.connect obj ~name:"edge-overshot" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_edge_reached ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let pos =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.positiontype_of_int (Gobject.Value.get_enum_int v)
+        in
+        callback ~pos)
+  in
+  Gobject.Signal.connect obj ~name:"edge-reached" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_move_focus_out ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let direction_type =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.directiontype_of_int (Gobject.Value.get_enum_int v)
+        in
+        callback ~direction_type)
+  in
+  Gobject.Signal.connect obj ~name:"move-focus-out" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_scroll_child ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let scroll =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.scrolltype_of_int (Gobject.Value.get_enum_int v)
+        in
+        let horizontal =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_boolean v
+        in
+        let result = callback ~scroll ~horizontal in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"scroll-child" ~callback:closure
+    ~after:(Option.value after ~default:false)

@@ -113,3 +113,19 @@ external add_action_widget :
     area. *)
 
 (* Properties *)
+
+let on_close ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"close" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_response ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let response_id =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_int v
+        in
+        callback ~response_id)
+  in
+  Gobject.Signal.connect obj ~name:"response" ~callback:closure
+    ~after:(Option.value after ~default:false)

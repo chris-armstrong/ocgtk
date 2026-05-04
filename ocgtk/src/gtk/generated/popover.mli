@@ -139,3 +139,9 @@ external get_autohide : t -> bool = "ml_gtk_popover_get_autohide"
     See [method@Gtk.Popover.set_autohide] for the implications of this. *)
 
 (* Properties *)
+
+val on_activate_default :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_closed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

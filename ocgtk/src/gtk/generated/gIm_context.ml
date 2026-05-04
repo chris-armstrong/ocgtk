@@ -1,7 +1,18 @@
-(* Signal class defined in gim_context_signals.ml *)
-
 class type im_context_t = object
-  inherit Gim_context_signals.im_context_signals
+  method on_commit : callback:(str:string -> unit) -> Gobject.Signal.handler_id
+
+  method on_delete_surrounding :
+    callback:(offset:int -> n_chars:int -> bool) -> Gobject.Signal.handler_id
+
+  method on_preedit_changed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_preedit_end : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_preedit_start : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_retrieve_surrounding :
+    callback:(unit -> bool) -> Gobject.Signal.handler_id
+
   method activate_osk : Ocgtk_gdk.Gdk.Event.event_t option -> bool
   method delete_surrounding : int -> int -> bool
 
@@ -40,7 +51,23 @@ end
 (* High-level class for IMContext *)
 class im_context (obj : Im_context.t) : im_context_t =
   object (self)
-    inherit Gim_context_signals.im_context_signals obj
+    method on_commit ~callback =
+      Im_context.on_commit self#as_im_context ~callback
+
+    method on_delete_surrounding ~callback =
+      Im_context.on_delete_surrounding self#as_im_context ~callback
+
+    method on_preedit_changed ~callback =
+      Im_context.on_preedit_changed self#as_im_context ~callback
+
+    method on_preedit_end ~callback =
+      Im_context.on_preedit_end self#as_im_context ~callback
+
+    method on_preedit_start ~callback =
+      Im_context.on_preedit_start self#as_im_context ~callback
+
+    method on_retrieve_surrounding ~callback =
+      Im_context.on_retrieve_surrounding self#as_im_context ~callback
 
     method activate_osk : Ocgtk_gdk.Gdk.Event.event_t option -> bool =
       fun event ->

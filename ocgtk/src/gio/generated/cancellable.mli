@@ -102,3 +102,6 @@ operation causes it to complete asynchronously. That is, if you
 cancel the operation from the same thread in which it is running,
 then the operation's #GAsyncReadyCallback will not be invoked until
 the application returns to the main loop. *)
+
+val on_cancelled :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

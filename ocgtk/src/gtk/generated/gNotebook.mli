@@ -3,7 +3,23 @@ class type notebook_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
-  inherit Gnotebook_signals.notebook_signals
+  method on_change_current_page :
+    callback:(object_:int -> bool) -> Gobject.Signal.handler_id
+
+  method on_focus_tab :
+    callback:(object_:Gtk_enums.notebooktab -> bool) ->
+    Gobject.Signal.handler_id
+
+  method on_move_focus_out :
+    callback:(object_:Gtk_enums.directiontype -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_reorder_tab :
+    callback:(object_:Gtk_enums.directiontype -> p0:bool -> bool) ->
+    Gobject.Signal.handler_id
+
+  method on_select_page :
+    callback:(object_:bool -> bool) -> Gobject.Signal.handler_id
 
   method append_page :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget

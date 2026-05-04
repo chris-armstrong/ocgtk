@@ -17,3 +17,9 @@ external get_velocity : t -> bool * float * float
 If the gesture is recognized, this function returns %TRUE and fills
 in @velocity_x and @velocity_y with the recorded velocity, as per the
 last events processed. *)
+
+val on_swipe :
+  ?after:bool ->
+  t ->
+  callback:(velocity_x:float -> velocity_y:float -> unit) ->
+  Gobject.Signal.handler_id

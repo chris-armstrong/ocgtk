@@ -568,3 +568,31 @@ external get_truncate_multiline : t -> bool
 external set_truncate_multiline : t -> bool -> unit
   = "ml_gtk_entry_set_truncate_multiline"
 (** Set property: truncate-multiline *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_icon_press ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let icon_pos =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.entryiconposition_of_int (Gobject.Value.get_enum_int v)
+        in
+        callback ~icon_pos)
+  in
+  Gobject.Signal.connect obj ~name:"icon-press" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_icon_release ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let icon_pos =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.entryiconposition_of_int (Gobject.Value.get_enum_int v)
+        in
+        callback ~icon_pos)
+  in
+  Gobject.Signal.connect obj ~name:"icon-release" ~callback:closure
+    ~after:(Option.value after ~default:false)

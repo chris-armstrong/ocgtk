@@ -114,3 +114,9 @@ It is not necessary to call this function when both @specified_width
 and @specified_height are known, but it is useful to call this
 function in GtkWidget:measure implementations to compute the
 other dimension when only one dimension is given. *)
+
+val on_invalidate_contents :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_invalidate_size :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

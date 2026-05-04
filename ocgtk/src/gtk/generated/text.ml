@@ -242,3 +242,91 @@ external set_invisible_char_set : t -> bool -> unit
 
 external get_scroll_offset : t -> int = "ml_gtk_text_get_scroll_offset"
 (** Get property: scroll-offset *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_backspace ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"backspace" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_copy_clipboard ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"copy-clipboard" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_cut_clipboard ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"cut-clipboard" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_delete_from_cursor ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let type_ =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.deletetype_of_int (Gobject.Value.get_enum_int v)
+        in
+        let count =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        callback ~type_ ~count)
+  in
+  Gobject.Signal.connect obj ~name:"delete-from-cursor" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_insert_at_cursor ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let string =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        callback ~string)
+  in
+  Gobject.Signal.connect obj ~name:"insert-at-cursor" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_insert_emoji ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"insert-emoji" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_move_cursor ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let step =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.movementstep_of_int (Gobject.Value.get_enum_int v)
+        in
+        let count =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        let extend =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_boolean v
+        in
+        callback ~step ~count ~extend)
+  in
+  Gobject.Signal.connect obj ~name:"move-cursor" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_paste_clipboard ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"paste-clipboard" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_preedit_changed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let preedit =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        callback ~preedit)
+  in
+  Gobject.Signal.connect obj ~name:"preedit-changed" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_toggle_overwrite ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"toggle-overwrite" ~callback
+    ~after:(Option.value after ~default:false)

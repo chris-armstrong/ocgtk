@@ -1,5 +1,8 @@
 class type sorter_t = object
-  inherit Gsorter_signals.sorter_signals
+  method on_changed :
+    callback:(change:Gtk_enums.sorterchange -> unit) ->
+    Gobject.Signal.handler_id
+
   method changed : Gtk_enums.sorterchange -> unit
 
   method compare :

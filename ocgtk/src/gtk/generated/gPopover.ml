@@ -1,5 +1,3 @@
-(* Signal class defined in gpopover_signals.ml *)
-
 class type popover_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -7,7 +5,11 @@ class type popover_t = object
 
   inherit GNative.native_t
   inherit GShortcut_manager.shortcut_manager_t
-  inherit Gpopover_signals.popover_signals
+
+  method on_activate_default :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_closed : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_autohide : unit -> bool
   method get_cascade_popdown : unit -> bool
 
@@ -62,7 +64,10 @@ class popover (obj : Popover.t) : popover_t =
     inherit
       GShortcut_manager.shortcut_manager (Shortcut_manager.from_gobject obj)
 
-    inherit Gpopover_signals.popover_signals obj
+    method on_activate_default ~callback =
+      Popover.on_activate_default self#as_popover ~callback
+
+    method on_closed ~callback = Popover.on_closed self#as_popover ~callback
     method get_autohide : unit -> bool = fun () -> Popover.get_autohide obj
 
     method get_cascade_popdown : unit -> bool =

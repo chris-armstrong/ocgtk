@@ -139,3 +139,11 @@ external get_autohide : t -> bool = "ml_gtk_popover_get_autohide"
     See [method@Gtk.Popover.set_autohide] for the implications of this. *)
 
 (* Properties *)
+
+let on_activate_default ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate-default" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_closed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"closed" ~callback
+    ~after:(Option.value after ~default:false)

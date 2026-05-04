@@ -143,3 +143,22 @@ external get_cell_area :
   t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t
   = "ml_gtk_entry_completion_get_cell_area"
 (** Get property: cell-area *)
+
+let on_insert_prefix ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let prefix =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        let result = callback ~prefix in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"insert-prefix" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_no_matches ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"no-matches" ~callback
+    ~after:(Option.value after ~default:false)

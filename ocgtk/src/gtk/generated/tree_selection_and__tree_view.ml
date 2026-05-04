@@ -68,6 +68,9 @@ module rec Tree_selection : sig
   (** Returns the number of rows that have been selected in @tree. *)
 
   (* Properties *)
+
+  val on_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
   type t = [ `tree_selection | `object_ ] Gobject.obj
 
@@ -135,6 +138,10 @@ end = struct
   (** Returns the number of rows that have been selected in @tree. *)
 
   (* Properties *)
+
+  let on_changed ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"changed" ~callback
+      ~after:(Option.value after ~default:false)
 end
 
 and Tree_view : sig
@@ -653,6 +660,50 @@ and Tree_view : sig
   external set_enable_grid_lines : t -> Gtk_enums.treeviewgridlines -> unit
     = "ml_gtk_tree_view_set_enable_grid_lines"
   (** Set property: enable-grid-lines *)
+
+  val on_columns_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_cursor_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_expand_collapse_cursor_row :
+    ?after:bool ->
+    t ->
+    callback:(object_:bool -> p0:bool -> p1:bool -> bool) ->
+    Gobject.Signal.handler_id
+
+  val on_move_cursor :
+    ?after:bool ->
+    t ->
+    callback:
+      (step:Gtk_enums.movementstep ->
+      direction:int ->
+      extend:bool ->
+      modify:bool ->
+      bool) ->
+    Gobject.Signal.handler_id
+
+  val on_select_all :
+    ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  val on_select_cursor_parent :
+    ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  val on_select_cursor_row :
+    ?after:bool ->
+    t ->
+    callback:(object_:bool -> bool) ->
+    Gobject.Signal.handler_id
+
+  val on_start_interactive_search :
+    ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  val on_toggle_cursor_row :
+    ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  val on_unselect_all :
+    ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
 end = struct
   type t = [ `tree_view | `widget | `initially_unowned | `object_ ] Gobject.obj
 
@@ -1169,4 +1220,134 @@ end = struct
   external set_enable_grid_lines : t -> Gtk_enums.treeviewgridlines -> unit
     = "ml_gtk_tree_view_set_enable_grid_lines"
   (** Set property: enable-grid-lines *)
+
+  let on_columns_changed ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"columns-changed" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_cursor_changed ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"cursor-changed" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_expand_collapse_cursor_row ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let object_ =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_boolean v
+          in
+          let p0 =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            Gobject.Value.get_boolean v
+          in
+          let p1 =
+            let v = Gobject.Closure.nth argv ~pos:3 in
+            Gobject.Value.get_boolean v
+          in
+          let result = callback ~object_ ~p0 ~p1 in
+          let v = Gobject.Closure.result argv in
+          let x = result in
+          Gobject.Value.set_boolean v x)
+    in
+    Gobject.Signal.connect obj ~name:"expand-collapse-cursor-row"
+      ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_move_cursor ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let step =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gtk_enums.movementstep_of_int (Gobject.Value.get_enum_int v)
+          in
+          let direction =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            Gobject.Value.get_int v
+          in
+          let extend =
+            let v = Gobject.Closure.nth argv ~pos:3 in
+            Gobject.Value.get_boolean v
+          in
+          let modify =
+            let v = Gobject.Closure.nth argv ~pos:4 in
+            Gobject.Value.get_boolean v
+          in
+          let result = callback ~step ~direction ~extend ~modify in
+          let v = Gobject.Closure.result argv in
+          let x = result in
+          Gobject.Value.set_boolean v x)
+    in
+    Gobject.Signal.connect obj ~name:"move-cursor" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_select_all ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let result = callback () in
+          let v = Gobject.Closure.result argv in
+          let x = result in
+          Gobject.Value.set_boolean v x)
+    in
+    Gobject.Signal.connect obj ~name:"select-all" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_select_cursor_parent ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let result = callback () in
+          let v = Gobject.Closure.result argv in
+          let x = result in
+          Gobject.Value.set_boolean v x)
+    in
+    Gobject.Signal.connect obj ~name:"select-cursor-parent" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_select_cursor_row ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let object_ =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_boolean v
+          in
+          let result = callback ~object_ in
+          let v = Gobject.Closure.result argv in
+          let x = result in
+          Gobject.Value.set_boolean v x)
+    in
+    Gobject.Signal.connect obj ~name:"select-cursor-row" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_start_interactive_search ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let result = callback () in
+          let v = Gobject.Closure.result argv in
+          let x = result in
+          Gobject.Value.set_boolean v x)
+    in
+    Gobject.Signal.connect obj ~name:"start-interactive-search"
+      ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_toggle_cursor_row ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let result = callback () in
+          let v = Gobject.Closure.result argv in
+          let x = result in
+          Gobject.Value.set_boolean v x)
+    in
+    Gobject.Signal.connect obj ~name:"toggle-cursor-row" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_unselect_all ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let result = callback () in
+          let v = Gobject.Closure.result argv in
+          let x = result in
+          Gobject.Value.set_boolean v x)
+    in
+    Gobject.Signal.connect obj ~name:"unselect-all" ~callback:closure
+      ~after:(Option.value after ~default:false)
 end

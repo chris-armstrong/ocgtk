@@ -1,13 +1,16 @@
-(* Signal class defined in gmemory_monitor_signals.ml *)
-
 class type memory_monitor_t = object
-  inherit Gmemory_monitor_signals.memory_monitor_signals
+  method on_low_memory_warning :
+    callback:(level:Gio_enums.memorymonitorwarninglevel -> unit) ->
+    Gobject.Signal.handler_id
+
   method as_memory_monitor : Memory_monitor.t
 end
 
 (* High-level class for MemoryMonitor *)
 class memory_monitor (obj : Memory_monitor.t) : memory_monitor_t =
   object (self)
-    inherit Gmemory_monitor_signals.memory_monitor_signals obj
+    method on_low_memory_warning ~callback =
+      Memory_monitor.on_low_memory_warning self#as_memory_monitor ~callback
+
     method as_memory_monitor = obj
   end

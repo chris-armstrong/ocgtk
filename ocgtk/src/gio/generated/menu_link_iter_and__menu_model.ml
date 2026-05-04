@@ -115,6 +115,12 @@ and Menu_model : sig
 
   If the attribute does not exist, or does not match the expected type
   then %NULL is returned. *)
+
+  val on_items_changed :
+    ?after:bool ->
+    t ->
+    callback:(position:int -> removed:int -> added:int -> unit) ->
+    Gobject.Signal.handler_id
 end = struct
   type t = [ `menu_model | `object_ ] Gobject.obj
 
@@ -183,4 +189,24 @@ end = struct
 
   If the attribute does not exist, or does not match the expected type
   then %NULL is returned. *)
+
+  let on_items_changed ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let position =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_int v
+          in
+          let removed =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            Gobject.Value.get_int v
+          in
+          let added =
+            let v = Gobject.Closure.nth argv ~pos:3 in
+            Gobject.Value.get_int v
+          in
+          callback ~position ~removed ~added)
+    in
+    Gobject.Signal.connect obj ~name:"items-changed" ~callback:closure
+      ~after:(Option.value after ~default:false)
 end

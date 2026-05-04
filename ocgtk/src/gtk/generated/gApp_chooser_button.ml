@@ -1,12 +1,14 @@
-(* Signal class defined in gapp_chooser_button_signals.ml *)
-
 class type app_chooser_button_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
   inherit GApp_chooser.app_chooser_t
-  inherit Gapp_chooser_button_signals.app_chooser_button_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_custom_item_activated :
+    callback:(item_name:string -> unit) -> Gobject.Signal.handler_id
 
   method append_custom_item :
     string -> string -> Ocgtk_gio.Gio.Icon.icon_t -> unit
@@ -36,7 +38,16 @@ class app_chooser_button (obj : App_chooser_button.t) : app_chooser_button_t =
              .t)
 
     inherit GApp_chooser.app_chooser (App_chooser.from_gobject obj)
-    inherit Gapp_chooser_button_signals.app_chooser_button_signals obj
+
+    method on_activate ~callback =
+      App_chooser_button.on_activate self#as_app_chooser_button ~callback
+
+    method on_changed ~callback =
+      App_chooser_button.on_changed self#as_app_chooser_button ~callback
+
+    method on_custom_item_activated ~callback =
+      App_chooser_button.on_custom_item_activated self#as_app_chooser_button
+        ~callback
 
     method append_custom_item :
         string -> string -> Ocgtk_gio.Gio.Icon.icon_t -> unit =

@@ -1,7 +1,10 @@
-(* Signal class defined in gpaintable_signals.ml *)
-
 class type paintable_t = object
-  inherit Gpaintable_signals.paintable_signals
+  method on_invalidate_contents :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_invalidate_size :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
   method get_current_image : unit -> paintable_t
   method get_flags : unit -> Gdk_enums.paintableflags
   method get_intrinsic_aspect_ratio : unit -> float
@@ -16,7 +19,11 @@ end
 (* High-level class for Paintable *)
 class paintable (obj : Paintable.t) : paintable_t =
   object (self)
-    inherit Gpaintable_signals.paintable_signals obj
+    method on_invalidate_contents ~callback =
+      Paintable.on_invalidate_contents self#as_paintable ~callback
+
+    method on_invalidate_size ~callback =
+      Paintable.on_invalidate_size self#as_paintable ~callback
 
     method get_current_image : unit -> paintable_t =
       fun () -> new paintable (Paintable.get_current_image obj)

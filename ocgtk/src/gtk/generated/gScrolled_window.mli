@@ -3,7 +3,19 @@ class type scrolled_window_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
-  inherit Gscrolled_window_signals.scrolled_window_signals
+  method on_edge_overshot :
+    callback:(pos:Gtk_enums.positiontype -> unit) -> Gobject.Signal.handler_id
+
+  method on_edge_reached :
+    callback:(pos:Gtk_enums.positiontype -> unit) -> Gobject.Signal.handler_id
+
+  method on_move_focus_out :
+    callback:(direction_type:Gtk_enums.directiontype -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_scroll_child :
+    callback:(scroll:Gtk_enums.scrolltype -> horizontal:bool -> bool) ->
+    Gobject.Signal.handler_id
 
   method get_child :
     unit ->

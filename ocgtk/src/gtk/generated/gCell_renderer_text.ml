@@ -1,8 +1,10 @@
-(* Signal class defined in gcell_renderer_text_signals.ml *)
-
 class type cell_renderer_text_t = object
   inherit GCell_renderer.cell_renderer_t
-  inherit Gcell_renderer_text_signals.cell_renderer_text_signals
+
+  method on_edited :
+    callback:(path:string -> new_text:string -> unit) ->
+    Gobject.Signal.handler_id
+
   method set_fixed_height_from_font : int -> unit
   method align_set : bool
   method set_align_set : bool -> unit
@@ -102,7 +104,9 @@ end
 class cell_renderer_text (obj : Cell_renderer_text.t) : cell_renderer_text_t =
   object (self)
     inherit GCell_renderer.cell_renderer (obj :> Cell_renderer.t)
-    inherit Gcell_renderer_text_signals.cell_renderer_text_signals obj
+
+    method on_edited ~callback =
+      Cell_renderer_text.on_edited self#as_cell_renderer_text ~callback
 
     method set_fixed_height_from_font : int -> unit =
       fun number_of_rows ->

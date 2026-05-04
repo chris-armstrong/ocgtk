@@ -16,3 +16,11 @@ external contains_focus : t -> bool
 (** Returns %TRUE if focus is within @self or one of its children. *)
 
 (* Properties *)
+
+let on_enter ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"enter" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_leave ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"leave" ~callback
+    ~after:(Option.value after ~default:false)

@@ -1,7 +1,6 @@
-(* Signal class defined in gcell_renderer_signals.ml *)
-
 class type cell_renderer_t = object
-  inherit Gcell_renderer_signals.cell_renderer_signals
+  method on_editing_canceled :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
 
   method activate :
     Ocgtk_gdk.Gdk.Event.event_t ->
@@ -81,7 +80,8 @@ end
 (* High-level class for CellRenderer *)
 class cell_renderer (obj : Cell_renderer.t) : cell_renderer_t =
   object (self)
-    inherit Gcell_renderer_signals.cell_renderer_signals obj
+    method on_editing_canceled ~callback =
+      Cell_renderer.on_editing_canceled self#as_cell_renderer ~callback
 
     method activate :
         Ocgtk_gdk.Gdk.Event.event_t ->

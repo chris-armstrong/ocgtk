@@ -17,3 +17,19 @@ external get_section : t -> int -> int * int
 
     If the position is larger than the number of items, a single range from
     n_items to G_MAXUINT will be returned. *)
+
+let on_sections_changed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let position =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_uint v
+        in
+        let n_items =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_uint v
+        in
+        callback ~position ~n_items)
+  in
+  Gobject.Signal.connect obj ~name:"sections-changed" ~callback:closure
+    ~after:(Option.value after ~default:false)

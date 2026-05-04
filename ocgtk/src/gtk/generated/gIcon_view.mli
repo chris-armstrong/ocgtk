@@ -5,7 +5,31 @@ class type icon_view_t = object
 
   inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
   inherit GScrollable.scrollable_t
-  inherit Gicon_view_signals.icon_view_signals
+
+  method on_activate_cursor_item :
+    callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  method on_move_cursor :
+    callback:
+      (step:Gtk_enums.movementstep ->
+      count:int ->
+      extend:bool ->
+      modify:bool ->
+      bool) ->
+    Gobject.Signal.handler_id
+
+  method on_select_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_select_cursor_item :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_selection_changed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_toggle_cursor_item :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_unselect_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
 
   method create_drag_icon :
     Tree_path.t -> Ocgtk_gdk.Gdk.Paintable.paintable_t option

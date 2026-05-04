@@ -1,11 +1,25 @@
-(* Signal class defined in gnotebook_signals.ml *)
-
 class type notebook_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
-  inherit Gnotebook_signals.notebook_signals
+  method on_change_current_page :
+    callback:(object_:int -> bool) -> Gobject.Signal.handler_id
+
+  method on_focus_tab :
+    callback:(object_:Gtk_enums.notebooktab -> bool) ->
+    Gobject.Signal.handler_id
+
+  method on_move_focus_out :
+    callback:(object_:Gtk_enums.directiontype -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_reorder_tab :
+    callback:(object_:Gtk_enums.directiontype -> p0:bool -> bool) ->
+    Gobject.Signal.handler_id
+
+  method on_select_page :
+    callback:(object_:bool -> bool) -> Gobject.Signal.handler_id
 
   method append_page :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -224,7 +238,20 @@ class notebook (obj : Notebook.t) : notebook_t =
              .Widget
              .t)
 
-    inherit Gnotebook_signals.notebook_signals obj
+    method on_change_current_page ~callback =
+      Notebook.on_change_current_page self#as_notebook ~callback
+
+    method on_focus_tab ~callback =
+      Notebook.on_focus_tab self#as_notebook ~callback
+
+    method on_move_focus_out ~callback =
+      Notebook.on_move_focus_out self#as_notebook ~callback
+
+    method on_reorder_tab ~callback =
+      Notebook.on_reorder_tab self#as_notebook ~callback
+
+    method on_select_page ~callback =
+      Notebook.on_select_page self#as_notebook ~callback
 
     method append_page :
         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget

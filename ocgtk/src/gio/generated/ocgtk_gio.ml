@@ -2,4 +2,5 @@
 (* Library wrapper module - re-exports Gio as the public API *)
 
 module Gio = Gio
+module Gio_enums = Gio_enums
 module Gio_volume_monitor_core = Gio_volume_monitor_core

@@ -26,3 +26,23 @@ external get_delay_factor : t -> float
 (** Returns the delay factor. *)
 
 (* Properties *)
+
+let on_cancelled ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"cancelled" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_pressed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let x =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_double v
+        in
+        let y =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_double v
+        in
+        callback ~x ~y)
+  in
+  Gobject.Signal.connect obj ~name:"pressed" ~callback:closure
+    ~after:(Option.value after ~default:false)

@@ -61,3 +61,9 @@ interface, they are an implementation of that interface.
 
 The item type of a #GListModel can not change during the life of the
 model. *)
+
+val on_items_changed :
+  ?after:bool ->
+  t ->
+  callback:(position:int -> removed:int -> added:int -> unit) ->
+  Gobject.Signal.handler_id

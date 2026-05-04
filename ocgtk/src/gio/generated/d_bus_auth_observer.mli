@@ -16,3 +16,9 @@ external authorize_authenticated_peer :
 external allow_mechanism : t -> string -> bool
   = "ml_g_dbus_auth_observer_allow_mechanism"
 (** Emits the #GDBusAuthObserver::allow-mechanism signal on @observer. *)
+
+val on_allow_mechanism :
+  ?after:bool ->
+  t ->
+  callback:(mechanism:string -> bool) ->
+  Gobject.Signal.handler_id

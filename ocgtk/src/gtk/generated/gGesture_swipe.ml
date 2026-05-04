@@ -1,8 +1,10 @@
-(* Signal class defined in ggesture_swipe_signals.ml *)
-
 class type gesture_swipe_t = object
   inherit GGesture_single.gesture_single_t
-  inherit Ggesture_swipe_signals.gesture_swipe_signals
+
+  method on_swipe :
+    callback:(velocity_x:float -> velocity_y:float -> unit) ->
+    Gobject.Signal.handler_id
+
   method as_gesture_swipe : Gesture_swipe.t
 end
 
@@ -10,7 +12,10 @@ end
 class gesture_swipe (obj : Gesture_swipe.t) : gesture_swipe_t =
   object (self)
     inherit GGesture_single.gesture_single (obj :> Gesture_single.t)
-    inherit Ggesture_swipe_signals.gesture_swipe_signals obj
+
+    method on_swipe ~callback =
+      Gesture_swipe.on_swipe self#as_gesture_swipe ~callback
+
     method as_gesture_swipe = obj
   end
 

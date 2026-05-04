@@ -1,6 +1,13 @@
 class type print_operation_t = object
   inherit GPrint_operation_preview.print_operation_preview_t
-  inherit Gprint_operation_signals.print_operation_signals
+
+  method on_done_ :
+    callback:(result:Gtk_enums.printoperationresult -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_status_changed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
   method cancel : unit -> unit
   method draw_page_finish : unit -> unit
   method get_default_page_setup : unit -> GPage_setup.page_setup_t

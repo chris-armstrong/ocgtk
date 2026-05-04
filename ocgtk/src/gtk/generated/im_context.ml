@@ -136,3 +136,57 @@ external get_input_purpose : t -> Gtk_enums.inputpurpose
 external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit
   = "ml_gtk_im_context_set_input_purpose"
 (** Set property: input-purpose *)
+
+let on_commit ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let str =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        callback ~str)
+  in
+  Gobject.Signal.connect obj ~name:"commit" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_delete_surrounding ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let offset =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_int v
+        in
+        let n_chars =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        let result = callback ~offset ~n_chars in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"delete-surrounding" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_preedit_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"preedit-changed" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_preedit_end ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"preedit-end" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_preedit_start ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"preedit-start" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_retrieve_surrounding ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let result = callback () in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"retrieve-surrounding" ~callback:closure
+    ~after:(Option.value after ~default:false)

@@ -30,3 +30,7 @@ external get_dialog : t -> Color_dialog.t option
 (** Returns the `GtkColorDialog` of @self. *)
 
 (* Properties *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)

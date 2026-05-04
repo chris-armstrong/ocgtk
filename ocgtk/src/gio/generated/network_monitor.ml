@@ -73,3 +73,15 @@ trying to do multicast DNS on the local network), so if you do not
 want to block, you should use g_network_monitor_can_reach_async(). *)
 
 (* Properties *)
+
+let on_network_changed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let network_available =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_boolean v
+        in
+        callback ~network_available)
+  in
+  Gobject.Signal.connect obj ~name:"network-changed" ~callback:closure
+    ~after:(Option.value after ~default:false)

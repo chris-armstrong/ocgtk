@@ -1,6 +1,4 @@
 class type socket_listener_t = object
-  inherit Gsocket_listener_signals.socket_listener_signals
-
   method add_any_inet_port :
     [ `object_ ] Gobject.obj option -> (UInt16.t, GError.t) result
 

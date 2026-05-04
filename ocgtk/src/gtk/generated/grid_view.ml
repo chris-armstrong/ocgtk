@@ -88,3 +88,15 @@ external get_enable_rubberband : t -> bool
 (** Returns whether rows can be selected by dragging with the mouse. *)
 
 (* Properties *)
+
+let on_activate ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let position =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_uint v
+        in
+        callback ~position)
+  in
+  Gobject.Signal.connect obj ~name:"activate" ~callback:closure
+    ~after:(Option.value after ~default:false)

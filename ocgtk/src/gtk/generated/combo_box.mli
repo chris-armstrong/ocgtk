@@ -186,3 +186,27 @@ external set_has_frame : t -> bool -> unit = "ml_gtk_combo_box_set_has_frame"
 
 external get_popup_shown : t -> bool = "ml_gtk_combo_box_get_popup_shown"
 (** Get property: popup-shown *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_format_entry_text :
+  ?after:bool ->
+  t ->
+  callback:(path:string -> string) ->
+  Gobject.Signal.handler_id
+
+val on_move_active :
+  ?after:bool ->
+  t ->
+  callback:(scroll_type:Gtk_enums.scrolltype -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_popdown :
+  ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+val on_popup :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

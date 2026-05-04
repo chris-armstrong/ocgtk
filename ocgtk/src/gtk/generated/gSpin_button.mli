@@ -7,7 +7,14 @@ class type spin_button_t = object
   inherit GCell_editable.cell_editable_t
   inherit GEditable.editable_t
   inherit GOrientable.orientable_t
-  inherit Gspin_button_signals.spin_button_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_change_value :
+    callback:(scroll:Gtk_enums.scrolltype -> unit) -> Gobject.Signal.handler_id
+
+  method on_output : callback:(unit -> bool) -> Gobject.Signal.handler_id
+  method on_value_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_wrapped : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method configure : GAdjustment.adjustment_t option -> float -> int -> unit
   method get_activates_default : unit -> bool
   method get_adjustment : unit -> GAdjustment.adjustment_t

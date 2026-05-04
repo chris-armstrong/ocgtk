@@ -1,7 +1,7 @@
-(* Signal class defined in gnative_dialog_signals.ml *)
-
 class type native_dialog_t = object
-  inherit Gnative_dialog_signals.native_dialog_signals
+  method on_response :
+    callback:(response_id:int -> unit) -> Gobject.Signal.handler_id
+
   method destroy : unit -> unit
   method get_modal : unit -> bool
   method get_title : unit -> string option
@@ -24,7 +24,9 @@ end
 (* High-level class for NativeDialog *)
 class native_dialog (obj : Native_dialog.t) : native_dialog_t =
   object (self)
-    inherit Gnative_dialog_signals.native_dialog_signals obj
+    method on_response ~callback =
+      Native_dialog.on_response self#as_native_dialog ~callback
+
     method destroy : unit -> unit = fun () -> Native_dialog.destroy obj
     method get_modal : unit -> bool = fun () -> Native_dialog.get_modal obj
 

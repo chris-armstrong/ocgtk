@@ -76,3 +76,39 @@ Note that the positions are specified in characters,
 not bytes. *)
 
 (* Properties *)
+
+let on_deleted_text ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let position =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_uint v
+        in
+        let n_chars =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_uint v
+        in
+        callback ~position ~n_chars)
+  in
+  Gobject.Signal.connect obj ~name:"deleted-text" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_inserted_text ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let position =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_uint v
+        in
+        let chars =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_string v
+        in
+        let n_chars =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_uint v
+        in
+        callback ~position ~chars ~n_chars)
+  in
+  Gobject.Signal.connect obj ~name:"inserted-text" ~callback:closure
+    ~after:(Option.value after ~default:false)

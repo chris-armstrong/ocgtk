@@ -2,7 +2,19 @@
 (* Combined classes for cyclic dependencies *)
 
 class type text_buffer_t = object
-  inherit Gtext_buffer_signals.text_buffer_signals
+  method on_begin_user_action :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_end_user_action :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_modified_changed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_redo : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_undo : callback:(unit -> unit) -> Gobject.Signal.handler_id
 
   method add_mark :
     text_mark_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
@@ -304,13 +316,33 @@ and text_mark_t = object
   method as_text_mark : Text_buffer_and__text_iter_and__text_mark.Text_mark.t
 end
 
-(* Signal class defined in gtext_buffer_signals.ml *)
-
 class text_buffer
   (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t) :
   text_buffer_t =
   object (self)
-    inherit Gtext_buffer_signals.text_buffer_signals obj
+    method on_begin_user_action ~callback =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_begin_user_action
+        self#as_text_buffer ~callback
+
+    method on_changed ~callback =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_changed
+        self#as_text_buffer ~callback
+
+    method on_end_user_action ~callback =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_end_user_action
+        self#as_text_buffer ~callback
+
+    method on_modified_changed ~callback =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_modified_changed
+        self#as_text_buffer ~callback
+
+    method on_redo ~callback =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_redo
+        self#as_text_buffer ~callback
+
+    method on_undo ~callback =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_undo
+        self#as_text_buffer ~callback
 
     method add_mark :
         text_mark_t ->

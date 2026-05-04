@@ -149,6 +149,9 @@ and Clipboard : sig
 
   external get_local : t -> bool = "ml_gdk_clipboard_get_local"
   (** Get property: local *)
+
+  val on_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end
 
 and Device : sig
@@ -276,6 +279,9 @@ and Device : sig
 
   external get_tool : t -> Device_tool.t = "ml_gdk_device_get_tool"
   (** Get property: tool *)
+
+  val on_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end
 
 and Display : sig
@@ -540,6 +546,21 @@ and Display : sig
 
   external get_shadow_width : t -> bool = "ml_gdk_display_get_shadow_width"
   (** Get property: shadow-width *)
+
+  val on_closed :
+    ?after:bool ->
+    t ->
+    callback:(is_error:bool -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_opened :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_setting_changed :
+    ?after:bool ->
+    t ->
+    callback:(setting:string -> unit) ->
+    Gobject.Signal.handler_id
 end
 
 and Draw_context : sig
@@ -987,6 +1008,9 @@ and Monitor : sig
 
   external get_valid : t -> bool = "ml_gdk_monitor_get_valid"
   (** Get property: valid *)
+
+  val on_invalidate :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end
 
 and Seat : sig
@@ -1254,10 +1278,18 @@ and Surface : sig
   emits a short beep on the display just as [method@Gdk.Display.beep]. *)
 
   (* Properties *)
+
+  val on_layout :
+    ?after:bool ->
+    t ->
+    callback:(width:int -> height:int -> unit) ->
+    Gobject.Signal.handler_id
 end
 
 and Vulkan_context : sig
   type t = [ `vulkan_context | `draw_context | `object_ ] Gobject.obj
 
   (* Methods *)
+  val on_images_updated :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end

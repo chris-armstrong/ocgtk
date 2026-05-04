@@ -1,7 +1,11 @@
 class type entry_completion_t = object
   inherit GBuildable.buildable_t
   inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
-  inherit Gentry_completion_signals.entry_completion_signals
+
+  method on_insert_prefix :
+    callback:(prefix:string -> bool) -> Gobject.Signal.handler_id
+
+  method on_no_matches : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method complete : unit -> unit
   method compute_prefix : string -> string option
   method get_completion_prefix : unit -> string option

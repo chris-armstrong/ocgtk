@@ -1,11 +1,9 @@
-(* Signal class defined in gfont_dialog_button_signals.ml *)
-
 class type font_dialog_button_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
-  inherit Gfont_dialog_button_signals.font_dialog_button_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_dialog : unit -> GFont_dialog.font_dialog_t option
 
   method get_font_desc :
@@ -40,7 +38,8 @@ class font_dialog_button (obj : Font_dialog_button.t) : font_dialog_button_t =
              .Widget
              .t)
 
-    inherit Gfont_dialog_button_signals.font_dialog_button_signals obj
+    method on_activate ~callback =
+      Font_dialog_button.on_activate self#as_font_dialog_button ~callback
 
     method get_dialog : unit -> GFont_dialog.font_dialog_t option =
       fun () ->

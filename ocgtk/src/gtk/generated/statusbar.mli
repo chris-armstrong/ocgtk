@@ -30,3 +30,15 @@ external get_context_id : t -> string -> int = "ml_gtk_statusbar_get_context_id"
 (** Returns a new context identifier, given a description of the actual context.
 
     Note that the description is not shown in the UI. *)
+
+val on_text_popped :
+  ?after:bool ->
+  t ->
+  callback:(context_id:int -> text:string -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_text_pushed :
+  ?after:bool ->
+  t ->
+  callback:(context_id:int -> text:string -> unit) ->
+  Gobject.Signal.handler_id

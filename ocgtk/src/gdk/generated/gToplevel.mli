@@ -1,6 +1,4 @@
 class type toplevel_t = object
-  inherit Gtoplevel_signals.toplevel_signals
-
   method begin_move :
     GApp_launch_context_cycle_de440b34.device_t ->
     int ->

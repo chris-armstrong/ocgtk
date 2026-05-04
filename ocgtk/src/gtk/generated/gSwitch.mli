@@ -4,7 +4,11 @@ class type switch_t = object
     .widget_t
 
   inherit GActionable.actionable_t
-  inherit Gswitch_signals.switch_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_state_set :
+    callback:(state:bool -> bool) -> Gobject.Signal.handler_id
+
   method get_active : unit -> bool
   method get_state : unit -> bool
   method set_active : bool -> unit

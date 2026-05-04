@@ -1,7 +1,7 @@
-(* Signal class defined in gfont_chooser_signals.ml *)
-
 class type font_chooser_t = object
-  inherit Gfont_chooser_signals.font_chooser_signals
+  method on_font_activated :
+    callback:(fontname:string -> unit) -> Gobject.Signal.handler_id
+
   method get_font : unit -> string option
 
   method get_font_desc :
@@ -35,7 +35,8 @@ end
 (* High-level class for FontChooser *)
 class font_chooser (obj : Font_chooser.t) : font_chooser_t =
   object (self)
-    inherit Gfont_chooser_signals.font_chooser_signals obj
+    method on_font_activated ~callback =
+      Font_chooser.on_font_activated self#as_font_chooser ~callback
 
     method get_font : unit -> string option =
       fun () -> Font_chooser.get_font obj

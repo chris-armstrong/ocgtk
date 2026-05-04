@@ -94,3 +94,7 @@ is to call [method@Gtk.ListBox.invalidate_sort] on any model change,
 but that is more expensive. *)
 
 (* Properties *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)

@@ -1,5 +1,3 @@
-(* Signal class defined in gcombo_box_signals.ml *)
-
 class type combo_box_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -7,7 +5,18 @@ class type combo_box_t = object
 
   inherit GCell_editable.cell_editable_t
   inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
-  inherit Gcombo_box_signals.combo_box_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_format_entry_text :
+    callback:(path:string -> string) -> Gobject.Signal.handler_id
+
+  method on_move_active :
+    callback:(scroll_type:Gtk_enums.scrolltype -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_popdown : callback:(unit -> bool) -> Gobject.Signal.handler_id
+  method on_popup : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_active : unit -> int
   method get_active_id : unit -> string option
   method get_button_sensitivity : unit -> Gtk_enums.sensitivitytype
@@ -65,7 +74,22 @@ class combo_box (obj : Combo_box.t) : combo_box_t =
         (Cell_area_and__cell_area_context_and__cell_layout.Cell_layout
          .from_gobject obj)
 
-    inherit Gcombo_box_signals.combo_box_signals obj
+    method on_activate ~callback =
+      Combo_box.on_activate self#as_combo_box ~callback
+
+    method on_changed ~callback =
+      Combo_box.on_changed self#as_combo_box ~callback
+
+    method on_format_entry_text ~callback =
+      Combo_box.on_format_entry_text self#as_combo_box ~callback
+
+    method on_move_active ~callback =
+      Combo_box.on_move_active self#as_combo_box ~callback
+
+    method on_popdown ~callback =
+      Combo_box.on_popdown self#as_combo_box ~callback
+
+    method on_popup ~callback = Combo_box.on_popup self#as_combo_box ~callback
     method get_active : unit -> int = fun () -> Combo_box.get_active obj
 
     method get_active_id : unit -> string option =

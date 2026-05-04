@@ -1,11 +1,25 @@
-(* Signal class defined in glist_box_signals.ml *)
-
 class type list_box_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
-  inherit Glist_box_signals.list_box_signals
+  method on_activate_cursor_row :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_move_cursor :
+    callback:
+      (object_:Gtk_enums.movementstep -> p0:int -> p1:bool -> p2:bool -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_select_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_selected_rows_changed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_toggle_cursor_row :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_unselect_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
 
   method append :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -75,7 +89,23 @@ class list_box (obj : List_box.t) : list_box_t =
              .Widget
              .t)
 
-    inherit Glist_box_signals.list_box_signals obj
+    method on_activate_cursor_row ~callback =
+      List_box.on_activate_cursor_row self#as_list_box ~callback
+
+    method on_move_cursor ~callback =
+      List_box.on_move_cursor self#as_list_box ~callback
+
+    method on_select_all ~callback =
+      List_box.on_select_all self#as_list_box ~callback
+
+    method on_selected_rows_changed ~callback =
+      List_box.on_selected_rows_changed self#as_list_box ~callback
+
+    method on_toggle_cursor_row ~callback =
+      List_box.on_toggle_cursor_row self#as_list_box ~callback
+
+    method on_unselect_all ~callback =
+      List_box.on_unselect_all self#as_list_box ~callback
 
     method append :
         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget

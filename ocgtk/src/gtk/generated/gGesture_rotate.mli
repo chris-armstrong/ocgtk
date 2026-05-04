@@ -1,6 +1,10 @@
 class type gesture_rotate_t = object
   inherit GGesture.gesture_t
-  inherit Ggesture_rotate_signals.gesture_rotate_signals
+
+  method on_angle_changed :
+    callback:(angle:float -> angle_delta:float -> unit) ->
+    Gobject.Signal.handler_id
+
   method get_angle_delta : unit -> float
   method as_gesture_rotate : Gesture_rotate.t
 end

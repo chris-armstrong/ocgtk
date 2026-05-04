@@ -1,5 +1,8 @@
 class type list_model_t = object
-  inherit Glist_model_signals.list_model_signals
+  method on_items_changed :
+    callback:(position:int -> removed:int -> added:int -> unit) ->
+    Gobject.Signal.handler_id
+
   method get_item_type : unit -> int
   method get_n_items : unit -> int
   method get_object : int -> [ `object_ ] Gobject.obj option

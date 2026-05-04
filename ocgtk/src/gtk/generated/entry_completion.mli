@@ -143,3 +143,12 @@ external get_cell_area :
   t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t
   = "ml_gtk_entry_completion_get_cell_area"
 (** Get property: cell-area *)
+
+val on_insert_prefix :
+  ?after:bool ->
+  t ->
+  callback:(prefix:string -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_no_matches :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

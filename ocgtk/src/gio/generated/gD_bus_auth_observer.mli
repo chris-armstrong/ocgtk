@@ -1,5 +1,7 @@
 class type d_bus_auth_observer_t = object
-  inherit Gd_bus_auth_observer_signals.d_bus_auth_observer_signals
+  method on_allow_mechanism :
+    callback:(mechanism:string -> bool) -> Gobject.Signal.handler_id
+
   method allow_mechanism : string -> bool
 
   method authorize_authenticated_peer :

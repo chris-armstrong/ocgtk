@@ -73,3 +73,15 @@ external append_custom_item :
     See also [method@Gtk.AppChooserButton.append_separator]. *)
 
 (* Properties *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_custom_item_activated :
+  ?after:bool ->
+  t ->
+  callback:(item_name:string -> unit) ->
+  Gobject.Signal.handler_id

@@ -38,3 +38,9 @@ external get_content_height : t -> int
 (** Retrieves the content height of the `GtkDrawingArea`. *)
 
 (* Properties *)
+
+val on_resize :
+  ?after:bool ->
+  t ->
+  callback:(width:int -> height:int -> unit) ->
+  Gobject.Signal.handler_id

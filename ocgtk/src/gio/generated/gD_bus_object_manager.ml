@@ -1,8 +1,4 @@
-(* Signal class defined in gd_bus_object_manager_signals.ml *)
-
 class type d_bus_object_manager_t = object
-  inherit Gd_bus_object_manager_signals.d_bus_object_manager_signals
-
   method get_interface :
     string ->
     string ->
@@ -23,8 +19,6 @@ end
 class d_bus_object_manager (obj : D_bus_object_manager.t) :
   d_bus_object_manager_t =
   object (self)
-    inherit Gd_bus_object_manager_signals.d_bus_object_manager_signals obj
-
     method get_interface :
         string ->
         string ->

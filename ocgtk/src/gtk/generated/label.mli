@@ -384,3 +384,19 @@ external get_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option
     (self))`. *)
 
 (* Properties *)
+
+val on_activate_current_link :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_activate_link :
+  ?after:bool -> t -> callback:(uri:string -> bool) -> Gobject.Signal.handler_id
+
+val on_copy_clipboard :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_move_cursor :
+  ?after:bool ->
+  t ->
+  callback:
+    (step:Gtk_enums.movementstep -> count:int -> extend_selection:bool -> unit) ->
+  Gobject.Signal.handler_id

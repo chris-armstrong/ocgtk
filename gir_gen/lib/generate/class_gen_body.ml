@@ -9,10 +9,6 @@ open Types
 (* Use Common.StringSet for type compatibility across all modules *)
 module StringSet = Common.StringSet
 
-(* Include the signal name functions from Class_gen_helpers *)
-let get_signal_module_name = Class_gen_helpers.get_signal_module_name
-let signal_class_name = Class_gen_helpers.signal_class_name
-
 (** Generate a class section (methods or properties) by applying generator to
     each item *)
 let generate_section ~buf ~items_seen ~items ~generator_fn ~add_newline =
@@ -29,7 +25,6 @@ let generate_section ~buf ~items_seen ~items ~generator_fn ~add_newline =
 let generate_class_module_body ~ctx ~buf ~layer1_module_name
     ~current_layer2_module ~class_name ~class_snake ~c_type ~methods
     ~entity_kind ~properties ~signals ~same_cluster_classes ~parent_name () =
-  let has_any_signals = List.length signals > 0 in
   let property_filters =
     Class_gen_helpers.get_property_filters ~ctx ~class_name ~methods properties
   in
@@ -156,12 +151,14 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name
         | None -> () (* interface not in type mappings (filtered out) — skip *)
       end);
 
-  (* Signal handlers via inherit *)
-  if has_any_signals then begin
-    let signal_module = get_signal_module_name class_snake in
-    bprintf buf "  inherit %s.%s obj\n" signal_module
-      (signal_class_name class_name)
-  end;
+  (* L2 signal forwarder methods — one per supported signal.
+     Error branch silently skips: the skip was already logged at L1 emission. *)
+  List.iter signals ~f:(fun signal ->
+      match Signal_gen.classify ~ctx signal with
+      | Error _ -> ()
+      | Ok emission ->
+          Buffer.add_string buf
+            (Signal_gen.emit_l2_method emission ~layer1_module_name ~class_snake));
 
   bprintf buf "\n";
 
@@ -211,9 +208,8 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name
 
 (** Generate the body of a class signature *)
 let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_
-    ~current_layer2_module ~class_name ~class_snake ~c_type ~methods
+    ~current_layer2_module ~class_name ~class_snake:_ ~c_type ~methods
     ~entity_kind ~properties ~signals ~same_cluster_classes ~parent_name () =
-  let has_any_signals = List.length signals > 0 in
   let property_filters =
     Class_gen_helpers.get_property_filters ~ctx ~class_name ~methods properties
   in
@@ -292,12 +288,13 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_
         | None -> ()
       end);
 
-  (* Signal handlers via inherit *)
-  if has_any_signals then begin
-    let signal_module = get_signal_module_name class_snake in
-    bprintf buf "    inherit %s.%s\n" signal_module
-      (signal_class_name class_name)
-  end;
+  (* L2 signal method type signatures — one per supported signal.
+     Error branch silently skips: already logged at L1 emission. *)
+  List.iter signals ~f:(fun signal ->
+      match Signal_gen.classify ~ctx signal with
+      | Error _ -> ()
+      | Ok emission ->
+          Buffer.add_string buf (Signal_gen.emit_l2_method_sig emission));
 
   (* Pre-populate seen with inherited method names to suppress conflicts *)
   let inherited_names =
