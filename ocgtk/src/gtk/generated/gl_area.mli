@@ -126,3 +126,9 @@ This function is automatically called before emitting the
 called by application code. *)
 
 (* Properties *)
+
+val on_resize :
+  ?after:bool ->
+  t ->
+  callback:(width:int -> height:int -> unit) ->
+  Gobject.Signal.handler_id

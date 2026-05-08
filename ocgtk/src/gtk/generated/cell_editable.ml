@@ -36,3 +36,11 @@ external get_editing_canceled : t -> bool
 external set_editing_canceled : t -> bool -> unit
   = "ml_gtk_cell_editable_set_editing_canceled"
 (** Set property: editing-canceled *)
+
+let on_editing_done ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"editing-done" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_remove_widget ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"remove-widget" ~callback
+    ~after:(Option.value after ~default:false)

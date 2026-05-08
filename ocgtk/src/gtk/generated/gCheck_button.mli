@@ -4,7 +4,8 @@ class type check_button_t = object
     .widget_t
 
   inherit GActionable.actionable_t
-  inherit Gcheck_button_signals.check_button_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_toggled : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_active : unit -> bool
 
   method get_child :

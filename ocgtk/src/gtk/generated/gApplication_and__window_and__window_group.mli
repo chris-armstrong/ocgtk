@@ -1,6 +1,6 @@
 class type application_t = object
   inherit Ocgtk_gio.Gio.Application.application_t
-  inherit Gapplication_signals.application_signals
+  method on_query_end : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method add_window : window_t -> unit
   method get_accels_for_action : string -> string array
   method get_actions_for_accel : string -> string array
@@ -35,7 +35,19 @@ and window_t = object
     .root_t
 
   inherit GShortcut_manager.shortcut_manager_t
-  inherit Gwindow_signals.window_signals
+
+  method on_activate_default :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate_focus :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_close_request : callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  method on_enable_debugging :
+    callback:(toggle:bool -> bool) -> Gobject.Signal.handler_id
+
+  method on_keys_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method close : unit -> unit
   method destroy : unit -> unit
   method fullscreen : unit -> unit

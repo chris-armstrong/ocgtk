@@ -1,6 +1,9 @@
 class type assistant_t = object
   inherit GApplication_and__window_and__window_group.window_t
-  inherit Gassistant_signals.assistant_signals
+  method on_apply : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_cancel : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_close : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_escape : callback:(unit -> unit) -> Gobject.Signal.handler_id
 
   method add_action_widget :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget

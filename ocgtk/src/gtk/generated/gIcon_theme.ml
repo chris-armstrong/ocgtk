@@ -1,7 +1,5 @@
-(* Signal class defined in gicon_theme_signals.ml *)
-
 class type icon_theme_t = object
-  inherit Gicon_theme_signals.icon_theme_signals
+  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method add_resource_path : string -> unit
   method add_search_path : string -> unit
   method get_display : unit -> Ocgtk_gdk.Gdk.Display.display_t option
@@ -38,7 +36,8 @@ end
 (* High-level class for IconTheme *)
 class icon_theme (obj : Icon_theme.t) : icon_theme_t =
   object (self)
-    inherit Gicon_theme_signals.icon_theme_signals obj
+    method on_changed ~callback =
+      Icon_theme.on_changed self#as_icon_theme ~callback
 
     method add_resource_path : string -> unit =
       fun path -> Icon_theme.add_resource_path obj path

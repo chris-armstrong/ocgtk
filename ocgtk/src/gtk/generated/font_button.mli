@@ -38,3 +38,9 @@ external get_modal : t -> bool = "ml_gtk_font_button_get_modal"
 (** Gets whether the dialog is modal. *)
 
 (* Properties *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_font_set :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

@@ -1,5 +1,4 @@
 class type socket_client_t = object
-  inherit Gsocket_client_signals.socket_client_signals
   method add_application_proxy : string -> unit
 
   method connect :

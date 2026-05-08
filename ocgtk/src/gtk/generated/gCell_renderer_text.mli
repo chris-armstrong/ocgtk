@@ -1,6 +1,10 @@
 class type cell_renderer_text_t = object
   inherit GCell_renderer.cell_renderer_t
-  inherit Gcell_renderer_text_signals.cell_renderer_text_signals
+
+  method on_edited :
+    callback:(path:string -> new_text:string -> unit) ->
+    Gobject.Signal.handler_id
+
   method set_fixed_height_from_font : int -> unit
   method align_set : bool
   method set_align_set : bool -> unit

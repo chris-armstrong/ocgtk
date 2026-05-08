@@ -160,3 +160,18 @@ external add_credit_section : t -> string -> string array -> unit
 (** Creates a new section in the "Credits" page. *)
 
 (* Properties *)
+
+let on_activate_link ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let uri =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        let result = callback ~uri in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"activate-link" ~callback:closure
+    ~after:(Option.value after ~default:false)

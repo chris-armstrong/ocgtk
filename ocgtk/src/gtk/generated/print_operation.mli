@@ -292,3 +292,12 @@ external cancel : t -> unit = "ml_gtk_print_operation_cancel"
     running print operation. *)
 
 (* Properties *)
+
+val on_done_ :
+  ?after:bool ->
+  t ->
+  callback:(result:Gtk_enums.printoperationresult -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_status_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

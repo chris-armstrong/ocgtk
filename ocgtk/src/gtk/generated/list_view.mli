@@ -85,3 +85,9 @@ external get_enable_rubberband : t -> bool
 (** Returns whether rows can be selected by dragging with the mouse. *)
 
 (* Properties *)
+
+val on_activate :
+  ?after:bool ->
+  t ->
+  callback:(position:int -> unit) ->
+  Gobject.Signal.handler_id

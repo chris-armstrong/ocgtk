@@ -167,6 +167,12 @@ module rec Column_view : sig
   (** Appends the @column to the end of the columns in @self. *)
 
   (* Properties *)
+
+  val on_activate :
+    ?after:bool ->
+    t ->
+    callback:(position:int -> unit) ->
+    Gobject.Signal.handler_id
 end
 
 and Column_view_column : sig

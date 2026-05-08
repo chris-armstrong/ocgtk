@@ -93,4 +93,10 @@ and Menu_model : sig
 
   If the attribute does not exist, or does not match the expected type
   then %NULL is returned. *)
+
+  val on_items_changed :
+    ?after:bool ->
+    t ->
+    callback:(position:int -> removed:int -> added:int -> unit) ->
+    Gobject.Signal.handler_id
 end

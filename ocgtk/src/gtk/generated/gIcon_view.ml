@@ -1,5 +1,3 @@
-(* Signal class defined in gicon_view_signals.ml *)
-
 class type icon_view_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -7,7 +5,31 @@ class type icon_view_t = object
 
   inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
   inherit GScrollable.scrollable_t
-  inherit Gicon_view_signals.icon_view_signals
+
+  method on_activate_cursor_item :
+    callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  method on_move_cursor :
+    callback:
+      (step:Gtk_enums.movementstep ->
+      count:int ->
+      extend:bool ->
+      modify:bool ->
+      bool) ->
+    Gobject.Signal.handler_id
+
+  method on_select_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_select_cursor_item :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_selection_changed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_toggle_cursor_item :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_unselect_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
 
   method create_drag_icon :
     Tree_path.t -> Ocgtk_gdk.Gdk.Paintable.paintable_t option
@@ -104,7 +126,27 @@ class icon_view (obj : Icon_view.t) : icon_view_t =
          .from_gobject obj)
 
     inherit GScrollable.scrollable (Scrollable.from_gobject obj)
-    inherit Gicon_view_signals.icon_view_signals obj
+
+    method on_activate_cursor_item ~callback =
+      Icon_view.on_activate_cursor_item self#as_icon_view ~callback
+
+    method on_move_cursor ~callback =
+      Icon_view.on_move_cursor self#as_icon_view ~callback
+
+    method on_select_all ~callback =
+      Icon_view.on_select_all self#as_icon_view ~callback
+
+    method on_select_cursor_item ~callback =
+      Icon_view.on_select_cursor_item self#as_icon_view ~callback
+
+    method on_selection_changed ~callback =
+      Icon_view.on_selection_changed self#as_icon_view ~callback
+
+    method on_toggle_cursor_item ~callback =
+      Icon_view.on_toggle_cursor_item self#as_icon_view ~callback
+
+    method on_unselect_all ~callback =
+      Icon_view.on_unselect_all self#as_icon_view ~callback
 
     method create_drag_icon :
         Tree_path.t -> Ocgtk_gdk.Gdk.Paintable.paintable_t option =

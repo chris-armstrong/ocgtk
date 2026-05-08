@@ -82,3 +82,6 @@ external get_dialog : t -> Font_dialog.t option
 (** Returns the `GtkFontDialog` of @self. *)
 
 (* Properties *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

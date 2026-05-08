@@ -77,3 +77,7 @@ external get_filename : t -> string = "ml_gtk_recent_manager_get_filename"
 
 external get_size : t -> int = "ml_gtk_recent_manager_get_size"
 (** Get property: size *)
+
+let on_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"changed" ~callback
+    ~after:(Option.value after ~default:false)

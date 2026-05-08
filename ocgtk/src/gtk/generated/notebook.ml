@@ -431,3 +431,79 @@ external get_enable_popup : t -> bool = "ml_gtk_notebook_get_enable_popup"
 external set_enable_popup : t -> bool -> unit
   = "ml_gtk_notebook_set_enable_popup"
 (** Set property: enable-popup *)
+
+let on_change_current_page ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let object_ =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_int v
+        in
+        let result = callback ~object_ in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"change-current-page" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_focus_tab ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let object_ =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.notebooktab_of_int (Gobject.Value.get_enum_int v)
+        in
+        let result = callback ~object_ in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"focus-tab" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_move_focus_out ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let object_ =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.directiontype_of_int (Gobject.Value.get_enum_int v)
+        in
+        callback ~object_)
+  in
+  Gobject.Signal.connect obj ~name:"move-focus-out" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_reorder_tab ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let object_ =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.directiontype_of_int (Gobject.Value.get_enum_int v)
+        in
+        let p0 =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_boolean v
+        in
+        let result = callback ~object_ ~p0 in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"reorder-tab" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_select_page ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let object_ =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_boolean v
+        in
+        let result = callback ~object_ in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"select-page" ~callback:closure
+    ~after:(Option.value after ~default:false)

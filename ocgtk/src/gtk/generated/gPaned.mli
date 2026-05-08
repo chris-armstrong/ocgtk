@@ -5,7 +5,25 @@ class type paned_t = object
 
   inherit GAccessible_range.accessible_range_t
   inherit GOrientable.orientable_t
-  inherit Gpaned_signals.paned_signals
+
+  method on_accept_position :
+    callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  method on_cancel_position :
+    callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  method on_cycle_child_focus :
+    callback:(reversed:bool -> bool) -> Gobject.Signal.handler_id
+
+  method on_cycle_handle_focus :
+    callback:(reversed:bool -> bool) -> Gobject.Signal.handler_id
+
+  method on_move_handle :
+    callback:(scroll_type:Gtk_enums.scrolltype -> bool) ->
+    Gobject.Signal.handler_id
+
+  method on_toggle_handle_focus :
+    callback:(unit -> bool) -> Gobject.Signal.handler_id
 
   method get_end_child :
     unit ->

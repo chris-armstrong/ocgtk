@@ -1,8 +1,9 @@
-(* Signal class defined in gabout_dialog_signals.ml *)
-
 class type about_dialog_t = object
   inherit GApplication_and__window_and__window_group.window_t
-  inherit Gabout_dialog_signals.about_dialog_signals
+
+  method on_activate_link :
+    callback:(uri:string -> bool) -> Gobject.Signal.handler_id
+
   method add_credit_section : string -> string array -> unit
   method get_artists : unit -> string array
   method get_authors : unit -> string array
@@ -44,7 +45,8 @@ class about_dialog (obj : About_dialog.t) : about_dialog_t =
       GApplication_and__window_and__window_group.window
         (obj :> Application_and__window_and__window_group.Window.t)
 
-    inherit Gabout_dialog_signals.about_dialog_signals obj
+    method on_activate_link ~callback =
+      About_dialog.on_activate_link self#as_about_dialog ~callback
 
     method add_credit_section : string -> string array -> unit =
       fun section_name people ->

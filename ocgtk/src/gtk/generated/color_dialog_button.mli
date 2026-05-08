@@ -30,3 +30,6 @@ external get_dialog : t -> Color_dialog.t option
 (** Returns the `GtkColorDialog` of @self. *)
 
 (* Properties *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

@@ -205,3 +205,50 @@ external get_accept_unpaired_release : t -> bool
 external set_accept_unpaired_release : t -> bool -> unit
   = "ml_gtk_flow_box_set_accept_unpaired_release"
 (** Set property: accept-unpaired-release *)
+
+let on_activate_cursor_child ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate-cursor-child" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_move_cursor ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let step =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.movementstep_of_int (Gobject.Value.get_enum_int v)
+        in
+        let count =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        let extend =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_boolean v
+        in
+        let modify =
+          let v = Gobject.Closure.nth argv ~pos:4 in
+          Gobject.Value.get_boolean v
+        in
+        let result = callback ~step ~count ~extend ~modify in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"move-cursor" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_select_all ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"select-all" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_selected_children_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"selected-children-changed" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_toggle_cursor_child ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"toggle-cursor-child" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_unselect_all ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"unselect-all" ~callback
+    ~after:(Option.value after ~default:false)

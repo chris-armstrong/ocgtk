@@ -113,3 +113,11 @@ A [signal@Gtk.Adjustment::value-changed] signal will be emitted
 if the value is changed. *)
 
 (* Properties *)
+
+let on_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"changed" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_value_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"value-changed" ~callback
+    ~after:(Option.value after ~default:false)

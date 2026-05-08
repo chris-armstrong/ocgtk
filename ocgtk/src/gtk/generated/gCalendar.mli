@@ -3,7 +3,11 @@ class type calendar_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
-  inherit Gcalendar_signals.calendar_signals
+  method on_day_selected : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_next_month : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_next_year : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_prev_month : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_prev_year : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method clear_marks : unit -> unit
   method get_day : unit -> int
   method get_day_is_marked : int -> bool

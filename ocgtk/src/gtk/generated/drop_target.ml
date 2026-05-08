@@ -60,3 +60,45 @@ external get_actions : t -> Ocgtk_gdk.Gdk.dragaction
 (** Gets the actions that this drop target supports. *)
 
 (* Properties *)
+
+let on_enter ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let x =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_double v
+        in
+        let y =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_double v
+        in
+        let result = callback ~x ~y in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_flags_int v (Ocgtk_gdk.Gdk_enums.dragaction_to_int x))
+  in
+  Gobject.Signal.connect obj ~name:"enter" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_leave ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"leave" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_motion ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let x =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_double v
+        in
+        let y =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_double v
+        in
+        let result = callback ~x ~y in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_flags_int v (Ocgtk_gdk.Gdk_enums.dragaction_to_int x))
+  in
+  Gobject.Signal.connect obj ~name:"motion" ~callback:closure
+    ~after:(Option.value after ~default:false)

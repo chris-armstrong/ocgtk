@@ -61,3 +61,23 @@ interface, they are an implementation of that interface.
 
 The item type of a #GListModel can not change during the life of the
 model. *)
+
+let on_items_changed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let position =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_uint v
+        in
+        let removed =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_uint v
+        in
+        let added =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_uint v
+        in
+        callback ~position ~removed ~added)
+  in
+  Gobject.Signal.connect obj ~name:"items-changed" ~callback:closure
+    ~after:(Option.value after ~default:false)

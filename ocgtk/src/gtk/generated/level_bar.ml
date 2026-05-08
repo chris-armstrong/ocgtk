@@ -73,3 +73,15 @@ If another offset marker named @name exists, its value will be
 replaced by @value. *)
 
 (* Properties *)
+
+let on_offset_changed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let name =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        callback ~name)
+  in
+  Gobject.Signal.connect obj ~name:"offset-changed" ~callback:closure
+    ~after:(Option.value after ~default:false)

@@ -149,3 +149,24 @@ external get_adjustment : t -> Adjustment.t = "ml_gtk_range_get_adjustment"
 (** Get the adjustment which is the “model” object for `GtkRange`. *)
 
 (* Properties *)
+
+val on_adjust_bounds :
+  ?after:bool ->
+  t ->
+  callback:(value:float -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_change_value :
+  ?after:bool ->
+  t ->
+  callback:(scroll:Gtk_enums.scrolltype -> value:float -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_move_slider :
+  ?after:bool ->
+  t ->
+  callback:(step:Gtk_enums.scrolltype -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_value_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

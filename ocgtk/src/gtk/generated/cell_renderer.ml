@@ -259,3 +259,7 @@ external get_ypad : t -> int = "ml_gtk_cell_renderer_get_ypad"
 
 external set_ypad : t -> int -> unit = "ml_gtk_cell_renderer_set_ypad"
 (** Set property: ypad *)
+
+let on_editing_canceled ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"editing-canceled" ~callback
+    ~after:(Option.value after ~default:false)

@@ -1,10 +1,15 @@
-(* Signal class defined in gd_bus_proxy_signals.ml *)
-
 class type d_bus_proxy_t = object
   inherit GAsync_initable.async_initable_t
   inherit GD_bus_interface_and__d_bus_object.d_bus_interface_t
   inherit GInitable.initable_t
-  inherit Gd_bus_proxy_signals.d_bus_proxy_signals
+
+  method on_g_signal :
+    callback:
+      (sender_name:string ->
+      signal_name:string ->
+      parameters:Gvariant.t ->
+      unit) ->
+    Gobject.Signal.handler_id
 
   method call_finish :
     GAsync_result.async_result_t -> (Gvariant.t, GError.t) result
@@ -53,7 +58,9 @@ class d_bus_proxy (obj : D_bus_proxy.t) : d_bus_proxy_t =
         (D_bus_interface_and__d_bus_object.D_bus_interface.from_gobject obj)
 
     inherit GInitable.initable (Initable.from_gobject obj)
-    inherit Gd_bus_proxy_signals.d_bus_proxy_signals obj
+
+    method on_g_signal ~callback =
+      D_bus_proxy.on_g_signal self#as_d_bus_proxy ~callback
 
     method call_finish :
         GAsync_result.async_result_t -> (Gvariant.t, GError.t) result =

@@ -3,7 +3,7 @@ class type menu_button_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
-  inherit Gmenu_button_signals.menu_button_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_active : unit -> bool
   method get_always_show_arrow : unit -> bool
   method get_can_shrink : unit -> bool

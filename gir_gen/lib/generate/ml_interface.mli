@@ -23,6 +23,7 @@ val generate_ml_interface :
   ?c_symbol_prefix:string ->
   entity_kind:Filtering.entity_kind ->
   ?from_gobject_c_name:string ->
+  ?signals:Types.gir_signal list ->
   unit ->
   string
 (** Generate a complete OCaml interface or implementation module. Handles
@@ -40,14 +41,16 @@ val generate_ml_interface :
     - methods: List of methods to generate
     - properties: List of properties to generate
     - c_symbol_prefix: Optional C symbol prefix for this class
-    - entity_kind: [Filtering.entity_kind] tag identifying whether the
-      entity is a Class, Interface, or Record. Forwarded to the central
+    - entity_kind: [Filtering.entity_kind] tag identifying whether the entity is
+      a Class, Interface, or Record. Forwarded to the central
       [Filtering.should_skip_method_binding] so the record copy/free/unref
-      filter is folded into the same answer as varargs/unsupported-arrays
-      etc. Does NOT affect the type-declaration shape — records and
-      classes both emit [\[ \`tag... \] Gobject.obj].
+      filter is folded into the same answer as varargs/unsupported-arrays etc.
+      Does NOT affect the type-declaration shape — records and classes both emit
+      [[ \`tag... ] Gobject.obj].
     - from_gobject_c_name: Optional C function name for the from_gobject
       external
+    - signals: Optional list of GIR signals to emit as [val on_<sig>] /
+      [let on_<sig>] bindings. Defaults to [[]] for backward compatibility.
 
     Returns: Generated OCaml source code as a string *)
 

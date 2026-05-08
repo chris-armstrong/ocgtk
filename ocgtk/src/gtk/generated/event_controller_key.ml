@@ -33,3 +33,68 @@ This function can only be used in handlers for the
 [signal@Gtk.EventControllerKey::key-pressed],
 [signal@Gtk.EventControllerKey::key-released]
 or [signal@Gtk.EventControllerKey::modifiers] signals. *)
+
+let on_im_update ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"im-update" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_key_pressed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let keyval =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_uint v
+        in
+        let keycode =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_uint v
+        in
+        let state =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Ocgtk_gdk.Gdk_enums.modifiertype_of_int
+            (Gobject.Value.get_flags_int v)
+        in
+        let result = callback ~keyval ~keycode ~state in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"key-pressed" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_key_released ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let keyval =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_uint v
+        in
+        let keycode =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_uint v
+        in
+        let state =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Ocgtk_gdk.Gdk_enums.modifiertype_of_int
+            (Gobject.Value.get_flags_int v)
+        in
+        callback ~keyval ~keycode ~state)
+  in
+  Gobject.Signal.connect obj ~name:"key-released" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_modifiers ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let state =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Ocgtk_gdk.Gdk_enums.modifiertype_of_int
+            (Gobject.Value.get_flags_int v)
+        in
+        let result = callback ~state in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"modifiers" ~callback:closure
+    ~after:(Option.value after ~default:false)

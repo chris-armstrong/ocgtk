@@ -146,11 +146,7 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
   let module_names = get_module_names ~ctx class_name in
   let class_snake = sanitize_name class_name in
   let class_type_name = Utils.class_type_name class_name in
-  let has_any_signals = signals <> [] in
   let parent_name = match parent_chain with p :: _ -> Some p | [] -> None in
-
-  if has_any_signals then
-    bprintf buf "(* Signal class defined in g%s_signals.ml *)\n\n" class_snake;
 
   (* Class type definition *)
   bprintf buf "class type %s = object\n" class_type_name;
@@ -285,10 +281,6 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
       ~current_layer2_module ~class_name ~c_type ~methods ~entity_kind
       ~properties ~signals ~same_cluster_classes ~parent_name =
     let class_type_name = Utils.class_type_name class_name in
-    let has_any_signals = signals <> [] in
-    if has_any_signals then
-      bprintf buf "(* Signal class defined in g%s_signals.ml *)\n\n" class_snake;
-
     if i = 0 then
       bprintf buf "class %s (obj : %s.t) : %s = object (self)\n" class_snake
         module_name class_type_name

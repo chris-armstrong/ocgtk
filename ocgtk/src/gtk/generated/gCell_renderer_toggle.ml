@@ -1,8 +1,9 @@
-(* Signal class defined in gcell_renderer_toggle_signals.ml *)
-
 class type cell_renderer_toggle_t = object
   inherit GCell_renderer.cell_renderer_t
-  inherit Gcell_renderer_toggle_signals.cell_renderer_toggle_signals
+
+  method on_toggled :
+    callback:(path:string -> unit) -> Gobject.Signal.handler_id
+
   method get_activatable : unit -> bool
   method get_active : unit -> bool
   method get_radio : unit -> bool
@@ -19,7 +20,9 @@ class cell_renderer_toggle (obj : Cell_renderer_toggle.t) :
   cell_renderer_toggle_t =
   object (self)
     inherit GCell_renderer.cell_renderer (obj :> Cell_renderer.t)
-    inherit Gcell_renderer_toggle_signals.cell_renderer_toggle_signals obj
+
+    method on_toggled ~callback =
+      Cell_renderer_toggle.on_toggled self#as_cell_renderer_toggle ~callback
 
     method get_activatable : unit -> bool =
       fun () -> Cell_renderer_toggle.get_activatable obj

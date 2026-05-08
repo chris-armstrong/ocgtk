@@ -1,11 +1,12 @@
-(* Signal class defined in ginfo_bar_signals.ml *)
-
 class type info_bar_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
-  inherit Ginfo_bar_signals.info_bar_signals
+  method on_close : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_response :
+    callback:(response_id:int -> unit) -> Gobject.Signal.handler_id
 
   method add_action_widget :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -54,7 +55,10 @@ class info_bar (obj : Info_bar.t) : info_bar_t =
              .Widget
              .t)
 
-    inherit Ginfo_bar_signals.info_bar_signals obj
+    method on_close ~callback = Info_bar.on_close self#as_info_bar ~callback
+
+    method on_response ~callback =
+      Info_bar.on_response self#as_info_bar ~callback
 
     method add_action_widget :
         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget

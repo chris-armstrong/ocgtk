@@ -192,6 +192,9 @@ module rec Application : sig
   external get_screensaver_active : t -> bool
     = "ml_gtk_application_get_screensaver_active"
   (** Get property: screensaver-active *)
+
+  val on_query_end :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end
 
 and Window : sig
@@ -750,6 +753,24 @@ and Window : sig
 
   external get_suspended : t -> bool = "ml_gtk_window_get_suspended"
   (** Get property: suspended *)
+
+  val on_activate_default :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_activate_focus :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_close_request :
+    ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  val on_enable_debugging :
+    ?after:bool ->
+    t ->
+    callback:(toggle:bool -> bool) ->
+    Gobject.Signal.handler_id
+
+  val on_keys_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end
 
 and Window_group : sig

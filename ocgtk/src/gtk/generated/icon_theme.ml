@@ -138,3 +138,7 @@ external add_resource_path : t -> string -> unit
     part of the icon theme. *)
 
 (* Properties *)
+
+let on_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"changed" ~callback
+    ~after:(Option.value after ~default:false)

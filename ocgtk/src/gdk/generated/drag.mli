@@ -61,3 +61,15 @@ call as effective, if this function is called multiple times,
 all subsequent calls will be ignored. *)
 
 (* Properties *)
+
+val on_cancel :
+  ?after:bool ->
+  t ->
+  callback:(reason:Gdk_enums.dragcancelreason -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_dnd_finished :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_drop_performed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

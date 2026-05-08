@@ -1,7 +1,7 @@
 class type tree_view_column_t = object
   inherit GBuildable.buildable_t
   inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
-  inherit Gtree_view_column_signals.tree_view_column_signals
+  method on_clicked : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method cell_is_visible : unit -> bool
 
   method cell_set_cell_data :

@@ -1,5 +1,4 @@
 class type tree_model_t = object
-  inherit Gtree_model_signals.tree_model_signals
   method filter_new : Tree_path.t option -> tree_model_t
   method get_column_type : int -> int
   method get_flags : unit -> Gtk_enums.treemodelflags

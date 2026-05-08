@@ -292,3 +292,19 @@ external cancel : t -> unit = "ml_gtk_print_operation_cancel"
     running print operation. *)
 
 (* Properties *)
+
+let on_done_ ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let result =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.printoperationresult_of_int (Gobject.Value.get_enum_int v)
+        in
+        callback ~result)
+  in
+  Gobject.Signal.connect obj ~name:"done" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_status_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"status-changed" ~callback
+    ~after:(Option.value after ~default:false)

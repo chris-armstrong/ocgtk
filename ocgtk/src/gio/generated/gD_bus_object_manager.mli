@@ -1,6 +1,4 @@
 class type d_bus_object_manager_t = object
-  inherit Gd_bus_object_manager_signals.d_bus_object_manager_signals
-
   method get_interface :
     string ->
     string ->

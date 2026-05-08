@@ -1,9 +1,10 @@
-(* Signal class defined in gapplication_signals.ml *)
-
 class type application_t = object
   inherit GAction_group.action_group_t
   inherit GAction_map.action_map_t
-  inherit Gapplication_signals.application_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_name_lost : callback:(unit -> bool) -> Gobject.Signal.handler_id
+  method on_shutdown : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_startup : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method activate : unit -> unit
   method bind_busy_property : [ `object_ ] Gobject.obj -> string -> unit
   method get_application_id : unit -> string option
@@ -60,7 +61,19 @@ class application (obj : Application.t) : application_t =
   object (self)
     inherit GAction_group.action_group (Action_group.from_gobject obj)
     inherit GAction_map.action_map (Action_map.from_gobject obj)
-    inherit Gapplication_signals.application_signals obj
+
+    method on_activate ~callback =
+      Application.on_activate self#as_application ~callback
+
+    method on_name_lost ~callback =
+      Application.on_name_lost self#as_application ~callback
+
+    method on_shutdown ~callback =
+      Application.on_shutdown self#as_application ~callback
+
+    method on_startup ~callback =
+      Application.on_startup self#as_application ~callback
+
     method activate : unit -> unit = fun () -> Application.activate obj
 
     method bind_busy_property : [ `object_ ] Gobject.obj -> string -> unit =

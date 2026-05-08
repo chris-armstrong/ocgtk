@@ -1,12 +1,31 @@
-(* Signal class defined in gflow_box_signals.ml *)
-
 class type flow_box_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
   inherit GOrientable.orientable_t
-  inherit Gflow_box_signals.flow_box_signals
+
+  method on_activate_cursor_child :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_move_cursor :
+    callback:
+      (step:Gtk_enums.movementstep ->
+      count:int ->
+      extend:bool ->
+      modify:bool ->
+      bool) ->
+    Gobject.Signal.handler_id
+
+  method on_select_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_selected_children_changed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_toggle_cursor_child :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_unselect_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
 
   method append :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -77,7 +96,24 @@ class flow_box (obj : Flow_box.t) : flow_box_t =
              .t)
 
     inherit GOrientable.orientable (Orientable.from_gobject obj)
-    inherit Gflow_box_signals.flow_box_signals obj
+
+    method on_activate_cursor_child ~callback =
+      Flow_box.on_activate_cursor_child self#as_flow_box ~callback
+
+    method on_move_cursor ~callback =
+      Flow_box.on_move_cursor self#as_flow_box ~callback
+
+    method on_select_all ~callback =
+      Flow_box.on_select_all self#as_flow_box ~callback
+
+    method on_selected_children_changed ~callback =
+      Flow_box.on_selected_children_changed self#as_flow_box ~callback
+
+    method on_toggle_cursor_child ~callback =
+      Flow_box.on_toggle_cursor_child self#as_flow_box ~callback
+
+    method on_unselect_all ~callback =
+      Flow_box.on_unselect_all self#as_flow_box ~callback
 
     method append :
         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget

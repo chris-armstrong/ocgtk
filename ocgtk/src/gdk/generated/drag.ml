@@ -61,3 +61,23 @@ call as effective, if this function is called multiple times,
 all subsequent calls will be ignored. *)
 
 (* Properties *)
+
+let on_cancel ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let reason =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gdk_enums.dragcancelreason_of_int (Gobject.Value.get_enum_int v)
+        in
+        callback ~reason)
+  in
+  Gobject.Signal.connect obj ~name:"cancel" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_dnd_finished ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"dnd-finished" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_drop_performed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"drop-performed" ~callback
+    ~after:(Option.value after ~default:false)

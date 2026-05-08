@@ -1,5 +1,3 @@
-(* Signal class defined in gscale_button_signals.ml *)
-
 class type scale_button_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -7,7 +5,12 @@ class type scale_button_t = object
 
   inherit GAccessible_range.accessible_range_t
   inherit GOrientable.orientable_t
-  inherit Gscale_button_signals.scale_button_signals
+  method on_popdown : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_popup : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_value_changed :
+    callback:(value:float -> unit) -> Gobject.Signal.handler_id
+
   method get_active : unit -> bool
   method get_adjustment : unit -> GAdjustment.adjustment_t
   method get_has_frame : unit -> bool
@@ -42,7 +45,16 @@ class scale_button (obj : Scale_button.t) : scale_button_t =
       GAccessible_range.accessible_range (Accessible_range.from_gobject obj)
 
     inherit GOrientable.orientable (Orientable.from_gobject obj)
-    inherit Gscale_button_signals.scale_button_signals obj
+
+    method on_popdown ~callback =
+      Scale_button.on_popdown self#as_scale_button ~callback
+
+    method on_popup ~callback =
+      Scale_button.on_popup self#as_scale_button ~callback
+
+    method on_value_changed ~callback =
+      Scale_button.on_value_changed self#as_scale_button ~callback
+
     method get_active : unit -> bool = fun () -> Scale_button.get_active obj
 
     method get_adjustment : unit -> GAdjustment.adjustment_t =

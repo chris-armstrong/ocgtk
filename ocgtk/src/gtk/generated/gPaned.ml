@@ -1,5 +1,3 @@
-(* Signal class defined in gpaned_signals.ml *)
-
 class type paned_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -7,7 +5,25 @@ class type paned_t = object
 
   inherit GAccessible_range.accessible_range_t
   inherit GOrientable.orientable_t
-  inherit Gpaned_signals.paned_signals
+
+  method on_accept_position :
+    callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  method on_cancel_position :
+    callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  method on_cycle_child_focus :
+    callback:(reversed:bool -> bool) -> Gobject.Signal.handler_id
+
+  method on_cycle_handle_focus :
+    callback:(reversed:bool -> bool) -> Gobject.Signal.handler_id
+
+  method on_move_handle :
+    callback:(scroll_type:Gtk_enums.scrolltype -> bool) ->
+    Gobject.Signal.handler_id
+
+  method on_toggle_handle_focus :
+    callback:(unit -> bool) -> Gobject.Signal.handler_id
 
   method get_end_child :
     unit ->
@@ -70,7 +86,24 @@ class paned (obj : Paned.t) : paned_t =
       GAccessible_range.accessible_range (Accessible_range.from_gobject obj)
 
     inherit GOrientable.orientable (Orientable.from_gobject obj)
-    inherit Gpaned_signals.paned_signals obj
+
+    method on_accept_position ~callback =
+      Paned.on_accept_position self#as_paned ~callback
+
+    method on_cancel_position ~callback =
+      Paned.on_cancel_position self#as_paned ~callback
+
+    method on_cycle_child_focus ~callback =
+      Paned.on_cycle_child_focus self#as_paned ~callback
+
+    method on_cycle_handle_focus ~callback =
+      Paned.on_cycle_handle_focus self#as_paned ~callback
+
+    method on_move_handle ~callback =
+      Paned.on_move_handle self#as_paned ~callback
+
+    method on_toggle_handle_focus ~callback =
+      Paned.on_toggle_handle_focus self#as_paned ~callback
 
     method get_end_child :
         unit ->

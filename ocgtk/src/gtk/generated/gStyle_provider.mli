@@ -1,5 +1,7 @@
 class type style_provider_t = object
-  inherit Gstyle_provider_signals.style_provider_signals
+  method on_gtk_private_changed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
   method as_style_provider : Style_provider.t
 end
 

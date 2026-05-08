@@ -96,3 +96,9 @@ external get_active : t -> bool = "ml_gtk_check_button_get_active"
 (** Returns whether the check button is active. *)
 
 (* Properties *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_toggled :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

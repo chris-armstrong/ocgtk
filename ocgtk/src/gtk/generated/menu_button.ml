@@ -169,3 +169,7 @@ external get_active : t -> bool = "ml_gtk_menu_button_get_active"
 (** Returns whether the menu button is active. *)
 
 (* Properties *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)

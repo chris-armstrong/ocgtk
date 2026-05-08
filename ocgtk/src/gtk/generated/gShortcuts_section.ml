@@ -1,8 +1,9 @@
-(* Signal class defined in gshortcuts_section_signals.ml *)
-
 class type shortcuts_section_t = object
   inherit GBox.box_t
-  inherit Gshortcuts_section_signals.shortcuts_section_signals
+
+  method on_change_current_page :
+    callback:(object_:int -> bool) -> Gobject.Signal.handler_id
+
   method add_group : GShortcuts_group.shortcuts_group_t -> unit
   method max_height : int
   method set_max_height : int -> unit
@@ -19,7 +20,10 @@ end
 class shortcuts_section (obj : Shortcuts_section.t) : shortcuts_section_t =
   object (self)
     inherit GBox.box (obj :> Box.t)
-    inherit Gshortcuts_section_signals.shortcuts_section_signals obj
+
+    method on_change_current_page ~callback =
+      Shortcuts_section.on_change_current_page self#as_shortcuts_section
+        ~callback
 
     method add_group : GShortcuts_group.shortcuts_group_t -> unit =
       fun group ->

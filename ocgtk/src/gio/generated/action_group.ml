@@ -162,3 +162,59 @@ external action_added : t -> string -> unit = "ml_g_action_group_action_added"
 (** Emits the #GActionGroup::action-added signal on @action_group.
 
 This function should only be called by #GActionGroup implementations. *)
+
+let on_action_added ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let action_name =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        callback ~action_name)
+  in
+  Gobject.Signal.connect obj ~name:"action-added" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_action_enabled_changed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let action_name =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        let enabled =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_boolean v
+        in
+        callback ~action_name ~enabled)
+  in
+  Gobject.Signal.connect obj ~name:"action-enabled-changed" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_action_removed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let action_name =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        callback ~action_name)
+  in
+  Gobject.Signal.connect obj ~name:"action-removed" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_action_state_changed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let action_name =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        let value =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_variant v
+        in
+        callback ~action_name ~value)
+  in
+  Gobject.Signal.connect obj ~name:"action-state-changed" ~callback:closure
+    ~after:(Option.value after ~default:false)

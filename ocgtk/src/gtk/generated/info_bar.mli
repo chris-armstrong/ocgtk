@@ -113,3 +113,12 @@ external add_action_widget :
     area. *)
 
 (* Properties *)
+
+val on_close :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_response :
+  ?after:bool ->
+  t ->
+  callback:(response_id:int -> unit) ->
+  Gobject.Signal.handler_id

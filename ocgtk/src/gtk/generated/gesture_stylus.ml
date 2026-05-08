@@ -59,3 +59,67 @@ This function must be called from the handler of one of the
 signals. *)
 
 (* Properties *)
+
+let on_down ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let x =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_double v
+        in
+        let y =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_double v
+        in
+        callback ~x ~y)
+  in
+  Gobject.Signal.connect obj ~name:"down" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_motion ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let x =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_double v
+        in
+        let y =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_double v
+        in
+        callback ~x ~y)
+  in
+  Gobject.Signal.connect obj ~name:"motion" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_proximity ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let x =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_double v
+        in
+        let y =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_double v
+        in
+        callback ~x ~y)
+  in
+  Gobject.Signal.connect obj ~name:"proximity" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_up ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let x =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_double v
+        in
+        let y =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_double v
+        in
+        callback ~x ~y)
+  in
+  Gobject.Signal.connect obj ~name:"up" ~callback:closure
+    ~after:(Option.value after ~default:false)

@@ -1,5 +1,11 @@
 class type frame_clock_t = object
-  inherit Gframe_clock_signals.frame_clock_signals
+  method on_after_paint : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_before_paint : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_flush_events : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_layout : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_paint : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_resume_events : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_update : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method begin_updating : unit -> unit
   method end_updating : unit -> unit
   method get_current_timings : unit -> Frame_timings.t option

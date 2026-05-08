@@ -5,7 +5,36 @@ class type text_t = object
 
   inherit GAccessible_text.accessible_text_t
   inherit GEditable.editable_t
-  inherit Gtext_signals.text_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_backspace : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_copy_clipboard :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_cut_clipboard : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_delete_from_cursor :
+    callback:(type_:Gtk_enums.deletetype -> count:int -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_insert_at_cursor :
+    callback:(string:string -> unit) -> Gobject.Signal.handler_id
+
+  method on_insert_emoji : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_move_cursor :
+    callback:(step:Gtk_enums.movementstep -> count:int -> extend:bool -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_paste_clipboard :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_preedit_changed :
+    callback:(preedit:string -> unit) -> Gobject.Signal.handler_id
+
+  method on_toggle_overwrite :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
   method get_activates_default : unit -> bool
   method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
   method get_buffer : unit -> GEntry_buffer.entry_buffer_t

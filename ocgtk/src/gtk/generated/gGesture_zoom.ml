@@ -1,8 +1,9 @@
-(* Signal class defined in ggesture_zoom_signals.ml *)
-
 class type gesture_zoom_t = object
   inherit GGesture.gesture_t
-  inherit Ggesture_zoom_signals.gesture_zoom_signals
+
+  method on_scale_changed :
+    callback:(scale:float -> unit) -> Gobject.Signal.handler_id
+
   method get_scale_delta : unit -> float
   method as_gesture_zoom : Gesture_zoom.t
 end
@@ -11,7 +12,9 @@ end
 class gesture_zoom (obj : Gesture_zoom.t) : gesture_zoom_t =
   object (self)
     inherit GGesture.gesture (obj :> Gesture.t)
-    inherit Ggesture_zoom_signals.gesture_zoom_signals obj
+
+    method on_scale_changed ~callback =
+      Gesture_zoom.on_scale_changed self#as_gesture_zoom ~callback
 
     method get_scale_delta : unit -> float =
       fun () -> Gesture_zoom.get_scale_delta obj

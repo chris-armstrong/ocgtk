@@ -113,3 +113,9 @@ A [signal@Gtk.Adjustment::value-changed] signal will be emitted
 if the value is changed. *)
 
 (* Properties *)
+
+val on_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_value_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

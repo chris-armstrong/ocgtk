@@ -4,7 +4,8 @@ class type button_t = object
     .widget_t
 
   inherit GActionable.actionable_t
-  inherit Gbutton_signals.button_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_clicked : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_can_shrink : unit -> bool
 
   method get_child :

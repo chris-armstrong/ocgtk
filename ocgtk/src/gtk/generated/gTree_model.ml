@@ -1,7 +1,4 @@
-(* Signal class defined in gtree_model_signals.ml *)
-
 class type tree_model_t = object
-  inherit Gtree_model_signals.tree_model_signals
   method filter_new : Tree_path.t option -> tree_model_t
   method get_column_type : int -> int
   method get_flags : unit -> Gtk_enums.treemodelflags
@@ -28,8 +25,6 @@ end
 (* High-level class for TreeModel *)
 class tree_model (obj : Tree_model.t) : tree_model_t =
   object (self)
-    inherit Gtree_model_signals.tree_model_signals obj
-
     method filter_new : Tree_path.t option -> tree_model_t =
       fun root -> new tree_model (Tree_model.filter_new obj root)
 

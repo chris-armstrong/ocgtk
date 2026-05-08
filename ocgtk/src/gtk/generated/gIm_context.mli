@@ -1,5 +1,18 @@
 class type im_context_t = object
-  inherit Gim_context_signals.im_context_signals
+  method on_commit : callback:(str:string -> unit) -> Gobject.Signal.handler_id
+
+  method on_delete_surrounding :
+    callback:(offset:int -> n_chars:int -> bool) -> Gobject.Signal.handler_id
+
+  method on_preedit_changed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_preedit_end : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_preedit_start : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_retrieve_surrounding :
+    callback:(unit -> bool) -> Gobject.Signal.handler_id
+
   method activate_osk : Ocgtk_gdk.Gdk.Event.event_t option -> bool
   method delete_surrounding : int -> int -> bool
 

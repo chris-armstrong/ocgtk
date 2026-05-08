@@ -4,7 +4,6 @@ class type app_chooser_widget_t = object
     .widget_t
 
   inherit GApp_chooser.app_chooser_t
-  inherit Gapp_chooser_widget_signals.app_chooser_widget_signals
   method get_default_text : unit -> string option
   method get_show_all : unit -> bool
   method get_show_default : unit -> bool

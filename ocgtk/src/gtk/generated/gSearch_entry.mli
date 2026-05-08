@@ -4,7 +4,19 @@ class type search_entry_t = object
     .widget_t
 
   inherit GEditable.editable_t
-  inherit Gsearch_entry_signals.search_entry_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_next_match : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_previous_match :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_search_changed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_search_started :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_stop_search : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_input_hints : unit -> Gtk_enums.inputhints
   method get_input_purpose : unit -> Gtk_enums.inputpurpose
 

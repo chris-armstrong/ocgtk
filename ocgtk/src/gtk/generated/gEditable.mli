@@ -1,5 +1,8 @@
 class type editable_t = object
-  inherit Geditable_signals.editable_signals
+  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_delete_text :
+    callback:(start_pos:int -> end_pos:int -> unit) -> Gobject.Signal.handler_id
 
   method delegate_get_accessible_platform_state :
     Gtk_enums.accessibleplatformstate -> bool

@@ -3,7 +3,9 @@ class type gl_area_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
-  inherit Ggl_area_signals.gl_area_signals
+  method on_resize :
+    callback:(width:int -> height:int -> unit) -> Gobject.Signal.handler_id
+
   method attach_buffers : unit -> unit
   method get_allowed_apis : unit -> Ocgtk_gdk.Gdk.glapi
   method get_api : unit -> Ocgtk_gdk.Gdk.glapi

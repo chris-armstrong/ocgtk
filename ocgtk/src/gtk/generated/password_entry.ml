@@ -46,3 +46,7 @@ external get_placeholder_text : t -> string
 external set_placeholder_text : t -> string -> unit
   = "ml_gtk_password_entry_set_placeholder_text"
 (** Set property: placeholder-text *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)

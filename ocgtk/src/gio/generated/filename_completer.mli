@@ -20,3 +20,6 @@ external get_completions : t -> string -> string array
 external get_completion_suffix : t -> string -> string option
   = "ml_g_filename_completer_get_completion_suffix"
 (** Obtains a completion for @initial_text from @completer. *)
+
+val on_got_completion_data :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

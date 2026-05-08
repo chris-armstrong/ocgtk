@@ -1,8 +1,5 @@
-(* Signal class defined in gd_bus_interface_skeleton_signals.ml *)
-
 class type d_bus_interface_skeleton_t = object
   inherit GD_bus_interface_and__d_bus_object.d_bus_interface_t
-  inherit Gd_bus_interface_skeleton_signals.d_bus_interface_skeleton_signals
 
   method export :
     GD_bus_connection.d_bus_connection_t -> string -> (bool, GError.t) result
@@ -30,9 +27,6 @@ class d_bus_interface_skeleton (obj : D_bus_interface_skeleton.t) :
     inherit
       GD_bus_interface_and__d_bus_object.d_bus_interface
         (D_bus_interface_and__d_bus_object.D_bus_interface.from_gobject obj)
-
-    inherit
-      Gd_bus_interface_skeleton_signals.d_bus_interface_skeleton_signals obj
 
     method export :
         GD_bus_connection.d_bus_connection_t ->

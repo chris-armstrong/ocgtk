@@ -38,3 +38,19 @@ external get_content_height : t -> int
 (** Retrieves the content height of the `GtkDrawingArea`. *)
 
 (* Properties *)
+
+let on_resize ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let width =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_int v
+        in
+        let height =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        callback ~width ~height)
+  in
+  Gobject.Signal.connect obj ~name:"resize" ~callback:closure
+    ~after:(Option.value after ~default:false)

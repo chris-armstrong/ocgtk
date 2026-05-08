@@ -322,3 +322,61 @@ external get_cell_area :
   t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t
   = "ml_gtk_icon_view_get_cell_area"
 (** Get property: cell-area *)
+
+let on_activate_cursor_item ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let result = callback () in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"activate-cursor-item" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_move_cursor ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let step =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.movementstep_of_int (Gobject.Value.get_enum_int v)
+        in
+        let count =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        let extend =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_boolean v
+        in
+        let modify =
+          let v = Gobject.Closure.nth argv ~pos:4 in
+          Gobject.Value.get_boolean v
+        in
+        let result = callback ~step ~count ~extend ~modify in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"move-cursor" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_select_all ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"select-all" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_select_cursor_item ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"select-cursor-item" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_selection_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"selection-changed" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_toggle_cursor_item ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"toggle-cursor-item" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_unselect_all ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"unselect-all" ~callback
+    ~after:(Option.value after ~default:false)

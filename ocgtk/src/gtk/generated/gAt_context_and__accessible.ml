@@ -2,7 +2,7 @@
 (* Combined classes for cyclic dependencies *)
 
 class type at_context_t = object
-  inherit Gat_context_signals.at_context_signals
+  method on_state_change : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_accessible : unit -> accessible_t
   method get_accessible_role : unit -> Gtk_enums.accessiblerole
   method display : Ocgtk_gdk.Gdk.Display.display_t
@@ -29,12 +29,12 @@ and accessible_t = object
   method as_accessible : At_context_and__accessible.Accessible.t
 end
 
-(* Signal class defined in gat_context_signals.ml *)
-
 class at_context (obj : At_context_and__accessible.At_context.t) : at_context_t
   =
   object (self)
-    inherit Gat_context_signals.at_context_signals obj
+    method on_state_change ~callback =
+      At_context_and__accessible.At_context.on_state_change self#as_at_context
+        ~callback
 
     method get_accessible : unit -> accessible_t =
       fun () ->

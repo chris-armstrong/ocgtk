@@ -1,5 +1,4 @@
 class type dtls_connection_t = object
-  inherit Gdtls_connection_signals.dtls_connection_signals
   method close : GCancellable.cancellable_t option -> (bool, GError.t) result
   method close_finish : GAsync_result.async_result_t -> (bool, GError.t) result
 

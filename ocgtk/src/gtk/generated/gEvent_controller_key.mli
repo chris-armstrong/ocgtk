@@ -3,7 +3,27 @@ class type event_controller_key_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .event_controller_t
 
-  inherit Gevent_controller_key_signals.event_controller_key_signals
+  method on_im_update : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_key_pressed :
+    callback:
+      (keyval:int ->
+      keycode:int ->
+      state:Ocgtk_gdk.Gdk_enums.modifiertype ->
+      bool) ->
+    Gobject.Signal.handler_id
+
+  method on_key_released :
+    callback:
+      (keyval:int ->
+      keycode:int ->
+      state:Ocgtk_gdk.Gdk_enums.modifiertype ->
+      unit) ->
+    Gobject.Signal.handler_id
+
+  method on_modifiers :
+    callback:(state:Ocgtk_gdk.Gdk_enums.modifiertype -> bool) ->
+    Gobject.Signal.handler_id
 
   method forward :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget

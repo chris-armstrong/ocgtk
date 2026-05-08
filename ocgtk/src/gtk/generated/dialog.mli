@@ -89,3 +89,12 @@ the @action_area field of the `GtkDialog` struct. *)
 
 external get_use_header_bar : t -> int = "ml_gtk_dialog_get_use_header_bar"
 (** Get property: use-header-bar *)
+
+val on_close :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_response :
+  ?after:bool ->
+  t ->
+  callback:(response_id:int -> unit) ->
+  Gobject.Signal.handler_id

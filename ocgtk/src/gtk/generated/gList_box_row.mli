@@ -4,7 +4,7 @@ class type list_box_row_t = object
     .widget_t
 
   inherit GActionable.actionable_t
-  inherit Glist_box_row_signals.list_box_row_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method changed : unit -> unit
   method get_activatable : unit -> bool
 

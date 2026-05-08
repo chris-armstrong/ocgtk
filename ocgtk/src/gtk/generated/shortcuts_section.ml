@@ -46,3 +46,18 @@ external get_view_name : t -> string = "ml_gtk_shortcuts_section_get_view_name"
 external set_view_name : t -> string -> unit
   = "ml_gtk_shortcuts_section_set_view_name"
 (** Set property: view-name *)
+
+let on_change_current_page ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let object_ =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_int v
+        in
+        let result = callback ~object_ in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"change-current-page" ~callback:closure
+    ~after:(Option.value after ~default:false)

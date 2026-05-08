@@ -1,8 +1,9 @@
-(* Signal class defined in gemoji_chooser_signals.ml *)
-
 class type emoji_chooser_t = object
   inherit GPopover.popover_t
-  inherit Gemoji_chooser_signals.emoji_chooser_signals
+
+  method on_emoji_picked :
+    callback:(text:string -> unit) -> Gobject.Signal.handler_id
+
   method as_emoji_chooser : Emoji_chooser.t
 end
 
@@ -10,7 +11,10 @@ end
 class emoji_chooser (obj : Emoji_chooser.t) : emoji_chooser_t =
   object (self)
     inherit GPopover.popover (obj :> Popover.t)
-    inherit Gemoji_chooser_signals.emoji_chooser_signals obj
+
+    method on_emoji_picked ~callback =
+      Emoji_chooser.on_emoji_picked self#as_emoji_chooser ~callback
+
     method as_emoji_chooser = obj
   end
 

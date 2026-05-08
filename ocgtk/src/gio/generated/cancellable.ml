@@ -102,3 +102,7 @@ operation causes it to complete asynchronously. That is, if you
 cancel the operation from the same thread in which it is running,
 then the operation's #GAsyncReadyCallback will not be invoked until
 the application returns to the main loop. *)
+
+let on_cancelled ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"cancelled" ~callback
+    ~after:(Option.value after ~default:false)

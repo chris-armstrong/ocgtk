@@ -1,7 +1,6 @@
-(* Signal class defined in gnetwork_monitor_signals.ml *)
-
 class type network_monitor_t = object
-  inherit Gnetwork_monitor_signals.network_monitor_signals
+  method on_network_changed :
+    callback:(network_available:bool -> unit) -> Gobject.Signal.handler_id
 
   method can_reach :
     GSocket_address_and__socket_address_enumerator_and__socket_connectable
@@ -21,7 +20,8 @@ end
 (* High-level class for NetworkMonitor *)
 class network_monitor (obj : Network_monitor.t) : network_monitor_t =
   object (self)
-    inherit Gnetwork_monitor_signals.network_monitor_signals obj
+    method on_network_changed ~callback =
+      Network_monitor.on_network_changed self#as_network_monitor ~callback
 
     method can_reach :
         GSocket_address_and__socket_address_enumerator_and__socket_connectable

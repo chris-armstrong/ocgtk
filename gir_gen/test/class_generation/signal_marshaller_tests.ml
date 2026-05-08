@@ -247,10 +247,7 @@ let test_same_ns_gobject_class () =
     Type_factory.make_gir_type ~name:"Widget" ~c_type:"GtkWidget*" ()
   in
   let result = classify ~ctx ~gir_type in
-  assert_supported ~label:"GtkWidget class" result @@ fun m ->
-  Alcotest.(check string) "ocaml_type" "Gtk.Widget.t Gobject.obj" m.ocaml_type;
-  assert_expr_contains ~label:"GtkWidget class" ~field:"getter_expr"
-    m.getter_expr "Gobject.Value.get_object"
+  assert_unsupported ~label:"same-ns GObject class" result "not yet supported"
 
 let test_cross_ns_gobject_gio_file () =
   let ctx = gtk_ctx_with_gio_file () in
@@ -258,11 +255,7 @@ let test_cross_ns_gobject_gio_file () =
     Type_factory.make_gir_type ~name:"Gio.File" ~c_type:"GFile*" ()
   in
   let result = classify ~ctx ~gir_type in
-  assert_supported ~label:"Gio.File interface" result @@ fun m ->
-  Alcotest.(check string) "ocaml_type"
-    "Ocgtk_gio.Gio.File.t Gobject.obj" m.ocaml_type;
-  assert_expr_contains ~label:"Gio.File interface" ~field:"getter_expr"
-    m.getter_expr "Gobject.Value.get_object"
+  assert_unsupported ~label:"cross-ns GObject class" result "not yet supported"
 
 let test_garray_is_unsupported () =
   let ctx = gtk_ctx () in
@@ -326,10 +319,9 @@ let tests =
       `Quick test_cross_ns_bitfield_modifiertype;
     Alcotest.test_case "GLib.Variant maps to Gvariant.t" `Quick
       test_glib_variant_maps_to_gvariant;
-    Alcotest.test_case "same-ns GObject Widget -> Gtk.Widget.t Gobject.obj"
-      `Quick test_same_ns_gobject_class;
-    Alcotest.test_case
-      "cross-ns GObject Gio.File -> Ocgtk_gio.Gio.File.t Gobject.obj" `Quick
+    Alcotest.test_case "same-ns GObject class is Unsupported" `Quick
+      test_same_ns_gobject_class;
+    Alcotest.test_case "cross-ns GObject class is Unsupported" `Quick
       test_cross_ns_gobject_gio_file;
     Alcotest.test_case "GLib.Array is Unsupported" `Quick
       test_garray_is_unsupported;

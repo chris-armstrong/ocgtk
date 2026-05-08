@@ -322,3 +322,32 @@ external get_cell_area :
   t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t
   = "ml_gtk_icon_view_get_cell_area"
 (** Get property: cell-area *)
+
+val on_activate_cursor_item :
+  ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+val on_move_cursor :
+  ?after:bool ->
+  t ->
+  callback:
+    (step:Gtk_enums.movementstep ->
+    count:int ->
+    extend:bool ->
+    modify:bool ->
+    bool) ->
+  Gobject.Signal.handler_id
+
+val on_select_all :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_select_cursor_item :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_selection_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_toggle_cursor_item :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_unselect_all :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

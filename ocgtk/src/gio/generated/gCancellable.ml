@@ -1,7 +1,5 @@
-(* Signal class defined in gcancellable_signals.ml *)
-
 class type cancellable_t = object
-  inherit Gcancellable_signals.cancellable_signals
+  method on_cancelled : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method cancel : unit -> unit
   method disconnect : int -> unit
   method get_fd : unit -> int
@@ -17,7 +15,9 @@ end
 (* High-level class for Cancellable *)
 class cancellable (obj : Cancellable.t) : cancellable_t =
   object (self)
-    inherit Gcancellable_signals.cancellable_signals obj
+    method on_cancelled ~callback =
+      Cancellable.on_cancelled self#as_cancellable ~callback
+
     method cancel : unit -> unit = fun () -> Cancellable.cancel obj
 
     method disconnect : int -> unit =

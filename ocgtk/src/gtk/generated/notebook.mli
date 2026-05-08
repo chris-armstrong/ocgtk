@@ -431,3 +431,33 @@ external get_enable_popup : t -> bool = "ml_gtk_notebook_get_enable_popup"
 external set_enable_popup : t -> bool -> unit
   = "ml_gtk_notebook_set_enable_popup"
 (** Set property: enable-popup *)
+
+val on_change_current_page :
+  ?after:bool ->
+  t ->
+  callback:(object_:int -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_focus_tab :
+  ?after:bool ->
+  t ->
+  callback:(object_:Gtk_enums.notebooktab -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_move_focus_out :
+  ?after:bool ->
+  t ->
+  callback:(object_:Gtk_enums.directiontype -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_reorder_tab :
+  ?after:bool ->
+  t ->
+  callback:(object_:Gtk_enums.directiontype -> p0:bool -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_select_page :
+  ?after:bool ->
+  t ->
+  callback:(object_:bool -> bool) ->
+  Gobject.Signal.handler_id

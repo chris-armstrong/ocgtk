@@ -1,7 +1,7 @@
-(* Signal class defined in gtree_sortable_signals.ml *)
-
 class type tree_sortable_t = object
-  inherit Gtree_sortable_signals.tree_sortable_signals
+  method on_sort_column_changed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
   method has_default_sort_func : unit -> bool
   method set_sort_column_id : int -> Gtk_enums.sorttype -> unit
   method sort_column_changed : unit -> unit
@@ -11,7 +11,8 @@ end
 (* High-level class for TreeSortable *)
 class tree_sortable (obj : Tree_sortable.t) : tree_sortable_t =
   object (self)
-    inherit Gtree_sortable_signals.tree_sortable_signals obj
+    method on_sort_column_changed ~callback =
+      Tree_sortable.on_sort_column_changed self#as_tree_sortable ~callback
 
     method has_default_sort_func : unit -> bool =
       fun () -> Tree_sortable.has_default_sort_func obj

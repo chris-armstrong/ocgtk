@@ -1,11 +1,9 @@
-(* Signal class defined in gexpander_signals.ml *)
-
 class type expander_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
-  inherit Gexpander_signals.expander_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
 
   method get_child :
     unit ->
@@ -58,7 +56,8 @@ class expander (obj : Expander.t) : expander_t =
              .Widget
              .t)
 
-    inherit Gexpander_signals.expander_signals obj
+    method on_activate ~callback =
+      Expander.on_activate self#as_expander ~callback
 
     method get_child :
         unit ->

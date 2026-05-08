@@ -289,3 +289,7 @@ external get_cell_area :
   t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t
   = "ml_gtk_tree_view_column_get_cell_area"
 (** Get property: cell-area *)
+
+let on_clicked ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"clicked" ~callback
+    ~after:(Option.value after ~default:false)

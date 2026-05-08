@@ -1,5 +1,6 @@
 class type network_monitor_t = object
-  inherit Gnetwork_monitor_signals.network_monitor_signals
+  method on_network_changed :
+    callback:(network_available:bool -> unit) -> Gobject.Signal.handler_id
 
   method can_reach :
     GSocket_address_and__socket_address_enumerator_and__socket_connectable

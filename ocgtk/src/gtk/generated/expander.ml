@@ -96,3 +96,7 @@ external get_child :
 (** Gets the child widget of @expander. *)
 
 (* Properties *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)

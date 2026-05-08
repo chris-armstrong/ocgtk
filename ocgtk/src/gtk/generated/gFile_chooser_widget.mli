@@ -4,7 +4,36 @@ class type file_chooser_widget_t = object
     .widget_t
 
   inherit GFile_chooser.file_chooser_t
-  inherit Gfile_chooser_widget_signals.file_chooser_widget_signals
+
+  method on_desktop_folder :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_down_folder : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_home_folder : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_location_popup :
+    callback:(path:string -> unit) -> Gobject.Signal.handler_id
+
+  method on_location_popup_on_paste :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_location_toggle_popup :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_places_shortcut :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_quick_bookmark :
+    callback:(bookmark_index:int -> unit) -> Gobject.Signal.handler_id
+
+  method on_recent_shortcut :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_search_shortcut :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_show_hidden : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_up_folder : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method search_mode : bool
   method set_search_mode : bool -> unit
   method show_time : bool

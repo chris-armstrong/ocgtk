@@ -4,7 +4,8 @@ class type color_button_t = object
     .widget_t
 
   inherit GColor_chooser.color_chooser_t
-  inherit Gcolor_button_signals.color_button_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_color_set : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_modal : unit -> bool
   method get_title : unit -> string
   method set_modal : bool -> unit

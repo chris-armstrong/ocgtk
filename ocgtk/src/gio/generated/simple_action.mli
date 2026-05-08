@@ -52,3 +52,15 @@ external get_parameter_type : t -> Gvariant_type.t
 external get_state_type : t -> Gvariant_type.t
   = "ml_g_simple_action_get_state_type"
 (** Get property: state-type *)
+
+val on_activate :
+  ?after:bool ->
+  t ->
+  callback:(parameter:Gvariant.t -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_change_state :
+  ?after:bool ->
+  t ->
+  callback:(value:Gvariant.t -> unit) ->
+  Gobject.Signal.handler_id

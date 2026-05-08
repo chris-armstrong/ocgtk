@@ -1,7 +1,6 @@
 class type d_bus_connection_t = object
   inherit GAsync_initable.async_initable_t
   inherit GInitable.initable_t
-  inherit Gd_bus_connection_signals.d_bus_connection_signals
 
   method call_finish :
     GAsync_result.async_result_t -> (Gvariant.t, GError.t) result

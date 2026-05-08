@@ -64,3 +64,15 @@ external get_active : t -> bool = "ml_gtk_scale_button_get_active"
 *)
 
 (* Properties *)
+
+val on_popdown :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_popup :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_value_changed :
+  ?after:bool ->
+  t ->
+  callback:(value:float -> unit) ->
+  Gobject.Signal.handler_id

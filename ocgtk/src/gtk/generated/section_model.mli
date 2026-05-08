@@ -17,3 +17,9 @@ external get_section : t -> int -> int * int
 
     If the position is larger than the number of items, a single range from
     n_items to G_MAXUINT will be returned. *)
+
+val on_sections_changed :
+  ?after:bool ->
+  t ->
+  callback:(position:int -> n_items:int -> unit) ->
+  Gobject.Signal.handler_id

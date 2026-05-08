@@ -3,7 +3,9 @@ class type drawing_area_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
-  inherit Gdrawing_area_signals.drawing_area_signals
+  method on_resize :
+    callback:(width:int -> height:int -> unit) -> Gobject.Signal.handler_id
+
   method get_content_height : unit -> int
   method get_content_width : unit -> int
   method set_content_height : int -> unit

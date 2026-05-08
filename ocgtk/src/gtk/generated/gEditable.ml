@@ -1,7 +1,8 @@
-(* Signal class defined in geditable_signals.ml *)
-
 class type editable_t = object
-  inherit Geditable_signals.editable_signals
+  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_delete_text :
+    callback:(start_pos:int -> end_pos:int -> unit) -> Gobject.Signal.handler_id
 
   method delegate_get_accessible_platform_state :
     Gtk_enums.accessibleplatformstate -> bool
@@ -37,7 +38,10 @@ end
 (* High-level class for Editable *)
 class editable (obj : Editable.t) : editable_t =
   object (self)
-    inherit Geditable_signals.editable_signals obj
+    method on_changed ~callback = Editable.on_changed self#as_editable ~callback
+
+    method on_delete_text ~callback =
+      Editable.on_delete_text self#as_editable ~callback
 
     method delegate_get_accessible_platform_state :
         Gtk_enums.accessibleplatformstate -> bool =

@@ -1,7 +1,4 @@
-(* Signal class defined in gdtls_connection_signals.ml *)
-
 class type dtls_connection_t = object
-  inherit Gdtls_connection_signals.dtls_connection_signals
   method close : GCancellable.cancellable_t option -> (bool, GError.t) result
   method close_finish : GAsync_result.async_result_t -> (bool, GError.t) result
 
@@ -64,8 +61,6 @@ end
 (* High-level class for DtlsConnection *)
 class dtls_connection (obj : Dtls_connection.t) : dtls_connection_t =
   object (self)
-    inherit Gdtls_connection_signals.dtls_connection_signals obj
-
     method close : GCancellable.cancellable_t option -> (bool, GError.t) result
         =
       fun cancellable ->

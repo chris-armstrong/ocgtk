@@ -5,7 +5,12 @@ class type scale_button_t = object
 
   inherit GAccessible_range.accessible_range_t
   inherit GOrientable.orientable_t
-  inherit Gscale_button_signals.scale_button_signals
+  method on_popdown : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_popup : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_value_changed :
+    callback:(value:float -> unit) -> Gobject.Signal.handler_id
+
   method get_active : unit -> bool
   method get_adjustment : unit -> GAdjustment.adjustment_t
   method get_has_frame : unit -> bool

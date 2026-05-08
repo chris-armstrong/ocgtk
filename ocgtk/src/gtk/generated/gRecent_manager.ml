@@ -1,7 +1,5 @@
-(* Signal class defined in grecent_manager_signals.ml *)
-
 class type recent_manager_t = object
-  inherit Grecent_manager_signals.recent_manager_signals
+  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method add_full : string -> Recent_data.t -> bool
   method add_item : string -> bool
   method get_items : unit -> Recent_info.t list
@@ -18,7 +16,8 @@ end
 (* High-level class for RecentManager *)
 class recent_manager (obj : Recent_manager.t) : recent_manager_t =
   object (self)
-    inherit Grecent_manager_signals.recent_manager_signals obj
+    method on_changed ~callback =
+      Recent_manager.on_changed self#as_recent_manager ~callback
 
     method add_full : string -> Recent_data.t -> bool =
       fun uri recent_data -> Recent_manager.add_full obj uri recent_data

@@ -195,3 +195,47 @@ external get_accept_unpaired_release : t -> bool
 external set_accept_unpaired_release : t -> bool -> unit
   = "ml_gtk_list_box_set_accept_unpaired_release"
 (** Set property: accept-unpaired-release *)
+
+let on_activate_cursor_row ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate-cursor-row" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_move_cursor ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let object_ =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.movementstep_of_int (Gobject.Value.get_enum_int v)
+        in
+        let p0 =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        let p1 =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_boolean v
+        in
+        let p2 =
+          let v = Gobject.Closure.nth argv ~pos:4 in
+          Gobject.Value.get_boolean v
+        in
+        callback ~object_ ~p0 ~p1 ~p2)
+  in
+  Gobject.Signal.connect obj ~name:"move-cursor" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_select_all ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"select-all" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_selected_rows_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"selected-rows-changed" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_toggle_cursor_row ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"toggle-cursor-row" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_unselect_all ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"unselect-all" ~callback
+    ~after:(Option.value after ~default:false)

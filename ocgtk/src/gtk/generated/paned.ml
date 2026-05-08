@@ -101,3 +101,81 @@ external get_position_set : t -> bool = "ml_gtk_paned_get_position_set"
 
 external set_position_set : t -> bool -> unit = "ml_gtk_paned_set_position_set"
 (** Set property: position-set *)
+
+let on_accept_position ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let result = callback () in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"accept-position" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_cancel_position ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let result = callback () in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"cancel-position" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_cycle_child_focus ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let reversed =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_boolean v
+        in
+        let result = callback ~reversed in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"cycle-child-focus" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_cycle_handle_focus ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let reversed =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_boolean v
+        in
+        let result = callback ~reversed in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"cycle-handle-focus" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_move_handle ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let scroll_type =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.scrolltype_of_int (Gobject.Value.get_enum_int v)
+        in
+        let result = callback ~scroll_type in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"move-handle" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_toggle_handle_focus ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let result = callback () in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"toggle-handle-focus" ~callback:closure
+    ~after:(Option.value after ~default:false)

@@ -9,10 +9,6 @@ type output_mode =
   | Interface  (** Generate .mli interface file *)
   | Implementation  (** Generate .ml implementation file *)
 
-let generate_signal_bindings ~output_mode:_ ~module_name:_ ~has_widget_parent:__
-    _signals =
-  "" (* Signals are only generated in high-level g*.ml wrappers *)
-
 let detect_class_hierarchy_names ~ctx:_ ~class_name ~parent_chain () =
   let normalized_class = Utils.normalize_class_name class_name in
   let parent_chain =

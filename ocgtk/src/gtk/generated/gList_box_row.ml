@@ -1,12 +1,10 @@
-(* Signal class defined in glist_box_row_signals.ml *)
-
 class type list_box_row_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
   inherit GActionable.actionable_t
-  inherit Glist_box_row_signals.list_box_row_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method changed : unit -> unit
   method get_activatable : unit -> bool
 
@@ -55,7 +53,10 @@ class list_box_row (obj : List_box_row.t) : list_box_row_t =
              .t)
 
     inherit GActionable.actionable (Actionable.from_gobject obj)
-    inherit Glist_box_row_signals.list_box_row_signals obj
+
+    method on_activate ~callback =
+      List_box_row.on_activate self#as_list_box_row ~callback
+
     method changed : unit -> unit = fun () -> List_box_row.changed obj
 
     method get_activatable : unit -> bool =

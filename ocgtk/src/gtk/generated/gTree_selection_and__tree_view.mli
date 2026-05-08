@@ -1,5 +1,5 @@
 class type tree_selection_t = object
-  inherit Gtree_selection_signals.tree_selection_signals
+  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method count_selected_rows : unit -> int
   method get_mode : unit -> Gtk_enums.selectionmode
   method get_tree_view : unit -> tree_view_t
@@ -23,7 +23,41 @@ and tree_view_t = object
     .widget_t
 
   inherit GScrollable.scrollable_t
-  inherit Gtree_view_signals.tree_view_signals
+
+  method on_columns_changed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_cursor_changed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_expand_collapse_cursor_row :
+    callback:(object_:bool -> p0:bool -> p1:bool -> bool) ->
+    Gobject.Signal.handler_id
+
+  method on_move_cursor :
+    callback:
+      (step:Gtk_enums.movementstep ->
+      direction:int ->
+      extend:bool ->
+      modify:bool ->
+      bool) ->
+    Gobject.Signal.handler_id
+
+  method on_select_all : callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  method on_select_cursor_parent :
+    callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  method on_select_cursor_row :
+    callback:(object_:bool -> bool) -> Gobject.Signal.handler_id
+
+  method on_start_interactive_search :
+    callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  method on_toggle_cursor_row :
+    callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  method on_unselect_all : callback:(unit -> bool) -> Gobject.Signal.handler_id
   method append_column : GTree_view_column.tree_view_column_t -> int
   method collapse_all : unit -> unit
   method collapse_row : Tree_path.t -> bool

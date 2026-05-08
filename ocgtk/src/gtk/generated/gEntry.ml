@@ -1,5 +1,3 @@
-(* Signal class defined in gentry_signals.ml *)
-
 class type entry_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -7,7 +5,16 @@ class type entry_t = object
 
   inherit GCell_editable.cell_editable_t
   inherit GEditable.editable_t
-  inherit Gentry_signals.entry_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_icon_press :
+    callback:(icon_pos:Gtk_enums.entryiconposition -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_icon_release :
+    callback:(icon_pos:Gtk_enums.entryiconposition -> unit) ->
+    Gobject.Signal.handler_id
+
   method get_activates_default : unit -> bool
   method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
   method get_buffer : unit -> GEntry_buffer.entry_buffer_t
@@ -154,7 +161,11 @@ class entry (obj : Entry.t) : entry_t =
 
     inherit GCell_editable.cell_editable (Cell_editable.from_gobject obj)
     inherit GEditable.editable (Editable.from_gobject obj)
-    inherit Gentry_signals.entry_signals obj
+    method on_activate ~callback = Entry.on_activate self#as_entry ~callback
+    method on_icon_press ~callback = Entry.on_icon_press self#as_entry ~callback
+
+    method on_icon_release ~callback =
+      Entry.on_icon_release self#as_entry ~callback
 
     method get_activates_default : unit -> bool =
       fun () -> Entry.get_activates_default obj

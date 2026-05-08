@@ -413,3 +413,12 @@ external get_schema_id : t -> string = "ml_g_settings_get_schema_id"
 external get_settings_schema : t -> Settings_schema.t
   = "ml_g_settings_get_settings_schema"
 (** Get property: settings-schema *)
+
+val on_changed :
+  ?after:bool -> t -> callback:(key:string -> unit) -> Gobject.Signal.handler_id
+
+val on_writable_change_event :
+  ?after:bool -> t -> callback:(key:int -> bool) -> Gobject.Signal.handler_id
+
+val on_writable_changed :
+  ?after:bool -> t -> callback:(key:string -> unit) -> Gobject.Signal.handler_id

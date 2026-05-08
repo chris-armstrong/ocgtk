@@ -12,12 +12,13 @@ val generate_ml_interface_internal :
   ?c_symbol_prefix:string ->
   entity_kind:Filtering.entity_kind ->
   ?from_gobject_c_name:string ->
+  ?signals:Types.gir_signal list ->
   Buffer.t ->
   unit
 (** Generate the core interface content for a class/record. This is the internal
     version that writes to a buffer rather than returning a string. It generates
-    type declarations, hierarchy accessors, constructors, methods, and
-    properties. *)
+    type declarations, hierarchy accessors, constructors, methods, properties,
+    and L1 signal bindings ([val on_<sig>] / [let on_<sig>] entries). *)
 
 val generate_ml_interface :
   ctx:Types.generation_context ->
@@ -32,14 +33,20 @@ val generate_ml_interface :
   ?c_symbol_prefix:string ->
   entity_kind:Filtering.entity_kind ->
   ?from_gobject_c_name:string ->
+  ?signals:Types.gir_signal list ->
   unit ->
   string
 (** Generate a complete OCaml interface (.mli) or implementation (.ml) for a
     class/interface/record. Returns the generated code as a string, including
     documentation header. [entity_kind] is the discriminator that the central
     [Filtering.should_skip_method_binding] uses to decide which methods to
-    filter; it does not affect type-declaration shape (records and classes
-    are both emitted as [\[ \`tag... \] Gobject.obj]). *)
+    filter; it does not affect type-declaration shape (records and classes are
+    both emitted as [[ \`tag... ] Gobject.obj]).
+
+    [signals] is the list of GIR signals for the class. Supported signals are
+    emitted as [val on_<sig>] (Interface mode) or [let on_<sig>] (Implementation
+    mode). Unsupported signals are silently skipped with a message to stderr.
+    Defaults to [[]] for backward compatibility. *)
 
 val generate_combined_ml_modules :
   ctx:Types.generation_context ->

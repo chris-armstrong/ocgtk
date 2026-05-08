@@ -85,3 +85,18 @@ external clear_marks : t -> unit = "ml_gtk_calendar_clear_marks"
 (** Remove all visual markers. *)
 
 (* Properties *)
+
+val on_day_selected :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_next_month :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_next_year :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_prev_month :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_prev_year :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

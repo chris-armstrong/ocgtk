@@ -80,3 +80,29 @@ external get_anonymous : t -> bool = "ml_g_mount_operation_get_anonymous"
     user. *)
 
 (* Properties *)
+
+val on_aborted :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_ask_password :
+  ?after:bool ->
+  t ->
+  callback:
+    (message:string ->
+    default_user:string ->
+    default_domain:string ->
+    flags:Gio_enums.askpasswordflags ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_reply :
+  ?after:bool ->
+  t ->
+  callback:(result:Gio_enums.mountoperationresult -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_show_unmount_progress :
+  ?after:bool ->
+  t ->
+  callback:(message:string -> time_left:Int64.t -> bytes_left:Int64.t -> unit) ->
+  Gobject.Signal.handler_id

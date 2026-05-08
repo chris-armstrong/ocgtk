@@ -1,6 +1,9 @@
 class type emoji_chooser_t = object
   inherit GPopover.popover_t
-  inherit Gemoji_chooser_signals.emoji_chooser_signals
+
+  method on_emoji_picked :
+    callback:(text:string -> unit) -> Gobject.Signal.handler_id
+
   method as_emoji_chooser : Emoji_chooser.t
 end
 

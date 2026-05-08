@@ -1,9 +1,11 @@
-(* Signal class defined in gentry_completion_signals.ml *)
-
 class type entry_completion_t = object
   inherit GBuildable.buildable_t
   inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
-  inherit Gentry_completion_signals.entry_completion_signals
+
+  method on_insert_prefix :
+    callback:(prefix:string -> bool) -> Gobject.Signal.handler_id
+
+  method on_no_matches : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method complete : unit -> unit
   method compute_prefix : string -> string option
   method get_completion_prefix : unit -> string option
@@ -47,7 +49,12 @@ class entry_completion (obj : Entry_completion.t) : entry_completion_t =
         (Cell_area_and__cell_area_context_and__cell_layout.Cell_layout
          .from_gobject obj)
 
-    inherit Gentry_completion_signals.entry_completion_signals obj
+    method on_insert_prefix ~callback =
+      Entry_completion.on_insert_prefix self#as_entry_completion ~callback
+
+    method on_no_matches ~callback =
+      Entry_completion.on_no_matches self#as_entry_completion ~callback
+
     method complete : unit -> unit = fun () -> Entry_completion.complete obj
 
     method compute_prefix : string -> string option =

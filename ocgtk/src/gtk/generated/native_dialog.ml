@@ -74,3 +74,15 @@ external destroy : t -> unit = "ml_gtk_native_dialog_destroy"
     system to the `GtkNativeDialog`. *)
 
 (* Properties *)
+
+let on_response ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let response_id =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_int v
+        in
+        callback ~response_id)
+  in
+  Gobject.Signal.connect obj ~name:"response" ~callback:closure
+    ~after:(Option.value after ~default:false)

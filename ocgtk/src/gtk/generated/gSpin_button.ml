@@ -1,5 +1,3 @@
-(* Signal class defined in gspin_button_signals.ml *)
-
 class type spin_button_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -9,7 +7,14 @@ class type spin_button_t = object
   inherit GCell_editable.cell_editable_t
   inherit GEditable.editable_t
   inherit GOrientable.orientable_t
-  inherit Gspin_button_signals.spin_button_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_change_value :
+    callback:(scroll:Gtk_enums.scrolltype -> unit) -> Gobject.Signal.handler_id
+
+  method on_output : callback:(unit -> bool) -> Gobject.Signal.handler_id
+  method on_value_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_wrapped : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method configure : GAdjustment.adjustment_t option -> float -> int -> unit
   method get_activates_default : unit -> bool
   method get_adjustment : unit -> GAdjustment.adjustment_t
@@ -54,7 +59,21 @@ class spin_button (obj : Spin_button.t) : spin_button_t =
     inherit GCell_editable.cell_editable (Cell_editable.from_gobject obj)
     inherit GEditable.editable (Editable.from_gobject obj)
     inherit GOrientable.orientable (Orientable.from_gobject obj)
-    inherit Gspin_button_signals.spin_button_signals obj
+
+    method on_activate ~callback =
+      Spin_button.on_activate self#as_spin_button ~callback
+
+    method on_change_value ~callback =
+      Spin_button.on_change_value self#as_spin_button ~callback
+
+    method on_output ~callback =
+      Spin_button.on_output self#as_spin_button ~callback
+
+    method on_value_changed ~callback =
+      Spin_button.on_value_changed self#as_spin_button ~callback
+
+    method on_wrapped ~callback =
+      Spin_button.on_wrapped self#as_spin_button ~callback
 
     method configure : GAdjustment.adjustment_t option -> float -> int -> unit =
       fun adjustment climb_rate digits ->

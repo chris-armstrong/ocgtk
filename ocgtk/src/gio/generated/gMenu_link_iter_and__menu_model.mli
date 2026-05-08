@@ -6,7 +6,9 @@ class type menu_link_iter_t = object
 end
 
 and menu_model_t = object
-  inherit Gmenu_model_signals.menu_model_signals
+  method on_items_changed :
+    callback:(position:int -> removed:int -> added:int -> unit) ->
+    Gobject.Signal.handler_id
 
   method get_item_attribute_value :
     int -> string -> Gvariant_type.t option -> Gvariant.t option

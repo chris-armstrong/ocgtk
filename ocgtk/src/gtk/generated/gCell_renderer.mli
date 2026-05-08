@@ -1,5 +1,6 @@
 class type cell_renderer_t = object
-  inherit Gcell_renderer_signals.cell_renderer_signals
+  method on_editing_canceled :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
 
   method activate :
     Ocgtk_gdk.Gdk.Event.event_t ->

@@ -3,7 +3,6 @@
 
 class type cell_area_t = object
   inherit GBuildable.buildable_t
-  inherit Gcell_area_signals.cell_area_signals
 
   method activate :
     cell_area_context_t ->
@@ -120,14 +119,11 @@ and cell_layout_t = object
     Cell_area_and__cell_area_context_and__cell_layout.Cell_layout.t
 end
 
-(* Signal class defined in gcell_area_signals.ml *)
-
 class cell_area
   (obj : Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t) :
   cell_area_t =
   object (self)
     inherit GBuildable.buildable (Buildable.from_gobject obj)
-    inherit Gcell_area_signals.cell_area_signals obj
 
     method activate :
         cell_area_context_t ->

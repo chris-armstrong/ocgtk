@@ -21,18 +21,22 @@ type result = Supported of marshaller | Unsupported of string
     getter_fn, setter_fn) triples for [Gobject.Value]. *)
 let primitive_marshallers : (string * (string * string * string)) list =
   [
-    ("gboolean", ("bool", "Gobject.Value.get_boolean", "Gobject.Value.set_boolean"));
-    ("gint", ("int", "Gobject.Value.get_int", "Gobject.Value.set_int"));
-    ("guint", ("int", "Gobject.Value.get_uint", "Gobject.Value.set_uint"));
+    ( "gboolean",
+      ("bool", "Gobject.Value.get_boolean v", "Gobject.Value.set_boolean v x") );
+    ("gint", ("int", "Gobject.Value.get_int v", "Gobject.Value.set_int v x"));
+    ("guint", ("int", "Gobject.Value.get_uint v", "Gobject.Value.set_uint v x"));
     ( "gint64",
-      ("Int64.t", "Gobject.Value.get_int64", "Gobject.Value.set_int64") );
-    ("gdouble", ("float", "Gobject.Value.get_double", "Gobject.Value.set_double"));
-    ("gfloat", ("float", "Gobject.Value.get_double", "Gobject.Value.set_double"));
-    ("utf8", ("string", "Gobject.Value.get_string", "Gobject.Value.set_string"));
+      ("Int64.t", "Gobject.Value.get_int64 v", "Gobject.Value.set_int64 v x") );
+    ( "gdouble",
+      ("float", "Gobject.Value.get_double v", "Gobject.Value.set_double v x") );
+    ( "gfloat",
+      ("float", "Gobject.Value.get_double v", "Gobject.Value.set_double v x") );
+    ( "utf8",
+      ("string", "Gobject.Value.get_string v", "Gobject.Value.set_string v x") );
     ( "filename",
-      ("string", "Gobject.Value.get_string", "Gobject.Value.set_string") );
+      ("string", "Gobject.Value.get_string v", "Gobject.Value.set_string v x") );
     ( "gchararray",
-      ("string", "Gobject.Value.get_string", "Gobject.Value.set_string") );
+      ("string", "Gobject.Value.get_string v", "Gobject.Value.set_string v x") );
   ]
 
 (* ===================================================================== *)
@@ -72,15 +76,19 @@ let cross_ns_enums_module namespace =
 
 (** Build the GObject-ref OCaml type for a same-namespace class / interface. *)
 let same_ns_object_type ~ctx class_name =
-  let ns = Utils.internal_namespace_to_module_name ctx.namespace.namespace_name in
-  let mod_ = Utils.module_name_of_class class_name in
-  ns ^ "." ^ mod_ ^ ".t Gobject.obj"
+  let mod_path =
+    Type_mappings.calculate_class_or_interface_or_record_module_name ~ctx
+      ~name:class_name
+  in
+  mod_path ^ ".t Gobject.obj"
 
-(** Build the GObject-ref OCaml type for a cross-namespace class / interface. *)
+(** Build the GObject-ref OCaml type for a cross-namespace class / interface.
+    Cross-namespace classes are exposed via the library wrapper's [Wrappers]
+    submodule, e.g. [Ocgtk_gio.Gio.Wrappers.App_info.t]. *)
 let cross_ns_object_type namespace class_name =
   let ext = Utils.external_namespace_to_module_name namespace in
   let mod_ = Utils.module_name_of_class class_name in
-  ext ^ "." ^ mod_ ^ ".t Gobject.obj"
+  ext ^ ".Wrappers." ^ mod_ ^ ".t Gobject.obj"
 
 (* ===================================================================== *)
 (* Enum / bitfield classification helpers                                *)
@@ -126,15 +134,21 @@ let classify_bitfield ~ctx ~namespace ~name =
 (* Class / interface classification helpers                              *)
 (* ===================================================================== *)
 
-let classify_gobject ~ctx ~namespace ~name =
-  let ocaml_type =
-    if String.equal namespace ctx.namespace.namespace_name then
-      same_ns_object_type ~ctx name
-    else cross_ns_object_type namespace name
-  in
-  let getter_expr = "Gobject.Value.get_object v" in
-  let setter_expr = "Gobject.Value.set_object v (Some x)" in
-  Supported { ocaml_type; getter_expr; setter_expr }
+let classify_gobject ~ctx:_ ~namespace ~name =
+  (* GObject class / interface parameters in signal callbacks are not yet
+     supported at the L1 emission layer. Two issues block them:
+     (a) [Gobject.Value.get_object] returns ['a obj option] but the
+         emitted [val] declarations are typed without the [option], so the
+         implementation type does not match the interface type;
+     (b) referencing a same-namespace class type from another L1 module
+         introduces dependency edges that may form cycles the existing
+         module-grouping pass did not anticipate (e.g. Tooltip <-> Widget).
+     Until both issues are addressed, classify class types as Unsupported
+     so the signal is logged and skipped at L1 emission. *)
+  let _ = same_ns_object_type and _ = cross_ns_object_type in
+  Unsupported
+    (Printf.sprintf "GObject class parameter %s.%s not yet supported"
+       namespace name)
 
 (* ===================================================================== *)
 (* Main classify function                                                *)

@@ -26,3 +26,9 @@ external get_active : t -> bool = "ml_gtk_switch_get_active"
 (** Gets whether the `GtkSwitch` is in its “on” or “off” state. *)
 
 (* Properties *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_state_set :
+  ?after:bool -> t -> callback:(state:bool -> bool) -> Gobject.Signal.handler_id

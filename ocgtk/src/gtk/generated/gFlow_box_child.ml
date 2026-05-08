@@ -1,11 +1,9 @@
-(* Signal class defined in gflow_box_child_signals.ml *)
-
 class type flow_box_child_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t
 
-  inherit Gflow_box_child_signals.flow_box_child_signals
+  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method changed : unit -> unit
 
   method get_child :
@@ -37,7 +35,9 @@ class flow_box_child (obj : Flow_box_child.t) : flow_box_child_t =
              .Widget
              .t)
 
-    inherit Gflow_box_child_signals.flow_box_child_signals obj
+    method on_activate ~callback =
+      Flow_box_child.on_activate self#as_flow_box_child ~callback
+
     method changed : unit -> unit = fun () -> Flow_box_child.changed obj
 
     method get_child :

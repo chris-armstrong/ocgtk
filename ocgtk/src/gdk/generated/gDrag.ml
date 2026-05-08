@@ -1,7 +1,13 @@
-(* Signal class defined in gdrag_signals.ml *)
-
 class type drag_t = object
-  inherit Gdrag_signals.drag_signals
+  method on_cancel :
+    callback:(reason:Gdk_enums.dragcancelreason -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_dnd_finished : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_drop_performed :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
   method drop_done : bool -> unit
   method get_actions : unit -> Gdk_enums.dragaction
   method get_content : unit -> GContent_provider.content_provider_t
@@ -21,7 +27,14 @@ end
 (* High-level class for Drag *)
 class drag (obj : Drag.t) : drag_t =
   object (self)
-    inherit Gdrag_signals.drag_signals obj
+    method on_cancel ~callback = Drag.on_cancel self#as_drag ~callback
+
+    method on_dnd_finished ~callback =
+      Drag.on_dnd_finished self#as_drag ~callback
+
+    method on_drop_performed ~callback =
+      Drag.on_drop_performed self#as_drag ~callback
+
     method drop_done : bool -> unit = fun success -> Drag.drop_done obj success
 
     method get_actions : unit -> Gdk_enums.dragaction =

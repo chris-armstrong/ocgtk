@@ -16,3 +16,18 @@ external authorize_authenticated_peer :
 external allow_mechanism : t -> string -> bool
   = "ml_g_dbus_auth_observer_allow_mechanism"
 (** Emits the #GDBusAuthObserver::allow-mechanism signal on @observer. *)
+
+let on_allow_mechanism ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let mechanism =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        let result = callback ~mechanism in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"allow-mechanism" ~callback:closure
+    ~after:(Option.value after ~default:false)

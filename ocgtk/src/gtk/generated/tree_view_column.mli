@@ -289,3 +289,6 @@ external get_cell_area :
   t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t
   = "ml_gtk_tree_view_column_get_cell_area"
 (** Get property: cell-area *)
+
+val on_clicked :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

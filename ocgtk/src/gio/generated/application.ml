@@ -456,3 +456,26 @@ external activate : t -> unit = "ml_g_application_activate"
     The application must be registered before calling this function. *)
 
 (* Properties *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_name_lost ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let result = callback () in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"name-lost" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_shutdown ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"shutdown" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_startup ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"startup" ~callback
+    ~after:(Option.value after ~default:false)

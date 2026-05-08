@@ -1,5 +1,5 @@
 class type resolver_t = object
-  inherit Gresolver_signals.resolver_signals
+  method on_reload : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method get_timeout : unit -> int
 
   method lookup_by_address :

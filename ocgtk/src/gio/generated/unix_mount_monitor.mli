@@ -17,3 +17,9 @@ rate at which events would be reported under some uncommon
 circumstances.  Since @mount_monitor is a singleton, it also meant
 that calling this function would have side effects for other users of
 the monitor. *)
+
+val on_mountpoints_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_mounts_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

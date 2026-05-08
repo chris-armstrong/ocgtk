@@ -1,5 +1,5 @@
 class type recent_manager_t = object
-  inherit Grecent_manager_signals.recent_manager_signals
+  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method add_full : string -> Recent_data.t -> bool
   method add_item : string -> bool
   method get_items : unit -> Recent_info.t list

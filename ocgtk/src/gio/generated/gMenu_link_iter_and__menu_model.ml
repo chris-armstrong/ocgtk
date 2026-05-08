@@ -9,7 +9,9 @@ class type menu_link_iter_t = object
 end
 
 and menu_model_t = object
-  inherit Gmenu_model_signals.menu_model_signals
+  method on_items_changed :
+    callback:(position:int -> removed:int -> added:int -> unit) ->
+    Gobject.Signal.handler_id
 
   method get_item_attribute_value :
     int -> string -> Gvariant_type.t option -> Gvariant.t option
@@ -41,12 +43,14 @@ class menu_link_iter (obj : Menu_link_iter_and__menu_model.Menu_link_iter.t) :
       fun () -> Menu_link_iter_and__menu_model.Menu_link_iter.next obj
 
     method as_menu_link_iter = obj
-  end (* Signal class defined in gmenu_model_signals.ml *)
+  end
 
 and menu_model (obj : Menu_link_iter_and__menu_model.Menu_model.t) :
   menu_model_t =
   object (self)
-    inherit Gmenu_model_signals.menu_model_signals obj
+    method on_items_changed ~callback =
+      Menu_link_iter_and__menu_model.Menu_model.on_items_changed
+        self#as_menu_model ~callback
 
     method get_item_attribute_value :
         int -> string -> Gvariant_type.t option -> Gvariant.t option =

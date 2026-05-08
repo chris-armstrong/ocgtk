@@ -138,3 +138,6 @@ external add_resource_path : t -> string -> unit
     part of the icon theme. *)
 
 (* Properties *)
+
+val on_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

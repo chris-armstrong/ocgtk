@@ -64,3 +64,23 @@ external get_active : t -> bool = "ml_gtk_scale_button_get_active"
 *)
 
 (* Properties *)
+
+let on_popdown ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"popdown" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_popup ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"popup" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_value_changed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let value =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_double v
+        in
+        callback ~value)
+  in
+  Gobject.Signal.connect obj ~name:"value-changed" ~callback:closure
+    ~after:(Option.value after ~default:false)

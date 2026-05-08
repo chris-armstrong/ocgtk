@@ -1,8 +1,4 @@
-(* Signal class defined in gvolume_monitor_signals.ml *)
-
 class type volume_monitor_t = object
-  inherit Gvolume_monitor_signals.volume_monitor_signals
-
   method get_connected_drives :
     unit ->
     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
@@ -39,8 +35,6 @@ end
 (* High-level class for VolumeMonitor *)
 class volume_monitor (obj : Volume_monitor.t) : volume_monitor_t =
   object (self)
-    inherit Gvolume_monitor_signals.volume_monitor_signals obj
-
     method get_connected_drives :
         unit ->
         GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume

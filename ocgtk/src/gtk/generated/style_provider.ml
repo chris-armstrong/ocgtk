@@ -7,3 +7,6 @@ external from_gobject : 'a Gobject.obj -> t
   = "ml_gtk_style_provider_from_gobject"
 
 (* Methods *)
+let on_gtk_private_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"gtk-private-changed" ~callback
+    ~after:(Option.value after ~default:false)

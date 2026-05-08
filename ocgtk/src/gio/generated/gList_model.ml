@@ -1,7 +1,8 @@
-(* Signal class defined in glist_model_signals.ml *)
-
 class type list_model_t = object
-  inherit Glist_model_signals.list_model_signals
+  method on_items_changed :
+    callback:(position:int -> removed:int -> added:int -> unit) ->
+    Gobject.Signal.handler_id
+
   method get_item_type : unit -> int
   method get_n_items : unit -> int
   method get_object : int -> [ `object_ ] Gobject.obj option
@@ -12,7 +13,9 @@ end
 (* High-level class for ListModel *)
 class list_model (obj : List_model.t) : list_model_t =
   object (self)
-    inherit Glist_model_signals.list_model_signals obj
+    method on_items_changed ~callback =
+      List_model.on_items_changed self#as_list_model ~callback
+
     method get_item_type : unit -> int = fun () -> List_model.get_item_type obj
     method get_n_items : unit -> int = fun () -> List_model.get_n_items obj
 

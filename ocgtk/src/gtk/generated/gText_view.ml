@@ -1,5 +1,3 @@
-(* Signal class defined in gtext_view_signals.ml *)
-
 class type text_view_t = object
   inherit
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -7,7 +5,50 @@ class type text_view_t = object
 
   inherit GAccessible_text.accessible_text_t
   inherit GScrollable.scrollable_t
-  inherit Gtext_view_signals.text_view_signals
+  method on_backspace : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_copy_clipboard :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_cut_clipboard : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_delete_from_cursor :
+    callback:(type_:Gtk_enums.deletetype -> count:int -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_insert_at_cursor :
+    callback:(string:string -> unit) -> Gobject.Signal.handler_id
+
+  method on_insert_emoji : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_move_cursor :
+    callback:
+      (step:Gtk_enums.movementstep ->
+      count:int ->
+      extend_selection:bool ->
+      unit) ->
+    Gobject.Signal.handler_id
+
+  method on_move_viewport :
+    callback:(step:Gtk_enums.scrollstep -> count:int -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_paste_clipboard :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_preedit_changed :
+    callback:(preedit:string -> unit) -> Gobject.Signal.handler_id
+
+  method on_select_all :
+    callback:(select:bool -> unit) -> Gobject.Signal.handler_id
+
+  method on_set_anchor : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_toggle_cursor_visible :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_toggle_overwrite :
+    callback:(unit -> unit) -> Gobject.Signal.handler_id
 
   method add_child_at_anchor :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -163,7 +204,48 @@ class text_view (obj : Text_view.t) : text_view_t =
 
     inherit GAccessible_text.accessible_text (Accessible_text.from_gobject obj)
     inherit GScrollable.scrollable (Scrollable.from_gobject obj)
-    inherit Gtext_view_signals.text_view_signals obj
+
+    method on_backspace ~callback =
+      Text_view.on_backspace self#as_text_view ~callback
+
+    method on_copy_clipboard ~callback =
+      Text_view.on_copy_clipboard self#as_text_view ~callback
+
+    method on_cut_clipboard ~callback =
+      Text_view.on_cut_clipboard self#as_text_view ~callback
+
+    method on_delete_from_cursor ~callback =
+      Text_view.on_delete_from_cursor self#as_text_view ~callback
+
+    method on_insert_at_cursor ~callback =
+      Text_view.on_insert_at_cursor self#as_text_view ~callback
+
+    method on_insert_emoji ~callback =
+      Text_view.on_insert_emoji self#as_text_view ~callback
+
+    method on_move_cursor ~callback =
+      Text_view.on_move_cursor self#as_text_view ~callback
+
+    method on_move_viewport ~callback =
+      Text_view.on_move_viewport self#as_text_view ~callback
+
+    method on_paste_clipboard ~callback =
+      Text_view.on_paste_clipboard self#as_text_view ~callback
+
+    method on_preedit_changed ~callback =
+      Text_view.on_preedit_changed self#as_text_view ~callback
+
+    method on_select_all ~callback =
+      Text_view.on_select_all self#as_text_view ~callback
+
+    method on_set_anchor ~callback =
+      Text_view.on_set_anchor self#as_text_view ~callback
+
+    method on_toggle_cursor_visible ~callback =
+      Text_view.on_toggle_cursor_visible self#as_text_view ~callback
+
+    method on_toggle_overwrite ~callback =
+      Text_view.on_toggle_overwrite self#as_text_view ~callback
 
     method add_child_at_anchor :
         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget

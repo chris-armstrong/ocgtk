@@ -389,6 +389,12 @@ and App_launch_context : sig
   (** Gets the display string for the @context. This is used to ensure new
   applications are started on the same display as the launching
   application, by setting the `DISPLAY` environment variable. *)
+
+  val on_launch_failed :
+    ?after:bool ->
+    t ->
+    callback:(startup_notify_id:string -> unit) ->
+    Gobject.Signal.handler_id
 end = struct
   type t = [ `app_launch_context | `object_ ] Gobject.obj
 
@@ -443,6 +449,18 @@ end = struct
   (** Gets the display string for the @context. This is used to ensure new
   applications are started on the same display as the launching
   application, by setting the `DISPLAY` environment variable. *)
+
+  let on_launch_failed ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let startup_notify_id =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_string v
+          in
+          callback ~startup_notify_id)
+    in
+    Gobject.Signal.connect obj ~name:"launch-failed" ~callback:closure
+      ~after:(Option.value after ~default:false)
 end
 
 and Drive : sig
@@ -542,6 +560,18 @@ and Drive : sig
 
   external can_eject : t -> bool = "ml_g_drive_can_eject"
   (** Checks if a drive can be ejected. *)
+
+  val on_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_disconnected :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_eject_button :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_stop_button :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
   type t = [ `drive ] Gobject.obj
 
@@ -639,6 +669,22 @@ end = struct
 
   external can_eject : t -> bool = "ml_g_drive_can_eject"
   (** Checks if a drive can be ejected. *)
+
+  let on_changed ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"changed" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_disconnected ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"disconnected" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_eject_button ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"eject-button" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_stop_button ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"stop-button" ~callback
+      ~after:(Option.value after ~default:false)
 end
 
 and File : sig
@@ -3011,6 +3057,15 @@ and Mount : sig
 
   external can_eject : t -> bool = "ml_g_mount_can_eject"
   (** Checks if @mount can be ejected. *)
+
+  val on_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_pre_unmount :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_unmounted :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
   type t = [ `mount ] Gobject.obj
 
@@ -3145,6 +3200,18 @@ end = struct
 
   external can_eject : t -> bool = "ml_g_mount_can_eject"
   (** Checks if @mount can be ejected. *)
+
+  let on_changed ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"changed" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_pre_unmount ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"pre-unmount" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_unmounted ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"unmounted" ~callback
+      ~after:(Option.value after ~default:false)
 end
 
 and Volume : sig
@@ -3247,6 +3314,12 @@ and Volume : sig
 
   external can_eject : t -> bool = "ml_g_volume_can_eject"
   (** Checks if a volume can be ejected. *)
+
+  val on_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_removed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
   type t = [ `volume ] Gobject.obj
 
@@ -3347,4 +3420,12 @@ end = struct
 
   external can_eject : t -> bool = "ml_g_volume_can_eject"
   (** Checks if a volume can be ejected. *)
+
+  let on_changed ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"changed" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_removed ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"removed" ~callback
+      ~after:(Option.value after ~default:false)
 end

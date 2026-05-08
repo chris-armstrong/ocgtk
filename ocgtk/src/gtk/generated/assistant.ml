@@ -191,3 +191,19 @@ external add_action_widget :
 
 external get_use_header_bar : t -> int = "ml_gtk_assistant_get_use_header_bar"
 (** Get property: use-header-bar *)
+
+let on_apply ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"apply" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_cancel ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"cancel" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_close ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"close" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_escape ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"escape" ~callback
+    ~after:(Option.value after ~default:false)
