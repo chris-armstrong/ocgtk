@@ -18,24 +18,51 @@ type result = Supported of marshaller | Unsupported of string
 (* ===================================================================== *)
 
 (** Association list mapping GIR primitive names to (ocaml_type,
-    getter_fn, setter_fn) triples for [Gobject.Value]. *)
+    getter_fn, setter_fn) triples for [Gobject.Value].
+
+    Covers every GIR primitive that maps to a [Gobject.Value] accessor
+    defined in [gobject.ml].  Types without a corresponding GValue accessor
+    ([guint64], [glong], [gulong], [gchar], [guchar], [gpointer], [gsize],
+    [gssize], [goffset]) fall through to [Tk_Primitive -> Unsupported]
+    in [classify]. *)
 let primitive_marshallers : (string * (string * string * string)) list =
   [
+    (* G_TYPE_BOOLEAN *)
     ( "gboolean",
       ("bool", "Gobject.Value.get_boolean v", "Gobject.Value.set_boolean v x") );
+    (* G_TYPE_INT: gint and its sized aliases are all G_TYPE_INT *)
     ("gint", ("int", "Gobject.Value.get_int v", "Gobject.Value.set_int v x"));
+    ( "gint16",
+      ("int", "Gobject.Value.get_int v", "Gobject.Value.set_int v x") );
+    ( "gint32",
+      ("int", "Gobject.Value.get_int v", "Gobject.Value.set_int v x") );
+    (* G_TYPE_UINT: guint and its sized aliases are all G_TYPE_UINT *)
     ("guint", ("int", "Gobject.Value.get_uint v", "Gobject.Value.set_uint v x"));
+    ( "guint16",
+      ("int", "Gobject.Value.get_uint v", "Gobject.Value.set_uint v x") );
+    ( "guint32",
+      ("int", "Gobject.Value.get_uint v", "Gobject.Value.set_uint v x") );
+    ("gunichar",
+      ("int", "Gobject.Value.get_uint v", "Gobject.Value.set_uint v x") );
+    (* G_TYPE_INT64 *)
     ( "gint64",
       ("Int64.t", "Gobject.Value.get_int64 v", "Gobject.Value.set_int64 v x") );
+    (* G_TYPE_DOUBLE *)
     ( "gdouble",
       ("float", "Gobject.Value.get_double v", "Gobject.Value.set_double v x") );
+    (* G_TYPE_FLOAT *)
     ( "gfloat",
-      ("float", "Gobject.Value.get_double v", "Gobject.Value.set_double v x") );
+      ("float", "Gobject.Value.get_float v", "Gobject.Value.set_float v x") );
+    (* G_TYPE_STRING *)
     ( "utf8",
       ("string", "Gobject.Value.get_string v", "Gobject.Value.set_string v x") );
     ( "filename",
       ("string", "Gobject.Value.get_string v", "Gobject.Value.set_string v x") );
     ( "gchararray",
+      ("string", "Gobject.Value.get_string v", "Gobject.Value.set_string v x") );
+    ("gchar*",
+      ("string", "Gobject.Value.get_string v", "Gobject.Value.set_string v x") );
+    ( "const gchar*",
       ("string", "Gobject.Value.get_string v", "Gobject.Value.set_string v x") );
   ]
 
