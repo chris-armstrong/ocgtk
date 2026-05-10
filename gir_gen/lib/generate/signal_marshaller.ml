@@ -134,27 +134,57 @@ let classify_bitfield ~ctx ~namespace ~name =
 (* Class / interface classification helpers                              *)
 (* ===================================================================== *)
 
-let classify_gobject ~ctx:_ ~namespace ~name =
-  (* GObject class / interface parameters in signal callbacks are not yet
-     supported at the L1 emission layer. Two issues block them:
-     (a) [Gobject.Value.get_object] returns ['a obj option] but the
-         emitted [val] declarations are typed without the [option], so the
-         implementation type does not match the interface type;
-     (b) referencing a same-namespace class type from another L1 module
-         introduces dependency edges that may form cycles the existing
-         module-grouping pass did not anticipate (e.g. Tooltip <-> Widget).
-     Until both issues are addressed, classify class types as Unsupported
-     so the signal is logged and skipped at L1 emission. *)
-  let _ = same_ns_object_type and _ = cross_ns_object_type in
-  Unsupported
-    (Printf.sprintf "GObject class parameter %s.%s not yet supported"
-       namespace name)
+let classify_gobject ~ctx ~emitting_class ~namespace ~name =
+  let module_of n =
+    match Hashtbl.find_opt ctx.module_groups n with
+    | Some m -> m
+    | None -> Utils.module_name_of_class n
+  in
+  if not (String.equal namespace ctx.namespace.namespace_name) then
+    (* Cross-namespace: can never close a same-namespace cycle. *)
+    Supported
+      {
+        ocaml_type = cross_ns_object_type namespace name ^ " option";
+        getter_expr = "Gobject.Value.get_object v";
+        setter_expr = "Gobject.Value.set_object v x";
+      }
+  else
+    let emitting_mod = module_of emitting_class in
+    let param_mod = module_of name in
+    if String.equal emitting_mod param_mod then
+      (* Intra-module reference — self-loop, always safe. *)
+      Supported
+        {
+          ocaml_type = same_ns_object_type ~ctx name ^ " option";
+          getter_expr = "Gobject.Value.get_object v";
+          setter_expr = "Gobject.Value.set_object v x";
+        }
+    else
+      let graph = Dependency_analysis.build_module_dependency_graph ctx in
+      if
+        Dependency_analysis.module_reaches_module graph
+          ~from_module:param_mod ~to_module:emitting_mod
+      then
+        (* param_mod already reaches emitting_mod — adding this edge would
+           create a cycle in the module graph. *)
+        Unsupported
+          (Printf.sprintf
+             "GObject class parameter %s.%s would create a module cycle \
+              (%s -> %s -> %s)"
+             namespace name emitting_mod param_mod emitting_mod)
+      else
+        Supported
+          {
+            ocaml_type = same_ns_object_type ~ctx name ^ " option";
+            getter_expr = "Gobject.Value.get_object v";
+            setter_expr = "Gobject.Value.set_object v x";
+          }
 
 (* ===================================================================== *)
 (* Main classify function                                                *)
 (* ===================================================================== *)
 
-let classify ~ctx ~gir_type =
+let classify ~ctx ~emitting_class ~gir_type =
   (* Array types are not yet supported *)
   if Option.is_some gir_type.array then
     Unsupported "GArray not yet supported"
@@ -190,7 +220,7 @@ let classify ~ctx ~gir_type =
         | Type_mappings.Tk_Bitfield ->
             classify_bitfield ~ctx ~namespace ~name
         | Type_mappings.Tk_Class | Type_mappings.Tk_Interface ->
-            classify_gobject ~ctx ~namespace ~name
+            classify_gobject ~ctx ~emitting_class ~namespace ~name
         | Type_mappings.Tk_Record ->
             Unsupported
               (Printf.sprintf "boxed type %s.%s not yet supported" namespace

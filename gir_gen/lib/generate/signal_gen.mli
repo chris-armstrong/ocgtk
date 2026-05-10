@@ -51,7 +51,10 @@ val sanitize_signal_name : string -> string
     Example: ["key-pressed"] -> ["on_key_pressed"]. *)
 
 val classify :
-  ctx:generation_context -> gir_signal -> (signal_emission, string) result
+  ctx:generation_context ->
+  emitting_class:string ->
+  gir_signal ->
+  (signal_emission, string) result
 (** [classify ~ctx signal] analyses [signal] and returns a fully-populated
     [signal_emission] record when all parameters and the return type can be
     marshalled.

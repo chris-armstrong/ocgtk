@@ -59,4 +59,8 @@ type result =
     - Array types ([GLib.Array])
     - Boxed record types (e.g. [Gtk.TextIter])
     - Callback parameter types (deferred to Milestone 4) *)
-val classify : ctx:generation_context -> gir_type:gir_type -> result
+val classify :
+  ctx:generation_context ->
+  emitting_class:string ->
+  gir_type:gir_type ->
+  result

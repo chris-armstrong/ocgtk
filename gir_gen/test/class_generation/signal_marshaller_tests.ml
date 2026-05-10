@@ -140,7 +140,11 @@ let gtk_ctx_with_textiter () =
       ]
     ()
 
-let classify = Gir_gen_lib.Generate.Signal_marshaller.classify
+(* Default emitting class for tests that don't care about cycle detection *)
+let dummy_emitting_class = "Emitter"
+
+let classify ?(emitting_class = dummy_emitting_class) ~ctx ~gir_type () =
+  Gir_gen_lib.Generate.Signal_marshaller.classify ~ctx ~emitting_class ~gir_type
 
 (* ========================================================================= *)
 (* Test cases                                                                 *)
@@ -149,7 +153,7 @@ let classify = Gir_gen_lib.Generate.Signal_marshaller.classify
 let test_gboolean_maps_to_bool () =
   let ctx = gtk_ctx () in
   let gir_type = Type_factory.make_gir_type ~name:"gboolean" ~c_type:"gboolean" () in
-  let result = classify ~ctx ~gir_type in
+  let result = classify ~ctx ~gir_type () in
   assert_supported ~label:"gboolean" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "bool" m.ocaml_type;
   assert_expr_contains ~label:"gboolean" ~field:"getter_expr"
@@ -158,7 +162,7 @@ let test_gboolean_maps_to_bool () =
 let test_gint_maps_to_int () =
   let ctx = gtk_ctx () in
   let gir_type = Type_factory.make_gir_type ~name:"gint" ~c_type:"gint" () in
-  let result = classify ~ctx ~gir_type in
+  let result = classify ~ctx ~gir_type () in
   assert_supported ~label:"gint" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "int" m.ocaml_type;
   assert_expr_contains ~label:"gint" ~field:"getter_expr"
@@ -167,7 +171,7 @@ let test_gint_maps_to_int () =
 let test_guint_maps_to_int () =
   let ctx = gtk_ctx () in
   let gir_type = Type_factory.make_gir_type ~name:"guint" ~c_type:"guint" () in
-  let result = classify ~ctx ~gir_type in
+  let result = classify ~ctx ~gir_type () in
   assert_supported ~label:"guint" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "int" m.ocaml_type;
   assert_expr_contains ~label:"guint" ~field:"getter_expr"
@@ -176,7 +180,7 @@ let test_guint_maps_to_int () =
 let test_gint64_maps_to_int64 () =
   let ctx = gtk_ctx () in
   let gir_type = Type_factory.make_gir_type ~name:"gint64" ~c_type:"gint64" () in
-  let result = classify ~ctx ~gir_type in
+  let result = classify ~ctx ~gir_type () in
   assert_supported ~label:"gint64" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "Int64.t" m.ocaml_type;
   assert_expr_contains ~label:"gint64" ~field:"getter_expr"
@@ -185,7 +189,7 @@ let test_gint64_maps_to_int64 () =
 let test_gdouble_maps_to_float () =
   let ctx = gtk_ctx () in
   let gir_type = Type_factory.make_gir_type ~name:"gdouble" ~c_type:"gdouble" () in
-  let result = classify ~ctx ~gir_type in
+  let result = classify ~ctx ~gir_type () in
   assert_supported ~label:"gdouble" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "float" m.ocaml_type;
   assert_expr_contains ~label:"gdouble" ~field:"getter_expr"
@@ -196,7 +200,7 @@ let test_utf8_maps_to_string () =
   let gir_type =
     Type_factory.make_gir_type ~name:"utf8" ~c_type:"const gchar*" ()
   in
-  let result = classify ~ctx ~gir_type in
+  let result = classify ~ctx ~gir_type () in
   assert_supported ~label:"utf8" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "string" m.ocaml_type;
   assert_expr_contains ~label:"utf8" ~field:"getter_expr"
@@ -207,7 +211,7 @@ let test_same_ns_enum_orientation () =
   let gir_type =
     Type_factory.make_gir_type ~name:"Orientation" ~c_type:"GtkOrientation" ()
   in
-  let result = classify ~ctx ~gir_type in
+  let result = classify ~ctx ~gir_type () in
   assert_supported ~label:"Orientation enum" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "Gtk_enums.orientation" m.ocaml_type;
   assert_expr_contains ~label:"Orientation enum" ~field:"getter_expr"
@@ -221,7 +225,7 @@ let test_cross_ns_bitfield_modifiertype () =
     Type_factory.make_gir_type ~name:"Gdk.ModifierType"
       ~c_type:"GdkModifierType" ()
   in
-  let result = classify ~ctx ~gir_type in
+  let result = classify ~ctx ~gir_type () in
   assert_supported ~label:"Gdk.ModifierType bitfield" result @@ fun m ->
   Alcotest.(check string) "ocaml_type"
     "Ocgtk_gdk.Gdk_enums.modifiertype" m.ocaml_type;
@@ -235,27 +239,95 @@ let test_glib_variant_maps_to_gvariant () =
   let gir_type =
     Type_factory.make_gir_type ~name:"GLib.Variant" ~c_type:"GVariant*" ()
   in
-  let result = classify ~ctx ~gir_type in
+  let result = classify ~ctx ~gir_type () in
   assert_supported ~label:"GLib.Variant" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "Gvariant.t" m.ocaml_type;
   assert_expr_contains ~label:"GLib.Variant" ~field:"getter_expr"
     m.getter_expr "Gobject.Value.get_variant"
 
-let test_same_ns_gobject_class () =
+(* Same-NS GObject class with no cycle: emitter is "Button", param is "Widget".
+   Widget has no outgoing edges to Button in the empty ctx, so no cycle. *)
+let test_same_ns_gobject_class_no_cycle () =
   let ctx = gtk_ctx_with_widget () in
   let gir_type =
     Type_factory.make_gir_type ~name:"Widget" ~c_type:"GtkWidget*" ()
   in
-  let result = classify ~ctx ~gir_type in
-  assert_unsupported ~label:"same-ns GObject class" result "not yet supported"
+  let result =
+    classify ~emitting_class:"Button" ~ctx ~gir_type ()
+  in
+  assert_supported ~label:"same-ns GObject class (no cycle)" result @@ fun m ->
+  assert_expr_contains ~label:"same-ns GObject class (no cycle)"
+    ~field:"ocaml_type" m.ocaml_type "Widget";
+  assert_expr_contains ~label:"same-ns GObject class (no cycle)"
+    ~field:"ocaml_type" m.ocaml_type "option";
+  assert_expr_contains ~label:"same-ns GObject class (no cycle)"
+    ~field:"getter_expr" m.getter_expr "Gobject.Value.get_object"
 
+(* Cross-NS GObject class: always Supported regardless of cycle status. *)
 let test_cross_ns_gobject_gio_file () =
   let ctx = gtk_ctx_with_gio_file () in
   let gir_type =
     Type_factory.make_gir_type ~name:"Gio.File" ~c_type:"GFile*" ()
   in
-  let result = classify ~ctx ~gir_type in
-  assert_unsupported ~label:"cross-ns GObject class" result "not yet supported"
+  let result = classify ~ctx ~gir_type () in
+  assert_supported ~label:"cross-ns GObject class" result @@ fun m ->
+  assert_expr_contains ~label:"cross-ns GObject class" ~field:"ocaml_type"
+    m.ocaml_type "File";
+  assert_expr_contains ~label:"cross-ns GObject class" ~field:"ocaml_type"
+    m.ocaml_type "option";
+  assert_expr_contains ~label:"cross-ns GObject class" ~field:"getter_expr"
+    m.getter_expr "Gobject.Value.get_object"
+
+(* Same-NS GObject class where adding the signal edge would close a cycle.
+   Setup: Widget has a method returning Tooltip; Tooltip emits a signal with
+   Widget as a parameter.  Widget (Widget_module) already reaches Tooltip
+   (Tooltip_module) via the dependency graph, so Tooltip emitting a Widget
+   param would add Tooltip_module -> Widget_module, completing the cycle. *)
+let test_same_ns_gobject_class_cycle_unsupported () =
+  let widget_type =
+    Type_factory.make_gir_type ~name:"Widget" ~c_type:"GtkWidget*" ()
+  in
+  let method_tooltip_returns_widget =
+    Type_factory.make_gir_method ~method_name:"get_widget"
+      ~c_identifier:"tooltip_get_widget" ~return_type:widget_type ()
+  in
+  let cls_tooltip =
+    Type_factory.make_gir_class ~class_name:"Tooltip"
+      ~methods:[ method_tooltip_returns_widget ] ()
+  in
+  let cls_widget = Type_factory.make_gir_class ~class_name:"Widget" () in
+  let tooltip_type =
+    Type_factory.make_gir_type ~name:"Tooltip" ~c_type:"GtkTooltip*" ()
+  in
+  let method_widget_returns_tooltip =
+    Type_factory.make_gir_method ~method_name:"get_tooltip"
+      ~c_identifier:"widget_get_tooltip" ~return_type:tooltip_type ()
+  in
+  let cls_widget_with_tooltip_dep =
+    Type_factory.make_gir_class ~class_name:"Widget"
+      ~methods:[ method_widget_returns_tooltip ] ()
+  in
+  (* Widget already depends on Tooltip, so Tooltip emitting Widget would cycle *)
+  let ctx =
+    Type_factory.make_generation_context
+      ~namespace:
+        (Type_factory.make_gir_namespace ~namespace_name:"Gtk"
+           ~namespace_version:"4.0"
+           ~namespace_shared_library:"libgtk-4.so.1"
+           ~namespace_c_identifier_prefixes:"Gtk"
+           ~namespace_c_symbol_prefixes:"gtk" ())
+      ~classes:[ cls_widget_with_tooltip_dep; cls_tooltip; cls_widget ]
+      ~module_groups:[ ("Widget", "Widget"); ("Tooltip", "Tooltip") ]
+      ()
+  in
+  let gir_type =
+    Type_factory.make_gir_type ~name:"Widget" ~c_type:"GtkWidget*" ()
+  in
+  let result =
+    classify ~emitting_class:"Tooltip" ~ctx ~gir_type ()
+  in
+  assert_unsupported ~label:"same-ns GObject class (cycle)" result
+    "would create a module cycle"
 
 let test_garray_is_unsupported () =
   let ctx = gtk_ctx () in
@@ -268,7 +340,7 @@ let test_garray_is_unsupported () =
     Type_factory.make_gir_type ~name:"GLib.Array" ~c_type:"GArray*"
       ~array:array_info ()
   in
-  let result = classify ~ctx ~gir_type in
+  let result = classify ~ctx ~gir_type () in
   assert_unsupported ~label:"GLib.Array" result "GArray not yet supported"
 
 let test_boxed_textiter_is_unsupported () =
@@ -276,7 +348,7 @@ let test_boxed_textiter_is_unsupported () =
   let gir_type =
     Type_factory.make_gir_type ~name:"TextIter" ~c_type:"GtkTextIter*" ()
   in
-  let result = classify ~ctx ~gir_type in
+  let result = classify ~ctx ~gir_type () in
   assert_unsupported ~label:"Gtk.TextIter boxed" result "TextIter"
 
 let test_callback_type_is_unsupported () =
@@ -286,13 +358,13 @@ let test_callback_type_is_unsupported () =
   let gir_type =
     Type_factory.make_gir_type ~name:"DestroyFunc" ~c_type:"GDestroyNotify" ()
   in
-  let result = classify ~ctx ~gir_type in
+  let result = classify ~ctx ~gir_type () in
   assert_unsupported ~label:"callback type" result "Milestone 4"
 
 let test_void_none_return () =
   let ctx = gtk_ctx () in
   let gir_type = Type_factory.make_gir_type ~name:"none" ~c_type:"void" () in
-  let result = classify ~ctx ~gir_type in
+  let result = classify ~ctx ~gir_type () in
   assert_supported ~label:"void/none return" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "unit" m.ocaml_type
 
@@ -319,10 +391,14 @@ let tests =
       `Quick test_cross_ns_bitfield_modifiertype;
     Alcotest.test_case "GLib.Variant maps to Gvariant.t" `Quick
       test_glib_variant_maps_to_gvariant;
-    Alcotest.test_case "same-ns GObject class is Unsupported" `Quick
-      test_same_ns_gobject_class;
-    Alcotest.test_case "cross-ns GObject class is Unsupported" `Quick
+    Alcotest.test_case
+      "same-ns GObject class (no cycle) is Supported with option" `Quick
+      test_same_ns_gobject_class_no_cycle;
+    Alcotest.test_case "cross-ns GObject class is Supported with option" `Quick
       test_cross_ns_gobject_gio_file;
+    Alcotest.test_case
+      "same-ns GObject class (would cycle) is Unsupported" `Quick
+      test_same_ns_gobject_class_cycle_unsupported;
     Alcotest.test_case "GLib.Array is Unsupported" `Quick
       test_garray_is_unsupported;
     Alcotest.test_case "Gtk.TextIter boxed is Unsupported" `Quick

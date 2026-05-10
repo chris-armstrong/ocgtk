@@ -154,7 +154,7 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name
   (* L2 signal forwarder methods — one per supported signal.
      Error branch silently skips: the skip was already logged at L1 emission. *)
   List.iter signals ~f:(fun signal ->
-      match Signal_gen.classify ~ctx signal with
+      match Signal_gen.classify ~ctx ~emitting_class:class_name signal with
       | Error _ -> ()
       | Ok emission ->
           Buffer.add_string buf
@@ -291,7 +291,7 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_
   (* L2 signal method type signatures — one per supported signal.
      Error branch silently skips: already logged at L1 emission. *)
   List.iter signals ~f:(fun signal ->
-      match Signal_gen.classify ~ctx signal with
+      match Signal_gen.classify ~ctx ~emitting_class:class_name signal with
       | Error _ -> ()
       | Ok emission ->
           Buffer.add_string buf (Signal_gen.emit_l2_method_sig emission));

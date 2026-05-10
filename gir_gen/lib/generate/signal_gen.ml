@@ -111,13 +111,16 @@ type signal_emission = {
 
 (** Classify a single [gir_param], returning [Ok marshaller] or [Error reason].
     Only [In]-direction parameters are supported. *)
-let classify_param ~ctx (param : gir_param) :
+let classify_param ~ctx ~emitting_class (param : gir_param) :
     (gir_param * Signal_marshaller.marshaller, string) result =
   match param.direction with
   | Out | InOut ->
       Error (sprintf "non-In direction parameter '%s'" param.param_name)
   | In -> (
-      match Signal_marshaller.classify ~ctx ~gir_type:param.param_type with
+      match
+        Signal_marshaller.classify ~ctx ~emitting_class
+          ~gir_type:param.param_type
+      with
       | Signal_marshaller.Unsupported reason ->
           Error
             (sprintf "unsupported parameter type for '%s': %s" param.param_name
@@ -160,22 +163,26 @@ let collect_param_results param_results :
 
 (** Classify the return type, converting void/unit to [None] and other supported
     types to [Some marshaller]. *)
-let classify_return ~ctx (return_type : gir_type) :
+let classify_return ~ctx ~emitting_class (return_type : gir_type) :
     (Signal_marshaller.marshaller option, string) result =
-  match Signal_marshaller.classify ~ctx ~gir_type:return_type with
+  match Signal_marshaller.classify ~ctx ~emitting_class ~gir_type:return_type with
   | Signal_marshaller.Supported m when String.equal m.ocaml_type "unit" ->
       Ok None
   | Signal_marshaller.Supported m -> Ok (Some m)
   | Signal_marshaller.Unsupported reason ->
       Error (sprintf "unsupported return type: %s" reason)
 
-let classify ~ctx (signal : gir_signal) : (signal_emission, string) result =
+let classify ~ctx ~emitting_class (signal : gir_signal) :
+    (signal_emission, string) result =
   let ( let* ) = Result.bind in
   (* Collect In-direction parameters; fail on Out/InOut or unsupported type *)
-  let param_results = List.map signal.sig_parameters ~f:(classify_param ~ctx) in
+  let param_results =
+    List.map signal.sig_parameters
+      ~f:(classify_param ~ctx ~emitting_class)
+  in
   let* supported_params = collect_param_results param_results in
   (* Classify the return type *)
-  let* return_marshaller = classify_return ~ctx signal.return_type in
+  let* return_marshaller = classify_return ~ctx ~emitting_class signal.return_type in
   let strategy =
     match (supported_params, return_marshaller) with
     | [], None -> `Connect_simple

@@ -62,7 +62,7 @@ let test_void_zero_param_emits_connect_simple_in_l1_let () =
       ~return_type:Type_factory.void_type ()
   in
   let emission =
-    expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
+    expect_ok "clicked classify" (Signal_gen.classify ~ctx ~emitting_class:"Widget" signal) Fun.id
   in
   let l1_let = Signal_gen.emit_l1_let emission in
   let ast = Ml_ast_helpers.parse_implementation l1_let in
@@ -89,7 +89,7 @@ let test_void_zero_param_emits_val_in_l1_val () =
       ~return_type:Type_factory.void_type ()
   in
   let emission =
-    expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
+    expect_ok "clicked classify" (Signal_gen.classify ~ctx ~emitting_class:"Widget" signal) Fun.id
   in
   let l1_val = Signal_gen.emit_l1_val emission in
   let ast = Ml_ast_helpers.parse_interface l1_val in
@@ -117,7 +117,7 @@ let test_void_primitive_params_uses_closure_create () =
       ()
   in
   let emission =
-    expect_ok "pressed classify" (Signal_gen.classify ~ctx signal) Fun.id
+    expect_ok "pressed classify" (Signal_gen.classify ~ctx ~emitting_class:"Widget" signal) Fun.id
   in
   (* L1 let body must contain Gobject.Closure.create *)
   let l1_let = Signal_gen.emit_l1_let emission in
@@ -172,7 +172,7 @@ let test_bool_return_zero_param_uses_closure_create () =
       ~return_type:Type_factory.gboolean_type ()
   in
   let emission =
-    expect_ok "close-request classify" (Signal_gen.classify ~ctx signal) Fun.id
+    expect_ok "close-request classify" (Signal_gen.classify ~ctx ~emitting_class:"Widget" signal) Fun.id
   in
   (match emission.strategy with
   | `Closure -> ()
@@ -223,7 +223,7 @@ let test_bool_return_bool_param_round_trip () =
       ()
   in
   let emission =
-    expect_ok "state-set classify" (Signal_gen.classify ~ctx signal) Fun.id
+    expect_ok "state-set classify" (Signal_gen.classify ~ctx ~emitting_class:"Widget" signal) Fun.id
   in
   Alcotest.(check string)
     "ocaml_callback_type" "state:bool -> bool" emission.ocaml_callback_type;
@@ -271,7 +271,7 @@ let test_mixed_params_key_pressed_shape () =
       ()
   in
   let emission =
-    expect_ok "key-pressed classify" (Signal_gen.classify ~ctx signal) Fun.id
+    expect_ok "key-pressed classify" (Signal_gen.classify ~ctx ~emitting_class:"Widget" signal) Fun.id
   in
   Alcotest.(check int)
     "3 param marshallers" 3
@@ -310,7 +310,7 @@ let test_unsupported_signal_returns_error () =
         ]
       ()
   in
-  let result = Signal_gen.classify ~ctx signal in
+  let result = Signal_gen.classify ~ctx ~emitting_class:"Widget" signal in
   let reason = expect_error "callback signal should fail" result in
   if String.equal "" reason then
     Alcotest.fail "Error reason should be non-empty"
@@ -334,7 +334,7 @@ let test_sender_not_at_pos_0 () =
       ()
   in
   let emission =
-    expect_ok "pressed classify" (Signal_gen.classify ~ctx signal) Fun.id
+    expect_ok "pressed classify" (Signal_gen.classify ~ctx ~emitting_class:"Widget" signal) Fun.id
   in
   let l1_let = Signal_gen.emit_l1_let emission in
   (* pos 0 (sender) should never appear in any Gobject.Closure.nth call *)
@@ -364,7 +364,7 @@ let test_keyword_param_name_sanitised () =
       ()
   in
   let emission =
-    expect_ok "typed classify" (Signal_gen.classify ~ctx signal) Fun.id
+    expect_ok "typed classify" (Signal_gen.classify ~ctx ~emitting_class:"Widget" signal) Fun.id
   in
   if not (String.mem ~sub:"type_:" emission.ocaml_callback_type) then
     Alcotest.failf "ocaml_callback_type should contain 'type_:' but got: %s"
@@ -403,7 +403,7 @@ let test_int64_param_maps_to_int64_t () =
       ()
   in
   let emission =
-    expect_ok "value-changed classify" (Signal_gen.classify ~ctx signal) Fun.id
+    expect_ok "value-changed classify" (Signal_gen.classify ~ctx ~emitting_class:"Widget" signal) Fun.id
   in
   let _, m =
     match emission.param_marshallers with
@@ -436,7 +436,7 @@ let test_variant_param_maps_to_gvariant () =
       ()
   in
   let emission =
-    expect_ok "change-value classify" (Signal_gen.classify ~ctx signal) Fun.id
+    expect_ok "change-value classify" (Signal_gen.classify ~ctx ~emitting_class:"Widget" signal) Fun.id
   in
   let _, m =
     match emission.param_marshallers with
@@ -460,7 +460,7 @@ let test_l2_forwarder_shape () =
       ~return_type:Type_factory.void_type ()
   in
   let emission =
-    expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
+    expect_ok "clicked classify" (Signal_gen.classify ~ctx ~emitting_class:"Widget" signal) Fun.id
   in
   let l2 =
     Signal_gen.emit_l2_method emission ~layer1_module_name:"Window"
@@ -494,7 +494,7 @@ let test_l1_obj_is_positional_not_labelled () =
       ~return_type:Type_factory.void_type ()
   in
   let emission =
-    expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
+    expect_ok "clicked classify" (Signal_gen.classify ~ctx ~emitting_class:"Widget" signal) Fun.id
   in
   let l1_val = Signal_gen.emit_l1_val emission in
   let ast = Ml_ast_helpers.parse_interface l1_val in
@@ -585,7 +585,7 @@ let test_l2_has_no_inherit_signals_line () =
       ~return_type:Type_factory.void_type ()
   in
   let emission =
-    expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
+    expect_ok "clicked classify" (Signal_gen.classify ~ctx ~emitting_class:"Widget" signal) Fun.id
   in
   let l2 =
     Signal_gen.emit_l2_method emission ~layer1_module_name:"Button"
