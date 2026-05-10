@@ -279,3 +279,74 @@ let create_module_groups_table (groups : module_group list) :
       List.iter entities ~f:(fun entity ->
           Hashtbl.add tbl entity.name module_name));
   tbl
+
+(** [build_module_dependency_graph ctx] collapses the class-level dependency
+    graph to module granularity using [ctx.module_groups].
+
+    For every class-level edge (A -> B), emits an edge (module(A) -> module(B)),
+    filters self-loops, deduplicates, and merges entries sharing the same
+    from-module. Returns a list of [(module_name, dep_module_names)] pairs.
+
+    Precondition: [ctx.module_groups] must be fully populated (i.e.
+    [create_module_groups_table] must have been called and the result stored in
+    [ctx.module_groups]) before calling this function. If a class name is absent
+    from [module_groups], the fallback [Utils.module_name_of_class] is used. *)
+let build_module_dependency_graph (ctx : generation_context) :
+    (string * string list) list =
+  let module_of name =
+    match Hashtbl.find_opt ctx.module_groups name with
+    | Some m -> m
+    | None -> Utils.module_name_of_class name
+  in
+  let class_graph = build_dependency_graph ctx in
+  let module_edges =
+    List.map class_graph ~f:(fun (class_name, deps) ->
+        let from_mod = module_of class_name in
+        let to_mods =
+          List.filter_map deps ~f:(fun dep ->
+              let to_mod = module_of dep in
+              if String.equal from_mod to_mod then None else Some to_mod)
+        in
+        (from_mod, to_mods))
+  in
+  (* Merge entries with the same from-module and deduplicate deps *)
+  let merged : (string, string list) Hashtbl.t = Hashtbl.create 64 in
+  List.iter module_edges ~f:(fun (from_mod, to_mods) ->
+      let existing =
+        match Hashtbl.find_opt merged from_mod with
+        | Some xs -> xs
+        | None -> []
+      in
+      Hashtbl.replace merged from_mod (existing @ to_mods));
+  Hashtbl.fold
+    (fun from_mod to_mods acc ->
+      let deduped = List.sort_uniq ~cmp:String.compare to_mods in
+      (from_mod, deduped) :: acc)
+    merged []
+
+(** [module_reaches_module graph ~from_module ~to_module] returns [true] if
+    [to_module] is reachable from [from_module] via a directed path in [graph].
+    Returns [true] when [from_module = to_module] (reflexive).
+
+    Uses depth-first search with a visited set to handle cycles.
+
+    [graph] should be the result of [build_module_dependency_graph]. *)
+let module_reaches_module (graph : (string * string list) list)
+    ~(from_module : string) ~(to_module : string) : bool =
+  if String.equal from_module to_module then true
+  else
+    let visited : (string, bool) Hashtbl.t = Hashtbl.create 16 in
+    let rec dfs current =
+      if Hashtbl.mem visited current then false
+      else begin
+        Hashtbl.add visited current true;
+        let neighbors =
+          match List.assoc_opt current graph with
+          | Some ns -> ns
+          | None -> []
+        in
+        List.exists neighbors ~f:(fun neighbor ->
+            String.equal neighbor to_module || dfs neighbor)
+      end
+    in
+    dfs from_module

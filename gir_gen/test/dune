@@ -50,6 +50,8 @@
   constructor_wrapper_tests
   signal_wrapper_tests
   signal_marshaller_tests
+  ; Utility helpers
+  dependency_graph_tests
   ; Interface — parsing only (pure unit, no subprocess)
   parsing_tests
   ; Cross-namespace (pure unit/pipeline)
