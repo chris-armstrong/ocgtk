@@ -206,6 +206,18 @@ val on_move_cursor :
     (object_:Gtk_enums.movementstep -> p0:int -> p1:bool -> p2:bool -> unit) ->
   Gobject.Signal.handler_id
 
+val on_row_activated :
+  ?after:bool ->
+  t ->
+  callback:(row:List_box_row.t Gobject.obj option -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_row_selected :
+  ?after:bool ->
+  t ->
+  callback:(row:List_box_row.t Gobject.obj option -> unit) ->
+  Gobject.Signal.handler_id
+
 val on_select_all :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 

@@ -643,8 +643,21 @@ module rec Text_buffer : sig
   val on_end_user_action :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 
+  val on_mark_deleted :
+    ?after:bool ->
+    t ->
+    callback:(mark:Text_mark.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
+
   val on_modified_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_paste_done :
+    ?after:bool ->
+    t ->
+    callback:
+      (clipboard:Ocgtk_gdk.Gdk.Wrappers.Clipboard.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
 
   val on_redo :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -1296,8 +1309,32 @@ end = struct
     Gobject.Signal.connect_simple obj ~name:"end-user-action" ~callback
       ~after:(Option.value after ~default:false)
 
+  let on_mark_deleted ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let mark =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object v
+          in
+          callback ~mark)
+    in
+    Gobject.Signal.connect obj ~name:"mark-deleted" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
   let on_modified_changed ?after obj ~callback =
     Gobject.Signal.connect_simple obj ~name:"modified-changed" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_paste_done ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let clipboard =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object v
+          in
+          callback ~clipboard)
+    in
+    Gobject.Signal.connect obj ~name:"paste-done" ~callback:closure
       ~after:(Option.value after ~default:false)
 
   let on_redo ?after obj ~callback =

@@ -11,6 +11,14 @@ class type list_box_t = object
       (object_:Gtk_enums.movementstep -> p0:int -> p1:bool -> p2:bool -> unit) ->
     Gobject.Signal.handler_id
 
+  method on_row_activated :
+    callback:(row:List_box_row.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_row_selected :
+    callback:(row:List_box_row.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
+
   method on_select_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
 
   method on_selected_rows_changed :

@@ -438,6 +438,19 @@ val on_change_current_page :
   callback:(object_:int -> bool) ->
   Gobject.Signal.handler_id
 
+val on_create_window :
+  ?after:bool ->
+  t ->
+  callback:
+    (page:
+       Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+       .Widget
+       .t
+       Gobject.obj
+       option ->
+    t Gobject.obj option) ->
+  Gobject.Signal.handler_id
+
 val on_focus_tab :
   ?after:bool ->
   t ->
@@ -450,6 +463,48 @@ val on_move_focus_out :
   callback:(object_:Gtk_enums.directiontype -> unit) ->
   Gobject.Signal.handler_id
 
+val on_page_added :
+  ?after:bool ->
+  t ->
+  callback:
+    (child:
+       Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+       .Widget
+       .t
+       Gobject.obj
+       option ->
+    page_num:int ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_page_removed :
+  ?after:bool ->
+  t ->
+  callback:
+    (child:
+       Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+       .Widget
+       .t
+       Gobject.obj
+       option ->
+    page_num:int ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_page_reordered :
+  ?after:bool ->
+  t ->
+  callback:
+    (child:
+       Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+       .Widget
+       .t
+       Gobject.obj
+       option ->
+    page_num:int ->
+    unit) ->
+  Gobject.Signal.handler_id
+
 val on_reorder_tab :
   ?after:bool ->
   t ->
@@ -460,4 +515,18 @@ val on_select_page :
   ?after:bool ->
   t ->
   callback:(object_:bool -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_switch_page :
+  ?after:bool ->
+  t ->
+  callback:
+    (page:
+       Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+       .Widget
+       .t
+       Gobject.obj
+       option ->
+    page_num:int ->
+    unit) ->
   Gobject.Signal.handler_id

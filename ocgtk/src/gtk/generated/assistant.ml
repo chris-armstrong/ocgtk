@@ -207,3 +207,15 @@ let on_close ?after obj ~callback =
 let on_escape ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"escape" ~callback
     ~after:(Option.value after ~default:false)
+
+let on_prepare ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let page =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        callback ~page)
+  in
+  Gobject.Signal.connect obj ~name:"prepare" ~callback:closure
+    ~after:(Option.value after ~default:false)

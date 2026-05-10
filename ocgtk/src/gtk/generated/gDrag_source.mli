@@ -1,5 +1,31 @@
 class type drag_source_t = object
   inherit GGesture_single.gesture_single_t
+
+  method on_drag_begin :
+    callback:(drag:Ocgtk_gdk.Gdk.Wrappers.Drag.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_drag_cancel :
+    callback:
+      (drag:Ocgtk_gdk.Gdk.Wrappers.Drag.t Gobject.obj option ->
+      reason:Ocgtk_gdk.Gdk_enums.dragcancelreason ->
+      bool) ->
+    Gobject.Signal.handler_id
+
+  method on_drag_end :
+    callback:
+      (drag:Ocgtk_gdk.Gdk.Wrappers.Drag.t Gobject.obj option ->
+      delete_data:bool ->
+      unit) ->
+    Gobject.Signal.handler_id
+
+  method on_prepare :
+    callback:
+      (x:float ->
+      y:float ->
+      Ocgtk_gdk.Gdk.Wrappers.Content_provider.t Gobject.obj option) ->
+    Gobject.Signal.handler_id
+
   method drag_cancel : unit -> unit
   method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction
 

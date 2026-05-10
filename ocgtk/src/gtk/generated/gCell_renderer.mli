@@ -2,6 +2,11 @@ class type cell_renderer_t = object
   method on_editing_canceled :
     callback:(unit -> unit) -> Gobject.Signal.handler_id
 
+  method on_editing_started :
+    callback:
+      (editable:Cell_editable.t Gobject.obj option -> path:string -> unit) ->
+    Gobject.Signal.handler_id
+
   method activate :
     Ocgtk_gdk.Gdk.Event.event_t ->
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget

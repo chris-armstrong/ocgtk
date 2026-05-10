@@ -3,6 +3,10 @@ class type drop_target_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .event_controller_t
 
+  method on_accept :
+    callback:(drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option -> bool) ->
+    Gobject.Signal.handler_id
+
   method on_enter :
     callback:(x:float -> y:float -> Ocgtk_gdk.Gdk_enums.dragaction) ->
     Gobject.Signal.handler_id
@@ -38,6 +42,9 @@ class drop_target (obj : Drop_target.t) : drop_target_t =
           :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
              .Event_controller
              .t)
+
+    method on_accept ~callback =
+      Drop_target.on_accept self#as_drop_target ~callback
 
     method on_enter ~callback =
       Drop_target.on_enter self#as_drop_target ~callback

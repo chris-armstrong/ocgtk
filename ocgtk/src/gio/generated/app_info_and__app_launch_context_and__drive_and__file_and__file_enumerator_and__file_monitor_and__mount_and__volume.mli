@@ -229,6 +229,20 @@ and App_launch_context : sig
     t ->
     callback:(startup_notify_id:string -> unit) ->
     Gobject.Signal.handler_id
+
+  val on_launch_started :
+    ?after:bool ->
+    t ->
+    callback:
+      (info:App_info.t Gobject.obj option -> platform_data:Gvariant.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_launched :
+    ?after:bool ->
+    t ->
+    callback:
+      (info:App_info.t Gobject.obj option -> platform_data:Gvariant.t -> unit) ->
+    Gobject.Signal.handler_id
 end
 
 and Drive : sig
@@ -1461,6 +1475,16 @@ and File_monitor : sig
 
   external get_cancelled : t -> bool = "ml_g_file_monitor_get_cancelled"
   (** Get property: cancelled *)
+
+  val on_changed :
+    ?after:bool ->
+    t ->
+    callback:
+      (file:File.t Gobject.obj option ->
+      other_file:File.t Gobject.obj option ->
+      event_type:Gio_enums.filemonitorevent ->
+      unit) ->
+    Gobject.Signal.handler_id
 end
 
 and Mount : sig

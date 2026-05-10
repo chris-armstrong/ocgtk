@@ -13,14 +13,22 @@ open Types
     or return type. *)
 type marshaller = {
   ocaml_type : string;
-      (** The OCaml type expression that the signal callback will see.
+      (** The OCaml type expression that the signal callback will see in an L1
+          module context.
 
           Examples:
           - ["bool"] for [gboolean]
           - ["Gtk_enums.orientation"] for a same-namespace enum
           - ["Ocgtk_gdk.Gdk_enums.modifiertype"] for a cross-namespace bitfield
-          - ["Gtk.Widget.t Gobject.obj"] for a same-namespace GObject class
+          - ["Gtk.Widget.t Gobject.obj option"] for a same-namespace GObject class
           - ["Gvariant.t"] for [GLib.Variant] *)
+  l2_ocaml_type : string option;
+      (** Override OCaml type for L2 class-type contexts.  [None] means the L2
+          type is identical to [ocaml_type].  Set to [Some t] only when the L1
+          and L2 contexts require different type expressions — specifically when
+          the param class is the same as the emitting class, so L1 must use bare
+          [t] (to avoid a self-reference error inside the module's own [.mli])
+          while L2 must use the fully-qualified [Module.t]. *)
   getter_expr : string;
       (** OCaml expression that extracts the typed value from a
           [Gobject.Value.t].

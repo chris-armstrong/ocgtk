@@ -37,3 +37,15 @@ external get_connection : t -> D_bus_connection.t
 external get_object_path : t -> string
   = "ml_g_d_bus_object_manager_client_get_object_path"
 (** Get property: object-path *)
+
+val on_interface_proxy_signal :
+  ?after:bool ->
+  t ->
+  callback:
+    (object_proxy:D_bus_object_proxy.t Gobject.obj option ->
+    interface_proxy:D_bus_proxy.t Gobject.obj option ->
+    sender_name:string ->
+    signal_name:string ->
+    parameters:Gvariant.t ->
+    unit) ->
+  Gobject.Signal.handler_id

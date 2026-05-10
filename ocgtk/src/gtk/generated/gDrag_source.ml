@@ -1,5 +1,31 @@
 class type drag_source_t = object
   inherit GGesture_single.gesture_single_t
+
+  method on_drag_begin :
+    callback:(drag:Ocgtk_gdk.Gdk.Wrappers.Drag.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_drag_cancel :
+    callback:
+      (drag:Ocgtk_gdk.Gdk.Wrappers.Drag.t Gobject.obj option ->
+      reason:Ocgtk_gdk.Gdk_enums.dragcancelreason ->
+      bool) ->
+    Gobject.Signal.handler_id
+
+  method on_drag_end :
+    callback:
+      (drag:Ocgtk_gdk.Gdk.Wrappers.Drag.t Gobject.obj option ->
+      delete_data:bool ->
+      unit) ->
+    Gobject.Signal.handler_id
+
+  method on_prepare :
+    callback:
+      (x:float ->
+      y:float ->
+      Ocgtk_gdk.Gdk.Wrappers.Content_provider.t Gobject.obj option) ->
+    Gobject.Signal.handler_id
+
   method drag_cancel : unit -> unit
   method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction
 
@@ -22,6 +48,19 @@ end
 class drag_source (obj : Drag_source.t) : drag_source_t =
   object (self)
     inherit GGesture_single.gesture_single (obj :> Gesture_single.t)
+
+    method on_drag_begin ~callback =
+      Drag_source.on_drag_begin self#as_drag_source ~callback
+
+    method on_drag_cancel ~callback =
+      Drag_source.on_drag_cancel self#as_drag_source ~callback
+
+    method on_drag_end ~callback =
+      Drag_source.on_drag_end self#as_drag_source ~callback
+
+    method on_prepare ~callback =
+      Drag_source.on_prepare self#as_drag_source ~callback
+
     method drag_cancel : unit -> unit = fun () -> Drag_source.drag_cancel obj
 
     method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction =

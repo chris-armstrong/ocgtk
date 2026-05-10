@@ -76,3 +76,19 @@ external get_listen_backlog : t -> int
 external set_listen_backlog : t -> int -> unit
   = "ml_g_socket_listener_set_listen_backlog"
 (** Set property: listen-backlog *)
+
+let on_event ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let event =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gio_enums.socketlistenerevent_of_int (Gobject.Value.get_enum_int v)
+        in
+        let socket =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_object v
+        in
+        callback ~event ~socket)
+  in
+  Gobject.Signal.connect obj ~name:"event" ~callback:closure
+    ~after:(Option.value after ~default:false)

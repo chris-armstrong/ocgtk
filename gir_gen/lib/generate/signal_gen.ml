@@ -102,6 +102,7 @@ type signal_emission = {
   param_marshallers : (gir_param * Signal_marshaller.marshaller) list;
   return_marshaller : Signal_marshaller.marshaller option;
   ocaml_callback_type : string;
+  l2_ocaml_callback_type : string;
   strategy : [ `Connect_simple | `Closure ];
 }
 
@@ -127,17 +128,23 @@ let classify_param ~ctx ~emitting_class (param : gir_param) :
                reason)
       | Signal_marshaller.Supported m -> Ok (param, m))
 
-(** Derive the callback type string from the param/return marshallers. *)
-let build_callback_type
+(** Derive the callback type string from the param/return marshallers.
+    When [~l2:true], use [m.l2_ocaml_type] when available (for L2 class type
+    contexts where bare [t] is unbound). *)
+let build_callback_type ?(l2 = false)
     (param_marshallers : (gir_param * Signal_marshaller.marshaller) list)
     (return_marshaller : Signal_marshaller.marshaller option) : string =
+  let type_of (m : Signal_marshaller.marshaller) =
+    if l2 then Option.value m.l2_ocaml_type ~default:m.ocaml_type
+    else m.ocaml_type
+  in
   let param_parts =
     List.map param_marshallers
-      ~f:(fun (param, (m : Signal_marshaller.marshaller)) ->
-        sprintf "%s:%s" (sanitize_param_name param.param_name) m.ocaml_type)
+      ~f:(fun (param, m) ->
+        sprintf "%s:%s" (sanitize_param_name param.param_name) (type_of m))
   in
   let return_type =
-    match return_marshaller with None -> "unit" | Some m -> m.ocaml_type
+    match return_marshaller with None -> "unit" | Some m -> type_of m
   in
   match param_parts with
   | [] -> sprintf "unit -> %s" return_type
@@ -189,9 +196,8 @@ let classify ~ctx ~emitting_class (signal : gir_signal) :
     | _ -> `Closure
   in
   let method_name = sanitize_signal_name signal.signal_name in
-  let ocaml_callback_type =
-    build_callback_type supported_params return_marshaller
-  in
+  let ocaml_callback_type = build_callback_type supported_params return_marshaller in
+  let l2_ocaml_callback_type = build_callback_type ~l2:true supported_params return_marshaller in
   Ok
     {
       signal;
@@ -200,6 +206,7 @@ let classify ~ctx ~emitting_class (signal : gir_signal) :
       param_marshallers = supported_params;
       return_marshaller;
       ocaml_callback_type;
+      l2_ocaml_callback_type;
       strategy;
     }
 
@@ -298,4 +305,4 @@ let emit_l2_method (e : signal_emission) ~layer1_module_name ~class_snake :
     emits a concrete method body), this emits only the method type. *)
 let emit_l2_method_sig (e : signal_emission) : string =
   sprintf "    method %s : callback:(%s) -> Gobject.Signal.handler_id\n"
-    e.method_name e.ocaml_callback_type
+    e.method_name e.l2_ocaml_callback_type

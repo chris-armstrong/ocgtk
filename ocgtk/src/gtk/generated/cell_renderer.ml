@@ -263,3 +263,19 @@ external set_ypad : t -> int -> unit = "ml_gtk_cell_renderer_set_ypad"
 let on_editing_canceled ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"editing-canceled" ~callback
     ~after:(Option.value after ~default:false)
+
+let on_editing_started ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let editable =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let path =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_string v
+        in
+        callback ~editable ~path)
+  in
+  Gobject.Signal.connect obj ~name:"editing-started" ~callback:closure
+    ~after:(Option.value after ~default:false)

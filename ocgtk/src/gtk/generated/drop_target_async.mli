@@ -39,3 +39,45 @@ external get_actions : t -> Ocgtk_gdk.Gdk.dragaction
 (** Gets the actions that this drop target supports. *)
 
 (* Properties *)
+
+val on_accept :
+  ?after:bool ->
+  t ->
+  callback:(drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_drag_enter :
+  ?after:bool ->
+  t ->
+  callback:
+    (drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option ->
+    x:float ->
+    y:float ->
+    Ocgtk_gdk.Gdk_enums.dragaction) ->
+  Gobject.Signal.handler_id
+
+val on_drag_leave :
+  ?after:bool ->
+  t ->
+  callback:(drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_drag_motion :
+  ?after:bool ->
+  t ->
+  callback:
+    (drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option ->
+    x:float ->
+    y:float ->
+    Ocgtk_gdk.Gdk_enums.dragaction) ->
+  Gobject.Signal.handler_id
+
+val on_drop :
+  ?after:bool ->
+  t ->
+  callback:
+    (drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option ->
+    x:float ->
+    y:float ->
+    bool) ->
+  Gobject.Signal.handler_id

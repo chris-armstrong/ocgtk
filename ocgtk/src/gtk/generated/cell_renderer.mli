@@ -262,3 +262,9 @@ external set_ypad : t -> int -> unit = "ml_gtk_cell_renderer_set_ypad"
 
 val on_editing_canceled :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_editing_started :
+  ?after:bool ->
+  t ->
+  callback:(editable:Cell_editable.t Gobject.obj option -> path:string -> unit) ->
+  Gobject.Signal.handler_id

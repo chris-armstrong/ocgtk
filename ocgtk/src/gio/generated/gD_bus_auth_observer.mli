@@ -2,6 +2,13 @@ class type d_bus_auth_observer_t = object
   method on_allow_mechanism :
     callback:(mechanism:string -> bool) -> Gobject.Signal.handler_id
 
+  method on_authorize_authenticated_peer :
+    callback:
+      (stream:Io_stream.t Gobject.obj option ->
+      credentials:Credentials.t Gobject.obj option ->
+      bool) ->
+    Gobject.Signal.handler_id
+
   method allow_mechanism : string -> bool
 
   method authorize_authenticated_peer :

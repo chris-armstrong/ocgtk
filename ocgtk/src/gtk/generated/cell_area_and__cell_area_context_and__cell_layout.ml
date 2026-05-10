@@ -343,6 +343,22 @@ module rec Cell_area : sig
   can also activate a widget if it currently has the focus. *)
 
   (* Properties *)
+
+  val on_focus_changed :
+    ?after:bool ->
+    t ->
+    callback:
+      (renderer:Cell_renderer.t Gobject.obj option -> path:string -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_remove_editable :
+    ?after:bool ->
+    t ->
+    callback:
+      (renderer:Cell_renderer.t Gobject.obj option ->
+      editable:Cell_editable.t Gobject.obj option ->
+      unit) ->
+    Gobject.Signal.handler_id
 end = struct
   type t = [ `cell_area | `initially_unowned | `object_ ] Gobject.obj
 
@@ -685,6 +701,38 @@ end = struct
   can also activate a widget if it currently has the focus. *)
 
   (* Properties *)
+
+  let on_focus_changed ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let renderer =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object v
+          in
+          let path =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            Gobject.Value.get_string v
+          in
+          callback ~renderer ~path)
+    in
+    Gobject.Signal.connect obj ~name:"focus-changed" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_remove_editable ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let renderer =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object v
+          in
+          let editable =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            Gobject.Value.get_object v
+          in
+          callback ~renderer ~editable)
+    in
+    Gobject.Signal.connect obj ~name:"remove-editable" ~callback:closure
+      ~after:(Option.value after ~default:false)
 end
 
 and Cell_area_context : sig

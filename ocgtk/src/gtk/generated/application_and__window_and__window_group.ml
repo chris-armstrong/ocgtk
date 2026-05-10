@@ -195,6 +195,18 @@ module rec Application : sig
 
   val on_query_end :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_window_added :
+    ?after:bool ->
+    t ->
+    callback:(window:Window.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_window_removed :
+    ?after:bool ->
+    t ->
+    callback:(window:Window.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
 end = struct
   type t = [ `application | `object_ ] Gobject.obj
 
@@ -389,6 +401,30 @@ end = struct
 
   let on_query_end ?after obj ~callback =
     Gobject.Signal.connect_simple obj ~name:"query-end" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_window_added ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let window =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object v
+          in
+          callback ~window)
+    in
+    Gobject.Signal.connect obj ~name:"window-added" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_window_removed ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let window =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object v
+          in
+          callback ~window)
+    in
+    Gobject.Signal.connect obj ~name:"window-removed" ~callback:closure
       ~after:(Option.value after ~default:false)
 end
 

@@ -33,3 +33,18 @@ external stop : t -> unit = "ml_g_debug_controller_dbus_stop"
 external get_connection : t -> D_bus_connection.t
   = "ml_g_debug_controller_d_bus_get_connection"
 (** Get property: connection *)
+
+let on_authorize ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let invocation =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let result = callback ~invocation in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"authorize" ~callback:closure
+    ~after:(Option.value after ~default:false)

@@ -39,3 +39,99 @@ external get_actions : t -> Ocgtk_gdk.Gdk.dragaction
 (** Gets the actions that this drop target supports. *)
 
 (* Properties *)
+
+let on_accept ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let drop =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let result = callback ~drop in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"accept" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_drag_enter ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let drop =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let x =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_double v
+        in
+        let y =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_double v
+        in
+        let result = callback ~drop ~x ~y in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_flags_int v (Ocgtk_gdk.Gdk_enums.dragaction_to_int x))
+  in
+  Gobject.Signal.connect obj ~name:"drag-enter" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_drag_leave ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let drop =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        callback ~drop)
+  in
+  Gobject.Signal.connect obj ~name:"drag-leave" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_drag_motion ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let drop =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let x =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_double v
+        in
+        let y =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_double v
+        in
+        let result = callback ~drop ~x ~y in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_flags_int v (Ocgtk_gdk.Gdk_enums.dragaction_to_int x))
+  in
+  Gobject.Signal.connect obj ~name:"drag-motion" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_drop ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let drop =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let x =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_double v
+        in
+        let y =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_double v
+        in
+        let result = callback ~drop ~x ~y in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"drop" ~callback:closure
+    ~after:(Option.value after ~default:false)

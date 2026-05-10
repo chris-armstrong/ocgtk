@@ -66,3 +66,27 @@ external get_default_text : t -> string option
     the content type. *)
 
 (* Properties *)
+
+let on_application_activated ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let application =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        callback ~application)
+  in
+  Gobject.Signal.connect obj ~name:"application-activated" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_application_selected ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let application =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        callback ~application)
+  in
+  Gobject.Signal.connect obj ~name:"application-selected" ~callback:closure
+    ~after:(Option.value after ~default:false)

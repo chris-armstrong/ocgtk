@@ -195,6 +195,18 @@ module rec Application : sig
 
   val on_query_end :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_window_added :
+    ?after:bool ->
+    t ->
+    callback:(window:Window.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_window_removed :
+    ?after:bool ->
+    t ->
+    callback:(window:Window.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
 end
 
 and Window : sig

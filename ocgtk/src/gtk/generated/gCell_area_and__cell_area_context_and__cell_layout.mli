@@ -1,6 +1,18 @@
 class type cell_area_t = object
   inherit GBuildable.buildable_t
 
+  method on_focus_changed :
+    callback:
+      (renderer:Cell_renderer.t Gobject.obj option -> path:string -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_remove_editable :
+    callback:
+      (renderer:Cell_renderer.t Gobject.obj option ->
+      editable:Cell_editable.t Gobject.obj option ->
+      unit) ->
+    Gobject.Signal.handler_id
+
   method activate :
     cell_area_context_t ->
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget

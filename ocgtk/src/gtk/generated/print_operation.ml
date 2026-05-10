@@ -293,6 +293,30 @@ external cancel : t -> unit = "ml_gtk_print_operation_cancel"
 
 (* Properties *)
 
+let on_begin_print ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let context =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        callback ~context)
+  in
+  Gobject.Signal.connect obj ~name:"begin-print" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_custom_widget_apply ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let widget =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        callback ~widget)
+  in
+  Gobject.Signal.connect obj ~name:"custom-widget-apply" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
 let on_done_ ?after obj ~callback =
   let closure =
     Gobject.Closure.create (fun argv ->
@@ -305,6 +329,112 @@ let on_done_ ?after obj ~callback =
   Gobject.Signal.connect obj ~name:"done" ~callback:closure
     ~after:(Option.value after ~default:false)
 
+let on_draw_page ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let context =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let page_nr =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        callback ~context ~page_nr)
+  in
+  Gobject.Signal.connect obj ~name:"draw-page" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_end_print ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let context =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        callback ~context)
+  in
+  Gobject.Signal.connect obj ~name:"end-print" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_paginate ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let context =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let result = callback ~context in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"paginate" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_preview ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let preview =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let context =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_object v
+        in
+        let parent =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_object v
+        in
+        let result = callback ~preview ~context ~parent in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"preview" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_request_page_setup ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let context =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let page_nr =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        let setup =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_object v
+        in
+        callback ~context ~page_nr ~setup)
+  in
+  Gobject.Signal.connect obj ~name:"request-page-setup" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
 let on_status_changed ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"status-changed" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_update_custom_widget ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let widget =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let setup =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_object v
+        in
+        let settings =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_object v
+        in
+        callback ~widget ~setup ~settings)
+  in
+  Gobject.Signal.connect obj ~name:"update-custom-widget" ~callback:closure
     ~after:(Option.value after ~default:false)

@@ -1,5 +1,10 @@
 class type d_bus_server_t = object
   inherit GInitable.initable_t
+
+  method on_new_connection :
+    callback:(connection:D_bus_connection.t Gobject.obj option -> bool) ->
+    Gobject.Signal.handler_id
+
   method get_client_address : unit -> string
   method get_flags : unit -> Gio_enums.dbusserverflags
   method get_guid : unit -> string

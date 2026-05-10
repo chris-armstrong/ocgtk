@@ -343,6 +343,22 @@ module rec Cell_area : sig
   can also activate a widget if it currently has the focus. *)
 
   (* Properties *)
+
+  val on_focus_changed :
+    ?after:bool ->
+    t ->
+    callback:
+      (renderer:Cell_renderer.t Gobject.obj option -> path:string -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_remove_editable :
+    ?after:bool ->
+    t ->
+    callback:
+      (renderer:Cell_renderer.t Gobject.obj option ->
+      editable:Cell_editable.t Gobject.obj option ->
+      unit) ->
+    Gobject.Signal.handler_id
 end
 
 and Cell_area_context : sig

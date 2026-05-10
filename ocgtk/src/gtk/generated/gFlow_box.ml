@@ -8,6 +8,10 @@ class type flow_box_t = object
   method on_activate_cursor_child :
     callback:(unit -> unit) -> Gobject.Signal.handler_id
 
+  method on_child_activated :
+    callback:(child:Flow_box_child.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
+
   method on_move_cursor :
     callback:
       (step:Gtk_enums.movementstep ->
@@ -99,6 +103,9 @@ class flow_box (obj : Flow_box.t) : flow_box_t =
 
     method on_activate_cursor_child ~callback =
       Flow_box.on_activate_cursor_child self#as_flow_box ~callback
+
+    method on_child_activated ~callback =
+      Flow_box.on_child_activated self#as_flow_box ~callback
 
     method on_move_cursor ~callback =
       Flow_box.on_move_cursor self#as_flow_box ~callback

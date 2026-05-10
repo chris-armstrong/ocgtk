@@ -6,6 +6,17 @@ class type notebook_t = object
   method on_change_current_page :
     callback:(object_:int -> bool) -> Gobject.Signal.handler_id
 
+  method on_create_window :
+    callback:
+      (page:
+         Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+         .Widget
+         .t
+         Gobject.obj
+         option ->
+      Notebook.t Gobject.obj option) ->
+    Gobject.Signal.handler_id
+
   method on_focus_tab :
     callback:(object_:Gtk_enums.notebooktab -> bool) ->
     Gobject.Signal.handler_id
@@ -14,12 +25,60 @@ class type notebook_t = object
     callback:(object_:Gtk_enums.directiontype -> unit) ->
     Gobject.Signal.handler_id
 
+  method on_page_added :
+    callback:
+      (child:
+         Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+         .Widget
+         .t
+         Gobject.obj
+         option ->
+      page_num:int ->
+      unit) ->
+    Gobject.Signal.handler_id
+
+  method on_page_removed :
+    callback:
+      (child:
+         Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+         .Widget
+         .t
+         Gobject.obj
+         option ->
+      page_num:int ->
+      unit) ->
+    Gobject.Signal.handler_id
+
+  method on_page_reordered :
+    callback:
+      (child:
+         Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+         .Widget
+         .t
+         Gobject.obj
+         option ->
+      page_num:int ->
+      unit) ->
+    Gobject.Signal.handler_id
+
   method on_reorder_tab :
     callback:(object_:Gtk_enums.directiontype -> p0:bool -> bool) ->
     Gobject.Signal.handler_id
 
   method on_select_page :
     callback:(object_:bool -> bool) -> Gobject.Signal.handler_id
+
+  method on_switch_page :
+    callback:
+      (page:
+         Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+         .Widget
+         .t
+         Gobject.obj
+         option ->
+      page_num:int ->
+      unit) ->
+    Gobject.Signal.handler_id
 
   method append_page :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
@@ -241,17 +300,32 @@ class notebook (obj : Notebook.t) : notebook_t =
     method on_change_current_page ~callback =
       Notebook.on_change_current_page self#as_notebook ~callback
 
+    method on_create_window ~callback =
+      Notebook.on_create_window self#as_notebook ~callback
+
     method on_focus_tab ~callback =
       Notebook.on_focus_tab self#as_notebook ~callback
 
     method on_move_focus_out ~callback =
       Notebook.on_move_focus_out self#as_notebook ~callback
 
+    method on_page_added ~callback =
+      Notebook.on_page_added self#as_notebook ~callback
+
+    method on_page_removed ~callback =
+      Notebook.on_page_removed self#as_notebook ~callback
+
+    method on_page_reordered ~callback =
+      Notebook.on_page_reordered self#as_notebook ~callback
+
     method on_reorder_tab ~callback =
       Notebook.on_reorder_tab self#as_notebook ~callback
 
     method on_select_page ~callback =
       Notebook.on_select_page self#as_notebook ~callback
+
+    method on_switch_page ~callback =
+      Notebook.on_switch_page self#as_notebook ~callback
 
     method append_page :
         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget

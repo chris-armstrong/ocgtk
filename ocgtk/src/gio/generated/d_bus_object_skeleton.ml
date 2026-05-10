@@ -47,3 +47,22 @@ external get_g_object_path : t -> string
 external set_g_object_path : t -> string -> unit
   = "ml_g_d_bus_object_skeleton_set_g_object_path"
 (** Set property: g-object-path *)
+
+let on_authorize_method ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let interface =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let invocation =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_object v
+        in
+        let result = callback ~interface ~invocation in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"authorize-method" ~callback:closure
+    ~after:(Option.value after ~default:false)

@@ -5,6 +5,17 @@ class type assistant_t = object
   method on_close : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method on_escape : callback:(unit -> unit) -> Gobject.Signal.handler_id
 
+  method on_prepare :
+    callback:
+      (page:
+         Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+         .Widget
+         .t
+         Gobject.obj
+         option ->
+      unit) ->
+    Gobject.Signal.handler_id
+
   method add_action_widget :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
     .widget_t ->
@@ -104,6 +115,9 @@ class assistant (obj : Assistant.t) : assistant_t =
     method on_cancel ~callback = Assistant.on_cancel self#as_assistant ~callback
     method on_close ~callback = Assistant.on_close self#as_assistant ~callback
     method on_escape ~callback = Assistant.on_escape self#as_assistant ~callback
+
+    method on_prepare ~callback =
+      Assistant.on_prepare self#as_assistant ~callback
 
     method add_action_widget :
         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget

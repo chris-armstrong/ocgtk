@@ -209,6 +209,12 @@ external set_accept_unpaired_release : t -> bool -> unit
 val on_activate_cursor_child :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 
+val on_child_activated :
+  ?after:bool ->
+  t ->
+  callback:(child:Flow_box_child.t Gobject.obj option -> unit) ->
+  Gobject.Signal.handler_id
+
 val on_move_cursor :
   ?after:bool ->
   t ->

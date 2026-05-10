@@ -447,6 +447,21 @@ let on_change_current_page ?after obj ~callback =
   Gobject.Signal.connect obj ~name:"change-current-page" ~callback:closure
     ~after:(Option.value after ~default:false)
 
+let on_create_window ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let page =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let result = callback ~page in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_object v x)
+  in
+  Gobject.Signal.connect obj ~name:"create-window" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
 let on_focus_tab ?after obj ~callback =
   let closure =
     Gobject.Closure.create (fun argv ->
@@ -472,6 +487,54 @@ let on_move_focus_out ?after obj ~callback =
         callback ~object_)
   in
   Gobject.Signal.connect obj ~name:"move-focus-out" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_page_added ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let child =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let page_num =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_uint v
+        in
+        callback ~child ~page_num)
+  in
+  Gobject.Signal.connect obj ~name:"page-added" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_page_removed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let child =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let page_num =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_uint v
+        in
+        callback ~child ~page_num)
+  in
+  Gobject.Signal.connect obj ~name:"page-removed" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_page_reordered ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let child =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let page_num =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_uint v
+        in
+        callback ~child ~page_num)
+  in
+  Gobject.Signal.connect obj ~name:"page-reordered" ~callback:closure
     ~after:(Option.value after ~default:false)
 
 let on_reorder_tab ?after obj ~callback =
@@ -506,4 +569,20 @@ let on_select_page ?after obj ~callback =
         Gobject.Value.set_boolean v x)
   in
   Gobject.Signal.connect obj ~name:"select-page" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_switch_page ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let page =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let page_num =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_uint v
+        in
+        callback ~page ~page_num)
+  in
+  Gobject.Signal.connect obj ~name:"switch-page" ~callback:closure
     ~after:(Option.value after ~default:false)

@@ -4,6 +4,21 @@
 class type application_t = object
   inherit Ocgtk_gio.Gio.Application.application_t
   method on_query_end : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_window_added :
+    callback:
+      (window:
+         Application_and__window_and__window_group.Window.t Gobject.obj option ->
+      unit) ->
+    Gobject.Signal.handler_id
+
+  method on_window_removed :
+    callback:
+      (window:
+         Application_and__window_and__window_group.Window.t Gobject.obj option ->
+      unit) ->
+    Gobject.Signal.handler_id
+
   method add_window : window_t -> unit
   method get_accels_for_action : string -> string array
   method get_actions_for_accel : string -> string array
@@ -180,6 +195,14 @@ class application
 
     method on_query_end ~callback =
       Application_and__window_and__window_group.Application.on_query_end
+        self#as_application ~callback
+
+    method on_window_added ~callback =
+      Application_and__window_and__window_group.Application.on_window_added
+        self#as_application ~callback
+
+    method on_window_removed ~callback =
+      Application_and__window_and__window_group.Application.on_window_removed
         self#as_application ~callback
 
     method add_window : window_t -> unit =

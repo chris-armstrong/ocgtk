@@ -44,4 +44,16 @@ and D_bus_object : sig
     = "ml_g_dbus_object_get_interface"
   (** Gets the D-Bus interface with name @interface_name associated with
   @object, if any. *)
+
+  val on_interface_added :
+    ?after:bool ->
+    t ->
+    callback:(interface:D_bus_interface.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_interface_removed :
+    ?after:bool ->
+    t ->
+    callback:(interface:D_bus_interface.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
 end

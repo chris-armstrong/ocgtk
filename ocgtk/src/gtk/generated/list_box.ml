@@ -224,6 +224,30 @@ let on_move_cursor ?after obj ~callback =
   Gobject.Signal.connect obj ~name:"move-cursor" ~callback:closure
     ~after:(Option.value after ~default:false)
 
+let on_row_activated ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let row =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        callback ~row)
+  in
+  Gobject.Signal.connect obj ~name:"row-activated" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_row_selected ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let row =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        callback ~row)
+  in
+  Gobject.Signal.connect obj ~name:"row-selected" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
 let on_select_all ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"select-all" ~callback
     ~after:(Option.value after ~default:false)

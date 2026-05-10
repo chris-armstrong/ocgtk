@@ -8,6 +8,20 @@ class type d_bus_interface_t = object
 end
 
 and d_bus_object_t = object
+  method on_interface_added :
+    callback:
+      (interface:
+         D_bus_interface_and__d_bus_object.D_bus_interface.t Gobject.obj option ->
+      unit) ->
+    Gobject.Signal.handler_id
+
+  method on_interface_removed :
+    callback:
+      (interface:
+         D_bus_interface_and__d_bus_object.D_bus_interface.t Gobject.obj option ->
+      unit) ->
+    Gobject.Signal.handler_id
+
   method get_interface : string -> d_bus_interface_t option
   method get_interfaces : unit -> d_bus_interface_t list
   method get_object_path : unit -> string

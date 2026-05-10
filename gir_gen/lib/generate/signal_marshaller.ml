@@ -7,6 +7,7 @@ open Types
 
 type marshaller = {
   ocaml_type : string;
+  l2_ocaml_type : string option;
   getter_expr : string;
   setter_expr : string;
 }
@@ -110,7 +111,7 @@ let classify_enum ~ctx ~namespace ~name =
   let setter_expr =
     "Gobject.Value.set_enum_int v (" ^ to_int ^ " x)"
   in
-  Supported { ocaml_type; getter_expr; setter_expr }
+  Supported { ocaml_type; l2_ocaml_type = None; getter_expr; setter_expr }
 
 let classify_bitfield ~ctx ~namespace ~name =
   let enums_module =
@@ -128,7 +129,7 @@ let classify_bitfield ~ctx ~namespace ~name =
   let setter_expr =
     "Gobject.Value.set_flags_int v (" ^ to_int ^ " x)"
   in
-  Supported { ocaml_type; getter_expr; setter_expr }
+  Supported { ocaml_type; l2_ocaml_type = None; getter_expr; setter_expr }
 
 (* ===================================================================== *)
 (* Class / interface classification helpers                              *)
@@ -145,6 +146,7 @@ let classify_gobject ~ctx ~emitting_class ~namespace ~name =
     Supported
       {
         ocaml_type = cross_ns_object_type namespace name ^ " option";
+        l2_ocaml_type = None;
         getter_expr = "Gobject.Value.get_object v";
         setter_expr = "Gobject.Value.set_object v x";
       }
@@ -152,13 +154,29 @@ let classify_gobject ~ctx ~emitting_class ~namespace ~name =
     let emitting_mod = module_of emitting_class in
     let param_mod = module_of name in
     if String.equal emitting_mod param_mod then
-      (* Intra-module reference — self-loop, always safe. *)
-      Supported
-        {
-          ocaml_type = same_ns_object_type ~ctx name ^ " option";
-          getter_expr = "Gobject.Value.get_object v";
-          setter_expr = "Gobject.Value.set_object v x";
-        }
+      (* Intra-module reference — self-loop, always safe.
+         When the param class IS the emitting class, 'ModuleName.t' is a
+         self-reference that OCaml rejects inside the module's own .mli.
+         Use bare 't' in that case; for combined-cycle modules the full
+         submodule path (CombinedModule.ClassName.t) is still valid.
+         L2 class type files (gFoo.mli) don't define 't', so they need the
+         fully-qualified type — captured in l2_ocaml_type. *)
+      if String.equal name emitting_class then
+        Supported
+          {
+            ocaml_type = "t Gobject.obj option";
+            l2_ocaml_type = Some (same_ns_object_type ~ctx name ^ " option");
+            getter_expr = "Gobject.Value.get_object v";
+            setter_expr = "Gobject.Value.set_object v x";
+          }
+      else
+        Supported
+          {
+            ocaml_type = same_ns_object_type ~ctx name ^ " option";
+            l2_ocaml_type = None;
+            getter_expr = "Gobject.Value.get_object v";
+            setter_expr = "Gobject.Value.set_object v x";
+          }
     else
       let graph = Dependency_analysis.build_module_dependency_graph ctx in
       if
@@ -176,6 +194,7 @@ let classify_gobject ~ctx ~emitting_class ~namespace ~name =
         Supported
           {
             ocaml_type = same_ns_object_type ~ctx name ^ " option";
+            l2_ocaml_type = None;
             getter_expr = "Gobject.Value.get_object v";
             setter_expr = "Gobject.Value.set_object v x";
           }
@@ -191,12 +210,13 @@ let classify ~ctx ~emitting_class ~gir_type =
   (* Void / none is the return-only unit path *)
   else if is_void_type gir_type then
     Supported
-      { ocaml_type = "unit"; getter_expr = "()"; setter_expr = "()" }
+      { ocaml_type = "unit"; l2_ocaml_type = None; getter_expr = "()"; setter_expr = "()" }
   (* GLib.Variant has special handling before general classification *)
   else if is_glib_variant gir_type then
     Supported
       {
         ocaml_type = "Gvariant.t";
+        l2_ocaml_type = None;
         getter_expr = "Gobject.Value.get_variant v";
         setter_expr = "Gobject.Value.set_variant v x";
       }
@@ -207,7 +227,7 @@ let classify ~ctx ~emitting_class ~gir_type =
     let primitive_result =
       List.assoc_opt ~eq:String.equal gir_type.name primitive_marshallers
       |> Option.map (fun (ocaml_type, getter_expr, setter_expr) ->
-             Supported { ocaml_type; getter_expr; setter_expr })
+             Supported { ocaml_type; l2_ocaml_type = None; getter_expr; setter_expr })
     in
     match primitive_result with
     | Some r -> r

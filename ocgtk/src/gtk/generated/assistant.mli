@@ -203,3 +203,16 @@ val on_close :
 
 val on_escape :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_prepare :
+  ?after:bool ->
+  t ->
+  callback:
+    (page:
+       Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+       .Widget
+       .t
+       Gobject.obj
+       option ->
+    unit) ->
+  Gobject.Signal.handler_id

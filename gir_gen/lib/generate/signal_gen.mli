@@ -28,9 +28,15 @@ type signal_emission = {
   return_marshaller : Signal_marshaller.marshaller option;
       (** [None] for void/unit return; [Some m] for a non-void return type. *)
   ocaml_callback_type : string;
-      (** Full OCaml function type for the callback parameter. Examples:
+      (** Full OCaml function type for the callback parameter, for use in L1
+          module contexts (e.g. generated [notebook.mli]).  Examples:
           - ["unit -> unit"] for zero-param void signal (connect_simple)
           - ["n_press:int -> x:float -> y:float -> unit"] for pressed signal *)
+  l2_ocaml_callback_type : string;
+      (** Same as [ocaml_callback_type] in the common case.  Differs only when a
+          param type is the same class as the emitting class: L1 uses bare [t]
+          (required inside the module's own [.mli]) while L2 uses the fully-
+          qualified [Module.t] (since L2 class type files don't define [t]). *)
   strategy : [ `Connect_simple | `Closure ];
       (** [`Connect_simple] when no parameters and void return (fast path);
           [`Closure] otherwise (uses [Gobject.Closure.create]). *)
