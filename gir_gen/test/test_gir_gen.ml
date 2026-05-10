@@ -31,6 +31,8 @@ let () =
       ("Signal Marshaller", Signal_marshaller_tests.tests);
       (* Interface Parsing (pure unit — no gir_gen.exe) *)
       ("Interface Parsing", Parsing_tests.test_suite);
+      (* Utility helpers *)
+      ("Module Dependency Graph", Dependency_graph_tests.tests);
       (* Cross-namespace (pure unit/pipeline) *)
       ("C Stub Header Include (Stage 5)", C_stub_include_tests.tests);
       ("classify_type + Array Resolution (Phase 6)", Classify_type_tests.tests);
