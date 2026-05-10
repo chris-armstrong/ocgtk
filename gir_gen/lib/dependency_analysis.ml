@@ -317,7 +317,7 @@ let build_module_dependency_graph (ctx : generation_context) :
         | Some xs -> xs
         | None -> []
       in
-      Hashtbl.replace merged from_mod (existing @ to_mods));
+      Hashtbl.replace merged from_mod (to_mods @ existing));
   Hashtbl.fold
     (fun from_mod to_mods acc ->
       let deduped = List.sort_uniq ~cmp:String.compare to_mods in
@@ -335,15 +335,17 @@ let module_reaches_module (graph : (string * string list) list)
     ~(from_module : string) ~(to_module : string) : bool =
   if String.equal from_module to_module then true
   else
+    let graph_tbl : (string, string list) Hashtbl.t =
+      Hashtbl.create (List.length graph)
+    in
+    List.iter graph ~f:(fun (k, vs) -> Hashtbl.add graph_tbl k vs);
     let visited : (string, bool) Hashtbl.t = Hashtbl.create 16 in
     let rec dfs current =
       if Hashtbl.mem visited current then false
       else begin
         Hashtbl.add visited current true;
         let neighbors =
-          match List.assoc_opt current graph with
-          | Some ns -> ns
-          | None -> []
+          Option.value (Hashtbl.find_opt graph_tbl current) ~default:[]
         in
         List.exists neighbors ~f:(fun neighbor ->
             String.equal neighbor to_module || dfs neighbor)

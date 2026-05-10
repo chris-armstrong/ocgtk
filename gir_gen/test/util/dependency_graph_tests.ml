@@ -117,9 +117,18 @@ let test_module_graph_combined_module_intra_filtered () =
   let b_type = make_gir_type ~name:"B" ~c_type:"B*" () in
   let c_type = make_gir_type ~name:"C" ~c_type:"C*" () in
   let a_type = make_gir_type ~name:"A" ~c_type:"A*" () in
-  let method_a = make_gir_method ~method_name:"to_b" ~c_identifier:"a_to_b" ~return_type:b_type () in
-  let method_b = make_gir_method ~method_name:"to_c" ~c_identifier:"b_to_c" ~return_type:c_type () in
-  let method_c = make_gir_method ~method_name:"to_a" ~c_identifier:"c_to_a" ~return_type:a_type () in
+  let method_a =
+    make_gir_method ~method_name:"to_b" ~c_identifier:"a_to_b"
+      ~return_type:b_type ()
+  in
+  let method_b =
+    make_gir_method ~method_name:"to_c" ~c_identifier:"b_to_c"
+      ~return_type:c_type ()
+  in
+  let method_c =
+    make_gir_method ~method_name:"to_a" ~c_identifier:"c_to_a"
+      ~return_type:a_type ()
+  in
   let cls_a = make_gir_class ~class_name:"A" ~methods:[ method_a ] () in
   let cls_b = make_gir_class ~class_name:"B" ~methods:[ method_b ] () in
   let cls_c = make_gir_class ~class_name:"C" ~methods:[ method_c ] () in
@@ -170,6 +179,62 @@ let test_module_reaches_simulates_tooltip_widget_cycle () =
     "MB does not reach MA (adding signal edge would create cycle)" false
     reaches_mb_ma
 
+(* -------------------------------------------------------------------------
+   test_module_reaches_absent_from_module
+
+   module_reaches_module returns false when from_module is not in the graph
+   at all (no outgoing edges recorded).  This is the case for a leaf module
+   whose class never appears as a source in build_dependency_graph.
+   ------------------------------------------------------------------------- *)
+let test_module_reaches_absent_from_module () =
+  let graph = [ ("MA", [ "MB" ]) ] in
+  let reaches =
+    Dependency_analysis.module_reaches_module graph ~from_module:"MX"
+      ~to_module:"MA"
+  in
+  Alcotest.(check bool)
+    "absent from_module does not reach anything" false reaches
+
+(* -------------------------------------------------------------------------
+   test_module_reaches_actual_cycle
+
+   Graph has a genuine cycle: MA->MB->MA.
+   module_reaches_module exercises the visited-set cycle guard:
+   - MA reaches MB (direct edge)
+   - MB reaches MA (back edge, via cycle)
+   - DFS must not loop infinitely
+   ------------------------------------------------------------------------- *)
+let test_module_reaches_actual_cycle () =
+  let b_type = make_gir_type ~name:"B" ~c_type:"B*" () in
+  let a_type = make_gir_type ~name:"A" ~c_type:"A*" () in
+  let method_a_to_b =
+    make_gir_method ~method_name:"get_b" ~c_identifier:"a_get_b"
+      ~return_type:b_type ()
+  in
+  let method_b_to_a =
+    make_gir_method ~method_name:"get_a" ~c_identifier:"b_get_a"
+      ~return_type:a_type ()
+  in
+  let cls_a = make_gir_class ~class_name:"A" ~methods:[ method_a_to_b ] () in
+  let cls_b = make_gir_class ~class_name:"B" ~methods:[ method_b_to_a ] () in
+  let ctx =
+    make_generation_context ~classes:[ cls_a; cls_b ]
+      ~module_groups:[ ("A", "MA"); ("B", "MB") ]
+      ()
+  in
+  let graph = Dependency_analysis.build_module_dependency_graph ctx in
+  let reaches_ma_mb =
+    Dependency_analysis.module_reaches_module graph ~from_module:"MA"
+      ~to_module:"MB"
+  in
+  Alcotest.(check bool) "MA reaches MB (direct edge in cycle)" true
+    reaches_ma_mb;
+  let reaches_mb_ma =
+    Dependency_analysis.module_reaches_module graph ~from_module:"MB"
+      ~to_module:"MA"
+  in
+  Alcotest.(check bool) "MB reaches MA (back edge in cycle)" true reaches_mb_ma
+
 let tests =
   [
     ( "test_module_graph_singleton",
@@ -187,4 +252,10 @@ let tests =
     ( "test_module_reaches_simulates_tooltip_widget_cycle",
       `Quick,
       test_module_reaches_simulates_tooltip_widget_cycle );
+    ( "test_module_reaches_absent_from_module",
+      `Quick,
+      test_module_reaches_absent_from_module );
+    ( "test_module_reaches_actual_cycle",
+      `Quick,
+      test_module_reaches_actual_cycle );
   ]
