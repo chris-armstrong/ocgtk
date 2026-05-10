@@ -21,6 +21,7 @@ let calculate_layer2_class ~class_module ~class_name =
   {
     class_module = "G" ^ class_module;
     class_type = class_name ^ "_t";
+    class_ml_name = class_name;
     class_layer1_accessor = "as_" ^ class_name;
   }
 
@@ -51,29 +52,34 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
     layer2_class =
       (match cr.cr_type with
       | Crt_Class _ ->
+          let c_name = Utils.ocaml_class_name cr.cr_name in
           Some
             {
               class_module =
                 external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
-              class_type = Utils.ocaml_class_name cr.cr_name ^ "_t";
-              class_layer1_accessor = "as_" ^ Utils.ocaml_class_name cr.cr_name;
+              class_type = c_name ^ "_t";
+              class_ml_name = c_name;
+              class_layer1_accessor = "as_" ^ c_name;
             }
       | Crt_Interface ->
+          let c_name = Utils.ocaml_interface_name cr.cr_name in
           Some
             {
               class_module =
                 external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
-              class_type = Utils.ocaml_interface_name cr.cr_name ^ "_t";
-              class_layer1_accessor =
-                "as_" ^ Utils.ocaml_interface_name cr.cr_name;
+              class_type = c_name ^ "_t";
+              class_ml_name = c_name;
+              class_layer1_accessor = "as_" ^ c_name;
             }
       | Crt_Record _ ->
+          let c_name = Utils.ocaml_record_name cr.cr_name in
           Some
             {
               class_module =
                 external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
-              class_type = Utils.ocaml_record_name cr.cr_name ^ "_t";
-              class_layer1_accessor = "as_" ^ Utils.ocaml_record_name cr.cr_name;
+              class_type = c_name ^ "_t";
+              class_ml_name = c_name;
+              class_layer1_accessor = "as_" ^ c_name;
             }
       | Crt_Enum | Crt_Bitfield -> None);
     is_value_type_record =

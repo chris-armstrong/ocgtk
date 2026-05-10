@@ -271,6 +271,7 @@ let entity_of_record (rec_ : gir_record) : entity =
 type ocaml_class = {
   class_module : string;
   class_type : string;
+  class_ml_name : string;
   class_layer1_accessor : string;
 }
 

@@ -248,8 +248,8 @@ let make_entity ?(kind = Class (make_gir_class ())) ?(name = "TestEntity")
   }
 
 let make_ocaml_class ?(class_module = "Test") ?(class_type = "test")
-    ?(class_layer1_accessor = "test") () =
-  { class_module; class_type; class_layer1_accessor }
+    ?(class_ml_name = "test") ?(class_layer1_accessor = "test") () =
+  { class_module; class_type; class_ml_name; class_layer1_accessor }
 
 let make_type_mapping ~ocaml_type ~c_type ~c_to_ml ~ml_to_c ?layer2_class
     ?(is_value_type_record = false) () =
