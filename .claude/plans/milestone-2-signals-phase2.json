@@ -551,7 +551,7 @@
           "depends_on": [
             2
           ],
-          "implementation_notes": "Inspection checklist: substitute_getter_expr does not strip 'option'; emit_closure_body's `let <pname> = ... in` produces option for class params; callback_call uses ~<pname>; setter section uses set_object v x for option-typed result. NO CODE CHANGES expected; add comments at option-flow seams referencing gobject.mli line numbers (200-210).",
+          "implementation_notes": "Inspect substitute_getter_expr, emit_closure_body, and the return-value setter section to confirm option-typed class params flow correctly: getter produces `<Path>.t Gobject.obj option`; callback receives option; setter uses set_object v x. Expected to be a no-code-change verification. Add 3 regression tests (see test_requirements). No mandatory inline comments linking to specific gobject.mli line numbers — those couple the plan to line numbers that will drift.",
           "coding_guidelines_to_emphasize": [
             "test-patterns.md: parse_implementation / parse_interface for AST validation",
             "code-reuse.md: do not duplicate substitute_getter_expr",
@@ -597,7 +597,7 @@
           "title": "Add integration tests for cycle-detected, same-cycle, and cross-NS class params",
           "status": "pending",
           "replanned": false,
-          "description": "Add end-to-end tests at the layer1/class_gen level: synthetic Tooltip-shaped + Widget-shaped pair produces Unsupported (skipped at L1); same-cycle class-pair produces Supported (emitted in combined module); cross-NS pair produces Supported with Ocgtk_<ns>.<Ns>.Wrappers path.",
+          "description": "Add end-to-end tests at the signal_gen level: (1) same-combined-module class-pair produces Supported; (2) cross-NS pair produces Supported with Ocgtk_<ns>.<Ns>.Wrappers path. The tooltip-skip test is omitted: epoch 3 feeds signal-param edges into the SCC so Tooltip will be absorbed into the Widget combined module instead of being skipped.",
           "files_to_modify": [
             "gir_gen/test/class_generation/signal_wrapper_tests.ml"
           ],
@@ -605,7 +605,7 @@
           "depends_on": [
             3
           ],
-          "implementation_notes": "TESTS: (1) test_e2e_tooltip_widget_signal_skipped_at_l1: synthetic Tooltip+Widget; signal on Widget-cluster class with Tooltip param. L1 output does NOT contain on_<sig>; stderr contains 'would create dependency cycle'. (2) test_e2e_intra_combined_module_signal_supported: classes A,B in CombinedAB. Signal on A with param B. L1 output contains 'on_<sig>' and 'CombinedAB.B.t Gobject.obj option'. (3) test_e2e_cross_ns_class_param_supported: signal on a Gtk class with Gio.File param. L1 output contains 'Ocgtk_gio.Gio.Wrappers.File.t Gobject.obj option'. Use stderr capture pattern from existing tests (or document inline tmp-file approach).",
+          "implementation_notes": "TESTS: (1) test_e2e_intra_combined_module_signal_supported: classes A,B in CombinedAB. Signal on A with param B. L1 output contains on_<sig> and 'CombinedAB.B.t Gobject.obj option'. (2) test_e2e_cross_ns_class_param_supported: signal on a Gtk class with Gio.File param. L1 output contains 'Ocgtk_gio.Gio.Wrappers.File.t Gobject.obj option'.",
           "coding_guidelines_to_emphasize": [
             "test-patterns.md: e2e tests use parse_implementation for AST presence/absence",
             "test-patterns.md: stderr capture deterministic",
@@ -617,12 +617,6 @@
               "dune test gir_gen/"
             ],
             "new_tests": [
-              {
-                "file": "gir_gen/test/class_generation/signal_wrapper_tests.ml",
-                "test_name": "test_e2e_tooltip_widget_signal_skipped_at_l1",
-                "description": "Tooltip+Widget shape with method-graph edge Tooltip->CombinedWidget. Signal on Widget-cluster class with Tooltip param. L1 output skips it; stderr contains cycle reason.",
-                "asserts": "find_let_binding 'on_<sig>' = None; stderr contains 'would create dependency cycle'"
-              },
               {
                 "file": "gir_gen/test/class_generation/signal_wrapper_tests.ml",
                 "test_name": "test_e2e_intra_combined_module_signal_supported",
@@ -640,8 +634,7 @@
           },
           "acceptance_criteria": [
             "dune build succeeds",
-            "dune test gir_gen/ passes including 3 new e2e tests",
-            "Cycle-detected signals silently skipped at L1",
+            "dune test gir_gen/ passes including 2 new e2e tests",
             "Same-combined-module signals emitted with correct combined-module path",
             "Cross-NS signals emit option-wrapped types via Ocgtk_<ns>.<Ns>.Wrappers.<Class>.t"
           ]
@@ -724,6 +717,121 @@
         }
       ],
       "cycle_aware_design_notes": "Branch: signals (worktree bridge-cse_01M6oA99vZqDtecsYFCgLE6v). Phase 2 stages 1-6 are committed. Current state: signal_marshaller.classify_gobject (lines 137-151) returns Unsupported for all class/interface params. /tmp/{gtk,gio,gdk}.log show 322 'Skipping signal' messages total: 223 due to 'GObject class parameter' (recoverable), 68 due to 'boxed type' (out of scope here — Phase 5+), 31 'other' (callbacks, primitive 'GObject.Object', non-In direction).\n\n--- REUSE AUDIT ---\n\nINFRASTRUCTURE TO REUSE (do NOT duplicate):\n- Dependency_analysis (gir_gen/lib/dependency_analysis.ml): provides Tarjan SCC (lines 6-84), build_dependency_graph (lines 188-206), compute_module_groups (lines 230-253), create_module_groups_table (lines 271-281). The new signal-aware grouping must REUSE the SCC implementation; only the dependency-graph builder needs a signal-aware variant.\n- ctx.module_groups (Hashtbl: class_name -> combined_module_name) populated in gir_gen/bin/gir_gen.ml lines 1193-1200. This table is used by other generators (class_gen_method.ml, type_mappings.ml) and MUST NOT change semantics.\n- Type_mappings.calculate_class_or_interface_or_record_module_name (lines 472-488): given a class name, returns the correct module path (with combined-module prefix when cyclic). Reuse verbatim.\n- ctx.current_cycle_classes (string list) in generation_context: carries the names of classes inside the cycle currently being generated. Passed in for class-method-body type resolution. The new cycle-aware classifier MUST consult it (a same-cycle param needs no cross-module reference).\n- Signal_marshaller.same_ns_object_type / cross_ns_object_type (lines 78-91): produce the OCaml type string. They already use calculate_class_or_interface_or_record_module_name. Both are currently unused (`let _ = same_ns_object_type and _ = cross_ns_object_type` line 148). Stage 2 wires them back in.\n- Signal_gen layer1 emission hook (gir_gen/lib/generate/layer1/layer1_main.ml lines 45-54): already calls Signal_gen.classify and emits emit_l1_val / emit_l1_let. NO changes needed.\n- Signal_gen layer2 emission hook (gir_gen/lib/generate/class_gen_body.ml lines 155-161 and 290-297): already calls Signal_gen.classify and emits emit_l2_method / emit_l2_method_sig. NO changes needed.\n- gobject.mli line 202: `val get_object : t -> 'a obj option` is the canonical signature. The L1 emission must match.\n\nNEW INFRASTRUCTURE NEEDED:\n- Augmented dependency graph that also walks signal parameter and return types. Lives in dependency_analysis.ml as a new function `build_signal_aware_dependency_graph` (parallel to build_dependency_graph). Returns `(string * string list) list`.\n- New SCC table `signal_module_groups : (string, string) Hashtbl.t` (same shape as module_groups but computed from the augmented graph). Stored in ctx.\n- In signal_marshaller.classify_gobject: cycle check using both ctx.module_groups (for emitting class) and ctx.signal_module_groups (for full-augmented grouping). Also reads ctx.current_cycle_classes for same-cycle pass-through.\n- Closure body for class params: `match Gobject.Value.get_object v with Some obj -> obj | None -> ...` — but the callback now receives an option, so simply use `Gobject.Value.get_object v` as the getter expression and emit type `<Path> Gobject.obj option`.\n\n--- KEY OBSERVATIONS ---\n\n1. Signal-aware vs method-aware module_groups must be SEPARATE tables. The existing module_groups is used to emit class definitions, methods, properties — those are already fully wired. If we expand it to include signal-class-param edges, we may force NEW classes into combined modules (not just the existing Tooltip/Widget ones), which would change file naming (`tooltip.ml` would become part of a new combined module). That cascades to many tests and the entire generated layout. Risk too high.\n   Therefore: introduce `signal_module_groups` as a NEW, distinct table. The MAIN module_groups stays unchanged. The cycle decision in classify_gobject reads BOTH tables: (a) the emitting class's main module_group (where the L1 val/let lands), (b) the param class's main module_group (where the param type is defined). Cycle check is a forward-reachability test in the existing module_groups graph — not in the augmented graph.\n\n   REVISED ALGORITHM (simpler, no new SCC needed):\n\n   Given emitting class E (in module ME) and param class P (in module MP):\n   - If MP == ME (same module, including same combined cyclic module): Supported (no inter-module edge created).\n   - Else: build the inter-module dependency graph from existing module_groups. Check if there is already a path MP -> ... -> ME in the existing graph. If yes, adding the edge ME -> MP would close a cycle. Return Unsupported.\n   - If no such path: Supported.\n\n   This is option C from the user's task description, ENHANCED to be precise (forward reachability, not just direct neighbour). It does NOT require a new SCC pass; it requires only a graph-traversal helper over the existing dependency_analysis output.\n\n2. The same-namespace cross-NS distinction: cross-NS (e.g. Gtk class with Gio param) cannot create a cycle within the current namespace's build graph because Gio is already a dependency of Gtk. The L1 val just imports `Ocgtk_gio.Gio.Wrappers.<Class>.t`; this never creates a cycle in Gtk's own dune file. So cross-NS class params can ALWAYS be supported (they only need the option-wrapping fix). The cycle check applies ONLY to same-namespace params.\n\n3. The OPTION TYPE FIX (option A from user task): wrap with `<Path>.t Gobject.obj option` in the marshaller's ocaml_type. The existing getter_expr `Gobject.Value.get_object v` already returns `'a obj option`, so the body assignment `let target = (Gobject.Value.get_object v) in` types correctly. Callbacks receive an option; user code pattern-matches. This is the simplest, most correct fix.\n\n4. Recovery estimate: 223 'GObject class parameter' skips. Of those:\n   - Cross-NS (e.g. 'context: Gio.Drive' on a Gtk class): all recoverable. From /tmp/gio.log etc., approximately 70-90 are cross-NS.\n   - Same-NS non-cycle (e.g. ActionGroup with same-NS interface param): approximately 60-80 recoverable.\n   - Same-NS cycle (Tooltip<->Widget pattern, plus ListBoxRow<->Widget, ColumnViewColumn<->ColumnView, etc.): approximately 60-80 will remain Unsupported with a more precise reason.\n   Net reduction: 322 -> ~120-150 skips (40-50% reduction; 60-70% of GObject-class skips recovered).\n\n5. Edge case: the augmented graph approach (option A from user task) IS feasible but heavier. It would require running Tarjan's SCC twice and producing two module_groups tables — plus careful selection of WHICH table to use in WHICH code path. This is sketched below as a fallback for stage 6 if the simpler reachability check proves wrong on real data.\n\n--- OPEN QUESTIONS (for user before execution) ---\n1. Confirm option A (wrap with option) over option C (add `get_object_unsafe` to gobject.mli). Option A reflects runtime semantics; option C requires a new C wrapper. Recommended: A.\n2. Should the skip reason on cycle-detection include the path? E.g. 'Tooltip -> Widget closes cycle: Widget -> Tooltip exists via method return type'. Useful for debugging but verbose.\n3. For same-cycle params (e.g. Widget signal with another Widget-cluster class as param): should the L1 val/let live in the COMBINED module (e.g. `event_controller_and__layout_child_and...widget.ml`)? Currently the L1 val/let is emitted by layer1_main.ml per-class, which produces `Widget.t` references. Inside a combined module, the param type resolves correctly via current_cycle_classes — confirm this works through the existing calculate_class_or_interface_or_record_module_name path. (Expected answer: YES, no special handling needed — the calculate_ helper already returns the bare submodule name when ctx.current_cycle_classes contains it.)\n4. The signal-aware augmented grouping (option A from user task) — is it worth building as a fallback in stage 6 if reachability proves insufficient? Recommend: defer to a later phase if it surfaces in testing."
+    },
+    {
+      "epoch": 3,
+      "title": "Simplify: feed signal-param edges into SCC; housekeeping",
+      "status": "pending",
+      "replanned": false,
+      "description": "Replace the bespoke reachability machinery added in epoch 2 with the correct architectural approach: include signal-parameter edges in build_dependency_graph so that the existing Tarjan SCC naturally produces acyclic combined modules. classify_gobject loses the reachability check entirely. Then address remaining housekeeping follow-ups (F2, F3, F5).",
+      "stages": [
+        {
+          "stage": 1,
+          "title": "Feed signal-param edges into build_dependency_graph; remove reachability helpers",
+          "status": "pending",
+          "replanned": false,
+          "description": "Extend build_dependency_graph to walk signal.sig_parameters for each class alongside the existing method-param/return walk. The existing Tarjan SCC and compute_module_groups handle the rest — no new tables, no new SCC pass. classify_gobject simplifies: same-NS inter-module case is always Supported (the SCC has already ensured no cycle). Remove build_module_dependency_graph and module_reaches_module from dependency_analysis.ml/mli. Remove or repurpose dependency_graph_tests.ml (the functions it tests no longer exist). Regenerate all 9 namespaces and rebuild.",
+          "files_to_modify": [
+            "gir_gen/lib/dependency_analysis.ml",
+            "gir_gen/lib/dependency_analysis.mli",
+            "gir_gen/lib/generate/signal_marshaller.ml",
+            "gir_gen/lib/generate/signal_marshaller.mli",
+            "gir_gen/test/util/dependency_graph_tests.ml",
+            "ocgtk/src/*/generated/*"
+          ],
+          "files_to_create": [],
+          "depends_on": [],
+          "implementation_notes": "In build_dependency_graph, after the existing loop over methods, add a loop:\n  List.iter ctx.classes ~f:(fun cls ->\n    List.iter cls.signals ~f:(fun sig ->\n      List.iter sig.sig_parameters ~f:(fun param ->\n        (* extract namespace and name from param.param_type *)\n        (* if same namespace: emit edge cls.class_name -> param_class_name *)\n      )));\nCross-namespace signal params do not contribute edges (Gio is already a dep of Gtk).\n\nclassify_gobject after change:\n  cross-NS → always Supported (unchanged)\n  same-NS same-module → Supported (unchanged)\n  same-NS inter-module → Supported unconditionally (SCC guarantees acyclicity)\nRemove the build_module_dependency_graph call and the Unsupported cycle branch.\n\ndependency_graph_tests.ml: delete tests for the removed helpers. If the file becomes empty, remove it from gir_gen/test/dune and test_gir_gen.ml.\n\nExpected layout change: Tooltip absorbed into the Widget combined module. The combined module file name grows. No test files check for tooltip.ml by name (verify with grep before deleting anything).",
+          "coding_guidelines_to_emphasize": [
+            "code-reuse.md: augment build_dependency_graph in-place; do not create a parallel function",
+            "module-boundaries.md: remove the two helpers from dependency_analysis.mli cleanly",
+            "test-patterns.md: delete tests for deleted functions; do not leave dead tests"
+          ],
+          "test_requirements": {
+            "existing_tests": [
+              "dune test gir_gen/ — all tests pass after helper removal",
+              "dune build — all 9 namespaces compile with augmented SCC layout",
+              "xvfb-run dune test ocgtk/ — no regressions"
+            ],
+            "new_tests": [],
+            "test_command": "bash scripts/generate-bindings.sh && dune build --root . && dune test gir_gen/ && xvfb-run dune test ocgtk/"
+          },
+          "acceptance_criteria": [
+            "build_dependency_graph includes signal-param edges for same-namespace params",
+            "build_module_dependency_graph and module_reaches_module deleted from dependency_analysis.ml/mli",
+            "classify_gobject has no reachability check; same-NS inter-module is always Supported",
+            "dune build, dune test gir_gen/, xvfb-run dune test ocgtk/ all exit 0",
+            "Skip count drops from 126 to 123 (the 3 genuine-cycle skips absorbed into combined modules)",
+            "grep -c \"would create a module cycle\" regen.log = 0"
+          ]
+        },
+        {
+          "stage": 2,
+          "title": "F2: add ?after to L2 forwarders (emit_l2_method + emit_l2_method_sig)",
+          "status": "pending",
+          "replanned": false,
+          "description": "emit_l2_method currently drops ?after. Change it to pass ?after through to the L1 function. emit_l2_method_sig should include ?after:bool in the class type signature. Two-line change; regenerate all 9 namespaces.",
+          "files_to_modify": [
+            "gir_gen/lib/generate/signal_gen.ml",
+            "gir_gen/lib/generate/signal_gen.mli",
+            "ocgtk/src/*/generated/*"
+          ],
+          "files_to_create": [],
+          "depends_on": [
+            1
+          ],
+          "implementation_notes": "emit_l2_method:\n  sprintf \"  method %s ?after ~callback =\\n    %s.%s ?after self#as_%s ~callback\\n\\n\"\n    e.method_name layer1_module_name e.method_name class_snake\n\nemit_l2_method_sig:\n  sprintf \"    method %s : ?after:bool -> callback:(%s) -> Gobject.Signal.handler_id\\n\"\n    e.method_name e.l2_ocaml_callback_type\n\nNo unit terminator needed — ?after is erased when passed to an external function that also takes it as optional.",
+          "coding_guidelines_to_emphasize": [
+            "naming-and-intermediates.md: no gratuitous unit terminator"
+          ],
+          "test_requirements": {
+            "existing_tests": [
+              "dune test gir_gen/ — existing signal_wrapper_tests cover emit_l2_method shape"
+            ],
+            "new_tests": [
+              {
+                "file": "gir_gen/test/class_generation/signal_wrapper_tests.ml",
+                "test_name": "test_l2_forwarder_passes_after",
+                "description": "emit_l2_method output contains ?after in both the method head and the L1 call.",
+                "asserts": "output contains '?after' twice (method head and forwarded arg)"
+              }
+            ],
+            "test_command": "dune build && dune test gir_gen/"
+          },
+          "acceptance_criteria": [
+            "emit_l2_method emits ?after in method head and L1 call",
+            "emit_l2_method_sig includes ?after:bool",
+            "dune build, dune test gir_gen/ exit 0"
+          ]
+        },
+        {
+          "stage": 3,
+          "title": "F3: hide generate_ml_interface_internal from layer1_main.mli; F5 connect_simple audit",
+          "status": "pending",
+          "replanned": false,
+          "description": "F3: remove generate_ml_interface_internal from layer1_main.mli — it is only called within layer1_main.ml and the _internal suffix already signals private intent. F5: audit connect_simple counts per namespace and confirm the strategy classifier only selects it for zero-param void signals.",
+          "files_to_modify": [
+            "gir_gen/lib/generate/layer1/layer1_main.mli"
+          ],
+          "files_to_create": [],
+          "depends_on": [
+            2
+          ],
+          "implementation_notes": "F3: delete the val generate_ml_interface_internal ... entry from layer1_main.mli. Verify dune build still passes.\n\nF5 audit (no code change expected):\n  for ns in cairo gio gdk graphene gdkpixbuf pango pangocairo gsk gtk; do\n    echo -n \"$ns: \"; grep -rh \"connect_simple\" ocgtk/src/$ns/generated/ | wc -l\n  done\nCompare with zero-param void signal counts per namespace. If totals match, strategy classifier is correct. If any namespace has more connect_simple calls than zero-param void signals, investigate.",
+          "test_requirements": {
+            "existing_tests": [
+              "dune build — verify removing the mli entry does not break callers outside layer1_main.ml"
+            ],
+            "new_tests": [],
+            "test_command": "dune build && dune test gir_gen/"
+          },
+          "acceptance_criteria": [
+            "generate_ml_interface_internal absent from layer1_main.mli",
+            "dune build exits 0",
+            "F5 audit logged in plan or commit message; no strategy-classifier bug found"
+          ]
+        }
+      ]
     }
   ],
   "follow_ups": [
@@ -734,7 +842,9 @@
       "originating_stage": 5,
       "originating_review": "phase-2 end-of-epoch reviewer",
       "description": "classify_gobject returns Unsupported for all class/interface params, causing 322 skips vs the original ~60-80 target. Epoch 2 of this plan implements a cycle-safe option-wrapped marshaller using a forward-reachability check on the existing module dependency graph. Expected to recover 140-200 of the currently-skipped signals.",
-      "rationale": "Reinstates the most common signal shape (callbacks taking class params) while keeping the build acyclic."
+      "rationale": "Reinstates the most common signal shape (callbacks taking class params) while keeping the build acyclic.",
+      "status": "resolved",
+      "resolution": "Implemented in epoch 2 (stages 1-2, commits 97863849-00672013). Skip count 322→126."
     },
     {
       "id": "F2",
@@ -742,8 +852,9 @@
       "severity": "minor-api-gap",
       "originating_stage": 5,
       "originating_review": "phase-2 end-of-epoch reviewer",
-      "description": "emit_l2_method and emit_l2_method_sig drop ?after to dodge OCaml warning 16 (unerasable optional). The original plan and Phase 7 spec have the L2 forwarder taking ?after. Re-add via a unit terminator: method on_X ?(after = false) ~callback () = ... .",
-      "rationale": "Symmetry with L1; lets callers control after-phase connection from L2."
+      "description": "emit_l2_method drops ?after. Fix: add ?after to the method head and forward it to the L1 call. emit_l2_method_sig: add ?after:bool to the class type method signature. Two-line change in signal_gen.ml. No unit terminator needed.",
+      "rationale": "Symmetry with L1; lets callers control after-phase connection from L2.",
+      "planned_epoch": "epoch-3-stage-2"
     },
     {
       "id": "F3",
@@ -752,7 +863,8 @@
       "originating_stage": 2,
       "originating_review": "phase-2 end-of-epoch reviewer",
       "description": "gir_gen/lib/generate/layer1/layer1_main.mli exposes generate_ml_interface_internal but no caller outside layer1_main.ml uses it. The _internal suffix already signals private intent. Remove from the .mli; keep in .ml only.",
-      "rationale": "module-boundaries.md compliance; smaller public API surface."
+      "rationale": "module-boundaries.md compliance; smaller public API surface.",
+      "planned_epoch": "epoch-3-stage-3"
     },
     {
       "id": "F4",
@@ -761,7 +873,9 @@
       "originating_stage": 5,
       "originating_review": "phase-2 end-of-epoch reviewer",
       "description": "signal_marshaller.ml has let _ = same_ns_object_type and _ = cross_ns_object_type inside classify_gobject to silence unused warnings while the helpers are reserved for the cycle-aware classifier. Once Epoch 2 wires them back into the live path, the discard goes away naturally. If Epoch 2 is delayed, add [@@warning \"-32\"] on the helper definitions instead.",
-      "rationale": "Cleaner intent; the discard pattern reads as dead code."
+      "rationale": "Cleaner intent; the discard pattern reads as dead code.",
+      "status": "resolved",
+      "resolution": "Resolved naturally in epoch 2 stage 2: same_ns_object_type and cross_ns_object_type are now called from classify_gobject; the let _ = ... discards are gone."
     },
     {
       "id": "F5",
@@ -770,7 +884,8 @@
       "originating_stage": 5,
       "originating_review": "phase-2 end-of-epoch reviewer",
       "description": "connect_simple count is 140 across all 9 namespaces; the original plan estimated ~27 for GTK alone. Run grep -rh connect_simple ocgtk/src/<ns>/generated/ | wc -l for each namespace and confirm Strategy 1 (connect_simple) is selected only for zero-param void signals.",
-      "rationale": "Sanity check the strategy classifier; surprise counts may indicate over-selection of connect_simple."
+      "rationale": "Sanity check the strategy classifier; surprise counts may indicate over-selection of connect_simple.",
+      "planned_epoch": "epoch-3-stage-3"
     }
   ]
 }
