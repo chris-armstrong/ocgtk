@@ -191,6 +191,44 @@ let test_gdouble_maps_to_float () =
   assert_expr_contains ~label:"gdouble" ~field:"getter_expr"
     m.getter_expr "Gobject.Value.get_double"
 
+let test_gfloat_maps_to_float () =
+  let ctx = gtk_ctx () in
+  let gir_type = Type_factory.make_gir_type ~name:"gfloat" ~c_type:"gfloat" () in
+  let result = classify ~ctx ~gir_type in
+  assert_supported ~label:"gfloat" result @@ fun m ->
+  Alcotest.(check string) "ocaml_type" "float" m.ocaml_type;
+  assert_expr_contains ~label:"gfloat" ~field:"getter_expr"
+    m.getter_expr "Gobject.Value.get_float"
+
+let test_gint16_maps_to_int () =
+  let ctx = gtk_ctx () in
+  let gir_type = Type_factory.make_gir_type ~name:"gint16" ~c_type:"gint16" () in
+  let result = classify ~ctx ~gir_type in
+  assert_supported ~label:"gint16" result @@ fun m ->
+  Alcotest.(check string) "ocaml_type" "int" m.ocaml_type;
+  assert_expr_contains ~label:"gint16" ~field:"getter_expr"
+    m.getter_expr "Gobject.Value.get_int"
+
+let test_gunichar_maps_to_int () =
+  let ctx = gtk_ctx () in
+  let gir_type = Type_factory.make_gir_type ~name:"gunichar" ~c_type:"gunichar" () in
+  let result = classify ~ctx ~gir_type in
+  assert_supported ~label:"gunichar" result @@ fun m ->
+  Alcotest.(check string) "ocaml_type" "int" m.ocaml_type;
+  assert_expr_contains ~label:"gunichar" ~field:"getter_expr"
+    m.getter_expr "Gobject.Value.get_uint"
+
+let test_gchar_star_maps_to_string () =
+  let ctx = gtk_ctx () in
+  let gir_type =
+    Type_factory.make_gir_type ~name:"gchar*" ~c_type:"gchar*" ()
+  in
+  let result = classify ~ctx ~gir_type in
+  assert_supported ~label:"gchar*" result @@ fun m ->
+  Alcotest.(check string) "ocaml_type" "string" m.ocaml_type;
+  assert_expr_contains ~label:"gchar*" ~field:"getter_expr"
+    m.getter_expr "Gobject.Value.get_string"
+
 let test_utf8_maps_to_string () =
   let ctx = gtk_ctx () in
   let gir_type =
@@ -311,6 +349,14 @@ let tests =
       test_gint64_maps_to_int64;
     Alcotest.test_case "gdouble maps to float" `Quick
       test_gdouble_maps_to_float;
+    Alcotest.test_case "gfloat maps to float (get_float)" `Quick
+      test_gfloat_maps_to_float;
+    Alcotest.test_case "gint16 maps to int (get_int)" `Quick
+      test_gint16_maps_to_int;
+    Alcotest.test_case "gunichar maps to int (get_uint)" `Quick
+      test_gunichar_maps_to_int;
+    Alcotest.test_case "gchar* maps to string" `Quick
+      test_gchar_star_maps_to_string;
     Alcotest.test_case "utf8 maps to string" `Quick test_utf8_maps_to_string;
     Alcotest.test_case "same-ns enum Orientation -> Gtk_enums.orientation"
       `Quick test_same_ns_enum_orientation;
