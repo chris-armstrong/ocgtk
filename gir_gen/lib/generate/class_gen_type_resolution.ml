@@ -4,7 +4,6 @@
  *)
 
 open StdLabels
-open Printf
 open Types
 
 (* Use Class_gen_helpers for shared functions
