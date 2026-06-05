@@ -10,8 +10,21 @@ class type text_buffer_t = object
   method on_end_user_action :
     callback:(unit -> unit) -> Gobject.Signal.handler_id
 
+  method on_mark_deleted :
+    callback:
+      (mark:
+         Text_buffer_and__text_iter_and__text_mark.Text_mark.t Gobject.obj
+         option ->
+      unit) ->
+    Gobject.Signal.handler_id
+
   method on_modified_changed :
     callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_paste_done :
+    callback:
+      (clipboard:Ocgtk_gdk.Gdk.Wrappers.Clipboard.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
 
   method on_redo : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method on_undo : callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -332,8 +345,16 @@ class text_buffer
       Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_end_user_action
         self#as_text_buffer ~callback
 
+    method on_mark_deleted ~callback =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_mark_deleted
+        self#as_text_buffer ~callback
+
     method on_modified_changed ~callback =
       Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_modified_changed
+        self#as_text_buffer ~callback
+
+    method on_paste_done ~callback =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_paste_done
         self#as_text_buffer ~callback
 
     method on_redo ~callback =

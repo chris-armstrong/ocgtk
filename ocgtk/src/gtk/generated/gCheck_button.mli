@@ -1,6 +1,6 @@
 class type check_button_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GActionable.actionable_t
@@ -10,7 +10,7 @@ class type check_button_t = object
 
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -20,7 +20,7 @@ class type check_button_t = object
   method set_active : bool -> unit
 
   method set_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit

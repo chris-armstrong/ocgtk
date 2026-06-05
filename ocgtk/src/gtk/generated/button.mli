@@ -42,7 +42,7 @@ external set_has_frame : t -> bool -> unit = "ml_gtk_button_set_has_frame"
 
 external set_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -87,7 +87,7 @@ external get_has_frame : t -> bool = "ml_gtk_button_get_has_frame"
 
 external get_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_button_get_child"

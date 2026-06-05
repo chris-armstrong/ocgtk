@@ -1,6 +1,6 @@
 class type popover_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GNative.native_t
@@ -15,7 +15,7 @@ class type popover_t = object
 
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -29,13 +29,13 @@ class type popover_t = object
   method set_cascade_popdown : bool -> unit
 
   method set_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
 
   method set_default_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -52,10 +52,10 @@ end
 class popover (obj : Popover.t) : popover_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
@@ -75,14 +75,14 @@ class popover (obj : Popover.t) : popover_t =
 
     method get_child :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Popover.get_child obj)
@@ -106,7 +106,7 @@ class popover (obj : Popover.t) : popover_t =
       fun cascade_popdown -> Popover.set_cascade_popdown obj cascade_popdown
 
     method set_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =
@@ -115,7 +115,7 @@ class popover (obj : Popover.t) : popover_t =
         Popover.set_child obj child
 
     method set_default_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =

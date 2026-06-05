@@ -47,3 +47,12 @@ external get_g_object_path : t -> string
 external set_g_object_path : t -> string -> unit
   = "ml_g_d_bus_object_skeleton_set_g_object_path"
 (** Set property: g-object-path *)
+
+val on_authorize_method :
+  ?after:bool ->
+  t ->
+  callback:
+    (interface:D_bus_interface_skeleton.t Gobject.obj option ->
+    invocation:D_bus_method_invocation.t Gobject.obj option ->
+    bool) ->
+  Gobject.Signal.handler_id

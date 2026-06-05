@@ -1,6 +1,6 @@
 class type text_view_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GAccessible_text.accessible_text_t
@@ -51,13 +51,13 @@ class type text_view_t = object
     callback:(unit -> unit) -> Gobject.Signal.handler_id
 
   method add_child_at_anchor :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     GText_child_anchor.text_child_anchor_t ->
     unit
 
   method add_overlay :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int ->
     int ->
@@ -87,7 +87,7 @@ class type text_view_t = object
 
   method get_gutter :
     Gtk_enums.textwindowtype ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -113,7 +113,7 @@ class type text_view_t = object
     GText_buffer_and__text_iter_and__text_mark.text_mark_t -> bool
 
   method move_overlay :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int ->
     int ->
@@ -125,7 +125,7 @@ class type text_view_t = object
   method place_cursor_onscreen : unit -> bool
 
   method remove :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
@@ -163,7 +163,7 @@ class type text_view_t = object
 
   method set_gutter :
     Gtk_enums.textwindowtype ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit

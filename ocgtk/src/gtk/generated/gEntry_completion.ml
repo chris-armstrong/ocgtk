@@ -12,7 +12,7 @@ class type entry_completion_t = object
 
   method get_entry :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method get_inline_completion : unit -> bool
@@ -65,11 +65,11 @@ class entry_completion (obj : Entry_completion.t) : entry_completion_t =
 
     method get_entry :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t =
       fun () ->
         new
-          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
           .widget
           (Entry_completion.get_entry obj)
 

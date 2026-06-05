@@ -36,7 +36,7 @@ external get_value : t -> float = "ml_gtk_scale_button_get_value"
 
 external get_popup :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_scale_button_get_popup"
 (** Retrieves the popup of the `GtkScaleButton`. *)

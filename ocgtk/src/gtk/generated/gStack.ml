@@ -1,21 +1,21 @@
 class type stack_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method add_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     GStack_page.stack_page_t
 
   method add_named :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     string option ->
     GStack_page.stack_page_t
 
   method add_titled :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     string option ->
     string ->
@@ -23,7 +23,7 @@ class type stack_t = object
 
   method get_child_by_name :
     string ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -31,7 +31,7 @@ class type stack_t = object
   method get_interpolate_size : unit -> bool
 
   method get_page :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     GStack_page.stack_page_t
 
@@ -43,14 +43,14 @@ class type stack_t = object
 
   method get_visible_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
   method get_visible_child_name : unit -> string option
 
   method remove :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
@@ -61,7 +61,7 @@ class type stack_t = object
   method set_vhomogeneous : bool -> unit
 
   method set_visible_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
@@ -76,15 +76,15 @@ end
 class stack (obj : Stack.t) : stack_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
     method add_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         GStack_page.stack_page_t =
       fun child ->
@@ -92,7 +92,7 @@ class stack (obj : Stack.t) : stack_t =
         new GStack_page.stack_page (Stack.add_child obj child)
 
     method add_named :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         string option ->
         GStack_page.stack_page_t =
@@ -101,7 +101,7 @@ class stack (obj : Stack.t) : stack_t =
         new GStack_page.stack_page (Stack.add_named obj child name)
 
     method add_titled :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         string option ->
         string ->
@@ -112,14 +112,14 @@ class stack (obj : Stack.t) : stack_t =
 
     method get_child_by_name :
         string ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun name ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Stack.get_child_by_name obj name)
@@ -131,7 +131,7 @@ class stack (obj : Stack.t) : stack_t =
       fun () -> Stack.get_interpolate_size obj
 
     method get_page :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         GStack_page.stack_page_t =
       fun child ->
@@ -155,14 +155,14 @@ class stack (obj : Stack.t) : stack_t =
 
     method get_visible_child :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Stack.get_visible_child obj)
@@ -171,7 +171,7 @@ class stack (obj : Stack.t) : stack_t =
       fun () -> Stack.get_visible_child_name obj
 
     method remove :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun child ->
@@ -194,7 +194,7 @@ class stack (obj : Stack.t) : stack_t =
       fun vhomogeneous -> Stack.set_vhomogeneous obj vhomogeneous
 
     method set_visible_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun child ->

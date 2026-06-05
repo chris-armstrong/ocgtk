@@ -15,7 +15,7 @@ external new_with_area :
 
 external set_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -149,7 +149,7 @@ external get_width : t -> int = "ml_gtk_tree_view_column_get_width"
 
 external get_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_tree_view_column_get_widget"
@@ -162,7 +162,7 @@ external get_visible : t -> bool = "ml_gtk_tree_view_column_get_visible"
 
 external get_tree_view :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_tree_view_column_get_tree_view"
@@ -221,7 +221,7 @@ external get_clickable : t -> bool = "ml_gtk_tree_view_column_get_clickable"
 
 external get_button :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_tree_view_column_get_button"
 (** Returns the button used in the treeview column header *)

@@ -32,7 +32,7 @@ class type im_context_t = object
   method reset : unit -> unit
 
   method set_client_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -101,7 +101,7 @@ class im_context (obj : Im_context.t) : im_context_t =
     method reset : unit -> unit = fun () -> Im_context.reset obj
 
     method set_client_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =

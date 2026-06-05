@@ -95,8 +95,13 @@ and Tree_view : sig
   (** Undoes the effect of gtk_tree_view_enable_model_drag_dest(). Calling this
       method sets `GtkTreeView`:reorderable to %FALSE. *)
 
-  external set_tooltip_row : t -> Tooltip.t -> Tree_path.t -> unit
-    = "ml_gtk_tree_view_set_tooltip_row"
+  external set_tooltip_row :
+    t ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .Tooltip
+    .t ->
+    Tree_path.t ->
+    unit = "ml_gtk_tree_view_set_tooltip_row"
   (** Sets the tip area of @tooltip to be the area covered by the row at @path.
   See also gtk_tree_view_set_tooltip_column() for a simpler alternative.
   See also gtk_tooltip_set_tip_area(). *)
@@ -116,7 +121,9 @@ and Tree_view : sig
 
   external set_tooltip_cell :
     t ->
-    Tooltip.t ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .Tooltip
+    .t ->
     Tree_path.t option ->
     Tree_view_column.t option ->
     Cell_renderer.t option ->

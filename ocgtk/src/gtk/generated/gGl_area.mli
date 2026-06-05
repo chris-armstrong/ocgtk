@@ -1,7 +1,16 @@
 class type gl_area_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
+
+  method on_create_context :
+    callback:(unit -> Ocgtk_gdk.Gdk.Wrappers.Gl_context.t Gobject.obj option) ->
+    Gobject.Signal.handler_id
+
+  method on_render :
+    callback:
+      (context:Ocgtk_gdk.Gdk.Wrappers.Gl_context.t Gobject.obj option -> bool) ->
+    Gobject.Signal.handler_id
 
   method on_resize :
     callback:(width:int -> height:int -> unit) -> Gobject.Signal.handler_id

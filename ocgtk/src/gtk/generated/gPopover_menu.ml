@@ -2,7 +2,7 @@ class type popover_menu_t = object
   inherit GPopover.popover_t
 
   method add_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     string ->
     bool
@@ -11,7 +11,7 @@ class type popover_menu_t = object
   method get_menu_model : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
 
   method remove_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool
 
@@ -28,7 +28,7 @@ class popover_menu (obj : Popover_menu.t) : popover_menu_t =
     inherit GPopover.popover (obj :> Popover.t)
 
     method add_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         string ->
         bool =
@@ -47,7 +47,7 @@ class popover_menu (obj : Popover_menu.t) : popover_menu_t =
           (Popover_menu.get_menu_model obj)
 
     method remove_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         bool =
       fun child ->

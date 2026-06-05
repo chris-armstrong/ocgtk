@@ -76,3 +76,12 @@ external get_listen_backlog : t -> int
 external set_listen_backlog : t -> int -> unit
   = "ml_g_socket_listener_set_listen_backlog"
 (** Set property: listen-backlog *)
+
+val on_event :
+  ?after:bool ->
+  t ->
+  callback:
+    (event:Gio_enums.socketlistenerevent ->
+    socket:Socket_and__socket_connection.Socket.t Gobject.obj option ->
+    unit) ->
+  Gobject.Signal.handler_id

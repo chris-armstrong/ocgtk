@@ -233,6 +233,15 @@ module rec Tls_connection : sig
   external get_base_io_stream : t -> Io_stream.t
     = "ml_g_tls_connection_get_base_io_stream"
   (** Get property: base-io-stream *)
+
+  val on_accept_certificate :
+    ?after:bool ->
+    t ->
+    callback:
+      (peer_cert:Tls_certificate.t Gobject.obj option ->
+      errors:Gio_enums.tlscertificateflags ->
+      bool) ->
+    Gobject.Signal.handler_id
 end
 
 and Tls_database : sig

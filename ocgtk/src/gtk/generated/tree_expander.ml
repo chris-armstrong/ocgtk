@@ -28,7 +28,7 @@ external set_hide_expander : t -> bool -> unit
 
 external set_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -64,7 +64,7 @@ external get_hide_expander : t -> bool
 
 external get_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_tree_expander_get_child"

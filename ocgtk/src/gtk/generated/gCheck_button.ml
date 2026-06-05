@@ -1,6 +1,6 @@
 class type check_button_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GActionable.actionable_t
@@ -10,7 +10,7 @@ class type check_button_t = object
 
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -20,7 +20,7 @@ class type check_button_t = object
   method set_active : bool -> unit
 
   method set_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -36,10 +36,10 @@ end
 class check_button (obj : Check_button.t) : check_button_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
@@ -55,14 +55,14 @@ class check_button (obj : Check_button.t) : check_button_t =
 
     method get_child :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Check_button.get_child obj)
@@ -80,7 +80,7 @@ class check_button (obj : Check_button.t) : check_button_t =
       fun setting -> Check_button.set_active obj setting
 
     method set_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =

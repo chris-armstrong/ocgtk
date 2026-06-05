@@ -23,7 +23,7 @@ See [method@Gdk.KeyEvent.get_layout]. *)
 
 external forward :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   bool = "ml_gtk_event_controller_key_forward"

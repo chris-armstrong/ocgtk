@@ -34,7 +34,7 @@ properties individually, set flags before model to avoid a redundant rebuild. *)
 
 external remove_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   bool = "ml_gtk_popover_menu_remove_child"
@@ -51,7 +51,7 @@ external get_flags : t -> Gtk_enums.popovermenuflags
 
 external add_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   string ->

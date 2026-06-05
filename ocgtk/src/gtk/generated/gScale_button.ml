@@ -1,6 +1,6 @@
 class type scale_button_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GAccessible_range.accessible_range_t
@@ -19,7 +19,7 @@ class type scale_button_t = object
 
   method get_popup :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method get_value : unit -> float
@@ -34,10 +34,10 @@ end
 class scale_button (obj : Scale_button.t) : scale_button_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
@@ -71,11 +71,11 @@ class scale_button (obj : Scale_button.t) : scale_button_t =
 
     method get_popup :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t =
       fun () ->
         new
-          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
           .widget
           (Scale_button.get_popup obj)
 

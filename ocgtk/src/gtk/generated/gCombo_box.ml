@@ -1,6 +1,6 @@
 class type combo_box_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GCell_editable.cell_editable_t
@@ -23,7 +23,7 @@ class type combo_box_t = object
 
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -41,7 +41,7 @@ class type combo_box_t = object
   method set_button_sensitivity : Gtk_enums.sensitivitytype -> unit
 
   method set_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -60,10 +60,10 @@ end
 class combo_box (obj : Combo_box.t) : combo_box_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
@@ -100,14 +100,14 @@ class combo_box (obj : Combo_box.t) : combo_box_t =
 
     method get_child :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Combo_box.get_child obj)
@@ -148,7 +148,7 @@ class combo_box (obj : Combo_box.t) : combo_box_t =
       fun sensitivity -> Combo_box.set_button_sensitivity obj sensitivity
 
     method set_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =

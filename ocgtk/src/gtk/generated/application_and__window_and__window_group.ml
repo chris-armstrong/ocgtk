@@ -195,6 +195,18 @@ module rec Application : sig
 
   val on_query_end :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_window_added :
+    ?after:bool ->
+    t ->
+    callback:(window:Window.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_window_removed :
+    ?after:bool ->
+    t ->
+    callback:(window:Window.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
 end = struct
   type t = [ `application | `object_ ] Gobject.obj
 
@@ -390,6 +402,30 @@ end = struct
   let on_query_end ?after obj ~callback =
     Gobject.Signal.connect_simple obj ~name:"query-end" ~callback
       ~after:(Option.value after ~default:false)
+
+  let on_window_added ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let window =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object v
+          in
+          callback ~window)
+    in
+    Gobject.Signal.connect obj ~name:"window-added" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_window_removed ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let window =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object v
+          in
+          callback ~window)
+    in
+    Gobject.Signal.connect obj ~name:"window-removed" ~callback:closure
+      ~after:(Option.value after ~default:false)
 end
 
 and Window : sig
@@ -455,7 +491,7 @@ and Window : sig
 
   external set_titlebar :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option ->
@@ -550,7 +586,7 @@ and Window : sig
 
   external set_focus :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option ->
@@ -594,7 +630,7 @@ and Window : sig
 
   external set_default_widget :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option ->
@@ -651,7 +687,7 @@ and Window : sig
 
   external set_child :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option ->
@@ -774,7 +810,7 @@ and Window : sig
 
   external get_titlebar :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option = "ml_gtk_window_get_titlebar"
@@ -816,7 +852,7 @@ and Window : sig
 
   external get_focus :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option = "ml_gtk_window_get_focus"
@@ -835,7 +871,7 @@ and Window : sig
 
   external get_default_widget :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option = "ml_gtk_window_get_default_widget"
@@ -857,7 +893,7 @@ and Window : sig
 
   external get_child :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option = "ml_gtk_window_get_child"
@@ -920,14 +956,14 @@ and Window : sig
 
   external get_focus_widget :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t = "ml_gtk_window_get_focus_widget"
   (** Get property: focus-widget *)
 
   external set_focus_widget :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     unit = "ml_gtk_window_set_focus_widget"
@@ -1029,7 +1065,7 @@ end = struct
 
   external set_titlebar :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option ->
@@ -1124,7 +1160,7 @@ end = struct
 
   external set_focus :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option ->
@@ -1168,7 +1204,7 @@ end = struct
 
   external set_default_widget :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option ->
@@ -1225,7 +1261,7 @@ end = struct
 
   external set_child :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option ->
@@ -1348,7 +1384,7 @@ end = struct
 
   external get_titlebar :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option = "ml_gtk_window_get_titlebar"
@@ -1390,7 +1426,7 @@ end = struct
 
   external get_focus :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option = "ml_gtk_window_get_focus"
@@ -1409,7 +1445,7 @@ end = struct
 
   external get_default_widget :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option = "ml_gtk_window_get_default_widget"
@@ -1431,7 +1467,7 @@ end = struct
 
   external get_child :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option = "ml_gtk_window_get_child"
@@ -1494,14 +1530,14 @@ end = struct
 
   external get_focus_widget :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t = "ml_gtk_window_get_focus_widget"
   (** Get property: focus-widget *)
 
   external set_focus_widget :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     unit = "ml_gtk_window_set_focus_widget"

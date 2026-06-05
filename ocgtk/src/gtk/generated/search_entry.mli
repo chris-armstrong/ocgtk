@@ -19,7 +19,7 @@ external set_placeholder_text : t -> string option -> unit
 
 external set_key_capture_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -60,7 +60,7 @@ external get_placeholder_text : t -> string option
 
 external get_key_capture_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_search_entry_get_key_capture_widget"

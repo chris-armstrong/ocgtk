@@ -33,8 +33,13 @@ external unselect_path : t -> Tree_path.t -> unit
 external unselect_all : t -> unit = "ml_gtk_icon_view_unselect_all"
 (** Unselects all the icons. *)
 
-external set_tooltip_item : t -> Tooltip.t -> Tree_path.t -> unit
-  = "ml_gtk_icon_view_set_tooltip_item"
+external set_tooltip_item :
+  t ->
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+  .Tooltip
+  .t ->
+  Tree_path.t ->
+  unit = "ml_gtk_icon_view_set_tooltip_item"
 (** Sets the tip area of @tooltip to be the area covered by the item at @path.
 See also gtk_icon_view_set_tooltip_column() for a simpler alternative.
 See also gtk_tooltip_set_tip_area(). *)
@@ -53,8 +58,13 @@ Note that the signal handler sets the text with gtk_tooltip_set_markup(),
 so &, <, etc have to be escaped in the text. *)
 
 external set_tooltip_cell :
-  t -> Tooltip.t -> Tree_path.t -> Cell_renderer.t option -> unit
-  = "ml_gtk_icon_view_set_tooltip_cell"
+  t ->
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+  .Tooltip
+  .t ->
+  Tree_path.t ->
+  Cell_renderer.t option ->
+  unit = "ml_gtk_icon_view_set_tooltip_cell"
 (** Sets the tip area of @tooltip to the area which @cell occupies in
 the item pointed to by @path. See also gtk_tooltip_set_tip_area().
 

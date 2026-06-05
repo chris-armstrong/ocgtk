@@ -2,6 +2,11 @@ class type application_t = object
   inherit GAction_group.action_group_t
   inherit GAction_map.action_map_t
   method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_command_line :
+    callback:(command_line:Application_command_line.t Gobject.obj option -> int) ->
+    Gobject.Signal.handler_id
+
   method on_name_lost : callback:(unit -> bool) -> Gobject.Signal.handler_id
   method on_shutdown : callback:(unit -> unit) -> Gobject.Signal.handler_id
   method on_startup : callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -64,6 +69,9 @@ class application (obj : Application.t) : application_t =
 
     method on_activate ~callback =
       Application.on_activate self#as_application ~callback
+
+    method on_command_line ~callback =
+      Application.on_command_line self#as_application ~callback
 
     method on_name_lost ~callback =
       Application.on_name_lost self#as_application ~callback

@@ -95,7 +95,7 @@ This function does nothing if @box is backed by a model. *)
 
 external remove :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_flow_box_remove"
@@ -103,7 +103,7 @@ external remove :
 
 external prepend :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_flow_box_prepend"
@@ -131,7 +131,7 @@ term, and the entry with the string has changed. *)
 
 external insert :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int ->
@@ -185,7 +185,7 @@ external get_activate_on_single_click : t -> bool
 
 external append :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_flow_box_append"
@@ -208,6 +208,18 @@ external set_accept_unpaired_release : t -> bool -> unit
 
 let on_activate_cursor_child ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"activate-cursor-child" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_child_activated ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let child =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        callback ~child)
+  in
+  Gobject.Signal.connect obj ~name:"child-activated" ~callback:closure
     ~after:(Option.value after ~default:false)
 
 let on_move_cursor ?after obj ~callback =

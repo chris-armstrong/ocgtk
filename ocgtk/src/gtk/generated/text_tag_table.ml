@@ -30,3 +30,43 @@ The tag is assigned the highest priority in the table.
 
 @tag must not be in a tag table already, and may not have
 the same name as an already-added tag. *)
+
+let on_tag_added ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let tag =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        callback ~tag)
+  in
+  Gobject.Signal.connect obj ~name:"tag-added" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_tag_changed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let tag =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let size_changed =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_boolean v
+        in
+        callback ~tag ~size_changed)
+  in
+  Gobject.Signal.connect obj ~name:"tag-changed" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_tag_removed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let tag =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        callback ~tag)
+  in
+  Gobject.Signal.connect obj ~name:"tag-removed" ~callback:closure
+    ~after:(Option.value after ~default:false)

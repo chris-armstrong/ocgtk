@@ -1,6 +1,6 @@
 class type event_controller_scroll_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .event_controller_t
 
   method on_decelerate :
@@ -22,10 +22,10 @@ class event_controller_scroll (obj : Event_controller_scroll.t) :
   event_controller_scroll_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .event_controller
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Event_controller
              .t)
 

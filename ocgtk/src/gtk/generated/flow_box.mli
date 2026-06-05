@@ -95,7 +95,7 @@ This function does nothing if @box is backed by a model. *)
 
 external remove :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_flow_box_remove"
@@ -103,7 +103,7 @@ external remove :
 
 external prepend :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_flow_box_prepend"
@@ -131,7 +131,7 @@ term, and the entry with the string has changed. *)
 
 external insert :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int ->
@@ -185,7 +185,7 @@ external get_activate_on_single_click : t -> bool
 
 external append :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_flow_box_append"
@@ -208,6 +208,12 @@ external set_accept_unpaired_release : t -> bool -> unit
 
 val on_activate_cursor_child :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_child_activated :
+  ?after:bool ->
+  t ->
+  callback:(child:Flow_box_child.t Gobject.obj option -> unit) ->
+  Gobject.Signal.handler_id
 
 val on_move_cursor :
   ?after:bool ->

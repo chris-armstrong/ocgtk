@@ -1,6 +1,6 @@
 class type search_entry_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GEditable.editable_t
@@ -22,7 +22,7 @@ class type search_entry_t = object
 
   method get_key_capture_widget :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -32,7 +32,7 @@ class type search_entry_t = object
   method set_input_purpose : Gtk_enums.inputpurpose -> unit
 
   method set_key_capture_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit

@@ -32,10 +32,10 @@ external set_baseline_child : t -> int -> unit = "ml_gtk_box_set_baseline_child"
 
 external reorder_child_after :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -47,7 +47,7 @@ If @sibling is %NULL, move @child to the first position. *)
 
 external remove :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_box_remove"
@@ -59,7 +59,7 @@ The child must have been added before with
 
 external prepend :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_box_prepend"
@@ -67,10 +67,10 @@ external prepend :
 
 external insert_child_after :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -95,7 +95,7 @@ external get_baseline_child : t -> int = "ml_gtk_box_get_baseline_child"
 
 external append :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_box_append"

@@ -6,7 +6,7 @@ class type dialog_t = object
     callback:(response_id:int -> unit) -> Gobject.Signal.handler_id
 
   method add_action_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int ->
     unit
@@ -14,20 +14,20 @@ class type dialog_t = object
   method add_button :
     string ->
     int ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method get_content_area : unit -> GBox.box_t
   method get_header_bar : unit -> GHeader_bar.header_bar_t
 
   method get_response_for_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int
 
   method get_widget_for_response :
     int ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -49,7 +49,7 @@ class dialog (obj : Dialog.t) : dialog_t =
     method on_response ~callback = Dialog.on_response self#as_dialog ~callback
 
     method add_action_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         int ->
         unit =
@@ -60,11 +60,11 @@ class dialog (obj : Dialog.t) : dialog_t =
     method add_button :
         string ->
         int ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t =
       fun button_text response_id ->
         new
-          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
           .widget
           (Dialog.add_button obj button_text response_id)
 
@@ -75,7 +75,7 @@ class dialog (obj : Dialog.t) : dialog_t =
       fun () -> new GHeader_bar.header_bar (Dialog.get_header_bar obj)
 
     method get_response_for_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         int =
       fun widget ->
@@ -84,14 +84,14 @@ class dialog (obj : Dialog.t) : dialog_t =
 
     method get_widget_for_response :
         int ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun response_id ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Dialog.get_widget_for_response obj response_id)

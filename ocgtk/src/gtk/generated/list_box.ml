@@ -25,7 +25,7 @@ external set_selection_mode : t -> Gtk_enums.selectionmode -> unit
 
 external set_placeholder :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -65,7 +65,7 @@ This function does nothing if @box is backed by a model. *)
 
 external remove :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_list_box_remove"
@@ -73,7 +73,7 @@ external remove :
 
 external prepend :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_list_box_prepend"
@@ -107,7 +107,7 @@ string and the entry with the search string has changed. *)
 
 external insert :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int ->
@@ -177,7 +177,7 @@ a drag leave event. *)
 
 external append :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_list_box_append"
@@ -222,6 +222,30 @@ let on_move_cursor ?after obj ~callback =
         callback ~object_ ~p0 ~p1 ~p2)
   in
   Gobject.Signal.connect obj ~name:"move-cursor" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_row_activated ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let row =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        callback ~row)
+  in
+  Gobject.Signal.connect obj ~name:"row-activated" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_row_selected ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let row =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        callback ~row)
+  in
+  Gobject.Signal.connect obj ~name:"row-selected" ~callback:closure
     ~after:(Option.value after ~default:false)
 
 let on_select_all ?after obj ~callback =

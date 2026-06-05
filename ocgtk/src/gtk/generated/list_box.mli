@@ -25,7 +25,7 @@ external set_selection_mode : t -> Gtk_enums.selectionmode -> unit
 
 external set_placeholder :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -65,7 +65,7 @@ This function does nothing if @box is backed by a model. *)
 
 external remove :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_list_box_remove"
@@ -73,7 +73,7 @@ external remove :
 
 external prepend :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_list_box_prepend"
@@ -107,7 +107,7 @@ string and the entry with the search string has changed. *)
 
 external insert :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int ->
@@ -177,7 +177,7 @@ a drag leave event. *)
 
 external append :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_list_box_append"
@@ -204,6 +204,18 @@ val on_move_cursor :
   t ->
   callback:
     (object_:Gtk_enums.movementstep -> p0:int -> p1:bool -> p2:bool -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_row_activated :
+  ?after:bool ->
+  t ->
+  callback:(row:List_box_row.t Gobject.obj option -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_row_selected :
+  ?after:bool ->
+  t ->
+  callback:(row:List_box_row.t Gobject.obj option -> unit) ->
   Gobject.Signal.handler_id
 
 val on_select_all :

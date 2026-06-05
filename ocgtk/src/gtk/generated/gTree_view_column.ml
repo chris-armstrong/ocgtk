@@ -13,7 +13,7 @@ class type tree_view_column_t = object
 
   method get_button :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method get_clickable : unit -> bool
@@ -32,7 +32,7 @@ class type tree_view_column_t = object
 
   method get_tree_view :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -40,7 +40,7 @@ class type tree_view_column_t = object
 
   method get_widget :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -64,7 +64,7 @@ class type tree_view_column_t = object
   method set_visible : bool -> unit
 
   method set_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -110,11 +110,11 @@ class tree_view_column (obj : Tree_view_column.t) : tree_view_column_t =
 
     method get_button :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t =
       fun () ->
         new
-          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
           .widget
           (Tree_view_column.get_button obj)
 
@@ -157,14 +157,14 @@ class tree_view_column (obj : Tree_view_column.t) : tree_view_column_t =
 
     method get_tree_view :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Tree_view_column.get_tree_view obj)
@@ -174,14 +174,14 @@ class tree_view_column (obj : Tree_view_column.t) : tree_view_column_t =
 
     method get_widget :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Tree_view_column.get_widget obj)
@@ -241,7 +241,7 @@ class tree_view_column (obj : Tree_view_column.t) : tree_view_column_t =
       fun visible -> Tree_view_column.set_visible obj visible
 
     method set_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =

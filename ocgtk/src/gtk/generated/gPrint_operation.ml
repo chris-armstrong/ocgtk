@@ -1,12 +1,69 @@
 class type print_operation_t = object
   inherit GPrint_operation_preview.print_operation_preview_t
 
+  method on_begin_print :
+    callback:(context:Print_context.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_custom_widget_apply :
+    callback:
+      (widget:
+         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .Widget
+         .t
+         Gobject.obj
+         option ->
+      unit) ->
+    Gobject.Signal.handler_id
+
   method on_done_ :
     callback:(result:Gtk_enums.printoperationresult -> unit) ->
     Gobject.Signal.handler_id
 
+  method on_draw_page :
+    callback:(context:Print_context.t Gobject.obj option -> page_nr:int -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_end_print :
+    callback:(context:Print_context.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_paginate :
+    callback:(context:Print_context.t Gobject.obj option -> bool) ->
+    Gobject.Signal.handler_id
+
+  method on_preview :
+    callback:
+      (preview:Print_operation_preview.t Gobject.obj option ->
+      context:Print_context.t Gobject.obj option ->
+      parent:
+        Application_and__window_and__window_group.Window.t Gobject.obj option ->
+      bool) ->
+    Gobject.Signal.handler_id
+
+  method on_request_page_setup :
+    callback:
+      (context:Print_context.t Gobject.obj option ->
+      page_nr:int ->
+      setup:Page_setup.t Gobject.obj option ->
+      unit) ->
+    Gobject.Signal.handler_id
+
   method on_status_changed :
     callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_update_custom_widget :
+    callback:
+      (widget:
+         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .Widget
+         .t
+         Gobject.obj
+         option ->
+      setup:Page_setup.t Gobject.obj option ->
+      settings:Print_settings.t Gobject.obj option ->
+      unit) ->
+    Gobject.Signal.handler_id
 
   method cancel : unit -> unit
   method draw_page_finish : unit -> unit
@@ -52,11 +109,35 @@ class print_operation (obj : Print_operation.t) : print_operation_t =
       GPrint_operation_preview.print_operation_preview
         (Print_operation_preview.from_gobject obj)
 
+    method on_begin_print ~callback =
+      Print_operation.on_begin_print self#as_print_operation ~callback
+
+    method on_custom_widget_apply ~callback =
+      Print_operation.on_custom_widget_apply self#as_print_operation ~callback
+
     method on_done_ ~callback =
       Print_operation.on_done_ self#as_print_operation ~callback
 
+    method on_draw_page ~callback =
+      Print_operation.on_draw_page self#as_print_operation ~callback
+
+    method on_end_print ~callback =
+      Print_operation.on_end_print self#as_print_operation ~callback
+
+    method on_paginate ~callback =
+      Print_operation.on_paginate self#as_print_operation ~callback
+
+    method on_preview ~callback =
+      Print_operation.on_preview self#as_print_operation ~callback
+
+    method on_request_page_setup ~callback =
+      Print_operation.on_request_page_setup self#as_print_operation ~callback
+
     method on_status_changed ~callback =
       Print_operation.on_status_changed self#as_print_operation ~callback
+
+    method on_update_custom_widget ~callback =
+      Print_operation.on_update_custom_widget self#as_print_operation ~callback
 
     method cancel : unit -> unit = fun () -> Print_operation.cancel obj
 

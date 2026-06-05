@@ -103,7 +103,7 @@ external set_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode -> unit
 
 external set_mnemonic_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -295,7 +295,7 @@ external get_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode
 
 external get_mnemonic_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_label_get_mnemonic_widget"

@@ -270,3 +270,12 @@ g_dtls_connection_close() again to complete closing the #GDtlsConnection. *)
 external get_base_socket : t -> Datagram_based.t
   = "ml_g_dtls_connection_get_base_socket"
 (** Get property: base-socket *)
+
+val on_accept_certificate :
+  ?after:bool ->
+  t ->
+  callback:
+    (peer_cert:Tls_certificate.t Gobject.obj option ->
+    errors:Gio_enums.tlscertificateflags ->
+    bool) ->
+  Gobject.Signal.handler_id

@@ -17,7 +17,7 @@ in response to the `GtkCellEditable::editing-done` signal of
 external start_editing :
   t ->
   Ocgtk_gdk.Gdk.Wrappers.Event.t option ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   string ->
@@ -33,7 +33,7 @@ widget created by the `GtkCellRenderer`Class.start_editing virtual function. *)
 external snapshot :
   t ->
   Snapshot.t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
@@ -85,7 +85,7 @@ external get_visible : t -> bool = "ml_gtk_cell_renderer_get_visible"
 
 external get_state :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -104,7 +104,7 @@ external get_request_mode : t -> Gtk_enums.sizerequestmode
 
 external get_preferred_width_for_height :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int ->
@@ -114,7 +114,7 @@ external get_preferred_width_for_height :
 
 external get_preferred_width :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int * int = "ml_gtk_cell_renderer_get_preferred_width"
@@ -122,7 +122,7 @@ external get_preferred_width :
 
 external get_preferred_size :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   Requisition.t * Requisition.t = "ml_gtk_cell_renderer_get_preferred_size"
@@ -131,7 +131,7 @@ external get_preferred_size :
 
 external get_preferred_height_for_width :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int ->
@@ -141,7 +141,7 @@ external get_preferred_height_for_width :
 
 external get_preferred_height :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int * int = "ml_gtk_cell_renderer_get_preferred_height"
@@ -165,7 +165,7 @@ external get_alignment : t -> float * float
 
 external get_aligned_area :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   Gtk_enums.cellrendererstate ->
@@ -177,7 +177,7 @@ the appropriate edit and focus rectangle. *)
 external activate :
   t ->
   Ocgtk_gdk.Gdk.Wrappers.Event.t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   string ->
@@ -262,3 +262,9 @@ external set_ypad : t -> int -> unit = "ml_gtk_cell_renderer_set_ypad"
 
 val on_editing_canceled :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_editing_started :
+  ?after:bool ->
+  t ->
+  callback:(editable:Cell_editable.t Gobject.obj option -> path:string -> unit) ->
+  Gobject.Signal.handler_id

@@ -1,34 +1,34 @@
 class type fixed_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method get_child_transform :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     Ocgtk_gsk.Gsk.Transform.transform_t option
 
   method move :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     float ->
     float ->
     unit
 
   method put :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     float ->
     float ->
     unit
 
   method remove :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
   method set_child_transform :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     Ocgtk_gsk.Gsk.Transform.transform_t option ->
     unit
@@ -40,15 +40,15 @@ end
 class fixed (obj : Fixed.t) : fixed_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
     method get_child_transform :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         Ocgtk_gsk.Gsk.Transform.transform_t option =
       fun widget ->
@@ -58,7 +58,7 @@ class fixed (obj : Fixed.t) : fixed_t =
           (Fixed.get_child_transform obj widget)
 
     method move :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         float ->
         float ->
@@ -68,7 +68,7 @@ class fixed (obj : Fixed.t) : fixed_t =
         Fixed.move obj widget x y
 
     method put :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         float ->
         float ->
@@ -78,7 +78,7 @@ class fixed (obj : Fixed.t) : fixed_t =
         Fixed.put obj widget x y
 
     method remove :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun widget ->
@@ -86,7 +86,7 @@ class fixed (obj : Fixed.t) : fixed_t =
         Fixed.remove obj widget
 
     method set_child_transform :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         Ocgtk_gsk.Gsk.Transform.transform_t option ->
         unit =

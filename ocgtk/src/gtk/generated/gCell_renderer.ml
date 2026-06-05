@@ -2,9 +2,14 @@ class type cell_renderer_t = object
   method on_editing_canceled :
     callback:(unit -> unit) -> Gobject.Signal.handler_id
 
+  method on_editing_started :
+    callback:
+      (editable:Cell_editable.t Gobject.obj option -> path:string -> unit) ->
+    Gobject.Signal.handler_id
+
   method activate :
     Ocgtk_gdk.Gdk.Event.event_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     string ->
     Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
@@ -18,7 +23,7 @@ class type cell_renderer_t = object
   method get_sensitive : unit -> bool
 
   method get_state :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     Gtk_enums.cellrendererstate ->
@@ -36,7 +41,7 @@ class type cell_renderer_t = object
 
   method snapshot :
     GSnapshot.snapshot_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
     Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
@@ -45,7 +50,7 @@ class type cell_renderer_t = object
 
   method start_editing :
     Ocgtk_gdk.Gdk.Event.event_t option ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     string ->
     Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
@@ -83,9 +88,12 @@ class cell_renderer (obj : Cell_renderer.t) : cell_renderer_t =
     method on_editing_canceled ~callback =
       Cell_renderer.on_editing_canceled self#as_cell_renderer ~callback
 
+    method on_editing_started ~callback =
+      Cell_renderer.on_editing_started self#as_cell_renderer ~callback
+
     method activate :
         Ocgtk_gdk.Gdk.Event.event_t ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         string ->
         Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
@@ -113,7 +121,7 @@ class cell_renderer (obj : Cell_renderer.t) : cell_renderer_t =
       fun () -> Cell_renderer.get_sensitive obj
 
     method get_state :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         Gtk_enums.cellrendererstate ->
@@ -150,7 +158,7 @@ class cell_renderer (obj : Cell_renderer.t) : cell_renderer_t =
 
     method snapshot :
         GSnapshot.snapshot_t ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
         Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
@@ -166,7 +174,7 @@ class cell_renderer (obj : Cell_renderer.t) : cell_renderer_t =
 
     method start_editing :
         Ocgtk_gdk.Gdk.Event.event_t option ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         string ->
         Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->

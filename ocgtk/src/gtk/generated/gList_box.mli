@@ -1,6 +1,6 @@
 class type list_box_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method on_activate_cursor_row :
@@ -9,6 +9,14 @@ class type list_box_t = object
   method on_move_cursor :
     callback:
       (object_:Gtk_enums.movementstep -> p0:int -> p1:bool -> p2:bool -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_row_activated :
+    callback:(row:List_box_row.t Gobject.obj option -> unit) ->
+    Gobject.Signal.handler_id
+
+  method on_row_selected :
+    callback:(row:List_box_row.t Gobject.obj option -> unit) ->
     Gobject.Signal.handler_id
 
   method on_select_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -22,7 +30,7 @@ class type list_box_t = object
   method on_unselect_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
 
   method append :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
@@ -38,7 +46,7 @@ class type list_box_t = object
   method get_show_separators : unit -> bool
 
   method insert :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int ->
     unit
@@ -48,12 +56,12 @@ class type list_box_t = object
   method invalidate_sort : unit -> unit
 
   method prepend :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
   method remove :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
@@ -64,7 +72,7 @@ class type list_box_t = object
   method set_adjustment : GAdjustment.adjustment_t option -> unit
 
   method set_placeholder :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit

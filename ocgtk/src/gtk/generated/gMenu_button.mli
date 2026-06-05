@@ -1,6 +1,6 @@
 class type menu_button_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -10,7 +10,7 @@ class type menu_button_t = object
 
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -28,7 +28,7 @@ class type menu_button_t = object
   method set_can_shrink : bool -> unit
 
   method set_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -39,7 +39,7 @@ class type menu_button_t = object
   method set_menu_model : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
 
   method set_popover :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit

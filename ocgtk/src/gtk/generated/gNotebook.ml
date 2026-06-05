@@ -1,10 +1,21 @@
 class type notebook_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method on_change_current_page :
     callback:(object_:int -> bool) -> Gobject.Signal.handler_id
+
+  method on_create_window :
+    callback:
+      (page:
+         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .Widget
+         .t
+         Gobject.obj
+         option ->
+      Notebook.t Gobject.obj option) ->
+    Gobject.Signal.handler_id
 
   method on_focus_tab :
     callback:(object_:Gtk_enums.notebooktab -> bool) ->
@@ -14,6 +25,42 @@ class type notebook_t = object
     callback:(object_:Gtk_enums.directiontype -> unit) ->
     Gobject.Signal.handler_id
 
+  method on_page_added :
+    callback:
+      (child:
+         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .Widget
+         .t
+         Gobject.obj
+         option ->
+      page_num:int ->
+      unit) ->
+    Gobject.Signal.handler_id
+
+  method on_page_removed :
+    callback:
+      (child:
+         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .Widget
+         .t
+         Gobject.obj
+         option ->
+      page_num:int ->
+      unit) ->
+    Gobject.Signal.handler_id
+
+  method on_page_reordered :
+    callback:
+      (child:
+         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .Widget
+         .t
+         Gobject.obj
+         option ->
+      page_num:int ->
+      unit) ->
+    Gobject.Signal.handler_id
+
   method on_reorder_tab :
     callback:(object_:Gtk_enums.directiontype -> p0:bool -> bool) ->
     Gobject.Signal.handler_id
@@ -21,33 +68,45 @@ class type notebook_t = object
   method on_select_page :
     callback:(object_:bool -> bool) -> Gobject.Signal.handler_id
 
+  method on_switch_page :
+    callback:
+      (page:
+         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .Widget
+         .t
+         Gobject.obj
+         option ->
+      page_num:int ->
+      unit) ->
+    Gobject.Signal.handler_id
+
   method append_page :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     int
 
   method append_page_menu :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     int
 
   method detach_tab :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
   method get_action_widget :
     Gtk_enums.packtype ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -55,14 +114,14 @@ class type notebook_t = object
   method get_group_name : unit -> string option
 
   method get_menu_label :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
   method get_menu_label_text :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     string option
 
@@ -70,12 +129,12 @@ class type notebook_t = object
 
   method get_nth_page :
     int ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
   method get_page :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     GNotebook_page.notebook_page_t
 
@@ -85,45 +144,45 @@ class type notebook_t = object
   method get_show_tabs : unit -> bool
 
   method get_tab_detachable :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool
 
   method get_tab_label :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
   method get_tab_label_text :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     string option
 
   method get_tab_pos : unit -> Gtk_enums.positiontype
 
   method get_tab_reorderable :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool
 
   method insert_page :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     int ->
     int
 
   method insert_page_menu :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     int ->
@@ -132,7 +191,7 @@ class type notebook_t = object
   method next_page : unit -> unit
 
   method page_num :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int
 
@@ -140,20 +199,20 @@ class type notebook_t = object
   method popup_enable : unit -> unit
 
   method prepend_page :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     int
 
   method prepend_page_menu :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     int
@@ -162,13 +221,13 @@ class type notebook_t = object
   method remove_page : int -> unit
 
   method reorder_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int ->
     unit
 
   method set_action_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     Gtk_enums.packtype ->
     unit
@@ -177,15 +236,15 @@ class type notebook_t = object
   method set_group_name : string option -> unit
 
   method set_menu_label :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
 
   method set_menu_label_text :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     string ->
     unit
@@ -195,21 +254,21 @@ class type notebook_t = object
   method set_show_tabs : bool -> unit
 
   method set_tab_detachable :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool ->
     unit
 
   method set_tab_label :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
 
   method set_tab_label_text :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     string ->
     unit
@@ -217,7 +276,7 @@ class type notebook_t = object
   method set_tab_pos : Gtk_enums.positiontype -> unit
 
   method set_tab_reorderable :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool ->
     unit
@@ -231,15 +290,18 @@ end
 class notebook (obj : Notebook.t) : notebook_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
     method on_change_current_page ~callback =
       Notebook.on_change_current_page self#as_notebook ~callback
+
+    method on_create_window ~callback =
+      Notebook.on_create_window self#as_notebook ~callback
 
     method on_focus_tab ~callback =
       Notebook.on_focus_tab self#as_notebook ~callback
@@ -247,16 +309,28 @@ class notebook (obj : Notebook.t) : notebook_t =
     method on_move_focus_out ~callback =
       Notebook.on_move_focus_out self#as_notebook ~callback
 
+    method on_page_added ~callback =
+      Notebook.on_page_added self#as_notebook ~callback
+
+    method on_page_removed ~callback =
+      Notebook.on_page_removed self#as_notebook ~callback
+
+    method on_page_reordered ~callback =
+      Notebook.on_page_reordered self#as_notebook ~callback
+
     method on_reorder_tab ~callback =
       Notebook.on_reorder_tab self#as_notebook ~callback
 
     method on_select_page ~callback =
       Notebook.on_select_page self#as_notebook ~callback
 
+    method on_switch_page ~callback =
+      Notebook.on_switch_page self#as_notebook ~callback
+
     method append_page :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         int =
@@ -266,12 +340,12 @@ class notebook (obj : Notebook.t) : notebook_t =
         Notebook.append_page obj child tab_label
 
     method append_page_menu :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         int =
@@ -282,7 +356,7 @@ class notebook (obj : Notebook.t) : notebook_t =
         Notebook.append_page_menu obj child tab_label menu_label
 
     method detach_tab :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun child ->
@@ -291,14 +365,14 @@ class notebook (obj : Notebook.t) : notebook_t =
 
     method get_action_widget :
         Gtk_enums.packtype ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun pack_type ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Notebook.get_action_widget obj pack_type)
@@ -310,9 +384,9 @@ class notebook (obj : Notebook.t) : notebook_t =
       fun () -> Notebook.get_group_name obj
 
     method get_menu_label :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun child ->
@@ -320,13 +394,13 @@ class notebook (obj : Notebook.t) : notebook_t =
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Notebook.get_menu_label obj child)
 
     method get_menu_label_text :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         string option =
       fun child ->
@@ -337,20 +411,20 @@ class notebook (obj : Notebook.t) : notebook_t =
 
     method get_nth_page :
         int ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun page_num ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Notebook.get_nth_page obj page_num)
 
     method get_page :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         GNotebook_page.notebook_page_t =
       fun child ->
@@ -368,7 +442,7 @@ class notebook (obj : Notebook.t) : notebook_t =
     method get_show_tabs : unit -> bool = fun () -> Notebook.get_show_tabs obj
 
     method get_tab_detachable :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         bool =
       fun child ->
@@ -376,9 +450,9 @@ class notebook (obj : Notebook.t) : notebook_t =
         Notebook.get_tab_detachable obj child
 
     method get_tab_label :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun child ->
@@ -386,13 +460,13 @@ class notebook (obj : Notebook.t) : notebook_t =
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Notebook.get_tab_label obj child)
 
     method get_tab_label_text :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         string option =
       fun child ->
@@ -403,7 +477,7 @@ class notebook (obj : Notebook.t) : notebook_t =
       fun () -> Notebook.get_tab_pos obj
 
     method get_tab_reorderable :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         bool =
       fun child ->
@@ -411,9 +485,9 @@ class notebook (obj : Notebook.t) : notebook_t =
         Notebook.get_tab_reorderable obj child
 
     method insert_page :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         int ->
@@ -424,12 +498,12 @@ class notebook (obj : Notebook.t) : notebook_t =
         Notebook.insert_page obj child tab_label position
 
     method insert_page_menu :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         int ->
@@ -443,7 +517,7 @@ class notebook (obj : Notebook.t) : notebook_t =
     method next_page : unit -> unit = fun () -> Notebook.next_page obj
 
     method page_num :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         int =
       fun child ->
@@ -454,9 +528,9 @@ class notebook (obj : Notebook.t) : notebook_t =
     method popup_enable : unit -> unit = fun () -> Notebook.popup_enable obj
 
     method prepend_page :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         int =
@@ -466,12 +540,12 @@ class notebook (obj : Notebook.t) : notebook_t =
         Notebook.prepend_page obj child tab_label
 
     method prepend_page_menu :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         int =
@@ -487,7 +561,7 @@ class notebook (obj : Notebook.t) : notebook_t =
       fun page_num -> Notebook.remove_page obj page_num
 
     method reorder_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         int ->
         unit =
@@ -496,7 +570,7 @@ class notebook (obj : Notebook.t) : notebook_t =
         Notebook.reorder_child obj child position
 
     method set_action_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         Gtk_enums.packtype ->
         unit =
@@ -511,9 +585,9 @@ class notebook (obj : Notebook.t) : notebook_t =
       fun group_name -> Notebook.set_group_name obj group_name
 
     method set_menu_label :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =
@@ -523,7 +597,7 @@ class notebook (obj : Notebook.t) : notebook_t =
         Notebook.set_menu_label obj child menu_label
 
     method set_menu_label_text :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         string ->
         unit =
@@ -541,7 +615,7 @@ class notebook (obj : Notebook.t) : notebook_t =
       fun show_tabs -> Notebook.set_show_tabs obj show_tabs
 
     method set_tab_detachable :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         bool ->
         unit =
@@ -550,9 +624,9 @@ class notebook (obj : Notebook.t) : notebook_t =
         Notebook.set_tab_detachable obj child detachable
 
     method set_tab_label :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =
@@ -562,7 +636,7 @@ class notebook (obj : Notebook.t) : notebook_t =
         Notebook.set_tab_label obj child tab_label
 
     method set_tab_label_text :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         string ->
         unit =
@@ -574,7 +648,7 @@ class notebook (obj : Notebook.t) : notebook_t =
       fun pos -> Notebook.set_tab_pos obj pos
 
     method set_tab_reorderable :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         bool ->
         unit =

@@ -14,7 +14,7 @@ external set_selectable : t -> bool -> unit
 
 external set_header :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -28,7 +28,7 @@ and be shown in front of the row in the listbox. *)
 
 external set_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -51,7 +51,7 @@ external get_index : t -> int = "ml_gtk_list_box_row_get_index"
 
 external get_header :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_list_box_row_get_header"
@@ -64,7 +64,7 @@ the state of it. *)
 
 external get_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_list_box_row_get_child"

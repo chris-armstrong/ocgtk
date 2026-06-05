@@ -19,7 +19,7 @@ end
 
 and tree_view_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GScrollable.scrollable_t
@@ -162,14 +162,21 @@ and tree_view_t = object
   method set_show_expanders : bool -> unit
 
   method set_tooltip_cell :
-    GTooltip.tooltip_t ->
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .tooltip_t ->
     Tree_path.t option ->
     GTree_view_column.tree_view_column_t option ->
     GCell_renderer.cell_renderer_t option ->
     unit
 
   method set_tooltip_column : int -> unit
-  method set_tooltip_row : GTooltip.tooltip_t -> Tree_path.t -> unit
+
+  method set_tooltip_row :
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .tooltip_t ->
+    Tree_path.t ->
+    unit
+
   method unset_rows_drag_dest : unit -> unit
   method unset_rows_drag_source : unit -> unit
   method enable_grid_lines : Gtk_enums.treeviewgridlines

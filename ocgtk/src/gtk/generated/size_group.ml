@@ -19,7 +19,7 @@ external set_mode : t -> Gtk_enums.sizegroupmode -> unit
 
 external remove_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_size_group_remove_widget"
@@ -27,7 +27,7 @@ external remove_widget :
 
 external get_widgets :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   list = "ml_gtk_size_group_get_widgets"
@@ -38,7 +38,7 @@ external get_mode : t -> Gtk_enums.sizegroupmode = "ml_gtk_size_group_get_mode"
 
 external add_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_size_group_add_widget"

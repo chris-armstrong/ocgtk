@@ -41,6 +41,30 @@ and app_launch_context_t = object
   method on_launch_failed :
     callback:(startup_notify_id:string -> unit) -> Gobject.Signal.handler_id
 
+  method on_launch_started :
+    callback:
+      (info:
+         App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+         .App_info
+         .t
+         Gobject.obj
+         option ->
+      platform_data:Gvariant.t ->
+      unit) ->
+    Gobject.Signal.handler_id
+
+  method on_launched :
+    callback:
+      (info:
+         App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+         .App_info
+         .t
+         Gobject.obj
+         option ->
+      platform_data:Gvariant.t ->
+      unit) ->
+    Gobject.Signal.handler_id
+
   method get_display : app_info_t -> file_t list -> string option
   method get_environment : unit -> string array
   method get_startup_notify_id : app_info_t -> file_t list -> string option
@@ -400,6 +424,24 @@ and file_enumerator_t = object
 end
 
 and file_monitor_t = object
+  method on_changed :
+    callback:
+      (file:
+         App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+         .File
+         .t
+         Gobject.obj
+         option ->
+      other_file:
+        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+        .File
+        .t
+        Gobject.obj
+        option ->
+      event_type:Gio_enums.filemonitorevent ->
+      unit) ->
+    Gobject.Signal.handler_id
+
   method cancel : unit -> bool
   method emit_event : file_t -> file_t -> Gio_enums.filemonitorevent -> unit
   method is_cancelled : unit -> bool

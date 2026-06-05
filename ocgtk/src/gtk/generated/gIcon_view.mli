@@ -1,6 +1,6 @@
 class type icon_view_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
@@ -91,13 +91,20 @@ class type icon_view_t = object
   method set_text_column : int -> unit
 
   method set_tooltip_cell :
-    GTooltip.tooltip_t ->
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .tooltip_t ->
     Tree_path.t ->
     GCell_renderer.cell_renderer_t option ->
     unit
 
   method set_tooltip_column : int -> unit
-  method set_tooltip_item : GTooltip.tooltip_t -> Tree_path.t -> unit
+
+  method set_tooltip_item :
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .tooltip_t ->
+    Tree_path.t ->
+    unit
+
   method unselect_all : unit -> unit
   method unselect_path : Tree_path.t -> unit
   method unset_model_drag_dest : unit -> unit

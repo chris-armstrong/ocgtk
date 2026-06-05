@@ -31,3 +31,31 @@ external end_preview : t -> unit = "ml_gtk_print_operation_preview_end_preview"
 (** Ends a preview.
 
     This function must be called to finish a custom print preview. *)
+
+let on_got_page_size ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let context =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        let page_setup =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_object v
+        in
+        callback ~context ~page_setup)
+  in
+  Gobject.Signal.connect obj ~name:"got-page-size" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_ready ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let context =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object v
+        in
+        callback ~context)
+  in
+  Gobject.Signal.connect obj ~name:"ready" ~callback:closure
+    ~after:(Option.value after ~default:false)
