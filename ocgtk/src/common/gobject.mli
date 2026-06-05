@@ -76,6 +76,17 @@ external unsafe_cast : 'a obj -> 'b obj = "%identity"
 external coerce : 'a obj -> unit obj = "%identity"
 (** Safe coercion to generic object *)
 
+external same : 'a obj -> 'b obj -> bool = "ml_gobject_same"
+(** [same a b] is [true] iff [a] and [b] wrap the same underlying GObject
+    pointer. Two extractions of the same GObject (e.g. successive
+    [Gobject.Value.get_object] calls in a signal callback) allocate distinct
+    OCaml custom blocks, so [Stdlib.(==)] always returns [false]. Use [same]
+    when the intent is identity comparison.
+
+    [Stdlib.(=)], [Stdlib.compare], and [Hashtbl.hash] also operate on pointer
+    identity for [obj] values (the custom block installs a pointer-compare /
+    pointer-hash); [same] is the explicit form. *)
+
 val get_ref_count : 'a obj -> int
 (** Get reference count (for debugging) *)
 

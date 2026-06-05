@@ -59,6 +59,7 @@ type signal_type = [ `RUN_FIRST | `RUN_LAST | `NO_RECURSE | `ACTION | `NO_HOOKS 
 external get_type : 'a obj -> g_type = "ml_g_object_get_type"
 external unsafe_cast : 'a obj -> 'b obj = "%identity"
 external coerce : 'a obj -> unit obj = "%identity"
+external same : 'a obj -> 'b obj -> bool = "ml_gobject_same"
 external get_ref_count : 'a obj -> int = "ml_g_object_get_ref_count"
 
 (** {2 Test Helpers} *)
