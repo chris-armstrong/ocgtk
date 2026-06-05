@@ -132,6 +132,15 @@ let extract_constructor_dependencies (ctx : generation_context)
     (ctor : gir_constructor) : string list =
   extract_param_dependencies ctx ctor.ctor_parameters
 
+(* Extract dependencies from a signal. Signal callbacks reference param and
+   return types at the L1 module level (same-namespace GObject params introduce
+   inter-module edges that Tarjan absorbs into SCC-derived combined modules). *)
+let extract_signal_dependencies (ctx : generation_context)
+    (signal : gir_signal) : string list =
+  let return_deps = extract_dependencies_from_type ctx signal.return_type in
+  let param_deps = extract_param_dependencies ctx signal.sig_parameters in
+  return_deps @ param_deps
+
 (* Extract all dependencies for a class *)
 let extract_class_dependencies (ctx : generation_context) (cls : gir_class) :
     string list =
@@ -146,11 +155,14 @@ let extract_class_dependencies (ctx : generation_context) (cls : gir_class) :
   let constructor_deps =
     List.concat_map cls.constructors ~f:(extract_constructor_dependencies ctx)
   in
+  let signal_deps =
+    List.concat_map cls.signals ~f:(extract_signal_dependencies ctx)
+  in
 
   (* Remove self-references and duplicates *)
   let all_deps =
     parent_deps @ interface_deps @ method_deps @ property_deps
-    @ constructor_deps
+    @ constructor_deps @ signal_deps
   in
   List.filter all_deps ~f:(fun dep -> dep <> cls.class_name)
   |> List.sort_uniq ~cmp:String.compare
@@ -164,9 +176,12 @@ let extract_interface_dependencies (ctx : generation_context)
   let property_deps =
     List.concat_map intf.properties ~f:(extract_property_dependencies ctx)
   in
+  let signal_deps =
+    List.concat_map intf.signals ~f:(extract_signal_dependencies ctx)
+  in
 
   (* Remove self-references and duplicates *)
-  let all_deps = method_deps @ property_deps in
+  let all_deps = method_deps @ property_deps @ signal_deps in
   List.filter all_deps ~f:(fun dep -> dep <> intf.interface_name)
   |> List.sort_uniq ~cmp:String.compare
 

@@ -154,7 +154,7 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name
   (* L2 signal forwarder methods — one per supported signal.
      Error branch silently skips: the skip was already logged at L1 emission. *)
   List.iter signals ~f:(fun signal ->
-      match Signal_gen.classify ~ctx signal with
+      match Signal_gen.classify ~current_class:(Some class_name) ~ctx signal with
       | Error _ -> ()
       | Ok emission ->
           Buffer.add_string buf
@@ -289,9 +289,14 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_
       end);
 
   (* L2 signal method type signatures — one per supported signal.
-     Error branch silently skips: already logged at L1 emission. *)
+     Error branch silently skips: already logged at L1 emission.
+
+     [current_class] is [None] here because the L2 class type [<class>_t] lives
+     in a file where [t] is not in scope: self-class references must remain
+     qualified as [<Module>.t]. (Work 2 will replace these L1 types with L2
+     class types.) *)
   List.iter signals ~f:(fun signal ->
-      match Signal_gen.classify ~ctx signal with
+      match Signal_gen.classify ~current_class:None ~ctx signal with
       | Error _ -> ()
       | Ok emission ->
           Buffer.add_string buf (Signal_gen.emit_l2_method_sig emission));

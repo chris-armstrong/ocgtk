@@ -42,7 +42,9 @@ let generate_properties_section ~ctx ~class_name ~methods ~properties buf =
 let generate_signal_bindings_section ~ctx ~output_mode ~class_name
     (signals : gir_signal list) buf =
   List.iter signals ~f:(fun signal ->
-      match Signal_gen.classify ~ctx signal with
+      match
+        Signal_gen.classify ~current_class:(Some class_name) ~ctx signal
+      with
       | Error reason ->
           eprintf "Skipping signal '%s' for %s (%s)\n" signal.signal_name
             class_name reason

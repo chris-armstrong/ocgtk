@@ -161,27 +161,34 @@ let classify_bitfield ~ctx ~namespace ~name =
 (* Class / interface classification helpers                              *)
 (* ===================================================================== *)
 
-let classify_gobject ~ctx:_ ~namespace ~name =
-  (* GObject class / interface parameters in signal callbacks are not yet
-     supported at the L1 emission layer. Two issues block them:
-     (a) [Gobject.Value.get_object] returns ['a obj option] but the
-         emitted [val] declarations are typed without the [option], so the
-         implementation type does not match the interface type;
-     (b) referencing a same-namespace class type from another L1 module
-         introduces dependency edges that may form cycles the existing
-         module-grouping pass did not anticipate (e.g. Tooltip <-> Widget).
-     Until both issues are addressed, classify class types as Unsupported
-     so the signal is logged and skipped at L1 emission. *)
-  let _ = same_ns_object_type and _ = cross_ns_object_type in
-  Unsupported
-    (Printf.sprintf "GObject class parameter %s.%s not yet supported"
-       namespace name)
+let classify_gobject ~current_class ~ctx ~namespace ~name =
+  (* GObject class / interface parameters resolve to ['a obj option] because
+     [Gobject.Value.get_object] returns [None] for NULL pointers. Same-namespace
+     edges are fed into [Dependency_analysis.build_dependency_graph] via
+     [extract_signal_dependencies], so any cycle they create is absorbed into a
+     combined module by the Tarjan SCC pass.
+
+     When [current_class] is set and a same-namespace target matches it, emit a
+     bare [t Gobject.obj] — the val/let is being placed inside that class's L1
+     module, where a qualified [<Module>.t] would form a self-referential alias
+     and fail to compile. *)
+  let base_type =
+    if String.equal namespace ctx.namespace.namespace_name then
+      match current_class with
+      | Some current when String.equal current name -> "t Gobject.obj"
+      | _ -> same_ns_object_type ~ctx name
+    else cross_ns_object_type namespace name
+  in
+  let ocaml_type = base_type ^ " option" in
+  let getter_expr = "Gobject.Value.get_object v" in
+  let setter_expr = "Gobject.Value.set_object v x" in
+  Supported { ocaml_type; getter_expr; setter_expr }
 
 (* ===================================================================== *)
 (* Main classify function                                                *)
 (* ===================================================================== *)
 
-let classify ~ctx ~gir_type =
+let classify ~current_class ~ctx ~gir_type =
   (* Array types are not yet supported *)
   if Option.is_some gir_type.array then
     Unsupported "GArray not yet supported"
@@ -217,7 +224,7 @@ let classify ~ctx ~gir_type =
         | Type_mappings.Tk_Bitfield ->
             classify_bitfield ~ctx ~namespace ~name
         | Type_mappings.Tk_Class | Type_mappings.Tk_Interface ->
-            classify_gobject ~ctx ~namespace ~name
+            classify_gobject ~current_class ~ctx ~namespace ~name
         | Type_mappings.Tk_Record ->
             Unsupported
               (Printf.sprintf "boxed type %s.%s not yet supported" namespace

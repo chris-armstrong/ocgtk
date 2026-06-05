@@ -140,7 +140,9 @@ let gtk_ctx_with_textiter () =
       ]
     ()
 
-let classify = Gir_gen_lib.Generate.Signal_marshaller.classify
+let classify ~ctx ~gir_type =
+  Gir_gen_lib.Generate.Signal_marshaller.classify ~current_class:None ~ctx
+    ~gir_type
 
 (* ========================================================================= *)
 (* Test cases                                                                 *)
@@ -285,7 +287,15 @@ let test_same_ns_gobject_class () =
     Type_factory.make_gir_type ~name:"Widget" ~c_type:"GtkWidget*" ()
   in
   let result = classify ~ctx ~gir_type in
-  assert_unsupported ~label:"same-ns GObject class" result "not yet supported"
+  assert_supported ~label:"same-ns GObject class" result @@ fun m ->
+  assert_expr_contains ~label:"same-ns GObject class" ~field:"ocaml_type"
+    m.ocaml_type "Widget";
+  assert_expr_contains ~label:"same-ns GObject class" ~field:"ocaml_type"
+    m.ocaml_type "Gobject.obj option";
+  Alcotest.(check string)
+    "getter_expr" "Gobject.Value.get_object v" m.getter_expr;
+  Alcotest.(check string)
+    "setter_expr" "Gobject.Value.set_object v x" m.setter_expr
 
 let test_cross_ns_gobject_gio_file () =
   let ctx = gtk_ctx_with_gio_file () in
@@ -293,7 +303,17 @@ let test_cross_ns_gobject_gio_file () =
     Type_factory.make_gir_type ~name:"Gio.File" ~c_type:"GFile*" ()
   in
   let result = classify ~ctx ~gir_type in
-  assert_unsupported ~label:"cross-ns GObject class" result "not yet supported"
+  assert_supported ~label:"cross-ns GObject class" result @@ fun m ->
+  assert_expr_contains ~label:"cross-ns GObject class" ~field:"ocaml_type"
+    m.ocaml_type "Ocgtk_gio";
+  assert_expr_contains ~label:"cross-ns GObject class" ~field:"ocaml_type"
+    m.ocaml_type "Wrappers.File";
+  assert_expr_contains ~label:"cross-ns GObject class" ~field:"ocaml_type"
+    m.ocaml_type "Gobject.obj option";
+  Alcotest.(check string)
+    "getter_expr" "Gobject.Value.get_object v" m.getter_expr;
+  Alcotest.(check string)
+    "setter_expr" "Gobject.Value.set_object v x" m.setter_expr
 
 let test_garray_is_unsupported () =
   let ctx = gtk_ctx () in
@@ -365,10 +385,12 @@ let tests =
       `Quick test_cross_ns_bitfield_modifiertype;
     Alcotest.test_case "GLib.Variant maps to Gvariant.t" `Quick
       test_glib_variant_maps_to_gvariant;
-    Alcotest.test_case "same-ns GObject class is Unsupported" `Quick
+    Alcotest.test_case
+      "same-ns GObject class -> Widget.t Gobject.obj option" `Quick
       test_same_ns_gobject_class;
-    Alcotest.test_case "cross-ns GObject class is Unsupported" `Quick
-      test_cross_ns_gobject_gio_file;
+    Alcotest.test_case
+      "cross-ns GObject class -> Ocgtk_gio.Wrappers.File.t Gobject.obj option"
+      `Quick test_cross_ns_gobject_gio_file;
     Alcotest.test_case "GLib.Array is Unsupported" `Quick
       test_garray_is_unsupported;
     Alcotest.test_case "Gtk.TextIter boxed is Unsupported" `Quick

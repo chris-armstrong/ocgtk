@@ -4,8 +4,17 @@
 
 open Containers
 open Gir_gen_lib.Types
-module Signal_gen = Gir_gen_lib.Generate.Signal_gen
+module Signal_gen_real = Gir_gen_lib.Generate.Signal_gen
 module Signal_marshaller = Gir_gen_lib.Generate.Signal_marshaller
+
+(* Local wrapper that defaults [current_class] to [None] for tests that don't
+   exercise same-class self-reference handling. *)
+module Signal_gen = struct
+  include Signal_gen_real
+
+  let classify ?(current_class = None) ~ctx signal =
+    Signal_gen_real.classify ~current_class ~ctx signal
+end
 
 (* ========================================================================= *)
 (* Shared context builders                                                    *)

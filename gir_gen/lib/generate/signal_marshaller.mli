@@ -46,17 +46,34 @@ type result =
           human-readable reason (used for error messages and test
           assertions). *)
 
-(** [classify ~ctx ~gir_type] determines how to marshal [gir_type] as
-    a signal parameter or return type in the context of the namespace
-    described by [ctx].
+(** [classify ~current_class ~ctx ~gir_type] determines how to marshal
+    [gir_type] as a signal parameter or return type in the context of the
+    namespace described by [ctx].
+
+    [current_class] is the GIR class/interface name into whose L1 module the
+    val/let binding will be emitted; [None] when emission target is not
+    class-scoped. A same-namespace GObject type whose name matches
+    [current_class] is rendered as a bare ["t Gobject.obj"] to avoid forming
+    a self-referential module alias inside the standalone L1 [.mli]/[.ml].
 
     Same-namespace types are resolved directly from [ctx.enums],
     [ctx.bitfields], [ctx.classes], [ctx.interfaces], and [ctx.records].
     Cross-namespace types are resolved via [ctx.cross_references].
+
+    GObject class / interface parameters are classified as [Supported] with
+    [ocaml_type] of the form ["Mod.t Gobject.obj option"] (always wrapped in
+    [option] because [Gobject.Value.get_object] returns [None] for NULL).
+    Same-namespace edges introduced by signal params are fed into the
+    dependency graph via [Dependency_analysis.extract_signal_dependencies],
+    so any cycles are absorbed by the Tarjan SCC pass into combined modules.
 
     Returns [Supported m] when marshalling is possible, [Unsupported
     reason] otherwise.  Currently unsupported cases include:
     - Array types ([GLib.Array])
     - Boxed record types (e.g. [Gtk.TextIter])
     - Callback parameter types (deferred to Milestone 4) *)
-val classify : ctx:generation_context -> gir_type:gir_type -> result
+val classify :
+  current_class:string option ->
+  ctx:generation_context ->
+  gir_type:gir_type ->
+  result

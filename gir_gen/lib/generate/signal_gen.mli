@@ -51,10 +51,19 @@ val sanitize_signal_name : string -> string
     Example: ["key-pressed"] -> ["on_key_pressed"]. *)
 
 val classify :
-  ctx:generation_context -> gir_signal -> (signal_emission, string) result
-(** [classify ~ctx signal] analyses [signal] and returns a fully-populated
-    [signal_emission] record when all parameters and the return type can be
-    marshalled.
+  current_class:string option ->
+  ctx:generation_context ->
+  gir_signal ->
+  (signal_emission, string) result
+(** [classify ~current_class ~ctx signal] analyses [signal] and returns a
+    fully-populated [signal_emission] record when all parameters and the return
+    type can be marshalled.
+
+    [current_class] names the GIR class/interface whose L1 module will hold the
+    emitted val/let. Same-namespace GObject params/returns matching
+    [current_class] are rendered as a bare ["t Gobject.obj"] instead of
+    ["<Module>.t Gobject.obj"] so the binding compiles inside its own module.
+    Pass [None] when the emission target is not class-scoped.
 
     Returns [Error reason] when:
     - Any parameter has a non-In direction (Out or InOut).
