@@ -9,9 +9,15 @@ type marshaller = {
   ocaml_type : string;
   getter_expr : string;
   setter_expr : string;
+  l2_class : ocaml_class option;
+  same_ns_class : string option;
 }
 
 type result = Supported of marshaller | Unsupported of string
+
+let make_marshaller ?(l2_class = None) ?(same_ns_class = None) ~ocaml_type
+    ~getter_expr ~setter_expr () =
+  { ocaml_type; getter_expr; setter_expr; l2_class; same_ns_class }
 
 (* ===================================================================== *)
 (* Primitive type table                                                  *)
@@ -101,21 +107,34 @@ let cross_ns_enums_module namespace =
   ^ Utils.internal_namespace_to_module_name namespace
   ^ "_enums"
 
-(** Build the GObject-ref OCaml type for a same-namespace class / interface. *)
+(** Build the L1 OCaml type for a same-namespace GObject class / interface.
+    [<Mod>.t] is itself a [Gobject.obj] phantom (e.g.
+    [type t = [`widget | ...] Gobject.obj]) so no extra [Gobject.obj] is
+    appended; users see a value typed as [Widget.t], unifying with the
+    underlying [Gobject.Value.get_object : t -> 'a obj option]. *)
 let same_ns_object_type ~ctx class_name =
   let mod_path =
     Type_mappings.calculate_class_or_interface_or_record_module_name ~ctx
       ~name:class_name
   in
-  mod_path ^ ".t Gobject.obj"
+  mod_path ^ ".t"
 
-(** Build the GObject-ref OCaml type for a cross-namespace class / interface.
+(** Build the L1 OCaml type for a cross-namespace GObject class / interface.
     Cross-namespace classes are exposed via the library wrapper's [Wrappers]
-    submodule, e.g. [Ocgtk_gio.Gio.Wrappers.App_info.t]. *)
+    submodule, e.g. [Ocgtk_gio.Gio.Wrappers.App_info.t]. As with same-namespace
+    classes, the [.t] is already a [Gobject.obj]. *)
 let cross_ns_object_type namespace class_name =
   let ext = Utils.external_namespace_to_module_name namespace in
   let mod_ = Utils.module_name_of_class class_name in
-  ext ^ ".Wrappers." ^ mod_ ^ ".t Gobject.obj"
+  ext ^ ".Wrappers." ^ mod_ ^ ".t"
+
+(** Look up the L2 [ocaml_class] info for a GIR type via [Type_mappings].
+    Returns [None] when the type has no L2 representation (e.g. an interface
+    whose layer2_class is None). *)
+let lookup_l2_class ~ctx gir_type : ocaml_class option =
+  match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
+  | Some { layer2_class = Some lc; _ } -> Some lc
+  | _ -> None
 
 (* ===================================================================== *)
 (* Enum / bitfield classification helpers                                *)
@@ -137,7 +156,7 @@ let classify_enum ~ctx ~namespace ~name =
   let setter_expr =
     "Gobject.Value.set_enum_int v (" ^ to_int ^ " x)"
   in
-  Supported { ocaml_type; getter_expr; setter_expr }
+  Supported (make_marshaller ~ocaml_type ~getter_expr ~setter_expr ())
 
 let classify_bitfield ~ctx ~namespace ~name =
   let enums_module =
@@ -155,55 +174,56 @@ let classify_bitfield ~ctx ~namespace ~name =
   let setter_expr =
     "Gobject.Value.set_flags_int v (" ^ to_int ^ " x)"
   in
-  Supported { ocaml_type; getter_expr; setter_expr }
+  Supported (make_marshaller ~ocaml_type ~getter_expr ~setter_expr ())
 
 (* ===================================================================== *)
 (* Class / interface classification helpers                              *)
 (* ===================================================================== *)
 
-let classify_gobject ~current_class ~ctx ~namespace ~name =
+let classify_gobject ~ctx ~gir_type ~namespace ~name =
   (* GObject class / interface parameters resolve to ['a obj option] because
      [Gobject.Value.get_object] returns [None] for NULL pointers. Same-namespace
      edges are fed into [Dependency_analysis.build_dependency_graph] via
      [extract_signal_dependencies], so any cycle they create is absorbed into a
      combined module by the Tarjan SCC pass.
 
-     When [current_class] is set and a same-namespace target matches it, emit a
-     bare [t Gobject.obj] — the val/let is being placed inside that class's L1
-     module, where a qualified [<Module>.t] would form a self-referential alias
-     and fail to compile. *)
+     The marshaller carries structured info (l2_class, same_ns_class) so that
+     L1 emission can collapse same-class references to bare [t Gobject.obj]
+     and L2 emission can render the L2 [class_type] and emit the
+     [new <class>] / [#<accessor>] wrap/unwrap expressions, all without
+     re-running classify. *)
+  let same_ns = String.equal namespace ctx.namespace.namespace_name in
   let base_type =
-    if String.equal namespace ctx.namespace.namespace_name then
-      match current_class with
-      | Some current when String.equal current name -> "t Gobject.obj"
-      | _ -> same_ns_object_type ~ctx name
+    if same_ns then same_ns_object_type ~ctx name
     else cross_ns_object_type namespace name
   in
   let ocaml_type = base_type ^ " option" in
-  let getter_expr = "Gobject.Value.get_object v" in
-  let setter_expr = "Gobject.Value.set_object v x" in
-  Supported { ocaml_type; getter_expr; setter_expr }
+  let l2_class = lookup_l2_class ~ctx gir_type in
+  let same_ns_class = if same_ns then Some name else None in
+  Supported
+    (make_marshaller ~ocaml_type
+       ~getter_expr:"Gobject.Value.get_object v"
+       ~setter_expr:"Gobject.Value.set_object v x"
+       ~l2_class ~same_ns_class ())
 
 (* ===================================================================== *)
 (* Main classify function                                                *)
 (* ===================================================================== *)
 
-let classify ~current_class ~ctx ~gir_type =
+let classify ~ctx ~gir_type =
   (* Array types are not yet supported *)
   if Option.is_some gir_type.array then
     Unsupported "GArray not yet supported"
   (* Void / none is the return-only unit path *)
   else if is_void_type gir_type then
     Supported
-      { ocaml_type = "unit"; getter_expr = "()"; setter_expr = "()" }
+      (make_marshaller ~ocaml_type:"unit" ~getter_expr:"()" ~setter_expr:"()" ())
   (* GLib.Variant has special handling before general classification *)
   else if is_glib_variant gir_type then
     Supported
-      {
-        ocaml_type = "Gvariant.t";
-        getter_expr = "Gobject.Value.get_variant v";
-        setter_expr = "Gobject.Value.set_variant v x";
-      }
+      (make_marshaller ~ocaml_type:"Gvariant.t"
+         ~getter_expr:"Gobject.Value.get_variant v"
+         ~setter_expr:"Gobject.Value.set_variant v x" ())
   else if is_callback_type gir_type then
     Unsupported "callback parameters require Milestone 4"
   else
@@ -211,7 +231,8 @@ let classify ~current_class ~ctx ~gir_type =
     let primitive_result =
       List.assoc_opt ~eq:String.equal gir_type.name primitive_marshallers
       |> Option.map (fun (ocaml_type, getter_expr, setter_expr) ->
-             Supported { ocaml_type; getter_expr; setter_expr })
+             Supported
+               (make_marshaller ~ocaml_type ~getter_expr ~setter_expr ()))
     in
     match primitive_result with
     | Some r -> r
@@ -224,7 +245,7 @@ let classify ~current_class ~ctx ~gir_type =
         | Type_mappings.Tk_Bitfield ->
             classify_bitfield ~ctx ~namespace ~name
         | Type_mappings.Tk_Class | Type_mappings.Tk_Interface ->
-            classify_gobject ~current_class ~ctx ~namespace ~name
+            classify_gobject ~ctx ~gir_type ~namespace ~name
         | Type_mappings.Tk_Record ->
             Unsupported
               (Printf.sprintf "boxed type %s.%s not yet supported" namespace
@@ -237,3 +258,65 @@ let classify ~current_class ~ctx ~gir_type =
         | Type_mappings.Tk_Unknown ->
             Unsupported
               (Printf.sprintf "unknown type %s" gir_type.name))
+
+(* ===================================================================== *)
+(* Type rendering helpers                                                 *)
+(* ===================================================================== *)
+
+(** Render the OCaml type for a marshaller as it should appear inside the L1
+    module of [current_class]. For non-object marshallers this is just
+    [ocaml_type]; for a same-namespace object whose [same_ns_class] matches
+    [current_class] the bare ["t Gobject.obj option"] is used to dodge the
+    compilation-unit self-alias error. *)
+let render_l1_type ~current_class (m : marshaller) : string =
+  match m.same_ns_class with
+  | Some n when String.equal n current_class -> "t option"
+  | _ -> m.ocaml_type
+
+(** Render the L2-form OCaml type for a marshaller in the context of
+    [current_layer2_module]. For object marshallers this is the L2 class type
+    (e.g. ["widget_t option"]); the module prefix is dropped when the class
+    is in the current L2 module. For non-object marshallers, the L1
+    [ocaml_type] is used unchanged. *)
+let render_l2_type ~current_layer2_module (m : marshaller) : string =
+  match m.l2_class with
+  | Some lc ->
+      let qualified =
+        if String.equal current_layer2_module lc.class_module then lc.class_type
+        else lc.class_module ^ "." ^ lc.class_type
+      in
+      qualified ^ " option"
+  | None -> m.ocaml_type
+
+(** Build an OCaml expression that converts an L1-form value [param_name] into
+    its L2 form (used inside L2 callback param wrapping).
+
+    For object marshallers, wraps with [Option.map (fun w -> new <class> w)].
+    For non-object marshallers, returns [param_name] unchanged. *)
+let l2_param_wrap_expr ~current_layer2_module (m : marshaller) param_name :
+    string =
+  match m.l2_class with
+  | Some lc ->
+      let qualified =
+        if String.equal current_layer2_module lc.class_module then
+          lc.class_ml_name
+        else lc.class_module ^ "." ^ lc.class_ml_name
+      in
+      Printf.sprintf "(Option.map (fun w -> new %s w) %s)" qualified param_name
+  | None -> param_name
+
+(** Build an OCaml expression that converts an L2-form value [result_expr]
+    back into its L1 form (used inside L2 callback return unwrapping).
+
+    For object marshallers, wraps with [Option.map (fun w -> w#<accessor>)].
+    For non-object marshallers, returns [result_expr] unchanged. *)
+let l2_return_unwrap_expr (m : marshaller) result_expr : string =
+  match m.l2_class with
+  | Some lc ->
+      (* The result_expr is usually a curried callback application that
+         carries its own labelled arguments. Wrap it in parens before passing
+         to Option.map so the labelled args bind to the callback, not to
+         Option.map. *)
+      Printf.sprintf "(Option.map (fun w -> w#%s) (%s))"
+        lc.class_layer1_accessor result_expr
+  | None -> result_expr

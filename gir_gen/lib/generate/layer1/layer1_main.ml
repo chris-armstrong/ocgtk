@@ -42,16 +42,15 @@ let generate_properties_section ~ctx ~class_name ~methods ~properties buf =
 let generate_signal_bindings_section ~ctx ~output_mode ~class_name
     (signals : gir_signal list) buf =
   List.iter signals ~f:(fun signal ->
-      match
-        Signal_gen.classify ~current_class:(Some class_name) ~ctx signal
-      with
+      match Signal_gen.classify ~ctx signal with
       | Error reason ->
           eprintf "Skipping signal '%s' for %s (%s)\n" signal.signal_name
             class_name reason
       | Ok emission -> (
           match output_mode with
           | Layer1_helpers.Interface ->
-              Buffer.add_string buf (Signal_gen.emit_l1_val emission)
+              Buffer.add_string buf
+                (Signal_gen.emit_l1_val ~current_class:class_name emission)
           | Layer1_helpers.Implementation ->
               Buffer.add_string buf (Signal_gen.emit_l1_let emission)))
 

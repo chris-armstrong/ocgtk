@@ -4,17 +4,8 @@
 
 open Containers
 open Gir_gen_lib.Types
-module Signal_gen_real = Gir_gen_lib.Generate.Signal_gen
+module Signal_gen = Gir_gen_lib.Generate.Signal_gen
 module Signal_marshaller = Gir_gen_lib.Generate.Signal_marshaller
-
-(* Local wrapper that defaults [current_class] to [None] for tests that don't
-   exercise same-class self-reference handling. *)
-module Signal_gen = struct
-  include Signal_gen_real
-
-  let classify ?(current_class = None) ~ctx signal =
-    Signal_gen_real.classify ~current_class ~ctx signal
-end
 
 (* ========================================================================= *)
 (* Shared context builders                                                    *)
@@ -100,7 +91,7 @@ let test_void_zero_param_emits_val_in_l1_val () =
   let emission =
     expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
-  let l1_val = Signal_gen.emit_l1_val emission in
+  let l1_val = Signal_gen.emit_l1_val ~current_class:"Button" emission in
   let ast = Ml_ast_helpers.parse_interface l1_val in
   Helpers.assert_some "val on_clicked in interface"
     (Ml_ast_helpers.find_value_declaration_sig ast "on_clicked")
@@ -140,7 +131,7 @@ let test_void_primitive_params_uses_closure_create () =
          "create")
   then Alcotest.fail "on_pressed body should call Gobject.Closure.create";
   (* The l1_val callback type must have labelled params n_press:int, x:float, y:float *)
-  let l1_val = Signal_gen.emit_l1_val emission in
+  let l1_val = Signal_gen.emit_l1_val ~current_class:"Button" emission in
   let val_ast = Ml_ast_helpers.parse_interface l1_val in
   Helpers.expect_some "on_pressed val declaration"
     (Ml_ast_helpers.find_value_declaration_sig val_ast "on_pressed")
@@ -199,7 +190,7 @@ let test_bool_return_zero_param_uses_closure_create () =
          "create")
   then Alcotest.fail "on_close_request body should call Gobject.Closure.create";
   (* L1 val callback type must have a bool return type *)
-  let l1_val = Signal_gen.emit_l1_val emission in
+  let l1_val = Signal_gen.emit_l1_val ~current_class:"Button" emission in
   let val_ast = Ml_ast_helpers.parse_interface l1_val in
   Helpers.expect_some "on_close_request val declaration"
     (Ml_ast_helpers.find_value_declaration_sig val_ast "on_close_request")
@@ -235,7 +226,8 @@ let test_bool_return_bool_param_round_trip () =
     expect_ok "state-set classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
   Alcotest.(check string)
-    "ocaml_callback_type" "state:bool -> bool" emission.ocaml_callback_type;
+    "l1_callback_type" "state:bool -> bool"
+    (Signal_gen.l1_callback_type ~current_class:"Button" emission);
   let l1_let = Signal_gen.emit_l1_let emission in
   let ast = Ml_ast_helpers.parse_implementation l1_let in
   Helpers.expect_some "on_state_set binding"
@@ -375,9 +367,12 @@ let test_keyword_param_name_sanitised () =
   let emission =
     expect_ok "typed classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
-  if not (String.mem ~sub:"type_:" emission.ocaml_callback_type) then
-    Alcotest.failf "ocaml_callback_type should contain 'type_:' but got: %s"
-      emission.ocaml_callback_type;
+  let callback_type =
+    Signal_gen.l1_callback_type ~current_class:"Button" emission
+  in
+  if not (String.mem ~sub:"type_:" callback_type) then
+    Alcotest.failf "l1_callback_type should contain 'type_:' but got: %s"
+      callback_type;
   let l1_let = Signal_gen.emit_l1_let emission in
   let ast = Ml_ast_helpers.parse_implementation l1_let in
   Helpers.expect_some "on_typed binding"
@@ -472,8 +467,8 @@ let test_l2_forwarder_shape () =
     expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
   let l2 =
-    Signal_gen.emit_l2_method emission ~layer1_module_name:"Window"
-      ~class_snake:"window"
+    Signal_gen.emit_l2_method ~current_layer2_module:"GButton"
+      ~layer1_module_name:"Window" ~class_snake:"window" emission
   in
   (* Parse as a class body fragment by wrapping it *)
   let wrapped = Printf.sprintf "class test_class = object\n%send\n" l2 in
@@ -505,7 +500,7 @@ let test_l1_obj_is_positional_not_labelled () =
   let emission =
     expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
-  let l1_val = Signal_gen.emit_l1_val emission in
+  let l1_val = Signal_gen.emit_l1_val ~current_class:"Button" emission in
   let ast = Ml_ast_helpers.parse_interface l1_val in
   Helpers.expect_some "on_clicked val declaration"
     (Ml_ast_helpers.find_value_declaration_sig ast "on_clicked")
@@ -597,8 +592,8 @@ let test_l2_has_no_inherit_signals_line () =
     expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
   let l2 =
-    Signal_gen.emit_l2_method emission ~layer1_module_name:"Button"
-      ~class_snake:"button"
+    Signal_gen.emit_l2_method ~current_layer2_module:"GButton"
+      ~layer1_module_name:"Button" ~class_snake:"button" emission
   in
   let wrapped = Printf.sprintf "class test_class = object\n%send\n" l2 in
   let ast = Ml_ast_helpers.parse_implementation wrapped in

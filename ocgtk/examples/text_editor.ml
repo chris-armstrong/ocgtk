@@ -60,13 +60,15 @@ let () =
   button_box#append (insert_btn :> Widget.widget_t);
 
   ignore
-    (insert_btn#on_clicked ~callback:(fun () ->
+    (insert_btn#on_clicked
+       ~callback:(fun () ->
          let entry_buffer = entry_#get_buffer () in
          let text = entry_buffer#get_text () in
          if text <> "" then begin
            buffer#insert_at_cursor (text ^ "\n") (-1);
            entry_buffer#set_text "" (-1)
-         end));
+         end)
+       ());
 
   (* Clear button *)
   let clear_btn =
@@ -74,7 +76,7 @@ let () =
   in
   button_box#append (clear_btn :> Widget.widget_t);
 
-  ignore (clear_btn#on_clicked ~callback:(fun () -> buffer#set_text "" (-1)));
+  ignore (clear_btn#on_clicked ~callback:(fun () -> buffer#set_text "" (-1)) ());
 
   (* Status label - updates on buffer changes *)
   let status_label = new Label.label (Wrappers.Label.new_ None) in
@@ -83,7 +85,7 @@ let () =
     status_label#set_label (Printf.sprintf "Characters: %d" char_count)
   in
   update_status ();
-  ignore (buffer#on_changed ~callback:update_status);
+  ignore (buffer#on_changed ~callback:update_status ());
   vbox#append (status_label :> Widget.widget_t);
 
   (* Show window and run main loop *)

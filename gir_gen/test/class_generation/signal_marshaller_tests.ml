@@ -140,9 +140,7 @@ let gtk_ctx_with_textiter () =
       ]
     ()
 
-let classify ~ctx ~gir_type =
-  Gir_gen_lib.Generate.Signal_marshaller.classify ~current_class:None ~ctx
-    ~gir_type
+let classify = Gir_gen_lib.Generate.Signal_marshaller.classify
 
 (* ========================================================================= *)
 (* Test cases                                                                 *)
@@ -291,7 +289,7 @@ let test_same_ns_gobject_class () =
   assert_expr_contains ~label:"same-ns GObject class" ~field:"ocaml_type"
     m.ocaml_type "Widget";
   assert_expr_contains ~label:"same-ns GObject class" ~field:"ocaml_type"
-    m.ocaml_type "Gobject.obj option";
+    m.ocaml_type ".t option";
   Alcotest.(check string)
     "getter_expr" "Gobject.Value.get_object v" m.getter_expr;
   Alcotest.(check string)
@@ -309,7 +307,7 @@ let test_cross_ns_gobject_gio_file () =
   assert_expr_contains ~label:"cross-ns GObject class" ~field:"ocaml_type"
     m.ocaml_type "Wrappers.File";
   assert_expr_contains ~label:"cross-ns GObject class" ~field:"ocaml_type"
-    m.ocaml_type "Gobject.obj option";
+    m.ocaml_type ".t option";
   Alcotest.(check string)
     "getter_expr" "Gobject.Value.get_object v" m.getter_expr;
   Alcotest.(check string)
@@ -386,10 +384,10 @@ let tests =
     Alcotest.test_case "GLib.Variant maps to Gvariant.t" `Quick
       test_glib_variant_maps_to_gvariant;
     Alcotest.test_case
-      "same-ns GObject class -> Widget.t Gobject.obj option" `Quick
+      "same-ns GObject class -> Widget.t option" `Quick
       test_same_ns_gobject_class;
     Alcotest.test_case
-      "cross-ns GObject class -> Ocgtk_gio.Wrappers.File.t Gobject.obj option"
+      "cross-ns GObject class -> Ocgtk_gio.Wrappers.File.t option"
       `Quick test_cross_ns_gobject_gio_file;
     Alcotest.test_case "GLib.Array is Unsupported" `Quick
       test_garray_is_unsupported;
