@@ -6,30 +6,36 @@ class type flow_box_t = object
   inherit GOrientable.orientable_t
 
   method on_activate_cursor_child :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_child_activated :
-    callback:(child:Flow_box_child.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(child:GFlow_box_child.flow_box_child_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_move_cursor :
+    ?after:bool ->
     callback:
       (step:Gtk_enums.movementstep ->
       count:int ->
       extend:bool ->
       modify:bool ->
       bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_select_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_select_all :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_selected_children_changed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_toggle_cursor_child :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method on_unselect_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_unselect_all :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method append :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -101,26 +107,30 @@ class flow_box (obj : Flow_box.t) : flow_box_t =
 
     inherit GOrientable.orientable (Orientable.from_gobject obj)
 
-    method on_activate_cursor_child ~callback =
-      Flow_box.on_activate_cursor_child self#as_flow_box ~callback
+    method on_activate_cursor_child ?(after = false) ~callback () =
+      Flow_box.on_activate_cursor_child ~after self#as_flow_box ~callback
 
-    method on_child_activated ~callback =
-      Flow_box.on_child_activated self#as_flow_box ~callback
+    method on_child_activated ?(after = false) ~callback () =
+      Flow_box.on_child_activated ~after self#as_flow_box
+        ~callback:(fun ~child ->
+          callback
+            ~child:
+              (Option.map (fun w -> new GFlow_box_child.flow_box_child w) child))
 
-    method on_move_cursor ~callback =
-      Flow_box.on_move_cursor self#as_flow_box ~callback
+    method on_move_cursor ?(after = false) ~callback () =
+      Flow_box.on_move_cursor ~after self#as_flow_box ~callback
 
-    method on_select_all ~callback =
-      Flow_box.on_select_all self#as_flow_box ~callback
+    method on_select_all ?(after = false) ~callback () =
+      Flow_box.on_select_all ~after self#as_flow_box ~callback
 
-    method on_selected_children_changed ~callback =
-      Flow_box.on_selected_children_changed self#as_flow_box ~callback
+    method on_selected_children_changed ?(after = false) ~callback () =
+      Flow_box.on_selected_children_changed ~after self#as_flow_box ~callback
 
-    method on_toggle_cursor_child ~callback =
-      Flow_box.on_toggle_cursor_child self#as_flow_box ~callback
+    method on_toggle_cursor_child ?(after = false) ~callback () =
+      Flow_box.on_toggle_cursor_child ~after self#as_flow_box ~callback
 
-    method on_unselect_all ~callback =
-      Flow_box.on_unselect_all self#as_flow_box ~callback
+    method on_unselect_all ?(after = false) ~callback () =
+      Flow_box.on_unselect_all ~after self#as_flow_box ~callback
 
     method append :
         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

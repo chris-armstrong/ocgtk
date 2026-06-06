@@ -1,12 +1,15 @@
 class type drag_t = object
   method on_cancel :
+    ?after:bool ->
     callback:(reason:Gdk_enums.dragcancelreason -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_dnd_finished : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_dnd_finished :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_drop_performed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method drop_done : bool -> unit
   method get_actions : unit -> Gdk_enums.dragaction
@@ -27,13 +30,14 @@ end
 (* High-level class for Drag *)
 class drag (obj : Drag.t) : drag_t =
   object (self)
-    method on_cancel ~callback = Drag.on_cancel self#as_drag ~callback
+    method on_cancel ?(after = false) ~callback () =
+      Drag.on_cancel ~after self#as_drag ~callback
 
-    method on_dnd_finished ~callback =
-      Drag.on_dnd_finished self#as_drag ~callback
+    method on_dnd_finished ?(after = false) ~callback () =
+      Drag.on_dnd_finished ~after self#as_drag ~callback
 
-    method on_drop_performed ~callback =
-      Drag.on_drop_performed self#as_drag ~callback
+    method on_drop_performed ?(after = false) ~callback () =
+      Drag.on_drop_performed ~after self#as_drag ~callback
 
     method drop_done : bool -> unit = fun success -> Drag.drop_done obj success
 

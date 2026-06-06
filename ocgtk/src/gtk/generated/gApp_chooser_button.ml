@@ -4,11 +4,18 @@ class type app_chooser_button_t = object
     .widget_t
 
   inherit GApp_chooser.app_chooser_t
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_custom_item_activated :
-    callback:(item_name:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(item_name:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method append_custom_item :
     string -> string -> Ocgtk_gio.Gio.Icon.icon_t -> unit
@@ -39,15 +46,15 @@ class app_chooser_button (obj : App_chooser_button.t) : app_chooser_button_t =
 
     inherit GApp_chooser.app_chooser (App_chooser.from_gobject obj)
 
-    method on_activate ~callback =
-      App_chooser_button.on_activate self#as_app_chooser_button ~callback
+    method on_activate ?(after = false) ~callback () =
+      App_chooser_button.on_activate ~after self#as_app_chooser_button ~callback
 
-    method on_changed ~callback =
-      App_chooser_button.on_changed self#as_app_chooser_button ~callback
+    method on_changed ?(after = false) ~callback () =
+      App_chooser_button.on_changed ~after self#as_app_chooser_button ~callback
 
-    method on_custom_item_activated ~callback =
-      App_chooser_button.on_custom_item_activated self#as_app_chooser_button
-        ~callback
+    method on_custom_item_activated ?(after = false) ~callback () =
+      App_chooser_button.on_custom_item_activated ~after
+        self#as_app_chooser_button ~callback
 
     method append_custom_item :
         string -> string -> Ocgtk_gio.Gio.Icon.icon_t -> unit =

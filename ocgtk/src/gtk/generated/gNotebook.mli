@@ -4,80 +4,92 @@ class type notebook_t = object
     .widget_t
 
   method on_change_current_page :
-    callback:(object_:int -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(object_:int -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_create_window :
+    ?after:bool ->
     callback:
       (page:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .Widget
-         .t
-         Gobject.obj
+         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .widget_t
          option ->
-      Notebook.t Gobject.obj option) ->
+      notebook_t option) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_focus_tab :
+    ?after:bool ->
     callback:(object_:Gtk_enums.notebooktab -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_move_focus_out :
+    ?after:bool ->
     callback:(object_:Gtk_enums.directiontype -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_page_added :
+    ?after:bool ->
     callback:
       (child:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .Widget
-         .t
-         Gobject.obj
+         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .widget_t
          option ->
       page_num:int ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_page_removed :
+    ?after:bool ->
     callback:
       (child:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .Widget
-         .t
-         Gobject.obj
+         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .widget_t
          option ->
       page_num:int ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_page_reordered :
+    ?after:bool ->
     callback:
       (child:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .Widget
-         .t
-         Gobject.obj
+         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .widget_t
          option ->
       page_num:int ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_reorder_tab :
+    ?after:bool ->
     callback:(object_:Gtk_enums.directiontype -> p0:bool -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_select_page :
-    callback:(object_:bool -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(object_:bool -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_switch_page :
+    ?after:bool ->
     callback:
       (page:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .Widget
-         .t
-         Gobject.obj
+         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .widget_t
          option ->
       page_num:int ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method append_page :

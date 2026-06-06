@@ -2,15 +2,21 @@ class type text_tag_table_t = object
   inherit GBuildable.buildable_t
 
   method on_tag_added :
-    callback:(tag:Text_tag.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(tag:GText_tag.text_tag_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_tag_changed :
-    callback:(tag:Text_tag.t Gobject.obj option -> size_changed:bool -> unit) ->
+    ?after:bool ->
+    callback:(tag:GText_tag.text_tag_t option -> size_changed:bool -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_tag_removed :
-    callback:(tag:Text_tag.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(tag:GText_tag.text_tag_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method add : GText_tag.text_tag_t -> bool

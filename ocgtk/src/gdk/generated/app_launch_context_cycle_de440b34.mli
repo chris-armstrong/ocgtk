@@ -286,7 +286,7 @@ and Device : sig
   val on_tool_changed :
     ?after:bool ->
     t ->
-    callback:(tool:Device_tool.t Gobject.obj option -> unit) ->
+    callback:(tool:Device_tool.t option -> unit) ->
     Gobject.Signal.handler_id
 end
 
@@ -565,13 +565,13 @@ and Display : sig
   val on_seat_added :
     ?after:bool ->
     t ->
-    callback:(seat:Seat.t Gobject.obj option -> unit) ->
+    callback:(seat:Seat.t option -> unit) ->
     Gobject.Signal.handler_id
 
   val on_seat_removed :
     ?after:bool ->
     t ->
-    callback:(seat:Seat.t Gobject.obj option -> unit) ->
+    callback:(seat:Seat.t option -> unit) ->
     Gobject.Signal.handler_id
 
   val on_setting_changed :
@@ -1061,25 +1061,25 @@ and Seat : sig
   val on_device_added :
     ?after:bool ->
     t ->
-    callback:(device:Device.t Gobject.obj option -> unit) ->
+    callback:(device:Device.t option -> unit) ->
     Gobject.Signal.handler_id
 
   val on_device_removed :
     ?after:bool ->
     t ->
-    callback:(device:Device.t Gobject.obj option -> unit) ->
+    callback:(device:Device.t option -> unit) ->
     Gobject.Signal.handler_id
 
   val on_tool_added :
     ?after:bool ->
     t ->
-    callback:(tool:Device_tool.t Gobject.obj option -> unit) ->
+    callback:(tool:Device_tool.t option -> unit) ->
     Gobject.Signal.handler_id
 
   val on_tool_removed :
     ?after:bool ->
     t ->
-    callback:(tool:Device_tool.t Gobject.obj option -> unit) ->
+    callback:(tool:Device_tool.t option -> unit) ->
     Gobject.Signal.handler_id
 end
 
@@ -1324,13 +1324,13 @@ and Surface : sig
   val on_enter_monitor :
     ?after:bool ->
     t ->
-    callback:(monitor:Monitor.t Gobject.obj option -> unit) ->
+    callback:(monitor:Monitor.t option -> unit) ->
     Gobject.Signal.handler_id
 
   val on_event :
     ?after:bool ->
     t ->
-    callback:(event:Event.t Gobject.obj option -> bool) ->
+    callback:(event:Event.t option -> bool) ->
     Gobject.Signal.handler_id
 
   val on_layout :
@@ -1342,7 +1342,7 @@ and Surface : sig
   val on_leave_monitor :
     ?after:bool ->
     t ->
-    callback:(monitor:Monitor.t Gobject.obj option -> unit) ->
+    callback:(monitor:Monitor.t option -> unit) ->
     Gobject.Signal.handler_id
 end
 

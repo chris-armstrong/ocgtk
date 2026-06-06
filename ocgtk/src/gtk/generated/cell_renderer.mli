@@ -266,5 +266,5 @@ val on_editing_canceled :
 val on_editing_started :
   ?after:bool ->
   t ->
-  callback:(editable:Cell_editable.t Gobject.obj option -> path:string -> unit) ->
+  callback:(editable:Cell_editable.t option -> path:string -> unit) ->
   Gobject.Signal.handler_id

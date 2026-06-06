@@ -130,14 +130,13 @@ called by application code. *)
 val on_create_context :
   ?after:bool ->
   t ->
-  callback:(unit -> Ocgtk_gdk.Gdk.Wrappers.Gl_context.t Gobject.obj option) ->
+  callback:(unit -> Ocgtk_gdk.Gdk.Wrappers.Gl_context.t option) ->
   Gobject.Signal.handler_id
 
 val on_render :
   ?after:bool ->
   t ->
-  callback:
-    (context:Ocgtk_gdk.Gdk.Wrappers.Gl_context.t Gobject.obj option -> bool) ->
+  callback:(context:Ocgtk_gdk.Gdk.Wrappers.Gl_context.t option -> bool) ->
   Gobject.Signal.handler_id
 
 val on_resize :

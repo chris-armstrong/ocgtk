@@ -5,14 +5,20 @@ class type entry_t = object
 
   inherit GCell_editable.cell_editable_t
   inherit GEditable.editable_t
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_icon_press :
+    ?after:bool ->
     callback:(icon_pos:Gtk_enums.entryiconposition -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_icon_release :
+    ?after:bool ->
     callback:(icon_pos:Gtk_enums.entryiconposition -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_activates_default : unit -> bool

@@ -2,7 +2,9 @@ class type d_bus_server_t = object
   inherit GInitable.initable_t
 
   method on_new_connection :
-    callback:(connection:D_bus_connection.t Gobject.obj option -> bool) ->
+    ?after:bool ->
+    callback:(connection:GD_bus_connection.d_bus_connection_t option -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_client_address : unit -> string

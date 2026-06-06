@@ -2,7 +2,9 @@ class type d_bus_server_t = object
   inherit GInitable.initable_t
 
   method on_new_connection :
-    callback:(connection:D_bus_connection.t Gobject.obj option -> bool) ->
+    ?after:bool ->
+    callback:(connection:GD_bus_connection.d_bus_connection_t option -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_client_address : unit -> string
@@ -22,8 +24,14 @@ class d_bus_server (obj : D_bus_server.t) : d_bus_server_t =
   object (self)
     inherit GInitable.initable (Initable.from_gobject obj)
 
-    method on_new_connection ~callback =
-      D_bus_server.on_new_connection self#as_d_bus_server ~callback
+    method on_new_connection ?(after = false) ~callback () =
+      D_bus_server.on_new_connection ~after self#as_d_bus_server
+        ~callback:(fun ~connection ->
+          callback
+            ~connection:
+              (Option.map
+                 (fun w -> new GD_bus_connection.d_bus_connection w)
+                 connection))
 
     method get_client_address : unit -> string =
       fun () -> D_bus_server.get_client_address obj

@@ -4,11 +4,18 @@ class type app_chooser_button_t = object
     .widget_t
 
   inherit GApp_chooser.app_chooser_t
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_custom_item_activated :
-    callback:(item_name:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(item_name:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method append_custom_item :
     string -> string -> Ocgtk_gio.Gio.Icon.icon_t -> unit

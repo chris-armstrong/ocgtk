@@ -3,26 +3,33 @@ class type event_controller_key_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .event_controller_t
 
-  method on_im_update : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_im_update :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_key_pressed :
+    ?after:bool ->
     callback:
       (keyval:int ->
       keycode:int ->
       state:Ocgtk_gdk.Gdk_enums.modifiertype ->
       bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_key_released :
+    ?after:bool ->
     callback:
       (keyval:int ->
       keycode:int ->
       state:Ocgtk_gdk.Gdk_enums.modifiertype ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_modifiers :
+    ?after:bool ->
     callback:(state:Ocgtk_gdk.Gdk_enums.modifiertype -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method forward :

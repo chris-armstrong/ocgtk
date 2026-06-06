@@ -1,9 +1,11 @@
 class type socket_listener_t = object
   method on_event :
+    ?after:bool ->
     callback:
       (event:Gio_enums.socketlistenerevent ->
-      socket:Socket_and__socket_connection.Socket.t Gobject.obj option ->
+      socket:GSocket_and__socket_connection.socket_t option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method add_any_inet_port :

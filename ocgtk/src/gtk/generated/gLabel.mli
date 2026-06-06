@@ -6,20 +6,25 @@ class type label_t = object
   inherit GAccessible_text.accessible_text_t
 
   method on_activate_current_link :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_activate_link :
-    callback:(uri:string -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(uri:string -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_copy_clipboard :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_move_cursor :
+    ?after:bool ->
     callback:
       (step:Gtk_enums.movementstep ->
       count:int ->
       extend_selection:bool ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option

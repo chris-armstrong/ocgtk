@@ -1,34 +1,34 @@
 class type d_bus_object_manager_t = object
   method on_interface_added :
+    ?after:bool ->
     callback:
-      (object_:
-         D_bus_interface_and__d_bus_object.D_bus_object.t Gobject.obj option ->
-      interface:
-        D_bus_interface_and__d_bus_object.D_bus_interface.t Gobject.obj option ->
+      (object_:GD_bus_interface_and__d_bus_object.d_bus_object_t option ->
+      interface:GD_bus_interface_and__d_bus_object.d_bus_interface_t option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_interface_removed :
+    ?after:bool ->
     callback:
-      (object_:
-         D_bus_interface_and__d_bus_object.D_bus_object.t Gobject.obj option ->
-      interface:
-        D_bus_interface_and__d_bus_object.D_bus_interface.t Gobject.obj option ->
+      (object_:GD_bus_interface_and__d_bus_object.d_bus_object_t option ->
+      interface:GD_bus_interface_and__d_bus_object.d_bus_interface_t option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_object_added :
+    ?after:bool ->
     callback:
-      (object_:
-         D_bus_interface_and__d_bus_object.D_bus_object.t Gobject.obj option ->
-      unit) ->
+      (object_:GD_bus_interface_and__d_bus_object.d_bus_object_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_object_removed :
+    ?after:bool ->
     callback:
-      (object_:
-         D_bus_interface_and__d_bus_object.D_bus_object.t Gobject.obj option ->
-      unit) ->
+      (object_:GD_bus_interface_and__d_bus_object.d_bus_object_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_interface :

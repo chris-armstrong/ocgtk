@@ -2,7 +2,11 @@ class type d_bus_interface_skeleton_t = object
   inherit GD_bus_interface_and__d_bus_object.d_bus_interface_t
 
   method on_g_authorize_method :
-    callback:(invocation:D_bus_method_invocation.t Gobject.obj option -> bool) ->
+    ?after:bool ->
+    callback:
+      (invocation:GD_bus_method_invocation.d_bus_method_invocation_t option ->
+      bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method export :

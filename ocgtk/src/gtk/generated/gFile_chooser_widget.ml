@@ -6,34 +6,47 @@ class type file_chooser_widget_t = object
   inherit GFile_chooser.file_chooser_t
 
   method on_desktop_folder :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method on_down_folder : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_home_folder : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_down_folder :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_home_folder :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_location_popup :
-    callback:(path:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(path:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_location_popup_on_paste :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_location_toggle_popup :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_places_shortcut :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_quick_bookmark :
-    callback:(bookmark_index:int -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(bookmark_index:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_recent_shortcut :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_search_shortcut :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method on_show_hidden : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_up_folder : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_show_hidden :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_up_folder :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method search_mode : bool
   method set_search_mode : bool -> unit
   method show_time : bool
@@ -55,49 +68,53 @@ class file_chooser_widget (obj : File_chooser_widget.t) : file_chooser_widget_t
 
     inherit GFile_chooser.file_chooser (File_chooser.from_gobject obj)
 
-    method on_desktop_folder ~callback =
-      File_chooser_widget.on_desktop_folder self#as_file_chooser_widget
+    method on_desktop_folder ?(after = false) ~callback () =
+      File_chooser_widget.on_desktop_folder ~after self#as_file_chooser_widget
         ~callback
 
-    method on_down_folder ~callback =
-      File_chooser_widget.on_down_folder self#as_file_chooser_widget ~callback
-
-    method on_home_folder ~callback =
-      File_chooser_widget.on_home_folder self#as_file_chooser_widget ~callback
-
-    method on_location_popup ~callback =
-      File_chooser_widget.on_location_popup self#as_file_chooser_widget
+    method on_down_folder ?(after = false) ~callback () =
+      File_chooser_widget.on_down_folder ~after self#as_file_chooser_widget
         ~callback
 
-    method on_location_popup_on_paste ~callback =
-      File_chooser_widget.on_location_popup_on_paste self#as_file_chooser_widget
+    method on_home_folder ?(after = false) ~callback () =
+      File_chooser_widget.on_home_folder ~after self#as_file_chooser_widget
         ~callback
 
-    method on_location_toggle_popup ~callback =
-      File_chooser_widget.on_location_toggle_popup self#as_file_chooser_widget
+    method on_location_popup ?(after = false) ~callback () =
+      File_chooser_widget.on_location_popup ~after self#as_file_chooser_widget
         ~callback
 
-    method on_places_shortcut ~callback =
-      File_chooser_widget.on_places_shortcut self#as_file_chooser_widget
+    method on_location_popup_on_paste ?(after = false) ~callback () =
+      File_chooser_widget.on_location_popup_on_paste ~after
+        self#as_file_chooser_widget ~callback
+
+    method on_location_toggle_popup ?(after = false) ~callback () =
+      File_chooser_widget.on_location_toggle_popup ~after
+        self#as_file_chooser_widget ~callback
+
+    method on_places_shortcut ?(after = false) ~callback () =
+      File_chooser_widget.on_places_shortcut ~after self#as_file_chooser_widget
         ~callback
 
-    method on_quick_bookmark ~callback =
-      File_chooser_widget.on_quick_bookmark self#as_file_chooser_widget
+    method on_quick_bookmark ?(after = false) ~callback () =
+      File_chooser_widget.on_quick_bookmark ~after self#as_file_chooser_widget
         ~callback
 
-    method on_recent_shortcut ~callback =
-      File_chooser_widget.on_recent_shortcut self#as_file_chooser_widget
+    method on_recent_shortcut ?(after = false) ~callback () =
+      File_chooser_widget.on_recent_shortcut ~after self#as_file_chooser_widget
         ~callback
 
-    method on_search_shortcut ~callback =
-      File_chooser_widget.on_search_shortcut self#as_file_chooser_widget
+    method on_search_shortcut ?(after = false) ~callback () =
+      File_chooser_widget.on_search_shortcut ~after self#as_file_chooser_widget
         ~callback
 
-    method on_show_hidden ~callback =
-      File_chooser_widget.on_show_hidden self#as_file_chooser_widget ~callback
+    method on_show_hidden ?(after = false) ~callback () =
+      File_chooser_widget.on_show_hidden ~after self#as_file_chooser_widget
+        ~callback
 
-    method on_up_folder ~callback =
-      File_chooser_widget.on_up_folder self#as_file_chooser_widget ~callback
+    method on_up_folder ?(after = false) ~callback () =
+      File_chooser_widget.on_up_folder ~after self#as_file_chooser_widget
+        ~callback
 
     method search_mode = File_chooser_widget.get_search_mode obj
     method set_search_mode v = File_chooser_widget.set_search_mode obj v

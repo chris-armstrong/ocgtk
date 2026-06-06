@@ -4,13 +4,15 @@ class type d_bus_object_manager_client_t = object
   inherit GInitable.initable_t
 
   method on_interface_proxy_signal :
+    ?after:bool ->
     callback:
-      (object_proxy:D_bus_object_proxy.t Gobject.obj option ->
-      interface_proxy:D_bus_proxy.t Gobject.obj option ->
+      (object_proxy:GD_bus_object_proxy.d_bus_object_proxy_t option ->
+      interface_proxy:GD_bus_proxy.d_bus_proxy_t option ->
       sender_name:string ->
       signal_name:string ->
       parameters:Gvariant.t ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_connection : unit -> GD_bus_connection.d_bus_connection_t

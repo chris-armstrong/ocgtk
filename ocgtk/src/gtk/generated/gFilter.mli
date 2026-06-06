@@ -1,6 +1,8 @@
 class type filter_t = object
   method on_changed :
+    ?after:bool ->
     callback:(change:Gtk_enums.filterchange -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method changed : Gtk_enums.filterchange -> unit

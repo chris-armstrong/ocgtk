@@ -1,9 +1,9 @@
 class type unix_mount_monitor_t = object
   method on_mountpoints_changed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_mounts_changed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method set_rate_limit : int -> unit
   method as_unix_mount_monitor : Unix_mount_monitor.t

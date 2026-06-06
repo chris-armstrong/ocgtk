@@ -75,49 +75,65 @@ and widget_t = object
   inherit GAt_context_and__accessible.accessible_t
   inherit GBuildable.buildable_t
   inherit GConstraint_target.constraint_target_t
-  method on_destroy : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_destroy :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_direction_changed :
+    ?after:bool ->
     callback:(previous_direction:Gtk_enums.textdirection -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_hide : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_hide :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_keynav_failed :
+    ?after:bool ->
     callback:(direction:Gtk_enums.directiontype -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_map : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_map :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_mnemonic_activate :
-    callback:(group_cycling:bool -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(group_cycling:bool -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_move_focus :
+    ?after:bool ->
     callback:(direction:Gtk_enums.directiontype -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_query_tooltip :
+    ?after:bool ->
     callback:
-      (x:int ->
-      y:int ->
-      keyboard_mode:bool ->
-      tooltip:
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .Tooltip
-        .t
-        Gobject.obj
-        option ->
-      bool) ->
+      (x:int -> y:int -> keyboard_mode:bool -> tooltip:tooltip_t option -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_realize : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_show : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_realize :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_show :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_state_flags_changed :
-    callback:(flags:Gtk_enums.stateflags -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(flags:Gtk_enums.stateflags -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
-  method on_unmap : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_unrealize : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_unmap :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_unrealize :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method action_set_enabled : string -> bool -> unit
   method activate : unit -> bool
   method activate_action_variant : string -> Gvariant.t option -> bool
@@ -563,70 +579,73 @@ and widget
     inherit
       GConstraint_target.constraint_target (Constraint_target.from_gobject obj)
 
-    method on_destroy ~callback =
+    method on_destroy ?(after = false) ~callback () =
       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .Widget
-      .on_destroy self#as_widget ~callback
+      .on_destroy ~after self#as_widget ~callback
 
-    method on_direction_changed ~callback =
+    method on_direction_changed ?(after = false) ~callback () =
       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .Widget
-      .on_direction_changed self#as_widget ~callback
+      .on_direction_changed ~after self#as_widget ~callback
 
-    method on_hide ~callback =
+    method on_hide ?(after = false) ~callback () =
       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .Widget
-      .on_hide self#as_widget ~callback
+      .on_hide ~after self#as_widget ~callback
 
-    method on_keynav_failed ~callback =
+    method on_keynav_failed ?(after = false) ~callback () =
       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .Widget
-      .on_keynav_failed self#as_widget ~callback
+      .on_keynav_failed ~after self#as_widget ~callback
 
-    method on_map ~callback =
+    method on_map ?(after = false) ~callback () =
       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .Widget
-      .on_map self#as_widget ~callback
+      .on_map ~after self#as_widget ~callback
 
-    method on_mnemonic_activate ~callback =
+    method on_mnemonic_activate ?(after = false) ~callback () =
       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .Widget
-      .on_mnemonic_activate self#as_widget ~callback
+      .on_mnemonic_activate ~after self#as_widget ~callback
 
-    method on_move_focus ~callback =
+    method on_move_focus ?(after = false) ~callback () =
       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .Widget
-      .on_move_focus self#as_widget ~callback
+      .on_move_focus ~after self#as_widget ~callback
 
-    method on_query_tooltip ~callback =
+    method on_query_tooltip ?(after = false) ~callback () =
       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .Widget
-      .on_query_tooltip self#as_widget ~callback
+      .on_query_tooltip ~after self#as_widget
+        ~callback:(fun ~x ~y ~keyboard_mode ~tooltip ->
+          callback ~x ~y ~keyboard_mode
+            ~tooltip:(Option.map (fun w -> new tooltip w) tooltip))
 
-    method on_realize ~callback =
+    method on_realize ?(after = false) ~callback () =
       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .Widget
-      .on_realize self#as_widget ~callback
+      .on_realize ~after self#as_widget ~callback
 
-    method on_show ~callback =
+    method on_show ?(after = false) ~callback () =
       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .Widget
-      .on_show self#as_widget ~callback
+      .on_show ~after self#as_widget ~callback
 
-    method on_state_flags_changed ~callback =
+    method on_state_flags_changed ?(after = false) ~callback () =
       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .Widget
-      .on_state_flags_changed self#as_widget ~callback
+      .on_state_flags_changed ~after self#as_widget ~callback
 
-    method on_unmap ~callback =
+    method on_unmap ?(after = false) ~callback () =
       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .Widget
-      .on_unmap self#as_widget ~callback
+      .on_unmap ~after self#as_widget ~callback
 
-    method on_unrealize ~callback =
+    method on_unrealize ?(after = false) ~callback () =
       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .Widget
-      .on_unrealize self#as_widget ~callback
+      .on_unrealize ~after self#as_widget ~callback
 
     method action_set_enabled : string -> bool -> unit =
       fun action_name enabled ->

@@ -4,30 +4,38 @@ class type list_box_t = object
     .widget_t
 
   method on_activate_cursor_row :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_move_cursor :
+    ?after:bool ->
     callback:
       (object_:Gtk_enums.movementstep -> p0:int -> p1:bool -> p2:bool -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_row_activated :
-    callback:(row:List_box_row.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(row:GList_box_row.list_box_row_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_row_selected :
-    callback:(row:List_box_row.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(row:GList_box_row.list_box_row_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_select_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_select_all :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_selected_rows_changed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_toggle_cursor_row :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method on_unselect_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_unselect_all :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method append :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -97,29 +105,33 @@ class list_box (obj : List_box.t) : list_box_t =
              .Widget
              .t)
 
-    method on_activate_cursor_row ~callback =
-      List_box.on_activate_cursor_row self#as_list_box ~callback
+    method on_activate_cursor_row ?(after = false) ~callback () =
+      List_box.on_activate_cursor_row ~after self#as_list_box ~callback
 
-    method on_move_cursor ~callback =
-      List_box.on_move_cursor self#as_list_box ~callback
+    method on_move_cursor ?(after = false) ~callback () =
+      List_box.on_move_cursor ~after self#as_list_box ~callback
 
-    method on_row_activated ~callback =
-      List_box.on_row_activated self#as_list_box ~callback
+    method on_row_activated ?(after = false) ~callback () =
+      List_box.on_row_activated ~after self#as_list_box ~callback:(fun ~row ->
+          callback
+            ~row:(Option.map (fun w -> new GList_box_row.list_box_row w) row))
 
-    method on_row_selected ~callback =
-      List_box.on_row_selected self#as_list_box ~callback
+    method on_row_selected ?(after = false) ~callback () =
+      List_box.on_row_selected ~after self#as_list_box ~callback:(fun ~row ->
+          callback
+            ~row:(Option.map (fun w -> new GList_box_row.list_box_row w) row))
 
-    method on_select_all ~callback =
-      List_box.on_select_all self#as_list_box ~callback
+    method on_select_all ?(after = false) ~callback () =
+      List_box.on_select_all ~after self#as_list_box ~callback
 
-    method on_selected_rows_changed ~callback =
-      List_box.on_selected_rows_changed self#as_list_box ~callback
+    method on_selected_rows_changed ?(after = false) ~callback () =
+      List_box.on_selected_rows_changed ~after self#as_list_box ~callback
 
-    method on_toggle_cursor_row ~callback =
-      List_box.on_toggle_cursor_row self#as_list_box ~callback
+    method on_toggle_cursor_row ?(after = false) ~callback () =
+      List_box.on_toggle_cursor_row ~after self#as_list_box ~callback
 
-    method on_unselect_all ~callback =
-      List_box.on_unselect_all self#as_list_box ~callback
+    method on_unselect_all ?(after = false) ~callback () =
+      List_box.on_unselect_all ~after self#as_list_box ~callback
 
     method append :
         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

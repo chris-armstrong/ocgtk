@@ -9,7 +9,10 @@ class type column_view_t = object
   inherit GScrollable.scrollable_t
 
   method on_activate :
-    callback:(position:int -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(position:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method append_column : column_view_column_t -> unit
   method get_columns : unit -> Ocgtk_gio.Gio.List_model.list_model_t
@@ -93,8 +96,8 @@ class column_view (obj : Column_view_and__column_view_column.Column_view.t) :
 
     inherit GScrollable.scrollable (Scrollable.from_gobject obj)
 
-    method on_activate ~callback =
-      Column_view_and__column_view_column.Column_view.on_activate
+    method on_activate ?(after = false) ~callback () =
+      Column_view_and__column_view_column.Column_view.on_activate ~after
         self#as_column_view ~callback
 
     method append_column : column_view_column_t -> unit =

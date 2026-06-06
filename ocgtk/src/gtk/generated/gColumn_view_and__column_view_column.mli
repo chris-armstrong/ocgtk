@@ -6,7 +6,10 @@ class type column_view_t = object
   inherit GScrollable.scrollable_t
 
   method on_activate :
-    callback:(position:int -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(position:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method append_column : column_view_column_t -> unit
   method get_columns : unit -> Ocgtk_gio.Gio.List_model.list_model_t

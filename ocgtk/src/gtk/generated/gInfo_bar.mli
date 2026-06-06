@@ -3,10 +3,14 @@ class type info_bar_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  method on_close : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_close :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_response :
-    callback:(response_id:int -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(response_id:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method add_action_widget :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

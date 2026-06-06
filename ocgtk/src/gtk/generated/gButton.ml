@@ -4,8 +4,13 @@ class type button_t = object
     .widget_t
 
   inherit GActionable.actionable_t
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_clicked : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_clicked :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_can_shrink : unit -> bool
 
   method get_child :
@@ -45,8 +50,13 @@ class button (obj : Button.t) : button_t =
              .t)
 
     inherit GActionable.actionable (Actionable.from_gobject obj)
-    method on_activate ~callback = Button.on_activate self#as_button ~callback
-    method on_clicked ~callback = Button.on_clicked self#as_button ~callback
+
+    method on_activate ?(after = false) ~callback () =
+      Button.on_activate ~after self#as_button ~callback
+
+    method on_clicked ?(after = false) ~callback () =
+      Button.on_clicked ~after self#as_button ~callback
+
     method get_can_shrink : unit -> bool = fun () -> Button.get_can_shrink obj
 
     method get_child :

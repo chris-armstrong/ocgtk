@@ -1,15 +1,15 @@
 class type socket_client_t = object
   method on_event :
+    ?after:bool ->
     callback:
       (event:Gio_enums.socketclientevent ->
       connectable:
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .Socket_connectable
-        .t
-        Gobject.obj
+        GSocket_address_and__socket_address_enumerator_and__socket_connectable
+        .socket_connectable_t
         option ->
-      connection:Io_stream.t Gobject.obj option ->
+      connection:GIo_stream.io_stream_t option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method add_application_proxy : string -> unit
@@ -92,8 +92,20 @@ end
 (* High-level class for SocketClient *)
 class socket_client (obj : Socket_client.t) : socket_client_t =
   object (self)
-    method on_event ~callback =
-      Socket_client.on_event self#as_socket_client ~callback
+    method on_event ?(after = false) ~callback () =
+      Socket_client.on_event ~after self#as_socket_client
+        ~callback:(fun ~event ~connectable ~connection ->
+          callback ~event
+            ~connectable:
+              (Option.map
+                 (fun w ->
+                   new
+                     GSocket_address_and__socket_address_enumerator_and__socket_connectable
+                     .socket_connectable
+                     w)
+                 connectable)
+            ~connection:
+              (Option.map (fun w -> new GIo_stream.io_stream w) connection))
 
     method add_application_proxy : string -> unit =
       fun protocol -> Socket_client.add_application_proxy obj protocol

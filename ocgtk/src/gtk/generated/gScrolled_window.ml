@@ -4,17 +4,27 @@ class type scrolled_window_t = object
     .widget_t
 
   method on_edge_overshot :
-    callback:(pos:Gtk_enums.positiontype -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(pos:Gtk_enums.positiontype -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_edge_reached :
-    callback:(pos:Gtk_enums.positiontype -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(pos:Gtk_enums.positiontype -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_move_focus_out :
+    ?after:bool ->
     callback:(direction_type:Gtk_enums.directiontype -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_scroll_child :
+    ?after:bool ->
     callback:(scroll:Gtk_enums.scrolltype -> horizontal:bool -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_child :
@@ -87,17 +97,17 @@ class scrolled_window (obj : Scrolled_window.t) : scrolled_window_t =
              .Widget
              .t)
 
-    method on_edge_overshot ~callback =
-      Scrolled_window.on_edge_overshot self#as_scrolled_window ~callback
+    method on_edge_overshot ?(after = false) ~callback () =
+      Scrolled_window.on_edge_overshot ~after self#as_scrolled_window ~callback
 
-    method on_edge_reached ~callback =
-      Scrolled_window.on_edge_reached self#as_scrolled_window ~callback
+    method on_edge_reached ?(after = false) ~callback () =
+      Scrolled_window.on_edge_reached ~after self#as_scrolled_window ~callback
 
-    method on_move_focus_out ~callback =
-      Scrolled_window.on_move_focus_out self#as_scrolled_window ~callback
+    method on_move_focus_out ?(after = false) ~callback () =
+      Scrolled_window.on_move_focus_out ~after self#as_scrolled_window ~callback
 
-    method on_scroll_child ~callback =
-      Scrolled_window.on_scroll_child self#as_scrolled_window ~callback
+    method on_scroll_child ?(after = false) ~callback () =
+      Scrolled_window.on_scroll_child ~after self#as_scrolled_window ~callback
 
     method get_child :
         unit ->

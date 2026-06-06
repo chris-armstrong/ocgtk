@@ -1,6 +1,9 @@
 class type native_dialog_t = object
   method on_response :
-    callback:(response_id:int -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(response_id:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method destroy : unit -> unit
   method get_modal : unit -> bool
@@ -24,8 +27,8 @@ end
 (* High-level class for NativeDialog *)
 class native_dialog (obj : Native_dialog.t) : native_dialog_t =
   object (self)
-    method on_response ~callback =
-      Native_dialog.on_response self#as_native_dialog ~callback
+    method on_response ?(after = false) ~callback () =
+      Native_dialog.on_response ~after self#as_native_dialog ~callback
 
     method destroy : unit -> unit = fun () -> Native_dialog.destroy obj
     method get_modal : unit -> bool = fun () -> Native_dialog.get_modal obj

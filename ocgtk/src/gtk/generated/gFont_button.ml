@@ -4,8 +4,13 @@ class type font_button_t = object
     .widget_t
 
   inherit GFont_chooser.font_chooser_t
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_font_set : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_font_set :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_modal : unit -> bool
   method get_title : unit -> string
   method get_use_font : unit -> bool
@@ -30,11 +35,11 @@ class font_button (obj : Font_button.t) : font_button_t =
 
     inherit GFont_chooser.font_chooser (Font_chooser.from_gobject obj)
 
-    method on_activate ~callback =
-      Font_button.on_activate self#as_font_button ~callback
+    method on_activate ?(after = false) ~callback () =
+      Font_button.on_activate ~after self#as_font_button ~callback
 
-    method on_font_set ~callback =
-      Font_button.on_font_set self#as_font_button ~callback
+    method on_font_set ?(after = false) ~callback () =
+      Font_button.on_font_set ~after self#as_font_button ~callback
 
     method get_modal : unit -> bool = fun () -> Font_button.get_modal obj
     method get_title : unit -> string = fun () -> Font_button.get_title obj

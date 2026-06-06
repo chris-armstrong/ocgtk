@@ -6,30 +6,36 @@ class type flow_box_t = object
   inherit GOrientable.orientable_t
 
   method on_activate_cursor_child :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_child_activated :
-    callback:(child:Flow_box_child.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(child:GFlow_box_child.flow_box_child_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_move_cursor :
+    ?after:bool ->
     callback:
       (step:Gtk_enums.movementstep ->
       count:int ->
       extend:bool ->
       modify:bool ->
       bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_select_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_select_all :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_selected_children_changed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_toggle_cursor_child :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method on_unselect_all : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_unselect_all :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method append :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

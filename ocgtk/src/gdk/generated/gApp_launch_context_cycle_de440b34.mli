@@ -13,7 +13,9 @@ and cairo_context_t = object
 end
 
 and clipboard_t = object
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_content : unit -> GContent_provider.content_provider_t option
   method get_display : unit -> display_t
   method get_formats : unit -> Content_formats.t
@@ -37,10 +39,13 @@ and clipboard_t = object
 end
 
 and device_t = object
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_tool_changed :
-    callback:(tool:Device_tool.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(tool:GDevice_tool.device_tool_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_caps_lock_state : unit -> bool
@@ -66,22 +71,31 @@ end
 
 and display_t = object
   method on_closed :
-    callback:(is_error:bool -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(is_error:bool -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
-  method on_opened : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_opened :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_seat_added :
-    callback:
-      (seat:App_launch_context_cycle_de440b34.Seat.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(seat:seat_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_seat_removed :
-    callback:
-      (seat:App_launch_context_cycle_de440b34.Seat.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(seat:seat_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_setting_changed :
-    callback:(setting:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(setting:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method beep : unit -> unit
   method close : unit -> unit
@@ -161,7 +175,9 @@ and gl_context_t = object
 end
 
 and monitor_t = object
-  method on_invalidate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_invalidate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_connector : unit -> string option
   method get_description : unit -> string option
   method get_display : unit -> display_t
@@ -180,23 +196,27 @@ end
 
 and seat_t = object
   method on_device_added :
-    callback:
-      (device:App_launch_context_cycle_de440b34.Device.t Gobject.obj option ->
-      unit) ->
+    ?after:bool ->
+    callback:(device:device_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_device_removed :
-    callback:
-      (device:App_launch_context_cycle_de440b34.Device.t Gobject.obj option ->
-      unit) ->
+    ?after:bool ->
+    callback:(device:device_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_tool_added :
-    callback:(tool:Device_tool.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(tool:GDevice_tool.device_tool_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_tool_removed :
-    callback:(tool:Device_tool.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(tool:GDevice_tool.device_tool_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_capabilities : unit -> Gdk_enums.seatcapabilities
@@ -210,24 +230,27 @@ end
 
 and surface_t = object
   method on_enter_monitor :
-    callback:
-      (monitor:App_launch_context_cycle_de440b34.Monitor.t Gobject.obj option ->
-      unit) ->
+    ?after:bool ->
+    callback:(monitor:monitor_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_event :
-    callback:
-      (event:App_launch_context_cycle_de440b34.Event.t Gobject.obj option ->
-      bool) ->
+    ?after:bool ->
+    callback:(event:event_t option -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_layout :
-    callback:(width:int -> height:int -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(width:int -> height:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_leave_monitor :
-    callback:
-      (monitor:App_launch_context_cycle_de440b34.Monitor.t Gobject.obj option ->
-      unit) ->
+    ?after:bool ->
+    callback:(monitor:monitor_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method beep : unit -> unit
@@ -266,7 +289,7 @@ and vulkan_context_t = object
   inherit Ocgtk_gio.Gio.Initable.initable_t
 
   method on_images_updated :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method as_vulkan_context : App_launch_context_cycle_de440b34.Vulkan_context.t
 end

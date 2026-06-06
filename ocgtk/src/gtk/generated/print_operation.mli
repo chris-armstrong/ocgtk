@@ -296,7 +296,7 @@ external cancel : t -> unit = "ml_gtk_print_operation_cancel"
 val on_begin_print :
   ?after:bool ->
   t ->
-  callback:(context:Print_context.t Gobject.obj option -> unit) ->
+  callback:(context:Print_context.t option -> unit) ->
   Gobject.Signal.handler_id
 
 val on_custom_widget_apply :
@@ -307,7 +307,6 @@ val on_custom_widget_apply :
        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
        .Widget
        .t
-       Gobject.obj
        option ->
     unit) ->
   Gobject.Signal.handler_id
@@ -321,28 +320,28 @@ val on_done_ :
 val on_draw_page :
   ?after:bool ->
   t ->
-  callback:(context:Print_context.t Gobject.obj option -> page_nr:int -> unit) ->
+  callback:(context:Print_context.t option -> page_nr:int -> unit) ->
   Gobject.Signal.handler_id
 
 val on_end_print :
   ?after:bool ->
   t ->
-  callback:(context:Print_context.t Gobject.obj option -> unit) ->
+  callback:(context:Print_context.t option -> unit) ->
   Gobject.Signal.handler_id
 
 val on_paginate :
   ?after:bool ->
   t ->
-  callback:(context:Print_context.t Gobject.obj option -> bool) ->
+  callback:(context:Print_context.t option -> bool) ->
   Gobject.Signal.handler_id
 
 val on_preview :
   ?after:bool ->
   t ->
   callback:
-    (preview:Print_operation_preview.t Gobject.obj option ->
-    context:Print_context.t Gobject.obj option ->
-    parent:Application_and__window_and__window_group.Window.t Gobject.obj option ->
+    (preview:Print_operation_preview.t option ->
+    context:Print_context.t option ->
+    parent:Application_and__window_and__window_group.Window.t option ->
     bool) ->
   Gobject.Signal.handler_id
 
@@ -350,9 +349,9 @@ val on_request_page_setup :
   ?after:bool ->
   t ->
   callback:
-    (context:Print_context.t Gobject.obj option ->
+    (context:Print_context.t option ->
     page_nr:int ->
-    setup:Page_setup.t Gobject.obj option ->
+    setup:Page_setup.t option ->
     unit) ->
   Gobject.Signal.handler_id
 
@@ -367,9 +366,8 @@ val on_update_custom_widget :
        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
        .Widget
        .t
-       Gobject.obj
        option ->
-    setup:Page_setup.t Gobject.obj option ->
-    settings:Print_settings.t Gobject.obj option ->
+    setup:Page_setup.t option ->
+    settings:Print_settings.t option ->
     unit) ->
   Gobject.Signal.handler_id

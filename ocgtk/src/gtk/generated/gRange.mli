@@ -7,16 +7,26 @@ class type range_t = object
   inherit GOrientable.orientable_t
 
   method on_adjust_bounds :
-    callback:(value:float -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(value:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_change_value :
+    ?after:bool ->
     callback:(scroll:Gtk_enums.scrolltype -> value:float -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_move_slider :
-    callback:(step:Gtk_enums.scrolltype -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(step:Gtk_enums.scrolltype -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
-  method on_value_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_value_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_adjustment : unit -> GAdjustment.adjustment_t
   method get_fill_level : unit -> float
   method get_flippable : unit -> bool

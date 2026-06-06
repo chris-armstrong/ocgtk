@@ -4,12 +4,19 @@ class type drop_controller_motion_t = object
     .event_controller_t
 
   method on_enter :
-    callback:(x:float -> y:float -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(x:float -> y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
-  method on_leave : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_leave :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_motion :
-    callback:(x:float -> y:float -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(x:float -> y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method contains_pointer : unit -> bool
   method get_drop : unit -> Ocgtk_gdk.Gdk.Drop.drop_t option

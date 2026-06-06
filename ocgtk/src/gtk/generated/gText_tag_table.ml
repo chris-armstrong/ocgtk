@@ -2,15 +2,21 @@ class type text_tag_table_t = object
   inherit GBuildable.buildable_t
 
   method on_tag_added :
-    callback:(tag:Text_tag.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(tag:GText_tag.text_tag_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_tag_changed :
-    callback:(tag:Text_tag.t Gobject.obj option -> size_changed:bool -> unit) ->
+    ?after:bool ->
+    callback:(tag:GText_tag.text_tag_t option -> size_changed:bool -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_tag_removed :
-    callback:(tag:Text_tag.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(tag:GText_tag.text_tag_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method add : GText_tag.text_tag_t -> bool
@@ -25,14 +31,22 @@ class text_tag_table (obj : Text_tag_table.t) : text_tag_table_t =
   object (self)
     inherit GBuildable.buildable (Buildable.from_gobject obj)
 
-    method on_tag_added ~callback =
-      Text_tag_table.on_tag_added self#as_text_tag_table ~callback
+    method on_tag_added ?(after = false) ~callback () =
+      Text_tag_table.on_tag_added ~after self#as_text_tag_table
+        ~callback:(fun ~tag ->
+          callback ~tag:(Option.map (fun w -> new GText_tag.text_tag w) tag))
 
-    method on_tag_changed ~callback =
-      Text_tag_table.on_tag_changed self#as_text_tag_table ~callback
+    method on_tag_changed ?(after = false) ~callback () =
+      Text_tag_table.on_tag_changed ~after self#as_text_tag_table
+        ~callback:(fun ~tag ~size_changed ->
+          callback
+            ~tag:(Option.map (fun w -> new GText_tag.text_tag w) tag)
+            ~size_changed)
 
-    method on_tag_removed ~callback =
-      Text_tag_table.on_tag_removed self#as_text_tag_table ~callback
+    method on_tag_removed ?(after = false) ~callback () =
+      Text_tag_table.on_tag_removed ~after self#as_text_tag_table
+        ~callback:(fun ~tag ->
+          callback ~tag:(Option.map (fun w -> new GText_tag.text_tag w) tag))
 
     method add : GText_tag.text_tag_t -> bool =
       fun tag ->

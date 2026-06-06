@@ -9,17 +9,15 @@ end
 
 and d_bus_object_t = object
   method on_interface_added :
-    callback:
-      (interface:
-         D_bus_interface_and__d_bus_object.D_bus_interface.t Gobject.obj option ->
-      unit) ->
+    ?after:bool ->
+    callback:(interface:d_bus_interface_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_interface_removed :
-    callback:
-      (interface:
-         D_bus_interface_and__d_bus_object.D_bus_interface.t Gobject.obj option ->
-      unit) ->
+    ?after:bool ->
+    callback:(interface:d_bus_interface_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_interface : string -> d_bus_interface_t option

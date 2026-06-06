@@ -29,7 +29,5 @@ external get_default_display :
 val on_display_opened :
   ?after:bool ->
   t ->
-  callback:
-    (display:App_launch_context_cycle_de440b34.Display.t Gobject.obj option ->
-    unit) ->
+  callback:(display:App_launch_context_cycle_de440b34.Display.t option -> unit) ->
   Gobject.Signal.handler_id

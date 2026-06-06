@@ -4,17 +4,24 @@ class type drop_target_t = object
     .event_controller_t
 
   method on_accept :
-    callback:(drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option -> bool) ->
+    ?after:bool ->
+    callback:(drop:Ocgtk_gdk.Gdk.Drop.drop_t option -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_enter :
+    ?after:bool ->
     callback:(x:float -> y:float -> Ocgtk_gdk.Gdk_enums.dragaction) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_leave : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_leave :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_motion :
+    ?after:bool ->
     callback:(x:float -> y:float -> Ocgtk_gdk.Gdk_enums.dragaction) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction

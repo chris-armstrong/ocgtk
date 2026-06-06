@@ -4,7 +4,9 @@ class type event_controller_legacy_t = object
     .event_controller_t
 
   method on_event :
-    callback:(event:Ocgtk_gdk.Gdk.Wrappers.Event.t Gobject.obj option -> bool) ->
+    ?after:bool ->
+    callback:(event:Ocgtk_gdk.Gdk.Event.event_t option -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method as_event_controller_legacy : Event_controller_legacy.t
@@ -22,8 +24,11 @@ class event_controller_legacy (obj : Event_controller_legacy.t) :
              .Event_controller
              .t)
 
-    method on_event ~callback =
-      Event_controller_legacy.on_event self#as_event_controller_legacy ~callback
+    method on_event ?(after = false) ~callback () =
+      Event_controller_legacy.on_event ~after self#as_event_controller_legacy
+        ~callback:(fun ~event ->
+          callback
+            ~event:(Option.map (fun w -> new Ocgtk_gdk.Gdk.Event.event w) event))
 
     method as_event_controller_legacy = obj
   end

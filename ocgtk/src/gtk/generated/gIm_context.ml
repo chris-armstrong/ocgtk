@@ -1,17 +1,27 @@
 class type im_context_t = object
-  method on_commit : callback:(str:string -> unit) -> Gobject.Signal.handler_id
+  method on_commit :
+    ?after:bool ->
+    callback:(str:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_delete_surrounding :
-    callback:(offset:int -> n_chars:int -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(offset:int -> n_chars:int -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_preedit_changed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method on_preedit_end : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_preedit_start : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_preedit_end :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_preedit_start :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_retrieve_surrounding :
-    callback:(unit -> bool) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
 
   method activate_osk : Ocgtk_gdk.Gdk.Event.event_t option -> bool
   method delete_surrounding : int -> int -> bool
@@ -51,23 +61,23 @@ end
 (* High-level class for IMContext *)
 class im_context (obj : Im_context.t) : im_context_t =
   object (self)
-    method on_commit ~callback =
-      Im_context.on_commit self#as_im_context ~callback
+    method on_commit ?(after = false) ~callback () =
+      Im_context.on_commit ~after self#as_im_context ~callback
 
-    method on_delete_surrounding ~callback =
-      Im_context.on_delete_surrounding self#as_im_context ~callback
+    method on_delete_surrounding ?(after = false) ~callback () =
+      Im_context.on_delete_surrounding ~after self#as_im_context ~callback
 
-    method on_preedit_changed ~callback =
-      Im_context.on_preedit_changed self#as_im_context ~callback
+    method on_preedit_changed ?(after = false) ~callback () =
+      Im_context.on_preedit_changed ~after self#as_im_context ~callback
 
-    method on_preedit_end ~callback =
-      Im_context.on_preedit_end self#as_im_context ~callback
+    method on_preedit_end ?(after = false) ~callback () =
+      Im_context.on_preedit_end ~after self#as_im_context ~callback
 
-    method on_preedit_start ~callback =
-      Im_context.on_preedit_start self#as_im_context ~callback
+    method on_preedit_start ?(after = false) ~callback () =
+      Im_context.on_preedit_start ~after self#as_im_context ~callback
 
-    method on_retrieve_surrounding ~callback =
-      Im_context.on_retrieve_surrounding self#as_im_context ~callback
+    method on_retrieve_surrounding ?(after = false) ~callback () =
+      Im_context.on_retrieve_surrounding ~after self#as_im_context ~callback
 
     method activate_osk : Ocgtk_gdk.Gdk.Event.event_t option -> bool =
       fun event ->

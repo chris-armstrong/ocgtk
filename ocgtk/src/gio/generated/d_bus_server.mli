@@ -53,5 +53,5 @@ external get_authentication_observer : t -> D_bus_auth_observer.t
 val on_new_connection :
   ?after:bool ->
   t ->
-  callback:(connection:D_bus_connection.t Gobject.obj option -> bool) ->
+  callback:(connection:D_bus_connection.t option -> bool) ->
   Gobject.Signal.handler_id

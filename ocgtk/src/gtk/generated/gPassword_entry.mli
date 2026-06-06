@@ -4,7 +4,10 @@ class type password_entry_t = object
     .widget_t
 
   inherit GEditable.editable_t
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_extra_menu : unit -> Ocgtk_gio.Gio.Menu_model.menu_model_t option
   method get_show_peek_icon : unit -> bool
   method set_extra_menu : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit

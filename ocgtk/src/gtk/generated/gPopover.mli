@@ -7,9 +7,11 @@ class type popover_t = object
   inherit GShortcut_manager.shortcut_manager_t
 
   method on_activate_default :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method on_closed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_closed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_autohide : unit -> bool
   method get_cascade_popdown : unit -> bool
 

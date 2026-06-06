@@ -1,6 +1,10 @@
 class type cell_editable_t = object
-  method on_editing_done : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_remove_widget : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_editing_done :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_remove_widget :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method editing_done : unit -> unit
   method remove_widget : unit -> unit
   method start_editing : Ocgtk_gdk.Gdk.Event.event_t option -> unit
@@ -12,11 +16,11 @@ end
 (* High-level class for CellEditable *)
 class cell_editable (obj : Cell_editable.t) : cell_editable_t =
   object (self)
-    method on_editing_done ~callback =
-      Cell_editable.on_editing_done self#as_cell_editable ~callback
+    method on_editing_done ?(after = false) ~callback () =
+      Cell_editable.on_editing_done ~after self#as_cell_editable ~callback
 
-    method on_remove_widget ~callback =
-      Cell_editable.on_remove_widget self#as_cell_editable ~callback
+    method on_remove_widget ?(after = false) ~callback () =
+      Cell_editable.on_remove_widget ~after self#as_cell_editable ~callback
 
     method editing_done : unit -> unit =
       fun () -> Cell_editable.editing_done obj

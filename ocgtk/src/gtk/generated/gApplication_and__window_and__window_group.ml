@@ -3,20 +3,20 @@
 
 class type application_t = object
   inherit Ocgtk_gio.Gio.Application.application_t
-  method on_query_end : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_query_end :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_window_added :
-    callback:
-      (window:
-         Application_and__window_and__window_group.Window.t Gobject.obj option ->
-      unit) ->
+    ?after:bool ->
+    callback:(window:window_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_window_removed :
-    callback:
-      (window:
-         Application_and__window_and__window_group.Window.t Gobject.obj option ->
-      unit) ->
+    ?after:bool ->
+    callback:(window:window_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method add_window : window_t -> unit
@@ -55,17 +55,23 @@ and window_t = object
   inherit GShortcut_manager.shortcut_manager_t
 
   method on_activate_default :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_activate_focus :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method on_close_request : callback:(unit -> bool) -> Gobject.Signal.handler_id
+  method on_close_request :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
 
   method on_enable_debugging :
-    callback:(toggle:bool -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(toggle:bool -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
-  method on_keys_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_keys_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method close : unit -> unit
   method destroy : unit -> unit
   method fullscreen : unit -> unit
@@ -193,17 +199,19 @@ class application
       Ocgtk_gio.Gio.Application.application
         (obj :> Ocgtk_gio.Gio.Wrappers.Application.t)
 
-    method on_query_end ~callback =
-      Application_and__window_and__window_group.Application.on_query_end
+    method on_query_end ?(after = false) ~callback () =
+      Application_and__window_and__window_group.Application.on_query_end ~after
         self#as_application ~callback
 
-    method on_window_added ~callback =
+    method on_window_added ?(after = false) ~callback () =
       Application_and__window_and__window_group.Application.on_window_added
-        self#as_application ~callback
+        ~after self#as_application ~callback:(fun ~window ->
+          callback ~window:(Option.map (fun w -> new window w) window))
 
-    method on_window_removed ~callback =
+    method on_window_removed ?(after = false) ~callback () =
       Application_and__window_and__window_group.Application.on_window_removed
-        self#as_application ~callback
+        ~after self#as_application ~callback:(fun ~window ->
+          callback ~window:(Option.map (fun w -> new window w) window))
 
     method add_window : window_t -> unit =
       fun window ->
@@ -326,24 +334,24 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
     inherit
       GShortcut_manager.shortcut_manager (Shortcut_manager.from_gobject obj)
 
-    method on_activate_default ~callback =
+    method on_activate_default ?(after = false) ~callback () =
       Application_and__window_and__window_group.Window.on_activate_default
+        ~after self#as_window ~callback
+
+    method on_activate_focus ?(after = false) ~callback () =
+      Application_and__window_and__window_group.Window.on_activate_focus ~after
         self#as_window ~callback
 
-    method on_activate_focus ~callback =
-      Application_and__window_and__window_group.Window.on_activate_focus
+    method on_close_request ?(after = false) ~callback () =
+      Application_and__window_and__window_group.Window.on_close_request ~after
         self#as_window ~callback
 
-    method on_close_request ~callback =
-      Application_and__window_and__window_group.Window.on_close_request
-        self#as_window ~callback
-
-    method on_enable_debugging ~callback =
+    method on_enable_debugging ?(after = false) ~callback () =
       Application_and__window_and__window_group.Window.on_enable_debugging
-        self#as_window ~callback
+        ~after self#as_window ~callback
 
-    method on_keys_changed ~callback =
-      Application_and__window_and__window_group.Window.on_keys_changed
+    method on_keys_changed ?(after = false) ~callback () =
+      Application_and__window_and__window_group.Window.on_keys_changed ~after
         self#as_window ~callback
 
     method close : unit -> unit =

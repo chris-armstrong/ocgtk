@@ -7,23 +7,31 @@ class type paned_t = object
   inherit GOrientable.orientable_t
 
   method on_accept_position :
-    callback:(unit -> bool) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
 
   method on_cancel_position :
-    callback:(unit -> bool) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
 
   method on_cycle_child_focus :
-    callback:(reversed:bool -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(reversed:bool -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_cycle_handle_focus :
-    callback:(reversed:bool -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(reversed:bool -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_move_handle :
+    ?after:bool ->
     callback:(scroll_type:Gtk_enums.scrolltype -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_toggle_handle_focus :
-    callback:(unit -> bool) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
 
   method get_end_child :
     unit ->
@@ -87,23 +95,23 @@ class paned (obj : Paned.t) : paned_t =
 
     inherit GOrientable.orientable (Orientable.from_gobject obj)
 
-    method on_accept_position ~callback =
-      Paned.on_accept_position self#as_paned ~callback
+    method on_accept_position ?(after = false) ~callback () =
+      Paned.on_accept_position ~after self#as_paned ~callback
 
-    method on_cancel_position ~callback =
-      Paned.on_cancel_position self#as_paned ~callback
+    method on_cancel_position ?(after = false) ~callback () =
+      Paned.on_cancel_position ~after self#as_paned ~callback
 
-    method on_cycle_child_focus ~callback =
-      Paned.on_cycle_child_focus self#as_paned ~callback
+    method on_cycle_child_focus ?(after = false) ~callback () =
+      Paned.on_cycle_child_focus ~after self#as_paned ~callback
 
-    method on_cycle_handle_focus ~callback =
-      Paned.on_cycle_handle_focus self#as_paned ~callback
+    method on_cycle_handle_focus ?(after = false) ~callback () =
+      Paned.on_cycle_handle_focus ~after self#as_paned ~callback
 
-    method on_move_handle ~callback =
-      Paned.on_move_handle self#as_paned ~callback
+    method on_move_handle ?(after = false) ~callback () =
+      Paned.on_move_handle ~after self#as_paned ~callback
 
-    method on_toggle_handle_focus ~callback =
-      Paned.on_toggle_handle_focus self#as_paned ~callback
+    method on_toggle_handle_focus ?(after = false) ~callback () =
+      Paned.on_toggle_handle_focus ~after self#as_paned ~callback
 
     method get_end_child :
         unit ->

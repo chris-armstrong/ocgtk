@@ -6,13 +6,15 @@ class type app_chooser_widget_t = object
   inherit GApp_chooser.app_chooser_t
 
   method on_application_activated :
-    callback:
-      (application:Ocgtk_gio.Gio.Wrappers.App_info.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_application_selected :
-    callback:
-      (application:Ocgtk_gio.Gio.Wrappers.App_info.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_default_text : unit -> string option

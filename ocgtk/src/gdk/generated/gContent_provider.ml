@@ -1,6 +1,6 @@
 class type content_provider_t = object
   method on_content_changed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method content_changed : unit -> unit
   method ref_formats : unit -> Content_formats.t
@@ -17,8 +17,9 @@ end
 (* High-level class for ContentProvider *)
 class content_provider (obj : Content_provider.t) : content_provider_t =
   object (self)
-    method on_content_changed ~callback =
-      Content_provider.on_content_changed self#as_content_provider ~callback
+    method on_content_changed ?(after = false) ~callback () =
+      Content_provider.on_content_changed ~after self#as_content_provider
+        ~callback
 
     method content_changed : unit -> unit =
       fun () -> Content_provider.content_changed obj

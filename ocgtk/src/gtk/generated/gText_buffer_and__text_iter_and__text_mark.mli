@@ -1,30 +1,33 @@
 class type text_buffer_t = object
   method on_begin_user_action :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_end_user_action :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_mark_deleted :
-    callback:
-      (mark:
-         Text_buffer_and__text_iter_and__text_mark.Text_mark.t Gobject.obj
-         option ->
-      unit) ->
+    ?after:bool ->
+    callback:(mark:text_mark_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_modified_changed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_paste_done :
-    callback:
-      (clipboard:Ocgtk_gdk.Gdk.Wrappers.Clipboard.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(clipboard:Ocgtk_gdk.Gdk.Clipboard.clipboard_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_redo : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_undo : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_redo :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_undo :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method add_mark :
     text_mark_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit

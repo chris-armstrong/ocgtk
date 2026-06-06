@@ -4,17 +4,24 @@ class type drop_target_t = object
     .event_controller_t
 
   method on_accept :
-    callback:(drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option -> bool) ->
+    ?after:bool ->
+    callback:(drop:Ocgtk_gdk.Gdk.Drop.drop_t option -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_enter :
+    ?after:bool ->
     callback:(x:float -> y:float -> Ocgtk_gdk.Gdk_enums.dragaction) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_leave : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_leave :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_motion :
+    ?after:bool ->
     callback:(x:float -> y:float -> Ocgtk_gdk.Gdk_enums.dragaction) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction
@@ -43,17 +50,19 @@ class drop_target (obj : Drop_target.t) : drop_target_t =
              .Event_controller
              .t)
 
-    method on_accept ~callback =
-      Drop_target.on_accept self#as_drop_target ~callback
+    method on_accept ?(after = false) ~callback () =
+      Drop_target.on_accept ~after self#as_drop_target ~callback:(fun ~drop ->
+          callback
+            ~drop:(Option.map (fun w -> new Ocgtk_gdk.Gdk.Drop.drop w) drop))
 
-    method on_enter ~callback =
-      Drop_target.on_enter self#as_drop_target ~callback
+    method on_enter ?(after = false) ~callback () =
+      Drop_target.on_enter ~after self#as_drop_target ~callback
 
-    method on_leave ~callback =
-      Drop_target.on_leave self#as_drop_target ~callback
+    method on_leave ?(after = false) ~callback () =
+      Drop_target.on_leave ~after self#as_drop_target ~callback
 
-    method on_motion ~callback =
-      Drop_target.on_motion self#as_drop_target ~callback
+    method on_motion ?(after = false) ~callback () =
+      Drop_target.on_motion ~after self#as_drop_target ~callback
 
     method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction =
       fun () -> Drop_target.get_actions obj

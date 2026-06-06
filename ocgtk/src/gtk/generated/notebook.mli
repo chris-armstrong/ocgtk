@@ -446,9 +446,8 @@ val on_create_window :
        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
        .Widget
        .t
-       Gobject.obj
        option ->
-    t Gobject.obj option) ->
+    t option) ->
   Gobject.Signal.handler_id
 
 val on_focus_tab :
@@ -471,7 +470,6 @@ val on_page_added :
        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
        .Widget
        .t
-       Gobject.obj
        option ->
     page_num:int ->
     unit) ->
@@ -485,7 +483,6 @@ val on_page_removed :
        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
        .Widget
        .t
-       Gobject.obj
        option ->
     page_num:int ->
     unit) ->
@@ -499,7 +496,6 @@ val on_page_reordered :
        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
        .Widget
        .t
-       Gobject.obj
        option ->
     page_num:int ->
     unit) ->
@@ -525,7 +521,6 @@ val on_switch_page :
        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
        .Widget
        .t
-       Gobject.obj
        option ->
     page_num:int ->
     unit) ->

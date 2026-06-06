@@ -1,6 +1,6 @@
 class type filename_completer_t = object
   method on_got_completion_data :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method get_completion_suffix : string -> string option
   method get_completions : string -> string array
@@ -11,9 +11,9 @@ end
 (* High-level class for FilenameCompleter *)
 class filename_completer (obj : Filename_completer.t) : filename_completer_t =
   object (self)
-    method on_got_completion_data ~callback =
-      Filename_completer.on_got_completion_data self#as_filename_completer
-        ~callback
+    method on_got_completion_data ?(after = false) ~callback () =
+      Filename_completer.on_got_completion_data ~after
+        self#as_filename_completer ~callback
 
     method get_completion_suffix : string -> string option =
       fun initial_text ->

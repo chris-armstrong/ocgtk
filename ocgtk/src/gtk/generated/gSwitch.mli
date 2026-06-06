@@ -4,10 +4,15 @@ class type switch_t = object
     .widget_t
 
   inherit GActionable.actionable_t
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_state_set :
-    callback:(state:bool -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(state:bool -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method get_active : unit -> bool
   method get_state : unit -> bool

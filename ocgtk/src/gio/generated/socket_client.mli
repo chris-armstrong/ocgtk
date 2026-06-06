@@ -345,8 +345,7 @@ val on_event :
       Socket_address_and__socket_address_enumerator_and__socket_connectable
       .Socket_connectable
       .t
-      Gobject.obj
       option ->
-    connection:Io_stream.t Gobject.obj option ->
+    connection:Io_stream.t option ->
     unit) ->
   Gobject.Signal.handler_id

@@ -70,13 +70,13 @@ and D_bus_object : sig
   val on_interface_added :
     ?after:bool ->
     t ->
-    callback:(interface:D_bus_interface.t Gobject.obj option -> unit) ->
+    callback:(interface:D_bus_interface.t option -> unit) ->
     Gobject.Signal.handler_id
 
   val on_interface_removed :
     ?after:bool ->
     t ->
-    callback:(interface:D_bus_interface.t Gobject.obj option -> unit) ->
+    callback:(interface:D_bus_interface.t option -> unit) ->
     Gobject.Signal.handler_id
 end = struct
   type t = [ `d_bus_object ] Gobject.obj

@@ -4,80 +4,92 @@ class type notebook_t = object
     .widget_t
 
   method on_change_current_page :
-    callback:(object_:int -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(object_:int -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_create_window :
+    ?after:bool ->
     callback:
       (page:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .Widget
-         .t
-         Gobject.obj
+         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .widget_t
          option ->
-      Notebook.t Gobject.obj option) ->
+      notebook_t option) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_focus_tab :
+    ?after:bool ->
     callback:(object_:Gtk_enums.notebooktab -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_move_focus_out :
+    ?after:bool ->
     callback:(object_:Gtk_enums.directiontype -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_page_added :
+    ?after:bool ->
     callback:
       (child:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .Widget
-         .t
-         Gobject.obj
+         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .widget_t
          option ->
       page_num:int ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_page_removed :
+    ?after:bool ->
     callback:
       (child:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .Widget
-         .t
-         Gobject.obj
+         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .widget_t
          option ->
       page_num:int ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_page_reordered :
+    ?after:bool ->
     callback:
       (child:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .Widget
-         .t
-         Gobject.obj
+         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .widget_t
          option ->
       page_num:int ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_reorder_tab :
+    ?after:bool ->
     callback:(object_:Gtk_enums.directiontype -> p0:bool -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_select_page :
-    callback:(object_:bool -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(object_:bool -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_switch_page :
+    ?after:bool ->
     callback:
       (page:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .Widget
-         .t
-         Gobject.obj
+         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .widget_t
          option ->
       page_num:int ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method append_page :
@@ -297,35 +309,90 @@ class notebook (obj : Notebook.t) : notebook_t =
              .Widget
              .t)
 
-    method on_change_current_page ~callback =
-      Notebook.on_change_current_page self#as_notebook ~callback
+    method on_change_current_page ?(after = false) ~callback () =
+      Notebook.on_change_current_page ~after self#as_notebook ~callback
 
-    method on_create_window ~callback =
-      Notebook.on_create_window self#as_notebook ~callback
+    method on_create_window ?(after = false) ~callback () =
+      Notebook.on_create_window ~after self#as_notebook ~callback:(fun ~page ->
+          Option.map
+            (fun w -> w#as_notebook)
+            (callback
+               ~page:
+                 (Option.map
+                    (fun w ->
+                      new
+                        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+                        .widget
+                        w)
+                    page)))
 
-    method on_focus_tab ~callback =
-      Notebook.on_focus_tab self#as_notebook ~callback
+    method on_focus_tab ?(after = false) ~callback () =
+      Notebook.on_focus_tab ~after self#as_notebook ~callback
 
-    method on_move_focus_out ~callback =
-      Notebook.on_move_focus_out self#as_notebook ~callback
+    method on_move_focus_out ?(after = false) ~callback () =
+      Notebook.on_move_focus_out ~after self#as_notebook ~callback
 
-    method on_page_added ~callback =
-      Notebook.on_page_added self#as_notebook ~callback
+    method on_page_added ?(after = false) ~callback () =
+      Notebook.on_page_added ~after self#as_notebook
+        ~callback:(fun ~child ~page_num ->
+          callback
+            ~child:
+              (Option.map
+                 (fun w ->
+                   new
+                     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+                     .widget
+                     w)
+                 child)
+            ~page_num)
 
-    method on_page_removed ~callback =
-      Notebook.on_page_removed self#as_notebook ~callback
+    method on_page_removed ?(after = false) ~callback () =
+      Notebook.on_page_removed ~after self#as_notebook
+        ~callback:(fun ~child ~page_num ->
+          callback
+            ~child:
+              (Option.map
+                 (fun w ->
+                   new
+                     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+                     .widget
+                     w)
+                 child)
+            ~page_num)
 
-    method on_page_reordered ~callback =
-      Notebook.on_page_reordered self#as_notebook ~callback
+    method on_page_reordered ?(after = false) ~callback () =
+      Notebook.on_page_reordered ~after self#as_notebook
+        ~callback:(fun ~child ~page_num ->
+          callback
+            ~child:
+              (Option.map
+                 (fun w ->
+                   new
+                     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+                     .widget
+                     w)
+                 child)
+            ~page_num)
 
-    method on_reorder_tab ~callback =
-      Notebook.on_reorder_tab self#as_notebook ~callback
+    method on_reorder_tab ?(after = false) ~callback () =
+      Notebook.on_reorder_tab ~after self#as_notebook ~callback
 
-    method on_select_page ~callback =
-      Notebook.on_select_page self#as_notebook ~callback
+    method on_select_page ?(after = false) ~callback () =
+      Notebook.on_select_page ~after self#as_notebook ~callback
 
-    method on_switch_page ~callback =
-      Notebook.on_switch_page self#as_notebook ~callback
+    method on_switch_page ?(after = false) ~callback () =
+      Notebook.on_switch_page ~after self#as_notebook
+        ~callback:(fun ~page ~page_num ->
+          callback
+            ~page:
+              (Option.map
+                 (fun w ->
+                   new
+                     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+                     .widget
+                     w)
+                 page)
+            ~page_num)
 
     method append_page :
         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

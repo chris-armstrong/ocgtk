@@ -1,5 +1,7 @@
 class type icon_theme_t = object
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method add_resource_path : string -> unit
   method add_search_path : string -> unit
   method get_display : unit -> Ocgtk_gdk.Gdk.Display.display_t option
@@ -36,8 +38,8 @@ end
 (* High-level class for IconTheme *)
 class icon_theme (obj : Icon_theme.t) : icon_theme_t =
   object (self)
-    method on_changed ~callback =
-      Icon_theme.on_changed self#as_icon_theme ~callback
+    method on_changed ?(after = false) ~callback () =
+      Icon_theme.on_changed ~after self#as_icon_theme ~callback
 
     method add_resource_path : string -> unit =
       fun path -> Icon_theme.add_resource_path obj path

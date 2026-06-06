@@ -1,6 +1,6 @@
 class type tree_sortable_t = object
   method on_sort_column_changed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method has_default_sort_func : unit -> bool
   method set_sort_column_id : int -> Gtk_enums.sorttype -> unit

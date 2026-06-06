@@ -2,28 +2,33 @@ class type drag_source_t = object
   inherit GGesture_single.gesture_single_t
 
   method on_drag_begin :
-    callback:(drag:Ocgtk_gdk.Gdk.Wrappers.Drag.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(drag:Ocgtk_gdk.Gdk.Drag.drag_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_drag_cancel :
+    ?after:bool ->
     callback:
-      (drag:Ocgtk_gdk.Gdk.Wrappers.Drag.t Gobject.obj option ->
+      (drag:Ocgtk_gdk.Gdk.Drag.drag_t option ->
       reason:Ocgtk_gdk.Gdk_enums.dragcancelreason ->
       bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_drag_end :
-    callback:
-      (drag:Ocgtk_gdk.Gdk.Wrappers.Drag.t Gobject.obj option ->
-      delete_data:bool ->
-      unit) ->
+    ?after:bool ->
+    callback:(drag:Ocgtk_gdk.Gdk.Drag.drag_t option -> delete_data:bool -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_prepare :
+    ?after:bool ->
     callback:
       (x:float ->
       y:float ->
-      Ocgtk_gdk.Gdk.Wrappers.Content_provider.t Gobject.obj option) ->
+      Ocgtk_gdk.Gdk.Content_provider.content_provider_t option) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method drag_cancel : unit -> unit
@@ -49,17 +54,29 @@ class drag_source (obj : Drag_source.t) : drag_source_t =
   object (self)
     inherit GGesture_single.gesture_single (obj :> Gesture_single.t)
 
-    method on_drag_begin ~callback =
-      Drag_source.on_drag_begin self#as_drag_source ~callback
+    method on_drag_begin ?(after = false) ~callback () =
+      Drag_source.on_drag_begin ~after self#as_drag_source
+        ~callback:(fun ~drag ->
+          callback
+            ~drag:(Option.map (fun w -> new Ocgtk_gdk.Gdk.Drag.drag w) drag))
 
-    method on_drag_cancel ~callback =
-      Drag_source.on_drag_cancel self#as_drag_source ~callback
+    method on_drag_cancel ?(after = false) ~callback () =
+      Drag_source.on_drag_cancel ~after self#as_drag_source
+        ~callback:(fun ~drag ~reason ->
+          callback
+            ~drag:(Option.map (fun w -> new Ocgtk_gdk.Gdk.Drag.drag w) drag)
+            ~reason)
 
-    method on_drag_end ~callback =
-      Drag_source.on_drag_end self#as_drag_source ~callback
+    method on_drag_end ?(after = false) ~callback () =
+      Drag_source.on_drag_end ~after self#as_drag_source
+        ~callback:(fun ~drag ~delete_data ->
+          callback
+            ~drag:(Option.map (fun w -> new Ocgtk_gdk.Gdk.Drag.drag w) drag)
+            ~delete_data)
 
-    method on_prepare ~callback =
-      Drag_source.on_prepare self#as_drag_source ~callback
+    method on_prepare ?(after = false) ~callback () =
+      Drag_source.on_prepare ~after self#as_drag_source ~callback:(fun ~x ~y ->
+          Option.map (fun w -> w#as_content_provider) (callback ~x ~y))
 
     method drag_cancel : unit -> unit = fun () -> Drag_source.drag_cancel obj
 

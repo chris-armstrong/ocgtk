@@ -1,15 +1,15 @@
 class type socket_client_t = object
   method on_event :
+    ?after:bool ->
     callback:
       (event:Gio_enums.socketclientevent ->
       connectable:
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .Socket_connectable
-        .t
-        Gobject.obj
+        GSocket_address_and__socket_address_enumerator_and__socket_connectable
+        .socket_connectable_t
         option ->
-      connection:Io_stream.t Gobject.obj option ->
+      connection:GIo_stream.io_stream_t option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method add_application_proxy : string -> unit

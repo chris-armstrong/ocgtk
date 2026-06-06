@@ -5,50 +5,70 @@ class type text_view_t = object
 
   inherit GAccessible_text.accessible_text_t
   inherit GScrollable.scrollable_t
-  method on_backspace : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_backspace :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_copy_clipboard :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method on_cut_clipboard : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_cut_clipboard :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_delete_from_cursor :
+    ?after:bool ->
     callback:(type_:Gtk_enums.deletetype -> count:int -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_insert_at_cursor :
-    callback:(string:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(string:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
-  method on_insert_emoji : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_insert_emoji :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_move_cursor :
+    ?after:bool ->
     callback:
       (step:Gtk_enums.movementstep ->
       count:int ->
       extend_selection:bool ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_move_viewport :
+    ?after:bool ->
     callback:(step:Gtk_enums.scrollstep -> count:int -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_paste_clipboard :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_preedit_changed :
-    callback:(preedit:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(preedit:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_select_all :
-    callback:(select:bool -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(select:bool -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
-  method on_set_anchor : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_set_anchor :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_toggle_cursor_visible :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_toggle_overwrite :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method add_child_at_anchor :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

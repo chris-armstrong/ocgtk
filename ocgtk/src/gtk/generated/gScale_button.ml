@@ -5,11 +5,18 @@ class type scale_button_t = object
 
   inherit GAccessible_range.accessible_range_t
   inherit GOrientable.orientable_t
-  method on_popdown : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_popup : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_popdown :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_popup :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_value_changed :
-    callback:(value:float -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(value:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method get_active : unit -> bool
   method get_adjustment : unit -> GAdjustment.adjustment_t
@@ -46,14 +53,14 @@ class scale_button (obj : Scale_button.t) : scale_button_t =
 
     inherit GOrientable.orientable (Orientable.from_gobject obj)
 
-    method on_popdown ~callback =
-      Scale_button.on_popdown self#as_scale_button ~callback
+    method on_popdown ?(after = false) ~callback () =
+      Scale_button.on_popdown ~after self#as_scale_button ~callback
 
-    method on_popup ~callback =
-      Scale_button.on_popup self#as_scale_button ~callback
+    method on_popup ?(after = false) ~callback () =
+      Scale_button.on_popup ~after self#as_scale_button ~callback
 
-    method on_value_changed ~callback =
-      Scale_button.on_value_changed self#as_scale_button ~callback
+    method on_value_changed ?(after = false) ~callback () =
+      Scale_button.on_value_changed ~after self#as_scale_button ~callback
 
     method get_active : unit -> bool = fun () -> Scale_button.get_active obj
 

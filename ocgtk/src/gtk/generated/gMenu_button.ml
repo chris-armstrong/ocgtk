@@ -3,7 +3,9 @@ class type menu_button_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_active : unit -> bool
   method get_always_show_arrow : unit -> bool
   method get_can_shrink : unit -> bool
@@ -60,8 +62,8 @@ class menu_button (obj : Menu_button.t) : menu_button_t =
              .Widget
              .t)
 
-    method on_activate ~callback =
-      Menu_button.on_activate self#as_menu_button ~callback
+    method on_activate ?(after = false) ~callback () =
+      Menu_button.on_activate ~after self#as_menu_button ~callback
 
     method get_active : unit -> bool = fun () -> Menu_button.get_active obj
 

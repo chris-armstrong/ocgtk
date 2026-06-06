@@ -4,13 +4,15 @@ class type d_bus_object_manager_client_t = object
   inherit GInitable.initable_t
 
   method on_interface_proxy_signal :
+    ?after:bool ->
     callback:
-      (object_proxy:D_bus_object_proxy.t Gobject.obj option ->
-      interface_proxy:D_bus_proxy.t Gobject.obj option ->
+      (object_proxy:GD_bus_object_proxy.d_bus_object_proxy_t option ->
+      interface_proxy:GD_bus_proxy.d_bus_proxy_t option ->
       sender_name:string ->
       signal_name:string ->
       parameters:Gvariant.t ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_connection : unit -> GD_bus_connection.d_bus_connection_t
@@ -33,9 +35,26 @@ class d_bus_object_manager_client (obj : D_bus_object_manager_client.t) :
 
     inherit GInitable.initable (Initable.from_gobject obj)
 
-    method on_interface_proxy_signal ~callback =
-      D_bus_object_manager_client.on_interface_proxy_signal
-        self#as_d_bus_object_manager_client ~callback
+    method on_interface_proxy_signal ?(after = false) ~callback () =
+      D_bus_object_manager_client.on_interface_proxy_signal ~after
+        self#as_d_bus_object_manager_client
+        ~callback:(fun
+            ~object_proxy
+            ~interface_proxy
+            ~sender_name
+            ~signal_name
+            ~parameters
+          ->
+          callback
+            ~object_proxy:
+              (Option.map
+                 (fun w -> new GD_bus_object_proxy.d_bus_object_proxy w)
+                 object_proxy)
+            ~interface_proxy:
+              (Option.map
+                 (fun w -> new GD_bus_proxy.d_bus_proxy w)
+                 interface_proxy)
+            ~sender_name ~signal_name ~parameters)
 
     method get_connection : unit -> GD_bus_connection.d_bus_connection_t =
       fun () ->

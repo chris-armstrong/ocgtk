@@ -1,6 +1,9 @@
 class type native_dialog_t = object
   method on_response :
-    callback:(response_id:int -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(response_id:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method destroy : unit -> unit
   method get_modal : unit -> bool

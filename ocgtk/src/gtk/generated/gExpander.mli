@@ -3,7 +3,8 @@ class type expander_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method get_child :
     unit ->

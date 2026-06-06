@@ -1,9 +1,11 @@
 class type dtls_connection_t = object
   method on_accept_certificate :
+    ?after:bool ->
     callback:
-      (peer_cert:Tls_certificate.t Gobject.obj option ->
+      (peer_cert:GTls_certificate.tls_certificate_t option ->
       errors:Gio_enums.tlscertificateflags ->
       bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method close : GCancellable.cancellable_t option -> (bool, GError.t) result

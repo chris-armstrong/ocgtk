@@ -1,8 +1,9 @@
 class type display_manager_t = object
   method on_display_opened :
+    ?after:bool ->
     callback:
-      (display:App_launch_context_cycle_de440b34.Display.t Gobject.obj option ->
-      unit) ->
+      (display:GApp_launch_context_cycle_de440b34.display_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_default_display :

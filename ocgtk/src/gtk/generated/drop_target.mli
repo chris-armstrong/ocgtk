@@ -64,7 +64,7 @@ external get_actions : t -> Ocgtk_gdk.Gdk.dragaction
 val on_accept :
   ?after:bool ->
   t ->
-  callback:(drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option -> bool) ->
+  callback:(drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t option -> bool) ->
   Gobject.Signal.handler_id
 
 val on_enter :

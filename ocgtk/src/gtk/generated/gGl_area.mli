@@ -4,16 +4,22 @@ class type gl_area_t = object
     .widget_t
 
   method on_create_context :
-    callback:(unit -> Ocgtk_gdk.Gdk.Wrappers.Gl_context.t Gobject.obj option) ->
+    ?after:bool ->
+    callback:(unit -> Ocgtk_gdk.Gdk.Gl_context.gl_context_t option) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_render :
-    callback:
-      (context:Ocgtk_gdk.Gdk.Wrappers.Gl_context.t Gobject.obj option -> bool) ->
+    ?after:bool ->
+    callback:(context:Ocgtk_gdk.Gdk.Gl_context.gl_context_t option -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_resize :
-    callback:(width:int -> height:int -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(width:int -> height:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method attach_buffers : unit -> unit
   method get_allowed_apis : unit -> Ocgtk_gdk.Gdk.glapi

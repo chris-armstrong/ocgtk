@@ -3,7 +3,11 @@ class type debug_controller_d_bus_t = object
   inherit GInitable.initable_t
 
   method on_authorize :
-    callback:(invocation:D_bus_method_invocation.t Gobject.obj option -> bool) ->
+    ?after:bool ->
+    callback:
+      (invocation:GD_bus_method_invocation.d_bus_method_invocation_t option ->
+      bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method stop : unit -> unit
@@ -20,9 +24,15 @@ class debug_controller_d_bus (obj : Debug_controller_d_bus.t) :
 
     inherit GInitable.initable (Initable.from_gobject obj)
 
-    method on_authorize ~callback =
-      Debug_controller_d_bus.on_authorize self#as_debug_controller_d_bus
-        ~callback
+    method on_authorize ?(after = false) ~callback () =
+      Debug_controller_d_bus.on_authorize ~after self#as_debug_controller_d_bus
+        ~callback:(fun ~invocation ->
+          callback
+            ~invocation:
+              (Option.map
+                 (fun w ->
+                   new GD_bus_method_invocation.d_bus_method_invocation w)
+                 invocation))
 
     method stop : unit -> unit = fun () -> Debug_controller_d_bus.stop obj
 

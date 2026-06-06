@@ -1,134 +1,134 @@
 class type volume_monitor_t = object
   method on_drive_changed :
+    ?after:bool ->
     callback:
       (drive:
-         App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .Drive
-         .t
-         Gobject.obj
+         GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+         .drive_t
          option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_drive_connected :
+    ?after:bool ->
     callback:
       (drive:
-         App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .Drive
-         .t
-         Gobject.obj
+         GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+         .drive_t
          option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_drive_disconnected :
+    ?after:bool ->
     callback:
       (drive:
-         App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .Drive
-         .t
-         Gobject.obj
+         GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+         .drive_t
          option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_drive_eject_button :
+    ?after:bool ->
     callback:
       (drive:
-         App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .Drive
-         .t
-         Gobject.obj
+         GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+         .drive_t
          option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_drive_stop_button :
+    ?after:bool ->
     callback:
       (drive:
-         App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .Drive
-         .t
-         Gobject.obj
+         GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+         .drive_t
          option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_mount_added :
+    ?after:bool ->
     callback:
       (mount:
-         App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .Mount
-         .t
-         Gobject.obj
+         GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+         .mount_t
          option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_mount_changed :
+    ?after:bool ->
     callback:
       (mount:
-         App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .Mount
-         .t
-         Gobject.obj
+         GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+         .mount_t
          option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_mount_pre_unmount :
+    ?after:bool ->
     callback:
       (mount:
-         App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .Mount
-         .t
-         Gobject.obj
+         GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+         .mount_t
          option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_mount_removed :
+    ?after:bool ->
     callback:
       (mount:
-         App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .Mount
-         .t
-         Gobject.obj
+         GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+         .mount_t
          option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_volume_added :
+    ?after:bool ->
     callback:
       (volume:
-         App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .Volume
-         .t
-         Gobject.obj
+         GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+         .volume_t
          option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_volume_changed :
+    ?after:bool ->
     callback:
       (volume:
-         App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .Volume
-         .t
-         Gobject.obj
+         GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+         .volume_t
          option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_volume_removed :
+    ?after:bool ->
     callback:
       (volume:
-         App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .Volume
-         .t
-         Gobject.obj
+         GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+         .volume_t
          option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_connected_drives :
@@ -167,41 +167,161 @@ end
 (* High-level class for VolumeMonitor *)
 class volume_monitor (obj : Volume_monitor.t) : volume_monitor_t =
   object (self)
-    method on_drive_changed ~callback =
-      Volume_monitor.on_drive_changed self#as_volume_monitor ~callback
+    method on_drive_changed ?(after = false) ~callback () =
+      Volume_monitor.on_drive_changed ~after self#as_volume_monitor
+        ~callback:(fun ~drive ->
+          callback
+            ~drive:
+              (Option.map
+                 (fun w ->
+                   new
+                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                     .drive
+                     w)
+                 drive))
 
-    method on_drive_connected ~callback =
-      Volume_monitor.on_drive_connected self#as_volume_monitor ~callback
+    method on_drive_connected ?(after = false) ~callback () =
+      Volume_monitor.on_drive_connected ~after self#as_volume_monitor
+        ~callback:(fun ~drive ->
+          callback
+            ~drive:
+              (Option.map
+                 (fun w ->
+                   new
+                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                     .drive
+                     w)
+                 drive))
 
-    method on_drive_disconnected ~callback =
-      Volume_monitor.on_drive_disconnected self#as_volume_monitor ~callback
+    method on_drive_disconnected ?(after = false) ~callback () =
+      Volume_monitor.on_drive_disconnected ~after self#as_volume_monitor
+        ~callback:(fun ~drive ->
+          callback
+            ~drive:
+              (Option.map
+                 (fun w ->
+                   new
+                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                     .drive
+                     w)
+                 drive))
 
-    method on_drive_eject_button ~callback =
-      Volume_monitor.on_drive_eject_button self#as_volume_monitor ~callback
+    method on_drive_eject_button ?(after = false) ~callback () =
+      Volume_monitor.on_drive_eject_button ~after self#as_volume_monitor
+        ~callback:(fun ~drive ->
+          callback
+            ~drive:
+              (Option.map
+                 (fun w ->
+                   new
+                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                     .drive
+                     w)
+                 drive))
 
-    method on_drive_stop_button ~callback =
-      Volume_monitor.on_drive_stop_button self#as_volume_monitor ~callback
+    method on_drive_stop_button ?(after = false) ~callback () =
+      Volume_monitor.on_drive_stop_button ~after self#as_volume_monitor
+        ~callback:(fun ~drive ->
+          callback
+            ~drive:
+              (Option.map
+                 (fun w ->
+                   new
+                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                     .drive
+                     w)
+                 drive))
 
-    method on_mount_added ~callback =
-      Volume_monitor.on_mount_added self#as_volume_monitor ~callback
+    method on_mount_added ?(after = false) ~callback () =
+      Volume_monitor.on_mount_added ~after self#as_volume_monitor
+        ~callback:(fun ~mount ->
+          callback
+            ~mount:
+              (Option.map
+                 (fun w ->
+                   new
+                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                     .mount
+                     w)
+                 mount))
 
-    method on_mount_changed ~callback =
-      Volume_monitor.on_mount_changed self#as_volume_monitor ~callback
+    method on_mount_changed ?(after = false) ~callback () =
+      Volume_monitor.on_mount_changed ~after self#as_volume_monitor
+        ~callback:(fun ~mount ->
+          callback
+            ~mount:
+              (Option.map
+                 (fun w ->
+                   new
+                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                     .mount
+                     w)
+                 mount))
 
-    method on_mount_pre_unmount ~callback =
-      Volume_monitor.on_mount_pre_unmount self#as_volume_monitor ~callback
+    method on_mount_pre_unmount ?(after = false) ~callback () =
+      Volume_monitor.on_mount_pre_unmount ~after self#as_volume_monitor
+        ~callback:(fun ~mount ->
+          callback
+            ~mount:
+              (Option.map
+                 (fun w ->
+                   new
+                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                     .mount
+                     w)
+                 mount))
 
-    method on_mount_removed ~callback =
-      Volume_monitor.on_mount_removed self#as_volume_monitor ~callback
+    method on_mount_removed ?(after = false) ~callback () =
+      Volume_monitor.on_mount_removed ~after self#as_volume_monitor
+        ~callback:(fun ~mount ->
+          callback
+            ~mount:
+              (Option.map
+                 (fun w ->
+                   new
+                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                     .mount
+                     w)
+                 mount))
 
-    method on_volume_added ~callback =
-      Volume_monitor.on_volume_added self#as_volume_monitor ~callback
+    method on_volume_added ?(after = false) ~callback () =
+      Volume_monitor.on_volume_added ~after self#as_volume_monitor
+        ~callback:(fun ~volume ->
+          callback
+            ~volume:
+              (Option.map
+                 (fun w ->
+                   new
+                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                     .volume
+                     w)
+                 volume))
 
-    method on_volume_changed ~callback =
-      Volume_monitor.on_volume_changed self#as_volume_monitor ~callback
+    method on_volume_changed ?(after = false) ~callback () =
+      Volume_monitor.on_volume_changed ~after self#as_volume_monitor
+        ~callback:(fun ~volume ->
+          callback
+            ~volume:
+              (Option.map
+                 (fun w ->
+                   new
+                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                     .volume
+                     w)
+                 volume))
 
-    method on_volume_removed ~callback =
-      Volume_monitor.on_volume_removed self#as_volume_monitor ~callback
+    method on_volume_removed ?(after = false) ~callback () =
+      Volume_monitor.on_volume_removed ~after self#as_volume_monitor
+        ~callback:(fun ~volume ->
+          callback
+            ~volume:
+              (Option.map
+                 (fun w ->
+                   new
+                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                     .volume
+                     w)
+                 volume))
 
     method get_connected_drives :
         unit ->

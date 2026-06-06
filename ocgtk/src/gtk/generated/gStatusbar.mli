@@ -4,11 +4,15 @@ class type statusbar_t = object
     .widget_t
 
   method on_text_popped :
+    ?after:bool ->
     callback:(context_id:int -> text:string -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_text_pushed :
+    ?after:bool ->
     callback:(context_id:int -> text:string -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_context_id : string -> int

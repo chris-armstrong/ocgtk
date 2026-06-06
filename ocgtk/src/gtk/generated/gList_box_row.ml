@@ -4,7 +4,10 @@ class type list_box_row_t = object
     .widget_t
 
   inherit GActionable.actionable_t
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method changed : unit -> unit
   method get_activatable : unit -> bool
 
@@ -54,8 +57,8 @@ class list_box_row (obj : List_box_row.t) : list_box_row_t =
 
     inherit GActionable.actionable (Actionable.from_gobject obj)
 
-    method on_activate ~callback =
-      List_box_row.on_activate self#as_list_box_row ~callback
+    method on_activate ?(after = false) ~callback () =
+      List_box_row.on_activate ~after self#as_list_box_row ~callback
 
     method changed : unit -> unit = fun () -> List_box_row.changed obj
 

@@ -2,15 +2,19 @@ class type cell_area_t = object
   inherit GBuildable.buildable_t
 
   method on_focus_changed :
+    ?after:bool ->
     callback:
-      (renderer:Cell_renderer.t Gobject.obj option -> path:string -> unit) ->
+      (renderer:GCell_renderer.cell_renderer_t option -> path:string -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_remove_editable :
+    ?after:bool ->
     callback:
-      (renderer:Cell_renderer.t Gobject.obj option ->
-      editable:Cell_editable.t Gobject.obj option ->
+      (renderer:GCell_renderer.cell_renderer_t option ->
+      editable:GCell_editable.cell_editable_t option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method activate :

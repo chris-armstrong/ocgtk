@@ -4,19 +4,25 @@ class type search_entry_t = object
     .widget_t
 
   inherit GEditable.editable_t
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_next_match : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_next_match :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_previous_match :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_search_changed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_search_started :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method on_stop_search : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_stop_search :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_input_hints : unit -> Gtk_enums.inputhints
   method get_input_purpose : unit -> Gtk_enums.inputpurpose
 
@@ -57,23 +63,23 @@ class search_entry (obj : Search_entry.t) : search_entry_t =
 
     inherit GEditable.editable (Editable.from_gobject obj)
 
-    method on_activate ~callback =
-      Search_entry.on_activate self#as_search_entry ~callback
+    method on_activate ?(after = false) ~callback () =
+      Search_entry.on_activate ~after self#as_search_entry ~callback
 
-    method on_next_match ~callback =
-      Search_entry.on_next_match self#as_search_entry ~callback
+    method on_next_match ?(after = false) ~callback () =
+      Search_entry.on_next_match ~after self#as_search_entry ~callback
 
-    method on_previous_match ~callback =
-      Search_entry.on_previous_match self#as_search_entry ~callback
+    method on_previous_match ?(after = false) ~callback () =
+      Search_entry.on_previous_match ~after self#as_search_entry ~callback
 
-    method on_search_changed ~callback =
-      Search_entry.on_search_changed self#as_search_entry ~callback
+    method on_search_changed ?(after = false) ~callback () =
+      Search_entry.on_search_changed ~after self#as_search_entry ~callback
 
-    method on_search_started ~callback =
-      Search_entry.on_search_started self#as_search_entry ~callback
+    method on_search_started ?(after = false) ~callback () =
+      Search_entry.on_search_started ~after self#as_search_entry ~callback
 
-    method on_stop_search ~callback =
-      Search_entry.on_stop_search self#as_search_entry ~callback
+    method on_stop_search ?(after = false) ~callback () =
+      Search_entry.on_stop_search ~after self#as_search_entry ~callback
 
     method get_input_hints : unit -> Gtk_enums.inputhints =
       fun () -> Search_entry.get_input_hints obj

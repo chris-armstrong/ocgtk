@@ -7,7 +7,10 @@ class type level_bar_t = object
   inherit GOrientable.orientable_t
 
   method on_offset_changed :
-    callback:(name:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(name:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method add_offset_value : string -> float -> unit
   method get_inverted : unit -> bool

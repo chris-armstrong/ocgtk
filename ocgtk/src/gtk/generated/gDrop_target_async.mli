@@ -4,35 +4,42 @@ class type drop_target_async_t = object
     .event_controller_t
 
   method on_accept :
-    callback:(drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option -> bool) ->
+    ?after:bool ->
+    callback:(drop:Ocgtk_gdk.Gdk.Drop.drop_t option -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_drag_enter :
+    ?after:bool ->
     callback:
-      (drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option ->
+      (drop:Ocgtk_gdk.Gdk.Drop.drop_t option ->
       x:float ->
       y:float ->
       Ocgtk_gdk.Gdk_enums.dragaction) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_drag_leave :
-    callback:(drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(drop:Ocgtk_gdk.Gdk.Drop.drop_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_drag_motion :
+    ?after:bool ->
     callback:
-      (drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option ->
+      (drop:Ocgtk_gdk.Gdk.Drop.drop_t option ->
       x:float ->
       y:float ->
       Ocgtk_gdk.Gdk_enums.dragaction) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_drop :
+    ?after:bool ->
     callback:
-      (drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option ->
-      x:float ->
-      y:float ->
-      bool) ->
+      (drop:Ocgtk_gdk.Gdk.Drop.drop_t option -> x:float -> y:float -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction

@@ -1,19 +1,19 @@
 class type application_t = object
   inherit Ocgtk_gio.Gio.Application.application_t
-  method on_query_end : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_query_end :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_window_added :
-    callback:
-      (window:
-         Application_and__window_and__window_group.Window.t Gobject.obj option ->
-      unit) ->
+    ?after:bool ->
+    callback:(window:window_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_window_removed :
-    callback:
-      (window:
-         Application_and__window_and__window_group.Window.t Gobject.obj option ->
-      unit) ->
+    ?after:bool ->
+    callback:(window:window_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method add_window : window_t -> unit
@@ -52,17 +52,23 @@ and window_t = object
   inherit GShortcut_manager.shortcut_manager_t
 
   method on_activate_default :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_activate_focus :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method on_close_request : callback:(unit -> bool) -> Gobject.Signal.handler_id
+  method on_close_request :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
 
   method on_enable_debugging :
-    callback:(toggle:bool -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(toggle:bool -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
-  method on_keys_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_keys_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method close : unit -> unit
   method destroy : unit -> unit
   method fullscreen : unit -> unit

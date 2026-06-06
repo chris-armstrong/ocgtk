@@ -1,9 +1,11 @@
 class type socket_listener_t = object
   method on_event :
+    ?after:bool ->
     callback:
       (event:Gio_enums.socketlistenerevent ->
-      socket:Socket_and__socket_connection.Socket.t Gobject.obj option ->
+      socket:GSocket_and__socket_connection.socket_t option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method add_any_inet_port :
@@ -27,8 +29,14 @@ end
 (* High-level class for SocketListener *)
 class socket_listener (obj : Socket_listener.t) : socket_listener_t =
   object (self)
-    method on_event ~callback =
-      Socket_listener.on_event self#as_socket_listener ~callback
+    method on_event ?(after = false) ~callback () =
+      Socket_listener.on_event ~after self#as_socket_listener
+        ~callback:(fun ~event ~socket ->
+          callback ~event
+            ~socket:
+              (Option.map
+                 (fun w -> new GSocket_and__socket_connection.socket w)
+                 socket))
 
     method add_any_inet_port :
         [ `object_ ] Gobject.obj option -> (UInt16.t, GError.t) result =

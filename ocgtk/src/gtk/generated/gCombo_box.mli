@@ -5,18 +5,31 @@ class type combo_box_t = object
 
   inherit GCell_editable.cell_editable_t
   inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_format_entry_text :
-    callback:(path:string -> string) -> Gobject.Signal.handler_id
-
-  method on_move_active :
-    callback:(scroll_type:Gtk_enums.scrolltype -> unit) ->
+    ?after:bool ->
+    callback:(path:string -> string) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_popdown : callback:(unit -> bool) -> Gobject.Signal.handler_id
-  method on_popup : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_move_active :
+    ?after:bool ->
+    callback:(scroll_type:Gtk_enums.scrolltype -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_popdown :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
+  method on_popup :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_active : unit -> int
   method get_active_id : unit -> string option
   method get_button_sensitivity : unit -> Gtk_enums.sensitivitytype

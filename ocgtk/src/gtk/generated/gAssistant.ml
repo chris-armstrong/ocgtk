@@ -1,19 +1,27 @@
 class type assistant_t = object
   inherit GApplication_and__window_and__window_group.window_t
-  method on_apply : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_cancel : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_close : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_escape : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_apply :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_cancel :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_close :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_escape :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_prepare :
+    ?after:bool ->
     callback:
       (page:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .Widget
-         .t
-         Gobject.obj
+         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .widget_t
          option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method add_action_widget :
@@ -111,13 +119,29 @@ class assistant (obj : Assistant.t) : assistant_t =
       GApplication_and__window_and__window_group.window
         (obj :> Application_and__window_and__window_group.Window.t)
 
-    method on_apply ~callback = Assistant.on_apply self#as_assistant ~callback
-    method on_cancel ~callback = Assistant.on_cancel self#as_assistant ~callback
-    method on_close ~callback = Assistant.on_close self#as_assistant ~callback
-    method on_escape ~callback = Assistant.on_escape self#as_assistant ~callback
+    method on_apply ?(after = false) ~callback () =
+      Assistant.on_apply ~after self#as_assistant ~callback
 
-    method on_prepare ~callback =
-      Assistant.on_prepare self#as_assistant ~callback
+    method on_cancel ?(after = false) ~callback () =
+      Assistant.on_cancel ~after self#as_assistant ~callback
+
+    method on_close ?(after = false) ~callback () =
+      Assistant.on_close ~after self#as_assistant ~callback
+
+    method on_escape ?(after = false) ~callback () =
+      Assistant.on_escape ~after self#as_assistant ~callback
+
+    method on_prepare ?(after = false) ~callback () =
+      Assistant.on_prepare ~after self#as_assistant ~callback:(fun ~page ->
+          callback
+            ~page:
+              (Option.map
+                 (fun w ->
+                   new
+                     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+                     .widget
+                     w)
+                 page))
 
     method add_action_widget :
         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

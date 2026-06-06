@@ -82,6 +82,6 @@ val on_event :
   t ->
   callback:
     (event:Gio_enums.socketlistenerevent ->
-    socket:Socket_and__socket_connection.Socket.t Gobject.obj option ->
+    socket:Socket_and__socket_connection.Socket.t option ->
     unit) ->
   Gobject.Signal.handler_id

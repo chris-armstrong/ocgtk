@@ -2,7 +2,9 @@
 (* Combined classes for cyclic dependencies *)
 
 class type tree_selection_t = object
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method count_selected_rows : unit -> int
   method get_mode : unit -> Gtk_enums.selectionmode
   method get_tree_view : unit -> tree_view_t
@@ -28,39 +30,49 @@ and tree_view_t = object
   inherit GScrollable.scrollable_t
 
   method on_columns_changed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_cursor_changed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_expand_collapse_cursor_row :
+    ?after:bool ->
     callback:(object_:bool -> p0:bool -> p1:bool -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_move_cursor :
+    ?after:bool ->
     callback:
       (step:Gtk_enums.movementstep ->
       direction:int ->
       extend:bool ->
       modify:bool ->
       bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_select_all : callback:(unit -> bool) -> Gobject.Signal.handler_id
+  method on_select_all :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
 
   method on_select_cursor_parent :
-    callback:(unit -> bool) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
 
   method on_select_cursor_row :
-    callback:(object_:bool -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(object_:bool -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_start_interactive_search :
-    callback:(unit -> bool) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
 
   method on_toggle_cursor_row :
-    callback:(unit -> bool) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
 
-  method on_unselect_all : callback:(unit -> bool) -> Gobject.Signal.handler_id
+  method on_unselect_all :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
   method append_column : GTree_view_column.tree_view_column_t -> int
   method collapse_all : unit -> unit
   method collapse_row : Tree_path.t -> bool
@@ -190,8 +202,8 @@ end
 class tree_selection (obj : Tree_selection_and__tree_view.Tree_selection.t) :
   tree_selection_t =
   object (self)
-    method on_changed ~callback =
-      Tree_selection_and__tree_view.Tree_selection.on_changed
+    method on_changed ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_selection.on_changed ~after
         self#as_tree_selection ~callback
 
     method count_selected_rows : unit -> int =
@@ -265,45 +277,45 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t =
 
     inherit GScrollable.scrollable (Scrollable.from_gobject obj)
 
-    method on_columns_changed ~callback =
-      Tree_selection_and__tree_view.Tree_view.on_columns_changed
+    method on_columns_changed ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_columns_changed ~after
         self#as_tree_view ~callback
 
-    method on_cursor_changed ~callback =
-      Tree_selection_and__tree_view.Tree_view.on_cursor_changed
+    method on_cursor_changed ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_cursor_changed ~after
         self#as_tree_view ~callback
 
-    method on_expand_collapse_cursor_row ~callback =
+    method on_expand_collapse_cursor_row ?(after = false) ~callback () =
       Tree_selection_and__tree_view.Tree_view.on_expand_collapse_cursor_row
+        ~after self#as_tree_view ~callback
+
+    method on_move_cursor ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_move_cursor ~after
         self#as_tree_view ~callback
 
-    method on_move_cursor ~callback =
-      Tree_selection_and__tree_view.Tree_view.on_move_cursor self#as_tree_view
-        ~callback
-
-    method on_select_all ~callback =
-      Tree_selection_and__tree_view.Tree_view.on_select_all self#as_tree_view
-        ~callback
-
-    method on_select_cursor_parent ~callback =
-      Tree_selection_and__tree_view.Tree_view.on_select_cursor_parent
+    method on_select_all ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_select_all ~after
         self#as_tree_view ~callback
 
-    method on_select_cursor_row ~callback =
-      Tree_selection_and__tree_view.Tree_view.on_select_cursor_row
+    method on_select_cursor_parent ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_select_cursor_parent ~after
         self#as_tree_view ~callback
 
-    method on_start_interactive_search ~callback =
-      Tree_selection_and__tree_view.Tree_view.on_start_interactive_search
+    method on_select_cursor_row ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_select_cursor_row ~after
         self#as_tree_view ~callback
 
-    method on_toggle_cursor_row ~callback =
-      Tree_selection_and__tree_view.Tree_view.on_toggle_cursor_row
+    method on_start_interactive_search ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_start_interactive_search ~after
         self#as_tree_view ~callback
 
-    method on_unselect_all ~callback =
-      Tree_selection_and__tree_view.Tree_view.on_unselect_all self#as_tree_view
-        ~callback
+    method on_toggle_cursor_row ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_toggle_cursor_row ~after
+        self#as_tree_view ~callback
+
+    method on_unselect_all ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_unselect_all ~after
+        self#as_tree_view ~callback
 
     method append_column : GTree_view_column.tree_view_column_t -> int =
       fun column ->

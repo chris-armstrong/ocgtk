@@ -6,13 +6,15 @@ class type app_chooser_widget_t = object
   inherit GApp_chooser.app_chooser_t
 
   method on_application_activated :
-    callback:
-      (application:Ocgtk_gio.Gio.Wrappers.App_info.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_application_selected :
-    callback:
-      (application:Ocgtk_gio.Gio.Wrappers.App_info.t Gobject.obj option -> unit) ->
+    ?after:bool ->
+    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t option -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_default_text : unit -> string option
@@ -43,13 +45,23 @@ class app_chooser_widget (obj : App_chooser_widget.t) : app_chooser_widget_t =
 
     inherit GApp_chooser.app_chooser (App_chooser.from_gobject obj)
 
-    method on_application_activated ~callback =
-      App_chooser_widget.on_application_activated self#as_app_chooser_widget
-        ~callback
+    method on_application_activated ?(after = false) ~callback () =
+      App_chooser_widget.on_application_activated ~after
+        self#as_app_chooser_widget ~callback:(fun ~application ->
+          callback
+            ~application:
+              (Option.map
+                 (fun w -> new Ocgtk_gio.Gio.App_info.app_info w)
+                 application))
 
-    method on_application_selected ~callback =
-      App_chooser_widget.on_application_selected self#as_app_chooser_widget
-        ~callback
+    method on_application_selected ?(after = false) ~callback () =
+      App_chooser_widget.on_application_selected ~after
+        self#as_app_chooser_widget ~callback:(fun ~application ->
+          callback
+            ~application:
+              (Option.map
+                 (fun w -> new Ocgtk_gio.Gio.App_info.app_info w)
+                 application))
 
     method get_default_text : unit -> string option =
       fun () -> App_chooser_widget.get_default_text obj

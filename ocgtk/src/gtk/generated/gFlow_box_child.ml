@@ -3,7 +3,9 @@ class type flow_box_child_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method changed : unit -> unit
 
   method get_child :
@@ -35,8 +37,8 @@ class flow_box_child (obj : Flow_box_child.t) : flow_box_child_t =
              .Widget
              .t)
 
-    method on_activate ~callback =
-      Flow_box_child.on_activate self#as_flow_box_child ~callback
+    method on_activate ?(after = false) ~callback () =
+      Flow_box_child.on_activate ~after self#as_flow_box_child ~callback
 
     method changed : unit -> unit = fun () -> Flow_box_child.changed obj
 

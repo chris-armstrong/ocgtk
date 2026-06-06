@@ -6,20 +6,25 @@ class type label_t = object
   inherit GAccessible_text.accessible_text_t
 
   method on_activate_current_link :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_activate_link :
-    callback:(uri:string -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(uri:string -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_copy_clipboard :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_move_cursor :
+    ?after:bool ->
     callback:
       (step:Gtk_enums.movementstep ->
       count:int ->
       extend_selection:bool ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
@@ -97,17 +102,17 @@ class label (obj : Label.t) : label_t =
 
     inherit GAccessible_text.accessible_text (Accessible_text.from_gobject obj)
 
-    method on_activate_current_link ~callback =
-      Label.on_activate_current_link self#as_label ~callback
+    method on_activate_current_link ?(after = false) ~callback () =
+      Label.on_activate_current_link ~after self#as_label ~callback
 
-    method on_activate_link ~callback =
-      Label.on_activate_link self#as_label ~callback
+    method on_activate_link ?(after = false) ~callback () =
+      Label.on_activate_link ~after self#as_label ~callback
 
-    method on_copy_clipboard ~callback =
-      Label.on_copy_clipboard self#as_label ~callback
+    method on_copy_clipboard ?(after = false) ~callback () =
+      Label.on_copy_clipboard ~after self#as_label ~callback
 
-    method on_move_cursor ~callback =
-      Label.on_move_cursor self#as_label ~callback
+    method on_move_cursor ?(after = false) ~callback () =
+      Label.on_move_cursor ~after self#as_label ~callback
 
     method get_attributes :
         unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option =

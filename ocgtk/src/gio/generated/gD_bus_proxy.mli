@@ -4,11 +4,13 @@ class type d_bus_proxy_t = object
   inherit GInitable.initable_t
 
   method on_g_signal :
+    ?after:bool ->
     callback:
       (sender_name:string ->
       signal_name:string ->
       parameters:Gvariant.t ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method call_finish :

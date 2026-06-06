@@ -4,12 +4,19 @@ class type drop_controller_motion_t = object
     .event_controller_t
 
   method on_enter :
-    callback:(x:float -> y:float -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(x:float -> y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
-  method on_leave : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_leave :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_motion :
-    callback:(x:float -> y:float -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(x:float -> y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method contains_pointer : unit -> bool
   method get_drop : unit -> Ocgtk_gdk.Gdk.Drop.drop_t option
@@ -29,14 +36,17 @@ class drop_controller_motion (obj : Drop_controller_motion.t) :
              .Event_controller
              .t)
 
-    method on_enter ~callback =
-      Drop_controller_motion.on_enter self#as_drop_controller_motion ~callback
+    method on_enter ?(after = false) ~callback () =
+      Drop_controller_motion.on_enter ~after self#as_drop_controller_motion
+        ~callback
 
-    method on_leave ~callback =
-      Drop_controller_motion.on_leave self#as_drop_controller_motion ~callback
+    method on_leave ?(after = false) ~callback () =
+      Drop_controller_motion.on_leave ~after self#as_drop_controller_motion
+        ~callback
 
-    method on_motion ~callback =
-      Drop_controller_motion.on_motion self#as_drop_controller_motion ~callback
+    method on_motion ?(after = false) ~callback () =
+      Drop_controller_motion.on_motion ~after self#as_drop_controller_motion
+        ~callback
 
     method contains_pointer : unit -> bool =
       fun () -> Drop_controller_motion.contains_pointer obj

@@ -347,16 +347,15 @@ module rec Cell_area : sig
   val on_focus_changed :
     ?after:bool ->
     t ->
-    callback:
-      (renderer:Cell_renderer.t Gobject.obj option -> path:string -> unit) ->
+    callback:(renderer:Cell_renderer.t option -> path:string -> unit) ->
     Gobject.Signal.handler_id
 
   val on_remove_editable :
     ?after:bool ->
     t ->
     callback:
-      (renderer:Cell_renderer.t Gobject.obj option ->
-      editable:Cell_editable.t Gobject.obj option ->
+      (renderer:Cell_renderer.t option ->
+      editable:Cell_editable.t option ->
       unit) ->
     Gobject.Signal.handler_id
 end = struct

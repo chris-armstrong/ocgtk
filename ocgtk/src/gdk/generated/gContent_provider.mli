@@ -1,6 +1,6 @@
 class type content_provider_t = object
   method on_content_changed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method content_changed : unit -> unit
   method ref_formats : unit -> Content_formats.t

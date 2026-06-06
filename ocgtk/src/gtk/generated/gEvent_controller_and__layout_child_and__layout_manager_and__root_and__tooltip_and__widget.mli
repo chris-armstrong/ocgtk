@@ -72,49 +72,65 @@ and widget_t = object
   inherit GAt_context_and__accessible.accessible_t
   inherit GBuildable.buildable_t
   inherit GConstraint_target.constraint_target_t
-  method on_destroy : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_destroy :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_direction_changed :
+    ?after:bool ->
     callback:(previous_direction:Gtk_enums.textdirection -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_hide : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_hide :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_keynav_failed :
+    ?after:bool ->
     callback:(direction:Gtk_enums.directiontype -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_map : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_map :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_mnemonic_activate :
-    callback:(group_cycling:bool -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(group_cycling:bool -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_move_focus :
+    ?after:bool ->
     callback:(direction:Gtk_enums.directiontype -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_query_tooltip :
+    ?after:bool ->
     callback:
-      (x:int ->
-      y:int ->
-      keyboard_mode:bool ->
-      tooltip:
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .Tooltip
-        .t
-        Gobject.obj
-        option ->
-      bool) ->
+      (x:int -> y:int -> keyboard_mode:bool -> tooltip:tooltip_t option -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_realize : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_show : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_realize :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_show :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_state_flags_changed :
-    callback:(flags:Gtk_enums.stateflags -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(flags:Gtk_enums.stateflags -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
-  method on_unmap : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_unrealize : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_unmap :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_unrealize :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method action_set_enabled : string -> bool -> unit
   method activate : unit -> bool
   method activate_action_variant : string -> Gvariant.t option -> bool

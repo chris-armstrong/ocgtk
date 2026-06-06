@@ -4,8 +4,13 @@ class type check_button_t = object
     .widget_t
 
   inherit GActionable.actionable_t
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_toggled : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_toggled :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_active : unit -> bool
 
   method get_child :
@@ -45,11 +50,11 @@ class check_button (obj : Check_button.t) : check_button_t =
 
     inherit GActionable.actionable (Actionable.from_gobject obj)
 
-    method on_activate ~callback =
-      Check_button.on_activate self#as_check_button ~callback
+    method on_activate ?(after = false) ~callback () =
+      Check_button.on_activate ~after self#as_check_button ~callback
 
-    method on_toggled ~callback =
-      Check_button.on_toggled self#as_check_button ~callback
+    method on_toggled ?(after = false) ~callback () =
+      Check_button.on_toggled ~after self#as_check_button ~callback
 
     method get_active : unit -> bool = fun () -> Check_button.get_active obj
 

@@ -1751,11 +1751,7 @@ and Widget : sig
     ?after:bool ->
     t ->
     callback:
-      (x:int ->
-      y:int ->
-      keyboard_mode:bool ->
-      tooltip:Tooltip.t Gobject.obj option ->
-      bool) ->
+      (x:int -> y:int -> keyboard_mode:bool -> tooltip:Tooltip.t option -> bool) ->
     Gobject.Signal.handler_id
 
   val on_realize :

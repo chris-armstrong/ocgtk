@@ -209,13 +209,13 @@ val on_move_cursor :
 val on_row_activated :
   ?after:bool ->
   t ->
-  callback:(row:List_box_row.t Gobject.obj option -> unit) ->
+  callback:(row:List_box_row.t option -> unit) ->
   Gobject.Signal.handler_id
 
 val on_row_selected :
   ?after:bool ->
   t ->
-  callback:(row:List_box_row.t Gobject.obj option -> unit) ->
+  callback:(row:List_box_row.t option -> unit) ->
   Gobject.Signal.handler_id
 
 val on_select_all :

@@ -1,16 +1,26 @@
 class type action_group_t = object
   method on_action_added :
-    callback:(action_name:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(action_name:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_action_enabled_changed :
+    ?after:bool ->
     callback:(action_name:string -> enabled:bool -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_action_removed :
-    callback:(action_name:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(action_name:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_action_state_changed :
+    ?after:bool ->
     callback:(action_name:string -> value:Gvariant.t -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method action_added : string -> unit
@@ -32,17 +42,18 @@ end
 (* High-level class for ActionGroup *)
 class action_group (obj : Action_group.t) : action_group_t =
   object (self)
-    method on_action_added ~callback =
-      Action_group.on_action_added self#as_action_group ~callback
+    method on_action_added ?(after = false) ~callback () =
+      Action_group.on_action_added ~after self#as_action_group ~callback
 
-    method on_action_enabled_changed ~callback =
-      Action_group.on_action_enabled_changed self#as_action_group ~callback
+    method on_action_enabled_changed ?(after = false) ~callback () =
+      Action_group.on_action_enabled_changed ~after self#as_action_group
+        ~callback
 
-    method on_action_removed ~callback =
-      Action_group.on_action_removed self#as_action_group ~callback
+    method on_action_removed ?(after = false) ~callback () =
+      Action_group.on_action_removed ~after self#as_action_group ~callback
 
-    method on_action_state_changed ~callback =
-      Action_group.on_action_state_changed self#as_action_group ~callback
+    method on_action_state_changed ?(after = false) ~callback () =
+      Action_group.on_action_state_changed ~after self#as_action_group ~callback
 
     method action_added : string -> unit =
       fun action_name -> Action_group.action_added obj action_name

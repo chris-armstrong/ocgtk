@@ -1,9 +1,14 @@
 class type gesture_long_press_t = object
   inherit GGesture_single.gesture_single_t
-  method on_cancelled : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_cancelled :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_pressed :
-    callback:(x:float -> y:float -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(x:float -> y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method get_delay_factor : unit -> float
   method set_delay_factor : float -> unit

@@ -64,7 +64,6 @@ val on_drive_changed :
        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
        .Drive
        .t
-       Gobject.obj
        option ->
     unit) ->
   Gobject.Signal.handler_id
@@ -77,7 +76,6 @@ val on_drive_connected :
        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
        .Drive
        .t
-       Gobject.obj
        option ->
     unit) ->
   Gobject.Signal.handler_id
@@ -90,7 +88,6 @@ val on_drive_disconnected :
        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
        .Drive
        .t
-       Gobject.obj
        option ->
     unit) ->
   Gobject.Signal.handler_id
@@ -103,7 +100,6 @@ val on_drive_eject_button :
        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
        .Drive
        .t
-       Gobject.obj
        option ->
     unit) ->
   Gobject.Signal.handler_id
@@ -116,7 +112,6 @@ val on_drive_stop_button :
        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
        .Drive
        .t
-       Gobject.obj
        option ->
     unit) ->
   Gobject.Signal.handler_id
@@ -129,7 +124,6 @@ val on_mount_added :
        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
        .Mount
        .t
-       Gobject.obj
        option ->
     unit) ->
   Gobject.Signal.handler_id
@@ -142,7 +136,6 @@ val on_mount_changed :
        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
        .Mount
        .t
-       Gobject.obj
        option ->
     unit) ->
   Gobject.Signal.handler_id
@@ -155,7 +148,6 @@ val on_mount_pre_unmount :
        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
        .Mount
        .t
-       Gobject.obj
        option ->
     unit) ->
   Gobject.Signal.handler_id
@@ -168,7 +160,6 @@ val on_mount_removed :
        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
        .Mount
        .t
-       Gobject.obj
        option ->
     unit) ->
   Gobject.Signal.handler_id
@@ -181,7 +172,6 @@ val on_volume_added :
        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
        .Volume
        .t
-       Gobject.obj
        option ->
     unit) ->
   Gobject.Signal.handler_id
@@ -194,7 +184,6 @@ val on_volume_changed :
        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
        .Volume
        .t
-       Gobject.obj
        option ->
     unit) ->
   Gobject.Signal.handler_id
@@ -207,7 +196,6 @@ val on_volume_removed :
        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
        .Volume
        .t
-       Gobject.obj
        option ->
     unit) ->
   Gobject.Signal.handler_id

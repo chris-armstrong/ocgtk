@@ -1,8 +1,12 @@
 class type editable_t = object
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_delete_text :
-    callback:(start_pos:int -> end_pos:int -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(start_pos:int -> end_pos:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method delegate_get_accessible_platform_state :
     Gtk_enums.accessibleplatformstate -> bool
@@ -38,10 +42,11 @@ end
 (* High-level class for Editable *)
 class editable (obj : Editable.t) : editable_t =
   object (self)
-    method on_changed ~callback = Editable.on_changed self#as_editable ~callback
+    method on_changed ?(after = false) ~callback () =
+      Editable.on_changed ~after self#as_editable ~callback
 
-    method on_delete_text ~callback =
-      Editable.on_delete_text self#as_editable ~callback
+    method on_delete_text ?(after = false) ~callback () =
+      Editable.on_delete_text ~after self#as_editable ~callback
 
     method delegate_get_accessible_platform_state :
         Gtk_enums.accessibleplatformstate -> bool =

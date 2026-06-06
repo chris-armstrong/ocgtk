@@ -4,16 +4,22 @@ class type gl_area_t = object
     .widget_t
 
   method on_create_context :
-    callback:(unit -> Ocgtk_gdk.Gdk.Wrappers.Gl_context.t Gobject.obj option) ->
+    ?after:bool ->
+    callback:(unit -> Ocgtk_gdk.Gdk.Gl_context.gl_context_t option) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_render :
-    callback:
-      (context:Ocgtk_gdk.Gdk.Wrappers.Gl_context.t Gobject.obj option -> bool) ->
+    ?after:bool ->
+    callback:(context:Ocgtk_gdk.Gdk.Gl_context.gl_context_t option -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_resize :
-    callback:(width:int -> height:int -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(width:int -> height:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method attach_buffers : unit -> unit
   method get_allowed_apis : unit -> Ocgtk_gdk.Gdk.glapi
@@ -45,11 +51,21 @@ class gl_area (obj : Gl_area.t) : gl_area_t =
              .Widget
              .t)
 
-    method on_create_context ~callback =
-      Gl_area.on_create_context self#as_gl_area ~callback
+    method on_create_context ?(after = false) ~callback () =
+      Gl_area.on_create_context ~after self#as_gl_area ~callback:(fun () ->
+          Option.map (fun w -> w#as_gl_context) (callback ()))
 
-    method on_render ~callback = Gl_area.on_render self#as_gl_area ~callback
-    method on_resize ~callback = Gl_area.on_resize self#as_gl_area ~callback
+    method on_render ?(after = false) ~callback () =
+      Gl_area.on_render ~after self#as_gl_area ~callback:(fun ~context ->
+          callback
+            ~context:
+              (Option.map
+                 (fun w -> new Ocgtk_gdk.Gdk.Gl_context.gl_context w)
+                 context))
+
+    method on_resize ?(after = false) ~callback () =
+      Gl_area.on_resize ~after self#as_gl_area ~callback
+
     method attach_buffers : unit -> unit = fun () -> Gl_area.attach_buffers obj
 
     method get_allowed_apis : unit -> Ocgtk_gdk.Gdk.glapi =

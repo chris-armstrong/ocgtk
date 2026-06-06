@@ -5,15 +5,19 @@ class type cell_area_t = object
   inherit GBuildable.buildable_t
 
   method on_focus_changed :
+    ?after:bool ->
     callback:
-      (renderer:Cell_renderer.t Gobject.obj option -> path:string -> unit) ->
+      (renderer:GCell_renderer.cell_renderer_t option -> path:string -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_remove_editable :
+    ?after:bool ->
     callback:
-      (renderer:Cell_renderer.t Gobject.obj option ->
-      editable:Cell_editable.t Gobject.obj option ->
+      (renderer:GCell_renderer.cell_renderer_t option ->
+      editable:GCell_editable.cell_editable_t option ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method activate :
@@ -137,13 +141,30 @@ class cell_area
   object (self)
     inherit GBuildable.buildable (Buildable.from_gobject obj)
 
-    method on_focus_changed ~callback =
+    method on_focus_changed ?(after = false) ~callback () =
       Cell_area_and__cell_area_context_and__cell_layout.Cell_area
-      .on_focus_changed self#as_cell_area ~callback
+      .on_focus_changed ~after self#as_cell_area
+        ~callback:(fun ~renderer ~path ->
+          callback
+            ~renderer:
+              (Option.map
+                 (fun w -> new GCell_renderer.cell_renderer w)
+                 renderer)
+            ~path)
 
-    method on_remove_editable ~callback =
+    method on_remove_editable ?(after = false) ~callback () =
       Cell_area_and__cell_area_context_and__cell_layout.Cell_area
-      .on_remove_editable self#as_cell_area ~callback
+      .on_remove_editable ~after self#as_cell_area
+        ~callback:(fun ~renderer ~editable ->
+          callback
+            ~renderer:
+              (Option.map
+                 (fun w -> new GCell_renderer.cell_renderer w)
+                 renderer)
+            ~editable:
+              (Option.map
+                 (fun w -> new GCell_editable.cell_editable w)
+                 editable))
 
     method activate :
         cell_area_context_t ->

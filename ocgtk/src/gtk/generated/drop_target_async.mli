@@ -43,14 +43,14 @@ external get_actions : t -> Ocgtk_gdk.Gdk.dragaction
 val on_accept :
   ?after:bool ->
   t ->
-  callback:(drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option -> bool) ->
+  callback:(drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t option -> bool) ->
   Gobject.Signal.handler_id
 
 val on_drag_enter :
   ?after:bool ->
   t ->
   callback:
-    (drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option ->
+    (drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t option ->
     x:float ->
     y:float ->
     Ocgtk_gdk.Gdk_enums.dragaction) ->
@@ -59,14 +59,14 @@ val on_drag_enter :
 val on_drag_leave :
   ?after:bool ->
   t ->
-  callback:(drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option -> unit) ->
+  callback:(drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t option -> unit) ->
   Gobject.Signal.handler_id
 
 val on_drag_motion :
   ?after:bool ->
   t ->
   callback:
-    (drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option ->
+    (drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t option ->
     x:float ->
     y:float ->
     Ocgtk_gdk.Gdk_enums.dragaction) ->
@@ -76,8 +76,5 @@ val on_drop :
   ?after:bool ->
   t ->
   callback:
-    (drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t Gobject.obj option ->
-    x:float ->
-    y:float ->
-    bool) ->
+    (drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t option -> x:float -> y:float -> bool) ->
   Gobject.Signal.handler_id

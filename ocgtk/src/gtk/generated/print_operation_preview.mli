@@ -36,13 +36,11 @@ val on_got_page_size :
   ?after:bool ->
   t ->
   callback:
-    (context:Print_context.t Gobject.obj option ->
-    page_setup:Page_setup.t Gobject.obj option ->
-    unit) ->
+    (context:Print_context.t option -> page_setup:Page_setup.t option -> unit) ->
   Gobject.Signal.handler_id
 
 val on_ready :
   ?after:bool ->
   t ->
-  callback:(context:Print_context.t Gobject.obj option -> unit) ->
+  callback:(context:Print_context.t option -> unit) ->
   Gobject.Signal.handler_id

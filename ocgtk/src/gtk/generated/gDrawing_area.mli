@@ -4,7 +4,10 @@ class type drawing_area_t = object
     .widget_t
 
   method on_resize :
-    callback:(width:int -> height:int -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(width:int -> height:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method get_content_height : unit -> int
   method get_content_width : unit -> int

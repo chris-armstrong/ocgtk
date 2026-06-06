@@ -4,17 +4,27 @@ class type scrolled_window_t = object
     .widget_t
 
   method on_edge_overshot :
-    callback:(pos:Gtk_enums.positiontype -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(pos:Gtk_enums.positiontype -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_edge_reached :
-    callback:(pos:Gtk_enums.positiontype -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(pos:Gtk_enums.positiontype -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_move_focus_out :
+    ?after:bool ->
     callback:(direction_type:Gtk_enums.directiontype -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_scroll_child :
+    ?after:bool ->
     callback:(scroll:Gtk_enums.scrolltype -> horizontal:bool -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_child :

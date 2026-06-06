@@ -1,10 +1,12 @@
 class type cell_renderer_t = object
   method on_editing_canceled :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_editing_started :
+    ?after:bool ->
     callback:
-      (editable:Cell_editable.t Gobject.obj option -> path:string -> unit) ->
+      (editable:GCell_editable.cell_editable_t option -> path:string -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method activate :

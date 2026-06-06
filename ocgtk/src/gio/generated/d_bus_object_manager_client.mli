@@ -42,8 +42,8 @@ val on_interface_proxy_signal :
   ?after:bool ->
   t ->
   callback:
-    (object_proxy:D_bus_object_proxy.t Gobject.obj option ->
-    interface_proxy:D_bus_proxy.t Gobject.obj option ->
+    (object_proxy:D_bus_object_proxy.t option ->
+    interface_proxy:D_bus_proxy.t option ->
     sender_name:string ->
     signal_name:string ->
     parameters:Gvariant.t ->

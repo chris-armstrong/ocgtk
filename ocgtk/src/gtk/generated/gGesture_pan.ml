@@ -2,7 +2,9 @@ class type gesture_pan_t = object
   inherit GGesture_drag.gesture_drag_t
 
   method on_pan :
+    ?after:bool ->
     callback:(direction:Gtk_enums.pandirection -> offset:float -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_orientation : unit -> Gtk_enums.orientation
@@ -14,7 +16,9 @@ end
 class gesture_pan (obj : Gesture_pan.t) : gesture_pan_t =
   object (self)
     inherit GGesture_drag.gesture_drag (obj :> Gesture_drag.t)
-    method on_pan ~callback = Gesture_pan.on_pan self#as_gesture_pan ~callback
+
+    method on_pan ?(after = false) ~callback () =
+      Gesture_pan.on_pan ~after self#as_gesture_pan ~callback
 
     method get_orientation : unit -> Gtk_enums.orientation =
       fun () -> Gesture_pan.get_orientation obj
