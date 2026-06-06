@@ -43,11 +43,11 @@ let on_interface_proxy_signal ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let object_proxy =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let interface_proxy =
           let v = Gobject.Closure.nth argv ~pos:2 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let sender_name =
           let v = Gobject.Closure.nth argv ~pos:3 in

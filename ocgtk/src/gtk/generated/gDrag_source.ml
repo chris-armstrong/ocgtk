@@ -3,14 +3,14 @@ class type drag_source_t = object
 
   method on_drag_begin :
     ?after:bool ->
-    callback:(drag:Ocgtk_gdk.Gdk.Drag.drag_t option -> unit) ->
+    callback:(drag:Ocgtk_gdk.Gdk.Drag.drag_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_drag_cancel :
     ?after:bool ->
     callback:
-      (drag:Ocgtk_gdk.Gdk.Drag.drag_t option ->
+      (drag:Ocgtk_gdk.Gdk.Drag.drag_t ->
       reason:Ocgtk_gdk.Gdk_enums.dragcancelreason ->
       bool) ->
     unit ->
@@ -18,7 +18,7 @@ class type drag_source_t = object
 
   method on_drag_end :
     ?after:bool ->
-    callback:(drag:Ocgtk_gdk.Gdk.Drag.drag_t option -> delete_data:bool -> unit) ->
+    callback:(drag:Ocgtk_gdk.Gdk.Drag.drag_t -> delete_data:bool -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -57,22 +57,17 @@ class drag_source (obj : Drag_source.t) : drag_source_t =
     method on_drag_begin ?(after = false) ~callback () =
       Drag_source.on_drag_begin ~after self#as_drag_source
         ~callback:(fun ~drag ->
-          callback
-            ~drag:(Option.map (fun w -> new Ocgtk_gdk.Gdk.Drag.drag w) drag))
+          callback ~drag:(new Ocgtk_gdk.Gdk.Drag.drag drag))
 
     method on_drag_cancel ?(after = false) ~callback () =
       Drag_source.on_drag_cancel ~after self#as_drag_source
         ~callback:(fun ~drag ~reason ->
-          callback
-            ~drag:(Option.map (fun w -> new Ocgtk_gdk.Gdk.Drag.drag w) drag)
-            ~reason)
+          callback ~drag:(new Ocgtk_gdk.Gdk.Drag.drag drag) ~reason)
 
     method on_drag_end ?(after = false) ~callback () =
       Drag_source.on_drag_end ~after self#as_drag_source
         ~callback:(fun ~drag ~delete_data ->
-          callback
-            ~drag:(Option.map (fun w -> new Ocgtk_gdk.Gdk.Drag.drag w) drag)
-            ~delete_data)
+          callback ~drag:(new Ocgtk_gdk.Gdk.Drag.drag drag) ~delete_data)
 
     method on_prepare ?(after = false) ~callback () =
       Drag_source.on_prepare ~after self#as_drag_source ~callback:(fun ~x ~y ->

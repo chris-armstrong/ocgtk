@@ -86,7 +86,7 @@ let on_event ?after obj ~callback =
         in
         let socket =
           let v = Gobject.Closure.nth argv ~pos:2 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~event ~socket)
   in

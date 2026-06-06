@@ -36,7 +36,7 @@ let on_tag_added ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let tag =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~tag)
   in
@@ -48,7 +48,7 @@ let on_tag_changed ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let tag =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let size_changed =
           let v = Gobject.Closure.nth argv ~pos:2 in
@@ -64,7 +64,7 @@ let on_tag_removed ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let tag =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~tag)
   in

@@ -8,8 +8,7 @@ class type application_t = object
   method on_command_line :
     ?after:bool ->
     callback:
-      (command_line:GApplication_command_line.application_command_line_t option ->
-      int) ->
+      (command_line:GApplication_command_line.application_command_line_t -> int) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -87,9 +86,7 @@ class application (obj : Application.t) : application_t =
         ~callback:(fun ~command_line ->
           callback
             ~command_line:
-              (Option.map
-                 (fun w ->
-                   new GApplication_command_line.application_command_line w)
+              (new GApplication_command_line.application_command_line
                  command_line))
 
     method on_name_lost ?(after = false) ~callback () =

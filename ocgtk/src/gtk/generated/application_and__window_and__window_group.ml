@@ -199,13 +199,13 @@ module rec Application : sig
   val on_window_added :
     ?after:bool ->
     t ->
-    callback:(window:Window.t option -> unit) ->
+    callback:(window:Window.t -> unit) ->
     Gobject.Signal.handler_id
 
   val on_window_removed :
     ?after:bool ->
     t ->
-    callback:(window:Window.t option -> unit) ->
+    callback:(window:Window.t -> unit) ->
     Gobject.Signal.handler_id
 end = struct
   type t = [ `application | `object_ ] Gobject.obj
@@ -408,7 +408,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let window =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           callback ~window)
     in
@@ -420,7 +420,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let window =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           callback ~window)
     in

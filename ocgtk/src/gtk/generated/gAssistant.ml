@@ -18,8 +18,7 @@ class type assistant_t = object
     callback:
       (page:
          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t
-         option ->
+         .widget_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -135,12 +134,9 @@ class assistant (obj : Assistant.t) : assistant_t =
       Assistant.on_prepare ~after self#as_assistant ~callback:(fun ~page ->
           callback
             ~page:
-              (Option.map
-                 (fun w ->
-                   new
-                     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-                     .widget
-                     w)
+              (new
+                 GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+                 .widget
                  page))
 
     method add_action_widget :

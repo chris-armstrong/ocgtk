@@ -22,21 +22,21 @@ type marshaller = {
           - ["bool"] for [gboolean]
           - ["Gtk_enums.orientation"] for a same-namespace enum
           - ["Ocgtk_gdk.Gdk_enums.modifiertype"] for a cross-namespace bitfield
-          - ["Widget.t option"] for a same-namespace GObject class
-          - ["Ocgtk_gio.Gio.Wrappers.File.t option"] for cross-namespace
+          - ["Widget.t"] for a non-nullable same-namespace GObject class
+          - ["Widget.t option"] for a nullable same-namespace GObject class
+          - ["Ocgtk_gio.Gio.Wrappers.File.t"] for a non-nullable cross-namespace
           - ["Gvariant.t"] for [GLib.Variant]
 
-          Object types render as ["<Mod>.t option"] — not [".t Gobject.obj
-          option"] — because the per-class [.t] alias is itself a
+          Object types render as ["<Mod>.t"] or ["<Mod>.t option"] — not
+          [".t Gobject.obj"] — because the per-class [.t] alias is itself a
           [Gobject.obj] phantom; appending another [Gobject.obj] would
-          double-wrap and break unification with the [Option.map (fun w ->
-          new <class> w)] L1↔L2 conversion.
+          double-wrap and break unification with the L1↔L2 conversion.
 
           For non-object marshallers this string is used directly at both L1
           and L2 emission. For object marshallers, callers should prefer
           {!render_l1_type} (so same-class references collapse to bare
-          ["t option"]) and {!render_l2_type} (which yields the L2 class
-          type [widget_t option]). *)
+          ["t"] or ["t option"]) and {!render_l2_type} (which yields the L2
+          class type [widget_t] or [widget_t option]). *)
   getter_expr : string;
       (** OCaml expression that extracts the typed value from a
           [Gobject.Value.t]. Context-independent: references the placeholder
@@ -54,8 +54,13 @@ type marshaller = {
   is_same_ns_class : bool;
       (** [true] when the target is a GObject class / interface in the same
           namespace as the generation context. Used by L1 emission to detect a
-          self-reference and emit the bare [t option] form. [false] for
+          self-reference and emit the bare [t] or [t option] form. [false] for
           non-object marshallers and for cross-namespace objects. *)
+  nullable : bool;
+      (** [true] when the GIR type declares this parameter nullable.
+          Object marshallers use [get_object] / [set_object] (option types)
+          when [true] and [get_object_exn] / [set_object_exn] (bare types)
+          when [false]. *)
 }
 
 (** The result of classifying a GIR type for signal marshalling. *)
@@ -80,11 +85,12 @@ val classify : ctx:generation_context -> gir_type:gir_type -> result
     Cross-namespace types are resolved via [ctx.cross_references].
 
     GObject class / interface parameters are [Supported] with [ocaml_type] of
-    the form ["<Mod>.t option"] (always wrapped in [option]
-    because [Gobject.Value.get_object] returns [None] for NULL). Same-namespace
-    edges introduced by signal params are fed into the dependency graph via
-    [Dependency_analysis.extract_signal_dependencies], so any cycles are
-    absorbed by the Tarjan SCC pass into combined modules.
+    the form ["<Mod>.t"] when non-nullable and ["<Mod>.t option"] when
+    nullable. The marshaller chooses [get_object_exn] / [set_object_exn] for
+    non-nullable params and [get_object] / [set_object] for nullable ones.
+    Same-namespace edges introduced by signal params are fed into the
+    dependency graph via [Dependency_analysis.extract_signal_dependencies],
+    so any cycles are absorbed by the Tarjan SCC pass into combined modules.
 
     Returns [Supported m] when marshalling is possible, [Unsupported reason]
     otherwise. Currently unsupported cases include:
@@ -97,28 +103,30 @@ val render_l1_type : current_class:string -> marshaller -> string
     [m] as it should appear inside the L1 module of [current_class]. For
     non-object marshallers this is just [m.ocaml_type]; for a same-namespace
     object whose [is_same_ns_class] is true, the bare
-    ["t option"] is used to avoid forming a self-referential compilation-unit
-    alias inside the standalone module. *)
+    ["t"] or ["t option"] is used to avoid forming a self-referential
+    compilation-unit alias inside the standalone module. *)
 
 val render_l2_type : current_layer2_module:string -> marshaller -> string
 (** [render_l2_type ~current_layer2_module m] returns the L2-form OCaml type
     expression for [m]. Object marshallers render as the L2 [class_type]
-    (e.g. ["widget_t option"]), with the module prefix dropped when the L2
-    class lives in [current_layer2_module]. Non-object marshallers render as
-    [m.ocaml_type] unchanged. *)
+    (e.g. ["widget_t"] or ["widget_t option"]), with the module prefix dropped
+    when the L2 class lives in [current_layer2_module]. Non-object marshallers
+    render as [m.ocaml_type] unchanged. *)
 
 val l2_param_wrap_expr :
   current_layer2_module:string -> marshaller -> string -> string
 (** [l2_param_wrap_expr ~current_layer2_module m name] builds an OCaml
     expression that converts the L1-form value bound to [name] into its L2
     form, suitable for inlining where the L2 callback param is forwarded to
-    the user's callback. Object marshallers wrap with
-    [Option.map (fun w -> new <class> w) name]; non-object marshallers return
+    the user's callback. Nullable object marshallers wrap with
+    [Option.map (fun w -> new <class> w) name]; non-nullable object
+    marshallers wrap with [new <class> name]; non-object marshallers return
     [name] unchanged. *)
 
 val l2_return_unwrap_expr : marshaller -> string -> string
 (** [l2_return_unwrap_expr m expr] builds an OCaml expression that converts
     the L2-form value produced by [expr] (typically the user callback's
-    return value) back into its L1 form. Object marshallers wrap with
-    [Option.map (fun w -> w#<accessor>) expr]; non-object marshallers return
-    [expr] unchanged. *)
+    return value) back into its L1 form. Nullable object marshallers wrap with
+    [Option.map (fun w -> w#<accessor>) expr]; non-nullable object marshallers
+    wrap with [(expr)#<accessor>]; non-object marshallers return [expr]
+    unchanged. *)

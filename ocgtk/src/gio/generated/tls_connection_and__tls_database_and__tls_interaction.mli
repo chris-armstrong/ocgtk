@@ -238,7 +238,7 @@ module rec Tls_connection : sig
     ?after:bool ->
     t ->
     callback:
-      (peer_cert:Tls_certificate.t option ->
+      (peer_cert:Tls_certificate.t ->
       errors:Gio_enums.tlscertificateflags ->
       bool) ->
     Gobject.Signal.handler_id

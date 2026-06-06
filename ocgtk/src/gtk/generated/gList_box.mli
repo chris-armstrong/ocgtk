@@ -15,7 +15,7 @@ class type list_box_t = object
 
   method on_row_activated :
     ?after:bool ->
-    callback:(row:GList_box_row.list_box_row_t option -> unit) ->
+    callback:(row:GList_box_row.list_box_row_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 

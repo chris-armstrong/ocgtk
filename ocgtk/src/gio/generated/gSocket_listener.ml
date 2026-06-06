@@ -3,7 +3,7 @@ class type socket_listener_t = object
     ?after:bool ->
     callback:
       (event:Gio_enums.socketlistenerevent ->
-      socket:GSocket_and__socket_connection.socket_t option ->
+      socket:GSocket_and__socket_connection.socket_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -33,10 +33,7 @@ class socket_listener (obj : Socket_listener.t) : socket_listener_t =
       Socket_listener.on_event ~after self#as_socket_listener
         ~callback:(fun ~event ~socket ->
           callback ~event
-            ~socket:
-              (Option.map
-                 (fun w -> new GSocket_and__socket_connection.socket w)
-                 socket))
+            ~socket:(new GSocket_and__socket_connection.socket socket))
 
     method add_any_inet_port :
         [ `object_ ] Gobject.obj option -> (UInt16.t, GError.t) result =

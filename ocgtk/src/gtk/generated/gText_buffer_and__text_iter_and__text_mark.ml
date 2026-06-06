@@ -13,7 +13,7 @@ class type text_buffer_t = object
 
   method on_mark_deleted :
     ?after:bool ->
-    callback:(mark:text_mark_t option -> unit) ->
+    callback:(mark:text_mark_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -22,7 +22,7 @@ class type text_buffer_t = object
 
   method on_paste_done :
     ?after:bool ->
-    callback:(clipboard:Ocgtk_gdk.Gdk.Clipboard.clipboard_t option -> unit) ->
+    callback:(clipboard:Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -351,7 +351,7 @@ class text_buffer
     method on_mark_deleted ?(after = false) ~callback () =
       Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_mark_deleted
         ~after self#as_text_buffer ~callback:(fun ~mark ->
-          callback ~mark:(Option.map (fun w -> new text_mark w) mark))
+          callback ~mark:(new text_mark mark))
 
     method on_modified_changed ?(after = false) ~callback () =
       Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_modified_changed
@@ -360,11 +360,7 @@ class text_buffer
     method on_paste_done ?(after = false) ~callback () =
       Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_paste_done ~after
         self#as_text_buffer ~callback:(fun ~clipboard ->
-          callback
-            ~clipboard:
-              (Option.map
-                 (fun w -> new Ocgtk_gdk.Gdk.Clipboard.clipboard w)
-                 clipboard))
+          callback ~clipboard:(new Ocgtk_gdk.Gdk.Clipboard.clipboard clipboard))
 
     method on_redo ?(after = false) ~callback () =
       Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_redo ~after

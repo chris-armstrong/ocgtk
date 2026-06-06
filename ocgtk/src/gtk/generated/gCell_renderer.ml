@@ -4,8 +4,7 @@ class type cell_renderer_t = object
 
   method on_editing_started :
     ?after:bool ->
-    callback:
-      (editable:GCell_editable.cell_editable_t option -> path:string -> unit) ->
+    callback:(editable:GCell_editable.cell_editable_t -> path:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -93,12 +92,7 @@ class cell_renderer (obj : Cell_renderer.t) : cell_renderer_t =
     method on_editing_started ?(after = false) ~callback () =
       Cell_renderer.on_editing_started ~after self#as_cell_renderer
         ~callback:(fun ~editable ~path ->
-          callback
-            ~editable:
-              (Option.map
-                 (fun w -> new GCell_editable.cell_editable w)
-                 editable)
-            ~path)
+          callback ~editable:(new GCell_editable.cell_editable editable) ~path)
 
     method activate :
         Ocgtk_gdk.Gdk.Event.event_t ->

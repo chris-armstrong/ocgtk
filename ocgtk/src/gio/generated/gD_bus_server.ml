@@ -3,7 +3,7 @@ class type d_bus_server_t = object
 
   method on_new_connection :
     ?after:bool ->
-    callback:(connection:GD_bus_connection.d_bus_connection_t option -> bool) ->
+    callback:(connection:GD_bus_connection.d_bus_connection_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -28,10 +28,7 @@ class d_bus_server (obj : D_bus_server.t) : d_bus_server_t =
       D_bus_server.on_new_connection ~after self#as_d_bus_server
         ~callback:(fun ~connection ->
           callback
-            ~connection:
-              (Option.map
-                 (fun w -> new GD_bus_connection.d_bus_connection w)
-                 connection))
+            ~connection:(new GD_bus_connection.d_bus_connection connection))
 
     method get_client_address : unit -> string =
       fun () -> D_bus_server.get_client_address obj

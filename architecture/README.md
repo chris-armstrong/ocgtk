@@ -50,6 +50,8 @@ parse/gir_parser.ml   override_parser.ml
                   │
            override_apply.ml   (filter ignored entities, set versions)
                   │
+           override_extractor.ml (extract Since annotations, optional)
+                  │
                   ▼
            type_mappings.ml   (build generation context)
                   │
@@ -70,46 +72,65 @@ C stubs       External decls    OCaml classes
 
 | Module | Purpose |
 |--------|---------|
-| `types.ml` | AST for GIR elements (classes, methods, enums, records) |
+| `types.ml` | AST for GIR elements (classes, methods, enums, records, signals) |
 | `parse/gir_parser.ml` | XML parsing → AST; reads `version` XML attrs on members/fields |
 | `type_mappings.ml` | C→OCaml type mapping (`gint`→`int`, etc.) + cross-namespace resolution |
 | `override_types.ml` | Override type definitions (ignore, version actions) |
 | `override_parser.ml` | S-expression parser for `overrides/<ns>.sexp` files |
 | `override_apply.ml` | Apply overrides to AST before ctx build (filter + version) |
+| `override_extractor.ml` | Extract `Since X.Y` version annotations from GIR doc strings |
+| `version_guard.ml` | C version guard macro generation (`GTK_CHECK_VERSION`, `PANGO_CHECK_VERSION`, etc.) |
+| `os_filter.ml` | OS/platform filter type for conditional compilation guards |
 | `dependency_analysis.ml` | Tarjan SCC for cyclic dependency handling |
-| `filtering.ml` | Method/property filtering (out params, unknown types, varargs) |
+| `filtering.ml` | Method/property filtering (unknown types, varargs) |
 | `exclude_list.ml` | Residual structural skips (`*Private` records, etc.) |
+| `class_utils.ml` | Qualified module name resolution accounting for cyclic modules |
+| `utils.ml` | String normalization, snake_case conversion, namespace helpers |
 
 ### Generation Modules
 
 **C Stubs (`generate/`)**:
-- `c_stubs.ml` - Main C code orchestration
-- `c_stub_method.ml` - Method wrappers
-- `c_stub_property.ml` - Property GValue access
-- `c_stub_enum.ml`/`c_stub_bitfield.ml` - Enum converters
-- `c_stub_record.ml` - Boxed record converters
-- `c_stub_class.ml` - Class type macros
+- `c_stubs.ml` - Main C code orchestration, dependency namespace extraction, re-exports
+- `c_stub_helpers.ml` - Shared C generation utilities, version guard emission
+- `c_stub_method.ml` - Method wrapper C code generation
+- `c_stub_method_out.ml` - Out-parameter array and struct handling
+- `c_stub_property.ml` - Property getter/setter GValue access
+- `c_stub_constructor.ml` - Constructor C stub generation
+- `c_stub_enum.ml`/`c_stub_bitfield.ml` - Enum/bitfield C converters
+- `c_stub_record.ml` - Boxed record converters, copy method detection
+- `c_stub_class.ml` - Class type macros (`GtkWidget_val`, `Val_GtkWidget`)
+- `c_stub_array_conv.ml` - Inline array conversion code (zero-terminated, GPtrArray, length-based)
+- `c_stub_gvalue.ml` - GValue access helper macros
+- `c_stub_type_analysis.ml` - Property type introspection for GValue dispatch
+- `c_stub_list_conv.ml` - GList/GSList conversion code generation
 - `<ns>_decls.h` - Per-library declaration headers
 
 **Layer 1 (`generate/layer1/`)**:
-- `layer1_main.ml` - Polymorphic variant types, module generation
-- `layer1_method.ml` - External declarations
-- `layer1_property.ml` - Property accessors
-- `layer1_constructor.ml` - Constructor externals
+- `layer1_main.ml` - Polymorphic variant types, combined module generation
+- `layer1_method.ml` - External function declarations
+- `layer1_property.ml` - Property accessor declarations
+- `layer1_constructor.ml` - Constructor external declarations
+- `layer1_helpers.ml` - Shared Layer 1 utilities
 - Combined modules for cyclic dependencies: `<c1>_and__<c2>.ml`
 
 **Layer 2 (`generate/class_gen*.ml`)**:
 - `class_gen.ml` - Main wrapper orchestration
-- `class_gen_body.ml` - Skeleton/concrete classes
-- `class_gen_method.ml` - Method wrappers
-- `class_gen_property.ml` - Property methods
+- `class_gen_body.ml` - Skeleton/concrete class definitions
+- `class_gen_method.ml` - Method wrapper generation
+- `class_gen_property.ml` - Property method generation
 - `class_gen_type_resolution.ml` - Cross-namespace type handling
+- `class_gen_helpers.ml` - Shared class generation utilities
+- `class_gen_conflict_detection.ml` - Property/method name conflict resolution
+- `class_gen_converter.ml` - Minimal type converter helpers
+- `common.ml` - Shared types (`StringSet`, `module_names`)
 
 **Other**:
-- `signal_gen.ml` - Signal handler classes (parameterless void only)
-- `enum_code.ml` - Enum/bitfield type definitions
-- `dune_file.ml` - Build configuration generation
-- `library_module.ml` - Combined library module (`Gtk.ml`)
+- `signal_gen.ml` - Signal handler class generation
+- `signal_marshaller.ml` - Signal parameter marshalling to/from `Gobject.Value`
+- `enum_code.ml` - Enum/bitfield OCaml type definitions and C converters
+- `dune_file.ml` - Build configuration (`dune-generated.inc`) generation
+- `library_module.ml` - Combined library module (`Gtk.ml`) generation
+- `ml_interface.ml` - Thin re-export wrapper for Layer 1
 
 ### Dependency Resolution
 

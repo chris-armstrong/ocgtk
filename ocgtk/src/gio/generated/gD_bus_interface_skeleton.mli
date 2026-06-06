@@ -4,8 +4,7 @@ class type d_bus_interface_skeleton_t = object
   method on_g_authorize_method :
     ?after:bool ->
     callback:
-      (invocation:GD_bus_method_invocation.d_bus_method_invocation_t option ->
-      bool) ->
+      (invocation:GD_bus_method_invocation.d_bus_method_invocation_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 

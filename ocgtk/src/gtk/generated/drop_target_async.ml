@@ -45,7 +45,7 @@ let on_accept ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drop =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let result = callback ~drop in
         let v = Gobject.Closure.result argv in
@@ -60,7 +60,7 @@ let on_drag_enter ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drop =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let x =
           let v = Gobject.Closure.nth argv ~pos:2 in
@@ -83,7 +83,7 @@ let on_drag_leave ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drop =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~drop)
   in
@@ -95,7 +95,7 @@ let on_drag_motion ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drop =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let x =
           let v = Gobject.Closure.nth argv ~pos:2 in
@@ -118,7 +118,7 @@ let on_drop ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drop =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let x =
           let v = Gobject.Closure.nth argv ~pos:2 in

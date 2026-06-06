@@ -44,7 +44,7 @@ and device_t = object
 
   method on_tool_changed :
     ?after:bool ->
-    callback:(tool:GDevice_tool.device_tool_t option -> unit) ->
+    callback:(tool:GDevice_tool.device_tool_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -81,13 +81,13 @@ and display_t = object
 
   method on_seat_added :
     ?after:bool ->
-    callback:(seat:seat_t option -> unit) ->
+    callback:(seat:seat_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_seat_removed :
     ?after:bool ->
-    callback:(seat:seat_t option -> unit) ->
+    callback:(seat:seat_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -197,25 +197,25 @@ end
 and seat_t = object
   method on_device_added :
     ?after:bool ->
-    callback:(device:device_t option -> unit) ->
+    callback:(device:device_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_device_removed :
     ?after:bool ->
-    callback:(device:device_t option -> unit) ->
+    callback:(device:device_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_tool_added :
     ?after:bool ->
-    callback:(tool:GDevice_tool.device_tool_t option -> unit) ->
+    callback:(tool:GDevice_tool.device_tool_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_tool_removed :
     ?after:bool ->
-    callback:(tool:GDevice_tool.device_tool_t option -> unit) ->
+    callback:(tool:GDevice_tool.device_tool_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -231,13 +231,13 @@ end
 and surface_t = object
   method on_enter_monitor :
     ?after:bool ->
-    callback:(monitor:monitor_t option -> unit) ->
+    callback:(monitor:monitor_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_event :
     ?after:bool ->
-    callback:(event:event_t option -> bool) ->
+    callback:(event:event_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -249,7 +249,7 @@ and surface_t = object
 
   method on_leave_monitor :
     ?after:bool ->
-    callback:(monitor:monitor_t option -> unit) ->
+    callback:(monitor:monitor_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 

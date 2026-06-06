@@ -10,7 +10,7 @@ class type flow_box_t = object
 
   method on_child_activated :
     ?after:bool ->
-    callback:(child:GFlow_box_child.flow_box_child_t option -> unit) ->
+    callback:(child:GFlow_box_child.flow_box_child_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -113,9 +113,7 @@ class flow_box (obj : Flow_box.t) : flow_box_t =
     method on_child_activated ?(after = false) ~callback () =
       Flow_box.on_child_activated ~after self#as_flow_box
         ~callback:(fun ~child ->
-          callback
-            ~child:
-              (Option.map (fun w -> new GFlow_box_child.flow_box_child w) child))
+          callback ~child:(new GFlow_box_child.flow_box_child child))
 
     method on_move_cursor ?(after = false) ~callback () =
       Flow_box.on_move_cursor ~after self#as_flow_box ~callback

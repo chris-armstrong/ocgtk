@@ -6,16 +6,15 @@ class type cell_area_t = object
 
   method on_focus_changed :
     ?after:bool ->
-    callback:
-      (renderer:GCell_renderer.cell_renderer_t option -> path:string -> unit) ->
+    callback:(renderer:GCell_renderer.cell_renderer_t -> path:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_remove_editable :
     ?after:bool ->
     callback:
-      (renderer:GCell_renderer.cell_renderer_t option ->
-      editable:GCell_editable.cell_editable_t option ->
+      (renderer:GCell_renderer.cell_renderer_t ->
+      editable:GCell_editable.cell_editable_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -145,26 +144,15 @@ class cell_area
       Cell_area_and__cell_area_context_and__cell_layout.Cell_area
       .on_focus_changed ~after self#as_cell_area
         ~callback:(fun ~renderer ~path ->
-          callback
-            ~renderer:
-              (Option.map
-                 (fun w -> new GCell_renderer.cell_renderer w)
-                 renderer)
-            ~path)
+          callback ~renderer:(new GCell_renderer.cell_renderer renderer) ~path)
 
     method on_remove_editable ?(after = false) ~callback () =
       Cell_area_and__cell_area_context_and__cell_layout.Cell_area
       .on_remove_editable ~after self#as_cell_area
         ~callback:(fun ~renderer ~editable ->
           callback
-            ~renderer:
-              (Option.map
-                 (fun w -> new GCell_renderer.cell_renderer w)
-                 renderer)
-            ~editable:
-              (Option.map
-                 (fun w -> new GCell_editable.cell_editable w)
-                 editable))
+            ~renderer:(new GCell_renderer.cell_renderer renderer)
+            ~editable:(new GCell_editable.cell_editable editable))
 
     method activate :
         cell_area_context_t ->

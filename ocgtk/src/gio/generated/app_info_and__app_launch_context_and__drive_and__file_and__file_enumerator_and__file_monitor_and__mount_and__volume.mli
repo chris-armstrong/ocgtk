@@ -233,13 +233,13 @@ and App_launch_context : sig
   val on_launch_started :
     ?after:bool ->
     t ->
-    callback:(info:App_info.t option -> platform_data:Gvariant.t -> unit) ->
+    callback:(info:App_info.t -> platform_data:Gvariant.t -> unit) ->
     Gobject.Signal.handler_id
 
   val on_launched :
     ?after:bool ->
     t ->
-    callback:(info:App_info.t option -> platform_data:Gvariant.t -> unit) ->
+    callback:(info:App_info.t -> platform_data:Gvariant.t -> unit) ->
     Gobject.Signal.handler_id
 end
 
@@ -1478,7 +1478,7 @@ and File_monitor : sig
     ?after:bool ->
     t ->
     callback:
-      (file:File.t option ->
+      (file:File.t ->
       other_file:File.t option ->
       event_type:Gio_enums.filemonitorevent ->
       unit) ->

@@ -70,11 +70,11 @@ external get_default_text : t -> string option
 val on_application_activated :
   ?after:bool ->
   t ->
-  callback:(application:Ocgtk_gio.Gio.Wrappers.App_info.t option -> unit) ->
+  callback:(application:Ocgtk_gio.Gio.Wrappers.App_info.t -> unit) ->
   Gobject.Signal.handler_id
 
 val on_application_selected :
   ?after:bool ->
   t ->
-  callback:(application:Ocgtk_gio.Gio.Wrappers.App_info.t option -> unit) ->
+  callback:(application:Ocgtk_gio.Gio.Wrappers.App_info.t -> unit) ->
   Gobject.Signal.handler_id

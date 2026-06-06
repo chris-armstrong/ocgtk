@@ -4,8 +4,7 @@ class type cell_renderer_t = object
 
   method on_editing_started :
     ?after:bool ->
-    callback:
-      (editable:GCell_editable.cell_editable_t option -> path:string -> unit) ->
+    callback:(editable:GCell_editable.cell_editable_t -> path:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 

@@ -452,7 +452,7 @@ let on_create_window ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let page =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let result = callback ~page in
         let v = Gobject.Closure.result argv in
@@ -494,7 +494,7 @@ let on_page_added ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let child =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let page_num =
           let v = Gobject.Closure.nth argv ~pos:2 in
@@ -510,7 +510,7 @@ let on_page_removed ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let child =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let page_num =
           let v = Gobject.Closure.nth argv ~pos:2 in
@@ -526,7 +526,7 @@ let on_page_reordered ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let child =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let page_num =
           let v = Gobject.Closure.nth argv ~pos:2 in
@@ -576,7 +576,7 @@ let on_switch_page ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let page =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let page_num =
           let v = Gobject.Closure.nth argv ~pos:2 in

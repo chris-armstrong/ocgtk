@@ -7,13 +7,13 @@ class type app_chooser_widget_t = object
 
   method on_application_activated :
     ?after:bool ->
-    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t option -> unit) ->
+    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_application_selected :
     ?after:bool ->
-    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t option -> unit) ->
+    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -49,19 +49,13 @@ class app_chooser_widget (obj : App_chooser_widget.t) : app_chooser_widget_t =
       App_chooser_widget.on_application_activated ~after
         self#as_app_chooser_widget ~callback:(fun ~application ->
           callback
-            ~application:
-              (Option.map
-                 (fun w -> new Ocgtk_gio.Gio.App_info.app_info w)
-                 application))
+            ~application:(new Ocgtk_gio.Gio.App_info.app_info application))
 
     method on_application_selected ?(after = false) ~callback () =
       App_chooser_widget.on_application_selected ~after
         self#as_app_chooser_widget ~callback:(fun ~application ->
           callback
-            ~application:
-              (Option.map
-                 (fun w -> new Ocgtk_gio.Gio.App_info.app_info w)
-                 application))
+            ~application:(new Ocgtk_gio.Gio.App_info.app_info application))
 
     method get_default_text : unit -> string option =
       fun () -> App_chooser_widget.get_default_text obj

@@ -11,13 +11,14 @@ type marshaller = {
   setter_expr : string;
   l2_class : ocaml_class option;
   is_same_ns_class : bool;
+  nullable : bool;
 }
 
 type result = Supported of marshaller | Unsupported of string
 
-let make_marshaller ?(l2_class = None) ?(is_same_ns_class = false) ~ocaml_type
-    ~getter_expr ~setter_expr () : marshaller =
-  { ocaml_type; getter_expr; setter_expr; l2_class; is_same_ns_class }
+let make_marshaller ?(l2_class = None) ?(is_same_ns_class = false)
+    ?(nullable = false) ~ocaml_type ~getter_expr ~setter_expr () : marshaller =
+  { ocaml_type; getter_expr; setter_expr; l2_class; is_same_ns_class; nullable }
 
 (* ===================================================================== *)
 (* Primitive type table                                                  *)
@@ -181,15 +182,15 @@ let classify_bitfield ~ctx ~namespace ~name =
 (* ===================================================================== *)
 
 let classify_gobject ~ctx ~gir_type ~namespace ~name : result =
-  (* GObject class / interface parameters resolve to ['a obj option] because
-     [Gobject.Value.get_object] returns [None] for NULL pointers. Same-namespace
-     edges are fed into [Dependency_analysis.build_dependency_graph] via
-     [extract_signal_dependencies], so any cycle they create is absorbed into a
-     combined module by the Tarjan SCC pass.
+  (* GObject class / interface parameters resolve to ['a obj option] when the
+     GIR declares them nullable, and to a bare ['a obj] otherwise.
+     Same-namespace edges are fed into [Dependency_analysis.build_dependency_graph]
+     via [extract_signal_dependencies], so any cycle they create is absorbed
+     into a combined module by the Tarjan SCC pass.
 
-      The marshaller carries structured info (l2_class, is_same_ns_class) so that
-      L1 emission can collapse same-class references to bare [t option]
-      and L2 emission can render the L2 [class_type] and emit the
+      The marshaller carries structured info (l2_class, is_same_ns_class, nullable)
+      so that L1 emission can collapse same-class references to bare [t] or [t option]
+      and L2 emission can render the L2 [class_type] and emit the correct
       [new <class>] / [#<accessor>] wrap/unwrap expressions, all without
       re-running classify. *)
   let same_ns = String.equal namespace ctx.namespace.namespace_name in
@@ -197,14 +198,20 @@ let classify_gobject ~ctx ~gir_type ~namespace ~name : result =
     if same_ns then same_ns_object_type ~ctx name
     else cross_ns_object_type namespace name
   in
-  let ocaml_type = base_type ^ " option" in
   let l2_class = lookup_l2_class ~ctx gir_type in
   let is_same_ns_class = same_ns in
-  Supported
-    (make_marshaller ~ocaml_type
-       ~getter_expr:"Gobject.Value.get_object v"
-       ~setter_expr:"Gobject.Value.set_object v x"
-       ~l2_class ~is_same_ns_class ())
+  if gir_type.nullable then
+    Supported
+      (make_marshaller ~ocaml_type:(base_type ^ " option")
+         ~getter_expr:"Gobject.Value.get_object v"
+         ~setter_expr:"Gobject.Value.set_object v x"
+         ~l2_class ~is_same_ns_class ~nullable:true ())
+  else
+    Supported
+      (make_marshaller ~ocaml_type:base_type
+         ~getter_expr:"Gobject.Value.get_object_exn v"
+         ~setter_expr:"Gobject.Value.set_object_exn v x"
+         ~l2_class ~is_same_ns_class ~nullable:false ())
 
 (* ===================================================================== *)
 (* Main classify function                                                *)
@@ -265,17 +272,24 @@ let classify ~ctx ~gir_type : result =
 
 (** Render the OCaml type for a marshaller as it should appear inside the L1
     module of [current_class]. For non-object marshallers this is just
-    [ocaml_type]; for a same-namespace object whose [is_same_ns_class] is true,
-    the bare ["t option"] is used to dodge the
-    compilation-unit self-alias error. *)
-let render_l1_type ~current_class:_ (m : marshaller) : string =
-  if m.is_same_ns_class then "t option" else m.ocaml_type
+    [ocaml_type]; for a same-namespace object whose type is literally the class
+    being defined, the bare ["t"] or ["t option"] is used to avoid forming a
+    self-referential compilation-unit alias inside the standalone module. For
+    other same-namespace objects the fully qualified type is returned. *)
+let render_l1_type ~current_class (m : marshaller) : string =
+  if m.is_same_ns_class then
+    if String.equal m.ocaml_type (current_class ^ ".t") then "t"
+    else if String.equal m.ocaml_type (current_class ^ ".t option") then
+      "t option"
+    else m.ocaml_type
+  else
+    m.ocaml_type
 
 (** Render the L2-form OCaml type for a marshaller in the context of
     [current_layer2_module]. For object marshallers this is the L2 class type
-    (e.g. ["widget_t option"]); the module prefix is dropped when the class
-    is in the current L2 module. For non-object marshallers, the L1
-    [ocaml_type] is used unchanged. *)
+    (e.g. ["widget_t"] or ["widget_t option"]); the module prefix is dropped
+    when the class is in the current L2 module. For non-object marshallers, the
+    L1 [ocaml_type] is used unchanged. *)
 let render_l2_type ~current_layer2_module (m : marshaller) : string =
   match m.l2_class with
   | Some lc ->
@@ -283,13 +297,14 @@ let render_l2_type ~current_layer2_module (m : marshaller) : string =
         if String.equal current_layer2_module lc.class_module then lc.class_type
         else lc.class_module ^ "." ^ lc.class_type
       in
-      qualified ^ " option"
+      if m.nullable then qualified ^ " option" else qualified
   | None -> m.ocaml_type
 
 (** Build an OCaml expression that converts an L1-form value [param_name] into
     its L2 form (used inside L2 callback param wrapping).
 
-    For object marshallers, wraps with [Option.map (fun w -> new <class> w)].
+    For nullable object marshallers, wraps with [Option.map (fun w -> new <class> w)].
+    For non-nullable object marshallers, wraps with [new <class>].
     For non-object marshallers, returns [param_name] unchanged. *)
 let l2_param_wrap_expr ~current_layer2_module (m : marshaller) param_name :
     string =
@@ -300,21 +315,28 @@ let l2_param_wrap_expr ~current_layer2_module (m : marshaller) param_name :
           lc.class_ml_name
         else lc.class_module ^ "." ^ lc.class_ml_name
       in
-      Printf.sprintf "(Option.map (fun w -> new %s w) %s)" qualified param_name
+      if m.nullable then
+        Printf.sprintf "(Option.map (fun w -> new %s w) %s)" qualified param_name
+      else
+        Printf.sprintf "(new %s %s)" qualified param_name
   | None -> param_name
 
 (** Build an OCaml expression that converts an L2-form value [result_expr]
     back into its L1 form (used inside L2 callback return unwrapping).
 
-    For object marshallers, wraps with [Option.map (fun w -> w#<accessor>)].
+    For nullable object marshallers, wraps with [Option.map (fun w -> w#<accessor>)].
+    For non-nullable object marshallers, wraps with [(<expr>)#<accessor>].
     For non-object marshallers, returns [result_expr] unchanged. *)
 let l2_return_unwrap_expr (m : marshaller) result_expr : string =
   match m.l2_class with
   | Some lc ->
-      (* The result_expr is usually a curried callback application that
-         carries its own labelled arguments. Wrap it in parens before passing
-         to Option.map so the labelled args bind to the callback, not to
-         Option.map. *)
-      Printf.sprintf "(Option.map (fun w -> w#%s) (%s))"
-        lc.class_layer1_accessor result_expr
+      if m.nullable then
+        (* The result_expr is usually a curried callback application that
+           carries its own labelled arguments. Wrap it in parens before passing
+           to Option.map so the labelled args bind to the callback, not to
+           Option.map. *)
+        Printf.sprintf "(Option.map (fun w -> w#%s) (%s))"
+          lc.class_layer1_accessor result_expr
+      else
+        Printf.sprintf "(%s)#%s" result_expr lc.class_layer1_accessor
   | None -> result_expr

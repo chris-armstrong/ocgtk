@@ -4,8 +4,7 @@ class type volume_monitor_t = object
     callback:
       (drive:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .drive_t
-         option ->
+         .drive_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -15,8 +14,7 @@ class type volume_monitor_t = object
     callback:
       (drive:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .drive_t
-         option ->
+         .drive_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -26,8 +24,7 @@ class type volume_monitor_t = object
     callback:
       (drive:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .drive_t
-         option ->
+         .drive_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -37,8 +34,7 @@ class type volume_monitor_t = object
     callback:
       (drive:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .drive_t
-         option ->
+         .drive_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -48,8 +44,7 @@ class type volume_monitor_t = object
     callback:
       (drive:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .drive_t
-         option ->
+         .drive_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -59,8 +54,7 @@ class type volume_monitor_t = object
     callback:
       (mount:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .mount_t
-         option ->
+         .mount_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -70,8 +64,7 @@ class type volume_monitor_t = object
     callback:
       (mount:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .mount_t
-         option ->
+         .mount_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -81,8 +74,7 @@ class type volume_monitor_t = object
     callback:
       (mount:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .mount_t
-         option ->
+         .mount_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -92,8 +84,7 @@ class type volume_monitor_t = object
     callback:
       (mount:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .mount_t
-         option ->
+         .mount_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -103,8 +94,7 @@ class type volume_monitor_t = object
     callback:
       (volume:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .volume_t
-         option ->
+         .volume_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -114,8 +104,7 @@ class type volume_monitor_t = object
     callback:
       (volume:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .volume_t
-         option ->
+         .volume_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -125,8 +114,7 @@ class type volume_monitor_t = object
     callback:
       (volume:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .volume_t
-         option ->
+         .volume_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -172,12 +160,9 @@ class volume_monitor (obj : Volume_monitor.t) : volume_monitor_t =
         ~callback:(fun ~drive ->
           callback
             ~drive:
-              (Option.map
-                 (fun w ->
-                   new
-                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-                     .drive
-                     w)
+              (new
+                 GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                 .drive
                  drive))
 
     method on_drive_connected ?(after = false) ~callback () =
@@ -185,12 +170,9 @@ class volume_monitor (obj : Volume_monitor.t) : volume_monitor_t =
         ~callback:(fun ~drive ->
           callback
             ~drive:
-              (Option.map
-                 (fun w ->
-                   new
-                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-                     .drive
-                     w)
+              (new
+                 GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                 .drive
                  drive))
 
     method on_drive_disconnected ?(after = false) ~callback () =
@@ -198,12 +180,9 @@ class volume_monitor (obj : Volume_monitor.t) : volume_monitor_t =
         ~callback:(fun ~drive ->
           callback
             ~drive:
-              (Option.map
-                 (fun w ->
-                   new
-                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-                     .drive
-                     w)
+              (new
+                 GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                 .drive
                  drive))
 
     method on_drive_eject_button ?(after = false) ~callback () =
@@ -211,12 +190,9 @@ class volume_monitor (obj : Volume_monitor.t) : volume_monitor_t =
         ~callback:(fun ~drive ->
           callback
             ~drive:
-              (Option.map
-                 (fun w ->
-                   new
-                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-                     .drive
-                     w)
+              (new
+                 GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                 .drive
                  drive))
 
     method on_drive_stop_button ?(after = false) ~callback () =
@@ -224,12 +200,9 @@ class volume_monitor (obj : Volume_monitor.t) : volume_monitor_t =
         ~callback:(fun ~drive ->
           callback
             ~drive:
-              (Option.map
-                 (fun w ->
-                   new
-                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-                     .drive
-                     w)
+              (new
+                 GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                 .drive
                  drive))
 
     method on_mount_added ?(after = false) ~callback () =
@@ -237,12 +210,9 @@ class volume_monitor (obj : Volume_monitor.t) : volume_monitor_t =
         ~callback:(fun ~mount ->
           callback
             ~mount:
-              (Option.map
-                 (fun w ->
-                   new
-                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-                     .mount
-                     w)
+              (new
+                 GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                 .mount
                  mount))
 
     method on_mount_changed ?(after = false) ~callback () =
@@ -250,12 +220,9 @@ class volume_monitor (obj : Volume_monitor.t) : volume_monitor_t =
         ~callback:(fun ~mount ->
           callback
             ~mount:
-              (Option.map
-                 (fun w ->
-                   new
-                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-                     .mount
-                     w)
+              (new
+                 GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                 .mount
                  mount))
 
     method on_mount_pre_unmount ?(after = false) ~callback () =
@@ -263,12 +230,9 @@ class volume_monitor (obj : Volume_monitor.t) : volume_monitor_t =
         ~callback:(fun ~mount ->
           callback
             ~mount:
-              (Option.map
-                 (fun w ->
-                   new
-                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-                     .mount
-                     w)
+              (new
+                 GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                 .mount
                  mount))
 
     method on_mount_removed ?(after = false) ~callback () =
@@ -276,12 +240,9 @@ class volume_monitor (obj : Volume_monitor.t) : volume_monitor_t =
         ~callback:(fun ~mount ->
           callback
             ~mount:
-              (Option.map
-                 (fun w ->
-                   new
-                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-                     .mount
-                     w)
+              (new
+                 GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                 .mount
                  mount))
 
     method on_volume_added ?(after = false) ~callback () =
@@ -289,12 +250,9 @@ class volume_monitor (obj : Volume_monitor.t) : volume_monitor_t =
         ~callback:(fun ~volume ->
           callback
             ~volume:
-              (Option.map
-                 (fun w ->
-                   new
-                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-                     .volume
-                     w)
+              (new
+                 GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                 .volume
                  volume))
 
     method on_volume_changed ?(after = false) ~callback () =
@@ -302,12 +260,9 @@ class volume_monitor (obj : Volume_monitor.t) : volume_monitor_t =
         ~callback:(fun ~volume ->
           callback
             ~volume:
-              (Option.map
-                 (fun w ->
-                   new
-                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-                     .volume
-                     w)
+              (new
+                 GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                 .volume
                  volume))
 
     method on_volume_removed ?(after = false) ~callback () =
@@ -315,12 +270,9 @@ class volume_monitor (obj : Volume_monitor.t) : volume_monitor_t =
         ~callback:(fun ~volume ->
           callback
             ~volume:
-              (Option.map
-                 (fun w ->
-                   new
-                     GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-                     .volume
-                     w)
+              (new
+                 GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+                 .volume
                  volume))
 
     method get_connected_drives :

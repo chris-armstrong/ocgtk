@@ -5,14 +5,14 @@ class type drop_target_async_t = object
 
   method on_accept :
     ?after:bool ->
-    callback:(drop:Ocgtk_gdk.Gdk.Drop.drop_t option -> bool) ->
+    callback:(drop:Ocgtk_gdk.Gdk.Drop.drop_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_drag_enter :
     ?after:bool ->
     callback:
-      (drop:Ocgtk_gdk.Gdk.Drop.drop_t option ->
+      (drop:Ocgtk_gdk.Gdk.Drop.drop_t ->
       x:float ->
       y:float ->
       Ocgtk_gdk.Gdk_enums.dragaction) ->
@@ -21,14 +21,14 @@ class type drop_target_async_t = object
 
   method on_drag_leave :
     ?after:bool ->
-    callback:(drop:Ocgtk_gdk.Gdk.Drop.drop_t option -> unit) ->
+    callback:(drop:Ocgtk_gdk.Gdk.Drop.drop_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_drag_motion :
     ?after:bool ->
     callback:
-      (drop:Ocgtk_gdk.Gdk.Drop.drop_t option ->
+      (drop:Ocgtk_gdk.Gdk.Drop.drop_t ->
       x:float ->
       y:float ->
       Ocgtk_gdk.Gdk_enums.dragaction) ->
@@ -37,8 +37,7 @@ class type drop_target_async_t = object
 
   method on_drop :
     ?after:bool ->
-    callback:
-      (drop:Ocgtk_gdk.Gdk.Drop.drop_t option -> x:float -> y:float -> bool) ->
+    callback:(drop:Ocgtk_gdk.Gdk.Drop.drop_t -> x:float -> y:float -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -70,35 +69,27 @@ class drop_target_async (obj : Drop_target_async.t) : drop_target_async_t =
     method on_accept ?(after = false) ~callback () =
       Drop_target_async.on_accept ~after self#as_drop_target_async
         ~callback:(fun ~drop ->
-          callback
-            ~drop:(Option.map (fun w -> new Ocgtk_gdk.Gdk.Drop.drop w) drop))
+          callback ~drop:(new Ocgtk_gdk.Gdk.Drop.drop drop))
 
     method on_drag_enter ?(after = false) ~callback () =
       Drop_target_async.on_drag_enter ~after self#as_drop_target_async
         ~callback:(fun ~drop ~x ~y ->
-          callback
-            ~drop:(Option.map (fun w -> new Ocgtk_gdk.Gdk.Drop.drop w) drop)
-            ~x ~y)
+          callback ~drop:(new Ocgtk_gdk.Gdk.Drop.drop drop) ~x ~y)
 
     method on_drag_leave ?(after = false) ~callback () =
       Drop_target_async.on_drag_leave ~after self#as_drop_target_async
         ~callback:(fun ~drop ->
-          callback
-            ~drop:(Option.map (fun w -> new Ocgtk_gdk.Gdk.Drop.drop w) drop))
+          callback ~drop:(new Ocgtk_gdk.Gdk.Drop.drop drop))
 
     method on_drag_motion ?(after = false) ~callback () =
       Drop_target_async.on_drag_motion ~after self#as_drop_target_async
         ~callback:(fun ~drop ~x ~y ->
-          callback
-            ~drop:(Option.map (fun w -> new Ocgtk_gdk.Gdk.Drop.drop w) drop)
-            ~x ~y)
+          callback ~drop:(new Ocgtk_gdk.Gdk.Drop.drop drop) ~x ~y)
 
     method on_drop ?(after = false) ~callback () =
       Drop_target_async.on_drop ~after self#as_drop_target_async
         ~callback:(fun ~drop ~x ~y ->
-          callback
-            ~drop:(Option.map (fun w -> new Ocgtk_gdk.Gdk.Drop.drop w) drop)
-            ~x ~y)
+          callback ~drop:(new Ocgtk_gdk.Gdk.Drop.drop drop) ~x ~y)
 
     method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction =
       fun () -> Drop_target_async.get_actions obj

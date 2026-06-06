@@ -49,13 +49,13 @@ and app_launch_context_t = object
 
   method on_launch_started :
     ?after:bool ->
-    callback:(info:app_info_t option -> platform_data:Gvariant.t -> unit) ->
+    callback:(info:app_info_t -> platform_data:Gvariant.t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_launched :
     ?after:bool ->
-    callback:(info:app_info_t option -> platform_data:Gvariant.t -> unit) ->
+    callback:(info:app_info_t -> platform_data:Gvariant.t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -429,7 +429,7 @@ and file_monitor_t = object
   method on_changed :
     ?after:bool ->
     callback:
-      (file:file_t option ->
+      (file:file_t ->
       other_file:file_t option ->
       event_type:Gio_enums.filemonitorevent ->
       unit) ->
@@ -721,18 +721,14 @@ and app_launch_context
       .App_launch_context
       .on_launch_started ~after self#as_app_launch_context
         ~callback:(fun ~info ~platform_data ->
-          callback
-            ~info:(Option.map (fun w -> new app_info w) info)
-            ~platform_data)
+          callback ~info:(new app_info info) ~platform_data)
 
     method on_launched ?(after = false) ~callback () =
       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
       .App_launch_context
       .on_launched ~after self#as_app_launch_context
         ~callback:(fun ~info ~platform_data ->
-          callback
-            ~info:(Option.map (fun w -> new app_info w) info)
-            ~platform_data)
+          callback ~info:(new app_info info) ~platform_data)
 
     method get_display : app_info_t -> file_t list -> string option =
       fun info files ->
@@ -1820,7 +1816,7 @@ and file_monitor
       .on_changed ~after self#as_file_monitor
         ~callback:(fun ~file ~other_file ~event_type ->
           callback
-            ~file:(Option.map (fun w -> new file w) file)
+            ~file:(new file file)
             ~other_file:(Option.map (fun w -> new file w) other_file)
             ~event_type)
 

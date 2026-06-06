@@ -15,7 +15,7 @@ class type list_box_t = object
 
   method on_row_activated :
     ?after:bool ->
-    callback:(row:GList_box_row.list_box_row_t option -> unit) ->
+    callback:(row:GList_box_row.list_box_row_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -113,8 +113,7 @@ class list_box (obj : List_box.t) : list_box_t =
 
     method on_row_activated ?(after = false) ~callback () =
       List_box.on_row_activated ~after self#as_list_box ~callback:(fun ~row ->
-          callback
-            ~row:(Option.map (fun w -> new GList_box_row.list_box_row w) row))
+          callback ~row:(new GList_box_row.list_box_row row))
 
     method on_row_selected ?(after = false) ~callback () =
       List_box.on_row_selected ~after self#as_list_box ~callback:(fun ~row ->

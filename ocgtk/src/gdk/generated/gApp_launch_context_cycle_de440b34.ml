@@ -47,7 +47,7 @@ and device_t = object
 
   method on_tool_changed :
     ?after:bool ->
-    callback:(tool:GDevice_tool.device_tool_t option -> unit) ->
+    callback:(tool:GDevice_tool.device_tool_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -84,13 +84,13 @@ and display_t = object
 
   method on_seat_added :
     ?after:bool ->
-    callback:(seat:seat_t option -> unit) ->
+    callback:(seat:seat_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_seat_removed :
     ?after:bool ->
-    callback:(seat:seat_t option -> unit) ->
+    callback:(seat:seat_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -200,25 +200,25 @@ end
 and seat_t = object
   method on_device_added :
     ?after:bool ->
-    callback:(device:device_t option -> unit) ->
+    callback:(device:device_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_device_removed :
     ?after:bool ->
-    callback:(device:device_t option -> unit) ->
+    callback:(device:device_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_tool_added :
     ?after:bool ->
-    callback:(tool:GDevice_tool.device_tool_t option -> unit) ->
+    callback:(tool:GDevice_tool.device_tool_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_tool_removed :
     ?after:bool ->
-    callback:(tool:GDevice_tool.device_tool_t option -> unit) ->
+    callback:(tool:GDevice_tool.device_tool_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -234,13 +234,13 @@ end
 and surface_t = object
   method on_enter_monitor :
     ?after:bool ->
-    callback:(monitor:monitor_t option -> unit) ->
+    callback:(monitor:monitor_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_event :
     ?after:bool ->
-    callback:(event:event_t option -> bool) ->
+    callback:(event:event_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -252,7 +252,7 @@ and surface_t = object
 
   method on_leave_monitor :
     ?after:bool ->
-    callback:(monitor:monitor_t option -> unit) ->
+    callback:(monitor:monitor_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -407,8 +407,7 @@ and device (obj : App_launch_context_cycle_de440b34.Device.t) : device_t =
     method on_tool_changed ?(after = false) ~callback () =
       App_launch_context_cycle_de440b34.Device.on_tool_changed ~after
         self#as_device ~callback:(fun ~tool ->
-          callback
-            ~tool:(Option.map (fun w -> new GDevice_tool.device_tool w) tool))
+          callback ~tool:(new GDevice_tool.device_tool tool))
 
     method get_caps_lock_state : unit -> bool =
       fun () -> App_launch_context_cycle_de440b34.Device.get_caps_lock_state obj
@@ -484,13 +483,11 @@ and display (obj : App_launch_context_cycle_de440b34.Display.t) : display_t =
 
     method on_seat_added ?(after = false) ~callback () =
       App_launch_context_cycle_de440b34.Display.on_seat_added ~after
-        self#as_display ~callback:(fun ~seat ->
-          callback ~seat:(Option.map (fun w -> new seat w) seat))
+        self#as_display ~callback:(fun ~seat -> callback ~seat:(new seat seat))
 
     method on_seat_removed ?(after = false) ~callback () =
       App_launch_context_cycle_de440b34.Display.on_seat_removed ~after
-        self#as_display ~callback:(fun ~seat ->
-          callback ~seat:(Option.map (fun w -> new seat w) seat))
+        self#as_display ~callback:(fun ~seat -> callback ~seat:(new seat seat))
 
     method on_setting_changed ?(after = false) ~callback () =
       App_launch_context_cycle_de440b34.Display.on_setting_changed ~after
@@ -827,25 +824,22 @@ and seat (obj : App_launch_context_cycle_de440b34.Seat.t) : seat_t =
   object (self)
     method on_device_added ?(after = false) ~callback () =
       App_launch_context_cycle_de440b34.Seat.on_device_added ~after self#as_seat
-        ~callback:(fun ~device ->
-          callback ~device:(Option.map (fun w -> new device w) device))
+        ~callback:(fun ~device -> callback ~device:(new device device))
 
     method on_device_removed ?(after = false) ~callback () =
       App_launch_context_cycle_de440b34.Seat.on_device_removed ~after
         self#as_seat ~callback:(fun ~device ->
-          callback ~device:(Option.map (fun w -> new device w) device))
+          callback ~device:(new device device))
 
     method on_tool_added ?(after = false) ~callback () =
       App_launch_context_cycle_de440b34.Seat.on_tool_added ~after self#as_seat
         ~callback:(fun ~tool ->
-          callback
-            ~tool:(Option.map (fun w -> new GDevice_tool.device_tool w) tool))
+          callback ~tool:(new GDevice_tool.device_tool tool))
 
     method on_tool_removed ?(after = false) ~callback () =
       App_launch_context_cycle_de440b34.Seat.on_tool_removed ~after self#as_seat
         ~callback:(fun ~tool ->
-          callback
-            ~tool:(Option.map (fun w -> new GDevice_tool.device_tool w) tool))
+          callback ~tool:(new GDevice_tool.device_tool tool))
 
     method get_capabilities : unit -> Gdk_enums.seatcapabilities =
       fun () -> App_launch_context_cycle_de440b34.Seat.get_capabilities obj
@@ -884,12 +878,11 @@ and surface (obj : App_launch_context_cycle_de440b34.Surface.t) : surface_t =
     method on_enter_monitor ?(after = false) ~callback () =
       App_launch_context_cycle_de440b34.Surface.on_enter_monitor ~after
         self#as_surface ~callback:(fun ~monitor ->
-          callback ~monitor:(Option.map (fun w -> new monitor w) monitor))
+          callback ~monitor:(new monitor monitor))
 
     method on_event ?(after = false) ~callback () =
       App_launch_context_cycle_de440b34.Surface.on_event ~after self#as_surface
-        ~callback:(fun ~event ->
-          callback ~event:(Option.map (fun w -> new event w) event))
+        ~callback:(fun ~event -> callback ~event:(new event event))
 
     method on_layout ?(after = false) ~callback () =
       App_launch_context_cycle_de440b34.Surface.on_layout ~after self#as_surface
@@ -898,7 +891,7 @@ and surface (obj : App_launch_context_cycle_de440b34.Surface.t) : surface_t =
     method on_leave_monitor ?(after = false) ~callback () =
       App_launch_context_cycle_de440b34.Surface.on_leave_monitor ~after
         self#as_surface ~callback:(fun ~monitor ->
-          callback ~monitor:(Option.map (fun w -> new monitor w) monitor))
+          callback ~monitor:(new monitor monitor))
 
     method beep : unit -> unit =
       fun () -> App_launch_context_cycle_de440b34.Surface.beep obj

@@ -238,7 +238,7 @@ module rec Tls_connection : sig
     ?after:bool ->
     t ->
     callback:
-      (peer_cert:Tls_certificate.t option ->
+      (peer_cert:Tls_certificate.t ->
       errors:Gio_enums.tlscertificateflags ->
       bool) ->
     Gobject.Signal.handler_id
@@ -480,7 +480,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let peer_cert =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           let errors =
             let v = Gobject.Closure.nth argv ~pos:2 in

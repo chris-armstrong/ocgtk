@@ -5,13 +5,13 @@ class type gl_area_t = object
 
   method on_create_context :
     ?after:bool ->
-    callback:(unit -> Ocgtk_gdk.Gdk.Gl_context.gl_context_t option) ->
+    callback:(unit -> Ocgtk_gdk.Gdk.Gl_context.gl_context_t) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_render :
     ?after:bool ->
-    callback:(context:Ocgtk_gdk.Gdk.Gl_context.gl_context_t option -> bool) ->
+    callback:(context:Ocgtk_gdk.Gdk.Gl_context.gl_context_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 

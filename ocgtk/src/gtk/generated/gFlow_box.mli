@@ -10,7 +10,7 @@ class type flow_box_t = object
 
   method on_child_activated :
     ?after:bool ->
-    callback:(child:GFlow_box_child.flow_box_child_t option -> unit) ->
+    callback:(child:GFlow_box_child.flow_box_child_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 

@@ -108,8 +108,7 @@ and widget_t = object
 
   method on_query_tooltip :
     ?after:bool ->
-    callback:
-      (x:int -> y:int -> keyboard_mode:bool -> tooltip:tooltip_t option -> bool) ->
+    callback:(x:int -> y:int -> keyboard_mode:bool -> tooltip:tooltip_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 

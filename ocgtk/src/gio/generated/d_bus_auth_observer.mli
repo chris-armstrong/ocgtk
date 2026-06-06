@@ -26,6 +26,5 @@ val on_allow_mechanism :
 val on_authorize_authenticated_peer :
   ?after:bool ->
   t ->
-  callback:
-    (stream:Io_stream.t option -> credentials:Credentials.t option -> bool) ->
+  callback:(stream:Io_stream.t -> credentials:Credentials.t option -> bool) ->
   Gobject.Signal.handler_id

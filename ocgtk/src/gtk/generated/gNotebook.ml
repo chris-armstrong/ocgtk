@@ -14,8 +14,7 @@ class type notebook_t = object
     callback:
       (page:
          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t
-         option ->
+         .widget_t ->
       notebook_t option) ->
     unit ->
     Gobject.Signal.handler_id
@@ -37,8 +36,7 @@ class type notebook_t = object
     callback:
       (child:
          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t
-         option ->
+         .widget_t ->
       page_num:int ->
       unit) ->
     unit ->
@@ -49,8 +47,7 @@ class type notebook_t = object
     callback:
       (child:
          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t
-         option ->
+         .widget_t ->
       page_num:int ->
       unit) ->
     unit ->
@@ -61,8 +58,7 @@ class type notebook_t = object
     callback:
       (child:
          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t
-         option ->
+         .widget_t ->
       page_num:int ->
       unit) ->
     unit ->
@@ -85,8 +81,7 @@ class type notebook_t = object
     callback:
       (page:
          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t
-         option ->
+         .widget_t ->
       page_num:int ->
       unit) ->
     unit ->
@@ -318,12 +313,9 @@ class notebook (obj : Notebook.t) : notebook_t =
             (fun w -> w#as_notebook)
             (callback
                ~page:
-                 (Option.map
-                    (fun w ->
-                      new
-                        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-                        .widget
-                        w)
+                 (new
+                    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+                    .widget
                     page)))
 
     method on_focus_tab ?(after = false) ~callback () =
@@ -337,12 +329,9 @@ class notebook (obj : Notebook.t) : notebook_t =
         ~callback:(fun ~child ~page_num ->
           callback
             ~child:
-              (Option.map
-                 (fun w ->
-                   new
-                     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-                     .widget
-                     w)
+              (new
+                 GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+                 .widget
                  child)
             ~page_num)
 
@@ -351,12 +340,9 @@ class notebook (obj : Notebook.t) : notebook_t =
         ~callback:(fun ~child ~page_num ->
           callback
             ~child:
-              (Option.map
-                 (fun w ->
-                   new
-                     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-                     .widget
-                     w)
+              (new
+                 GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+                 .widget
                  child)
             ~page_num)
 
@@ -365,12 +351,9 @@ class notebook (obj : Notebook.t) : notebook_t =
         ~callback:(fun ~child ~page_num ->
           callback
             ~child:
-              (Option.map
-                 (fun w ->
-                   new
-                     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-                     .widget
-                     w)
+              (new
+                 GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+                 .widget
                  child)
             ~page_num)
 
@@ -385,12 +368,9 @@ class notebook (obj : Notebook.t) : notebook_t =
         ~callback:(fun ~page ~page_num ->
           callback
             ~page:
-              (Option.map
-                 (fun w ->
-                   new
-                     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-                     .widget
-                     w)
+              (new
+                 GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+                 .widget
                  page)
             ~page_num)
 

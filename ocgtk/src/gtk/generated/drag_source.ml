@@ -72,7 +72,7 @@ let on_drag_begin ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drag =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~drag)
   in
@@ -84,7 +84,7 @@ let on_drag_cancel ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drag =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let reason =
           let v = Gobject.Closure.nth argv ~pos:2 in
@@ -104,7 +104,7 @@ let on_drag_end ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drag =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let delete_data =
           let v = Gobject.Closure.nth argv ~pos:2 in

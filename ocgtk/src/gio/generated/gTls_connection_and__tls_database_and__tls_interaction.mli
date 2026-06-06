@@ -4,7 +4,7 @@ class type tls_connection_t = object
   method on_accept_certificate :
     ?after:bool ->
     callback:
-      (peer_cert:GTls_certificate.tls_certificate_t option ->
+      (peer_cert:GTls_certificate.tls_certificate_t ->
       errors:Gio_enums.tlscertificateflags ->
       bool) ->
     unit ->

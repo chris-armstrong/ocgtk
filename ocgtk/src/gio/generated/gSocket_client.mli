@@ -5,8 +5,7 @@ class type socket_client_t = object
       (event:Gio_enums.socketclientevent ->
       connectable:
         GSocket_address_and__socket_address_enumerator_and__socket_connectable
-        .socket_connectable_t
-        option ->
+        .socket_connectable_t ->
       connection:GIo_stream.io_stream_t option ->
       unit) ->
     unit ->

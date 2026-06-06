@@ -34,17 +34,17 @@ the same name as an already-added tag. *)
 val on_tag_added :
   ?after:bool ->
   t ->
-  callback:(tag:Text_tag.t option -> unit) ->
+  callback:(tag:Text_tag.t -> unit) ->
   Gobject.Signal.handler_id
 
 val on_tag_changed :
   ?after:bool ->
   t ->
-  callback:(tag:Text_tag.t option -> size_changed:bool -> unit) ->
+  callback:(tag:Text_tag.t -> size_changed:bool -> unit) ->
   Gobject.Signal.handler_id
 
 val on_tag_removed :
   ?after:bool ->
   t ->
-  callback:(tag:Text_tag.t option -> unit) ->
+  callback:(tag:Text_tag.t -> unit) ->
   Gobject.Signal.handler_id

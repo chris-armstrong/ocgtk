@@ -3,7 +3,7 @@ class type socket_listener_t = object
     ?after:bool ->
     callback:
       (event:Gio_enums.socketlistenerevent ->
-      socket:GSocket_and__socket_connection.socket_t option ->
+      socket:GSocket_and__socket_connection.socket_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id

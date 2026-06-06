@@ -212,7 +212,7 @@ val on_activate_cursor_child :
 val on_child_activated :
   ?after:bool ->
   t ->
-  callback:(child:Flow_box_child.t option -> unit) ->
+  callback:(child:Flow_box_child.t -> unit) ->
   Gobject.Signal.handler_id
 
 val on_move_cursor :

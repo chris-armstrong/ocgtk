@@ -36,11 +36,11 @@ let on_interface_added ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let object_ =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let interface =
           let v = Gobject.Closure.nth argv ~pos:2 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~object_ ~interface)
   in
@@ -52,11 +52,11 @@ let on_interface_removed ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let object_ =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let interface =
           let v = Gobject.Closure.nth argv ~pos:2 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~object_ ~interface)
   in
@@ -68,7 +68,7 @@ let on_object_added ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let object_ =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~object_)
   in
@@ -80,7 +80,7 @@ let on_object_removed ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let object_ =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~object_)
   in

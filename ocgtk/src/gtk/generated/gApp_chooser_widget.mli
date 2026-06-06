@@ -7,13 +7,13 @@ class type app_chooser_widget_t = object
 
   method on_application_activated :
     ?after:bool ->
-    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t option -> unit) ->
+    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_application_selected :
     ?after:bool ->
-    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t option -> unit) ->
+    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 

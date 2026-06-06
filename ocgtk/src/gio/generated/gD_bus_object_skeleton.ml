@@ -4,8 +4,8 @@ class type d_bus_object_skeleton_t = object
   method on_authorize_method :
     ?after:bool ->
     callback:
-      (interface:GD_bus_interface_skeleton.d_bus_interface_skeleton_t option ->
-      invocation:GD_bus_method_invocation.d_bus_method_invocation_t option ->
+      (interface:GD_bus_interface_skeleton.d_bus_interface_skeleton_t ->
+      invocation:GD_bus_method_invocation.d_bus_method_invocation_t ->
       bool) ->
     unit ->
     Gobject.Signal.handler_id
@@ -38,15 +38,9 @@ class d_bus_object_skeleton (obj : D_bus_object_skeleton.t) :
         self#as_d_bus_object_skeleton ~callback:(fun ~interface ~invocation ->
           callback
             ~interface:
-              (Option.map
-                 (fun w ->
-                   new GD_bus_interface_skeleton.d_bus_interface_skeleton w)
-                 interface)
+              (new GD_bus_interface_skeleton.d_bus_interface_skeleton interface)
             ~invocation:
-              (Option.map
-                 (fun w ->
-                   new GD_bus_method_invocation.d_bus_method_invocation w)
-                 invocation))
+              (new GD_bus_method_invocation.d_bus_method_invocation invocation))
 
     method add_interface :
         GD_bus_interface_skeleton.d_bus_interface_skeleton_t -> unit =

@@ -434,7 +434,7 @@ and Device : sig
   val on_tool_changed :
     ?after:bool ->
     t ->
-    callback:(tool:Device_tool.t option -> unit) ->
+    callback:(tool:Device_tool.t -> unit) ->
     Gobject.Signal.handler_id
 end = struct
   type t = [ `device | `object_ ] Gobject.obj
@@ -571,7 +571,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let tool =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           callback ~tool)
     in
@@ -854,13 +854,13 @@ and Display : sig
   val on_seat_added :
     ?after:bool ->
     t ->
-    callback:(seat:Seat.t option -> unit) ->
+    callback:(seat:Seat.t -> unit) ->
     Gobject.Signal.handler_id
 
   val on_seat_removed :
     ?after:bool ->
     t ->
-    callback:(seat:Seat.t option -> unit) ->
+    callback:(seat:Seat.t -> unit) ->
     Gobject.Signal.handler_id
 
   val on_setting_changed :
@@ -1152,7 +1152,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let seat =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           callback ~seat)
     in
@@ -1164,7 +1164,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let seat =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           callback ~seat)
     in
@@ -2107,25 +2107,25 @@ and Seat : sig
   val on_device_added :
     ?after:bool ->
     t ->
-    callback:(device:Device.t option -> unit) ->
+    callback:(device:Device.t -> unit) ->
     Gobject.Signal.handler_id
 
   val on_device_removed :
     ?after:bool ->
     t ->
-    callback:(device:Device.t option -> unit) ->
+    callback:(device:Device.t -> unit) ->
     Gobject.Signal.handler_id
 
   val on_tool_added :
     ?after:bool ->
     t ->
-    callback:(tool:Device_tool.t option -> unit) ->
+    callback:(tool:Device_tool.t -> unit) ->
     Gobject.Signal.handler_id
 
   val on_tool_removed :
     ?after:bool ->
     t ->
-    callback:(tool:Device_tool.t option -> unit) ->
+    callback:(tool:Device_tool.t -> unit) ->
     Gobject.Signal.handler_id
 end = struct
   type t = [ `seat | `object_ ] Gobject.obj
@@ -2159,7 +2159,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let device =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           callback ~device)
     in
@@ -2171,7 +2171,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let device =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           callback ~device)
     in
@@ -2183,7 +2183,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let tool =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           callback ~tool)
     in
@@ -2195,7 +2195,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let tool =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           callback ~tool)
     in
@@ -2444,13 +2444,13 @@ and Surface : sig
   val on_enter_monitor :
     ?after:bool ->
     t ->
-    callback:(monitor:Monitor.t option -> unit) ->
+    callback:(monitor:Monitor.t -> unit) ->
     Gobject.Signal.handler_id
 
   val on_event :
     ?after:bool ->
     t ->
-    callback:(event:Event.t option -> bool) ->
+    callback:(event:Event.t -> bool) ->
     Gobject.Signal.handler_id
 
   val on_layout :
@@ -2462,7 +2462,7 @@ and Surface : sig
   val on_leave_monitor :
     ?after:bool ->
     t ->
-    callback:(monitor:Monitor.t option -> unit) ->
+    callback:(monitor:Monitor.t -> unit) ->
     Gobject.Signal.handler_id
 end = struct
   type t = [ `surface | `object_ ] Gobject.obj
@@ -2707,7 +2707,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let monitor =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           callback ~monitor)
     in
@@ -2719,7 +2719,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let event =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           let result = callback ~event in
           let v = Gobject.Closure.result argv in
@@ -2750,7 +2750,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let monitor =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           callback ~monitor)
     in

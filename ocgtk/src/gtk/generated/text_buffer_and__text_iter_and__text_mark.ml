@@ -646,7 +646,7 @@ module rec Text_buffer : sig
   val on_mark_deleted :
     ?after:bool ->
     t ->
-    callback:(mark:Text_mark.t option -> unit) ->
+    callback:(mark:Text_mark.t -> unit) ->
     Gobject.Signal.handler_id
 
   val on_modified_changed :
@@ -655,7 +655,7 @@ module rec Text_buffer : sig
   val on_paste_done :
     ?after:bool ->
     t ->
-    callback:(clipboard:Ocgtk_gdk.Gdk.Wrappers.Clipboard.t option -> unit) ->
+    callback:(clipboard:Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> unit) ->
     Gobject.Signal.handler_id
 
   val on_redo :
@@ -1313,7 +1313,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let mark =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           callback ~mark)
     in
@@ -1329,7 +1329,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let clipboard =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           callback ~clipboard)
     in

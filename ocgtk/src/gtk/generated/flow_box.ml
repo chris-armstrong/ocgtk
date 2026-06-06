@@ -215,7 +215,7 @@ let on_child_activated ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let child =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~child)
   in

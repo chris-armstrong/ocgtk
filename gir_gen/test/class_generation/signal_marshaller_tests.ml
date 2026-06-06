@@ -305,6 +305,19 @@ let test_same_ns_gobject_class () =
   in
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"same-ns GObject class" result @@ fun m ->
+  Alcotest.(check string) "ocaml_type" "Widget.t" m.ocaml_type;
+  Alcotest.(check string)
+    "getter_expr" "Gobject.Value.get_object_exn v" m.getter_expr;
+  Alcotest.(check string)
+    "setter_expr" "Gobject.Value.set_object_exn v x" m.setter_expr
+
+let test_same_ns_gobject_class_nullable () =
+  let ctx = gtk_ctx_with_widget () in
+  let gir_type =
+    Type_factory.make_gir_type ~name:"Widget" ~c_type:"GtkWidget*" ~nullable:true ()
+  in
+  let result = classify ~ctx ~gir_type in
+  assert_supported ~label:"same-ns GObject class nullable" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "Widget.t option" m.ocaml_type;
   Alcotest.(check string)
     "getter_expr" "Gobject.Value.get_object v" m.getter_expr;
@@ -318,6 +331,20 @@ let test_cross_ns_gobject_gio_file () =
   in
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"cross-ns GObject class" result @@ fun m ->
+  Alcotest.(check string)
+    "ocaml_type" "Ocgtk_gio.Gio.Wrappers.File.t" m.ocaml_type;
+  Alcotest.(check string)
+    "getter_expr" "Gobject.Value.get_object_exn v" m.getter_expr;
+  Alcotest.(check string)
+    "setter_expr" "Gobject.Value.set_object_exn v x" m.setter_expr
+
+let test_cross_ns_gobject_gio_file_nullable () =
+  let ctx = gtk_ctx_with_gio_file () in
+  let gir_type =
+    Type_factory.make_gir_type ~name:"Gio.File" ~c_type:"GFile*" ~nullable:true ()
+  in
+  let result = classify ~ctx ~gir_type in
+  assert_supported ~label:"cross-ns GObject class nullable" result @@ fun m ->
   Alcotest.(check string)
     "ocaml_type" "Ocgtk_gio.Gio.Wrappers.File.t option" m.ocaml_type;
   Alcotest.(check string)
@@ -396,11 +423,17 @@ let tests =
     Alcotest.test_case "GLib.Variant maps to Gvariant.t" `Quick
       test_glib_variant_maps_to_gvariant;
     Alcotest.test_case
-      "same-ns GObject class -> Widget.t option" `Quick
+      "same-ns GObject class -> Widget.t" `Quick
       test_same_ns_gobject_class;
     Alcotest.test_case
-      "cross-ns GObject class -> Ocgtk_gio.Wrappers.File.t option"
+      "same-ns GObject class nullable -> Widget.t option" `Quick
+      test_same_ns_gobject_class_nullable;
+    Alcotest.test_case
+      "cross-ns GObject class -> Ocgtk_gio.Wrappers.File.t"
       `Quick test_cross_ns_gobject_gio_file;
+    Alcotest.test_case
+      "cross-ns GObject class nullable -> Ocgtk_gio.Wrappers.File.t option"
+      `Quick test_cross_ns_gobject_gio_file_nullable;
     Alcotest.test_case "GLib.Array is Unsupported" `Quick
       test_garray_is_unsupported;
     Alcotest.test_case "Gtk.TextIter boxed is Unsupported" `Quick

@@ -4,8 +4,7 @@ class type volume_monitor_t = object
     callback:
       (drive:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .drive_t
-         option ->
+         .drive_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -15,8 +14,7 @@ class type volume_monitor_t = object
     callback:
       (drive:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .drive_t
-         option ->
+         .drive_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -26,8 +24,7 @@ class type volume_monitor_t = object
     callback:
       (drive:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .drive_t
-         option ->
+         .drive_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -37,8 +34,7 @@ class type volume_monitor_t = object
     callback:
       (drive:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .drive_t
-         option ->
+         .drive_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -48,8 +44,7 @@ class type volume_monitor_t = object
     callback:
       (drive:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .drive_t
-         option ->
+         .drive_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -59,8 +54,7 @@ class type volume_monitor_t = object
     callback:
       (mount:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .mount_t
-         option ->
+         .mount_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -70,8 +64,7 @@ class type volume_monitor_t = object
     callback:
       (mount:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .mount_t
-         option ->
+         .mount_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -81,8 +74,7 @@ class type volume_monitor_t = object
     callback:
       (mount:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .mount_t
-         option ->
+         .mount_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -92,8 +84,7 @@ class type volume_monitor_t = object
     callback:
       (mount:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .mount_t
-         option ->
+         .mount_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -103,8 +94,7 @@ class type volume_monitor_t = object
     callback:
       (volume:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .volume_t
-         option ->
+         .volume_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -114,8 +104,7 @@ class type volume_monitor_t = object
     callback:
       (volume:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .volume_t
-         option ->
+         .volume_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -125,8 +114,7 @@ class type volume_monitor_t = object
     callback:
       (volume:
          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .volume_t
-         option ->
+         .volume_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id

@@ -111,8 +111,7 @@ and widget_t = object
 
   method on_query_tooltip :
     ?after:bool ->
-    callback:
-      (x:int -> y:int -> keyboard_mode:bool -> tooltip:tooltip_t option -> bool) ->
+    callback:(x:int -> y:int -> keyboard_mode:bool -> tooltip:tooltip_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -619,8 +618,7 @@ and widget
       .Widget
       .on_query_tooltip ~after self#as_widget
         ~callback:(fun ~x ~y ~keyboard_mode ~tooltip ->
-          callback ~x ~y ~keyboard_mode
-            ~tooltip:(Option.map (fun w -> new tooltip w) tooltip))
+          callback ~x ~y ~keyboard_mode ~tooltip:(new tooltip tooltip))
 
     method on_realize ?(after = false) ~callback () =
       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

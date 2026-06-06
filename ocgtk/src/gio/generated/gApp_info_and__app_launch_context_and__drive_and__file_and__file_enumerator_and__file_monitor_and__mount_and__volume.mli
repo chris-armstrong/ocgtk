@@ -46,13 +46,13 @@ and app_launch_context_t = object
 
   method on_launch_started :
     ?after:bool ->
-    callback:(info:app_info_t option -> platform_data:Gvariant.t -> unit) ->
+    callback:(info:app_info_t -> platform_data:Gvariant.t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_launched :
     ?after:bool ->
-    callback:(info:app_info_t option -> platform_data:Gvariant.t -> unit) ->
+    callback:(info:app_info_t -> platform_data:Gvariant.t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -426,7 +426,7 @@ and file_monitor_t = object
   method on_changed :
     ?after:bool ->
     callback:
-      (file:file_t option ->
+      (file:file_t ->
       other_file:file_t option ->
       event_type:Gio_enums.filemonitorevent ->
       unit) ->

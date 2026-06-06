@@ -1750,8 +1750,7 @@ and Widget : sig
   val on_query_tooltip :
     ?after:bool ->
     t ->
-    callback:
-      (x:int -> y:int -> keyboard_mode:bool -> tooltip:Tooltip.t option -> bool) ->
+    callback:(x:int -> y:int -> keyboard_mode:bool -> tooltip:Tooltip.t -> bool) ->
     Gobject.Signal.handler_id
 
   val on_realize :

@@ -345,7 +345,7 @@ let on_event ?after obj ~callback =
         in
         let connectable =
           let v = Gobject.Closure.nth argv ~pos:2 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let connection =
           let v = Gobject.Closure.nth argv ~pos:3 in

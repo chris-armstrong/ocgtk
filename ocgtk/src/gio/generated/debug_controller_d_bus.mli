@@ -37,5 +37,5 @@ external get_connection : t -> D_bus_connection.t
 val on_authorize :
   ?after:bool ->
   t ->
-  callback:(invocation:D_bus_method_invocation.t option -> bool) ->
+  callback:(invocation:D_bus_method_invocation.t -> bool) ->
   Gobject.Signal.handler_id

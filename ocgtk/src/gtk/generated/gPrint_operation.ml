@@ -3,7 +3,7 @@ class type print_operation_t = object
 
   method on_begin_print :
     ?after:bool ->
-    callback:(context:GPrint_context.print_context_t option -> unit) ->
+    callback:(context:GPrint_context.print_context_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -12,8 +12,7 @@ class type print_operation_t = object
     callback:
       (widget:
          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t
-         option ->
+         .widget_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -26,28 +25,27 @@ class type print_operation_t = object
 
   method on_draw_page :
     ?after:bool ->
-    callback:
-      (context:GPrint_context.print_context_t option -> page_nr:int -> unit) ->
+    callback:(context:GPrint_context.print_context_t -> page_nr:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_end_print :
     ?after:bool ->
-    callback:(context:GPrint_context.print_context_t option -> unit) ->
+    callback:(context:GPrint_context.print_context_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_paginate :
     ?after:bool ->
-    callback:(context:GPrint_context.print_context_t option -> bool) ->
+    callback:(context:GPrint_context.print_context_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_preview :
     ?after:bool ->
     callback:
-      (preview:GPrint_operation_preview.print_operation_preview_t option ->
-      context:GPrint_context.print_context_t option ->
+      (preview:GPrint_operation_preview.print_operation_preview_t ->
+      context:GPrint_context.print_context_t ->
       parent:GApplication_and__window_and__window_group.window_t option ->
       bool) ->
     unit ->
@@ -56,9 +54,9 @@ class type print_operation_t = object
   method on_request_page_setup :
     ?after:bool ->
     callback:
-      (context:GPrint_context.print_context_t option ->
+      (context:GPrint_context.print_context_t ->
       page_nr:int ->
-      setup:GPage_setup.page_setup_t option ->
+      setup:GPage_setup.page_setup_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -71,10 +69,9 @@ class type print_operation_t = object
     callback:
       (widget:
          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t
-         option ->
-      setup:GPage_setup.page_setup_t option ->
-      settings:GPrint_settings.print_settings_t option ->
+         .widget_t ->
+      setup:GPage_setup.page_setup_t ->
+      settings:GPrint_settings.print_settings_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id
@@ -126,21 +123,16 @@ class print_operation (obj : Print_operation.t) : print_operation_t =
     method on_begin_print ?(after = false) ~callback () =
       Print_operation.on_begin_print ~after self#as_print_operation
         ~callback:(fun ~context ->
-          callback
-            ~context:
-              (Option.map (fun w -> new GPrint_context.print_context w) context))
+          callback ~context:(new GPrint_context.print_context context))
 
     method on_custom_widget_apply ?(after = false) ~callback () =
       Print_operation.on_custom_widget_apply ~after self#as_print_operation
         ~callback:(fun ~widget ->
           callback
             ~widget:
-              (Option.map
-                 (fun w ->
-                   new
-                     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-                     .widget
-                     w)
+              (new
+                 GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+                 .widget
                  widget))
 
     method on_done_ ?(after = false) ~callback () =
@@ -149,36 +141,25 @@ class print_operation (obj : Print_operation.t) : print_operation_t =
     method on_draw_page ?(after = false) ~callback () =
       Print_operation.on_draw_page ~after self#as_print_operation
         ~callback:(fun ~context ~page_nr ->
-          callback
-            ~context:
-              (Option.map (fun w -> new GPrint_context.print_context w) context)
-            ~page_nr)
+          callback ~context:(new GPrint_context.print_context context) ~page_nr)
 
     method on_end_print ?(after = false) ~callback () =
       Print_operation.on_end_print ~after self#as_print_operation
         ~callback:(fun ~context ->
-          callback
-            ~context:
-              (Option.map (fun w -> new GPrint_context.print_context w) context))
+          callback ~context:(new GPrint_context.print_context context))
 
     method on_paginate ?(after = false) ~callback () =
       Print_operation.on_paginate ~after self#as_print_operation
         ~callback:(fun ~context ->
-          callback
-            ~context:
-              (Option.map (fun w -> new GPrint_context.print_context w) context))
+          callback ~context:(new GPrint_context.print_context context))
 
     method on_preview ?(after = false) ~callback () =
       Print_operation.on_preview ~after self#as_print_operation
         ~callback:(fun ~preview ~context ~parent ->
           callback
             ~preview:
-              (Option.map
-                 (fun w ->
-                   new GPrint_operation_preview.print_operation_preview w)
-                 preview)
-            ~context:
-              (Option.map (fun w -> new GPrint_context.print_context w) context)
+              (new GPrint_operation_preview.print_operation_preview preview)
+            ~context:(new GPrint_context.print_context context)
             ~parent:
               (Option.map
                  (fun w ->
@@ -189,10 +170,9 @@ class print_operation (obj : Print_operation.t) : print_operation_t =
       Print_operation.on_request_page_setup ~after self#as_print_operation
         ~callback:(fun ~context ~page_nr ~setup ->
           callback
-            ~context:
-              (Option.map (fun w -> new GPrint_context.print_context w) context)
+            ~context:(new GPrint_context.print_context context)
             ~page_nr
-            ~setup:(Option.map (fun w -> new GPage_setup.page_setup w) setup))
+            ~setup:(new GPage_setup.page_setup setup))
 
     method on_status_changed ?(after = false) ~callback () =
       Print_operation.on_status_changed ~after self#as_print_operation ~callback
@@ -202,18 +182,12 @@ class print_operation (obj : Print_operation.t) : print_operation_t =
         ~callback:(fun ~widget ~setup ~settings ->
           callback
             ~widget:
-              (Option.map
-                 (fun w ->
-                   new
-                     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-                     .widget
-                     w)
+              (new
+                 GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+                 .widget
                  widget)
-            ~setup:(Option.map (fun w -> new GPage_setup.page_setup w) setup)
-            ~settings:
-              (Option.map
-                 (fun w -> new GPrint_settings.print_settings w)
-                 settings))
+            ~setup:(new GPage_setup.page_setup setup)
+            ~settings:(new GPrint_settings.print_settings settings))
 
     method cancel : unit -> unit = fun () -> Print_operation.cancel obj
 

@@ -347,16 +347,13 @@ module rec Cell_area : sig
   val on_focus_changed :
     ?after:bool ->
     t ->
-    callback:(renderer:Cell_renderer.t option -> path:string -> unit) ->
+    callback:(renderer:Cell_renderer.t -> path:string -> unit) ->
     Gobject.Signal.handler_id
 
   val on_remove_editable :
     ?after:bool ->
     t ->
-    callback:
-      (renderer:Cell_renderer.t option ->
-      editable:Cell_editable.t option ->
-      unit) ->
+    callback:(renderer:Cell_renderer.t -> editable:Cell_editable.t -> unit) ->
     Gobject.Signal.handler_id
 end = struct
   type t = [ `cell_area | `initially_unowned | `object_ ] Gobject.obj
@@ -706,7 +703,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let renderer =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           let path =
             let v = Gobject.Closure.nth argv ~pos:2 in
@@ -722,11 +719,11 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let renderer =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           let editable =
             let v = Gobject.Closure.nth argv ~pos:2 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           callback ~renderer ~editable)
     in

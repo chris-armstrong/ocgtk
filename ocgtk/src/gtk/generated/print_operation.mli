@@ -296,7 +296,7 @@ external cancel : t -> unit = "ml_gtk_print_operation_cancel"
 val on_begin_print :
   ?after:bool ->
   t ->
-  callback:(context:Print_context.t option -> unit) ->
+  callback:(context:Print_context.t -> unit) ->
   Gobject.Signal.handler_id
 
 val on_custom_widget_apply :
@@ -306,8 +306,7 @@ val on_custom_widget_apply :
     (widget:
        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
        .Widget
-       .t
-       option ->
+       .t ->
     unit) ->
   Gobject.Signal.handler_id
 
@@ -320,27 +319,27 @@ val on_done_ :
 val on_draw_page :
   ?after:bool ->
   t ->
-  callback:(context:Print_context.t option -> page_nr:int -> unit) ->
+  callback:(context:Print_context.t -> page_nr:int -> unit) ->
   Gobject.Signal.handler_id
 
 val on_end_print :
   ?after:bool ->
   t ->
-  callback:(context:Print_context.t option -> unit) ->
+  callback:(context:Print_context.t -> unit) ->
   Gobject.Signal.handler_id
 
 val on_paginate :
   ?after:bool ->
   t ->
-  callback:(context:Print_context.t option -> bool) ->
+  callback:(context:Print_context.t -> bool) ->
   Gobject.Signal.handler_id
 
 val on_preview :
   ?after:bool ->
   t ->
   callback:
-    (preview:Print_operation_preview.t option ->
-    context:Print_context.t option ->
+    (preview:Print_operation_preview.t ->
+    context:Print_context.t ->
     parent:Application_and__window_and__window_group.Window.t option ->
     bool) ->
   Gobject.Signal.handler_id
@@ -349,10 +348,7 @@ val on_request_page_setup :
   ?after:bool ->
   t ->
   callback:
-    (context:Print_context.t option ->
-    page_nr:int ->
-    setup:Page_setup.t option ->
-    unit) ->
+    (context:Print_context.t -> page_nr:int -> setup:Page_setup.t -> unit) ->
   Gobject.Signal.handler_id
 
 val on_status_changed :
@@ -365,9 +361,8 @@ val on_update_custom_widget :
     (widget:
        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
        .Widget
-       .t
-       option ->
-    setup:Page_setup.t option ->
-    settings:Print_settings.t option ->
+       .t ->
+    setup:Page_setup.t ->
+    settings:Print_settings.t ->
     unit) ->
   Gobject.Signal.handler_id

@@ -3,14 +3,14 @@ class type drag_source_t = object
 
   method on_drag_begin :
     ?after:bool ->
-    callback:(drag:Ocgtk_gdk.Gdk.Drag.drag_t option -> unit) ->
+    callback:(drag:Ocgtk_gdk.Gdk.Drag.drag_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_drag_cancel :
     ?after:bool ->
     callback:
-      (drag:Ocgtk_gdk.Gdk.Drag.drag_t option ->
+      (drag:Ocgtk_gdk.Gdk.Drag.drag_t ->
       reason:Ocgtk_gdk.Gdk_enums.dragcancelreason ->
       bool) ->
     unit ->
@@ -18,7 +18,7 @@ class type drag_source_t = object
 
   method on_drag_end :
     ?after:bool ->
-    callback:(drag:Ocgtk_gdk.Gdk.Drag.drag_t option -> delete_data:bool -> unit) ->
+    callback:(drag:Ocgtk_gdk.Gdk.Drag.drag_t -> delete_data:bool -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 

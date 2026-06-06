@@ -2,7 +2,7 @@ class type dtls_connection_t = object
   method on_accept_certificate :
     ?after:bool ->
     callback:
-      (peer_cert:GTls_certificate.tls_certificate_t option ->
+      (peer_cert:GTls_certificate.tls_certificate_t ->
       errors:Gio_enums.tlscertificateflags ->
       bool) ->
     unit ->
@@ -74,10 +74,7 @@ class dtls_connection (obj : Dtls_connection.t) : dtls_connection_t =
       Dtls_connection.on_accept_certificate ~after self#as_dtls_connection
         ~callback:(fun ~peer_cert ~errors ->
           callback
-            ~peer_cert:
-              (Option.map
-                 (fun w -> new GTls_certificate.tls_certificate w)
-                 peer_cert)
+            ~peer_cert:(new GTls_certificate.tls_certificate peer_cert)
             ~errors)
 
     method close : GCancellable.cancellable_t option -> (bool, GError.t) result

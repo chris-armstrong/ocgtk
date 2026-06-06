@@ -275,7 +275,7 @@ val on_accept_certificate :
   ?after:bool ->
   t ->
   callback:
-    (peer_cert:Tls_certificate.t option ->
+    (peer_cert:Tls_certificate.t ->
     errors:Gio_enums.tlscertificateflags ->
     bool) ->
   Gobject.Signal.handler_id

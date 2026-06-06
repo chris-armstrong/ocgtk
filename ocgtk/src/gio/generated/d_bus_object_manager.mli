@@ -35,8 +35,8 @@ val on_interface_added :
   ?after:bool ->
   t ->
   callback:
-    (object_:D_bus_interface_and__d_bus_object.D_bus_object.t option ->
-    interface:D_bus_interface_and__d_bus_object.D_bus_interface.t option ->
+    (object_:D_bus_interface_and__d_bus_object.D_bus_object.t ->
+    interface:D_bus_interface_and__d_bus_object.D_bus_interface.t ->
     unit) ->
   Gobject.Signal.handler_id
 
@@ -44,21 +44,19 @@ val on_interface_removed :
   ?after:bool ->
   t ->
   callback:
-    (object_:D_bus_interface_and__d_bus_object.D_bus_object.t option ->
-    interface:D_bus_interface_and__d_bus_object.D_bus_interface.t option ->
+    (object_:D_bus_interface_and__d_bus_object.D_bus_object.t ->
+    interface:D_bus_interface_and__d_bus_object.D_bus_interface.t ->
     unit) ->
   Gobject.Signal.handler_id
 
 val on_object_added :
   ?after:bool ->
   t ->
-  callback:
-    (object_:D_bus_interface_and__d_bus_object.D_bus_object.t option -> unit) ->
+  callback:(object_:D_bus_interface_and__d_bus_object.D_bus_object.t -> unit) ->
   Gobject.Signal.handler_id
 
 val on_object_removed :
   ?after:bool ->
   t ->
-  callback:
-    (object_:D_bus_interface_and__d_bus_object.D_bus_object.t option -> unit) ->
+  callback:(object_:D_bus_interface_and__d_bus_object.D_bus_object.t -> unit) ->
   Gobject.Signal.handler_id

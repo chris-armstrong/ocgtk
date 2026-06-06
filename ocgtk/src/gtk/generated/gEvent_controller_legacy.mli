@@ -5,7 +5,7 @@ class type event_controller_legacy_t = object
 
   method on_event :
     ?after:bool ->
-    callback:(event:Ocgtk_gdk.Gdk.Event.event_t option -> bool) ->
+    callback:(event:Ocgtk_gdk.Gdk.Event.event_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 

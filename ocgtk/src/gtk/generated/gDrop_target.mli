@@ -5,7 +5,7 @@ class type drop_target_t = object
 
   method on_accept :
     ?after:bool ->
-    callback:(drop:Ocgtk_gdk.Gdk.Drop.drop_t option -> bool) ->
+    callback:(drop:Ocgtk_gdk.Gdk.Drop.drop_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 

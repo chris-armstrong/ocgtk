@@ -70,13 +70,13 @@ and D_bus_object : sig
   val on_interface_added :
     ?after:bool ->
     t ->
-    callback:(interface:D_bus_interface.t option -> unit) ->
+    callback:(interface:D_bus_interface.t -> unit) ->
     Gobject.Signal.handler_id
 
   val on_interface_removed :
     ?after:bool ->
     t ->
-    callback:(interface:D_bus_interface.t option -> unit) ->
+    callback:(interface:D_bus_interface.t -> unit) ->
     Gobject.Signal.handler_id
 end = struct
   type t = [ `d_bus_object ] Gobject.obj
@@ -103,7 +103,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let interface =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           callback ~interface)
     in
@@ -115,7 +115,7 @@ end = struct
       Gobject.Closure.create (fun argv ->
           let interface =
             let v = Gobject.Closure.nth argv ~pos:1 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           callback ~interface)
     in

@@ -10,13 +10,13 @@ end
 and d_bus_object_t = object
   method on_interface_added :
     ?after:bool ->
-    callback:(interface:d_bus_interface_t option -> unit) ->
+    callback:(interface:d_bus_interface_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_interface_removed :
     ?after:bool ->
-    callback:(interface:d_bus_interface_t option -> unit) ->
+    callback:(interface:d_bus_interface_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 

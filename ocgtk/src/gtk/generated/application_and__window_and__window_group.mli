@@ -199,13 +199,13 @@ module rec Application : sig
   val on_window_added :
     ?after:bool ->
     t ->
-    callback:(window:Window.t option -> unit) ->
+    callback:(window:Window.t -> unit) ->
     Gobject.Signal.handler_id
 
   val on_window_removed :
     ?after:bool ->
     t ->
-    callback:(window:Window.t option -> unit) ->
+    callback:(window:Window.t -> unit) ->
     Gobject.Signal.handler_id
 end
 

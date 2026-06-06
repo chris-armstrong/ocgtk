@@ -9,13 +9,13 @@ class type application_t = object
 
   method on_window_added :
     ?after:bool ->
-    callback:(window:window_t option -> unit) ->
+    callback:(window:window_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_window_removed :
     ?after:bool ->
-    callback:(window:window_t option -> unit) ->
+    callback:(window:window_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -206,12 +206,12 @@ class application
     method on_window_added ?(after = false) ~callback () =
       Application_and__window_and__window_group.Application.on_window_added
         ~after self#as_application ~callback:(fun ~window ->
-          callback ~window:(Option.map (fun w -> new window w) window))
+          callback ~window:(new window window))
 
     method on_window_removed ?(after = false) ~callback () =
       Application_and__window_and__window_group.Application.on_window_removed
         ~after self#as_application ~callback:(fun ~window ->
-          callback ~window:(Option.map (fun w -> new window w) window))
+          callback ~window:(new window window))
 
     method add_window : window_t -> unit =
       fun window ->

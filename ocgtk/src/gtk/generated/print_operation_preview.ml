@@ -37,11 +37,11 @@ let on_got_page_size ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let context =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let page_setup =
           let v = Gobject.Closure.nth argv ~pos:2 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~context ~page_setup)
   in
@@ -53,7 +53,7 @@ let on_ready ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let context =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~context)
   in

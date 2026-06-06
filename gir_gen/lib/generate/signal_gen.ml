@@ -116,7 +116,11 @@ let classify_param ~ctx (param : gir_param) :
   | Out | InOut ->
       Error (sprintf "non-In direction parameter '%s'" param.param_name)
   | In -> (
-      match Signal_marshaller.classify ~ctx ~gir_type:param.param_type with
+      let gir_type =
+        { param.param_type with
+          nullable = param.nullable || param.param_type.nullable }
+      in
+      match Signal_marshaller.classify ~ctx ~gir_type with
       | Signal_marshaller.Unsupported reason ->
           Error
             (sprintf "unsupported parameter type for '%s': %s" param.param_name

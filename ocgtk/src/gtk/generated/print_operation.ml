@@ -298,7 +298,7 @@ let on_begin_print ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let context =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~context)
   in
@@ -310,7 +310,7 @@ let on_custom_widget_apply ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let widget =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~widget)
   in
@@ -334,7 +334,7 @@ let on_draw_page ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let context =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let page_nr =
           let v = Gobject.Closure.nth argv ~pos:2 in
@@ -350,7 +350,7 @@ let on_end_print ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let context =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~context)
   in
@@ -362,7 +362,7 @@ let on_paginate ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let context =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let result = callback ~context in
         let v = Gobject.Closure.result argv in
@@ -377,11 +377,11 @@ let on_preview ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let preview =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let context =
           let v = Gobject.Closure.nth argv ~pos:2 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let parent =
           let v = Gobject.Closure.nth argv ~pos:3 in
@@ -400,7 +400,7 @@ let on_request_page_setup ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let context =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let page_nr =
           let v = Gobject.Closure.nth argv ~pos:2 in
@@ -408,7 +408,7 @@ let on_request_page_setup ?after obj ~callback =
         in
         let setup =
           let v = Gobject.Closure.nth argv ~pos:3 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~context ~page_nr ~setup)
   in
@@ -424,15 +424,15 @@ let on_update_custom_widget ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let widget =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let setup =
           let v = Gobject.Closure.nth argv ~pos:2 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let settings =
           let v = Gobject.Closure.nth argv ~pos:3 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~widget ~setup ~settings)
   in

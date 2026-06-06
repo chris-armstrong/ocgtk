@@ -1,3 +1,10 @@
+# GIR Code Generator — Detailed Status and Reference
+
+> This is the archived detailed status document for `gir_gen`. For a quick
+> overview, build instructions, and links, see [`../README.md`](../README.md).
+
+---
+
 # GIR Code Generator (gir_gen)
 
 GTK introspection-based code generator for ocgtk bindings.
@@ -381,7 +388,7 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 ### Layer 2: Low-Level OCaml Interfaces (`<class_name>.ml/.mli`)
 - Polymorphic variant type definitions: `type t = [`widget | ...] Gobject.obj` (see `generate/layer1/layer1_main.ml`)
 - External function declarations for constructors, methods, and properties
-- Hierarchy accessor methods (`as_widget`, `as_event_controller`, etc.) 
+- Hierarchy accessor methods (`as_widget`, `as_event_controller`, etc.)
 - Combined modules for cyclic dependencies using Tarjan's SCC algorithm (see `dependency_analysis.ml`)
 - **Smart type resolution for cyclic modules** - automatically uses simple names within a cycle (`Window.t`) and fully-qualified names for external references (`Application_and__window_and__window_group.Window.t`)
 - Over 600 generated binding files
@@ -513,7 +520,7 @@ drives polymorphic variant types in Layer 1 and `inherit` in Layer 2.
 The former `hierarchy_detection.ml` module was removed (2026-03-23) as it
 was entirely dead code.
 
-### Filtering and Exclusions (filtering.ml - 150+ lines, exclude_list.ml - 85 lines)
+### Filtering and Exclusions (filtering.ml - ~281 lines, exclude_list.ml - 68 lines)
 **Working:**
 - Platform-specific type filtering (PrintJob, etc.)
 - Variadic function detection and filtering
@@ -522,9 +529,8 @@ was entirely dead code.
 - Virtual method de-duplication
 
 **What Gets Filtered:**
-- Methods with Out/InOut parameters (see `filtering.ml`)
 - Methods with unknown types in parameters/returns (cross-namespace types are NOT filtered — they resolve via references)
-- Signals with parameters or non-void returns
+- Signals with unsupported parameter types or return types
 - Variadic functions (hardcoded list in `exclude_list.ml`)
 - Platform-specific classes (Windows/macOS-only widgets)
 

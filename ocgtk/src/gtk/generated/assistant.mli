@@ -211,7 +211,6 @@ val on_prepare :
     (page:
        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
        .Widget
-       .t
-       option ->
+       .t ->
     unit) ->
   Gobject.Signal.handler_id

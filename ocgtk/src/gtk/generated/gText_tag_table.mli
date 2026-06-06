@@ -3,19 +3,19 @@ class type text_tag_table_t = object
 
   method on_tag_added :
     ?after:bool ->
-    callback:(tag:GText_tag.text_tag_t option -> unit) ->
+    callback:(tag:GText_tag.text_tag_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_tag_changed :
     ?after:bool ->
-    callback:(tag:GText_tag.text_tag_t option -> size_changed:bool -> unit) ->
+    callback:(tag:GText_tag.text_tag_t -> size_changed:bool -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_tag_removed :
     ?after:bool ->
-    callback:(tag:GText_tag.text_tag_t option -> unit) ->
+    callback:(tag:GText_tag.text_tag_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 

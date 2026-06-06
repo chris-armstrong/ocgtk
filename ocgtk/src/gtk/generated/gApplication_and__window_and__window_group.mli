@@ -6,13 +6,13 @@ class type application_t = object
 
   method on_window_added :
     ?after:bool ->
-    callback:(window:window_t option -> unit) ->
+    callback:(window:window_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_window_removed :
     ?after:bool ->
-    callback:(window:window_t option -> unit) ->
+    callback:(window:window_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 

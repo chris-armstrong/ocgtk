@@ -13,13 +13,13 @@ end
 and d_bus_object_t = object
   method on_interface_added :
     ?after:bool ->
-    callback:(interface:d_bus_interface_t option -> unit) ->
+    callback:(interface:d_bus_interface_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_interface_removed :
     ?after:bool ->
-    callback:(interface:d_bus_interface_t option -> unit) ->
+    callback:(interface:d_bus_interface_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -56,14 +56,12 @@ and d_bus_object (obj : D_bus_interface_and__d_bus_object.D_bus_object.t) :
     method on_interface_added ?(after = false) ~callback () =
       D_bus_interface_and__d_bus_object.D_bus_object.on_interface_added ~after
         self#as_d_bus_object ~callback:(fun ~interface ->
-          callback
-            ~interface:(Option.map (fun w -> new d_bus_interface w) interface))
+          callback ~interface:(new d_bus_interface interface))
 
     method on_interface_removed ?(after = false) ~callback () =
       D_bus_interface_and__d_bus_object.D_bus_object.on_interface_removed ~after
         self#as_d_bus_object ~callback:(fun ~interface ->
-          callback
-            ~interface:(Option.map (fun w -> new d_bus_interface w) interface))
+          callback ~interface:(new d_bus_interface interface))
 
     method get_interface : string -> d_bus_interface_t option =
       fun interface_name ->

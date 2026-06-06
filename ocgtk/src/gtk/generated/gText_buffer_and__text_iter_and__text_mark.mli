@@ -10,7 +10,7 @@ class type text_buffer_t = object
 
   method on_mark_deleted :
     ?after:bool ->
-    callback:(mark:text_mark_t option -> unit) ->
+    callback:(mark:text_mark_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -19,7 +19,7 @@ class type text_buffer_t = object
 
   method on_paste_done :
     ?after:bool ->
-    callback:(clipboard:Ocgtk_gdk.Gdk.Clipboard.clipboard_t option -> unit) ->
+    callback:(clipboard:Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 

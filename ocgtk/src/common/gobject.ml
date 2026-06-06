@@ -183,10 +183,12 @@ module Value = struct
   external set_object_null : t -> unit = "ml_g_value_set_object_null"
 
   let get_object v = try Some (get_object_internal v) with _ -> None
-
   let set_object v = function
     | Some obj -> set_object_internal v obj
     | None -> set_object_null v
+
+  let get_object_exn v = get_object_internal v
+  let set_object_exn v obj = set_object_internal v obj
 end
 
 (** {2 Properties} *)

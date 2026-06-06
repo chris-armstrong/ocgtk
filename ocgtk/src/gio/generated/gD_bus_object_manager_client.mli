@@ -6,8 +6,8 @@ class type d_bus_object_manager_client_t = object
   method on_interface_proxy_signal :
     ?after:bool ->
     callback:
-      (object_proxy:GD_bus_object_proxy.d_bus_object_proxy_t option ->
-      interface_proxy:GD_bus_proxy.d_bus_proxy_t option ->
+      (object_proxy:GD_bus_object_proxy.d_bus_object_proxy_t ->
+      interface_proxy:GD_bus_proxy.d_bus_proxy_t ->
       sender_name:string ->
       signal_name:string ->
       parameters:Gvariant.t ->

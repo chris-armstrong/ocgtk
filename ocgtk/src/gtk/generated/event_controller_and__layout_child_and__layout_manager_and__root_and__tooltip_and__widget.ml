@@ -1964,8 +1964,7 @@ and Widget : sig
   val on_query_tooltip :
     ?after:bool ->
     t ->
-    callback:
-      (x:int -> y:int -> keyboard_mode:bool -> tooltip:Tooltip.t option -> bool) ->
+    callback:(x:int -> y:int -> keyboard_mode:bool -> tooltip:Tooltip.t -> bool) ->
     Gobject.Signal.handler_id
 
   val on_realize :
@@ -3557,7 +3556,7 @@ end = struct
           in
           let tooltip =
             let v = Gobject.Closure.nth argv ~pos:4 in
-            Gobject.Value.get_object v
+            Gobject.Value.get_object_exn v
           in
           let result = callback ~x ~y ~keyboard_mode ~tooltip in
           let v = Gobject.Closure.result argv in

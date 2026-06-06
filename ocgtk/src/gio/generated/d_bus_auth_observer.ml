@@ -37,7 +37,7 @@ let on_authorize_authenticated_peer ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let stream =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let credentials =
           let v = Gobject.Closure.nth argv ~pos:2 in

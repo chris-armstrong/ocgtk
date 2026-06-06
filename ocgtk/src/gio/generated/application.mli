@@ -463,7 +463,7 @@ val on_activate :
 val on_command_line :
   ?after:bool ->
   t ->
-  callback:(command_line:Application_command_line.t option -> int) ->
+  callback:(command_line:Application_command_line.t -> int) ->
   Gobject.Signal.handler_id
 
 val on_name_lost :

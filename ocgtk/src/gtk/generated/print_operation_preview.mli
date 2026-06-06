@@ -35,12 +35,11 @@ external end_preview : t -> unit = "ml_gtk_print_operation_preview_end_preview"
 val on_got_page_size :
   ?after:bool ->
   t ->
-  callback:
-    (context:Print_context.t option -> page_setup:Page_setup.t option -> unit) ->
+  callback:(context:Print_context.t -> page_setup:Page_setup.t -> unit) ->
   Gobject.Signal.handler_id
 
 val on_ready :
   ?after:bool ->
   t ->
-  callback:(context:Print_context.t option -> unit) ->
+  callback:(context:Print_context.t -> unit) ->
   Gobject.Signal.handler_id

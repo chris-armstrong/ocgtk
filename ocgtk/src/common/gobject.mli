@@ -212,6 +212,13 @@ module Value : sig
 
   val get_object : t -> 'a obj option
   val set_object : t -> 'a obj option -> unit
+
+  (** Get a GObject from a GValue, raising [Failure] if the value is NULL.
+      Use this when the GIR declares the parameter non-nullable. *)
+  val get_object_exn : t -> 'a obj
+
+  (** Set a non-nullable GObject on a GValue. *)
+  val set_object_exn : t -> 'a obj -> unit
 end
 
 (** {2 Properties} *)

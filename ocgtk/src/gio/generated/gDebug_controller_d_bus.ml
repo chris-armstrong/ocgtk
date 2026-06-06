@@ -5,8 +5,7 @@ class type debug_controller_d_bus_t = object
   method on_authorize :
     ?after:bool ->
     callback:
-      (invocation:GD_bus_method_invocation.d_bus_method_invocation_t option ->
-      bool) ->
+      (invocation:GD_bus_method_invocation.d_bus_method_invocation_t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -29,10 +28,7 @@ class debug_controller_d_bus (obj : Debug_controller_d_bus.t) :
         ~callback:(fun ~invocation ->
           callback
             ~invocation:
-              (Option.map
-                 (fun w ->
-                   new GD_bus_method_invocation.d_bus_method_invocation w)
-                 invocation))
+              (new GD_bus_method_invocation.d_bus_method_invocation invocation))
 
     method stop : unit -> unit = fun () -> Debug_controller_d_bus.stop obj
 

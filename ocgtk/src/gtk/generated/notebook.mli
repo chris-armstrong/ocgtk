@@ -445,8 +445,7 @@ val on_create_window :
     (page:
        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
        .Widget
-       .t
-       option ->
+       .t ->
     t option) ->
   Gobject.Signal.handler_id
 
@@ -469,8 +468,7 @@ val on_page_added :
     (child:
        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
        .Widget
-       .t
-       option ->
+       .t ->
     page_num:int ->
     unit) ->
   Gobject.Signal.handler_id
@@ -482,8 +480,7 @@ val on_page_removed :
     (child:
        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
        .Widget
-       .t
-       option ->
+       .t ->
     page_num:int ->
     unit) ->
   Gobject.Signal.handler_id
@@ -495,8 +492,7 @@ val on_page_reordered :
     (child:
        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
        .Widget
-       .t
-       option ->
+       .t ->
     page_num:int ->
     unit) ->
   Gobject.Signal.handler_id
@@ -520,8 +516,7 @@ val on_switch_page :
     (page:
        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
        .Widget
-       .t
-       option ->
+       .t ->
     page_num:int ->
     unit) ->
   Gobject.Signal.handler_id

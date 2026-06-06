@@ -52,7 +52,7 @@ val on_authorize_method :
   ?after:bool ->
   t ->
   callback:
-    (interface:D_bus_interface_skeleton.t option ->
-    invocation:D_bus_method_invocation.t option ->
+    (interface:D_bus_interface_skeleton.t ->
+    invocation:D_bus_method_invocation.t ->
     bool) ->
   Gobject.Signal.handler_id

@@ -61,7 +61,7 @@ let on_drive_changed ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drive =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~drive)
   in
@@ -73,7 +73,7 @@ let on_drive_connected ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drive =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~drive)
   in
@@ -85,7 +85,7 @@ let on_drive_disconnected ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drive =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~drive)
   in
@@ -97,7 +97,7 @@ let on_drive_eject_button ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drive =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~drive)
   in
@@ -109,7 +109,7 @@ let on_drive_stop_button ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let drive =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~drive)
   in
@@ -121,7 +121,7 @@ let on_mount_added ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let mount =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~mount)
   in
@@ -133,7 +133,7 @@ let on_mount_changed ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let mount =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~mount)
   in
@@ -145,7 +145,7 @@ let on_mount_pre_unmount ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let mount =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~mount)
   in
@@ -157,7 +157,7 @@ let on_mount_removed ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let mount =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~mount)
   in
@@ -169,7 +169,7 @@ let on_volume_added ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let volume =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~volume)
   in
@@ -181,7 +181,7 @@ let on_volume_changed ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let volume =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~volume)
   in
@@ -193,7 +193,7 @@ let on_volume_removed ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let volume =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~volume)
   in

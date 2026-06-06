@@ -1,8 +1,7 @@
 class type display_manager_t = object
   method on_display_opened :
     ?after:bool ->
-    callback:
-      (display:GApp_launch_context_cycle_de440b34.display_t option -> unit) ->
+    callback:(display:GApp_launch_context_cycle_de440b34.display_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -28,10 +27,7 @@ class display_manager (obj : Display_manager.t) : display_manager_t =
       Display_manager.on_display_opened ~after self#as_display_manager
         ~callback:(fun ~display ->
           callback
-            ~display:
-              (Option.map
-                 (fun w -> new GApp_launch_context_cycle_de440b34.display w)
-                 display))
+            ~display:(new GApp_launch_context_cycle_de440b34.display display))
 
     method get_default_display :
         unit -> GApp_launch_context_cycle_de440b34.display_t option =

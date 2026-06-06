@@ -3,16 +3,15 @@ class type cell_area_t = object
 
   method on_focus_changed :
     ?after:bool ->
-    callback:
-      (renderer:GCell_renderer.cell_renderer_t option -> path:string -> unit) ->
+    callback:(renderer:GCell_renderer.cell_renderer_t -> path:string -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_remove_editable :
     ?after:bool ->
     callback:
-      (renderer:GCell_renderer.cell_renderer_t option ->
-      editable:GCell_editable.cell_editable_t option ->
+      (renderer:GCell_renderer.cell_renderer_t ->
+      editable:GCell_editable.cell_editable_t ->
       unit) ->
     unit ->
     Gobject.Signal.handler_id

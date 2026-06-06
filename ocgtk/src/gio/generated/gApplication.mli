@@ -8,8 +8,7 @@ class type application_t = object
   method on_command_line :
     ?after:bool ->
     callback:
-      (command_line:GApplication_command_line.application_command_line_t option ->
-      int) ->
+      (command_line:GApplication_command_line.application_command_line_t -> int) ->
     unit ->
     Gobject.Signal.handler_id
 

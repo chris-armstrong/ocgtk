@@ -93,7 +93,7 @@ let on_g_authorize_method ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let invocation =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         let result = callback ~invocation in
         let v = Gobject.Closure.result argv in

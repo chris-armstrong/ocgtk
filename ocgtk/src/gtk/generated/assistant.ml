@@ -213,7 +213,7 @@ let on_prepare ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let page =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~page)
   in

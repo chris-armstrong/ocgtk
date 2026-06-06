@@ -229,7 +229,7 @@ let on_row_activated ?after obj ~callback =
     Gobject.Closure.create (fun argv ->
         let row =
           let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object v
+          Gobject.Value.get_object_exn v
         in
         callback ~row)
   in

@@ -91,5 +91,5 @@ external set_g_flags : t -> Gio_enums.dbusinterfaceskeletonflags -> unit
 val on_g_authorize_method :
   ?after:bool ->
   t ->
-  callback:(invocation:D_bus_method_invocation.t option -> bool) ->
+  callback:(invocation:D_bus_method_invocation.t -> bool) ->
   Gobject.Signal.handler_id
