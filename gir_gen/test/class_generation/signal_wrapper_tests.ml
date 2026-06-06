@@ -289,14 +289,12 @@ let test_mixed_params_key_pressed_shape () =
     | [ _; _; third ] -> third
     | _ -> Alcotest.fail "expected exactly 3 param marshallers"
   in
-  if not (String.mem ~sub:"get_flags_int" third_m.getter_expr) then
-    Alcotest.failf
-      "third param getter_expr should contain 'get_flags_int' but got: %s"
-      third_m.getter_expr;
-  if not (String.mem ~sub:"modifiertype_of_int" third_m.getter_expr) then
-    Alcotest.failf
-      "third param getter_expr should contain 'modifiertype_of_int' but got: %s"
-      third_m.getter_expr
+  Alcotest.(check string) "getter_expr"
+    "Ocgtk_gdk.Gdk_enums.modifiertype_of_int (Gobject.Value.get_flags_int v)"
+    third_m.getter_expr;
+  Alcotest.(check string) "setter_expr"
+    "Gobject.Value.set_flags_int v (Ocgtk_gdk.Gdk_enums.modifiertype_to_int x)"
+    third_m.setter_expr
 
 (* ========================================================================= *)
 (* Case 6: unsupported signal returns Error                                   *)
@@ -415,10 +413,10 @@ let test_int64_param_maps_to_int64_t () =
     | _ -> Alcotest.fail "expected exactly 1 param marshaller"
   in
   Alcotest.(check string) "ocaml_type" "Int64.t" m.ocaml_type;
-  if not (String.mem ~sub:"Gobject.Value.get_int64" m.getter_expr) then
-    Alcotest.failf
-      "getter_expr should contain 'Gobject.Value.get_int64' but got: %s"
-      m.getter_expr
+  Alcotest.(check string) "getter_expr" "Gobject.Value.get_int64 v"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr" "Gobject.Value.set_int64 v x"
+    m.setter_expr
 
 (* ========================================================================= *)
 (* Case 10: GLib.Variant param maps to Gvariant.t                            *)
@@ -448,10 +446,10 @@ let test_variant_param_maps_to_gvariant () =
     | _ -> Alcotest.fail "expected exactly 1 param marshaller"
   in
   Alcotest.(check string) "ocaml_type" "Gvariant.t" m.ocaml_type;
-  if not (String.mem ~sub:"Gobject.Value.get_variant" m.getter_expr) then
-    Alcotest.failf
-      "getter_expr should contain 'Gobject.Value.get_variant' but got: %s"
-      m.getter_expr
+  Alcotest.(check string) "getter_expr" "Gobject.Value.get_variant v"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr" "Gobject.Value.set_variant v x"
+    m.setter_expr
 
 (* ========================================================================= *)
 (* Case 11: L2 forwarder shape                                                *)

@@ -127,12 +127,12 @@ let classify_param ~ctx (param : gir_param) :
     the list of supported (param, marshaller) pairs. *)
 let collect_param_results param_results :
     ((gir_param * Signal_marshaller.marshaller) list, string) result =
-  let first_error =
-    List.find_opt ~f:(function Error _ -> true | Ok _ -> false) param_results
-  in
-  match first_error with
-  | Some (Error reason) -> Error reason
-  | Some (Ok _) -> assert false
+  match
+    List.find_map
+      ~f:(function Error reason -> Some reason | Ok _ -> None)
+      param_results
+  with
+  | Some reason -> Error reason
   | None ->
       let supported =
         List.filter_map
