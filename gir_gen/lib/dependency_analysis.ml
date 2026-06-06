@@ -268,13 +268,16 @@ let compute_module_groups (ctx : generation_context) (entities : entity list) :
       | multiple -> Some (Cycle multiple))
 
 (* Check if a module group is cyclic *)
-let is_cyclic_group = function Single _ -> false | Cycle _ -> true
+let is_cyclic_group (group : module_group) : bool =
+  match group with Single _ -> false | Cycle _ -> true
 
 (* Get entities from a module group *)
-let entities_of_group = function Single e -> [ e ] | Cycle es -> es
+let entities_of_group (group : module_group) : entity list =
+  match group with Single e -> [ e ] | Cycle es -> es
 
 (* Get module name for a group *)
-let module_name_of_group = function
+let module_name_of_group (group : module_group) : string =
+  match group with
   | Single e -> Utils.module_name_of_class e.name
   | Cycle es ->
       (* For cyclic modules, we need to return the name as OCaml will see it

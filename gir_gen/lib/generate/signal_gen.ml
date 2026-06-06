@@ -293,12 +293,11 @@ let emit_l1_let (e : signal_emission) : string =
 (** True iff at least one param or the return value of this signal carries an
     [l2_class] and therefore requires L1↔L2 wrapping inside the L2 forwarder. *)
 let needs_l2_wrapping (e : signal_emission) : bool =
-  List.exists e.param_marshallers ~f:(fun (_, (m : Signal_marshaller.marshaller)) ->
+  List.exists e.param_marshallers
+    ~f:(fun (_, (m : Signal_marshaller.marshaller)) ->
       Option.is_some m.l2_class)
-  ||
-  match e.return_marshaller with
-  | Some m -> Option.is_some m.l2_class
-  | None -> false
+  || Option.fold e.return_marshaller ~none:false
+       ~some:(fun (m : Signal_marshaller.marshaller) -> Option.is_some m.l2_class)
 
 let emit_l2_method ~current_layer2_module ~layer1_module_name ~class_snake
     (e : signal_emission) : string =
@@ -314,34 +313,23 @@ let emit_l2_method ~current_layer2_module ~layer1_module_name ~class_snake
     bprintf buf "  method %s ?(after = false) ~callback () =\n" e.method_name;
     bprintf buf "    %s.%s ~after self#as_%s\n" layer1_module_name
       e.method_name class_snake;
-    (* Closure that wraps L1 params into L2 form before calling the user
-       callback, and unwraps the user's L2 return into L1 form. *)
-    let fun_param_list =
-      match e.param_marshallers with
-      | [] -> "()"
-      | params ->
-          String.concat ~sep:" "
-            (List.map params ~f:(fun (p, _) ->
-                 sprintf "~%s" (sanitize_param_name p.param_name)))
+    (* Build the L1→L2 adapter so the runtime marshalling layer stays hidden from user callbacks. *)
+    let format_user_arg (p, m) =
+      let pname = sanitize_param_name p.param_name in
+      let wrapped =
+        Signal_marshaller.l2_param_wrap_expr ~current_layer2_module m pname
+      in
+      if String.equal wrapped pname then sprintf "~%s" pname
+      else sprintf "~%s:%s" pname wrapped
     in
-    let user_callback_args =
+    let fun_param_list, _user_callback_args, user_call =
       match e.param_marshallers with
-      | [] -> "()"
+      | [] -> ("()", "()", "callback ()")
       | params ->
-          String.concat ~sep:" "
-            (List.map params ~f:(fun (p, m) ->
-                 let pname = sanitize_param_name p.param_name in
-                 let wrapped =
-                   Signal_marshaller.l2_param_wrap_expr
-                     ~current_layer2_module m pname
-                 in
-                 if String.equal wrapped pname then sprintf "~%s" pname
-                 else sprintf "~%s:%s" pname wrapped))
-    in
-    let user_call =
-      match e.param_marshallers with
-      | [] -> "callback ()"
-      | _ -> sprintf "callback %s" user_callback_args
+          let names = List.map params ~f:(fun (p, _) -> sanitize_param_name p.param_name) in
+          let fun_params = String.concat ~sep:" " (List.map names ~f:(sprintf "~%s")) in
+          let user_callback_args = String.concat ~sep:" " (List.map params ~f:format_user_arg) in
+          (fun_params, user_callback_args, sprintf "callback %s" user_callback_args)
     in
     let body =
       match e.return_marshaller with

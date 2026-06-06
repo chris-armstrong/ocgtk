@@ -51,10 +51,10 @@ type marshaller = {
           emission to render the [class_type] in method sigs and the
           [class_ml_name] / [class_layer1_accessor] in L1↔L2 wrap/unwrap
           expressions. *)
-  same_ns_class : string option;
-      (** GIR class name when the target is in the same namespace as the
-          generation context. Used by L1 emission to detect a self-reference
-          and emit the bare [t Gobject.obj option] form. [None] for
+  is_same_ns_class : bool;
+      (** [true] when the target is a GObject class / interface in the same
+          namespace as the generation context. Used by L1 emission to detect a
+          self-reference and emit the bare [t option] form. [false] for
           non-object marshallers and for cross-namespace objects. *)
 }
 
@@ -80,7 +80,7 @@ val classify : ctx:generation_context -> gir_type:gir_type -> result
     Cross-namespace types are resolved via [ctx.cross_references].
 
     GObject class / interface parameters are [Supported] with [ocaml_type] of
-    the form ["<Mod>.t Gobject.obj option"] (always wrapped in [option]
+    the form ["<Mod>.t option"] (always wrapped in [option]
     because [Gobject.Value.get_object] returns [None] for NULL). Same-namespace
     edges introduced by signal params are fed into the dependency graph via
     [Dependency_analysis.extract_signal_dependencies], so any cycles are
@@ -96,7 +96,7 @@ val render_l1_type : current_class:string -> marshaller -> string
 (** [render_l1_type ~current_class m] returns the OCaml type expression for
     [m] as it should appear inside the L1 module of [current_class]. For
     non-object marshallers this is just [m.ocaml_type]; for a same-namespace
-    object whose [same_ns_class] equals [current_class], the bare
+    object whose [is_same_ns_class] is true, the bare
     ["t option"] is used to avoid forming a self-referential compilation-unit
     alias inside the standalone module. *)
 

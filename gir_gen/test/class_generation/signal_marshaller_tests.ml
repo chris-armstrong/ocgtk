@@ -286,10 +286,7 @@ let test_same_ns_gobject_class () =
   in
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"same-ns GObject class" result @@ fun m ->
-  assert_expr_contains ~label:"same-ns GObject class" ~field:"ocaml_type"
-    m.ocaml_type "Widget";
-  assert_expr_contains ~label:"same-ns GObject class" ~field:"ocaml_type"
-    m.ocaml_type ".t option";
+  Alcotest.(check string) "ocaml_type" "Widget.t option" m.ocaml_type;
   Alcotest.(check string)
     "getter_expr" "Gobject.Value.get_object v" m.getter_expr;
   Alcotest.(check string)
@@ -302,12 +299,8 @@ let test_cross_ns_gobject_gio_file () =
   in
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"cross-ns GObject class" result @@ fun m ->
-  assert_expr_contains ~label:"cross-ns GObject class" ~field:"ocaml_type"
-    m.ocaml_type "Ocgtk_gio";
-  assert_expr_contains ~label:"cross-ns GObject class" ~field:"ocaml_type"
-    m.ocaml_type "Wrappers.File";
-  assert_expr_contains ~label:"cross-ns GObject class" ~field:"ocaml_type"
-    m.ocaml_type ".t option";
+  Alcotest.(check string)
+    "ocaml_type" "Ocgtk_gio.Gio.Wrappers.File.t option" m.ocaml_type;
   Alcotest.(check string)
     "getter_expr" "Gobject.Value.get_object v" m.getter_expr;
   Alcotest.(check string)

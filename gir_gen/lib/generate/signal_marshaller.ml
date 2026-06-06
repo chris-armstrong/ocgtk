@@ -10,14 +10,14 @@ type marshaller = {
   getter_expr : string;
   setter_expr : string;
   l2_class : ocaml_class option;
-  same_ns_class : string option;
+  is_same_ns_class : bool;
 }
 
 type result = Supported of marshaller | Unsupported of string
 
-let make_marshaller ?(l2_class = None) ?(same_ns_class = None) ~ocaml_type
-    ~getter_expr ~setter_expr () =
-  { ocaml_type; getter_expr; setter_expr; l2_class; same_ns_class }
+let make_marshaller ?(l2_class = None) ?(is_same_ns_class = false) ~ocaml_type
+    ~getter_expr ~setter_expr () : marshaller =
+  { ocaml_type; getter_expr; setter_expr; l2_class; is_same_ns_class }
 
 (* ===================================================================== *)
 (* Primitive type table                                                  *)
@@ -134,7 +134,7 @@ let cross_ns_object_type namespace class_name =
 let lookup_l2_class ~ctx gir_type : ocaml_class option =
   match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
   | Some { layer2_class = Some lc; _ } -> Some lc
-  | _ -> None
+  | Some { layer2_class = None; _ } | None -> None
 
 (* ===================================================================== *)
 (* Enum / bitfield classification helpers                                *)
@@ -180,18 +180,18 @@ let classify_bitfield ~ctx ~namespace ~name =
 (* Class / interface classification helpers                              *)
 (* ===================================================================== *)
 
-let classify_gobject ~ctx ~gir_type ~namespace ~name =
+let classify_gobject ~ctx ~gir_type ~namespace ~name : result =
   (* GObject class / interface parameters resolve to ['a obj option] because
      [Gobject.Value.get_object] returns [None] for NULL pointers. Same-namespace
      edges are fed into [Dependency_analysis.build_dependency_graph] via
      [extract_signal_dependencies], so any cycle they create is absorbed into a
      combined module by the Tarjan SCC pass.
 
-     The marshaller carries structured info (l2_class, same_ns_class) so that
-     L1 emission can collapse same-class references to bare [t Gobject.obj]
-     and L2 emission can render the L2 [class_type] and emit the
-     [new <class>] / [#<accessor>] wrap/unwrap expressions, all without
-     re-running classify. *)
+      The marshaller carries structured info (l2_class, is_same_ns_class) so that
+      L1 emission can collapse same-class references to bare [t option]
+      and L2 emission can render the L2 [class_type] and emit the
+      [new <class>] / [#<accessor>] wrap/unwrap expressions, all without
+      re-running classify. *)
   let same_ns = String.equal namespace ctx.namespace.namespace_name in
   let base_type =
     if same_ns then same_ns_object_type ~ctx name
@@ -199,18 +199,18 @@ let classify_gobject ~ctx ~gir_type ~namespace ~name =
   in
   let ocaml_type = base_type ^ " option" in
   let l2_class = lookup_l2_class ~ctx gir_type in
-  let same_ns_class = if same_ns then Some name else None in
+  let is_same_ns_class = same_ns in
   Supported
     (make_marshaller ~ocaml_type
        ~getter_expr:"Gobject.Value.get_object v"
        ~setter_expr:"Gobject.Value.set_object v x"
-       ~l2_class ~same_ns_class ())
+       ~l2_class ~is_same_ns_class ())
 
 (* ===================================================================== *)
 (* Main classify function                                                *)
 (* ===================================================================== *)
 
-let classify ~ctx ~gir_type =
+let classify ~ctx ~gir_type : result =
   (* Array types are not yet supported *)
   if Option.is_some gir_type.array then
     Unsupported "GArray not yet supported"
@@ -265,13 +265,11 @@ let classify ~ctx ~gir_type =
 
 (** Render the OCaml type for a marshaller as it should appear inside the L1
     module of [current_class]. For non-object marshallers this is just
-    [ocaml_type]; for a same-namespace object whose [same_ns_class] matches
-    [current_class] the bare ["t Gobject.obj option"] is used to dodge the
+    [ocaml_type]; for a same-namespace object whose [is_same_ns_class] is true,
+    the bare ["t option"] is used to dodge the
     compilation-unit self-alias error. *)
-let render_l1_type ~current_class (m : marshaller) : string =
-  match m.same_ns_class with
-  | Some n when String.equal n current_class -> "t option"
-  | _ -> m.ocaml_type
+let render_l1_type ~current_class:_ (m : marshaller) : string =
+  if m.is_same_ns_class then "t option" else m.ocaml_type
 
 (** Render the L2-form OCaml type for a marshaller in the context of
     [current_layer2_module]. For object marshallers this is the L2 class type

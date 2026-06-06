@@ -173,8 +173,8 @@ static void finalize_gobject(value v) {
  * sign of an unsigned uintptr_t subtraction would be UB; instead compare
  * directly and yield -1 / 0 / 1. */
 static int compare_gobject(value a, value b) {
-    void *pa = *((void**)Data_custom_val(a));
-    void *pb = *((void**)Data_custom_val(b));
+    uintptr_t pa = (uintptr_t)*((void**)Data_custom_val(a));
+    uintptr_t pb = (uintptr_t)*((void**)Data_custom_val(b));
     if (pa == pb) return 0;
     return (pa < pb) ? -1 : 1;
 }
@@ -208,6 +208,10 @@ struct custom_operations ocgtk_gobject_ops = {
  * but [same] documents the intent at the call site. */
 CAMLprim value ml_gobject_same(value a, value b) {
     CAMLparam2(a, b);
+    if (Tag_val(a) != Custom_tag || Custom_ops_val(a) != &ocgtk_gobject_ops)
+        caml_invalid_argument("ml_gobject_same: not a GObject custom block");
+    if (Tag_val(b) != Custom_tag || Custom_ops_val(b) != &ocgtk_gobject_ops)
+        caml_invalid_argument("ml_gobject_same: not a GObject custom block");
     void *pa = *((void**)Data_custom_val(a));
     void *pb = *((void**)Data_custom_val(b));
     CAMLreturn(Val_bool(pa == pb));
