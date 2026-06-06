@@ -1,0 +1,89 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "control-flow-reviewer": {
+      "mode": "subagent",
+      "model": "ollama-cloud/deepseek-v4-flash",
+      "color": "success",
+      "description": "Reviews OCaml files against nesting-and-control-flow, error-handling, and partial-functions guidelines",
+      "prompt": "{file:./agents/control-flow-reviewer.txt}",
+    },
+    "type-correctness-reviewer": {
+      "mode": "subagent",
+      "model": "ollama-cloud/deepseek-v4-flash",
+      "color": "success",
+      "description": "Reviews OCaml files against type-safety, pattern-matching, and module-boundaries guidelines",
+      "prompt": "{file:./agents/type-correctness-reviewer.txt}",
+    },
+    "code-quality-reviewer": {
+      "mode": "subagent",
+      "model": "ollama-cloud/deepseek-v4-flash",
+      "color": "success",
+      "description": "Reviews OCaml files against naming-and-intermediates and code-reuse guidelines",
+      "prompt": "{file:./agents/code-quality-reviewer.txt}",
+    },
+    "abstractions-reviewer": {
+      "mode": "subagent",
+      "model": "ollama-cloud/deepseek-v4-flash",
+      "color": "success",
+      "description": "Reviews OCaml files against the abstractions guideline",
+      "prompt": "{file:./agents/abstractions-reviewer.txt}",
+    },
+    "test-reviewer": {
+      "mode": "subagent",
+      "model": "ollama-cloud/deepseek-v4-flash",
+      "color": "success",
+      "description": "Reviews OCaml files against test-patterns and atspi-e2e-testing guidelines",
+      "prompt": "{file:./agents/test-reviewer.txt}",
+    },
+    "docs-reviewer": {
+      "mode": "subagent",
+      "model": "ollama-cloud/deepseek-v4-flash",
+      "color": "success",
+      "description": "Reviews OCaml files against the comments-and-documentation guideline",
+      "prompt": "{file:./agents/docs-reviewer.txt}",
+    },
+    "review": {
+      "mode": "subagent",
+      "model": "ollama-cloud/kimi-k2.6",
+      "color": "info",
+      "description": "Coordinates all six reviewer agents and reports violations by severity",
+      "prompt": "{file:./agents/review.txt}",
+    },
+    "planner": {
+      "mode": "subagent",
+      "model": "ollama-cloud/deepseek-v4-pro",
+      "color": "info",
+      "description": "Reads a PRD or architectural spec and writes a structured epoch/stage implementation plan",
+      "prompt": "{file:./agents/planner.txt}",
+    },
+    "stage-executor": {
+      "mode": "subagent",
+      "model": "ollama-cloud/glm-5.1",
+      "color": "warning",
+      "description": "Implements a single stage from an implementation plan, builds, tests, and self-reviews against acceptance criteria",
+      "prompt": "{file:./agents/stage-executor.txt}",
+    },
+    "orchestrate": {
+      "mode": "subagent",
+      "model": "ollama-cloud/kimi-k2.6",
+      "color": "info",
+      "description": "Coordinates the planner → executor → review loop for a plan or PRD",
+      "prompt": "{file:./agents/orchestrate.txt}",
+    },
+  },
+  "command": {
+    "refactor": {
+      "description": "Refactor code to meet a specific guideline with independent review",
+      "template": "{file:./commands/refactor.txt}",
+    },
+    "review": {
+      "description": "Report-only guideline review of a PR, branch, staged files, or explicit paths",
+      "template": "{file:./commands/review.txt}",
+    },
+    "orchestrate": {
+      "description": "Run the planner → executor → review loop for a plan file or PRD",
+      "template": "{file:./commands/orchestrate.txt}",
+    },
+  },
+}

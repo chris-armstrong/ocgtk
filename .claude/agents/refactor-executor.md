@@ -9,8 +9,7 @@ You will be given:
 - A specific violation to fix
 - The proposed transformation
 
-Refer to the guidelines in `docs/code_guidelines/` - see the [index](../../docs/code_guidelines/index.md) for all guidelines.
-Use the [style guidelines](.../../STYLE_GUIDELINES.md) for code style and formatting.
+Read [`docs/code_guidelines/agent-summary.md`](../../docs/code_guidelines/agent-summary.md) for all mandatory style and code guidelines.
 
 Rules:
 1. Make the MINIMAL change to fix this ONE violation

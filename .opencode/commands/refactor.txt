@@ -1,8 +1,3 @@
----
-description: Refactor code to meet a specific guideline with independent review
-argument-hint: "[guideline-keyword] [scope: staged|committed|HEAD~N|<files>]"
----
-
 ## Refactoring Pass: $ARGUMENTS
 
 You are the coordinating agent for a guideline-based refactoring pass. Work through the steps below in order.
@@ -35,14 +30,14 @@ The six reviewer agents and what they cover:
 
 | Agent | Guidelines covered |
 |---|---|
-| `control-flow-reviewer` | nesting-and-control-flow, error-handling, partial-functions |
-| `type-correctness-reviewer` | type-safety, pattern-matching, module-boundaries |
-| `code-quality-reviewer` | naming-and-intermediates, code-reuse |
-| `abstractions-reviewer` | abstractions |
-| `test-reviewer` | test-patterns, atspi-e2e-testing |
-| `docs-reviewer` | comments-and-documentation |
+| `@control-flow-reviewer` | nesting-and-control-flow, error-handling, partial-functions |
+| `@type-correctness-reviewer` | type-safety, pattern-matching, module-boundaries |
+| `@code-quality-reviewer` | naming-and-intermediates, code-reuse |
+| `@abstractions-reviewer` | abstractions |
+| `@test-reviewer` | test-patterns, atspi-e2e-testing |
+| `@docs-reviewer` | comments-and-documentation |
 
-Parse `$ARGUMENTS` for a filter keyword. If a keyword matches one or more agents (e.g. "nesting" or "control-flow" → `control-flow-reviewer`, "types" or "pattern" → `type-correctness-reviewer`, "test" → `test-reviewer`, "docs" or "comments" → `docs-reviewer`), run only the matching agents. Otherwise run **all six**.
+Parse `$ARGUMENTS` for a filter keyword. If a keyword matches one or more agents (e.g. "nesting" or "control-flow" → `@control-flow-reviewer`, "types" or "pattern" → `@type-correctness-reviewer`, "test" → `@test-reviewer`, "docs" or "comments" → `@docs-reviewer`), run only the matching agents. Otherwise run **all six**.
 
 Print the list of agents you will dispatch.
 
@@ -53,6 +48,8 @@ Print the list of agents you will dispatch.
 For **each** agent in the list, invoke it as a subtask with the following message:
 
 ```
+Apply fixes to each violation as you find them.
+
 Files to review (full list — do not skip any):
 <one file path per line, the complete list from Step 1>
 ```
@@ -68,13 +65,14 @@ Dispatch reviewers one at a time and wait for each to complete before starting t
 After all reviewers have completed, run the full build:
 
 ```bash
-dune build 2>&1
+cd ocgtk && dune build 2>&1
 ```
 
 Check the return code. If the build fails:
 1. Identify which file(s) have errors from the build output.
-2. Re-invoke a reviewer for just the broken files with the instruction: "The build is broken in these files after your previous edits. Fix the build errors while keeping guideline fixes where possible."
-3. Re-run `dune build` to confirm.
+2. For each broken file, identify which reviewer last touched it.
+3. Re-invoke that reviewer with just the broken files and the instruction: "The build is broken in these files after your previous edits. Fix the build errors while keeping your guideline fixes where possible."
+4. Re-run `dune build` to confirm.
 
 ---
 
@@ -96,9 +94,9 @@ Output a combined report:
 ## Refactoring Summary
 Scope: <description of how files were selected>
 Files in scope: <N>
-Guidelines applied: <list>
+Agents run: <list>
 
-### Per-Guideline Results
+### Per-Agent Results
 <paste each reviewer's output block here>
 
 ### Build: PASS / FAIL
