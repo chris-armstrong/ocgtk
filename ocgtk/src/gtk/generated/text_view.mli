@@ -113,7 +113,7 @@ Tags in the buffer may override the default. *)
 external set_gutter :
   t ->
   Gtk_enums.textwindowtype ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -242,7 +242,7 @@ external reset_cursor_blink : t -> unit = "ml_gtk_text_view_reset_cursor_blink"
 
 external remove :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_text_view_remove"
@@ -270,7 +270,7 @@ is moved off of the end of a run. *)
 
 external move_overlay :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int ->
@@ -476,7 +476,7 @@ The indentation may be negative. *)
 external get_gutter :
   t ->
   Gtk_enums.textwindowtype ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_text_view_get_gutter"
@@ -601,7 +601,7 @@ views, since they depend on the contents of the `GtkTextBuffer`. *)
 
 external add_overlay :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int ->
@@ -620,7 +620,7 @@ If instead you want a widget that will not move with the
 
 external add_child_at_anchor :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   Text_child_anchor.t ->

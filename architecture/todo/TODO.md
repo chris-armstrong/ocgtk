@@ -18,9 +18,12 @@ Cross-namespace type resolution works via reference files and `<ns>_decls.h` hea
 * ~~Generate all classes in a class hierarchy with #as_<type>, not just those in the Widget hierarchy (e.g. Expression)~~ — Done: hierarchy_info abstraction removed (was dead code). Parent chain drives polymorphic variant types. Layer 1 accessors not yet generated from parent chain.
 * Update methods that take a class value like "#expression" (which means anything polymorphically implementing that interface) to work
 
-## Non-void signals
+## Signal handling — partially implemented
 
-We don't handle non-void signals / callbacks at this time. Only parameterless void signals are generated.
+- Parameterless void signals are fully generated.
+- Signals with primitive parameters and some GObject parameters are now supported via `signal_marshaller.ml`.
+- Typed-parameter signals with return values and complex types (e.g. `GdkEvent`) are still deferred.
+- See active plan: [`gir_gen/docs/plans/milestone-2-signals.md`](../../gir_gen/docs/plans/milestone-2-signals.md)
 
 ## Interface generation
 

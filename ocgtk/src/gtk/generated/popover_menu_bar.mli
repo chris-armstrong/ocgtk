@@ -18,7 +18,7 @@ its contents. *)
 
 external remove_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   bool = "ml_gtk_popover_menu_bar_remove_child"
@@ -31,7 +31,7 @@ external get_menu_model : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
 
 external add_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   string ->

@@ -1,9 +1,14 @@
 class type entry_buffer_t = object
   method on_deleted_text :
-    callback:(position:int -> n_chars:int -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(position:int -> n_chars:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_inserted_text :
+    ?after:bool ->
     callback:(position:int -> chars:string -> n_chars:int -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method delete_text : int -> int -> int

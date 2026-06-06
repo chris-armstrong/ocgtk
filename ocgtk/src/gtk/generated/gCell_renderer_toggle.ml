@@ -2,7 +2,10 @@ class type cell_renderer_toggle_t = object
   inherit GCell_renderer.cell_renderer_t
 
   method on_toggled :
-    callback:(path:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(path:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method get_activatable : unit -> bool
   method get_active : unit -> bool
@@ -21,8 +24,9 @@ class cell_renderer_toggle (obj : Cell_renderer_toggle.t) :
   object (self)
     inherit GCell_renderer.cell_renderer (obj :> Cell_renderer.t)
 
-    method on_toggled ~callback =
-      Cell_renderer_toggle.on_toggled self#as_cell_renderer_toggle ~callback
+    method on_toggled ?(after = false) ~callback () =
+      Cell_renderer_toggle.on_toggled ~after self#as_cell_renderer_toggle
+        ~callback
 
     method get_activatable : unit -> bool =
       fun () -> Cell_renderer_toggle.get_activatable obj

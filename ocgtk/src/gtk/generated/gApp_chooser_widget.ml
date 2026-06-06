@@ -1,9 +1,22 @@
 class type app_chooser_widget_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GApp_chooser.app_chooser_t
+
+  method on_application_activated :
+    ?after:bool ->
+    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_application_selected :
+    ?after:bool ->
+    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_default_text : unit -> string option
   method get_show_all : unit -> bool
   method get_show_default : unit -> bool
@@ -23,14 +36,26 @@ end
 class app_chooser_widget (obj : App_chooser_widget.t) : app_chooser_widget_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
     inherit GApp_chooser.app_chooser (App_chooser.from_gobject obj)
+
+    method on_application_activated ?(after = false) ~callback () =
+      App_chooser_widget.on_application_activated ~after
+        self#as_app_chooser_widget ~callback:(fun ~application ->
+          callback
+            ~application:(new Ocgtk_gio.Gio.App_info.app_info application))
+
+    method on_application_selected ?(after = false) ~callback () =
+      App_chooser_widget.on_application_selected ~after
+        self#as_app_chooser_widget ~callback:(fun ~application ->
+          callback
+            ~application:(new Ocgtk_gio.Gio.App_info.app_info application))
 
     method get_default_text : unit -> string option =
       fun () -> App_chooser_widget.get_default_text obj

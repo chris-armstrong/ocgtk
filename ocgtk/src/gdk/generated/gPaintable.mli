@@ -1,9 +1,9 @@
 class type paintable_t = object
   method on_invalidate_contents :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_invalidate_size :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method get_current_image : unit -> paintable_t
   method get_flags : unit -> Gdk_enums.paintableflags

@@ -1,5 +1,7 @@
 class type cancellable_t = object
-  method on_cancelled : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_cancelled :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method cancel : unit -> unit
   method disconnect : int -> unit
   method get_fd : unit -> int

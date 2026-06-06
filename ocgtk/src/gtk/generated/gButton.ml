@@ -1,16 +1,21 @@
 class type button_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GActionable.actionable_t
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_clicked : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_clicked :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_can_shrink : unit -> bool
 
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -21,7 +26,7 @@ class type button_t = object
   method set_can_shrink : bool -> unit
 
   method set_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -37,28 +42,33 @@ end
 class button (obj : Button.t) : button_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
     inherit GActionable.actionable (Actionable.from_gobject obj)
-    method on_activate ~callback = Button.on_activate self#as_button ~callback
-    method on_clicked ~callback = Button.on_clicked self#as_button ~callback
+
+    method on_activate ?(after = false) ~callback () =
+      Button.on_activate ~after self#as_button ~callback
+
+    method on_clicked ?(after = false) ~callback () =
+      Button.on_clicked ~after self#as_button ~callback
+
     method get_can_shrink : unit -> bool = fun () -> Button.get_can_shrink obj
 
     method get_child :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Button.get_child obj)
@@ -77,7 +87,7 @@ class button (obj : Button.t) : button_t =
       fun can_shrink -> Button.set_can_shrink obj can_shrink
 
     method set_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =

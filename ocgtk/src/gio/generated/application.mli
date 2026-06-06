@@ -460,6 +460,12 @@ external activate : t -> unit = "ml_g_application_activate"
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 
+val on_command_line :
+  ?after:bool ->
+  t ->
+  callback:(command_line:Application_command_line.t -> int) ->
+  Gobject.Signal.handler_id
+
 val on_name_lost :
   ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
 

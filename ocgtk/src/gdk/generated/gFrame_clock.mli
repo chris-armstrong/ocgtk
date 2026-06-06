@@ -1,11 +1,25 @@
 class type frame_clock_t = object
-  method on_after_paint : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_before_paint : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_flush_events : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_layout : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_paint : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_resume_events : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_update : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_after_paint :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_before_paint :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_flush_events :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_layout :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_paint :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_resume_events :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_update :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method begin_updating : unit -> unit
   method end_updating : unit -> unit
   method get_current_timings : unit -> Frame_timings.t option

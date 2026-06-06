@@ -10,7 +10,7 @@ external new_ : unit -> t = "ml_gtk_overlay_new"
 
 external set_measure_overlay :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   bool ->
@@ -23,7 +23,7 @@ be drawn outside of @overlay's allocation if they are too large. *)
 
 external set_clip_overlay :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   bool ->
@@ -32,7 +32,7 @@ external set_clip_overlay :
 
 external set_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -41,7 +41,7 @@ external set_child :
 
 external remove_overlay :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_overlay_remove_overlay"
@@ -49,7 +49,7 @@ external remove_overlay :
 
 external get_measure_overlay :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   bool = "ml_gtk_overlay_get_measure_overlay"
@@ -58,7 +58,7 @@ external get_measure_overlay :
 
 external get_clip_overlay :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   bool = "ml_gtk_overlay_get_clip_overlay"
@@ -66,7 +66,7 @@ external get_clip_overlay :
 
 external get_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_overlay_get_child"
@@ -74,7 +74,7 @@ external get_child :
 
 external add_overlay :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_overlay_add_overlay"

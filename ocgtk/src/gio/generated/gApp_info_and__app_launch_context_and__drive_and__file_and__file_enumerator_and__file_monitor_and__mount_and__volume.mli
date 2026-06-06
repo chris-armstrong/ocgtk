@@ -39,7 +39,22 @@ end
 
 and app_launch_context_t = object
   method on_launch_failed :
-    callback:(startup_notify_id:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(startup_notify_id:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_launch_started :
+    ?after:bool ->
+    callback:(info:app_info_t -> platform_data:Gvariant.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_launched :
+    ?after:bool ->
+    callback:(info:app_info_t -> platform_data:Gvariant.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method get_display : app_info_t -> file_t list -> string option
   method get_environment : unit -> string array
@@ -55,10 +70,18 @@ and app_launch_context_t = object
 end
 
 and drive_t = object
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_disconnected : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_eject_button : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_stop_button : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_disconnected :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_eject_button :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_stop_button :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method can_eject : unit -> bool
   method can_poll_for_media : unit -> bool
   method can_start : unit -> bool
@@ -400,6 +423,16 @@ and file_enumerator_t = object
 end
 
 and file_monitor_t = object
+  method on_changed :
+    ?after:bool ->
+    callback:
+      (file:file_t ->
+      other_file:file_t option ->
+      event_type:Gio_enums.filemonitorevent ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method cancel : unit -> bool
   method emit_event : file_t -> file_t -> Gio_enums.filemonitorevent -> unit
   method is_cancelled : unit -> bool
@@ -413,9 +446,15 @@ and file_monitor_t = object
 end
 
 and mount_t = object
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_pre_unmount : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_unmounted : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_pre_unmount :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_unmounted :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method can_eject : unit -> bool
   method can_unmount : unit -> bool
   method eject_finish : GAsync_result.async_result_t -> (bool, GError.t) result
@@ -461,8 +500,12 @@ and mount_t = object
 end
 
 and volume_t = object
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_removed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_removed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method can_eject : unit -> bool
   method can_mount : unit -> bool
   method eject_finish : GAsync_result.async_result_t -> (bool, GError.t) result

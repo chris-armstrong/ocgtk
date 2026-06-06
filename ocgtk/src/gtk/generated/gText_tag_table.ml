@@ -1,5 +1,24 @@
 class type text_tag_table_t = object
   inherit GBuildable.buildable_t
+
+  method on_tag_added :
+    ?after:bool ->
+    callback:(tag:GText_tag.text_tag_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_tag_changed :
+    ?after:bool ->
+    callback:(tag:GText_tag.text_tag_t -> size_changed:bool -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_tag_removed :
+    ?after:bool ->
+    callback:(tag:GText_tag.text_tag_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method add : GText_tag.text_tag_t -> bool
   method get_size : unit -> int
   method lookup : string -> GText_tag.text_tag_t option
@@ -11,6 +30,19 @@ end
 class text_tag_table (obj : Text_tag_table.t) : text_tag_table_t =
   object (self)
     inherit GBuildable.buildable (Buildable.from_gobject obj)
+
+    method on_tag_added ?(after = false) ~callback () =
+      Text_tag_table.on_tag_added ~after self#as_text_tag_table
+        ~callback:(fun ~tag -> callback ~tag:(new GText_tag.text_tag tag))
+
+    method on_tag_changed ?(after = false) ~callback () =
+      Text_tag_table.on_tag_changed ~after self#as_text_tag_table
+        ~callback:(fun ~tag ~size_changed ->
+          callback ~tag:(new GText_tag.text_tag tag) ~size_changed)
+
+    method on_tag_removed ?(after = false) ~callback () =
+      Text_tag_table.on_tag_removed ~after self#as_text_tag_table
+        ~callback:(fun ~tag -> callback ~tag:(new GText_tag.text_tag tag))
 
     method add : GText_tag.text_tag_t -> bool =
       fun tag ->

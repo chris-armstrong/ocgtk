@@ -114,7 +114,7 @@ external set_hadjustment : t -> Adjustment.t option -> unit
 
 external set_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -127,7 +127,7 @@ and then add the viewport as its child widget. *)
 
 external get_vscrollbar :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_scrolled_window_get_vscrollbar"
 (** Returns the vertical scrollbar of @scrolled_window. *)
@@ -186,7 +186,7 @@ external get_kinetic_scrolling : t -> bool
 
 external get_hscrollbar :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_scrolled_window_get_hscrollbar"
 (** Returns the horizontal scrollbar of @scrolled_window. *)
@@ -203,7 +203,7 @@ external get_hadjustment : t -> Adjustment.t
 
 external get_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_scrolled_window_get_child"

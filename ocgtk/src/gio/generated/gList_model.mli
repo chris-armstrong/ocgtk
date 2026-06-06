@@ -1,6 +1,8 @@
 class type list_model_t = object
   method on_items_changed :
+    ?after:bool ->
     callback:(position:int -> removed:int -> added:int -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_item_type : unit -> int

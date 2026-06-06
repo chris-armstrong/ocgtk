@@ -1,13 +1,16 @@
 class type level_bar_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GAccessible_range.accessible_range_t
   inherit GOrientable.orientable_t
 
   method on_offset_changed :
-    callback:(name:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(name:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method add_offset_value : string -> float -> unit
   method get_inverted : unit -> bool
@@ -28,10 +31,10 @@ end
 class level_bar (obj : Level_bar.t) : level_bar_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
@@ -40,8 +43,8 @@ class level_bar (obj : Level_bar.t) : level_bar_t =
 
     inherit GOrientable.orientable (Orientable.from_gobject obj)
 
-    method on_offset_changed ~callback =
-      Level_bar.on_offset_changed self#as_level_bar ~callback
+    method on_offset_changed ?(after = false) ~callback () =
+      Level_bar.on_offset_changed ~after self#as_level_bar ~callback
 
     method add_offset_value : string -> float -> unit =
       fun name value -> Level_bar.add_offset_value obj name value

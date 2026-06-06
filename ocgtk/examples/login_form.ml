@@ -84,7 +84,8 @@ let () =
   button_box#append (login_btn :> Widget.widget_t);
 
   ignore
-    (login_btn#on_clicked ~callback:(fun () ->
+    (login_btn#on_clicked
+       ~callback:(fun () ->
          let username = username_entry#get_text () in
          let password = password_entry#get_text () in
 
@@ -98,7 +99,8 @@ let () =
          end
          else
            status_label#set_markup
-             "<span foreground='red'>Invalid credentials</span>"));
+             "<span foreground='red'>Invalid credentials</span>")
+       ());
 
   (* Cancel button *)
   let cancel_btn =
@@ -107,11 +109,13 @@ let () =
   button_box#append (cancel_btn :> Widget.widget_t);
 
   ignore
-    (cancel_btn#on_clicked ~callback:(fun () ->
+    (cancel_btn#on_clicked
+       ~callback:(fun () ->
          username_entry#set_text "";
          password_entry#set_text "";
          status_label#set_label "";
-         remember_check#set_active false));
+         remember_check#set_active false)
+       ());
 
   (* Show window and run main loop *)
   window#present ();

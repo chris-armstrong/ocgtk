@@ -26,7 +26,7 @@ external set_obey_child : t -> bool -> unit
 
 external set_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -50,7 +50,7 @@ external get_obey_child : t -> bool = "ml_gtk_aspect_frame_get_obey_child"
 
 external get_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_aspect_frame_get_child"

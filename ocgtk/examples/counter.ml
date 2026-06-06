@@ -27,23 +27,27 @@ let activate app =
   let button = new Button.button (Wrappers.Button.new_with_label "Click Me!") in
   vbox#append (button :> Widget.widget_t);
   ignore
-    (button#on_clicked ~callback:(fun () ->
+    (button#on_clicked
+       ~callback:(fun () ->
          count := !count + 1;
-         label#set_label (Printf.sprintf "Count: %d" !count)));
+         label#set_label (Printf.sprintf "Count: %d" !count))
+       ());
 
   (* Create reset button *)
   let reset_btn = new Button.button (Wrappers.Button.new_with_label "Reset") in
   vbox#append (reset_btn :> Widget.widget_t);
   ignore
-    (reset_btn#on_clicked ~callback:(fun () ->
+    (reset_btn#on_clicked
+       ~callback:(fun () ->
          count := 0;
-         label#set_label (Printf.sprintf "Count: %d" !count)));
+         label#set_label (Printf.sprintf "Count: %d" !count))
+       ());
 
   (* Show window *)
   window#present ()
 
 let () =
   let app = Application.new_ (Some "org.ocgtk.Counter") [ `DEFAULT_FLAGS ] in
-  ignore (app#on_activate ~callback:(fun () -> activate app));
+  ignore (app#on_activate ~callback:(fun () -> activate app) ());
   let status = app#run 0 None in
   exit status

@@ -31,3 +31,23 @@ let on_allow_mechanism ?after obj ~callback =
   in
   Gobject.Signal.connect obj ~name:"allow-mechanism" ~callback:closure
     ~after:(Option.value after ~default:false)
+
+let on_authorize_authenticated_peer ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let stream =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v
+        in
+        let credentials =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_object v
+        in
+        let result = callback ~stream ~credentials in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"authorize-authenticated-peer"
+    ~callback:closure
+    ~after:(Option.value after ~default:false)

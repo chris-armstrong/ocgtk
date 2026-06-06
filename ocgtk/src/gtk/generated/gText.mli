@@ -1,39 +1,55 @@
 class type text_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GAccessible_text.accessible_text_t
   inherit GEditable.editable_t
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_backspace : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_backspace :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_copy_clipboard :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method on_cut_clipboard : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_cut_clipboard :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_delete_from_cursor :
+    ?after:bool ->
     callback:(type_:Gtk_enums.deletetype -> count:int -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_insert_at_cursor :
-    callback:(string:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(string:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
-  method on_insert_emoji : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_insert_emoji :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_move_cursor :
+    ?after:bool ->
     callback:(step:Gtk_enums.movementstep -> count:int -> extend:bool -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_paste_clipboard :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_preedit_changed :
-    callback:(preedit:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(preedit:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_toggle_overwrite :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method get_activates_default : unit -> bool
   method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option

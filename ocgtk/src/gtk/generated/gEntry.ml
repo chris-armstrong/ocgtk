@@ -1,18 +1,24 @@
 class type entry_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GCell_editable.cell_editable_t
   inherit GEditable.editable_t
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_icon_press :
+    ?after:bool ->
     callback:(icon_pos:Gtk_enums.entryiconposition -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_icon_release :
+    ?after:bool ->
     callback:(icon_pos:Gtk_enums.entryiconposition -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_activates_default : unit -> bool
@@ -152,20 +158,24 @@ end
 class entry (obj : Entry.t) : entry_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
     inherit GCell_editable.cell_editable (Cell_editable.from_gobject obj)
     inherit GEditable.editable (Editable.from_gobject obj)
-    method on_activate ~callback = Entry.on_activate self#as_entry ~callback
-    method on_icon_press ~callback = Entry.on_icon_press self#as_entry ~callback
 
-    method on_icon_release ~callback =
-      Entry.on_icon_release self#as_entry ~callback
+    method on_activate ?(after = false) ~callback () =
+      Entry.on_activate ~after self#as_entry ~callback
+
+    method on_icon_press ?(after = false) ~callback () =
+      Entry.on_icon_press ~after self#as_entry ~callback
+
+    method on_icon_release ?(after = false) ~callback () =
+      Entry.on_icon_release ~after self#as_entry ~callback
 
     method get_activates_default : unit -> bool =
       fun () -> Entry.get_activates_default obj

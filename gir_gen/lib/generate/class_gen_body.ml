@@ -11,7 +11,10 @@ module StringSet = Common.StringSet
 
 (** Generate a class section (methods or properties) by applying generator to
     each item *)
-let generate_section ~buf ~items_seen ~items ~generator_fn ~add_newline =
+let generate_section ~(buf : Buffer.t) ~(items_seen : StringSet.t)
+    ~(items : 'a list)
+    ~(generator_fn : StringSet.t -> 'a -> string * StringSet.t)
+    ~(add_newline : bool) : StringSet.t =
   let items_seen, () =
     List.fold_left items ~init:(items_seen, ()) ~f:(fun (items_seen, ()) item ->
         let chunk, items_seen = generator_fn items_seen item in
@@ -22,9 +25,16 @@ let generate_section ~buf ~items_seen ~items ~generator_fn ~add_newline =
   items_seen
 
 (** Generate the body of a class module (implementation) *)
-let generate_class_module_body ~ctx ~buf ~layer1_module_name
-    ~current_layer2_module ~class_name ~class_snake ~c_type ~methods
-    ~entity_kind ~properties ~signals ~same_cluster_classes ~parent_name () =
+let generate_class_module_body ~(ctx : Types.generation_context)
+    ~(buf : Buffer.t) ~(layer1_module_name : string)
+    ~(current_layer2_module : string) ~(class_name : string)
+    ~(class_snake : string) ~(c_type : string)
+    ~(methods : Types.gir_method list)
+    ~(entity_kind : Filtering.entity_kind)
+    ~(properties : Types.gir_property list)
+    ~(signals : Types.gir_signal list)
+    ~(same_cluster_classes : string list)
+    ~(parent_name : string option) () : unit =
   let property_filters =
     Class_gen_helpers.get_property_filters ~ctx ~class_name ~methods properties
   in
@@ -158,7 +168,8 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name
       | Error _ -> ()
       | Ok emission ->
           Buffer.add_string buf
-            (Signal_gen.emit_l2_method emission ~layer1_module_name ~class_snake));
+            (Signal_gen.emit_l2_method ~current_layer2_module
+               ~layer1_module_name ~class_snake emission));
 
   bprintf buf "\n";
 
@@ -207,9 +218,16 @@ let generate_class_module_body ~ctx ~buf ~layer1_module_name
     Class_gen_converter.generate_class_converter_method_impl ~class_name buf
 
 (** Generate the body of a class signature *)
-let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_
-    ~current_layer2_module ~class_name ~class_snake:_ ~c_type ~methods
-    ~entity_kind ~properties ~signals ~same_cluster_classes ~parent_name () =
+let generate_class_signature_body ~(ctx : Types.generation_context)
+    ~(buf : Buffer.t) ~layer1_module_name:(_ : string)
+    ~(current_layer2_module : string) ~(class_name : string)
+    ~class_snake:(_ : string) ~(c_type : string)
+    ~(methods : Types.gir_method list)
+    ~(entity_kind : Filtering.entity_kind)
+    ~(properties : Types.gir_property list)
+    ~(signals : Types.gir_signal list)
+    ~(same_cluster_classes : string list)
+    ~(parent_name : string option) () : unit =
   let property_filters =
     Class_gen_helpers.get_property_filters ~ctx ~class_name ~methods properties
   in
@@ -294,7 +312,8 @@ let generate_class_signature_body ~ctx ~buf ~layer1_module_name:_
       match Signal_gen.classify ~ctx signal with
       | Error _ -> ()
       | Ok emission ->
-          Buffer.add_string buf (Signal_gen.emit_l2_method_sig emission));
+          Buffer.add_string buf
+            (Signal_gen.emit_l2_method_sig ~current_layer2_module emission));
 
   (* Pre-populate seen with inherited method names to suppress conflicts *)
   let inherited_names =

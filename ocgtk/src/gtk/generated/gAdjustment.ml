@@ -1,6 +1,10 @@
 class type adjustment_t = object
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_value_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_value_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method clamp_page : float -> float -> unit
   method configure : float -> float -> float -> float -> float -> float -> unit
   method get_lower : unit -> float
@@ -22,11 +26,11 @@ end
 (* High-level class for Adjustment *)
 class adjustment (obj : Adjustment.t) : adjustment_t =
   object (self)
-    method on_changed ~callback =
-      Adjustment.on_changed self#as_adjustment ~callback
+    method on_changed ?(after = false) ~callback () =
+      Adjustment.on_changed ~after self#as_adjustment ~callback
 
-    method on_value_changed ~callback =
-      Adjustment.on_value_changed self#as_adjustment ~callback
+    method on_value_changed ?(after = false) ~callback () =
+      Adjustment.on_value_changed ~after self#as_adjustment ~callback
 
     method clamp_page : float -> float -> unit =
       fun lower upper -> Adjustment.clamp_page obj lower upper

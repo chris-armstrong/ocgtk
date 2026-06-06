@@ -7,7 +7,7 @@ type t = [ `list_header | `object_ ] Gobject.obj
 
 external set_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -44,7 +44,7 @@ If @self is unbound, %GTK_INVALID_LIST_POSITION is returned. *)
 
 external get_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_list_header_get_child"

@@ -1,6 +1,9 @@
 class type selection_model_t = object
   method on_selection_changed :
-    callback:(position:int -> n_items:int -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(position:int -> n_items:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method get_selection : unit -> Bitset.t
   method get_selection_in_range : int -> int -> Bitset.t

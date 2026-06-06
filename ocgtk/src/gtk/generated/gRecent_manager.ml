@@ -1,5 +1,7 @@
 class type recent_manager_t = object
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method add_full : string -> Recent_data.t -> bool
   method add_item : string -> bool
   method get_items : unit -> Recent_info.t list
@@ -16,8 +18,8 @@ end
 (* High-level class for RecentManager *)
 class recent_manager (obj : Recent_manager.t) : recent_manager_t =
   object (self)
-    method on_changed ~callback =
-      Recent_manager.on_changed self#as_recent_manager ~callback
+    method on_changed ?(after = false) ~callback () =
+      Recent_manager.on_changed ~after self#as_recent_manager ~callback
 
     method add_full : string -> Recent_data.t -> bool =
       fun uri recent_data -> Recent_manager.add_full obj uri recent_data

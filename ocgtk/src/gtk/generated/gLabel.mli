@@ -1,25 +1,30 @@
 class type label_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GAccessible_text.accessible_text_t
 
   method on_activate_current_link :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_activate_link :
-    callback:(uri:string -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(uri:string -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_copy_clipboard :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_move_cursor :
+    ?after:bool ->
     callback:
       (step:Gtk_enums.movementstep ->
       count:int ->
       extend_selection:bool ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
@@ -35,7 +40,7 @@ class type label_t = object
 
   method get_mnemonic_widget :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -63,7 +68,7 @@ class type label_t = object
   method set_max_width_chars : int -> unit
 
   method set_mnemonic_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit

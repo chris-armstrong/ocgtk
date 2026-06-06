@@ -1,9 +1,11 @@
 class type font_dialog_button_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_dialog : unit -> GFont_dialog.font_dialog_t option
 
   method get_font_desc :
@@ -31,15 +33,15 @@ end
 class font_dialog_button (obj : Font_dialog_button.t) : font_dialog_button_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
-    method on_activate ~callback =
-      Font_dialog_button.on_activate self#as_font_dialog_button ~callback
+    method on_activate ?(after = false) ~callback () =
+      Font_dialog_button.on_activate ~after self#as_font_dialog_button ~callback
 
     method get_dialog : unit -> GFont_dialog.font_dialog_t option =
       fun () ->

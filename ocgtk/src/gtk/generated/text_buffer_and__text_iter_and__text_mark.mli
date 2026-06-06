@@ -643,8 +643,20 @@ module rec Text_buffer : sig
   val on_end_user_action :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 
+  val on_mark_deleted :
+    ?after:bool ->
+    t ->
+    callback:(mark:Text_mark.t -> unit) ->
+    Gobject.Signal.handler_id
+
   val on_modified_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_paste_done :
+    ?after:bool ->
+    t ->
+    callback:(clipboard:Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> unit) ->
+    Gobject.Signal.handler_id
 
   val on_redo :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

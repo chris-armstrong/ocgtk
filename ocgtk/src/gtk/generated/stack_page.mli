@@ -49,7 +49,7 @@ external get_icon_name : t -> string option = "ml_gtk_stack_page_get_icon_name"
 
 external get_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_stack_page_get_child"
 (** Returns the stack child to which @self belongs. *)

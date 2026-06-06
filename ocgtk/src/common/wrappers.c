@@ -13,6 +13,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <caml/mlvalues.h>
 #include <caml/alloc.h>
 #include <caml/memory.h>
@@ -167,16 +168,54 @@ static void finalize_gobject(value v) {
     }
 }
 
+/* Pointer-identity compare for Gobject custom blocks. Two values compare
+ * equal iff they wrap the same underlying GObject pointer. Returning the
+ * sign of an unsigned uintptr_t subtraction would be UB; instead compare
+ * directly and yield -1 / 0 / 1. */
+static int compare_gobject(value a, value b) {
+    uintptr_t pa = (uintptr_t)*((void**)Data_custom_val(a));
+    uintptr_t pb = (uintptr_t)*((void**)Data_custom_val(b));
+    if (pa == pb) return 0;
+    return (pa < pb) ? -1 : 1;
+}
+
+/* Hash function: derive a stable hash from the pointer value. Wide
+ * pointers are folded into intnat by XOR of high/low halves on 64-bit
+ * platforms; on 32-bit the cast is lossless. */
+static intnat hash_gobject(value v) {
+    uintptr_t p = (uintptr_t)*((void**)Data_custom_val(v));
+#if UINTPTR_MAX > 0xFFFFFFFFu
+    return (intnat)((p ^ (p >> 32)) & 0x7FFFFFFFu);
+#else
+    return (intnat)(p & 0x7FFFFFFFu);
+#endif
+}
+
 struct custom_operations ocgtk_gobject_ops = {
     "ocgtk.gobject",
     finalize_gobject,
-    custom_compare_default,
-    custom_hash_default,
+    compare_gobject,
+    hash_gobject,
     custom_serialize_default,
     custom_deserialize_default,
     custom_compare_ext_default,
     custom_fixed_length_default
 };
+
+/* Pointer-identity equality between two Gobject.obj custom blocks.
+ * Distinct from [Stdlib.(=)] only in being explicit about identity
+ * semantics — both now agree because compare_gobject is installed,
+ * but [same] documents the intent at the call site. */
+CAMLprim value ml_gobject_same(value a, value b) {
+    CAMLparam2(a, b);
+    if (Tag_val(a) != Custom_tag || Custom_ops_val(a) != &ocgtk_gobject_ops)
+        caml_invalid_argument("ml_gobject_same: not a GObject custom block");
+    if (Tag_val(b) != Custom_tag || Custom_ops_val(b) != &ocgtk_gobject_ops)
+        caml_invalid_argument("ml_gobject_same: not a GObject custom block");
+    void *pa = *((void**)Data_custom_val(a));
+    void *pb = *((void**)Data_custom_val(b));
+    CAMLreturn(Val_bool(pa == pb));
+}
 
 CAMLexport value ml_gobject_val_of_ext(const void *gobject) {
     CAMLparam0();

@@ -31,7 +31,7 @@ child of @stack. *)
 
 external set_visible_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_stack_set_visible_child"
@@ -87,7 +87,7 @@ external set_hhomogeneous : t -> bool -> unit = "ml_gtk_stack_set_hhomogeneous"
 
 external remove :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_stack_remove"
@@ -101,7 +101,7 @@ Returns %NULL if there is no visible child. *)
 
 external get_visible_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_stack_get_visible_child"
@@ -136,7 +136,7 @@ external get_pages : t -> Selection_model.t = "ml_gtk_stack_get_pages"
 
 external get_page :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   Stack_page.t = "ml_gtk_stack_get_page"
@@ -152,7 +152,7 @@ external get_hhomogeneous : t -> bool = "ml_gtk_stack_get_hhomogeneous"
 external get_child_by_name :
   t ->
   string ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_stack_get_child_by_name"
@@ -162,7 +162,7 @@ external get_child_by_name :
 
 external add_titled :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   string option ->
@@ -176,7 +176,7 @@ will be used by `GtkStackSwitcher` to represent
 
 external add_named :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   string option ->
@@ -187,7 +187,7 @@ The child is identified by the @name. *)
 
 external add_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   Stack_page.t = "ml_gtk_stack_add_child"

@@ -2,6 +2,19 @@ class type d_bus_object_manager_client_t = object
   inherit GAsync_initable.async_initable_t
   inherit GD_bus_object_manager.d_bus_object_manager_t
   inherit GInitable.initable_t
+
+  method on_interface_proxy_signal :
+    ?after:bool ->
+    callback:
+      (object_proxy:GD_bus_object_proxy.d_bus_object_proxy_t ->
+      interface_proxy:GD_bus_proxy.d_bus_proxy_t ->
+      sender_name:string ->
+      signal_name:string ->
+      parameters:Gvariant.t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_connection : unit -> GD_bus_connection.d_bus_connection_t
   method get_flags : unit -> Gio_enums.dbusobjectmanagerclientflags
   method get_name : unit -> string
@@ -21,6 +34,22 @@ class d_bus_object_manager_client (obj : D_bus_object_manager_client.t) :
         (D_bus_object_manager.from_gobject obj)
 
     inherit GInitable.initable (Initable.from_gobject obj)
+
+    method on_interface_proxy_signal ?(after = false) ~callback () =
+      D_bus_object_manager_client.on_interface_proxy_signal ~after
+        self#as_d_bus_object_manager_client
+        ~callback:(fun
+            ~object_proxy
+            ~interface_proxy
+            ~sender_name
+            ~signal_name
+            ~parameters
+          ->
+          callback
+            ~object_proxy:
+              (new GD_bus_object_proxy.d_bus_object_proxy object_proxy)
+            ~interface_proxy:(new GD_bus_proxy.d_bus_proxy interface_proxy)
+            ~sender_name ~signal_name ~parameters)
 
     method get_connection : unit -> GD_bus_connection.d_bus_connection_t =
       fun () ->

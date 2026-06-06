@@ -1,12 +1,80 @@
 class type print_operation_t = object
   inherit GPrint_operation_preview.print_operation_preview_t
 
+  method on_begin_print :
+    ?after:bool ->
+    callback:(context:GPrint_context.print_context_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_custom_widget_apply :
+    ?after:bool ->
+    callback:
+      (widget:
+         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .widget_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method on_done_ :
+    ?after:bool ->
     callback:(result:Gtk_enums.printoperationresult -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_draw_page :
+    ?after:bool ->
+    callback:(context:GPrint_context.print_context_t -> page_nr:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_end_print :
+    ?after:bool ->
+    callback:(context:GPrint_context.print_context_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_paginate :
+    ?after:bool ->
+    callback:(context:GPrint_context.print_context_t -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_preview :
+    ?after:bool ->
+    callback:
+      (preview:GPrint_operation_preview.print_operation_preview_t ->
+      context:GPrint_context.print_context_t ->
+      parent:GApplication_and__window_and__window_group.window_t option ->
+      bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_request_page_setup :
+    ?after:bool ->
+    callback:
+      (context:GPrint_context.print_context_t ->
+      page_nr:int ->
+      setup:GPage_setup.page_setup_t ->
+      unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_status_changed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_update_custom_widget :
+    ?after:bool ->
+    callback:
+      (widget:
+         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .widget_t ->
+      setup:GPage_setup.page_setup_t ->
+      settings:GPrint_settings.print_settings_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method cancel : unit -> unit
   method draw_page_finish : unit -> unit

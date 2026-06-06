@@ -10,7 +10,9 @@ end
 
 and menu_model_t = object
   method on_items_changed :
+    ?after:bool ->
     callback:(position:int -> removed:int -> added:int -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_item_attribute_value :
@@ -48,8 +50,8 @@ class menu_link_iter (obj : Menu_link_iter_and__menu_model.Menu_link_iter.t) :
 and menu_model (obj : Menu_link_iter_and__menu_model.Menu_model.t) :
   menu_model_t =
   object (self)
-    method on_items_changed ~callback =
-      Menu_link_iter_and__menu_model.Menu_model.on_items_changed
+    method on_items_changed ?(after = false) ~callback () =
+      Menu_link_iter_and__menu_model.Menu_model.on_items_changed ~after
         self#as_menu_model ~callback
 
     method get_item_attribute_value :

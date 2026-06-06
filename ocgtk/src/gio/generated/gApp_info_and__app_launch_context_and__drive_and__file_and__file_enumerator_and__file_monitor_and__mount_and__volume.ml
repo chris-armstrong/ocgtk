@@ -42,7 +42,22 @@ end
 
 and app_launch_context_t = object
   method on_launch_failed :
-    callback:(startup_notify_id:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(startup_notify_id:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_launch_started :
+    ?after:bool ->
+    callback:(info:app_info_t -> platform_data:Gvariant.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_launched :
+    ?after:bool ->
+    callback:(info:app_info_t -> platform_data:Gvariant.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method get_display : app_info_t -> file_t list -> string option
   method get_environment : unit -> string array
@@ -58,10 +73,18 @@ and app_launch_context_t = object
 end
 
 and drive_t = object
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_disconnected : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_eject_button : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_stop_button : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_disconnected :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_eject_button :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_stop_button :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method can_eject : unit -> bool
   method can_poll_for_media : unit -> bool
   method can_start : unit -> bool
@@ -403,6 +426,16 @@ and file_enumerator_t = object
 end
 
 and file_monitor_t = object
+  method on_changed :
+    ?after:bool ->
+    callback:
+      (file:file_t ->
+      other_file:file_t option ->
+      event_type:Gio_enums.filemonitorevent ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method cancel : unit -> bool
   method emit_event : file_t -> file_t -> Gio_enums.filemonitorevent -> unit
   method is_cancelled : unit -> bool
@@ -416,9 +449,15 @@ and file_monitor_t = object
 end
 
 and mount_t = object
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_pre_unmount : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_unmounted : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_pre_unmount :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_unmounted :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method can_eject : unit -> bool
   method can_unmount : unit -> bool
   method eject_finish : GAsync_result.async_result_t -> (bool, GError.t) result
@@ -464,8 +503,12 @@ and mount_t = object
 end
 
 and volume_t = object
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_removed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_removed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method can_eject : unit -> bool
   method can_mount : unit -> bool
   method eject_finish : GAsync_result.async_result_t -> (bool, GError.t) result
@@ -668,10 +711,24 @@ and app_launch_context
     .t) :
   app_launch_context_t =
   object (self)
-    method on_launch_failed ~callback =
+    method on_launch_failed ?(after = false) ~callback () =
       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
       .App_launch_context
-      .on_launch_failed self#as_app_launch_context ~callback
+      .on_launch_failed ~after self#as_app_launch_context ~callback
+
+    method on_launch_started ?(after = false) ~callback () =
+      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .App_launch_context
+      .on_launch_started ~after self#as_app_launch_context
+        ~callback:(fun ~info ~platform_data ->
+          callback ~info:(new app_info info) ~platform_data)
+
+    method on_launched ?(after = false) ~callback () =
+      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .App_launch_context
+      .on_launched ~after self#as_app_launch_context
+        ~callback:(fun ~info ~platform_data ->
+          callback ~info:(new app_info info) ~platform_data)
 
     method get_display : app_info_t -> file_t list -> string option =
       fun info files ->
@@ -723,25 +780,25 @@ and drive
     .t) :
   drive_t =
   object (self)
-    method on_changed ~callback =
+    method on_changed ?(after = false) ~callback () =
       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
       .Drive
-      .on_changed self#as_drive ~callback
+      .on_changed ~after self#as_drive ~callback
 
-    method on_disconnected ~callback =
+    method on_disconnected ?(after = false) ~callback () =
       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
       .Drive
-      .on_disconnected self#as_drive ~callback
+      .on_disconnected ~after self#as_drive ~callback
 
-    method on_eject_button ~callback =
+    method on_eject_button ?(after = false) ~callback () =
       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
       .Drive
-      .on_eject_button self#as_drive ~callback
+      .on_eject_button ~after self#as_drive ~callback
 
-    method on_stop_button ~callback =
+    method on_stop_button ?(after = false) ~callback () =
       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
       .Drive
-      .on_stop_button self#as_drive ~callback
+      .on_stop_button ~after self#as_drive ~callback
 
     method can_eject : unit -> bool =
       fun () ->
@@ -1753,6 +1810,16 @@ and file_monitor
     .t) :
   file_monitor_t =
   object (self)
+    method on_changed ?(after = false) ~callback () =
+      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .File_monitor
+      .on_changed ~after self#as_file_monitor
+        ~callback:(fun ~file ~other_file ~event_type ->
+          callback
+            ~file:(new file file)
+            ~other_file:(Option.map (fun w -> new file w) other_file)
+            ~event_type)
+
     method cancel : unit -> bool =
       fun () ->
         App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
@@ -1794,20 +1861,20 @@ and mount
     .t) :
   mount_t =
   object (self)
-    method on_changed ~callback =
+    method on_changed ?(after = false) ~callback () =
       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
       .Mount
-      .on_changed self#as_mount ~callback
+      .on_changed ~after self#as_mount ~callback
 
-    method on_pre_unmount ~callback =
+    method on_pre_unmount ?(after = false) ~callback () =
       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
       .Mount
-      .on_pre_unmount self#as_mount ~callback
+      .on_pre_unmount ~after self#as_mount ~callback
 
-    method on_unmounted ~callback =
+    method on_unmounted ?(after = false) ~callback () =
       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
       .Mount
-      .on_unmounted self#as_mount ~callback
+      .on_unmounted ~after self#as_mount ~callback
 
     method can_eject : unit -> bool =
       fun () ->
@@ -1969,15 +2036,15 @@ and volume
     .t) :
   volume_t =
   object (self)
-    method on_changed ~callback =
+    method on_changed ?(after = false) ~callback () =
       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
       .Volume
-      .on_changed self#as_volume ~callback
+      .on_changed ~after self#as_volume ~callback
 
-    method on_removed ~callback =
+    method on_removed ?(after = false) ~callback () =
       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
       .Volume
-      .on_removed self#as_volume ~callback
+      .on_removed ~after self#as_volume ~callback
 
     method can_eject : unit -> bool =
       fun () ->

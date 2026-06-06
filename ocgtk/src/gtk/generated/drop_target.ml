@@ -61,6 +61,21 @@ external get_actions : t -> Ocgtk_gdk.Gdk.dragaction
 
 (* Properties *)
 
+let on_accept ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let drop =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v
+        in
+        let result = callback ~drop in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"accept" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
 let on_enter ?after obj ~callback =
   let closure =
     Gobject.Closure.create (fun argv ->

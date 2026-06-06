@@ -461,6 +461,21 @@ let on_activate ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"activate" ~callback
     ~after:(Option.value after ~default:false)
 
+let on_command_line ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let command_line =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v
+        in
+        let result = callback ~command_line in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_int v x)
+  in
+  Gobject.Signal.connect obj ~name:"command-line" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
 let on_name_lost ?after obj ~callback =
   let closure =
     Gobject.Closure.create (fun argv ->

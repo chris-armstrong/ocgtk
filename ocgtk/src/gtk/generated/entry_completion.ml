@@ -112,7 +112,7 @@ external get_inline_completion : t -> bool
 
 external get_entry :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_entry_completion_get_entry"
 (** Gets the entry @completion has been attached to. *)

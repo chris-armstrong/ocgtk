@@ -17,7 +17,7 @@ no effect if the action bar is hidden. *)
 
 external set_center_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -26,7 +26,7 @@ external set_center_widget :
 
 external remove :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_action_bar_remove"
@@ -34,7 +34,7 @@ external remove :
 
 external pack_start :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_action_bar_pack_start"
@@ -43,7 +43,7 @@ start of the @action_bar. *)
 
 external pack_end :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_action_bar_pack_end"
@@ -55,7 +55,7 @@ external get_revealed : t -> bool = "ml_gtk_action_bar_get_revealed"
 
 external get_center_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_action_bar_get_center_widget"

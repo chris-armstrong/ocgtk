@@ -97,23 +97,26 @@ The buffer issue is a special case of the broader array length erasure problem. 
 
 ---
 
-## BUG-002: Array Length Parameters Are Exposed at Layer 1 and Layer 2
+## BUG-002: Array Length Parameters Are Still Exposed in OCaml API
 
-**Status:** Deferred — requires significant generator changes
+**Status:** Partially fixed — C-level substitution works; OCaml API still exposes length
 **Affects:** All array-taking methods across all namespaces
 **Related plan:** `docs/plans/gobject_glib_type_mappings.md`
 
 ### Description
 
-When a method takes an array parameter with an explicit length, GIR encodes this as two
-separate parameters: the array and the length. For example:
+Arrays are now fully supported at the C stub level (see `architecture/gir_gen/array_handling.md`):
+zero-terminated, length-based, GPtrArray, and out-param arrays all generate correct C code,
+and the C stub generator automatically substitutes `Array.length` or computed lengths into
+the corresponding C length parameter.
+
+However, the **OCaml API still exposes the companion length parameter** as a separate argument.
+For example:
 
 ```xml
 <parameter name="types" type="GType*" length="1"/>
 <parameter name="n_types" type="gsize"/>
 ```
-
-The current generator exposes both parameters at Layer 1 and Layer 2:
 
 ```ocaml
 (* Layer 1 — current (wrong) *)
@@ -124,12 +127,12 @@ val set_gtypes : t -> int array option -> unit
 (* length derived from Array.length *)
 ```
 
-The length parameter is C-level plumbing and should never be exposed as a separate argument.
+The length parameter is C-level plumbing and should be hidden from the OCaml signature.
 
-### Why It's Hard
+### Why It's Still Hard
 
 1. **GIR `length` attribute is an index into the parameter list**, not a name. The linkage
-   needs to be resolved before parameter list building, not after.
+   needs to be resolved before parameter list building in `layer1_method.ml`, not after.
 2. **Out-array lengths are more complex:** When an array is an out-parameter, the length
    is also an out-parameter that the C side fills in.
 3. **Layer 2 needs updating too:** Layer 2 wraps Layer 1, so signature changes propagate.
@@ -149,7 +152,7 @@ The length parameter is C-level plumbing and should never be exposed as a separa
 1. During parameter list construction in `layer1_method.ml`, detect when a `gsize`/`int`
    parameter is the `length=N` annotation of an adjacent array parameter.
 2. Mark it as "hidden" — emit it in C but not in OCaml.
-3. For in-arrays: derive count from `Array.length arr` in generated C.
+3. For in-arrays: derive count from `Array.length arr` in generated C (already done).
 4. For out-arrays: emit a local `gsize` variable in C, use its value to build the return array.
 5. Update Layer 2 wrappers to match.
 
@@ -200,12 +203,17 @@ virtual classes with virtual methods. `<virtual-method>` elements are not parsed
 
 ---
 
-## BUG-007: Signals with Parameters Are Not Generated
+## BUG-007: Complex Signals Are Partially Supported
 
-**Status:** Not yet implemented
+**Status:** Partially implemented — active milestone in progress
 
-Only parameterless void signals are generated. Signals with parameters or return values
-are skipped. See `generate/signal_gen.ml`.
+- Parameterless void signals are fully generated.
+- Signals with primitive parameters (`int`, `bool`, `float`, `string`, enums, bitfields) are now generated via `signal_marshaller.ml`.
+- Signals with GObject class/interface parameters are supported once signal-param edges are fed into the dependency graph (see `gir_gen/docs/plans/milestone-2-signals.md`, Remaining Work 1).
+- Signals with return values are supported for primitive types; non-primitive returns are deferred.
+- Signals with unsupported types (`GdkEvent`, custom structs, callbacks, `GArray`, `GVariant`) are still skipped.
+
+See the active plan: `gir_gen/docs/plans/milestone-2-signals.md`
 
 ---
 

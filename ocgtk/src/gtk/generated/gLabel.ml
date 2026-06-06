@@ -1,25 +1,30 @@
 class type label_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GAccessible_text.accessible_text_t
 
   method on_activate_current_link :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_activate_link :
-    callback:(uri:string -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(uri:string -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_copy_clipboard :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_move_cursor :
+    ?after:bool ->
     callback:
       (step:Gtk_enums.movementstep ->
       count:int ->
       extend_selection:bool ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
@@ -35,7 +40,7 @@ class type label_t = object
 
   method get_mnemonic_widget :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -63,7 +68,7 @@ class type label_t = object
   method set_max_width_chars : int -> unit
 
   method set_mnemonic_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -88,26 +93,26 @@ end
 class label (obj : Label.t) : label_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
     inherit GAccessible_text.accessible_text (Accessible_text.from_gobject obj)
 
-    method on_activate_current_link ~callback =
-      Label.on_activate_current_link self#as_label ~callback
+    method on_activate_current_link ?(after = false) ~callback () =
+      Label.on_activate_current_link ~after self#as_label ~callback
 
-    method on_activate_link ~callback =
-      Label.on_activate_link self#as_label ~callback
+    method on_activate_link ?(after = false) ~callback () =
+      Label.on_activate_link ~after self#as_label ~callback
 
-    method on_copy_clipboard ~callback =
-      Label.on_copy_clipboard self#as_label ~callback
+    method on_copy_clipboard ?(after = false) ~callback () =
+      Label.on_copy_clipboard ~after self#as_label ~callback
 
-    method on_move_cursor ~callback =
-      Label.on_move_cursor self#as_label ~callback
+    method on_move_cursor ?(after = false) ~callback () =
+      Label.on_move_cursor ~after self#as_label ~callback
 
     method get_attributes :
         unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option =
@@ -147,14 +152,14 @@ class label (obj : Label.t) : label_t =
 
     method get_mnemonic_widget :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Label.get_mnemonic_widget obj)
@@ -221,7 +226,7 @@ class label (obj : Label.t) : label_t =
       fun n_chars -> Label.set_max_width_chars obj n_chars
 
     method set_mnemonic_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =

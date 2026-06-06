@@ -1,5 +1,7 @@
 class type recent_manager_t = object
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method add_full : string -> Recent_data.t -> bool
   method add_item : string -> bool
   method get_items : unit -> Recent_info.t list

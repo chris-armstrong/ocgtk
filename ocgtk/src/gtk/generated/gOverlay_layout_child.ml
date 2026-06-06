@@ -1,6 +1,6 @@
 class type overlay_layout_child_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .layout_child_t
 
   method get_clip_overlay : unit -> bool
@@ -15,10 +15,10 @@ class overlay_layout_child (obj : Overlay_layout_child.t) :
   overlay_layout_child_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .layout_child
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Layout_child
              .t)
 

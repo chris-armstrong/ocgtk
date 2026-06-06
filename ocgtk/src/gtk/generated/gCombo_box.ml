@@ -1,29 +1,42 @@
 class type combo_box_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GCell_editable.cell_editable_t
   inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_format_entry_text :
-    callback:(path:string -> string) -> Gobject.Signal.handler_id
-
-  method on_move_active :
-    callback:(scroll_type:Gtk_enums.scrolltype -> unit) ->
+    ?after:bool ->
+    callback:(path:string -> string) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_popdown : callback:(unit -> bool) -> Gobject.Signal.handler_id
-  method on_popup : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_move_active :
+    ?after:bool ->
+    callback:(scroll_type:Gtk_enums.scrolltype -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_popdown :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
+  method on_popup :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_active : unit -> int
   method get_active_id : unit -> string option
   method get_button_sensitivity : unit -> Gtk_enums.sensitivitytype
 
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -41,7 +54,7 @@ class type combo_box_t = object
   method set_button_sensitivity : Gtk_enums.sensitivitytype -> unit
 
   method set_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -60,10 +73,10 @@ end
 class combo_box (obj : Combo_box.t) : combo_box_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
@@ -74,22 +87,24 @@ class combo_box (obj : Combo_box.t) : combo_box_t =
         (Cell_area_and__cell_area_context_and__cell_layout.Cell_layout
          .from_gobject obj)
 
-    method on_activate ~callback =
-      Combo_box.on_activate self#as_combo_box ~callback
+    method on_activate ?(after = false) ~callback () =
+      Combo_box.on_activate ~after self#as_combo_box ~callback
 
-    method on_changed ~callback =
-      Combo_box.on_changed self#as_combo_box ~callback
+    method on_changed ?(after = false) ~callback () =
+      Combo_box.on_changed ~after self#as_combo_box ~callback
 
-    method on_format_entry_text ~callback =
-      Combo_box.on_format_entry_text self#as_combo_box ~callback
+    method on_format_entry_text ?(after = false) ~callback () =
+      Combo_box.on_format_entry_text ~after self#as_combo_box ~callback
 
-    method on_move_active ~callback =
-      Combo_box.on_move_active self#as_combo_box ~callback
+    method on_move_active ?(after = false) ~callback () =
+      Combo_box.on_move_active ~after self#as_combo_box ~callback
 
-    method on_popdown ~callback =
-      Combo_box.on_popdown self#as_combo_box ~callback
+    method on_popdown ?(after = false) ~callback () =
+      Combo_box.on_popdown ~after self#as_combo_box ~callback
 
-    method on_popup ~callback = Combo_box.on_popup self#as_combo_box ~callback
+    method on_popup ?(after = false) ~callback () =
+      Combo_box.on_popup ~after self#as_combo_box ~callback
+
     method get_active : unit -> int = fun () -> Combo_box.get_active obj
 
     method get_active_id : unit -> string option =
@@ -100,14 +115,14 @@ class combo_box (obj : Combo_box.t) : combo_box_t =
 
     method get_child :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Combo_box.get_child obj)
@@ -148,7 +163,7 @@ class combo_box (obj : Combo_box.t) : combo_box_t =
       fun sensitivity -> Combo_box.set_button_sensitivity obj sensitivity
 
     method set_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =

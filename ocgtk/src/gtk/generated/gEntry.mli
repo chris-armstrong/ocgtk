@@ -1,18 +1,24 @@
 class type entry_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GCell_editable.cell_editable_t
   inherit GEditable.editable_t
-  method on_activate : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_icon_press :
+    ?after:bool ->
     callback:(icon_pos:Gtk_enums.entryiconposition -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method on_icon_release :
+    ?after:bool ->
     callback:(icon_pos:Gtk_enums.entryiconposition -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_activates_default : unit -> bool

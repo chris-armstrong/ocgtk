@@ -1,16 +1,27 @@
 class type drop_target_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .event_controller_t
 
-  method on_enter :
-    callback:(x:float -> y:float -> Ocgtk_gdk.Gdk_enums.dragaction) ->
+  method on_accept :
+    ?after:bool ->
+    callback:(drop:Ocgtk_gdk.Gdk.Drop.drop_t -> bool) ->
+    unit ->
     Gobject.Signal.handler_id
 
-  method on_leave : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_enter :
+    ?after:bool ->
+    callback:(x:float -> y:float -> Ocgtk_gdk.Gdk_enums.dragaction) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_leave :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_motion :
+    ?after:bool ->
     callback:(x:float -> y:float -> Ocgtk_gdk.Gdk_enums.dragaction) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method get_actions : unit -> Ocgtk_gdk.Gdk.dragaction

@@ -270,3 +270,22 @@ g_dtls_connection_close() again to complete closing the #GDtlsConnection. *)
 external get_base_socket : t -> Datagram_based.t
   = "ml_g_dtls_connection_get_base_socket"
 (** Get property: base-socket *)
+
+let on_accept_certificate ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let peer_cert =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v
+        in
+        let errors =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gio_enums.tlscertificateflags_of_int (Gobject.Value.get_flags_int v)
+        in
+        let result = callback ~peer_cert ~errors in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"accept-certificate" ~callback:closure
+    ~after:(Option.value after ~default:false)

@@ -1,4 +1,34 @@
 class type d_bus_object_manager_t = object
+  method on_interface_added :
+    ?after:bool ->
+    callback:
+      (object_:GD_bus_interface_and__d_bus_object.d_bus_object_t ->
+      interface:GD_bus_interface_and__d_bus_object.d_bus_interface_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_interface_removed :
+    ?after:bool ->
+    callback:
+      (object_:GD_bus_interface_and__d_bus_object.d_bus_object_t ->
+      interface:GD_bus_interface_and__d_bus_object.d_bus_interface_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_object_added :
+    ?after:bool ->
+    callback:(object_:GD_bus_interface_and__d_bus_object.d_bus_object_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_object_removed :
+    ?after:bool ->
+    callback:(object_:GD_bus_interface_and__d_bus_object.d_bus_object_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_interface :
     string ->
     string ->

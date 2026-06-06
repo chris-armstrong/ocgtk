@@ -2,7 +2,10 @@ class type about_dialog_t = object
   inherit GApplication_and__window_and__window_group.window_t
 
   method on_activate_link :
-    callback:(uri:string -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(uri:string -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method add_credit_section : string -> string array -> unit
   method get_artists : unit -> string array

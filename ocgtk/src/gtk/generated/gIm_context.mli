@@ -1,17 +1,27 @@
 class type im_context_t = object
-  method on_commit : callback:(str:string -> unit) -> Gobject.Signal.handler_id
+  method on_commit :
+    ?after:bool ->
+    callback:(str:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_delete_surrounding :
-    callback:(offset:int -> n_chars:int -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(offset:int -> n_chars:int -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_preedit_changed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method on_preedit_end : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_preedit_start : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_preedit_end :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_preedit_start :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_retrieve_surrounding :
-    callback:(unit -> bool) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
 
   method activate_osk : Ocgtk_gdk.Gdk.Event.event_t option -> bool
   method delete_surrounding : int -> int -> bool
@@ -32,7 +42,7 @@ class type im_context_t = object
   method reset : unit -> unit
 
   method set_client_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit

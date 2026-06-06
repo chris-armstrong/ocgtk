@@ -2,16 +2,28 @@ class type gesture_stylus_t = object
   inherit GGesture_single.gesture_single_t
 
   method on_down :
-    callback:(x:float -> y:float -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(x:float -> y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_motion :
-    callback:(x:float -> y:float -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(x:float -> y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_proximity :
-    callback:(x:float -> y:float -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(x:float -> y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_up :
-    callback:(x:float -> y:float -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(x:float -> y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method get_device_tool :
     unit -> Ocgtk_gdk.Gdk.Device_tool.device_tool_t option
@@ -26,17 +38,17 @@ class gesture_stylus (obj : Gesture_stylus.t) : gesture_stylus_t =
   object (self)
     inherit GGesture_single.gesture_single (obj :> Gesture_single.t)
 
-    method on_down ~callback =
-      Gesture_stylus.on_down self#as_gesture_stylus ~callback
+    method on_down ?(after = false) ~callback () =
+      Gesture_stylus.on_down ~after self#as_gesture_stylus ~callback
 
-    method on_motion ~callback =
-      Gesture_stylus.on_motion self#as_gesture_stylus ~callback
+    method on_motion ?(after = false) ~callback () =
+      Gesture_stylus.on_motion ~after self#as_gesture_stylus ~callback
 
-    method on_proximity ~callback =
-      Gesture_stylus.on_proximity self#as_gesture_stylus ~callback
+    method on_proximity ?(after = false) ~callback () =
+      Gesture_stylus.on_proximity ~after self#as_gesture_stylus ~callback
 
-    method on_up ~callback =
-      Gesture_stylus.on_up self#as_gesture_stylus ~callback
+    method on_up ?(after = false) ~callback () =
+      Gesture_stylus.on_up ~after self#as_gesture_stylus ~callback
 
     method get_device_tool :
         unit -> Ocgtk_gdk.Gdk.Device_tool.device_tool_t option =

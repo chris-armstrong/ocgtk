@@ -1,6 +1,9 @@
 class type font_chooser_t = object
   method on_font_activated :
-    callback:(fontname:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(fontname:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method get_font : unit -> string option
 

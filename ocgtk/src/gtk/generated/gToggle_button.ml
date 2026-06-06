@@ -1,6 +1,9 @@
 class type toggle_button_t = object
   inherit GButton.button_t
-  method on_toggled : callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  method on_toggled :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_active : unit -> bool
   method set_active : bool -> unit
   method set_group : toggle_button_t option -> unit
@@ -13,8 +16,8 @@ class toggle_button (obj : Toggle_button.t) : toggle_button_t =
   object (self)
     inherit GButton.button (obj :> Button.t)
 
-    method on_toggled ~callback =
-      Toggle_button.on_toggled self#as_toggle_button ~callback
+    method on_toggled ?(after = false) ~callback () =
+      Toggle_button.on_toggled ~after self#as_toggle_button ~callback
 
     method get_active : unit -> bool = fun () -> Toggle_button.get_active obj
 

@@ -1,6 +1,8 @@
 class type filter_t = object
   method on_changed :
+    ?after:bool ->
     callback:(change:Gtk_enums.filterchange -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method changed : Gtk_enums.filterchange -> unit
@@ -12,7 +14,8 @@ end
 (* High-level class for Filter *)
 class filter (obj : Filter.t) : filter_t =
   object (self)
-    method on_changed ~callback = Filter.on_changed self#as_filter ~callback
+    method on_changed ?(after = false) ~callback () =
+      Filter.on_changed ~after self#as_filter ~callback
 
     method changed : Gtk_enums.filterchange -> unit =
       fun change -> Filter.changed obj change

@@ -119,7 +119,7 @@ module Wrappers : sig
   module Entry_completion = Entry_completion
 
   module Event_controller =
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Event_controller
 
   module Event_controller_focus = Event_controller_focus
@@ -183,11 +183,11 @@ module Wrappers : sig
   module Label = Label
 
   module Layout_child =
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Layout_child
 
   module Layout_manager =
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Layout_manager
 
   module Level_bar = Level_bar
@@ -257,7 +257,7 @@ module Wrappers : sig
   module Revealer = Revealer
 
   module Root =
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Root
 
   module Scale = Scale
@@ -315,7 +315,11 @@ module Wrappers : sig
   module Text_tag_table = Text_tag_table
   module Text_view = Text_view
   module Toggle_button = Toggle_button
-  module Tooltip = Tooltip
+
+  module Tooltip =
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .Tooltip
+
   module Tree_drag_dest = Tree_drag_dest
   module Tree_drag_source = Tree_drag_source
   module Tree_expander = Tree_expander
@@ -339,7 +343,7 @@ module Wrappers : sig
   module Volume_button = Volume_button
 
   module Widget =
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
 
   module Widget_paintable = Widget_paintable

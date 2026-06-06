@@ -3,18 +3,34 @@
 
 class type text_buffer_t = object
   method on_begin_user_action :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method on_changed : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_end_user_action :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_mark_deleted :
+    ?after:bool ->
+    callback:(mark:text_mark_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_modified_changed :
-    callback:(unit -> unit) -> Gobject.Signal.handler_id
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
-  method on_redo : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_undo : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_paste_done :
+    ?after:bool ->
+    callback:(clipboard:Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_redo :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_undo :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method add_mark :
     text_mark_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit
@@ -320,28 +336,38 @@ class text_buffer
   (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t) :
   text_buffer_t =
   object (self)
-    method on_begin_user_action ~callback =
+    method on_begin_user_action ?(after = false) ~callback () =
       Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_begin_user_action
+        ~after self#as_text_buffer ~callback
+
+    method on_changed ?(after = false) ~callback () =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_changed ~after
         self#as_text_buffer ~callback
 
-    method on_changed ~callback =
-      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_changed
-        self#as_text_buffer ~callback
-
-    method on_end_user_action ~callback =
+    method on_end_user_action ?(after = false) ~callback () =
       Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_end_user_action
-        self#as_text_buffer ~callback
+        ~after self#as_text_buffer ~callback
 
-    method on_modified_changed ~callback =
+    method on_mark_deleted ?(after = false) ~callback () =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_mark_deleted
+        ~after self#as_text_buffer ~callback:(fun ~mark ->
+          callback ~mark:(new text_mark mark))
+
+    method on_modified_changed ?(after = false) ~callback () =
       Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_modified_changed
+        ~after self#as_text_buffer ~callback
+
+    method on_paste_done ?(after = false) ~callback () =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_paste_done ~after
+        self#as_text_buffer ~callback:(fun ~clipboard ->
+          callback ~clipboard:(new Ocgtk_gdk.Gdk.Clipboard.clipboard clipboard))
+
+    method on_redo ?(after = false) ~callback () =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_redo ~after
         self#as_text_buffer ~callback
 
-    method on_redo ~callback =
-      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_redo
-        self#as_text_buffer ~callback
-
-    method on_undo ~callback =
-      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_undo
+    method on_undo ?(after = false) ~callback () =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_undo ~after
         self#as_text_buffer ~callback
 
     method add_mark :

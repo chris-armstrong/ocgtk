@@ -1,12 +1,15 @@
 class type column_view_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GScrollable.scrollable_t
 
   method on_activate :
-    callback:(position:int -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(position:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method append_column : column_view_column_t -> unit
   method get_columns : unit -> Ocgtk_gio.Gio.List_model.list_model_t

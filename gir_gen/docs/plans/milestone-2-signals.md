@@ -460,6 +460,51 @@ declare `Widget.t Gobject.obj option` instead of `widget_t option`. Every
 other L2 method uses L2 class types via `resolve_ocaml_type`
 (`class_gen_type_resolution.ml:57`).
 
+### Inherited debt: remove `current_class` from `Signal_marshaller.classify`
+
+Work 1 landed a `~current_class:string option` parameter on
+`Signal_marshaller.classify` and `Signal_gen.classify` to keep same-class
+GObject references rendered as bare `t Gobject.obj` inside their
+standalone L1 module (avoiding a compilation-unit self-alias error). This
+is a band-aid: `signal_emission.ocaml_callback_type` is rendered at
+classify time, so L1 and L2 emission must call `classify` twice with
+different `current_class` values to obtain different strings — the record
+stops being a single source of truth.
+
+**Work 2 must remove this parameter.** The cleanup is part of the same
+refactor Work 2 already requires:
+
+- `Signal_marshaller.marshaller` should carry **structured** type info
+  (e.g. a sum type distinguishing same-ns object / cross-ns object /
+  primitive / enum / bitfield / variant), not a pre-rendered string.
+- `Signal_marshaller.classify` takes no rendering context — it only
+  classifies.
+- `emit_l1_val` / `emit_l1_let` take `~current_class:string` and render
+  the callback type from the structured marshaller data, applying the
+  self-reference rule at emit time.
+- `emit_l2_method_sig` / `emit_l2_method` take `~current_layer2_module`
+  and render using `resolve_layer2_class_ref` / `resolve_ocaml_type`
+  from `class_gen_type_resolution.ml`, which already handles same-module
+  qualification correctly.
+
+After this refactor:
+- `Signal_gen.classify` no longer takes `~current_class`.
+- `class_gen_body.ml`'s L2 sites no longer pass `~current_class:None`
+  with an explanatory comment; instead they pass `~current_layer2_module`
+  and Work 2's L2 type rendering takes care of everything.
+- `layer1_main.ml`'s L1 site no longer threads `~current_class`; it
+  calls `emit_l1_val` / `emit_l1_let` with `~current_class:class_name`
+  directly.
+- The local test wrappers in `signal_wrapper_tests.ml` and
+  `signal_marshaller_tests.ml` that default `current_class` to `None`
+  go away.
+
+**Definition-of-Done for Work 2 includes:** zero occurrences of
+`current_class` in `gir_gen/lib/generate/signal_marshaller.{ml,mli}` and
+`gir_gen/lib/generate/signal_gen.{ml,mli}`, and a grep across the
+generator returns no `~current_class` arguments at classify callsites.
+Work 2 does not ship until this is satisfied.
+
 ### Design
 
 Signal callbacks have a **direction reversal** compared to method calls:

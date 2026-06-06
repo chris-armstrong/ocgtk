@@ -37,6 +37,18 @@ let gtk_ctx_with_gdk_modifiertype () =
   { (gtk_ctx ()) with cross_references = cross_refs }
 
 (* ========================================================================= *)
+(* Shared signal builders                                                     *)
+(* ========================================================================= *)
+
+(** Void zero-param 'clicked' signal used in many tests. *)
+let make_clicked_signal () =
+  Type_factory.make_gir_signal ~signal_name:"clicked"
+    ~return_type:Type_factory.void_type ()
+
+(** Minimal Gtk context reused by tests that don't need entities. *)
+let shared_ctx = gtk_ctx ()
+
+(* ========================================================================= *)
 (* Result-check helpers                                                       *)
 (* ========================================================================= *)
 
@@ -56,11 +68,8 @@ let expect_error label result =
 (* ========================================================================= *)
 
 let test_void_zero_param_emits_connect_simple_in_l1_let () =
-  let ctx = gtk_ctx () in
-  let signal =
-    Type_factory.make_gir_signal ~signal_name:"clicked"
-      ~return_type:Type_factory.void_type ()
-  in
+  let ctx = shared_ctx in
+  let signal = make_clicked_signal () in
   let emission =
     expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
@@ -83,15 +92,12 @@ let test_void_zero_param_emits_connect_simple_in_l1_let () =
 (* ========================================================================= *)
 
 let test_void_zero_param_emits_val_in_l1_val () =
-  let ctx = gtk_ctx () in
-  let signal =
-    Type_factory.make_gir_signal ~signal_name:"clicked"
-      ~return_type:Type_factory.void_type ()
-  in
+  let ctx = shared_ctx in
+  let signal = make_clicked_signal () in
   let emission =
     expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
-  let l1_val = Signal_gen.emit_l1_val emission in
+  let l1_val = Signal_gen.emit_l1_val ~current_class:"Button" emission in
   let ast = Ml_ast_helpers.parse_interface l1_val in
   Helpers.assert_some "val on_clicked in interface"
     (Ml_ast_helpers.find_value_declaration_sig ast "on_clicked")
@@ -101,7 +107,7 @@ let test_void_zero_param_emits_val_in_l1_val () =
 (* ========================================================================= *)
 
 let test_void_primitive_params_uses_closure_create () =
-  let ctx = gtk_ctx () in
+  let ctx = shared_ctx in
   let signal =
     Type_factory.make_gir_signal ~signal_name:"pressed"
       ~return_type:Type_factory.void_type
@@ -131,7 +137,7 @@ let test_void_primitive_params_uses_closure_create () =
          "create")
   then Alcotest.fail "on_pressed body should call Gobject.Closure.create";
   (* The l1_val callback type must have labelled params n_press:int, x:float, y:float *)
-  let l1_val = Signal_gen.emit_l1_val emission in
+  let l1_val = Signal_gen.emit_l1_val ~current_class:"Button" emission in
   let val_ast = Ml_ast_helpers.parse_interface l1_val in
   Helpers.expect_some "on_pressed val declaration"
     (Ml_ast_helpers.find_value_declaration_sig val_ast "on_pressed")
@@ -166,7 +172,7 @@ let test_void_primitive_params_uses_closure_create () =
 (* ========================================================================= *)
 
 let test_bool_return_zero_param_uses_closure_create () =
-  let ctx = gtk_ctx () in
+  let ctx = shared_ctx in
   let signal =
     Type_factory.make_gir_signal ~signal_name:"close-request"
       ~return_type:Type_factory.gboolean_type ()
@@ -190,7 +196,7 @@ let test_bool_return_zero_param_uses_closure_create () =
          "create")
   then Alcotest.fail "on_close_request body should call Gobject.Closure.create";
   (* L1 val callback type must have a bool return type *)
-  let l1_val = Signal_gen.emit_l1_val emission in
+  let l1_val = Signal_gen.emit_l1_val ~current_class:"Button" emission in
   let val_ast = Ml_ast_helpers.parse_interface l1_val in
   Helpers.expect_some "on_close_request val declaration"
     (Ml_ast_helpers.find_value_declaration_sig val_ast "on_close_request")
@@ -211,7 +217,7 @@ let test_bool_return_zero_param_uses_closure_create () =
 (* ========================================================================= *)
 
 let test_bool_return_bool_param_round_trip () =
-  let ctx = gtk_ctx () in
+  let ctx = shared_ctx in
   let signal =
     Type_factory.make_gir_signal ~signal_name:"state-set"
       ~return_type:Type_factory.gboolean_type
@@ -226,7 +232,8 @@ let test_bool_return_bool_param_round_trip () =
     expect_ok "state-set classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
   Alcotest.(check string)
-    "ocaml_callback_type" "state:bool -> bool" emission.ocaml_callback_type;
+    "l1_callback_type" "state:bool -> bool"
+    (Signal_gen.l1_callback_type ~current_class:"Button" emission);
   let l1_let = Signal_gen.emit_l1_let emission in
   let ast = Ml_ast_helpers.parse_implementation l1_let in
   Helpers.expect_some "on_state_set binding"
@@ -282,21 +289,19 @@ let test_mixed_params_key_pressed_shape () =
     | [ _; _; third ] -> third
     | _ -> Alcotest.fail "expected exactly 3 param marshallers"
   in
-  if not (String.mem ~sub:"get_flags_int" third_m.getter_expr) then
-    Alcotest.failf
-      "third param getter_expr should contain 'get_flags_int' but got: %s"
-      third_m.getter_expr;
-  if not (String.mem ~sub:"modifiertype_of_int" third_m.getter_expr) then
-    Alcotest.failf
-      "third param getter_expr should contain 'modifiertype_of_int' but got: %s"
-      third_m.getter_expr
+  Alcotest.(check string) "getter_expr"
+    "Ocgtk_gdk.Gdk_enums.modifiertype_of_int (Gobject.Value.get_flags_int v)"
+    third_m.getter_expr;
+  Alcotest.(check string) "setter_expr"
+    "Gobject.Value.set_flags_int v (Ocgtk_gdk.Gdk_enums.modifiertype_to_int x)"
+    third_m.setter_expr
 
 (* ========================================================================= *)
 (* Case 6: unsupported signal returns Error                                   *)
 (* ========================================================================= *)
 
 let test_unsupported_signal_returns_error () =
-  let ctx = gtk_ctx () in
+  let ctx = shared_ctx in
   let callback_gir =
     Type_factory.make_gir_type ~name:"DestroyFunc" ~c_type:"GDestroyNotify" ()
   in
@@ -320,7 +325,7 @@ let test_unsupported_signal_returns_error () =
 (* ========================================================================= *)
 
 let test_sender_not_at_pos_0 () =
-  let ctx = gtk_ctx () in
+  let ctx = shared_ctx in
   let signal =
     Type_factory.make_gir_signal ~signal_name:"pressed"
       ~return_type:Type_factory.void_type
@@ -352,7 +357,7 @@ let test_sender_not_at_pos_0 () =
 (* ========================================================================= *)
 
 let test_keyword_param_name_sanitised () =
-  let ctx = gtk_ctx () in
+  let ctx = shared_ctx in
   let signal =
     Type_factory.make_gir_signal ~signal_name:"typed"
       ~return_type:Type_factory.void_type
@@ -366,9 +371,6 @@ let test_keyword_param_name_sanitised () =
   let emission =
     expect_ok "typed classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
-  if not (String.mem ~sub:"type_:" emission.ocaml_callback_type) then
-    Alcotest.failf "ocaml_callback_type should contain 'type_:' but got: %s"
-      emission.ocaml_callback_type;
   let l1_let = Signal_gen.emit_l1_let emission in
   let ast = Ml_ast_helpers.parse_implementation l1_let in
   Helpers.expect_some "on_typed binding"
@@ -388,7 +390,7 @@ let test_keyword_param_name_sanitised () =
 (* ========================================================================= *)
 
 let test_int64_param_maps_to_int64_t () =
-  let ctx = gtk_ctx () in
+  let ctx = shared_ctx in
   let gint64_type =
     Type_factory.make_gir_type ~name:"gint64" ~c_type:"gint64" ()
   in
@@ -411,17 +413,17 @@ let test_int64_param_maps_to_int64_t () =
     | _ -> Alcotest.fail "expected exactly 1 param marshaller"
   in
   Alcotest.(check string) "ocaml_type" "Int64.t" m.ocaml_type;
-  if not (String.mem ~sub:"Gobject.Value.get_int64" m.getter_expr) then
-    Alcotest.failf
-      "getter_expr should contain 'Gobject.Value.get_int64' but got: %s"
-      m.getter_expr
+  Alcotest.(check string) "getter_expr" "Gobject.Value.get_int64 v"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr" "Gobject.Value.set_int64 v x"
+    m.setter_expr
 
 (* ========================================================================= *)
 (* Case 10: GLib.Variant param maps to Gvariant.t                            *)
 (* ========================================================================= *)
 
 let test_variant_param_maps_to_gvariant () =
-  let ctx = gtk_ctx () in
+  let ctx = shared_ctx in
   let variant_gir =
     Type_factory.make_gir_type ~name:"GLib.Variant" ~c_type:"GVariant*" ()
   in
@@ -444,27 +446,24 @@ let test_variant_param_maps_to_gvariant () =
     | _ -> Alcotest.fail "expected exactly 1 param marshaller"
   in
   Alcotest.(check string) "ocaml_type" "Gvariant.t" m.ocaml_type;
-  if not (String.mem ~sub:"Gobject.Value.get_variant" m.getter_expr) then
-    Alcotest.failf
-      "getter_expr should contain 'Gobject.Value.get_variant' but got: %s"
-      m.getter_expr
+  Alcotest.(check string) "getter_expr" "Gobject.Value.get_variant v"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr" "Gobject.Value.set_variant v x"
+    m.setter_expr
 
 (* ========================================================================= *)
 (* Case 11: L2 forwarder shape                                                *)
 (* ========================================================================= *)
 
 let test_l2_forwarder_shape () =
-  let ctx = gtk_ctx () in
-  let signal =
-    Type_factory.make_gir_signal ~signal_name:"clicked"
-      ~return_type:Type_factory.void_type ()
-  in
+  let ctx = shared_ctx in
+  let signal = make_clicked_signal () in
   let emission =
     expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
   let l2 =
-    Signal_gen.emit_l2_method emission ~layer1_module_name:"Window"
-      ~class_snake:"window"
+    Signal_gen.emit_l2_method ~current_layer2_module:"GButton"
+      ~layer1_module_name:"Window" ~class_snake:"window" emission
   in
   (* Parse as a class body fragment by wrapping it *)
   let wrapped = Printf.sprintf "class test_class = object\n%send\n" l2 in
@@ -488,15 +487,12 @@ let test_l2_forwarder_shape () =
 (* ========================================================================= *)
 
 let test_l1_obj_is_positional_not_labelled () =
-  let ctx = gtk_ctx () in
-  let signal =
-    Type_factory.make_gir_signal ~signal_name:"clicked"
-      ~return_type:Type_factory.void_type ()
-  in
+  let ctx = shared_ctx in
+  let signal = make_clicked_signal () in
   let emission =
     expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
-  let l1_val = Signal_gen.emit_l1_val emission in
+  let l1_val = Signal_gen.emit_l1_val ~current_class:"Button" emission in
   let ast = Ml_ast_helpers.parse_interface l1_val in
   Helpers.expect_some "on_clicked val declaration"
     (Ml_ast_helpers.find_value_declaration_sig ast "on_clicked")
@@ -579,17 +575,14 @@ let test_no_signals_files_generated () =
 (* ========================================================================= *)
 
 let test_l2_has_no_inherit_signals_line () =
-  let ctx = gtk_ctx () in
-  let signal =
-    Type_factory.make_gir_signal ~signal_name:"clicked"
-      ~return_type:Type_factory.void_type ()
-  in
+  let ctx = shared_ctx in
+  let signal = make_clicked_signal () in
   let emission =
     expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
   let l2 =
-    Signal_gen.emit_l2_method emission ~layer1_module_name:"Button"
-      ~class_snake:"button"
+    Signal_gen.emit_l2_method ~current_layer2_module:"GButton"
+      ~layer1_module_name:"Button" ~class_snake:"button" emission
   in
   let wrapped = Printf.sprintf "class test_class = object\n%send\n" l2 in
   let ast = Ml_ast_helpers.parse_implementation wrapped in
@@ -610,15 +603,10 @@ let test_l2_has_no_inherit_signals_line () =
 
 module Ml_interface = Gir_gen_lib.Generate.Ml_interface
 
-(** Synthetic Button class used for L1 module generator integration tests. *)
-let make_button_with_clicked_signal () =
-  Type_factory.make_gir_signal ~signal_name:"clicked"
-    ~return_type:Type_factory.void_type ()
-
 let test_l1_val_in_generated_module_interface () =
   (* Arrange: minimal Gtk context and one void zero-param signal *)
-  let ctx = gtk_ctx () in
-  let clicked_signal = make_button_with_clicked_signal () in
+  let ctx = shared_ctx in
+  let clicked_signal = make_clicked_signal () in
   (* Act: call the L1 interface generator in Interface mode with the signal *)
   let mli_content =
     Ml_interface.generate_ml_interface ~ctx ~output_mode:Ml_interface.Interface
@@ -634,8 +622,8 @@ let test_l1_val_in_generated_module_interface () =
 
 let test_l1_let_in_generated_module_impl () =
   (* Arrange: minimal Gtk context and one void zero-param signal *)
-  let ctx = gtk_ctx () in
-  let clicked_signal = make_button_with_clicked_signal () in
+  let ctx = shared_ctx in
+  let clicked_signal = make_clicked_signal () in
   (* Act: call the L1 interface generator in Implementation mode with the
      signal *)
   let ml_content =
@@ -667,10 +655,7 @@ let gtk_ctx_with_button () =
 let test_l2_class_body_contains_on_signal_method () =
   (* Arrange: Button class with a void zero-param 'clicked' signal *)
   let ctx = gtk_ctx_with_button () in
-  let clicked_signal =
-    Type_factory.make_gir_signal ~signal_name:"clicked"
-      ~return_type:Type_factory.void_type ()
-  in
+  let clicked_signal = make_clicked_signal () in
   (* Act: generate the L2 class module (.ml) *)
   let ml_code =
     Class_gen.generate_class_module ~ctx ~class_name:"Button"
@@ -701,10 +686,7 @@ let test_l2_class_body_contains_on_signal_method () =
 let test_l2_class_type_contains_on_signal_method_sig () =
   (* Arrange: same Button with clicked signal *)
   let ctx = gtk_ctx_with_button () in
-  let clicked_signal =
-    Type_factory.make_gir_signal ~signal_name:"clicked"
-      ~return_type:Type_factory.void_type ()
-  in
+  let clicked_signal = make_clicked_signal () in
   (* Act: generate the L2 class signature (.mli) *)
   let mli_code =
     Class_gen.generate_class_signature ~ctx ~class_name:"Button"
@@ -734,10 +716,7 @@ let test_l2_class_type_contains_on_signal_method_sig () =
 let test_l2_no_inherit_signals_in_generated_class () =
   (* Arrange: Button class with a void zero-param 'clicked' signal *)
   let ctx = gtk_ctx_with_button () in
-  let clicked_signal =
-    Type_factory.make_gir_signal ~signal_name:"clicked"
-      ~return_type:Type_factory.void_type ()
-  in
+  let clicked_signal = make_clicked_signal () in
   (* Act: generate the L2 class module (.ml) *)
   let ml_code =
     Class_gen.generate_class_module ~ctx ~class_name:"Button"

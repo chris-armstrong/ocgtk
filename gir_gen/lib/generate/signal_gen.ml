@@ -101,7 +101,6 @@ type signal_emission = {
   raw_signal_name : string;
   param_marshallers : (gir_param * Signal_marshaller.marshaller) list;
   return_marshaller : Signal_marshaller.marshaller option;
-  ocaml_callback_type : string;
   strategy : [ `Connect_simple | `Closure ];
 }
 
@@ -117,39 +116,27 @@ let classify_param ~ctx (param : gir_param) :
   | Out | InOut ->
       Error (sprintf "non-In direction parameter '%s'" param.param_name)
   | In -> (
-      match Signal_marshaller.classify ~ctx ~gir_type:param.param_type with
+      let gir_type =
+        { param.param_type with
+          nullable = param.nullable || param.param_type.nullable }
+      in
+      match Signal_marshaller.classify ~ctx ~gir_type with
       | Signal_marshaller.Unsupported reason ->
           Error
             (sprintf "unsupported parameter type for '%s': %s" param.param_name
                reason)
       | Signal_marshaller.Supported m -> Ok (param, m))
 
-(** Derive the callback type string from the param/return marshallers. *)
-let build_callback_type
-    (param_marshallers : (gir_param * Signal_marshaller.marshaller) list)
-    (return_marshaller : Signal_marshaller.marshaller option) : string =
-  let param_parts =
-    List.map param_marshallers
-      ~f:(fun (param, (m : Signal_marshaller.marshaller)) ->
-        sprintf "%s:%s" (sanitize_param_name param.param_name) m.ocaml_type)
-  in
-  let return_type =
-    match return_marshaller with None -> "unit" | Some m -> m.ocaml_type
-  in
-  match param_parts with
-  | [] -> sprintf "unit -> %s" return_type
-  | _ -> sprintf "%s -> %s" (String.concat ~sep:" -> " param_parts) return_type
-
 (** Check whether any parameter classification failed; return the first error or
     the list of supported (param, marshaller) pairs. *)
 let collect_param_results param_results :
     ((gir_param * Signal_marshaller.marshaller) list, string) result =
-  let first_error =
-    List.find_opt ~f:(function Error _ -> true | Ok _ -> false) param_results
-  in
-  match first_error with
-  | Some (Error reason) -> Error reason
-  | Some (Ok _) -> assert false
+  match
+    List.find_map
+      ~f:(function Error reason -> Some reason | Ok _ -> None)
+      param_results
+  with
+  | Some reason -> Error reason
   | None ->
       let supported =
         List.filter_map
@@ -182,9 +169,6 @@ let classify ~ctx (signal : gir_signal) : (signal_emission, string) result =
     | _ -> `Closure
   in
   let method_name = sanitize_signal_name signal.signal_name in
-  let ocaml_callback_type =
-    build_callback_type supported_params return_marshaller
-  in
   Ok
     {
       signal;
@@ -192,18 +176,51 @@ let classify ~ctx (signal : gir_signal) : (signal_emission, string) result =
       raw_signal_name = signal.signal_name;
       param_marshallers = supported_params;
       return_marshaller;
-      ocaml_callback_type;
       strategy;
     }
+
+(* ================================================================= *)
+(* Callback type rendering                                            *)
+(* ================================================================= *)
+
+(** Build the callback type string for an emission, using [render_param] to
+    resolve each marshaller's OCaml type. *)
+let build_callback_type ~render_param ~render_return
+    (param_marshallers : (gir_param * Signal_marshaller.marshaller) list)
+    (return_marshaller : Signal_marshaller.marshaller option) : string =
+  let param_parts =
+    List.map param_marshallers
+      ~f:(fun (param, (m : Signal_marshaller.marshaller)) ->
+        sprintf "%s:%s" (sanitize_param_name param.param_name) (render_param m))
+  in
+  let return_type =
+    match return_marshaller with None -> "unit" | Some m -> render_return m
+  in
+  match param_parts with
+  | [] -> sprintf "unit -> %s" return_type
+  | _ -> sprintf "%s -> %s" (String.concat ~sep:" -> " param_parts) return_type
+
+let l1_callback_type ~current_class (e : signal_emission) : string =
+  let render m = Signal_marshaller.render_l1_type ~current_class m in
+  build_callback_type ~render_param:render ~render_return:render
+    e.param_marshallers e.return_marshaller
+
+let l2_callback_type ~current_layer2_module (e : signal_emission) : string =
+  let render m =
+    Signal_marshaller.render_l2_type ~current_layer2_module m
+  in
+  build_callback_type ~render_param:render ~render_return:render
+    e.param_marshallers e.return_marshaller
 
 (* ================================================================= *)
 (* emit_l1_val                                                        *)
 (* ================================================================= *)
 
-let emit_l1_val (e : signal_emission) : string =
+let emit_l1_val ~current_class (e : signal_emission) : string =
   sprintf
     "val %s : ?after:bool -> t -> callback:(%s) -> Gobject.Signal.handler_id\n"
-    e.method_name e.ocaml_callback_type
+    e.method_name
+    (l1_callback_type ~current_class e)
 
 (* ================================================================= *)
 (* emit_l1_let                                                        *)
@@ -277,10 +294,54 @@ let emit_l1_let (e : signal_emission) : string =
 (* emit_l2_method                                                     *)
 (* ================================================================= *)
 
-let emit_l2_method (e : signal_emission) ~layer1_module_name ~class_snake :
-    string =
-  sprintf "  method %s ~callback =\n    %s.%s self#as_%s ~callback\n\n"
-    e.method_name layer1_module_name e.method_name class_snake
+(** True iff at least one param or the return value of this signal carries an
+    [l2_class] and therefore requires L1↔L2 wrapping inside the L2 forwarder. *)
+let needs_l2_wrapping (e : signal_emission) : bool =
+  List.exists e.param_marshallers
+    ~f:(fun (_, (m : Signal_marshaller.marshaller)) ->
+      Option.is_some m.l2_class)
+  || Option.fold e.return_marshaller ~none:false
+       ~some:(fun (m : Signal_marshaller.marshaller) -> Option.is_some m.l2_class)
+
+let emit_l2_method ~current_layer2_module ~layer1_module_name ~class_snake
+    (e : signal_emission) : string =
+  if not (needs_l2_wrapping e) then
+    (* No GObject params or return — the L1 callback type matches L2 exactly,
+       so forward the user's callback through unchanged. *)
+    sprintf
+      "  method %s ?(after = false) ~callback () =\n\
+      \    %s.%s ~after self#as_%s ~callback\n\n"
+      e.method_name layer1_module_name e.method_name class_snake
+  else
+    let buf = Buffer.create 256 in
+    bprintf buf "  method %s ?(after = false) ~callback () =\n" e.method_name;
+    bprintf buf "    %s.%s ~after self#as_%s\n" layer1_module_name
+      e.method_name class_snake;
+    (* Build the L1→L2 adapter so the runtime marshalling layer stays hidden from user callbacks. *)
+    let format_user_arg (p, m) =
+      let pname = sanitize_param_name p.param_name in
+      let wrapped =
+        Signal_marshaller.l2_param_wrap_expr ~current_layer2_module m pname
+      in
+      if String.equal wrapped pname then sprintf "~%s" pname
+      else sprintf "~%s:%s" pname wrapped
+    in
+    let fun_param_list, _user_callback_args, user_call =
+      match e.param_marshallers with
+      | [] -> ("()", "()", "callback ()")
+      | params ->
+          let names = List.map params ~f:(fun (p, _) -> sanitize_param_name p.param_name) in
+          let fun_params = String.concat ~sep:" " (List.map names ~f:(sprintf "~%s")) in
+          let user_callback_args = String.concat ~sep:" " (List.map params ~f:format_user_arg) in
+          (fun_params, user_callback_args, sprintf "callback %s" user_callback_args)
+    in
+    let body =
+      match e.return_marshaller with
+      | None -> user_call
+      | Some m -> Signal_marshaller.l2_return_unwrap_expr m user_call
+    in
+    bprintf buf "      ~callback:(fun %s -> %s)\n\n" fun_param_list body;
+    Buffer.contents buf
 
 (* ================================================================= *)
 (* emit_l2_method_sig                                                 *)
@@ -289,6 +350,8 @@ let emit_l2_method (e : signal_emission) ~layer1_module_name ~class_snake :
 (** Emit a class type method signature for insertion into a generated L2 class
     type body (.mli / class type definition). Unlike [emit_l2_method] (which
     emits a concrete method body), this emits only the method type. *)
-let emit_l2_method_sig (e : signal_emission) : string =
-  sprintf "    method %s : callback:(%s) -> Gobject.Signal.handler_id\n"
-    e.method_name e.ocaml_callback_type
+let emit_l2_method_sig ~current_layer2_module (e : signal_emission) : string =
+  sprintf
+    "    method %s : ?after:bool -> callback:(%s) -> unit -> Gobject.Signal.handler_id\n"
+    e.method_name
+    (l2_callback_type ~current_layer2_module e)

@@ -2,15 +2,20 @@ class type cell_renderer_accel_t = object
   inherit GCell_renderer_text.cell_renderer_text_t
 
   method on_accel_cleared :
-    callback:(path_string:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(path_string:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_accel_edited :
+    ?after:bool ->
     callback:
       (path_string:string ->
       accel_key:int ->
       accel_mods:Ocgtk_gdk.Gdk_enums.modifiertype ->
       hardware_keycode:int ->
       unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method accel_key : int

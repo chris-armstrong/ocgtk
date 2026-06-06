@@ -33,3 +33,9 @@ external stop : t -> unit = "ml_g_debug_controller_dbus_stop"
 external get_connection : t -> D_bus_connection.t
   = "ml_g_debug_controller_d_bus_get_connection"
 (** Get property: connection *)
+
+val on_authorize :
+  ?after:bool ->
+  t ->
+  callback:(invocation:D_bus_method_invocation.t -> bool) ->
+  Gobject.Signal.handler_id

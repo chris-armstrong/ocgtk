@@ -7,7 +7,7 @@ type t = [ `notebook_page | `object_ ] Gobject.obj
 
 external get_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_notebook_page_get_child"
 (** Returns the notebook child to which @page belongs. *)
@@ -23,7 +23,7 @@ external set_detachable : t -> bool -> unit
 
 external get_menu :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_notebook_page_get_menu"
 (** Get property: menu *)
@@ -50,7 +50,7 @@ external set_reorderable : t -> bool -> unit
 
 external get_tab :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_notebook_page_get_tab"
 (** Get property: tab *)

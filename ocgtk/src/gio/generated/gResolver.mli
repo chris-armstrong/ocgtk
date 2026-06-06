@@ -1,5 +1,7 @@
 class type resolver_t = object
-  method on_reload : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_reload :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_timeout : unit -> int
 
   method lookup_by_address :

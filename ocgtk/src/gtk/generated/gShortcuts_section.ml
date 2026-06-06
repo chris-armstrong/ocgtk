@@ -2,7 +2,10 @@ class type shortcuts_section_t = object
   inherit GBox.box_t
 
   method on_change_current_page :
-    callback:(object_:int -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(object_:int -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method add_group : GShortcuts_group.shortcuts_group_t -> unit
   method max_height : int
@@ -21,8 +24,8 @@ class shortcuts_section (obj : Shortcuts_section.t) : shortcuts_section_t =
   object (self)
     inherit GBox.box (obj :> Box.t)
 
-    method on_change_current_page ~callback =
-      Shortcuts_section.on_change_current_page self#as_shortcuts_section
+    method on_change_current_page ?(after = false) ~callback () =
+      Shortcuts_section.on_change_current_page ~after self#as_shortcuts_section
         ~callback
 
     method add_group : GShortcuts_group.shortcuts_group_t -> unit =

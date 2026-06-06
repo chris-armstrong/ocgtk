@@ -26,7 +26,7 @@ external set_resize_toplevel : t -> bool -> unit
 
 external set_label_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -49,7 +49,7 @@ external set_expanded : t -> bool -> unit = "ml_gtk_expander_set_expanded"
 
 external set_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -68,7 +68,7 @@ external get_resize_toplevel : t -> bool = "ml_gtk_expander_get_resize_toplevel"
 
 external get_label_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_expander_get_label_widget"
@@ -89,7 +89,7 @@ external get_expanded : t -> bool = "ml_gtk_expander_get_expanded"
 
 external get_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_expander_get_child"

@@ -1,6 +1,8 @@
 class type sorter_t = object
   method on_changed :
+    ?after:bool ->
     callback:(change:Gtk_enums.sorterchange -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method changed : Gtk_enums.sorterchange -> unit
@@ -15,7 +17,8 @@ end
 (* High-level class for Sorter *)
 class sorter (obj : Sorter.t) : sorter_t =
   object (self)
-    method on_changed ~callback = Sorter.on_changed self#as_sorter ~callback
+    method on_changed ?(after = false) ~callback () =
+      Sorter.on_changed ~after self#as_sorter ~callback
 
     method changed : Gtk_enums.sorterchange -> unit =
       fun change -> Sorter.changed obj change

@@ -1,6 +1,9 @@
 class type font_chooser_t = object
   method on_font_activated :
-    callback:(fontname:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(fontname:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method get_font : unit -> string option
 
@@ -35,8 +38,8 @@ end
 (* High-level class for FontChooser *)
 class font_chooser (obj : Font_chooser.t) : font_chooser_t =
   object (self)
-    method on_font_activated ~callback =
-      Font_chooser.on_font_activated self#as_font_chooser ~callback
+    method on_font_activated ?(after = false) ~callback () =
+      Font_chooser.on_font_activated ~after self#as_font_chooser ~callback
 
     method get_font : unit -> string option =
       fun () -> Font_chooser.get_font obj

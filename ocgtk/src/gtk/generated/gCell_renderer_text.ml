@@ -2,7 +2,9 @@ class type cell_renderer_text_t = object
   inherit GCell_renderer.cell_renderer_t
 
   method on_edited :
+    ?after:bool ->
     callback:(path:string -> new_text:string -> unit) ->
+    unit ->
     Gobject.Signal.handler_id
 
   method set_fixed_height_from_font : int -> unit
@@ -105,8 +107,8 @@ class cell_renderer_text (obj : Cell_renderer_text.t) : cell_renderer_text_t =
   object (self)
     inherit GCell_renderer.cell_renderer (obj :> Cell_renderer.t)
 
-    method on_edited ~callback =
-      Cell_renderer_text.on_edited self#as_cell_renderer_text ~callback
+    method on_edited ?(after = false) ~callback () =
+      Cell_renderer_text.on_edited ~after self#as_cell_renderer_text ~callback
 
     method set_fixed_height_from_font : int -> unit =
       fun number_of_rows ->

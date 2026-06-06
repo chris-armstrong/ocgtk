@@ -1,13 +1,23 @@
 class type calendar_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  method on_day_selected : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_next_month : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_next_year : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_prev_month : callback:(unit -> unit) -> Gobject.Signal.handler_id
-  method on_prev_year : callback:(unit -> unit) -> Gobject.Signal.handler_id
+  method on_day_selected :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_next_month :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_next_year :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_prev_month :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_prev_year :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method clear_marks : unit -> unit
   method get_day : unit -> int
   method get_day_is_marked : int -> bool
@@ -31,27 +41,27 @@ end
 class calendar (obj : Calendar.t) : calendar_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
-    method on_day_selected ~callback =
-      Calendar.on_day_selected self#as_calendar ~callback
+    method on_day_selected ?(after = false) ~callback () =
+      Calendar.on_day_selected ~after self#as_calendar ~callback
 
-    method on_next_month ~callback =
-      Calendar.on_next_month self#as_calendar ~callback
+    method on_next_month ?(after = false) ~callback () =
+      Calendar.on_next_month ~after self#as_calendar ~callback
 
-    method on_next_year ~callback =
-      Calendar.on_next_year self#as_calendar ~callback
+    method on_next_year ?(after = false) ~callback () =
+      Calendar.on_next_year ~after self#as_calendar ~callback
 
-    method on_prev_month ~callback =
-      Calendar.on_prev_month self#as_calendar ~callback
+    method on_prev_month ?(after = false) ~callback () =
+      Calendar.on_prev_month ~after self#as_calendar ~callback
 
-    method on_prev_year ~callback =
-      Calendar.on_prev_year self#as_calendar ~callback
+    method on_prev_year ?(after = false) ~callback () =
+      Calendar.on_prev_year ~after self#as_calendar ~callback
 
     method clear_marks : unit -> unit = fun () -> Calendar.clear_marks obj
     method get_day : unit -> int = fun () -> Calendar.get_day obj

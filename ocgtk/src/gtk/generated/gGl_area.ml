@@ -1,10 +1,25 @@
 class type gl_area_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  method on_create_context :
+    ?after:bool ->
+    callback:(unit -> Ocgtk_gdk.Gdk.Gl_context.gl_context_t) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_render :
+    ?after:bool ->
+    callback:(context:Ocgtk_gdk.Gdk.Gl_context.gl_context_t -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method on_resize :
-    callback:(width:int -> height:int -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(width:int -> height:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method attach_buffers : unit -> unit
   method get_allowed_apis : unit -> Ocgtk_gdk.Gdk.glapi
@@ -29,14 +44,24 @@ end
 class gl_area (obj : Gl_area.t) : gl_area_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
-    method on_resize ~callback = Gl_area.on_resize self#as_gl_area ~callback
+    method on_create_context ?(after = false) ~callback () =
+      Gl_area.on_create_context ~after self#as_gl_area ~callback:(fun () ->
+          (callback ())#as_gl_context)
+
+    method on_render ?(after = false) ~callback () =
+      Gl_area.on_render ~after self#as_gl_area ~callback:(fun ~context ->
+          callback ~context:(new Ocgtk_gdk.Gdk.Gl_context.gl_context context))
+
+    method on_resize ?(after = false) ~callback () =
+      Gl_area.on_resize ~after self#as_gl_area ~callback
+
     method attach_buffers : unit -> unit = fun () -> Gl_area.attach_buffers obj
 
     method get_allowed_apis : unit -> Ocgtk_gdk.Gdk.glapi =

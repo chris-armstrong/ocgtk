@@ -49,3 +49,9 @@ external get_address : t -> string = "ml_g_d_bus_server_get_address"
 external get_authentication_observer : t -> D_bus_auth_observer.t
   = "ml_g_d_bus_server_get_authentication_observer"
 (** Get property: authentication-observer *)
+
+val on_new_connection :
+  ?after:bool ->
+  t ->
+  callback:(connection:D_bus_connection.t -> bool) ->
+  Gobject.Signal.handler_id

@@ -1,11 +1,21 @@
 class type settings_t = object
-  method on_changed : callback:(key:string -> unit) -> Gobject.Signal.handler_id
+  method on_changed :
+    ?after:bool ->
+    callback:(key:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_writable_change_event :
-    callback:(key:int -> bool) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(key:int -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_writable_changed :
-    callback:(key:string -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(key:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method apply : unit -> unit
 

@@ -1,9 +1,24 @@
 class type cell_area_t = object
   inherit GBuildable.buildable_t
 
+  method on_focus_changed :
+    ?after:bool ->
+    callback:(renderer:GCell_renderer.cell_renderer_t -> path:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_remove_editable :
+    ?after:bool ->
+    callback:
+      (renderer:GCell_renderer.cell_renderer_t ->
+      editable:GCell_editable.cell_editable_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method activate :
     cell_area_context_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
     Gtk_enums.cellrendererstate ->
@@ -11,7 +26,7 @@ class type cell_area_t = object
     bool
 
   method activate_cell :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     GCell_renderer.cell_renderer_t ->
     Ocgtk_gdk.Gdk.Event.event_t ->
@@ -37,7 +52,7 @@ class type cell_area_t = object
 
   method event :
     cell_area_context_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     Ocgtk_gdk.Gdk.Event.event_t ->
     Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
@@ -72,7 +87,7 @@ class type cell_area_t = object
 
   method snapshot :
     cell_area_context_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     GSnapshot.snapshot_t ->
     Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->

@@ -34,13 +34,6 @@ let assert_unsupported ~label result expected_substring =
           "%s: Unsupported reason %S does not contain expected substring %S"
           label reason expected_substring
 
-(** Check that [expr] contains [expected_substring]. *)
-let assert_expr_contains ~label ~field expr expected_substring =
-  if not (String.mem ~sub:expected_substring expr) then
-    Alcotest.failf
-      "%s: %s %S does not contain expected substring %S"
-      label field expr expected_substring
-
 (* ========================================================================= *)
 (* Shared test context builders                                               *)
 (* ========================================================================= *)
@@ -152,8 +145,10 @@ let test_gboolean_maps_to_bool () =
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"gboolean" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "bool" m.ocaml_type;
-  assert_expr_contains ~label:"gboolean" ~field:"getter_expr"
-    m.getter_expr "Gobject.Value.get_boolean"
+  Alcotest.(check string) "getter_expr" "Gobject.Value.get_boolean v"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr" "Gobject.Value.set_boolean v x"
+    m.setter_expr
 
 let test_gint_maps_to_int () =
   let ctx = gtk_ctx () in
@@ -161,8 +156,10 @@ let test_gint_maps_to_int () =
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"gint" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "int" m.ocaml_type;
-  assert_expr_contains ~label:"gint" ~field:"getter_expr"
-    m.getter_expr "Gobject.Value.get_int"
+  Alcotest.(check string) "getter_expr" "Gobject.Value.get_int v"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr" "Gobject.Value.set_int v x"
+    m.setter_expr
 
 let test_guint_maps_to_int () =
   let ctx = gtk_ctx () in
@@ -170,8 +167,10 @@ let test_guint_maps_to_int () =
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"guint" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "int" m.ocaml_type;
-  assert_expr_contains ~label:"guint" ~field:"getter_expr"
-    m.getter_expr "Gobject.Value.get_uint"
+  Alcotest.(check string) "getter_expr" "Gobject.Value.get_uint v"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr" "Gobject.Value.set_uint v x"
+    m.setter_expr
 
 let test_gint64_maps_to_int64 () =
   let ctx = gtk_ctx () in
@@ -179,8 +178,10 @@ let test_gint64_maps_to_int64 () =
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"gint64" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "Int64.t" m.ocaml_type;
-  assert_expr_contains ~label:"gint64" ~field:"getter_expr"
-    m.getter_expr "Gobject.Value.get_int64"
+  Alcotest.(check string) "getter_expr" "Gobject.Value.get_int64 v"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr" "Gobject.Value.set_int64 v x"
+    m.setter_expr
 
 let test_gdouble_maps_to_float () =
   let ctx = gtk_ctx () in
@@ -188,8 +189,10 @@ let test_gdouble_maps_to_float () =
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"gdouble" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "float" m.ocaml_type;
-  assert_expr_contains ~label:"gdouble" ~field:"getter_expr"
-    m.getter_expr "Gobject.Value.get_double"
+  Alcotest.(check string) "getter_expr" "Gobject.Value.get_double v"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr" "Gobject.Value.set_double v x"
+    m.setter_expr
 
 let test_gfloat_maps_to_float () =
   let ctx = gtk_ctx () in
@@ -197,8 +200,10 @@ let test_gfloat_maps_to_float () =
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"gfloat" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "float" m.ocaml_type;
-  assert_expr_contains ~label:"gfloat" ~field:"getter_expr"
-    m.getter_expr "Gobject.Value.get_float"
+  Alcotest.(check string) "getter_expr" "Gobject.Value.get_float v"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr" "Gobject.Value.set_float v x"
+    m.setter_expr
 
 let test_gint16_maps_to_int () =
   let ctx = gtk_ctx () in
@@ -206,8 +211,10 @@ let test_gint16_maps_to_int () =
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"gint16" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "int" m.ocaml_type;
-  assert_expr_contains ~label:"gint16" ~field:"getter_expr"
-    m.getter_expr "Gobject.Value.get_int"
+  Alcotest.(check string) "getter_expr" "Gobject.Value.get_int v"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr" "Gobject.Value.set_int v x"
+    m.setter_expr
 
 let test_gunichar_maps_to_int () =
   let ctx = gtk_ctx () in
@@ -215,8 +222,10 @@ let test_gunichar_maps_to_int () =
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"gunichar" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "int" m.ocaml_type;
-  assert_expr_contains ~label:"gunichar" ~field:"getter_expr"
-    m.getter_expr "Gobject.Value.get_uint"
+  Alcotest.(check string) "getter_expr" "Gobject.Value.get_uint v"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr" "Gobject.Value.set_uint v x"
+    m.setter_expr
 
 let test_gchar_star_maps_to_string () =
   let ctx = gtk_ctx () in
@@ -226,8 +235,10 @@ let test_gchar_star_maps_to_string () =
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"gchar*" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "string" m.ocaml_type;
-  assert_expr_contains ~label:"gchar*" ~field:"getter_expr"
-    m.getter_expr "Gobject.Value.get_string"
+  Alcotest.(check string) "getter_expr" "Gobject.Value.get_string v"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr" "Gobject.Value.set_string v x"
+    m.setter_expr
 
 let test_utf8_maps_to_string () =
   let ctx = gtk_ctx () in
@@ -237,8 +248,10 @@ let test_utf8_maps_to_string () =
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"utf8" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "string" m.ocaml_type;
-  assert_expr_contains ~label:"utf8" ~field:"getter_expr"
-    m.getter_expr "Gobject.Value.get_string"
+  Alcotest.(check string) "getter_expr" "Gobject.Value.get_string v"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr" "Gobject.Value.set_string v x"
+    m.setter_expr
 
 let test_same_ns_enum_orientation () =
   let ctx = gtk_ctx_with_orientation () in
@@ -248,10 +261,12 @@ let test_same_ns_enum_orientation () =
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"Orientation enum" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "Gtk_enums.orientation" m.ocaml_type;
-  assert_expr_contains ~label:"Orientation enum" ~field:"getter_expr"
-    m.getter_expr "Gobject.Value.get_enum_int";
-  assert_expr_contains ~label:"Orientation enum" ~field:"getter_expr"
-    m.getter_expr "Gtk_enums.orientation_of_int"
+  Alcotest.(check string) "getter_expr"
+    "Gtk_enums.orientation_of_int (Gobject.Value.get_enum_int v)"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr"
+    "Gobject.Value.set_enum_int v (Gtk_enums.orientation_to_int x)"
+    m.setter_expr
 
 let test_cross_ns_bitfield_modifiertype () =
   let ctx = gtk_ctx_with_gdk_modifiertype () in
@@ -263,10 +278,12 @@ let test_cross_ns_bitfield_modifiertype () =
   assert_supported ~label:"Gdk.ModifierType bitfield" result @@ fun m ->
   Alcotest.(check string) "ocaml_type"
     "Ocgtk_gdk.Gdk_enums.modifiertype" m.ocaml_type;
-  assert_expr_contains ~label:"Gdk.ModifierType bitfield" ~field:"getter_expr"
-    m.getter_expr "Gobject.Value.get_flags_int";
-  assert_expr_contains ~label:"Gdk.ModifierType bitfield" ~field:"getter_expr"
-    m.getter_expr "Ocgtk_gdk.Gdk_enums.modifiertype_of_int"
+  Alcotest.(check string) "getter_expr"
+    "Ocgtk_gdk.Gdk_enums.modifiertype_of_int (Gobject.Value.get_flags_int v)"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr"
+    "Gobject.Value.set_flags_int v (Ocgtk_gdk.Gdk_enums.modifiertype_to_int x)"
+    m.setter_expr
 
 let test_glib_variant_maps_to_gvariant () =
   let ctx = gtk_ctx () in
@@ -276,8 +293,10 @@ let test_glib_variant_maps_to_gvariant () =
   let result = classify ~ctx ~gir_type in
   assert_supported ~label:"GLib.Variant" result @@ fun m ->
   Alcotest.(check string) "ocaml_type" "Gvariant.t" m.ocaml_type;
-  assert_expr_contains ~label:"GLib.Variant" ~field:"getter_expr"
-    m.getter_expr "Gobject.Value.get_variant"
+  Alcotest.(check string) "getter_expr" "Gobject.Value.get_variant v"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr" "Gobject.Value.set_variant v x"
+    m.setter_expr
 
 let test_same_ns_gobject_class () =
   let ctx = gtk_ctx_with_widget () in
@@ -285,7 +304,25 @@ let test_same_ns_gobject_class () =
     Type_factory.make_gir_type ~name:"Widget" ~c_type:"GtkWidget*" ()
   in
   let result = classify ~ctx ~gir_type in
-  assert_unsupported ~label:"same-ns GObject class" result "not yet supported"
+  assert_supported ~label:"same-ns GObject class" result @@ fun m ->
+  Alcotest.(check string) "ocaml_type" "Widget.t" m.ocaml_type;
+  Alcotest.(check string)
+    "getter_expr" "Gobject.Value.get_object_exn v" m.getter_expr;
+  Alcotest.(check string)
+    "setter_expr" "Gobject.Value.set_object_exn v x" m.setter_expr
+
+let test_same_ns_gobject_class_nullable () =
+  let ctx = gtk_ctx_with_widget () in
+  let gir_type =
+    Type_factory.make_gir_type ~name:"Widget" ~c_type:"GtkWidget*" ~nullable:true ()
+  in
+  let result = classify ~ctx ~gir_type in
+  assert_supported ~label:"same-ns GObject class nullable" result @@ fun m ->
+  Alcotest.(check string) "ocaml_type" "Widget.t option" m.ocaml_type;
+  Alcotest.(check string)
+    "getter_expr" "Gobject.Value.get_object v" m.getter_expr;
+  Alcotest.(check string)
+    "setter_expr" "Gobject.Value.set_object v x" m.setter_expr
 
 let test_cross_ns_gobject_gio_file () =
   let ctx = gtk_ctx_with_gio_file () in
@@ -293,7 +330,27 @@ let test_cross_ns_gobject_gio_file () =
     Type_factory.make_gir_type ~name:"Gio.File" ~c_type:"GFile*" ()
   in
   let result = classify ~ctx ~gir_type in
-  assert_unsupported ~label:"cross-ns GObject class" result "not yet supported"
+  assert_supported ~label:"cross-ns GObject class" result @@ fun m ->
+  Alcotest.(check string)
+    "ocaml_type" "Ocgtk_gio.Gio.Wrappers.File.t" m.ocaml_type;
+  Alcotest.(check string)
+    "getter_expr" "Gobject.Value.get_object_exn v" m.getter_expr;
+  Alcotest.(check string)
+    "setter_expr" "Gobject.Value.set_object_exn v x" m.setter_expr
+
+let test_cross_ns_gobject_gio_file_nullable () =
+  let ctx = gtk_ctx_with_gio_file () in
+  let gir_type =
+    Type_factory.make_gir_type ~name:"Gio.File" ~c_type:"GFile*" ~nullable:true ()
+  in
+  let result = classify ~ctx ~gir_type in
+  assert_supported ~label:"cross-ns GObject class nullable" result @@ fun m ->
+  Alcotest.(check string)
+    "ocaml_type" "Ocgtk_gio.Gio.Wrappers.File.t option" m.ocaml_type;
+  Alcotest.(check string)
+    "getter_expr" "Gobject.Value.get_object v" m.getter_expr;
+  Alcotest.(check string)
+    "setter_expr" "Gobject.Value.set_object v x" m.setter_expr
 
 let test_garray_is_unsupported () =
   let ctx = gtk_ctx () in
@@ -365,10 +422,18 @@ let tests =
       `Quick test_cross_ns_bitfield_modifiertype;
     Alcotest.test_case "GLib.Variant maps to Gvariant.t" `Quick
       test_glib_variant_maps_to_gvariant;
-    Alcotest.test_case "same-ns GObject class is Unsupported" `Quick
+    Alcotest.test_case
+      "same-ns GObject class -> Widget.t" `Quick
       test_same_ns_gobject_class;
-    Alcotest.test_case "cross-ns GObject class is Unsupported" `Quick
-      test_cross_ns_gobject_gio_file;
+    Alcotest.test_case
+      "same-ns GObject class nullable -> Widget.t option" `Quick
+      test_same_ns_gobject_class_nullable;
+    Alcotest.test_case
+      "cross-ns GObject class -> Ocgtk_gio.Wrappers.File.t"
+      `Quick test_cross_ns_gobject_gio_file;
+    Alcotest.test_case
+      "cross-ns GObject class nullable -> Ocgtk_gio.Wrappers.File.t option"
+      `Quick test_cross_ns_gobject_gio_file_nullable;
     Alcotest.test_case "GLib.Array is Unsupported" `Quick
       test_garray_is_unsupported;
     Alcotest.test_case "Gtk.TextIter boxed is Unsupported" `Quick

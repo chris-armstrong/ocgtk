@@ -1,4 +1,34 @@
 class type d_bus_object_manager_t = object
+  method on_interface_added :
+    ?after:bool ->
+    callback:
+      (object_:GD_bus_interface_and__d_bus_object.d_bus_object_t ->
+      interface:GD_bus_interface_and__d_bus_object.d_bus_interface_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_interface_removed :
+    ?after:bool ->
+    callback:
+      (object_:GD_bus_interface_and__d_bus_object.d_bus_object_t ->
+      interface:GD_bus_interface_and__d_bus_object.d_bus_interface_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_object_added :
+    ?after:bool ->
+    callback:(object_:GD_bus_interface_and__d_bus_object.d_bus_object_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_object_removed :
+    ?after:bool ->
+    callback:(object_:GD_bus_interface_and__d_bus_object.d_bus_object_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_interface :
     string ->
     string ->
@@ -19,6 +49,38 @@ end
 class d_bus_object_manager (obj : D_bus_object_manager.t) :
   d_bus_object_manager_t =
   object (self)
+    method on_interface_added ?(after = false) ~callback () =
+      D_bus_object_manager.on_interface_added ~after
+        self#as_d_bus_object_manager ~callback:(fun ~object_ ~interface ->
+          callback
+            ~object_:
+              (new GD_bus_interface_and__d_bus_object.d_bus_object object_)
+            ~interface:
+              (new GD_bus_interface_and__d_bus_object.d_bus_interface interface))
+
+    method on_interface_removed ?(after = false) ~callback () =
+      D_bus_object_manager.on_interface_removed ~after
+        self#as_d_bus_object_manager ~callback:(fun ~object_ ~interface ->
+          callback
+            ~object_:
+              (new GD_bus_interface_and__d_bus_object.d_bus_object object_)
+            ~interface:
+              (new GD_bus_interface_and__d_bus_object.d_bus_interface interface))
+
+    method on_object_added ?(after = false) ~callback () =
+      D_bus_object_manager.on_object_added ~after self#as_d_bus_object_manager
+        ~callback:(fun ~object_ ->
+          callback
+            ~object_:
+              (new GD_bus_interface_and__d_bus_object.d_bus_object object_))
+
+    method on_object_removed ?(after = false) ~callback () =
+      D_bus_object_manager.on_object_removed ~after self#as_d_bus_object_manager
+        ~callback:(fun ~object_ ->
+          callback
+            ~object_:
+              (new GD_bus_interface_and__d_bus_object.d_bus_object object_))
+
     method get_interface :
         string ->
         string ->

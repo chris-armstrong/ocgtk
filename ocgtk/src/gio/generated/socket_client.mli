@@ -335,3 +335,16 @@ external get_type : t -> Gio_enums.sockettype = "ml_g_socket_client_get_type"
 external set_type : t -> Gio_enums.sockettype -> unit
   = "ml_g_socket_client_set_type"
 (** Set property: type *)
+
+val on_event :
+  ?after:bool ->
+  t ->
+  callback:
+    (event:Gio_enums.socketclientevent ->
+    connectable:
+      Socket_address_and__socket_address_enumerator_and__socket_connectable
+      .Socket_connectable
+      .t ->
+    connection:Io_stream.t option ->
+    unit) ->
+  Gobject.Signal.handler_id

@@ -25,3 +25,15 @@ external get_default_display :
 (** Gets the default `GdkDisplay`. *)
 
 (* Properties *)
+
+let on_display_opened ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let display =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v
+        in
+        callback ~display)
+  in
+  Gobject.Signal.connect obj ~name:"display-opened" ~callback:closure
+    ~after:(Option.value after ~default:false)

@@ -22,7 +22,7 @@ external set_search_mode : t -> bool -> unit
 
 external set_key_capture_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -42,7 +42,7 @@ capture and forward the events yourself with
 
 external set_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -58,7 +58,7 @@ external get_search_mode : t -> bool = "ml_gtk_search_bar_get_search_mode"
 
 external get_key_capture_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_search_bar_get_key_capture_widget"
@@ -66,7 +66,7 @@ external get_key_capture_widget :
 
 external get_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_search_bar_get_child"

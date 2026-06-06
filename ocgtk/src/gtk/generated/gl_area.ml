@@ -127,6 +127,32 @@ called by application code. *)
 
 (* Properties *)
 
+let on_create_context ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let result = callback () in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_object_exn v x)
+  in
+  Gobject.Signal.connect obj ~name:"create-context" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_render ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let context =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v
+        in
+        let result = callback ~context in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"render" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
 let on_resize ?after obj ~callback =
   let closure =
     Gobject.Closure.create (fun argv ->

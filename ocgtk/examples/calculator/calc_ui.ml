@@ -248,7 +248,7 @@ let build (window : Window.window_t) =
 
              let span = if text = "0" then 2 else 1 in
              let callback = handle_button_click ui text in
-             ignore (btn#on_clicked ~callback);
+             ignore (btn#on_clicked ~callback ());
 
              apply_css_provider css_provider (btn :> Widget.widget_t);
              grid#attach (btn :> Widget.widget_t) col_offset row span 1;

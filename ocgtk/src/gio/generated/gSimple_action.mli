@@ -2,10 +2,16 @@ class type simple_action_t = object
   inherit GAction.action_t
 
   method on_activate :
-    callback:(parameter:Gvariant.t -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(parameter:Gvariant.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_change_state :
-    callback:(value:Gvariant.t -> unit) -> Gobject.Signal.handler_id
+    ?after:bool ->
+    callback:(value:Gvariant.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method set_enabled : bool -> unit
   method set_state : Gvariant.t -> unit

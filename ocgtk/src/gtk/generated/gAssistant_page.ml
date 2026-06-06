@@ -1,7 +1,7 @@
 class type assistant_page_t = object
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method complete : bool
@@ -18,11 +18,11 @@ class assistant_page (obj : Assistant_page.t) : assistant_page_t =
   object (self)
     method get_child :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t =
       fun () ->
         new
-          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
           .widget
           (Assistant_page.get_child obj)
 

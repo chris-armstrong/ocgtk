@@ -4,9 +4,24 @@
 class type cell_area_t = object
   inherit GBuildable.buildable_t
 
+  method on_focus_changed :
+    ?after:bool ->
+    callback:(renderer:GCell_renderer.cell_renderer_t -> path:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_remove_editable :
+    ?after:bool ->
+    callback:
+      (renderer:GCell_renderer.cell_renderer_t ->
+      editable:GCell_editable.cell_editable_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method activate :
     cell_area_context_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
     Gtk_enums.cellrendererstate ->
@@ -14,7 +29,7 @@ class type cell_area_t = object
     bool
 
   method activate_cell :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     GCell_renderer.cell_renderer_t ->
     Ocgtk_gdk.Gdk.Event.event_t ->
@@ -40,7 +55,7 @@ class type cell_area_t = object
 
   method event :
     cell_area_context_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     Ocgtk_gdk.Gdk.Event.event_t ->
     Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
@@ -75,7 +90,7 @@ class type cell_area_t = object
 
   method snapshot :
     cell_area_context_t ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     GSnapshot.snapshot_t ->
     Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
@@ -125,9 +140,23 @@ class cell_area
   object (self)
     inherit GBuildable.buildable (Buildable.from_gobject obj)
 
+    method on_focus_changed ?(after = false) ~callback () =
+      Cell_area_and__cell_area_context_and__cell_layout.Cell_area
+      .on_focus_changed ~after self#as_cell_area
+        ~callback:(fun ~renderer ~path ->
+          callback ~renderer:(new GCell_renderer.cell_renderer renderer) ~path)
+
+    method on_remove_editable ?(after = false) ~callback () =
+      Cell_area_and__cell_area_context_and__cell_layout.Cell_area
+      .on_remove_editable ~after self#as_cell_area
+        ~callback:(fun ~renderer ~editable ->
+          callback
+            ~renderer:(new GCell_renderer.cell_renderer renderer)
+            ~editable:(new GCell_editable.cell_editable editable))
+
     method activate :
         cell_area_context_t ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
         Gtk_enums.cellrendererstate ->
@@ -141,7 +170,7 @@ class cell_area
           context widget cell_area flags edit_only
 
     method activate_cell :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         GCell_renderer.cell_renderer_t ->
         Ocgtk_gdk.Gdk.Event.event_t ->
@@ -214,7 +243,7 @@ class cell_area
 
     method event :
         cell_area_context_t ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         Ocgtk_gdk.Gdk.Event.event_t ->
         Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
@@ -325,7 +354,7 @@ class cell_area
 
     method snapshot :
         cell_area_context_t ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         GSnapshot.snapshot_t ->
         Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->

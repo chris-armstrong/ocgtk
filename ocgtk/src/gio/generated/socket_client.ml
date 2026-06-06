@@ -335,3 +335,23 @@ external get_type : t -> Gio_enums.sockettype = "ml_g_socket_client_get_type"
 external set_type : t -> Gio_enums.sockettype -> unit
   = "ml_g_socket_client_set_type"
 (** Set property: type *)
+
+let on_event ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let event =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gio_enums.socketclientevent_of_int (Gobject.Value.get_enum_int v)
+        in
+        let connectable =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_object_exn v
+        in
+        let connection =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_object v
+        in
+        callback ~event ~connectable ~connection)
+  in
+  Gobject.Signal.connect obj ~name:"event" ~callback:closure
+    ~after:(Option.value after ~default:false)

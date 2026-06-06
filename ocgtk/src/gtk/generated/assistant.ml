@@ -23,7 +23,7 @@ affects the future page flow of the assistant. *)
 
 external set_page_type :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   Gtk_enums.assistantpagetype ->
@@ -34,7 +34,7 @@ The page type determines the page behavior in the @assistant. *)
 
 external set_page_title :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   string ->
@@ -46,7 +46,7 @@ when @page is the current page. *)
 
 external set_page_complete :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   bool ->
@@ -69,7 +69,7 @@ external remove_page : t -> int -> unit = "ml_gtk_assistant_remove_page"
 
 external remove_action_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_assistant_remove_action_widget"
@@ -86,7 +86,7 @@ external previous_page : t -> unit = "ml_gtk_assistant_previous_page"
 
 external prepend_page :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int = "ml_gtk_assistant_prepend_page"
@@ -102,7 +102,7 @@ external next_page : t -> unit = "ml_gtk_assistant_next_page"
 
 external insert_page :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int ->
@@ -115,7 +115,7 @@ external get_pages : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
 
 external get_page_type :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   Gtk_enums.assistantpagetype = "ml_gtk_assistant_get_page_type"
@@ -123,7 +123,7 @@ external get_page_type :
 
 external get_page_title :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   string = "ml_gtk_assistant_get_page_title"
@@ -131,7 +131,7 @@ external get_page_title :
 
 external get_page_complete :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   bool = "ml_gtk_assistant_get_page_complete"
@@ -139,7 +139,7 @@ external get_page_complete :
 
 external get_page :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   Assistant_page.t = "ml_gtk_assistant_get_page"
@@ -148,7 +148,7 @@ external get_page :
 external get_nth_page :
   t ->
   int ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_assistant_get_nth_page"
@@ -173,7 +173,7 @@ external commit : t -> unit = "ml_gtk_assistant_commit"
 
 external append_page :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int = "ml_gtk_assistant_append_page"
@@ -181,7 +181,7 @@ external append_page :
 
 external add_action_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_assistant_add_action_widget"
@@ -206,4 +206,16 @@ let on_close ?after obj ~callback =
 
 let on_escape ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"escape" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_prepare ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let page =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v
+        in
+        callback ~page)
+  in
+  Gobject.Signal.connect obj ~name:"prepare" ~callback:closure
     ~after:(Option.value after ~default:false)

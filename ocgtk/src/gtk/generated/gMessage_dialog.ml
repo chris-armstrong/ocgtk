@@ -3,7 +3,7 @@ class type message_dialog_t = object
 
   method get_message_area :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method set_markup : string -> unit
@@ -27,11 +27,11 @@ class message_dialog (obj : Message_dialog.t) : message_dialog_t =
 
     method get_message_area :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t =
       fun () ->
         new
-          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
           .widget
           (Message_dialog.get_message_area obj)
 

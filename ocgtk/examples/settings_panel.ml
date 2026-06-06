@@ -104,7 +104,8 @@ let () =
   vbox#append (apply_btn :> Widget.widget_t);
 
   ignore
-    (apply_btn#on_clicked ~callback:(fun () ->
+    (apply_btn#on_clicked
+       ~callback:(fun () ->
          let settings =
            Printf.sprintf
              "Settings:\n\
@@ -123,7 +124,8 @@ let () =
              (advanced_toggle#get_active ())
              (font_spin#get_value ())
          in
-         print_endline settings));
+         print_endline settings)
+       ());
 
   (* Show window and run main loop *)
   window#present ();

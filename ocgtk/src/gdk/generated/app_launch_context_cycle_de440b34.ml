@@ -430,6 +430,12 @@ and Device : sig
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_tool_changed :
+    ?after:bool ->
+    t ->
+    callback:(tool:Device_tool.t -> unit) ->
+    Gobject.Signal.handler_id
 end = struct
   type t = [ `device | `object_ ] Gobject.obj
 
@@ -558,6 +564,18 @@ end = struct
 
   let on_changed ?after obj ~callback =
     Gobject.Signal.connect_simple obj ~name:"changed" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_tool_changed ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let tool =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          callback ~tool)
+    in
+    Gobject.Signal.connect obj ~name:"tool-changed" ~callback:closure
       ~after:(Option.value after ~default:false)
 end
 
@@ -832,6 +850,18 @@ and Display : sig
 
   val on_opened :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_seat_added :
+    ?after:bool ->
+    t ->
+    callback:(seat:Seat.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_seat_removed :
+    ?after:bool ->
+    t ->
+    callback:(seat:Seat.t -> unit) ->
+    Gobject.Signal.handler_id
 
   val on_setting_changed :
     ?after:bool ->
@@ -1115,6 +1145,30 @@ end = struct
 
   let on_opened ?after obj ~callback =
     Gobject.Signal.connect_simple obj ~name:"opened" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_seat_added ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let seat =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          callback ~seat)
+    in
+    Gobject.Signal.connect obj ~name:"seat-added" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_seat_removed ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let seat =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          callback ~seat)
+    in
+    Gobject.Signal.connect obj ~name:"seat-removed" ~callback:closure
       ~after:(Option.value after ~default:false)
 
   let on_setting_changed ?after obj ~callback =
@@ -2049,6 +2103,30 @@ and Seat : sig
   (** Returns the capabilities this `GdkSeat` currently has. *)
 
   (* Properties *)
+
+  val on_device_added :
+    ?after:bool ->
+    t ->
+    callback:(device:Device.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_device_removed :
+    ?after:bool ->
+    t ->
+    callback:(device:Device.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_tool_added :
+    ?after:bool ->
+    t ->
+    callback:(tool:Device_tool.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_tool_removed :
+    ?after:bool ->
+    t ->
+    callback:(tool:Device_tool.t -> unit) ->
+    Gobject.Signal.handler_id
 end = struct
   type t = [ `seat | `object_ ] Gobject.obj
 
@@ -2075,6 +2153,54 @@ end = struct
   (** Returns the capabilities this `GdkSeat` currently has. *)
 
   (* Properties *)
+
+  let on_device_added ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let device =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          callback ~device)
+    in
+    Gobject.Signal.connect obj ~name:"device-added" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_device_removed ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let device =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          callback ~device)
+    in
+    Gobject.Signal.connect obj ~name:"device-removed" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_tool_added ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let tool =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          callback ~tool)
+    in
+    Gobject.Signal.connect obj ~name:"tool-added" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_tool_removed ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let tool =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          callback ~tool)
+    in
+    Gobject.Signal.connect obj ~name:"tool-removed" ~callback:closure
+      ~after:(Option.value after ~default:false)
 end
 
 and Surface : sig
@@ -2315,10 +2441,28 @@ and Surface : sig
 
   (* Properties *)
 
+  val on_enter_monitor :
+    ?after:bool ->
+    t ->
+    callback:(monitor:Monitor.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_event :
+    ?after:bool ->
+    t ->
+    callback:(event:Event.t -> bool) ->
+    Gobject.Signal.handler_id
+
   val on_layout :
     ?after:bool ->
     t ->
     callback:(width:int -> height:int -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_leave_monitor :
+    ?after:bool ->
+    t ->
+    callback:(monitor:Monitor.t -> unit) ->
     Gobject.Signal.handler_id
 end = struct
   type t = [ `surface | `object_ ] Gobject.obj
@@ -2558,6 +2702,33 @@ end = struct
 
   (* Properties *)
 
+  let on_enter_monitor ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let monitor =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          callback ~monitor)
+    in
+    Gobject.Signal.connect obj ~name:"enter-monitor" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_event ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let event =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          let result = callback ~event in
+          let v = Gobject.Closure.result argv in
+          let x = result in
+          Gobject.Value.set_boolean v x)
+    in
+    Gobject.Signal.connect obj ~name:"event" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
   let on_layout ?after obj ~callback =
     let closure =
       Gobject.Closure.create (fun argv ->
@@ -2572,6 +2743,18 @@ end = struct
           callback ~width ~height)
     in
     Gobject.Signal.connect obj ~name:"layout" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_leave_monitor ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let monitor =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          callback ~monitor)
+    in
+    Gobject.Signal.connect obj ~name:"leave-monitor" ~callback:closure
       ~after:(Option.value after ~default:false)
 end
 
