@@ -1,9 +1,8 @@
 (** Runtime test suite for GValue enum/flags/variant/int64 wrappers.
 
-    Tests the [Gobject.Value] get/set functions introduced in Stage 2–3 of
-    Milestone 2 Signals Phase 1a. Tests that exercise concrete GTK/GDK
-    registered GTypes (cases 1–3, 9) are gated with [require_gtk] so they skip
-    gracefully when run without a display.
+    Tests the [Gobject.Value] get/set functions. Tests that exercise concrete
+    GTK/GDK registered GTypes (cases 1–3, 9) are gated with [require_gtk] so
+    they skip gracefully when run without a display.
 
     The generated enum/bitfield decoders live in [Gtk_enums] and [Gdk_enums]
     which are internal modules of [ocgtk.gtk] and [ocgtk.gdk] respectively.

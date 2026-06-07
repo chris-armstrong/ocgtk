@@ -1,60 +1,47 @@
 (* Test closure behavior with explicit GC - for understanding limits *)
 
+open Alcotest
+
+(** Create 100 closures without explicit GC between iterations — verifies the
+    default finalizer path works. *)
 let test_without_gc () =
-  Printf.printf "=== Test WITHOUT explicit GC ===\n%!";
   let counter = ref 0 in
-  for i = 1 to 100 do
+  for _i = 1 to 100 do
+    let closure = Gobject.Closure.create (fun _argv -> incr counter) in
+    Gobject.Test.invoke_closure_void closure
+  done;
+  check int "counter reached 100 without GC" 100 !counter
+
+(** Create 10 closures with [Gc.minor()] after each invocation — exercises the
+    finalizer path under GC pressure. *)
+let test_with_minor_gc () =
+  let counter = ref 0 in
+  for _i = 1 to 10 do
     let closure = Gobject.Closure.create (fun _argv -> incr counter) in
     Gobject.Test.invoke_closure_void closure;
-    if i mod 25 = 0 then
-      Printf.printf "  Created %d closures, counter=%d\n%!" i !counter
+    Gc.minor ()
   done;
-  Printf.printf "✓ Completed: counter=%d\n\n%!" !counter
+  check int "counter reached 10 with Gc.minor after each" 10 !counter
 
-let test_with_minor_gc () =
-  Printf.printf "=== Test WITH Gc.minor() after each closure ===\n%!";
-  try
-    let counter = ref 0 in
-    for i = 1 to 10 do
-      let closure = Gobject.Closure.create (fun _argv -> incr counter) in
-      Gobject.Test.invoke_closure_void closure;
-      Gc.minor ();
-      (* Force minor GC *)
-      Printf.printf "  Iteration %d: GC passed, counter=%d\n%!" i !counter
-    done;
-    Printf.printf "✓ Completed with GC: counter=%d\n\n%!" !counter
-  with e ->
-    Printf.printf "✗ CRASHED with exception: %s\n\n%!" (Printexc.to_string e);
-    exit 1
-
+(** Create 50 closures with [Gc.minor()] every 10 iterations. *)
 let test_with_delayed_gc () =
-  Printf.printf "=== Test with GC every 10 closures ===\n%!";
-  try
-    let counter = ref 0 in
-    for i = 1 to 50 do
-      let closure = Gobject.Closure.create (fun _argv -> incr counter) in
-      Gobject.Test.invoke_closure_void closure;
-      if i mod 10 = 0 then begin
-        Gc.minor ();
-        Printf.printf "  After %d closures: GC passed, counter=%d\n%!" i
-          !counter
-      end
-    done;
-    Printf.printf "✓ Completed: counter=%d\n\n%!" !counter
-  with e ->
-    Printf.printf "✗ CRASHED with exception: %s\n\n%!" (Printexc.to_string e);
-    exit 1
+  let counter = ref 0 in
+  for i = 1 to 50 do
+    let closure = Gobject.Closure.create (fun _argv -> incr counter) in
+    Gobject.Test.invoke_closure_void closure;
+    if i mod 10 = 0 then Gc.minor ()
+  done;
+  check int "counter reached 50 with Gc.minor every 10" 50 !counter
 
 let () =
-  Printf.printf "==========================================================\n";
-  Printf.printf "  CLOSURE + GC INTERACTION TEST\n";
-  Printf.printf "==========================================================\n\n";
-
-  test_without_gc ();
-  test_with_delayed_gc ();
-  test_with_minor_gc ();
-
-  Printf.printf "==========================================================\n";
-  Printf.printf "  ALL TESTS PASSED - Implementation is GC-safe!\n";
-  Printf.printf "==========================================================\n";
-  exit 0
+  run "Closure + GC Interaction Test"
+    [
+      ( "gc",
+        [
+          test_case "100 closures without explicit GC" `Quick test_without_gc;
+          test_case "10 closures with Gc.minor after each" `Quick
+            test_with_minor_gc;
+          test_case "50 closures with Gc.minor every 10" `Quick
+            test_with_delayed_gc;
+        ] );
+    ]

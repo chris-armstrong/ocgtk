@@ -1,4 +1,4 @@
-(** Runtime tests for GTK4 Event Controller System (Phase 3.3)
+(** Runtime tests for GTK4 Event Controller System.
 
     These tests require a display server to run. Use xvfb-run in CI: $ xvfb-run
     dune exec ./test_event_controller_runtime.exe
@@ -51,7 +51,7 @@ let test_multiple_signal_connections () =
 (** {2 Test Suite} *)
 
 let () =
-  run "Event Controller Runtime Tests (Phase 3.3)"
+  run "Event Controller Runtime Tests"
     [
       ( "api_verification",
         [

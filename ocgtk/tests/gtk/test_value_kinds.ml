@@ -3,9 +3,9 @@
     Allocates one value of each custom-block kind via the public OCaml allocator
     and asserts the C-level classifier returns the matching [ocgtk_kind]
     discriminator. GValue and GClosure have no public standalone allocator and
-    are exercised indirectly via signal infrastructure in later milestones; the
-    remaining kinds are covered directly here so Phase 7 Signal_marshaller
-    consumers can depend on the dispatch with confidence. *)
+    are exercised indirectly via signal infrastructure; the remaining kinds are
+    covered directly here so that Signal_marshaller consumers can depend on the
+    dispatch with confidence. *)
 
 open Ocgtk_gtk.Gtk
 module Helpers = Gtk_test_helpers
@@ -31,7 +31,7 @@ let test_int_immediate () =
 
 let test_gobject () =
   (* DropTarget is a concrete GObject whose constructor needs no display.
-     Its custom block must classify as KIND_GOBJECT — the dispatch Phase 7
+     Its custom block must classify as KIND_GOBJECT — the dispatch
      Signal_marshaller relies on for object-typed signal arguments. *)
   let dt = Wrappers.Drop_target.new_ (Gobject.Type.from_name "gchararray") [] in
   check_int_eq "Drop_target -> KIND_GOBJECT" kind_gobject (classify_int dt)

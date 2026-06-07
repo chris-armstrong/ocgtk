@@ -11,6 +11,20 @@
 (*                                                                        *)
 (**************************************************************************)
 
-type t
-(** Abstract GError type — constructed by C FFI stubs in wrappers.c, used
-    only as the error component of [(_, GError.t) result] return values. *)
+(** Top-level OCaml GTK4 bindings library.
+
+    This module re-exports all namespaces as sub-modules. Access individual
+    widgets, types, and functions through the corresponding sub-module, e.g.
+    [Ocgtk.Gtk.Widget], [Ocgtk.Gio.Volume_monitor], etc. *)
+
+module Cairo = Ocgtk_cairo.Cairo
+module Gdk = Ocgtk_gdk.Gdk
+module GdkPixbuf = Ocgtk_gdkpixbuf.GdkPixbuf
+module Gio = Ocgtk_gio.Gio
+module Graphene = Ocgtk_graphene.Graphene
+module Gsk = Ocgtk_gsk.Gsk
+module Gtk = Ocgtk_gtk.Gtk
+module Pango = Ocgtk_pango.Pango
+module PangoCairo = Ocgtk_pangocairo.PangoCairo
+module GMain = Ocgtk_gtk.GMain
+module Common = Ocgtk_common

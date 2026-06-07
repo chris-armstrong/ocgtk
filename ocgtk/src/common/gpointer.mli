@@ -11,6 +11,24 @@
 (*                                                                        *)
 (**************************************************************************)
 
-type t
-(** Abstract GError type — constructed by C FFI stubs in wrappers.c, used
-    only as the error component of [(_, GError.t) result] return values. *)
+(** Minimal Gpointer module for enum conversions and boxed pointers *)
+
+type boxed
+(** Abstract type for boxed pointers *)
+
+val boxed_null : boxed
+(** The null boxed pointer *)
+
+exception Null
+(** Exception raised when a null pointer is encountered *)
+
+type 'a variant_table constraint 'a = [> ]
+(** Variant table type for enum conversions *)
+
+external decode_variant : 'a variant_table -> int -> 'a
+  = "ml_lookup_from_c"
+(** Decode an integer to a polymorphic variant using the given table *)
+
+external encode_variant : 'a variant_table -> 'a -> int
+  = "ml_lookup_to_c"
+(** Encode a polymorphic variant to an integer using the given table *)

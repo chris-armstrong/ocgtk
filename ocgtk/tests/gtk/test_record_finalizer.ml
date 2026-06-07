@@ -6,9 +6,9 @@
     [g_free]. The generator threads the get-type call through
     [ml_gir_record_val_ptr_with_type], so [Val_GtkTreePath] et al. now record
     the GType at allocation time. This file exercises the runtime side of that
-    contract using [GtkTreePath] — the canonical example called out in the
-    milestone-2 plan because [g_free] does not run [gtk_tree_path_free],
-    silently leaking the path's internal indices array.
+    contract using [GtkTreePath] — the canonical example because [g_free] does
+    not run [gtk_tree_path_free], silently leaking the path's internal indices
+    array.
 
     What the test would have caught had it run before the cleanup:
 

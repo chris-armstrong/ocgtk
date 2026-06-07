@@ -1,4 +1,4 @@
-(** Test suite for Window, Scrolled_window, and Frame (Phase 4.2)
+(** Test suite for Window, Scrolled_window, and Frame.
 
     This test file verifies:
     - GtkWindow module compiles and types are accessible
@@ -471,7 +471,7 @@ let test_complex_nesting () =
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =
-  run "Single-Child Container Tests (Phase 4.2)"
+  run "Single-Child Container Tests"
     [
       ( "Window - Low Level",
         [
