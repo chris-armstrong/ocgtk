@@ -11,6 +11,27 @@
 (*                                                                        *)
 (**************************************************************************)
 
-type t
-(** Abstract GError type — constructed by C FFI stubs in wrappers.c, used
-    only as the error component of [(_, GError.t) result] return values. *)
+(** Common utility modules for ocgtk GTK4 bindings.
+
+    This module re-exports hand-written common modules shared across all
+    ocgtk binding libraries (Gtk, Gio, Gdk, etc.). Each module is also
+    available as a flat top-level module (e.g. [Gobject]) in the
+    [ocgtk.common] library. *)
+
+module GError = GError
+(** Error type for GTK/GLib functions. See {!GError}. *)
+
+module Gaux = Gaux
+(** Option-handling utility functions. See {!Gaux}. *)
+
+module Gpointer = Gpointer
+(** Enum conversion and boxed pointer utilities. See {!Gpointer}. *)
+
+module Gobject = Gobject
+(** GObject type system, properties, and signals. See {!Gobject}. *)
+
+module Gvariant = Gvariant
+(** GVariant structured data serialization. See {!Gvariant}. *)
+
+module Gvariant_type = Gvariant_type
+(** GVariant type descriptions. See {!Gvariant_type}. *)
