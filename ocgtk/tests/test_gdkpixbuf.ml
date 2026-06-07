@@ -1,5 +1,5 @@
 (**************************************************************************)
-(*                Test Suite for GdkPixbuf Module (Phase 2.3)            *)
+(*                Test Suite for GdkPixbuf Module            *)
 (**************************************************************************)
 
 open Alcotest
@@ -286,7 +286,7 @@ let test_save_to_buffer () =
 (* Main test suite *)
 
 let () =
-  run "GdkPixbuf Module Tests (Phase 2.3)"
+  run "GdkPixbuf Module Tests"
     [
       ( "Creation and Accessors",
         [

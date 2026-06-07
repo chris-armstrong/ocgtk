@@ -1,4 +1,4 @@
-(* Phase 5.1 Button Widget Tests *)
+(* Button Widget Tests *)
 
 open Alcotest
 open Ocgtk_gtk.Gtk

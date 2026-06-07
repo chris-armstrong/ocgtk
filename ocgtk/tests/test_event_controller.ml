@@ -1,7 +1,7 @@
-(** Tests for GTK4 Event Controller System (Phase 3.3)
+(** Tests for GTK4 Event Controller System.
 
     Note: These tests verify API compilation and structure. Runtime tests with
-    actual GTK objects will be added in Phase 4+ when gtk_init is available in
+    actual GTK objects will be added when gtk_init is available in
     the bindings. *)
 
 open Alcotest
@@ -177,7 +177,7 @@ let test_widget_remove_controller_method () =
 (** {2 Test Suite} *)
 
 let () =
-  run "Event Controller Tests (Phase 3.3)"
+  run "Event Controller Tests"
     [
       ( "module_structure",
         [

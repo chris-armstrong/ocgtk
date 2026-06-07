@@ -1,4 +1,4 @@
-(** Tests for GPack convenience module (Phase 4.5) *)
+(** Tests for GPack convenience module *)
 
 open Alcotest
 
@@ -257,7 +257,7 @@ let test_scrolled_convenience () =
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =
-  run "GPack Module Tests (Phase 4.5)"
+  run "GPack Module Tests"
     [
       ( "Box Packing",
         [
@@ -290,7 +290,7 @@ let () =
           test_case "notebook with pages" `Quick
             (require_gtk test_notebook_with_pages);
         ] );
-      ( "Window and Scrolled_window Conveniences (Phase 4.2)",
+      ( "Window and Scrolled_window Conveniences",
         [
           test_case "window convenience" `Quick
             (require_gtk test_window_convenience);

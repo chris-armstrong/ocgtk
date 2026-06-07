@@ -1,8 +1,7 @@
-(** Test suite for GtkSnapshot and Graphene (Phase 3.2)
+(** Test suite for GtkSnapshot and Graphene.
 
     Note: Most snapshot tests are skipped as they require actual widget
-    instances and a rendering context, which need concrete widget types from
-    Phase 4/5.
+    instances and a rendering context, which need concrete widget types.
 
     This test file verifies:
     - Graphene types compile and work correctly
@@ -107,7 +106,7 @@ let test_snapshot_cairo_skipped () =
   skip ()
 
 let () =
-  run "GtkSnapshot and Graphene Tests (Phase 3.2)"
+  run "GtkSnapshot and Graphene Tests"
     [
       ( "Graphene.Point",
         [ test_case "make and accessors" `Quick test_graphene_point ] );

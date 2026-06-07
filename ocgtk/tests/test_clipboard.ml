@@ -1,4 +1,4 @@
-(* test_clipboard.ml - Test suite for GdkClipboard module (Phase 2.6) *)
+(* test_clipboard.ml - Test suite for GdkClipboard module *)
 
 open Alcotest
 
@@ -391,7 +391,7 @@ let test_exception_doesnt_leak =
 (* ==================================================================== *)
 
 let () =
-  run "GdkClipboard Module Tests (Phase 2.6)"
+  run "GdkClipboard Module Tests"
     [
       ( "Getting Clipboard Instances",
         [
