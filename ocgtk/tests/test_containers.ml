@@ -1,4 +1,4 @@
-(** Test suite for additional GTK containers (Phase 4.4)
+(** Test suite for additional GTK containers.
 
     This test file verifies:
     - GtkFixed: Absolute positioning container
@@ -534,7 +534,7 @@ let test_all_transitions () =
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =
-  run "Comprehensive Container Tests (Phase 4.4)"
+  run "Comprehensive Container Tests"
     [
       ( "Fixed - Low Level",
         [

@@ -129,17 +129,18 @@ module Type = struct
 end
 
 let is_a obj type_name =
-  try
-    let obj_type = get_type obj in
-    let check_type = Type.from_name type_name in
-    Type.is_a obj_type check_type
-  with _ -> false
+  match get_type obj with
+  | exception _ -> false
+  | obj_type -> (
+    match Type.from_name type_name with
+    | exception _ -> false
+    | check_type -> Type.is_a obj_type check_type)
 
 exception Cannot_cast of string * string
 
-let try_cast w name =
-  if is_a w name then unsafe_cast w
-  else raise (Cannot_cast (Type.name (get_type w), name))
+let try_cast obj name =
+  if is_a obj name then unsafe_cast obj
+  else raise (Cannot_cast (Type.name (get_type obj), name))
 
 (** {2 GValue Operations} *)
 
@@ -182,7 +183,7 @@ module Value = struct
   external set_object_internal : t -> 'a obj -> unit = "ml_g_value_set_object"
   external set_object_null : t -> unit = "ml_g_value_set_object_null"
 
-  let get_object v = try Some (get_object_internal v) with _ -> None
+  let get_object v = match get_object_internal v with exception _ -> None | x -> Some x
   let set_object v = function
     | Some obj -> set_object_internal v obj
     | None -> set_object_null v

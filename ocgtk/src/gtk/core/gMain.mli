@@ -58,4 +58,4 @@ val iteration : bool -> bool
     - Simple examples
     - Migration from GTK3
 
-    Full GtkApplication support will be added in Phase 6.2. *)
+    Full GtkApplication support is planned for a future release. *)

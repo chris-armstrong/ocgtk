@@ -2,7 +2,7 @@
 
 **Status: IN PROGRESS**
 **Created: 2026-04-27**
-**Updated: 2026-05-10**
+**Updated: 2026-06-07**
 **Branch: `signals`**
 
 ## Overview
@@ -200,8 +200,8 @@ items 1-4 are now resolved; items 5-6 remain.
    to the original `int`, `uint`, `boolean`, `string`, `float`, `double`,
    `object`, `gtype`. ✅
 
-6. **GObject class/interface params** → Remaining work 1.
-7. **L2 type coherence** → Remaining work 2.
+6. **GObject class/interface params** → Remaining work 1. **Now resolved.** `classify_gobject` is fully implemented and returns `Supported` with structured `l2_class` / `is_same_ns_class` / `nullable` fields. Same-namespace signal-param edges are fed into the dependency graph via `extract_signal_dependencies` (already exists in `dependency_analysis.ml:138`). ✅
+7. **L2 type coherence** → Remaining work 2. **Now resolved.** `emit_l2_method` / `emit_l2_method_sig` take `~current_layer2_module` and render L2 class types; generated forwarders already emit `new widget` / `Option.map` wrapping. `current_class` has been removed from `classify` (per the DoD) and only remains on L1 emit functions (`emit_l1_val` / `l1_callback_type`), which is intentional. ✅
 8. **Form example** → Phase 5.
 
 ### Records in signals
@@ -219,7 +219,7 @@ double-free hazard, out of scope here.
 `ocgtk/tests/test_closure_stress.ml` and `test_closure_with_gc.ml` cover
 allocation at scale (1000 closures), void/0-param invocation, single int-param
 dispatch, and GC interaction. They do **not** exercise: multi-param dispatch,
-mixed-type params, non-void return copy-back (`ml_gobject.c:629-633`),
+mixed-type params, non-void return copy-back (`ml_gobject.c:778-783`),
 GObject params, or exception escape. Phase 4 treats closing these gaps
 as a hard prerequisite before signals with GObject params ship.
 
@@ -245,12 +245,14 @@ of three options — see Appendix A for the tradeoff analysis.
 
 ### Signal_marshaller module
 
-`gir_gen/lib/generate/signal_marshaller.{ml,mli}` maps each `gir_type` to
+ `gir_gen/lib/generate/signal_marshaller.{ml,mli}` maps each `gir_type` to
 getter/setter OCaml expressions. `primitive_marshallers` at line 22 is
 exhaustive for every GIR primitive with a `Gobject.Value` counterpart. 19 test
-cases pass. Currently `classify_gobject` at `signal_marshaller.ml:137` returns
-`Unsupported` for all class/interface params — the placeholder addressed by
-Remaining work 1.
+cases pass. `classify_gobject` at `signal_marshaller.ml:184` returns `Supported`
+with structured `l2_class`, `is_same_ns_class`, and `nullable` fields — it
+handles same-namespace and cross-namespace GObject/Interface params
+unconditionally. The `nullable` field drives whether `get_object` (option) or
+`get_object_exn` (bare) is used in generated code.
 
 ### Generator rewrite: pure-data API, L1 + L2 emission
 
@@ -268,16 +270,28 @@ type signal_emission = {
   raw_signal_name     : string;                 (* "close-request" *)
   param_marshallers   : (gir_param * Signal_marshaller.marshaller) list;
   return_marshaller   : Signal_marshaller.marshaller option;
-  ocaml_callback_type : string;                 (* "n_press:int -> x:float -> unit" *)
   strategy            : [ `Connect_simple | `Closure ];
 }
 
-val classify   : ctx:generation_context -> gir_signal -> (signal_emission, string) result
-val emit_l1_val       : signal_emission -> string
+val classify :
+  ctx:generation_context -> gir_signal -> (signal_emission, string) result
+
+val l1_callback_type  : current_class:string -> signal_emission -> string
+val l2_callback_type  : current_layer2_module:string -> signal_emission -> string
+val emit_l1_val       : current_class:string -> signal_emission -> string
 val emit_l1_let       : signal_emission -> string
-val emit_l2_method    : signal_emission -> layer1_module_name:string -> class_snake:string -> string
-val emit_l2_method_sig : signal_emission -> string
+val emit_l2_method    :
+  current_layer2_module:string ->
+  layer1_module_name:string -> class_snake:string -> signal_emission -> string
+val emit_l2_method_sig :
+  current_layer2_module:string -> signal_emission -> string
 ```
+
+**Key design evolution:** The callback type is **not** pre-rendered at
+`classify` time. Instead, `l1_callback_type` and `l2_callback_type` are pure
+functions over the structural `param_marshallers` / `return_marshaller`. This
+keeps `signal_emission` as a single source of truth and eliminates the
+`~current_class` parameter from `classify` (DoD satisfied).
 
 Generated L1 example (from `notebook.ml`):
 
@@ -310,310 +324,105 @@ method on_focus_tab ~callback =
   Notebook.on_focus_tab self#as_notebook ~callback
 ```
 
-**Current skip count:** ~322 signals skipped. The majority (~223) are due to
-`classify_gobject` returning `Unsupported` for GObject class/interface params
-— addressed below.
+**Current skip count:** ~100 signals skipped. Remaining skips are due to
+boxed records (`Gtk.TextIter`, `Gtk.TreeIter`, `Gtk.TreePath`,
+`Gdk.EventSequence`), callbacks, non-In direction params, and the
+`GObject.Object` meta-type. GObject class/interface params are now fully
+supported.
 
 ---
 
 ## Next steps
 
-Work 1 and Work 2 are the two remaining implementation tasks. Work 1 must
-come first: once GObject class params are unblocked, the generated code will
-have L1-level GObject params in L2 forwarders (the exact problem Work 2
-fixes). The remaining phases are verification, testing, and polish — ordered
-roughly by dependency.
+Work 1 and Work 2 are **completed** in the current codebase. The remaining
+phases are verification, testing, and polish:
 
-1. **Remaining work 1** — Feed signal-param edges into the dependency graph;
-   unblock `classify_gobject`. (~30 lines of code, high impact: ~223 signals
-   recoverable)
-
-2. **Remaining work 2** — L2 type conversion for GObject signal
-   params/returns. (~80 lines in `signal_gen.ml`, depends on Work 1)
-
-3. **Regenerate all 9 namespaces** — verify idempotency, zero GObject-param
+1. **Regenerate all 9 namespaces** — verify idempotency, zero GObject-param
    skips, combined modules absorb new SCCs, L2 types are correct
-
-4. **Phase 3** — Cross-namespace verification (spot-check
+2. **Phase 3** — Cross-namespace verification (spot-check
    `Event_controller_key.on_key_pressed`)
-
-5. **Phase 4** — Runtime marshalling tests (marshaller-level M1-M7 + wired
+3. **Phase 4** — Runtime marshalling tests (marshaller-level M1–M8 + wired
    widget tests)
-
-6. **Phase 5** — `form_example.ml`
-
-7. **Phases 6–8** — Regression test, signal flags, migrate examples, archive
+4. **Phase 5** — `form_example.ml`
+5. **Phases 6–8** — Regression test, signal flags, migrate examples, archive
    plan
 
 ---
 
-## Remaining Work 1: Feed signal-param edges into the dependency graph
+## Completed Work 1: Feed signal-param edges into the dependency graph
 
-### Problem
+**Status: COMPLETED.** `extract_signal_dependencies` already exists at
+`dependency_analysis.ml:138` and is wired into `extract_class_dependencies`
+(line 158) and `extract_interface_dependencies` (line 179). The Tarjan SCC
+pass absorbs any new cycles into combined modules automatically.
 
-`classify_gobject` at `signal_marshaller.ml:137` returns `Unsupported` for
-**all** GObject class/interface parameters. This placeholder exists because
-signal parameters referencing same-namespace GObject types can introduce new
-compile-time dependency edges between L1 modules. For example, if `Tooltip`
-has a signal whose parameter is `Widget`, then `tooltip.ml` (standalone today)
-would need to reference `Widget.t Gobject.obj`, creating a dependency from the
-Tooltip L1 module to the Widget L1 module. If Widget methods already reference
-Tooltip (e.g. return types), this creates a cycle.
+`classify_gobject` at `signal_marshaller.ml:184` is fully implemented and
+returns `Supported` with structured `l2_class`, `is_same_ns_class`, and
+`nullable` fields. It handles same-namespace and cross-namespace GObject/Interface
+params unconditionally.
 
-### Approach
-
-Feed signal-parameter edges into the existing `build_dependency_graph`
-(`dependency_analysis.ml:189`) so the existing Tarjan SCC (`compute_module_groups:231`)
-naturally absorbs any new cycles into larger combined modules. Combined
-modules are an internal implementation detail — users only interact with the
-L2 API — so structural changes are transparent.
-
-An earlier iteration of this plan explored a bespoke reachability check that
-pre-emptively **skipped** cycle-creating signals. That approach added ~200
-lines of novel graph code, duplicated the existing SCC logic, and silently
-dropped useful signals. See Appendix B for the decision record.
-
-### Concrete changes
-
-**1. Add `extract_signal_dependencies` to `dependency_analysis.ml`**
-
-Mirror existing `extract_method_dependencies` at line 119:
-
-```ocaml
-let extract_signal_dependencies (ctx : generation_context)
-    (signal : gir_signal) : string list =
-  let return_deps = extract_dependencies_from_type ctx signal.return_type in
-  let param_deps = List.concat_map signal.sig_parameters ~f:(fun p ->
-    extract_dependencies_from_type ctx p.param_type) in
-  return_deps @ param_deps
-```
-
-Reuses `extract_dependencies_from_type` at line 93, which already classifies
-same-namespace entities via `is_same_ns_entity` at line 87.
-
-**2. Wire signal deps into `extract_class_dependencies`**
-
-At `dependency_analysis.ml:136`, add `signal_deps` to the dependency
-collection alongside method/property/constructor deps. Similarly extend
-`extract_interface_dependencies` at line 159 (interfaces carry signals too).
-
-**No other changes to `dependency_analysis.ml` are needed.** The existing
-`build_dependency_graph` and Tarjan SCC handle the rest automatically.
-
-**3. Unblock `classify_gobject` in `signal_marshaller.ml`**
-
-Replace the placeholder at `signal_marshaller.ml:137-151` with unconditional
-support. The function already has the helpers it needs
-(`same_ns_object_type:78`, `cross_ns_object_type:88`):
-
-```ocaml
-let classify_gobject ~ctx ~namespace ~name =
-  let ocaml_type =
-    if String.equal namespace ctx.namespace.namespace_name then
-      same_ns_object_type ~ctx name
-    else
-      cross_ns_object_type namespace name
-  in
-  let ocaml_type = ocaml_type ^ " option" in  (* get_object returns option *)
-  let getter_expr = "Gobject.Value.get_object v" in
-  let setter_expr = "Gobject.Value.set_object v x" in
-  Supported { ocaml_type; getter_expr; setter_expr }
-```
-
-Params are always wrapped in `option` because `Gobject.Value.get_object`
-(`gobject.ml:165-168`) returns `'a obj option` (null pointers become `None`).
-
-**4. Impact on combined modules**
-
-Classes like `Tooltip` whose signals reference `Widget` will enter the same
-SCC as `Widget`, producing a combined module like
-`application_and__window_and__window_group_and__tooltip.ml`. The `_and_`
-naming convention already handles this. The L2 API is unchanged.
-
-### Validation
-
+**Validation results (observed):**
 1. `dune build` succeeds across all 9 namespaces.
-2. Skip count drops from ~322 to ~100 (remaining: boxed records, callbacks,
-   non-In direction, `GObject.Object` meta-type).
+2. Skip count dropped from ~322 to ~100 (boxed records, callbacks, non-In,
+   `GObject.Object` meta-type remain).
 3. `grep -c 'GObject class parameter.*not yet supported'` on stderr → 0.
-4. Combined-module names reflect new SCCs — spot-check `Tooltip` enters the
-   Window combined module in Gtk.
+4. Combined-module names reflect new SCCs (e.g. `Tooltip` merged into Window
+   combined module).
 
-### Files to modify
-
+**Files modified (historical):**
 | File | Change |
 |------|--------|
-| `gir_gen/lib/dependency_analysis.ml` | Add `extract_signal_dependencies` (~10 lines); wire into `extract_class_dependencies` and `extract_interface_dependencies` |
-| `gir_gen/lib/generate/signal_marshaller.ml` | Replace `classify_gobject` placeholder with unconditional `Supported` (~15 lines) |
-| `gir_gen/lib/generate/signal_marshaller.mli` | Update doc comment on `classify` |
+| `gir_gen/lib/dependency_analysis.ml` | `extract_signal_dependencies` added (~5 lines); wired into class/interface extraction |
+| `gir_gen/lib/generate/signal_marshaller.ml` | `classify_gobject` replaced placeholder with unconditional `Supported` (~30 lines) |
+| `gir_gen/lib/generate/signal_marshaller.mli` | Updated doc comment on `classify` |
 
 ---
 
-## Remaining Work 2: L2 type conversion for GObject signal params/returns
+## Completed Work 2: L2 type conversion for GObject signal params/returns
 
-### Problem
+**Status: COMPLETED.** `emit_l2_method` and `emit_l2_method_sig` already take
+`~current_layer2_module` and render L2 class types using the structural
+`l2_class` field on each marshaller. Generated forwarders already emit:
+- `new <class>` wrapping for GObject params (e.g. `new widget child`)
+- `Option.map` for nullable params and returns
+- `?after` with trailing `()` terminator
 
-`emit_l2_method` at `signal_gen.ml:280` and `emit_l2_method_sig` at `:292`
-both use `ocaml_callback_type` — which contains **L1** types. For a signal
-with a `Gtk.Widget` param, the L2 class type signature would incorrectly
-declare `Widget.t Gobject.obj option` instead of `widget_t option`. Every
-other L2 method uses L2 class types via `resolve_ocaml_type`
-(`class_gen_type_resolution.ml:57`).
+**Inherited debt resolution:** `~current_class` was successfully removed from
+`Signal_marshaller.classify` and `Signal_gen.classify` (DoD satisfied). It
+remains only on L1 emit functions (`emit_l1_val` / `l1_callback_type`), which is
+intentional per the design: L1 rendering needs to know the self-class to
+collapse same-namespace references to bare `t option`.
 
-### Inherited debt: remove `current_class` from `Signal_marshaller.classify`
+**Design insight — direction reversal:**
+- **Params (C→OCaml):** L2 callback accepts L2 types; forwarder wraps
+  L1→L2 before calling the user (`new widget child`, `Option.map`).
+- **Returns (OCaml→C):** User returns L2 type; forwarder unwraps to L1
+  (`result#as_widget`, `Option.map`) before setting into GValue.
 
-Work 1 landed a `~current_class:string option` parameter on
-`Signal_marshaller.classify` and `Signal_gen.classify` to keep same-class
-GObject references rendered as bare `t Gobject.obj` inside their
-standalone L1 module (avoiding a compilation-unit self-alias error). This
-is a band-aid: `signal_emission.ocaml_callback_type` is rendered at
-classify time, so L1 and L2 emission must call `classify` twice with
-different `current_class` values to obtain different strings — the record
-stops being a single source of truth.
+This mirrors the existing pattern in `class_gen_method.ml`.
 
-**Work 2 must remove this parameter.** The cleanup is part of the same
-refactor Work 2 already requires:
-
-- `Signal_marshaller.marshaller` should carry **structured** type info
-  (e.g. a sum type distinguishing same-ns object / cross-ns object /
-  primitive / enum / bitfield / variant), not a pre-rendered string.
-- `Signal_marshaller.classify` takes no rendering context — it only
-  classifies.
-- `emit_l1_val` / `emit_l1_let` take `~current_class:string` and render
-  the callback type from the structured marshaller data, applying the
-  self-reference rule at emit time.
-- `emit_l2_method_sig` / `emit_l2_method` take `~current_layer2_module`
-  and render using `resolve_layer2_class_ref` / `resolve_ocaml_type`
-  from `class_gen_type_resolution.ml`, which already handles same-module
-  qualification correctly.
-
-After this refactor:
-- `Signal_gen.classify` no longer takes `~current_class`.
-- `class_gen_body.ml`'s L2 sites no longer pass `~current_class:None`
-  with an explanatory comment; instead they pass `~current_layer2_module`
-  and Work 2's L2 type rendering takes care of everything.
-- `layer1_main.ml`'s L1 site no longer threads `~current_class`; it
-  calls `emit_l1_val` / `emit_l1_let` with `~current_class:class_name`
-  directly.
-- The local test wrappers in `signal_wrapper_tests.ml` and
-  `signal_marshaller_tests.ml` that default `current_class` to `None`
-  go away.
-
-**Definition-of-Done for Work 2 includes:** zero occurrences of
-`current_class` in `gir_gen/lib/generate/signal_marshaller.{ml,mli}` and
-`gir_gen/lib/generate/signal_gen.{ml,mli}`, and a grep across the
-generator returns no `~current_class` arguments at classify callsites.
-Work 2 does not ship until this is satisfied.
-
-### Design
-
-Signal callbacks have a **direction reversal** compared to method calls:
-- **Params (C→OCaml):** GValue → L1 extraction → user callback. The L2
-  callback should accept L2 types, so we wrap L1→L2 before calling the user.
-- **Returns (OCaml→C):** user returns L2 type → unwrap to L1 → set into
-  GValue.
-
-This mirrors the existing pattern in `class_gen_method.ml:285-318` (param
-unwrapping: `let child = child#as_widget`) and `:188-207` (return wrapping:
-`new widget result`).
-
-Generated example — signal `page-added(Gtk.Widget, gint) -> void`:
-
+**Generated example (observed in `gNotebook.ml:327`):**
 ```ocaml
-(* L2 forwarder with L1→L2 param wrapping *)
-method on_page_added ~callback =
-  Notebook.on_page_added self#as_notebook
-    ~callback:(fun ~child ~page ->
-      callback ~child:(new widget child) ~page)
+method on_page_added ?(after = false) ~callback () =
+  Notebook.on_page_added ~after self#as_notebook
+    ~callback:(fun ~child ~page_num ->
+      callback
+        ~child:
+          (new
+             GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+             .widget
+             child)
+        ~page_num)
 ```
 
-With a GObject return — signal `create-child(gint) -> Gtk.Widget`:
-
-```ocaml
-method on_create_child ~callback =
-  Notebook.on_create_child self#as_notebook
-    ~callback:(fun ~page ->
-      let result = callback ~page in
-      result#as_widget)
-```
-
-With nullable params/returns:
-
-```ocaml
-(* Nullable param: Option.map *)
-method on_page_added ~callback =
-  Notebook.on_page_added self#as_notebook
-    ~callback:(fun ~child ->
-      callback ~child:(Option.map (fun w -> new widget w) child))
-
-(* Nullable return: Option.map *)
-method on_create_child ~callback =
-  Notebook.on_create_child self#as_notebook
-    ~callback:(fun ~page ->
-      let result = callback ~page in
-      Option.map (fun w -> w#as_widget) result)
-```
-
-Non-GObject params (primitives, enums) pass through unchanged — their L1 and
-L2 types are identical.
-
-### Concrete changes
-
-**1. Add `l2_class` to `signal_marshaller.marshaller`**
-
-```ocaml
-type marshaller = {
-  ocaml_type : string;           (* L1 type — unchanged *)
-  getter_expr : string;
-  setter_expr : string;
-  l2_class : ocaml_class option; (* NEW — populated for GObject types *)
-}
-```
-
-Set by `classify_gobject` via `Type_mappings.find_type_mapping_for_gir_type`,
-reading the `layer2_class` field. Primitives, enums, bitfields set `None`.
-
-**2. Add `l2_callback_type` to `signal_emission`**
-
-Computed by `classify` alongside `ocaml_callback_type`. For each param/return
-where `marshaller.l2_class = Some lc`, substitutes the L2 class type (e.g.
-`widget_t`) using the same module-scoping logic as
-`class_gen_type_resolution.ml:57` (`resolve_ocaml_type`).
-
-**3. Use `l2_callback_type` in `emit_l2_method_sig`** — replaces
-`e.ocaml_callback_type`.
-
-**4. Rewrite `emit_l2_method`** to generate L1↔L2 conversion let-bindings
-for each GObject param and return value, following the patterns above.
-Non-GObject params pass through unchanged.
-
-**5. `?after` on L2 forwarders** — currently omitted to dodge OCaml warning 16.
-Re-add with a unit terminator:
-
-```ocaml
-method on_clicked ?(after = false) ~callback () =
-  Button.on_clicked ~after self#as_button ~callback
-```
-
-### Files to modify
-
+**Files modified (historical):**
 | File | Change |
 |------|--------|
-| `gir_gen/lib/generate/signal_marshaller.mli` | Add `l2_class` to `marshaller` |
-| `gir_gen/lib/generate/signal_marshaller.ml` | Populate `l2_class` in `classify_gobject` |
-| `gir_gen/lib/generate/signal_gen.mli` | Add `l2_callback_type` to `signal_emission`; update docs |
-| `gir_gen/lib/generate/signal_gen.ml` | Compute `l2_callback_type`; rewrite `emit_l2_method` with conversion code; update `emit_l2_method_sig`; add `?after` to L2 forwarders |
+| `gir_gen/lib/generate/signal_marshaller.mli` | `l2_class` added to `marshaller` record |
+| `gir_gen/lib/generate/signal_marshaller.ml` | `classify_gobject` populates `l2_class` via `Type_mappings` |
+| `gir_gen/lib/generate/signal_gen.mli` | `l1_callback_type` / `l2_callback_type` functions added; `emit_l2_method` signature updated |
+| `gir_gen/lib/generate/signal_gen.ml` | Rewrote `emit_l2_method` with L1↔L2 conversion; added `?after` to L2 forwarders |
 | `gir_gen/test/class_generation/signal_wrapper_tests.ml` | Tests for L2 GObject param/return type conversion and `?after` |
-
-### Validation
-
-1. `dune build` succeeds across all 9 namespaces.
-2. Generated L2 class types use L2 types: `grep "method on_.*->" ocgtk/src/*/generated/g*.mli`
-   — GObject params appear as `widget_t`, not `Widget.t Gobject.obj`.
-3. Generated L2 bodies have wrapping: `grep "method on_" ocgtk/src/*/generated/g*.ml`
-   — `Option.map (fun c -> new ...)` for GObject params,
-   `Option.map (fun c -> c#as_...)` for GObject returns.
-4. `dune test gir_gen/` passes all tests.
 
 ---
 
@@ -628,10 +437,11 @@ cross-reference infrastructure is shared with method stubs
 Verification: confirm `Event_controller_key.on_key_pressed` has
 `state:Ocgtk_gdk.Gdk_enums.modifiertype` in the regenerated L1 sig.
 
-**Phase 4 — Runtime marshalling tests.** Marshaller-level tests (M1-M7:
-multi-param dispatch, non-void return copy-back, exception handling) and
-wired-signal tests through real widgets. Add GObject class param tests
-(e.g. `notebook.page-added`).
+**Phase 4 — Runtime marshalling tests.** Marshaller-level tests (M1–M8:
+multi-param dispatch, non-void return copy-back, exception handling, enum
+dispatch, int return copy-back) and wired-signal tests through real widgets.
+Add GObject class param tests (e.g. `notebook.page-added`) and `?after`
+coverage.
 
 **Phase 5 — Form example app.** `ocgtk/examples/form_example.ml` — a contact
 form exercising keyboard shortcuts, close-confirm, input validation, and
