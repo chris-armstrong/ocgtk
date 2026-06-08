@@ -213,12 +213,12 @@ module Value : sig
   val get_object : t -> 'a obj option
   val set_object : t -> 'a obj option -> unit
 
-  (** Get a GObject from a GValue, raising [Failure] if the value is NULL.
-      Use this when the GIR declares the parameter non-nullable. *)
   val get_object_exn : t -> 'a obj
+  (** Get a GObject from a GValue, raising [Failure] if the value is NULL. Use
+      this when the GIR declares the parameter non-nullable. *)
 
-  (** Set a non-nullable GObject on a GValue. *)
   val set_object_exn : t -> 'a obj -> unit
+  (** Set a non-nullable GObject on a GValue. *)
 end
 
 (** {2 Properties} *)
@@ -336,4 +336,24 @@ module Test : sig
 
   val invoke_closure_double : g_closure -> float -> unit
   (** Test helper: Invoke a closure with a double argument *)
+
+  val invoke_closure_mixed_return_bool :
+    g_closure -> int -> string -> 'a obj option -> bool
+  (** Test helper: Invoke a closure with mixed params (int, string, GObject
+      option) and a bool return value *)
+
+  val invoke_closure_enum_return_bool : g_closure -> int -> bool
+  (** Test helper: Invoke a closure with an enum argument and bool return *)
+
+  val invoke_closure_flags_return_bool : g_closure -> int -> bool
+  (** Test helper: Invoke a closure with a flags argument and bool return *)
+
+  val invoke_closure_return_int : g_closure -> int
+  (** Test helper: Invoke a closure with no arguments and int return *)
+
+  val reset_closure_exception_flag : unit -> unit
+  (** Test helper: Reset the exception-escape observation flag *)
+
+  val check_closure_exception_flag : unit -> bool
+  (** Test helper: Check whether a closure callback raised an exception *)
 end
