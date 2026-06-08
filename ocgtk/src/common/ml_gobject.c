@@ -654,6 +654,12 @@ CAMLprim value ml_g_object_notify(value obj, value prop_name)
 }
 
 /* ==================================================================== */
+/* Exception-escape observation flag (forward declaration) */
+/* ==================================================================== */
+
+static int ml_closure_exception_flag = 0;
+
+/* ==================================================================== */
 /* Closure Support */
 /* ==================================================================== */
 
@@ -760,6 +766,7 @@ static void ml_closure_marshal(GClosure *closure,
     /* Check for exceptions */
     if (Is_exception_result(result)) {
         exn = Extract_exception(result);
+        ml_closure_exception_flag = 1;
         /* Format and log the exception so closure failures are visible */
         const value *exn_to_string = caml_named_value("Printexc.to_string");
         if (exn_to_string != NULL) {
@@ -1058,6 +1065,163 @@ CAMLprim value ml_test_invoke_closure_double(value closure_val, value arg_val)
     g_value_unset(&param);
 
     CAMLreturn(Val_unit);
+}
+
+/* ==================================================================== */
+/* Exception-escape observation flag */
+/* ==================================================================== */
+
+CAMLprim value ml_test_reset_closure_exception_flag(value unit)
+{
+    CAMLparam1(unit);
+    ml_closure_exception_flag = 0;
+    CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_test_check_closure_exception_flag(value unit)
+{
+    CAMLparam1(unit);
+    CAMLreturn(Val_bool(ml_closure_exception_flag));
+}
+
+/* ==================================================================== */
+/* Enum/Flags type registration helpers */
+/* ==================================================================== */
+
+static GType test_enum_type_id = G_TYPE_INVALID;
+static GType test_flags_type_id = G_TYPE_INVALID;
+
+static void ensure_test_types(void)
+{
+    if (test_enum_type_id != G_TYPE_INVALID)
+        return;
+
+    static GEnumValue test_enum_values[] = {
+        { 0, (gchar *)"NONE", (gchar *)"NONE" },
+        { 1, (gchar *)"ONE",  (gchar *)"ONE"  },
+        { 2, (gchar *)"TWO",  (gchar *)"TWO"  },
+        { 0, NULL, NULL }
+    };
+
+    static GFlagsValue test_flags_values[] = {
+        { 1, (gchar *)"A", (gchar *)"A" },
+        { 2, (gchar *)"B", (gchar *)"B" },
+        { 3, (gchar *)"AB", (gchar *)"AB" },
+        { 0, NULL, NULL }
+    };
+
+    test_enum_type_id = g_enum_register_static("TestEnum", test_enum_values);
+    test_flags_type_id = g_flags_register_static("TestFlags", test_flags_values);
+}
+
+/* Test helper to invoke a closure with an enum argument and bool return */
+CAMLprim value ml_test_invoke_closure_enum_return_bool(value closure_val, value enum_val)
+{
+    CAMLparam2(closure_val, enum_val);
+    GClosure *closure = GClosure_val(closure_val);
+    GValue param = G_VALUE_INIT;
+    GValue return_value = G_VALUE_INIT;
+
+    ensure_test_types();
+
+    g_value_init(&param, test_enum_type_id);
+    g_value_set_enum(&param, Int_val(enum_val));
+
+    g_value_init(&return_value, G_TYPE_BOOLEAN);
+
+    g_closure_invoke(closure, &return_value, 1, &param, NULL);
+
+    gboolean result = g_value_get_boolean(&return_value);
+
+    g_value_unset(&param);
+    g_value_unset(&return_value);
+
+    CAMLreturn(Val_bool(result));
+}
+
+/* Test helper to invoke a closure with a flags argument and bool return */
+CAMLprim value ml_test_invoke_closure_flags_return_bool(value closure_val, value flags_val)
+{
+    CAMLparam2(closure_val, flags_val);
+    GClosure *closure = GClosure_val(closure_val);
+    GValue param = G_VALUE_INIT;
+    GValue return_value = G_VALUE_INIT;
+
+    ensure_test_types();
+
+    g_value_init(&param, test_flags_type_id);
+    g_value_set_flags(&param, Int_val(flags_val));
+
+    g_value_init(&return_value, G_TYPE_BOOLEAN);
+
+    g_closure_invoke(closure, &return_value, 1, &param, NULL);
+
+    gboolean result = g_value_get_boolean(&return_value);
+
+    g_value_unset(&param);
+    g_value_unset(&return_value);
+
+    CAMLreturn(Val_bool(result));
+}
+
+/* Test helper to invoke a closure with mixed params (int, string, GObject?)
+ * and bool return value */
+CAMLprim value ml_test_invoke_closure_mixed_return_bool(value closure_val,
+                                                         value int_arg,
+                                                         value string_arg,
+                                                         value obj_arg)
+{
+    CAMLparam4(closure_val, int_arg, string_arg, obj_arg);
+    GClosure *closure = GClosure_val(closure_val);
+    GValue params[3] = {G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT};
+    GValue return_value = G_VALUE_INIT;
+
+    /* Set up int parameter */
+    g_value_init(&params[0], G_TYPE_INT);
+    g_value_set_int(&params[0], Int_val(int_arg));
+
+    /* Set up string parameter */
+    g_value_init(&params[1], G_TYPE_STRING);
+    g_value_set_string(&params[1], String_val(string_arg));
+
+    /* Set up object parameter — handle nullable (None = NULL GObject) */
+    g_value_init(&params[2], G_TYPE_OBJECT);
+    if (Is_block(obj_arg)) {
+        g_value_set_object(&params[2], G_OBJECT(ml_gobject_ext_of_val(Some_val(obj_arg))));
+    }
+    /* If obj_arg is Val_none, the GValue holds NULL (default after init) */
+
+    g_value_init(&return_value, G_TYPE_BOOLEAN);
+
+    g_closure_invoke(closure, &return_value, 3, params, NULL);
+
+    gboolean result = g_value_get_boolean(&return_value);
+
+    /* Clean up */
+    g_value_unset(&params[0]);
+    g_value_unset(&params[1]);
+    g_value_unset(&params[2]);
+    g_value_unset(&return_value);
+
+    CAMLreturn(Val_bool(result));
+}
+
+/* Test helper to invoke a closure with no args and int return value */
+CAMLprim value ml_test_invoke_closure_return_int(value closure_val)
+{
+    CAMLparam1(closure_val);
+    GClosure *closure = GClosure_val(closure_val);
+    GValue return_value = G_VALUE_INIT;
+
+    g_value_init(&return_value, G_TYPE_INT);
+
+    g_closure_invoke(closure, &return_value, 0, NULL, NULL);
+
+    gint result = g_value_get_int(&return_value);
+
+    g_value_unset(&return_value);
+
+    CAMLreturn(Val_int(result));
 }
 
 /* ==================================================================== */

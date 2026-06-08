@@ -132,9 +132,9 @@ let is_a obj type_name =
   match get_type obj with
   | exception _ -> false
   | obj_type -> (
-    match Type.from_name type_name with
-    | exception _ -> false
-    | check_type -> Type.is_a obj_type check_type)
+      match Type.from_name type_name with
+      | exception _ -> false
+      | check_type -> Type.is_a obj_type check_type)
 
 exception Cannot_cast of string * string
 
@@ -183,7 +183,9 @@ module Value = struct
   external set_object_internal : t -> 'a obj -> unit = "ml_g_value_set_object"
   external set_object_null : t -> unit = "ml_g_value_set_object_null"
 
-  let get_object v = match get_object_internal v with exception _ -> None | x -> Some x
+  let get_object v =
+    match get_object_internal v with exception _ -> None | x -> Some x
+
   let set_object v = function
     | Some obj -> set_object_internal v obj
     | None -> set_object_null v
@@ -293,4 +295,23 @@ module Test = struct
 
   external invoke_closure_double : g_closure -> float -> unit
     = "ml_test_invoke_closure_double"
+
+  external invoke_closure_mixed_return_bool :
+    g_closure -> int -> string -> 'a obj option -> bool
+    = "ml_test_invoke_closure_mixed_return_bool"
+
+  external invoke_closure_enum_return_bool : g_closure -> int -> bool
+    = "ml_test_invoke_closure_enum_return_bool"
+
+  external invoke_closure_flags_return_bool : g_closure -> int -> bool
+    = "ml_test_invoke_closure_flags_return_bool"
+
+  external invoke_closure_return_int : g_closure -> int
+    = "ml_test_invoke_closure_return_int"
+
+  external reset_closure_exception_flag : unit -> unit
+    = "ml_test_reset_closure_exception_flag"
+
+  external check_closure_exception_flag : unit -> bool
+    = "ml_test_check_closure_exception_flag"
 end
