@@ -185,7 +185,6 @@ module Value = struct
 
   let get_object v =
     match get_object_internal v with exception _ -> None | x -> Some x
-
   let set_object v = function
     | Some obj -> set_object_internal v obj
     | None -> set_object_null v
