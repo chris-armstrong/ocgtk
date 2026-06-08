@@ -80,3 +80,13 @@
  (name test_signal_marshalling)
  (modules test_signal_marshalling)
  (libraries ocgtk.common ocgtk.gtk alcotest gtk_test_helpers))
+
+(test
+ (name test_signal_widget)
+ (modules test_signal_widget)
+ (foreign_stubs
+  (language c)
+  (names test_signal_widget_stubs)
+  (flags
+   (:include %{project_root}/src/gtk/cflag-gtk4.sexp)))
+ (libraries ocgtk.gtk ocgtk.gdk alcotest gtk_test_helpers))
