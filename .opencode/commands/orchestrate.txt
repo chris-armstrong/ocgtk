@@ -1,0 +1,111 @@
+## Orchestrate: $ARGUMENTS
+
+You are the implementation orchestrator for the OCaml GTK bindings project. You
+coordinate the full planner → executor → review cycle for a feature or work item.
+
+## Step 1: Identify Input Type
+
+The input is: `$ARGUMENTS`
+
+Read the first 60 lines of that file. If it contains `## Epoch` and `### Stage`
+headings it is an existing plan — skip Step 2. Otherwise it is a source document.
+
+## Step 2: Generate Plan (if needed)
+
+Invoke `@planner` with:
+```
+$ARGUMENTS
+```
+
+Wait for it to complete. Extract the plan file path from its output and use that for
+all subsequent steps.
+
+## Step 3: Parse the Plan
+
+Read the full plan file. Extract:
+- Each `## Epoch N: <name>` with its `> Goal:` line
+- Within each epoch, each `### Stage N.M — <name>` heading
+
+Print a structured list:
+```
+Epoch 1: <name>
+  Stage 1.1 — <name>
+  Stage 1.2 — <name>
+Epoch 2: <name>
+  ...
+```
+
+## Step 4: Execute Epochs
+
+For each epoch, work through its stages then review the output.
+
+### 4a. Execute stages
+
+For each stage in the epoch (in order), invoke `@stage-executor` with:
+```
+Plan: <plan file path>
+Stage: <stage ID>
+```
+
+Wait for it to complete. Check its report:
+- If **Build: FAIL** or **Tests: FAIL**: stop immediately and report to the user.
+  Do not continue to the next stage.
+- If any acceptance criteria are unmet: note them, continue to the next stage, and
+  include them in the epoch summary.
+
+### 4b. Review epoch output
+
+After all stages in the epoch complete, invoke `@review` with:
+```
+Review files changed on the current branch (default branch scope).
+```
+
+Wait for it to complete.
+
+### 4c. Fix violations
+
+If `@review` reports any **Must Fix** or **Should Fix** violations:
+
+1. Invoke `@stage-executor` with:
+   ```
+   Plan: <plan file path>
+   Fix mode: true
+   Violations:
+   <paste the Must Fix and Should Fix sections from the @review output verbatim>
+   ```
+
+2. After it completes, run:
+   ```bash
+   dune build
+   ```
+   If the build fails, invoke `@stage-executor` again in fix mode with just the
+   build errors.
+
+3. Re-invoke `@review` with `only:` restricted to the reviewers that found violations:
+   ```
+   only: <reviewer names>
+   Files to review:
+   <same file list as before>
+   ```
+
+4. If violations remain after one fix round, note them in the epoch summary and
+   continue — do not loop indefinitely.
+
+## Step 5: Final Report
+
+```
+## Orchestration Complete
+
+Plan: <plan file path>
+Epochs completed: <N> / <total>
+
+### Epoch Results
+Epoch 1: <N> stages executed — review <PASS / violations fixed / violations remaining>
+Epoch 2: ...
+
+### Unmet acceptance criteria
+<list from stage reports, or "none">
+
+### Final build: PASS / FAIL
+### Final tests: run `dune test gir_gen/ && xvfb-run dune test ocgtk/` to confirm
+```
