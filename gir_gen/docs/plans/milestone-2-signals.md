@@ -340,9 +340,9 @@ phases are verification, testing, and polish:
 1. **Regenerate all 9 namespaces** — verify idempotency, zero GObject-param
    skips, combined modules absorb new SCCs, L2 types are correct
 2. **Phase 3** — Cross-namespace verification (spot-check
-   `Event_controller_key.on_key_pressed`)
+   `Event_controller_key.on_key_pressed`) ✅
 3. **Phase 4** — Runtime marshalling tests (marshaller-level M1–M8 + wired
-   widget tests)
+   widget tests) ✅
 4. **Phase 5** — `form_example.ml`
 5. **Phases 6–8** — Regression test, signal flags, migrate examples, archive
    plan

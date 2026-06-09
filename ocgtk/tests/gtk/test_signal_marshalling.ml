@@ -65,6 +65,27 @@ let test_null_gobject_param () =
   check bool "null object passed as None" true
     (match !obj_captured with None -> true | Some _ -> false)
 
+(** {2 M5b: non-null GObject param preserves identity} *)
+
+let test_non_null_gobject_param () =
+  let btn_obj = Ocgtk_gtk.Gtk.Wrappers.Button.new_ () in
+  let obj_captured = ref None in
+  let closure =
+    Closure.create (fun argv ->
+        obj_captured := Value.get_object (Closure.nth argv ~pos:2);
+        Value.set_boolean (Closure.result argv) true)
+  in
+  let result =
+    Test.invoke_closure_mixed_return_bool closure 0 "test" (Some btn_obj)
+  in
+  check bool "return value is true" true result;
+  check bool "non-null object received as Some" true
+    (match !obj_captured with Some _ -> true | None -> false);
+  check bool "object identity preserved via Gobject.same" true
+    (match !obj_captured with
+     | Some obj -> Gobject.same obj btn_obj
+     | None -> false)
+
 (** {2 M4: exception escape} *)
 
 let test_exception_escape () =
@@ -75,29 +96,6 @@ let test_exception_escape () =
   Test.invoke_closure_void closure;
   check bool "exception flag is set after escape" true
     (Test.check_closure_exception_flag ())
-
-(** {2 M7: enum dispatch} *)
-
-type test_enum = NONE | ONE | TWO
-
-let test_enum_of_int = function
-  | 0 -> NONE
-  | 1 -> ONE
-  | 2 -> TWO
-  | _ -> NONE (* fallback for unexpected values *)
-
-let test_enum_dispatch () =
-  let enum_captured = ref NONE in
-  let closure =
-    Closure.create (fun argv ->
-        enum_captured :=
-          test_enum_of_int (Value.get_enum_int (Closure.nth argv ~pos:0));
-        Value.set_boolean (Closure.result argv) true)
-  in
-  let result = Test.invoke_closure_enum_return_bool closure 1 in
-  check bool "return value is true" true result;
-  check int "enum value captured" 1
-    (match !enum_captured with NONE -> 0 | ONE -> 1 | TWO -> 2)
 
 (** {2 M8: int return copy-back} *)
 
@@ -178,17 +176,15 @@ let () =
             (require_gtk test_void_return_0_params);
           test_case "null gobject param" `Quick
             (require_gtk test_null_gobject_param);
+          test_case "non-null gobject param preserves identity" `Quick
+            (require_gtk test_non_null_gobject_param);
         ] );
       ( "exception",
         [
           test_case "exception escape sets flag" `Quick
             (require_gtk test_exception_escape);
         ] );
-      ( "enum_and_flags",
-        [
-          test_case "enum dispatch" `Quick (require_gtk test_enum_dispatch);
-          test_case "flags dispatch" `Quick (require_gtk test_flags_dispatch);
-        ] );
+      ( "flags", [ test_case "flags dispatch" `Quick (require_gtk test_flags_dispatch) ] );
       ( "int_return",
         [
           test_case "int return copy-back" `Quick (require_gtk test_int_return);

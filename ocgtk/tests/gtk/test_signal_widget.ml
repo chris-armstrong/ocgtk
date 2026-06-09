@@ -18,6 +18,25 @@ external emit_key_pressed_signal :
 (** Emit "key-pressed" signal on an EventControllerKey via C stub. Returns the
     boolean result of the signal handler chain. *)
 
+(** {2 Test 0: Signal disconnect} *)
+
+let test_signal_disconnect () =
+  let btn_obj = Wrappers.Button.new_ () in
+  let btn = new Button.button btn_obj in
+  let called = ref false in
+  let handler_id =
+    btn#on_clicked ~callback:(fun () -> called := true) ()
+  in
+  (* Emit signal -- handler should fire *)
+  Gobject.Signal.emit_by_name btn_obj ~name:"clicked";
+  check bool "callback invoked before disconnect" true !called;
+  (* Disconnect and reset *)
+  called := false;
+  Gobject.Signal.disconnect btn_obj handler_id;
+  (* Emit again -- handler should NOT fire *)
+  Gobject.Signal.emit_by_name btn_obj ~name:"clicked";
+  check bool "callback not invoked after disconnect" false !called
+
 (** {2 Test 1: Button clicked (simple)} *)
 
 let test_button_clicked () =
@@ -121,6 +140,8 @@ let () =
     [
       ( "button",
         [
+          test_case "signal disconnect" `Quick
+            (require_gtk test_signal_disconnect);
           test_case "button clicked" `Quick (require_gtk test_button_clicked);
           test_case "button clicked after" `Quick
             (require_gtk test_button_clicked_after);
