@@ -41,7 +41,9 @@ For each epoch, work through its stages then review the output.
 
 ### 4a. Execute stages
 
-For each stage in the epoch (in order), invoke `@stage-executor` with:
+Each stage is done with a separate @stage-executor command. DO NOT attempt to build it yourself
+
+For each stage in the epoch (in order), YOU MUST invoke `@stage-executor` with:
 ```
 Plan: <plan file path>
 Stage: <stage ID>

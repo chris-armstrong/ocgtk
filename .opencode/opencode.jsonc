@@ -6,77 +6,63 @@
       "model": "ollama-cloud/deepseek-v4-flash",
       "color": "success",
       "description": "Reviews OCaml files against nesting-and-control-flow, error-handling, and partial-functions guidelines",
-      "prompt": "{file:./agents/control-flow-reviewer.txt}"
+      "prompt": "{file:./agents/control-flow-reviewer.txt}",
     },
     "type-correctness-reviewer": {
       "mode": "subagent",
       "model": "ollama-cloud/deepseek-v4-flash",
       "color": "success",
       "description": "Reviews OCaml files against type-safety, pattern-matching, and module-boundaries guidelines",
-      "prompt": "{file:./agents/type-correctness-reviewer.txt}"
+      "prompt": "{file:./agents/type-correctness-reviewer.txt}",
     },
     "code-quality-reviewer": {
       "mode": "subagent",
       "model": "ollama-cloud/deepseek-v4-flash",
       "color": "success",
       "description": "Reviews OCaml files against naming-and-intermediates and code-reuse guidelines",
-      "prompt": "{file:./agents/code-quality-reviewer.txt}"
+      "prompt": "{file:./agents/code-quality-reviewer.txt}",
     },
     "abstractions-reviewer": {
       "mode": "subagent",
       "model": "ollama-cloud/deepseek-v4-flash",
       "color": "success",
       "description": "Reviews OCaml files against the abstractions guideline",
-      "prompt": "{file:./agents/abstractions-reviewer.txt}"
+      "prompt": "{file:./agents/abstractions-reviewer.txt}",
     },
     "test-reviewer": {
       "mode": "subagent",
       "model": "ollama-cloud/deepseek-v4-flash",
       "color": "success",
       "description": "Reviews OCaml files against test-patterns and atspi-e2e-testing guidelines",
-      "prompt": "{file:./agents/test-reviewer.txt}"
+      "prompt": "{file:./agents/test-reviewer.txt}",
     },
     "docs-reviewer": {
       "mode": "subagent",
       "model": "ollama-cloud/deepseek-v4-flash",
       "color": "success",
       "description": "Reviews OCaml files against the comments-and-documentation guideline",
-      "prompt": "{file:./agents/docs-reviewer.txt}"
-    },
-    "requirements-design-tasks": {
-      "mode": "subagent",
-      "model": "anthropic/claude-sonnet-4-6",
-      "color": "info",
-      "description": "Work through requirements, carry out a design, and specify an implementation plan",
-      "prompt": "{file:./agents/requirements-design-tasks.txt}"
-    },
-    "spec-task-execution": {
-      "mode": "subagent",
-      "model": "anthropic/claude-sonnet-4-6",
-      "color": "warning",
-      "description": "Implement tasks that refer to a feature and existing planning documents in the repository",
-      "prompt": "{file:./agents/spec-task-execution.txt}"
+      "prompt": "{file:./agents/docs-reviewer.txt}",
     },
     "phase-executor": {
       "mode": "subagent",
       "model": "ollama-cloud/deepseek-v4-flash",
       "color": "info",
       "description": "Execute a single implementation task from gir_gen/docs/plans/ with full build-and-test cycle",
-      "prompt": "{file:./agents/phase-executor.txt}"
-    }
+      "prompt": "{file:./agents/phase-executor.txt}",
+    },
   },
   "command": {
     "refactor": {
       "description": "Refactor code to meet a specific guideline with independent review",
-      "template": "{file:./commands/refactor.txt}"
-    },
-    "review-spec": {
-      "description": "Run all six guideline reviewers against the files implemented for a spec",
-      "template": "{file:./commands/review-spec.txt}"
+      "template": "{file:./commands/refactor.txt}",
     },
     "review": {
       "description": "Report-only guideline review of a PR, branch, staged files, or explicit paths",
-      "template": "{file:./commands/review.txt}"
-    }
-  }
+      "template": "{file:./commands/review.txt}",
+    },
+    "orchestrate": {
+      "description": "Orchestrate a full build-and-test cycle for a feature or work item",
+      "template": "{file:./commands/orchestrate.txt}",
+    },
+  },
 }

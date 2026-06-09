@@ -23,7 +23,7 @@ Parse `$ARGUMENTS` to determine which files to review:
 - **Explicit file paths**: if `$ARGUMENTS` contains `.ml` or `.mli` paths, use those directly.
 - **Default** (no argument or unrecognised): all OCaml files changed on this branch vs main:
   ```bash
-  git diff $(git merge-base HEAD origin/lablgtk4) --name-only -- '*.ml' '*.mli'
+  git diff $(git merge-base HEAD origin/main) --name-only -- '*.ml' '*.mli'
   ```
 
 Filter the result:
@@ -69,13 +69,13 @@ Files reviewed: <N>
 
 Collect all violations from all agents and bucket them:
 
-**Must Fix** (correctness, type safety, partial functions):
+**Must Fix** (correctness, type safety, partial functions, pattern matching, error handling):
 - <file>:<line> — [<agent>/<guideline>] <description>
 
-**Should Fix** (error handling, pattern matching, module boundaries):
+**Should Fix** (module boundaries, reuse, naming, abstractions, docs, comments):
 - <file>:<line> — [<agent>/<guideline>] <description>
 
-**Nice to Fix** (naming, reuse, abstractions, docs, comments):
+**Nice to Fix** (docs, comments):
 - <file>:<line> — [<agent>/<guideline>] <description>
 
 ### Per-Agent Summaries

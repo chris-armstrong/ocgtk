@@ -15,21 +15,13 @@ If given explicit `.ml`/`.mli` paths, use those directly.
 
 Otherwise resolve the scope:
 
-- PR number (`123` or `#123`):
-  ```bash
-  gh pr diff 123 --name-only | grep -E '\.(ml|mli)$'
-  ```
-- Branch name:
-  ```bash
-  git diff $(git merge-base HEAD <branch>) --name-only -- '*.ml' '*.mli'
-  ```
 - `staged`:
   ```bash
   git diff --cached --name-only -- '*.ml' '*.mli'
   ```
-- Default (current branch vs main):
+- Default (working copy — staged and unstaged changes):
   ```bash
-  git diff $(git merge-base HEAD origin/lablgtk4) --name-only -- '*.ml' '*.mli'
+  { git diff --name-only -- '*.ml' '*.mli'; git diff --cached --name-only -- '*.ml' '*.mli'; } | sort -u
   ```
 
 Filter results:
@@ -42,7 +34,7 @@ If the file list is empty, stop and report no OCaml files in scope.
 
 Unless `only:` was specified, dispatch all six. With `only:`, dispatch only those named.
 
-Dispatch **one at a time**, waiting for each to complete before starting the next.
+Dispatch **each in parallel**.
 Use the `@agent-name` syntax to spawn each reviewer as a subagent.
 Pass every reviewer the same message body:
 
