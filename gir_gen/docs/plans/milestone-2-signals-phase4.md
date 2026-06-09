@@ -423,10 +423,11 @@ the test file, matching the structural pattern used by generated decoders.
 | **M3: void return, 0 params** | `connect_simple`-style closure fires, counter increments. Uses existing `invoke_closure_void`. |
 | **M4: exception escape** | Closure raises `Failure`; `ml_closure_marshal` exception handler sets the flag; test asserts `check_closure_exception_flag` returns `true`. Process doesn't crash. |
 | **M5: null GObject param** | `None` passed as object arg to `invoke_closure_mixed_return_bool`; callback receives `None`. |
+| **M5b: non-null GObject param identity** | Real `Gtk.Button` passed as object arg; `Gobject.same` confirms pointer identity is preserved through the marshal path. |
 | **M6: GC safety** | 50 mixed-type closures created and invoked, `Gc.minor()` every 10, all survive and return correct values. |
-| **M7: enum param dispatch** | Closure receives a G_TYPE_ENUM GValue via `invoke_closure_enum_return_bool`; local `_of_int` decoder runs and round-trips correctly. Validates the full `g_value_set_enum` → marshal → `get_enum_int` path. |
+| ~~**M7: enum param dispatch**~~ | ~~Closure receives a `G_TYPE_ENUM` GValue via `invoke_closure_enum_return_bool`; local `_of_int` decoder runs.~~ **Removed in review** — covered by `test_signal_value_enum_flags.ml` and `test_signal_widget.ml` (real signal decoders). |
 | **M8: int return copy-back** | Closure returns `int`; `invoke_closure_return_int` reads it back via `g_value_get_int`. Exercises non-bool non-void return copy-back. |
-| **M9: flags param dispatch** | Closure receives a G_TYPE_FLAGS GValue via `invoke_closure_flags_return_bool`; local `_of_int` decoder runs and round-trips correctly. Validates the same `get_flags_int` path used by cross-namespace signals like `on_key_pressed` with `GdkModifierType`. |
+| **M9: flags param dispatch** | Closure receives a `G_TYPE_FLAGS` GValue via `invoke_closure_flags_return_bool`; local `_of_int` decoder runs. Validates the same `get_flags_int` path used by cross-namespace signals. |
 
 ### Implementation notes
 
@@ -544,7 +545,7 @@ enum/flags tests use dynamically-registered GTypes that don't require GTK init.
 
 ### Validation
 
-`dune test ocgtk/` — passes without display server (9 tests in
+`dune test ocgtk/` -- passes without display server (8 tests in
 `test_signal_marshalling`).
 
 ---
@@ -562,6 +563,7 @@ is available.
 
 | # | Test | What It Exercises | Widget Used |
 |---|------|-------------------|-------------|
+| 0 | **Signal disconnect** | Connect `Button.on_clicked`, emit, disconnect, emit again — handler no longer fires | `Gtk.Button` |
 | 1 | **Button clicked** | `connect_simple` path — void return, 0 params | `Gtk.Button` |
 | 2 | **Button clicked ?after** | `?after:true` on a simple signal | `Gtk.Button` |
 | 3 | **Check-button toggled** | Void return, 0 params, verifies toggle state changes | `Gtk.CheckButton` |
@@ -688,9 +690,9 @@ through the real GLib type system rather than a synthetic test type.
 1. **Part A** — C helpers + OCaml externals + signatures + exception-flag wire
 2. `dune build` — verify C compiles without warnings, OCaml sees all externals
 3. **Part B** — `test_signal_marshalling.ml` (~280 lines) + dune entry
-4. `dune test ocgtk/` — standalone tests pass (9 tests, no display)
+4. `dune test ocgtk/` — standalone tests pass (8 tests, no display)
 5. **Part C** — `test_signal_widget.ml` (~180 lines) + stubs + dune entry
-6. `xvfb-run dune test ocgtk/` — full suite passes (6 widget tests)
+6. `xvfb-run dune test ocgtk/` — full suite passes (7 widget tests)
 
 ---
 
@@ -714,8 +716,8 @@ generated bindings (except `ml_closure_marshal` exception-flag line).
 ## Verification (Phase 4 Definition of Done)
 
 - [ ] `dune build` clean (no C warnings)
-- [ ] `dune test ocgtk/` — `test_signal_marshalling` passes 9 tests (no display)
-- [ ] `xvfb-run dune test ocgtk/` — `test_signal_widget` passes 6 tests
+- [ ] `dune test ocgtk/` — `test_signal_marshalling` passes 8 tests (no display)
+- [ ] `xvfb-run dune test ocgtk/` — `test_signal_widget` passes 7 tests
 - [ ] C helpers compile without warnings (including `ensure_test_types`)
 - [ ] All existing `Gobject.Test.invoke_closure_*` helpers still work (regression via `test_closure_stress`)
 - [ ] Exception-escape flag: `reset_closure_exception_flag` + `check_closure_exception_flag` round-trip correctly

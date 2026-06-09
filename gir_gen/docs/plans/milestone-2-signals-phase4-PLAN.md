@@ -31,23 +31,22 @@ The work is in three epochs: Epoch 1 adds C test helpers plus an exception-escap
 
 ---
 
-### Stage 1.2 — Enum/flags type registration helpers
+### Stage 1.2 — Flags type registration helper
 
-**Goal**: Add `ensure_test_types()` and two invocation helpers for enum and flags param dispatch with bool return.
+**Goal**: Add `ensure_test_types()` and one invocation helper for flags param dispatch with bool return. (The enum helper was removed during review — enum dispatch is already covered by round-trip tests and real-signal tests.)
 
 **Files**:
-- `ocgtk/src/common/ml_gobject.c` — after the exception-flag section, add `test_enum_type_id`, `test_flags_type_id`, `ensure_test_types()`, `ml_test_invoke_closure_enum_return_bool`, and `ml_test_invoke_closure_flags_return_bool`.
+- `ocgtk/src/common/ml_gobject.c` — after the exception-flag section, add `test_flags_type_id`, `ensure_test_types()`, and `ml_test_invoke_closure_flags_return_bool`.
 
 **Steps**:
-1. Add static `test_enum_type_id` and `test_flags_type_id` (initialized to `G_TYPE_INVALID`)
-2. Add `ensure_test_types()` that registers `TestEnum` (3 values: 0/1/2) and `TestFlags` (3 flags: 1/2/3) via `g_enum_register_static`/`g_flags_register_static`
-3. Add `ml_test_invoke_closure_enum_return_bool` — calls `ensure_test_types()`, packs one GValue typed as `test_enum_type_id`, invokes with `&return_value` (bool), reads back `g_value_get_boolean`
-4. Add `ml_test_invoke_closure_flags_return_bool` — same pattern with `test_flags_type_id`
+1. Add static `test_flags_type_id` (initialized to `G_TYPE_INVALID`)
+2. Add `ensure_test_types()` that registers `TestFlags` (3 flags: 1/2/3) via `g_flags_register_static`
+3. Add `ml_test_invoke_closure_flags_return_bool` — calls `ensure_test_types()`, packs one GValue typed as `test_flags_type_id`, invokes with `&return_value` (bool), reads back `g_value_get_boolean`
 
 **Acceptance criteria**:
 - [ ] `dune build` passes with no errors or warnings
-- [ ] `grep ensure_test_types ocgtk/src/common/ml_gobject.c` shows definition and two call sites
-- [ ] No GTK headers needed (the functions use only GLib type registration APIs)
+- [ ] `grep ensure_test_types ocgtk/src/common/ml_gobject.c` shows definition and one call site
+- [ ] No GTK headers needed (the function uses only GLib type registration API)
 
 ---
 
@@ -81,7 +80,6 @@ The work is in three epochs: Epoch 1 adds C test helpers plus an exception-escap
 **Steps**:
 1. In `gobject.ml`'s `module Test`, after the existing 6 `invoke_closure_*` externals, add:
    - `external invoke_closure_mixed_return_bool : g_closure -> int -> string -> 'a obj option -> bool`
-   - `external invoke_closure_enum_return_bool : g_closure -> int -> bool`
    - `external invoke_closure_flags_return_bool : g_closure -> int -> bool`
    - `external invoke_closure_return_int : g_closure -> int`
    - `external reset_closure_exception_flag : unit -> unit`
@@ -91,13 +89,13 @@ The work is in three epochs: Epoch 1 adds C test helpers plus an exception-escap
 **Acceptance criteria**:
 - [ ] `dune build` passes — all externals resolve to C symbols
 - [ ] `grep invoke_closure_mixed_return_bool ocgtk/src/common/gobject.ml` shows the declaration
-- [ ] All 6 new declarations are present in `.mli`
+- [ ] All 5 new declarations are present in `.mli`
 
 ---
 
 ## Epoch 2: Standalone Closure Marshalling Tests
 
-> Goal: `dune test ocgtk/` passes `test_signal_marshalling` (9 tests, no xvfb)
+> Goal: `dune test ocgtk/` passes `test_signal_marshalling` (8 tests, no xvfb)
 
 ### Stage 2.1 — Create test file and dune entry for standalone marshalling tests
 
@@ -165,20 +163,25 @@ The work is in three epochs: Epoch 1 adds C test helpers plus an exception-escap
 
 **Goal**: Test exception-escape flag, enum dispatch, int return copy-back, and flags dispatch.
 
+**Review changes (post-implementation):**
+- `test_enum_dispatch` (M7) was **removed** from the final test suite because the enum dispatch path is already covered by `test_signal_value_enum_flags.ml` (GValue round-trips) and `test_signal_widget.ml` (real signal enum/flags through generated decoders). The standalone closure-level dispatch was redundant.
+- A new test **M5b** (`test_non_null_gobject_param`) was added: passes a real `Gtk.Button` as a GObject arg to `invoke_closure_mixed_return_bool` and verifies `Gobject.same` preserves pointer identity.
+
 **Files**:
 - `ocgtk/tests/gtk/test_signal_marshalling.ml`
 
 **Steps**:
 1. Implement `test_exception_escape` — resets flag, creates closure that raises `Failure "test exception"`, invokes via `invoke_closure_void`, asserts `check_closure_exception_flag()` returns `true`
-2. Implement `test_enum_dispatch` — defines local `test_enum_of_int` decoder (0→`NONE`, 1→`ONE`, 2→`TWO`), creates closure that decodes param at pos 1 via `Gobject.Value.get_enum_int` and returns true, invokes via `invoke_closure_enum_return_bool`, asserts return and decoded value
+2. ~~Implement `test_enum_dispatch`~~ — **removed** (see review changes above)
 3. Implement `test_int_return` — closure sets int 99 on result via `Gobject.Value.set_int`, invokes via `invoke_closure_return_int`, asserts return is 99
 4. Implement `test_flags_dispatch` — defines local `test_flags_of_int` decoder, creates closure that decodes param at pos 1 via `Gobject.Value.get_flags_int`, invokes via `invoke_closure_flags_return_bool` with value 3 (bits 0 and 1), asserts decoded flags contain `A` and `B`
-5. Register in alcotest runner
+5. Implement `test_non_null_gobject_param` — creates `Wrappers.Button.new_()`, passes `Some btn_obj` to `invoke_closure_mixed_return_bool`, asserts received object matches via `Gobject.same`
+6. Register in alcotest runner
 
 **Acceptance criteria**:
-- [ ] `dune test ocgtk/` passes M4, M7, M8, M9 (no xvfb needed — `ensure_test_types()` uses GLib type system only)
+- [ ] `dune test ocgtk/` passes the marshalling suite (9 tests total: M1, M2, M3, M5, M5b, M4, M8, M9, M6)
 - [ ] M4 assertion: `check_closure_exception_flag ()` returns true without crashing the process
-- [ ] M7/M9 use `List.sort Stdlib.compare` for comparison to handle ordering
+- [ ] M9 uses `List.sort Stdlib.compare` for comparison to handle ordering
 
 ---
 
@@ -201,7 +204,9 @@ The work is in three epochs: Epoch 1 adds C test helpers plus an exception-escap
 
 ## Epoch 3: Wired Widget Signal Tests
 
-> Goal: `xvfb-run dune test ocgtk/` passes `test_signal_widget` (6 tests, xvfb required)
+> Goal: `xvfb-run dune test ocgtk/` passes `test_signal_widget` (7 tests, xvfb required)
+
+> **Review changes (post-implementation):** A new test **Test 0** — signal disconnect/deregistration — was added. This connects a handler via `Button.on_clicked`, emits the `clicked` signal to confirm it fires, calls `Gobject.Signal.disconnect`, emits again, and asserts the handler no longer fires.
 
 ### Stage 3.1 — Create C stubs for cross-namespace signal emission
 

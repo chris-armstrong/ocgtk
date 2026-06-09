@@ -1088,20 +1088,12 @@ CAMLprim value ml_test_check_closure_exception_flag(value unit)
 /* Enum/Flags type registration helpers */
 /* ==================================================================== */
 
-static GType test_enum_type_id = G_TYPE_INVALID;
 static GType test_flags_type_id = G_TYPE_INVALID;
 
 static void ensure_test_types(void)
 {
-    if (test_enum_type_id != G_TYPE_INVALID)
+    if (test_flags_type_id != G_TYPE_INVALID)
         return;
-
-    static GEnumValue test_enum_values[] = {
-        { 0, (gchar *)"NONE", (gchar *)"NONE" },
-        { 1, (gchar *)"ONE",  (gchar *)"ONE"  },
-        { 2, (gchar *)"TWO",  (gchar *)"TWO"  },
-        { 0, NULL, NULL }
-    };
 
     static GFlagsValue test_flags_values[] = {
         { 1, (gchar *)"A", (gchar *)"A" },
@@ -1110,33 +1102,7 @@ static void ensure_test_types(void)
         { 0, NULL, NULL }
     };
 
-    test_enum_type_id = g_enum_register_static("TestEnum", test_enum_values);
     test_flags_type_id = g_flags_register_static("TestFlags", test_flags_values);
-}
-
-/* Test helper to invoke a closure with an enum argument and bool return */
-CAMLprim value ml_test_invoke_closure_enum_return_bool(value closure_val, value enum_val)
-{
-    CAMLparam2(closure_val, enum_val);
-    GClosure *closure = GClosure_val(closure_val);
-    GValue param = G_VALUE_INIT;
-    GValue return_value = G_VALUE_INIT;
-
-    ensure_test_types();
-
-    g_value_init(&param, test_enum_type_id);
-    g_value_set_enum(&param, Int_val(enum_val));
-
-    g_value_init(&return_value, G_TYPE_BOOLEAN);
-
-    g_closure_invoke(closure, &return_value, 1, &param, NULL);
-
-    gboolean result = g_value_get_boolean(&return_value);
-
-    g_value_unset(&param);
-    g_value_unset(&return_value);
-
-    CAMLreturn(Val_bool(result));
 }
 
 /* Test helper to invoke a closure with a flags argument and bool return */

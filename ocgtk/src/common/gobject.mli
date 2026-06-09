@@ -342,9 +342,6 @@ module Test : sig
   (** Test helper: Invoke a closure with mixed params (int, string, GObject
       option) and a bool return value *)
 
-  val invoke_closure_enum_return_bool : g_closure -> int -> bool
-  (** Test helper: Invoke a closure with an enum argument and bool return *)
-
   val invoke_closure_flags_return_bool : g_closure -> int -> bool
   (** Test helper: Invoke a closure with a flags argument and bool return *)
 

@@ -299,9 +299,6 @@ module Test = struct
     g_closure -> int -> string -> 'a obj option -> bool
     = "ml_test_invoke_closure_mixed_return_bool"
 
-  external invoke_closure_enum_return_bool : g_closure -> int -> bool
-    = "ml_test_invoke_closure_enum_return_bool"
-
   external invoke_closure_flags_return_bool : g_closure -> int -> bool
     = "ml_test_invoke_closure_flags_return_bool"
 
