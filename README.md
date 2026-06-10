@@ -88,3 +88,7 @@ This library is distributed under the terms of the GNU Library General Public Li
 - [GTK 4 Documentation](https://docs.gtk.org/gtk4/)
 - [GTK 3 → 4 Migration Guide](https://docs.gtk.org/gtk4/migrating-3to4.html)
 
+## Sponsorship
+
+This project has been generously sponsored via a grant from [Ahrefs](https://ahrefs.com/). 
+
