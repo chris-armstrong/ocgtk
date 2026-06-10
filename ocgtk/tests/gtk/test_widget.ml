@@ -1,7 +1,7 @@
-(** Test suite for Gtk.Widget module (Phase 3.1)
+(** Test suite for Gtk.Widget module.
 
     Note: Most tests are skipped as they require actual widget instances, which
-    need container support (Phase 4) and concrete widget types (Phase 5).
+    need container support and concrete widget types.
 
     This test file verifies:
     - Module compiles and types are accessible
@@ -56,11 +56,11 @@ let require_gtk = Gtk_test_helpers.require_gtk
 (*   check int "allocation width" 200 alloc.width; *)
 (*   check int "allocation height" 100 alloc.height *)
 
-(* Widget creation tests - Now working with GtkBox from Phase 4.1! *)
+(* Widget creation tests *)
 let test_widget_creation () =
   try
     let _ = GMain.init () in
-    (* Create a widget (using GtkBox from Phase 4.1) *)
+    (* Create a widget (using GtkBox) *)
     let box = Box.new_ `HORIZONTAL 0 in
     let widget = Box.as_widget box in
 
@@ -177,7 +177,7 @@ let test_focus () =
 (*   | e -> *)
 (*       fail ("Unexpected error: " ^ Printexc.to_string e) *)
 
-(* Parent/root tests - Now working with containers from Phase 4.1! *)
+(* Parent/root tests *)
 (* FIXME: get_root not generated because it relies on interface Root
    which is not generated yet *)
 (* let test_parent_root () = *)
@@ -204,7 +204,7 @@ let test_focus () =
 (*   | GMain.Error _ -> skip () *)
 (*   | e -> fail ("Unexpected error: " ^ Printexc.to_string e) *)
 
-(* Queue draw/resize tests - Now working with GtkBox *)
+(* Queue draw/resize tests *)
 let test_queue_operations () =
   try
     let _ = GMain.init () in
@@ -221,7 +221,7 @@ let test_queue_operations () =
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =
-  run "Gtk.Widget Tests (Phase 3.1)"
+  run "Gtk.Widget Tests"
     [
       (* ( "module", *)
       (*   [ *)

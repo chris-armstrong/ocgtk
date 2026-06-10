@@ -11,9 +11,6 @@
 (*                                                                        *)
 (**************************************************************************)
 
-type t = {
-  domain : int;  (** Error domain (GQuark) *)
-  code : int;  (** Error code within the domain *)
-  message : string;  (** Human-readable error message *)
-}
-(** GError record type representing errors from GTK/GLib functions *)
+type t
+(** Abstract GError type — constructed by C FFI stubs in wrappers.c, used
+    only as the error component of [(_, GError.t) result] return values. *)

@@ -76,31 +76,6 @@ CAMLprim value ml_g_object_get_ref_count(value obj)
     CAMLreturn(Val_int(gobj->ref_count));
 }
 
-/* ==================================================================== */
-/* Test Helpers */
-/* ==================================================================== */
-
-/* Test helper: check if value is custom block */
-CAMLprim value ml_g_object_is_custom_block(value obj)
-{
-    CAMLparam1(obj);
-    CAMLreturn(Val_bool(Tag_val(obj) == Custom_tag));
-}
-
-/* Test helper: check if pointer is GObject */
-CAMLprim value ml_g_object_is_gobject(value obj)
-{
-    CAMLparam1(obj);
-
-    if (obj == Val_unit)
-        CAMLreturn(Val_false);
-
-    const void *ptr = ml_gobject_ext_of_val(obj);
-    if (ptr == NULL)
-        CAMLreturn(Val_false);
-
-    CAMLreturn(Val_bool(G_IS_OBJECT(ptr)));
-}
 
 /* ==================================================================== */
 /* Type System Queries */
@@ -654,6 +629,12 @@ CAMLprim value ml_g_object_notify(value obj, value prop_name)
 }
 
 /* ==================================================================== */
+/* Exception-escape observation flag (forward declaration) */
+/* ==================================================================== */
+
+int ml_closure_exception_flag = 0;
+
+/* ==================================================================== */
 /* Closure Support */
 /* ==================================================================== */
 
@@ -760,6 +741,7 @@ static void ml_closure_marshal(GClosure *closure,
     /* Check for exceptions */
     if (Is_exception_result(result)) {
         exn = Extract_exception(result);
+        ml_closure_exception_flag = 1;
         /* Format and log the exception so closure failures are visible */
         const value *exn_to_string = caml_named_value("Printexc.to_string");
         if (exn_to_string != NULL) {
@@ -937,126 +919,6 @@ CAMLprim value ml_g_signal_emit_by_name(value obj, value signal_name)
 {
     CAMLparam2(obj, signal_name);
     g_signal_emit_by_name(G_OBJECT(ml_gobject_ext_of_val(obj)), String_val(signal_name));
-    CAMLreturn(Val_unit);
-}
-
-/* ==================================================================== */
-/* Test Helpers for Closure Invocation */
-/* ==================================================================== */
-
-/* Test helper to directly invoke a closure with no arguments and no return value */
-CAMLprim value ml_test_invoke_closure_void(value closure_val)
-{
-    CAMLparam1(closure_val);
-    GClosure *closure = GClosure_val(closure_val);
-
-    /* Invoke the closure with no parameters and no return value */
-    g_closure_invoke(closure, NULL, 0, NULL, NULL);
-
-    CAMLreturn(Val_unit);
-}
-
-/* Test helper to invoke a closure with an integer argument */
-CAMLprim value ml_test_invoke_closure_int(value closure_val, value arg_val)
-{
-    CAMLparam2(closure_val, arg_val);
-    GClosure *closure = GClosure_val(closure_val);
-    GValue param = G_VALUE_INIT;
-
-    /* Set up the parameter */
-    g_value_init(&param, G_TYPE_INT);
-    g_value_set_int(&param, Int_val(arg_val));
-
-    /* Invoke the closure with no return value */
-    g_closure_invoke(closure, NULL, 1, &param, NULL);
-
-    /* Clean up */
-    g_value_unset(&param);
-
-    CAMLreturn(Val_unit);
-}
-
-/* Test helper to invoke a closure with a string argument */
-CAMLprim value ml_test_invoke_closure_string(value closure_val, value arg_val)
-{
-    CAMLparam2(closure_val, arg_val);
-    GClosure *closure = GClosure_val(closure_val);
-    GValue param = G_VALUE_INIT;
-
-    /* Set up the parameter */
-    g_value_init(&param, G_TYPE_STRING);
-    g_value_set_string(&param, String_val(arg_val));
-
-    /* Invoke the closure with no return value */
-    g_closure_invoke(closure, NULL, 1, &param, NULL);
-
-    /* Clean up */
-    g_value_unset(&param);
-
-    CAMLreturn(Val_unit);
-}
-
-/* Test helper to invoke a closure with two integer arguments */
-CAMLprim value ml_test_invoke_closure_two_ints(value closure_val, value arg1_val, value arg2_val)
-{
-    CAMLparam3(closure_val, arg1_val, arg2_val);
-    GClosure *closure = GClosure_val(closure_val);
-    GValue params[2] = {G_VALUE_INIT, G_VALUE_INIT};
-
-    /* Set up the parameters */
-    g_value_init(&params[0], G_TYPE_INT);
-    g_value_set_int(&params[0], Int_val(arg1_val));
-
-    g_value_init(&params[1], G_TYPE_INT);
-    g_value_set_int(&params[1], Int_val(arg2_val));
-
-    /* Invoke the closure with no return value */
-    g_closure_invoke(closure, NULL, 2, params, NULL);
-
-    /* Clean up */
-    g_value_unset(&params[0]);
-    g_value_unset(&params[1]);
-
-    CAMLreturn(Val_unit);
-}
-
-/* Test helper to invoke a closure with a boolean argument */
-CAMLprim value ml_test_invoke_closure_boolean(value closure_val, value arg_val)
-{
-    CAMLparam2(closure_val, arg_val);
-    GClosure *closure = GClosure_val(closure_val);
-    GValue param = G_VALUE_INIT;
-
-    /* Set up the parameter */
-    g_value_init(&param, G_TYPE_BOOLEAN);
-    g_value_set_boolean(&param, Bool_val(arg_val));
-
-    /* Invoke the closure with no return value */
-    g_closure_invoke(closure, NULL, 1, &param, NULL);
-
-    /* Clean up */
-    g_value_unset(&param);
-
-    CAMLreturn(Val_unit);
-}
-
-/* Test helper to invoke a closure with a double argument */
-CAMLprim value ml_test_invoke_closure_double(value closure_val, value arg_val)
-{
-    CAMLparam2(closure_val, arg_val);
-    GClosure *closure = GClosure_val(closure_val);
-    GValue param = G_VALUE_INIT;
-
-    /* Set up the parameter */
-    g_value_init(&param, G_TYPE_DOUBLE);
-    g_value_set_double(&param, Double_val(arg_val));
-
-    /* Invoke the closure with no return value */
-    g_closure_invoke(closure, NULL, 1, &param, NULL);
-
-    /* Clean up */
-    g_value_unset(&param);
-
     CAMLreturn(Val_unit);
 }
 

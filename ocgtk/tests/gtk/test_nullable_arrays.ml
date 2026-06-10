@@ -1,13 +1,12 @@
-(** Runtime tests for the four phase-5 nullable length-linked array out-param
-    bindings beyond [Tree_path.get_indices_with_depth] (covered separately in
+(** Runtime tests for nullable length-linked array out-param bindings beyond
+    [Tree_path.get_indices_with_depth] (covered separately in
     [test_tree_path.ml]).
 
-    Phase 5 of the value-kinds-registry plan added a NULL guard to the C-stub
-    array emitter so a NULL return from a nullable length-linked array out param
-    materialises as [None] in OCaml rather than crashing on [Array.length] of an
-    invalid pointer. The generator unit tests ([record_macro_tests]) cover the
-    emitter; these tests exercise the generated C stubs end-to-end against real
-    GTK objects.
+    A NULL guard was added to the C-stub array emitter so a NULL return from a
+    nullable length-linked array out param materialises as [None] in OCaml
+    rather than crashing on [Array.length] of an invalid pointer. The generator
+    unit tests ([record_macro_tests]) cover the emitter; these tests exercise
+    the generated C stubs end-to-end against real GTK objects.
 
     Coverage strategy: each binding has a setter that takes [_ array option]
     (or, for [Drop_target.set_gtypes], with a length parameter). We drive a

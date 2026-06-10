@@ -62,11 +62,6 @@ external coerce : 'a obj -> unit obj = "%identity"
 external same : 'a obj -> 'b obj -> bool = "ml_gobject_same"
 external get_ref_count : 'a obj -> int = "ml_g_object_get_ref_count"
 
-(** {2 Test Helpers} *)
-
-external is_custom_block : 'a obj -> bool = "ml_g_object_is_custom_block"
-external is_gobject : 'a obj -> bool = "ml_g_object_is_gobject"
-
 (** {2 Type System} *)
 
 module Type = struct
@@ -129,17 +124,18 @@ module Type = struct
 end
 
 let is_a obj type_name =
-  try
-    let obj_type = get_type obj in
-    let check_type = Type.from_name type_name in
-    Type.is_a obj_type check_type
-  with _ -> false
+  match get_type obj with
+  | exception _ -> false
+  | obj_type -> (
+      match Type.from_name type_name with
+      | exception _ -> false
+      | check_type -> Type.is_a obj_type check_type)
 
 exception Cannot_cast of string * string
 
-let try_cast w name =
-  if is_a w name then unsafe_cast w
-  else raise (Cannot_cast (Type.name (get_type w), name))
+let try_cast obj name =
+  if is_a obj name then unsafe_cast obj
+  else raise (Cannot_cast (Type.name (get_type obj), name))
 
 (** {2 GValue Operations} *)
 
@@ -182,7 +178,9 @@ module Value = struct
   external set_object_internal : t -> 'a obj -> unit = "ml_g_value_set_object"
   external set_object_null : t -> unit = "ml_g_value_set_object_null"
 
-  let get_object v = try Some (get_object_internal v) with _ -> None
+  let get_object v =
+    match get_object_internal v with exception _ -> None | x -> Some x
+
   let set_object v = function
     | Some obj -> set_object_internal v obj
     | None -> set_object_null v
@@ -269,27 +267,4 @@ module Data = struct
       Gpointer.encode_variant tbl flag
     in
     (decode, encode)
-end
-
-(** {2 Test Helpers} *)
-
-(* These functions are for testing closure invocation only *)
-module Test = struct
-  external invoke_closure_void : g_closure -> unit
-    = "ml_test_invoke_closure_void"
-
-  external invoke_closure_int : g_closure -> int -> unit
-    = "ml_test_invoke_closure_int"
-
-  external invoke_closure_string : g_closure -> string -> unit
-    = "ml_test_invoke_closure_string"
-
-  external invoke_closure_two_ints : g_closure -> int -> int -> unit
-    = "ml_test_invoke_closure_two_ints"
-
-  external invoke_closure_boolean : g_closure -> bool -> unit
-    = "ml_test_invoke_closure_boolean"
-
-  external invoke_closure_double : g_closure -> float -> unit
-    = "ml_test_invoke_closure_double"
 end

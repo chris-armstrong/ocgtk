@@ -1,4 +1,4 @@
-(* Phase 8: Runtime tests for interface support *)
+(* Runtime tests for interface support *)
 
 open Alcotest
 open Ocgtk_gtk.Gtk
@@ -118,7 +118,7 @@ let test_button_works_without_editable_interface () =
   check (option string) "button label works" (Some "ok") (btn#get_label ())
 
 let () =
-  run "Interface Support Tests (Phase 8)"
+  run "Interface Support Tests"
     [
       ( "Interface Inheritance (Editable via Entry)",
         [

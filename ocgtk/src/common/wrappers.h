@@ -117,6 +117,9 @@ CAMLexport value ml_lookup_to_c (value table, value key);
 /* GClosure - custom block with finalizer (defined in ml_gobject.c) */
 #define GClosure_val(val) (*((GClosure**)Data_custom_val(val)))
 
+/* Exception-escape observation flag (defined in ml_gobject.c, accessed by test helpers) */
+extern int ml_closure_exception_flag;
+
 /* GType */
 #define GType_val(val) ((GType)Long_val(val))
 #define Val_GType(t) (Val_long(t))

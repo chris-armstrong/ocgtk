@@ -41,7 +41,8 @@
  ; Int8/Int16/Int32 come from int8.ml/int16.ml/int32.ml respectively.
  (modules
   ocgtk_common
-  Gaux
+
+
   Gpointer
   GError
   Gobject

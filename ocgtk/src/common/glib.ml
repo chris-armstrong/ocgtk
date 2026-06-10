@@ -13,7 +13,7 @@
 
 (** Interface to GLib functions (GTK4 / GLib 2.66+)
 
-    Phase 2.1 Implementation - Complete GLib module with:
+    Provides:
     - Main event loop
     - Timeout and idle callbacks
     - Character set conversion (UTF-8)
@@ -54,8 +54,7 @@ module Timeout = struct
     = "ml_g_timeout_add"
 
   let add ?prio ~ms ~callback () =
-    let prio_opt = match prio with Some p -> Some p | None -> None in
-    add_full prio_opt ms callback
+    add_full prio ms callback
 
   external remove : id -> unit = "ml_g_timeout_remove"
 end
@@ -68,8 +67,7 @@ module Idle = struct
   external add_full : int option -> (unit -> bool) -> id = "ml_g_idle_add"
 
   let add ?prio callback =
-    let prio_opt = match prio with Some p -> Some p | None -> None in
-    add_full prio_opt callback
+    add_full prio callback
 
   external remove : id -> unit = "ml_g_idle_remove"
 end

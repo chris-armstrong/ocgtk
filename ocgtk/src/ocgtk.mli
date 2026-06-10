@@ -11,17 +11,20 @@
 (*                                                                        *)
 (**************************************************************************)
 
-(* $Id$ *)
+(** Top-level OCaml GTK4 bindings library.
 
-(* Option handling *)
+    This module re-exports all namespaces as sub-modules. Access individual
+    widgets, types, and functions through the corresponding sub-module, e.g.
+    [Ocgtk.Gtk.Widget], [Ocgtk.Gio.Volume_monitor], etc. *)
 
-let may ~f x =
-  match x with
-  | None -> ()
-  | Some x ->
-      let _ = f x in
-      ()
-
-let may_map ~f x = match x with None -> None | Some x -> Some (f x)
-let default x ~opt = match opt with None -> x | Some y -> y
-let may_default f x ~opt = match opt with None -> f x | Some y -> y
+module Cairo = Ocgtk_cairo.Cairo
+module Gdk = Ocgtk_gdk.Gdk
+module GdkPixbuf = Ocgtk_gdkpixbuf.GdkPixbuf
+module Gio = Ocgtk_gio.Gio
+module Graphene = Ocgtk_graphene.Graphene
+module Gsk = Ocgtk_gsk.Gsk
+module Gtk = Ocgtk_gtk.Gtk
+module Pango = Ocgtk_pango.Pango
+module PangoCairo = Ocgtk_pangocairo.PangoCairo
+module GMain = Ocgtk_gtk.GMain
+module Common = Ocgtk_common

@@ -1,8 +1,8 @@
-(** Test suite for GObj high-level widget wrapper (Phase 3.4)
+(** Test suite for GObj high-level widget wrapper.
 
     Note: Most tests are skipped as they require GTK initialization (gtk_init),
-    which is not yet available in the bindings. Runtime tests will be added in
-    Phase 4+ when gtk_init is implemented.
+    which is not yet available in the bindings. Runtime tests will be added
+    when gtk_init is implemented.
 
     This test file verifies:
     - Module compiles and types are accessible
@@ -147,7 +147,7 @@ let test_set_object_none_stores_null () =
 (** {2 Test Suite} *)
 
 let () =
-  run "GObj Tests (Phase 3.4)"
+  run "GObj Tests"
     [
       ( "type_system",
         [ test_case "type accessibility" `Quick test_type_accessibility ] );

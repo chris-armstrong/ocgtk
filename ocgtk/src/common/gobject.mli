@@ -90,15 +90,6 @@ external same : 'a obj -> 'b obj -> bool = "ml_gobject_same"
 val get_ref_count : 'a obj -> int
 (** Get reference count (for debugging) *)
 
-(** {2 Test Helpers} *)
-
-val is_custom_block : 'a obj -> bool
-(** Test helper: check if value is custom block (for testing GObject finalizers)
-*)
-
-val is_gobject : 'a obj -> bool
-(** Test helper: check if pointer is a valid GObject *)
-
 (** {2 Type System} *)
 
 module Type : sig
@@ -213,12 +204,12 @@ module Value : sig
   val get_object : t -> 'a obj option
   val set_object : t -> 'a obj option -> unit
 
-  (** Get a GObject from a GValue, raising [Failure] if the value is NULL.
-      Use this when the GIR declares the parameter non-nullable. *)
   val get_object_exn : t -> 'a obj
+  (** Get a GObject from a GValue, raising [Failure] if the value is NULL. Use
+      this when the GIR declares the parameter non-nullable. *)
 
-  (** Set a non-nullable GObject on a GValue. *)
   val set_object_exn : t -> 'a obj -> unit
+  (** Set a non-nullable GObject on a GValue. *)
 end
 
 (** {2 Properties} *)
@@ -313,27 +304,4 @@ module Data : sig
 
   val flags : ([> ] as 'a) Gpointer.variant_table -> (int -> 'a) * ('a -> int)
   (** Create decoder/encoder pair for flags types *)
-end
-
-(** {2 Test Helpers} *)
-
-(** Functions for testing closure invocation - not part of the public API *)
-module Test : sig
-  val invoke_closure_void : g_closure -> unit
-  (** Test helper: Invoke a closure with no arguments *)
-
-  val invoke_closure_int : g_closure -> int -> unit
-  (** Test helper: Invoke a closure with an integer argument *)
-
-  val invoke_closure_string : g_closure -> string -> unit
-  (** Test helper: Invoke a closure with a string argument *)
-
-  val invoke_closure_two_ints : g_closure -> int -> int -> unit
-  (** Test helper: Invoke a closure with two integer arguments *)
-
-  val invoke_closure_boolean : g_closure -> bool -> unit
-  (** Test helper: Invoke a closure with a boolean argument *)
-
-  val invoke_closure_double : g_closure -> float -> unit
-  (** Test helper: Invoke a closure with a double argument *)
 end

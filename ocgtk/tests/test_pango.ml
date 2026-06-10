@@ -1,7 +1,7 @@
 (**************************************************************************)
 (*                ocgtk - OCaml bindings for GTK4                      *)
 (*                                                                        *)
-(*                  Test suite for Pango module (Phase 2.5)               *)
+(*                  Test suite for Pango module               *)
 (**************************************************************************)
 
 open Alcotest
@@ -213,7 +213,7 @@ let test_rectangle_creation () =
 (* Note: These tests are skipped because they require a valid PangoContext,
    which typically comes from a GTK widget. We would need to initialize
    GTK and create a widget to get a context. This will be tested in
-   integration tests once we have GTK widget support in Phase 3+. *)
+   integration tests once we have GTK widget support. *)
 
 let test_context_operations_skipped () = skip ()
 let test_layout_operations_skipped () = skip ()
@@ -270,7 +270,7 @@ let integration_tests =
   ]
 
 let () =
-  run "Pango Module Tests (Phase 2.5)"
+  run "Pango Module Tests"
     [
       ("Font Descriptions", font_description_tests);
       ("Language Support", language_tests);

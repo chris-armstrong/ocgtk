@@ -1,0 +1,104 @@
+## Refactoring Pass: $ARGUMENTS
+
+You are the coordinating agent for a guideline-based refactoring pass. Work through the steps below in order.
+
+---
+
+### Step 1: Determine the File Scope
+
+Determine the full list of OCaml source files to review. Parse `$ARGUMENTS` for a scope hint:
+
+- **Explicit paths**: if `$ARGUMENTS` contains `.ml` or `.mli` file paths, use exactly those files.
+- **`staged`**: `git diff --cached --name-only -- '*.ml' '*.mli'`
+- **`committed`** or **`HEAD~N`**: `git diff HEAD~N --name-only -- '*.ml' '*.mli'` (replace N)
+- **Default (epoch / current branch)**: all OCaml files changed since the branch diverged from main:
+  ```bash
+  git diff $(git merge-base HEAD origin/lablgtk4) --name-only -- '*.ml' '*.mli'
+  ```
+
+After running the appropriate command, filter the result:
+- Remove any paths containing `/_build/` or `/generated/`
+- Remove any path that does not exist on disk
+
+Print the final file list. If it is empty, stop and report that there are no OCaml files in scope.
+
+---
+
+### Step 2: Determine Which Reviewers to Run
+
+The six reviewer agents and what they cover:
+
+| Agent | Guidelines covered |
+|---|---|
+| `@control-flow-reviewer` | nesting-and-control-flow, error-handling, partial-functions |
+| `@type-correctness-reviewer` | type-safety, pattern-matching, module-boundaries |
+| `@code-quality-reviewer` | naming-and-intermediates, code-reuse |
+| `@abstractions-reviewer` | abstractions |
+| `@test-reviewer` | test-patterns, atspi-e2e-testing |
+| `@docs-reviewer` | comments-and-documentation |
+
+Parse `$ARGUMENTS` for a filter keyword. If a keyword matches one or more agents (e.g. "nesting" or "control-flow" → `@control-flow-reviewer`, "types" or "pattern" → `@type-correctness-reviewer`, "test" → `@test-reviewer`, "docs" or "comments" → `@docs-reviewer`), run only the matching agents. Otherwise run **all six**.
+
+Print the list of agents you will dispatch.
+
+---
+
+### Step 3: Dispatch Each Reviewer
+
+For **each** agent in the list, invoke it as a subtask with the following message:
+
+```
+Apply fixes to each violation as you find them.
+
+Files to review (full list — do not skip any):
+<one file path per line, the complete list from Step 1>
+```
+
+**Important**: every reviewer receives the same complete file list from Step 1. Do not pre-filter files per agent — each reviewer reads its own guidelines and decides what is relevant.
+
+Dispatch reviewers one at a time and wait for each to complete before starting the next.
+
+---
+
+### Step 4: Build Check
+
+After all reviewers have completed, run the full build:
+
+```bash
+cd ocgtk && dune build 2>&1
+```
+
+Check the return code. If the build fails:
+1. Identify which file(s) have errors from the build output.
+2. For each broken file, identify which reviewer last touched it.
+3. Re-invoke that reviewer with just the broken files and the instruction: "The build is broken in these files after your previous edits. Fix the build errors while keeping your guideline fixes where possible."
+4. Re-run `dune build` to confirm.
+
+---
+
+### Step 5: Test Suite
+
+```bash
+dune test gir_gen/ && xvfb-run dune test ocgtk/ 2>&1
+```
+
+Check the return code. Report pass or fail.
+
+---
+
+### Step 6: Final Summary
+
+Output a combined report:
+
+```
+## Refactoring Summary
+Scope: <description of how files were selected>
+Files in scope: <N>
+Agents run: <list>
+
+### Per-Agent Results
+<paste each reviewer's output block here>
+
+### Build: PASS / FAIL
+### Tests: PASS / FAIL
+```
