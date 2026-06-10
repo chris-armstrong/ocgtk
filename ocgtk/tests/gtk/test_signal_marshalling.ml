@@ -1,12 +1,12 @@
 (** Runtime tests for the closure-marshal path in [ml_closure_marshal].
 
     Exercises multi-param dispatch, enum/flags dispatch, return copy-back,
-    exception escape, and GC interaction via the [Gobject.Test] helpers. *)
+    exception escape, and GC interaction via the [Gobject_test_helpers] helpers. *)
 
 open Alcotest
 module Closure = Gobject.Closure
 module Value = Gobject.Value
-module Test = Gobject.Test
+module Helpers = Gobject_test_helpers
 
 (** {2 M1: multi-param dispatch with bool return (true)} *)
 
@@ -23,7 +23,7 @@ let test_mixed_params_bool_return_true () =
         Value.set_boolean (Closure.result argv) true)
   in
   let result =
-    Test.invoke_closure_mixed_return_bool closure 42 "hello" (Some btn_obj)
+    Helpers.invoke_closure_mixed_return_bool closure 42 "hello" (Some btn_obj)
   in
   check bool "return value is true" true result;
   check int "int arg captured" 42 !int_captured;
@@ -39,7 +39,7 @@ let test_mixed_params_bool_return_false () =
     Closure.create (fun argv -> Value.set_boolean (Closure.result argv) false)
   in
   let result =
-    Test.invoke_closure_mixed_return_bool closure 99 "world" (Some btn_obj)
+    Helpers.invoke_closure_mixed_return_bool closure 99 "world" (Some btn_obj)
   in
   check bool "return value is false" false result
 
@@ -48,7 +48,7 @@ let test_mixed_params_bool_return_false () =
 let test_void_return_0_params () =
   let called = ref false in
   let closure = Closure.create (fun _argv -> called := true) in
-  Test.invoke_closure_void closure;
+  Helpers.invoke_closure_void closure;
   check bool "closure was invoked" true !called
 
 (** {2 M5: nullable GObject param} *)
@@ -60,7 +60,7 @@ let test_null_gobject_param () =
         obj_captured := Value.get_object (Closure.nth argv ~pos:2);
         Value.set_boolean (Closure.result argv) true)
   in
-  let result = Test.invoke_closure_mixed_return_bool closure 0 "" None in
+  let result = Helpers.invoke_closure_mixed_return_bool closure 0 "" None in
   check bool "return value is true" true result;
   check bool "null object passed as None" true
     (match !obj_captured with None -> true | Some _ -> false)
@@ -76,7 +76,7 @@ let test_non_null_gobject_param () =
         Value.set_boolean (Closure.result argv) true)
   in
   let result =
-    Test.invoke_closure_mixed_return_bool closure 0 "test" (Some btn_obj)
+    Helpers.invoke_closure_mixed_return_bool closure 0 "test" (Some btn_obj)
   in
   check bool "return value is true" true result;
   check bool "non-null object received as Some" true
@@ -89,13 +89,13 @@ let test_non_null_gobject_param () =
 (** {2 M4: exception escape} *)
 
 let test_exception_escape () =
-  Test.reset_closure_exception_flag ();
+  Helpers.reset_closure_exception_flag ();
   let closure =
     Closure.create (fun _argv -> raise (Failure "test exception"))
   in
-  Test.invoke_closure_void closure;
+  Helpers.invoke_closure_void closure;
   check bool "exception flag is set after escape" true
-    (Test.check_closure_exception_flag ())
+    (Helpers.check_closure_exception_flag ())
 
 (** {2 M8: int return copy-back} *)
 
@@ -103,7 +103,7 @@ let test_int_return () =
   let closure =
     Closure.create (fun argv -> Value.set_int (Closure.result argv) 99)
   in
-  let result = Test.invoke_closure_return_int closure in
+  let result = Helpers.invoke_closure_return_int closure in
   check int "int return is 99" 99 result
 
 (** {2 M9: flags dispatch} *)
@@ -126,7 +126,7 @@ let test_flags_dispatch () =
           test_flags_of_int (Value.get_flags_int (Closure.nth argv ~pos:0));
         Value.set_boolean (Closure.result argv) true)
   in
-  let result = Test.invoke_closure_flags_return_bool closure 3 in
+  let result = Helpers.invoke_closure_flags_return_bool closure 3 in
   check bool "return value is true" true result;
   let expected = List.sort Stdlib.compare [ A; B; AB ] in
   check int "flags list length" (List.length expected)
@@ -144,7 +144,7 @@ let test_gc_safety () =
   in
   Array.iteri
     (fun i closure ->
-      let result = Test.invoke_closure_return_int closure in
+      let result = Helpers.invoke_closure_return_int closure in
       let expected = i + 1 in
       if Int.equal result expected |> not then errors := !errors + 1;
       if (i + 1) mod 10 = 0 then Gc.minor ())
@@ -152,7 +152,7 @@ let test_gc_safety () =
   Gc.minor ();
   Array.iteri
     (fun i closure ->
-      let result = Test.invoke_closure_return_int closure in
+      let result = Helpers.invoke_closure_return_int closure in
       let expected = i + 1 in
       if Int.equal result expected |> not then errors := !errors + 1)
     closures;

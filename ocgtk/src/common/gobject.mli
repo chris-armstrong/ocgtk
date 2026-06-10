@@ -90,15 +90,6 @@ external same : 'a obj -> 'b obj -> bool = "ml_gobject_same"
 val get_ref_count : 'a obj -> int
 (** Get reference count (for debugging) *)
 
-(** {2 Test Helpers} *)
-
-val is_custom_block : 'a obj -> bool
-(** Test helper: check if value is custom block (for testing GObject finalizers)
-*)
-
-val is_gobject : 'a obj -> bool
-(** Test helper: check if pointer is a valid GObject *)
-
 (** {2 Type System} *)
 
 module Type : sig
@@ -313,44 +304,4 @@ module Data : sig
 
   val flags : ([> ] as 'a) Gpointer.variant_table -> (int -> 'a) * ('a -> int)
   (** Create decoder/encoder pair for flags types *)
-end
-
-(** {2 Test Helpers} *)
-
-(** Functions for testing closure invocation - not part of the public API *)
-module Test : sig
-  val invoke_closure_void : g_closure -> unit
-  (** Test helper: Invoke a closure with no arguments *)
-
-  val invoke_closure_int : g_closure -> int -> unit
-  (** Test helper: Invoke a closure with an integer argument *)
-
-  val invoke_closure_string : g_closure -> string -> unit
-  (** Test helper: Invoke a closure with a string argument *)
-
-  val invoke_closure_two_ints : g_closure -> int -> int -> unit
-  (** Test helper: Invoke a closure with two integer arguments *)
-
-  val invoke_closure_boolean : g_closure -> bool -> unit
-  (** Test helper: Invoke a closure with a boolean argument *)
-
-  val invoke_closure_double : g_closure -> float -> unit
-  (** Test helper: Invoke a closure with a double argument *)
-
-  val invoke_closure_mixed_return_bool :
-    g_closure -> int -> string -> 'a obj option -> bool
-  (** Test helper: Invoke a closure with mixed params (int, string, GObject
-      option) and a bool return value *)
-
-  val invoke_closure_flags_return_bool : g_closure -> int -> bool
-  (** Test helper: Invoke a closure with a flags argument and bool return *)
-
-  val invoke_closure_return_int : g_closure -> int
-  (** Test helper: Invoke a closure with no arguments and int return *)
-
-  val reset_closure_exception_flag : unit -> unit
-  (** Test helper: Reset the exception-escape observation flag *)
-
-  val check_closure_exception_flag : unit -> bool
-  (** Test helper: Check whether a closure callback raised an exception *)
 end

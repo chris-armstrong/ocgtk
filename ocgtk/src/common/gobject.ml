@@ -62,11 +62,6 @@ external coerce : 'a obj -> unit obj = "%identity"
 external same : 'a obj -> 'b obj -> bool = "ml_gobject_same"
 external get_ref_count : 'a obj -> int = "ml_g_object_get_ref_count"
 
-(** {2 Test Helpers} *)
-
-external is_custom_block : 'a obj -> bool = "ml_g_object_is_custom_block"
-external is_gobject : 'a obj -> bool = "ml_g_object_is_gobject"
-
 (** {2 Type System} *)
 
 module Type = struct
@@ -272,43 +267,4 @@ module Data = struct
       Gpointer.encode_variant tbl flag
     in
     (decode, encode)
-end
-
-(** {2 Test Helpers} *)
-
-(* These functions are for testing closure invocation only *)
-module Test = struct
-  external invoke_closure_void : g_closure -> unit
-    = "ml_test_invoke_closure_void"
-
-  external invoke_closure_int : g_closure -> int -> unit
-    = "ml_test_invoke_closure_int"
-
-  external invoke_closure_string : g_closure -> string -> unit
-    = "ml_test_invoke_closure_string"
-
-  external invoke_closure_two_ints : g_closure -> int -> int -> unit
-    = "ml_test_invoke_closure_two_ints"
-
-  external invoke_closure_boolean : g_closure -> bool -> unit
-    = "ml_test_invoke_closure_boolean"
-
-  external invoke_closure_double : g_closure -> float -> unit
-    = "ml_test_invoke_closure_double"
-
-  external invoke_closure_mixed_return_bool :
-    g_closure -> int -> string -> 'a obj option -> bool
-    = "ml_test_invoke_closure_mixed_return_bool"
-
-  external invoke_closure_flags_return_bool : g_closure -> int -> bool
-    = "ml_test_invoke_closure_flags_return_bool"
-
-  external invoke_closure_return_int : g_closure -> int
-    = "ml_test_invoke_closure_return_int"
-
-  external reset_closure_exception_flag : unit -> unit
-    = "ml_test_reset_closure_exception_flag"
-
-  external check_closure_exception_flag : unit -> bool
-    = "ml_test_check_closure_exception_flag"
 end

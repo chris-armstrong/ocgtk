@@ -20,7 +20,7 @@ let test_create_and_invoke_500_closures () =
   let counter = ref 0 in
   for _i = 1 to n do
     let closure = Gobject.Closure.create (fun _argv -> incr counter) in
-    Gobject.Test.invoke_closure_void closure
+    Gobject_test_helpers.invoke_closure_void closure
   done;
   check int "invoked 500 closures" n !counter
 
@@ -48,7 +48,7 @@ let test_nested_closures_with_parameters () =
           let received = Gobject.Value.get_int gval in
           results := (received = expected) :: !results)
     in
-    Gobject.Test.invoke_closure_int closure expected
+    Gobject_test_helpers.invoke_closure_int closure expected
   done;
   let all_correct = List.for_all (fun x -> x) !results in
   check bool "all nested closures received correct parameters" true all_correct

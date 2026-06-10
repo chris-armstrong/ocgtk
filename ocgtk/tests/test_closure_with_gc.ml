@@ -8,7 +8,7 @@ let test_without_gc () =
   let counter = ref 0 in
   for _i = 1 to 100 do
     let closure = Gobject.Closure.create (fun _argv -> incr counter) in
-    Gobject.Test.invoke_closure_void closure
+    Gobject_test_helpers.invoke_closure_void closure
   done;
   check int "counter reached 100 without GC" 100 !counter
 
@@ -18,7 +18,7 @@ let test_with_minor_gc () =
   let counter = ref 0 in
   for _i = 1 to 10 do
     let closure = Gobject.Closure.create (fun _argv -> incr counter) in
-    Gobject.Test.invoke_closure_void closure;
+    Gobject_test_helpers.invoke_closure_void closure;
     Gc.minor ()
   done;
   check int "counter reached 10 with Gc.minor after each" 10 !counter
@@ -28,7 +28,7 @@ let test_with_delayed_gc () =
   let counter = ref 0 in
   for i = 1 to 50 do
     let closure = Gobject.Closure.create (fun _argv -> incr counter) in
-    Gobject.Test.invoke_closure_void closure;
+    Gobject_test_helpers.invoke_closure_void closure;
     if i mod 10 = 0 then Gc.minor ()
   done;
   check int "counter reached 50 with Gc.minor every 10" 50 !counter

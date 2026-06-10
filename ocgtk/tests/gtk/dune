@@ -6,6 +6,18 @@
  (modules gtk_test_helpers)
  (libraries ocgtk.gtk alcotest))
 
+(library
+ (name gobject_test_helpers)
+ (wrapped false)
+ (modules gobject_test_helpers)
+ (foreign_stubs
+  (language c)
+  (names ml_gobject_test_helpers)
+  (flags
+   -fPIC
+   (:include %{project_root}/src/gtk/cflag-gtk4.sexp)))
+ (libraries ocgtk.common ocgtk.gtk))
+
 (test
  (name test_string_list)
  (modules test_string_list)
@@ -79,7 +91,7 @@
 (test
  (name test_signal_marshalling)
  (modules test_signal_marshalling)
- (libraries ocgtk.common ocgtk.gtk alcotest gtk_test_helpers))
+ (libraries ocgtk.common ocgtk.gtk alcotest gtk_test_helpers gobject_test_helpers))
 
 (test
  (name test_signal_widget)
