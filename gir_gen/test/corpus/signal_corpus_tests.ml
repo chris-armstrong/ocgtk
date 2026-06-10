@@ -26,31 +26,32 @@ let load_baseline () : Signal_corpus.histogram list =
   let sexp = Sexplib.Sexp.load_sexp baseline_path in
   Sexplib.Conv.list_of_sexp Signal_corpus.histogram_of_sexp sexp
 
+let compare_namespace baseline_histograms gir_dir (namespace_name, gir_file) =
+  let live_hist =
+    Signal_corpus.histogram_of_file (Filename.concat gir_dir gir_file)
+  in
+  let baseline_hist =
+    List.find_opt
+      (fun (hist : Signal_corpus.histogram) -> String.equal hist.namespace namespace_name)
+      baseline_histograms
+  in
+  match baseline_hist with
+  | None ->
+      [ Printf.sprintf "%s: no baseline histogram found" namespace_name ]
+  | Some baseline_histogram -> (
+      match Signal_corpus.compare_histograms baseline_histogram live_hist with
+      | Ok () -> []
+      | Error reasons ->
+          List.map
+            (fun r -> Printf.sprintf "%s: %s" namespace_name r)
+            reasons)
+
 let test_baseline_regression () =
   let baseline_histograms = load_baseline () in
   let gir_dir = Helpers.gir_data_dir () in
   let mismatches =
     List.concat_map
-      (fun (ns_name, gir_file) ->
-        let live_hist =
-          Signal_corpus.histogram_of_file (Filename.concat gir_dir gir_file)
-        in
-        let baseline_hist =
-          List.find_opt
-            (fun (h : Signal_corpus.histogram) ->
-              String.equal h.namespace ns_name)
-            baseline_histograms
-        in
-        match baseline_hist with
-        | None ->
-            [ Printf.sprintf "%s: no baseline histogram found" ns_name ]
-        | Some bh -> (
-            match Signal_corpus.compare_histograms bh live_hist with
-            | Ok () -> []
-            | Error reasons ->
-                List.map
-                  (fun r -> Printf.sprintf "%s: %s" ns_name r)
-                  reasons ))
+      (compare_namespace baseline_histograms gir_dir)
       namespace_files
   in
   match mismatches with

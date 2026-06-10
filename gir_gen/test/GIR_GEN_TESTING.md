@@ -175,7 +175,7 @@ Provides:
 - `create_gir_file()` - Writes GIR XML to file
 - `run_gir_gen()` - Executes gir_gen.exe with logging
 - File path utilities (`stub_c_file`, `mli_file`, etc.)
-- Assertion helpers (`assert_true`, `assert_contains`, etc.)
+- Assertion helpers (`assert_true`, `assert_some`, etc.)
 
 #### c_validation.ml
 
@@ -610,7 +610,10 @@ let test_record_support () =
   assert_true "Should succeed" (exit_code = 0);
 
   let c_content = read_file (stub_c_file output_dir "RecordUser") in
-  assert_contains "Should use record macro" c_content "Val_GtkTestRecord"
+  let functions = C_parser.parse_c_code c_content in
+  let func = Helpers.assert_some (C_ast.find_function functions "ml_gtk_test_record_get_type") in
+  Alcotest.(check bool) "Should use record macro" true
+    (C_validation.calls_c_function func "gtk_test_record_get_type")
 ```
 
 ### Current Integration Tests
@@ -787,11 +790,17 @@ let test_my_integration () =
 ```ocaml
   let c_file = stub_c_file output_dir "MyWidget" in
   let c_content = read_file c_file in
-  assert_contains "Should generate C stub" c_content "ml_gtk_my_widget_set_value";
+  let functions = C_parser.parse_c_code c_content in
+  let func = Helpers.assert_some (C_ast.find_function functions "ml_gtk_my_widget_set_value") in
+  Alcotest.(check bool) "Should call C function" true
+    (C_validation.calls_c_function func "gtk_my_widget_set_value");
 
   let ml_file = ml_file output_dir "MyWidget" in
   let ml_content = read_file ml_file in
-  assert_contains "Should generate ML function" ml_content "external set_value";
+  let structure = Ml_ast_helpers.parse_implementation ml_content in
+  let externals = Ml_validation.find_external_decls structure in
+  Alcotest.(check bool) "Should generate ML external" true
+    (List.exists (fun e -> String.equal e.Ml_ast_helpers.name "set_value") externals);
 ```
 
 ### Adding Record Type Tests
