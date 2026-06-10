@@ -1,8 +1,8 @@
 (** Test suite for GObj high-level widget wrapper.
 
     Note: Most tests are skipped as they require GTK initialization (gtk_init),
-    which is not yet available in the bindings. Runtime tests will be added
-    when gtk_init is implemented.
+    which is not yet available in the bindings. Runtime tests will be added when
+    gtk_init is implemented.
 
     This test file verifies:
     - Module compiles and types are accessible

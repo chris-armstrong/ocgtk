@@ -1,8 +1,8 @@
 (** Tests for GTK4 Event Controller System.
 
     Note: These tests verify API compilation and structure. Runtime tests with
-    actual GTK objects will be added when gtk_init is available in
-    the bindings. *)
+    actual GTK objects will be added when gtk_init is available in the bindings.
+*)
 
 open Alcotest
 

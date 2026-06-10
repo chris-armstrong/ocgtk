@@ -13,14 +13,12 @@
 
 (** Common utility modules for ocgtk GTK4 bindings.
 
-    This module re-exports hand-written common modules shared across all
-    ocgtk binding libraries (Gtk, Gio, Gdk, etc.). Each module is also
-    available as a flat top-level module (e.g. [Gobject]) in the
-    [ocgtk.common] library. *)
+    This module re-exports hand-written common modules shared across all ocgtk
+    binding libraries (Gtk, Gio, Gdk, etc.). Each module is also available as a
+    flat top-level module (e.g. [Gobject]) in the [ocgtk.common] library. *)
 
 module GError = GError
 (** Error type for GTK/GLib functions. See {!GError}. *)
-
 
 module Gpointer = Gpointer
 (** Enum conversion and boxed pointer utilities. See {!Gpointer}. *)

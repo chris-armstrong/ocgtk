@@ -14,7 +14,8 @@ let test_create_1000_closures () =
   check int "created 1000 closures" n (List.length !closures)
 
 (** Create and invoke 500 closures, each incrementing a counter. Exercises the
-    closure invocation path end-to-end without GC pressure between iterations. *)
+    closure invocation path end-to-end without GC pressure between iterations.
+*)
 let test_create_and_invoke_500_closures () =
   let n = 500 in
   let counter = ref 0 in
