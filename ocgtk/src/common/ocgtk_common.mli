@@ -21,8 +21,6 @@
 module GError = GError
 (** Error type for GTK/GLib functions. See {!GError}. *)
 
-module Gaux = Gaux
-(** Option-handling utility functions. See {!Gaux}. *)
 
 module Gpointer = Gpointer
 (** Enum conversion and boxed pointer utilities. See {!Gpointer}. *)
