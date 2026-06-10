@@ -67,7 +67,7 @@ has its own epoch/stage numbering starting from 1.
    - Acceptance criteria are mechanical (build, test, grep, run) — not subjective.
    - No stage leaves orphaned code that is not integrated by the end of its epoch.
    - No stage is too large to complete in one focused session.
-6. Write the plan file. Report the path and a one-line summary of each epoch.
+6. Write the plan file to `.planning/plans/<kebab-case-name>.md`. Report the path and a one-line summary of each epoch.
 
 ## Constraints
 
