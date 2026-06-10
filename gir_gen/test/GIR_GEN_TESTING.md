@@ -631,6 +631,68 @@ let test_record_support () =
 
 ---
 
+## Signal Corpus Regression Tests
+
+**Status: ✅ IMPLEMENTED**
+
+**Location:** `corpus/`
+
+### Overview
+
+The signal corpus regression test classifies every signal in all 7 signal-bearing GIR files (Gtk, Gdk, Gio, Pango, Gsk, GdkPixbuf, Graphene) and produces a histogram of Supported vs Unsupported counts, broken down by unsupported-reason category. This histogram is serialized as a sexp file and checked into the test tree as a baseline. Every `dune test gir_gen/` run regenerates the histogram from live GIR files and compares it against the baseline — any deviation fails the test.
+
+### How It Works
+
+1. **`signal_corpus.ml`** — Core module with:
+   - `classify_signals_of_file`: Parses a GIR file, builds a minimal generation context (same-namespace-only, no cross-references), and classifies every signal as Supported or Unsupported.
+   - `histogram_of_file`: Convenience function that classifies then aggregates into a typed histogram.
+   - `compare_histograms`: Field-by-field comparison returning `(unit, string list) result`.
+   - Unit tests for classification, histogram aggregation, comparison, and sexp roundtrip.
+
+2. **`signal_corpus_tests.ml`** — Regression test:
+   - Reads the checked-in baseline from `corpus/signal_corpus_baseline.sexp`.
+   - Recomputes live histograms from the 7 GIR files in `gir/`.
+   - Compares each namespace's live histogram against its baseline.
+   - Fails with a detailed diff on any mismatch.
+
+3. **`corpus/signal_corpus_baseline.sexp`** — Checked-in sexp file containing 7 histogram entries (one per namespace).
+
+### Running the Tests
+
+```bash
+# All gir_gen tests (includes Signal Corpus and Signal Corpus Regression)
+dune test gir_gen/
+
+# Full test suite
+dune test gir_gen/ && xvfb-run dune test ocgtk/
+```
+
+### Updating the Baseline
+
+When a legitimate signal classification change is made (e.g., adding support for a previously-unsupported signal type), the baseline must be updated to match:
+
+1. **Run the histogram generator** — Use the `Signal_corpus` module to regenerate histograms:
+   ```bash
+   # From the repo root, build and run a one-off OCaml script:
+   dune exec gir_gen -- generate-baseline
+   # Or, in a utop/OCaml REPL:
+   #   let histograms = List.map (fun (ns, f) ->
+   #     Signal_corpus.histogram_of_file (Helpers.gir_data_dir () ^ "/" ^ f)
+   #   ) namespace_files;;
+   ```
+2. **Overwrite the baseline file** — Replace `gir_gen/test/corpus/signal_corpus_baseline.sexp` with the new output.
+3. **Commit the updated baseline** alongside the classification change that caused it.
+
+The baseline uses sexp format (`[@@deriving sexp]`) so it is human-readable and trivially diffable in version control.
+
+### Design Decisions
+
+- **No cross-references**: Each GIR file is classified against its own namespace-only context. Cross-namespace parameter types appear as `Unsupported "unknown type …"`. This is deliberate — the baseline captures the honest per-file classification boundary and will naturally improve when cross-reference resolution is added.
+- **Sorted by_reason**: Unsupported reasons are sorted alphabetically for deterministic sexp output and stable diffs.
+- **Test is `Slow`**: Parsing 7 large GIR files takes noticeable time, so the regression test is registered as `Slow`.
+
+---
+
 ## Writing New Tests
 
 ### Adding a C Stub Test (Layer 0)

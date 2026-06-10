@@ -128,14 +128,14 @@ let () =
         histogram_of_file filepath)
       gir_files
   in
-  let sexp_items = List.map histogram_sexp_of histograms in
+  let sexp_items = List.map sexp_of_histogram histograms in
   let sexp = Sexplib.Sexp.List sexp_items in
   let output_path =
     Filename.concat (Sys.getcwd ())
       "gir_gen/test/corpus/signal_corpus_baseline.sexp"
   in
   let oc = open_out output_path in
-  Sexplib.Sexp.to_channel oc sexp;
+  output_string oc (Sexplib.Sexp.to_string_hum sexp);
   output_char oc '\n';
   close_out oc;
   Printf.eprintf "Baseline written to %s\n" output_path

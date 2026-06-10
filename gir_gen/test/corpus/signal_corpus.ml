@@ -4,6 +4,7 @@
 
 open Gir_gen_lib.Types
 module Signal_gen = Gir_gen_lib.Generate.Signal_gen
+open Sexplib.Std
 
 (* ================================================================= *)
 (* Classification outcome                                             *)
@@ -295,6 +296,37 @@ let test_histogram_of_file_returns_nontrivial () =
   Alcotest.(check bool) "supported > 0" true (h.supported > 0);
   Alcotest.(check string) "namespace is Gtk" "Gtk" h.namespace
 
+let test_sexp_roundtrip () =
+  let h : histogram =
+    {
+      namespace = "TestNS";
+      total_signals = 5;
+      supported = 3;
+      unsupported = 2;
+      by_reason = [ ("bad return type", 2 ) ];
+    }
+  in
+  let sexp_str = Sexplib.Sexp.to_string_hum (sexp_of_histogram h) in
+  let parsed = histogram_of_sexp (Sexplib.Sexp.of_string sexp_str) in
+  Alcotest.(check string) "namespace" h.namespace parsed.namespace;
+  Alcotest.(check int) "total_signals" h.total_signals parsed.total_signals;
+  Alcotest.(check int) "supported" h.supported parsed.supported;
+  Alcotest.(check int) "unsupported" h.unsupported parsed.unsupported;
+  Alcotest.(check int) "by_reason length" (List.length h.by_reason)
+    (List.length parsed.by_reason)
+
+let test_baseline_file_readable () =
+  let baseline_path =
+    Filename.concat (Filename.dirname Sys.executable_name)
+      "corpus/signal_corpus_baseline.sexp"
+  in
+  let sexp = Sexplib.Sexp.load_sexp baseline_path in
+  let histograms = Sexplib.Conv.list_of_sexp histogram_of_sexp sexp in
+  Alcotest.(check int) "7 histogram entries" 7 (List.length histograms);
+  let gtk_hist = List.find (fun h -> String.equal h.namespace "Gtk") histograms in
+  Alcotest.(check bool) "Gtk total_signals > 100" true (gtk_hist.total_signals > 100);
+  Alcotest.(check bool) "Gtk supported > 0" true (gtk_hist.supported > 0)
+
 let tests =
   [
     Alcotest.test_case "classify real Gtk GIR file returns non-empty outcomes"
@@ -314,4 +346,10 @@ let tests =
     Alcotest.test_case
       "histogram_of_file on Gtk-4.0.gir returns non-trivial histogram" `Slow
       test_histogram_of_file_returns_nontrivial;
+    Alcotest.test_case
+      "histogram sexp roundtrip preserves all fields" `Quick
+      test_sexp_roundtrip;
+    Alcotest.test_case
+      "baseline sexp file is readable and contains 7 histograms" `Slow
+      test_baseline_file_readable;
   ]

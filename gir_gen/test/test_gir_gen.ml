@@ -53,4 +53,5 @@ let () =
       ("Enum Member Version Guards", Enum_member_version_tests.test_suite);
       (* Signal corpus *)
       ("Signal Corpus", Signal_corpus.tests);
+      ("Signal Corpus Regression", Signal_corpus_tests.tests);
     ]
