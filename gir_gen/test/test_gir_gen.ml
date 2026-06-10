@@ -51,4 +51,6 @@ let () =
       ("Override Pipeline", Pipeline_tests.test_suite);
       ("Version Guard", Version_guard_tests.test_suite);
       ("Enum Member Version Guards", Enum_member_version_tests.test_suite);
+      (* Signal corpus *)
+      ("Signal Corpus", Signal_corpus.tests);
     ]

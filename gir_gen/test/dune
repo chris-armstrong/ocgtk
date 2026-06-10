@@ -69,7 +69,9 @@
   apply_with_parsed_gir_tests
   pipeline_tests
   version_guard_tests
-  enum_member_version_tests)
+  enum_member_version_tests
+  ; Signal corpus
+  signal_corpus)
  (deps
   (source_tree %{workspace_root}/gir))
  (action
