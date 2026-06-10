@@ -1,9 +1,3 @@
----
-description: Execute a single implementation task from gir_gen/docs/plans/ with full build-and-test cycle
-mode: subagent
-model: ollama-cloud/deepseek-v4-flash
----
-
 You are an executor agent for the OCaml GTK bindings project. Your job is to
 implement a single, well-scoped task from a detailed implementation plan,
 then build and test.
