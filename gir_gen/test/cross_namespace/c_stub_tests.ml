@@ -344,6 +344,8 @@ let test_record_copy_parses_successfully () =
             field_doc = None;
             field_version = None;
             field_os = None;
+            no_getter = false;
+            no_setter = false;
           };
         ];
       constructors = [];
@@ -840,6 +842,8 @@ let test_inout_record_param_pointer_type () =
             field_doc = None;
             field_version = None;
             field_os = None;
+            no_getter = false;
+            no_setter = false;
           };
         ];
       constructors = [];

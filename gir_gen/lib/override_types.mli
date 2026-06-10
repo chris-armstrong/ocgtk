@@ -19,6 +19,8 @@ type component_override = {
   component_name : string;
   action : override_action option;
   os : Os_filter.t option;
+  no_getter : bool;
+  no_setter : bool;
 }
 [@@deriving sexp, eq]
 (** Override for a sub-component of an entity (method, property, etc.).

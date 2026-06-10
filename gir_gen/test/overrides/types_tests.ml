@@ -27,16 +27,48 @@ let test_override_action_eq () =
     (equal_override_action Ignore (Set_version v410))
 
 let test_component_override_construction () =
-  let c = { component_name = "foo"; action = Some Ignore; os = None } in
+  let c =
+    {
+      component_name = "foo";
+      action = Some Ignore;
+      os = None;
+      no_getter = false;
+      no_setter = false;
+    }
+  in
   Alcotest.(check string) "name" "foo" c.component_name;
   Alcotest.(check bool)
     "action" true
     (Option.equal equal_override_action c.action (Some Ignore))
 
 let test_component_override_eq () =
-  let c1 = { component_name = "foo"; action = Some Ignore; os = None } in
-  let c2 = { component_name = "foo"; action = Some Ignore; os = None } in
-  let c3 = { component_name = "bar"; action = Some Ignore; os = None } in
+  let c1 =
+    {
+      component_name = "foo";
+      action = Some Ignore;
+      os = None;
+      no_getter = false;
+      no_setter = false;
+    }
+  in
+  let c2 =
+    {
+      component_name = "foo";
+      action = Some Ignore;
+      os = None;
+      no_getter = false;
+      no_setter = false;
+    }
+  in
+  let c3 =
+    {
+      component_name = "bar";
+      action = Some Ignore;
+      os = None;
+      no_getter = false;
+      no_setter = false;
+    }
+  in
   Alcotest.(check bool) "eq" true (equal_component_override c1 c2);
   Alcotest.(check bool) "neq" false (equal_component_override c1 c3)
 
@@ -47,7 +79,16 @@ let test_class_override_construction () =
       class_action = Some Ignore;
       class_os = None;
       constructors = [];
-      methods = [ { component_name = "foo"; action = Some Ignore; os = None } ];
+      methods =
+        [
+          {
+            component_name = "foo";
+            action = Some Ignore;
+            os = None;
+            no_getter = false;
+            no_setter = false;
+          };
+        ];
       properties = [];
       signals = [];
     }
@@ -70,6 +111,8 @@ let test_interface_override_construction () =
             action =
               Some (Set_version { vs_version = "4.12"; vs_namespace = None });
             os = None;
+            no_getter = false;
+            no_setter = false;
           };
         ];
       signals = [];
@@ -84,8 +127,16 @@ let test_record_override_construction () =
       record_name = "TextIter";
       record_action = None;
       record_os = None;
-      fields =
-        [ { component_name = "user_data"; action = Some Ignore; os = None } ];
+fields =
+        [
+          {
+            component_name = "user_data";
+            action = Some Ignore;
+            os = None;
+            no_getter = false;
+            no_setter = false;
+          };
+        ];
       constructors = [];
       methods = [];
       functions = [];
@@ -100,7 +151,16 @@ let test_enum_override_construction () =
       enum_name = "RGBA";
       enum_action = None;
       enum_os = None;
-      members = [ { component_name = "RED"; action = Some Ignore; os = None } ];
+      members =
+        [
+          {
+            component_name = "RED";
+            action = Some Ignore;
+            os = None;
+            no_getter = false;
+            no_setter = false;
+          };
+        ];
       functions = [];
     }
   in
@@ -114,7 +174,16 @@ let test_bitfield_override_construction () =
       bitfield_action =
         Some (Set_version { vs_version = "4.10"; vs_namespace = None });
       bitfield_os = None;
-      flags = [ { component_name = "ACTIVE"; action = Some Ignore; os = None } ];
+      flags =
+        [
+          {
+            component_name = "ACTIVE";
+            action = Some Ignore;
+            os = None;
+            no_getter = false;
+            no_setter = false;
+          };
+        ];
     }
   in
   Alcotest.(check string) "name" "StateFlags" b.bitfield_name;
@@ -129,8 +198,16 @@ let test_library_overrides_construction () =
       records = [];
       enums = [];
       bitfields = [];
-      functions =
-        [ { component_name = "gtk_show_uri"; action = Some Ignore; os = None } ];
+functions =
+        [
+          {
+            component_name = "gtk_show_uri";
+            action = Some Ignore;
+            os = None;
+            no_getter = false;
+            no_setter = false;
+          };
+        ];
       headers = [];
     }
   in

@@ -114,6 +114,8 @@ type gir_record_field = {
   field_doc : string option;
   field_version : string option;
   field_os : Os_filter.t option;
+  no_getter : bool;
+  no_setter : bool;
 }
 
 type gir_record = {
@@ -221,6 +223,7 @@ type entity = {
   methods : gir_method list;
   properties : gir_property list;
   signals : gir_signal list;
+  fields : gir_record_field list;
   version : string option;
   os : Os_filter.t option;
 }
@@ -237,6 +240,7 @@ let entity_of_class (cls : gir_class) : entity =
     methods = cls.methods;
     properties = cls.properties;
     signals = cls.signals;
+    fields = [];
     version = cls.version;
     os = cls.os;
   }
@@ -253,6 +257,7 @@ let entity_of_interface (intf : gir_interface) : entity =
     methods = intf.methods;
     properties = intf.properties;
     signals = intf.signals;
+    fields = [];
     version = intf.version;
     os = intf.os;
   }
@@ -269,6 +274,7 @@ let entity_of_record (rec_ : gir_record) : entity =
     methods = rec_.methods;
     properties = [];
     signals = [];
+    fields = rec_.fields;
     version = rec_.version;
     os = rec_.os;
   }

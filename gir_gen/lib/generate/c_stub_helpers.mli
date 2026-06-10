@@ -67,6 +67,32 @@ val generate_array_c_to_ml :
 val is_string_array : Types.gir_array -> bool
 (** Check if an array contains string elements *)
 
+(** {1 Record field accessor array helpers} *)
+
+val generate_array_getter_body :
+  element_c_type:string -> size:int -> c_field:string -> string
+(** Generate C getter body for a fixed-size array field. [element_c_type] is
+    the C type of array elements (e.g., "gdouble", "gint",
+    "graphene_size_t"). [size] is the fixed array size. [c_field] is the C
+    struct member access expression (e.g., "rec->axes"). Returns the complete
+    function body (without CAMLparam). *)
+
+val generate_array_setter_body :
+  element_c_type:string -> size:int -> c_field:string -> string
+(** Generate C setter body for a fixed-size array field. Parameters same as
+    [generate_array_getter_body]. Returns the complete function body (without
+    CAMLparam). *)
+
+val generate_strv_getter_body : c_field:string -> string
+(** Generate C getter body for a gchar** (null-terminated string array) field.
+    [c_field] is the C struct member access expression. Returns the complete
+    function body (without CAMLparam). *)
+
+val generate_strv_setter_body : c_field:string -> string
+(** Generate C setter body for a gchar** field. [c_field] is the C struct
+    member access expression. Returns the complete function body (without
+    CAMLparam). *)
+
 val generate_gvalue_getter_assignment :
   ml_name:string ->
   prop:Types.gir_property ->

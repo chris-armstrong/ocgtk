@@ -121,8 +121,16 @@ let ignore_create_overrides =
           class_action = None;
           class_os = None;
           constructors = [];
-          methods =
-            [ { component_name = "create"; action = Some Ignore; os = None } ];
+methods =
+            [
+              {
+                component_name = "create";
+                action = Some Ignore;
+                os = None;
+                no_getter = false;
+                no_setter = false;
+              };
+            ];
           properties = [];
           signals = [];
         };

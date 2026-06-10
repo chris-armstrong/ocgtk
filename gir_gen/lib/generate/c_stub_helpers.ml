@@ -206,6 +206,87 @@ module Code_gen = struct
           with Failure msg ->
             eprintf "  Warning: skipping method %s: %s\n" meth.method_name msg)
       (List.rev methods)
+
+  (* {1 Fixed-size array and gchar** helpers for record field accessors} *)
+
+  (** Generate C getter body for a fixed-size array field.
+      [element_c_type] is the C type of array elements (e.g., "gdouble", "gint", "graphene_size_t").
+      [size] is the fixed array size.
+      [c_field] is the C struct member access expression (e.g., "rec->axes").
+      Returns the complete function body (without CAMLparam). *)
+  let generate_array_getter_body ~element_c_type ~size ~c_field =
+    let is_float =
+      String.equal element_c_type "gdouble" || String.equal element_c_type "gfloat"
+      || String.equal element_c_type "double" || String.equal element_c_type "float"
+    in
+    if is_float then
+      sprintf
+        "CAMLlocal1(arr);\n    \
+         arr = caml_alloc(%d, Double_array_tag);\n    \
+         for (int i = 0; i < %d; i++)\n      \
+           Store_double_field(arr, i, %s[i]);\n    \
+         CAMLreturn(arr);"
+        size size c_field
+    else
+      (* For nested record arrays, element_c_type is the C struct type name,
+         and Val_<element_c_type> is the macro to box it. *)
+      sprintf
+        "CAMLlocal1(arr);\n    \
+         arr = caml_alloc(%d, 0);\n    \
+         for (int i = 0; i < %d; i++)\n      \
+           caml_modify(&Field(arr, i), Val_%s(&%s[i]));\n    \
+         CAMLreturn(arr);"
+        size size element_c_type c_field
+
+  (** Generate C setter body for a fixed-size array field.
+      [element_c_type] is the C type of array elements.
+      [size] is the fixed array size.
+      [c_field] is the C struct member access expression.
+      Returns the complete function body (without CAMLparam). *)
+  let generate_array_setter_body ~element_c_type ~size ~c_field =
+    let is_float =
+      String.equal element_c_type "gdouble" || String.equal element_c_type "gfloat"
+      || String.equal element_c_type "double" || String.equal element_c_type "float"
+    in
+    if is_float then
+      sprintf
+        "for (int i = 0; i < %d; i++)\n      \
+           %s[i] = Double_field(v_val, i);\n    \
+         CAMLreturn(Val_unit);"
+        size c_field
+    else
+      (* For nested records: dereference the pointer returned by the _val macro.
+         For primitives: use the macro directly (e.g., Int_val). *)
+      let deref =
+        if String.length element_c_type > 0 && Char.equal element_c_type.[0] 'g' then
+          ""
+        else "*"
+      in
+      sprintf
+        "for (int i = 0; i < %d; i++)\n      \
+           %s[i] = %s%s_val(Field(v_val, i));\n    \
+         CAMLreturn(Val_unit);"
+        size c_field deref element_c_type
+
+  (** Generate C getter body for a gchar** (null-terminated string array) field.
+      [c_field] is the C struct member access expression.
+      Returns the complete function body (without CAMLparam). *)
+  let generate_strv_getter_body ~c_field =
+    sprintf
+      "CAMLlocal1(result);\n    \
+       Val_strv(%s, result);\n    \
+       CAMLreturn(result);"
+      c_field
+
+  (** Generate C setter body for a gchar** field.
+      [c_field] is the C struct member access expression.
+      Returns the complete function body (without CAMLparam). *)
+  let generate_strv_setter_body ~c_field =
+    sprintf
+      "g_strfreev(%s);\n    \
+       Strv_val(v_val, %s);\n    \
+       CAMLreturn(Val_unit);"
+      c_field c_field
 end
 
 (** Forward declaration generation helpers - shared across record, class, enum,
@@ -280,6 +361,12 @@ let build_return_statement = Code_gen.build_return_statement
 let generate_constructors = Code_gen.generate_constructors
 let generate_methods = Code_gen.generate_methods
 let default_type_mapping = Code_gen.default_type_mapping
+
+(* Re-export array helpers for record field accessors *)
+let generate_array_getter_body = Code_gen.generate_array_getter_body
+let generate_array_setter_body = Code_gen.generate_array_setter_body
+let generate_strv_getter_body = Code_gen.generate_strv_getter_body
+let generate_strv_setter_body = Code_gen.generate_strv_setter_body
 
 (* Nullable conversion expressions - these depend on Type_analysis.analyze_property_type *)
 let nullable_c_to_ml_expr ~ctx ~var ~(gir_type : gir_type)

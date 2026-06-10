@@ -1229,6 +1229,8 @@ let parse_gir_file filename filter_classes =
                       field_doc = !field_doc;
                       field_version = get_attr "version" field_attrs;
                       field_os = None;
+                      no_getter = false;
+                      no_setter = false;
                     }
                     :: !fields
               | None -> ());

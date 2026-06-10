@@ -113,7 +113,7 @@ let make_gir_property ~prop_name ~prop_type ?(readable = true)
   }
 
 let make_gir_record_field ~field_name ?field_type ?(readable = true)
-    ?(writable = false) ?field_doc () =
+    ?(writable = false) ?field_doc ?(no_getter = false) ?(no_setter = false) () =
   {
     field_name;
     field_type;
@@ -122,6 +122,8 @@ let make_gir_record_field ~field_name ?field_type ?(readable = true)
     field_doc;
     field_version = None;
     field_os = None;
+    no_getter;
+    no_setter;
   }
 
 let make_gir_record ?(record_name = "TestRecord") ?(c_type = "TestRecord")
@@ -236,7 +238,7 @@ let make_gir_interface ?(interface_name = "TestInterface")
 let make_entity ?(kind = Class (make_gir_class ())) ?(name = "TestEntity")
     ?(c_type = "TestEntity") ?doc ?parent ?(implements = [])
     ?(constructors = []) ?(methods = []) ?(properties = []) ?(signals = [])
-    ?version ?(os = None) () =
+    ?(fields = []) ?version ?(os = None) () =
   {
     kind;
     name;
@@ -248,6 +250,7 @@ let make_entity ?(kind = Class (make_gir_class ())) ?(name = "TestEntity")
     methods;
     properties;
     signals;
+    fields;
     version;
     os;
   }

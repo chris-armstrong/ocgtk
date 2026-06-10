@@ -172,6 +172,16 @@ let apply_record_components (ov : record_override) (rec_ : gir_record) :
       ~set_version:field_set_version ~set_os:field_set_os ~overrides:ov.fields
       rec_.fields
   in
+  (* Post-processing: merge no_getter/no_setter from overrides
+     into surviving field records. *)
+  let fields =
+    List.map
+      (fun (f : gir_record_field) ->
+        match find_component_override f.field_name ov.fields with
+        | Some { no_getter; no_setter; _ } -> { f with no_getter; no_setter }
+        | None -> f)
+      fields
+  in
   let constructors =
     apply_components_by_name
       ~get_name:(fun (c : gir_constructor) -> c.ctor_name)
