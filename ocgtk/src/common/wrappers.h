@@ -125,17 +125,19 @@ CAMLexport value ml_lookup_to_c (value table, value key);
 /* Bounded integer types (private int representation)                   */
 /* ==================================================================== */
 
-/* Bounded integer types — all backed by OCaml int (private int representation).
- * The cast on read (UInt16_val, etc.) handles sign/zero extension from OCaml's
- * tagged int correctly. The cast on write (Val_uint16, etc.) ensures the value
- * is stored with the correct bit pattern before tagging. */
+/* Bounded integer types backed by OCaml int.
+ * The cast on read handles sign/zero extension from OCaml's tagged int correctly.
+ * The cast on write ensures the value is stored with the correct bit pattern
+ * before tagging.
+ *
+ * Note: Int8_val and Int16_val are intentionally omitted—they are provided by
+ * <ocaml_integers.h> (from the integers library) and defining them here would
+ * cause macro-redefinition warnings. Our custom UInt8/UInt16/UInt32 macros use
+ * Long_val (wider than Int_val) which is safe for the ranges these types cover. */
 #define UInt8_val(v)           ((uint8_t)(Long_val(v)))
 #define Val_uint8(x)           (Val_long((uint8_t)(x)))
-#define Int8_val(v)            ((int8_t)(Long_val(v)))
-#define Val_int8(x)            (Val_long((int8_t)(x)))
 #define UInt16_val(v)          ((uint16_t)(Long_val(v)))
 #define Val_uint16(x)          (Val_long((uint16_t)(x)))
-#define Int16_val(v)           ((int16_t)(Long_val(v)))
 #define Val_int16(x)           (Val_long((int16_t)(x)))
 #define UInt32_val(v)          ((uint32_t)(Long_val(v)))
 #define Val_uint32(x)          (Val_long((uint32_t)(x)))
