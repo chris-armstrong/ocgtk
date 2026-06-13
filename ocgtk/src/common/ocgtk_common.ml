@@ -1,5 +1,4 @@
 module GError = GError
-
 module Gpointer = Gpointer
 module Gobject = Gobject
 module Gvariant = Gvariant

@@ -12,5 +12,5 @@
 (**************************************************************************)
 
 type t
-(** Abstract GError type — constructed by C FFI stubs in wrappers.c, used
-    only as the error component of [(_, GError.t) result] return values. *)
+(** Abstract GError type — constructed by C FFI stubs in wrappers.c, used only
+    as the error component of [(_, GError.t) result] return values. *)

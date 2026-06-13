@@ -1,7 +1,8 @@
 (** Runtime tests for the closure-marshal path in [ml_closure_marshal].
 
     Exercises multi-param dispatch, enum/flags dispatch, return copy-back,
-    exception escape, and GC interaction via the [Gobject_test_helpers] helpers. *)
+    exception escape, and GC interaction via the [Gobject_test_helpers] helpers.
+*)
 
 open Alcotest
 module Closure = Gobject.Closure
@@ -83,8 +84,8 @@ let test_non_null_gobject_param () =
     (match !obj_captured with Some _ -> true | None -> false);
   check bool "object identity preserved via Gobject.same" true
     (match !obj_captured with
-     | Some obj -> Gobject.same obj btn_obj
-     | None -> false)
+    | Some obj -> Gobject.same obj btn_obj
+    | None -> false)
 
 (** {2 M4: exception escape} *)
 
@@ -184,7 +185,9 @@ let () =
           test_case "exception escape sets flag" `Quick
             (require_gtk test_exception_escape);
         ] );
-      ( "flags", [ test_case "flags dispatch" `Quick (require_gtk test_flags_dispatch) ] );
+      ( "flags",
+        [ test_case "flags dispatch" `Quick (require_gtk test_flags_dispatch) ]
+      );
       ( "int_return",
         [
           test_case "int return copy-back" `Quick (require_gtk test_int_return);

@@ -69,14 +69,20 @@
   apply_with_parsed_gir_tests
   pipeline_tests
   version_guard_tests
-  enum_member_version_tests)
+  enum_member_version_tests
+  ; Signal corpus
+  signal_corpus
+  signal_corpus_tests)
  (deps
-  (source_tree %{workspace_root}/gir))
+  (source_tree %{workspace_root}/gir)
+  corpus/signal_corpus_baseline.sexp)
  (action
   (setenv
    "GIR_DATA_DIR"
    "%{workspace_root}/gir"
    (run %{test})))
+ (preprocess
+  (pps ppx_sexp_conv))
  (libraries
   test_gir_gen_helpers
   gir_gen_lib

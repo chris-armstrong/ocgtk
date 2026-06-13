@@ -17,8 +17,9 @@ let test_distinct_objects_not_same () =
 (* Round-trip the same GObject through a GValue twice. Each get_object
    call allocates a fresh OCaml custom block, so the two extracted
    handles are distinct OCaml values that wrap the same C pointer. *)
-let extract_twice : string -> 'a Gobject.obj -> 'a Gobject.obj * 'a Gobject.obj =
-  fun label obj ->
+let extract_twice : string -> 'a Gobject.obj -> 'a Gobject.obj * 'a Gobject.obj
+    =
+ fun label obj ->
   let gtype = Gobject.get_type obj in
   let v = Gobject.Value.create gtype in
   Gobject.Value.set_object v (Some obj);
@@ -26,8 +27,9 @@ let extract_twice : string -> 'a Gobject.obj -> 'a Gobject.obj * 'a Gobject.obj 
   let b = Gobject.Value.get_object v in
   match (a, b) with
   | Some a, Some b -> (a, b)
-  | (None, _) | (_, None) ->
-      Alcotest.failf "extract_twice: get_object returned None for non-NULL %s" label
+  | None, _ | _, None ->
+      Alcotest.failf "extract_twice: get_object returned None for non-NULL %s"
+        label
 
 let test_same_pointer_is_same () =
   let btn = Wrappers.Button.new_ () in

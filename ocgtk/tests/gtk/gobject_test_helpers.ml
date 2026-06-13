@@ -1,7 +1,7 @@
 (** Test-only helpers for invoking GObject closures directly.
 
-    These functions exist solely for testing the closure-marshal path.
-    They are NOT part of the public API and should only be used in tests. *)
+    These functions exist solely for testing the closure-marshal path. They are
+    NOT part of the public API and should only be used in tests. *)
 
 external invoke_closure_void : Gobject.g_closure -> unit
   = "ml_test_invoke_closure_void"

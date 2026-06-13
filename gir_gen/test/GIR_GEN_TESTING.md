@@ -175,7 +175,7 @@ Provides:
 - `create_gir_file()` - Writes GIR XML to file
 - `run_gir_gen()` - Executes gir_gen.exe with logging
 - File path utilities (`stub_c_file`, `mli_file`, etc.)
-- Assertion helpers (`assert_true`, `assert_contains`, etc.)
+- Assertion helpers (`assert_true`, `assert_some`, etc.)
 
 #### c_validation.ml
 
@@ -610,7 +610,10 @@ let test_record_support () =
   assert_true "Should succeed" (exit_code = 0);
 
   let c_content = read_file (stub_c_file output_dir "RecordUser") in
-  assert_contains "Should use record macro" c_content "Val_GtkTestRecord"
+  let functions = C_parser.parse_c_code c_content in
+  let func = Helpers.assert_some (C_ast.find_function functions "ml_gtk_test_record_get_type") in
+  Alcotest.(check bool) "Should use record macro" true
+    (C_validation.calls_c_function func "gtk_test_record_get_type")
 ```
 
 ### Current Integration Tests
@@ -628,6 +631,68 @@ let test_record_support () =
 - [ ] Real GTK GIR file validation
 - [ ] Cross-module dependencies
 - [ ] Complete namespace generation
+
+---
+
+## Signal Corpus Regression Tests
+
+**Status: ✅ IMPLEMENTED**
+
+**Location:** `corpus/`
+
+### Overview
+
+The signal corpus regression test classifies every signal in all 7 signal-bearing GIR files (Gtk, Gdk, Gio, Pango, Gsk, GdkPixbuf, Graphene) and produces a signal coverage snapshot of Supported vs Unsupported counts, broken down by unsupported-reason category. This coverage is serialized as a sexp file and checked into the test tree as a baseline. Every `dune test gir_gen/` run regenerates the coverage from live GIR files and compares it against the baseline — any deviation fails the test.
+
+### How It Works
+
+1. **`signal_corpus.ml`** — Core module with:
+   - `classify_signals_of_file`: Parses a GIR file, builds a minimal generation context (same-namespace-only, no cross-references), and classifies every signal as Supported or Unsupported.
+   - `coverage_of_file`: Convenience function that classifies then aggregates into a typed `signal_coverage` record.
+   - `compare_coverage`: Field-by-field comparison returning `(unit, string list) result`.
+   - Unit tests for classification, coverage aggregation, comparison, and sexp roundtrip.
+
+2. **`signal_corpus_tests.ml`** — Regression test:
+   - Reads the checked-in baseline from `corpus/signal_corpus_baseline.sexp`.
+   - Recomputes live coverage from the 7 GIR files in `gir/`.
+   - Compares each namespace's live coverage against its baseline.
+   - Fails with a detailed diff on any mismatch.
+
+3. **`corpus/signal_corpus_baseline.sexp`** — Checked-in sexp file containing 7 coverage entries (one per namespace).
+
+### Running the Tests
+
+```bash
+# All gir_gen tests (includes Signal Corpus and Signal Corpus Regression)
+dune test gir_gen/
+
+# Full test suite
+dune test gir_gen/ && xvfb-run dune test ocgtk/
+```
+
+### Updating the Baseline
+
+When a legitimate signal classification change is made (e.g., adding support for a previously-unsupported signal type), the baseline must be updated to match:
+
+1. **Run the coverage generator** — Use the `Signal_corpus` module to regenerate coverage:
+   ```bash
+   # From the repo root, build and run the baseline generator:
+   dune exec gir_gen/scripts/gen_signal_baseline.exe -- $(pwd)/gir
+   # Or, in a utop/OCaml REPL:
+   #   let coverages = List.map (fun (ns, f) ->
+   #     Signal_corpus.coverage_of_file (Helpers.gir_data_dir () ^ "/" ^ f)
+   #   ) namespace_files;;
+   ```
+2. **Overwrite the baseline file** — Replace `gir_gen/test/corpus/signal_corpus_baseline.sexp` with the new output.
+3. **Commit the updated baseline** alongside the classification change that caused it.
+
+The baseline uses sexp format (`[@@deriving sexp]`) so it is human-readable and trivially diffable in version control.
+
+### Design Decisions
+
+- **No cross-references**: Each GIR file is classified against its own namespace-only context. Cross-namespace parameter types appear as `Unsupported "unknown type …"`. This is deliberate — the baseline captures the honest per-file classification boundary and will naturally improve when cross-reference resolution is added.
+- **Sorted by_reason**: Unsupported reasons are sorted alphabetically for deterministic sexp output and stable diffs.
+- **Test is `Slow`**: Parsing 7 large GIR files takes noticeable time, so the regression test is registered as `Slow`.
 
 ---
 
@@ -725,11 +790,17 @@ let test_my_integration () =
 ```ocaml
   let c_file = stub_c_file output_dir "MyWidget" in
   let c_content = read_file c_file in
-  assert_contains "Should generate C stub" c_content "ml_gtk_my_widget_set_value";
+  let functions = C_parser.parse_c_code c_content in
+  let func = Helpers.assert_some (C_ast.find_function functions "ml_gtk_my_widget_set_value") in
+  Alcotest.(check bool) "Should call C function" true
+    (C_validation.calls_c_function func "gtk_my_widget_set_value");
 
   let ml_file = ml_file output_dir "MyWidget" in
   let ml_content = read_file ml_file in
-  assert_contains "Should generate ML function" ml_content "external set_value";
+  let structure = Ml_ast_helpers.parse_implementation ml_content in
+  let externals = Ml_validation.find_external_decls structure in
+  Alcotest.(check bool) "Should generate ML external" true
+    (List.exists (fun e -> String.equal e.Ml_ast_helpers.name "set_value") externals);
 ```
 
 ### Adding Record Type Tests

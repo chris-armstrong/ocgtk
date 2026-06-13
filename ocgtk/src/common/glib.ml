@@ -53,8 +53,7 @@ module Timeout = struct
   external add_full : int option -> int -> (unit -> bool) -> id
     = "ml_g_timeout_add"
 
-  let add ?prio ~ms ~callback () =
-    add_full prio ms callback
+  let add ?prio ~ms ~callback () = add_full prio ms callback
 
   external remove : id -> unit = "ml_g_timeout_remove"
 end
@@ -66,8 +65,7 @@ module Idle = struct
 
   external add_full : int option -> (unit -> bool) -> id = "ml_g_idle_add"
 
-  let add ?prio callback =
-    add_full prio callback
+  let add ?prio callback = add_full prio callback
 
   external remove : id -> unit = "ml_g_idle_remove"
 end

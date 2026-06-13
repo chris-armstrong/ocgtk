@@ -55,16 +55,31 @@ Wait for it to complete. Check its report:
 
 ### 4b. Review epoch output
 
-After all stages in the epoch complete, invoke `@review` with:
+After all stages in the epoch complete, invoke all reviewer agents below in parallel
+
+Pass every reviewer the same message body:
+
 ```
-Review files changed on the current branch (default branch scope).
+Files to review (do not skip any):
+<one file per line — the complete list from Step 1>
 ```
 
-Wait for it to complete.
+Agents to dispatch *in parallel*:
+
+1. @control-flow-reviewer
+2. @type-correctness-reviewer
+3. @code-quality-reviewer
+4. @abstractions-reviewer
+5. @test-reviewer
+6. @docs-reviewer
+
+Do NOT include "apply fixes" in the message — reviewers report only.
+
+Wait for all of them to complete.
 
 ### 4c. Fix violations
 
-If `@review` reports any **Must Fix** or **Should Fix** violations:
+If any reviewer agents reports any **Must Fix** or **Should Fix** violations:
 
 1. Invoke `@stage-executor` with:
    ```
@@ -81,15 +96,16 @@ If `@review` reports any **Must Fix** or **Should Fix** violations:
    If the build fails, invoke `@stage-executor` again in fix mode with just the
    build errors.
 
-3. Re-invoke `@review` with `only:` restricted to the reviewers that found violations:
+3. Re-invoke reviewer agenst, restricted to the reviewers that found violations:
    ```
    only: <reviewer names>
    Files to review:
    <same file list as before>
    ```
 
-4. If violations remain after one fix round, note them in the epoch summary and
-   continue — do not loop indefinitely.
+4. If violations remain after one fix round, stop and report to the user.
+
+5. After the epoch is complete, commit the changes using conventional commits style (see existing git history for examples).
 
 ## Step 5: Final Report
 

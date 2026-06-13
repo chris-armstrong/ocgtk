@@ -14,6 +14,6 @@
 type t
 (** Abstract GError type representing errors from GTK/GLib functions.
 
-    GError values are constructed by the C FFI layer and used exclusively
-    as the error component of [(_, GError.t) result] return types. Record
-    fields (domain, code, message) are only accessible from C stubs. *)
+    GError values are constructed by the C FFI layer and used exclusively as the
+    error component of [(_, GError.t) result] return types. Record fields
+    (domain, code, message) are only accessible from C stubs. *)

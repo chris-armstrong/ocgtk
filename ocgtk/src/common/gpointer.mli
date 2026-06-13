@@ -25,10 +25,8 @@ exception Null
 type 'a variant_table constraint 'a = [> ]
 (** Variant table type for enum conversions *)
 
-external decode_variant : 'a variant_table -> int -> 'a
-  = "ml_lookup_from_c"
+external decode_variant : 'a variant_table -> int -> 'a = "ml_lookup_from_c"
 (** Decode an integer to a polymorphic variant using the given table *)
 
-external encode_variant : 'a variant_table -> 'a -> int
-  = "ml_lookup_to_c"
+external encode_variant : 'a variant_table -> 'a -> int = "ml_lookup_to_c"
 (** Encode a polymorphic variant to an integer using the given table *)

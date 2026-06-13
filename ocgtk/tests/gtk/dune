@@ -91,7 +91,12 @@
 (test
  (name test_signal_marshalling)
  (modules test_signal_marshalling)
- (libraries ocgtk.common ocgtk.gtk alcotest gtk_test_helpers gobject_test_helpers))
+ (libraries
+  ocgtk.common
+  ocgtk.gtk
+  alcotest
+  gtk_test_helpers
+  gobject_test_helpers))
 
 (test
  (name test_signal_widget)

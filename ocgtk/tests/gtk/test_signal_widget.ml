@@ -24,9 +24,7 @@ let test_signal_disconnect () =
   let btn_obj = Wrappers.Button.new_ () in
   let btn = new Button.button btn_obj in
   let called = ref false in
-  let handler_id =
-    btn#on_clicked ~callback:(fun () -> called := true) ()
-  in
+  let handler_id = btn#on_clicked ~callback:(fun () -> called := true) () in
   (* Emit signal -- handler should fire *)
   Gobject.Signal.emit_by_name btn_obj ~name:"clicked";
   check bool "callback invoked before disconnect" true !called;
