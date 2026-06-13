@@ -2,6 +2,10 @@
 
 GTK introspection-based code generator for ocgtk bindings.
 
+For a full architectural introduction covering the binding layers, pipeline,
+dependency analysis, signals, and dead code elimination, see
+[architecture/overview.md](../architecture/overview.md).
+
 ## Architecture Overview
 
 The generator processes GIR XML files through a 4-stage pipeline:
@@ -582,7 +586,7 @@ was entirely dead code.
 **Impact:** Slider/progress widgets lack convenient OCaml-style access patterns.
 
 ### 5. Out/InOut Parameters - Implemented
-**Status:** Out parameters are now supported (see `architecture/gir_gen/array_handling.md`).
+**Status:** Out parameters are now supported (see `architecture/special_case_generation.md`).
 
 **Working:**
 - Primitive out parameters returned directly
@@ -853,4 +857,4 @@ The original design plan outlined a comprehensive multi-phase implementation. Th
 - **GTK4 API Reference**: https://docs.gtk.org/gtk4/
 - **GIR Format Annotations**: https://gi.readthedocs.io/en/latest/annotations/giannotations.html
 - **lablgtk3 Reference** - Polymorphic variant type patterns for GTK3 bindings
-- **Cross-Namespace Plan**: `architecture/todo/CROSS_NAMESPACE_PLAN.md`
+- **Cross-Namespace Architecture**: `architecture/cross_namespace_types.md`

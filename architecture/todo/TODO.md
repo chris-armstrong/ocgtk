@@ -1,30 +1,42 @@
 # Todos
 
-A high level overview of porting and cleanup tasks needed to get ocgtk4 to a 1.0
-
-## Known bugs
-
-See [KNOWN_BUGS.md](./KNOWN_BUGS.md)
-
-## Split up into several sub-libraries ✅ DONE
-
-All 9 GIR namespaces are generated as separate libraries via `scripts/generate-bindings.sh`:
-Cairo, Gio, Gdk, Graphene, GdkPixbuf, Pango, PangoCairo, Gsk, Gtk.
-
-Cross-namespace type resolution works via reference files and `<ns>_decls.h` headers. See [CROSS_NAMESPACE_PLAN.md](./CROSS_NAMESPACE_PLAN.md).
+Outstanding work items for ocgtk. For known bugs and intentional limitations
+see [KNOWN_BUGS.md](./KNOWN_BUGS.md).
 
 ## Class hierarchy
 
-* ~~Generate all classes in a class hierarchy with #as_<type>, not just those in the Widget hierarchy (e.g. Expression)~~ — Done: hierarchy_info abstraction removed (was dead code). Parent chain drives polymorphic variant types. Layer 1 accessors not yet generated from parent chain.
-* Update methods that take a class value like "#expression" (which means anything polymorphically implementing that interface) to work
+- Layer 1 parent-chain accessors (`as_widget : t -> Widget.t` etc.) are not yet
+  generated from the parent chain. `Obj.magic` is used at Layer 2 instead.
+- Methods that accept interface types as parameters are currently skipped (BUG-004).
+  Proper interface parameter handling requires `as_<interface>` accessors.
 
-## Signal handling — partially implemented
+## Signal handling
 
-- Parameterless void signals are fully generated.
-- Signals with primitive parameters and some GObject parameters are now supported via `signal_marshaller.ml`.
-- Typed-parameter signals with return values and complex types (e.g. `GdkEvent`) are still deferred.
-- See active plan: [`gir_gen/docs/plans/milestone-2-signals.md`](../../gir_gen/docs/plans/milestone-2-signals.md)
+- Signals with complex parameter types (boxed records, `GdkEvent`, callbacks)
+  are not yet generated. See `gir_gen/docs/plans/milestone-2-signals.md` for the
+  active plan.
+- Signal return values are supported for primitives only; non-primitive returns
+  are deferred.
 
 ## Interface generation
 
-Interfaces are generated as classes, but need to be generated as virtual classes with virtual methods (and then inherited) or class types to be useful.
+Interfaces are generated as ordinary classes but should be generated as virtual
+classes (or class types) with virtual methods that concrete classes inherit and
+implement.
+
+## Array length hiding (BUG-002)
+
+The companion length parameter for length-based arrays is hidden from the C stub
+but still visible in the Layer 1 OCaml signature. It should be dropped from the
+OCaml API entirely with the length derived from `Array.length`.
+
+## Static functions (BUG-005)
+
+`<function>` elements in GIR (static methods with no implicit `self`) are not yet
+generated.
+
+## macOS build (BUG-010)
+
+`gio/gdesktopappinfo.h` is included unconditionally in `gio_decls.h` but is not
+available on macOS (Homebrew omits it). The fix is to wrap it in `#ifdef G_OS_UNIX`
+or ignore `GDesktopAppInfo` via the override file.

@@ -105,7 +105,7 @@ The buffer issue is a special case of the broader array length erasure problem. 
 
 ### Description
 
-Arrays are now fully supported at the C stub level (see `architecture/gir_gen/array_handling.md`):
+Arrays are now fully supported at the C stub level (see `architecture/special_case_generation.md`):
 zero-terminated, length-based, GPtrArray, and out-param arrays all generate correct C code,
 and the C stub generator automatically substitutes `Array.length` or computed lengths into
 the corresponding C length parameter.
