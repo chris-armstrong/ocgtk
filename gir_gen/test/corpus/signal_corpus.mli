@@ -13,7 +13,7 @@ type classification_outcome =
       reason : string;
     }
 
-type histogram = {
+type signal_coverage = {
   namespace : string;
   total_signals : int;
   supported : int;
@@ -24,12 +24,12 @@ type histogram = {
 
 val classify_signals_of_file : string -> classification_outcome list
 
-val histogram_of_namespace : string -> classification_outcome list -> histogram
+val coverage_of_namespace : string -> classification_outcome list -> signal_coverage
 
-val histogram_of_file : string -> histogram
+val coverage_of_file : string -> signal_coverage
 
-val compare_histograms :
-  histogram -> histogram -> (unit, string list) result
+val compare_coverage :
+  signal_coverage -> signal_coverage -> (unit, string list) result
 
 val count_supported : classification_outcome list -> int
 

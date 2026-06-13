@@ -642,23 +642,23 @@ let test_record_support () =
 
 ### Overview
 
-The signal corpus regression test classifies every signal in all 7 signal-bearing GIR files (Gtk, Gdk, Gio, Pango, Gsk, GdkPixbuf, Graphene) and produces a histogram of Supported vs Unsupported counts, broken down by unsupported-reason category. This histogram is serialized as a sexp file and checked into the test tree as a baseline. Every `dune test gir_gen/` run regenerates the histogram from live GIR files and compares it against the baseline — any deviation fails the test.
+The signal corpus regression test classifies every signal in all 7 signal-bearing GIR files (Gtk, Gdk, Gio, Pango, Gsk, GdkPixbuf, Graphene) and produces a signal coverage snapshot of Supported vs Unsupported counts, broken down by unsupported-reason category. This coverage is serialized as a sexp file and checked into the test tree as a baseline. Every `dune test gir_gen/` run regenerates the coverage from live GIR files and compares it against the baseline — any deviation fails the test.
 
 ### How It Works
 
 1. **`signal_corpus.ml`** — Core module with:
    - `classify_signals_of_file`: Parses a GIR file, builds a minimal generation context (same-namespace-only, no cross-references), and classifies every signal as Supported or Unsupported.
-   - `histogram_of_file`: Convenience function that classifies then aggregates into a typed histogram.
-   - `compare_histograms`: Field-by-field comparison returning `(unit, string list) result`.
-   - Unit tests for classification, histogram aggregation, comparison, and sexp roundtrip.
+   - `coverage_of_file`: Convenience function that classifies then aggregates into a typed `signal_coverage` record.
+   - `compare_coverage`: Field-by-field comparison returning `(unit, string list) result`.
+   - Unit tests for classification, coverage aggregation, comparison, and sexp roundtrip.
 
 2. **`signal_corpus_tests.ml`** — Regression test:
    - Reads the checked-in baseline from `corpus/signal_corpus_baseline.sexp`.
-   - Recomputes live histograms from the 7 GIR files in `gir/`.
-   - Compares each namespace's live histogram against its baseline.
+   - Recomputes live coverage from the 7 GIR files in `gir/`.
+   - Compares each namespace's live coverage against its baseline.
    - Fails with a detailed diff on any mismatch.
 
-3. **`corpus/signal_corpus_baseline.sexp`** — Checked-in sexp file containing 7 histogram entries (one per namespace).
+3. **`corpus/signal_corpus_baseline.sexp`** — Checked-in sexp file containing 7 coverage entries (one per namespace).
 
 ### Running the Tests
 
@@ -674,13 +674,13 @@ dune test gir_gen/ && xvfb-run dune test ocgtk/
 
 When a legitimate signal classification change is made (e.g., adding support for a previously-unsupported signal type), the baseline must be updated to match:
 
-1. **Run the histogram generator** — Use the `Signal_corpus` module to regenerate histograms:
+1. **Run the coverage generator** — Use the `Signal_corpus` module to regenerate coverage:
    ```bash
-   # From the repo root, build and run a one-off OCaml script:
-   dune exec gir_gen -- generate-baseline
+   # From the repo root, build and run the baseline generator:
+   dune exec gir_gen/scripts/gen_signal_baseline.exe -- $(pwd)/gir
    # Or, in a utop/OCaml REPL:
-   #   let histograms = List.map (fun (ns, f) ->
-   #     Signal_corpus.histogram_of_file (Helpers.gir_data_dir () ^ "/" ^ f)
+   #   let coverages = List.map (fun (ns, f) ->
+   #     Signal_corpus.coverage_of_file (Helpers.gir_data_dir () ^ "/" ^ f)
    #   ) namespace_files;;
    ```
 2. **Overwrite the baseline file** — Replace `gir_gen/test/corpus/signal_corpus_baseline.sexp` with the new output.

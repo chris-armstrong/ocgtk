@@ -6,13 +6,14 @@
 
 Parse all 7 signal-bearing GIR files (Gtk, Gdk, Gio, Pango, Gsk, GdkPixbuf,
 Graphene), classify every signal using the existing `Signal_gen.classify`
-pipeline, and produce a histogram of classification results. The histogram
-counts Supported vs Unsupported signals broken down by unsupported-reason
-category. It is serialized as a sexp file and checked into the test tree as a
-baseline. Every subsequent `dune test gir_gen/` run regenerates the histogram
-from live GIR files and compares it against the baseline — any deviation
-(signal becoming newly unsupported, a previously-unsupported signal becoming
-supported, count mismatches) fails the test.
+pipeline, and produce a signal coverage snapshot of classification results. The
+coverage counts Supported vs Unsupported signals broken down by
+unsupported-reason category. It is serialized as a sexp file and checked into
+the test tree as a baseline. Every subsequent `dune test gir_gen/` run
+regenerates the coverage from live GIR files and compares it against the
+baseline — any deviation (signal becoming newly unsupported, a
+previously-unsupported signal becoming supported, count mismatches) fails the
+test.
 
 The test runs as a pure in-process unit test: it parses GIR files directly via
 `Gir_parser.parse_gir_file`, builds a per-namespace `generation_context`
@@ -27,16 +28,17 @@ Key design decisions:
   Gtk signal) will appear as `Unsupported "unknown type …"`. This is deliberate
   — the baseline captures the honest per-file classification boundary and will
   naturally improve when cross-reference resolution is added later.
-- **Sexp baseline**: The histogram uses `[@@deriving sexp]` so the baseline
+- **Sexp baseline**: The coverage uses `[@@deriving sexp]` so the baseline
   file is both human-readable and trivially diffable.
-- **Separate histogram computation from the assertion**: The histogram
+- **Separate coverage computation from the assertion**: The coverage
   computation logic is a standalone module (`Signal_corpus`) so it can be
   invoked manually when the baseline needs updating.
 
-## Epoch 1: Histogram computation module
+## Epoch 1: Coverage computation module
 
 > Goal: A `Signal_corpus` module than can parse a GIR file, classify every
-> signal, and return a typed histogram. Runnable from the test suite.
+> signal, and return a typed signal coverage snapshot. Runnable from the test
+> suite.
 
 ### Stage 1.1 — `Signal_corpus` module skeleton and single-file classification
 
@@ -88,19 +90,19 @@ list of classification outcomes.
 
 ---
 
-### Stage 1.2 — Histogram aggregation data type and sexp serialization
+### Stage 1.2 — Coverage aggregation data type and sexp serialization
 
-**Goal**: Aggregate the flat list of outcomes into a histogram record and
-derive sexp serialization so the histogram can be saved to and loaded from a
+**Goal**: Aggregate the flat list of outcomes into a coverage record and
+derive sexp serialization so the coverage can be saved to and loaded from a
 baseline file.
 
 **Files**:
-- `gir_gen/test/corpus/signal_corpus.ml` — extend with histogram type
+- `gir_gen/test/corpus/signal_corpus.ml` — extend with coverage type
 
 **Steps**:
-1. Define a `histogram` type:
+1. Define a `signal_coverage` type:
    ```ocaml
-   type histogram = {
+   type signal_coverage = {
      namespace : string;
      total_signals : int;
      supported : int;
@@ -108,26 +110,26 @@ baseline file.
      by_reason : (string * int) list;  (* (reason, count) sorted by reason *)
    } [@@deriving sexp]
    ```
-2. Implement `histogram_of_namespace : string -> classification_outcome list -> histogram`
+2. Implement `coverage_of_namespace : string -> classification_outcome list -> signal_coverage`
    that counts outcomes and groups unsupported signals by reason.
-3. Implement `histogram_of_file : string -> histogram` as a convenience that
-   calls `classify_signals_of_file` then `histogram_of_namespace`.
-4. Implement `compare_histograms : histogram -> histogram -> (string list, unit) result`
-   that compares two histograms field-by-field and returns `Ok ()` when they
+3. Implement `coverage_of_file : string -> signal_coverage` as a convenience that
+   calls `classify_signals_of_file` then `coverage_of_namespace`.
+4. Implement `compare_coverage : signal_coverage -> signal_coverage -> (string list, unit) result`
+   that compares two coverage records field-by-field and returns `Ok ()` when they
    match or `Error reasons` listing every mismatch.
 5. Add test cases:
-   - Given 3 Supported and 2 Unsupported outcomes, verify `histogram_of_namespace`
+   - Given 3 Supported and 2 Unsupported outcomes, verify `coverage_of_namespace`
      produces correct counts.
-   - Given identical histograms, `compare_histograms` returns `Ok ()`.
-   - Given histograms differing in `supported` count, `compare_histograms`
+   - Given identical coverage, `compare_coverage` returns `Ok ()`.
+   - Given coverage differing in `supported` count, `compare_coverage`
      returns `Error` listing the discrepancy.
 6. Compile and run tests.
 
 **Acceptance criteria**:
-- [ ] `histogram_of_file "gir/Gtk-4.0.gir"` returns a non-trivial histogram
+- [ ] `coverage_of_file "gir/Gtk-4.0.gir"` returns a non-trivial coverage
       with `total_signals > 0`
 - [ ] `by_reason` groups unsupported reasons and sorts them
-- [ ] `compare_histograms` detects count mismatches in `supported`,
+- [ ] `compare_coverage` detects count mismatches in `supported`,
       `unsupported`, and per-reason buckets
 - [ ] `dune build` passes with no new errors
 - [ ] All tests pass
@@ -136,13 +138,13 @@ baseline file.
 
 ## Epoch 2: Baseline and regression test
 
-> Goal: A checked-in baseline histogram file for all 7 namespaces. A regression
-> test that regenerates the histogram from live GIR files and compares against
+> Goal: A checked-in baseline coverage file for all 7 namespaces. A regression
+> test that regenerates the coverage from live GIR files and compares against
 > the baseline, wired into `dune test gir_gen/`.
 
-### Stage 2.1 — Generate and check in baseline histogram files
+### Stage 2.1 — Generate and check in baseline coverage files
 
-**Goal**: Run the histogram computation against all 7 GIR files to produce a
+**Goal**: Run the coverage computation against all 7 GIR files to produce a
 baseline, then commit the baseline file to the test tree.
 
 **Files**:
@@ -155,8 +157,8 @@ baseline, then commit the baseline file to the test tree.
      `("Gdk", "Gdk-4.0.gir")`, `("Gio", "Gio-2.0.gir")`, `("Pango",
      "Pango-1.0.gir")`, `("Gsk", "Gsk-4.0.gir")`, `("GdkPixbuf",
      "GdkPixbuf-2.0.gir")`, `("Graphene", "Graphene-1.0.gir")`.
-   - For each: calls `histogram_of_file`, wraps all 7 histograms in a
-     `histogram list [@@deriving sexp]`, and writes the result to
+   - For each: calls `coverage_of_file`, wraps all 7 coverage records in a
+     `signal_coverage list [@@deriving sexp]`, and writes the result to
      `gir_gen/test/corpus/signal_corpus_baseline.sexp`.
 2. Run the script and inspect that the baseline is non-empty and reasonable
    (e.g. Gtk has hundreds of signals, Graphene has few or none).
@@ -166,17 +168,17 @@ baseline, then commit the baseline file to the test tree.
 
 **Acceptance criteria**:
 - [ ] `gir_gen/test/corpus/signal_corpus_baseline.sexp` exists and contains 7
-      histogram entries
+      coverage entries
 - [ ] The Gtk entry has `total_signals > 100` and `supported > 0`
 - [ ] `dune build` passes (the baseline file is inert data, no compilation
       impact)
 
 ---
 
-### Stage 2.2 — Regression test that compares live histogram against baseline
+### Stage 2.2 — Regression test that compares live coverage against baseline
 
 **Goal**: Add a test case that reads the checked-in baseline, recomputes
-histograms from the live GIR files, and asserts they match.
+coverage from the live GIR files, and asserts they match.
 
 **Files**:
 - `gir_gen/test/corpus/signal_corpus_tests.ml` — new test module
@@ -187,11 +189,11 @@ histograms from the live GIR files, and asserts they match.
    a. Define `test_baseline_regression`:
       - Read `signal_corpus_baseline.sexp` from the test source tree. Use
         `Filename.dirname(__FILE__)` to locate it relative to the test module.
-      - For each of the 7 namespaces: call `Signal_corpus.histogram_of_file`
+      - For each of the 7 namespaces: call `Signal_corpus.coverage_of_file`
         with the full GIR path (`gir_data_dir () ^ "/Gtk-4.0.gir"`, etc.),
-        producing a live histogram.
-      - Look up the corresponding baseline histogram by namespace.
-      - Call `Signal_corpus.compare_histograms baseline live`.
+        producing a live coverage record.
+      - Look up the corresponding baseline coverage by namespace.
+      - Call `Signal_corpus.compare_coverage baseline live`.
       - Accumulate all mismatches across all 7 namespaces.
       - If any mismatch: fail with a detailed message listing every difference.
    b. Register the test case with `Alcotest.test_case` as a `Slow` test
@@ -205,7 +207,7 @@ histograms from the live GIR files, and asserts they match.
 
 **Acceptance criteria**:
 - [ ] `dune build` passes with no new errors
-- [ ] First run: `dune test gir_gen/` passes (live histogram matches baseline,
+- [ ] First run: `dune test gir_gen/` passes (live coverage matches baseline,
       because we just generated it in Stage 2.1)
 - [ ] Changing a signal classification (e.g. temporarily modifying
       `Signal_marshaller.ml` to return `Unsupported` for something currently
@@ -224,14 +226,14 @@ invocation and that the baseline can be regenerated without drift.
    build includes the new test (it should, since it is added to the
    `test_gir_gen` Alcotest runner).
 2. Run the full test suite twice in succession to confirm no flaky baseline
-   mismatches (e.g. from non-deterministic ordering of histogram entries):
+   mismatches (e.g. from non-deterministic ordering of coverage entries):
    ```bash
    dune test gir_gen/ && dune test gir_gen/
    ```
 3. Document in `gir_gen/test/GIR_GEN_TESTING.md` (or a comment at the top of
    `signal_corpus_tests.ml`) how a developer should intentionally update the
    baseline when a legitimate signal classification change is made:
-   - Temporarily run the histogram generator, overwrite
+   - Temporarily run the coverage generator, overwrite
      `signal_corpus_baseline.sexp`, commit the updated baseline alongside the
      classification change.
 

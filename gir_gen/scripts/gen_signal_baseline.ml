@@ -65,7 +65,7 @@ let classify_signals_of_file filepath =
   in
   class_outcomes @ iface_outcomes
 
-type histogram = {
+type signal_coverage = {
   namespace : string;
   total_signals : int;
   supported : int;
@@ -74,8 +74,8 @@ type histogram = {
 }
 [@@deriving sexp]
 
-let histogram_of_namespace (ns_name : string) (outcomes : classification_outcome list)
-    : histogram =
+let coverage_of_namespace (ns_name : string) (outcomes : classification_outcome list)
+    : signal_coverage =
   let total_signals = List.length outcomes in
   let supported =
     List.fold_left (fun acc -> function Supported _ -> acc + 1 | _ -> acc) 0
@@ -97,12 +97,12 @@ let histogram_of_namespace (ns_name : string) (outcomes : classification_outcome
   let by_reason = List.sort (fun (a, _) (b, _) -> String.compare a b) reason_counts in
   { namespace = ns_name; total_signals; supported; unsupported; by_reason }
 
-let histogram_of_file filepath =
+let coverage_of_file filepath =
   let _, namespace, _, _, _, _, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file filepath []
   in
   let outcomes = classify_signals_of_file filepath in
-  histogram_of_namespace namespace.Types.namespace_name outcomes
+  coverage_of_namespace namespace.Types.namespace_name outcomes
 
 let gir_files =
   [
@@ -121,14 +121,14 @@ let () =
     | [_; dir] -> dir
     | _ -> Filename.concat (Sys.getcwd ()) "gir"
   in
-  let histograms =
+  let coverages =
     List.map (fun (_ns, filename) ->
         let filepath = Filename.concat gir_dir filename in
         Printf.eprintf "Processing %s...\n" filepath;
-        histogram_of_file filepath)
+        coverage_of_file filepath)
       gir_files
   in
-  let sexp_items = List.map sexp_of_histogram histograms in
+  let sexp_items = List.map sexp_of_signal_coverage coverages in
   let sexp = Sexplib.Sexp.List sexp_items in
   let output_path =
     Filename.concat (Sys.getcwd ())

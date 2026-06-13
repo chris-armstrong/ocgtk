@@ -448,7 +448,7 @@ form exercising keyboard shortcuts, close-confirm, input validation, and
 clickable links through generated signal connectors.
 
 **Phase 6 — Signal-corpus regression test.** Parse all 7 GIR files, classify
-every signal, compare against a checked-in baseline histogram.
+every signal, compare against a checked-in baseline signal coverage snapshot.
 
 **Phase 7 — Signal flag propagation.** Parse `when=`/`action`/`no-recurse`/
 `no-hooks` from GIR signals (parser at `gir_parser.ml:613` currently drops

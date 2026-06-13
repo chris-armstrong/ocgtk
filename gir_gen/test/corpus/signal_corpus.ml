@@ -83,7 +83,7 @@ let classify_signals_of_file filepath =
 (* Histogram aggregation                                              *)
 (* ================================================================= *)
 
-type histogram = {
+type signal_coverage = {
   namespace : string;
   total_signals : int;
   supported : int;
@@ -95,8 +95,8 @@ type histogram = {
 let count_supported (outcomes : classification_outcome list) : int =
   List.fold_left (fun acc -> function Supported _ -> acc + 1 | _ -> acc) 0 outcomes
 
-let histogram_of_namespace (namespace_name : string)
-    (outcomes : classification_outcome list) : histogram =
+let coverage_of_namespace (namespace_name : string)
+    (outcomes : classification_outcome list) : signal_coverage =
   let total_signals = List.length outcomes in
   let supported = count_supported outcomes in
   let unsupported = total_signals - supported in
@@ -115,14 +115,14 @@ let histogram_of_namespace (namespace_name : string)
   let by_reason = List.sort (fun (a, _) (b, _) -> String.compare a b) reason_counts in
   { namespace = namespace_name; total_signals; supported; unsupported; by_reason }
 
-let histogram_of_file filepath =
+let coverage_of_file filepath =
   let _, namespace, _, _, _, _, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file filepath []
   in
   let outcomes = classify_signals_of_file filepath in
-  histogram_of_namespace namespace.namespace_name outcomes
+  coverage_of_namespace namespace.namespace_name outcomes
 
-let compare_histograms (baseline : histogram) (live : histogram) :
+let compare_coverage (baseline : signal_coverage) (live : signal_coverage) :
     (unit, string list) result =
   let mismatches = ref [] in
   let check_field label expected actual =
@@ -216,7 +216,7 @@ let test_synthetic_supported_signal () =
     ~finally:(fun () -> Sys.remove tmp)
     classify_and_assert_synthetic
 
-let test_histogram_of_namespace_counts () =
+let test_coverage_of_namespace_counts () =
   let outcomes =
     [
       Supported { class_or_iface = "A"; signal_name = "sig1" };
@@ -228,21 +228,21 @@ let test_histogram_of_namespace_counts () =
         { class_or_iface = "C"; signal_name = "sig5"; reason = "bad return type" };
     ]
   in
-  let hist = histogram_of_namespace "TestNS" outcomes in
-  Alcotest.(check string) "namespace" "TestNS" hist.namespace;
-  Alcotest.(check int) "total_signals" 5 hist.total_signals;
-  Alcotest.(check int) "supported" 3 hist.supported;
-  Alcotest.(check int) "unsupported" 2 hist.unsupported;
+  let cov = coverage_of_namespace "TestNS" outcomes in
+  Alcotest.(check string) "namespace" "TestNS" cov.namespace;
+  Alcotest.(check int) "total_signals" 5 cov.total_signals;
+  Alcotest.(check int) "supported" 3 cov.supported;
+  Alcotest.(check int) "unsupported" 2 cov.unsupported;
   (* by_reason is sorted alphabetically by reason *)
-  Alcotest.(check int) "by_reason length" 1 (List.length hist.by_reason);
-  match hist.by_reason with
+  Alcotest.(check int) "by_reason length" 1 (List.length cov.by_reason);
+  match cov.by_reason with
   | [ (reason, count) ] ->
       Alcotest.(check string) "reason" "bad return type" reason;
       Alcotest.(check int) "count" 2 count
   | _ -> Alcotest.fail "expected exactly one reason bucket"
 
-let test_compare_identical_histograms () =
-  let hist =
+let test_compare_identical_coverage () =
+  let cov =
     {
       namespace = "Gtk";
       total_signals = 10;
@@ -251,13 +251,13 @@ let test_compare_identical_histograms () =
       by_reason = [ ("bad param", 2); ("bad return", 1) ];
     }
   in
-  match compare_histograms hist hist with
+  match compare_coverage cov cov with
   | Ok () -> ()
   | Error reasons ->
-      Alcotest.failf "identical histograms should match, but got: %s"
+      Alcotest.failf "identical coverage should match, but got: %s"
         (String.concat "; " reasons)
 
-let test_compare_histograms_detects_mismatch () =
+let test_compare_coverage_detects_mismatch () =
   let baseline =
     {
       namespace = "Gtk";
@@ -276,24 +276,24 @@ let test_compare_histograms_detects_mismatch () =
       by_reason = [ ("bad param", 1); ("bad return", 2); ("new reason", 1) ];
     }
   in
-  match compare_histograms baseline live with
-  | Ok () -> Alcotest.fail "different histograms should not match"
+  match compare_coverage baseline live with
+  | Ok () -> Alcotest.fail "different coverage should not match"
   | Error reasons ->
       Alcotest.(check bool) "mentions supported mismatch"
         true (List.exists (fun r -> String.length r > 0) reasons);
       Alcotest.(check bool) "has at least one reason"
         true (List.length reasons > 0)
 
-let test_histogram_of_file_returns_nontrivial () =
+let test_coverage_of_file_returns_nontrivial () =
   let gir_dir = Helpers.gir_data_dir () in
   let gtk_gir = Filename.concat gir_dir "Gtk-4.0.gir" in
-  let hist = histogram_of_file gtk_gir in
-  Alcotest.(check bool) "total_signals > 0" true (hist.total_signals > 0);
-  Alcotest.(check bool) "supported > 0" true (hist.supported > 0);
-  Alcotest.(check string) "namespace is Gtk" "Gtk" hist.namespace
+  let cov = coverage_of_file gtk_gir in
+  Alcotest.(check bool) "total_signals > 0" true (cov.total_signals > 0);
+  Alcotest.(check bool) "supported > 0" true (cov.supported > 0);
+  Alcotest.(check string) "namespace is Gtk" "Gtk" cov.namespace
 
 let test_sexp_roundtrip () =
-  let hist : histogram =
+  let cov : signal_coverage =
     {
       namespace = "TestNS";
       total_signals = 5;
@@ -302,13 +302,13 @@ let test_sexp_roundtrip () =
       by_reason = [ ("bad return type", 2 ) ];
     }
   in
-  let sexp_str = Sexplib.Sexp.to_string_hum (sexp_of_histogram hist) in
-  let parsed = histogram_of_sexp (Sexplib.Sexp.of_string sexp_str) in
-  Alcotest.(check string) "namespace" hist.namespace parsed.namespace;
-  Alcotest.(check int) "total_signals" hist.total_signals parsed.total_signals;
-  Alcotest.(check int) "supported" hist.supported parsed.supported;
-  Alcotest.(check int) "unsupported" hist.unsupported parsed.unsupported;
-  Alcotest.(check int) "by_reason length" (List.length hist.by_reason)
+  let sexp_str = Sexplib.Sexp.to_string_hum (sexp_of_signal_coverage cov) in
+  let parsed = signal_coverage_of_sexp (Sexplib.Sexp.of_string sexp_str) in
+  Alcotest.(check string) "namespace" cov.namespace parsed.namespace;
+  Alcotest.(check int) "total_signals" cov.total_signals parsed.total_signals;
+  Alcotest.(check int) "supported" cov.supported parsed.supported;
+  Alcotest.(check int) "unsupported" cov.unsupported parsed.unsupported;
+  Alcotest.(check int) "by_reason length" (List.length cov.by_reason)
     (List.length parsed.by_reason)
 
 let test_baseline_file_readable () =
@@ -317,15 +317,15 @@ let test_baseline_file_readable () =
       "corpus/signal_corpus_baseline.sexp"
   in
   let sexp = Sexplib.Sexp.load_sexp baseline_path in
-  let histograms = Sexplib.Conv.list_of_sexp histogram_of_sexp sexp in
-  Alcotest.(check int) "7 histogram entries" 7 (List.length histograms);
-  let gtk_hist =
-    Helpers.expect_some "no Gtk histogram found in baseline"
-      (List.find_opt (fun hist -> String.equal hist.namespace "Gtk") histograms)
+  let coverages = Sexplib.Conv.list_of_sexp signal_coverage_of_sexp sexp in
+  Alcotest.(check int) "7 coverage entries" 7 (List.length coverages);
+  let gtk_cov =
+    Helpers.expect_some "no Gtk coverage found in baseline"
+      (List.find_opt (fun cov -> String.equal cov.namespace "Gtk") coverages)
       Fun.id
   in
-  Alcotest.(check bool) "Gtk total_signals > 100" true (gtk_hist.total_signals > 100);
-  Alcotest.(check bool) "Gtk supported > 0" true (gtk_hist.supported > 0)
+  Alcotest.(check bool) "Gtk total_signals > 100" true (gtk_cov.total_signals > 100);
+  Alcotest.(check bool) "Gtk supported > 0" true (gtk_cov.supported > 0)
 
 let tests =
   [
@@ -335,21 +335,21 @@ let tests =
       "synthetic gboolean-return signal is classified as Supported" `Quick
       test_synthetic_supported_signal;
     Alcotest.test_case
-      "histogram_of_namespace produces correct counts from outcomes" `Quick
-      test_histogram_of_namespace_counts;
+      "coverage_of_namespace produces correct counts from outcomes" `Quick
+      test_coverage_of_namespace_counts;
     Alcotest.test_case
-      "compare_histograms returns Ok for identical histograms" `Quick
-      test_compare_identical_histograms;
+      "compare_coverage returns Ok for identical coverage" `Quick
+      test_compare_identical_coverage;
     Alcotest.test_case
-      "compare_histograms detects supported/unsupported count mismatches" `Quick
-      test_compare_histograms_detects_mismatch;
+      "compare_coverage detects supported/unsupported count mismatches" `Quick
+      test_compare_coverage_detects_mismatch;
     Alcotest.test_case
-      "histogram_of_file on Gtk-4.0.gir returns non-trivial histogram" `Slow
-      test_histogram_of_file_returns_nontrivial;
+      "coverage_of_file on Gtk-4.0.gir returns non-trivial coverage" `Slow
+      test_coverage_of_file_returns_nontrivial;
     Alcotest.test_case
-      "histogram sexp roundtrip preserves all fields" `Quick
+      "coverage sexp roundtrip preserves all fields" `Quick
       test_sexp_roundtrip;
     Alcotest.test_case
-      "baseline sexp file is readable and contains 7 histograms" `Slow
+      "baseline sexp file is readable and contains 7 coverage entries" `Slow
       test_baseline_file_readable;
   ]
