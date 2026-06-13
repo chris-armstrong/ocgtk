@@ -66,6 +66,8 @@ type gir_function = {
   os : Os_filter.t option;
 }
 
+type signal_run_when = RunFirst | RunLast | RunCleanup
+
 type gir_signal = {
   signal_name : string;
   return_type : gir_type;
@@ -74,6 +76,10 @@ type gir_signal = {
   version : string option;
   version_namespace : string option;
   os : Os_filter.t option;
+  run_when : signal_run_when option;
+  action : bool;
+  no_recurse : bool;
+  no_hooks : bool;
 }
 
 type gir_constructor = {

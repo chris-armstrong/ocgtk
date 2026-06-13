@@ -649,6 +649,18 @@ let parse_gir_file filename filter_classes =
         in
 
         parse_signal_contents ();
+        let run_when =
+          match get_attr "when" attrs with
+          | Some "first" -> Some Types.RunFirst
+          | Some "last" -> Some Types.RunLast
+          | Some "cleanup" -> Some Types.RunCleanup
+          | Some other ->
+              failwith
+                (Printf.sprintf
+                   "Invalid 'when' attribute value on signal '%s': %s"
+                   signal_name other)
+          | None -> None
+        in
         Some
           {
             signal_name;
@@ -658,6 +670,10 @@ let parse_gir_file filename filter_classes =
             version = get_attr "version" attrs;
             version_namespace = None;
             os = None;
+            run_when;
+            action = get_attr "action" attrs |> Utils.parse_bool;
+            no_recurse = get_attr "no-recurse" attrs |> Utils.parse_bool;
+            no_hooks = get_attr "no-hooks" attrs |> Utils.parse_bool;
           }
     | None ->
         skip_element input 1;

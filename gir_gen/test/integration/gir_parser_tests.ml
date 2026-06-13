@@ -205,6 +205,18 @@ let test_parse_class_with_properties () =
   Alcotest.(check bool)
     "Property is construct-only" true underline_prop.construct_only
 
+let signal_run_when_to_string : signal_run_when option -> string = function
+  | None -> "none"
+  | Some RunFirst -> "first"
+  | Some RunLast -> "last"
+  | Some RunCleanup -> "cleanup"
+
+let check_run_when label expected actual =
+  Alcotest.(check string)
+    label
+    (signal_run_when_to_string expected)
+    (signal_run_when_to_string actual)
+
 let test_parse_class_with_signals () =
   let gir_xml =
     wrap_namespace
@@ -241,13 +253,66 @@ let test_parse_class_with_signals () =
   Alcotest.(check int)
     "Signal has no parameters" 0
     (List.length clicked.sig_parameters);
+  check_run_when "clicked run_when is first" (Some RunFirst) clicked.run_when;
 
   let activate =
     List.find (fun s -> s.signal_name = "activate") button.signals
   in
   Alcotest.(check int)
     "Signal has 1 parameter" 1
-    (List.length activate.sig_parameters)
+    (List.length activate.sig_parameters);
+  check_run_when "activate run_when is last" (Some RunLast) activate.run_when
+
+let test_parse_signal_flags () =
+  let gir_xml =
+    wrap_namespace
+      {|
+    <class name="Widget" c:type="GtkWidget">
+      <glib:signal name="default-flags">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+      </glib:signal>
+      <glib:signal name="cleanup-signal" when="cleanup">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+      </glib:signal>
+      <glib:signal name="full-flags" when="last" action="1" no-recurse="1"
+                   no-hooks="1">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+      </glib:signal>
+    </class>
+  |}
+  in
+
+  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let widget = List.hd classes in
+
+  let default_flags =
+    List.find (fun s -> s.signal_name = "default-flags") widget.signals
+  in
+  check_run_when "omitted when= -> None" None default_flags.run_when;
+  Alcotest.(check bool) "default action is false" false default_flags.action;
+  Alcotest.(check bool)
+    "default no_recurse is false" false default_flags.no_recurse;
+  Alcotest.(check bool)
+    "default no_hooks is false" false default_flags.no_hooks;
+
+  let cleanup =
+    List.find (fun s -> s.signal_name = "cleanup-signal") widget.signals
+  in
+  check_run_when "when=cleanup parses" (Some RunCleanup) cleanup.run_when;
+
+  let full =
+    List.find (fun s -> s.signal_name = "full-flags") widget.signals
+  in
+  check_run_when "when=last parses" (Some RunLast) full.run_when;
+  Alcotest.(check bool) "action=1 parses" true full.action;
+  Alcotest.(check bool) "no-recurse=1 parses" true full.no_recurse;
+  Alcotest.(check bool) "no-hooks=1 parses" true full.no_hooks
 
 (* ========================================================================= *)
 (* Interface Parsing Tests *)
@@ -1221,6 +1286,8 @@ let tests =
       test_parse_class_with_properties;
     Alcotest.test_case "Parse class with signals" `Quick
       test_parse_class_with_signals;
+    Alcotest.test_case "Parse signal flag attributes" `Quick
+      test_parse_signal_flags;
     (* Interface tests *)
     Alcotest.test_case "Parse interface" `Quick test_parse_interface;
     Alcotest.test_case "Parse interface without c:type" `Quick
