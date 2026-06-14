@@ -3,16 +3,6 @@ module GMain = Ocgtk_gtk.GMain
 (* Settings Panel Application
    Demonstrates: CheckButton (including radio grouping), ToggleButton, SpinButton *)
 
-let on_close_request window_obj callback =
-  let closure =
-    Gobject.Closure.create (fun argv ->
-        callback ();
-        Gobject.Value.set_boolean (Gobject.Closure.result argv) false)
-  in
-  ignore
-    (Gobject.Signal.connect window_obj ~name:"close-request" ~callback:closure
-       ~after:false)
-
 let () =
   ignore (GMain.init ());
 
@@ -21,7 +11,12 @@ let () =
   let window = new Window.window window_obj in
   window#set_title (Some "Settings Panel");
   window#set_default_size 400 400;
-  on_close_request window_obj (fun () -> GMain.quit ());
+  ignore
+    (window#on_close_request
+       ~callback:(fun () ->
+         GMain.quit ();
+         false)
+       ());
 
   (* Create vertical box for layout *)
   let vbox = new Box.box (Wrappers.Box.new_ `VERTICAL 15) in
