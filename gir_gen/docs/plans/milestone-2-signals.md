@@ -449,9 +449,13 @@ clickable links through generated signal connectors.
 **Phase 6 — Signal-corpus regression test.** Parse all 7 GIR files, classify
 every signal, compare against a checked-in baseline signal coverage snapshot.
 
-**Phase 7 — Signal flag propagation.** Parse `when=`/`action`/`no-recurse`/
-`no-hooks` from GIR signals (parser at `gir_parser.ml:613` currently drops
-them). Detailed signals (`notify::*`) deferred.
+**Phase 7 — Signal flag propagation.** ✅ Done. `parse_signal` reads `when=`
+into `gir_signal.run_when : signal_run_when option` and `action`/`no-recurse`/
+`no-hooks` into matching booleans on `gir_signal` (`types.ml:69`). Parser
+tests cover all four attrs plus the omitted-defaults case
+(`gir_parser_tests.ml:test_parse_signal_flags`). Downstream consumers (signal
+emission, docs) are left unchanged for now; the data is now available to
+future phases. Detailed signals (`notify::*`) deferred.
 
 **Phase 8 — Migrate hand-written closures, archive plan.** Replace manual
 `Gobject.Closure.create` blocks in examples with generated connectors. Move

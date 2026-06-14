@@ -68,7 +68,8 @@ let make_gir_function ~function_name ~c_identifier ~return_type ?parameters ?doc
   }
 
 let make_gir_signal ~signal_name ~return_type ?(sig_parameters = []) ?doc
-    ?version () =
+    ?version ?run_when ?(action = false) ?(no_recurse = false)
+    ?(no_hooks = false) () =
   {
     signal_name;
     return_type;
@@ -77,6 +78,10 @@ let make_gir_signal ~signal_name ~return_type ?(sig_parameters = []) ?doc
     version;
     version_namespace = None;
     os = None;
+    run_when;
+    action;
+    no_recurse;
+    no_hooks;
   }
 
 let make_gir_constructor ~ctor_name ~c_identifier ?(ctor_parameters = [])
