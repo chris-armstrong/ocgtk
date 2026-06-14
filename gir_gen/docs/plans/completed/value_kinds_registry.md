@@ -85,7 +85,7 @@ A small, additive registry layer in `ocgtk/src/common/` that:
 - Rebinding value-like records as inline-struct custom blocks
   (`Gdk.Rectangle`, `Gdk.RGBA`, `Gdk.Point`, `Gtk.Requisition`,
   `Gtk.Allocation`, `Gtk.Border`). That's TASKS.md's "rebind value-type
-  records" entry, deferred to Milestone 3. This plan **enables** that
+  records" entry, deferred to Milestone 3 (see `architecture/todo/TODO.md`). This plan **enables** that
   work by giving the new boxed-struct ops struct a natural home in the
   registry.
 

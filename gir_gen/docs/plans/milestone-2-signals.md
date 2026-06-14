@@ -30,8 +30,7 @@ event-driven UI patterns.
 - Signals with `<callback>`-typed parameters (Milestone 4)
 - Signals with `GArray`, struct-by-value, or `va_list` parameters (Milestone 4)
 - Boxed record types (`Gtk.TextIter`, `Gtk.TreeIter`, `Gtk.TreePath`,
-  `Gdk.EventSequence`, `GLib.Error`) — deferred to Milestone 3/4 (though the
-  generic GValue boxed bridge is already in place)
+  `Gdk.EventSequence`, `GLib.Error`) — deferred to Milestone 3/4 (see `architecture/todo/TODO.md`; the generic GValue boxed bridge is already in place)
 
 ---
 
@@ -112,8 +111,8 @@ Gdk, Gio, Pango, Gsk, GdkPixbuf, Graphene):
 | D. bool return, 0 or primitive params (`close-request`, `key-pressed`, `state-set`) | ~68 | No | Yes |
 | E. bool return, GObject\* params | ~18 | No | Yes |
 | F. non-bool/void return (string, int, GObject\*) | ~35 | No | partially (int, int64, string only) |
-| G. detailed (`notify::\*`) | ~2 + every property | No | No (deferred) |
-| H. hard cases (GArray/GVariant return, callback, struct-by-value, boxed iter) | ~76 | No | No (deferred) |
+ | G. detailed (`notify::\*`) | ~2 + every property | No | No (deferred; see `architecture/todo/TODO.md`) |
+ | H. hard cases (GArray/GVariant return, callback, struct-by-value, boxed iter) | ~76 | No | No (deferred; see `architecture/todo/TODO.md`) |
 
 Expected GTK signal coverage after this milestone: ~141 → ~268 (≈77%), plus
 analogous gains in Gdk/Gio/Pango.

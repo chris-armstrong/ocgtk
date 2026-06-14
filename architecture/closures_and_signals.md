@@ -316,8 +316,8 @@ generated output):
 
 | Pattern | Reason |
 |---------|--------|
-| `GArray` / array types | Marshalling through `GValue` for arrays is not implemented |
-| Boxed record types | `Gobject.Value.get_boxed` not yet wired to specific types |
+| `GArray` / array types | Marshalling through `GValue` for arrays is not implemented (see `todo/TODO.md`) |
+| Boxed record types | `Gobject.Value.get_boxed` not yet wired to specific types (see `todo/TODO.md`) |
 | Callback parameters | Deferred to a future milestone |
 | `gpointer` | Opaque pointer with no OCaml representation |
 | `GdkEvent` subtypes | Requires specialised union handling |

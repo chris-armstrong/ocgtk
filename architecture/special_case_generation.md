@@ -64,7 +64,7 @@ gtk_drop_target_set_gtypes(self, c_types, n_types);
 This hiding is implemented at the C level: the companion length parameter is
 substituted with `Wosize_val(array)` when the C function is called. The OCaml
 Layer 1 signature still exposes the length parameter; full hiding at the OCaml
-API level is tracked in `todo/KNOWN_BUGS.md` (BUG-002).
+API level is tracked in `todo/TODO.md` (Array length hiding).
 
 ### GPtrArray
 
@@ -123,7 +123,7 @@ g_list_free(list);
 ```
 
 The element type must be resolvable via `type_mappings`. Lists whose element type
-is an interface are currently skipped (BUG-009 in `todo/KNOWN_BUGS.md`).
+is an interface are currently skipped (see `todo/TODO.md`).
 
 ---
 
@@ -297,4 +297,4 @@ accessors, callback-typed properties, `GHashTable`, union types, and async
 `Gio` callback patterns.
 
 For the full list of known limitations see
-[todo/KNOWN_BUGS.md](./todo/KNOWN_BUGS.md).
+[todo/TODO.md](./todo/TODO.md).
