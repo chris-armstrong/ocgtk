@@ -24,6 +24,7 @@ val generate_ml_interface :
   entity_kind:Filtering.entity_kind ->
   ?from_gobject_c_name:string ->
   ?signals:Types.gir_signal list ->
+  ?fields:Types.gir_record_field list ->
   unit ->
   string
 (** Generate a complete OCaml interface or implementation module. Handles
@@ -51,6 +52,9 @@ val generate_ml_interface :
       external
     - signals: Optional list of GIR signals to emit as [val on_<sig>] /
       [let on_<sig>] bindings. Defaults to [[]] for backward compatibility.
+    - fields: Optional list of GIR record fields. If provided and non-empty, a
+      [make] constructor external declaration is generated from the writable
+      fields.
 
     Returns: Generated OCaml source code as a string *)
 
