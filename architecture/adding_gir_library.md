@@ -100,7 +100,6 @@ Create hand-written bindings for common types and functions:
 #### `src/<library>/core/<library>.ml`
 ```ocaml
 (* Core OCaml bindings *)
-open Gaux
 
 (* Add type definitions and utility functions *)
 ```
@@ -312,34 +311,6 @@ ocgtk/
 │           └── *_enums.mli           # Enums/bitfields
 ```
 
----
-
-## Recent Fixes
-
-### 2026-01-02: Constructor Self-Reference and Out Parameter Fixes
-
-Three critical code generation bugs were discovered and fixed while adding GDK support:
-
-1. **Constructor self-reference bug**: Constructor parameters that reference the same type being defined (e.g., `Cursor.new_from_name` taking `Cursor.t option` as fallback) were generating `Cursor.t` instead of `t`, causing "module is an alias for itself" errors.
-   - **Fix**: Modified `ml_interface.ml` to apply `simplify_self_reference` to constructor parameter types (line 198)
-   - **File**: `gir_gen/lib/generate/ml_interface.ml`
-
-2. **Out parameter struct pointer bug**: Out parameters for struct types (like `GdkRectangle`) were being passed by value instead of by pointer to their conversion functions, causing type mismatches like "incompatible type for argument 1 of 'Val_GdkRectangle'".
-   - **Fix**: Modified `nullable_c_to_ml_expr` in `c_stubs.ml` to detect struct types (conversion functions starting with `Val_Gdk` but not ending in `Type` or `Flags`) and pass their address using `&var` for out parameters
-   - **File**: `gir_gen/lib/generate/c_stubs.ml` (lines 24-45)
-
-3. **Opaque record types**: Records with no public methods/constructors (like `EventSequence`) need minimal module definitions when referenced by other types.
-   - **Workaround**: Manually create minimal `.ml/.mli` files with `type t = Obj.t`
-   - **Future fix needed**: Code generator should auto-generate these minimal modules
-
-### 2025-12-19: Previous Fixes
-
-1. **Dynamic pkg-config references**: The dune-generated.inc now correctly generates pkg-config references for each library (e.g., `cflag-gio.sexp` for GIO instead of hardcoded `cflag-gtk4.sexp`)
-
-2. **Result type wrapping**: Methods that throw errors (return `(type, GError.t) result`) now correctly wrap class return types using `Result.map` instead of direct instantiation
-
-These fixes enable proper support for multiple libraries beyond GTK.
-
 ## Known Limitations
 
 When adding a new library, be aware of these gir_gen limitations:
@@ -353,7 +324,7 @@ When adding a new library, be aware of these gir_gen limitations:
 7. **Record fields**: No field accessor generation.
 8. **Factory functions**: No high-level factory function generation.
 
-Refer to `architecture/todo/KNOWN_BUGS.md` for the full list.
+Refer to `architecture/todo/TODO.md` for the full list.
 
 ---
 
@@ -381,7 +352,7 @@ let excluded_types = [
 
 **Cause**: Methods that can throw errors return result types. These need special handling when the success value is a class instance.
 
-**Solution**: This is automatically handled by gir_gen (as of 2025-12-19). Regenerate bindings if you see this error in older generated code.
+**Solution**: This is automatically handled by gir_gen. Regenerate bindings if you see this error.
 
 ### Runtime Errors
 
@@ -396,31 +367,24 @@ let excluded_types = [
 
 See the initial implementation for a concrete example of adding Gio-2.0 following Plan B.
 
-### Example 2: Adding GDK (2026-01-02)
+### Example 2: Adding GDK
 
 GDK was added as the third library after GTK and GIO. Key learnings:
 
 **Setup differences:**
-- GDK doesn't have a separate pkg-config package - it's bundled with GTK4
-- Solution: Use `pkg-config --cflags gtk4` in the dune file
+- GDK doesn't have a separate pkg-config package — it's bundled with GTK4.
+  Use `pkg-config --cflags gtk4` in the dune file.
 
-**Issues encountered and fixed:**
-1. **Self-reference in constructors**: `Cursor.new_from_name` takes a `Cursor.t option` fallback parameter
-   - Required fix to code generator to use `t` instead of `Cursor.t` in same-module references
+**Opaque record types**: `EventSequence` has no public API but is referenced by
+other types. If a record has no fields, constructors, or methods, the generator
+produces no module for it. Create a minimal handwritten module in `core/`:
 
-2. **Struct out parameters**: Methods like `Monitor.get_geometry` return `GdkRectangle` via out parameter
-   - Required fix to pass `&out_var` instead of `out_var` for struct types
-   - Had to distinguish between structs and enums/bitfields by checking conversion function naming patterns
-
-3. **Opaque record types**: `EventSequence` has no public API but is referenced by other types
-   - Manually created minimal module: `type t = Obj.t`
+```ocaml
+(* src/gdk/core/event_sequence.ml *)
+type t = Obj.t
+```
 
 **Files created:**
-- `src/gdk/dune` - Library definition using `gtk4` for pkg-config
-- `src/gdk/core/ml_gdk.c` - Placeholder for hand-written stubs
-- `src/gdk/generated/*` - Auto-generated bindings (47 classes, 5 interfaces, 32 records)
-- `src/Gdk.ml` - Wrapper module re-exporting from ocgtk_gdk
-
-**Result**:
-- Full GDK bindings successfully generated and compiled
-- Discovered and fixed 3 code generator bugs that will benefit future library additions
+- `src/gdk/dune` — Library definition using `gtk4` for pkg-config
+- `src/gdk/core/ml_gdk.c` — Placeholder for hand-written stubs
+- `src/gdk/generated/*` — Auto-generated bindings

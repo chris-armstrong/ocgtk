@@ -597,7 +597,7 @@ was entirely dead code.
 
 **Limitations:**
 - InOut parameters are partially supported but may have edge cases
-- Multiple out parameters returning tuples are not yet wrapped
+- Multiple out parameters returning tuples are not yet wrapped (see `architecture/todo/TODO.md`)
 
 ### 6. Array and List Types - Implemented
 **Status:** Array support is production-ready for methods, constructors, and properties.
@@ -637,7 +637,7 @@ was entirely dead code.
 
 ### 9. Layer 1 Accessor Methods Not Generated
 **Issue:** `as_widget : t -> Widget.t` and similar parent chain accessor
-methods are not generated in Layer 1 modules.
+methods are not generated in Layer 1 modules (see `architecture/todo/TODO.md`).
 
 **Impact:** Layer 2 `inherit` provides parent method access, but there's no
 direct L1 function to upcast a type to its ancestor's type. Could be
@@ -745,9 +745,9 @@ implemented by walking the parent chain.
 
 | Feature | Status | Completeness |
 |---------|--------|--------------|
-| GIR Parsing | ✓ Working | 90% (missing callback types) |
+| GIR Parsing | ✓ Working | 90% (see `architecture/todo/TODO.md`) |
 | C FFI Generation | ✓ Working | 90% (arrays, out params implemented) |
-| Low-Level OCaml Bindings | ✓ Working | 90% (missing some type conversions) |
+| Low-Level OCaml Bindings | ✓ Working | 90% (see `architecture/todo/TODO.md`) |
 | High-Level Class Wrappers | ⚠ Basic | 65% (no specializations) |
 | Signal Handling | ⚠ Partial | 50% (parameterless + typed parameters for supported types) |
 | Enum/Bitfield Support | ✓ Complete | 95% (same + cross-namespace) |
@@ -770,8 +770,8 @@ The original design plan outlined a comprehensive multi-phase implementation. Th
 
 - **Phase 1 (Type System):** ✓ Complete - Polymorphic variants, hierarchy types, accessor methods all implemented
 - **Phase 2 (Signals):** ⚠ Partial - Simple signal generation works, parameter/return value handling partially implemented via `signal_marshaller.ml`
-- **Phase 3 (High-Level Classes):** ⚠ Partial - Skeleton/concrete classes generated, out/inout parameter support added, specializations still missing
-- **Phase 4 (Factory Functions):** ✗ Not Started - Documented but not implemented
+- **Phase 3 (High-Level Classes):** ⚠ Partial - Skeleton/concrete classes generated, out/inout parameter support added, specializations still missing. See `architecture/todo/TODO.md`.
+- **Phase 4 (Factory Functions):** ✗ Not Started - See `architecture/todo/TODO.md`.
 - **Phase 5 (Containers):** ✗ Not Started - No special handling
 - **Phase 6 (Inheritance):** ⚠ Partial - 5 hierarchies hardcoded, not automatic
 - **Phase 7 (Special Patterns):** ✗ Not Started - No widget-specific patterns
