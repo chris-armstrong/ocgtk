@@ -5,8 +5,8 @@ see [KNOWN_BUGS.md](./KNOWN_BUGS.md).
 
 ## Class hierarchy
 
-- Layer 1 parent-chain accessors (`as_widget : t -> Widget.t` etc.) are not yet
-  generated from the parent chain. `Obj.magic` is used at Layer 2 instead.
+- Layer 1 parent-chain accessors (`as_widget : t -> Widget.t` etc.) are
+  generated from the parent chain so Layer 2 can upcast safely.
 - Methods that accept interface types as parameters are currently skipped (BUG-004).
   Proper interface parameter handling requires `as_<interface>` accessors.
 
@@ -38,5 +38,5 @@ generated.
 ## macOS build (BUG-010)
 
 `gio/gdesktopappinfo.h` is included unconditionally in `gio_decls.h` but is not
-available on macOS (Homebrew omits it). The fix is to wrap it in `#ifdef G_OS_UNIX`
-or ignore `GDesktopAppInfo` via the override file.
+available on macOS (Homebrew omits it). Wrap it in `#ifdef G_OS_UNIX` or ignore
+`GDesktopAppInfo` via the override file.

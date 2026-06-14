@@ -403,7 +403,7 @@ other namespaces: `Gtk.Widget` returns `Gdk.Display`; `Gtk.Label` accepts
 `Pango.AttrList`. Without cross-namespace resolution, those methods would be
 skipped entirely.
 
-See [cross_namespace_types.md](./cross_namespace_types.md) for the full treatment.
+See [cross_namespace_types.md](./cross_namespace_types.md) for a detailed description.
 Key points:
 
 - **GLib and GObject are not generated**: they provide the runtime infrastructure

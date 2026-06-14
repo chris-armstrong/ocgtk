@@ -61,9 +61,10 @@ GType* c_types = ...;
 gtk_drop_target_set_gtypes(self, c_types, n_types);
 ```
 
-This hiding is currently implemented at the C level; the OCaml Layer 1 signature
-still exposes the length parameter. Full hiding at the OCaml API level is tracked
-in `todo/KNOWN_BUGS.md` (BUG-002).
+This hiding is implemented at the C level: the companion length parameter is
+substituted with `Wosize_val(array)` when the C function is called. The OCaml
+Layer 1 signature still exposes the length parameter; full hiding at the OCaml
+API level is tracked in `todo/KNOWN_BUGS.md` (BUG-002).
 
 ### GPtrArray
 
@@ -106,7 +107,7 @@ GLib's singly-linked list types (`GList*`, `GSList*`) are represented in GIR as:
 ```
 
 The generator calls `c_stub_list_conv.ml` which produces conversion code that
-walks the list and builds an OCaml array:
+walks the list and builds an OCaml list:
 
 ```c
 GList *list = gtk_widget_list_mnemonic_labels(self);
@@ -177,6 +178,9 @@ gdk_monitor_get_geometry(self, &out_rect);
 CAMLreturn(Val_GdkRectangle(&out_rect));
 ```
 
+The `Val_<Struct>` macro copies the struct value, so the returned value is not a
+pointer to the stack-allocated local.
+
 When a method has both a primary return value and out parameters, both are returned
 as a tuple.
 
@@ -243,10 +247,10 @@ int gtk_enums_input_purpose_to_int(value v) {
 Version guards are applied via two sources:
 
 1. **Override sexp** (`ocgtk/overrides/<ns>.sexp`): explicit
-   `(version "X.Y")` directives added by contributors.
-2. **GIR doc strings**: `override_extractor.ml` scans `<doc>` elements for
-   phrases like "Since: 4.10" and can extract those annotations into override
-   files automatically (via `gir_gen overrides`).
+   `(version "X.Y")` directives added by contributors. This is the primary
+   source of version information.
+2. **GIR `version` attributes** on methods, properties, etc. (`version="X.Y"`),
+   when present and valid in GIR.
 
 ---
 
@@ -258,7 +262,8 @@ typed through `GValue`. The generator produces `get_<prop>` and `set_<prop>`
 wrappers using `GValue` accessor macros (`c_stub_property.ml`).
 
 Properties are skipped when:
-- The property type is an array (cannot be marshalled through `GValue`)
+- The property type is an array (`GValue` can expose boxed arrays, but the
+  generator does not yet marshal arrays through `GValue`)
 - The property has a corresponding getter/setter method (the method takes
   precedence to avoid duplication)
 - The property type is not in `type_mappings`
@@ -285,6 +290,11 @@ The following patterns are suppressed by `filtering.ml` or by absent type mappin
 When a method is skipped, it is absent from the generated output with no indication
 at build time. At runtime the method simply does not exist in the OCaml API; callers
 who need it must write a manual binding in `core/`.
+
+Other patterns that are not yet handled include: callbacks as method parameters,
+factory/constructor helpers, container-specific convenience methods, record field
+accessors, callback-typed properties, `GHashTable`, union types, and async
+`Gio` callback patterns.
 
 For the full list of known limitations see
 [todo/KNOWN_BUGS.md](./todo/KNOWN_BUGS.md).

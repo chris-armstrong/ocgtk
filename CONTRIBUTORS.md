@@ -42,6 +42,15 @@ xvfb-run dune test ocgtk/
 dune test gir_gen/ && xvfb-run dune test ocgtk/
 ```
 
+`xvfb-run` provides a headless X display server so that the ocgtk tests which need a
+display can run. Tests that require a display are automatically skipped when none is
+available, but note that `dune` caches this skip decision — if you later want to run
+the full suite with a display, pass `--force` to dune:
+
+```bash
+dune test gir_gen/ && xvfb-run dune test ocgtk/ --force
+```
+
 Always check the return code — some test output looks like success even on failure.
 
 ## Regenerating Bindings
@@ -61,16 +70,6 @@ After regeneration, rebuild and test:
 ```bash
 dune build && dune test gir_gen/ && xvfb-run dune test ocgtk/
 ```
-
-### Regenerating a single namespace
-
-```bash
-dune exec gir_gen -- generate gir/Gtk-4.0.gir ocgtk/src/gtk
-```
-
-Cross-namespace references won't be available unless you pass `--reference` flags, so
-single-namespace regeneration is best for rapid iteration on generator logic where you
-don't need cross-namespace types to resolve.
 
 ## Development Workflow
 
