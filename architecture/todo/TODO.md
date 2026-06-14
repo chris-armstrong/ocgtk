@@ -12,27 +12,6 @@ implicit `self`, e.g. `gtk_show_uri`, `pango_parse_markup`) are not yet
 generated. ~2,001 such functions exist across all namespaces. Some are required
 for demo applications and common tasks. Tracked as ROADMAP P4.
 
-### Factory functions
-
-High-level factory function generation is not implemented. Widget creation
-requires verbose manual constructor calls and separate property setting.
-Tracked as ROADMAP Phase 4.
-
-### Container helpers
-
-Container-specific convenience methods are not generated. Box-like containers
-(`append`, `prepend`, `insert_child_after`), single-child containers
-(`set_child`, `get_child`), window/dialog lifecycle (`destroy`, `present`,
-`close`, `run`), and TreeView/ListView model management all require direct
-low-level FFI calls. Tracked as ROADMAP Phase 5.
-
-### Range and adjustment helpers
-
-Specialized methods for Range-derived widgets (`Scale`, `Scrollbar`,
-`LevelBar`) are not generated: `value`/`set_value` property methods,
-`adjustment` accessor, `value-changed` signal helpers, and increment/step
-configuration.
-
 ### Record field accessors
 
 Accessing fields of non-opaque record types is not supported. Users cannot
@@ -54,38 +33,17 @@ and Glade file loading helpers are not implemented.
 GIR `<constant>` elements are not generated. 2,536 constants exist across all
 namespaces (2,287 are GDK key syms). Required for `PANGO_SCALE`,
 `GTK_STYLE_PROVIDER_PRIORITY_*`, and GDK key constants. Tracked as ROADMAP
-P3.
-
-### Layer 1 parent-chain accessors
-
-Layer 1 parent-chain accessor methods (`as_widget : t -> Widget.t` etc.) are
-not generated. Layer 2 `inherit` provides parent method access, but there is no
-direct L1 function to upcast a type to its ancestor's type. Could be implemented
-by walking the parent chain.
-
-### Interface parameter handling
-
-Methods that accept interface types as parameters are currently skipped at L2.
-Proper interface parameter handling requires `as_<interface>` accessors.
-GList/GSList parameters containing interface types (e.g. `GSList<Gio.File>`)
-generate broken C stubs because interface structs are opaque. These methods are
-filtered out; manual bindings are required if needed.
+P3. Implementation plan exists at `gir_gen/docs/plans/constant-bindings.md`.
 
 ### Interface generation
 
 Interfaces are generated as ordinary classes but should be generated as virtual
 classes (or class types) with virtual methods that concrete classes inherit and
-implement. Adding proper class type generation and wiring interface
-implementation into the class hierarchy (e.g. `CssProvider` implementing
-`StyleProvider`, `Entry` implementing `Editable`) would eliminate `Obj.magic`
-casts. Tracked as ROADMAP P6.
-
-### Hierarchy detection
-
-Parent chain traversal is currently hardcoded for 5 hierarchies (Widget,
-EventController, CellRenderer, LayoutManager, Expression). Dynamic hierarchy
-detection is needed so new hierarchies are discovered automatically. Tracked
-as ROADMAP Phase 6.
+implement. `Obj.magic` casts have been eliminated — interface access now uses
+`from_gobject` with runtime `g_type_is_a()` checks. Concrete classes correctly
+`inherit` interface classes (e.g. `CssProvider` implements `StyleProvider`,
+`Entry` implements `Editable`). The remaining work is compile-time type safety
+via virtual class types. Tracked as ROADMAP P6.
 
 ## Signal Handling
 
@@ -119,22 +77,24 @@ until this infrastructure exists.
 
 The companion length parameter for length-based arrays is hidden from the C stub
 but still visible in the Layer 1 OCaml signature. It should be dropped from the
-OCaml API entirely with the length derived from `Array.length`.
+OCaml API entirely with the length derived from `Array.length`. Tracked as
+ROADMAP P2.
 
 ### Array-typed properties
 
-Properties whose type is an array are skipped. `GValue` can expose boxed arrays,
-but the generator does not yet marshal arrays through `GValue`.
-
-### Fixed-size stack-allocated arrays
-
-Fixed-size stack-allocated arrays are treated as heap-allocated.
+Properties whose type is an array are skipped by `filtering.ml`. C stub
+generation code exists in `c_stub_property.ml` (handles `g_value_get_boxed`/
+`g_value_set_boxed`), but the OCaml Layer 1 signature generation does not emit
+array-typed properties.
 
 ### Out/InOut parameters
 
-Out parameters are supported. InOut parameters have partial support. Multiple
-out parameters returning tuples are not yet wrapped. Out-param arrays with no
-length are skipped. Double-pointer out-params not marked as arrays are skipped.
+Out parameters are fully supported (primitive, struct, array). Multiple out
+parameters returning tuples ARE generated (e.g. `Pango.Matrix.get_font_scale_factors`
+returns `float * float`). InOut parameters have a type mismatch bug: the C stub
+returns modified values in a tuple, but the OCaml signature declares `unit`,
+silently discarding them. Out-param arrays with no length are skipped.
+Double-pointer out-params not marked as arrays are skipped.
 
 ### Callback parameters in methods
 
@@ -150,9 +110,12 @@ callback parameters. Tracked as ROADMAP P5.
 
 ### Deferred GObject/GLib type mappings
 
-- **GObject.Value** — `GValue_val` exists (ml→c) but there is no `Val_GValue`
-  (c→ml). 73 hits in GTK, 50 in GDK. Deferred until cross-namespace interface
-  types are resolved.
+- **GObject.Value** — Works for property accessors (inline `GValue` in C stubs)
+  and signal marshalling. Methods that take/return `GObject.Value` directly are
+  skipped: no type mapping entry exists, and `Val_GValue` (c→ml) is not
+  implemented. ~23 methods in GTK/GDK and ~21 standalone functions affected
+  (e.g. `TreeModel.set_value`, `Builder.value_from_string`,
+  `Expression.evaluate`).
 - **GObject.Closure** — Only 16 hits in GIR. Most closure usage goes through the
   signal system which is already handled. Low priority.
 - **GLib.Quark, IOCondition, String, SeekType** — Low standalone unlock
@@ -162,15 +125,6 @@ callback parameters. Tracked as ROADMAP P5.
 - **GLib.KeyFile** — 50 hits. Low intersection potential.
 - **GLib.Source** — 37 hits. Most methods use callbacks that can't be
   auto-generated.
-
-### Bounded integer wrapper types
-
-`guint16`, `gint16`, `guint32`, `gint32` are currently mapped to bare `int` /
-`int32`, allowing silent truncation at the C boundary. A custom `bounded_int`
-module with `private int` wrapper types (`UInt8`, `Int8`, `UInt16`, `Int16`,
-`UInt32`, `Int32`) is planned to enforce range constraints at the OCaml level.
-See `architecture/integer_type_design.md`. Tracked as `gobject_glib_type_mappings`
-Task 3.3.1.
 
 ### GHashTable, unions
 
@@ -196,22 +150,6 @@ Only 4 instances exist; low priority.
 Needed to distinguish opaque cairo types from value records. Tracked in
 ROADMAP Backlog.
 
-## Platform and Build Issues
-
-### macOS build
-
-`gio/gdesktopappinfo.h` is included unconditionally in `gio_decls.h` but is not
-available on macOS (Homebrew omits it). Wrap it in `#ifdef G_OS_UNIX` or ignore
-`GDesktopAppInfo` via the override file.
-
-### Throwing constructors
-
-Constructors with `throws="1"` are currently filtered out. The generator already
-handles `throws` for methods (returning `('a, GError.t) result`), but
-constructors need the same `Res_Ok`/`Res_Error` wrapping in
-`c_stub_constructor.ml` and `layer1_constructor.ml`. Tracked as
-`gobject_glib_type_mappings` Separate Track.
-
 ## Documentation and Testing
 
 ### Documentation
@@ -226,57 +164,11 @@ Unit, integration, and C compilation test coverage is incomplete. Missing:
 - Runtime functionality tests with actual GTK4 library
 - Performance benchmarks
 - Example program generation
-- Full end-to-end compilation of generated bindings in CI
-- ML file generation tests (module_structure_tests.ml,
-  type_definition_tests.ml, external_decl_tests.ml, signature_tests.ml)
-- ML generation infrastructure (ml_parser.ml, ml_ast.ml, ml_validation.ml)
 
 ### `dune-modules.sexp` cleanup
 
 Currently unused (all dune files use `(modules :standard)`). Tracked in ROADMAP
 Backlog.
-
-## Known Bugs and Quirks
-
-### Parser (`parse/gir_parser.ml`)
-
-- Element data extraction uses recursive string concatenation (performance issue
-  for large documents).
-- Namespace attribute handling has multiple fallback paths and can be fragile.
-- Record parsing returns `None` on exclude (silent skip, no logging).
-- Signal parameter parsing assumes a single return-value + parameters structure.
-
-### Generator
-
-- Hierarchy root check uses lowercase string comparison (fragile).
-- Combined files are generated even for single-element SCCs.
-- Virtual method de-duplication logic may incorrectly skip inherited methods.
-- Some property getter/setter `GValue` macros have platform-specific edge cases.
-
-### Type mapping (`type_mappings.ml`)
-
-- Type normalization removes the namespace prefix, which can cause collisions.
-- Hash table lookup is case-sensitive, but C types are not canonicalized.
-- Record mapping requires an exact C type match; there is no fuzzy matching.
-- Nullable handling assumes pointer types; value types cause issues.
-
-### Override system (`override_apply.ml`)
-
-- `set_version` lambda is duplicated across ~12 call sites; should be extracted
-  into per-type helpers.
-- Entity-level `Set_version` is dead code (parser never produces it).
-- `namespace_display_name` duplicates knowledge from `version_guard.ml`;
-  adding a new namespace requires updating both.
-- Single guard per property: `(version ...)` supports exactly one version
-  constraint. Properties requiring both a namespace version guard and a
-cross-namespace guard cannot be expressed.
-
-### C FFI
-
-- `value result` declared without `CAMLlocal1` in some generated GVariant C
-  stubs (`ml_g_variant_get_variant`, `ml_g_variant_get_child_value`,
-  `ml_g_variant_type_new`). Currently safe (no GC between allocation and
-  return) but violates OCaml FFI convention.
 
 ## Prerequisite / Roadmap Items
 
@@ -294,24 +186,3 @@ milestones:
    the class hierarchy.
 7. **P7. GList/GSList Interface Element Types** — Detect interface types and
    use pointer-based list handling instead of value-type copying.
-
-## Completed Items (no longer tracked here)
-
-The following were previously limitations but are now implemented:
-
-- **Cross-namespace type resolution** — Classes, interfaces, records, enums,
-  and bitfields are auto-discovered via reference files.
-- **GList/GSList for class element types** — Macro-based conversion in
-  `wrappers.h` with generator support via `c_stub_list_conv.ml`.
-- **Out parameters** — Primitive, struct, and array out parameters are
-  supported.
-- **GVariant** — Full opaque wrapper with scalar, array, dict, and child
-  access support (`src/common/gvariant.ml`, `gvariant_type.ml`).
-- **GLib.Bytes** — Opaque wrapper with `create`, `to_string`, `size`.
-- **Primitive integer type mappings** — `gsize`, `gssize`, `GType`, `guint16`,
-  `gint16`, `gint32`, `guint32`, `gint64`, `guint64`, `gulong`, `gunichar`,
-  `gchar`.
-- **Signals with primitive and GObject parameters** — Generated via
-  `signal_marshaller.ml` and `signal_gen.ml`.
-- **GObject.Object / InitiallyUnowned** — Type mappings added; `` `object_ ``
-  tag introduced as hierarchy root.
