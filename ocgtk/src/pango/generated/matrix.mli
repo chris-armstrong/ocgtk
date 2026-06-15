@@ -115,3 +115,24 @@ external concat : t -> t -> unit = "ml_pango_matrix_concat"
 (** Changes the transformation represented by @matrix to be the
 transformation given by first applying transformation
 given by @new_matrix then applying the original transformation. *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_xx : t -> float = "ml_pango_matrix_get_xx"
+external get_xy : t -> float = "ml_pango_matrix_get_xy"
+external get_yx : t -> float = "ml_pango_matrix_get_yx"
+external get_yy : t -> float = "ml_pango_matrix_get_yy"
+external get_x0 : t -> float = "ml_pango_matrix_get_x0"
+external get_y0 : t -> float = "ml_pango_matrix_get_y0"
+
+(* Setters *)
+external set_xx : t -> float -> unit = "ml_pango_matrix_set_xx"
+external set_xy : t -> float -> unit = "ml_pango_matrix_set_xy"
+external set_yx : t -> float -> unit = "ml_pango_matrix_set_yx"
+external set_yy : t -> float -> unit = "ml_pango_matrix_set_yy"
+external set_x0 : t -> float -> unit = "ml_pango_matrix_set_x0"
+external set_y0 : t -> float -> unit = "ml_pango_matrix_set_y0"
+
+external make : float -> float -> float -> float -> float -> float -> t
+  = "ml_pango_matrix_make_bytecode" "ml_pango_matrix_make_native"

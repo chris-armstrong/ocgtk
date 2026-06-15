@@ -61,3 +61,84 @@ caml_failwith("Item requires Pango >= 1.44");
 return Val_unit;
 }
 #endif
+\
+CAMLexport CAMLprim value ml_pango_item_get_offset(value self)
+{
+    CAMLparam1(self);
+    PangoItem *rec = PangoItem_val(self);
+    CAMLreturn(Val_int(rec->offset));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_item_get_length(value self)
+{
+    CAMLparam1(self);
+    PangoItem *rec = PangoItem_val(self);
+    CAMLreturn(Val_int(rec->length));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_item_get_num_chars(value self)
+{
+    CAMLparam1(self);
+    PangoItem *rec = PangoItem_val(self);
+    CAMLreturn(Val_int(rec->num_chars));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_item_get_analysis(value self)
+{
+    CAMLparam1(self);
+    PangoItem *rec = PangoItem_val(self);
+    CAMLreturn(Val_PangoAnalysis(&rec->analysis));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_item_set_offset(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoItem *rec = PangoItem_val(self);
+    rec->offset = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_item_set_length(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoItem *rec = PangoItem_val(self);
+    rec->length = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_item_set_num_chars(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoItem *rec = PangoItem_val(self);
+    rec->num_chars = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_item_set_analysis(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoItem *rec = PangoItem_val(self);
+    rec->analysis = *PangoAnalysis_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_item_make(value v_offset, value v_length, value v_num_chars, value v_analysis)
+{
+    CAMLparam4(v_offset, v_length, v_num_chars, v_analysis);
+    PangoItem *obj = g_new0(PangoItem, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->offset = Int_val(v_offset);
+    obj->length = Int_val(v_length);
+    obj->num_chars = Int_val(v_num_chars);
+    obj->analysis = *PangoAnalysis_val(v_analysis);
+    CAMLreturn(Val_PangoItem(obj));
+}
+

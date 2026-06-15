@@ -101,3 +101,54 @@ CAMLparam2(self, arg1);
 gboolean result = gsk_rounded_rect_contains_point(GskRoundedRect_val(self), graphene_point_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+\
+CAMLexport CAMLprim value ml_gsk_rounded_rect_get_bounds(value self)
+{
+    CAMLparam1(self);
+    GskRoundedRect *rec = GskRoundedRect_val(self);
+    CAMLreturn(Val_graphene_rect_t(&rec->bounds));
+}
+
+\
+CAMLexport CAMLprim value ml_gsk_rounded_rect_get_corner(value self)
+{
+    CAMLparam1(self);
+    GskRoundedRect *rec = GskRoundedRect_val(self);
+    CAMLlocal1(arr);
+    arr = caml_alloc(4, 0);
+    for (int i = 0; i < 4; i++)
+      caml_modify(&Field(arr, i), Val_graphene_size_t(&rec->corner[i]));
+    CAMLreturn(arr);
+}
+
+\
+CAMLexport CAMLprim value ml_gsk_rounded_rect_set_bounds(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GskRoundedRect *rec = GskRoundedRect_val(self);
+    rec->bounds = *graphene_rect_t_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gsk_rounded_rect_set_corner(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GskRoundedRect *rec = GskRoundedRect_val(self);
+    for (int i = 0; i < 4; i++)
+      rec->corner[i] = *graphene_size_t_val(Field(v_val, i));
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gsk_rounded_rect_make(value v_bounds, value v_corner)
+{
+    CAMLparam2(v_bounds, v_corner);
+    GskRoundedRect *obj = g_new0(GskRoundedRect, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->bounds = *graphene_rect_t_val(v_bounds);
+    for (int i = 0; i < 4; i++)
+      obj->corner[i] = *graphene_size_t_val(Field(v_corner, i));
+    CAMLreturn(Val_GskRoundedRect(obj));
+}
+

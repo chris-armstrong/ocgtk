@@ -28,3 +28,21 @@ external add :
   unit = "ml_g_file_attribute_info_list_add"
 (** Adds a new attribute with @name to the @list, setting
 its @type and @flags. *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_infos : t -> File_attribute_info.t
+  = "ml_g_file_attribute_info_list_get_infos"
+
+external get_n_infos : t -> int = "ml_g_file_attribute_info_list_get_n_infos"
+
+(* Setters *)
+external set_infos : t -> File_attribute_info.t -> unit
+  = "ml_g_file_attribute_info_list_set_infos"
+
+external set_n_infos : t -> int -> unit
+  = "ml_g_file_attribute_info_list_set_n_infos"
+
+external make : File_attribute_info.t -> int -> t
+  = "ml_g_file_attribute_info_list_make"

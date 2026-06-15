@@ -84,6 +84,51 @@ CAMLparam2(self, arg1);
 _Bool result = graphene_size_equal(graphene_size_t_val(self), graphene_size_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+\
+CAMLexport CAMLprim value ml_graphene_size_get_width(value self)
+{
+    CAMLparam1(self);
+    graphene_size_t *rec = graphene_size_t_val(self);
+    CAMLreturn(caml_copy_double(rec->width));
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_size_get_height(value self)
+{
+    CAMLparam1(self);
+    graphene_size_t *rec = graphene_size_t_val(self);
+    CAMLreturn(caml_copy_double(rec->height));
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_size_set_width(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    graphene_size_t *rec = graphene_size_t_val(self);
+    rec->width = Double_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_size_set_height(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    graphene_size_t *rec = graphene_size_t_val(self);
+    rec->height = Double_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_size_make(value v_width, value v_height)
+{
+    CAMLparam2(v_width, v_height);
+    graphene_size_t *obj = g_new0(graphene_size_t, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->width = Double_val(v_width);
+    obj->height = Double_val(v_height);
+    CAMLreturn(Val_graphene_size_t(obj));
+}
+
 
 #else
 

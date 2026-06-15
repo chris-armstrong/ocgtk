@@ -116,6 +116,52 @@ caml_failwith("DBusInterfaceInfo requires GLib >= 2.30");
 return Val_unit;
 }
 #endif
+\
+CAMLexport CAMLprim value ml_g_d_bus_interface_info_get_ref_count(value self)
+{
+    CAMLparam1(self);
+    GDBusInterfaceInfo *rec = GDBusInterfaceInfo_val(self);
+    CAMLreturn(Val_int(rec->ref_count));
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_interface_info_get_name(value self)
+{
+    CAMLparam1(self);
+    GDBusInterfaceInfo *rec = GDBusInterfaceInfo_val(self);
+    CAMLreturn(caml_copy_string(rec->name));
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_interface_info_set_ref_count(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GDBusInterfaceInfo *rec = GDBusInterfaceInfo_val(self);
+    rec->ref_count = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_interface_info_set_name(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GDBusInterfaceInfo *rec = GDBusInterfaceInfo_val(self);
+    g_free(rec->name);
+    rec->name = g_strdup(String_val(v_val));
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_interface_info_make(value v_ref_count, value v_name)
+{
+    CAMLparam2(v_ref_count, v_name);
+    GDBusInterfaceInfo *obj = g_new0(GDBusInterfaceInfo, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->ref_count = Int_val(v_ref_count);
+    obj->name = g_strdup(String_val(v_name));
+    CAMLreturn(Val_GDBusInterfaceInfo(obj));
+}
+
 
 #else
 

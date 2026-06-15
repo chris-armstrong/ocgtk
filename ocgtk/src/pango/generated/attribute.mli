@@ -75,3 +75,16 @@ external as_color : t -> Attr_color.t option = "ml_pango_attribute_as_color"
 (** Returns the attribute cast to `PangoAttrColor`.
 
     This is mainly useful for language bindings. *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_start_index : t -> int = "ml_pango_attribute_get_start_index"
+external get_end_index : t -> int = "ml_pango_attribute_get_end_index"
+
+(* Setters *)
+external set_start_index : t -> int -> unit
+  = "ml_pango_attribute_set_start_index"
+
+external set_end_index : t -> int -> unit = "ml_pango_attribute_set_end_index"
+external make : int -> int -> t = "ml_pango_attribute_make"

@@ -7,3 +7,12 @@ type t = [ `output_vector ] Gobject.obj
     they were one buffer. *)
 
 (* Methods *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_size : t -> Gsize.t = "ml_g_output_vector_get_size"
+
+(* Setters *)
+external set_size : t -> Gsize.t -> unit = "ml_g_output_vector_set_size"
+external make : Gsize.t -> t = "ml_g_output_vector_make"

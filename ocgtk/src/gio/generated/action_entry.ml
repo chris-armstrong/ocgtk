@@ -14,3 +14,22 @@ the future.
 See g_action_map_add_action_entries() for an example. *)
 
 (* Methods *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_name : t -> string = "ml_g_action_entry_get_name"
+
+external get_parameter_type : t -> string
+  = "ml_g_action_entry_get_parameter_type"
+
+external get_state : t -> string = "ml_g_action_entry_get_state"
+
+(* Setters *)
+external set_name : t -> string -> unit = "ml_g_action_entry_set_name"
+
+external set_parameter_type : t -> string -> unit
+  = "ml_g_action_entry_set_parameter_type"
+
+external set_state : t -> string -> unit = "ml_g_action_entry_set_state"
+external make : string -> string -> string -> t = "ml_g_action_entry_make"

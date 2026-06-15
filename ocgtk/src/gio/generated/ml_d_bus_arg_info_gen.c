@@ -50,6 +50,71 @@ CAMLparam1(self);
 GDBusArgInfo* result = g_dbus_arg_info_ref(GDBusArgInfo_val(self));
 CAMLreturn(Val_GDBusArgInfo(result));
 }
+\
+CAMLexport CAMLprim value ml_g_d_bus_arg_info_get_ref_count(value self)
+{
+    CAMLparam1(self);
+    GDBusArgInfo *rec = GDBusArgInfo_val(self);
+    CAMLreturn(Val_int(rec->ref_count));
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_arg_info_get_name(value self)
+{
+    CAMLparam1(self);
+    GDBusArgInfo *rec = GDBusArgInfo_val(self);
+    CAMLreturn(caml_copy_string(rec->name));
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_arg_info_get_signature(value self)
+{
+    CAMLparam1(self);
+    GDBusArgInfo *rec = GDBusArgInfo_val(self);
+    CAMLreturn(caml_copy_string(rec->signature));
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_arg_info_set_ref_count(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GDBusArgInfo *rec = GDBusArgInfo_val(self);
+    rec->ref_count = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_arg_info_set_name(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GDBusArgInfo *rec = GDBusArgInfo_val(self);
+    g_free(rec->name);
+    rec->name = g_strdup(String_val(v_val));
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_arg_info_set_signature(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GDBusArgInfo *rec = GDBusArgInfo_val(self);
+    g_free(rec->signature);
+    rec->signature = g_strdup(String_val(v_val));
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_arg_info_make(value v_ref_count, value v_name, value v_signature)
+{
+    CAMLparam3(v_ref_count, v_name, v_signature);
+    GDBusArgInfo *obj = g_new0(GDBusArgInfo, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->ref_count = Int_val(v_ref_count);
+    obj->name = g_strdup(String_val(v_name));
+    obj->signature = g_strdup(String_val(v_signature));
+    CAMLreturn(Val_GDBusArgInfo(obj));
+}
+
 
 #else
 

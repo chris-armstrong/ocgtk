@@ -41,3 +41,16 @@ external parse : t -> string -> bool = "ml_pango_color_parse"
     `#rrrrggggbbbb`, where `r`, `g` and `b` are hex digits of the red, green,
     and blue components of the color, respectively. (White in the four forms is
     `#fff`, `#ffffff`, `#fffffffff` and `#ffffffffffff`.) *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_red : t -> UInt16.t = "ml_pango_color_get_red"
+external get_green : t -> UInt16.t = "ml_pango_color_get_green"
+external get_blue : t -> UInt16.t = "ml_pango_color_get_blue"
+
+(* Setters *)
+external set_red : t -> UInt16.t -> unit = "ml_pango_color_set_red"
+external set_green : t -> UInt16.t -> unit = "ml_pango_color_set_green"
+external set_blue : t -> UInt16.t -> unit = "ml_pango_color_set_blue"
+external make : UInt16.t -> UInt16.t -> UInt16.t -> t = "ml_pango_color_make"

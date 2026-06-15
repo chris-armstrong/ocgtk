@@ -67,3 +67,46 @@ external init_end : t -> Glyph_item.t -> string -> bool
     a glyph item.
 
     See `PangoGlyphItemIter` for details of cluster orders. *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_glyph_item : t -> Glyph_item.t
+  = "ml_pango_glyph_item_iter_get_glyph_item"
+
+external get_text : t -> string = "ml_pango_glyph_item_iter_get_text"
+external get_start_glyph : t -> int = "ml_pango_glyph_item_iter_get_start_glyph"
+external get_start_index : t -> int = "ml_pango_glyph_item_iter_get_start_index"
+external get_start_char : t -> int = "ml_pango_glyph_item_iter_get_start_char"
+external get_end_glyph : t -> int = "ml_pango_glyph_item_iter_get_end_glyph"
+external get_end_index : t -> int = "ml_pango_glyph_item_iter_get_end_index"
+external get_end_char : t -> int = "ml_pango_glyph_item_iter_get_end_char"
+
+(* Setters *)
+external set_glyph_item : t -> Glyph_item.t -> unit
+  = "ml_pango_glyph_item_iter_set_glyph_item"
+
+external set_text : t -> string -> unit = "ml_pango_glyph_item_iter_set_text"
+
+external set_start_glyph : t -> int -> unit
+  = "ml_pango_glyph_item_iter_set_start_glyph"
+
+external set_start_index : t -> int -> unit
+  = "ml_pango_glyph_item_iter_set_start_index"
+
+external set_start_char : t -> int -> unit
+  = "ml_pango_glyph_item_iter_set_start_char"
+
+external set_end_glyph : t -> int -> unit
+  = "ml_pango_glyph_item_iter_set_end_glyph"
+
+external set_end_index : t -> int -> unit
+  = "ml_pango_glyph_item_iter_set_end_index"
+
+external set_end_char : t -> int -> unit
+  = "ml_pango_glyph_item_iter_set_end_char"
+
+external make :
+  Glyph_item.t -> string -> int -> int -> int -> int -> int -> int -> t
+  = "ml_pango_glyph_item_iter_make_bytecode"
+    "ml_pango_glyph_item_iter_make_native"

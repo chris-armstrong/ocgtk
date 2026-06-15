@@ -79,3 +79,31 @@ external get_extents : t -> Rectangle.t * Rectangle.t
 
     See [method@Pango.Font.get_glyph_extents] for details about the
     interpretation of the rectangles. *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_start_index : t -> int = "ml_pango_layout_line_get_start_index"
+external get_length : t -> int = "ml_pango_layout_line_get_length"
+external get_runs : t -> unit = "ml_pango_layout_line_get_runs"
+
+external get_is_paragraph_start : t -> int
+  = "ml_pango_layout_line_get_is_paragraph_start"
+
+external get_resolved_dir : t -> int = "ml_pango_layout_line_get_resolved_dir"
+
+(* Setters *)
+external set_start_index : t -> int -> unit
+  = "ml_pango_layout_line_set_start_index"
+
+external set_length : t -> int -> unit = "ml_pango_layout_line_set_length"
+external set_runs : t -> unit -> unit = "ml_pango_layout_line_set_runs"
+
+external set_is_paragraph_start : t -> int -> unit
+  = "ml_pango_layout_line_set_is_paragraph_start"
+
+external set_resolved_dir : t -> int -> unit
+  = "ml_pango_layout_line_set_resolved_dir"
+
+external make : int -> int -> unit -> int -> int -> t
+  = "ml_pango_layout_line_make"

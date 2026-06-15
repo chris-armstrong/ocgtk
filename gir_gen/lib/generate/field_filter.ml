@@ -37,35 +37,44 @@ let is_dynamic_array (field_type : gir_type) : bool =
       && not (Filtering.is_string_array arr)
   | None -> false
 
+(* Check if a fixed-size array's element type is gpointer.
+   GIR records like GtkBitsetIter have fixed-size gpointer arrays as opaque
+   private storage.  We cannot generate meaningful accessors for these. *)
+let is_gpointer_array (field_type : gir_type) : bool =
+  match field_type.array with
+  | Some arr -> is_gpointer_type arr.element_type
+  | None -> false
+
 (* Check if a field should be generated at all.
    Returns false for fields that cannot be generated:
+   - not readable AND not writable (private/internal-only fields)
    - gpointer type
+   - gpointer fixed-size array (opaque private storage)
    - Callback function pointer type
-   - Private fields (TODO: parser doesn't support private attribute yet)
    - Dynamic C arrays without fixed size or zero-terminator
-   - Bit-fields (TODO: parser doesn't support bits attribute yet)
    - AttrClass struct-of-function-pointers *)
 let should_generate_field (field : gir_record_field) : bool =
   match field.field_type with
   | None -> false
   | Some field_type ->
+      let private_field = not field.readable && not field.writable in
       let gpointer = is_gpointer_type field_type in
+      let gpointer_arr = is_gpointer_array field_type in
       let callback = is_callback_field_type field_type in
       let attr_class = is_attr_class_type field_type in
       let dynamic_arr = is_dynamic_array field_type in
-      (* TODO: check field.private when parser supports it *)
-      (* TODO: check bit-field when parser supports bits attribute *)
-      let skip = gpointer || callback || attr_class || dynamic_arr in
+      let skip = private_field || gpointer || gpointer_arr || callback || attr_class || dynamic_arr in
       Log.debug (fun m ->
-          m "should_generate_field: %s -> skip=%b (gpointer=%b callback=%b \
-             attr_class=%b dynamic_arr=%b)\n"
-            field.field_name skip gpointer callback attr_class dynamic_arr);
+          m "should_generate_field: %s -> skip=%b (private=%b gpointer=%b \
+             gpointer_arr=%b callback=%b attr_class=%b dynamic_arr=%b)\n"
+            field.field_name skip private_field gpointer gpointer_arr callback
+            attr_class dynamic_arr);
       not skip
 
 (* Check if a field getter should be generated.
-   In addition to should_generate_field, also checks no_getter override. *)
+   In addition to should_generate_field, also checks readable and no_getter override. *)
 let should_generate_field_getter (field : gir_record_field) : bool =
-  should_generate_field field && not field.no_getter
+  should_generate_field field && field.readable && not field.no_getter
 
 (* Check if a field setter should be generated.
    In addition to should_generate_field, also checks no_setter override

@@ -42,6 +42,52 @@ value Val_GDBusErrorEntry_option(const GDBusErrorEntry *ptr) {
 
 #if GLIB_CHECK_VERSION(2,26,0)
 
+\
+CAMLexport CAMLprim value ml_g_d_bus_error_entry_get_error_code(value self)
+{
+    CAMLparam1(self);
+    GDBusErrorEntry *rec = GDBusErrorEntry_val(self);
+    CAMLreturn(Val_int(rec->error_code));
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_error_entry_get_dbus_error_name(value self)
+{
+    CAMLparam1(self);
+    GDBusErrorEntry *rec = GDBusErrorEntry_val(self);
+    CAMLreturn(caml_copy_string(rec->dbus_error_name));
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_error_entry_set_error_code(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GDBusErrorEntry *rec = GDBusErrorEntry_val(self);
+    rec->error_code = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_error_entry_set_dbus_error_name(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GDBusErrorEntry *rec = GDBusErrorEntry_val(self);
+    g_free(rec->dbus_error_name);
+    rec->dbus_error_name = g_strdup(String_val(v_val));
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_error_entry_make(value v_error_code, value v_dbus_error_name)
+{
+    CAMLparam2(v_error_code, v_dbus_error_name);
+    GDBusErrorEntry *obj = g_new0(GDBusErrorEntry, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->error_code = Int_val(v_error_code);
+    obj->dbus_error_name = g_strdup(String_val(v_dbus_error_name));
+    CAMLreturn(Val_GDBusErrorEntry(obj));
+}
+
 
 #else
 

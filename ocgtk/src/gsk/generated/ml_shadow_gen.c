@@ -30,3 +30,84 @@ value Val_GskShadow_option(const GskShadow *ptr) {
   return Val_some(Val_GskShadow(ptr));
 }
 
+\
+CAMLexport CAMLprim value ml_gsk_shadow_get_color(value self)
+{
+    CAMLparam1(self);
+    GskShadow *rec = GskShadow_val(self);
+    CAMLreturn(Val_GdkRGBA(&rec->color));
+}
+
+\
+CAMLexport CAMLprim value ml_gsk_shadow_get_dx(value self)
+{
+    CAMLparam1(self);
+    GskShadow *rec = GskShadow_val(self);
+    CAMLreturn(caml_copy_double(rec->dx));
+}
+
+\
+CAMLexport CAMLprim value ml_gsk_shadow_get_dy(value self)
+{
+    CAMLparam1(self);
+    GskShadow *rec = GskShadow_val(self);
+    CAMLreturn(caml_copy_double(rec->dy));
+}
+
+\
+CAMLexport CAMLprim value ml_gsk_shadow_get_radius(value self)
+{
+    CAMLparam1(self);
+    GskShadow *rec = GskShadow_val(self);
+    CAMLreturn(caml_copy_double(rec->radius));
+}
+
+\
+CAMLexport CAMLprim value ml_gsk_shadow_set_color(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GskShadow *rec = GskShadow_val(self);
+    rec->color = *GdkRGBA_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gsk_shadow_set_dx(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GskShadow *rec = GskShadow_val(self);
+    rec->dx = Double_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gsk_shadow_set_dy(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GskShadow *rec = GskShadow_val(self);
+    rec->dy = Double_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gsk_shadow_set_radius(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GskShadow *rec = GskShadow_val(self);
+    rec->radius = Double_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gsk_shadow_make(value v_color, value v_dx, value v_dy, value v_radius)
+{
+    CAMLparam4(v_color, v_dx, v_dy, v_radius);
+    GskShadow *obj = g_new0(GskShadow, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->color = *GdkRGBA_val(v_color);
+    obj->dx = Double_val(v_dx);
+    obj->dy = Double_val(v_dy);
+    obj->radius = Double_val(v_radius);
+    CAMLreturn(Val_GskShadow(obj));
+}
+

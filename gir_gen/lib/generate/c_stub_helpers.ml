@@ -214,7 +214,8 @@ module Code_gen = struct
       [size] is the fixed array size.
       [c_field] is the C struct member access expression (e.g., "rec->axes").
       Returns the complete function body (without CAMLparam). *)
-  let generate_array_getter_body ~element_c_type ~size ~c_field =
+  let generate_array_getter_body ~element_c_type ~element_c_to_ml ~element_is_struct
+      ~size ~c_field =
     let is_float =
       String.equal element_c_type "gdouble" || String.equal element_c_type "gfloat"
       || String.equal element_c_type "double" || String.equal element_c_type "float"
@@ -227,23 +228,32 @@ module Code_gen = struct
            Store_double_field(arr, i, %s[i]);\n    \
          CAMLreturn(arr);"
         size size c_field
-    else
-      (* For nested record arrays, element_c_type is the C struct type name,
-         and Val_<element_c_type> is the macro to box it. *)
+    else if element_is_struct then
+      (* Struct elements: the boxing macro takes a pointer. *)
       sprintf
         "CAMLlocal1(arr);\n    \
          arr = caml_alloc(%d, 0);\n    \
          for (int i = 0; i < %d; i++)\n      \
-           caml_modify(&Field(arr, i), Val_%s(&%s[i]));\n    \
+           caml_modify(&Field(arr, i), %s(&%s[i]));\n    \
          CAMLreturn(arr);"
-        size size element_c_type c_field
+        size size element_c_to_ml c_field
+    else
+      (* Primitive elements: the boxing macro takes the value directly. *)
+      sprintf
+        "CAMLlocal1(arr);\n    \
+         arr = caml_alloc(%d, 0);\n    \
+         for (int i = 0; i < %d; i++)\n      \
+           caml_modify(&Field(arr, i), %s(%s[i]));\n    \
+         CAMLreturn(arr);"
+        size size element_c_to_ml c_field
 
   (** Generate C setter body for a fixed-size array field.
       [element_c_type] is the C type of array elements.
       [size] is the fixed array size.
       [c_field] is the C struct member access expression.
       Returns the complete function body (without CAMLparam). *)
-  let generate_array_setter_body ~element_c_type ~size ~c_field =
+  let generate_array_setter_body ~element_c_type ~element_ml_to_c ~element_is_struct
+      ~size ~c_field =
     let is_float =
       String.equal element_c_type "gdouble" || String.equal element_c_type "gfloat"
       || String.equal element_c_type "double" || String.equal element_c_type "float"
@@ -255,18 +265,12 @@ module Code_gen = struct
          CAMLreturn(Val_unit);"
         size c_field
     else
-      (* For nested records: dereference the pointer returned by the _val macro.
-         For primitives: use the macro directly (e.g., Int_val). *)
-      let deref =
-        if String.length element_c_type > 0 && Char.equal element_c_type.[0] 'g' then
-          ""
-        else "*"
-      in
+      let deref = if element_is_struct then "*" else "" in
       sprintf
         "for (int i = 0; i < %d; i++)\n      \
-           %s[i] = %s%s_val(Field(v_val, i));\n    \
+           %s[i] = %s%s(Field(v_val, i));\n    \
          CAMLreturn(Val_unit);"
-        size c_field deref element_c_type
+        size c_field deref element_ml_to_c
 
   (** Generate C getter body for a gchar** (null-terminated string array) field.
       [c_field] is the C struct member access expression.

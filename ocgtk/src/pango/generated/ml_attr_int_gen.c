@@ -30,3 +30,30 @@ value Val_PangoAttrInt_option(const PangoAttrInt *ptr) {
   return Val_some(Val_PangoAttrInt(ptr));
 }
 
+\
+CAMLexport CAMLprim value ml_pango_attr_int_get_value(value self)
+{
+    CAMLparam1(self);
+    PangoAttrInt *rec = PangoAttrInt_val(self);
+    CAMLreturn(Val_int(rec->value));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attr_int_set_value(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoAttrInt *rec = PangoAttrInt_val(self);
+    rec->value = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attr_int_make(value v_value)
+{
+    CAMLparam1(v_value);
+    PangoAttrInt *obj = g_new0(PangoAttrInt, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->value = Int_val(v_value);
+    CAMLreturn(Val_PangoAttrInt(obj));
+}
+

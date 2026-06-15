@@ -42,6 +42,33 @@ value Val_GOutputVector_option(const GOutputVector *ptr) {
 
 #if GLIB_CHECK_VERSION(2,22,0)
 
+\
+CAMLexport CAMLprim value ml_g_output_vector_get_size(value self)
+{
+    CAMLparam1(self);
+    GOutputVector *rec = GOutputVector_val(self);
+    CAMLreturn(Val_gsize(rec->size));
+}
+
+\
+CAMLexport CAMLprim value ml_g_output_vector_set_size(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GOutputVector *rec = GOutputVector_val(self);
+    rec->size = Gsize_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_output_vector_make(value v_size)
+{
+    CAMLparam1(v_size);
+    GOutputVector *obj = g_new0(GOutputVector, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->size = Gsize_val(v_size);
+    CAMLreturn(Val_GOutputVector(obj));
+}
+
 
 #else
 

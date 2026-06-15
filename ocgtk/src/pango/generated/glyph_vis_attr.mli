@@ -13,3 +13,20 @@ type t = [ `glyph_vis_attr ] Gobject.obj
     Arabic text, accent glyphs follow the glyphs for the base character. *)
 
 (* Methods *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_is_cluster_start : t -> int
+  = "ml_pango_glyph_vis_attr_get_is_cluster_start"
+
+external get_is_color : t -> int = "ml_pango_glyph_vis_attr_get_is_color"
+
+(* Setters *)
+external set_is_cluster_start : t -> int -> unit
+  = "ml_pango_glyph_vis_attr_set_is_cluster_start"
+
+external set_is_color : t -> int -> unit
+  = "ml_pango_glyph_vis_attr_set_is_color"
+
+external make : int -> int -> t = "ml_pango_glyph_vis_attr_make"

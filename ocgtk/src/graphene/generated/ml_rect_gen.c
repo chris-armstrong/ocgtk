@@ -425,6 +425,51 @@ CAMLparam2(self, arg1);
 _Bool result = graphene_rect_contains_point(graphene_rect_t_val(self), graphene_point_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+\
+CAMLexport CAMLprim value ml_graphene_rect_get_origin(value self)
+{
+    CAMLparam1(self);
+    graphene_rect_t *rec = graphene_rect_t_val(self);
+    CAMLreturn(Val_graphene_point_t(&rec->origin));
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_rect_get_size(value self)
+{
+    CAMLparam1(self);
+    graphene_rect_t *rec = graphene_rect_t_val(self);
+    CAMLreturn(Val_graphene_size_t(&rec->size));
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_rect_set_origin(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    graphene_rect_t *rec = graphene_rect_t_val(self);
+    rec->origin = *graphene_point_t_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_rect_set_size(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    graphene_rect_t *rec = graphene_rect_t_val(self);
+    rec->size = *graphene_size_t_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_rect_make(value v_origin, value v_size)
+{
+    CAMLparam2(v_origin, v_size);
+    graphene_rect_t *obj = g_new0(graphene_rect_t, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->origin = *graphene_point_t_val(v_origin);
+    obj->size = *graphene_size_t_val(v_size);
+    CAMLreturn(Val_graphene_rect_t(obj));
+}
+
 
 #else
 

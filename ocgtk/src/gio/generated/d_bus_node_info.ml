@@ -19,3 +19,14 @@ external lookup_interface : t -> string -> D_bus_interface_info.t option
 (** Looks up information about an interface.
 
     The cost of this function is O(n) in number of interfaces. *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_ref_count : t -> int = "ml_g_d_bus_node_info_get_ref_count"
+external get_path : t -> string = "ml_g_d_bus_node_info_get_path"
+
+(* Setters *)
+external set_ref_count : t -> int -> unit = "ml_g_d_bus_node_info_set_ref_count"
+external set_path : t -> string -> unit = "ml_g_d_bus_node_info_set_path"
+external make : int -> string -> t = "ml_g_d_bus_node_info_make"

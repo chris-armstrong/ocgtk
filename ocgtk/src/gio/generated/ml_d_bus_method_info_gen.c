@@ -50,6 +50,52 @@ CAMLparam1(self);
 GDBusMethodInfo* result = g_dbus_method_info_ref(GDBusMethodInfo_val(self));
 CAMLreturn(Val_GDBusMethodInfo(result));
 }
+\
+CAMLexport CAMLprim value ml_g_d_bus_method_info_get_ref_count(value self)
+{
+    CAMLparam1(self);
+    GDBusMethodInfo *rec = GDBusMethodInfo_val(self);
+    CAMLreturn(Val_int(rec->ref_count));
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_method_info_get_name(value self)
+{
+    CAMLparam1(self);
+    GDBusMethodInfo *rec = GDBusMethodInfo_val(self);
+    CAMLreturn(caml_copy_string(rec->name));
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_method_info_set_ref_count(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GDBusMethodInfo *rec = GDBusMethodInfo_val(self);
+    rec->ref_count = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_method_info_set_name(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GDBusMethodInfo *rec = GDBusMethodInfo_val(self);
+    g_free(rec->name);
+    rec->name = g_strdup(String_val(v_val));
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_method_info_make(value v_ref_count, value v_name)
+{
+    CAMLparam2(v_ref_count, v_name);
+    GDBusMethodInfo *obj = g_new0(GDBusMethodInfo, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->ref_count = Int_val(v_ref_count);
+    obj->name = g_strdup(String_val(v_name));
+    CAMLreturn(Val_GDBusMethodInfo(obj));
+}
+
 
 #else
 

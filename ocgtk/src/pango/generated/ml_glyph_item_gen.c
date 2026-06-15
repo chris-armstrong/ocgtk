@@ -72,3 +72,102 @@ caml_failwith("GlyphItem requires Pango >= 1.2");
 return Val_unit;
 }
 #endif
+\
+CAMLexport CAMLprim value ml_pango_glyph_item_get_item(value self)
+{
+    CAMLparam1(self);
+    PangoGlyphItem *rec = PangoGlyphItem_val(self);
+    CAMLreturn(Val_PangoItem(rec->item));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_item_get_glyphs(value self)
+{
+    CAMLparam1(self);
+    PangoGlyphItem *rec = PangoGlyphItem_val(self);
+    CAMLreturn(Val_PangoGlyphString(rec->glyphs));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_item_get_y_offset(value self)
+{
+    CAMLparam1(self);
+    PangoGlyphItem *rec = PangoGlyphItem_val(self);
+    CAMLreturn(Val_int(rec->y_offset));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_item_get_start_x_offset(value self)
+{
+    CAMLparam1(self);
+    PangoGlyphItem *rec = PangoGlyphItem_val(self);
+    CAMLreturn(Val_int(rec->start_x_offset));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_item_get_end_x_offset(value self)
+{
+    CAMLparam1(self);
+    PangoGlyphItem *rec = PangoGlyphItem_val(self);
+    CAMLreturn(Val_int(rec->end_x_offset));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_item_set_item(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoGlyphItem *rec = PangoGlyphItem_val(self);
+    rec->item = PangoItem_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_item_set_glyphs(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoGlyphItem *rec = PangoGlyphItem_val(self);
+    rec->glyphs = PangoGlyphString_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_item_set_y_offset(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoGlyphItem *rec = PangoGlyphItem_val(self);
+    rec->y_offset = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_item_set_start_x_offset(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoGlyphItem *rec = PangoGlyphItem_val(self);
+    rec->start_x_offset = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_item_set_end_x_offset(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoGlyphItem *rec = PangoGlyphItem_val(self);
+    rec->end_x_offset = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_item_make(value v_item, value v_glyphs, value v_y_offset, value v_start_x_offset, value v_end_x_offset)
+{
+    CAMLparam5(v_item, v_glyphs, v_y_offset, v_start_x_offset, v_end_x_offset);
+    PangoGlyphItem *obj = g_new0(PangoGlyphItem, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->item = PangoItem_val(v_item);
+    obj->glyphs = PangoGlyphString_val(v_glyphs);
+    obj->y_offset = Int_val(v_y_offset);
+    obj->start_x_offset = Int_val(v_start_x_offset);
+    obj->end_x_offset = Int_val(v_end_x_offset);
+    CAMLreturn(Val_PangoGlyphItem(obj));
+}
+

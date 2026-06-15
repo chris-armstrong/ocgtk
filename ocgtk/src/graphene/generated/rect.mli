@@ -191,3 +191,14 @@ external contains_rect : t -> t -> bool = "ml_graphene_rect_contains_rect"
 external contains_point : t -> Point.t -> bool
   = "ml_graphene_rect_contains_point"
 (** Checks whether a #graphene_rect_t contains the given coordinates. *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_origin : t -> Point.t = "ml_graphene_rect_get_origin"
+external get_size : t -> Size.t = "ml_graphene_rect_get_size"
+
+(* Setters *)
+external set_origin : t -> Point.t -> unit = "ml_graphene_rect_set_origin"
+external set_size : t -> Size.t -> unit = "ml_graphene_rect_set_size"
+external make : Point.t -> Size.t -> t = "ml_graphene_rect_make"

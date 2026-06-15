@@ -30,3 +30,30 @@ value Val_PangoAttrLanguage_option(const PangoAttrLanguage *ptr) {
   return Val_some(Val_PangoAttrLanguage(ptr));
 }
 
+\
+CAMLexport CAMLprim value ml_pango_attr_language_get_value(value self)
+{
+    CAMLparam1(self);
+    PangoAttrLanguage *rec = PangoAttrLanguage_val(self);
+    CAMLreturn(Val_PangoLanguage(rec->value));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attr_language_set_value(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoAttrLanguage *rec = PangoAttrLanguage_val(self);
+    rec->value = PangoLanguage_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attr_language_make(value v_value)
+{
+    CAMLparam1(v_value);
+    PangoAttrLanguage *obj = g_new0(PangoAttrLanguage, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->value = PangoLanguage_val(v_value);
+    CAMLreturn(Val_PangoAttrLanguage(obj));
+}
+

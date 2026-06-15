@@ -174,6 +174,27 @@ let entity_generator_by_entity_type =
             Field_analysis.compute_record_field_info ~ctx ~record_name ~c_type
               fields
           in
+          (* Skip field accessors that would duplicate existing method bindings.
+             Records like GdkPixbufFormat provide get_*/set_* methods for all
+             their fields; generating duplicate stubs causes naming collisions
+             and also fails for structs whose definition is not in public headers. *)
+          let method_snake_names =
+            List.map entity.methods
+              ~f:(fun (m : gir_method) ->
+                Gir_gen_lib.Utils.to_snake_case m.method_name)
+          in
+          let field_infos =
+            List.filter field_infos
+              ~f:(fun (fi : Field_analysis.field_info) ->
+                let getter_name = "get_" ^ fi.field_name in
+                let setter_name = "set_" ^ fi.field_name in
+                let conflicts =
+                  List.exists method_snake_names ~f:(fun n ->
+                      String.equal n getter_name || String.equal n setter_name
+                      || String.equal n fi.field_name)
+                in
+                not conflicts)
+          in
           (* Generate getter stubs *)
           let getters =
             C_stub_field.generate_field_getters ~c_type

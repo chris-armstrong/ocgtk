@@ -30,3 +30,30 @@ value Val_PangoAttrFontDesc_option(const PangoAttrFontDesc *ptr) {
   return Val_some(Val_PangoAttrFontDesc(ptr));
 }
 
+\
+CAMLexport CAMLprim value ml_pango_attr_font_desc_get_desc(value self)
+{
+    CAMLparam1(self);
+    PangoAttrFontDesc *rec = PangoAttrFontDesc_val(self);
+    CAMLreturn(Val_PangoFontDescription(rec->desc));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attr_font_desc_set_desc(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoAttrFontDesc *rec = PangoAttrFontDesc_val(self);
+    rec->desc = PangoFontDescription_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attr_font_desc_make(value v_desc)
+{
+    CAMLparam1(v_desc);
+    PangoAttrFontDesc *obj = g_new0(PangoAttrFontDesc, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->desc = PangoFontDescription_val(v_desc);
+    CAMLreturn(Val_PangoAttrFontDesc(obj));
+}
+

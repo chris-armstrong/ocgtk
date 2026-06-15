@@ -1163,7 +1163,7 @@ let parse_gir_file filename filter_classes =
             when local_name raw_tag = "field" ->
               let field_name = get_attr "name" field_attrs in
               let readable =
-                get_attr "readable" field_attrs |> Utils.parse_bool
+                get_attr "readable" field_attrs |> Utils.parse_bool ~default:true
               in
               let writable =
                 get_attr "writable" field_attrs |> Utils.parse_bool

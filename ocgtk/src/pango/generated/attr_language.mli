@@ -6,3 +6,14 @@ type t = [ `attr_language ] Gobject.obj
     languages. *)
 
 (* Methods *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_value : t -> Language.t = "ml_pango_attr_language_get_value"
+
+(* Setters *)
+external set_value : t -> Language.t -> unit
+  = "ml_pango_attr_language_set_value"
+
+external make : Language.t -> t = "ml_pango_attr_language_make"

@@ -149,3 +149,48 @@ CAMLlocal1(ret);
     Store_field(ret, 1, Val_PangoRectangle(&out3));
     CAMLreturn(ret);
 }
+\
+CAMLexport CAMLprim value ml_pango_glyph_string_get_num_glyphs(value self)
+{
+    CAMLparam1(self);
+    PangoGlyphString *rec = PangoGlyphString_val(self);
+    CAMLreturn(Val_int(rec->num_glyphs));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_string_get_log_clusters(value self)
+{
+    CAMLparam1(self);
+    PangoGlyphString *rec = PangoGlyphString_val(self);
+    CAMLreturn(Val_int(rec->log_clusters));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_string_set_num_glyphs(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoGlyphString *rec = PangoGlyphString_val(self);
+    rec->num_glyphs = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_string_set_log_clusters(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoGlyphString *rec = PangoGlyphString_val(self);
+    rec->log_clusters = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_string_make(value v_num_glyphs, value v_log_clusters)
+{
+    CAMLparam2(v_num_glyphs, v_log_clusters);
+    PangoGlyphString *obj = g_new0(PangoGlyphString, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->num_glyphs = Int_val(v_num_glyphs);
+    obj->log_clusters = Int_val(v_log_clusters);
+    CAMLreturn(Val_PangoGlyphString(obj));
+}
+

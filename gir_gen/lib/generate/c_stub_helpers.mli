@@ -70,16 +70,32 @@ val is_string_array : Types.gir_array -> bool
 (** {1 Record field accessor array helpers} *)
 
 val generate_array_getter_body :
-  element_c_type:string -> size:int -> c_field:string -> string
+  element_c_type:string ->
+  element_c_to_ml:string ->
+  element_is_struct:bool ->
+  size:int ->
+  c_field:string ->
+  string
 (** Generate C getter body for a fixed-size array field. [element_c_type] is
     the C type of array elements (e.g., "gdouble", "gint",
-    "graphene_size_t"). [size] is the fixed array size. [c_field] is the C
-    struct member access expression (e.g., "rec->axes"). Returns the complete
-    function body (without CAMLparam). *)
+    "graphene_size_t"). [element_c_to_ml] is the boxing macro (e.g.,
+    "Val_gsize", "Val_graphene_size_t"). [element_is_struct] is true when
+    the element is a C struct (the macro takes a pointer) and false for
+    primitive types (the macro takes the value directly). [size] is the fixed
+    array size. [c_field] is the C struct member access expression (e.g.,
+    "rec->axes"). Returns the complete function body (without CAMLparam). *)
 
 val generate_array_setter_body :
-  element_c_type:string -> size:int -> c_field:string -> string
-(** Generate C setter body for a fixed-size array field. Parameters same as
+  element_c_type:string ->
+  element_ml_to_c:string ->
+  element_is_struct:bool ->
+  size:int ->
+  c_field:string ->
+  string
+(** Generate C setter body for a fixed-size array field. [element_ml_to_c] is
+    the unboxing macro/function (e.g., "Gsize_val", "Int_val"). When
+    [element_is_struct] is true the result is dereferenced ([*macro(val)]);
+    for primitives it is used directly. Other parameters same as
     [generate_array_getter_body]. Returns the complete function body (without
     CAMLparam). *)
 

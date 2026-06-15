@@ -43,3 +43,14 @@ graphene_point_near() instead. *)
 external distance : t -> t -> float * float * float
   = "ml_graphene_point_distance"
 (** Computes the distance between @a and @b. *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_x : t -> float = "ml_graphene_point_get_x"
+external get_y : t -> float = "ml_graphene_point_get_y"
+
+(* Setters *)
+external set_x : t -> float -> unit = "ml_graphene_point_set_x"
+external set_y : t -> float -> unit = "ml_graphene_point_set_y"
+external make : float -> float -> t = "ml_graphene_point_make"

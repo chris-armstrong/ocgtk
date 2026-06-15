@@ -124,6 +124,24 @@
     (field script (version "1.18"))
   )
 
+  ;; AttrXxx records all embed a PangoAttribute as their first field.
+  ;; Generating the `attr` field accessor creates a module cycle because
+  ;; Attribute.mli already references all AttrXxx modules via its as_* methods.
+  ;; Ignoring `attr` breaks those cycles while preserving all Attribute methods.
+  (record AttrColor (field attr (ignore)))
+  (record AttrInt (field attr (ignore)))
+  (record AttrFloat (field attr (ignore)))
+  (record AttrString (field attr (ignore)))
+  (record AttrSize (field attr (ignore)))
+  (record AttrLanguage (field attr (ignore)))
+  (record AttrShape (field attr (ignore)))
+  (record AttrFontDesc (field attr (ignore)))
+  (record AttrFontFeatures (field attr (ignore)))
+
+  ;; LayoutLine.layout (PangoLayout*) creates a module cycle because
+  ;; Layout_and__layout_iter.mli already references LayoutLine via get_lines.
+  (record LayoutLine (field layout (ignore)))
+
   (record GlyphVisAttr
     (field is_color (version "1.50"))
   )

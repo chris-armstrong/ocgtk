@@ -64,3 +64,16 @@ external distance : t -> t -> float * Vec3_and__vec4.Vec3.t
 
 external cross : t -> t -> t = "ml_graphene_point3d_cross"
 (** Computes the cross product of the two given #graphene_point3d_t. *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_x : t -> float = "ml_graphene_point3_d_get_x"
+external get_y : t -> float = "ml_graphene_point3_d_get_y"
+external get_z : t -> float = "ml_graphene_point3_d_get_z"
+
+(* Setters *)
+external set_x : t -> float -> unit = "ml_graphene_point3_d_set_x"
+external set_y : t -> float -> unit = "ml_graphene_point3_d_set_y"
+external set_z : t -> float -> unit = "ml_graphene_point3_d_set_z"
+external make : float -> float -> float -> t = "ml_graphene_point3_d_make"

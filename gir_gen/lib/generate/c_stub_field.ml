@@ -197,7 +197,7 @@ CAMLexport CAMLprim value %s(%s)
 }
 |}
             make_c_name
-            (String.concat ~sep:", " param_names)
+            (String.concat ~sep:", " (List.map ~f:(fun p -> "value " ^ p) param_names))
             camlparam_line
             c_type c_type assignments c_type
         in
@@ -212,7 +212,7 @@ CAMLexport CAMLprim value %s(%s)
         in
         let xparam_lines = format_camlxparam_lines rest in
         let params_decl =
-          String.concat ~sep:", " param_names
+          String.concat ~sep:", " (List.map ~f:(fun p -> "value " ^ p) param_names)
         in
 
         let native_body =

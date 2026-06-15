@@ -25,3 +25,14 @@ external init : t -> float -> float -> t = "ml_graphene_size_init"
 
 external equal : t -> t -> bool = "ml_graphene_size_equal"
 (** Checks whether the two give #graphene_size_t are equal. *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_width : t -> float = "ml_graphene_size_get_width"
+external get_height : t -> float = "ml_graphene_size_get_height"
+
+(* Setters *)
+external set_width : t -> float -> unit = "ml_graphene_size_set_width"
+external set_height : t -> float -> unit = "ml_graphene_size_set_height"
+external make : float -> float -> t = "ml_graphene_size_make"

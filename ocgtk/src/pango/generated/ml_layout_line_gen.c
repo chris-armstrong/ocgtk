@@ -231,3 +231,48 @@ CAMLlocal1(ret);
     Store_field(ret, 1, Val_PangoRectangle(&out2));
     CAMLreturn(ret);
 }
+\
+CAMLexport CAMLprim value ml_pango_layout_line_get_runs(value self)
+{
+    CAMLparam1(self);
+    PangoLayoutLine *rec = PangoLayoutLine_val(self);
+    CAMLreturn(Val_int(rec->runs));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_layout_line_get_resolved_dir(value self)
+{
+    CAMLparam1(self);
+    PangoLayoutLine *rec = PangoLayoutLine_val(self);
+    CAMLreturn(Val_int(rec->resolved_dir));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_layout_line_set_runs(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoLayoutLine *rec = PangoLayoutLine_val(self);
+    rec->runs = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_layout_line_set_resolved_dir(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoLayoutLine *rec = PangoLayoutLine_val(self);
+    rec->resolved_dir = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_layout_line_make(value v_runs, value v_resolved_dir)
+{
+    CAMLparam2(v_runs, v_resolved_dir);
+    PangoLayoutLine *obj = g_new0(PangoLayoutLine, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->runs = Int_val(v_runs);
+    obj->resolved_dir = Int_val(v_resolved_dir);
+    CAMLreturn(Val_PangoLayoutLine(obj));
+}
+
