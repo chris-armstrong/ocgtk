@@ -14,6 +14,19 @@
   ;; PrintBackend is an internal GTK type not in public headers
   (record PrintBackend (ignore))
 
+  ;; GtkRecentData is a write-only input struct passed to
+  ;; gtk_recent_manager_add_full(). Suppressing getters prevents accidental
+  ;; reads of fields that are only meaningful when set by the caller.
+  (record RecentData
+    (field display_name (no_getter))
+    (field description (no_getter))
+    (field mime_type (no_getter))
+    (field app_name (no_getter))
+    (field app_exec (no_getter))
+    (field groups (no_getter))
+    (field is_private (no_getter))
+  )
+
   ;; Migrated from filtering.ml property_exclude_list
   (class IconPaintable
     (property is-symbolic (ignore))

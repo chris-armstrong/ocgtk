@@ -27,4 +27,6 @@ let () =
       ("Records", Records_tests.tests);
       ("Properties", Properties_tests.tests);
       ("Edge Cases", Edge_cases_tests.tests);
+      (* Record field accessor integration tests *)
+      ("Record Field Accessors", Record_field_accessor_tests.tests);
     ]

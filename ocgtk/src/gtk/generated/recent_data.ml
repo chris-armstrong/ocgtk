@@ -9,15 +9,6 @@ type t = [ `recent_data ] Gobject.obj
 
 (* Record field accessors *)
 
-(* Getters *)
-external get_display_name : t -> string = "ml_gtk_recent_data_get_display_name"
-external get_description : t -> string = "ml_gtk_recent_data_get_description"
-external get_mime_type : t -> string = "ml_gtk_recent_data_get_mime_type"
-external get_app_name : t -> string = "ml_gtk_recent_data_get_app_name"
-external get_app_exec : t -> string = "ml_gtk_recent_data_get_app_exec"
-external get_groups : t -> string array = "ml_gtk_recent_data_get_groups"
-external get_is_private : t -> bool = "ml_gtk_recent_data_get_is_private"
-
 (* Setters *)
 external set_display_name : t -> string -> unit
   = "ml_gtk_recent_data_set_display_name"

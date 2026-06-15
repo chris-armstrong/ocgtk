@@ -72,7 +72,10 @@
   enum_member_version_tests
   ; Signal corpus
   signal_corpus
-  signal_corpus_tests)
+  signal_corpus_tests
+  ; Record field accessors (unit)
+  record_field_tests
+  field_accessor_decl_tests)
  (deps
   (source_tree %{workspace_root}/gir)
   corpus/signal_corpus_baseline.sexp)
@@ -116,7 +119,9 @@
   enums_tests
   records_tests
   properties_tests
-  edge_cases_tests)
+  edge_cases_tests
+  ; Record field accessor integration tests
+  record_field_accessor_tests)
  (deps
   %{exe:../bin/gir_gen.exe}
   (source_tree %{workspace_root}/gir))

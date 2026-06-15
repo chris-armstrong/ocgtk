@@ -54,4 +54,7 @@ let () =
       (* Signal corpus *)
       ("Signal Corpus", Signal_corpus.tests);
       ("Signal Corpus Regression", Signal_corpus_tests.tests);
+      (* Record field accessors *)
+      ("Record Field C Stubs", Record_field_tests.tests);
+      ("Record Field Accessor Decls (ML)", Field_accessor_decl_tests.tests);
     ]

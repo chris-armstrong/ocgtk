@@ -178,27 +178,48 @@ let entity_generator_by_entity_type =
              bindings (same C symbol name). Check getter and setter separately
              so that, e.g., a record with a get_X method but no set_X method
              still gets a field setter stub. The make constructor always uses
-             all fields regardless of method conflicts. *)
+             all fields regardless of method conflicts.
+             Also respect no_getter/no_setter overrides on individual fields by
+             filtering on should_generate_field_getter/setter before the
+             method-conflict check. *)
           let method_snake_names =
             List.map entity.methods
               ~f:(fun (m : gir_method) ->
                 Gir_gen_lib.Utils.to_snake_case m.method_name)
           in
+          (* Build a set of field names that pass the getter/setter override
+             filters so we can then filter field_infos by name. *)
+          let getter_allowed =
+            List.filter_map fields
+              ~f:(fun (f : gir_record_field) ->
+                if Field_filter.should_generate_field_getter f then
+                  Some (Gir_gen_lib.Utils.to_snake_case f.field_name)
+                else None)
+          in
+          let setter_allowed =
+            List.filter_map fields
+              ~f:(fun (f : gir_record_field) ->
+                if Field_filter.should_generate_field_setter f then
+                  Some (Gir_gen_lib.Utils.to_snake_case f.field_name)
+                else None)
+          in
           let getter_infos =
             List.filter field_infos
               ~f:(fun (fi : Field_analysis.field_info) ->
                 let getter_name = "get_" ^ fi.field_name in
-                not
-                  (List.exists method_snake_names
-                     ~f:(String.equal getter_name)))
+                List.exists getter_allowed ~f:(String.equal fi.field_name)
+                && not
+                     (List.exists method_snake_names
+                        ~f:(String.equal getter_name)))
           in
           let setter_infos =
             List.filter field_infos
               ~f:(fun (fi : Field_analysis.field_info) ->
                 let setter_name = "set_" ^ fi.field_name in
-                not
-                  (List.exists method_snake_names
-                     ~f:(String.equal setter_name)))
+                List.exists setter_allowed ~f:(String.equal fi.field_name)
+                && not
+                     (List.exists method_snake_names
+                        ~f:(String.equal setter_name)))
           in
           (* Generate getter stubs *)
           let getters =
