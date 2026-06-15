@@ -57,4 +57,5 @@ let () =
       (* Record field accessors *)
       ("Record Field C Stubs", Record_field_tests.tests);
       ("Record Field Accessor Decls (ML)", Field_accessor_decl_tests.tests);
+      ("L2 Class Field Methods", Class_field_methods_tests.tests);
     ]

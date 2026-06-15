@@ -75,7 +75,8 @@
   signal_corpus_tests
   ; Record field accessors (unit)
   record_field_tests
-  field_accessor_decl_tests)
+  field_accessor_decl_tests
+  class_field_methods_tests)
  (deps
   (source_tree %{workspace_root}/gir)
   corpus/signal_corpus_baseline.sexp)

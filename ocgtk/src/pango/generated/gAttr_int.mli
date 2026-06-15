@@ -4,3 +4,5 @@
 class type attr_int_t = GAttr_color_cycle_ed189c09.attr_int_t
 
 class attr_int : Attr_color_cycle_ed189c09.Attr_int.t -> attr_int_t
+
+val make : Attr_color_cycle_ed189c09.Attribute.t -> int -> attr_int_t

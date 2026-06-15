@@ -28,6 +28,7 @@ type field_info = {
   is_array : bool;
   is_bitfield : bool;
   bit_shift : int option;
+  field_gir_type : Types.gir_type option;
 }
 
 (* Build C function names for getter, setter, and make. *)
@@ -437,6 +438,7 @@ let compute_field_info ~ctx ~record_name ~c_type:_ (field : gir_record_field) :
           is_array;
           is_bitfield = false;
           bit_shift = None;
+          field_gir_type = field.field_type;
         }
 
 (** Compute [field_info] for all fields of a record entity.

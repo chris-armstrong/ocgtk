@@ -32,64 +32,6 @@ value Val_GtkRecentData_option(const GtkRecentData *ptr) {
 }
 
 \
-CAMLexport CAMLprim value ml_gtk_recent_data_get_display_name(value self)
-{
-    CAMLparam1(self);
-    GtkRecentData *rec = GtkRecentData_val(self);
-    CAMLreturn(caml_copy_string(rec->display_name));
-}
-
-\
-CAMLexport CAMLprim value ml_gtk_recent_data_get_description(value self)
-{
-    CAMLparam1(self);
-    GtkRecentData *rec = GtkRecentData_val(self);
-    CAMLreturn(caml_copy_string(rec->description));
-}
-
-\
-CAMLexport CAMLprim value ml_gtk_recent_data_get_mime_type(value self)
-{
-    CAMLparam1(self);
-    GtkRecentData *rec = GtkRecentData_val(self);
-    CAMLreturn(caml_copy_string(rec->mime_type));
-}
-
-\
-CAMLexport CAMLprim value ml_gtk_recent_data_get_app_name(value self)
-{
-    CAMLparam1(self);
-    GtkRecentData *rec = GtkRecentData_val(self);
-    CAMLreturn(caml_copy_string(rec->app_name));
-}
-
-\
-CAMLexport CAMLprim value ml_gtk_recent_data_get_app_exec(value self)
-{
-    CAMLparam1(self);
-    GtkRecentData *rec = GtkRecentData_val(self);
-    CAMLreturn(caml_copy_string(rec->app_exec));
-}
-
-\
-CAMLexport CAMLprim value ml_gtk_recent_data_get_groups(value self)
-{
-    CAMLparam1(self);
-    GtkRecentData *rec = GtkRecentData_val(self);
-    CAMLlocal1(result);
-    Val_strv(rec->groups, result);
-    CAMLreturn(result);
-}
-
-\
-CAMLexport CAMLprim value ml_gtk_recent_data_get_is_private(value self)
-{
-    CAMLparam1(self);
-    GtkRecentData *rec = GtkRecentData_val(self);
-    CAMLreturn(Val_bool(rec->is_private));
-}
-
-\
 CAMLexport CAMLprim value ml_gtk_recent_data_set_display_name(value self, value v_val)
 {
     CAMLparam2(self, v_val);

@@ -753,7 +753,8 @@ let generate_high_level_class ~ctx ~output_dir entity parent_chain =
            ~methods:entity.Gir_gen_lib.Types.methods ~entity_kind
            ~properties:entity.Gir_gen_lib.Types.properties
            ~signals:entity.Gir_gen_lib.Types.signals
-           ~constructors:entity.Gir_gen_lib.Types.constructors);
+           ~constructors:entity.Gir_gen_lib.Types.constructors
+           ~fields:entity.Gir_gen_lib.Types.fields);
 
     (* Always overwrite signature files too *)
     let g_sig_exists = output_under_src && Sys.file_exists g_sig_file in
@@ -768,7 +769,8 @@ let generate_high_level_class ~ctx ~output_dir entity parent_chain =
            ~methods:entity.Gir_gen_lib.Types.methods ~entity_kind
            ~properties:entity.Gir_gen_lib.Types.properties
            ~signals:entity.Gir_gen_lib.Types.signals
-           ~constructors:entity.Gir_gen_lib.Types.constructors)
+           ~constructors:entity.Gir_gen_lib.Types.constructors
+           ~fields:entity.Gir_gen_lib.Types.fields)
   in
   match entity.kind with
   | Gir_gen_lib.Types.Class clazz ->

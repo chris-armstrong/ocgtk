@@ -105,6 +105,16 @@ and layout_line_t = object
   method ref :
     unit -> Layout_and__layout_iter_and__layout_line.Layout_line.t option
 
+  method get_layout : layout_t
+  method set_layout : layout_t -> unit
+  method set_start_index : int -> unit
+  method set_length : int -> unit
+  method get_runs : unit
+  method set_runs : unit -> unit
+  method get_is_paragraph_start : int
+  method set_is_paragraph_start : int -> unit
+  method get_resolved_dir : int
+  method set_resolved_dir : int -> unit
   method as_layout_line : Layout_and__layout_iter_and__layout_line.Layout_line.t
 end
 
@@ -406,6 +416,48 @@ and layout_line (obj : Layout_and__layout_iter_and__layout_line.Layout_line.t) :
         unit -> Layout_and__layout_iter_and__layout_line.Layout_line.t option =
       fun () -> Layout_and__layout_iter_and__layout_line.Layout_line.ref obj
 
+    method get_layout : layout_t =
+      new layout
+        (Layout_and__layout_iter_and__layout_line.Layout_line.get_layout obj)
+
+    method set_layout : layout_t -> unit =
+      fun v ->
+        Layout_and__layout_iter_and__layout_line.Layout_line.set_layout obj
+          v#as_layout
+
+    method set_start_index : int -> unit =
+      fun v ->
+        Layout_and__layout_iter_and__layout_line.Layout_line.set_start_index obj
+          v
+
+    method set_length : int -> unit =
+      fun v ->
+        Layout_and__layout_iter_and__layout_line.Layout_line.set_length obj v
+
+    method get_runs : unit =
+      Layout_and__layout_iter_and__layout_line.Layout_line.get_runs obj
+
+    method set_runs : unit -> unit =
+      fun v ->
+        Layout_and__layout_iter_and__layout_line.Layout_line.set_runs obj v
+
+    method get_is_paragraph_start : int =
+      Layout_and__layout_iter_and__layout_line.Layout_line
+      .get_is_paragraph_start obj
+
+    method set_is_paragraph_start : int -> unit =
+      fun v ->
+        Layout_and__layout_iter_and__layout_line.Layout_line
+        .set_is_paragraph_start obj v
+
+    method get_resolved_dir : int =
+      Layout_and__layout_iter_and__layout_line.Layout_line.get_resolved_dir obj
+
+    method set_resolved_dir : int -> unit =
+      fun v ->
+        Layout_and__layout_iter_and__layout_line.Layout_line.set_resolved_dir
+          obj v
+
     method as_layout_line = obj
   end
 
@@ -414,3 +466,9 @@ let new_ (context : GContext_and__font_and__font_map_and__fontset.context_t) :
   let context = context#as_context in
   let obj_ = Layout_and__layout_iter_and__layout_line.Layout.new_ context in
   new layout obj_
+
+let make (layout : layout_t) (start_index : int) (length : int) (runs : unit)
+    (is_paragraph_start : int) (resolved_dir : int) : layout_line_t =
+  new layout_line
+    (Layout_and__layout_iter_and__layout_line.Layout_line.make layout#as_layout
+       start_index length runs is_paragraph_start resolved_dir)

@@ -4,6 +4,10 @@ class type point_t = object
   method init_from_point : Point.t -> Point.t
   method init_from_vec2 : Vec2.t -> Point.t
   method near : Point.t -> float -> bool
+  method get_x : float
+  method set_x : float -> unit
+  method get_y : float
+  method set_y : float -> unit
   method as_point : Point.t
 end
 
@@ -22,7 +26,12 @@ class point (obj : Point.t) : point_t =
     method near : Point.t -> float -> bool =
       fun b epsilon -> Point.near obj b epsilon
 
+    method get_x : float = Point.get_x obj
+    method set_x : float -> unit = fun v -> Point.set_x obj v
+    method get_y : float = Point.get_y obj
+    method set_y : float -> unit = fun v -> Point.set_y obj v
     method as_point = obj
   end
 
 let alloc () : point_t = new point (Point.alloc ())
+let make (x : float) (y : float) : point_t = new point (Point.make x y)

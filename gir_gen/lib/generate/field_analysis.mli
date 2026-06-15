@@ -32,6 +32,8 @@ type field_info = {
       (** True if the field is a bit-field (parser support pending). *)
   bit_shift : int option;
       (** Bit shift for bit-field access (None for non-bit-fields). *)
+  field_gir_type : Types.gir_type option;
+      (** Original GIR field type, used by [Class_gen_field] for L2 type resolution. *)
 }
 
 val compute_field_info :

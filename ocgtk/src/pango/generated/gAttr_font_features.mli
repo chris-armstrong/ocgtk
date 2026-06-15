@@ -7,3 +7,6 @@ class type attr_font_features_t =
 class attr_font_features :
   Attr_color_cycle_ed189c09.Attr_font_features.t ->
   attr_font_features_t
+
+val make :
+  Attr_color_cycle_ed189c09.Attribute.t -> string -> attr_font_features_t

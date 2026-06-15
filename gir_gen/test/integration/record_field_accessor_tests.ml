@@ -229,6 +229,110 @@ let test_make_constructor_arity () =
     (Helpers.string_contains c_content "v_blue")
 
 (* ========================================================================= *)
+(* Test 6: L2 class has getter/setter methods in generated .ml file *)
+(* ========================================================================= *)
+
+let test_l2_class_has_getter_setter_methods () =
+  let gir_content =
+    wrap_namespace
+      {|
+    <record name="Point" c:type="GtkPoint">
+      <field name="x" writable="1"><type name="gint" c:type="gint"/></field>
+      <field name="y" writable="1"><type name="gint" c:type="gint"/></field>
+    </record>
+|}
+  in
+  let test_name = "l2_class_getter_setter" in
+  let test_gir = Printf.sprintf "/tmp/test_%s.gir" test_name in
+  let output_dir = Printf.sprintf "/tmp/test_%s_output" test_name in
+  create_gir_file test_gir gir_content;
+  ensure_output_dir output_dir;
+  let _exit = run_gir_gen_with_override test_gir output_dir in
+  let g_ml = g_wrapper_file output_dir "Point" in
+  assert_true "gPoint.ml exists" (file_exists g_ml);
+  let content = read_file g_ml in
+  assert_true "gPoint.ml contains 'method get_x'"
+    (Helpers.string_contains content "method get_x");
+  assert_true "gPoint.ml contains 'method set_x'"
+    (Helpers.string_contains content "method set_x");
+  assert_true "gPoint.ml contains 'method get_y'"
+    (Helpers.string_contains content "method get_y");
+  assert_true "gPoint.ml contains 'method set_y'"
+    (Helpers.string_contains content "method set_y");
+  assert_true "gPoint.ml contains 'method as_point'"
+    (Helpers.string_contains content "method as_point");
+  assert_true "gPoint.ml contains 'let make'"
+    (Helpers.string_contains content "let make")
+
+(* ========================================================================= *)
+(* Test 7: no_getter override suppresses L2 getter method *)
+(* ========================================================================= *)
+
+let test_l2_no_getter_suppresses_method () =
+  let gir_content =
+    wrap_namespace
+      {|
+    <record name="Point" c:type="GtkPoint">
+      <field name="x" writable="1"><type name="gint" c:type="gint"/></field>
+      <field name="y" writable="1"><type name="gint" c:type="gint"/></field>
+    </record>
+|}
+  in
+  let override_content =
+    {|(overrides (library "Gtk") (record Point (field x (no_getter))))|}
+  in
+  let test_name = "l2_no_getter_method" in
+  let test_gir = Printf.sprintf "/tmp/test_%s.gir" test_name in
+  let output_dir = Printf.sprintf "/tmp/test_%s_output" test_name in
+  let override_file = write_override_file ~test_name override_content in
+  create_gir_file test_gir gir_content;
+  ensure_output_dir output_dir;
+  let _exit =
+    run_gir_gen_with_override ~override_file test_gir output_dir
+  in
+  let g_ml = g_wrapper_file output_dir "Point" in
+  assert_true "gPoint.ml exists" (file_exists g_ml);
+  let content = read_file g_ml in
+  assert_true "no_getter: 'method get_x' is absent from L2 class"
+    (not (Helpers.string_contains content "method get_x"));
+  assert_true "no_getter: 'method set_x' is still present"
+    (Helpers.string_contains content "method set_x");
+  assert_true "no_getter: 'method get_y' is unaffected"
+    (Helpers.string_contains content "method get_y")
+
+(* ========================================================================= *)
+(* Test 8: L2 class type signature in generated .mli file *)
+(* ========================================================================= *)
+
+let test_l2_class_type_signature () =
+  let gir_content =
+    wrap_namespace
+      {|
+    <record name="Point" c:type="GtkPoint">
+      <field name="x" writable="1"><type name="gint" c:type="gint"/></field>
+      <field name="y" writable="1"><type name="gint" c:type="gint"/></field>
+    </record>
+|}
+  in
+  let test_name = "l2_class_type_sig" in
+  let test_gir = Printf.sprintf "/tmp/test_%s.gir" test_name in
+  let output_dir = Printf.sprintf "/tmp/test_%s_output" test_name in
+  create_gir_file test_gir gir_content;
+  ensure_output_dir output_dir;
+  let _exit = run_gir_gen_with_override test_gir output_dir in
+  let g_mli =
+    Filename.concat (Helpers.generated_dir output_dir) "gPoint.mli"
+  in
+  assert_true "gPoint.mli exists" (file_exists g_mli);
+  let content = read_file g_mli in
+  assert_true "gPoint.mli contains 'method get_x : int'"
+    (Helpers.string_contains content "method get_x : int");
+  assert_true "gPoint.mli contains 'method set_x : int -> unit'"
+    (Helpers.string_contains content "method set_x : int -> unit");
+  assert_true "gPoint.mli contains 'val make' with correct arity"
+    (Helpers.string_contains content "val make : int -> int -> point_t")
+
+(* ========================================================================= *)
 (* Test Suite *)
 (* ========================================================================= *)
 
@@ -244,4 +348,10 @@ let tests =
       test_no_fields_override_suppresses_all_accessors;
     Alcotest.test_case "make constructor arity matches writable fields" `Quick
       test_make_constructor_arity;
+    Alcotest.test_case "L2 class has getter/setter methods" `Quick
+      test_l2_class_has_getter_setter_methods;
+    Alcotest.test_case "L2 no_getter suppresses method in class" `Quick
+      test_l2_no_getter_suppresses_method;
+    Alcotest.test_case "L2 class type signature in .mli" `Quick
+      test_l2_class_type_signature;
   ]

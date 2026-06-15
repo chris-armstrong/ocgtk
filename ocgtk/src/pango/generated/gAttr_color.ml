@@ -4,3 +4,7 @@
 class type attr_color_t = GAttr_color_cycle_ed189c09.attr_color_t
 
 class attr_color = GAttr_color_cycle_ed189c09.attr_color
+
+let make (attr : Attr_color_cycle_ed189c09.Attribute.t) (color : Color.t) :
+    attr_color_t =
+  new attr_color (Attr_color_cycle_ed189c09.Attr_color.make attr color)

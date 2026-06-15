@@ -18,6 +18,10 @@ class type rounded_rect_t = object
   method normalize : unit -> Rounded_rect.t
   method offset : float -> float -> Rounded_rect.t
   method shrink : float -> float -> float -> float -> Rounded_rect.t
+  method get_bounds : Ocgtk_graphene.Graphene.Rect.rect_t
+  method set_bounds : Ocgtk_graphene.Graphene.Rect.rect_t -> unit
+  method get_corner : Ocgtk_graphene.Graphene.Wrappers.Size.t array
+  method set_corner : Ocgtk_graphene.Graphene.Wrappers.Size.t array -> unit
   method as_rounded_rect : Rounded_rect.t
 end
 
@@ -72,5 +76,21 @@ class rounded_rect (obj : Rounded_rect.t) : rounded_rect_t =
     method shrink : float -> float -> float -> float -> Rounded_rect.t =
       fun top right bottom left -> Rounded_rect.shrink obj top right bottom left
 
+    method get_bounds : Ocgtk_graphene.Graphene.Rect.rect_t =
+      new Ocgtk_graphene.Graphene.Rect.rect (Rounded_rect.get_bounds obj)
+
+    method set_bounds : Ocgtk_graphene.Graphene.Rect.rect_t -> unit =
+      fun v -> Rounded_rect.set_bounds obj v#as_rect
+
+    method get_corner : Ocgtk_graphene.Graphene.Wrappers.Size.t array =
+      Rounded_rect.get_corner obj
+
+    method set_corner : Ocgtk_graphene.Graphene.Wrappers.Size.t array -> unit =
+      fun v -> Rounded_rect.set_corner obj v
+
     method as_rounded_rect = obj
   end
+
+let make (bounds : Ocgtk_graphene.Graphene.Rect.rect_t)
+    (corner : Ocgtk_graphene.Graphene.Wrappers.Size.t array) : rounded_rect_t =
+  new rounded_rect (Rounded_rect.make bounds#as_rect corner)

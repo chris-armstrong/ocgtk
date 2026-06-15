@@ -8,6 +8,10 @@ class type file_attribute_info_list_t = object
   method dup : unit -> File_attribute_info_list.t
   method lookup : string -> File_attribute_info.t
   method ref : unit -> File_attribute_info_list.t
+  method get_infos : File_attribute_info.t
+  method set_infos : File_attribute_info.t -> unit
+  method get_n_infos : int
+  method set_n_infos : int -> unit
   method as_file_attribute_info_list : File_attribute_info_list.t
 end
 
@@ -31,8 +35,23 @@ class file_attribute_info_list (obj : File_attribute_info_list.t) :
     method ref : unit -> File_attribute_info_list.t =
       fun () -> File_attribute_info_list.ref obj
 
+    method get_infos : File_attribute_info.t =
+      File_attribute_info_list.get_infos obj
+
+    method set_infos : File_attribute_info.t -> unit =
+      fun v -> File_attribute_info_list.set_infos obj v
+
+    method get_n_infos : int = File_attribute_info_list.get_n_infos obj
+
+    method set_n_infos : int -> unit =
+      fun v -> File_attribute_info_list.set_n_infos obj v
+
     method as_file_attribute_info_list = obj
   end
 
 let new_ () : file_attribute_info_list_t =
   new file_attribute_info_list (File_attribute_info_list.new_ ())
+
+let make (infos : File_attribute_info.t) (n_infos : int) :
+    file_attribute_info_list_t =
+  new file_attribute_info_list (File_attribute_info_list.make infos n_infos)

@@ -20,6 +20,7 @@ val generate_class_module_body :
   signals:gir_signal list ->
   same_cluster_classes:string list ->
   parent_name:string option ->
+  fields:gir_record_field list ->
   unit ->
   unit
 (** Generate the body of a class module (implementation) *)
@@ -38,6 +39,7 @@ val generate_class_signature_body :
   signals:gir_signal list ->
   same_cluster_classes:string list ->
   parent_name:string option ->
+  fields:gir_record_field list ->
   unit ->
   unit
 (** Generate the body of a class signature *)

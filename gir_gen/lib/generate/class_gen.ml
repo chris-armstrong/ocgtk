@@ -141,7 +141,7 @@ let generate_constructor_sig ~ctx ~buf ~class_type_name ~current_layer2_module
 
 (** Generate a class module (implementation) *)
 let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
-    ~entity_kind ~properties ~signals ~constructors =
+    ~entity_kind ~properties ~signals ~constructors ~fields =
   let buf = Buffer.create 2048 in
   let module_names = get_module_names ~ctx class_name in
   let class_snake = sanitize_name class_name in
@@ -155,7 +155,7 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
     ~layer1_module_name:module_names.layer1
     ~current_layer2_module:module_names.layer2 ~class_name ~class_snake ~c_type
     ~methods ~entity_kind ~properties ~signals
-    ~same_cluster_classes:[ class_name ] ~parent_name ();
+    ~same_cluster_classes:[ class_name ] ~parent_name ~fields ();
 
   bprintf buf "end\n\n";
 
@@ -167,7 +167,7 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
   generate_class_module_body ~ctx ~buf ~layer1_module_name:module_names.layer1
     ~current_layer2_module:module_names.layer2 ~class_name ~class_snake ~c_type
     ~methods ~entity_kind ~properties ~signals
-    ~same_cluster_classes:[ class_name ] ~parent_name ();
+    ~same_cluster_classes:[ class_name ] ~parent_name ~fields ();
 
   bprintf buf "end\n\n";
 
@@ -178,11 +178,23 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
          ~current_layer2_module:module_names.layer2
          ~layer1_ctor_prefix:module_names.layer1);
 
+  (* Module-level make function for records *)
+  (match entity_kind with
+  | Filtering.Record ->
+      let field_infos =
+        Field_analysis.compute_record_field_info ~ctx ~record_name:class_name
+          ~c_type fields
+      in
+      Class_gen_field.generate_field_make_fn ~ctx ~class_snake ~class_type_name
+        ~layer1_module_name:module_names.layer1
+        ~current_layer2_module:module_names.layer2 ~field_infos ~buf
+  | _ -> ());
+
   Buffer.contents buf
 
 (** Generate a class signature *)
 let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain ~methods
-    ~entity_kind ~properties ~signals ~constructors =
+    ~entity_kind ~properties ~signals ~constructors ~fields =
   let buf = Buffer.create 1024 in
   let module_names = get_module_names ~ctx class_name in
   let class_snake = sanitize_name class_name in
@@ -196,7 +208,7 @@ let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain ~methods
     ~layer1_module_name:module_names.layer1
     ~current_layer2_module:module_names.layer2 ~class_name ~class_snake ~c_type
     ~methods ~entity_kind ~properties ~signals
-    ~same_cluster_classes:[ class_name ] ~parent_name ();
+    ~same_cluster_classes:[ class_name ] ~parent_name ~fields ();
 
   bprintf buf "end\n\n";
 
@@ -209,6 +221,17 @@ let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain ~methods
     ~f:
       (generate_constructor_sig ~ctx ~buf ~class_type_name
          ~current_layer2_module:module_names.layer2);
+
+  (* Module-level make function signature for records *)
+  (match entity_kind with
+  | Filtering.Record ->
+      let field_infos =
+        Field_analysis.compute_record_field_info ~ctx ~record_name:class_name
+          ~c_type fields
+      in
+      Class_gen_field.generate_field_make_fn_sig ~ctx ~class_type_name
+        ~current_layer2_module:module_names.layer2 ~field_infos ~buf
+  | _ -> ());
 
   Buffer.contents buf
 
@@ -238,7 +261,7 @@ let generate_combined_entities ~ctx ~combined_module_name ~entities
         ~class_name:entity.name ~c_type:entity.c_type ~methods:entity.methods
         ~entity_kind:(Filtering.entity_kind_of_entity entity)
         ~properties:entity.properties ~signals:entity.signals
-        ~same_cluster_classes ~parent_name)
+        ~same_cluster_classes ~parent_name ~fields:entity.fields)
     sorted_entities;
 
   Buffer.contents buf
@@ -254,7 +277,7 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
   (* Pass 1: class type definitions *)
   let generate_class_type ~buf ~i ~class_snake ~module_name:_
       ~current_layer2_module ~class_name ~c_type ~methods ~entity_kind
-      ~properties ~signals ~same_cluster_classes ~parent_name =
+      ~properties ~signals ~same_cluster_classes ~parent_name ~fields =
     let class_type_name = Utils.class_type_name class_name in
     if i = 0 then bprintf buf "class type %s = object\n" class_type_name
     else bprintf buf "\nand %s = object\n" class_type_name;
@@ -263,7 +286,8 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
       ~layer1_module_name:
         (Class_utils.get_qualified_module_name ~ctx class_name)
       ~current_layer2_module ~class_name ~class_snake ~c_type ~methods
-      ~entity_kind ~properties ~signals ~same_cluster_classes ~parent_name ();
+      ~entity_kind ~properties ~signals ~same_cluster_classes ~parent_name
+      ~fields ();
 
     bprintf buf "end\n"
   in
@@ -279,7 +303,7 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
   (* Pass 2: class implementations *)
   let generate_class_impl ~buf ~i ~class_snake ~module_name
       ~current_layer2_module ~class_name ~c_type ~methods ~entity_kind
-      ~properties ~signals ~same_cluster_classes ~parent_name =
+      ~properties ~signals ~same_cluster_classes ~parent_name ~fields =
     let class_type_name = Utils.class_type_name class_name in
     if i = 0 then
       bprintf buf "class %s (obj : %s.t) : %s = object (self)\n" class_snake
@@ -290,7 +314,8 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
 
     generate_class_module_body ~ctx ~buf ~layer1_module_name:module_name
       ~current_layer2_module ~class_name ~class_snake ~c_type ~methods
-      ~entity_kind ~properties ~signals ~same_cluster_classes ~parent_name ();
+      ~entity_kind ~properties ~signals ~same_cluster_classes ~parent_name
+      ~fields ();
 
     bprintf buf "end\n"
   in
@@ -302,7 +327,7 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
   in
   Buffer.add_string buf classes_text;
 
-  (* Constructor wrappers for each entity *)
+  (* Constructor wrappers and record make functions for each entity *)
   let current_layer2_module = "G" ^ combined_module_name in
   List.iter entities ~f:(fun entity ->
       let class_snake = sanitize_name entity.name in
@@ -313,7 +338,17 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
       List.iter entity.constructors
         ~f:
           (generate_constructor_impl ~ctx ~buf ~class_snake ~class_type_name
-             ~current_layer2_module ~layer1_ctor_prefix:module_name));
+             ~current_layer2_module ~layer1_ctor_prefix:module_name);
+      (match Filtering.entity_kind_of_entity entity with
+      | Filtering.Record ->
+          let field_infos =
+            Field_analysis.compute_record_field_info ~ctx
+              ~record_name:entity.name ~c_type:entity.c_type entity.fields
+          in
+          Class_gen_field.generate_field_make_fn ~ctx ~class_snake
+            ~class_type_name ~layer1_module_name:module_name
+            ~current_layer2_module ~field_infos ~buf
+      | _ -> ()));
 
   Buffer.contents buf
 
@@ -325,7 +360,7 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
   (* Pass 1: class type definitions *)
   let generate_class_type ~buf ~i ~class_snake ~module_name:_
       ~current_layer2_module ~class_name ~c_type ~methods ~entity_kind
-      ~properties ~signals ~same_cluster_classes ~parent_name =
+      ~properties ~signals ~same_cluster_classes ~parent_name ~fields =
     let class_type_name = Utils.class_type_name class_name in
     if i = 0 then bprintf buf "class type %s = object\n" class_type_name
     else bprintf buf "\nand %s = object\n" class_type_name;
@@ -334,7 +369,8 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
       ~layer1_module_name:
         (Class_utils.get_qualified_module_name ~ctx class_name)
       ~current_layer2_module ~class_name ~class_snake ~c_type ~methods
-      ~entity_kind ~properties ~signals ~same_cluster_classes ~parent_name ();
+      ~entity_kind ~properties ~signals ~same_cluster_classes ~parent_name
+      ~fields ();
 
     bprintf buf "end\n"
   in
@@ -350,7 +386,7 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
   (* Pass 2: class declarations referencing class types *)
   let generate_class_decl ~buf ~i ~class_snake ~module_name
       ~current_layer2_module:_ ~class_name ~c_type:_ ~methods:_ ~entity_kind:_
-      ~properties:_ ~signals:_ ~same_cluster_classes:_ ~parent_name:_ =
+      ~properties:_ ~signals:_ ~same_cluster_classes:_ ~parent_name:_ ~fields:_ =
     let class_type_name = Utils.class_type_name class_name in
     if i = 0 then
       bprintf buf "class %s : %s.t -> %s\n" class_snake module_name
@@ -367,14 +403,23 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
   in
   Buffer.add_string buf class_decls_text;
 
-  (* Constructor wrappers for each entity *)
+  (* Constructor wrappers and record make function signatures for each entity *)
   let current_layer2_module = "G" ^ combined_module_name in
   List.iter entities ~f:(fun entity ->
       let class_type_name = Utils.class_type_name entity.name in
       List.iter entity.constructors
         ~f:
           (generate_constructor_sig ~ctx ~buf ~class_type_name
-             ~current_layer2_module));
+             ~current_layer2_module);
+      (match Filtering.entity_kind_of_entity entity with
+      | Filtering.Record ->
+          let field_infos =
+            Field_analysis.compute_record_field_info ~ctx
+              ~record_name:entity.name ~c_type:entity.c_type entity.fields
+          in
+          Class_gen_field.generate_field_make_fn_sig ~ctx ~class_type_name
+            ~current_layer2_module ~field_infos ~buf
+      | _ -> ()));
 
   Buffer.contents buf
 
@@ -412,6 +457,21 @@ let generate_cyclic_shim_module ~ctx ~entity ~combined_module_name
          ~class_type_name:entity_type_name ~current_layer2_module
          ~layer1_ctor_prefix);
 
+  (* Module-level make function for record shims *)
+  (match Filtering.entity_kind_of_entity entity with
+  | Filtering.Record ->
+      let field_infos =
+        Field_analysis.compute_record_field_info ~ctx ~record_name:entity.name
+          ~c_type:entity.c_type entity.fields
+      in
+      let qualified_l1 =
+        sprintf "%s.%s" combined_module_name layer1_module_name
+      in
+      Class_gen_field.generate_field_make_fn ~ctx ~class_snake:entity_snake
+        ~class_type_name:entity_type_name ~layer1_module_name:qualified_l1
+        ~current_layer2_module ~field_infos ~buf
+  | _ -> ());
+
   Buffer.contents buf
 
 (** Generate cyclic shim signature *)
@@ -442,6 +502,19 @@ let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name
     ~f:
       (generate_constructor_sig ~ctx ~buf ~class_type_name:entity_type_name
          ~current_layer2_module);
+
+  (* Make function signature for record shims *)
+  (match Filtering.entity_kind_of_entity entity with
+  | Filtering.Record ->
+      let field_infos =
+        Field_analysis.compute_record_field_info ~ctx ~record_name:entity.name
+          ~c_type:entity.c_type entity.fields
+      in
+      Class_gen_field.generate_field_make_fn_sig ~ctx
+        ~class_type_name:entity_type_name ~current_layer2_module ~field_infos
+        ~buf
+  | _ -> ());
+
   bprintf buf "\n";
 
   Buffer.contents buf
