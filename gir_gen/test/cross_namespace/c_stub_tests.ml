@@ -238,6 +238,7 @@ let test_copy_function_returns_copy_result () =
       disguised = false;
       c_symbol_prefix = Some "test_format";
       is_gtype_struct_for = None;
+      no_field_accessors = false;
       fields = [];
       constructors = [];
       methods = [ copy_method ];
@@ -326,6 +327,7 @@ let test_record_copy_parses_successfully () =
       disguised = false;
       c_symbol_prefix = Some "test_record";
       is_gtype_struct_for = None;
+      no_field_accessors = false;
       fields =
         [
           {
@@ -824,6 +826,7 @@ let test_inout_record_param_pointer_type () =
       disguised = false;
       c_symbol_prefix = Some "pango_rectangle";
       is_gtype_struct_for = None;
+      no_field_accessors = false;
       fields =
         [
           {
@@ -1072,6 +1075,7 @@ let test_fixed_size_array_out_param () =
       disguised = false;
       c_symbol_prefix = Some "graphene_vec3";
       is_gtype_struct_for = None;
+      no_field_accessors = false;
       fields = [];
       constructors = [];
       methods = [];

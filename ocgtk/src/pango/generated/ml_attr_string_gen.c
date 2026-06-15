@@ -31,11 +31,28 @@ value Val_PangoAttrString_option(const PangoAttrString *ptr) {
 }
 
 \
+CAMLexport CAMLprim value ml_pango_attr_string_get_attr(value self)
+{
+    CAMLparam1(self);
+    PangoAttrString *rec = PangoAttrString_val(self);
+    CAMLreturn(Val_PangoAttribute(&rec->attr));
+}
+
+\
 CAMLexport CAMLprim value ml_pango_attr_string_get_value(value self)
 {
     CAMLparam1(self);
     PangoAttrString *rec = PangoAttrString_val(self);
     CAMLreturn(caml_copy_string(rec->value));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attr_string_set_attr(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoAttrString *rec = PangoAttrString_val(self);
+    rec->attr = *PangoAttribute_val(v_val);
+    CAMLreturn(Val_unit);
 }
 
 \
@@ -49,11 +66,12 @@ CAMLexport CAMLprim value ml_pango_attr_string_set_value(value self, value v_val
 }
 
 \
-CAMLexport CAMLprim value ml_pango_attr_string_make(value v_value)
+CAMLexport CAMLprim value ml_pango_attr_string_make(value v_attr, value v_value)
 {
-    CAMLparam1(v_value);
+    CAMLparam2(v_attr, v_value);
     PangoAttrString *obj = g_new0(PangoAttrString, 1);
     if (obj == NULL) caml_failwith("allocation failed");
+    obj->attr = *PangoAttribute_val(v_attr);
     obj->value = g_strdup(String_val(v_value));
     CAMLreturn(Val_PangoAttrString(obj));
 }

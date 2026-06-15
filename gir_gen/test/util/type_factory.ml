@@ -141,6 +141,7 @@ let make_gir_record ?(record_name = "TestRecord") ?(c_type = "TestRecord")
     introspectable;
     c_symbol_prefix;
     is_gtype_struct_for;
+    no_field_accessors = false;
     fields;
     constructors;
     methods;

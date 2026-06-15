@@ -200,7 +200,7 @@ let apply_record_components (ov : record_override) (rec_ : gir_record) :
       ~set_version:function_set_version ~set_os:function_set_os
       ~overrides:ov.functions rec_.functions
   in
-  { rec_ with fields; constructors; methods; functions }
+  { rec_ with no_field_accessors = ov.no_fields; fields; constructors; methods; functions }
 
 let apply_enum_components (ov : enum_override) (enm : gir_enum) : gir_enum =
   let members =

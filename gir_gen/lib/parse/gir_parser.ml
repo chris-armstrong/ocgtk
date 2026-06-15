@@ -1330,6 +1330,7 @@ let parse_gir_file filename filter_classes =
             introspectable;
             c_symbol_prefix;
             is_gtype_struct_for;
+            no_field_accessors = false;
             fields = List.rev !fields;
             constructors = List.rev !constructors;
             methods = List.rev !methods;

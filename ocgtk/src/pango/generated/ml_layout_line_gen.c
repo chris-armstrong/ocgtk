@@ -232,11 +232,27 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 \
+CAMLexport CAMLprim value ml_pango_layout_line_get_layout(value self)
+{
+    CAMLparam1(self);
+    PangoLayoutLine *rec = PangoLayoutLine_val(self);
+    CAMLreturn(Val_PangoLayout(rec->layout));
+}
+
+\
 CAMLexport CAMLprim value ml_pango_layout_line_get_runs(value self)
 {
     CAMLparam1(self);
     PangoLayoutLine *rec = PangoLayoutLine_val(self);
     CAMLreturn(Val_int(rec->runs));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_layout_line_get_is_paragraph_start(value self)
+{
+    CAMLparam1(self);
+    PangoLayoutLine *rec = PangoLayoutLine_val(self);
+    CAMLreturn(Val_int(rec->is_paragraph_start));
 }
 
 \
@@ -248,11 +264,47 @@ CAMLexport CAMLprim value ml_pango_layout_line_get_resolved_dir(value self)
 }
 
 \
+CAMLexport CAMLprim value ml_pango_layout_line_set_layout(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoLayoutLine *rec = PangoLayoutLine_val(self);
+    rec->layout = PangoLayout_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_layout_line_set_start_index(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoLayoutLine *rec = PangoLayoutLine_val(self);
+    rec->start_index = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_layout_line_set_length(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoLayoutLine *rec = PangoLayoutLine_val(self);
+    rec->length = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
 CAMLexport CAMLprim value ml_pango_layout_line_set_runs(value self, value v_val)
 {
     CAMLparam2(self, v_val);
     PangoLayoutLine *rec = PangoLayoutLine_val(self);
     rec->runs = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_layout_line_set_is_paragraph_start(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoLayoutLine *rec = PangoLayoutLine_val(self);
+    rec->is_paragraph_start = Int_val(v_val);
     CAMLreturn(Val_unit);
 }
 
@@ -266,13 +318,24 @@ CAMLexport CAMLprim value ml_pango_layout_line_set_resolved_dir(value self, valu
 }
 
 \
-CAMLexport CAMLprim value ml_pango_layout_line_make(value v_runs, value v_resolved_dir)
+CAMLexport CAMLprim value ml_pango_layout_line_make_native(value v_layout, value v_start_index, value v_length, value v_runs, value v_is_paragraph_start, value v_resolved_dir)
 {
-    CAMLparam2(v_runs, v_resolved_dir);
+    CAMLparam5(v_layout, v_start_index, v_length, v_runs, v_is_paragraph_start);
+CAMLxparam1(v_resolved_dir);
+
     PangoLayoutLine *obj = g_new0(PangoLayoutLine, 1);
     if (obj == NULL) caml_failwith("allocation failed");
+    obj->layout = PangoLayout_val(v_layout);
+    obj->start_index = Int_val(v_start_index);
+    obj->length = Int_val(v_length);
     obj->runs = Int_val(v_runs);
+    obj->is_paragraph_start = Int_val(v_is_paragraph_start);
     obj->resolved_dir = Int_val(v_resolved_dir);
     CAMLreturn(Val_PangoLayoutLine(obj));
+}
+\
+CAMLexport CAMLprim value ml_pango_layout_line_make_bytecode(value * argv, int argn)
+{
+    return ml_pango_layout_line_make_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
 

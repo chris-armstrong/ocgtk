@@ -174,44 +174,47 @@ let entity_generator_by_entity_type =
             Field_analysis.compute_record_field_info ~ctx ~record_name ~c_type
               fields
           in
-          (* Skip field accessors that would duplicate existing method bindings.
-             Records like GdkPixbufFormat provide get_*/set_* methods for all
-             their fields; generating duplicate stubs causes naming collisions
-             and also fails for structs whose definition is not in public headers. *)
+          (* Skip field accessor C stubs that would duplicate existing method
+             bindings (same C symbol name). Check getter and setter separately
+             so that, e.g., a record with a get_X method but no set_X method
+             still gets a field setter stub. The make constructor always uses
+             all fields regardless of method conflicts. *)
           let method_snake_names =
             List.map entity.methods
               ~f:(fun (m : gir_method) ->
                 Gir_gen_lib.Utils.to_snake_case m.method_name)
           in
-          let field_infos =
+          let getter_infos =
             List.filter field_infos
               ~f:(fun (fi : Field_analysis.field_info) ->
                 let getter_name = "get_" ^ fi.field_name in
+                not
+                  (List.exists method_snake_names
+                     ~f:(String.equal getter_name)))
+          in
+          let setter_infos =
+            List.filter field_infos
+              ~f:(fun (fi : Field_analysis.field_info) ->
                 let setter_name = "set_" ^ fi.field_name in
-                let conflicts =
-                  List.exists method_snake_names ~f:(fun n ->
-                      String.equal n getter_name || String.equal n setter_name
-                      || String.equal n fi.field_name)
-                in
-                not conflicts)
+                not
+                  (List.exists method_snake_names
+                     ~f:(String.equal setter_name)))
           in
           (* Generate getter stubs *)
           let getters =
-            C_stub_field.generate_field_getters ~c_type
-              field_infos
+            C_stub_field.generate_field_getters ~c_type getter_infos
           in
           List.iter getters ~f:(fun stub ->
               Buffer.add_string buf stub;
               Buffer.add_char buf '\n');
           (* Generate setter stubs *)
           let setters =
-            C_stub_field.generate_field_setters ~c_type
-              field_infos
+            C_stub_field.generate_field_setters ~c_type setter_infos
           in
           List.iter setters ~f:(fun stub ->
               Buffer.add_string buf stub;
               Buffer.add_char buf '\n');
-          (* Generate make constructor stub *)
+          (* Generate make constructor stub - uses ALL fields *)
           match
             C_stub_field.generate_field_make_from_fields ~c_type field_infos
           with

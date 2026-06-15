@@ -441,6 +441,7 @@ let test_record_field_ignore () =
             record_name = "TextIter";
             record_action = None;
             record_os = None;
+            no_fields = false;
             fields =
               [
                 {
@@ -482,6 +483,7 @@ let test_record_field_version_override () =
             record_name = "TextIter";
             record_action = None;
             record_os = None;
+            no_fields = false;
             fields =
               [
                 {
@@ -523,6 +525,7 @@ let test_record_ignore () =
             record_name = "PrintBackend";
             record_action = Some Ignore;
             record_os = None;
+            no_fields = false;
             fields = [];
             constructors = [];
             methods = [];

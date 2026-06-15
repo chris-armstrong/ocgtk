@@ -1,10 +1,10 @@
 class type attr_list_t = object
-  method change : Attribute.t -> unit
+  method change : Attr_color_cycle_ed189c09.Attribute.t -> unit
   method equal : Attr_list.t -> bool
-  method get_attributes : unit -> Attribute.t list
+  method get_attributes : unit -> Attr_color_cycle_ed189c09.Attribute.t list
   method get_iterator : unit -> Attr_iterator.t
-  method insert : Attribute.t -> unit
-  method insert_before : Attribute.t -> unit
+  method insert : Attr_color_cycle_ed189c09.Attribute.t -> unit
+  method insert_before : Attr_color_cycle_ed189c09.Attribute.t -> unit
   method ref : unit -> Attr_list.t
   method splice : Attr_list.t -> int -> int -> unit
   method to_string : unit -> string
@@ -15,20 +15,22 @@ end
 (* High-level class for AttrList *)
 class attr_list (obj : Attr_list.t) : attr_list_t =
   object (self)
-    method change : Attribute.t -> unit = fun attr -> Attr_list.change obj attr
+    method change : Attr_color_cycle_ed189c09.Attribute.t -> unit =
+      fun attr -> Attr_list.change obj attr
 
     method equal : Attr_list.t -> bool =
       fun other_list -> Attr_list.equal obj other_list
 
-    method get_attributes : unit -> Attribute.t list =
+    method get_attributes : unit -> Attr_color_cycle_ed189c09.Attribute.t list =
       fun () -> Attr_list.get_attributes obj
 
     method get_iterator : unit -> Attr_iterator.t =
       fun () -> Attr_list.get_iterator obj
 
-    method insert : Attribute.t -> unit = fun attr -> Attr_list.insert obj attr
+    method insert : Attr_color_cycle_ed189c09.Attribute.t -> unit =
+      fun attr -> Attr_list.insert obj attr
 
-    method insert_before : Attribute.t -> unit =
+    method insert_before : Attr_color_cycle_ed189c09.Attribute.t -> unit =
       fun attr -> Attr_list.insert_before obj attr
 
     method ref : unit -> Attr_list.t = fun () -> Attr_list.ref obj

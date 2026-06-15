@@ -194,9 +194,22 @@ let extract_record_dependencies (ctx : generation_context) (rec_ : gir_record) :
   let constructor_deps =
     List.concat_map rec_.constructors ~f:(extract_constructor_dependencies ctx)
   in
+  (* Include field types that will appear in generated OCaml accessor signatures.
+     Only fields that pass the field filter produce OCaml-level type references.
+     Skip entirely when no_field_accessors is set (no accessors will be generated). *)
+  let field_deps =
+    if rec_.no_field_accessors then []
+    else
+      List.concat_map rec_.fields ~f:(fun field ->
+          if Generate.Field_filter.should_generate_field field then
+            match field.field_type with
+            | None -> []
+            | Some ft -> extract_dependencies_from_type ctx ft
+          else [])
+  in
 
   (* Remove self-references and duplicates *)
-  let all_deps = method_deps @ constructor_deps in
+  let all_deps = method_deps @ constructor_deps @ field_deps in
   List.filter all_deps ~f:(fun dep -> dep <> rec_.record_name)
   |> List.sort_uniq ~cmp:String.compare
 

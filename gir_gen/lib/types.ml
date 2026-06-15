@@ -129,6 +129,9 @@ type gir_record = {
   c_symbol_prefix : string option;
   is_gtype_struct_for : string option;
       (* glib:is-gtype-struct-for attribute - class structs to skip *)
+  no_field_accessors : bool;
+      (* set by override (no_fields): struct body is private even though GIR
+         lists fields, so field accessors must not be generated *)
   fields : gir_record_field list;
   constructors : gir_constructor list;
   methods : gir_method list;
@@ -274,7 +277,7 @@ let entity_of_record (rec_ : gir_record) : entity =
     methods = rec_.methods;
     properties = [];
     signals = [];
-    fields = rec_.fields;
+    fields = (if rec_.no_field_accessors then [] else rec_.fields);
     version = rec_.version;
     os = rec_.os;
   }

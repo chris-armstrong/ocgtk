@@ -35,11 +35,28 @@ value Val_PangoAttrFontFeatures_option(const PangoAttrFontFeatures *ptr) {
 #if PANGO_VERSION_CHECK(1,38,0)
 
 \
+CAMLexport CAMLprim value ml_pango_attr_font_features_get_attr(value self)
+{
+    CAMLparam1(self);
+    PangoAttrFontFeatures *rec = PangoAttrFontFeatures_val(self);
+    CAMLreturn(Val_PangoAttribute(&rec->attr));
+}
+
+\
 CAMLexport CAMLprim value ml_pango_attr_font_features_get_features(value self)
 {
     CAMLparam1(self);
     PangoAttrFontFeatures *rec = PangoAttrFontFeatures_val(self);
     CAMLreturn(caml_copy_string(rec->features));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attr_font_features_set_attr(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoAttrFontFeatures *rec = PangoAttrFontFeatures_val(self);
+    rec->attr = *PangoAttribute_val(v_val);
+    CAMLreturn(Val_unit);
 }
 
 \
@@ -53,11 +70,12 @@ CAMLexport CAMLprim value ml_pango_attr_font_features_set_features(value self, v
 }
 
 \
-CAMLexport CAMLprim value ml_pango_attr_font_features_make(value v_features)
+CAMLexport CAMLprim value ml_pango_attr_font_features_make(value v_attr, value v_features)
 {
-    CAMLparam1(v_features);
+    CAMLparam2(v_attr, v_features);
     PangoAttrFontFeatures *obj = g_new0(PangoAttrFontFeatures, 1);
     if (obj == NULL) caml_failwith("allocation failed");
+    obj->attr = *PangoAttribute_val(v_attr);
     obj->features = g_strdup(String_val(v_features));
     CAMLreturn(Val_PangoAttrFontFeatures(obj));
 }

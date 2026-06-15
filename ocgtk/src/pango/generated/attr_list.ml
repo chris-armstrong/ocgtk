@@ -91,14 +91,15 @@ This mode is useful for merging two lists of attributes together. *)
 external ref : t -> t = "ml_pango_attr_list_ref"
 (** Increase the reference count of the given attribute list by one. *)
 
-external insert_before : t -> Attribute.t -> unit
+external insert_before : t -> Attr_color_cycle_ed189c09.Attribute.t -> unit
   = "ml_pango_attr_list_insert_before"
 (** Insert the given attribute into the `PangoAttrList`.
 
 It will be inserted before all other attributes with a
 matching @start_index. *)
 
-external insert : t -> Attribute.t -> unit = "ml_pango_attr_list_insert"
+external insert : t -> Attr_color_cycle_ed189c09.Attribute.t -> unit
+  = "ml_pango_attr_list_insert"
 (** Insert the given attribute into the `PangoAttrList`.
 
 It will be inserted after all other attributes with a
@@ -109,7 +110,7 @@ external get_iterator : t -> Attr_iterator.t = "ml_pango_attr_list_get_iterator"
 
 @list must not be modified until this iterator is freed. *)
 
-external get_attributes : t -> Attribute.t list
+external get_attributes : t -> Attr_color_cycle_ed189c09.Attribute.t list
   = "ml_pango_attr_list_get_attributes"
 (** Gets a list of all attributes in @list. *)
 
@@ -121,7 +122,8 @@ same ranges.
 Beware that this will return wrong values if any list
 contains duplicates. *)
 
-external change : t -> Attribute.t -> unit = "ml_pango_attr_list_change"
+external change : t -> Attr_color_cycle_ed189c09.Attribute.t -> unit
+  = "ml_pango_attr_list_change"
 (** Insert the given attribute into the `PangoAttrList`.
 
     It will replace any attributes of the same type on that segment and be

@@ -45,6 +45,7 @@ type record_override = {
   record_name : string;
   record_action : override_action option;
   record_os : Os_filter.t option;
+  no_fields : bool;
   fields : component_override list;
   constructors : component_override list;
   methods : component_override list;

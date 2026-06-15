@@ -62,37 +62,3 @@ external get_extensions : t -> string array
 
 external get_description : t -> string = "ml_gdk_pixbuf_format_get_description"
 (** Returns a description of the format. *)
-
-(* Record field accessors *)
-
-(* Getters *)
-external get_name : t -> string = "ml_gdk_pixbuf_format_get_name"
-external get_description : t -> string = "ml_gdk_pixbuf_format_get_description"
-
-external get_mime_types : t -> string array
-  = "ml_gdk_pixbuf_format_get_mime_types"
-
-external get_extensions : t -> string array
-  = "ml_gdk_pixbuf_format_get_extensions"
-
-external get_disabled : t -> bool = "ml_gdk_pixbuf_format_get_disabled"
-external get_license : t -> string = "ml_gdk_pixbuf_format_get_license"
-
-(* Setters *)
-external set_name : t -> string -> unit = "ml_gdk_pixbuf_format_set_name"
-
-external set_description : t -> string -> unit
-  = "ml_gdk_pixbuf_format_set_description"
-
-external set_mime_types : t -> string array -> unit
-  = "ml_gdk_pixbuf_format_set_mime_types"
-
-external set_extensions : t -> string array -> unit
-  = "ml_gdk_pixbuf_format_set_extensions"
-
-external set_disabled : t -> bool -> unit = "ml_gdk_pixbuf_format_set_disabled"
-external set_license : t -> string -> unit = "ml_gdk_pixbuf_format_set_license"
-
-external make :
-  string -> string -> string array -> string array -> bool -> string -> t
-  = "ml_gdk_pixbuf_format_make_bytecode" "ml_gdk_pixbuf_format_make_native"

@@ -45,7 +45,8 @@ external get_matrix : t -> Matrix.t option = "ml_pango_renderer_get_matrix"
 
     See [method@Pango.Renderer.set_matrix]. *)
 
-external get_layout_line : t -> Layout_line.t option
+external get_layout_line :
+  t -> Layout_and__layout_iter_and__layout_line.Layout_line.t option
   = "ml_pango_renderer_get_layout_line"
 (** Gets the layout line currently being rendered using @renderer.
 
@@ -55,7 +56,8 @@ methods, like in its draw_shape vfunc, for example.
 The returned layout line should not be modified while still being
 rendered. *)
 
-external get_layout : t -> Layout_and__layout_iter.Layout.t option
+external get_layout :
+  t -> Layout_and__layout_iter_and__layout_line.Layout.t option
   = "ml_pango_renderer_get_layout"
 (** Gets the layout currently being rendered using @renderer.
 
@@ -98,8 +100,12 @@ specified `PangoRenderer`.
 This should be called while @renderer is already active.
 Use [method@Pango.Renderer.activate] to activate a renderer. *)
 
-external draw_layout_line : t -> Layout_line.t -> int -> int -> unit
-  = "ml_pango_renderer_draw_layout_line"
+external draw_layout_line :
+  t ->
+  Layout_and__layout_iter_and__layout_line.Layout_line.t ->
+  int ->
+  int ->
+  unit = "ml_pango_renderer_draw_layout_line"
 (** Draws @line with the specified `PangoRenderer`.
 
 This draws the glyph items that make up the line, as well as
@@ -107,7 +113,7 @@ shapes, backgrounds and lines that are specified by the attributes
 of those items. *)
 
 external draw_layout :
-  t -> Layout_and__layout_iter.Layout.t -> int -> int -> unit
+  t -> Layout_and__layout_iter_and__layout_line.Layout.t -> int -> int -> unit
   = "ml_pango_renderer_draw_layout"
 (** Draws @layout with the specified `PangoRenderer`.
 

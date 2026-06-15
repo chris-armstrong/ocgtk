@@ -233,7 +233,7 @@ let validate_body_elements ~entity_name ~valid_kinds body =
               List.mem k valid_kinds || String.equal k "ignore"
               || String.equal k "version" || String.equal k "os"
               || String.equal k "not_os" || String.equal k "no_getter"
-              || String.equal k "no_setter"
+              || String.equal k "no_setter" || String.equal k "no_fields"
             then check rest
             else
               Error
@@ -329,6 +329,13 @@ let parse_record_override sexp =
       ~valid_kinds:[ "field"; "constructor"; "method"; "function" ]
       body
   in
+  let no_fields =
+    List.exists
+      (function
+        | Sexp.Atom "no_fields" | Sexp.List [ Sexp.Atom "no_fields" ] -> true
+        | _ -> false)
+      body
+  in
   let* fields = parse_components_of_kind ~entity_name:name ~kind:"field" body in
   let* constructors =
     parse_components_of_kind ~entity_name:name ~kind:"constructor" body
@@ -344,6 +351,7 @@ let parse_record_override sexp =
       record_name = name;
       record_action;
       record_os;
+      no_fields;
       fields;
       constructors;
       methods;

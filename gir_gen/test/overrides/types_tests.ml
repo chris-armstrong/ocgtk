@@ -127,7 +127,8 @@ let test_record_override_construction () =
       record_name = "TextIter";
       record_action = None;
       record_os = None;
-fields =
+      no_fields = false;
+      fields =
         [
           {
             component_name = "user_data";
