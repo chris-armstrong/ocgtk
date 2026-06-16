@@ -22,10 +22,42 @@ type classification_outcome =
     }
 
 (* ================================================================= *)
+(* Cross-namespace reference loading                                  *)
+(* ================================================================= *)
+
+(* Mirrors [load_reference_files] in [gir_gen/bin/gir_gen.ml] so the corpus
+   classifier sees the same cross-namespace knowledge the production
+   generator does. Without this the [classify_type] cross-ns branch falls off
+   to [Tk_Unknown] for every external type and the histogram over-reports
+   skips. *)
+let load_reference_files (reference_files : string list) :
+    generation_context_namespace_cross_references StringMap.t =
+  let converter = cross_reference_namespace_of_sexp in
+  List.fold_left
+    (fun acc file ->
+      let cr_namespace = Sexplib.Sexp.load_sexp_conv_exn file converter in
+      let ncr_namespace =
+        {
+          ncr_namespace_name = cr_namespace.cr_namespace_name;
+          ncr_namespace_packages = cr_namespace.cr_namespace_packages;
+          ncr_namespace_c_includes = cr_namespace.cr_namespace_c_includes;
+          ncr_namespace_includes = cr_namespace.cr_namespace_includes;
+          ncr_entities =
+            List.fold_left
+              (fun sm (cr : cross_reference_entity) ->
+                StringMap.add cr.cr_name cr sm)
+              StringMap.empty cr_namespace.cr_entities;
+        }
+      in
+      StringMap.add cr_namespace.cr_namespace_name ncr_namespace acc)
+    StringMap.empty reference_files
+
+(* ================================================================= *)
 (* Build a minimal generation context from parsed entities            *)
 (* ================================================================= *)
 
 let build_context
+    ?(cross_references = StringMap.empty)
     (namespace : gir_namespace)
     (repository : gir_repository)
     (classes : gir_class list)
@@ -43,19 +75,21 @@ let build_context
     records;
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
-    cross_references = StringMap.empty;
+    cross_references;
   }
 
 (* ================================================================= *)
 (* Classify all signals in a single file                              *)
 (* ================================================================= *)
 
-let classify_signals_of_file filepath =
+let classify_signals_of_file ?(reference_files = []) filepath =
   let repository, namespace, classes, interfaces, enums, bitfields, records =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file filepath []
   in
+  let cross_references = load_reference_files reference_files in
   let ctx =
-    build_context namespace repository classes interfaces enums bitfields records
+    build_context ~cross_references namespace repository classes interfaces
+      enums bitfields records
   in
   let classify_entity class_name signal =
     match Signal_gen.classify ~ctx signal with
@@ -115,11 +149,11 @@ let coverage_of_namespace (namespace_name : string)
   let by_reason = List.sort (fun (a, _) (b, _) -> String.compare a b) reason_counts in
   { namespace = namespace_name; total_signals; supported; unsupported; by_reason }
 
-let coverage_of_file filepath =
+let coverage_of_file ?(reference_files = []) filepath =
   let _, namespace, _, _, _, _, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file filepath []
   in
-  let outcomes = classify_signals_of_file filepath in
+  let outcomes = classify_signals_of_file ~reference_files filepath in
   coverage_of_namespace namespace.namespace_name outcomes
 
 let compare_coverage (baseline : signal_coverage) (live : signal_coverage) :
