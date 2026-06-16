@@ -179,74 +179,69 @@ let element_is_struct_type ~ctx (element_type : gir_type) : bool =
 (* Build getter body for a fixed-size array field. *)
 let array_getter_body ~ctx (gir_type : gir_type) c_field_expr =
   match gir_type.array with
-  | Some arr -> (
-      match arr.fixed_size with
-      | Some size -> (
-          match Type_mappings.find_type_mapping_for_gir_type ~ctx arr.element_type with
-          | Some elem_tm ->
-              let element_is_struct = element_is_struct_type ~ctx arr.element_type in
-              C_stub_helpers.generate_array_getter_body
-                ~element_c_type:elem_tm.c_type ~element_c_to_ml:elem_tm.c_to_ml
-                ~element_is_struct ~size ~c_field:c_field_expr
-          | None ->
-              failwith
-                (sprintf "array_getter_body: no element mapping for %s"
-                   arr.element_type.name))
+  | Some { fixed_size = Some size; element_type; _ } -> (
+      match Type_mappings.find_type_mapping_for_gir_type ~ctx element_type with
+      | Some elem_tm ->
+          let element_is_struct = element_is_struct_type ~ctx element_type in
+          C_stub_helpers.generate_array_getter_body
+            ~element_c_type:elem_tm.c_type ~element_c_to_ml:elem_tm.c_to_ml
+            ~element_is_struct ~size ~c_field:c_field_expr
       | None ->
-          failwith "array_getter_body: fixed-size array without fixed_size")
+          failwith
+            (sprintf "array_getter_body: no element mapping for %s"
+               element_type.name))
+  | Some { fixed_size = None; _ } ->
+      failwith "array_getter_body: fixed-size array without fixed_size"
   | None -> failwith "array_getter_body: not an array type"
 
 (* Build setter body for a fixed-size array field. *)
 let array_setter_body ~ctx (gir_type : gir_type) c_field_expr =
   match gir_type.array with
-  | Some arr -> (
-      match arr.fixed_size with
-      | Some size -> (
-          match Type_mappings.find_type_mapping_for_gir_type ~ctx arr.element_type with
-          | Some elem_tm ->
-              let element_is_struct = element_is_struct_type ~ctx arr.element_type in
-              C_stub_helpers.generate_array_setter_body
-                ~element_c_type:elem_tm.c_type ~element_ml_to_c:elem_tm.ml_to_c
-                ~element_is_struct ~size ~c_field:c_field_expr
-          | None ->
-              failwith
-                (sprintf "array_setter_body: no element mapping for %s"
-                   arr.element_type.name))
+  | Some { fixed_size = Some size; element_type; _ } -> (
+      match Type_mappings.find_type_mapping_for_gir_type ~ctx element_type with
+      | Some elem_tm ->
+          let element_is_struct = element_is_struct_type ~ctx element_type in
+          C_stub_helpers.generate_array_setter_body
+            ~element_c_type:elem_tm.c_type ~element_ml_to_c:elem_tm.ml_to_c
+            ~element_is_struct ~size ~c_field:c_field_expr
       | None ->
-          failwith "array_setter_body: fixed-size array without fixed_size")
+          failwith
+            (sprintf "array_setter_body: no element mapping for %s"
+               element_type.name))
+  | Some { fixed_size = None; _ } ->
+      failwith "array_setter_body: fixed-size array without fixed_size"
   | None -> failwith "array_setter_body: not an array type"
 
 (* Build make assignment for a fixed-size array field. *)
 let array_make_assignment ~ctx (gir_type : gir_type) c_make_field_expr param_name =
   match gir_type.array with
-  | Some arr -> (
-      match arr.fixed_size with
-      | Some size -> (
-          match Type_mappings.find_type_mapping_for_gir_type ~ctx arr.element_type with
-          | Some elem_tm ->
-              let is_float =
-                String.equal elem_tm.c_type "gdouble"
-                || String.equal elem_tm.c_type "gfloat"
-                || String.equal elem_tm.c_type "double"
-                || String.equal elem_tm.c_type "float"
-              in
-              let element_is_struct = element_is_struct_type ~ctx arr.element_type in
-              if is_float then
-                sprintf
-                  "for (int i = 0; i < %d; i++)\n      \
-                     %s[i] = Double_field(%s, i);"
-                  size c_make_field_expr param_name
-              else
-                let deref = if element_is_struct then "*" else "" in
-                sprintf
-                  "for (int i = 0; i < %d; i++)\n      \
-                     %s[i] = %s%s(Field(%s, i));"
-                  size c_make_field_expr deref elem_tm.ml_to_c param_name
-          | None ->
-              failwith
-                (sprintf "array_make_assignment: no element mapping for %s"
-                   arr.element_type.name))
-      | None -> failwith "array_make_assignment: fixed-size array without fixed_size")
+  | Some { fixed_size = Some size; element_type; _ } -> (
+      match Type_mappings.find_type_mapping_for_gir_type ~ctx element_type with
+      | Some elem_tm ->
+          let is_float =
+            String.equal elem_tm.c_type "gdouble"
+            || String.equal elem_tm.c_type "gfloat"
+            || String.equal elem_tm.c_type "double"
+            || String.equal elem_tm.c_type "float"
+          in
+          let element_is_struct = element_is_struct_type ~ctx element_type in
+          if is_float then
+            sprintf
+              "for (int i = 0; i < %d; i++)\n      \
+                 %s[i] = Double_field(%s, i);"
+              size c_make_field_expr param_name
+          else
+            let deref = if element_is_struct then "*" else "" in
+            sprintf
+              "for (int i = 0; i < %d; i++)\n      \
+                 %s[i] = %s%s(Field(%s, i));"
+              size c_make_field_expr deref elem_tm.ml_to_c param_name
+      | None ->
+          failwith
+            (sprintf "array_make_assignment: no element mapping for %s"
+               element_type.name))
+  | Some { fixed_size = None; _ } ->
+      failwith "array_make_assignment: fixed-size array without fixed_size"
   | None -> failwith "array_make_assignment: not an array type"
 
 (* Build getter body for a gchar** field. *)
@@ -260,6 +255,115 @@ let strv_setter_body c_field_expr =
 (* Build make assignment for a gchar** field. *)
 let strv_make_assignment c_field_expr param_name =
   sprintf "Strv_val(%s, %s);" param_name c_field_expr
+
+(** Compute the C getter/setter/make bodies for a field based on its type
+    classification. Returns a 5-tuple:
+    (getter_body, setter_body, make_assignment, needs_g_free, needs_g_strdup). *)
+let compute_field_bodies ~ctx ~field_type ~type_kind ~is_array ~is_string
+    ~is_nullable ~is_strv ~is_slist_with_element ~c_field_expr ~c_make_field_expr
+    ~field_name =
+  if is_strv then
+    ( strv_getter_body c_field_expr,
+      strv_setter_body c_field_expr,
+      strv_make_assignment c_make_field_expr ("v_" ^ field_name),
+      true,
+      true )
+  else if is_array then
+    ( array_getter_body ~ctx field_type c_field_expr,
+      array_setter_body ~ctx field_type c_field_expr,
+      array_make_assignment ~ctx field_type c_make_field_expr ("v_" ^ field_name),
+      false,
+      false )
+  else if is_slist_with_element then
+    let elem_tm =
+      match field_type.array with
+      | Some arr ->
+          CCOption.get_exn_or "slist element mapping"
+            (Type_mappings.find_type_mapping_for_gir_type ~ctx arr.element_type)
+      | None -> failwith "is_slist_with_element: no array info"
+    in
+    ( slist_getter_body field_type c_field_expr elem_tm,
+      slist_setter_body field_type c_field_expr elem_tm,
+      slist_make_assignment c_make_field_expr elem_tm ("v_" ^ field_name),
+      true,
+      true )
+  else if is_string then
+    ( string_getter_body c_field_expr,
+      string_setter_body c_field_expr,
+      string_make_assignment c_make_field_expr ("v_" ^ field_name),
+      true,
+      true )
+  else if is_nullable && (match type_kind with Type_mappings.Tk_Primitive -> false | _ -> true) then
+    match Type_mappings.find_type_mapping_for_gir_type ~ctx field_type with
+    | Some tm ->
+        ( nullable_getter_body tm.c_to_ml c_field_expr,
+          nullable_setter_body tm.ml_to_c c_field_expr,
+          nullable_make_assignment tm.ml_to_c c_make_field_expr ("v_" ^ field_name),
+          true,
+          false )
+    | None ->
+        ( primitive_getter_body "Val_int" c_field_expr,
+          primitive_setter_body "Int_val" c_field_expr,
+          primitive_make_assignment "Int_val" c_make_field_expr ("v_" ^ field_name),
+          false,
+          false )
+  else
+    match type_kind with
+    | Type_mappings.Tk_Record -> (
+        let field_c_type_ends_with_ptr =
+          match field_type.c_type with
+          | Some ct ->
+              String.length ct > 0 && Char.equal ct.[String.length ct - 1] '*'
+          | None -> false
+        in
+        match Type_mappings.find_type_mapping_for_gir_type ~ctx field_type with
+        | Some tm ->
+            if field_c_type_ends_with_ptr then
+              ( primitive_getter_body tm.c_to_ml c_field_expr,
+                primitive_setter_body tm.ml_to_c c_field_expr,
+                primitive_make_assignment tm.ml_to_c c_make_field_expr ("v_" ^ field_name),
+                false,
+                false )
+            else
+              ( inline_record_getter_body tm.c_to_ml c_field_expr,
+                inline_record_setter_body tm.ml_to_c c_field_expr,
+                inline_record_make_assignment tm.ml_to_c c_make_field_expr ("v_" ^ field_name),
+                false,
+                false )
+        | None ->
+            ( primitive_getter_body "Val_int" c_field_expr,
+              primitive_setter_body "Int_val" c_field_expr,
+              primitive_make_assignment "Int_val" c_make_field_expr ("v_" ^ field_name),
+              false,
+              false ))
+    | Type_mappings.Tk_Enum | Type_mappings.Tk_Bitfield ->
+        let tm =
+          CCOption.get_exn_or "enum mapping"
+            (Type_mappings.find_type_mapping_for_gir_type ~ctx field_type)
+        in
+        ( enum_getter_body tm.c_to_ml c_field_expr,
+          enum_setter_body tm.ml_to_c c_field_expr,
+          enum_make_assignment tm.ml_to_c c_make_field_expr ("v_" ^ field_name),
+          false,
+          false )
+    | _ -> (
+        match
+          Type_mappings.find_type_mapping_for_gir_type ~ctx field_type
+        with
+        | Some tm ->
+            ( primitive_getter_body tm.c_to_ml c_field_expr,
+              primitive_setter_body tm.ml_to_c c_field_expr,
+              primitive_make_assignment tm.ml_to_c c_make_field_expr
+                ("v_" ^ field_name),
+              false,
+              false )
+        | None ->
+            ( primitive_getter_body "Val_int" c_field_expr,
+              primitive_setter_body "Int_val" c_field_expr,
+              primitive_make_assignment "Int_val" c_make_field_expr
+                ("v_" ^ field_name),
+              false,
+              false ))
 
 (** Compute [field_info] for a single record field.
     Returns [None] if the field type cannot be resolved. *)
@@ -278,21 +382,18 @@ let compute_field_info ~ctx ~record_name ~c_type:_ (field : gir_record_field) :
 
       let ocaml_type = resolve_ocaml_type ~ctx field_type in
 
-      (* Determine type classification to pick the right conversion pattern. *)
       let type_kind = Type_mappings.classify_type ~ctx field_type in
       let is_list = Type_mappings.is_list_type field_type in
       let is_array = Option.is_some field_type.array in
       let is_string = Filtering.is_string_type field_type.c_type in
       let is_nullable = field_type.nullable in
 
-      (* Check if the field type is a gchar** (null-terminated string array) *)
       let is_strv =
         match field_type.c_type with
         | Some "gchar**" | Some "char**" -> true
         | _ -> false
       in
 
-      (* Check if this is an SList with a known element type. *)
       let is_slist_with_element =
         is_list
         &&
@@ -306,120 +407,18 @@ let compute_field_info ~ctx ~record_name ~c_type:_ (field : gir_record_field) :
         | None -> false
       in
 
-      (* Build getter/setter/make bodies based on type classification. *)
       let ( c_getter_body,
             c_setter_body,
             c_make_assignment,
             needs_g_free,
             needs_g_strdup ) =
-        if is_strv then
-          ( strv_getter_body c_field_expr,
-            strv_setter_body c_field_expr,
-            strv_make_assignment c_make_field_expr ("v_" ^ field_name),
-            true,
-            true )
-        else if is_array then
-          ( array_getter_body ~ctx field_type c_field_expr,
-            array_setter_body ~ctx field_type c_field_expr,
-            array_make_assignment ~ctx field_type c_make_field_expr ("v_" ^ field_name),
-            false,
-            false )
-        else if is_slist_with_element then
-          let elem_tm =
-            match field_type.array with
-            | Some arr ->
-                CCOption.get_exn_or "slist element mapping"
-                  (Type_mappings.find_type_mapping_for_gir_type ~ctx arr.element_type)
-            | None -> failwith "is_slist_with_element: no array info"
-          in
-          ( slist_getter_body field_type c_field_expr elem_tm,
-            slist_setter_body field_type c_field_expr elem_tm,
-            slist_make_assignment c_make_field_expr elem_tm ("v_" ^ field_name),
-            true,
-            true )
-        else if is_string then
-          ( string_getter_body c_field_expr,
-            string_setter_body c_field_expr,
-            string_make_assignment c_make_field_expr ("v_" ^ field_name),
-            true,
-            true )
-        else if is_nullable && (match type_kind with Type_mappings.Tk_Primitive -> false | _ -> true) then
-          (* Nullable non-primitive: record pointer, enum pointer, etc. *)
-          match Type_mappings.find_type_mapping_for_gir_type ~ctx field_type with
-          | Some tm ->
-              ( nullable_getter_body tm.c_to_ml c_field_expr,
-                nullable_setter_body tm.ml_to_c c_field_expr,
-                nullable_make_assignment tm.ml_to_c c_make_field_expr ("v_" ^ field_name),
-                true,
-                false )
-          | None ->
-              ( primitive_getter_body "Val_int" c_field_expr,
-                primitive_setter_body "Int_val" c_field_expr,
-                primitive_make_assignment "Int_val" c_make_field_expr ("v_" ^ field_name),
-                false,
-                false )
-        else
-          match type_kind with
-          | Type_mappings.Tk_Record -> (
-              (* Record field: either inline (by value) or pointer.
-                 Use the field's own type mapping to get the right Val_/val_ functions.
-                 Pointer fields (c_type ends with '*') need no & deref; inline fields do. *)
-              let field_c_type_ends_with_ptr =
-                match field_type.c_type with
-                | Some ct ->
-                    String.length ct > 0 && Char.equal ct.[String.length ct - 1] '*'
-                | None -> false
-              in
-              match Type_mappings.find_type_mapping_for_gir_type ~ctx field_type with
-              | Some tm ->
-                  if field_c_type_ends_with_ptr then
-                    (* Pointer to record: accessor takes/returns pointer directly *)
-                    ( primitive_getter_body tm.c_to_ml c_field_expr,
-                      primitive_setter_body tm.ml_to_c c_field_expr,
-                      primitive_make_assignment tm.ml_to_c c_make_field_expr ("v_" ^ field_name),
-                      false,
-                      false )
-                  else
-                    (* Inline record (embedded by value): need & for getter, * for setter *)
-                    ( inline_record_getter_body tm.c_to_ml c_field_expr,
-                      inline_record_setter_body tm.ml_to_c c_field_expr,
-                      inline_record_make_assignment tm.ml_to_c c_make_field_expr ("v_" ^ field_name),
-                      false,
-                      false )
-              | None ->
-                  ( primitive_getter_body "Val_int" c_field_expr,
-                    primitive_setter_body "Int_val" c_field_expr,
-                    primitive_make_assignment "Int_val" c_make_field_expr ("v_" ^ field_name),
-                    false,
-                    false ))
-          | Type_mappings.Tk_Enum | Type_mappings.Tk_Bitfield ->
-              let tm =
-                CCOption.get_exn_or "enum mapping"
-                  (Type_mappings.find_type_mapping_for_gir_type ~ctx field_type)
-              in
-              ( enum_getter_body tm.c_to_ml c_field_expr,
-                enum_setter_body tm.ml_to_c c_field_expr,
-                enum_make_assignment tm.ml_to_c c_make_field_expr ("v_" ^ field_name),
-                false,
-                false )
-          | _ -> (
-              match
-                Type_mappings.find_type_mapping_for_gir_type ~ctx field_type
-              with
-              | Some tm ->
-                  ( primitive_getter_body tm.c_to_ml c_field_expr,
-                    primitive_setter_body tm.ml_to_c c_field_expr,
-                    primitive_make_assignment tm.ml_to_c c_make_field_expr
-                      ("v_" ^ field_name),
-                    false,
-                    false )
-              | None ->
-                  ( primitive_getter_body "Val_int" c_field_expr,
-                    primitive_setter_body "Int_val" c_field_expr,
-                    primitive_make_assignment "Int_val" c_make_field_expr
-                      ("v_" ^ field_name),
-                    false,
-                    false ))
+        compute_field_bodies ~ctx ~field_type ~type_kind ~is_array
+          ~is_string ~is_nullable ~is_strv ~is_slist_with_element ~c_field_expr
+          ~c_make_field_expr ~field_name:field.field_name
+      in
+
+      let is_bitfield =
+        match type_kind with Type_mappings.Tk_Bitfield -> true | _ -> false
       in
 
       Some
@@ -436,7 +435,7 @@ let compute_field_info ~ctx ~record_name ~c_type:_ (field : gir_record_field) :
           needs_g_free;
           needs_g_strdup;
           is_array;
-          is_bitfield = false;
+          is_bitfield;
           bit_shift = None;
           field_gir_type = field.field_type;
         }

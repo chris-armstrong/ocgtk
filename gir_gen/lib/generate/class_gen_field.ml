@@ -12,10 +12,8 @@ let method_snake_names methods =
   List.map methods ~f:(fun m -> Utils.to_snake_case m.method_name)
 
 let find_l2_class_for_field ~ctx (fi : Field_analysis.field_info) =
-  match fi.field_gir_type with
-  | None -> None
-  | Some gir_type ->
-      Class_gen_type_resolution.find_layer2_class_for_type ~ctx gir_type
+  Option.bind fi.field_gir_type (fun gir_type ->
+      Class_gen_type_resolution.find_layer2_class_for_type ~ctx gir_type)
 
 let field_l2_type ~ctx ~current_layer2_module (fi : Field_analysis.field_info) =
   match find_l2_class_for_field ~ctx fi with
@@ -24,9 +22,15 @@ let field_l2_type ~ctx ~current_layer2_module (fi : Field_analysis.field_info) =
   | None -> fi.ocaml_type
 
 let getter_method_impl ~ctx ~current_layer2_module ~layer1_module_name fi =
-  let l2_type = field_l2_type ~ctx ~current_layer2_module fi in
   let name = fi.Field_analysis.field_name in
-  match find_l2_class_for_field ~ctx fi with
+  let l2_class = find_l2_class_for_field ~ctx fi in
+  let l2_type =
+    match l2_class with
+    | Some lc ->
+        Class_gen_type_resolution.qualify_layer2_class_type ~current_layer2_module lc
+    | None -> fi.ocaml_type
+  in
+  match l2_class with
   | Some lc ->
       let cls =
         Class_gen_type_resolution.qualify_layer2_class_name
@@ -39,9 +43,15 @@ let getter_method_impl ~ctx ~current_layer2_module ~layer1_module_name fi =
         layer1_module_name name
 
 let setter_method_impl ~ctx ~current_layer2_module ~layer1_module_name fi =
-  let l2_type = field_l2_type ~ctx ~current_layer2_module fi in
   let name = fi.Field_analysis.field_name in
-  match find_l2_class_for_field ~ctx fi with
+  let l2_class = find_l2_class_for_field ~ctx fi in
+  let l2_type =
+    match l2_class with
+    | Some lc ->
+        Class_gen_type_resolution.qualify_layer2_class_type ~current_layer2_module lc
+    | None -> fi.ocaml_type
+  in
+  match l2_class with
   | Some lc ->
       sprintf
         "  method set_%s : %s -> unit = fun v -> %s.set_%s obj (v#%s)\n" name
@@ -71,20 +81,24 @@ let iter_active_fields ~fields ~field_infos ~methods ~f =
       | None -> ()
       | Some fi -> f field fi snake mnames)
 
+let method_name_conflicts ~prefix ~snake ~mnames =
+  List.exists mnames ~f:(String.equal (prefix ^ snake))
+
 (** Generate field getter/setter method implementations for the class body. *)
 let generate_field_methods ~ctx ~layer1_module_name ~current_layer2_module
     ~fields ~field_infos ~methods ~buf =
+  let mnames = method_snake_names methods in
   iter_active_fields ~fields ~field_infos ~methods
-    ~f:(fun field fi snake mnames ->
+    ~f:(fun field fi snake _mnames ->
       if
         Field_filter.should_generate_field_getter field
-        && not (List.exists mnames ~f:(String.equal ("get_" ^ snake)))
+        && not (method_name_conflicts ~prefix:"get_" ~snake ~mnames)
       then
         Buffer.add_string buf
           (getter_method_impl ~ctx ~current_layer2_module ~layer1_module_name fi);
       if
         Field_filter.should_generate_field_setter field
-        && not (List.exists mnames ~f:(String.equal ("set_" ^ snake)))
+        && not (method_name_conflicts ~prefix:"set_" ~snake ~mnames)
       then
         Buffer.add_string buf
           (setter_method_impl ~ctx ~current_layer2_module ~layer1_module_name fi))
@@ -92,16 +106,17 @@ let generate_field_methods ~ctx ~layer1_module_name ~current_layer2_module
 (** Generate field getter/setter method signatures for the class type definition. *)
 let generate_field_method_sigs ~ctx ~current_layer2_module ~fields ~field_infos
     ~methods ~buf =
+  let mnames = method_snake_names methods in
   iter_active_fields ~fields ~field_infos ~methods
-    ~f:(fun field fi snake mnames ->
+    ~f:(fun field fi snake _mnames ->
       if
         Field_filter.should_generate_field_getter field
-        && not (List.exists mnames ~f:(String.equal ("get_" ^ snake)))
+        && not (method_name_conflicts ~prefix:"get_" ~snake ~mnames)
       then
         Buffer.add_string buf (getter_method_sig ~ctx ~current_layer2_module fi);
       if
         Field_filter.should_generate_field_setter field
-        && not (List.exists mnames ~f:(String.equal ("set_" ^ snake)))
+        && not (method_name_conflicts ~prefix:"set_" ~snake ~mnames)
       then
         Buffer.add_string buf (setter_method_sig ~ctx ~current_layer2_module fi))
 

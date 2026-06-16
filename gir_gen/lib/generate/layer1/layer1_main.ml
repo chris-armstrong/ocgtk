@@ -58,7 +58,7 @@ let generate_signal_bindings_section ~ctx ~output_mode ~class_name
 
 let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ~base_type ?c_symbol_prefix ~entity_kind
-    ?from_gobject_c_name ?(signals = []) ?(fields = []) buf : unit =
+    ?from_gobject_c_name ~signals ~fields buf : unit =
   generate_type_declaration ~output_mode ~base_type buf;
   (match from_gobject_c_name with
   | Some c_name ->
@@ -110,7 +110,7 @@ let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
 
 let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
     ~parent_chain ~constructors ~methods ~properties ?c_symbol_prefix
-    ~entity_kind ?from_gobject_c_name ?(signals = []) ?(fields = []) () : string
+    ~entity_kind ?from_gobject_c_name ~signals ~fields () : string
     =
   let buf = Buffer.create 1024 in
 

@@ -16,14 +16,19 @@ let is_gpointer_type (field_type : gir_type) : bool =
   || (match field_type.c_type with Some "gpointer" -> true | _ -> false)
 
 (* Check if a field type is a callback function pointer type.
-   Callback fields require marshalling infrastructure (Milestone 4). *)
+   Callback fields require marshalling infrastructure (Milestone 4).
+   These are filtered by type-name pattern rather than per-field overrides
+   because the set of callback-typed fields is large and changes across
+   GTK versions; individual fields can still be suppressed via the
+   [Ignore] override action if needed. *)
 let is_callback_field_type (field_type : gir_type) : bool =
   let lower = String.lowercase_ascii field_type.name in
   CCString.mem ~sub:"func" lower || CCString.mem ~sub:"callback" lower
 
 (* Check if a field type is an AttrClass struct-of-function-pointers.
    These are structs whose members are all function pointers, treated as
-   callback-equivalent and skipped. *)
+   callback-equivalent and skipped. Same rationale as [is_callback_field_type]:
+   pattern-based filtering avoids maintaining a per-field override list. *)
 let is_attr_class_type (field_type : gir_type) : bool =
   String.equal field_type.name "AttrClass"
 

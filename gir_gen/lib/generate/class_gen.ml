@@ -17,6 +17,16 @@ include Class_gen_converter
 include Class_gen_method
 include Class_gen_body
 
+(** Helper: compute field_infos for a record entity, returning [Some] list
+    or [None] for non-record entities. *)
+let compute_record_field_infos ~ctx ~entity_kind ~record_name ~c_type ~fields =
+  match entity_kind with
+  | Filtering.Record ->
+      Some
+        (Field_analysis.compute_record_field_info ~ctx ~record_name ~c_type
+           fields)
+  | _ -> None
+
 (** Helper: Determine if a parameter is a class type and get its Layer 2 type *)
 let get_param_layer2_type ~ctx ~current_layer2_module (param : gir_param) =
   match Type_mappings.find_type_mapping_for_gir_type ~ctx param.param_type with
@@ -179,16 +189,13 @@ let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
          ~layer1_ctor_prefix:module_names.layer1);
 
   (* Module-level make function for records *)
-  (match entity_kind with
-  | Filtering.Record ->
-      let field_infos =
-        Field_analysis.compute_record_field_info ~ctx ~record_name:class_name
-          ~c_type fields
-      in
+  (match compute_record_field_infos ~ctx ~entity_kind ~record_name:class_name
+           ~c_type ~fields with
+  | Some field_infos ->
       Class_gen_field.generate_field_make_fn ~ctx ~class_snake ~class_type_name
         ~layer1_module_name:module_names.layer1
         ~current_layer2_module:module_names.layer2 ~field_infos ~buf
-  | _ -> ());
+  | None -> ());
 
   Buffer.contents buf
 
@@ -223,15 +230,12 @@ let generate_class_signature ~ctx ~class_name ~c_type ~parent_chain ~methods
          ~current_layer2_module:module_names.layer2);
 
   (* Module-level make function signature for records *)
-  (match entity_kind with
-  | Filtering.Record ->
-      let field_infos =
-        Field_analysis.compute_record_field_info ~ctx ~record_name:class_name
-          ~c_type fields
-      in
+  (match compute_record_field_infos ~ctx ~entity_kind ~record_name:class_name
+           ~c_type ~fields with
+  | Some field_infos ->
       Class_gen_field.generate_field_make_fn_sig ~ctx ~class_type_name
         ~current_layer2_module:module_names.layer2 ~field_infos ~buf
-  | _ -> ());
+  | None -> ());
 
   Buffer.contents buf
 
@@ -339,16 +343,15 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
         ~f:
           (generate_constructor_impl ~ctx ~buf ~class_snake ~class_type_name
              ~current_layer2_module ~layer1_ctor_prefix:module_name);
-      (match Filtering.entity_kind_of_entity entity with
-      | Filtering.Record ->
-          let field_infos =
-            Field_analysis.compute_record_field_info ~ctx
-              ~record_name:entity.name ~c_type:entity.c_type entity.fields
-          in
-          Class_gen_field.generate_field_make_fn ~ctx ~class_snake
-            ~class_type_name ~layer1_module_name:module_name
-            ~current_layer2_module ~field_infos ~buf
-      | _ -> ()));
+      (match compute_record_field_infos ~ctx
+               ~entity_kind:(Filtering.entity_kind_of_entity entity)
+               ~record_name:entity.name ~c_type:entity.c_type ~fields:entity.fields
+       with
+       | Some field_infos ->
+           Class_gen_field.generate_field_make_fn ~ctx ~class_snake
+             ~class_type_name ~layer1_module_name:module_name
+             ~current_layer2_module ~field_infos ~buf
+       | None -> ()));
 
   Buffer.contents buf
 
@@ -411,15 +414,14 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
         ~f:
           (generate_constructor_sig ~ctx ~buf ~class_type_name
              ~current_layer2_module);
-      (match Filtering.entity_kind_of_entity entity with
-      | Filtering.Record ->
-          let field_infos =
-            Field_analysis.compute_record_field_info ~ctx
-              ~record_name:entity.name ~c_type:entity.c_type entity.fields
-          in
-          Class_gen_field.generate_field_make_fn_sig ~ctx ~class_type_name
-            ~current_layer2_module ~field_infos ~buf
-      | _ -> ()));
+      (match compute_record_field_infos ~ctx
+               ~entity_kind:(Filtering.entity_kind_of_entity entity)
+               ~record_name:entity.name ~c_type:entity.c_type ~fields:entity.fields
+       with
+       | Some field_infos ->
+           Class_gen_field.generate_field_make_fn_sig ~ctx ~class_type_name
+             ~current_layer2_module ~field_infos ~buf
+       | None -> ()));
 
   Buffer.contents buf
 
@@ -458,19 +460,18 @@ let generate_cyclic_shim_module ~ctx ~entity ~combined_module_name
          ~layer1_ctor_prefix);
 
   (* Module-level make function for record shims *)
-  (match Filtering.entity_kind_of_entity entity with
-  | Filtering.Record ->
-      let field_infos =
-        Field_analysis.compute_record_field_info ~ctx ~record_name:entity.name
-          ~c_type:entity.c_type entity.fields
-      in
-      let qualified_l1 =
-        sprintf "%s.%s" combined_module_name layer1_module_name
-      in
-      Class_gen_field.generate_field_make_fn ~ctx ~class_snake:entity_snake
-        ~class_type_name:entity_type_name ~layer1_module_name:qualified_l1
-        ~current_layer2_module ~field_infos ~buf
-  | _ -> ());
+  (match compute_record_field_infos ~ctx
+           ~entity_kind:(Filtering.entity_kind_of_entity entity)
+           ~record_name:entity.name ~c_type:entity.c_type ~fields:entity.fields
+   with
+   | Some field_infos ->
+       let qualified_l1 =
+         sprintf "%s.%s" combined_module_name layer1_module_name
+       in
+       Class_gen_field.generate_field_make_fn ~ctx ~class_snake:entity_snake
+         ~class_type_name:entity_type_name ~layer1_module_name:qualified_l1
+         ~current_layer2_module ~field_infos ~buf
+   | None -> ());
 
   Buffer.contents buf
 
@@ -504,16 +505,15 @@ let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name
          ~current_layer2_module);
 
   (* Make function signature for record shims *)
-  (match Filtering.entity_kind_of_entity entity with
-  | Filtering.Record ->
-      let field_infos =
-        Field_analysis.compute_record_field_info ~ctx ~record_name:entity.name
-          ~c_type:entity.c_type entity.fields
-      in
-      Class_gen_field.generate_field_make_fn_sig ~ctx
-        ~class_type_name:entity_type_name ~current_layer2_module ~field_infos
-        ~buf
-  | _ -> ());
+  (match compute_record_field_infos ~ctx
+           ~entity_kind:(Filtering.entity_kind_of_entity entity)
+           ~record_name:entity.name ~c_type:entity.c_type ~fields:entity.fields
+   with
+   | Some field_infos ->
+       Class_gen_field.generate_field_make_fn_sig ~ctx
+         ~class_type_name:entity_type_name ~current_layer2_module ~field_infos
+         ~buf
+   | None -> ());
 
   bprintf buf "\n";
 

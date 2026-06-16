@@ -29,7 +29,7 @@ type field_info = {
   is_array : bool;
       (** True if the field is an array type. *)
   is_bitfield : bool;
-      (** True if the field is a bit-field (parser support pending). *)
+      (** True if the field is a bit-field type. *)
   bit_shift : int option;
       (** Bit shift for bit-field access (None for non-bit-fields). *)
   field_gir_type : Types.gir_type option;

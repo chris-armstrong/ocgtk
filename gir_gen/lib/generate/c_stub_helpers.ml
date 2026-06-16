@@ -228,24 +228,15 @@ module Code_gen = struct
            Store_double_field(arr, i, %s[i]);\n    \
          CAMLreturn(arr);"
         size size c_field
-    else if element_is_struct then
-      (* Struct elements: the boxing macro takes a pointer. *)
-      sprintf
-        "CAMLlocal1(arr);\n    \
-         arr = caml_alloc(%d, 0);\n    \
-         for (int i = 0; i < %d; i++)\n      \
-           caml_modify(&Field(arr, i), %s(&%s[i]));\n    \
-         CAMLreturn(arr);"
-        size size element_c_to_ml c_field
     else
-      (* Primitive elements: the boxing macro takes the value directly. *)
+      let deref = if element_is_struct then "&" else "" in
       sprintf
         "CAMLlocal1(arr);\n    \
          arr = caml_alloc(%d, 0);\n    \
          for (int i = 0; i < %d; i++)\n      \
-           caml_modify(&Field(arr, i), %s(%s[i]));\n    \
+           caml_modify(&Field(arr, i), %s(%s%s[i]));\n    \
          CAMLreturn(arr);"
-        size size element_c_to_ml c_field
+        size size element_c_to_ml deref c_field
 
   (** Generate C setter body for a fixed-size array field.
       [element_c_type] is the C type of array elements.

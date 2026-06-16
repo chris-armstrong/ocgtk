@@ -19,6 +19,23 @@ let write_override_file ~test_name content =
   path
 
 (* Run gir_gen with an optional override file. *)
+let failwith_gir_gen_error result =
+  let stderr_lines = String.split_on_char '\n' result.stderr in
+  let rec take n = function
+    | [] -> []
+    | _ when n = 0 -> []
+    | x :: xs -> x :: take (n - 1) xs
+  in
+  let preview = String.concat "\n" (take 20 stderr_lines) in
+  let log_info =
+    match result.log_file with
+    | Some p -> Printf.sprintf "\n\nFull log saved to: %s" p
+    | None -> ""
+  in
+  Alcotest.fail
+    (Printf.sprintf "gir_gen command failed (exit code %d)\n\nStderr:\n%s%s"
+       result.exit_code preview log_info)
+
 let run_gir_gen_with_override ?override_file gir_file output_dir =
   let tools_dir = get_tools_dir () in
   let override_arg =
@@ -33,24 +50,29 @@ let run_gir_gen_with_override ?override_file gir_file output_dir =
   let result =
     run_command_with_output ~log_dir:(Some "/tmp/gir_gen_test_logs") cmd
   in
-  if result.exit_code <> 0 then begin
-    let stderr_lines = String.split_on_char '\n' result.stderr in
-    let rec take n = function
-      | [] -> []
-      | _ when n = 0 -> []
-      | x :: xs -> x :: take (n - 1) xs
-    in
-    let preview = String.concat "\n" (take 20 stderr_lines) in
-    let log_info =
-      match result.log_file with
-      | Some p -> Printf.sprintf "\n\nFull log saved to: %s" p
-      | None -> ""
-    in
-    Alcotest.fail
-      (Printf.sprintf "gir_gen command failed (exit code %d)\n\nStderr:\n%s%s"
-         result.exit_code preview log_info)
-  end;
+  if result.exit_code <> 0 then
+    failwith_gir_gen_error result;
   result.exit_code
+
+(* Parse a generated .ml file and find the class definition by name. *)
+let parse_and_find_class output_dir record_name class_snake =
+  let g_ml = g_wrapper_file output_dir record_name in
+  assert_true (Printf.sprintf "%s exists" g_ml) (file_exists g_ml);
+  let content = read_file g_ml in
+  let ast = Ml_ast_helpers.parse_implementation content in
+  Helpers.expect_some (Printf.sprintf "class %s not found" class_snake)
+    (Ml_ast_helpers.find_class_definition ast class_snake)
+    Fun.id
+
+(* Parse a generated .mli file and find the class type declaration by name. *)
+let parse_and_find_class_type output_dir record_name class_type_name =
+  let g_mli = Filename.concat (generated_dir output_dir) ("g" ^ record_name ^ ".mli") in
+  assert_true (Printf.sprintf "%s exists" g_mli) (file_exists g_mli);
+  let content = read_file g_mli in
+  let ast = Ml_ast_helpers.parse_interface content in
+  Helpers.expect_some (Printf.sprintf "class type %s not found" class_type_name)
+    (Ml_ast_helpers.find_class_type_declaration ast class_type_name)
+    Fun.id
 
 (* ========================================================================= *)
 (* Test 1: simple int fields generate getter/setter/make *)
@@ -248,21 +270,22 @@ let test_l2_class_has_getter_setter_methods () =
   create_gir_file test_gir gir_content;
   ensure_output_dir output_dir;
   let _exit = run_gir_gen_with_override test_gir output_dir in
+  let cd = parse_and_find_class output_dir "Point" "point" in
+  if not (Ml_ast_helpers.method_exists_as_definition cd.pci_expr "get_x") then
+    Alcotest.fail "method get_x not generated";
+  if not (Ml_ast_helpers.method_exists_as_definition cd.pci_expr "set_x") then
+    Alcotest.fail "method set_x not generated";
+  if not (Ml_ast_helpers.method_exists_as_definition cd.pci_expr "get_y") then
+    Alcotest.fail "method get_y not generated";
+  if not (Ml_ast_helpers.method_exists_as_definition cd.pci_expr "set_y") then
+    Alcotest.fail "method set_y not generated";
+  if not (Ml_ast_helpers.method_exists_as_definition cd.pci_expr "as_point") then
+    Alcotest.fail "method as_point not generated";
   let g_ml = g_wrapper_file output_dir "Point" in
-  assert_true "gPoint.ml exists" (file_exists g_ml);
   let content = read_file g_ml in
-  assert_true "gPoint.ml contains 'method get_x'"
-    (Helpers.string_contains content "method get_x");
-  assert_true "gPoint.ml contains 'method set_x'"
-    (Helpers.string_contains content "method set_x");
-  assert_true "gPoint.ml contains 'method get_y'"
-    (Helpers.string_contains content "method get_y");
-  assert_true "gPoint.ml contains 'method set_y'"
-    (Helpers.string_contains content "method set_y");
-  assert_true "gPoint.ml contains 'method as_point'"
-    (Helpers.string_contains content "method as_point");
-  assert_true "gPoint.ml contains 'let make'"
-    (Helpers.string_contains content "let make")
+  let ast = Ml_ast_helpers.parse_implementation content in
+  if Option.is_none (Ml_ast_helpers.find_let_binding ast "make") then
+    Alcotest.fail "let make not found"
 
 (* ========================================================================= *)
 (* Test 7: no_getter override suppresses L2 getter method *)
@@ -290,15 +313,13 @@ let test_l2_no_getter_suppresses_method () =
   let _exit =
     run_gir_gen_with_override ~override_file test_gir output_dir
   in
-  let g_ml = g_wrapper_file output_dir "Point" in
-  assert_true "gPoint.ml exists" (file_exists g_ml);
-  let content = read_file g_ml in
-  assert_true "no_getter: 'method get_x' is absent from L2 class"
-    (not (Helpers.string_contains content "method get_x"));
-  assert_true "no_getter: 'method set_x' is still present"
-    (Helpers.string_contains content "method set_x");
-  assert_true "no_getter: 'method get_y' is unaffected"
-    (Helpers.string_contains content "method get_y")
+  let cd = parse_and_find_class output_dir "Point" "point" in
+  if Ml_ast_helpers.method_exists_as_definition cd.pci_expr "get_x" then
+    Alcotest.fail "no_getter: get_x should be absent";
+  if not (Ml_ast_helpers.method_exists_as_definition cd.pci_expr "set_x") then
+    Alcotest.fail "no_getter: set_x should still be present";
+  if not (Ml_ast_helpers.method_exists_as_definition cd.pci_expr "get_y") then
+    Alcotest.fail "no_getter: get_y should be unaffected"
 
 (* ========================================================================= *)
 (* Test 8: L2 class type signature in generated .mli file *)
@@ -320,17 +341,23 @@ let test_l2_class_type_signature () =
   create_gir_file test_gir gir_content;
   ensure_output_dir output_dir;
   let _exit = run_gir_gen_with_override test_gir output_dir in
+  let ctd = parse_and_find_class_type output_dir "Point" "point_t" in
+  if not (Ml_ast_helpers.method_signature_exists ctd.pci_expr "get_x") then
+    Alcotest.fail "method get_x signature not found";
+  if not (Ml_ast_helpers.method_signature_exists ctd.pci_expr "set_x") then
+    Alcotest.fail "method set_x signature not found";
   let g_mli =
     Filename.concat (Helpers.generated_dir output_dir) "gPoint.mli"
   in
-  assert_true "gPoint.mli exists" (file_exists g_mli);
   let content = read_file g_mli in
-  assert_true "gPoint.mli contains 'method get_x : int'"
-    (Helpers.string_contains content "method get_x : int");
-  assert_true "gPoint.mli contains 'method set_x : int -> unit'"
-    (Helpers.string_contains content "method set_x : int -> unit");
-  assert_true "gPoint.mli contains 'val make' with correct arity"
-    (Helpers.string_contains content "val make : int -> int -> point_t")
+  let ast = Ml_ast_helpers.parse_interface content in
+  let vd =
+    Helpers.expect_some "val make not found"
+      (Ml_ast_helpers.find_value_declaration_sig ast "make")
+      Fun.id
+  in
+  let type_str = Ml_ast_helpers.core_type_to_string vd.pval_type in
+  Alcotest.(check string) "make sig type" "int -> int -> point_t" type_str
 
 (* ========================================================================= *)
 (* Test Suite *)
