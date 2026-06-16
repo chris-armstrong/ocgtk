@@ -174,17 +174,10 @@ let setup_keyboard ui (window : Window.window_t) =
   let key_controller = Event_controller_key.new_ () in
   (* Capture phase so we see keys before focused buttons consume Enter/Escape *)
   key_controller#set_propagation_phase `CAPTURE;
-  (* key-pressed has a complex signature (keyval, keycode, modifiers -> bool)
-     so it is not auto-generated. Connect manually via Gobject.Signal. *)
-  let closure =
-    Gobject.Closure.create (fun argv ->
-        let keyval = Gobject.Value.get_uint (Gobject.Closure.nth argv ~pos:1) in
-        let handled = handle_key ui keyval in
-        Gobject.Value.set_boolean (Gobject.Closure.result argv) handled)
-  in
   ignore
-    (Gobject.Signal.connect key_controller#as_event_controller_key
-       ~name:"key-pressed" ~callback:closure ~after:false);
+    (key_controller#on_key_pressed
+       ~callback:(fun ~keyval ~keycode:_ ~state:_ -> handle_key ui keyval)
+       ());
   window#add_controller (key_controller :> Event_controller.event_controller_t)
 
 let build (window : Window.window_t) =

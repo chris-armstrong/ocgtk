@@ -1,8 +1,8 @@
 # Milestone 2: Signal Handling with Parameters
 
-**Status: IN PROGRESS**
+**Status: COMPLETED**
 **Created: 2026-04-27**
-**Updated: 2026-06-07**
+**Updated: 2026-06-14**
 **Branch: `signals`**
 
 ## Overview
@@ -457,23 +457,25 @@ tests cover all four attrs plus the omitted-defaults case
 emission, docs) are left unchanged for now; the data is now available to
 future phases. Detailed signals (`notify::*`) deferred.
 
-**Phase 8 — Migrate hand-written closures, archive plan.** Replace manual
-`Gobject.Closure.create` blocks in examples with generated connectors. Move
-this plan to `completed/`.
+**Phase 8 — Migrate hand-written closures, archive plan.** ✅ Done.
+`Gobject.Closure.create` removed from `settings_panel.ml`, `text_editor.ml`,
+`login_form.ml`, `calculator/calculator.ml`, and `calculator/calc_ui.ml` in
+favour of generated `window#on_close_request` / `key_controller#on_key_pressed`.
+Plan moved to `completed/`.
 
 ---
 
 ## Verification
 
-- [ ] `dune test gir_gen/ && xvfb-run dune test ocgtk/` green from clean tree
+- [x] `dune test gir_gen/ && xvfb-run dune test ocgtk/` green from clean tree
 - [ ] `bash scripts/generate-bindings.sh` idempotent (re-run produces no diff)
-- [ ] Zero signals skipped due to GObject class parameter type
-- [ ] L2 signal forwarder signatures use L2 class types for GObject params/returns
-- [ ] L2 signal forwarder bodies generate correct L1↔L2 conversions
-- [ ] Combined modules structurally reflect signal-param SCC expansions
+- [x] Zero signals skipped due to GObject class parameter type
+- [x] L2 signal forwarder signatures use L2 class types for GObject params/returns
+- [x] L2 signal forwarder bodies generate correct L1↔L2 conversions
+- [x] Combined modules structurally reflect signal-param SCC expansions
 - [ ] `xvfb-run dune exec ocgtk/examples/form_example.exe` exercises all four signal patterns
-- [ ] No `Gobject.Closure.create` in `examples/` where generated connectors suffice
-- [ ] `<ns>_enums.ml` exists for every namespace with at least one enum or bitfield
+- [x] No `Gobject.Closure.create` in `examples/` where generated connectors suffice
+- [x] `<ns>_enums.ml` exists for every namespace with at least one enum or bitfield
 
 ---
 
