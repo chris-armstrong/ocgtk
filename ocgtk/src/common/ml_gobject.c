@@ -128,35 +128,6 @@ CAMLprim value ml_g_type_is_a(value type, value is_a_type)
     CAMLreturn(Val_bool(result));
 }
 
-CAMLprim value ml_g_type_fundamental(value type)
-{
-    CAMLparam1(type);
-    GType fund = G_TYPE_FUNDAMENTAL(Long_val(type));
-    /* Map GType fundamentals to our enum */
-    if (fund == G_TYPE_INVALID) CAMLreturn(Val_int(0));
-    if (fund == G_TYPE_NONE) CAMLreturn(Val_int(1));
-    if (fund == G_TYPE_INTERFACE) CAMLreturn(Val_int(2));
-    if (fund == G_TYPE_CHAR) CAMLreturn(Val_int(3));
-    if (fund == G_TYPE_UCHAR) CAMLreturn(Val_int(4));
-    if (fund == G_TYPE_BOOLEAN) CAMLreturn(Val_int(5));
-    if (fund == G_TYPE_INT) CAMLreturn(Val_int(6));
-    if (fund == G_TYPE_UINT) CAMLreturn(Val_int(7));
-    if (fund == G_TYPE_LONG) CAMLreturn(Val_int(8));
-    if (fund == G_TYPE_ULONG) CAMLreturn(Val_int(9));
-    if (fund == G_TYPE_INT64) CAMLreturn(Val_int(10));
-    if (fund == G_TYPE_UINT64) CAMLreturn(Val_int(11));
-    if (fund == G_TYPE_ENUM) CAMLreturn(Val_int(12));
-    if (fund == G_TYPE_FLAGS) CAMLreturn(Val_int(13));
-    if (fund == G_TYPE_FLOAT) CAMLreturn(Val_int(14));
-    if (fund == G_TYPE_DOUBLE) CAMLreturn(Val_int(15));
-    if (fund == G_TYPE_STRING) CAMLreturn(Val_int(16));
-    if (fund == G_TYPE_POINTER) CAMLreturn(Val_int(17));
-    if (fund == G_TYPE_BOXED) CAMLreturn(Val_int(18));
-    if (fund == G_TYPE_PARAM) CAMLreturn(Val_int(19));
-    if (fund == G_TYPE_OBJECT) CAMLreturn(Val_int(20));
-    CAMLreturn(Val_int(0)); /* INVALID */
-}
-
 CAMLprim value ml_g_type_of_fundamental(value fund_int)
 {
     CAMLparam1(fund_int);

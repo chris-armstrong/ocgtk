@@ -73,21 +73,6 @@ CAMLexport const void* ml_gobject_ext_of_val(value val);
 CAMLexport value ml_gobject_val_of_ext_option(const void *gobject);
 
 /* ==================================================================== */
-/* Enums <-> Polymorphic Variants */
-/* ==================================================================== */
-
-typedef struct { value key; int data; } lookup_info;
-
-/* Enum conversion functions (implemented in wrappers.c) */
-/* Internal C variants - accept lookup table pointers directly */
-value lookup_from_c_direct (const lookup_info *table, int data);
-int lookup_to_c_direct (const lookup_info *table, value key);
-
-/* External OCaml FFI variants - accept lookup tables as OCaml values */
-CAMLexport value ml_lookup_from_c (value table, value data);
-CAMLexport value ml_lookup_to_c (value table, value key);
-
-/* ==================================================================== */
 /* OCaml Value Helpers */
 /* ==================================================================== */
 

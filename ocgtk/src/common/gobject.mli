@@ -28,48 +28,10 @@ type g_value
 type g_closure
 (** GClosure for signal callbacks *)
 
-(** {2 Fundamental Types} *)
-
-type fundamental_type =
-  [ `INVALID
-  | `NONE
-  | `INTERFACE
-  | `CHAR
-  | `UCHAR
-  | `BOOLEAN
-  | `INT
-  | `UINT
-  | `LONG
-  | `ULONG
-  | `INT64
-  | `UINT64
-  | `ENUM
-  | `FLAGS
-  | `FLOAT
-  | `DOUBLE
-  | `STRING
-  | `POINTER
-  | `BOXED
-  | `PARAM
-  | `OBJECT ]
-(** Fundamental GType categories *)
-
-type signal_type = [ `RUN_FIRST | `RUN_LAST | `NO_RECURSE | `ACTION | `NO_HOOKS ]
-(** Signal emission phases *)
-
 (** {2 Object Operations} *)
 
 val get_type : 'a obj -> g_type
 (** Get the GType of an object *)
-
-val is_a : 'a obj -> string -> bool
-(** Check if object is of a given type (by name) *)
-
-exception Cannot_cast of string * string
-(** Exception raised when type casting fails *)
-
-val try_cast : 'a obj -> string -> 'b obj
-(** Try to cast object to a specific type, raises Cannot_cast on failure *)
 
 external unsafe_cast : 'a obj -> 'b obj = "%identity"
 (** Unsafe cast between object types *)
@@ -114,14 +76,27 @@ module Type : sig
   val is_a : t -> t -> bool
   (** Check type hierarchy *)
 
-  val fundamental : t -> fundamental_type
-  (** Get fundamental type category *)
-
-  val of_fundamental : fundamental_type -> t
-  (** Get GType for fundamental type *)
-
-  val invalid : t
-  (** Invalid *)
+  val invalid   : t
+  val none      : t
+  val interface : t
+  val char_     : t
+  val uchar     : t
+  val boolean   : t
+  val int_      : t
+  val uint      : t
+  val long      : t
+  val ulong     : t
+  val int64     : t
+  val uint64    : t
+  val enum      : t
+  val flags     : t
+  val float_    : t
+  val double    : t
+  val string    : t
+  val pointer   : t
+  val boxed     : t
+  val param     : t
+  val object_   : t
 end
 
 (** {2 GValue Operations} *)
@@ -304,14 +279,3 @@ module Signal : sig
   (** Emit a signal by name *)
 end
 
-(** {2 Data Conversions} *)
-
-module Data : sig
-  (** Enum and flags conversion *)
-
-  val enum : ([> ] as 'a) Gpointer.variant_table -> (int -> 'a) * ('a -> int)
-  (** Create decoder/encoder pair for enum types *)
-
-  val flags : ([> ] as 'a) Gpointer.variant_table -> (int -> 'a) * ('a -> int)
-  (** Create decoder/encoder pair for flags types *)
-end

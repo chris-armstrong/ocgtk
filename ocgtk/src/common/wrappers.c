@@ -24,63 +24,6 @@
 #include "wrappers.h"
 #include "value_kinds.h"
 
-/* Read a lookup_info pointer from a 1-word Abstract block. The matching
- * writer is unused — generated enum tables are compiled-in C arrays, not
- * OCaml-side allocations. */
-static inline const lookup_info *lookup_info_val(value v) {
-    return *((const lookup_info **)Data_abstract_val(v));
-}
-
-/* Enum/variant conversion functions */
-
-/* Internal C variant - accepts lookup table pointer directly
- * Converts C enum value to OCaml polymorphic variant
- */
-value lookup_from_c_direct (const lookup_info *table, int data)
-{
-    int i;
-    for (i = table[0].data; i > 0; i--)
-	if (table[i].data == data) return table[i].key;
-    caml_invalid_argument ("lookup_from_c_direct");
-}
-
-/* Internal C variant - accepts lookup table pointer directly
- * Converts OCaml polymorphic variant to C enum value
- */
-int lookup_to_c_direct (const lookup_info *table, value key)
-{
-    int first = 1, last = table[0].data, current;
-    while (first < last) {
-	/* Avoid integer overflow in midpoint calculation */
-	current = first + (last - first) / 2;
-	if (table[current].key >= key) last = current;
-	else first = current + 1;
-    }
-    if (table[first].key == key) return table[first].data;
-    caml_invalid_argument ("lookup_to_c_direct");
-}
-
-/* External OCaml FFI variant - accepts lookup table as OCaml value
- * Converts C enum value to OCaml polymorphic variant
- */
-CAMLexport value ml_lookup_from_c (value table_val, value data_val)
-{
-    CAMLparam2(table_val, data_val);
-    const lookup_info *table = lookup_info_val(table_val);
-    int data = Int_val(data_val);
-    CAMLreturn(lookup_from_c_direct(table, data));
-}
-
-/* External OCaml FFI variant - accepts lookup table as OCaml value
- * Converts OCaml polymorphic variant to C enum value
- */
-CAMLexport value ml_lookup_to_c (value table_val, value key)
-{
-    CAMLparam2(table_val, key);
-    const lookup_info *table = lookup_info_val(table_val);
-    CAMLreturn(Val_int(lookup_to_c_direct(table, key)));
-}
-
 /* ==================================================================== */
 /* GIR record helpers                                                   */
 /* ==================================================================== */

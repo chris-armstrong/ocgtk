@@ -126,7 +126,7 @@ let test_variant_roundtrip () =
     it back with [get_int64], and assert equality. G_TYPE_INT64 is a GLib
     fundamental type; no gtk_init needed. *)
 let test_int64_roundtrip () =
-  let gtype_int64 = Gobject.Type.of_fundamental `INT64 in
+  let gtype_int64 = Gobject.Type.int64 in
   let v = Gobject.Value.create gtype_int64 in
   Gobject.Value.set_int64 v Int64.max_int;
   let result = Gobject.Value.get_int64 v in
@@ -218,7 +218,7 @@ let test_bitfield_of_int_to_int_preserves_set () =
     G_VALUE_HOLDS_FLAGS failure, so the raised exception is [Invalid_argument],
     not [Failure]. *)
 let test_wrong_gvalue_type_raises () =
-  let gtype_int = Gobject.Type.of_fundamental `INT in
+  let gtype_int = Gobject.Type.int_ in
   let v = Gobject.Value.create gtype_int in
   Gobject.Value.set_int v 5;
   check_raises "get_flags_int on non-flags GValue raises Invalid_argument"

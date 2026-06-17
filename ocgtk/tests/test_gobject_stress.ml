@@ -22,7 +22,7 @@ let test_gvalue_lifecycle () =
 
   (* Create many GValues that go out of scope *)
   for _i = 0 to 999 do
-    let int_type = Gobject.Type.of_fundamental `INT in
+    let int_type = Gobject.Type.int_ in
     let gval = Gobject.Value.create int_type in
     Gobject.Value.set_int gval 42;
     let _ = Gobject.Value.get_int gval in
@@ -43,9 +43,9 @@ let test_gvalue_gc_interaction () =
   (* Create GValues in a nested scope *)
   let create_and_discard () =
     for _i = 0 to 99 do
-      let int_type = Gobject.Type.of_fundamental `INT in
+      let int_type = Gobject.Type.int_ in
       let _gval = Gobject.Value.create int_type in
-      let string_type = Gobject.Type.of_fundamental `STRING in
+      let string_type = Gobject.Type.string in
       let _sval = Gobject.Value.create string_type in
       ()
     done
@@ -56,7 +56,7 @@ let test_gvalue_gc_interaction () =
   (* Trigger minor GC and verify we can still create new GValues *)
   Gc.minor ();
 
-  let int_type = Gobject.Type.of_fundamental `INT in
+  let int_type = Gobject.Type.int_ in
   let gval = Gobject.Value.create int_type in
   Gobject.Value.set_int gval 123;
   check int "GValue works after GC" 123 (Gobject.Value.get_int gval)
@@ -67,9 +67,9 @@ let test_gvalue_gc_interaction () =
 
 let test_gvalue_multiple_types () =
   (* Test creating GValues of different types simultaneously *)
-  let int_gval = Gobject.Value.create (Gobject.Type.of_fundamental `INT) in
-  let str_gval = Gobject.Value.create (Gobject.Type.of_fundamental `STRING) in
-  let bool_gval = Gobject.Value.create (Gobject.Type.of_fundamental `BOOLEAN) in
+  let int_gval = Gobject.Value.create (Gobject.Type.int_) in
+  let str_gval = Gobject.Value.create (Gobject.Type.string) in
+  let bool_gval = Gobject.Value.create (Gobject.Type.boolean) in
 
   Gobject.Value.set_int int_gval 100;
   Gobject.Value.set_string str_gval "test";
