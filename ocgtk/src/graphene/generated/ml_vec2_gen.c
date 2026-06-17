@@ -315,6 +315,7 @@ CAMLexport CAMLprim value ml_graphene_vec2_init_from_vec2(value self, value arg1
 CAMLparam2(self, arg1);
 
 graphene_vec2_t* result = graphene_vec2_init_from_vec2(graphene_vec2_t_val(self), graphene_vec2_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_vec2_get_type(), result);
 CAMLreturn(Val_graphene_vec2_t(result));
 }
 
@@ -342,6 +343,7 @@ CAMLparam2(self, arg1);
     }
 
 graphene_vec2_t* result = graphene_vec2_init_from_float(graphene_vec2_t_val(self), c_arg1);
+if (result) result = g_boxed_copy(graphene_vec2_get_type(), result);
     g_free(c_arg1);
 CAMLreturn(Val_graphene_vec2_t(result));
 }
@@ -365,6 +367,7 @@ CAMLexport CAMLprim value ml_graphene_vec2_init(value self, value arg1, value ar
 CAMLparam3(self, arg1, arg2);
 
 graphene_vec2_t* result = graphene_vec2_init(graphene_vec2_t_val(self), Double_val(arg1), Double_val(arg2));
+if (result) result = g_boxed_copy(graphene_vec2_get_type(), result);
 CAMLreturn(Val_graphene_vec2_t(result));
 }
 

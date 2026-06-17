@@ -71,6 +71,7 @@ CAMLexport CAMLprim value ml_gsk_conic_gradient_node_get_center(value self)
 CAMLparam1(self);
 
 const graphene_point_t* result = gsk_conic_gradient_node_get_center(GskConicGradientNode_val(self));
+if (result) result = g_boxed_copy(graphene_point_get_type(), result);
 CAMLreturn(Val_graphene_point_t(result));
 }
 

@@ -19,7 +19,7 @@
 value copy_PangoColor(const PangoColor *ptr)
 {
   if (ptr == NULL) return Val_none;
-  PangoColor *copy = pango_color_copy((PangoColor*)ptr);
+  PangoColor *copy = g_boxed_copy(pango_color_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(pango_color_get_type(), copy);
 }
 

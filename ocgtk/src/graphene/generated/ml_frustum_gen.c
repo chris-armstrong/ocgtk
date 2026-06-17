@@ -64,6 +64,7 @@ CAMLexport CAMLprim value ml_graphene_frustum_init_from_matrix(value self, value
 CAMLparam2(self, arg1);
 
 graphene_frustum_t* result = graphene_frustum_init_from_matrix(graphene_frustum_t_val(self), graphene_matrix_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_frustum_get_type(), result);
 CAMLreturn(Val_graphene_frustum_t(result));
 }
 
@@ -72,6 +73,7 @@ CAMLexport CAMLprim value ml_graphene_frustum_init_from_frustum(value self, valu
 CAMLparam2(self, arg1);
 
 graphene_frustum_t* result = graphene_frustum_init_from_frustum(graphene_frustum_t_val(self), graphene_frustum_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_frustum_get_type(), result);
 CAMLreturn(Val_graphene_frustum_t(result));
 }
 
@@ -81,6 +83,7 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam2(arg5, arg6);
 
 graphene_frustum_t* result = graphene_frustum_init(graphene_frustum_t_val(self), graphene_plane_t_val(arg1), graphene_plane_t_val(arg2), graphene_plane_t_val(arg3), graphene_plane_t_val(arg4), graphene_plane_t_val(arg5), graphene_plane_t_val(arg6));
+if (result) result = g_boxed_copy(graphene_frustum_get_type(), result);
 CAMLreturn(Val_graphene_frustum_t(result));}
 
 CAMLexport CAMLprim value ml_graphene_frustum_init_bytecode(value * argv, int argn)

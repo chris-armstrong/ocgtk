@@ -49,6 +49,7 @@ CAMLexport CAMLprim value ml_gtk_color_dialog_button_get_rgba(value self)
 CAMLparam1(self);
 
 const GdkRGBA* result = gtk_color_dialog_button_get_rgba(GtkColorDialogButton_val(self));
+if (result) result = g_boxed_copy(gdk_rgba_get_type(), result);
 CAMLreturn(Val_GdkRGBA(result));
 }
 

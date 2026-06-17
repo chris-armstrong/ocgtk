@@ -627,6 +627,7 @@ CAMLexport CAMLprim value ml_pango_layout_get_line_readonly(value self, value ar
 CAMLparam2(self, arg1);
 
 PangoLayoutLine* result = pango_layout_get_line_readonly(PangoLayout_val(self), Int_val(arg1));
+if (result) result = g_boxed_copy(pango_layout_line_get_type(), result);
 CAMLreturn(Val_option(result, Val_PangoLayoutLine));
 }
 
@@ -655,6 +656,7 @@ CAMLexport CAMLprim value ml_pango_layout_get_line(value self, value arg1)
 CAMLparam2(self, arg1);
 
 PangoLayoutLine* result = pango_layout_get_line(PangoLayout_val(self), Int_val(arg1));
+if (result) result = g_boxed_copy(pango_layout_line_get_type(), result);
 CAMLreturn(Val_option(result, Val_PangoLayoutLine));
 }
 
@@ -731,6 +733,7 @@ CAMLexport CAMLprim value ml_pango_layout_get_font_description(value self)
 CAMLparam1(self);
 
 const PangoFontDescription* result = pango_layout_get_font_description(PangoLayout_val(self));
+if (result) result = g_boxed_copy(pango_font_description_get_type(), result);
 CAMLreturn(Val_option(result, Val_PangoFontDescription));
 }
 
@@ -921,6 +924,7 @@ CAMLexport CAMLprim value ml_pango_layout_get_attributes(value self)
 CAMLparam1(self);
 
 PangoAttrList* result = pango_layout_get_attributes(PangoLayout_val(self));
+if (result) result = g_boxed_copy(pango_attr_list_get_type(), result);
 CAMLreturn(Val_option(result, Val_PangoAttrList));
 }
 

@@ -96,6 +96,7 @@ CAMLexport CAMLprim value ml_g_dbus_method_invocation_get_property_info(value se
 CAMLparam1(self);
 
 const GDBusPropertyInfo* result = g_dbus_method_invocation_get_property_info(GDBusMethodInvocation_val(self));
+if (result) result = g_boxed_copy(g_dbus_property_info_get_type(), result);
 CAMLreturn(Val_option(result, Val_GDBusPropertyInfo));
 }
 
@@ -140,6 +141,7 @@ CAMLexport CAMLprim value ml_g_dbus_method_invocation_get_method_info(value self
 CAMLparam1(self);
 
 const GDBusMethodInfo* result = g_dbus_method_invocation_get_method_info(GDBusMethodInvocation_val(self));
+if (result) result = g_boxed_copy(g_dbus_method_info_get_type(), result);
 CAMLreturn(Val_option(result, Val_GDBusMethodInfo));
 }
 

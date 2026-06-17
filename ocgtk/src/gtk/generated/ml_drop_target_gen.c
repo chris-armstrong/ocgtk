@@ -115,6 +115,7 @@ CAMLexport CAMLprim value ml_gtk_drop_target_get_formats(value self)
 CAMLparam1(self);
 
 GdkContentFormats* result = gtk_drop_target_get_formats(GtkDropTarget_val(self));
+if (result) result = g_boxed_copy(gdk_content_formats_get_type(), result);
 CAMLreturn(Val_option(result, Val_GdkContentFormats));
 }
 

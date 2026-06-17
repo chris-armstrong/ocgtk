@@ -67,6 +67,7 @@ CAMLexport CAMLprim value ml_g_static_resource_get_resource(value self)
 CAMLparam1(self);
 
 GResource* result = g_static_resource_get_resource(GStaticResource_val(self));
+if (result) result = g_boxed_copy(g_resource_get_type(), result);
 CAMLreturn(Val_GResource(result));
 }
 

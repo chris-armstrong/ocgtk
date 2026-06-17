@@ -62,5 +62,6 @@ CAMLexport CAMLprim value ml_gtk_expression_bind(value self, value arg1, value a
 CAMLparam4(self, arg1, arg2, arg3);
 
 GtkExpressionWatch* result = gtk_expression_bind(GtkExpression_val(self), GObject_ext_of_val(arg1), String_val(arg2), GObject_ext_of_val(arg3));
+if (result) result = g_boxed_copy(gtk_expression_watch_get_type(), result);
 CAMLreturn(Val_GtkExpressionWatch(result));
 }

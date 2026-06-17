@@ -85,6 +85,7 @@ CAMLexport CAMLprim value ml_gsk_path_measure_get_path(value self)
 CAMLparam1(self);
 
 GskPath* result = gsk_path_measure_get_path(GskPathMeasure_val(self));
+if (result) result = g_boxed_copy(gsk_path_get_type(), result);
 CAMLreturn(Val_GskPath(result));
 }
 

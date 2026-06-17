@@ -30,6 +30,7 @@ CAMLexport CAMLprim value ml_gsk_cairo_node_get_surface(value self)
 CAMLparam1(self);
 
 cairo_surface_t* result = gsk_cairo_node_get_surface(GskCairoNode_val(self));
+if (result) result = g_boxed_copy(cairo_gobject_surface_get_type(), result);
 CAMLreturn(Val_cairo_surface_t(result));
 }
 

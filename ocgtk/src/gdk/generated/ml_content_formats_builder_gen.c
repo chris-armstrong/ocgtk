@@ -52,6 +52,7 @@ CAMLexport CAMLprim value ml_gdk_content_formats_builder_ref(value self)
 CAMLparam1(self);
 
 GdkContentFormatsBuilder* result = gdk_content_formats_builder_ref(GdkContentFormatsBuilder_val(self));
+if (result) result = g_boxed_copy(gdk_content_formats_builder_get_type(), result);
 CAMLreturn(Val_GdkContentFormatsBuilder(result));
 }
 

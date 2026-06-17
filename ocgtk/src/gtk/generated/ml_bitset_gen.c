@@ -133,6 +133,7 @@ CAMLexport CAMLprim value ml_gtk_bitset_ref(value self)
 CAMLparam1(self);
 
 GtkBitset* result = gtk_bitset_ref(GtkBitset_val(self));
+if (result) result = g_boxed_copy(gtk_bitset_get_type(), result);
 CAMLreturn(Val_GtkBitset(result));
 }
 

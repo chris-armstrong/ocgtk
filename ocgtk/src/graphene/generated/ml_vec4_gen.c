@@ -315,6 +315,7 @@ CAMLexport CAMLprim value ml_graphene_vec4_init_from_vec4(value self, value arg1
 CAMLparam2(self, arg1);
 
 graphene_vec4_t* result = graphene_vec4_init_from_vec4(graphene_vec4_t_val(self), graphene_vec4_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_vec4_get_type(), result);
 CAMLreturn(Val_graphene_vec4_t(result));
 }
 
@@ -337,6 +338,7 @@ CAMLexport CAMLprim value ml_graphene_vec4_init_from_vec3(value self, value arg1
 CAMLparam3(self, arg1, arg2);
 
 graphene_vec4_t* result = graphene_vec4_init_from_vec3(graphene_vec4_t_val(self), graphene_vec3_t_val(arg1), Double_val(arg2));
+if (result) result = g_boxed_copy(graphene_vec4_get_type(), result);
 CAMLreturn(Val_graphene_vec4_t(result));
 }
 
@@ -360,6 +362,7 @@ CAMLexport CAMLprim value ml_graphene_vec4_init_from_vec2(value self, value arg1
 CAMLparam4(self, arg1, arg2, arg3);
 
 graphene_vec4_t* result = graphene_vec4_init_from_vec2(graphene_vec4_t_val(self), graphene_vec2_t_val(arg1), Double_val(arg2), Double_val(arg3));
+if (result) result = g_boxed_copy(graphene_vec4_get_type(), result);
 CAMLreturn(Val_graphene_vec4_t(result));
 }
 
@@ -389,6 +392,7 @@ CAMLparam2(self, arg1);
     }
 
 graphene_vec4_t* result = graphene_vec4_init_from_float(graphene_vec4_t_val(self), c_arg1);
+if (result) result = g_boxed_copy(graphene_vec4_get_type(), result);
     g_free(c_arg1);
 CAMLreturn(Val_graphene_vec4_t(result));
 }
@@ -412,6 +416,7 @@ CAMLexport CAMLprim value ml_graphene_vec4_init(value self, value arg1, value ar
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
 graphene_vec4_t* result = graphene_vec4_init(graphene_vec4_t_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3), Double_val(arg4));
+if (result) result = g_boxed_copy(graphene_vec4_get_type(), result);
 CAMLreturn(Val_graphene_vec4_t(result));
 }
 

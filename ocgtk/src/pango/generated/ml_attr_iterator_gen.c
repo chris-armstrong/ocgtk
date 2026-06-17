@@ -82,6 +82,7 @@ CAMLexport CAMLprim value ml_pango_attr_iterator_get(value self, value arg1)
 CAMLparam2(self, arg1);
 
 PangoAttribute* result = pango_attr_iterator_get(PangoAttrIterator_val(self), PangoAttrType_val(arg1));
+if (result) result = g_boxed_copy(pango_attribute_get_type(), result);
 CAMLreturn(Val_option(result, Val_PangoAttribute));
 }
 

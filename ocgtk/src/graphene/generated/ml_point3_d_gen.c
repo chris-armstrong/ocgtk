@@ -125,6 +125,7 @@ CAMLexport CAMLprim value ml_graphene_point3d_init_from_vec3(value self, value a
 CAMLparam2(self, arg1);
 
 graphene_point3d_t* result = graphene_point3d_init_from_vec3(graphene_point3d_t_val(self), graphene_vec3_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_point3d_get_type(), result);
 CAMLreturn(Val_graphene_point3d_t(result));
 }
 
@@ -133,6 +134,7 @@ CAMLexport CAMLprim value ml_graphene_point3d_init_from_point(value self, value 
 CAMLparam2(self, arg1);
 
 graphene_point3d_t* result = graphene_point3d_init_from_point(graphene_point3d_t_val(self), graphene_point3d_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_point3d_get_type(), result);
 CAMLreturn(Val_graphene_point3d_t(result));
 }
 
@@ -141,6 +143,7 @@ CAMLexport CAMLprim value ml_graphene_point3d_init(value self, value arg1, value
 CAMLparam4(self, arg1, arg2, arg3);
 
 graphene_point3d_t* result = graphene_point3d_init(graphene_point3d_t_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3));
+if (result) result = g_boxed_copy(graphene_point3d_get_type(), result);
 CAMLreturn(Val_graphene_point3d_t(result));
 }
 

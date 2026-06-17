@@ -178,6 +178,7 @@ CAMLexport CAMLprim value ml_gdk_popup_layout_get_anchor_rect(value self)
 CAMLparam1(self);
 
 const GdkRectangle* result = gdk_popup_layout_get_anchor_rect(GdkPopupLayout_val(self));
+if (result) result = g_boxed_copy(gdk_rectangle_get_type(), result);
 CAMLreturn(Val_GdkRectangle(result));
 }
 

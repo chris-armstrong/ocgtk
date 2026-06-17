@@ -20,7 +20,7 @@
 value copy_GtkTreeIter(const GtkTreeIter *ptr)
 {
   if (ptr == NULL) return Val_none;
-  GtkTreeIter *copy = gtk_tree_iter_copy((GtkTreeIter*)ptr);
+  GtkTreeIter *copy = g_boxed_copy(gtk_tree_iter_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(gtk_tree_iter_get_type(), copy);
 }
 

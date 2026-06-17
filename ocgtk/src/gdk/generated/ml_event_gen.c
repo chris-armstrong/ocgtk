@@ -135,6 +135,7 @@ CAMLexport CAMLprim value ml_gdk_event_get_event_sequence(value self)
 CAMLparam1(self);
 
 GdkEventSequence* result = gdk_event_get_event_sequence(GdkEvent_val(self));
+if (result) result = g_boxed_copy(gdk_event_sequence_get_type(), result);
 CAMLreturn(Val_GdkEventSequence(result));
 }
 

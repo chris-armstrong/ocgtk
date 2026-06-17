@@ -258,6 +258,7 @@ CAMLexport CAMLprim value ml_gdk_display_get_dmabuf_formats(value self)
 CAMLparam1(self);
 
 GdkDmabufFormats* result = gdk_display_get_dmabuf_formats(GdkDisplay_val(self));
+if (result) result = g_boxed_copy(gdk_dmabuf_formats_get_type(), result);
 CAMLreturn(Val_GdkDmabufFormats(result));
 }
 

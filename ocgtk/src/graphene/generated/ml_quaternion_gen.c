@@ -211,6 +211,7 @@ CAMLexport CAMLprim value ml_graphene_quaternion_init_identity(value self)
 CAMLparam1(self);
 
 graphene_quaternion_t* result = graphene_quaternion_init_identity(graphene_quaternion_t_val(self));
+if (result) result = g_boxed_copy(graphene_quaternion_get_type(), result);
 CAMLreturn(Val_graphene_quaternion_t(result));
 }
 
@@ -219,6 +220,7 @@ CAMLexport CAMLprim value ml_graphene_quaternion_init_from_vec4(value self, valu
 CAMLparam2(self, arg1);
 
 graphene_quaternion_t* result = graphene_quaternion_init_from_vec4(graphene_quaternion_t_val(self), graphene_vec4_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_quaternion_get_type(), result);
 CAMLreturn(Val_graphene_quaternion_t(result));
 }
 
@@ -227,6 +229,7 @@ CAMLexport CAMLprim value ml_graphene_quaternion_init_from_radians(value self, v
 CAMLparam4(self, arg1, arg2, arg3);
 
 graphene_quaternion_t* result = graphene_quaternion_init_from_radians(graphene_quaternion_t_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3));
+if (result) result = g_boxed_copy(graphene_quaternion_get_type(), result);
 CAMLreturn(Val_graphene_quaternion_t(result));
 }
 
@@ -235,6 +238,7 @@ CAMLexport CAMLprim value ml_graphene_quaternion_init_from_quaternion(value self
 CAMLparam2(self, arg1);
 
 graphene_quaternion_t* result = graphene_quaternion_init_from_quaternion(graphene_quaternion_t_val(self), graphene_quaternion_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_quaternion_get_type(), result);
 CAMLreturn(Val_graphene_quaternion_t(result));
 }
 
@@ -243,6 +247,7 @@ CAMLexport CAMLprim value ml_graphene_quaternion_init_from_matrix(value self, va
 CAMLparam2(self, arg1);
 
 graphene_quaternion_t* result = graphene_quaternion_init_from_matrix(graphene_quaternion_t_val(self), graphene_matrix_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_quaternion_get_type(), result);
 CAMLreturn(Val_graphene_quaternion_t(result));
 }
 
@@ -253,6 +258,7 @@ CAMLexport CAMLprim value ml_graphene_quaternion_init_from_euler(value self, val
 CAMLparam2(self, arg1);
 
 graphene_quaternion_t* result = graphene_quaternion_init_from_euler(graphene_quaternion_t_val(self), graphene_euler_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_quaternion_get_type(), result);
 CAMLreturn(Val_graphene_quaternion_t(result));
 }
 
@@ -273,6 +279,7 @@ CAMLexport CAMLprim value ml_graphene_quaternion_init_from_angles(value self, va
 CAMLparam4(self, arg1, arg2, arg3);
 
 graphene_quaternion_t* result = graphene_quaternion_init_from_angles(graphene_quaternion_t_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3));
+if (result) result = g_boxed_copy(graphene_quaternion_get_type(), result);
 CAMLreturn(Val_graphene_quaternion_t(result));
 }
 
@@ -281,6 +288,7 @@ CAMLexport CAMLprim value ml_graphene_quaternion_init_from_angle_vec3(value self
 CAMLparam3(self, arg1, arg2);
 
 graphene_quaternion_t* result = graphene_quaternion_init_from_angle_vec3(graphene_quaternion_t_val(self), Double_val(arg1), graphene_vec3_t_val(arg2));
+if (result) result = g_boxed_copy(graphene_quaternion_get_type(), result);
 CAMLreturn(Val_graphene_quaternion_t(result));
 }
 
@@ -289,6 +297,7 @@ CAMLexport CAMLprim value ml_graphene_quaternion_init(value self, value arg1, va
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
 graphene_quaternion_t* result = graphene_quaternion_init(graphene_quaternion_t_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3), Double_val(arg4));
+if (result) result = g_boxed_copy(graphene_quaternion_get_type(), result);
 CAMLreturn(Val_graphene_quaternion_t(result));
 }
 

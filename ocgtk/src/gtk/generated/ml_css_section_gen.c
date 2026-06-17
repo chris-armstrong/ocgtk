@@ -69,6 +69,7 @@ CAMLexport CAMLprim value ml_gtk_css_section_get_parent(value self)
 CAMLparam1(self);
 
 GtkCssSection* result = gtk_css_section_get_parent(GtkCssSection_val(self));
+if (result) result = g_boxed_copy(gtk_css_section_get_type(), result);
 CAMLreturn(Val_option(result, Val_GtkCssSection));
 }
 

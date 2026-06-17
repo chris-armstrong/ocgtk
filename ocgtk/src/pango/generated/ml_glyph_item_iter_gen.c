@@ -20,7 +20,7 @@
 value copy_PangoGlyphItemIter(const PangoGlyphItemIter *ptr)
 {
   if (ptr == NULL) return Val_none;
-  PangoGlyphItemIter *copy = pango_glyph_item_iter_copy((PangoGlyphItemIter*)ptr);
+  PangoGlyphItemIter *copy = g_boxed_copy(pango_glyph_item_iter_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(pango_glyph_item_iter_get_type(), copy);
 }
 #endif

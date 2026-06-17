@@ -139,6 +139,7 @@ CAMLexport CAMLprim value ml_g_dbus_proxy_get_interface_info(value self)
 CAMLparam1(self);
 
 GDBusInterfaceInfo* result = g_dbus_proxy_get_interface_info(GDBusProxy_val(self));
+if (result) result = g_boxed_copy(g_dbus_interface_info_get_type(), result);
 CAMLreturn(Val_option(result, Val_GDBusInterfaceInfo));
 }
 

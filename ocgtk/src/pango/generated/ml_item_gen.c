@@ -19,7 +19,7 @@
 value copy_PangoItem(const PangoItem *ptr)
 {
   if (ptr == NULL) return Val_none;
-  PangoItem *copy = pango_item_copy((PangoItem*)ptr);
+  PangoItem *copy = g_boxed_copy(pango_item_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(pango_item_get_type(), copy);
 }
 

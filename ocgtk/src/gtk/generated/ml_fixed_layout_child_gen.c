@@ -30,5 +30,6 @@ CAMLexport CAMLprim value ml_gtk_fixed_layout_child_get_transform(value self)
 CAMLparam1(self);
 
 GskTransform* result = gtk_fixed_layout_child_get_transform(GtkFixedLayoutChild_val(self));
+if (result) result = g_boxed_copy(gsk_transform_get_type(), result);
 CAMLreturn(Val_option(result, Val_GskTransform));
 }
