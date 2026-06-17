@@ -129,7 +129,6 @@ CAMLexport CAMLprim value ml_gtk_font_dialog_button_get_font_desc(value self)
 CAMLparam1(self);
 
 PangoFontDescription* result = gtk_font_dialog_button_get_font_desc(GtkFontDialogButton_val(self));
-if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_PangoFontDescription));
 }
 

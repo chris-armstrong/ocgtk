@@ -120,7 +120,6 @@ CAMLexport CAMLprim value ml_gtk_gesture_get_last_updated_sequence(value self)
 CAMLparam1(self);
 
 GdkEventSequence* result = gtk_gesture_get_last_updated_sequence(GtkGesture_val(self));
-if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GdkEventSequence));
 }
 

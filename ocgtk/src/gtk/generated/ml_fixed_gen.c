@@ -63,7 +63,6 @@ CAMLexport CAMLprim value ml_gtk_fixed_get_child_transform(value self, value arg
 CAMLparam2(self, arg1);
 
 GskTransform* result = gtk_fixed_get_child_transform(GtkFixed_val(self), GtkWidget_val(arg1));
-if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GskTransform));
 }
 

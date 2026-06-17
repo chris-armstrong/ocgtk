@@ -47,6 +47,7 @@ module Code_gen = struct
       layer2_class = None;
       c_type = "void";
       is_value_type_record = false;
+      transfer_strategy = Ts_none;
     }
 
   (* Generate C file header with common includes and type conversions *)

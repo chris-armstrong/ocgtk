@@ -1521,7 +1521,7 @@ let generate_references gir_file output_file overrides_file =
       |> List.map ~f:(fun rec_ ->
           {
             cr_name = rec_.record_name;
-            cr_type = Crt_Record { opaque = rec_.opaque };
+            cr_type = Crt_Record { opaque = rec_.opaque; get_type_func = rec_.glib_get_type };
             cr_c_type = rec_.c_type;
           }))
   in

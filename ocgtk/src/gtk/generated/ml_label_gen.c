@@ -494,6 +494,5 @@ CAMLexport CAMLprim value ml_gtk_label_get_attributes(value self)
 CAMLparam1(self);
 
 PangoAttrList* result = gtk_label_get_attributes(GtkLabel_val(self));
-if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_PangoAttrList));
 }

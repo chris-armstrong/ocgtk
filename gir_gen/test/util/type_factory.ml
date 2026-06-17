@@ -257,8 +257,10 @@ let make_ocaml_class ?(class_module = "Test") ?(class_type = "test")
   { class_module; class_type; class_ml_name; class_layer1_accessor }
 
 let make_type_mapping ~ocaml_type ~c_type ~c_to_ml ~ml_to_c ?layer2_class
-    ?(is_value_type_record = false) () =
-  { ocaml_type; c_type; c_to_ml; ml_to_c; layer2_class; is_value_type_record }
+    ?(is_value_type_record = false)
+    ?(transfer_strategy = Ts_none) () =
+  { ocaml_type; c_type; c_to_ml; ml_to_c; layer2_class; is_value_type_record;
+    transfer_strategy }
 
 let make_gir_namespace ?(namespace_name = "Test") ?(namespace_version = "1.0")
     ?(namespace_shared_library = "libtest.so")
@@ -282,7 +284,7 @@ let make_gir_repository ?(repository_includes = [])
 let make_cross_reference_type ?parent = function
   | `Class -> Crt_Class { parent; implements = [] }
   | `Interface -> Crt_Interface
-  | `Record opaque -> Crt_Record { opaque }
+  | `Record opaque -> Crt_Record { opaque; get_type_func = None }
   | `Enum -> Crt_Enum
   | `Bitfield -> Crt_Bitfield
 

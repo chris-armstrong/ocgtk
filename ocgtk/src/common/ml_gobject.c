@@ -537,6 +537,16 @@ CAMLprim value ml_g_value_get_boxed(value val)
     CAMLlocal1(result);
 
     GValue *gv = GValue_val(val);
+
+    /* GTK sometimes wraps signal parameters in a G_TYPE_VALUE container
+       (a nested GValue). Unwrap it so we operate on the inner value. */
+    if (G_VALUE_TYPE(gv) == G_TYPE_VALUE) {
+        const GValue *inner = g_value_get_boxed(gv);
+        if (inner == NULL)
+            caml_failwith("g_value_get_boxed: NULL inner GValue");
+        gv = (GValue *)inner;
+    }
+
     if (!G_VALUE_HOLDS_BOXED(gv))
         caml_invalid_argument("g_value_get_boxed: not a boxed value");
 

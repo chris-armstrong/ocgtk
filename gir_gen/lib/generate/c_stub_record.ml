@@ -190,28 +190,25 @@ let generate_value_record_conversions ~namespace_prefix ~buf
         String.equal lower_name "copy")
   in
 
-  (match copy_method with
-  | Some copy_meth ->
-      (* Generate the copy_TypeName function that wraps the GTK copy function *)
-      bprintf buf "value copy_%s(const %s *ptr)\n" record.c_type record.c_type;
-      bprintf buf "{\n";
-      bprintf buf "  if (ptr == NULL) return Val_none;\n";
-      bprintf buf "  %s *copy = %s((%s*)ptr);\n" record.c_type
-        copy_meth.c_identifier record.c_type;
-      bprintf buf "  return %s;\n"
-        (val_ptr_call_for_record record ~ptr_expr:"copy");
-      bprintf buf "}\n"
+  bprintf buf "value copy_%s(const %s *ptr)\n" record.c_type record.c_type;
+  bprintf buf "{\n";
+  bprintf buf "  if (ptr == NULL) return Val_none;\n";
+  (match record.glib_get_type with
+  | Some get_type_func ->
+      (* Registered boxed type: delegate copy semantics to the GType system.
+         g_boxed_copy handles ref-counting, deep copy, or whatever the type
+         requires — no need to locate a type-specific _copy function. *)
+      bprintf buf "  %s *copy = g_boxed_copy(%s(), ptr);\n" record.c_type
+        get_type_func
   | None ->
-      (* Fallback: generate a simple memcpy-based copy *)
-      bprintf buf "value copy_%s(const %s *ptr)\n" record.c_type record.c_type;
-      bprintf buf "{\n";
-      bprintf buf "  if (ptr == NULL) return Val_none;\n";
+      (* No GType registration: fall back to a plain memcpy. *)
+      ignore copy_method;
       bprintf buf "  %s *copy = g_malloc(sizeof(%s));\n" record.c_type
         record.c_type;
-      bprintf buf "  memcpy(copy, ptr, sizeof(%s));\n" record.c_type;
-      bprintf buf "  return %s;\n"
-        (val_ptr_call_for_record record ~ptr_expr:"copy");
-      bprintf buf "}\n");
+      bprintf buf "  memcpy(copy, ptr, sizeof(%s));\n" record.c_type);
+  bprintf buf "  return %s;\n"
+    (val_ptr_call_for_record record ~ptr_expr:"copy");
+  bprintf buf "}\n";
   Option.iter (fun _ -> Buffer.add_string buf "#endif\n") record.version;
   Option.iter
     (fun os ->

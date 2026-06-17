@@ -84,8 +84,13 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
       | Crt_Enum | Crt_Bitfield -> None);
     is_value_type_record =
       (match cr.cr_type with
-      | Crt_Record { opaque = false } -> true
+      | Crt_Record { opaque = false; _ } -> true
       | _ -> false);
+    transfer_strategy =
+      (match cr.cr_type with
+      | Crt_Class _ | Crt_Interface -> Ts_gobject
+      | Crt_Record { get_type_func = Some f; _ } -> Ts_boxed f
+      | _ -> Ts_none);
   }
 
 (** Type mappings for built-in / primitive types (integers, strings, etc.) *)
@@ -99,6 +104,7 @@ let type_mappings : (string * Types.type_mapping) list =
          layer2_class = None;
          c_type = "guint";
          is_value_type_record = false;
+      transfer_strategy = Ts_none;
        }
         : Types.type_mapping) );
     ( "gint",
@@ -109,6 +115,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gint";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "gdouble",
       {
@@ -118,6 +125,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gdouble";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "double",
       {
@@ -127,6 +135,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "double";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "gboolean",
       {
@@ -136,6 +145,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gboolean";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "gchararray",
       {
@@ -145,6 +155,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gchararray";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "const gchar*",
       {
@@ -154,6 +165,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "const gchar*";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "gchar*",
       {
@@ -163,6 +175,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gchar*";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "utf8",
       {
@@ -172,6 +185,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "utf8";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "filename",
       {
@@ -181,6 +195,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "const gchar*";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "const char*",
       {
@@ -190,6 +205,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "const char*";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "gfloat",
       {
@@ -199,6 +215,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gfloat";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "float",
       {
@@ -208,6 +225,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "float";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     (* GObject namespace types — not generated from GIR, mapped to
        hand-written wrappers in src/common/gobject.ml *)
@@ -219,11 +237,13 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "GObject*";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     (* GObject.Value — returned as a borrowed const GValue* by functions like
        gtk_drop_target_get_value.  Val_GValue_copy takes an owned copy so the
        OCaml value's lifetime is independent of the C caller's storage.
        is_value_type_record = true so that for out-parameters the generator
+      transfer_strategy = Ts_none;
        passes &var (address of the stack GValue) rather than the struct value. *)
     ( "GObject.Value",
       {
@@ -233,6 +253,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "const GValue*";
         is_value_type_record = true;
+      transfer_strategy = Ts_none;
       } );
     ( "GObject.InitiallyUnowned",
       {
@@ -242,6 +263,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "GInitiallyUnowned*";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     (* GLib.List - GList* container type, elements resolved at generation time
        c_to_ml/ml_to_c use LIST_INLINE marker for generator to handle specially *)
@@ -253,6 +275,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "GList*";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     (* GLib.SList - GSList* container type, elements resolved at generation time *)
     ( "GLib.SList",
@@ -263,6 +286,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "GSList*";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     (* GLib.Variant - Opaque boxed type with reference counting *)
     ( "GLib.Variant",
@@ -273,6 +297,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "GVariant*";
         is_value_type_record = false;
+      transfer_strategy = Ts_gvariant;
       } );
     (* GLib.VariantType - Immutable type description for GVariant *)
     ( "GLib.VariantType",
@@ -283,6 +308,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "GVariantType*";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     (* GLib.Bytes - Immutable reference-counted byte buffer *)
     ( "GLib.Bytes",
@@ -293,6 +319,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "GBytes*";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     (* GLib/GObject primitive integer types — not generated from GIR, mapped to
        standard OCaml C API converters. All c:type values match the GIR name
@@ -308,6 +335,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gsize";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "gssize",
       {
@@ -317,6 +345,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gssize";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     (* GType is typedef gsize — macros Val_GType/GType_val already in wrappers.h *)
     ( "GType",
@@ -327,6 +356,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "GType";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "guint16",
       {
@@ -336,6 +366,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "guint16";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "gint16",
       {
@@ -345,6 +376,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gint16";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "gint32",
       {
@@ -354,6 +386,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gint32";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     (* guint32 mapped to UInt32.t (bounded private int) — OCaml int is 63-bit on
        64-bit platforms so it covers the full uint32 range without boxing *)
@@ -365,6 +398,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "guint32";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "gint64",
       {
@@ -374,6 +408,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gint64";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     (* guint64 uses the integers library (already a dependency via GVariant).
        wrappers.h includes <ocaml_integers.h> to expose Uint64_val/integers_copy_uint64.
@@ -387,6 +422,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "guint64";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "gulong",
       {
@@ -396,6 +432,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gulong";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "gunichar",
       {
@@ -405,6 +442,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gunichar";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
     ( "gchar",
       {
@@ -414,6 +452,7 @@ let type_mappings : (string * Types.type_mapping) list =
         layer2_class = None;
         c_type = "gchar";
         is_value_type_record = false;
+      transfer_strategy = Ts_none;
       } );
   ]
 
@@ -534,6 +573,7 @@ let find_class_mapping ~ctx lookup_str =
       ml_to_c = sprintf "%s_val" cls.c_type;
       c_type = cls.c_type;
       is_value_type_record = false;
+      transfer_strategy = Ts_gobject;
     }
 
 (** Attempt to find an interface mapping in the context in the current namespace
@@ -567,6 +607,7 @@ let find_interface_mapping ~ctx lookup_str =
       ml_to_c = sprintf "%s_val" iface.c_type;
       c_type = iface.c_type;
       is_value_type_record = false;
+      transfer_strategy = Ts_gobject;
     }
 
 (** Attempt to find a record mapping in the context in the current namespace *)
@@ -591,6 +632,10 @@ let find_record_mapping ~ctx lookup_str =
       layer2_class = None;
       c_type = record.c_type;
       is_value_type_record = not record.opaque;
+      transfer_strategy =
+        (match record.glib_get_type with
+        | Some f -> Ts_boxed f
+        | None -> Ts_none);
     }
 
 let find_enum_mapping ~ctx lookup_str =
@@ -612,6 +657,7 @@ let find_enum_mapping ~ctx lookup_str =
       ml_to_c = sprintf "%s%s_val" c_namespace enum.enum_name;
       layer2_class = None;
       is_value_type_record = false;
+      transfer_strategy = Ts_none;
     }
 
 let find_bitfield_mapping ~ctx lookup_str =
@@ -636,6 +682,7 @@ let find_bitfield_mapping ~ctx lookup_str =
       layer2_class = None;
       c_type = bitfield.bitfield_c_type;
       is_value_type_record = false;
+      transfer_strategy = Ts_none;
     }
 
 type type_kind =
@@ -712,6 +759,7 @@ and build_container_mapping ~(element_mapping : type_mapping) ~container_suffix
     ml_to_c = marker;
     layer2_class = None;
     is_value_type_record = false;
+    transfer_strategy = Ts_none;
   }
 
 (** Handle GList/GSList container types. Returns None if the element type cannot
