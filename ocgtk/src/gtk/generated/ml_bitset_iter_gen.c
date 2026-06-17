@@ -73,3 +73,9 @@ CAMLparam1(self);
 guint result = gtk_bitset_iter_get_value(GtkBitsetIter_val(self));
 CAMLreturn(Val_int(result));
 }
+
+CAMLprim value ml_gtk_bitset_iter_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gtk_bitset_iter_get_type()));
+}

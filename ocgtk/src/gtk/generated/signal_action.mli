@@ -1,14 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SignalAction: SignalAction *)
 
-type t = [ `signal_action | `shortcut_action | `object_ ] Gobject.obj
+type t = [`signal_action | `shortcut_action | `object_] Gobject.obj
 
-external new_ : string -> t = "ml_gtk_signal_action_new"
 (** Create a new SignalAction *)
+external new_ : string -> t = "ml_gtk_signal_action_new"
 
 (* Methods *)
-
-external get_signal_name : t -> string = "ml_gtk_signal_action_get_signal_name"
 (** Returns the name of the signal that will be emitted. *)
+external get_signal_name : t -> string = "ml_gtk_signal_action_get_signal_name"
 
 (* Properties *)
+

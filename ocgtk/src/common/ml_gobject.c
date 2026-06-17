@@ -551,6 +551,24 @@ CAMLprim value ml_g_value_get_boxed(value val)
     CAMLreturn(result);
 }
 
+/* Wrap a borrowed const GValue* into an owned Gobject.Value.t by copying its
+   contents.  The returned custom block uses ocgtk_gvalue_ops whose finalizer
+   calls g_value_unset, so the copy is cleaned up correctly when OCaml GC
+   collects the block.  Never call this with a NULL src — the caller (generated
+   C stubs) guards with Val_option which handles NULL. */
+value Val_GValue_copy(const GValue *src)
+{
+    CAMLparam0();
+    CAMLlocal1(result);
+    result = caml_alloc_custom(&ocgtk_gvalue_ops, sizeof(ml_gvalue), 0, 1);
+    ml_gvalue *mlgv = (ml_gvalue *)Data_custom_val(result);
+    memset(&mlgv->gvalue, 0, sizeof(GValue));
+    g_value_init(&mlgv->gvalue, G_VALUE_TYPE(src));
+    g_value_copy(src, &mlgv->gvalue);
+    mlgv->initialized = 1;
+    CAMLreturn(result);
+}
+
 CAMLprim value ml_g_value_set_boxed(value val, value v)
 {
     CAMLparam2(val, v);

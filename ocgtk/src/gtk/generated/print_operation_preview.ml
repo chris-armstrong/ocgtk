@@ -1,15 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PrintOperationPreview: PrintOperationPreview *)
 
-type t = [ `print_operation_preview ] Gobject.obj
+type t = [`print_operation_preview] Gobject.obj
 
-external from_gobject : 'a Gobject.obj -> t
-  = "ml_gtk_print_operation_preview_from_gobject"
+external from_gobject : 'a Gobject.obj -> t = "ml_gtk_print_operation_preview_from_gobject"
 
 (* Methods *)
-
-external render_page : t -> int -> unit
-  = "ml_gtk_print_operation_preview_render_page"
 (** Renders a page to the preview.
 
 This is using the print context that was passed to the
@@ -21,41 +17,31 @@ the currently selected page.
 
 Note that this function requires a suitable cairo context to
 be associated with the print context. *)
+external render_page : t -> int -> unit = "ml_gtk_print_operation_preview_render_page"
 
-external is_selected : t -> int -> bool
-  = "ml_gtk_print_operation_preview_is_selected"
-(** Returns whether the given page is included in the set of pages that have
-    been selected for printing. *)
+(** Returns whether the given page is included in the set of pages that
+have been selected for printing. *)
+external is_selected : t -> int -> bool = "ml_gtk_print_operation_preview_is_selected"
 
-external end_preview : t -> unit = "ml_gtk_print_operation_preview_end_preview"
 (** Ends a preview.
 
-    This function must be called to finish a custom print preview. *)
+This function must be called to finish a custom print preview. *)
+external end_preview : t -> unit = "ml_gtk_print_operation_preview_end_preview"
 
 let on_got_page_size ?after obj ~callback =
-  let closure =
-    Gobject.Closure.create (fun argv ->
-        let context =
-          let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object_exn v
-        in
-        let page_setup =
-          let v = Gobject.Closure.nth argv ~pos:2 in
-          Gobject.Value.get_object_exn v
-        in
-        callback ~context ~page_setup)
-  in
+  let closure = Gobject.Closure.create (fun argv ->
+    let context = (let v = (Gobject.Closure.nth argv ~pos:1) in Gobject.Value.get_object_exn v) in
+    let page_setup = (let v = (Gobject.Closure.nth argv ~pos:2) in Gobject.Value.get_object_exn v) in
+    callback ~context ~page_setup)
+ in
   Gobject.Signal.connect obj ~name:"got-page-size" ~callback:closure
     ~after:(Option.value after ~default:false)
 
 let on_ready ?after obj ~callback =
-  let closure =
-    Gobject.Closure.create (fun argv ->
-        let context =
-          let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_object_exn v
-        in
-        callback ~context)
-  in
+  let closure = Gobject.Closure.create (fun argv ->
+    let context = (let v = (Gobject.Closure.nth argv ~pos:1) in Gobject.Value.get_object_exn v) in
+    callback ~context)
+ in
   Gobject.Signal.connect obj ~name:"ready" ~callback:closure
     ~after:(Option.value after ~default:false)
+

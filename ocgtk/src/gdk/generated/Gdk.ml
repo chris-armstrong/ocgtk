@@ -3,9 +3,7 @@
 
 (** Layer 1 Module Wrappers *)
 module Wrappers = struct
-  module App_launch_context =
-    App_launch_context_cycle_de440b34.App_launch_context
-
+  module App_launch_context = App_launch_context_cycle_de440b34.App_launch_context
   module Button_event = Button_event
   module Cairo_context = App_launch_context_cycle_de440b34.Cairo_context
   module Clipboard = App_launch_context_cycle_de440b34.Clipboard

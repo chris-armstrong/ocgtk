@@ -70,6 +70,14 @@ gtk_drop_target_reject(GtkDropTarget_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_drop_target_get_value(value self)
+{
+CAMLparam1(self);
+
+const GValue* result = gtk_drop_target_get_value(GtkDropTarget_val(self));
+CAMLreturn(Val_option(result, Val_GValue_copy));
+}
+
 CAMLexport CAMLprim value ml_gtk_drop_target_get_preload(value self)
 {
 CAMLparam1(self);

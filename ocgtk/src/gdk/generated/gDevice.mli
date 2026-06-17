@@ -4,3 +4,4 @@
 class type device_t = GApp_launch_context_cycle_de440b34.device_t
 
 class device : App_launch_context_cycle_de440b34.Device.t -> device_t
+

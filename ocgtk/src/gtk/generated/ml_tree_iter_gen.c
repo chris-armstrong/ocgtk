@@ -24,3 +24,9 @@ value copy_GtkTreeIter(const GtkTreeIter *ptr)
   return ml_gir_record_val_ptr_with_type(gtk_tree_iter_get_type(), copy);
 }
 
+
+CAMLprim value ml_gtk_tree_iter_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gtk_tree_iter_get_type()));
+}

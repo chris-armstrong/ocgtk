@@ -67,6 +67,9 @@ external get_ref_count : 'a obj -> int = "ml_g_object_get_ref_count"
 module Type = struct
   type t = g_type
 
+  let equal (a : t) (b : t) = Int.equal a b
+  let to_int (t : t) = t
+
   external name : t -> string = "ml_g_type_name"
   external from_name : string -> t = "ml_g_type_from_name"
   external parent : t -> t = "ml_g_type_parent"
@@ -121,6 +124,8 @@ module Type = struct
     | `BOXED -> of_fundamental 18
     | `PARAM -> of_fundamental 19
     | `OBJECT -> of_fundamental 20
+
+  let invalid = of_fundamental `INVALID
 end
 
 let is_a obj type_name =

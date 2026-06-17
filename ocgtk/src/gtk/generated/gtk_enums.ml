@@ -1,21 +1,31 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Gtk Enumeration and Bitfield Converters *)
 
-type accessibleannouncementpriority = [ `LOW | `MEDIUM | `HIGH ]
+type accessibleannouncementpriority = [
+  | `LOW
+  | `MEDIUM
+  | `HIGH
+]
 
 let accessibleannouncementpriority_of_int n =
   match n with
   | 0 -> `LOW
   | 1 -> `MEDIUM
   | 2 -> `HIGH
-  | n ->
-      failwith
-        (Printf.sprintf "AccessibleAnnouncementPriority: unknown int %d" n)
+  | n -> failwith (Printf.sprintf "AccessibleAnnouncementPriority: unknown int %d" n)
 
 let accessibleannouncementpriority_to_int v =
-  match v with `LOW -> 0 | `MEDIUM -> 1 | `HIGH -> 2
+  match v with
+  | `LOW -> 0
+  | `MEDIUM -> 1
+  | `HIGH -> 2
 
-type accessibleautocomplete = [ `NONE | `INLINE | `LIST | `BOTH ]
+type accessibleautocomplete = [
+  | `NONE
+  | `INLINE
+  | `LIST
+  | `BOTH
+]
 
 let accessibleautocomplete_of_int n =
   match n with
@@ -26,9 +36,18 @@ let accessibleautocomplete_of_int n =
   | n -> failwith (Printf.sprintf "AccessibleAutocomplete: unknown int %d" n)
 
 let accessibleautocomplete_to_int v =
-  match v with `NONE -> 0 | `INLINE -> 1 | `LIST -> 2 | `BOTH -> 3
+  match v with
+  | `NONE -> 0
+  | `INLINE -> 1
+  | `LIST -> 2
+  | `BOTH -> 3
 
-type accessibleinvalidstate = [ `FALSE | `TRUE | `GRAMMAR | `SPELLING ]
+type accessibleinvalidstate = [
+  | `FALSE
+  | `TRUE
+  | `GRAMMAR
+  | `SPELLING
+]
 
 let accessibleinvalidstate_of_int n =
   match n with
@@ -39,9 +58,17 @@ let accessibleinvalidstate_of_int n =
   | n -> failwith (Printf.sprintf "AccessibleInvalidState: unknown int %d" n)
 
 let accessibleinvalidstate_to_int v =
-  match v with `FALSE -> 0 | `TRUE -> 1 | `GRAMMAR -> 2 | `SPELLING -> 3
+  match v with
+  | `FALSE -> 0
+  | `TRUE -> 1
+  | `GRAMMAR -> 2
+  | `SPELLING -> 3
 
-type accessibleplatformstate = [ `FOCUSABLE | `FOCUSED | `ACTIVE ]
+type accessibleplatformstate = [
+  | `FOCUSABLE
+  | `FOCUSED
+  | `ACTIVE
+]
 
 let accessibleplatformstate_of_int n =
   match n with
@@ -51,10 +78,13 @@ let accessibleplatformstate_of_int n =
   | n -> failwith (Printf.sprintf "AccessiblePlatformState: unknown int %d" n)
 
 let accessibleplatformstate_to_int v =
-  match v with `FOCUSABLE -> 0 | `FOCUSED -> 1 | `ACTIVE -> 2
+  match v with
+  | `FOCUSABLE -> 0
+  | `FOCUSED -> 1
+  | `ACTIVE -> 2
 
-type accessibleproperty =
-  [ `AUTOCOMPLETE
+type accessibleproperty = [
+  | `AUTOCOMPLETE
   | `DESCRIPTION
   | `HAS_POPUP
   | `KEY_SHORTCUTS
@@ -72,7 +102,8 @@ type accessibleproperty =
   | `VALUE_MAX
   | `VALUE_MIN
   | `VALUE_NOW
-  | `VALUE_TEXT ]
+  | `VALUE_TEXT
+]
 
 let accessibleproperty_of_int n =
   match n with
@@ -119,8 +150,8 @@ let accessibleproperty_to_int v =
   | `VALUE_NOW -> 17
   | `VALUE_TEXT -> 18
 
-type accessiblerelation =
-  [ `ACTIVE_DESCENDANT
+type accessiblerelation = [
+  | `ACTIVE_DESCENDANT
   | `COL_COUNT
   | `COL_INDEX
   | `COL_INDEX_TEXT
@@ -137,7 +168,8 @@ type accessiblerelation =
   | `ROW_INDEX
   | `ROW_INDEX_TEXT
   | `ROW_SPAN
-  | `SET_SIZE ]
+  | `SET_SIZE
+]
 
 let accessiblerelation_of_int n =
   match n with
@@ -182,8 +214,8 @@ let accessiblerelation_to_int v =
   | `ROW_SPAN -> 16
   | `SET_SIZE -> 17
 
-type accessiblerole =
-  [ `ALERT
+type accessiblerole = [
+  | `ALERT
   | `ALERT_DIALOG
   | `BANNER
   | `BUTTON
@@ -267,7 +299,8 @@ type accessiblerole =
   | `BLOCK_QUOTE
   | `ARTICLE
   | `COMMENT
-  | `TERMINAL ]
+  | `TERMINAL
+]
 
 let accessiblerole_of_int n =
   match n with
@@ -446,7 +479,12 @@ let accessiblerole_to_int v =
   | `COMMENT -> 83
   | `TERMINAL -> 84
 
-type accessiblesort = [ `NONE | `ASCENDING | `DESCENDING | `OTHER ]
+type accessiblesort = [
+  | `NONE
+  | `ASCENDING
+  | `DESCENDING
+  | `OTHER
+]
 
 let accessiblesort_of_int n =
   match n with
@@ -457,10 +495,14 @@ let accessiblesort_of_int n =
   | n -> failwith (Printf.sprintf "AccessibleSort: unknown int %d" n)
 
 let accessiblesort_to_int v =
-  match v with `NONE -> 0 | `ASCENDING -> 1 | `DESCENDING -> 2 | `OTHER -> 3
+  match v with
+  | `NONE -> 0
+  | `ASCENDING -> 1
+  | `DESCENDING -> 2
+  | `OTHER -> 3
 
-type accessiblestate =
-  [ `BUSY
+type accessiblestate = [
+  | `BUSY
   | `CHECKED
   | `DISABLED
   | `EXPANDED
@@ -468,7 +510,8 @@ type accessiblestate =
   | `INVALID
   | `PRESSED
   | `SELECTED
-  | `VISITED ]
+  | `VISITED
+]
 
 let accessiblestate_of_int n =
   match n with
@@ -495,20 +538,29 @@ let accessiblestate_to_int v =
   | `SELECTED -> 7
   | `VISITED -> 8
 
-type accessibletextcontentchange = [ `INSERT | `REMOVE ]
+type accessibletextcontentchange = [
+  | `INSERT
+  | `REMOVE
+]
 
 let accessibletextcontentchange_of_int n =
   match n with
   | 0 -> `INSERT
   | 1 -> `REMOVE
-  | n ->
-      failwith (Printf.sprintf "AccessibleTextContentChange: unknown int %d" n)
+  | n -> failwith (Printf.sprintf "AccessibleTextContentChange: unknown int %d" n)
 
 let accessibletextcontentchange_to_int v =
-  match v with `INSERT -> 0 | `REMOVE -> 1
+  match v with
+  | `INSERT -> 0
+  | `REMOVE -> 1
 
-type accessibletextgranularity =
-  [ `CHARACTER | `WORD | `SENTENCE | `LINE | `PARAGRAPH ]
+type accessibletextgranularity = [
+  | `CHARACTER
+  | `WORD
+  | `SENTENCE
+  | `LINE
+  | `PARAGRAPH
+]
 
 let accessibletextgranularity_of_int n =
   match n with
@@ -527,7 +579,11 @@ let accessibletextgranularity_to_int v =
   | `LINE -> 3
   | `PARAGRAPH -> 4
 
-type accessibletristate = [ `FALSE | `TRUE | `MIXED ]
+type accessibletristate = [
+  | `FALSE
+  | `TRUE
+  | `MIXED
+]
 
 let accessibletristate_of_int n =
   match n with
@@ -537,16 +593,20 @@ let accessibletristate_of_int n =
   | n -> failwith (Printf.sprintf "AccessibleTristate: unknown int %d" n)
 
 let accessibletristate_to_int v =
-  match v with `FALSE -> 0 | `TRUE -> 1 | `MIXED -> 2
+  match v with
+  | `FALSE -> 0
+  | `TRUE -> 1
+  | `MIXED -> 2
 
-type align =
-  [ `FILL
+type align = [
+  | `FILL
   | `START
   | `END
   | `CENTER
   | `BASELINE_FILL
   | `BASELINE
-  | `BASELINE_CENTER ]
+  | `BASELINE_CENTER
+]
 
 let align_of_int n =
   match n with
@@ -568,7 +628,13 @@ let align_to_int v =
   | `BASELINE -> 4
   | `BASELINE_CENTER -> 5
 
-type arrowtype = [ `UP | `DOWN | `LEFT | `RIGHT | `NONE ]
+type arrowtype = [
+  | `UP
+  | `DOWN
+  | `LEFT
+  | `RIGHT
+  | `NONE
+]
 
 let arrowtype_of_int n =
   match n with
@@ -580,10 +646,21 @@ let arrowtype_of_int n =
   | n -> failwith (Printf.sprintf "ArrowType: unknown int %d" n)
 
 let arrowtype_to_int v =
-  match v with `UP -> 0 | `DOWN -> 1 | `LEFT -> 2 | `RIGHT -> 3 | `NONE -> 4
+  match v with
+  | `UP -> 0
+  | `DOWN -> 1
+  | `LEFT -> 2
+  | `RIGHT -> 3
+  | `NONE -> 4
 
-type assistantpagetype =
-  [ `CONTENT | `INTRO | `CONFIRM | `SUMMARY | `PROGRESS | `CUSTOM ]
+type assistantpagetype = [
+  | `CONTENT
+  | `INTRO
+  | `CONFIRM
+  | `SUMMARY
+  | `PROGRESS
+  | `CUSTOM
+]
 
 let assistantpagetype_of_int n =
   match n with
@@ -604,7 +681,11 @@ let assistantpagetype_to_int v =
   | `PROGRESS -> 4
   | `CUSTOM -> 5
 
-type baselineposition = [ `TOP | `CENTER | `BOTTOM ]
+type baselineposition = [
+  | `TOP
+  | `CENTER
+  | `BOTTOM
+]
 
 let baselineposition_of_int n =
   match n with
@@ -614,10 +695,13 @@ let baselineposition_of_int n =
   | n -> failwith (Printf.sprintf "BaselinePosition: unknown int %d" n)
 
 let baselineposition_to_int v =
-  match v with `TOP -> 0 | `CENTER -> 1 | `BOTTOM -> 2
+  match v with
+  | `TOP -> 0
+  | `CENTER -> 1
+  | `BOTTOM -> 2
 
-type borderstyle =
-  [ `NONE
+type borderstyle = [
+  | `NONE
   | `HIDDEN
   | `SOLID
   | `INSET
@@ -626,7 +710,8 @@ type borderstyle =
   | `DASHED
   | `DOUBLE
   | `GROOVE
-  | `RIDGE ]
+  | `RIDGE
+]
 
 let borderstyle_of_int n =
   match n with
@@ -655,8 +740,8 @@ let borderstyle_to_int v =
   | `GROOVE -> 8
   | `RIDGE -> 9
 
-type buildererror =
-  [ `INVALID_TYPE_FUNCTION
+type buildererror = [
+  | `INVALID_TYPE_FUNCTION
   | `UNHANDLED_TAG
   | `MISSING_ATTRIBUTE
   | `INVALID_ATTRIBUTE
@@ -670,7 +755,8 @@ type buildererror =
   | `INVALID_PROPERTY
   | `INVALID_SIGNAL
   | `INVALID_ID
-  | `INVALID_FUNCTION ]
+  | `INVALID_FUNCTION
+]
 
 let buildererror_of_int n =
   match n with
@@ -709,7 +795,14 @@ let buildererror_to_int v =
   | `INVALID_ID -> 13
   | `INVALID_FUNCTION -> 14
 
-type buttonstype = [ `NONE | `OK | `CLOSE | `CANCEL | `YES_NO | `OK_CANCEL ]
+type buttonstype = [
+  | `NONE
+  | `OK
+  | `CLOSE
+  | `CANCEL
+  | `YES_NO
+  | `OK_CANCEL
+]
 
 let buttonstype_of_int n =
   match n with
@@ -730,7 +823,10 @@ let buttonstype_to_int v =
   | `YES_NO -> 4
   | `OK_CANCEL -> 5
 
-type cellrendereraccelmode = [ `GTK | `OTHER ]
+type cellrendereraccelmode = [
+  | `GTK
+  | `OTHER
+]
 
 let cellrendereraccelmode_of_int n =
   match n with
@@ -738,9 +834,16 @@ let cellrendereraccelmode_of_int n =
   | 1 -> `OTHER
   | n -> failwith (Printf.sprintf "CellRendererAccelMode: unknown int %d" n)
 
-let cellrendereraccelmode_to_int v = match v with `GTK -> 0 | `OTHER -> 1
+let cellrendereraccelmode_to_int v =
+  match v with
+  | `GTK -> 0
+  | `OTHER -> 1
 
-type cellrenderermode = [ `INERT | `ACTIVATABLE | `EDITABLE ]
+type cellrenderermode = [
+  | `INERT
+  | `ACTIVATABLE
+  | `EDITABLE
+]
 
 let cellrenderermode_of_int n =
   match n with
@@ -750,9 +853,16 @@ let cellrenderermode_of_int n =
   | n -> failwith (Printf.sprintf "CellRendererMode: unknown int %d" n)
 
 let cellrenderermode_to_int v =
-  match v with `INERT -> 0 | `ACTIVATABLE -> 1 | `EDITABLE -> 2
+  match v with
+  | `INERT -> 0
+  | `ACTIVATABLE -> 1
+  | `EDITABLE -> 2
 
-type collation = [ `NONE | `UNICODE | `FILENAME ]
+type collation = [
+  | `NONE
+  | `UNICODE
+  | `FILENAME
+]
 
 let collation_of_int n =
   match n with
@@ -762,10 +872,13 @@ let collation_of_int n =
   | n -> failwith (Printf.sprintf "Collation: unknown int %d" n)
 
 let collation_to_int v =
-  match v with `NONE -> 0 | `UNICODE -> 1 | `FILENAME -> 2
+  match v with
+  | `NONE -> 0
+  | `UNICODE -> 1
+  | `FILENAME -> 2
 
-type constraintattribute =
-  [ `NONE
+type constraintattribute = [
+  | `NONE
   | `LEFT
   | `RIGHT
   | `TOP
@@ -776,7 +889,8 @@ type constraintattribute =
   | `HEIGHT
   | `CENTER_X
   | `CENTER_Y
-  | `BASELINE ]
+  | `BASELINE
+]
 
 let constraintattribute_of_int n =
   match n with
@@ -809,7 +923,11 @@ let constraintattribute_to_int v =
   | `CENTER_Y -> 10
   | `BASELINE -> 11
 
-type constraintrelation = [ `LE | `EQ | `GE ]
+type constraintrelation = [
+  | `LE
+  | `EQ
+  | `GE
+]
 
 let constraintrelation_of_int n =
   match n with
@@ -818,9 +936,18 @@ let constraintrelation_of_int n =
   | 1 -> `GE
   | n -> failwith (Printf.sprintf "ConstraintRelation: unknown int %d" n)
 
-let constraintrelation_to_int v = match v with `LE -> -1 | `EQ -> 0 | `GE -> 1
+let constraintrelation_to_int v =
+  match v with
+  | `LE -> -1
+  | `EQ -> 0
+  | `GE -> 1
 
-type constraintstrength = [ `REQUIRED | `STRONG | `MEDIUM | `WEAK ]
+type constraintstrength = [
+  | `REQUIRED
+  | `STRONG
+  | `MEDIUM
+  | `WEAK
+]
 
 let constraintstrength_of_int n =
   match n with
@@ -837,8 +964,14 @@ let constraintstrength_to_int v =
   | `MEDIUM -> 1000
   | `WEAK -> 1
 
-type constraintvflparsererror =
-  [ `SYMBOL | `ATTRIBUTE | `VIEW | `METRIC | `PRIORITY | `RELATION ]
+type constraintvflparsererror = [
+  | `SYMBOL
+  | `ATTRIBUTE
+  | `VIEW
+  | `METRIC
+  | `PRIORITY
+  | `RELATION
+]
 
 let constraintvflparsererror_of_int n =
   match n with
@@ -859,7 +992,12 @@ let constraintvflparsererror_to_int v =
   | `PRIORITY -> 4
   | `RELATION -> 5
 
-type contentfit = [ `FILL | `CONTAIN | `COVER | `SCALE_DOWN ]
+type contentfit = [
+  | `FILL
+  | `CONTAIN
+  | `COVER
+  | `SCALE_DOWN
+]
 
 let contentfit_of_int n =
   match n with
@@ -870,9 +1008,18 @@ let contentfit_of_int n =
   | n -> failwith (Printf.sprintf "ContentFit: unknown int %d" n)
 
 let contentfit_to_int v =
-  match v with `FILL -> 0 | `CONTAIN -> 1 | `COVER -> 2 | `SCALE_DOWN -> 3
+  match v with
+  | `FILL -> 0
+  | `CONTAIN -> 1
+  | `COVER -> 2
+  | `SCALE_DOWN -> 3
 
-type cornertype = [ `TOP_LEFT | `BOTTOM_LEFT | `TOP_RIGHT | `BOTTOM_RIGHT ]
+type cornertype = [
+  | `TOP_LEFT
+  | `BOTTOM_LEFT
+  | `TOP_RIGHT
+  | `BOTTOM_RIGHT
+]
 
 let cornertype_of_int n =
   match n with
@@ -889,7 +1036,13 @@ let cornertype_to_int v =
   | `TOP_RIGHT -> 2
   | `BOTTOM_RIGHT -> 3
 
-type cssparsererror = [ `FAILED | `SYNTAX | `IMPORT | `NAME | `UNKNOWN_VALUE ]
+type cssparsererror = [
+  | `FAILED
+  | `SYNTAX
+  | `IMPORT
+  | `NAME
+  | `UNKNOWN_VALUE
+]
 
 let cssparsererror_of_int n =
   match n with
@@ -908,7 +1061,11 @@ let cssparsererror_to_int v =
   | `NAME -> 3
   | `UNKNOWN_VALUE -> 4
 
-type cssparserwarning = [ `DEPRECATED | `SYNTAX | `UNIMPLEMENTED ]
+type cssparserwarning = [
+  | `DEPRECATED
+  | `SYNTAX
+  | `UNIMPLEMENTED
+]
 
 let cssparserwarning_of_int n =
   match n with
@@ -918,17 +1075,21 @@ let cssparserwarning_of_int n =
   | n -> failwith (Printf.sprintf "CssParserWarning: unknown int %d" n)
 
 let cssparserwarning_to_int v =
-  match v with `DEPRECATED -> 0 | `SYNTAX -> 1 | `UNIMPLEMENTED -> 2
+  match v with
+  | `DEPRECATED -> 0
+  | `SYNTAX -> 1
+  | `UNIMPLEMENTED -> 2
 
-type deletetype =
-  [ `CHARS
+type deletetype = [
+  | `CHARS
   | `WORD_ENDS
   | `WORDS
   | `DISPLAY_LINES
   | `DISPLAY_LINE_ENDS
   | `PARAGRAPH_ENDS
   | `PARAGRAPHS
-  | `WHITESPACE ]
+  | `WHITESPACE
+]
 
 let deletetype_of_int n =
   match n with
@@ -953,7 +1114,11 @@ let deletetype_to_int v =
   | `PARAGRAPHS -> 6
   | `WHITESPACE -> 7
 
-type dialogerror = [ `FAILED | `CANCELLED | `DISMISSED ]
+type dialogerror = [
+  | `FAILED
+  | `CANCELLED
+  | `DISMISSED
+]
 
 let dialogerror_of_int n =
   match n with
@@ -963,10 +1128,19 @@ let dialogerror_of_int n =
   | n -> failwith (Printf.sprintf "DialogError: unknown int %d" n)
 
 let dialogerror_to_int v =
-  match v with `FAILED -> 0 | `CANCELLED -> 1 | `DISMISSED -> 2
+  match v with
+  | `FAILED -> 0
+  | `CANCELLED -> 1
+  | `DISMISSED -> 2
 
-type directiontype =
-  [ `TAB_FORWARD | `TAB_BACKWARD | `UP | `DOWN | `LEFT | `RIGHT ]
+type directiontype = [
+  | `TAB_FORWARD
+  | `TAB_BACKWARD
+  | `UP
+  | `DOWN
+  | `LEFT
+  | `RIGHT
+]
 
 let directiontype_of_int n =
   match n with
@@ -987,8 +1161,8 @@ let directiontype_to_int v =
   | `LEFT -> 4
   | `RIGHT -> 5
 
-type editableproperties =
-  [ `PROP_TEXT
+type editableproperties = [
+  | `PROP_TEXT
   | `PROP_CURSOR_POSITION
   | `PROP_SELECTION_BOUND
   | `PROP_EDITABLE
@@ -996,7 +1170,8 @@ type editableproperties =
   | `PROP_MAX_WIDTH_CHARS
   | `PROP_XALIGN
   | `PROP_ENABLE_UNDO
-  | `NUM_PROPERTIES ]
+  | `NUM_PROPERTIES
+]
 
 let editableproperties_of_int n =
   match n with
@@ -1023,7 +1198,10 @@ let editableproperties_to_int v =
   | `PROP_ENABLE_UNDO -> 7
   | `NUM_PROPERTIES -> 8
 
-type entryiconposition = [ `PRIMARY | `SECONDARY ]
+type entryiconposition = [
+  | `PRIMARY
+  | `SECONDARY
+]
 
 let entryiconposition_of_int n =
   match n with
@@ -1031,9 +1209,16 @@ let entryiconposition_of_int n =
   | 1 -> `SECONDARY
   | n -> failwith (Printf.sprintf "EntryIconPosition: unknown int %d" n)
 
-let entryiconposition_to_int v = match v with `PRIMARY -> 0 | `SECONDARY -> 1
+let entryiconposition_to_int v =
+  match v with
+  | `PRIMARY -> 0
+  | `SECONDARY -> 1
 
-type eventsequencestate = [ `NONE | `CLAIMED | `DENIED ]
+type eventsequencestate = [
+  | `NONE
+  | `CLAIMED
+  | `DENIED
+]
 
 let eventsequencestate_of_int n =
   match n with
@@ -1043,9 +1228,16 @@ let eventsequencestate_of_int n =
   | n -> failwith (Printf.sprintf "EventSequenceState: unknown int %d" n)
 
 let eventsequencestate_to_int v =
-  match v with `NONE -> 0 | `CLAIMED -> 1 | `DENIED -> 2
+  match v with
+  | `NONE -> 0
+  | `CLAIMED -> 1
+  | `DENIED -> 2
 
-type filechooseraction = [ `OPEN | `SAVE | `SELECT_FOLDER ]
+type filechooseraction = [
+  | `OPEN
+  | `SAVE
+  | `SELECT_FOLDER
+]
 
 let filechooseraction_of_int n =
   match n with
@@ -1055,10 +1247,17 @@ let filechooseraction_of_int n =
   | n -> failwith (Printf.sprintf "FileChooserAction: unknown int %d" n)
 
 let filechooseraction_to_int v =
-  match v with `OPEN -> 0 | `SAVE -> 1 | `SELECT_FOLDER -> 2
+  match v with
+  | `OPEN -> 0
+  | `SAVE -> 1
+  | `SELECT_FOLDER -> 2
 
-type filechoosererror =
-  [ `NONEXISTENT | `BAD_FILENAME | `ALREADY_EXISTS | `INCOMPLETE_HOSTNAME ]
+type filechoosererror = [
+  | `NONEXISTENT
+  | `BAD_FILENAME
+  | `ALREADY_EXISTS
+  | `INCOMPLETE_HOSTNAME
+]
 
 let filechoosererror_of_int n =
   match n with
@@ -1075,7 +1274,11 @@ let filechoosererror_to_int v =
   | `ALREADY_EXISTS -> 2
   | `INCOMPLETE_HOSTNAME -> 3
 
-type filterchange = [ `DIFFERENT | `LESS_STRICT | `MORE_STRICT ]
+type filterchange = [
+  | `DIFFERENT
+  | `LESS_STRICT
+  | `MORE_STRICT
+]
 
 let filterchange_of_int n =
   match n with
@@ -1085,9 +1288,16 @@ let filterchange_of_int n =
   | n -> failwith (Printf.sprintf "FilterChange: unknown int %d" n)
 
 let filterchange_to_int v =
-  match v with `DIFFERENT -> 0 | `LESS_STRICT -> 1 | `MORE_STRICT -> 2
+  match v with
+  | `DIFFERENT -> 0
+  | `LESS_STRICT -> 1
+  | `MORE_STRICT -> 2
 
-type filtermatch = [ `SOME | `NONE | `ALL ]
+type filtermatch = [
+  | `SOME
+  | `NONE
+  | `ALL
+]
 
 let filtermatch_of_int n =
   match n with
@@ -1096,9 +1306,18 @@ let filtermatch_of_int n =
   | 2 -> `ALL
   | n -> failwith (Printf.sprintf "FilterMatch: unknown int %d" n)
 
-let filtermatch_to_int v = match v with `SOME -> 0 | `NONE -> 1 | `ALL -> 2
+let filtermatch_to_int v =
+  match v with
+  | `SOME -> 0
+  | `NONE -> 1
+  | `ALL -> 2
 
-type fontlevel = [ `FAMILY | `FACE | `FONT | `FEATURES ]
+type fontlevel = [
+  | `FAMILY
+  | `FACE
+  | `FONT
+  | `FEATURES
+]
 
 let fontlevel_of_int n =
   match n with
@@ -1109,9 +1328,16 @@ let fontlevel_of_int n =
   | n -> failwith (Printf.sprintf "FontLevel: unknown int %d" n)
 
 let fontlevel_to_int v =
-  match v with `FAMILY -> 0 | `FACE -> 1 | `FONT -> 2 | `FEATURES -> 3
+  match v with
+  | `FAMILY -> 0
+  | `FACE -> 1
+  | `FONT -> 2
+  | `FEATURES -> 3
 
-type graphicsoffloadenabled = [ `ENABLED | `DISABLED ]
+type graphicsoffloadenabled = [
+  | `ENABLED
+  | `DISABLED
+]
 
 let graphicsoffloadenabled_of_int n =
   match n with
@@ -1120,9 +1346,15 @@ let graphicsoffloadenabled_of_int n =
   | n -> failwith (Printf.sprintf "GraphicsOffloadEnabled: unknown int %d" n)
 
 let graphicsoffloadenabled_to_int v =
-  match v with `ENABLED -> 0 | `DISABLED -> 1
+  match v with
+  | `ENABLED -> 0
+  | `DISABLED -> 1
 
-type iconsize = [ `INHERIT | `NORMAL | `LARGE ]
+type iconsize = [
+  | `INHERIT
+  | `NORMAL
+  | `LARGE
+]
 
 let iconsize_of_int n =
   match n with
@@ -1132,9 +1364,15 @@ let iconsize_of_int n =
   | n -> failwith (Printf.sprintf "IconSize: unknown int %d" n)
 
 let iconsize_to_int v =
-  match v with `INHERIT -> 0 | `NORMAL -> 1 | `LARGE -> 2
+  match v with
+  | `INHERIT -> 0
+  | `NORMAL -> 1
+  | `LARGE -> 2
 
-type iconthemeerror = [ `NOT_FOUND | `FAILED ]
+type iconthemeerror = [
+  | `NOT_FOUND
+  | `FAILED
+]
 
 let iconthemeerror_of_int n =
   match n with
@@ -1142,15 +1380,19 @@ let iconthemeerror_of_int n =
   | 1 -> `FAILED
   | n -> failwith (Printf.sprintf "IconThemeError: unknown int %d" n)
 
-let iconthemeerror_to_int v = match v with `NOT_FOUND -> 0 | `FAILED -> 1
+let iconthemeerror_to_int v =
+  match v with
+  | `NOT_FOUND -> 0
+  | `FAILED -> 1
 
-type iconviewdropposition =
-  [ `NO_DROP
+type iconviewdropposition = [
+  | `NO_DROP
   | `DROP_INTO
   | `DROP_LEFT
   | `DROP_RIGHT
   | `DROP_ABOVE
-  | `DROP_BELOW ]
+  | `DROP_BELOW
+]
 
 let iconviewdropposition_of_int n =
   match n with
@@ -1171,7 +1413,12 @@ let iconviewdropposition_to_int v =
   | `DROP_ABOVE -> 4
   | `DROP_BELOW -> 5
 
-type imagetype = [ `EMPTY | `ICON_NAME | `GICON | `PAINTABLE ]
+type imagetype = [
+  | `EMPTY
+  | `ICON_NAME
+  | `GICON
+  | `PAINTABLE
+]
 
 let imagetype_of_int n =
   match n with
@@ -1182,10 +1429,14 @@ let imagetype_of_int n =
   | n -> failwith (Printf.sprintf "ImageType: unknown int %d" n)
 
 let imagetype_to_int v =
-  match v with `EMPTY -> 0 | `ICON_NAME -> 1 | `GICON -> 2 | `PAINTABLE -> 3
+  match v with
+  | `EMPTY -> 0
+  | `ICON_NAME -> 1
+  | `GICON -> 2
+  | `PAINTABLE -> 3
 
-type inputpurpose =
-  [ `FREE_FORM
+type inputpurpose = [
+  | `FREE_FORM
   | `ALPHA
   | `DIGITS
   | `NUMBER
@@ -1195,7 +1446,8 @@ type inputpurpose =
   | `NAME
   | `PASSWORD
   | `PIN
-  | `TERMINAL ]
+  | `TERMINAL
+]
 
 let inputpurpose_of_int n =
   match n with
@@ -1226,8 +1478,12 @@ let inputpurpose_to_int v =
   | `PIN -> 9
   | `TERMINAL -> 10
 
-type inscriptionoverflow =
-  [ `CLIP | `ELLIPSIZE_START | `ELLIPSIZE_MIDDLE | `ELLIPSIZE_END ]
+type inscriptionoverflow = [
+  | `CLIP
+  | `ELLIPSIZE_START
+  | `ELLIPSIZE_MIDDLE
+  | `ELLIPSIZE_END
+]
 
 let inscriptionoverflow_of_int n =
   match n with
@@ -1244,7 +1500,12 @@ let inscriptionoverflow_to_int v =
   | `ELLIPSIZE_MIDDLE -> 2
   | `ELLIPSIZE_END -> 3
 
-type justification = [ `LEFT | `RIGHT | `CENTER | `FILL ]
+type justification = [
+  | `LEFT
+  | `RIGHT
+  | `CENTER
+  | `FILL
+]
 
 let justification_of_int n =
   match n with
@@ -1255,9 +1516,16 @@ let justification_of_int n =
   | n -> failwith (Printf.sprintf "Justification: unknown int %d" n)
 
 let justification_to_int v =
-  match v with `LEFT -> 0 | `RIGHT -> 1 | `CENTER -> 2 | `FILL -> 3
+  match v with
+  | `LEFT -> 0
+  | `RIGHT -> 1
+  | `CENTER -> 2
+  | `FILL -> 3
 
-type levelbarmode = [ `CONTINUOUS | `DISCRETE ]
+type levelbarmode = [
+  | `CONTINUOUS
+  | `DISCRETE
+]
 
 let levelbarmode_of_int n =
   match n with
@@ -1265,9 +1533,16 @@ let levelbarmode_of_int n =
   | 1 -> `DISCRETE
   | n -> failwith (Printf.sprintf "LevelBarMode: unknown int %d" n)
 
-let levelbarmode_to_int v = match v with `CONTINUOUS -> 0 | `DISCRETE -> 1
+let levelbarmode_to_int v =
+  match v with
+  | `CONTINUOUS -> 0
+  | `DISCRETE -> 1
 
-type listtabbehavior = [ `ALL | `ITEM | `CELL ]
+type listtabbehavior = [
+  | `ALL
+  | `ITEM
+  | `CELL
+]
 
 let listtabbehavior_of_int n =
   match n with
@@ -1277,9 +1552,18 @@ let listtabbehavior_of_int n =
   | n -> failwith (Printf.sprintf "ListTabBehavior: unknown int %d" n)
 
 let listtabbehavior_to_int v =
-  match v with `ALL -> 0 | `ITEM -> 1 | `CELL -> 2
+  match v with
+  | `ALL -> 0
+  | `ITEM -> 1
+  | `CELL -> 2
 
-type messagetype = [ `INFO | `WARNING | `QUESTION | `ERROR | `OTHER ]
+type messagetype = [
+  | `INFO
+  | `WARNING
+  | `QUESTION
+  | `ERROR
+  | `OTHER
+]
 
 let messagetype_of_int n =
   match n with
@@ -1298,8 +1582,8 @@ let messagetype_to_int v =
   | `ERROR -> 3
   | `OTHER -> 4
 
-type movementstep =
-  [ `LOGICAL_POSITIONS
+type movementstep = [
+  | `LOGICAL_POSITIONS
   | `VISUAL_POSITIONS
   | `WORDS
   | `DISPLAY_LINES
@@ -1308,7 +1592,8 @@ type movementstep =
   | `PARAGRAPH_ENDS
   | `PAGES
   | `BUFFER_ENDS
-  | `HORIZONTAL_PAGES ]
+  | `HORIZONTAL_PAGES
+]
 
 let movementstep_of_int n =
   match n with
@@ -1337,7 +1622,11 @@ let movementstep_to_int v =
   | `BUFFER_ENDS -> 8
   | `HORIZONTAL_PAGES -> 9
 
-type naturalwrapmode = [ `INHERIT | `NONE | `WORD ]
+type naturalwrapmode = [
+  | `INHERIT
+  | `NONE
+  | `WORD
+]
 
 let naturalwrapmode_of_int n =
   match n with
@@ -1347,9 +1636,15 @@ let naturalwrapmode_of_int n =
   | n -> failwith (Printf.sprintf "NaturalWrapMode: unknown int %d" n)
 
 let naturalwrapmode_to_int v =
-  match v with `INHERIT -> 0 | `NONE -> 1 | `WORD -> 2
+  match v with
+  | `INHERIT -> 0
+  | `NONE -> 1
+  | `WORD -> 2
 
-type notebooktab = [ `FIRST | `LAST ]
+type notebooktab = [
+  | `FIRST
+  | `LAST
+]
 
 let notebooktab_of_int n =
   match n with
@@ -1357,10 +1652,21 @@ let notebooktab_of_int n =
   | 1 -> `LAST
   | n -> failwith (Printf.sprintf "NotebookTab: unknown int %d" n)
 
-let notebooktab_to_int v = match v with `FIRST -> 0 | `LAST -> 1
+let notebooktab_to_int v =
+  match v with
+  | `FIRST -> 0
+  | `LAST -> 1
 
-type numberuplayout =
-  [ `LRTB | `LRBT | `RLTB | `RLBT | `TBLR | `TBRL | `BTLR | `BTRL ]
+type numberuplayout = [
+  | `LRTB
+  | `LRBT
+  | `RLTB
+  | `RLBT
+  | `TBLR
+  | `TBRL
+  | `BTLR
+  | `BTRL
+]
 
 let numberuplayout_of_int n =
   match n with
@@ -1385,7 +1691,11 @@ let numberuplayout_to_int v =
   | `BTLR -> 6
   | `BTRL -> 7
 
-type ordering = [ `SMALLER | `EQUAL | `LARGER ]
+type ordering = [
+  | `SMALLER
+  | `EQUAL
+  | `LARGER
+]
 
 let ordering_of_int n =
   match n with
@@ -1395,9 +1705,15 @@ let ordering_of_int n =
   | n -> failwith (Printf.sprintf "Ordering: unknown int %d" n)
 
 let ordering_to_int v =
-  match v with `SMALLER -> -1 | `EQUAL -> 0 | `LARGER -> 1
+  match v with
+  | `SMALLER -> -1
+  | `EQUAL -> 0
+  | `LARGER -> 1
 
-type orientation = [ `HORIZONTAL | `VERTICAL ]
+type orientation = [
+  | `HORIZONTAL
+  | `VERTICAL
+]
 
 let orientation_of_int n =
   match n with
@@ -1405,9 +1721,15 @@ let orientation_of_int n =
   | 1 -> `VERTICAL
   | n -> failwith (Printf.sprintf "Orientation: unknown int %d" n)
 
-let orientation_to_int v = match v with `HORIZONTAL -> 0 | `VERTICAL -> 1
+let orientation_to_int v =
+  match v with
+  | `HORIZONTAL -> 0
+  | `VERTICAL -> 1
 
-type overflow = [ `VISIBLE | `HIDDEN ]
+type overflow = [
+  | `VISIBLE
+  | `HIDDEN
+]
 
 let overflow_of_int n =
   match n with
@@ -1415,9 +1737,15 @@ let overflow_of_int n =
   | 1 -> `HIDDEN
   | n -> failwith (Printf.sprintf "Overflow: unknown int %d" n)
 
-let overflow_to_int v = match v with `VISIBLE -> 0 | `HIDDEN -> 1
+let overflow_to_int v =
+  match v with
+  | `VISIBLE -> 0
+  | `HIDDEN -> 1
 
-type packtype = [ `START | `END ]
+type packtype = [
+  | `START
+  | `END
+]
 
 let packtype_of_int n =
   match n with
@@ -1425,9 +1753,16 @@ let packtype_of_int n =
   | 1 -> `END
   | n -> failwith (Printf.sprintf "PackType: unknown int %d" n)
 
-let packtype_to_int v = match v with `START -> 0 | `END -> 1
+let packtype_to_int v =
+  match v with
+  | `START -> 0
+  | `END -> 1
 
-type padactiontype = [ `BUTTON | `RING | `STRIP ]
+type padactiontype = [
+  | `BUTTON
+  | `RING
+  | `STRIP
+]
 
 let padactiontype_of_int n =
   match n with
@@ -1437,10 +1772,17 @@ let padactiontype_of_int n =
   | n -> failwith (Printf.sprintf "PadActionType: unknown int %d" n)
 
 let padactiontype_to_int v =
-  match v with `BUTTON -> 0 | `RING -> 1 | `STRIP -> 2
+  match v with
+  | `BUTTON -> 0
+  | `RING -> 1
+  | `STRIP -> 2
 
-type pageorientation =
-  [ `PORTRAIT | `LANDSCAPE | `REVERSE_PORTRAIT | `REVERSE_LANDSCAPE ]
+type pageorientation = [
+  | `PORTRAIT
+  | `LANDSCAPE
+  | `REVERSE_PORTRAIT
+  | `REVERSE_LANDSCAPE
+]
 
 let pageorientation_of_int n =
   match n with
@@ -1457,7 +1799,11 @@ let pageorientation_to_int v =
   | `REVERSE_PORTRAIT -> 2
   | `REVERSE_LANDSCAPE -> 3
 
-type pageset = [ `ALL | `EVEN | `ODD ]
+type pageset = [
+  | `ALL
+  | `EVEN
+  | `ODD
+]
 
 let pageset_of_int n =
   match n with
@@ -1466,9 +1812,18 @@ let pageset_of_int n =
   | 2 -> `ODD
   | n -> failwith (Printf.sprintf "PageSet: unknown int %d" n)
 
-let pageset_to_int v = match v with `ALL -> 0 | `EVEN -> 1 | `ODD -> 2
+let pageset_to_int v =
+  match v with
+  | `ALL -> 0
+  | `EVEN -> 1
+  | `ODD -> 2
 
-type pandirection = [ `LEFT | `RIGHT | `UP | `DOWN ]
+type pandirection = [
+  | `LEFT
+  | `RIGHT
+  | `UP
+  | `DOWN
+]
 
 let pandirection_of_int n =
   match n with
@@ -1479,9 +1834,18 @@ let pandirection_of_int n =
   | n -> failwith (Printf.sprintf "PanDirection: unknown int %d" n)
 
 let pandirection_to_int v =
-  match v with `LEFT -> 0 | `RIGHT -> 1 | `UP -> 2 | `DOWN -> 3
+  match v with
+  | `LEFT -> 0
+  | `RIGHT -> 1
+  | `UP -> 2
+  | `DOWN -> 3
 
-type policytype = [ `ALWAYS | `AUTOMATIC | `NEVER | `EXTERNAL ]
+type policytype = [
+  | `ALWAYS
+  | `AUTOMATIC
+  | `NEVER
+  | `EXTERNAL
+]
 
 let policytype_of_int n =
   match n with
@@ -1492,9 +1856,18 @@ let policytype_of_int n =
   | n -> failwith (Printf.sprintf "PolicyType: unknown int %d" n)
 
 let policytype_to_int v =
-  match v with `ALWAYS -> 0 | `AUTOMATIC -> 1 | `NEVER -> 2 | `EXTERNAL -> 3
+  match v with
+  | `ALWAYS -> 0
+  | `AUTOMATIC -> 1
+  | `NEVER -> 2
+  | `EXTERNAL -> 3
 
-type positiontype = [ `LEFT | `RIGHT | `TOP | `BOTTOM ]
+type positiontype = [
+  | `LEFT
+  | `RIGHT
+  | `TOP
+  | `BOTTOM
+]
 
 let positiontype_of_int n =
   match n with
@@ -1505,9 +1878,17 @@ let positiontype_of_int n =
   | n -> failwith (Printf.sprintf "PositionType: unknown int %d" n)
 
 let positiontype_to_int v =
-  match v with `LEFT -> 0 | `RIGHT -> 1 | `TOP -> 2 | `BOTTOM -> 3
+  match v with
+  | `LEFT -> 0
+  | `RIGHT -> 1
+  | `TOP -> 2
+  | `BOTTOM -> 3
 
-type printduplex = [ `SIMPLEX | `HORIZONTAL | `VERTICAL ]
+type printduplex = [
+  | `SIMPLEX
+  | `HORIZONTAL
+  | `VERTICAL
+]
 
 let printduplex_of_int n =
   match n with
@@ -1517,9 +1898,17 @@ let printduplex_of_int n =
   | n -> failwith (Printf.sprintf "PrintDuplex: unknown int %d" n)
 
 let printduplex_to_int v =
-  match v with `SIMPLEX -> 0 | `HORIZONTAL -> 1 | `VERTICAL -> 2
+  match v with
+  | `SIMPLEX -> 0
+  | `HORIZONTAL -> 1
+  | `VERTICAL -> 2
 
-type printerror = [ `GENERAL | `INTERNAL_ERROR | `NOMEM | `INVALID_FILE ]
+type printerror = [
+  | `GENERAL
+  | `INTERNAL_ERROR
+  | `NOMEM
+  | `INVALID_FILE
+]
 
 let printerror_of_int n =
   match n with
@@ -1536,7 +1925,12 @@ let printerror_to_int v =
   | `NOMEM -> 2
   | `INVALID_FILE -> 3
 
-type printoperationaction = [ `PRINT_DIALOG | `PRINT | `PREVIEW | `EXPORT ]
+type printoperationaction = [
+  | `PRINT_DIALOG
+  | `PRINT
+  | `PREVIEW
+  | `EXPORT
+]
 
 let printoperationaction_of_int n =
   match n with
@@ -1547,9 +1941,18 @@ let printoperationaction_of_int n =
   | n -> failwith (Printf.sprintf "PrintOperationAction: unknown int %d" n)
 
 let printoperationaction_to_int v =
-  match v with `PRINT_DIALOG -> 0 | `PRINT -> 1 | `PREVIEW -> 2 | `EXPORT -> 3
+  match v with
+  | `PRINT_DIALOG -> 0
+  | `PRINT -> 1
+  | `PREVIEW -> 2
+  | `EXPORT -> 3
 
-type printoperationresult = [ `ERROR | `APPLY | `CANCEL | `IN_PROGRESS ]
+type printoperationresult = [
+  | `ERROR
+  | `APPLY
+  | `CANCEL
+  | `IN_PROGRESS
+]
 
 let printoperationresult_of_int n =
   match n with
@@ -1560,9 +1963,18 @@ let printoperationresult_of_int n =
   | n -> failwith (Printf.sprintf "PrintOperationResult: unknown int %d" n)
 
 let printoperationresult_to_int v =
-  match v with `ERROR -> 0 | `APPLY -> 1 | `CANCEL -> 2 | `IN_PROGRESS -> 3
+  match v with
+  | `ERROR -> 0
+  | `APPLY -> 1
+  | `CANCEL -> 2
+  | `IN_PROGRESS -> 3
 
-type printpages = [ `ALL | `CURRENT | `RANGES | `SELECTION ]
+type printpages = [
+  | `ALL
+  | `CURRENT
+  | `RANGES
+  | `SELECTION
+]
 
 let printpages_of_int n =
   match n with
@@ -1573,9 +1985,18 @@ let printpages_of_int n =
   | n -> failwith (Printf.sprintf "PrintPages: unknown int %d" n)
 
 let printpages_to_int v =
-  match v with `ALL -> 0 | `CURRENT -> 1 | `RANGES -> 2 | `SELECTION -> 3
+  match v with
+  | `ALL -> 0
+  | `CURRENT -> 1
+  | `RANGES -> 2
+  | `SELECTION -> 3
 
-type printquality = [ `LOW | `NORMAL | `HIGH | `DRAFT ]
+type printquality = [
+  | `LOW
+  | `NORMAL
+  | `HIGH
+  | `DRAFT
+]
 
 let printquality_of_int n =
   match n with
@@ -1586,10 +2007,14 @@ let printquality_of_int n =
   | n -> failwith (Printf.sprintf "PrintQuality: unknown int %d" n)
 
 let printquality_to_int v =
-  match v with `LOW -> 0 | `NORMAL -> 1 | `HIGH -> 2 | `DRAFT -> 3
+  match v with
+  | `LOW -> 0
+  | `NORMAL -> 1
+  | `HIGH -> 2
+  | `DRAFT -> 3
 
-type printstatus =
-  [ `INITIAL
+type printstatus = [
+  | `INITIAL
   | `PREPARING
   | `GENERATING_DATA
   | `SENDING_DATA
@@ -1597,7 +2022,8 @@ type printstatus =
   | `PENDING_ISSUE
   | `PRINTING
   | `FINISHED
-  | `FINISHED_ABORTED ]
+  | `FINISHED_ABORTED
+]
 
 let printstatus_of_int n =
   match n with
@@ -1624,7 +2050,10 @@ let printstatus_to_int v =
   | `FINISHED -> 7
   | `FINISHED_ABORTED -> 8
 
-type propagationlimit = [ `NONE | `SAME_NATIVE ]
+type propagationlimit = [
+  | `NONE
+  | `SAME_NATIVE
+]
 
 let propagationlimit_of_int n =
   match n with
@@ -1632,9 +2061,17 @@ let propagationlimit_of_int n =
   | 1 -> `SAME_NATIVE
   | n -> failwith (Printf.sprintf "PropagationLimit: unknown int %d" n)
 
-let propagationlimit_to_int v = match v with `NONE -> 0 | `SAME_NATIVE -> 1
+let propagationlimit_to_int v =
+  match v with
+  | `NONE -> 0
+  | `SAME_NATIVE -> 1
 
-type propagationphase = [ `NONE | `CAPTURE | `BUBBLE | `TARGET ]
+type propagationphase = [
+  | `NONE
+  | `CAPTURE
+  | `BUBBLE
+  | `TARGET
+]
 
 let propagationphase_of_int n =
   match n with
@@ -1645,16 +2082,21 @@ let propagationphase_of_int n =
   | n -> failwith (Printf.sprintf "PropagationPhase: unknown int %d" n)
 
 let propagationphase_to_int v =
-  match v with `NONE -> 0 | `CAPTURE -> 1 | `BUBBLE -> 2 | `TARGET -> 3
+  match v with
+  | `NONE -> 0
+  | `CAPTURE -> 1
+  | `BUBBLE -> 2
+  | `TARGET -> 3
 
-type recentmanagererror =
-  [ `NOT_FOUND
+type recentmanagererror = [
+  | `NOT_FOUND
   | `INVALID_URI
   | `INVALID_ENCODING
   | `NOT_REGISTERED
   | `READ
   | `WRITE
-  | `UNKNOWN ]
+  | `UNKNOWN
+]
 
 let recentmanagererror_of_int n =
   match n with
@@ -1677,8 +2119,8 @@ let recentmanagererror_to_int v =
   | `WRITE -> 5
   | `UNKNOWN -> 6
 
-type responsetype =
-  [ `NONE
+type responsetype = [
+  | `NONE
   | `REJECT
   | `ACCEPT
   | `DELETE_EVENT
@@ -1688,7 +2130,8 @@ type responsetype =
   | `YES
   | `NO
   | `APPLY
-  | `HELP ]
+  | `HELP
+]
 
 let responsetype_of_int n =
   match n with
@@ -1719,8 +2162,8 @@ let responsetype_to_int v =
   | `APPLY -> -10
   | `HELP -> -11
 
-type revealertransitiontype =
-  [ `NONE
+type revealertransitiontype = [
+  | `NONE
   | `CROSSFADE
   | `SLIDE_RIGHT
   | `SLIDE_LEFT
@@ -1729,7 +2172,8 @@ type revealertransitiontype =
   | `SWING_RIGHT
   | `SWING_LEFT
   | `SWING_UP
-  | `SWING_DOWN ]
+  | `SWING_DOWN
+]
 
 let revealertransitiontype_of_int n =
   match n with
@@ -1758,13 +2202,14 @@ let revealertransitiontype_to_int v =
   | `SWING_UP -> 8
   | `SWING_DOWN -> 9
 
-type scrollstep =
-  [ `STEPS
+type scrollstep = [
+  | `STEPS
   | `PAGES
   | `ENDS
   | `HORIZONTAL_STEPS
   | `HORIZONTAL_PAGES
-  | `HORIZONTAL_ENDS ]
+  | `HORIZONTAL_ENDS
+]
 
 let scrollstep_of_int n =
   match n with
@@ -1785,8 +2230,8 @@ let scrollstep_to_int v =
   | `HORIZONTAL_PAGES -> 4
   | `HORIZONTAL_ENDS -> 5
 
-type scrolltype =
-  [ `NONE
+type scrolltype = [
+  | `NONE
   | `JUMP
   | `STEP_BACKWARD
   | `STEP_FORWARD
@@ -1801,7 +2246,8 @@ type scrolltype =
   | `PAGE_LEFT
   | `PAGE_RIGHT
   | `START
-  | `END ]
+  | `END
+]
 
 let scrolltype_of_int n =
   match n with
@@ -1842,7 +2288,10 @@ let scrolltype_to_int v =
   | `START -> 14
   | `END -> 15
 
-type scrollablepolicy = [ `MINIMUM | `NATURAL ]
+type scrollablepolicy = [
+  | `MINIMUM
+  | `NATURAL
+]
 
 let scrollablepolicy_of_int n =
   match n with
@@ -1850,9 +2299,17 @@ let scrollablepolicy_of_int n =
   | 1 -> `NATURAL
   | n -> failwith (Printf.sprintf "ScrollablePolicy: unknown int %d" n)
 
-let scrollablepolicy_to_int v = match v with `MINIMUM -> 0 | `NATURAL -> 1
+let scrollablepolicy_to_int v =
+  match v with
+  | `MINIMUM -> 0
+  | `NATURAL -> 1
 
-type selectionmode = [ `NONE | `SINGLE | `BROWSE | `MULTIPLE ]
+type selectionmode = [
+  | `NONE
+  | `SINGLE
+  | `BROWSE
+  | `MULTIPLE
+]
 
 let selectionmode_of_int n =
   match n with
@@ -1863,9 +2320,17 @@ let selectionmode_of_int n =
   | n -> failwith (Printf.sprintf "SelectionMode: unknown int %d" n)
 
 let selectionmode_to_int v =
-  match v with `NONE -> 0 | `SINGLE -> 1 | `BROWSE -> 2 | `MULTIPLE -> 3
+  match v with
+  | `NONE -> 0
+  | `SINGLE -> 1
+  | `BROWSE -> 2
+  | `MULTIPLE -> 3
 
-type sensitivitytype = [ `AUTO | `ON | `OFF ]
+type sensitivitytype = [
+  | `AUTO
+  | `ON
+  | `OFF
+]
 
 let sensitivitytype_of_int n =
   match n with
@@ -1874,9 +2339,17 @@ let sensitivitytype_of_int n =
   | 2 -> `OFF
   | n -> failwith (Printf.sprintf "SensitivityType: unknown int %d" n)
 
-let sensitivitytype_to_int v = match v with `AUTO -> 0 | `ON -> 1 | `OFF -> 2
+let sensitivitytype_to_int v =
+  match v with
+  | `AUTO -> 0
+  | `ON -> 1
+  | `OFF -> 2
 
-type shortcutscope = [ `LOCAL | `MANAGED | `GLOBAL ]
+type shortcutscope = [
+  | `LOCAL
+  | `MANAGED
+  | `GLOBAL
+]
 
 let shortcutscope_of_int n =
   match n with
@@ -1886,10 +2359,13 @@ let shortcutscope_of_int n =
   | n -> failwith (Printf.sprintf "ShortcutScope: unknown int %d" n)
 
 let shortcutscope_to_int v =
-  match v with `LOCAL -> 0 | `MANAGED -> 1 | `GLOBAL -> 2
+  match v with
+  | `LOCAL -> 0
+  | `MANAGED -> 1
+  | `GLOBAL -> 2
 
-type shortcuttype =
-  [ `ACCELERATOR
+type shortcuttype = [
+  | `ACCELERATOR
   | `GESTURE_PINCH
   | `GESTURE_STRETCH
   | `GESTURE_ROTATE_CLOCKWISE
@@ -1898,7 +2374,8 @@ type shortcuttype =
   | `GESTURE_TWO_FINGER_SWIPE_RIGHT
   | `GESTURE
   | `GESTURE_SWIPE_LEFT
-  | `GESTURE_SWIPE_RIGHT ]
+  | `GESTURE_SWIPE_RIGHT
+]
 
 let shortcuttype_of_int n =
   match n with
@@ -1927,7 +2404,12 @@ let shortcuttype_to_int v =
   | `GESTURE_SWIPE_LEFT -> 8
   | `GESTURE_SWIPE_RIGHT -> 9
 
-type sizegroupmode = [ `NONE | `HORIZONTAL | `VERTICAL | `BOTH ]
+type sizegroupmode = [
+  | `NONE
+  | `HORIZONTAL
+  | `VERTICAL
+  | `BOTH
+]
 
 let sizegroupmode_of_int n =
   match n with
@@ -1938,9 +2420,17 @@ let sizegroupmode_of_int n =
   | n -> failwith (Printf.sprintf "SizeGroupMode: unknown int %d" n)
 
 let sizegroupmode_to_int v =
-  match v with `NONE -> 0 | `HORIZONTAL -> 1 | `VERTICAL -> 2 | `BOTH -> 3
+  match v with
+  | `NONE -> 0
+  | `HORIZONTAL -> 1
+  | `VERTICAL -> 2
+  | `BOTH -> 3
 
-type sizerequestmode = [ `HEIGHT_FOR_WIDTH | `WIDTH_FOR_HEIGHT | `CONSTANT_SIZE ]
+type sizerequestmode = [
+  | `HEIGHT_FOR_WIDTH
+  | `WIDTH_FOR_HEIGHT
+  | `CONSTANT_SIZE
+]
 
 let sizerequestmode_of_int n =
   match n with
@@ -1955,7 +2445,10 @@ let sizerequestmode_to_int v =
   | `WIDTH_FOR_HEIGHT -> 1
   | `CONSTANT_SIZE -> 2
 
-type sorttype = [ `ASCENDING | `DESCENDING ]
+type sorttype = [
+  | `ASCENDING
+  | `DESCENDING
+]
 
 let sorttype_of_int n =
   match n with
@@ -1963,9 +2456,17 @@ let sorttype_of_int n =
   | 1 -> `DESCENDING
   | n -> failwith (Printf.sprintf "SortType: unknown int %d" n)
 
-let sorttype_to_int v = match v with `ASCENDING -> 0 | `DESCENDING -> 1
+let sorttype_to_int v =
+  match v with
+  | `ASCENDING -> 0
+  | `DESCENDING -> 1
 
-type sorterchange = [ `DIFFERENT | `INVERTED | `LESS_STRICT | `MORE_STRICT ]
+type sorterchange = [
+  | `DIFFERENT
+  | `INVERTED
+  | `LESS_STRICT
+  | `MORE_STRICT
+]
 
 let sorterchange_of_int n =
   match n with
@@ -1982,7 +2483,11 @@ let sorterchange_to_int v =
   | `LESS_STRICT -> 2
   | `MORE_STRICT -> 3
 
-type sorterorder = [ `PARTIAL | `NONE | `TOTAL ]
+type sorterorder = [
+  | `PARTIAL
+  | `NONE
+  | `TOTAL
+]
 
 let sorterorder_of_int n =
   match n with
@@ -1992,9 +2497,15 @@ let sorterorder_of_int n =
   | n -> failwith (Printf.sprintf "SorterOrder: unknown int %d" n)
 
 let sorterorder_to_int v =
-  match v with `PARTIAL -> 0 | `NONE -> 1 | `TOTAL -> 2
+  match v with
+  | `PARTIAL -> 0
+  | `NONE -> 1
+  | `TOTAL -> 2
 
-type spinbuttonupdatepolicy = [ `ALWAYS | `IF_VALID ]
+type spinbuttonupdatepolicy = [
+  | `ALWAYS
+  | `IF_VALID
+]
 
 let spinbuttonupdatepolicy_of_int n =
   match n with
@@ -2003,16 +2514,19 @@ let spinbuttonupdatepolicy_of_int n =
   | n -> failwith (Printf.sprintf "SpinButtonUpdatePolicy: unknown int %d" n)
 
 let spinbuttonupdatepolicy_to_int v =
-  match v with `ALWAYS -> 0 | `IF_VALID -> 1
+  match v with
+  | `ALWAYS -> 0
+  | `IF_VALID -> 1
 
-type spintype =
-  [ `STEP_FORWARD
+type spintype = [
+  | `STEP_FORWARD
   | `STEP_BACKWARD
   | `PAGE_FORWARD
   | `PAGE_BACKWARD
   | `HOME
   | `END
-  | `USER_DEFINED ]
+  | `USER_DEFINED
+]
 
 let spintype_of_int n =
   match n with
@@ -2035,8 +2549,8 @@ let spintype_to_int v =
   | `END -> 5
   | `USER_DEFINED -> 6
 
-type stacktransitiontype =
-  [ `NONE
+type stacktransitiontype = [
+  | `NONE
   | `CROSSFADE
   | `SLIDE_RIGHT
   | `SLIDE_LEFT
@@ -2058,7 +2572,8 @@ type stacktransitiontype =
   | `OVER_RIGHT_LEFT
   | `ROTATE_LEFT
   | `ROTATE_RIGHT
-  | `ROTATE_LEFT_RIGHT ]
+  | `ROTATE_LEFT_RIGHT
+]
 
 let stacktransitiontype_of_int n =
   match n with
@@ -2113,7 +2628,11 @@ let stacktransitiontype_to_int v =
   | `ROTATE_RIGHT -> 21
   | `ROTATE_LEFT_RIGHT -> 22
 
-type stringfiltermatchmode = [ `EXACT | `SUBSTRING | `PREFIX ]
+type stringfiltermatchmode = [
+  | `EXACT
+  | `SUBSTRING
+  | `PREFIX
+]
 
 let stringfiltermatchmode_of_int n =
   match n with
@@ -2123,9 +2642,17 @@ let stringfiltermatchmode_of_int n =
   | n -> failwith (Printf.sprintf "StringFilterMatchMode: unknown int %d" n)
 
 let stringfiltermatchmode_to_int v =
-  match v with `EXACT -> 0 | `SUBSTRING -> 1 | `PREFIX -> 2
+  match v with
+  | `EXACT -> 0
+  | `SUBSTRING -> 1
+  | `PREFIX -> 2
 
-type symboliccolor = [ `FOREGROUND | `ERROR | `WARNING | `SUCCESS ]
+type symboliccolor = [
+  | `FOREGROUND
+  | `ERROR
+  | `WARNING
+  | `SUCCESS
+]
 
 let symboliccolor_of_int n =
   match n with
@@ -2136,10 +2663,19 @@ let symboliccolor_of_int n =
   | n -> failwith (Printf.sprintf "SymbolicColor: unknown int %d" n)
 
 let symboliccolor_to_int v =
-  match v with `FOREGROUND -> 0 | `ERROR -> 1 | `WARNING -> 2 | `SUCCESS -> 3
+  match v with
+  | `FOREGROUND -> 0
+  | `ERROR -> 1
+  | `WARNING -> 2
+  | `SUCCESS -> 3
 
-type systemsetting =
-  [ `DPI | `FONT_NAME | `FONT_CONFIG | `DISPLAY | `ICON_THEME ]
+type systemsetting = [
+  | `DPI
+  | `FONT_NAME
+  | `FONT_CONFIG
+  | `DISPLAY
+  | `ICON_THEME
+]
 
 let systemsetting_of_int n =
   match n with
@@ -2158,7 +2694,11 @@ let systemsetting_to_int v =
   | `DISPLAY -> 3
   | `ICON_THEME -> 4
 
-type textdirection = [ `NONE | `LTR | `RTL ]
+type textdirection = [
+  | `NONE
+  | `LTR
+  | `RTL
+]
 
 let textdirection_of_int n =
   match n with
@@ -2167,9 +2707,16 @@ let textdirection_of_int n =
   | 2 -> `RTL
   | n -> failwith (Printf.sprintf "TextDirection: unknown int %d" n)
 
-let textdirection_to_int v = match v with `NONE -> 0 | `LTR -> 1 | `RTL -> 2
+let textdirection_to_int v =
+  match v with
+  | `NONE -> 0
+  | `LTR -> 1
+  | `RTL -> 2
 
-type textextendselection = [ `WORD | `LINE ]
+type textextendselection = [
+  | `WORD
+  | `LINE
+]
 
 let textextendselection_of_int n =
   match n with
@@ -2177,9 +2724,15 @@ let textextendselection_of_int n =
   | 1 -> `LINE
   | n -> failwith (Printf.sprintf "TextExtendSelection: unknown int %d" n)
 
-let textextendselection_to_int v = match v with `WORD -> 0 | `LINE -> 1
+let textextendselection_to_int v =
+  match v with
+  | `WORD -> 0
+  | `LINE -> 1
 
-type textviewlayer = [ `BELOW_TEXT | `ABOVE_TEXT ]
+type textviewlayer = [
+  | `BELOW_TEXT
+  | `ABOVE_TEXT
+]
 
 let textviewlayer_of_int n =
   match n with
@@ -2187,9 +2740,19 @@ let textviewlayer_of_int n =
   | 1 -> `ABOVE_TEXT
   | n -> failwith (Printf.sprintf "TextViewLayer: unknown int %d" n)
 
-let textviewlayer_to_int v = match v with `BELOW_TEXT -> 0 | `ABOVE_TEXT -> 1
+let textviewlayer_to_int v =
+  match v with
+  | `BELOW_TEXT -> 0
+  | `ABOVE_TEXT -> 1
 
-type textwindowtype = [ `WIDGET | `TEXT | `LEFT | `RIGHT | `TOP | `BOTTOM ]
+type textwindowtype = [
+  | `WIDGET
+  | `TEXT
+  | `LEFT
+  | `RIGHT
+  | `TOP
+  | `BOTTOM
+]
 
 let textwindowtype_of_int n =
   match n with
@@ -2210,7 +2773,11 @@ let textwindowtype_to_int v =
   | `TOP -> 5
   | `BOTTOM -> 6
 
-type treeviewcolumnsizing = [ `GROW_ONLY | `AUTOSIZE | `FIXED ]
+type treeviewcolumnsizing = [
+  | `GROW_ONLY
+  | `AUTOSIZE
+  | `FIXED
+]
 
 let treeviewcolumnsizing_of_int n =
   match n with
@@ -2220,10 +2787,17 @@ let treeviewcolumnsizing_of_int n =
   | n -> failwith (Printf.sprintf "TreeViewColumnSizing: unknown int %d" n)
 
 let treeviewcolumnsizing_to_int v =
-  match v with `GROW_ONLY -> 0 | `AUTOSIZE -> 1 | `FIXED -> 2
+  match v with
+  | `GROW_ONLY -> 0
+  | `AUTOSIZE -> 1
+  | `FIXED -> 2
 
-type treeviewdropposition =
-  [ `BEFORE | `AFTER | `INTO_OR_BEFORE | `INTO_OR_AFTER ]
+type treeviewdropposition = [
+  | `BEFORE
+  | `AFTER
+  | `INTO_OR_BEFORE
+  | `INTO_OR_AFTER
+]
 
 let treeviewdropposition_of_int n =
   match n with
@@ -2240,7 +2814,12 @@ let treeviewdropposition_to_int v =
   | `INTO_OR_BEFORE -> 2
   | `INTO_OR_AFTER -> 3
 
-type treeviewgridlines = [ `NONE | `HORIZONTAL | `VERTICAL | `BOTH ]
+type treeviewgridlines = [
+  | `NONE
+  | `HORIZONTAL
+  | `VERTICAL
+  | `BOTH
+]
 
 let treeviewgridlines_of_int n =
   match n with
@@ -2251,9 +2830,18 @@ let treeviewgridlines_of_int n =
   | n -> failwith (Printf.sprintf "TreeViewGridLines: unknown int %d" n)
 
 let treeviewgridlines_to_int v =
-  match v with `NONE -> 0 | `HORIZONTAL -> 1 | `VERTICAL -> 2 | `BOTH -> 3
+  match v with
+  | `NONE -> 0
+  | `HORIZONTAL -> 1
+  | `VERTICAL -> 2
+  | `BOTH -> 3
 
-type unit = [ `NONE | `POINTS | `INCH | `MM ]
+type unit = [
+  | `NONE
+  | `POINTS
+  | `INCH
+  | `MM
+]
 
 let unit_of_int n =
   match n with
@@ -2264,9 +2852,18 @@ let unit_of_int n =
   | n -> failwith (Printf.sprintf "Unit: unknown int %d" n)
 
 let unit_to_int v =
-  match v with `NONE -> 0 | `POINTS -> 1 | `INCH -> 2 | `MM -> 3
+  match v with
+  | `NONE -> 0
+  | `POINTS -> 1
+  | `INCH -> 2
+  | `MM -> 3
 
-type wrapmode = [ `NONE | `CHAR | `WORD | `WORD_CHAR ]
+type wrapmode = [
+  | `NONE
+  | `CHAR
+  | `WORD
+  | `WORD_CHAR
+]
 
 let wrapmode_of_int n =
   match n with
@@ -2277,9 +2874,19 @@ let wrapmode_of_int n =
   | n -> failwith (Printf.sprintf "WrapMode: unknown int %d" n)
 
 let wrapmode_to_int v =
-  match v with `NONE -> 0 | `CHAR -> 1 | `WORD -> 2 | `WORD_CHAR -> 3
+  match v with
+  | `NONE -> 0
+  | `CHAR -> 1
+  | `WORD -> 2
+  | `WORD_CHAR -> 3
 
-type applicationinhibitflags_flag = [ `LOGOUT | `SWITCH | `SUSPEND | `IDLE ]
+type applicationinhibitflags_flag = [
+  | `LOGOUT
+  | `SWITCH
+  | `SUSPEND
+  | `IDLE
+]
+
 type applicationinhibitflags = applicationinhibitflags_flag list
 
 let applicationinhibitflags_of_int flags =
@@ -2297,10 +2904,14 @@ let applicationinhibitflags_to_int flags =
       | `LOGOUT -> acc lor 1
       | `SWITCH -> acc lor 2
       | `SUSPEND -> acc lor 4
-      | `IDLE -> acc lor 8)
+      | `IDLE -> acc lor 8
+    )
     0 flags
 
-type builderclosureflags_flag = [ `SWAPPED ]
+type builderclosureflags_flag = [
+  | `SWAPPED
+]
+
 type builderclosureflags = builderclosureflags_flag list
 
 let builderclosureflags_of_int flags =
@@ -2310,17 +2921,21 @@ let builderclosureflags_of_int flags =
 
 let builderclosureflags_to_int flags =
   List.fold_left
-    (fun acc flag -> match flag with `SWAPPED -> acc lor 1)
+    (fun acc flag ->
+      match flag with
+      | `SWAPPED -> acc lor 1
+    )
     0 flags
 
-type cellrendererstate_flag =
-  [ `SELECTED
+type cellrendererstate_flag = [
+  | `SELECTED
   | `PRELIT
   | `INSENSITIVE
   | `SORTED
   | `FOCUSED
   | `EXPANDABLE
-  | `EXPANDED ]
+  | `EXPANDED
+]
 
 type cellrendererstate = cellrendererstate_flag list
 
@@ -2345,11 +2960,12 @@ let cellrendererstate_to_int flags =
       | `SORTED -> acc lor 8
       | `FOCUSED -> acc lor 16
       | `EXPANDABLE -> acc lor 32
-      | `EXPANDED -> acc lor 64)
+      | `EXPANDED -> acc lor 64
+    )
     0 flags
 
-type debugflags_flag =
-  [ `TEXT
+type debugflags_flag = [
+  | `TEXT
   | `TREE
   | `KEYBINDINGS
   | `MODULES
@@ -2367,7 +2983,8 @@ type debugflags_flag =
   | `BUILDER_OBJECTS
   | `A11Y
   | `ICONFALLBACK
-  | `INVERT_TEXT_DIR ]
+  | `INVERT_TEXT_DIR
+]
 
 type debugflags = debugflags_flag list
 
@@ -2416,10 +3033,16 @@ let debugflags_to_int flags =
       | `BUILDER_OBJECTS -> acc lor 65536
       | `A11Y -> acc lor 131072
       | `ICONFALLBACK -> acc lor 262144
-      | `INVERT_TEXT_DIR -> acc lor 524288)
+      | `INVERT_TEXT_DIR -> acc lor 524288
+    )
     0 flags
 
-type dialogflags_flag = [ `MODAL | `DESTROY_WITH_PARENT | `USE_HEADER_BAR ]
+type dialogflags_flag = [
+  | `MODAL
+  | `DESTROY_WITH_PARENT
+  | `USE_HEADER_BAR
+]
+
 type dialogflags = dialogflags_flag list
 
 let dialogflags_of_int flags =
@@ -2435,11 +3058,18 @@ let dialogflags_to_int flags =
       match flag with
       | `MODAL -> acc lor 1
       | `DESTROY_WITH_PARENT -> acc lor 2
-      | `USE_HEADER_BAR -> acc lor 4)
+      | `USE_HEADER_BAR -> acc lor 4
+    )
     0 flags
 
-type eventcontrollerscrollflags_flag =
-  [ `NONE | `VERTICAL | `HORIZONTAL | `DISCRETE | `KINETIC | `BOTH_AXES ]
+type eventcontrollerscrollflags_flag = [
+  | `NONE
+  | `VERTICAL
+  | `HORIZONTAL
+  | `DISCRETE
+  | `KINETIC
+  | `BOTH_AXES
+]
 
 type eventcontrollerscrollflags = eventcontrollerscrollflags_flag list
 
@@ -2462,11 +3092,17 @@ let eventcontrollerscrollflags_to_int flags =
       | `HORIZONTAL -> acc lor 2
       | `DISCRETE -> acc lor 4
       | `KINETIC -> acc lor 8
-      | `BOTH_AXES -> acc lor 3)
+      | `BOTH_AXES -> acc lor 3
+    )
     0 flags
 
-type fontchooserlevel_flag =
-  [ `FAMILY | `STYLE | `SIZE | `VARIATIONS | `FEATURES ]
+type fontchooserlevel_flag = [
+  | `FAMILY
+  | `STYLE
+  | `SIZE
+  | `VARIATIONS
+  | `FEATURES
+]
 
 type fontchooserlevel = fontchooserlevel_flag list
 
@@ -2487,10 +3123,16 @@ let fontchooserlevel_to_int flags =
       | `STYLE -> acc lor 1
       | `SIZE -> acc lor 2
       | `VARIATIONS -> acc lor 4
-      | `FEATURES -> acc lor 8)
+      | `FEATURES -> acc lor 8
+    )
     0 flags
 
-type iconlookupflags_flag = [ `FORCE_REGULAR | `FORCE_SYMBOLIC | `PRELOAD ]
+type iconlookupflags_flag = [
+  | `FORCE_REGULAR
+  | `FORCE_SYMBOLIC
+  | `PRELOAD
+]
+
 type iconlookupflags = iconlookupflags_flag list
 
 let iconlookupflags_of_int flags =
@@ -2506,11 +3148,12 @@ let iconlookupflags_to_int flags =
       match flag with
       | `FORCE_REGULAR -> acc lor 1
       | `FORCE_SYMBOLIC -> acc lor 2
-      | `PRELOAD -> acc lor 4)
+      | `PRELOAD -> acc lor 4
+    )
     0 flags
 
-type inputhints_flag =
-  [ `NONE
+type inputhints_flag = [
+  | `NONE
   | `SPELLCHECK
   | `NO_SPELLCHECK
   | `WORD_COMPLETION
@@ -2522,7 +3165,8 @@ type inputhints_flag =
   | `VERTICAL_WRITING
   | `EMOJI
   | `NO_EMOJI
-  | `PRIVATE ]
+  | `PRIVATE
+]
 
 type inputhints = inputhints_flag list
 
@@ -2559,10 +3203,16 @@ let inputhints_to_int flags =
       | `VERTICAL_WRITING -> acc lor 256
       | `EMOJI -> acc lor 512
       | `NO_EMOJI -> acc lor 1024
-      | `PRIVATE -> acc lor 2048)
+      | `PRIVATE -> acc lor 2048
+    )
     0 flags
 
-type listscrollflags_flag = [ `NONE | `FOCUS | `SELECT ]
+type listscrollflags_flag = [
+  | `NONE
+  | `FOCUS
+  | `SELECT
+]
+
 type listscrollflags = listscrollflags_flag list
 
 let listscrollflags_of_int flags =
@@ -2578,10 +3228,16 @@ let listscrollflags_to_int flags =
       match flag with
       | `NONE -> acc lor 0
       | `FOCUS -> acc lor 1
-      | `SELECT -> acc lor 2)
+      | `SELECT -> acc lor 2
+    )
     0 flags
 
-type pickflags_flag = [ `DEFAULT | `INSENSITIVE | `NON_TARGETABLE ]
+type pickflags_flag = [
+  | `DEFAULT
+  | `INSENSITIVE
+  | `NON_TARGETABLE
+]
+
 type pickflags = pickflags_flag list
 
 let pickflags_of_int flags =
@@ -2597,10 +3253,15 @@ let pickflags_to_int flags =
       match flag with
       | `DEFAULT -> acc lor 0
       | `INSENSITIVE -> acc lor 1
-      | `NON_TARGETABLE -> acc lor 2)
+      | `NON_TARGETABLE -> acc lor 2
+    )
     0 flags
 
-type popovermenuflags_flag = [ `SLIDING | `NESTED ]
+type popovermenuflags_flag = [
+  | `SLIDING
+  | `NESTED
+]
+
 type popovermenuflags = popovermenuflags_flag list
 
 let popovermenuflags_of_int flags =
@@ -2612,10 +3273,16 @@ let popovermenuflags_of_int flags =
 let popovermenuflags_to_int flags =
   List.fold_left
     (fun acc flag ->
-      match flag with `SLIDING -> acc lor 0 | `NESTED -> acc lor 1)
+      match flag with
+      | `SLIDING -> acc lor 0
+      | `NESTED -> acc lor 1
+    )
     0 flags
 
-type shortcutactionflags_flag = [ `EXCLUSIVE ]
+type shortcutactionflags_flag = [
+  | `EXCLUSIVE
+]
+
 type shortcutactionflags = shortcutactionflags_flag list
 
 let shortcutactionflags_of_int flags =
@@ -2625,11 +3292,14 @@ let shortcutactionflags_of_int flags =
 
 let shortcutactionflags_to_int flags =
   List.fold_left
-    (fun acc flag -> match flag with `EXCLUSIVE -> acc lor 1)
+    (fun acc flag ->
+      match flag with
+      | `EXCLUSIVE -> acc lor 1
+    )
     0 flags
 
-type stateflags_flag =
-  [ `NORMAL
+type stateflags_flag = [
+  | `NORMAL
   | `ACTIVE
   | `PRELIGHT
   | `SELECTED
@@ -2644,7 +3314,8 @@ type stateflags_flag =
   | `CHECKED
   | `DROP_ACTIVE
   | `FOCUS_VISIBLE
-  | `FOCUS_WITHIN ]
+  | `FOCUS_WITHIN
+]
 
 type stateflags = stateflags_flag list
 
@@ -2687,11 +3358,16 @@ let stateflags_to_int flags =
       | `CHECKED -> acc lor 2048
       | `DROP_ACTIVE -> acc lor 4096
       | `FOCUS_VISIBLE -> acc lor 8192
-      | `FOCUS_WITHIN -> acc lor 16384)
+      | `FOCUS_WITHIN -> acc lor 16384
+    )
     0 flags
 
-type stylecontextprintflags_flag =
-  [ `NONE | `RECURSE | `SHOW_STYLE | `SHOW_CHANGE ]
+type stylecontextprintflags_flag = [
+  | `NONE
+  | `RECURSE
+  | `SHOW_STYLE
+  | `SHOW_CHANGE
+]
 
 type stylecontextprintflags = stylecontextprintflags_flag list
 
@@ -2710,10 +3386,16 @@ let stylecontextprintflags_to_int flags =
       | `NONE -> acc lor 0
       | `RECURSE -> acc lor 1
       | `SHOW_STYLE -> acc lor 2
-      | `SHOW_CHANGE -> acc lor 4)
+      | `SHOW_CHANGE -> acc lor 4
+    )
     0 flags
 
-type textsearchflags_flag = [ `VISIBLE_ONLY | `TEXT_ONLY | `CASE_INSENSITIVE ]
+type textsearchflags_flag = [
+  | `VISIBLE_ONLY
+  | `TEXT_ONLY
+  | `CASE_INSENSITIVE
+]
+
 type textsearchflags = textsearchflags_flag list
 
 let textsearchflags_of_int flags =
@@ -2729,10 +3411,15 @@ let textsearchflags_to_int flags =
       match flag with
       | `VISIBLE_ONLY -> acc lor 1
       | `TEXT_ONLY -> acc lor 2
-      | `CASE_INSENSITIVE -> acc lor 4)
+      | `CASE_INSENSITIVE -> acc lor 4
+    )
     0 flags
 
-type treemodelflags_flag = [ `ITERS_PERSIST | `LIST_ONLY ]
+type treemodelflags_flag = [
+  | `ITERS_PERSIST
+  | `LIST_ONLY
+]
+
 type treemodelflags = treemodelflags_flag list
 
 let treemodelflags_of_int flags =
@@ -2744,5 +3431,9 @@ let treemodelflags_of_int flags =
 let treemodelflags_to_int flags =
   List.fold_left
     (fun acc flag ->
-      match flag with `ITERS_PERSIST -> acc lor 1 | `LIST_ONLY -> acc lor 2)
+      match flag with
+      | `ITERS_PERSIST -> acc lor 1
+      | `LIST_ONLY -> acc lor 2
+    )
     0 flags
+

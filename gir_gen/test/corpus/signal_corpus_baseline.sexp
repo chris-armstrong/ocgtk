@@ -1,4 +1,4 @@
-(((namespace Gtk) (total_signals 346) (supported 283) (unsupported 63)
+(((namespace Gtk) (total_signals 346) (supported 284) (unsupported 62)
   (by_reason
    (("non-In direction parameter 'allocation'" 1)
     ("non-In direction parameter 'new_value'" 1)
@@ -35,7 +35,6 @@
      3)
     ("unsupported parameter type for 'state': unknown type Gdk.ModifierType"
      3)
-    ("unsupported parameter type for 'value': unknown type GObject.Value" 1)
     ("unsupported return type: primitive type GObject.Object not in marshaller table"
      1)
     ("unsupported return type: unknown type Gdk.ContentProvider" 1)

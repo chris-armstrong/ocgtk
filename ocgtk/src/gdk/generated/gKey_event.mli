@@ -1,13 +1,14 @@
 class type key_event_t = object
-  inherit GApp_launch_context_cycle_de440b34.event_t
-  method get_consumed_modifiers : unit -> Gdk_enums.modifiertype
-  method get_keycode : unit -> int
-  method get_keyval : unit -> int
-  method get_layout : unit -> int
-  method get_level : unit -> int
-  method is_modifier : unit -> bool
-  method matches : int -> Gdk_enums.modifiertype -> Gdk_enums.keymatch
-  method as_key_event : Key_event.t
+    inherit GApp_launch_context_cycle_de440b34.event_t
+    method get_consumed_modifiers : unit -> Gdk_enums.modifiertype
+    method get_keycode : unit -> int
+    method get_keyval : unit -> int
+    method get_layout : unit -> int
+    method get_level : unit -> int
+    method is_modifier : unit -> bool
+    method matches : int -> Gdk_enums.modifiertype -> Gdk_enums.keymatch
+    method as_key_event : Key_event.t
 end
 
 class key_event : Key_event.t -> key_event_t
+

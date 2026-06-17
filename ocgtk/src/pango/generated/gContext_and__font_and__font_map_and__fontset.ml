@@ -56,7 +56,7 @@ and font_map_t = object
   method reload_font :
     font_t -> float -> context_t option -> string option -> font_t
 
-  method item_type : int
+  method item_type : Gobject.Type.t
   method n_items : int
   method as_font_map : Context_and__font_and__font_map_and__fontset.Font_map.t
 end

@@ -1,55 +1,51 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MediaStream: MediaStream *)
 
-type t = [ `media_stream | `object_ ] Gobject.obj
+type t = [`media_stream | `object_] Gobject.obj
 
 (* Methods *)
+(** Media stream implementations should regularly call this
+function to update the timestamp reported by the stream.
 
+It is up to implementations to call this at the frequency
+they deem appropriate.
+
+The media stream must be prepared when this function is called. *)
 external update : t -> int64 -> unit = "ml_gtk_media_stream_update"
-(** Media stream implementations should regularly call this function to update
-    the timestamp reported by the stream.
 
-    It is up to implementations to call this at the frequency they deem
-    appropriate.
-
-    The media stream must be prepared when this function is called. *)
-
-external unrealize : t -> Ocgtk_gdk.Gdk.Wrappers.Surface.t -> unit
-  = "ml_gtk_media_stream_unrealize"
 (** Undoes a previous call to gtk_media_stream_realize().
 
 This causes the stream to release all resources it had
 allocated from @surface. *)
+external unrealize : t -> Ocgtk_gdk.Gdk.Wrappers.Surface.t -> unit = "ml_gtk_media_stream_unrealize"
 
-external stream_unprepared : t -> unit = "ml_gtk_media_stream_stream_unprepared"
 (** Resets a given media stream implementation.
 
-    [method@Gtk.MediaStream.stream_prepared] can then be called again.
+[method@Gtk.MediaStream.stream_prepared] can then be called again.
 
-    This function will also reset any error state the stream was in. *)
+This function will also reset any error state the stream was in. *)
+external stream_unprepared : t -> unit = "ml_gtk_media_stream_stream_unprepared"
 
-external stream_prepared : t -> bool -> bool -> bool -> int64 -> unit
-  = "ml_gtk_media_stream_stream_prepared"
-(** Called by `GtkMediaStream` implementations to advertise the stream being
-    ready to play and providing details about the stream.
+(** Called by `GtkMediaStream` implementations to advertise the stream
+being ready to play and providing details about the stream.
 
-    Note that the arguments are hints. If the stream implementation cannot
-    determine the correct values, it is better to err on the side of caution and
-    return %TRUE. User interfaces will use those values to determine what
-    controls to show.
+Note that the arguments are hints. If the stream implementation
+cannot determine the correct values, it is better to err on the
+side of caution and return %TRUE. User interfaces will use those
+values to determine what controls to show.
 
-    This function may not be called again until the stream has been reset via
-    [method@Gtk.MediaStream.stream_unprepared]. *)
+This function may not be called again until the stream has been
+reset via [method@Gtk.MediaStream.stream_unprepared]. *)
+external stream_prepared : t -> bool -> bool -> bool -> int64 -> unit = "ml_gtk_media_stream_stream_prepared"
 
-external stream_ended : t -> unit = "ml_gtk_media_stream_stream_ended"
 (** Pauses the media stream and marks it as ended.
 
-    This is a hint only, calls to [method@Gtk.MediaStream.play] may still
-    happen.
+This is a hint only, calls to [method@Gtk.MediaStream.play]
+may still happen.
 
-    The media stream must be prepared when this function is called. *)
+The media stream must be prepared when this function is called. *)
+external stream_ended : t -> unit = "ml_gtk_media_stream_stream_ended"
 
-external set_volume : t -> float -> unit = "ml_gtk_media_stream_set_volume"
 (** Sets the volume of the audio stream.
 
 This function call will work even if the stream is muted.
@@ -61,47 +57,49 @@ be clamped to the nearest value.
 If the stream has no audio or is muted, calling this function
 will still work but it will not have an immediate audible effect.
 When the stream is unmuted, the new volume setting will take effect. *)
+external set_volume : t -> float -> unit = "ml_gtk_media_stream_set_volume"
 
-external set_playing : t -> bool -> unit = "ml_gtk_media_stream_set_playing"
 (** Starts or pauses playback of the stream. *)
+external set_playing : t -> bool -> unit = "ml_gtk_media_stream_set_playing"
 
-external set_muted : t -> bool -> unit = "ml_gtk_media_stream_set_muted"
 (** Sets whether the audio stream should be muted.
 
-    Muting a stream will cause no audio to be played, but it does not modify the
-    volume. This means that muting and then unmuting the stream will restore the
-    volume settings.
+Muting a stream will cause no audio to be played, but it
+does not modify the volume. This means that muting and
+then unmuting the stream will restore the volume settings.
 
-    If the stream has no audio, calling this function will still work but it
-    will not have an audible effect. *)
+If the stream has no audio, calling this function will
+still work but it will not have an audible effect. *)
+external set_muted : t -> bool -> unit = "ml_gtk_media_stream_set_muted"
 
-external set_loop : t -> bool -> unit = "ml_gtk_media_stream_set_loop"
 (** Sets whether the stream should loop.
 
-    In this case, it will attempt to restart playback from the beginning instead
-    of stopping at the end.
+In this case, it will attempt to restart playback
+from the beginning instead of stopping at the end.
 
-    Not all streams may support looping, in particular non-seekable streams.
-    Those streams will ignore the loop setting and just end. *)
+Not all streams may support looping, in particular
+non-seekable streams. Those streams will ignore the
+loop setting and just end. *)
+external set_loop : t -> bool -> unit = "ml_gtk_media_stream_set_loop"
 
-external seek_success : t -> unit = "ml_gtk_media_stream_seek_success"
 (** Ends a seek operation started via GtkMediaStream.seek() successfully.
 
-    This function will unset the GtkMediaStream:ended property if it was set.
+This function will unset the GtkMediaStream:ended property
+if it was set.
 
-    See [method@Gtk.MediaStream.seek_failed] for the other way of ending a seek.
-*)
+See [method@Gtk.MediaStream.seek_failed] for the other way of
+ending a seek. *)
+external seek_success : t -> unit = "ml_gtk_media_stream_seek_success"
 
-external seek_failed : t -> unit = "ml_gtk_media_stream_seek_failed"
 (** Ends a seek operation started via GtkMediaStream.seek() as a failure.
 
-    This will not cause an error on the stream and will assume that playback
-    continues as if no seek had happened.
+This will not cause an error on the stream and will assume that
+playback continues as if no seek had happened.
 
-    See [method@Gtk.MediaStream.seek_success] for the other way of ending a
-    seek. *)
+See [method@Gtk.MediaStream.seek_success] for the other way of
+ending a seek. *)
+external seek_failed : t -> unit = "ml_gtk_media_stream_seek_failed"
 
-external seek : t -> int64 -> unit = "ml_gtk_media_stream_seek"
 (** Start a seek operation on @self to @timestamp.
 
 If @timestamp is out of range, it will be clamped.
@@ -113,9 +111,8 @@ property will be set.
 When calling gtk_media_stream_seek() during an
 ongoing seek operation, the new seek will override
 any pending seek. *)
+external seek : t -> int64 -> unit = "ml_gtk_media_stream_seek"
 
-external realize : t -> Ocgtk_gdk.Gdk.Wrappers.Surface.t -> unit
-  = "ml_gtk_media_stream_realize"
 (** Called by users to attach the media stream to a `GdkSurface` they manage.
 
 The stream can then access the resources of @surface for its
@@ -132,81 +129,83 @@ calls must be followed by its own call to
 [method@Gtk.MediaStream.unrealize].
 
 It is not required to call this function to make a media stream work. *)
+external realize : t -> Ocgtk_gdk.Gdk.Wrappers.Surface.t -> unit = "ml_gtk_media_stream_realize"
 
-external play : t -> unit = "ml_gtk_media_stream_play"
 (** Starts playing the stream.
 
-    If the stream is in error or already playing, do nothing. *)
+If the stream is in error or already playing, do nothing. *)
+external play : t -> unit = "ml_gtk_media_stream_play"
 
-external pause : t -> unit = "ml_gtk_media_stream_pause"
 (** Pauses playback of the stream.
 
-    If the stream is not playing, do nothing. *)
+If the stream is not playing, do nothing. *)
+external pause : t -> unit = "ml_gtk_media_stream_pause"
 
-external is_seeking : t -> bool = "ml_gtk_media_stream_is_seeking"
 (** Checks if there is currently a seek operation going on. *)
+external is_seeking : t -> bool = "ml_gtk_media_stream_is_seeking"
 
-external is_seekable : t -> bool = "ml_gtk_media_stream_is_seekable"
 (** Checks if a stream may be seekable.
 
-    This is meant to be a hint. Streams may not allow seeking even if this
-    function returns %TRUE. However, if this function returns %FALSE, streams
-    are guaranteed to not be seekable and user interfaces may hide controls that
-    allow seeking.
+This is meant to be a hint. Streams may not allow seeking even if
+this function returns %TRUE. However, if this function returns
+%FALSE, streams are guaranteed to not be seekable and user interfaces
+may hide controls that allow seeking.
 
-    It is allowed to call [method@Gtk.MediaStream.seek] on a non-seekable
-    stream, though it will not do anything. *)
+It is allowed to call [method@Gtk.MediaStream.seek] on a non-seekable
+stream, though it will not do anything. *)
+external is_seekable : t -> bool = "ml_gtk_media_stream_is_seekable"
 
-external is_prepared : t -> bool = "ml_gtk_media_stream_is_prepared"
 (** Returns whether the stream has finished initializing.
 
-    At this point the existence of audio and video is known. *)
+At this point the existence of audio and video is known. *)
+external is_prepared : t -> bool = "ml_gtk_media_stream_is_prepared"
 
-external has_video : t -> bool = "ml_gtk_media_stream_has_video"
 (** Returns whether the stream has video. *)
+external has_video : t -> bool = "ml_gtk_media_stream_has_video"
 
-external has_audio : t -> bool = "ml_gtk_media_stream_has_audio"
 (** Returns whether the stream has audio. *)
+external has_audio : t -> bool = "ml_gtk_media_stream_has_audio"
 
-external get_volume : t -> float = "ml_gtk_media_stream_get_volume"
 (** Returns the volume of the audio for the stream.
 
-    See [method@Gtk.MediaStream.set_volume] for details. *)
+See [method@Gtk.MediaStream.set_volume] for details. *)
+external get_volume : t -> float = "ml_gtk_media_stream_get_volume"
 
-external get_timestamp : t -> int64 = "ml_gtk_media_stream_get_timestamp"
 (** Returns the current presentation timestamp in microseconds. *)
+external get_timestamp : t -> int64 = "ml_gtk_media_stream_get_timestamp"
 
-external get_playing : t -> bool = "ml_gtk_media_stream_get_playing"
 (** Return whether the stream is currently playing. *)
+external get_playing : t -> bool = "ml_gtk_media_stream_get_playing"
 
-external get_muted : t -> bool = "ml_gtk_media_stream_get_muted"
 (** Returns whether the audio for the stream is muted.
 
-    See [method@Gtk.MediaStream.set_muted] for details. *)
+See [method@Gtk.MediaStream.set_muted] for details. *)
+external get_muted : t -> bool = "ml_gtk_media_stream_get_muted"
 
-external get_loop : t -> bool = "ml_gtk_media_stream_get_loop"
 (** Returns whether the stream is set to loop.
 
-    See [method@Gtk.MediaStream.set_loop] for details. *)
+See [method@Gtk.MediaStream.set_loop] for details. *)
+external get_loop : t -> bool = "ml_gtk_media_stream_get_loop"
 
-external get_ended : t -> bool = "ml_gtk_media_stream_get_ended"
 (** Returns whether the streams playback is finished. *)
+external get_ended : t -> bool = "ml_gtk_media_stream_get_ended"
 
-external get_duration : t -> int64 = "ml_gtk_media_stream_get_duration"
 (** Gets the duration of the stream.
 
-    If the duration is not known, 0 will be returned. *)
+If the duration is not known, 0 will be returned. *)
+external get_duration : t -> int64 = "ml_gtk_media_stream_get_duration"
 
 (* Properties *)
 
-external get_prepared : t -> bool = "ml_gtk_media_stream_get_prepared"
 (** Get property: prepared *)
+external get_prepared : t -> bool = "ml_gtk_media_stream_get_prepared"
 
-external set_prepared : t -> bool -> unit = "ml_gtk_media_stream_set_prepared"
 (** Set property: prepared *)
+external set_prepared : t -> bool -> unit = "ml_gtk_media_stream_set_prepared"
 
-external get_seekable : t -> bool = "ml_gtk_media_stream_get_seekable"
 (** Get property: seekable *)
+external get_seekable : t -> bool = "ml_gtk_media_stream_get_seekable"
 
-external get_seeking : t -> bool = "ml_gtk_media_stream_get_seeking"
 (** Get property: seeking *)
+external get_seeking : t -> bool = "ml_gtk_media_stream_get_seeking"
+

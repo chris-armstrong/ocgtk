@@ -287,6 +287,12 @@ value Val_GError(GError *error);
 
 CAMLprim GValue *GValue_val(value val);
 
+/* Wrap a borrowed const GValue* into an owned Gobject.Value.t OCaml value.
+   Copies the GValue contents via g_value_copy so the caller (GTK) retains
+   ownership of the original.  The returned block's finalizer calls
+   g_value_unset.  src must not be NULL (caller must check). */
+extern value Val_GValue_copy(const GValue *src);
+
 /* ==================================================================== */
 /* GVariant                                                             */
 /* ==================================================================== */

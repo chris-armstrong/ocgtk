@@ -24,6 +24,14 @@ gdk_content_deserializer_return_success(GdkContentDeserializer_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gdk_content_deserializer_get_value(value self)
+{
+CAMLparam1(self);
+
+GValue* result = gdk_content_deserializer_get_value(GdkContentDeserializer_val(self));
+CAMLreturn(Val_GValue_copy(result));
+}
+
 CAMLexport CAMLprim value ml_gdk_content_deserializer_get_priority(value self)
 {
 CAMLparam1(self);

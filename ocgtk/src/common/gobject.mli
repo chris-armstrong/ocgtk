@@ -18,8 +18,9 @@
 type -'a obj
 (** Type for GObject instances. The type parameter provides type safety. *)
 
-type g_type = int
-(** GType identifier *)
+type g_type
+(** GType identifier — opaque; use [Type.equal] to compare, [Type.to_int] for
+    formatting *)
 
 type g_value
 (** GValue container for generic values *)
@@ -95,6 +96,12 @@ val get_ref_count : 'a obj -> int
 module Type : sig
   type t = g_type
 
+  val equal : t -> t -> bool
+  (** Test two GTypes for identity *)
+
+  val to_int : t -> int
+  (** Expose the underlying integer (for logging/debugging only) *)
+
   val name : t -> string
   (** Get type name *)
 
@@ -112,6 +119,9 @@ module Type : sig
 
   val of_fundamental : fundamental_type -> t
   (** Get GType for fundamental type *)
+
+  val invalid : t
+  (** Invalid *)
 end
 
 (** {2 GValue Operations} *)

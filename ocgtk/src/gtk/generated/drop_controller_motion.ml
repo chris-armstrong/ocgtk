@@ -1,42 +1,32 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DropControllerMotion: DropControllerMotion *)
 
-type t = [ `drop_controller_motion | `event_controller | `object_ ] Gobject.obj
+type t = [`drop_controller_motion | `event_controller | `object_] Gobject.obj
 
-external new_ : unit -> t = "ml_gtk_drop_controller_motion_new"
 (** Create a new DropControllerMotion *)
+external new_ : unit -> t = "ml_gtk_drop_controller_motion_new"
 
 (* Methods *)
-
-external is_pointer : t -> bool = "ml_gtk_drop_controller_motion_is_pointer"
 (** Returns if a Drag-and-Drop operation is within the widget
 @self, not one of its children. *)
+external is_pointer : t -> bool = "ml_gtk_drop_controller_motion_is_pointer"
 
-external get_drop : t -> Ocgtk_gdk.Gdk.Wrappers.Drop.t option
-  = "ml_gtk_drop_controller_motion_get_drop"
 (** Returns the `GdkDrop` of a current Drag-and-Drop operation
 over the widget of @self. *)
+external get_drop : t -> Ocgtk_gdk.Gdk.Wrappers.Drop.t option = "ml_gtk_drop_controller_motion_get_drop"
 
-external contains_pointer : t -> bool
-  = "ml_gtk_drop_controller_motion_contains_pointer"
 (** Returns if a Drag-and-Drop operation is within the widget
 @self or one of its children. *)
+external contains_pointer : t -> bool = "ml_gtk_drop_controller_motion_contains_pointer"
 
 (* Properties *)
 
 let on_enter ?after obj ~callback =
-  let closure =
-    Gobject.Closure.create (fun argv ->
-        let x =
-          let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_double v
-        in
-        let y =
-          let v = Gobject.Closure.nth argv ~pos:2 in
-          Gobject.Value.get_double v
-        in
-        callback ~x ~y)
-  in
+  let closure = Gobject.Closure.create (fun argv ->
+    let x = (let v = (Gobject.Closure.nth argv ~pos:1) in Gobject.Value.get_double v) in
+    let y = (let v = (Gobject.Closure.nth argv ~pos:2) in Gobject.Value.get_double v) in
+    callback ~x ~y)
+ in
   Gobject.Signal.connect obj ~name:"enter" ~callback:closure
     ~after:(Option.value after ~default:false)
 
@@ -45,17 +35,11 @@ let on_leave ?after obj ~callback =
     ~after:(Option.value after ~default:false)
 
 let on_motion ?after obj ~callback =
-  let closure =
-    Gobject.Closure.create (fun argv ->
-        let x =
-          let v = Gobject.Closure.nth argv ~pos:1 in
-          Gobject.Value.get_double v
-        in
-        let y =
-          let v = Gobject.Closure.nth argv ~pos:2 in
-          Gobject.Value.get_double v
-        in
-        callback ~x ~y)
-  in
+  let closure = Gobject.Closure.create (fun argv ->
+    let x = (let v = (Gobject.Closure.nth argv ~pos:1) in Gobject.Value.get_double v) in
+    let y = (let v = (Gobject.Closure.nth argv ~pos:2) in Gobject.Value.get_double v) in
+    callback ~x ~y)
+ in
   Gobject.Signal.connect obj ~name:"motion" ~callback:closure
     ~after:(Option.value after ~default:false)
+

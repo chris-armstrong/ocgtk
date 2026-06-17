@@ -3,6 +3,5 @@
 
 class type draw_context_t = GApp_launch_context_cycle_de440b34.draw_context_t
 
-class draw_context :
-  App_launch_context_cycle_de440b34.Draw_context.t ->
-  draw_context_t
+class draw_context : App_launch_context_cycle_de440b34.Draw_context.t -> draw_context_t
+

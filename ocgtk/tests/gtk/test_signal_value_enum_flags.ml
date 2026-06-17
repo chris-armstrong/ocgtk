@@ -37,13 +37,13 @@ external gtk_orientation_get_type : unit -> Gobject.g_type
     [g_type_from_name] only works after a type has been registered via its
     [_get_type()] function. The wrapper in
     [test_signal_value_enum_flags_stubs.c] converts the raw C [GType] (gulong)
-    to an OCaml integer via [Val_long], matching [Gobject.g_type = int]. *)
+    via [Val_long]. *)
 
 external gdk_rectangle_get_type : unit -> Gobject.g_type
   = "ml_gdk_rectangle_get_type"
 (** Direct binding to [gdk_rectangle_get_type] via a thin C stub in
     [test_signal_value_enum_flags_stubs.c]. Converts the raw C [GType] (gulong)
-    to an OCaml integer via [Val_long], matching [Gobject.g_type = int]. *)
+    via [Val_long]. *)
 
 external gdk_rectangle_create : int -> int -> int -> int -> Rectangle.t
   = "ml_gdk_rectangle_create"

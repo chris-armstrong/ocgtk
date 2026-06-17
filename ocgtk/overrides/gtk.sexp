@@ -39,4 +39,15 @@
   ;; gtk_tree_model_filter_get_virtual_root not present in GTK 4.0 GIR —
   ;; this entry will produce a warning but is kept for documentation
   ;; (function gtk_tree_model_filter_get_virtual_root (ignore))
+
+  ;; The *_value variants of these accessible methods take parallel arrays of
+  ;; enum values and GValues. The C stub generator does not yet support arrays
+  ;; of enum values (the macro expansion produces invalid C), so skip them.
+  ;; The non-_value variants (update_state, update_relation, update_property)
+  ;; are variadic and already skipped via the variadic filter.
+  (interface Accessible
+    (method update_state_value (ignore))
+    (method update_relation_value (ignore))
+    (method update_property_value (ignore))
+  )
 )

@@ -1,21 +1,20 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* StackSidebar: StackSidebar *)
 
-type t =
-  [ `stack_sidebar | `widget | `initially_unowned | `object_ ] Gobject.obj
+type t = [`stack_sidebar | `widget | `initially_unowned | `object_] Gobject.obj
 
-external new_ : unit -> t = "ml_gtk_stack_sidebar_new"
 (** Create a new StackSidebar *)
+external new_ : unit -> t = "ml_gtk_stack_sidebar_new"
 
 (* Methods *)
-
-external set_stack : t -> Stack.t -> unit = "ml_gtk_stack_sidebar_set_stack"
 (** Set the `GtkStack` associated with this `GtkStackSidebar`.
 
-    The sidebar widget will automatically update according to the order and
-    items within the given `GtkStack`. *)
+The sidebar widget will automatically update according to
+the order and items within the given `GtkStack`. *)
+external set_stack : t -> Stack.t -> unit = "ml_gtk_stack_sidebar_set_stack"
 
-external get_stack : t -> Stack.t option = "ml_gtk_stack_sidebar_get_stack"
 (** Retrieves the stack. *)
+external get_stack : t -> Stack.t option = "ml_gtk_stack_sidebar_get_stack"
 
 (* Properties *)
+

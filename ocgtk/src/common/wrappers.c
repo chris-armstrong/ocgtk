@@ -306,6 +306,11 @@ ocgtk_kind ocgtk_classify(value v)
     return OCGTK_KIND_OPAQUE_BLOCK;
 }
 
+/* GError field accessors */
+CAMLprim value ml_gerror_message(value v) { return Field(v, 2); }
+CAMLprim value ml_gerror_code(value v)    { return Field(v, 1); }
+CAMLprim value ml_gerror_domain(value v)  { return Field(v, 0); }
+
 /* Convert GError to OCaml GError.t record and free the GError */
 value Val_GError(GError *error) {
     CAMLparam0();

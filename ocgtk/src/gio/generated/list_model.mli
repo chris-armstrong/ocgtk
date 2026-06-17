@@ -52,7 +52,7 @@ Depending on the model implementation, calling this function may be
 less efficient than iterating the list with increasing values for
 @position until g_list_model_get_item() returns %NULL. *)
 
-external get_item_type : t -> int = "ml_g_list_model_get_item_type"
+external get_item_type : t -> Gobject.Type.t = "ml_g_list_model_get_item_type"
 (** Gets the type of the items in @list.
 
 All items returned from g_list_model_get_item() are of the type

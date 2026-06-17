@@ -98,6 +98,12 @@ Val_GSList_with(c_result, result, item, cell, Val_GFile((gpointer)_tmp->data));
     CAMLreturn(result);
 }
 
+CAMLprim value ml_gdk_file_list_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gdk_file_list_get_type()));
+}
+
 #else
 
 

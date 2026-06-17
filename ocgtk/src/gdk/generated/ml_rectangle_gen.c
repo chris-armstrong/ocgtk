@@ -68,3 +68,9 @@ CAMLparam3(self, arg1, arg2);
 gboolean result = gdk_rectangle_contains_point(GdkRectangle_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_bool(result));
 }
+
+CAMLprim value ml_gdk_rectangle_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gdk_rectangle_get_type()));
+}

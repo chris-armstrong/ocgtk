@@ -2,13 +2,12 @@
 (* Top-level library module with direct references to all classes and enumerations *)
 
 (** {1 Layer 1 Module Wrappers}
-
-    This submodule provides aliases to the layer 1 (low-level) modules. These
-    are the modules containing external declarations and basic bindings. *)
+    
+    This submodule provides aliases to the layer 1 (low-level) modules.
+    These are the modules containing external declarations and basic bindings.
+ *)
 module Wrappers : sig
-  module App_launch_context =
-    App_launch_context_cycle_de440b34.App_launch_context
-
+  module App_launch_context = App_launch_context_cycle_de440b34.App_launch_context
   module Button_event = Button_event
   module Cairo_context = App_launch_context_cycle_de440b34.Cairo_context
   module Clipboard = App_launch_context_cycle_de440b34.Clipboard

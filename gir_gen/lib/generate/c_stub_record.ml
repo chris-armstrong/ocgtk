@@ -275,4 +275,15 @@ let generate_record_c_code ~ctx (record : gir_record) =
     ~generator:generate_record_method_with_guards ~entity_kind:Filtering.Record
     record.methods;
 
+  (* Emit a get_type wrapper for records registered with the GType system.
+     This lets OCaml code pass the GType to APIs like GtkDropTarget.new_. *)
+  (match record.glib_get_type with
+  | Some get_type_func ->
+      let ml_name = sprintf "ml_%s_%s_get_type" namespace_snake class_snake in
+      bprintf buf "\nCAMLprim value %s(value unit)\n{\n" ml_name;
+      bprintf buf "  CAMLparam1(unit);\n";
+      bprintf buf "  CAMLreturn(Val_long(%s()));\n" get_type_func;
+      bprintf buf "}\n"
+  | None -> ());
+
   Buffer.contents buf

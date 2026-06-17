@@ -220,6 +220,20 @@ let type_mappings : (string * Types.type_mapping) list =
         c_type = "GObject*";
         is_value_type_record = false;
       } );
+    (* GObject.Value — returned as a borrowed const GValue* by functions like
+       gtk_drop_target_get_value.  Val_GValue_copy takes an owned copy so the
+       OCaml value's lifetime is independent of the C caller's storage.
+       is_value_type_record = true so that for out-parameters the generator
+       passes &var (address of the stack GValue) rather than the struct value. *)
+    ( "GObject.Value",
+      {
+        ocaml_type = "Gobject.Value.t";
+        c_to_ml = "Val_GValue_copy";
+        ml_to_c = "GValue_val";
+        layer2_class = None;
+        c_type = "const GValue*";
+        is_value_type_record = true;
+      } );
     ( "GObject.InitiallyUnowned",
       {
         ocaml_type = "[`initially_unowned | `object_] Gobject.obj";
@@ -307,7 +321,7 @@ let type_mappings : (string * Types.type_mapping) list =
     (* GType is typedef gsize — macros Val_GType/GType_val already in wrappers.h *)
     ( "GType",
       {
-        ocaml_type = "int";
+        ocaml_type = "Gobject.Type.t";
         c_to_ml = "Val_GType";
         ml_to_c = "GType_val";
         layer2_class = None;

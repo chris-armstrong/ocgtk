@@ -208,6 +208,14 @@ const char* result = gdk_display_get_startup_notification_id(GdkDisplay_val(self
 CAMLreturn(Val_option_string(result));
 }
 
+CAMLexport CAMLprim value ml_gdk_display_get_setting(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gboolean result = gdk_display_get_setting(GdkDisplay_val(self), String_val(arg1), GValue_val(arg2));
+CAMLreturn(Val_bool(result));
+}
+
 CAMLexport CAMLprim value ml_gdk_display_get_primary_clipboard(value self)
 {
 CAMLparam1(self);
