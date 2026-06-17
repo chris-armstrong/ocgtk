@@ -249,29 +249,50 @@ ocgtk_kind ocgtk_classify(value v)
     return OCGTK_KIND_OPAQUE_BLOCK;
 }
 
-/* GError field accessors */
-CAMLprim value ml_gerror_message(value v) { return Field(v, 2); }
-CAMLprim value ml_gerror_code(value v)    { return Field(v, 1); }
-CAMLprim value ml_gerror_domain(value v)  { return Field(v, 0); }
+/* ==================================================================== */
+/* GError custom block                                                  */
+/* ==================================================================== */
 
-/* Convert GError to OCaml GError.t record and free the GError */
+static void finalize_gerror(value v) {
+    GError *err = GError_val(v);
+    if (err != NULL) g_error_free(err);
+}
+
+struct custom_operations ocgtk_gerror_ops = {
+    "ocgtk.gerror",
+    finalize_gerror,
+    custom_compare_default,
+    custom_hash_default,
+    custom_serialize_default,
+    custom_deserialize_default,
+    custom_compare_ext_default,
+    custom_fixed_length_default
+};
+
+/* Val_GError: wrap a GError* in a custom block, taking ownership. */
 value Val_GError(GError *error) {
     CAMLparam0();
     CAMLlocal1(v);
 
-    if (error == NULL) {
-        /* Should not happen, but handle gracefully */
-        v = caml_alloc(3, 0);
-        Store_field(v, 0, Val_int(0));  /* domain */
-        Store_field(v, 1, Val_int(0));  /* code */
-        Store_field(v, 2, caml_copy_string("Unknown error"));  /* message */
-    } else {
-        v = caml_alloc(3, 0);
-        Store_field(v, 0, Val_int(error->domain));  /* domain (GQuark) */
-        Store_field(v, 1, Val_int(error->code));    /* code */
-        Store_field(v, 2, caml_copy_string(error->message ? error->message : "")); /* message */
-        g_error_free(error);  /* Free the GError as it's been converted */
-    }
+    if (error == NULL)
+        caml_failwith("Val_GError: NULL error");
+
+    v = caml_alloc_custom(&ocgtk_gerror_ops, sizeof(GError*), 0, 1);
+    *((GError**)Data_custom_val(v)) = error;
 
     CAMLreturn(v);
+}
+
+CAMLprim value ml_gerror_message(value v) {
+    CAMLparam1(v);
+    GError *err = GError_val(v);
+    CAMLreturn(caml_copy_string(err->message ? err->message : ""));
+}
+
+CAMLprim value ml_gerror_code(value v) {
+    return Val_int(GError_val(v)->code);
+}
+
+CAMLprim value ml_gerror_domain(value v) {
+    return Val_int(GError_val(v)->domain);
 }
