@@ -103,6 +103,20 @@ external return_error_if_cancelled : t -> bool
 g_task_return_pointer() for more discussion of exactly what this
 means). *)
 
+external return_error : t -> GError.t -> unit = "ml_g_task_return_error"
+(** Sets @task's result to @error (which @task assumes ownership of)
+and completes the task (see g_task_return_pointer() for more
+discussion of exactly what this means).
+
+Note that since the task takes ownership of @error, and since the
+task may be completed before returning from g_task_return_error(),
+you cannot assume that @error is still valid after calling this.
+Call g_error_copy() on the error if you need to keep a local copy
+as well.
+
+See also [method@Gio.Task.return_new_error],
+[method@Gio.Task.return_new_error_literal]. *)
+
 external return_boolean : t -> bool -> unit = "ml_g_task_return_boolean"
 (** Sets @task's result to @result and completes the task (see
 g_task_return_pointer() for more discussion of exactly what this

@@ -22,6 +22,10 @@ external set_handle_cancellation : t -> bool -> unit
     g_simple_async_result_set_check_cancellable(). It only refers to the
     #GCancellable passed to g_simple_async_result_run_in_thread(). *)
 
+external set_from_error : t -> GError.t -> unit
+  = "ml_g_simple_async_result_set_from_error"
+(** Sets the result from a #GError. *)
+
 external set_check_cancellable : t -> Cancellable.t option -> unit
   = "ml_g_simple_async_result_set_check_cancellable"
 (** Sets a #GCancellable to check before dispatching results.

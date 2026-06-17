@@ -201,6 +201,28 @@ return Val_unit;
 
 #if GLIB_CHECK_VERSION(2,36,0)
 
+CAMLexport CAMLprim value ml_g_task_return_error(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_task_return_error(GTask_val(self), GError_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_task_return_error(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Task requires GLib >= 2.36");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,36,0)
+
 CAMLexport CAMLprim value ml_g_task_return_boolean(value self, value arg1)
 {
 CAMLparam2(self, arg1);

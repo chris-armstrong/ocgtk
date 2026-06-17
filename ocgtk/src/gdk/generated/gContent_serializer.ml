@@ -9,6 +9,7 @@ class type content_serializer_t = object
   method get_output_stream : unit -> Ocgtk_gio.Gio.Output_stream.output_stream_t
   method get_priority : unit -> int
   method get_value : unit -> Gobject.Value.t
+  method return_error : GError.t -> unit
   method return_success : unit -> unit
   method as_content_serializer : Content_serializer.t
 end
@@ -44,6 +45,9 @@ class content_serializer (obj : Content_serializer.t) : content_serializer_t =
 
     method get_value : unit -> Gobject.Value.t =
       fun () -> Content_serializer.get_value obj
+
+    method return_error : GError.t -> unit =
+      fun error -> Content_serializer.return_error obj error
 
     method return_success : unit -> unit =
       fun () -> Content_serializer.return_success obj
