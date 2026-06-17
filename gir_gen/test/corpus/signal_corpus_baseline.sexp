@@ -1,22 +1,12 @@
-(((namespace Gtk) (total_signals 346) (supported 283) (unsupported 63)
+(((namespace Gtk) (total_signals 346) (supported 305) (unsupported 41)
   (by_reason
    (("non-In direction parameter 'allocation'" 1)
     ("non-In direction parameter 'new_value'" 1)
     ("non-In direction parameter 'position'" 1)
-    ("unsupported parameter type for 'accel_mods': unknown type Gdk.ModifierType"
+    ("unsupported parameter type for 'cell_area': boxed type Gdk.Rectangle not yet supported"
      1)
-    ("unsupported parameter type for 'application': unknown type Gio.AppInfo"
-     2)
-    ("unsupported parameter type for 'cell_area': unknown type Gdk.Rectangle"
+    ("unsupported parameter type for 'color': boxed type Gdk.RGBA not yet supported"
      1)
-    ("unsupported parameter type for 'clipboard': unknown type Gdk.Clipboard"
-     1)
-    ("unsupported parameter type for 'color': unknown type Gdk.RGBA" 1)
-    ("unsupported parameter type for 'context': unknown type Gdk.GLContext"
-     1)
-    ("unsupported parameter type for 'drag': unknown type Gdk.Drag" 3)
-    ("unsupported parameter type for 'drop': unknown type Gdk.Drop" 6)
-    ("unsupported parameter type for 'event': unknown type Gdk.Event" 1)
     ("unsupported parameter type for 'iter': boxed type Gtk.TreeIter not yet supported"
      7)
     ("unsupported parameter type for 'location': boxed type Gtk.TextIter not yet supported"
@@ -29,21 +19,17 @@
      7)
     ("unsupported parameter type for 'section': boxed type Gtk.CssSection not yet supported"
      1)
-    ("unsupported parameter type for 'sequence': unknown type Gdk.EventSequence"
+    ("unsupported parameter type for 'sequence': boxed type Gdk.EventSequence not yet supported"
      6)
     ("unsupported parameter type for 'start': boxed type Gtk.TextIter not yet supported"
      3)
-    ("unsupported parameter type for 'state': unknown type Gdk.ModifierType"
-     3)
     ("unsupported parameter type for 'value': unknown type GObject.Value" 1)
     ("unsupported return type: primitive type GObject.Object not in marshaller table"
-     1)
-    ("unsupported return type: unknown type Gdk.ContentProvider" 1)
-    ("unsupported return type: unknown type Gdk.DragAction" 2)
-    ("unsupported return type: unknown type Gdk.GLContext" 1))))
+     1))))
  ((namespace Gdk) (total_signals 35) (supported 32) (unsupported 3)
   (by_reason
-   (("unsupported parameter type for 'region': unknown type cairo.Region" 1)
+   (("unsupported parameter type for 'region': boxed type cairo.Region not yet supported"
+     1)
     ("unsupported parameter type for 'size': boxed type Gdk.DragSurfaceSize not yet supported"
      1)
     ("unsupported parameter type for 'size': boxed type Gdk.ToplevelSize not yet supported"

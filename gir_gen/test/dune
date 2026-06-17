@@ -69,13 +69,9 @@
   apply_with_parsed_gir_tests
   pipeline_tests
   version_guard_tests
-  enum_member_version_tests
-  ; Signal corpus
-  signal_corpus
-  signal_corpus_tests)
+  enum_member_version_tests)
  (deps
-  (source_tree %{workspace_root}/gir)
-  corpus/signal_corpus_baseline.sexp)
+  (source_tree %{workspace_root}/gir))
  (action
   (setenv
    "GIR_DATA_DIR"
@@ -116,15 +112,31 @@
   enums_tests
   records_tests
   properties_tests
-  edge_cases_tests)
+  edge_cases_tests
+  ; Signal corpus — uses cross-namespace reference files produced by
+  ; gir_gen.exe references rules in corpus/dune.
+  signal_corpus
+  signal_corpus_tests)
  (deps
   %{exe:../bin/gir_gen.exe}
-  (source_tree %{workspace_root}/gir))
+  (source_tree %{workspace_root}/gir)
+  corpus/signal_corpus_baseline.sexp
+  corpus/cairo-references.sexp
+  corpus/gio-references.sexp
+  corpus/gdk-references.sexp
+  corpus/graphene-references.sexp
+  corpus/gdkpixbuf-references.sexp
+  corpus/pango-references.sexp
+  corpus/gsk-references.sexp
+  corpus/pangocairo-references.sexp
+  corpus/gtk-references.sexp)
  (action
   (setenv
    "GIR_DATA_DIR"
    "%{workspace_root}/gir"
    (run %{test})))
+ (preprocess
+  (pps ppx_sexp_conv))
  (libraries
   test_gir_gen_helpers
   gir_gen_lib
