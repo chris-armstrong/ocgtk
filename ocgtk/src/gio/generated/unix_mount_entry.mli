@@ -6,3 +6,5 @@ type t = [ `unix_mount_entry ] Gobject.obj
     corresponds roughly to a mtab entry. *)
 
 (* Methods *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gio_unix_mount_entry_get_type"

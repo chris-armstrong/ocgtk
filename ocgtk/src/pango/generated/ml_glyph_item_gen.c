@@ -72,3 +72,9 @@ caml_failwith("GlyphItem requires Pango >= 1.2");
 return Val_unit;
 }
 #endif
+
+CAMLprim value ml_pango_glyph_item_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_glyph_item_get_type()));
+}

@@ -60,6 +60,12 @@ gboolean result = pango_glyph_item_iter_init_end(PangoGlyphItemIter_val(self), P
 CAMLreturn(Val_bool(result));
 }
 
+CAMLprim value ml_pango_glyph_item_iter_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_glyph_item_iter_get_type()));
+}
+
 #else
 
 

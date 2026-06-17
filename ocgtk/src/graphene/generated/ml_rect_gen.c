@@ -426,6 +426,12 @@ _Bool result = graphene_rect_contains_point(graphene_rect_t_val(self), graphene_
 CAMLreturn(Val_bool(result));
 }
 
+CAMLprim value ml_graphene_rect_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_rect_get_type()));
+}
+
 #else
 
 

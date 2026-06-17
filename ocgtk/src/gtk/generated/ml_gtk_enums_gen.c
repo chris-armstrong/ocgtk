@@ -3664,25 +3664,25 @@ value Val_GtkApplicationInhibitFlags(GtkApplicationInhibitFlags flags) {
 
   if (flags & GTK_APPLICATION_INHIBIT_LOGOUT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("LOGOUT"))); /* `LOGOUT */
+    Store_field(cons, 0, caml_hash_variant("LOGOUT")); /* `LOGOUT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_APPLICATION_INHIBIT_SWITCH) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SWITCH"))); /* `SWITCH */
+    Store_field(cons, 0, caml_hash_variant("SWITCH")); /* `SWITCH */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_APPLICATION_INHIBIT_SUSPEND) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SUSPEND"))); /* `SUSPEND */
+    Store_field(cons, 0, caml_hash_variant("SUSPEND")); /* `SUSPEND */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_APPLICATION_INHIBIT_IDLE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("IDLE"))); /* `IDLE */
+    Store_field(cons, 0, caml_hash_variant("IDLE")); /* `IDLE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3694,7 +3694,7 @@ value Val_GtkApplicationInhibitFlags(GtkApplicationInhibitFlags flags) {
 GtkApplicationInhibitFlags GtkApplicationInhibitFlags_val(value list) {
   GtkApplicationInhibitFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("LOGOUT")) result |= GTK_APPLICATION_INHIBIT_LOGOUT; /* `LOGOUT */
     else if (tag == caml_hash_variant("SWITCH")) result |= GTK_APPLICATION_INHIBIT_SWITCH; /* `SWITCH */
     else if (tag == caml_hash_variant("SUSPEND")) result |= GTK_APPLICATION_INHIBIT_SUSPEND; /* `SUSPEND */
@@ -3712,7 +3712,7 @@ value Val_GtkBuilderClosureFlags(GtkBuilderClosureFlags flags) {
 
   if (flags & GTK_BUILDER_CLOSURE_SWAPPED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SWAPPED"))); /* `SWAPPED */
+    Store_field(cons, 0, caml_hash_variant("SWAPPED")); /* `SWAPPED */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3724,7 +3724,7 @@ value Val_GtkBuilderClosureFlags(GtkBuilderClosureFlags flags) {
 GtkBuilderClosureFlags GtkBuilderClosureFlags_val(value list) {
   GtkBuilderClosureFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("SWAPPED")) result |= GTK_BUILDER_CLOSURE_SWAPPED; /* `SWAPPED */
     list = Field(list, 1);
   }
@@ -3739,43 +3739,43 @@ value Val_GtkCellRendererState(GtkCellRendererState flags) {
 
   if (flags & GTK_CELL_RENDERER_SELECTED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SELECTED"))); /* `SELECTED */
+    Store_field(cons, 0, caml_hash_variant("SELECTED")); /* `SELECTED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_CELL_RENDERER_PRELIT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("PRELIT"))); /* `PRELIT */
+    Store_field(cons, 0, caml_hash_variant("PRELIT")); /* `PRELIT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_CELL_RENDERER_INSENSITIVE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("INSENSITIVE"))); /* `INSENSITIVE */
+    Store_field(cons, 0, caml_hash_variant("INSENSITIVE")); /* `INSENSITIVE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_CELL_RENDERER_SORTED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SORTED"))); /* `SORTED */
+    Store_field(cons, 0, caml_hash_variant("SORTED")); /* `SORTED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_CELL_RENDERER_FOCUSED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FOCUSED"))); /* `FOCUSED */
+    Store_field(cons, 0, caml_hash_variant("FOCUSED")); /* `FOCUSED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_CELL_RENDERER_EXPANDABLE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("EXPANDABLE"))); /* `EXPANDABLE */
+    Store_field(cons, 0, caml_hash_variant("EXPANDABLE")); /* `EXPANDABLE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_CELL_RENDERER_EXPANDED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("EXPANDED"))); /* `EXPANDED */
+    Store_field(cons, 0, caml_hash_variant("EXPANDED")); /* `EXPANDED */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3787,7 +3787,7 @@ value Val_GtkCellRendererState(GtkCellRendererState flags) {
 GtkCellRendererState GtkCellRendererState_val(value list) {
   GtkCellRendererState result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("SELECTED")) result |= GTK_CELL_RENDERER_SELECTED; /* `SELECTED */
     else if (tag == caml_hash_variant("PRELIT")) result |= GTK_CELL_RENDERER_PRELIT; /* `PRELIT */
     else if (tag == caml_hash_variant("INSENSITIVE")) result |= GTK_CELL_RENDERER_INSENSITIVE; /* `INSENSITIVE */
@@ -3808,110 +3808,110 @@ value Val_GtkDebugFlags(GtkDebugFlags flags) {
 
   if (flags & GTK_DEBUG_TEXT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("TEXT"))); /* `TEXT */
+    Store_field(cons, 0, caml_hash_variant("TEXT")); /* `TEXT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DEBUG_TREE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("TREE"))); /* `TREE */
+    Store_field(cons, 0, caml_hash_variant("TREE")); /* `TREE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DEBUG_KEYBINDINGS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("KEYBINDINGS"))); /* `KEYBINDINGS */
+    Store_field(cons, 0, caml_hash_variant("KEYBINDINGS")); /* `KEYBINDINGS */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DEBUG_MODULES) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("MODULES"))); /* `MODULES */
+    Store_field(cons, 0, caml_hash_variant("MODULES")); /* `MODULES */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DEBUG_GEOMETRY) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("GEOMETRY"))); /* `GEOMETRY */
+    Store_field(cons, 0, caml_hash_variant("GEOMETRY")); /* `GEOMETRY */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DEBUG_ICONTHEME) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ICONTHEME"))); /* `ICONTHEME */
+    Store_field(cons, 0, caml_hash_variant("ICONTHEME")); /* `ICONTHEME */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DEBUG_PRINTING) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("PRINTING"))); /* `PRINTING */
+    Store_field(cons, 0, caml_hash_variant("PRINTING")); /* `PRINTING */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DEBUG_BUILDER) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("BUILDER"))); /* `BUILDER */
+    Store_field(cons, 0, caml_hash_variant("BUILDER")); /* `BUILDER */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DEBUG_SIZE_REQUEST) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SIZE_REQUEST"))); /* `SIZE_REQUEST */
+    Store_field(cons, 0, caml_hash_variant("SIZE_REQUEST")); /* `SIZE_REQUEST */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DEBUG_NO_CSS_CACHE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NO_CSS_CACHE"))); /* `NO_CSS_CACHE */
+    Store_field(cons, 0, caml_hash_variant("NO_CSS_CACHE")); /* `NO_CSS_CACHE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DEBUG_INTERACTIVE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("INTERACTIVE"))); /* `INTERACTIVE */
+    Store_field(cons, 0, caml_hash_variant("INTERACTIVE")); /* `INTERACTIVE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DEBUG_ACTIONS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ACTIONS"))); /* `ACTIONS */
+    Store_field(cons, 0, caml_hash_variant("ACTIONS")); /* `ACTIONS */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DEBUG_LAYOUT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("LAYOUT"))); /* `LAYOUT */
+    Store_field(cons, 0, caml_hash_variant("LAYOUT")); /* `LAYOUT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DEBUG_SNAPSHOT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SNAPSHOT"))); /* `SNAPSHOT */
+    Store_field(cons, 0, caml_hash_variant("SNAPSHOT")); /* `SNAPSHOT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DEBUG_CONSTRAINTS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("CONSTRAINTS"))); /* `CONSTRAINTS */
+    Store_field(cons, 0, caml_hash_variant("CONSTRAINTS")); /* `CONSTRAINTS */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DEBUG_BUILDER_OBJECTS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("BUILDER_OBJECTS"))); /* `BUILDER_OBJECTS */
+    Store_field(cons, 0, caml_hash_variant("BUILDER_OBJECTS")); /* `BUILDER_OBJECTS */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DEBUG_A11Y) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("A11Y"))); /* `A11Y */
+    Store_field(cons, 0, caml_hash_variant("A11Y")); /* `A11Y */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GTK_CHECK_VERSION(4,2,0)
   if (flags & GTK_DEBUG_ICONFALLBACK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ICONFALLBACK"))); /* `ICONFALLBACK */
+    Store_field(cons, 0, caml_hash_variant("ICONFALLBACK")); /* `ICONFALLBACK */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3920,7 +3920,7 @@ value Val_GtkDebugFlags(GtkDebugFlags flags) {
 #if GTK_CHECK_VERSION(4,8,0)
   if (flags & GTK_DEBUG_INVERT_TEXT_DIR) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("INVERT_TEXT_DIR"))); /* `INVERT_TEXT_DIR */
+    Store_field(cons, 0, caml_hash_variant("INVERT_TEXT_DIR")); /* `INVERT_TEXT_DIR */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3934,7 +3934,7 @@ value Val_GtkDebugFlags(GtkDebugFlags flags) {
 GtkDebugFlags GtkDebugFlags_val(value list) {
   GtkDebugFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("TEXT")) result |= GTK_DEBUG_TEXT; /* `TEXT */
     else if (tag == caml_hash_variant("TREE")) result |= GTK_DEBUG_TREE; /* `TREE */
     else if (tag == caml_hash_variant("KEYBINDINGS")) result |= GTK_DEBUG_KEYBINDINGS; /* `KEYBINDINGS */
@@ -3977,19 +3977,19 @@ value Val_GtkDialogFlags(GtkDialogFlags flags) {
 
   if (flags & GTK_DIALOG_MODAL) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("MODAL"))); /* `MODAL */
+    Store_field(cons, 0, caml_hash_variant("MODAL")); /* `MODAL */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DIALOG_DESTROY_WITH_PARENT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DESTROY_WITH_PARENT"))); /* `DESTROY_WITH_PARENT */
+    Store_field(cons, 0, caml_hash_variant("DESTROY_WITH_PARENT")); /* `DESTROY_WITH_PARENT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_DIALOG_USE_HEADER_BAR) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("USE_HEADER_BAR"))); /* `USE_HEADER_BAR */
+    Store_field(cons, 0, caml_hash_variant("USE_HEADER_BAR")); /* `USE_HEADER_BAR */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -4001,7 +4001,7 @@ value Val_GtkDialogFlags(GtkDialogFlags flags) {
 GtkDialogFlags GtkDialogFlags_val(value list) {
   GtkDialogFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("MODAL")) result |= GTK_DIALOG_MODAL; /* `MODAL */
     else if (tag == caml_hash_variant("DESTROY_WITH_PARENT")) result |= GTK_DIALOG_DESTROY_WITH_PARENT; /* `DESTROY_WITH_PARENT */
     else if (tag == caml_hash_variant("USE_HEADER_BAR")) result |= GTK_DIALOG_USE_HEADER_BAR; /* `USE_HEADER_BAR */
@@ -4018,37 +4018,37 @@ value Val_GtkEventControllerScrollFlags(GtkEventControllerScrollFlags flags) {
 
   if (flags & GTK_EVENT_CONTROLLER_SCROLL_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_EVENT_CONTROLLER_SCROLL_VERTICAL) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("VERTICAL"))); /* `VERTICAL */
+    Store_field(cons, 0, caml_hash_variant("VERTICAL")); /* `VERTICAL */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_EVENT_CONTROLLER_SCROLL_HORIZONTAL) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("HORIZONTAL"))); /* `HORIZONTAL */
+    Store_field(cons, 0, caml_hash_variant("HORIZONTAL")); /* `HORIZONTAL */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_EVENT_CONTROLLER_SCROLL_DISCRETE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DISCRETE"))); /* `DISCRETE */
+    Store_field(cons, 0, caml_hash_variant("DISCRETE")); /* `DISCRETE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_EVENT_CONTROLLER_SCROLL_KINETIC) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("KINETIC"))); /* `KINETIC */
+    Store_field(cons, 0, caml_hash_variant("KINETIC")); /* `KINETIC */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("BOTH_AXES"))); /* `BOTH_AXES */
+    Store_field(cons, 0, caml_hash_variant("BOTH_AXES")); /* `BOTH_AXES */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -4060,7 +4060,7 @@ value Val_GtkEventControllerScrollFlags(GtkEventControllerScrollFlags flags) {
 GtkEventControllerScrollFlags GtkEventControllerScrollFlags_val(value list) {
   GtkEventControllerScrollFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= GTK_EVENT_CONTROLLER_SCROLL_NONE; /* `NONE */
     else if (tag == caml_hash_variant("VERTICAL")) result |= GTK_EVENT_CONTROLLER_SCROLL_VERTICAL; /* `VERTICAL */
     else if (tag == caml_hash_variant("HORIZONTAL")) result |= GTK_EVENT_CONTROLLER_SCROLL_HORIZONTAL; /* `HORIZONTAL */
@@ -4080,31 +4080,31 @@ value Val_GtkFontChooserLevel(GtkFontChooserLevel flags) {
 
   if (flags & GTK_FONT_CHOOSER_LEVEL_FAMILY) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FAMILY"))); /* `FAMILY */
+    Store_field(cons, 0, caml_hash_variant("FAMILY")); /* `FAMILY */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_FONT_CHOOSER_LEVEL_STYLE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("STYLE"))); /* `STYLE */
+    Store_field(cons, 0, caml_hash_variant("STYLE")); /* `STYLE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_FONT_CHOOSER_LEVEL_SIZE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SIZE"))); /* `SIZE */
+    Store_field(cons, 0, caml_hash_variant("SIZE")); /* `SIZE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_FONT_CHOOSER_LEVEL_VARIATIONS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("VARIATIONS"))); /* `VARIATIONS */
+    Store_field(cons, 0, caml_hash_variant("VARIATIONS")); /* `VARIATIONS */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_FONT_CHOOSER_LEVEL_FEATURES) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FEATURES"))); /* `FEATURES */
+    Store_field(cons, 0, caml_hash_variant("FEATURES")); /* `FEATURES */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -4116,7 +4116,7 @@ value Val_GtkFontChooserLevel(GtkFontChooserLevel flags) {
 GtkFontChooserLevel GtkFontChooserLevel_val(value list) {
   GtkFontChooserLevel result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("FAMILY")) result |= GTK_FONT_CHOOSER_LEVEL_FAMILY; /* `FAMILY */
     else if (tag == caml_hash_variant("STYLE")) result |= GTK_FONT_CHOOSER_LEVEL_STYLE; /* `STYLE */
     else if (tag == caml_hash_variant("SIZE")) result |= GTK_FONT_CHOOSER_LEVEL_SIZE; /* `SIZE */
@@ -4135,19 +4135,19 @@ value Val_GtkIconLookupFlags(GtkIconLookupFlags flags) {
 
   if (flags & GTK_ICON_LOOKUP_FORCE_REGULAR) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FORCE_REGULAR"))); /* `FORCE_REGULAR */
+    Store_field(cons, 0, caml_hash_variant("FORCE_REGULAR")); /* `FORCE_REGULAR */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_ICON_LOOKUP_FORCE_SYMBOLIC) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FORCE_SYMBOLIC"))); /* `FORCE_SYMBOLIC */
+    Store_field(cons, 0, caml_hash_variant("FORCE_SYMBOLIC")); /* `FORCE_SYMBOLIC */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_ICON_LOOKUP_PRELOAD) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("PRELOAD"))); /* `PRELOAD */
+    Store_field(cons, 0, caml_hash_variant("PRELOAD")); /* `PRELOAD */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -4159,7 +4159,7 @@ value Val_GtkIconLookupFlags(GtkIconLookupFlags flags) {
 GtkIconLookupFlags GtkIconLookupFlags_val(value list) {
   GtkIconLookupFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("FORCE_REGULAR")) result |= GTK_ICON_LOOKUP_FORCE_REGULAR; /* `FORCE_REGULAR */
     else if (tag == caml_hash_variant("FORCE_SYMBOLIC")) result |= GTK_ICON_LOOKUP_FORCE_SYMBOLIC; /* `FORCE_SYMBOLIC */
     else if (tag == caml_hash_variant("PRELOAD")) result |= GTK_ICON_LOOKUP_PRELOAD; /* `PRELOAD */
@@ -4176,79 +4176,79 @@ value Val_GtkInputHints(GtkInputHints flags) {
 
   if (flags & GTK_INPUT_HINT_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_INPUT_HINT_SPELLCHECK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SPELLCHECK"))); /* `SPELLCHECK */
+    Store_field(cons, 0, caml_hash_variant("SPELLCHECK")); /* `SPELLCHECK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_INPUT_HINT_NO_SPELLCHECK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NO_SPELLCHECK"))); /* `NO_SPELLCHECK */
+    Store_field(cons, 0, caml_hash_variant("NO_SPELLCHECK")); /* `NO_SPELLCHECK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_INPUT_HINT_WORD_COMPLETION) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("WORD_COMPLETION"))); /* `WORD_COMPLETION */
+    Store_field(cons, 0, caml_hash_variant("WORD_COMPLETION")); /* `WORD_COMPLETION */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_INPUT_HINT_LOWERCASE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("LOWERCASE"))); /* `LOWERCASE */
+    Store_field(cons, 0, caml_hash_variant("LOWERCASE")); /* `LOWERCASE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_INPUT_HINT_UPPERCASE_CHARS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("UPPERCASE_CHARS"))); /* `UPPERCASE_CHARS */
+    Store_field(cons, 0, caml_hash_variant("UPPERCASE_CHARS")); /* `UPPERCASE_CHARS */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_INPUT_HINT_UPPERCASE_WORDS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("UPPERCASE_WORDS"))); /* `UPPERCASE_WORDS */
+    Store_field(cons, 0, caml_hash_variant("UPPERCASE_WORDS")); /* `UPPERCASE_WORDS */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_INPUT_HINT_UPPERCASE_SENTENCES) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("UPPERCASE_SENTENCES"))); /* `UPPERCASE_SENTENCES */
+    Store_field(cons, 0, caml_hash_variant("UPPERCASE_SENTENCES")); /* `UPPERCASE_SENTENCES */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_INPUT_HINT_INHIBIT_OSK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("INHIBIT_OSK"))); /* `INHIBIT_OSK */
+    Store_field(cons, 0, caml_hash_variant("INHIBIT_OSK")); /* `INHIBIT_OSK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_INPUT_HINT_VERTICAL_WRITING) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("VERTICAL_WRITING"))); /* `VERTICAL_WRITING */
+    Store_field(cons, 0, caml_hash_variant("VERTICAL_WRITING")); /* `VERTICAL_WRITING */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_INPUT_HINT_EMOJI) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("EMOJI"))); /* `EMOJI */
+    Store_field(cons, 0, caml_hash_variant("EMOJI")); /* `EMOJI */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_INPUT_HINT_NO_EMOJI) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NO_EMOJI"))); /* `NO_EMOJI */
+    Store_field(cons, 0, caml_hash_variant("NO_EMOJI")); /* `NO_EMOJI */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_INPUT_HINT_PRIVATE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("PRIVATE"))); /* `PRIVATE */
+    Store_field(cons, 0, caml_hash_variant("PRIVATE")); /* `PRIVATE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -4260,7 +4260,7 @@ value Val_GtkInputHints(GtkInputHints flags) {
 GtkInputHints GtkInputHints_val(value list) {
   GtkInputHints result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= GTK_INPUT_HINT_NONE; /* `NONE */
     else if (tag == caml_hash_variant("SPELLCHECK")) result |= GTK_INPUT_HINT_SPELLCHECK; /* `SPELLCHECK */
     else if (tag == caml_hash_variant("NO_SPELLCHECK")) result |= GTK_INPUT_HINT_NO_SPELLCHECK; /* `NO_SPELLCHECK */
@@ -4288,19 +4288,19 @@ value Val_GtkListScrollFlags(GtkListScrollFlags flags) {
 
   if (flags & GTK_LIST_SCROLL_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_LIST_SCROLL_FOCUS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FOCUS"))); /* `FOCUS */
+    Store_field(cons, 0, caml_hash_variant("FOCUS")); /* `FOCUS */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_LIST_SCROLL_SELECT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SELECT"))); /* `SELECT */
+    Store_field(cons, 0, caml_hash_variant("SELECT")); /* `SELECT */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -4312,7 +4312,7 @@ value Val_GtkListScrollFlags(GtkListScrollFlags flags) {
 GtkListScrollFlags GtkListScrollFlags_val(value list) {
   GtkListScrollFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= GTK_LIST_SCROLL_NONE; /* `NONE */
     else if (tag == caml_hash_variant("FOCUS")) result |= GTK_LIST_SCROLL_FOCUS; /* `FOCUS */
     else if (tag == caml_hash_variant("SELECT")) result |= GTK_LIST_SCROLL_SELECT; /* `SELECT */
@@ -4331,19 +4331,19 @@ value Val_GtkPickFlags(GtkPickFlags flags) {
 
   if (flags & GTK_PICK_DEFAULT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DEFAULT"))); /* `DEFAULT */
+    Store_field(cons, 0, caml_hash_variant("DEFAULT")); /* `DEFAULT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_PICK_INSENSITIVE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("INSENSITIVE"))); /* `INSENSITIVE */
+    Store_field(cons, 0, caml_hash_variant("INSENSITIVE")); /* `INSENSITIVE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_PICK_NON_TARGETABLE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NON_TARGETABLE"))); /* `NON_TARGETABLE */
+    Store_field(cons, 0, caml_hash_variant("NON_TARGETABLE")); /* `NON_TARGETABLE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -4355,7 +4355,7 @@ value Val_GtkPickFlags(GtkPickFlags flags) {
 GtkPickFlags GtkPickFlags_val(value list) {
   GtkPickFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("DEFAULT")) result |= GTK_PICK_DEFAULT; /* `DEFAULT */
     else if (tag == caml_hash_variant("INSENSITIVE")) result |= GTK_PICK_INSENSITIVE; /* `INSENSITIVE */
     else if (tag == caml_hash_variant("NON_TARGETABLE")) result |= GTK_PICK_NON_TARGETABLE; /* `NON_TARGETABLE */
@@ -4373,7 +4373,7 @@ value Val_GtkPopoverMenuFlags(GtkPopoverMenuFlags flags) {
 #if GTK_CHECK_VERSION(4,14,0)
   if (flags & GTK_POPOVER_MENU_SLIDING) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SLIDING"))); /* `SLIDING */
+    Store_field(cons, 0, caml_hash_variant("SLIDING")); /* `SLIDING */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -4381,7 +4381,7 @@ value Val_GtkPopoverMenuFlags(GtkPopoverMenuFlags flags) {
 #endif
   if (flags & GTK_POPOVER_MENU_NESTED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NESTED"))); /* `NESTED */
+    Store_field(cons, 0, caml_hash_variant("NESTED")); /* `NESTED */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -4393,7 +4393,7 @@ value Val_GtkPopoverMenuFlags(GtkPopoverMenuFlags flags) {
 GtkPopoverMenuFlags GtkPopoverMenuFlags_val(value list) {
   GtkPopoverMenuFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
 #if GTK_CHECK_VERSION(4,14,0)
     if (tag == caml_hash_variant("SLIDING")) result |= GTK_POPOVER_MENU_SLIDING; /* `SLIDING */
 
@@ -4414,7 +4414,7 @@ value Val_GtkShortcutActionFlags(GtkShortcutActionFlags flags) {
 
   if (flags & GTK_SHORTCUT_ACTION_EXCLUSIVE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("EXCLUSIVE"))); /* `EXCLUSIVE */
+    Store_field(cons, 0, caml_hash_variant("EXCLUSIVE")); /* `EXCLUSIVE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -4426,7 +4426,7 @@ value Val_GtkShortcutActionFlags(GtkShortcutActionFlags flags) {
 GtkShortcutActionFlags GtkShortcutActionFlags_val(value list) {
   GtkShortcutActionFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("EXCLUSIVE")) result |= GTK_SHORTCUT_ACTION_EXCLUSIVE; /* `EXCLUSIVE */
     list = Field(list, 1);
   }
@@ -4441,97 +4441,97 @@ value Val_GtkStateFlags(GtkStateFlags flags) {
 
   if (flags & GTK_STATE_FLAG_NORMAL) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NORMAL"))); /* `NORMAL */
+    Store_field(cons, 0, caml_hash_variant("NORMAL")); /* `NORMAL */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STATE_FLAG_ACTIVE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ACTIVE"))); /* `ACTIVE */
+    Store_field(cons, 0, caml_hash_variant("ACTIVE")); /* `ACTIVE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STATE_FLAG_PRELIGHT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("PRELIGHT"))); /* `PRELIGHT */
+    Store_field(cons, 0, caml_hash_variant("PRELIGHT")); /* `PRELIGHT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STATE_FLAG_SELECTED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SELECTED"))); /* `SELECTED */
+    Store_field(cons, 0, caml_hash_variant("SELECTED")); /* `SELECTED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STATE_FLAG_INSENSITIVE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("INSENSITIVE"))); /* `INSENSITIVE */
+    Store_field(cons, 0, caml_hash_variant("INSENSITIVE")); /* `INSENSITIVE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STATE_FLAG_INCONSISTENT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("INCONSISTENT"))); /* `INCONSISTENT */
+    Store_field(cons, 0, caml_hash_variant("INCONSISTENT")); /* `INCONSISTENT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STATE_FLAG_FOCUSED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FOCUSED"))); /* `FOCUSED */
+    Store_field(cons, 0, caml_hash_variant("FOCUSED")); /* `FOCUSED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STATE_FLAG_BACKDROP) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("BACKDROP"))); /* `BACKDROP */
+    Store_field(cons, 0, caml_hash_variant("BACKDROP")); /* `BACKDROP */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STATE_FLAG_DIR_LTR) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DIR_LTR"))); /* `DIR_LTR */
+    Store_field(cons, 0, caml_hash_variant("DIR_LTR")); /* `DIR_LTR */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STATE_FLAG_DIR_RTL) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DIR_RTL"))); /* `DIR_RTL */
+    Store_field(cons, 0, caml_hash_variant("DIR_RTL")); /* `DIR_RTL */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STATE_FLAG_LINK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("LINK"))); /* `LINK */
+    Store_field(cons, 0, caml_hash_variant("LINK")); /* `LINK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STATE_FLAG_VISITED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("VISITED"))); /* `VISITED */
+    Store_field(cons, 0, caml_hash_variant("VISITED")); /* `VISITED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STATE_FLAG_CHECKED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("CHECKED"))); /* `CHECKED */
+    Store_field(cons, 0, caml_hash_variant("CHECKED")); /* `CHECKED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STATE_FLAG_DROP_ACTIVE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DROP_ACTIVE"))); /* `DROP_ACTIVE */
+    Store_field(cons, 0, caml_hash_variant("DROP_ACTIVE")); /* `DROP_ACTIVE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STATE_FLAG_FOCUS_VISIBLE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FOCUS_VISIBLE"))); /* `FOCUS_VISIBLE */
+    Store_field(cons, 0, caml_hash_variant("FOCUS_VISIBLE")); /* `FOCUS_VISIBLE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STATE_FLAG_FOCUS_WITHIN) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FOCUS_WITHIN"))); /* `FOCUS_WITHIN */
+    Store_field(cons, 0, caml_hash_variant("FOCUS_WITHIN")); /* `FOCUS_WITHIN */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -4543,7 +4543,7 @@ value Val_GtkStateFlags(GtkStateFlags flags) {
 GtkStateFlags GtkStateFlags_val(value list) {
   GtkStateFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NORMAL")) result |= GTK_STATE_FLAG_NORMAL; /* `NORMAL */
     else if (tag == caml_hash_variant("ACTIVE")) result |= GTK_STATE_FLAG_ACTIVE; /* `ACTIVE */
     else if (tag == caml_hash_variant("PRELIGHT")) result |= GTK_STATE_FLAG_PRELIGHT; /* `PRELIGHT */
@@ -4573,25 +4573,25 @@ value Val_GtkStyleContextPrintFlags(GtkStyleContextPrintFlags flags) {
 
   if (flags & GTK_STYLE_CONTEXT_PRINT_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STYLE_CONTEXT_PRINT_RECURSE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("RECURSE"))); /* `RECURSE */
+    Store_field(cons, 0, caml_hash_variant("RECURSE")); /* `RECURSE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STYLE_CONTEXT_PRINT_SHOW_STYLE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SHOW_STYLE"))); /* `SHOW_STYLE */
+    Store_field(cons, 0, caml_hash_variant("SHOW_STYLE")); /* `SHOW_STYLE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_STYLE_CONTEXT_PRINT_SHOW_CHANGE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SHOW_CHANGE"))); /* `SHOW_CHANGE */
+    Store_field(cons, 0, caml_hash_variant("SHOW_CHANGE")); /* `SHOW_CHANGE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -4603,7 +4603,7 @@ value Val_GtkStyleContextPrintFlags(GtkStyleContextPrintFlags flags) {
 GtkStyleContextPrintFlags GtkStyleContextPrintFlags_val(value list) {
   GtkStyleContextPrintFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= GTK_STYLE_CONTEXT_PRINT_NONE; /* `NONE */
     else if (tag == caml_hash_variant("RECURSE")) result |= GTK_STYLE_CONTEXT_PRINT_RECURSE; /* `RECURSE */
     else if (tag == caml_hash_variant("SHOW_STYLE")) result |= GTK_STYLE_CONTEXT_PRINT_SHOW_STYLE; /* `SHOW_STYLE */
@@ -4621,19 +4621,19 @@ value Val_GtkTextSearchFlags(GtkTextSearchFlags flags) {
 
   if (flags & GTK_TEXT_SEARCH_VISIBLE_ONLY) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("VISIBLE_ONLY"))); /* `VISIBLE_ONLY */
+    Store_field(cons, 0, caml_hash_variant("VISIBLE_ONLY")); /* `VISIBLE_ONLY */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_TEXT_SEARCH_TEXT_ONLY) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("TEXT_ONLY"))); /* `TEXT_ONLY */
+    Store_field(cons, 0, caml_hash_variant("TEXT_ONLY")); /* `TEXT_ONLY */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_TEXT_SEARCH_CASE_INSENSITIVE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("CASE_INSENSITIVE"))); /* `CASE_INSENSITIVE */
+    Store_field(cons, 0, caml_hash_variant("CASE_INSENSITIVE")); /* `CASE_INSENSITIVE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -4645,7 +4645,7 @@ value Val_GtkTextSearchFlags(GtkTextSearchFlags flags) {
 GtkTextSearchFlags GtkTextSearchFlags_val(value list) {
   GtkTextSearchFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("VISIBLE_ONLY")) result |= GTK_TEXT_SEARCH_VISIBLE_ONLY; /* `VISIBLE_ONLY */
     else if (tag == caml_hash_variant("TEXT_ONLY")) result |= GTK_TEXT_SEARCH_TEXT_ONLY; /* `TEXT_ONLY */
     else if (tag == caml_hash_variant("CASE_INSENSITIVE")) result |= GTK_TEXT_SEARCH_CASE_INSENSITIVE; /* `CASE_INSENSITIVE */
@@ -4662,13 +4662,13 @@ value Val_GtkTreeModelFlags(GtkTreeModelFlags flags) {
 
   if (flags & GTK_TREE_MODEL_ITERS_PERSIST) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ITERS_PERSIST"))); /* `ITERS_PERSIST */
+    Store_field(cons, 0, caml_hash_variant("ITERS_PERSIST")); /* `ITERS_PERSIST */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GTK_TREE_MODEL_LIST_ONLY) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("LIST_ONLY"))); /* `LIST_ONLY */
+    Store_field(cons, 0, caml_hash_variant("LIST_ONLY")); /* `LIST_ONLY */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -4680,7 +4680,7 @@ value Val_GtkTreeModelFlags(GtkTreeModelFlags flags) {
 GtkTreeModelFlags GtkTreeModelFlags_val(value list) {
   GtkTreeModelFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("ITERS_PERSIST")) result |= GTK_TREE_MODEL_ITERS_PERSIST; /* `ITERS_PERSIST */
     else if (tag == caml_hash_variant("LIST_ONLY")) result |= GTK_TREE_MODEL_LIST_ONLY; /* `LIST_ONLY */
     list = Field(list, 1);

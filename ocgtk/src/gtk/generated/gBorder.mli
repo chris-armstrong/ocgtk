@@ -1,5 +1,5 @@
 class type border_t = object
-    method as_border : Border.t
+  method as_border : Border.t
 end
 
 class border : Border.t -> border_t

@@ -178,3 +178,5 @@ external get_category : t -> Gsk_enums.transformcategory
 
 external equal : t -> t option -> bool = "ml_gsk_transform_equal"
 (** Checks two transforms for equality. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gsk_transform_get_type"

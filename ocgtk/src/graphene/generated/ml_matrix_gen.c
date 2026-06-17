@@ -1572,3 +1572,9 @@ CAMLlocal1(ret);
     Store_field(ret, 5, Val_graphene_vec4_t(&out5));
     CAMLreturn(ret);
 }
+
+CAMLprim value ml_graphene_matrix_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_matrix_get_type()));
+}

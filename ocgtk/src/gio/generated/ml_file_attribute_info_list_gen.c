@@ -78,3 +78,9 @@ CAMLparam4(self, arg1, arg2, arg3);
 g_file_attribute_info_list_add(GFileAttributeInfoList_val(self), String_val(arg1), GioFileAttributeType_val(arg2), GioFileAttributeInfoFlags_val(arg3));
 CAMLreturn(Val_unit);
 }
+
+CAMLprim value ml_gio_file_attribute_info_list_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(g_file_attribute_info_list_get_type()));
+}

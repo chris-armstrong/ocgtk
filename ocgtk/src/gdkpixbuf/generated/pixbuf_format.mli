@@ -62,3 +62,6 @@ external get_extensions : t -> string array
 
 external get_description : t -> string = "ml_gdk_pixbuf_format_get_description"
 (** Returns a description of the format. *)
+
+external get_type : unit -> Gobject.Type.t
+  = "ml_gdk_pixbuf_pixbuf_format_get_type"

@@ -75,3 +75,5 @@ external as_color : t -> Attr_color.t option = "ml_pango_attribute_as_color"
 (** Returns the attribute cast to `PangoAttrColor`.
 
     This is mainly useful for language bindings. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_pango_attribute_get_type"

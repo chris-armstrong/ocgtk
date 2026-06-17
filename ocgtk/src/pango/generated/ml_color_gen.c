@@ -79,3 +79,9 @@ CAMLparam2(self, arg1);
 gboolean result = pango_color_parse(PangoColor_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+CAMLprim value ml_pango_color_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_color_get_type()));
+}

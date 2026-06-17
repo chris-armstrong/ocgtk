@@ -96,6 +96,12 @@ float result = gsk_path_measure_get_length(GskPathMeasure_val(self));
 CAMLreturn(caml_copy_double(result));
 }
 
+CAMLprim value ml_gsk_path_measure_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gsk_path_measure_get_type()));
+}
+
 #else
 
 

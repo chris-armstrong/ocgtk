@@ -250,3 +250,9 @@ caml_failwith("Attribute requires Pango >= 1.50");
 return Val_unit;
 }
 #endif
+
+CAMLprim value ml_pango_attribute_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_attribute_get_type()));
+}

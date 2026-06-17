@@ -1,34 +1,45 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ContentProvider: ContentProvider *)
 
-type t = [`content_provider | `object_] Gobject.obj
+type t = [ `content_provider | `object_ ] Gobject.obj
 
+external new_for_bytes : string -> Glib_bytes.t -> t
+  = "ml_gdk_content_provider_new_for_bytes"
 (** Create a new ContentProvider *)
-external new_for_bytes : string -> Glib_bytes.t -> t = "ml_gdk_content_provider_new_for_bytes"
 
+external new_for_value : Gobject.Value.t -> t
+  = "ml_gdk_content_provider_new_for_value"
 (** Create a new ContentProvider *)
-external new_for_value : Gobject.Value.t -> t = "ml_gdk_content_provider_new_for_value"
 
+external new_union : t array option -> Gsize.t -> t
+  = "ml_gdk_content_provider_new_union"
 (** Create a new ContentProvider *)
-external new_union : t array option -> Gsize.t -> t = "ml_gdk_content_provider_new_union"
 
 (* Methods *)
+
+external write_mime_type_finish :
+  t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result
+  = "ml_gdk_content_provider_write_mime_type_finish"
 (** Finishes an asynchronous write operation.
 
-See [method@Gdk.ContentProvider.write_mime_type_async]. *)
-external write_mime_type_finish : t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result = "ml_gdk_content_provider_write_mime_type_finish"
+    See [method@Gdk.ContentProvider.write_mime_type_async]. *)
 
-(** Gets the formats that the provider suggests other applications to store
-the data in.
+external ref_storable_formats : t -> Content_formats.t
+  = "ml_gdk_content_provider_ref_storable_formats"
+(** Gets the formats that the provider suggests other applications to store the
+    data in.
 
-An example of such an application would be a clipboard manager.
+    An example of such an application would be a clipboard manager.
 
-This can be assumed to be a subset of [method@Gdk.ContentProvider.ref_formats]. *)
-external ref_storable_formats : t -> Content_formats.t = "ml_gdk_content_provider_ref_storable_formats"
+    This can be assumed to be a subset of
+    [method@Gdk.ContentProvider.ref_formats]. *)
 
+external ref_formats : t -> Content_formats.t
+  = "ml_gdk_content_provider_ref_formats"
 (** Gets the formats that the provider can provide its current contents in. *)
-external ref_formats : t -> Content_formats.t = "ml_gdk_content_provider_ref_formats"
 
+external get_value : t -> (bool * Gobject.Value.t, GError.t) result
+  = "ml_gdk_content_provider_get_value"
 (** Gets the contents of @provider stored in @value.
 
 The @value will have been initialized to the `GType` the value should be
@@ -36,20 +47,20 @@ provided in. This given `GType` does not need to be listed in the formats
 returned by [method@Gdk.ContentProvider.ref_formats]. However, if the
 given `GType` is not supported, this operation can fail and
 `G_IO_ERROR_NOT_SUPPORTED` will be reported. *)
-external get_value : t -> (bool * Gobject.Value.t, GError.t) result = "ml_gdk_content_provider_get_value"
 
-(** Emits the ::content-changed signal. *)
 external content_changed : t -> unit = "ml_gdk_content_provider_content_changed"
+(** Emits the ::content-changed signal. *)
 
 (* Properties *)
 
+external get_formats : t -> Content_formats.t
+  = "ml_gdk_content_provider_get_formats"
 (** Get property: formats *)
-external get_formats : t -> Content_formats.t = "ml_gdk_content_provider_get_formats"
 
+external get_storable_formats : t -> Content_formats.t
+  = "ml_gdk_content_provider_get_storable_formats"
 (** Get property: storable-formats *)
-external get_storable_formats : t -> Content_formats.t = "ml_gdk_content_provider_get_storable_formats"
 
 let on_content_changed ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"content-changed" ~callback
     ~after:(Option.value after ~default:false)
-

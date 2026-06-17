@@ -12,6 +12,7 @@ class type task_t = object
   method return_boolean : bool -> unit
   method return_error_if_cancelled : unit -> bool
   method return_int : int -> unit
+  method return_value : Gobject.Value.t option -> unit
   method set_check_cancellable : bool -> unit
   method set_name : string option -> unit
   method set_priority : int -> unit

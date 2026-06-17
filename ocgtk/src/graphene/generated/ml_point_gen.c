@@ -143,6 +143,12 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+CAMLprim value ml_graphene_point_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_point_get_type()));
+}
+
 #else
 
 

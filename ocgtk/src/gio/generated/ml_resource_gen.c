@@ -130,6 +130,12 @@ g_resources_register(GResource_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLprim value ml_gio_resource_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(g_resource_get_type()));
+}
+
 #else
 
 

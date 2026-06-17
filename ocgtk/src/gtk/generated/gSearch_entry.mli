@@ -1,25 +1,53 @@
 class type search_entry_t = object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget.widget_t
-    inherit GEditable.editable_t
-    method on_activate : ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
-    method on_next_match : ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
-    method on_previous_match : ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
-    method on_search_changed : ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
-    method on_search_started : ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
-    method on_stop_search : ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
-    method get_input_hints : unit -> Gtk_enums.inputhints
-    method get_input_purpose : unit -> Gtk_enums.inputpurpose
-    method get_key_capture_widget : unit -> GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget.widget_t option
-    method get_placeholder_text : unit -> string option
-    method get_search_delay : unit -> int
-    method set_input_hints : Gtk_enums.inputhints -> unit
-    method set_input_purpose : Gtk_enums.inputpurpose -> unit
-    method set_key_capture_widget : GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget.widget_t option -> unit
-    method set_placeholder_text : string option -> unit
-    method set_search_delay : int -> unit
-    method activates_default : bool
-    method set_activates_default : bool -> unit
-    method as_search_entry : Search_entry.t
+  inherit
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .widget_t
+
+  inherit GEditable.editable_t
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_next_match :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_previous_match :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_search_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_search_started :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_stop_search :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method get_input_hints : unit -> Gtk_enums.inputhints
+  method get_input_purpose : unit -> Gtk_enums.inputpurpose
+
+  method get_key_capture_widget :
+    unit ->
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .widget_t
+    option
+
+  method get_placeholder_text : unit -> string option
+  method get_search_delay : unit -> int
+  method set_input_hints : Gtk_enums.inputhints -> unit
+  method set_input_purpose : Gtk_enums.inputpurpose -> unit
+
+  method set_key_capture_widget :
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .widget_t
+    option ->
+    unit
+
+  method set_placeholder_text : string option -> unit
+  method set_search_delay : int -> unit
+  method activates_default : bool
+  method set_activates_default : bool -> unit
+  method as_search_entry : Search_entry.t
 end
 
 class search_entry : Search_entry.t -> search_entry_t

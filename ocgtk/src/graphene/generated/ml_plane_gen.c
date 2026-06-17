@@ -158,6 +158,12 @@ float result = graphene_plane_distance(graphene_plane_t_val(self), graphene_poin
 CAMLreturn(caml_copy_double(result));
 }
 
+CAMLprim value ml_graphene_plane_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_plane_get_type()));
+}
+
 #else
 
 

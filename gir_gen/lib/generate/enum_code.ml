@@ -219,7 +219,7 @@ let generate_c_bitfield_converters ~namespace ~class_version bitfield =
           sprintf
             "  if (flags & %s) {\n\
             \    cons = caml_alloc(2, 0);\n\
-            \    Store_field(cons, 0, Val_int(caml_hash_variant(\"%s\"))); /* \
+            \    Store_field(cons, 0, caml_hash_variant(\"%s\")); /* \
              `%s */\n\
             \    Store_field(cons, 1, result);\n\
             \    result = cons;\n\
@@ -238,7 +238,7 @@ let generate_c_bitfield_converters ~namespace ~class_version bitfield =
     bprintf buf "%s %s(value list) {\n" bitfield.bitfield_c_type c_val_func;
     bprintf buf "  %s result = 0;\n" bitfield.bitfield_c_type;
     bprintf buf "  while (list != Val_emptylist) {\n";
-    bprintf buf "    int tag = Int_val(Field(list, 0));\n";
+    bprintf buf "    value tag = Field(list, 0);\n";
 
     List.iteri
       ~f:(fun i flag ->

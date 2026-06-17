@@ -4,4 +4,3 @@
 class type clipboard_t = GApp_launch_context_cycle_de440b34.clipboard_t
 
 class clipboard : App_launch_context_cycle_de440b34.Clipboard.t -> clipboard_t
-

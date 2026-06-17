@@ -194,71 +194,60 @@ let build_signature_section ~window ~dirty =
        ());
 
   let fl_type = Ocgtk_gdk.Gdk.Wrappers.File_list.get_type () in
-  let f_type = Gobject.Type.from_name "GdkFile" in
 
   let drop_target = Drop_target.new_ Gobject.Type.invalid [ `COPY ] in
-  drop_target#set_gtypes (Some [| fl_type; f_type |]) (Gsize.of_int 2);
-  Printf.printf "DnD setup: GdkFileList gtype=%d gtype=%d\n%!"
-    (fl_type |> Gobject.Type.to_int)
-    (Gobject.Type.from_name "GdkFileList" |> Gobject.Type.to_int);
+  drop_target#set_gtypes (Some [| fl_type |]) (Gsize.of_int 1);
   (picture :> Widget.widget_t)#add_controller
     (drop_target :> Event_controller.event_controller_t);
   ignore (drop_target#on_accept ~callback:(fun ~drop:_ -> true) ());
   ignore
     (drop_target#on_enter
        ~callback:(fun ~x:_ ~y:_ ->
-         let offered =
-           match drop_target#get_current_drop () with
-           | None -> []
-           | Some drop -> drop#get_actions ()
-         in
-         Printf.printf "on_enter %d\n"
-           (offered |> Ocgtk_gdk.Gdk_enums.dragaction_to_int);
-         let action = pick_action offered in
-         Printf.printf "on_enter: action=%d\n%!"
-           (action |> Ocgtk_gdk.Gdk_enums.dragaction_to_int);
-         action)
+          let offered =
+            match drop_target#get_current_drop () with
+            | None -> []
+            | Some drop -> drop#get_actions ()
+          in
+          pick_action offered)
        ());
   ignore
     (drop_target#on_motion
        ~callback:(fun ~x:_ ~y:_ ->
-         let offered =
-           match drop_target#get_current_drop () with
-           | None -> []
-           | Some drop -> drop#get_actions ()
-         in
-         pick_action offered)
+          let offered =
+            match drop_target#get_current_drop () with
+            | None -> []
+            | Some drop -> drop#get_actions ()
+          in
+          pick_action offered)
        ());
   ignore
     (drop_target#on_leave
        ~callback:(fun () ->
-         Printf.printf "on_leave\n%!";
-         label#set_markup "<span foreground='gray'>Drop an image here</span>")
+          label#set_markup "<span foreground='gray'>Drop an image here</span>")
        ());
   ignore
     (drop_target#on_drop
-       ~callback:(fun ~value ~x:_ ~y:_ ->
-         Printf.printf "on_drop called\n%!";
-         let ( let* ) = Option.bind in
-         let path =
-           if not (Gobject.Type.equal (Gobject.Value.get_type value) fl_type)
-           then None
-           else
-             let raw : Ocgtk_gdk.Gdk.Wrappers.File_list.t =
-               Gobject.Value.get_boxed value
-             in
-             let fl = new Ocgtk_gdk.Gdk.File_list.file_list raw in
-             let* file = List.nth_opt (fl#get_files ()) 0 in
-             file#get_path ()
-         in
-         match path with
-         | None ->
-             Printf.printf "on_drop: no file path\n%!";
-             false
-         | Some path ->
-             Printf.printf "on_drop: loading %s\n%!" path;
-             load_signature ~path ~picture ~label ~dirty;
-             true)
+       ~callback:(fun ~value:_ ~x:_ ~y:_ ->
+          let path =
+            match drop_target#get_value () with
+            | None -> None
+            | Some v ->
+                if Gobject.Type.equal (Gobject.Value.get_type v) fl_type then
+                  let raw : Ocgtk_gdk.Gdk.Wrappers.File_list.t =
+                    Gobject.Value.get_boxed v
+                  in
+                  let fl = new Ocgtk_gdk.Gdk.File_list.file_list raw in
+                  let ( let* ) = Option.bind in
+                  let* file = List.nth_opt (fl#get_files ()) 0 in
+                  file#get_path ()
+                else
+                  None
+          in
+          match path with
+          | None -> false
+          | Some path ->
+              load_signature ~path ~picture ~label ~dirty;
+              true)
        ());
 
   let frame = Frame.new_ (Some "Signature") in

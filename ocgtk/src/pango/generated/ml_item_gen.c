@@ -61,3 +61,9 @@ caml_failwith("Item requires Pango >= 1.44");
 return Val_unit;
 }
 #endif
+
+CAMLprim value ml_pango_item_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_item_get_type()));
+}

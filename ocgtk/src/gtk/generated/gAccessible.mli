@@ -4,4 +4,3 @@
 class type accessible_t = GAt_context_and__accessible.accessible_t
 
 class accessible : At_context_and__accessible.Accessible.t -> accessible_t
-

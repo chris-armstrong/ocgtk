@@ -1,23 +1,23 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Spinner: Spinner *)
 
-type t = [`spinner | `widget | `initially_unowned | `object_] Gobject.obj
+type t = [ `spinner | `widget | `initially_unowned | `object_ ] Gobject.obj
 
-(** Create a new Spinner *)
 external new_ : unit -> t = "ml_gtk_spinner_new"
+(** Create a new Spinner *)
 
 (* Methods *)
-(** Stops the animation of the spinner. *)
+
 external stop : t -> unit = "ml_gtk_spinner_stop"
+(** Stops the animation of the spinner. *)
 
-(** Starts the animation of the spinner. *)
 external start : t -> unit = "ml_gtk_spinner_start"
+(** Starts the animation of the spinner. *)
 
-(** Sets the activity of the spinner. *)
 external set_spinning : t -> bool -> unit = "ml_gtk_spinner_set_spinning"
+(** Sets the activity of the spinner. *)
 
-(** Returns whether the spinner is spinning. *)
 external get_spinning : t -> bool = "ml_gtk_spinner_get_spinning"
+(** Returns whether the spinner is spinning. *)
 
 (* Properties *)
-

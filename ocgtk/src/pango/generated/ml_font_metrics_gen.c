@@ -175,3 +175,9 @@ CAMLparam1(self);
 int result = pango_font_metrics_get_approximate_char_width(PangoFontMetrics_val(self));
 CAMLreturn(Val_int(result));
 }
+
+CAMLprim value ml_pango_font_metrics_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_font_metrics_get_type()));
+}

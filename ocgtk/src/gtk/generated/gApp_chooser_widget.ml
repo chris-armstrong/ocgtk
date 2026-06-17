@@ -1,88 +1,101 @@
 class type app_chooser_widget_t = object
-    inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget.widget_t
-    inherit GApp_chooser.app_chooser_t
-    method on_application_activated : ?after:bool -> callback:(application:Ocgtk_gio.Gio.App_info.app_info_t -> unit) -> unit -> Gobject.Signal.handler_id
-    method on_application_selected : ?after:bool -> callback:(application:Ocgtk_gio.Gio.App_info.app_info_t -> unit) -> unit -> Gobject.Signal.handler_id
-    method get_default_text : unit -> string option
-    method get_show_all : unit -> bool
-    method get_show_default : unit -> bool
-    method get_show_fallback : unit -> bool
-    method get_show_other : unit -> bool
-    method get_show_recommended : unit -> bool
-    method set_default_text : string -> unit
-    method set_show_all : bool -> unit
-    method set_show_default : bool -> unit
-    method set_show_fallback : bool -> unit
-    method set_show_other : bool -> unit
-    method set_show_recommended : bool -> unit
-    method as_app_chooser_widget : App_chooser_widget.t
+  inherit
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .widget_t
+
+  inherit GApp_chooser.app_chooser_t
+
+  method on_application_activated :
+    ?after:bool ->
+    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_application_selected :
+    ?after:bool ->
+    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method get_default_text : unit -> string option
+  method get_show_all : unit -> bool
+  method get_show_default : unit -> bool
+  method get_show_fallback : unit -> bool
+  method get_show_other : unit -> bool
+  method get_show_recommended : unit -> bool
+  method set_default_text : string -> unit
+  method set_show_all : bool -> unit
+  method set_show_default : bool -> unit
+  method set_show_fallback : bool -> unit
+  method set_show_other : bool -> unit
+  method set_show_recommended : bool -> unit
+  method as_app_chooser_widget : App_chooser_widget.t
 end
 
 (* High-level class for AppChooserWidget *)
-class app_chooser_widget (obj : App_chooser_widget.t) : app_chooser_widget_t = object (self)
-  inherit GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget.widget (obj :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget.Widget.t)
-  inherit GApp_chooser.app_chooser (App_chooser.from_gobject obj)
-  method on_application_activated ?(after = false) ~callback () =
-    App_chooser_widget.on_application_activated ~after self#as_app_chooser_widget
-      ~callback:(fun ~application -> callback ~application:(new Ocgtk_gio.Gio.App_info.app_info application))
+class app_chooser_widget (obj : App_chooser_widget.t) : app_chooser_widget_t =
+  object (self)
+    inherit
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+      .widget
+        (obj
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+             .Widget
+             .t)
 
-  method on_application_selected ?(after = false) ~callback () =
-    App_chooser_widget.on_application_selected ~after self#as_app_chooser_widget
-      ~callback:(fun ~application -> callback ~application:(new Ocgtk_gio.Gio.App_info.app_info application))
+    inherit GApp_chooser.app_chooser (App_chooser.from_gobject obj)
 
+    method on_application_activated ?(after = false) ~callback () =
+      App_chooser_widget.on_application_activated ~after
+        self#as_app_chooser_widget ~callback:(fun ~application ->
+          callback
+            ~application:(new Ocgtk_gio.Gio.App_info.app_info application))
 
-  method get_default_text : unit -> string option =
-    fun () ->
-      (App_chooser_widget.get_default_text obj)
+    method on_application_selected ?(after = false) ~callback () =
+      App_chooser_widget.on_application_selected ~after
+        self#as_app_chooser_widget ~callback:(fun ~application ->
+          callback
+            ~application:(new Ocgtk_gio.Gio.App_info.app_info application))
 
-  method get_show_all : unit -> bool =
-    fun () ->
-      (App_chooser_widget.get_show_all obj)
+    method get_default_text : unit -> string option =
+      fun () -> App_chooser_widget.get_default_text obj
 
-  method get_show_default : unit -> bool =
-    fun () ->
-      (App_chooser_widget.get_show_default obj)
+    method get_show_all : unit -> bool =
+      fun () -> App_chooser_widget.get_show_all obj
 
-  method get_show_fallback : unit -> bool =
-    fun () ->
-      (App_chooser_widget.get_show_fallback obj)
+    method get_show_default : unit -> bool =
+      fun () -> App_chooser_widget.get_show_default obj
 
-  method get_show_other : unit -> bool =
-    fun () ->
-      (App_chooser_widget.get_show_other obj)
+    method get_show_fallback : unit -> bool =
+      fun () -> App_chooser_widget.get_show_fallback obj
 
-  method get_show_recommended : unit -> bool =
-    fun () ->
-      (App_chooser_widget.get_show_recommended obj)
+    method get_show_other : unit -> bool =
+      fun () -> App_chooser_widget.get_show_other obj
 
-  method set_default_text : string -> unit =
-    fun text ->
-      (App_chooser_widget.set_default_text obj text)
+    method get_show_recommended : unit -> bool =
+      fun () -> App_chooser_widget.get_show_recommended obj
 
-  method set_show_all : bool -> unit =
-    fun setting ->
-      (App_chooser_widget.set_show_all obj setting)
+    method set_default_text : string -> unit =
+      fun text -> App_chooser_widget.set_default_text obj text
 
-  method set_show_default : bool -> unit =
-    fun setting ->
-      (App_chooser_widget.set_show_default obj setting)
+    method set_show_all : bool -> unit =
+      fun setting -> App_chooser_widget.set_show_all obj setting
 
-  method set_show_fallback : bool -> unit =
-    fun setting ->
-      (App_chooser_widget.set_show_fallback obj setting)
+    method set_show_default : bool -> unit =
+      fun setting -> App_chooser_widget.set_show_default obj setting
 
-  method set_show_other : bool -> unit =
-    fun setting ->
-      (App_chooser_widget.set_show_other obj setting)
+    method set_show_fallback : bool -> unit =
+      fun setting -> App_chooser_widget.set_show_fallback obj setting
 
-  method set_show_recommended : bool -> unit =
-    fun setting ->
-      (App_chooser_widget.set_show_recommended obj setting)
+    method set_show_other : bool -> unit =
+      fun setting -> App_chooser_widget.set_show_other obj setting
+
+    method set_show_recommended : bool -> unit =
+      fun setting -> App_chooser_widget.set_show_recommended obj setting
 
     method as_app_chooser_widget = obj
-end
+  end
 
 let new_ (content_type : string) : app_chooser_widget_t =
   let obj_ = App_chooser_widget.new_ content_type in
   new app_chooser_widget obj_
-

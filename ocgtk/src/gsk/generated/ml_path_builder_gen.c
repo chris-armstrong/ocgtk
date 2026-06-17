@@ -307,6 +307,12 @@ gsk_path_builder_add_cairo_path(GskPathBuilder_val(self), cairo_path_t_val(arg1)
 CAMLreturn(Val_unit);
 }
 
+CAMLprim value ml_gsk_path_builder_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gsk_path_builder_get_type()));
+}
+
 #else
 
 

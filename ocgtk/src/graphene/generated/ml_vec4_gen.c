@@ -647,3 +647,9 @@ caml_failwith("Vec4 requires Graphene >= 1.0");
 return Val_unit;
 }
 #endif
+
+CAMLprim value ml_graphene_vec4_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_vec4_get_type()));
+}

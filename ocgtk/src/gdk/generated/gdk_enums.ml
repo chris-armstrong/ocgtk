@@ -1,8 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Gdk Enumeration and Bitfield Converters *)
 
-type axisuse = [
-  | `IGNORE
+type axisuse =
+  [ `IGNORE
   | `X
   | `Y
   | `DELTA_X
@@ -14,8 +14,7 @@ type axisuse = [
   | `DISTANCE
   | `ROTATION
   | `SLIDER
-  | `LAST
-]
+  | `LAST ]
 
 let axisuse_of_int n =
   match n with
@@ -50,8 +49,8 @@ let axisuse_to_int v =
   | `SLIDER -> 11
   | `LAST -> 12
 
-type crossingmode = [
-  | `NORMAL
+type crossingmode =
+  [ `NORMAL
   | `GRAB
   | `UNGRAB
   | `GTK_GRAB
@@ -59,8 +58,7 @@ type crossingmode = [
   | `STATE_CHANGED
   | `TOUCH_BEGIN
   | `TOUCH_END
-  | `DEVICE_SWITCH
-]
+  | `DEVICE_SWITCH ]
 
 let crossingmode_of_int n =
   match n with
@@ -87,11 +85,7 @@ let crossingmode_to_int v =
   | `TOUCH_END -> 7
   | `DEVICE_SWITCH -> 8
 
-type devicepadfeature = [
-  | `BUTTON
-  | `RING
-  | `STRIP
-]
+type devicepadfeature = [ `BUTTON | `RING | `STRIP ]
 
 let devicepadfeature_of_int n =
   match n with
@@ -101,21 +95,10 @@ let devicepadfeature_of_int n =
   | n -> failwith (Printf.sprintf "DevicePadFeature: unknown int %d" n)
 
 let devicepadfeature_to_int v =
-  match v with
-  | `BUTTON -> 0
-  | `RING -> 1
-  | `STRIP -> 2
+  match v with `BUTTON -> 0 | `RING -> 1 | `STRIP -> 2
 
-type devicetooltype = [
-  | `UNKNOWN
-  | `PEN
-  | `ERASER
-  | `BRUSH
-  | `PENCIL
-  | `AIRBRUSH
-  | `MOUSE
-  | `LENS
-]
+type devicetooltype =
+  [ `UNKNOWN | `PEN | `ERASER | `BRUSH | `PENCIL | `AIRBRUSH | `MOUSE | `LENS ]
 
 let devicetooltype_of_int n =
   match n with
@@ -140,11 +123,7 @@ let devicetooltype_to_int v =
   | `MOUSE -> 6
   | `LENS -> 7
 
-type dmabuferror = [
-  | `NOT_AVAILABLE
-  | `UNSUPPORTED_FORMAT
-  | `CREATION_FAILED
-]
+type dmabuferror = [ `NOT_AVAILABLE | `UNSUPPORTED_FORMAT | `CREATION_FAILED ]
 
 let dmabuferror_of_int n =
   match n with
@@ -159,11 +138,7 @@ let dmabuferror_to_int v =
   | `UNSUPPORTED_FORMAT -> 1
   | `CREATION_FAILED -> 2
 
-type dragcancelreason = [
-  | `NO_TARGET
-  | `USER_CANCELLED
-  | `ERROR
-]
+type dragcancelreason = [ `NO_TARGET | `USER_CANCELLED | `ERROR ]
 
 let dragcancelreason_of_int n =
   match n with
@@ -173,13 +148,10 @@ let dragcancelreason_of_int n =
   | n -> failwith (Printf.sprintf "DragCancelReason: unknown int %d" n)
 
 let dragcancelreason_to_int v =
-  match v with
-  | `NO_TARGET -> 0
-  | `USER_CANCELLED -> 1
-  | `ERROR -> 2
+  match v with `NO_TARGET -> 0 | `USER_CANCELLED -> 1 | `ERROR -> 2
 
-type eventtype = [
-  | `DELETE
+type eventtype =
+  [ `DELETE
   | `MOTION_NOTIFY
   | `BUTTON_PRESS
   | `BUTTON_RELEASE
@@ -208,8 +180,7 @@ type eventtype = [
   | `PAD_STRIP
   | `PAD_GROUP_MODE
   | `TOUCHPAD_HOLD
-  | `EVENT_LAST
-]
+  | `EVENT_LAST ]
 
 let eventtype_of_int n =
   match n with
@@ -278,10 +249,7 @@ let eventtype_to_int v =
   | `TOUCHPAD_HOLD -> 28
   | `EVENT_LAST -> 29
 
-type fullscreenmode = [
-  | `CURRENT_MONITOR
-  | `ALL_MONITORS
-]
+type fullscreenmode = [ `CURRENT_MONITOR | `ALL_MONITORS ]
 
 let fullscreenmode_of_int n =
   match n with
@@ -290,17 +258,14 @@ let fullscreenmode_of_int n =
   | n -> failwith (Printf.sprintf "FullscreenMode: unknown int %d" n)
 
 let fullscreenmode_to_int v =
-  match v with
-  | `CURRENT_MONITOR -> 0
-  | `ALL_MONITORS -> 1
+  match v with `CURRENT_MONITOR -> 0 | `ALL_MONITORS -> 1
 
-type glerror = [
-  | `NOT_AVAILABLE
+type glerror =
+  [ `NOT_AVAILABLE
   | `UNSUPPORTED_FORMAT
   | `UNSUPPORTED_PROFILE
   | `COMPILATION_FAILED
-  | `LINK_FAILED
-]
+  | `LINK_FAILED ]
 
 let glerror_of_int n =
   match n with
@@ -319,8 +284,8 @@ let glerror_to_int v =
   | `COMPILATION_FAILED -> 3
   | `LINK_FAILED -> 4
 
-type gravity = [
-  | `NORTH_WEST
+type gravity =
+  [ `NORTH_WEST
   | `NORTH
   | `NORTH_EAST
   | `WEST
@@ -329,8 +294,7 @@ type gravity = [
   | `SOUTH_WEST
   | `SOUTH
   | `SOUTH_EAST
-  | `STATIC
-]
+  | `STATIC ]
 
 let gravity_of_int n =
   match n with
@@ -359,15 +323,14 @@ let gravity_to_int v =
   | `SOUTH_EAST -> 9
   | `STATIC -> 10
 
-type inputsource = [
-  | `MOUSE
+type inputsource =
+  [ `MOUSE
   | `PEN
   | `KEYBOARD
   | `TOUCHSCREEN
   | `TOUCHPAD
   | `TRACKPOINT
-  | `TABLET_PAD
-]
+  | `TABLET_PAD ]
 
 let inputsource_of_int n =
   match n with
@@ -390,11 +353,7 @@ let inputsource_to_int v =
   | `TRACKPOINT -> 5
   | `TABLET_PAD -> 6
 
-type keymatch = [
-  | `NONE
-  | `PARTIAL
-  | `EXACT
-]
+type keymatch = [ `NONE | `PARTIAL | `EXACT ]
 
 let keymatch_of_int n =
   match n with
@@ -403,14 +362,10 @@ let keymatch_of_int n =
   | 2 -> `EXACT
   | n -> failwith (Printf.sprintf "KeyMatch: unknown int %d" n)
 
-let keymatch_to_int v =
-  match v with
-  | `NONE -> 0
-  | `PARTIAL -> 1
-  | `EXACT -> 2
+let keymatch_to_int v = match v with `NONE -> 0 | `PARTIAL -> 1 | `EXACT -> 2
 
-type memoryformat = [
-  | `B8G8R8A8_PREMULTIPLIED
+type memoryformat =
+  [ `B8G8R8A8_PREMULTIPLIED
   | `A8R8G8B8_PREMULTIPLIED
   | `R8G8B8A8_PREMULTIPLIED
   | `B8G8R8A8
@@ -443,8 +398,7 @@ type memoryformat = [
   | `X8R8G8B8
   | `R8G8B8X8
   | `X8B8G8R8
-  | `N_FORMATS
-]
+  | `N_FORMATS ]
 
 let memoryformat_of_int n =
   match n with
@@ -521,14 +475,13 @@ let memoryformat_to_int v =
   | `X8B8G8R8 -> 32
   | `N_FORMATS -> 33
 
-type notifytype = [
-  | `ANCESTOR
+type notifytype =
+  [ `ANCESTOR
   | `VIRTUAL
   | `INFERIOR
   | `NONLINEAR
   | `NONLINEAR_VIRTUAL
-  | `UNKNOWN
-]
+  | `UNKNOWN ]
 
 let notifytype_of_int n =
   match n with
@@ -549,13 +502,7 @@ let notifytype_to_int v =
   | `NONLINEAR_VIRTUAL -> 4
   | `UNKNOWN -> 5
 
-type scrolldirection = [
-  | `UP
-  | `DOWN
-  | `LEFT
-  | `RIGHT
-  | `SMOOTH
-]
+type scrolldirection = [ `UP | `DOWN | `LEFT | `RIGHT | `SMOOTH ]
 
 let scrolldirection_of_int n =
   match n with
@@ -567,17 +514,9 @@ let scrolldirection_of_int n =
   | n -> failwith (Printf.sprintf "ScrollDirection: unknown int %d" n)
 
 let scrolldirection_to_int v =
-  match v with
-  | `UP -> 0
-  | `DOWN -> 1
-  | `LEFT -> 2
-  | `RIGHT -> 3
-  | `SMOOTH -> 4
+  match v with `UP -> 0 | `DOWN -> 1 | `LEFT -> 2 | `RIGHT -> 3 | `SMOOTH -> 4
 
-type scrollunit = [
-  | `WHEEL
-  | `SURFACE
-]
+type scrollunit = [ `WHEEL | `SURFACE ]
 
 let scrollunit_of_int n =
   match n with
@@ -585,19 +524,15 @@ let scrollunit_of_int n =
   | 1 -> `SURFACE
   | n -> failwith (Printf.sprintf "ScrollUnit: unknown int %d" n)
 
-let scrollunit_to_int v =
-  match v with
-  | `WHEEL -> 0
-  | `SURFACE -> 1
+let scrollunit_to_int v = match v with `WHEEL -> 0 | `SURFACE -> 1
 
-type subpixellayout = [
-  | `UNKNOWN
+type subpixellayout =
+  [ `UNKNOWN
   | `NONE
   | `HORIZONTAL_RGB
   | `HORIZONTAL_BGR
   | `VERTICAL_RGB
-  | `VERTICAL_BGR
-]
+  | `VERTICAL_BGR ]
 
 let subpixellayout_of_int n =
   match n with
@@ -618,16 +553,15 @@ let subpixellayout_to_int v =
   | `VERTICAL_RGB -> 4
   | `VERTICAL_BGR -> 5
 
-type surfaceedge = [
-  | `NORTH_WEST
+type surfaceedge =
+  [ `NORTH_WEST
   | `NORTH
   | `NORTH_EAST
   | `WEST
   | `EAST
   | `SOUTH_WEST
   | `SOUTH
-  | `SOUTH_EAST
-]
+  | `SOUTH_EAST ]
 
 let surfaceedge_of_int n =
   match n with
@@ -652,12 +586,8 @@ let surfaceedge_to_int v =
   | `SOUTH -> 6
   | `SOUTH_EAST -> 7
 
-type textureerror = [
-  | `TOO_LARGE
-  | `CORRUPT_IMAGE
-  | `UNSUPPORTED_CONTENT
-  | `UNSUPPORTED_FORMAT
-]
+type textureerror =
+  [ `TOO_LARGE | `CORRUPT_IMAGE | `UNSUPPORTED_CONTENT | `UNSUPPORTED_FORMAT ]
 
 let textureerror_of_int n =
   match n with
@@ -674,11 +604,7 @@ let textureerror_to_int v =
   | `UNSUPPORTED_CONTENT -> 2
   | `UNSUPPORTED_FORMAT -> 3
 
-type titlebargesture = [
-  | `DOUBLE_CLICK
-  | `RIGHT_CLICK
-  | `MIDDLE_CLICK
-]
+type titlebargesture = [ `DOUBLE_CLICK | `RIGHT_CLICK | `MIDDLE_CLICK ]
 
 let titlebargesture_of_int n =
   match n with
@@ -688,17 +614,9 @@ let titlebargesture_of_int n =
   | n -> failwith (Printf.sprintf "TitlebarGesture: unknown int %d" n)
 
 let titlebargesture_to_int v =
-  match v with
-  | `DOUBLE_CLICK -> 1
-  | `RIGHT_CLICK -> 2
-  | `MIDDLE_CLICK -> 3
+  match v with `DOUBLE_CLICK -> 1 | `RIGHT_CLICK -> 2 | `MIDDLE_CLICK -> 3
 
-type touchpadgesturephase = [
-  | `BEGIN
-  | `UPDATE
-  | `END
-  | `CANCEL
-]
+type touchpadgesturephase = [ `BEGIN | `UPDATE | `END | `CANCEL ]
 
 let touchpadgesturephase_of_int n =
   match n with
@@ -709,16 +627,9 @@ let touchpadgesturephase_of_int n =
   | n -> failwith (Printf.sprintf "TouchpadGesturePhase: unknown int %d" n)
 
 let touchpadgesturephase_to_int v =
-  match v with
-  | `BEGIN -> 0
-  | `UPDATE -> 1
-  | `END -> 2
-  | `CANCEL -> 3
+  match v with `BEGIN -> 0 | `UPDATE -> 1 | `END -> 2 | `CANCEL -> 3
 
-type vulkanerror = [
-  | `UNSUPPORTED
-  | `NOT_AVAILABLE
-]
+type vulkanerror = [ `UNSUPPORTED | `NOT_AVAILABLE ]
 
 let vulkanerror_of_int n =
   match n with
@@ -727,12 +638,10 @@ let vulkanerror_of_int n =
   | n -> failwith (Printf.sprintf "VulkanError: unknown int %d" n)
 
 let vulkanerror_to_int v =
-  match v with
-  | `UNSUPPORTED -> 0
-  | `NOT_AVAILABLE -> 1
+  match v with `UNSUPPORTED -> 0 | `NOT_AVAILABLE -> 1
 
-type anchorhints_flag = [
-  | `FLIP_X
+type anchorhints_flag =
+  [ `FLIP_X
   | `FLIP_Y
   | `SLIDE_X
   | `SLIDE_Y
@@ -740,8 +649,7 @@ type anchorhints_flag = [
   | `RESIZE_Y
   | `FLIP
   | `SLIDE
-  | `RESIZE
-]
+  | `RESIZE ]
 
 type anchorhints = anchorhints_flag list
 
@@ -770,12 +678,11 @@ let anchorhints_to_int flags =
       | `RESIZE_Y -> acc lor 32
       | `FLIP -> acc lor 3
       | `SLIDE -> acc lor 12
-      | `RESIZE -> acc lor 48
-    )
+      | `RESIZE -> acc lor 48)
     0 flags
 
-type axisflags_flag = [
-  | `X
+type axisflags_flag =
+  [ `X
   | `Y
   | `DELTA_X
   | `DELTA_Y
@@ -785,8 +692,7 @@ type axisflags_flag = [
   | `WHEEL
   | `DISTANCE
   | `ROTATION
-  | `SLIDER
-]
+  | `SLIDER ]
 
 type axisflags = axisflags_flag list
 
@@ -819,17 +725,10 @@ let axisflags_to_int flags =
       | `WHEEL -> acc lor 256
       | `DISTANCE -> acc lor 512
       | `ROTATION -> acc lor 1024
-      | `SLIDER -> acc lor 2048
-    )
+      | `SLIDER -> acc lor 2048)
     0 flags
 
-type dragaction_flag = [
-  | `COPY
-  | `MOVE
-  | `LINK
-  | `ASK
-]
-
+type dragaction_flag = [ `COPY | `MOVE | `LINK | `ASK ]
 type dragaction = dragaction_flag list
 
 let dragaction_of_int flags =
@@ -847,20 +746,18 @@ let dragaction_to_int flags =
       | `COPY -> acc lor 1
       | `MOVE -> acc lor 2
       | `LINK -> acc lor 4
-      | `ASK -> acc lor 8
-    )
+      | `ASK -> acc lor 8)
     0 flags
 
-type frameclockphase_flag = [
-  | `NONE
+type frameclockphase_flag =
+  [ `NONE
   | `FLUSH_EVENTS
   | `BEFORE_PAINT
   | `UPDATE
   | `LAYOUT
   | `PAINT
   | `RESUME_EVENTS
-  | `AFTER_PAINT
-]
+  | `AFTER_PAINT ]
 
 type frameclockphase = frameclockphase_flag list
 
@@ -887,15 +784,10 @@ let frameclockphase_to_int flags =
       | `LAYOUT -> acc lor 8
       | `PAINT -> acc lor 16
       | `RESUME_EVENTS -> acc lor 32
-      | `AFTER_PAINT -> acc lor 64
-    )
+      | `AFTER_PAINT -> acc lor 64)
     0 flags
 
-type glapi_flag = [
-  | `GL
-  | `GLES
-]
-
+type glapi_flag = [ `GL | `GLES ]
 type glapi = glapi_flag list
 
 let glapi_of_int flags =
@@ -906,15 +798,11 @@ let glapi_of_int flags =
 
 let glapi_to_int flags =
   List.fold_left
-    (fun acc flag ->
-      match flag with
-      | `GL -> acc lor 1
-      | `GLES -> acc lor 2
-    )
+    (fun acc flag -> match flag with `GL -> acc lor 1 | `GLES -> acc lor 2)
     0 flags
 
-type modifiertype_flag = [
-  | `NO_MODIFIER_MASK
+type modifiertype_flag =
+  [ `NO_MODIFIER_MASK
   | `SHIFT_MASK
   | `LOCK_MASK
   | `CONTROL_MASK
@@ -926,8 +814,7 @@ type modifiertype_flag = [
   | `BUTTON5_MASK
   | `SUPER_MASK
   | `HYPER_MASK
-  | `META_MASK
-]
+  | `META_MASK ]
 
 type modifiertype = modifiertype_flag list
 
@@ -964,15 +851,10 @@ let modifiertype_to_int flags =
       | `BUTTON5_MASK -> acc lor 4096
       | `SUPER_MASK -> acc lor 67108864
       | `HYPER_MASK -> acc lor 134217728
-      | `META_MASK -> acc lor 268435456
-    )
+      | `META_MASK -> acc lor 268435456)
     0 flags
 
-type paintableflags_flag = [
-  | `SIZE
-  | `CONTENTS
-]
-
+type paintableflags_flag = [ `SIZE | `CONTENTS ]
 type paintableflags = paintableflags_flag list
 
 let paintableflags_of_int flags =
@@ -984,22 +866,18 @@ let paintableflags_of_int flags =
 let paintableflags_to_int flags =
   List.fold_left
     (fun acc flag ->
-      match flag with
-      | `SIZE -> acc lor 1
-      | `CONTENTS -> acc lor 2
-    )
+      match flag with `SIZE -> acc lor 1 | `CONTENTS -> acc lor 2)
     0 flags
 
-type seatcapabilities_flag = [
-  | `NONE
+type seatcapabilities_flag =
+  [ `NONE
   | `POINTER
   | `TOUCH
   | `TABLET_STYLUS
   | `KEYBOARD
   | `TABLET_PAD
   | `ALL_POINTING
-  | `ALL
-]
+  | `ALL ]
 
 type seatcapabilities = seatcapabilities_flag list
 
@@ -1026,12 +904,11 @@ let seatcapabilities_to_int flags =
       | `KEYBOARD -> acc lor 8
       | `TABLET_PAD -> acc lor 16
       | `ALL_POINTING -> acc lor 7
-      | `ALL -> acc lor 31
-    )
+      | `ALL -> acc lor 31)
     0 flags
 
-type toplevelstate_flag = [
-  | `MINIMIZED
+type toplevelstate_flag =
+  [ `MINIMIZED
   | `MAXIMIZED
   | `STICKY
   | `FULLSCREEN
@@ -1047,8 +924,7 @@ type toplevelstate_flag = [
   | `BOTTOM_RESIZABLE
   | `LEFT_TILED
   | `LEFT_RESIZABLE
-  | `SUSPENDED
-]
+  | `SUSPENDED ]
 
 type toplevelstate = toplevelstate_flag list
 
@@ -1093,7 +969,5 @@ let toplevelstate_to_int flags =
       | `BOTTOM_RESIZABLE -> acc lor 8192
       | `LEFT_TILED -> acc lor 16384
       | `LEFT_RESIZABLE -> acc lor 32768
-      | `SUSPENDED -> acc lor 65536
-    )
+      | `SUSPENDED -> acc lor 65536)
     0 flags
-

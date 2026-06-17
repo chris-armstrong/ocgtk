@@ -175,6 +175,12 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+CAMLprim value ml_gsk_stroke_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gsk_stroke_get_type()));
+}
+
 #else
 
 

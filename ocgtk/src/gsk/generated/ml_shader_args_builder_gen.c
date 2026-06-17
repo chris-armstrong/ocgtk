@@ -110,3 +110,9 @@ CAMLparam1(self);
 GskShaderArgsBuilder* result = gsk_shader_args_builder_ref(GskShaderArgsBuilder_val(self));
 CAMLreturn(Val_GskShaderArgsBuilder(result));
 }
+
+CAMLprim value ml_gsk_shader_args_builder_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gsk_shader_args_builder_get_type()));
+}

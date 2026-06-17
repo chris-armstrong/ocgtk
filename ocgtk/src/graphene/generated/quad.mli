@@ -33,3 +33,5 @@ external contains : t -> Point.t -> bool = "ml_graphene_quad_contains"
 
 external bounds : t -> Rect.t = "ml_graphene_quad_bounds"
 (** Computes the bounding rectangle of @q and places it into @r. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_graphene_quad_get_type"

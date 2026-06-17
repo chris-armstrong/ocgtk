@@ -1044,55 +1044,55 @@ value Val_GdkAnchorHints(GdkAnchorHints flags) {
 
   if (flags & GDK_ANCHOR_FLIP_X) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FLIP_X"))); /* `FLIP_X */
+    Store_field(cons, 0, caml_hash_variant("FLIP_X")); /* `FLIP_X */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_ANCHOR_FLIP_Y) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FLIP_Y"))); /* `FLIP_Y */
+    Store_field(cons, 0, caml_hash_variant("FLIP_Y")); /* `FLIP_Y */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_ANCHOR_SLIDE_X) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SLIDE_X"))); /* `SLIDE_X */
+    Store_field(cons, 0, caml_hash_variant("SLIDE_X")); /* `SLIDE_X */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_ANCHOR_SLIDE_Y) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SLIDE_Y"))); /* `SLIDE_Y */
+    Store_field(cons, 0, caml_hash_variant("SLIDE_Y")); /* `SLIDE_Y */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_ANCHOR_RESIZE_X) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("RESIZE_X"))); /* `RESIZE_X */
+    Store_field(cons, 0, caml_hash_variant("RESIZE_X")); /* `RESIZE_X */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_ANCHOR_RESIZE_Y) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("RESIZE_Y"))); /* `RESIZE_Y */
+    Store_field(cons, 0, caml_hash_variant("RESIZE_Y")); /* `RESIZE_Y */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_ANCHOR_FLIP) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FLIP"))); /* `FLIP */
+    Store_field(cons, 0, caml_hash_variant("FLIP")); /* `FLIP */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_ANCHOR_SLIDE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SLIDE"))); /* `SLIDE */
+    Store_field(cons, 0, caml_hash_variant("SLIDE")); /* `SLIDE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_ANCHOR_RESIZE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("RESIZE"))); /* `RESIZE */
+    Store_field(cons, 0, caml_hash_variant("RESIZE")); /* `RESIZE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -1104,7 +1104,7 @@ value Val_GdkAnchorHints(GdkAnchorHints flags) {
 GdkAnchorHints GdkAnchorHints_val(value list) {
   GdkAnchorHints result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("FLIP_X")) result |= GDK_ANCHOR_FLIP_X; /* `FLIP_X */
     else if (tag == caml_hash_variant("FLIP_Y")) result |= GDK_ANCHOR_FLIP_Y; /* `FLIP_Y */
     else if (tag == caml_hash_variant("SLIDE_X")) result |= GDK_ANCHOR_SLIDE_X; /* `SLIDE_X */
@@ -1127,67 +1127,67 @@ value Val_GdkAxisFlags(GdkAxisFlags flags) {
 
   if (flags & GDK_AXIS_FLAG_X) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("X"))); /* `X */
+    Store_field(cons, 0, caml_hash_variant("X")); /* `X */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_AXIS_FLAG_Y) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("Y"))); /* `Y */
+    Store_field(cons, 0, caml_hash_variant("Y")); /* `Y */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_AXIS_FLAG_DELTA_X) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DELTA_X"))); /* `DELTA_X */
+    Store_field(cons, 0, caml_hash_variant("DELTA_X")); /* `DELTA_X */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_AXIS_FLAG_DELTA_Y) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DELTA_Y"))); /* `DELTA_Y */
+    Store_field(cons, 0, caml_hash_variant("DELTA_Y")); /* `DELTA_Y */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_AXIS_FLAG_PRESSURE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("PRESSURE"))); /* `PRESSURE */
+    Store_field(cons, 0, caml_hash_variant("PRESSURE")); /* `PRESSURE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_AXIS_FLAG_XTILT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("XTILT"))); /* `XTILT */
+    Store_field(cons, 0, caml_hash_variant("XTILT")); /* `XTILT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_AXIS_FLAG_YTILT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("YTILT"))); /* `YTILT */
+    Store_field(cons, 0, caml_hash_variant("YTILT")); /* `YTILT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_AXIS_FLAG_WHEEL) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("WHEEL"))); /* `WHEEL */
+    Store_field(cons, 0, caml_hash_variant("WHEEL")); /* `WHEEL */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_AXIS_FLAG_DISTANCE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DISTANCE"))); /* `DISTANCE */
+    Store_field(cons, 0, caml_hash_variant("DISTANCE")); /* `DISTANCE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_AXIS_FLAG_ROTATION) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ROTATION"))); /* `ROTATION */
+    Store_field(cons, 0, caml_hash_variant("ROTATION")); /* `ROTATION */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_AXIS_FLAG_SLIDER) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SLIDER"))); /* `SLIDER */
+    Store_field(cons, 0, caml_hash_variant("SLIDER")); /* `SLIDER */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -1199,7 +1199,7 @@ value Val_GdkAxisFlags(GdkAxisFlags flags) {
 GdkAxisFlags GdkAxisFlags_val(value list) {
   GdkAxisFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("X")) result |= GDK_AXIS_FLAG_X; /* `X */
     else if (tag == caml_hash_variant("Y")) result |= GDK_AXIS_FLAG_Y; /* `Y */
     else if (tag == caml_hash_variant("DELTA_X")) result |= GDK_AXIS_FLAG_DELTA_X; /* `DELTA_X */
@@ -1224,25 +1224,25 @@ value Val_GdkDragAction(GdkDragAction flags) {
 
   if (flags & GDK_ACTION_COPY) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("COPY"))); /* `COPY */
+    Store_field(cons, 0, caml_hash_variant("COPY")); /* `COPY */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_ACTION_MOVE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("MOVE"))); /* `MOVE */
+    Store_field(cons, 0, caml_hash_variant("MOVE")); /* `MOVE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_ACTION_LINK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("LINK"))); /* `LINK */
+    Store_field(cons, 0, caml_hash_variant("LINK")); /* `LINK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_ACTION_ASK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ASK"))); /* `ASK */
+    Store_field(cons, 0, caml_hash_variant("ASK")); /* `ASK */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -1254,7 +1254,7 @@ value Val_GdkDragAction(GdkDragAction flags) {
 GdkDragAction GdkDragAction_val(value list) {
   GdkDragAction result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("COPY")) result |= GDK_ACTION_COPY; /* `COPY */
     else if (tag == caml_hash_variant("MOVE")) result |= GDK_ACTION_MOVE; /* `MOVE */
     else if (tag == caml_hash_variant("LINK")) result |= GDK_ACTION_LINK; /* `LINK */
@@ -1272,49 +1272,49 @@ value Val_GdkFrameClockPhase(GdkFrameClockPhase flags) {
 
   if (flags & GDK_FRAME_CLOCK_PHASE_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_FRAME_CLOCK_PHASE_FLUSH_EVENTS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FLUSH_EVENTS"))); /* `FLUSH_EVENTS */
+    Store_field(cons, 0, caml_hash_variant("FLUSH_EVENTS")); /* `FLUSH_EVENTS */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_FRAME_CLOCK_PHASE_BEFORE_PAINT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("BEFORE_PAINT"))); /* `BEFORE_PAINT */
+    Store_field(cons, 0, caml_hash_variant("BEFORE_PAINT")); /* `BEFORE_PAINT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_FRAME_CLOCK_PHASE_UPDATE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("UPDATE"))); /* `UPDATE */
+    Store_field(cons, 0, caml_hash_variant("UPDATE")); /* `UPDATE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_FRAME_CLOCK_PHASE_LAYOUT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("LAYOUT"))); /* `LAYOUT */
+    Store_field(cons, 0, caml_hash_variant("LAYOUT")); /* `LAYOUT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_FRAME_CLOCK_PHASE_PAINT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("PAINT"))); /* `PAINT */
+    Store_field(cons, 0, caml_hash_variant("PAINT")); /* `PAINT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_FRAME_CLOCK_PHASE_RESUME_EVENTS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("RESUME_EVENTS"))); /* `RESUME_EVENTS */
+    Store_field(cons, 0, caml_hash_variant("RESUME_EVENTS")); /* `RESUME_EVENTS */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_FRAME_CLOCK_PHASE_AFTER_PAINT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("AFTER_PAINT"))); /* `AFTER_PAINT */
+    Store_field(cons, 0, caml_hash_variant("AFTER_PAINT")); /* `AFTER_PAINT */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -1326,7 +1326,7 @@ value Val_GdkFrameClockPhase(GdkFrameClockPhase flags) {
 GdkFrameClockPhase GdkFrameClockPhase_val(value list) {
   GdkFrameClockPhase result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= GDK_FRAME_CLOCK_PHASE_NONE; /* `NONE */
     else if (tag == caml_hash_variant("FLUSH_EVENTS")) result |= GDK_FRAME_CLOCK_PHASE_FLUSH_EVENTS; /* `FLUSH_EVENTS */
     else if (tag == caml_hash_variant("BEFORE_PAINT")) result |= GDK_FRAME_CLOCK_PHASE_BEFORE_PAINT; /* `BEFORE_PAINT */
@@ -1349,13 +1349,13 @@ value Val_GdkGLAPI(GdkGLAPI flags) {
 
   if (flags & GDK_GL_API_GL) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("GL"))); /* `GL */
+    Store_field(cons, 0, caml_hash_variant("GL")); /* `GL */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_GL_API_GLES) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("GLES"))); /* `GLES */
+    Store_field(cons, 0, caml_hash_variant("GLES")); /* `GLES */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -1367,7 +1367,7 @@ value Val_GdkGLAPI(GdkGLAPI flags) {
 GdkGLAPI GdkGLAPI_val(value list) {
   GdkGLAPI result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("GL")) result |= GDK_GL_API_GL; /* `GL */
     else if (tag == caml_hash_variant("GLES")) result |= GDK_GL_API_GLES; /* `GLES */
     list = Field(list, 1);
@@ -1386,7 +1386,7 @@ value Val_GdkModifierType(GdkModifierType flags) {
 #if GTK_CHECK_VERSION(4,14,0)
   if (flags & GDK_NO_MODIFIER_MASK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NO_MODIFIER_MASK"))); /* `NO_MODIFIER_MASK */
+    Store_field(cons, 0, caml_hash_variant("NO_MODIFIER_MASK")); /* `NO_MODIFIER_MASK */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -1394,73 +1394,73 @@ value Val_GdkModifierType(GdkModifierType flags) {
 #endif
   if (flags & GDK_SHIFT_MASK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SHIFT_MASK"))); /* `SHIFT_MASK */
+    Store_field(cons, 0, caml_hash_variant("SHIFT_MASK")); /* `SHIFT_MASK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_LOCK_MASK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("LOCK_MASK"))); /* `LOCK_MASK */
+    Store_field(cons, 0, caml_hash_variant("LOCK_MASK")); /* `LOCK_MASK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_CONTROL_MASK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("CONTROL_MASK"))); /* `CONTROL_MASK */
+    Store_field(cons, 0, caml_hash_variant("CONTROL_MASK")); /* `CONTROL_MASK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_ALT_MASK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ALT_MASK"))); /* `ALT_MASK */
+    Store_field(cons, 0, caml_hash_variant("ALT_MASK")); /* `ALT_MASK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_BUTTON1_MASK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("BUTTON1_MASK"))); /* `BUTTON1_MASK */
+    Store_field(cons, 0, caml_hash_variant("BUTTON1_MASK")); /* `BUTTON1_MASK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_BUTTON2_MASK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("BUTTON2_MASK"))); /* `BUTTON2_MASK */
+    Store_field(cons, 0, caml_hash_variant("BUTTON2_MASK")); /* `BUTTON2_MASK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_BUTTON3_MASK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("BUTTON3_MASK"))); /* `BUTTON3_MASK */
+    Store_field(cons, 0, caml_hash_variant("BUTTON3_MASK")); /* `BUTTON3_MASK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_BUTTON4_MASK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("BUTTON4_MASK"))); /* `BUTTON4_MASK */
+    Store_field(cons, 0, caml_hash_variant("BUTTON4_MASK")); /* `BUTTON4_MASK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_BUTTON5_MASK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("BUTTON5_MASK"))); /* `BUTTON5_MASK */
+    Store_field(cons, 0, caml_hash_variant("BUTTON5_MASK")); /* `BUTTON5_MASK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_SUPER_MASK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SUPER_MASK"))); /* `SUPER_MASK */
+    Store_field(cons, 0, caml_hash_variant("SUPER_MASK")); /* `SUPER_MASK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_HYPER_MASK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("HYPER_MASK"))); /* `HYPER_MASK */
+    Store_field(cons, 0, caml_hash_variant("HYPER_MASK")); /* `HYPER_MASK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_META_MASK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("META_MASK"))); /* `META_MASK */
+    Store_field(cons, 0, caml_hash_variant("META_MASK")); /* `META_MASK */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -1472,7 +1472,7 @@ value Val_GdkModifierType(GdkModifierType flags) {
 GdkModifierType GdkModifierType_val(value list) {
   GdkModifierType result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
 #if GTK_CHECK_VERSION(4,14,0)
     if (tag == caml_hash_variant("NO_MODIFIER_MASK")) result |= GDK_NO_MODIFIER_MASK; /* `NO_MODIFIER_MASK */
 
@@ -1504,13 +1504,13 @@ value Val_GdkPaintableFlags(GdkPaintableFlags flags) {
 
   if (flags & GDK_PAINTABLE_STATIC_SIZE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SIZE"))); /* `SIZE */
+    Store_field(cons, 0, caml_hash_variant("SIZE")); /* `SIZE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_PAINTABLE_STATIC_CONTENTS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("CONTENTS"))); /* `CONTENTS */
+    Store_field(cons, 0, caml_hash_variant("CONTENTS")); /* `CONTENTS */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -1522,7 +1522,7 @@ value Val_GdkPaintableFlags(GdkPaintableFlags flags) {
 GdkPaintableFlags GdkPaintableFlags_val(value list) {
   GdkPaintableFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("SIZE")) result |= GDK_PAINTABLE_STATIC_SIZE; /* `SIZE */
     else if (tag == caml_hash_variant("CONTENTS")) result |= GDK_PAINTABLE_STATIC_CONTENTS; /* `CONTENTS */
     list = Field(list, 1);
@@ -1538,49 +1538,49 @@ value Val_GdkSeatCapabilities(GdkSeatCapabilities flags) {
 
   if (flags & GDK_SEAT_CAPABILITY_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_SEAT_CAPABILITY_POINTER) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("POINTER"))); /* `POINTER */
+    Store_field(cons, 0, caml_hash_variant("POINTER")); /* `POINTER */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_SEAT_CAPABILITY_TOUCH) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("TOUCH"))); /* `TOUCH */
+    Store_field(cons, 0, caml_hash_variant("TOUCH")); /* `TOUCH */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_SEAT_CAPABILITY_TABLET_STYLUS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("TABLET_STYLUS"))); /* `TABLET_STYLUS */
+    Store_field(cons, 0, caml_hash_variant("TABLET_STYLUS")); /* `TABLET_STYLUS */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_SEAT_CAPABILITY_KEYBOARD) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("KEYBOARD"))); /* `KEYBOARD */
+    Store_field(cons, 0, caml_hash_variant("KEYBOARD")); /* `KEYBOARD */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_SEAT_CAPABILITY_TABLET_PAD) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("TABLET_PAD"))); /* `TABLET_PAD */
+    Store_field(cons, 0, caml_hash_variant("TABLET_PAD")); /* `TABLET_PAD */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_SEAT_CAPABILITY_ALL_POINTING) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ALL_POINTING"))); /* `ALL_POINTING */
+    Store_field(cons, 0, caml_hash_variant("ALL_POINTING")); /* `ALL_POINTING */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_SEAT_CAPABILITY_ALL) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ALL"))); /* `ALL */
+    Store_field(cons, 0, caml_hash_variant("ALL")); /* `ALL */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -1592,7 +1592,7 @@ value Val_GdkSeatCapabilities(GdkSeatCapabilities flags) {
 GdkSeatCapabilities GdkSeatCapabilities_val(value list) {
   GdkSeatCapabilities result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= GDK_SEAT_CAPABILITY_NONE; /* `NONE */
     else if (tag == caml_hash_variant("POINTER")) result |= GDK_SEAT_CAPABILITY_POINTER; /* `POINTER */
     else if (tag == caml_hash_variant("TOUCH")) result |= GDK_SEAT_CAPABILITY_TOUCH; /* `TOUCH */
@@ -1614,104 +1614,104 @@ value Val_GdkToplevelState(GdkToplevelState flags) {
 
   if (flags & GDK_TOPLEVEL_STATE_MINIMIZED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("MINIMIZED"))); /* `MINIMIZED */
+    Store_field(cons, 0, caml_hash_variant("MINIMIZED")); /* `MINIMIZED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_TOPLEVEL_STATE_MAXIMIZED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("MAXIMIZED"))); /* `MAXIMIZED */
+    Store_field(cons, 0, caml_hash_variant("MAXIMIZED")); /* `MAXIMIZED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_TOPLEVEL_STATE_STICKY) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("STICKY"))); /* `STICKY */
+    Store_field(cons, 0, caml_hash_variant("STICKY")); /* `STICKY */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_TOPLEVEL_STATE_FULLSCREEN) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FULLSCREEN"))); /* `FULLSCREEN */
+    Store_field(cons, 0, caml_hash_variant("FULLSCREEN")); /* `FULLSCREEN */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_TOPLEVEL_STATE_ABOVE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ABOVE"))); /* `ABOVE */
+    Store_field(cons, 0, caml_hash_variant("ABOVE")); /* `ABOVE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_TOPLEVEL_STATE_BELOW) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("BELOW"))); /* `BELOW */
+    Store_field(cons, 0, caml_hash_variant("BELOW")); /* `BELOW */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_TOPLEVEL_STATE_FOCUSED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FOCUSED"))); /* `FOCUSED */
+    Store_field(cons, 0, caml_hash_variant("FOCUSED")); /* `FOCUSED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_TOPLEVEL_STATE_TILED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("TILED"))); /* `TILED */
+    Store_field(cons, 0, caml_hash_variant("TILED")); /* `TILED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_TOPLEVEL_STATE_TOP_TILED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("TOP_TILED"))); /* `TOP_TILED */
+    Store_field(cons, 0, caml_hash_variant("TOP_TILED")); /* `TOP_TILED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_TOPLEVEL_STATE_TOP_RESIZABLE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("TOP_RESIZABLE"))); /* `TOP_RESIZABLE */
+    Store_field(cons, 0, caml_hash_variant("TOP_RESIZABLE")); /* `TOP_RESIZABLE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_TOPLEVEL_STATE_RIGHT_TILED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("RIGHT_TILED"))); /* `RIGHT_TILED */
+    Store_field(cons, 0, caml_hash_variant("RIGHT_TILED")); /* `RIGHT_TILED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_TOPLEVEL_STATE_RIGHT_RESIZABLE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("RIGHT_RESIZABLE"))); /* `RIGHT_RESIZABLE */
+    Store_field(cons, 0, caml_hash_variant("RIGHT_RESIZABLE")); /* `RIGHT_RESIZABLE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_TOPLEVEL_STATE_BOTTOM_TILED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("BOTTOM_TILED"))); /* `BOTTOM_TILED */
+    Store_field(cons, 0, caml_hash_variant("BOTTOM_TILED")); /* `BOTTOM_TILED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_TOPLEVEL_STATE_BOTTOM_RESIZABLE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("BOTTOM_RESIZABLE"))); /* `BOTTOM_RESIZABLE */
+    Store_field(cons, 0, caml_hash_variant("BOTTOM_RESIZABLE")); /* `BOTTOM_RESIZABLE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_TOPLEVEL_STATE_LEFT_TILED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("LEFT_TILED"))); /* `LEFT_TILED */
+    Store_field(cons, 0, caml_hash_variant("LEFT_TILED")); /* `LEFT_TILED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_TOPLEVEL_STATE_LEFT_RESIZABLE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("LEFT_RESIZABLE"))); /* `LEFT_RESIZABLE */
+    Store_field(cons, 0, caml_hash_variant("LEFT_RESIZABLE")); /* `LEFT_RESIZABLE */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GTK_CHECK_VERSION(4,12,0)
   if (flags & GDK_TOPLEVEL_STATE_SUSPENDED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SUSPENDED"))); /* `SUSPENDED */
+    Store_field(cons, 0, caml_hash_variant("SUSPENDED")); /* `SUSPENDED */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -1725,7 +1725,7 @@ value Val_GdkToplevelState(GdkToplevelState flags) {
 GdkToplevelState GdkToplevelState_val(value list) {
   GdkToplevelState result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("MINIMIZED")) result |= GDK_TOPLEVEL_STATE_MINIMIZED; /* `MINIMIZED */
     else if (tag == caml_hash_variant("MAXIMIZED")) result |= GDK_TOPLEVEL_STATE_MAXIMIZED; /* `MAXIMIZED */
     else if (tag == caml_hash_variant("STICKY")) result |= GDK_TOPLEVEL_STATE_STICKY; /* `STICKY */

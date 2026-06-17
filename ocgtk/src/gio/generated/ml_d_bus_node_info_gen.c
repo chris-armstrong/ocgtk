@@ -68,6 +68,12 @@ GDBusInterfaceInfo* result = g_dbus_node_info_lookup_interface(GDBusNodeInfo_val
 CAMLreturn(Val_option(result, Val_GDBusInterfaceInfo));
 }
 
+CAMLprim value ml_gio_d_bus_node_info_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(g_dbus_node_info_get_type()));
+}
+
 #else
 
 

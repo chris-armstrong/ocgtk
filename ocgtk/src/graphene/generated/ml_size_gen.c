@@ -85,6 +85,12 @@ _Bool result = graphene_size_equal(graphene_size_t_val(self), graphene_size_t_va
 CAMLreturn(Val_bool(result));
 }
 
+CAMLprim value ml_graphene_size_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_size_get_type()));
+}
+
 #else
 
 

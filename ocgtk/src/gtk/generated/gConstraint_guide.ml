@@ -1,80 +1,68 @@
 class type constraint_guide_t = object
-    inherit GConstraint_target.constraint_target_t
-    method get_name : unit -> string option
-    method get_strength : unit -> Gtk_enums.constraintstrength
-    method set_max_size : int -> int -> unit
-    method set_min_size : int -> int -> unit
-    method set_name : string option -> unit
-    method set_nat_size : int -> int -> unit
-    method set_strength : Gtk_enums.constraintstrength -> unit
-    method max_height : int
-    method set_max_height : int -> unit
-    method max_width : int
-    method set_max_width : int -> unit
-    method min_height : int
-    method set_min_height : int -> unit
-    method min_width : int
-    method set_min_width : int -> unit
-    method nat_height : int
-    method set_nat_height : int -> unit
-    method nat_width : int
-    method set_nat_width : int -> unit
-    method as_constraint_guide : Constraint_guide.t
+  inherit GConstraint_target.constraint_target_t
+  method get_name : unit -> string option
+  method get_strength : unit -> Gtk_enums.constraintstrength
+  method set_max_size : int -> int -> unit
+  method set_min_size : int -> int -> unit
+  method set_name : string option -> unit
+  method set_nat_size : int -> int -> unit
+  method set_strength : Gtk_enums.constraintstrength -> unit
+  method max_height : int
+  method set_max_height : int -> unit
+  method max_width : int
+  method set_max_width : int -> unit
+  method min_height : int
+  method set_min_height : int -> unit
+  method min_width : int
+  method set_min_width : int -> unit
+  method nat_height : int
+  method set_nat_height : int -> unit
+  method nat_width : int
+  method set_nat_width : int -> unit
+  method as_constraint_guide : Constraint_guide.t
 end
 
 (* High-level class for ConstraintGuide *)
-class constraint_guide (obj : Constraint_guide.t) : constraint_guide_t = object (self)
-  inherit GConstraint_target.constraint_target (Constraint_target.from_gobject obj)
+class constraint_guide (obj : Constraint_guide.t) : constraint_guide_t =
+  object (self)
+    inherit
+      GConstraint_target.constraint_target (Constraint_target.from_gobject obj)
 
-  method get_name : unit -> string option =
-    fun () ->
-      (Constraint_guide.get_name obj)
+    method get_name : unit -> string option =
+      fun () -> Constraint_guide.get_name obj
 
-  method get_strength : unit -> Gtk_enums.constraintstrength =
-    fun () ->
-      (Constraint_guide.get_strength obj)
+    method get_strength : unit -> Gtk_enums.constraintstrength =
+      fun () -> Constraint_guide.get_strength obj
 
-  method set_max_size : int -> int -> unit =
-    fun width height ->
-      (Constraint_guide.set_max_size obj width height)
+    method set_max_size : int -> int -> unit =
+      fun width height -> Constraint_guide.set_max_size obj width height
 
-  method set_min_size : int -> int -> unit =
-    fun width height ->
-      (Constraint_guide.set_min_size obj width height)
+    method set_min_size : int -> int -> unit =
+      fun width height -> Constraint_guide.set_min_size obj width height
 
-  method set_name : string option -> unit =
-    fun name ->
-      (Constraint_guide.set_name obj name)
+    method set_name : string option -> unit =
+      fun name -> Constraint_guide.set_name obj name
 
-  method set_nat_size : int -> int -> unit =
-    fun width height ->
-      (Constraint_guide.set_nat_size obj width height)
+    method set_nat_size : int -> int -> unit =
+      fun width height -> Constraint_guide.set_nat_size obj width height
 
-  method set_strength : Gtk_enums.constraintstrength -> unit =
-    fun strength ->
-      (Constraint_guide.set_strength obj strength)
+    method set_strength : Gtk_enums.constraintstrength -> unit =
+      fun strength -> Constraint_guide.set_strength obj strength
 
-  method max_height = Constraint_guide.get_max_height obj
-  method set_max_height v =  Constraint_guide.set_max_height obj v
-
-  method max_width = Constraint_guide.get_max_width obj
-  method set_max_width v =  Constraint_guide.set_max_width obj v
-
-  method min_height = Constraint_guide.get_min_height obj
-  method set_min_height v =  Constraint_guide.set_min_height obj v
-
-  method min_width = Constraint_guide.get_min_width obj
-  method set_min_width v =  Constraint_guide.set_min_width obj v
-
-  method nat_height = Constraint_guide.get_nat_height obj
-  method set_nat_height v =  Constraint_guide.set_nat_height obj v
-
-  method nat_width = Constraint_guide.get_nat_width obj
-  method set_nat_width v =  Constraint_guide.set_nat_width obj v
-
+    method max_height = Constraint_guide.get_max_height obj
+    method set_max_height v = Constraint_guide.set_max_height obj v
+    method max_width = Constraint_guide.get_max_width obj
+    method set_max_width v = Constraint_guide.set_max_width obj v
+    method min_height = Constraint_guide.get_min_height obj
+    method set_min_height v = Constraint_guide.set_min_height obj v
+    method min_width = Constraint_guide.get_min_width obj
+    method set_min_width v = Constraint_guide.set_min_width obj v
+    method nat_height = Constraint_guide.get_nat_height obj
+    method set_nat_height v = Constraint_guide.set_nat_height obj v
+    method nat_width = Constraint_guide.get_nat_width obj
+    method set_nat_width v = Constraint_guide.set_nat_width obj v
     method as_constraint_guide = obj
-end
+  end
 
 let new_ () : constraint_guide_t =
   new constraint_guide (Constraint_guide.new_ ())
-
