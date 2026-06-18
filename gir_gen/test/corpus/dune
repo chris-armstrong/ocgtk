@@ -1,0 +1,90 @@
+; Cross-namespace reference files for the signal corpus.
+;
+; Each rule invokes [gir_gen references] over one namespace's GIR + override
+; file, producing the same [*-references.sexp] artefact that the production
+; bindings generator consumes in [scripts/generate-bindings.sh]. The corpus
+; test loads all nine files at runtime so signal classification sees the same
+; cross-namespace knowledge the real generator does — without them, every
+; cross-namespace type would fall off to [Tk_Unknown] and the baseline would
+; over-report skips.
+
+(rule
+ (target cairo-references.sexp)
+ (deps
+  (:gir_gen ../../bin/gir_gen.exe)
+  (:gir %{workspace_root}/gir/cairo-1.0.gir)
+  (:overrides %{workspace_root}/ocgtk/overrides/cairo.sexp))
+ (action
+  (run %{gir_gen} references -o %{overrides} %{gir} %{target})))
+
+(rule
+ (target gio-references.sexp)
+ (deps
+  (:gir_gen ../../bin/gir_gen.exe)
+  (:gir %{workspace_root}/gir/Gio-2.0.gir)
+  (:overrides %{workspace_root}/ocgtk/overrides/gio.sexp))
+ (action
+  (run %{gir_gen} references -o %{overrides} %{gir} %{target})))
+
+(rule
+ (target gdk-references.sexp)
+ (deps
+  (:gir_gen ../../bin/gir_gen.exe)
+  (:gir %{workspace_root}/gir/Gdk-4.0.gir)
+  (:overrides %{workspace_root}/ocgtk/overrides/gdk.sexp))
+ (action
+  (run %{gir_gen} references -o %{overrides} %{gir} %{target})))
+
+(rule
+ (target graphene-references.sexp)
+ (deps
+  (:gir_gen ../../bin/gir_gen.exe)
+  (:gir %{workspace_root}/gir/Graphene-1.0.gir)
+  (:overrides %{workspace_root}/ocgtk/overrides/graphene.sexp))
+ (action
+  (run %{gir_gen} references -o %{overrides} %{gir} %{target})))
+
+(rule
+ (target gdkpixbuf-references.sexp)
+ (deps
+  (:gir_gen ../../bin/gir_gen.exe)
+  (:gir %{workspace_root}/gir/GdkPixbuf-2.0.gir)
+  (:overrides %{workspace_root}/ocgtk/overrides/gdkpixbuf.sexp))
+ (action
+  (run %{gir_gen} references -o %{overrides} %{gir} %{target})))
+
+(rule
+ (target pango-references.sexp)
+ (deps
+  (:gir_gen ../../bin/gir_gen.exe)
+  (:gir %{workspace_root}/gir/Pango-1.0.gir)
+  (:overrides %{workspace_root}/ocgtk/overrides/pango.sexp))
+ (action
+  (run %{gir_gen} references -o %{overrides} %{gir} %{target})))
+
+(rule
+ (target gsk-references.sexp)
+ (deps
+  (:gir_gen ../../bin/gir_gen.exe)
+  (:gir %{workspace_root}/gir/Gsk-4.0.gir)
+  (:overrides %{workspace_root}/ocgtk/overrides/gsk.sexp))
+ (action
+  (run %{gir_gen} references -o %{overrides} %{gir} %{target})))
+
+(rule
+ (target pangocairo-references.sexp)
+ (deps
+  (:gir_gen ../../bin/gir_gen.exe)
+  (:gir %{workspace_root}/gir/PangoCairo-1.0.gir)
+  (:overrides %{workspace_root}/ocgtk/overrides/pangocairo.sexp))
+ (action
+  (run %{gir_gen} references -o %{overrides} %{gir} %{target})))
+
+(rule
+ (target gtk-references.sexp)
+ (deps
+  (:gir_gen ../../bin/gir_gen.exe)
+  (:gir %{workspace_root}/gir/Gtk-4.0.gir)
+  (:overrides %{workspace_root}/ocgtk/overrides/gtk.sexp))
+ (action
+  (run %{gir_gen} references -o %{overrides} %{gir} %{target})))

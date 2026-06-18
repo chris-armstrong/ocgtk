@@ -27,4 +27,8 @@ let () =
       ("Records", Records_tests.tests);
       ("Properties", Properties_tests.tests);
       ("Edge Cases", Edge_cases_tests.tests);
+      (* Signal corpus — needs gir_gen.exe references for cross-namespace
+         classification, so it lives with the integration suite. *)
+      ("Signal Corpus", Signal_corpus.tests);
+      ("Signal Corpus Regression", Signal_corpus_tests.tests);
     ]
