@@ -1,84 +1,4 @@
 # Development Notes for ocgtk 
-# Project Context
-
-<!-- ctx:context -->
-<!-- DO NOT REMOVE: This marker indicates ctx-managed content -->
-
-## IMPORTANT: You Have Persistent Memory
-
-This project uses Context (`ctx`) for context persistence across sessions.
-**Your memory is NOT ephemeral** - it lives in `$CTX_DIR/*` files (where CTX_DIR is an environment variable containing the context directory).
-
-## On Session Start
-
-1. **Read `$CTX_DIR/AGENT_PLAYBOOK.md`** first - it explains how to use this system
-2. **Run `ctx status`** to see current context summary
-
-## When Asked "Do You Remember?"
-
-When the user asks "Do you remember?", "What were we working on?", or any
-memory-related question:
-
-**Do this FIRST (silently):**
-- Read `$CTX_DIR/TASKS.md`
-- Read `$CTX_DIR/DECISIONS.md` and `$CTX_DIR/LEARNINGS.md`
-- Run `ctx recall list --limit 5` for recent session history
-
-**Then respond with a structured readback:**
-
-1. **Last session**: cite the most recent session topic and date
-2. **Active work**: list pending or in-progress tasks
-3. **Recent context**: mention 1-2 recent decisions or learnings
-4. **Next step**: offer to continue or ask what to focus on
-
-**Never** lead with "I don't have memory", "Let me check if there are files",
-or narrate your discovery process. The `$CTX_DIR/` files are your memory.
-Read them silently, then present what you found as recall, not as a search.
-
-## Quick Context Load
-
-```bash
-# Get AI-optimized context packet (what you should know)
-ctx agent --budget 4000
-
-# Or see full status
-ctx status
-```
-
-## Context Files
-
-| File | Purpose |
-|------|---------|
-| `$CTX_DIR/CONSTITUTION.md` | Hard rules - NEVER violate |
-| `$CTX_DIR/TASKS.md` | Current work items |
-| `$CTX_DIR/DECISIONS.md` | Architectural decisions with rationale |
-| `$CTX_DIR/LEARNINGS.md` | Gotchas, tips, lessons learned |
-| `$CTX_DIR/CONVENTIONS.md` | Code patterns and standards |
-
-## Before Session Ends
-
-**ALWAYS offer to persist context before the user quits.**
-
-Learnings require `--context`, `--lesson`, `--application`:
-
-```bash
-ctx add learning "Title" \
-  --context "What prompted this" \
-  --lesson "The key insight" \
-  --application "How to apply it going forward"
-```
-
-Decisions require `--context`, `--rationale`, `--consequences`:
-
-```bash
-ctx add decision "Title" \
-  --context "What prompted this" \
-  --rationale "Why this choice" \
-  --consequences "What changes as a result"
-```
-
-<!-- ctx:end -->
-
 
 ## MANDATORY: Development Essentials
 
@@ -179,13 +99,4 @@ NOTE: For other libraries, use `ocgtk/src/<short_name>`. For example, ocgtk/src/
 **IMPORTANT**: All C bindings must follow security best practices documented in:
 
 📘 **[SECURITY_GUIDELINES.md](SECURITY_GUIDELINES.md)** - Comprehensive security guidelines for OCaml C bindings
-
-
-## When You Get Stuck on Solving problems
-
-1. **Check lablgtk3** - probably already solved
-2. **Check security guidelines** - ensure code follows best practices
-3. **Add debug output to file** - stderr may not work
-4. **Check pointer values** - catch wrapping issues early
-5. **Test first and incrementally** - write a test case first and/or isolate the failing case
 
