@@ -1,6 +1,28 @@
 class type cell_area_t = object
   inherit GBuildable.buildable_t
 
+  method on_add_editable :
+    ?after:bool ->
+    callback:
+      (renderer:GCell_renderer.cell_renderer_t ->
+      editable:GCell_editable.cell_editable_t ->
+      cell_area:Ocgtk_gdk.Gdk.Rectangle.rectangle_t ->
+      path:string ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_apply_attributes :
+    ?after:bool ->
+    callback:
+      (model:GTree_model.tree_model_t ->
+      iter:Tree_iter.t ->
+      is_expander:bool ->
+      is_expanded:bool ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method on_focus_changed :
     ?after:bool ->
     callback:(renderer:GCell_renderer.cell_renderer_t -> path:string -> unit) ->

@@ -634,19 +634,58 @@ module rec Text_buffer : sig
     = "ml_gtk_text_buffer_get_cursor_position"
   (** Get property: cursor-position *)
 
+  val on_apply_tag :
+    ?after:bool ->
+    t ->
+    callback:(tag:Text_tag.t -> start:Text_iter.t -> end_:Text_iter.t -> unit) ->
+    Gobject.Signal.handler_id
+
   val on_begin_user_action :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 
+  val on_delete_range :
+    ?after:bool ->
+    t ->
+    callback:(start:Text_iter.t -> end_:Text_iter.t -> unit) ->
+    Gobject.Signal.handler_id
+
   val on_end_user_action :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_insert_child_anchor :
+    ?after:bool ->
+    t ->
+    callback:(location:Text_iter.t -> anchor:Text_child_anchor.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_insert_paintable :
+    ?after:bool ->
+    t ->
+    callback:
+      (location:Text_iter.t ->
+      paintable:Ocgtk_gdk.Gdk.Wrappers.Paintable.t ->
+      unit) ->
+    Gobject.Signal.handler_id
+
+  val on_insert_text :
+    ?after:bool ->
+    t ->
+    callback:(location:Text_iter.t -> text:string -> len:int -> unit) ->
+    Gobject.Signal.handler_id
 
   val on_mark_deleted :
     ?after:bool ->
     t ->
     callback:(mark:Text_mark.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_mark_set :
+    ?after:bool ->
+    t ->
+    callback:(location:Text_iter.t -> mark:Text_mark.t -> unit) ->
     Gobject.Signal.handler_id
 
   val on_modified_changed :
@@ -660,6 +699,12 @@ module rec Text_buffer : sig
 
   val on_redo :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_remove_tag :
+    ?after:bool ->
+    t ->
+    callback:(tag:Text_tag.t -> start:Text_iter.t -> end_:Text_iter.t -> unit) ->
+    Gobject.Signal.handler_id
 
   val on_undo :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -1296,6 +1341,26 @@ end = struct
     = "ml_gtk_text_buffer_get_cursor_position"
   (** Get property: cursor-position *)
 
+  let on_apply_tag ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let tag =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          let start =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            (Gobject.Value.get_boxed v : Text_iter.t)
+          in
+          let end_ =
+            let v = Gobject.Closure.nth argv ~pos:3 in
+            (Gobject.Value.get_boxed v : Text_iter.t)
+          in
+          callback ~tag ~start ~end_)
+    in
+    Gobject.Signal.connect obj ~name:"apply-tag" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
   let on_begin_user_action ?after obj ~callback =
     Gobject.Signal.connect_simple obj ~name:"begin-user-action" ~callback
       ~after:(Option.value after ~default:false)
@@ -1304,8 +1369,76 @@ end = struct
     Gobject.Signal.connect_simple obj ~name:"changed" ~callback
       ~after:(Option.value after ~default:false)
 
+  let on_delete_range ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let start =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            (Gobject.Value.get_boxed v : Text_iter.t)
+          in
+          let end_ =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            (Gobject.Value.get_boxed v : Text_iter.t)
+          in
+          callback ~start ~end_)
+    in
+    Gobject.Signal.connect obj ~name:"delete-range" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
   let on_end_user_action ?after obj ~callback =
     Gobject.Signal.connect_simple obj ~name:"end-user-action" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_insert_child_anchor ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let location =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            (Gobject.Value.get_boxed v : Text_iter.t)
+          in
+          let anchor =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            Gobject.Value.get_object_exn v
+          in
+          callback ~location ~anchor)
+    in
+    Gobject.Signal.connect obj ~name:"insert-child-anchor" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_insert_paintable ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let location =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            (Gobject.Value.get_boxed v : Text_iter.t)
+          in
+          let paintable =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            Gobject.Value.get_object_exn v
+          in
+          callback ~location ~paintable)
+    in
+    Gobject.Signal.connect obj ~name:"insert-paintable" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_insert_text ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let location =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            (Gobject.Value.get_boxed v : Text_iter.t)
+          in
+          let text =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            Gobject.Value.get_string v
+          in
+          let len =
+            let v = Gobject.Closure.nth argv ~pos:3 in
+            Gobject.Value.get_int v
+          in
+          callback ~location ~text ~len)
+    in
+    Gobject.Signal.connect obj ~name:"insert-text" ~callback:closure
       ~after:(Option.value after ~default:false)
 
   let on_mark_deleted ?after obj ~callback =
@@ -1318,6 +1451,22 @@ end = struct
           callback ~mark)
     in
     Gobject.Signal.connect obj ~name:"mark-deleted" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_mark_set ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let location =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            (Gobject.Value.get_boxed v : Text_iter.t)
+          in
+          let mark =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            Gobject.Value.get_object_exn v
+          in
+          callback ~location ~mark)
+    in
+    Gobject.Signal.connect obj ~name:"mark-set" ~callback:closure
       ~after:(Option.value after ~default:false)
 
   let on_modified_changed ?after obj ~callback =
@@ -1338,6 +1487,26 @@ end = struct
 
   let on_redo ?after obj ~callback =
     Gobject.Signal.connect_simple obj ~name:"redo" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_remove_tag ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let tag =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          let start =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            (Gobject.Value.get_boxed v : Text_iter.t)
+          in
+          let end_ =
+            let v = Gobject.Closure.nth argv ~pos:3 in
+            (Gobject.Value.get_boxed v : Text_iter.t)
+          in
+          callback ~tag ~start ~end_)
+    in
+    Gobject.Signal.connect obj ~name:"remove-tag" ~callback:closure
       ~after:(Option.value after ~default:false)
 
   let on_undo ?after obj ~callback =

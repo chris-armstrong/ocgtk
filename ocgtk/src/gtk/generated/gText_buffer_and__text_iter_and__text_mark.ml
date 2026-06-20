@@ -2,18 +2,74 @@
 (* Combined classes for cyclic dependencies *)
 
 class type text_buffer_t = object
+  method on_apply_tag :
+    ?after:bool ->
+    callback:
+      (tag:GText_tag.text_tag_t ->
+      start:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      end_:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method on_begin_user_action :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
+  method on_delete_range :
+    ?after:bool ->
+    callback:
+      (start:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      end_:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method on_end_user_action :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_insert_child_anchor :
+    ?after:bool ->
+    callback:
+      (location:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      anchor:GText_child_anchor.text_child_anchor_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_insert_paintable :
+    ?after:bool ->
+    callback:
+      (location:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      paintable:Ocgtk_gdk.Gdk.Paintable.paintable_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_insert_text :
+    ?after:bool ->
+    callback:
+      (location:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      text:string ->
+      len:int ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_mark_deleted :
     ?after:bool ->
     callback:(mark:text_mark_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_mark_set :
+    ?after:bool ->
+    callback:
+      (location:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      mark:text_mark_t ->
+      unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -28,6 +84,16 @@ class type text_buffer_t = object
 
   method on_redo :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_remove_tag :
+    ?after:bool ->
+    callback:
+      (tag:GText_tag.text_tag_t ->
+      start:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      end_:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_undo :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -336,6 +402,11 @@ class text_buffer
   (obj : Text_buffer_and__text_iter_and__text_mark.Text_buffer.t) :
   text_buffer_t =
   object (self)
+    method on_apply_tag ?(after = false) ~callback () =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_apply_tag ~after
+        self#as_text_buffer ~callback:(fun ~tag ~start ~end_ ->
+          callback ~tag:(new GText_tag.text_tag tag) ~start ~end_)
+
     method on_begin_user_action ?(after = false) ~callback () =
       Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_begin_user_action
         ~after self#as_text_buffer ~callback
@@ -344,14 +415,40 @@ class text_buffer
       Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_changed ~after
         self#as_text_buffer ~callback
 
+    method on_delete_range ?(after = false) ~callback () =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_delete_range
+        ~after self#as_text_buffer ~callback
+
     method on_end_user_action ?(after = false) ~callback () =
       Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_end_user_action
+        ~after self#as_text_buffer ~callback
+
+    method on_insert_child_anchor ?(after = false) ~callback () =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer
+      .on_insert_child_anchor ~after self#as_text_buffer
+        ~callback:(fun ~location ~anchor ->
+          callback ~location
+            ~anchor:(new GText_child_anchor.text_child_anchor anchor))
+
+    method on_insert_paintable ?(after = false) ~callback () =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_insert_paintable
+        ~after self#as_text_buffer ~callback:(fun ~location ~paintable ->
+          callback ~location
+            ~paintable:(new Ocgtk_gdk.Gdk.Paintable.paintable paintable))
+
+    method on_insert_text ?(after = false) ~callback () =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_insert_text
         ~after self#as_text_buffer ~callback
 
     method on_mark_deleted ?(after = false) ~callback () =
       Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_mark_deleted
         ~after self#as_text_buffer ~callback:(fun ~mark ->
           callback ~mark:(new text_mark mark))
+
+    method on_mark_set ?(after = false) ~callback () =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_mark_set ~after
+        self#as_text_buffer ~callback:(fun ~location ~mark ->
+          callback ~location ~mark:(new text_mark mark))
 
     method on_modified_changed ?(after = false) ~callback () =
       Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_modified_changed
@@ -365,6 +462,11 @@ class text_buffer
     method on_redo ?(after = false) ~callback () =
       Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_redo ~after
         self#as_text_buffer ~callback
+
+    method on_remove_tag ?(after = false) ~callback () =
+      Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_remove_tag ~after
+        self#as_text_buffer ~callback:(fun ~tag ~start ~end_ ->
+          callback ~tag:(new GText_tag.text_tag tag) ~start ~end_)
 
     method on_undo ?(after = false) ~callback () =
       Text_buffer_and__text_iter_and__text_mark.Text_buffer.on_undo ~after

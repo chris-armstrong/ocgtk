@@ -650,6 +650,17 @@ val on_delete_from_cursor :
   callback:(type_:Gtk_enums.deletetype -> count:int -> unit) ->
   Gobject.Signal.handler_id
 
+val on_extend_selection :
+  ?after:bool ->
+  t ->
+  callback:
+    (granularity:Gtk_enums.textextendselection ->
+    location:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+    start:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+    end_:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+    bool) ->
+  Gobject.Signal.handler_id
+
 val on_insert_at_cursor :
   ?after:bool ->
   t ->

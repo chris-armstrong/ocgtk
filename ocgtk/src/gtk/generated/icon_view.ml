@@ -344,6 +344,18 @@ let on_activate_cursor_item ?after obj ~callback =
   Gobject.Signal.connect obj ~name:"activate-cursor-item" ~callback:closure
     ~after:(Option.value after ~default:false)
 
+let on_item_activated ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let path =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          (Gobject.Value.get_boxed v : Tree_path.t)
+        in
+        callback ~path)
+  in
+  Gobject.Signal.connect obj ~name:"item-activated" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
 let on_move_cursor ?after obj ~callback =
   let closure =
     Gobject.Closure.create (fun argv ->

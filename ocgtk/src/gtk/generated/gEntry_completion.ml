@@ -2,9 +2,21 @@ class type entry_completion_t = object
   inherit GBuildable.buildable_t
   inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
 
+  method on_cursor_on_match :
+    ?after:bool ->
+    callback:(model:GTree_model.tree_model_t -> iter:Tree_iter.t -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method on_insert_prefix :
     ?after:bool ->
     callback:(prefix:string -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_match_selected :
+    ?after:bool ->
+    callback:(model:GTree_model.tree_model_t -> iter:Tree_iter.t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -54,9 +66,19 @@ class entry_completion (obj : Entry_completion.t) : entry_completion_t =
         (Cell_area_and__cell_area_context_and__cell_layout.Cell_layout
          .from_gobject obj)
 
+    method on_cursor_on_match ?(after = false) ~callback () =
+      Entry_completion.on_cursor_on_match ~after self#as_entry_completion
+        ~callback:(fun ~model ~iter ->
+          callback ~model:(new GTree_model.tree_model model) ~iter)
+
     method on_insert_prefix ?(after = false) ~callback () =
       Entry_completion.on_insert_prefix ~after self#as_entry_completion
         ~callback
+
+    method on_match_selected ?(after = false) ~callback () =
+      Entry_completion.on_match_selected ~after self#as_entry_completion
+        ~callback:(fun ~model ~iter ->
+          callback ~model:(new GTree_model.tree_model model) ~iter)
 
     method on_no_matches ?(after = false) ~callback () =
       Entry_completion.on_no_matches ~after self#as_entry_completion ~callback

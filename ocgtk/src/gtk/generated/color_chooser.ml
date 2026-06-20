@@ -49,3 +49,15 @@ of removing the default color palette from the color chooser.
 If @colors is %NULL, removes all previously added palettes. *)
 
 (* Properties *)
+
+let on_color_activated ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let color =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          (Gobject.Value.get_boxed v : Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t)
+        in
+        callback ~color)
+  in
+  Gobject.Signal.connect obj ~name:"color-activated" ~callback:closure
+    ~after:(Option.value after ~default:false)

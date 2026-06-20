@@ -1,4 +1,10 @@
 class type color_chooser_t = object
+  method on_color_activated :
+    ?after:bool ->
+    callback:(color:Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method add_palette :
     Gtk_enums.orientation ->
     int ->
@@ -15,6 +21,11 @@ end
 (* High-level class for ColorChooser *)
 class color_chooser (obj : Color_chooser.t) : color_chooser_t =
   object (self)
+    method on_color_activated ?(after = false) ~callback () =
+      Color_chooser.on_color_activated ~after self#as_color_chooser
+        ~callback:(fun ~color ->
+          callback ~color:(new Ocgtk_gdk.Gdk.Rgb_a.rgb_a color))
+
     method add_palette :
         Gtk_enums.orientation ->
         int ->

@@ -49,6 +49,27 @@ and tree_view_t = object
     unit ->
     Gobject.Signal.handler_id
 
+  method on_row_activated :
+    ?after:bool ->
+    callback:
+      (path:Tree_path.t ->
+      column:GTree_view_column.tree_view_column_t option ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_row_collapsed :
+    ?after:bool ->
+    callback:(iter:Tree_iter.t -> path:Tree_path.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_row_expanded :
+    ?after:bool ->
+    callback:(iter:Tree_iter.t -> path:Tree_path.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method on_select_all :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
 
@@ -63,6 +84,18 @@ and tree_view_t = object
 
   method on_start_interactive_search :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
+  method on_test_collapse_row :
+    ?after:bool ->
+    callback:(iter:Tree_iter.t -> path:Tree_path.t -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_test_expand_row :
+    ?after:bool ->
+    callback:(iter:Tree_iter.t -> path:Tree_path.t -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_toggle_cursor_row :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id

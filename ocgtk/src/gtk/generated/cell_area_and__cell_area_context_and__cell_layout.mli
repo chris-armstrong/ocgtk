@@ -354,6 +354,28 @@ module rec Cell_area : sig
 
   (* Properties *)
 
+  val on_add_editable :
+    ?after:bool ->
+    t ->
+    callback:
+      (renderer:Cell_renderer.t ->
+      editable:Cell_editable.t ->
+      cell_area:Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
+      path:string ->
+      unit) ->
+    Gobject.Signal.handler_id
+
+  val on_apply_attributes :
+    ?after:bool ->
+    t ->
+    callback:
+      (model:Tree_model.t ->
+      iter:Tree_iter.t ->
+      is_expander:bool ->
+      is_expanded:bool ->
+      unit) ->
+    Gobject.Signal.handler_id
+
   val on_focus_changed :
     ?after:bool ->
     t ->

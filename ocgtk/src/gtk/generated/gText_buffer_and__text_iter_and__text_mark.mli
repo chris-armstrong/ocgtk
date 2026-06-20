@@ -1,16 +1,72 @@
 class type text_buffer_t = object
+  method on_apply_tag :
+    ?after:bool ->
+    callback:
+      (tag:GText_tag.text_tag_t ->
+      start:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      end_:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method on_begin_user_action :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
+  method on_delete_range :
+    ?after:bool ->
+    callback:
+      (start:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      end_:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method on_end_user_action :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_insert_child_anchor :
+    ?after:bool ->
+    callback:
+      (location:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      anchor:GText_child_anchor.text_child_anchor_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_insert_paintable :
+    ?after:bool ->
+    callback:
+      (location:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      paintable:Ocgtk_gdk.Gdk.Paintable.paintable_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_insert_text :
+    ?after:bool ->
+    callback:
+      (location:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      text:string ->
+      len:int ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_mark_deleted :
     ?after:bool ->
     callback:(mark:text_mark_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_mark_set :
+    ?after:bool ->
+    callback:
+      (location:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      mark:text_mark_t ->
+      unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -25,6 +81,16 @@ class type text_buffer_t = object
 
   method on_redo :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_remove_tag :
+    ?after:bool ->
+    callback:
+      (tag:GText_tag.text_tag_t ->
+      start:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      end_:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_undo :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id

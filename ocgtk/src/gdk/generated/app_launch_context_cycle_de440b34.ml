@@ -2498,6 +2498,12 @@ and Surface : sig
     t ->
     callback:(monitor:Monitor.t -> unit) ->
     Gobject.Signal.handler_id
+
+  val on_render :
+    ?after:bool ->
+    t ->
+    callback:(region:Ocgtk_cairo.Cairo.Wrappers.Region.t -> bool) ->
+    Gobject.Signal.handler_id
 end = struct
   type t = [ `surface | `object_ ] Gobject.obj
 
@@ -2789,6 +2795,21 @@ end = struct
           callback ~monitor)
     in
     Gobject.Signal.connect obj ~name:"leave-monitor" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_render ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let region =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            (Gobject.Value.get_boxed v : Ocgtk_cairo.Cairo.Wrappers.Region.t)
+          in
+          let result = callback ~region in
+          let v = Gobject.Closure.result argv in
+          let x = result in
+          Gobject.Value.set_boolean v x)
+    in
+    Gobject.Signal.connect obj ~name:"render" ~callback:closure
       ~after:(Option.value after ~default:false)
 end
 

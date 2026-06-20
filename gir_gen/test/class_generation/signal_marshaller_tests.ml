@@ -366,13 +366,20 @@ let test_garray_is_unsupported () =
   let result = classify ~ctx ~gir_type in
   assert_unsupported ~label:"GLib.Array" result "GArray not yet supported"
 
-let test_boxed_textiter_is_unsupported () =
+let test_boxed_textiter_is_supported () =
   let ctx = gtk_ctx_with_textiter () in
   let gir_type =
     Type_factory.make_gir_type ~name:"TextIter" ~c_type:"GtkTextIter*" ()
   in
   let result = classify ~ctx ~gir_type in
-  assert_unsupported ~label:"Gtk.TextIter boxed" result "TextIter"
+  assert_supported ~label:"Gtk.TextIter boxed" result @@ fun m ->
+  Alcotest.(check string) "ocaml_type" "Text_iter.t" m.ocaml_type;
+  Alcotest.(check string) "getter_expr"
+    "(Gobject.Value.get_boxed v : Text_iter.t)"
+    m.getter_expr;
+  Alcotest.(check string) "setter_expr"
+    "Gobject.Value.set_boxed v x"
+    m.setter_expr
 
 let test_callback_type_is_unsupported () =
   let ctx = gtk_ctx () in
@@ -436,8 +443,8 @@ let tests =
       `Quick test_cross_ns_gobject_gio_file_nullable;
     Alcotest.test_case "GLib.Array is Unsupported" `Quick
       test_garray_is_unsupported;
-    Alcotest.test_case "Gtk.TextIter boxed is Unsupported" `Quick
-      test_boxed_textiter_is_unsupported;
+    Alcotest.test_case "Gtk.TextIter boxed is Supported" `Quick
+      test_boxed_textiter_is_supported;
     Alcotest.test_case "callback type is Unsupported (Milestone 4)" `Quick
       test_callback_type_is_unsupported;
     Alcotest.test_case "void/none return maps to unit" `Quick

@@ -220,6 +220,25 @@ let classify_gobject ~ctx ~gir_type ~namespace ~name : result =
          ~setter_expr:"Gobject.Value.set_object_exn v x"
          ~l2_class ~is_same_ns_class ~nullable:false ())
 
+let classify_record ~ctx ~gir_type ~namespace ~name : result =
+  let same_ns = String.equal namespace ctx.namespace.namespace_name in
+  let base_type =
+    if same_ns then same_ns_object_type ~ctx name
+    else cross_ns_object_type namespace name
+  in
+  let l2_class = lookup_l2_class ~ctx gir_type in
+  let is_same_ns_class = same_ns in
+  if gir_type.nullable then
+    (* get_boxed C wrapper fails on NULL; nullable boxed records need a
+       nullable-safe accessor (see ocgtk/src/common/ml_gobject.c). *)
+    Unsupported "nullable boxed records not yet supported"
+  else
+    Supported
+      (make_marshaller ~ocaml_type:base_type
+         ~getter_expr:("(Gobject.Value.get_boxed v : " ^ base_type ^ ")")
+         ~setter_expr:"Gobject.Value.set_boxed v x"
+         ~l2_class ~is_same_ns_class ~nullable:false ())
+
 (* ===================================================================== *)
 (* Main classify function                                                *)
 (* ===================================================================== *)
@@ -268,10 +287,7 @@ let classify ~ctx ~gir_type : result =
             classify_bitfield ~ctx ~namespace ~name
         | Type_mappings.Tk_Class | Type_mappings.Tk_Interface ->
             classify_gobject ~ctx ~gir_type ~namespace ~name
-        | Type_mappings.Tk_Record ->
-            Unsupported
-              (Printf.sprintf "boxed type %s.%s not yet supported" namespace
-                 name)
+        | Type_mappings.Tk_Record -> classify_record ~ctx ~gir_type ~namespace ~name
         | Type_mappings.Tk_Primitive ->
             (* A primitive not in our table — should not happen often *)
             Unsupported

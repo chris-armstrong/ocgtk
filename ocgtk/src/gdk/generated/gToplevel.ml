@@ -1,4 +1,10 @@
 class type toplevel_t = object
+  method on_compute_size :
+    ?after:bool ->
+    callback:(size:Toplevel_size.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method begin_move :
     GApp_launch_context_cycle_de440b34.device_t ->
     int ->
@@ -48,6 +54,9 @@ end
 (* High-level class for Toplevel *)
 class toplevel (obj : Toplevel.t) : toplevel_t =
   object (self)
+    method on_compute_size ?(after = false) ~callback () =
+      Toplevel.on_compute_size ~after self#as_toplevel ~callback
+
     method begin_move :
         GApp_launch_context_cycle_de440b34.device_t ->
         int ->

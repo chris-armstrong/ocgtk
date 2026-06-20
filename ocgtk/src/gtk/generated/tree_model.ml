@@ -194,3 +194,63 @@ external filter_new : t -> Tree_path.t option -> t
   = "ml_gtk_tree_model_filter_new"
 (** Creates a new `GtkTreeModel`, with @child_model as the child_model
 and @root as the virtual root. *)
+
+let on_row_changed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let path =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          (Gobject.Value.get_boxed v : Tree_path.t)
+        in
+        let iter =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          (Gobject.Value.get_boxed v : Tree_iter.t)
+        in
+        callback ~path ~iter)
+  in
+  Gobject.Signal.connect obj ~name:"row-changed" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_row_deleted ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let path =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          (Gobject.Value.get_boxed v : Tree_path.t)
+        in
+        callback ~path)
+  in
+  Gobject.Signal.connect obj ~name:"row-deleted" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_row_has_child_toggled ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let path =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          (Gobject.Value.get_boxed v : Tree_path.t)
+        in
+        let iter =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          (Gobject.Value.get_boxed v : Tree_iter.t)
+        in
+        callback ~path ~iter)
+  in
+  Gobject.Signal.connect obj ~name:"row-has-child-toggled" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_row_inserted ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let path =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          (Gobject.Value.get_boxed v : Tree_path.t)
+        in
+        let iter =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          (Gobject.Value.get_boxed v : Tree_iter.t)
+        in
+        callback ~path ~iter)
+  in
+  Gobject.Signal.connect obj ~name:"row-inserted" ~callback:closure
+    ~after:(Option.value after ~default:false)

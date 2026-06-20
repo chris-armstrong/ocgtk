@@ -620,6 +620,24 @@ and Tree_view : sig
       bool) ->
     Gobject.Signal.handler_id
 
+  val on_row_activated :
+    ?after:bool ->
+    t ->
+    callback:(path:Tree_path.t -> column:Tree_view_column.t option -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_row_collapsed :
+    ?after:bool ->
+    t ->
+    callback:(iter:Tree_iter.t -> path:Tree_path.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_row_expanded :
+    ?after:bool ->
+    t ->
+    callback:(iter:Tree_iter.t -> path:Tree_path.t -> unit) ->
+    Gobject.Signal.handler_id
+
   val on_select_all :
     ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
 
@@ -634,6 +652,18 @@ and Tree_view : sig
 
   val on_start_interactive_search :
     ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  val on_test_collapse_row :
+    ?after:bool ->
+    t ->
+    callback:(iter:Tree_iter.t -> path:Tree_path.t -> bool) ->
+    Gobject.Signal.handler_id
+
+  val on_test_expand_row :
+    ?after:bool ->
+    t ->
+    callback:(iter:Tree_iter.t -> path:Tree_path.t -> bool) ->
+    Gobject.Signal.handler_id
 
   val on_toggle_cursor_row :
     ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id

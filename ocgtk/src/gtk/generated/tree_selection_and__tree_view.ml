@@ -691,6 +691,24 @@ and Tree_view : sig
       bool) ->
     Gobject.Signal.handler_id
 
+  val on_row_activated :
+    ?after:bool ->
+    t ->
+    callback:(path:Tree_path.t -> column:Tree_view_column.t option -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_row_collapsed :
+    ?after:bool ->
+    t ->
+    callback:(iter:Tree_iter.t -> path:Tree_path.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_row_expanded :
+    ?after:bool ->
+    t ->
+    callback:(iter:Tree_iter.t -> path:Tree_path.t -> unit) ->
+    Gobject.Signal.handler_id
+
   val on_select_all :
     ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
 
@@ -705,6 +723,18 @@ and Tree_view : sig
 
   val on_start_interactive_search :
     ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  val on_test_collapse_row :
+    ?after:bool ->
+    t ->
+    callback:(iter:Tree_iter.t -> path:Tree_path.t -> bool) ->
+    Gobject.Signal.handler_id
+
+  val on_test_expand_row :
+    ?after:bool ->
+    t ->
+    callback:(iter:Tree_iter.t -> path:Tree_path.t -> bool) ->
+    Gobject.Signal.handler_id
 
   val on_toggle_cursor_row :
     ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
@@ -1294,6 +1324,54 @@ end = struct
     Gobject.Signal.connect obj ~name:"move-cursor" ~callback:closure
       ~after:(Option.value after ~default:false)
 
+  let on_row_activated ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let path =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            (Gobject.Value.get_boxed v : Tree_path.t)
+          in
+          let column =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            Gobject.Value.get_object v
+          in
+          callback ~path ~column)
+    in
+    Gobject.Signal.connect obj ~name:"row-activated" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_row_collapsed ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let iter =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            (Gobject.Value.get_boxed v : Tree_iter.t)
+          in
+          let path =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            (Gobject.Value.get_boxed v : Tree_path.t)
+          in
+          callback ~iter ~path)
+    in
+    Gobject.Signal.connect obj ~name:"row-collapsed" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_row_expanded ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let iter =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            (Gobject.Value.get_boxed v : Tree_iter.t)
+          in
+          let path =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            (Gobject.Value.get_boxed v : Tree_path.t)
+          in
+          callback ~iter ~path)
+    in
+    Gobject.Signal.connect obj ~name:"row-expanded" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
   let on_select_all ?after obj ~callback =
     let closure =
       Gobject.Closure.create (fun argv ->
@@ -1341,6 +1419,44 @@ end = struct
     in
     Gobject.Signal.connect obj ~name:"start-interactive-search"
       ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_test_collapse_row ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let iter =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            (Gobject.Value.get_boxed v : Tree_iter.t)
+          in
+          let path =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            (Gobject.Value.get_boxed v : Tree_path.t)
+          in
+          let result = callback ~iter ~path in
+          let v = Gobject.Closure.result argv in
+          let x = result in
+          Gobject.Value.set_boolean v x)
+    in
+    Gobject.Signal.connect obj ~name:"test-collapse-row" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_test_expand_row ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let iter =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            (Gobject.Value.get_boxed v : Tree_iter.t)
+          in
+          let path =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            (Gobject.Value.get_boxed v : Tree_path.t)
+          in
+          let result = callback ~iter ~path in
+          let v = Gobject.Closure.result argv in
+          let x = result in
+          Gobject.Value.set_boolean v x)
+    in
+    Gobject.Signal.connect obj ~name:"test-expand-row" ~callback:closure
       ~after:(Option.value after ~default:false)
 
   let on_toggle_cursor_row ?after obj ~callback =

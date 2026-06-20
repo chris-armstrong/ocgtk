@@ -336,6 +336,12 @@ external get_cell_area :
 val on_activate_cursor_item :
   ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
 
+val on_item_activated :
+  ?after:bool ->
+  t ->
+  callback:(path:Tree_path.t -> unit) ->
+  Gobject.Signal.handler_id
+
 val on_move_cursor :
   ?after:bool ->
   t ->

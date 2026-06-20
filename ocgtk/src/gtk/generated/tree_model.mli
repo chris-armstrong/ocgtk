@@ -194,3 +194,27 @@ external filter_new : t -> Tree_path.t option -> t
   = "ml_gtk_tree_model_filter_new"
 (** Creates a new `GtkTreeModel`, with @child_model as the child_model
 and @root as the virtual root. *)
+
+val on_row_changed :
+  ?after:bool ->
+  t ->
+  callback:(path:Tree_path.t -> iter:Tree_iter.t -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_row_deleted :
+  ?after:bool ->
+  t ->
+  callback:(path:Tree_path.t -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_row_has_child_toggled :
+  ?after:bool ->
+  t ->
+  callback:(path:Tree_path.t -> iter:Tree_iter.t -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_row_inserted :
+  ?after:bool ->
+  t ->
+  callback:(path:Tree_path.t -> iter:Tree_iter.t -> unit) ->
+  Gobject.Signal.handler_id

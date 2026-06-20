@@ -188,3 +188,15 @@ external set_fullscreen_mode : t -> Gdk_enums.fullscreenmode -> unit
 external get_shortcuts_inhibited : t -> bool
   = "ml_gdk_toplevel_get_shortcuts_inhibited"
 (** Get property: shortcuts-inhibited *)
+
+let on_compute_size ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let size =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          (Gobject.Value.get_boxed v : Toplevel_size.t)
+        in
+        callback ~size)
+  in
+  Gobject.Signal.connect obj ~name:"compute-size" ~callback:closure
+    ~after:(Option.value after ~default:false)

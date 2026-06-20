@@ -663,6 +663,36 @@ let on_delete_from_cursor ?after obj ~callback =
   Gobject.Signal.connect obj ~name:"delete-from-cursor" ~callback:closure
     ~after:(Option.value after ~default:false)
 
+let on_extend_selection ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let granularity =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.textextendselection_of_int (Gobject.Value.get_enum_int v)
+        in
+        let location =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          (Gobject.Value.get_boxed v
+            : Text_buffer_and__text_iter_and__text_mark.Text_iter.t)
+        in
+        let start =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          (Gobject.Value.get_boxed v
+            : Text_buffer_and__text_iter_and__text_mark.Text_iter.t)
+        in
+        let end_ =
+          let v = Gobject.Closure.nth argv ~pos:4 in
+          (Gobject.Value.get_boxed v
+            : Text_buffer_and__text_iter_and__text_mark.Text_iter.t)
+        in
+        let result = callback ~granularity ~location ~start ~end_ in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"extend-selection" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
 let on_insert_at_cursor ?after obj ~callback =
   let closure =
     Gobject.Closure.create (fun argv ->
