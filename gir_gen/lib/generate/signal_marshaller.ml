@@ -185,8 +185,18 @@ let classify_bitfield ~ctx ~namespace ~name =
   Supported (make_marshaller ~ocaml_type ~getter_expr ~setter_expr ())
 
 (* ===================================================================== *)
-(* Class / interface classification helpers                              *)
+(* Class / interface / record classification helpers                   *)
 (* ===================================================================== *)
+
+let resolve_object_type_info ~ctx ~gir_type ~namespace ~name =
+  let same_ns = String.equal namespace ctx.namespace.namespace_name in
+  let base_type =
+    if same_ns then same_ns_object_type ~ctx name
+    else cross_ns_object_type namespace name
+  in
+  let l2_class = lookup_l2_class ~ctx gir_type in
+  let is_same_ns_class = same_ns in
+  (base_type, l2_class, is_same_ns_class)
 
 let classify_gobject ~ctx ~gir_type ~namespace ~name : result =
   (* GObject class / interface parameters resolve to ['a obj option] when the
@@ -200,13 +210,9 @@ let classify_gobject ~ctx ~gir_type ~namespace ~name : result =
       and L2 emission can render the L2 [class_type] and emit the correct
       [new <class>] / [#<accessor>] wrap/unwrap expressions, all without
       re-running classify. *)
-  let same_ns = String.equal namespace ctx.namespace.namespace_name in
-  let base_type =
-    if same_ns then same_ns_object_type ~ctx name
-    else cross_ns_object_type namespace name
+  let base_type, l2_class, is_same_ns_class =
+    resolve_object_type_info ~ctx ~gir_type ~namespace ~name
   in
-  let l2_class = lookup_l2_class ~ctx gir_type in
-  let is_same_ns_class = same_ns in
   if gir_type.nullable then
     Supported
       (make_marshaller ~ocaml_type:(base_type ^ " option")
@@ -221,21 +227,18 @@ let classify_gobject ~ctx ~gir_type ~namespace ~name : result =
          ~l2_class ~is_same_ns_class ~nullable:false ())
 
 let classify_record ~ctx ~gir_type ~namespace ~name : result =
-  let same_ns = String.equal namespace ctx.namespace.namespace_name in
-  let base_type =
-    if same_ns then same_ns_object_type ~ctx name
-    else cross_ns_object_type namespace name
+  let base_type, l2_class, is_same_ns_class =
+    resolve_object_type_info ~ctx ~gir_type ~namespace ~name
   in
-  let l2_class = lookup_l2_class ~ctx gir_type in
-  let is_same_ns_class = same_ns in
   if gir_type.nullable then
     (* get_boxed C wrapper fails on NULL; nullable boxed records need a
        nullable-safe accessor (see ocgtk/src/common/ml_gobject.c). *)
     Unsupported "nullable boxed records not yet supported"
   else
+    let getter_expr = "(Gobject.Value.get_boxed v : " ^ base_type ^ ")" in
     Supported
       (make_marshaller ~ocaml_type:base_type
-         ~getter_expr:("(Gobject.Value.get_boxed v : " ^ base_type ^ ")")
+         ~getter_expr
          ~setter_expr:"Gobject.Value.set_boxed v x"
          ~l2_class ~is_same_ns_class ~nullable:false ())
 
