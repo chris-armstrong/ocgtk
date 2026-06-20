@@ -269,8 +269,8 @@ struct custom_operations ocgtk_gerror_ops = {
     custom_fixed_length_default
 };
 
-/* Val_GError: wrap a GError* in a custom block, taking ownership. */
-value Val_GError(GError *error) {
+/* Val_GError: copy a GError into a custom block that owns the copy. */
+value Val_GError(const GError *error) {
     CAMLparam0();
     CAMLlocal1(v);
 
@@ -278,7 +278,7 @@ value Val_GError(GError *error) {
         caml_failwith("Val_GError: NULL error");
 
     v = caml_alloc_custom(&ocgtk_gerror_ops, sizeof(GError*), 0, 1);
-    *((GError**)Data_custom_val(v)) = error;
+    *((GError**)Data_custom_val(v)) = g_error_copy(error);
 
     CAMLreturn(v);
 }

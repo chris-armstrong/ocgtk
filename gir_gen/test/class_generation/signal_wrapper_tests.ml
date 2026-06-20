@@ -739,6 +739,170 @@ let test_l2_no_inherit_signals_in_generated_class () =
        clause"
 
 (* ========================================================================= *)
+(* Epoch 2 stages 3-4: class-param signal coverage                           *)
+(* ========================================================================= *)
+
+(** Gtk context with Widget registered as a same-namespace class. *)
+let gtk_ctx_with_widget () =
+  let widget_class =
+    Type_factory.make_gir_class ~class_name:"Widget" ~c_type:"GtkWidget" ()
+  in
+  { (gtk_ctx ()) with classes = [ widget_class ] }
+
+(** Gtk context with a cross-namespace Gio.File interface. *)
+let gtk_ctx_with_gio_file () =
+  let gio_entities =
+    StringMap.empty
+    |> StringMap.add "File"
+         (Type_factory.make_cross_reference_entity ~cr_name:"File"
+            ~cr_type:(Type_factory.make_cross_reference_type `Interface)
+            ~cr_c_type:"GFile*" ())
+  in
+  let cross_refs =
+    Type_factory.make_cross_reference_map
+      [ Helpers.make_ncr "Gio" gio_entities ]
+  in
+  { (gtk_ctx ()) with cross_references = cross_refs }
+
+let test_class_param_marshaller_type_correct () =
+  (* Non-nullable same-NS class param → ocaml_type = "Widget.t" *)
+  let ctx = gtk_ctx_with_widget () in
+  let signal =
+    Type_factory.make_gir_signal ~signal_name:"child-notify"
+      ~return_type:Type_factory.void_type
+      ~sig_parameters:
+        [
+          Type_factory.make_gir_param ~param_name:"widget"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"Widget" ~c_type:"GtkWidget*"
+                 ())
+            ();
+        ]
+      ()
+  in
+  let emission =
+    expect_ok "child-notify classify" (Signal_gen.classify ~ctx signal) Fun.id
+  in
+  let _, m =
+    match emission.param_marshallers with
+    | [ entry ] -> entry
+    | _ -> Alcotest.fail "expected exactly 1 param marshaller"
+  in
+  Alcotest.(check string) "ocaml_type" "Widget.t" m.ocaml_type;
+  Alcotest.(check string)
+    "getter_expr" "Gobject.Value.get_object_exn v" m.getter_expr
+
+let test_class_param_nullable_marshaller_type_has_option () =
+  (* Nullable same-NS class param → ocaml_type = "Widget.t option" *)
+  let ctx = gtk_ctx_with_widget () in
+  let signal =
+    Type_factory.make_gir_signal ~signal_name:"child-notify"
+      ~return_type:Type_factory.void_type
+      ~sig_parameters:
+        [
+          Type_factory.make_gir_param ~param_name:"widget"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"Widget" ~c_type:"GtkWidget*"
+                 ~nullable:true ())
+            ();
+        ]
+      ()
+  in
+  let emission =
+    expect_ok "child-notify nullable classify"
+      (Signal_gen.classify ~ctx signal)
+      Fun.id
+  in
+  let _, m =
+    match emission.param_marshallers with
+    | [ entry ] -> entry
+    | _ -> Alcotest.fail "expected exactly 1 param marshaller"
+  in
+  Alcotest.(check string) "ocaml_type" "Widget.t option" m.ocaml_type;
+  Alcotest.(check string)
+    "getter_expr" "Gobject.Value.get_object v" m.getter_expr
+
+let test_class_param_l1_let_parses () =
+  (* emit_l1_let for a class-param signal produces valid OCaml *)
+  let ctx = gtk_ctx_with_widget () in
+  let signal =
+    Type_factory.make_gir_signal ~signal_name:"child-notify"
+      ~return_type:Type_factory.void_type
+      ~sig_parameters:
+        [
+          Type_factory.make_gir_param ~param_name:"widget"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"Widget" ~c_type:"GtkWidget*"
+                 ())
+            ();
+        ]
+      ()
+  in
+  let emission =
+    expect_ok "child-notify classify" (Signal_gen.classify ~ctx signal) Fun.id
+  in
+  let l1_let = Signal_gen.emit_l1_let emission in
+  let ast = Ml_ast_helpers.parse_implementation l1_let in
+  Helpers.assert_some "on_child_notify binding should be present"
+    (Ml_ast_helpers.find_let_binding ast "on_child_notify")
+
+let test_e2e_same_ns_class_param_l1_interface () =
+  (* generate_ml_interface emits val for a signal with a same-NS class param *)
+  let ctx = gtk_ctx_with_widget () in
+  let signal =
+    Type_factory.make_gir_signal ~signal_name:"child-notify"
+      ~return_type:Type_factory.void_type
+      ~sig_parameters:
+        [
+          Type_factory.make_gir_param ~param_name:"widget"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"Widget" ~c_type:"GtkWidget*"
+                 ())
+            ();
+        ]
+      ()
+  in
+  let mli_content =
+    Ml_interface.generate_ml_interface ~ctx
+      ~output_mode:Ml_interface.Interface ~class_name:"Window" ~class_doc:None
+      ~c_type:"GtkWindow" ~parent_chain:[ "Widget" ] ~constructors:None
+      ~methods:[] ~properties:[] ~signals:[ signal ]
+      ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
+  in
+  let ast = Ml_ast_helpers.parse_interface mli_content in
+  Helpers.assert_some
+    "val on_child_notify should appear in .mli for same-NS class-param signal"
+    (Ml_ast_helpers.find_value_declaration_sig ast "on_child_notify")
+
+let test_e2e_cross_ns_class_param_l1_interface () =
+  (* generate_ml_interface emits val for a signal with a cross-NS class param *)
+  let ctx = gtk_ctx_with_gio_file () in
+  let signal =
+    Type_factory.make_gir_signal ~signal_name:"file-opened"
+      ~return_type:Type_factory.void_type
+      ~sig_parameters:
+        [
+          Type_factory.make_gir_param ~param_name:"file"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"Gio.File" ~c_type:"GFile*"
+                 ())
+            ();
+        ]
+      ()
+  in
+  let mli_content =
+    Ml_interface.generate_ml_interface ~ctx
+      ~output_mode:Ml_interface.Interface ~class_name:"Button" ~class_doc:None
+      ~c_type:"GtkButton" ~parent_chain:[ "Widget" ] ~constructors:None
+      ~methods:[] ~properties:[] ~signals:[ signal ]
+      ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
+  in
+  let ast = Ml_ast_helpers.parse_interface mli_content in
+  Helpers.assert_some
+    "val on_file_opened should appear in .mli for cross-NS class-param signal"
+    (Ml_ast_helpers.find_value_declaration_sig ast "on_file_opened")
+
+(* ========================================================================= *)
 (* Test suite                                                                 *)
 (* ========================================================================= *)
 
@@ -787,4 +951,18 @@ let tests =
     Alcotest.test_case
       "L2 generated class has no inherit G*_signals in class body" `Quick
       test_l2_no_inherit_signals_in_generated_class;
+    Alcotest.test_case
+      "same-NS class param: marshaller type is Widget.t" `Quick
+      test_class_param_marshaller_type_correct;
+    Alcotest.test_case
+      "nullable same-NS class param: marshaller type is Widget.t option" `Quick
+      test_class_param_nullable_marshaller_type_has_option;
+    Alcotest.test_case "same-NS class param: emit_l1_let parses" `Quick
+      test_class_param_l1_let_parses;
+    Alcotest.test_case
+      "e2e: same-NS class param signal emits val in L1 interface" `Quick
+      test_e2e_same_ns_class_param_l1_interface;
+    Alcotest.test_case
+      "e2e: cross-NS class param signal emits val in L1 interface" `Quick
+      test_e2e_cross_ns_class_param_l1_interface;
   ]

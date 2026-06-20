@@ -118,12 +118,13 @@ extern int ml_closure_exception_flag;
  * The cast on write ensures the value is stored with the correct bit pattern
  * before tagging.
  *
- * Note: Int8_val and Int16_val are intentionally omitted—they are provided by
- * <ocaml_integers.h> (from the integers library) and defining them here would
- * cause macro-redefinition warnings. Our custom UInt8/UInt16/UInt32 macros use
- * Long_val (wider than Int_val) which is safe for the ranges these types cover. */
+ * Note: <ocaml_integers.h> provides only the *unsigned* variants (Uint8_val,
+ * Uint16_val, etc.).  The signed Int8_val / Int16_val are not in that header,
+ * so we define them here.  UInt8/UInt16/UInt32 reuse Long_val (wider than
+ * Int_val) which is safe for the ranges these types cover. */
 #define UInt8_val(v)           ((uint8_t)(Long_val(v)))
 #define Val_uint8(x)           (Val_long((uint8_t)(x)))
+#define Int16_val(v)           ((int16_t)(Long_val(v)))
 #define UInt16_val(v)          ((uint16_t)(Long_val(v)))
 #define Val_uint16(x)          (Val_long((uint16_t)(x)))
 #define Val_int16(x)           (Val_long((int16_t)(x)))
@@ -264,7 +265,7 @@ value Res_Error(value v);
 
 /* GError custom block — defined in wrappers.c */
 extern struct custom_operations ocgtk_gerror_ops;
-value Val_GError(GError *error);
+value Val_GError(const GError *error);
 #define GError_val(v) (*((GError**)Data_custom_val(v)))
 
 /* ==================================================================== */
