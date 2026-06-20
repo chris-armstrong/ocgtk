@@ -89,6 +89,7 @@ CAMLexport CAMLprim value ml_graphene_point_init_from_vec2(value self, value arg
 CAMLparam2(self, arg1);
 
 graphene_point_t* result = graphene_point_init_from_vec2(graphene_point_t_val(self), graphene_vec2_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_point_get_type(), result);
 CAMLreturn(Val_graphene_point_t(result));
 }
 
@@ -109,6 +110,7 @@ CAMLexport CAMLprim value ml_graphene_point_init_from_point(value self, value ar
 CAMLparam2(self, arg1);
 
 graphene_point_t* result = graphene_point_init_from_point(graphene_point_t_val(self), graphene_point_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_point_get_type(), result);
 CAMLreturn(Val_graphene_point_t(result));
 }
 
@@ -117,6 +119,7 @@ CAMLexport CAMLprim value ml_graphene_point_init(value self, value arg1, value a
 CAMLparam3(self, arg1, arg2);
 
 graphene_point_t* result = graphene_point_init(graphene_point_t_val(self), Double_val(arg1), Double_val(arg2));
+if (result) result = g_boxed_copy(graphene_point_get_type(), result);
 CAMLreturn(Val_graphene_point_t(result));
 }
 
@@ -187,6 +190,12 @@ CAMLexport CAMLprim value ml_graphene_point_make(value v_x, value v_y)
     CAMLreturn(Val_graphene_point_t(obj));
 }
 
+
+CAMLprim value ml_graphene_point_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_point_get_type()));
+}
 
 #else
 

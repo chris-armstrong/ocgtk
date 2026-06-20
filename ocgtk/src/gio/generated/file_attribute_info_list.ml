@@ -46,3 +46,6 @@ external set_n_infos : t -> int -> unit
 
 external make : File_attribute_info.t -> int -> t
   = "ml_g_file_attribute_info_list_make"
+
+external get_type : unit -> Gobject.Type.t
+  = "ml_gio_file_attribute_info_list_get_type"

@@ -111,3 +111,9 @@ CAMLexport CAMLprim value ml_cairo_rectangle_int_make(value v_x, value v_y, valu
     CAMLreturn(Val_cairo_rectangle_int_t(obj));
 }
 
+
+CAMLprim value ml_cairo_rectangle_int_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(cairo_gobject_rectangle_int_get_type()));
+}

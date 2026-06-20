@@ -149,3 +149,9 @@ CAMLexport CAMLprim value ml_gdk_rectangle_make(value v_x, value v_y, value v_wi
     CAMLreturn(Val_GdkRectangle(obj));
 }
 
+
+CAMLprim value ml_gdk_rectangle_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gdk_rectangle_get_type()));
+}

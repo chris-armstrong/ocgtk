@@ -50,6 +50,13 @@ class type cell_area_t = object
 
   method attribute_disconnect : GCell_renderer.cell_renderer_t -> string -> unit
   method attribute_get_column : GCell_renderer.cell_renderer_t -> string -> int
+
+  method cell_get_property :
+    GCell_renderer.cell_renderer_t -> string -> Gobject.Value.t -> unit
+
+  method cell_set_property :
+    GCell_renderer.cell_renderer_t -> string -> Gobject.Value.t -> unit
+
   method copy_context : cell_area_context_t -> cell_area_context_t
   method create_context : unit -> cell_area_context_t
 
@@ -227,6 +234,20 @@ class cell_area
         let renderer = renderer#as_cell_renderer in
         Cell_area_and__cell_area_context_and__cell_layout.Cell_area
         .attribute_get_column obj renderer attribute
+
+    method cell_get_property :
+        GCell_renderer.cell_renderer_t -> string -> Gobject.Value.t -> unit =
+      fun renderer property_name value ->
+        let renderer = renderer#as_cell_renderer in
+        Cell_area_and__cell_area_context_and__cell_layout.Cell_area
+        .cell_get_property obj renderer property_name value
+
+    method cell_set_property :
+        GCell_renderer.cell_renderer_t -> string -> Gobject.Value.t -> unit =
+      fun renderer property_name value ->
+        let renderer = renderer#as_cell_renderer in
+        Cell_area_and__cell_area_context_and__cell_layout.Cell_area
+        .cell_set_property obj renderer property_name value
 
     method copy_context : cell_area_context_t -> cell_area_context_t =
       fun context ->

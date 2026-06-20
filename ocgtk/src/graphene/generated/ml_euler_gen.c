@@ -97,6 +97,7 @@ CAMLexport CAMLprim value ml_graphene_euler_init_with_order(value self, value ar
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
 graphene_euler_t* result = graphene_euler_init_with_order(graphene_euler_t_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3), GrapheneEulerOrder_val(arg4));
+if (result) result = g_boxed_copy(graphene_euler_get_type(), result);
 CAMLreturn(Val_graphene_euler_t(result));
 }
 
@@ -105,6 +106,7 @@ CAMLexport CAMLprim value ml_graphene_euler_init_from_vec3(value self, value arg
 CAMLparam3(self, arg1, arg2);
 
 graphene_euler_t* result = graphene_euler_init_from_vec3(graphene_euler_t_val(self), Option_val(arg1, graphene_vec3_t_val, NULL), GrapheneEulerOrder_val(arg2));
+if (result) result = g_boxed_copy(graphene_euler_get_type(), result);
 CAMLreturn(Val_graphene_euler_t(result));
 }
 
@@ -115,6 +117,7 @@ CAMLexport CAMLprim value ml_graphene_euler_init_from_radians(value self, value 
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
 graphene_euler_t* result = graphene_euler_init_from_radians(graphene_euler_t_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3), GrapheneEulerOrder_val(arg4));
+if (result) result = g_boxed_copy(graphene_euler_get_type(), result);
 CAMLreturn(Val_graphene_euler_t(result));
 }
 
@@ -138,6 +141,7 @@ CAMLexport CAMLprim value ml_graphene_euler_init_from_quaternion(value self, val
 CAMLparam3(self, arg1, arg2);
 
 graphene_euler_t* result = graphene_euler_init_from_quaternion(graphene_euler_t_val(self), Option_val(arg1, graphene_quaternion_t_val, NULL), GrapheneEulerOrder_val(arg2));
+if (result) result = g_boxed_copy(graphene_euler_get_type(), result);
 CAMLreturn(Val_graphene_euler_t(result));
 }
 
@@ -146,6 +150,7 @@ CAMLexport CAMLprim value ml_graphene_euler_init_from_matrix(value self, value a
 CAMLparam3(self, arg1, arg2);
 
 graphene_euler_t* result = graphene_euler_init_from_matrix(graphene_euler_t_val(self), Option_val(arg1, graphene_matrix_t_val, NULL), GrapheneEulerOrder_val(arg2));
+if (result) result = g_boxed_copy(graphene_euler_get_type(), result);
 CAMLreturn(Val_graphene_euler_t(result));
 }
 
@@ -154,6 +159,7 @@ CAMLexport CAMLprim value ml_graphene_euler_init_from_euler(value self, value ar
 CAMLparam2(self, arg1);
 
 graphene_euler_t* result = graphene_euler_init_from_euler(graphene_euler_t_val(self), Option_val(arg1, graphene_euler_t_val, NULL));
+if (result) result = g_boxed_copy(graphene_euler_get_type(), result);
 CAMLreturn(Val_graphene_euler_t(result));
 }
 
@@ -162,6 +168,7 @@ CAMLexport CAMLprim value ml_graphene_euler_init(value self, value arg1, value a
 CAMLparam4(self, arg1, arg2, arg3);
 
 graphene_euler_t* result = graphene_euler_init(graphene_euler_t_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3));
+if (result) result = g_boxed_copy(graphene_euler_get_type(), result);
 CAMLreturn(Val_graphene_euler_t(result));
 }
 
@@ -266,6 +273,12 @@ CAMLparam2(self, arg1);
 
 _Bool result = graphene_euler_equal(graphene_euler_t_val(self), graphene_euler_t_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_graphene_euler_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_euler_get_type()));
 }
 
 #else

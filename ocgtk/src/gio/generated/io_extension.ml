@@ -7,7 +7,7 @@ type t = [ `io_extension ] Gobject.obj
 
 (* Methods *)
 
-external get_type : t -> int = "ml_g_io_extension_get_type"
+external get_type : t -> Gobject.Type.t = "ml_g_io_extension_get_type"
 (** Gets the type associated with @extension. *)
 
 external get_priority : t -> int = "ml_g_io_extension_get_priority"

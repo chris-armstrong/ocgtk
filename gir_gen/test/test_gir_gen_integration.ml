@@ -29,4 +29,8 @@ let () =
       ("Edge Cases", Edge_cases_tests.tests);
       (* Record field accessor integration tests *)
       ("Record Field Accessors", Record_field_accessor_tests.tests);
+      (* Signal corpus — needs gir_gen.exe references for cross-namespace
+         classification, so it lives with the integration suite. *)
+      ("Signal Corpus", Signal_corpus.tests);
+      ("Signal Corpus Regression", Signal_corpus_tests.tests);
     ]

@@ -48,6 +48,7 @@ CAMLexport CAMLprim value ml_graphene_triangle_init_from_vec3(value self, value 
 CAMLparam4(self, arg1, arg2, arg3);
 
 graphene_triangle_t* result = graphene_triangle_init_from_vec3(graphene_triangle_t_val(self), Option_val(arg1, graphene_vec3_t_val, NULL), Option_val(arg2, graphene_vec3_t_val, NULL), Option_val(arg3, graphene_vec3_t_val, NULL));
+if (result) result = g_boxed_copy(graphene_triangle_get_type(), result);
 CAMLreturn(Val_graphene_triangle_t(result));
 }
 
@@ -56,6 +57,7 @@ CAMLexport CAMLprim value ml_graphene_triangle_init_from_point3d(value self, val
 CAMLparam4(self, arg1, arg2, arg3);
 
 graphene_triangle_t* result = graphene_triangle_init_from_point3d(graphene_triangle_t_val(self), Option_val(arg1, graphene_point3d_t_val, NULL), Option_val(arg2, graphene_point3d_t_val, NULL), Option_val(arg3, graphene_point3d_t_val, NULL));
+if (result) result = g_boxed_copy(graphene_triangle_get_type(), result);
 CAMLreturn(Val_graphene_triangle_t(result));
 }
 
@@ -81,6 +83,7 @@ CAMLparam4(self, arg1, arg2, arg3);
     }
 
 graphene_triangle_t* result = graphene_triangle_init_from_float(graphene_triangle_t_val(self), c_arg1, c_arg2, c_arg3);
+if (result) result = g_boxed_copy(graphene_triangle_get_type(), result);
     g_free(c_arg1);
     g_free(c_arg2);
     g_free(c_arg3);
@@ -234,6 +237,12 @@ CAMLparam2(self, arg1);
 
 _Bool result = graphene_triangle_contains_point(graphene_triangle_t_val(self), graphene_point3d_t_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_graphene_triangle_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_triangle_get_type()));
 }
 
 #else

@@ -91,6 +91,14 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GFile));
 }
 
+CAMLexport CAMLprim value ml_gtk_directory_list_get_error(value self)
+{
+CAMLparam1(self);
+
+const GError* result = gtk_directory_list_get_error(GtkDirectoryList_val(self));
+CAMLreturn(Val_option(result, Val_GError));
+}
+
 CAMLexport CAMLprim value ml_gtk_directory_list_get_attributes(value self)
 {
 CAMLparam1(self);

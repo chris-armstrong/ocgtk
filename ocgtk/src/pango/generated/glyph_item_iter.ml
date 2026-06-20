@@ -110,3 +110,5 @@ external make :
   Glyph_item.t -> string -> int -> int -> int -> int -> int -> int -> t
   = "ml_pango_glyph_item_iter_make_bytecode"
     "ml_pango_glyph_item_iter_make_native"
+
+external get_type : unit -> Gobject.Type.t = "ml_pango_glyph_item_iter_get_type"

@@ -19,7 +19,7 @@
 value copy_PangoAttribute(const PangoAttribute *ptr)
 {
   if (ptr == NULL) return Val_none;
-  PangoAttribute *copy = pango_attribute_copy((PangoAttribute*)ptr);
+  PangoAttribute *copy = g_boxed_copy(pango_attribute_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(pango_attribute_get_type(), copy);
 }
 
@@ -295,3 +295,9 @@ CAMLexport CAMLprim value ml_pango_attribute_make(value v_start_index, value v_e
     CAMLreturn(Val_PangoAttribute(obj));
 }
 
+
+CAMLprim value ml_pango_attribute_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_attribute_get_type()));
+}

@@ -20,7 +20,7 @@
 value copy_GdkPixbufFormat(const GdkPixbufFormat *ptr)
 {
   if (ptr == NULL) return Val_none;
-  GdkPixbufFormat *copy = gdk_pixbuf_format_copy((GdkPixbufFormat*)ptr);
+  GdkPixbufFormat *copy = g_boxed_copy(gdk_pixbuf_format_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(gdk_pixbuf_format_get_type(), copy);
 }
 #endif
@@ -195,6 +195,12 @@ CAMLparam1(self);
 
 gchar* result = gdk_pixbuf_format_get_description(GdkPixbufFormat_val(self));
 CAMLreturn(caml_copy_string(result));
+}
+
+CAMLprim value ml_gdk_pixbuf_pixbuf_format_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gdk_pixbuf_format_get_type()));
 }
 
 #else

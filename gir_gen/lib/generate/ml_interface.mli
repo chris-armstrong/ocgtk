@@ -23,8 +23,9 @@ val generate_ml_interface :
   ?c_symbol_prefix:string ->
   entity_kind:Filtering.entity_kind ->
   ?from_gobject_c_name:string ->
-  signals:Types.gir_signal list ->
-  fields:Types.gir_record_field list ->
+  ?signals:Types.gir_signal list ->
+  ?glib_get_type:string ->
+  ?fields:Types.gir_record_field list ->
   unit ->
   string
 (** Generate a complete OCaml interface or implementation module. Handles

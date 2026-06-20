@@ -67,7 +67,8 @@ function does nothing. *)
 
 (* Properties *)
 
-external get_item_type : t -> int = "ml_gtk_shortcut_controller_get_item_type"
+external get_item_type : t -> Gobject.Type.t
+  = "ml_gtk_shortcut_controller_get_item_type"
 (** Get property: item-type *)
 
 external get_mnemonic_modifiers : t -> Ocgtk_gdk.Gdk.modifiertype

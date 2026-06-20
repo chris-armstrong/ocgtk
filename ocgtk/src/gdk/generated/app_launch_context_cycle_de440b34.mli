@@ -91,6 +91,10 @@ and Clipboard : sig
 
       See [method@Gdk.Clipboard.store_async]. *)
 
+  external set_value : t -> Gobject.Value.t -> unit
+    = "ml_gdk_clipboard_set_value"
+  (** Sets the @clipboard to contain the given @value. *)
+
   external set_content : t -> Content_provider.t option -> bool
     = "ml_gdk_clipboard_set_content"
   (** Sets a new content provider on @clipboard.
@@ -105,6 +109,14 @@ and Clipboard : sig
   If the contents are read by either an external application or the
   @clipboard's read functions, @clipboard will select the best format to
   transfer the contents and then request that format from @provider. *)
+
+  external read_value_finish :
+    t ->
+    Ocgtk_gio.Gio.Wrappers.Async_result.t ->
+    (Gobject.Value.t, GError.t) result = "ml_gdk_clipboard_read_value_finish"
+  (** Finishes an asynchronous clipboard read.
+
+      See [method@Gdk.Clipboard.read_value_async]. *)
 
   external read_texture_finish :
     t ->
@@ -449,6 +461,11 @@ and Display : sig
     = "ml_gdk_display_get_startup_notification_id"
   (** Gets the startup notification ID for a Wayland display, or %NULL if no ID
       has been defined. *)
+
+  external get_setting : t -> string -> Gobject.Value.t -> bool
+    = "ml_gdk_display_get_setting"
+  (** Retrieves a desktop-wide setting such as double-click time
+  for the @display. *)
 
   external get_primary_clipboard : t -> Clipboard.t
     = "ml_gdk_display_get_primary_clipboard"

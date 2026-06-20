@@ -20,7 +20,7 @@
 value copy_GtkBorder(const GtkBorder *ptr)
 {
   if (ptr == NULL) return Val_none;
-  GtkBorder *copy = gtk_border_copy((GtkBorder*)ptr);
+  GtkBorder *copy = g_boxed_copy(gtk_border_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(gtk_border_get_type(), copy);
 }
 
@@ -113,3 +113,9 @@ CAMLexport CAMLprim value ml_gtk_border_make(value v_left, value v_right, value 
     CAMLreturn(Val_GtkBorder(obj));
 }
 
+
+CAMLprim value ml_gtk_border_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gtk_border_get_type()));
+}

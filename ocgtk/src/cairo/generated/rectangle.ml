@@ -21,3 +21,5 @@ external set_height : t -> float -> unit = "ml_cairo_rectangle_set_height"
 
 external make : float -> float -> float -> float -> t
   = "ml_cairo_rectangle_make"
+
+external get_type : unit -> Gobject.Type.t = "ml_cairo_rectangle_get_type"

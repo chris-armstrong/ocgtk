@@ -249,6 +249,7 @@ CAMLexport CAMLprim value ml_gsk_transform_ref(value self)
 CAMLparam1(self);
 
 GskTransform* result = gsk_transform_ref(GskTransform_val(self));
+if (result) result = g_boxed_copy(gsk_transform_get_type(), result);
 CAMLreturn(Val_option(result, Val_GskTransform));
 }
 
@@ -290,4 +291,10 @@ CAMLparam2(self, arg1);
 
 gboolean result = gsk_transform_equal(GskTransform_val(self), Option_val(arg1, GskTransform_val, NULL));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gsk_transform_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gsk_transform_get_type()));
 }

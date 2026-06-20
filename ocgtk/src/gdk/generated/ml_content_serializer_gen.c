@@ -24,6 +24,22 @@ gdk_content_serializer_return_success(GdkContentSerializer_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gdk_content_serializer_return_error(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gdk_content_serializer_return_error(GdkContentSerializer_val(self), GError_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gdk_content_serializer_get_value(value self)
+{
+CAMLparam1(self);
+
+const GValue* result = gdk_content_serializer_get_value(GdkContentSerializer_val(self));
+CAMLreturn(Val_GValue_copy(result));
+}
+
 CAMLexport CAMLprim value ml_gdk_content_serializer_get_priority(value self)
 {
 CAMLparam1(self);

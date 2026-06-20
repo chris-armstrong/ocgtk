@@ -30,3 +30,9 @@ value Val_cairo_region_t_option(const cairo_region_t *ptr) {
   return Val_some(Val_cairo_region_t(ptr));
 }
 
+
+CAMLprim value ml_cairo_region_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(cairo_gobject_region_get_type()));
+}

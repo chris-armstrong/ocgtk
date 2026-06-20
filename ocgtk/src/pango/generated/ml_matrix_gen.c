@@ -20,7 +20,7 @@
 value copy_PangoMatrix(const PangoMatrix *ptr)
 {
   if (ptr == NULL) return Val_none;
-  PangoMatrix *copy = pango_matrix_copy((PangoMatrix*)ptr);
+  PangoMatrix *copy = g_boxed_copy(pango_matrix_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(pango_matrix_get_type(), copy);
 }
 #endif
@@ -358,6 +358,12 @@ CAMLexport CAMLprim value ml_pango_matrix_make_bytecode(value * argv, int argn)
     return ml_pango_matrix_make_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
 
+
+CAMLprim value ml_pango_matrix_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_matrix_get_type()));
+}
 
 #else
 

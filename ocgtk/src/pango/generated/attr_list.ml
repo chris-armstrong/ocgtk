@@ -133,3 +133,5 @@ external change : t -> Attr_color_cycle_ed189c09.Attribute.t -> unit
     attribute list in order (potentially much slower for large lists). However,
     [method@Pango.AttrList.insert] is not suitable for continually changing a
     set of attributes since it never removes or combines existing attributes. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_pango_attr_list_get_type"

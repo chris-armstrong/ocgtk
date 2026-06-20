@@ -128,35 +128,6 @@ CAMLprim value ml_g_type_is_a(value type, value is_a_type)
     CAMLreturn(Val_bool(result));
 }
 
-CAMLprim value ml_g_type_fundamental(value type)
-{
-    CAMLparam1(type);
-    GType fund = G_TYPE_FUNDAMENTAL(Long_val(type));
-    /* Map GType fundamentals to our enum */
-    if (fund == G_TYPE_INVALID) CAMLreturn(Val_int(0));
-    if (fund == G_TYPE_NONE) CAMLreturn(Val_int(1));
-    if (fund == G_TYPE_INTERFACE) CAMLreturn(Val_int(2));
-    if (fund == G_TYPE_CHAR) CAMLreturn(Val_int(3));
-    if (fund == G_TYPE_UCHAR) CAMLreturn(Val_int(4));
-    if (fund == G_TYPE_BOOLEAN) CAMLreturn(Val_int(5));
-    if (fund == G_TYPE_INT) CAMLreturn(Val_int(6));
-    if (fund == G_TYPE_UINT) CAMLreturn(Val_int(7));
-    if (fund == G_TYPE_LONG) CAMLreturn(Val_int(8));
-    if (fund == G_TYPE_ULONG) CAMLreturn(Val_int(9));
-    if (fund == G_TYPE_INT64) CAMLreturn(Val_int(10));
-    if (fund == G_TYPE_UINT64) CAMLreturn(Val_int(11));
-    if (fund == G_TYPE_ENUM) CAMLreturn(Val_int(12));
-    if (fund == G_TYPE_FLAGS) CAMLreturn(Val_int(13));
-    if (fund == G_TYPE_FLOAT) CAMLreturn(Val_int(14));
-    if (fund == G_TYPE_DOUBLE) CAMLreturn(Val_int(15));
-    if (fund == G_TYPE_STRING) CAMLreturn(Val_int(16));
-    if (fund == G_TYPE_POINTER) CAMLreturn(Val_int(17));
-    if (fund == G_TYPE_BOXED) CAMLreturn(Val_int(18));
-    if (fund == G_TYPE_PARAM) CAMLreturn(Val_int(19));
-    if (fund == G_TYPE_OBJECT) CAMLreturn(Val_int(20));
-    CAMLreturn(Val_int(0)); /* INVALID */
-}
-
 CAMLprim value ml_g_type_of_fundamental(value fund_int)
 {
     CAMLparam1(fund_int);
@@ -537,6 +508,16 @@ CAMLprim value ml_g_value_get_boxed(value val)
     CAMLlocal1(result);
 
     GValue *gv = GValue_val(val);
+
+    /* GTK sometimes wraps signal parameters in a G_TYPE_VALUE container
+       (a nested GValue). Unwrap it so we operate on the inner value. */
+    if (G_VALUE_TYPE(gv) == G_TYPE_VALUE) {
+        const GValue *inner = g_value_get_boxed(gv);
+        if (inner == NULL)
+            caml_failwith("g_value_get_boxed: NULL inner GValue");
+        gv = (GValue *)inner;
+    }
+
     if (!G_VALUE_HOLDS_BOXED(gv))
         caml_invalid_argument("g_value_get_boxed: not a boxed value");
 
@@ -548,6 +529,24 @@ CAMLprim value ml_g_value_get_boxed(value val)
     void *copy = g_boxed_copy(G_VALUE_TYPE(gv), p);
     result = ml_gir_record_val_ptr_with_type(G_VALUE_TYPE(gv), copy);
 
+    CAMLreturn(result);
+}
+
+/* Wrap a borrowed const GValue* into an owned Gobject.Value.t by copying its
+   contents.  The returned custom block uses ocgtk_gvalue_ops whose finalizer
+   calls g_value_unset, so the copy is cleaned up correctly when OCaml GC
+   collects the block.  Never call this with a NULL src — the caller (generated
+   C stubs) guards with Val_option which handles NULL. */
+value Val_GValue_copy(const GValue *src)
+{
+    CAMLparam0();
+    CAMLlocal1(result);
+    result = caml_alloc_custom(&ocgtk_gvalue_ops, sizeof(ml_gvalue), 0, 1);
+    ml_gvalue *mlgv = (ml_gvalue *)Data_custom_val(result);
+    memset(&mlgv->gvalue, 0, sizeof(GValue));
+    g_value_init(&mlgv->gvalue, G_VALUE_TYPE(src));
+    g_value_copy(src, &mlgv->gvalue);
+    mlgv->initialized = 1;
     CAMLreturn(result);
 }
 

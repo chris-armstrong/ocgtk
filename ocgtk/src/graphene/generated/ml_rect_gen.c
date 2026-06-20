@@ -73,6 +73,7 @@ CAMLexport CAMLprim value ml_graphene_rect_round_to_pixel(value self)
 CAMLparam1(self);
 
 graphene_rect_t* result = graphene_rect_round_to_pixel(graphene_rect_t_val(self));
+if (result) result = g_boxed_copy(graphene_rect_get_type(), result);
 CAMLreturn(Val_graphene_rect_t(result));
 }
 
@@ -149,6 +150,7 @@ CAMLexport CAMLprim value ml_graphene_rect_offset(value self, value arg1, value 
 CAMLparam3(self, arg1, arg2);
 
 graphene_rect_t* result = graphene_rect_offset(graphene_rect_t_val(self), Double_val(arg1), Double_val(arg2));
+if (result) result = g_boxed_copy(graphene_rect_get_type(), result);
 CAMLreturn(Val_graphene_rect_t(result));
 }
 
@@ -179,6 +181,7 @@ CAMLexport CAMLprim value ml_graphene_rect_normalize(value self)
 CAMLparam1(self);
 
 graphene_rect_t* result = graphene_rect_normalize(graphene_rect_t_val(self));
+if (result) result = g_boxed_copy(graphene_rect_get_type(), result);
 CAMLreturn(Val_graphene_rect_t(result));
 }
 
@@ -233,6 +236,7 @@ CAMLexport CAMLprim value ml_graphene_rect_inset(value self, value arg1, value a
 CAMLparam3(self, arg1, arg2);
 
 graphene_rect_t* result = graphene_rect_inset(graphene_rect_t_val(self), Double_val(arg1), Double_val(arg2));
+if (result) result = g_boxed_copy(graphene_rect_get_type(), result);
 CAMLreturn(Val_graphene_rect_t(result));
 }
 
@@ -241,6 +245,7 @@ CAMLexport CAMLprim value ml_graphene_rect_init_from_rect(value self, value arg1
 CAMLparam2(self, arg1);
 
 graphene_rect_t* result = graphene_rect_init_from_rect(graphene_rect_t_val(self), graphene_rect_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_rect_get_type(), result);
 CAMLreturn(Val_graphene_rect_t(result));
 }
 
@@ -249,6 +254,7 @@ CAMLexport CAMLprim value ml_graphene_rect_init(value self, value arg1, value ar
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
 graphene_rect_t* result = graphene_rect_init(graphene_rect_t_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3), Double_val(arg4));
+if (result) result = g_boxed_copy(graphene_rect_get_type(), result);
 CAMLreturn(Val_graphene_rect_t(result));
 }
 
@@ -470,6 +476,12 @@ CAMLexport CAMLprim value ml_graphene_rect_make(value v_origin, value v_size)
     CAMLreturn(Val_graphene_rect_t(obj));
 }
 
+
+CAMLprim value ml_graphene_rect_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_rect_get_type()));
+}
 
 #else
 

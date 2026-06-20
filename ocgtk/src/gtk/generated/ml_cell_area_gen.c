@@ -292,6 +292,22 @@ GtkCellAreaContext* result = gtk_cell_area_copy_context(GtkCellArea_val(self), G
 CAMLreturn(Val_GtkCellAreaContext(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_cell_area_cell_set_property(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_cell_area_cell_set_property(GtkCellArea_val(self), GtkCellRenderer_val(arg1), String_val(arg2), GValue_val(arg3));
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_cell_area_cell_get_property(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_cell_area_cell_get_property(GtkCellArea_val(self), GtkCellRenderer_val(arg1), String_val(arg2), GValue_val(arg3));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_cell_area_attribute_get_column(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);

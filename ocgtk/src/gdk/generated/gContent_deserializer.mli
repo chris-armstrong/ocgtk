@@ -4,10 +4,12 @@ class type content_deserializer_t = object
   method get_cancellable :
     unit -> Ocgtk_gio.Gio.Cancellable.cancellable_t option
 
-  method get_gtype : unit -> int
+  method get_gtype : unit -> Gobject.Type.t
   method get_input_stream : unit -> Ocgtk_gio.Gio.Input_stream.input_stream_t
   method get_mime_type : unit -> string
   method get_priority : unit -> int
+  method get_value : unit -> Gobject.Value.t
+  method return_error : GError.t -> unit
   method return_success : unit -> unit
   method as_content_deserializer : Content_deserializer.t
 end

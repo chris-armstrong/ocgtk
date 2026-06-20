@@ -9,6 +9,12 @@ class type drop_target_t = object
     unit ->
     Gobject.Signal.handler_id
 
+  method on_drop :
+    ?after:bool ->
+    callback:(value:Gobject.Value.t -> x:float -> y:float -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method on_enter :
     ?after:bool ->
     callback:(x:float -> y:float -> Ocgtk_gdk.Gdk_enums.dragaction) ->
@@ -32,13 +38,14 @@ class type drop_target_t = object
     unit -> Ocgtk_gdk.Gdk.Content_formats.content_formats_t option
 
   method get_preload : unit -> bool
+  method get_value : unit -> Gobject.Value.t option
   method reject : unit -> unit
   method set_actions : Ocgtk_gdk.Gdk.dragaction -> unit
-  method set_gtypes : int array option -> Gsize.t -> unit
+  method set_gtypes : Gobject.Type.t array option -> Gsize.t -> unit
   method set_preload : bool -> unit
   method as_drop_target : Drop_target.t
 end
 
 class drop_target : Drop_target.t -> drop_target_t
 
-val new_ : int -> Ocgtk_gdk.Gdk.dragaction -> drop_target_t
+val new_ : Gobject.Type.t -> Ocgtk_gdk.Gdk.dragaction -> drop_target_t

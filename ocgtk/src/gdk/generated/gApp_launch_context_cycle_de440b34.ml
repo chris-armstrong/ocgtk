@@ -32,7 +32,12 @@ and clipboard_t = object
     Ocgtk_gio.Gio.Async_result.async_result_t ->
     (GTexture.texture_t option, GError.t) result
 
+  method read_value_finish :
+    Ocgtk_gio.Gio.Async_result.async_result_t ->
+    (Gobject.Value.t, GError.t) result
+
   method set_content : GContent_provider.content_provider_t option -> bool
+  method set_value : Gobject.Value.t -> unit
 
   method store_finish :
     Ocgtk_gio.Gio.Async_result.async_result_t -> (bool, GError.t) result
@@ -113,6 +118,7 @@ and display_t = object
   method get_monitors : unit -> Ocgtk_gio.Gio.List_model.list_model_t
   method get_name : unit -> string
   method get_primary_clipboard : unit -> clipboard_t
+  method get_setting : string -> Gobject.Value.t -> bool
   method get_startup_notification_id : unit -> string option
   method is_closed : unit -> bool
   method is_composited : unit -> bool
@@ -383,10 +389,21 @@ and clipboard (obj : App_launch_context_cycle_de440b34.Clipboard.t) :
           (App_launch_context_cycle_de440b34.Clipboard.read_texture_finish obj
              result)
 
+    method read_value_finish :
+        Ocgtk_gio.Gio.Async_result.async_result_t ->
+        (Gobject.Value.t, GError.t) result =
+      fun result ->
+        let result = result#as_async_result in
+        App_launch_context_cycle_de440b34.Clipboard.read_value_finish obj result
+
     method set_content : GContent_provider.content_provider_t option -> bool =
       fun provider ->
         let provider = Option.map (fun c -> c#as_content_provider) provider in
         App_launch_context_cycle_de440b34.Clipboard.set_content obj provider
+
+    method set_value : Gobject.Value.t -> unit =
+      fun value ->
+        App_launch_context_cycle_de440b34.Clipboard.set_value obj value
 
     method store_finish :
         Ocgtk_gio.Gio.Async_result.async_result_t -> (bool, GError.t) result =
@@ -552,6 +569,10 @@ and display (obj : App_launch_context_cycle_de440b34.Display.t) : display_t =
       fun () ->
         new clipboard
           (App_launch_context_cycle_de440b34.Display.get_primary_clipboard obj)
+
+    method get_setting : string -> Gobject.Value.t -> bool =
+      fun name value ->
+        App_launch_context_cycle_de440b34.Display.get_setting obj name value
 
     method get_startup_notification_id : unit -> string option =
       fun () ->

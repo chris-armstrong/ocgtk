@@ -30,3 +30,9 @@ value Val_cairo_scaled_font_t_option(const cairo_scaled_font_t *ptr) {
   return Val_some(Val_cairo_scaled_font_t(ptr));
 }
 
+
+CAMLprim value ml_cairo_scaled_font_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(cairo_gobject_scaled_font_get_type()));
+}

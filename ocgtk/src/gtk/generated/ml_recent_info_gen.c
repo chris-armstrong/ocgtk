@@ -214,3 +214,9 @@ GError *error = NULL;
 GAppInfo* result = gtk_recent_info_create_app_info(GtkRecentInfo_val(self), String_option_val(arg1), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GAppInfo))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+
+CAMLprim value ml_gtk_recent_info_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gtk_recent_info_get_type()));
+}

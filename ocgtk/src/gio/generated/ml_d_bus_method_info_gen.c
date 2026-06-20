@@ -97,6 +97,12 @@ CAMLexport CAMLprim value ml_g_d_bus_method_info_make(value v_ref_count, value v
 }
 
 
+CAMLprim value ml_gio_d_bus_method_info_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(g_dbus_method_info_get_type()));
+}
+
 #else
 
 

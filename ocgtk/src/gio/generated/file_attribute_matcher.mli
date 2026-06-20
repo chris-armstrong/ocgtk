@@ -51,3 +51,6 @@ matcher was created with "standard::*" and @ns is "standard", or if matcher was 
 using "*" and namespace is anything.)
 
 TODO: this is awkwardly worded. *)
+
+external get_type : unit -> Gobject.Type.t
+  = "ml_gio_file_attribute_matcher_get_type"

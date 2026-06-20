@@ -22,3 +22,4 @@ external set_ref_count : t -> int -> unit
 
 external set_name : t -> string -> unit = "ml_g_d_bus_method_info_set_name"
 external make : int -> string -> t = "ml_g_d_bus_method_info_make"
+external get_type : unit -> Gobject.Type.t = "ml_gio_d_bus_method_info_get_type"

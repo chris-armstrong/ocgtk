@@ -27,3 +27,5 @@ external set_bottom : t -> Int16.t -> unit = "ml_gtk_border_set_bottom"
 
 external make : Int16.t -> Int16.t -> Int16.t -> Int16.t -> t
   = "ml_gtk_border_make"
+
+external get_type : unit -> Gobject.Type.t = "ml_gtk_border_get_type"

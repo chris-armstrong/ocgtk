@@ -3,7 +3,7 @@
 
 type t = [ `list_store | `object_ ] Gobject.obj
 
-external newv : int -> int array -> t = "ml_gtk_list_store_newv"
+external newv : int -> Gobject.Type.t array -> t = "ml_gtk_list_store_newv"
 (** Create a new ListStore *)
 
 (* Methods *)
@@ -13,7 +13,21 @@ external swap : t -> Tree_iter.t -> Tree_iter.t -> unit
 (** Swaps @a and @b in @store. Note that this function only works with
 unsorted stores. *)
 
-external set_column_types : t -> int -> int array -> unit
+external set_valuesv :
+  t -> Tree_iter.t -> int array -> Gobject.Value.t array -> int -> unit
+  = "ml_gtk_list_store_set_valuesv"
+(** A variant of gtk_list_store_set_valist() which takes the columns and values
+    as two arrays, instead of varargs. This function is mainly intended for
+    language-bindings and in case the number of columns to change is not known
+    until run-time. *)
+
+external set_value : t -> Tree_iter.t -> int -> Gobject.Value.t -> unit
+  = "ml_gtk_list_store_set_value"
+(** Sets the data in the cell specified by @iter and @column.
+The type of @value must be convertible to the type of the
+column. *)
+
+external set_column_types : t -> int -> Gobject.Type.t array -> unit
   = "ml_gtk_list_store_set_column_types"
 (** Sets the types of the columns of a list store.
 
@@ -50,6 +64,14 @@ external iter_is_valid : t -> Tree_iter.t -> bool
 (** Checks if the given iter is a valid iter for this `GtkListStore`.
 
     This function is slow. Only use it for debugging and/or testing purposes. *)
+
+external insert_with_valuesv :
+  t -> int -> int array -> Gobject.Value.t array -> int -> Tree_iter.t
+  = "ml_gtk_list_store_insert_with_valuesv"
+(** A variant of gtk_list_store_insert_with_values() which takes the columns and
+    values as two arrays, instead of varargs.
+
+    This function is mainly intended for language-bindings. *)
 
 external insert_before : t -> Tree_iter.t option -> Tree_iter.t
   = "ml_gtk_list_store_insert_before"

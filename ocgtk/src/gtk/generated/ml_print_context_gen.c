@@ -99,6 +99,7 @@ CAMLexport CAMLprim value ml_gtk_print_context_get_cairo_context(value self)
 CAMLparam1(self);
 
 cairo_t* result = gtk_print_context_get_cairo_context(GtkPrintContext_val(self));
+if (result) result = g_boxed_copy(cairo_gobject_context_get_type(), result);
 CAMLreturn(Val_cairo_t(result));
 }
 

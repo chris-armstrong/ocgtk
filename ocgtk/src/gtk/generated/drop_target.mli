@@ -3,7 +3,8 @@
 
 type t = [ `drop_target | `event_controller | `object_ ] Gobject.obj
 
-external new_ : int -> Ocgtk_gdk.Gdk.dragaction -> t = "ml_gtk_drop_target_new"
+external new_ : Gobject.Type.t -> Ocgtk_gdk.Gdk.dragaction -> t
+  = "ml_gtk_drop_target_new"
 (** Create a new DropTarget *)
 
 (* Methods *)
@@ -11,7 +12,7 @@ external new_ : int -> Ocgtk_gdk.Gdk.dragaction -> t = "ml_gtk_drop_target_new"
 external set_preload : t -> bool -> unit = "ml_gtk_drop_target_set_preload"
 (** Sets whether data should be preloaded on hover. *)
 
-external set_gtypes : t -> int array option -> Gsize.t -> unit
+external set_gtypes : t -> Gobject.Type.t array option -> Gsize.t -> unit
   = "ml_gtk_drop_target_set_gtypes"
 (** Sets the supported `GType`s for this drop target. *)
 
@@ -28,10 +29,14 @@ external reject : t -> unit = "ml_gtk_drop_target_reject"
     This function should be used when delaying the decision on whether to accept
     a drag or not until after reading the data. *)
 
+external get_value : t -> Gobject.Value.t option
+  = "ml_gtk_drop_target_get_value"
+(** Gets the current drop data, as a `GValue`. *)
+
 external get_preload : t -> bool = "ml_gtk_drop_target_get_preload"
 (** Gets whether data should be preloaded on hover. *)
 
-external get_gtypes : t -> int array option * Gsize.t
+external get_gtypes : t -> Gobject.Type.t array option * Gsize.t
   = "ml_gtk_drop_target_get_gtypes"
 (** Gets the list of supported `GType`s that can be dropped on the target.
 
@@ -65,6 +70,12 @@ val on_accept :
   ?after:bool ->
   t ->
   callback:(drop:Ocgtk_gdk.Gdk.Wrappers.Drop.t -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_drop :
+  ?after:bool ->
+  t ->
+  callback:(value:Gobject.Value.t -> x:float -> y:float -> bool) ->
   Gobject.Signal.handler_id
 
 val on_enter :

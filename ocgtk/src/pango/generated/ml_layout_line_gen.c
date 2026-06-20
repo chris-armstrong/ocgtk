@@ -339,3 +339,9 @@ CAMLexport CAMLprim value ml_pango_layout_line_make_bytecode(value * argv, int a
     return ml_pango_layout_line_make_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
 
+
+CAMLprim value ml_pango_layout_line_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_layout_line_get_type()));
+}

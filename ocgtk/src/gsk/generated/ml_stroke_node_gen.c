@@ -32,6 +32,7 @@ CAMLexport CAMLprim value ml_gsk_stroke_node_get_stroke(value self)
 CAMLparam1(self);
 
 const GskStroke* result = gsk_stroke_node_get_stroke(GskStrokeNode_val(self));
+if (result) result = g_boxed_copy(gsk_stroke_get_type(), result);
 CAMLreturn(Val_GskStroke(result));
 }
 
@@ -40,6 +41,7 @@ CAMLexport CAMLprim value ml_gsk_stroke_node_get_path(value self)
 CAMLparam1(self);
 
 GskPath* result = gsk_stroke_node_get_path(GskStrokeNode_val(self));
+if (result) result = g_boxed_copy(gsk_path_get_type(), result);
 CAMLreturn(Val_GskPath(result));
 }
 

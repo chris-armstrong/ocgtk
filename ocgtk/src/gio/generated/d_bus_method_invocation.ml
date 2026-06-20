@@ -51,6 +51,15 @@ then this call will sink @parameters and free @invocation, but
 otherwise do nothing (as per the recommendations of the D-Bus
 specification). *)
 
+external return_gerror : t -> GError.t -> unit
+  = "ml_g_dbus_method_invocation_return_gerror"
+(** Like g_dbus_method_invocation_return_error() but takes a #GError
+instead of the error domain, error code and message.
+
+This method will take ownership of @invocation. See
+#GDBusInterfaceVTable for more information about the ownership of
+@invocation. *)
+
 external return_dbus_error : t -> string -> string -> unit
   = "ml_g_dbus_method_invocation_return_dbus_error"
 (** Finishes handling a D-Bus method call by returning an error.

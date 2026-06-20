@@ -193,7 +193,7 @@ CAMLexport CAMLprim value ml_gtk_inscription_get_attributes(value self)
 CAMLparam1(self);
 
 PangoAttrList* result = gtk_inscription_get_attributes(GtkInscription_val(self));
-if (result) g_object_ref_sink(result);
+if (result) result = g_boxed_copy(pango_attr_list_get_type(), result);
 CAMLreturn(Val_option(result, Val_PangoAttrList));
 }
 

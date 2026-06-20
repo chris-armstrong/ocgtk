@@ -96,3 +96,4 @@ external set_log_clusters : t -> int -> unit
   = "ml_pango_glyph_string_set_log_clusters"
 
 external make : int -> int -> t = "ml_pango_glyph_string_make"
+external get_type : unit -> Gobject.Type.t = "ml_pango_glyph_string_get_type"

@@ -20,7 +20,7 @@
 value copy_PangoGlyphItemIter(const PangoGlyphItemIter *ptr)
 {
   if (ptr == NULL) return Val_none;
-  PangoGlyphItemIter *copy = pango_glyph_item_iter_copy((PangoGlyphItemIter*)ptr);
+  PangoGlyphItemIter *copy = g_boxed_copy(pango_glyph_item_iter_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(pango_glyph_item_iter_get_type(), copy);
 }
 #endif
@@ -220,6 +220,12 @@ CAMLexport CAMLprim value ml_pango_glyph_item_iter_make_bytecode(value * argv, i
     return ml_pango_glyph_item_iter_make_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7]);
 }
 
+
+CAMLprim value ml_pango_glyph_item_iter_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_glyph_item_iter_get_type()));
+}
 
 #else
 

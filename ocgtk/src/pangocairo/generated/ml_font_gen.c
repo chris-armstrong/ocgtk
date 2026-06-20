@@ -23,6 +23,7 @@ CAMLexport CAMLprim value ml_pango_cairo_font_get_scaled_font(value self)
 CAMLparam1(self);
 
 cairo_scaled_font_t* result = pango_cairo_font_get_scaled_font(PangoCairoFont_val(self));
+if (result) result = g_boxed_copy(cairo_gobject_scaled_font_get_type(), result);
 CAMLreturn(Val_option(result, Val_cairo_scaled_font_t));
 }
 CAMLexport CAMLprim value ml_pangocairo_font_from_gobject(value obj)

@@ -71,3 +71,5 @@ available at all.
 Once this function returns %TRUE for a frame, you can be
 certain that no further values will become available and be
 stored in the `GdkFrameTimings`. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gdk_frame_timings_get_type"

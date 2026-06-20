@@ -56,6 +56,7 @@ CAMLexport CAMLprim value ml_g_dbus_interface_info_lookup_signal(value self, val
 CAMLparam2(self, arg1);
 
 GDBusSignalInfo* result = g_dbus_interface_info_lookup_signal(GDBusInterfaceInfo_val(self), String_val(arg1));
+if (result) result = g_boxed_copy(g_dbus_signal_info_get_type(), result);
 CAMLreturn(Val_option(result, Val_GDBusSignalInfo));
 }
 
@@ -64,6 +65,7 @@ CAMLexport CAMLprim value ml_g_dbus_interface_info_lookup_property(value self, v
 CAMLparam2(self, arg1);
 
 GDBusPropertyInfo* result = g_dbus_interface_info_lookup_property(GDBusInterfaceInfo_val(self), String_val(arg1));
+if (result) result = g_boxed_copy(g_dbus_property_info_get_type(), result);
 CAMLreturn(Val_option(result, Val_GDBusPropertyInfo));
 }
 
@@ -72,6 +74,7 @@ CAMLexport CAMLprim value ml_g_dbus_interface_info_lookup_method(value self, val
 CAMLparam2(self, arg1);
 
 GDBusMethodInfo* result = g_dbus_interface_info_lookup_method(GDBusInterfaceInfo_val(self), String_val(arg1));
+if (result) result = g_boxed_copy(g_dbus_method_info_get_type(), result);
 CAMLreturn(Val_option(result, Val_GDBusMethodInfo));
 }
 
@@ -162,6 +165,12 @@ CAMLexport CAMLprim value ml_g_d_bus_interface_info_make(value v_ref_count, valu
     CAMLreturn(Val_GDBusInterfaceInfo(obj));
 }
 
+
+CAMLprim value ml_gio_d_bus_interface_info_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(g_dbus_interface_info_get_type()));
+}
 
 #else
 

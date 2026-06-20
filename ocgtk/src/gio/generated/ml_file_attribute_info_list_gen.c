@@ -123,3 +123,9 @@ CAMLexport CAMLprim value ml_g_file_attribute_info_list_make(value v_infos, valu
     CAMLreturn(Val_GFileAttributeInfoList(obj));
 }
 
+
+CAMLprim value ml_gio_file_attribute_info_list_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(g_file_attribute_info_list_get_type()));
+}

@@ -24,6 +24,15 @@ gdk_drop_status(GdkDrop_val(self), GdkDragAction_val(arg1), GdkDragAction_val(ar
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gdk_drop_read_value_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+const GValue* result = gdk_drop_read_value_finish(GdkDrop_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GValue_copy(result))); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_gdk_drop_get_surface(value self)
 {
 CAMLparam1(self);
@@ -38,6 +47,7 @@ CAMLexport CAMLprim value ml_gdk_drop_get_formats(value self)
 CAMLparam1(self);
 
 GdkContentFormats* result = gdk_drop_get_formats(GdkDrop_val(self));
+if (result) result = g_boxed_copy(gdk_content_formats_get_type(), result);
 CAMLreturn(Val_GdkContentFormats(result));
 }
 

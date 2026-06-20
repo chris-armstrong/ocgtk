@@ -373,3 +373,9 @@ CAMLparam3(self, arg1, arg2);
 gboolean result = pango_font_description_better_match(PangoFontDescription_val(self), Option_val(arg1, PangoFontDescription_val, NULL), PangoFontDescription_val(arg2));
 CAMLreturn(Val_bool(result));
 }
+
+CAMLprim value ml_pango_font_description_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_font_description_get_type()));
+}

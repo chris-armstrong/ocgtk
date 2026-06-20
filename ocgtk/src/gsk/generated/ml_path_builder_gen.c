@@ -153,6 +153,7 @@ CAMLexport CAMLprim value ml_gsk_path_builder_ref(value self)
 CAMLparam1(self);
 
 GskPathBuilder* result = gsk_path_builder_ref(GskPathBuilder_val(self));
+if (result) result = g_boxed_copy(gsk_path_builder_get_type(), result);
 CAMLreturn(Val_GskPathBuilder(result));
 }
 
@@ -198,6 +199,7 @@ CAMLexport CAMLprim value ml_gsk_path_builder_get_current_point(value self)
 CAMLparam1(self);
 
 const graphene_point_t* result = gsk_path_builder_get_current_point(GskPathBuilder_val(self));
+if (result) result = g_boxed_copy(graphene_point_get_type(), result);
 CAMLreturn(Val_graphene_point_t(result));
 }
 
@@ -305,6 +307,12 @@ CAMLparam2(self, arg1);
 
 gsk_path_builder_add_cairo_path(GskPathBuilder_val(self), cairo_path_t_val(arg1));
 CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gsk_path_builder_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gsk_path_builder_get_type()));
 }
 
 #else

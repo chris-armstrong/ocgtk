@@ -65,6 +65,7 @@ CAMLexport CAMLprim value ml_g_dbus_node_info_lookup_interface(value self, value
 CAMLparam2(self, arg1);
 
 GDBusInterfaceInfo* result = g_dbus_node_info_lookup_interface(GDBusNodeInfo_val(self), String_val(arg1));
+if (result) result = g_boxed_copy(g_dbus_interface_info_get_type(), result);
 CAMLreturn(Val_option(result, Val_GDBusInterfaceInfo));
 }
 \
@@ -113,6 +114,12 @@ CAMLexport CAMLprim value ml_g_d_bus_node_info_make(value v_ref_count, value v_p
     CAMLreturn(Val_GDBusNodeInfo(obj));
 }
 
+
+CAMLprim value ml_gio_d_bus_node_info_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(g_dbus_node_info_get_type()));
+}
 
 #else
 

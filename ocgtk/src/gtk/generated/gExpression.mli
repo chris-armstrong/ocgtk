@@ -5,7 +5,8 @@ class type expression_t = object
     [ `object_ ] Gobject.obj option ->
     Expression_watch.t
 
-  method get_value_type : unit -> int
+  method evaluate : [ `object_ ] Gobject.obj option -> Gobject.Value.t -> bool
+  method get_value_type : unit -> Gobject.Type.t
   method is_static : unit -> bool
   method ref : unit -> expression_t
   method unref : unit -> unit

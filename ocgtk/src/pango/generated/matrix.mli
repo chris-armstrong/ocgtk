@@ -136,3 +136,5 @@ external set_y0 : t -> float -> unit = "ml_pango_matrix_set_y0"
 
 external make : float -> float -> float -> float -> float -> float -> t
   = "ml_pango_matrix_make_bytecode" "ml_pango_matrix_make_native"
+
+external get_type : unit -> Gobject.Type.t = "ml_pango_matrix_get_type"

@@ -9,6 +9,7 @@ class type d_bus_method_invocation_t = object
   method get_property_info : unit -> D_bus_property_info.t option
   method get_sender : unit -> string
   method return_dbus_error : string -> string -> unit
+  method return_gerror : GError.t -> unit
   method return_value : Gvariant.t option -> unit
 
   method return_value_with_unix_fd_list :

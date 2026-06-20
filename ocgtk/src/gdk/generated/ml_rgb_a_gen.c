@@ -19,7 +19,7 @@
 value copy_GdkRGBA(const GdkRGBA *ptr)
 {
   if (ptr == NULL) return Val_none;
-  GdkRGBA *copy = gdk_rgba_copy((GdkRGBA*)ptr);
+  GdkRGBA *copy = g_boxed_copy(gdk_rgba_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(gdk_rgba_get_type(), copy);
 }
 
@@ -152,3 +152,9 @@ CAMLexport CAMLprim value ml_gdk_rgb_a_make(value v_red, value v_green, value v_
     CAMLreturn(Val_GdkRGBA(obj));
 }
 
+
+CAMLprim value ml_gdk_rgb_a_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gdk_rgba_get_type()));
+}

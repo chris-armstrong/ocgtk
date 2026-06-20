@@ -25,3 +25,4 @@ external set_signature : t -> string -> unit
   = "ml_g_d_bus_arg_info_set_signature"
 
 external make : int -> string -> string -> t = "ml_g_d_bus_arg_info_make"
+external get_type : unit -> Gobject.Type.t = "ml_gio_d_bus_arg_info_get_type"

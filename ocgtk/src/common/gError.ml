@@ -12,5 +12,7 @@
 (**************************************************************************)
 
 type t
-(** Abstract GError type — constructed by C FFI stubs in wrappers.c, used only
-    as the error component of [(_, GError.t) result] return values. *)
+
+external message : t -> string = "ml_gerror_message"
+external code : t -> int = "ml_gerror_code"
+external domain : t -> int = "ml_gerror_domain"

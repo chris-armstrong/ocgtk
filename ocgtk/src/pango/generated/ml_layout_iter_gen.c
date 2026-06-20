@@ -119,6 +119,7 @@ CAMLexport CAMLprim value ml_pango_layout_iter_get_line_readonly(value self)
 CAMLparam1(self);
 
 PangoLayoutLine* result = pango_layout_iter_get_line_readonly(PangoLayoutIter_val(self));
+if (result) result = g_boxed_copy(pango_layout_line_get_type(), result);
 CAMLreturn(Val_option(result, Val_PangoLayoutLine));
 }
 
@@ -152,6 +153,7 @@ CAMLexport CAMLprim value ml_pango_layout_iter_get_line(value self)
 CAMLparam1(self);
 
 PangoLayoutLine* result = pango_layout_iter_get_line(PangoLayoutIter_val(self));
+if (result) result = g_boxed_copy(pango_layout_line_get_type(), result);
 CAMLreturn(Val_option(result, Val_PangoLayoutLine));
 }
 
@@ -236,4 +238,10 @@ CAMLparam1(self);
 
 gboolean result = pango_layout_iter_at_last_line(PangoLayoutIter_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_pango_layout_iter_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_layout_iter_get_type()));
 }

@@ -47,6 +47,13 @@ class type cell_area_t = object
 
   method attribute_disconnect : GCell_renderer.cell_renderer_t -> string -> unit
   method attribute_get_column : GCell_renderer.cell_renderer_t -> string -> int
+
+  method cell_get_property :
+    GCell_renderer.cell_renderer_t -> string -> Gobject.Value.t -> unit
+
+  method cell_set_property :
+    GCell_renderer.cell_renderer_t -> string -> Gobject.Value.t -> unit
+
   method copy_context : cell_area_context_t -> cell_area_context_t
   method create_context : unit -> cell_area_context_t
 

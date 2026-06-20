@@ -32,6 +32,7 @@ CAMLexport CAMLprim value ml_gsk_fill_node_get_path(value self)
 CAMLparam1(self);
 
 GskPath* result = gsk_fill_node_get_path(GskFillNode_val(self));
+if (result) result = g_boxed_copy(gsk_path_get_type(), result);
 CAMLreturn(Val_GskPath(result));
 }
 

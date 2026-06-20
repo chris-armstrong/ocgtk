@@ -27,3 +27,6 @@ external set_value : t -> string -> unit
   = "ml_g_d_bus_annotation_info_set_value"
 
 external make : int -> string -> string -> t = "ml_g_d_bus_annotation_info_make"
+
+external get_type : unit -> Gobject.Type.t
+  = "ml_gio_d_bus_annotation_info_get_type"

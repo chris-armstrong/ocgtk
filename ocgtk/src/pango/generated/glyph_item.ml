@@ -72,3 +72,5 @@ external set_end_x_offset : t -> int -> unit
 
 external make : Item.t -> Glyph_string.t -> int -> int -> int -> t
   = "ml_pango_glyph_item_make"
+
+external get_type : unit -> Gobject.Type.t = "ml_pango_glyph_item_get_type"

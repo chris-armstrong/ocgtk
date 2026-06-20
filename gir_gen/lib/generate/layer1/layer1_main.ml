@@ -58,7 +58,8 @@ let generate_signal_bindings_section ~ctx ~output_mode ~class_name
 
 let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ~base_type ?c_symbol_prefix ~entity_kind
-    ?from_gobject_c_name ~signals ~fields buf : unit =
+    ?from_gobject_c_name ?(signals = []) ?glib_get_type ?(fields = []) buf :
+    unit =
   generate_type_declaration ~output_mode ~base_type buf;
   (match from_gobject_c_name with
   | Some c_name ->
@@ -106,12 +107,20 @@ let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
       (* Generate [make] constructor external declaration from writable fields *)
       Layer1_field.generate_field_make_decl ~buf field_infos
     end
-  end
+  end;
+  (match glib_get_type with
+  | Some _ ->
+      let ns_snake = Utils.to_snake_case ctx.namespace.namespace_name in
+      let class_snake = Utils.to_snake_case class_name in
+      let c_stub = sprintf "ml_%s_%s_get_type" ns_snake class_snake in
+      bprintf buf
+        "\nexternal get_type : unit -> Gobject.Type.t = \"%s\"\n" c_stub
+  | None -> ())
 
 let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
     ~parent_chain ~constructors ~methods ~properties ?c_symbol_prefix
-    ~entity_kind ?from_gobject_c_name ~signals ~fields () : string
-    =
+    ~entity_kind ?from_gobject_c_name ?(signals = []) ?glib_get_type
+    ?(fields = []) () : string =
   let buf = Buffer.create 1024 in
 
   let class_type_name, base_type =
@@ -127,7 +136,7 @@ let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
   | None -> ());
   generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ?c_symbol_prefix ~base_type ~entity_kind
-    ?from_gobject_c_name ~signals ~fields buf;
+    ?from_gobject_c_name ~signals ?glib_get_type ~fields buf;
   Buffer.contents buf
 
 (** Format module declaration (module rec X | and X) *)

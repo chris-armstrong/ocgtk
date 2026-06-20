@@ -52,6 +52,7 @@ CAMLexport CAMLprim value ml_gdk_content_formats_builder_ref(value self)
 CAMLparam1(self);
 
 GdkContentFormatsBuilder* result = gdk_content_formats_builder_ref(GdkContentFormatsBuilder_val(self));
+if (result) result = g_boxed_copy(gdk_content_formats_builder_get_type(), result);
 CAMLreturn(Val_GdkContentFormatsBuilder(result));
 }
 
@@ -77,4 +78,10 @@ CAMLparam2(self, arg1);
 
 gdk_content_formats_builder_add_formats(GdkContentFormatsBuilder_val(self), GdkContentFormats_val(arg1));
 CAMLreturn(Val_unit);
+}
+
+CAMLprim value ml_gdk_content_formats_builder_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gdk_content_formats_builder_get_type()));
 }

@@ -82,6 +82,13 @@ let is_glib_variant (gir_type : gir_type) =
   String.equal gir_type.name "GLib.Variant"
   || (match gir_type.c_type with Some ct -> String.equal ct "GVariant*" | None -> false)
 
+(** Return true when [gir_type] is a GObject.Value (raw GValue parameter).
+    The closure marshaller already copies each GValue param into a fresh
+    [Gobject.Value.t] block, so the getter expression is simply [v] — the
+    closure arg itself is the value the callback receives. *)
+let is_gobject_value (gir_type : gir_type) =
+  String.equal gir_type.name "GObject.Value"
+
 (** Return true when [gir_type] represents a void / none return type. *)
 let is_void_type (gir_type : gir_type) =
   String.equal gir_type.name "none"
@@ -231,6 +238,14 @@ let classify ~ctx ~gir_type : result =
       (make_marshaller ~ocaml_type:"Gvariant.t"
          ~getter_expr:"Gobject.Value.get_variant v"
          ~setter_expr:"Gobject.Value.set_variant v x" ())
+  (* GObject.Value — the closure arg IS the Gobject.Value.t we want to pass.
+     The closure marshaller already copies each param_values[i] into a fresh
+     ml_gvalue block, so getter_expr = "v" passes it through unchanged. *)
+  else if is_gobject_value gir_type then
+    Supported
+      (make_marshaller ~ocaml_type:"Gobject.Value.t"
+         ~getter_expr:"v"
+         ~setter_expr:"()" ())
   else if is_callback_type gir_type then
     Unsupported "callback parameters require Milestone 4"
   else

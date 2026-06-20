@@ -549,25 +549,25 @@ value Val_GskPathForeachFlags(GskPathForeachFlags flags) {
 
   if (flags & GSK_PATH_FOREACH_ALLOW_ONLY_LINES) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ONLY_LINES"))); /* `ONLY_LINES */
+    Store_field(cons, 0, caml_hash_variant("ONLY_LINES")); /* `ONLY_LINES */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GSK_PATH_FOREACH_ALLOW_QUAD) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("QUAD"))); /* `QUAD */
+    Store_field(cons, 0, caml_hash_variant("QUAD")); /* `QUAD */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GSK_PATH_FOREACH_ALLOW_CUBIC) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("CUBIC"))); /* `CUBIC */
+    Store_field(cons, 0, caml_hash_variant("CUBIC")); /* `CUBIC */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GSK_PATH_FOREACH_ALLOW_CONIC) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("CONIC"))); /* `CONIC */
+    Store_field(cons, 0, caml_hash_variant("CONIC")); /* `CONIC */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -579,7 +579,7 @@ value Val_GskPathForeachFlags(GskPathForeachFlags flags) {
 GskPathForeachFlags GskPathForeachFlags_val(value list) {
   GskPathForeachFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("ONLY_LINES")) result |= GSK_PATH_FOREACH_ALLOW_ONLY_LINES; /* `ONLY_LINES */
     else if (tag == caml_hash_variant("QUAD")) result |= GSK_PATH_FOREACH_ALLOW_QUAD; /* `QUAD */
     else if (tag == caml_hash_variant("CUBIC")) result |= GSK_PATH_FOREACH_ALLOW_CUBIC; /* `CUBIC */

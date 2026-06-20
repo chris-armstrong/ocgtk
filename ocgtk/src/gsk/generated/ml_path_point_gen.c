@@ -20,7 +20,7 @@
 value copy_GskPathPoint(const GskPathPoint *ptr)
 {
   if (ptr == NULL) return Val_none;
-  GskPathPoint *copy = gsk_path_point_copy((GskPathPoint*)ptr);
+  GskPathPoint *copy = g_boxed_copy(gsk_path_point_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(gsk_path_point_get_type(), copy);
 }
 #endif
@@ -89,6 +89,12 @@ CAMLparam2(self, arg1);
 
 int result = gsk_path_point_compare(GskPathPoint_val(self), GskPathPoint_val(arg1));
 CAMLreturn(Val_int(result));
+}
+
+CAMLprim value ml_gsk_path_point_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gsk_path_point_get_type()));
 }
 
 #else

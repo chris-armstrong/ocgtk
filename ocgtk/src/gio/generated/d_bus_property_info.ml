@@ -34,3 +34,6 @@ external set_flags : t -> Gio_enums.dbuspropertyinfoflags -> unit
 
 external make : int -> string -> string -> Gio_enums.dbuspropertyinfoflags -> t
   = "ml_g_d_bus_property_info_make"
+
+external get_type : unit -> Gobject.Type.t
+  = "ml_gio_d_bus_property_info_get_type"

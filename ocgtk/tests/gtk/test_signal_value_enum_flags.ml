@@ -37,13 +37,13 @@ external gtk_orientation_get_type : unit -> Gobject.g_type
     [g_type_from_name] only works after a type has been registered via its
     [_get_type()] function. The wrapper in
     [test_signal_value_enum_flags_stubs.c] converts the raw C [GType] (gulong)
-    to an OCaml integer via [Val_long], matching [Gobject.g_type = int]. *)
+    via [Val_long]. *)
 
 external gdk_rectangle_get_type : unit -> Gobject.g_type
   = "ml_gdk_rectangle_get_type"
 (** Direct binding to [gdk_rectangle_get_type] via a thin C stub in
     [test_signal_value_enum_flags_stubs.c]. Converts the raw C [GType] (gulong)
-    to an OCaml integer via [Val_long], matching [Gobject.g_type = int]. *)
+    via [Val_long]. *)
 
 external gdk_rectangle_create : int -> int -> int -> int -> Rectangle.t
   = "ml_gdk_rectangle_create"
@@ -126,7 +126,7 @@ let test_variant_roundtrip () =
     it back with [get_int64], and assert equality. G_TYPE_INT64 is a GLib
     fundamental type; no gtk_init needed. *)
 let test_int64_roundtrip () =
-  let gtype_int64 = Gobject.Type.of_fundamental `INT64 in
+  let gtype_int64 = Gobject.Type.int64 in
   let v = Gobject.Value.create gtype_int64 in
   Gobject.Value.set_int64 v Int64.max_int;
   let result = Gobject.Value.get_int64 v in
@@ -218,7 +218,7 @@ let test_bitfield_of_int_to_int_preserves_set () =
     G_VALUE_HOLDS_FLAGS failure, so the raised exception is [Invalid_argument],
     not [Failure]. *)
 let test_wrong_gvalue_type_raises () =
-  let gtype_int = Gobject.Type.of_fundamental `INT in
+  let gtype_int = Gobject.Type.int_ in
   let v = Gobject.Value.create gtype_int in
   Gobject.Value.set_int v 5;
   check_raises "get_flags_int on non-flags GValue raises Invalid_argument"

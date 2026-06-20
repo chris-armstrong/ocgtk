@@ -9,14 +9,12 @@ let activate app =
 
   (* Keep the application alive while the window is open *)
   app#hold ();
-  let close_callback =
-    Gobject.Closure.create (fun argv ->
-        app#release ();
-        Gobject.Value.set_boolean (Gobject.Closure.result argv) false)
-  in
   ignore
-    (Gobject.Signal.connect window#as_window ~name:"close-request"
-       ~callback:close_callback ~after:false);
+    (window#on_close_request
+       ~callback:(fun () ->
+         app#release ();
+         false)
+       ());
 
   ignore (Calc_ui.build window);
   window#present ()

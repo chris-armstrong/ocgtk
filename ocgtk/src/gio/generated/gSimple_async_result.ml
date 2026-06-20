@@ -6,6 +6,7 @@ class type simple_async_result_t = object
   method get_op_res_gssize : unit -> int
   method propagate_error : unit -> (bool, GError.t) result
   method set_check_cancellable : GCancellable.cancellable_t option -> unit
+  method set_from_error : GError.t -> unit
   method set_handle_cancellation : bool -> unit
   method set_op_res_gboolean : bool -> unit
   method set_op_res_gssize : int -> unit
@@ -37,6 +38,9 @@ class simple_async_result (obj : Simple_async_result.t) : simple_async_result_t
           Option.map (fun c -> c#as_cancellable) check_cancellable
         in
         Simple_async_result.set_check_cancellable obj check_cancellable
+
+    method set_from_error : GError.t -> unit =
+      fun error -> Simple_async_result.set_from_error obj error
 
     method set_handle_cancellation : bool -> unit =
       fun handle_cancellation ->

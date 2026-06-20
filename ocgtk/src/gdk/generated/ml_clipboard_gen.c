@@ -25,12 +25,29 @@ gboolean result = gdk_clipboard_store_finish(GdkClipboard_val(self), GAsyncResul
 if (error == NULL) CAMLreturn(Res_Ok(Val_bool(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
+CAMLexport CAMLprim value ml_gdk_clipboard_set_value(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gdk_clipboard_set_value(GdkClipboard_val(self), GValue_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gdk_clipboard_set_content(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
 gboolean result = gdk_clipboard_set_content(GdkClipboard_val(self), Option_val(arg1, GdkContentProvider_val, NULL));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gdk_clipboard_read_value_finish(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+GError *error = NULL;
+
+const GValue* result = gdk_clipboard_read_value_finish(GdkClipboard_val(self), GAsyncResult_val(arg1), &error);
+if (error == NULL) CAMLreturn(Res_Ok(Val_GValue_copy(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gdk_clipboard_read_texture_finish(value self, value arg1)
@@ -64,6 +81,7 @@ CAMLexport CAMLprim value ml_gdk_clipboard_get_formats(value self)
 CAMLparam1(self);
 
 GdkContentFormats* result = gdk_clipboard_get_formats(GdkClipboard_val(self));
+if (result) result = g_boxed_copy(gdk_content_formats_get_type(), result);
 CAMLreturn(Val_GdkContentFormats(result));
 }
 

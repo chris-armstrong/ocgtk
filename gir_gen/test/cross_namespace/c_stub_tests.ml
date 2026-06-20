@@ -263,9 +263,16 @@ let test_copy_function_returns_copy_result () =
     Option.get (C_ast.find_function functions "copy_TestFormat")
   in
 
-  (* Positive: copy function calls the record's copy method *)
+  (* Positive: copy function uses g_boxed_copy via the registered GType, not the
+     type-specific copy method. The old test_format_copy call is replaced by the
+     uniform boxed interface. *)
   Alcotest.(check bool)
-    "Calls test_format_copy" true
+    "Calls g_boxed_copy" true
+    (C_validation.calls_c_function copy_func "g_boxed_copy");
+
+  (* Negative: type-specific copy method is no longer called directly *)
+  Alcotest.(check bool)
+    "Does not call test_format_copy directly" false
     (C_validation.calls_c_function copy_func "test_format_copy");
 
   (* Positive: return expression wraps the copy variable, not g_new0 *)

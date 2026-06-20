@@ -5,7 +5,7 @@ class type list_model_t = object
     unit ->
     Gobject.Signal.handler_id
 
-  method get_item_type : unit -> int
+  method get_item_type : unit -> Gobject.Type.t
   method get_n_items : unit -> int
   method get_object : int -> [ `object_ ] Gobject.obj option
   method items_changed : int -> int -> int -> unit
@@ -18,7 +18,9 @@ class list_model (obj : List_model.t) : list_model_t =
     method on_items_changed ?(after = false) ~callback () =
       List_model.on_items_changed ~after self#as_list_model ~callback
 
-    method get_item_type : unit -> int = fun () -> List_model.get_item_type obj
+    method get_item_type : unit -> Gobject.Type.t =
+      fun () -> List_model.get_item_type obj
+
     method get_n_items : unit -> int = fun () -> List_model.get_n_items obj
 
     method get_object : int -> [ `object_ ] Gobject.obj option =

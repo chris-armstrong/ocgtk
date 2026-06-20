@@ -115,3 +115,9 @@ CAMLparam2(self, arg1);
 gboolean result = g_file_attribute_matcher_enumerate_namespace(GFileAttributeMatcher_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+CAMLprim value ml_gio_file_attribute_matcher_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(g_file_attribute_matcher_get_type()));
+}

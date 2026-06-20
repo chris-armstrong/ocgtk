@@ -240,6 +240,7 @@ CAMLexport CAMLprim value ml_pango_context_get_matrix(value self)
 CAMLparam1(self);
 
 const PangoMatrix* result = pango_context_get_matrix(PangoContext_val(self));
+if (result) result = g_boxed_copy(pango_matrix_get_type(), result);
 CAMLreturn(Val_option(result, Val_PangoMatrix));
 }
 
@@ -259,6 +260,7 @@ CAMLexport CAMLprim value ml_pango_context_get_language(value self)
 CAMLparam1(self);
 
 PangoLanguage* result = pango_context_get_language(PangoContext_val(self));
+if (result) result = g_boxed_copy(pango_language_get_type(), result);
 CAMLreturn(Val_PangoLanguage(result));
 }
 
@@ -331,6 +333,7 @@ CAMLexport CAMLprim value ml_pango_context_get_font_description(value self)
 CAMLparam1(self);
 
 PangoFontDescription* result = pango_context_get_font_description(PangoContext_val(self));
+if (result) result = g_boxed_copy(pango_font_description_get_type(), result);
 CAMLreturn(Val_option(result, Val_PangoFontDescription));
 }
 
