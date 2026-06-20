@@ -26,6 +26,7 @@ class type gl_area_t = object
   method get_api : unit -> Ocgtk_gdk.Gdk.glapi
   method get_auto_render : unit -> bool
   method get_context : unit -> Ocgtk_gdk.Gdk.Gl_context.gl_context_t option
+  method get_error : unit -> GError.t option
   method get_has_depth_buffer : unit -> bool
   method get_has_stencil_buffer : unit -> bool
   method get_use_es : unit -> bool
@@ -33,6 +34,7 @@ class type gl_area_t = object
   method queue_render : unit -> unit
   method set_allowed_apis : Ocgtk_gdk.Gdk.glapi -> unit
   method set_auto_render : bool -> unit
+  method set_error : GError.t option -> unit
   method set_has_depth_buffer : bool -> unit
   method set_has_stencil_buffer : bool -> unit
   method set_required_version : int -> int -> unit
@@ -78,6 +80,8 @@ class gl_area (obj : Gl_area.t) : gl_area_t =
           (fun ret -> new Ocgtk_gdk.Gdk.Gl_context.gl_context ret)
           (Gl_area.get_context obj)
 
+    method get_error : unit -> GError.t option = fun () -> Gl_area.get_error obj
+
     method get_has_depth_buffer : unit -> bool =
       fun () -> Gl_area.get_has_depth_buffer obj
 
@@ -93,6 +97,9 @@ class gl_area (obj : Gl_area.t) : gl_area_t =
 
     method set_auto_render : bool -> unit =
       fun auto_render -> Gl_area.set_auto_render obj auto_render
+
+    method set_error : GError.t option -> unit =
+      fun error -> Gl_area.set_error obj error
 
     method set_has_depth_buffer : bool -> unit =
       fun has_depth_buffer -> Gl_area.set_has_depth_buffer obj has_depth_buffer

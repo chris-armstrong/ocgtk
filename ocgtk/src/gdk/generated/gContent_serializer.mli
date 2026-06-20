@@ -9,6 +9,7 @@ class type content_serializer_t = object
   method get_output_stream : unit -> Ocgtk_gio.Gio.Output_stream.output_stream_t
   method get_priority : unit -> int
   method get_value : unit -> Gobject.Value.t
+  method return_error : GError.t -> unit
   method return_success : unit -> unit
   method as_content_serializer : Content_serializer.t
 end

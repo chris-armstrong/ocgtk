@@ -9,6 +9,7 @@ class type d_bus_method_invocation_t = object
   method get_property_info : unit -> D_bus_property_info.t option
   method get_sender : unit -> string
   method return_dbus_error : string -> string -> unit
+  method return_gerror : GError.t -> unit
   method return_value : Gvariant.t option -> unit
 
   method return_value_with_unix_fd_list :
@@ -55,6 +56,9 @@ class d_bus_method_invocation (obj : D_bus_method_invocation.t) :
     method return_dbus_error : string -> string -> unit =
       fun error_name error_message ->
         D_bus_method_invocation.return_dbus_error obj error_name error_message
+
+    method return_gerror : GError.t -> unit =
+      fun error -> D_bus_method_invocation.return_gerror obj error
 
     method return_value : Gvariant.t option -> unit =
       fun parameters -> D_bus_method_invocation.return_value obj parameters

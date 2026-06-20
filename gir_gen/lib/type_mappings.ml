@@ -321,6 +321,17 @@ let type_mappings : (string * Types.type_mapping) list =
         is_value_type_record = false;
       transfer_strategy = Ts_none;
       } );
+    (* GLib.Error — GError* custom block; Val_GError/GError_val defined in wrappers.h *)
+    ( "GLib.Error",
+      {
+        ocaml_type = "GError.t";
+        c_to_ml = "Val_GError";
+        ml_to_c = "GError_val";
+        layer2_class = None;
+        c_type = "GError*";
+        is_value_type_record = false;
+        transfer_strategy = Ts_none;
+      } );
     (* GLib/GObject primitive integer types — not generated from GIR, mapped to
        standard OCaml C API converters. All c:type values match the GIR name
        exactly so a single entry per type is sufficient.

@@ -9,6 +9,12 @@ external return_success : t -> unit
   = "ml_gdk_content_deserializer_return_success"
 (** Indicate that the deserialization has been successfully completed. *)
 
+external return_error : t -> GError.t -> unit
+  = "ml_gdk_content_deserializer_return_error"
+(** Indicate that the deserialization has ended with an error.
+
+This function consumes @error. *)
+
 external get_value : t -> Gobject.Value.t
   = "ml_gdk_content_deserializer_get_value"
 (** Gets the `GValue` to store the deserialized object in. *)

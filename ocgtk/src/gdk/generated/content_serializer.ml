@@ -8,6 +8,12 @@ type t = [ `content_serializer | `object_ ] Gobject.obj
 external return_success : t -> unit = "ml_gdk_content_serializer_return_success"
 (** Indicate that the serialization has been successfully completed. *)
 
+external return_error : t -> GError.t -> unit
+  = "ml_gdk_content_serializer_return_error"
+(** Indicate that the serialization has ended with an error.
+
+This function consumes @error. *)
+
 external get_value : t -> Gobject.Value.t
   = "ml_gdk_content_serializer_get_value"
 (** Gets the `GValue` to read the object to serialize from. *)

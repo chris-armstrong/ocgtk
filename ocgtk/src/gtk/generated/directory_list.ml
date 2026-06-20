@@ -64,6 +64,16 @@ external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option
   = "ml_gtk_directory_list_get_file"
 (** Gets the file whose children are currently enumerated. *)
 
+external get_error : t -> GError.t option = "ml_gtk_directory_list_get_error"
+(** Gets the loading error, if any.
+
+    If an error occurs during the loading process, the loading process will
+    finish and this property allows querying the error that happened. This error
+    will persist until a file is loaded again.
+
+    An error being set does not mean that no files were loaded, and all
+    successfully queried files will remain in the list. *)
+
 external get_attributes : t -> string option
   = "ml_gtk_directory_list_get_attributes"
 (** Gets the attributes queried on the children. *)

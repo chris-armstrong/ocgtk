@@ -262,9 +262,10 @@ value Res_Error(value v);
 /* Special case for unit result */
 #define ValUnit Val_unit
 
-/* Convert GError to OCaml GError.t record */
-/* Defined in wrappers.c */
+/* GError custom block — defined in wrappers.c */
+extern struct custom_operations ocgtk_gerror_ops;
 value Val_GError(GError *error);
+#define GError_val(v) (*((GError**)Data_custom_val(v)))
 
 /* ==================================================================== */
 /* GValue */

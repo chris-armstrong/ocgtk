@@ -48,6 +48,14 @@ g_simple_async_result_set_handle_cancellation(GSimpleAsyncResult_val(self), Bool
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_simple_async_result_set_from_error(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_simple_async_result_set_from_error(GSimpleAsyncResult_val(self), GError_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 #if GLIB_CHECK_VERSION(2,32,0)
 
 CAMLexport CAMLprim value ml_g_simple_async_result_set_check_cancellable(value self, value arg1)
