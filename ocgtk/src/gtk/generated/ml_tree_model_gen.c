@@ -150,6 +150,15 @@ CAMLlocal1(ret);
     CAMLreturn(ret);
 }
 
+CAMLexport CAMLprim value ml_gtk_tree_model_get_value(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GValue out3;
+
+gtk_tree_model_get_value(GtkTreeModel_val(self), GtkTreeIter_val(arg1), Int_val(arg2), &out3);
+CAMLreturn(Val_GValue_copy(&out3));
+}
+
 CAMLexport CAMLprim value ml_gtk_tree_model_get_string_from_iter(value self, value arg1)
 {
 CAMLparam2(self, arg1);

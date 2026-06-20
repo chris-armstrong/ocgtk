@@ -57,7 +57,8 @@ The @string will be copied. See
 
 (* Properties *)
 
-external get_item_type : t -> int = "ml_gtk_string_list_get_item_type"
+external get_item_type : t -> Gobject.Type.t
+  = "ml_gtk_string_list_get_item_type"
 (** Get property: item-type *)
 
 external get_n_items : t -> int = "ml_gtk_string_list_get_n_items"

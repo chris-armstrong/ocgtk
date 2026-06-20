@@ -81,3 +81,5 @@ external extents :
     Examples of logical (red) and ink (green) rects:
 
     ![](rects1.png) ![](rects2.png) *)
+
+external get_type : unit -> Gobject.Type.t = "ml_pango_glyph_string_get_type"

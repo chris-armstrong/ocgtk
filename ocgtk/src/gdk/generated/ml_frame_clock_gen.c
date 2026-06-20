@@ -29,6 +29,7 @@ CAMLexport CAMLprim value ml_gdk_frame_clock_get_timings(value self, value arg1)
 CAMLparam2(self, arg1);
 
 GdkFrameTimings* result = gdk_frame_clock_get_timings(GdkFrameClock_val(self), Int64_val(arg1));
+if (result) result = g_boxed_copy(gdk_frame_timings_get_type(), result);
 CAMLreturn(Val_option(result, Val_GdkFrameTimings));
 }
 
@@ -83,6 +84,7 @@ CAMLexport CAMLprim value ml_gdk_frame_clock_get_current_timings(value self)
 CAMLparam1(self);
 
 GdkFrameTimings* result = gdk_frame_clock_get_current_timings(GdkFrameClock_val(self));
+if (result) result = g_boxed_copy(gdk_frame_timings_get_type(), result);
 CAMLreturn(Val_option(result, Val_GdkFrameTimings));
 }
 

@@ -19,7 +19,7 @@
 value copy_PangoGlyphItem(const PangoGlyphItem *ptr)
 {
   if (ptr == NULL) return Val_none;
-  PangoGlyphItem *copy = pango_glyph_item_copy((PangoGlyphItem*)ptr);
+  PangoGlyphItem *copy = g_boxed_copy(pango_glyph_item_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(pango_glyph_item_get_type(), copy);
 }
 
@@ -72,3 +72,9 @@ caml_failwith("GlyphItem requires Pango >= 1.2");
 return Val_unit;
 }
 #endif
+
+CAMLprim value ml_pango_glyph_item_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_glyph_item_get_type()));
+}

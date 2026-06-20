@@ -149,13 +149,13 @@ and widget_t = object
   method create_pango_layout :
     string option -> Ocgtk_pango.Pango.Layout.layout_t
 
-  method dispose_template : int -> unit
+  method dispose_template : Gobject.Type.t -> unit
   method drag_check_threshold : int -> int -> int -> int -> bool
   method error_bell : unit -> unit
   method get_allocated_baseline : unit -> int
   method get_allocated_height : unit -> int
   method get_allocated_width : unit -> int
-  method get_ancestor : int -> widget_t option
+  method get_ancestor : Gobject.Type.t -> widget_t option
   method get_baseline : unit -> int
   method get_can_focus : unit -> bool
   method get_can_target : unit -> bool
@@ -209,7 +209,10 @@ and widget_t = object
   method get_size : Gtk_enums.orientation -> int
   method get_state_flags : unit -> Gtk_enums.stateflags
   method get_style_context : unit -> GStyle_context.style_context_t
-  method get_template_child : int -> string -> [ `object_ ] Gobject.obj
+
+  method get_template_child :
+    Gobject.Type.t -> string -> [ `object_ ] Gobject.obj
+
   method get_tooltip_markup : unit -> string option
   method get_tooltip_text : unit -> string option
   method get_valign : unit -> Gtk_enums.align

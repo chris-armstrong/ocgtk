@@ -29,7 +29,12 @@ and clipboard_t = object
     Ocgtk_gio.Gio.Async_result.async_result_t ->
     (GTexture.texture_t option, GError.t) result
 
+  method read_value_finish :
+    Ocgtk_gio.Gio.Async_result.async_result_t ->
+    (Gobject.Value.t, GError.t) result
+
   method set_content : GContent_provider.content_provider_t option -> bool
+  method set_value : Gobject.Value.t -> unit
 
   method store_finish :
     Ocgtk_gio.Gio.Async_result.async_result_t -> (bool, GError.t) result
@@ -110,6 +115,7 @@ and display_t = object
   method get_monitors : unit -> Ocgtk_gio.Gio.List_model.list_model_t
   method get_name : unit -> string
   method get_primary_clipboard : unit -> clipboard_t
+  method get_setting : string -> Gobject.Value.t -> bool
   method get_startup_notification_id : unit -> string option
   method is_closed : unit -> bool
   method is_composited : unit -> bool

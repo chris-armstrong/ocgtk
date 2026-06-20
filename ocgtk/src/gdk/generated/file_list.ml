@@ -19,3 +19,5 @@ external get_files : t -> Ocgtk_gio.Gio.Wrappers.File.t list
 (** Retrieves the list of files inside a `GdkFileList`.
 
     This function is meant for language bindings. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gdk_file_list_get_type"

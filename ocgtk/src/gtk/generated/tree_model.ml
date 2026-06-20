@@ -134,6 +134,13 @@ function has been called.
 If @parent is %NULL returns the first node, equivalent to
 `gtk_tree_model_get_iter_first (tree_model, iter);` *)
 
+external get_value : t -> Tree_iter.t -> int -> Gobject.Value.t
+  = "ml_gtk_tree_model_get_value"
+(** Initializes and sets @value to that at @column.
+
+When done with @value, g_value_unset() needs to be called
+to free any allocated memory. *)
+
 external get_string_from_iter : t -> Tree_iter.t -> string option
   = "ml_gtk_tree_model_get_string_from_iter"
 (** Generates a string representation of the iter.
@@ -179,7 +186,8 @@ The flags are a bitwise combination of `GtkTreeModel`Flags.
 The flags supported should not change during the lifetime
 of the @tree_model. *)
 
-external get_column_type : t -> int -> int = "ml_gtk_tree_model_get_column_type"
+external get_column_type : t -> int -> Gobject.Type.t
+  = "ml_gtk_tree_model_get_column_type"
 (** Returns the type of the column. *)
 
 external filter_new : t -> Tree_path.t option -> t

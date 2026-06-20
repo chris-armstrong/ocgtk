@@ -113,6 +113,7 @@ CAMLexport CAMLprim value ml_gdk_gl_texture_builder_get_update_region(value self
 CAMLparam1(self);
 
 cairo_region_t* result = gdk_gl_texture_builder_get_update_region(GdkGLTextureBuilder_val(self));
+if (result) result = g_boxed_copy(cairo_gobject_region_get_type(), result);
 CAMLreturn(Val_option(result, Val_cairo_region_t));
 }
 

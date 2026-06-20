@@ -17,6 +17,20 @@ external new_from_string : string -> int -> t = "ml_gtk_builder_new_from_string"
 
 (* Methods *)
 
+external value_from_string_type :
+  t -> Gobject.Type.t -> string -> (bool * Gobject.Value.t, GError.t) result
+  = "ml_gtk_builder_value_from_string_type"
+(** Demarshals a value from a string.
+
+Unlike [method@Gtk.Builder.value_from_string], this function
+takes a `GType` instead of `GParamSpec`.
+
+Calls g_value_init() on the @value argument, so it
+need not be initialised beforehand.
+
+Upon errors %FALSE will be returned and @error will be
+assigned a `GError` from the %GTK_BUILDER_ERROR domain. *)
+
 external set_translation_domain : t -> string option -> unit
   = "ml_gtk_builder_set_translation_domain"
 (** Sets the translation domain of @builder. *)
@@ -39,7 +53,7 @@ when an object is optional.
 object to the widget the template is inited for. For functions like
 [ctor@Gtk.Builder.new_from_resource], the current object will be %NULL. *)
 
-external get_type_from_name : t -> string -> int
+external get_type_from_name : t -> string -> Gobject.Type.t
   = "ml_gtk_builder_get_type_from_name"
 (** Looks up a type by name.
 
@@ -75,7 +89,7 @@ external get_current_object : t -> [ `object_ ] Gobject.obj option
 external extend_with_template :
   t ->
   [ `object_ ] Gobject.obj ->
-  int ->
+  Gobject.Type.t ->
   string ->
   int ->
   (bool, GError.t) result = "ml_gtk_builder_extend_with_template"

@@ -30,7 +30,7 @@ external add_mime_type : t -> string -> unit
   = "ml_gdk_content_formats_builder_add_mime_type"
 (** Appends @mime_type to @builder if it has not already been added. *)
 
-external add_gtype : t -> int -> unit
+external add_gtype : t -> Gobject.Type.t -> unit
   = "ml_gdk_content_formats_builder_add_gtype"
 (** Appends @type to @builder if it has not already been added. *)
 
@@ -38,3 +38,6 @@ external add_formats : t -> Content_formats.t -> unit
   = "ml_gdk_content_formats_builder_add_formats"
 (** Appends all formats from @formats to @builder, skipping those that
 already exist. *)
+
+external get_type : unit -> Gobject.Type.t
+  = "ml_gdk_content_formats_builder_get_type"

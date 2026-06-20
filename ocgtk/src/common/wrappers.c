@@ -24,63 +24,6 @@
 #include "wrappers.h"
 #include "value_kinds.h"
 
-/* Read a lookup_info pointer from a 1-word Abstract block. The matching
- * writer is unused — generated enum tables are compiled-in C arrays, not
- * OCaml-side allocations. */
-static inline const lookup_info *lookup_info_val(value v) {
-    return *((const lookup_info **)Data_abstract_val(v));
-}
-
-/* Enum/variant conversion functions */
-
-/* Internal C variant - accepts lookup table pointer directly
- * Converts C enum value to OCaml polymorphic variant
- */
-value lookup_from_c_direct (const lookup_info *table, int data)
-{
-    int i;
-    for (i = table[0].data; i > 0; i--)
-	if (table[i].data == data) return table[i].key;
-    caml_invalid_argument ("lookup_from_c_direct");
-}
-
-/* Internal C variant - accepts lookup table pointer directly
- * Converts OCaml polymorphic variant to C enum value
- */
-int lookup_to_c_direct (const lookup_info *table, value key)
-{
-    int first = 1, last = table[0].data, current;
-    while (first < last) {
-	/* Avoid integer overflow in midpoint calculation */
-	current = first + (last - first) / 2;
-	if (table[current].key >= key) last = current;
-	else first = current + 1;
-    }
-    if (table[first].key == key) return table[first].data;
-    caml_invalid_argument ("lookup_to_c_direct");
-}
-
-/* External OCaml FFI variant - accepts lookup table as OCaml value
- * Converts C enum value to OCaml polymorphic variant
- */
-CAMLexport value ml_lookup_from_c (value table_val, value data_val)
-{
-    CAMLparam2(table_val, data_val);
-    const lookup_info *table = lookup_info_val(table_val);
-    int data = Int_val(data_val);
-    CAMLreturn(lookup_from_c_direct(table, data));
-}
-
-/* External OCaml FFI variant - accepts lookup table as OCaml value
- * Converts OCaml polymorphic variant to C enum value
- */
-CAMLexport value ml_lookup_to_c (value table_val, value key)
-{
-    CAMLparam2(table_val, key);
-    const lookup_info *table = lookup_info_val(table_val);
-    CAMLreturn(Val_int(lookup_to_c_direct(table, key)));
-}
-
 /* ==================================================================== */
 /* GIR record helpers                                                   */
 /* ==================================================================== */
@@ -306,24 +249,50 @@ ocgtk_kind ocgtk_classify(value v)
     return OCGTK_KIND_OPAQUE_BLOCK;
 }
 
-/* Convert GError to OCaml GError.t record and free the GError */
+/* ==================================================================== */
+/* GError custom block                                                  */
+/* ==================================================================== */
+
+static void finalize_gerror(value v) {
+    GError *err = GError_val(v);
+    if (err != NULL) g_error_free(err);
+}
+
+struct custom_operations ocgtk_gerror_ops = {
+    "ocgtk.gerror",
+    finalize_gerror,
+    custom_compare_default,
+    custom_hash_default,
+    custom_serialize_default,
+    custom_deserialize_default,
+    custom_compare_ext_default,
+    custom_fixed_length_default
+};
+
+/* Val_GError: wrap a GError* in a custom block, taking ownership. */
 value Val_GError(GError *error) {
     CAMLparam0();
     CAMLlocal1(v);
 
-    if (error == NULL) {
-        /* Should not happen, but handle gracefully */
-        v = caml_alloc(3, 0);
-        Store_field(v, 0, Val_int(0));  /* domain */
-        Store_field(v, 1, Val_int(0));  /* code */
-        Store_field(v, 2, caml_copy_string("Unknown error"));  /* message */
-    } else {
-        v = caml_alloc(3, 0);
-        Store_field(v, 0, Val_int(error->domain));  /* domain (GQuark) */
-        Store_field(v, 1, Val_int(error->code));    /* code */
-        Store_field(v, 2, caml_copy_string(error->message ? error->message : "")); /* message */
-        g_error_free(error);  /* Free the GError as it's been converted */
-    }
+    if (error == NULL)
+        caml_failwith("Val_GError: NULL error");
+
+    v = caml_alloc_custom(&ocgtk_gerror_ops, sizeof(GError*), 0, 1);
+    *((GError**)Data_custom_val(v)) = error;
 
     CAMLreturn(v);
+}
+
+CAMLprim value ml_gerror_message(value v) {
+    CAMLparam1(v);
+    GError *err = GError_val(v);
+    CAMLreturn(caml_copy_string(err->message ? err->message : ""));
+}
+
+CAMLprim value ml_gerror_code(value v) {
+    return Val_int(GError_val(v)->code);
+}
+
+CAMLprim value ml_gerror_domain(value v) {
+    return Val_int(GError_val(v)->domain);
 }

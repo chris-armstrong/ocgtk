@@ -17,4 +17,5 @@ end
 class content_provider : Content_provider.t -> content_provider_t
 
 val new_for_bytes : string -> Glib_bytes.t -> content_provider_t
+val new_for_value : Gobject.Value.t -> content_provider_t
 val new_union : Content_provider.t array option -> Gsize.t -> content_provider_t

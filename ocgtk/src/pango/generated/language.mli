@@ -84,3 +84,5 @@ language code "xx".  That is, compare to:
 ```
 pango_language_get_sample_string (pango_language_from_string ("xx"))
 ``` *)
+
+external get_type : unit -> Gobject.Type.t = "ml_pango_language_get_type"

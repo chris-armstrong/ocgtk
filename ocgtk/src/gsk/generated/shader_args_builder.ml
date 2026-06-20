@@ -67,3 +67,6 @@ The uniform must be of bool type. *)
 
 external ref : t -> t = "ml_gsk_shader_args_builder_ref"
 (** Increases the reference count of a `GskShaderArgsBuilder` by one. *)
+
+external get_type : unit -> Gobject.Type.t
+  = "ml_gsk_shader_args_builder_get_type"

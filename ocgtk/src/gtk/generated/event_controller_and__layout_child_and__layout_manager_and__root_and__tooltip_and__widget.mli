@@ -1052,7 +1052,8 @@ and Widget : sig
   [method@Gtk.Widget.set_tooltip_markup], this
   function returns %NULL. *)
 
-  external get_template_child : t -> int -> string -> [ `object_ ] Gobject.obj
+  external get_template_child :
+    t -> Gobject.Type.t -> string -> [ `object_ ] Gobject.obj
     = "ml_gtk_widget_get_template_child"
   (** Fetch an object build from the template XML for @widget_type in
   this @widget instance.
@@ -1445,7 +1446,8 @@ and Widget : sig
   for the `GtkWidget`Class.snapshot() function, and when allocating
   child widgets in `GtkWidget`Class.size_allocate(). *)
 
-  external get_ancestor : t -> int -> t option = "ml_gtk_widget_get_ancestor"
+  external get_ancestor : t -> Gobject.Type.t -> t option
+    = "ml_gtk_widget_get_ancestor"
   (** Gets the first ancestor of @widget with type @widget_type.
 
   For example, `gtk_widget_get_ancestor (widget, GTK_TYPE_BOX)`
@@ -1491,7 +1493,7 @@ and Widget : sig
     = "ml_gtk_drag_check_threshold"
   (** Checks to see if a drag movement has passed the GTK drag threshold. *)
 
-  external dispose_template : t -> int -> unit
+  external dispose_template : t -> Gobject.Type.t -> unit
     = "ml_gtk_widget_dispose_template"
   (** Clears the template children for the given widget.
 

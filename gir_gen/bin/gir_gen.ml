@@ -316,6 +316,28 @@ let generate_c_stub ~ctx ~output_dir entity =
         Buffer.add_string body_buf stub
     | _ -> ());
 
+    (* Append get_type stub for records registered with the GType system *)
+    (match entity.kind with
+    | Gir_gen_lib.Types.Record record -> (
+        match record.glib_get_type with
+        | Some get_type_func ->
+            let ns_snake =
+              Gir_gen_lib.Utils.to_snake_case ctx.namespace.namespace_name
+            in
+            let class_snake =
+              Gir_gen_lib.Utils.to_snake_case record.record_name
+            in
+            let ml_name =
+              sprintf "ml_%s_%s_get_type" ns_snake class_snake
+            in
+            Buffer.add_string body_buf
+              (sprintf
+                 "\nCAMLprim value %s(value unit)\n{\n  CAMLparam1(unit);\n  \
+                  CAMLreturn(Val_long(%s()));\n}\n"
+                 ml_name get_type_func)
+        | None -> ())
+    | _ -> ());
+
     let body_content = Buffer.contents body_buf in
 
     (* Apply version guard (inner) to produce version_guarded_content *)
@@ -594,6 +616,11 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
   let entity_kind =
     Gir_gen_lib.Generate.Filtering.entity_kind_of_entity entity
   in
+  let glib_get_type =
+    match entity.Gir_gen_lib.Types.kind with
+    | Gir_gen_lib.Types.Record record -> record.glib_get_type
+    | _ -> None
+  in
   let content =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx ~output_mode
       ~class_name:entity.Gir_gen_lib.Types.name
@@ -605,7 +632,8 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
          else None)
       ~methods:entity.Gir_gen_lib.Types.methods ~entity_kind
       ~properties:entity.Gir_gen_lib.Types.properties
-      ~signals:entity.Gir_gen_lib.Types.signals ?from_gobject_c_name ()
+      ~signals:entity.Gir_gen_lib.Types.signals ?from_gobject_c_name
+      ?glib_get_type ()
   in
 
   write_file ~path:ml_file ~content
@@ -1493,7 +1521,7 @@ let generate_references gir_file output_file overrides_file =
       |> List.map ~f:(fun rec_ ->
           {
             cr_name = rec_.record_name;
-            cr_type = Crt_Record { opaque = rec_.opaque };
+            cr_type = Crt_Record { opaque = rec_.opaque; get_type_func = rec_.glib_get_type };
             cr_c_type = rec_.c_type;
           }))
   in

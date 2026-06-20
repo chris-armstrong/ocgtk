@@ -1,7 +1,9 @@
 class type media_stream_t = object
   inherit Ocgtk_gdk.Gdk.Paintable.paintable_t
+  method gerror : GError.t -> unit
   method get_duration : unit -> int64
   method get_ended : unit -> bool
+  method get_error : unit -> GError.t option
   method get_loop : unit -> bool
   method get_muted : unit -> bool
   method get_playing : unit -> bool
@@ -41,10 +43,17 @@ class media_stream (obj : Media_stream.t) : media_stream_t =
       Ocgtk_gdk.Gdk.Paintable.paintable
         (Ocgtk_gdk.Gdk.Wrappers.Paintable.from_gobject obj)
 
+    method gerror : GError.t -> unit =
+      fun error -> Media_stream.gerror obj error
+
     method get_duration : unit -> int64 =
       fun () -> Media_stream.get_duration obj
 
     method get_ended : unit -> bool = fun () -> Media_stream.get_ended obj
+
+    method get_error : unit -> GError.t option =
+      fun () -> Media_stream.get_error obj
+
     method get_loop : unit -> bool = fun () -> Media_stream.get_loop obj
     method get_muted : unit -> bool = fun () -> Media_stream.get_muted obj
     method get_playing : unit -> bool = fun () -> Media_stream.get_playing obj

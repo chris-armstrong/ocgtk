@@ -102,3 +102,5 @@ external get_anchor_hints : t -> Gdk_enums.anchorhints
 
 external equal : t -> t -> bool = "ml_gdk_popup_layout_equal"
 (** Check whether @layout and @other has identical layout properties. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gdk_popup_layout_get_type"

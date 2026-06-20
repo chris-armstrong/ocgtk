@@ -40,7 +40,8 @@ external get_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option
 
 (* Properties *)
 
-external get_item_type : t -> int = "ml_gtk_slice_list_model_get_item_type"
+external get_item_type : t -> Gobject.Type.t
+  = "ml_gtk_slice_list_model_get_item_type"
 (** Get property: item-type *)
 
 external get_n_items : t -> int = "ml_gtk_slice_list_model_get_n_items"

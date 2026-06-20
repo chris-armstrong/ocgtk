@@ -79,3 +79,5 @@ external get_extents : t -> Rectangle.t * Rectangle.t
 
     See [method@Pango.Font.get_glyph_extents] for details about the
     interpretation of the rectangles. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_pango_layout_line_get_type"

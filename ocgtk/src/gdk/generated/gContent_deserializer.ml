@@ -4,10 +4,12 @@ class type content_deserializer_t = object
   method get_cancellable :
     unit -> Ocgtk_gio.Gio.Cancellable.cancellable_t option
 
-  method get_gtype : unit -> int
+  method get_gtype : unit -> Gobject.Type.t
   method get_input_stream : unit -> Ocgtk_gio.Gio.Input_stream.input_stream_t
   method get_mime_type : unit -> string
   method get_priority : unit -> int
+  method get_value : unit -> Gobject.Value.t
+  method return_error : GError.t -> unit
   method return_success : unit -> unit
   method as_content_deserializer : Content_deserializer.t
 end
@@ -27,7 +29,7 @@ class content_deserializer (obj : Content_deserializer.t) :
           (fun ret -> new Ocgtk_gio.Gio.Cancellable.cancellable ret)
           (Content_deserializer.get_cancellable obj)
 
-    method get_gtype : unit -> int =
+    method get_gtype : unit -> Gobject.Type.t =
       fun () -> Content_deserializer.get_gtype obj
 
     method get_input_stream : unit -> Ocgtk_gio.Gio.Input_stream.input_stream_t
@@ -41,6 +43,12 @@ class content_deserializer (obj : Content_deserializer.t) :
 
     method get_priority : unit -> int =
       fun () -> Content_deserializer.get_priority obj
+
+    method get_value : unit -> Gobject.Value.t =
+      fun () -> Content_deserializer.get_value obj
+
+    method return_error : GError.t -> unit =
+      fun error -> Content_deserializer.return_error obj error
 
     method return_success : unit -> unit =
       fun () -> Content_deserializer.return_success obj

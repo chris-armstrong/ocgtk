@@ -70,6 +70,7 @@ CAMLparam4(self, arg1, arg2, arg3);
     }
 
 graphene_sphere_t* result = graphene_sphere_init_from_vectors(graphene_sphere_t_val(self), Int_val(arg1), c_arg2, Option_val(arg3, graphene_point3d_t_val, NULL));
+if (result) result = g_boxed_copy(graphene_sphere_get_type(), result);
     g_free(c_arg2);
 CAMLreturn(Val_graphene_sphere_t(result));
 }
@@ -84,6 +85,7 @@ CAMLparam4(self, arg1, arg2, arg3);
     }
 
 graphene_sphere_t* result = graphene_sphere_init_from_points(graphene_sphere_t_val(self), Int_val(arg1), c_arg2, Option_val(arg3, graphene_point3d_t_val, NULL));
+if (result) result = g_boxed_copy(graphene_sphere_get_type(), result);
     g_free(c_arg2);
 CAMLreturn(Val_graphene_sphere_t(result));
 }
@@ -93,6 +95,7 @@ CAMLexport CAMLprim value ml_graphene_sphere_init(value self, value arg1, value 
 CAMLparam3(self, arg1, arg2);
 
 graphene_sphere_t* result = graphene_sphere_init(graphene_sphere_t_val(self), Option_val(arg1, graphene_point3d_t_val, NULL), Double_val(arg2));
+if (result) result = g_boxed_copy(graphene_sphere_get_type(), result);
 CAMLreturn(Val_graphene_sphere_t(result));
 }
 
@@ -144,6 +147,12 @@ CAMLparam2(self, arg1);
 
 _Bool result = graphene_sphere_contains_point(graphene_sphere_t_val(self), graphene_point3d_t_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_graphene_sphere_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_sphere_get_type()));
 }
 
 #else

@@ -53,6 +53,20 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkBuilder(obj));
 }
+CAMLexport CAMLprim value ml_gtk_builder_value_from_string_type(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+GError *error = NULL;
+GValue out3;
+
+gboolean result = gtk_builder_value_from_string_type(GtkBuilder_val(self), GType_val(arg1), String_val(arg2), &out3, &error);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GValue_copy(&out3));
+    if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
+}
+
 CAMLexport CAMLprim value ml_gtk_builder_set_translation_domain(value self, value arg1)
 {
 CAMLparam2(self, arg1);

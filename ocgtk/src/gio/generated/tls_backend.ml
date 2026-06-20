@@ -29,19 +29,19 @@ external set_default_database :
     database as if g_tls_backend_set_default_database() had never been called.
 *)
 
-external get_server_connection_type : t -> int
+external get_server_connection_type : t -> Gobject.Type.t
   = "ml_g_tls_backend_get_server_connection_type"
 (** Gets the #GType of @backend's #GTlsServerConnection implementation. *)
 
-external get_file_database_type : t -> int
+external get_file_database_type : t -> Gobject.Type.t
   = "ml_g_tls_backend_get_file_database_type"
 (** Gets the #GType of @backend's #GTlsFileDatabase implementation. *)
 
-external get_dtls_server_connection_type : t -> int
+external get_dtls_server_connection_type : t -> Gobject.Type.t
   = "ml_g_tls_backend_get_dtls_server_connection_type"
 (** Gets the #GType of @backend’s #GDtlsServerConnection implementation. *)
 
-external get_dtls_client_connection_type : t -> int
+external get_dtls_client_connection_type : t -> Gobject.Type.t
   = "ml_g_tls_backend_get_dtls_client_connection_type"
 (** Gets the #GType of @backend’s #GDtlsClientConnection implementation. *)
 
@@ -50,10 +50,10 @@ external get_default_database :
   = "ml_g_tls_backend_get_default_database"
 (** Gets the default #GTlsDatabase used to verify TLS connections. *)
 
-external get_client_connection_type : t -> int
+external get_client_connection_type : t -> Gobject.Type.t
   = "ml_g_tls_backend_get_client_connection_type"
 (** Gets the #GType of @backend's #GTlsClientConnection implementation. *)
 
-external get_certificate_type : t -> int
+external get_certificate_type : t -> Gobject.Type.t
   = "ml_g_tls_backend_get_certificate_type"
 (** Gets the #GType of @backend's #GTlsCertificate implementation. *)

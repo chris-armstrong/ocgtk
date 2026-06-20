@@ -51,6 +51,12 @@ GDBusSignalInfo* result = g_dbus_signal_info_ref(GDBusSignalInfo_val(self));
 CAMLreturn(Val_GDBusSignalInfo(result));
 }
 
+CAMLprim value ml_gio_d_bus_signal_info_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(g_dbus_signal_info_get_type()));
+}
+
 #else
 
 

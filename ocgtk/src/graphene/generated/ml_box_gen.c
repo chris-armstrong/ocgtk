@@ -75,6 +75,7 @@ CAMLparam3(self, arg1, arg2);
     }
 
 graphene_box_t* result = graphene_box_init_from_vectors(graphene_box_t_val(self), Int_val(arg1), c_arg2);
+if (result) result = g_boxed_copy(graphene_box_get_type(), result);
     g_free(c_arg2);
 CAMLreturn(Val_graphene_box_t(result));
 }
@@ -84,6 +85,7 @@ CAMLexport CAMLprim value ml_graphene_box_init_from_vec3(value self, value arg1,
 CAMLparam3(self, arg1, arg2);
 
 graphene_box_t* result = graphene_box_init_from_vec3(graphene_box_t_val(self), Option_val(arg1, graphene_vec3_t_val, NULL), Option_val(arg2, graphene_vec3_t_val, NULL));
+if (result) result = g_boxed_copy(graphene_box_get_type(), result);
 CAMLreturn(Val_graphene_box_t(result));
 }
 
@@ -97,6 +99,7 @@ CAMLparam3(self, arg1, arg2);
     }
 
 graphene_box_t* result = graphene_box_init_from_points(graphene_box_t_val(self), Int_val(arg1), c_arg2);
+if (result) result = g_boxed_copy(graphene_box_get_type(), result);
     g_free(c_arg2);
 CAMLreturn(Val_graphene_box_t(result));
 }
@@ -106,6 +109,7 @@ CAMLexport CAMLprim value ml_graphene_box_init_from_box(value self, value arg1)
 CAMLparam2(self, arg1);
 
 graphene_box_t* result = graphene_box_init_from_box(graphene_box_t_val(self), graphene_box_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_box_get_type(), result);
 CAMLreturn(Val_graphene_box_t(result));
 }
 
@@ -114,6 +118,7 @@ CAMLexport CAMLprim value ml_graphene_box_init(value self, value arg1, value arg
 CAMLparam3(self, arg1, arg2);
 
 graphene_box_t* result = graphene_box_init(graphene_box_t_val(self), Option_val(arg1, graphene_point3d_t_val, NULL), Option_val(arg2, graphene_point3d_t_val, NULL));
+if (result) result = g_boxed_copy(graphene_box_get_type(), result);
 CAMLreturn(Val_graphene_box_t(result));
 }
 
@@ -251,6 +256,12 @@ CAMLparam2(self, arg1);
 
 _Bool result = graphene_box_contains_box(graphene_box_t_val(self), graphene_box_t_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_graphene_box_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_box_get_type()));
 }
 
 #else

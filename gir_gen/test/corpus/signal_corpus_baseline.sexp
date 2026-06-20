@@ -1,4 +1,4 @@
-(((namespace Gtk) (total_signals 346) (supported 305) (unsupported 41)
+(((namespace Gtk) (total_signals 346) (supported 306) (unsupported 40)
   (by_reason
    (("non-In direction parameter 'allocation'" 1)
     ("non-In direction parameter 'new_value'" 1)
@@ -23,7 +23,6 @@
      6)
     ("unsupported parameter type for 'start': boxed type Gtk.TextIter not yet supported"
      3)
-    ("unsupported parameter type for 'value': unknown type GObject.Value" 1)
     ("unsupported return type: primitive type GObject.Object not in marshaller table"
      1))))
  ((namespace Gdk) (total_signals 35) (supported 32) (unsupported 3)
@@ -37,7 +36,7 @@
  ((namespace Gio) (total_signals 81) (supported 71) (unsupported 10)
   (by_reason
    (("unsupported parameter type for 'choices': GArray not yet supported" 1)
-    ("unsupported parameter type for 'error': unknown type GLib.Error" 1)
+    ("unsupported parameter type for 'error': primitive type GLib.Error not in marshaller table" 1)
     ("unsupported parameter type for 'files': GArray not yet supported" 1)
     ("unsupported parameter type for 'invalidated_properties': GArray not yet supported"
      2)

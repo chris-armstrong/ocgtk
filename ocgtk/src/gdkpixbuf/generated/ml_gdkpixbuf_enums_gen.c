@@ -180,20 +180,20 @@ value Val_GdkPixbufPixbufFormatFlags(GdkPixbufFormatFlags flags) {
 
   if (flags & GDK_PIXBUF_FORMAT_WRITABLE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("WRITABLE"))); /* `WRITABLE */
+    Store_field(cons, 0, caml_hash_variant("WRITABLE")); /* `WRITABLE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & GDK_PIXBUF_FORMAT_SCALABLE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SCALABLE"))); /* `SCALABLE */
+    Store_field(cons, 0, caml_hash_variant("SCALABLE")); /* `SCALABLE */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GDK_PIXBUF_CHECK_VERSION(2,28,0)
   if (flags & GDK_PIXBUF_FORMAT_THREADSAFE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("THREADSAFE"))); /* `THREADSAFE */
+    Store_field(cons, 0, caml_hash_variant("THREADSAFE")); /* `THREADSAFE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -207,7 +207,7 @@ value Val_GdkPixbufPixbufFormatFlags(GdkPixbufFormatFlags flags) {
 GdkPixbufFormatFlags GdkPixbufPixbufFormatFlags_val(value list) {
   GdkPixbufFormatFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("WRITABLE")) result |= GDK_PIXBUF_FORMAT_WRITABLE; /* `WRITABLE */
     else if (tag == caml_hash_variant("SCALABLE")) result |= GDK_PIXBUF_FORMAT_SCALABLE; /* `SCALABLE */
 #if GDK_PIXBUF_CHECK_VERSION(2,28,0)

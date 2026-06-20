@@ -165,3 +165,5 @@ external add_range : t -> int -> int -> unit = "ml_gtk_bitset_add_range"
 
 external add : t -> int -> bool = "ml_gtk_bitset_add"
 (** Adds @value to @self if it wasn't part of it before. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gtk_bitset_get_type"

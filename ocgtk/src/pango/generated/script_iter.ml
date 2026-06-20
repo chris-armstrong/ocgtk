@@ -15,3 +15,5 @@ external next : t -> bool = "ml_pango_script_iter_next"
 
 If @iter is already at the end, it is left unchanged
 and %FALSE is returned. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_pango_script_iter_get_type"

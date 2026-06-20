@@ -260,6 +260,14 @@ gboolean result = gtk_media_stream_get_loop(GtkMediaStream_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+CAMLexport CAMLprim value ml_gtk_media_stream_get_error(value self)
+{
+CAMLparam1(self);
+
+const GError* result = gtk_media_stream_get_error(GtkMediaStream_val(self));
+CAMLreturn(Val_option(result, Val_GError));
+}
+
 CAMLexport CAMLprim value ml_gtk_media_stream_get_ended(value self)
 {
 CAMLparam1(self);
@@ -274,6 +282,14 @@ CAMLparam1(self);
 
 gint64 result = gtk_media_stream_get_duration(GtkMediaStream_val(self));
 CAMLreturn(caml_copy_int64(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_media_stream_gerror(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_media_stream_gerror(GtkMediaStream_val(self), GError_val(arg1));
+CAMLreturn(Val_unit);
 }
 
 CAMLexport CAMLprim value ml_gtk_media_stream_get_prepared(value self)

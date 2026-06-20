@@ -1,6 +1,6 @@
 class type tree_model_t = object
   method filter_new : Tree_path.t option -> tree_model_t
-  method get_column_type : int -> int
+  method get_column_type : int -> Gobject.Type.t
   method get_flags : unit -> Gtk_enums.treemodelflags
   method get_n_columns : unit -> int
   method get_path : Tree_iter.t -> Tree_path.t

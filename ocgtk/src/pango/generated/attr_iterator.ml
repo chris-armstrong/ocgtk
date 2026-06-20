@@ -34,3 +34,5 @@ external get : t -> Pango_enums.attrtype -> Attribute.t option
 
 external destroy : t -> unit = "ml_pango_attr_iterator_destroy"
 (** Destroy a `PangoAttrIterator` and free all associated memory. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_pango_attr_iterator_get_type"

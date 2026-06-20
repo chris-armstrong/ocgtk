@@ -14,6 +14,7 @@ val generate_ml_interface :
   entity_kind:Filtering.entity_kind ->
   ?from_gobject_c_name:string ->
   ?signals:Types.gir_signal list ->
+  ?glib_get_type:string ->
   unit ->
   string
 (** Generate a single OCaml interface (.mli) or implementation (.ml) string

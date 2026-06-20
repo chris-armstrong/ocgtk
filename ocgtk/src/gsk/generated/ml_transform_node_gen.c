@@ -30,6 +30,7 @@ CAMLexport CAMLprim value ml_gsk_transform_node_get_transform(value self)
 CAMLparam1(self);
 
 GskTransform* result = gsk_transform_node_get_transform(GskTransformNode_val(self));
+if (result) result = g_boxed_copy(gsk_transform_get_type(), result);
 CAMLreturn(Val_GskTransform(result));
 }
 

@@ -38,7 +38,8 @@ type t = [ `content_formats ] Gobject.obj
 external new_ : string array option -> int -> t = "ml_gdk_content_formats_new"
 (** Create a new ContentFormats *)
 
-external new_for_gtype : int -> t = "ml_gdk_content_formats_new_for_gtype"
+external new_for_gtype : Gobject.Type.t -> t
+  = "ml_gdk_content_formats_new_for_gtype"
 (** Create a new ContentFormats *)
 
 (* Methods *)
@@ -85,7 +86,8 @@ in @second.
 
 If no matching mime type is found, %NULL is returned. *)
 
-external match_gtype : t -> t -> int = "ml_gdk_content_formats_match_gtype"
+external match_gtype : t -> t -> Gobject.Type.t
+  = "ml_gdk_content_formats_match_gtype"
 (** Finds the first `GType` from @first that is also contained
 in @second.
 
@@ -101,7 +103,7 @@ external get_mime_types : t -> string array option * Gsize.t
 Note that @formats may not contain any mime types, in particular
 when they are empty. In that case %NULL will be returned. *)
 
-external get_gtypes : t -> int array option * Gsize.t
+external get_gtypes : t -> Gobject.Type.t array option * Gsize.t
   = "ml_gdk_content_formats_get_gtypes"
 (** Gets the `GType`s included in @formats.
 
@@ -112,6 +114,8 @@ external contain_mime_type : t -> string -> bool
   = "ml_gdk_content_formats_contain_mime_type"
 (** Checks if a given mime type is part of the given @formats. *)
 
-external contain_gtype : t -> int -> bool
+external contain_gtype : t -> Gobject.Type.t -> bool
   = "ml_gdk_content_formats_contain_gtype"
 (** Checks if a given `GType` is part of the given @formats. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gdk_content_formats_get_type"

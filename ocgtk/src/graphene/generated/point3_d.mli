@@ -64,3 +64,5 @@ external distance : t -> t -> float * Vec3_and__vec4.Vec3.t
 
 external cross : t -> t -> t = "ml_graphene_point3d_cross"
 (** Computes the cross product of the two given #graphene_point3d_t. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_graphene_point3_d_get_type"

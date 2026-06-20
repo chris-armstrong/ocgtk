@@ -45,3 +45,5 @@ If no such file exists, for example because the CSS was loaded via
 external get_end_location : t -> Css_location.t
   = "ml_gtk_css_section_get_end_location"
 (** Returns the location in the CSS document where this section ends. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gtk_css_section_get_type"

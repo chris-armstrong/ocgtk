@@ -20,9 +20,6 @@
 module GError = GError
 (** Error type for GTK/GLib functions. See {!GError}. *)
 
-module Gpointer = Gpointer
-(** Enum conversion and boxed pointer utilities. See {!Gpointer}. *)
-
 module Gobject = Gobject
 (** GObject type system, properties, and signals. See {!Gobject}. *)
 

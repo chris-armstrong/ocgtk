@@ -80,6 +80,17 @@ via g_task_return_error_if_cancelled()).
 If you are using g_task_set_return_on_cancel() as well, then
 you must leave check-cancellable set %TRUE. *)
 
+external return_value : t -> Gobject.Value.t option -> unit
+  = "ml_g_task_return_value"
+(** Sets @task's result to @result (by copying it) and completes the task.
+
+If @result is %NULL then a #GValue of type %G_TYPE_POINTER
+with a value of %NULL will be used for the result.
+
+This is a very generic low-level method intended primarily for use
+by language bindings; for C code, g_task_return_pointer() and the
+like will normally be much easier to use. *)
+
 external return_int : t -> int -> unit = "ml_g_task_return_int"
 (** Sets @task's result to @result and completes the task (see
 g_task_return_pointer() for more discussion of exactly what this
@@ -92,10 +103,37 @@ external return_error_if_cancelled : t -> bool
 g_task_return_pointer() for more discussion of exactly what this
 means). *)
 
+external return_error : t -> GError.t -> unit = "ml_g_task_return_error"
+(** Sets @task's result to @error (which @task assumes ownership of)
+and completes the task (see g_task_return_pointer() for more
+discussion of exactly what this means).
+
+Note that since the task takes ownership of @error, and since the
+task may be completed before returning from g_task_return_error(),
+you cannot assume that @error is still valid after calling this.
+Call g_error_copy() on the error if you need to keep a local copy
+as well.
+
+See also [method@Gio.Task.return_new_error],
+[method@Gio.Task.return_new_error_literal]. *)
+
 external return_boolean : t -> bool -> unit = "ml_g_task_return_boolean"
 (** Sets @task's result to @result and completes the task (see
 g_task_return_pointer() for more discussion of exactly what this
 means). *)
+
+external propagate_value : t -> (bool * Gobject.Value.t, GError.t) result
+  = "ml_g_task_propagate_value"
+(** Gets the result of @task as a #GValue, and transfers ownership of
+that value to the caller. As with g_task_return_value(), this is
+a generic low-level method; g_task_propagate_pointer() and the like
+will usually be more useful for C code.
+
+If the task resulted in an error, or was cancelled, then this will
+instead set @error and return %FALSE.
+
+Since this method transfers ownership of the return value (or
+error) to the caller, you may only call it once. *)
 
 external propagate_int : t -> (int, GError.t) result = "ml_g_task_propagate_int"
 (** Gets the result of @task as an integer (#gssize).

@@ -277,6 +277,16 @@ module rec Cell_area : sig
       context which was already used to request all the row widths that are to
       be displayed. *)
 
+  external cell_set_property :
+    t -> Cell_renderer.t -> string -> Gobject.Value.t -> unit
+    = "ml_gtk_cell_area_cell_set_property"
+  (** Sets a cell property for @renderer in @area. *)
+
+  external cell_get_property :
+    t -> Cell_renderer.t -> string -> Gobject.Value.t -> unit
+    = "ml_gtk_cell_area_cell_get_property"
+  (** Gets the value of a cell property for @renderer in @area. *)
+
   external attribute_get_column : t -> Cell_renderer.t -> string -> int
     = "ml_gtk_cell_area_attribute_get_column"
   (** Returns the model column that an attribute has been mapped to, or -1 if

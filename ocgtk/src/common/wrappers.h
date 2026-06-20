@@ -73,21 +73,6 @@ CAMLexport const void* ml_gobject_ext_of_val(value val);
 CAMLexport value ml_gobject_val_of_ext_option(const void *gobject);
 
 /* ==================================================================== */
-/* Enums <-> Polymorphic Variants */
-/* ==================================================================== */
-
-typedef struct { value key; int data; } lookup_info;
-
-/* Enum conversion functions (implemented in wrappers.c) */
-/* Internal C variants - accept lookup table pointers directly */
-value lookup_from_c_direct (const lookup_info *table, int data);
-int lookup_to_c_direct (const lookup_info *table, value key);
-
-/* External OCaml FFI variants - accept lookup tables as OCaml values */
-CAMLexport value ml_lookup_from_c (value table, value data);
-CAMLexport value ml_lookup_to_c (value table, value key);
-
-/* ==================================================================== */
 /* OCaml Value Helpers */
 /* ==================================================================== */
 
@@ -277,15 +262,22 @@ value Res_Error(value v);
 /* Special case for unit result */
 #define ValUnit Val_unit
 
-/* Convert GError to OCaml GError.t record */
-/* Defined in wrappers.c */
+/* GError custom block — defined in wrappers.c */
+extern struct custom_operations ocgtk_gerror_ops;
 value Val_GError(GError *error);
+#define GError_val(v) (*((GError**)Data_custom_val(v)))
 
 /* ==================================================================== */
 /* GValue */
 /* ==================================================================== */
 
 CAMLprim GValue *GValue_val(value val);
+
+/* Wrap a borrowed const GValue* into an owned Gobject.Value.t OCaml value.
+   Copies the GValue contents via g_value_copy so the caller (GTK) retains
+   ownership of the original.  The returned block's finalizer calls
+   g_value_unset.  src must not be NULL (caller must check). */
+extern value Val_GValue_copy(const GValue *src);
 
 /* ==================================================================== */
 /* GVariant                                                             */

@@ -19,7 +19,7 @@
 value copy_PangoColor(const PangoColor *ptr)
 {
   if (ptr == NULL) return Val_none;
-  PangoColor *copy = pango_color_copy((PangoColor*)ptr);
+  PangoColor *copy = g_boxed_copy(pango_color_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(pango_color_get_type(), copy);
 }
 
@@ -78,4 +78,10 @@ CAMLparam2(self, arg1);
 
 gboolean result = pango_color_parse(PangoColor_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_pango_color_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_color_get_type()));
 }

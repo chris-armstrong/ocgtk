@@ -69,6 +69,7 @@ CAMLexport CAMLprim value ml_gtk_css_section_get_parent(value self)
 CAMLparam1(self);
 
 GtkCssSection* result = gtk_css_section_get_parent(GtkCssSection_val(self));
+if (result) result = g_boxed_copy(gtk_css_section_get_type(), result);
 CAMLreturn(Val_option(result, Val_GtkCssSection));
 }
 
@@ -87,4 +88,10 @@ CAMLparam1(self);
 
 const GtkCssLocation* result = gtk_css_section_get_end_location(GtkCssSection_val(self));
 CAMLreturn(Val_GtkCssLocation(result));
+}
+
+CAMLprim value ml_gtk_css_section_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gtk_css_section_get_type()));
 }

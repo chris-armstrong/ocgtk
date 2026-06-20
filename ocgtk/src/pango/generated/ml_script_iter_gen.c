@@ -73,3 +73,9 @@ caml_failwith("ScriptIter requires Pango >= 1.4");
 return Val_unit;
 }
 #endif
+
+CAMLprim value ml_pango_script_iter_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_script_iter_get_type()));
+}

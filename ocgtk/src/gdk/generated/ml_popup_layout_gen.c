@@ -178,6 +178,7 @@ CAMLexport CAMLprim value ml_gdk_popup_layout_get_anchor_rect(value self)
 CAMLparam1(self);
 
 const GdkRectangle* result = gdk_popup_layout_get_anchor_rect(GdkPopupLayout_val(self));
+if (result) result = g_boxed_copy(gdk_rectangle_get_type(), result);
 CAMLreturn(Val_GdkRectangle(result));
 }
 
@@ -195,4 +196,10 @@ CAMLparam2(self, arg1);
 
 gboolean result = gdk_popup_layout_equal(GdkPopupLayout_val(self), GdkPopupLayout_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gdk_popup_layout_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gdk_popup_layout_get_type()));
 }

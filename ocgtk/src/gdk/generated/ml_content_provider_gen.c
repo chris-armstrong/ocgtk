@@ -25,6 +25,15 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GdkContentProvider(obj));
 }
+CAMLexport CAMLprim value ml_gdk_content_provider_new_for_value(value arg1)
+{
+CAMLparam1(arg1);
+
+GdkContentProvider *obj = gdk_content_provider_new_for_value(GValue_val(arg1));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GdkContentProvider(obj));
+}
 CAMLexport CAMLprim value ml_gdk_content_provider_new_union(value arg1, value arg2)
 {
 CAMLparam2(arg1, arg2);
@@ -68,6 +77,20 @@ CAMLparam1(self);
 
 GdkContentFormats* result = gdk_content_provider_ref_formats(GdkContentProvider_val(self));
 CAMLreturn(Val_GdkContentFormats(result));
+}
+
+CAMLexport CAMLprim value ml_gdk_content_provider_get_value(value self)
+{
+CAMLparam1(self);
+GError *error = NULL;
+GValue out1;
+
+gboolean result = gdk_content_provider_get_value(GdkContentProvider_val(self), &out1, &error);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_GValue_copy(&out1));
+    if (error == NULL) CAMLreturn(Res_Ok(ret)); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gdk_content_provider_content_changed(value self)

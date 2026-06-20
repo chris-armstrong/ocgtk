@@ -30,6 +30,7 @@ CAMLexport CAMLprim value ml_gsk_repeat_node_get_child_bounds(value self)
 CAMLparam1(self);
 
 const graphene_rect_t* result = gsk_repeat_node_get_child_bounds(GskRepeatNode_val(self));
+if (result) result = g_boxed_copy(graphene_rect_get_type(), result);
 CAMLreturn(Val_graphene_rect_t(result));
 }
 

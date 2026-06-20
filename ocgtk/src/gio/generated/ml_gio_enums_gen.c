@@ -1899,26 +1899,26 @@ value Val_GioAppInfoCreateFlags(GAppInfoCreateFlags flags) {
 
   if (flags & G_APP_INFO_CREATE_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_APP_INFO_CREATE_NEEDS_TERMINAL) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NEEDS_TERMINAL"))); /* `NEEDS_TERMINAL */
+    Store_field(cons, 0, caml_hash_variant("NEEDS_TERMINAL")); /* `NEEDS_TERMINAL */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_APP_INFO_CREATE_SUPPORTS_URIS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SUPPORTS_URIS"))); /* `SUPPORTS_URIS */
+    Store_field(cons, 0, caml_hash_variant("SUPPORTS_URIS")); /* `SUPPORTS_URIS */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GLIB_CHECK_VERSION(2,26,0)
   if (flags & G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SUPPORTS_STARTUP_NOTIFICATION"))); /* `SUPPORTS_STARTUP_NOTIFICATION */
+    Store_field(cons, 0, caml_hash_variant("SUPPORTS_STARTUP_NOTIFICATION")); /* `SUPPORTS_STARTUP_NOTIFICATION */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -1932,7 +1932,7 @@ value Val_GioAppInfoCreateFlags(GAppInfoCreateFlags flags) {
 GAppInfoCreateFlags GioAppInfoCreateFlags_val(value list) {
   GAppInfoCreateFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_APP_INFO_CREATE_NONE; /* `NONE */
     else if (tag == caml_hash_variant("NEEDS_TERMINAL")) result |= G_APP_INFO_CREATE_NEEDS_TERMINAL; /* `NEEDS_TERMINAL */
     else if (tag == caml_hash_variant("SUPPORTS_URIS")) result |= G_APP_INFO_CREATE_SUPPORTS_URIS; /* `SUPPORTS_URIS */
@@ -1956,14 +1956,14 @@ value Val_GioApplicationFlags(GApplicationFlags flags) {
 
   if (flags & G_APPLICATION_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FLAGS_NONE"))); /* `FLAGS_NONE */
+    Store_field(cons, 0, caml_hash_variant("FLAGS_NONE")); /* `FLAGS_NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GLIB_CHECK_VERSION(2,74,0)
   if (flags & G_APPLICATION_DEFAULT_FLAGS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DEFAULT_FLAGS"))); /* `DEFAULT_FLAGS */
+    Store_field(cons, 0, caml_hash_variant("DEFAULT_FLAGS")); /* `DEFAULT_FLAGS */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -1971,38 +1971,38 @@ value Val_GioApplicationFlags(GApplicationFlags flags) {
 #endif
   if (flags & G_APPLICATION_IS_SERVICE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("IS_SERVICE"))); /* `IS_SERVICE */
+    Store_field(cons, 0, caml_hash_variant("IS_SERVICE")); /* `IS_SERVICE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_APPLICATION_IS_LAUNCHER) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("IS_LAUNCHER"))); /* `IS_LAUNCHER */
+    Store_field(cons, 0, caml_hash_variant("IS_LAUNCHER")); /* `IS_LAUNCHER */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_APPLICATION_HANDLES_OPEN) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("HANDLES_OPEN"))); /* `HANDLES_OPEN */
+    Store_field(cons, 0, caml_hash_variant("HANDLES_OPEN")); /* `HANDLES_OPEN */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_APPLICATION_HANDLES_COMMAND_LINE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("HANDLES_COMMAND_LINE"))); /* `HANDLES_COMMAND_LINE */
+    Store_field(cons, 0, caml_hash_variant("HANDLES_COMMAND_LINE")); /* `HANDLES_COMMAND_LINE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_APPLICATION_SEND_ENVIRONMENT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SEND_ENVIRONMENT"))); /* `SEND_ENVIRONMENT */
+    Store_field(cons, 0, caml_hash_variant("SEND_ENVIRONMENT")); /* `SEND_ENVIRONMENT */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GLIB_CHECK_VERSION(2,30,0)
   if (flags & G_APPLICATION_NON_UNIQUE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NON_UNIQUE"))); /* `NON_UNIQUE */
+    Store_field(cons, 0, caml_hash_variant("NON_UNIQUE")); /* `NON_UNIQUE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2011,7 +2011,7 @@ value Val_GioApplicationFlags(GApplicationFlags flags) {
 #if GLIB_CHECK_VERSION(2,48,0)
   if (flags & G_APPLICATION_CAN_OVERRIDE_APP_ID) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("CAN_OVERRIDE_APP_ID"))); /* `CAN_OVERRIDE_APP_ID */
+    Store_field(cons, 0, caml_hash_variant("CAN_OVERRIDE_APP_ID")); /* `CAN_OVERRIDE_APP_ID */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2020,7 +2020,7 @@ value Val_GioApplicationFlags(GApplicationFlags flags) {
 #if GLIB_CHECK_VERSION(2,60,0)
   if (flags & G_APPLICATION_ALLOW_REPLACEMENT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ALLOW_REPLACEMENT"))); /* `ALLOW_REPLACEMENT */
+    Store_field(cons, 0, caml_hash_variant("ALLOW_REPLACEMENT")); /* `ALLOW_REPLACEMENT */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2029,7 +2029,7 @@ value Val_GioApplicationFlags(GApplicationFlags flags) {
 #if GLIB_CHECK_VERSION(2,60,0)
   if (flags & G_APPLICATION_REPLACE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("REPLACE"))); /* `REPLACE */
+    Store_field(cons, 0, caml_hash_variant("REPLACE")); /* `REPLACE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2043,7 +2043,7 @@ value Val_GioApplicationFlags(GApplicationFlags flags) {
 GApplicationFlags GioApplicationFlags_val(value list) {
   GApplicationFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("FLAGS_NONE")) result |= G_APPLICATION_FLAGS_NONE; /* `FLAGS_NONE */
 #if GLIB_CHECK_VERSION(2,74,0)
     else if (tag == caml_hash_variant("DEFAULT_FLAGS")) result |= G_APPLICATION_DEFAULT_FLAGS; /* `DEFAULT_FLAGS */
@@ -2095,38 +2095,38 @@ value Val_GioAskPasswordFlags(GAskPasswordFlags flags) {
 
   if (flags & G_ASK_PASSWORD_NEED_PASSWORD) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NEED_PASSWORD"))); /* `NEED_PASSWORD */
+    Store_field(cons, 0, caml_hash_variant("NEED_PASSWORD")); /* `NEED_PASSWORD */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_ASK_PASSWORD_NEED_USERNAME) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NEED_USERNAME"))); /* `NEED_USERNAME */
+    Store_field(cons, 0, caml_hash_variant("NEED_USERNAME")); /* `NEED_USERNAME */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_ASK_PASSWORD_NEED_DOMAIN) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NEED_DOMAIN"))); /* `NEED_DOMAIN */
+    Store_field(cons, 0, caml_hash_variant("NEED_DOMAIN")); /* `NEED_DOMAIN */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_ASK_PASSWORD_SAVING_SUPPORTED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SAVING_SUPPORTED"))); /* `SAVING_SUPPORTED */
+    Store_field(cons, 0, caml_hash_variant("SAVING_SUPPORTED")); /* `SAVING_SUPPORTED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_ASK_PASSWORD_ANONYMOUS_SUPPORTED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ANONYMOUS_SUPPORTED"))); /* `ANONYMOUS_SUPPORTED */
+    Store_field(cons, 0, caml_hash_variant("ANONYMOUS_SUPPORTED")); /* `ANONYMOUS_SUPPORTED */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GLIB_CHECK_VERSION(2,58,0)
   if (flags & G_ASK_PASSWORD_TCRYPT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("TCRYPT"))); /* `TCRYPT */
+    Store_field(cons, 0, caml_hash_variant("TCRYPT")); /* `TCRYPT */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2140,7 +2140,7 @@ value Val_GioAskPasswordFlags(GAskPasswordFlags flags) {
 GAskPasswordFlags GioAskPasswordFlags_val(value list) {
   GAskPasswordFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NEED_PASSWORD")) result |= G_ASK_PASSWORD_NEED_PASSWORD; /* `NEED_PASSWORD */
     else if (tag == caml_hash_variant("NEED_USERNAME")) result |= G_ASK_PASSWORD_NEED_USERNAME; /* `NEED_USERNAME */
     else if (tag == caml_hash_variant("NEED_DOMAIN")) result |= G_ASK_PASSWORD_NEED_DOMAIN; /* `NEED_DOMAIN */
@@ -2166,26 +2166,26 @@ value Val_GioBusNameOwnerFlags(GBusNameOwnerFlags flags) {
 
   if (flags & G_BUS_NAME_OWNER_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ALLOW_REPLACEMENT"))); /* `ALLOW_REPLACEMENT */
+    Store_field(cons, 0, caml_hash_variant("ALLOW_REPLACEMENT")); /* `ALLOW_REPLACEMENT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_BUS_NAME_OWNER_FLAGS_REPLACE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("REPLACE"))); /* `REPLACE */
+    Store_field(cons, 0, caml_hash_variant("REPLACE")); /* `REPLACE */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GLIB_CHECK_VERSION(2,54,0)
   if (flags & G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DO_NOT_QUEUE"))); /* `DO_NOT_QUEUE */
+    Store_field(cons, 0, caml_hash_variant("DO_NOT_QUEUE")); /* `DO_NOT_QUEUE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2199,7 +2199,7 @@ value Val_GioBusNameOwnerFlags(GBusNameOwnerFlags flags) {
 GBusNameOwnerFlags GioBusNameOwnerFlags_val(value list) {
   GBusNameOwnerFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_BUS_NAME_OWNER_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("ALLOW_REPLACEMENT")) result |= G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT; /* `ALLOW_REPLACEMENT */
     else if (tag == caml_hash_variant("REPLACE")) result |= G_BUS_NAME_OWNER_FLAGS_REPLACE; /* `REPLACE */
@@ -2225,13 +2225,13 @@ value Val_GioBusNameWatcherFlags(GBusNameWatcherFlags flags) {
 
   if (flags & G_BUS_NAME_WATCHER_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_BUS_NAME_WATCHER_FLAGS_AUTO_START) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("AUTO_START"))); /* `AUTO_START */
+    Store_field(cons, 0, caml_hash_variant("AUTO_START")); /* `AUTO_START */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2243,7 +2243,7 @@ value Val_GioBusNameWatcherFlags(GBusNameWatcherFlags flags) {
 GBusNameWatcherFlags GioBusNameWatcherFlags_val(value list) {
   GBusNameWatcherFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_BUS_NAME_WATCHER_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("AUTO_START")) result |= G_BUS_NAME_WATCHER_FLAGS_AUTO_START; /* `AUTO_START */
     list = Field(list, 1);
@@ -2262,19 +2262,19 @@ value Val_GioConverterFlags(GConverterFlags flags) {
 
   if (flags & G_CONVERTER_NO_FLAGS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_CONVERTER_INPUT_AT_END) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("INPUT_AT_END"))); /* `INPUT_AT_END */
+    Store_field(cons, 0, caml_hash_variant("INPUT_AT_END")); /* `INPUT_AT_END */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_CONVERTER_FLUSH) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FLUSH"))); /* `FLUSH */
+    Store_field(cons, 0, caml_hash_variant("FLUSH")); /* `FLUSH */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2286,7 +2286,7 @@ value Val_GioConverterFlags(GConverterFlags flags) {
 GConverterFlags GioConverterFlags_val(value list) {
   GConverterFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_CONVERTER_NO_FLAGS; /* `NONE */
     else if (tag == caml_hash_variant("INPUT_AT_END")) result |= G_CONVERTER_INPUT_AT_END; /* `INPUT_AT_END */
     else if (tag == caml_hash_variant("FLUSH")) result |= G_CONVERTER_FLUSH; /* `FLUSH */
@@ -2306,20 +2306,20 @@ value Val_GioDBusCallFlags(GDBusCallFlags flags) {
 
   if (flags & G_DBUS_CALL_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_CALL_FLAGS_NO_AUTO_START) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NO_AUTO_START"))); /* `NO_AUTO_START */
+    Store_field(cons, 0, caml_hash_variant("NO_AUTO_START")); /* `NO_AUTO_START */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GLIB_CHECK_VERSION(2,46,0)
   if (flags & G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ALLOW_INTERACTIVE_AUTHORIZATION"))); /* `ALLOW_INTERACTIVE_AUTHORIZATION */
+    Store_field(cons, 0, caml_hash_variant("ALLOW_INTERACTIVE_AUTHORIZATION")); /* `ALLOW_INTERACTIVE_AUTHORIZATION */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2333,7 +2333,7 @@ value Val_GioDBusCallFlags(GDBusCallFlags flags) {
 GDBusCallFlags GioDBusCallFlags_val(value list) {
   GDBusCallFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_DBUS_CALL_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("NO_AUTO_START")) result |= G_DBUS_CALL_FLAGS_NO_AUTO_START; /* `NO_AUTO_START */
 #if GLIB_CHECK_VERSION(2,46,0)
@@ -2358,13 +2358,13 @@ value Val_GioDBusCapabilityFlags(GDBusCapabilityFlags flags) {
 
   if (flags & G_DBUS_CAPABILITY_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("UNIX_FD_PASSING"))); /* `UNIX_FD_PASSING */
+    Store_field(cons, 0, caml_hash_variant("UNIX_FD_PASSING")); /* `UNIX_FD_PASSING */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2376,7 +2376,7 @@ value Val_GioDBusCapabilityFlags(GDBusCapabilityFlags flags) {
 GDBusCapabilityFlags GioDBusCapabilityFlags_val(value list) {
   GDBusCapabilityFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_DBUS_CAPABILITY_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("UNIX_FD_PASSING")) result |= G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING; /* `UNIX_FD_PASSING */
     list = Field(list, 1);
@@ -2395,44 +2395,44 @@ value Val_GioDBusConnectionFlags(GDBusConnectionFlags flags) {
 
   if (flags & G_DBUS_CONNECTION_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("AUTHENTICATION_CLIENT"))); /* `AUTHENTICATION_CLIENT */
+    Store_field(cons, 0, caml_hash_variant("AUTHENTICATION_CLIENT")); /* `AUTHENTICATION_CLIENT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("AUTHENTICATION_SERVER"))); /* `AUTHENTICATION_SERVER */
+    Store_field(cons, 0, caml_hash_variant("AUTHENTICATION_SERVER")); /* `AUTHENTICATION_SERVER */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("AUTHENTICATION_ALLOW_ANONYMOUS"))); /* `AUTHENTICATION_ALLOW_ANONYMOUS */
+    Store_field(cons, 0, caml_hash_variant("AUTHENTICATION_ALLOW_ANONYMOUS")); /* `AUTHENTICATION_ALLOW_ANONYMOUS */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("MESSAGE_BUS_CONNECTION"))); /* `MESSAGE_BUS_CONNECTION */
+    Store_field(cons, 0, caml_hash_variant("MESSAGE_BUS_CONNECTION")); /* `MESSAGE_BUS_CONNECTION */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DELAY_MESSAGE_PROCESSING"))); /* `DELAY_MESSAGE_PROCESSING */
+    Store_field(cons, 0, caml_hash_variant("DELAY_MESSAGE_PROCESSING")); /* `DELAY_MESSAGE_PROCESSING */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GLIB_CHECK_VERSION(2,68,0)
   if (flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("AUTHENTICATION_REQUIRE_SAME_USER"))); /* `AUTHENTICATION_REQUIRE_SAME_USER */
+    Store_field(cons, 0, caml_hash_variant("AUTHENTICATION_REQUIRE_SAME_USER")); /* `AUTHENTICATION_REQUIRE_SAME_USER */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2441,7 +2441,7 @@ value Val_GioDBusConnectionFlags(GDBusConnectionFlags flags) {
 #if GLIB_CHECK_VERSION(2,74,0)
   if (flags & G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("CROSS_NAMESPACE"))); /* `CROSS_NAMESPACE */
+    Store_field(cons, 0, caml_hash_variant("CROSS_NAMESPACE")); /* `CROSS_NAMESPACE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2455,7 +2455,7 @@ value Val_GioDBusConnectionFlags(GDBusConnectionFlags flags) {
 GDBusConnectionFlags GioDBusConnectionFlags_val(value list) {
   GDBusConnectionFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_DBUS_CONNECTION_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("AUTHENTICATION_CLIENT")) result |= G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT; /* `AUTHENTICATION_CLIENT */
     else if (tag == caml_hash_variant("AUTHENTICATION_SERVER")) result |= G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER; /* `AUTHENTICATION_SERVER */
@@ -2490,13 +2490,13 @@ value Val_GioDBusInterfaceSkeletonFlags(GDBusInterfaceSkeletonFlags flags) {
 
   if (flags & G_DBUS_INTERFACE_SKELETON_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("HANDLE_METHOD_INVOCATIONS_IN_THREAD"))); /* `HANDLE_METHOD_INVOCATIONS_IN_THREAD */
+    Store_field(cons, 0, caml_hash_variant("HANDLE_METHOD_INVOCATIONS_IN_THREAD")); /* `HANDLE_METHOD_INVOCATIONS_IN_THREAD */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2508,7 +2508,7 @@ value Val_GioDBusInterfaceSkeletonFlags(GDBusInterfaceSkeletonFlags flags) {
 GDBusInterfaceSkeletonFlags GioDBusInterfaceSkeletonFlags_val(value list) {
   GDBusInterfaceSkeletonFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_DBUS_INTERFACE_SKELETON_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("HANDLE_METHOD_INVOCATIONS_IN_THREAD")) result |= G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD; /* `HANDLE_METHOD_INVOCATIONS_IN_THREAD */
     list = Field(list, 1);
@@ -2527,26 +2527,26 @@ value Val_GioDBusMessageFlags(GDBusMessageFlags flags) {
 
   if (flags & G_DBUS_MESSAGE_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NO_REPLY_EXPECTED"))); /* `NO_REPLY_EXPECTED */
+    Store_field(cons, 0, caml_hash_variant("NO_REPLY_EXPECTED")); /* `NO_REPLY_EXPECTED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_MESSAGE_FLAGS_NO_AUTO_START) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NO_AUTO_START"))); /* `NO_AUTO_START */
+    Store_field(cons, 0, caml_hash_variant("NO_AUTO_START")); /* `NO_AUTO_START */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GLIB_CHECK_VERSION(2,46,0)
   if (flags & G_DBUS_MESSAGE_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ALLOW_INTERACTIVE_AUTHORIZATION"))); /* `ALLOW_INTERACTIVE_AUTHORIZATION */
+    Store_field(cons, 0, caml_hash_variant("ALLOW_INTERACTIVE_AUTHORIZATION")); /* `ALLOW_INTERACTIVE_AUTHORIZATION */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2560,7 +2560,7 @@ value Val_GioDBusMessageFlags(GDBusMessageFlags flags) {
 GDBusMessageFlags GioDBusMessageFlags_val(value list) {
   GDBusMessageFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_DBUS_MESSAGE_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("NO_REPLY_EXPECTED")) result |= G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED; /* `NO_REPLY_EXPECTED */
     else if (tag == caml_hash_variant("NO_AUTO_START")) result |= G_DBUS_MESSAGE_FLAGS_NO_AUTO_START; /* `NO_AUTO_START */
@@ -2586,13 +2586,13 @@ value Val_GioDBusObjectManagerClientFlags(GDBusObjectManagerClientFlags flags) {
 
   if (flags & G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_DO_NOT_AUTO_START) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DO_NOT_AUTO_START"))); /* `DO_NOT_AUTO_START */
+    Store_field(cons, 0, caml_hash_variant("DO_NOT_AUTO_START")); /* `DO_NOT_AUTO_START */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2604,7 +2604,7 @@ value Val_GioDBusObjectManagerClientFlags(GDBusObjectManagerClientFlags flags) {
 GDBusObjectManagerClientFlags GioDBusObjectManagerClientFlags_val(value list) {
   GDBusObjectManagerClientFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("DO_NOT_AUTO_START")) result |= G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_DO_NOT_AUTO_START; /* `DO_NOT_AUTO_START */
     list = Field(list, 1);
@@ -2623,19 +2623,19 @@ value Val_GioDBusPropertyInfoFlags(GDBusPropertyInfoFlags flags) {
 
   if (flags & G_DBUS_PROPERTY_INFO_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_PROPERTY_INFO_FLAGS_READABLE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("READABLE"))); /* `READABLE */
+    Store_field(cons, 0, caml_hash_variant("READABLE")); /* `READABLE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_PROPERTY_INFO_FLAGS_WRITABLE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("WRITABLE"))); /* `WRITABLE */
+    Store_field(cons, 0, caml_hash_variant("WRITABLE")); /* `WRITABLE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2647,7 +2647,7 @@ value Val_GioDBusPropertyInfoFlags(GDBusPropertyInfoFlags flags) {
 GDBusPropertyInfoFlags GioDBusPropertyInfoFlags_val(value list) {
   GDBusPropertyInfoFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_DBUS_PROPERTY_INFO_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("READABLE")) result |= G_DBUS_PROPERTY_INFO_FLAGS_READABLE; /* `READABLE */
     else if (tag == caml_hash_variant("WRITABLE")) result |= G_DBUS_PROPERTY_INFO_FLAGS_WRITABLE; /* `WRITABLE */
@@ -2667,32 +2667,32 @@ value Val_GioDBusProxyFlags(GDBusProxyFlags flags) {
 
   if (flags & G_DBUS_PROXY_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DO_NOT_LOAD_PROPERTIES"))); /* `DO_NOT_LOAD_PROPERTIES */
+    Store_field(cons, 0, caml_hash_variant("DO_NOT_LOAD_PROPERTIES")); /* `DO_NOT_LOAD_PROPERTIES */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DO_NOT_CONNECT_SIGNALS"))); /* `DO_NOT_CONNECT_SIGNALS */
+    Store_field(cons, 0, caml_hash_variant("DO_NOT_CONNECT_SIGNALS")); /* `DO_NOT_CONNECT_SIGNALS */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DO_NOT_AUTO_START"))); /* `DO_NOT_AUTO_START */
+    Store_field(cons, 0, caml_hash_variant("DO_NOT_AUTO_START")); /* `DO_NOT_AUTO_START */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GLIB_CHECK_VERSION(2,32,0)
   if (flags & G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("GET_INVALIDATED_PROPERTIES"))); /* `GET_INVALIDATED_PROPERTIES */
+    Store_field(cons, 0, caml_hash_variant("GET_INVALIDATED_PROPERTIES")); /* `GET_INVALIDATED_PROPERTIES */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2700,14 +2700,14 @@ value Val_GioDBusProxyFlags(GDBusProxyFlags flags) {
 #endif
   if (flags & G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DO_NOT_AUTO_START_AT_CONSTRUCTION"))); /* `DO_NOT_AUTO_START_AT_CONSTRUCTION */
+    Store_field(cons, 0, caml_hash_variant("DO_NOT_AUTO_START_AT_CONSTRUCTION")); /* `DO_NOT_AUTO_START_AT_CONSTRUCTION */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GLIB_CHECK_VERSION(2,72,0)
   if (flags & G_DBUS_PROXY_FLAGS_NO_MATCH_RULE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NO_MATCH_RULE"))); /* `NO_MATCH_RULE */
+    Store_field(cons, 0, caml_hash_variant("NO_MATCH_RULE")); /* `NO_MATCH_RULE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2721,7 +2721,7 @@ value Val_GioDBusProxyFlags(GDBusProxyFlags flags) {
 GDBusProxyFlags GioDBusProxyFlags_val(value list) {
   GDBusProxyFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_DBUS_PROXY_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("DO_NOT_LOAD_PROPERTIES")) result |= G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES; /* `DO_NOT_LOAD_PROPERTIES */
     else if (tag == caml_hash_variant("DO_NOT_CONNECT_SIGNALS")) result |= G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS; /* `DO_NOT_CONNECT_SIGNALS */
@@ -2755,13 +2755,13 @@ value Val_GioDBusSendMessageFlags(GDBusSendMessageFlags flags) {
 
   if (flags & G_DBUS_SEND_MESSAGE_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("PRESERVE_SERIAL"))); /* `PRESERVE_SERIAL */
+    Store_field(cons, 0, caml_hash_variant("PRESERVE_SERIAL")); /* `PRESERVE_SERIAL */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2773,7 +2773,7 @@ value Val_GioDBusSendMessageFlags(GDBusSendMessageFlags flags) {
 GDBusSendMessageFlags GioDBusSendMessageFlags_val(value list) {
   GDBusSendMessageFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_DBUS_SEND_MESSAGE_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("PRESERVE_SERIAL")) result |= G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL; /* `PRESERVE_SERIAL */
     list = Field(list, 1);
@@ -2792,26 +2792,26 @@ value Val_GioDBusServerFlags(GDBusServerFlags flags) {
 
   if (flags & G_DBUS_SERVER_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_SERVER_FLAGS_RUN_IN_THREAD) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("RUN_IN_THREAD"))); /* `RUN_IN_THREAD */
+    Store_field(cons, 0, caml_hash_variant("RUN_IN_THREAD")); /* `RUN_IN_THREAD */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("AUTHENTICATION_ALLOW_ANONYMOUS"))); /* `AUTHENTICATION_ALLOW_ANONYMOUS */
+    Store_field(cons, 0, caml_hash_variant("AUTHENTICATION_ALLOW_ANONYMOUS")); /* `AUTHENTICATION_ALLOW_ANONYMOUS */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GLIB_CHECK_VERSION(2,68,0)
   if (flags & G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("AUTHENTICATION_REQUIRE_SAME_USER"))); /* `AUTHENTICATION_REQUIRE_SAME_USER */
+    Store_field(cons, 0, caml_hash_variant("AUTHENTICATION_REQUIRE_SAME_USER")); /* `AUTHENTICATION_REQUIRE_SAME_USER */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2825,7 +2825,7 @@ value Val_GioDBusServerFlags(GDBusServerFlags flags) {
 GDBusServerFlags GioDBusServerFlags_val(value list) {
   GDBusServerFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_DBUS_SERVER_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("RUN_IN_THREAD")) result |= G_DBUS_SERVER_FLAGS_RUN_IN_THREAD; /* `RUN_IN_THREAD */
     else if (tag == caml_hash_variant("AUTHENTICATION_ALLOW_ANONYMOUS")) result |= G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS; /* `AUTHENTICATION_ALLOW_ANONYMOUS */
@@ -2851,25 +2851,25 @@ value Val_GioDBusSignalFlags(GDBusSignalFlags flags) {
 
   if (flags & G_DBUS_SIGNAL_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NO_MATCH_RULE"))); /* `NO_MATCH_RULE */
+    Store_field(cons, 0, caml_hash_variant("NO_MATCH_RULE")); /* `NO_MATCH_RULE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("MATCH_ARG0_NAMESPACE"))); /* `MATCH_ARG0_NAMESPACE */
+    Store_field(cons, 0, caml_hash_variant("MATCH_ARG0_NAMESPACE")); /* `MATCH_ARG0_NAMESPACE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("MATCH_ARG0_PATH"))); /* `MATCH_ARG0_PATH */
+    Store_field(cons, 0, caml_hash_variant("MATCH_ARG0_PATH")); /* `MATCH_ARG0_PATH */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2881,7 +2881,7 @@ value Val_GioDBusSignalFlags(GDBusSignalFlags flags) {
 GDBusSignalFlags GioDBusSignalFlags_val(value list) {
   GDBusSignalFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_DBUS_SIGNAL_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("NO_MATCH_RULE")) result |= G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE; /* `NO_MATCH_RULE */
     else if (tag == caml_hash_variant("MATCH_ARG0_NAMESPACE")) result |= G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_NAMESPACE; /* `MATCH_ARG0_NAMESPACE */
@@ -2902,13 +2902,13 @@ value Val_GioDBusSubtreeFlags(GDBusSubtreeFlags flags) {
 
   if (flags & G_DBUS_SUBTREE_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DISPATCH_TO_UNENUMERATED_NODES"))); /* `DISPATCH_TO_UNENUMERATED_NODES */
+    Store_field(cons, 0, caml_hash_variant("DISPATCH_TO_UNENUMERATED_NODES")); /* `DISPATCH_TO_UNENUMERATED_NODES */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2920,7 +2920,7 @@ value Val_GioDBusSubtreeFlags(GDBusSubtreeFlags flags) {
 GDBusSubtreeFlags GioDBusSubtreeFlags_val(value list) {
   GDBusSubtreeFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_DBUS_SUBTREE_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("DISPATCH_TO_UNENUMERATED_NODES")) result |= G_DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES; /* `DISPATCH_TO_UNENUMERATED_NODES */
     list = Field(list, 1);
@@ -2939,7 +2939,7 @@ value Val_GioDriveStartFlags(GDriveStartFlags flags) {
 
   if (flags & G_DRIVE_START_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2951,7 +2951,7 @@ value Val_GioDriveStartFlags(GDriveStartFlags flags) {
 GDriveStartFlags GioDriveStartFlags_val(value list) {
   GDriveStartFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_DRIVE_START_NONE; /* `NONE */
     list = Field(list, 1);
   }
@@ -2968,19 +2968,19 @@ value Val_GioFileAttributeInfoFlags(GFileAttributeInfoFlags flags) {
 
   if (flags & G_FILE_ATTRIBUTE_INFO_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("COPY_WITH_FILE"))); /* `COPY_WITH_FILE */
+    Store_field(cons, 0, caml_hash_variant("COPY_WITH_FILE")); /* `COPY_WITH_FILE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("COPY_WHEN_MOVED"))); /* `COPY_WHEN_MOVED */
+    Store_field(cons, 0, caml_hash_variant("COPY_WHEN_MOVED")); /* `COPY_WHEN_MOVED */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2992,7 +2992,7 @@ value Val_GioFileAttributeInfoFlags(GFileAttributeInfoFlags flags) {
 GFileAttributeInfoFlags GioFileAttributeInfoFlags_val(value list) {
   GFileAttributeInfoFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_FILE_ATTRIBUTE_INFO_NONE; /* `NONE */
     else if (tag == caml_hash_variant("COPY_WITH_FILE")) result |= G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE; /* `COPY_WITH_FILE */
     else if (tag == caml_hash_variant("COPY_WHEN_MOVED")) result |= G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED; /* `COPY_WHEN_MOVED */
@@ -3009,50 +3009,50 @@ value Val_GioFileCopyFlags(GFileCopyFlags flags) {
 
   if (flags & G_FILE_COPY_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_FILE_COPY_OVERWRITE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("OVERWRITE"))); /* `OVERWRITE */
+    Store_field(cons, 0, caml_hash_variant("OVERWRITE")); /* `OVERWRITE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_FILE_COPY_BACKUP) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("BACKUP"))); /* `BACKUP */
+    Store_field(cons, 0, caml_hash_variant("BACKUP")); /* `BACKUP */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_FILE_COPY_NOFOLLOW_SYMLINKS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NOFOLLOW_SYMLINKS"))); /* `NOFOLLOW_SYMLINKS */
+    Store_field(cons, 0, caml_hash_variant("NOFOLLOW_SYMLINKS")); /* `NOFOLLOW_SYMLINKS */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_FILE_COPY_ALL_METADATA) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ALL_METADATA"))); /* `ALL_METADATA */
+    Store_field(cons, 0, caml_hash_variant("ALL_METADATA")); /* `ALL_METADATA */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_FILE_COPY_NO_FALLBACK_FOR_MOVE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NO_FALLBACK_FOR_MOVE"))); /* `NO_FALLBACK_FOR_MOVE */
+    Store_field(cons, 0, caml_hash_variant("NO_FALLBACK_FOR_MOVE")); /* `NO_FALLBACK_FOR_MOVE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_FILE_COPY_TARGET_DEFAULT_PERMS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("TARGET_DEFAULT_PERMS"))); /* `TARGET_DEFAULT_PERMS */
+    Store_field(cons, 0, caml_hash_variant("TARGET_DEFAULT_PERMS")); /* `TARGET_DEFAULT_PERMS */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GLIB_CHECK_VERSION(2,80,0)
   if (flags & G_FILE_COPY_TARGET_DEFAULT_MODIFIED_TIME) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("TARGET_DEFAULT_MODIFIED_TIME"))); /* `TARGET_DEFAULT_MODIFIED_TIME */
+    Store_field(cons, 0, caml_hash_variant("TARGET_DEFAULT_MODIFIED_TIME")); /* `TARGET_DEFAULT_MODIFIED_TIME */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3066,7 +3066,7 @@ value Val_GioFileCopyFlags(GFileCopyFlags flags) {
 GFileCopyFlags GioFileCopyFlags_val(value list) {
   GFileCopyFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_FILE_COPY_NONE; /* `NONE */
     else if (tag == caml_hash_variant("OVERWRITE")) result |= G_FILE_COPY_OVERWRITE; /* `OVERWRITE */
     else if (tag == caml_hash_variant("BACKUP")) result |= G_FILE_COPY_BACKUP; /* `BACKUP */
@@ -3093,20 +3093,20 @@ value Val_GioFileCreateFlags(GFileCreateFlags flags) {
 
   if (flags & G_FILE_CREATE_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_FILE_CREATE_PRIVATE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("PRIVATE"))); /* `PRIVATE */
+    Store_field(cons, 0, caml_hash_variant("PRIVATE")); /* `PRIVATE */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GLIB_CHECK_VERSION(2,20,0)
   if (flags & G_FILE_CREATE_REPLACE_DESTINATION) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("REPLACE_DESTINATION"))); /* `REPLACE_DESTINATION */
+    Store_field(cons, 0, caml_hash_variant("REPLACE_DESTINATION")); /* `REPLACE_DESTINATION */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3120,7 +3120,7 @@ value Val_GioFileCreateFlags(GFileCreateFlags flags) {
 GFileCreateFlags GioFileCreateFlags_val(value list) {
   GFileCreateFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_FILE_CREATE_NONE; /* `NONE */
     else if (tag == caml_hash_variant("PRIVATE")) result |= G_FILE_CREATE_PRIVATE; /* `PRIVATE */
 #if GLIB_CHECK_VERSION(2,20,0)
@@ -3143,25 +3143,25 @@ value Val_GioFileMeasureFlags(GFileMeasureFlags flags) {
 
   if (flags & G_FILE_MEASURE_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_FILE_MEASURE_REPORT_ANY_ERROR) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("REPORT_ANY_ERROR"))); /* `REPORT_ANY_ERROR */
+    Store_field(cons, 0, caml_hash_variant("REPORT_ANY_ERROR")); /* `REPORT_ANY_ERROR */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_FILE_MEASURE_APPARENT_SIZE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("APPARENT_SIZE"))); /* `APPARENT_SIZE */
+    Store_field(cons, 0, caml_hash_variant("APPARENT_SIZE")); /* `APPARENT_SIZE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_FILE_MEASURE_NO_XDEV) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NO_XDEV"))); /* `NO_XDEV */
+    Store_field(cons, 0, caml_hash_variant("NO_XDEV")); /* `NO_XDEV */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3173,7 +3173,7 @@ value Val_GioFileMeasureFlags(GFileMeasureFlags flags) {
 GFileMeasureFlags GioFileMeasureFlags_val(value list) {
   GFileMeasureFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_FILE_MEASURE_NONE; /* `NONE */
     else if (tag == caml_hash_variant("REPORT_ANY_ERROR")) result |= G_FILE_MEASURE_REPORT_ANY_ERROR; /* `REPORT_ANY_ERROR */
     else if (tag == caml_hash_variant("APPARENT_SIZE")) result |= G_FILE_MEASURE_APPARENT_SIZE; /* `APPARENT_SIZE */
@@ -3193,26 +3193,26 @@ value Val_GioFileMonitorFlags(GFileMonitorFlags flags) {
 
   if (flags & G_FILE_MONITOR_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_FILE_MONITOR_WATCH_MOUNTS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("WATCH_MOUNTS"))); /* `WATCH_MOUNTS */
+    Store_field(cons, 0, caml_hash_variant("WATCH_MOUNTS")); /* `WATCH_MOUNTS */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_FILE_MONITOR_SEND_MOVED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SEND_MOVED"))); /* `SEND_MOVED */
+    Store_field(cons, 0, caml_hash_variant("SEND_MOVED")); /* `SEND_MOVED */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GLIB_CHECK_VERSION(2,36,0)
   if (flags & G_FILE_MONITOR_WATCH_HARD_LINKS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("WATCH_HARD_LINKS"))); /* `WATCH_HARD_LINKS */
+    Store_field(cons, 0, caml_hash_variant("WATCH_HARD_LINKS")); /* `WATCH_HARD_LINKS */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3221,7 +3221,7 @@ value Val_GioFileMonitorFlags(GFileMonitorFlags flags) {
 #if GLIB_CHECK_VERSION(2,46,0)
   if (flags & G_FILE_MONITOR_WATCH_MOVES) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("WATCH_MOVES"))); /* `WATCH_MOVES */
+    Store_field(cons, 0, caml_hash_variant("WATCH_MOVES")); /* `WATCH_MOVES */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3235,7 +3235,7 @@ value Val_GioFileMonitorFlags(GFileMonitorFlags flags) {
 GFileMonitorFlags GioFileMonitorFlags_val(value list) {
   GFileMonitorFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_FILE_MONITOR_NONE; /* `NONE */
     else if (tag == caml_hash_variant("WATCH_MOUNTS")) result |= G_FILE_MONITOR_WATCH_MOUNTS; /* `WATCH_MOUNTS */
     else if (tag == caml_hash_variant("SEND_MOVED")) result |= G_FILE_MONITOR_SEND_MOVED; /* `SEND_MOVED */
@@ -3264,13 +3264,13 @@ value Val_GioFileQueryInfoFlags(GFileQueryInfoFlags flags) {
 
   if (flags & G_FILE_QUERY_INFO_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NOFOLLOW_SYMLINKS"))); /* `NOFOLLOW_SYMLINKS */
+    Store_field(cons, 0, caml_hash_variant("NOFOLLOW_SYMLINKS")); /* `NOFOLLOW_SYMLINKS */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3282,7 +3282,7 @@ value Val_GioFileQueryInfoFlags(GFileQueryInfoFlags flags) {
 GFileQueryInfoFlags GioFileQueryInfoFlags_val(value list) {
   GFileQueryInfoFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_FILE_QUERY_INFO_NONE; /* `NONE */
     else if (tag == caml_hash_variant("NOFOLLOW_SYMLINKS")) result |= G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS; /* `NOFOLLOW_SYMLINKS */
     list = Field(list, 1);
@@ -3299,25 +3299,25 @@ value Val_GioIOStreamSpliceFlags(GIOStreamSpliceFlags flags) {
 
   if (flags & G_IO_STREAM_SPLICE_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_IO_STREAM_SPLICE_CLOSE_STREAM1) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("CLOSE_STREAM1"))); /* `CLOSE_STREAM1 */
+    Store_field(cons, 0, caml_hash_variant("CLOSE_STREAM1")); /* `CLOSE_STREAM1 */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_IO_STREAM_SPLICE_CLOSE_STREAM2) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("CLOSE_STREAM2"))); /* `CLOSE_STREAM2 */
+    Store_field(cons, 0, caml_hash_variant("CLOSE_STREAM2")); /* `CLOSE_STREAM2 */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_IO_STREAM_SPLICE_WAIT_FOR_BOTH) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("WAIT_FOR_BOTH"))); /* `WAIT_FOR_BOTH */
+    Store_field(cons, 0, caml_hash_variant("WAIT_FOR_BOTH")); /* `WAIT_FOR_BOTH */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3329,7 +3329,7 @@ value Val_GioIOStreamSpliceFlags(GIOStreamSpliceFlags flags) {
 GIOStreamSpliceFlags GioIOStreamSpliceFlags_val(value list) {
   GIOStreamSpliceFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_IO_STREAM_SPLICE_NONE; /* `NONE */
     else if (tag == caml_hash_variant("CLOSE_STREAM1")) result |= G_IO_STREAM_SPLICE_CLOSE_STREAM1; /* `CLOSE_STREAM1 */
     else if (tag == caml_hash_variant("CLOSE_STREAM2")) result |= G_IO_STREAM_SPLICE_CLOSE_STREAM2; /* `CLOSE_STREAM2 */
@@ -3349,7 +3349,7 @@ value Val_GioMountMountFlags(GMountMountFlags flags) {
 
   if (flags & G_MOUNT_MOUNT_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3361,7 +3361,7 @@ value Val_GioMountMountFlags(GMountMountFlags flags) {
 GMountMountFlags GioMountMountFlags_val(value list) {
   GMountMountFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_MOUNT_MOUNT_NONE; /* `NONE */
     list = Field(list, 1);
   }
@@ -3376,13 +3376,13 @@ value Val_GioMountUnmountFlags(GMountUnmountFlags flags) {
 
   if (flags & G_MOUNT_UNMOUNT_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_MOUNT_UNMOUNT_FORCE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FORCE"))); /* `FORCE */
+    Store_field(cons, 0, caml_hash_variant("FORCE")); /* `FORCE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3394,7 +3394,7 @@ value Val_GioMountUnmountFlags(GMountUnmountFlags flags) {
 GMountUnmountFlags GioMountUnmountFlags_val(value list) {
   GMountUnmountFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_MOUNT_UNMOUNT_NONE; /* `NONE */
     else if (tag == caml_hash_variant("FORCE")) result |= G_MOUNT_UNMOUNT_FORCE; /* `FORCE */
     list = Field(list, 1);
@@ -3410,19 +3410,19 @@ value Val_GioOutputStreamSpliceFlags(GOutputStreamSpliceFlags flags) {
 
   if (flags & G_OUTPUT_STREAM_SPLICE_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("CLOSE_SOURCE"))); /* `CLOSE_SOURCE */
+    Store_field(cons, 0, caml_hash_variant("CLOSE_SOURCE")); /* `CLOSE_SOURCE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("CLOSE_TARGET"))); /* `CLOSE_TARGET */
+    Store_field(cons, 0, caml_hash_variant("CLOSE_TARGET")); /* `CLOSE_TARGET */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3434,7 +3434,7 @@ value Val_GioOutputStreamSpliceFlags(GOutputStreamSpliceFlags flags) {
 GOutputStreamSpliceFlags GioOutputStreamSpliceFlags_val(value list) {
   GOutputStreamSpliceFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_OUTPUT_STREAM_SPLICE_NONE; /* `NONE */
     else if (tag == caml_hash_variant("CLOSE_SOURCE")) result |= G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE; /* `CLOSE_SOURCE */
     else if (tag == caml_hash_variant("CLOSE_TARGET")) result |= G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET; /* `CLOSE_TARGET */
@@ -3452,19 +3452,19 @@ value Val_GioResolverNameLookupFlags(GResolverNameLookupFlags flags) {
 
   if (flags & G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DEFAULT"))); /* `DEFAULT */
+    Store_field(cons, 0, caml_hash_variant("DEFAULT")); /* `DEFAULT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("IPV4_ONLY"))); /* `IPV4_ONLY */
+    Store_field(cons, 0, caml_hash_variant("IPV4_ONLY")); /* `IPV4_ONLY */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("IPV6_ONLY"))); /* `IPV6_ONLY */
+    Store_field(cons, 0, caml_hash_variant("IPV6_ONLY")); /* `IPV6_ONLY */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3476,7 +3476,7 @@ value Val_GioResolverNameLookupFlags(GResolverNameLookupFlags flags) {
 GResolverNameLookupFlags GioResolverNameLookupFlags_val(value list) {
   GResolverNameLookupFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("DEFAULT")) result |= G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT; /* `DEFAULT */
     else if (tag == caml_hash_variant("IPV4_ONLY")) result |= G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY; /* `IPV4_ONLY */
     else if (tag == caml_hash_variant("IPV6_ONLY")) result |= G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY; /* `IPV6_ONLY */
@@ -3496,13 +3496,13 @@ value Val_GioResourceFlags(GResourceFlags flags) {
 
   if (flags & G_RESOURCE_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_RESOURCE_FLAGS_COMPRESSED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("COMPRESSED"))); /* `COMPRESSED */
+    Store_field(cons, 0, caml_hash_variant("COMPRESSED")); /* `COMPRESSED */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3514,7 +3514,7 @@ value Val_GioResourceFlags(GResourceFlags flags) {
 GResourceFlags GioResourceFlags_val(value list) {
   GResourceFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_RESOURCE_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("COMPRESSED")) result |= G_RESOURCE_FLAGS_COMPRESSED; /* `COMPRESSED */
     list = Field(list, 1);
@@ -3533,7 +3533,7 @@ value Val_GioResourceLookupFlags(GResourceLookupFlags flags) {
 
   if (flags & G_RESOURCE_LOOKUP_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3545,7 +3545,7 @@ value Val_GioResourceLookupFlags(GResourceLookupFlags flags) {
 GResourceLookupFlags GioResourceLookupFlags_val(value list) {
   GResourceLookupFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_RESOURCE_LOOKUP_FLAGS_NONE; /* `NONE */
     list = Field(list, 1);
   }
@@ -3562,37 +3562,37 @@ value Val_GioSettingsBindFlags(GSettingsBindFlags flags) {
 
   if (flags & G_SETTINGS_BIND_DEFAULT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DEFAULT"))); /* `DEFAULT */
+    Store_field(cons, 0, caml_hash_variant("DEFAULT")); /* `DEFAULT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_SETTINGS_BIND_GET) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("GET"))); /* `GET */
+    Store_field(cons, 0, caml_hash_variant("GET")); /* `GET */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_SETTINGS_BIND_SET) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SET"))); /* `SET */
+    Store_field(cons, 0, caml_hash_variant("SET")); /* `SET */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_SETTINGS_BIND_NO_SENSITIVITY) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NO_SENSITIVITY"))); /* `NO_SENSITIVITY */
+    Store_field(cons, 0, caml_hash_variant("NO_SENSITIVITY")); /* `NO_SENSITIVITY */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_SETTINGS_BIND_GET_NO_CHANGES) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("GET_NO_CHANGES"))); /* `GET_NO_CHANGES */
+    Store_field(cons, 0, caml_hash_variant("GET_NO_CHANGES")); /* `GET_NO_CHANGES */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_SETTINGS_BIND_INVERT_BOOLEAN) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("INVERT_BOOLEAN"))); /* `INVERT_BOOLEAN */
+    Store_field(cons, 0, caml_hash_variant("INVERT_BOOLEAN")); /* `INVERT_BOOLEAN */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3604,7 +3604,7 @@ value Val_GioSettingsBindFlags(GSettingsBindFlags flags) {
 GSettingsBindFlags GioSettingsBindFlags_val(value list) {
   GSettingsBindFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("DEFAULT")) result |= G_SETTINGS_BIND_DEFAULT; /* `DEFAULT */
     else if (tag == caml_hash_variant("GET")) result |= G_SETTINGS_BIND_GET; /* `GET */
     else if (tag == caml_hash_variant("SET")) result |= G_SETTINGS_BIND_SET; /* `SET */
@@ -3625,25 +3625,25 @@ value Val_GioSocketMsgFlags(GSocketMsgFlags flags) {
 
   if (flags & G_SOCKET_MSG_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_SOCKET_MSG_OOB) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("OOB"))); /* `OOB */
+    Store_field(cons, 0, caml_hash_variant("OOB")); /* `OOB */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_SOCKET_MSG_PEEK) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("PEEK"))); /* `PEEK */
+    Store_field(cons, 0, caml_hash_variant("PEEK")); /* `PEEK */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_SOCKET_MSG_DONTROUTE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DONTROUTE"))); /* `DONTROUTE */
+    Store_field(cons, 0, caml_hash_variant("DONTROUTE")); /* `DONTROUTE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3655,7 +3655,7 @@ value Val_GioSocketMsgFlags(GSocketMsgFlags flags) {
 GSocketMsgFlags GioSocketMsgFlags_val(value list) {
   GSocketMsgFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_SOCKET_MSG_NONE; /* `NONE */
     else if (tag == caml_hash_variant("OOB")) result |= G_SOCKET_MSG_OOB; /* `OOB */
     else if (tag == caml_hash_variant("PEEK")) result |= G_SOCKET_MSG_PEEK; /* `PEEK */
@@ -3676,62 +3676,62 @@ value Val_GioSubprocessFlags(GSubprocessFlags flags) {
 
   if (flags & G_SUBPROCESS_FLAGS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_SUBPROCESS_FLAGS_STDIN_PIPE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("STDIN_PIPE"))); /* `STDIN_PIPE */
+    Store_field(cons, 0, caml_hash_variant("STDIN_PIPE")); /* `STDIN_PIPE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_SUBPROCESS_FLAGS_STDIN_INHERIT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("STDIN_INHERIT"))); /* `STDIN_INHERIT */
+    Store_field(cons, 0, caml_hash_variant("STDIN_INHERIT")); /* `STDIN_INHERIT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_SUBPROCESS_FLAGS_STDOUT_PIPE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("STDOUT_PIPE"))); /* `STDOUT_PIPE */
+    Store_field(cons, 0, caml_hash_variant("STDOUT_PIPE")); /* `STDOUT_PIPE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_SUBPROCESS_FLAGS_STDOUT_SILENCE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("STDOUT_SILENCE"))); /* `STDOUT_SILENCE */
+    Store_field(cons, 0, caml_hash_variant("STDOUT_SILENCE")); /* `STDOUT_SILENCE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_SUBPROCESS_FLAGS_STDERR_PIPE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("STDERR_PIPE"))); /* `STDERR_PIPE */
+    Store_field(cons, 0, caml_hash_variant("STDERR_PIPE")); /* `STDERR_PIPE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_SUBPROCESS_FLAGS_STDERR_SILENCE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("STDERR_SILENCE"))); /* `STDERR_SILENCE */
+    Store_field(cons, 0, caml_hash_variant("STDERR_SILENCE")); /* `STDERR_SILENCE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_SUBPROCESS_FLAGS_STDERR_MERGE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("STDERR_MERGE"))); /* `STDERR_MERGE */
+    Store_field(cons, 0, caml_hash_variant("STDERR_MERGE")); /* `STDERR_MERGE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_SUBPROCESS_FLAGS_INHERIT_FDS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("INHERIT_FDS"))); /* `INHERIT_FDS */
+    Store_field(cons, 0, caml_hash_variant("INHERIT_FDS")); /* `INHERIT_FDS */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GLIB_CHECK_VERSION(2,72,0)
   if (flags & G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SEARCH_PATH_FROM_ENVP"))); /* `SEARCH_PATH_FROM_ENVP */
+    Store_field(cons, 0, caml_hash_variant("SEARCH_PATH_FROM_ENVP")); /* `SEARCH_PATH_FROM_ENVP */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3745,7 +3745,7 @@ value Val_GioSubprocessFlags(GSubprocessFlags flags) {
 GSubprocessFlags GioSubprocessFlags_val(value list) {
   GSubprocessFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_SUBPROCESS_FLAGS_NONE; /* `NONE */
     else if (tag == caml_hash_variant("STDIN_PIPE")) result |= G_SUBPROCESS_FLAGS_STDIN_PIPE; /* `STDIN_PIPE */
     else if (tag == caml_hash_variant("STDIN_INHERIT")) result |= G_SUBPROCESS_FLAGS_STDIN_INHERIT; /* `STDIN_INHERIT */
@@ -3777,7 +3777,7 @@ value Val_GioTestDBusFlags(GTestDBusFlags flags) {
 
   if (flags & G_TEST_DBUS_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3789,7 +3789,7 @@ value Val_GioTestDBusFlags(GTestDBusFlags flags) {
 GTestDBusFlags GioTestDBusFlags_val(value list) {
   GTestDBusFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_TEST_DBUS_NONE; /* `NONE */
     list = Field(list, 1);
   }
@@ -3808,7 +3808,7 @@ value Val_GioTlsCertificateFlags(GTlsCertificateFlags flags) {
 #if GLIB_CHECK_VERSION(2,74,0)
   if (flags & G_TLS_CERTIFICATE_NO_FLAGS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NO_FLAGS"))); /* `NO_FLAGS */
+    Store_field(cons, 0, caml_hash_variant("NO_FLAGS")); /* `NO_FLAGS */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3816,49 +3816,49 @@ value Val_GioTlsCertificateFlags(GTlsCertificateFlags flags) {
 #endif
   if (flags & G_TLS_CERTIFICATE_UNKNOWN_CA) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("UNKNOWN_CA"))); /* `UNKNOWN_CA */
+    Store_field(cons, 0, caml_hash_variant("UNKNOWN_CA")); /* `UNKNOWN_CA */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_TLS_CERTIFICATE_BAD_IDENTITY) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("BAD_IDENTITY"))); /* `BAD_IDENTITY */
+    Store_field(cons, 0, caml_hash_variant("BAD_IDENTITY")); /* `BAD_IDENTITY */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_TLS_CERTIFICATE_NOT_ACTIVATED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NOT_ACTIVATED"))); /* `NOT_ACTIVATED */
+    Store_field(cons, 0, caml_hash_variant("NOT_ACTIVATED")); /* `NOT_ACTIVATED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_TLS_CERTIFICATE_EXPIRED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("EXPIRED"))); /* `EXPIRED */
+    Store_field(cons, 0, caml_hash_variant("EXPIRED")); /* `EXPIRED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_TLS_CERTIFICATE_REVOKED) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("REVOKED"))); /* `REVOKED */
+    Store_field(cons, 0, caml_hash_variant("REVOKED")); /* `REVOKED */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_TLS_CERTIFICATE_INSECURE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("INSECURE"))); /* `INSECURE */
+    Store_field(cons, 0, caml_hash_variant("INSECURE")); /* `INSECURE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_TLS_CERTIFICATE_GENERIC_ERROR) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("GENERIC_ERROR"))); /* `GENERIC_ERROR */
+    Store_field(cons, 0, caml_hash_variant("GENERIC_ERROR")); /* `GENERIC_ERROR */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_TLS_CERTIFICATE_VALIDATE_ALL) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("VALIDATE_ALL"))); /* `VALIDATE_ALL */
+    Store_field(cons, 0, caml_hash_variant("VALIDATE_ALL")); /* `VALIDATE_ALL */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3870,7 +3870,7 @@ value Val_GioTlsCertificateFlags(GTlsCertificateFlags flags) {
 GTlsCertificateFlags GioTlsCertificateFlags_val(value list) {
   GTlsCertificateFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
 #if GLIB_CHECK_VERSION(2,74,0)
     if (tag == caml_hash_variant("NO_FLAGS")) result |= G_TLS_CERTIFICATE_NO_FLAGS; /* `NO_FLAGS */
 
@@ -3901,7 +3901,7 @@ value Val_GioTlsDatabaseVerifyFlags(GTlsDatabaseVerifyFlags flags) {
 
   if (flags & G_TLS_DATABASE_VERIFY_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3913,7 +3913,7 @@ value Val_GioTlsDatabaseVerifyFlags(GTlsDatabaseVerifyFlags flags) {
 GTlsDatabaseVerifyFlags GioTlsDatabaseVerifyFlags_val(value list) {
   GTlsDatabaseVerifyFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_TLS_DATABASE_VERIFY_NONE; /* `NONE */
     list = Field(list, 1);
   }
@@ -3931,32 +3931,32 @@ value Val_GioTlsPasswordFlags(GTlsPasswordFlags flags) {
 
   if (flags & G_TLS_PASSWORD_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_TLS_PASSWORD_RETRY) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("RETRY"))); /* `RETRY */
+    Store_field(cons, 0, caml_hash_variant("RETRY")); /* `RETRY */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_TLS_PASSWORD_MANY_TRIES) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("MANY_TRIES"))); /* `MANY_TRIES */
+    Store_field(cons, 0, caml_hash_variant("MANY_TRIES")); /* `MANY_TRIES */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & G_TLS_PASSWORD_FINAL_TRY) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FINAL_TRY"))); /* `FINAL_TRY */
+    Store_field(cons, 0, caml_hash_variant("FINAL_TRY")); /* `FINAL_TRY */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if GLIB_CHECK_VERSION(2,70,0)
   if (flags & G_TLS_PASSWORD_PKCS11_USER) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("PKCS11_USER"))); /* `PKCS11_USER */
+    Store_field(cons, 0, caml_hash_variant("PKCS11_USER")); /* `PKCS11_USER */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3965,7 +3965,7 @@ value Val_GioTlsPasswordFlags(GTlsPasswordFlags flags) {
 #if GLIB_CHECK_VERSION(2,70,0)
   if (flags & G_TLS_PASSWORD_PKCS11_SECURITY_OFFICER) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("PKCS11_SECURITY_OFFICER"))); /* `PKCS11_SECURITY_OFFICER */
+    Store_field(cons, 0, caml_hash_variant("PKCS11_SECURITY_OFFICER")); /* `PKCS11_SECURITY_OFFICER */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3974,7 +3974,7 @@ value Val_GioTlsPasswordFlags(GTlsPasswordFlags flags) {
 #if GLIB_CHECK_VERSION(2,70,0)
   if (flags & G_TLS_PASSWORD_PKCS11_CONTEXT_SPECIFIC) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("PKCS11_CONTEXT_SPECIFIC"))); /* `PKCS11_CONTEXT_SPECIFIC */
+    Store_field(cons, 0, caml_hash_variant("PKCS11_CONTEXT_SPECIFIC")); /* `PKCS11_CONTEXT_SPECIFIC */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -3988,7 +3988,7 @@ value Val_GioTlsPasswordFlags(GTlsPasswordFlags flags) {
 GTlsPasswordFlags GioTlsPasswordFlags_val(value list) {
   GTlsPasswordFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= G_TLS_PASSWORD_NONE; /* `NONE */
     else if (tag == caml_hash_variant("RETRY")) result |= G_TLS_PASSWORD_RETRY; /* `RETRY */
     else if (tag == caml_hash_variant("MANY_TRIES")) result |= G_TLS_PASSWORD_MANY_TRIES; /* `MANY_TRIES */

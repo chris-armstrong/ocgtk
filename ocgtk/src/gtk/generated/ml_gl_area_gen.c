@@ -58,6 +58,14 @@ gtk_gl_area_set_has_depth_buffer(GtkGLArea_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_gl_area_set_error(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_gl_area_set_error(GtkGLArea_val(self), Option_val(arg1, GError_val, NULL));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_gl_area_set_auto_render(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -140,6 +148,14 @@ CAMLparam1(self);
 
 gboolean result = gtk_gl_area_get_has_depth_buffer(GtkGLArea_val(self));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_gl_area_get_error(value self)
+{
+CAMLparam1(self);
+
+GError* result = gtk_gl_area_get_error(GtkGLArea_val(self));
+CAMLreturn(Val_option(result, Val_GError));
 }
 
 CAMLexport CAMLprim value ml_gtk_gl_area_get_context(value self)

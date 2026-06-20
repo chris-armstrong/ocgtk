@@ -135,7 +135,7 @@ let test_signal_connection () =
 
 let test_set_object_none_stores_null () =
   (* Arrange: create a GValue of G_TYPE_OBJECT type *)
-  let gtype_object = Gobject.Type.of_fundamental `OBJECT in
+  let gtype_object = Gobject.Type.object_ in
   let v = Gobject.Value.create gtype_object in
   (* Act: set None via set_object — previously this was a no-op *)
   Gobject.Value.set_object v None;

@@ -145,6 +145,7 @@ CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_update_region(value 
 CAMLparam1(self);
 
 cairo_region_t* result = gdk_dmabuf_texture_builder_get_update_region(GdkDmabufTextureBuilder_val(self));
+if (result) result = g_boxed_copy(cairo_gobject_region_get_type(), result);
 CAMLreturn(Val_option(result, Val_cairo_region_t));
 }
 

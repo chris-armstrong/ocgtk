@@ -37,6 +37,12 @@ If @has_depth_buffer is %TRUE the widget will allocate and
 enable a depth buffer for the target framebuffer. Otherwise
 there will be none. *)
 
+external set_error : t -> GError.t option -> unit = "ml_gtk_gl_area_set_error"
+(** Sets an error on the area which will be shown instead of the GL rendering.
+
+    This is useful in the [signal@Gtk.GLArea::create-context] signal if GL
+    context creation fails. *)
+
 external set_auto_render : t -> bool -> unit = "ml_gtk_gl_area_set_auto_render"
 (** Sets whether the `GtkGLArea` is in auto render mode.
 
@@ -95,6 +101,9 @@ external get_has_stencil_buffer : t -> bool
 external get_has_depth_buffer : t -> bool
   = "ml_gtk_gl_area_get_has_depth_buffer"
 (** Returns whether the area has a depth buffer. *)
+
+external get_error : t -> GError.t option = "ml_gtk_gl_area_get_error"
+(** Gets the current error set on the @area. *)
 
 external get_context : t -> Ocgtk_gdk.Gdk.Wrappers.Gl_context.t option
   = "ml_gtk_gl_area_get_context"

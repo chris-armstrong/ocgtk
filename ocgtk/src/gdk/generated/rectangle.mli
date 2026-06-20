@@ -45,3 +45,5 @@ external equal : t -> t -> bool = "ml_gdk_rectangle_equal"
 external contains_point : t -> int -> int -> bool
   = "ml_gdk_rectangle_contains_point"
 (** Returns %TRUE if @rect contains the point described by @x and @y. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gdk_rectangle_get_type"

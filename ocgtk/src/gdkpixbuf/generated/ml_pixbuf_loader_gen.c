@@ -120,6 +120,7 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_loader_get_format(value self)
 CAMLparam1(self);
 
 GdkPixbufFormat* result = gdk_pixbuf_loader_get_format(GdkPixbufLoader_val(self));
+if (result) result = g_boxed_copy(gdk_pixbuf_format_get_type(), result);
 CAMLreturn(Val_option(result, Val_GdkPixbufFormat));
 }
 

@@ -73,6 +73,14 @@ g_dbus_method_invocation_return_value(GDBusMethodInvocation_val(self), Option_va
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_gerror(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_dbus_method_invocation_return_gerror(GDBusMethodInvocation_val(self), GError_val(arg1));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_dbus_error(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -96,6 +104,7 @@ CAMLexport CAMLprim value ml_g_dbus_method_invocation_get_property_info(value se
 CAMLparam1(self);
 
 const GDBusPropertyInfo* result = g_dbus_method_invocation_get_property_info(GDBusMethodInvocation_val(self));
+if (result) result = g_boxed_copy(g_dbus_property_info_get_type(), result);
 CAMLreturn(Val_option(result, Val_GDBusPropertyInfo));
 }
 
@@ -140,6 +149,7 @@ CAMLexport CAMLprim value ml_g_dbus_method_invocation_get_method_info(value self
 CAMLparam1(self);
 
 const GDBusMethodInfo* result = g_dbus_method_invocation_get_method_info(GDBusMethodInvocation_val(self));
+if (result) result = g_boxed_copy(g_dbus_method_info_get_type(), result);
 CAMLreturn(Val_option(result, Val_GDBusMethodInfo));
 }
 
@@ -259,6 +269,16 @@ CAMLparam3(self, arg1, arg2);
 (void)self;
 (void)arg1;
 (void)arg2;
+caml_failwith("DBusMethodInvocation requires GLib >= 2.26");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_dbus_method_invocation_return_gerror(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
 caml_failwith("DBusMethodInvocation requires GLib >= 2.26");
 return Val_unit;
 }

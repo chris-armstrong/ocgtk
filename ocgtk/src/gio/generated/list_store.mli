@@ -3,7 +3,7 @@
 
 type t = [ `list_store | `object_ ] Gobject.obj
 
-external new_ : int -> t = "ml_g_list_store_new"
+external new_ : Gobject.Type.t -> t = "ml_g_list_store_new"
 (** Create a new ListStore *)
 
 (* Methods *)
@@ -66,7 +66,7 @@ efficiently. *)
 
 (* Properties *)
 
-external get_item_type : t -> int = "ml_g_list_store_get_item_type"
+external get_item_type : t -> Gobject.Type.t = "ml_g_list_store_get_item_type"
 (** Get property: item-type *)
 
 external get_n_items : t -> int = "ml_g_list_store_get_n_items"

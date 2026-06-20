@@ -19,7 +19,7 @@
 value copy_PangoGlyphString(const PangoGlyphString *ptr)
 {
   if (ptr == NULL) return Val_none;
-  PangoGlyphString *copy = pango_glyph_string_copy((PangoGlyphString*)ptr);
+  PangoGlyphString *copy = g_boxed_copy(pango_glyph_string_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(pango_glyph_string_get_type(), copy);
 }
 
@@ -148,4 +148,10 @@ CAMLlocal1(ret);
     Store_field(ret, 0, Val_PangoRectangle(&out2));
     Store_field(ret, 1, Val_PangoRectangle(&out3));
     CAMLreturn(ret);
+}
+
+CAMLprim value ml_pango_glyph_string_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_glyph_string_get_type()));
 }

@@ -261,3 +261,6 @@ and size-related attributes. Approximate matching for style considers
 a match as when the styles are equal.
 
 Note that @old_match must match @desc. *)
+
+external get_type : unit -> Gobject.Type.t
+  = "ml_pango_font_description_get_type"

@@ -90,6 +90,7 @@ CAMLexport CAMLprim value ml_graphene_plane_init_from_vec4(value self, value arg
 CAMLparam2(self, arg1);
 
 graphene_plane_t* result = graphene_plane_init_from_vec4(graphene_plane_t_val(self), graphene_vec4_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_plane_get_type(), result);
 CAMLreturn(Val_graphene_plane_t(result));
 }
 
@@ -98,6 +99,7 @@ CAMLexport CAMLprim value ml_graphene_plane_init_from_points(value self, value a
 CAMLparam4(self, arg1, arg2, arg3);
 
 graphene_plane_t* result = graphene_plane_init_from_points(graphene_plane_t_val(self), graphene_point3d_t_val(arg1), graphene_point3d_t_val(arg2), graphene_point3d_t_val(arg3));
+if (result) result = g_boxed_copy(graphene_plane_get_type(), result);
 CAMLreturn(Val_graphene_plane_t(result));
 }
 
@@ -106,6 +108,7 @@ CAMLexport CAMLprim value ml_graphene_plane_init_from_point(value self, value ar
 CAMLparam3(self, arg1, arg2);
 
 graphene_plane_t* result = graphene_plane_init_from_point(graphene_plane_t_val(self), graphene_vec3_t_val(arg1), graphene_point3d_t_val(arg2));
+if (result) result = g_boxed_copy(graphene_plane_get_type(), result);
 CAMLreturn(Val_graphene_plane_t(result));
 }
 
@@ -114,6 +117,7 @@ CAMLexport CAMLprim value ml_graphene_plane_init_from_plane(value self, value ar
 CAMLparam2(self, arg1);
 
 graphene_plane_t* result = graphene_plane_init_from_plane(graphene_plane_t_val(self), graphene_plane_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_plane_get_type(), result);
 CAMLreturn(Val_graphene_plane_t(result));
 }
 
@@ -122,6 +126,7 @@ CAMLexport CAMLprim value ml_graphene_plane_init(value self, value arg1, value a
 CAMLparam3(self, arg1, arg2);
 
 graphene_plane_t* result = graphene_plane_init(graphene_plane_t_val(self), Option_val(arg1, graphene_vec3_t_val, NULL), Double_val(arg2));
+if (result) result = g_boxed_copy(graphene_plane_get_type(), result);
 CAMLreturn(Val_graphene_plane_t(result));
 }
 
@@ -156,6 +161,12 @@ CAMLparam2(self, arg1);
 
 float result = graphene_plane_distance(graphene_plane_t_val(self), graphene_point3d_t_val(arg1));
 CAMLreturn(caml_copy_double(result));
+}
+
+CAMLprim value ml_graphene_plane_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_plane_get_type()));
 }
 
 #else

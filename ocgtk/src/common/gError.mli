@@ -12,8 +12,11 @@
 (**************************************************************************)
 
 type t
-(** Abstract GError type representing errors from GTK/GLib functions.
+(** GError type representing errors from GTK/GLib functions.
 
     GError values are constructed by the C FFI layer and used exclusively as the
-    error component of [(_, GError.t) result] return types. Record fields
-    (domain, code, message) are only accessible from C stubs. *)
+    error component of [(_, GError.t) result] return types. *)
+
+external message : t -> string = "ml_gerror_message"
+external code : t -> int = "ml_gerror_code"
+external domain : t -> int = "ml_gerror_domain"
