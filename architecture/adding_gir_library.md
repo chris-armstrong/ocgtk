@@ -206,28 +206,7 @@ If you want the library to be aware of other library enums, update `external_nam
 
 ### Step 8: Run Code Generation
 
-Execute the gir_gen tool (from repo root):
-
-```bash
-dune exec gir_gen -- generate \
-  gir/<Library>-<Version>.gir \
-  ocgtk/src/<library-name>
-```
-
-Example for Gio:
-```bash
-dune exec gir_gen -- generate \
-  gir/Gio-2.0.gir \
-  ocgtk/src/gio
-```
-
-This will generate:
-- `src/<library>/generated/dune-generated.inc` - Build configuration
-- `src/<library>/generated/ml_*_gen.c` - C FFI stubs
-- `src/<library>/generated/*.ml/.mli` - OCaml low-level bindings
-- `src/<library>/generated/g*.ml/.mli` - High-level wrapper classes
-- `src/<library>/generated/*_signals.ml` - Signal handlers
-- `src/<library>/generated/<namespace>_enums.mli` - Enum definitions
+See [gir_gen/README.md](../gir_gen/README.md) for the `generate` command syntax and options.
 
 ### Step 9: Update Main Library Wrapper
 

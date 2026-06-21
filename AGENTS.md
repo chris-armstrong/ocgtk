@@ -147,28 +147,8 @@ For instructions and best practices for writing and updating OCaml / C FFI, see 
 ## ocgtk Development Tools
 
 ### GIR Code Generator
-For generating GTK bindings from GObject Introspection (GIR) files:
-- See [gir_gen/README.md](gir_gen/README.md) for complete usage instructions
-- Generates C FFI bindings and OCaml interfaces for 9 namespaces: Cairo, Gio, Gdk, Graphene, GdkPixbuf, Pango, PangoCairo, Gsk, Gtk
-- Cross-namespace type resolution via reference files and `<ns>_decls.h` headers
 
-**To regenerate all bindings (recommended):**
-```bash
-# From repository root (NOT ocgtk/):
-bash scripts/generate-bindings.sh
-```
-
-This builds the generator, generates reference files for all 9 namespaces, then generates bindings with correct cross-namespace dependencies.
-
-**To regenerate a single library manually:**
-```bash
-# From repository root:
-dune exec gir_gen -- generate gir/Gtk-4.0.gir ocgtk/src/gtk
-```
-
-NOTE: For other libraries, use `ocgtk/src/<short_name>`. For example, ocgtk/src/pango for Pango, ocgtk/src/gsk for GSK, ocgtk/src/gdk for GDK, etc.
-
-**⚠️ IMPORTANT:** Use `ocgtk/src/gtk` NOT `ocgtk/src/gtk/generated` as the output directory. The generator automatically creates the `generated/` subdirectory. Using `ocgtk/src/gtk/generated` will create a nested `src/gtk/generated/generated/` directory.
+See [gir_gen/README.md](gir_gen/README.md) for complete usage instructions, including regeneration commands, override system, and cross-namespace type resolution.
 
 
 ## Security Guidelines

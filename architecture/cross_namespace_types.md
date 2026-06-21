@@ -38,32 +38,9 @@ types — methods that reference them use the manually-written common modules di
 
 ## Reference Files
 
-The generator's cross-namespace mechanism is built on **reference sexp files**. For
-each namespace, running `gir_gen references` produces a `.sexp` file that lists
-every exported entity with its fully-qualified OCaml module path:
-
-```sexp
-; _build/references/gdk-references.sexp (excerpt)
-((class "Display"
-  (module "Ocgtk_gdk.Gdk.Wrappers.Display")
-  (type "Ocgtk_gdk.Gdk.Wrappers.Display.t"))
- (class "Rgba"
-  (module "Ocgtk_gdk.Gdk.Wrappers.Rgba")
-  (type "Ocgtk_gdk.Gdk.Wrappers.Rgba.t"))
- (enum "EventType"
-  (module "Ocgtk_gdk.Gdk_enums")
-  (type "Ocgtk_gdk.Gdk_enums.event_type")))
-```
-
-When generating Gtk bindings, `gir_gen generate` loads the reference files for its
-dependencies (`--reference _build/references/gdk-references.sexp`, etc.). The
-`type_mappings` context is populated with these external entries, so
-`find_type_mapping_for_gir_type` can resolve `Gdk.Display` to
-`Ocgtk_gdk.Gdk.Wrappers.Display.t`.
-
-The same `--reference` flag that is passed to `generate` is also passed to
-`references` — ignored entities (from the override file) are excluded from the
-reference output, so downstream namespaces do not try to use types that don't exist.
+The generator's cross-namespace mechanism is built on **reference sexp files**.
+See [gir_gen/README.md](../gir_gen/README.md) for the `references` command and
+file format.
 
 ---
 
@@ -93,43 +70,9 @@ C stubs without duplicating macro definitions.
 
 ## `scripts/generate-bindings.sh`: Two-Phase Generation
 
-Cross-namespace resolution requires that each namespace's reference file exist
-before that namespace's dependencies are generated. This creates an ordering
-constraint that `scripts/generate-bindings.sh` handles in two phases:
-
-**Phase 1 — Generate reference files for all namespaces:**
-
-```bash
-for ns in Cairo Gio Gdk Graphene GdkPixbuf Pango PangoCairo Gsk Gtk; do
-    dune exec gir_gen -- references \
-        gir/$ns.gir \
-        _build/references/$lower_ns-references.sexp \
-        -o ocgtk/overrides/$lower_ns.sexp
-done
-```
-
-**Phase 2 — Generate bindings with cross-references:**
-
-Each namespace is generated with `--reference` flags for its dependencies:
-
-```bash
-dune exec gir_gen -- generate \
-    gir/Gtk-4.0.gir \
-    ocgtk/src/gtk \
-    --reference _build/references/cairo-references.sexp \
-    --reference _build/references/gdk-references.sexp \
-    --reference _build/references/gio-references.sexp \
-    --reference _build/references/graphene-references.sexp \
-    --reference _build/references/gdkpixbuf-references.sexp \
-    --reference _build/references/pango-references.sexp \
-    --reference _build/references/pangocairo-references.sexp \
-    --reference _build/references/gsk-references.sexp \
-    -o ocgtk/overrides/gtk.sexp
-```
-
-Lower-level namespaces (Cairo, Graphene) have few or no dependencies and are
-generated first. Higher-level ones (Gtk) are generated last with all dependencies
-available.
+Cross-namespace resolution requires reference files to exist before dependencies
+are generated. See [gir_gen/README.md](../gir_gen/README.md) for the two-phase
+workflow and command syntax.
 
 ---
 
