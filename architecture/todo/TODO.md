@@ -47,20 +47,23 @@ via virtual class types. Tracked as ROADMAP P6.
 
 ## Signal Handling
 
-Signals are partially implemented:
+Signals are generated as per-class L1 free functions with L2 method
+forwarders:
 
 - Parameterless void signals are fully generated.
-- Signals with primitive parameters (`int`, `bool`, `float`, `string`, enums,
-  bitfields) and GObject class/interface parameters are generated via
-  `signal_marshaller.ml`.
-- Signals with return values are supported for primitive types only.
+- Signals with primitive, enum, bitfield, and GObject class/interface
+  parameters are generated via `signal_marshaller.ml`.
+- Signals with primitive/boolean return values are supported.
 - Signals with unsupported types (`GdkEvent`, custom structs, callbacks,
   `GArray`, `GVariant`) are skipped.
 - Detailed signals (`notify::property-name`) are deferred.
-- Signal flags (`when`, `action`, `no-recurse`, `no-hooks`, `detailed`) are not
-  parsed from GIR and are dropped by the parser.
-- ~100 signals remain skipped (mostly boxed records, callbacks, non-In
-direction params, and the `GObject.Object` meta-type).
+- Signal flags: `when`, `action`, `no-recurse`, and `no-hooks` are parsed from
+  GIR and stored on `gir_signal` (`types.ml`). `detailed` is deferred.
+- 53 signals remain skipped across the 7 signal-bearing namespaces (40 in
+  GTK), mostly boxed records, `GArray` parameters, non-In direction parameters,
+  and the `GObject.Object` meta-type. Boxed records and `GArray` parameters
+  are intentionally deferred to a later milestone for safety. Exact counts are
+  tracked in `gir_gen/test/corpus/signal_corpus_baseline.sexp`.
 
 ## Type System and Mappings
 

@@ -32,7 +32,7 @@ Currently unsupported:
 * Accessing fields of non-opaque record types
 * Callbacks as method parameters
 
-^[1]: Signals with primitive, enum, bitfield, and GObject class/interface parameters are generated. Bool return values are supported. Signals with boxed record types, callbacks, or GArray parameters are not yet generated.
+^[1]: Signals with primitive, enum, bitfield, and GObject class/interface parameters are generated, including primitive/boolean return values. Signals with boxed record types (e.g. `GtkTextIter`, `GdkRGBA`), `GArray` parameters, callbacks, non-In direction parameters, or the generic `GObject.Object` meta-type are not yet generated. Detailed signals (`notify::property-name`) are deferred. Per-namespace counts are tracked in `gir_gen/test/corpus/signal_corpus_baseline.sexp`.
 
 ## Quick Start
 

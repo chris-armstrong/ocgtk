@@ -647,7 +647,9 @@ The signal corpus regression test classifies every signal in all 7 signal-bearin
 ### How It Works
 
 1. **`signal_corpus.ml`** — Core module with:
-   - `classify_signals_of_file`: Parses a GIR file, builds a minimal generation context (same-namespace-only, no cross-references), and classifies every signal as Supported or Unsupported.
+   - `classify_signals_of_file`: Parses a GIR file, builds a generation context,
+     loads all cross-namespace reference files, and classifies every signal as
+     Supported or Unsupported.
    - `coverage_of_file`: Convenience function that classifies then aggregates into a typed `signal_coverage` record.
    - `compare_coverage`: Field-by-field comparison returning `(unit, string list) result`.
    - Unit tests for classification, coverage aggregation, comparison, and sexp roundtrip.
@@ -672,25 +674,29 @@ dune test gir_gen/ && xvfb-run dune test ocgtk/
 
 ### Updating the Baseline
 
-When a legitimate signal classification change is made (e.g., adding support for a previously-unsupported signal type), the baseline must be updated to match:
+When a legitimate signal classification change is made (e.g., adding support
+for a previously-unsupported signal type), the baseline must be updated to
+match. Use the dedicated helper script:
 
-1. **Run the coverage generator** — Use the `Signal_corpus` module to regenerate coverage:
-   ```bash
-   # From the repo root, build and run the baseline generator:
-   dune exec gir_gen/scripts/gen_signal_baseline.exe -- $(pwd)/gir
-   # Or, in a utop/OCaml REPL:
-   #   let coverages = List.map (fun (ns, f) ->
-   #     Signal_corpus.coverage_of_file (Helpers.gir_data_dir () ^ "/" ^ f)
-   #   ) namespace_files;;
-   ```
-2. **Overwrite the baseline file** — Replace `gir_gen/test/corpus/signal_corpus_baseline.sexp` with the new output.
-3. **Commit the updated baseline** alongside the classification change that caused it.
+```bash
+# From the repo root:
+./scripts/update-signal-corpus-baseline.sh
+```
 
-The baseline uses sexp format (`[@@deriving sexp]`) so it is human-readable and trivially diffable in version control.
+This builds the integration test executable, materialises the same
+`*-references.sexp` files the production generator uses, and writes the fresh
+coverage counts into `gir_gen/test/corpus/signal_corpus_baseline.sexp`.
+Review the resulting diff and commit the updated baseline alongside the code
+change that caused it.
 
 ### Design Decisions
 
-- **No cross-references**: Each GIR file is classified against its own namespace-only context. Cross-namespace parameter types appear as `Unsupported "unknown type …"`. This is deliberate — the baseline captures the honest per-file classification boundary and will naturally improve when cross-reference resolution is added.
+- **Full cross-namespace references**: The regression test loads all 9
+  `*-references.sexp` files (produced by the rules in
+  `gir_gen/test/corpus/dune`) so the corpus classifier sees the same
+  cross-namespace knowledge the production generator does. Without them,
+  cross-namespace parameter types would fall off to `Tk_Unknown` and the
+  baseline would over-report skips.
 - **Sorted by_reason**: Unsupported reasons are sorted alphabetically for deterministic sexp output and stable diffs.
 - **Test is `Slow`**: Parsing 7 large GIR files takes noticeable time, so the regression test is registered as `Slow`.
 

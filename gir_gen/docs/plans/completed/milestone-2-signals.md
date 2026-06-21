@@ -28,9 +28,13 @@ event-driven UI patterns.
 
 - Detailed signals (`notify::property-name`)
 - Signals with `<callback>`-typed parameters (Milestone 4)
-- Signals with `GArray`, struct-by-value, or `va_list` parameters (Milestone 4)
+- Signals with `GArray`, struct-by-value, or `va_list` parameters — deferred to a
+  later milestone (they require careful memory-ownership handling and are
+  relatively complicated; see `architecture/todo/TODO.md`)
 - Boxed record types (`Gtk.TextIter`, `Gtk.TreeIter`, `Gtk.TreePath`,
-  `Gdk.EventSequence`, `GLib.Error`) — deferred to Milestone 3/4 (see `architecture/todo/TODO.md`; the generic GValue boxed bridge is already in place)
+  `Gdk.EventSequence`, `GLib.Error`) — deferred to a later milestone for safety
+  (the generic GValue boxed bridge is already in place, but per-type ownership
+  semantics need a dedicated review)
 
 ---
 
@@ -100,22 +104,32 @@ and `classify_bitfield:115` of `signal_marshaller.ml`.
 
 ### Signal coverage overview
 
-Census across all 7 GIR files (462 signals in GTK-4.0.gir; 466 total across
+Census across all 7 GIR files (346 signals in GTK-4.0.gir; 466 total across
 Gdk, Gio, Pango, Gsk, GdkPixbuf, Graphene):
 
-| Category | ~Count | Covered today? | Covered after this milestone? |
-|----------|-------:|----------------|-------------------------------|
+| Category | Count | Covered today? | Covered after this milestone? |
+|----------|------:|----------------|-------------------------------|
 | A. void return, 0 params (`changed`, `activate` on Entry, etc.) | ~27 | Yes via `connect_simple` | Yes (unchanged) |
 | B. void return, primitive params (`response`, `icon-press`, `pressed`) | ~95 | No | Yes |
 | C. void return, GObject\* params (`page-added`, `child-notify`) | ~25 | No | Yes |
 | D. bool return, 0 or primitive params (`close-request`, `key-pressed`, `state-set`) | ~68 | No | Yes |
 | E. bool return, GObject\* params | ~18 | No | Yes |
-| F. non-bool/void return (string, int, GObject\*) | ~35 | No | partially (int, int64, string only) |
- | G. detailed (`notify::\*`) | ~2 + every property | No | No (deferred; see `architecture/todo/TODO.md`) |
- | H. hard cases (GArray/GVariant return, callback, struct-by-value, boxed iter) | ~76 | No | No (deferred; see `architecture/todo/TODO.md`) |
+| F. non-bool/void return (string, int, GObject\*, etc.) | ~35 | No | Yes (primitive/string returns; GObject\* params/returns via L1↔L2 conversion) |
+| G. detailed (`notify::\*`) | ~2 + every property | No | No (deferred; see `architecture/todo/TODO.md`) |
+| H. hard cases (`GArray`/GVariant return, callback, struct-by-value, boxed iter) | ~76 | No | No (deferred to a later milestone; `GArray` and boxed records are intentionally out of scope for safety) |
 
-Expected GTK signal coverage after this milestone: ~141 → ~268 (≈77%), plus
-analogous gains in Gdk/Gio/Pango.
+Final coverage after this milestone: **413 of 466 signals generated (≈89%)**.
+GTK specifically: **306 of 346 generated (≈88%)**, with 40 skipped —
+mostly boxed records (`Gtk.TextIter`, `Gtk.TreeIter`, `Gtk.TreePath`,
+`Gdk.EventSequence`, `Gdk.Rectangle`, `Gdk.RGBA`, `Gtk.CssSection`), the
+`GObject.Object` meta-type, three non-In parameters, and one `GArray`. All
+of these skipped categories are explicitly out of scope for this milestone:
+boxed records and `GArray` are deferred to a later milestone for safety,
+`GObject.Object` and non-In direction parameters need separate design work,
+and detailed signals remain a future feature.
+
+The exact per-namespace counts are enforced by the signal-corpus regression
+baseline at `gir_gen/test/corpus/signal_corpus_baseline.sexp`.
 
 ### Param-type census
 
@@ -138,11 +152,11 @@ for exhaustiveness — they cost one line each and prevent fall-through to
 `gssize`, `goffset`) are genuinely unsupported and documented as such in the
 marshaller comment.
 
-Top non-primitive types: `Gtk.TextIter` (13), `Gtk.TreeIter` (12),
-`Gtk.TreePath` (11), `GtkWidget`/`GObject` (~20 combined — blocked by the
+Top non-primitive types: `Gtk.TextIter` (8), `Gtk.TreeIter` (8),
+`Gtk.TreePath` (7), `GtkWidget`/`GObject` (~20 combined — blocked by the
 `classify_gobject` placeholder, addressed by Remaining work 1), `GLib.Variant`
-(9), enum/flags (~50 combined), `Gdk.EventSequence` (6), `GLib.Error` (2),
-`GLib.Array` (1).
+(9), enum/flags (~50 combined), `Gdk.EventSequence` (6), `GLib.Error` (1),
+`GLib.Array` (7).
 
 ### What's already in place (preexisting — not built in this milestone)
 
@@ -205,13 +219,14 @@ items 1-4 are now resolved; items 5-6 remain.
 
 ### Records in signals
 
-~60 record-type references across all 466 signals (`Gtk.TextIter` 13,
-`Gtk.TreeIter` 12, `Gtk.TreePath` 11, `Gdk.EventSequence` 6, plus others).
-The generic `ml_g_value_get_boxed`/`_set_boxed` pair added in Phase 1a handles
-all of them — takes an owned copy via `g_boxed_copy`, wraps it in a
-GType-aware custom block whose finalizer calls `g_boxed_free`. Zero per-type
-symbols. Existing `_free` externals (e.g. `tree_iter#free`) are a tracked
-double-free hazard, out of scope here.
+~40 record-type references across all 466 signals (`Gtk.TextIter` 8,
+`Gtk.TreeIter` 8, `Gtk.TreePath` 7, `Gdk.EventSequence` 6, plus others).
+The generic `ml_g_value_get_boxed`/`_set_boxed` pair added in Phase 1a is
+available, but generating signal connectors for boxed-record parameters is
+**intentionally deferred to a later milestone** because per-type ownership
+semantics require a dedicated safety review. Zero per-type symbols would
+be needed once enabled. Existing `_free` externals (e.g. `tree_iter#free`)
+are a tracked double-free hazard, out of scope here.
 
 ### Existing closure-marshaller test coverage gaps
 
@@ -323,11 +338,13 @@ method on_focus_tab ~callback =
   Notebook.on_focus_tab self#as_notebook ~callback
 ```
 
-**Current skip count:** ~100 signals skipped. Remaining skips are due to
-boxed records (`Gtk.TextIter`, `Gtk.TreeIter`, `Gtk.TreePath`,
-`Gdk.EventSequence`), callbacks, non-In direction params, and the
-`GObject.Object` meta-type. GObject class/interface params are now fully
-supported.
+**Current skip count:** 53 signals skipped across all 7 namespaces (40 in
+GTK). Remaining skips are due to boxed records (`Gtk.TextIter`,
+`Gtk.TreeIter`, `Gtk.TreePath`, `Gdk.EventSequence`, `Gdk.Rectangle`,
+`Gdk.RGBA`, `Gtk.CssSection`), `GArray` parameters, callbacks, non-In
+direction params, and the `GObject.Object` meta-type. Boxed records and
+`GArray` are intentionally deferred to a later milestone for safety. GObject
+class/interface params are now fully supported.
 
 ---
 
@@ -446,8 +463,11 @@ coverage.
 form exercising keyboard shortcuts, close-confirm, input validation, and
 clickable links through generated signal connectors.
 
-**Phase 6 — Signal-corpus regression test.** Parse all 7 GIR files, classify
-every signal, compare against a checked-in baseline signal coverage snapshot.
+**Phase 6 — Signal-corpus regression test.** ✅ Done. Parses all 7 GIR files,
+classifies every signal, and compares against the checked-in baseline
+`gir_gen/test/corpus/signal_corpus_baseline.sexp`. The baseline is updated
+via `scripts/update-signal-corpus-baseline.sh` after intentional
+classification changes.
 
 **Phase 7 — Signal flag propagation.** ✅ Done. `parse_signal` reads `when=`
 into `gir_signal.run_when : signal_run_when option` and `action`/`no-recurse`/
