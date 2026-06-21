@@ -116,4 +116,4 @@ See [core-idioms.md](./core-idioms.md) for module extraction heuristics.
 Read `architecture/FFI_GUIDELINES.md` in full. Key rules:
 - Use `CAMLparam`/`CAMLlocal`/`CAMLreturn` macros — never skip.
 - Free all allocated resources; no raw GC-unsafe pointers.
-- Follow [FFI Guidelines](../architecture/FFI_GUIDELINES.md) for input validation at FFI boundaries.
+- Follow [FFI Guidelines](../../architecture/FFI_GUIDELINES.md) for input validation at FFI boundaries.

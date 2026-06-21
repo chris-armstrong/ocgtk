@@ -21,4 +21,4 @@ types.
 | [FFI_GUIDELINES.md](./FFI_GUIDELINES.md) | OCaml/C binding best practices |
 | [adding_gir_library.md](./adding_gir_library.md) | Step-by-step: adding a new GIR namespace |
 | [ci_distro_testing.md](./ci_distro_testing.md) | Docker-based multi-distro CI |
-| [todo/TODO.md](./todo/TODO.md) | Known limitations, deferred features, active bugs, and outstanding work |
+| [ROADMAP.md](../ROADMAP.md) | Known limitations, deferred features, and outstanding work |

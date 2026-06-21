@@ -206,7 +206,7 @@ let test_method_generation () =
 
 ## 7. Reference Guide
 
-See [OCaml AST Reference Guide](../ocaml_ast/AST_REFERENCE_GUIDE.md) for common OCaml syntax to AST translations.
+See [OCaml AST Reference Guide](../../ocgtk/docs/ocaml_ast/AST_REFERENCE_GUIDE.md) for common OCaml syntax to AST translations.
 
 ---
 

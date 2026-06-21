@@ -1,5 +1,5 @@
 # Development Notes for ocgtk 
-# Project Context
+## Project Context
 
 <!-- ctx:context -->
 <!-- DO NOT REMOVE: This marker indicates ctx-managed content -->

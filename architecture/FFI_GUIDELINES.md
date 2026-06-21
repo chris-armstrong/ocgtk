@@ -1,4 +1,4 @@
-## FFI Guidelines
+# FFI Guidelines
 
 ## Canonical FFI Paths
 
