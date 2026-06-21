@@ -319,7 +319,7 @@ baseline `gir_gen/test/corpus/signal_corpus_baseline.sexp` (466 signals across
 | Pattern | Count | Reason |
 |---------|------:|--------|
 | Boxed record types | 47 | `Gobject.Value.get_boxed` is available at runtime, but per-type ownership semantics require a dedicated safety review; intentionally deferred to a later milestone |
-| `GArray` / array types | 7 | Marshalling arrays through `GValue` for signal parameters is not yet implemented; intentionally deferred to a later milestone for safety (see `architecture/todo/TODO.md`) |
+| `GArray` / array types | 7 | Marshalling arrays through `GValue` for signal parameters is not yet implemented; intentionally deferred to a later milestone for safety (see [ROADMAP.md](../ROADMAP.md)) |
 | `GObject.Object` meta-type | 5 | Generic `GObject.Object` parameter/return lacks a concrete L2 class wrapper; needs design work |
 | Non-In direction parameters | 3 | Out/InOut signal parameters are not supported |
 | `GLib.Error` | 1 | Boxed record variant; deferred with other boxed records |

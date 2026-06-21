@@ -112,3 +112,9 @@ Tests nullable parameters, radio button grouping, and both Layer 1 and Layer 2 A
 - All examples use `GMain.init()` for GTK initialization
 - `open Ocgtk_gtk.Gtk` provides short class names and the `Wrappers` module
 - Examples follow GTK4 conventions (e.g., CheckButton for radio buttons)
+
+### Calculator AT-SPI E2E Tests
+
+The calculator example includes AT-SPI end-to-end tests (`test_calculator_atspi.py`).
+See [docs/code_guidelines/atspi-e2e-testing.md](../../docs/code_guidelines/atspi-e2e-testing.md)
+for the AT-SPI testing framework and guidelines.

@@ -295,7 +295,7 @@ When adding a new library, be aware of these gir_gen limitations:
 7. **Record fields**: No field accessor generation.
 8. **Factory functions**: No high-level factory function generation.
 
-Refer to `architecture/todo/TODO.md` for the full list.
+Refer to [ROADMAP.md](../ROADMAP.md) for the full list.
 
 ---
 

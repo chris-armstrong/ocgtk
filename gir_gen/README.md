@@ -520,7 +520,7 @@ signal coverage, supported/unsupported patterns, and the signal-corpus regressio
 
 ### 9. Layer 1 Accessor Methods - Not Generated
 **Issue:** `as_widget : t -> Widget.t` and similar parent-chain accessor
-methods are not generated in Layer 1 modules (see `architecture/todo/TODO.md`).
+methods are not generated in Layer 1 modules (see [ROADMAP.md](../ROADMAP.md)).
 
 **Impact:** Layer 2 `inherit` provides parent method access, but there's no
 direct L1 function to upcast a type to an ancestor's type. Could be
@@ -628,9 +628,9 @@ implemented by walking the parent chain.
 
 | Feature | Status | Completeness |
 |---------|--------|--------------|
-| GIR Parsing | ✓ Working | 90% (see `architecture/todo/TODO.md`) |
+| GIR Parsing | ✓ Working | 90% (see [ROADMAP.md](../ROADMAP.md)) |
 | C FFI Generation | ✓ Working | 90% (arrays, out params implemented) |
-| Low-Level OCaml Bindings | ✓ Working | 90% (see `architecture/todo/TODO.md`) |
+| Low-Level OCaml Bindings | ✓ Working | 90% (see [ROADMAP.md](../ROADMAP.md)) |
 | High-Level Class Wrappers | ⚠ Basic | 65% (no specializations) |
 | Signal Handling | ✓ Working | 90% (primitive/enum/bitfield/GObject params + primitive returns; boxed records/GArray/callbacks remain) |
 | Enum/Bitfield Support | ✓ Complete | 95% (same + cross-namespace) |
@@ -653,8 +653,8 @@ The original design plan outlined a comprehensive multi-phase implementation. Th
 
 - **Phase 1 (Type System):** ✓ Complete - Polymorphic variants, hierarchy types, accessor methods all implemented
 - **Phase 2 (Signals):** ✓ Complete - Per-class L1 signal connectors and L2 method forwarders are generated for parameterless, primitive-param, and primitive/enum/bitfield/GObject class/interface-param signals, including non-void primitive returns. Remaining skips are boxed records, `GArray`, callbacks, non-In parameters, and the `GObject.Object` meta-type, tracked by the signal-corpus baseline.
-- **Phase 3 (High-Level Classes):** ⚠ Partial - Skeleton/concrete classes generated, out/inout parameter support added, specializations still missing. See `architecture/todo/TODO.md`.
-- **Phase 4 (Factory Functions):** ✗ Not Started - See `architecture/todo/TODO.md`.
+- **Phase 3 (High-Level Classes):** ⚠ Partial - Skeleton/concrete classes generated, out/inout parameter support added, specializations still missing. See [ROADMAP.md](../ROADMAP.md).
+- **Phase 4 (Factory Functions):** ✗ Not Started - See [ROADMAP.md](../ROADMAP.md).
 - **Phase 5 (Containers):** ✗ Not Started - No special handling
 - **Phase 6 (Inheritance):** ⚠ Partial - 5 hierarchies hardcoded, not automatic
 - **Phase 7 (Special Patterns):** ✗ Not Started - No widget-specific patterns
