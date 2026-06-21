@@ -61,7 +61,7 @@ GList/GSList containing interface types (e.g. `GSList<Gio.File>`) generate broke
 
 ## Milestone 2: Signal Handling with Parameters — COMPLETE
 
-**Status**: Complete. See `gir_gen/docs/plans/completed/milestone-2-signals.md` for full details.
+**Status**: Complete. See [architecture/closures_and_signals.md](architecture/closures_and_signals.md) for full details.
 
 **What was delivered**:
 

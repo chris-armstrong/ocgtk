@@ -260,7 +260,7 @@ linker still treats it as a single compilation unit.
 
 **Error: "Don't know how to build gir_gen"**
 - Use `dune exec gir_gen --` from the repository root (where the dune-workspace file lives)
-- Do not use `dune exec src/tools/gir_gen/gir_gen.exe` — that path no longer exists
+- Do not use `dune exec gir_gen/bin/gir_gen.exe` — use `dune exec gir_gen --` from the repository root
 
 ---
 

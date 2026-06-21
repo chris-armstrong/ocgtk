@@ -18,7 +18,7 @@ The GIR code generator skips ~2,235 method/constructor bindings across all names
 
 ### Root Cause
 
-GLib types have no GIR file in the standard `/usr/share/gir-1.0/` location (only in `/usr/lib/x86_64-linux-gnu/gir-1.0/GLib-2.0.gir`), and GObject/GLib are not part of the generator's cross-namespace reference system. When the generator encounters `GObject.Object`, `GLib.Variant`, etc., `find_type_mapping_for_gir_type` returns `None`, causing `exclude_list.ml` to skip the method.
+GLib types have no GIR file in the standard system location (only in `/usr/lib/x86_64-linux-gnu/gir-1.0/GLib-2.0.gir`), and GObject/GLib are not part of the generator's cross-namespace reference system. When the generator encounters `GObject.Object`, `GLib.Variant`, etc., `find_type_mapping_for_gir_type` returns `None`, causing `exclude_list.ml` to skip the method.
 
 ## Approach: Hardcoded Type Mappings
 

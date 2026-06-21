@@ -5,7 +5,7 @@ This document provides a step-by-step plan for adding a new GObject Introspectio
 ## Prerequisites
 
 Before starting, ensure you have:
-- The GIR file for the library (in `gir/` at the repo root, or installed to `/usr/share/gir-1.0/`)
+- The GIR file for the library (in `gir/` at the repo root)
 - Development packages installed (e.g., `libgio-2.0-dev`, `gir1.2-gio-2.0`)
 - pkg-config support for the library
 

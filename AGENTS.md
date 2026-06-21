@@ -97,7 +97,7 @@ shellcheck is available to lint & check shell scripts.
 
 ## Setting up the project
 
-If you are running in a clean container (e.g. Claude Code Web), you will need to follow the instructions in [SETUP.md](./SETUP.md) for instructions.
+If you are running in a clean container (e.g. Claude Code Web), you will need to follow the instructions in [CONTRIBUTORS.md](./CONTRIBUTORS.md) for instructions.
 
 ## Project Layout and Architecture
 

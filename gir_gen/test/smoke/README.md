@@ -1,7 +1,6 @@
 # Smoke tests
 
-Tier 4 in the test classification (see Phase 1.5 of
-[`docs/plans/completed/test-suite-remediation.md`](../../docs/plans/completed/test-suite-remediation.md)).
+Tier 4 in the 5-tier test classification (unit / pipeline / integration / smoke / E2E).
 
 ## Definition
 

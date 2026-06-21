@@ -77,7 +77,7 @@ This library is distributed under the terms of the GNU Library General Public Li
 
 ### Key Documents
 
-- **Development Setup**: [SETUP.md](SETUP.md)
+- **Development Setup**: [CONTRIBUTORS.md](CONTRIBUTORS.md)
 - **Security Guidelines**: [SECURITY_GUIDELINES.md](SECURITY_GUIDELINES.md)
 - **GIR Code Generation**: [gir_gen/README.md](gir_gen/README.md)
 - **GIR Override Files**: [ocgtk/overrides/](ocgtk/overrides/) — per-namespace sexp files controlling entity ignores and version guards
