@@ -30,12 +30,15 @@ Run `ocamlformat` after every edit (`dune fmt` or `ocamlformat --inplace`).
 
 ## Naming and Intermediate Values
 
-- 3+ pipeline stages → name intermediates. Anonymous function > 1 line → extract and name it.
+See [core-idioms.md](./core-idioms.md) for pipeline naming and predicate extraction rules.
+
 - `snake_case` for variables/functions/types; `PascalCase` for modules.
 - Boolean names must read naturally: `is_deprecated`, `has_methods`, `should_skip`.
 - Full words; single letters only for well-known roles (`acc`, `i`, `f`).
 
 ## Module Boundaries
+
+See [core-idioms.md](./core-idioms.md) for module extraction heuristics.
 
 - Public modules must have `.mli` files. Abstract types hide implementation.
 - 2+ parameters of the same type → use labeled arguments.
@@ -79,15 +82,16 @@ Intentional partial functions must have `_exn` suffix.
 
 ## OCaml Idioms
 
-- `Stdlib.(=)` is banned — use type-specific equality (see Partial Functions).
-- `let*`/`let+` for dependent chains; `|>` for linear transformations.
+See [core-idioms.md](./core-idioms.md) for bind operators vs pipelines, polymorphic equality ban, and module extraction heuristics.
+
 - Labeled args when 2+ params have the same type or unclear position.
 - Parameter order: most-general first.
 
 ## Abstractions
 
+See [core-idioms.md](./core-idioms.md) for module extraction heuristics.
+
 - 3+ same parameters passed to 3+ functions → context record.
-- Extract a module when: used from 2+ places, has a clear responsibility, or has invariants.
 - Maintain clear dependency direction (application → generation → infrastructure → parsing).
 - Functors for the same algorithm with different types.
 
@@ -112,4 +116,4 @@ Intentional partial functions must have `_exn` suffix.
 Read `architecture/FFI_GUIDELINES.md` in full. Key rules:
 - Use `CAMLparam`/`CAMLlocal`/`CAMLreturn` macros — never skip.
 - Free all allocated resources; no raw GC-unsafe pointers.
-- Follow `SECURITY_GUIDELINES.md` for input validation at FFI boundaries.
+- Follow [FFI Guidelines](../architecture/FFI_GUIDELINES.md) for input validation at FFI boundaries.

@@ -108,43 +108,7 @@ let result = List.fold_left (fun acc x -> acc + x) 0 numbers
 
 ## 4. Extract Common Patterns into Helpers
 
-When you see the same pattern 3+ times, extract it.
-
-### Bad: Repeated iteration pattern
-```ocaml
-let generate_methods entity output =
-  List.fold_left (fun acc method_info ->
-    if should_skip method_info then acc
-    else acc ^ generate_method method_info ^ "\n"
-  ) "" entity.methods
-
-let generate_properties entity output =
-  List.fold_left (fun acc prop_info ->
-    if should_skip_prop prop_info then acc
-    else acc ^ generate_property prop_info ^ "\n"
-  ) "" entity.properties
-```
-
-### Good: Extracted helper
-```ocaml
-let generate_filtered ~skip ~generate items =
-  items
-  |> List.filter (fun item -> not (skip item))
-  |> List.map generate
-  |> String.concat "\n"
-
-let generate_methods entity =
-  generate_filtered
-    ~skip:should_skip_method
-    ~generate:generate_method
-    entity.methods
-
-let generate_properties entity =
-  generate_filtered
-    ~skip:should_skip_prop
-    ~generate:generate_property
-    entity.properties
-```
+See [core-idioms.md](./core-idioms.md) for the 3+ occurrences extraction rule and over-abstraction guidance.
 
 ---
 

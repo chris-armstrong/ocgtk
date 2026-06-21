@@ -223,3 +223,72 @@ allocator and reader listed in the **Canonical FFI Paths** table at the top of
 this document.  `Val_pointer`/`Pointer_val` (deleted in phase-0a) and
 `val_of_ext`/`ext_of_val` (legacy, phase-6 retirement) are covered in the
 **Legacy Paths** section above.
+
+## Security
+
+### Allocation Safety
+
+- **Check all allocation results**: `malloc`, `g_new`, `g_malloc` can return NULL.
+  Raise `caml_raise_out_of_memory()` on failure.
+- **Check integer overflow before allocation**: before `count * item_size`,
+  verify `count <= SIZE_MAX / item_size`.
+- **Free resources on all error paths**: before calling `caml_failwith` or
+  `caml_raise_*`, free all locally allocated resources (or document intentional
+  leaks for small, rare allocations).
+
+### Pointer and Buffer Safety
+
+- **Validate pointer arguments before dereference**: check for NULL after
+  unwrapping, raise `caml_invalid_argument` with a descriptive message.
+- **Validate buffer bounds for memcpy/strcpy**: ensure `src_len <= dest_size`,
+  check `src != NULL` and `dest != NULL` when `len > 0`.
+- **NULL-terminate after strncpy**: always `buffer[size-1] = '\0'`.
+- **Never use unbounded strlen on external pointers**: use `strnlen` with a
+  reasonable maximum.
+
+### GLib/GTK Patterns
+
+- **Check g_object_new result**: can return NULL; raise on failure.
+- **Handle GError properly**: `caml_failwith` never returns. Either document
+  intentional leaks, use stack buffers, or use static strings.
+- **Validate GList/GSList structure during conversion**: check `Is_block` and
+  `Wosize_val >= 2` for each cell; free allocated GList on error before raising.
+- **Reference counting**: new GObjects have floating refs — use
+  `g_object_ref_sink` to take ownership; always `g_object_unref` in finalizer.
+
+### Callback Safety
+
+- **Use caml_callback_exn and check Is_exception_result**: log or handle
+  exceptions; never silently swallow them.
+- **Don't store pointers to temporary data in OCaml values**: if the C pointer
+  lifetime is shorter than the OCaml value lifetime, document the constraint
+  or copy the data.
+- **Protect closures with global roots**: `caml_register_global_root` when
+  storing OCaml values in C structures; `caml_remove_global_root` on destroy.
+
+### Integer Safety
+
+- **Validate integer ranges**: check for negative where invalid, maximum values,
+  and overflow in calculations.
+- **OCaml int range**: on 64-bit, OCaml ints are 63-bit (tagged). Use
+  `caml_copy_int32`/`int64`/`nativeint` for full-range integers.
+
+### Use-After-Free Prevention
+
+- Use custom blocks with finalizers that NULL the pointer after cleanup.
+- Connect to GTK "destroy" signals to NULL stored widget pointers.
+- Never access a GObject after `g_object_unref`.
+
+### Code Review Checklist
+
+- [ ] All malloc/g_new results checked for NULL
+- [ ] Integer overflow checked before allocation calculations
+- [ ] Resources freed on all error paths (or documented intentional leak)
+- [ ] CAMLparam/CAMLlocal/CAMLreturn used correctly
+- [ ] Global roots registered/removed for OCaml values in C structures
+- [ ] No shallow copies of GValue or complex structures
+- [ ] NULL pointer checks before dereferencing
+- [ ] Integer ranges validated
+- [ ] caml_callback_exn used and results checked
+- [ ] Temporary C pointers not stored in OCaml values
+- [ ] Reference counting correct (ref_sink for new objects)

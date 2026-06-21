@@ -128,37 +128,7 @@ let handle = function
 
 ## 6. Avoid Deep Nesting in Patterns
 
-### Bad: Deeply nested match
-```ocaml
-let process opt =
-  match opt with
-  | Some result ->
-    match result with
-    | Ok value ->
-      match value with
-      | Some data -> use data
-      | None -> default ()
-    | Error e -> handle_error e
-  | None -> default ()
-```
-
-### Good: Flatten with nested patterns or bind
-```ocaml
-(* Option 1: Nested pattern *)
-let process = function
-  | Some (Ok (Some data)) -> use data
-  | Some (Error e) -> handle_error e
-  | Some (Ok None) | None -> default ()
-
-(* Option 2: Bind operators *)
-let process opt =
-  let open Option.Syntax in
-  let* result = opt in
-  match result with
-  | Ok (Some data) -> Some (use data)
-  | Ok None -> Some (default ())
-  | Error e -> Some (handle_error e)
-```
+See [core-idioms.md](./core-idioms.md) for using bind operators to flatten nested match chains.
 
 ---
 

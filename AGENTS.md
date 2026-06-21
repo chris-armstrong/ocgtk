@@ -155,7 +155,7 @@ See [gir_gen/README.md](gir_gen/README.md) for complete usage instructions, incl
 
 **IMPORTANT**: All C bindings must follow security best practices documented in:
 
-📘 **[SECURITY_GUIDELINES.md](SECURITY_GUIDELINES.md)** - Comprehensive security guidelines for OCaml C bindings
+📘 **[FFI Guidelines](./architecture/FFI_GUIDELINES.md)** — Comprehensive security and FFI guidelines for OCaml C bindings
 
 
 ## When You Get Stuck on Solving problems

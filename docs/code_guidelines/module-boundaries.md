@@ -35,16 +35,7 @@ let validate user =
 
 ## 2. When to Create .mli Files
 
-### Always create .mli when:
-- Module is exposed outside its directory
-- Module defines abstract types
-- Module has a public API used by other modules
-- You want to hide implementation details
-
-### Can skip .mli when:
-- Module is purely internal to a single file
-- Module is a simple collection of utilities with obvious types
-- You're prototyping (but add before merging)
+See [core-idioms.md](./core-idioms.md) for module extraction heuristics.
 
 ---
 

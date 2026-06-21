@@ -78,7 +78,7 @@ This library is distributed under the terms of the GNU Library General Public Li
 ### Key Documents
 
 - **Development Setup**: [CONTRIBUTORS.md](CONTRIBUTORS.md)
-- **Security Guidelines**: [SECURITY_GUIDELINES.md](SECURITY_GUIDELINES.md)
+- **Security Guidelines**: [architecture/FFI_GUIDELINES.md](architecture/FFI_GUIDELINES.md)
 - **GIR Code Generation**: [gir_gen/README.md](gir_gen/README.md)
 - **GIR Override Files**: [ocgtk/overrides/](ocgtk/overrides/) — per-namespace sexp files controlling entity ignores and version guards
 - **CI / Distro Testing**: [architecture/ci_distro_testing.md](architecture/ci_distro_testing.md) — Docker-based multi-distro build and test (`./ci/oci`)

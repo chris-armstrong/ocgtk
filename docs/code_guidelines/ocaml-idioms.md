@@ -9,18 +9,7 @@ Core OCaml idioms and formatting requirements for this project.
 
 ## Structural Equality is Banned
 
-`Stdlib.(=)` is polymorphic and breaks on functions, abstract types, and cyclic structures. Always use type-specific equality.
-
-| Bad | Use Instead |
-|-----|-------------|
-| `x = y` | `String.equal x y` |
-| `list1 = list2` | `List.equal String.equal list1 list2` |
-| `opt = None` | `Option.is_none opt` |
-
-Common type-specific equalities: `String.equal`, `Int.equal`, `Bool.equal`,
-`Option.equal f`, `List.equal f`.
-
-This is also documented in [partial-functions.md](./partial-functions.md) under "Banned Functions".
+See [core-idioms.md](./core-idioms.md) for the project-wide policy on polymorphic equality.
 
 ## Nested Pattern Matching
 
@@ -35,28 +24,7 @@ See [nesting-and-control-flow.md](./nesting-and-control-flow.md) for full guidan
 
 ## Binding Operators vs Pipelines
 
-**Use `let*` / `let+`** when operations are conditionally dependent (each step
-might fail or be skipped), or when nesting makes pipelines unreadable.
-
-```ocaml
-let open Result.Syntax in
-let* user = find_user config in
-let* profile = get_profile user in
-let+ email = profile.email in
-email
-```
-
-**Use `|>`** when steps are independent transformations that always apply:
-
-```ocaml
-user
-|> sanitize_input
-|> validate_length
-|> encode_special_chars
-|> Database.save
-```
-
-Readability decides. If bind operators make the code clearer, use them.
+See [core-idioms.md](./core-idioms.md) for the project-wide guidance on bind operators and pipelines.
 
 ## Function Design
 
