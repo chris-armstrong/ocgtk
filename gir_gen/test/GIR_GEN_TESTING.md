@@ -664,13 +664,7 @@ The signal corpus regression test classifies every signal in all 7 signal-bearin
 
 ### Running the Tests
 
-```bash
-# All gir_gen tests (includes Signal Corpus and Signal Corpus Regression)
-dune test gir_gen/
-
-# Full test suite
-dune test gir_gen/ && xvfb-run dune test ocgtk/
-```
+See [CONTRIBUTORS.md](../../CONTRIBUTORS.md) for build and test commands.
 
 ### Updating the Baseline
 

@@ -136,11 +136,8 @@ for full documentation.
 
 ## Running Build Tools
 
-This project uses `dune` to compile code and run tests. NEVER compile code directly with `ocamlc/ocamlc.opt`.
-
-* Use `dune build` from the repo root to compile both projects. IMPORTANT: Always check the return code and grep for "error|warning|undefined reference".
-    DO NOT filter its output with `grep`/`head`/`tail` etc. unless you know what you are looking for AND have already checked the return code.
-* Use `dune test gir_gen/ && xvfb-run dune test ocgtk/` from the repo root to run all tests. ALWAYS check the return code to determine success - do not rely on the console output.
+**Quick reference:** `dune build` (build), `dune test gir_gen/ && xvfb-run dune test ocgtk/` (test).
+See [CONTRIBUTORS.md](./CONTRIBUTORS.md) for complete build, test, and CI instructions.
 
 ## OCaml / C FFI Guidelines
 
