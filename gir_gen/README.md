@@ -203,111 +203,7 @@ Generated files are written to `ocgtk/src/<ns>/generated/` (e.g., `ocgtk/src/gtk
 
 ## Override System
 
-Override files (`overrides/<ns>.sexp`) allow per-library customisation of what gets
-generated without modifying the generator source. They replace the former hardcoded
-exclusion lists in `exclude_list.ml`, `filtering.ml`, and `library_module.ml`.
-
-Override files live in `ocgtk/overrides/` and are committed to the repository. One file
-exists per namespace (e.g. `ocgtk/overrides/gtk.sexp`, `ocgtk/overrides/gio.sexp`).
-
-### Format
-
-```sexp
-(overrides
-  (library "Gtk")
-
-  ;; Ignore an entire class (no bindings generated)
-  (class PrintJob (ignore))
-
-  ;; Ignore a single method on a class
-  (class TextBuffer
-    (method insert_with_tags (ignore))
-  )
-
-  ;; Ignore a property
-  (class IconPaintable
-    (property is-symbolic (ignore))
-  )
-
-  ;; Set a version guard on an enum member (emits #if GTK_CHECK_VERSION(...))
-  (enumeration FileChooserAction
-    (save (version "4.10"))
-  )
-
-  ;; Cross-namespace version guard: guard on a DIFFERENT namespace's version.
-  ;; Useful when the binding depends on a dependency at a higher version than
-  ;; the containing namespace requires (e.g. a GTK property that uses a
-  ;; PangoTextTransform type introduced in Pango 1.50, but the GTK version
-  ;; guard alone is not sufficient because the distro may ship GTK >= 4.6
-  ;; with Pango < 1.50).
-  (class TextTag
-    (property text-transform (version (pango "1.50")))
-  )
-
-  ;; Ignore a bitfield or record
-  (bitfield PrintCapabilities (ignore))
-  (record PrintBackend (ignore))
-
-  ;; OS guard: generate this entity only on Linux
-  (class DesktopAppInfo (os "linux"))
-
-  ;; OS guard: generate this entity on all platforms except Windows
-  (class UnixInputStream (not_os "windows"))
-
-  ;; Conditional header include in <ns>_decls.h (only on Linux)
-  (header "gio/gdesktopappinfo.h" (os "linux"))
-  ;; Conditional header include excluded on Windows
-  (header "gio/gunixoutputstream.h" (not_os "windows"))
-)
-```
-
-Supported entity kinds: `class`, `interface`, `enumeration`, `bitfield`, `record`.
-Supported sub-component directives: `method`, `constructor`, `property`, `signal`,
-`member` (enum member), `flag` (bitfield flag), `field` (record field).
-
-Available actions:
-- `(ignore)` — skip generation of this entity or sub-component entirely
-- `(version "X.Y")` — emit a `#if NS_CHECK_VERSION(X, Y, 0)` guard using this namespace's version macro (e.g. `GTK_CHECK_VERSION` in `gtk.sexp`)
-- `(version (<ns> "X.Y"))` — emit a `#if <NS>_CHECK_VERSION(X, Y, 0)` guard using a **different** namespace's version macro; use when the binding depends on a dependency at a version higher than the containing namespace's own minimum (e.g. `(version (pango "1.50"))` in `gtk.sexp` emits `PANGO_CHECK_VERSION(1, 50, 0)`)
-- `(os "<platform>")` — wrap the generated C stub in `#if defined(<MACRO>)` / `#else caml_failwith` so the binding compiles on all platforms but raises a runtime error on unsupported ones
-- `(not_os "<platform>")` — same, but the guard is `#if !defined(<MACRO>)`; cannot be mixed with `(os ...)`
-
-OS guard actions can be applied to top-level entities **and** to sub-component directives (`method`, `constructor`, `property`, etc.).
-
-Recognised platform names and the C macros they expand to:
-
-| Name | C guard |
-|------|---------|
-| `"linux"` | `defined(__linux__)` |
-| `"macos"` | `defined(__APPLE__) && defined(__MACH__)` |
-| `"freebsd"` | `defined(__FreeBSD__)` |
-| `"unix"` | `defined(G_OS_UNIX)` |
-| `"windows"` | `defined(_WIN32)` |
-
-The `(header "path" (os/not_os ...))` directive adds a header to `<ns>_decls.h` wrapped in the same platform guard. This is distinct from the per-entity `(os ...)` action — it controls C `#include` lines, not stub generation.
-
-### Workflow: updating override files
-
-Override files are generated once with `gir_gen overrides` and then hand-edited. When
-the GIR file changes (e.g. a GTK upgrade), re-run `gir_gen overrides` and merge the
-diff to pick up new `Since` annotations.
-
-The recommended workflow is to use `generate-bindings.sh` (from the repository root),
-which handles all 9 namespaces end-to-end:
-
-```bash
-bash scripts/generate-bindings.sh
-```
-
-To regenerate just the version-annotation portion for one namespace:
-
-```bash
-# From repository root:
-dune exec gir_gen -- overrides \
-  gir/Gtk-4.0.gir ocgtk/overrides/gtk.sexp
-```
-
-Then review the diff, keep any manual `(ignore)` entries you added, and commit.
+See [architecture/gir_gen/overrides.md](../architecture/gir_gen/overrides.md) for the full override format reference, architecture, and workflow.
 
 ## Constructor Wrapper Generation
 
@@ -398,21 +294,9 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 - Constructor wrappers as module-level `let` functions (e.g., `let new_with_label ...`), wrapping Layer 1 constructors with the high-level class
 
 ### Layer 4: Signal Handling
-Signal connectors are generated as free functions in each per-class Layer 1
-module (e.g., `Button.on_clicked`), with one-line Layer 2 method forwarders in
-the corresponding `g<Class>.ml` module. The generator emits:
 
-- Parameterless void signals via `Gobject.Signal.connect_simple`.
-- Signals with primitive, enum, bitfield, and GObject class/interface
-  parameters via `Gobject.Closure.create`.
-- Signals with primitive/boolean return values.
-- Unsupported signals (boxed records, `GArray`, callbacks, non-In parameters,
-  generic `GObject.Object`) are silently skipped. The exact counts are tracked
-  in `gir_gen/test/corpus/signal_corpus_baseline.sexp` and enforced by the
-  signal-corpus regression test.
-
-See also `architecture/closures_and_signals.md` and
-`gir_gen/docs/plans/completed/milestone-2-signals.md`.
+See [architecture/closures_and_signals.md](../architecture/closures_and_signals.md) for
+the full signal architecture, marshalling, and generation details.
 
 ### Layer 5: Enum and Bitfield Types
 - Complete enum type definitions for Gtk4 and external namespaces (Gdk, Pango, GdkPixbuf, Gsk, Graphene)
@@ -450,10 +334,7 @@ See also `architecture/closures_and_signals.md` and
 - Boxed record converters (`Val_*` / `*_val` macros)
 - Widget type mappings (`GtkWidget*` → `Widget.t`)
 - EventController, CellRenderer, LayoutManager, Expression hierarchies
-- Cross-namespace type resolution via reference files:
-  - Classes, interfaces, records: qualified as `Ocgtk_<ns>.<Ns>.Wrappers.<Module>.t`
-  - Enums/bitfields: qualified as `Ocgtk_<ns>.<Ns>.<enum_name>`
-  - `classify_type` for cross-namespace enum/bitfield detection in property analysis
+- Cross-namespace type resolution via reference files — see [architecture/cross_namespace_types.md](../architecture/cross_namespace_types.md)
 - Context-aware cyclic module type resolution:
   - Detects when generating within a cyclic module via `current_cycle_classes`
   - Uses unqualified names for same-cycle references
@@ -548,26 +429,9 @@ was entirely dead code.
 ## Major Deficiencies and Missing Features
 
 ### 1. Signal Handling
-**Status:** Working for primitive, enum, bitfield, and GObject class/interface parameters.
-Across the 7 signal-bearing namespaces the generator currently emits 413 of 466
-signals (≈89%). The remaining 53 unsupported signals are skipped for the
-following concrete reasons:
 
-| Reason | Count |
-|--------|------:|
-| Boxed record parameters (`Gtk.TreeIter`, `Gtk.TreePath`, `Gtk.TextIter`, `Gdk.EventSequence`, `Gdk.Rectangle`, `Gdk.RGBA`, `Gtk.CssSection`, `cairo.Region`, `Gdk.DragSurfaceSize`, `Gdk.ToplevelSize`) | 47 |
-| `GArray` parameters | 7 |
-| `GObject.Object` meta-type parameter or return | 5 |
-| `GLib.Error` parameter | 1 |
-| `GLib.VariantDict` parameter | 1 |
-| Non-In direction parameter | 3 |
-| Callback parameters | 0 (none currently present in corpus) |
-
-(Detailed counts per namespace are tracked in `gir_gen/test/corpus/signal_corpus_baseline.sexp` and verified by the signal-corpus regression test.)
-
-**Impact:** Most GTK4 event signals are generated; only those carrying boxed
-records, arrays, or the generic `GObject.Object` meta-type still require manual
-wrappers. Detailed signals (`notify::property-name`) are deferred.
+See [architecture/closures_and_signals.md](../architecture/closures_and_signals.md) for
+signal coverage, supported/unsupported patterns, and the signal-corpus regression baseline.
 
 ### 2. Factory Functions - Not Implemented
 **Issue:** No factory function generation.
