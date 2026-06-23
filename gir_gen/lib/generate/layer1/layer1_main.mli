@@ -15,10 +15,13 @@ val generate_ml_interface :
   ?from_gobject_c_name:string ->
   ?signals:Types.gir_signal list ->
   ?glib_get_type:string ->
+  ?fields:Types.gir_record_field list ->
   unit ->
   string
 (** Generate a single OCaml interface (.mli) or implementation (.ml) string
-    for a GObject class, interface, or record. *)
+    for a GObject class, interface, or record. If [fields] is non-empty,
+    a [make] constructor external declaration is generated from the writable
+    record fields. *)
 
 val generate_combined_ml_modules :
   ctx:Types.generation_context ->

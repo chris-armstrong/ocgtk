@@ -198,6 +198,69 @@ graphene_point3d_t out2;
 graphene_point3d_cross(graphene_point3d_t_val(self), graphene_point3d_t_val(arg1), &out2);
 CAMLreturn(Val_graphene_point3d_t(&out2));
 }
+\
+CAMLexport CAMLprim value ml_graphene_point3_d_get_x(value self)
+{
+    CAMLparam1(self);
+    graphene_point3d_t *rec = graphene_point3d_t_val(self);
+    CAMLreturn(caml_copy_double(rec->x));
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_point3_d_get_y(value self)
+{
+    CAMLparam1(self);
+    graphene_point3d_t *rec = graphene_point3d_t_val(self);
+    CAMLreturn(caml_copy_double(rec->y));
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_point3_d_get_z(value self)
+{
+    CAMLparam1(self);
+    graphene_point3d_t *rec = graphene_point3d_t_val(self);
+    CAMLreturn(caml_copy_double(rec->z));
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_point3_d_set_x(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    graphene_point3d_t *rec = graphene_point3d_t_val(self);
+    rec->x = Double_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_point3_d_set_y(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    graphene_point3d_t *rec = graphene_point3d_t_val(self);
+    rec->y = Double_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_point3_d_set_z(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    graphene_point3d_t *rec = graphene_point3d_t_val(self);
+    rec->z = Double_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_point3_d_make(value v_x, value v_y, value v_z)
+{
+    CAMLparam3(v_x, v_y, v_z);
+    graphene_point3d_t *obj = g_new0(graphene_point3d_t, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->x = Double_val(v_x);
+    obj->y = Double_val(v_y);
+    obj->z = Double_val(v_z);
+    CAMLreturn(Val_graphene_point3d_t(obj));
+}
+
 
 CAMLprim value ml_graphene_point3_d_get_type(value unit)
 {

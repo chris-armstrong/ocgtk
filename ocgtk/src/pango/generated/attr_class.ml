@@ -9,3 +9,14 @@ type t = [ `attr_class ] Gobject.obj
     should use the wrapper functions provided for `PangoAttribute`. *)
 
 (* Methods *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_type : t -> Pango_enums.attrtype = "ml_pango_attr_class_get_type"
+
+(* Setters *)
+external set_type : t -> Pango_enums.attrtype -> unit
+  = "ml_pango_attr_class_set_type"
+
+external make : Pango_enums.attrtype -> t = "ml_pango_attr_class_make"

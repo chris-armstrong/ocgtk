@@ -52,6 +52,27 @@ and tree_view_t = object
     unit ->
     Gobject.Signal.handler_id
 
+  method on_row_activated :
+    ?after:bool ->
+    callback:
+      (path:Tree_path.t ->
+      column:GTree_view_column.tree_view_column_t option ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_row_collapsed :
+    ?after:bool ->
+    callback:(iter:Tree_iter.t -> path:Tree_path.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_row_expanded :
+    ?after:bool ->
+    callback:(iter:Tree_iter.t -> path:Tree_path.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method on_select_all :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
 
@@ -66,6 +87,18 @@ and tree_view_t = object
 
   method on_start_interactive_search :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
+  method on_test_collapse_row :
+    ?after:bool ->
+    callback:(iter:Tree_iter.t -> path:Tree_path.t -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_test_expand_row :
+    ?after:bool ->
+    callback:(iter:Tree_iter.t -> path:Tree_path.t -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method on_toggle_cursor_row :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
@@ -293,6 +326,23 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t =
       Tree_selection_and__tree_view.Tree_view.on_move_cursor ~after
         self#as_tree_view ~callback
 
+    method on_row_activated ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_row_activated ~after
+        self#as_tree_view ~callback:(fun ~path ~column ->
+          callback ~path
+            ~column:
+              (Option.map
+                 (fun w -> new GTree_view_column.tree_view_column w)
+                 column))
+
+    method on_row_collapsed ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_row_collapsed ~after
+        self#as_tree_view ~callback
+
+    method on_row_expanded ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_row_expanded ~after
+        self#as_tree_view ~callback
+
     method on_select_all ?(after = false) ~callback () =
       Tree_selection_and__tree_view.Tree_view.on_select_all ~after
         self#as_tree_view ~callback
@@ -307,6 +357,14 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t =
 
     method on_start_interactive_search ?(after = false) ~callback () =
       Tree_selection_and__tree_view.Tree_view.on_start_interactive_search ~after
+        self#as_tree_view ~callback
+
+    method on_test_collapse_row ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_test_collapse_row ~after
+        self#as_tree_view ~callback
+
+    method on_test_expand_row ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_test_expand_row ~after
         self#as_tree_view ~callback
 
     method on_toggle_cursor_row ?(after = false) ~callback () =

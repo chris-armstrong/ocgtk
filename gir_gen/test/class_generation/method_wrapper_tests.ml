@@ -115,6 +115,7 @@ let test_hierarchy_parameter_coercion () =
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[ meth ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   let _mli_code =
@@ -122,6 +123,7 @@ let test_hierarchy_parameter_coercion () =
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[ meth ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   (* Parse the generated code into AST *)
@@ -155,6 +157,7 @@ let test_nullable_parameter_handling () =
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[ meth ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   (* Parse the generated signature into AST *)
@@ -186,6 +189,7 @@ let test_return_value_wrapping () =
       ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
       ~methods:[ meth ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   (* Parse the generated signature into AST *)
@@ -215,6 +219,7 @@ let test_void_method () =
       ~class_name:"Widget" ~c_type:"GtkWidget" ~parent_chain:[]
       ~methods:[ meth ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   let mli_code =
@@ -222,6 +227,7 @@ let test_void_method () =
       ~class_name:"Widget" ~c_type:"GtkWidget" ~parent_chain:[]
       ~methods:[ meth ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   (* Parse the generated code into ASTs *)
@@ -261,6 +267,7 @@ let test_multiple_parameters () =
       ~class_name:"Widget" ~c_type:"GtkWidget" ~parent_chain:[]
       ~methods:[ meth ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   let mli_code =
@@ -268,6 +275,7 @@ let test_multiple_parameters () =
       ~class_name:"Widget" ~c_type:"GtkWidget" ~parent_chain:[]
       ~methods:[ meth ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   (* Parse the generated code into ASTs *)
@@ -305,6 +313,7 @@ let test_method_with_object_parameter () =
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[ meth ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   (* Parse the generated code into AST *)
@@ -395,6 +404,7 @@ let test_property_getter_wrapper () =
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[ get_label_method ] ~properties:[ label_property ] ~signals:[]
       ~constructors:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   (* Parse the generated signature into AST *)
@@ -433,6 +443,7 @@ let test_property_setter_wrapper () =
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[ set_child_method ] ~properties:[ child_property ] ~signals:[]
       ~constructors:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   (* Parse the generated code into AST *)
@@ -470,6 +481,7 @@ let test_inheritance_generation () =
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[ meth ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   Printf.eprintf "Generated class module for inheritance test:\n%s\n" ml_code;
@@ -501,6 +513,7 @@ let test_signal_handler_l2_forwarder () =
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[] ~properties:[] ~signals:[ clicked_signal ] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   (* Parse the generated code into AST *)
@@ -541,6 +554,7 @@ let test_class_accessor_method () =
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   (* Parse the generated code into AST *)
@@ -595,6 +609,7 @@ let test_method_conflict_detection () =
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[ button_show_method ] ~properties:[] ~signals:[]
       ~constructors:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   let mli_code =
@@ -602,6 +617,7 @@ let test_method_conflict_detection () =
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[ button_show_method ] ~properties:[] ~signals:[]
       ~constructors:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   Printf.eprintf "Generated .ml code for conflict test:\n%s\n\n" ml_code;
@@ -702,6 +718,7 @@ let test_layer2_signature_consistency () =
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   let mli_code =
@@ -709,6 +726,7 @@ let test_layer2_signature_consistency () =
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   (* Debug: Print generated code for inspection *)
@@ -1018,6 +1036,7 @@ let test_throws_method_result_wrapping () =
       ~parent_chain:[ "Widget" ] ~methods:[ load_file_method ] ~properties:[]
       ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   (* Debug: Print the generated signature *)
@@ -1081,6 +1100,7 @@ let test_throws_method_result_wrapping () =
       ~methods:[ load_file_method; create_directory_method ]
       ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   let mli_ast_with_void = Ml_ast_helpers.parse_interface mli_code_with_void in
@@ -1146,6 +1166,7 @@ let test_parent_inherit_in_implementation () =
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   Printf.eprintf "Generated class module for parent inherit test:\n%s\n" ml_code;
@@ -1172,6 +1193,7 @@ let test_parent_inherit_in_class_type () =
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   Printf.eprintf "Generated class signature for parent inherit test:\n%s\n"
@@ -1270,12 +1292,14 @@ let test_glist_return_wrapping () =
       ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
       ~methods:[ get_children_method ] ~properties:[] ~signals:[]
       ~constructors:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
   let mli_code =
     Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
       ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
       ~methods:[ get_children_method ] ~properties:[] ~signals:[]
       ~constructors:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   Printf.eprintf "GList return wrapping .ml:\n%s\n\n" ml_code;
@@ -1315,12 +1339,14 @@ let test_glist_return_throws_wrapping () =
       ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
       ~methods:[ lookup_method ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
   let ml_code =
     Gir_gen_lib.Generate.Class_gen.generate_class_module ~ctx
       ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
       ~methods:[ lookup_method ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   Printf.eprintf "GList throws return wrapping .mli:\n%s\n\n" mli_code;
@@ -1364,12 +1390,14 @@ let test_glist_param_unwrapping () =
       ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
       ~methods:[ set_children_method ] ~properties:[] ~signals:[]
       ~constructors:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
   let mli_code =
     Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
       ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
       ~methods:[ set_children_method ] ~properties:[] ~signals:[]
       ~constructors:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
 
   Printf.eprintf "GList param unwrapping .ml:\n%s\n\n" ml_code;

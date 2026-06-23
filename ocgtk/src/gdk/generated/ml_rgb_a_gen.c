@@ -71,6 +71,87 @@ CAMLparam2(self, arg1);
 gboolean result = gdk_rgba_equal(GdkRGBA_val(self), GdkRGBA_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+\
+CAMLexport CAMLprim value ml_gdk_rgb_a_get_red(value self)
+{
+    CAMLparam1(self);
+    GdkRGBA *rec = GdkRGBA_val(self);
+    CAMLreturn(caml_copy_double(rec->red));
+}
+
+\
+CAMLexport CAMLprim value ml_gdk_rgb_a_get_green(value self)
+{
+    CAMLparam1(self);
+    GdkRGBA *rec = GdkRGBA_val(self);
+    CAMLreturn(caml_copy_double(rec->green));
+}
+
+\
+CAMLexport CAMLprim value ml_gdk_rgb_a_get_blue(value self)
+{
+    CAMLparam1(self);
+    GdkRGBA *rec = GdkRGBA_val(self);
+    CAMLreturn(caml_copy_double(rec->blue));
+}
+
+\
+CAMLexport CAMLprim value ml_gdk_rgb_a_get_alpha(value self)
+{
+    CAMLparam1(self);
+    GdkRGBA *rec = GdkRGBA_val(self);
+    CAMLreturn(caml_copy_double(rec->alpha));
+}
+
+\
+CAMLexport CAMLprim value ml_gdk_rgb_a_set_red(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GdkRGBA *rec = GdkRGBA_val(self);
+    rec->red = Double_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gdk_rgb_a_set_green(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GdkRGBA *rec = GdkRGBA_val(self);
+    rec->green = Double_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gdk_rgb_a_set_blue(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GdkRGBA *rec = GdkRGBA_val(self);
+    rec->blue = Double_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gdk_rgb_a_set_alpha(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GdkRGBA *rec = GdkRGBA_val(self);
+    rec->alpha = Double_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gdk_rgb_a_make(value v_red, value v_green, value v_blue, value v_alpha)
+{
+    CAMLparam4(v_red, v_green, v_blue, v_alpha);
+    GdkRGBA *obj = g_new0(GdkRGBA, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->red = Double_val(v_red);
+    obj->green = Double_val(v_green);
+    obj->blue = Double_val(v_blue);
+    obj->alpha = Double_val(v_alpha);
+    CAMLreturn(Val_GdkRGBA(obj));
+}
+
 
 CAMLprim value ml_gdk_rgb_a_get_type(value unit)
 {

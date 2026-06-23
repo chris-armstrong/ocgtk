@@ -51,4 +51,8 @@ let () =
       ("Override Pipeline", Pipeline_tests.test_suite);
       ("Version Guard", Version_guard_tests.test_suite);
       ("Enum Member Version Guards", Enum_member_version_tests.test_suite);
+      (* Record field accessors *)
+      ("Record Field C Stubs", Record_field_tests.tests);
+      ("Record Field Accessor Decls (ML)", Field_accessor_decl_tests.tests);
+      ("L2 Class Field Methods", Class_field_methods_tests.tests);
     ]

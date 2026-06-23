@@ -30,3 +30,66 @@ value Val_PangoGlyphInfo_option(const PangoGlyphInfo *ptr) {
   return Val_some(Val_PangoGlyphInfo(ptr));
 }
 
+\
+CAMLexport CAMLprim value ml_pango_glyph_info_get_glyph(value self)
+{
+    CAMLparam1(self);
+    PangoGlyphInfo *rec = PangoGlyphInfo_val(self);
+    CAMLreturn(Val_int(rec->glyph));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_info_get_geometry(value self)
+{
+    CAMLparam1(self);
+    PangoGlyphInfo *rec = PangoGlyphInfo_val(self);
+    CAMLreturn(Val_PangoGlyphGeometry(&rec->geometry));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_info_get_attr(value self)
+{
+    CAMLparam1(self);
+    PangoGlyphInfo *rec = PangoGlyphInfo_val(self);
+    CAMLreturn(Val_PangoGlyphVisAttr(&rec->attr));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_info_set_glyph(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoGlyphInfo *rec = PangoGlyphInfo_val(self);
+    rec->glyph = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_info_set_geometry(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoGlyphInfo *rec = PangoGlyphInfo_val(self);
+    rec->geometry = *PangoGlyphGeometry_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_info_set_attr(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoGlyphInfo *rec = PangoGlyphInfo_val(self);
+    rec->attr = *PangoGlyphVisAttr_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_info_make(value v_glyph, value v_geometry, value v_attr)
+{
+    CAMLparam3(v_glyph, v_geometry, v_attr);
+    PangoGlyphInfo *obj = g_new0(PangoGlyphInfo, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->glyph = Int_val(v_glyph);
+    obj->geometry = *PangoGlyphGeometry_val(v_geometry);
+    obj->attr = *PangoGlyphVisAttr_val(v_attr);
+    CAMLreturn(Val_PangoGlyphInfo(obj));
+}
+

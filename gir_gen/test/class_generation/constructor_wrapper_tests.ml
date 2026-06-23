@@ -35,6 +35,7 @@ let test_zero_param_constructor () =
     Gir_gen_lib.Generate.Class_gen.generate_class_module ~ctx
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[] ~properties:[] ~signals:[] ~constructors:[ ctor ] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
   let ast = Ml_ast_helpers.parse_implementation ml_code in
 
@@ -63,6 +64,7 @@ let test_single_string_param_constructor () =
     Gir_gen_lib.Generate.Class_gen.generate_class_module ~ctx
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[] ~properties:[] ~signals:[] ~constructors:[ ctor ] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
   let ast = Ml_ast_helpers.parse_implementation ml_code in
 
@@ -87,6 +89,7 @@ let test_class_typed_param_constructor () =
     Gir_gen_lib.Generate.Class_gen.generate_class_module ~ctx ~class_name:"Box"
       ~c_type:"GtkBox" ~parent_chain:[ "Widget" ] ~methods:[] ~properties:[]
       ~signals:[] ~constructors:[ ctor ] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
   let ast = Ml_ast_helpers.parse_implementation ml_code in
 
@@ -110,6 +113,7 @@ let test_nullable_class_param_constructor () =
     Gir_gen_lib.Generate.Class_gen.generate_class_module ~ctx ~class_name:"Box"
       ~c_type:"GtkBox" ~parent_chain:[ "Widget" ] ~methods:[] ~properties:[]
       ~signals:[] ~constructors:[ ctor ] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
   let ast = Ml_ast_helpers.parse_implementation ml_code in
 
@@ -145,6 +149,7 @@ let test_constructor_signature () =
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[] ~properties:[] ~signals:[]
       ~constructors:[ ctor_no_params; ctor_with_param ] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
   let ast = Ml_ast_helpers.parse_interface mli_code in
 

@@ -145,6 +145,51 @@ CAMLlocal1(ret);
     Store_field(ret, 2, caml_copy_double(out3));
     CAMLreturn(ret);
 }
+\
+CAMLexport CAMLprim value ml_graphene_point_get_x(value self)
+{
+    CAMLparam1(self);
+    graphene_point_t *rec = graphene_point_t_val(self);
+    CAMLreturn(caml_copy_double(rec->x));
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_point_get_y(value self)
+{
+    CAMLparam1(self);
+    graphene_point_t *rec = graphene_point_t_val(self);
+    CAMLreturn(caml_copy_double(rec->y));
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_point_set_x(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    graphene_point_t *rec = graphene_point_t_val(self);
+    rec->x = Double_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_point_set_y(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    graphene_point_t *rec = graphene_point_t_val(self);
+    rec->y = Double_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_graphene_point_make(value v_x, value v_y)
+{
+    CAMLparam2(v_x, v_y);
+    graphene_point_t *obj = g_new0(graphene_point_t, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->x = Double_val(v_x);
+    obj->y = Double_val(v_y);
+    CAMLreturn(Val_graphene_point_t(obj));
+}
+
 
 CAMLprim value ml_graphene_point_get_type(value unit)
 {

@@ -30,3 +30,66 @@ value Val_PangoGlyphGeometry_option(const PangoGlyphGeometry *ptr) {
   return Val_some(Val_PangoGlyphGeometry(ptr));
 }
 
+\
+CAMLexport CAMLprim value ml_pango_glyph_geometry_get_width(value self)
+{
+    CAMLparam1(self);
+    PangoGlyphGeometry *rec = PangoGlyphGeometry_val(self);
+    CAMLreturn(Val_int(rec->width));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_geometry_get_x_offset(value self)
+{
+    CAMLparam1(self);
+    PangoGlyphGeometry *rec = PangoGlyphGeometry_val(self);
+    CAMLreturn(Val_int(rec->x_offset));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_geometry_get_y_offset(value self)
+{
+    CAMLparam1(self);
+    PangoGlyphGeometry *rec = PangoGlyphGeometry_val(self);
+    CAMLreturn(Val_int(rec->y_offset));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_geometry_set_width(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoGlyphGeometry *rec = PangoGlyphGeometry_val(self);
+    rec->width = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_geometry_set_x_offset(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoGlyphGeometry *rec = PangoGlyphGeometry_val(self);
+    rec->x_offset = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_geometry_set_y_offset(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoGlyphGeometry *rec = PangoGlyphGeometry_val(self);
+    rec->y_offset = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_geometry_make(value v_width, value v_x_offset, value v_y_offset)
+{
+    CAMLparam3(v_width, v_x_offset, v_y_offset);
+    PangoGlyphGeometry *obj = g_new0(PangoGlyphGeometry, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->width = Int_val(v_width);
+    obj->x_offset = Int_val(v_x_offset);
+    obj->y_offset = Int_val(v_y_offset);
+    CAMLreturn(Val_PangoGlyphGeometry(obj));
+}
+

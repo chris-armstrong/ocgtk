@@ -1,5 +1,12 @@
 class type cell_renderer_combo_t = object
   inherit GCell_renderer_text.cell_renderer_text_t
+
+  method on_changed :
+    ?after:bool ->
+    callback:(path_string:string -> new_iter:Tree_iter.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method has_entry : bool
   method set_has_entry : bool -> unit
   method model : GTree_model.tree_model_t

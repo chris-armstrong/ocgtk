@@ -69,7 +69,11 @@
   apply_with_parsed_gir_tests
   pipeline_tests
   version_guard_tests
-  enum_member_version_tests)
+  enum_member_version_tests
+  ; Record field accessors (unit)
+  record_field_tests
+  field_accessor_decl_tests
+  class_field_methods_tests)
  (deps
   (source_tree %{workspace_root}/gir))
  (action
@@ -113,6 +117,8 @@
   records_tests
   properties_tests
   edge_cases_tests
+  ; Record field accessor integration tests
+  record_field_accessor_tests
   ; Signal corpus — uses cross-namespace reference files produced by
   ; gir_gen.exe references rules in corpus/dune.
   signal_corpus

@@ -144,6 +144,25 @@ external get_cell_area :
   = "ml_gtk_entry_completion_get_cell_area"
 (** Get property: cell-area *)
 
+let on_cursor_on_match ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let model =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v
+        in
+        let iter =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          (Gobject.Value.get_boxed v : Tree_iter.t)
+        in
+        let result = callback ~model ~iter in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"cursor-on-match" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
 let on_insert_prefix ?after obj ~callback =
   let closure =
     Gobject.Closure.create (fun argv ->
@@ -157,6 +176,25 @@ let on_insert_prefix ?after obj ~callback =
         Gobject.Value.set_boolean v x)
   in
   Gobject.Signal.connect obj ~name:"insert-prefix" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_match_selected ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let model =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v
+        in
+        let iter =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          (Gobject.Value.get_boxed v : Tree_iter.t)
+        in
+        let result = callback ~model ~iter in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"match-selected" ~callback:closure
     ~after:(Option.value after ~default:false)
 
 let on_no_matches ?after obj ~callback =

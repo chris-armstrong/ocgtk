@@ -1,9 +1,12 @@
-class type attr_font_features_t = object
-  method as_attr_font_features : Attr_font_features.t
-end
+(* GENERATED CODE - DO NOT EDIT *)
+(* Shim module for AttrFontFeatures from cyclic group Attr_color_cycle_ed189c09 *)
 
-(* High-level class for AttrFontFeatures *)
-class attr_font_features (obj : Attr_font_features.t) : attr_font_features_t =
-  object (self)
-    method as_attr_font_features = obj
-  end
+class type attr_font_features_t =
+  GAttr_color_cycle_ed189c09.attr_font_features_t
+
+class attr_font_features = GAttr_color_cycle_ed189c09.attr_font_features
+
+let make (attr : Attr_color_cycle_ed189c09.Attribute.t) (features : string) :
+    attr_font_features_t =
+  new attr_font_features
+    (Attr_color_cycle_ed189c09.Attr_font_features.make attr features)

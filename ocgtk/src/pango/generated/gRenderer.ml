@@ -11,8 +11,11 @@ class type renderer_t = object
     int ->
     unit
 
-  method draw_layout : GLayout_and__layout_iter.layout_t -> int -> int -> unit
-  method draw_layout_line : Layout_line.t -> int -> int -> unit
+  method draw_layout :
+    GLayout_and__layout_iter_and__layout_line.layout_t -> int -> int -> unit
+
+  method draw_layout_line :
+    Layout_and__layout_iter_and__layout_line.Layout_line.t -> int -> int -> unit
 
   method draw_rectangle :
     Pango_enums.renderpart -> int -> int -> int -> int -> unit
@@ -29,8 +32,13 @@ class type renderer_t = object
 
   method get_alpha : Pango_enums.renderpart -> UInt16.t
   method get_color : Pango_enums.renderpart -> Color.t option
-  method get_layout : unit -> GLayout_and__layout_iter.layout_t option
-  method get_layout_line : unit -> Layout_line.t option
+
+  method get_layout :
+    unit -> GLayout_and__layout_iter_and__layout_line.layout_t option
+
+  method get_layout_line :
+    unit -> Layout_and__layout_iter_and__layout_line.Layout_line.t option
+
   method get_matrix : unit -> Matrix.t option
   method part_changed : Pango_enums.renderpart -> unit
   method set_alpha : Pango_enums.renderpart -> UInt16.t -> unit
@@ -63,13 +71,18 @@ class renderer (obj : Renderer.t) : renderer_t =
         let font = font#as_font in
         Renderer.draw_glyphs obj font glyphs x y
 
-    method draw_layout : GLayout_and__layout_iter.layout_t -> int -> int -> unit
+    method draw_layout :
+        GLayout_and__layout_iter_and__layout_line.layout_t -> int -> int -> unit
         =
       fun layout x y ->
         let layout = layout#as_layout in
         Renderer.draw_layout obj layout x y
 
-    method draw_layout_line : Layout_line.t -> int -> int -> unit =
+    method draw_layout_line :
+        Layout_and__layout_iter_and__layout_line.Layout_line.t ->
+        int ->
+        int ->
+        unit =
       fun line x y -> Renderer.draw_layout_line obj line x y
 
     method draw_rectangle :
@@ -95,13 +108,15 @@ class renderer (obj : Renderer.t) : renderer_t =
     method get_color : Pango_enums.renderpart -> Color.t option =
       fun part -> Renderer.get_color obj part
 
-    method get_layout : unit -> GLayout_and__layout_iter.layout_t option =
+    method get_layout :
+        unit -> GLayout_and__layout_iter_and__layout_line.layout_t option =
       fun () ->
         Option.map
-          (fun ret -> new GLayout_and__layout_iter.layout ret)
+          (fun ret -> new GLayout_and__layout_iter_and__layout_line.layout ret)
           (Renderer.get_layout obj)
 
-    method get_layout_line : unit -> Layout_line.t option =
+    method get_layout_line :
+        unit -> Layout_and__layout_iter_and__layout_line.Layout_line.t option =
       fun () -> Renderer.get_layout_line obj
 
     method get_matrix : unit -> Matrix.t option =

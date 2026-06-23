@@ -250,6 +250,51 @@ caml_failwith("Attribute requires Pango >= 1.50");
 return Val_unit;
 }
 #endif
+\
+CAMLexport CAMLprim value ml_pango_attribute_get_start_index(value self)
+{
+    CAMLparam1(self);
+    PangoAttribute *rec = PangoAttribute_val(self);
+    CAMLreturn(Val_int(rec->start_index));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attribute_get_end_index(value self)
+{
+    CAMLparam1(self);
+    PangoAttribute *rec = PangoAttribute_val(self);
+    CAMLreturn(Val_int(rec->end_index));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attribute_set_start_index(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoAttribute *rec = PangoAttribute_val(self);
+    rec->start_index = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attribute_set_end_index(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoAttribute *rec = PangoAttribute_val(self);
+    rec->end_index = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attribute_make(value v_start_index, value v_end_index)
+{
+    CAMLparam2(v_start_index, v_end_index);
+    PangoAttribute *obj = g_new0(PangoAttribute, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->start_index = Int_val(v_start_index);
+    obj->end_index = Int_val(v_end_index);
+    CAMLreturn(Val_PangoAttribute(obj));
+}
+
 
 CAMLprim value ml_pango_attribute_get_type(value unit)
 {

@@ -1,4 +1,10 @@
 class type color_chooser_t = object
+  method on_color_activated :
+    ?after:bool ->
+    callback:(color:Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method add_palette :
     Gtk_enums.orientation ->
     int ->

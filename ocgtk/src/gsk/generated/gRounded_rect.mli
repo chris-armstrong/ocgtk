@@ -18,7 +18,16 @@ class type rounded_rect_t = object
   method normalize : unit -> Rounded_rect.t
   method offset : float -> float -> Rounded_rect.t
   method shrink : float -> float -> float -> float -> Rounded_rect.t
+  method get_bounds : Ocgtk_graphene.Graphene.Rect.rect_t
+  method set_bounds : Ocgtk_graphene.Graphene.Rect.rect_t -> unit
+  method get_corner : Ocgtk_graphene.Graphene.Wrappers.Size.t array
+  method set_corner : Ocgtk_graphene.Graphene.Wrappers.Size.t array -> unit
   method as_rounded_rect : Rounded_rect.t
 end
 
 class rounded_rect : Rounded_rect.t -> rounded_rect_t
+
+val make :
+  Ocgtk_graphene.Graphene.Rect.rect_t ->
+  Ocgtk_graphene.Graphene.Wrappers.Size.t array ->
+  rounded_rect_t

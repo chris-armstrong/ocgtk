@@ -68,6 +68,87 @@ CAMLparam3(self, arg1, arg2);
 gboolean result = gdk_rectangle_contains_point(GdkRectangle_val(self), Int_val(arg1), Int_val(arg2));
 CAMLreturn(Val_bool(result));
 }
+\
+CAMLexport CAMLprim value ml_gdk_rectangle_get_x(value self)
+{
+    CAMLparam1(self);
+    GdkRectangle *rec = GdkRectangle_val(self);
+    CAMLreturn(Val_int(rec->x));
+}
+
+\
+CAMLexport CAMLprim value ml_gdk_rectangle_get_y(value self)
+{
+    CAMLparam1(self);
+    GdkRectangle *rec = GdkRectangle_val(self);
+    CAMLreturn(Val_int(rec->y));
+}
+
+\
+CAMLexport CAMLprim value ml_gdk_rectangle_get_width(value self)
+{
+    CAMLparam1(self);
+    GdkRectangle *rec = GdkRectangle_val(self);
+    CAMLreturn(Val_int(rec->width));
+}
+
+\
+CAMLexport CAMLprim value ml_gdk_rectangle_get_height(value self)
+{
+    CAMLparam1(self);
+    GdkRectangle *rec = GdkRectangle_val(self);
+    CAMLreturn(Val_int(rec->height));
+}
+
+\
+CAMLexport CAMLprim value ml_gdk_rectangle_set_x(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GdkRectangle *rec = GdkRectangle_val(self);
+    rec->x = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gdk_rectangle_set_y(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GdkRectangle *rec = GdkRectangle_val(self);
+    rec->y = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gdk_rectangle_set_width(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GdkRectangle *rec = GdkRectangle_val(self);
+    rec->width = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gdk_rectangle_set_height(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GdkRectangle *rec = GdkRectangle_val(self);
+    rec->height = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gdk_rectangle_make(value v_x, value v_y, value v_width, value v_height)
+{
+    CAMLparam4(v_x, v_y, v_width, v_height);
+    GdkRectangle *obj = g_new0(GdkRectangle, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->x = Int_val(v_x);
+    obj->y = Int_val(v_y);
+    obj->width = Int_val(v_width);
+    obj->height = Int_val(v_height);
+    CAMLreturn(Val_GdkRectangle(obj));
+}
+
 
 CAMLprim value ml_gdk_rectangle_get_type(value unit)
 {

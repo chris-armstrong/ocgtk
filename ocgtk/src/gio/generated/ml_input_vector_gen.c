@@ -42,6 +42,33 @@ value Val_GInputVector_option(const GInputVector *ptr) {
 
 #if GLIB_CHECK_VERSION(2,22,0)
 
+\
+CAMLexport CAMLprim value ml_g_input_vector_get_size(value self)
+{
+    CAMLparam1(self);
+    GInputVector *rec = GInputVector_val(self);
+    CAMLreturn(Val_gsize(rec->size));
+}
+
+\
+CAMLexport CAMLprim value ml_g_input_vector_set_size(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GInputVector *rec = GInputVector_val(self);
+    rec->size = Gsize_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_input_vector_make(value v_size)
+{
+    CAMLparam1(v_size);
+    GInputVector *obj = g_new0(GInputVector, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->size = Gsize_val(v_size);
+    CAMLreturn(Val_GInputVector(obj));
+}
+
 
 #else
 

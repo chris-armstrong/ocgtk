@@ -36,3 +36,19 @@ external get_text_column : t -> int
 external set_text_column : t -> int -> unit
   = "ml_gtk_cell_renderer_combo_set_text_column"
 (** Set property: text-column *)
+
+let on_changed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let path_string =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        let new_iter =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          (Gobject.Value.get_boxed v : Tree_iter.t)
+        in
+        callback ~path_string ~new_iter)
+  in
+  Gobject.Signal.connect obj ~name:"changed" ~callback:closure
+    ~after:(Option.value after ~default:false)

@@ -31,3 +31,48 @@ value Val_GtkRequestedSize_option(const GtkRequestedSize *ptr) {
   return Val_some(Val_GtkRequestedSize(ptr));
 }
 
+\
+CAMLexport CAMLprim value ml_gtk_requested_size_get_minimum_size(value self)
+{
+    CAMLparam1(self);
+    GtkRequestedSize *rec = GtkRequestedSize_val(self);
+    CAMLreturn(Val_int(rec->minimum_size));
+}
+
+\
+CAMLexport CAMLprim value ml_gtk_requested_size_get_natural_size(value self)
+{
+    CAMLparam1(self);
+    GtkRequestedSize *rec = GtkRequestedSize_val(self);
+    CAMLreturn(Val_int(rec->natural_size));
+}
+
+\
+CAMLexport CAMLprim value ml_gtk_requested_size_set_minimum_size(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GtkRequestedSize *rec = GtkRequestedSize_val(self);
+    rec->minimum_size = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gtk_requested_size_set_natural_size(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GtkRequestedSize *rec = GtkRequestedSize_val(self);
+    rec->natural_size = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gtk_requested_size_make(value v_minimum_size, value v_natural_size)
+{
+    CAMLparam2(v_minimum_size, v_natural_size);
+    GtkRequestedSize *obj = g_new0(GtkRequestedSize, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->minimum_size = Int_val(v_minimum_size);
+    obj->natural_size = Int_val(v_natural_size);
+    CAMLreturn(Val_GtkRequestedSize(obj));
+}
+

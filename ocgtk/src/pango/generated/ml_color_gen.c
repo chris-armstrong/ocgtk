@@ -79,6 +79,69 @@ CAMLparam2(self, arg1);
 gboolean result = pango_color_parse(PangoColor_val(self), String_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+\
+CAMLexport CAMLprim value ml_pango_color_get_red(value self)
+{
+    CAMLparam1(self);
+    PangoColor *rec = PangoColor_val(self);
+    CAMLreturn(Val_uint16(rec->red));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_color_get_green(value self)
+{
+    CAMLparam1(self);
+    PangoColor *rec = PangoColor_val(self);
+    CAMLreturn(Val_uint16(rec->green));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_color_get_blue(value self)
+{
+    CAMLparam1(self);
+    PangoColor *rec = PangoColor_val(self);
+    CAMLreturn(Val_uint16(rec->blue));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_color_set_red(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoColor *rec = PangoColor_val(self);
+    rec->red = UInt16_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_color_set_green(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoColor *rec = PangoColor_val(self);
+    rec->green = UInt16_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_color_set_blue(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoColor *rec = PangoColor_val(self);
+    rec->blue = UInt16_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_color_make(value v_red, value v_green, value v_blue)
+{
+    CAMLparam3(v_red, v_green, v_blue);
+    PangoColor *obj = g_new0(PangoColor, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->red = UInt16_val(v_red);
+    obj->green = UInt16_val(v_green);
+    obj->blue = UInt16_val(v_blue);
+    CAMLreturn(Val_PangoColor(obj));
+}
+
 
 CAMLprim value ml_pango_color_get_type(value unit)
 {

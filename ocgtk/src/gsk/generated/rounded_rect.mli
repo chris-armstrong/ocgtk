@@ -79,3 +79,24 @@ external contains_rect : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> bool
 external contains_point : t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> bool
   = "ml_gsk_rounded_rect_contains_point"
 (** Checks if the given @point is inside the rounded rectangle. *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_bounds : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t
+  = "ml_gsk_rounded_rect_get_bounds"
+
+external get_corner : t -> Ocgtk_graphene.Graphene.Wrappers.Size.t array
+  = "ml_gsk_rounded_rect_get_corner"
+
+(* Setters *)
+external set_bounds : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> unit
+  = "ml_gsk_rounded_rect_set_bounds"
+
+external set_corner : t -> Ocgtk_graphene.Graphene.Wrappers.Size.t array -> unit
+  = "ml_gsk_rounded_rect_set_corner"
+
+external make :
+  Ocgtk_graphene.Graphene.Wrappers.Rect.t ->
+  Ocgtk_graphene.Graphene.Wrappers.Size.t array ->
+  t = "ml_gsk_rounded_rect_make"

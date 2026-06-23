@@ -634,19 +634,58 @@ module rec Text_buffer : sig
     = "ml_gtk_text_buffer_get_cursor_position"
   (** Get property: cursor-position *)
 
+  val on_apply_tag :
+    ?after:bool ->
+    t ->
+    callback:(tag:Text_tag.t -> start:Text_iter.t -> end_:Text_iter.t -> unit) ->
+    Gobject.Signal.handler_id
+
   val on_begin_user_action :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 
+  val on_delete_range :
+    ?after:bool ->
+    t ->
+    callback:(start:Text_iter.t -> end_:Text_iter.t -> unit) ->
+    Gobject.Signal.handler_id
+
   val on_end_user_action :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_insert_child_anchor :
+    ?after:bool ->
+    t ->
+    callback:(location:Text_iter.t -> anchor:Text_child_anchor.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_insert_paintable :
+    ?after:bool ->
+    t ->
+    callback:
+      (location:Text_iter.t ->
+      paintable:Ocgtk_gdk.Gdk.Wrappers.Paintable.t ->
+      unit) ->
+    Gobject.Signal.handler_id
+
+  val on_insert_text :
+    ?after:bool ->
+    t ->
+    callback:(location:Text_iter.t -> text:string -> len:int -> unit) ->
+    Gobject.Signal.handler_id
 
   val on_mark_deleted :
     ?after:bool ->
     t ->
     callback:(mark:Text_mark.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_mark_set :
+    ?after:bool ->
+    t ->
+    callback:(location:Text_iter.t -> mark:Text_mark.t -> unit) ->
     Gobject.Signal.handler_id
 
   val on_modified_changed :
@@ -660,6 +699,12 @@ module rec Text_buffer : sig
 
   val on_redo :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_remove_tag :
+    ?after:bool ->
+    t ->
+    callback:(tag:Text_tag.t -> start:Text_iter.t -> end_:Text_iter.t -> unit) ->
+    Gobject.Signal.handler_id
 
   val on_undo :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

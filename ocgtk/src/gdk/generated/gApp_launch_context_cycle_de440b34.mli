@@ -259,6 +259,12 @@ and surface_t = object
     unit ->
     Gobject.Signal.handler_id
 
+  method on_render :
+    ?after:bool ->
+    callback:(region:Ocgtk_cairo.Cairo.Region.region_t -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method beep : unit -> unit
   method create_cairo_context : unit -> cairo_context_t
   method create_gl_context : unit -> (gl_context_t, GError.t) result

@@ -2,9 +2,21 @@ class type entry_completion_t = object
   inherit GBuildable.buildable_t
   inherit GCell_area_and__cell_area_context_and__cell_layout.cell_layout_t
 
+  method on_cursor_on_match :
+    ?after:bool ->
+    callback:(model:GTree_model.tree_model_t -> iter:Tree_iter.t -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method on_insert_prefix :
     ?after:bool ->
     callback:(prefix:string -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_match_selected :
+    ?after:bool ->
+    callback:(model:GTree_model.tree_model_t -> iter:Tree_iter.t -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 

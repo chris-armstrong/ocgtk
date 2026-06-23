@@ -50,6 +50,52 @@ CAMLparam1(self);
 GDBusSignalInfo* result = g_dbus_signal_info_ref(GDBusSignalInfo_val(self));
 CAMLreturn(Val_GDBusSignalInfo(result));
 }
+\
+CAMLexport CAMLprim value ml_g_d_bus_signal_info_get_ref_count(value self)
+{
+    CAMLparam1(self);
+    GDBusSignalInfo *rec = GDBusSignalInfo_val(self);
+    CAMLreturn(Val_int(rec->ref_count));
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_signal_info_get_name(value self)
+{
+    CAMLparam1(self);
+    GDBusSignalInfo *rec = GDBusSignalInfo_val(self);
+    CAMLreturn(caml_copy_string(rec->name));
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_signal_info_set_ref_count(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GDBusSignalInfo *rec = GDBusSignalInfo_val(self);
+    rec->ref_count = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_signal_info_set_name(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GDBusSignalInfo *rec = GDBusSignalInfo_val(self);
+    g_free(rec->name);
+    rec->name = g_strdup(String_val(v_val));
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_signal_info_make(value v_ref_count, value v_name)
+{
+    CAMLparam2(v_ref_count, v_name);
+    GDBusSignalInfo *obj = g_new0(GDBusSignalInfo, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->ref_count = Int_val(v_ref_count);
+    obj->name = g_strdup(String_val(v_name));
+    CAMLreturn(Val_GDBusSignalInfo(obj));
+}
+
 
 CAMLprim value ml_gio_d_bus_signal_info_get_type(value unit)
 {

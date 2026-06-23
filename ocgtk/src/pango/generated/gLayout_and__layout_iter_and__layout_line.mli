@@ -15,15 +15,29 @@ class type layout_t = object
   method get_font_description : unit -> Font_description.t option
   method get_height : unit -> int
   method get_indent : unit -> int
-  method get_iter : unit -> Layout_and__layout_iter.Layout_iter.t
+
+  method get_iter :
+    unit -> Layout_and__layout_iter_and__layout_line.Layout_iter.t
+
   method get_justify : unit -> bool
   method get_justify_last_line : unit -> bool
-  method get_line : int -> Layout_line.t option
+
+  method get_line :
+    int -> Layout_and__layout_iter_and__layout_line.Layout_line.t option
+
   method get_line_count : unit -> int
-  method get_line_readonly : int -> Layout_line.t option
+
+  method get_line_readonly :
+    int -> Layout_and__layout_iter_and__layout_line.Layout_line.t option
+
   method get_line_spacing : unit -> float
-  method get_lines : unit -> Layout_line.t list
-  method get_lines_readonly : unit -> Layout_line.t list
+
+  method get_lines :
+    unit -> Layout_and__layout_iter_and__layout_line.Layout_line.t list
+
+  method get_lines_readonly :
+    unit -> Layout_and__layout_iter_and__layout_line.Layout_line.t list
+
   method get_serial : unit -> int
   method get_single_paragraph_mode : unit -> bool
   method get_spacing : unit -> int
@@ -56,7 +70,7 @@ class type layout_t = object
   method write_to_file :
     Pango_enums.layoutserializeflags -> string -> (bool, GError.t) result
 
-  method as_layout : Layout_and__layout_iter.Layout.t
+  method as_layout : Layout_and__layout_iter_and__layout_line.Layout.t
 end
 
 and layout_iter_t = object
@@ -64,18 +78,52 @@ and layout_iter_t = object
   method get_baseline : unit -> int
   method get_index : unit -> int
   method get_layout : unit -> layout_t option
-  method get_line : unit -> Layout_line.t option
-  method get_line_readonly : unit -> Layout_line.t option
+
+  method get_line :
+    unit -> Layout_and__layout_iter_and__layout_line.Layout_line.t option
+
+  method get_line_readonly :
+    unit -> Layout_and__layout_iter_and__layout_line.Layout_line.t option
+
   method get_run_baseline : unit -> int
   method next_char : unit -> bool
   method next_cluster : unit -> bool
   method next_line : unit -> bool
   method next_run : unit -> bool
-  method as_layout_iter : Layout_and__layout_iter.Layout_iter.t
+  method as_layout_iter : Layout_and__layout_iter_and__layout_line.Layout_iter.t
 end
 
-class layout : Layout_and__layout_iter.Layout.t -> layout_t
+and layout_line_t = object
+  method get_length : unit -> int
+  method get_resolved_direction : unit -> Pango_enums.direction
+  method get_start_index : unit -> int
+  method is_paragraph_start : unit -> bool
 
-and layout_iter : Layout_and__layout_iter.Layout_iter.t -> layout_iter_t
+  method ref :
+    unit -> Layout_and__layout_iter_and__layout_line.Layout_line.t option
+
+  method get_layout : layout_t
+  method set_layout : layout_t -> unit
+  method set_start_index : int -> unit
+  method set_length : int -> unit
+  method get_runs : unit
+  method set_runs : unit -> unit
+  method get_is_paragraph_start : int
+  method set_is_paragraph_start : int -> unit
+  method get_resolved_dir : int
+  method set_resolved_dir : int -> unit
+  method as_layout_line : Layout_and__layout_iter_and__layout_line.Layout_line.t
+end
+
+class layout : Layout_and__layout_iter_and__layout_line.Layout.t -> layout_t
+
+and layout_iter :
+  Layout_and__layout_iter_and__layout_line.Layout_iter.t ->
+  layout_iter_t
+
+and layout_line :
+  Layout_and__layout_iter_and__layout_line.Layout_line.t ->
+  layout_line_t
 
 val new_ : GContext_and__font_and__font_map_and__fontset.context_t -> layout_t
+val make : layout_t -> int -> int -> unit -> int -> int -> layout_line_t

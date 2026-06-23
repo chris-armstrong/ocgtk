@@ -82,4 +82,18 @@ external extents :
 
     ![](rects1.png) ![](rects2.png) *)
 
+(* Record field accessors *)
+
+(* Getters *)
+external get_num_glyphs : t -> int = "ml_pango_glyph_string_get_num_glyphs"
+external get_log_clusters : t -> int = "ml_pango_glyph_string_get_log_clusters"
+
+(* Setters *)
+external set_num_glyphs : t -> int -> unit
+  = "ml_pango_glyph_string_set_num_glyphs"
+
+external set_log_clusters : t -> int -> unit
+  = "ml_pango_glyph_string_set_log_clusters"
+
+external make : int -> int -> t = "ml_pango_glyph_string_make"
 external get_type : unit -> Gobject.Type.t = "ml_pango_glyph_string_get_type"

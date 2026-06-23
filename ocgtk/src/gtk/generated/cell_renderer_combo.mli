@@ -36,3 +36,9 @@ external get_text_column : t -> int
 external set_text_column : t -> int -> unit
   = "ml_gtk_cell_renderer_combo_set_text_column"
 (** Set property: text-column *)
+
+val on_changed :
+  ?after:bool ->
+  t ->
+  callback:(path_string:string -> new_iter:Tree_iter.t -> unit) ->
+  Gobject.Signal.handler_id

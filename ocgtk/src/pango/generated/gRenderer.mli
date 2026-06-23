@@ -11,8 +11,11 @@ class type renderer_t = object
     int ->
     unit
 
-  method draw_layout : GLayout_and__layout_iter.layout_t -> int -> int -> unit
-  method draw_layout_line : Layout_line.t -> int -> int -> unit
+  method draw_layout :
+    GLayout_and__layout_iter_and__layout_line.layout_t -> int -> int -> unit
+
+  method draw_layout_line :
+    Layout_and__layout_iter_and__layout_line.Layout_line.t -> int -> int -> unit
 
   method draw_rectangle :
     Pango_enums.renderpart -> int -> int -> int -> int -> unit
@@ -29,8 +32,13 @@ class type renderer_t = object
 
   method get_alpha : Pango_enums.renderpart -> UInt16.t
   method get_color : Pango_enums.renderpart -> Color.t option
-  method get_layout : unit -> GLayout_and__layout_iter.layout_t option
-  method get_layout_line : unit -> Layout_line.t option
+
+  method get_layout :
+    unit -> GLayout_and__layout_iter_and__layout_line.layout_t option
+
+  method get_layout_line :
+    unit -> Layout_and__layout_iter_and__layout_line.Layout_line.t option
+
   method get_matrix : unit -> Matrix.t option
   method part_changed : Pango_enums.renderpart -> unit
   method set_alpha : Pango_enums.renderpart -> UInt16.t -> unit

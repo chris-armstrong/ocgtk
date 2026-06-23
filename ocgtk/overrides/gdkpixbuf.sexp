@@ -7,6 +7,11 @@
   (record PixbufModule (ignore))
   (record PixbufModulePattern (ignore))
 
+  ;; GdkPixbufFormat is an incomplete typedef in public headers (the struct body
+  ;; is private even though GIR lists its fields). All field access must go
+  ;; through the gdk_pixbuf_format_* library functions.
+  (record PixbufFormat (no_fields))
+
   (enumeration InterpType
     (member hyper (version "2.38"))
   )

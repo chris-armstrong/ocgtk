@@ -67,4 +67,18 @@ external hash : t -> int = "ml_gdk_rgba_hash"
 external equal : t -> t -> bool = "ml_gdk_rgba_equal"
 (** Compares two `GdkRGBA` colors. *)
 
+(* Record field accessors *)
+
+(* Getters *)
+external get_red : t -> float = "ml_gdk_rgb_a_get_red"
+external get_green : t -> float = "ml_gdk_rgb_a_get_green"
+external get_blue : t -> float = "ml_gdk_rgb_a_get_blue"
+external get_alpha : t -> float = "ml_gdk_rgb_a_get_alpha"
+
+(* Setters *)
+external set_red : t -> float -> unit = "ml_gdk_rgb_a_set_red"
+external set_green : t -> float -> unit = "ml_gdk_rgb_a_set_green"
+external set_blue : t -> float -> unit = "ml_gdk_rgb_a_set_blue"
+external set_alpha : t -> float -> unit = "ml_gdk_rgb_a_set_alpha"
+external make : float -> float -> float -> float -> t = "ml_gdk_rgb_a_make"
 external get_type : unit -> Gobject.Type.t = "ml_gdk_rgb_a_get_type"

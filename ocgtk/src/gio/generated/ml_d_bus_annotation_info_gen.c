@@ -50,6 +50,71 @@ CAMLparam1(self);
 GDBusAnnotationInfo* result = g_dbus_annotation_info_ref(GDBusAnnotationInfo_val(self));
 CAMLreturn(Val_GDBusAnnotationInfo(result));
 }
+\
+CAMLexport CAMLprim value ml_g_d_bus_annotation_info_get_ref_count(value self)
+{
+    CAMLparam1(self);
+    GDBusAnnotationInfo *rec = GDBusAnnotationInfo_val(self);
+    CAMLreturn(Val_int(rec->ref_count));
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_annotation_info_get_key(value self)
+{
+    CAMLparam1(self);
+    GDBusAnnotationInfo *rec = GDBusAnnotationInfo_val(self);
+    CAMLreturn(caml_copy_string(rec->key));
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_annotation_info_get_value(value self)
+{
+    CAMLparam1(self);
+    GDBusAnnotationInfo *rec = GDBusAnnotationInfo_val(self);
+    CAMLreturn(caml_copy_string(rec->value));
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_annotation_info_set_ref_count(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GDBusAnnotationInfo *rec = GDBusAnnotationInfo_val(self);
+    rec->ref_count = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_annotation_info_set_key(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GDBusAnnotationInfo *rec = GDBusAnnotationInfo_val(self);
+    g_free(rec->key);
+    rec->key = g_strdup(String_val(v_val));
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_annotation_info_set_value(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GDBusAnnotationInfo *rec = GDBusAnnotationInfo_val(self);
+    g_free(rec->value);
+    rec->value = g_strdup(String_val(v_val));
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_annotation_info_make(value v_ref_count, value v_key, value v_value)
+{
+    CAMLparam3(v_ref_count, v_key, v_value);
+    GDBusAnnotationInfo *obj = g_new0(GDBusAnnotationInfo, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->ref_count = Int_val(v_ref_count);
+    obj->key = g_strdup(String_val(v_key));
+    obj->value = g_strdup(String_val(v_value));
+    CAMLreturn(Val_GDBusAnnotationInfo(obj));
+}
+
 
 CAMLprim value ml_gio_d_bus_annotation_info_get_type(value unit)
 {

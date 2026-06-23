@@ -33,6 +33,8 @@ type entity_generators = {
     ctx:generation_context -> entity:entity -> Buffer.t -> unit;
   generate_c_stub_properties :
     ctx:generation_context -> entity:entity -> Buffer.t -> unit;
+  generate_c_stub_fields :
+    ctx:generation_context -> entity:entity -> Buffer.t -> unit;
 }
 
 let entity_generator_by_entity_type =
@@ -161,6 +163,88 @@ let entity_generator_by_entity_type =
           end)
         entity.properties
     in
+    let generate_c_stub_fields ~ctx ~entity buf =
+      match entity.kind with
+      | Class _ | Interface _ -> ()
+      | Record record ->
+          let c_type = entity.c_type in
+          let record_name = entity.name in
+          let fields = entity.fields in
+          let field_infos =
+            Field_analysis.compute_record_field_info ~ctx ~record_name ~c_type
+              fields
+          in
+          (* Skip field accessor C stubs that would duplicate existing method
+             bindings (same C symbol name). Check getter and setter separately
+             so that, e.g., a record with a get_X method but no set_X method
+             still gets a field setter stub. The make constructor always uses
+             all fields regardless of method conflicts.
+             Also respect no_getter/no_setter overrides on individual fields by
+             filtering on should_generate_field_getter/setter before the
+             method-conflict check. *)
+          let method_snake_names =
+            List.map entity.methods
+              ~f:(fun (m : gir_method) ->
+                Gir_gen_lib.Utils.to_snake_case m.method_name)
+          in
+          (* Build a set of field names that pass the getter/setter override
+             filters so we can then filter field_infos by name. *)
+          let getter_allowed =
+            List.filter_map fields
+              ~f:(fun (f : gir_record_field) ->
+                if Field_filter.should_generate_field_getter f then
+                  Some (Gir_gen_lib.Utils.to_snake_case f.field_name)
+                else None)
+          in
+          let setter_allowed =
+            List.filter_map fields
+              ~f:(fun (f : gir_record_field) ->
+                if Field_filter.should_generate_field_setter f then
+                  Some (Gir_gen_lib.Utils.to_snake_case f.field_name)
+                else None)
+          in
+          let getter_infos =
+            List.filter field_infos
+              ~f:(fun (fi : Field_analysis.field_info) ->
+                let getter_name = "get_" ^ fi.field_name in
+                List.exists getter_allowed ~f:(String.equal fi.field_name)
+                && not
+                     (List.exists method_snake_names
+                        ~f:(String.equal getter_name)))
+          in
+          let setter_infos =
+            List.filter field_infos
+              ~f:(fun (fi : Field_analysis.field_info) ->
+                let setter_name = "set_" ^ fi.field_name in
+                List.exists setter_allowed ~f:(String.equal fi.field_name)
+                && not
+                     (List.exists method_snake_names
+                        ~f:(String.equal setter_name)))
+          in
+          (* Generate getter stubs *)
+          let getters =
+            C_stub_field.generate_field_getters ~c_type getter_infos
+          in
+          List.iter getters ~f:(fun stub ->
+              Buffer.add_string buf stub;
+              Buffer.add_char buf '\n');
+          (* Generate setter stubs *)
+          let setters =
+            C_stub_field.generate_field_setters ~c_type setter_infos
+          in
+          List.iter setters ~f:(fun stub ->
+              Buffer.add_string buf stub;
+              Buffer.add_char buf '\n');
+          (* Generate make constructor stub - uses ALL fields *)
+          match
+            C_stub_field.generate_field_make_from_fields ~c_type field_infos
+          with
+          | Some stub ->
+              Buffer.add_string buf stub;
+              Buffer.add_char buf '\n'
+          | None -> ()
+    in
+
     let generate_c_stub_converters ~ctx ~entity buf =
       match entity.kind with
       | Class _ | Interface _ -> ()
@@ -169,31 +253,14 @@ let entity_generator_by_entity_type =
           C_stub_record.generate_record_converters ~namespace_prefix ~buf record
     in
 
-    match entity_type with
-    | Class _ ->
-        {
-          generate_c_stub_headers;
-          generate_c_stub_converters;
-          generate_c_stub_constructors;
-          generate_c_stub_methods;
-          generate_c_stub_properties;
-        }
-    | Interface _ ->
-        {
-          generate_c_stub_headers;
-          generate_c_stub_converters;
-          generate_c_stub_constructors;
-          generate_c_stub_methods;
-          generate_c_stub_properties;
-        }
-    | Record _ ->
-        {
-          generate_c_stub_headers;
-          generate_c_stub_converters;
-          generate_c_stub_constructors;
-          generate_c_stub_methods;
-          generate_c_stub_properties;
-        }
+    {
+      generate_c_stub_headers;
+      generate_c_stub_converters;
+      generate_c_stub_constructors;
+      generate_c_stub_methods;
+      generate_c_stub_properties;
+      generate_c_stub_fields;
+    }
 
 (** Generate the from_gobject C function for an interface. Raises [Failure] if
     [intf.glib_type_name] is [None] — callers must guard with
@@ -290,6 +357,7 @@ let generate_c_stub ~ctx ~output_dir entity =
       generate_c_stub_constructors;
       generate_c_stub_methods;
       generate_c_stub_properties;
+      generate_c_stub_fields;
       _;
     } =
       entity_generator_by_entity_type entity.kind
@@ -304,6 +372,7 @@ let generate_c_stub ~ctx ~output_dir entity =
     generate_c_stub_constructors ~ctx ~entity body_buf;
     generate_c_stub_methods ~ctx ~entity body_buf;
     generate_c_stub_properties ~ctx ~entity body_buf;
+    generate_c_stub_fields ~ctx ~entity body_buf;
 
     (* Append from_gobject stub for interfaces that have a glib_type_name *)
     (match entity.kind with
@@ -632,7 +701,8 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
          else None)
       ~methods:entity.Gir_gen_lib.Types.methods ~entity_kind
       ~properties:entity.Gir_gen_lib.Types.properties
-      ~signals:entity.Gir_gen_lib.Types.signals ?from_gobject_c_name
+      ~signals:entity.Gir_gen_lib.Types.signals
+      ~fields:entity.Gir_gen_lib.Types.fields ?from_gobject_c_name
       ?glib_get_type ()
   in
 
@@ -711,7 +781,8 @@ let generate_high_level_class ~ctx ~output_dir entity parent_chain =
            ~methods:entity.Gir_gen_lib.Types.methods ~entity_kind
            ~properties:entity.Gir_gen_lib.Types.properties
            ~signals:entity.Gir_gen_lib.Types.signals
-           ~constructors:entity.Gir_gen_lib.Types.constructors);
+           ~constructors:entity.Gir_gen_lib.Types.constructors
+           ~fields:entity.Gir_gen_lib.Types.fields);
 
     (* Always overwrite signature files too *)
     let g_sig_exists = output_under_src && Sys.file_exists g_sig_file in
@@ -726,7 +797,8 @@ let generate_high_level_class ~ctx ~output_dir entity parent_chain =
            ~methods:entity.Gir_gen_lib.Types.methods ~entity_kind
            ~properties:entity.Gir_gen_lib.Types.properties
            ~signals:entity.Gir_gen_lib.Types.signals
-           ~constructors:entity.Gir_gen_lib.Types.constructors)
+           ~constructors:entity.Gir_gen_lib.Types.constructors
+           ~fields:entity.Gir_gen_lib.Types.fields)
   in
   match entity.kind with
   | Gir_gen_lib.Types.Class clazz ->

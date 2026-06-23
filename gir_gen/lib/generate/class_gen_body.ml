@@ -34,7 +34,8 @@ let generate_class_module_body ~(ctx : Types.generation_context)
     ~(properties : Types.gir_property list)
     ~(signals : Types.gir_signal list)
     ~(same_cluster_classes : string list)
-    ~(parent_name : string option) () : unit =
+    ~(parent_name : string option)
+    ~(fields : Types.gir_record_field list) () : unit =
   let property_filters =
     Class_gen_helpers.get_property_filters ~ctx ~class_name ~methods properties
   in
@@ -203,6 +204,17 @@ let generate_class_module_body ~(ctx : Types.generation_context)
   in
   ignore seen;
 
+  (* Field accessor methods for record entities *)
+  (match entity_kind with
+  | Filtering.Record ->
+      let field_infos =
+        Field_analysis.compute_record_field_info ~ctx ~record_name:class_name
+          ~c_type fields
+      in
+      Class_gen_field.generate_field_methods ~ctx ~layer1_module_name
+        ~current_layer2_module ~fields ~field_infos ~methods ~buf
+  | _ -> ());
+
   (* Converter methods — skip if parent already provides the same accessor *)
   let self_accessor = Utils.ocaml_class_name class_name in
   let parent_provides_accessor =
@@ -227,7 +239,8 @@ let generate_class_signature_body ~(ctx : Types.generation_context)
     ~(properties : Types.gir_property list)
     ~(signals : Types.gir_signal list)
     ~(same_cluster_classes : string list)
-    ~(parent_name : string option) () : unit =
+    ~(parent_name : string option)
+    ~(fields : Types.gir_record_field list) () : unit =
   let property_filters =
     Class_gen_helpers.get_property_filters ~ctx ~class_name ~methods properties
   in
@@ -353,6 +366,17 @@ let generate_class_signature_body ~(ctx : Types.generation_context)
     generate_section ~buf ~items_seen:seen ~items:properties
       ~generator_fn:generate ~add_newline:false
   in
+
+  (* Field accessor method signatures for record entities *)
+  (match entity_kind with
+  | Filtering.Record ->
+      let field_infos =
+        Field_analysis.compute_record_field_info ~ctx ~record_name:class_name
+          ~c_type fields
+      in
+      Class_gen_field.generate_field_method_sigs ~ctx ~current_layer2_module
+        ~fields ~field_infos ~methods ~buf
+  | _ -> ());
 
   (* Converter methods — skip if parent already provides the same accessor *)
   let self_accessor = Utils.ocaml_class_name class_name in

@@ -30,3 +30,48 @@ value Val_PangoGlyphVisAttr_option(const PangoGlyphVisAttr *ptr) {
   return Val_some(Val_PangoGlyphVisAttr(ptr));
 }
 
+\
+CAMLexport CAMLprim value ml_pango_glyph_vis_attr_get_is_cluster_start(value self)
+{
+    CAMLparam1(self);
+    PangoGlyphVisAttr *rec = PangoGlyphVisAttr_val(self);
+    CAMLreturn(Val_int(rec->is_cluster_start));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_vis_attr_get_is_color(value self)
+{
+    CAMLparam1(self);
+    PangoGlyphVisAttr *rec = PangoGlyphVisAttr_val(self);
+    CAMLreturn(Val_int(rec->is_color));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_vis_attr_set_is_cluster_start(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoGlyphVisAttr *rec = PangoGlyphVisAttr_val(self);
+    rec->is_cluster_start = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_vis_attr_set_is_color(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoGlyphVisAttr *rec = PangoGlyphVisAttr_val(self);
+    rec->is_color = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_glyph_vis_attr_make(value v_is_cluster_start, value v_is_color)
+{
+    CAMLparam2(v_is_cluster_start, v_is_color);
+    PangoGlyphVisAttr *obj = g_new0(PangoGlyphVisAttr, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->is_cluster_start = Int_val(v_is_cluster_start);
+    obj->is_color = Int_val(v_is_color);
+    CAMLreturn(Val_PangoGlyphVisAttr(obj));
+}
+

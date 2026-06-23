@@ -95,8 +95,13 @@ val classify : ctx:generation_context -> gir_type:gir_type -> result
     Returns [Supported m] when marshalling is possible, [Unsupported reason]
     otherwise. Currently unsupported cases include:
     - Array types ([GLib.Array])
-    - Boxed record types (e.g. [Gtk.TextIter])
-    - Callback parameter types (deferred to Milestone 4) *)
+    - Callback parameter types (deferred to later milestone)
+    - Nullable boxed record types (the C [get_boxed] wrapper does not yet
+      safely handle [NULL] pointers)
+
+    Non-nullable boxed record types (e.g. [Gtk.TextIter]) are supported via
+    [get_boxed] / [set_boxed], copying the struct in and out of the
+    [Gobject.Value.t]. *)
 
 val render_l1_type : current_class:string -> marshaller -> string
 (** [render_l1_type ~current_class m] returns the OCaml type expression for

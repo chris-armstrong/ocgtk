@@ -2,6 +2,11 @@
 
 open Gir_gen_lib.Override_types
 
+(* Constructor helper for component_override records. *)
+let make_component_override ?(action = None) ?(os = None) ?(no_getter = false)
+    ?(no_setter = false) ~name () =
+  { component_name = name; action; os; no_getter; no_setter }
+
 let test_override_action_ignore () =
   let a = Ignore in
   match a with Ignore -> () | Set_version _ -> Alcotest.fail "Expected Ignore"
@@ -27,16 +32,16 @@ let test_override_action_eq () =
     (equal_override_action Ignore (Set_version v410))
 
 let test_component_override_construction () =
-  let c = { component_name = "foo"; action = Some Ignore; os = None } in
+  let c = make_component_override ~action:(Some Ignore) ~name:"foo" () in
   Alcotest.(check string) "name" "foo" c.component_name;
   Alcotest.(check bool)
     "action" true
     (Option.equal equal_override_action c.action (Some Ignore))
 
 let test_component_override_eq () =
-  let c1 = { component_name = "foo"; action = Some Ignore; os = None } in
-  let c2 = { component_name = "foo"; action = Some Ignore; os = None } in
-  let c3 = { component_name = "bar"; action = Some Ignore; os = None } in
+  let c1 = make_component_override ~action:(Some Ignore) ~name:"foo" () in
+  let c2 = make_component_override ~action:(Some Ignore) ~name:"foo" () in
+  let c3 = make_component_override ~action:(Some Ignore) ~name:"bar" () in
   Alcotest.(check bool) "eq" true (equal_component_override c1 c2);
   Alcotest.(check bool) "neq" false (equal_component_override c1 c3)
 
@@ -47,7 +52,10 @@ let test_class_override_construction () =
       class_action = Some Ignore;
       class_os = None;
       constructors = [];
-      methods = [ { component_name = "foo"; action = Some Ignore; os = None } ];
+      methods =
+        [
+          make_component_override ~action:(Some Ignore) ~name:"foo" ();
+        ];
       properties = [];
       signals = [];
     }
@@ -65,12 +73,10 @@ let test_interface_override_construction () =
       methods = [];
       properties =
         [
-          {
-            component_name = "action_name";
-            action =
-              Some (Set_version { vs_version = "4.12"; vs_namespace = None });
-            os = None;
-          };
+          make_component_override
+            ~action:
+              (Some (Set_version { vs_version = "4.12"; vs_namespace = None }))
+            ~name:"action_name" ();
         ];
       signals = [];
     }
@@ -84,8 +90,11 @@ let test_record_override_construction () =
       record_name = "TextIter";
       record_action = None;
       record_os = None;
+      no_fields = false;
       fields =
-        [ { component_name = "user_data"; action = Some Ignore; os = None } ];
+        [
+          make_component_override ~action:(Some Ignore) ~name:"user_data" ();
+        ];
       constructors = [];
       methods = [];
       functions = [];
@@ -100,7 +109,10 @@ let test_enum_override_construction () =
       enum_name = "RGBA";
       enum_action = None;
       enum_os = None;
-      members = [ { component_name = "RED"; action = Some Ignore; os = None } ];
+      members =
+        [
+          make_component_override ~action:(Some Ignore) ~name:"RED" ();
+        ];
       functions = [];
     }
   in
@@ -114,7 +126,10 @@ let test_bitfield_override_construction () =
       bitfield_action =
         Some (Set_version { vs_version = "4.10"; vs_namespace = None });
       bitfield_os = None;
-      flags = [ { component_name = "ACTIVE"; action = Some Ignore; os = None } ];
+      flags =
+        [
+          make_component_override ~action:(Some Ignore) ~name:"ACTIVE" ();
+        ];
     }
   in
   Alcotest.(check string) "name" "StateFlags" b.bitfield_name;
@@ -129,8 +144,10 @@ let test_library_overrides_construction () =
       records = [];
       enums = [];
       bitfields = [];
-      functions =
-        [ { component_name = "gtk_show_uri"; action = Some Ignore; os = None } ];
+functions =
+        [
+          make_component_override ~action:(Some Ignore) ~name:"gtk_show_uri" ();
+        ];
       headers = [];
     }
   in

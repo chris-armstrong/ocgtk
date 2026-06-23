@@ -1163,7 +1163,7 @@ let parse_gir_file filename filter_classes =
             when local_name raw_tag = "field" ->
               let field_name = get_attr "name" field_attrs in
               let readable =
-                get_attr "readable" field_attrs |> Utils.parse_bool
+                get_attr "readable" field_attrs |> Utils.parse_bool ~default:true
               in
               let writable =
                 get_attr "writable" field_attrs |> Utils.parse_bool
@@ -1229,6 +1229,8 @@ let parse_gir_file filename filter_classes =
                       field_doc = !field_doc;
                       field_version = get_attr "version" field_attrs;
                       field_os = None;
+                      no_getter = false;
+                      no_setter = false;
                     }
                     :: !fields
               | None -> ());
@@ -1328,6 +1330,7 @@ let parse_gir_file filename filter_classes =
             introspectable;
             c_symbol_prefix;
             is_gtype_struct_for;
+            no_field_accessors = false;
             fields = List.rev !fields;
             constructors = List.rev !constructors;
             methods = List.rev !methods;

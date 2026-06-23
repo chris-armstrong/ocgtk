@@ -58,7 +58,8 @@ let generate_signal_bindings_section ~ctx ~output_mode ~class_name
 
 let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ~base_type ?c_symbol_prefix ~entity_kind
-    ?from_gobject_c_name ?(signals = []) ?glib_get_type buf : unit =
+    ?from_gobject_c_name ?(signals = []) ?glib_get_type ?(fields = []) buf :
+    unit =
   generate_type_declaration ~output_mode ~base_type buf;
   (match from_gobject_c_name with
   | Some c_name ->
@@ -70,6 +71,43 @@ let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~entity_kind ~methods buf;
   generate_properties_section ~ctx ~class_name ~methods ~properties buf;
   generate_signal_bindings_section ~ctx ~output_mode ~class_name signals buf;
+  (* Record field accessors: generate getter/setter externals and [make] constructor *)
+  if List.length fields > 0 then begin
+    (* Compute field_infos for all filter-passing fields *)
+    let field_infos =
+      Field_analysis.compute_record_field_info ~ctx ~record_name:class_name
+        ~c_type fields
+    in
+    if List.length field_infos > 0 then begin
+      bprintf buf "\n(* Record field accessors *)\n\n";
+      (* Generate getter external declarations for readable fields *)
+      let getter_fields =
+        List.filter_map fields ~f:(fun (field : Types.gir_record_field) ->
+          if Field_filter.should_generate_field_getter field then
+            Field_analysis.compute_field_info ~ctx ~record_name:class_name
+              ~c_type field
+          else None)
+      in
+      if List.length getter_fields > 0 then begin
+        bprintf buf "(* Getters *)\n";
+        Layer1_field.generate_field_getters ~buf getter_fields
+      end;
+      (* Generate setter external declarations for writable fields *)
+      let setter_fields =
+        List.filter_map fields ~f:(fun (field : Types.gir_record_field) ->
+          if Field_filter.should_generate_field_setter field then
+            Field_analysis.compute_field_info ~ctx ~record_name:class_name
+              ~c_type field
+          else None)
+      in
+      if List.length setter_fields > 0 then begin
+        bprintf buf "(* Setters *)\n";
+        Layer1_field.generate_field_setters ~buf setter_fields
+      end;
+      (* Generate [make] constructor external declaration from writable fields *)
+      Layer1_field.generate_field_make_decl ~buf field_infos
+    end
+  end;
   (match glib_get_type with
   | Some _ ->
       let ns_snake = Utils.to_snake_case ctx.namespace.namespace_name in
@@ -81,8 +119,8 @@ let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
 
 let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
     ~parent_chain ~constructors ~methods ~properties ?c_symbol_prefix
-    ~entity_kind ?from_gobject_c_name ?(signals = []) ?glib_get_type () :
-    string =
+    ~entity_kind ?from_gobject_c_name ?(signals = []) ?glib_get_type
+    ?(fields = []) () : string =
   let buf = Buffer.create 1024 in
 
   let class_type_name, base_type =
@@ -98,7 +136,7 @@ let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
   | None -> ());
   generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ?c_symbol_prefix ~base_type ~entity_kind
-    ?from_gobject_c_name ~signals ?glib_get_type buf;
+    ?from_gobject_c_name ~signals ?glib_get_type ~fields buf;
   Buffer.contents buf
 
 (** Format module declaration (module rec X | and X) *)
@@ -118,7 +156,7 @@ let generate_module_signature ~ctx ~entity ~base_type ?from_gobject_c_name buf :
       ~methods:entity.methods
       ~entity_kind:(Filtering.entity_kind_of_entity entity)
       ~properties:entity.properties ~signals:entity.signals ~base_type
-      ?from_gobject_c_name inner_buf;
+      ~fields:entity.fields ?from_gobject_c_name inner_buf;
     Buffer.contents inner_buf
   in
   Layer1_helpers.print_indent signature_contents buf
@@ -135,8 +173,8 @@ let generate_module_implementation ~ctx ~output_mode ~entity ~base_type
          else None)
       ~methods:entity.methods
       ~entity_kind:(Filtering.entity_kind_of_entity entity)
-      ~properties:entity.properties ~signals:entity.signals ?from_gobject_c_name
-      inner_buf;
+      ~properties:entity.properties ~signals:entity.signals
+      ~fields:entity.fields ?from_gobject_c_name inner_buf;
     Buffer.contents inner_buf
   in
   Layer1_helpers.print_indent single_content buf

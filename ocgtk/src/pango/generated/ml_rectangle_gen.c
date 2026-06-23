@@ -30,3 +30,84 @@ value Val_PangoRectangle_option(const PangoRectangle *ptr) {
   return Val_some(Val_PangoRectangle(ptr));
 }
 
+\
+CAMLexport CAMLprim value ml_pango_rectangle_get_x(value self)
+{
+    CAMLparam1(self);
+    PangoRectangle *rec = PangoRectangle_val(self);
+    CAMLreturn(Val_int(rec->x));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_rectangle_get_y(value self)
+{
+    CAMLparam1(self);
+    PangoRectangle *rec = PangoRectangle_val(self);
+    CAMLreturn(Val_int(rec->y));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_rectangle_get_width(value self)
+{
+    CAMLparam1(self);
+    PangoRectangle *rec = PangoRectangle_val(self);
+    CAMLreturn(Val_int(rec->width));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_rectangle_get_height(value self)
+{
+    CAMLparam1(self);
+    PangoRectangle *rec = PangoRectangle_val(self);
+    CAMLreturn(Val_int(rec->height));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_rectangle_set_x(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoRectangle *rec = PangoRectangle_val(self);
+    rec->x = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_rectangle_set_y(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoRectangle *rec = PangoRectangle_val(self);
+    rec->y = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_rectangle_set_width(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoRectangle *rec = PangoRectangle_val(self);
+    rec->width = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_rectangle_set_height(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoRectangle *rec = PangoRectangle_val(self);
+    rec->height = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_rectangle_make(value v_x, value v_y, value v_width, value v_height)
+{
+    CAMLparam4(v_x, v_y, v_width, v_height);
+    PangoRectangle *obj = g_new0(PangoRectangle, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->x = Int_val(v_x);
+    obj->y = Int_val(v_y);
+    obj->width = Int_val(v_width);
+    obj->height = Int_val(v_height);
+    CAMLreturn(Val_PangoRectangle(obj));
+}
+

@@ -68,6 +68,52 @@ GDBusInterfaceInfo* result = g_dbus_node_info_lookup_interface(GDBusNodeInfo_val
 if (result) result = g_boxed_copy(g_dbus_interface_info_get_type(), result);
 CAMLreturn(Val_option(result, Val_GDBusInterfaceInfo));
 }
+\
+CAMLexport CAMLprim value ml_g_d_bus_node_info_get_ref_count(value self)
+{
+    CAMLparam1(self);
+    GDBusNodeInfo *rec = GDBusNodeInfo_val(self);
+    CAMLreturn(Val_int(rec->ref_count));
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_node_info_get_path(value self)
+{
+    CAMLparam1(self);
+    GDBusNodeInfo *rec = GDBusNodeInfo_val(self);
+    CAMLreturn(caml_copy_string(rec->path));
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_node_info_set_ref_count(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GDBusNodeInfo *rec = GDBusNodeInfo_val(self);
+    rec->ref_count = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_node_info_set_path(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GDBusNodeInfo *rec = GDBusNodeInfo_val(self);
+    g_free(rec->path);
+    rec->path = g_strdup(String_val(v_val));
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_d_bus_node_info_make(value v_ref_count, value v_path)
+{
+    CAMLparam2(v_ref_count, v_path);
+    GDBusNodeInfo *obj = g_new0(GDBusNodeInfo, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->ref_count = Int_val(v_ref_count);
+    obj->path = g_strdup(String_val(v_path));
+    CAMLreturn(Val_GDBusNodeInfo(obj));
+}
+
 
 CAMLprim value ml_gio_d_bus_node_info_get_type(value unit)
 {

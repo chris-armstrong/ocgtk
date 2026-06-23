@@ -21,6 +21,17 @@ class type text_view_t = object
     unit ->
     Gobject.Signal.handler_id
 
+  method on_extend_selection :
+    ?after:bool ->
+    callback:
+      (granularity:Gtk_enums.textextendselection ->
+      location:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      start:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      end_:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method on_insert_at_cursor :
     ?after:bool ->
     callback:(string:string -> unit) ->

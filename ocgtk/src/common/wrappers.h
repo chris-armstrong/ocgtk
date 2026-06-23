@@ -246,6 +246,56 @@ CAMLprim GSList *GSList_val(value list, gpointer (*func)(value));
     } while(0)
 
 /* ==================================================================== */
+/* Null-terminated string arrays (gchar**)                               */
+/* ==================================================================== */
+
+/**
+ * Val_strv: NULL-terminated gchar** -> OCaml string list
+ *
+ * Produces an OCaml string list from a NULL-terminated C string array.
+ * If strv is NULL, produces an empty list.
+ *
+ * REQUIRED: Function must declare CAMLparam/CAMLlocal as usual (no extra
+ * locals needed — uses its own locals inside the do/while block).
+ */
+#define Val_strv(strv, result) \
+  do { \
+    result = Val_emptylist; \
+    if (strv) { \
+      gchar **p = strv; \
+      int count = 0; \
+      while (p[count]) count++; \
+      while (count-- > 0) { \
+        value cell = caml_alloc_small(2, 0); \
+        Field(cell, 0) = caml_copy_string(strv[count]); \
+        Field(cell, 1) = result; \
+        result = cell; \
+      } \
+    } \
+  } while(0)
+
+/**
+ * Strv_val: OCaml string list -> gchar** (caller owns, must g_strfreev)
+ *
+ * Converts an OCaml string list to a freshly-allocated NULL-terminated
+ * gchar**. The caller is responsible for freeing the result with
+ * g_strfreev().
+ */
+#define Strv_val(ml_list, result_strv) \
+  do { \
+    int count = 0; \
+    value current = ml_list; \
+    while (current != Val_emptylist) { count++; current = Field(current, 1); } \
+    result_strv = g_new0(gchar*, count + 1); \
+    current = ml_list; \
+    for (int i = 0; i < count; i++) { \
+      result_strv[i] = g_strdup(String_val(Field(current, 0))); \
+      current = Field(current, 1); \
+    } \
+    result_strv[count] = NULL; \
+  } while(0)
+
+/* ==================================================================== */
 /* Error Handling */
 /* ==================================================================== */
 

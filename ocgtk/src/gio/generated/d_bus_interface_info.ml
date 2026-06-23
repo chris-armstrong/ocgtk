@@ -48,5 +48,18 @@ used and its use count is increased.
 Note that @info cannot be modified until
 g_dbus_interface_info_cache_release() is called. *)
 
+(* Record field accessors *)
+
+(* Getters *)
+external get_ref_count : t -> int = "ml_g_d_bus_interface_info_get_ref_count"
+external get_name : t -> string = "ml_g_d_bus_interface_info_get_name"
+
+(* Setters *)
+external set_ref_count : t -> int -> unit
+  = "ml_g_d_bus_interface_info_set_ref_count"
+
+external set_name : t -> string -> unit = "ml_g_d_bus_interface_info_set_name"
+external make : int -> string -> t = "ml_g_d_bus_interface_info_make"
+
 external get_type : unit -> Gobject.Type.t
   = "ml_gio_d_bus_interface_info_get_type"

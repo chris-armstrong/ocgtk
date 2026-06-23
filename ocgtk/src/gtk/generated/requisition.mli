@@ -11,4 +11,14 @@ external new_ : unit -> t = "ml_gtk_requisition_new"
 
 (* Methods *)
 
+(* Record field accessors *)
+
+(* Getters *)
+external get_width : t -> int = "ml_gtk_requisition_get_width"
+external get_height : t -> int = "ml_gtk_requisition_get_height"
+
+(* Setters *)
+external set_width : t -> int -> unit = "ml_gtk_requisition_set_width"
+external set_height : t -> int -> unit = "ml_gtk_requisition_set_height"
+external make : int -> int -> t = "ml_gtk_requisition_make"
 external get_type : unit -> Gobject.Type.t = "ml_gtk_requisition_get_type"

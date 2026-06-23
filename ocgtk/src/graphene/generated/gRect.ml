@@ -13,6 +13,10 @@ class type rect_t = object
   method normalize : unit -> Rect.t
   method offset : float -> float -> Rect.t
   method round_to_pixel : unit -> Rect.t
+  method get_origin : Point.t
+  method set_origin : Point.t -> unit
+  method get_size : Size.t
+  method set_size : Size.t -> unit
   method as_rect : Rect.t
 end
 
@@ -43,5 +47,12 @@ class rect (obj : Rect.t) : rect_t =
       fun d_x d_y -> Rect.offset obj d_x d_y
 
     method round_to_pixel : unit -> Rect.t = fun () -> Rect.round_to_pixel obj
+    method get_origin : Point.t = Rect.get_origin obj
+    method set_origin : Point.t -> unit = fun v -> Rect.set_origin obj v
+    method get_size : Size.t = Rect.get_size obj
+    method set_size : Size.t -> unit = fun v -> Rect.set_size obj v
     method as_rect = obj
   end
+
+let make (origin : Point.t) (size : Size.t) : rect_t =
+  new rect (Rect.make origin size)

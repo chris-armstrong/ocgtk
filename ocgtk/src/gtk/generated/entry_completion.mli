@@ -144,10 +144,22 @@ external get_cell_area :
   = "ml_gtk_entry_completion_get_cell_area"
 (** Get property: cell-area *)
 
+val on_cursor_on_match :
+  ?after:bool ->
+  t ->
+  callback:(model:Tree_model.t -> iter:Tree_iter.t -> bool) ->
+  Gobject.Signal.handler_id
+
 val on_insert_prefix :
   ?after:bool ->
   t ->
   callback:(prefix:string -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_match_selected :
+  ?after:bool ->
+  t ->
+  callback:(model:Tree_model.t -> iter:Tree_iter.t -> bool) ->
   Gobject.Signal.handler_id
 
 val on_no_matches :

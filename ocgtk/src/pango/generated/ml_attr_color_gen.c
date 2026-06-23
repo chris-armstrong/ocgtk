@@ -30,3 +30,48 @@ value Val_PangoAttrColor_option(const PangoAttrColor *ptr) {
   return Val_some(Val_PangoAttrColor(ptr));
 }
 
+\
+CAMLexport CAMLprim value ml_pango_attr_color_get_attr(value self)
+{
+    CAMLparam1(self);
+    PangoAttrColor *rec = PangoAttrColor_val(self);
+    CAMLreturn(Val_PangoAttribute(&rec->attr));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attr_color_get_color(value self)
+{
+    CAMLparam1(self);
+    PangoAttrColor *rec = PangoAttrColor_val(self);
+    CAMLreturn(Val_PangoColor(&rec->color));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attr_color_set_attr(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoAttrColor *rec = PangoAttrColor_val(self);
+    rec->attr = *PangoAttribute_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attr_color_set_color(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoAttrColor *rec = PangoAttrColor_val(self);
+    rec->color = *PangoColor_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attr_color_make(value v_attr, value v_color)
+{
+    CAMLparam2(v_attr, v_color);
+    PangoAttrColor *obj = g_new0(PangoAttrColor, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->attr = *PangoAttribute_val(v_attr);
+    obj->color = *PangoColor_val(v_color);
+    CAMLreturn(Val_PangoAttrColor(obj));
+}
+

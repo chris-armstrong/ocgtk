@@ -262,6 +262,12 @@ and surface_t = object
     unit ->
     Gobject.Signal.handler_id
 
+  method on_render :
+    ?after:bool ->
+    callback:(region:Ocgtk_cairo.Cairo.Region.region_t -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method beep : unit -> unit
   method create_cairo_context : unit -> cairo_context_t
   method create_gl_context : unit -> (gl_context_t, GError.t) result
@@ -913,6 +919,11 @@ and surface (obj : App_launch_context_cycle_de440b34.Surface.t) : surface_t =
       App_launch_context_cycle_de440b34.Surface.on_leave_monitor ~after
         self#as_surface ~callback:(fun ~monitor ->
           callback ~monitor:(new monitor monitor))
+
+    method on_render ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Surface.on_render ~after self#as_surface
+        ~callback:(fun ~region ->
+          callback ~region:(new Ocgtk_cairo.Cairo.Region.region region))
 
     method beep : unit -> unit =
       fun () -> App_launch_context_cycle_de440b34.Surface.beep obj

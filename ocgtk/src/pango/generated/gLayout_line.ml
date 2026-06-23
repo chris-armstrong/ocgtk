@@ -1,26 +1,14 @@
-class type layout_line_t = object
-  method get_length : unit -> int
-  method get_resolved_direction : unit -> Pango_enums.direction
-  method get_start_index : unit -> int
-  method is_paragraph_start : unit -> bool
-  method ref : unit -> Layout_line.t option
-  method as_layout_line : Layout_line.t
-end
+(* GENERATED CODE - DO NOT EDIT *)
+(* Shim module for LayoutLine from cyclic group Layout_and__layout_iter_and__layout_line *)
 
-(* High-level class for LayoutLine *)
-class layout_line (obj : Layout_line.t) : layout_line_t =
-  object (self)
-    method get_length : unit -> int = fun () -> Layout_line.get_length obj
+class type layout_line_t =
+  GLayout_and__layout_iter_and__layout_line.layout_line_t
 
-    method get_resolved_direction : unit -> Pango_enums.direction =
-      fun () -> Layout_line.get_resolved_direction obj
+class layout_line = GLayout_and__layout_iter_and__layout_line.layout_line
 
-    method get_start_index : unit -> int =
-      fun () -> Layout_line.get_start_index obj
-
-    method is_paragraph_start : unit -> bool =
-      fun () -> Layout_line.is_paragraph_start obj
-
-    method ref : unit -> Layout_line.t option = fun () -> Layout_line.ref obj
-    method as_layout_line = obj
-  end
+let make (layout : GLayout_and__layout_iter_and__layout_line.layout_t)
+    (start_index : int) (length : int) (runs : unit) (is_paragraph_start : int)
+    (resolved_dir : int) : layout_line_t =
+  new layout_line
+    (Layout_and__layout_iter_and__layout_line.Layout_line.make layout#as_layout
+       start_index length runs is_paragraph_start resolved_dir)

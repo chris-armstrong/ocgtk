@@ -89,27 +89,34 @@ let build_os_filter ~context os_vals not_os_vals =
            })
 
 (** Parse optional qualifiers from a component body: (ignore), (version ...),
-    (os "..."), (not_os "..."). Returns [(action, os)] where both are options.
+    (os "..."), (not_os "..."), (no_getter), (no_setter).
+    Returns [(action, os, no_getter, no_setter)].
 *)
 let parse_component_qualifiers ~comp_name body =
-  let rec go action os_vals not_os_vals = function
+  let rec go action os_vals not_os_vals (no_getter, no_setter) = function
     | [] -> (
         match
           build_os_filter ~context:comp_name (List.rev os_vals)
             (List.rev not_os_vals)
         with
         | Error e -> Error e
-        | Ok os -> Ok (action, os))
+        | Ok os -> Ok (action, os, no_getter, no_setter))
     | Sexp.Atom "ignore" :: rest | Sexp.List [ Sexp.Atom "ignore" ] :: rest ->
-        go (Some Ignore) os_vals not_os_vals rest
+        go (Some Ignore) os_vals not_os_vals (no_getter, no_setter) rest
     | Sexp.List (Sexp.Atom "version" :: args) :: rest -> (
         match parse_version_spec ~comp_name args with
         | Error e -> Error e
-        | Ok a -> go (Some a) os_vals not_os_vals rest)
+        | Ok a -> go (Some a) os_vals not_os_vals (no_getter, no_setter) rest)
     | Sexp.List [ Sexp.Atom "os"; Sexp.Atom os_val ] :: rest ->
-        go action (os_val :: os_vals) not_os_vals rest
+        go action (os_val :: os_vals) not_os_vals (no_getter, no_setter) rest
     | Sexp.List [ Sexp.Atom "not_os"; Sexp.Atom os_val ] :: rest ->
-        go action os_vals (os_val :: not_os_vals) rest
+        go action os_vals (os_val :: not_os_vals) (no_getter, no_setter) rest
+    | Sexp.Atom "no_getter" :: rest
+    | Sexp.List [ Sexp.Atom "no_getter" ] :: rest ->
+        go action os_vals not_os_vals (true, no_setter) rest
+    | Sexp.Atom "no_setter" :: rest
+    | Sexp.List [ Sexp.Atom "no_setter" ] :: rest ->
+        go action os_vals not_os_vals (no_getter, true) rest
     | Sexp.List (Sexp.Atom k :: _) :: _ ->
         Error
           (Invalid_format
@@ -117,13 +124,13 @@ let parse_component_qualifiers ~comp_name body =
                location = Printf.sprintf "%s" comp_name;
                message =
                  Printf.sprintf
-                   "Unknown qualifier '%s'; expected ignore, version, os, or \
-                    not_os"
+                   "Unknown qualifier '%s'; expected ignore, version, os, \
+                    not_os, no_getter, or no_setter"
                    k;
              })
-    | _ :: rest -> go action os_vals not_os_vals rest
+    | _ :: rest -> go action os_vals not_os_vals (no_getter, no_setter) rest
   in
-  go None [] [] body
+  go None [] [] (false, false) body
 
 let parse_component ~entity_name sexp =
   match sexp with
@@ -135,21 +142,36 @@ let parse_component ~entity_name sexp =
         Sexp.Atom comp_name;
         Sexp.List [ Sexp.Atom "ignore" ];
       ] ->
-      Ok { component_name = comp_name; action = Some Ignore; os = None }
+      Ok
+        {
+          component_name = comp_name;
+          action = Some Ignore;
+          os = None;
+          no_getter = false;
+          no_setter = false;
+        }
   (* General form: (kind name qualifier...) *)
   | Sexp.List (Sexp.Atom _comp_kind :: Sexp.Atom comp_name :: body) -> (
       match parse_component_qualifiers ~comp_name body with
       | Error e -> Error e
-      | Ok (None, None) ->
+      | Ok (None, None, false, false) ->
           Error
             (Invalid_format
                {
                  location = Printf.sprintf "%s %s" entity_name comp_name;
                  message =
                    "Expected at least one qualifier: (ignore), (version \
-                    \"X.Y\"), or (os \"...\")";
+                    \"X.Y\"), (os \"...\"), (no_getter), or (no_setter)";
                })
-      | Ok (action, os) -> Ok { component_name = comp_name; action; os })
+      | Ok (action, os, no_getter, no_setter) ->
+          Ok
+            {
+              component_name = comp_name;
+              action;
+              os;
+              no_getter;
+              no_setter;
+            })
   | _ ->
       Error
         (Invalid_format
@@ -210,7 +232,8 @@ let validate_body_elements ~entity_name ~valid_kinds body =
             if
               List.mem k valid_kinds || String.equal k "ignore"
               || String.equal k "version" || String.equal k "os"
-              || String.equal k "not_os"
+              || String.equal k "not_os" || String.equal k "no_getter"
+              || String.equal k "no_setter" || String.equal k "no_fields"
             then check rest
             else
               Error
@@ -306,6 +329,13 @@ let parse_record_override sexp =
       ~valid_kinds:[ "field"; "constructor"; "method"; "function" ]
       body
   in
+  let no_fields =
+    List.exists
+      (function
+        | Sexp.Atom "no_fields" | Sexp.List [ Sexp.Atom "no_fields" ] -> true
+        | _ -> false)
+      body
+  in
   let* fields = parse_components_of_kind ~entity_name:name ~kind:"field" body in
   let* constructors =
     parse_components_of_kind ~entity_name:name ~kind:"constructor" body
@@ -321,6 +351,7 @@ let parse_record_override sexp =
       record_name = name;
       record_action;
       record_os;
+      no_fields;
       fields;
       constructors;
       methods;

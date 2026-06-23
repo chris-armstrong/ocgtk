@@ -42,4 +42,16 @@ external parse : t -> string -> bool = "ml_pango_color_parse"
     and blue components of the color, respectively. (White in the four forms is
     `#fff`, `#ffffff`, `#fffffffff` and `#ffffffffffff`.) *)
 
+(* Record field accessors *)
+
+(* Getters *)
+external get_red : t -> UInt16.t = "ml_pango_color_get_red"
+external get_green : t -> UInt16.t = "ml_pango_color_get_green"
+external get_blue : t -> UInt16.t = "ml_pango_color_get_blue"
+
+(* Setters *)
+external set_red : t -> UInt16.t -> unit = "ml_pango_color_set_red"
+external set_green : t -> UInt16.t -> unit = "ml_pango_color_set_green"
+external set_blue : t -> UInt16.t -> unit = "ml_pango_color_set_blue"
+external make : UInt16.t -> UInt16.t -> UInt16.t -> t = "ml_pango_color_make"
 external get_type : unit -> Gobject.Type.t = "ml_pango_color_get_type"

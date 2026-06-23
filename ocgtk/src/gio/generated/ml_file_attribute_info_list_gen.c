@@ -78,6 +78,51 @@ CAMLparam4(self, arg1, arg2, arg3);
 g_file_attribute_info_list_add(GFileAttributeInfoList_val(self), String_val(arg1), GioFileAttributeType_val(arg2), GioFileAttributeInfoFlags_val(arg3));
 CAMLreturn(Val_unit);
 }
+\
+CAMLexport CAMLprim value ml_g_file_attribute_info_list_get_infos(value self)
+{
+    CAMLparam1(self);
+    GFileAttributeInfoList *rec = GFileAttributeInfoList_val(self);
+    CAMLreturn(Val_GFileAttributeInfo(rec->infos));
+}
+
+\
+CAMLexport CAMLprim value ml_g_file_attribute_info_list_get_n_infos(value self)
+{
+    CAMLparam1(self);
+    GFileAttributeInfoList *rec = GFileAttributeInfoList_val(self);
+    CAMLreturn(Val_int(rec->n_infos));
+}
+
+\
+CAMLexport CAMLprim value ml_g_file_attribute_info_list_set_infos(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GFileAttributeInfoList *rec = GFileAttributeInfoList_val(self);
+    rec->infos = GFileAttributeInfo_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_file_attribute_info_list_set_n_infos(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GFileAttributeInfoList *rec = GFileAttributeInfoList_val(self);
+    rec->n_infos = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_g_file_attribute_info_list_make(value v_infos, value v_n_infos)
+{
+    CAMLparam2(v_infos, v_n_infos);
+    GFileAttributeInfoList *obj = g_new0(GFileAttributeInfoList, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->infos = GFileAttributeInfo_val(v_infos);
+    obj->n_infos = Int_val(v_n_infos);
+    CAMLreturn(Val_GFileAttributeInfoList(obj));
+}
+
 
 CAMLprim value ml_gio_file_attribute_info_list_get_type(value unit)
 {

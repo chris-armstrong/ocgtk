@@ -354,6 +354,28 @@ module rec Cell_area : sig
 
   (* Properties *)
 
+  val on_add_editable :
+    ?after:bool ->
+    t ->
+    callback:
+      (renderer:Cell_renderer.t ->
+      editable:Cell_editable.t ->
+      cell_area:Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
+      path:string ->
+      unit) ->
+    Gobject.Signal.handler_id
+
+  val on_apply_attributes :
+    ?after:bool ->
+    t ->
+    callback:
+      (model:Tree_model.t ->
+      iter:Tree_iter.t ->
+      is_expander:bool ->
+      is_expanded:bool ->
+      unit) ->
+    Gobject.Signal.handler_id
+
   val on_focus_changed :
     ?after:bool ->
     t ->
@@ -717,6 +739,54 @@ end = struct
   can also activate a widget if it currently has the focus. *)
 
   (* Properties *)
+
+  let on_add_editable ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let renderer =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          let editable =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            Gobject.Value.get_object_exn v
+          in
+          let cell_area =
+            let v = Gobject.Closure.nth argv ~pos:3 in
+            (Gobject.Value.get_boxed v : Ocgtk_gdk.Gdk.Wrappers.Rectangle.t)
+          in
+          let path =
+            let v = Gobject.Closure.nth argv ~pos:4 in
+            Gobject.Value.get_string v
+          in
+          callback ~renderer ~editable ~cell_area ~path)
+    in
+    Gobject.Signal.connect obj ~name:"add-editable" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_apply_attributes ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let model =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          let iter =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            (Gobject.Value.get_boxed v : Tree_iter.t)
+          in
+          let is_expander =
+            let v = Gobject.Closure.nth argv ~pos:3 in
+            Gobject.Value.get_boolean v
+          in
+          let is_expanded =
+            let v = Gobject.Closure.nth argv ~pos:4 in
+            Gobject.Value.get_boolean v
+          in
+          callback ~model ~iter ~is_expander ~is_expanded)
+    in
+    Gobject.Signal.connect obj ~name:"apply-attributes" ~callback:closure
+      ~after:(Option.value after ~default:false)
 
   let on_focus_changed ?after obj ~callback =
     let closure =

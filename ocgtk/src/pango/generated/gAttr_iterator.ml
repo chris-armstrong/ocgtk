@@ -1,7 +1,10 @@
 class type attr_iterator_t = object
   method destroy : unit -> unit
-  method get : Pango_enums.attrtype -> Attribute.t option
-  method get_attrs : unit -> Attribute.t list
+
+  method get :
+    Pango_enums.attrtype -> Attr_color_cycle_ed189c09.Attribute.t option
+
+  method get_attrs : unit -> Attr_color_cycle_ed189c09.Attribute.t list
   method next : unit -> bool
   method as_attr_iterator : Attr_iterator.t
 end
@@ -11,10 +14,11 @@ class attr_iterator (obj : Attr_iterator.t) : attr_iterator_t =
   object (self)
     method destroy : unit -> unit = fun () -> Attr_iterator.destroy obj
 
-    method get : Pango_enums.attrtype -> Attribute.t option =
+    method get :
+        Pango_enums.attrtype -> Attr_color_cycle_ed189c09.Attribute.t option =
       fun type_ -> Attr_iterator.get obj type_
 
-    method get_attrs : unit -> Attribute.t list =
+    method get_attrs : unit -> Attr_color_cycle_ed189c09.Attribute.t list =
       fun () -> Attr_iterator.get_attrs obj
 
     method next : unit -> bool = fun () -> Attr_iterator.next obj

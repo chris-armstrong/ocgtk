@@ -188,3 +188,9 @@ external set_fullscreen_mode : t -> Gdk_enums.fullscreenmode -> unit
 external get_shortcuts_inhibited : t -> bool
   = "ml_gdk_toplevel_get_shortcuts_inhibited"
 (** Get property: shortcuts-inhibited *)
+
+val on_compute_size :
+  ?after:bool ->
+  t ->
+  callback:(size:Toplevel_size.t -> unit) ->
+  Gobject.Signal.handler_id

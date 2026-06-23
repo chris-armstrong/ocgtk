@@ -1361,6 +1361,12 @@ and Surface : sig
     t ->
     callback:(monitor:Monitor.t -> unit) ->
     Gobject.Signal.handler_id
+
+  val on_render :
+    ?after:bool ->
+    t ->
+    callback:(region:Ocgtk_cairo.Cairo.Wrappers.Region.t -> bool) ->
+    Gobject.Signal.handler_id
 end
 
 and Vulkan_context : sig

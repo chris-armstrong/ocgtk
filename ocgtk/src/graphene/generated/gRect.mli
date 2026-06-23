@@ -13,7 +13,13 @@ class type rect_t = object
   method normalize : unit -> Rect.t
   method offset : float -> float -> Rect.t
   method round_to_pixel : unit -> Rect.t
+  method get_origin : Point.t
+  method set_origin : Point.t -> unit
+  method get_size : Size.t
+  method set_size : Size.t -> unit
   method as_rect : Rect.t
 end
 
 class rect : Rect.t -> rect_t
+
+val make : Point.t -> Size.t -> rect_t

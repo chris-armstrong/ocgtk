@@ -19,3 +19,21 @@ as follows:
 4. Render the next glyph *)
 
 (* Methods *)
+
+(* Record field accessors *)
+
+(* Getters *)
+external get_width : t -> unit = "ml_pango_glyph_geometry_get_width"
+external get_x_offset : t -> unit = "ml_pango_glyph_geometry_get_x_offset"
+external get_y_offset : t -> unit = "ml_pango_glyph_geometry_get_y_offset"
+
+(* Setters *)
+external set_width : t -> unit -> unit = "ml_pango_glyph_geometry_set_width"
+
+external set_x_offset : t -> unit -> unit
+  = "ml_pango_glyph_geometry_set_x_offset"
+
+external set_y_offset : t -> unit -> unit
+  = "ml_pango_glyph_geometry_set_y_offset"
+
+external make : unit -> unit -> unit -> t = "ml_pango_glyph_geometry_make"

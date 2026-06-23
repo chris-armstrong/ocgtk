@@ -49,3 +49,9 @@ of removing the default color palette from the color chooser.
 If @colors is %NULL, removes all previously added palettes. *)
 
 (* Properties *)
+
+val on_color_activated :
+  ?after:bool ->
+  t ->
+  callback:(color:Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit) ->
+  Gobject.Signal.handler_id

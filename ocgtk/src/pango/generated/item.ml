@@ -40,4 +40,18 @@ and will be advanced past it. This function is meant to be called
 in a loop over the items resulting from itemization, while passing
 the iter to each call. *)
 
+(* Record field accessors *)
+
+(* Getters *)
+external get_offset : t -> int = "ml_pango_item_get_offset"
+external get_length : t -> int = "ml_pango_item_get_length"
+external get_num_chars : t -> int = "ml_pango_item_get_num_chars"
+external get_analysis : t -> Analysis.t = "ml_pango_item_get_analysis"
+
+(* Setters *)
+external set_offset : t -> int -> unit = "ml_pango_item_set_offset"
+external set_length : t -> int -> unit = "ml_pango_item_set_length"
+external set_num_chars : t -> int -> unit = "ml_pango_item_set_num_chars"
+external set_analysis : t -> Analysis.t -> unit = "ml_pango_item_set_analysis"
+external make : int -> int -> int -> Analysis.t -> t = "ml_pango_item_make"
 external get_type : unit -> Gobject.Type.t = "ml_pango_item_get_type"

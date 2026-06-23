@@ -15,6 +15,8 @@ type component_override = {
   component_name : string;
   action : override_action option;
   os : Os_filter.t option;
+  no_getter : bool;
+  no_setter : bool;
 }
 [@@deriving sexp, eq]
 
@@ -43,6 +45,7 @@ type record_override = {
   record_name : string;
   record_action : override_action option;
   record_os : Os_filter.t option;
+  no_fields : bool;
   fields : component_override list;
   constructors : component_override list;
   methods : component_override list;

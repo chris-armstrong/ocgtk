@@ -44,4 +44,33 @@ result items can have multiple attributes of the same type.
 This function takes ownership of @glyph_item; it will be reused
 as one of the elements in the list. *)
 
+(* Record field accessors *)
+
+(* Getters *)
+external get_item : t -> Item.t = "ml_pango_glyph_item_get_item"
+external get_glyphs : t -> Glyph_string.t = "ml_pango_glyph_item_get_glyphs"
+external get_y_offset : t -> int = "ml_pango_glyph_item_get_y_offset"
+
+external get_start_x_offset : t -> int
+  = "ml_pango_glyph_item_get_start_x_offset"
+
+external get_end_x_offset : t -> int = "ml_pango_glyph_item_get_end_x_offset"
+
+(* Setters *)
+external set_item : t -> Item.t -> unit = "ml_pango_glyph_item_set_item"
+
+external set_glyphs : t -> Glyph_string.t -> unit
+  = "ml_pango_glyph_item_set_glyphs"
+
+external set_y_offset : t -> int -> unit = "ml_pango_glyph_item_set_y_offset"
+
+external set_start_x_offset : t -> int -> unit
+  = "ml_pango_glyph_item_set_start_x_offset"
+
+external set_end_x_offset : t -> int -> unit
+  = "ml_pango_glyph_item_set_end_x_offset"
+
+external make : Item.t -> Glyph_string.t -> int -> int -> int -> t
+  = "ml_pango_glyph_item_make"
+
 external get_type : unit -> Gobject.Type.t = "ml_pango_glyph_item_get_type"

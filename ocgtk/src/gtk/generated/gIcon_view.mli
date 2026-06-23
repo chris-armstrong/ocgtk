@@ -9,6 +9,12 @@ class type icon_view_t = object
   method on_activate_cursor_item :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
 
+  method on_item_activated :
+    ?after:bool ->
+    callback:(path:Tree_path.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method on_move_cursor :
     ?after:bool ->
     callback:

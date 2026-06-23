@@ -21,6 +21,17 @@ class type text_view_t = object
     unit ->
     Gobject.Signal.handler_id
 
+  method on_extend_selection :
+    ?after:bool ->
+    callback:
+      (granularity:Gtk_enums.textextendselection ->
+      location:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      start:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      end_:Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
+      bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method on_insert_at_cursor :
     ?after:bool ->
     callback:(string:string -> unit) ->
@@ -236,6 +247,9 @@ class text_view (obj : Text_view.t) : text_view_t =
 
     method on_delete_from_cursor ?(after = false) ~callback () =
       Text_view.on_delete_from_cursor ~after self#as_text_view ~callback
+
+    method on_extend_selection ?(after = false) ~callback () =
+      Text_view.on_extend_selection ~after self#as_text_view ~callback
 
     method on_insert_at_cursor ?(after = false) ~callback () =
       Text_view.on_insert_at_cursor ~after self#as_text_view ~callback

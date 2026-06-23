@@ -30,3 +30,30 @@ value Val_PangoAttrClass_option(const PangoAttrClass *ptr) {
   return Val_some(Val_PangoAttrClass(ptr));
 }
 
+\
+CAMLexport CAMLprim value ml_pango_attr_class_get_type(value self)
+{
+    CAMLparam1(self);
+    PangoAttrClass *rec = PangoAttrClass_val(self);
+    CAMLreturn(Val_PangoAttrType(rec->type));
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attr_class_set_type(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    PangoAttrClass *rec = PangoAttrClass_val(self);
+    rec->type = PangoAttrType_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_pango_attr_class_make(value v_type)
+{
+    CAMLparam1(v_type);
+    PangoAttrClass *obj = g_new0(PangoAttrClass, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->type = PangoAttrType_val(v_type);
+    CAMLreturn(Val_PangoAttrClass(obj));
+}
+

@@ -613,7 +613,8 @@ let test_l1_val_in_generated_module_interface () =
       ~class_name:"Button" ~class_doc:None ~c_type:"GtkButton"
       ~parent_chain:[ "Widget" ] ~constructors:None ~methods:[] ~properties:[]
       ~signals:[ clicked_signal ]
-      ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
+      ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[] ()
   in
   (* Assert: val on_clicked present in the module signature *)
   let ast = Ml_ast_helpers.parse_interface mli_content in
@@ -631,7 +632,8 @@ let test_l1_let_in_generated_module_impl () =
       ~output_mode:Ml_interface.Implementation ~class_name:"Button"
       ~class_doc:None ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~constructors:None ~methods:[] ~properties:[] ~signals:[ clicked_signal ]
-      ~entity_kind:Gir_gen_lib.Generate.Filtering.Class ()
+      ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[] ()
   in
   (* Assert: let on_clicked present in the module body *)
   let ast = Ml_ast_helpers.parse_implementation ml_content in
@@ -662,6 +664,7 @@ let test_l2_class_body_contains_on_signal_method () =
       ~c_type:"GtkButton" ~parent_chain:[] ~methods:[] ~properties:[]
       ~signals:[ clicked_signal ] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
   let ast = Ml_ast_helpers.parse_implementation ml_code in
   (* Assert: the 'button' class exists and contains method on_clicked *)
@@ -693,6 +696,7 @@ let test_l2_class_type_contains_on_signal_method_sig () =
       ~c_type:"GtkButton" ~parent_chain:[] ~methods:[] ~properties:[]
       ~signals:[ clicked_signal ] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
   let sig_ast = Ml_ast_helpers.parse_interface mli_code in
   (* Assert: the 'button_t' class type contains method on_clicked *)
@@ -723,6 +727,7 @@ let test_l2_no_inherit_signals_in_generated_class () =
       ~c_type:"GtkButton" ~parent_chain:[] ~methods:[] ~properties:[]
       ~signals:[ clicked_signal ] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~fields:[]
   in
   let ast = Ml_ast_helpers.parse_implementation ml_code in
   (* Assert: no Pcf_inherit references a name ending in _signals *)

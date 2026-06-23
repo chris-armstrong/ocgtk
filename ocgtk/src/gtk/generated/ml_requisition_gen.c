@@ -32,7 +32,52 @@ CAMLparam1(unit);
 GtkRequisition *obj = gtk_requisition_new();
 
 CAMLreturn(Val_GtkRequisition(obj));
+}\
+CAMLexport CAMLprim value ml_gtk_requisition_get_width(value self)
+{
+    CAMLparam1(self);
+    GtkRequisition *rec = GtkRequisition_val(self);
+    CAMLreturn(Val_int(rec->width));
 }
+
+\
+CAMLexport CAMLprim value ml_gtk_requisition_get_height(value self)
+{
+    CAMLparam1(self);
+    GtkRequisition *rec = GtkRequisition_val(self);
+    CAMLreturn(Val_int(rec->height));
+}
+
+\
+CAMLexport CAMLprim value ml_gtk_requisition_set_width(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GtkRequisition *rec = GtkRequisition_val(self);
+    rec->width = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gtk_requisition_set_height(value self, value v_val)
+{
+    CAMLparam2(self, v_val);
+    GtkRequisition *rec = GtkRequisition_val(self);
+    rec->height = Int_val(v_val);
+    CAMLreturn(Val_unit);
+}
+
+\
+CAMLexport CAMLprim value ml_gtk_requisition_make(value v_width, value v_height)
+{
+    CAMLparam2(v_width, v_height);
+    GtkRequisition *obj = g_new0(GtkRequisition, 1);
+    if (obj == NULL) caml_failwith("allocation failed");
+    obj->width = Int_val(v_width);
+    obj->height = Int_val(v_height);
+    CAMLreturn(Val_GtkRequisition(obj));
+}
+
+
 CAMLprim value ml_gtk_requisition_get_type(value unit)
 {
   CAMLparam1(unit);

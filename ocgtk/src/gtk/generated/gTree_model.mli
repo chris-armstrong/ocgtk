@@ -1,4 +1,28 @@
 class type tree_model_t = object
+  method on_row_changed :
+    ?after:bool ->
+    callback:(path:Tree_path.t -> iter:Tree_iter.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_row_deleted :
+    ?after:bool ->
+    callback:(path:Tree_path.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_row_has_child_toggled :
+    ?after:bool ->
+    callback:(path:Tree_path.t -> iter:Tree_iter.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_row_inserted :
+    ?after:bool ->
+    callback:(path:Tree_path.t -> iter:Tree_iter.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method filter_new : Tree_path.t option -> tree_model_t
   method get_column_type : int -> Gobject.Type.t
   method get_flags : unit -> Gtk_enums.treemodelflags
