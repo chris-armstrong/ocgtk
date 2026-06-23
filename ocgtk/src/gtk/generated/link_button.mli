@@ -36,3 +36,6 @@ external get_uri : t -> string = "ml_gtk_link_button_get_uri"
 (** Retrieves the URI of the `GtkLinkButton`. *)
 
 (* Properties *)
+
+val on_activate_link :
+  ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id

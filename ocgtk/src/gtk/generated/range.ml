@@ -149,3 +149,50 @@ external get_adjustment : t -> Adjustment.t = "ml_gtk_range_get_adjustment"
 (** Get the adjustment which is the “model” object for `GtkRange`. *)
 
 (* Properties *)
+
+let on_adjust_bounds ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let value =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_double v
+        in
+        callback ~value)
+  in
+  Gobject.Signal.connect obj ~name:"adjust-bounds" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_change_value ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let scroll =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.scrolltype_of_int (Gobject.Value.get_enum_int v)
+        in
+        let value =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_double v
+        in
+        let result = callback ~scroll ~value in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"change-value" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_move_slider ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let step =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.scrolltype_of_int (Gobject.Value.get_enum_int v)
+        in
+        callback ~step)
+  in
+  Gobject.Signal.connect obj ~name:"move-slider" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_value_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"value-changed" ~callback
+    ~after:(Option.value after ~default:false)

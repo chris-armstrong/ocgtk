@@ -25,3 +25,6 @@ If the schema isn't found directly in @source and @recursive is %TRUE
 then the parent sources will also be checked.
 
 If the schema isn't found, %NULL is returned. *)
+
+external get_type : unit -> Gobject.Type.t
+  = "ml_gio_settings_schema_source_get_type"

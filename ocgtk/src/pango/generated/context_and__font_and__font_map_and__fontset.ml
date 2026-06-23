@@ -553,7 +553,8 @@ and Font_map : sig
 
   (* Properties *)
 
-  external get_item_type : t -> int = "ml_pango_font_map_get_item_type"
+  external get_item_type : t -> Gobject.Type.t
+    = "ml_pango_font_map_get_item_type"
   (** Get property: item-type *)
 
   external get_n_items : t -> int = "ml_pango_font_map_get_n_items"
@@ -630,7 +631,8 @@ end = struct
 
   (* Properties *)
 
-  external get_item_type : t -> int = "ml_pango_font_map_get_item_type"
+  external get_item_type : t -> Gobject.Type.t
+    = "ml_pango_font_map_get_item_type"
   (** Get property: item-type *)
 
   external get_n_items : t -> int = "ml_pango_font_map_get_n_items"

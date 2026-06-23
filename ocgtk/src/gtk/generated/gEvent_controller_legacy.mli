@@ -1,9 +1,14 @@
 class type event_controller_legacy_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .event_controller_t
 
-  inherit Gevent_controller_legacy_signals.event_controller_legacy_signals
+  method on_event :
+    ?after:bool ->
+    callback:(event:Ocgtk_gdk.Gdk.Event.event_t -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method as_event_controller_legacy : Event_controller_legacy.t
 end
 

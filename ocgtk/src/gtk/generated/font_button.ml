@@ -38,3 +38,11 @@ external get_modal : t -> bool = "ml_gtk_font_button_get_modal"
 (** Gets whether the dialog is modal. *)
 
 (* Properties *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_font_set ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"font-set" ~callback
+    ~after:(Option.value after ~default:false)

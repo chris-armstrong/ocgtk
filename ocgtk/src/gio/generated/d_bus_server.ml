@@ -49,3 +49,18 @@ external get_address : t -> string = "ml_g_d_bus_server_get_address"
 external get_authentication_observer : t -> D_bus_auth_observer.t
   = "ml_g_d_bus_server_get_authentication_observer"
 (** Get property: authentication-observer *)
+
+let on_new_connection ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let connection =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v
+        in
+        let result = callback ~connection in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"new-connection" ~callback:closure
+    ~after:(Option.value after ~default:false)

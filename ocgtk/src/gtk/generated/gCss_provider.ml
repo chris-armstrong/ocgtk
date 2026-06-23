@@ -1,8 +1,5 @@
-(* Signal class defined in gcss_provider_signals.ml *)
-
 class type css_provider_t = object
   inherit GStyle_provider.style_provider_t
-  inherit Gcss_provider_signals.css_provider_signals
   method load_from_bytes : Glib_bytes.t -> unit
   method load_from_data : string -> int -> unit
   method load_from_file : Ocgtk_gio.Gio.File.file_t -> unit
@@ -18,7 +15,6 @@ end
 class css_provider (obj : Css_provider.t) : css_provider_t =
   object (self)
     inherit GStyle_provider.style_provider (Style_provider.from_gobject obj)
-    inherit Gcss_provider_signals.css_provider_signals obj
 
     method load_from_bytes : Glib_bytes.t -> unit =
       fun data -> Css_provider.load_from_bytes obj data

@@ -3,16 +3,6 @@ module GMain = Ocgtk_gtk.GMain
 (* Simple Text Editor
    Demonstrates: TextView, TextBuffer, Entry, ScrolledWindow, Button *)
 
-let on_close_request window_obj callback =
-  let closure =
-    Gobject.Closure.create (fun argv ->
-        callback ();
-        Gobject.Value.set_boolean (Gobject.Closure.result argv) false)
-  in
-  ignore
-    (Gobject.Signal.connect window_obj ~name:"close-request" ~callback:closure
-       ~after:false)
-
 let () =
   ignore (GMain.init ());
 
@@ -21,7 +11,12 @@ let () =
   let window = new Window.window window_obj in
   window#set_title (Some "Simple Text Editor");
   window#set_default_size 600 400;
-  on_close_request window_obj (fun () -> GMain.quit ());
+  ignore
+    (window#on_close_request
+       ~callback:(fun () ->
+         GMain.quit ();
+         false)
+       ());
 
   (* Create vertical box for layout *)
   let vbox = new Box.box (Wrappers.Box.new_ `VERTICAL 5) in
@@ -60,13 +55,15 @@ let () =
   button_box#append (insert_btn :> Widget.widget_t);
 
   ignore
-    (insert_btn#on_clicked ~callback:(fun () ->
+    (insert_btn#on_clicked
+       ~callback:(fun () ->
          let entry_buffer = entry_#get_buffer () in
          let text = entry_buffer#get_text () in
          if text <> "" then begin
            buffer#insert_at_cursor (text ^ "\n") (-1);
            entry_buffer#set_text "" (-1)
-         end));
+         end)
+       ());
 
   (* Clear button *)
   let clear_btn =
@@ -74,7 +71,7 @@ let () =
   in
   button_box#append (clear_btn :> Widget.widget_t);
 
-  ignore (clear_btn#on_clicked ~callback:(fun () -> buffer#set_text "" (-1)));
+  ignore (clear_btn#on_clicked ~callback:(fun () -> buffer#set_text "" (-1)) ());
 
   (* Status label - updates on buffer changes *)
   let status_label = new Label.label (Wrappers.Label.new_ None) in
@@ -83,7 +80,7 @@ let () =
     status_label#set_label (Printf.sprintf "Characters: %d" char_count)
   in
   update_status ();
-  ignore (buffer#on_changed ~callback:update_status);
+  ignore (buffer#on_changed ~callback:update_status ());
   vbox#append (status_label :> Widget.widget_t);
 
   (* Show window and run main loop *)

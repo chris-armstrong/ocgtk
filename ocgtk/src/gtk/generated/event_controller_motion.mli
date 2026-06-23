@@ -16,3 +16,18 @@ external contains_pointer : t -> bool
 (** Returns if a pointer is within @self or one of its children. *)
 
 (* Properties *)
+
+val on_enter :
+  ?after:bool ->
+  t ->
+  callback:(x:float -> y:float -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_leave :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_motion :
+  ?after:bool ->
+  t ->
+  callback:(x:float -> y:float -> unit) ->
+  Gobject.Signal.handler_id

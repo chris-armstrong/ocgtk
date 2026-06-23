@@ -31,6 +31,9 @@ type axisuse = [
   | `LAST
 ]
 
+val axisuse_of_int : int -> axisuse
+val axisuse_to_int : axisuse -> int
+
 (* CrossingMode - enumeration *)
 type crossingmode = [
   (** crossing because of pointer motion. *)
@@ -58,6 +61,9 @@ type crossingmode = [
   | `DEVICE_SWITCH
 ]
 
+val crossingmode_of_int : int -> crossingmode
+val crossingmode_to_int : crossingmode -> int
+
 (* DevicePadFeature - enumeration *)
 type devicepadfeature = [
   (** a button *)
@@ -67,6 +73,9 @@ type devicepadfeature = [
   (** a straight interactive area *)
   | `STRIP
 ]
+
+val devicepadfeature_of_int : int -> devicepadfeature
+val devicepadfeature_to_int : devicepadfeature -> int
 
 (* DeviceToolType - enumeration *)
 type devicetooltype = [
@@ -88,6 +97,9 @@ type devicetooltype = [
   | `LENS
 ]
 
+val devicetooltype_of_int : int -> devicetooltype
+val devicetooltype_to_int : devicetooltype -> int
+
 (* DmabufError - enumeration *)
 type dmabuferror = [
   (** Dmabuf support is not available, because the OS
@@ -100,6 +112,9 @@ type dmabuferror = [
   | `CREATION_FAILED
 ]
 
+val dmabuferror_of_int : int -> dmabuferror
+val dmabuferror_to_int : dmabuferror -> int
+
 (* DragCancelReason - enumeration *)
 type dragcancelreason = [
   (** There is no suitable drop target. *)
@@ -109,6 +124,9 @@ type dragcancelreason = [
   (** Unspecified error. *)
   | `ERROR
 ]
+
+val dragcancelreason_of_int : int -> dragcancelreason
+val dragcancelreason_to_int : dragcancelreason -> int
 
 (* EventType - enumeration *)
 type eventtype = [
@@ -182,6 +200,9 @@ field. *)
   | `EVENT_LAST
 ]
 
+val eventtype_of_int : int -> eventtype
+val eventtype_to_int : eventtype -> int
+
 (* FullscreenMode - enumeration *)
 type fullscreenmode = [
   (** Fullscreen on current monitor only. *)
@@ -189,6 +210,9 @@ type fullscreenmode = [
   (** Span across all monitors when fullscreen. *)
   | `ALL_MONITORS
 ]
+
+val fullscreenmode_of_int : int -> fullscreenmode
+val fullscreenmode_to_int : fullscreenmode -> int
 
 (* GLError - enumeration *)
 type glerror = [
@@ -203,6 +227,9 @@ type glerror = [
   (** The shader linking failed *)
   | `LINK_FAILED
 ]
+
+val glerror_of_int : int -> glerror
+val glerror_to_int : glerror -> int
 
 (* Gravity - enumeration *)
 type gravity = [
@@ -229,6 +256,9 @@ type gravity = [
   | `STATIC
 ]
 
+val gravity_of_int : int -> gravity
+val gravity_to_int : gravity -> int
+
 (* InputSource - enumeration *)
 type inputsource = [
   (** the device is a mouse. (This will be reported for the core
@@ -251,6 +281,9 @@ type inputsource = [
   | `TABLET_PAD
 ]
 
+val inputsource_of_int : int -> inputsource
+val inputsource_to_int : inputsource -> int
+
 (* KeyMatch - enumeration *)
 type keymatch = [
   (** The key event does not match *)
@@ -261,6 +294,9 @@ type keymatch = [
   (** The key event matches *)
   | `EXACT
 ]
+
+val keymatch_of_int : int -> keymatch
+val keymatch_to_int : keymatch -> int
 
 (* MemoryFormat - enumeration *)
 type memoryformat = [
@@ -344,6 +380,9 @@ the alpha value. *)
   | `N_FORMATS
 ]
 
+val memoryformat_of_int : int -> memoryformat
+val memoryformat_to_int : memoryformat -> int
+
 (* NotifyType - enumeration *)
 type notifytype = [
   (** the surface is entered from an ancestor or
@@ -367,6 +406,9 @@ type notifytype = [
   | `UNKNOWN
 ]
 
+val notifytype_of_int : int -> notifytype
+val notifytype_to_int : notifytype -> int
+
 (* ScrollDirection - enumeration *)
 type scrolldirection = [
   (** the surface is scrolled up. *)
@@ -382,6 +424,9 @@ type scrolldirection = [
   | `SMOOTH
 ]
 
+val scrolldirection_of_int : int -> scrolldirection
+val scrolldirection_to_int : scrolldirection -> int
+
 (* ScrollUnit - enumeration *)
 type scrollunit = [
   (** The delta is in number of wheel clicks. *)
@@ -390,6 +435,9 @@ type scrollunit = [
   on screen. *)
   | `SURFACE
 ]
+
+val scrollunit_of_int : int -> scrollunit
+val scrollunit_to_int : scrollunit -> int
 
 (* SubpixelLayout - enumeration *)
 type subpixellayout = [
@@ -406,6 +454,9 @@ type subpixellayout = [
   (** The layout is vertical, the order is BGR *)
   | `VERTICAL_BGR
 ]
+
+val subpixellayout_of_int : int -> subpixellayout
+val subpixellayout_to_int : subpixellayout -> int
 
 (* SurfaceEdge - enumeration *)
 type surfaceedge = [
@@ -427,6 +478,9 @@ type surfaceedge = [
   | `SOUTH_EAST
 ]
 
+val surfaceedge_of_int : int -> surfaceedge
+val surfaceedge_to_int : surfaceedge -> int
+
 (* TextureError - enumeration *)
 type textureerror = [
   (** Not enough memory to handle this image *)
@@ -440,12 +494,18 @@ type textureerror = [
   | `UNSUPPORTED_FORMAT
 ]
 
+val textureerror_of_int : int -> textureerror
+val textureerror_to_int : textureerror -> int
+
 (* TitlebarGesture - enumeration *)
 type titlebargesture = [
   | `DOUBLE_CLICK
   | `RIGHT_CLICK
   | `MIDDLE_CLICK
 ]
+
+val titlebargesture_of_int : int -> titlebargesture
+val titlebargesture_to_int : titlebargesture -> int
 
 (* TouchpadGesturePhase - enumeration *)
 type touchpadgesturephase = [
@@ -461,6 +521,9 @@ type touchpadgesturephase = [
   | `CANCEL
 ]
 
+val touchpadgesturephase_of_int : int -> touchpadgesturephase
+val touchpadgesturephase_to_int : touchpadgesturephase -> int
+
 (* VulkanError - enumeration *)
 type vulkanerror = [
   (** Vulkan is not supported on this backend or has not been
@@ -469,6 +532,9 @@ type vulkanerror = [
   (** Vulkan support is not available on this Surface *)
   | `NOT_AVAILABLE
 ]
+
+val vulkanerror_of_int : int -> vulkanerror
+val vulkanerror_to_int : vulkanerror -> int
 
 (* AnchorHints - bitfield/flags *)
 type anchorhints_flag = [
@@ -493,6 +559,9 @@ type anchorhints_flag = [
 ]
 
 type anchorhints = anchorhints_flag list
+
+val anchorhints_of_int : int -> anchorhints
+val anchorhints_to_int : anchorhints -> int
 
 (* AxisFlags - bitfield/flags *)
 type axisflags_flag = [
@@ -522,6 +591,9 @@ type axisflags_flag = [
 
 type axisflags = axisflags_flag list
 
+val axisflags_of_int : int -> axisflags
+val axisflags_to_int : axisflags -> int
+
 (* DragAction - bitfield/flags *)
 type dragaction_flag = [
   (** Copy the data. *)
@@ -538,6 +610,9 @@ type dragaction_flag = [
 ]
 
 type dragaction = dragaction_flag list
+
+val dragaction_of_int : int -> dragaction
+val dragaction_to_int : dragaction -> int
 
 (* FrameClockPhase - bitfield/flags *)
 type frameclockphase_flag = [
@@ -561,6 +636,9 @@ type frameclockphase_flag = [
 
 type frameclockphase = frameclockphase_flag list
 
+val frameclockphase_of_int : int -> frameclockphase
+val frameclockphase_to_int : frameclockphase -> int
+
 (* GLAPI - bitfield/flags *)
 type glapi_flag = [
   (** The OpenGL API *)
@@ -570,6 +648,9 @@ type glapi_flag = [
 ]
 
 type glapi = glapi_flag list
+
+val glapi_of_int : int -> glapi
+val glapi_to_int : glapi -> int
 
 (* ModifierType - bitfield/flags *)
 type modifiertype_flag = [
@@ -606,6 +687,9 @@ type modifiertype_flag = [
 
 type modifiertype = modifiertype_flag list
 
+val modifiertype_of_int : int -> modifiertype
+val modifiertype_to_int : modifiertype -> int
+
 (* PaintableFlags - bitfield/flags *)
 type paintableflags_flag = [
   (** The size is immutable.
@@ -619,6 +703,9 @@ type paintableflags_flag = [
 ]
 
 type paintableflags = paintableflags_flag list
+
+val paintableflags_of_int : int -> paintableflags
+val paintableflags_to_int : paintableflags -> int
 
 (* SeatCapabilities - bitfield/flags *)
 type seatcapabilities_flag = [
@@ -641,6 +728,9 @@ type seatcapabilities_flag = [
 ]
 
 type seatcapabilities = seatcapabilities_flag list
+
+val seatcapabilities_of_int : int -> seatcapabilities
+val seatcapabilities_to_int : seatcapabilities -> int
 
 (* ToplevelState - bitfield/flags *)
 type toplevelstate_flag = [
@@ -681,4 +771,7 @@ type toplevelstate_flag = [
 ]
 
 type toplevelstate = toplevelstate_flag list
+
+val toplevelstate_of_int : int -> toplevelstate
+val toplevelstate_to_int : toplevelstate -> int
 

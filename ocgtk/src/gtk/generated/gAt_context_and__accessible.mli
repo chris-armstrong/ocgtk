@@ -1,5 +1,7 @@
 class type at_context_t = object
-  inherit Gat_context_signals.at_context_signals
+  method on_state_change :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_accessible : unit -> accessible_t
   method get_accessible_role : unit -> Gtk_enums.accessiblerole
   method display : Ocgtk_gdk.Gdk.Display.display_t

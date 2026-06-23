@@ -1,27 +1,188 @@
 # Todos
 
-A high level overview of porting and cleanup tasks needed to get ocgtk4 to a 1.0
+Outstanding work items, known bugs, and intentional limitations for ocgtk,
+with enough context to understand what needs to be done and why it is non-trivial.
 
-## Known bugs
+## Missing Features
 
-See [KNOWN_BUGS.md](./KNOWN_BUGS.md)
+### Static functions
 
-## Split up into several sub-libraries ✅ DONE
+`<function>` elements in GIR (standalone/namespace-level functions with no
+implicit `self`, e.g. `gtk_show_uri`, `pango_parse_markup`) are not yet
+generated. ~2,001 such functions exist across all namespaces. Some are required
+for demo applications and common tasks. Tracked as ROADMAP P4.
 
-All 9 GIR namespaces are generated as separate libraries via `scripts/generate-bindings.sh`:
-Cairo, Gio, Gdk, Graphene, GdkPixbuf, Pango, PangoCairo, Gsk, Gtk.
+### Record field accessors
 
-Cross-namespace type resolution works via reference files and `<ns>_decls.h` headers. See [CROSS_NAMESPACE_PLAN.md](./CROSS_NAMESPACE_PLAN.md).
+Accessing fields of non-opaque record types is not supported. Users cannot
+access struct fields without writing manual C stubs.
 
-## Class hierarchy
+### Property observer / `notify::property-name`
 
-* ~~Generate all classes in a class hierarchy with #as_<type>, not just those in the Widget hierarchy (e.g. Expression)~~ — Done: hierarchy_info abstraction removed (was dead code). Parent chain drives polymorphic variant types. Layer 1 accessors not yet generated from parent chain.
-* Update methods that take a class value like "#expression" (which means anything polymorphically implementing that interface) to work
+Property change notification wrappers (`notify::property-name` signal
+connection helpers, property binding helpers, two-way synchronization) are not
+generated.
 
-## Non-void signals
+### GTK Builder / Glade XML integration
 
-We don't handle non-void signals / callbacks at this time. Only parameterless void signals are generated.
+Widget lookup from builder XML, signal autoconnection, template class support,
+and Glade file loading helpers are not implemented.
 
-## Interface generation
+### Constant bindings
 
-Interfaces are generated as classes, but need to be generated as virtual classes with virtual methods (and then inherited) or class types to be useful.
+GIR `<constant>` elements are not generated. 2,536 constants exist across all
+namespaces (2,287 are GDK key syms). Required for `PANGO_SCALE`,
+`GTK_STYLE_PROVIDER_PRIORITY_*`, and GDK key constants. Tracked as ROADMAP
+P3. Implementation plan exists at `gir_gen/docs/plans/constant-bindings.md`.
+
+### Interface generation
+
+Interfaces are generated as ordinary classes but should be generated as virtual
+classes (or class types) with virtual methods that concrete classes inherit and
+implement. `Obj.magic` casts have been eliminated — interface access now uses
+`from_gobject` with runtime `g_type_is_a()` checks. Concrete classes correctly
+`inherit` interface classes (e.g. `CssProvider` implements `StyleProvider`,
+`Entry` implements `Editable`). The remaining work is compile-time type safety
+via virtual class types. Tracked as ROADMAP P6.
+
+## Signal Handling
+
+Signals are partially implemented:
+
+- Parameterless void signals are fully generated.
+- Signals with primitive parameters (`int`, `bool`, `float`, `string`, enums,
+  bitfields) and GObject class/interface parameters are generated via
+  `signal_marshaller.ml`.
+- Signals with return values are supported for primitive types only.
+- Signals with unsupported types (`GdkEvent`, custom structs, callbacks,
+  `GArray`, `GVariant`) are skipped.
+- Detailed signals (`notify::property-name`) are deferred.
+- Signal flags (`when`, `action`, `no-recurse`, `no-hooks`, `detailed`) are not
+  parsed from GIR and are dropped by the parser.
+- ~100 signals remain skipped (mostly boxed records, callbacks, non-In
+direction params, and the `GObject.Object` meta-type).
+
+## Type System and Mappings
+
+### Byte-buffer arrays
+
+`void*`/`gpointer` byte-buffer arrays (element type `guint8`) cannot be
+generated. Many GTK/GIO APIs pass binary data as a `(void* buffer, gsize count)`
+pair; the idiomatic OCaml binding should expose the buffer as `Bytes.t` or
+`string` and derive the length automatically. The `guint8` type mapping is
+intentionally omitted from `type_mappings.ml` to avoid generating invalid stubs
+until this infrastructure exists.
+
+### Array length hiding
+
+The companion length parameter for length-based arrays is hidden from the C stub
+but still visible in the Layer 1 OCaml signature. It should be dropped from the
+OCaml API entirely with the length derived from `Array.length`. Tracked as
+ROADMAP P2.
+
+### Array-typed properties
+
+Properties whose type is an array are skipped by `filtering.ml`. C stub
+generation code exists in `c_stub_property.ml` (handles `g_value_get_boxed`/
+`g_value_set_boxed`), but the OCaml Layer 1 signature generation does not emit
+array-typed properties.
+
+### Out/InOut parameters
+
+Out parameters are fully supported (primitive, struct, array). Multiple out
+parameters returning tuples ARE generated (e.g. `Pango.Matrix.get_font_scale_factors`
+returns `float * float`). InOut parameters have a type mismatch bug: the C stub
+returns modified values in a tuple, but the OCaml signature declares `unit`,
+silently discarding them. Out-param arrays with no length are skipped.
+Double-pointer out-params not marked as arrays are skipped.
+
+### Callback parameters in methods
+
+Callback parameters in methods are not supported (async APIs, custom
+callbacks). Callbacks in signals are also unsupported. Tracked as ROADMAP
+Milestone 4.
+
+### Callback type definitions
+
+Complex callback type definitions are not fully extracted from GIR. 101
+callback types appear in function/method signatures. Required for fully typed
+callback parameters. Tracked as ROADMAP P5.
+
+### Deferred GObject/GLib type mappings
+
+- **GObject.Value** — Works for property accessors (inline `GValue` in C stubs)
+  and signal marshalling. Methods that take/return `GObject.Value` directly are
+  skipped: no type mapping entry exists, and `Val_GValue` (c→ml) is not
+  implemented. ~23 methods in GTK/GDK and ~21 standalone functions affected
+  (e.g. `TreeModel.set_value`, `Builder.value_from_string`,
+  `Expression.evaluate`).
+- **GObject.Closure** — Only 16 hits in GIR. Most closure usage goes through the
+  signal system which is already handled. Low priority.
+- **GLib.Quark, IOCondition, String, SeekType** — Low standalone unlock
+  potential; methods using them also need other missing types.
+- **GLib.DateTime** — 90 hits. Moderate priority; used in `Gtk.Calendar` and
+  `GFileInfo` date properties.
+- **GLib.KeyFile** — 50 hits. Low intersection potential.
+- **GLib.Source** — 37 hits. Most methods use callbacks that can't be
+  auto-generated.
+
+### GHashTable, unions
+
+`GHashTable` and union types are not handled. `GVariant` is now handled
+(see `gir_gen/docs/plans/gobject_glib_type_mappings.md` Phase 3.1).
+
+### Varargs parameters
+
+`<varargs>` parameters are not parsed correctly and default to `void`. Methods
+using them are suppressed, but handling should be made explicit rather than
+relying on a type-defaulting side-effect.
+
+### Virtual methods
+
+`<virtual-method>` elements are not parsed or generated.
+
+### `<alias>` GIR elements
+
+Only 4 instances exist; low priority.
+
+### `foreign="1"` attribute on GIR records
+
+Needed to distinguish opaque cairo types from value records. Tracked in
+ROADMAP Backlog.
+
+## Documentation and Testing
+
+### Documentation
+
+Generated and user-facing documentation is essentially absent. GIR documentation
+strings are parsed but not emitted in generated code. `dune build @doc` is not
+configured. Tracked as ROADMAP Milestone 3.
+
+### Test coverage
+
+Unit, integration, and C compilation test coverage is incomplete. Missing:
+- Runtime functionality tests with actual GTK4 library
+- Performance benchmarks
+- Example program generation
+
+### `dune-modules.sexp` cleanup
+
+Currently unused (all dune files use `(modules :standard)`). Tracked in ROADMAP
+Backlog.
+
+## Prerequisite / Roadmap Items
+
+The following are tracked in `ROADMAP.md` as prerequisites for upcoming
+milestones:
+
+1. **P1. GObject/GLib Type Mappings** — Task 1.1 done (`GObject.Object`,
+   `GObject.InitiallyUnowned`). Remaining tasks deferred (see above).
+2. **P2. Elide Length-Linked Array Parameters** — Hide companion length params
+   at the OCaml API level.
+3. **P3. GIR `<constant>` Bindings** — 2,536 constants (mostly GDK key syms).
+4. **P4. GIR `<function>` Bindings** — 2,001 standalone functions.
+5. **P5. Parse `<callback>` Type Definitions** — 101 callback types.
+6. **P6. Interface Support** — Proper class type generation and wiring into
+   the class hierarchy.
+7. **P7. GList/GSList Interface Element Types** — Detect interface types and
+   use pointer-based list handling instead of value-type copying.

@@ -1831,44 +1831,44 @@ value Val_PangoFontMask(PangoFontMask flags) {
 
   if (flags & PANGO_FONT_MASK_FAMILY) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("FAMILY"))); /* `FAMILY */
+    Store_field(cons, 0, caml_hash_variant("FAMILY")); /* `FAMILY */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & PANGO_FONT_MASK_STYLE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("STYLE"))); /* `STYLE */
+    Store_field(cons, 0, caml_hash_variant("STYLE")); /* `STYLE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & PANGO_FONT_MASK_VARIANT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("VARIANT"))); /* `VARIANT */
+    Store_field(cons, 0, caml_hash_variant("VARIANT")); /* `VARIANT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & PANGO_FONT_MASK_WEIGHT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("WEIGHT"))); /* `WEIGHT */
+    Store_field(cons, 0, caml_hash_variant("WEIGHT")); /* `WEIGHT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & PANGO_FONT_MASK_STRETCH) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("STRETCH"))); /* `STRETCH */
+    Store_field(cons, 0, caml_hash_variant("STRETCH")); /* `STRETCH */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & PANGO_FONT_MASK_SIZE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SIZE"))); /* `SIZE */
+    Store_field(cons, 0, caml_hash_variant("SIZE")); /* `SIZE */
     Store_field(cons, 1, result);
     result = cons;
   }
 #if PANGO_VERSION_CHECK(1,16,0)
   if (flags & PANGO_FONT_MASK_GRAVITY) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("GRAVITY"))); /* `GRAVITY */
+    Store_field(cons, 0, caml_hash_variant("GRAVITY")); /* `GRAVITY */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -1877,7 +1877,7 @@ value Val_PangoFontMask(PangoFontMask flags) {
 #if PANGO_VERSION_CHECK(1,42,0)
   if (flags & PANGO_FONT_MASK_VARIATIONS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("VARIATIONS"))); /* `VARIATIONS */
+    Store_field(cons, 0, caml_hash_variant("VARIATIONS")); /* `VARIATIONS */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -1891,7 +1891,7 @@ value Val_PangoFontMask(PangoFontMask flags) {
 PangoFontMask PangoFontMask_val(value list) {
   PangoFontMask result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("FAMILY")) result |= PANGO_FONT_MASK_FAMILY; /* `FAMILY */
     else if (tag == caml_hash_variant("STYLE")) result |= PANGO_FONT_MASK_STYLE; /* `STYLE */
     else if (tag == caml_hash_variant("VARIANT")) result |= PANGO_FONT_MASK_VARIANT; /* `VARIANT */
@@ -1924,13 +1924,13 @@ value Val_PangoLayoutDeserializeFlags(PangoLayoutDeserializeFlags flags) {
 
   if (flags & PANGO_LAYOUT_DESERIALIZE_DEFAULT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DEFAULT"))); /* `DEFAULT */
+    Store_field(cons, 0, caml_hash_variant("DEFAULT")); /* `DEFAULT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & PANGO_LAYOUT_DESERIALIZE_CONTEXT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("CONTEXT"))); /* `CONTEXT */
+    Store_field(cons, 0, caml_hash_variant("CONTEXT")); /* `CONTEXT */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -1942,7 +1942,7 @@ value Val_PangoLayoutDeserializeFlags(PangoLayoutDeserializeFlags flags) {
 PangoLayoutDeserializeFlags PangoLayoutDeserializeFlags_val(value list) {
   PangoLayoutDeserializeFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("DEFAULT")) result |= PANGO_LAYOUT_DESERIALIZE_DEFAULT; /* `DEFAULT */
     else if (tag == caml_hash_variant("CONTEXT")) result |= PANGO_LAYOUT_DESERIALIZE_CONTEXT; /* `CONTEXT */
     list = Field(list, 1);
@@ -1961,19 +1961,19 @@ value Val_PangoLayoutSerializeFlags(PangoLayoutSerializeFlags flags) {
 
   if (flags & PANGO_LAYOUT_SERIALIZE_DEFAULT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("DEFAULT"))); /* `DEFAULT */
+    Store_field(cons, 0, caml_hash_variant("DEFAULT")); /* `DEFAULT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & PANGO_LAYOUT_SERIALIZE_CONTEXT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("CONTEXT"))); /* `CONTEXT */
+    Store_field(cons, 0, caml_hash_variant("CONTEXT")); /* `CONTEXT */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & PANGO_LAYOUT_SERIALIZE_OUTPUT) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("OUTPUT"))); /* `OUTPUT */
+    Store_field(cons, 0, caml_hash_variant("OUTPUT")); /* `OUTPUT */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -1985,7 +1985,7 @@ value Val_PangoLayoutSerializeFlags(PangoLayoutSerializeFlags flags) {
 PangoLayoutSerializeFlags PangoLayoutSerializeFlags_val(value list) {
   PangoLayoutSerializeFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("DEFAULT")) result |= PANGO_LAYOUT_SERIALIZE_DEFAULT; /* `DEFAULT */
     else if (tag == caml_hash_variant("CONTEXT")) result |= PANGO_LAYOUT_SERIALIZE_CONTEXT; /* `CONTEXT */
     else if (tag == caml_hash_variant("OUTPUT")) result |= PANGO_LAYOUT_SERIALIZE_OUTPUT; /* `OUTPUT */
@@ -2005,13 +2005,13 @@ value Val_PangoShapeFlags(PangoShapeFlags flags) {
 
   if (flags & PANGO_SHAPE_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & PANGO_SHAPE_ROUND_POSITIONS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("ROUND_POSITIONS"))); /* `ROUND_POSITIONS */
+    Store_field(cons, 0, caml_hash_variant("ROUND_POSITIONS")); /* `ROUND_POSITIONS */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2023,7 +2023,7 @@ value Val_PangoShapeFlags(PangoShapeFlags flags) {
 PangoShapeFlags PangoShapeFlags_val(value list) {
   PangoShapeFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= PANGO_SHAPE_NONE; /* `NONE */
     else if (tag == caml_hash_variant("ROUND_POSITIONS")) result |= PANGO_SHAPE_ROUND_POSITIONS; /* `ROUND_POSITIONS */
     list = Field(list, 1);
@@ -2042,25 +2042,25 @@ value Val_PangoShowFlags(PangoShowFlags flags) {
 
   if (flags & PANGO_SHOW_NONE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("NONE"))); /* `NONE */
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & PANGO_SHOW_SPACES) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("SPACES"))); /* `SPACES */
+    Store_field(cons, 0, caml_hash_variant("SPACES")); /* `SPACES */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & PANGO_SHOW_LINE_BREAKS) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("LINE_BREAKS"))); /* `LINE_BREAKS */
+    Store_field(cons, 0, caml_hash_variant("LINE_BREAKS")); /* `LINE_BREAKS */
     Store_field(cons, 1, result);
     result = cons;
   }
   if (flags & PANGO_SHOW_IGNORABLES) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, Val_int(caml_hash_variant("IGNORABLES"))); /* `IGNORABLES */
+    Store_field(cons, 0, caml_hash_variant("IGNORABLES")); /* `IGNORABLES */
     Store_field(cons, 1, result);
     result = cons;
   }
@@ -2072,7 +2072,7 @@ value Val_PangoShowFlags(PangoShowFlags flags) {
 PangoShowFlags PangoShowFlags_val(value list) {
   PangoShowFlags result = 0;
   while (list != Val_emptylist) {
-    int tag = Int_val(Field(list, 0));
+    value tag = Field(list, 0);
     if (tag == caml_hash_variant("NONE")) result |= PANGO_SHOW_NONE; /* `NONE */
     else if (tag == caml_hash_variant("SPACES")) result |= PANGO_SHOW_SPACES; /* `SPACES */
     else if (tag == caml_hash_variant("LINE_BREAKS")) result |= PANGO_SHOW_LINE_BREAKS; /* `LINE_BREAKS */

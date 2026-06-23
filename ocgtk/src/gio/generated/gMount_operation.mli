@@ -1,5 +1,30 @@
 class type mount_operation_t = object
-  inherit Gmount_operation_signals.mount_operation_signals
+  method on_aborted :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_ask_password :
+    ?after:bool ->
+    callback:
+      (message:string ->
+      default_user:string ->
+      default_domain:string ->
+      flags:Gio_enums.askpasswordflags ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_reply :
+    ?after:bool ->
+    callback:(result:Gio_enums.mountoperationresult -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_show_unmount_progress :
+    ?after:bool ->
+    callback:(message:string -> time_left:Int64.t -> bytes_left:Int64.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_anonymous : unit -> bool
   method get_choice : unit -> int
   method get_domain : unit -> string option

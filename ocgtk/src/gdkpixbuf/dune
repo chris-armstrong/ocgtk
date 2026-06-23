@@ -27,7 +27,6 @@
  (wrapped true)
  (flags :standard -w -3-6-9-27-32-33-34-50)
  (modules :standard)
- (modules_without_implementation gdkpixbuf_enums)
  (foreign_stubs
   (language c)
   (names ml_gdkpixbuf)

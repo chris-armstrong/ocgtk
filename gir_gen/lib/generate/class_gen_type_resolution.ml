@@ -3,10 +3,7 @@
    and class_gen-specific logic for polymorphic types and structural types.
  *)
 
-[@@@warning "-32-33"]
-
 open StdLabels
-open Printf
 open Types
 
 (* Use Class_gen_helpers for shared functions
@@ -14,82 +11,68 @@ open Types
    because opens don't propagate through include *)
 include Class_gen_helpers
 
+(** Qualify a layer 2 class type name (with _t suffix) with the module prefix
+    when the class is from a different module. *)
+let qualify_layer2_class_type ~current_layer2_module lc =
+  if String.equal current_layer2_module lc.class_module then lc.class_type
+  else lc.class_module ^ "." ^ lc.class_type
+
+(** Like qualify_layer2_class but returns the bare class name (no _t suffix)
+    for use in [new] expressions. *)
+let qualify_layer2_class_name ~current_layer2_module lc =
+  if String.equal current_layer2_module lc.class_module then lc.class_ml_name
+  else lc.class_module ^ "." ^ lc.class_ml_name
+
+let find_layer2_class_for_type ~ctx gir_type =
+  match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
+  | Some { layer2_class = Some lc; _ } -> Some lc
+  | _ -> None
+
 (** Resolve a GIR type to its layer 2 class type reference (with _t suffix).
     Returns the fully qualified type reference if found, or None if no mapping
     exists. If the class is in the current module, returns just the type name.
 *)
 let resolve_layer2_class_ref ~ctx ~current_layer2_module ~(gir_type : gir_type)
     =
-  match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
-  | Some { layer2_class = Some layer2_class; _ } ->
-      let qualified =
-        if String.equal current_layer2_module layer2_class.class_module then
-          layer2_class.class_type
-        else layer2_class.class_module ^ "." ^ layer2_class.class_type
-      in
-      Some qualified
-  | _ -> None
+  find_layer2_class_for_type ~ctx gir_type
+  |> Option.map (qualify_layer2_class_type ~current_layer2_module)
 
 (** Like resolve_layer2_class_ref but returns the class name (without _t
     suffix), for use in [new] expressions. *)
 let resolve_layer2_class_name ~ctx ~current_layer2_module ~(gir_type : gir_type)
     =
-  match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
-  | Some { layer2_class = Some layer2_class; _ } ->
-      (* Strip the _t suffix to get the class name *)
-      let class_name =
-        let ct = layer2_class.class_type in
-        if Filename.check_suffix ct "_t" then
-          String.sub ct ~pos:0 ~len:(String.length ct - 2)
-        else ct
-      in
-      let qualified =
-        if String.equal current_layer2_module layer2_class.class_module then
-          class_name
-        else layer2_class.class_module ^ "." ^ class_name
-      in
-      Some qualified
-  | _ -> None
+  find_layer2_class_for_type ~ctx gir_type
+  |> Option.map (qualify_layer2_class_name ~current_layer2_module)
 
 (** Resolve a GIR type to its OCaml type string. Returns the OCaml type
     representation with proper nullable handling. Returns None if no type
     mapping exists. *)
 let resolve_ocaml_type ~ctx ~current_layer2_module ~(gir_type : gir_type) =
-  (* Special case: GList/GSList where the element type has a Layer 2 class.
-     Return the L2 class type list rather than the raw L1 type list. *)
+  let qualify = qualify_layer2_class_type ~current_layer2_module in
   let list_l2_type =
     if Type_mappings.is_list_type gir_type then
       match gir_type.array with
-      | Some arr -> (
-          match
-            Type_mappings.find_type_mapping_for_gir_type ~ctx arr.element_type
-          with
-          | Some { layer2_class = Some lc; _ } ->
-              let qualified =
-                if String.equal current_layer2_module lc.class_module then
-                  lc.class_type
-                else lc.class_module ^ "." ^ lc.class_type
-              in
-              Some (qualified ^ " list")
-          | _ -> None)
+      | Some arr ->
+        (match find_layer2_class_for_type ~ctx arr.element_type with
+         | Some lc -> Some (qualify lc ^ " list")
+         | None -> None)
       | None -> None
     else None
   in
-  (match list_l2_type with
+  let base_type =
+    match list_l2_type with
     | Some t -> Some t
     | None -> (
-        match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
-        | Some { layer2_class = Some layer2_class; _ } ->
-            let qualified =
-              if String.equal current_layer2_module layer2_class.class_module
-              then layer2_class.class_type
-              else layer2_class.class_module ^ "." ^ layer2_class.class_type
-            in
-            Some qualified
-        | Some mapping -> Some mapping.ocaml_type
-        | None -> None))
-  |> Option.map (fun base ->
-      if gir_type.nullable then base ^ " option" else base)
+      match find_layer2_class_for_type ~ctx gir_type with
+      | Some lc -> Some (qualify lc)
+      | None ->
+        (match Type_mappings.find_type_mapping_for_gir_type ~ctx gir_type with
+         | Some mapping -> Some mapping.ocaml_type
+         | None -> None))
+  in
+  match base_type with
+  | Some base when gir_type.nullable -> Some (base ^ " option")
+  | _ -> base_type
 
 let map_param_sig ~ctx ~same_cluster_classes:_ ~current_layer2_module p =
   (* Regular type *)

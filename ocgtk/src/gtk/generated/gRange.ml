@@ -1,13 +1,32 @@
-(* Signal class defined in grange_signals.ml *)
-
 class type range_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GAccessible_range.accessible_range_t
   inherit GOrientable.orientable_t
-  inherit Grange_signals.range_signals
+
+  method on_adjust_bounds :
+    ?after:bool ->
+    callback:(value:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_change_value :
+    ?after:bool ->
+    callback:(scroll:Gtk_enums.scrolltype -> value:float -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_move_slider :
+    ?after:bool ->
+    callback:(step:Gtk_enums.scrolltype -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_value_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_adjustment : unit -> GAdjustment.adjustment_t
   method get_fill_level : unit -> float
   method get_flippable : unit -> bool
@@ -35,10 +54,10 @@ end
 class range (obj : Range.t) : range_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
@@ -46,7 +65,18 @@ class range (obj : Range.t) : range_t =
       GAccessible_range.accessible_range (Accessible_range.from_gobject obj)
 
     inherit GOrientable.orientable (Orientable.from_gobject obj)
-    inherit Grange_signals.range_signals obj
+
+    method on_adjust_bounds ?(after = false) ~callback () =
+      Range.on_adjust_bounds ~after self#as_range ~callback
+
+    method on_change_value ?(after = false) ~callback () =
+      Range.on_change_value ~after self#as_range ~callback
+
+    method on_move_slider ?(after = false) ~callback () =
+      Range.on_move_slider ~after self#as_range ~callback
+
+    method on_value_changed ?(after = false) ~callback () =
+      Range.on_value_changed ~after self#as_range ~callback
 
     method get_adjustment : unit -> GAdjustment.adjustment_t =
       fun () -> new GAdjustment.adjustment (Range.get_adjustment obj)

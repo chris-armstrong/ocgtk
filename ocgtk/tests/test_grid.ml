@@ -1,4 +1,4 @@
-(** Test suite for Gtk.Grid module (Phase 4.3)
+(** Test suite for Gtk.Grid module.
 
     This test file verifies:
     - GtkGrid module compiles and types are accessible
@@ -327,7 +327,7 @@ let test_ggrid_with_nested_containers () =
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =
-  run "Comprehensive Gtk.Grid Tests (Phase 4.3)"
+  run "Comprehensive Gtk.Grid Tests"
     [
       ( "module",
         [

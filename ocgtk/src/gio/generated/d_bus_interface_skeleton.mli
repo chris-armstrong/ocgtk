@@ -87,3 +87,9 @@ external get_g_flags : t -> Gio_enums.dbusinterfaceskeletonflags
 external set_g_flags : t -> Gio_enums.dbusinterfaceskeletonflags -> unit
   = "ml_g_d_bus_interface_skeleton_set_g_flags"
 (** Set property: g-flags *)
+
+val on_g_authorize_method :
+  ?after:bool ->
+  t ->
+  callback:(invocation:D_bus_method_invocation.t -> bool) ->
+  Gobject.Signal.handler_id

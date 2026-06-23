@@ -43,6 +43,12 @@ value Val_GUnixMountEntry_option(const GUnixMountEntry *ptr) {
 
 #if !(defined(_WIN32))
 
+CAMLprim value ml_gio_unix_mount_entry_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(g_unix_mount_entry_get_type()));
+}
+
 #else
 
 

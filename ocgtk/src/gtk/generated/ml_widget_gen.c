@@ -1018,6 +1018,7 @@ CAMLexport CAMLprim value ml_gtk_widget_get_font_options(value self)
 CAMLparam1(self);
 
 const cairo_font_options_t* result = gtk_widget_get_font_options(GtkWidget_val(self));
+if (result) result = g_boxed_copy(cairo_gobject_font_options_get_type(), result);
 CAMLreturn(Val_option(result, Val_cairo_font_options_t));
 }
 

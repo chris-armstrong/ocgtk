@@ -47,3 +47,6 @@ used and its use count is increased.
 
 Note that @info cannot be modified until
 g_dbus_interface_info_cache_release() is called. *)
+
+external get_type : unit -> Gobject.Type.t
+  = "ml_gio_d_bus_interface_info_get_type"

@@ -1,4 +1,4 @@
-(* Phase 5.4 Range Widget Tests *)
+(* Range Widget Tests *)
 
 open Alcotest
 open Ocgtk_gtk.Gtk

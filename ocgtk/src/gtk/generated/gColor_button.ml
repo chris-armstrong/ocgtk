@@ -1,12 +1,16 @@
-(* Signal class defined in gcolor_button_signals.ml *)
-
 class type color_button_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GColor_chooser.color_chooser_t
-  inherit Gcolor_button_signals.color_button_signals
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_color_set :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_modal : unit -> bool
   method get_title : unit -> string
   method set_modal : bool -> unit
@@ -20,15 +24,21 @@ end
 class color_button (obj : Color_button.t) : color_button_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
     inherit GColor_chooser.color_chooser (Color_chooser.from_gobject obj)
-    inherit Gcolor_button_signals.color_button_signals obj
+
+    method on_activate ?(after = false) ~callback () =
+      Color_button.on_activate ~after self#as_color_button ~callback
+
+    method on_color_set ?(after = false) ~callback () =
+      Color_button.on_color_set ~after self#as_color_button ~callback
+
     method get_modal : unit -> bool = fun () -> Color_button.get_modal obj
     method get_title : unit -> string = fun () -> Color_button.get_title obj
 

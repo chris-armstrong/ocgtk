@@ -40,7 +40,8 @@ external get_attributes : t -> string option
 
 (* Properties *)
 
-external get_item_type : t -> int = "ml_gtk_bookmark_list_get_item_type"
+external get_item_type : t -> Gobject.Type.t
+  = "ml_gtk_bookmark_list_get_item_type"
 (** Get property: item-type *)
 
 external get_loading : t -> bool = "ml_gtk_bookmark_list_get_loading"

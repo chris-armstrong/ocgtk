@@ -37,3 +37,32 @@ external get_connection : t -> D_bus_connection.t
 external get_object_path : t -> string
   = "ml_g_d_bus_object_manager_client_get_object_path"
 (** Get property: object-path *)
+
+let on_interface_proxy_signal ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let object_proxy =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v
+        in
+        let interface_proxy =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_object_exn v
+        in
+        let sender_name =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_string v
+        in
+        let signal_name =
+          let v = Gobject.Closure.nth argv ~pos:4 in
+          Gobject.Value.get_string v
+        in
+        let parameters =
+          let v = Gobject.Closure.nth argv ~pos:5 in
+          Gobject.Value.get_variant v
+        in
+        callback ~object_proxy ~interface_proxy ~sender_name ~signal_name
+          ~parameters)
+  in
+  Gobject.Signal.connect obj ~name:"interface-proxy-signal" ~callback:closure
+    ~after:(Option.value after ~default:false)

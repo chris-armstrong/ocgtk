@@ -6,3 +6,5 @@ type t = [ `event_sequence ] Gobject.obj
     touch events. *)
 
 (* Methods *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gdk_event_sequence_get_type"

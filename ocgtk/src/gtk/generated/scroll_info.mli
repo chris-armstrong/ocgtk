@@ -32,3 +32,5 @@ external get_enable_vertical : t -> bool
 external get_enable_horizontal : t -> bool
   = "ml_gtk_scroll_info_get_enable_horizontal"
 (** Checks if horizontal scrolling is enabled. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gtk_scroll_info_get_type"

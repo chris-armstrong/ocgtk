@@ -74,6 +74,56 @@ let test_value_like_record_val_declaration_name_present () =
   C_validation.assert_forward_decl_exists output "TestRGBA_val" ""
 
 (* ========================================================================= *)
+(* Test: value-like record with glib:get-type uses g_boxed_copy not _copy   *)
+(* ========================================================================= *)
+
+let generate_record_c_code_for record =
+  let ctx = Helpers.create_test_context () in
+  let buf = Buffer.create 1024 in
+  Gir_gen_lib.Generate.C_stub_record.generate_record_converters
+    ~namespace_prefix:ctx.namespace.namespace_name ~buf record;
+  Buffer.contents buf
+
+let test_value_like_record_copy_uses_g_boxed_copy () =
+  let record = make_value_like_record () in
+  let output = generate_record_c_code_for record in
+  Helpers.log_generated_c_code "value-like record copy body" output;
+  Alcotest.(check bool)
+    "copy function calls g_boxed_copy" true
+    (Helpers.string_contains output "g_boxed_copy")
+
+let test_value_like_record_copy_does_not_call_type_specific_copy () =
+  let record = make_value_like_record () in
+  let output = generate_record_c_code_for record in
+  Helpers.log_generated_c_code "value-like record copy body (neg)" output;
+  Alcotest.(check bool)
+    "copy function does not call test_rgba_copy directly" false
+    (Helpers.string_contains output "test_rgba_copy")
+
+(* ========================================================================= *)
+(* Test: record without glib:get-type falls back to memcpy                   *)
+(* ========================================================================= *)
+
+let make_record_without_get_type () =
+  let copy_method =
+    make_gir_method ~method_name:"copy" ~c_identifier:"plain_rect_copy"
+      ~return_type:
+        (make_gir_type ~name:"PlainRect" ~c_type:"PlainRect*"
+           ~transfer_ownership:TransferFull ())
+      ()
+  in
+  make_gir_record ~record_name:"PlainRect" ~c_type:"PlainRect" ~opaque:false
+    ~methods:[ copy_method ] ()
+
+let test_record_without_get_type_uses_memcpy () =
+  let record = make_record_without_get_type () in
+  let output = generate_record_c_code_for record in
+  Helpers.log_generated_c_code "record without get-type" output;
+  Alcotest.(check bool)
+    "record without glib:get-type uses memcpy fallback" true
+    (Helpers.string_contains output "memcpy")
+
+(* ========================================================================= *)
 (* Test Suite *)
 (* ========================================================================= *)
 
@@ -85,4 +135,12 @@ let tests =
       `Quick test_value_like_record_val_macro_does_not_emit_ext_of_val;
     Alcotest.test_case "Value-like record _val forward declaration name present"
       `Quick test_value_like_record_val_declaration_name_present;
+    Alcotest.test_case
+      "Value-like record with glib:get-type uses g_boxed_copy in copy function"
+      `Quick test_value_like_record_copy_uses_g_boxed_copy;
+    Alcotest.test_case
+      "Value-like record does not call type-specific copy function directly"
+      `Quick test_value_like_record_copy_does_not_call_type_specific_copy;
+    Alcotest.test_case "Record without glib:get-type falls back to memcpy"
+      `Quick test_record_without_get_type_uses_memcpy;
   ]

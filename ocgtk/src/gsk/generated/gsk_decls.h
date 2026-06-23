@@ -9,8 +9,11 @@
 
 /* Dependency headers for cross-namespace types */
 #include "generated/gdk_decls.h"
+#include "generated/gdkpixbuf_decls.h"
 #include "generated/gio_decls.h"
 #include "generated/graphene_decls.h"
+#include "generated/pango_decls.h"
+#include "generated/pangocairo_decls.h"
 #include "generated/cairo_decls.h"
 
 /* Class-specific conversion macros (shared) */

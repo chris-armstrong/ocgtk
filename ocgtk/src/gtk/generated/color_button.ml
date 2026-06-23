@@ -32,3 +32,11 @@ external get_show_editor : t -> bool = "ml_gtk_color_button_get_show_editor"
 external set_show_editor : t -> bool -> unit
   = "ml_gtk_color_button_set_show_editor"
 (** Set property: show-editor *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_color_set ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"color-set" ~callback
+    ~after:(Option.value after ~default:false)

@@ -1,15 +1,35 @@
-(* Signal class defined in gscrolled_window_signals.ml *)
-
 class type scrolled_window_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  inherit Gscrolled_window_signals.scrolled_window_signals
+  method on_edge_overshot :
+    ?after:bool ->
+    callback:(pos:Gtk_enums.positiontype -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_edge_reached :
+    ?after:bool ->
+    callback:(pos:Gtk_enums.positiontype -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_move_focus_out :
+    ?after:bool ->
+    callback:(direction_type:Gtk_enums.directiontype -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_scroll_child :
+    ?after:bool ->
+    callback:(scroll:Gtk_enums.scrolltype -> horizontal:bool -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -18,7 +38,7 @@ class type scrolled_window_t = object
 
   method get_hscrollbar :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method get_kinetic_scrolling : unit -> bool
@@ -34,11 +54,11 @@ class type scrolled_window_t = object
 
   method get_vscrollbar :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method set_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -70,25 +90,35 @@ end
 class scrolled_window (obj : Scrolled_window.t) : scrolled_window_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
-    inherit Gscrolled_window_signals.scrolled_window_signals obj
+    method on_edge_overshot ?(after = false) ~callback () =
+      Scrolled_window.on_edge_overshot ~after self#as_scrolled_window ~callback
+
+    method on_edge_reached ?(after = false) ~callback () =
+      Scrolled_window.on_edge_reached ~after self#as_scrolled_window ~callback
+
+    method on_move_focus_out ?(after = false) ~callback () =
+      Scrolled_window.on_move_focus_out ~after self#as_scrolled_window ~callback
+
+    method on_scroll_child ?(after = false) ~callback () =
+      Scrolled_window.on_scroll_child ~after self#as_scrolled_window ~callback
 
     method get_child :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Scrolled_window.get_child obj)
@@ -101,11 +131,11 @@ class scrolled_window (obj : Scrolled_window.t) : scrolled_window_t =
 
     method get_hscrollbar :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t =
       fun () ->
         new
-          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
           .widget
           (Scrolled_window.get_hscrollbar obj)
 
@@ -141,16 +171,16 @@ class scrolled_window (obj : Scrolled_window.t) : scrolled_window_t =
 
     method get_vscrollbar :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t =
       fun () ->
         new
-          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
           .widget
           (Scrolled_window.get_vscrollbar obj)
 
     method set_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =

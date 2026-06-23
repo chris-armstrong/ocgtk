@@ -23,11 +23,26 @@ external is_static : t -> bool = "ml_gtk_expression_is_static"
     That means a call to [method@Gtk.Expression.watch] is not necessary because
     it will never trigger a notify. *)
 
-external get_value_type : t -> int = "ml_gtk_expression_get_value_type"
+external get_value_type : t -> Gobject.Type.t
+  = "ml_gtk_expression_get_value_type"
 (** Gets the `GType` that this expression evaluates to.
 
     This type is constant and will not change over the lifetime of this
     expression. *)
+
+external evaluate :
+  t -> [ `object_ ] Gobject.obj option -> Gobject.Value.t -> bool
+  = "ml_gtk_expression_evaluate"
+(** Evaluates the given expression and on success stores the result
+in @value.
+
+The `GType` of `value` will be the type given by
+[method@Gtk.Expression.get_value_type].
+
+It is possible that expressions cannot be evaluated - for example
+when the expression references objects that have been destroyed or
+set to `NULL`. In that case `value` will remain empty and `FALSE`
+will be returned. *)
 
 external bind :
   t ->

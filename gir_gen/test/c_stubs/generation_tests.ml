@@ -748,6 +748,56 @@ let test_header_guard_format () =
   Alcotest.(check bool) "Header guard has #define" true guard.has_define;
   Alcotest.(check bool) "Header guard has #endif" true guard.has_endif
 
+(* Transfer-none boxed record return emits g_boxed_copy to take ownership.
+   Without this, the finalizer calls g_boxed_free on a borrowed pointer. *)
+let test_boxed_record_transfer_none_emits_g_boxed_copy () =
+  let ctx = Helpers.create_test_context () in
+  let test_record =
+    make_gir_record ~record_name:"TestRecord" ~c_type:"GtkTestRecord"
+      ~glib_get_type:"gtk_test_record_get_type" ~opaque:true ()
+  in
+  let ctx = { ctx with records = [ test_record ] } in
+  let return_type =
+    make_gir_type ~name:"TestRecord" ~c_type:"GtkTestRecord*"
+      ~transfer_ownership:TransferNone ()
+  in
+  let meth =
+    make_gir_method ~method_name:"get_record"
+      ~c_identifier:"gtk_widget_get_record" ~return_type ()
+  in
+  let c_code =
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GtkWidget" meth "Widget"
+  in
+  Helpers.log_generated_c_code "boxed record transfer-none" c_code;
+  Alcotest.(check bool)
+    "Transfer-none boxed record emits g_boxed_copy" true
+    (Helpers.string_contains c_code "g_boxed_copy")
+
+let test_boxed_record_transfer_full_no_g_boxed_copy () =
+  let ctx = Helpers.create_test_context () in
+  let test_record =
+    make_gir_record ~record_name:"TestRecord" ~c_type:"GtkTestRecord"
+      ~glib_get_type:"gtk_test_record_get_type" ~opaque:true ()
+  in
+  let ctx = { ctx with records = [ test_record ] } in
+  let return_type =
+    make_gir_type ~name:"TestRecord" ~c_type:"GtkTestRecord*"
+      ~transfer_ownership:TransferFull ()
+  in
+  let meth =
+    make_gir_method ~method_name:"get_record"
+      ~c_identifier:"gtk_widget_get_record" ~return_type ()
+  in
+  let c_code =
+    Gir_gen_lib.Generate.C_stub_method.generate_c_method ~ctx
+      ~c_type:"GtkWidget" meth "Widget"
+  in
+  Helpers.log_generated_c_code "boxed record transfer-full" c_code;
+  Alcotest.(check bool)
+    "Transfer-full boxed record does not emit g_boxed_copy" false
+    (Helpers.string_contains c_code "g_boxed_copy")
+
 (* ========================================================================= *)
 (* Test Suite *)
 (* ========================================================================= *)
@@ -793,6 +843,10 @@ let tests =
       test_nullable_record_return;
     Alcotest.test_case "Nullable record parameter" `Quick
       test_nullable_record_parameter;
+    Alcotest.test_case "Boxed record transfer-none emits g_boxed_copy" `Quick
+      test_boxed_record_transfer_none_emits_g_boxed_copy;
+    Alcotest.test_case "Boxed record transfer-full does not emit g_boxed_copy"
+      `Quick test_boxed_record_transfer_full_no_g_boxed_copy;
     (* Header file naming tests (Stage 1: Phase 2) *)
     Alcotest.test_case "Header file uses <ns>_decls.h naming" `Quick
       test_header_file_naming;

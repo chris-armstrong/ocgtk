@@ -1,16 +1,35 @@
-(* Signal class defined in gassistant_signals.ml *)
-
 class type assistant_t = object
   inherit GApplication_and__window_and__window_group.window_t
-  inherit Gassistant_signals.assistant_signals
+
+  method on_apply :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_cancel :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_close :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_escape :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_prepare :
+    ?after:bool ->
+    callback:
+      (page:
+         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+         .widget_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method add_action_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
   method append_page :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int
 
@@ -20,34 +39,34 @@ class type assistant_t = object
 
   method get_nth_page :
     int ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
   method get_page :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     GAssistant_page.assistant_page_t
 
   method get_page_complete :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool
 
   method get_page_title :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     string
 
   method get_page_type :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     Gtk_enums.assistantpagetype
 
   method get_pages : unit -> Ocgtk_gio.Gio.List_model.list_model_t
 
   method insert_page :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int ->
     int
@@ -55,14 +74,14 @@ class type assistant_t = object
   method next_page : unit -> unit
 
   method prepend_page :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int
 
   method previous_page : unit -> unit
 
   method remove_action_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
@@ -70,19 +89,19 @@ class type assistant_t = object
   method set_current_page : int -> unit
 
   method set_page_complete :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool ->
     unit
 
   method set_page_title :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     string ->
     unit
 
   method set_page_type :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     Gtk_enums.assistantpagetype ->
     unit
@@ -99,10 +118,29 @@ class assistant (obj : Assistant.t) : assistant_t =
       GApplication_and__window_and__window_group.window
         (obj :> Application_and__window_and__window_group.Window.t)
 
-    inherit Gassistant_signals.assistant_signals obj
+    method on_apply ?(after = false) ~callback () =
+      Assistant.on_apply ~after self#as_assistant ~callback
+
+    method on_cancel ?(after = false) ~callback () =
+      Assistant.on_cancel ~after self#as_assistant ~callback
+
+    method on_close ?(after = false) ~callback () =
+      Assistant.on_close ~after self#as_assistant ~callback
+
+    method on_escape ?(after = false) ~callback () =
+      Assistant.on_escape ~after self#as_assistant ~callback
+
+    method on_prepare ?(after = false) ~callback () =
+      Assistant.on_prepare ~after self#as_assistant ~callback:(fun ~page ->
+          callback
+            ~page:
+              (new
+                 GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+                 .widget
+                 page))
 
     method add_action_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun child ->
@@ -110,7 +148,7 @@ class assistant (obj : Assistant.t) : assistant_t =
         Assistant.add_action_widget obj child
 
     method append_page :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         int =
       fun page ->
@@ -126,20 +164,20 @@ class assistant (obj : Assistant.t) : assistant_t =
 
     method get_nth_page :
         int ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun page_num ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Assistant.get_nth_page obj page_num)
 
     method get_page :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         GAssistant_page.assistant_page_t =
       fun child ->
@@ -147,7 +185,7 @@ class assistant (obj : Assistant.t) : assistant_t =
         new GAssistant_page.assistant_page (Assistant.get_page obj child)
 
     method get_page_complete :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         bool =
       fun page ->
@@ -155,7 +193,7 @@ class assistant (obj : Assistant.t) : assistant_t =
         Assistant.get_page_complete obj page
 
     method get_page_title :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         string =
       fun page ->
@@ -163,7 +201,7 @@ class assistant (obj : Assistant.t) : assistant_t =
         Assistant.get_page_title obj page
 
     method get_page_type :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         Gtk_enums.assistantpagetype =
       fun page ->
@@ -175,7 +213,7 @@ class assistant (obj : Assistant.t) : assistant_t =
         new Ocgtk_gio.Gio.List_model.list_model (Assistant.get_pages obj)
 
     method insert_page :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         int ->
         int =
@@ -186,7 +224,7 @@ class assistant (obj : Assistant.t) : assistant_t =
     method next_page : unit -> unit = fun () -> Assistant.next_page obj
 
     method prepend_page :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         int =
       fun page ->
@@ -196,7 +234,7 @@ class assistant (obj : Assistant.t) : assistant_t =
     method previous_page : unit -> unit = fun () -> Assistant.previous_page obj
 
     method remove_action_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun child ->
@@ -210,7 +248,7 @@ class assistant (obj : Assistant.t) : assistant_t =
       fun page_num -> Assistant.set_current_page obj page_num
 
     method set_page_complete :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         bool ->
         unit =
@@ -219,7 +257,7 @@ class assistant (obj : Assistant.t) : assistant_t =
         Assistant.set_page_complete obj page complete
 
     method set_page_title :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         string ->
         unit =
@@ -228,7 +266,7 @@ class assistant (obj : Assistant.t) : assistant_t =
         Assistant.set_page_title obj page title
 
     method set_page_type :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         Gtk_enums.assistantpagetype ->
         unit =

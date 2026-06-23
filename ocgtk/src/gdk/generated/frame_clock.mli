@@ -78,3 +78,24 @@ external begin_updating : t -> unit = "ml_gdk_frame_clock_begin_updating"
     %GDK_FRAME_CLOCK_PHASE_UPDATE phase. This function may be called multiple
     times and frames will be requested until gdk_frame_clock_end_updating() is
     called the same number of times. *)
+
+val on_after_paint :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_before_paint :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_flush_events :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_layout :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_paint :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_resume_events :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_update :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

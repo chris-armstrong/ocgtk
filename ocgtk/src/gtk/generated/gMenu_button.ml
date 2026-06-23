@@ -1,18 +1,18 @@
-(* Signal class defined in gmenu_button_signals.ml *)
-
 class type menu_button_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  inherit Gmenu_button_signals.menu_button_signals
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_active : unit -> bool
   method get_always_show_arrow : unit -> bool
   method get_can_shrink : unit -> bool
 
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -30,7 +30,7 @@ class type menu_button_t = object
   method set_can_shrink : bool -> unit
 
   method set_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -41,7 +41,7 @@ class type menu_button_t = object
   method set_menu_model : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
 
   method set_popover :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -55,14 +55,16 @@ end
 class menu_button (obj : Menu_button.t) : menu_button_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
-    inherit Gmenu_button_signals.menu_button_signals obj
+    method on_activate ?(after = false) ~callback () =
+      Menu_button.on_activate ~after self#as_menu_button ~callback
+
     method get_active : unit -> bool = fun () -> Menu_button.get_active obj
 
     method get_always_show_arrow : unit -> bool =
@@ -73,14 +75,14 @@ class menu_button (obj : Menu_button.t) : menu_button_t =
 
     method get_child :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Menu_button.get_child obj)
@@ -126,7 +128,7 @@ class menu_button (obj : Menu_button.t) : menu_button_t =
       fun can_shrink -> Menu_button.set_can_shrink obj can_shrink
 
     method set_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =
@@ -150,7 +152,7 @@ class menu_button (obj : Menu_button.t) : menu_button_t =
         Menu_button.set_menu_model obj menu_model
 
     method set_popover :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =

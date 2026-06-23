@@ -79,3 +79,51 @@ external close : t -> (bool, GError.t) result = "ml_gdk_pixbuf_loader_close"
 
     Remember that this function does not release a reference on the loader, so
     you will need to explicitly release any reference you hold. *)
+
+let on_area_prepared ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"area-prepared" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_area_updated ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let x =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_int v
+        in
+        let y =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        let width =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_int v
+        in
+        let height =
+          let v = Gobject.Closure.nth argv ~pos:4 in
+          Gobject.Value.get_int v
+        in
+        callback ~x ~y ~width ~height)
+  in
+  Gobject.Signal.connect obj ~name:"area-updated" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_closed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"closed" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_size_prepared ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let width =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_int v
+        in
+        let height =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        callback ~width ~height)
+  in
+  Gobject.Signal.connect obj ~name:"size-prepared" ~callback:closure
+    ~after:(Option.value after ~default:false)

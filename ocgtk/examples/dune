@@ -29,3 +29,13 @@
  (name login_form)
  (modules login_form)
  (libraries ocgtk))
+
+(executable
+ (name form_example)
+ (modules form_example)
+ (libraries ocgtk))
+
+(executable
+ (name picture_test)
+ (modules picture_test)
+ (libraries ocgtk ocgtk.gdk ocgtk.common))

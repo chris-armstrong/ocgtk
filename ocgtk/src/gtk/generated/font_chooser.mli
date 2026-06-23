@@ -128,3 +128,9 @@ external get_font : t -> string option = "ml_gtk_font_chooser_get_font"
     descriptions. *)
 
 (* Properties *)
+
+val on_font_activated :
+  ?after:bool ->
+  t ->
+  callback:(fontname:string -> unit) ->
+  Gobject.Signal.handler_id

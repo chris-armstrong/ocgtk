@@ -21,6 +21,14 @@ This function should be called by drag destinations in response to
 not yet know the exact actions it supports, it should set any possible
 actions first and then later call this function again. *)
 
+external read_value_finish :
+  t ->
+  Ocgtk_gio.Gio.Wrappers.Async_result.t ->
+  (Gobject.Value.t, GError.t) result = "ml_gdk_drop_read_value_finish"
+(** Finishes an async drop read.
+
+    See [method@Gdk.Drop.read_value_async]. *)
+
 external get_surface : t -> App_launch_context_cycle_de440b34.Surface.t
   = "ml_gdk_drop_get_surface"
 (** Returns the `GdkSurface` performing the drop. *)

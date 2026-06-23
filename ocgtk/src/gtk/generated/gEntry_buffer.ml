@@ -1,7 +1,16 @@
-(* Signal class defined in gentry_buffer_signals.ml *)
-
 class type entry_buffer_t = object
-  inherit Gentry_buffer_signals.entry_buffer_signals
+  method on_deleted_text :
+    ?after:bool ->
+    callback:(position:int -> n_chars:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_inserted_text :
+    ?after:bool ->
+    callback:(position:int -> chars:string -> n_chars:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method delete_text : int -> int -> int
   method emit_deleted_text : int -> int -> unit
   method emit_inserted_text : int -> string -> int -> unit
@@ -18,7 +27,11 @@ end
 (* High-level class for EntryBuffer *)
 class entry_buffer (obj : Entry_buffer.t) : entry_buffer_t =
   object (self)
-    inherit Gentry_buffer_signals.entry_buffer_signals obj
+    method on_deleted_text ?(after = false) ~callback () =
+      Entry_buffer.on_deleted_text ~after self#as_entry_buffer ~callback
+
+    method on_inserted_text ?(after = false) ~callback () =
+      Entry_buffer.on_inserted_text ~after self#as_entry_buffer ~callback
 
     method delete_text : int -> int -> int =
       fun position n_chars -> Entry_buffer.delete_text obj position n_chars

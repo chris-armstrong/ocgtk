@@ -1,5 +1,12 @@
 class type socket_listener_t = object
-  inherit Gsocket_listener_signals.socket_listener_signals
+  method on_event :
+    ?after:bool ->
+    callback:
+      (event:Gio_enums.socketlistenerevent ->
+      socket:GSocket_and__socket_connection.socket_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method add_any_inet_port :
     [ `object_ ] Gobject.obj option -> (UInt16.t, GError.t) result

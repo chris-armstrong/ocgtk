@@ -859,7 +859,7 @@ Create `ocgtk/test_gir_gen/test_override_integration.ml`:
 In `test_override_parser.ml`, add:
 
 - First add `sexp` to the `[@@deriving eq]` annotations in `override_types.ml` and `.mli`
-  (they currently only derive `eq` — `sexp` was deferred because the human-readable override
+  (they currently only derive `eq` — `sexp` was deferred (see `architecture/todo/TODO.md`) because the human-readable override
   file format is hand-parsed, but sexp serialisation is still useful for round-trip tests)
 - Generate override content from `library_overrides` using `sexplib` (`sexp_of_library_overrides`)
 - Parse it back with `parse_overrides_from_string`

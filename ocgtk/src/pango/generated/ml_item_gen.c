@@ -19,7 +19,7 @@
 value copy_PangoItem(const PangoItem *ptr)
 {
   if (ptr == NULL) return Val_none;
-  PangoItem *copy = pango_item_copy((PangoItem*)ptr);
+  PangoItem *copy = g_boxed_copy(pango_item_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(pango_item_get_type(), copy);
 }
 
@@ -61,3 +61,9 @@ caml_failwith("Item requires Pango >= 1.44");
 return Val_unit;
 }
 #endif
+
+CAMLprim value ml_pango_item_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_item_get_type()));
+}

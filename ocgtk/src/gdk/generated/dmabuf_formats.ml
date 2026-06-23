@@ -46,3 +46,5 @@ same dmabuf formats, in the same order. *)
 external contains : t -> UInt32.t -> UInt64.t -> bool
   = "ml_gdk_dmabuf_formats_contains"
 (** Returns whether a given format is contained in @formats. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gdk_dmabuf_formats_get_type"

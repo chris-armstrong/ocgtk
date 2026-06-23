@@ -1,6 +1,4 @@
 class type color_chooser_t = object
-  inherit Gcolor_chooser_signals.color_chooser_signals
-
   method add_palette :
     Gtk_enums.orientation ->
     int ->

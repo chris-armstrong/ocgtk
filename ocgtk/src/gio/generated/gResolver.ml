@@ -1,7 +1,7 @@
-(* Signal class defined in gresolver_signals.ml *)
-
 class type resolver_t = object
-  inherit Gresolver_signals.resolver_signals
+  method on_reload :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_timeout : unit -> int
 
   method lookup_by_address :
@@ -58,7 +58,9 @@ end
 (* High-level class for Resolver *)
 class resolver (obj : Resolver.t) : resolver_t =
   object (self)
-    inherit Gresolver_signals.resolver_signals obj
+    method on_reload ?(after = false) ~callback () =
+      Resolver.on_reload ~after self#as_resolver ~callback
+
     method get_timeout : unit -> int = fun () -> Resolver.get_timeout obj
 
     method lookup_by_address :

@@ -3,7 +3,7 @@
 
 type t = [ `tree_store | `object_ ] Gobject.obj
 
-external newv : int -> int array -> t = "ml_gtk_tree_store_newv"
+external newv : int -> Gobject.Type.t array -> t = "ml_gtk_tree_store_newv"
 (** Create a new TreeStore *)
 
 (* Methods *)
@@ -14,7 +14,23 @@ external swap : t -> Tree_iter.t -> Tree_iter.t -> unit
 
 Note that this function only works with unsorted stores. *)
 
-external set_column_types : t -> int -> int array -> unit
+external set_valuesv :
+  t -> Tree_iter.t -> int array -> Gobject.Value.t array -> int -> unit
+  = "ml_gtk_tree_store_set_valuesv"
+(** A variant of gtk_tree_store_set_valist() which takes the columns and values
+    as two arrays, instead of using variadic arguments.
+
+    This function is mainly intended for language bindings or in case the number
+    of columns to change is not known until run-time. *)
+
+external set_value : t -> Tree_iter.t -> int -> Gobject.Value.t -> unit
+  = "ml_gtk_tree_store_set_value"
+(** Sets the data in the cell specified by @iter and @column.
+
+The type of @value must be convertible to the type of the
+column. *)
+
+external set_column_types : t -> int -> Gobject.Type.t array -> unit
   = "ml_gtk_tree_store_set_column_types"
 (** Sets the type of the columns in a tree store.
 
@@ -75,6 +91,21 @@ external iter_depth : t -> Tree_iter.t -> int = "ml_gtk_tree_store_iter_depth"
 external is_ancestor : t -> Tree_iter.t -> Tree_iter.t -> bool
   = "ml_gtk_tree_store_is_ancestor"
 (** Checks if @iter is an ancestor of @descendant. *)
+
+external insert_with_valuesv :
+  t ->
+  Tree_iter.t option ->
+  int ->
+  int array ->
+  Gobject.Value.t array ->
+  int ->
+  Tree_iter.t
+  = "ml_gtk_tree_store_insert_with_valuesv_bytecode"
+    "ml_gtk_tree_store_insert_with_valuesv_native"
+(** A variant of gtk_tree_store_insert_with_values() which takes the columns and
+    values as two arrays, instead of varargs.
+
+    This function is mainly intended for language bindings. *)
 
 external insert_before :
   t -> Tree_iter.t option -> Tree_iter.t option -> Tree_iter.t

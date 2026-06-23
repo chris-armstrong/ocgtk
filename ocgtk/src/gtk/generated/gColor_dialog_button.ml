@@ -1,11 +1,11 @@
-(* Signal class defined in gcolor_dialog_button_signals.ml *)
-
 class type color_dialog_button_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  inherit Gcolor_dialog_button_signals.color_dialog_button_signals
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_dialog : unit -> GColor_dialog.color_dialog_t option
   method get_rgba : unit -> Ocgtk_gdk.Gdk.Rgb_a.rgb_a_t
   method set_dialog : GColor_dialog.color_dialog_t -> unit
@@ -18,14 +18,16 @@ class color_dialog_button (obj : Color_dialog_button.t) : color_dialog_button_t
   =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
-    inherit Gcolor_dialog_button_signals.color_dialog_button_signals obj
+    method on_activate ?(after = false) ~callback () =
+      Color_dialog_button.on_activate ~after self#as_color_dialog_button
+        ~callback
 
     method get_dialog : unit -> GColor_dialog.color_dialog_t option =
       fun () ->

@@ -1,5 +1,10 @@
 class type section_model_t = object
-  inherit Gsection_model_signals.section_model_signals
+  method on_sections_changed :
+    ?after:bool ->
+    callback:(position:int -> n_items:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method sections_changed : int -> int -> unit
   method as_section_model : Section_model.t
 end

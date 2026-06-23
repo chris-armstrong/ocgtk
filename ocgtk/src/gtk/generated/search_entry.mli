@@ -19,7 +19,7 @@ external set_placeholder_text : t -> string option -> unit
 
 external set_key_capture_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -60,7 +60,7 @@ external get_placeholder_text : t -> string option
 
 external get_key_capture_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_search_entry_get_key_capture_widget"
@@ -83,3 +83,21 @@ external get_activates_default : t -> bool
 external set_activates_default : t -> bool -> unit
   = "ml_gtk_search_entry_set_activates_default"
 (** Set property: activates-default *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_next_match :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_previous_match :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_search_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_search_started :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_stop_search :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

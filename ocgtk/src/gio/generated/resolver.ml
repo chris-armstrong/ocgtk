@@ -172,3 +172,7 @@ external get_timeout : t -> int = "ml_g_resolver_get_timeout"
 (** Get the timeout applied to all resolver lookups. See #GResolver:timeout. *)
 
 (* Properties *)
+
+let on_reload ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"reload" ~callback
+    ~after:(Option.value after ~default:false)

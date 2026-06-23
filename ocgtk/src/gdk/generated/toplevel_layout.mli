@@ -57,3 +57,5 @@ fullscreen, or %FALSE, if it should go unfullscreen. *)
 
 external equal : t -> t -> bool = "ml_gdk_toplevel_layout_equal"
 (** Check whether @layout and @other has identical layout properties. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gdk_toplevel_layout_get_type"

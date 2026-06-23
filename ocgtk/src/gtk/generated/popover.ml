@@ -42,7 +42,7 @@ external set_has_arrow : t -> bool -> unit = "ml_gtk_popover_set_has_arrow"
 
 external set_default_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -55,7 +55,7 @@ external set_default_widget :
 
 external set_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -124,7 +124,7 @@ external get_has_arrow : t -> bool = "ml_gtk_popover_get_has_arrow"
 
 external get_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_popover_get_child"
@@ -139,3 +139,11 @@ external get_autohide : t -> bool = "ml_gtk_popover_get_autohide"
     See [method@Gtk.Popover.set_autohide] for the implications of this. *)
 
 (* Properties *)
+
+let on_activate_default ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate-default" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_closed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"closed" ~callback
+    ~after:(Option.value after ~default:false)

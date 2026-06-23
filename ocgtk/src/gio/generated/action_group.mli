@@ -162,3 +162,27 @@ external action_added : t -> string -> unit = "ml_g_action_group_action_added"
 (** Emits the #GActionGroup::action-added signal on @action_group.
 
 This function should only be called by #GActionGroup implementations. *)
+
+val on_action_added :
+  ?after:bool ->
+  t ->
+  callback:(action_name:string -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_action_enabled_changed :
+  ?after:bool ->
+  t ->
+  callback:(action_name:string -> enabled:bool -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_action_removed :
+  ?after:bool ->
+  t ->
+  callback:(action_name:string -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_action_state_changed :
+  ?after:bool ->
+  t ->
+  callback:(action_name:string -> value:Gvariant.t -> unit) ->
+  Gobject.Signal.handler_id

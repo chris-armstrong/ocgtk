@@ -30,6 +30,7 @@ CAMLexport CAMLprim value ml_gsk_color_matrix_node_get_color_offset(value self)
 CAMLparam1(self);
 
 const graphene_vec4_t* result = gsk_color_matrix_node_get_color_offset(GskColorMatrixNode_val(self));
+if (result) result = g_boxed_copy(graphene_vec4_get_type(), result);
 CAMLreturn(Val_graphene_vec4_t(result));
 }
 
@@ -38,6 +39,7 @@ CAMLexport CAMLprim value ml_gsk_color_matrix_node_get_color_matrix(value self)
 CAMLparam1(self);
 
 const graphene_matrix_t* result = gsk_color_matrix_node_get_color_matrix(GskColorMatrixNode_val(self));
+if (result) result = g_boxed_copy(graphene_matrix_get_type(), result);
 CAMLreturn(Val_graphene_matrix_t(result));
 }
 

@@ -53,7 +53,7 @@ external response : t -> int -> unit = "ml_gtk_info_bar_response"
 
 external remove_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_info_bar_remove_child"
@@ -61,7 +61,7 @@ external remove_child :
 
 external remove_action_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_info_bar_remove_action_widget"
@@ -83,7 +83,7 @@ external get_message_type : t -> Gtk_enums.messagetype
 
 external add_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_info_bar_add_child"
@@ -100,7 +100,7 @@ external add_button : t -> string -> int -> Button.t
 
 external add_action_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int ->
@@ -113,3 +113,12 @@ external add_action_widget :
     area. *)
 
 (* Properties *)
+
+val on_close :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_response :
+  ?after:bool ->
+  t ->
+  callback:(response_id:int -> unit) ->
+  Gobject.Signal.handler_id

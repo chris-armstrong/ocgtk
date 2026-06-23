@@ -38,7 +38,7 @@ external set_cursor_location : t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t -> unit
 
 external set_client_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -136,3 +136,24 @@ external get_input_purpose : t -> Gtk_enums.inputpurpose
 external set_input_purpose : t -> Gtk_enums.inputpurpose -> unit
   = "ml_gtk_im_context_set_input_purpose"
 (** Set property: input-purpose *)
+
+val on_commit :
+  ?after:bool -> t -> callback:(str:string -> unit) -> Gobject.Signal.handler_id
+
+val on_delete_surrounding :
+  ?after:bool ->
+  t ->
+  callback:(offset:int -> n_chars:int -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_preedit_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_preedit_end :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_preedit_start :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_retrieve_surrounding :
+  ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id

@@ -41,7 +41,24 @@ class type app_info_t = object
 end
 
 and app_launch_context_t = object
-  inherit Gapp_launch_context_signals.app_launch_context_signals
+  method on_launch_failed :
+    ?after:bool ->
+    callback:(startup_notify_id:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_launch_started :
+    ?after:bool ->
+    callback:(info:app_info_t -> platform_data:Gvariant.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_launched :
+    ?after:bool ->
+    callback:(info:app_info_t -> platform_data:Gvariant.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_display : app_info_t -> file_t list -> string option
   method get_environment : unit -> string array
   method get_startup_notify_id : app_info_t -> file_t list -> string option
@@ -56,7 +73,18 @@ and app_launch_context_t = object
 end
 
 and drive_t = object
-  inherit Gdrive_signals.drive_signals
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_disconnected :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_eject_button :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_stop_button :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method can_eject : unit -> bool
   method can_poll_for_media : unit -> bool
   method can_start : unit -> bool
@@ -398,7 +426,16 @@ and file_enumerator_t = object
 end
 
 and file_monitor_t = object
-  inherit Gfile_monitor_signals.file_monitor_signals
+  method on_changed :
+    ?after:bool ->
+    callback:
+      (file:file_t ->
+      other_file:file_t option ->
+      event_type:Gio_enums.filemonitorevent ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method cancel : unit -> bool
   method emit_event : file_t -> file_t -> Gio_enums.filemonitorevent -> unit
   method is_cancelled : unit -> bool
@@ -412,7 +449,15 @@ and file_monitor_t = object
 end
 
 and mount_t = object
-  inherit Gmount_signals.mount_signals
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_pre_unmount :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_unmounted :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method can_eject : unit -> bool
   method can_unmount : unit -> bool
   method eject_finish : GAsync_result.async_result_t -> (bool, GError.t) result
@@ -458,7 +503,12 @@ and mount_t = object
 end
 
 and volume_t = object
-  inherit Gvolume_signals.volume_signals
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_removed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method can_eject : unit -> bool
   method can_mount : unit -> bool
   method eject_finish : GAsync_result.async_result_t -> (bool, GError.t) result
@@ -652,7 +702,7 @@ class app_info
         .supports_uris obj
 
     method as_app_info = obj
-  end (* Signal class defined in gapp_launch_context_signals.ml *)
+  end
 
 and app_launch_context
   (obj :
@@ -661,7 +711,24 @@ and app_launch_context
     .t) :
   app_launch_context_t =
   object (self)
-    inherit Gapp_launch_context_signals.app_launch_context_signals obj
+    method on_launch_failed ?(after = false) ~callback () =
+      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .App_launch_context
+      .on_launch_failed ~after self#as_app_launch_context ~callback
+
+    method on_launch_started ?(after = false) ~callback () =
+      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .App_launch_context
+      .on_launch_started ~after self#as_app_launch_context
+        ~callback:(fun ~info ~platform_data ->
+          callback ~info:(new app_info info) ~platform_data)
+
+    method on_launched ?(after = false) ~callback () =
+      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .App_launch_context
+      .on_launched ~after self#as_app_launch_context
+        ~callback:(fun ~info ~platform_data ->
+          callback ~info:(new app_info info) ~platform_data)
 
     method get_display : app_info_t -> file_t list -> string option =
       fun info files ->
@@ -704,7 +771,7 @@ and app_launch_context
         .unsetenv obj variable
 
     method as_app_launch_context = obj
-  end (* Signal class defined in gdrive_signals.ml *)
+  end
 
 and drive
   (obj :
@@ -713,7 +780,25 @@ and drive
     .t) :
   drive_t =
   object (self)
-    inherit Gdrive_signals.drive_signals obj
+    method on_changed ?(after = false) ~callback () =
+      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .Drive
+      .on_changed ~after self#as_drive ~callback
+
+    method on_disconnected ?(after = false) ~callback () =
+      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .Drive
+      .on_disconnected ~after self#as_drive ~callback
+
+    method on_eject_button ?(after = false) ~callback () =
+      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .Drive
+      .on_eject_button ~after self#as_drive ~callback
+
+    method on_stop_button ?(after = false) ~callback () =
+      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .Drive
+      .on_stop_button ~after self#as_drive ~callback
 
     method can_eject : unit -> bool =
       fun () ->
@@ -1716,7 +1801,7 @@ and file_enumerator
         .set_pending obj pending
 
     method as_file_enumerator = obj
-  end (* Signal class defined in gfile_monitor_signals.ml *)
+  end
 
 and file_monitor
   (obj :
@@ -1725,7 +1810,15 @@ and file_monitor
     .t) :
   file_monitor_t =
   object (self)
-    inherit Gfile_monitor_signals.file_monitor_signals obj
+    method on_changed ?(after = false) ~callback () =
+      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .File_monitor
+      .on_changed ~after self#as_file_monitor
+        ~callback:(fun ~file ~other_file ~event_type ->
+          callback
+            ~file:(new file file)
+            ~other_file:(Option.map (fun w -> new file w) other_file)
+            ~event_type)
 
     method cancel : unit -> bool =
       fun () ->
@@ -1759,7 +1852,7 @@ and file_monitor
       .get_cancelled obj
 
     method as_file_monitor = obj
-  end (* Signal class defined in gmount_signals.ml *)
+  end
 
 and mount
   (obj :
@@ -1768,7 +1861,20 @@ and mount
     .t) :
   mount_t =
   object (self)
-    inherit Gmount_signals.mount_signals obj
+    method on_changed ?(after = false) ~callback () =
+      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .Mount
+      .on_changed ~after self#as_mount ~callback
+
+    method on_pre_unmount ?(after = false) ~callback () =
+      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .Mount
+      .on_pre_unmount ~after self#as_mount ~callback
+
+    method on_unmounted ?(after = false) ~callback () =
+      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .Mount
+      .on_unmounted ~after self#as_mount ~callback
 
     method can_eject : unit -> bool =
       fun () ->
@@ -1921,7 +2027,7 @@ and mount
         .unshadow obj
 
     method as_mount = obj
-  end (* Signal class defined in gvolume_signals.ml *)
+  end
 
 and volume
   (obj :
@@ -1930,7 +2036,15 @@ and volume
     .t) :
   volume_t =
   object (self)
-    inherit Gvolume_signals.volume_signals obj
+    method on_changed ?(after = false) ~callback () =
+      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .Volume
+      .on_changed ~after self#as_volume ~callback
+
+    method on_removed ?(after = false) ~callback () =
+      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+      .Volume
+      .on_removed ~after self#as_volume ~callback
 
     method can_eject : unit -> bool =
       fun () ->

@@ -1,7 +1,10 @@
 # OCaml Linking and Dead Code Elimination
 
-This document describes how OCaml's native linker handles dead code elimination,
-and the implications for ocgtk's generated code.
+This document describes how OCaml's native linker handles dead code elimination
+and how ocgtk's generated code is structured to exploit it. For the dependency
+analysis and cyclic-module grouping that makes per-class DCE possible, see the
+[Calculating dependencies, cycles, and module naming](./overview.md#calculating-dependencies-cycles-and-module-naming)
+section of `overview.md`.
 
 ## Background
 
@@ -58,43 +61,28 @@ nm binary.exe | grep -c 'camlOcgtk_gtk'
 
 ## Impact on ocgtk
 
-### Current state
+### The class-alias problem (and why it was fixed)
 
-The generated `Gtk.ml` contains ~626 lines like:
+An earlier version of the generated entry-point module (`ocgtk_gtk.ml`) contained
+lines like:
 
 ```ocaml
-class button = GButton.button
+class button = GButton.button  (* old pattern — do not use *)
 class window = GWindow.window
 (* ... every generated class ... *)
 ```
 
-Each of these creates a runtime reference to the corresponding `G*.ml` module.
-When any code does `open Ocgtk_gtk.Gtk`, the `Gtk` module is linked, which
-transitively pulls in **every** generated class module -- even if only `button`
-is used.
+Each of these created a runtime reference to the corresponding `G*.ml` module.
+Opening `Ocgtk_gtk.Gtk` linked the entry-point module, which transitively pulled
+in **every** generated class module — even if only `button` was used. A minimal
+counter application linked all ~661 GTK class modules (~24 MB binary).
 
-This means `counter.exe` (which uses only Button, Label, Box, and Window) links
-all ~661 GTK class modules, resulting in a ~24MB binary.
+Dune's `(wrapped true)` generates pure module aliases in the wrapper module
+(`ocgtk_gtk__.ml-gen`), which are correctly erased by the compiler. The problem
+was specifically in the generated `ocgtk_gtk.ml` umbrella that used `class`
+re-exports rather than `module` aliases.
 
-### Why dune's module aliasing doesn't help
-
-Dune's `(wrapped true)` generates a wrapper module (`ocgtk_gtk__.ml-gen`) with
-pure module aliases:
-
-```ocaml
-module GButton = Ocgtk_gtk__GButton
-module GWindow = Ocgtk_gtk__GWindow
-(* ... *)
-```
-
-These are correctly erased by the compiler and do not force linking. The problem
-is specifically in the hand-authored/generated `Gtk.ml` umbrella module which
-uses `class` re-exports rather than `module` aliases.
-
-### Implementation: module aliases and constructor wrappers
-
-The fix replaces class re-exports with module aliases and adds constructor
-wrappers in the G* modules:
+### Current implementation: module aliases and constructor wrappers
 
 #### 1. Module Aliases (generated via dune wrapping)
 
@@ -133,7 +121,9 @@ the high-level class wrapper.
 Classes with cyclic dependencies (e.g., `Application`, `Window`, `WindowGroup`)
 are combined into single modules like `application_and__window_and__window_group.ml`
 to handle OCaml's restriction against cyclic dependencies. These combined modules
-export all constituent classes with proper type resolution.
+export all constituent classes with proper type resolution. The cycle detection
+that produces these groups is described in
+[overview.md — Calculating dependencies, cycles, and module naming](./overview.md#calculating-dependencies-cycles-and-module-naming).
 
 #### User-Facing API
 

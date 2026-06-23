@@ -1,10 +1,22 @@
 class type app_chooser_widget_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GApp_chooser.app_chooser_t
-  inherit Gapp_chooser_widget_signals.app_chooser_widget_signals
+
+  method on_application_activated :
+    ?after:bool ->
+    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_application_selected :
+    ?after:bool ->
+    callback:(application:Ocgtk_gio.Gio.App_info.app_info_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_default_text : unit -> string option
   method get_show_all : unit -> bool
   method get_show_default : unit -> bool

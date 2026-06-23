@@ -48,6 +48,7 @@ CAMLexport CAMLprim value ml_graphene_quad_init_from_rect(value self, value arg1
 CAMLparam2(self, arg1);
 
 graphene_quad_t* result = graphene_quad_init_from_rect(graphene_quad_t_val(self), graphene_rect_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_quad_get_type(), result);
 CAMLreturn(Val_graphene_quad_t(result));
 }
 
@@ -63,6 +64,7 @@ CAMLparam2(self, arg1);
     }
 
 graphene_quad_t* result = graphene_quad_init_from_points(graphene_quad_t_val(self), c_arg1);
+if (result) result = g_boxed_copy(graphene_quad_get_type(), result);
     g_free(c_arg1);
 CAMLreturn(Val_graphene_quad_t(result));
 }
@@ -84,6 +86,7 @@ CAMLexport CAMLprim value ml_graphene_quad_init(value self, value arg1, value ar
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
 graphene_quad_t* result = graphene_quad_init(graphene_quad_t_val(self), graphene_point_t_val(arg1), graphene_point_t_val(arg2), graphene_point_t_val(arg3), graphene_point_t_val(arg4));
+if (result) result = g_boxed_copy(graphene_quad_get_type(), result);
 CAMLreturn(Val_graphene_quad_t(result));
 }
 
@@ -92,6 +95,7 @@ CAMLexport CAMLprim value ml_graphene_quad_get_point(value self, value arg1)
 CAMLparam2(self, arg1);
 
 const graphene_point_t* result = graphene_quad_get_point(graphene_quad_t_val(self), Int_val(arg1));
+if (result) result = g_boxed_copy(graphene_point_get_type(), result);
 CAMLreturn(Val_graphene_point_t(result));
 }
 
@@ -110,6 +114,12 @@ graphene_rect_t out1;
 
 graphene_quad_bounds(graphene_quad_t_val(self), &out1);
 CAMLreturn(Val_graphene_rect_t(&out1));
+}
+
+CAMLprim value ml_graphene_quad_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_quad_get_type()));
 }
 
 #else

@@ -39,3 +39,5 @@ The @iter should be positioned before the range of the item,
 and will be advanced past it. This function is meant to be called
 in a loop over the items resulting from itemization, while passing
 the iter to each call. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_pango_item_get_type"

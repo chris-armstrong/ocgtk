@@ -82,3 +82,7 @@ external get_dialog : t -> Font_dialog.t option
 (** Returns the `GtkFontDialog` of @self. *)
 
 (* Properties *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)

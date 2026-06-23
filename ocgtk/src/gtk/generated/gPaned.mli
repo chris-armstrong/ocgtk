@@ -1,15 +1,41 @@
 class type paned_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GAccessible_range.accessible_range_t
   inherit GOrientable.orientable_t
-  inherit Gpaned_signals.paned_signals
+
+  method on_accept_position :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
+  method on_cancel_position :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
+  method on_cycle_child_focus :
+    ?after:bool ->
+    callback:(reversed:bool -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_cycle_handle_focus :
+    ?after:bool ->
+    callback:(reversed:bool -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_move_handle :
+    ?after:bool ->
+    callback:(scroll_type:Gtk_enums.scrolltype -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_toggle_handle_focus :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
 
   method get_end_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -21,14 +47,14 @@ class type paned_t = object
 
   method get_start_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
   method get_wide_handle : unit -> bool
 
   method set_end_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -40,7 +66,7 @@ class type paned_t = object
   method set_shrink_start_child : bool -> unit
 
   method set_start_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit

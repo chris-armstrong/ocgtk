@@ -1,13 +1,12 @@
-(** Runtime tests for the four phase-5 nullable length-linked array out-param
-    bindings beyond [Tree_path.get_indices_with_depth] (covered separately in
+(** Runtime tests for nullable length-linked array out-param bindings beyond
+    [Tree_path.get_indices_with_depth] (covered separately in
     [test_tree_path.ml]).
 
-    Phase 5 of the value-kinds-registry plan added a NULL guard to the C-stub
-    array emitter so a NULL return from a nullable length-linked array out param
-    materialises as [None] in OCaml rather than crashing on [Array.length] of an
-    invalid pointer. The generator unit tests ([record_macro_tests]) cover the
-    emitter; these tests exercise the generated C stubs end-to-end against real
-    GTK objects.
+    A NULL guard was added to the C-stub array emitter so a NULL return from a
+    nullable length-linked array out param materialises as [None] in OCaml
+    rather than crashing on [Array.length] of an invalid pointer. The generator
+    unit tests ([record_macro_tests]) cover the emitter; these tests exercise
+    the generated C stubs end-to-end against real GTK objects.
 
     Coverage strategy: each binding has a setter that takes [_ array option]
     (or, for [Drop_target.set_gtypes], with a length parameter). We drive a
@@ -33,9 +32,12 @@ let require_gtk = Helpers.require_gtk
 
 (* Alcotest testables for option-wrapped arrays. *)
 let string_array_option = option (array string)
-let int_array_option = option (array int)
+let g_type_testable =
+  testable (fun fmt t -> Format.fprintf fmt "%d" (Gobject.Type.to_int t))
+    Gobject.Type.equal
+let g_type_array_option = option (array g_type_testable)
 
-(* ========== Drop_target.get_gtypes : t -> int array option * Gsize.t ========== *)
+(* ========== Drop_target.get_gtypes : t -> Gobject.Type.t array option * Gsize.t ========== *)
 
 let test_drop_target_get_gtypes_set_none_round_trips () =
   (* Constructing with a placeholder GType then clearing it via
@@ -45,7 +47,7 @@ let test_drop_target_get_gtypes_set_none_round_trips () =
   Wrappers.Drop_target.set_gtypes dt None Gsize.zero;
   let arr_opt, n = Wrappers.Drop_target.get_gtypes dt in
   check int "count is 0 after set_gtypes None" 0 (Gsize.to_int n);
-  check int_array_option "get_gtypes returns None after set_gtypes None" None
+  check g_type_array_option "get_gtypes returns None after set_gtypes None" None
     arr_opt
 
 let test_drop_target_get_gtypes_set_some_round_trips () =
@@ -57,7 +59,7 @@ let test_drop_target_get_gtypes_set_some_round_trips () =
     (Gsize.of_int (Array.length expected));
   let arr_opt, n = Wrappers.Drop_target.get_gtypes dt in
   check int "count matches set" (Array.length expected) (Gsize.to_int n);
-  check int_array_option "get_gtypes returns the array we set" (Some expected)
+  check g_type_array_option "get_gtypes returns the array we set" (Some expected)
     arr_opt
 
 (* ========== Icon_theme.get_search_path : t -> string array option ========== *)

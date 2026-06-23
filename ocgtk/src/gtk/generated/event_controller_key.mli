@@ -23,7 +23,7 @@ See [method@Gdk.KeyEvent.get_layout]. *)
 
 external forward :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   bool = "ml_gtk_event_controller_key_forward"
@@ -33,3 +33,32 @@ This function can only be used in handlers for the
 [signal@Gtk.EventControllerKey::key-pressed],
 [signal@Gtk.EventControllerKey::key-released]
 or [signal@Gtk.EventControllerKey::modifiers] signals. *)
+
+val on_im_update :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_key_pressed :
+  ?after:bool ->
+  t ->
+  callback:
+    (keyval:int ->
+    keycode:int ->
+    state:Ocgtk_gdk.Gdk_enums.modifiertype ->
+    bool) ->
+  Gobject.Signal.handler_id
+
+val on_key_released :
+  ?after:bool ->
+  t ->
+  callback:
+    (keyval:int ->
+    keycode:int ->
+    state:Ocgtk_gdk.Gdk_enums.modifiertype ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_modifiers :
+  ?after:bool ->
+  t ->
+  callback:(state:Ocgtk_gdk.Gdk_enums.modifiertype -> bool) ->
+  Gobject.Signal.handler_id

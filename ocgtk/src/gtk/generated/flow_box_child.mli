@@ -11,7 +11,7 @@ external new_ : unit -> t = "ml_gtk_flow_box_child_new"
 
 external set_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -27,7 +27,7 @@ external get_index : t -> int = "ml_gtk_flow_box_child_get_index"
 
 external get_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_flow_box_child_get_child"
@@ -55,3 +55,6 @@ Another alternative is to call [method@Gtk.FlowBox.invalidate_sort]
 on any model change, but that is more expensive. *)
 
 (* Properties *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

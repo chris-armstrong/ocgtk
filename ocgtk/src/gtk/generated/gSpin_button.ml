@@ -1,15 +1,31 @@
-(* Signal class defined in gspin_button_signals.ml *)
-
 class type spin_button_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GAccessible_range.accessible_range_t
   inherit GCell_editable.cell_editable_t
   inherit GEditable.editable_t
   inherit GOrientable.orientable_t
-  inherit Gspin_button_signals.spin_button_signals
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_change_value :
+    ?after:bool ->
+    callback:(scroll:Gtk_enums.scrolltype -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_output :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
+  method on_value_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_wrapped :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method configure : GAdjustment.adjustment_t option -> float -> int -> unit
   method get_activates_default : unit -> bool
   method get_adjustment : unit -> GAdjustment.adjustment_t
@@ -41,10 +57,10 @@ end
 class spin_button (obj : Spin_button.t) : spin_button_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
@@ -54,7 +70,21 @@ class spin_button (obj : Spin_button.t) : spin_button_t =
     inherit GCell_editable.cell_editable (Cell_editable.from_gobject obj)
     inherit GEditable.editable (Editable.from_gobject obj)
     inherit GOrientable.orientable (Orientable.from_gobject obj)
-    inherit Gspin_button_signals.spin_button_signals obj
+
+    method on_activate ?(after = false) ~callback () =
+      Spin_button.on_activate ~after self#as_spin_button ~callback
+
+    method on_change_value ?(after = false) ~callback () =
+      Spin_button.on_change_value ~after self#as_spin_button ~callback
+
+    method on_output ?(after = false) ~callback () =
+      Spin_button.on_output ~after self#as_spin_button ~callback
+
+    method on_value_changed ?(after = false) ~callback () =
+      Spin_button.on_value_changed ~after self#as_spin_button ~callback
+
+    method on_wrapped ?(after = false) ~callback () =
+      Spin_button.on_wrapped ~after self#as_spin_button ~callback
 
     method configure : GAdjustment.adjustment_t option -> float -> int -> unit =
       fun adjustment climb_rate digits ->

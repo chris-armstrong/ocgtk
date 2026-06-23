@@ -114,7 +114,7 @@ external set_hadjustment : t -> Adjustment.t option -> unit
 
 external set_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -127,7 +127,7 @@ and then add the viewport as its child widget. *)
 
 external get_vscrollbar :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_scrolled_window_get_vscrollbar"
 (** Returns the vertical scrollbar of @scrolled_window. *)
@@ -186,7 +186,7 @@ external get_kinetic_scrolling : t -> bool
 
 external get_hscrollbar :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_scrolled_window_get_hscrollbar"
 (** Returns the horizontal scrollbar of @scrolled_window. *)
@@ -203,7 +203,7 @@ external get_hadjustment : t -> Adjustment.t
 
 external get_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_scrolled_window_get_child"
@@ -238,3 +238,27 @@ external get_window_placement : t -> Gtk_enums.cornertype
 external set_window_placement : t -> Gtk_enums.cornertype -> unit
   = "ml_gtk_scrolled_window_set_window_placement"
 (** Set property: window-placement *)
+
+val on_edge_overshot :
+  ?after:bool ->
+  t ->
+  callback:(pos:Gtk_enums.positiontype -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_edge_reached :
+  ?after:bool ->
+  t ->
+  callback:(pos:Gtk_enums.positiontype -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_move_focus_out :
+  ?after:bool ->
+  t ->
+  callback:(direction_type:Gtk_enums.directiontype -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_scroll_child :
+  ?after:bool ->
+  t ->
+  callback:(scroll:Gtk_enums.scrolltype -> horizontal:bool -> bool) ->
+  Gobject.Signal.handler_id

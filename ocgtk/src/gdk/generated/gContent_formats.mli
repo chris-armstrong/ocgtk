@@ -1,8 +1,8 @@
 class type content_formats_t = object
-  method contain_gtype : int -> bool
+  method contain_gtype : Gobject.Type.t -> bool
   method contain_mime_type : string -> bool
   method match_ : Content_formats.t -> bool
-  method match_gtype : Content_formats.t -> int
+  method match_gtype : Content_formats.t -> Gobject.Type.t
   method match_mime_type : Content_formats.t -> string option
   method ref : unit -> Content_formats.t
   method to_string : unit -> string
@@ -17,4 +17,4 @@ end
 class content_formats : Content_formats.t -> content_formats_t
 
 val new_ : string array option -> int -> content_formats_t
-val new_for_gtype : int -> content_formats_t
+val new_for_gtype : Gobject.Type.t -> content_formats_t

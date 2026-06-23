@@ -70,6 +70,7 @@ CAMLexport CAMLprim value ml_pango_renderer_get_matrix(value self)
 CAMLparam1(self);
 
 const PangoMatrix* result = pango_renderer_get_matrix(PangoRenderer_val(self));
+if (result) result = g_boxed_copy(pango_matrix_get_type(), result);
 CAMLreturn(Val_option(result, Val_PangoMatrix));
 }
 
@@ -80,6 +81,7 @@ CAMLexport CAMLprim value ml_pango_renderer_get_layout_line(value self)
 CAMLparam1(self);
 
 PangoLayoutLine* result = pango_renderer_get_layout_line(PangoRenderer_val(self));
+if (result) result = g_boxed_copy(pango_layout_line_get_type(), result);
 CAMLreturn(Val_option(result, Val_PangoLayoutLine));
 }
 
@@ -121,6 +123,7 @@ CAMLexport CAMLprim value ml_pango_renderer_get_color(value self, value arg1)
 CAMLparam2(self, arg1);
 
 PangoColor* result = pango_renderer_get_color(PangoRenderer_val(self), PangoRenderPart_val(arg1));
+if (result) result = g_boxed_copy(pango_color_get_type(), result);
 CAMLreturn(Val_option(result, Val_PangoColor));
 }
 

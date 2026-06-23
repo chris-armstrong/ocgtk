@@ -1,7 +1,13 @@
-(* Signal class defined in gdtls_connection_signals.ml *)
-
 class type dtls_connection_t = object
-  inherit Gdtls_connection_signals.dtls_connection_signals
+  method on_accept_certificate :
+    ?after:bool ->
+    callback:
+      (peer_cert:GTls_certificate.tls_certificate_t ->
+      errors:Gio_enums.tlscertificateflags ->
+      bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method close : GCancellable.cancellable_t option -> (bool, GError.t) result
   method close_finish : GAsync_result.async_result_t -> (bool, GError.t) result
 
@@ -64,7 +70,12 @@ end
 (* High-level class for DtlsConnection *)
 class dtls_connection (obj : Dtls_connection.t) : dtls_connection_t =
   object (self)
-    inherit Gdtls_connection_signals.dtls_connection_signals obj
+    method on_accept_certificate ?(after = false) ~callback () =
+      Dtls_connection.on_accept_certificate ~after self#as_dtls_connection
+        ~callback:(fun ~peer_cert ~errors ->
+          callback
+            ~peer_cert:(new GTls_certificate.tls_certificate peer_cert)
+            ~errors)
 
     method close : GCancellable.cancellable_t option -> (bool, GError.t) result
         =

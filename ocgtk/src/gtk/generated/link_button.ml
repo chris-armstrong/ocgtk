@@ -36,3 +36,14 @@ external get_uri : t -> string = "ml_gtk_link_button_get_uri"
 (** Retrieves the URI of the `GtkLinkButton`. *)
 
 (* Properties *)
+
+let on_activate_link ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let result = callback () in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"activate-link" ~callback:closure
+    ~after:(Option.value after ~default:false)

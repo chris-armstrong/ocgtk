@@ -92,3 +92,19 @@ external get_selection : t -> Bitset.t = "ml_gtk_selection_model_get_selection"
     consider using [method@Gtk.SelectionModel.is_selected] or if you are only
     interested in a few, consider
     [method@Gtk.SelectionModel.get_selection_in_range]. *)
+
+let on_selection_changed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let position =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_uint v
+        in
+        let n_items =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_uint v
+        in
+        callback ~position ~n_items)
+  in
+  Gobject.Signal.connect obj ~name:"selection-changed" ~callback:closure
+    ~after:(Option.value after ~default:false)

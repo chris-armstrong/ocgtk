@@ -45,3 +45,5 @@ external get_device_path : t -> string = "ml_g_unix_mount_point_get_device_path"
 
 external compare : t -> t -> int = "ml_g_unix_mount_point_compare"
 (** Compares two unix mount points. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gio_unix_mount_point_get_type"

@@ -54,7 +54,7 @@ external remove_column : t -> int -> unit = "ml_gtk_grid_remove_column"
 
 external remove :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_grid_remove"
@@ -65,7 +65,7 @@ The child must have been added with
 
 external query_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int * int * int * int = "ml_gtk_grid_query_child"
@@ -80,7 +80,7 @@ external insert_row : t -> int -> unit = "ml_gtk_grid_insert_row"
 
 external insert_next_to :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   Gtk_enums.positiontype ->
@@ -122,7 +122,7 @@ external get_child_at :
   t ->
   int ->
   int ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_grid_get_child_at"
@@ -134,10 +134,10 @@ external get_baseline_row : t -> int = "ml_gtk_grid_get_baseline_row"
 
 external attach_next_to :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -158,7 +158,7 @@ Attaching widgets labeled `[1]`, `[2]`, `[3]` with `@sibling == %NULL` and
 
 external attach :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int ->

@@ -18,8 +18,9 @@
 type -'a obj
 (** Type for GObject instances. The type parameter provides type safety. *)
 
-type g_type = int
-(** GType identifier *)
+type g_type
+(** GType identifier — opaque; use [Type.equal] to compare, [Type.to_int] for
+    formatting *)
 
 type g_value
 (** GValue container for generic values *)
@@ -27,48 +28,10 @@ type g_value
 type g_closure
 (** GClosure for signal callbacks *)
 
-(** {2 Fundamental Types} *)
-
-type fundamental_type =
-  [ `INVALID
-  | `NONE
-  | `INTERFACE
-  | `CHAR
-  | `UCHAR
-  | `BOOLEAN
-  | `INT
-  | `UINT
-  | `LONG
-  | `ULONG
-  | `INT64
-  | `UINT64
-  | `ENUM
-  | `FLAGS
-  | `FLOAT
-  | `DOUBLE
-  | `STRING
-  | `POINTER
-  | `BOXED
-  | `PARAM
-  | `OBJECT ]
-(** Fundamental GType categories *)
-
-type signal_type = [ `RUN_FIRST | `RUN_LAST | `NO_RECURSE | `ACTION | `NO_HOOKS ]
-(** Signal emission phases *)
-
 (** {2 Object Operations} *)
 
 val get_type : 'a obj -> g_type
 (** Get the GType of an object *)
-
-val is_a : 'a obj -> string -> bool
-(** Check if object is of a given type (by name) *)
-
-exception Cannot_cast of string * string
-(** Exception raised when type casting fails *)
-
-val try_cast : 'a obj -> string -> 'b obj
-(** Try to cast object to a specific type, raises Cannot_cast on failure *)
 
 external unsafe_cast : 'a obj -> 'b obj = "%identity"
 (** Unsafe cast between object types *)
@@ -76,22 +39,30 @@ external unsafe_cast : 'a obj -> 'b obj = "%identity"
 external coerce : 'a obj -> unit obj = "%identity"
 (** Safe coercion to generic object *)
 
+external same : 'a obj -> 'b obj -> bool = "ml_gobject_same"
+(** [same a b] is [true] iff [a] and [b] wrap the same underlying GObject
+    pointer. Two extractions of the same GObject (e.g. successive
+    [Gobject.Value.get_object] calls in a signal callback) allocate distinct
+    OCaml custom blocks, so [Stdlib.(==)] always returns [false]. Use [same]
+    when the intent is identity comparison.
+
+    [Stdlib.(=)], [Stdlib.compare], and [Hashtbl.hash] also operate on pointer
+    identity for [obj] values (the custom block installs a pointer-compare /
+    pointer-hash); [same] is the explicit form. *)
+
 val get_ref_count : 'a obj -> int
 (** Get reference count (for debugging) *)
-
-(** {2 Test Helpers} *)
-
-val is_custom_block : 'a obj -> bool
-(** Test helper: check if value is custom block (for testing GObject finalizers)
-*)
-
-val is_gobject : 'a obj -> bool
-(** Test helper: check if pointer is a valid GObject *)
 
 (** {2 Type System} *)
 
 module Type : sig
   type t = g_type
+
+  val equal : t -> t -> bool
+  (** Test two GTypes for identity *)
+
+  val to_int : t -> int
+  (** Expose the underlying integer (for logging/debugging only) *)
 
   val name : t -> string
   (** Get type name *)
@@ -105,11 +76,27 @@ module Type : sig
   val is_a : t -> t -> bool
   (** Check type hierarchy *)
 
-  val fundamental : t -> fundamental_type
-  (** Get fundamental type category *)
-
-  val of_fundamental : fundamental_type -> t
-  (** Get GType for fundamental type *)
+  val invalid   : t
+  val none      : t
+  val interface : t
+  val char_     : t
+  val uchar     : t
+  val boolean   : t
+  val int_      : t
+  val uint      : t
+  val long      : t
+  val ulong     : t
+  val int64     : t
+  val uint64    : t
+  val enum      : t
+  val flags     : t
+  val float_    : t
+  val double    : t
+  val string    : t
+  val pointer   : t
+  val boxed     : t
+  val param     : t
+  val object_   : t
 end
 
 (** {2 GValue Operations} *)
@@ -146,8 +133,68 @@ module Value : sig
   val set_float : t -> float -> unit
   val get_double : t -> float
   val set_double : t -> float -> unit
+
+  val get_int64 : t -> int64
+  (** Get a 64-bit integer from a GValue of G_TYPE_INT64. *)
+
+  val set_int64 : t -> int64 -> unit
+  (** Set a 64-bit integer on a GValue of G_TYPE_INT64. *)
+
+  val get_variant : t -> Gvariant.t
+  (** Get a GVariant from a GValue of G_TYPE_VARIANT. The returned value is a
+      new reference (ref-counted); the caller may use it freely and the OCaml GC
+      will unref it when the value is collected. *)
+
+  val set_variant : t -> Gvariant.t -> unit
+  (** Set a GVariant on a GValue of G_TYPE_VARIANT. Transfer-none: the GValue
+      takes its own reference. *)
+
+  val get_enum_int : t -> int
+  (** Get the raw integer value of a GValue holding an enum type. Raises
+      [Invalid_argument] if the GValue does not hold an enum type. *)
+
+  val set_enum_int : t -> int -> unit
+  (** Set the raw integer value of a GValue holding an enum type. Raises
+      [Invalid_argument] if the GValue does not hold an enum type. *)
+
+  val get_flags_int : t -> int
+  (** Get the raw integer bitmask of a GValue holding a flags type. Raises
+      [Invalid_argument] if the GValue does not hold a flags type. *)
+
+  val set_flags_int : t -> int -> unit
+  (** Set the raw integer bitmask of a GValue holding a flags type. Raises
+      [Invalid_argument] if the GValue does not hold a flags type. *)
+
+  val get_boxed : t -> 'a obj
+  (** Get a boxed GIR record from a GValue holding a boxed GType. Returns a
+      gir_record custom block (ocgtk_gir_record_ops) carrying the GType and an
+      owned copy of the boxed data (g_boxed_copy was called). The existing
+      gir_record finalizer calls g_boxed_free when the block is collected. The
+      caller must ascribe the correct record type at the call site, e.g.
+      [(Gobject.Value.get_boxed v : Gtk.Tree_iter.t)]. Raises [Invalid_argument]
+      if the GValue does not hold a boxed type. *)
+
+  val set_boxed : t -> 'a obj -> unit
+  (** Set a boxed GIR record on a GValue holding a boxed GType. The argument
+      must be a gir_record custom block created by the ocgtk GIR record
+      infrastructure and backed by a registered boxed GType (i.e.
+      [G_TYPE_IS_BOXED(type)] must be true for the record's GType). Passing a
+      plain non-boxed GIR record yields type confusion at GValue finalization
+      because [g_value_set_boxed] will call [g_boxed_copy] and [g_boxed_free]
+      internally using the GType stored in the GValue, not the record's own
+      type. Transfer-none: the GValue copies the data via [g_boxed_copy]
+      internally. The caller must ascribe the correct record type at the call
+      site. *)
+
   val get_object : t -> 'a obj option
   val set_object : t -> 'a obj option -> unit
+
+  val get_object_exn : t -> 'a obj
+  (** Get a GObject from a GValue, raising [Failure] if the value is NULL. Use
+      this when the GIR declares the parameter non-nullable. *)
+
+  val set_object_exn : t -> 'a obj -> unit
+  (** Set a non-nullable GObject on a GValue. *)
 end
 
 (** {2 Properties} *)
@@ -232,37 +279,3 @@ module Signal : sig
   (** Emit a signal by name *)
 end
 
-(** {2 Data Conversions} *)
-
-module Data : sig
-  (** Enum and flags conversion *)
-
-  val enum : ([> ] as 'a) Gpointer.variant_table -> (int -> 'a) * ('a -> int)
-  (** Create decoder/encoder pair for enum types *)
-
-  val flags : ([> ] as 'a) Gpointer.variant_table -> (int -> 'a) * ('a -> int)
-  (** Create decoder/encoder pair for flags types *)
-end
-
-(** {2 Test Helpers} *)
-
-(** Functions for testing closure invocation - not part of the public API *)
-module Test : sig
-  val invoke_closure_void : g_closure -> unit
-  (** Test helper: Invoke a closure with no arguments *)
-
-  val invoke_closure_int : g_closure -> int -> unit
-  (** Test helper: Invoke a closure with an integer argument *)
-
-  val invoke_closure_string : g_closure -> string -> unit
-  (** Test helper: Invoke a closure with a string argument *)
-
-  val invoke_closure_two_ints : g_closure -> int -> int -> unit
-  (** Test helper: Invoke a closure with two integer arguments *)
-
-  val invoke_closure_boolean : g_closure -> bool -> unit
-  (** Test helper: Invoke a closure with a boolean argument *)
-
-  val invoke_closure_double : g_closure -> float -> unit
-  (** Test helper: Invoke a closure with a double argument *)
-end

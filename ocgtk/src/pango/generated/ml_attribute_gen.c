@@ -19,7 +19,7 @@
 value copy_PangoAttribute(const PangoAttribute *ptr)
 {
   if (ptr == NULL) return Val_none;
-  PangoAttribute *copy = pango_attribute_copy((PangoAttribute*)ptr);
+  PangoAttribute *copy = g_boxed_copy(pango_attribute_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(pango_attribute_get_type(), copy);
 }
 
@@ -250,3 +250,9 @@ caml_failwith("Attribute requires Pango >= 1.50");
 return Val_unit;
 }
 #endif
+
+CAMLprim value ml_pango_attribute_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_attribute_get_type()));
+}

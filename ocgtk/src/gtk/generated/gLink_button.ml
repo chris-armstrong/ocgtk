@@ -1,8 +1,9 @@
-(* Signal class defined in glink_button_signals.ml *)
-
 class type link_button_t = object
   inherit GButton.button_t
-  inherit Glink_button_signals.link_button_signals
+
+  method on_activate_link :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
   method get_uri : unit -> string
   method get_visited : unit -> bool
   method set_uri : string -> unit
@@ -14,7 +15,10 @@ end
 class link_button (obj : Link_button.t) : link_button_t =
   object (self)
     inherit GButton.button (obj :> Button.t)
-    inherit Glink_button_signals.link_button_signals obj
+
+    method on_activate_link ?(after = false) ~callback () =
+      Link_button.on_activate_link ~after self#as_link_button ~callback
+
     method get_uri : unit -> string = fun () -> Link_button.get_uri obj
     method get_visited : unit -> bool = fun () -> Link_button.get_visited obj
     method set_uri : string -> unit = fun uri -> Link_button.set_uri obj uri

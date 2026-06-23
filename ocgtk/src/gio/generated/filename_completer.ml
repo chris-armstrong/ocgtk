@@ -20,3 +20,7 @@ external get_completions : t -> string -> string array
 external get_completion_suffix : t -> string -> string option
   = "ml_g_filename_completer_get_completion_suffix"
 (** Obtains a completion for @initial_text from @completer. *)
+
+let on_got_completion_data ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"got-completion-data" ~callback
+    ~after:(Option.value after ~default:false)

@@ -7,4 +7,7 @@ end
 class property_expression : Property_expression.t -> property_expression_t
 
 val new_ :
-  int -> GExpression.expression_t option -> string -> property_expression_t
+  Gobject.Type.t ->
+  GExpression.expression_t option ->
+  string ->
+  property_expression_t

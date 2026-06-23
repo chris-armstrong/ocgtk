@@ -7,6 +7,9 @@ type colorspace = [
   | `RGB
 ]
 
+val colorspace_of_int : int -> colorspace
+val colorspace_to_int : colorspace -> int
+
 (* InterpType - enumeration *)
 type interptype = [
   (** Nearest neighbor sampling; this is the fastest
@@ -36,6 +39,9 @@ type interptype = [
   | `HYPER
 ]
 
+val interptype_of_int : int -> interptype
+val interptype_to_int : interptype -> int
+
 (* PixbufAlphaMode - enumeration *)
 type pixbufalphamode = [
   (** A bilevel clipping mask (black and white)
@@ -47,6 +53,9 @@ type pixbufalphamode = [
  In the future it will do full alpha compositing. *)
   | `FULL
 ]
+
+val pixbufalphamode_of_int : int -> pixbufalphamode
+val pixbufalphamode_to_int : pixbufalphamode -> int
 
 (* PixbufError - enumeration *)
 type pixbuferror = [
@@ -67,6 +76,9 @@ type pixbuferror = [
   | `INCOMPLETE_ANIMATION
 ]
 
+val pixbuferror_of_int : int -> pixbuferror
+val pixbuferror_to_int : pixbuferror -> int
+
 (* PixbufRotation - enumeration *)
 type pixbufrotation = [
   (** No rotation. *)
@@ -78,6 +90,9 @@ type pixbufrotation = [
   (** Rotate by 270 degrees. *)
   | `CLOCKWISE
 ]
+
+val pixbufrotation_of_int : int -> pixbufrotation
+val pixbufrotation_to_int : pixbufrotation -> int
 
 (* PixbufFormatFlags - bitfield/flags *)
 type pixbufformatflags_flag = [
@@ -91,4 +106,7 @@ type pixbufformatflags_flag = [
 ]
 
 type pixbufformatflags = pixbufformatflags_flag list
+
+val pixbufformatflags_of_int : int -> pixbufformatflags
+val pixbufformatflags_to_int : pixbufformatflags -> int
 

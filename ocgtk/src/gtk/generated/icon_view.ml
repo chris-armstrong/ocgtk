@@ -33,8 +33,13 @@ external unselect_path : t -> Tree_path.t -> unit
 external unselect_all : t -> unit = "ml_gtk_icon_view_unselect_all"
 (** Unselects all the icons. *)
 
-external set_tooltip_item : t -> Tooltip.t -> Tree_path.t -> unit
-  = "ml_gtk_icon_view_set_tooltip_item"
+external set_tooltip_item :
+  t ->
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+  .Tooltip
+  .t ->
+  Tree_path.t ->
+  unit = "ml_gtk_icon_view_set_tooltip_item"
 (** Sets the tip area of @tooltip to be the area covered by the item at @path.
 See also gtk_icon_view_set_tooltip_column() for a simpler alternative.
 See also gtk_tooltip_set_tip_area(). *)
@@ -53,8 +58,13 @@ Note that the signal handler sets the text with gtk_tooltip_set_markup(),
 so &, <, etc have to be escaped in the text. *)
 
 external set_tooltip_cell :
-  t -> Tooltip.t -> Tree_path.t -> Cell_renderer.t option -> unit
-  = "ml_gtk_icon_view_set_tooltip_cell"
+  t ->
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+  .Tooltip
+  .t ->
+  Tree_path.t ->
+  Cell_renderer.t option ->
+  unit = "ml_gtk_icon_view_set_tooltip_cell"
 (** Sets the tip area of @tooltip to the area which @cell occupies in
 the item pointed to by @path. See also gtk_tooltip_set_tip_area().
 
@@ -322,3 +332,61 @@ external get_cell_area :
   t -> Cell_area_and__cell_area_context_and__cell_layout.Cell_area.t
   = "ml_gtk_icon_view_get_cell_area"
 (** Get property: cell-area *)
+
+let on_activate_cursor_item ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let result = callback () in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"activate-cursor-item" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_move_cursor ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let step =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.movementstep_of_int (Gobject.Value.get_enum_int v)
+        in
+        let count =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        let extend =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_boolean v
+        in
+        let modify =
+          let v = Gobject.Closure.nth argv ~pos:4 in
+          Gobject.Value.get_boolean v
+        in
+        let result = callback ~step ~count ~extend ~modify in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"move-cursor" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_select_all ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"select-all" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_select_cursor_item ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"select-cursor-item" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_selection_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"selection-changed" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_toggle_cursor_item ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"toggle-cursor-item" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_unselect_all ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"unselect-all" ~callback
+    ~after:(Option.value after ~default:false)

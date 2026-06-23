@@ -1,14 +1,14 @@
 class type notebook_page_t = object
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method detachable : bool
   method set_detachable : bool -> unit
 
   method menu :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method menu_label : string
@@ -19,7 +19,7 @@ class type notebook_page_t = object
   method set_reorderable : bool -> unit
 
   method tab :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method tab_expand : bool
@@ -36,11 +36,11 @@ class notebook_page (obj : Notebook_page.t) : notebook_page_t =
   object (self)
     method get_child :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t =
       fun () ->
         new
-          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
           .widget
           (Notebook_page.get_child obj)
 
@@ -49,7 +49,7 @@ class notebook_page (obj : Notebook_page.t) : notebook_page_t =
 
     method menu =
       new
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget
         (Notebook_page.get_menu obj)
 
@@ -62,7 +62,7 @@ class notebook_page (obj : Notebook_page.t) : notebook_page_t =
 
     method tab =
       new
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget
         (Notebook_page.get_tab obj)
 

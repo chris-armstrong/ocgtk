@@ -59,3 +59,27 @@ This function must be called from the handler of one of the
 signals. *)
 
 (* Properties *)
+
+val on_down :
+  ?after:bool ->
+  t ->
+  callback:(x:float -> y:float -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_motion :
+  ?after:bool ->
+  t ->
+  callback:(x:float -> y:float -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_proximity :
+  ?after:bool ->
+  t ->
+  callback:(x:float -> y:float -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_up :
+  ?after:bool ->
+  t ->
+  callback:(x:float -> y:float -> unit) ->
+  Gobject.Signal.handler_id

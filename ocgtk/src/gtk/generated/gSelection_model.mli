@@ -1,5 +1,10 @@
 class type selection_model_t = object
-  inherit Gselection_model_signals.selection_model_signals
+  method on_selection_changed :
+    ?after:bool ->
+    callback:(position:int -> n_items:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_selection : unit -> Bitset.t
   method get_selection_in_range : int -> int -> Bitset.t
   method is_selected : int -> bool

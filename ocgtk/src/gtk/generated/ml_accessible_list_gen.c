@@ -72,6 +72,12 @@ Val_GList_with(c_result, result, item, cell, Val_GtkAccessible((gpointer)_tmp->d
     CAMLreturn(result);
 }
 
+CAMLprim value ml_gtk_accessible_list_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gtk_accessible_list_get_type()));
+}
+
 #else
 
 

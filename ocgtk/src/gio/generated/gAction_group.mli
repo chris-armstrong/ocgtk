@@ -1,5 +1,28 @@
 class type action_group_t = object
-  inherit Gaction_group_signals.action_group_signals
+  method on_action_added :
+    ?after:bool ->
+    callback:(action_name:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_action_enabled_changed :
+    ?after:bool ->
+    callback:(action_name:string -> enabled:bool -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_action_removed :
+    ?after:bool ->
+    callback:(action_name:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_action_state_changed :
+    ?after:bool ->
+    callback:(action_name:string -> value:Gvariant.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method action_added : string -> unit
   method action_enabled_changed : string -> bool -> unit
   method action_removed : string -> unit

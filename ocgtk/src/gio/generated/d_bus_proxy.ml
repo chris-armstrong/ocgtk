@@ -226,3 +226,23 @@ external get_g_name_owner : t -> string = "ml_g_d_bus_proxy_get_g_name_owner"
 
 external get_g_object_path : t -> string = "ml_g_d_bus_proxy_get_g_object_path"
 (** Get property: g-object-path *)
+
+let on_g_signal ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let sender_name =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        let signal_name =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_string v
+        in
+        let parameters =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_variant v
+        in
+        callback ~sender_name ~signal_name ~parameters)
+  in
+  Gobject.Signal.connect obj ~name:"g-signal" ~callback:closure
+    ~after:(Option.value after ~default:false)

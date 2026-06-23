@@ -30,7 +30,7 @@ external response : t -> int -> unit = "ml_gtk_dialog_response"
 external get_widget_for_response :
   t ->
   int ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_dialog_get_widget_for_response"
@@ -39,7 +39,7 @@ external get_widget_for_response :
 
 external get_response_for_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int = "ml_gtk_dialog_get_response_for_widget"
@@ -58,7 +58,7 @@ external add_button :
   t ->
   string ->
   int ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_dialog_add_button"
 (** Adds a button with the given text.
@@ -70,7 +70,7 @@ The button widget is returned, but usually you don’t need it. *)
 
 external add_action_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int ->
@@ -89,3 +89,12 @@ the @action_area field of the `GtkDialog` struct. *)
 
 external get_use_header_bar : t -> int = "ml_gtk_dialog_get_use_header_bar"
 (** Get property: use-header-bar *)
+
+val on_close :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_response :
+  ?after:bool ->
+  t ->
+  callback:(response_id:int -> unit) ->
+  Gobject.Signal.handler_id

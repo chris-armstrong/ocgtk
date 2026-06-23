@@ -91,6 +91,10 @@ and Clipboard : sig
 
       See [method@Gdk.Clipboard.store_async]. *)
 
+  external set_value : t -> Gobject.Value.t -> unit
+    = "ml_gdk_clipboard_set_value"
+  (** Sets the @clipboard to contain the given @value. *)
+
   external set_content : t -> Content_provider.t option -> bool
     = "ml_gdk_clipboard_set_content"
   (** Sets a new content provider on @clipboard.
@@ -105,6 +109,14 @@ and Clipboard : sig
   If the contents are read by either an external application or the
   @clipboard's read functions, @clipboard will select the best format to
   transfer the contents and then request that format from @provider. *)
+
+  external read_value_finish :
+    t ->
+    Ocgtk_gio.Gio.Wrappers.Async_result.t ->
+    (Gobject.Value.t, GError.t) result = "ml_gdk_clipboard_read_value_finish"
+  (** Finishes an asynchronous clipboard read.
+
+      See [method@Gdk.Clipboard.read_value_async]. *)
 
   external read_texture_finish :
     t ->
@@ -149,6 +161,9 @@ and Clipboard : sig
 
   external get_local : t -> bool = "ml_gdk_clipboard_get_local"
   (** Get property: local *)
+
+  val on_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end
 
 and Device : sig
@@ -276,6 +291,15 @@ and Device : sig
 
   external get_tool : t -> Device_tool.t = "ml_gdk_device_get_tool"
   (** Get property: tool *)
+
+  val on_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_tool_changed :
+    ?after:bool ->
+    t ->
+    callback:(tool:Device_tool.t -> unit) ->
+    Gobject.Signal.handler_id
 end
 
 and Display : sig
@@ -438,6 +462,11 @@ and Display : sig
   (** Gets the startup notification ID for a Wayland display, or %NULL if no ID
       has been defined. *)
 
+  external get_setting : t -> string -> Gobject.Value.t -> bool
+    = "ml_gdk_display_get_setting"
+  (** Retrieves a desktop-wide setting such as double-click time
+  for the @display. *)
+
   external get_primary_clipboard : t -> Clipboard.t
     = "ml_gdk_display_get_primary_clipboard"
   (** Gets the clipboard used for the primary selection.
@@ -540,6 +569,33 @@ and Display : sig
 
   external get_shadow_width : t -> bool = "ml_gdk_display_get_shadow_width"
   (** Get property: shadow-width *)
+
+  val on_closed :
+    ?after:bool ->
+    t ->
+    callback:(is_error:bool -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_opened :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_seat_added :
+    ?after:bool ->
+    t ->
+    callback:(seat:Seat.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_seat_removed :
+    ?after:bool ->
+    t ->
+    callback:(seat:Seat.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_setting_changed :
+    ?after:bool ->
+    t ->
+    callback:(setting:string -> unit) ->
+    Gobject.Signal.handler_id
 end
 
 and Draw_context : sig
@@ -987,6 +1043,9 @@ and Monitor : sig
 
   external get_valid : t -> bool = "ml_gdk_monitor_get_valid"
   (** Get property: valid *)
+
+  val on_invalidate :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end
 
 and Seat : sig
@@ -1015,6 +1074,30 @@ and Seat : sig
   (** Returns the capabilities this `GdkSeat` currently has. *)
 
   (* Properties *)
+
+  val on_device_added :
+    ?after:bool ->
+    t ->
+    callback:(device:Device.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_device_removed :
+    ?after:bool ->
+    t ->
+    callback:(device:Device.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_tool_added :
+    ?after:bool ->
+    t ->
+    callback:(tool:Device_tool.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_tool_removed :
+    ?after:bool ->
+    t ->
+    callback:(tool:Device_tool.t -> unit) ->
+    Gobject.Signal.handler_id
 end
 
 and Surface : sig
@@ -1254,10 +1337,36 @@ and Surface : sig
   emits a short beep on the display just as [method@Gdk.Display.beep]. *)
 
   (* Properties *)
+
+  val on_enter_monitor :
+    ?after:bool ->
+    t ->
+    callback:(monitor:Monitor.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_event :
+    ?after:bool ->
+    t ->
+    callback:(event:Event.t -> bool) ->
+    Gobject.Signal.handler_id
+
+  val on_layout :
+    ?after:bool ->
+    t ->
+    callback:(width:int -> height:int -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_leave_monitor :
+    ?after:bool ->
+    t ->
+    callback:(monitor:Monitor.t -> unit) ->
+    Gobject.Signal.handler_id
 end
 
 and Vulkan_context : sig
   type t = [ `vulkan_context | `draw_context | `object_ ] Gobject.obj
 
   (* Methods *)
+  val on_images_updated :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end

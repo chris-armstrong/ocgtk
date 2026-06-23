@@ -66,3 +66,31 @@ external drag_cancel : t -> unit = "ml_gtk_drag_source_drag_cancel"
 (** Cancels a currently ongoing drag operation. *)
 
 (* Properties *)
+
+val on_drag_begin :
+  ?after:bool ->
+  t ->
+  callback:(drag:Ocgtk_gdk.Gdk.Wrappers.Drag.t -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_drag_cancel :
+  ?after:bool ->
+  t ->
+  callback:
+    (drag:Ocgtk_gdk.Gdk.Wrappers.Drag.t ->
+    reason:Ocgtk_gdk.Gdk_enums.dragcancelreason ->
+    bool) ->
+  Gobject.Signal.handler_id
+
+val on_drag_end :
+  ?after:bool ->
+  t ->
+  callback:(drag:Ocgtk_gdk.Gdk.Wrappers.Drag.t -> delete_data:bool -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_prepare :
+  ?after:bool ->
+  t ->
+  callback:
+    (x:float -> y:float -> Ocgtk_gdk.Gdk.Wrappers.Content_provider.t option) ->
+  Gobject.Signal.handler_id

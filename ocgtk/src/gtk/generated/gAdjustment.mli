@@ -1,5 +1,10 @@
 class type adjustment_t = object
-  inherit Gadjustment_signals.adjustment_signals
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_value_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method clamp_page : float -> float -> unit
   method configure : float -> float -> float -> float -> float -> float -> unit
   method get_lower : unit -> float

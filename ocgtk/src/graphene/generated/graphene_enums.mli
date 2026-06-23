@@ -74,6 +74,9 @@ type eulerorder = [
   | `RZYZ
 ]
 
+val eulerorder_of_int : int -> eulerorder
+val eulerorder_to_int : eulerorder -> int
+
 (* RayIntersectionKind - enumeration *)
 type rayintersectionkind = [
   (** No intersection *)
@@ -85,4 +88,7 @@ type rayintersectionkind = [
   object *)
   | `LEAVE
 ]
+
+val rayintersectionkind_of_int : int -> rayintersectionkind
+val rayintersectionkind_to_int : rayintersectionkind -> int
 

@@ -84,3 +84,5 @@ external get_default_left_margin : t -> Gtk_enums.unit -> float
 external get_default_bottom_margin : t -> Gtk_enums.unit -> float
   = "ml_gtk_paper_size_get_default_bottom_margin"
 (** Gets the default bottom margin for the `GtkPaperSize`. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gtk_paper_size_get_type"

@@ -242,3 +242,48 @@ external set_invisible_char_set : t -> bool -> unit
 
 external get_scroll_offset : t -> int = "ml_gtk_text_get_scroll_offset"
 (** Get property: scroll-offset *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_backspace :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_copy_clipboard :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_cut_clipboard :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_delete_from_cursor :
+  ?after:bool ->
+  t ->
+  callback:(type_:Gtk_enums.deletetype -> count:int -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_insert_at_cursor :
+  ?after:bool ->
+  t ->
+  callback:(string:string -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_insert_emoji :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_move_cursor :
+  ?after:bool ->
+  t ->
+  callback:(step:Gtk_enums.movementstep -> count:int -> extend:bool -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_paste_clipboard :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_preedit_changed :
+  ?after:bool ->
+  t ->
+  callback:(preedit:string -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_toggle_overwrite :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

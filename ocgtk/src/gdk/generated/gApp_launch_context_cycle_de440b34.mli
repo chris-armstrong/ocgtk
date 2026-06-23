@@ -13,7 +13,9 @@ and cairo_context_t = object
 end
 
 and clipboard_t = object
-  inherit Gclipboard_signals.clipboard_signals
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_content : unit -> GContent_provider.content_provider_t option
   method get_display : unit -> display_t
   method get_formats : unit -> Content_formats.t
@@ -27,7 +29,12 @@ and clipboard_t = object
     Ocgtk_gio.Gio.Async_result.async_result_t ->
     (GTexture.texture_t option, GError.t) result
 
+  method read_value_finish :
+    Ocgtk_gio.Gio.Async_result.async_result_t ->
+    (Gobject.Value.t, GError.t) result
+
   method set_content : GContent_provider.content_provider_t option -> bool
+  method set_value : Gobject.Value.t -> unit
 
   method store_finish :
     Ocgtk_gio.Gio.Async_result.async_result_t -> (bool, GError.t) result
@@ -37,7 +44,15 @@ and clipboard_t = object
 end
 
 and device_t = object
-  inherit Gdevice_signals.device_signals
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_tool_changed :
+    ?after:bool ->
+    callback:(tool:GDevice_tool.device_tool_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_caps_lock_state : unit -> bool
   method get_device_tool : unit -> GDevice_tool.device_tool_t option
   method get_direction : unit -> Ocgtk_pango.Pango.direction
@@ -60,7 +75,33 @@ and device_t = object
 end
 
 and display_t = object
-  inherit Gdisplay_signals.display_signals
+  method on_closed :
+    ?after:bool ->
+    callback:(is_error:bool -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_opened :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_seat_added :
+    ?after:bool ->
+    callback:(seat:seat_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_seat_removed :
+    ?after:bool ->
+    callback:(seat:seat_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_setting_changed :
+    ?after:bool ->
+    callback:(setting:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method beep : unit -> unit
   method close : unit -> unit
   method create_gl_context : unit -> (gl_context_t, GError.t) result
@@ -74,6 +115,7 @@ and display_t = object
   method get_monitors : unit -> Ocgtk_gio.Gio.List_model.list_model_t
   method get_name : unit -> string
   method get_primary_clipboard : unit -> clipboard_t
+  method get_setting : string -> Gobject.Value.t -> bool
   method get_startup_notification_id : unit -> string option
   method is_closed : unit -> bool
   method is_composited : unit -> bool
@@ -139,7 +181,9 @@ and gl_context_t = object
 end
 
 and monitor_t = object
-  inherit Gmonitor_signals.monitor_signals
+  method on_invalidate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_connector : unit -> string option
   method get_description : unit -> string option
   method get_display : unit -> display_t
@@ -157,7 +201,30 @@ and monitor_t = object
 end
 
 and seat_t = object
-  inherit Gseat_signals.seat_signals
+  method on_device_added :
+    ?after:bool ->
+    callback:(device:device_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_device_removed :
+    ?after:bool ->
+    callback:(device:device_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_tool_added :
+    ?after:bool ->
+    callback:(tool:GDevice_tool.device_tool_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_tool_removed :
+    ?after:bool ->
+    callback:(tool:GDevice_tool.device_tool_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_capabilities : unit -> Gdk_enums.seatcapabilities
   method get_devices : Gdk_enums.seatcapabilities -> device_t list
   method get_display : unit -> display_t
@@ -168,7 +235,30 @@ and seat_t = object
 end
 
 and surface_t = object
-  inherit Gsurface_signals.surface_signals
+  method on_enter_monitor :
+    ?after:bool ->
+    callback:(monitor:monitor_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_event :
+    ?after:bool ->
+    callback:(event:event_t -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_layout :
+    ?after:bool ->
+    callback:(width:int -> height:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_leave_monitor :
+    ?after:bool ->
+    callback:(monitor:monitor_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method beep : unit -> unit
   method create_cairo_context : unit -> cairo_context_t
   method create_gl_context : unit -> (gl_context_t, GError.t) result
@@ -203,7 +293,10 @@ end
 
 and vulkan_context_t = object
   inherit Ocgtk_gio.Gio.Initable.initable_t
-  inherit Gvulkan_context_signals.vulkan_context_signals
+
+  method on_images_updated :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method as_vulkan_context : App_launch_context_cycle_de440b34.Vulkan_context.t
 end
 

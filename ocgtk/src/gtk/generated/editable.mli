@@ -193,3 +193,12 @@ external get_xalign : t -> float = "ml_gtk_editable_get_xalign"
 
 external set_xalign : t -> float -> unit = "ml_gtk_editable_set_xalign"
 (** Set property: xalign *)
+
+val on_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_delete_text :
+  ?after:bool ->
+  t ->
+  callback:(start_pos:int -> end_pos:int -> unit) ->
+  Gobject.Signal.handler_id

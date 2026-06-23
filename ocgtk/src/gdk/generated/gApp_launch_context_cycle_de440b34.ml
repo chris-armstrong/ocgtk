@@ -16,7 +16,9 @@ and cairo_context_t = object
 end
 
 and clipboard_t = object
-  inherit Gclipboard_signals.clipboard_signals
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_content : unit -> GContent_provider.content_provider_t option
   method get_display : unit -> display_t
   method get_formats : unit -> Content_formats.t
@@ -30,7 +32,12 @@ and clipboard_t = object
     Ocgtk_gio.Gio.Async_result.async_result_t ->
     (GTexture.texture_t option, GError.t) result
 
+  method read_value_finish :
+    Ocgtk_gio.Gio.Async_result.async_result_t ->
+    (Gobject.Value.t, GError.t) result
+
   method set_content : GContent_provider.content_provider_t option -> bool
+  method set_value : Gobject.Value.t -> unit
 
   method store_finish :
     Ocgtk_gio.Gio.Async_result.async_result_t -> (bool, GError.t) result
@@ -40,7 +47,15 @@ and clipboard_t = object
 end
 
 and device_t = object
-  inherit Gdevice_signals.device_signals
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_tool_changed :
+    ?after:bool ->
+    callback:(tool:GDevice_tool.device_tool_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_caps_lock_state : unit -> bool
   method get_device_tool : unit -> GDevice_tool.device_tool_t option
   method get_direction : unit -> Ocgtk_pango.Pango.direction
@@ -63,7 +78,33 @@ and device_t = object
 end
 
 and display_t = object
-  inherit Gdisplay_signals.display_signals
+  method on_closed :
+    ?after:bool ->
+    callback:(is_error:bool -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_opened :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_seat_added :
+    ?after:bool ->
+    callback:(seat:seat_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_seat_removed :
+    ?after:bool ->
+    callback:(seat:seat_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_setting_changed :
+    ?after:bool ->
+    callback:(setting:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method beep : unit -> unit
   method close : unit -> unit
   method create_gl_context : unit -> (gl_context_t, GError.t) result
@@ -77,6 +118,7 @@ and display_t = object
   method get_monitors : unit -> Ocgtk_gio.Gio.List_model.list_model_t
   method get_name : unit -> string
   method get_primary_clipboard : unit -> clipboard_t
+  method get_setting : string -> Gobject.Value.t -> bool
   method get_startup_notification_id : unit -> string option
   method is_closed : unit -> bool
   method is_composited : unit -> bool
@@ -142,7 +184,9 @@ and gl_context_t = object
 end
 
 and monitor_t = object
-  inherit Gmonitor_signals.monitor_signals
+  method on_invalidate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_connector : unit -> string option
   method get_description : unit -> string option
   method get_display : unit -> display_t
@@ -160,7 +204,30 @@ and monitor_t = object
 end
 
 and seat_t = object
-  inherit Gseat_signals.seat_signals
+  method on_device_added :
+    ?after:bool ->
+    callback:(device:device_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_device_removed :
+    ?after:bool ->
+    callback:(device:device_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_tool_added :
+    ?after:bool ->
+    callback:(tool:GDevice_tool.device_tool_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_tool_removed :
+    ?after:bool ->
+    callback:(tool:GDevice_tool.device_tool_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_capabilities : unit -> Gdk_enums.seatcapabilities
   method get_devices : Gdk_enums.seatcapabilities -> device_t list
   method get_display : unit -> display_t
@@ -171,7 +238,30 @@ and seat_t = object
 end
 
 and surface_t = object
-  inherit Gsurface_signals.surface_signals
+  method on_enter_monitor :
+    ?after:bool ->
+    callback:(monitor:monitor_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_event :
+    ?after:bool ->
+    callback:(event:event_t -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_layout :
+    ?after:bool ->
+    callback:(width:int -> height:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_leave_monitor :
+    ?after:bool ->
+    callback:(monitor:monitor_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method beep : unit -> unit
   method create_cairo_context : unit -> cairo_context_t
   method create_gl_context : unit -> (gl_context_t, GError.t) result
@@ -206,7 +296,10 @@ end
 
 and vulkan_context_t = object
   inherit Ocgtk_gio.Gio.Initable.initable_t
-  inherit Gvulkan_context_signals.vulkan_context_signals
+
+  method on_images_updated :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method as_vulkan_context : App_launch_context_cycle_de440b34.Vulkan_context.t
 end
 
@@ -253,12 +346,14 @@ and cairo_context (obj : App_launch_context_cycle_de440b34.Cairo_context.t) :
           (App_launch_context_cycle_de440b34.Cairo_context.cairo_create obj)
 
     method as_cairo_context = obj
-  end (* Signal class defined in gclipboard_signals.ml *)
+  end
 
 and clipboard (obj : App_launch_context_cycle_de440b34.Clipboard.t) :
   clipboard_t =
   object (self)
-    inherit Gclipboard_signals.clipboard_signals obj
+    method on_changed ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Clipboard.on_changed ~after
+        self#as_clipboard ~callback
 
     method get_content : unit -> GContent_provider.content_provider_t option =
       fun () ->
@@ -294,10 +389,21 @@ and clipboard (obj : App_launch_context_cycle_de440b34.Clipboard.t) :
           (App_launch_context_cycle_de440b34.Clipboard.read_texture_finish obj
              result)
 
+    method read_value_finish :
+        Ocgtk_gio.Gio.Async_result.async_result_t ->
+        (Gobject.Value.t, GError.t) result =
+      fun result ->
+        let result = result#as_async_result in
+        App_launch_context_cycle_de440b34.Clipboard.read_value_finish obj result
+
     method set_content : GContent_provider.content_provider_t option -> bool =
       fun provider ->
         let provider = Option.map (fun c -> c#as_content_provider) provider in
         App_launch_context_cycle_de440b34.Clipboard.set_content obj provider
+
+    method set_value : Gobject.Value.t -> unit =
+      fun value ->
+        App_launch_context_cycle_de440b34.Clipboard.set_value obj value
 
     method store_finish :
         Ocgtk_gio.Gio.Async_result.async_result_t -> (bool, GError.t) result =
@@ -307,11 +413,18 @@ and clipboard (obj : App_launch_context_cycle_de440b34.Clipboard.t) :
 
     method local = App_launch_context_cycle_de440b34.Clipboard.get_local obj
     method as_clipboard = obj
-  end (* Signal class defined in gdevice_signals.ml *)
+  end
 
 and device (obj : App_launch_context_cycle_de440b34.Device.t) : device_t =
   object (self)
-    inherit Gdevice_signals.device_signals obj
+    method on_changed ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Device.on_changed ~after self#as_device
+        ~callback
+
+    method on_tool_changed ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Device.on_tool_changed ~after
+        self#as_device ~callback:(fun ~tool ->
+          callback ~tool:(new GDevice_tool.device_tool tool))
 
     method get_caps_lock_state : unit -> bool =
       fun () -> App_launch_context_cycle_de440b34.Device.get_caps_lock_state obj
@@ -373,11 +486,29 @@ and device (obj : App_launch_context_cycle_de440b34.Device.t) : device_t =
         (App_launch_context_cycle_de440b34.Device.get_tool obj)
 
     method as_device = obj
-  end (* Signal class defined in gdisplay_signals.ml *)
+  end
 
 and display (obj : App_launch_context_cycle_de440b34.Display.t) : display_t =
   object (self)
-    inherit Gdisplay_signals.display_signals obj
+    method on_closed ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Display.on_closed ~after self#as_display
+        ~callback
+
+    method on_opened ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Display.on_opened ~after self#as_display
+        ~callback
+
+    method on_seat_added ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Display.on_seat_added ~after
+        self#as_display ~callback:(fun ~seat -> callback ~seat:(new seat seat))
+
+    method on_seat_removed ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Display.on_seat_removed ~after
+        self#as_display ~callback:(fun ~seat -> callback ~seat:(new seat seat))
+
+    method on_setting_changed ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Display.on_setting_changed ~after
+        self#as_display ~callback
 
     method beep : unit -> unit =
       fun () -> App_launch_context_cycle_de440b34.Display.beep obj
@@ -438,6 +569,10 @@ and display (obj : App_launch_context_cycle_de440b34.Display.t) : display_t =
       fun () ->
         new clipboard
           (App_launch_context_cycle_de440b34.Display.get_primary_clipboard obj)
+
+    method get_setting : string -> Gobject.Value.t -> bool =
+      fun name value ->
+        App_launch_context_cycle_de440b34.Display.get_setting obj name value
 
     method get_startup_notification_id : unit -> string option =
       fun () ->
@@ -656,11 +791,13 @@ and gl_context (obj : App_launch_context_cycle_de440b34.Gl_context.t) :
         App_launch_context_cycle_de440b34.Gl_context.set_use_es obj use_es
 
     method as_gl_context = obj
-  end (* Signal class defined in gmonitor_signals.ml *)
+  end
 
 and monitor (obj : App_launch_context_cycle_de440b34.Monitor.t) : monitor_t =
   object (self)
-    inherit Gmonitor_signals.monitor_signals obj
+    method on_invalidate ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Monitor.on_invalidate ~after
+        self#as_monitor ~callback
 
     method get_connector : unit -> string option =
       fun () -> App_launch_context_cycle_de440b34.Monitor.get_connector obj
@@ -702,11 +839,28 @@ and monitor (obj : App_launch_context_cycle_de440b34.Monitor.t) : monitor_t =
 
     method valid = App_launch_context_cycle_de440b34.Monitor.get_valid obj
     method as_monitor = obj
-  end (* Signal class defined in gseat_signals.ml *)
+  end
 
 and seat (obj : App_launch_context_cycle_de440b34.Seat.t) : seat_t =
   object (self)
-    inherit Gseat_signals.seat_signals obj
+    method on_device_added ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Seat.on_device_added ~after self#as_seat
+        ~callback:(fun ~device -> callback ~device:(new device device))
+
+    method on_device_removed ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Seat.on_device_removed ~after
+        self#as_seat ~callback:(fun ~device ->
+          callback ~device:(new device device))
+
+    method on_tool_added ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Seat.on_tool_added ~after self#as_seat
+        ~callback:(fun ~tool ->
+          callback ~tool:(new GDevice_tool.device_tool tool))
+
+    method on_tool_removed ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Seat.on_tool_removed ~after self#as_seat
+        ~callback:(fun ~tool ->
+          callback ~tool:(new GDevice_tool.device_tool tool))
 
     method get_capabilities : unit -> Gdk_enums.seatcapabilities =
       fun () -> App_launch_context_cycle_de440b34.Seat.get_capabilities obj
@@ -738,11 +892,27 @@ and seat (obj : App_launch_context_cycle_de440b34.Seat.t) : seat_t =
           (App_launch_context_cycle_de440b34.Seat.get_tools obj)
 
     method as_seat = obj
-  end (* Signal class defined in gsurface_signals.ml *)
+  end
 
 and surface (obj : App_launch_context_cycle_de440b34.Surface.t) : surface_t =
   object (self)
-    inherit Gsurface_signals.surface_signals obj
+    method on_enter_monitor ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Surface.on_enter_monitor ~after
+        self#as_surface ~callback:(fun ~monitor ->
+          callback ~monitor:(new monitor monitor))
+
+    method on_event ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Surface.on_event ~after self#as_surface
+        ~callback:(fun ~event -> callback ~event:(new event event))
+
+    method on_layout ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Surface.on_layout ~after self#as_surface
+        ~callback
+
+    method on_leave_monitor ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Surface.on_leave_monitor ~after
+        self#as_surface ~callback:(fun ~monitor ->
+          callback ~monitor:(new monitor monitor))
 
     method beep : unit -> unit =
       fun () -> App_launch_context_cycle_de440b34.Surface.beep obj
@@ -851,7 +1021,7 @@ and surface (obj : App_launch_context_cycle_de440b34.Surface.t) : surface_t =
         App_launch_context_cycle_de440b34.Surface.set_opaque_region obj region
 
     method as_surface = obj
-  end (* Signal class defined in gvulkan_context_signals.ml *)
+  end
 
 and vulkan_context (obj : App_launch_context_cycle_de440b34.Vulkan_context.t) :
   vulkan_context_t =
@@ -860,7 +1030,10 @@ and vulkan_context (obj : App_launch_context_cycle_de440b34.Vulkan_context.t) :
       Ocgtk_gio.Gio.Initable.initable
         (Ocgtk_gio.Gio.Wrappers.Initable.from_gobject obj)
 
-    inherit Gvulkan_context_signals.vulkan_context_signals obj
+    method on_images_updated ?(after = false) ~callback () =
+      App_launch_context_cycle_de440b34.Vulkan_context.on_images_updated ~after
+        self#as_vulkan_context ~callback
+
     method as_vulkan_context = obj
   end
 

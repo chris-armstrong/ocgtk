@@ -2,7 +2,7 @@ class type size_group_t = object
   inherit GBuildable.buildable_t
 
   method add_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
@@ -10,12 +10,12 @@ class type size_group_t = object
 
   method get_widgets :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     list
 
   method remove_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
@@ -29,7 +29,7 @@ class size_group (obj : Size_group.t) : size_group_t =
     inherit GBuildable.buildable (Buildable.from_gobject obj)
 
     method add_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun widget ->
@@ -41,19 +41,19 @@ class size_group (obj : Size_group.t) : size_group_t =
 
     method get_widgets :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         list =
       fun () ->
         (List.map (fun ret ->
              new
-               GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+               GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
                .widget
                ret))
           (Size_group.get_widgets obj)
 
     method remove_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun widget ->

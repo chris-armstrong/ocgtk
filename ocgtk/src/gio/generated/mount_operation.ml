@@ -80,3 +80,63 @@ external get_anonymous : t -> bool = "ml_g_mount_operation_get_anonymous"
     user. *)
 
 (* Properties *)
+
+let on_aborted ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"aborted" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_ask_password ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let message =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        let default_user =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_string v
+        in
+        let default_domain =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_string v
+        in
+        let flags =
+          let v = Gobject.Closure.nth argv ~pos:4 in
+          Gio_enums.askpasswordflags_of_int (Gobject.Value.get_flags_int v)
+        in
+        callback ~message ~default_user ~default_domain ~flags)
+  in
+  Gobject.Signal.connect obj ~name:"ask-password" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_reply ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let result =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gio_enums.mountoperationresult_of_int (Gobject.Value.get_enum_int v)
+        in
+        callback ~result)
+  in
+  Gobject.Signal.connect obj ~name:"reply" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_show_unmount_progress ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let message =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        let time_left =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int64 v
+        in
+        let bytes_left =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_int64 v
+        in
+        callback ~message ~time_left ~bytes_left)
+  in
+  Gobject.Signal.connect obj ~name:"show-unmount-progress" ~callback:closure
+    ~after:(Option.value after ~default:false)

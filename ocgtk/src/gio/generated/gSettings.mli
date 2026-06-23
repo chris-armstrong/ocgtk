@@ -1,5 +1,22 @@
 class type settings_t = object
-  inherit Gsettings_signals.settings_signals
+  method on_changed :
+    ?after:bool ->
+    callback:(key:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_writable_change_event :
+    ?after:bool ->
+    callback:(key:int -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_writable_changed :
+    ?after:bool ->
+    callback:(key:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method apply : unit -> unit
 
   method bind :

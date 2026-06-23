@@ -2,6 +2,10 @@
 
 This directory contains coding guidelines for the ocgtk project, organized by concern.
 
+> **Maintainers**: `agent-summary.md` is a compact digest of all guidelines below.
+> **Whenever you add, remove, or materially change a guideline in this directory,
+> you MUST update `agent-summary.md` to reflect the change.**
+
 ## MANDATORY GUIDELINES INDEX
 
 | Document | Concerns Covered |
@@ -16,7 +20,15 @@ This directory contains coding guidelines for the ocgtk project, organized by co
 | [code-reuse.md](./code-reuse.md) | Record updates, deduplication, labelled args |
 | [test-patterns.md](./test-patterns.md) | AST-based validation, test helpers |
 | [abstractions.md](./abstractions.md) | Module design, parameter reduction, functors |
+| [comments-and-documentation.md](./comments-and-documentation.md) | Comment succinctness, accuracy, no ephemeral references |
 | [atspi-e2e-testing.md](./atspi-e2e-testing.md) | AT-SPI E2E test structure, best practices |
+| [ocaml-idioms.md](./ocaml-idioms.md) | ocamlformat, structural equality ban, binding vs pipeline operators, function design |
+
+## AGENT QUICK REFERENCE
+
+| Document | Purpose |
+|----------|---------|
+| [agent-summary.md](./agent-summary.md) | Compact digest of all guidelines above — agents read this instead of the full index |
 
 ## C FFI GUIDELINES
 

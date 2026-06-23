@@ -10,7 +10,7 @@ external new_ : unit -> t = "ml_gtk_fixed_new"
 
 external set_child_transform :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   Ocgtk_gsk.Gsk.Wrappers.Transform.t option ->
@@ -23,7 +23,7 @@ This is a convenience function that retrieves the
 
 external remove :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_fixed_remove"
@@ -31,7 +31,7 @@ external remove :
 
 external put :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   float ->
@@ -41,7 +41,7 @@ external put :
 
 external move :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   float ->
@@ -52,7 +52,7 @@ coordinates to the child @widget of the `GtkFixed`. *)
 
 external get_child_transform :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   Ocgtk_gsk.Gsk.Wrappers.Transform.t option = "ml_gtk_fixed_get_child_transform"
@@ -61,7 +61,7 @@ gtk_fixed_set_child_transform(). *)
 
 external get_child_position :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   float * float = "ml_gtk_fixed_get_child_position"

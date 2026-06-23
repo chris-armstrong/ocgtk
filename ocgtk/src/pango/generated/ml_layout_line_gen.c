@@ -231,3 +231,9 @@ CAMLlocal1(ret);
     Store_field(ret, 1, Val_PangoRectangle(&out2));
     CAMLreturn(ret);
 }
+
+CAMLprim value ml_pango_layout_line_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(pango_layout_line_get_type()));
+}

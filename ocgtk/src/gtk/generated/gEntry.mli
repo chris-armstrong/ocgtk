@@ -1,11 +1,26 @@
 class type entry_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GCell_editable.cell_editable_t
   inherit GEditable.editable_t
-  inherit Gentry_signals.entry_signals
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_icon_press :
+    ?after:bool ->
+    callback:(icon_pos:Gtk_enums.entryiconposition -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_icon_release :
+    ?after:bool ->
+    callback:(icon_pos:Gtk_enums.entryiconposition -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_activates_default : unit -> bool
   method get_attributes : unit -> Ocgtk_pango.Pango.Attr_list.attr_list_t option
   method get_buffer : unit -> GEntry_buffer.entry_buffer_t

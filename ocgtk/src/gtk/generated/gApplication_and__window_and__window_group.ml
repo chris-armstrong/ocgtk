@@ -3,7 +3,22 @@
 
 class type application_t = object
   inherit Ocgtk_gio.Gio.Application.application_t
-  inherit Gapplication_signals.application_signals
+
+  method on_query_end :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_window_added :
+    ?after:bool ->
+    callback:(window:window_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_window_removed :
+    ?after:bool ->
+    callback:(window:window_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method add_window : window_t -> unit
   method get_accels_for_action : string -> string array
   method get_actions_for_accel : string -> string array
@@ -28,17 +43,35 @@ end
 
 and window_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GNative.native_t
 
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .root_t
 
   inherit GShortcut_manager.shortcut_manager_t
-  inherit Gwindow_signals.window_signals
+
+  method on_activate_default :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_activate_focus :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_close_request :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
+  method on_enable_debugging :
+    ?after:bool ->
+    callback:(toggle:bool -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_keys_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method close : unit -> unit
   method destroy : unit -> unit
   method fullscreen : unit -> unit
@@ -47,7 +80,7 @@ and window_t = object
 
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -55,7 +88,7 @@ and window_t = object
 
   method get_default_widget :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -73,7 +106,7 @@ and window_t = object
 
   method get_titlebar :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -90,7 +123,7 @@ and window_t = object
   method set_application : application_t option -> unit
 
   method set_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -99,7 +132,7 @@ and window_t = object
   method set_default_size : int -> int -> unit
 
   method set_default_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -118,7 +151,7 @@ and window_t = object
   method set_title : string option -> unit
 
   method set_titlebar :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -133,11 +166,11 @@ and window_t = object
   method set_default_width : int -> unit
 
   method focus_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   method set_focus_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
@@ -158,8 +191,6 @@ and window_group_t = object
     Application_and__window_and__window_group.Window_group.t
 end
 
-(* Signal class defined in gapplication_signals.ml *)
-
 class application
   (obj : Application_and__window_and__window_group.Application.t) :
   application_t =
@@ -168,7 +199,19 @@ class application
       Ocgtk_gio.Gio.Application.application
         (obj :> Ocgtk_gio.Gio.Wrappers.Application.t)
 
-    inherit Gapplication_signals.application_signals obj
+    method on_query_end ?(after = false) ~callback () =
+      Application_and__window_and__window_group.Application.on_query_end ~after
+        self#as_application ~callback
+
+    method on_window_added ?(after = false) ~callback () =
+      Application_and__window_and__window_group.Application.on_window_added
+        ~after self#as_application ~callback:(fun ~window ->
+          callback ~window:(new window window))
+
+    method on_window_removed ?(after = false) ~callback () =
+      Application_and__window_and__window_group.Application.on_window_removed
+        ~after self#as_application ~callback:(fun ~window ->
+          callback ~window:(new window window))
 
     method add_window : window_t -> unit =
       fun window ->
@@ -266,32 +309,50 @@ class application
     method screensaver_active =
       Application_and__window_and__window_group.Application
       .get_screensaver_active obj
-  end (* Signal class defined in gwindow_signals.ml *)
+  end
 
 and window (obj : Application_and__window_and__window_group.Window.t) : window_t
   =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
     inherit GNative.native (Native.from_gobject obj)
 
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .root
-        (Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        (Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
          .Root
          .from_gobject obj)
 
     inherit
       GShortcut_manager.shortcut_manager (Shortcut_manager.from_gobject obj)
 
-    inherit Gwindow_signals.window_signals obj
+    method on_activate_default ?(after = false) ~callback () =
+      Application_and__window_and__window_group.Window.on_activate_default
+        ~after self#as_window ~callback
+
+    method on_activate_focus ?(after = false) ~callback () =
+      Application_and__window_and__window_group.Window.on_activate_focus ~after
+        self#as_window ~callback
+
+    method on_close_request ?(after = false) ~callback () =
+      Application_and__window_and__window_group.Window.on_close_request ~after
+        self#as_window ~callback
+
+    method on_enable_debugging ?(after = false) ~callback () =
+      Application_and__window_and__window_group.Window.on_enable_debugging
+        ~after self#as_window ~callback
+
+    method on_keys_changed ?(after = false) ~callback () =
+      Application_and__window_and__window_group.Window.on_keys_changed ~after
+        self#as_window ~callback
 
     method close : unit -> unit =
       fun () -> Application_and__window_and__window_group.Window.close obj
@@ -316,14 +377,14 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
 
     method get_child :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Application_and__window_and__window_group.Window.get_child obj)
@@ -334,14 +395,14 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
 
     method get_default_widget :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Application_and__window_and__window_group.Window.get_default_widget
@@ -395,14 +456,14 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
 
     method get_titlebar :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Application_and__window_and__window_group.Window.get_titlebar obj)
@@ -453,7 +514,7 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
           application
 
     method set_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =
@@ -472,7 +533,7 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
           width height
 
     method set_default_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =
@@ -539,7 +600,7 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
         Application_and__window_and__window_group.Window.set_title obj title
 
     method set_titlebar :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =
@@ -578,12 +639,12 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
 
     method focus_widget =
       new
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget
         (Application_and__window_and__window_group.Window.get_focus_widget obj)
 
     method set_focus_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun v ->

@@ -1,7 +1,10 @@
-(* Signal class defined in gsorter_signals.ml *)
-
 class type sorter_t = object
-  inherit Gsorter_signals.sorter_signals
+  method on_changed :
+    ?after:bool ->
+    callback:(change:Gtk_enums.sorterchange -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method changed : Gtk_enums.sorterchange -> unit
 
   method compare :
@@ -14,7 +17,8 @@ end
 (* High-level class for Sorter *)
 class sorter (obj : Sorter.t) : sorter_t =
   object (self)
-    inherit Gsorter_signals.sorter_signals obj
+    method on_changed ?(after = false) ~callback () =
+      Sorter.on_changed ~after self#as_sorter ~callback
 
     method changed : Gtk_enums.sorterchange -> unit =
       fun change -> Sorter.changed obj change

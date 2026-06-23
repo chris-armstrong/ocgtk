@@ -28,6 +28,7 @@ let () =
       ("Layer2 Method Wrappers", Method_wrapper_tests.tests);
       ("Constructor Wrappers", Constructor_wrapper_tests.tests);
       ("Signal Wrappers", Signal_wrapper_tests.tests);
+      ("Signal Marshaller", Signal_marshaller_tests.tests);
       (* Interface Parsing (pure unit — no gir_gen.exe) *)
       ("Interface Parsing", Parsing_tests.test_suite);
       (* Cross-namespace (pure unit/pipeline) *)

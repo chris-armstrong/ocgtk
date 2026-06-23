@@ -1,8 +1,8 @@
-(** Integration tests for Event Controller System (Phase 3.3)
+(** Integration tests for Event Controller System.
 
     Note: Most tests are skipped as they require GTK initialization (gtk_init),
     which is not yet available in the bindings. Runtime integration tests will
-    be added in Phase 4+ when gtk_init is implemented.
+    be added when gtk_init is implemented.
 
     This test file verifies:
     - API patterns compile correctly
@@ -165,7 +165,7 @@ let test_double_click_detection () =
 (** {2 Test Suite} *)
 
 let () =
-  run "Integration Tests (Phase 3.3)"
+  run "Integration Tests"
     [
       ( "api_patterns",
         [

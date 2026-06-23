@@ -1,12 +1,21 @@
-(* Signal class defined in gapp_chooser_button_signals.ml *)
-
 class type app_chooser_button_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GApp_chooser.app_chooser_t
-  inherit Gapp_chooser_button_signals.app_chooser_button_signals
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_custom_item_activated :
+    ?after:bool ->
+    callback:(item_name:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method append_custom_item :
     string -> string -> Ocgtk_gio.Gio.Icon.icon_t -> unit
@@ -28,15 +37,24 @@ end
 class app_chooser_button (obj : App_chooser_button.t) : app_chooser_button_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
     inherit GApp_chooser.app_chooser (App_chooser.from_gobject obj)
-    inherit Gapp_chooser_button_signals.app_chooser_button_signals obj
+
+    method on_activate ?(after = false) ~callback () =
+      App_chooser_button.on_activate ~after self#as_app_chooser_button ~callback
+
+    method on_changed ?(after = false) ~callback () =
+      App_chooser_button.on_changed ~after self#as_app_chooser_button ~callback
+
+    method on_custom_item_activated ?(after = false) ~callback () =
+      App_chooser_button.on_custom_item_activated ~after
+        self#as_app_chooser_button ~callback
 
     method append_custom_item :
         string -> string -> Ocgtk_gio.Gio.Icon.icon_t -> unit =

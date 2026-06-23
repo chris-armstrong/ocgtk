@@ -1,7 +1,10 @@
-(* Signal class defined in gselection_model_signals.ml *)
-
 class type selection_model_t = object
-  inherit Gselection_model_signals.selection_model_signals
+  method on_selection_changed :
+    ?after:bool ->
+    callback:(position:int -> n_items:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_selection : unit -> Bitset.t
   method get_selection_in_range : int -> int -> Bitset.t
   method is_selected : int -> bool
@@ -19,7 +22,9 @@ end
 (* High-level class for SelectionModel *)
 class selection_model (obj : Selection_model.t) : selection_model_t =
   object (self)
-    inherit Gselection_model_signals.selection_model_signals obj
+    method on_selection_changed ?(after = false) ~callback () =
+      Selection_model.on_selection_changed ~after self#as_selection_model
+        ~callback
 
     method get_selection : unit -> Bitset.t =
       fun () -> Selection_model.get_selection obj

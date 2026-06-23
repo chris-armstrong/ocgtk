@@ -1,7 +1,19 @@
-(* Signal class defined in gprint_operation_preview_signals.ml *)
-
 class type print_operation_preview_t = object
-  inherit Gprint_operation_preview_signals.print_operation_preview_signals
+  method on_got_page_size :
+    ?after:bool ->
+    callback:
+      (context:GPrint_context.print_context_t ->
+      page_setup:GPage_setup.page_setup_t ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_ready :
+    ?after:bool ->
+    callback:(context:GPrint_context.print_context_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method end_preview : unit -> unit
   method is_selected : int -> bool
   method render_page : int -> unit
@@ -12,7 +24,17 @@ end
 class print_operation_preview (obj : Print_operation_preview.t) :
   print_operation_preview_t =
   object (self)
-    inherit Gprint_operation_preview_signals.print_operation_preview_signals obj
+    method on_got_page_size ?(after = false) ~callback () =
+      Print_operation_preview.on_got_page_size ~after
+        self#as_print_operation_preview ~callback:(fun ~context ~page_setup ->
+          callback
+            ~context:(new GPrint_context.print_context context)
+            ~page_setup:(new GPage_setup.page_setup page_setup))
+
+    method on_ready ?(after = false) ~callback () =
+      Print_operation_preview.on_ready ~after self#as_print_operation_preview
+        ~callback:(fun ~context ->
+          callback ~context:(new GPrint_context.print_context context))
 
     method end_preview : unit -> unit =
       fun () -> Print_operation_preview.end_preview obj

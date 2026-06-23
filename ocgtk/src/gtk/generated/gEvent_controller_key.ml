@@ -1,14 +1,39 @@
-(* Signal class defined in gevent_controller_key_signals.ml *)
-
 class type event_controller_key_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .event_controller_t
 
-  inherit Gevent_controller_key_signals.event_controller_key_signals
+  method on_im_update :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_key_pressed :
+    ?after:bool ->
+    callback:
+      (keyval:int ->
+      keycode:int ->
+      state:Ocgtk_gdk.Gdk_enums.modifiertype ->
+      bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_key_released :
+    ?after:bool ->
+    callback:
+      (keyval:int ->
+      keycode:int ->
+      state:Ocgtk_gdk.Gdk_enums.modifiertype ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_modifiers :
+    ?after:bool ->
+    callback:(state:Ocgtk_gdk.Gdk_enums.modifiertype -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method forward :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     bool
 
@@ -23,17 +48,31 @@ class event_controller_key (obj : Event_controller_key.t) :
   event_controller_key_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .event_controller
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Event_controller
              .t)
 
-    inherit Gevent_controller_key_signals.event_controller_key_signals obj
+    method on_im_update ?(after = false) ~callback () =
+      Event_controller_key.on_im_update ~after self#as_event_controller_key
+        ~callback
+
+    method on_key_pressed ?(after = false) ~callback () =
+      Event_controller_key.on_key_pressed ~after self#as_event_controller_key
+        ~callback
+
+    method on_key_released ?(after = false) ~callback () =
+      Event_controller_key.on_key_released ~after self#as_event_controller_key
+        ~callback
+
+    method on_modifiers ?(after = false) ~callback () =
+      Event_controller_key.on_modifiers ~after self#as_event_controller_key
+        ~callback
 
     method forward :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         bool =
       fun widget ->

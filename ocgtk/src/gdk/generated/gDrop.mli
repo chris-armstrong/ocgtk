@@ -6,6 +6,11 @@ class type drop_t = object
   method get_drag : unit -> GDrag.drag_t option
   method get_formats : unit -> Content_formats.t
   method get_surface : unit -> GApp_launch_context_cycle_de440b34.surface_t
+
+  method read_value_finish :
+    Ocgtk_gio.Gio.Async_result.async_result_t ->
+    (Gobject.Value.t, GError.t) result
+
   method status : Gdk_enums.dragaction -> Gdk_enums.dragaction -> unit
   method as_drop : Drop.t
 end

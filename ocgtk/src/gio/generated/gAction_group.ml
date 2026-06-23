@@ -1,7 +1,28 @@
-(* Signal class defined in gaction_group_signals.ml *)
-
 class type action_group_t = object
-  inherit Gaction_group_signals.action_group_signals
+  method on_action_added :
+    ?after:bool ->
+    callback:(action_name:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_action_enabled_changed :
+    ?after:bool ->
+    callback:(action_name:string -> enabled:bool -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_action_removed :
+    ?after:bool ->
+    callback:(action_name:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_action_state_changed :
+    ?after:bool ->
+    callback:(action_name:string -> value:Gvariant.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method action_added : string -> unit
   method action_enabled_changed : string -> bool -> unit
   method action_removed : string -> unit
@@ -21,7 +42,18 @@ end
 (* High-level class for ActionGroup *)
 class action_group (obj : Action_group.t) : action_group_t =
   object (self)
-    inherit Gaction_group_signals.action_group_signals obj
+    method on_action_added ?(after = false) ~callback () =
+      Action_group.on_action_added ~after self#as_action_group ~callback
+
+    method on_action_enabled_changed ?(after = false) ~callback () =
+      Action_group.on_action_enabled_changed ~after self#as_action_group
+        ~callback
+
+    method on_action_removed ?(after = false) ~callback () =
+      Action_group.on_action_removed ~after self#as_action_group ~callback
+
+    method on_action_state_changed ?(after = false) ~callback () =
+      Action_group.on_action_state_changed ~after self#as_action_group ~callback
 
     method action_added : string -> unit =
       fun action_name -> Action_group.action_added obj action_name

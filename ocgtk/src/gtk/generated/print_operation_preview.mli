@@ -31,3 +31,15 @@ external end_preview : t -> unit = "ml_gtk_print_operation_preview_end_preview"
 (** Ends a preview.
 
     This function must be called to finish a custom print preview. *)
+
+val on_got_page_size :
+  ?after:bool ->
+  t ->
+  callback:(context:Print_context.t -> page_setup:Page_setup.t -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_ready :
+  ?after:bool ->
+  t ->
+  callback:(context:Print_context.t -> unit) ->
+  Gobject.Signal.handler_id

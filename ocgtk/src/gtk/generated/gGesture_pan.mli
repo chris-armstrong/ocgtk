@@ -1,6 +1,12 @@
 class type gesture_pan_t = object
   inherit GGesture_drag.gesture_drag_t
-  inherit Ggesture_pan_signals.gesture_pan_signals
+
+  method on_pan :
+    ?after:bool ->
+    callback:(direction:Gtk_enums.pandirection -> offset:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_orientation : unit -> Gtk_enums.orientation
   method set_orientation : Gtk_enums.orientation -> unit
   method as_gesture_pan : Gesture_pan.t

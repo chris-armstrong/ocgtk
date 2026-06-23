@@ -55,3 +55,135 @@ external get_connected_drives :
 
     The returned list should be freed with g_list_free(), after its elements
     have been unreffed with g_object_unref(). *)
+
+val on_drive_changed :
+  ?after:bool ->
+  t ->
+  callback:
+    (drive:
+       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+       .Drive
+       .t ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_drive_connected :
+  ?after:bool ->
+  t ->
+  callback:
+    (drive:
+       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+       .Drive
+       .t ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_drive_disconnected :
+  ?after:bool ->
+  t ->
+  callback:
+    (drive:
+       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+       .Drive
+       .t ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_drive_eject_button :
+  ?after:bool ->
+  t ->
+  callback:
+    (drive:
+       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+       .Drive
+       .t ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_drive_stop_button :
+  ?after:bool ->
+  t ->
+  callback:
+    (drive:
+       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+       .Drive
+       .t ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_mount_added :
+  ?after:bool ->
+  t ->
+  callback:
+    (mount:
+       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+       .Mount
+       .t ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_mount_changed :
+  ?after:bool ->
+  t ->
+  callback:
+    (mount:
+       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+       .Mount
+       .t ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_mount_pre_unmount :
+  ?after:bool ->
+  t ->
+  callback:
+    (mount:
+       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+       .Mount
+       .t ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_mount_removed :
+  ?after:bool ->
+  t ->
+  callback:
+    (mount:
+       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+       .Mount
+       .t ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_volume_added :
+  ?after:bool ->
+  t ->
+  callback:
+    (volume:
+       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+       .Volume
+       .t ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_volume_changed :
+  ?after:bool ->
+  t ->
+  callback:
+    (volume:
+       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+       .Volume
+       .t ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_volume_removed :
+  ?after:bool ->
+  t ->
+  callback:
+    (volume:
+       App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
+       .Volume
+       .t ->
+    unit) ->
+  Gobject.Signal.handler_id

@@ -7,6 +7,10 @@ external new_for_bytes : string -> Glib_bytes.t -> t
   = "ml_gdk_content_provider_new_for_bytes"
 (** Create a new ContentProvider *)
 
+external new_for_value : Gobject.Value.t -> t
+  = "ml_gdk_content_provider_new_for_value"
+(** Create a new ContentProvider *)
+
 external new_union : t array option -> Gsize.t -> t
   = "ml_gdk_content_provider_new_union"
 (** Create a new ContentProvider *)
@@ -34,6 +38,16 @@ external ref_formats : t -> Content_formats.t
   = "ml_gdk_content_provider_ref_formats"
 (** Gets the formats that the provider can provide its current contents in. *)
 
+external get_value : t -> (bool * Gobject.Value.t, GError.t) result
+  = "ml_gdk_content_provider_get_value"
+(** Gets the contents of @provider stored in @value.
+
+The @value will have been initialized to the `GType` the value should be
+provided in. This given `GType` does not need to be listed in the formats
+returned by [method@Gdk.ContentProvider.ref_formats]. However, if the
+given `GType` is not supported, this operation can fail and
+`G_IO_ERROR_NOT_SUPPORTED` will be reported. *)
+
 external content_changed : t -> unit = "ml_gdk_content_provider_content_changed"
 (** Emits the ::content-changed signal. *)
 
@@ -46,3 +60,6 @@ external get_formats : t -> Content_formats.t
 external get_storable_formats : t -> Content_formats.t
   = "ml_gdk_content_provider_get_storable_formats"
 (** Get property: storable-formats *)
+
+val on_content_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

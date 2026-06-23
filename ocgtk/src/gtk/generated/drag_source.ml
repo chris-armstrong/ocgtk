@@ -66,3 +66,70 @@ external drag_cancel : t -> unit = "ml_gtk_drag_source_drag_cancel"
 (** Cancels a currently ongoing drag operation. *)
 
 (* Properties *)
+
+let on_drag_begin ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let drag =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v
+        in
+        callback ~drag)
+  in
+  Gobject.Signal.connect obj ~name:"drag-begin" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_drag_cancel ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let drag =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v
+        in
+        let reason =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Ocgtk_gdk.Gdk_enums.dragcancelreason_of_int
+            (Gobject.Value.get_enum_int v)
+        in
+        let result = callback ~drag ~reason in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"drag-cancel" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_drag_end ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let drag =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v
+        in
+        let delete_data =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_boolean v
+        in
+        callback ~drag ~delete_data)
+  in
+  Gobject.Signal.connect obj ~name:"drag-end" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_prepare ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let x =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_double v
+        in
+        let y =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_double v
+        in
+        let result = callback ~x ~y in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_object v x)
+  in
+  Gobject.Signal.connect obj ~name:"prepare" ~callback:closure
+    ~after:(Option.value after ~default:false)

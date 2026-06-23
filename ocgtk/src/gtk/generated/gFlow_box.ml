@@ -1,15 +1,44 @@
-(* Signal class defined in gflow_box_signals.ml *)
-
 class type flow_box_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GOrientable.orientable_t
-  inherit Gflow_box_signals.flow_box_signals
+
+  method on_activate_cursor_child :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_child_activated :
+    ?after:bool ->
+    callback:(child:GFlow_box_child.flow_box_child_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_move_cursor :
+    ?after:bool ->
+    callback:
+      (step:Gtk_enums.movementstep ->
+      count:int ->
+      extend:bool ->
+      modify:bool ->
+      bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_select_all :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_selected_children_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_toggle_cursor_child :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_unselect_all :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method append :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
@@ -28,7 +57,7 @@ class type flow_box_t = object
   method get_selection_mode : unit -> Gtk_enums.selectionmode
 
   method insert :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int ->
     unit
@@ -37,12 +66,12 @@ class type flow_box_t = object
   method invalidate_sort : unit -> unit
 
   method prepend :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
   method remove :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
@@ -69,18 +98,40 @@ end
 class flow_box (obj : Flow_box.t) : flow_box_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
     inherit GOrientable.orientable (Orientable.from_gobject obj)
-    inherit Gflow_box_signals.flow_box_signals obj
+
+    method on_activate_cursor_child ?(after = false) ~callback () =
+      Flow_box.on_activate_cursor_child ~after self#as_flow_box ~callback
+
+    method on_child_activated ?(after = false) ~callback () =
+      Flow_box.on_child_activated ~after self#as_flow_box
+        ~callback:(fun ~child ->
+          callback ~child:(new GFlow_box_child.flow_box_child child))
+
+    method on_move_cursor ?(after = false) ~callback () =
+      Flow_box.on_move_cursor ~after self#as_flow_box ~callback
+
+    method on_select_all ?(after = false) ~callback () =
+      Flow_box.on_select_all ~after self#as_flow_box ~callback
+
+    method on_selected_children_changed ?(after = false) ~callback () =
+      Flow_box.on_selected_children_changed ~after self#as_flow_box ~callback
+
+    method on_toggle_cursor_child ?(after = false) ~callback () =
+      Flow_box.on_toggle_cursor_child ~after self#as_flow_box ~callback
+
+    method on_unselect_all ?(after = false) ~callback () =
+      Flow_box.on_unselect_all ~after self#as_flow_box ~callback
 
     method append :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun child ->
@@ -128,7 +179,7 @@ class flow_box (obj : Flow_box.t) : flow_box_t =
       fun () -> Flow_box.get_selection_mode obj
 
     method insert :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         int ->
         unit =
@@ -143,7 +194,7 @@ class flow_box (obj : Flow_box.t) : flow_box_t =
       fun () -> Flow_box.invalidate_sort obj
 
     method prepend :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun child ->
@@ -151,7 +202,7 @@ class flow_box (obj : Flow_box.t) : flow_box_t =
         Flow_box.prepend obj child
 
     method remove :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun widget ->

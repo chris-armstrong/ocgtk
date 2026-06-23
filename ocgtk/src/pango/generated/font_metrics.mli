@@ -85,3 +85,5 @@ external get_approximate_char_width : t -> int
     This is merely a representative value useful, for example, for determining
     the initial size for a window. Actual characters in text will be wider and
     narrower than this. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_pango_font_metrics_get_type"

@@ -1,6 +1,18 @@
 class type simple_action_t = object
   inherit GAction.action_t
-  inherit Gsimple_action_signals.simple_action_signals
+
+  method on_activate :
+    ?after:bool ->
+    callback:(parameter:Gvariant.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_change_state :
+    ?after:bool ->
+    callback:(value:Gvariant.t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method set_enabled : bool -> unit
   method set_state : Gvariant.t -> unit
   method set_state_hint : Gvariant.t option -> unit

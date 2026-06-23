@@ -1,8 +1,12 @@
-(* Signal class defined in gshortcuts_window_signals.ml *)
-
 class type shortcuts_window_t = object
   inherit GApplication_and__window_and__window_group.window_t
-  inherit Gshortcuts_window_signals.shortcuts_window_signals
+
+  method on_close :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_search :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method add_section : GShortcuts_section.shortcuts_section_t -> unit
   method section_name : string
   method set_section_name : string -> unit
@@ -18,7 +22,11 @@ class shortcuts_window (obj : Shortcuts_window.t) : shortcuts_window_t =
       GApplication_and__window_and__window_group.window
         (obj :> Application_and__window_and__window_group.Window.t)
 
-    inherit Gshortcuts_window_signals.shortcuts_window_signals obj
+    method on_close ?(after = false) ~callback () =
+      Shortcuts_window.on_close ~after self#as_shortcuts_window ~callback
+
+    method on_search ?(after = false) ~callback () =
+      Shortcuts_window.on_search ~after self#as_shortcuts_window ~callback
 
     method add_section : GShortcuts_section.shortcuts_section_t -> unit =
       fun section ->

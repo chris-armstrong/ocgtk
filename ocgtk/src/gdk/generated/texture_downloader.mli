@@ -44,3 +44,6 @@ external download_bytes : t -> Glib_bytes.t * Gsize.t
     to allocate memory. If you think that may happen, you should handle memory
     allocation yourself and use [method@Gdk.TextureDownloader.download_into]
     once allocation succeeded. *)
+
+external get_type : unit -> Gobject.Type.t
+  = "ml_gdk_texture_downloader_get_type"

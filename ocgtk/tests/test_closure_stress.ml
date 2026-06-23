@@ -1,46 +1,45 @@
 (* Stress test for closure implementation - verifies GC safety *)
 
-let () =
-  Printf.printf "=== Closure Stress Test ===\n%!";
+open Alcotest
 
-  (* Test 1: Create many closures without invoking them *)
-  Printf.printf "Test 1: Creating 1000 closures...\n%!";
+(** Create many closures without invoking them — exercises GC pressure on
+    closure creation without signal dispatch. *)
+let test_create_1000_closures () =
+  let n = 1000 in
   let closures = ref [] in
-  for i = 1 to 1000 do
+  for _i = 1 to n do
     let closure = Gobject.Closure.create (fun _argv -> ()) in
-    closures := closure :: !closures;
-    if i mod 100 = 0 then Printf.printf "  Created %d closures\n%!" i
+    closures := closure :: !closures
   done;
+  check int "created 1000 closures" n (List.length !closures)
 
-  Printf.printf "Test 1: ✓ Created 1000 closures successfully\n%!";
-
-  (* Test 2: Create and invoke many closures *)
-  Printf.printf "\nTest 2: Creating and invoking 500 closures...\n%!";
+(** Create and invoke 500 closures, each incrementing a counter. Exercises the
+    closure invocation path end-to-end without GC pressure between iterations.
+*)
+let test_create_and_invoke_500_closures () =
+  let n = 500 in
   let counter = ref 0 in
-  for i = 1 to 500 do
+  for _i = 1 to n do
     let closure = Gobject.Closure.create (fun _argv -> incr counter) in
-    Gobject.Test.invoke_closure_void closure;
-    if i mod 100 = 0 then
-      Printf.printf "  Invoked %d closures, counter=%d\n%!" i !counter
+    Gobject_test_helpers.invoke_closure_void closure
   done;
+  check int "invoked 500 closures" n !counter
 
-  Printf.printf "Test 2: ✓ Counter reached %d\n%!" !counter;
-
-  (* Test 3: Rapid allocation/deallocation by letting closures go out of scope *)
-  Printf.printf
-    "\nTest 3: Rapid allocation (closures going out of scope)...\n%!";
-  for round = 1 to 10 do
+(** Rapid alloc/drop: 1000 closures go out of scope in batches of 100. No
+    explicit GC — exercises the finalizer driven by normal minor/major
+    collections. *)
+let test_rapid_alloc_drop_1000 () =
+  for _round = 1 to 10 do
     for _i = 1 to 100 do
       let _ = Gobject.Closure.create (fun _argv -> ()) in
       ()
-    done;
-    Printf.printf "  Round %d: 100 closures created and released\n%!" round
+    done
   done;
+  check pass "completed 1000 allocation/releases" () ()
 
-  Printf.printf "Test 3: ✓ Completed 1000 allocation/releases\n%!";
-
-  (* Test 4: Nested closure creation with parameters *)
-  Printf.printf "\nTest 4: Nested closures with parameters...\n%!";
+(** Nested closures with parameters: create 100 closures each taking an int
+    parameter, invoke them, and verify the received value matches. *)
+let test_nested_closures_with_parameters () =
   let results = ref [] in
   for i = 1 to 100 do
     let expected = i * 2 in
@@ -50,12 +49,21 @@ let () =
           let received = Gobject.Value.get_int gval in
           results := (received = expected) :: !results)
     in
-    Gobject.Test.invoke_closure_int closure expected
+    Gobject_test_helpers.invoke_closure_int closure expected
   done;
-
   let all_correct = List.for_all (fun x -> x) !results in
-  Printf.printf "Test 4: ✓ All %d closures received correct parameters: %b\n%!"
-    (List.length !results) all_correct;
+  check bool "all nested closures received correct parameters" true all_correct
 
-  Printf.printf "\n=== All Stress Tests Passed ===\n%!";
-  exit 0
+let () =
+  run "Closure Stress Test"
+    [
+      ( "stress",
+        [
+          test_case "create 1000 closures" `Slow test_create_1000_closures;
+          test_case "create and invoke 500 closures" `Slow
+            test_create_and_invoke_500_closures;
+          test_case "rapid alloc/drop 1000" `Slow test_rapid_alloc_drop_1000;
+          test_case "nested closures with parameters" `Slow
+            test_nested_closures_with_parameters;
+        ] );
+    ]

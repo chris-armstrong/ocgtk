@@ -5,7 +5,7 @@ class type list_store_t = object
   method remove : int -> unit
   method remove_all : unit -> unit
   method splice : int -> int -> [ `object_ ] Gobject.obj array -> int -> unit
-  method item_type : int
+  method item_type : Gobject.Type.t
   method n_items : int
   method as_list_store : List_store.t
 end
@@ -34,6 +34,6 @@ class list_store (obj : List_store.t) : list_store_t =
     method as_list_store = obj
   end
 
-let new_ (item_type : int) : list_store_t =
+let new_ (item_type : Gobject.Type.t) : list_store_t =
   let obj_ = List_store.new_ item_type in
   new list_store obj_

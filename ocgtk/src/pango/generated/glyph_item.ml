@@ -43,3 +43,5 @@ result items can have multiple attributes of the same type.
 
 This function takes ownership of @glyph_item; it will be reused
 as one of the elements in the list. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_pango_glyph_item_get_type"

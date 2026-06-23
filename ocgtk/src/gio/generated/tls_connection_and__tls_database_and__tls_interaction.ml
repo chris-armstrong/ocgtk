@@ -233,6 +233,15 @@ module rec Tls_connection : sig
   external get_base_io_stream : t -> Io_stream.t
     = "ml_g_tls_connection_get_base_io_stream"
   (** Get property: base-io-stream *)
+
+  val on_accept_certificate :
+    ?after:bool ->
+    t ->
+    callback:
+      (peer_cert:Tls_certificate.t ->
+      errors:Gio_enums.tlscertificateflags ->
+      bool) ->
+    Gobject.Signal.handler_id
 end = struct
   type t = [ `tls_connection | `io_stream | `object_ ] Gobject.obj
 
@@ -465,6 +474,25 @@ end = struct
   external get_base_io_stream : t -> Io_stream.t
     = "ml_g_tls_connection_get_base_io_stream"
   (** Get property: base-io-stream *)
+
+  let on_accept_certificate ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let peer_cert =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          let errors =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            Gio_enums.tlscertificateflags_of_int (Gobject.Value.get_flags_int v)
+          in
+          let result = callback ~peer_cert ~errors in
+          let v = Gobject.Closure.result argv in
+          let x = result in
+          Gobject.Value.set_boolean v x)
+    in
+    Gobject.Signal.connect obj ~name:"accept-certificate" ~callback:closure
+      ~after:(Option.value after ~default:false)
 end
 
 and Tls_database : sig

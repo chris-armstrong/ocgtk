@@ -30,3 +30,35 @@ external get_context_id : t -> string -> int = "ml_gtk_statusbar_get_context_id"
 (** Returns a new context identifier, given a description of the actual context.
 
     Note that the description is not shown in the UI. *)
+
+let on_text_popped ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let context_id =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_uint v
+        in
+        let text =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_string v
+        in
+        callback ~context_id ~text)
+  in
+  Gobject.Signal.connect obj ~name:"text-popped" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_text_pushed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let context_id =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_uint v
+        in
+        let text =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_string v
+        in
+        callback ~context_id ~text)
+  in
+  Gobject.Signal.connect obj ~name:"text-pushed" ~callback:closure
+    ~after:(Option.value after ~default:false)

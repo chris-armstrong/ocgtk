@@ -633,6 +633,36 @@ module rec Text_buffer : sig
   external get_cursor_position : t -> int
     = "ml_gtk_text_buffer_get_cursor_position"
   (** Get property: cursor-position *)
+
+  val on_begin_user_action :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_end_user_action :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_mark_deleted :
+    ?after:bool ->
+    t ->
+    callback:(mark:Text_mark.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_modified_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_paste_done :
+    ?after:bool ->
+    t ->
+    callback:(clipboard:Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_redo :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_undo :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end
 
 and Text_iter : sig

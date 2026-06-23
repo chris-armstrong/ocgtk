@@ -1,4 +1,4 @@
-(** Test suite for Gtk.Box module (Phase 4.1)
+(** Test suite for Gtk.Box module.
 
     This test file verifies:
     - GtkBox module compiles and types are accessible
@@ -162,7 +162,7 @@ let test_as_widget () =
   check string "converted widget name" "test_box" (Widget.get_name widget)
 
 let () =
-  run "Gtk.Box Tests (Phase 4.1)"
+  run "Gtk.Box Tests"
     [
       ( "module",
         [

@@ -1,5 +1,10 @@
 class type paintable_t = object
-  inherit Gpaintable_signals.paintable_signals
+  method on_invalidate_contents :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_invalidate_size :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_current_image : unit -> paintable_t
   method get_flags : unit -> Gdk_enums.paintableflags
   method get_intrinsic_aspect_ratio : unit -> float

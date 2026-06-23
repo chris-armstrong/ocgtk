@@ -633,6 +633,36 @@ module rec Text_buffer : sig
   external get_cursor_position : t -> int
     = "ml_gtk_text_buffer_get_cursor_position"
   (** Get property: cursor-position *)
+
+  val on_begin_user_action :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_end_user_action :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_mark_deleted :
+    ?after:bool ->
+    t ->
+    callback:(mark:Text_mark.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_modified_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_paste_done :
+    ?after:bool ->
+    t ->
+    callback:(clipboard:Ocgtk_gdk.Gdk.Wrappers.Clipboard.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_redo :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_undo :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
   type t = [ `text_buffer | `object_ ] Gobject.obj
 
@@ -1265,6 +1295,54 @@ end = struct
   external get_cursor_position : t -> int
     = "ml_gtk_text_buffer_get_cursor_position"
   (** Get property: cursor-position *)
+
+  let on_begin_user_action ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"begin-user-action" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_changed ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"changed" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_end_user_action ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"end-user-action" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_mark_deleted ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let mark =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          callback ~mark)
+    in
+    Gobject.Signal.connect obj ~name:"mark-deleted" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_modified_changed ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"modified-changed" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_paste_done ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let clipboard =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          callback ~clipboard)
+    in
+    Gobject.Signal.connect obj ~name:"paste-done" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_redo ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"redo" ~callback
+      ~after:(Option.value after ~default:false)
+
+  let on_undo ?after obj ~callback =
+    Gobject.Signal.connect_simple obj ~name:"undo" ~callback
+      ~after:(Option.value after ~default:false)
 end
 
 and Text_iter : sig

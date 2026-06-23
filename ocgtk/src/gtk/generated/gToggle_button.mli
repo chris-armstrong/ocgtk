@@ -1,6 +1,9 @@
 class type toggle_button_t = object
   inherit GButton.button_t
-  inherit Gtoggle_button_signals.toggle_button_signals
+
+  method on_toggled :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_active : unit -> bool
   method set_active : bool -> unit
   method set_group : toggle_button_t option -> unit

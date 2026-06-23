@@ -1,10 +1,14 @@
 _build
+compile_commands.json
 .merlin
 *.install
 __pycache__/
 .claude/scratchpad/
 .claude/scheduled_tasks.lock
-.opencode/
+.opencode/node_modules/
+.opencode/package.json
+.opencode/bun.lock
+.opencode/.gitignore
 ocgtk/pipeline_tmp/
 
 # ctx managed entries

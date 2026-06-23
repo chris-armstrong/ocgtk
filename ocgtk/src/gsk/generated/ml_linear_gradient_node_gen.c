@@ -36,6 +36,7 @@ CAMLexport CAMLprim value ml_gsk_linear_gradient_node_get_start(value self)
 CAMLparam1(self);
 
 const graphene_point_t* result = gsk_linear_gradient_node_get_start(GskLinearGradientNode_val(self));
+if (result) result = g_boxed_copy(graphene_point_get_type(), result);
 CAMLreturn(Val_graphene_point_t(result));
 }
 
@@ -52,6 +53,7 @@ CAMLexport CAMLprim value ml_gsk_linear_gradient_node_get_end(value self)
 CAMLparam1(self);
 
 const graphene_point_t* result = gsk_linear_gradient_node_get_end(GskLinearGradientNode_val(self));
+if (result) result = g_boxed_copy(graphene_point_get_type(), result);
 CAMLreturn(Val_graphene_point_t(result));
 }
 

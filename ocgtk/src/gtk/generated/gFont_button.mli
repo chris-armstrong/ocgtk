@@ -1,10 +1,16 @@
 class type font_button_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GFont_chooser.font_chooser_t
-  inherit Gfont_button_signals.font_button_signals
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_font_set :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_modal : unit -> bool
   method get_title : unit -> string
   method get_use_font : unit -> bool

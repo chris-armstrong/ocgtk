@@ -1,98 +1,106 @@
 ---
 description: Refactor code to meet a specific guideline with independent review
-argument-hint: "<guideline> in <files or module>"
+argument-hint: "[guideline-keyword] [scope: staged|committed|HEAD~N|<files>]"
 ---
 
-## Refactoring Goal: $ARGUMENTS
+## Refactoring Pass: $ARGUMENTS
 
-### Setup: Load or Define Guidelines
+You are the coordinating agent for a guideline-based refactoring pass. Work through the steps below in order.
 
-First, check if `.claude/guidelines/ocaml-readability.md` exists:
+---
+
+### Step 1: Determine the File Scope
+
+Determine the full list of OCaml source files to review. Parse `$ARGUMENTS` for a scope hint:
+
+- **Explicit paths**: if `$ARGUMENTS` contains `.ml` or `.mli` file paths, use exactly those files.
+- **`staged`**: `git diff --cached --name-only -- '*.ml' '*.mli'`
+- **`committed`** or **`HEAD~N`**: `git diff HEAD~N --name-only -- '*.ml' '*.mli'` (replace N)
+- **Default (epoch / current branch)**: all OCaml files changed since the branch diverged from main:
+  ```bash
+  git diff $(git merge-base HEAD origin/lablgtk4) --name-only -- '*.ml' '*.mli'
+  ```
+
+After running the appropriate command, filter the result:
+- Remove any paths containing `/_build/` or `/generated/`
+- Remove any path that does not exist on disk
+
+Print the final file list. If it is empty, stop and report that there are no OCaml files in scope.
+
+---
+
+### Step 2: Determine Which Reviewers to Run
+
+The six reviewer agents and what they cover:
+
+| Agent | Guidelines covered |
+|---|---|
+| `control-flow-reviewer` | nesting-and-control-flow, error-handling, partial-functions |
+| `type-correctness-reviewer` | type-safety, pattern-matching, module-boundaries |
+| `code-quality-reviewer` | naming-and-intermediates, code-reuse |
+| `abstractions-reviewer` | abstractions |
+| `test-reviewer` | test-patterns, atspi-e2e-testing |
+| `docs-reviewer` | comments-and-documentation |
+
+Parse `$ARGUMENTS` for a filter keyword. If a keyword matches one or more agents (e.g. "nesting" or "control-flow" → `control-flow-reviewer`, "types" or "pattern" → `type-correctness-reviewer`, "test" → `test-reviewer`, "docs" or "comments" → `docs-reviewer`), run only the matching agents. Otherwise run **all six**.
+
+Print the list of agents you will dispatch.
+
+---
+
+### Step 3: Dispatch Each Reviewer
+
+For **each** agent in the list, invoke it as a subtask with the following message:
+
+```
+Files to review (full list — do not skip any):
+<one file path per line, the complete list from Step 1>
+```
+
+**Important**: every reviewer receives the same complete file list from Step 1. Do not pre-filter files per agent — each reviewer reads its own guidelines and decides what is relevant.
+
+Dispatch reviewers one at a time and wait for each to complete before starting the next.
+
+---
+
+### Step 4: Build Check
+
+After all reviewers have completed, run the full build:
+
 ```bash
-test -f .claude/guidelines/ocaml-readability.md && echo "EXISTS" || echo "MISSING"
+dune build 2>&1
 ```
 
-If MISSING, create it with the standard OCaml guidelines (use the full content from the guidelines document).
+Check the return code. If the build fails:
+1. Identify which file(s) have errors from the build output.
+2. Re-invoke a reviewer for just the broken files with the instruction: "The build is broken in these files after your previous edits. Fix the build errors while keeping guideline fixes where possible."
+3. Re-run `dune build` to confirm.
 
-### Phase 1: Planning
+---
 
-Save the original goal for the reviewer:
+### Step 5: Test Suite
+
 ```bash
-mkdir -p .claude/scratchpad
-echo '$ARGUMENTS' > .claude/scratchpad/current-goal.txt
+dune test gir_gen/ && xvfb-run dune test ocgtk/ 2>&1
 ```
 
-Use `guideline-refactor-planner` to analyze target files against goal: "$ARGUMENTS"
+Check the return code. Report pass or fail.
 
-The planner will output to `.claude/scratchpad/refactor-plan.json`
+---
 
-Show me the plan summary and wait for approval before proceeding.
+### Step 6: Final Summary
 
-### Phase 2: Execution Loop
+Output a combined report:
 
-For each violation in the plan:
-
-1. **Execute**: Use `ocaml-guideline-executor` with:
-   - The specific violation details
-   - Reference to guidelines file or inline patterns
-
-2. **Build Check**: 
-```bash
-   dune build 2>&1
 ```
-   If build fails, executor must fix before proceeding.
+## Refactoring Summary
+Scope: <description of how files were selected>
+Files in scope: <N>
+Guidelines applied: <list>
 
-3. **Independent Review**: Use `ocaml-guideline-reviewer` with:
-   - Original goal from: `cat .claude/scratchpad/current-goal.txt`
-   - Modified file paths only (reviewer reads current state)
-   
-4. **Handle Review Result**:
-   - PASS → commit and continue to next violation
-   - PARTIAL → show feedback, attempt fix (max 2 retries)
-   - FAIL → show feedback, attempt fix (max 3 retries)
-   - Still failing → pause and consult me
+### Per-Guideline Results
+<paste each reviewer's output block here>
 
-5. **Checkpoint**:
-```bash
-   git add -A
-   git commit -m "refactor(): 
-   
-   Guideline: $ARGUMENTS
-   Violation: 
-   Reviewer: PASS"
+### Build: PASS / FAIL
+### Tests: PASS / FAIL
 ```
-
-### Phase 3: Final Validation
-
-After all violations addressed:
-
-1. Full test suite:
-```bash
-   dune runtest 2>&1
-```
-
-2. Final review of ALL modified files:
-   Use `ocaml-guideline-reviewer` with original goal on complete changeset
-
-3. Generate summary:
-```
-   ## Refactoring Summary
-   - Goal: $ARGUMENTS
-   - Files modified: <count>
-   - Violations fixed: <count>
-   - Final verdict: <PASS/PARTIAL>
-   
-   ### Before/After Metrics
-   - Nesting depth: max <N> → max <M>
-   - Partial functions: <N> → <M>
-   - Exception sites: <N> → <M>
-```
-
-### Failure Recovery
-
-If context is exhausted mid-refactor:
-1. Progress is saved in `.claude/scratchpad/refactor-plan.json` 
-2. Completed violations are committed
-3. Resume with: `/ocaml-refactor continue`
-
-To abort: `git reset --hard HEAD~<N>` to undo commits

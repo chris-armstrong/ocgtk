@@ -1,5 +1,7 @@
 class type content_provider_t = object
-  inherit Gcontent_provider_signals.content_provider_signals
+  method on_content_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method content_changed : unit -> unit
   method ref_formats : unit -> Content_formats.t
   method ref_storable_formats : unit -> Content_formats.t
@@ -15,4 +17,5 @@ end
 class content_provider : Content_provider.t -> content_provider_t
 
 val new_for_bytes : string -> Glib_bytes.t -> content_provider_t
+val new_for_value : Gobject.Value.t -> content_provider_t
 val new_union : Content_provider.t array option -> Gsize.t -> content_provider_t

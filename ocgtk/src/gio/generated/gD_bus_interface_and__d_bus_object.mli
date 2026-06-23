@@ -8,7 +8,18 @@ class type d_bus_interface_t = object
 end
 
 and d_bus_object_t = object
-  inherit Gd_bus_object_signals.d_bus_object_signals
+  method on_interface_added :
+    ?after:bool ->
+    callback:(interface:d_bus_interface_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_interface_removed :
+    ?after:bool ->
+    callback:(interface:d_bus_interface_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_interface : string -> d_bus_interface_t option
   method get_interfaces : unit -> d_bus_interface_t list
   method get_object_path : unit -> string

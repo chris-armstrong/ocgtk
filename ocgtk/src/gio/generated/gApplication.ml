@@ -1,9 +1,26 @@
-(* Signal class defined in gapplication_signals.ml *)
-
 class type application_t = object
   inherit GAction_group.action_group_t
   inherit GAction_map.action_map_t
-  inherit Gapplication_signals.application_signals
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_command_line :
+    ?after:bool ->
+    callback:
+      (command_line:GApplication_command_line.application_command_line_t -> int) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_name_lost :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
+  method on_shutdown :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_startup :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method activate : unit -> unit
   method bind_busy_property : [ `object_ ] Gobject.obj -> string -> unit
   method get_application_id : unit -> string option
@@ -60,7 +77,27 @@ class application (obj : Application.t) : application_t =
   object (self)
     inherit GAction_group.action_group (Action_group.from_gobject obj)
     inherit GAction_map.action_map (Action_map.from_gobject obj)
-    inherit Gapplication_signals.application_signals obj
+
+    method on_activate ?(after = false) ~callback () =
+      Application.on_activate ~after self#as_application ~callback
+
+    method on_command_line ?(after = false) ~callback () =
+      Application.on_command_line ~after self#as_application
+        ~callback:(fun ~command_line ->
+          callback
+            ~command_line:
+              (new GApplication_command_line.application_command_line
+                 command_line))
+
+    method on_name_lost ?(after = false) ~callback () =
+      Application.on_name_lost ~after self#as_application ~callback
+
+    method on_shutdown ?(after = false) ~callback () =
+      Application.on_shutdown ~after self#as_application ~callback
+
+    method on_startup ?(after = false) ~callback () =
+      Application.on_startup ~after self#as_application ~callback
+
     method activate : unit -> unit = fun () -> Application.activate obj
 
     method bind_busy_property : [ `object_ ] Gobject.obj -> string -> unit =

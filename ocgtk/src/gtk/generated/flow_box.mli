@@ -95,7 +95,7 @@ This function does nothing if @box is backed by a model. *)
 
 external remove :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_flow_box_remove"
@@ -103,7 +103,7 @@ external remove :
 
 external prepend :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_flow_box_prepend"
@@ -131,7 +131,7 @@ term, and the entry with the string has changed. *)
 
 external insert :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int ->
@@ -185,7 +185,7 @@ external get_activate_on_single_click : t -> bool
 
 external append :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_flow_box_append"
@@ -205,3 +205,35 @@ external get_accept_unpaired_release : t -> bool
 external set_accept_unpaired_release : t -> bool -> unit
   = "ml_gtk_flow_box_set_accept_unpaired_release"
 (** Set property: accept-unpaired-release *)
+
+val on_activate_cursor_child :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_child_activated :
+  ?after:bool ->
+  t ->
+  callback:(child:Flow_box_child.t -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_move_cursor :
+  ?after:bool ->
+  t ->
+  callback:
+    (step:Gtk_enums.movementstep ->
+    count:int ->
+    extend:bool ->
+    modify:bool ->
+    bool) ->
+  Gobject.Signal.handler_id
+
+val on_select_all :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_selected_children_changed :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_toggle_cursor_child :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_unselect_all :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

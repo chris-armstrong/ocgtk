@@ -192,6 +192,21 @@ module rec Application : sig
   external get_screensaver_active : t -> bool
     = "ml_gtk_application_get_screensaver_active"
   (** Get property: screensaver-active *)
+
+  val on_query_end :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_window_added :
+    ?after:bool ->
+    t ->
+    callback:(window:Window.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_window_removed :
+    ?after:bool ->
+    t ->
+    callback:(window:Window.t -> unit) ->
+    Gobject.Signal.handler_id
 end
 
 and Window : sig
@@ -257,7 +272,7 @@ and Window : sig
 
   external set_titlebar :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option ->
@@ -352,7 +367,7 @@ and Window : sig
 
   external set_focus :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option ->
@@ -396,7 +411,7 @@ and Window : sig
 
   external set_default_widget :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option ->
@@ -453,7 +468,7 @@ and Window : sig
 
   external set_child :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option ->
@@ -576,7 +591,7 @@ and Window : sig
 
   external get_titlebar :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option = "ml_gtk_window_get_titlebar"
@@ -618,7 +633,7 @@ and Window : sig
 
   external get_focus :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option = "ml_gtk_window_get_focus"
@@ -637,7 +652,7 @@ and Window : sig
 
   external get_default_widget :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option = "ml_gtk_window_get_default_widget"
@@ -659,7 +674,7 @@ and Window : sig
 
   external get_child :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t
     option = "ml_gtk_window_get_child"
@@ -722,14 +737,14 @@ and Window : sig
 
   external get_focus_widget :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t = "ml_gtk_window_get_focus_widget"
   (** Get property: focus-widget *)
 
   external set_focus_widget :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     unit = "ml_gtk_window_set_focus_widget"
@@ -750,6 +765,24 @@ and Window : sig
 
   external get_suspended : t -> bool = "ml_gtk_window_get_suspended"
   (** Get property: suspended *)
+
+  val on_activate_default :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_activate_focus :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_close_request :
+    ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+  val on_enable_debugging :
+    ?after:bool ->
+    t ->
+    callback:(toggle:bool -> bool) ->
+    Gobject.Signal.handler_id
+
+  val on_keys_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end
 
 and Window_group : sig

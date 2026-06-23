@@ -9,7 +9,12 @@ class type list_store_t = object
   method move_after : Tree_iter.t -> Tree_iter.t option -> unit
   method move_before : Tree_iter.t -> Tree_iter.t option -> unit
   method remove : Tree_iter.t -> bool
-  method set_column_types : int -> int array -> unit
+  method set_column_types : int -> Gobject.Type.t array -> unit
+  method set_value : Tree_iter.t -> int -> Gobject.Value.t -> unit
+
+  method set_valuesv :
+    Tree_iter.t -> int array -> Gobject.Value.t array -> int -> unit
+
   method swap : Tree_iter.t -> Tree_iter.t -> unit
   method as_list_store : List_store.t
 end
@@ -38,8 +43,16 @@ class list_store (obj : List_store.t) : list_store_t =
 
     method remove : Tree_iter.t -> bool = fun iter -> List_store.remove obj iter
 
-    method set_column_types : int -> int array -> unit =
+    method set_column_types : int -> Gobject.Type.t array -> unit =
       fun n_columns types -> List_store.set_column_types obj n_columns types
+
+    method set_value : Tree_iter.t -> int -> Gobject.Value.t -> unit =
+      fun iter column value -> List_store.set_value obj iter column value
+
+    method set_valuesv :
+        Tree_iter.t -> int array -> Gobject.Value.t array -> int -> unit =
+      fun iter columns values n_values ->
+        List_store.set_valuesv obj iter columns values n_values
 
     method swap : Tree_iter.t -> Tree_iter.t -> unit =
       fun a b -> List_store.swap obj a b
@@ -47,6 +60,6 @@ class list_store (obj : List_store.t) : list_store_t =
     method as_list_store = obj
   end
 
-let newv (n_columns : int) (types : int array) : list_store_t =
+let newv (n_columns : int) (types : Gobject.Type.t array) : list_store_t =
   let obj_ = List_store.newv n_columns types in
   new list_store obj_

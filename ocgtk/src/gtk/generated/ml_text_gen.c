@@ -200,7 +200,7 @@ CAMLexport CAMLprim value ml_gtk_text_get_tabs(value self)
 CAMLparam1(self);
 
 PangoTabArray* result = gtk_text_get_tabs(GtkText_val(self));
-if (result) g_object_ref_sink(result);
+if (result) result = g_boxed_copy(pango_tab_array_get_type(), result);
 CAMLreturn(Val_option(result, Val_PangoTabArray));
 }
 
@@ -291,7 +291,7 @@ CAMLexport CAMLprim value ml_gtk_text_get_attributes(value self)
 CAMLparam1(self);
 
 PangoAttrList* result = gtk_text_get_attributes(GtkText_val(self));
-if (result) g_object_ref_sink(result);
+if (result) result = g_boxed_copy(pango_attr_list_get_type(), result);
 CAMLreturn(Val_option(result, Val_PangoAttrList));
 }
 

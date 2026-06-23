@@ -989,6 +989,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_init_translate(value self, value ar
 CAMLparam2(self, arg1);
 
 graphene_matrix_t* result = graphene_matrix_init_translate(graphene_matrix_t_val(self), graphene_point3d_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_matrix_get_type(), result);
 CAMLreturn(Val_graphene_matrix_t(result));
 }
 
@@ -1011,6 +1012,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_init_skew(value self, value arg1, v
 CAMLparam3(self, arg1, arg2);
 
 graphene_matrix_t* result = graphene_matrix_init_skew(graphene_matrix_t_val(self), Double_val(arg1), Double_val(arg2));
+if (result) result = g_boxed_copy(graphene_matrix_get_type(), result);
 CAMLreturn(Val_graphene_matrix_t(result));
 }
 
@@ -1034,6 +1036,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_init_scale(value self, value arg1, 
 CAMLparam4(self, arg1, arg2, arg3);
 
 graphene_matrix_t* result = graphene_matrix_init_scale(graphene_matrix_t_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3));
+if (result) result = g_boxed_copy(graphene_matrix_get_type(), result);
 CAMLreturn(Val_graphene_matrix_t(result));
 }
 
@@ -1058,6 +1061,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_init_rotate(value self, value arg1,
 CAMLparam3(self, arg1, arg2);
 
 graphene_matrix_t* result = graphene_matrix_init_rotate(graphene_matrix_t_val(self), Double_val(arg1), graphene_vec3_t_val(arg2));
+if (result) result = g_boxed_copy(graphene_matrix_get_type(), result);
 CAMLreturn(Val_graphene_matrix_t(result));
 }
 
@@ -1081,6 +1085,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_init_perspective(value self, value 
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
 graphene_matrix_t* result = graphene_matrix_init_perspective(graphene_matrix_t_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3), Double_val(arg4));
+if (result) result = g_boxed_copy(graphene_matrix_get_type(), result);
 CAMLreturn(Val_graphene_matrix_t(result));
 }
 
@@ -1107,6 +1112,7 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam2(arg5, arg6);
 
 graphene_matrix_t* result = graphene_matrix_init_ortho(graphene_matrix_t_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6));
+if (result) result = g_boxed_copy(graphene_matrix_get_type(), result);
 CAMLreturn(Val_graphene_matrix_t(result));}
 
 CAMLexport CAMLprim value ml_graphene_matrix_init_ortho_bytecode(value * argv, int argn)
@@ -1138,6 +1144,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_init_look_at(value self, value arg1
 CAMLparam4(self, arg1, arg2, arg3);
 
 graphene_matrix_t* result = graphene_matrix_init_look_at(graphene_matrix_t_val(self), graphene_vec3_t_val(arg1), graphene_vec3_t_val(arg2), graphene_vec3_t_val(arg3));
+if (result) result = g_boxed_copy(graphene_matrix_get_type(), result);
 CAMLreturn(Val_graphene_matrix_t(result));
 }
 
@@ -1162,6 +1169,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_init_identity(value self)
 CAMLparam1(self);
 
 graphene_matrix_t* result = graphene_matrix_init_identity(graphene_matrix_t_val(self));
+if (result) result = g_boxed_copy(graphene_matrix_get_type(), result);
 CAMLreturn(Val_graphene_matrix_t(result));
 }
 
@@ -1184,6 +1192,7 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam2(arg5, arg6);
 
 graphene_matrix_t* result = graphene_matrix_init_frustum(graphene_matrix_t_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6));
+if (result) result = g_boxed_copy(graphene_matrix_get_type(), result);
 CAMLreturn(Val_graphene_matrix_t(result));}
 
 CAMLexport CAMLprim value ml_graphene_matrix_init_frustum_bytecode(value * argv, int argn)
@@ -1215,6 +1224,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_init_from_vec4(value self, value ar
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 
 graphene_matrix_t* result = graphene_matrix_init_from_vec4(graphene_matrix_t_val(self), graphene_vec4_t_val(arg1), graphene_vec4_t_val(arg2), graphene_vec4_t_val(arg3), graphene_vec4_t_val(arg4));
+if (result) result = g_boxed_copy(graphene_matrix_get_type(), result);
 CAMLreturn(Val_graphene_matrix_t(result));
 }
 
@@ -1240,6 +1250,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_init_from_matrix(value self, value 
 CAMLparam2(self, arg1);
 
 graphene_matrix_t* result = graphene_matrix_init_from_matrix(graphene_matrix_t_val(self), graphene_matrix_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_matrix_get_type(), result);
 CAMLreturn(Val_graphene_matrix_t(result));
 }
 
@@ -1267,6 +1278,7 @@ CAMLparam2(self, arg1);
     }
 
 graphene_matrix_t* result = graphene_matrix_init_from_float(graphene_matrix_t_val(self), c_arg1);
+if (result) result = g_boxed_copy(graphene_matrix_get_type(), result);
     g_free(c_arg1);
 CAMLreturn(Val_graphene_matrix_t(result));
 }
@@ -1291,6 +1303,7 @@ CAMLparam5(self, arg1, arg2, arg3, arg4);
 CAMLxparam2(arg5, arg6);
 
 graphene_matrix_t* result = graphene_matrix_init_from_2d(graphene_matrix_t_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6));
+if (result) result = g_boxed_copy(graphene_matrix_get_type(), result);
 CAMLreturn(Val_graphene_matrix_t(result));}
 
 CAMLexport CAMLprim value ml_graphene_matrix_init_from_2d_bytecode(value * argv, int argn)
@@ -1571,4 +1584,10 @@ CAMLlocal1(ret);
     Store_field(ret, 4, Val_graphene_vec3_t(&out4));
     Store_field(ret, 5, Val_graphene_vec4_t(&out5));
     CAMLreturn(ret);
+}
+
+CAMLprim value ml_graphene_matrix_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_matrix_get_type()));
 }

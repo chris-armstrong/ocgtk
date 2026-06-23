@@ -19,7 +19,7 @@ module rec Cell_area : sig
   external snapshot :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     Snapshot.t ->
@@ -45,7 +45,7 @@ module rec Cell_area : sig
     t ->
     Cell_renderer.t ->
     Gtk_enums.orientation ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     int ->
@@ -76,7 +76,7 @@ module rec Cell_area : sig
 
   external inner_cell_area :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
@@ -98,7 +98,7 @@ module rec Cell_area : sig
   external get_preferred_width_for_height :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     int ->
@@ -121,7 +121,7 @@ module rec Cell_area : sig
   external get_preferred_width :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     int * int = "ml_gtk_cell_area_get_preferred_width"
@@ -136,7 +136,7 @@ module rec Cell_area : sig
   external get_preferred_height_for_width :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     int ->
@@ -159,7 +159,7 @@ module rec Cell_area : sig
   external get_preferred_height :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     int * int = "ml_gtk_cell_area_get_preferred_height"
@@ -210,7 +210,7 @@ module rec Cell_area : sig
   external get_cell_at_position :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
@@ -225,7 +225,7 @@ module rec Cell_area : sig
   external get_cell_allocation :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     Cell_renderer.t ->
@@ -247,7 +247,7 @@ module rec Cell_area : sig
   external event :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     Ocgtk_gdk.Gdk.Wrappers.Event.t ->
@@ -276,6 +276,16 @@ module rec Cell_area : sig
       `GtkIconView` uses this to request the heights of each row based on a
       context which was already used to request all the row widths that are to
       be displayed. *)
+
+  external cell_set_property :
+    t -> Cell_renderer.t -> string -> Gobject.Value.t -> unit
+    = "ml_gtk_cell_area_cell_set_property"
+  (** Sets a cell property for @renderer in @area. *)
+
+  external cell_get_property :
+    t -> Cell_renderer.t -> string -> Gobject.Value.t -> unit
+    = "ml_gtk_cell_area_cell_get_property"
+  (** Gets the value of a cell property for @renderer in @area. *)
 
   external attribute_get_column : t -> Cell_renderer.t -> string -> int
     = "ml_gtk_cell_area_attribute_get_column"
@@ -313,7 +323,7 @@ module rec Cell_area : sig
 
   external activate_cell :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     Cell_renderer.t ->
@@ -330,7 +340,7 @@ module rec Cell_area : sig
   external activate :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
@@ -343,6 +353,18 @@ module rec Cell_area : sig
   can also activate a widget if it currently has the focus. *)
 
   (* Properties *)
+
+  val on_focus_changed :
+    ?after:bool ->
+    t ->
+    callback:(renderer:Cell_renderer.t -> path:string -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_remove_editable :
+    ?after:bool ->
+    t ->
+    callback:(renderer:Cell_renderer.t -> editable:Cell_editable.t -> unit) ->
+    Gobject.Signal.handler_id
 end = struct
   type t = [ `cell_area | `initially_unowned | `object_ ] Gobject.obj
 
@@ -361,7 +383,7 @@ end = struct
   external snapshot :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     Snapshot.t ->
@@ -387,7 +409,7 @@ end = struct
     t ->
     Cell_renderer.t ->
     Gtk_enums.orientation ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     int ->
@@ -418,7 +440,7 @@ end = struct
 
   external inner_cell_area :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
@@ -440,7 +462,7 @@ end = struct
   external get_preferred_width_for_height :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     int ->
@@ -463,7 +485,7 @@ end = struct
   external get_preferred_width :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     int * int = "ml_gtk_cell_area_get_preferred_width"
@@ -478,7 +500,7 @@ end = struct
   external get_preferred_height_for_width :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     int ->
@@ -501,7 +523,7 @@ end = struct
   external get_preferred_height :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     int * int = "ml_gtk_cell_area_get_preferred_height"
@@ -552,7 +574,7 @@ end = struct
   external get_cell_at_position :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
@@ -567,7 +589,7 @@ end = struct
   external get_cell_allocation :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     Cell_renderer.t ->
@@ -589,7 +611,7 @@ end = struct
   external event :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     Ocgtk_gdk.Gdk.Wrappers.Event.t ->
@@ -618,6 +640,16 @@ end = struct
       `GtkIconView` uses this to request the heights of each row based on a
       context which was already used to request all the row widths that are to
       be displayed. *)
+
+  external cell_set_property :
+    t -> Cell_renderer.t -> string -> Gobject.Value.t -> unit
+    = "ml_gtk_cell_area_cell_set_property"
+  (** Sets a cell property for @renderer in @area. *)
+
+  external cell_get_property :
+    t -> Cell_renderer.t -> string -> Gobject.Value.t -> unit
+    = "ml_gtk_cell_area_cell_get_property"
+  (** Gets the value of a cell property for @renderer in @area. *)
 
   external attribute_get_column : t -> Cell_renderer.t -> string -> int
     = "ml_gtk_cell_area_attribute_get_column"
@@ -655,7 +687,7 @@ end = struct
 
   external activate_cell :
     t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     Cell_renderer.t ->
@@ -672,7 +704,7 @@ end = struct
   external activate :
     t ->
     Cell_area_context.t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .Widget
     .t ->
     Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
@@ -685,6 +717,38 @@ end = struct
   can also activate a widget if it currently has the focus. *)
 
   (* Properties *)
+
+  let on_focus_changed ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let renderer =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          let path =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            Gobject.Value.get_string v
+          in
+          callback ~renderer ~path)
+    in
+    Gobject.Signal.connect obj ~name:"focus-changed" ~callback:closure
+      ~after:(Option.value after ~default:false)
+
+  let on_remove_editable ?after obj ~callback =
+    let closure =
+      Gobject.Closure.create (fun argv ->
+          let renderer =
+            let v = Gobject.Closure.nth argv ~pos:1 in
+            Gobject.Value.get_object_exn v
+          in
+          let editable =
+            let v = Gobject.Closure.nth argv ~pos:2 in
+            Gobject.Value.get_object_exn v
+          in
+          callback ~renderer ~editable)
+    in
+    Gobject.Signal.connect obj ~name:"remove-editable" ~callback:closure
+      ~after:(Option.value after ~default:false)
 end
 
 and Cell_area_context : sig

@@ -9,3 +9,5 @@ model-specific data in the three @user_data
 members. *)
 
 (* Methods *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gtk_tree_iter_get_type"

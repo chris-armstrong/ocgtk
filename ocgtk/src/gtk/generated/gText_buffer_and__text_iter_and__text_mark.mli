@@ -1,5 +1,33 @@
 class type text_buffer_t = object
-  inherit Gtext_buffer_signals.text_buffer_signals
+  method on_begin_user_action :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_end_user_action :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_mark_deleted :
+    ?after:bool ->
+    callback:(mark:text_mark_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_modified_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_paste_done :
+    ?after:bool ->
+    callback:(clipboard:Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_redo :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_undo :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method add_mark :
     text_mark_t -> Text_buffer_and__text_iter_and__text_mark.Text_iter.t -> unit

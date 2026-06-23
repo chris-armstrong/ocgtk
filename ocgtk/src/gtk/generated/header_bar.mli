@@ -10,7 +10,7 @@ external new_ : unit -> t = "ml_gtk_header_bar_new"
 
 external set_title_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -52,7 +52,7 @@ external set_decoration_layout : t -> string option -> unit
 
 external remove :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_header_bar_remove"
@@ -64,7 +64,7 @@ external remove :
 
 external pack_start :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_header_bar_pack_start"
@@ -73,7 +73,7 @@ start of the @bar. *)
 
 external pack_end :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_header_bar_pack_end"
@@ -82,7 +82,7 @@ end of the @bar. *)
 
 external get_title_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_header_bar_get_title_widget"

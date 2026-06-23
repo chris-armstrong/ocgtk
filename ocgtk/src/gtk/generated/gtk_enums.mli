@@ -8,6 +8,9 @@ type accessibleannouncementpriority = [
   | `HIGH
 ]
 
+val accessibleannouncementpriority_of_int : int -> accessibleannouncementpriority
+val accessibleannouncementpriority_to_int : accessibleannouncementpriority -> int
+
 (* AccessibleAutocomplete - enumeration *)
 type accessibleautocomplete = [
   (** Automatic suggestions are not displayed. *)
@@ -28,6 +31,9 @@ type accessibleautocomplete = [
   | `BOTH
 ]
 
+val accessibleautocomplete_of_int : int -> accessibleautocomplete
+val accessibleautocomplete_to_int : accessibleautocomplete -> int
+
 (* AccessibleInvalidState - enumeration *)
 type accessibleinvalidstate = [
   (** There are no detected errors in the value *)
@@ -40,6 +46,9 @@ type accessibleinvalidstate = [
   | `SPELLING
 ]
 
+val accessibleinvalidstate_of_int : int -> accessibleinvalidstate
+val accessibleinvalidstate_to_int : accessibleinvalidstate -> int
+
 (* AccessiblePlatformState - enumeration *)
 type accessibleplatformstate = [
   (** whether the accessible can be focused *)
@@ -49,6 +58,9 @@ type accessibleplatformstate = [
   (** whether the accessible is active *)
   | `ACTIVE
 ]
+
+val accessibleplatformstate_of_int : int -> accessibleplatformstate
+val accessibleplatformstate_to_int : accessibleplatformstate -> int
 
 (* AccessibleProperty - enumeration *)
 type accessibleproperty = [
@@ -119,6 +131,9 @@ type accessibleproperty = [
   | `VALUE_TEXT
 ]
 
+val accessibleproperty_of_int : int -> accessibleproperty
+val accessibleproperty_to_int : accessibleproperty -> int
+
 (* AccessibleRelation - enumeration *)
 type accessiblerelation = [
   (** Identifies the currently active
@@ -183,6 +198,9 @@ type accessiblerelation = [
    set of listitems or treeitems. Value type: integer *)
   | `SET_SIZE
 ]
+
+val accessiblerelation_of_int : int -> accessiblerelation
+val accessiblerelation_to_int : accessiblerelation -> int
 
 (* AccessibleRole - enumeration *)
 type accessiblerole = [
@@ -386,6 +404,9 @@ part of a document, page, or site. *)
   | `TERMINAL
 ]
 
+val accessiblerole_of_int : int -> accessiblerole
+val accessiblerole_to_int : accessiblerole -> int
+
 (* AccessibleSort - enumeration *)
 type accessiblesort = [
   (** There is no defined sort applied to the column. *)
@@ -398,6 +419,9 @@ type accessiblesort = [
    descending has been applied. *)
   | `OTHER
 ]
+
+val accessiblesort_of_int : int -> accessiblesort
+val accessiblesort_to_int : accessiblesort -> int
 
 (* AccessibleState - enumeration *)
 type accessiblestate = [
@@ -435,6 +459,9 @@ Value type: boolean. *)
   | `VISITED
 ]
 
+val accessiblestate_of_int : int -> accessiblestate
+val accessiblestate_to_int : accessiblestate -> int
+
 (* AccessibleTextContentChange - enumeration *)
 type accessibletextcontentchange = [
   (** contents change as the result of
@@ -444,6 +471,9 @@ type accessibletextcontentchange = [
   a remove operation *)
   | `REMOVE
 ]
+
+val accessibletextcontentchange_of_int : int -> accessibletextcontentchange
+val accessibletextcontentchange_to_int : accessibletextcontentchange -> int
 
 (* AccessibleTextGranularity - enumeration *)
 type accessibletextgranularity = [
@@ -468,6 +498,9 @@ type accessibletextgranularity = [
   | `PARAGRAPH
 ]
 
+val accessibletextgranularity_of_int : int -> accessibletextgranularity
+val accessibletextgranularity_to_int : accessibletextgranularity -> int
+
 (* AccessibleTristate - enumeration *)
 type accessibletristate = [
   (** The state is `false` *)
@@ -477,6 +510,9 @@ type accessibletristate = [
   (** The state is `mixed` *)
   | `MIXED
 ]
+
+val accessibletristate_of_int : int -> accessibletristate
+val accessibletristate_to_int : accessibletristate -> int
 
 (* Align - enumeration *)
 type align = [
@@ -497,6 +533,9 @@ type align = [
   | `BASELINE_CENTER
 ]
 
+val align_of_int : int -> align
+val align_to_int : align -> int
+
 (* ArrowType - enumeration *)
 type arrowtype = [
   (** Represents an upward pointing arrow. *)
@@ -510,6 +549,9 @@ type arrowtype = [
   (** No arrow. *)
   | `NONE
 ]
+
+val arrowtype_of_int : int -> arrowtype
+val arrowtype_to_int : arrowtype -> int
 
 (* AssistantPageType - enumeration *)
 type assistantpagetype = [
@@ -536,6 +578,9 @@ type assistantpagetype = [
   | `CUSTOM
 ]
 
+val assistantpagetype_of_int : int -> assistantpagetype
+val assistantpagetype_to_int : assistantpagetype -> int
+
 (* BaselinePosition - enumeration *)
 type baselineposition = [
   (** Align the baseline at the top *)
@@ -545,6 +590,9 @@ type baselineposition = [
   (** Align the baseline at the bottom *)
   | `BOTTOM
 ]
+
+val baselineposition_of_int : int -> baselineposition
+val baselineposition_to_int : baselineposition -> int
 
 (* BorderStyle - enumeration *)
 type borderstyle = [
@@ -569,6 +617,9 @@ type borderstyle = [
   (** Looks as if it were coming out of the canvas *)
   | `RIDGE
 ]
+
+val borderstyle_of_int : int -> borderstyle
+val borderstyle_to_int : borderstyle -> int
 
 (* BuilderError - enumeration *)
 type buildererror = [
@@ -615,6 +666,9 @@ type buildererror = [
   | `INVALID_FUNCTION
 ]
 
+val buildererror_of_int : int -> buildererror
+val buildererror_to_int : buildererror -> int
+
 (* ButtonsType - enumeration *)
 type buttonstype = [
   (** no buttons at all *)
@@ -631,6 +685,9 @@ type buttonstype = [
   | `OK_CANCEL
 ]
 
+val buttonstype_of_int : int -> buttonstype
+val buttonstype_to_int : buttonstype -> int
+
 (* CellRendererAccelMode - enumeration *)
 type cellrendereraccelmode = [
   (** GTK accelerators mode *)
@@ -638,6 +695,9 @@ type cellrendereraccelmode = [
   (** Other accelerator mode *)
   | `OTHER
 ]
+
+val cellrendereraccelmode_of_int : int -> cellrendereraccelmode
+val cellrendereraccelmode_to_int : cellrendereraccelmode -> int
 
 (* CellRendererMode - enumeration *)
 type cellrenderermode = [
@@ -652,6 +712,9 @@ type cellrenderermode = [
   | `EDITABLE
 ]
 
+val cellrenderermode_of_int : int -> cellrenderermode
+val cellrenderermode_to_int : cellrenderermode -> int
+
 (* Collation - enumeration *)
 type collation = [
   (** Don't do any collation *)
@@ -661,6 +724,9 @@ type collation = [
   (** Use [func@GLib.utf8_collate_key_for_filename] *)
   | `FILENAME
 ]
+
+val collation_of_int : int -> collation
+val collation_to_int : collation -> int
 
 (* ConstraintAttribute - enumeration *)
 type constraintattribute = [
@@ -699,6 +765,9 @@ type constraintattribute = [
   | `BASELINE
 ]
 
+val constraintattribute_of_int : int -> constraintattribute
+val constraintattribute_to_int : constraintattribute -> int
+
 (* ConstraintRelation - enumeration *)
 type constraintrelation = [
   (** Less than, or equal *)
@@ -708,6 +777,9 @@ type constraintrelation = [
   (** Greater than, or equal *)
   | `GE
 ]
+
+val constraintrelation_of_int : int -> constraintrelation
+val constraintrelation_to_int : constraintrelation -> int
 
 (* ConstraintStrength - enumeration *)
 type constraintstrength = [
@@ -720,6 +792,9 @@ type constraintstrength = [
   (** A weak constraint *)
   | `WEAK
 ]
+
+val constraintstrength_of_int : int -> constraintstrength
+val constraintstrength_to_int : constraintstrength -> int
 
 (* ConstraintVflParserError - enumeration *)
 type constraintvflparsererror = [
@@ -736,6 +811,9 @@ type constraintvflparsererror = [
   (** Invalid or unknown relation *)
   | `RELATION
 ]
+
+val constraintvflparsererror_of_int : int -> constraintvflparsererror
+val constraintvflparsererror_to_int : constraintvflparsererror -> int
 
 (* ContentFit - enumeration *)
 type contentfit = [
@@ -759,6 +837,9 @@ type contentfit = [
   | `SCALE_DOWN
 ]
 
+val contentfit_of_int : int -> contentfit
+val contentfit_to_int : contentfit -> int
+
 (* CornerType - enumeration *)
 type cornertype = [
   (** Place the scrollbars on the right and bottom of the
@@ -775,6 +856,9 @@ type cornertype = [
   | `BOTTOM_RIGHT
 ]
 
+val cornertype_of_int : int -> cornertype
+val cornertype_to_int : cornertype -> int
+
 (* CssParserError - enumeration *)
 type cssparsererror = [
   (** Unknown failure. *)
@@ -789,6 +873,9 @@ type cssparsererror = [
   | `UNKNOWN_VALUE
 ]
 
+val cssparsererror_of_int : int -> cssparsererror
+val cssparsererror_to_int : cssparsererror -> int
+
 (* CssParserWarning - enumeration *)
 type cssparserwarning = [
   (** The given construct is
@@ -800,6 +887,9 @@ type cssparserwarning = [
   (** A feature is not implemented *)
   | `UNIMPLEMENTED
 ]
+
+val cssparserwarning_of_int : int -> cssparserwarning
+val cssparserwarning_to_int : cssparserwarning -> int
 
 (* DeleteType - enumeration *)
 type deletetype = [
@@ -827,6 +917,9 @@ type deletetype = [
   | `WHITESPACE
 ]
 
+val deletetype_of_int : int -> deletetype
+val deletetype_to_int : deletetype -> int
+
 (* DialogError - enumeration *)
 type dialogerror = [
   (** Generic error condition for when
@@ -839,6 +932,9 @@ type dialogerror = [
   by the user (via a Cancel or Close button) *)
   | `DISMISSED
 ]
+
+val dialogerror_of_int : int -> dialogerror
+val dialogerror_to_int : dialogerror -> int
 
 (* DirectionType - enumeration *)
 type directiontype = [
@@ -855,6 +951,9 @@ type directiontype = [
   (** Move right. *)
   | `RIGHT
 ]
+
+val directiontype_of_int : int -> directiontype
+val directiontype_to_int : directiontype -> int
 
 (* EditableProperties - enumeration *)
 type editableproperties = [
@@ -878,6 +977,9 @@ type editableproperties = [
   | `NUM_PROPERTIES
 ]
 
+val editableproperties_of_int : int -> editableproperties
+val editableproperties_to_int : editableproperties -> int
+
 (* EntryIconPosition - enumeration *)
 type entryiconposition = [
   (** At the beginning of the entry (depending on the text direction). *)
@@ -885,6 +987,9 @@ type entryiconposition = [
   (** At the end of the entry (depending on the text direction). *)
   | `SECONDARY
 ]
+
+val entryiconposition_of_int : int -> entryiconposition
+val entryiconposition_to_int : entryiconposition -> int
 
 (* EventSequenceState - enumeration *)
 type eventsequencestate = [
@@ -895,6 +1000,9 @@ type eventsequencestate = [
   (** The sequence is denied. *)
   | `DENIED
 ]
+
+val eventsequencestate_of_int : int -> eventsequencestate
+val eventsequencestate_to_int : eventsequencestate -> int
 
 (* FileChooserAction - enumeration *)
 type filechooseraction = [
@@ -911,6 +1019,9 @@ type filechooseraction = [
   | `SELECT_FOLDER
 ]
 
+val filechooseraction_of_int : int -> filechooseraction
+val filechooseraction_to_int : filechooseraction -> int
+
 (* FileChooserError - enumeration *)
 type filechoosererror = [
   (** Indicates that a file does not exist. *)
@@ -924,6 +1035,9 @@ type filechoosererror = [
  (e.g. "http://foo" without a slash after that). *)
   | `INCOMPLETE_HOSTNAME
 ]
+
+val filechoosererror_of_int : int -> filechoosererror
+val filechoosererror_to_int : filechoosererror -> int
 
 (* FilterChange - enumeration *)
 type filterchange = [
@@ -940,6 +1054,9 @@ type filterchange = [
   | `MORE_STRICT
 ]
 
+val filterchange_of_int : int -> filterchange
+val filterchange_to_int : filterchange -> int
+
 (* FilterMatch - enumeration *)
 type filtermatch = [
   (** The filter matches some items,
@@ -953,6 +1070,9 @@ type filtermatch = [
   | `ALL
 ]
 
+val filtermatch_of_int : int -> filtermatch
+val filtermatch_to_int : filtermatch -> int
+
 (* FontLevel - enumeration *)
 type fontlevel = [
   (** Select a font family *)
@@ -965,6 +1085,9 @@ type fontlevel = [
   | `FEATURES
 ]
 
+val fontlevel_of_int : int -> fontlevel
+val fontlevel_to_int : fontlevel -> int
+
 (* GraphicsOffloadEnabled - enumeration *)
 type graphicsoffloadenabled = [
   (** Graphics offloading is enabled. *)
@@ -972,6 +1095,9 @@ type graphicsoffloadenabled = [
   (** Graphics offloading is disabled. *)
   | `DISABLED
 ]
+
+val graphicsoffloadenabled_of_int : int -> graphicsoffloadenabled
+val graphicsoffloadenabled_to_int : graphicsoffloadenabled -> int
 
 (* IconSize - enumeration *)
 type iconsize = [
@@ -983,6 +1109,9 @@ type iconsize = [
   | `LARGE
 ]
 
+val iconsize_of_int : int -> iconsize
+val iconsize_to_int : iconsize -> int
+
 (* IconThemeError - enumeration *)
 type iconthemeerror = [
   (** The icon specified does not exist in the theme *)
@@ -990,6 +1119,9 @@ type iconthemeerror = [
   (** An unspecified error occurred. *)
   | `FAILED
 ]
+
+val iconthemeerror_of_int : int -> iconthemeerror
+val iconthemeerror_to_int : iconthemeerror -> int
 
 (* IconViewDropPosition - enumeration *)
 type iconviewdropposition = [
@@ -1007,6 +1139,9 @@ type iconviewdropposition = [
   | `DROP_BELOW
 ]
 
+val iconviewdropposition_of_int : int -> iconviewdropposition
+val iconviewdropposition_to_int : iconviewdropposition -> int
+
 (* ImageType - enumeration *)
 type imagetype = [
   (** there is no image displayed by the widget *)
@@ -1018,6 +1153,9 @@ type imagetype = [
   (** the widget contains a `GdkPaintable` *)
   | `PAINTABLE
 ]
+
+val imagetype_of_int : int -> imagetype
+val imagetype_to_int : imagetype -> int
 
 (* InputPurpose - enumeration *)
 type inputpurpose = [
@@ -1045,6 +1183,9 @@ type inputpurpose = [
   | `TERMINAL
 ]
 
+val inputpurpose_of_int : int -> inputpurpose
+val inputpurpose_to_int : inputpurpose -> int
+
 (* InscriptionOverflow - enumeration *)
 type inscriptionoverflow = [
   (** Clip the remaining text *)
@@ -1056,6 +1197,9 @@ type inscriptionoverflow = [
   (** Omit characters at the end of the text *)
   | `ELLIPSIZE_END
 ]
+
+val inscriptionoverflow_of_int : int -> inscriptionoverflow
+val inscriptionoverflow_to_int : inscriptionoverflow -> int
 
 (* Justification - enumeration *)
 type justification = [
@@ -1069,6 +1213,9 @@ type justification = [
   | `FILL
 ]
 
+val justification_of_int : int -> justification
+val justification_to_int : justification -> int
+
 (* LevelBarMode - enumeration *)
 type levelbarmode = [
   (** the bar has a continuous mode *)
@@ -1076,6 +1223,9 @@ type levelbarmode = [
   (** the bar has a discrete mode *)
   | `DISCRETE
 ]
+
+val levelbarmode_of_int : int -> levelbarmode
+val levelbarmode_to_int : levelbarmode -> int
 
 (* ListTabBehavior - enumeration *)
 type listtabbehavior = [
@@ -1093,6 +1243,9 @@ type listtabbehavior = [
   | `CELL
 ]
 
+val listtabbehavior_of_int : int -> listtabbehavior
+val listtabbehavior_to_int : listtabbehavior -> int
+
 (* MessageType - enumeration *)
 type messagetype = [
   (** Informational message *)
@@ -1106,6 +1259,9 @@ type messagetype = [
   (** None of the above *)
   | `OTHER
 ]
+
+val messagetype_of_int : int -> messagetype
+val messagetype_to_int : messagetype -> int
 
 (* MovementStep - enumeration *)
 type movementstep = [
@@ -1131,6 +1287,9 @@ type movementstep = [
   | `HORIZONTAL_PAGES
 ]
 
+val movementstep_of_int : int -> movementstep
+val movementstep_to_int : movementstep -> int
+
 (* NaturalWrapMode - enumeration *)
 type naturalwrapmode = [
   (** Inherit the minimum size request.
@@ -1146,6 +1305,9 @@ type naturalwrapmode = [
   | `WORD
 ]
 
+val naturalwrapmode_of_int : int -> naturalwrapmode
+val naturalwrapmode_to_int : naturalwrapmode -> int
+
 (* NotebookTab - enumeration *)
 type notebooktab = [
   (** the first tab in the notebook *)
@@ -1153,6 +1315,9 @@ type notebooktab = [
   (** the last tab in the notebook *)
   | `LAST
 ]
+
+val notebooktab_of_int : int -> notebooktab
+val notebooktab_to_int : notebooktab -> int
 
 (* NumberUpLayout - enumeration *)
 type numberuplayout = [
@@ -1174,6 +1339,9 @@ type numberuplayout = [
   | `BTRL
 ]
 
+val numberuplayout_of_int : int -> numberuplayout
+val numberuplayout_to_int : numberuplayout -> int
+
 (* Ordering - enumeration *)
 type ordering = [
   (** the first value is smaller than the second *)
@@ -1184,6 +1352,9 @@ type ordering = [
   | `LARGER
 ]
 
+val ordering_of_int : int -> ordering
+val ordering_to_int : ordering -> int
+
 (* Orientation - enumeration *)
 type orientation = [
   (** The element is in horizontal orientation. *)
@@ -1191,6 +1362,9 @@ type orientation = [
   (** The element is in vertical orientation. *)
   | `VERTICAL
 ]
+
+val orientation_of_int : int -> orientation
+val orientation_to_int : orientation -> int
 
 (* Overflow - enumeration *)
 type overflow = [
@@ -1202,6 +1376,9 @@ type overflow = [
   | `HIDDEN
 ]
 
+val overflow_of_int : int -> overflow
+val overflow_to_int : overflow -> int
+
 (* PackType - enumeration *)
 type packtype = [
   (** The child is packed into the start of the widget *)
@@ -1209,6 +1386,9 @@ type packtype = [
   (** The child is packed into the end of the widget *)
   | `END
 ]
+
+val packtype_of_int : int -> packtype
+val packtype_to_int : packtype -> int
 
 (* PadActionType - enumeration *)
 type padactiontype = [
@@ -1219,6 +1399,9 @@ type padactiontype = [
   (** Action is triggered by a pad strip *)
   | `STRIP
 ]
+
+val padactiontype_of_int : int -> padactiontype
+val padactiontype_to_int : padactiontype -> int
 
 (* PageOrientation - enumeration *)
 type pageorientation = [
@@ -1232,6 +1415,9 @@ type pageorientation = [
   | `REVERSE_LANDSCAPE
 ]
 
+val pageorientation_of_int : int -> pageorientation
+val pageorientation_to_int : pageorientation -> int
+
 (* PageSet - enumeration *)
 type pageset = [
   (** All pages. *)
@@ -1241,6 +1427,9 @@ type pageset = [
   (** Odd pages. *)
   | `ODD
 ]
+
+val pageset_of_int : int -> pageset
+val pageset_to_int : pageset -> int
 
 (* PanDirection - enumeration *)
 type pandirection = [
@@ -1253,6 +1442,9 @@ type pandirection = [
   (** panned downwards *)
   | `DOWN
 ]
+
+val pandirection_of_int : int -> pandirection
+val pandirection_to_int : pandirection -> int
 
 (* PolicyType - enumeration *)
 type policytype = [
@@ -1271,6 +1463,9 @@ type policytype = [
   | `EXTERNAL
 ]
 
+val policytype_of_int : int -> policytype
+val policytype_to_int : policytype -> int
+
 (* PositionType - enumeration *)
 type positiontype = [
   (** The feature is at the left edge. *)
@@ -1283,6 +1478,9 @@ type positiontype = [
   | `BOTTOM
 ]
 
+val positiontype_of_int : int -> positiontype
+val positiontype_to_int : positiontype -> int
+
 (* PrintDuplex - enumeration *)
 type printduplex = [
   (** No duplex. *)
@@ -1292,6 +1490,9 @@ type printduplex = [
   (** Vertical duplex. *)
   | `VERTICAL
 ]
+
+val printduplex_of_int : int -> printduplex
+val printduplex_to_int : printduplex -> int
 
 (* PrintError - enumeration *)
 type printerror = [
@@ -1305,6 +1506,9 @@ type printerror = [
   or paper size from a key file. *)
   | `INVALID_FILE
 ]
+
+val printerror_of_int : int -> printerror
+val printerror_to_int : printerror -> int
 
 (* PrintOperationAction - enumeration *)
 type printoperationaction = [
@@ -1320,6 +1524,9 @@ type printoperationaction = [
   | `EXPORT
 ]
 
+val printoperationaction_of_int : int -> printoperationaction
+val printoperationaction_to_int : printoperationaction -> int
+
 (* PrintOperationResult - enumeration *)
 type printoperationresult = [
   (** An error has occurred. *)
@@ -1334,6 +1541,9 @@ type printoperationresult = [
   | `IN_PROGRESS
 ]
 
+val printoperationresult_of_int : int -> printoperationresult
+val printoperationresult_to_int : printoperationresult -> int
+
 (* PrintPages - enumeration *)
 type printpages = [
   (** All pages. *)
@@ -1346,6 +1556,9 @@ type printpages = [
   | `SELECTION
 ]
 
+val printpages_of_int : int -> printpages
+val printpages_to_int : printpages -> int
+
 (* PrintQuality - enumeration *)
 type printquality = [
   (** Low quality. *)
@@ -1357,6 +1570,9 @@ type printquality = [
   (** Draft quality. *)
   | `DRAFT
 ]
+
+val printquality_of_int : int -> printquality
+val printquality_to_int : printquality -> int
 
 (* PrintStatus - enumeration *)
 type printstatus = [
@@ -1386,6 +1602,9 @@ type printstatus = [
   | `FINISHED_ABORTED
 ]
 
+val printstatus_of_int : int -> printstatus
+val printstatus_to_int : printstatus -> int
+
 (* PropagationLimit - enumeration *)
 type propagationlimit = [
   (** Events are handled regardless of what their
@@ -1396,6 +1615,9 @@ type propagationlimit = [
   that some event types have two targets (origin and destination). *)
   | `SAME_NATIVE
 ]
+
+val propagationlimit_of_int : int -> propagationlimit
+val propagationlimit_to_int : propagationlimit -> int
 
 (* PropagationPhase - enumeration *)
 type propagationphase = [
@@ -1415,6 +1637,9 @@ type propagationphase = [
   grab broken handlers for controllers in this phase to be run. *)
   | `TARGET
 ]
+
+val propagationphase_of_int : int -> propagationphase
+val propagationphase_to_int : propagationphase -> int
 
 (* RecentManagerError - enumeration *)
 type recentmanagererror = [
@@ -1438,6 +1663,9 @@ type recentmanagererror = [
   (** unspecified error. *)
   | `UNKNOWN
 ]
+
+val recentmanagererror_of_int : int -> recentmanagererror
+val recentmanagererror_to_int : recentmanagererror -> int
 
 (* ResponseType - enumeration *)
 type responsetype = [
@@ -1466,6 +1694,9 @@ type responsetype = [
   | `HELP
 ]
 
+val responsetype_of_int : int -> responsetype
+val responsetype_to_int : responsetype -> int
+
 (* RevealerTransitionType - enumeration *)
 type revealertransitiontype = [
   (** No transition *)
@@ -1490,6 +1721,9 @@ type revealertransitiontype = [
   | `SWING_DOWN
 ]
 
+val revealertransitiontype_of_int : int -> revealertransitiontype
+val revealertransitiontype_to_int : revealertransitiontype -> int
+
 (* ScrollStep - enumeration *)
 type scrollstep = [
   (** Scroll in steps. *)
@@ -1505,6 +1739,9 @@ type scrollstep = [
   (** Scroll to the horizontal ends. *)
   | `HORIZONTAL_ENDS
 ]
+
+val scrollstep_of_int : int -> scrollstep
+val scrollstep_to_int : scrollstep -> int
 
 (* ScrollType - enumeration *)
 type scrolltype = [
@@ -1542,6 +1779,9 @@ type scrolltype = [
   | `END
 ]
 
+val scrolltype_of_int : int -> scrolltype
+val scrolltype_to_int : scrolltype -> int
+
 (* ScrollablePolicy - enumeration *)
 type scrollablepolicy = [
   (** Scrollable adjustments are based on the minimum size *)
@@ -1549,6 +1789,9 @@ type scrollablepolicy = [
   (** Scrollable adjustments are based on the natural size *)
   | `NATURAL
 ]
+
+val scrollablepolicy_of_int : int -> scrollablepolicy
+val scrollablepolicy_to_int : scrollablepolicy -> int
 
 (* SelectionMode - enumeration *)
 type selectionmode = [
@@ -1570,6 +1813,9 @@ type selectionmode = [
   | `MULTIPLE
 ]
 
+val selectionmode_of_int : int -> selectionmode
+val selectionmode_to_int : selectionmode -> int
+
 (* SensitivityType - enumeration *)
 type sensitivitytype = [
   (** The control is made insensitive if no
@@ -1580,6 +1826,9 @@ type sensitivitytype = [
   (** The control is always insensitive *)
   | `OFF
 ]
+
+val sensitivitytype_of_int : int -> sensitivitytype
+val sensitivitytype_to_int : sensitivitytype -> int
 
 (* ShortcutScope - enumeration *)
 type shortcutscope = [
@@ -1593,6 +1842,9 @@ type shortcutscope = [
   the root widget. *)
   | `GLOBAL
 ]
+
+val shortcutscope_of_int : int -> shortcutscope
+val shortcutscope_to_int : shortcutscope -> int
 
 (* ShortcutType - enumeration *)
 type shortcuttype = [
@@ -1620,6 +1872,9 @@ type shortcuttype = [
   | `GESTURE_SWIPE_RIGHT
 ]
 
+val shortcuttype_of_int : int -> shortcuttype
+val shortcuttype_to_int : shortcuttype -> int
+
 (* SizeGroupMode - enumeration *)
 type sizegroupmode = [
   (** group has no effect *)
@@ -1632,6 +1887,9 @@ type sizegroupmode = [
   | `BOTH
 ]
 
+val sizegroupmode_of_int : int -> sizegroupmode
+val sizegroupmode_to_int : sizegroupmode -> int
+
 (* SizeRequestMode - enumeration *)
 type sizerequestmode = [
   (** Prefer height-for-width geometry management *)
@@ -1642,6 +1900,9 @@ type sizerequestmode = [
   | `CONSTANT_SIZE
 ]
 
+val sizerequestmode_of_int : int -> sizerequestmode
+val sizerequestmode_to_int : sizerequestmode -> int
+
 (* SortType - enumeration *)
 type sorttype = [
   (** Sorting is in ascending order. *)
@@ -1649,6 +1910,9 @@ type sorttype = [
   (** Sorting is in descending order. *)
   | `DESCENDING
 ]
+
+val sorttype_of_int : int -> sorttype
+val sorttype_to_int : sorttype -> int
 
 (* SorterChange - enumeration *)
 type sorterchange = [
@@ -1667,6 +1931,9 @@ type sorterchange = [
   | `MORE_STRICT
 ]
 
+val sorterchange_of_int : int -> sorterchange
+val sorterchange_to_int : sorterchange -> int
+
 (* SorterOrder - enumeration *)
 type sorterorder = [
   (** A partial order. Any `GtkOrdering` is possible. *)
@@ -1680,6 +1947,9 @@ type sorterorder = [
   | `TOTAL
 ]
 
+val sorterorder_of_int : int -> sorterorder
+val sorterorder_to_int : sorterorder -> int
+
 (* SpinButtonUpdatePolicy - enumeration *)
 type spinbuttonupdatepolicy = [
   (** When refreshing your `GtkSpinButton`, the value is
@@ -1690,6 +1960,9 @@ type spinbuttonupdatepolicy = [
   adjustment *)
   | `IF_VALID
 ]
+
+val spinbuttonupdatepolicy_of_int : int -> spinbuttonupdatepolicy
+val spinbuttonupdatepolicy_to_int : spinbuttonupdatepolicy -> int
 
 (* SpinType - enumeration *)
 type spintype = [
@@ -1708,6 +1981,9 @@ type spintype = [
   (** Change by a specified amount. *)
   | `USER_DEFINED
 ]
+
+val spintype_of_int : int -> spintype
+val spintype_to_int : spintype -> int
 
 (* StackTransitionType - enumeration *)
 type stacktransitiontype = [
@@ -1759,6 +2035,9 @@ type stacktransitiontype = [
   | `ROTATE_LEFT_RIGHT
 ]
 
+val stacktransitiontype_of_int : int -> stacktransitiontype
+val stacktransitiontype_to_int : stacktransitiontype -> int
+
 (* StringFilterMatchMode - enumeration *)
 type stringfiltermatchmode = [
   (** The search string and
@@ -1772,6 +2051,9 @@ type stringfiltermatchmode = [
   | `PREFIX
 ]
 
+val stringfiltermatchmode_of_int : int -> stringfiltermatchmode
+val stringfiltermatchmode_to_int : stringfiltermatchmode -> int
+
 (* SymbolicColor - enumeration *)
 type symboliccolor = [
   (** The default foreground color *)
@@ -1783,6 +2065,9 @@ type symboliccolor = [
   (** Indication color for success *)
   | `SUCCESS
 ]
+
+val symboliccolor_of_int : int -> symboliccolor
+val symboliccolor_to_int : symboliccolor -> int
 
 (* SystemSetting - enumeration *)
 type systemsetting = [
@@ -1805,6 +2090,9 @@ type systemsetting = [
   | `ICON_THEME
 ]
 
+val systemsetting_of_int : int -> systemsetting
+val systemsetting_to_int : systemsetting -> int
+
 (* TextDirection - enumeration *)
 type textdirection = [
   (** No direction. *)
@@ -1814,6 +2102,9 @@ type textdirection = [
   (** Right to left text direction. *)
   | `RTL
 ]
+
+val textdirection_of_int : int -> textdirection
+val textdirection_to_int : textdirection -> int
 
 (* TextExtendSelection - enumeration *)
 type textextendselection = [
@@ -1825,6 +2116,9 @@ type textextendselection = [
   | `LINE
 ]
 
+val textextendselection_of_int : int -> textextendselection
+val textextendselection_to_int : textextendselection -> int
+
 (* TextViewLayer - enumeration *)
 type textviewlayer = [
   (** The layer rendered below the text (but above the background). *)
@@ -1832,6 +2126,9 @@ type textviewlayer = [
   (** The layer rendered above the text. *)
   | `ABOVE_TEXT
 ]
+
+val textviewlayer_of_int : int -> textviewlayer
+val textviewlayer_to_int : textviewlayer -> int
 
 (* TextWindowType - enumeration *)
 type textwindowtype = [
@@ -1849,6 +2146,9 @@ type textwindowtype = [
   | `BOTTOM
 ]
 
+val textwindowtype_of_int : int -> textwindowtype
+val textwindowtype_to_int : textwindowtype -> int
+
 (* TreeViewColumnSizing - enumeration *)
 type treeviewcolumnsizing = [
   (** Columns only get bigger in reaction to changes in the model *)
@@ -1858,6 +2158,9 @@ type treeviewcolumnsizing = [
   (** Columns are a fixed numbers of pixels wide. *)
   | `FIXED
 ]
+
+val treeviewcolumnsizing_of_int : int -> treeviewcolumnsizing
+val treeviewcolumnsizing_to_int : treeviewcolumnsizing -> int
 
 (* TreeViewDropPosition - enumeration *)
 type treeviewdropposition = [
@@ -1871,6 +2174,9 @@ type treeviewdropposition = [
   | `INTO_OR_AFTER
 ]
 
+val treeviewdropposition_of_int : int -> treeviewdropposition
+val treeviewdropposition_to_int : treeviewdropposition -> int
+
 (* TreeViewGridLines - enumeration *)
 type treeviewgridlines = [
   (** No grid lines. *)
@@ -1883,6 +2189,9 @@ type treeviewgridlines = [
   | `BOTH
 ]
 
+val treeviewgridlines_of_int : int -> treeviewgridlines
+val treeviewgridlines_to_int : treeviewgridlines -> int
+
 (* Unit - enumeration *)
 type unit = [
   (** No units. *)
@@ -1894,6 +2203,9 @@ type unit = [
   (** Dimensions in millimeters *)
   | `MM
 ]
+
+val unit_of_int : int -> unit
+val unit_to_int : unit -> int
 
 (* WrapMode - enumeration *)
 type wrapmode = [
@@ -1909,6 +2221,9 @@ type wrapmode = [
   that is not enough, also between graphemes *)
   | `WORD_CHAR
 ]
+
+val wrapmode_of_int : int -> wrapmode
+val wrapmode_to_int : wrapmode -> int
 
 (* ApplicationInhibitFlags - bitfield/flags *)
 type applicationinhibitflags_flag = [
@@ -1927,6 +2242,9 @@ type applicationinhibitflags_flag = [
 
 type applicationinhibitflags = applicationinhibitflags_flag list
 
+val applicationinhibitflags_of_int : int -> applicationinhibitflags
+val applicationinhibitflags_to_int : applicationinhibitflags -> int
+
 (* BuilderClosureFlags - bitfield/flags *)
 type builderclosureflags_flag = [
   (** The closure should be created swapped. See
@@ -1935,6 +2253,9 @@ type builderclosureflags_flag = [
 ]
 
 type builderclosureflags = builderclosureflags_flag list
+
+val builderclosureflags_of_int : int -> builderclosureflags
+val builderclosureflags_to_int : builderclosureflags -> int
 
 (* CellRendererState - bitfield/flags *)
 type cellrendererstate_flag = [
@@ -1956,6 +2277,9 @@ type cellrendererstate_flag = [
 ]
 
 type cellrendererstate = cellrendererstate_flag list
+
+val cellrendererstate_of_int : int -> cellrendererstate
+val cellrendererstate_to_int : cellrendererstate -> int
 
 (* DebugFlags - bitfield/flags *)
 type debugflags_flag = [
@@ -2001,6 +2325,9 @@ type debugflags_flag = [
 
 type debugflags = debugflags_flag list
 
+val debugflags_of_int : int -> debugflags
+val debugflags_to_int : debugflags -> int
+
 (* DialogFlags - bitfield/flags *)
 type dialogflags_flag = [
   (** Make the constructed dialog modal *)
@@ -2013,6 +2340,9 @@ type dialogflags_flag = [
 ]
 
 type dialogflags = dialogflags_flag list
+
+val dialogflags_of_int : int -> dialogflags
+val dialogflags_to_int : dialogflags -> int
 
 (* EventControllerScrollFlags - bitfield/flags *)
 type eventcontrollerscrollflags_flag = [
@@ -2032,6 +2362,9 @@ type eventcontrollerscrollflags_flag = [
 
 type eventcontrollerscrollflags = eventcontrollerscrollflags_flag list
 
+val eventcontrollerscrollflags_of_int : int -> eventcontrollerscrollflags
+val eventcontrollerscrollflags_to_int : eventcontrollerscrollflags -> int
+
 (* FontChooserLevel - bitfield/flags *)
 type fontchooserlevel_flag = [
   (** Allow selecting a font family *)
@@ -2048,6 +2381,9 @@ type fontchooserlevel_flag = [
 
 type fontchooserlevel = fontchooserlevel_flag list
 
+val fontchooserlevel_of_int : int -> fontchooserlevel
+val fontchooserlevel_to_int : fontchooserlevel -> int
+
 (* IconLookupFlags - bitfield/flags *)
 type iconlookupflags_flag = [
   (** Try to always load regular icons, even
@@ -2062,6 +2398,9 @@ type iconlookupflags_flag = [
 ]
 
 type iconlookupflags = iconlookupflags_flag list
+
+val iconlookupflags_of_int : int -> iconlookupflags
+val iconlookupflags_to_int : iconlookupflags -> int
 
 (* InputHints - bitfield/flags *)
 type inputhints_flag = [
@@ -2099,6 +2438,9 @@ type inputhints_flag = [
 
 type inputhints = inputhints_flag list
 
+val inputhints_of_int : int -> inputhints
+val inputhints_to_int : inputhints -> int
+
 (* ListScrollFlags - bitfield/flags *)
 type listscrollflags_flag = [
   (** Don't do anything extra *)
@@ -2112,6 +2454,9 @@ type listscrollflags_flag = [
 
 type listscrollflags = listscrollflags_flag list
 
+val listscrollflags_of_int : int -> listscrollflags
+val listscrollflags_to_int : listscrollflags -> int
+
 (* PickFlags - bitfield/flags *)
 type pickflags_flag = [
   (** The default behavior, include widgets that are receiving events *)
@@ -2124,6 +2469,9 @@ type pickflags_flag = [
 
 type pickflags = pickflags_flag list
 
+val pickflags_of_int : int -> pickflags
+val pickflags_to_int : pickflags -> int
+
 (* PopoverMenuFlags - bitfield/flags *)
 type popovermenuflags_flag = [
   (** Submenus are presented as sliding submenus that replace the main menu. *)
@@ -2135,6 +2483,9 @@ type popovermenuflags_flag = [
 
 type popovermenuflags = popovermenuflags_flag list
 
+val popovermenuflags_of_int : int -> popovermenuflags
+val popovermenuflags_to_int : popovermenuflags -> int
+
 (* ShortcutActionFlags - bitfield/flags *)
 type shortcutactionflags_flag = [
   (** The action is the only
@@ -2144,6 +2495,9 @@ type shortcutactionflags_flag = [
 ]
 
 type shortcutactionflags = shortcutactionflags_flag list
+
+val shortcutactionflags_of_int : int -> shortcutactionflags
+val shortcutactionflags_to_int : shortcutactionflags -> int
 
 (* StateFlags - bitfield/flags *)
 type stateflags_flag = [
@@ -2183,6 +2537,9 @@ type stateflags_flag = [
 
 type stateflags = stateflags_flag list
 
+val stateflags_of_int : int -> stateflags
+val stateflags_to_int : stateflags -> int
+
 (* StyleContextPrintFlags - bitfield/flags *)
 type stylecontextprintflags_flag = [
   (** Default value. *)
@@ -2200,6 +2557,9 @@ type stylecontextprintflags_flag = [
 
 type stylecontextprintflags = stylecontextprintflags_flag list
 
+val stylecontextprintflags_of_int : int -> stylecontextprintflags
+val stylecontextprintflags_to_int : stylecontextprintflags -> int
+
 (* TextSearchFlags - bitfield/flags *)
 type textsearchflags_flag = [
   (** Search only visible data. A search match may
@@ -2215,6 +2575,9 @@ what case it is in. *)
 
 type textsearchflags = textsearchflags_flag list
 
+val textsearchflags_of_int : int -> textsearchflags
+val textsearchflags_to_int : textsearchflags -> int
+
 (* TreeModelFlags - bitfield/flags *)
 type treemodelflags_flag = [
   (** iterators survive all signals
@@ -2226,4 +2589,7 @@ type treemodelflags_flag = [
 ]
 
 type treemodelflags = treemodelflags_flag list
+
+val treemodelflags_of_int : int -> treemodelflags
+val treemodelflags_to_int : treemodelflags -> int
 

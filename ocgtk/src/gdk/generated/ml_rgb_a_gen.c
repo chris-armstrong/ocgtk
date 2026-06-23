@@ -19,7 +19,7 @@
 value copy_GdkRGBA(const GdkRGBA *ptr)
 {
   if (ptr == NULL) return Val_none;
-  GdkRGBA *copy = gdk_rgba_copy((GdkRGBA*)ptr);
+  GdkRGBA *copy = g_boxed_copy(gdk_rgba_get_type(), ptr);
   return ml_gir_record_val_ptr_with_type(gdk_rgba_get_type(), copy);
 }
 
@@ -70,4 +70,10 @@ CAMLparam2(self, arg1);
 
 gboolean result = gdk_rgba_equal(GdkRGBA_val(self), GdkRGBA_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gdk_rgb_a_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gdk_rgba_get_type()));
 }

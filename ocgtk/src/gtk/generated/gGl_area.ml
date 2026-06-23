@@ -1,16 +1,32 @@
-(* Signal class defined in ggl_area_signals.ml *)
-
 class type gl_area_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  inherit Ggl_area_signals.gl_area_signals
+  method on_create_context :
+    ?after:bool ->
+    callback:(unit -> Ocgtk_gdk.Gdk.Gl_context.gl_context_t) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_render :
+    ?after:bool ->
+    callback:(context:Ocgtk_gdk.Gdk.Gl_context.gl_context_t -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_resize :
+    ?after:bool ->
+    callback:(width:int -> height:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method attach_buffers : unit -> unit
   method get_allowed_apis : unit -> Ocgtk_gdk.Gdk.glapi
   method get_api : unit -> Ocgtk_gdk.Gdk.glapi
   method get_auto_render : unit -> bool
   method get_context : unit -> Ocgtk_gdk.Gdk.Gl_context.gl_context_t option
+  method get_error : unit -> GError.t option
   method get_has_depth_buffer : unit -> bool
   method get_has_stencil_buffer : unit -> bool
   method get_use_es : unit -> bool
@@ -18,6 +34,7 @@ class type gl_area_t = object
   method queue_render : unit -> unit
   method set_allowed_apis : Ocgtk_gdk.Gdk.glapi -> unit
   method set_auto_render : bool -> unit
+  method set_error : GError.t option -> unit
   method set_has_depth_buffer : bool -> unit
   method set_has_stencil_buffer : bool -> unit
   method set_required_version : int -> int -> unit
@@ -29,14 +46,24 @@ end
 class gl_area (obj : Gl_area.t) : gl_area_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
-    inherit Ggl_area_signals.gl_area_signals obj
+    method on_create_context ?(after = false) ~callback () =
+      Gl_area.on_create_context ~after self#as_gl_area ~callback:(fun () ->
+          (callback ())#as_gl_context)
+
+    method on_render ?(after = false) ~callback () =
+      Gl_area.on_render ~after self#as_gl_area ~callback:(fun ~context ->
+          callback ~context:(new Ocgtk_gdk.Gdk.Gl_context.gl_context context))
+
+    method on_resize ?(after = false) ~callback () =
+      Gl_area.on_resize ~after self#as_gl_area ~callback
+
     method attach_buffers : unit -> unit = fun () -> Gl_area.attach_buffers obj
 
     method get_allowed_apis : unit -> Ocgtk_gdk.Gdk.glapi =
@@ -53,6 +80,8 @@ class gl_area (obj : Gl_area.t) : gl_area_t =
           (fun ret -> new Ocgtk_gdk.Gdk.Gl_context.gl_context ret)
           (Gl_area.get_context obj)
 
+    method get_error : unit -> GError.t option = fun () -> Gl_area.get_error obj
+
     method get_has_depth_buffer : unit -> bool =
       fun () -> Gl_area.get_has_depth_buffer obj
 
@@ -68,6 +97,9 @@ class gl_area (obj : Gl_area.t) : gl_area_t =
 
     method set_auto_render : bool -> unit =
       fun auto_render -> Gl_area.set_auto_render obj auto_render
+
+    method set_error : GError.t option -> unit =
+      fun error -> Gl_area.set_error obj error
 
     method set_has_depth_buffer : bool -> unit =
       fun has_depth_buffer -> Gl_area.set_has_depth_buffer obj has_depth_buffer

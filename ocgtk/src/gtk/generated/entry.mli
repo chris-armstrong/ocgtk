@@ -568,3 +568,18 @@ external get_truncate_multiline : t -> bool
 external set_truncate_multiline : t -> bool -> unit
   = "ml_gtk_entry_set_truncate_multiline"
 (** Set property: truncate-multiline *)
+
+val on_activate :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_icon_press :
+  ?after:bool ->
+  t ->
+  callback:(icon_pos:Gtk_enums.entryiconposition -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_icon_release :
+  ?after:bool ->
+  t ->
+  callback:(icon_pos:Gtk_enums.entryiconposition -> unit) ->
+  Gobject.Signal.handler_id

@@ -1,7 +1,19 @@
-(* Signal class defined in gd_bus_auth_observer_signals.ml *)
-
 class type d_bus_auth_observer_t = object
-  inherit Gd_bus_auth_observer_signals.d_bus_auth_observer_signals
+  method on_allow_mechanism :
+    ?after:bool ->
+    callback:(mechanism:string -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_authorize_authenticated_peer :
+    ?after:bool ->
+    callback:
+      (stream:GIo_stream.io_stream_t ->
+      credentials:GCredentials.credentials_t option ->
+      bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method allow_mechanism : string -> bool
 
   method authorize_authenticated_peer :
@@ -14,7 +26,17 @@ end
 class d_bus_auth_observer (obj : D_bus_auth_observer.t) : d_bus_auth_observer_t
   =
   object (self)
-    inherit Gd_bus_auth_observer_signals.d_bus_auth_observer_signals obj
+    method on_allow_mechanism ?(after = false) ~callback () =
+      D_bus_auth_observer.on_allow_mechanism ~after self#as_d_bus_auth_observer
+        ~callback
+
+    method on_authorize_authenticated_peer ?(after = false) ~callback () =
+      D_bus_auth_observer.on_authorize_authenticated_peer ~after
+        self#as_d_bus_auth_observer ~callback:(fun ~stream ~credentials ->
+          callback
+            ~stream:(new GIo_stream.io_stream stream)
+            ~credentials:
+              (Option.map (fun w -> new GCredentials.credentials w) credentials))
 
     method allow_mechanism : string -> bool =
       fun mechanism -> D_bus_auth_observer.allow_mechanism obj mechanism

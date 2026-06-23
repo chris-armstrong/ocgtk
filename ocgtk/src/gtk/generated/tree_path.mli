@@ -72,3 +72,5 @@ external append_index : t -> int -> unit = "ml_gtk_tree_path_append_index"
 (** Appends a new index to a path.
 
     As a result, the depth of the path is increased. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gtk_tree_path_get_type"

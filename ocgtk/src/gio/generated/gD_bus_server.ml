@@ -1,8 +1,12 @@
-(* Signal class defined in gd_bus_server_signals.ml *)
-
 class type d_bus_server_t = object
   inherit GInitable.initable_t
-  inherit Gd_bus_server_signals.d_bus_server_signals
+
+  method on_new_connection :
+    ?after:bool ->
+    callback:(connection:GD_bus_connection.d_bus_connection_t -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method get_client_address : unit -> string
   method get_flags : unit -> Gio_enums.dbusserverflags
   method get_guid : unit -> string
@@ -19,7 +23,12 @@ end
 class d_bus_server (obj : D_bus_server.t) : d_bus_server_t =
   object (self)
     inherit GInitable.initable (Initable.from_gobject obj)
-    inherit Gd_bus_server_signals.d_bus_server_signals obj
+
+    method on_new_connection ?(after = false) ~callback () =
+      D_bus_server.on_new_connection ~after self#as_d_bus_server
+        ~callback:(fun ~connection ->
+          callback
+            ~connection:(new GD_bus_connection.d_bus_connection connection))
 
     method get_client_address : unit -> string =
       fun () -> D_bus_server.get_client_address obj

@@ -43,3 +43,9 @@ the [enum@Gtk.SorterChange] documentation for details.
 
 This function is intended for implementers of `GtkSorter`
 subclasses and should not be called from other functions. *)
+
+val on_changed :
+  ?after:bool ->
+  t ->
+  callback:(change:Gtk_enums.sorterchange -> unit) ->
+  Gobject.Signal.handler_id

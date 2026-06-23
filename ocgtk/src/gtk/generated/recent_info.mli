@@ -97,3 +97,5 @@ external create_app_info :
 
 In case of error, @error will be set either with a
 %GTK_RECENT_MANAGER_ERROR or a %G_IO_ERROR *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gtk_recent_info_get_type"

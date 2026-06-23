@@ -76,31 +76,6 @@ CAMLprim value ml_g_object_get_ref_count(value obj)
     CAMLreturn(Val_int(gobj->ref_count));
 }
 
-/* ==================================================================== */
-/* Test Helpers */
-/* ==================================================================== */
-
-/* Test helper: check if value is custom block */
-CAMLprim value ml_g_object_is_custom_block(value obj)
-{
-    CAMLparam1(obj);
-    CAMLreturn(Val_bool(Tag_val(obj) == Custom_tag));
-}
-
-/* Test helper: check if pointer is GObject */
-CAMLprim value ml_g_object_is_gobject(value obj)
-{
-    CAMLparam1(obj);
-
-    if (obj == Val_unit)
-        CAMLreturn(Val_false);
-
-    const void *ptr = ml_gobject_ext_of_val(obj);
-    if (ptr == NULL)
-        CAMLreturn(Val_false);
-
-    CAMLreturn(Val_bool(G_IS_OBJECT(ptr)));
-}
 
 /* ==================================================================== */
 /* Type System Queries */
@@ -151,35 +126,6 @@ CAMLprim value ml_g_type_is_a(value type, value is_a_type)
     CAMLparam2(type, is_a_type);
     gboolean result = g_type_is_a(Long_val(type), Long_val(is_a_type));
     CAMLreturn(Val_bool(result));
-}
-
-CAMLprim value ml_g_type_fundamental(value type)
-{
-    CAMLparam1(type);
-    GType fund = G_TYPE_FUNDAMENTAL(Long_val(type));
-    /* Map GType fundamentals to our enum */
-    if (fund == G_TYPE_INVALID) CAMLreturn(Val_int(0));
-    if (fund == G_TYPE_NONE) CAMLreturn(Val_int(1));
-    if (fund == G_TYPE_INTERFACE) CAMLreturn(Val_int(2));
-    if (fund == G_TYPE_CHAR) CAMLreturn(Val_int(3));
-    if (fund == G_TYPE_UCHAR) CAMLreturn(Val_int(4));
-    if (fund == G_TYPE_BOOLEAN) CAMLreturn(Val_int(5));
-    if (fund == G_TYPE_INT) CAMLreturn(Val_int(6));
-    if (fund == G_TYPE_UINT) CAMLreturn(Val_int(7));
-    if (fund == G_TYPE_LONG) CAMLreturn(Val_int(8));
-    if (fund == G_TYPE_ULONG) CAMLreturn(Val_int(9));
-    if (fund == G_TYPE_INT64) CAMLreturn(Val_int(10));
-    if (fund == G_TYPE_UINT64) CAMLreturn(Val_int(11));
-    if (fund == G_TYPE_ENUM) CAMLreturn(Val_int(12));
-    if (fund == G_TYPE_FLAGS) CAMLreturn(Val_int(13));
-    if (fund == G_TYPE_FLOAT) CAMLreturn(Val_int(14));
-    if (fund == G_TYPE_DOUBLE) CAMLreturn(Val_int(15));
-    if (fund == G_TYPE_STRING) CAMLreturn(Val_int(16));
-    if (fund == G_TYPE_POINTER) CAMLreturn(Val_int(17));
-    if (fund == G_TYPE_BOXED) CAMLreturn(Val_int(18));
-    if (fund == G_TYPE_PARAM) CAMLreturn(Val_int(19));
-    if (fund == G_TYPE_OBJECT) CAMLreturn(Val_int(20));
-    CAMLreturn(Val_int(0)); /* INVALID */
 }
 
 CAMLprim value ml_g_type_of_fundamental(value fund_int)
@@ -440,6 +386,182 @@ CAMLprim value ml_g_value_set_object(value val, value obj)
     CAMLreturn(Val_unit);
 }
 
+CAMLprim value ml_g_value_set_object_null(value val)
+{
+    CAMLparam1(val);
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_OBJECT(gv))
+        caml_invalid_argument("g_value_set_object_null: not an object");
+    g_value_set_object(gv, NULL);
+    CAMLreturn(Val_unit);
+}
+
+/* --- int64 --- */
+
+CAMLprim value ml_g_value_get_int64(value val)
+{
+    CAMLparam1(val);
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_INT64(gv))
+        caml_invalid_argument("g_value_get_int64: not an int64");
+    CAMLreturn(caml_copy_int64(g_value_get_int64(gv)));
+}
+
+CAMLprim value ml_g_value_set_int64(value val, value v)
+{
+    CAMLparam2(val, v);
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_INT64(gv))
+        caml_invalid_argument("g_value_set_int64: not an int64 value");
+    g_value_set_int64(gv, Int64_val(v));
+    CAMLreturn(Val_unit);
+}
+
+/* --- GVariant --- */
+
+CAMLprim value ml_g_value_get_variant(value val)
+{
+    CAMLparam1(val);
+    CAMLlocal1(result);
+
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_VARIANT(gv))
+        caml_invalid_argument("g_value_get_variant: not a variant");
+
+    GVariant *p = g_value_get_variant(gv);
+    /* g_value_get_variant returns a borrowed pointer; ref to take ownership */
+    if (p == NULL)
+        caml_failwith("g_value_get_variant: NULL variant");
+    result = Val_GVariant(g_variant_ref(p));
+
+    CAMLreturn(result);
+}
+
+CAMLprim value ml_g_value_set_variant(value val, value v)
+{
+    CAMLparam2(val, v);
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_VARIANT(gv))
+        caml_invalid_argument("g_value_set_variant: not a variant value");
+    /* transfer-none: GValue takes its own reference */
+    g_value_set_variant(gv, GVariant_val(v));
+    CAMLreturn(Val_unit);
+}
+
+/* --- enum (raw int round-trip) --- */
+
+CAMLprim value ml_g_value_get_enum_int(value val)
+{
+    CAMLparam1(val);
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_ENUM(gv))
+        caml_invalid_argument("g_value_get_enum_int: not an enum");
+    CAMLreturn(Val_int(g_value_get_enum(gv)));
+}
+
+CAMLprim value ml_g_value_set_enum_int(value val, value v)
+{
+    CAMLparam2(val, v);
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_ENUM(gv))
+        caml_invalid_argument("g_value_set_enum_int: not an enum");
+    g_value_set_enum(gv, Int_val(v));
+    CAMLreturn(Val_unit);
+}
+
+/* --- flags (raw int round-trip) --- */
+
+CAMLprim value ml_g_value_get_flags_int(value val)
+{
+    CAMLparam1(val);
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_FLAGS(gv))
+        caml_invalid_argument("g_value_get_flags_int: not a flags value");
+    CAMLreturn(Val_int((int)g_value_get_flags(gv)));
+}
+
+CAMLprim value ml_g_value_set_flags_int(value val, value v)
+{
+    CAMLparam2(val, v);
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_FLAGS(gv))
+        caml_invalid_argument("g_value_set_flags_int: not a flags value");
+    g_value_set_flags(gv, (guint)Int_val(v));
+    CAMLreturn(Val_unit);
+}
+
+/* --- boxed record bridge ---
+ * get_boxed: copies the boxed value out of the GValue via g_boxed_copy and
+ * wraps it in a gir_record custom block (ocgtk_gir_record_ops).  The
+ * existing finalizer (finalize_gir_record in wrappers.c) dispatches on
+ * G_TYPE_IS_BOXED and calls g_boxed_free, so the copy is freed correctly
+ * when the OCaml block is collected.
+ *
+ * set_boxed: extracts the pointer from the gir_record custom block and
+ * passes it to g_value_set_boxed (transfer-none; the GValue copies
+ * internally via g_boxed_copy).
+ */
+
+CAMLprim value ml_g_value_get_boxed(value val)
+{
+    CAMLparam1(val);
+    CAMLlocal1(result);
+
+    GValue *gv = GValue_val(val);
+
+    /* GTK sometimes wraps signal parameters in a G_TYPE_VALUE container
+       (a nested GValue). Unwrap it so we operate on the inner value. */
+    if (G_VALUE_TYPE(gv) == G_TYPE_VALUE) {
+        const GValue *inner = g_value_get_boxed(gv);
+        if (inner == NULL)
+            caml_failwith("g_value_get_boxed: NULL inner GValue");
+        gv = (GValue *)inner;
+    }
+
+    if (!G_VALUE_HOLDS_BOXED(gv))
+        caml_invalid_argument("g_value_get_boxed: not a boxed value");
+
+    void *p = g_value_get_boxed(gv);
+    if (p == NULL)
+        caml_failwith("g_value_get_boxed: NULL boxed pointer");
+
+    /* Take an owned copy so OCaml controls the lifetime via gir_record_box */
+    void *copy = g_boxed_copy(G_VALUE_TYPE(gv), p);
+    result = ml_gir_record_val_ptr_with_type(G_VALUE_TYPE(gv), copy);
+
+    CAMLreturn(result);
+}
+
+/* Wrap a borrowed const GValue* into an owned Gobject.Value.t by copying its
+   contents.  The returned custom block uses ocgtk_gvalue_ops whose finalizer
+   calls g_value_unset, so the copy is cleaned up correctly when OCaml GC
+   collects the block.  Never call this with a NULL src — the caller (generated
+   C stubs) guards with Val_option which handles NULL. */
+value Val_GValue_copy(const GValue *src)
+{
+    CAMLparam0();
+    CAMLlocal1(result);
+    result = caml_alloc_custom(&ocgtk_gvalue_ops, sizeof(ml_gvalue), 0, 1);
+    ml_gvalue *mlgv = (ml_gvalue *)Data_custom_val(result);
+    memset(&mlgv->gvalue, 0, sizeof(GValue));
+    g_value_init(&mlgv->gvalue, G_VALUE_TYPE(src));
+    g_value_copy(src, &mlgv->gvalue);
+    mlgv->initialized = 1;
+    CAMLreturn(result);
+}
+
+CAMLprim value ml_g_value_set_boxed(value val, value v)
+{
+    CAMLparam2(val, v);
+    GValue *gv = GValue_val(val);
+    if (!G_VALUE_HOLDS_BOXED(gv))
+        caml_invalid_argument("g_value_set_boxed: not a boxed value");
+    /* transfer-none: GValue takes its own copy via g_boxed_copy internally */
+    const void *ptr = ml_gir_record_ptr_val(v, "set_boxed");
+    g_value_set_boxed(gv, ptr);
+    CAMLreturn(Val_unit);
+}
+
 /* ==================================================================== */
 /* Property Operations */
 /* ==================================================================== */
@@ -504,6 +626,12 @@ CAMLprim value ml_g_object_notify(value obj, value prop_name)
     g_object_notify(G_OBJECT(ml_gobject_ext_of_val(obj)), String_val(prop_name));
     CAMLreturn(Val_unit);
 }
+
+/* ==================================================================== */
+/* Exception-escape observation flag (forward declaration) */
+/* ==================================================================== */
+
+int ml_closure_exception_flag = 0;
 
 /* ==================================================================== */
 /* Closure Support */
@@ -612,6 +740,7 @@ static void ml_closure_marshal(GClosure *closure,
     /* Check for exceptions */
     if (Is_exception_result(result)) {
         exn = Extract_exception(result);
+        ml_closure_exception_flag = 1;
         /* Format and log the exception so closure failures are visible */
         const value *exn_to_string = caml_named_value("Printexc.to_string");
         if (exn_to_string != NULL) {
@@ -789,126 +918,6 @@ CAMLprim value ml_g_signal_emit_by_name(value obj, value signal_name)
 {
     CAMLparam2(obj, signal_name);
     g_signal_emit_by_name(G_OBJECT(ml_gobject_ext_of_val(obj)), String_val(signal_name));
-    CAMLreturn(Val_unit);
-}
-
-/* ==================================================================== */
-/* Test Helpers for Closure Invocation */
-/* ==================================================================== */
-
-/* Test helper to directly invoke a closure with no arguments and no return value */
-CAMLprim value ml_test_invoke_closure_void(value closure_val)
-{
-    CAMLparam1(closure_val);
-    GClosure *closure = GClosure_val(closure_val);
-
-    /* Invoke the closure with no parameters and no return value */
-    g_closure_invoke(closure, NULL, 0, NULL, NULL);
-
-    CAMLreturn(Val_unit);
-}
-
-/* Test helper to invoke a closure with an integer argument */
-CAMLprim value ml_test_invoke_closure_int(value closure_val, value arg_val)
-{
-    CAMLparam2(closure_val, arg_val);
-    GClosure *closure = GClosure_val(closure_val);
-    GValue param = G_VALUE_INIT;
-
-    /* Set up the parameter */
-    g_value_init(&param, G_TYPE_INT);
-    g_value_set_int(&param, Int_val(arg_val));
-
-    /* Invoke the closure with no return value */
-    g_closure_invoke(closure, NULL, 1, &param, NULL);
-
-    /* Clean up */
-    g_value_unset(&param);
-
-    CAMLreturn(Val_unit);
-}
-
-/* Test helper to invoke a closure with a string argument */
-CAMLprim value ml_test_invoke_closure_string(value closure_val, value arg_val)
-{
-    CAMLparam2(closure_val, arg_val);
-    GClosure *closure = GClosure_val(closure_val);
-    GValue param = G_VALUE_INIT;
-
-    /* Set up the parameter */
-    g_value_init(&param, G_TYPE_STRING);
-    g_value_set_string(&param, String_val(arg_val));
-
-    /* Invoke the closure with no return value */
-    g_closure_invoke(closure, NULL, 1, &param, NULL);
-
-    /* Clean up */
-    g_value_unset(&param);
-
-    CAMLreturn(Val_unit);
-}
-
-/* Test helper to invoke a closure with two integer arguments */
-CAMLprim value ml_test_invoke_closure_two_ints(value closure_val, value arg1_val, value arg2_val)
-{
-    CAMLparam3(closure_val, arg1_val, arg2_val);
-    GClosure *closure = GClosure_val(closure_val);
-    GValue params[2] = {G_VALUE_INIT, G_VALUE_INIT};
-
-    /* Set up the parameters */
-    g_value_init(&params[0], G_TYPE_INT);
-    g_value_set_int(&params[0], Int_val(arg1_val));
-
-    g_value_init(&params[1], G_TYPE_INT);
-    g_value_set_int(&params[1], Int_val(arg2_val));
-
-    /* Invoke the closure with no return value */
-    g_closure_invoke(closure, NULL, 2, params, NULL);
-
-    /* Clean up */
-    g_value_unset(&params[0]);
-    g_value_unset(&params[1]);
-
-    CAMLreturn(Val_unit);
-}
-
-/* Test helper to invoke a closure with a boolean argument */
-CAMLprim value ml_test_invoke_closure_boolean(value closure_val, value arg_val)
-{
-    CAMLparam2(closure_val, arg_val);
-    GClosure *closure = GClosure_val(closure_val);
-    GValue param = G_VALUE_INIT;
-
-    /* Set up the parameter */
-    g_value_init(&param, G_TYPE_BOOLEAN);
-    g_value_set_boolean(&param, Bool_val(arg_val));
-
-    /* Invoke the closure with no return value */
-    g_closure_invoke(closure, NULL, 1, &param, NULL);
-
-    /* Clean up */
-    g_value_unset(&param);
-
-    CAMLreturn(Val_unit);
-}
-
-/* Test helper to invoke a closure with a double argument */
-CAMLprim value ml_test_invoke_closure_double(value closure_val, value arg_val)
-{
-    CAMLparam2(closure_val, arg_val);
-    GClosure *closure = GClosure_val(closure_val);
-    GValue param = G_VALUE_INIT;
-
-    /* Set up the parameter */
-    g_value_init(&param, G_TYPE_DOUBLE);
-    g_value_set_double(&param, Double_val(arg_val));
-
-    /* Invoke the closure with no return value */
-    g_closure_invoke(closure, NULL, 1, &param, NULL);
-
-    /* Clean up */
-    g_value_unset(&param);
-
     CAMLreturn(Val_unit);
 }
 

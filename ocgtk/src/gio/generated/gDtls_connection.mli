@@ -1,5 +1,13 @@
 class type dtls_connection_t = object
-  inherit Gdtls_connection_signals.dtls_connection_signals
+  method on_accept_certificate :
+    ?after:bool ->
+    callback:
+      (peer_cert:GTls_certificate.tls_certificate_t ->
+      errors:Gio_enums.tlscertificateflags ->
+      bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method close : GCancellable.cancellable_t option -> (bool, GError.t) result
   method close_finish : GAsync_result.async_result_t -> (bool, GError.t) result
 

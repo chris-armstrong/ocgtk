@@ -1,5 +1,10 @@
 class type native_dialog_t = object
-  inherit Gnative_dialog_signals.native_dialog_signals
+  method on_response :
+    ?after:bool ->
+    callback:(response_id:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method destroy : unit -> unit
   method get_modal : unit -> bool
   method get_title : unit -> string option

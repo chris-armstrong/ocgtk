@@ -66,3 +66,5 @@ external hash : t -> int = "ml_gdk_rgba_hash"
 
 external equal : t -> t -> bool = "ml_gdk_rgba_equal"
 (** Compares two `GdkRGBA` colors. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gdk_rgb_a_get_type"

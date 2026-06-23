@@ -1,5 +1,7 @@
 class type icon_theme_t = object
-  inherit Gicon_theme_signals.icon_theme_signals
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method add_resource_path : string -> unit
   method add_search_path : string -> unit
   method get_display : unit -> Ocgtk_gdk.Gdk.Display.display_t option

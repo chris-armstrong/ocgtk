@@ -70,6 +70,9 @@ let mli_file output_dir module_name =
 let enum_file output_dir =
   Filename.concat (generated_dir output_dir) "gtk_enums.mli"
 
+let enum_ml_file output_dir =
+  Filename.concat (generated_dir output_dir) "gtk_enums.ml"
+
 let enum_c_file output_dir =
   Filename.concat (generated_dir output_dir) "ml_gtk_enums_gen.c"
 

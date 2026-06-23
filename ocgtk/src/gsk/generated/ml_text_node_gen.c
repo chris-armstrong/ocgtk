@@ -51,6 +51,7 @@ CAMLexport CAMLprim value ml_gsk_text_node_get_offset(value self)
 CAMLparam1(self);
 
 const graphene_point_t* result = gsk_text_node_get_offset(GskTextNode_val(self));
+if (result) result = g_boxed_copy(graphene_point_get_type(), result);
 CAMLreturn(Val_graphene_point_t(result));
 }
 
@@ -95,5 +96,6 @@ CAMLexport CAMLprim value ml_gsk_text_node_get_color(value self)
 CAMLparam1(self);
 
 const GdkRGBA* result = gsk_text_node_get_color(GskTextNode_val(self));
+if (result) result = g_boxed_copy(gdk_rgba_get_type(), result);
 CAMLreturn(Val_GdkRGBA(result));
 }

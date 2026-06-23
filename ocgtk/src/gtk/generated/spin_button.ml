@@ -136,3 +136,38 @@ external configure : t -> Adjustment.t option -> float -> int -> unit
     accordingly. *)
 
 (* Properties *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_change_value ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let scroll =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.scrolltype_of_int (Gobject.Value.get_enum_int v)
+        in
+        callback ~scroll)
+  in
+  Gobject.Signal.connect obj ~name:"change-value" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_output ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let result = callback () in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"output" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_value_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"value-changed" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_wrapped ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"wrapped" ~callback
+    ~after:(Option.value after ~default:false)

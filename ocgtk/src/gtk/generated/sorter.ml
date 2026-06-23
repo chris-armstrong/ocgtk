@@ -43,3 +43,15 @@ the [enum@Gtk.SorterChange] documentation for details.
 
 This function is intended for implementers of `GtkSorter`
 subclasses and should not be called from other functions. *)
+
+let on_changed ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let change =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gtk_enums.sorterchange_of_int (Gobject.Value.get_enum_int v)
+        in
+        callback ~change)
+  in
+  Gobject.Signal.connect obj ~name:"changed" ~callback:closure
+    ~after:(Option.value after ~default:false)

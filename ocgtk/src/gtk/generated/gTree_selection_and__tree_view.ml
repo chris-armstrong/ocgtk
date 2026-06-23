@@ -2,7 +2,9 @@
 (* Combined classes for cyclic dependencies *)
 
 class type tree_selection_t = object
-  inherit Gtree_selection_signals.tree_selection_signals
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method count_selected_rows : unit -> int
   method get_mode : unit -> Gtk_enums.selectionmode
   method get_tree_view : unit -> tree_view_t
@@ -22,11 +24,55 @@ end
 
 and tree_view_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GScrollable.scrollable_t
-  inherit Gtree_view_signals.tree_view_signals
+
+  method on_columns_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_cursor_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_expand_collapse_cursor_row :
+    ?after:bool ->
+    callback:(object_:bool -> p0:bool -> p1:bool -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_move_cursor :
+    ?after:bool ->
+    callback:
+      (step:Gtk_enums.movementstep ->
+      direction:int ->
+      extend:bool ->
+      modify:bool ->
+      bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_select_all :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
+  method on_select_cursor_parent :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
+  method on_select_cursor_row :
+    ?after:bool ->
+    callback:(object_:bool -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_start_interactive_search :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
+  method on_toggle_cursor_row :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
+  method on_unselect_all :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
   method append_column : GTree_view_column.tree_view_column_t -> int
   method collapse_all : unit -> unit
   method collapse_row : Tree_path.t -> bool
@@ -131,14 +177,21 @@ and tree_view_t = object
   method set_show_expanders : bool -> unit
 
   method set_tooltip_cell :
-    GTooltip.tooltip_t ->
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .tooltip_t ->
     Tree_path.t option ->
     GTree_view_column.tree_view_column_t option ->
     GCell_renderer.cell_renderer_t option ->
     unit
 
   method set_tooltip_column : int -> unit
-  method set_tooltip_row : GTooltip.tooltip_t -> Tree_path.t -> unit
+
+  method set_tooltip_row :
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .tooltip_t ->
+    Tree_path.t ->
+    unit
+
   method unset_rows_drag_dest : unit -> unit
   method unset_rows_drag_source : unit -> unit
   method enable_grid_lines : Gtk_enums.treeviewgridlines
@@ -146,12 +199,12 @@ and tree_view_t = object
   method as_tree_view : Tree_selection_and__tree_view.Tree_view.t
 end
 
-(* Signal class defined in gtree_selection_signals.ml *)
-
 class tree_selection (obj : Tree_selection_and__tree_view.Tree_selection.t) :
   tree_selection_t =
   object (self)
-    inherit Gtree_selection_signals.tree_selection_signals obj
+    method on_changed ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_selection.on_changed ~after
+        self#as_tree_selection ~callback
 
     method count_selected_rows : unit -> int =
       fun () ->
@@ -210,20 +263,59 @@ class tree_selection (obj : Tree_selection_and__tree_view.Tree_selection.t) :
           start_path end_path
 
     method as_tree_selection = obj
-  end (* Signal class defined in gtree_view_signals.ml *)
+  end
 
 and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
     inherit GScrollable.scrollable (Scrollable.from_gobject obj)
-    inherit Gtree_view_signals.tree_view_signals obj
+
+    method on_columns_changed ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_columns_changed ~after
+        self#as_tree_view ~callback
+
+    method on_cursor_changed ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_cursor_changed ~after
+        self#as_tree_view ~callback
+
+    method on_expand_collapse_cursor_row ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_expand_collapse_cursor_row
+        ~after self#as_tree_view ~callback
+
+    method on_move_cursor ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_move_cursor ~after
+        self#as_tree_view ~callback
+
+    method on_select_all ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_select_all ~after
+        self#as_tree_view ~callback
+
+    method on_select_cursor_parent ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_select_cursor_parent ~after
+        self#as_tree_view ~callback
+
+    method on_select_cursor_row ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_select_cursor_row ~after
+        self#as_tree_view ~callback
+
+    method on_start_interactive_search ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_start_interactive_search ~after
+        self#as_tree_view ~callback
+
+    method on_toggle_cursor_row ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_toggle_cursor_row ~after
+        self#as_tree_view ~callback
+
+    method on_unselect_all ?(after = false) ~callback () =
+      Tree_selection_and__tree_view.Tree_view.on_unselect_all ~after
+        self#as_tree_view ~callback
 
     method append_column : GTree_view_column.tree_view_column_t -> int =
       fun column ->
@@ -515,7 +607,8 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t =
         Tree_selection_and__tree_view.Tree_view.set_show_expanders obj enabled
 
     method set_tooltip_cell :
-        GTooltip.tooltip_t ->
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        .tooltip_t ->
         Tree_path.t option ->
         GTree_view_column.tree_view_column_t option ->
         GCell_renderer.cell_renderer_t option ->
@@ -531,7 +624,11 @@ and tree_view (obj : Tree_selection_and__tree_view.Tree_view.t) : tree_view_t =
       fun column ->
         Tree_selection_and__tree_view.Tree_view.set_tooltip_column obj column
 
-    method set_tooltip_row : GTooltip.tooltip_t -> Tree_path.t -> unit =
+    method set_tooltip_row :
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        .tooltip_t ->
+        Tree_path.t ->
+        unit =
       fun tooltip path ->
         let tooltip = tooltip#as_tooltip in
         Tree_selection_and__tree_view.Tree_view.set_tooltip_row obj tooltip path

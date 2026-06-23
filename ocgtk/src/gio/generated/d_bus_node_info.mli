@@ -19,3 +19,5 @@ external lookup_interface : t -> string -> D_bus_interface_info.t option
 (** Looks up information about an interface.
 
     The cost of this function is O(n) in number of interfaces. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gio_d_bus_node_info_get_type"

@@ -246,9 +246,9 @@ classification and tightens the rules pipeline tests must follow.*
 
 - [x] Created `test_gir_gen/smoke/` with `README.md` capturing the
   "no `gir_gen` dependency" rule and the other discipline rules
-- [ ] Move (or stage) any tests under `ocgtk/tests/` that only exercise
+- [ ]   Move (or stage) any tests under `ocgtk/tests/` that only exercise
   generated bindings — candidates surfaced by the Phase 5 audit *(deferred
-  to Phase 5)*
+  to Phase 5; see `architecture/todo/TODO.md`)*
 
 ---
 

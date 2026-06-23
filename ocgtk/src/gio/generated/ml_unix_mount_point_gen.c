@@ -165,6 +165,12 @@ gint result = g_unix_mount_point_compare(GUnixMountPoint_val(self), GUnixMountPo
 CAMLreturn(Val_int(result));
 }
 
+CAMLprim value ml_gio_unix_mount_point_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(g_unix_mount_point_get_type()));
+}
+
 #else
 
 

@@ -189,6 +189,22 @@ external get_loop : t -> bool = "ml_gtk_media_stream_get_loop"
 
     See [method@Gtk.MediaStream.set_loop] for details. *)
 
+external get_error : t -> GError.t option = "ml_gtk_media_stream_get_error"
+(** If the stream is in an error state, returns the `GError` explaining that
+    state.
+
+    Any type of error can be reported here depending on the implementation of
+    the media stream.
+
+    A media stream in an error cannot be operated on, calls like
+    [method@Gtk.MediaStream.play] or [method@Gtk.MediaStream.seek] will not have
+    any effect.
+
+    `GtkMediaStream` itself does not provide a way to unset an error, but
+    implementations may provide options. For example, a [class@Gtk.MediaFile]
+    will unset errors when a new source is set, e.g. with
+    [method@Gtk.MediaFile.set_file]. *)
+
 external get_ended : t -> bool = "ml_gtk_media_stream_get_ended"
 (** Returns whether the streams playback is finished. *)
 
@@ -196,6 +212,20 @@ external get_duration : t -> int64 = "ml_gtk_media_stream_get_duration"
 (** Gets the duration of the stream.
 
     If the duration is not known, 0 will be returned. *)
+
+external gerror : t -> GError.t -> unit = "ml_gtk_media_stream_gerror"
+(** Sets @self into an error state.
+
+This will pause the stream (you can check for an error
+via [method@Gtk.MediaStream.get_error] in your
+GtkMediaStream.pause() implementation), abort pending
+seeks and mark the stream as prepared.
+
+if the stream is already in an error state, this call
+will be ignored and the existing error will be retained.
+
+To unset an error, the stream must be reset via a call to
+[method@Gtk.MediaStream.unprepared]. *)
 
 (* Properties *)
 

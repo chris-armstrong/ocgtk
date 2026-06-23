@@ -172,3 +172,6 @@ external get_timeout : t -> int = "ml_g_resolver_get_timeout"
 (** Get the timeout applied to all resolver lookups. See #GResolver:timeout. *)
 
 (* Properties *)
+
+val on_reload :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

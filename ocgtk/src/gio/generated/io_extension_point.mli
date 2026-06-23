@@ -45,12 +45,12 @@ type t = [ `io_extension_point ] Gobject.obj
 
 (* Methods *)
 
-external set_required_type : t -> int -> unit
+external set_required_type : t -> Gobject.Type.t -> unit
   = "ml_g_io_extension_point_set_required_type"
 (** Sets the required type for @extension_point to @type.
 All implementations must henceforth have this type. *)
 
-external get_required_type : t -> int
+external get_required_type : t -> Gobject.Type.t
   = "ml_g_io_extension_point_get_required_type"
 (** Gets the required type for @extension_point. *)
 

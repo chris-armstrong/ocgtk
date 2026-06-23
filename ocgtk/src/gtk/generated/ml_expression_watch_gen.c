@@ -47,3 +47,17 @@ CAMLparam1(self);
 GtkExpressionWatch* result = gtk_expression_watch_ref(GtkExpressionWatch_val(self));
 CAMLreturn(Val_GtkExpressionWatch(result));
 }
+
+CAMLexport CAMLprim value ml_gtk_expression_watch_evaluate(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = gtk_expression_watch_evaluate(GtkExpressionWatch_val(self), GValue_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_gtk_expression_watch_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gtk_expression_watch_get_type()));
+}

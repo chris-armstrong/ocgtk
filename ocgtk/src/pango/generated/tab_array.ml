@@ -69,3 +69,5 @@ external get_decimal_point : t -> int -> int
 
     The default value of 0 means that Pango will use the decimal point according
     to the current locale. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_pango_tab_array_get_type"

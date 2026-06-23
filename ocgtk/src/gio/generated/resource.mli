@@ -225,3 +225,5 @@ external _register : t -> unit = "ml_g_resources_register"
 (** Registers the resource with the process-global set of resources. Once a
     resource is registered the files in it can be accessed with the global
     resource lookup functions like g_resources_lookup_data(). *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gio_resource_get_type"

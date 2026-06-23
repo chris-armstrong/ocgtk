@@ -1,11 +1,23 @@
-(* Signal class defined in gdrop_controller_motion_signals.ml *)
-
 class type drop_controller_motion_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .event_controller_t
 
-  inherit Gdrop_controller_motion_signals.drop_controller_motion_signals
+  method on_enter :
+    ?after:bool ->
+    callback:(x:float -> y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_leave :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_motion :
+    ?after:bool ->
+    callback:(x:float -> y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method contains_pointer : unit -> bool
   method get_drop : unit -> Ocgtk_gdk.Gdk.Drop.drop_t option
   method is_pointer : unit -> bool
@@ -17,14 +29,24 @@ class drop_controller_motion (obj : Drop_controller_motion.t) :
   drop_controller_motion_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .event_controller
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Event_controller
              .t)
 
-    inherit Gdrop_controller_motion_signals.drop_controller_motion_signals obj
+    method on_enter ?(after = false) ~callback () =
+      Drop_controller_motion.on_enter ~after self#as_drop_controller_motion
+        ~callback
+
+    method on_leave ?(after = false) ~callback () =
+      Drop_controller_motion.on_leave ~after self#as_drop_controller_motion
+        ~callback
+
+    method on_motion ?(after = false) ~callback () =
+      Drop_controller_motion.on_motion ~after self#as_drop_controller_motion
+        ~callback
 
     method contains_pointer : unit -> bool =
       fun () -> Drop_controller_motion.contains_pointer obj

@@ -66,6 +66,8 @@ type gir_function = {
   os : Os_filter.t option;
 }
 
+type signal_run_when = RunFirst | RunLast | RunCleanup
+
 type gir_signal = {
   signal_name : string;
   return_type : gir_type;
@@ -74,6 +76,10 @@ type gir_signal = {
   version : string option;
   version_namespace : string option;
   os : Os_filter.t option;
+  run_when : signal_run_when option;
+  action : bool;
+  no_recurse : bool;
+  no_hooks : bool;
 }
 
 type gir_constructor = {
@@ -271,6 +277,7 @@ let entity_of_record (rec_ : gir_record) : entity =
 type ocaml_class = {
   class_module : string;
   class_type : string;
+  class_ml_name : string;
   class_layer1_accessor : string;
 }
 
@@ -324,7 +331,32 @@ type type_mapping = {
           True for: same-namespace non-opaque records, cross-namespace
           non-opaque records ([Crt_Record {opaque=false}]). False for: classes,
           interfaces, opaque records, enums, bitfields, primitives. *)
+  transfer_strategy : transfer_strategy;
+      (** How to handle ownership when wrapping a return value. Drives
+          [generate_ref_sink_stmt] in the C stub generator. *)
 }
+(** Ownership strategy for wrapping a C return value into OCaml.
+
+    Used by [generate_ref_sink_stmt] to emit the correct ownership transfer
+    call after a C function returns a value with [transfer-ownership="none"]. *)
+and transfer_strategy =
+  | Ts_none
+      (** No special ownership action: primitives, strings, enums, bitfields,
+          and container types. The C value is copied or the OCaml runtime
+          manages the memory. *)
+  | Ts_gobject
+      (** GObject class or interface: emit [g_object_ref_sink(result)] for
+          transfer-none and floating returns so the OCaml finalizer always
+          holds a strong reference. *)
+  | Ts_boxed of string
+      (** GObject boxed type (record with [glib:get-type]): emit
+          [result = g_boxed_copy(<get_type_func>(), result)] for transfer-none
+          returns. The string is the C get-type function name, e.g.
+          ["gdk_content_formats_get_type"]. *)
+  | Ts_gvariant
+      (** [GVariant]: emit [g_variant_ref(result)] for transfer-none returns.
+          GVariant is ref-counted but uses its own API rather than the
+          generic boxed interface. *)
 (** Maps a GIR type to its C and OCaml representations for code generation.
 
     Used by both Layer 0 (C stubs) and Layer 2 (OCaml class wrappers) generators
@@ -392,7 +424,7 @@ type cross_reference_type =
       implements : string list; [@sexp.list]
     }
   | Crt_Interface
-  | Crt_Record of { opaque : bool }
+  | Crt_Record of { opaque : bool; get_type_func : string option [@sexp.option] }
   | Crt_Enum
   | Crt_Bitfield
 [@@deriving sexp]

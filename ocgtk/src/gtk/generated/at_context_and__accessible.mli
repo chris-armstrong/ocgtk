@@ -30,6 +30,9 @@ module rec At_context : sig
   external set_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t -> unit
     = "ml_gtk_at_context_set_display"
   (** Set property: display *)
+
+  val on_state_change :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end
 
 and Accessible : sig

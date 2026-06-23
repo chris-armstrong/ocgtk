@@ -33,3 +33,11 @@ external get_view_name : t -> string = "ml_gtk_shortcuts_window_get_view_name"
 external set_view_name : t -> string -> unit
   = "ml_gtk_shortcuts_window_set_view_name"
 (** Set property: view-name *)
+
+let on_close ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"close" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_search ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"search" ~callback
+    ~after:(Option.value after ~default:false)

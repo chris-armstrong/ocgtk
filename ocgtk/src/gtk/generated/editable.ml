@@ -193,3 +193,23 @@ external get_xalign : t -> float = "ml_gtk_editable_get_xalign"
 
 external set_xalign : t -> float -> unit = "ml_gtk_editable_set_xalign"
 (** Set property: xalign *)
+
+let on_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"changed" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_delete_text ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let start_pos =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_int v
+        in
+        let end_pos =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        callback ~start_pos ~end_pos)
+  in
+  Gobject.Signal.connect obj ~name:"delete-text" ~callback:closure
+    ~after:(Option.value after ~default:false)

@@ -1,7 +1,22 @@
-(* Signal class defined in gsettings_signals.ml *)
-
 class type settings_t = object
-  inherit Gsettings_signals.settings_signals
+  method on_changed :
+    ?after:bool ->
+    callback:(key:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_writable_change_event :
+    ?after:bool ->
+    callback:(key:int -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_writable_changed :
+    ?after:bool ->
+    callback:(key:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method apply : unit -> unit
 
   method bind :
@@ -60,7 +75,15 @@ end
 (* High-level class for Settings *)
 class settings (obj : Settings.t) : settings_t =
   object (self)
-    inherit Gsettings_signals.settings_signals obj
+    method on_changed ?(after = false) ~callback () =
+      Settings.on_changed ~after self#as_settings ~callback
+
+    method on_writable_change_event ?(after = false) ~callback () =
+      Settings.on_writable_change_event ~after self#as_settings ~callback
+
+    method on_writable_changed ?(after = false) ~callback () =
+      Settings.on_writable_changed ~after self#as_settings ~callback
+
     method apply : unit -> unit = fun () -> Settings.apply obj
 
     method bind :

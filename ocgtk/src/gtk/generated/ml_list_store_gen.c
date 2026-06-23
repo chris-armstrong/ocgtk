@@ -40,6 +40,34 @@ gtk_list_store_swap(GtkListStore_val(self), GtkTreeIter_val(arg1), GtkTreeIter_v
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_list_store_set_valuesv(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+    int arg2_length = Wosize_val(arg2);
+    int* c_arg2 = (int*)g_malloc(sizeof(int) * arg2_length);
+    for (int i = 0; i < arg2_length; i++) {
+      c_arg2[i] = Int_val(Field(arg2, i));
+    }
+    int arg3_length = Wosize_val(arg3);
+    GValue* c_arg3 = (GValue*)g_malloc(sizeof(GValue) * arg3_length);
+    for (int i = 0; i < arg3_length; i++) {
+      c_arg3[i] = *GValue_val(Field(arg3, i));
+    }
+
+gtk_list_store_set_valuesv(GtkListStore_val(self), GtkTreeIter_val(arg1), c_arg2, c_arg3, Int_val(arg4));
+    g_free(c_arg2);
+    g_free(c_arg3);
+CAMLreturn(Val_unit);
+}
+
+CAMLexport CAMLprim value ml_gtk_list_store_set_value(value self, value arg1, value arg2, value arg3)
+{
+CAMLparam4(self, arg1, arg2, arg3);
+
+gtk_list_store_set_value(GtkListStore_val(self), GtkTreeIter_val(arg1), Int_val(arg2), GValue_val(arg3));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_gtk_list_store_set_column_types(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);
@@ -93,6 +121,27 @@ CAMLparam2(self, arg1);
 
 gboolean result = gtk_list_store_iter_is_valid(GtkListStore_val(self), GtkTreeIter_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLexport CAMLprim value ml_gtk_list_store_insert_with_valuesv(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+GtkTreeIter out1;
+    int arg2_length = Wosize_val(arg2);
+    int* c_arg2 = (int*)g_malloc(sizeof(int) * arg2_length);
+    for (int i = 0; i < arg2_length; i++) {
+      c_arg2[i] = Int_val(Field(arg2, i));
+    }
+    int arg3_length = Wosize_val(arg3);
+    GValue* c_arg3 = (GValue*)g_malloc(sizeof(GValue) * arg3_length);
+    for (int i = 0; i < arg3_length; i++) {
+      c_arg3[i] = *GValue_val(Field(arg3, i));
+    }
+
+gtk_list_store_insert_with_valuesv(GtkListStore_val(self), &out1, Int_val(arg1), c_arg2, c_arg3, Int_val(arg4));
+    g_free(c_arg2);
+    g_free(c_arg3);
+CAMLreturn(Val_GtkTreeIter(&out1));
 }
 
 CAMLexport CAMLprim value ml_gtk_list_store_insert_before(value self, value arg1)

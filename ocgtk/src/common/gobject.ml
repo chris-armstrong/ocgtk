@@ -29,116 +29,50 @@ type g_value
 type g_closure
 (** Abstract type for GClosure *)
 
-type fundamental_type =
-  [ `INVALID
-  | `NONE
-  | `INTERFACE
-  | `CHAR
-  | `UCHAR
-  | `BOOLEAN
-  | `INT
-  | `UINT
-  | `LONG
-  | `ULONG
-  | `INT64
-  | `UINT64
-  | `ENUM
-  | `FLAGS
-  | `FLOAT
-  | `DOUBLE
-  | `STRING
-  | `POINTER
-  | `BOXED
-  | `PARAM
-  | `OBJECT ]
-
-type signal_type = [ `RUN_FIRST | `RUN_LAST | `NO_RECURSE | `ACTION | `NO_HOOKS ]
-
 (** {2 Object Operations} *)
 
 external get_type : 'a obj -> g_type = "ml_g_object_get_type"
 external unsafe_cast : 'a obj -> 'b obj = "%identity"
 external coerce : 'a obj -> unit obj = "%identity"
+external same : 'a obj -> 'b obj -> bool = "ml_gobject_same"
 external get_ref_count : 'a obj -> int = "ml_g_object_get_ref_count"
-
-(** {2 Test Helpers} *)
-
-external is_custom_block : 'a obj -> bool = "ml_g_object_is_custom_block"
-external is_gobject : 'a obj -> bool = "ml_g_object_is_gobject"
 
 (** {2 Type System} *)
 
 module Type = struct
   type t = g_type
 
+  let equal (a : t) (b : t) = Int.equal a b
+  let to_int (t : t) = t
+
   external name : t -> string = "ml_g_type_name"
   external from_name : string -> t = "ml_g_type_from_name"
   external parent : t -> t = "ml_g_type_parent"
   external is_a : t -> t -> bool = "ml_g_type_is_a"
-  external fundamental : t -> int = "ml_g_type_fundamental"
-  external of_fundamental : int -> t = "ml_g_type_of_fundamental"
+  external of_fundamental_int : int -> t = "ml_g_type_of_fundamental"
 
-  let fundamental t =
-    match fundamental t with
-    | 0 -> `INVALID
-    | 1 -> `NONE
-    | 2 -> `INTERFACE
-    | 3 -> `CHAR
-    | 4 -> `UCHAR
-    | 5 -> `BOOLEAN
-    | 6 -> `INT
-    | 7 -> `UINT
-    | 8 -> `LONG
-    | 9 -> `ULONG
-    | 10 -> `INT64
-    | 11 -> `UINT64
-    | 12 -> `ENUM
-    | 13 -> `FLAGS
-    | 14 -> `FLOAT
-    | 15 -> `DOUBLE
-    | 16 -> `STRING
-    | 17 -> `POINTER
-    | 18 -> `BOXED
-    | 19 -> `PARAM
-    | 20 -> `OBJECT
-    | _ -> `INVALID
-
-  let of_fundamental = function
-    | `INVALID -> of_fundamental 0
-    | `NONE -> of_fundamental 1
-    | `INTERFACE -> of_fundamental 2
-    | `CHAR -> of_fundamental 3
-    | `UCHAR -> of_fundamental 4
-    | `BOOLEAN -> of_fundamental 5
-    | `INT -> of_fundamental 6
-    | `UINT -> of_fundamental 7
-    | `LONG -> of_fundamental 8
-    | `ULONG -> of_fundamental 9
-    | `INT64 -> of_fundamental 10
-    | `UINT64 -> of_fundamental 11
-    | `ENUM -> of_fundamental 12
-    | `FLAGS -> of_fundamental 13
-    | `FLOAT -> of_fundamental 14
-    | `DOUBLE -> of_fundamental 15
-    | `STRING -> of_fundamental 16
-    | `POINTER -> of_fundamental 17
-    | `BOXED -> of_fundamental 18
-    | `PARAM -> of_fundamental 19
-    | `OBJECT -> of_fundamental 20
+  let invalid   = of_fundamental_int 0
+  let none      = of_fundamental_int 1
+  let interface = of_fundamental_int 2
+  let char_     = of_fundamental_int 3
+  let uchar     = of_fundamental_int 4
+  let boolean   = of_fundamental_int 5
+  let int_      = of_fundamental_int 6
+  let uint      = of_fundamental_int 7
+  let long      = of_fundamental_int 8
+  let ulong     = of_fundamental_int 9
+  let int64     = of_fundamental_int 10
+  let uint64    = of_fundamental_int 11
+  let enum      = of_fundamental_int 12
+  let flags     = of_fundamental_int 13
+  let float_    = of_fundamental_int 14
+  let double    = of_fundamental_int 15
+  let string    = of_fundamental_int 16
+  let pointer   = of_fundamental_int 17
+  let boxed     = of_fundamental_int 18
+  let param     = of_fundamental_int 19
+  let object_   = of_fundamental_int 20
 end
-
-let is_a obj type_name =
-  try
-    let obj_type = get_type obj in
-    let check_type = Type.from_name type_name in
-    Type.is_a obj_type check_type
-  with _ -> false
-
-exception Cannot_cast of string * string
-
-let try_cast w name =
-  if is_a w name then unsafe_cast w
-  else raise (Cannot_cast (Type.name (get_type w), name))
 
 (** {2 GValue Operations} *)
 
@@ -167,14 +101,29 @@ module Value = struct
   external set_float : t -> float -> unit = "ml_g_value_set_float"
   external get_double : t -> float = "ml_g_value_get_double"
   external set_double : t -> float -> unit = "ml_g_value_set_double"
+  external get_int64 : t -> int64 = "ml_g_value_get_int64"
+  external set_int64 : t -> int64 -> unit = "ml_g_value_set_int64"
+  external get_variant : t -> Gvariant.t = "ml_g_value_get_variant"
+  external set_variant : t -> Gvariant.t -> unit = "ml_g_value_set_variant"
+  external get_enum_int : t -> int = "ml_g_value_get_enum_int"
+  external set_enum_int : t -> int -> unit = "ml_g_value_set_enum_int"
+  external get_flags_int : t -> int = "ml_g_value_get_flags_int"
+  external set_flags_int : t -> int -> unit = "ml_g_value_set_flags_int"
+  external get_boxed : t -> 'a obj = "ml_g_value_get_boxed"
+  external set_boxed : t -> 'a obj -> unit = "ml_g_value_set_boxed"
   external get_object_internal : t -> 'a obj = "ml_g_value_get_object"
   external set_object_internal : t -> 'a obj -> unit = "ml_g_value_set_object"
+  external set_object_null : t -> unit = "ml_g_value_set_object_null"
 
-  let get_object v = try Some (get_object_internal v) with _ -> None
+  let get_object v =
+    match get_object_internal v with exception _ -> None | x -> Some x
 
   let set_object v = function
     | Some obj -> set_object_internal v obj
-    | None -> () (* Set NULL *)
+    | None -> set_object_null v
+
+  let get_object_exn v = get_object_internal v
+  let set_object_exn v obj = set_object_internal v obj
 end
 
 (** {2 Properties} *)
@@ -238,44 +187,3 @@ module Signal = struct
     = "ml_g_signal_emit_by_name"
 end
 
-(** {2 Data Conversions} *)
-
-module Data = struct
-  (* enum: creates encoder/decoder pair for simple enumerations *)
-  let enum tbl = (Gpointer.decode_variant tbl, Gpointer.encode_variant tbl)
-
-  (* flags: creates decoder/encoder pair for flag-type enumerations *)
-  let flags tbl =
-    let decode flags =
-      (* For now, decode as single value - full implementation would decode bits *)
-      Gpointer.decode_variant tbl flags
-    in
-    let encode flag =
-      (* For now, encode as single value - full implementation would combine bits *)
-      Gpointer.encode_variant tbl flag
-    in
-    (decode, encode)
-end
-
-(** {2 Test Helpers} *)
-
-(* These functions are for testing closure invocation only *)
-module Test = struct
-  external invoke_closure_void : g_closure -> unit
-    = "ml_test_invoke_closure_void"
-
-  external invoke_closure_int : g_closure -> int -> unit
-    = "ml_test_invoke_closure_int"
-
-  external invoke_closure_string : g_closure -> string -> unit
-    = "ml_test_invoke_closure_string"
-
-  external invoke_closure_two_ints : g_closure -> int -> int -> unit
-    = "ml_test_invoke_closure_two_ints"
-
-  external invoke_closure_boolean : g_closure -> bool -> unit
-    = "ml_test_invoke_closure_boolean"
-
-  external invoke_closure_double : g_closure -> float -> unit
-    = "ml_test_invoke_closure_double"
-end

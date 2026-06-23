@@ -11,9 +11,12 @@
 (*                                                                        *)
 (**************************************************************************)
 
-type t = {
-  domain : int;  (** Error domain (GQuark) *)
-  code : int;  (** Error code within the domain *)
-  message : string;  (** Human-readable error message *)
-}
-(** GError record type representing errors from GTK/GLib functions *)
+type t
+(** GError type representing errors from GTK/GLib functions.
+
+    GError values are constructed by the C FFI layer and used exclusively as the
+    error component of [(_, GError.t) result] return types. *)
+
+external message : t -> string = "ml_gerror_message"
+external code : t -> int = "ml_gerror_code"
+external domain : t -> int = "ml_gerror_domain"

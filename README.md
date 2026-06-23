@@ -27,12 +27,12 @@ Features currently supported:
 * GObject interface implementation in the type hierarchy (`:>` coercions work)
 
 Currently unsupported:
-* Signals with multiple parameters
+* Signals with boxed record parameters (e.g. `GtkTextIter`, `GdkRGBA`) or callback parameters
 * Standalone namespace-level functions (e.g. `gtk_show_uri`)
 * Accessing fields of non-opaque record types
-* Callbacks
+* Callbacks as method parameters
 
-^[1]: Only signals with no parameters are currently supported.
+^[1]: Signals with primitive, enum, bitfield, and GObject class/interface parameters are generated. Bool return values are supported. Signals with boxed record types, callbacks, or GArray parameters are not yet generated.
 
 ## Quick Start
 

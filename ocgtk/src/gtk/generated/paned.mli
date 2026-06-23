@@ -13,7 +13,7 @@ external set_wide_handle : t -> bool -> unit = "ml_gtk_paned_set_wide_handle"
 
 external set_start_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -43,7 +43,7 @@ external set_position : t -> int -> unit = "ml_gtk_paned_set_position"
 
 external set_end_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -57,7 +57,7 @@ external get_wide_handle : t -> bool = "ml_gtk_paned_get_wide_handle"
 
 external get_start_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_paned_get_start_child"
@@ -82,7 +82,7 @@ external get_position : t -> int = "ml_gtk_paned_get_position"
 
 external get_end_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_paned_get_end_child"
@@ -101,3 +101,30 @@ external get_position_set : t -> bool = "ml_gtk_paned_get_position_set"
 
 external set_position_set : t -> bool -> unit = "ml_gtk_paned_set_position_set"
 (** Set property: position-set *)
+
+val on_accept_position :
+  ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+val on_cancel_position :
+  ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
+
+val on_cycle_child_focus :
+  ?after:bool ->
+  t ->
+  callback:(reversed:bool -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_cycle_handle_focus :
+  ?after:bool ->
+  t ->
+  callback:(reversed:bool -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_move_handle :
+  ?after:bool ->
+  t ->
+  callback:(scroll_type:Gtk_enums.scrolltype -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_toggle_handle_focus :
+  ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id

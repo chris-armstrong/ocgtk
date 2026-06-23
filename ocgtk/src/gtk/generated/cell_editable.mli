@@ -36,3 +36,9 @@ external get_editing_canceled : t -> bool
 external set_editing_canceled : t -> bool -> unit
   = "ml_gtk_cell_editable_set_editing_canceled"
 (** Set property: editing-canceled *)
+
+val on_editing_done :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_remove_widget :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

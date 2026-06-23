@@ -315,6 +315,7 @@ CAMLexport CAMLprim value ml_graphene_vec3_init_from_vec3(value self, value arg1
 CAMLparam2(self, arg1);
 
 graphene_vec3_t* result = graphene_vec3_init_from_vec3(graphene_vec3_t_val(self), graphene_vec3_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_vec3_get_type(), result);
 CAMLreturn(Val_graphene_vec3_t(result));
 }
 
@@ -342,6 +343,7 @@ CAMLparam2(self, arg1);
     }
 
 graphene_vec3_t* result = graphene_vec3_init_from_float(graphene_vec3_t_val(self), c_arg1);
+if (result) result = g_boxed_copy(graphene_vec3_get_type(), result);
     g_free(c_arg1);
 CAMLreturn(Val_graphene_vec3_t(result));
 }
@@ -365,6 +367,7 @@ CAMLexport CAMLprim value ml_graphene_vec3_init(value self, value arg1, value ar
 CAMLparam4(self, arg1, arg2, arg3);
 
 graphene_vec3_t* result = graphene_vec3_init(graphene_vec3_t_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3));
+if (result) result = g_boxed_copy(graphene_vec3_get_type(), result);
 CAMLreturn(Val_graphene_vec3_t(result));
 }
 
@@ -668,3 +671,9 @@ caml_failwith("Vec3 requires Graphene >= 1.0");
 return Val_unit;
 }
 #endif
+
+CAMLprim value ml_graphene_vec3_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_vec3_get_type()));
+}

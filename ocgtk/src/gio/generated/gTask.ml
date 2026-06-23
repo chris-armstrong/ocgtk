@@ -10,8 +10,10 @@ class type task_t = object
   method propagate_boolean : unit -> (bool, GError.t) result
   method propagate_int : unit -> (int, GError.t) result
   method return_boolean : bool -> unit
+  method return_error : GError.t -> unit
   method return_error_if_cancelled : unit -> bool
   method return_int : int -> unit
+  method return_value : Gobject.Value.t option -> unit
   method set_check_cancellable : bool -> unit
   method set_name : string option -> unit
   method set_priority : int -> unit
@@ -52,10 +54,16 @@ class task (obj : Task.t) : task_t =
     method return_boolean : bool -> unit =
       fun result -> Task.return_boolean obj result
 
+    method return_error : GError.t -> unit =
+      fun error -> Task.return_error obj error
+
     method return_error_if_cancelled : unit -> bool =
       fun () -> Task.return_error_if_cancelled obj
 
     method return_int : int -> unit = fun result -> Task.return_int obj result
+
+    method return_value : Gobject.Value.t option -> unit =
+      fun result -> Task.return_value obj result
 
     method set_check_cancellable : bool -> unit =
       fun check_cancellable -> Task.set_check_cancellable obj check_cancellable

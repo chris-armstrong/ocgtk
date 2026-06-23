@@ -75,8 +75,7 @@ let entity_generator_by_entity_type =
       let entity_kind = Filtering.entity_kind_of_entity entity in
       List.iter
         ~f:(fun (meth : gir_method) ->
-          if
-            not (Filtering.should_skip_method_binding ~ctx ~entity_kind meth)
+          if not (Filtering.should_skip_method_binding ~ctx ~entity_kind meth)
           then
             try
               let stub =
@@ -315,6 +314,28 @@ let generate_c_stub ~ctx ~output_dir entity =
             ~namespace_name:ctx.namespace.namespace_name intf
         in
         Buffer.add_string body_buf stub
+    | _ -> ());
+
+    (* Append get_type stub for records registered with the GType system *)
+    (match entity.kind with
+    | Gir_gen_lib.Types.Record record -> (
+        match record.glib_get_type with
+        | Some get_type_func ->
+            let ns_snake =
+              Gir_gen_lib.Utils.to_snake_case ctx.namespace.namespace_name
+            in
+            let class_snake =
+              Gir_gen_lib.Utils.to_snake_case record.record_name
+            in
+            let ml_name =
+              sprintf "ml_%s_%s_get_type" ns_snake class_snake
+            in
+            Buffer.add_string body_buf
+              (sprintf
+                 "\nCAMLprim value %s(value unit)\n{\n  CAMLparam1(unit);\n  \
+                  CAMLreturn(Val_long(%s()));\n}\n"
+                 ml_name get_type_func)
+        | None -> ())
     | _ -> ());
 
     let body_content = Buffer.contents body_buf in
@@ -592,7 +613,14 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
     | Implementation -> Gir_gen_lib.Generate.Ml_interface.Implementation
   in
 
-  let entity_kind = Gir_gen_lib.Generate.Filtering.entity_kind_of_entity entity in
+  let entity_kind =
+    Gir_gen_lib.Generate.Filtering.entity_kind_of_entity entity
+  in
+  let glib_get_type =
+    match entity.Gir_gen_lib.Types.kind with
+    | Gir_gen_lib.Types.Record record -> record.glib_get_type
+    | _ -> None
+  in
   let content =
     Gir_gen_lib.Generate.Ml_interface.generate_ml_interface ~ctx ~output_mode
       ~class_name:entity.Gir_gen_lib.Types.name
@@ -603,7 +631,9 @@ let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
            Some entity.Gir_gen_lib.Types.constructors
          else None)
       ~methods:entity.Gir_gen_lib.Types.methods ~entity_kind
-      ~properties:entity.Gir_gen_lib.Types.properties ?from_gobject_c_name ()
+      ~properties:entity.Gir_gen_lib.Types.properties
+      ~signals:entity.Gir_gen_lib.Types.signals ?from_gobject_c_name
+      ?glib_get_type ()
   in
 
   write_file ~path:ml_file ~content
@@ -708,46 +738,6 @@ let generate_high_level_class ~ctx ~output_dir entity parent_chain =
   | Gir_gen_lib.Types.Record record ->
       if Gir_gen_lib.Generate.Filtering.should_generate_record record then
         generate_ ()
-
-(* Generate signal class file for a single entity *)
-let generate_signal_class ~ctx ~output_dir ~parent_chain entity =
-  let generate_ () =
-    let signal_code =
-      Gir_gen_lib.Generate.Signal_gen.generate_signal_class ~ctx
-        ~class_name:entity.Gir_gen_lib.Types.name
-        ~signals:entity.Gir_gen_lib.Types.signals ~parent_chain
-    in
-
-    let signal_file =
-      Filename.concat
-        (generated_output_dir output_dir)
-        (sprintf "g%s_signals.ml"
-           (Gir_gen_lib.Utils.to_snake_case entity.Gir_gen_lib.Types.name))
-    in
-    write_file ~path:signal_file ~content:signal_code
-  in
-  if List.length entity.Gir_gen_lib.Types.signals = 0 then ()
-  else
-    match entity.kind with
-    | Gir_gen_lib.Types.Class clazz ->
-        if Gir_gen_lib.Generate.Filtering.should_generate_class clazz then
-          generate_ ()
-    | Gir_gen_lib.Types.Interface intf ->
-        if Gir_gen_lib.Generate.Filtering.should_generate_interface intf then
-          generate_ ()
-    | Gir_gen_lib.Types.Record record ->
-        if Gir_gen_lib.Generate.Filtering.should_generate_record record then
-          generate_ ()
-
-(* Generate signal classes for all entities *)
-let generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class
-    entities =
-  printf "\nGenerating signal classes...\n";
-  List.iter
-    ~f:(fun entity ->
-      let parent_chain = parent_chain_for_class entity.Gir_gen_lib.Types.name in
-      generate_signal_class ~ctx ~output_dir ~parent_chain entity)
-    entities
 
 (* Generate combined .ml + .mli for cyclic Layer 1 modules *)
 let generate_combined_ml_files ~ctx ~output_dir ~module_group
@@ -895,6 +885,26 @@ let generate_enum_files ~output_dir ~generated_stubs namespace enums bitfields =
     in
     write_file ~path:enum_file
       ~content:(String.concat ~sep:"" ocaml_content_parts);
+
+    (* Generate OCaml .ml file with pure-OCaml _of_int/_to_int implementations *)
+    let enum_ml_file =
+      Filename.concat
+        (generated_output_dir output_dir)
+        (sprintf "%s_enums.ml" namespace.prefix)
+    in
+    let ocaml_ml_content_parts =
+      [
+        "(* GENERATED CODE - DO NOT EDIT *)\n";
+        sprintf "(* %s Enumeration and Bitfield Converters *)\n\n"
+          namespace.name;
+      ]
+      @ List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_enum_impl
+          enums
+      @ List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_bitfield_impl
+          bitfields
+    in
+    write_file ~path:enum_ml_file
+      ~content:(String.concat ~sep:"" ocaml_ml_content_parts);
 
     (* Generate C converter file *)
     let stub_name = sprintf "ml_%s_enums_gen" namespace.prefix in
@@ -1318,9 +1328,6 @@ let generate_bindings filter_file gir_file output_dir reference_files
                 ~entity))
     module_groups_list;
 
-  (* Generate signal classes for all entities (classes and interfaces) *)
-  generate_all_signal_classes ~ctx ~output_dir ~parent_chain_for_class entities;
-
   (* ==== BUILD CONFIGURATION ==== *)
 
   (* Generate dune file in generated/ subdirectory *)
@@ -1371,13 +1378,29 @@ let generate_bindings filter_file gir_file output_dir reference_files
   let core_module_lines =
     List.map core_modules ~f:(fun m -> sprintf "module %s = %s" m m)
   in
+  let enums_module_name =
+    Gir_gen_lib.Utils.internal_namespace_to_module_name
+      namespace.namespace_name
+    ^ "_enums"
+  in
+  let enums_ml_path =
+    Filename.concat
+      (generated_output_dir output_dir)
+      (String.lowercase_ascii namespace.namespace_name ^ "_enums.ml")
+  in
+  let enums_alias_line =
+    if Sys.file_exists enums_ml_path then
+      sprintf "module %s = %s\n" enums_module_name enums_module_name
+    else ""
+  in
   let wrapper_content =
     sprintf
       "(* GENERATED CODE - DO NOT EDIT *)\n\
        (* Library wrapper module - re-exports %s as the public API *)\n\n\
        module %s = %s\n\
+       %s\
        %s\n"
-      lib_name lib_name lib_name
+      lib_name lib_name lib_name enums_alias_line
       (String.concat ~sep:"\n" core_module_lines)
   in
   write_file ~path:wrapper_ml_file ~content:wrapper_content;
@@ -1498,7 +1521,7 @@ let generate_references gir_file output_file overrides_file =
       |> List.map ~f:(fun rec_ ->
           {
             cr_name = rec_.record_name;
-            cr_type = Crt_Record { opaque = rec_.opaque };
+            cr_type = Crt_Record { opaque = rec_.opaque; get_type_func = rec_.glib_get_type };
             cr_c_type = rec_.c_type;
           }))
   in
@@ -1832,12 +1855,12 @@ let generate_cmd =
       `Pre "  gir_gen generate gir/Gtk-4.0.gir ./output";
       `P "Generate with cross-namespace references:";
       `Pre
-        "  gir_gen generate -r gtk_refs.txt -r gdk_refs.txt \
-         gir/Gtk-4.0.gir ./output";
+        "  gir_gen generate -r gtk_refs.txt -r gdk_refs.txt gir/Gtk-4.0.gir \
+         ./output";
       `P "Generate with override file:";
       `Pre
-        "  gir_gen generate -o ocgtk/overrides/gtk.sexp \
-         gir/Gtk-4.0.gir ./output";
+        "  gir_gen generate -o ocgtk/overrides/gtk.sexp gir/Gtk-4.0.gir \
+         ./output";
     ]
   in
   let info = Cmd.info "generate" ~doc ~man in
@@ -1871,8 +1894,7 @@ let overrides_cmd =
          manually-authored ignore entries to form a complete override file.";
       `S Manpage.s_examples;
       `P "Extract version overrides from GTK GIR:";
-      `Pre
-        "  gir_gen overrides gir/Gtk-4.0.gir ocgtk/overrides/gtk.sexp";
+      `Pre "  gir_gen overrides gir/Gtk-4.0.gir ocgtk/overrides/gtk.sexp";
     ]
   in
   let info = Cmd.info "overrides" ~doc ~man in
@@ -1897,8 +1919,8 @@ let references_cmd =
       `Pre "  gir_gen references gir/Gtk-4.0.gir gtk_refs.txt";
       `P "Generate reference list with overrides:";
       `Pre
-        "  gir_gen references -o ocgtk/overrides/gtk.sexp \
-         gir/Gtk-4.0.gir gtk_refs.txt";
+        "  gir_gen references -o ocgtk/overrides/gtk.sexp gir/Gtk-4.0.gir \
+         gtk_refs.txt";
     ]
   in
   let info = Cmd.info "references" ~doc ~man in

@@ -1,5 +1,22 @@
 class type pixbuf_loader_t = object
-  inherit Gpixbuf_loader_signals.pixbuf_loader_signals
+  method on_area_prepared :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_area_updated :
+    ?after:bool ->
+    callback:(x:int -> y:int -> width:int -> height:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_closed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_size_prepared :
+    ?after:bool ->
+    callback:(width:int -> height:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method close : unit -> (bool, GError.t) result
   method get_animation : unit -> GPixbuf_animation.pixbuf_animation_t option
   method get_format : unit -> Pixbuf_format.t option

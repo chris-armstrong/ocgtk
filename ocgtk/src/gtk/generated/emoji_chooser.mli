@@ -9,3 +9,8 @@ external new_ : unit -> t = "ml_gtk_emoji_chooser_new"
 (** Create a new EmojiChooser *)
 
 (* Methods *)
+val on_emoji_picked :
+  ?after:bool ->
+  t ->
+  callback:(text:string -> unit) ->
+  Gobject.Signal.handler_id

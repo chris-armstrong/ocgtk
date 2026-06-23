@@ -1,19 +1,23 @@
-(* Signal class defined in gpopover_signals.ml *)
-
 class type popover_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GNative.native_t
   inherit GShortcut_manager.shortcut_manager_t
-  inherit Gpopover_signals.popover_signals
+
+  method on_activate_default :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_closed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_autohide : unit -> bool
   method get_cascade_popdown : unit -> bool
 
   method get_child :
     unit ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -27,13 +31,13 @@ class type popover_t = object
   method set_cascade_popdown : bool -> unit
 
   method set_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
 
   method set_default_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -50,10 +54,10 @@ end
 class popover (obj : Popover.t) : popover_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
@@ -62,7 +66,12 @@ class popover (obj : Popover.t) : popover_t =
     inherit
       GShortcut_manager.shortcut_manager (Shortcut_manager.from_gobject obj)
 
-    inherit Gpopover_signals.popover_signals obj
+    method on_activate_default ?(after = false) ~callback () =
+      Popover.on_activate_default ~after self#as_popover ~callback
+
+    method on_closed ?(after = false) ~callback () =
+      Popover.on_closed ~after self#as_popover ~callback
+
     method get_autohide : unit -> bool = fun () -> Popover.get_autohide obj
 
     method get_cascade_popdown : unit -> bool =
@@ -70,14 +79,14 @@ class popover (obj : Popover.t) : popover_t =
 
     method get_child :
         unit ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun () ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Popover.get_child obj)
@@ -101,7 +110,7 @@ class popover (obj : Popover.t) : popover_t =
       fun cascade_popdown -> Popover.set_cascade_popdown obj cascade_popdown
 
     method set_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =
@@ -110,7 +119,7 @@ class popover (obj : Popover.t) : popover_t =
         Popover.set_child obj child
 
     method set_default_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =

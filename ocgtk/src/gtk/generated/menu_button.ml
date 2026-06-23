@@ -19,7 +19,7 @@ external set_primary : t -> bool -> unit = "ml_gtk_menu_button_set_primary"
 
 external set_popover :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -83,7 +83,7 @@ as if you passed %GTK_ARROW_DOWN (although you won’t see any arrows). *)
 
 external set_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -150,7 +150,7 @@ external get_direction : t -> Gtk_enums.arrowtype
 
 external get_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_menu_button_get_child"
@@ -169,3 +169,7 @@ external get_active : t -> bool = "ml_gtk_menu_button_get_active"
 (** Returns whether the menu button is active. *)
 
 (* Properties *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)

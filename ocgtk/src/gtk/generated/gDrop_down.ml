@@ -1,11 +1,11 @@
-(* Signal class defined in gdrop_down_signals.ml *)
-
 class type drop_down_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  inherit Gdrop_down_signals.drop_down_signals
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method get_enable_search : unit -> bool
   method get_expression : unit -> GExpression.expression_t option
   method get_factory : unit -> GList_item_factory.list_item_factory_t option
@@ -42,14 +42,15 @@ end
 class drop_down (obj : Drop_down.t) : drop_down_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
-    inherit Gdrop_down_signals.drop_down_signals obj
+    method on_activate ?(after = false) ~callback () =
+      Drop_down.on_activate ~after self#as_drop_down ~callback
 
     method get_enable_search : unit -> bool =
       fun () -> Drop_down.get_enable_search obj

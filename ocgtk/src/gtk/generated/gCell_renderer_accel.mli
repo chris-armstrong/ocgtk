@@ -1,6 +1,23 @@
 class type cell_renderer_accel_t = object
   inherit GCell_renderer_text.cell_renderer_text_t
-  inherit Gcell_renderer_accel_signals.cell_renderer_accel_signals
+
+  method on_accel_cleared :
+    ?after:bool ->
+    callback:(path_string:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_accel_edited :
+    ?after:bool ->
+    callback:
+      (path_string:string ->
+      accel_key:int ->
+      accel_mods:Ocgtk_gdk.Gdk_enums.modifiertype ->
+      hardware_keycode:int ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method accel_key : int
   method set_accel_key : int -> unit
   method accel_mode : Gtk_enums.cellrendereraccelmode

@@ -113,7 +113,7 @@ Tags in the buffer may override the default. *)
 external set_gutter :
   t ->
   Gtk_enums.textwindowtype ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -242,7 +242,7 @@ external reset_cursor_blink : t -> unit = "ml_gtk_text_view_reset_cursor_blink"
 
 external remove :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_text_view_remove"
@@ -270,7 +270,7 @@ is moved off of the end of a run. *)
 
 external move_overlay :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int ->
@@ -476,7 +476,7 @@ The indentation may be negative. *)
 external get_gutter :
   t ->
   Gtk_enums.textwindowtype ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_text_view_get_gutter"
@@ -601,7 +601,7 @@ views, since they depend on the contents of the `GtkTextBuffer`. *)
 
 external add_overlay :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int ->
@@ -620,7 +620,7 @@ If instead you want a widget that will not move with the
 
 external add_child_at_anchor :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   Text_child_anchor.t ->
@@ -634,3 +634,64 @@ external get_im_module : t -> string = "ml_gtk_text_view_get_im_module"
 
 external set_im_module : t -> string -> unit = "ml_gtk_text_view_set_im_module"
 (** Set property: im-module *)
+
+val on_backspace :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_copy_clipboard :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_cut_clipboard :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_delete_from_cursor :
+  ?after:bool ->
+  t ->
+  callback:(type_:Gtk_enums.deletetype -> count:int -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_insert_at_cursor :
+  ?after:bool ->
+  t ->
+  callback:(string:string -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_insert_emoji :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_move_cursor :
+  ?after:bool ->
+  t ->
+  callback:
+    (step:Gtk_enums.movementstep -> count:int -> extend_selection:bool -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_move_viewport :
+  ?after:bool ->
+  t ->
+  callback:(step:Gtk_enums.scrollstep -> count:int -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_paste_clipboard :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_preedit_changed :
+  ?after:bool ->
+  t ->
+  callback:(preedit:string -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_select_all :
+  ?after:bool ->
+  t ->
+  callback:(select:bool -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_set_anchor :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_toggle_cursor_visible :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_toggle_overwrite :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

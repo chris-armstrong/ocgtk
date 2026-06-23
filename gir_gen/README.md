@@ -2,6 +2,10 @@
 
 GTK introspection-based code generator for ocgtk bindings.
 
+For a full architectural introduction covering the binding layers, pipeline,
+dependency analysis, signals, and dead code elimination, see
+[architecture/overview.md](../architecture/overview.md).
+
 ## Architecture Overview
 
 The generator processes GIR XML files through a 4-stage pipeline:
@@ -29,12 +33,20 @@ GIR XML (e.g., Gtk-4.0.gir)
 
 | File | Purpose |
 |------|---------|
-| `types.ml` | AST for GIR elements (classes, methods, types) |
+| `types.ml` | AST for GIR elements (classes, methods, types, enums, records, signals) |
 | `parse/gir_parser.ml` | XML parsing → AST |
-| `type_mappings.ml` | Maps C types to OCaml types (`gint` → `int`, etc.) |
-| `generate/c_stubs.ml` | C FFI code generation (Layer 0) |
-| `generate/ml_interface.ml` | OCaml interface generation (Layer 1) |
-| `generate/class_gen.ml` | High-level wrapper generation (Layer 2) |
+| `type_mappings.ml` | Maps C types to OCaml types (`gint` → `int`, etc.) + cross-namespace resolution |
+| `override_types.ml` / `override_parser.ml` / `override_apply.ml` | Override sexp parsing and application |
+| `dependency_analysis.ml` | Tarjan SCC for cyclic dependency resolution |
+| `generate/c_stubs.ml` | C FFI code orchestration (Layer 0) |
+| `generate/c_stub_method.ml` | C method stub generation |
+| `generate/c_stub_property.ml` | C property getter/setter generation |
+| `generate/c_stub_array_conv.ml` | Array conversion code generation |
+| `generate/layer1/layer1_main.ml` | OCaml interface generation (Layer 1) |
+| `generate/class_gen.ml` | High-level wrapper orchestration (Layer 2) |
+| `generate/signal_gen.ml` / `signal_marshaller.ml` | Signal handler generation |
+| `generate/enum_code.ml` | Enum/bitfield type and converter generation |
+| `generate/dune_file.ml` | Build configuration generation |
 
 ### Type Resolution Flow
 
@@ -402,7 +414,7 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 
 ## Current Capabilities
 
-### Parsing (parse/gir_parser.ml - 1090 lines)
+### Parsing (parse/gir_parser.ml - ~1560 lines)
 **Working:**
 - Class extraction with parent/implements relationships, constructors, methods, properties, signals
 - Interface extraction with methods, properties, c:symbol-prefix
@@ -411,14 +423,14 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 - Cross-namespace reference loading for all 9 namespaces via sexp reference files
 - Documentation string extraction
 - Constructor `throws` attribute detection
+- Array type annotations (zero-terminated, length parameters, fixed-size, GPtrArray)
+- Property `writable` / `construct-only` / `transfer-ownership` attributes
 
 **Limitations:**
-- Signals parsed only for parameterless void signatures; complex signal callbacks skipped
-- Array/list type parameters not parsed
-- Callback types not extracted
+- Complex callback type definitions not fully extracted
 - Interface method implementations not tracked beyond interface names
 
-### Type Mapping (type_mappings.ml - 544 lines)
+### Type Mapping (type_mappings.ml - ~784 lines)
 **Working:**
 - ~150 hardcoded GTK/GLib type mappings to OCaml types
 - Nullable type handling with `option` wrapper
@@ -434,49 +446,59 @@ The tool produces a **four-layer binding system** from GIR introspection data:
   - Detects when generating within a cyclic module via `current_cycle_classes`
   - Uses unqualified names for same-cycle references
   - Uses fully qualified names for cross-module references
+- Array type mapping with `ARRAY_INLINE` marker for inline conversion
+- GList/GSList type detection
 - Modular lookup pipeline: `find_class_mapping`, `find_interface_mapping`, `find_record_mapping`, `find_enum_mapping`, `find_bitfield_mapping` chained via `or_else`
 
 **Limitations:**
 - No variadic argument support (filtered in `exclude_list.ml`)
 - Limited callback type support
 - No union type handling
-- Out/InOut parameters filtered in class generation (see `filtering.ml`)
 
 ### Code Generation
-**C Stubs (generate/c_stubs.ml - 943 lines):**
+**C Stubs (`generate/c_stub_*.ml` - ~3100 lines across 12 modules):**
 - Proper memory management with CAMLparam/CAMLlocal/CAMLreturn
 - Type converter macros for enums, records, nullable types
 - Property access via g_object_get_property/g_object_set_property with GValue
 - Record allocation/deallocation with copy semantics
+- Array inline conversion (zero-terminated, length-based, GPtrArray, out-param arrays)
+- GList/GSList conversion macros
+- Constructor stub generation with array parameters
+- Out parameter handling (arrays, structs, primitives)
 - Per-library `<ns>_decls.h` declaration headers with dependency includes
+- Version guard emission (`#if GTK_CHECK_VERSION(...)`) for versioned entities and members
 
-**OCaml Interfaces (generate/layer1/ - 546 lines across 5 modules):**
+**OCaml Interfaces (`generate/layer1/` - ~480 lines across 5 modules):**
 - Polymorphic variant types with inheritance chains
 - External declarations matching C stubs
 - Accessor methods for 5 hierarchies (Widget, EventController, CellRenderer, LayoutManager, Expression)
 - Combined module generation for cyclic SCCs
 - Handles nullable parameters/returns
+- Constructor external declarations with self-reference simplification
 
-**High-Level Classes (generate/class_gen*.ml - 952 lines across 8 modules):**
+**High-Level Classes (`generate/class_gen*.ml` - ~1880 lines across 8 modules):**
 - Skeleton class generation with `GObj.widget_impl` inheritance
 - Property methods (get_property, set_property patterns)
 - Method wrappers with type coercion to parent types
 - Concrete class instantiation
 - Signal handler wiring via `connect` method
 - Cross-namespace type resolution via `class_gen_type_resolution.ml`
+- Property/method name conflict detection and resolution
 
-**Signals (generate/signal_gen.ml - ~80 lines):**
-- Signal classes with `Gobject.Signal.connect_simple` connections
-- Only void signals with no parameters supported
+**Signals (`generate/signal_gen.ml` / `signal_marshaller.ml` - ~670 lines):**
+- Signal handler class generation
+- Parameter marshalling via `Gobject.Value` for signals with typed parameters
 - Widget type coercion for signal attachment
+- Unsupported signals are skipped with warnings (not all parameter types are marshallable)
 
-**Enums (generate/enum_code.ml - 250+ lines):**
+**Enums (`generate/enum_code.ml` - ~380 lines):**
 - Type definitions for all enums and bitfields
 - C converter functions using `caml_hash_variant`
 - Namespace prefix handling (Gtk, Gdk, Pango, etc.)
 - Digit-prefixed variant name sanitization
+- Member-level version guards in C converters
 
-### Dependency Handling (dependency_analysis.ml - 225+ lines)
+### Dependency Handling (`dependency_analysis.ml` - ~299 lines)
 **Working:**
 - Tarjan's strongly connected components algorithm
 - Cyclic dependency detection and resolution
@@ -512,158 +534,6 @@ was entirely dead code.
 
 ---
 
-## Major Deficiencies and Missing Features
-
-### 1. Signal Handling - Severely Limited
-**Issue:** Only parameterless void signals are generated (see `generate/signal_gen.ml`).
-
-**Missing:**
-- Signals with parameters (e.g., `key-press-event` with GdkEvent parameter)
-- Signals with return values (e.g., `delete-event` returning bool to prevent window close)
-- Callback wrapper generation for complex signal signatures
-- Event marshalling for GdkEvent, GdkModifierType, etc.
-
-**Impact:** Most GTK4 signals unusable through generated bindings. Users must write manual signal wrappers.
-
-### 2. Factory Functions - Not Implemented
-**Issue:** No factory function generation despite documentation in README (formerly lines 162-174, 309-351, 536-550).
-
-**Missing:**
-- Optional parameter handling for common properties
-- Constructor selection logic (new_with_label, new_with_mnemonic, etc.)
-- Property initialization after construction
-- Packing and show parameter support
-- Customization file system (button.json, window.json, etc.)
-
-**Impact:** Widget creation requires verbose manual constructor calls and separate property setting. Less ergonomic than lablgtk3.
-
-### 3. Container-Specific Methods - Not Generated
-**Issue:** No special handling for container widgets (see README formerly lines 353-384).
-
-**Missing:**
-- Box-like containers: `append`, `prepend`, `insert_child_after` wrappers
-- Single-child containers: `set_child`, `get_child` methods
-- Window/Dialog lifecycle: `destroy`, `present`, `close`, `run` patterns
-- TreeView/ListView: model and selection management
-- Child widget type coercion helpers
-
-**Impact:** Container operations require direct low-level FFI calls. No type-safe child management.
-
-### 4. Range and Adjustment Helpers - Not Generated
-**Issue:** No specialized methods for Range-derived widgets (Scale, Scrollbar, LevelBar).
-
-**Missing:**
-- `value`/`set_value` property methods
-- `adjustment` accessor returning wrapped GData.adjustment object
-- Signal handling for `value-changed`
-- Increment/step configuration helpers
-
-**Impact:** Slider/progress widgets lack convenient OCaml-style access patterns.
-
-### 5. Out/InOut Parameters - Actively Filtered
-**Issue:** Methods with output parameters are skipped entirely (see `filtering.ml` and `class_gen.ml`).
-
-**Missing:**
-- Methods returning multiple values via out parameters
-- Wrapper generation converting out params to OCaml tuples
-- InOut parameter handling with mutable refs or tuples
-
-**Impact:** Significant API coverage gap. Many useful GTK4 methods unavailable (e.g., geometry queries, range queries).
-
-### 6. Array and List Types - Not Supported
-**Issue:** No support for GList, GSList, GPtrArray, or C array parameters/returns.
-
-**Missing:**
-- List type conversion to OCaml lists
-- Array marshalling with length parameters
-- NULL-terminated array handling
-- Transfer-ownership handling for array elements
-
-**Impact:** Methods accepting/returning collections are filtered. Significant API coverage loss.
-
-### 7. Callback Parameters - Not Supported
-**Issue:** No callback type generation or marshalling (distinct from signal callbacks).
-
-**Missing:**
-- Callback type definitions from GIR
-- C callback stub generation for OCaml function values
-- Closure data handling with GDestroyNotify
-- Async callback patterns (e.g., gio_async callbacks)
-
-**Impact:** Async APIs, custom sorting/filtering callbacks, iteration callbacks all unavailable.
-
-### 8. Record Field Accessors - Not Generated
-**Issue:** Records parsed but no field getter/setter generation.
-
-**Missing:**
-- Field accessor methods for record structs
-- Nested record access
-- Field documentation from GIR
-
-**Impact:** Users cannot access struct fields without writing manual C stubs.
-
-### 9. Layer 1 Accessor Methods Not Generated
-**Issue:** `as_widget : t -> Widget.t` and similar parent chain accessor
-methods are not generated in Layer 1 modules. The former hierarchy detection
-system was supposed to generate these but was dead code (removed 2026-03-23).
-
-**Impact:** Layer 2 `inherit` provides parent method access, but there's no
-direct L1 function to upcast a type to its ancestor's type. Could be
-implemented by walking the parent chain.
-
-### 10. Type Coverage - Mostly Resolved via Cross-Namespace References
-**Issue:** ~150 hardcoded type mappings in `type_mappings.ml` for primitive/GLib types.
-
-**Status:** Cross-namespace classes, interfaces, records, enums, and bitfields are now automatically resolved via the reference file system (`cross_references`). The hardcoded mappings are only needed for GLib primitives (`gint`, `gboolean`, `gchar*`, etc.) and special types. Adding new GIR namespaces with classes/records/enums/bitfields requires no changes to `type_mappings.ml`.
-
-**Remaining gap:** Callback types, union types, and some GLib collection types still have no mapping.
-
-### 11. Property Observer Generation - Not Implemented
-**Issue:** No property change notification wrappers (marked TODO in `test_gir_gen.ml`).
-
-**Missing:**
-- `notify::property-name` signal connection helpers
-- Property binding helpers
-- Two-way property synchronization
-
-**Impact:** Property change monitoring requires manual signal connection.
-
-### 12. Builder/Glade Integration - Not Implemented
-**Issue:** No GTK Builder XML support (marked TODO in README formerly lines 667-673).
-
-**Missing:**
-- Widget lookup from builder XML
-- Signal autoconnection
-- Template class support
-- Glade file loading helpers
-
-**Impact:** Cannot use GTK Builder UI files effectively.
-
-### 13. Documentation Generation - Not Implemented
-**Issue:** GIR documentation strings parsed but not emitted in generated code.
-
-**Missing:**
-- OCamldoc comment generation from GIR docs
-- Parameter documentation
-- Example code from GIR annotations
-- Deprecation warnings
-
-**Impact:** Generated code has no inline documentation. Developers must reference GTK docs separately.
-
-### 14. Test Coverage - Minimal Integration Testing
-**Issue:** `test_gir_gen.ml` has unit tests but no real compilation/runtime tests.
-
-**Missing:**
-- Generated code compilation verification
-- Runtime functionality tests with actual GTK4 library
-- Type safety regression tests
-- Performance benchmarks
-- Example program generation
-
-**Impact:** Bugs in generated code may not be caught until user code compilation.
-
----
-
 ## Known Bugs and Quirks
 
 ### Parser Issues (parse/gir_parser.ml)
@@ -674,11 +544,9 @@ implemented by walking the parent chain.
 
 ### Generator Issues
 1. Hierarchy root check uses lowercase string comparison (fragile)
-2. Parent chain building has arbitrary 100-iteration limit
-3. Filtered modules still tracked in generated_modules list (memory overhead)
-4. Combined files generated even for single-element SCCs
-5. Property getter/setter GValue macros have platform-specific issues (commented in `c_stubs.ml`)
-6. Virtual method de-duplication logic may incorrectly skip inherited methods
+2. Combined files generated even for single-element SCCs
+3. Virtual method de-duplication logic may incorrectly skip inherited methods
+4. Some property getter/setter GValue macros have platform-specific edge cases
 
 ### Type Mapping Issues (type_mappings.ml)
 1. Type normalization removes namespace prefix, can cause collisions
@@ -702,78 +570,103 @@ implemented by walking the parent chain.
 
 ## Completion Estimate
 
-**Overall: ~70% Complete**
+**Overall: ~80% Complete**
 
 | Feature | Status | Completeness |
 |---------|--------|--------------|
-| GIR Parsing | ✓ Working | 85% (missing array/callback types) |
-| C FFI Generation | ✓ Working | 90% (missing out params, arrays) |
-| Low-Level OCaml Bindings | ✓ Working | 85% (missing some type conversions) |
-| High-Level Class Wrappers | ⚠ Basic | 60% (no specializations) |
-| Signal Handling | ⚠ Minimal | 30% (parameterless only) |
+| GIR Parsing | ✓ Working | 90% (see `architecture/todo/TODO.md`) |
+| C FFI Generation | ✓ Working | 90% (arrays, out params implemented) |
+| Low-Level OCaml Bindings | ✓ Working | 90% (see `architecture/todo/TODO.md`) |
+| High-Level Class Wrappers | ⚠ Basic | 65% (no specializations) |
+| Signal Handling | ⚠ Partial | 50% (parameterless + typed parameters for supported types) |
 | Enum/Bitfield Support | ✓ Complete | 95% (same + cross-namespace) |
-| Cross-Namespace Types | ✓ Working | 90% (classes, records, enums, bitfields) |
+| Cross-Namespace Types | ✓ Working | 95% (classes, records, enums, bitfields) |
 | Factory Functions | ✗ Missing | 0% |
 | Container Helpers | ✗ Missing | 0% |
 | Hierarchy Detection | ⚠ Hardcoded | 50% (5 hierarchies, removal planned) |
 | Multi-Library Generation | ✓ Complete | 100% (9 namespaces via generate-bindings.sh) |
 | Dependency Handling | ✓ Excellent | 100% |
+| Array/List Support | ✓ Working | 85% (arrays done, GList/GSList partial) |
+| Out/InOut Parameters | ✓ Working | 80% (out params done, inout partial) |
 | Documentation | ✗ Missing | 0% |
-| Test Coverage | ⚠ Basic | 40% (unit tests only) |
+| Test Coverage | ⚠ Good | 65% (unit + integration + C compilation tests) |
 
 ---
 
-## Migration Path From Design Plan to Implementation
+## Migration Path From Design Plan To Implementation
 
-The original design plan (formerly lines 74-676 of this document) outlined a comprehensive multi-phase implementation. The current implementation has achieved:
+The original design plan outlined a comprehensive multi-phase implementation. The current implementation has achieved:
 
 - **Phase 1 (Type System):** ✓ Complete - Polymorphic variants, hierarchy types, accessor methods all implemented
-- **Phase 2 (Signals):** ⚠ Partial - Simple signal generation works, parameter/return value handling not implemented
-- **Phase 3 (High-Level Classes):** ⚠ Partial - Skeleton/concrete classes generated, specializations missing
-- **Phase 4 (Factory Functions):** ✗ Not Started - Documented but not implemented
+- **Phase 2 (Signals):** ⚠ Partial - Simple signal generation works, parameter/return value handling partially implemented via `signal_marshaller.ml`
+- **Phase 3 (High-Level Classes):** ⚠ Partial - Skeleton/concrete classes generated, out/inout parameter support added, specializations still missing. See `architecture/todo/TODO.md`.
+- **Phase 4 (Factory Functions):** ✗ Not Started - See `architecture/todo/TODO.md`.
 - **Phase 5 (Containers):** ✗ Not Started - No special handling
 - **Phase 6 (Inheritance):** ⚠ Partial - 5 hierarchies hardcoded, not automatic
 - **Phase 7 (Special Patterns):** ✗ Not Started - No widget-specific patterns
 
 **Next priorities to achieve full coverage:**
-1. Implement signal parameter and return value handling (close Phase 2)
+1. Complete signal parameter and return value handling (close Phase 2)
 2. Add factory function generation (complete Phase 4)
-3. Implement out/inout parameter wrapping (expand Phase 3)
-4. Add array/list type support (expand parsing and type mapping)
-5. Generate container-specific methods (complete Phase 5)
-6. Make hierarchy detection dynamic (complete Phase 6)
-7. Add widget-specific patterns (complete Phase 7)
+3. Generate container-specific methods (complete Phase 5)
+4. Make hierarchy detection dynamic (complete Phase 6)
+5. Add widget-specific patterns (complete Phase 7)
+6. Add callback type support
+7. Generate record field accessors
 
 ---
 
 ## References for Understanding Implementation
 
 ### Parser and Type System
-- `parse/gir_parser.ml` - GIR XML parsing, extracts classes/interfaces/enums/records/signals
+- `parse/gir_parser.ml` (~1560 lines) - GIR XML parsing, extracts classes/interfaces/enums/records/signals/arrays
 - `types.ml` - AST type definitions for GIR elements, `generation_context` with:
   - `cross_references : generation_context_namespace_cross_references StringMap.t` - Cross-namespace type data
   - `module_groups: (string, string) Hashtbl.t` - Maps class names to combined module names for cyclic groups
   - `current_cycle_classes: string list` - Tracks which classes are in the currently-generating cyclic module
-- `type_mappings.ml` (544 lines) - Type mappings, cross-namespace resolution, `classify_type`, `find_type_mapping_for_gir_type`
+- `type_mappings.ml` (~784 lines) - Type mappings, cross-namespace resolution, `classify_type`, `find_type_mapping_for_gir_type`, array detection
 - `utils.ml` - String normalization, snake_case conversion, `library_wrapper_name`, `external_namespace_to_module_name`
-- `hierarchy_detection.ml` (108 lines) - 5 hardcoded widget hierarchies (removal planned)
-- `dependency_analysis.ml` (225+ lines) - Tarjan's SCC algorithm for cyclic dependency resolution
+- `class_utils.ml` - Qualified module name resolution for cyclic modules
+- `dependency_analysis.ml` (~299 lines) - Tarjan's SCC algorithm for cyclic dependency resolution
+
+### Override System
+- `override_types.ml` / `override_types.mli` - Override AST type definitions
+- `override_parser.ml` (~370 lines) - S-expression parser for `overrides/<ns>.sexp` files
+- `override_apply.ml` (~290 lines) - Apply overrides to parsed GIR data (filter + version)
+- `override_extractor.ml` (~30 lines) - Extract `Since X.Y` version annotations from GIR doc strings
+- `version_guard.ml` - C version guard macro generation
+- `os_filter.ml` - OS/platform filter type for conditional compilation
 
 ### Code Generators
-- `generate/c_stubs.ml` - C FFI stubs, type converters, property GValue access, `<ns>_decls.h` headers
-- `generate/layer1/` (5 modules, 546 lines) - Layer 1 OCaml interfaces: helpers, constructors, methods, properties, main orchestration
-- `generate/ml_interface.ml` (10 lines) - Thin re-export wrapper for layer1/
-- `generate/class_gen*.ml` (8 modules, 952 lines) - Layer 2 high-level wrappers: body, method, property, type resolution, helpers, conflict detection, converter
-- `generate/signal_gen.ml` - Signal handler classes (parameterless void signals only)
-- `generate/enum_code.ml` - Enum/bitfield types and C converters for all namespaces
-- `generate/dune_file.ml` - Build configuration generation with cross-namespace library dependencies
+- `generate/c_stubs.ml` (~161 lines) - C FFI orchestration, dependency extraction, re-exports
+- `generate/c_stub_helpers.ml` (~622 lines) - Shared C generation utilities, version guard emission
+- `generate/c_stub_method.ml` (~742 lines) - Method wrapper C code generation
+- `generate/c_stub_method_out.ml` (~148 lines) - Out-parameter array and struct handling
+- `generate/c_stub_property.ml` (~325 lines) - Property getter/setter GValue access
+- `generate/c_stub_constructor.ml` (~297 lines) - Constructor C stub generation
+- `generate/c_stub_enum.ml` (~62 lines) / `c_stub_bitfield.ml` (~96 lines) - Enum/bitfield C converters
+- `generate/c_stub_record.ml` (~278 lines) - Boxed record converters, copy method detection
+- `generate/c_stub_class.ml` (~96 lines) - Class type macros (`GtkWidget_val`, `Val_GtkWidget`)
+- `generate/c_stub_array_conv.ml` (~461 lines) - Inline array conversion code generation
+- `generate/c_stub_gvalue.ml` (~165 lines) - GValue access helper macros
+- `generate/c_stub_type_analysis.ml` (~136 lines) - Property type introspection for GValue dispatch
+- `c_stub_list_conv.ml` (~194 lines) - GList/GSList conversion code generation
+- `generate/layer1/` (5 modules, ~480 lines) - Layer 1 OCaml interfaces: helpers, constructors, methods, properties, main orchestration
+- `generate/ml_interface.ml` (~10 lines) - Thin re-export wrapper for layer1/
+- `generate/class_gen*.ml` (8 modules, ~1880 lines) - Layer 2 high-level wrappers: body, method, property, type resolution, helpers, conflict detection, converter
+- `generate/signal_gen.ml` (~353 lines) - Signal handler class generation
+- `generate/signal_marshaller.ml` (~320 lines) - Signal parameter marshalling to/from `Gobject.Value`
+- `generate/enum_code.ml` (~380 lines) - Enum/bitfield OCaml type definitions and C converters for all namespaces
+- `generate/dune_file.ml` (~230 lines) - Build configuration generation with cross-namespace library dependencies
+- `generate/library_module.ml` (~222 lines) - Combined library module (`Gtk.ml`) generation
+- `generate/common.ml` - Shared types (`StringSet`, `module_names`) for class generation
 
 ### Filtering and Utilities
-- `filtering.ml` - Method/property filtering, unknown type detection, duplicate removal (no cross-namespace filtering)
-- `exclude_list.ml` - Platform-specific types, variadic functions, skip rules
+- `filtering.ml` (~281 lines) - Method/property filtering, unknown type detection, duplicate removal
+- `exclude_list.ml` (~68 lines) - Platform-specific types, variadic functions, skip rules
 
 ### Entry Point
-- `gir_gen.ml` (1164 lines) - CLI entry point, generation pipeline orchestration, reference file loading, binding generation
+- `bin/gir_gen.ml` (~1929 lines) - CLI entry point, generation pipeline orchestration, reference file loading, binding generation
 
 ### Build Automation
 - `scripts/generate-bindings.sh` - Two-phase generation: reference files then bindings for all 9 namespaces
@@ -795,4 +688,4 @@ The original design plan (formerly lines 74-676 of this document) outlined a com
 - **GTK4 API Reference**: https://docs.gtk.org/gtk4/
 - **GIR Format Annotations**: https://gi.readthedocs.io/en/latest/annotations/giannotations.html
 - **lablgtk3 Reference** - Polymorphic variant type patterns for GTK3 bindings
-- **Cross-Namespace Plan**: `architecture/todo/CROSS_NAMESPACE_PLAN.md`
+- **Cross-Namespace Architecture**: `architecture/cross_namespace_types.md`

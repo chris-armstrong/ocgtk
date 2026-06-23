@@ -1,7 +1,10 @@
-(* Signal class defined in gsection_model_signals.ml *)
-
 class type section_model_t = object
-  inherit Gsection_model_signals.section_model_signals
+  method on_sections_changed :
+    ?after:bool ->
+    callback:(position:int -> n_items:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method sections_changed : int -> int -> unit
   method as_section_model : Section_model.t
 end
@@ -9,7 +12,8 @@ end
 (* High-level class for SectionModel *)
 class section_model (obj : Section_model.t) : section_model_t =
   object (self)
-    inherit Gsection_model_signals.section_model_signals obj
+    method on_sections_changed ?(after = false) ~callback () =
+      Section_model.on_sections_changed ~after self#as_section_model ~callback
 
     method sections_changed : int -> int -> unit =
       fun position n_items ->

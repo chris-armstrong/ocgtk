@@ -58,7 +58,7 @@ value. *)
 
 external set_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -86,7 +86,7 @@ external get_inconsistent : t -> bool = "ml_gtk_check_button_get_inconsistent"
 
 external get_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_check_button_get_child"
@@ -96,3 +96,11 @@ external get_active : t -> bool = "ml_gtk_check_button_get_active"
 (** Returns whether the check button is active. *)
 
 (* Properties *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_toggled ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"toggled" ~callback
+    ~after:(Option.value after ~default:false)

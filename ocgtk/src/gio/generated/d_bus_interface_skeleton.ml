@@ -87,3 +87,18 @@ external get_g_flags : t -> Gio_enums.dbusinterfaceskeletonflags
 external set_g_flags : t -> Gio_enums.dbusinterfaceskeletonflags -> unit
   = "ml_g_d_bus_interface_skeleton_set_g_flags"
 (** Set property: g-flags *)
+
+let on_g_authorize_method ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let invocation =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v
+        in
+        let result = callback ~invocation in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"g-authorize-method" ~callback:closure
+    ~after:(Option.value after ~default:false)

@@ -1,6 +1,12 @@
 class type gesture_swipe_t = object
   inherit GGesture_single.gesture_single_t
-  inherit Ggesture_swipe_signals.gesture_swipe_signals
+
+  method on_swipe :
+    ?after:bool ->
+    callback:(velocity_x:float -> velocity_y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method as_gesture_swipe : Gesture_swipe.t
 end
 

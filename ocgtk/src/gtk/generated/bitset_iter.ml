@@ -31,3 +31,5 @@ external get_value : t -> int = "ml_gtk_bitset_iter_get_value"
 
 If @iter is not valid and [method@Gtk.BitsetIter.is_valid]
 returns %FALSE, this function returns 0. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gtk_bitset_iter_get_type"

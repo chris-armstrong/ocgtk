@@ -73,21 +73,6 @@ CAMLexport const void* ml_gobject_ext_of_val(value val);
 CAMLexport value ml_gobject_val_of_ext_option(const void *gobject);
 
 /* ==================================================================== */
-/* Enums <-> Polymorphic Variants */
-/* ==================================================================== */
-
-typedef struct { value key; int data; } lookup_info;
-
-/* Enum conversion functions (implemented in wrappers.c) */
-/* Internal C variants - accept lookup table pointers directly */
-value lookup_from_c_direct (const lookup_info *table, int data);
-int lookup_to_c_direct (const lookup_info *table, value key);
-
-/* External OCaml FFI variants - accept lookup tables as OCaml values */
-CAMLexport value ml_lookup_from_c (value table, value data);
-CAMLexport value ml_lookup_to_c (value table, value key);
-
-/* ==================================================================== */
 /* OCaml Value Helpers */
 /* ==================================================================== */
 
@@ -117,6 +102,9 @@ CAMLexport value ml_lookup_to_c (value table, value key);
 /* GClosure - custom block with finalizer (defined in ml_gobject.c) */
 #define GClosure_val(val) (*((GClosure**)Data_custom_val(val)))
 
+/* Exception-escape observation flag (defined in ml_gobject.c, accessed by test helpers) */
+extern int ml_closure_exception_flag;
+
 /* GType */
 #define GType_val(val) ((GType)Long_val(val))
 #define Val_GType(t) (Val_long(t))
@@ -125,17 +113,20 @@ CAMLexport value ml_lookup_to_c (value table, value key);
 /* Bounded integer types (private int representation)                   */
 /* ==================================================================== */
 
-/* Bounded integer types — all backed by OCaml int (private int representation).
- * The cast on read (UInt16_val, etc.) handles sign/zero extension from OCaml's
- * tagged int correctly. The cast on write (Val_uint16, etc.) ensures the value
- * is stored with the correct bit pattern before tagging. */
+/* Bounded integer types backed by OCaml int.
+ * The cast on read handles sign/zero extension from OCaml's tagged int correctly.
+ * The cast on write ensures the value is stored with the correct bit pattern
+ * before tagging.
+ *
+ * Note: <ocaml_integers.h> provides only the *unsigned* variants (Uint8_val,
+ * Uint16_val, etc.).  The signed Int8_val / Int16_val are not in that header,
+ * so we define them here.  UInt8/UInt16/UInt32 reuse Long_val (wider than
+ * Int_val) which is safe for the ranges these types cover. */
 #define UInt8_val(v)           ((uint8_t)(Long_val(v)))
 #define Val_uint8(x)           (Val_long((uint8_t)(x)))
-#define Int8_val(v)            ((int8_t)(Long_val(v)))
-#define Val_int8(x)            (Val_long((int8_t)(x)))
+#define Int16_val(v)           ((int16_t)(Long_val(v)))
 #define UInt16_val(v)          ((uint16_t)(Long_val(v)))
 #define Val_uint16(x)          (Val_long((uint16_t)(x)))
-#define Int16_val(v)           ((int16_t)(Long_val(v)))
 #define Val_int16(x)           (Val_long((int16_t)(x)))
 #define UInt32_val(v)          ((uint32_t)(Long_val(v)))
 #define Val_uint32(x)          (Val_long((uint32_t)(x)))
@@ -272,15 +263,22 @@ value Res_Error(value v);
 /* Special case for unit result */
 #define ValUnit Val_unit
 
-/* Convert GError to OCaml GError.t record */
-/* Defined in wrappers.c */
-value Val_GError(GError *error);
+/* GError custom block — defined in wrappers.c */
+extern struct custom_operations ocgtk_gerror_ops;
+value Val_GError(const GError *error);
+#define GError_val(v) (*((GError**)Data_custom_val(v)))
 
 /* ==================================================================== */
 /* GValue */
 /* ==================================================================== */
 
 CAMLprim GValue *GValue_val(value val);
+
+/* Wrap a borrowed const GValue* into an owned Gobject.Value.t OCaml value.
+   Copies the GValue contents via g_value_copy so the caller (GTK) retains
+   ownership of the original.  The returned block's finalizer calls
+   g_value_unset.  src must not be NULL (caller must check). */
+extern value Val_GValue_copy(const GValue *src);
 
 /* ==================================================================== */
 /* GVariant                                                             */

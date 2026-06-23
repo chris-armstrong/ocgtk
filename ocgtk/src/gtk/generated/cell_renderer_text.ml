@@ -355,3 +355,19 @@ external get_wrap_width : t -> int = "ml_gtk_cell_renderer_text_get_wrap_width"
 external set_wrap_width : t -> int -> unit
   = "ml_gtk_cell_renderer_text_set_wrap_width"
 (** Set property: wrap-width *)
+
+let on_edited ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let path =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_string v
+        in
+        let new_text =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_string v
+        in
+        callback ~path ~new_text)
+  in
+  Gobject.Signal.connect obj ~name:"edited" ~callback:closure
+    ~after:(Option.value after ~default:false)

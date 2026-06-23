@@ -92,3 +92,9 @@ external get_selection : t -> Bitset.t = "ml_gtk_selection_model_get_selection"
     consider using [method@Gtk.SelectionModel.is_selected] or if you are only
     interested in a few, consider
     [method@Gtk.SelectionModel.get_selection_in_range]. *)
+
+val on_selection_changed :
+  ?after:bool ->
+  t ->
+  callback:(position:int -> n_items:int -> unit) ->
+  Gobject.Signal.handler_id

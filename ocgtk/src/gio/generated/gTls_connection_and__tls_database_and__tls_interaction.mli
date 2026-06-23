@@ -1,6 +1,14 @@
 class type tls_connection_t = object
   inherit GIo_stream.io_stream_t
-  inherit Gtls_connection_signals.tls_connection_signals
+
+  method on_accept_certificate :
+    ?after:bool ->
+    callback:
+      (peer_cert:GTls_certificate.tls_certificate_t ->
+      errors:Gio_enums.tlscertificateflags ->
+      bool) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method emit_accept_certificate :
     GTls_certificate.tls_certificate_t -> Gio_enums.tlscertificateflags -> bool

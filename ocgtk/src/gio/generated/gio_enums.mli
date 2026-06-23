@@ -13,6 +13,9 @@ type bustype = [
   | `SESSION
 ]
 
+val bustype_of_int : int -> bustype
+val bustype_to_int : bustype -> int
+
 (* ConverterResult - enumeration *)
 type converterresult = [
   (** There was an error during conversion. *)
@@ -24,6 +27,9 @@ type converterresult = [
   (** Flushing is finished *)
   | `FLUSHED
 ]
+
+val converterresult_of_int : int -> converterresult
+val converterresult_to_int : converterresult -> int
 
 (* CredentialsType - enumeration *)
 type credentialstype = [
@@ -44,6 +50,9 @@ type credentialstype = [
   (** The native credentials type is a PID `DWORD`. Added in 2.72. *)
   | `WIN32_PID
 ]
+
+val credentialstype_of_int : int -> credentialstype
+val credentialstype_to_int : credentialstype -> int
 
 (* DBusError - enumeration *)
 type dbuserror = [
@@ -149,6 +158,9 @@ can't fix it for compatibility reasons so just be careful. *)
   | `PROPERTY_READ_ONLY
 ]
 
+val dbuserror_of_int : int -> dbuserror
+val dbuserror_to_int : dbuserror -> int
+
 (* DBusMessageByteOrder - enumeration *)
 type dbusmessagebyteorder = [
   (** The byte order is big endian. *)
@@ -156,6 +168,9 @@ type dbusmessagebyteorder = [
   (** The byte order is little endian. *)
   | `LITTLE_ENDIAN
 ]
+
+val dbusmessagebyteorder_of_int : int -> dbusmessagebyteorder
+val dbusmessagebyteorder_to_int : dbusmessagebyteorder -> int
 
 (* DBusMessageHeaderField - enumeration *)
 type dbusmessageheaderfield = [
@@ -181,6 +196,9 @@ type dbusmessageheaderfield = [
   | `NUM_UNIX_FDS
 ]
 
+val dbusmessageheaderfield_of_int : int -> dbusmessageheaderfield
+val dbusmessageheaderfield_to_int : dbusmessageheaderfield -> int
+
 (* DBusMessageType - enumeration *)
 type dbusmessagetype = [
   (** Message is of invalid type. *)
@@ -195,6 +213,9 @@ type dbusmessagetype = [
   | `SIGNAL
 ]
 
+val dbusmessagetype_of_int : int -> dbusmessagetype
+val dbusmessagetype_to_int : dbusmessagetype -> int
+
 (* DataStreamByteOrder - enumeration *)
 type datastreambyteorder = [
   (** Selects Big Endian byte order. *)
@@ -204,6 +225,9 @@ type datastreambyteorder = [
   (** Selects endianness based on host machine's architecture. *)
   | `HOST_ENDIAN
 ]
+
+val datastreambyteorder_of_int : int -> datastreambyteorder
+val datastreambyteorder_to_int : datastreambyteorder -> int
 
 (* DataStreamNewlineType - enumeration *)
 type datastreamnewlinetype = [
@@ -216,6 +240,9 @@ type datastreamnewlinetype = [
   (** Automatically try to handle any line ending type. *)
   | `ANY
 ]
+
+val datastreamnewlinetype_of_int : int -> datastreamnewlinetype
+val datastreamnewlinetype_to_int : datastreamnewlinetype -> int
 
 (* DriveStartStopType - enumeration *)
 type drivestartstoptype = [
@@ -239,6 +266,9 @@ type drivestartstoptype = [
   | `PASSWORD
 ]
 
+val drivestartstoptype_of_int : int -> drivestartstoptype
+val drivestartstoptype_to_int : drivestartstoptype -> int
+
 (* EmblemOrigin - enumeration *)
 type emblemorigin = [
   (** Emblem of unknown origin *)
@@ -251,6 +281,9 @@ type emblemorigin = [
   | `TAG
 ]
 
+val emblemorigin_of_int : int -> emblemorigin
+val emblemorigin_to_int : emblemorigin -> int
+
 (* FileAttributeStatus - enumeration *)
 type fileattributestatus = [
   (** Attribute value is unset (empty). *)
@@ -260,6 +293,9 @@ type fileattributestatus = [
   (** Indicates an error in setting the value. *)
   | `ERROR_SETTING
 ]
+
+val fileattributestatus_of_int : int -> fileattributestatus
+val fileattributestatus_to_int : fileattributestatus -> int
 
 (* FileAttributeType - enumeration *)
 type fileattributetype = [
@@ -284,6 +320,9 @@ type fileattributetype = [
   (** a %NULL terminated char **. Since 2.22 *)
   | `STRINGV
 ]
+
+val fileattributetype_of_int : int -> fileattributetype
+val fileattributetype_to_int : fileattributetype -> int
 
 (* FileMonitorEvent - enumeration *)
 type filemonitorevent = [
@@ -318,6 +357,9 @@ type filemonitorevent = [
   | `MOVED_OUT
 ]
 
+val filemonitorevent_of_int : int -> filemonitorevent
+val filemonitorevent_to_int : filemonitorevent -> int
+
 (* FileType - enumeration *)
 type filetype = [
   (** File's type is unknown. *)
@@ -338,6 +380,9 @@ type filetype = [
   | `MOUNTABLE
 ]
 
+val filetype_of_int : int -> filetype
+val filetype_to_int : filetype -> int
+
 (* FilesystemPreviewType - enumeration *)
 type filesystempreviewtype = [
   (** Only preview files if user has explicitly requested it. *)
@@ -347,6 +392,9 @@ type filesystempreviewtype = [
   (** Never preview files. *)
   | `NEVER
 ]
+
+val filesystempreviewtype_of_int : int -> filesystempreviewtype
+val filesystempreviewtype_to_int : filesystempreviewtype -> int
 
 (* IOErrorEnum - enumeration *)
 type ioerrorenum = [
@@ -465,6 +513,9 @@ type ioerrorenum = [
   | `DESTINATION_UNSET
 ]
 
+val ioerrorenum_of_int : int -> ioerrorenum
+val ioerrorenum_to_int : ioerrorenum -> int
+
 (* IOModuleScopeFlags - enumeration *)
 type iomodulescopeflags = [
   (** No module scan flags *)
@@ -474,6 +525,9 @@ type iomodulescopeflags = [
     basename as previously loaded module. *)
   | `BLOCK_DUPLICATES
 ]
+
+val iomodulescopeflags_of_int : int -> iomodulescopeflags
+val iomodulescopeflags_to_int : iomodulescopeflags -> int
 
 (* MemoryMonitorWarningLevel - enumeration *)
 type memorymonitorwarninglevel = [
@@ -491,6 +545,9 @@ type memorymonitorwarninglevel = [
   | `CRITICAL
 ]
 
+val memorymonitorwarninglevel_of_int : int -> memorymonitorwarninglevel
+val memorymonitorwarninglevel_to_int : memorymonitorwarninglevel -> int
+
 (* MountOperationResult - enumeration *)
 type mountoperationresult = [
   (** The request was fulfilled and the
@@ -503,6 +560,9 @@ type mountoperationresult = [
     implemented) *)
   | `UNHANDLED
 ]
+
+val mountoperationresult_of_int : int -> mountoperationresult
+val mountoperationresult_to_int : mountoperationresult -> int
 
 (* NetworkConnectivity - enumeration *)
 type networkconnectivity = [
@@ -521,6 +581,9 @@ type networkconnectivity = [
   appears to be able to reach the full Internet. *)
   | `FULL
 ]
+
+val networkconnectivity_of_int : int -> networkconnectivity
+val networkconnectivity_to_int : networkconnectivity -> int
 
 (* NotificationPriority - enumeration *)
 type notificationpriority = [
@@ -542,6 +605,9 @@ type notificationpriority = [
   | `URGENT
 ]
 
+val notificationpriority_of_int : int -> notificationpriority
+val notificationpriority_to_int : notificationpriority -> int
+
 (* PasswordSave - enumeration *)
 type passwordsave = [
   (** never save a password. *)
@@ -552,6 +618,9 @@ type passwordsave = [
   | `PERMANENTLY
 ]
 
+val passwordsave_of_int : int -> passwordsave
+val passwordsave_to_int : passwordsave -> int
+
 (* PollableReturn - enumeration *)
 type pollablereturn = [
   (** Generic error condition for when an operation fails. *)
@@ -561,6 +630,9 @@ type pollablereturn = [
   (** The operation would block. *)
   | `WOULD_BLOCK
 ]
+
+val pollablereturn_of_int : int -> pollablereturn
+val pollablereturn_to_int : pollablereturn -> int
 
 (* ResolverError - enumeration *)
 type resolvererror = [
@@ -573,6 +645,9 @@ type resolvererror = [
   (** unknown error *)
   | `INTERNAL
 ]
+
+val resolvererror_of_int : int -> resolvererror
+val resolvererror_to_int : resolvererror -> int
 
 (* ResolverRecordType - enumeration *)
 type resolverrecordtype = [
@@ -588,6 +663,9 @@ type resolverrecordtype = [
   | `NS
 ]
 
+val resolverrecordtype_of_int : int -> resolverrecordtype
+val resolverrecordtype_to_int : resolverrecordtype -> int
+
 (* ResourceError - enumeration *)
 type resourceerror = [
   (** no file was found at the requested path *)
@@ -595,6 +673,9 @@ type resourceerror = [
   (** unknown error *)
   | `INTERNAL
 ]
+
+val resourceerror_of_int : int -> resourceerror
+val resourceerror_to_int : resourceerror -> int
 
 (* SocketClientEvent - enumeration *)
 type socketclientevent = [
@@ -625,6 +706,9 @@ type socketclientevent = [
   | `COMPLETE
 ]
 
+val socketclientevent_of_int : int -> socketclientevent
+val socketclientevent_to_int : socketclientevent -> int
+
 (* SocketFamily - enumeration *)
 type socketfamily = [
   (** no address family *)
@@ -636,6 +720,9 @@ type socketfamily = [
   (** the IPv6 family *)
   | `IPV6
 ]
+
+val socketfamily_of_int : int -> socketfamily
+val socketfamily_to_int : socketfamily -> int
 
 (* SocketListenerEvent - enumeration *)
 type socketlistenerevent = [
@@ -651,6 +738,9 @@ type socketlistenerevent = [
   | `LISTENED
 ]
 
+val socketlistenerevent_of_int : int -> socketlistenerevent
+val socketlistenerevent_to_int : socketlistenerevent -> int
+
 (* SocketProtocol - enumeration *)
 type socketprotocol = [
   (** The protocol type is unknown *)
@@ -664,6 +754,9 @@ type socketprotocol = [
   (** SCTP over IP *)
   | `SCTP
 ]
+
+val socketprotocol_of_int : int -> socketprotocol
+val socketprotocol_to_int : socketprotocol -> int
 
 (* SocketType - enumeration *)
 type sockettype = [
@@ -679,6 +772,9 @@ type sockettype = [
   | `SEQPACKET
 ]
 
+val sockettype_of_int : int -> sockettype
+val sockettype_to_int : sockettype -> int
+
 (* TlsAuthenticationMode - enumeration *)
 type tlsauthenticationmode = [
   (** client authentication not required *)
@@ -689,11 +785,17 @@ type tlsauthenticationmode = [
   | `REQUIRED
 ]
 
+val tlsauthenticationmode_of_int : int -> tlsauthenticationmode
+val tlsauthenticationmode_to_int : tlsauthenticationmode -> int
+
 (* TlsCertificateRequestFlags - enumeration *)
 type tlscertificaterequestflags = [
   (** No flags *)
   | `NONE
 ]
+
+val tlscertificaterequestflags_of_int : int -> tlscertificaterequestflags
+val tlscertificaterequestflags_to_int : tlscertificaterequestflags -> int
 
 (* TlsChannelBindingError - enumeration *)
 type tlschannelbindingerror = [
@@ -720,6 +822,9 @@ type tlschannelbindingerror = [
   | `GENERAL_ERROR
 ]
 
+val tlschannelbindingerror_of_int : int -> tlschannelbindingerror
+val tlschannelbindingerror_to_int : tlschannelbindingerror -> int
+
 (* TlsChannelBindingType - enumeration *)
 type tlschannelbindingtype = [
   (** [`tls-unique`](https://tools.ietf.org/html/rfc5929#section-3) binding
@@ -733,6 +838,9 @@ type tlschannelbindingtype = [
   | `EXPORTER
 ]
 
+val tlschannelbindingtype_of_int : int -> tlschannelbindingtype
+val tlschannelbindingtype_to_int : tlschannelbindingtype -> int
+
 (* TlsDatabaseLookupFlags - enumeration *)
 type tlsdatabaselookupflags = [
   (** No lookup flags *)
@@ -741,6 +849,9 @@ type tlsdatabaselookupflags = [
     a private key. *)
   | `KEYPAIR
 ]
+
+val tlsdatabaselookupflags_of_int : int -> tlsdatabaselookupflags
+val tlsdatabaselookupflags_to_int : tlsdatabaselookupflags -> int
 
 (* TlsError - enumeration *)
 type tlserror = [
@@ -774,6 +885,9 @@ type tlserror = [
   | `BAD_CERTIFICATE_PASSWORD
 ]
 
+val tlserror_of_int : int -> tlserror
+val tlserror_to_int : tlserror -> int
+
 (* TlsInteractionResult - enumeration *)
 type tlsinteractionresult = [
   (** The interaction was unhandled (i.e. not
@@ -786,6 +900,9 @@ type tlsinteractionresult = [
     and the operation should be aborted. *)
   | `FAILED
 ]
+
+val tlsinteractionresult_of_int : int -> tlsinteractionresult
+val tlsinteractionresult_to_int : tlsinteractionresult -> int
 
 (* TlsProtocolVersion - enumeration *)
 type tlsprotocolversion = [
@@ -807,6 +924,9 @@ type tlsprotocolversion = [
   | `DTLS_1_2
 ]
 
+val tlsprotocolversion_of_int : int -> tlsprotocolversion
+val tlsprotocolversion_to_int : tlsprotocolversion -> int
+
 (* TlsRehandshakeMode - enumeration *)
 type tlsrehandshakemode = [
   (** Never allow rehandshaking *)
@@ -816,6 +936,9 @@ type tlsrehandshakemode = [
   (** Allow unsafe rehandshaking *)
   | `UNSAFELY
 ]
+
+val tlsrehandshakemode_of_int : int -> tlsrehandshakemode
+val tlsrehandshakemode_to_int : tlsrehandshakemode -> int
 
 (* UnixSocketAddressType - enumeration *)
 type unixsocketaddresstype = [
@@ -832,6 +955,9 @@ type unixsocketaddresstype = [
   | `ABSTRACT_PADDED
 ]
 
+val unixsocketaddresstype_of_int : int -> unixsocketaddresstype
+val unixsocketaddresstype_to_int : unixsocketaddresstype -> int
+
 (* ZlibCompressorFormat - enumeration *)
 type zlibcompressorformat = [
   (** deflate compression with zlib header *)
@@ -841,6 +967,9 @@ type zlibcompressorformat = [
   (** deflate compression with no header *)
   | `RAW
 ]
+
+val zlibcompressorformat_of_int : int -> zlibcompressorformat
+val zlibcompressorformat_to_int : zlibcompressorformat -> int
 
 (* AppInfoCreateFlags - bitfield/flags *)
 type appinfocreateflags_flag = [
@@ -855,6 +984,9 @@ type appinfocreateflags_flag = [
 ]
 
 type appinfocreateflags = appinfocreateflags_flag list
+
+val appinfocreateflags_of_int : int -> appinfocreateflags
+val appinfocreateflags_to_int : appinfocreateflags -> int
 
 (* ApplicationFlags - bitfield/flags *)
 type applicationflags_flag = [
@@ -912,6 +1044,9 @@ type applicationflags_flag = [
 
 type applicationflags = applicationflags_flag list
 
+val applicationflags_of_int : int -> applicationflags
+val applicationflags_to_int : applicationflags -> int
+
 (* AskPasswordFlags - bitfield/flags *)
 type askpasswordflags_flag = [
   (** operation requires a password. *)
@@ -930,6 +1065,9 @@ type askpasswordflags_flag = [
 
 type askpasswordflags = askpasswordflags_flag list
 
+val askpasswordflags_of_int : int -> askpasswordflags
+val askpasswordflags_to_int : askpasswordflags -> int
+
 (* BusNameOwnerFlags - bitfield/flags *)
 type busnameownerflags_flag = [
   (** No flags set. *)
@@ -946,6 +1084,9 @@ return an error from g_bus_own_name() rather than entering the waiting queue for
 
 type busnameownerflags = busnameownerflags_flag list
 
+val busnameownerflags_of_int : int -> busnameownerflags
+val busnameownerflags_to_int : busnameownerflags -> int
+
 (* BusNameWatcherFlags - bitfield/flags *)
 type busnamewatcherflags_flag = [
   (** No flags set. *)
@@ -958,6 +1099,9 @@ name. *)
 
 type busnamewatcherflags = busnamewatcherflags_flag list
 
+val busnamewatcherflags_of_int : int -> busnamewatcherflags
+val busnamewatcherflags_to_int : busnamewatcherflags -> int
+
 (* ConverterFlags - bitfield/flags *)
 type converterflags_flag = [
   (** No flags. *)
@@ -969,6 +1113,9 @@ type converterflags_flag = [
 ]
 
 type converterflags = converterflags_flag list
+
+val converterflags_of_int : int -> converterflags
+val converterflags_to_int : converterflags -> int
 
 (* DBusCallFlags - bitfield/flags *)
 type dbuscallflags_flag = [
@@ -985,6 +1132,9 @@ wait for interactive authorization. Since 2.46. *)
 
 type dbuscallflags = dbuscallflags_flag list
 
+val dbuscallflags_of_int : int -> dbuscallflags
+val dbuscallflags_to_int : dbuscallflags -> int
+
 (* DBusCapabilityFlags - bitfield/flags *)
 type dbuscapabilityflags_flag = [
   (** No flags set. *)
@@ -995,6 +1145,9 @@ supports exchanging UNIX file descriptors with the remote peer. *)
 ]
 
 type dbuscapabilityflags = dbuscapabilityflags_flag list
+
+val dbuscapabilityflags_of_int : int -> dbuscapabilityflags
+val dbuscapabilityflags_to_int : dbuscapabilityflags -> int
 
 (* DBusConnectionFlags - bitfield/flags *)
 type dbusconnectionflags_flag = [
@@ -1028,6 +1181,9 @@ as a server, require the UID of the peer to be the same as the UID of the server
 
 type dbusconnectionflags = dbusconnectionflags_flag list
 
+val dbusconnectionflags_of_int : int -> dbusconnectionflags
+val dbusconnectionflags_to_int : dbusconnectionflags -> int
+
 (* DBusInterfaceSkeletonFlags - bitfield/flags *)
 type dbusinterfaceskeletonflags_flag = [
   (** No flags set. *)
@@ -1040,6 +1196,9 @@ type dbusinterfaceskeletonflags_flag = [
 ]
 
 type dbusinterfaceskeletonflags = dbusinterfaceskeletonflags_flag list
+
+val dbusinterfaceskeletonflags_of_int : int -> dbusinterfaceskeletonflags
+val dbusinterfaceskeletonflags_to_int : dbusinterfaceskeletonflags -> int
 
 (* DBusMessageFlags - bitfield/flags *)
 type dbusmessageflags_flag = [
@@ -1058,6 +1217,9 @@ authorization. Since 2.46. *)
 
 type dbusmessageflags = dbusmessageflags_flag list
 
+val dbusmessageflags_of_int : int -> dbusmessageflags
+val dbusmessageflags_to_int : dbusmessageflags -> int
+
 (* DBusObjectManagerClientFlags - bitfield/flags *)
 type dbusobjectmanagerclientflags_flag = [
   (** No flags set. *)
@@ -1071,6 +1233,9 @@ type dbusobjectmanagerclientflags_flag = [
 
 type dbusobjectmanagerclientflags = dbusobjectmanagerclientflags_flag list
 
+val dbusobjectmanagerclientflags_of_int : int -> dbusobjectmanagerclientflags
+val dbusobjectmanagerclientflags_to_int : dbusobjectmanagerclientflags -> int
+
 (* DBusPropertyInfoFlags - bitfield/flags *)
 type dbuspropertyinfoflags_flag = [
   (** No flags set. *)
@@ -1082,6 +1247,9 @@ type dbuspropertyinfoflags_flag = [
 ]
 
 type dbuspropertyinfoflags = dbuspropertyinfoflags_flag list
+
+val dbuspropertyinfoflags_of_int : int -> dbuspropertyinfoflags
+val dbuspropertyinfoflags_to_int : dbuspropertyinfoflags -> int
 
 (* DBusProxyFlags - bitfield/flags *)
 type dbusproxyflags_flag = [
@@ -1110,6 +1278,9 @@ and only if %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START is not also specified. *)
 
 type dbusproxyflags = dbusproxyflags_flag list
 
+val dbusproxyflags_of_int : int -> dbusproxyflags
+val dbusproxyflags_to_int : dbusproxyflags -> int
+
 (* DBusSendMessageFlags - bitfield/flags *)
 type dbussendmessageflags_flag = [
   (** No flags set. *)
@@ -1121,6 +1292,9 @@ sending a message. *)
 ]
 
 type dbussendmessageflags = dbussendmessageflags_flag list
+
+val dbussendmessageflags_of_int : int -> dbussendmessageflags
+val dbussendmessageflags_to_int : dbussendmessageflags -> int
 
 (* DBusServerFlags - bitfield/flags *)
 type dbusserverflags_flag = [
@@ -1139,6 +1313,9 @@ peer to be the same as the UID of the server when authenticating. (Since: 2.68) 
 ]
 
 type dbusserverflags = dbusserverflags_flag list
+
+val dbusserverflags_of_int : int -> dbusserverflags
+val dbusserverflags_to_int : dbusserverflags -> int
 
 (* DBusSignalFlags - bitfield/flags *)
 type dbussignalflags_flag = [
@@ -1159,6 +1336,9 @@ or one of the paths is a subpath of the other. *)
 
 type dbussignalflags = dbussignalflags_flag list
 
+val dbussignalflags_of_int : int -> dbussignalflags
+val dbussignalflags_to_int : dbussignalflags -> int
+
 (* DBusSubtreeFlags - bitfield/flags *)
 type dbussubtreeflags_flag = [
   (** No flags set. *)
@@ -1171,6 +1351,9 @@ type dbussubtreeflags_flag = [
 
 type dbussubtreeflags = dbussubtreeflags_flag list
 
+val dbussubtreeflags_of_int : int -> dbussubtreeflags
+val dbussubtreeflags_to_int : dbussubtreeflags -> int
+
 (* DriveStartFlags - bitfield/flags *)
 type drivestartflags_flag = [
   (** No flags set. *)
@@ -1178,6 +1361,9 @@ type drivestartflags_flag = [
 ]
 
 type drivestartflags = drivestartflags_flag list
+
+val drivestartflags_of_int : int -> drivestartflags
+val drivestartflags_to_int : drivestartflags -> int
 
 (* FileAttributeInfoFlags - bitfield/flags *)
 type fileattributeinfoflags_flag = [
@@ -1190,6 +1376,9 @@ type fileattributeinfoflags_flag = [
 ]
 
 type fileattributeinfoflags = fileattributeinfoflags_flag list
+
+val fileattributeinfoflags_of_int : int -> fileattributeinfoflags
+val fileattributeinfoflags_to_int : fileattributeinfoflags -> int
 
 (* FileCopyFlags - bitfield/flags *)
 type filecopyflags_flag = [
@@ -1214,6 +1403,9 @@ type filecopyflags_flag = [
 
 type filecopyflags = filecopyflags_flag list
 
+val filecopyflags_of_int : int -> filecopyflags
+val filecopyflags_to_int : filecopyflags -> int
+
 (* FileCreateFlags - bitfield/flags *)
 type filecreateflags_flag = [
   (** No flags set. *)
@@ -1235,6 +1427,9 @@ type filecreateflags_flag = [
 ]
 
 type filecreateflags = filecreateflags_flag list
+
+val filecreateflags_of_int : int -> filecreateflags
+val filecreateflags_to_int : filecreateflags -> int
 
 (* FileMeasureFlags - bitfield/flags *)
 type filemeasureflags_flag = [
@@ -1258,6 +1453,9 @@ type filemeasureflags_flag = [
 ]
 
 type filemeasureflags = filemeasureflags_flag list
+
+val filemeasureflags_of_int : int -> filemeasureflags
+val filemeasureflags_to_int : filemeasureflags -> int
 
 (* FileMonitorFlags - bitfield/flags *)
 type filemonitorflags_flag = [
@@ -1284,6 +1482,9 @@ type filemonitorflags_flag = [
 
 type filemonitorflags = filemonitorflags_flag list
 
+val filemonitorflags_of_int : int -> filemonitorflags
+val filemonitorflags_to_int : filemonitorflags -> int
+
 (* FileQueryInfoFlags - bitfield/flags *)
 type filequeryinfoflags_flag = [
   (** No flags set. *)
@@ -1293,6 +1494,9 @@ type filequeryinfoflags_flag = [
 ]
 
 type filequeryinfoflags = filequeryinfoflags_flag list
+
+val filequeryinfoflags_of_int : int -> filequeryinfoflags
+val filequeryinfoflags_to_int : filequeryinfoflags -> int
 
 (* IOStreamSpliceFlags - bitfield/flags *)
 type iostreamspliceflags_flag = [
@@ -1311,6 +1515,9 @@ type iostreamspliceflags_flag = [
 
 type iostreamspliceflags = iostreamspliceflags_flag list
 
+val iostreamspliceflags_of_int : int -> iostreamspliceflags
+val iostreamspliceflags_to_int : iostreamspliceflags -> int
+
 (* MountMountFlags - bitfield/flags *)
 type mountmountflags_flag = [
   (** No flags set. *)
@@ -1318,6 +1525,9 @@ type mountmountflags_flag = [
 ]
 
 type mountmountflags = mountmountflags_flag list
+
+val mountmountflags_of_int : int -> mountmountflags
+val mountmountflags_to_int : mountmountflags -> int
 
 (* MountUnmountFlags - bitfield/flags *)
 type mountunmountflags_flag = [
@@ -1329,6 +1539,9 @@ type mountunmountflags_flag = [
 ]
 
 type mountunmountflags = mountunmountflags_flag list
+
+val mountunmountflags_of_int : int -> mountunmountflags
+val mountunmountflags_to_int : mountunmountflags -> int
 
 (* OutputStreamSpliceFlags - bitfield/flags *)
 type outputstreamspliceflags_flag = [
@@ -1344,6 +1557,9 @@ type outputstreamspliceflags_flag = [
 
 type outputstreamspliceflags = outputstreamspliceflags_flag list
 
+val outputstreamspliceflags_of_int : int -> outputstreamspliceflags
+val outputstreamspliceflags_to_int : outputstreamspliceflags -> int
+
 (* ResolverNameLookupFlags - bitfield/flags *)
 type resolvernamelookupflags_flag = [
   (** default behavior (same as g_resolver_lookup_by_name()) *)
@@ -1356,6 +1572,9 @@ type resolvernamelookupflags_flag = [
 
 type resolvernamelookupflags = resolvernamelookupflags_flag list
 
+val resolvernamelookupflags_of_int : int -> resolvernamelookupflags
+val resolvernamelookupflags_to_int : resolvernamelookupflags -> int
+
 (* ResourceFlags - bitfield/flags *)
 type resourceflags_flag = [
   (** No flags set. *)
@@ -1366,6 +1585,9 @@ type resourceflags_flag = [
 
 type resourceflags = resourceflags_flag list
 
+val resourceflags_of_int : int -> resourceflags
+val resourceflags_to_int : resourceflags -> int
+
 (* ResourceLookupFlags - bitfield/flags *)
 type resourcelookupflags_flag = [
   (** No flags set. *)
@@ -1373,6 +1595,9 @@ type resourcelookupflags_flag = [
 ]
 
 type resourcelookupflags = resourcelookupflags_flag list
+
+val resourcelookupflags_of_int : int -> resourcelookupflags
+val resourcelookupflags_to_int : resourcelookupflags -> int
 
 (* SettingsBindFlags - bitfield/flags *)
 type settingsbindflags_flag = [
@@ -1397,6 +1622,9 @@ type settingsbindflags_flag = [
 
 type settingsbindflags = settingsbindflags_flag list
 
+val settingsbindflags_of_int : int -> settingsbindflags
+val settingsbindflags_to_int : settingsbindflags -> int
+
 (* SocketMsgFlags - bitfield/flags *)
 type socketmsgflags_flag = [
   (** No flags. *)
@@ -1412,6 +1640,9 @@ type socketmsgflags_flag = [
 ]
 
 type socketmsgflags = socketmsgflags_flag list
+
+val socketmsgflags_of_int : int -> socketmsgflags
+val socketmsgflags_to_int : socketmsgflags -> int
 
 (* SubprocessFlags - bitfield/flags *)
 type subprocessflags_flag = [
@@ -1455,6 +1686,9 @@ type subprocessflags_flag = [
 
 type subprocessflags = subprocessflags_flag list
 
+val subprocessflags_of_int : int -> subprocessflags
+val subprocessflags_to_int : subprocessflags -> int
+
 (* TestDBusFlags - bitfield/flags *)
 type testdbusflags_flag = [
   (** No flags. *)
@@ -1462,6 +1696,9 @@ type testdbusflags_flag = [
 ]
 
 type testdbusflags = testdbusflags_flag list
+
+val testdbusflags_of_int : int -> testdbusflags
+val testdbusflags_to_int : testdbusflags -> int
 
 (* TlsCertificateFlags - bitfield/flags *)
 type tlscertificateflags_flag = [
@@ -1494,6 +1731,9 @@ type tlscertificateflags_flag = [
 
 type tlscertificateflags = tlscertificateflags_flag list
 
+val tlscertificateflags_of_int : int -> tlscertificateflags
+val tlscertificateflags_to_int : tlscertificateflags -> int
+
 (* TlsDatabaseVerifyFlags - bitfield/flags *)
 type tlsdatabaseverifyflags_flag = [
   (** No verification flags *)
@@ -1501,6 +1741,9 @@ type tlsdatabaseverifyflags_flag = [
 ]
 
 type tlsdatabaseverifyflags = tlsdatabaseverifyflags_flag list
+
+val tlsdatabaseverifyflags_of_int : int -> tlsdatabaseverifyflags
+val tlsdatabaseverifyflags_to_int : tlsdatabaseverifyflags -> int
 
 (* TlsPasswordFlags - bitfield/flags *)
 type tlspasswordflags_flag = [
@@ -1526,4 +1769,7 @@ type tlspasswordflags_flag = [
 ]
 
 type tlspasswordflags = tlspasswordflags_flag list
+
+val tlspasswordflags_of_int : int -> tlspasswordflags
+val tlspasswordflags_to_int : tlspasswordflags -> int
 

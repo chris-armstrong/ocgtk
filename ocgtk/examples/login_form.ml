@@ -3,17 +3,6 @@ module GMain = Ocgtk_gtk.GMain
 (* Login Form Application
    Demonstrates: Entry, PasswordEntry, Button, Label with markup *)
 
-(* close-request returns bool — not yet supported by signal generator *)
-let on_close_request window_obj callback =
-  let closure =
-    Gobject.Closure.create (fun argv ->
-        callback ();
-        Gobject.Value.set_boolean (Gobject.Closure.result argv) false)
-  in
-  ignore
-    (Gobject.Signal.connect window_obj ~name:"close-request" ~callback:closure
-       ~after:false)
-
 let () =
   ignore (GMain.init ());
 
@@ -21,7 +10,12 @@ let () =
   let window = new Window.window window_obj in
   window#set_title (Some "Login Form");
   window#set_default_size 350 200;
-  on_close_request window_obj (fun () -> GMain.quit ());
+  ignore
+    (window#on_close_request
+       ~callback:(fun () ->
+         GMain.quit ();
+         false)
+       ());
 
   (* Create vertical box for layout *)
   let vbox = new Box.box (Wrappers.Box.new_ `VERTICAL 15) in
@@ -84,7 +78,8 @@ let () =
   button_box#append (login_btn :> Widget.widget_t);
 
   ignore
-    (login_btn#on_clicked ~callback:(fun () ->
+    (login_btn#on_clicked
+       ~callback:(fun () ->
          let username = username_entry#get_text () in
          let password = password_entry#get_text () in
 
@@ -98,7 +93,8 @@ let () =
          end
          else
            status_label#set_markup
-             "<span foreground='red'>Invalid credentials</span>"));
+             "<span foreground='red'>Invalid credentials</span>")
+       ());
 
   (* Cancel button *)
   let cancel_btn =
@@ -107,11 +103,13 @@ let () =
   button_box#append (cancel_btn :> Widget.widget_t);
 
   ignore
-    (cancel_btn#on_clicked ~callback:(fun () ->
+    (cancel_btn#on_clicked
+       ~callback:(fun () ->
          username_entry#set_text "";
          password_entry#set_text "";
          status_label#set_label "";
-         remember_check#set_active false));
+         remember_check#set_active false)
+       ());
 
   (* Show window and run main loop *)
   window#present ();

@@ -30,3 +30,9 @@ value Val_cairo_rectangle_t_option(const cairo_rectangle_t *ptr) {
   return Val_some(Val_cairo_rectangle_t(ptr));
 }
 
+
+CAMLprim value ml_cairo_rectangle_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(cairo_gobject_rectangle_get_type()));
+}

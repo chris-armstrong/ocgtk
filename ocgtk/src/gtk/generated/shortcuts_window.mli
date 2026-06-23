@@ -33,3 +33,9 @@ external get_view_name : t -> string = "ml_gtk_shortcuts_window_get_view_name"
 external set_view_name : t -> string -> unit
   = "ml_gtk_shortcuts_window_set_view_name"
 (** Set property: view-name *)
+
+val on_close :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_search :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

@@ -1,14 +1,19 @@
-(* Signal class defined in ginfo_bar_signals.ml *)
-
 class type info_bar_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
-  inherit Ginfo_bar_signals.info_bar_signals
+  method on_close :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_response :
+    ?after:bool ->
+    callback:(response_id:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method add_action_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int ->
     unit
@@ -16,7 +21,7 @@ class type info_bar_t = object
   method add_button : string -> int -> GButton.button_t
 
   method add_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
@@ -25,12 +30,12 @@ class type info_bar_t = object
   method get_show_close_button : unit -> bool
 
   method remove_action_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
   method remove_child :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
@@ -47,17 +52,21 @@ end
 class info_bar (obj : Info_bar.t) : info_bar_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
-    inherit Ginfo_bar_signals.info_bar_signals obj
+    method on_close ?(after = false) ~callback () =
+      Info_bar.on_close ~after self#as_info_bar ~callback
+
+    method on_response ?(after = false) ~callback () =
+      Info_bar.on_response ~after self#as_info_bar ~callback
 
     method add_action_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         int ->
         unit =
@@ -70,7 +79,7 @@ class info_bar (obj : Info_bar.t) : info_bar_t =
         new GButton.button (Info_bar.add_button obj button_text response_id)
 
     method add_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun widget ->
@@ -86,7 +95,7 @@ class info_bar (obj : Info_bar.t) : info_bar_t =
       fun () -> Info_bar.get_show_close_button obj
 
     method remove_action_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun widget ->
@@ -94,7 +103,7 @@ class info_bar (obj : Info_bar.t) : info_bar_t =
         Info_bar.remove_action_widget obj widget
 
     method remove_child :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun widget ->

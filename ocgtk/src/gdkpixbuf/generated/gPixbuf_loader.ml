@@ -1,7 +1,22 @@
-(* Signal class defined in gpixbuf_loader_signals.ml *)
-
 class type pixbuf_loader_t = object
-  inherit Gpixbuf_loader_signals.pixbuf_loader_signals
+  method on_area_prepared :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_area_updated :
+    ?after:bool ->
+    callback:(x:int -> y:int -> width:int -> height:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_closed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_size_prepared :
+    ?after:bool ->
+    callback:(width:int -> height:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method close : unit -> (bool, GError.t) result
   method get_animation : unit -> GPixbuf_animation.pixbuf_animation_t option
   method get_format : unit -> Pixbuf_format.t option
@@ -14,7 +29,17 @@ end
 (* High-level class for PixbufLoader *)
 class pixbuf_loader (obj : Pixbuf_loader.t) : pixbuf_loader_t =
   object (self)
-    inherit Gpixbuf_loader_signals.pixbuf_loader_signals obj
+    method on_area_prepared ?(after = false) ~callback () =
+      Pixbuf_loader.on_area_prepared ~after self#as_pixbuf_loader ~callback
+
+    method on_area_updated ?(after = false) ~callback () =
+      Pixbuf_loader.on_area_updated ~after self#as_pixbuf_loader ~callback
+
+    method on_closed ?(after = false) ~callback () =
+      Pixbuf_loader.on_closed ~after self#as_pixbuf_loader ~callback
+
+    method on_size_prepared ?(after = false) ~callback () =
+      Pixbuf_loader.on_size_prepared ~after self#as_pixbuf_loader ~callback
 
     method close : unit -> (bool, GError.t) result =
       fun () -> Pixbuf_loader.close obj

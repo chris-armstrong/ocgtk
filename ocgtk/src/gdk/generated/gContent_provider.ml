@@ -1,7 +1,7 @@
-(* Signal class defined in gcontent_provider_signals.ml *)
-
 class type content_provider_t = object
-  inherit Gcontent_provider_signals.content_provider_signals
+  method on_content_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method content_changed : unit -> unit
   method ref_formats : unit -> Content_formats.t
   method ref_storable_formats : unit -> Content_formats.t
@@ -17,7 +17,9 @@ end
 (* High-level class for ContentProvider *)
 class content_provider (obj : Content_provider.t) : content_provider_t =
   object (self)
-    inherit Gcontent_provider_signals.content_provider_signals obj
+    method on_content_changed ?(after = false) ~callback () =
+      Content_provider.on_content_changed ~after self#as_content_provider
+        ~callback
 
     method content_changed : unit -> unit =
       fun () -> Content_provider.content_changed obj
@@ -42,6 +44,10 @@ class content_provider (obj : Content_provider.t) : content_provider_t =
 let new_for_bytes (mime_type : string) (bytes : Glib_bytes.t) :
     content_provider_t =
   let obj_ = Content_provider.new_for_bytes mime_type bytes in
+  new content_provider obj_
+
+let new_for_value (value : Gobject.Value.t) : content_provider_t =
+  let obj_ = Content_provider.new_for_value value in
   new content_provider obj_
 
 let new_union (providers : Content_provider.t array option)

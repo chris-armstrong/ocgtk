@@ -395,6 +395,10 @@ let create_test_signal ~name =
     version = None;
     version_namespace = None;
     os = None;
+    run_when = None;
+    action = false;
+    no_recurse = false;
+    no_hooks = false;
   }
 
 (* Create a test GIR signal with return type *)
@@ -407,6 +411,10 @@ let create_test_signal_with_return ~name ~return_type =
     version = None;
     version_namespace = None;
     os = None;
+    run_when = None;
+    action = false;
+    no_recurse = false;
+    no_hooks = false;
   }
 
 (* Create a test GIR signal with parameters *)
@@ -419,6 +427,10 @@ let create_test_signal_with_params ~name ~return_type ~params =
     version = None;
     version_namespace = None;
     os = None;
+    run_when = None;
+    action = false;
+    no_recurse = false;
+    no_hooks = false;
   }
 
 (* Create a test class with signals *)

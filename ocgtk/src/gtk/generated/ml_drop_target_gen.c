@@ -70,6 +70,14 @@ gtk_drop_target_reject(GtkDropTarget_val(self));
 CAMLreturn(Val_unit);
 }
 
+CAMLexport CAMLprim value ml_gtk_drop_target_get_value(value self)
+{
+CAMLparam1(self);
+
+const GValue* result = gtk_drop_target_get_value(GtkDropTarget_val(self));
+CAMLreturn(Val_option(result, Val_GValue_copy));
+}
+
 CAMLexport CAMLprim value ml_gtk_drop_target_get_preload(value self)
 {
 CAMLparam1(self);
@@ -107,7 +115,7 @@ CAMLexport CAMLprim value ml_gtk_drop_target_get_formats(value self)
 CAMLparam1(self);
 
 GdkContentFormats* result = gtk_drop_target_get_formats(GtkDropTarget_val(self));
-if (result) g_object_ref_sink(result);
+if (result) result = g_boxed_copy(gdk_content_formats_get_type(), result);
 CAMLreturn(Val_option(result, Val_GdkContentFormats));
 }
 

@@ -1,6 +1,9 @@
 class type link_button_t = object
   inherit GButton.button_t
-  inherit Glink_button_signals.link_button_signals
+
+  method on_activate_link :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
   method get_uri : unit -> string
   method get_visited : unit -> bool
   method set_uri : string -> unit

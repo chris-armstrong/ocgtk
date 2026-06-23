@@ -1,13 +1,31 @@
 class type spin_button_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GAccessible_range.accessible_range_t
   inherit GCell_editable.cell_editable_t
   inherit GEditable.editable_t
   inherit GOrientable.orientable_t
-  inherit Gspin_button_signals.spin_button_signals
+
+  method on_activate :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_change_value :
+    ?after:bool ->
+    callback:(scroll:Gtk_enums.scrolltype -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_output :
+    ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
+  method on_value_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_wrapped :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method configure : GAdjustment.adjustment_t option -> float -> int -> unit
   method get_activates_default : unit -> bool
   method get_adjustment : unit -> GAdjustment.adjustment_t

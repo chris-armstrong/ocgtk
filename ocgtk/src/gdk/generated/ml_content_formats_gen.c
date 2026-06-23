@@ -202,3 +202,9 @@ CAMLparam2(self, arg1);
 gboolean result = gdk_content_formats_contain_gtype(GdkContentFormats_val(self), GType_val(arg1));
 CAMLreturn(Val_bool(result));
 }
+
+CAMLprim value ml_gdk_content_formats_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gdk_content_formats_get_type()));
+}

@@ -36,3 +36,7 @@ external get_sort_column_id : t -> bool * int * Gtk_enums.sorttype
 order. It returns %TRUE unless the @sort_column_id is
 %GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
 %GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID. *)
+
+let on_sort_column_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"sort-column-changed" ~callback
+    ~after:(Option.value after ~default:false)

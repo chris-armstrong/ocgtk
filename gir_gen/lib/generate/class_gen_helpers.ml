@@ -13,11 +13,6 @@ type property_filters = { method_names : string list; base_names : string list }
 
 let sanitize_name = Utils.ocaml_class_name
 
-let signal_class_name class_name =
-  Utils.ocaml_class_name (sanitize_name class_name ^ "_signals")
-
-let get_signal_module_name class_snake = "G" ^ class_snake ^ "_signals"
-
 let get_module_names ~ctx class_name =
   let layer1 = Class_utils.get_qualified_module_name ~ctx class_name in
   { layer1; layer2 = Utils.layer2_module_name class_name }

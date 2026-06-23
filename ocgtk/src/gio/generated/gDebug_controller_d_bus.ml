@@ -1,9 +1,14 @@
-(* Signal class defined in gdebug_controller_d_bus_signals.ml *)
-
 class type debug_controller_d_bus_t = object
   inherit GDebug_controller.debug_controller_t
   inherit GInitable.initable_t
-  inherit Gdebug_controller_d_bus_signals.debug_controller_d_bus_signals
+
+  method on_authorize :
+    ?after:bool ->
+    callback:
+      (invocation:GD_bus_method_invocation.d_bus_method_invocation_t -> bool) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method stop : unit -> unit
   method connection : GD_bus_connection.d_bus_connection_t
   method as_debug_controller_d_bus : Debug_controller_d_bus.t
@@ -17,7 +22,14 @@ class debug_controller_d_bus (obj : Debug_controller_d_bus.t) :
       GDebug_controller.debug_controller (Debug_controller.from_gobject obj)
 
     inherit GInitable.initable (Initable.from_gobject obj)
-    inherit Gdebug_controller_d_bus_signals.debug_controller_d_bus_signals obj
+
+    method on_authorize ?(after = false) ~callback () =
+      Debug_controller_d_bus.on_authorize ~after self#as_debug_controller_d_bus
+        ~callback:(fun ~invocation ->
+          callback
+            ~invocation:
+              (new GD_bus_method_invocation.d_bus_method_invocation invocation))
+
     method stop : unit -> unit = fun () -> Debug_controller_d_bus.stop obj
 
     method connection =

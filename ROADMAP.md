@@ -1,8 +1,8 @@
 # ocgtk Roadmap
 
-This roadmap tracks the path from current state to a usable OCaml GTK 4 binding library. Milestone 1 (cross-namespace type resolution) is complete. The remaining milestones cover signals, documentation, and callback APIs.
+This roadmap tracks the path from current state to a usable OCaml GTK 4 binding library. Milestones 1 (cross-namespace type resolution) and 2 (signal handling) are complete. The remaining milestones cover documentation and callback APIs.
 
-## Current State (post-Milestone 1)
+## Current State (post-Milestone 2)
 
 - 9 GIR namespaces generated as separate libraries (Cairo, Gio, Gdk, Graphene, GdkPixbuf, Pango, PangoCairo, Gsk, Gtk)
 - Cross-namespace type resolution via reference files and `<ns>_decls.h` headers
@@ -11,10 +11,11 @@ This roadmap tracks the path from current state to a usable OCaml GTK 4 binding 
 - Contravariant `Gobject.obj` enabling safe `:>` upcasting
 - GList/GSList support for class element types
 - Throwing constructors (Result-returning)
-- Only parameterless void signals (141 of 346 GTK signals)
+- Signals with primitive, enum, bitfield, and GObject class/interface parameters generated; bool return values supported; ~225 GTK signals of 346 covered
+- Signals skipped: boxed record params (TextIter, RGBA, etc.), GArray, callbacks (~121 GTK signals)
 - No callback parameter marshalling
 - No generated documentation
-- Calculator example app demonstrating cross-namespace usage
+- Calculator example and form-example apps demonstrating signals and cross-namespace usage
 
 ## Prerequisite Work
 
@@ -24,7 +25,7 @@ These items cut across multiple milestones and should be addressed first or in p
 
 **Status**: Task 1.1 done (GObject.Object + InitiallyUnowned). Remaining phases not started.
 
-Add type mappings for GObject.Value, GObject.Closure, and simple GLib types (Quark, String, IOCondition, SeekType). These unblock methods across all namespaces and are required for signal parameter marshalling (Milestone 2) and callback parameters (Milestone 4).
+Add type mappings for GObject.Value, GObject.Closure, and simple GLib types (Quark, String, IOCondition, SeekType). These unblock methods across all namespaces and are required for callback parameters (Milestone 4).
 
 **Plan**: `gir_gen/docs/plans/gobject_glib_type_mappings.md`
 
@@ -38,7 +39,7 @@ When GIR marks an array with `length=N`, the OCaml binding should hide the lengt
 
 ### P4. GIR `<function>` Bindings
 
-2,001 standalone/namespace-level functions not attached to any class or record (e.g. `gtk_show_uri`, `pango_parse_markup`, `g_file_new_for_path`). Some are required for the Milestone 2 and 4 demo applications.
+2,001 standalone/namespace-level functions not attached to any class or record (e.g. `gtk_show_uri`, `pango_parse_markup`, `g_file_new_for_path`). Some are required for Milestone 4 demo applications.
 
 ### P5. Parse `<callback>` Type Definitions
 
@@ -58,45 +59,28 @@ GList/GSList containing interface types (e.g. `GSList<Gio.File>`) generate broke
 
 ---
 
-## Milestone 2: Signal Handling with Parameters
+## Milestone 2: Signal Handling with Parameters — COMPLETE
 
-**Why**: Only parameterless void signals are generated (141 of 346 total GTK signals). Without parameterised signals, applications cannot respond to key presses, handle close confirmations, or react to most user interactions.
+**Status**: Complete. See `gir_gen/docs/plans/completed/milestone-2-signals.md` for full details.
 
-**Goal**: GTK signals with typed parameters are generated as usable OCaml callbacks, covering keyboard, mouse, window lifecycle, and widget state events.
+**What was delivered**:
 
-**Prerequisites**: P1 (GObject.Closure type mapping needed for marshalling), P3 (GDK key constants for demo app)
+1. **Parameterised signal generation** — L1 free functions + L2 method forwarders for signals with primitive, enum, bitfield, and GObject class/interface parameters. `key-pressed`, `pressed`, `close-request`, `state-set`, `response`, and ~225 other GTK signals are generated.
 
-### Deliverables
+2. **Boolean return value signals** — `close-request` and other bool-return signals supported via `Gobject.Closure.create`.
 
-1. **Parameterised signal generation** — Signals with typed parameters generate correct OCaml callback signatures via the `Gobject.Closure` infrastructure (e.g. `key-pressed` produces a callback receiving keyval, keycode, and modifier state).
+3. **GObject class/interface parameters** — Same-namespace and cross-namespace class params resolved; nullable variants emit `option` types.
 
-2. **Boolean return value signals** — Signals returning bool are supported (e.g. `close-request` returning `true` to prevent window close).
+4. **Cyclic dependency resolution** — Signal-param edges fed into Tarjan SCC so cycles are absorbed into combined modules.
 
-3. **Common signal coverage**:
-   - Keyboard input (`key-pressed`)
-   - Mouse clicks (`pressed`)
-   - Window lifecycle (`close-request`)
-   - Widget state changes (`state-set`)
-   - Dialog responses (`response`)
+5. **Interactive form application** — `ocgtk/examples/form_example.ml` demonstrates keyboard shortcuts, close confirmation, text validation, and drag-and-drop.
 
-4. **Interactive form application** — Keyboard shortcut handling, close confirmation dialog, text input validation, and clickable links.
+6. **Unit tests** for signal parameter marshalling (25 test cases in `gir_gen/test/class_generation/signal_wrapper_tests.ml`).
 
-5. **Unit tests** for signal parameter marshalling.
-
-### Key implementation areas
-
-- `signal_gen.ml` — extend beyond `List.length signal.parameters = 0` check; generate typed `Gobject.Closure.create_*` calls
-- `signal_filtering.ml` — relax filtering to allow parameterised signals
-- Signal parameter type mapping — map GIR signal parameter types to OCaml types and C marshalling code
-- Return value handling — `Gobject.Signal.connect` instead of `connect_simple` for non-void returns
-
-### Verification
-
-- Test suite passes
-- Form application launches
-- Keyboard shortcuts are handled
-- Closing the window shows a confirmation dialog
-- Text input validates as the user types
+**What remains unsupported** (deferred):
+- Signals with boxed record params (TextIter, RGBA, EventSequence, etc.)
+- Signals with GArray or callback parameters
+- ~121 GTK signals are skipped for these reasons
 
 ---
 

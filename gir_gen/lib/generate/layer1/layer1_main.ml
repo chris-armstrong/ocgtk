@@ -5,13 +5,13 @@ open Printf
 open Types
 
 (** Generate type declaration for the module. Both records and classes are
-    represented as [\[ tag... \] Gobject.obj], computed by the caller; we
-    just emit it. *)
-let generate_type_declaration ~output_mode:_ ~base_type buf =
+    represented as [[ tag... ] Gobject.obj], computed by the caller; we just
+    emit it. *)
+let generate_type_declaration ~output_mode:_ ~base_type buf : unit =
   bprintf buf "type t = %s\n\n" base_type
 
 (** Generate constructors section *)
-let generate_constructors_section ~ctx ~class_name ~constructors buf =
+let generate_constructors_section ~ctx ~class_name ~constructors buf : unit =
   List.iter
     ~f:(fun (ctor : gir_constructor) ->
       if Layer1_constructor.should_generate_constructor ~ctx ctor then
@@ -20,7 +20,7 @@ let generate_constructors_section ~ctx ~class_name ~constructors buf =
 
 (** Generate methods section *)
 let generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix
-    ~entity_kind ~methods buf =
+    ~entity_kind ~methods buf : unit =
   bprintf buf "(* Methods *)\n";
   List.iter
     ~f:(fun (meth : gir_method) ->
@@ -29,7 +29,7 @@ let generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix
     (List.rev methods)
 
 (** Generate properties section *)
-let generate_properties_section ~ctx ~class_name ~methods ~properties buf =
+let generate_properties_section ~ctx ~class_name ~methods ~properties buf : unit =
   if List.length properties > 0 then begin
     bprintf buf "(* Properties *)\n\n";
     List.iter
@@ -39,9 +39,26 @@ let generate_properties_section ~ctx ~class_name ~methods ~properties buf =
       properties
   end
 
+let emit_one_signal ~ctx ~output_mode ~class_name buf signal =
+  match Signal_gen.classify ~ctx signal with
+  | Error reason ->
+      eprintf "Skipping signal '%s' for %s (%s)\n" signal.signal_name
+        class_name reason
+  | Ok emission -> (
+      match output_mode with
+      | Layer1_helpers.Interface ->
+          Buffer.add_string buf
+            (Signal_gen.emit_l1_val ~current_class:class_name emission)
+      | Layer1_helpers.Implementation ->
+          Buffer.add_string buf (Signal_gen.emit_l1_let emission))
+
+let generate_signal_bindings_section ~ctx ~output_mode ~class_name
+    (signals : gir_signal list) buf : unit =
+  List.iter signals ~f:(emit_one_signal ~ctx ~output_mode ~class_name buf)
+
 let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ~base_type ?c_symbol_prefix ~entity_kind
-    ?from_gobject_c_name buf =
+    ?from_gobject_c_name ?(signals = []) ?glib_get_type buf : unit =
   generate_type_declaration ~output_mode ~base_type buf;
   (match from_gobject_c_name with
   | Some c_name ->
@@ -51,11 +68,21 @@ let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
   generate_constructors_section ~ctx ~class_name ~constructors buf;
   generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix
     ~entity_kind ~methods buf;
-  generate_properties_section ~ctx ~class_name ~methods ~properties buf
+  generate_properties_section ~ctx ~class_name ~methods ~properties buf;
+  generate_signal_bindings_section ~ctx ~output_mode ~class_name signals buf;
+  (match glib_get_type with
+  | Some _ ->
+      let ns_snake = Utils.to_snake_case ctx.namespace.namespace_name in
+      let class_snake = Utils.to_snake_case class_name in
+      let c_stub = sprintf "ml_%s_%s_get_type" ns_snake class_snake in
+      bprintf buf
+        "\nexternal get_type : unit -> Gobject.Type.t = \"%s\"\n" c_stub
+  | None -> ())
 
 let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
     ~parent_chain ~constructors ~methods ~properties ?c_symbol_prefix
-    ~entity_kind ?from_gobject_c_name () =
+    ~entity_kind ?from_gobject_c_name ?(signals = []) ?glib_get_type () :
+    string =
   let buf = Buffer.create 1024 in
 
   let class_type_name, base_type =
@@ -71,16 +98,16 @@ let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
   | None -> ());
   generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ?c_symbol_prefix ~base_type ~entity_kind
-    ?from_gobject_c_name buf;
+    ?from_gobject_c_name ~signals ?glib_get_type buf;
   Buffer.contents buf
 
 (** Format module declaration (module rec X | and X) *)
-let format_module_declaration buf module_name is_start =
+let format_module_declaration buf module_name is_start : unit =
   if is_start then bprintf buf "module rec %s" module_name
   else bprintf buf "\nand %s\n" module_name
 
 (** Generate module signature for a single entity *)
-let generate_module_signature ~ctx ~entity ~base_type ?from_gobject_c_name buf =
+let generate_module_signature ~ctx ~entity ~base_type ?from_gobject_c_name buf : unit =
   let signature_contents =
     let inner_buf = Buffer.create 1024 in
     generate_ml_interface_internal ~ctx ~output_mode:Layer1_helpers.Interface
@@ -90,14 +117,15 @@ let generate_module_signature ~ctx ~entity ~base_type ?from_gobject_c_name buf =
          else None)
       ~methods:entity.methods
       ~entity_kind:(Filtering.entity_kind_of_entity entity)
-      ~properties:entity.properties ~base_type ?from_gobject_c_name inner_buf;
+      ~properties:entity.properties ~signals:entity.signals ~base_type
+      ?from_gobject_c_name inner_buf;
     Buffer.contents inner_buf
   in
   Layer1_helpers.print_indent signature_contents buf
 
 (** Generate module implementation for a single entity *)
 let generate_module_implementation ~ctx ~output_mode ~entity ~base_type
-    ?from_gobject_c_name buf =
+    ?from_gobject_c_name buf : unit =
   let single_content =
     let inner_buf = Buffer.create 1024 in
     generate_ml_interface_internal ~ctx ~output_mode ~class_name:entity.name
@@ -107,14 +135,15 @@ let generate_module_implementation ~ctx ~output_mode ~entity ~base_type
          else None)
       ~methods:entity.methods
       ~entity_kind:(Filtering.entity_kind_of_entity entity)
-      ~properties:entity.properties ?from_gobject_c_name inner_buf;
+      ~properties:entity.properties ~signals:entity.signals ?from_gobject_c_name
+      inner_buf;
     Buffer.contents inner_buf
   in
   Layer1_helpers.print_indent single_content buf
 
 (** Generate a single combined module entity *)
 let generate_combined_module_entity ~ctx ~output_mode ~entity
-    ~parent_chain_for_entity ~index ~from_gobject_c_name_for_entity buf =
+    ~parent_chain_for_entity ~index ~from_gobject_c_name_for_entity buf : unit =
   let parent_chain = parent_chain_for_entity entity.name in
   let class_name = entity.name in
   let _, base_type =
@@ -148,7 +177,7 @@ let generate_combined_module_entity ~ctx ~output_mode ~entity
 (* Generate combined modules for cyclic dependencies *)
 let generate_combined_ml_modules ~ctx ~output_mode ~entities
     ~parent_chain_for_entity ?(from_gobject_c_name_for_entity = fun _ -> None)
-    () =
+    () : string =
   let buf = Buffer.create 4096 in
 
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";

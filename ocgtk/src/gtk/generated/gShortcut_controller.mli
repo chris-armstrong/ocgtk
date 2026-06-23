@@ -1,6 +1,6 @@
 class type shortcut_controller_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .event_controller_t
 
   inherit Ocgtk_gio.Gio.List_model.list_model_t
@@ -11,7 +11,7 @@ class type shortcut_controller_t = object
   method remove_shortcut : GShortcut.shortcut_t -> unit
   method set_mnemonics_modifiers : Ocgtk_gdk.Gdk.modifiertype -> unit
   method set_scope : Gtk_enums.shortcutscope -> unit
-  method item_type : int
+  method item_type : Gobject.Type.t
   method mnemonic_modifiers : Ocgtk_gdk.Gdk.modifiertype
   method set_mnemonic_modifiers : Ocgtk_gdk.Gdk.modifiertype -> unit
   method n_items : int

@@ -1,8 +1,29 @@
-(* Signal class defined in ggesture_stylus_signals.ml *)
-
 class type gesture_stylus_t = object
   inherit GGesture_single.gesture_single_t
-  inherit Ggesture_stylus_signals.gesture_stylus_signals
+
+  method on_down :
+    ?after:bool ->
+    callback:(x:float -> y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_motion :
+    ?after:bool ->
+    callback:(x:float -> y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_proximity :
+    ?after:bool ->
+    callback:(x:float -> y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_up :
+    ?after:bool ->
+    callback:(x:float -> y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
 
   method get_device_tool :
     unit -> Ocgtk_gdk.Gdk.Device_tool.device_tool_t option
@@ -16,7 +37,18 @@ end
 class gesture_stylus (obj : Gesture_stylus.t) : gesture_stylus_t =
   object (self)
     inherit GGesture_single.gesture_single (obj :> Gesture_single.t)
-    inherit Ggesture_stylus_signals.gesture_stylus_signals obj
+
+    method on_down ?(after = false) ~callback () =
+      Gesture_stylus.on_down ~after self#as_gesture_stylus ~callback
+
+    method on_motion ?(after = false) ~callback () =
+      Gesture_stylus.on_motion ~after self#as_gesture_stylus ~callback
+
+    method on_proximity ?(after = false) ~callback () =
+      Gesture_stylus.on_proximity ~after self#as_gesture_stylus ~callback
+
+    method on_up ?(after = false) ~callback () =
+      Gesture_stylus.on_up ~after self#as_gesture_stylus ~callback
 
     method get_device_tool :
         unit -> Ocgtk_gdk.Gdk.Device_tool.device_tool_t option =

@@ -10,7 +10,7 @@ external new_ : unit -> t = "ml_gtk_notebook_new"
 
 external set_tab_reorderable :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   bool ->
@@ -23,7 +23,7 @@ external set_tab_pos : t -> Gtk_enums.positiontype -> unit
 
 external set_tab_label_text :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   string ->
@@ -33,10 +33,10 @@ containing @child. *)
 
 external set_tab_label :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -48,7 +48,7 @@ have the label “page N”. *)
 
 external set_tab_detachable :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   bool ->
@@ -113,7 +113,7 @@ external set_scrollable : t -> bool -> unit = "ml_gtk_notebook_set_scrollable"
 
 external set_menu_label_text :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   string ->
@@ -122,10 +122,10 @@ external set_menu_label_text :
 
 external set_menu_label :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -151,7 +151,7 @@ adding them to a notebook. *)
 
 external set_action_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   Gtk_enums.packtype ->
@@ -164,7 +164,7 @@ more than one widget on the same side. *)
 
 external reorder_child :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int ->
@@ -185,14 +185,14 @@ external prev_page : t -> unit = "ml_gtk_notebook_prev_page"
 
 external prepend_page_menu :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -202,10 +202,10 @@ label in the popup menu. *)
 
 external prepend_page :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -223,7 +223,7 @@ external popup_disable : t -> unit = "ml_gtk_notebook_popup_disable"
 
 external page_num :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   int = "ml_gtk_notebook_page_num"
@@ -236,14 +236,14 @@ external next_page : t -> unit = "ml_gtk_notebook_next_page"
 
 external insert_page_menu :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -254,10 +254,10 @@ the widget to use as the label in the popup menu. *)
 
 external insert_page :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -267,7 +267,7 @@ external insert_page :
 
 external get_tab_reorderable :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   bool = "ml_gtk_notebook_get_tab_reorderable"
@@ -279,7 +279,7 @@ external get_tab_pos : t -> Gtk_enums.positiontype
 
 external get_tab_label_text :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   string option = "ml_gtk_notebook_get_tab_label_text"
@@ -288,10 +288,10 @@ external get_tab_label_text :
 
 external get_tab_label :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_notebook_get_tab_label"
@@ -302,7 +302,7 @@ if no tab label has specifically been set for @child. *)
 
 external get_tab_detachable :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   bool = "ml_gtk_notebook_get_tab_detachable"
@@ -327,7 +327,7 @@ external get_pages : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
 
 external get_page :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   Notebook_page.t = "ml_gtk_notebook_get_page"
@@ -336,7 +336,7 @@ external get_page :
 external get_nth_page :
   t ->
   int ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_notebook_get_nth_page"
@@ -347,7 +347,7 @@ external get_n_pages : t -> int = "ml_gtk_notebook_get_n_pages"
 
 external get_menu_label_text :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   string option = "ml_gtk_notebook_get_menu_label_text"
@@ -356,10 +356,10 @@ external get_menu_label_text :
 
 external get_menu_label :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_notebook_get_menu_label"
@@ -374,7 +374,7 @@ external get_current_page : t -> int = "ml_gtk_notebook_get_current_page"
 external get_action_widget :
   t ->
   Gtk_enums.packtype ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_notebook_get_action_widget"
@@ -384,7 +384,7 @@ external get_action_widget :
 
 external detach_tab :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
   unit = "ml_gtk_notebook_detach_tab"
@@ -396,14 +396,14 @@ external detach_tab :
 
 external append_page_menu :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -413,10 +413,10 @@ label in the popup menu. *)
 
 external append_page :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -431,3 +431,92 @@ external get_enable_popup : t -> bool = "ml_gtk_notebook_get_enable_popup"
 external set_enable_popup : t -> bool -> unit
   = "ml_gtk_notebook_set_enable_popup"
 (** Set property: enable-popup *)
+
+val on_change_current_page :
+  ?after:bool ->
+  t ->
+  callback:(object_:int -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_create_window :
+  ?after:bool ->
+  t ->
+  callback:
+    (page:
+       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+       .Widget
+       .t ->
+    t option) ->
+  Gobject.Signal.handler_id
+
+val on_focus_tab :
+  ?after:bool ->
+  t ->
+  callback:(object_:Gtk_enums.notebooktab -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_move_focus_out :
+  ?after:bool ->
+  t ->
+  callback:(object_:Gtk_enums.directiontype -> unit) ->
+  Gobject.Signal.handler_id
+
+val on_page_added :
+  ?after:bool ->
+  t ->
+  callback:
+    (child:
+       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+       .Widget
+       .t ->
+    page_num:int ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_page_removed :
+  ?after:bool ->
+  t ->
+  callback:
+    (child:
+       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+       .Widget
+       .t ->
+    page_num:int ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_page_reordered :
+  ?after:bool ->
+  t ->
+  callback:
+    (child:
+       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+       .Widget
+       .t ->
+    page_num:int ->
+    unit) ->
+  Gobject.Signal.handler_id
+
+val on_reorder_tab :
+  ?after:bool ->
+  t ->
+  callback:(object_:Gtk_enums.directiontype -> p0:bool -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_select_page :
+  ?after:bool ->
+  t ->
+  callback:(object_:bool -> bool) ->
+  Gobject.Signal.handler_id
+
+val on_switch_page :
+  ?after:bool ->
+  t ->
+  callback:
+    (page:
+       Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+       .Widget
+       .t ->
+    page_num:int ->
+    unit) ->
+  Gobject.Signal.handler_id

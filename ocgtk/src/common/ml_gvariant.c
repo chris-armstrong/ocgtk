@@ -45,7 +45,6 @@
 
 #include "wrappers.h"
 #include "value_kinds.h"
-#include <ocaml_integers.h>
 
 /* ==================================================================== */
 /* GVariant custom block with reference counting                        */

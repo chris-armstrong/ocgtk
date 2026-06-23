@@ -1,23 +1,23 @@
-(** Test suite for GObj high-level widget wrapper (Phase 3.4)
+(** Test suite for GObj high-level widget wrapper.
 
     Note: Most tests are skipped as they require GTK initialization (gtk_init),
-    which is not yet available in the bindings. Runtime tests will be added in
-    Phase 4+ when gtk_init is implemented.
+    which is not yet available in the bindings. Runtime tests will be added when
+    gtk_init is implemented.
 
     This test file verifies:
     - Module compiles and types are accessible
     - API structure matches GTK4 patterns
-    - No deprecated GTK3 patterns present *)
+    - No deprecated GTK3 patterns present
+    - GValue set_object None stores NULL correctly *)
 
 open Alcotest
 
 (** {2 Type System Tests} *)
 
 let test_type_accessibility () =
-  (* Verify we can reference GObj types *)
-  (* Note: controller_ops is currently commented out in the API *)
-  let _widget_type : GObj.widget option = None in
-  check bool "GObj types accessible" true true
+  (* Verify we can reference Gobject obj types *)
+  let _obj_type : unit Gobject.obj option = None in
+  check bool "Gobject obj types accessible" true true
 
 (** {2 API Structure Verification} *)
 
@@ -131,13 +131,31 @@ let test_signal_connection () =
   (* Future test: connect method in widget_full *)
   skip ()
 
+(** {2 GValue set_object None Regression Test} *)
+
+let test_set_object_none_stores_null () =
+  (* Arrange: create a GValue of G_TYPE_OBJECT type *)
+  let gtype_object = Gobject.Type.object_ in
+  let v = Gobject.Value.create gtype_object in
+  (* Act: set None via set_object — previously this was a no-op *)
+  Gobject.Value.set_object v None;
+  (* Assert: read back via get_object and confirm the result is None *)
+  let result = Gobject.Value.get_object v in
+  Alcotest.(check (option pass))
+    "set_object None stores NULL (get_object returns None)" None result
+
 (** {2 Test Suite} *)
 
 let () =
-  run "GObj Tests (Phase 3.4)"
+  run "GObj Tests"
     [
       ( "type_system",
         [ test_case "type accessibility" `Quick test_type_accessibility ] );
+      ( "gvalue_set_object",
+        [
+          test_case "set_object None stores NULL" `Quick
+            test_set_object_none_stores_null;
+        ] );
       ( "api_structure",
         [
           test_case "controller_ops API" `Quick

@@ -37,6 +37,12 @@ If @has_depth_buffer is %TRUE the widget will allocate and
 enable a depth buffer for the target framebuffer. Otherwise
 there will be none. *)
 
+external set_error : t -> GError.t option -> unit = "ml_gtk_gl_area_set_error"
+(** Sets an error on the area which will be shown instead of the GL rendering.
+
+    This is useful in the [signal@Gtk.GLArea::create-context] signal if GL
+    context creation fails. *)
+
 external set_auto_render : t -> bool -> unit = "ml_gtk_gl_area_set_auto_render"
 (** Sets whether the `GtkGLArea` is in auto render mode.
 
@@ -96,6 +102,9 @@ external get_has_depth_buffer : t -> bool
   = "ml_gtk_gl_area_get_has_depth_buffer"
 (** Returns whether the area has a depth buffer. *)
 
+external get_error : t -> GError.t option = "ml_gtk_gl_area_get_error"
+(** Gets the current error set on the @area. *)
+
 external get_context : t -> Ocgtk_gdk.Gdk.Wrappers.Gl_context.t option
   = "ml_gtk_gl_area_get_context"
 (** Retrieves the `GdkGLContext` used by @area. *)
@@ -126,3 +135,45 @@ This function is automatically called before emitting the
 called by application code. *)
 
 (* Properties *)
+
+let on_create_context ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let result = callback () in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_object_exn v x)
+  in
+  Gobject.Signal.connect obj ~name:"create-context" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_render ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let context =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v
+        in
+        let result = callback ~context in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"render" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_resize ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let width =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_int v
+        in
+        let height =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        callback ~width ~height)
+  in
+  Gobject.Signal.connect obj ~name:"resize" ~callback:closure
+    ~after:(Option.value after ~default:false)

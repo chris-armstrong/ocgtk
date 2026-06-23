@@ -33,6 +33,8 @@ merged via `merge_methods`), properties, and signals. Interfaces flow through th
 
 ### What's missing
 
+See `architecture/todo/TODO.md` for the current state of interface support.
+
 1. **`from_gobject` function** — A C function + Layer 1 external that converts any `GObject` to an interface type with a runtime type check, raising an exception on failure.
 2. **Interface inheritance at Layer 2** — Implementing classes (e.g. `Entry`) do not `inherit editable_t` or include interface methods/properties.
 3. **Missing type metadata** — `gir_interface` lacks `glib_type_name`, `glib_get_type`, `prerequisites`, and `introspectable` fields (needed to wire up the conversion).

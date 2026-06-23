@@ -223,6 +223,24 @@ and App_launch_context : sig
   (** Gets the display string for the @context. This is used to ensure new
   applications are started on the same display as the launching
   application, by setting the `DISPLAY` environment variable. *)
+
+  val on_launch_failed :
+    ?after:bool ->
+    t ->
+    callback:(startup_notify_id:string -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_launch_started :
+    ?after:bool ->
+    t ->
+    callback:(info:App_info.t -> platform_data:Gvariant.t -> unit) ->
+    Gobject.Signal.handler_id
+
+  val on_launched :
+    ?after:bool ->
+    t ->
+    callback:(info:App_info.t -> platform_data:Gvariant.t -> unit) ->
+    Gobject.Signal.handler_id
 end
 
 and Drive : sig
@@ -322,6 +340,18 @@ and Drive : sig
 
   external can_eject : t -> bool = "ml_g_drive_can_eject"
   (** Checks if a drive can be ejected. *)
+
+  val on_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_disconnected :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_eject_button :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_stop_button :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end
 
 and File : sig
@@ -1443,6 +1473,16 @@ and File_monitor : sig
 
   external get_cancelled : t -> bool = "ml_g_file_monitor_get_cancelled"
   (** Get property: cancelled *)
+
+  val on_changed :
+    ?after:bool ->
+    t ->
+    callback:
+      (file:File.t ->
+      other_file:File.t option ->
+      event_type:Gio_enums.filemonitorevent ->
+      unit) ->
+    Gobject.Signal.handler_id
 end
 
 and Mount : sig
@@ -1579,6 +1619,15 @@ and Mount : sig
 
   external can_eject : t -> bool = "ml_g_mount_can_eject"
   (** Checks if @mount can be ejected. *)
+
+  val on_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_pre_unmount :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_unmounted :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end
 
 and Volume : sig
@@ -1681,4 +1730,10 @@ and Volume : sig
 
   external can_eject : t -> bool = "ml_g_volume_can_eject"
   (** Checks if a volume can be ejected. *)
+
+  val on_changed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+  val on_removed :
+    ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end

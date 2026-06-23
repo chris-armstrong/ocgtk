@@ -25,3 +25,9 @@ external get_default_display :
 (** Gets the default `GdkDisplay`. *)
 
 (* Properties *)
+
+val on_display_opened :
+  ?after:bool ->
+  t ->
+  callback:(display:App_launch_context_cycle_de440b34.Display.t -> unit) ->
+  Gobject.Signal.handler_id

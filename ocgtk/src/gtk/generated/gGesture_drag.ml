@@ -1,8 +1,24 @@
-(* Signal class defined in ggesture_drag_signals.ml *)
-
 class type gesture_drag_t = object
   inherit GGesture_single.gesture_single_t
-  inherit Ggesture_drag_signals.gesture_drag_signals
+
+  method on_drag_begin :
+    ?after:bool ->
+    callback:(start_x:float -> start_y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_drag_end :
+    ?after:bool ->
+    callback:(offset_x:float -> offset_y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_drag_update :
+    ?after:bool ->
+    callback:(offset_x:float -> offset_y:float -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
   method as_gesture_drag : Gesture_drag.t
 end
 
@@ -10,7 +26,16 @@ end
 class gesture_drag (obj : Gesture_drag.t) : gesture_drag_t =
   object (self)
     inherit GGesture_single.gesture_single (obj :> Gesture_single.t)
-    inherit Ggesture_drag_signals.gesture_drag_signals obj
+
+    method on_drag_begin ?(after = false) ~callback () =
+      Gesture_drag.on_drag_begin ~after self#as_gesture_drag ~callback
+
+    method on_drag_end ?(after = false) ~callback () =
+      Gesture_drag.on_drag_end ~after self#as_gesture_drag ~callback
+
+    method on_drag_update ?(after = false) ~callback () =
+      Gesture_drag.on_drag_update ~after self#as_gesture_drag ~callback
+
     method as_gesture_drag = obj
   end
 

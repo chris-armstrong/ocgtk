@@ -85,3 +85,23 @@ external clear_marks : t -> unit = "ml_gtk_calendar_clear_marks"
 (** Remove all visual markers. *)
 
 (* Properties *)
+
+let on_day_selected ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"day-selected" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_next_month ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"next-month" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_next_year ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"next-year" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_prev_month ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"prev-month" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_prev_year ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"prev-year" ~callback
+    ~after:(Option.value after ~default:false)

@@ -103,7 +103,7 @@ external set_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode -> unit
 
 external set_mnemonic_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option ->
@@ -295,7 +295,7 @@ external get_natural_wrap_mode : t -> Gtk_enums.naturalwrapmode
 
 external get_mnemonic_widget :
   t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t
   option = "ml_gtk_label_get_mnemonic_widget"
@@ -384,3 +384,19 @@ external get_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option
     (self))`. *)
 
 (* Properties *)
+
+val on_activate_current_link :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_activate_link :
+  ?after:bool -> t -> callback:(uri:string -> bool) -> Gobject.Signal.handler_id
+
+val on_copy_clipboard :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+
+val on_move_cursor :
+  ?after:bool ->
+  t ->
+  callback:
+    (step:Gtk_enums.movementstep -> count:int -> extend_selection:bool -> unit) ->
+  Gobject.Signal.handler_id

@@ -1,22 +1,83 @@
-(* Signal class defined in gtext_view_signals.ml *)
-
 class type text_view_t = object
   inherit
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
   inherit GAccessible_text.accessible_text_t
   inherit GScrollable.scrollable_t
-  inherit Gtext_view_signals.text_view_signals
+
+  method on_backspace :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_copy_clipboard :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_cut_clipboard :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_delete_from_cursor :
+    ?after:bool ->
+    callback:(type_:Gtk_enums.deletetype -> count:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_insert_at_cursor :
+    ?after:bool ->
+    callback:(string:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_insert_emoji :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_move_cursor :
+    ?after:bool ->
+    callback:
+      (step:Gtk_enums.movementstep ->
+      count:int ->
+      extend_selection:bool ->
+      unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_move_viewport :
+    ?after:bool ->
+    callback:(step:Gtk_enums.scrollstep -> count:int -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_paste_clipboard :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_preedit_changed :
+    ?after:bool ->
+    callback:(preedit:string -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_select_all :
+    ?after:bool ->
+    callback:(select:bool -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_set_anchor :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_toggle_cursor_visible :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_toggle_overwrite :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
   method add_child_at_anchor :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     GText_child_anchor.text_child_anchor_t ->
     unit
 
   method add_overlay :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int ->
     int ->
@@ -46,7 +107,7 @@ class type text_view_t = object
 
   method get_gutter :
     Gtk_enums.textwindowtype ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option
 
@@ -72,7 +133,7 @@ class type text_view_t = object
     GText_buffer_and__text_iter_and__text_mark.text_mark_t -> bool
 
   method move_overlay :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     int ->
     int ->
@@ -84,7 +145,7 @@ class type text_view_t = object
   method place_cursor_onscreen : unit -> bool
 
   method remove :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
     unit
 
@@ -122,7 +183,7 @@ class type text_view_t = object
 
   method set_gutter :
     Gtk_enums.textwindowtype ->
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
     option ->
     unit
@@ -154,19 +215,60 @@ end
 class text_view (obj : Text_view.t) : text_view_t =
   object (self)
     inherit
-      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+      GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
       .widget
         (obj
-          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__widget
+          :> Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
              .Widget
              .t)
 
     inherit GAccessible_text.accessible_text (Accessible_text.from_gobject obj)
     inherit GScrollable.scrollable (Scrollable.from_gobject obj)
-    inherit Gtext_view_signals.text_view_signals obj
+
+    method on_backspace ?(after = false) ~callback () =
+      Text_view.on_backspace ~after self#as_text_view ~callback
+
+    method on_copy_clipboard ?(after = false) ~callback () =
+      Text_view.on_copy_clipboard ~after self#as_text_view ~callback
+
+    method on_cut_clipboard ?(after = false) ~callback () =
+      Text_view.on_cut_clipboard ~after self#as_text_view ~callback
+
+    method on_delete_from_cursor ?(after = false) ~callback () =
+      Text_view.on_delete_from_cursor ~after self#as_text_view ~callback
+
+    method on_insert_at_cursor ?(after = false) ~callback () =
+      Text_view.on_insert_at_cursor ~after self#as_text_view ~callback
+
+    method on_insert_emoji ?(after = false) ~callback () =
+      Text_view.on_insert_emoji ~after self#as_text_view ~callback
+
+    method on_move_cursor ?(after = false) ~callback () =
+      Text_view.on_move_cursor ~after self#as_text_view ~callback
+
+    method on_move_viewport ?(after = false) ~callback () =
+      Text_view.on_move_viewport ~after self#as_text_view ~callback
+
+    method on_paste_clipboard ?(after = false) ~callback () =
+      Text_view.on_paste_clipboard ~after self#as_text_view ~callback
+
+    method on_preedit_changed ?(after = false) ~callback () =
+      Text_view.on_preedit_changed ~after self#as_text_view ~callback
+
+    method on_select_all ?(after = false) ~callback () =
+      Text_view.on_select_all ~after self#as_text_view ~callback
+
+    method on_set_anchor ?(after = false) ~callback () =
+      Text_view.on_set_anchor ~after self#as_text_view ~callback
+
+    method on_toggle_cursor_visible ?(after = false) ~callback () =
+      Text_view.on_toggle_cursor_visible ~after self#as_text_view ~callback
+
+    method on_toggle_overwrite ?(after = false) ~callback () =
+      Text_view.on_toggle_overwrite ~after self#as_text_view ~callback
 
     method add_child_at_anchor :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         GText_child_anchor.text_child_anchor_t ->
         unit =
@@ -176,7 +278,7 @@ class text_view (obj : Text_view.t) : text_view_t =
         Text_view.add_child_at_anchor obj child anchor
 
     method add_overlay :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         int ->
         int ->
@@ -224,14 +326,14 @@ class text_view (obj : Text_view.t) : text_view_t =
 
     method get_gutter :
         Gtk_enums.textwindowtype ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option =
       fun win ->
         Option.map
           (fun ret ->
             new
-              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+              GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
               .widget
               ret)
           (Text_view.get_gutter obj win)
@@ -296,7 +398,7 @@ class text_view (obj : Text_view.t) : text_view_t =
         Text_view.move_mark_onscreen obj mark
 
     method move_overlay :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         int ->
         int ->
@@ -313,7 +415,7 @@ class text_view (obj : Text_view.t) : text_view_t =
       fun () -> Text_view.place_cursor_onscreen obj
 
     method remove :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t ->
         unit =
       fun child ->
@@ -380,7 +482,7 @@ class text_view (obj : Text_view.t) : text_view_t =
 
     method set_gutter :
         Gtk_enums.textwindowtype ->
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__widget
+        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .widget_t
         option ->
         unit =

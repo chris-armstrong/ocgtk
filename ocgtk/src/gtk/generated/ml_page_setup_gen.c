@@ -157,6 +157,7 @@ CAMLexport CAMLprim value ml_gtk_page_setup_get_paper_size(value self)
 CAMLparam1(self);
 
 GtkPaperSize* result = gtk_page_setup_get_paper_size(GtkPageSetup_val(self));
+if (result) result = g_boxed_copy(gtk_paper_size_get_type(), result);
 CAMLreturn(Val_GtkPaperSize(result));
 }
 

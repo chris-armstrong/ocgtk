@@ -66,6 +66,7 @@ CAMLexport CAMLprim value ml_graphene_size_init_from_size(value self, value arg1
 CAMLparam2(self, arg1);
 
 graphene_size_t* result = graphene_size_init_from_size(graphene_size_t_val(self), graphene_size_t_val(arg1));
+if (result) result = g_boxed_copy(graphene_size_get_type(), result);
 CAMLreturn(Val_graphene_size_t(result));
 }
 
@@ -74,6 +75,7 @@ CAMLexport CAMLprim value ml_graphene_size_init(value self, value arg1, value ar
 CAMLparam3(self, arg1, arg2);
 
 graphene_size_t* result = graphene_size_init(graphene_size_t_val(self), Double_val(arg1), Double_val(arg2));
+if (result) result = g_boxed_copy(graphene_size_get_type(), result);
 CAMLreturn(Val_graphene_size_t(result));
 }
 
@@ -83,6 +85,12 @@ CAMLparam2(self, arg1);
 
 _Bool result = graphene_size_equal(graphene_size_t_val(self), graphene_size_t_val(arg1));
 CAMLreturn(Val_bool(result));
+}
+
+CAMLprim value ml_graphene_size_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(graphene_size_get_type()));
 }
 
 #else

@@ -1,5 +1,16 @@
 class type drag_t = object
-  inherit Gdrag_signals.drag_signals
+  method on_cancel :
+    ?after:bool ->
+    callback:(reason:Gdk_enums.dragcancelreason -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+
+  method on_dnd_finished :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
+  method on_drop_performed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+
   method drop_done : bool -> unit
   method get_actions : unit -> Gdk_enums.dragaction
   method get_content : unit -> GContent_provider.content_provider_t
