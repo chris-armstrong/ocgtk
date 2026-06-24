@@ -203,51 +203,50 @@ let build_signature_section ~window ~dirty =
   ignore
     (drop_target#on_enter
        ~callback:(fun ~x:_ ~y:_ ->
-          let offered =
-            match drop_target#get_current_drop () with
-            | None -> []
-            | Some drop -> drop#get_actions ()
-          in
-          pick_action offered)
+         let offered =
+           match drop_target#get_current_drop () with
+           | None -> []
+           | Some drop -> drop#get_actions ()
+         in
+         pick_action offered)
        ());
   ignore
     (drop_target#on_motion
        ~callback:(fun ~x:_ ~y:_ ->
-          let offered =
-            match drop_target#get_current_drop () with
-            | None -> []
-            | Some drop -> drop#get_actions ()
-          in
-          pick_action offered)
+         let offered =
+           match drop_target#get_current_drop () with
+           | None -> []
+           | Some drop -> drop#get_actions ()
+         in
+         pick_action offered)
        ());
   ignore
     (drop_target#on_leave
        ~callback:(fun () ->
-          label#set_markup "<span foreground='gray'>Drop an image here</span>")
+         label#set_markup "<span foreground='gray'>Drop an image here</span>")
        ());
   ignore
     (drop_target#on_drop
        ~callback:(fun ~value:_ ~x:_ ~y:_ ->
-          let path =
-            match drop_target#get_value () with
-            | None -> None
-            | Some v ->
-                if Gobject.Type.equal (Gobject.Value.get_type v) fl_type then
-                  let raw : Ocgtk_gdk.Gdk.Wrappers.File_list.t =
-                    Gobject.Value.get_boxed v
-                  in
-                  let fl = new Ocgtk_gdk.Gdk.File_list.file_list raw in
-                  let ( let* ) = Option.bind in
-                  let* file = List.nth_opt (fl#get_files ()) 0 in
-                  file#get_path ()
-                else
-                  None
-          in
-          match path with
-          | None -> false
-          | Some path ->
-              load_signature ~path ~picture ~label ~dirty;
-              true)
+         let path =
+           match drop_target#get_value () with
+           | None -> None
+           | Some v ->
+               if Gobject.Type.equal (Gobject.Value.get_type v) fl_type then
+                 let raw : Ocgtk_gdk.Gdk.Wrappers.File_list.t =
+                   Gobject.Value.get_boxed v
+                 in
+                 let fl = new Ocgtk_gdk.Gdk.File_list.file_list raw in
+                 let ( let* ) = Option.bind in
+                 let* file = List.nth_opt (fl#get_files ()) 0 in
+                 file#get_path ()
+               else None
+         in
+         match path with
+         | None -> false
+         | Some path ->
+             load_signature ~path ~picture ~label ~dirty;
+             true)
        ());
 
   let frame = Frame.new_ (Some "Signature") in

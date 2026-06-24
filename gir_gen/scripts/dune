@@ -1,5 +1,7 @@
 (executable
  (name gen_signal_baseline)
  (libraries gir_gen_lib sexplib)
- (preprocess (pps ppx_sexp_conv))
- (flags (:standard -w -32 -w -39)))
+ (preprocess
+  (pps ppx_sexp_conv))
+ (flags
+  (:standard -w -32 -w -39)))

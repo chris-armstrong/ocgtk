@@ -51,27 +51,27 @@ module Type = struct
   external is_a : t -> t -> bool = "ml_g_type_is_a"
   external of_fundamental_int : int -> t = "ml_g_type_of_fundamental"
 
-  let invalid   = of_fundamental_int 0
-  let none      = of_fundamental_int 1
+  let invalid = of_fundamental_int 0
+  let none = of_fundamental_int 1
   let interface = of_fundamental_int 2
-  let char_     = of_fundamental_int 3
-  let uchar     = of_fundamental_int 4
-  let boolean   = of_fundamental_int 5
-  let int_      = of_fundamental_int 6
-  let uint      = of_fundamental_int 7
-  let long      = of_fundamental_int 8
-  let ulong     = of_fundamental_int 9
-  let int64     = of_fundamental_int 10
-  let uint64    = of_fundamental_int 11
-  let enum      = of_fundamental_int 12
-  let flags     = of_fundamental_int 13
-  let float_    = of_fundamental_int 14
-  let double    = of_fundamental_int 15
-  let string    = of_fundamental_int 16
-  let pointer   = of_fundamental_int 17
-  let boxed     = of_fundamental_int 18
-  let param     = of_fundamental_int 19
-  let object_   = of_fundamental_int 20
+  let char_ = of_fundamental_int 3
+  let uchar = of_fundamental_int 4
+  let boolean = of_fundamental_int 5
+  let int_ = of_fundamental_int 6
+  let uint = of_fundamental_int 7
+  let long = of_fundamental_int 8
+  let ulong = of_fundamental_int 9
+  let int64 = of_fundamental_int 10
+  let uint64 = of_fundamental_int 11
+  let enum = of_fundamental_int 12
+  let flags = of_fundamental_int 13
+  let float_ = of_fundamental_int 14
+  let double = of_fundamental_int 15
+  let string = of_fundamental_int 16
+  let pointer = of_fundamental_int 17
+  let boxed = of_fundamental_int 18
+  let param = of_fundamental_int 19
+  let object_ = of_fundamental_int 20
 end
 
 (** {2 GValue Operations} *)
@@ -186,4 +186,3 @@ module Signal = struct
   external emit_by_name : 'a obj -> name:string -> unit
     = "ml_g_signal_emit_by_name"
 end
-
