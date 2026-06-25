@@ -1,9 +1,5 @@
 class type application_command_line_t = object
-  method create_file_for_arg :
-    string ->
-    GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .file_t
-
+  method create_file_for_arg : string -> GApp_info_cycle_64c425a0.file_t
   method done_ : unit -> unit
   method get_cwd : unit -> string option
   method get_environ : unit -> string array
@@ -22,14 +18,9 @@ end
 class application_command_line (obj : Application_command_line.t) :
   application_command_line_t =
   object (self)
-    method create_file_for_arg :
-        string ->
-        GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .file_t =
+    method create_file_for_arg : string -> GApp_info_cycle_64c425a0.file_t =
       fun arg ->
-        new
-          GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-          .file
+        new GApp_info_cycle_64c425a0.file
           (Application_command_line.create_file_for_arg obj arg)
 
     method done_ : unit -> unit = fun () -> Application_command_line.done_ obj

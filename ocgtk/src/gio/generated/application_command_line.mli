@@ -156,12 +156,8 @@ external done_ : t -> unit = "ml_g_application_command_line_done"
     is disposed — so you can omit the call in non-garbage collected languages.
 *)
 
-external create_file_for_arg :
-  t ->
-  string ->
-  App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-  .File
-  .t = "ml_g_application_command_line_create_file_for_arg"
+external create_file_for_arg : t -> string -> App_info_cycle_64c425a0.File.t
+  = "ml_g_application_command_line_create_file_for_arg"
 (** Creates a #GFile corresponding to a filename that was given as part
 of the invocation of @cmdline.
 

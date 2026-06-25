@@ -20,13 +20,8 @@ external list_actions : t -> string array = "ml_g_desktop_app_info_list_actions"
     listed in the "Actions" key of the [Desktop Entry] group. *)
 
 external launch_action :
-  t ->
-  string ->
-  App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-  .App_launch_context
-  .t
-  option ->
-  unit = "ml_g_desktop_app_info_launch_action"
+  t -> string -> App_info_cycle_64c425a0.App_launch_context.t option -> unit
+  = "ml_g_desktop_app_info_launch_action"
 (** Activates the named application action.
 
 You may only call this function on action names that were

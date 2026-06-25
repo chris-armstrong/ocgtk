@@ -33,11 +33,7 @@ class type app_info_t = object
   method should_show : unit -> bool
   method supports_files : unit -> bool
   method supports_uris : unit -> bool
-
-  method as_app_info :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .App_info
-    .t
+  method as_app_info : App_info_cycle_64c425a0.App_info.t
 end
 
 and app_launch_context_t = object
@@ -65,11 +61,7 @@ and app_launch_context_t = object
   method launch_failed : string -> unit
   method setenv : string -> string -> unit
   method unsetenv : string -> unit
-
-  method as_app_launch_context :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .App_launch_context
-    .t
+  method as_app_launch_context : App_info_cycle_64c425a0.App_launch_context.t
 end
 
 and drive_t = object
@@ -114,11 +106,7 @@ and drive_t = object
 
   method start_finish : GAsync_result.async_result_t -> (bool, GError.t) result
   method stop_finish : GAsync_result.async_result_t -> (bool, GError.t) result
-
-  method as_drive :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .Drive
-    .t
+  method as_drive : App_info_cycle_64c425a0.Drive.t
 end
 
 and file_t = object
@@ -395,10 +383,7 @@ and file_t = object
   method unmount_mountable_with_operation_finish :
     GAsync_result.async_result_t -> (bool, GError.t) result
 
-  method as_file :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .File
-    .t
+  method as_file : App_info_cycle_64c425a0.File.t
 end
 
 and file_enumerator_t = object
@@ -418,11 +403,7 @@ and file_enumerator_t = object
     (GFile_info.file_info_t list, GError.t) result
 
   method set_pending : bool -> unit
-
-  method as_file_enumerator :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .File_enumerator
-    .t
+  method as_file_enumerator : App_info_cycle_64c425a0.File_enumerator.t
 end
 
 and file_monitor_t = object
@@ -441,11 +422,7 @@ and file_monitor_t = object
   method is_cancelled : unit -> bool
   method set_rate_limit : int -> unit
   method cancelled : bool
-
-  method as_file_monitor :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .File_monitor
-    .t
+  method as_file_monitor : App_info_cycle_64c425a0.File_monitor.t
 end
 
 and mount_t = object
@@ -495,11 +472,7 @@ and mount_t = object
     GAsync_result.async_result_t -> (bool, GError.t) result
 
   method unshadow : unit -> unit
-
-  method as_mount :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .Mount
-    .t
+  method as_mount : App_info_cycle_64c425a0.Mount.t
 end
 
 and volume_t = object
@@ -528,107 +501,58 @@ and volume_t = object
   method get_uuid : unit -> string option
   method mount_finish : GAsync_result.async_result_t -> (bool, GError.t) result
   method should_automount : unit -> bool
-
-  method as_volume :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .Volume
-    .t
+  method as_volume : App_info_cycle_64c425a0.Volume.t
 end
 
-class app_info
-  (obj :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .App_info
-    .t) :
-  app_info_t =
+class app_info (obj : App_info_cycle_64c425a0.App_info.t) : app_info_t =
   object (self)
     method add_supports_type : string -> (bool, GError.t) result =
       fun content_type ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .add_supports_type obj content_type
+        App_info_cycle_64c425a0.App_info.add_supports_type obj content_type
 
     method can_delete : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .can_delete obj
+      fun () -> App_info_cycle_64c425a0.App_info.can_delete obj
 
     method can_remove_supports_type : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .can_remove_supports_type obj
+      fun () -> App_info_cycle_64c425a0.App_info.can_remove_supports_type obj
 
     method delete : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .delete obj
+      fun () -> App_info_cycle_64c425a0.App_info.delete obj
 
     method dup : unit -> app_info_t =
-      fun () ->
-        new app_info
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .App_info
-           .dup obj)
+      fun () -> new app_info (App_info_cycle_64c425a0.App_info.dup obj)
 
     method equal : app_info_t -> bool =
       fun appinfo2 ->
         let appinfo2 = appinfo2#as_app_info in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .equal obj appinfo2
+        App_info_cycle_64c425a0.App_info.equal obj appinfo2
 
     method get_commandline : unit -> string option =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .get_commandline obj
+      fun () -> App_info_cycle_64c425a0.App_info.get_commandline obj
 
     method get_description : unit -> string option =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .get_description obj
+      fun () -> App_info_cycle_64c425a0.App_info.get_description obj
 
     method get_display_name : unit -> string =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .get_display_name obj
+      fun () -> App_info_cycle_64c425a0.App_info.get_display_name obj
 
     method get_executable : unit -> string =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .get_executable obj
+      fun () -> App_info_cycle_64c425a0.App_info.get_executable obj
 
     method get_icon : unit -> GIcon.icon_t option =
       fun () ->
         Option.map
           (fun ret -> new GIcon.icon ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .App_info
-           .get_icon obj)
+          (App_info_cycle_64c425a0.App_info.get_icon obj)
 
     method get_id : unit -> string option =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .get_id obj
+      fun () -> App_info_cycle_64c425a0.App_info.get_id obj
 
     method get_name : unit -> string =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .get_name obj
+      fun () -> App_info_cycle_64c425a0.App_info.get_name obj
 
     method get_supported_types : unit -> string array =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .get_supported_types obj
+      fun () -> App_info_cycle_64c425a0.App_info.get_supported_types obj
 
     method launch :
         file_t list option ->
@@ -637,9 +561,7 @@ class app_info
       fun files context ->
         let files = Option.map (List.map (fun c -> c#as_file)) files in
         let context = Option.map (fun c -> c#as_app_launch_context) context in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .launch obj files context
+        App_info_cycle_64c425a0.App_info.launch obj files context
 
     method launch_uris :
         string list option ->
@@ -647,319 +569,202 @@ class app_info
         (bool, GError.t) result =
       fun uris context ->
         let context = Option.map (fun c -> c#as_app_launch_context) context in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .launch_uris obj uris context
+        App_info_cycle_64c425a0.App_info.launch_uris obj uris context
 
     method launch_uris_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .launch_uris_finish obj result
+        App_info_cycle_64c425a0.App_info.launch_uris_finish obj result
 
     method remove_supports_type : string -> (bool, GError.t) result =
       fun content_type ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .remove_supports_type obj content_type
+        App_info_cycle_64c425a0.App_info.remove_supports_type obj content_type
 
     method set_as_default_for_extension : string -> (bool, GError.t) result =
       fun extension ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .set_as_default_for_extension obj extension
+        App_info_cycle_64c425a0.App_info.set_as_default_for_extension obj
+          extension
 
     method set_as_default_for_type : string -> (bool, GError.t) result =
       fun content_type ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .set_as_default_for_type obj content_type
+        App_info_cycle_64c425a0.App_info.set_as_default_for_type obj
+          content_type
 
     method set_as_last_used_for_type : string -> (bool, GError.t) result =
       fun content_type ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .set_as_last_used_for_type obj content_type
+        App_info_cycle_64c425a0.App_info.set_as_last_used_for_type obj
+          content_type
 
     method should_show : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .should_show obj
+      fun () -> App_info_cycle_64c425a0.App_info.should_show obj
 
     method supports_files : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .supports_files obj
+      fun () -> App_info_cycle_64c425a0.App_info.supports_files obj
 
     method supports_uris : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_info
-        .supports_uris obj
+      fun () -> App_info_cycle_64c425a0.App_info.supports_uris obj
 
     method as_app_info = obj
   end
 
-and app_launch_context
-  (obj :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .App_launch_context
-    .t) :
+and app_launch_context (obj : App_info_cycle_64c425a0.App_launch_context.t) :
   app_launch_context_t =
   object (self)
     method on_launch_failed ?(after = false) ~callback () =
-      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-      .App_launch_context
-      .on_launch_failed ~after self#as_app_launch_context ~callback
+      App_info_cycle_64c425a0.App_launch_context.on_launch_failed ~after
+        self#as_app_launch_context ~callback
 
     method on_launch_started ?(after = false) ~callback () =
-      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-      .App_launch_context
-      .on_launch_started ~after self#as_app_launch_context
-        ~callback:(fun ~info ~platform_data ->
+      App_info_cycle_64c425a0.App_launch_context.on_launch_started ~after
+        self#as_app_launch_context ~callback:(fun ~info ~platform_data ->
           callback ~info:(new app_info info) ~platform_data)
 
     method on_launched ?(after = false) ~callback () =
-      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-      .App_launch_context
-      .on_launched ~after self#as_app_launch_context
-        ~callback:(fun ~info ~platform_data ->
+      App_info_cycle_64c425a0.App_launch_context.on_launched ~after
+        self#as_app_launch_context ~callback:(fun ~info ~platform_data ->
           callback ~info:(new app_info info) ~platform_data)
 
     method get_display : app_info_t -> file_t list -> string option =
       fun info files ->
         let info = info#as_app_info in
         let files = (List.map (fun c -> c#as_file)) files in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_launch_context
-        .get_display obj info files
+        App_info_cycle_64c425a0.App_launch_context.get_display obj info files
 
     method get_environment : unit -> string array =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_launch_context
-        .get_environment obj
+      fun () -> App_info_cycle_64c425a0.App_launch_context.get_environment obj
 
     method get_startup_notify_id : app_info_t -> file_t list -> string option =
       fun info files ->
         let info = info#as_app_info in
         let files = (List.map (fun c -> c#as_file)) files in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_launch_context
-        .get_startup_notify_id obj info files
+        App_info_cycle_64c425a0.App_launch_context.get_startup_notify_id obj
+          info files
 
     method launch_failed : string -> unit =
       fun startup_notify_id ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_launch_context
-        .launch_failed obj startup_notify_id
+        App_info_cycle_64c425a0.App_launch_context.launch_failed obj
+          startup_notify_id
 
     method setenv : string -> string -> unit =
       fun variable value ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_launch_context
-        .setenv obj variable value
+        App_info_cycle_64c425a0.App_launch_context.setenv obj variable value
 
     method unsetenv : string -> unit =
       fun variable ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .App_launch_context
-        .unsetenv obj variable
+        App_info_cycle_64c425a0.App_launch_context.unsetenv obj variable
 
     method as_app_launch_context = obj
   end
 
-and drive
-  (obj :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .Drive
-    .t) :
-  drive_t =
+and drive (obj : App_info_cycle_64c425a0.Drive.t) : drive_t =
   object (self)
     method on_changed ?(after = false) ~callback () =
-      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-      .Drive
-      .on_changed ~after self#as_drive ~callback
+      App_info_cycle_64c425a0.Drive.on_changed ~after self#as_drive ~callback
 
     method on_disconnected ?(after = false) ~callback () =
-      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-      .Drive
-      .on_disconnected ~after self#as_drive ~callback
+      App_info_cycle_64c425a0.Drive.on_disconnected ~after self#as_drive
+        ~callback
 
     method on_eject_button ?(after = false) ~callback () =
-      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-      .Drive
-      .on_eject_button ~after self#as_drive ~callback
+      App_info_cycle_64c425a0.Drive.on_eject_button ~after self#as_drive
+        ~callback
 
     method on_stop_button ?(after = false) ~callback () =
-      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-      .Drive
-      .on_stop_button ~after self#as_drive ~callback
+      App_info_cycle_64c425a0.Drive.on_stop_button ~after self#as_drive
+        ~callback
 
     method can_eject : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .can_eject obj
+      fun () -> App_info_cycle_64c425a0.Drive.can_eject obj
 
     method can_poll_for_media : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .can_poll_for_media obj
+      fun () -> App_info_cycle_64c425a0.Drive.can_poll_for_media obj
 
     method can_start : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .can_start obj
+      fun () -> App_info_cycle_64c425a0.Drive.can_start obj
 
     method can_start_degraded : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .can_start_degraded obj
+      fun () -> App_info_cycle_64c425a0.Drive.can_start_degraded obj
 
     method can_stop : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .can_stop obj
+      fun () -> App_info_cycle_64c425a0.Drive.can_stop obj
 
     method eject_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .eject_finish obj result
+        App_info_cycle_64c425a0.Drive.eject_finish obj result
 
     method eject_with_operation_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .eject_with_operation_finish obj result
+        App_info_cycle_64c425a0.Drive.eject_with_operation_finish obj result
 
     method enumerate_identifiers : unit -> string array =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .enumerate_identifiers obj
+      fun () -> App_info_cycle_64c425a0.Drive.enumerate_identifiers obj
 
     method get_icon : unit -> GIcon.icon_t =
-      fun () ->
-        new GIcon.icon
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .Drive
-           .get_icon obj)
+      fun () -> new GIcon.icon (App_info_cycle_64c425a0.Drive.get_icon obj)
 
     method get_identifier : string -> string option =
-      fun kind ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .get_identifier obj kind
+      fun kind -> App_info_cycle_64c425a0.Drive.get_identifier obj kind
 
     method get_name : unit -> string =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .get_name obj
+      fun () -> App_info_cycle_64c425a0.Drive.get_name obj
 
     method get_sort_key : unit -> string option =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .get_sort_key obj
+      fun () -> App_info_cycle_64c425a0.Drive.get_sort_key obj
 
     method get_start_stop_type : unit -> Gio_enums.drivestartstoptype =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .get_start_stop_type obj
+      fun () -> App_info_cycle_64c425a0.Drive.get_start_stop_type obj
 
     method get_symbolic_icon : unit -> GIcon.icon_t =
       fun () ->
-        new GIcon.icon
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .Drive
-           .get_symbolic_icon obj)
+        new GIcon.icon (App_info_cycle_64c425a0.Drive.get_symbolic_icon obj)
 
     method get_volumes : unit -> volume_t list =
       fun () ->
         (List.map (fun ret -> new volume ret))
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .Drive
-           .get_volumes obj)
+          (App_info_cycle_64c425a0.Drive.get_volumes obj)
 
     method has_media : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .has_media obj
+      fun () -> App_info_cycle_64c425a0.Drive.has_media obj
 
     method has_volumes : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .has_volumes obj
+      fun () -> App_info_cycle_64c425a0.Drive.has_volumes obj
 
     method is_media_check_automatic : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .is_media_check_automatic obj
+      fun () -> App_info_cycle_64c425a0.Drive.is_media_check_automatic obj
 
     method is_media_removable : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .is_media_removable obj
+      fun () -> App_info_cycle_64c425a0.Drive.is_media_removable obj
 
     method is_removable : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .is_removable obj
+      fun () -> App_info_cycle_64c425a0.Drive.is_removable obj
 
     method poll_for_media_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .poll_for_media_finish obj result
+        App_info_cycle_64c425a0.Drive.poll_for_media_finish obj result
 
     method start_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .start_finish obj result
+        App_info_cycle_64c425a0.Drive.start_finish obj result
 
     method stop_finish : GAsync_result.async_result_t -> (bool, GError.t) result
         =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Drive
-        .stop_finish obj result
+        App_info_cycle_64c425a0.Drive.stop_finish obj result
 
     method as_drive = obj
   end
 
-and file
-  (obj :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .File
-    .t) :
-  file_t =
+and file (obj : App_info_cycle_64c425a0.File.t) : file_t =
   object (self)
     method append_to :
         Gio_enums.filecreateflags ->
@@ -969,9 +774,7 @@ and file
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new GFile_output_stream.file_output_stream ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .append_to obj flags cancellable)
+          (App_info_cycle_64c425a0.File.append_to obj flags cancellable)
 
     method append_to_finish :
         GAsync_result.async_result_t ->
@@ -980,9 +783,7 @@ and file
         let res = res#as_async_result in
         Result.map
           (fun ret -> new GFile_output_stream.file_output_stream ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .append_to_finish obj res)
+          (App_info_cycle_64c425a0.File.append_to_finish obj res)
 
     method build_attribute_list_for_copy :
         Gio_enums.filecopyflags ->
@@ -990,9 +791,8 @@ and file
         (string, GError.t) result =
       fun flags cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .build_attribute_list_for_copy obj flags cancellable
+        App_info_cycle_64c425a0.File.build_attribute_list_for_copy obj flags
+          cancellable
 
     method copy_attributes :
         file_t ->
@@ -1002,17 +802,14 @@ and file
       fun destination flags cancellable ->
         let destination = destination#as_file in
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .copy_attributes obj destination flags cancellable
+        App_info_cycle_64c425a0.File.copy_attributes obj destination flags
+          cancellable
 
     method copy_finish : GAsync_result.async_result_t -> (bool, GError.t) result
         =
       fun res ->
         let res = res#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .copy_finish obj res
+        App_info_cycle_64c425a0.File.copy_finish obj res
 
     method create :
         Gio_enums.filecreateflags ->
@@ -1022,9 +819,7 @@ and file
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new GFile_output_stream.file_output_stream ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .create obj flags cancellable)
+          (App_info_cycle_64c425a0.File.create obj flags cancellable)
 
     method create_finish :
         GAsync_result.async_result_t ->
@@ -1033,9 +828,7 @@ and file
         let res = res#as_async_result in
         Result.map
           (fun ret -> new GFile_output_stream.file_output_stream ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .create_finish obj res)
+          (App_info_cycle_64c425a0.File.create_finish obj res)
 
     method create_readwrite :
         Gio_enums.filecreateflags ->
@@ -1045,9 +838,7 @@ and file
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new GFile_io_stream.file_io_stream ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .create_readwrite obj flags cancellable)
+          (App_info_cycle_64c425a0.File.create_readwrite obj flags cancellable)
 
     method create_readwrite_finish :
         GAsync_result.async_result_t ->
@@ -1056,48 +847,35 @@ and file
         let res = res#as_async_result in
         Result.map
           (fun ret -> new GFile_io_stream.file_io_stream ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .create_readwrite_finish obj res)
+          (App_info_cycle_64c425a0.File.create_readwrite_finish obj res)
 
     method delete : GCancellable.cancellable_t option -> (bool, GError.t) result
         =
       fun cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .delete obj cancellable
+        App_info_cycle_64c425a0.File.delete obj cancellable
 
     method delete_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .delete_finish obj result
+        App_info_cycle_64c425a0.File.delete_finish obj result
 
     method dup : unit -> file_t =
-      fun () ->
-        new file
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .dup obj)
+      fun () -> new file (App_info_cycle_64c425a0.File.dup obj)
 
     method eject_mountable_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .eject_mountable_finish obj result
+        App_info_cycle_64c425a0.File.eject_mountable_finish obj result
 
     method eject_mountable_with_operation_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .eject_mountable_with_operation_finish obj result
+        App_info_cycle_64c425a0.File.eject_mountable_with_operation_finish obj
+          result
 
     method enumerate_children :
         string ->
@@ -1108,9 +886,8 @@ and file
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new file_enumerator ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .enumerate_children obj attributes flags cancellable)
+          (App_info_cycle_64c425a0.File.enumerate_children obj attributes flags
+             cancellable)
 
     method enumerate_children_finish :
         GAsync_result.async_result_t -> (file_enumerator_t, GError.t) result =
@@ -1118,16 +895,12 @@ and file
         let res = res#as_async_result in
         Result.map
           (fun ret -> new file_enumerator ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .enumerate_children_finish obj res)
+          (App_info_cycle_64c425a0.File.enumerate_children_finish obj res)
 
     method equal : file_t -> bool =
       fun file2 ->
         let file2 = file2#as_file in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .equal obj file2
+        App_info_cycle_64c425a0.File.equal obj file2
 
     method find_enclosing_mount :
         GCancellable.cancellable_t option -> (mount_t, GError.t) result =
@@ -1135,9 +908,7 @@ and file
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new mount ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .find_enclosing_mount obj cancellable)
+          (App_info_cycle_64c425a0.File.find_enclosing_mount obj cancellable)
 
     method find_enclosing_mount_finish :
         GAsync_result.async_result_t -> (mount_t, GError.t) result =
@@ -1145,141 +916,93 @@ and file
         let res = res#as_async_result in
         Result.map
           (fun ret -> new mount ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .find_enclosing_mount_finish obj res)
+          (App_info_cycle_64c425a0.File.find_enclosing_mount_finish obj res)
 
     method get_basename : unit -> string option =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .get_basename obj
+      fun () -> App_info_cycle_64c425a0.File.get_basename obj
 
     method get_child : string -> file_t =
-      fun name ->
-        new file
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .get_child obj name)
+      fun name -> new file (App_info_cycle_64c425a0.File.get_child obj name)
 
     method get_child_for_display_name : string -> (file_t, GError.t) result =
       fun display_name ->
         Result.map
           (fun ret -> new file ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .get_child_for_display_name obj display_name)
+          (App_info_cycle_64c425a0.File.get_child_for_display_name obj
+             display_name)
 
     method get_parent : unit -> file_t option =
       fun () ->
         Option.map
           (fun ret -> new file ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .get_parent obj)
+          (App_info_cycle_64c425a0.File.get_parent obj)
 
     method get_parse_name : unit -> string =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .get_parse_name obj
+      fun () -> App_info_cycle_64c425a0.File.get_parse_name obj
 
     method get_path : unit -> string option =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .get_path obj
+      fun () -> App_info_cycle_64c425a0.File.get_path obj
 
     method get_relative_path : file_t -> string option =
       fun descendant ->
         let descendant = descendant#as_file in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .get_relative_path obj descendant
+        App_info_cycle_64c425a0.File.get_relative_path obj descendant
 
     method get_uri : unit -> string =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .get_uri obj
+      fun () -> App_info_cycle_64c425a0.File.get_uri obj
 
     method get_uri_scheme : unit -> string option =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .get_uri_scheme obj
+      fun () -> App_info_cycle_64c425a0.File.get_uri_scheme obj
 
     method has_parent : file_t option -> bool =
       fun parent ->
         let parent = Option.map (fun c -> c#as_file) parent in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .has_parent obj parent
+        App_info_cycle_64c425a0.File.has_parent obj parent
 
     method has_prefix : file_t -> bool =
       fun prefix ->
         let prefix = prefix#as_file in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .has_prefix obj prefix
+        App_info_cycle_64c425a0.File.has_prefix obj prefix
 
     method has_uri_scheme : string -> bool =
       fun uri_scheme ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .has_uri_scheme obj uri_scheme
+        App_info_cycle_64c425a0.File.has_uri_scheme obj uri_scheme
 
-    method hash : unit -> int =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .hash obj
+    method hash : unit -> int = fun () -> App_info_cycle_64c425a0.File.hash obj
 
     method is_native : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .is_native obj
+      fun () -> App_info_cycle_64c425a0.File.is_native obj
 
     method make_directory :
         GCancellable.cancellable_t option -> (bool, GError.t) result =
       fun cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .make_directory obj cancellable
+        App_info_cycle_64c425a0.File.make_directory obj cancellable
 
     method make_directory_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .make_directory_finish obj result
+        App_info_cycle_64c425a0.File.make_directory_finish obj result
 
     method make_directory_with_parents :
         GCancellable.cancellable_t option -> (bool, GError.t) result =
       fun cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .make_directory_with_parents obj cancellable
+        App_info_cycle_64c425a0.File.make_directory_with_parents obj cancellable
 
     method make_symbolic_link :
         string -> GCancellable.cancellable_t option -> (bool, GError.t) result =
       fun symlink_value cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .make_symbolic_link obj symlink_value cancellable
+        App_info_cycle_64c425a0.File.make_symbolic_link obj symlink_value
+          cancellable
 
     method make_symbolic_link_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .make_symbolic_link_finish obj result
+        App_info_cycle_64c425a0.File.make_symbolic_link_finish obj result
 
     method monitor :
         Gio_enums.filemonitorflags ->
@@ -1289,9 +1012,7 @@ and file
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new file_monitor ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .monitor obj flags cancellable)
+          (App_info_cycle_64c425a0.File.monitor obj flags cancellable)
 
     method monitor_directory :
         Gio_enums.filemonitorflags ->
@@ -1301,9 +1022,7 @@ and file
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new file_monitor ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .monitor_directory obj flags cancellable)
+          (App_info_cycle_64c425a0.File.monitor_directory obj flags cancellable)
 
     method monitor_file :
         Gio_enums.filemonitorflags ->
@@ -1313,17 +1032,13 @@ and file
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new file_monitor ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .monitor_file obj flags cancellable)
+          (App_info_cycle_64c425a0.File.monitor_file obj flags cancellable)
 
     method mount_enclosing_volume_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .mount_enclosing_volume_finish obj result
+        App_info_cycle_64c425a0.File.mount_enclosing_volume_finish obj result
 
     method mount_mountable_finish :
         GAsync_result.async_result_t -> (file_t, GError.t) result =
@@ -1331,17 +1046,13 @@ and file
         let result = result#as_async_result in
         Result.map
           (fun ret -> new file ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .mount_mountable_finish obj result)
+          (App_info_cycle_64c425a0.File.mount_mountable_finish obj result)
 
     method move_finish : GAsync_result.async_result_t -> (bool, GError.t) result
         =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .move_finish obj result
+        App_info_cycle_64c425a0.File.move_finish obj result
 
     method open_readwrite :
         GCancellable.cancellable_t option ->
@@ -1350,9 +1061,7 @@ and file
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new GFile_io_stream.file_io_stream ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .open_readwrite obj cancellable)
+          (App_info_cycle_64c425a0.File.open_readwrite obj cancellable)
 
     method open_readwrite_finish :
         GAsync_result.async_result_t ->
@@ -1361,23 +1070,16 @@ and file
         let res = res#as_async_result in
         Result.map
           (fun ret -> new GFile_io_stream.file_io_stream ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .open_readwrite_finish obj res)
+          (App_info_cycle_64c425a0.File.open_readwrite_finish obj res)
 
     method peek_path : unit -> string option =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .peek_path obj
+      fun () -> App_info_cycle_64c425a0.File.peek_path obj
 
     method poll_mountable_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .poll_mountable_finish obj result
+        App_info_cycle_64c425a0.File.poll_mountable_finish obj result
 
     method query_default_handler :
         GCancellable.cancellable_t option -> (app_info_t, GError.t) result =
@@ -1385,9 +1087,7 @@ and file
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new app_info ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .query_default_handler obj cancellable)
+          (App_info_cycle_64c425a0.File.query_default_handler obj cancellable)
 
     method query_default_handler_finish :
         GAsync_result.async_result_t -> (app_info_t, GError.t) result =
@@ -1395,16 +1095,12 @@ and file
         let result = result#as_async_result in
         Result.map
           (fun ret -> new app_info ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .query_default_handler_finish obj result)
+          (App_info_cycle_64c425a0.File.query_default_handler_finish obj result)
 
     method query_exists : GCancellable.cancellable_t option -> bool =
       fun cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .query_exists obj cancellable
+        App_info_cycle_64c425a0.File.query_exists obj cancellable
 
     method query_file_type :
         Gio_enums.filequeryinfoflags ->
@@ -1412,9 +1108,7 @@ and file
         Gio_enums.filetype =
       fun flags cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .query_file_type obj flags cancellable
+        App_info_cycle_64c425a0.File.query_file_type obj flags cancellable
 
     method query_filesystem_info :
         string ->
@@ -1424,9 +1118,8 @@ and file
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new GFile_info.file_info ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .query_filesystem_info obj attributes cancellable)
+          (App_info_cycle_64c425a0.File.query_filesystem_info obj attributes
+             cancellable)
 
     method query_filesystem_info_finish :
         GAsync_result.async_result_t ->
@@ -1435,9 +1128,7 @@ and file
         let res = res#as_async_result in
         Result.map
           (fun ret -> new GFile_info.file_info ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .query_filesystem_info_finish obj res)
+          (App_info_cycle_64c425a0.File.query_filesystem_info_finish obj res)
 
     method query_info :
         string ->
@@ -1448,9 +1139,8 @@ and file
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new GFile_info.file_info ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .query_info obj attributes flags cancellable)
+          (App_info_cycle_64c425a0.File.query_info obj attributes flags
+             cancellable)
 
     method query_info_finish :
         GAsync_result.async_result_t ->
@@ -1459,27 +1149,21 @@ and file
         let res = res#as_async_result in
         Result.map
           (fun ret -> new GFile_info.file_info ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .query_info_finish obj res)
+          (App_info_cycle_64c425a0.File.query_info_finish obj res)
 
     method query_settable_attributes :
         GCancellable.cancellable_t option ->
         (File_attribute_info_list.t, GError.t) result =
       fun cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .query_settable_attributes obj cancellable
+        App_info_cycle_64c425a0.File.query_settable_attributes obj cancellable
 
     method query_writable_namespaces :
         GCancellable.cancellable_t option ->
         (File_attribute_info_list.t, GError.t) result =
       fun cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .query_writable_namespaces obj cancellable
+        App_info_cycle_64c425a0.File.query_writable_namespaces obj cancellable
 
     method read :
         GCancellable.cancellable_t option ->
@@ -1488,9 +1172,7 @@ and file
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new GFile_input_stream.file_input_stream ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .read obj cancellable)
+          (App_info_cycle_64c425a0.File.read obj cancellable)
 
     method read_finish :
         GAsync_result.async_result_t ->
@@ -1499,9 +1181,7 @@ and file
         let res = res#as_async_result in
         Result.map
           (fun ret -> new GFile_input_stream.file_input_stream ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .read_finish obj res)
+          (App_info_cycle_64c425a0.File.read_finish obj res)
 
     method replace :
         string option ->
@@ -1513,9 +1193,8 @@ and file
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new GFile_output_stream.file_output_stream ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .replace obj etag make_backup flags cancellable)
+          (App_info_cycle_64c425a0.File.replace obj etag make_backup flags
+             cancellable)
 
     method replace_finish :
         GAsync_result.async_result_t ->
@@ -1524,9 +1203,7 @@ and file
         let res = res#as_async_result in
         Result.map
           (fun ret -> new GFile_output_stream.file_output_stream ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .replace_finish obj res)
+          (App_info_cycle_64c425a0.File.replace_finish obj res)
 
     method replace_readwrite :
         string option ->
@@ -1538,9 +1215,8 @@ and file
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new GFile_io_stream.file_io_stream ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .replace_readwrite obj etag make_backup flags cancellable)
+          (App_info_cycle_64c425a0.File.replace_readwrite obj etag make_backup
+             flags cancellable)
 
     method replace_readwrite_finish :
         GAsync_result.async_result_t ->
@@ -1549,16 +1225,12 @@ and file
         let res = res#as_async_result in
         Result.map
           (fun ret -> new GFile_io_stream.file_io_stream ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .replace_readwrite_finish obj res)
+          (App_info_cycle_64c425a0.File.replace_readwrite_finish obj res)
 
     method resolve_relative_path : string -> file_t =
       fun relative_path ->
         new file
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .resolve_relative_path obj relative_path)
+          (App_info_cycle_64c425a0.File.resolve_relative_path obj relative_path)
 
     method set_attribute_byte_string :
         string ->
@@ -1568,9 +1240,8 @@ and file
         (bool, GError.t) result =
       fun attribute value flags cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .set_attribute_byte_string obj attribute value flags cancellable
+        App_info_cycle_64c425a0.File.set_attribute_byte_string obj attribute
+          value flags cancellable
 
     method set_attribute_int32 :
         string ->
@@ -1580,9 +1251,8 @@ and file
         (bool, GError.t) result =
       fun attribute value flags cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .set_attribute_int32 obj attribute value flags cancellable
+        App_info_cycle_64c425a0.File.set_attribute_int32 obj attribute value
+          flags cancellable
 
     method set_attribute_int64 :
         string ->
@@ -1592,9 +1262,8 @@ and file
         (bool, GError.t) result =
       fun attribute value flags cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .set_attribute_int64 obj attribute value flags cancellable
+        App_info_cycle_64c425a0.File.set_attribute_int64 obj attribute value
+          flags cancellable
 
     method set_attribute_string :
         string ->
@@ -1604,9 +1273,8 @@ and file
         (bool, GError.t) result =
       fun attribute value flags cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .set_attribute_string obj attribute value flags cancellable
+        App_info_cycle_64c425a0.File.set_attribute_string obj attribute value
+          flags cancellable
 
     method set_attribute_uint32 :
         string ->
@@ -1616,9 +1284,8 @@ and file
         (bool, GError.t) result =
       fun attribute value flags cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .set_attribute_uint32 obj attribute value flags cancellable
+        App_info_cycle_64c425a0.File.set_attribute_uint32 obj attribute value
+          flags cancellable
 
     method set_attribute_uint64 :
         string ->
@@ -1628,9 +1295,8 @@ and file
         (bool, GError.t) result =
       fun attribute value flags cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .set_attribute_uint64 obj attribute value flags cancellable
+        App_info_cycle_64c425a0.File.set_attribute_uint64 obj attribute value
+          flags cancellable
 
     method set_attributes_from_info :
         GFile_info.file_info_t ->
@@ -1640,9 +1306,8 @@ and file
       fun info flags cancellable ->
         let info = info#as_file_info in
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .set_attributes_from_info obj info flags cancellable
+        App_info_cycle_64c425a0.File.set_attributes_from_info obj info flags
+          cancellable
 
     method set_display_name :
         string -> GCancellable.cancellable_t option -> (file_t, GError.t) result
@@ -1651,9 +1316,8 @@ and file
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> new file ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .set_display_name obj display_name cancellable)
+          (App_info_cycle_64c425a0.File.set_display_name obj display_name
+             cancellable)
 
     method set_display_name_finish :
         GAsync_result.async_result_t -> (file_t, GError.t) result =
@@ -1661,116 +1325,80 @@ and file
         let res = res#as_async_result in
         Result.map
           (fun ret -> new file ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File
-           .set_display_name_finish obj res)
+          (App_info_cycle_64c425a0.File.set_display_name_finish obj res)
 
     method start_mountable_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .start_mountable_finish obj result
+        App_info_cycle_64c425a0.File.start_mountable_finish obj result
 
     method stop_mountable_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .stop_mountable_finish obj result
+        App_info_cycle_64c425a0.File.stop_mountable_finish obj result
 
     method supports_thread_contexts : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .supports_thread_contexts obj
+      fun () -> App_info_cycle_64c425a0.File.supports_thread_contexts obj
 
     method trash : GCancellable.cancellable_t option -> (bool, GError.t) result
         =
       fun cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .trash obj cancellable
+        App_info_cycle_64c425a0.File.trash obj cancellable
 
     method trash_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .trash_finish obj result
+        App_info_cycle_64c425a0.File.trash_finish obj result
 
     method unmount_mountable_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .unmount_mountable_finish obj result
+        App_info_cycle_64c425a0.File.unmount_mountable_finish obj result
 
     method unmount_mountable_with_operation_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File
-        .unmount_mountable_with_operation_finish obj result
+        App_info_cycle_64c425a0.File.unmount_mountable_with_operation_finish obj
+          result
 
     method as_file = obj
   end
 
-and file_enumerator
-  (obj :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .File_enumerator
-    .t) :
+and file_enumerator (obj : App_info_cycle_64c425a0.File_enumerator.t) :
   file_enumerator_t =
   object (self)
     method close : GCancellable.cancellable_t option -> (bool, GError.t) result
         =
       fun cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File_enumerator
-        .close obj cancellable
+        App_info_cycle_64c425a0.File_enumerator.close obj cancellable
 
     method close_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File_enumerator
-        .close_finish obj result
+        App_info_cycle_64c425a0.File_enumerator.close_finish obj result
 
     method get_child : GFile_info.file_info_t -> file_t =
       fun info ->
         let info = info#as_file_info in
-        new file
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File_enumerator
-           .get_child obj info)
+        new file (App_info_cycle_64c425a0.File_enumerator.get_child obj info)
 
     method get_container : unit -> file_t =
       fun () ->
-        new file
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File_enumerator
-           .get_container obj)
+        new file (App_info_cycle_64c425a0.File_enumerator.get_container obj)
 
     method has_pending : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File_enumerator
-        .has_pending obj
+      fun () -> App_info_cycle_64c425a0.File_enumerator.has_pending obj
 
     method is_closed : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File_enumerator
-        .is_closed obj
+      fun () -> App_info_cycle_64c425a0.File_enumerator.is_closed obj
 
     method next_file :
         GCancellable.cancellable_t option ->
@@ -1779,9 +1407,7 @@ and file_enumerator
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
           (fun ret -> Option.map (fun ret -> new GFile_info.file_info ret) ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File_enumerator
-           .next_file obj cancellable)
+          (App_info_cycle_64c425a0.File_enumerator.next_file obj cancellable)
 
     method next_files_finish :
         GAsync_result.async_result_t ->
@@ -1790,189 +1416,117 @@ and file_enumerator
         let result = result#as_async_result in
         Result.map
           (List.map (fun ret -> new GFile_info.file_info ret))
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .File_enumerator
-           .next_files_finish obj result)
+          (App_info_cycle_64c425a0.File_enumerator.next_files_finish obj result)
 
     method set_pending : bool -> unit =
       fun pending ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File_enumerator
-        .set_pending obj pending
+        App_info_cycle_64c425a0.File_enumerator.set_pending obj pending
 
     method as_file_enumerator = obj
   end
 
-and file_monitor
-  (obj :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .File_monitor
-    .t) :
-  file_monitor_t =
+and file_monitor (obj : App_info_cycle_64c425a0.File_monitor.t) : file_monitor_t
+  =
   object (self)
     method on_changed ?(after = false) ~callback () =
-      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-      .File_monitor
-      .on_changed ~after self#as_file_monitor
-        ~callback:(fun ~file ~other_file ~event_type ->
+      App_info_cycle_64c425a0.File_monitor.on_changed ~after
+        self#as_file_monitor ~callback:(fun ~file ~other_file ~event_type ->
           callback
             ~file:(new file file)
             ~other_file:(Option.map (fun w -> new file w) other_file)
             ~event_type)
 
     method cancel : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File_monitor
-        .cancel obj
+      fun () -> App_info_cycle_64c425a0.File_monitor.cancel obj
 
     method emit_event : file_t -> file_t -> Gio_enums.filemonitorevent -> unit =
       fun child other_file event_type ->
         let child = child#as_file in
         let other_file = other_file#as_file in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File_monitor
-        .emit_event obj child other_file event_type
+        App_info_cycle_64c425a0.File_monitor.emit_event obj child other_file
+          event_type
 
     method is_cancelled : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File_monitor
-        .is_cancelled obj
+      fun () -> App_info_cycle_64c425a0.File_monitor.is_cancelled obj
 
     method set_rate_limit : int -> unit =
       fun limit_msecs ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .File_monitor
-        .set_rate_limit obj limit_msecs
+        App_info_cycle_64c425a0.File_monitor.set_rate_limit obj limit_msecs
 
-    method cancelled =
-      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-      .File_monitor
-      .get_cancelled obj
-
+    method cancelled = App_info_cycle_64c425a0.File_monitor.get_cancelled obj
     method as_file_monitor = obj
   end
 
-and mount
-  (obj :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .Mount
-    .t) :
-  mount_t =
+and mount (obj : App_info_cycle_64c425a0.Mount.t) : mount_t =
   object (self)
     method on_changed ?(after = false) ~callback () =
-      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-      .Mount
-      .on_changed ~after self#as_mount ~callback
+      App_info_cycle_64c425a0.Mount.on_changed ~after self#as_mount ~callback
 
     method on_pre_unmount ?(after = false) ~callback () =
-      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-      .Mount
-      .on_pre_unmount ~after self#as_mount ~callback
+      App_info_cycle_64c425a0.Mount.on_pre_unmount ~after self#as_mount
+        ~callback
 
     method on_unmounted ?(after = false) ~callback () =
-      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-      .Mount
-      .on_unmounted ~after self#as_mount ~callback
+      App_info_cycle_64c425a0.Mount.on_unmounted ~after self#as_mount ~callback
 
     method can_eject : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Mount
-        .can_eject obj
+      fun () -> App_info_cycle_64c425a0.Mount.can_eject obj
 
     method can_unmount : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Mount
-        .can_unmount obj
+      fun () -> App_info_cycle_64c425a0.Mount.can_unmount obj
 
     method eject_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Mount
-        .eject_finish obj result
+        App_info_cycle_64c425a0.Mount.eject_finish obj result
 
     method eject_with_operation_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Mount
-        .eject_with_operation_finish obj result
+        App_info_cycle_64c425a0.Mount.eject_with_operation_finish obj result
 
     method get_default_location : unit -> file_t =
       fun () ->
-        new file
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .Mount
-           .get_default_location obj)
+        new file (App_info_cycle_64c425a0.Mount.get_default_location obj)
 
     method get_drive : unit -> drive_t option =
       fun () ->
         Option.map
           (fun ret -> new drive ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .Mount
-           .get_drive obj)
+          (App_info_cycle_64c425a0.Mount.get_drive obj)
 
     method get_icon : unit -> GIcon.icon_t =
-      fun () ->
-        new GIcon.icon
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .Mount
-           .get_icon obj)
+      fun () -> new GIcon.icon (App_info_cycle_64c425a0.Mount.get_icon obj)
 
     method get_name : unit -> string =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Mount
-        .get_name obj
+      fun () -> App_info_cycle_64c425a0.Mount.get_name obj
 
     method get_root : unit -> file_t =
-      fun () ->
-        new file
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .Mount
-           .get_root obj)
+      fun () -> new file (App_info_cycle_64c425a0.Mount.get_root obj)
 
     method get_sort_key : unit -> string option =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Mount
-        .get_sort_key obj
+      fun () -> App_info_cycle_64c425a0.Mount.get_sort_key obj
 
     method get_symbolic_icon : unit -> GIcon.icon_t =
       fun () ->
-        new GIcon.icon
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .Mount
-           .get_symbolic_icon obj)
+        new GIcon.icon (App_info_cycle_64c425a0.Mount.get_symbolic_icon obj)
 
     method get_uuid : unit -> string option =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Mount
-        .get_uuid obj
+      fun () -> App_info_cycle_64c425a0.Mount.get_uuid obj
 
     method get_volume : unit -> volume_t option =
       fun () ->
         Option.map
           (fun ret -> new volume ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .Mount
-           .get_volume obj)
+          (App_info_cycle_64c425a0.Mount.get_volume obj)
 
     method guess_content_type_finish :
         GAsync_result.async_result_t -> (string array, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Mount
-        .guess_content_type_finish obj result
+        App_info_cycle_64c425a0.Mount.guess_content_type_finish obj result
 
     method guess_content_type_sync :
         bool ->
@@ -1980,187 +1534,116 @@ and mount
         (string array, GError.t) result =
       fun force_rescan cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Mount
-        .guess_content_type_sync obj force_rescan cancellable
+        App_info_cycle_64c425a0.Mount.guess_content_type_sync obj force_rescan
+          cancellable
 
     method is_shadowed : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Mount
-        .is_shadowed obj
+      fun () -> App_info_cycle_64c425a0.Mount.is_shadowed obj
 
     method remount_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Mount
-        .remount_finish obj result
+        App_info_cycle_64c425a0.Mount.remount_finish obj result
 
     method shadow : unit -> unit =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Mount
-        .shadow obj
+      fun () -> App_info_cycle_64c425a0.Mount.shadow obj
 
     method unmount_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Mount
-        .unmount_finish obj result
+        App_info_cycle_64c425a0.Mount.unmount_finish obj result
 
     method unmount_with_operation_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Mount
-        .unmount_with_operation_finish obj result
+        App_info_cycle_64c425a0.Mount.unmount_with_operation_finish obj result
 
     method unshadow : unit -> unit =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Mount
-        .unshadow obj
+      fun () -> App_info_cycle_64c425a0.Mount.unshadow obj
 
     method as_mount = obj
   end
 
-and volume
-  (obj :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .Volume
-    .t) :
-  volume_t =
+and volume (obj : App_info_cycle_64c425a0.Volume.t) : volume_t =
   object (self)
     method on_changed ?(after = false) ~callback () =
-      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-      .Volume
-      .on_changed ~after self#as_volume ~callback
+      App_info_cycle_64c425a0.Volume.on_changed ~after self#as_volume ~callback
 
     method on_removed ?(after = false) ~callback () =
-      App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-      .Volume
-      .on_removed ~after self#as_volume ~callback
+      App_info_cycle_64c425a0.Volume.on_removed ~after self#as_volume ~callback
 
     method can_eject : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Volume
-        .can_eject obj
+      fun () -> App_info_cycle_64c425a0.Volume.can_eject obj
 
     method can_mount : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Volume
-        .can_mount obj
+      fun () -> App_info_cycle_64c425a0.Volume.can_mount obj
 
     method eject_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Volume
-        .eject_finish obj result
+        App_info_cycle_64c425a0.Volume.eject_finish obj result
 
     method eject_with_operation_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Volume
-        .eject_with_operation_finish obj result
+        App_info_cycle_64c425a0.Volume.eject_with_operation_finish obj result
 
     method enumerate_identifiers : unit -> string array =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Volume
-        .enumerate_identifiers obj
+      fun () -> App_info_cycle_64c425a0.Volume.enumerate_identifiers obj
 
     method get_activation_root : unit -> file_t option =
       fun () ->
         Option.map
           (fun ret -> new file ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .Volume
-           .get_activation_root obj)
+          (App_info_cycle_64c425a0.Volume.get_activation_root obj)
 
     method get_drive : unit -> drive_t option =
       fun () ->
         Option.map
           (fun ret -> new drive ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .Volume
-           .get_drive obj)
+          (App_info_cycle_64c425a0.Volume.get_drive obj)
 
     method get_icon : unit -> GIcon.icon_t =
-      fun () ->
-        new GIcon.icon
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .Volume
-           .get_icon obj)
+      fun () -> new GIcon.icon (App_info_cycle_64c425a0.Volume.get_icon obj)
 
     method get_identifier : string -> string option =
-      fun kind ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Volume
-        .get_identifier obj kind
+      fun kind -> App_info_cycle_64c425a0.Volume.get_identifier obj kind
 
     method get_mount : unit -> mount_t option =
       fun () ->
         Option.map
           (fun ret -> new mount ret)
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .Volume
-           .get_mount obj)
+          (App_info_cycle_64c425a0.Volume.get_mount obj)
 
     method get_name : unit -> string =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Volume
-        .get_name obj
+      fun () -> App_info_cycle_64c425a0.Volume.get_name obj
 
     method get_sort_key : unit -> string option =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Volume
-        .get_sort_key obj
+      fun () -> App_info_cycle_64c425a0.Volume.get_sort_key obj
 
     method get_symbolic_icon : unit -> GIcon.icon_t =
       fun () ->
-        new GIcon.icon
-          (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-           .Volume
-           .get_symbolic_icon obj)
+        new GIcon.icon (App_info_cycle_64c425a0.Volume.get_symbolic_icon obj)
 
     method get_uuid : unit -> string option =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Volume
-        .get_uuid obj
+      fun () -> App_info_cycle_64c425a0.Volume.get_uuid obj
 
     method mount_finish :
         GAsync_result.async_result_t -> (bool, GError.t) result =
       fun result ->
         let result = result#as_async_result in
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Volume
-        .mount_finish obj result
+        App_info_cycle_64c425a0.Volume.mount_finish obj result
 
     method should_automount : unit -> bool =
-      fun () ->
-        App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .Volume
-        .should_automount obj
+      fun () -> App_info_cycle_64c425a0.Volume.should_automount obj
 
     method as_volume = obj
   end
 
 let new_ () : app_launch_context_t =
-  new app_launch_context
-    (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-     .App_launch_context
-     .new_ ())
+  new app_launch_context (App_info_cycle_64c425a0.App_launch_context.new_ ())

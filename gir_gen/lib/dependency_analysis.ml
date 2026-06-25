@@ -232,8 +232,15 @@ let create_module_name_for_cycle (entities : entity list) : string =
   let module_names = List.map names ~f:Utils.module_name_of_class in
   let joined = String.concat ~sep:"_and_" module_names in
   (* Long cycles (many members) produce filenames that exceed Windows MAX_PATH.
-     When the joined name is too long, fall back to first-name + short MD5 hash. *)
-  if String.length joined <= 150 then joined
+     When the joined name is too long, fall back to first-name + short MD5 hash.
+     Threshold derived from the opam CI runner path budget:
+       D:\a\opam-repository\opam-repository\_opam\.opam-switch\build\<pkg>\  (80)
+       _build\default\ocgtk\src\gio\.ocgtk_gio.objs\                         (46)
+       ocgtk_gio__G<name>.intf.d                                              (19 + name)
+     MAX_PATH = 260 (including NUL) → name budget ≤ 115. The GIO 8-interface
+     cycle produces joined = 116 chars; all other current cycles are ≤ 70.
+     Threshold of 90 hashes only the oversized case. *)
+  if String.length joined <= 90 then joined
   else
     let first_name = Utils.to_snake_case (List.hd names) in
     let hash_input = String.concat ~sep:"," names in
