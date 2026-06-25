@@ -36,14 +36,12 @@ ownership/memory-safety hardening across the generated bindings.
   dependency of `ocgtk` (bindings ship pre-generated).
 - Signal generation rewritten as a pure-data API: per-layer signal callback
   types with L2 wrapping of GObject params/returns; class-generation type
-  resolution simplified; cyclic dependency edges absorbed via Tarjan SCC.
+  resolution simplified; cyclic dependency edges absorbed via existing SCC algorithm.
 - Consolidated copy/free/unref filtering and replaced ad-hoc record-kind
   booleans with a required `entity_kind` ADT.
 
 ### Infrastructure
 
-- **Architecture docs overhaul** — contributor introduction and deep-dive
-  guides under `architecture/`.
 - **Signal-corpus regression baselines** — coverage computation and baseline
   snapshots across all seven non-Cairo namespaces.
 - **conf-gtk4** — simplified to MSYS2-native `depexts`, removed cross-compile
@@ -57,6 +55,8 @@ ownership/memory-safety hardening across the generated bindings.
 Signals with boxed record parameters (TextIter, RGBA, …), GArray, or callback
 parameters are still skipped (~121 GTK signals). No callback parameter
 marshalling; no generated API documentation.
+
+[0.1~preview2]: https://github.com/chris-armstrong/ocgtk/releases/tag/v0.1-preview2
 
 ## [0.1~preview1] — 2026-04-15
 
@@ -89,13 +89,12 @@ mappings, plus full multi-distro CI.
 ### Infrastructure
 
 - **Release-verification CI** — build + test matrix across Ubuntu 22.04 /
-  24.04, Debian 12, Fedora 40/43, CentOS Stream 9, openSUSE Leap 15.6, macOS,
-  and Windows (MSYS2/MinGW64), triggered on `v*` tags.
+  24.04, Debian 12, Fedora 40/43, CentOS Stream 9, openSUSE Leap 15.6, macOS:
+  triggered on `v*` tags.
 - Added `integers` (≥ 0.8.0) and `dune-configurator` dependencies;
   `conf-gtk4` `depexts` for Debian/Fedora/CentOS/openSUSE/Arch/Alpine/macOS/
   MSYS2/FreeBSD.
 - Calculator and form-example applications demonstrating cross-namespace usage
   and signals.
 
-[0.1~preview2]: https://github.com/chris-armstrong/ocgtk/releases/tag/v0.1-preview2
 [0.1~preview1]: https://github.com/chris-armstrong/ocgtk/releases/tag/v0.1-preview1
