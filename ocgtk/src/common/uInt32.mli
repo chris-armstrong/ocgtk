@@ -40,3 +40,17 @@ val min_value : int
 
 val max_value : int
 (** The maximum value representable as an [int], equal to [to_int max_int]. *)
+
+val of_string : string -> t
+(** Parse a decimal integer string into a [UInt32.t].
+    @raise Failure if the string is not a valid integer.
+    @raise Invalid_argument if the value is out of [[0, 4294967295]]. *)
+
+val to_string : t -> string
+(** Format as a decimal string. *)
+
+val of_int64 : int64 -> t
+(** Convert an [int64] to [UInt32.t], masking to 32 bits. *)
+
+val to_int64 : t -> int64
+(** Convert to [int64]. Result is always non-negative. *)

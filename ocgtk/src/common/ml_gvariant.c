@@ -207,7 +207,7 @@ CAMLprim value ml_g_variant_get_int16(value variant) {
 
 CAMLprim value ml_g_variant_new_uint16(value uint16_val) {
     CAMLparam1(uint16_val);
-    GVariant *v = g_variant_new_uint16((guint16)Uint16_val(uint16_val));
+    GVariant *v = g_variant_new_uint16((guint16)UInt16_val(uint16_val));
     CAMLreturn(Val_GVariant(v));
 }
 
@@ -217,7 +217,7 @@ CAMLprim value ml_g_variant_get_uint16(value variant) {
     if (!g_variant_is_of_type(v, G_VARIANT_TYPE_UINT16)) {
         caml_failwith("GVariant.get_uint16: variant is not a uint16");
     }
-    CAMLreturn(Integers_val_uint16(g_variant_get_uint16(v)));
+    CAMLreturn(Val_uint16(g_variant_get_uint16(v)));
 }
 
 /* ==================================================================== */
@@ -245,7 +245,7 @@ CAMLprim value ml_g_variant_get_int32(value variant) {
 
 CAMLprim value ml_g_variant_new_uint32(value uint32_val) {
     CAMLparam1(uint32_val);
-    GVariant *v = g_variant_new_uint32((guint32)Uint32_val(uint32_val));
+    GVariant *v = g_variant_new_uint32((guint32)UInt32_val(uint32_val));
     CAMLreturn(Val_GVariant(v));
 }
 
@@ -255,7 +255,7 @@ CAMLprim value ml_g_variant_get_uint32(value variant) {
     if (!g_variant_is_of_type(v, G_VARIANT_TYPE_UINT32)) {
         caml_failwith("GVariant.get_uint32: variant is not a uint32");
     }
-    CAMLreturn(integers_copy_uint32(g_variant_get_uint32(v)));
+    CAMLreturn(Val_uint32(g_variant_get_uint32(v)));
 }
 
 /* ==================================================================== */
@@ -665,7 +665,7 @@ CAMLprim value ml_g_variant_lookup_uint32(value variant, value key) {
     }
     
     guint32 val = g_variant_get_uint32(child);
-    int_val = integers_copy_uint32(val);
+    int_val = Val_uint32(val);
     result = caml_alloc(1, 0); /* Some */
     Store_field(result, 0, int_val);
     g_variant_unref(child);

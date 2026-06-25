@@ -23,7 +23,22 @@
 
 #include <glib.h>
 #include <glib-object.h>
-#include <ocaml_integers.h>
+
+/* ==================================================================== */
+/* Integer macros vendored from the integers library                    */
+/* ==================================================================== */
+/* UInt8/UInt16 are backed by OCaml int (tagged). */
+#define Uint8_val(V)            ((uint8_t)(Int_val(V)))
+#define Uint16_val(V)           ((uint16_t)(Int_val(V)))
+#define Integers_val_uint8(t)   (Val_int((uint8_t)(t)))
+#define Integers_val_uint16(t)  (Val_int((uint16_t)(t)))
+#define Int8_val(V)             ((int8_t)(Int_val(V)))
+#define Int16_val(V)            ((int16_t)(Int_val(V)))
+/* UInt64 is backed by OCaml int64 (a custom block). */
+#define Uint64_val(V)           ((uint64_t)(Int64_val(V)))
+#define Val_uint64(x)           (caml_copy_int64((int64_t)(x)))
+/* Compatibility shim for generated code: integers_copy_uint64 -> Val_uint64 */
+#define integers_copy_uint64(x) Val_uint64((uint64_t)(x))
 
 /* ==================================================================== */
 /* GIR record helpers                                                   */
@@ -113,18 +128,13 @@ extern int ml_closure_exception_flag;
 /* Bounded integer types (private int representation)                   */
 /* ==================================================================== */
 
-/* Bounded integer types backed by OCaml int.
- * The cast on read handles sign/zero extension from OCaml's tagged int correctly.
- * The cast on write ensures the value is stored with the correct bit pattern
- * before tagging.
- *
- * Note: <ocaml_integers.h> provides only the *unsigned* variants (Uint8_val,
- * Uint16_val, etc.).  The signed Int8_val / Int16_val are not in that header,
- * so we define them here.  UInt8/UInt16/UInt32 reuse Long_val (wider than
- * Int_val) which is safe for the ranges these types cover. */
+/* ocgtk bounded integer types backed by OCaml int (capital-I naming).
+ * UInt8/UInt16/UInt32 use Long_val (wider than Int_val) which is safe for
+ * the ranges these types cover on 64-bit OCaml runtimes.
+ * Int8/Int16/Int16 with signed semantics are provided in the vendored
+ * integers section above (Int8_val, Int16_val). */
 #define UInt8_val(v)           ((uint8_t)(Long_val(v)))
 #define Val_uint8(x)           (Val_long((uint8_t)(x)))
-#define Int16_val(v)           ((int16_t)(Long_val(v)))
 #define UInt16_val(v)          ((uint16_t)(Long_val(v)))
 #define Val_uint16(x)          (Val_long((uint16_t)(x)))
 #define Val_int16(x)           (Val_long((int16_t)(x)))

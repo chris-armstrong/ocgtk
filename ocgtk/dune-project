@@ -24,6 +24,5 @@
    (>= 5.0))
   (conf-gtk4
    (>= 2))
-  (integers (>= 0.8.0))
   (dune-configurator :build)
   (alcotest :with-test)))
