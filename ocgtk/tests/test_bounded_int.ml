@@ -292,6 +292,80 @@ let test_gsize_constants () =
   Alcotest.(check int)
     "Gsize max_value = Stdlib.max_int" Stdlib.max_int Gsize.max_value
 
+(** {2 UInt64 tests} *)
+
+let test_uint64_constants () =
+  Alcotest.(check string) "UInt64 zero" "0" (UInt64.to_string UInt64.zero);
+  Alcotest.(check string) "UInt64 one" "1" (UInt64.to_string UInt64.one);
+  Alcotest.(check string)
+    "UInt64 max_int" "18446744073709551615"
+    (UInt64.to_string UInt64.max_int)
+
+let test_uint64_of_int () =
+  Alcotest.(check string)
+    "UInt64 of_int 0" "0"
+    (UInt64.to_string (UInt64.of_int 0));
+  Alcotest.(check string)
+    "UInt64 of_int 42" "42"
+    (UInt64.to_string (UInt64.of_int 42))
+
+let test_uint64_to_string_above_int64_max () =
+  (* 2^63 = 9223372036854775808, which is negative as int64 *)
+  let v = UInt64.of_string "9223372036854775808" in
+  Alcotest.(check string)
+    "UInt64 to_string 2^63" "9223372036854775808" (UInt64.to_string v)
+
+let test_uint64_of_string_max () =
+  let v = UInt64.of_string "18446744073709551615" in
+  Alcotest.(check string)
+    "UInt64 of_string max round-trips" "18446744073709551615"
+    (UInt64.to_string v)
+
+let test_uint64_of_string_hex () =
+  let v = UInt64.of_string "0xffffffffffffffff" in
+  Alcotest.(check string)
+    "UInt64 of_string 0xfff...f = max" "18446744073709551615"
+    (UInt64.to_string v)
+
+let test_uint64_compare_ordering () =
+  Alcotest.(check bool)
+    "zero < one" true
+    (UInt64.compare UInt64.zero UInt64.one < 0);
+  Alcotest.(check bool)
+    "one > zero" true
+    (UInt64.compare UInt64.one UInt64.zero > 0);
+  Alcotest.(check bool)
+    "zero = zero" true
+    (UInt64.compare UInt64.zero UInt64.zero = 0);
+  (* Critical: max_int (stored as -1L) must compare greater than zero *)
+  Alcotest.(check bool)
+    "max_int > zero" true
+    (UInt64.compare UInt64.max_int UInt64.zero > 0);
+  (* 2^63 must compare greater than 2^63 - 1 *)
+  let above_signed_max = UInt64.of_string "9223372036854775808" in
+  let signed_max = UInt64.of_string "9223372036854775807" in
+  Alcotest.(check bool)
+    "2^63 > 2^63-1" true
+    (UInt64.compare above_signed_max signed_max > 0)
+
+let test_uint64_equal () =
+  Alcotest.(check bool)
+    "equal zero zero" true
+    (UInt64.equal UInt64.zero UInt64.zero);
+  Alcotest.(check bool)
+    "not equal zero one" false
+    (UInt64.equal UInt64.zero UInt64.one);
+  Alcotest.(check bool)
+    "equal max max" true
+    (UInt64.equal UInt64.max_int UInt64.max_int)
+
+let test_uint64_arithmetic () =
+  let a = UInt64.of_int 10 in
+  let b = UInt64.of_int 3 in
+  Alcotest.(check string) "add" "13" (UInt64.to_string (UInt64.add a b));
+  Alcotest.(check string) "sub" "7" (UInt64.to_string (UInt64.sub a b));
+  Alcotest.(check string) "mul" "30" (UInt64.to_string (UInt64.mul a b))
+
 (** {2 Test Suite} *)
 
 let () =
@@ -391,5 +465,19 @@ let () =
           Alcotest.test_case "roundtrip" `Quick test_gsize_roundtrip;
           Alcotest.test_case "zero constant" `Quick test_gsize_zero_constant;
           Alcotest.test_case "constants" `Quick test_gsize_constants;
+        ] );
+      ( "UInt64",
+        [
+          Alcotest.test_case "constants" `Quick test_uint64_constants;
+          Alcotest.test_case "of_int" `Quick test_uint64_of_int;
+          Alcotest.test_case "to_string above Int64.max_int" `Quick
+            test_uint64_to_string_above_int64_max;
+          Alcotest.test_case "of_string max round-trip" `Quick
+            test_uint64_of_string_max;
+          Alcotest.test_case "of_string hex" `Quick test_uint64_of_string_hex;
+          Alcotest.test_case "compare ordering" `Quick
+            test_uint64_compare_ordering;
+          Alcotest.test_case "equal" `Quick test_uint64_equal;
+          Alcotest.test_case "arithmetic" `Quick test_uint64_arithmetic;
         ] );
     ]

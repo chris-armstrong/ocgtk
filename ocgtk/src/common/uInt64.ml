@@ -19,14 +19,19 @@ type t = int64
 
 let zero = 0L
 let one = 1L
-let max_int = -1L  (* 0xFFFFFFFFFFFFFFFF *)
-
+let max_int = -1L (* 0xFFFFFFFFFFFFFFFF *)
 let of_int = Int64.of_int
 let to_int = Int64.to_int
-
 let add = Int64.add
 let sub = Int64.sub
 let mul = Int64.mul
+let equal (a : t) (b : t) = a = b
+
+(* Unsigned comparison: shift both values into the signed domain by adding
+ * Int64.min_int (i.e. XOR the sign bit), then compare as signed int64.
+ * This maps [0, 2^64) bijectively to [-2^63, 2^63) preserving unsigned order. *)
+let compare (a : t) (b : t) =
+  Int64.compare (Int64.add a Int64.min_int) (Int64.add b Int64.min_int)
 
 let to_string x = Printf.sprintf "%Lu" x
 
