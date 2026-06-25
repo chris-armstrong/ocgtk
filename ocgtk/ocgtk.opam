@@ -10,7 +10,7 @@ homepage: "https://github.com/chris-armstrong/ocgtk"
 bug-reports: "https://github.com/chris-armstrong/ocgtk/issues"
 depends: [
   "dune" {>= "3.13"}
-  "ocaml" {>= "5.0"}
+  "ocaml" {>= "4.14"}
   "conf-gtk4" {>= "2"}
   "dune-configurator" {build}
   "alcotest" {with-test}
