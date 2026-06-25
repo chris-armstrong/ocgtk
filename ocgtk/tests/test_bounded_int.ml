@@ -366,6 +366,16 @@ let test_uint64_arithmetic () =
   Alcotest.(check string) "sub" "7" (UInt64.to_string (UInt64.sub a b));
   Alcotest.(check string) "mul" "30" (UInt64.to_string (UInt64.mul a b))
 
+let test_uint64_wrapping () =
+  (* max_int + 1 must wrap to zero, not overflow *)
+  Alcotest.(check string)
+    "max_int + one wraps to zero" "0"
+    (UInt64.to_string (UInt64.add UInt64.max_int UInt64.one));
+  (* zero - 1 must wrap to max_int *)
+  Alcotest.(check string)
+    "zero - one wraps to max_int" "18446744073709551615"
+    (UInt64.to_string (UInt64.sub UInt64.zero UInt64.one))
+
 (** {2 Test Suite} *)
 
 let () =
@@ -479,5 +489,6 @@ let () =
             test_uint64_compare_ordering;
           Alcotest.test_case "equal" `Quick test_uint64_equal;
           Alcotest.test_case "arithmetic" `Quick test_uint64_arithmetic;
+          Alcotest.test_case "wrapping overflow" `Quick test_uint64_wrapping;
         ] );
     ]
