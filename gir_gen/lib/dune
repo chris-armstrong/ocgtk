@@ -2,6 +2,7 @@
 
 (library
  (name gir_gen_lib)
+ (package gir_gen)
  (modules :standard)
  (libraries str unix xmlm logs logs.fmt containers re sexplib)
  (preprocess

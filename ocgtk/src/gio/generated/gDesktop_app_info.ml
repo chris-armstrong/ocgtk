@@ -1,8 +1,5 @@
 class type desktop_app_info_t = object
-  inherit
-    GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .app_info_t
-
+  inherit GApp_info_cycle_64c425a0.app_info_t
   method get_action_name : string -> string
   method get_boolean : string -> bool
   method get_categories : unit -> string option
@@ -18,11 +15,7 @@ class type desktop_app_info_t = object
   method has_key : string -> bool
 
   method launch_action :
-    string ->
-    GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .app_launch_context_t
-    option ->
-    unit
+    string -> GApp_info_cycle_64c425a0.app_launch_context_t option -> unit
 
   method list_actions : unit -> string array
   method as_desktop_app_info : Desktop_app_info.t
@@ -32,11 +25,8 @@ end
 class desktop_app_info (obj : Desktop_app_info.t) : desktop_app_info_t =
   object (self)
     inherit
-      GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-      .app_info
-        (App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-         .App_info
-         .from_gobject obj)
+      GApp_info_cycle_64c425a0.app_info
+        (App_info_cycle_64c425a0.App_info.from_gobject obj)
 
     method get_action_name : string -> string =
       fun action_name -> Desktop_app_info.get_action_name obj action_name
@@ -78,11 +68,7 @@ class desktop_app_info (obj : Desktop_app_info.t) : desktop_app_info_t =
       fun key -> Desktop_app_info.has_key obj key
 
     method launch_action :
-        string ->
-        GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-        .app_launch_context_t
-        option ->
-        unit =
+        string -> GApp_info_cycle_64c425a0.app_launch_context_t option -> unit =
       fun action_name launch_context ->
         let launch_context =
           Option.map (fun c -> c#as_app_launch_context) launch_context

@@ -7,6 +7,7 @@
 (library
  (name test_gir_gen_helpers)
  (wrapped false)
+ (package gir_gen)
  (modules
   helpers
   pipeline_tmp
@@ -26,6 +27,7 @@
 
 (test
  (name test_gir_gen)
+ (package gir_gen)
  (modules
   test_gir_gen
   ; Layer 0 — C Stub Generation
@@ -93,6 +95,7 @@
 
 (test
  (name test_gir_gen_integration)
+ (package gir_gen)
  (modules
   test_gir_gen_integration
   ; Layer 2 — interface tests that call gir_gen.exe

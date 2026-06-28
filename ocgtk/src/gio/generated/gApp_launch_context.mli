@@ -1,14 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
-(* Shim module for AppLaunchContext from cyclic group App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume *)
+(* Shim module for AppLaunchContext from cyclic group App_info_cycle_64c425a0 *)
 
-class type app_launch_context_t =
-  GApp_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-  .app_launch_context_t
+class type app_launch_context_t = GApp_info_cycle_64c425a0.app_launch_context_t
 
 class app_launch_context :
-  App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-  .App_launch_context
-  .t ->
+  App_info_cycle_64c425a0.App_launch_context.t ->
   app_launch_context_t
 
 val new_ : unit -> app_launch_context_t

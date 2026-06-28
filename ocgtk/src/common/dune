@@ -19,7 +19,7 @@
  (name ocgtk_common)
  (public_name ocgtk.common)
  (wrapped false)
- (libraries integers)
+ (libraries)
  (foreign_stubs
   (language c)
   (names

@@ -2,7 +2,7 @@
 
 (name ocgtk)
 
-(version 0.1~preview1)
+(version 0.1~preview2)
 
 (generate_opam_files true)
 
@@ -21,10 +21,8 @@
  (description "ocgtk provides OCaml bindings for GTK 4")
  (depends
   (ocaml
-   (>= 5.0))
-  (dune
-   (>= 3.13))
-  conf-gtk4
-  (integers (>= 0.8.0))
+   (>= 4.14))
+  (conf-gtk4
+   (>= 2))
   (dune-configurator :build)
   (alcotest :with-test)))

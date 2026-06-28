@@ -30,11 +30,7 @@ class type app_info_t = object
   method should_show : unit -> bool
   method supports_files : unit -> bool
   method supports_uris : unit -> bool
-
-  method as_app_info :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .App_info
-    .t
+  method as_app_info : App_info_cycle_64c425a0.App_info.t
 end
 
 and app_launch_context_t = object
@@ -62,11 +58,7 @@ and app_launch_context_t = object
   method launch_failed : string -> unit
   method setenv : string -> string -> unit
   method unsetenv : string -> unit
-
-  method as_app_launch_context :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .App_launch_context
-    .t
+  method as_app_launch_context : App_info_cycle_64c425a0.App_launch_context.t
 end
 
 and drive_t = object
@@ -111,11 +103,7 @@ and drive_t = object
 
   method start_finish : GAsync_result.async_result_t -> (bool, GError.t) result
   method stop_finish : GAsync_result.async_result_t -> (bool, GError.t) result
-
-  method as_drive :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .Drive
-    .t
+  method as_drive : App_info_cycle_64c425a0.Drive.t
 end
 
 and file_t = object
@@ -392,10 +380,7 @@ and file_t = object
   method unmount_mountable_with_operation_finish :
     GAsync_result.async_result_t -> (bool, GError.t) result
 
-  method as_file :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .File
-    .t
+  method as_file : App_info_cycle_64c425a0.File.t
 end
 
 and file_enumerator_t = object
@@ -415,11 +400,7 @@ and file_enumerator_t = object
     (GFile_info.file_info_t list, GError.t) result
 
   method set_pending : bool -> unit
-
-  method as_file_enumerator :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .File_enumerator
-    .t
+  method as_file_enumerator : App_info_cycle_64c425a0.File_enumerator.t
 end
 
 and file_monitor_t = object
@@ -438,11 +419,7 @@ and file_monitor_t = object
   method is_cancelled : unit -> bool
   method set_rate_limit : int -> unit
   method cancelled : bool
-
-  method as_file_monitor :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .File_monitor
-    .t
+  method as_file_monitor : App_info_cycle_64c425a0.File_monitor.t
 end
 
 and mount_t = object
@@ -492,11 +469,7 @@ and mount_t = object
     GAsync_result.async_result_t -> (bool, GError.t) result
 
   method unshadow : unit -> unit
-
-  method as_mount :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .Mount
-    .t
+  method as_mount : App_info_cycle_64c425a0.Mount.t
 end
 
 and volume_t = object
@@ -525,59 +498,27 @@ and volume_t = object
   method get_uuid : unit -> string option
   method mount_finish : GAsync_result.async_result_t -> (bool, GError.t) result
   method should_automount : unit -> bool
-
-  method as_volume :
-    App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-    .Volume
-    .t
+  method as_volume : App_info_cycle_64c425a0.Volume.t
 end
 
-class app_info :
-  App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-  .App_info
-  .t ->
-  app_info_t
+class app_info : App_info_cycle_64c425a0.App_info.t -> app_info_t
 
 and app_launch_context :
-  App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-  .App_launch_context
-  .t ->
+  App_info_cycle_64c425a0.App_launch_context.t ->
   app_launch_context_t
 
-and drive :
-  App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-  .Drive
-  .t ->
-  drive_t
+and drive : App_info_cycle_64c425a0.Drive.t -> drive_t
 
-and file :
-  App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-  .File
-  .t ->
-  file_t
+and file : App_info_cycle_64c425a0.File.t -> file_t
 
 and file_enumerator :
-  App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-  .File_enumerator
-  .t ->
+  App_info_cycle_64c425a0.File_enumerator.t ->
   file_enumerator_t
 
-and file_monitor :
-  App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-  .File_monitor
-  .t ->
-  file_monitor_t
+and file_monitor : App_info_cycle_64c425a0.File_monitor.t -> file_monitor_t
 
-and mount :
-  App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-  .Mount
-  .t ->
-  mount_t
+and mount : App_info_cycle_64c425a0.Mount.t -> mount_t
 
-and volume :
-  App_info_and__app_launch_context_and__drive_and__file_and__file_enumerator_and__file_monitor_and__mount_and__volume
-  .Volume
-  .t ->
-  volume_t
+and volume : App_info_cycle_64c425a0.Volume.t -> volume_t
 
 val new_ : unit -> app_launch_context_t

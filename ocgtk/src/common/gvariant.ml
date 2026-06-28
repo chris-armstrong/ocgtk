@@ -45,13 +45,13 @@
 
 (** {2 Unsigned Integer Types} *)
 
-type uint32 = Unsigned.UInt32.t
+type uint32 = UInt32.t
 (** Unsigned 32-bit integer *)
 
-type uint64 = Unsigned.UInt64.t
+type uint64 = UInt64.t
 (** Unsigned 64-bit integer *)
 
-type uint16 = Unsigned.UInt16.t
+type uint16 = UInt16.t
 (** Unsigned 16-bit integer *)
 
 type int16 = int

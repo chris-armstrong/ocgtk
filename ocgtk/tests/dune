@@ -107,7 +107,7 @@
 (test
  (name test_gvariant)
  (modules test_gvariant)
- (libraries ocgtk alcotest integers))
+ (libraries ocgtk alcotest))
 
 (test
  (name test_gvariant_type)
