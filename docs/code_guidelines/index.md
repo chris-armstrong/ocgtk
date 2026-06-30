@@ -10,6 +10,7 @@ This directory contains coding guidelines for the ocgtk project, organized by co
 
 | Document | Concerns Covered |
 |----------|-----------------|
+| [core-idioms.md](./core-idioms.md) | Bind operators vs pipelines, polymorphic equality ban, naming intermediates, module extraction heuristics |
 | [nesting-and-control-flow.md](./nesting-and-control-flow.md) | Reducing nesting, bind operators |
 | [error-handling.md](./error-handling.md) | Result vs exceptions, error context |
 | [naming-and-intermediates.md](./naming-and-intermediates.md) | Named values, pipeline clarity |
@@ -22,7 +23,7 @@ This directory contains coding guidelines for the ocgtk project, organized by co
 | [abstractions.md](./abstractions.md) | Module design, parameter reduction, functors |
 | [comments-and-documentation.md](./comments-and-documentation.md) | Comment succinctness, accuracy, no ephemeral references |
 | [atspi-e2e-testing.md](./atspi-e2e-testing.md) | AT-SPI E2E test structure, best practices |
-| [ocaml-idioms.md](./ocaml-idioms.md) | ocamlformat, structural equality ban, binding vs pipeline operators, function design |
+| [ocaml-idioms.md](./ocaml-idioms.md) | ocamlformat, function design |
 
 ## AGENT QUICK REFERENCE
 

@@ -5,7 +5,7 @@ This document provides a step-by-step plan for adding a new GObject Introspectio
 ## Prerequisites
 
 Before starting, ensure you have:
-- The GIR file for the library (in `gir/` at the repo root, or installed to `/usr/share/gir-1.0/`)
+- The GIR file for the library (in `gir/` at the repo root)
 - Development packages installed (e.g., `libgio-2.0-dev`, `gir1.2-gio-2.0`)
 - pkg-config support for the library
 
@@ -173,18 +173,10 @@ Example for Gio:
 
 ### Step 5: Add Type Mappings (If Needed)
 
-For classes, interfaces, records, enums, and bitfields from other namespaces, **no manual type mappings are required** — these are automatically resolved via the cross-namespace reference file system. You only need to add mappings for:
-
-1. Library-specific primitive types that don't exist in other namespaces
-2. Special types not covered by the existing ~150 hardcoded GLib/GTK mappings
-
-Edit `gir_gen/lib/type_mappings.ml` around line 1-100:
-```ocaml
-  (* <Library> types *)
-  | "<Namespace>.<Type>", _ -> "<library_type>"
-```
-
-For most libraries, this step is minimal or unnecessary.
+Cross-namespace classes, interfaces, records, enums, and bitfields are automatically
+resolved via the reference file system — see [cross_namespace_types.md](./cross_namespace_types.md).
+You only need to add mappings for library-specific primitive types not covered by
+the existing GLib/GTK mappings in `type_mappings.ml`.
 
 ### Step 6: Update Exclude List (If Needed)
 
@@ -206,28 +198,7 @@ If you want the library to be aware of other library enums, update `external_nam
 
 ### Step 8: Run Code Generation
 
-Execute the gir_gen tool (from repo root):
-
-```bash
-dune exec gir_gen -- generate \
-  gir/<Library>-<Version>.gir \
-  ocgtk/src/<library-name>
-```
-
-Example for Gio:
-```bash
-dune exec gir_gen -- generate \
-  gir/Gio-2.0.gir \
-  ocgtk/src/gio
-```
-
-This will generate:
-- `src/<library>/generated/dune-generated.inc` - Build configuration
-- `src/<library>/generated/ml_*_gen.c` - C FFI stubs
-- `src/<library>/generated/*.ml/.mli` - OCaml low-level bindings
-- `src/<library>/generated/g*.ml/.mli` - High-level wrapper classes
-- `src/<library>/generated/*_signals.ml` - Signal handlers
-- `src/<library>/generated/<namespace>_enums.mli` - Enum definitions
+See [gir_gen/README.md](../gir_gen/README.md) for the `generate` command syntax and options.
 
 ### Step 9: Update Main Library Wrapper
 
@@ -319,12 +290,12 @@ When adding a new library, be aware of these gir_gen limitations:
 2. **Parameters**: Out parameters are now supported. InOut parameters have partial support.
 3. **Collections**: Arrays are fully supported (zero-terminated, length-based, GPtrArray, out-param arrays). GList/GSList support exists but is limited in coverage.
 4. **Callbacks**: No callback parameter support in methods (async APIs, custom callbacks).
-5. **Type mapping**: Cross-namespace types (classes, records, enums, bitfields) are auto-discovered via reference files. Only primitive/GLib types need manual mapping.
+5. **Type mapping**: Cross-namespace types are auto-discovered via reference files — see [cross_namespace_types.md](./cross_namespace_types.md). Only primitive/GLib types need manual mapping.
 6. **Platform-specific code**: The override system supports `(os ...)` and `(not_os ...)` directives for conditional compilation.
 7. **Record fields**: No field accessor generation.
 8. **Factory functions**: No high-level factory function generation.
 
-Refer to `architecture/todo/TODO.md` for the full list.
+Refer to [ROADMAP.md](../ROADMAP.md) for the full list.
 
 ---
 

@@ -1,5 +1,5 @@
 # Development Notes for ocgtk 
-# Project Context
+## Project Context
 
 <!-- ctx:context -->
 <!-- DO NOT REMOVE: This marker indicates ctx-managed content -->
@@ -97,7 +97,7 @@ shellcheck is available to lint & check shell scripts.
 
 ## Setting up the project
 
-If you are running in a clean container (e.g. Claude Code Web), you will need to follow the instructions in [SETUP.md](./SETUP.md) for instructions.
+If you are running in a clean container (e.g. Claude Code Web), you will need to follow the instructions in [CONTRIBUTORS.md](./CONTRIBUTORS.md) for instructions.
 
 ## Project Layout and Architecture
 
@@ -136,11 +136,8 @@ for full documentation.
 
 ## Running Build Tools
 
-This project uses `dune` to compile code and run tests. NEVER compile code directly with `ocamlc/ocamlc.opt`.
-
-* Use `dune build` from the repo root to compile both projects. IMPORTANT: Always check the return code and grep for "error|warning|undefined reference".
-    DO NOT filter its output with `grep`/`head`/`tail` etc. unless you know what you are looking for AND have already checked the return code.
-* Use `dune test gir_gen/ && xvfb-run dune test ocgtk/` from the repo root to run all tests. ALWAYS check the return code to determine success - do not rely on the console output.
+**Quick reference:** `dune build` (build), `dune test gir_gen/ && xvfb-run dune test ocgtk/` (test).
+See [CONTRIBUTORS.md](./CONTRIBUTORS.md) for complete build, test, and CI instructions.
 
 ## OCaml / C FFI Guidelines
 
@@ -150,35 +147,15 @@ For instructions and best practices for writing and updating OCaml / C FFI, see 
 ## ocgtk Development Tools
 
 ### GIR Code Generator
-For generating GTK bindings from GObject Introspection (GIR) files:
-- See [gir_gen/README.md](gir_gen/README.md) for complete usage instructions
-- Generates C FFI bindings and OCaml interfaces for 9 namespaces: Cairo, Gio, Gdk, Graphene, GdkPixbuf, Pango, PangoCairo, Gsk, Gtk
-- Cross-namespace type resolution via reference files and `<ns>_decls.h` headers
 
-**To regenerate all bindings (recommended):**
-```bash
-# From repository root (NOT ocgtk/):
-bash scripts/generate-bindings.sh
-```
-
-This builds the generator, generates reference files for all 9 namespaces, then generates bindings with correct cross-namespace dependencies.
-
-**To regenerate a single library manually:**
-```bash
-# From repository root:
-dune exec gir_gen -- generate gir/Gtk-4.0.gir ocgtk/src/gtk
-```
-
-NOTE: For other libraries, use `ocgtk/src/<short_name>`. For example, ocgtk/src/pango for Pango, ocgtk/src/gsk for GSK, ocgtk/src/gdk for GDK, etc.
-
-**⚠️ IMPORTANT:** Use `ocgtk/src/gtk` NOT `ocgtk/src/gtk/generated` as the output directory. The generator automatically creates the `generated/` subdirectory. Using `ocgtk/src/gtk/generated` will create a nested `src/gtk/generated/generated/` directory.
+See [gir_gen/README.md](gir_gen/README.md) for complete usage instructions, including regeneration commands, override system, and cross-namespace type resolution.
 
 
 ## Security Guidelines
 
 **IMPORTANT**: All C bindings must follow security best practices documented in:
 
-📘 **[SECURITY_GUIDELINES.md](SECURITY_GUIDELINES.md)** - Comprehensive security guidelines for OCaml C bindings
+📘 **[FFI Guidelines](./architecture/FFI_GUIDELINES.md)** — Comprehensive security and FFI guidelines for OCaml C bindings
 
 
 ## When You Get Stuck on Solving problems

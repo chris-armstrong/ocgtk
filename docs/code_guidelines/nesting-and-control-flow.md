@@ -48,21 +48,7 @@ let process_user request =
 
 ## 2. Use Bind Operators
 
-The `let*` and `let+` operators from `Result.Syntax` or `Option.Syntax` flatten sequential operations.
-
-### Operators:
-- `let*` - bind (flatMap): unwrap, apply function that returns wrapped value
-- `let+` - map: unwrap, apply function that returns plain value
-- `and*` - combine multiple wrapped values
-
-### Example:
-```ocaml
-let open Result.Syntax in
-let* a = get_first () in      (* a is unwrapped *)
-let* b = get_second a in      (* b is unwrapped *)
-let+ c = get_third b in       (* c is unwrapped, result re-wrapped *)
-process a b c                  (* returns plain value, wrapped by let+ *)
-```
+See [core-idioms.md](./core-idioms.md) for the project-wide guidance on bind operators (`let*`, `let+`, `and*`) and when to use them vs pipelines.
 
 ---
 

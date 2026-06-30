@@ -2,8 +2,8 @@
 
 ## generate-bindings.sh
 
-Generates OCaml bindings for all 9 GObject namespaces (Cairo, GIO, GDK, Graphene,
-GdkPixbuf, Pango, PangoCairo, GSK, GTK) from GIR (GObject Introspection) files.
+Generates OCaml bindings for all 9 GObject namespaces from GIR files.
+See [gir_gen/README.md](../gir_gen/README.md) for generator concepts, commands, and the override system.
 
 ### Usage
 
@@ -22,23 +22,16 @@ GIR_PATH=/custom/path/to/gir-1.0 ./scripts/generate-bindings.sh
 
 **Step 0** — Builds the `gir_gen` code generator tool via `dune build`.
 
-**Step 1** — Generates cross-namespace reference files (`_build/references/<ns>-references.sexp`)
-for all 9 namespaces. Each reference call also passes `-o overrides/<ns>.sexp` so that
-ignored entities are excluded from reference output.
+**Step 1** — Generates cross-namespace reference files for all 9 namespaces.
 
-**Step 2** — Generates OCaml bindings for all 9 namespaces into `src/<ns>/generated/`.
-Each `generate` call passes:
-- `-o overrides/<ns>.sexp` — applies override rules (entity ignores, version guards)
-- `-r <dep>-references.sexp` — one flag per transitive dependency namespace
+**Step 2** — Generates OCaml bindings for all 9 namespaces with cross-references and overrides.
 
 After generation, run `dune build` to compile the updated bindings.
 
 ### Override files
 
 Per-namespace override files live in `ocgtk/overrides/` and are committed to the
-repository. They control which entities are skipped during generation and set GTK
-version guards on enum/bitfield members. See
-[gir_gen/README.md — Override System](../gir_gen/README.md#override-system)
+repository. See [gir_gen/README.md — Override System](../gir_gen/README.md#override-system)
 for the file format and editing workflow.
 
 ### Requirements

@@ -203,111 +203,7 @@ Generated files are written to `ocgtk/src/<ns>/generated/` (e.g., `ocgtk/src/gtk
 
 ## Override System
 
-Override files (`overrides/<ns>.sexp`) allow per-library customisation of what gets
-generated without modifying the generator source. They replace the former hardcoded
-exclusion lists in `exclude_list.ml`, `filtering.ml`, and `library_module.ml`.
-
-Override files live in `ocgtk/overrides/` and are committed to the repository. One file
-exists per namespace (e.g. `ocgtk/overrides/gtk.sexp`, `ocgtk/overrides/gio.sexp`).
-
-### Format
-
-```sexp
-(overrides
-  (library "Gtk")
-
-  ;; Ignore an entire class (no bindings generated)
-  (class PrintJob (ignore))
-
-  ;; Ignore a single method on a class
-  (class TextBuffer
-    (method insert_with_tags (ignore))
-  )
-
-  ;; Ignore a property
-  (class IconPaintable
-    (property is-symbolic (ignore))
-  )
-
-  ;; Set a version guard on an enum member (emits #if GTK_CHECK_VERSION(...))
-  (enumeration FileChooserAction
-    (save (version "4.10"))
-  )
-
-  ;; Cross-namespace version guard: guard on a DIFFERENT namespace's version.
-  ;; Useful when the binding depends on a dependency at a higher version than
-  ;; the containing namespace requires (e.g. a GTK property that uses a
-  ;; PangoTextTransform type introduced in Pango 1.50, but the GTK version
-  ;; guard alone is not sufficient because the distro may ship GTK >= 4.6
-  ;; with Pango < 1.50).
-  (class TextTag
-    (property text-transform (version (pango "1.50")))
-  )
-
-  ;; Ignore a bitfield or record
-  (bitfield PrintCapabilities (ignore))
-  (record PrintBackend (ignore))
-
-  ;; OS guard: generate this entity only on Linux
-  (class DesktopAppInfo (os "linux"))
-
-  ;; OS guard: generate this entity on all platforms except Windows
-  (class UnixInputStream (not_os "windows"))
-
-  ;; Conditional header include in <ns>_decls.h (only on Linux)
-  (header "gio/gdesktopappinfo.h" (os "linux"))
-  ;; Conditional header include excluded on Windows
-  (header "gio/gunixoutputstream.h" (not_os "windows"))
-)
-```
-
-Supported entity kinds: `class`, `interface`, `enumeration`, `bitfield`, `record`.
-Supported sub-component directives: `method`, `constructor`, `property`, `signal`,
-`member` (enum member), `flag` (bitfield flag), `field` (record field).
-
-Available actions:
-- `(ignore)` — skip generation of this entity or sub-component entirely
-- `(version "X.Y")` — emit a `#if NS_CHECK_VERSION(X, Y, 0)` guard using this namespace's version macro (e.g. `GTK_CHECK_VERSION` in `gtk.sexp`)
-- `(version (<ns> "X.Y"))` — emit a `#if <NS>_CHECK_VERSION(X, Y, 0)` guard using a **different** namespace's version macro; use when the binding depends on a dependency at a version higher than the containing namespace's own minimum (e.g. `(version (pango "1.50"))` in `gtk.sexp` emits `PANGO_CHECK_VERSION(1, 50, 0)`)
-- `(os "<platform>")` — wrap the generated C stub in `#if defined(<MACRO>)` / `#else caml_failwith` so the binding compiles on all platforms but raises a runtime error on unsupported ones
-- `(not_os "<platform>")` — same, but the guard is `#if !defined(<MACRO>)`; cannot be mixed with `(os ...)`
-
-OS guard actions can be applied to top-level entities **and** to sub-component directives (`method`, `constructor`, `property`, etc.).
-
-Recognised platform names and the C macros they expand to:
-
-| Name | C guard |
-|------|---------|
-| `"linux"` | `defined(__linux__)` |
-| `"macos"` | `defined(__APPLE__) && defined(__MACH__)` |
-| `"freebsd"` | `defined(__FreeBSD__)` |
-| `"unix"` | `defined(G_OS_UNIX)` |
-| `"windows"` | `defined(_WIN32)` |
-
-The `(header "path" (os/not_os ...))` directive adds a header to `<ns>_decls.h` wrapped in the same platform guard. This is distinct from the per-entity `(os ...)` action — it controls C `#include` lines, not stub generation.
-
-### Workflow: updating override files
-
-Override files are generated once with `gir_gen overrides` and then hand-edited. When
-the GIR file changes (e.g. a GTK upgrade), re-run `gir_gen overrides` and merge the
-diff to pick up new `Since` annotations.
-
-The recommended workflow is to use `generate-bindings.sh` (from the repository root),
-which handles all 9 namespaces end-to-end:
-
-```bash
-bash scripts/generate-bindings.sh
-```
-
-To regenerate just the version-annotation portion for one namespace:
-
-```bash
-# From repository root:
-dune exec gir_gen -- overrides \
-  gir/Gtk-4.0.gir ocgtk/overrides/gtk.sexp
-```
-
-Then review the diff, keep any manual `(ignore)` entries you added, and commit.
+See [architecture/gir_gen/overrides.md](../architecture/gir_gen/overrides.md) for the full override format reference, architecture, and workflow.
 
 ## Constructor Wrapper Generation
 
@@ -364,7 +260,7 @@ linker still treats it as a single compilation unit.
 
 **Error: "Don't know how to build gir_gen"**
 - Use `dune exec gir_gen --` from the repository root (where the dune-workspace file lives)
-- Do not use `dune exec src/tools/gir_gen/gir_gen.exe` — that path no longer exists
+- Do not use `dune exec gir_gen/bin/gir_gen.exe` — use `dune exec gir_gen --` from the repository root
 
 ---
 
@@ -397,10 +293,10 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 - Method wrappers delegating to low-level FFI bindings
 - Constructor wrappers as module-level `let` functions (e.g., `let new_with_label ...`), wrapping Layer 1 constructors with the high-level class
 
-### Layer 4: Signal Handling (`<widget>_signals` classes)
-- Signal handler classes using `Gobject.Signal.connect_simple` (see `generate/signal_gen.ml`)
-- **Limited to parameterless void signals only**
-- Signals with parameters or return values are skipped with warnings
+### Layer 4: Signal Handling
+
+See [architecture/closures_and_signals.md](../architecture/closures_and_signals.md) for
+the full signal architecture, marshalling, and generation details.
 
 ### Layer 5: Enum and Bitfield Types
 - Complete enum type definitions for Gtk4 and external namespaces (Gdk, Pango, GdkPixbuf, Gsk, Graphene)
@@ -438,10 +334,7 @@ The tool produces a **four-layer binding system** from GIR introspection data:
 - Boxed record converters (`Val_*` / `*_val` macros)
 - Widget type mappings (`GtkWidget*` → `Widget.t`)
 - EventController, CellRenderer, LayoutManager, Expression hierarchies
-- Cross-namespace type resolution via reference files:
-  - Classes, interfaces, records: qualified as `Ocgtk_<ns>.<Ns>.Wrappers.<Module>.t`
-  - Enums/bitfields: qualified as `Ocgtk_<ns>.<Ns>.<enum_name>`
-  - `classify_type` for cross-namespace enum/bitfield detection in property analysis
+- Cross-namespace type resolution via reference files — see [architecture/cross_namespace_types.md](../architecture/cross_namespace_types.md)
 - Context-aware cyclic module type resolution:
   - Detects when generating within a cyclic module via `current_cycle_classes`
   - Uses unqualified names for same-cycle references
@@ -517,7 +410,7 @@ drives polymorphic variant types in Layer 1 and `inherit` in Layer 2.
 The former `hierarchy_detection.ml` module was removed (2026-03-23) as it
 was entirely dead code.
 
-### Filtering and Exclusions (filtering.ml - 150+ lines, exclude_list.ml - 85 lines)
+### Filtering and Exclusions (filtering.ml - ~281 lines, exclude_list.ml - 68 lines)
 **Working:**
 - Platform-specific type filtering (PrintJob, etc.)
 - Variadic function detection and filtering
@@ -526,11 +419,172 @@ was entirely dead code.
 - Virtual method de-duplication
 
 **What Gets Filtered:**
-- Methods with Out/InOut parameters (see `filtering.ml`)
 - Methods with unknown types in parameters/returns (cross-namespace types are NOT filtered — they resolve via references)
-- Signals with parameters or non-void returns
+- Signals with unsupported parameter types or return types
 - Variadic functions (hardcoded list in `exclude_list.ml`)
 - Platform-specific classes (Windows/macOS-only widgets)
+
+---
+
+## Major Deficiencies and Missing Features
+
+### 1. Signal Handling
+
+See [architecture/closures_and_signals.md](../architecture/closures_and_signals.md) for
+signal coverage, supported/unsupported patterns, and the signal-corpus regression baseline.
+
+### 2. Factory Functions - Not Implemented
+**Issue:** No factory function generation.
+
+**Missing:**
+- Optional parameter handling for common properties
+- Constructor selection logic (`new_with_label`, `new_with_mnemonic`, etc.)
+- Property initialization after construction
+- Packing and show parameter support
+- Customization file system (button.json, window.json, etc.)
+
+**Impact:** Widget creation requires verbose manual constructor calls and separate property setting.
+
+### 3. Container-Specific Methods - Not Generated
+**Issue:** No special handling for container widgets.
+
+**Missing:**
+- Box-like containers: `append`, `prepend`, `insert_child_after` wrappers
+- Single-child containers: `set_child`, `get_child` methods
+- Window/Dialog lifecycle: `destroy`, `present`, `close`, `run` patterns
+- TreeView/ListView: model and selection management
+- Child widget type coercion helpers
+
+**Impact:** Container operations require direct low-level FFI calls.
+
+### 4. Range and Adjustment Helpers - Not Generated
+**Issue:** No specialized methods for Range-derived widgets (Scale, Scrollbar, LevelBar).
+
+**Missing:**
+- `value`/`set_value` property methods
+- `adjustment` accessor returning wrapped object
+- Signal handling for `value-changed`
+- Increment/step configuration helpers
+
+**Impact:** Slider/progress widgets lack convenient OCaml-style access patterns.
+
+### 5. Out/InOut Parameters - Implemented
+**Status:** Out parameters are supported (see `architecture/gir_gen/array_handling.md`).
+
+**Working:**
+- Primitive out parameters returned directly
+- Out-parameter arrays with companion length parameters
+- Struct out parameters with correct pointer handling
+- Multiple out parameters returning tuples
+
+**Limitations:**
+- InOut parameters are partially supported but may have edge cases
+- Out-param arrays with no length are skipped
+- Double-pointer out-params not marked as arrays are skipped
+
+### 6. Array and List Types - Implemented
+**Status:** Array support is production-ready for methods, constructors, and properties.
+
+**Working:**
+- Zero-terminated C arrays ↔ OCaml arrays
+- Length-based arrays with automatic length parameter substitution
+- GPtrArray handling
+- String arrays with per-element cleanup
+- Struct arrays with correct dereferencing
+- Array out parameters
+
+**Missing:**
+- Fixed-size stack-allocated arrays (treated as heap-allocated)
+- GList/GSList support exists (`c_stub_list_conv.ml`) but is limited in coverage
+
+### 7. Callback Parameters - Not Supported
+**Issue:** No callback type generation or marshalling (distinct from signal callbacks).
+
+**Missing:**
+- Callback type definitions from GIR
+- C callback stub generation for OCaml function values
+- Closure data handling with GDestroyNotify
+- Async callback patterns (e.g., gio_async callbacks)
+
+**Impact:** Async APIs, custom sorting/filtering callbacks, iteration callbacks all unavailable.
+
+### 8. Record Field Accessors - Not Generated
+**Issue:** Records parsed but no field getter/setter generation.
+
+**Missing:**
+- Field accessor methods for record structs
+- Nested record access
+- Field documentation from GIR
+
+**Impact:** Users cannot access struct fields without writing manual C stubs.
+
+### 9. Layer 1 Accessor Methods - Not Generated
+**Issue:** `as_widget : t -> Widget.t` and similar parent-chain accessor
+methods are not generated in Layer 1 modules (see [ROADMAP.md](../ROADMAP.md)).
+
+**Impact:** Layer 2 `inherit` provides parent method access, but there's no
+direct L1 function to upcast a type to an ancestor's type. Could be
+implemented by walking the parent chain.
+
+### 10. Type Coverage - Mostly Resolved via Cross-Namespace References
+**Issue:** ~150 hardcoded type mappings in `type_mappings.ml` for primitive/GLib types.
+
+**Status:** Cross-namespace classes, interfaces, records, enums, and bitfields are now automatically resolved via the reference file system (`cross_references`). The hardcoded mappings are only needed for GLib primitives (`gint`, `gboolean`, `gchar*`, etc.) and special types. Adding new GIR namespaces with classes/records/enums/bitfields requires no changes to `type_mappings.ml`.
+
+**Remaining gap:** Callback types, union types, and some GLib collection types still have no mapping.
+
+### 11. Property Observer Generation - Not Implemented
+**Issue:** No property change notification wrappers.
+
+**Missing:**
+- `notify::property-name` signal connection helpers
+- Property binding helpers
+- Two-way property synchronization
+
+**Impact:** Property change monitoring requires manual signal connection.
+
+### 12. Builder/Glade Integration - Not Implemented
+**Issue:** No GTK Builder XML support.
+
+**Missing:**
+- Widget lookup from builder XML
+- Signal autoconnection
+- Template class support
+- Glade file loading helpers
+
+**Impact:** Cannot use GTK Builder UI files effectively.
+
+### 13. Documentation Generation - Not Implemented
+**Issue:** GIR documentation strings parsed but not emitted in generated code.
+
+**Missing:**
+- OCamldoc comment generation from GIR docs
+- Parameter documentation
+- Example code from GIR annotations
+- Deprecation warnings
+
+**Impact:** Generated code has no inline documentation. Developers must reference GTK docs separately.
+
+### 14. Test Coverage - Improved but Still Limited
+**Status:** Test suite has expanded significantly (~70 test files across 12 categories).
+
+**Working:**
+- Unit tests for parser, type mappings, filtering, exclusions
+- C stub compilation verification tests
+- Array handling tests (10 test cases)
+- Override system tests (parser, apply, version guards, pipeline)
+- Cross-namespace type resolution tests
+- Signal marshaller tests
+- Constructor wrapper tests
+- Integration tests for generated code patterns
+
+**Missing:**
+- Runtime functionality tests with actual GTK4 library
+- Performance benchmarks
+- Example program generation
+- Full end-to-end compilation of generated bindings in CI
+
+**Impact:** Most generator bugs are caught by tests, but runtime issues may still slip through.
 
 ---
 
@@ -574,11 +628,11 @@ was entirely dead code.
 
 | Feature | Status | Completeness |
 |---------|--------|--------------|
-| GIR Parsing | ✓ Working | 90% (see `architecture/todo/TODO.md`) |
+| GIR Parsing | ✓ Working | 90% (see [ROADMAP.md](../ROADMAP.md)) |
 | C FFI Generation | ✓ Working | 90% (arrays, out params implemented) |
-| Low-Level OCaml Bindings | ✓ Working | 90% (see `architecture/todo/TODO.md`) |
+| Low-Level OCaml Bindings | ✓ Working | 90% (see [ROADMAP.md](../ROADMAP.md)) |
 | High-Level Class Wrappers | ⚠ Basic | 65% (no specializations) |
-| Signal Handling | ⚠ Partial | 50% (parameterless + typed parameters for supported types) |
+| Signal Handling | ✓ Working | 90% (primitive/enum/bitfield/GObject params + primitive returns; boxed records/GArray/callbacks remain) |
 | Enum/Bitfield Support | ✓ Complete | 95% (same + cross-namespace) |
 | Cross-Namespace Types | ✓ Working | 95% (classes, records, enums, bitfields) |
 | Factory Functions | ✗ Missing | 0% |
@@ -598,21 +652,21 @@ was entirely dead code.
 The original design plan outlined a comprehensive multi-phase implementation. The current implementation has achieved:
 
 - **Phase 1 (Type System):** ✓ Complete - Polymorphic variants, hierarchy types, accessor methods all implemented
-- **Phase 2 (Signals):** ⚠ Partial - Simple signal generation works, parameter/return value handling partially implemented via `signal_marshaller.ml`
-- **Phase 3 (High-Level Classes):** ⚠ Partial - Skeleton/concrete classes generated, out/inout parameter support added, specializations still missing. See `architecture/todo/TODO.md`.
-- **Phase 4 (Factory Functions):** ✗ Not Started - See `architecture/todo/TODO.md`.
+- **Phase 2 (Signals):** ✓ Complete - Per-class L1 signal connectors and L2 method forwarders are generated for parameterless, primitive-param, and primitive/enum/bitfield/GObject class/interface-param signals, including non-void primitive returns. Remaining skips are boxed records, `GArray`, callbacks, non-In parameters, and the `GObject.Object` meta-type, tracked by the signal-corpus baseline.
+- **Phase 3 (High-Level Classes):** ⚠ Partial - Skeleton/concrete classes generated, out/inout parameter support added, specializations still missing. See [ROADMAP.md](../ROADMAP.md).
+- **Phase 4 (Factory Functions):** ✗ Not Started - See [ROADMAP.md](../ROADMAP.md).
 - **Phase 5 (Containers):** ✗ Not Started - No special handling
 - **Phase 6 (Inheritance):** ⚠ Partial - 5 hierarchies hardcoded, not automatic
 - **Phase 7 (Special Patterns):** ✗ Not Started - No widget-specific patterns
 
 **Next priorities to achieve full coverage:**
-1. Complete signal parameter and return value handling (close Phase 2)
-2. Add factory function generation (complete Phase 4)
-3. Generate container-specific methods (complete Phase 5)
-4. Make hierarchy detection dynamic (complete Phase 6)
-5. Add widget-specific patterns (complete Phase 7)
-6. Add callback type support
-7. Generate record field accessors
+1. Add factory function generation (complete Phase 4)
+2. Generate container-specific methods (complete Phase 5)
+3. Make hierarchy detection dynamic (complete Phase 6)
+4. Add widget-specific patterns (complete Phase 7)
+5. Add callback type support
+6. Generate record field accessors
+7. Add boxed record / `GArray` signal parameter support to close remaining signal gaps
 
 ---
 

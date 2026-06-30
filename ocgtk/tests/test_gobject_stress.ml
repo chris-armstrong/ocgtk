@@ -67,9 +67,9 @@ let test_gvalue_gc_interaction () =
 
 let test_gvalue_multiple_types () =
   (* Test creating GValues of different types simultaneously *)
-  let int_gval = Gobject.Value.create (Gobject.Type.int_) in
-  let str_gval = Gobject.Value.create (Gobject.Type.string) in
-  let bool_gval = Gobject.Value.create (Gobject.Type.boolean) in
+  let int_gval = Gobject.Value.create Gobject.Type.int_ in
+  let str_gval = Gobject.Value.create Gobject.Type.string in
+  let bool_gval = Gobject.Value.create Gobject.Type.boolean in
 
   Gobject.Value.set_int int_gval 100;
   Gobject.Value.set_string str_gval "test";

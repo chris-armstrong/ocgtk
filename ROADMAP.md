@@ -61,7 +61,7 @@ GList/GSList containing interface types (e.g. `GSList<Gio.File>`) generate broke
 
 ## Milestone 2: Signal Handling with Parameters — COMPLETE
 
-**Status**: Complete. See `gir_gen/docs/plans/completed/milestone-2-signals.md` for full details.
+**Status**: Complete. See [architecture/closures_and_signals.md](architecture/closures_and_signals.md) for full details.
 
 **What was delivered**:
 
@@ -161,3 +161,17 @@ These items are tracked but not assigned to a milestone:
 - **`<alias>` GIR elements** — only 4 instances, low priority
 - **`<virtual-method>` generation** — needed for full interface support
 - **Open variant types for Layer 1** — would eliminate remaining `Obj.magic` in `as_<class>` accessors
+
+## Deferred / Known Limitations
+
+These are intentionally deferred or known gaps not yet scheduled:
+
+- **Record field accessors** — accessing fields of non-opaque record types is not supported
+- **Property observer / `notify::property-name`** — property change notification wrappers not generated
+- **GTK Builder / Glade XML integration** — widget lookup from builder XML, signal autoconnection not implemented
+- **Byte-buffer arrays** — `void*`/`gpointer` byte-buffer arrays (element type `guint8`) cannot be generated
+- **Array-typed properties** — properties whose type is an array are skipped by `filtering.ml`
+- **Out/InOut parameter details** — InOut parameters have a type mismatch bug (C stub returns tuple, OCaml sig declares `unit`)
+- **GHashTable, unions** — not handled
+- **Varargs parameters** — not parsed correctly, default to `void`
+- **Test coverage** — runtime functionality tests with actual GTK4 library, performance benchmarks missing

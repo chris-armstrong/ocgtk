@@ -19,8 +19,9 @@ examples/my_app/
   my_app.ml              # Application entry point
   my_app_ui.ml           # UI module
   test_my_app_atspi.py   # E2E test harness
-  README_ATSPI.md        # Test documentation
 ```
+
+Test documentation lives in the example's section of `ocgtk/examples/README.md`.
 
 ## Test Script Requirements
 

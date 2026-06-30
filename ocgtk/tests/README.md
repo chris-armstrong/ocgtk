@@ -4,11 +4,7 @@ This directory contains the comprehensive test suite for the ocgtk GTK 4 binding
 
 ## Running Tests
 
-### Run All Tests (Recommended)
-
-```bash
-xvfb-run dune runtest
-```
+See [CONTRIBUTORS.md](../../CONTRIBUTORS.md) for build and test commands.
 
 ## CI Integration
 
@@ -18,21 +14,6 @@ The CI runs tests on:
 - OCaml versions: 5.3.x,5.4.x
 - OS: Ubuntu Latest
 - GTK version: 4.10+
-
-## Debugging Test Failures
-
-If a test fails:
-
-1. **Build the specific test**:
-   ```bash
-   dune build tests/test_name.exe
-   ```
-
-2. **Run with verbose output**:
-   ```bash
-   ./_build/default/tests/test_name.exe 
-   ```
-
 
 ## Dependencies
 

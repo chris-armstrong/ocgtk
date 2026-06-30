@@ -76,27 +76,27 @@ module Type : sig
   val is_a : t -> t -> bool
   (** Check type hierarchy *)
 
-  val invalid   : t
-  val none      : t
+  val invalid : t
+  val none : t
   val interface : t
-  val char_     : t
-  val uchar     : t
-  val boolean   : t
-  val int_      : t
-  val uint      : t
-  val long      : t
-  val ulong     : t
-  val int64     : t
-  val uint64    : t
-  val enum      : t
-  val flags     : t
-  val float_    : t
-  val double    : t
-  val string    : t
-  val pointer   : t
-  val boxed     : t
-  val param     : t
-  val object_   : t
+  val char_ : t
+  val uchar : t
+  val boolean : t
+  val int_ : t
+  val uint : t
+  val long : t
+  val ulong : t
+  val int64 : t
+  val uint64 : t
+  val enum : t
+  val flags : t
+  val float_ : t
+  val double : t
+  val string : t
+  val pointer : t
+  val boxed : t
+  val param : t
+  val object_ : t
 end
 
 (** {2 GValue Operations} *)
@@ -278,4 +278,3 @@ module Signal : sig
   val emit_by_name : 'a obj -> name:string -> unit
   (** Emit a signal by name *)
 end
-

@@ -40,33 +40,7 @@ let find_config key =
 
 ## 2. Use Bind Operators to Flatten Chains
 
-### Bad: Deep nesting
-```ocaml
-let process_user request =
-  match parse_request request with
-  | None -> Error "Invalid request"
-  | Some req ->
-    match validate_user req.user_id with
-    | Error e -> Error e
-    | Ok user ->
-      match fetch_permissions user with
-      | Error e -> Error e
-      | Ok perms ->
-        match check_access perms req.resource with
-        | false -> Error "Access denied"
-        | true -> Ok (execute req user)
-```
-
-### Good: Bind operators flatten the chain
-```ocaml
-let process_user request =
-  let open Result.Syntax in
-  let* req = parse_request request |> Option.to_result ~none:"Invalid request" in
-  let* user = validate_user req.user_id in
-  let* perms = fetch_permissions user in
-  let* () = check_access perms req.resource |> Result.ok_if_true ~error:"Access denied" in
-  Ok (execute req user)
-```
+See [core-idioms.md](./core-idioms.md) for the project-wide guidance on bind operators (`let*`, `let+`) and when to use them vs pipelines.
 
 ---
 

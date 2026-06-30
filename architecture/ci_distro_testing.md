@@ -5,6 +5,8 @@ test suite against multiple Linux distributions. This catches platform-specific
 failures (missing headers, version-guarded API differences, package naming) before
 they reach users.
 
+For the base build and test commands, see [CONTRIBUTORS.md](../CONTRIBUTORS.md).
+
 ## Supported Distros
 
 | Service name   | Image                          | Key GTK version      | Notes |

@@ -35,6 +35,18 @@ The ocgtk GIR generator produces OCaml bindings from GObject Introspection (GIR)
 4. **Verify structural correctness** of generated functions, types, and classes
 5. **Catch regressions** early in the development cycle
 
+### 5-Tier Test Classification
+
+Tests are organised into five tiers by scope and dependency:
+
+| Tier | Directory | Scope | Depends on |
+|------|-----------|-------|------------|
+| 1. Unit | `c_stubs/`, `ml_generation/`, `class_generation/` | Single generator function, in-memory, no file I/O | Generator library only |
+| 2. Pipeline | `pipeline/` | Full `gir_gen` invocation on synthetic GIR, validates output files | `gir_gen.exe` |
+| 3. Integration | `integration/` | Multi-file GIR, cross-namespace resolution, real GIR inputs | `gir_gen.exe` + reference files |
+| 4. Smoke | `smoke/` | Compile/link against generated bindings; no `gir_gen` dependency | Generated bindings only |
+| 5. E2E | `ocgtk/tests/` | Runtime tests against real GTK library with display | Full ocgtk library + Xvfb |
+
 ---
 
 ## Architecture & Generation Layers
@@ -350,240 +362,23 @@ See detailed test checklist in [Test Results & Coverage](#test-results--coverage
 
 ## Layer 1: ML File Generation Tests
 
-**Status: 🚧 IN PROGRESS**
+**Status: ✅ IMPLEMENTED**
 
-**Location:** `ml_generation/` (to be created)
+**Location:** `ml_generation/`
 
-### Testing Approach
-
-ML file generation tests use **library-based testing with OCaml AST** instead of string matching:
-
-1. Create test context and GIR data structures
-2. Call ML generator functions directly
-3. **Parse generated .ml and .mli files using OCaml's built-in compiler-libs (`Parsetree`, `Parse`)**
-4. **Validate module structure, type definitions, and signatures using AST inspection**
-5. **Perform structural validation that survives formatting changes**
-
-**Why OCaml AST Instead of String Matching:**
-- ✅ **No custom parser needed** - Uses OCaml's built-in `compiler-libs`
-- ✅ **Structural validation** - Validates actual OCaml syntax, not just text patterns
-- ✅ **Type-safe testing** - Leverages OCaml's type system for test assertions
-- ✅ **Refactoring-friendly** - Tests remain valid even if formatting changes
-- ✅ **Precise queries** - Can inspect specific AST nodes (type declarations, externals, etc.)
-- ✅ **Better error messages** - OCaml parser provides syntax error locations
-
-### Proposed Test Organization
-
-#### module_structure_tests.ml
-**TODO:** Test ML module organization and structure
-
-Coverage areas:
-- [ ] Module naming conventions
-- [ ] Module hierarchy (nested modules)
-- [ ] Module signature constraints
-- [ ] Module includes and opens
-- [ ] Namespace mapping from GIR to OCaml modules
-
-#### type_definition_tests.ml
-**TODO:** Test OCaml type definitions
-
-Coverage areas:
-- [ ] Primitive type mappings
-- [ ] Record type definitions
-- [ ] Variant type definitions (enums)
-- [ ] Object type definitions
-- [ ] Type aliases
-- [ ] Phantom types for type safety
-- [ ] Polymorphic variant usage
-
-#### external_decl_tests.ml
-**TODO:** Test external C function declarations
-
-Coverage areas:
-- [ ] External function naming (ml_gtk_xxx)
-- [ ] External function signatures match C stubs
-- [ ] Parameter type conversions
-- [ ] Return type conversions
-- [ ] Nullable type handling (option types)
-- [ ] Error handling (result types)
-
-#### signature_tests.ml
-**TODO:** Test .mli signature generation
-
-Coverage areas:
-- [ ] Public API surface
-- [ ] Type constraints in signatures
-- [ ] Documentation comments
-- [ ] Function signatures match implementation
-- [ ] Abstract types vs concrete types
-- [ ] Module type definitions
-
-#### edge_cases.ml
-**TODO:** Test ML-specific edge cases
-
-Coverage areas:
-- [ ] Empty modules
-- [ ] Name collisions with OCaml keywords
-- [ ] Very long type names
-- [ ] Complex nested types
-- [ ] Circular type dependencies
-
-### Testing Infrastructure
-
-**Status: 🚧 IN PROGRESS**
-
-- **ml_ast_helpers.ml** - ✅ Wrapper around OCaml `compiler-libs` for parsing and inspecting ML/MLI files
-  - Uses `Parsetree`, `Parse`, `Asttypes` from OCaml compiler
-  - Functions for finding type declarations, externals, value declarations
-  - AST node inspection and conversion utilities
-- **ml_validation.ml** - ✅ High-level validation helpers for common patterns
-  - Polymorphic variant validation
-  - External declaration validation
-  - Type compatibility checking
-  - Function signature validation
-
-### Example: Testing with OCaml AST
-
-**Testing a type definition:**
-```ocaml
-let test_widget_hierarchy_type () =
-  let ctx = Helpers.create_test_context () in
-
-  (* Generate ML interface for Button (inherits from Widget) *)
-  let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_type_definition
-    ~ctx ~class_name:"Button" ~parent_chain:["Widget"] () in
-
-  (* Parse using OCaml's built-in parser *)
-  let ast = Ml_ast_helpers.parse_implementation ml_code in
-
-  (* Find the type declaration for 't' *)
-  let type_decl = Ml_ast_helpers.find_type_declaration ast "t" in
-
-  (* Validate it's a polymorphic variant with correct tags *)
-  Ml_validation.assert_polymorphic_variant type_decl;
-  Ml_validation.assert_has_variant_tag type_decl "`button";
-  Ml_validation.assert_has_variant_tag type_decl "`widget";
-
-  (* Validate it wraps Gobject.obj *)
-  Ml_validation.assert_wraps_gobject_obj type_decl
-```
-
-**Testing an external declaration:**
-```ocaml
-let test_external_with_nullable_params () =
-  let ctx = Helpers.create_test_context () in
-  let meth = {
-    method_name = "set_label";
-    c_identifier = "gtk_button_set_label";
-    return_type = { name = "none"; c_type = None; nullable = false };
-    parameters = [
-      { param_name = "label";
-        param_type = { name = "utf8"; c_type = Some "gchar*"; nullable = true };
-        direction = In; (* ... *) }
-    ];
-    (* ... *)
-  } in
-
-  let ml_code = Gir_gen_lib.Generate.Ml_interface.generate_method
-    ~ctx ~class_name:"Button" meth in
-
-  let ast = Ml_ast_helpers.parse_implementation ml_code in
-  let ext_decl = Ml_ast_helpers.find_external ast "set_label" in
-
-  (* Validate external signature: string option -> unit *)
-  Alcotest.(check bool) "First param is string option" true
-    (Ml_validation.is_optional_string_param ext_decl 0);
-
-  Alcotest.(check bool) "Return type is unit" true
-    (Ml_validation.returns_unit ext_decl);
-
-  (* Validate C function name *)
-  Alcotest.(check string) "C identifier" "ml_gtk_button_set_label"
-    (Ml_ast_helpers.get_external_c_name ext_decl)
-```
+ML file generation tests use **library-based testing with OCaml AST** via
+`compiler-libs` (`Parsetree`, `Parse`). Infrastructure: `ml_ast_helpers.ml`
+and `ml_validation.ml`.
 
 ---
 
 ## Layer 2: Class Generation Tests
 
-**Status: ❌ TODO**
+**Status: ✅ IMPLEMENTED**
 
-**Location:** `class_generation/` (to be created)
+**Location:** `class_generation/`
 
-### Testing Approach
-
-Class generation tests should use **library-based testing**:
-
-1. Create test context with class hierarchies
-2. Call class generator functions directly
-3. Parse generated class definitions
-4. Validate inheritance, methods, and properties
-
-### Proposed Test Organization
-
-#### class_structure_tests.ml
-**TODO:** Test class definition structure
-
-Coverage areas:
-- [ ] Class naming conventions
-- [ ] Class constructor generation
-- [ ] Class method definitions
-- [ ] Class field definitions
-- [ ] Virtual methods
-- [ ] Private vs public methods
-
-#### inheritance_tests.ml
-**TODO:** Test class inheritance hierarchy
-
-Coverage areas:
-- [ ] Single inheritance
-- [ ] Multiple interface implementation
-- [ ] Method overriding
-- [ ] Super calls
-- [ ] Abstract base classes
-- [ ] Interface satisfaction
-- [ ] Coercion functions
-
-#### method_dispatch_tests.ml
-**TODO:** Test method dispatch mechanism
-
-Coverage areas:
-- [ ] Instance methods
-- [ ] Class methods
-- [ ] Static methods
-- [ ] Method name resolution
-- [ ] Parameter passing to underlying C stubs
-- [ ] Return value conversion
-- [ ] Method chaining
-
-#### property_accessor_tests.ml
-**TODO:** Test property accessor generation
-
-Coverage areas:
-- [ ] Property getter methods
-- [ ] Property setter methods
-- [ ] Read-only properties
-- [ ] Write-only properties
-- [ ] Computed properties
-- [ ] Property type conversions
-- [ ] Property documentation
-
-#### edge_cases.ml
-**TODO:** Test class-specific edge cases
-
-Coverage areas:
-- [ ] Empty classes (no methods)
-- [ ] Classes with only static methods
-- [ ] Deep inheritance hierarchies
-- [ ] Diamond inheritance problems
-- [ ] Name conflicts in inheritance
-- [ ] Abstract classes with no concrete implementation
-
-### Testing Infrastructure Needed
-
-- Extend **ml_parser.ml** to handle class syntax
-- Extend **ml_ast.ml** with class-specific AST nodes
-- Add class validation helpers to **ml_validation.ml**
+Class generation tests use library-based testing with OCaml AST validation.
 
 ---
 
@@ -647,7 +442,9 @@ The signal corpus regression test classifies every signal in all 7 signal-bearin
 ### How It Works
 
 1. **`signal_corpus.ml`** — Core module with:
-   - `classify_signals_of_file`: Parses a GIR file, builds a minimal generation context (same-namespace-only, no cross-references), and classifies every signal as Supported or Unsupported.
+   - `classify_signals_of_file`: Parses a GIR file, builds a generation context,
+     loads all cross-namespace reference files, and classifies every signal as
+     Supported or Unsupported.
    - `coverage_of_file`: Convenience function that classifies then aggregates into a typed `signal_coverage` record.
    - `compare_coverage`: Field-by-field comparison returning `(unit, string list) result`.
    - Unit tests for classification, coverage aggregation, comparison, and sexp roundtrip.
@@ -662,35 +459,33 @@ The signal corpus regression test classifies every signal in all 7 signal-bearin
 
 ### Running the Tests
 
-```bash
-# All gir_gen tests (includes Signal Corpus and Signal Corpus Regression)
-dune test gir_gen/
-
-# Full test suite
-dune test gir_gen/ && xvfb-run dune test ocgtk/
-```
+See [CONTRIBUTORS.md](../../CONTRIBUTORS.md) for build and test commands.
 
 ### Updating the Baseline
 
-When a legitimate signal classification change is made (e.g., adding support for a previously-unsupported signal type), the baseline must be updated to match:
+When a legitimate signal classification change is made (e.g., adding support
+for a previously-unsupported signal type), the baseline must be updated to
+match. Use the dedicated helper script:
 
-1. **Run the coverage generator** — Use the `Signal_corpus` module to regenerate coverage:
-   ```bash
-   # From the repo root, build and run the baseline generator:
-   dune exec gir_gen/scripts/gen_signal_baseline.exe -- $(pwd)/gir
-   # Or, in a utop/OCaml REPL:
-   #   let coverages = List.map (fun (ns, f) ->
-   #     Signal_corpus.coverage_of_file (Helpers.gir_data_dir () ^ "/" ^ f)
-   #   ) namespace_files;;
-   ```
-2. **Overwrite the baseline file** — Replace `gir_gen/test/corpus/signal_corpus_baseline.sexp` with the new output.
-3. **Commit the updated baseline** alongside the classification change that caused it.
+```bash
+# From the repo root:
+./scripts/update-signal-corpus-baseline.sh
+```
 
-The baseline uses sexp format (`[@@deriving sexp]`) so it is human-readable and trivially diffable in version control.
+This builds the integration test executable, materialises the same
+`*-references.sexp` files the production generator uses, and writes the fresh
+coverage counts into `gir_gen/test/corpus/signal_corpus_baseline.sexp`.
+Review the resulting diff and commit the updated baseline alongside the code
+change that caused it.
 
 ### Design Decisions
 
-- **No cross-references**: Each GIR file is classified against its own namespace-only context. Cross-namespace parameter types appear as `Unsupported "unknown type …"`. This is deliberate — the baseline captures the honest per-file classification boundary and will naturally improve when cross-reference resolution is added.
+- **Full cross-namespace references**: The regression test loads all 9
+  `*-references.sexp` files (produced by the rules in
+  `gir_gen/test/corpus/dune`) so the corpus classifier sees the same
+  cross-namespace knowledge the production generator does. Without them,
+  cross-namespace parameter types would fall off to `Tk_Unknown` and the
+  baseline would over-report skips.
 - **Sorted by_reason**: Unsupported reasons are sorted alphabetically for deterministic sexp output and stable diffs.
 - **Test is `Slow`**: Parsing 7 large GIR files takes noticeable time, so the regression test is registered as `Slow`.
 

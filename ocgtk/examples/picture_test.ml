@@ -22,20 +22,24 @@ let activate app =
   main_box#append (grid :> Widget.widget_t);
 
   let rows = [| "Name:"; "Email:"; "Age:"; "Reason to join:" |] in
-  Array.iteri (fun i label ->
-    let lbl = Label.new_ (Some label) in
-    grid#attach (lbl :> Widget.widget_t) 0 i 1 1;
-    if i < 3 then begin
-      let entry = Entry.new_ () in
-      grid#attach (entry :> Widget.widget_t) 1 i 1 1
-    end else begin
-      let tv = Text_view.new_ () in
-      tv#set_wrap_mode `WORD;
-      grid#attach (tv :> Widget.widget_t) 1 i 1 1
-    end
-  ) rows;
+  Array.iteri
+    (fun i label ->
+      let lbl = Label.new_ (Some label) in
+      grid#attach (lbl :> Widget.widget_t) 0 i 1 1;
+      if i < 3 then begin
+        let entry = Entry.new_ () in
+        grid#attach (entry :> Widget.widget_t) 1 i 1 1
+      end
+      else begin
+        let tv = Text_view.new_ () in
+        tv#set_wrap_mode `WORD;
+        grid#attach (tv :> Widget.widget_t) 1 i 1 1
+      end)
+    rows;
 
-  let terms = Check_button.new_with_label (Some "I agree to Terms of Service") in
+  let terms =
+    Check_button.new_with_label (Some "I agree to Terms of Service")
+  in
   grid#attach (terms :> Widget.widget_t) 0 4 2 1;
 
   (* tos link *)
@@ -83,28 +87,42 @@ let activate app =
 
   (* Don't load image yet — test post-realize set_filename *)
   window#present ();
-  ignore (window#on_close_request ~callback:(fun () -> app#quit (); false) ());
+  ignore
+    (window#on_close_request
+       ~callback:(fun () ->
+         app#quit ();
+         false)
+       ());
 
-  ignore (Glib.Timeout.add ~ms:300 ~callback:(fun () ->
-    let wh = (window :> Widget.widget_t)#get_allocated_height () in
-    let gh = (grid :> Widget.widget_t)#get_allocated_height () in
-    let fh = (sig_frame :> Widget.widget_t)#get_allocated_height () in
-    let pw = (picture :> Widget.widget_t)#get_allocated_width () in
-    let ph = (picture :> Widget.widget_t)#get_allocated_height () in
-    Printf.printf "window allocated: %dx%d\n%!" pw wh;
-    Printf.printf "grid height: %d\n%!" gh;
-    Printf.printf "sig_frame allocated: %dx%d\n%!" pw fh;
-    Printf.printf "picture allocated: %dx%d\n%!" pw ph;
-    Printf.printf "before set_filename: paintable = %s\n%!"
-      (match picture#get_paintable () with Some _ -> "Some" | None -> "None");
-    picture#set_filename (Some test_image_path);
-    Printf.printf "after set_filename: paintable = %s\n%!"
-      (match picture#get_paintable () with Some _ -> "Some" | None -> "None");
-    app#quit ();
-    false) ())
+  ignore
+    (Glib.Timeout.add ~ms:300
+       ~callback:(fun () ->
+         let wh = (window :> Widget.widget_t)#get_allocated_height () in
+         let gh = (grid :> Widget.widget_t)#get_allocated_height () in
+         let fh = (sig_frame :> Widget.widget_t)#get_allocated_height () in
+         let pw = (picture :> Widget.widget_t)#get_allocated_width () in
+         let ph = (picture :> Widget.widget_t)#get_allocated_height () in
+         Printf.printf "window allocated: %dx%d\n%!" pw wh;
+         Printf.printf "grid height: %d\n%!" gh;
+         Printf.printf "sig_frame allocated: %dx%d\n%!" pw fh;
+         Printf.printf "picture allocated: %dx%d\n%!" pw ph;
+         Printf.printf "before set_filename: paintable = %s\n%!"
+           (match picture#get_paintable () with
+           | Some _ -> "Some"
+           | None -> "None");
+         picture#set_filename (Some test_image_path);
+         Printf.printf "after set_filename: paintable = %s\n%!"
+           (match picture#get_paintable () with
+           | Some _ -> "Some"
+           | None -> "None");
+         app#quit ();
+         false)
+       ())
 
 let () =
-  let app = Application.new_ (Some "com.example.PictureTest") [ `DEFAULT_FLAGS ] in
+  let app =
+    Application.new_ (Some "com.example.PictureTest") [ `DEFAULT_FLAGS ]
+  in
   ignore (app#on_activate ~callback:(fun () -> activate app) ());
   let status = app#run 0 None in
   exit status

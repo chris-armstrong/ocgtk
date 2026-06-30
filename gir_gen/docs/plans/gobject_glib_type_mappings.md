@@ -18,7 +18,7 @@ The GIR code generator skips ~2,235 method/constructor bindings across all names
 
 ### Root Cause
 
-GLib types have no GIR file in the standard `/usr/share/gir-1.0/` location (only in `/usr/lib/x86_64-linux-gnu/gir-1.0/GLib-2.0.gir`), and GObject/GLib are not part of the generator's cross-namespace reference system. When the generator encounters `GObject.Object`, `GLib.Variant`, etc., `find_type_mapping_for_gir_type` returns `None`, causing `exclude_list.ml` to skip the method.
+GLib types have no GIR file in the standard system location (only in `/usr/lib/x86_64-linux-gnu/gir-1.0/GLib-2.0.gir`), and GObject/GLib are not part of the generator's cross-namespace reference system. When the generator encounters `GObject.Object`, `GLib.Variant`, etc., `find_type_mapping_for_gir_type` returns `None`, causing `exclude_list.ml` to skip the method.
 
 ## Approach: Hardcoded Type Mappings
 
@@ -521,7 +521,7 @@ Created `tests/test_gvariant_type.ml` with 19 tests covering:
 **`guint8` intentionally omitted:** Used almost exclusively as the element type of
 `gpointer`/`void*` byte-buffer arrays (e.g. `g_input_stream_read`, `g_output_stream_write`).
 These require length-erasure infrastructure (hiding the `gsize count` param, exposing the
-buffer as `Bytes.t` or `string`) not yet implemented. See `architecture/todo/TODO.md` for details.
+buffer as `Bytes.t` or `string`) not yet implemented. See [ROADMAP.md](../../../ROADMAP.md) for details.
 
 **Additional fix:** Extended `is_primitive_converter` in both directions of
 `c_stub_array_conv.ml` to cover the new converters. Without this, `GType` arrays

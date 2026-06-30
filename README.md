@@ -32,7 +32,7 @@ Currently unsupported:
 * Accessing fields of non-opaque record types
 * Callbacks as method parameters
 
-^[1]: Signals with primitive, enum, bitfield, and GObject class/interface parameters are generated. Bool return values are supported. Signals with boxed record types, callbacks, or GArray parameters are not yet generated.
+^[1]: Signals with primitive, enum, bitfield, and GObject class/interface parameters are generated, including primitive/boolean return values. Signals with boxed record types (e.g. `GtkTextIter`, `GdkRGBA`), `GArray` parameters, callbacks, non-In direction parameters, or the generic `GObject.Object` meta-type are not yet generated. Detailed signals (`notify::property-name`) are deferred. Per-namespace counts are tracked in `gir_gen/test/corpus/signal_corpus_baseline.sexp`.
 
 ## Quick Start
 
@@ -67,9 +67,9 @@ dune build
 
 ## License
 
-Copyright (C) 2025 Chris Armstrong, with some parts derived from lablgtk3 (see [LICENSE](LICENSE.md)).
+Copyright (C) 2025 Chris Armstrong, with some parts derived from lablgtk3 (see [LICENSE](LICENSE)).
 
-This library is distributed under the terms of the GNU Library General Public License v2, with the special exception on linking described in the [LICENSE](LICENSE.md) file.
+This library is distributed under the terms of the GNU Library General Public License v2, with the special exception on linking described in the [LICENSE](LICENSE) file.
 
 ## Documentation
 
@@ -77,8 +77,8 @@ This library is distributed under the terms of the GNU Library General Public Li
 
 ### Key Documents
 
-- **Development Setup**: [SETUP.md](SETUP.md)
-- **Security Guidelines**: [SECURITY_GUIDELINES.md](SECURITY_GUIDELINES.md)
+- **Development Setup**: [CONTRIBUTORS.md](CONTRIBUTORS.md)
+- **Security Guidelines**: [architecture/FFI_GUIDELINES.md](architecture/FFI_GUIDELINES.md)
 - **GIR Code Generation**: [gir_gen/README.md](gir_gen/README.md)
 - **GIR Override Files**: [ocgtk/overrides/](ocgtk/overrides/) — per-namespace sexp files controlling entity ignores and version guards
 - **CI / Distro Testing**: [architecture/ci_distro_testing.md](architecture/ci_distro_testing.md) — Docker-based multi-distro build and test (`./ci/oci`)

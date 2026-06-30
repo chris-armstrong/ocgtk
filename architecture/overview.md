@@ -316,7 +316,7 @@ Key cases:
 
 - **Suppressed generation**: methods referencing unknown types, varargs, callbacks,
   `void*` byte buffers, array-typed properties, and interface parameters in Layer 2
-  are silently skipped. See `filtering.ml` and `todo/TODO.md`.
+  are silently skipped. See `filtering.ml` and [ROADMAP.md](../ROADMAP.md).
 
 ---
 
@@ -439,4 +439,4 @@ Key points:
 | [FFI_GUIDELINES.md](./FFI_GUIDELINES.md) | OCaml/C binding best practices |
 | [adding_gir_library.md](./adding_gir_library.md) | Step-by-step guide to adding a new namespace |
 | [ci_distro_testing.md](./ci_distro_testing.md) | Docker-based multi-distro CI |
-| [todo/TODO.md](./todo/TODO.md) | Known limitations and deferred work |
+| [ROADMAP.md](../ROADMAP.md) | Known limitations and deferred work |

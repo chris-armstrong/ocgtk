@@ -49,34 +49,7 @@ let generate_all env entity =
 
 ## 2. When to Extract a Module
 
-### Extract when:
-- Code is used from 2+ other modules
-- Code has a clear, nameable responsibility
-- Code has internal state or invariants to protect
-- You want to hide implementation details
-
-### Keep inline when:
-- Code is only used in one place
-- Extracting would require passing many parameters
-- The abstraction boundary is unclear
-
-### Bad: Premature extraction
-```ocaml
-(* string_utils.ml - only used once *)
-let capitalize_first s =
-  String.mapi (fun i c -> if i = 0 then Char.uppercase_ascii c else c) s
-
-(* Now every caller needs to import String_utils *)
-```
-
-### Good: Extract when reused
-```ocaml
-(* utils.ml - shared utilities *)
-let capitalize_first s = ...
-let snake_to_camel s = ...
-let camel_to_snake s = ...
-(* All string conversion utilities in one place *)
-```
+See [core-idioms.md](./core-idioms.md) for module extraction heuristics.
 
 ---
 

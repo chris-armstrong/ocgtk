@@ -93,26 +93,7 @@ let name =
 
 ## 5. Use Type-Specific Equality
 
-`Stdlib.(=)` is polymorphic and can behave unexpectedly on functions, abstract types, or cyclic structures.
-
-### Bad: Polymorphic equality
-```ocaml
-if status = "active" then ...
-if list1 = list2 then ...
-```
-
-### Good: Type-specific equality
-```ocaml
-if String.equal status "active" then ...
-if List.equal String.equal list1 list2 then ...
-```
-
-### Common type-specific equalities:
-- `String.equal`
-- `Int.equal`
-- `Bool.equal`
-- `Option.equal elem_equal`
-- `List.equal elem_equal`
+See [core-idioms.md](./core-idioms.md) for the project-wide policy on polymorphic equality.
 
 ---
 

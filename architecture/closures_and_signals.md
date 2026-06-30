@@ -312,15 +312,21 @@ absorbed into the combined module for that cycle.
 ## What Remains Unsupported
 
 The following signal parameter patterns are skipped (the signal is omitted from
-generated output):
+generated output). The counts below come from the signal-corpus regression
+baseline `gir_gen/test/corpus/signal_corpus_baseline.sexp` (466 signals across
+7 namespaces; 413 generated, 53 skipped):
 
-| Pattern | Reason |
-|---------|--------|
-| `GArray` / array types | Marshalling through `GValue` for arrays is not implemented (see `todo/TODO.md`) |
-| Boxed record types | `Gobject.Value.get_boxed` not yet wired to specific types (see `todo/TODO.md`) |
-| Callback parameters | Deferred to a future milestone |
-| `gpointer` | Opaque pointer with no OCaml representation |
-| `GdkEvent` subtypes | Requires specialised union handling |
+| Pattern | Count | Reason |
+|---------|------:|--------|
+| Boxed record types | 47 | `Gobject.Value.get_boxed` is available at runtime, but per-type ownership semantics require a dedicated safety review; intentionally deferred to a later milestone |
+| `GArray` / array types | 7 | Marshalling arrays through `GValue` for signal parameters is not yet implemented; intentionally deferred to a later milestone for safety (see [ROADMAP.md](../ROADMAP.md)) |
+| `GObject.Object` meta-type | 5 | Generic `GObject.Object` parameter/return lacks a concrete L2 class wrapper; needs design work |
+| Non-In direction parameters | 3 | Out/InOut signal parameters are not supported |
+| `GLib.Error` | 1 | Boxed record variant; deferred with other boxed records |
+| `GLib.VariantDict` | 1 | Variant-dict handling not yet wired for signal marshalling |
+| Callback parameters | 0 present in corpus | Deferred to Milestone 4 |
+| `gpointer` | 0 present in corpus | Opaque pointer with no OCaml representation |
+| `GdkEvent` subtypes | 0 present in corpus | Requires specialised union handling (most event signals are already generated because their parameters are primitive or GObject) |
 
 When a signal is skipped, it is silently absent from the generated `.ml` file.
 Manual bindings can be added in `core/` for any signal that matters.

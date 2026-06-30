@@ -32,9 +32,12 @@ let require_gtk = Helpers.require_gtk
 
 (* Alcotest testables for option-wrapped arrays. *)
 let string_array_option = option (array string)
+
 let g_type_testable =
-  testable (fun fmt t -> Format.fprintf fmt "%d" (Gobject.Type.to_int t))
+  testable
+    (fun fmt t -> Format.fprintf fmt "%d" (Gobject.Type.to_int t))
     Gobject.Type.equal
+
 let g_type_array_option = option (array g_type_testable)
 
 (* ========== Drop_target.get_gtypes : t -> Gobject.Type.t array option * Gsize.t ========== *)
@@ -59,8 +62,8 @@ let test_drop_target_get_gtypes_set_some_round_trips () =
     (Gsize.of_int (Array.length expected));
   let arr_opt, n = Wrappers.Drop_target.get_gtypes dt in
   check int "count matches set" (Array.length expected) (Gsize.to_int n);
-  check g_type_array_option "get_gtypes returns the array we set" (Some expected)
-    arr_opt
+  check g_type_array_option "get_gtypes returns the array we set"
+    (Some expected) arr_opt
 
 (* ========== Icon_theme.get_search_path : t -> string array option ========== *)
 
