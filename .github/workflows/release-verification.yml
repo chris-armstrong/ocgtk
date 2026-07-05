@@ -15,6 +15,9 @@ env:
   OCAML_VERSION: '5.3.0'
   OPAM_VERSION: '2.5.0'
 
+permissions:
+  contents: write   # needed by the `package` job to publish a GitHub Release
+
 jobs:
 
   # ── Ubuntu 22.04 (native runner) ────────────────────────────────────────────
@@ -372,3 +375,79 @@ jobs:
 
       - name: Build
         run: opam exec -- dune build @ocgtk/install
+
+  # ── Package + publish release ────────────────────────────────────────────────
+  #
+  # Only fires on an actual tag push (not workflow_dispatch), and only after
+  # every platform verification job above has passed. Builds a tarball whose
+  # root is the `ocgtk/` subtree (so dune-project / *.install end up at the
+  # tarball root, where opam expects them) plus LICENSE/LGPL, and publishes it
+  # as a GitHub Release asset. opam-repository submissions must point url.src
+  # at this asset, not GitHub's auto-generated "Source code" archive, which
+  # still contains the whole monorepo.
+  package:
+    name: Package release tarball
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs:
+      - ubuntu-22
+      - ubuntu-24
+      - linux-apt
+      - linux-fedora
+      - centos-9
+      - opensuse-15
+      - macos
+      - windows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build ocgtk-only release tarball
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          PKG="ocgtk-$VERSION"
+          STAGE="$(mktemp -d)/$PKG"
+          mkdir -p "$STAGE"
+
+          # ocgtk/ subtree becomes the tarball root (fixes dune-project /
+          # *.install being one directory too deep for opam).
+          git archive "$GITHUB_REF_NAME:ocgtk" | tar -x -C "$STAGE"
+          # Fold in the repo-root license files alongside it.
+          git archive "$GITHUB_REF_NAME" -- LICENSE LGPL | tar -x -C "$STAGE"
+
+          tar -czf "$PKG.tar.gz" -C "$(dirname "$STAGE")" "$PKG"
+          sha256sum "$PKG.tar.gz" > "$PKG.tar.gz.sha256"
+
+          echo "PKG=$PKG" >> "$GITHUB_ENV"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Extract release notes from CHANGELOG.md
+        run: |
+          set -euo pipefail
+          # Tag versions use '-' (v0.1-preview2); CHANGELOG headings use '~'
+          # (## [0.1~preview2]), matching the dune-project/opam version format.
+          CHANGELOG_VERSION="${VERSION/-/~}"
+          awk -v ver="$CHANGELOG_VERSION" '
+            /^## \[/ {
+              if (found) exit
+              if (index($0, "[" ver "]")) { found=1; next }
+              next
+            }
+            found { print }
+          ' CHANGELOG.md > release-notes.md
+
+          if [ ! -s release-notes.md ]; then
+            echo "::error::No CHANGELOG.md section found for version $CHANGELOG_VERSION"
+            exit 1
+          fi
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: release-notes.md
+          prerelease: ${{ contains(github.ref_name, 'preview') }}
+          files: |
+            ${{ env.PKG }}.tar.gz
+            ${{ env.PKG }}.tar.gz.sha256
