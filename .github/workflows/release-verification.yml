@@ -428,7 +428,9 @@ jobs:
           set -euo pipefail
           # Tag versions use '-' (v0.1-preview2); CHANGELOG headings use '~'
           # (## [0.1~preview2]), matching the dune-project/opam version format.
-          CHANGELOG_VERSION="${VERSION/-/~}"
+          # (not `${VERSION/-/~}`: bash tilde-expands a bare `~` produced by
+          # parameter substitution, corrupting this into `$HOME`)
+          CHANGELOG_VERSION=$(printf '%s' "$VERSION" | sed 's/-/~/')
           awk -v ver="$CHANGELOG_VERSION" '
             /^## \[/ {
               if (found) exit
