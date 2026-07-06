@@ -47,7 +47,7 @@ CAMLexport CAMLprim value ml_graphene_frustum_intersects_sphere(value self, valu
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_frustum_intersects_sphere(graphene_frustum_t_val(self), graphene_sphere_t_val(arg1));
+bool result = graphene_frustum_intersects_sphere(graphene_frustum_t_val(self), graphene_sphere_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -55,7 +55,7 @@ CAMLexport CAMLprim value ml_graphene_frustum_intersects_box(value self, value a
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_frustum_intersects_box(graphene_frustum_t_val(self), graphene_box_t_val(arg1));
+bool result = graphene_frustum_intersects_box(graphene_frustum_t_val(self), graphene_box_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -113,7 +113,7 @@ CAMLexport CAMLprim value ml_graphene_frustum_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_frustum_equal(graphene_frustum_t_val(self), graphene_frustum_t_val(arg1));
+bool result = graphene_frustum_equal(graphene_frustum_t_val(self), graphene_frustum_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -133,7 +133,7 @@ CAMLexport CAMLprim value ml_graphene_frustum_contains_point(value self, value a
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_frustum_contains_point(graphene_frustum_t_val(self), graphene_point3d_t_val(arg1));
+bool result = graphene_frustum_contains_point(graphene_frustum_t_val(self), graphene_point3d_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

@@ -42,6 +42,28 @@ gtk_list_box_unselect_all(GtkListBox_val(self));
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,18,0)
+
+CAMLexport CAMLprim value ml_gtk_list_box_set_tab_behavior(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_list_box_set_tab_behavior(GtkListBox_val(self), GtkListTabBehavior_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_list_box_set_tab_behavior(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ListBox requires GTK >= 4.18");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gtk_list_box_set_show_separators(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -166,6 +188,27 @@ CAMLparam3(self, arg1, arg2);
 gtk_list_box_insert(GtkListBox_val(self), GtkWidget_val(arg1), Int_val(arg2));
 CAMLreturn(Val_unit);
 }
+
+#if GTK_CHECK_VERSION(4,18,0)
+
+CAMLexport CAMLprim value ml_gtk_list_box_get_tab_behavior(value self)
+{
+CAMLparam1(self);
+
+GtkListTabBehavior result = gtk_list_box_get_tab_behavior(GtkListBox_val(self));
+CAMLreturn(Val_GtkListTabBehavior(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_list_box_get_tab_behavior(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ListBox requires GTK >= 4.18");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_list_box_get_show_separators(value self)
 {

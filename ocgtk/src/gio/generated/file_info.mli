@@ -217,7 +217,7 @@ external get_file_type : t -> Gio_enums.filetype
     %G_FILE_ATTRIBUTE_STANDARD_TYPE. *)
 
 external get_etag : t -> string option = "ml_g_file_info_get_etag"
-(** Gets the [entity tag](iface.File.html#entity-tags) for a given #GFileInfo.
+(** Gets the [entity tag][iface@Gio.File#entity-tags] for a given #GFileInfo.
     See %G_FILE_ATTRIBUTE_ETAG_VALUE.
 
     It is an error to call this if the #GFileInfo does not contain
@@ -310,15 +310,29 @@ external get_attribute_boolean : t -> string -> bool
 
 external get_attribute_as_string : t -> string -> string option
   = "ml_g_file_info_get_attribute_as_string"
-(** Gets the value of an attribute, formatted as a string. This escapes things
-    as needed to make the string valid UTF-8. *)
+(** Gets the value of an attribute, formatted as a human readable string.
+
+    This escapes things as needed to make the string valid UTF-8 and readable by
+    humans. It’s not meant to be a machine readable or reversible escaping
+    format.
+
+    To format file name attributes of type
+    [enum@Gio.FileAttributeType.BYTE_STRING] for output as UTF-8, use
+    [func@GLib.filename_to_utf8] instead: ```c const char
+    *trash_orig_path_byte_string; g_autofree char *trash_orig_path_utf8 = NULL;
+
+    trash_orig_path_byte_string = g_file_info_get_attribute_byte_string (info,
+    G_FILE_ATTRIBUTE_TRASH_ORIG_PATH); trash_orig_path_utf8 = g_filename_to_utf8
+    (trash_orig_path_byte_string, -1, NULL, NULL, NULL); if
+    (trash_orig_path_utf8 != NULL) g_message ("Some larger UTF-8 string with
+    filename embedded as %s", trash_orig_path_utf8); ``` *)
 
 external dup : t -> t = "ml_g_file_info_dup"
 (** Duplicates a file info structure. *)
 
 external copy_into : t -> t -> unit = "ml_g_file_info_copy_into"
-(** First clears all of the [GFileAttribute][gio-GFileAttribute] of @dest_info,
-and then copies all of the file attributes from @src_info to @dest_info. *)
+(** First clears all of the [GFileAttribute](file-attributes.html#file-attributes) of
+@dest_info, and then copies all of the file attributes from @src_info to @dest_info. *)
 
 external clear_status : t -> unit = "ml_g_file_info_clear_status"
 (** Clears the status information from @info. *)

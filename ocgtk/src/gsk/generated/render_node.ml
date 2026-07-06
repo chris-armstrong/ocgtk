@@ -35,9 +35,20 @@ The format is not meant as a permanent storage format. *)
 external ref : t -> t = "ml_gsk_render_node_ref"
 (** Acquires a reference on the given `GskRenderNode`. *)
 
+external get_opaque_rect : t -> bool * Ocgtk_graphene.Graphene.Wrappers.Rect.t
+  = "ml_gsk_render_node_get_opaque_rect"
+(** Gets an opaque rectangle inside the node that GTK can determine to be fully
+    opaque.
+
+    There is no guarantee that this is indeed the largest opaque rectangle or
+    that regions outside the rectangle are not opaque. This function is a best
+    effort with that goal.
+
+    The rectangle will be fully contained in the bounds of the node. *)
+
 external get_node_type : t -> Gsk_enums.rendernodetype
   = "ml_gsk_render_node_get_node_type"
-(** Returns the type of the @node. *)
+(** Returns the type of the render node. *)
 
 external get_bounds : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t
   = "ml_gsk_render_node_get_bounds"
@@ -47,11 +58,11 @@ The node will not draw outside of its boundaries. *)
 
 external draw : t -> Ocgtk_cairo.Cairo.Wrappers.Context.t -> unit
   = "ml_gsk_render_node_draw"
-(** Draw the contents of @node to the given cairo context.
+(** Draws the contents of a render node on a cairo context.
 
-Typically, you'll use this function to implement fallback rendering
-of `GskRenderNode`s on an intermediate Cairo context, instead of using
-the drawing context associated to a [class@Gdk.Surface]'s rendering buffer.
+    Typically, you'll use this function to implement fallback rendering of
+    render nodes on an intermediate Cairo context, instead of using the drawing
+    context associated to a [class@Gdk.Surface]'s rendering buffer.
 
-For advanced nodes that cannot be supported using Cairo, in particular
-for nodes doing 3D operations, this function may fail. *)
+    For advanced nodes that cannot be supported using Cairo, in particular for
+    nodes doing 3D operations, this function may fail. *)

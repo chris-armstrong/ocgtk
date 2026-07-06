@@ -10,6 +10,7 @@ module Wrappers : sig
   module Device = Device
   module Font_face = Font_face
   module Font_options = Font_options
+  module Glyph = Glyph
   module Matrix = Matrix
   module Path = Path
   module Pattern = Pattern
@@ -18,6 +19,7 @@ module Wrappers : sig
   module Region = Region
   module Scaled_font = Scaled_font
   module Surface = Surface
+  module Text_cluster = Text_cluster
 end
 
 (** {1 Classes and Interfaces} *)
@@ -26,6 +28,7 @@ module Context = GContext
 module Device = GDevice
 module Font_face = GFont_face
 module Font_options = GFont_options
+module Glyph = GGlyph
 module Matrix = GMatrix
 module Path = GPath
 module Pattern = GPattern
@@ -34,6 +37,7 @@ module Rectangle_int = GRectangle_int
 module Region = GRegion
 module Scaled_font = GScaled_font
 module Surface = GSurface
+module Text_cluster = GText_cluster
 
 (** {1 Enumerations and Bitfields} *)
 

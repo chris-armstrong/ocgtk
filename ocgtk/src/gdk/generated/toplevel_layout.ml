@@ -2,8 +2,8 @@
 (* ToplevelLayout: ToplevelLayout *)
 
 type t = [ `toplevel_layout ] Gobject.obj
-(** The `GdkToplevelLayout` struct contains information that is necessary to
-    present a sovereign window on screen.
+(** Contains information that is necessary to present a sovereign window on
+    screen.
 
     The `GdkToplevelLayout` struct is necessary for using
     [method@Gdk.Toplevel.present].
@@ -41,8 +41,8 @@ external get_resizable : t -> bool = "ml_gdk_toplevel_layout_get_resizable"
 external get_maximized : t -> bool * bool
   = "ml_gdk_toplevel_layout_get_maximized"
 (** If the layout specifies whether to the toplevel should go maximized,
-the value pointed to by @maximized is set to %TRUE if it should go
-fullscreen, or %FALSE, if it should go unmaximized. *)
+the value pointed to by @maximized is set to true if it should go
+maximized, or false, if it should go unmaximized. *)
 
 external get_fullscreen_monitor :
   t -> App_launch_context_cycle_de440b34.Monitor.t option
@@ -52,8 +52,8 @@ external get_fullscreen_monitor :
 external get_fullscreen : t -> bool * bool
   = "ml_gdk_toplevel_layout_get_fullscreen"
 (** If the layout specifies whether to the toplevel should go fullscreen,
-the value pointed to by @fullscreen is set to %TRUE if it should go
-fullscreen, or %FALSE, if it should go unfullscreen. *)
+the value pointed to by @fullscreen is set to true if it should go
+fullscreen, or false, if it should go unfullscreen. *)
 
 external equal : t -> t -> bool = "ml_gdk_toplevel_layout_equal"
 (** Check whether @layout and @other has identical layout properties. *)

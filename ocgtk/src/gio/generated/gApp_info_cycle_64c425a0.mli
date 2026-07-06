@@ -54,7 +54,10 @@ and app_launch_context_t = object
 
   method get_display : app_info_t -> file_t list -> string option
   method get_environment : unit -> string array
-  method get_startup_notify_id : app_info_t -> file_t list -> string option
+
+  method get_startup_notify_id :
+    app_info_t option -> file_t list option -> string option
+
   method launch_failed : string -> unit
   method setenv : string -> string -> unit
   method unsetenv : string -> unit
@@ -415,10 +418,12 @@ and file_monitor_t = object
     Gobject.Signal.handler_id
 
   method cancel : unit -> bool
-  method emit_event : file_t -> file_t -> Gio_enums.filemonitorevent -> unit
+
+  method emit_event :
+    file_t -> file_t option -> Gio_enums.filemonitorevent -> unit
+
   method is_cancelled : unit -> bool
   method set_rate_limit : int -> unit
-  method cancelled : bool
   method as_file_monitor : App_info_cycle_64c425a0.File_monitor.t
 end
 

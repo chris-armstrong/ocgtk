@@ -190,7 +190,7 @@ CAMLexport CAMLprim value ml_graphene_rect_intersection(value self, value arg1)
 CAMLparam2(self, arg1);
 graphene_rect_t out2;
 
-_Bool result = graphene_rect_intersection(graphene_rect_t_val(self), graphene_rect_t_val(arg1), &out2);
+bool result = graphene_rect_intersection(graphene_rect_t_val(self), graphene_rect_t_val(arg1), &out2);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
@@ -412,7 +412,7 @@ CAMLexport CAMLprim value ml_graphene_rect_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_rect_equal(graphene_rect_t_val(self), graphene_rect_t_val(arg1));
+bool result = graphene_rect_equal(graphene_rect_t_val(self), graphene_rect_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -420,7 +420,7 @@ CAMLexport CAMLprim value ml_graphene_rect_contains_rect(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_rect_contains_rect(graphene_rect_t_val(self), graphene_rect_t_val(arg1));
+bool result = graphene_rect_contains_rect(graphene_rect_t_val(self), graphene_rect_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -428,7 +428,7 @@ CAMLexport CAMLprim value ml_graphene_rect_contains_point(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_rect_contains_point(graphene_rect_t_val(self), graphene_point_t_val(arg1));
+bool result = graphene_rect_contains_point(graphene_rect_t_val(self), graphene_point_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

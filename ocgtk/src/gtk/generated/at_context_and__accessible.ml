@@ -75,12 +75,21 @@ and Accessible : sig
 
   (* Methods *)
 
+  external update_platform_state :
+    t -> Gtk_enums.accessibleplatformstate -> unit
+    = "ml_gtk_accessible_update_platform_state"
+  (** Informs ATs that the platform state has changed.
+
+      This function should be used by `GtkAccessible` implementations that have
+      a platform state but are not widgets. Widgets handle platform states
+      automatically. *)
+
   external update_next_accessible_sibling : t -> t option -> unit
     = "ml_gtk_accessible_update_next_accessible_sibling"
-  (** Updates the next accessible sibling of @self.
+  (** Updates the next accessible sibling.
 
-  That might be useful when a new child of a custom `GtkAccessible`
-  is created, and it needs to be linked to a previous child. *)
+      That might be useful when a new child of a custom accessible is created,
+      and it needs to be linked to a previous child. *)
 
   external set_accessible_parent : t -> t option -> t option -> unit
     = "ml_gtk_accessible_set_accessible_parent"
@@ -96,21 +105,19 @@ and Accessible : sig
 
   external reset_state : t -> Gtk_enums.accessiblestate -> unit
     = "ml_gtk_accessible_reset_state"
-  (** Resets the accessible @state to its default value. *)
+  (** Resets the accessible state to its default value. *)
 
   external reset_relation : t -> Gtk_enums.accessiblerelation -> unit
     = "ml_gtk_accessible_reset_relation"
-  (** Resets the accessible @relation to its default value. *)
+  (** Resets the accessible relation to its default value. *)
 
   external reset_property : t -> Gtk_enums.accessibleproperty -> unit
     = "ml_gtk_accessible_reset_property"
-  (** Resets the accessible @property to its default value. *)
+  (** Resets the accessible property to its default value. *)
 
   external get_platform_state : t -> Gtk_enums.accessibleplatformstate -> bool
     = "ml_gtk_accessible_get_platform_state"
-  (** Query a platform state, such as focus.
-
-      See gtk_accessible_platform_changed().
+  (** Queries a platform state, such as focus.
 
       This functionality can be overridden by `GtkAccessible` implementations,
       e.g. to get platform state from an ignored child widget, as is the case
@@ -133,7 +140,7 @@ and Accessible : sig
 
   external get_at_context : t -> At_context.t
     = "ml_gtk_accessible_get_at_context"
-  (** Retrieves the accessible implementation for the given `GtkAccessible`. *)
+  (** Retrieves the implementation for the given accessible object. *)
 
   external get_accessible_role : t -> Gtk_enums.accessiblerole
     = "ml_gtk_accessible_get_accessible_role"
@@ -165,12 +172,21 @@ end = struct
 
   (* Methods *)
 
+  external update_platform_state :
+    t -> Gtk_enums.accessibleplatformstate -> unit
+    = "ml_gtk_accessible_update_platform_state"
+  (** Informs ATs that the platform state has changed.
+
+      This function should be used by `GtkAccessible` implementations that have
+      a platform state but are not widgets. Widgets handle platform states
+      automatically. *)
+
   external update_next_accessible_sibling : t -> t option -> unit
     = "ml_gtk_accessible_update_next_accessible_sibling"
-  (** Updates the next accessible sibling of @self.
+  (** Updates the next accessible sibling.
 
-  That might be useful when a new child of a custom `GtkAccessible`
-  is created, and it needs to be linked to a previous child. *)
+      That might be useful when a new child of a custom accessible is created,
+      and it needs to be linked to a previous child. *)
 
   external set_accessible_parent : t -> t option -> t option -> unit
     = "ml_gtk_accessible_set_accessible_parent"
@@ -186,21 +202,19 @@ end = struct
 
   external reset_state : t -> Gtk_enums.accessiblestate -> unit
     = "ml_gtk_accessible_reset_state"
-  (** Resets the accessible @state to its default value. *)
+  (** Resets the accessible state to its default value. *)
 
   external reset_relation : t -> Gtk_enums.accessiblerelation -> unit
     = "ml_gtk_accessible_reset_relation"
-  (** Resets the accessible @relation to its default value. *)
+  (** Resets the accessible relation to its default value. *)
 
   external reset_property : t -> Gtk_enums.accessibleproperty -> unit
     = "ml_gtk_accessible_reset_property"
-  (** Resets the accessible @property to its default value. *)
+  (** Resets the accessible property to its default value. *)
 
   external get_platform_state : t -> Gtk_enums.accessibleplatformstate -> bool
     = "ml_gtk_accessible_get_platform_state"
-  (** Query a platform state, such as focus.
-
-      See gtk_accessible_platform_changed().
+  (** Queries a platform state, such as focus.
 
       This functionality can be overridden by `GtkAccessible` implementations,
       e.g. to get platform state from an ignored child widget, as is the case
@@ -223,7 +237,7 @@ end = struct
 
   external get_at_context : t -> At_context.t
     = "ml_gtk_accessible_get_at_context"
-  (** Retrieves the accessible implementation for the given `GtkAccessible`. *)
+  (** Retrieves the implementation for the given accessible object. *)
 
   external get_accessible_role : t -> Gtk_enums.accessiblerole
     = "ml_gtk_accessible_get_accessible_role"

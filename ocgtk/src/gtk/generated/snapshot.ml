@@ -242,6 +242,7 @@ outside of it.
 The image is recorded until the next call to [method@Gtk.Snapshot.pop].
 
 If you want to fill the path with a color, [method@Gtk.Snapshot.append_fill]
+than rendering new ones, use [method@Gtk.Snapshot.append_fill]
 may be more convenient. *)
 
 external push_cross_fade : t -> float -> unit
@@ -255,6 +256,20 @@ until the second call to [method@Gtk.Snapshot.pop].
 
 Calling this function requires two subsequent calls
 to [method@Gtk.Snapshot.pop]. *)
+
+external push_component_transfer :
+  t ->
+  Ocgtk_gsk.Gsk.Wrappers.Component_transfer.t ->
+  Ocgtk_gsk.Gsk.Wrappers.Component_transfer.t ->
+  Ocgtk_gsk.Gsk.Wrappers.Component_transfer.t ->
+  Ocgtk_gsk.Gsk.Wrappers.Component_transfer.t ->
+  unit = "ml_gtk_snapshot_push_component_transfer"
+(** Modifies the colors of an image by applying a transfer function for each
+    component.
+
+    The transfer functions operate on unpremultiplied colors.
+
+    The image is recorded until the next call to [method@Gtk.Snapshot.pop]. *)
 
 external push_color_matrix :
   t ->
@@ -430,6 +445,13 @@ external append_layout :
   Ocgtk_pango.Pango.Wrappers.Layout.t ->
   Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t ->
   unit = "ml_gtk_snapshot_append_layout"
+(** Creates render nodes for rendering @layout in the given foregound @color
+and appends them to the current node of @snapshot without changing the
+current node. The current theme's foreground color for a widget can be
+obtained with [method@Gtk.Widget.get_color].
+
+Note that if the layout does not produce any visible output, then nodes
+may not be added to the @snapshot. *)
 
 external append_inset_shadow :
   t ->

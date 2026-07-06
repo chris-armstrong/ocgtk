@@ -72,7 +72,8 @@ type accessibleproperty =
   | `VALUE_MAX
   | `VALUE_MIN
   | `VALUE_NOW
-  | `VALUE_TEXT ]
+  | `VALUE_TEXT
+  | `HELP_TEXT ]
 
 let accessibleproperty_of_int n =
   match n with
@@ -95,6 +96,7 @@ let accessibleproperty_of_int n =
   | 16 -> `VALUE_MIN
   | 17 -> `VALUE_NOW
   | 18 -> `VALUE_TEXT
+  | 19 -> `HELP_TEXT
   | n -> failwith (Printf.sprintf "AccessibleProperty: unknown int %d" n)
 
 let accessibleproperty_to_int v =
@@ -118,6 +120,7 @@ let accessibleproperty_to_int v =
   | `VALUE_MIN -> 16
   | `VALUE_NOW -> 17
   | `VALUE_TEXT -> 18
+  | `HELP_TEXT -> 19
 
 type accessiblerelation =
   [ `ACTIVE_DESCENDANT
@@ -137,7 +140,13 @@ type accessiblerelation =
   | `ROW_INDEX
   | `ROW_INDEX_TEXT
   | `ROW_SPAN
-  | `SET_SIZE ]
+  | `SET_SIZE
+  | `LABEL_FOR
+  | `DESCRIPTION_FOR
+  | `CONTROLLED_BY
+  | `DETAILS_FOR
+  | `ERROR_MESSAGE_FOR
+  | `FLOW_FROM ]
 
 let accessiblerelation_of_int n =
   match n with
@@ -159,6 +168,12 @@ let accessiblerelation_of_int n =
   | 15 -> `ROW_INDEX_TEXT
   | 16 -> `ROW_SPAN
   | 17 -> `SET_SIZE
+  | 18 -> `LABEL_FOR
+  | 19 -> `DESCRIPTION_FOR
+  | 20 -> `CONTROLLED_BY
+  | 21 -> `DETAILS_FOR
+  | 22 -> `ERROR_MESSAGE_FOR
+  | 23 -> `FLOW_FROM
   | n -> failwith (Printf.sprintf "AccessibleRelation: unknown int %d" n)
 
 let accessiblerelation_to_int v =
@@ -181,6 +196,12 @@ let accessiblerelation_to_int v =
   | `ROW_INDEX_TEXT -> 15
   | `ROW_SPAN -> 16
   | `SET_SIZE -> 17
+  | `LABEL_FOR -> 18
+  | `DESCRIPTION_FOR -> 19
+  | `CONTROLLED_BY -> 20
+  | `DETAILS_FOR -> 21
+  | `ERROR_MESSAGE_FOR -> 22
+  | `FLOW_FROM -> 23
 
 type accessiblerole =
   [ `ALERT
@@ -1075,17 +1096,32 @@ let filechoosererror_to_int v =
   | `ALREADY_EXISTS -> 2
   | `INCOMPLETE_HOSTNAME -> 3
 
-type filterchange = [ `DIFFERENT | `LESS_STRICT | `MORE_STRICT ]
+type filterchange =
+  [ `DIFFERENT
+  | `LESS_STRICT
+  | `MORE_STRICT
+  | `DIFFERENT_REWATCH
+  | `LESS_STRICT_REWATCH
+  | `MORE_STRICT_REWATCH ]
 
 let filterchange_of_int n =
   match n with
   | 0 -> `DIFFERENT
   | 1 -> `LESS_STRICT
   | 2 -> `MORE_STRICT
+  | 3 -> `DIFFERENT_REWATCH
+  | 4 -> `LESS_STRICT_REWATCH
+  | 5 -> `MORE_STRICT_REWATCH
   | n -> failwith (Printf.sprintf "FilterChange: unknown int %d" n)
 
 let filterchange_to_int v =
-  match v with `DIFFERENT -> 0 | `LESS_STRICT -> 1 | `MORE_STRICT -> 2
+  match v with
+  | `DIFFERENT -> 0
+  | `LESS_STRICT -> 1
+  | `MORE_STRICT -> 2
+  | `DIFFERENT_REWATCH -> 3
+  | `LESS_STRICT_REWATCH -> 4
+  | `MORE_STRICT_REWATCH -> 5
 
 type filtermatch = [ `SOME | `NONE | `ALL ]
 
@@ -1110,6 +1146,16 @@ let fontlevel_of_int n =
 
 let fontlevel_to_int v =
   match v with `FAMILY -> 0 | `FACE -> 1 | `FONT -> 2 | `FEATURES -> 3
+
+type fontrendering = [ `AUTOMATIC | `MANUAL ]
+
+let fontrendering_of_int n =
+  match n with
+  | 0 -> `AUTOMATIC
+  | 1 -> `MANUAL
+  | n -> failwith (Printf.sprintf "FontRendering: unknown int %d" n)
+
+let fontrendering_to_int v = match v with `AUTOMATIC -> 0 | `MANUAL -> 1
 
 type graphicsoffloadenabled = [ `ENABLED | `DISABLED ]
 
@@ -1243,6 +1289,36 @@ let inscriptionoverflow_to_int v =
   | `ELLIPSIZE_START -> 1
   | `ELLIPSIZE_MIDDLE -> 2
   | `ELLIPSIZE_END -> 3
+
+type interfacecolorscheme = [ `UNSUPPORTED | `DEFAULT | `DARK | `LIGHT ]
+
+let interfacecolorscheme_of_int n =
+  match n with
+  | 0 -> `UNSUPPORTED
+  | 1 -> `DEFAULT
+  | 2 -> `DARK
+  | 3 -> `LIGHT
+  | n -> failwith (Printf.sprintf "InterfaceColorScheme: unknown int %d" n)
+
+let interfacecolorscheme_to_int v =
+  match v with `UNSUPPORTED -> 0 | `DEFAULT -> 1 | `DARK -> 2 | `LIGHT -> 3
+
+type interfacecontrast = [ `UNSUPPORTED | `NO_PREFERENCE | `MORE | `LESS ]
+
+let interfacecontrast_of_int n =
+  match n with
+  | 0 -> `UNSUPPORTED
+  | 1 -> `NO_PREFERENCE
+  | 2 -> `MORE
+  | 3 -> `LESS
+  | n -> failwith (Printf.sprintf "InterfaceContrast: unknown int %d" n)
+
+let interfacecontrast_to_int v =
+  match v with
+  | `UNSUPPORTED -> 0
+  | `NO_PREFERENCE -> 1
+  | `MORE -> 2
+  | `LESS -> 3
 
 type justification = [ `LEFT | `RIGHT | `CENTER | `FILL ]
 
@@ -1427,17 +1503,18 @@ let packtype_of_int n =
 
 let packtype_to_int v = match v with `START -> 0 | `END -> 1
 
-type padactiontype = [ `BUTTON | `RING | `STRIP ]
+type padactiontype = [ `BUTTON | `RING | `STRIP | `DIAL ]
 
 let padactiontype_of_int n =
   match n with
   | 0 -> `BUTTON
   | 1 -> `RING
   | 2 -> `STRIP
+  | 3 -> `DIAL
   | n -> failwith (Printf.sprintf "PadActionType: unknown int %d" n)
 
 let padactiontype_to_int v =
-  match v with `BUTTON -> 0 | `RING -> 1 | `STRIP -> 2
+  match v with `BUTTON -> 0 | `RING -> 1 | `STRIP -> 2 | `DIAL -> 3
 
 type pageorientation =
   [ `PORTRAIT | `LANDSCAPE | `REVERSE_PORTRAIT | `REVERSE_LANDSCAPE ]
@@ -2266,6 +2343,60 @@ let unit_of_int n =
 let unit_to_int v =
   match v with `NONE -> 0 | `POINTS -> 1 | `INCH -> 2 | `MM -> 3
 
+type windowgravity =
+  [ `TOP_LEFT
+  | `TOP
+  | `TOP_RIGHT
+  | `LEFT
+  | `CENTER
+  | `RIGHT
+  | `BOTTOM_LEFT
+  | `BOTTOM
+  | `BOTTOM_RIGHT
+  | `TOP_START
+  | `TOP_END
+  | `START
+  | `END
+  | `BOTTOM_START
+  | `BOTTOM_END ]
+
+let windowgravity_of_int n =
+  match n with
+  | 0 -> `TOP_LEFT
+  | 1 -> `TOP
+  | 2 -> `TOP_RIGHT
+  | 3 -> `LEFT
+  | 4 -> `CENTER
+  | 5 -> `RIGHT
+  | 6 -> `BOTTOM_LEFT
+  | 7 -> `BOTTOM
+  | 8 -> `BOTTOM_RIGHT
+  | 9 -> `TOP_START
+  | 10 -> `TOP_END
+  | 11 -> `START
+  | 12 -> `END
+  | 13 -> `BOTTOM_START
+  | 14 -> `BOTTOM_END
+  | n -> failwith (Printf.sprintf "WindowGravity: unknown int %d" n)
+
+let windowgravity_to_int v =
+  match v with
+  | `TOP_LEFT -> 0
+  | `TOP -> 1
+  | `TOP_RIGHT -> 2
+  | `LEFT -> 3
+  | `CENTER -> 4
+  | `RIGHT -> 5
+  | `BOTTOM_LEFT -> 6
+  | `BOTTOM -> 7
+  | `BOTTOM_RIGHT -> 8
+  | `TOP_START -> 9
+  | `TOP_END -> 10
+  | `START -> 11
+  | `END -> 12
+  | `BOTTOM_START -> 13
+  | `BOTTOM_END -> 14
+
 type wrapmode = [ `NONE | `CHAR | `WORD | `WORD_CHAR ]
 
 let wrapmode_of_int n =
@@ -2356,10 +2487,11 @@ type debugflags_flag =
   | `GEOMETRY
   | `ICONTHEME
   | `PRINTING
-  | `BUILDER
+  | `BUILDER_TRACE
   | `SIZE_REQUEST
   | `NO_CSS_CACHE
   | `INTERACTIVE
+  | `TOUCHSCREEN
   | `ACTIONS
   | `LAYOUT
   | `SNAPSHOT
@@ -2367,7 +2499,9 @@ type debugflags_flag =
   | `BUILDER_OBJECTS
   | `A11Y
   | `ICONFALLBACK
-  | `INVERT_TEXT_DIR ]
+  | `INVERT_TEXT_DIR
+  | `CSS
+  | `BUILDER ]
 
 type debugflags = debugflags_flag list
 
@@ -2380,10 +2514,11 @@ let debugflags_of_int flags =
   let acc = if flags land 16 <> 0 then `GEOMETRY :: acc else acc in
   let acc = if flags land 32 <> 0 then `ICONTHEME :: acc else acc in
   let acc = if flags land 64 <> 0 then `PRINTING :: acc else acc in
-  let acc = if flags land 128 <> 0 then `BUILDER :: acc else acc in
+  let acc = if flags land 128 <> 0 then `BUILDER_TRACE :: acc else acc in
   let acc = if flags land 256 <> 0 then `SIZE_REQUEST :: acc else acc in
   let acc = if flags land 512 <> 0 then `NO_CSS_CACHE :: acc else acc in
   let acc = if flags land 1024 <> 0 then `INTERACTIVE :: acc else acc in
+  let acc = if flags land 2048 <> 0 then `TOUCHSCREEN :: acc else acc in
   let acc = if flags land 4096 <> 0 then `ACTIONS :: acc else acc in
   let acc = if flags land 8192 <> 0 then `LAYOUT :: acc else acc in
   let acc = if flags land 16384 <> 0 then `SNAPSHOT :: acc else acc in
@@ -2392,6 +2527,8 @@ let debugflags_of_int flags =
   let acc = if flags land 131072 <> 0 then `A11Y :: acc else acc in
   let acc = if flags land 262144 <> 0 then `ICONFALLBACK :: acc else acc in
   let acc = if flags land 524288 <> 0 then `INVERT_TEXT_DIR :: acc else acc in
+  let acc = if flags land 1048576 <> 0 then `CSS :: acc else acc in
+  let acc = if flags land 2097152 <> 0 then `BUILDER :: acc else acc in
   acc
 
 let debugflags_to_int flags =
@@ -2405,10 +2542,11 @@ let debugflags_to_int flags =
       | `GEOMETRY -> acc lor 16
       | `ICONTHEME -> acc lor 32
       | `PRINTING -> acc lor 64
-      | `BUILDER -> acc lor 128
+      | `BUILDER_TRACE -> acc lor 128
       | `SIZE_REQUEST -> acc lor 256
       | `NO_CSS_CACHE -> acc lor 512
       | `INTERACTIVE -> acc lor 1024
+      | `TOUCHSCREEN -> acc lor 2048
       | `ACTIONS -> acc lor 4096
       | `LAYOUT -> acc lor 8192
       | `SNAPSHOT -> acc lor 16384
@@ -2416,7 +2554,9 @@ let debugflags_to_int flags =
       | `BUILDER_OBJECTS -> acc lor 65536
       | `A11Y -> acc lor 131072
       | `ICONFALLBACK -> acc lor 262144
-      | `INVERT_TEXT_DIR -> acc lor 524288)
+      | `INVERT_TEXT_DIR -> acc lor 524288
+      | `CSS -> acc lor 1048576
+      | `BUILDER -> acc lor 2097152)
     0 flags
 
 type dialogflags_flag = [ `MODAL | `DESTROY_WITH_PARENT | `USE_HEADER_BAR ]
@@ -2439,7 +2579,13 @@ let dialogflags_to_int flags =
     0 flags
 
 type eventcontrollerscrollflags_flag =
-  [ `NONE | `VERTICAL | `HORIZONTAL | `DISCRETE | `KINETIC | `BOTH_AXES ]
+  [ `NONE
+  | `VERTICAL
+  | `HORIZONTAL
+  | `DISCRETE
+  | `KINETIC
+  | `PHYSICAL_DIRECTION
+  | `BOTH_AXES ]
 
 type eventcontrollerscrollflags = eventcontrollerscrollflags_flag list
 
@@ -2450,6 +2596,7 @@ let eventcontrollerscrollflags_of_int flags =
   let acc = if flags land 2 <> 0 then `HORIZONTAL :: acc else acc in
   let acc = if flags land 4 <> 0 then `DISCRETE :: acc else acc in
   let acc = if flags land 8 <> 0 then `KINETIC :: acc else acc in
+  let acc = if flags land 16 <> 0 then `PHYSICAL_DIRECTION :: acc else acc in
   let acc = if flags land 3 <> 0 then `BOTH_AXES :: acc else acc in
   acc
 
@@ -2462,6 +2609,7 @@ let eventcontrollerscrollflags_to_int flags =
       | `HORIZONTAL -> acc lor 2
       | `DISCRETE -> acc lor 4
       | `KINETIC -> acc lor 8
+      | `PHYSICAL_DIRECTION -> acc lor 16
       | `BOTH_AXES -> acc lor 3)
     0 flags
 
@@ -2490,11 +2638,14 @@ let fontchooserlevel_to_int flags =
       | `FEATURES -> acc lor 8)
     0 flags
 
-type iconlookupflags_flag = [ `FORCE_REGULAR | `FORCE_SYMBOLIC | `PRELOAD ]
+type iconlookupflags_flag =
+  [ `NONE | `FORCE_REGULAR | `FORCE_SYMBOLIC | `PRELOAD ]
+
 type iconlookupflags = iconlookupflags_flag list
 
 let iconlookupflags_of_int flags =
   let acc = [] in
+  let acc = if flags land 0 <> 0 then `NONE :: acc else acc in
   let acc = if flags land 1 <> 0 then `FORCE_REGULAR :: acc else acc in
   let acc = if flags land 2 <> 0 then `FORCE_SYMBOLIC :: acc else acc in
   let acc = if flags land 4 <> 0 then `PRELOAD :: acc else acc in
@@ -2504,6 +2655,7 @@ let iconlookupflags_to_int flags =
   List.fold_left
     (fun acc flag ->
       match flag with
+      | `NONE -> acc lor 0
       | `FORCE_REGULAR -> acc lor 1
       | `FORCE_SYMBOLIC -> acc lor 2
       | `PRELOAD -> acc lor 4)
@@ -2711,6 +2863,29 @@ let stylecontextprintflags_to_int flags =
       | `RECURSE -> acc lor 1
       | `SHOW_STYLE -> acc lor 2
       | `SHOW_CHANGE -> acc lor 4)
+    0 flags
+
+type textbuffernotifyflags_flag =
+  [ `BEFORE_INSERT | `AFTER_INSERT | `BEFORE_DELETE | `AFTER_DELETE ]
+
+type textbuffernotifyflags = textbuffernotifyflags_flag list
+
+let textbuffernotifyflags_of_int flags =
+  let acc = [] in
+  let acc = if flags land 1 <> 0 then `BEFORE_INSERT :: acc else acc in
+  let acc = if flags land 2 <> 0 then `AFTER_INSERT :: acc else acc in
+  let acc = if flags land 4 <> 0 then `BEFORE_DELETE :: acc else acc in
+  let acc = if flags land 8 <> 0 then `AFTER_DELETE :: acc else acc in
+  acc
+
+let textbuffernotifyflags_to_int flags =
+  List.fold_left
+    (fun acc flag ->
+      match flag with
+      | `BEFORE_INSERT -> acc lor 1
+      | `AFTER_INSERT -> acc lor 2
+      | `BEFORE_DELETE -> acc lor 4
+      | `AFTER_DELETE -> acc lor 8)
     0 flags
 
 type textsearchflags_flag = [ `VISIBLE_ONLY | `TEXT_ONLY | `CASE_INSENSITIVE ]

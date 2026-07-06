@@ -63,9 +63,3 @@ external get_child :
 (** Gets the child widget of @frame. *)
 
 (* Properties *)
-
-external get_label_xalign : t -> float = "ml_gtk_frame_get_label_xalign"
-(** Get property: label-xalign *)
-
-external set_label_xalign : t -> float -> unit = "ml_gtk_frame_set_label_xalign"
-(** Set property: label-xalign *)

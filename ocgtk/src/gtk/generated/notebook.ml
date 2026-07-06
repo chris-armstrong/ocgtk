@@ -435,11 +435,11 @@ external set_enable_popup : t -> bool -> unit
 let on_change_current_page ?after obj ~callback =
   let closure =
     Gobject.Closure.create (fun argv ->
-        let object_ =
+        let page =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_int v
         in
-        let result = callback ~object_ in
+        let result = callback ~page in
         let v = Gobject.Closure.result argv in
         let x = result in
         Gobject.Value.set_boolean v x)
@@ -465,11 +465,11 @@ let on_create_window ?after obj ~callback =
 let on_focus_tab ?after obj ~callback =
   let closure =
     Gobject.Closure.create (fun argv ->
-        let object_ =
+        let tab =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gtk_enums.notebooktab_of_int (Gobject.Value.get_enum_int v)
         in
-        let result = callback ~object_ in
+        let result = callback ~tab in
         let v = Gobject.Closure.result argv in
         let x = result in
         Gobject.Value.set_boolean v x)
@@ -480,11 +480,11 @@ let on_focus_tab ?after obj ~callback =
 let on_move_focus_out ?after obj ~callback =
   let closure =
     Gobject.Closure.create (fun argv ->
-        let object_ =
+        let direction =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gtk_enums.directiontype_of_int (Gobject.Value.get_enum_int v)
         in
-        callback ~object_)
+        callback ~direction)
   in
   Gobject.Signal.connect obj ~name:"move-focus-out" ~callback:closure
     ~after:(Option.value after ~default:false)
@@ -540,15 +540,15 @@ let on_page_reordered ?after obj ~callback =
 let on_reorder_tab ?after obj ~callback =
   let closure =
     Gobject.Closure.create (fun argv ->
-        let object_ =
+        let direction =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gtk_enums.directiontype_of_int (Gobject.Value.get_enum_int v)
         in
-        let p0 =
+        let move_to_last =
           let v = Gobject.Closure.nth argv ~pos:2 in
           Gobject.Value.get_boolean v
         in
-        let result = callback ~object_ ~p0 in
+        let result = callback ~direction ~move_to_last in
         let v = Gobject.Closure.result argv in
         let x = result in
         Gobject.Value.set_boolean v x)
@@ -559,11 +559,11 @@ let on_reorder_tab ?after obj ~callback =
 let on_select_page ?after obj ~callback =
   let closure =
     Gobject.Closure.create (fun argv ->
-        let object_ =
+        let move_focus =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_boolean v
         in
-        let result = callback ~object_ in
+        let result = callback ~move_focus in
         let v = Gobject.Closure.result argv in
         let x = result in
         Gobject.Value.set_boolean v x)

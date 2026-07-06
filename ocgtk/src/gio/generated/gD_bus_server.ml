@@ -13,7 +13,6 @@ class type d_bus_server_t = object
   method is_active : unit -> bool
   method start : unit -> unit
   method stop : unit -> unit
-  method active : bool
   method address : string
   method authentication_observer : GD_bus_auth_observer.d_bus_auth_observer_t
   method as_d_bus_server : D_bus_server.t
@@ -40,7 +39,6 @@ class d_bus_server (obj : D_bus_server.t) : d_bus_server_t =
     method is_active : unit -> bool = fun () -> D_bus_server.is_active obj
     method start : unit -> unit = fun () -> D_bus_server.start obj
     method stop : unit -> unit = fun () -> D_bus_server.stop obj
-    method active = D_bus_server.get_active obj
     method address = D_bus_server.get_address obj
 
     method authentication_observer =

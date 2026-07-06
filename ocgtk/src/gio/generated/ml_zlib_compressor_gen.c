@@ -12,14 +12,6 @@
 #include "wrappers.h"
 
 #include <gio/gio.h>
-#ifdef __linux__
-#include <gio/gunixoutputstream.h>
-#include <gio/gunixmounts.h>
-#include <gio/gunixinputstream.h>
-#include <gio/gunixfdmessage.h>
-#include <gio/gfiledescriptorbased.h>
-#include <gio/gdesktopappinfo.h>
-#endif /* __linux__ */
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
@@ -47,6 +39,28 @@ return Val_unit;
 }
 #endif
 
+#if GLIB_CHECK_VERSION(2,86,0)
+
+CAMLexport CAMLprim value ml_g_zlib_compressor_set_os(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+g_zlib_compressor_set_os(GZlibCompressor_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_zlib_compressor_set_os(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("ZlibCompressor requires GLib >= 2.86");
+return Val_unit;
+}
+#endif
+
 #if GLIB_CHECK_VERSION(2,26,0)
 
 CAMLexport CAMLprim value ml_g_zlib_compressor_set_file_info(value self, value arg1)
@@ -65,6 +79,27 @@ CAMLparam2(self, arg1);
 (void)self;
 (void)arg1;
 caml_failwith("ZlibCompressor requires GLib >= 2.26");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,86,0)
+
+CAMLexport CAMLprim value ml_g_zlib_compressor_get_os(value self)
+{
+CAMLparam1(self);
+
+int result = g_zlib_compressor_get_os(GZlibCompressor_val(self));
+CAMLreturn(Val_int(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_zlib_compressor_get_os(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ZlibCompressor requires GLib >= 2.86");
 return Val_unit;
 }
 #endif

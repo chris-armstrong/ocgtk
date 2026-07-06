@@ -181,6 +181,8 @@ class type text_buffer_t = object
     Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
     unit
 
+  method remove_commit_notify : int -> unit
+
   method remove_selection_clipboard :
     Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> unit
 

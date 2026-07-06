@@ -2,6 +2,6 @@
 (* KeymapKey: KeymapKey *)
 
 type t = [ `keymap_key ] Gobject.obj
-(** A `GdkKeymapKey` is a hardware key that can be mapped to a keyval. *)
+(** Represents a hardware key that can be mapped to a keyval. *)
 
 (* Methods *)

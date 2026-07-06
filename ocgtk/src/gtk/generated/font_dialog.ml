@@ -31,8 +31,8 @@ external set_filter : t -> Filter.t option -> unit
 (** Adds a filter that decides which fonts to display in the font chooser
     dialog.
 
-    The `GtkFilter` must be able to handle both `PangoFontFamily` and
-    `PangoFontFace` objects. *)
+    The filter must be able to handle both `PangoFontFamily` and `PangoFontFace`
+    objects. *)
 
 external get_title : t -> string = "ml_gtk_font_dialog_get_title"
 (** Returns the title that will be shown on the font chooser dialog. *)
@@ -57,29 +57,31 @@ external get_filter : t -> Filter.t option = "ml_gtk_font_dialog_get_filter"
 external choose_font_finish :
   t ->
   Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-  (Ocgtk_pango.Pango.Wrappers.Font_description.t option, GError.t) result
+  (Ocgtk_pango.Pango.Wrappers.Font_description.t, GError.t) result
   = "ml_gtk_font_dialog_choose_font_finish"
-(** Finishes the [method@Gtk.FontDialog.choose_font] call and returns the
-    resulting font description. *)
+(** Finishes the [method@Gtk.FontDialog.choose_font] call.
+
+    Note that this function returns a [error@Gtk.DialogError.DISMISSED] error if
+    the user cancels the dialog. *)
 
 external choose_family_finish :
   t ->
   Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-  (Ocgtk_pango.Pango.Wrappers.Font_family.t option, GError.t) result
+  (Ocgtk_pango.Pango.Wrappers.Font_family.t, GError.t) result
   = "ml_gtk_font_dialog_choose_family_finish"
-(** Finishes the [method@Gtk.FontDialog.choose_family] call
-and returns the resulting family.
+(** Finishes the [method@Gtk.FontDialog.choose_family] call.
 
-This function never returns an error. If the operation is
-not finished successfully, the value passed as @initial_value
-to [method@Gtk.FontDialog.choose_family] is returned. *)
+    Note that this function returns a [error@Gtk.DialogError.DISMISSED] error if
+    the user cancels the dialog. *)
 
 external choose_face_finish :
   t ->
   Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-  (Ocgtk_pango.Pango.Wrappers.Font_face.t option, GError.t) result
+  (Ocgtk_pango.Pango.Wrappers.Font_face.t, GError.t) result
   = "ml_gtk_font_dialog_choose_face_finish"
-(** Finishes the [method@Gtk.FontDialog.choose_face] call and returns the
-    resulting font face. *)
+(** Finishes the [method@Gtk.FontDialog.choose_face] call.
+
+    Note that this function returns a [error@Gtk.DialogError.DISMISSED] error if
+    the user cancels the dialog. *)
 
 (* Properties *)

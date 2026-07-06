@@ -3,7 +3,7 @@ class type shortcuts_section_t = object
 
   method on_change_current_page :
     ?after:bool ->
-    callback:(object_:int -> bool) ->
+    callback:(offset:int -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 

@@ -61,6 +61,16 @@ external set_overwrite_mode : t -> bool -> unit
   = "ml_gtk_entry_set_overwrite_mode"
 (** Sets whether the text is overwritten when typing in the `GtkEntry`. *)
 
+external set_menu_entry_icon_text :
+  t -> Gtk_enums.entryiconposition -> string -> unit
+  = "ml_gtk_entry_set_menu_entry_icon_text"
+(** Sets the text that will be used in the context menu of the `GtkEntry` when
+    the specified icon is activatable. Selecting this item in the menu results,
+    from all aspects, the same than clicking on the specified icon. This greatly
+    simplifies making accessible applications, because the icons aren't
+    focusable when using keyboard navigation. This is why Gtk recommends to add
+    the same action to the context menu. *)
+
 external set_max_length : t -> int -> unit = "ml_gtk_entry_set_max_length"
 (** Sets the maximum allowed length of the contents of the widget.
 
@@ -282,6 +292,16 @@ is empty and unfocused *)
 external get_overwrite_mode : t -> bool = "ml_gtk_entry_get_overwrite_mode"
 (** Gets whether the `GtkEntry` is in overwrite mode. *)
 
+external get_menu_entry_icon_text :
+  t -> Gtk_enums.entryiconposition -> string option
+  = "ml_gtk_entry_get_menu_entry_icon_text"
+(** Gets the text that will be used in the context menu of the `GtkEntry` when
+    the specified icon is activatable. Selecting this item in the menu results,
+    from all aspects, the same than clicking on the specified icon. This greatly
+    simplifies making accessible applications, because the icons aren't
+    focusable when using keyboard navigation. This is why Gtk recommends to add
+    the same action to the context menu. *)
+
 external get_max_length : t -> int = "ml_gtk_entry_get_max_length"
 (** Retrieves the maximum allowed length of the text in @entry.
 
@@ -351,7 +371,7 @@ external get_icon_at_pos : t -> int -> int -> int
 The position’s coordinates are relative to the @entry’s
 top left corner. If @x, @y doesn’t lie inside an icon,
 -1 is returned. This function is intended for use in a
- [signal@Gtk.Widget::query-tooltip] signal handler. *)
+[signal@Gtk.Widget::query-tooltip] signal handler. *)
 
 external get_icon_area :
   t -> Gtk_enums.entryiconposition -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t
@@ -428,6 +448,22 @@ external get_invisible_char_set : t -> bool
 external set_invisible_char_set : t -> bool -> unit
   = "ml_gtk_entry_set_invisible_char_set"
 (** Set property: invisible-char-set *)
+
+external get_menu_entry_icon_primary_text : t -> string
+  = "ml_gtk_entry_get_menu_entry_icon_primary_text"
+(** Get property: menu-entry-icon-primary-text *)
+
+external set_menu_entry_icon_primary_text : t -> string -> unit
+  = "ml_gtk_entry_set_menu_entry_icon_primary_text"
+(** Set property: menu-entry-icon-primary-text *)
+
+external get_menu_entry_icon_secondary_text : t -> string
+  = "ml_gtk_entry_get_menu_entry_icon_secondary_text"
+(** Get property: menu-entry-icon-secondary-text *)
+
+external set_menu_entry_icon_secondary_text : t -> string -> unit
+  = "ml_gtk_entry_set_menu_entry_icon_secondary_text"
+(** Set property: menu-entry-icon-secondary-text *)
 
 external get_primary_icon_activatable : t -> bool
   = "ml_gtk_entry_get_primary_icon_activatable"

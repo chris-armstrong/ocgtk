@@ -1,5 +1,6 @@
 class type item_t = object
   method apply_attrs : Attr_iterator.t -> unit
+  method get_char_offset : unit -> int
   method split : int -> int -> Item.t
   method as_item : Item.t
 end
@@ -9,6 +10,8 @@ class item (obj : Item.t) : item_t =
   object (self)
     method apply_attrs : Attr_iterator.t -> unit =
       fun iter -> Item.apply_attrs obj iter
+
+    method get_char_offset : unit -> int = fun () -> Item.get_char_offset obj
 
     method split : int -> int -> Item.t =
       fun split_index split_offset -> Item.split obj split_index split_offset

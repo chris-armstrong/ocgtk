@@ -305,7 +305,7 @@ CAMLexport CAMLprim value ml_graphene_quaternion_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_quaternion_equal(graphene_quaternion_t_val(self), graphene_quaternion_t_val(arg1));
+bool result = graphene_quaternion_equal(graphene_quaternion_t_val(self), graphene_quaternion_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

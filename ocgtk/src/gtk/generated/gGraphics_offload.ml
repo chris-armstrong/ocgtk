@@ -3,6 +3,8 @@ class type graphics_offload_t = object
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t
 
+  method get_black_background : unit -> bool
+
   method get_child :
     unit ->
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -10,6 +12,7 @@ class type graphics_offload_t = object
     option
 
   method get_enabled : unit -> Gtk_enums.graphicsoffloadenabled
+  method set_black_background : bool -> unit
 
   method set_child :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -32,6 +35,9 @@ class graphics_offload (obj : Graphics_offload.t) : graphics_offload_t =
              .Widget
              .t)
 
+    method get_black_background : unit -> bool =
+      fun () -> Graphics_offload.get_black_background obj
+
     method get_child :
         unit ->
         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -48,6 +54,9 @@ class graphics_offload (obj : Graphics_offload.t) : graphics_offload_t =
 
     method get_enabled : unit -> Gtk_enums.graphicsoffloadenabled =
       fun () -> Graphics_offload.get_enabled obj
+
+    method set_black_background : bool -> unit =
+      fun value -> Graphics_offload.set_black_background obj value
 
     method set_child :
         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

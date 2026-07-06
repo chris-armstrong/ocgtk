@@ -5,7 +5,7 @@ class type notebook_t = object
 
   method on_change_current_page :
     ?after:bool ->
-    callback:(object_:int -> bool) ->
+    callback:(page:int -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -21,13 +21,13 @@ class type notebook_t = object
 
   method on_focus_tab :
     ?after:bool ->
-    callback:(object_:Gtk_enums.notebooktab -> bool) ->
+    callback:(tab:Gtk_enums.notebooktab -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_move_focus_out :
     ?after:bool ->
-    callback:(object_:Gtk_enums.directiontype -> unit) ->
+    callback:(direction:Gtk_enums.directiontype -> unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -66,13 +66,13 @@ class type notebook_t = object
 
   method on_reorder_tab :
     ?after:bool ->
-    callback:(object_:Gtk_enums.directiontype -> p0:bool -> bool) ->
+    callback:(direction:Gtk_enums.directiontype -> move_to_last:bool -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 
   method on_select_page :
     ?after:bool ->
-    callback:(object_:bool -> bool) ->
+    callback:(move_focus:bool -> bool) ->
     unit ->
     Gobject.Signal.handler_id
 

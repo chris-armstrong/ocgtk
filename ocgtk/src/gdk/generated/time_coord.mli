@@ -2,7 +2,7 @@
 (* TimeCoord: TimeCoord *)
 
 type t = [ `time_coord ] Gobject.obj
-(** A `GdkTimeCoord` stores a single event in a motion history.
+(** Stores a single event in a motion history.
 
 To check whether an axis is present, check whether the corresponding
 flag from the [flags@Gdk.AxisFlags] enumeration is set in the @flags

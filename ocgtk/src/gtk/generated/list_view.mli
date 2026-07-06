@@ -13,8 +13,10 @@ external new_ : Selection_model.t option -> List_item_factory.t option -> t
 
 external set_tab_behavior : t -> Gtk_enums.listtabbehavior -> unit
   = "ml_gtk_list_view_set_tab_behavior"
-(** Sets the behavior of the <kbd>Tab</kbd> and <kbd>Shift</kbd>+<kbd>Tab</kbd>
-    keys. *)
+(** Sets the <kbd>Tab</kbd> key behavior.
+
+    This influences how the <kbd>Tab</kbd> and <kbd>Shift</kbd>+<kbd>Tab</kbd>
+    keys move the focus in the listview. *)
 
 external set_single_click_activate : t -> bool -> unit
   = "ml_gtk_list_view_set_single_click_activate"
@@ -23,7 +25,7 @@ external set_single_click_activate : t -> bool -> unit
 
 external set_show_separators : t -> bool -> unit
   = "ml_gtk_list_view_set_show_separators"
-(** Sets whether the list box should show separators between rows. *)
+(** Sets whether the listview should show separators between rows. *)
 
 external set_model : t -> Selection_model.t option -> unit
   = "ml_gtk_list_view_set_model"
@@ -36,7 +38,7 @@ external set_header_factory : t -> List_item_factory.t option -> unit
 (** Sets the `GtkListItemFactory` to use for populating the
     [class@Gtk.ListHeader] objects used in section headers.
 
-    If this factory is set to %NULL, the list will not show section headers. *)
+    If this factory is set to `NULL`, the list will not show section headers. *)
 
 external set_factory : t -> List_item_factory.t option -> unit
   = "ml_gtk_list_view_set_factory"
@@ -66,7 +68,7 @@ external get_single_click_activate : t -> bool
 
 external get_show_separators : t -> bool
   = "ml_gtk_list_view_get_show_separators"
-(** Returns whether the list box should show separators between rows. *)
+(** Returns whether the listview should show separators between rows. *)
 
 external get_model : t -> Selection_model.t option
   = "ml_gtk_list_view_get_model"

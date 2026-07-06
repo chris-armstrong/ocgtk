@@ -3,6 +3,10 @@ class type transform_t = object
   method get_category : unit -> Gsk_enums.transformcategory
   method invert : unit -> Transform.t option
   method matrix : Ocgtk_graphene.Graphene.Matrix.matrix_t -> Transform.t
+
+  method matrix_2d :
+    float -> float -> float -> float -> float -> float -> Transform.t option
+
   method perspective : float -> Transform.t
   method ref : unit -> Transform.t option
   method rotate : float -> Transform.t option

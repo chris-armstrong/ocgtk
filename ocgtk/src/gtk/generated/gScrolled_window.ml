@@ -81,8 +81,6 @@ class type scrolled_window_t = object
   method set_hscrollbar_policy : Gtk_enums.policytype -> unit
   method vscrollbar_policy : Gtk_enums.policytype
   method set_vscrollbar_policy : Gtk_enums.policytype -> unit
-  method window_placement : Gtk_enums.cornertype
-  method set_window_placement : Gtk_enums.cornertype -> unit
   method as_scrolled_window : Scrolled_window.t
 end
 
@@ -242,8 +240,6 @@ class scrolled_window (obj : Scrolled_window.t) : scrolled_window_t =
     method set_hscrollbar_policy v = Scrolled_window.set_hscrollbar_policy obj v
     method vscrollbar_policy = Scrolled_window.get_vscrollbar_policy obj
     method set_vscrollbar_policy v = Scrolled_window.set_vscrollbar_policy obj v
-    method window_placement = Scrolled_window.get_window_placement obj
-    method set_window_placement v = Scrolled_window.set_window_placement obj v
     method as_scrolled_window = obj
   end
 

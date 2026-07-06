@@ -12,14 +12,6 @@
 #include "wrappers.h"
 
 #include <gio/gio.h>
-#ifdef __linux__
-#include <gio/gunixoutputstream.h>
-#include <gio/gunixmounts.h>
-#include <gio/gunixinputstream.h>
-#include <gio/gunixfdmessage.h>
-#include <gio/gfiledescriptorbased.h>
-#include <gio/gdesktopappinfo.h>
-#endif /* __linux__ */
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
@@ -95,23 +87,6 @@ g_io_stream_clear_pending(GIOStream_val(self));
 CAMLreturn(Val_unit);
 }
 
-CAMLexport CAMLprim value ml_g_io_stream_get_closed(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GIOStream *obj = (GIOStream *)GIOStream_val(self);
-    gboolean *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "closed");
-if (pspec == NULL) caml_failwith("ml_g_io_stream_get_closed: property 'closed' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "closed", &prop_gvalue);
-          prop_value = g_value_get_boolean(&prop_gvalue);
-
-      result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
 #else
 
 
@@ -181,15 +156,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_io_stream_set_pending(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("IOStream requires GLib >= 2.22");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_io_stream_get_closed(value self)
 {
 CAMLparam1(self);
 (void)self;

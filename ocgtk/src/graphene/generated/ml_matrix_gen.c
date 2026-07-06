@@ -59,7 +59,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_untransform_point(value self, value
 CAMLparam3(self, arg1, arg2);
 graphene_point_t out3;
 
-_Bool result = graphene_matrix_untransform_point(graphene_matrix_t_val(self), graphene_point_t_val(arg1), graphene_rect_t_val(arg2), &out3);
+bool result = graphene_matrix_untransform_point(graphene_matrix_t_val(self), graphene_point_t_val(arg1), graphene_rect_t_val(arg2), &out3);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
@@ -420,7 +420,7 @@ double out4;
 double out5;
 double out6;
 
-_Bool result = graphene_matrix_to_2d(graphene_matrix_t_val(self), &out1, &out2, &out3, &out4, &out5, &out6);
+bool result = graphene_matrix_to_2d(graphene_matrix_t_val(self), &out1, &out2, &out3, &out4, &out5, &out6);
 CAMLlocal1(ret);
     ret = caml_alloc(7, 0);
     Store_field(ret, 0, Val_bool(result));
@@ -808,7 +808,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_near(value self, value arg1, value 
 {
 CAMLparam3(self, arg1, arg2);
 
-_Bool result = graphene_matrix_near(graphene_matrix_t_val(self), graphene_matrix_t_val(arg1), Double_val(arg2));
+bool result = graphene_matrix_near(graphene_matrix_t_val(self), graphene_matrix_t_val(arg1), Double_val(arg2));
 CAMLreturn(Val_bool(result));
 }
 
@@ -854,7 +854,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_is_singular(value self)
 {
 CAMLparam1(self);
 
-_Bool result = graphene_matrix_is_singular(graphene_matrix_t_val(self));
+bool result = graphene_matrix_is_singular(graphene_matrix_t_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -875,7 +875,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_is_identity(value self)
 {
 CAMLparam1(self);
 
-_Bool result = graphene_matrix_is_identity(graphene_matrix_t_val(self));
+bool result = graphene_matrix_is_identity(graphene_matrix_t_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -896,7 +896,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_is_backface_visible(value self)
 {
 CAMLparam1(self);
 
-_Bool result = graphene_matrix_is_backface_visible(graphene_matrix_t_val(self));
+bool result = graphene_matrix_is_backface_visible(graphene_matrix_t_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -917,7 +917,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_is_2d(value self)
 {
 CAMLparam1(self);
 
-_Bool result = graphene_matrix_is_2d(graphene_matrix_t_val(self));
+bool result = graphene_matrix_is_2d(graphene_matrix_t_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -939,7 +939,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_inverse(value self)
 CAMLparam1(self);
 graphene_matrix_t out1;
 
-_Bool result = graphene_matrix_inverse(graphene_matrix_t_val(self), &out1);
+bool result = graphene_matrix_inverse(graphene_matrix_t_val(self), &out1);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
@@ -1506,7 +1506,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_equal_fast(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_matrix_equal_fast(graphene_matrix_t_val(self), graphene_matrix_t_val(arg1));
+bool result = graphene_matrix_equal_fast(graphene_matrix_t_val(self), graphene_matrix_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -1528,7 +1528,7 @@ CAMLexport CAMLprim value ml_graphene_matrix_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_matrix_equal(graphene_matrix_t_val(self), graphene_matrix_t_val(arg1));
+bool result = graphene_matrix_equal(graphene_matrix_t_val(self), graphene_matrix_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -1574,7 +1574,7 @@ graphene_quaternion_t out3;
 graphene_vec3_t out4;
 graphene_vec4_t out5;
 
-_Bool result = graphene_matrix_decompose(graphene_matrix_t_val(self), &out1, &out2, &out3, &out4, &out5);
+bool result = graphene_matrix_decompose(graphene_matrix_t_val(self), &out1, &out2, &out3, &out4, &out5);
 CAMLlocal1(ret);
     ret = caml_alloc(6, 0);
     Store_field(ret, 0, Val_bool(result));

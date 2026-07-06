@@ -240,6 +240,28 @@ gtk_widget_set_margin_bottom(GtkWidget_val(self), Int_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,18,0)
+
+CAMLexport CAMLprim value ml_gtk_widget_set_limit_events(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_widget_set_limit_events(GtkWidget_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_widget_set_limit_events(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Widget requires GTK >= 4.18");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gtk_widget_set_layout_manager(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -945,6 +967,27 @@ CAMLparam1(self);
 gboolean result = gtk_widget_get_mapped(GtkWidget_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#if GTK_CHECK_VERSION(4,18,0)
+
+CAMLexport CAMLprim value ml_gtk_widget_get_limit_events(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_widget_get_limit_events(GtkWidget_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_widget_get_limit_events(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Widget requires GTK >= 4.18");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_widget_get_layout_manager(value self)
 {

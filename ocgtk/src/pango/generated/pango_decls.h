@@ -277,6 +277,10 @@ value Val_PangoDirection(PangoDirection val);
 PangoDirection PangoDirection_val(value val);
 value Val_PangoEllipsizeMode(PangoEllipsizeMode val);
 PangoEllipsizeMode PangoEllipsizeMode_val(value val);
+#if PANGO_VERSION_CHECK(1,57,0)
+value Val_PangoFontColor(PangoFontColor val);
+PangoFontColor PangoFontColor_val(value val);
+#endif
 #if PANGO_VERSION_CHECK(1,50,0)
 value Val_PangoFontScale(PangoFontScale val);
 PangoFontScale PangoFontScale_val(value val);

@@ -39,7 +39,7 @@ external remove_child :
   .t ->
   bool = "ml_gtk_popover_menu_remove_child"
 (** Removes a widget that has previously been added with
-    [method@Gtk.PopoverMenu.add_child()] *)
+    [method@Gtk.PopoverMenu.add_child] *)
 
 external get_menu_model : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
   = "ml_gtk_popover_menu_get_menu_model"

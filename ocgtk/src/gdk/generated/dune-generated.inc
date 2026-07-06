@@ -37,7 +37,9 @@
    ml_app_launch_context_gen
    ml_button_event_gen
    ml_cairo_context_gen
+   ml_cicp_params_gen
    ml_clipboard_gen
+   ml_color_state_gen
    ml_content_deserializer_gen
    ml_content_formats_builder_gen
    ml_content_formats_gen
@@ -73,6 +75,7 @@
    ml_grab_broken_event_gen
    ml_key_event_gen
    ml_keymap_key_gen
+   ml_memory_texture_builder_gen
    ml_memory_texture_gen
    ml_monitor_gen
    ml_motion_event_gen

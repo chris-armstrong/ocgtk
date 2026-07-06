@@ -5,9 +5,11 @@ class type filter_list_model_t = object
   method get_incremental : unit -> bool
   method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
   method get_pending : unit -> int
+  method get_watch_items : unit -> bool
   method set_filter : GFilter.filter_t option -> unit
   method set_incremental : bool -> unit
   method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
+  method set_watch_items : bool -> unit
   method item_type : Gobject.Type.t
   method n_items : int
   method as_filter_list_model : Filter_list_model.t

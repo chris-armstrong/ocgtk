@@ -2,7 +2,9 @@ class type font_description_t = object
   method better_match : Font_description.t option -> Font_description.t -> bool
   method copy_static : unit -> Font_description.t option
   method equal : Font_description.t -> bool
+  method get_color : unit -> Pango_enums.fontcolor
   method get_family : unit -> string option
+  method get_features : unit -> string option
   method get_gravity : unit -> Pango_enums.gravity
   method get_set_fields : unit -> Pango_enums.fontmask
   method get_size : unit -> int
@@ -16,8 +18,11 @@ class type font_description_t = object
   method merge : Font_description.t option -> bool -> unit
   method merge_static : Font_description.t -> bool -> unit
   method set_absolute_size : float -> unit
+  method set_color : Pango_enums.fontcolor -> unit
   method set_family : string -> unit
   method set_family_static : string -> unit
+  method set_features : string option -> unit
+  method set_features_static : string -> unit
   method set_gravity : Pango_enums.gravity -> unit
   method set_size : int -> unit
   method set_stretch : Pango_enums.stretch -> unit
@@ -46,8 +51,14 @@ class font_description (obj : Font_description.t) : font_description_t =
     method equal : Font_description.t -> bool =
       fun desc2 -> Font_description.equal obj desc2
 
+    method get_color : unit -> Pango_enums.fontcolor =
+      fun () -> Font_description.get_color obj
+
     method get_family : unit -> string option =
       fun () -> Font_description.get_family obj
+
+    method get_features : unit -> string option =
+      fun () -> Font_description.get_features obj
 
     method get_gravity : unit -> Pango_enums.gravity =
       fun () -> Font_description.get_gravity obj
@@ -88,11 +99,20 @@ class font_description (obj : Font_description.t) : font_description_t =
     method set_absolute_size : float -> unit =
       fun size -> Font_description.set_absolute_size obj size
 
+    method set_color : Pango_enums.fontcolor -> unit =
+      fun color -> Font_description.set_color obj color
+
     method set_family : string -> unit =
       fun family -> Font_description.set_family obj family
 
     method set_family_static : string -> unit =
       fun family -> Font_description.set_family_static obj family
+
+    method set_features : string option -> unit =
+      fun features -> Font_description.set_features obj features
+
+    method set_features_static : string -> unit =
+      fun features -> Font_description.set_features_static obj features
 
     method set_gravity : Pango_enums.gravity -> unit =
       fun gravity -> Font_description.set_gravity obj gravity

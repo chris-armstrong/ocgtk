@@ -91,6 +91,29 @@ gtk_entry_set_overwrite_mode(GtkEntry_val(self), Bool_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gtk_entry_set_menu_entry_icon_text(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+
+gtk_entry_set_menu_entry_icon_text(GtkEntry_val(self), GtkEntryIconPosition_val(arg1), String_val(arg2));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_entry_set_menu_entry_icon_text(value self, value arg1, value arg2)
+{
+CAMLparam3(self, arg1, arg2);
+(void)self;
+(void)arg1;
+(void)arg2;
+caml_failwith("Entry requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gtk_entry_set_max_length(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -323,6 +346,28 @@ CAMLparam1(self);
 gboolean result = gtk_entry_get_overwrite_mode(GtkEntry_val(self));
 CAMLreturn(Val_bool(result));
 }
+
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gtk_entry_get_menu_entry_icon_text(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+const gchar* result = gtk_entry_get_menu_entry_icon_text(GtkEntry_val(self), GtkEntryIconPosition_val(arg1));
+CAMLreturn(Val_option_string(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_entry_get_menu_entry_icon_text(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Entry requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_entry_get_max_length(value self)
 {
@@ -602,6 +647,124 @@ g_object_set_property(G_OBJECT(obj), "invisible-char-set", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
+
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gtk_entry_get_menu_entry_icon_primary_text(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "menu-entry-icon-primary-text");
+if (pspec == NULL) caml_failwith("ml_gtk_entry_get_menu_entry_icon_primary_text: property 'menu-entry-icon-primary-text' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "menu-entry-icon-primary-text", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
+
+      result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_entry_get_menu_entry_icon_primary_text(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Entry requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gtk_entry_set_menu_entry_icon_primary_text(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
+    ML_DECL_CONST_STRING(c_value, String_val(new_value));
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "menu-entry-icon-primary-text");
+if (pspec == NULL) caml_failwith("ml_gtk_entry_set_menu_entry_icon_primary_text: property 'menu-entry-icon-primary-text' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_string(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "menu-entry-icon-primary-text", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_entry_set_menu_entry_icon_primary_text(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Entry requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gtk_entry_get_menu_entry_icon_secondary_text(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
+    gchar* *prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "menu-entry-icon-secondary-text");
+if (pspec == NULL) caml_failwith("ml_gtk_entry_get_menu_entry_icon_secondary_text: property 'menu-entry-icon-secondary-text' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "menu-entry-icon-secondary-text", &prop_gvalue);
+          prop_value = g_value_get_string(&prop_gvalue);
+
+      result = caml_copy_string(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_entry_get_menu_entry_icon_secondary_text(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Entry requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gtk_entry_set_menu_entry_icon_secondary_text(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkEntry *obj = (GtkEntry *)GtkEntry_val(self);
+    ML_DECL_CONST_STRING(c_value, String_val(new_value));
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "menu-entry-icon-secondary-text");
+if (pspec == NULL) caml_failwith("ml_gtk_entry_set_menu_entry_icon_secondary_text: property 'menu-entry-icon-secondary-text' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_string(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "menu-entry-icon-secondary-text", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_entry_set_menu_entry_icon_secondary_text(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Entry requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_entry_get_primary_icon_activatable(value self)
 {

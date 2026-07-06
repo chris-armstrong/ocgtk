@@ -12,8 +12,6 @@ class type shortcut_controller_t = object
   method set_mnemonics_modifiers : Ocgtk_gdk.Gdk.modifiertype -> unit
   method set_scope : Gtk_enums.shortcutscope -> unit
   method item_type : Gobject.Type.t
-  method mnemonic_modifiers : Ocgtk_gdk.Gdk.modifiertype
-  method set_mnemonic_modifiers : Ocgtk_gdk.Gdk.modifiertype -> unit
   method n_items : int
   method as_shortcut_controller : Shortcut_controller.t
 end
@@ -59,11 +57,6 @@ class shortcut_controller (obj : Shortcut_controller.t) : shortcut_controller_t
       fun scope -> Shortcut_controller.set_scope obj scope
 
     method item_type = Shortcut_controller.get_item_type obj
-    method mnemonic_modifiers = Shortcut_controller.get_mnemonic_modifiers obj
-
-    method set_mnemonic_modifiers v =
-      Shortcut_controller.set_mnemonic_modifiers obj v
-
     method n_items = Shortcut_controller.get_n_items obj
     method as_shortcut_controller = obj
   end

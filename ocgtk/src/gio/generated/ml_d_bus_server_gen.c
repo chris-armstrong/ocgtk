@@ -12,14 +12,6 @@
 #include "wrappers.h"
 
 #include <gio/gio.h>
-#ifdef __linux__
-#include <gio/gunixoutputstream.h>
-#include <gio/gunixmounts.h>
-#include <gio/gunixinputstream.h>
-#include <gio/gunixfdmessage.h>
-#include <gio/gfiledescriptorbased.h>
-#include <gio/gdesktopappinfo.h>
-#endif /* __linux__ */
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
@@ -83,23 +75,6 @@ CAMLparam1(self);
 const gchar* result = g_dbus_server_get_client_address(GDBusServer_val(self));
 CAMLreturn(caml_copy_string(result));
 }
-
-CAMLexport CAMLprim value ml_g_d_bus_server_get_active(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GDBusServer *obj = (GDBusServer *)GDBusServer_val(self);
-    gboolean *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "active");
-if (pspec == NULL) caml_failwith("ml_g_d_bus_server_get_active: property 'active' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "active", &prop_gvalue);
-          prop_value = g_value_get_boolean(&prop_gvalue);
-
-      result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
 
 CAMLexport CAMLprim value ml_g_d_bus_server_get_address(value self)
 {
@@ -197,15 +172,6 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_g_dbus_server_stop(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("DBusServer requires GLib >= 2.26");
-return Val_unit;
-}
-
-
-CAMLexport CAMLprim value ml_g_d_bus_server_get_active(value self)
 {
 CAMLparam1(self);
 (void)self;

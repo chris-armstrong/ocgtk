@@ -16,6 +16,6 @@ external get_widths : t -> float array = "ml_gsk_border_node_get_widths"
 external get_outline : t -> Rounded_rect.t = "ml_gsk_border_node_get_outline"
 (** Retrieves the outline of the border. *)
 
-external get_colors : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
+external get_colors : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array
   = "ml_gsk_border_node_get_colors"
 (** Retrieves the colors of the border. *)

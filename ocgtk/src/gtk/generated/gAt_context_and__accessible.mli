@@ -25,6 +25,7 @@ and accessible_t = object
     accessible_t option -> accessible_t option -> unit
 
   method update_next_accessible_sibling : accessible_t option -> unit
+  method update_platform_state : Gtk_enums.accessibleplatformstate -> unit
   method as_accessible : At_context_and__accessible.Accessible.t
 end
 

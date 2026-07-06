@@ -12,14 +12,6 @@
 #include "wrappers.h"
 
 #include <gio/gio.h>
-#ifdef __linux__
-#include <gio/gunixoutputstream.h>
-#include <gio/gunixmounts.h>
-#include <gio/gunixinputstream.h>
-#include <gio/gunixfdmessage.h>
-#include <gio/gfiledescriptorbased.h>
-#include <gio/gdesktopappinfo.h>
-#endif /* __linux__ */
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
@@ -92,7 +84,7 @@ CAMLparam3(self, arg1, arg2);
     GList* arg2_list = NULL;
     GList_val_with(arg2, arg2_list, (gpointer)GFile_val(Field(_iter, 0)));
 
-char* result = g_app_launch_context_get_startup_notify_id(GAppLaunchContext_val(self), GAppInfo_val(arg1), arg2_list);
+char* result = g_app_launch_context_get_startup_notify_id(GAppLaunchContext_val(self), Option_val(arg1, GAppInfo_val, NULL), arg2_list);
     g_list_free(arg2_list);
 CAMLreturn(Val_option_string(result));
 }

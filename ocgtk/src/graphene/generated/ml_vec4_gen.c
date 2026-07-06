@@ -177,7 +177,7 @@ CAMLexport CAMLprim value ml_graphene_vec4_near(value self, value arg1, value ar
 {
 CAMLparam3(self, arg1, arg2);
 
-_Bool result = graphene_vec4_near(graphene_vec4_t_val(self), graphene_vec4_t_val(arg1), Double_val(arg2));
+bool result = graphene_vec4_near(graphene_vec4_t_val(self), graphene_vec4_t_val(arg1), Double_val(arg2));
 CAMLreturn(Val_bool(result));
 }
 
@@ -569,7 +569,7 @@ CAMLexport CAMLprim value ml_graphene_vec4_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_vec4_equal(graphene_vec4_t_val(self), graphene_vec4_t_val(arg1));
+bool result = graphene_vec4_equal(graphene_vec4_t_val(self), graphene_vec4_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

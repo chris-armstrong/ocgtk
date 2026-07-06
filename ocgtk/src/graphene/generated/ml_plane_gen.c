@@ -151,7 +151,7 @@ CAMLexport CAMLprim value ml_graphene_plane_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_plane_equal(graphene_plane_t_val(self), graphene_plane_t_val(arg1));
+bool result = graphene_plane_equal(graphene_plane_t_val(self), graphene_plane_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

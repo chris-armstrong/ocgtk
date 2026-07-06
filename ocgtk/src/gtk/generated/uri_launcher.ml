@@ -19,4 +19,13 @@ external launch_finish :
 external get_uri : t -> string option = "ml_gtk_uri_launcher_get_uri"
 (** Gets the uri that will be opened. *)
 
+external can_launch :
+  t -> Application_and__window_and__window_group.Window.t option -> bool
+  = "ml_gtk_uri_launcher_can_launch"
+(** Returns whether the launcher is likely to succeed in launching an
+    application for its uri.
+
+    This can be used to disable controls that trigger the launcher when they are
+    known not to work. *)
+
 (* Properties *)

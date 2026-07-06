@@ -11,7 +11,6 @@ class type directory_list_t = object
   method set_io_priority : int -> unit
   method set_monitored : bool -> unit
   method item_type : Gobject.Type.t
-  method loading : bool
   method n_items : int
   method as_directory_list : Directory_list.t
 end
@@ -58,7 +57,6 @@ class directory_list (obj : Directory_list.t) : directory_list_t =
       fun monitored -> Directory_list.set_monitored obj monitored
 
     method item_type = Directory_list.get_item_type obj
-    method loading = Directory_list.get_loading obj
     method n_items = Directory_list.get_n_items obj
     method as_directory_list = obj
   end

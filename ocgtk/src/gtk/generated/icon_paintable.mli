@@ -13,10 +13,7 @@ external is_symbolic : t -> bool = "ml_gtk_icon_paintable_is_symbolic"
 (** Checks if the icon is symbolic or not.
 
     This currently uses only the file name and not the file contents for
-    determining this. This behaviour may change in the future.
-
-    Note that to render a symbolic `GtkIconPaintable` properly (with
-    recoloring), you have to set its icon name on a `GtkImage`. *)
+    determining this. This behaviour may change in the future. *)
 
 external get_icon_name : t -> string option
   = "ml_gtk_icon_paintable_get_icon_name"
@@ -37,3 +34,15 @@ external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option
     Returns %NULL if the icon was not loaded from a file. *)
 
 (* Properties *)
+
+external get_scale : t -> int = "ml_gtk_icon_paintable_get_scale"
+(** Get property: scale *)
+
+external set_scale : t -> int -> unit = "ml_gtk_icon_paintable_set_scale"
+(** Set property: scale *)
+
+external get_size : t -> int = "ml_gtk_icon_paintable_get_size"
+(** Get property: size *)
+
+external set_size : t -> int -> unit = "ml_gtk_icon_paintable_set_size"
+(** Set property: size *)

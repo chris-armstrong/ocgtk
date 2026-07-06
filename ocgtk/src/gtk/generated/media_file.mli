@@ -24,7 +24,7 @@ external new_for_resource : string -> t = "ml_gtk_media_file_new_for_resource"
 
 external set_resource : t -> string option -> unit
   = "ml_gtk_media_file_set_resource"
-(** Sets the `GtkMediaFile to play the given resource.
+(** Sets the `GtkMediaFile` to play the given resource.
 
 This is a utility function that converts the given @resource_path
 to a `GFile` and calls [method@Gtk.MediaFile.set_file]. *)
@@ -41,7 +41,7 @@ playback. The stream will not be closed. *)
 
 external set_filename : t -> string option -> unit
   = "ml_gtk_media_file_set_filename"
-(** Sets the `GtkMediaFile to play the given file.
+(** Sets the `GtkMediaFile` to play the given file.
 
 This is a utility function that converts the given @filename
 to a `GFile` and calls [method@Gtk.MediaFile.set_file]. *)

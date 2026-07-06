@@ -117,6 +117,13 @@ class type snapshot_t = object
     Ocgtk_graphene.Graphene.Vec4.vec4_t ->
     unit
 
+  method push_component_transfer :
+    Ocgtk_gsk.Gsk.Component_transfer.component_transfer_t ->
+    Ocgtk_gsk.Gsk.Component_transfer.component_transfer_t ->
+    Ocgtk_gsk.Gsk.Component_transfer.component_transfer_t ->
+    Ocgtk_gsk.Gsk.Component_transfer.component_transfer_t ->
+    unit
+
   method push_cross_fade : float -> unit
   method push_fill : Ocgtk_gsk.Gsk.Path.path_t -> Ocgtk_gsk.Gsk.fillrule -> unit
 

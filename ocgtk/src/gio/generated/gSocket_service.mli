@@ -3,8 +3,6 @@ class type socket_service_t = object
   method is_active : unit -> bool
   method start : unit -> unit
   method stop : unit -> unit
-  method active : bool
-  method set_active : bool -> unit
   method as_socket_service : Socket_service.t
 end
 

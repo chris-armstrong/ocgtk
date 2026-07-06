@@ -14,8 +14,8 @@ external unmark_day : t -> int -> unit = "ml_gtk_calendar_unmark_day"
 external set_year : t -> int -> unit = "ml_gtk_calendar_set_year"
 (** Sets the year for the selected date.
 
-    The new date must be valid. For example, setting 2023 for the year when then
-    the date is 2024-02-29, fails. *)
+    The new date must be valid. For example, setting the year to 2023 when the
+    date is February 29 will fail. *)
 
 external set_show_week_numbers : t -> bool -> unit
   = "ml_gtk_calendar_set_show_week_numbers"
@@ -35,14 +35,14 @@ external set_show_day_names : t -> bool -> unit
 external set_month : t -> int -> unit = "ml_gtk_calendar_set_month"
 (** Sets the month for the selected date.
 
-    The new date must be valid. For example, setting 1 (February) for the month
-    when the day is 31, fails. *)
+    The new date must be valid. For example, setting the month to 1 (February)
+    when the day is 31 will fail. *)
 
 external set_day : t -> int -> unit = "ml_gtk_calendar_set_day"
 (** Sets the day for the selected date.
 
-    The new date must be valid. For example, setting 31 for the day when the
-    month is February, fails. *)
+    The new date must be valid. For example, setting the day to 31 when the
+    month is February will fail. *)
 
 external mark_day : t -> int -> unit = "ml_gtk_calendar_mark_day"
 (** Places a visual marker on a particular day of the current month. *)

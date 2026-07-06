@@ -68,8 +68,12 @@ This method will take ownership of @invocation. See
 #GDBusInterfaceVTable for more information about the ownership of
 @invocation. *)
 
-external get_sender : t -> string = "ml_g_dbus_method_invocation_get_sender"
-(** Gets the bus name that invoked the method. *)
+external get_sender : t -> string option
+  = "ml_g_dbus_method_invocation_get_sender"
+(** Gets the bus name that invoked the method.
+
+    This can return %NULL if not specified by the caller, e.g. on peer-to-peer
+    connections. *)
 
 external get_property_info : t -> D_bus_property_info.t option
   = "ml_g_dbus_method_invocation_get_property_info"
@@ -113,13 +117,19 @@ external get_message : t -> D_bus_message.t
     to use low-level protocol features, such as UNIX file descriptor passing,
     that cannot be properly expressed in the #GVariant API.
 
-    See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
-    example of how to use this low-level API to send and receive UNIX file
-    descriptors. *)
+    See this [server][class@Gio.DBusConnection#an-example-d-bus-server] and
+    [client][class@Gio.DBusConnection#an-example-for-file-descriptor-passing]
+    for an example of how to use this low-level API to send and receive UNIX
+    file descriptors. *)
 
-external get_interface_name : t -> string
+external get_interface_name : t -> string option
   = "ml_g_dbus_method_invocation_get_interface_name"
 (** Gets the name of the D-Bus interface the method was invoked on.
+
+    This can be `NULL` if it was not specified by the sender. See
+    [callback@Gio.DBusInterfaceMethodCallFunc] or the
+    [D-Bus Specification](https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-types-method)
+    for details on when this can happen and how it should be handled.
 
     If this method call is a property Get, Set or GetAll call that has been
     redirected to the method call handler then "org.freedesktop.DBus.Properties"

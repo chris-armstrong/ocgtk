@@ -71,13 +71,5 @@ external get_item_type : t -> Gobject.Type.t
   = "ml_gtk_shortcut_controller_get_item_type"
 (** Get property: item-type *)
 
-external get_mnemonic_modifiers : t -> Ocgtk_gdk.Gdk.modifiertype
-  = "ml_gtk_shortcut_controller_get_mnemonic_modifiers"
-(** Get property: mnemonic-modifiers *)
-
-external set_mnemonic_modifiers : t -> Ocgtk_gdk.Gdk.modifiertype -> unit
-  = "ml_gtk_shortcut_controller_set_mnemonic_modifiers"
-(** Set property: mnemonic-modifiers *)
-
 external get_n_items : t -> int = "ml_gtk_shortcut_controller_get_n_items"
 (** Get property: n-items *)

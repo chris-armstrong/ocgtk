@@ -49,6 +49,16 @@ let axisuse_to_int v =
   | `SLIDER -> 11
   | `LAST -> 12
 
+type cicprange = [ `NARROW | `FULL ]
+
+let cicprange_of_int n =
+  match n with
+  | 0 -> `NARROW
+  | 1 -> `FULL
+  | n -> failwith (Printf.sprintf "CicpRange: unknown int %d" n)
+
+let cicprange_to_int v = match v with `NARROW -> 0 | `FULL -> 1
+
 type crossingmode =
   [ `NORMAL
   | `GRAB
@@ -180,6 +190,7 @@ type eventtype =
   | `PAD_STRIP
   | `PAD_GROUP_MODE
   | `TOUCHPAD_HOLD
+  | `PAD_DIAL
   | `EVENT_LAST ]
 
 let eventtype_of_int n =
@@ -213,7 +224,8 @@ let eventtype_of_int n =
   | 26 -> `PAD_STRIP
   | 27 -> `PAD_GROUP_MODE
   | 28 -> `TOUCHPAD_HOLD
-  | 29 -> `EVENT_LAST
+  | 29 -> `PAD_DIAL
+  | 30 -> `EVENT_LAST
   | n -> failwith (Printf.sprintf "EventType: unknown int %d" n)
 
 let eventtype_to_int v =
@@ -247,7 +259,8 @@ let eventtype_to_int v =
   | `PAD_STRIP -> 26
   | `PAD_GROUP_MODE -> 27
   | `TOUCHPAD_HOLD -> 28
-  | `EVENT_LAST -> 29
+  | `PAD_DIAL -> 29
+  | `EVENT_LAST -> 30
 
 type fullscreenmode = [ `CURRENT_MONITOR | `ALL_MONITORS ]
 
@@ -398,6 +411,38 @@ type memoryformat =
   | `X8R8G8B8
   | `R8G8B8X8
   | `X8B8G8R8
+  | `G8_B8R8_420
+  | `G8_R8B8_420
+  | `G8_B8R8_422
+  | `G8_R8B8_422
+  | `G8_B8R8_444
+  | `G8_R8B8_444
+  | `G10X6_B10X6R10X6_420
+  | `G12X4_B12X4R12X4_420
+  | `G16_B16R16_420
+  | `G8_B8_R8_410
+  | `G8_R8_B8_410
+  | `G8_B8_R8_411
+  | `G8_R8_B8_411
+  | `G8_B8_R8_420
+  | `G8_R8_B8_420
+  | `G8_B8_R8_422
+  | `G8_R8_B8_422
+  | `G8_B8_R8_444
+  | `G8_R8_B8_444
+  | `G8B8G8R8_422
+  | `G8R8G8B8_422
+  | `R8G8B8G8_422
+  | `B8G8R8G8_422
+  | `X6G10_X6B10_X6R10_420
+  | `X6G10_X6B10_X6R10_422
+  | `X6G10_X6B10_X6R10_444
+  | `X4G12_X4B12_X4R12_420
+  | `X4G12_X4B12_X4R12_422
+  | `X4G12_X4B12_X4R12_444
+  | `G16_B16_R16_420
+  | `G16_B16_R16_422
+  | `G16_B16_R16_444
   | `N_FORMATS ]
 
 let memoryformat_of_int n =
@@ -435,7 +480,39 @@ let memoryformat_of_int n =
   | 30 -> `X8R8G8B8
   | 31 -> `R8G8B8X8
   | 32 -> `X8B8G8R8
-  | 33 -> `N_FORMATS
+  | 33 -> `G8_B8R8_420
+  | 34 -> `G8_R8B8_420
+  | 35 -> `G8_B8R8_422
+  | 36 -> `G8_R8B8_422
+  | 37 -> `G8_B8R8_444
+  | 38 -> `G8_R8B8_444
+  | 39 -> `G10X6_B10X6R10X6_420
+  | 40 -> `G12X4_B12X4R12X4_420
+  | 41 -> `G16_B16R16_420
+  | 42 -> `G8_B8_R8_410
+  | 43 -> `G8_R8_B8_410
+  | 44 -> `G8_B8_R8_411
+  | 45 -> `G8_R8_B8_411
+  | 46 -> `G8_B8_R8_420
+  | 47 -> `G8_R8_B8_420
+  | 48 -> `G8_B8_R8_422
+  | 49 -> `G8_R8_B8_422
+  | 50 -> `G8_B8_R8_444
+  | 51 -> `G8_R8_B8_444
+  | 52 -> `G8B8G8R8_422
+  | 53 -> `G8R8G8B8_422
+  | 54 -> `R8G8B8G8_422
+  | 55 -> `B8G8R8G8_422
+  | 56 -> `X6G10_X6B10_X6R10_420
+  | 57 -> `X6G10_X6B10_X6R10_422
+  | 58 -> `X6G10_X6B10_X6R10_444
+  | 59 -> `X4G12_X4B12_X4R12_420
+  | 60 -> `X4G12_X4B12_X4R12_422
+  | 61 -> `X4G12_X4B12_X4R12_444
+  | 62 -> `G16_B16_R16_420
+  | 63 -> `G16_B16_R16_422
+  | 64 -> `G16_B16_R16_444
+  | 65 -> `N_FORMATS
   | n -> failwith (Printf.sprintf "MemoryFormat: unknown int %d" n)
 
 let memoryformat_to_int v =
@@ -473,7 +550,39 @@ let memoryformat_to_int v =
   | `X8R8G8B8 -> 30
   | `R8G8B8X8 -> 31
   | `X8B8G8R8 -> 32
-  | `N_FORMATS -> 33
+  | `G8_B8R8_420 -> 33
+  | `G8_R8B8_420 -> 34
+  | `G8_B8R8_422 -> 35
+  | `G8_R8B8_422 -> 36
+  | `G8_B8R8_444 -> 37
+  | `G8_R8B8_444 -> 38
+  | `G10X6_B10X6R10X6_420 -> 39
+  | `G12X4_B12X4R12X4_420 -> 40
+  | `G16_B16R16_420 -> 41
+  | `G8_B8_R8_410 -> 42
+  | `G8_R8_B8_410 -> 43
+  | `G8_B8_R8_411 -> 44
+  | `G8_R8_B8_411 -> 45
+  | `G8_B8_R8_420 -> 46
+  | `G8_R8_B8_420 -> 47
+  | `G8_B8_R8_422 -> 48
+  | `G8_R8_B8_422 -> 49
+  | `G8_B8_R8_444 -> 50
+  | `G8_R8_B8_444 -> 51
+  | `G8B8G8R8_422 -> 52
+  | `G8R8G8B8_422 -> 53
+  | `R8G8B8G8_422 -> 54
+  | `B8G8R8G8_422 -> 55
+  | `X6G10_X6B10_X6R10_420 -> 56
+  | `X6G10_X6B10_X6R10_422 -> 57
+  | `X6G10_X6B10_X6R10_444 -> 58
+  | `X4G12_X4B12_X4R12_420 -> 59
+  | `X4G12_X4B12_X4R12_422 -> 60
+  | `X4G12_X4B12_X4R12_444 -> 61
+  | `G16_B16_R16_420 -> 62
+  | `G16_B16_R16_422 -> 63
+  | `G16_B16_R16_444 -> 64
+  | `N_FORMATS -> 65
 
 type notifytype =
   [ `ANCESTOR
@@ -515,6 +624,18 @@ let scrolldirection_of_int n =
 
 let scrolldirection_to_int v =
   match v with `UP -> 0 | `DOWN -> 1 | `LEFT -> 2 | `RIGHT -> 3 | `SMOOTH -> 4
+
+type scrollrelativedirection = [ `IDENTICAL | `INVERTED | `UNKNOWN ]
+
+let scrollrelativedirection_of_int n =
+  match n with
+  | 0 -> `IDENTICAL
+  | 1 -> `INVERTED
+  | 2 -> `UNKNOWN
+  | n -> failwith (Printf.sprintf "ScrollRelativeDirection: unknown int %d" n)
+
+let scrollrelativedirection_to_int v =
+  match v with `IDENTICAL -> 0 | `INVERTED -> 1 | `UNKNOWN -> 2
 
 type scrollunit = [ `WHEEL | `SURFACE ]
 
@@ -728,11 +849,12 @@ let axisflags_to_int flags =
       | `SLIDER -> acc lor 2048)
     0 flags
 
-type dragaction_flag = [ `COPY | `MOVE | `LINK | `ASK ]
+type dragaction_flag = [ `NONE | `COPY | `MOVE | `LINK | `ASK ]
 type dragaction = dragaction_flag list
 
 let dragaction_of_int flags =
   let acc = [] in
+  let acc = if flags land 0 <> 0 then `NONE :: acc else acc in
   let acc = if flags land 1 <> 0 then `COPY :: acc else acc in
   let acc = if flags land 2 <> 0 then `MOVE :: acc else acc in
   let acc = if flags land 4 <> 0 then `LINK :: acc else acc in
@@ -743,6 +865,7 @@ let dragaction_to_int flags =
   List.fold_left
     (fun acc flag ->
       match flag with
+      | `NONE -> acc lor 0
       | `COPY -> acc lor 1
       | `MOVE -> acc lor 2
       | `LINK -> acc lor 4
@@ -905,6 +1028,44 @@ let seatcapabilities_to_int flags =
       | `TABLET_PAD -> acc lor 16
       | `ALL_POINTING -> acc lor 7
       | `ALL -> acc lor 31)
+    0 flags
+
+type toplevelcapabilities_flag =
+  [ `EDGE_CONSTRAINTS
+  | `INHIBIT_SHORTCUTS
+  | `TITLEBAR_GESTURES
+  | `WINDOW_MENU
+  | `MAXIMIZE
+  | `FULLSCREEN
+  | `MINIMIZE
+  | `LOWER ]
+
+type toplevelcapabilities = toplevelcapabilities_flag list
+
+let toplevelcapabilities_of_int flags =
+  let acc = [] in
+  let acc = if flags land 1 <> 0 then `EDGE_CONSTRAINTS :: acc else acc in
+  let acc = if flags land 2 <> 0 then `INHIBIT_SHORTCUTS :: acc else acc in
+  let acc = if flags land 4 <> 0 then `TITLEBAR_GESTURES :: acc else acc in
+  let acc = if flags land 8 <> 0 then `WINDOW_MENU :: acc else acc in
+  let acc = if flags land 16 <> 0 then `MAXIMIZE :: acc else acc in
+  let acc = if flags land 32 <> 0 then `FULLSCREEN :: acc else acc in
+  let acc = if flags land 64 <> 0 then `MINIMIZE :: acc else acc in
+  let acc = if flags land 128 <> 0 then `LOWER :: acc else acc in
+  acc
+
+let toplevelcapabilities_to_int flags =
+  List.fold_left
+    (fun acc flag ->
+      match flag with
+      | `EDGE_CONSTRAINTS -> acc lor 1
+      | `INHIBIT_SHORTCUTS -> acc lor 2
+      | `TITLEBAR_GESTURES -> acc lor 4
+      | `WINDOW_MENU -> acc lor 8
+      | `MAXIMIZE -> acc lor 16
+      | `FULLSCREEN -> acc lor 32
+      | `MINIMIZE -> acc lor 64
+      | `LOWER -> acc lor 128)
     0 flags
 
 type toplevelstate_flag =

@@ -231,14 +231,6 @@ external set_vscrollbar_policy : t -> Gtk_enums.policytype -> unit
   = "ml_gtk_scrolled_window_set_vscrollbar_policy"
 (** Set property: vscrollbar-policy *)
 
-external get_window_placement : t -> Gtk_enums.cornertype
-  = "ml_gtk_scrolled_window_get_window_placement"
-(** Get property: window-placement *)
-
-external set_window_placement : t -> Gtk_enums.cornertype -> unit
-  = "ml_gtk_scrolled_window_set_window_placement"
-(** Set property: window-placement *)
-
 let on_edge_overshot ?after obj ~callback =
   let closure =
     Gobject.Closure.create (fun argv ->

@@ -2,7 +2,9 @@ class type font_description_t = object
   method better_match : Font_description.t option -> Font_description.t -> bool
   method copy_static : unit -> Font_description.t option
   method equal : Font_description.t -> bool
+  method get_color : unit -> Pango_enums.fontcolor
   method get_family : unit -> string option
+  method get_features : unit -> string option
   method get_gravity : unit -> Pango_enums.gravity
   method get_set_fields : unit -> Pango_enums.fontmask
   method get_size : unit -> int
@@ -16,8 +18,11 @@ class type font_description_t = object
   method merge : Font_description.t option -> bool -> unit
   method merge_static : Font_description.t -> bool -> unit
   method set_absolute_size : float -> unit
+  method set_color : Pango_enums.fontcolor -> unit
   method set_family : string -> unit
   method set_family_static : string -> unit
+  method set_features : string option -> unit
+  method set_features_static : string -> unit
   method set_gravity : Pango_enums.gravity -> unit
   method set_size : int -> unit
   method set_stretch : Pango_enums.stretch -> unit

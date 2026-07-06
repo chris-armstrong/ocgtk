@@ -5,9 +5,11 @@ class type filter_list_model_t = object
   method get_incremental : unit -> bool
   method get_model : unit -> Ocgtk_gio.Gio.List_model.list_model_t option
   method get_pending : unit -> int
+  method get_watch_items : unit -> bool
   method set_filter : GFilter.filter_t option -> unit
   method set_incremental : bool -> unit
   method set_model : Ocgtk_gio.Gio.List_model.list_model_t option -> unit
+  method set_watch_items : bool -> unit
   method item_type : Gobject.Type.t
   method n_items : int
   method as_filter_list_model : Filter_list_model.t
@@ -40,6 +42,9 @@ class filter_list_model (obj : Filter_list_model.t) : filter_list_model_t =
     method get_pending : unit -> int =
       fun () -> Filter_list_model.get_pending obj
 
+    method get_watch_items : unit -> bool =
+      fun () -> Filter_list_model.get_watch_items obj
+
     method set_filter : GFilter.filter_t option -> unit =
       fun filter ->
         let filter = Option.map (fun c -> c#as_filter) filter in
@@ -52,6 +57,9 @@ class filter_list_model (obj : Filter_list_model.t) : filter_list_model_t =
       fun model ->
         let model = Option.map (fun c -> c#as_list_model) model in
         Filter_list_model.set_model obj model
+
+    method set_watch_items : bool -> unit =
+      fun watch_items -> Filter_list_model.set_watch_items obj watch_items
 
     method item_type = Filter_list_model.get_item_type obj
     method n_items = Filter_list_model.get_n_items obj

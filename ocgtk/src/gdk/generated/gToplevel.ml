@@ -17,6 +17,8 @@ class type toplevel_t = object
     unit
 
   method focus : UInt32.t -> unit
+  method get_capabilities : unit -> Gdk_enums.toplevelcapabilities
+  method get_gravity : unit -> Gdk_enums.gravity
   method get_state : unit -> Gdk_enums.toplevelstate
 
   method inhibit_system_shortcuts :
@@ -28,6 +30,7 @@ class type toplevel_t = object
   method restore_system_shortcuts : unit -> unit
   method set_decorated : bool -> unit
   method set_deletable : bool -> unit
+  method set_gravity : Gdk_enums.gravity -> unit
   method set_icon_list : GTexture.texture_t list -> unit
   method set_modal : bool -> unit
   method set_startup_id : string -> unit
@@ -74,6 +77,12 @@ class toplevel (obj : Toplevel.t) : toplevel_t =
     method focus : UInt32.t -> unit =
       fun timestamp -> Toplevel.focus obj timestamp
 
+    method get_capabilities : unit -> Gdk_enums.toplevelcapabilities =
+      fun () -> Toplevel.get_capabilities obj
+
+    method get_gravity : unit -> Gdk_enums.gravity =
+      fun () -> Toplevel.get_gravity obj
+
     method get_state : unit -> Gdk_enums.toplevelstate =
       fun () -> Toplevel.get_state obj
 
@@ -97,6 +106,9 @@ class toplevel (obj : Toplevel.t) : toplevel_t =
 
     method set_deletable : bool -> unit =
       fun deletable -> Toplevel.set_deletable obj deletable
+
+    method set_gravity : Gdk_enums.gravity -> unit =
+      fun gravity -> Toplevel.set_gravity obj gravity
 
     method set_icon_list : GTexture.texture_t list -> unit =
       fun surfaces ->

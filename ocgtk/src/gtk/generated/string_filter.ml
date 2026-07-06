@@ -25,7 +25,7 @@ external set_expression : t -> Expression.t option -> unit
 (** Sets the expression that the string filter uses to obtain strings from
     items.
 
-    The expression must have a value type of %G_TYPE_STRING. *)
+    The expression must have a value type of `G_TYPE_STRING`. *)
 
 external get_search : t -> string option = "ml_gtk_string_filter_get_search"
 (** Gets the search term. *)

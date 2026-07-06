@@ -26,6 +26,28 @@ if (obj) g_object_ref_sink(obj);
 
 CAMLreturn(Val_GtkFilterListModel(obj));
 }
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gtk_filter_list_model_set_watch_items(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_filter_list_model_set_watch_items(GtkFilterListModel_val(self), Bool_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_filter_list_model_set_watch_items(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FilterListModel requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gtk_filter_list_model_set_model(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -49,6 +71,27 @@ CAMLparam2(self, arg1);
 gtk_filter_list_model_set_filter(GtkFilterListModel_val(self), Option_val(arg1, GtkFilter_val, NULL));
 CAMLreturn(Val_unit);
 }
+
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gtk_filter_list_model_get_watch_items(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gtk_filter_list_model_get_watch_items(GtkFilterListModel_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_filter_list_model_get_watch_items(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FilterListModel requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_filter_list_model_get_pending(value self)
 {

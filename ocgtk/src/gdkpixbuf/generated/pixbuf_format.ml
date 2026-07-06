@@ -41,26 +41,27 @@ external is_disabled : t -> bool = "ml_gdk_pixbuf_format_is_disabled"
 
     See gdk_pixbuf_format_set_disabled(). *)
 
-external get_name : t -> string = "ml_gdk_pixbuf_format_get_name"
+external get_name : t -> string option = "ml_gdk_pixbuf_format_get_name"
 (** Returns the name of the format. *)
 
-external get_mime_types : t -> string array
+external get_mime_types : t -> string array option
   = "ml_gdk_pixbuf_format_get_mime_types"
 (** Returns the mime types supported by the format. *)
 
-external get_license : t -> string = "ml_gdk_pixbuf_format_get_license"
+external get_license : t -> string option = "ml_gdk_pixbuf_format_get_license"
 (** Returns information about the license of the image loader for the format.
 
     The returned string should be a shorthand for a well known license, e.g.
     "LGPL", "GPL", "QPL", "GPL/QPL", or "other" to indicate some other license.
 *)
 
-external get_extensions : t -> string array
+external get_extensions : t -> string array option
   = "ml_gdk_pixbuf_format_get_extensions"
 (** Returns the filename extensions typically used for files in the given
     format. *)
 
-external get_description : t -> string = "ml_gdk_pixbuf_format_get_description"
+external get_description : t -> string option
+  = "ml_gdk_pixbuf_format_get_description"
 (** Returns a description of the format. *)
 
 external get_type : unit -> Gobject.Type.t

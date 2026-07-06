@@ -57,7 +57,7 @@ CAMLexport CAMLprim value ml_graphene_box_intersection(value self, value arg1)
 CAMLparam2(self, arg1);
 graphene_box_t out2;
 
-_Bool result = graphene_box_intersection(graphene_box_t_val(self), graphene_box_t_val(arg1), &out2);
+bool result = graphene_box_intersection(graphene_box_t_val(self), graphene_box_t_val(arg1), &out2);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
@@ -238,7 +238,7 @@ CAMLexport CAMLprim value ml_graphene_box_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_box_equal(graphene_box_t_val(self), graphene_box_t_val(arg1));
+bool result = graphene_box_equal(graphene_box_t_val(self), graphene_box_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -246,7 +246,7 @@ CAMLexport CAMLprim value ml_graphene_box_contains_point(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_box_contains_point(graphene_box_t_val(self), graphene_point3d_t_val(arg1));
+bool result = graphene_box_contains_point(graphene_box_t_val(self), graphene_point3d_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -254,7 +254,7 @@ CAMLexport CAMLprim value ml_graphene_box_contains_box(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_box_contains_box(graphene_box_t_val(self), graphene_box_t_val(arg1));
+bool result = graphene_box_contains_box(graphene_box_t_val(self), graphene_box_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

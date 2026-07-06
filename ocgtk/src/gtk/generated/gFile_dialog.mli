@@ -10,23 +10,23 @@ class type file_dialog_t = object
 
   method open_finish :
     Ocgtk_gio.Gio.Async_result.async_result_t ->
-    (Ocgtk_gio.Gio.File.file_t option, GError.t) result
+    (Ocgtk_gio.Gio.File.file_t, GError.t) result
 
   method open_multiple_finish :
     Ocgtk_gio.Gio.Async_result.async_result_t ->
-    (Ocgtk_gio.Gio.List_model.list_model_t option, GError.t) result
+    (Ocgtk_gio.Gio.List_model.list_model_t, GError.t) result
 
   method save_finish :
     Ocgtk_gio.Gio.Async_result.async_result_t ->
-    (Ocgtk_gio.Gio.File.file_t option, GError.t) result
+    (Ocgtk_gio.Gio.File.file_t, GError.t) result
 
   method select_folder_finish :
     Ocgtk_gio.Gio.Async_result.async_result_t ->
-    (Ocgtk_gio.Gio.File.file_t option, GError.t) result
+    (Ocgtk_gio.Gio.File.file_t, GError.t) result
 
   method select_multiple_folders_finish :
     Ocgtk_gio.Gio.Async_result.async_result_t ->
-    (Ocgtk_gio.Gio.List_model.list_model_t option, GError.t) result
+    (Ocgtk_gio.Gio.List_model.list_model_t, GError.t) result
 
   method set_accept_label : string option -> unit
   method set_default_filter : GFile_filter.file_filter_t option -> unit

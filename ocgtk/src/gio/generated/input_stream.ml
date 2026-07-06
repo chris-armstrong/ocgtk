@@ -72,7 +72,7 @@ external read_all_finish :
   t -> Async_result.t -> (bool * Gsize.t, GError.t) result
   = "ml_g_input_stream_read_all_finish"
 (** Finishes an asynchronous stream read operation started with
-g_input_stream_read_all_async().
+[method@InputStream.read_all_async].
 
 As a special exception to the normal conventions for functions that
 use #GError, if this function returns %FALSE (and sets @error) then

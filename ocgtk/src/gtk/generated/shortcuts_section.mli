@@ -48,7 +48,4 @@ external set_view_name : t -> string -> unit
 (** Set property: view-name *)
 
 val on_change_current_page :
-  ?after:bool ->
-  t ->
-  callback:(object_:int -> bool) ->
-  Gobject.Signal.handler_id
+  ?after:bool -> t -> callback:(offset:int -> bool) -> Gobject.Signal.handler_id

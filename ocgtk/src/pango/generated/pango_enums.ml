@@ -275,6 +275,18 @@ let ellipsizemode_of_int n =
 let ellipsizemode_to_int v =
   match v with `NONE -> 0 | `START -> 1 | `MIDDLE -> 2 | `END -> 3
 
+type fontcolor = [ `FORBIDDEN | `REQUIRED | `DONT_CARE ]
+
+let fontcolor_of_int n =
+  match n with
+  | 0 -> `FORBIDDEN
+  | 1 -> `REQUIRED
+  | 2 -> `DONT_CARE
+  | n -> failwith (Printf.sprintf "FontColor: unknown int %d" n)
+
+let fontcolor_to_int v =
+  match v with `FORBIDDEN -> 0 | `REQUIRED -> 1 | `DONT_CARE -> 2
+
 type fontscale = [ `NONE | `SUPERSCRIPT | `SUBSCRIPT | `SMALL_CAPS ]
 
 let fontscale_of_int n =
@@ -913,16 +925,18 @@ let weight_to_int v =
   | `HEAVY -> 900
   | `ULTRAHEAVY -> 1000
 
-type wrapmode = [ `WORD | `CHAR | `WORD_CHAR ]
+type wrapmode = [ `WORD | `CHAR | `WORD_CHAR | `NONE ]
 
 let wrapmode_of_int n =
   match n with
   | 0 -> `WORD
   | 1 -> `CHAR
   | 2 -> `WORD_CHAR
+  | 3 -> `NONE
   | n -> failwith (Printf.sprintf "WrapMode: unknown int %d" n)
 
-let wrapmode_to_int v = match v with `WORD -> 0 | `CHAR -> 1 | `WORD_CHAR -> 2
+let wrapmode_to_int v =
+  match v with `WORD -> 0 | `CHAR -> 1 | `WORD_CHAR -> 2 | `NONE -> 3
 
 type fontmask_flag =
   [ `FAMILY
@@ -932,7 +946,9 @@ type fontmask_flag =
   | `STRETCH
   | `SIZE
   | `GRAVITY
-  | `VARIATIONS ]
+  | `VARIATIONS
+  | `FEATURES
+  | `COLOR ]
 
 type fontmask = fontmask_flag list
 
@@ -946,6 +962,8 @@ let fontmask_of_int flags =
   let acc = if flags land 32 <> 0 then `SIZE :: acc else acc in
   let acc = if flags land 64 <> 0 then `GRAVITY :: acc else acc in
   let acc = if flags land 128 <> 0 then `VARIATIONS :: acc else acc in
+  let acc = if flags land 256 <> 0 then `FEATURES :: acc else acc in
+  let acc = if flags land 512 <> 0 then `COLOR :: acc else acc in
   acc
 
 let fontmask_to_int flags =
@@ -959,7 +977,9 @@ let fontmask_to_int flags =
       | `STRETCH -> acc lor 16
       | `SIZE -> acc lor 32
       | `GRAVITY -> acc lor 64
-      | `VARIATIONS -> acc lor 128)
+      | `VARIATIONS -> acc lor 128
+      | `FEATURES -> acc lor 256
+      | `COLOR -> acc lor 512)
     0 flags
 
 type layoutdeserializeflags_flag = [ `DEFAULT | `CONTEXT ]

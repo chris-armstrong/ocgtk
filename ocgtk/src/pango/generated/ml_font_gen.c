@@ -97,7 +97,7 @@ CAMLparam1(self);
 
 PangoFontFace* result = pango_font_get_face(PangoFont_val(self));
 if (result) g_object_ref_sink(result);
-CAMLreturn(Val_PangoFontFace(result));
+CAMLreturn(Val_option(result, Val_PangoFontFace));
 }
 
 #else

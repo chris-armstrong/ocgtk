@@ -8,12 +8,14 @@ type t = [ `alert_dialog | `object_ ] Gobject.obj
 external show :
   t -> Application_and__window_and__window_group.Window.t option -> unit
   = "ml_gtk_alert_dialog_show"
-(** Show the alert to the user.
+(** Shows the alert to the user.
 
-    This function is a simple version of [method@Gtk.AlertDialog.choose]
-    intended for dialogs with a single button. If you want to cancel the dialog
-    or if the alert has more than one button, you should use that function
-    instead and provide it with a #GCancellable or callback respectively. *)
+    This function is a simpler version of [method@Gtk.AlertDialog.choose]
+    intended for dialogs with a single button.
+
+    If you want to cancel the dialog or if the alert has more than one button,
+    you should use that function instead and provide it with a
+    [class@Gio.Cancellable] and callback respectively. *)
 
 external set_modal : t -> bool -> unit = "ml_gtk_alert_dialog_set_modal"
 (** Sets whether the alert blocks interaction with the parent window while it is
@@ -67,7 +69,6 @@ external get_buttons : t -> string array option
 external choose_finish :
   t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (int, GError.t) result
   = "ml_gtk_alert_dialog_choose_finish"
-(** Finishes the [method@Gtk.AlertDialog.choose] call and returns the index of
-    the button that was clicked. *)
+(** Finishes the [method@Gtk.AlertDialog.choose] call. *)
 
 (* Properties *)

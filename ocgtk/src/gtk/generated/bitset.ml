@@ -2,9 +2,9 @@
 (* Bitset: Bitset *)
 
 type t = [ `bitset ] Gobject.obj
-(** A `GtkBitset` represents a set of unsigned integers.
+(** A set of unsigned integers.
 
-    Another name for this data structure is "bitmap".
+    Another name for this data structure is “bitmap”.
 
     The current implementation is based on
     [roaring bitmaps](https://roaringbitmap.org/).

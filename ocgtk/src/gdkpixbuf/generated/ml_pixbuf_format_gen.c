@@ -127,7 +127,7 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_format_get_name(value self)
 CAMLparam1(self);
 
 gchar* result = gdk_pixbuf_format_get_name(GdkPixbufFormat_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_format_get_mime_types(value self)
@@ -135,18 +135,23 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_format_get_mime_types(value self)
 CAMLparam1(self);
 
 gchar** result = gdk_pixbuf_format_get_mime_types(GdkPixbufFormat_val(self));
-    int result_length = 0;
+    CAMLlocal2(ml_result, ml_result_opt);
+    if (result == NULL) {
+      ml_result_opt = Val_none;
+    } else {
+      int result_length = 0;
     while (result[result_length] != NULL) result_length++;
-    CAMLlocal1(ml_result);
-    ml_result = caml_alloc(result_length, 0);
-    for (int i = 0; i < result_length; i++) {
-      Store_field(ml_result, i, caml_copy_string(result[i]));
-    }
-    for (int i = 0; i < result_length; i++) {
+      ml_result = caml_alloc(result_length, 0);
+      for (int i = 0; i < result_length; i++) {
+        Store_field(ml_result, i, caml_copy_string(result[i]));
+      }
+      ml_result_opt = Val_some(ml_result);
+            for (int i = 0; i < result_length; i++) {
       g_free((gpointer)result[i]);
     }
     g_free(result);
-CAMLreturn(ml_result);
+    }
+CAMLreturn(ml_result_opt);
 }
 
 #if GDK_PIXBUF_CHECK_VERSION(2,6,0)
@@ -156,7 +161,7 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_format_get_license(value self)
 CAMLparam1(self);
 
 gchar* result = gdk_pixbuf_format_get_license(GdkPixbufFormat_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 #else
@@ -175,18 +180,23 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_format_get_extensions(value self)
 CAMLparam1(self);
 
 gchar** result = gdk_pixbuf_format_get_extensions(GdkPixbufFormat_val(self));
-    int result_length = 0;
+    CAMLlocal2(ml_result, ml_result_opt);
+    if (result == NULL) {
+      ml_result_opt = Val_none;
+    } else {
+      int result_length = 0;
     while (result[result_length] != NULL) result_length++;
-    CAMLlocal1(ml_result);
-    ml_result = caml_alloc(result_length, 0);
-    for (int i = 0; i < result_length; i++) {
-      Store_field(ml_result, i, caml_copy_string(result[i]));
-    }
-    for (int i = 0; i < result_length; i++) {
+      ml_result = caml_alloc(result_length, 0);
+      for (int i = 0; i < result_length; i++) {
+        Store_field(ml_result, i, caml_copy_string(result[i]));
+      }
+      ml_result_opt = Val_some(ml_result);
+            for (int i = 0; i < result_length; i++) {
       g_free((gpointer)result[i]);
     }
     g_free(result);
-CAMLreturn(ml_result);
+    }
+CAMLreturn(ml_result_opt);
 }
 
 CAMLexport CAMLprim value ml_gdk_pixbuf_format_get_description(value self)
@@ -194,7 +204,7 @@ CAMLexport CAMLprim value ml_gdk_pixbuf_format_get_description(value self)
 CAMLparam1(self);
 
 gchar* result = gdk_pixbuf_format_get_description(GdkPixbufFormat_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLprim value ml_gdk_pixbuf_pixbuf_format_get_type(value unit)

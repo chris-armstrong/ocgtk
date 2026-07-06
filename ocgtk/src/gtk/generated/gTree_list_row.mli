@@ -8,7 +8,6 @@ class type tree_list_row_t = object
   method get_position : unit -> int
   method is_expandable : unit -> bool
   method set_expanded : bool -> unit
-  method expandable : bool
   method as_tree_list_row : Tree_list_row.t
 end
 

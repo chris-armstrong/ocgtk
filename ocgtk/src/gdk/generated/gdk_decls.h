@@ -30,6 +30,13 @@
 #define Val_GdkCairoContext(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GdkCairoContext */
 
+#if GTK_CHECK_VERSION(4,16,0)
+#ifndef Val_GdkCicpParams
+#define GdkCicpParams_val(val) ((GdkCicpParams*)ml_gobject_ext_of_val(val))
+#define Val_GdkCicpParams(obj) ((value)(ml_gobject_val_of_ext(obj)))
+#endif /* Val_GdkCicpParams */
+
+#endif
 #ifndef Val_GdkClipboard
 #define GdkClipboard_val(val) ((GdkClipboard*)ml_gobject_ext_of_val(val))
 #define Val_GdkClipboard(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -166,6 +173,13 @@
 #define Val_GdkMemoryTexture(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GdkMemoryTexture */
 
+#if GTK_CHECK_VERSION(4,16,0)
+#ifndef Val_GdkMemoryTextureBuilder
+#define GdkMemoryTextureBuilder_val(val) ((GdkMemoryTextureBuilder*)ml_gobject_ext_of_val(val))
+#define Val_GdkMemoryTextureBuilder(obj) ((value)(ml_gobject_val_of_ext(obj)))
+#endif /* Val_GdkMemoryTextureBuilder */
+
+#endif
 #ifndef Val_GdkMonitor
 #define GdkMonitor_val(val) ((GdkMonitor*)ml_gobject_ext_of_val(val))
 #define Val_GdkMonitor(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -263,6 +277,13 @@ value copy_GdkRGBA(const GdkRGBA *ptr);
 
 
 /* Forward declarations for record converters (non-opaque records) */
+#if GTK_CHECK_VERSION(4,16,0)
+/* Forward declarations for GdkColorState converters */
+GdkColorState *GdkColorState_val(value val);
+value Val_GdkColorState(const GdkColorState *ptr);
+value Val_GdkColorState_option(const GdkColorState *ptr);
+#endif
+
 /* Forward declarations for GdkContentFormats converters */
 GdkContentFormats *GdkContentFormats_val(value val);
 value Val_GdkContentFormats(const GdkContentFormats *ptr);
@@ -349,6 +370,10 @@ value Val_GdkToplevelSize_option(const GdkToplevelSize *ptr);
 /* Forward declarations for enum converters */
 value Val_GdkAxisUse(GdkAxisUse val);
 GdkAxisUse GdkAxisUse_val(value val);
+#if GTK_CHECK_VERSION(4,16,0)
+value Val_GdkCicpRange(GdkCicpRange val);
+GdkCicpRange GdkCicpRange_val(value val);
+#endif
 value Val_GdkCrossingMode(GdkCrossingMode val);
 GdkCrossingMode GdkCrossingMode_val(value val);
 value Val_GdkDevicePadFeature(GdkDevicePadFeature val);
@@ -379,6 +404,10 @@ value Val_GdkNotifyType(GdkNotifyType val);
 GdkNotifyType GdkNotifyType_val(value val);
 value Val_GdkScrollDirection(GdkScrollDirection val);
 GdkScrollDirection GdkScrollDirection_val(value val);
+#if GTK_CHECK_VERSION(4,20,0)
+value Val_GdkScrollRelativeDirection(GdkScrollRelativeDirection val);
+GdkScrollRelativeDirection GdkScrollRelativeDirection_val(value val);
+#endif
 #if GTK_CHECK_VERSION(4,8,0)
 value Val_GdkScrollUnit(GdkScrollUnit val);
 GdkScrollUnit GdkScrollUnit_val(value val);
@@ -419,6 +448,10 @@ value Val_GdkPaintableFlags(GdkPaintableFlags flags);
 GdkPaintableFlags GdkPaintableFlags_val(value list);
 value Val_GdkSeatCapabilities(GdkSeatCapabilities flags);
 GdkSeatCapabilities GdkSeatCapabilities_val(value list);
+#if GTK_CHECK_VERSION(4,20,0)
+value Val_GdkToplevelCapabilities(GdkToplevelCapabilities flags);
+GdkToplevelCapabilities GdkToplevelCapabilities_val(value list);
+#endif
 value Val_GdkToplevelState(GdkToplevelState flags);
 GdkToplevelState GdkToplevelState_val(value list);
 

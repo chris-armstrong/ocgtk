@@ -17,6 +17,15 @@
 #include "gtk_decls.h"
 
 
+CAMLexport CAMLprim value ml_gtk_drag_icon_get_for_drag(value arg1)
+{
+CAMLparam1(arg1);
+
+GtkDragIcon *obj = gtk_drag_icon_get_for_drag(GdkDrag_val(arg1));
+if (obj) g_object_ref_sink(obj);
+
+CAMLreturn(Val_GtkDragIcon(obj));
+}
 CAMLexport CAMLprim value ml_gtk_drag_icon_set_child(value self, value arg1)
 {
 CAMLparam2(self, arg1);

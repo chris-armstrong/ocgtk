@@ -50,11 +50,11 @@ external set_view_name : t -> string -> unit
 let on_change_current_page ?after obj ~callback =
   let closure =
     Gobject.Closure.create (fun argv ->
-        let object_ =
+        let offset =
           let v = Gobject.Closure.nth argv ~pos:1 in
           Gobject.Value.get_int v
         in
-        let result = callback ~object_ in
+        let result = callback ~offset in
         let v = Gobject.Closure.result argv in
         let x = result in
         Gobject.Value.set_boolean v x)

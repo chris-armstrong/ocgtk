@@ -32,8 +32,8 @@ external set_child :
 external get_selected : t -> bool = "ml_gtk_column_view_cell_get_selected"
 (** Checks if the item is displayed as selected.
 
-    The selected state is maintained by the liste widget and its model and
-    cannot be set otherwise. *)
+    The selected state is maintained by the list widget and its model and cannot
+    be set otherwise. *)
 
 external get_position : t -> int = "ml_gtk_column_view_cell_get_position"
 (** Gets the position in the model that @self currently displays.

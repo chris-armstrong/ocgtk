@@ -3,6 +3,10 @@ class type transform_t = object
   method get_category : unit -> Gsk_enums.transformcategory
   method invert : unit -> Transform.t option
   method matrix : Ocgtk_graphene.Graphene.Matrix.matrix_t -> Transform.t
+
+  method matrix_2d :
+    float -> float -> float -> float -> float -> float -> Transform.t option
+
   method perspective : float -> Transform.t
   method ref : unit -> Transform.t option
   method rotate : float -> Transform.t option
@@ -38,6 +42,11 @@ class transform (obj : Transform.t) : transform_t =
       fun matrix ->
         let matrix = matrix#as_matrix in
         Transform.matrix obj matrix
+
+    method matrix_2d :
+        float -> float -> float -> float -> float -> float -> Transform.t option
+        =
+      fun xx yx xy yy dx dy -> Transform.matrix_2d obj xx yx xy yy dx dy
 
     method perspective : float -> Transform.t =
       fun depth -> Transform.perspective obj depth

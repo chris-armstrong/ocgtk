@@ -152,6 +152,10 @@ value Val_GtkAccessibleProperty(GtkAccessibleProperty val) {
     case GTK_ACCESSIBLE_PROPERTY_VALUE_MIN: return caml_hash_variant("VALUE_MIN"); /* `VALUE_MIN */
     case GTK_ACCESSIBLE_PROPERTY_VALUE_NOW: return caml_hash_variant("VALUE_NOW"); /* `VALUE_NOW */
     case GTK_ACCESSIBLE_PROPERTY_VALUE_TEXT: return caml_hash_variant("VALUE_TEXT"); /* `VALUE_TEXT */
+#if GTK_CHECK_VERSION(4,16,0)
+    case GTK_ACCESSIBLE_PROPERTY_HELP_TEXT: return caml_hash_variant("HELP_TEXT"); /* `HELP_TEXT */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GtkAccessibleProperty value: %d", (int)val);
@@ -182,6 +186,12 @@ GtkAccessibleProperty GtkAccessibleProperty_val(value val) {
   else if (val == caml_hash_variant("VALUE_MIN")) return GTK_ACCESSIBLE_PROPERTY_VALUE_MIN; /* `VALUE_MIN */
   else if (val == caml_hash_variant("VALUE_NOW")) return GTK_ACCESSIBLE_PROPERTY_VALUE_NOW; /* `VALUE_NOW */
   else if (val == caml_hash_variant("VALUE_TEXT")) return GTK_ACCESSIBLE_PROPERTY_VALUE_TEXT; /* `VALUE_TEXT */
+#if GTK_CHECK_VERSION(4,16,0)
+  else if (val == caml_hash_variant("HELP_TEXT")) return GTK_ACCESSIBLE_PROPERTY_HELP_TEXT; /* `HELP_TEXT */
+
+#else
+  else if (val == caml_hash_variant("HELP_TEXT")) caml_failwith("GtkAccessibleProperty.HELP_TEXT requires 4.16");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GtkAccessibleProperty tag: %ld", val);
@@ -211,6 +221,30 @@ value Val_GtkAccessibleRelation(GtkAccessibleRelation val) {
     case GTK_ACCESSIBLE_RELATION_ROW_INDEX_TEXT: return caml_hash_variant("ROW_INDEX_TEXT"); /* `ROW_INDEX_TEXT */
     case GTK_ACCESSIBLE_RELATION_ROW_SPAN: return caml_hash_variant("ROW_SPAN"); /* `ROW_SPAN */
     case GTK_ACCESSIBLE_RELATION_SET_SIZE: return caml_hash_variant("SET_SIZE"); /* `SET_SIZE */
+#if GTK_CHECK_VERSION(4,18,0)
+    case GTK_ACCESSIBLE_RELATION_LABEL_FOR: return caml_hash_variant("LABEL_FOR"); /* `LABEL_FOR */
+
+#endif
+#if GTK_CHECK_VERSION(4,18,0)
+    case GTK_ACCESSIBLE_RELATION_DESCRIPTION_FOR: return caml_hash_variant("DESCRIPTION_FOR"); /* `DESCRIPTION_FOR */
+
+#endif
+#if GTK_CHECK_VERSION(4,18,0)
+    case GTK_ACCESSIBLE_RELATION_CONTROLLED_BY: return caml_hash_variant("CONTROLLED_BY"); /* `CONTROLLED_BY */
+
+#endif
+#if GTK_CHECK_VERSION(4,18,0)
+    case GTK_ACCESSIBLE_RELATION_DETAILS_FOR: return caml_hash_variant("DETAILS_FOR"); /* `DETAILS_FOR */
+
+#endif
+#if GTK_CHECK_VERSION(4,18,0)
+    case GTK_ACCESSIBLE_RELATION_ERROR_MESSAGE_FOR: return caml_hash_variant("ERROR_MESSAGE_FOR"); /* `ERROR_MESSAGE_FOR */
+
+#endif
+#if GTK_CHECK_VERSION(4,18,0)
+    case GTK_ACCESSIBLE_RELATION_FLOW_FROM: return caml_hash_variant("FLOW_FROM"); /* `FLOW_FROM */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GtkAccessibleRelation value: %d", (int)val);
@@ -240,6 +274,42 @@ GtkAccessibleRelation GtkAccessibleRelation_val(value val) {
   else if (val == caml_hash_variant("ROW_INDEX_TEXT")) return GTK_ACCESSIBLE_RELATION_ROW_INDEX_TEXT; /* `ROW_INDEX_TEXT */
   else if (val == caml_hash_variant("ROW_SPAN")) return GTK_ACCESSIBLE_RELATION_ROW_SPAN; /* `ROW_SPAN */
   else if (val == caml_hash_variant("SET_SIZE")) return GTK_ACCESSIBLE_RELATION_SET_SIZE; /* `SET_SIZE */
+#if GTK_CHECK_VERSION(4,18,0)
+  else if (val == caml_hash_variant("LABEL_FOR")) return GTK_ACCESSIBLE_RELATION_LABEL_FOR; /* `LABEL_FOR */
+
+#else
+  else if (val == caml_hash_variant("LABEL_FOR")) caml_failwith("GtkAccessibleRelation.LABEL_FOR requires 4.18");
+#endif
+#if GTK_CHECK_VERSION(4,18,0)
+  else if (val == caml_hash_variant("DESCRIPTION_FOR")) return GTK_ACCESSIBLE_RELATION_DESCRIPTION_FOR; /* `DESCRIPTION_FOR */
+
+#else
+  else if (val == caml_hash_variant("DESCRIPTION_FOR")) caml_failwith("GtkAccessibleRelation.DESCRIPTION_FOR requires 4.18");
+#endif
+#if GTK_CHECK_VERSION(4,18,0)
+  else if (val == caml_hash_variant("CONTROLLED_BY")) return GTK_ACCESSIBLE_RELATION_CONTROLLED_BY; /* `CONTROLLED_BY */
+
+#else
+  else if (val == caml_hash_variant("CONTROLLED_BY")) caml_failwith("GtkAccessibleRelation.CONTROLLED_BY requires 4.18");
+#endif
+#if GTK_CHECK_VERSION(4,18,0)
+  else if (val == caml_hash_variant("DETAILS_FOR")) return GTK_ACCESSIBLE_RELATION_DETAILS_FOR; /* `DETAILS_FOR */
+
+#else
+  else if (val == caml_hash_variant("DETAILS_FOR")) caml_failwith("GtkAccessibleRelation.DETAILS_FOR requires 4.18");
+#endif
+#if GTK_CHECK_VERSION(4,18,0)
+  else if (val == caml_hash_variant("ERROR_MESSAGE_FOR")) return GTK_ACCESSIBLE_RELATION_ERROR_MESSAGE_FOR; /* `ERROR_MESSAGE_FOR */
+
+#else
+  else if (val == caml_hash_variant("ERROR_MESSAGE_FOR")) caml_failwith("GtkAccessibleRelation.ERROR_MESSAGE_FOR requires 4.18");
+#endif
+#if GTK_CHECK_VERSION(4,18,0)
+  else if (val == caml_hash_variant("FLOW_FROM")) return GTK_ACCESSIBLE_RELATION_FLOW_FROM; /* `FLOW_FROM */
+
+#else
+  else if (val == caml_hash_variant("FLOW_FROM")) caml_failwith("GtkAccessibleRelation.FLOW_FROM requires 4.18");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GtkAccessibleRelation tag: %ld", val);
@@ -1546,6 +1616,18 @@ value Val_GtkFilterChange(GtkFilterChange val) {
     case GTK_FILTER_CHANGE_DIFFERENT: return caml_hash_variant("DIFFERENT"); /* `DIFFERENT */
     case GTK_FILTER_CHANGE_LESS_STRICT: return caml_hash_variant("LESS_STRICT"); /* `LESS_STRICT */
     case GTK_FILTER_CHANGE_MORE_STRICT: return caml_hash_variant("MORE_STRICT"); /* `MORE_STRICT */
+#if GTK_CHECK_VERSION(4,20,0)
+    case GTK_FILTER_CHANGE_DIFFERENT_REWATCH: return caml_hash_variant("DIFFERENT_REWATCH"); /* `DIFFERENT_REWATCH */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GTK_FILTER_CHANGE_LESS_STRICT_REWATCH: return caml_hash_variant("LESS_STRICT_REWATCH"); /* `LESS_STRICT_REWATCH */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GTK_FILTER_CHANGE_MORE_STRICT_REWATCH: return caml_hash_variant("MORE_STRICT_REWATCH"); /* `MORE_STRICT_REWATCH */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GtkFilterChange value: %d", (int)val);
@@ -1560,6 +1642,24 @@ GtkFilterChange GtkFilterChange_val(value val) {
   if (val == caml_hash_variant("DIFFERENT")) return GTK_FILTER_CHANGE_DIFFERENT; /* `DIFFERENT */
   else if (val == caml_hash_variant("LESS_STRICT")) return GTK_FILTER_CHANGE_LESS_STRICT; /* `LESS_STRICT */
   else if (val == caml_hash_variant("MORE_STRICT")) return GTK_FILTER_CHANGE_MORE_STRICT; /* `MORE_STRICT */
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("DIFFERENT_REWATCH")) return GTK_FILTER_CHANGE_DIFFERENT_REWATCH; /* `DIFFERENT_REWATCH */
+
+#else
+  else if (val == caml_hash_variant("DIFFERENT_REWATCH")) caml_failwith("GtkFilterChange.DIFFERENT_REWATCH requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("LESS_STRICT_REWATCH")) return GTK_FILTER_CHANGE_LESS_STRICT_REWATCH; /* `LESS_STRICT_REWATCH */
+
+#else
+  else if (val == caml_hash_variant("LESS_STRICT_REWATCH")) caml_failwith("GtkFilterChange.LESS_STRICT_REWATCH requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("MORE_STRICT_REWATCH")) return GTK_FILTER_CHANGE_MORE_STRICT_REWATCH; /* `MORE_STRICT_REWATCH */
+
+#else
+  else if (val == caml_hash_variant("MORE_STRICT_REWATCH")) caml_failwith("GtkFilterChange.MORE_STRICT_REWATCH requires 4.20");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GtkFilterChange tag: %ld", val);
@@ -1622,6 +1722,35 @@ GtkFontLevel GtkFontLevel_val(value val) {
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GtkFontLevel tag: %ld", val);
+    g_warning("%s", msg);
+    caml_failwith(msg);
+  }
+}
+
+#endif
+
+#if GTK_CHECK_VERSION(4,16,0)
+/* Convert GtkFontRendering to OCaml value */
+value Val_GtkFontRendering(GtkFontRendering val) {
+  switch (val) {
+    case GTK_FONT_RENDERING_AUTOMATIC: return caml_hash_variant("AUTOMATIC"); /* `AUTOMATIC */
+    case GTK_FONT_RENDERING_MANUAL: return caml_hash_variant("MANUAL"); /* `MANUAL */
+    default: {
+      char msg[128];
+      g_snprintf(msg, sizeof(msg), "Unknown GtkFontRendering value: %d", (int)val);
+      g_warning("%s", msg);
+      caml_failwith(msg);
+    }
+  }
+}
+
+/* Convert OCaml value to GtkFontRendering */
+GtkFontRendering GtkFontRendering_val(value val) {
+  if (val == caml_hash_variant("AUTOMATIC")) return GTK_FONT_RENDERING_AUTOMATIC; /* `AUTOMATIC */
+  else if (val == caml_hash_variant("MANUAL")) return GTK_FONT_RENDERING_MANUAL; /* `MANUAL */
+  else {
+    char msg[128];
+    g_snprintf(msg, sizeof(msg), "Unknown GtkFontRendering tag: %ld", val);
     g_warning("%s", msg);
     caml_failwith(msg);
   }
@@ -1846,6 +1975,72 @@ GtkInscriptionOverflow GtkInscriptionOverflow_val(value val) {
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GtkInscriptionOverflow tag: %ld", val);
+    g_warning("%s", msg);
+    caml_failwith(msg);
+  }
+}
+
+#endif
+
+#if GTK_CHECK_VERSION(4,20,0)
+/* Convert GtkInterfaceColorScheme to OCaml value */
+value Val_GtkInterfaceColorScheme(GtkInterfaceColorScheme val) {
+  switch (val) {
+    case GTK_INTERFACE_COLOR_SCHEME_UNSUPPORTED: return caml_hash_variant("UNSUPPORTED"); /* `UNSUPPORTED */
+    case GTK_INTERFACE_COLOR_SCHEME_DEFAULT: return caml_hash_variant("DEFAULT"); /* `DEFAULT */
+    case GTK_INTERFACE_COLOR_SCHEME_DARK: return caml_hash_variant("DARK"); /* `DARK */
+    case GTK_INTERFACE_COLOR_SCHEME_LIGHT: return caml_hash_variant("LIGHT"); /* `LIGHT */
+    default: {
+      char msg[128];
+      g_snprintf(msg, sizeof(msg), "Unknown GtkInterfaceColorScheme value: %d", (int)val);
+      g_warning("%s", msg);
+      caml_failwith(msg);
+    }
+  }
+}
+
+/* Convert OCaml value to GtkInterfaceColorScheme */
+GtkInterfaceColorScheme GtkInterfaceColorScheme_val(value val) {
+  if (val == caml_hash_variant("UNSUPPORTED")) return GTK_INTERFACE_COLOR_SCHEME_UNSUPPORTED; /* `UNSUPPORTED */
+  else if (val == caml_hash_variant("DEFAULT")) return GTK_INTERFACE_COLOR_SCHEME_DEFAULT; /* `DEFAULT */
+  else if (val == caml_hash_variant("DARK")) return GTK_INTERFACE_COLOR_SCHEME_DARK; /* `DARK */
+  else if (val == caml_hash_variant("LIGHT")) return GTK_INTERFACE_COLOR_SCHEME_LIGHT; /* `LIGHT */
+  else {
+    char msg[128];
+    g_snprintf(msg, sizeof(msg), "Unknown GtkInterfaceColorScheme tag: %ld", val);
+    g_warning("%s", msg);
+    caml_failwith(msg);
+  }
+}
+
+#endif
+
+#if GTK_CHECK_VERSION(4,20,0)
+/* Convert GtkInterfaceContrast to OCaml value */
+value Val_GtkInterfaceContrast(GtkInterfaceContrast val) {
+  switch (val) {
+    case GTK_INTERFACE_CONTRAST_UNSUPPORTED: return caml_hash_variant("UNSUPPORTED"); /* `UNSUPPORTED */
+    case GTK_INTERFACE_CONTRAST_NO_PREFERENCE: return caml_hash_variant("NO_PREFERENCE"); /* `NO_PREFERENCE */
+    case GTK_INTERFACE_CONTRAST_MORE: return caml_hash_variant("MORE"); /* `MORE */
+    case GTK_INTERFACE_CONTRAST_LESS: return caml_hash_variant("LESS"); /* `LESS */
+    default: {
+      char msg[128];
+      g_snprintf(msg, sizeof(msg), "Unknown GtkInterfaceContrast value: %d", (int)val);
+      g_warning("%s", msg);
+      caml_failwith(msg);
+    }
+  }
+}
+
+/* Convert OCaml value to GtkInterfaceContrast */
+GtkInterfaceContrast GtkInterfaceContrast_val(value val) {
+  if (val == caml_hash_variant("UNSUPPORTED")) return GTK_INTERFACE_CONTRAST_UNSUPPORTED; /* `UNSUPPORTED */
+  else if (val == caml_hash_variant("NO_PREFERENCE")) return GTK_INTERFACE_CONTRAST_NO_PREFERENCE; /* `NO_PREFERENCE */
+  else if (val == caml_hash_variant("MORE")) return GTK_INTERFACE_CONTRAST_MORE; /* `MORE */
+  else if (val == caml_hash_variant("LESS")) return GTK_INTERFACE_CONTRAST_LESS; /* `LESS */
+  else {
+    char msg[128];
+    g_snprintf(msg, sizeof(msg), "Unknown GtkInterfaceContrast tag: %ld", val);
     g_warning("%s", msg);
     caml_failwith(msg);
   }
@@ -2221,6 +2416,10 @@ value Val_GtkPadActionType(GtkPadActionType val) {
     case GTK_PAD_ACTION_BUTTON: return caml_hash_variant("BUTTON"); /* `BUTTON */
     case GTK_PAD_ACTION_RING: return caml_hash_variant("RING"); /* `RING */
     case GTK_PAD_ACTION_STRIP: return caml_hash_variant("STRIP"); /* `STRIP */
+#if GTK_CHECK_VERSION(4,20,0)
+    case GTK_PAD_ACTION_DIAL: return caml_hash_variant("DIAL"); /* `DIAL */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GtkPadActionType value: %d", (int)val);
@@ -2235,6 +2434,12 @@ GtkPadActionType GtkPadActionType_val(value val) {
   if (val == caml_hash_variant("BUTTON")) return GTK_PAD_ACTION_BUTTON; /* `BUTTON */
   else if (val == caml_hash_variant("RING")) return GTK_PAD_ACTION_RING; /* `RING */
   else if (val == caml_hash_variant("STRIP")) return GTK_PAD_ACTION_STRIP; /* `STRIP */
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("DIAL")) return GTK_PAD_ACTION_DIAL; /* `DIAL */
+
+#else
+  else if (val == caml_hash_variant("DIAL")) caml_failwith("GtkPadActionType.DIAL requires 4.20");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown GtkPadActionType tag: %ld", val);
@@ -3626,6 +3831,61 @@ GtkUnit GtkUnit_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,20,0)
+/* Convert GtkWindowGravity to OCaml value */
+value Val_GtkWindowGravity(GtkWindowGravity val) {
+  switch (val) {
+    case GTK_WINDOW_GRAVITY_TOP_LEFT: return caml_hash_variant("TOP_LEFT"); /* `TOP_LEFT */
+    case GTK_WINDOW_GRAVITY_TOP: return caml_hash_variant("TOP"); /* `TOP */
+    case GTK_WINDOW_GRAVITY_TOP_RIGHT: return caml_hash_variant("TOP_RIGHT"); /* `TOP_RIGHT */
+    case GTK_WINDOW_GRAVITY_LEFT: return caml_hash_variant("LEFT"); /* `LEFT */
+    case GTK_WINDOW_GRAVITY_CENTER: return caml_hash_variant("CENTER"); /* `CENTER */
+    case GTK_WINDOW_GRAVITY_RIGHT: return caml_hash_variant("RIGHT"); /* `RIGHT */
+    case GTK_WINDOW_GRAVITY_BOTTOM_LEFT: return caml_hash_variant("BOTTOM_LEFT"); /* `BOTTOM_LEFT */
+    case GTK_WINDOW_GRAVITY_BOTTOM: return caml_hash_variant("BOTTOM"); /* `BOTTOM */
+    case GTK_WINDOW_GRAVITY_BOTTOM_RIGHT: return caml_hash_variant("BOTTOM_RIGHT"); /* `BOTTOM_RIGHT */
+    case GTK_WINDOW_GRAVITY_TOP_START: return caml_hash_variant("TOP_START"); /* `TOP_START */
+    case GTK_WINDOW_GRAVITY_TOP_END: return caml_hash_variant("TOP_END"); /* `TOP_END */
+    case GTK_WINDOW_GRAVITY_START: return caml_hash_variant("START"); /* `START */
+    case GTK_WINDOW_GRAVITY_END: return caml_hash_variant("END"); /* `END */
+    case GTK_WINDOW_GRAVITY_BOTTOM_START: return caml_hash_variant("BOTTOM_START"); /* `BOTTOM_START */
+    case GTK_WINDOW_GRAVITY_BOTTOM_END: return caml_hash_variant("BOTTOM_END"); /* `BOTTOM_END */
+    default: {
+      char msg[128];
+      g_snprintf(msg, sizeof(msg), "Unknown GtkWindowGravity value: %d", (int)val);
+      g_warning("%s", msg);
+      caml_failwith(msg);
+    }
+  }
+}
+
+/* Convert OCaml value to GtkWindowGravity */
+GtkWindowGravity GtkWindowGravity_val(value val) {
+  if (val == caml_hash_variant("TOP_LEFT")) return GTK_WINDOW_GRAVITY_TOP_LEFT; /* `TOP_LEFT */
+  else if (val == caml_hash_variant("TOP")) return GTK_WINDOW_GRAVITY_TOP; /* `TOP */
+  else if (val == caml_hash_variant("TOP_RIGHT")) return GTK_WINDOW_GRAVITY_TOP_RIGHT; /* `TOP_RIGHT */
+  else if (val == caml_hash_variant("LEFT")) return GTK_WINDOW_GRAVITY_LEFT; /* `LEFT */
+  else if (val == caml_hash_variant("CENTER")) return GTK_WINDOW_GRAVITY_CENTER; /* `CENTER */
+  else if (val == caml_hash_variant("RIGHT")) return GTK_WINDOW_GRAVITY_RIGHT; /* `RIGHT */
+  else if (val == caml_hash_variant("BOTTOM_LEFT")) return GTK_WINDOW_GRAVITY_BOTTOM_LEFT; /* `BOTTOM_LEFT */
+  else if (val == caml_hash_variant("BOTTOM")) return GTK_WINDOW_GRAVITY_BOTTOM; /* `BOTTOM */
+  else if (val == caml_hash_variant("BOTTOM_RIGHT")) return GTK_WINDOW_GRAVITY_BOTTOM_RIGHT; /* `BOTTOM_RIGHT */
+  else if (val == caml_hash_variant("TOP_START")) return GTK_WINDOW_GRAVITY_TOP_START; /* `TOP_START */
+  else if (val == caml_hash_variant("TOP_END")) return GTK_WINDOW_GRAVITY_TOP_END; /* `TOP_END */
+  else if (val == caml_hash_variant("START")) return GTK_WINDOW_GRAVITY_START; /* `START */
+  else if (val == caml_hash_variant("END")) return GTK_WINDOW_GRAVITY_END; /* `END */
+  else if (val == caml_hash_variant("BOTTOM_START")) return GTK_WINDOW_GRAVITY_BOTTOM_START; /* `BOTTOM_START */
+  else if (val == caml_hash_variant("BOTTOM_END")) return GTK_WINDOW_GRAVITY_BOTTOM_END; /* `BOTTOM_END */
+  else {
+    char msg[128];
+    g_snprintf(msg, sizeof(msg), "Unknown GtkWindowGravity tag: %ld", val);
+    g_warning("%s", msg);
+    caml_failwith(msg);
+  }
+}
+
+#endif
+
 /* Convert GtkWrapMode to OCaml value */
 value Val_GtkWrapMode(GtkWrapMode val) {
   switch (val) {
@@ -3848,12 +4108,15 @@ value Val_GtkDebugFlags(GtkDebugFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
-  if (flags & GTK_DEBUG_BUILDER) {
+#if GTK_CHECK_VERSION(4,18,0)
+  if (flags & GTK_DEBUG_BUILDER_TRACE) {
     cons = caml_alloc(2, 0);
-    Store_field(cons, 0, caml_hash_variant("BUILDER")); /* `BUILDER */
+    Store_field(cons, 0, caml_hash_variant("BUILDER_TRACE")); /* `BUILDER_TRACE */
     Store_field(cons, 1, result);
     result = cons;
   }
+
+#endif
   if (flags & GTK_DEBUG_SIZE_REQUEST) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, caml_hash_variant("SIZE_REQUEST")); /* `SIZE_REQUEST */
@@ -3872,6 +4135,15 @@ value Val_GtkDebugFlags(GtkDebugFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GTK_CHECK_VERSION(4,20,0)
+  if (flags & GTK_DEBUG_TOUCHSCREEN) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("TOUCHSCREEN")); /* `TOUCHSCREEN */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+
+#endif
   if (flags & GTK_DEBUG_ACTIONS) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, caml_hash_variant("ACTIONS")); /* `ACTIONS */
@@ -3926,6 +4198,24 @@ value Val_GtkDebugFlags(GtkDebugFlags flags) {
   }
 
 #endif
+#if GTK_CHECK_VERSION(4,16,0)
+  if (flags & GTK_DEBUG_CSS) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("CSS")); /* `CSS */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+
+#endif
+#if GTK_CHECK_VERSION(4,18,0)
+  if (flags & GTK_DEBUG_BUILDER) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("BUILDER")); /* `BUILDER */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -3942,10 +4232,21 @@ GtkDebugFlags GtkDebugFlags_val(value list) {
     else if (tag == caml_hash_variant("GEOMETRY")) result |= GTK_DEBUG_GEOMETRY; /* `GEOMETRY */
     else if (tag == caml_hash_variant("ICONTHEME")) result |= GTK_DEBUG_ICONTHEME; /* `ICONTHEME */
     else if (tag == caml_hash_variant("PRINTING")) result |= GTK_DEBUG_PRINTING; /* `PRINTING */
-    else if (tag == caml_hash_variant("BUILDER")) result |= GTK_DEBUG_BUILDER; /* `BUILDER */
+#if GTK_CHECK_VERSION(4,18,0)
+    else if (tag == caml_hash_variant("BUILDER_TRACE")) result |= GTK_DEBUG_BUILDER_TRACE; /* `BUILDER_TRACE */
+
+#else
+    else if (tag == caml_hash_variant("BUILDER_TRACE")) caml_failwith("GtkDebugFlags.BUILDER_TRACE requires 4.18");
+#endif
     else if (tag == caml_hash_variant("SIZE_REQUEST")) result |= GTK_DEBUG_SIZE_REQUEST; /* `SIZE_REQUEST */
     else if (tag == caml_hash_variant("NO_CSS_CACHE")) result |= GTK_DEBUG_NO_CSS_CACHE; /* `NO_CSS_CACHE */
     else if (tag == caml_hash_variant("INTERACTIVE")) result |= GTK_DEBUG_INTERACTIVE; /* `INTERACTIVE */
+#if GTK_CHECK_VERSION(4,20,0)
+    else if (tag == caml_hash_variant("TOUCHSCREEN")) result |= GTK_DEBUG_TOUCHSCREEN; /* `TOUCHSCREEN */
+
+#else
+    else if (tag == caml_hash_variant("TOUCHSCREEN")) caml_failwith("GtkDebugFlags.TOUCHSCREEN requires 4.20");
+#endif
     else if (tag == caml_hash_variant("ACTIONS")) result |= GTK_DEBUG_ACTIONS; /* `ACTIONS */
     else if (tag == caml_hash_variant("LAYOUT")) result |= GTK_DEBUG_LAYOUT; /* `LAYOUT */
     else if (tag == caml_hash_variant("SNAPSHOT")) result |= GTK_DEBUG_SNAPSHOT; /* `SNAPSHOT */
@@ -3963,6 +4264,18 @@ GtkDebugFlags GtkDebugFlags_val(value list) {
 
 #else
     else if (tag == caml_hash_variant("INVERT_TEXT_DIR")) caml_failwith("GtkDebugFlags.INVERT_TEXT_DIR requires 4.8");
+#endif
+#if GTK_CHECK_VERSION(4,16,0)
+    else if (tag == caml_hash_variant("CSS")) result |= GTK_DEBUG_CSS; /* `CSS */
+
+#else
+    else if (tag == caml_hash_variant("CSS")) caml_failwith("GtkDebugFlags.CSS requires 4.16");
+#endif
+#if GTK_CHECK_VERSION(4,18,0)
+    else if (tag == caml_hash_variant("BUILDER")) result |= GTK_DEBUG_BUILDER; /* `BUILDER */
+
+#else
+    else if (tag == caml_hash_variant("BUILDER")) caml_failwith("GtkDebugFlags.BUILDER requires 4.18");
 #endif
     list = Field(list, 1);
   }
@@ -4046,6 +4359,15 @@ value Val_GtkEventControllerScrollFlags(GtkEventControllerScrollFlags flags) {
     Store_field(cons, 1, result);
     result = cons;
   }
+#if GTK_CHECK_VERSION(4,20,0)
+  if (flags & GTK_EVENT_CONTROLLER_SCROLL_PHYSICAL_DIRECTION) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("PHYSICAL_DIRECTION")); /* `PHYSICAL_DIRECTION */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+
+#endif
   if (flags & GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, caml_hash_variant("BOTH_AXES")); /* `BOTH_AXES */
@@ -4066,6 +4388,12 @@ GtkEventControllerScrollFlags GtkEventControllerScrollFlags_val(value list) {
     else if (tag == caml_hash_variant("HORIZONTAL")) result |= GTK_EVENT_CONTROLLER_SCROLL_HORIZONTAL; /* `HORIZONTAL */
     else if (tag == caml_hash_variant("DISCRETE")) result |= GTK_EVENT_CONTROLLER_SCROLL_DISCRETE; /* `DISCRETE */
     else if (tag == caml_hash_variant("KINETIC")) result |= GTK_EVENT_CONTROLLER_SCROLL_KINETIC; /* `KINETIC */
+#if GTK_CHECK_VERSION(4,20,0)
+    else if (tag == caml_hash_variant("PHYSICAL_DIRECTION")) result |= GTK_EVENT_CONTROLLER_SCROLL_PHYSICAL_DIRECTION; /* `PHYSICAL_DIRECTION */
+
+#else
+    else if (tag == caml_hash_variant("PHYSICAL_DIRECTION")) caml_failwith("GtkEventControllerScrollFlags.PHYSICAL_DIRECTION requires 4.20");
+#endif
     else if (tag == caml_hash_variant("BOTH_AXES")) result |= GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES; /* `BOTH_AXES */
     list = Field(list, 1);
   }
@@ -4133,6 +4461,15 @@ value Val_GtkIconLookupFlags(GtkIconLookupFlags flags) {
   CAMLlocal2(result, cons);
   result = Val_emptylist;
 
+#if GTK_CHECK_VERSION(4,18,0)
+  if (flags & GTK_ICON_LOOKUP_NONE) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+
+#endif
   if (flags & GTK_ICON_LOOKUP_FORCE_REGULAR) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, caml_hash_variant("FORCE_REGULAR")); /* `FORCE_REGULAR */
@@ -4160,7 +4497,13 @@ GtkIconLookupFlags GtkIconLookupFlags_val(value list) {
   GtkIconLookupFlags result = 0;
   while (list != Val_emptylist) {
     value tag = Field(list, 0);
-    if (tag == caml_hash_variant("FORCE_REGULAR")) result |= GTK_ICON_LOOKUP_FORCE_REGULAR; /* `FORCE_REGULAR */
+#if GTK_CHECK_VERSION(4,18,0)
+    if (tag == caml_hash_variant("NONE")) result |= GTK_ICON_LOOKUP_NONE; /* `NONE */
+
+#else
+    if (tag == caml_hash_variant("NONE")) caml_failwith("GtkIconLookupFlags.NONE requires 4.18");
+#endif
+    else if (tag == caml_hash_variant("FORCE_REGULAR")) result |= GTK_ICON_LOOKUP_FORCE_REGULAR; /* `FORCE_REGULAR */
     else if (tag == caml_hash_variant("FORCE_SYMBOLIC")) result |= GTK_ICON_LOOKUP_FORCE_SYMBOLIC; /* `FORCE_SYMBOLIC */
     else if (tag == caml_hash_variant("PRELOAD")) result |= GTK_ICON_LOOKUP_PRELOAD; /* `PRELOAD */
     list = Field(list, 1);
@@ -4612,6 +4955,57 @@ GtkStyleContextPrintFlags GtkStyleContextPrintFlags_val(value list) {
   }
   return result;
 }
+
+#if GTK_CHECK_VERSION(4,16,0)
+/* Convert GtkTextBufferNotifyFlags to OCaml flag list */
+value Val_GtkTextBufferNotifyFlags(GtkTextBufferNotifyFlags flags) {
+  CAMLparam0();
+  CAMLlocal2(result, cons);
+  result = Val_emptylist;
+
+  if (flags & GTK_TEXT_BUFFER_NOTIFY_BEFORE_INSERT) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("BEFORE_INSERT")); /* `BEFORE_INSERT */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+  if (flags & GTK_TEXT_BUFFER_NOTIFY_AFTER_INSERT) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("AFTER_INSERT")); /* `AFTER_INSERT */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+  if (flags & GTK_TEXT_BUFFER_NOTIFY_BEFORE_DELETE) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("BEFORE_DELETE")); /* `BEFORE_DELETE */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+  if (flags & GTK_TEXT_BUFFER_NOTIFY_AFTER_DELETE) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("AFTER_DELETE")); /* `AFTER_DELETE */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+
+  CAMLreturn(result);
+}
+
+/* Convert OCaml flag list to GtkTextBufferNotifyFlags */
+GtkTextBufferNotifyFlags GtkTextBufferNotifyFlags_val(value list) {
+  GtkTextBufferNotifyFlags result = 0;
+  while (list != Val_emptylist) {
+    value tag = Field(list, 0);
+    if (tag == caml_hash_variant("BEFORE_INSERT")) result |= GTK_TEXT_BUFFER_NOTIFY_BEFORE_INSERT; /* `BEFORE_INSERT */
+    else if (tag == caml_hash_variant("AFTER_INSERT")) result |= GTK_TEXT_BUFFER_NOTIFY_AFTER_INSERT; /* `AFTER_INSERT */
+    else if (tag == caml_hash_variant("BEFORE_DELETE")) result |= GTK_TEXT_BUFFER_NOTIFY_BEFORE_DELETE; /* `BEFORE_DELETE */
+    else if (tag == caml_hash_variant("AFTER_DELETE")) result |= GTK_TEXT_BUFFER_NOTIFY_AFTER_DELETE; /* `AFTER_DELETE */
+    list = Field(list, 1);
+  }
+  return result;
+}
+
+#endif
 
 /* Convert GtkTextSearchFlags to OCaml flag list */
 value Val_GtkTextSearchFlags(GtkTextSearchFlags flags) {

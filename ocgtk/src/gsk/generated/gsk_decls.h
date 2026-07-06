@@ -57,6 +57,13 @@
 #define Val_GskColorNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GskColorNode */
 
+#if GTK_CHECK_VERSION(4,20,0)
+#ifndef Val_GskComponentTransferNode
+#define GskComponentTransferNode_val(val) ((GskComponentTransferNode*)ml_gobject_ext_of_val(val))
+#define Val_GskComponentTransferNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
+#endif /* Val_GskComponentTransferNode */
+
+#endif
 #ifndef Val_GskConicGradientNode
 #define GskConicGradientNode_val(val) ((GskConicGradientNode*)ml_gobject_ext_of_val(val))
 #define Val_GskConicGradientNode(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -225,6 +232,13 @@ GskColorStop *GskColorStop_val(value val);
 value Val_GskColorStop(const GskColorStop *ptr);
 value Val_GskColorStop_option(const GskColorStop *ptr);
 
+#if GTK_CHECK_VERSION(4,20,0)
+/* Forward declarations for GskComponentTransfer converters */
+GskComponentTransfer *GskComponentTransfer_val(value val);
+value Val_GskComponentTransfer(const GskComponentTransfer *ptr);
+value Val_GskComponentTransfer_option(const GskComponentTransfer *ptr);
+#endif
+
 /* Forward declarations for GskParseLocation converters */
 GskParseLocation *GskParseLocation_val(value val);
 value Val_GskParseLocation(const GskParseLocation *ptr);
@@ -304,6 +318,10 @@ GskMaskMode GskMaskMode_val(value val);
 #if GTK_CHECK_VERSION(4,14,0)
 value Val_GskPathDirection(GskPathDirection val);
 GskPathDirection GskPathDirection_val(value val);
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+value Val_GskPathIntersection(GskPathIntersection val);
+GskPathIntersection GskPathIntersection_val(value val);
 #endif
 #if GTK_CHECK_VERSION(4,14,0)
 value Val_GskPathOperation(GskPathOperation val);

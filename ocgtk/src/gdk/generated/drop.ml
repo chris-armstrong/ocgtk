@@ -17,7 +17,7 @@ The @preferred action is a hint to the drag-and-drop mechanism about which
 action to use when multiple actions are possible.
 
 This function should be called by drag destinations in response to
-%GDK_DRAG_ENTER or %GDK_DRAG_MOTION events. If the destination does
+`GDK_DRAG_ENTER` or `GDK_DRAG_MOTION` events. If the destination does
 not yet know the exact actions it supports, it should set any possible
 actions first and then later call this function again. *)
 
@@ -41,7 +41,7 @@ external get_drag : t -> Drag.t option = "ml_gdk_drop_get_drag"
 (** If this is an in-app drag-and-drop operation, returns the `GdkDrag` that
     corresponds to this drop.
 
-    If it is not, %NULL is returned. *)
+    If it is not, `NULL` is returned. *)
 
 external get_display : t -> App_launch_context_cycle_de440b34.Display.t
   = "ml_gdk_drop_get_display"
@@ -55,10 +55,10 @@ external get_actions : t -> Gdk_enums.dragaction = "ml_gdk_drop_get_actions"
 (** Returns the possible actions for this `GdkDrop`.
 
     If this value contains multiple actions - i.e.
-    [func@Gdk.DragAction.is_unique] returns %FALSE for the result -
+    [func@Gdk.DragAction.is_unique] returns false for the result -
     [method@Gdk.Drop.finish] must choose the action to use when accepting the
-    drop. This will only happen if you passed %GDK_ACTION_ASK as one of the
-    possible actions in [method@Gdk.Drop.status]. %GDK_ACTION_ASK itself will
+    drop. This will only happen if you passed `GDK_ACTION_ASK` as one of the
+    possible actions in [method@Gdk.Drop.status]. `GDK_ACTION_ASK` itself will
     not be included in the actions returned by this function.
 
     This value may change over the lifetime of the [class@Gdk.Drop] both as a

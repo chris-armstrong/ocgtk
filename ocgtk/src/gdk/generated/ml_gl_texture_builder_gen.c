@@ -91,6 +91,28 @@ gdk_gl_texture_builder_set_context(GdkGLTextureBuilder_val(self), Option_val(arg
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,16,0)
+
+CAMLexport CAMLprim value ml_gdk_gl_texture_builder_set_color_state(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gdk_gl_texture_builder_set_color_state(GdkGLTextureBuilder_val(self), GdkColorState_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_gl_texture_builder_set_color_state(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("GLTextureBuilder requires GTK >= 4.16");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gdk_gl_texture_builder_get_width(value self)
 {
 CAMLparam1(self);
@@ -158,6 +180,28 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GdkGLContext));
 }
 
+#if GTK_CHECK_VERSION(4,16,0)
+
+CAMLexport CAMLprim value ml_gdk_gl_texture_builder_get_color_state(value self)
+{
+CAMLparam1(self);
+
+GdkColorState* result = gdk_gl_texture_builder_get_color_state(GdkGLTextureBuilder_val(self));
+if (result) result = g_boxed_copy(gdk_color_state_get_type(), result);
+CAMLreturn(Val_GdkColorState(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_gl_texture_builder_get_color_state(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("GLTextureBuilder requires GTK >= 4.16");
+return Val_unit;
+}
+#endif
+
 #else
 
 
@@ -165,6 +209,15 @@ CAMLexport CAMLprim value ml_gdk_gl_texture_builder_new(value unit)
 {
 CAMLparam1(unit);
 (void)unit;
+caml_failwith("GLTextureBuilder requires GTK >= 4.12");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gdk_gl_texture_builder_get_color_state(value self)
+{
+CAMLparam1(self);
+(void)self;
 caml_failwith("GLTextureBuilder requires GTK >= 4.12");
 return Val_unit;
 }
@@ -237,6 +290,16 @@ CAMLexport CAMLprim value ml_gdk_gl_texture_builder_get_width(value self)
 {
 CAMLparam1(self);
 (void)self;
+caml_failwith("GLTextureBuilder requires GTK >= 4.12");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gdk_gl_texture_builder_set_color_state(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
 caml_failwith("GLTextureBuilder requires GTK >= 4.12");
 return Val_unit;
 }

@@ -39,9 +39,3 @@ external is_active : t -> bool = "ml_g_socket_service_is_active"
     clients queue up until the service is started. *)
 
 (* Properties *)
-
-external get_active : t -> bool = "ml_g_socket_service_get_active"
-(** Get property: active *)
-
-external set_active : t -> bool -> unit = "ml_g_socket_service_set_active"
-(** Set property: active *)

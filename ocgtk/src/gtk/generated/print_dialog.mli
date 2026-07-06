@@ -9,14 +9,16 @@ external new_ : unit -> t = "ml_gtk_print_dialog_new"
 (* Methods *)
 
 external setup_finish :
-  t ->
-  Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-  (Print_setup.t option, GError.t) result = "ml_gtk_print_dialog_setup_finish"
+  t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (Print_setup.t, GError.t) result
+  = "ml_gtk_print_dialog_setup_finish"
 (** Finishes the [method@Gtk.PrintDialog.setup] call.
 
     If the call was successful, it returns a [struct@Gtk.PrintSetup] which
     contains the print settings and page setup information that will be used to
-    print. *)
+    print.
+
+    Note that this function returns a [error@Gtk.DialogError.DISMISSED] error if
+    the user cancels the dialog. *)
 
 external set_title : t -> string -> unit = "ml_gtk_print_dialog_set_title"
 (** Sets the title that will be shown on the print dialog. *)
@@ -41,7 +43,7 @@ external set_accept_label : t -> string -> unit
 external print_finish :
   t ->
   Ocgtk_gio.Gio.Wrappers.Async_result.t ->
-  (Ocgtk_gio.Gio.Wrappers.Output_stream.t option, GError.t) result
+  (Ocgtk_gio.Gio.Wrappers.Output_stream.t, GError.t) result
   = "ml_gtk_print_dialog_print_finish"
 (** Finishes the [method@Gtk.PrintDialog.print] call and returns the results.
 
@@ -52,22 +54,28 @@ external print_finish :
     [method@Gio.OutputStream.close] call, so if you are interested in the
     results, you need to explicitly close the output stream (it will be closed
     automatically if you just unref it). Be aware that the close call may not be
-    instant as it operation will for the printer to finish printing. *)
+    instant as it operation will for the printer to finish printing.
+
+    Note that this function returns a [error@Gtk.DialogError.DISMISSED] error if
+    the user cancels the dialog. *)
 
 external print_file_finish :
   t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result
   = "ml_gtk_print_dialog_print_file_finish"
 (** Finishes the [method@Gtk.PrintDialog.print_file] call and returns the
-    results. *)
+    results.
+
+    Note that this function returns a [error@Gtk.DialogError.DISMISSED] error if
+    the user cancels the dialog. *)
 
 external get_title : t -> string = "ml_gtk_print_dialog_get_title"
 (** Returns the title that will be shown on the print dialog. *)
 
-external get_print_settings : t -> Print_settings.t
+external get_print_settings : t -> Print_settings.t option
   = "ml_gtk_print_dialog_get_print_settings"
 (** Returns the print settings for the print dialog. *)
 
-external get_page_setup : t -> Page_setup.t
+external get_page_setup : t -> Page_setup.t option
   = "ml_gtk_print_dialog_get_page_setup"
 (** Returns the page setup. *)
 

@@ -9,7 +9,7 @@ class type event_controller_t = object
   method get_name : unit -> string option
   method get_propagation_limit : unit -> Gtk_enums.propagationlimit
   method get_propagation_phase : unit -> Gtk_enums.propagationphase
-  method get_widget : unit -> widget_t
+  method get_widget : unit -> widget_t option
   method reset : unit -> unit
   method set_name : string option -> unit
   method set_propagation_limit : Gtk_enums.propagationlimit -> unit
@@ -188,6 +188,7 @@ and widget_t = object
   method get_hexpand_set : unit -> bool
   method get_last_child : unit -> widget_t option
   method get_layout_manager : unit -> layout_manager_t option
+  method get_limit_events : unit -> bool
   method get_mapped : unit -> bool
   method get_margin_bottom : unit -> int
   method get_margin_end : unit -> int
@@ -277,6 +278,7 @@ and widget_t = object
   method set_hexpand : bool -> unit
   method set_hexpand_set : bool -> unit
   method set_layout_manager : layout_manager_t option -> unit
+  method set_limit_events : bool -> unit
   method set_margin_bottom : int -> unit
   method set_margin_end : int -> unit
   method set_margin_start : int -> unit
@@ -368,9 +370,10 @@ class event_controller
         .Event_controller
         .get_propagation_phase obj
 
-    method get_widget : unit -> widget_t =
+    method get_widget : unit -> widget_t option =
       fun () ->
-        new widget
+        Option.map
+          (fun ret -> new widget ret)
           (Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
            .Event_controller
            .get_widget obj)
@@ -942,6 +945,12 @@ and widget
            .Widget
            .get_layout_manager obj)
 
+    method get_limit_events : unit -> bool =
+      fun () ->
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        .Widget
+        .get_limit_events obj
+
     method get_mapped : unit -> bool =
       fun () ->
         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -1460,6 +1469,12 @@ and widget
         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
         .Widget
         .set_layout_manager obj layout_manager
+
+    method set_limit_events : bool -> unit =
+      fun limit_events ->
+        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+        .Widget
+        .set_limit_events obj limit_events
 
     method set_margin_bottom : int -> unit =
       fun margin ->

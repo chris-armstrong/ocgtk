@@ -33,4 +33,7 @@ external get_font : t -> Ocgtk_pango.Pango.Wrappers.Font.t
 
 external get_color : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
   = "ml_gsk_text_node_get_color"
-(** Retrieves the color used by the text @node. *)
+(** Retrieves the color used by the text @node.
+
+The value returned by this function will not be correct
+if the render node was created for a non-sRGB color. *)

@@ -91,35 +91,3 @@ GtkWidget* result = gtk_frame_get_child(GtkFrame_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GtkWidget));
 }
-
-CAMLexport CAMLprim value ml_gtk_frame_get_label_xalign(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GtkFrame *obj = (GtkFrame *)GtkFrame_val(self);
-    gfloat prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "label-xalign");
-if (pspec == NULL) caml_failwith("ml_gtk_frame_get_label_xalign: property 'label-xalign' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "label-xalign", &prop_gvalue);
-          prop_value = g_value_get_float(&prop_gvalue);
-
-      result = caml_copy_double(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
-CAMLexport CAMLprim value ml_gtk_frame_set_label_xalign(value self, value new_value)
-{
-    CAMLparam2(self, new_value);
-GtkFrame *obj = (GtkFrame *)GtkFrame_val(self);
-    gfloat c_value = Double_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "label-xalign");
-if (pspec == NULL) caml_failwith("ml_gtk_frame_set_label_xalign: property 'label-xalign' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-          g_value_set_float(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "label-xalign", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-    CAMLreturn(Val_unit);
-}

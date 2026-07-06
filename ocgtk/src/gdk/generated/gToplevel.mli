@@ -17,6 +17,8 @@ class type toplevel_t = object
     unit
 
   method focus : UInt32.t -> unit
+  method get_capabilities : unit -> Gdk_enums.toplevelcapabilities
+  method get_gravity : unit -> Gdk_enums.gravity
   method get_state : unit -> Gdk_enums.toplevelstate
 
   method inhibit_system_shortcuts :
@@ -28,6 +30,7 @@ class type toplevel_t = object
   method restore_system_shortcuts : unit -> unit
   method set_decorated : bool -> unit
   method set_deletable : bool -> unit
+  method set_gravity : Gdk_enums.gravity -> unit
   method set_icon_list : GTexture.texture_t list -> unit
   method set_modal : bool -> unit
   method set_startup_id : string -> unit

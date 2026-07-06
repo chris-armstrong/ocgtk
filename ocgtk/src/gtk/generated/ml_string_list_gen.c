@@ -84,6 +84,28 @@ const char* result = gtk_string_list_get_string(GtkStringList_val(self), Int_val
 CAMLreturn(Val_option_string(result));
 }
 
+#if GTK_CHECK_VERSION(4,18,0)
+
+CAMLexport CAMLprim value ml_gtk_string_list_find(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+guint result = gtk_string_list_find(GtkStringList_val(self), String_val(arg1));
+CAMLreturn(Val_int(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_string_list_find(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("StringList requires GTK >= 4.18");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gtk_string_list_append(value self, value arg1)
 {
 CAMLparam2(self, arg1);

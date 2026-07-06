@@ -12,14 +12,6 @@
 #include "wrappers.h"
 
 #include <gio/gio.h>
-#ifdef __linux__
-#include <gio/gunixoutputstream.h>
-#include <gio/gunixmounts.h>
-#include <gio/gunixinputstream.h>
-#include <gio/gunixfdmessage.h>
-#include <gio/gfiledescriptorbased.h>
-#include <gio/gdesktopappinfo.h>
-#endif /* __linux__ */
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
@@ -94,7 +86,7 @@ CAMLexport CAMLprim value ml_g_dbus_method_invocation_get_sender(value self)
 CAMLparam1(self);
 
 const gchar* result = g_dbus_method_invocation_get_sender(GDBusMethodInvocation_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 #if GLIB_CHECK_VERSION(2,38,0)
@@ -167,7 +159,7 @@ CAMLexport CAMLprim value ml_g_dbus_method_invocation_get_interface_name(value s
 CAMLparam1(self);
 
 const gchar* result = g_dbus_method_invocation_get_interface_name(GDBusMethodInvocation_val(self));
-CAMLreturn(caml_copy_string(result));
+CAMLreturn(Val_option_string(result));
 }
 
 CAMLexport CAMLprim value ml_g_dbus_method_invocation_get_connection(value self)

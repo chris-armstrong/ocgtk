@@ -39,13 +39,7 @@ class type menu_button_t = object
   method set_icon_name : string -> unit
   method set_label : string -> unit
   method set_menu_model : Ocgtk_gio.Gio.Menu_model.menu_model_t option -> unit
-
-  method set_popover :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
-
+  method set_popover : GPopover.popover_t option -> unit
   method set_primary : bool -> unit
   method set_use_underline : bool -> unit
   method as_menu_button : Menu_button.t

@@ -56,6 +56,35 @@ GdkAxisUse GdkAxisUse_val(value val) {
   }
 }
 
+#if GTK_CHECK_VERSION(4,16,0)
+/* Convert GdkCicpRange to OCaml value */
+value Val_GdkCicpRange(GdkCicpRange val) {
+  switch (val) {
+    case GDK_CICP_RANGE_NARROW: return caml_hash_variant("NARROW"); /* `NARROW */
+    case GDK_CICP_RANGE_FULL: return caml_hash_variant("FULL"); /* `FULL */
+    default: {
+      char msg[128];
+      g_snprintf(msg, sizeof(msg), "Unknown GdkCicpRange value: %d", (int)val);
+      g_warning("%s", msg);
+      caml_failwith(msg);
+    }
+  }
+}
+
+/* Convert OCaml value to GdkCicpRange */
+GdkCicpRange GdkCicpRange_val(value val) {
+  if (val == caml_hash_variant("NARROW")) return GDK_CICP_RANGE_NARROW; /* `NARROW */
+  else if (val == caml_hash_variant("FULL")) return GDK_CICP_RANGE_FULL; /* `FULL */
+  else {
+    char msg[128];
+    g_snprintf(msg, sizeof(msg), "Unknown GdkCicpRange tag: %ld", val);
+    g_warning("%s", msg);
+    caml_failwith(msg);
+  }
+}
+
+#endif
+
 /* Convert GdkCrossingMode to OCaml value */
 value Val_GdkCrossingMode(GdkCrossingMode val) {
   switch (val) {
@@ -256,6 +285,10 @@ value Val_GdkEventType(GdkEventType val) {
     case GDK_TOUCHPAD_HOLD: return caml_hash_variant("TOUCHPAD_HOLD"); /* `TOUCHPAD_HOLD */
 
 #endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_PAD_DIAL: return caml_hash_variant("PAD_DIAL"); /* `PAD_DIAL */
+
+#endif
     case GDK_EVENT_LAST: return caml_hash_variant("EVENT_LAST"); /* `EVENT_LAST */
     default: {
       char msg[128];
@@ -301,6 +334,12 @@ GdkEventType GdkEventType_val(value val) {
 
 #else
   else if (val == caml_hash_variant("TOUCHPAD_HOLD")) caml_failwith("GdkEventType.TOUCHPAD_HOLD requires 4.6");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("PAD_DIAL")) return GDK_PAD_DIAL; /* `PAD_DIAL */
+
+#else
+  else if (val == caml_hash_variant("PAD_DIAL")) caml_failwith("GdkEventType.PAD_DIAL requires 4.20");
 #endif
   else if (val == caml_hash_variant("EVENT_LAST")) return GDK_EVENT_LAST; /* `EVENT_LAST */
   else {
@@ -580,6 +619,134 @@ value Val_GdkMemoryFormat(GdkMemoryFormat val) {
     case GDK_MEMORY_X8B8G8R8: return caml_hash_variant("X8B8G8R8"); /* `X8B8G8R8 */
 
 #endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8_B8R8_420: return caml_hash_variant("G8_B8R8_420"); /* `G8_B8R8_420 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8_R8B8_420: return caml_hash_variant("G8_R8B8_420"); /* `G8_R8B8_420 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8_B8R8_422: return caml_hash_variant("G8_B8R8_422"); /* `G8_B8R8_422 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8_R8B8_422: return caml_hash_variant("G8_R8B8_422"); /* `G8_R8B8_422 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8_B8R8_444: return caml_hash_variant("G8_B8R8_444"); /* `G8_B8R8_444 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8_R8B8_444: return caml_hash_variant("G8_R8B8_444"); /* `G8_R8B8_444 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G10X6_B10X6R10X6_420: return caml_hash_variant("G10X6_B10X6R10X6_420"); /* `G10X6_B10X6R10X6_420 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G12X4_B12X4R12X4_420: return caml_hash_variant("G12X4_B12X4R12X4_420"); /* `G12X4_B12X4R12X4_420 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G16_B16R16_420: return caml_hash_variant("G16_B16R16_420"); /* `G16_B16R16_420 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8_B8_R8_410: return caml_hash_variant("G8_B8_R8_410"); /* `G8_B8_R8_410 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8_R8_B8_410: return caml_hash_variant("G8_R8_B8_410"); /* `G8_R8_B8_410 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8_B8_R8_411: return caml_hash_variant("G8_B8_R8_411"); /* `G8_B8_R8_411 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8_R8_B8_411: return caml_hash_variant("G8_R8_B8_411"); /* `G8_R8_B8_411 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8_B8_R8_420: return caml_hash_variant("G8_B8_R8_420"); /* `G8_B8_R8_420 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8_R8_B8_420: return caml_hash_variant("G8_R8_B8_420"); /* `G8_R8_B8_420 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8_B8_R8_422: return caml_hash_variant("G8_B8_R8_422"); /* `G8_B8_R8_422 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8_R8_B8_422: return caml_hash_variant("G8_R8_B8_422"); /* `G8_R8_B8_422 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8_B8_R8_444: return caml_hash_variant("G8_B8_R8_444"); /* `G8_B8_R8_444 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8_R8_B8_444: return caml_hash_variant("G8_R8_B8_444"); /* `G8_R8_B8_444 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8B8G8R8_422: return caml_hash_variant("G8B8G8R8_422"); /* `G8B8G8R8_422 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G8R8G8B8_422: return caml_hash_variant("G8R8G8B8_422"); /* `G8R8G8B8_422 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_R8G8B8G8_422: return caml_hash_variant("R8G8B8G8_422"); /* `R8G8B8G8_422 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_B8G8R8G8_422: return caml_hash_variant("B8G8R8G8_422"); /* `B8G8R8G8_422 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_X6G10_X6B10_X6R10_420: return caml_hash_variant("X6G10_X6B10_X6R10_420"); /* `X6G10_X6B10_X6R10_420 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_X6G10_X6B10_X6R10_422: return caml_hash_variant("X6G10_X6B10_X6R10_422"); /* `X6G10_X6B10_X6R10_422 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_X6G10_X6B10_X6R10_444: return caml_hash_variant("X6G10_X6B10_X6R10_444"); /* `X6G10_X6B10_X6R10_444 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_X4G12_X4B12_X4R12_420: return caml_hash_variant("X4G12_X4B12_X4R12_420"); /* `X4G12_X4B12_X4R12_420 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_X4G12_X4B12_X4R12_422: return caml_hash_variant("X4G12_X4B12_X4R12_422"); /* `X4G12_X4B12_X4R12_422 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_X4G12_X4B12_X4R12_444: return caml_hash_variant("X4G12_X4B12_X4R12_444"); /* `X4G12_X4B12_X4R12_444 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G16_B16_R16_420: return caml_hash_variant("G16_B16_R16_420"); /* `G16_B16_R16_420 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G16_B16_R16_422: return caml_hash_variant("G16_B16_R16_422"); /* `G16_B16_R16_422 */
+
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GDK_MEMORY_G16_B16_R16_444: return caml_hash_variant("G16_B16_R16_444"); /* `G16_B16_R16_444 */
+
+#endif
     case GDK_MEMORY_N_FORMATS: return caml_hash_variant("N_FORMATS"); /* `N_FORMATS */
     default: {
       char msg[128];
@@ -740,6 +907,198 @@ GdkMemoryFormat GdkMemoryFormat_val(value val) {
 #else
   else if (val == caml_hash_variant("X8B8G8R8")) caml_failwith("GdkMemoryFormat.X8B8G8R8 requires 4.14");
 #endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8_B8R8_420")) return GDK_MEMORY_G8_B8R8_420; /* `G8_B8R8_420 */
+
+#else
+  else if (val == caml_hash_variant("G8_B8R8_420")) caml_failwith("GdkMemoryFormat.G8_B8R8_420 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8_R8B8_420")) return GDK_MEMORY_G8_R8B8_420; /* `G8_R8B8_420 */
+
+#else
+  else if (val == caml_hash_variant("G8_R8B8_420")) caml_failwith("GdkMemoryFormat.G8_R8B8_420 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8_B8R8_422")) return GDK_MEMORY_G8_B8R8_422; /* `G8_B8R8_422 */
+
+#else
+  else if (val == caml_hash_variant("G8_B8R8_422")) caml_failwith("GdkMemoryFormat.G8_B8R8_422 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8_R8B8_422")) return GDK_MEMORY_G8_R8B8_422; /* `G8_R8B8_422 */
+
+#else
+  else if (val == caml_hash_variant("G8_R8B8_422")) caml_failwith("GdkMemoryFormat.G8_R8B8_422 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8_B8R8_444")) return GDK_MEMORY_G8_B8R8_444; /* `G8_B8R8_444 */
+
+#else
+  else if (val == caml_hash_variant("G8_B8R8_444")) caml_failwith("GdkMemoryFormat.G8_B8R8_444 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8_R8B8_444")) return GDK_MEMORY_G8_R8B8_444; /* `G8_R8B8_444 */
+
+#else
+  else if (val == caml_hash_variant("G8_R8B8_444")) caml_failwith("GdkMemoryFormat.G8_R8B8_444 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G10X6_B10X6R10X6_420")) return GDK_MEMORY_G10X6_B10X6R10X6_420; /* `G10X6_B10X6R10X6_420 */
+
+#else
+  else if (val == caml_hash_variant("G10X6_B10X6R10X6_420")) caml_failwith("GdkMemoryFormat.G10X6_B10X6R10X6_420 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G12X4_B12X4R12X4_420")) return GDK_MEMORY_G12X4_B12X4R12X4_420; /* `G12X4_B12X4R12X4_420 */
+
+#else
+  else if (val == caml_hash_variant("G12X4_B12X4R12X4_420")) caml_failwith("GdkMemoryFormat.G12X4_B12X4R12X4_420 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G16_B16R16_420")) return GDK_MEMORY_G16_B16R16_420; /* `G16_B16R16_420 */
+
+#else
+  else if (val == caml_hash_variant("G16_B16R16_420")) caml_failwith("GdkMemoryFormat.G16_B16R16_420 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8_B8_R8_410")) return GDK_MEMORY_G8_B8_R8_410; /* `G8_B8_R8_410 */
+
+#else
+  else if (val == caml_hash_variant("G8_B8_R8_410")) caml_failwith("GdkMemoryFormat.G8_B8_R8_410 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8_R8_B8_410")) return GDK_MEMORY_G8_R8_B8_410; /* `G8_R8_B8_410 */
+
+#else
+  else if (val == caml_hash_variant("G8_R8_B8_410")) caml_failwith("GdkMemoryFormat.G8_R8_B8_410 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8_B8_R8_411")) return GDK_MEMORY_G8_B8_R8_411; /* `G8_B8_R8_411 */
+
+#else
+  else if (val == caml_hash_variant("G8_B8_R8_411")) caml_failwith("GdkMemoryFormat.G8_B8_R8_411 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8_R8_B8_411")) return GDK_MEMORY_G8_R8_B8_411; /* `G8_R8_B8_411 */
+
+#else
+  else if (val == caml_hash_variant("G8_R8_B8_411")) caml_failwith("GdkMemoryFormat.G8_R8_B8_411 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8_B8_R8_420")) return GDK_MEMORY_G8_B8_R8_420; /* `G8_B8_R8_420 */
+
+#else
+  else if (val == caml_hash_variant("G8_B8_R8_420")) caml_failwith("GdkMemoryFormat.G8_B8_R8_420 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8_R8_B8_420")) return GDK_MEMORY_G8_R8_B8_420; /* `G8_R8_B8_420 */
+
+#else
+  else if (val == caml_hash_variant("G8_R8_B8_420")) caml_failwith("GdkMemoryFormat.G8_R8_B8_420 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8_B8_R8_422")) return GDK_MEMORY_G8_B8_R8_422; /* `G8_B8_R8_422 */
+
+#else
+  else if (val == caml_hash_variant("G8_B8_R8_422")) caml_failwith("GdkMemoryFormat.G8_B8_R8_422 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8_R8_B8_422")) return GDK_MEMORY_G8_R8_B8_422; /* `G8_R8_B8_422 */
+
+#else
+  else if (val == caml_hash_variant("G8_R8_B8_422")) caml_failwith("GdkMemoryFormat.G8_R8_B8_422 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8_B8_R8_444")) return GDK_MEMORY_G8_B8_R8_444; /* `G8_B8_R8_444 */
+
+#else
+  else if (val == caml_hash_variant("G8_B8_R8_444")) caml_failwith("GdkMemoryFormat.G8_B8_R8_444 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8_R8_B8_444")) return GDK_MEMORY_G8_R8_B8_444; /* `G8_R8_B8_444 */
+
+#else
+  else if (val == caml_hash_variant("G8_R8_B8_444")) caml_failwith("GdkMemoryFormat.G8_R8_B8_444 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8B8G8R8_422")) return GDK_MEMORY_G8B8G8R8_422; /* `G8B8G8R8_422 */
+
+#else
+  else if (val == caml_hash_variant("G8B8G8R8_422")) caml_failwith("GdkMemoryFormat.G8B8G8R8_422 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G8R8G8B8_422")) return GDK_MEMORY_G8R8G8B8_422; /* `G8R8G8B8_422 */
+
+#else
+  else if (val == caml_hash_variant("G8R8G8B8_422")) caml_failwith("GdkMemoryFormat.G8R8G8B8_422 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("R8G8B8G8_422")) return GDK_MEMORY_R8G8B8G8_422; /* `R8G8B8G8_422 */
+
+#else
+  else if (val == caml_hash_variant("R8G8B8G8_422")) caml_failwith("GdkMemoryFormat.R8G8B8G8_422 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("B8G8R8G8_422")) return GDK_MEMORY_B8G8R8G8_422; /* `B8G8R8G8_422 */
+
+#else
+  else if (val == caml_hash_variant("B8G8R8G8_422")) caml_failwith("GdkMemoryFormat.B8G8R8G8_422 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("X6G10_X6B10_X6R10_420")) return GDK_MEMORY_X6G10_X6B10_X6R10_420; /* `X6G10_X6B10_X6R10_420 */
+
+#else
+  else if (val == caml_hash_variant("X6G10_X6B10_X6R10_420")) caml_failwith("GdkMemoryFormat.X6G10_X6B10_X6R10_420 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("X6G10_X6B10_X6R10_422")) return GDK_MEMORY_X6G10_X6B10_X6R10_422; /* `X6G10_X6B10_X6R10_422 */
+
+#else
+  else if (val == caml_hash_variant("X6G10_X6B10_X6R10_422")) caml_failwith("GdkMemoryFormat.X6G10_X6B10_X6R10_422 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("X6G10_X6B10_X6R10_444")) return GDK_MEMORY_X6G10_X6B10_X6R10_444; /* `X6G10_X6B10_X6R10_444 */
+
+#else
+  else if (val == caml_hash_variant("X6G10_X6B10_X6R10_444")) caml_failwith("GdkMemoryFormat.X6G10_X6B10_X6R10_444 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("X4G12_X4B12_X4R12_420")) return GDK_MEMORY_X4G12_X4B12_X4R12_420; /* `X4G12_X4B12_X4R12_420 */
+
+#else
+  else if (val == caml_hash_variant("X4G12_X4B12_X4R12_420")) caml_failwith("GdkMemoryFormat.X4G12_X4B12_X4R12_420 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("X4G12_X4B12_X4R12_422")) return GDK_MEMORY_X4G12_X4B12_X4R12_422; /* `X4G12_X4B12_X4R12_422 */
+
+#else
+  else if (val == caml_hash_variant("X4G12_X4B12_X4R12_422")) caml_failwith("GdkMemoryFormat.X4G12_X4B12_X4R12_422 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("X4G12_X4B12_X4R12_444")) return GDK_MEMORY_X4G12_X4B12_X4R12_444; /* `X4G12_X4B12_X4R12_444 */
+
+#else
+  else if (val == caml_hash_variant("X4G12_X4B12_X4R12_444")) caml_failwith("GdkMemoryFormat.X4G12_X4B12_X4R12_444 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G16_B16_R16_420")) return GDK_MEMORY_G16_B16_R16_420; /* `G16_B16_R16_420 */
+
+#else
+  else if (val == caml_hash_variant("G16_B16_R16_420")) caml_failwith("GdkMemoryFormat.G16_B16_R16_420 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G16_B16_R16_422")) return GDK_MEMORY_G16_B16_R16_422; /* `G16_B16_R16_422 */
+
+#else
+  else if (val == caml_hash_variant("G16_B16_R16_422")) caml_failwith("GdkMemoryFormat.G16_B16_R16_422 requires 4.20");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("G16_B16_R16_444")) return GDK_MEMORY_G16_B16_R16_444; /* `G16_B16_R16_444 */
+
+#else
+  else if (val == caml_hash_variant("G16_B16_R16_444")) caml_failwith("GdkMemoryFormat.G16_B16_R16_444 requires 4.20");
+#endif
   else if (val == caml_hash_variant("N_FORMATS")) return GDK_MEMORY_N_FORMATS; /* `N_FORMATS */
   else {
     char msg[128];
@@ -814,6 +1173,37 @@ GdkScrollDirection GdkScrollDirection_val(value val) {
     caml_failwith(msg);
   }
 }
+
+#if GTK_CHECK_VERSION(4,20,0)
+/* Convert GdkScrollRelativeDirection to OCaml value */
+value Val_GdkScrollRelativeDirection(GdkScrollRelativeDirection val) {
+  switch (val) {
+    case GDK_SCROLL_RELATIVE_DIRECTION_IDENTICAL: return caml_hash_variant("IDENTICAL"); /* `IDENTICAL */
+    case GDK_SCROLL_RELATIVE_DIRECTION_INVERTED: return caml_hash_variant("INVERTED"); /* `INVERTED */
+    case GDK_SCROLL_RELATIVE_DIRECTION_UNKNOWN: return caml_hash_variant("UNKNOWN"); /* `UNKNOWN */
+    default: {
+      char msg[128];
+      g_snprintf(msg, sizeof(msg), "Unknown GdkScrollRelativeDirection value: %d", (int)val);
+      g_warning("%s", msg);
+      caml_failwith(msg);
+    }
+  }
+}
+
+/* Convert OCaml value to GdkScrollRelativeDirection */
+GdkScrollRelativeDirection GdkScrollRelativeDirection_val(value val) {
+  if (val == caml_hash_variant("IDENTICAL")) return GDK_SCROLL_RELATIVE_DIRECTION_IDENTICAL; /* `IDENTICAL */
+  else if (val == caml_hash_variant("INVERTED")) return GDK_SCROLL_RELATIVE_DIRECTION_INVERTED; /* `INVERTED */
+  else if (val == caml_hash_variant("UNKNOWN")) return GDK_SCROLL_RELATIVE_DIRECTION_UNKNOWN; /* `UNKNOWN */
+  else {
+    char msg[128];
+    g_snprintf(msg, sizeof(msg), "Unknown GdkScrollRelativeDirection tag: %ld", val);
+    g_warning("%s", msg);
+    caml_failwith(msg);
+  }
+}
+
+#endif
 
 #if GTK_CHECK_VERSION(4,8,0)
 /* Convert GdkScrollUnit to OCaml value */
@@ -1222,6 +1612,15 @@ value Val_GdkDragAction(GdkDragAction flags) {
   CAMLlocal2(result, cons);
   result = Val_emptylist;
 
+#if GTK_CHECK_VERSION(4,20,0)
+  if (flags & GDK_ACTION_NONE) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("NONE")); /* `NONE */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+
+#endif
   if (flags & GDK_ACTION_COPY) {
     cons = caml_alloc(2, 0);
     Store_field(cons, 0, caml_hash_variant("COPY")); /* `COPY */
@@ -1255,7 +1654,13 @@ GdkDragAction GdkDragAction_val(value list) {
   GdkDragAction result = 0;
   while (list != Val_emptylist) {
     value tag = Field(list, 0);
-    if (tag == caml_hash_variant("COPY")) result |= GDK_ACTION_COPY; /* `COPY */
+#if GTK_CHECK_VERSION(4,20,0)
+    if (tag == caml_hash_variant("NONE")) result |= GDK_ACTION_NONE; /* `NONE */
+
+#else
+    if (tag == caml_hash_variant("NONE")) caml_failwith("GdkDragAction.NONE requires 4.20");
+#endif
+    else if (tag == caml_hash_variant("COPY")) result |= GDK_ACTION_COPY; /* `COPY */
     else if (tag == caml_hash_variant("MOVE")) result |= GDK_ACTION_MOVE; /* `MOVE */
     else if (tag == caml_hash_variant("LINK")) result |= GDK_ACTION_LINK; /* `LINK */
     else if (tag == caml_hash_variant("ASK")) result |= GDK_ACTION_ASK; /* `ASK */
@@ -1605,6 +2010,85 @@ GdkSeatCapabilities GdkSeatCapabilities_val(value list) {
   }
   return result;
 }
+
+#if GTK_CHECK_VERSION(4,20,0)
+/* Convert GdkToplevelCapabilities to OCaml flag list */
+value Val_GdkToplevelCapabilities(GdkToplevelCapabilities flags) {
+  CAMLparam0();
+  CAMLlocal2(result, cons);
+  result = Val_emptylist;
+
+  if (flags & GDK_TOPLEVEL_CAPABILITIES_EDGE_CONSTRAINTS) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("EDGE_CONSTRAINTS")); /* `EDGE_CONSTRAINTS */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+  if (flags & GDK_TOPLEVEL_CAPABILITIES_INHIBIT_SHORTCUTS) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("INHIBIT_SHORTCUTS")); /* `INHIBIT_SHORTCUTS */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+  if (flags & GDK_TOPLEVEL_CAPABILITIES_TITLEBAR_GESTURES) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("TITLEBAR_GESTURES")); /* `TITLEBAR_GESTURES */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+  if (flags & GDK_TOPLEVEL_CAPABILITIES_WINDOW_MENU) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("WINDOW_MENU")); /* `WINDOW_MENU */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+  if (flags & GDK_TOPLEVEL_CAPABILITIES_MAXIMIZE) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("MAXIMIZE")); /* `MAXIMIZE */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+  if (flags & GDK_TOPLEVEL_CAPABILITIES_FULLSCREEN) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("FULLSCREEN")); /* `FULLSCREEN */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+  if (flags & GDK_TOPLEVEL_CAPABILITIES_MINIMIZE) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("MINIMIZE")); /* `MINIMIZE */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+  if (flags & GDK_TOPLEVEL_CAPABILITIES_LOWER) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("LOWER")); /* `LOWER */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+
+  CAMLreturn(result);
+}
+
+/* Convert OCaml flag list to GdkToplevelCapabilities */
+GdkToplevelCapabilities GdkToplevelCapabilities_val(value list) {
+  GdkToplevelCapabilities result = 0;
+  while (list != Val_emptylist) {
+    value tag = Field(list, 0);
+    if (tag == caml_hash_variant("EDGE_CONSTRAINTS")) result |= GDK_TOPLEVEL_CAPABILITIES_EDGE_CONSTRAINTS; /* `EDGE_CONSTRAINTS */
+    else if (tag == caml_hash_variant("INHIBIT_SHORTCUTS")) result |= GDK_TOPLEVEL_CAPABILITIES_INHIBIT_SHORTCUTS; /* `INHIBIT_SHORTCUTS */
+    else if (tag == caml_hash_variant("TITLEBAR_GESTURES")) result |= GDK_TOPLEVEL_CAPABILITIES_TITLEBAR_GESTURES; /* `TITLEBAR_GESTURES */
+    else if (tag == caml_hash_variant("WINDOW_MENU")) result |= GDK_TOPLEVEL_CAPABILITIES_WINDOW_MENU; /* `WINDOW_MENU */
+    else if (tag == caml_hash_variant("MAXIMIZE")) result |= GDK_TOPLEVEL_CAPABILITIES_MAXIMIZE; /* `MAXIMIZE */
+    else if (tag == caml_hash_variant("FULLSCREEN")) result |= GDK_TOPLEVEL_CAPABILITIES_FULLSCREEN; /* `FULLSCREEN */
+    else if (tag == caml_hash_variant("MINIMIZE")) result |= GDK_TOPLEVEL_CAPABILITIES_MINIMIZE; /* `MINIMIZE */
+    else if (tag == caml_hash_variant("LOWER")) result |= GDK_TOPLEVEL_CAPABILITIES_LOWER; /* `LOWER */
+    list = Field(list, 1);
+  }
+  return result;
+}
+
+#endif
 
 /* Convert GdkToplevelState to OCaml flag list */
 value Val_GdkToplevelState(GdkToplevelState flags) {

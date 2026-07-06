@@ -68,3 +68,9 @@ CAMLlocal1(ret);
     Store_field(ret, 1, Val_int(out2));
     CAMLreturn(ret);
 }
+
+CAMLprim value ml_gdk_toplevel_size_get_type(value unit)
+{
+  CAMLparam1(unit);
+  CAMLreturn(Val_long(gdk_toplevel_size_get_type()));
+}

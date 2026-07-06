@@ -75,8 +75,6 @@
    ml_datagram_based_gen
    ml_debug_controller_d_bus_gen
    ml_debug_controller_gen
-   ml_desktop_app_info_gen
-   ml_desktop_app_info_lookup_gen
    ml_drive_gen
    ml_dtls_client_connection_gen
    ml_dtls_connection_gen
@@ -86,7 +84,6 @@
    ml_file_attribute_info_gen
    ml_file_attribute_info_list_gen
    ml_file_attribute_matcher_gen
-   ml_file_descriptor_based_gen
    ml_file_enumerator_gen
    ml_file_gen
    ml_file_icon_gen
@@ -104,6 +101,9 @@
    ml_inet_address_mask_gen
    ml_inet_socket_address_gen
    ml_initable_gen
+   ml_input_message_gen
+   ml_input_stream_gen
+   ml_input_vector_gen
   )
   (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gio.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gio.sexp)))
@@ -117,9 +117,6 @@
  (foreign_stubs
   (language c)
   (names
-   ml_input_message_gen
-   ml_input_stream_gen
-   ml_input_vector_gen
    ml_io_extension_gen
    ml_io_extension_point_gen
    ml_io_module_gen
@@ -197,6 +194,9 @@
    ml_tls_client_connection_gen
    ml_tls_connection_gen
    ml_tls_database_gen
+   ml_tls_file_database_gen
+   ml_tls_interaction_gen
+   ml_tls_password_gen
   )
   (flags -fPIC -Igenerated -Icore -I../common (:include cflag-gio.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-gio.sexp)))
@@ -210,19 +210,10 @@
  (foreign_stubs
   (language c)
   (names
-   ml_tls_file_database_gen
-   ml_tls_interaction_gen
-   ml_tls_password_gen
    ml_tls_server_connection_gen
    ml_unix_connection_gen
    ml_unix_credentials_message_gen
    ml_unix_fd_list_gen
-   ml_unix_fd_message_gen
-   ml_unix_input_stream_gen
-   ml_unix_mount_entry_gen
-   ml_unix_mount_monitor_gen
-   ml_unix_mount_point_gen
-   ml_unix_output_stream_gen
    ml_unix_socket_address_gen
    ml_vfs_gen
    ml_volume_gen

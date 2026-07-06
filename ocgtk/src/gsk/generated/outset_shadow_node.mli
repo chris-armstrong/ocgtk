@@ -32,7 +32,10 @@ external get_dx : t -> float = "ml_gsk_outset_shadow_node_get_dx"
 
 external get_color : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
   = "ml_gsk_outset_shadow_node_get_color"
-(** Retrieves the color of the outset shadow. *)
+(** Retrieves the color of the outset shadow.
+
+    The value returned by this function will not be correct if the render node
+    was created for a non-sRGB color. *)
 
 external get_blur_radius : t -> float
   = "ml_gsk_outset_shadow_node_get_blur_radius"

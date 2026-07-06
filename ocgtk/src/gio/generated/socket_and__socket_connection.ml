@@ -75,7 +75,7 @@ module rec Socket : sig
   setsockopt(). (If you need to set a non-integer-valued option,
   you will need to call setsockopt() directly.)
 
-  The [<gio/gnetworking.h>][gio-gnetworking.h]
+  The [`<gio/gnetworking.h>`](networking.html)
   header pulls in system headers that will define most of the
   standard/portable socket options. For unusual socket protocols or
   platform-dependent options, you may need to include additional
@@ -450,7 +450,7 @@ module rec Socket : sig
   getsockopt(). (If you need to fetch a  non-integer-valued option,
   you will need to call getsockopt() directly.)
 
-  The [<gio/gnetworking.h>][gio-gnetworking.h]
+  The [`<gio/gnetworking.h>`](networking.html)
   header pulls in system headers that will define most of the
   standard/portable socket options. For unusual socket protocols or
   platform-dependent options, you may need to include additional
@@ -730,7 +730,7 @@ end = struct
   setsockopt(). (If you need to set a non-integer-valued option,
   you will need to call setsockopt() directly.)
 
-  The [<gio/gnetworking.h>][gio-gnetworking.h]
+  The [`<gio/gnetworking.h>`](networking.html)
   header pulls in system headers that will define most of the
   standard/portable socket options. For unusual socket protocols or
   platform-dependent options, you may need to include additional
@@ -1105,7 +1105,7 @@ end = struct
   getsockopt(). (If you need to fetch a  non-integer-valued option,
   you will need to call getsockopt() directly.)
 
-  The [<gio/gnetworking.h>][gio-gnetworking.h]
+  The [`<gio/gnetworking.h>`](networking.html)
   header pulls in system headers that will define most of the
   standard/portable socket options. For unusual socket protocols or
   platform-dependent options, you may need to include additional

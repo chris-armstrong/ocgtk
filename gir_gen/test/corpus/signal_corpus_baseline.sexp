@@ -33,10 +33,11 @@
      1)
     ("unsupported parameter type for 'size': boxed type Gdk.ToplevelSize not yet supported"
      1))))
- ((namespace Gio) (total_signals 81) (supported 71) (unsupported 10)
+ ((namespace Gio) (total_signals 79) (supported 69) (unsupported 10)
   (by_reason
    (("unsupported parameter type for 'choices': GArray not yet supported" 1)
-    ("unsupported parameter type for 'error': primitive type GLib.Error not in marshaller table" 1)
+    ("unsupported parameter type for 'error': primitive type GLib.Error not in marshaller table"
+     1)
     ("unsupported parameter type for 'files': GArray not yet supported" 1)
     ("unsupported parameter type for 'invalidated_properties': GArray not yet supported"
      2)

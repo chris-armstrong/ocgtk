@@ -57,7 +57,10 @@ and app_launch_context_t = object
 
   method get_display : app_info_t -> file_t list -> string option
   method get_environment : unit -> string array
-  method get_startup_notify_id : app_info_t -> file_t list -> string option
+
+  method get_startup_notify_id :
+    app_info_t option -> file_t list option -> string option
+
   method launch_failed : string -> unit
   method setenv : string -> string -> unit
   method unsetenv : string -> unit
@@ -418,10 +421,12 @@ and file_monitor_t = object
     Gobject.Signal.handler_id
 
   method cancel : unit -> bool
-  method emit_event : file_t -> file_t -> Gio_enums.filemonitorevent -> unit
+
+  method emit_event :
+    file_t -> file_t option -> Gio_enums.filemonitorevent -> unit
+
   method is_cancelled : unit -> bool
   method set_rate_limit : int -> unit
-  method cancelled : bool
   method as_file_monitor : App_info_cycle_64c425a0.File_monitor.t
 end
 
@@ -634,10 +639,11 @@ and app_launch_context (obj : App_info_cycle_64c425a0.App_launch_context.t) :
     method get_environment : unit -> string array =
       fun () -> App_info_cycle_64c425a0.App_launch_context.get_environment obj
 
-    method get_startup_notify_id : app_info_t -> file_t list -> string option =
+    method get_startup_notify_id :
+        app_info_t option -> file_t list option -> string option =
       fun info files ->
-        let info = info#as_app_info in
-        let files = (List.map (fun c -> c#as_file)) files in
+        let info = Option.map (fun c -> c#as_app_info) info in
+        let files = Option.map (List.map (fun c -> c#as_file)) files in
         App_info_cycle_64c425a0.App_launch_context.get_startup_notify_id obj
           info files
 
@@ -1439,10 +1445,11 @@ and file_monitor (obj : App_info_cycle_64c425a0.File_monitor.t) : file_monitor_t
     method cancel : unit -> bool =
       fun () -> App_info_cycle_64c425a0.File_monitor.cancel obj
 
-    method emit_event : file_t -> file_t -> Gio_enums.filemonitorevent -> unit =
+    method emit_event :
+        file_t -> file_t option -> Gio_enums.filemonitorevent -> unit =
       fun child other_file event_type ->
         let child = child#as_file in
-        let other_file = other_file#as_file in
+        let other_file = Option.map (fun c -> c#as_file) other_file in
         App_info_cycle_64c425a0.File_monitor.emit_event obj child other_file
           event_type
 
@@ -1453,7 +1460,6 @@ and file_monitor (obj : App_info_cycle_64c425a0.File_monitor.t) : file_monitor_t
       fun limit_msecs ->
         App_info_cycle_64c425a0.File_monitor.set_rate_limit obj limit_msecs
 
-    method cancelled = App_info_cycle_64c425a0.File_monitor.get_cancelled obj
     method as_file_monitor = obj
   end
 

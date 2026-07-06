@@ -64,7 +64,7 @@ external get_op_res_gboolean : t -> bool
 external complete_in_idle : t -> unit
   = "ml_g_simple_async_result_complete_in_idle"
 (** Completes an asynchronous function in an idle handler in the
-[thread-default main context][g-main-context-push-thread-default]
+thread-default main context (see [method@GLib.MainContext.push_thread_default])
 of the thread that @simple was initially created in
 (and re-pushes that context around the invocation of the callback).
 

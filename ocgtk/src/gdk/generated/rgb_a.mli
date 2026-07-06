@@ -2,8 +2,8 @@
 (* RGBA: RGBA *)
 
 type t = [ `rgb_a ] Gobject.obj
-(** A `GdkRGBA` is used to represent a color, in a way that is compatible with
-    cairo’s notion of color.
+(** Represents a color, in a way that is compatible with cairo’s notion of
+    color.
 
     `GdkRGBA` is a convenient way to pass colors around. It’s based on cairo’s
     way to deal with colors and mirrors its behavior. All values are in the

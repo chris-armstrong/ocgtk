@@ -32,7 +32,8 @@ module rec Event_controller : sig
   external reset : t -> unit = "ml_gtk_event_controller_reset"
   (** Resets the @controller to a clean state. *)
 
-  external get_widget : t -> Widget.t = "ml_gtk_event_controller_get_widget"
+  external get_widget : t -> Widget.t option
+    = "ml_gtk_event_controller_get_widget"
   (** Returns the `GtkWidget` this controller relates to. *)
 
   external get_propagation_phase : t -> Gtk_enums.propagationphase
@@ -239,13 +240,14 @@ and Widget : sig
       This function is for use in widget implementations. *)
 
   external unrealize : t -> unit = "ml_gtk_widget_unrealize"
-  (** Causes a widget to be unrealized (frees all GDK resources associated with
-      the widget).
+  (** Causes a widget to be unrealized.
+
+      This frees all GDK resources associated with the widget.
 
       This function is only useful in widget implementations. *)
 
   external unparent : t -> unit = "ml_gtk_widget_unparent"
-  (** Dissociate @widget from its parent.
+  (** Removes @widget from its parent.
 
   This function is only for use in widget implementations,
   typically in dispose. *)
@@ -257,21 +259,21 @@ and Widget : sig
 
   external trigger_tooltip_query : t -> unit
     = "ml_gtk_widget_trigger_tooltip_query"
-  (** Triggers a tooltip query on the display where the toplevel
-  of @widget is located. *)
+  (** Triggers a tooltip query on the display of the widget. *)
 
   external translate_coordinates :
     t -> t -> float -> float -> bool * float * float
     = "ml_gtk_widget_translate_coordinates"
-  (** Translate coordinates relative to @src_widget’s allocation
+  (** Translates coordinates relative to @src_widget’s allocation
   to coordinates relative to @dest_widget’s allocations.
 
   In order to perform this operation, both widget must share
-  a common ancestor. *)
+  a common ancestor. If that is not the case, @dest_x and @dest_y
+  are set to 0 and false is returned. *)
 
   external snapshot_child : t -> t -> Snapshot.t -> unit
     = "ml_gtk_widget_snapshot_child"
-  (** Snapshot the a child of @widget.
+  (** Snapshots a child of the widget.
 
   When a widget receives a call to the snapshot function,
   it must send synthetic [vfunc@Gtk.Widget.snapshot] calls
@@ -281,10 +283,10 @@ and Widget : sig
   gtk_widget_snapshot_child() once for each child, passing in
   the @snapshot the widget received.
 
-  gtk_widget_snapshot_child() takes care of translating the origin of
-  @snapshot, and deciding whether the child needs to be snapshot.
+  This function takes care of translating the origin of @snapshot,
+  and deciding whether the child needs to be snapshot.
 
-  This function does nothing for children that implement `GtkNative`. *)
+  It does nothing for children that implement `GtkNative`. *)
 
   external show : t -> unit = "ml_gtk_widget_show"
   (** Flags a widget to be displayed.
@@ -294,21 +296,21 @@ and Widget : sig
       Remember that you have to show the containers containing a widget, in
       addition to the widget itself, before it will appear onscreen.
 
-      When a toplevel container is shown, it is immediately realized and mapped;
-      other shown widgets are realized and mapped when their toplevel container
-      is realized and mapped. *)
+      When a toplevel widget is shown, it is immediately realized and mapped;
+      other shown widgets are realized and mapped when their toplevel widget is
+      realized and mapped. *)
 
   external should_layout : t -> bool = "ml_gtk_widget_should_layout"
-  (** Returns whether @widget should contribute to
-  the measuring and allocation of its parent.
+  (** Returns whether the widget should contribute to the measuring and
+      allocation of its parent.
 
-  This is %FALSE for invisible children, but also
-  for children that have their own surface. *)
+      This is false for invisible children, but also for children that have
+      their own surface, such as [class@Gtk.Popover] instances. *)
 
   external set_visible : t -> bool -> unit = "ml_gtk_widget_set_visible"
   (** Sets the visibility state of @widget.
 
-  Note that setting this to %TRUE doesn’t mean the widget is
+  Note that setting this to true doesn’t mean the widget is
   actually viewable, see [method@Gtk.Widget.get_visible]. *)
 
   external set_vexpand_set : t -> bool -> unit = "ml_gtk_widget_set_vexpand_set"
@@ -323,11 +325,11 @@ and Widget : sig
 
   external set_valign : t -> Gtk_enums.align -> unit
     = "ml_gtk_widget_set_valign"
-  (** Sets the vertical alignment of @widget. *)
+  (** Sets the vertical alignment of the widget. *)
 
   external set_tooltip_text : t -> string option -> unit
     = "ml_gtk_widget_set_tooltip_text"
-  (** Sets @text as the contents of the tooltip.
+  (** Sets the contents of the tooltip for the widget.
 
   If @text contains any markup, it will be escaped.
 
@@ -340,8 +342,9 @@ and Widget : sig
 
   external set_tooltip_markup : t -> string option -> unit
     = "ml_gtk_widget_set_tooltip_markup"
-  (** Sets @markup as the contents of the tooltip, which is marked
-  up with Pango markup.
+  (** Sets the contents of the tooltip for widget.
+
+  @markup must contain Pango markup.
 
   This function will take care of setting the
   [property@Gtk.Widget:has-tooltip] as a side effect, and of the
@@ -355,15 +358,15 @@ and Widget : sig
 
       Typical widget states are insensitive, prelighted, etc.
 
-      This function accepts the values %GTK_STATE_FLAG_DIR_LTR and
-      %GTK_STATE_FLAG_DIR_RTL but ignores them. If you want to set the widget's
-      direction, use [method@Gtk.Widget.set_direction].
+      This function accepts the values [flags@Gtk.StateFlags.dir-ltr] and
+      [flags@Gtk.StateFlags.dir-rtl] but ignores them. If you want to set the
+      widget's direction, use [method@Gtk.Widget.set_direction].
 
       This function is for use in widget implementations. *)
 
   external set_size_request : t -> int -> int -> unit
     = "ml_gtk_widget_set_size_request"
-  (** Sets the minimum size of a widget.
+  (** Sets the minimum size of the widget.
 
   That is, the widget’s size request will be at least @width
   by @height. You can use this function to force a widget to
@@ -377,9 +380,8 @@ and Widget : sig
 
   Note the inherent danger of setting any fixed size - themes,
   translations into other languages, different fonts, and user action
-  can all change the appropriate size for a given widget. So, it's
-  basically impossible to hardcode a size that will always be
-  correct.
+  can all change the appropriate size for a given widget. So, it is
+  basically impossible to hardcode a size that will always work.
 
   The size request of a widget is the smallest size a widget can
   accept while still functioning well and drawing itself correctly.
@@ -400,7 +402,7 @@ and Widget : sig
   of `GtkWidget`. *)
 
   external set_sensitive : t -> bool -> unit = "ml_gtk_widget_set_sensitive"
-  (** Sets the sensitivity of a widget.
+  (** Sets the sensitivity of the widget.
 
       A widget is sensitive if the user can interact with it. Insensitive
       widgets are “grayed out” and the user can’t interact with them.
@@ -409,55 +411,53 @@ and Widget : sig
 
   external set_receives_default : t -> bool -> unit
     = "ml_gtk_widget_set_receives_default"
-  (** Specifies whether @widget will be treated as the default
-  widget within its toplevel when it has the focus, even if
-  another widget is the default. *)
+  (** Sets whether the widget will be treated as the default widget within its
+      toplevel when it has the focus, even if another widget is the default. *)
 
   external set_parent : t -> t -> unit = "ml_gtk_widget_set_parent"
-  (** Sets @parent as the parent widget of @widget.
+  (** Sets the parent widget of the widget.
 
-  This takes care of details such as updating the state and style
-  of the child to reflect its new location and resizing the parent.
-  The opposite function is [method@Gtk.Widget.unparent].
+      This takes care of details such as updating the state and style of the
+      child to reflect its new location and resizing the parent. The opposite
+      function is [method@Gtk.Widget.unparent].
 
-  This function is useful only when implementing subclasses of
-  `GtkWidget`. *)
+      This function is useful only when implementing subclasses of `GtkWidget`.
+  *)
 
   external set_overflow : t -> Gtk_enums.overflow -> unit
     = "ml_gtk_widget_set_overflow"
-  (** Sets how @widget treats content that is drawn outside the
-  widget's content area.
+  (** Sets how the widget treats content that is drawn outside the it's content
+      area.
 
-  See the definition of [enum@Gtk.Overflow] for details.
+      See the definition of [enum@Gtk.Overflow] for details.
 
-  This setting is provided for widget implementations and
-  should not be used by application code.
+      This setting is provided for widget implementations and should not be used
+      by application code.
 
-  The default value is %GTK_OVERFLOW_VISIBLE. *)
+      The default value is [enum@Gtk.Overflow.visible]. *)
 
   external set_opacity : t -> float -> unit = "ml_gtk_widget_set_opacity"
-  (** Request the @widget to be rendered partially transparent.
+  (** Requests the widget to be rendered partially transparent.
 
-  An opacity of 0 is fully transparent and an opacity of 1
-  is fully opaque.
+      An opacity of 0 is fully transparent and an opacity of 1 is fully opaque.
 
-  Opacity works on both toplevel widgets and child widgets, although
-  there are some limitations: For toplevel widgets, applying opacity
-  depends on the capabilities of the windowing system. On X11, this
-  has any effect only on X displays with a compositing manager,
-  see gdk_display_is_composited(). On Windows and Wayland it should
-  always work, although setting a window’s opacity after the window
-  has been shown may cause some flicker.
+      Opacity works on both toplevel widgets and child widgets, although there
+      are some limitations: For toplevel widgets, applying opacity depends on
+      the capabilities of the windowing system. On X11, this has any effect only
+      on X displays with a compositing manager, see
+      [method@Gdk.Display.is_composited]. On Windows and Wayland it will always
+      work, although setting a window’s opacity after the window has been shown
+      may cause some flicker.
 
-  Note that the opacity is inherited through inclusion — if you set
-  a toplevel to be partially translucent, all of its content will
-  appear translucent, since it is ultimatively rendered on that
-  toplevel. The opacity value itself is not inherited by child
-  widgets (since that would make widgets deeper in the hierarchy
-  progressively more translucent). As a consequence, [class@Gtk.Popover]s
-  and other [iface@Gtk.Native] widgets with their own surface will use their
-  own opacity value, and thus by default appear non-translucent,
-  even if they are attached to a toplevel that is translucent. *)
+      Note that the opacity is inherited through inclusion — if you set a
+      toplevel to be partially translucent, all of its content will appear
+      translucent, since it is ultimatively rendered on that toplevel. The
+      opacity value itself is not inherited by child widgets (since that would
+      make widgets deeper in the hierarchy progressively more translucent). As a
+      consequence, [class@Gtk.Popover] instances and other [iface@Gtk.Native]
+      widgets with their own surface will use their own opacity value, and thus
+      by default appear non-translucent, even if they are attached to a toplevel
+      that is translucent. *)
 
   external set_name : t -> string -> unit = "ml_gtk_widget_set_name"
   (** Sets a widgets name.
@@ -473,23 +473,28 @@ and Widget : sig
       alphanumeric symbols, dashes and underscores will suffice. *)
 
   external set_margin_top : t -> int -> unit = "ml_gtk_widget_set_margin_top"
-  (** Sets the top margin of @widget. *)
+  (** Sets the top margin of the widget. *)
 
   external set_margin_start : t -> int -> unit
     = "ml_gtk_widget_set_margin_start"
-  (** Sets the start margin of @widget. *)
+  (** Sets the start margin of the widget. *)
 
   external set_margin_end : t -> int -> unit = "ml_gtk_widget_set_margin_end"
-  (** Sets the end margin of @widget. *)
+  (** Sets the end margin of the widget. *)
 
   external set_margin_bottom : t -> int -> unit
     = "ml_gtk_widget_set_margin_bottom"
-  (** Sets the bottom margin of @widget. *)
+  (** Sets the bottom margin of the widget. *)
+
+  external set_limit_events : t -> bool -> unit
+    = "ml_gtk_widget_set_limit_events"
+  (** Sets whether the widget acts like a modal dialog, with respect to event
+      delivery. *)
 
   external set_layout_manager : t -> Layout_manager.t option -> unit
     = "ml_gtk_widget_set_layout_manager"
-  (** Sets the layout manager delegate instance that provides an
-  implementation for measuring and allocating the children of @widget. *)
+  (** Sets the layout manager to use for measuring and allocating children of
+      the widget. *)
 
   external set_hexpand_set : t -> bool -> unit = "ml_gtk_widget_set_hexpand_set"
   (** Sets whether the hexpand flag will be used.
@@ -509,7 +514,7 @@ and Widget : sig
   external set_hexpand : t -> bool -> unit = "ml_gtk_widget_set_hexpand"
   (** Sets whether the widget would like any available extra horizontal space.
 
-      When a user resizes a `GtkWindow`, widgets with expand=TRUE generally
+      When a user resizes a window, widgets with expand set to true generally
       receive the extra space. For example, a list or scrollable area or
       document in your window would often be set to expand.
 
@@ -518,10 +523,9 @@ and Widget : sig
 
       By default, widgets automatically expand if any of their children want to
       expand. (To see if a widget will automatically expand given its current
-      children and state, call [method@Gtk.Widget.compute_expand]. A container
-      can decide how the expandability of children affects the expansion of the
-      container by overriding the compute_expand virtual method on
-      `GtkWidget`.).
+      children and state, call [method@Gtk.Widget.compute_expand]. A widget can
+      decide how the expandability of children affects its own expansion by
+      overriding the `compute_expand` virtual method on `GtkWidget`.).
 
       Setting hexpand explicitly with this function will override the automatic
       expand behavior.
@@ -533,16 +537,16 @@ and Widget : sig
       children and widget state. *)
 
   external set_has_tooltip : t -> bool -> unit = "ml_gtk_widget_set_has_tooltip"
-  (** Sets the `has-tooltip` property on @widget to @has_tooltip. *)
+  (** Sets the `has-tooltip` property on the widget. *)
 
   external set_halign : t -> Gtk_enums.align -> unit
     = "ml_gtk_widget_set_halign"
-  (** Sets the horizontal alignment of @widget. *)
+  (** Sets the horizontal alignment of the widget. *)
 
   external set_font_options :
     t -> Ocgtk_cairo.Cairo.Wrappers.Font_options.t option -> unit
     = "ml_gtk_widget_set_font_options"
-  (** Sets the `cairo_font_options_t` used for Pango rendering in this widget.
+  (** Sets the `cairo_font_options_t` used for text rendering in the widget.
 
       When not set, the default font options for the `GdkDisplay` will be used.
   *)
@@ -550,7 +554,7 @@ and Widget : sig
   external set_font_map :
     t -> Ocgtk_pango.Pango.Wrappers.Font_map.t option -> unit
     = "ml_gtk_widget_set_font_map"
-  (** Sets the font map to use for Pango rendering.
+  (** Sets the font map to use for text rendering in the widget.
 
       The font map is the object that is used to look up fonts. Setting a custom
       font map can be useful in special situations, e.g. when you need to add
@@ -559,12 +563,12 @@ and Widget : sig
       When not set, the widget will inherit the font map from its parent. *)
 
   external set_focusable : t -> bool -> unit = "ml_gtk_widget_set_focusable"
-  (** Specifies whether @widget can own the input focus.
+  (** Sets whether the widget can own the input focus.
 
-  Widget implementations should set @focusable to %TRUE in
+  Widget implementations should set @focusable to true in
   their init() function if they want to receive keyboard input.
 
-  Note that having @focusable be %TRUE is only one of the
+  Note that having @focusable be true is only one of the
   necessary conditions for being focusable. A widget must
   also be sensitive and can-focus and not have an ancestor
   that is marked as not can-focus in order to receive input
@@ -584,85 +588,84 @@ and Widget : sig
 
   external set_focus_child : t -> t option -> unit
     = "ml_gtk_widget_set_focus_child"
-  (** Set @child as the current focus child of @widget.
+  (** Set the focus child of the widget.
 
-  This function is only suitable for widget implementations.
-  If you want a certain widget to get the input focus, call
-  [method@Gtk.Widget.grab_focus] on it. *)
+      This function is only suitable for widget implementations. If you want a
+      certain widget to get the input focus, call [method@Gtk.Widget.grab_focus]
+      on it. *)
 
   external set_direction : t -> Gtk_enums.textdirection -> unit
     = "ml_gtk_widget_set_direction"
-  (** Sets the reading direction on a particular widget.
+  (** Sets the reading direction on the widget.
 
       This direction controls the primary direction for widgets containing text,
       and also the direction in which the children of a container are packed.
       The ability to set the direction is present in order so that correct
       localization into languages with right-to-left reading directions can be
-      done. Generally, applications will let the default reading direction
-      present, except for containers where the containers are arranged in an
-      order that is explicitly visual rather than logical (such as buttons for
-      text justification).
+      done.
 
-      If the direction is set to %GTK_TEXT_DIR_NONE, then the value set by
-      [func@Gtk.Widget.set_default_direction] will be used. *)
+      Generally, applications will let the default reading direction prevail,
+      except for widgets where the children are arranged in an order that is
+      explicitly visual rather than logical (such as buttons for text
+      justification).
+
+      If the direction is set to [enum@Gtk.TextDirection.none], then the value
+      set by [func@Gtk.Widget.set_default_direction] will be used. *)
 
   external set_cursor_from_name : t -> string option -> unit
     = "ml_gtk_widget_set_cursor_from_name"
-  (** Sets a named cursor to be shown when pointer devices point
-  towards @widget.
+  (** Sets the cursor to be shown when the pointer hovers over
+  the widget.
 
   This is a utility function that creates a cursor via
   [ctor@Gdk.Cursor.new_from_name] and then sets it on @widget
   with [method@Gtk.Widget.set_cursor]. See those functions for
   details.
 
-  On top of that, this function allows @name to be %NULL, which
+  On top of that, this function allows @name to be `NULL`, which
   will do the same as calling [method@Gtk.Widget.set_cursor]
-  with a %NULL cursor. *)
+  with a `NULL` cursor. *)
 
   external set_cursor : t -> Ocgtk_gdk.Gdk.Wrappers.Cursor.t option -> unit
     = "ml_gtk_widget_set_cursor"
-  (** Sets the cursor to be shown when pointer devices point
-  towards @widget.
+  (** Sets the cursor to be shown when the pointer hovers over
+  the widget.
 
-  If the @cursor is NULL, @widget will use the cursor
-  inherited from the parent widget. *)
+  If the @cursor is `NULL`, @widget will use the cursor
+  inherited from its parent. *)
 
   external set_css_classes : t -> string array -> unit
     = "ml_gtk_widget_set_css_classes"
-  (** Clear all style classes applied to @widget
-  and replace them with @classes. *)
+  (** Replaces the current style classes of the widget with @classes. *)
 
   external set_child_visible : t -> bool -> unit
     = "ml_gtk_widget_set_child_visible"
-  (** Sets whether @widget should be mapped along with its parent.
+  (** Sets whether the widget should be mapped along with its parent.
 
-  The child visibility can be set for widget before it is added
-  to a container with [method@Gtk.Widget.set_parent], to avoid
-  mapping children unnecessary before immediately unmapping them.
-  However it will be reset to its default state of %TRUE when the
-  widget is removed from a container.
+      The child visibility can be set for widget before it is added to a
+      container with [method@Gtk.Widget.set_parent], to avoid mapping children
+      unnecessary before immediately unmapping them. However it will be reset to
+      its default state of true when the widget is removed from a container.
 
-  Note that changing the child visibility of a widget does not
-  queue a resize on the widget. Most of the time, the size of
-  a widget is computed from all visible children, whether or
-  not they are mapped. If this is not the case, the container
-  can queue a resize itself.
+      Note that changing the child visibility of a widget does not queue a
+      resize on the widget. Most of the time, the size of a widget is computed
+      from all visible children, whether or not they are mapped. If this is not
+      the case, the container can queue a resize itself.
 
-  This function is only useful for container implementations
-  and should never be called by an application. *)
+      This function is only useful for widget implementations and should never
+      be called by an application. *)
 
   external set_can_target : t -> bool -> unit = "ml_gtk_widget_set_can_target"
-  (** Sets whether @widget can be the target of pointer events. *)
+  (** Sets whether the widget can be the target of pointer events. *)
 
   external set_can_focus : t -> bool -> unit = "ml_gtk_widget_set_can_focus"
-  (** Specifies whether the input focus can enter the widget
-  or any of its children.
+  (** Sets whether the input focus can enter the widget or
+  any of its children.
 
-  Applications should set @can_focus to %FALSE to mark a
+  Applications should set @can_focus to false to mark a
   widget as for pointer/touch use only.
 
-  Note that having @can_focus be %TRUE is only one of the
+  Note that having @can_focus be true is only one of the
   necessary conditions for being focusable. A widget must
   also be sensitive and focusable and not have an ancestor
   that is marked as not can-focus in order to receive input
@@ -674,31 +677,32 @@ and Widget : sig
   external remove_tick_callback : t -> int -> unit
     = "ml_gtk_widget_remove_tick_callback"
   (** Removes a tick callback previously registered with
-      gtk_widget_add_tick_callback(). *)
+      [method@Gtk.Widget.add_tick_callback]. *)
 
   external remove_mnemonic_label : t -> t -> unit
     = "ml_gtk_widget_remove_mnemonic_label"
   (** Removes a widget from the list of mnemonic labels for this widget.
 
-      See [method@Gtk.Widget.list_mnemonic_labels]. The widget must have
-      previously been added to the list with
+      See [method@Gtk.Widget.list_mnemonic_labels].
+
+      The widget must have previously been added to the list with
       [method@Gtk.Widget.add_mnemonic_label]. *)
 
   external remove_css_class : t -> string -> unit
     = "ml_gtk_widget_remove_css_class"
-  (** Removes a style from @widget.
+  (** Removes a style from the widget.
 
   After this, the style of @widget will stop matching for @css_class. *)
 
   external remove_controller : t -> Event_controller.t -> unit
     = "ml_gtk_widget_remove_controller"
-  (** Removes @controller from @widget, so that it doesn't process
-  events anymore.
+  (** Removes an event controller from the widget.
 
-  It should not be used again.
+      The removed event controller will not receive any more events, and should
+      not be used again.
 
-  Widgets will remove all event controllers automatically when they
-  are destroyed, there is normally no need to call this function. *)
+      Widgets will remove all event controllers automatically when they are
+      destroyed, there is normally no need to call this function. *)
 
   external realize : t -> unit = "ml_gtk_widget_realize"
   (** Creates the GDK resources associated with a widget.
@@ -733,7 +737,9 @@ and Widget : sig
       This function is only for use in widget implementations. *)
 
   external queue_draw : t -> unit = "ml_gtk_widget_queue_draw"
-  (** Schedules this widget to be redrawn in the paint phase
+  (** Schedules this widget to be redrawn.
+
+  The redraw will happen in the paint phase
   of the current or the next frame.
 
   This means @widget's [vfunc@Gtk.Widget.snapshot]
@@ -753,15 +759,15 @@ and Widget : sig
 
   external pick : t -> float -> float -> Gtk_enums.pickflags -> t option
     = "ml_gtk_widget_pick"
-  (** Finds the descendant of @widget closest to the point (@x, @y).
+  (** Finds the descendant of the widget closest to a point.
 
-  The point must be given in widget coordinates, so (0, 0) is assumed
-  to be the top left of @widget's content area.
+  The point (x, y) must be given in widget coordinates, so (0, 0)
+  is assumed to be the top left of @widget's content area.
 
-  Usually widgets will return %NULL if the given coordinate is not
+  Usually widgets will return `NULL` if the given coordinate is not
   contained in @widget checked via [method@Gtk.Widget.contains].
   Otherwise they will recursively try to find a child that does
-  not return %NULL. Widgets are however free to customize their
+  not return `NULL`. Widgets are however free to customize their
   picking algorithm.
 
   This function is used on the toplevel to determine the widget
@@ -770,32 +776,29 @@ and Widget : sig
 
   external observe_controllers : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
     = "ml_gtk_widget_observe_controllers"
-  (** Returns a `GListModel` to track the [class@Gtk.EventController]s
-  of @widget.
+  (** Returns a list model to track the event controllers of the widget.
 
-  Calling this function will enable extra internal bookkeeping
-  to track controllers and emit signals on the returned listmodel.
-  It may slow down operations a lot.
+      Calling this function will enable extra internal bookkeeping to track
+      controllers and emit signals on the returned listmodel. It may slow down
+      operations a lot.
 
-  Applications should try hard to avoid calling this function
-  because of the slowdowns. *)
+      Applications should try hard to avoid calling this function because of the
+      slowdowns. *)
 
   external observe_children : t -> Ocgtk_gio.Gio.Wrappers.List_model.t
     = "ml_gtk_widget_observe_children"
-  (** Returns a `GListModel` to track the children of @widget.
+  (** Returns a list model to track the children of the widget.
 
-  Calling this function will enable extra internal bookkeeping
-  to track children and emit signals on the returned listmodel.
-  It may slow down operations a lot.
+      Calling this function will enable extra internal bookkeeping to track
+      children and emit signals on the returned listmodel. It may slow down
+      operations a lot.
 
-  Applications should try hard to avoid calling this function
-  because of the slowdowns. *)
+      Applications should try hard to avoid calling this function because of the
+      slowdowns. *)
 
   external mnemonic_activate : t -> bool -> bool
     = "ml_gtk_widget_mnemonic_activate"
-  (** Emits the ::mnemonic-activate signal.
-
-      See [signal@Gtk.Widget::mnemonic-activate]. *)
+  (** Emits the [signal@Gtk.Widget::mnemonic-activate] signal. *)
 
   external measure : t -> Gtk_enums.orientation -> int -> int * int * int * int
     = "ml_gtk_widget_measure"
@@ -828,28 +831,29 @@ and Widget : sig
 
   external keynav_failed : t -> Gtk_enums.directiontype -> bool
     = "ml_gtk_widget_keynav_failed"
-  (** Emits the `::keynav-failed` signal on the widget.
+  (** Emits the [signal@Gtk.Widget::keynav-failed] signal on the widget.
 
       This function should be called whenever keyboard navigation within a
       single widget hits a boundary.
 
       The return value of this function should be interpreted in a way similar
-      to the return value of [method@Gtk.Widget.child_focus]. When %TRUE is
-      returned, stay in the widget, the failed keyboard navigation is OK and/or
-      there is nowhere we can/should move the focus to. When %FALSE is returned,
+      to the return value of [method@Gtk.Widget.child_focus]. When true is
+      returned, stay in the widget, the failed keyboard navigation is ok and/or
+      there is nowhere we can/should move the focus to. When false is returned,
       the caller should continue with keyboard navigation outside the widget,
       e.g. by calling [method@Gtk.Widget.child_focus] on the widget’s toplevel.
 
-      The default [signal@Gtk.Widget::keynav-failed] handler returns %FALSE for
-      %GTK_DIR_TAB_FORWARD and %GTK_DIR_TAB_BACKWARD. For the other values of
-      `GtkDirectionType` it returns %TRUE.
+      The default [signal@Gtk.Widget::keynav-failed] handler returns false for
+      [enum@Gtk.DirectionType.tab-forward] and
+      [enum@Gtk.DirectionType.tab-backward]. For the other values of
+      [enum@Gtk.DirectionType] it returns true.
 
-      Whenever the default handler returns %TRUE, it also calls
+      Whenever the default handler returns true, it also calls
       [method@Gtk.Widget.error_bell] to notify the user of the failed keyboard
       navigation.
 
-      A use case for providing an own implementation of ::keynav-failed (either
-      by connecting to it or by overriding it) would be a row of
+      A use case for providing an own implementation of `::keynav-failed`
+      (either by connecting to it or by overriding it) would be a row of
       [class@Gtk.Entry] widgets where the user should be able to navigate the
       entire row with the cursor keys, as e.g. known from user interfaces that
       require entering license keys. *)
@@ -876,51 +880,58 @@ and Widget : sig
       toplevel widget additionally has the global input focus. *)
 
   external is_drawable : t -> bool = "ml_gtk_widget_is_drawable"
-  (** Determines whether @widget can be drawn to.
+  (** Determines whether the widget can be drawn to.
 
-  A widget can be drawn if it is mapped and visible. *)
+      A widget can be drawn if it is mapped and visible. *)
 
   external is_ancestor : t -> t -> bool = "ml_gtk_widget_is_ancestor"
-  (** Determines whether @widget is somewhere inside @ancestor,
-  possibly with intermediate containers. *)
+  (** Determines whether the widget is a descendent of @ancestor. *)
 
   external insert_before : t -> t -> t option -> unit
     = "ml_gtk_widget_insert_before"
-  (** Inserts @widget into the child widget list of @parent.
+  (** Sets the parent widget of the widget.
+
+  In contrast to [method@Gtk.Widget.set_parent], this function
+  inserts @widget at a specific position into the list of children
+  of the @parent widget.
 
   It will be placed before @next_sibling, or at the end if
-  @next_sibling is %NULL.
+  @next_sibling is `NULL`.
 
-  After calling this function, `gtk_widget_get_next_sibling(widget)`
+  After calling this function, `gtk_widget_get_next_sibling (widget)`
   will return @next_sibling.
 
   If @parent is already set as the parent widget of @widget, this function
   can also be used to reorder @widget in the child widget list of @parent.
 
-  This API is primarily meant for widget implementations; if you are
+  This function is primarily meant for widget implementations; if you are
   just using a widget, you *must* use its own API for adding children. *)
 
   external insert_after : t -> t -> t option -> unit
     = "ml_gtk_widget_insert_after"
-  (** Inserts @widget into the child widget list of @parent.
+  (** Sets the parent widget of the widget.
+
+  In contrast to [method@Gtk.Widget.set_parent], this function
+  inserts @widget at a specific position into the list of children
+  of the @parent widget.
 
   It will be placed after @previous_sibling, or at the beginning if
-  @previous_sibling is %NULL.
+  @previous_sibling is `NULL`.
 
-  After calling this function, `gtk_widget_get_prev_sibling(widget)`
+  After calling this function, `gtk_widget_get_prev_sibling (widget)`
   will return @previous_sibling.
 
   If @parent is already set as the parent widget of @widget, this
   function can also be used to reorder @widget in the child widget
   list of @parent.
 
-  This API is primarily meant for widget implementations; if you are
+  This function is primarily meant for widget implementations; if you are
   just using a widget, you *must* use its own API for adding children. *)
 
   external insert_action_group :
     t -> string -> Ocgtk_gio.Gio.Wrappers.Action_group.t option -> unit
     = "ml_gtk_widget_insert_action_group"
-  (** Inserts @group into @widget.
+  (** Inserts an action group into the widget's actions.
 
   Children of @widget that implement [iface@Gtk.Actionable] can
   then be associated with actions in @group by setting their
@@ -931,7 +942,7 @@ and Widget : sig
   the same prefix will still be inherited from the parent, unless
   the group contains an action with the same name.
 
-  If @group is %NULL, a previously inserted group for @name is
+  If @group is `NULL`, a previously inserted group for @name is
   removed from @widget. *)
 
   external init_template : t -> unit = "ml_gtk_widget_init_template"
@@ -942,7 +953,7 @@ and Widget : sig
       [method@Gtk.WidgetClass.set_template].
 
       It is important to call this function in the instance initializer of a
-      `GtkWidget` subclass and not in `GObject.constructed()` or
+      widget subclass and not in `GObject.constructed()` or
       `GObject.constructor()` for two reasons:
 
       - derived widgets will assume that the composite widgets defined by its
@@ -961,7 +972,7 @@ and Widget : sig
       This information can sometimes be used to avoid doing unnecessary work. *)
 
   external hide : t -> unit = "ml_gtk_widget_hide"
-  (** Reverses the effects of gtk_widget_show().
+  (** Reverses the effects of [method.Gtk.Widget.show].
 
       This is causing the widget to be hidden (invisible to the user). *)
 
@@ -984,21 +995,22 @@ and Widget : sig
       global input focus, and only having the focus within a toplevel. *)
 
   external has_default : t -> bool = "ml_gtk_widget_has_default"
-  (** Determines whether @widget is the current default widget
-  within its toplevel. *)
+  (** Determines whether the widget is the current default widget within its
+      toplevel. *)
 
   external has_css_class : t -> string -> bool = "ml_gtk_widget_has_css_class"
-  (** Returns whether @css_class is currently applied to @widget. *)
+  (** Returns whether a style class is currently applied to the widget. *)
 
   external grab_focus : t -> bool = "ml_gtk_widget_grab_focus"
-  (** Causes @widget to have the keyboard focus for the `GtkWindow` it's inside.
+  (** Causes @widget to have the keyboard focus for the window
+  that it belongs to.
 
   If @widget is not focusable, or its [vfunc@Gtk.Widget.grab_focus]
   implementation cannot transfer the focus to a descendant of @widget
-  that is focusable, it will not take focus and %FALSE will be returned.
+  that is focusable, it will not take focus and false will be returned.
 
   Calling [method@Gtk.Widget.grab_focus] on an already focused widget
-  is allowed, should not have an effect, and return %TRUE. *)
+  is allowed, should not have an effect, and return true. *)
 
   external get_width : t -> int = "ml_gtk_widget_get_width"
   (** Returns the content width of the widget.
@@ -1023,8 +1035,7 @@ and Widget : sig
       See [method@Gtk.Widget.set_visible]. *)
 
   external get_vexpand_set : t -> bool = "ml_gtk_widget_get_vexpand_set"
-  (** Gets whether gtk_widget_set_vexpand() has been used to explicitly set the
-      expand flag on this widget.
+  (** Gets whether the `vexpand` flag has been explicitly set.
 
       See [method@Gtk.Widget.get_hexpand_set] for more detail. *)
 
@@ -1034,11 +1045,11 @@ and Widget : sig
       See [method@Gtk.Widget.get_hexpand] for more detail. *)
 
   external get_valign : t -> Gtk_enums.align = "ml_gtk_widget_get_valign"
-  (** Gets the vertical alignment of @widget. *)
+  (** Gets the vertical alignment of the widget. *)
 
   external get_tooltip_text : t -> string option
     = "ml_gtk_widget_get_tooltip_text"
-  (** Gets the contents of the tooltip for @widget.
+  (** Gets the contents of the tooltip for the widget.
 
   If the @widget's tooltip was set using
   [method@Gtk.Widget.set_tooltip_markup],
@@ -1046,17 +1057,16 @@ and Widget : sig
 
   external get_tooltip_markup : t -> string option
     = "ml_gtk_widget_get_tooltip_markup"
-  (** Gets the contents of the tooltip for @widget.
+  (** Gets the contents of the tooltip for the widget.
 
-  If the tooltip has not been set using
-  [method@Gtk.Widget.set_tooltip_markup], this
-  function returns %NULL. *)
+      If the tooltip has not been set using
+      [method@Gtk.Widget.set_tooltip_markup], this function returns `NULL`. *)
 
   external get_template_child :
     t -> Gobject.Type.t -> string -> [ `object_ ] Gobject.obj
     = "ml_gtk_widget_get_template_child"
-  (** Fetch an object build from the template XML for @widget_type in
-  this @widget instance.
+  (** Fetches an object build from the template XML for @widget_type in
+  the widget.
 
   This will only report children which were previously declared
   with [method@Gtk.WidgetClass.bind_template_child_full] or one of its
@@ -1068,7 +1078,7 @@ and Widget : sig
 
   external get_style_context : t -> Style_context.t
     = "ml_gtk_widget_get_style_context"
-  (** Returns the style context associated to @widget.
+  (** Returns the style context associated to the widget.
 
   The returned object is guaranteed to be the same
   for the lifetime of @widget. *)
@@ -1077,7 +1087,7 @@ and Widget : sig
     = "ml_gtk_widget_get_state_flags"
   (** Returns the widget state as a flag set.
 
-  It is worth mentioning that the effective %GTK_STATE_FLAG_INSENSITIVE
+  It is worth mentioning that the effective [flags@Gtk.StateFlags.insensitive]
   state will be returned, that is, also based on parent insensitivity,
   even if @widget itself is sensitive.
 
@@ -1086,15 +1096,16 @@ and Widget : sig
   method, you should look at [method@Gtk.StyleContext.get_state]. *)
 
   external get_size_request : t -> int * int = "ml_gtk_widget_get_size_request"
-  (** Gets the size request that was explicitly set for the widget using
-  gtk_widget_set_size_request().
+  (** Gets the size request that was explicitly set for the widget.
 
   A value of -1 stored in @width or @height indicates that that
   dimension has not been set explicitly and the natural requisition
-  of the widget will be used instead. See
-  [method@Gtk.Widget.set_size_request]. To get the size a widget will
-  actually request, call [method@Gtk.Widget.measure] instead of
-  this function. *)
+  of the widget will be used instead.
+
+  See [method@Gtk.Widget.set_size_request].
+
+  To get the size a widget will actually request, call
+  [method@Gtk.Widget.measure] instead of this function. *)
 
   external get_size : t -> Gtk_enums.orientation -> int
     = "ml_gtk_widget_get_size"
@@ -1103,8 +1114,8 @@ and Widget : sig
   Which dimension is returned depends on @orientation.
 
   This is equivalent to calling [method@Gtk.Widget.get_width]
-  for %GTK_ORIENTATION_HORIZONTAL or [method@Gtk.Widget.get_height]
-  for %GTK_ORIENTATION_VERTICAL, but can be used when
+  for [enum@Gtk.Orientation.horizontal] or [method@Gtk.Widget.get_height]
+  for [enum@Gtk.Orientation.vertical], but can be used when
   writing orientation-independent code, such as when
   implementing [iface@Gtk.Orientable] widgets.
 
@@ -1112,12 +1123,12 @@ and Widget : sig
   system [overview](coordinates.html). *)
 
   external get_settings : t -> Settings.t = "ml_gtk_widget_get_settings"
-  (** Gets the settings object holding the settings used for this widget.
+  (** Gets the settings object holding the settings used for the widget.
 
       Note that this function can only be called when the `GtkWidget` is
       attached to a toplevel, since the settings object is specific to a
-      particular `GdkDisplay`. If you want to monitor the widget for changes in
-      its settings, connect to the `notify::display` signal. *)
+      particular display. If you want to monitor the widget for changes in its
+      settings, connect to the `notify::display` signal. *)
 
   external get_sensitive : t -> bool = "ml_gtk_widget_get_sensitive"
   (** Returns the widget’s sensitivity.
@@ -1136,15 +1147,20 @@ and Widget : sig
       On traditional systems this is 1, on high density outputs, it can be a
       higher value (typically 2).
 
-      See [method@Gdk.Surface.get_scale_factor]. *)
+      See [method@Gdk.Surface.get_scale_factor].
+
+      Note that modern systems may support *fractional* scaling, where the scale
+      factor is not an integer. On such systems, this function will return the
+      next higher integer value, but you probably want to use
+      [method@Gdk.Surface.get_scale] to get the fractional scale value. *)
 
   external get_root : t -> Root.t option = "ml_gtk_widget_get_root"
-  (** Returns the `GtkRoot` widget of @widget.
+  (** Returns the `GtkRoot` widget of the widget.
 
-  This function will return %NULL if the widget is not contained
-  inside a widget tree with a root widget.
+      This function will return `NULL` if the widget is not contained inside a
+      widget tree with a root widget.
 
-  `GtkRoot` widgets will return themselves here. *)
+      `GtkRoot` widgets will return themselves here. *)
 
   external get_request_mode : t -> Gtk_enums.sizerequestmode
     = "ml_gtk_widget_get_request_mode"
@@ -1157,21 +1173,21 @@ and Widget : sig
 
   external get_receives_default : t -> bool
     = "ml_gtk_widget_get_receives_default"
-  (** Determines whether @widget is always treated as the default widget
-  within its toplevel when it has the focus, even if another widget
-  is the default.
+  (** Determines whether the widget is always treated as the default widget
+      within its toplevel when it has the focus, even if another widget is the
+      default.
 
-  See [method@Gtk.Widget.set_receives_default]. *)
+      See [method@Gtk.Widget.set_receives_default]. *)
 
   external get_realized : t -> bool = "ml_gtk_widget_get_realized"
-  (** Determines whether @widget is realized. *)
+  (** Determines whether the widget is realized. *)
 
   external get_primary_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t
     = "ml_gtk_widget_get_primary_clipboard"
-  (** Gets the primary clipboard of @widget.
+  (** Gets the primary clipboard of the widget.
 
   This is a utility function to get the primary clipboard object
-  for the `GdkDisplay` that @widget is using.
+  for the display that @widget is using.
 
   Note that this function always works, even when @widget is not
   realized yet. *)
@@ -1179,7 +1195,7 @@ and Widget : sig
   external get_prev_sibling : t -> t option = "ml_gtk_widget_get_prev_sibling"
   (** Returns the widget’s previous sibling.
 
-      This API is primarily meant for widget implementations. *)
+      This function is primarily meant for widget implementations. *)
 
   external get_preferred_size : t -> Requisition.t * Requisition.t
     = "ml_gtk_widget_get_preferred_size"
@@ -1200,12 +1216,14 @@ and Widget : sig
   *)
 
   external get_parent : t -> t option = "ml_gtk_widget_get_parent"
-  (** Returns the parent widget of @widget. *)
+  (** Returns the parent widget of the widget. *)
 
   external get_pango_context : t -> Ocgtk_pango.Pango.Wrappers.Context.t
     = "ml_gtk_widget_get_pango_context"
-  (** Gets a `PangoContext` with the appropriate font map, font description, and
-      base direction for this widget.
+  (** Gets a `PangoContext` that is configured for the widget.
+
+      The `PangoContext` will have the appropriate font map, font description,
+      and base direction set.
 
       Unlike the context returned by [method@Gtk.Widget.create_pango_context],
       this context is owned by the widget (it can be used until the screen for
@@ -1218,22 +1236,22 @@ and Widget : sig
   (** Returns the widget’s overflow value. *)
 
   external get_opacity : t -> float = "ml_gtk_widget_get_opacity"
-  (** #Fetches the requested opacity for this widget.
+  (** Fetches the requested opacity for the widget.
 
       See [method@Gtk.Widget.set_opacity]. *)
 
   external get_next_sibling : t -> t option = "ml_gtk_widget_get_next_sibling"
   (** Returns the widget’s next sibling.
 
-      This API is primarily meant for widget implementations. *)
+      This function is primarily meant for widget implementations. *)
 
   external get_native : t -> Native.t option = "ml_gtk_widget_get_native"
-  (** Returns the nearest `GtkNative` ancestor of @widget.
+  (** Returns the nearest `GtkNative` ancestor of the widget.
 
-  This function will return %NULL if the widget is not
-  contained inside a widget tree with a native ancestor.
+      This function will return `NULL` if the widget is not contained inside a
+      widget tree with a native ancestor.
 
-  `GtkNative` widgets will return themselves here. *)
+      `GtkNative` widgets will return themselves here. *)
 
   external get_name : t -> string = "ml_gtk_widget_get_name"
   (** Retrieves the name of a widget.
@@ -1241,34 +1259,36 @@ and Widget : sig
       See [method@Gtk.Widget.set_name] for the significance of widget names. *)
 
   external get_margin_top : t -> int = "ml_gtk_widget_get_margin_top"
-  (** Gets the top margin of @widget. *)
+  (** Gets the top margin of the widget. *)
 
   external get_margin_start : t -> int = "ml_gtk_widget_get_margin_start"
-  (** Gets the start margin of @widget. *)
+  (** Gets the start margin of the widget. *)
 
   external get_margin_end : t -> int = "ml_gtk_widget_get_margin_end"
-  (** Gets the end margin of @widget. *)
+  (** Gets the end margin of the widget. *)
 
   external get_margin_bottom : t -> int = "ml_gtk_widget_get_margin_bottom"
-  (** Gets the bottom margin of @widget. *)
+  (** Gets the bottom margin of the widget. *)
 
   external get_mapped : t -> bool = "ml_gtk_widget_get_mapped"
-  (** Whether the widget is mapped. *)
+  (** Returns whether the widget is mapped. *)
+
+  external get_limit_events : t -> bool = "ml_gtk_widget_get_limit_events"
+  (** Gets the value of the [property@Gtk.Widget:limit-events] property. *)
 
   external get_layout_manager : t -> Layout_manager.t option
     = "ml_gtk_widget_get_layout_manager"
-  (** Retrieves the layout manager used by @widget.
+  (** Retrieves the layout manager of the widget.
 
-  See [method@Gtk.Widget.set_layout_manager]. *)
+      See [method@Gtk.Widget.set_layout_manager]. *)
 
   external get_last_child : t -> t option = "ml_gtk_widget_get_last_child"
   (** Returns the widget’s last child.
 
-      This API is primarily meant for widget implementations. *)
+      This function is primarily meant for widget implementations. *)
 
   external get_hexpand_set : t -> bool = "ml_gtk_widget_get_hexpand_set"
-  (** Gets whether gtk_widget_set_hexpand() has been used to explicitly set the
-      expand flag on this widget.
+  (** Gets whether the `hexpand` flag has been explicitly set.
 
       If [property@Gtk.Widget:hexpand] property is set, then it overrides any
       computed expand value based on child widgets. If `hexpand` is not set,
@@ -1281,12 +1301,12 @@ and Widget : sig
   external get_hexpand : t -> bool = "ml_gtk_widget_get_hexpand"
   (** Gets whether the widget would like any available extra horizontal space.
 
-      When a user resizes a `GtkWindow`, widgets with expand=TRUE generally
+      When a user resizes a window, widgets with expand set to true generally
       receive the extra space. For example, a list or scrollable area or
       document in your window would often be set to expand.
 
-      Containers should use [method@Gtk.Widget.compute_expand] rather than this
-      function, to see whether a widget, or any of its children, has the expand
+      Widgets with children should use [method@Gtk.Widget.compute_expand] rather
+      than this function, to see whether any of its children, has the expand
       flag set. If any child of a widget wants to expand, the parent may ask to
       expand also.
 
@@ -1310,13 +1330,13 @@ and Widget : sig
   (** Returns the current value of the `has-tooltip` property. *)
 
   external get_halign : t -> Gtk_enums.align = "ml_gtk_widget_get_halign"
-  (** Gets the horizontal alignment of @widget.
+  (** Gets the horizontal alignment of the widget.
 
-  For backwards compatibility reasons this method will never return
-  one of the baseline alignments, but instead it will convert it to
-  `GTK_ALIGN_FILL` or `GTK_ALIGN_CENTER`.
+      For backwards compatibility reasons this method will never return one of
+      the baseline alignments, but instead it will convert it to
+      [enum@Gtk.Align.fill] or [enum@Gtk.Align.center].
 
-  Baselines are not supported for horizontal alignment. *)
+      Baselines are not supported for horizontal alignment. *)
 
   external get_frame_clock : t -> Ocgtk_gdk.Gdk.Wrappers.Frame_clock.t option
     = "ml_gtk_widget_get_frame_clock"
@@ -1334,7 +1354,7 @@ and Widget : sig
       clock, but won’t necessarily repaint any widgets. To repaint a widget, you
       have to use [method@Gtk.Widget.queue_draw] which invalidates the widget
       (thus scheduling it to receive a draw on the next frame).
-      gtk_widget_queue_draw() will also end up requesting a frame on the
+      [method@Gtk.Widget.queue_draw] will also end up requesting a frame on the
       appropriate frame clock.
 
       A widget’s frame clock will not change while the widget is mapped.
@@ -1346,20 +1366,20 @@ and Widget : sig
   external get_font_options :
     t -> Ocgtk_cairo.Cairo.Wrappers.Font_options.t option
     = "ml_gtk_widget_get_font_options"
-  (** Returns the `cairo_font_options_t` of widget.
+  (** Returns the `cairo_font_options_t` of the widget.
 
       Seee [method@Gtk.Widget.set_font_options]. *)
 
   external get_font_map : t -> Ocgtk_pango.Pango.Wrappers.Font_map.t option
     = "ml_gtk_widget_get_font_map"
-  (** Gets the font map of @widget.
+  (** Gets the font map of the widget.
 
-  See [method@Gtk.Widget.set_font_map]. *)
+      See [method@Gtk.Widget.set_font_map]. *)
 
   external get_focusable : t -> bool = "ml_gtk_widget_get_focusable"
-  (** Determines whether @widget can own the input focus.
+  (** Determines whether the widget can own the input focus.
 
-  See [method@Gtk.Widget.set_focusable]. *)
+      See [method@Gtk.Widget.set_focusable]. *)
 
   external get_focus_on_click : t -> bool = "ml_gtk_widget_get_focus_on_click"
   (** Returns whether the widget should grab focus when it is clicked with the
@@ -1368,87 +1388,87 @@ and Widget : sig
       See [method@Gtk.Widget.set_focus_on_click]. *)
 
   external get_focus_child : t -> t option = "ml_gtk_widget_get_focus_child"
-  (** Returns the current focus child of @widget. *)
+  (** Returns the focus child of the widget. *)
 
   external get_first_child : t -> t option = "ml_gtk_widget_get_first_child"
   (** Returns the widget’s first child.
 
-      This API is primarily meant for widget implementations. *)
+      This function is primarily meant for widget implementations. *)
 
   external get_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t
     = "ml_gtk_widget_get_display"
-  (** Get the `GdkDisplay` for the toplevel window associated with this widget.
+  (** Get the display for the window that the widget belongs to.
 
       This function can only be called after the widget has been added to a
-      widget hierarchy with a `GtkWindow` at the top.
+      widget hierarchy with a `GtkRoot` at the top.
 
-      In general, you should only create display specific resources when a
+      In general, you should only create display-specific resources when a
       widget has been realized, and you should free those resources when the
       widget is unrealized. *)
 
   external get_direction : t -> Gtk_enums.textdirection
     = "ml_gtk_widget_get_direction"
-  (** Gets the reading direction for a particular widget.
+  (** Gets the reading direction for the widget.
 
       See [method@Gtk.Widget.set_direction]. *)
 
   external get_cursor : t -> Ocgtk_gdk.Gdk.Wrappers.Cursor.t option
     = "ml_gtk_widget_get_cursor"
-  (** Queries the cursor set on @widget.
+  (** Gets the cursor set on the widget.
 
-  See [method@Gtk.Widget.set_cursor] for details. *)
+      See [method@Gtk.Widget.set_cursor] for details. *)
 
   external get_css_name : t -> string = "ml_gtk_widget_get_css_name"
-  (** Returns the CSS name that is used for @self. *)
+  (** Returns the CSS name of the widget. *)
 
   external get_css_classes : t -> string array = "ml_gtk_widget_get_css_classes"
-  (** Returns the list of style classes applied to @widget. *)
+  (** Returns the list of style classes applied to the widget. *)
 
   external get_color : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
     = "ml_gtk_widget_get_color"
-  (** Gets the current foreground color for the widget’s CSS style.
+  (** Gets the current foreground color for the widget’s style.
 
       This function should only be used in snapshot implementations that need to
       do custom drawing with the foreground color. *)
 
   external get_clipboard : t -> Ocgtk_gdk.Gdk.Wrappers.Clipboard.t
     = "ml_gtk_widget_get_clipboard"
-  (** Gets the clipboard object for @widget.
+  (** Gets the clipboard object for the widget.
 
   This is a utility function to get the clipboard object for the
-  `GdkDisplay` that @widget is using.
+  display that @widget is using.
 
   Note that this function always works, even when @widget is not
   realized yet. *)
 
   external get_child_visible : t -> bool = "ml_gtk_widget_get_child_visible"
-  (** Gets the value set with gtk_widget_set_child_visible().
+  (** Gets the value set with [method@Gtk.Widget.set_child_visible].
 
       If you feel a need to use this function, your code probably needs
       reorganization.
 
-      This function is only useful for container implementations and should
-      never be called by an application. *)
+      This function is only useful for widget implementations and should never
+      be called by an application. *)
 
   external get_can_target : t -> bool = "ml_gtk_widget_get_can_target"
-  (** Queries whether @widget can be the target of pointer events. *)
+  (** Queries whether the widget can be the target of pointer events. *)
 
   external get_can_focus : t -> bool = "ml_gtk_widget_get_can_focus"
-  (** Determines whether the input focus can enter @widget or any
-  of its children.
+  (** Determines whether the input focus can enter the widget or any of its
+      children.
 
-  See [method@Gtk.Widget.set_focusable]. *)
+      See [method@Gtk.Widget.set_can_focus]. *)
 
   external get_baseline : t -> int = "ml_gtk_widget_get_baseline"
-  (** Returns the baseline that has currently been allocated to @widget.
+  (** Returns the baseline that has currently been allocated to the widget.
 
-  This function is intended to be used when implementing handlers
-  for the `GtkWidget`Class.snapshot() function, and when allocating
-  child widgets in `GtkWidget`Class.size_allocate(). *)
+      This function is intended to be used when implementing handlers for the
+      `GtkWidgetClass.snapshot()` function, and when allocating child widgets in
+      `GtkWidgetClass.size_allocate()`. *)
 
   external get_ancestor : t -> Gobject.Type.t -> t option
     = "ml_gtk_widget_get_ancestor"
-  (** Gets the first ancestor of @widget with type @widget_type.
+  (** Gets the first ancestor of the widget with type @widget_type.
 
   For example, `gtk_widget_get_ancestor (widget, GTK_TYPE_BOX)`
   gets the first `GtkBox` that’s an ancestor of @widget. No
@@ -1459,30 +1479,30 @@ and Widget : sig
   considers @widget to be an ancestor of itself. *)
 
   external get_allocated_width : t -> int = "ml_gtk_widget_get_allocated_width"
-  (** Returns the width that has currently been allocated to @widget.
+  (** Returns the width that has currently been allocated to the widget.
 
-  To learn more about widget sizes, see the coordinate
-  system [overview](coordinates.html). *)
+      To learn more about widget sizes, see the coordinate system
+      [overview](coordinates.html). *)
 
   external get_allocated_height : t -> int
     = "ml_gtk_widget_get_allocated_height"
-  (** Returns the height that has currently been allocated to @widget.
+  (** Returns the height that has currently been allocated to the widget.
 
-  To learn more about widget sizes, see the coordinate
-  system [overview](coordinates.html). *)
+      To learn more about widget sizes, see the coordinate system
+      [overview](coordinates.html). *)
 
   external get_allocated_baseline : t -> int
     = "ml_gtk_widget_get_allocated_baseline"
-  (** Returns the baseline that has currently been allocated to @widget.
+  (** Returns the baseline that has currently been allocated to the widget.
 
-  This function is intended to be used when implementing handlers
-  for the `GtkWidget`Class.snapshot() function, and when allocating
-  child widgets in `GtkWidget`Class.size_allocate(). *)
+      This function is intended to be used when implementing handlers for the
+      `GtkWidget`Class.snapshot() function, and when allocating child widgets in
+      `GtkWidget`Class.size_allocate(). *)
 
   external error_bell : t -> unit = "ml_gtk_widget_error_bell"
-  (** Notifies the user about an input-related error on this widget.
+  (** Notifies the user about an input-related error on the widget.
 
-      If the [property@Gtk.Settings:gtk-error-bell] setting is %TRUE, it calls
+      If the [property@Gtk.Settings:gtk-error-bell] setting is true, it calls
       [method@Gdk.Surface.beep], otherwise it does nothing.
 
       Note that the effect of [method@Gdk.Surface.beep] can be configured in
@@ -1495,16 +1515,16 @@ and Widget : sig
 
   external dispose_template : t -> Gobject.Type.t -> unit
     = "ml_gtk_widget_dispose_template"
-  (** Clears the template children for the given widget.
+  (** Clears the template children for the widget.
 
-  This function is the opposite of [method@Gtk.Widget.init_template], and
-  it is used to clear all the template children from a widget instance.
-  If you bound a template child to a field in the instance structure, or
-  in the instance private data structure, the field will be set to `NULL`
-  after this function returns.
+  This function is the opposite of [method@Gtk.Widget.init_template],
+  and it is used to clear all the template children from a widget
+  instance. If you bound a template child to a field in the instance
+  structure, or in the instance private data structure, the field will
+  be set to `NULL` after this function returns.
 
   You should call this function inside the `GObjectClass.dispose()`
-  implementation of any widget that called `gtk_widget_init_template()`.
+  implementation of any widget that called [method@Gtk.Widget.init_template].
   Typically, you will want to call this function last, right before
   chaining up to the parent type's dispose implementation, e.g.
 
@@ -1524,25 +1544,29 @@ and Widget : sig
   external create_pango_layout :
     t -> string option -> Ocgtk_pango.Pango.Wrappers.Layout.t
     = "ml_gtk_widget_create_pango_layout"
-  (** Creates a new `PangoLayout` with the appropriate font map, font
-      description, and base direction for drawing text for this widget.
+  (** Creates a new `PangoLayout` that is configured for the widget.
+
+      The `PangoLayout` will have the appropriate font map, font description,
+      and base direction set.
 
       If you keep a `PangoLayout` created in this way around, you need to
-      re-create it when the widget `PangoContext` is replaced. This can be
+      re-create it when the widgets `PangoContext` is replaced. This can be
       tracked by listening to changes of the [property@Gtk.Widget:root] property
       on the widget. *)
 
   external create_pango_context : t -> Ocgtk_pango.Pango.Wrappers.Context.t
     = "ml_gtk_widget_create_pango_context"
-  (** Creates a new `PangoContext` with the appropriate font map, font options,
-      font description, and base direction for drawing text for this widget.
+  (** Creates a new `PangoContext` that is configured for the widget.
+
+      The `PangoContext` will have the appropriate font map, font options, font
+      description, and base direction set.
 
       See also [method@Gtk.Widget.get_pango_context]. *)
 
   external contains : t -> float -> float -> bool = "ml_gtk_widget_contains"
-  (** Tests if the point at (@x, @y) is contained in @widget.
+  (** Tests if a given point is contained in the widget.
 
-  The coordinates for (@x, @y) must be in widget coordinates, so
+  The coordinates for (x, y) must be in widget coordinates, so
   (0, 0) is assumed to be the top left of @widget's content area. *)
 
   external compute_transform :
@@ -1565,17 +1589,18 @@ and Widget : sig
     bool * Ocgtk_graphene.Graphene.Wrappers.Point.t
     = "ml_gtk_widget_compute_point"
   (** Translates the given @point in @widget's coordinates to coordinates
-  relative to @target’s coordinate system.
+  in @target’s coordinate system.
 
   In order to perform this operation, both widgets must share a
-  common ancestor. *)
+  a common ancestor. If that is not the case, @out_point is set
+  to (0, 0) and false is returned. *)
 
   external compute_expand : t -> Gtk_enums.orientation -> bool
     = "ml_gtk_widget_compute_expand"
-  (** Computes whether a container should give this widget extra space when
+  (** Computes whether a parent widget should give this widget extra space when
       possible.
 
-      Containers should check this, rather than looking at
+      Widgets with children should check this, rather than looking at
       [method@Gtk.Widget.get_hexpand] or [method@Gtk.Widget.get_vexpand].
 
       This function already checks whether the widget is visible, so visibility
@@ -1595,9 +1620,9 @@ and Widget : sig
   expected to draw in. See the [coordinate system](coordinates.html)
   overview to learn more.
 
-  If the operation is successful, %TRUE is returned. If @widget has no
+  If the operation is successful, true is returned. If @widget has no
   bounds or the bounds cannot be expressed in @target's coordinate space
-  (for example if both widgets are in different windows), %FALSE is
+  (for example if both widgets are in different windows), false is
   returned and @bounds is set to the zero rectangle.
 
   It is valid for @widget and @target to be the same widget. *)
@@ -1607,19 +1632,19 @@ and Widget : sig
   (** Called by widgets as the user moves around the window using
   keyboard shortcuts.
 
-  The @direction argument indicates what kind of motion is taking place (up,
-  down, left, right, tab forward, tab backward).
+  The @direction argument indicates what kind of motion is taking
+  place (up, down, left, right, tab forward, tab backward).
 
-  This function calls the [vfunc@Gtk.Widget.focus] virtual function; widgets
-  can override the virtual function in order to implement appropriate focus
-  behavior.
+  This function calls the [vfunc@Gtk.Widget.focus] virtual function;
+  widgets can override the virtual function in order to implement
+  appropriate focus behavior.
 
-  The default `focus()` virtual function for a widget should return `TRUE` if
-  moving in @direction left the focus on a focusable location inside that
-  widget, and `FALSE` if moving in @direction moved the focus outside the
-  widget. When returning `TRUE`, widgets normally call [method@Gtk.Widget.grab_focus]
-  to place the focus accordingly; when returning `FALSE`, they don’t modify
-  the current focus location.
+  The default `focus()` virtual function for a widget should return
+  true if moving in @direction left the focus on a focusable location
+  inside that widget, and false if moving in @direction moved the focus
+  outside the widget. When returning true, widgets normally call
+  [method@Gtk.Widget.grab_focus] to place the focus accordingly;
+  when returning false, they don’t modify the current focus location.
 
   This function is used by custom widget implementations; if you're
   writing an app, you’d use [method@Gtk.Widget.grab_focus] to move
@@ -1628,12 +1653,14 @@ and Widget : sig
   external allocate :
     t -> int -> int -> int -> Ocgtk_gsk.Gsk.Wrappers.Transform.t option -> unit
     = "ml_gtk_widget_allocate"
-  (** This function is only used by `GtkWidget` subclasses, to assign a size,
-      position and (optionally) baseline to their child widgets.
+  (** Assigns size, position, (optionally) a baseline and transform to a child
+      widget.
 
       In this function, the allocation and baseline may be adjusted. The given
       allocation will be forced to be bigger than the widget's minimum size, as
       well as at least 0×0 in size.
+
+      This function is only used by widget implementations.
 
       For a version that does not take a transform, see
       [method@Gtk.Widget.size_allocate]. *)
@@ -1642,13 +1669,14 @@ and Widget : sig
     = "ml_gtk_widget_add_mnemonic_label"
   (** Adds a widget to the list of mnemonic labels for this widget.
 
-      See [method@Gtk.Widget.list_mnemonic_labels]. Note the list of mnemonic
-      labels for the widget is cleared when the widget is destroyed, so the
-      caller must make sure to update its internal state at this point as well.
-  *)
+      See [method@Gtk.Widget.list_mnemonic_labels].
+
+      Note that the list of mnemonic labels for the widget is cleared when the
+      widget is destroyed, so the caller must make sure to update its internal
+      state at this point as well. *)
 
   external add_css_class : t -> string -> unit = "ml_gtk_widget_add_css_class"
-  (** Adds a style class to @widget.
+  (** Adds a style class to the widget.
 
   After calling this function, the widget’s style will match
   for @css_class, according to CSS matching rules.
@@ -1658,18 +1686,26 @@ and Widget : sig
 
   external add_controller : t -> Event_controller.t -> unit
     = "ml_gtk_widget_add_controller"
-  (** Adds @controller to @widget so that it will receive events.
+  (** Adds an event controller to the widget.
 
-  You will usually want to call this function right after
-  creating any kind of [class@Gtk.EventController]. *)
+      The event controllers of a widget handle the events that are propagated to
+      the widget.
+
+      You will usually want to call this function right after creating any kind
+      of [class@Gtk.EventController]. *)
 
   external activate_default : t -> unit = "ml_gtk_widget_activate_default"
-  (** Activates the `default.activate` action from @widget. *)
+  (** Activates the `default.activate` action for the widget.
+
+      The action is looked up in the same was as for
+      [method@Gtk.Widget.activate_action]. *)
 
   external activate_action_variant : t -> string -> Gvariant.t option -> bool
     = "ml_gtk_widget_activate_action_variant"
-  (** Looks up the action in the action groups associated with
-  @widget and its ancestors, and activates it.
+  (** Activates an action for the widget.
+
+  The action is looked up in the action groups associated with
+  @widget and its ancestors.
 
   If the action is in an action group added with
   [method@Gtk.Widget.insert_action_group], the @name is expected
@@ -1677,28 +1713,28 @@ and Widget : sig
   inserted.
 
   The arguments must match the actions expected parameter type,
-  as returned by `g_action_get_parameter_type()`. *)
+  as returned by [method@Gio.Action.get_parameter_type]. *)
 
   external activate : t -> bool = "ml_gtk_widget_activate"
-  (** For widgets that can be “activated” (buttons, menu items, etc.),
-  this function activates them.
+  (** Activates the widget.
 
   The activation will emit the signal set using
-  [method@Gtk.WidgetClass.set_activate_signal] during class initialization.
+  [method@Gtk.WidgetClass.set_activate_signal]
+  during class initialization.
 
   Activation is what happens when you press <kbd>Enter</kbd>
-  on a widget during key navigation.
+  on a widget.
 
-  If you wish to handle the activation keybinding yourself, it is
-  recommended to use [method@Gtk.WidgetClass.add_shortcut] with an action
-  created with [ctor@Gtk.SignalAction.new].
+  If you wish to handle the activation keybinding yourself,
+  it is recommended to use [method@Gtk.WidgetClass.add_shortcut]
+  with an action created with [ctor@Gtk.SignalAction.new].
 
-  If @widget isn't activatable, the function returns %FALSE. *)
+  If @widget is not activatable, the function returns false. *)
 
   external action_set_enabled : t -> string -> bool -> unit
     = "ml_gtk_widget_action_set_enabled"
-  (** Enable or disable an action installed with
-      gtk_widget_class_install_action(). *)
+  (** Enables or disables an action installed with
+      [method@Gtk.WidgetClass.install_action]. *)
 
   (* Properties *)
 

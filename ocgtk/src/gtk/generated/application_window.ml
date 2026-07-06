@@ -20,10 +20,10 @@ external set_help_overlay : t -> Shortcuts_window.t option -> unit
   = "ml_gtk_application_window_set_help_overlay"
 (** Associates a shortcuts window with the application window.
 
-Additionally, sets up an action with the name
-`win.show-help-overlay` to present it.
+    Additionally, sets up an action with the name `win.show-help-overlay` to
+    present it.
 
-@window takes responsibility for destroying @help_overlay. *)
+    The window takes responsibility for destroying the help overlay. *)
 
 external get_show_menubar : t -> bool
   = "ml_gtk_application_window_get_show_menubar"

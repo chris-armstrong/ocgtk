@@ -28,6 +28,7 @@ and accessible_t = object
     accessible_t option -> accessible_t option -> unit
 
   method update_next_accessible_sibling : accessible_t option -> unit
+  method update_platform_state : Gtk_enums.accessibleplatformstate -> unit
   method as_accessible : At_context_and__accessible.Accessible.t
 end
 
@@ -118,6 +119,10 @@ and accessible (obj : At_context_and__accessible.Accessible.t) : accessible_t =
         let new_sibling = Option.map (fun c -> c#as_accessible) new_sibling in
         At_context_and__accessible.Accessible.update_next_accessible_sibling obj
           new_sibling
+
+    method update_platform_state : Gtk_enums.accessibleplatformstate -> unit =
+      fun state ->
+        At_context_and__accessible.Accessible.update_platform_state obj state
 
     method as_accessible = obj
   end

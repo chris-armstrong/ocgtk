@@ -98,6 +98,28 @@ gtk_text_buffer_remove_selection_clipboard(GtkTextBuffer_val(self), GdkClipboard
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,16,0)
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_remove_commit_notify(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_text_buffer_remove_commit_notify(GtkTextBuffer_val(self), Int_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_text_buffer_remove_commit_notify(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("TextBuffer requires GTK >= 4.16");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gtk_text_buffer_remove_all_tags(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);

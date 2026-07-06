@@ -166,6 +166,22 @@ type pathdirection = [
 val pathdirection_of_int : int -> pathdirection
 val pathdirection_to_int : pathdirection -> int
 
+(* PathIntersection - enumeration *)
+type pathintersection = [
+  (** No intersection *)
+  | `NONE
+  (** A normal intersection, where the two paths
+  cross each other *)
+  | `NORMAL
+  (** The start of a segment where the two paths coincide *)
+  | `START
+  (** The end of a segment where the two paths coincide *)
+  | `END
+]
+
+val pathintersection_of_int : int -> pathintersection
+val pathintersection_to_int : pathintersection -> int
+
 (* PathOperation - enumeration *)
 type pathoperation = [
   (** A move-to operation, with 1 point describing the target point. *)
@@ -257,6 +273,8 @@ type rendernodetype = [
   | `STROKE_NODE
   (** A node that possibly redirects part of the scene graph to a subsurface. *)
   | `SUBSURFACE_NODE
+  (** A node that applies some function to each color component. *)
+  | `COMPONENT_TRANSFER_NODE
 ]
 
 val rendernodetype_of_int : int -> rendernodetype

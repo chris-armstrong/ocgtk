@@ -102,15 +102,15 @@ external configure :
 
 external clamp_page : t -> float -> float -> unit
   = "ml_gtk_adjustment_clamp_page"
-(** Updates the value property to ensure that the range
-between @lower and @upper is in the current page.
+(** Updates the value of the adjustment to ensure that the given range is
+    contained in the current page.
 
-The current page goes from `value` to `value` + `page-size`.
-If the range is larger than the page size, then only the
-start of it will be in the current page.
+    The current page goes from `value` to `value` + `page-size`. If the range is
+    larger than the page size, then only the start of it will be in the current
+    page.
 
-A [signal@Gtk.Adjustment::value-changed] signal will be emitted
-if the value is changed. *)
+    A [signal@Gtk.Adjustment::value-changed] signal will be emitted if the value
+    is changed. *)
 
 (* Properties *)
 

@@ -1,4 +1,7 @@
 class type dmabuf_texture_builder_t = object
+  method get_color_state :
+    unit -> Cicp_params_and__color_state.Color_state.t option
+
   method get_display : unit -> GApp_launch_context_cycle_de440b34.display_t
   method get_fd : int -> int
   method get_fourcc : unit -> UInt32.t
@@ -11,6 +14,10 @@ class type dmabuf_texture_builder_t = object
   method get_update_region : unit -> Ocgtk_cairo.Cairo.Region.region_t option
   method get_update_texture : unit -> GTexture.texture_t option
   method get_width : unit -> int
+
+  method set_color_state :
+    Cicp_params_and__color_state.Color_state.t option -> unit
+
   method set_display : GApp_launch_context_cycle_de440b34.display_t -> unit
   method set_fd : int -> int -> unit
   method set_fourcc : UInt32.t -> unit

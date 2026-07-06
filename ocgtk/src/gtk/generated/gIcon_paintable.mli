@@ -4,6 +4,10 @@ class type icon_paintable_t = object
   method get_file : unit -> Ocgtk_gio.Gio.File.file_t option
   method get_icon_name : unit -> string option
   method is_symbolic : unit -> bool
+  method scale : int
+  method set_scale : int -> unit
+  method size : int
+  method set_size : int -> unit
   method as_icon_paintable : Icon_paintable.t
 end
 

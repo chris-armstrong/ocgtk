@@ -116,7 +116,7 @@ CAMLparam2(self, arg1);
 GError *error = NULL;
 
 PangoFontDescription* result = gtk_font_dialog_choose_font_finish(GtkFontDialog_val(self), GAsyncResult_val(arg1), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_PangoFontDescription))); else CAMLreturn(Res_Error(Val_GError(error)));
+if (error == NULL) CAMLreturn(Res_Ok(Val_PangoFontDescription(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gtk_font_dialog_choose_family_finish(value self, value arg1)
@@ -125,7 +125,7 @@ CAMLparam2(self, arg1);
 GError *error = NULL;
 
 PangoFontFamily* result = gtk_font_dialog_choose_family_finish(GtkFontDialog_val(self), GAsyncResult_val(arg1), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_PangoFontFamily))); else CAMLreturn(Res_Error(Val_GError(error)));
+if (error == NULL) CAMLreturn(Res_Ok(Val_PangoFontFamily(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gtk_font_dialog_choose_face_finish(value self, value arg1)
@@ -134,7 +134,7 @@ CAMLparam2(self, arg1);
 GError *error = NULL;
 
 PangoFontFace* result = gtk_font_dialog_choose_face_finish(GtkFontDialog_val(self), GAsyncResult_val(arg1), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_PangoFontFace))); else CAMLreturn(Res_Error(Val_GError(error)));
+if (error == NULL) CAMLreturn(Res_Ok(Val_PangoFontFace(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 #else

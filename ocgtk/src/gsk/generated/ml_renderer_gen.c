@@ -97,20 +97,3 @@ GdkSurface* result = gsk_renderer_get_surface(GskRenderer_val(self));
 if (result) g_object_ref_sink(result);
 CAMLreturn(Val_option(result, Val_GdkSurface));
 }
-
-CAMLexport CAMLprim value ml_gsk_renderer_get_realized(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GskRenderer *obj = (GskRenderer *)GskRenderer_val(self);
-    gboolean *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "realized");
-if (pspec == NULL) caml_failwith("ml_gsk_renderer_get_realized: property 'realized' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "realized", &prop_gvalue);
-          prop_value = g_value_get_boolean(&prop_gvalue);
-
-      result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}

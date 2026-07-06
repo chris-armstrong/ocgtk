@@ -6,8 +6,10 @@ type t = [ `toplevel ] Gobject.obj
 external from_gobject : 'a Gobject.obj -> t = "ml_gdk_toplevel_from_gobject"
 
 (* Methods *)
+
 external titlebar_gesture : t -> Gdk_enums.titlebargesture -> bool
   = "ml_gdk_toplevel_titlebar_gesture"
+(** Performs a title bar gesture. *)
 
 external supports_edge_constraints : t -> bool
   = "ml_gdk_toplevel_supports_edge_constraints"
@@ -68,6 +70,11 @@ external set_icon_list : t -> Texture.t list -> unit
     several size icons can give better image quality.
 
     Note that some platforms don't support surface icons. *)
+
+external set_gravity : t -> Gdk_enums.gravity -> unit
+  = "ml_gdk_toplevel_set_gravity"
+(** Sets the gravity that is used when changing the toplevel size
+    programmatically. *)
 
 external set_deletable : t -> bool -> unit = "ml_gdk_toplevel_set_deletable"
 (** Sets the toplevel to be deletable.
@@ -139,6 +146,14 @@ by listening to the [property@Gdk.Toplevel:shortcuts-inhibited] property. *)
 external get_state : t -> Gdk_enums.toplevelstate = "ml_gdk_toplevel_get_state"
 (** Gets the bitwise or of the currently active surface state flags, from the
     `GdkToplevelState` enumeration. *)
+
+external get_gravity : t -> Gdk_enums.gravity = "ml_gdk_toplevel_get_gravity"
+(** Returns the gravity that is used when changing the toplevel size
+    programmatically. *)
+
+external get_capabilities : t -> Gdk_enums.toplevelcapabilities
+  = "ml_gdk_toplevel_get_capabilities"
+(** The capabilities that are available for this toplevel. *)
 
 external focus : t -> UInt32.t -> unit = "ml_gdk_toplevel_focus"
 (** Sets keyboard focus to @surface.

@@ -2,8 +2,8 @@
 (* PopupLayout: PopupLayout *)
 
 type t = [ `popup_layout ] Gobject.obj
-(** The `GdkPopupLayout` struct contains information that is necessary position
-    a [iface@Gdk.Popup] relative to its parent.
+(** Contains information that is necessary position a [iface@Gdk.Popup] relative
+    to its parent.
 
     The positioning requires a negotiation with the windowing system, since it
     depends on external constraints, such as the position of the parent surface,
@@ -70,8 +70,8 @@ external set_anchor_hints : t -> Gdk_enums.anchorhints -> unit
 
 The set @anchor_hints determines how @surface will be moved
 if the anchor points cause it to move off-screen. For example,
-%GDK_ANCHOR_FLIP_X will replace %GDK_GRAVITY_NORTH_WEST with
-%GDK_GRAVITY_NORTH_EAST and vice versa if @surface extends
+`GDK_ANCHOR_FLIP_X` will replace `GDK_GRAVITY_NORTH_WEST` with
+`GDK_GRAVITY_NORTH_EAST` and vice versa if @surface extends
 beyond the left or right edges of the monitor. *)
 
 external ref : t -> t = "ml_gdk_popup_layout_ref"
@@ -98,7 +98,7 @@ external get_anchor_rect : t -> Rectangle.t
 
 external get_anchor_hints : t -> Gdk_enums.anchorhints
   = "ml_gdk_popup_layout_get_anchor_hints"
-(** Get the `GdkAnchorHints`. *)
+(** Get the anchor hints. *)
 
 external equal : t -> t -> bool = "ml_gdk_popup_layout_equal"
 (** Check whether @layout and @other has identical layout properties. *)

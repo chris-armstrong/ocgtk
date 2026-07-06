@@ -123,6 +123,28 @@ gdk_dmabuf_texture_builder_set_display(GdkDmabufTextureBuilder_val(self), GdkDis
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,16,0)
+
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_set_color_state(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gdk_dmabuf_texture_builder_set_color_state(GdkDmabufTextureBuilder_val(self), Option_val(arg1, GdkColorState_val, NULL));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_set_color_state(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("DmabufTextureBuilder requires GTK >= 4.16");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_width(value self)
 {
 CAMLparam1(self);
@@ -222,6 +244,28 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GdkDisplay(result));
 }
 
+#if GTK_CHECK_VERSION(4,16,0)
+
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_color_state(value self)
+{
+CAMLparam1(self);
+
+GdkColorState* result = gdk_dmabuf_texture_builder_get_color_state(GdkDmabufTextureBuilder_val(self));
+if (result) result = g_boxed_copy(gdk_color_state_get_type(), result);
+CAMLreturn(Val_option(result, Val_GdkColorState));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_color_state(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("DmabufTextureBuilder requires GTK >= 4.16");
+return Val_unit;
+}
+#endif
+
 #else
 
 
@@ -229,6 +273,15 @@ CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_new(value unit)
 {
 CAMLparam1(unit);
 (void)unit;
+caml_failwith("DmabufTextureBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_color_state(value self)
+{
+CAMLparam1(self);
+(void)self;
 caml_failwith("DmabufTextureBuilder requires GTK >= 4.14");
 return Val_unit;
 }
@@ -340,6 +393,16 @@ CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_get_width(value self)
 {
 CAMLparam1(self);
 (void)self;
+caml_failwith("DmabufTextureBuilder requires GTK >= 4.14");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gdk_dmabuf_texture_builder_set_color_state(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
 caml_failwith("DmabufTextureBuilder requires GTK >= 4.14");
 return Val_unit;
 }

@@ -17,13 +17,8 @@ external set_primary : t -> bool -> unit = "ml_gtk_menu_button_set_primary"
 
     Primary menus can be opened with the <kbd>F10</kbd> key. *)
 
-external set_popover :
-  t ->
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-  .Widget
-  .t
-  option ->
-  unit = "ml_gtk_menu_button_set_popover"
+external set_popover : t -> Popover.t option -> unit
+  = "ml_gtk_menu_button_set_popover"
 (** Sets the `GtkPopover` that will be popped up when the @menu_button is clicked.
 
 If @popover is %NULL, the button is disabled.

@@ -6,8 +6,10 @@ class type window_controls_t = object
   method get_decoration_layout : unit -> string option
   method get_empty : unit -> bool
   method get_side : unit -> Gtk_enums.packtype
+  method get_use_native_controls : unit -> bool
   method set_decoration_layout : string option -> unit
   method set_side : Gtk_enums.packtype -> unit
+  method set_use_native_controls : bool -> unit
   method as_window_controls : Window_controls.t
 end
 
@@ -30,11 +32,17 @@ class window_controls (obj : Window_controls.t) : window_controls_t =
     method get_side : unit -> Gtk_enums.packtype =
       fun () -> Window_controls.get_side obj
 
+    method get_use_native_controls : unit -> bool =
+      fun () -> Window_controls.get_use_native_controls obj
+
     method set_decoration_layout : string option -> unit =
       fun layout -> Window_controls.set_decoration_layout obj layout
 
     method set_side : Gtk_enums.packtype -> unit =
       fun side -> Window_controls.set_side obj side
+
+    method set_use_native_controls : bool -> unit =
+      fun setting -> Window_controls.set_use_native_controls obj setting
 
     method as_window_controls = obj
   end

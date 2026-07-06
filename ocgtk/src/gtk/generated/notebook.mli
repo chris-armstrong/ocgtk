@@ -433,10 +433,7 @@ external set_enable_popup : t -> bool -> unit
 (** Set property: enable-popup *)
 
 val on_change_current_page :
-  ?after:bool ->
-  t ->
-  callback:(object_:int -> bool) ->
-  Gobject.Signal.handler_id
+  ?after:bool -> t -> callback:(page:int -> bool) -> Gobject.Signal.handler_id
 
 val on_create_window :
   ?after:bool ->
@@ -452,13 +449,13 @@ val on_create_window :
 val on_focus_tab :
   ?after:bool ->
   t ->
-  callback:(object_:Gtk_enums.notebooktab -> bool) ->
+  callback:(tab:Gtk_enums.notebooktab -> bool) ->
   Gobject.Signal.handler_id
 
 val on_move_focus_out :
   ?after:bool ->
   t ->
-  callback:(object_:Gtk_enums.directiontype -> unit) ->
+  callback:(direction:Gtk_enums.directiontype -> unit) ->
   Gobject.Signal.handler_id
 
 val on_page_added :
@@ -500,13 +497,13 @@ val on_page_reordered :
 val on_reorder_tab :
   ?after:bool ->
   t ->
-  callback:(object_:Gtk_enums.directiontype -> p0:bool -> bool) ->
+  callback:(direction:Gtk_enums.directiontype -> move_to_last:bool -> bool) ->
   Gobject.Signal.handler_id
 
 val on_select_page :
   ?after:bool ->
   t ->
-  callback:(object_:bool -> bool) ->
+  callback:(move_focus:bool -> bool) ->
   Gobject.Signal.handler_id
 
 val on_switch_page :

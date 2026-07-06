@@ -51,10 +51,10 @@ external set_resource_base_path : t -> string option -> unit
   = "ml_g_application_set_resource_base_path"
 (** Sets (or unsets) the base resource path of @application.
 
-The path is used to automatically load various [application
-resources][gresource] such as menu layouts and action descriptions.
-The various types of resources will be found at fixed names relative
-to the given base path.
+The path is used to automatically load various
+[application resources][struct@Gio.Resource] such as menu layouts and
+action descriptions. The various types of resources will be found at
+fixed names relative to the given base path.
 
 By default, the resource base path is determined from the application
 ID by prefixing '/' and replacing each '.' with '/'.  This is done at
@@ -170,11 +170,11 @@ replaced with @notification and shown again as if it was a new
 notification. This works even for notifications sent from a previous
 execution of the application, as long as @id is the same string.
 
-@id may be %NULL, but it is impossible to replace or withdraw
+@id may be `NULL`, but it is impossible to replace or withdraw
 notifications without an id.
 
 If @notification is no longer relevant, it can be withdrawn with
-g_application_withdraw_notification().
+[method@Gio.Application.withdraw_notification].
 
 It is an error to call this function if @application has no
 application ID. *)

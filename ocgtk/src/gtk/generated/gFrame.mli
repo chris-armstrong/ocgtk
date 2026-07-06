@@ -33,8 +33,6 @@ class type frame_t = object
     option ->
     unit
 
-  method label_xalign : float
-  method set_label_xalign : float -> unit
   method as_frame : Frame.t
 end
 

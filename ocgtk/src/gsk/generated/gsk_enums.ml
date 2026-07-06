@@ -167,6 +167,19 @@ let pathdirection_to_int v =
   | `TO_END -> 2
   | `FROM_END -> 3
 
+type pathintersection = [ `NONE | `NORMAL | `START | `END ]
+
+let pathintersection_of_int n =
+  match n with
+  | 0 -> `NONE
+  | 1 -> `NORMAL
+  | 2 -> `START
+  | 3 -> `END
+  | n -> failwith (Printf.sprintf "PathIntersection: unknown int %d" n)
+
+let pathintersection_to_int v =
+  match v with `NONE -> 0 | `NORMAL -> 1 | `START -> 2 | `END -> 3
+
 type pathoperation = [ `MOVE | `CLOSE | `LINE | `QUAD | `CUBIC | `CONIC ]
 
 let pathoperation_of_int n =
@@ -219,7 +232,8 @@ type rendernodetype =
   | `MASK_NODE
   | `FILL_NODE
   | `STROKE_NODE
-  | `SUBSURFACE_NODE ]
+  | `SUBSURFACE_NODE
+  | `COMPONENT_TRANSFER_NODE ]
 
 let rendernodetype_of_int n =
   match n with
@@ -254,6 +268,7 @@ let rendernodetype_of_int n =
   | 28 -> `FILL_NODE
   | 29 -> `STROKE_NODE
   | 30 -> `SUBSURFACE_NODE
+  | 31 -> `COMPONENT_TRANSFER_NODE
   | n -> failwith (Printf.sprintf "RenderNodeType: unknown int %d" n)
 
 let rendernodetype_to_int v =
@@ -289,6 +304,7 @@ let rendernodetype_to_int v =
   | `FILL_NODE -> 28
   | `STROKE_NODE -> 29
   | `SUBSURFACE_NODE -> 30
+  | `COMPONENT_TRANSFER_NODE -> 31
 
 type scalingfilter = [ `LINEAR | `NEAREST | `TRILINEAR ]
 

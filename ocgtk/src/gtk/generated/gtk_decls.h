@@ -1748,6 +1748,10 @@ GtkFilterMatch GtkFilterMatch_val(value val);
 value Val_GtkFontLevel(GtkFontLevel val);
 GtkFontLevel GtkFontLevel_val(value val);
 #endif
+#if GTK_CHECK_VERSION(4,16,0)
+value Val_GtkFontRendering(GtkFontRendering val);
+GtkFontRendering GtkFontRendering_val(value val);
+#endif
 #if GTK_CHECK_VERSION(4,14,0)
 value Val_GtkGraphicsOffloadEnabled(GtkGraphicsOffloadEnabled val);
 GtkGraphicsOffloadEnabled GtkGraphicsOffloadEnabled_val(value val);
@@ -1765,6 +1769,14 @@ GtkInputPurpose GtkInputPurpose_val(value val);
 #if GTK_CHECK_VERSION(4,8,0)
 value Val_GtkInscriptionOverflow(GtkInscriptionOverflow val);
 GtkInscriptionOverflow GtkInscriptionOverflow_val(value val);
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+value Val_GtkInterfaceColorScheme(GtkInterfaceColorScheme val);
+GtkInterfaceColorScheme GtkInterfaceColorScheme_val(value val);
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+value Val_GtkInterfaceContrast(GtkInterfaceContrast val);
+GtkInterfaceContrast GtkInterfaceContrast_val(value val);
 #endif
 value Val_GtkJustification(GtkJustification val);
 GtkJustification GtkJustification_val(value val);
@@ -1884,6 +1896,10 @@ value Val_GtkTreeViewGridLines(GtkTreeViewGridLines val);
 GtkTreeViewGridLines GtkTreeViewGridLines_val(value val);
 value Val_GtkUnit(GtkUnit val);
 GtkUnit GtkUnit_val(value val);
+#if GTK_CHECK_VERSION(4,20,0)
+value Val_GtkWindowGravity(GtkWindowGravity val);
+GtkWindowGravity GtkWindowGravity_val(value val);
+#endif
 value Val_GtkWrapMode(GtkWrapMode val);
 GtkWrapMode GtkWrapMode_val(value val);
 
@@ -1920,6 +1936,10 @@ value Val_GtkStateFlags(GtkStateFlags flags);
 GtkStateFlags GtkStateFlags_val(value list);
 value Val_GtkStyleContextPrintFlags(GtkStyleContextPrintFlags flags);
 GtkStyleContextPrintFlags GtkStyleContextPrintFlags_val(value list);
+#if GTK_CHECK_VERSION(4,16,0)
+value Val_GtkTextBufferNotifyFlags(GtkTextBufferNotifyFlags flags);
+GtkTextBufferNotifyFlags GtkTextBufferNotifyFlags_val(value list);
+#endif
 value Val_GtkTextSearchFlags(GtkTextSearchFlags flags);
 GtkTextSearchFlags GtkTextSearchFlags_val(value list);
 value Val_GtkTreeModelFlags(GtkTreeModelFlags flags);

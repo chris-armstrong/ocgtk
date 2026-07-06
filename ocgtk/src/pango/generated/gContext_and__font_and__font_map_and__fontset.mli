@@ -18,7 +18,7 @@ class type context_t = object
   method load_fontset : Font_description.t -> Language.t -> fontset_t option
   method set_base_dir : Pango_enums.direction -> unit
   method set_base_gravity : Pango_enums.gravity -> unit
-  method set_font_description : Font_description.t option -> unit
+  method set_font_description : Font_description.t -> unit
   method set_font_map : font_map_t option -> unit
   method set_gravity_hint : Pango_enums.gravityhint -> unit
   method set_language : Language.t option -> unit
@@ -31,7 +31,7 @@ and font_t = object
   method describe : unit -> Font_description.t
   method describe_with_absolute_size : unit -> Font_description.t
   method get_coverage : Language.t -> GCoverage.coverage_t
-  method get_face : unit -> GFont_face_and__font_family.font_face_t
+  method get_face : unit -> GFont_face_and__font_family.font_face_t option
   method get_font_map : unit -> font_map_t option
   method get_metrics : Language.t option -> Font_metrics.t
   method has_char : int -> bool
@@ -41,9 +41,10 @@ end
 
 and font_map_t = object
   inherit Ocgtk_gio.Gio.List_model.list_model_t
+  method add_font_file : string -> (bool, GError.t) result
   method changed : unit -> unit
   method create_context : unit -> context_t
-  method get_family : string -> GFont_face_and__font_family.font_family_t
+  method get_family : string -> GFont_face_and__font_family.font_family_t option
   method get_serial : unit -> int
   method load_font : context_t -> Font_description.t -> font_t option
 

@@ -98,9 +98,7 @@ external has_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t -> bool
 (** Checks whether an icon theme includes an icon for a particular `GIcon`. *)
 
 external get_theme_name : t -> string = "ml_gtk_icon_theme_get_theme_name"
-(** Gets the current icon theme name.
-
-    Returns (transfer full): the current icon theme name, *)
+(** Gets the current icon theme name. *)
 
 external get_search_path : t -> string array option
   = "ml_gtk_icon_theme_get_search_path"

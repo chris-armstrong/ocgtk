@@ -55,7 +55,7 @@ portable way to do that.
 
 If you need more control over the generated image, such as
 attaching metadata, you should look into an image handling
-library such as the gdk-pixbuf library.
+library such as the libglycin library.
 
 If you are dealing with high dynamic range float data, you
 might also want to consider [method@Gdk.Texture.save_to_tiff_bytes]
@@ -66,9 +66,9 @@ external save_to_png : t -> string -> bool = "ml_gdk_texture_save_to_png"
 
 This is a utility function intended for debugging and testing.
 If you want more control over formats, proper error handling or
-want to store to a [iface@Gio.File] or other location, you might want to
-use [method@Gdk.Texture.save_to_png_bytes] or look into the
-gdk-pixbuf library. *)
+want to store to a [iface@Gio.File] or other location, you might
+want to use [method@Gdk.Texture.save_to_png_bytes] or look into
+the libglycin library. *)
 
 external get_width : t -> int = "ml_gdk_texture_get_width"
 (** Returns the width of @texture, in pixels. *)
@@ -85,5 +85,9 @@ external get_format : t -> Gdk_enums.memoryformat = "ml_gdk_texture_get_format"
     The format can give an indication about the bit depth and opacity of the
     texture and is useful to determine the best format for downloading the
     texture. *)
+
+external get_color_state : t -> Cicp_params_and__color_state.Color_state.t
+  = "ml_gdk_texture_get_color_state"
+(** Returns the color state associated with the texture. *)
 
 (* Properties *)

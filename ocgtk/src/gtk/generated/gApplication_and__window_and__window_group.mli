@@ -92,6 +92,7 @@ and window_t = object
   method get_deletable : unit -> bool
   method get_destroy_with_parent : unit -> bool
   method get_focus_visible : unit -> bool
+  method get_gravity : unit -> Gtk_enums.windowgravity
   method get_group : unit -> window_group_t
   method get_handle_menubar_accel : unit -> bool
   method get_hide_on_close : unit -> bool
@@ -138,6 +139,7 @@ and window_t = object
   method set_destroy_with_parent : bool -> unit
   method set_display : Ocgtk_gdk.Gdk.Display.display_t -> unit
   method set_focus_visible : bool -> unit
+  method set_gravity : Gtk_enums.windowgravity -> unit
   method set_handle_menubar_accel : bool -> unit
   method set_hide_on_close : bool -> unit
   method set_icon_name : string option -> unit
@@ -161,21 +163,6 @@ and window_t = object
   method set_default_height : int -> unit
   method default_width : int
   method set_default_width : int -> unit
-
-  method focus_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
-  method set_focus_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
-
-  method fullscreened : bool
-  method set_fullscreened : bool -> unit
-  method maximized : bool
-  method set_maximized : bool -> unit
-  method suspended : bool
   method as_window : Application_and__window_and__window_group.Window.t
 end
 

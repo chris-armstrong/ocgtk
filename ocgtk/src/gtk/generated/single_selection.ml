@@ -18,7 +18,8 @@ If the list does not have an item at @position or
 value of the [property@Gtk.SingleSelection:autoselect] property:
 If it is set, no change will occur and the old item will stay
 selected. If it is unset, the selection will be unset and no item
-will be selected. *)
+will be selected. This also applies if [property@Gtk.SingleSelection:can-unselect]
+is set to %FALSE. *)
 
 external set_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option -> unit
   = "ml_gtk_single_selection_set_model"
@@ -33,7 +34,7 @@ external set_can_unselect : t -> bool -> unit
 
     Note that setting [property@Gtk.SingleSelection:autoselect] will cause
     unselecting to not work, so it practically makes no sense to set both at the
-    same time the same time. *)
+    same time. *)
 
 external set_autoselect : t -> bool -> unit
   = "ml_gtk_single_selection_set_autoselect"

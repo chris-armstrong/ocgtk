@@ -12,6 +12,8 @@ class type header_bar_t = object
     .widget_t
     option
 
+  method get_use_native_controls : unit -> bool
+
   method pack_end :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
@@ -36,6 +38,7 @@ class type header_bar_t = object
     option ->
     unit
 
+  method set_use_native_controls : bool -> unit
   method as_header_bar : Header_bar.t
 end
 

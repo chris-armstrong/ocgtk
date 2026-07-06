@@ -61,7 +61,7 @@ CAMLexport CAMLprim value ml_gdk_surface_set_input_region(value self, value arg1
 {
 CAMLparam2(self, arg1);
 
-gdk_surface_set_input_region(GdkSurface_val(self), cairo_region_t_val(arg1));
+gdk_surface_set_input_region(GdkSurface_val(self), Option_val(arg1, cairo_region_t_val, NULL));
 CAMLreturn(Val_unit);
 }
 

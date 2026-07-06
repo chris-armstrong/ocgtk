@@ -112,7 +112,7 @@ it will return %FALSE and fill in @rect with the parent
 widget coordinates. *)
 
 external get_offset : t -> int * int = "ml_gtk_popover_get_offset"
-(** Gets the offset previous set with [method@Gtk.Popover.set_offset()]. *)
+(** Gets the offset previous set with [method@Gtk.Popover.set_offset]. *)
 
 external get_mnemonics_visible : t -> bool
   = "ml_gtk_popover_get_mnemonics_visible"

@@ -32,10 +32,7 @@ class type editable_t = object
   method set_position : int -> unit
   method set_text : string -> unit
   method set_width_chars : int -> unit
-  method cursor_position : int
   method selection_bound : int
-  method xalign : float
-  method set_xalign : float -> unit
   method as_editable : Editable.t
 end
 
@@ -109,9 +106,6 @@ class editable (obj : Editable.t) : editable_t =
     method set_width_chars : int -> unit =
       fun n_chars -> Editable.set_width_chars obj n_chars
 
-    method cursor_position = Editable.get_cursor_position obj
     method selection_bound = Editable.get_selection_bound obj
-    method xalign = Editable.get_xalign obj
-    method set_xalign v = Editable.set_xalign obj v
     method as_editable = obj
   end

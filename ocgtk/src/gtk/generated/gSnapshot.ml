@@ -117,6 +117,13 @@ class type snapshot_t = object
     Ocgtk_graphene.Graphene.Vec4.vec4_t ->
     unit
 
+  method push_component_transfer :
+    Ocgtk_gsk.Gsk.Component_transfer.component_transfer_t ->
+    Ocgtk_gsk.Gsk.Component_transfer.component_transfer_t ->
+    Ocgtk_gsk.Gsk.Component_transfer.component_transfer_t ->
+    Ocgtk_gsk.Gsk.Component_transfer.component_transfer_t ->
+    unit
+
   method push_cross_fade : float -> unit
   method push_fill : Ocgtk_gsk.Gsk.Path.path_t -> Ocgtk_gsk.Gsk.fillrule -> unit
 
@@ -392,6 +399,19 @@ class snapshot (obj : Snapshot.t) : snapshot_t =
         let color_matrix = color_matrix#as_matrix in
         let color_offset = color_offset#as_vec4 in
         Snapshot.push_color_matrix obj color_matrix color_offset
+
+    method push_component_transfer :
+        Ocgtk_gsk.Gsk.Component_transfer.component_transfer_t ->
+        Ocgtk_gsk.Gsk.Component_transfer.component_transfer_t ->
+        Ocgtk_gsk.Gsk.Component_transfer.component_transfer_t ->
+        Ocgtk_gsk.Gsk.Component_transfer.component_transfer_t ->
+        unit =
+      fun red green blue alpha ->
+        let red = red#as_component_transfer in
+        let green = green#as_component_transfer in
+        let blue = blue#as_component_transfer in
+        let alpha = alpha#as_component_transfer in
+        Snapshot.push_component_transfer obj red green blue alpha
 
     method push_cross_fade : float -> unit =
       fun progress -> Snapshot.push_cross_fade obj progress

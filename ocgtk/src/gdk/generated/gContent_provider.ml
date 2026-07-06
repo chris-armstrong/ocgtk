@@ -9,8 +9,6 @@ class type content_provider_t = object
   method write_mime_type_finish :
     Ocgtk_gio.Gio.Async_result.async_result_t -> (bool, GError.t) result
 
-  method formats : Content_formats.t
-  method storable_formats : Content_formats.t
   method as_content_provider : Content_provider.t
 end
 
@@ -36,8 +34,6 @@ class content_provider (obj : Content_provider.t) : content_provider_t =
         let result = result#as_async_result in
         Content_provider.write_mime_type_finish obj result
 
-    method formats = Content_provider.get_formats obj
-    method storable_formats = Content_provider.get_storable_formats obj
     method as_content_provider = obj
   end
 

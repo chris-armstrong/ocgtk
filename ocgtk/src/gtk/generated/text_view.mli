@@ -333,6 +333,18 @@ region of the buffer, in buffer coordinates.
 Convert to window coordinates with
 [method@Gtk.TextView.buffer_to_window_coords]. *)
 
+external get_visible_offset : t -> float option * float option
+  = "ml_gtk_text_view_get_visible_offset"
+(** Gets the X,Y offset in buffer coordinates of the top-left corner of the
+    textview's text contents.
+
+    This allows for more-precise positioning than what is provided by
+    [method@Gtk.TextView.get_visible_rect] as you can discover what device pixel
+    is being quantized for text positioning.
+
+    You might want this when making ulterior widgets align with quantized device
+    pixels of the textview contents such as line numbers. *)
+
 external get_top_margin : t -> int = "ml_gtk_text_view_get_top_margin"
 (** Gets the top margin for text in the @text_view. *)
 

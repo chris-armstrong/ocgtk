@@ -26,6 +26,14 @@ provided because the text used to generate the item isn't available,
 so `pango_item_split()` can't count the char length of the split items
 itself. *)
 
+external get_char_offset : t -> int = "ml_pango_item_get_char_offset"
+(** Returns the character offset of the item from the beginning of the itemized
+    text.
+
+    If the item has not been obtained from Pango's itemization machinery, then
+    the character offset is not available. In that case, this function returns
+    -1. *)
+
 external apply_attrs : t -> Attr_iterator.t -> unit
   = "ml_pango_item_apply_attrs"
 (** Add attributes to a `PangoItem`.

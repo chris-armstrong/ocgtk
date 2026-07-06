@@ -287,6 +287,39 @@ GskPathDirection GskPathDirection_val(value val) {
 
 #endif
 
+#if GTK_CHECK_VERSION(4,20,0)
+/* Convert GskPathIntersection to OCaml value */
+value Val_GskPathIntersection(GskPathIntersection val) {
+  switch (val) {
+    case GSK_PATH_INTERSECTION_NONE: return caml_hash_variant("NONE"); /* `NONE */
+    case GSK_PATH_INTERSECTION_NORMAL: return caml_hash_variant("NORMAL"); /* `NORMAL */
+    case GSK_PATH_INTERSECTION_START: return caml_hash_variant("START"); /* `START */
+    case GSK_PATH_INTERSECTION_END: return caml_hash_variant("END"); /* `END */
+    default: {
+      char msg[128];
+      g_snprintf(msg, sizeof(msg), "Unknown GskPathIntersection value: %d", (int)val);
+      g_warning("%s", msg);
+      caml_failwith(msg);
+    }
+  }
+}
+
+/* Convert OCaml value to GskPathIntersection */
+GskPathIntersection GskPathIntersection_val(value val) {
+  if (val == caml_hash_variant("NONE")) return GSK_PATH_INTERSECTION_NONE; /* `NONE */
+  else if (val == caml_hash_variant("NORMAL")) return GSK_PATH_INTERSECTION_NORMAL; /* `NORMAL */
+  else if (val == caml_hash_variant("START")) return GSK_PATH_INTERSECTION_START; /* `START */
+  else if (val == caml_hash_variant("END")) return GSK_PATH_INTERSECTION_END; /* `END */
+  else {
+    char msg[128];
+    g_snprintf(msg, sizeof(msg), "Unknown GskPathIntersection tag: %ld", val);
+    g_warning("%s", msg);
+    caml_failwith(msg);
+  }
+}
+
+#endif
+
 #if GTK_CHECK_VERSION(4,14,0)
 /* Convert GskPathOperation to OCaml value */
 value Val_GskPathOperation(GskPathOperation val) {
@@ -373,6 +406,10 @@ value Val_GskRenderNodeType(GskRenderNodeType val) {
     case GSK_SUBSURFACE_NODE: return caml_hash_variant("SUBSURFACE_NODE"); /* `SUBSURFACE_NODE */
 
 #endif
+#if GTK_CHECK_VERSION(4,20,0)
+    case GSK_COMPONENT_TRANSFER_NODE: return caml_hash_variant("COMPONENT_TRANSFER_NODE"); /* `COMPONENT_TRANSFER_NODE */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown GskRenderNodeType value: %d", (int)val);
@@ -439,6 +476,12 @@ GskRenderNodeType GskRenderNodeType_val(value val) {
 
 #else
   else if (val == caml_hash_variant("SUBSURFACE_NODE")) caml_failwith("GskRenderNodeType.SUBSURFACE_NODE requires 4.14");
+#endif
+#if GTK_CHECK_VERSION(4,20,0)
+  else if (val == caml_hash_variant("COMPONENT_TRANSFER_NODE")) return GSK_COMPONENT_TRANSFER_NODE; /* `COMPONENT_TRANSFER_NODE */
+
+#else
+  else if (val == caml_hash_variant("COMPONENT_TRANSFER_NODE")) caml_failwith("GskRenderNodeType.COMPONENT_TRANSFER_NODE requires 4.20");
 #endif
   else {
     char msg[128];

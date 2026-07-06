@@ -65,7 +65,6 @@ class type d_bus_connection_t = object
   method unexport_menu_model : int -> unit
   method unregister_object : int -> bool
   method unregister_subtree : int -> bool
-  method closed : bool
   method as_d_bus_connection : D_bus_connection.t
 end
 
@@ -212,7 +211,6 @@ class d_bus_connection (obj : D_bus_connection.t) : d_bus_connection_t =
       fun registration_id ->
         D_bus_connection.unregister_subtree obj registration_id
 
-    method closed = D_bus_connection.get_closed obj
     method as_d_bus_connection = obj
   end
 

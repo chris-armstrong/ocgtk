@@ -12,14 +12,6 @@
 #include "wrappers.h"
 
 #include <gio/gio.h>
-#ifdef __linux__
-#include <gio/gunixoutputstream.h>
-#include <gio/gunixmounts.h>
-#include <gio/gunixinputstream.h>
-#include <gio/gunixfdmessage.h>
-#include <gio/gfiledescriptorbased.h>
-#include <gio/gdesktopappinfo.h>
-#endif /* __linux__ */
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
@@ -44,7 +36,7 @@ CAMLexport CAMLprim value ml_g_file_monitor_emit_event(value self, value arg1, v
 {
 CAMLparam4(self, arg1, arg2, arg3);
 
-g_file_monitor_emit_event(GFileMonitor_val(self), GFile_val(arg1), GFile_val(arg2), GioFileMonitorEvent_val(arg3));
+g_file_monitor_emit_event(GFileMonitor_val(self), GFile_val(arg1), Option_val(arg2, GFile_val, NULL), GioFileMonitorEvent_val(arg3));
 CAMLreturn(Val_unit);
 }
 
@@ -55,20 +47,3 @@ CAMLparam1(self);
 gboolean result = g_file_monitor_cancel(GFileMonitor_val(self));
 CAMLreturn(Val_bool(result));
 }
-
-CAMLexport CAMLprim value ml_g_file_monitor_get_cancelled(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GFileMonitor *obj = (GFileMonitor *)GFileMonitor_val(self);
-    gboolean *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "cancelled");
-if (pspec == NULL) caml_failwith("ml_g_file_monitor_get_cancelled: property 'cancelled' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "cancelled", &prop_gvalue);
-          prop_value = g_value_get_boolean(&prop_gvalue);
-
-      result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}

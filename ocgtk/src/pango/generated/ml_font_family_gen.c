@@ -111,6 +111,8 @@ return Val_unit;
 }
 #endif
 
+#if PANGO_VERSION_CHECK(1,52,0)
+
 CAMLexport CAMLprim value ml_pango_font_family_get_item_type(value self)
 {
     CAMLparam1(self);
@@ -128,6 +130,19 @@ g_value_init(&prop_gvalue, pspec->value_type);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
 
+#else
+
+CAMLexport CAMLprim value ml_pango_font_family_get_item_type(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontFamily requires Pango >= 1.52");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,52,0)
+
 CAMLexport CAMLprim value ml_pango_font_family_get_n_items(value self)
 {
     CAMLparam1(self);
@@ -144,3 +159,14 @@ g_value_init(&prop_gvalue, pspec->value_type);
       result = Val_int(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_pango_font_family_get_n_items(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontFamily requires Pango >= 1.52");
+return Val_unit;
+}
+#endif

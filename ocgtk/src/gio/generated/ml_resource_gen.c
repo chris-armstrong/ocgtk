@@ -12,14 +12,6 @@
 #include "wrappers.h"
 
 #include <gio/gio.h>
-#ifdef __linux__
-#include <gio/gunixoutputstream.h>
-#include <gio/gunixmounts.h>
-#include <gio/gunixinputstream.h>
-#include <gio/gunixfdmessage.h>
-#include <gio/gfiledescriptorbased.h>
-#include <gio/gdesktopappinfo.h>
-#endif /* __linux__ */
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
@@ -77,6 +69,28 @@ GError *error = NULL;
 GBytes* result = g_resource_lookup_data(GResource_val(self), String_val(arg1), GioResourceLookupFlags_val(arg2), &error);
 if (error == NULL) CAMLreturn(Res_Ok(Val_GBytes(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
+
+#if GLIB_CHECK_VERSION(2,84,0)
+
+CAMLexport CAMLprim value ml_g_resource_has_children(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = g_resource_has_children(GResource_val(self), String_val(arg1));
+CAMLreturn(Val_bool(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_resource_has_children(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Resource requires GLib >= 2.84");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_g_resource_get_info(value self, value arg1, value arg2)
 {
@@ -183,6 +197,16 @@ CAMLparam3(self, arg1, arg2);
 (void)self;
 (void)arg1;
 (void)arg2;
+caml_failwith("Resource requires GLib >= 2.32");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_g_resource_has_children(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
 caml_failwith("Resource requires GLib >= 2.32");
 return Val_unit;
 }

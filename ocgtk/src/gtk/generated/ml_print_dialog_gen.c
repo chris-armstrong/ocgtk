@@ -34,7 +34,7 @@ CAMLparam2(self, arg1);
 GError *error = NULL;
 
 GtkPrintSetup* result = gtk_print_dialog_setup_finish(GtkPrintDialog_val(self), GAsyncResult_val(arg1), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GtkPrintSetup))); else CAMLreturn(Res_Error(Val_GError(error)));
+if (error == NULL) CAMLreturn(Res_Ok(Val_GtkPrintSetup(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_dialog_set_title(value self, value arg1)
@@ -83,7 +83,7 @@ CAMLparam2(self, arg1);
 GError *error = NULL;
 
 GOutputStream* result = gtk_print_dialog_print_finish(GtkPrintDialog_val(self), GAsyncResult_val(arg1), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GOutputStream))); else CAMLreturn(Res_Error(Val_GError(error)));
+if (error == NULL) CAMLreturn(Res_Ok(Val_GOutputStream(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_dialog_print_file_finish(value self, value arg1)
@@ -109,7 +109,7 @@ CAMLparam1(self);
 
 GtkPrintSettings* result = gtk_print_dialog_get_print_settings(GtkPrintDialog_val(self));
 if (result) g_object_ref_sink(result);
-CAMLreturn(Val_GtkPrintSettings(result));
+CAMLreturn(Val_option(result, Val_GtkPrintSettings));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_dialog_get_page_setup(value self)
@@ -118,7 +118,7 @@ CAMLparam1(self);
 
 GtkPageSetup* result = gtk_print_dialog_get_page_setup(GtkPrintDialog_val(self));
 if (result) g_object_ref_sink(result);
-CAMLreturn(Val_GtkPageSetup(result));
+CAMLreturn(Val_option(result, Val_GtkPageSetup));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_dialog_get_modal(value self)

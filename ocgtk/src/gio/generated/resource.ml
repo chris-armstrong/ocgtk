@@ -161,8 +161,9 @@ external new_from_data : Glib_bytes.t -> (t, GError.t) result
 (* Methods *)
 
 external ref : t -> t = "ml_g_resource_ref"
-(** Atomically increments the reference count of @resource by one. This
-function is MT-safe and may be called from any thread. *)
+(** Atomically increments the reference count of @resource by one.
+
+This function is threadsafe and may be called from any thread. *)
 
 external open_stream :
   t ->
@@ -170,9 +171,12 @@ external open_stream :
   Gio_enums.resourcelookupflags ->
   (Input_stream.t, GError.t) result = "ml_g_resource_open_stream"
 (** Looks for a file at the specified @path in the resource and
-returns a #GInputStream that lets you read the data.
+returns a [class@Gio.InputStream] that lets you read the data.
 
-@lookup_flags controls the behaviour of the lookup. *)
+@lookup_flags controls the behaviour of the lookup.
+
+The only error this can return is %G_RESOURCE_ERROR_NOT_FOUND, if @path was
+not found in @resource. *)
 
 external lookup_data :
   t ->
@@ -180,19 +184,27 @@ external lookup_data :
   Gio_enums.resourcelookupflags ->
   (Glib_bytes.t, GError.t) result = "ml_g_resource_lookup_data"
 (** Looks for a file at the specified @path in the resource and
-returns a #GBytes that lets you directly access the data in
+returns a [struct@GLib.Bytes] that lets you directly access the data in
 memory.
 
 The data is always followed by a zero byte, so you
 can safely use the data as a C string. However, that byte
-is not included in the size of the GBytes.
+is not included in the size of the [struct@GLib.Bytes].
 
 For uncompressed resource files this is a pointer directly into
-the resource bundle, which is typically in some readonly data section
-in the program binary. For compressed files we allocate memory on
-the heap and automatically uncompress the data.
+the resource bundle, which is typically in some read-only data section
+in the program binary. For compressed files, memory is allocated on
+the heap and the data is automatically uncompressed.
 
-@lookup_flags controls the behaviour of the lookup. *)
+@lookup_flags controls the behaviour of the lookup.
+
+This can return error %G_RESOURCE_ERROR_NOT_FOUND if @path was not found in
+@resource, or %G_RESOURCE_ERROR_INTERNAL if decompression of a compressed
+resource failed. *)
+
+external has_children : t -> string -> bool = "ml_g_resource_has_children"
+(** Returns whether the specified @path in the resource
+has children. *)
 
 external get_info :
   t ->
@@ -202,7 +214,10 @@ external get_info :
 (** Looks for a file at the specified @path in the resource and
 if found returns information about it.
 
-@lookup_flags controls the behaviour of the lookup. *)
+@lookup_flags controls the behaviour of the lookup.
+
+The only error this can return is %G_RESOURCE_ERROR_NOT_FOUND, if @path was
+not found in @resource. *)
 
 external enumerate_children :
   t ->
@@ -210,10 +225,11 @@ external enumerate_children :
   Gio_enums.resourcelookupflags ->
   (string array, GError.t) result = "ml_g_resource_enumerate_children"
 (** Returns all the names of children at the specified @path in the resource.
-The return result is a %NULL terminated list of strings which should
-be released with g_strfreev().
 
-If @path is invalid or does not exist in the #GResource,
+The return result is a `NULL` terminated list of strings which should
+be released with [func@GLib.strfreev].
+
+If @path is invalid or does not exist in the [struct@Gio.Resource],
 %G_RESOURCE_ERROR_NOT_FOUND will be returned.
 
 @lookup_flags controls the behaviour of the lookup. *)
@@ -222,8 +238,9 @@ external _unregister : t -> unit = "ml_g_resources_unregister"
 (** Unregisters the resource from the process-global set of resources. *)
 
 external _register : t -> unit = "ml_g_resources_register"
-(** Registers the resource with the process-global set of resources. Once a
-    resource is registered the files in it can be accessed with the global
-    resource lookup functions like g_resources_lookup_data(). *)
+(** Registers the resource with the process-global set of resources.
+
+    Once a resource is registered the files in it can be accessed with the
+    global resource lookup functions like [func@Gio.resources_lookup_data]. *)
 
 external get_type : unit -> Gobject.Type.t = "ml_gio_resource_get_type"

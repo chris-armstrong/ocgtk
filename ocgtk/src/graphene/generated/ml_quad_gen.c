@@ -103,7 +103,7 @@ CAMLexport CAMLprim value ml_graphene_quad_contains(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_quad_contains(graphene_quad_t_val(self), graphene_point_t_val(arg1));
+bool result = graphene_quad_contains(graphene_quad_t_val(self), graphene_point_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

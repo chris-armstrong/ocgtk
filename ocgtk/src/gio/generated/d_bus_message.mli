@@ -47,7 +47,10 @@ external set_signature : t -> string option -> unit
     field. *)
 
 external set_serial : t -> UInt32.t -> unit = "ml_g_dbus_message_set_serial"
-(** Sets the serial for @message. *)
+(** Sets the serial for @message.
+
+The [D-Bus specification](https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-messages)
+does not allow the @serial to be zero. *)
 
 external set_sender : t -> string option -> unit
   = "ml_g_dbus_message_set_sender"
@@ -205,7 +208,7 @@ external get_member : t -> string option = "ml_g_dbus_message_get_member"
 
 external get_locked : t -> bool = "ml_g_dbus_message_get_locked"
 (** Checks whether @message is locked. To monitor changes to this
-value, conncet to the #GObject::notify signal to listen for changes
+value, connect to the #GObject::notify signal to listen for changes
 on the #GDBusMessage:locked property. *)
 
 external get_interface : t -> string option = "ml_g_dbus_message_get_interface"
