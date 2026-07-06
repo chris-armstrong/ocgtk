@@ -61,6 +61,21 @@ let rec collect_transitive_packages ~ctx ~visited namespace_name =
     in
     direct @ transitive
 
+(* Whether namespace_name is, or transitively includes, target_namespace. *)
+let rec transitively_includes ~ctx ~visited ~target namespace_name =
+  let open Types in
+  String.equal namespace_name target
+  ||
+  if List.mem ~eq:String.equal namespace_name visited then false
+  else
+    let visited = namespace_name :: visited in
+    match StringMap.find_opt namespace_name ctx.cross_references with
+    | None -> false
+    | Some ncr ->
+        List.exists
+          ~f:(transitively_includes ~ctx ~visited ~target)
+          ncr.ncr_namespace_includes
+
 (* Map namespace to library name for dune (ocgtk.<ns>) *)
 let library_name_of_namespace namespace_name =
   let ns_lower = String.lowercase_ascii namespace_name in
@@ -138,8 +153,24 @@ let generate_dune_library ~ctx ~lib_name ~stub_names ~repository =
     |> List.flatten
     |> List.sort_uniq ~cmp:String.compare
   in
+  (* Our hand-written gio_core.h unconditionally #includes gio-unix-2.0
+     headers on Linux (see src/gio/core/gio_core.h). Newer GLib (>=2.86)
+     split Gio's Unix-specific types out into a separate GioUnix-2.0
+     namespace, so Gio-2.0.gir no longer declares <package
+     name="gio-unix-2.0"/> and it won't show up via repository_packages or
+     dep_packages below. Force it in for Gio itself and for anything that
+     transitively pulls in Gio's headers, regardless of what the GIR
+     declares. *)
+  let needs_gio_unix =
+    String.equal lib_name "Gio"
+    || List.exists
+         ~f:(fun { Types.include_name; _ } ->
+           transitively_includes ~ctx ~visited:[] ~target:"Gio" include_name)
+         repository.repository_includes
+  in
   let all_packages =
-    repository.repository_packages @ dep_packages
+    (if needs_gio_unix then [ "gio-unix-2.0" ] else [])
+    @ repository.repository_packages @ dep_packages
     |> List.sort_uniq ~cmp:String.compare
   in
 
