@@ -19,7 +19,6 @@ class type renderer_t = object
     Ocgtk_gdk.Gdk.Texture.texture_t
 
   method unrealize : unit -> unit
-  method realized : bool
   method as_renderer : Renderer.t
 end
 

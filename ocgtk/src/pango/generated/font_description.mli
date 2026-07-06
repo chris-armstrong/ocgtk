@@ -119,6 +119,44 @@ the font description.
 This function is seldom useful to the user. Gravity should normally
 be set on a `PangoContext`. *)
 
+external set_features_static : t -> string -> unit
+  = "ml_pango_font_description_set_features_static"
+(** Sets the features field of a font description.
+
+This is like [method@Pango.FontDescription.set_features], except
+that no copy of @featuresis made. The caller must make sure that
+the string passed in stays around until @desc has been freed
+or the name is set again. This function can be used if
+@features is a static string such as a C string literal,
+or if @desc is only needed temporarily. *)
+
+external set_features : t -> string option -> unit
+  = "ml_pango_font_description_set_features"
+(** Sets the features field of a font description.
+
+    OpenType font features allow to enable or disable certain optional features
+    of a font, such as tabular numbers.
+
+    The format of the features string is comma-separated list of feature
+    assignments, with each assignment being one of these forms:
+
+    FEATURE=n
+
+    where FEATURE must be a 4 character tag that identifies and OpenType
+    feature, and n an integer (depending on the feature, the allowed values may
+    be 0, 1 or bigger numbers). Unknown features are ignored.
+
+    Note that font features set in this way are enabled for the entire text that
+    is using the font, which is not appropriate for all OpenType features. The
+    intended use case is to select character variations (features cv01 - c99),
+    style sets (ss01 - ss20) and the like.
+
+    Pango does not currently have a way to find supported OpenType features of a
+    font. Both harfbuzz and freetype have API for this. See for example
+    [hb_ot_layout_table_get_feature_tags](https://harfbuzz.github.io/harfbuzz-hb-ot-layout.html#hb-ot-layout-table-get-feature-tags).
+
+    Features that are not supported by the font are silently ignored. *)
+
 external set_family_static : t -> string -> unit
   = "ml_pango_font_description_set_family_static"
 (** Sets the family name field of a font description, without copying the string.
@@ -137,6 +175,13 @@ external set_family : t -> string -> unit
     to a particular `PangoFontFamily`. In some uses of `PangoFontDescription`,
     it is also possible to use a comma separated list of family names for this
     field. *)
+
+external set_color : t -> Pango_enums.fontcolor -> unit
+  = "ml_pango_font_description_set_color"
+(** Sets the color field of a font description.
+
+    This field determines whether the font description should match fonts that
+    have color glyphs, or fonts that don't. *)
 
 external set_absolute_size : t -> float -> unit
   = "ml_pango_font_description_set_absolute_size"
@@ -225,11 +270,24 @@ external get_gravity : t -> Pango_enums.gravity
 
     See [method@Pango.FontDescription.set_gravity]. *)
 
+external get_features : t -> string option
+  = "ml_pango_font_description_get_features"
+(** Gets the features field of a font description.
+
+    See [method@Pango.FontDescription.set_features]. *)
+
 external get_family : t -> string option
   = "ml_pango_font_description_get_family"
 (** Gets the family name field of a font description.
 
     See [method@Pango.FontDescription.set_family]. *)
+
+external get_color : t -> Pango_enums.fontcolor
+  = "ml_pango_font_description_get_color"
+(** Returns the color field of the font description.
+
+    This field determines whether the font description should match fonts that
+    have color glyphs, or fonts that don't. *)
 
 external equal : t -> t -> bool = "ml_pango_font_description_equal"
 (** Compares two font descriptions for equality.

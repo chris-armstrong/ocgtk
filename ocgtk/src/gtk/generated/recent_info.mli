@@ -2,8 +2,8 @@
 (* RecentInfo: RecentInfo *)
 
 type t = [ `recent_info ] Gobject.obj
-(** `GtkRecentInfo` contains the metadata associated with an item in the
-    recently used files list. *)
+(** Contains the metadata associated with an item in the recently used files
+    list. *)
 
 (* Methods *)
 

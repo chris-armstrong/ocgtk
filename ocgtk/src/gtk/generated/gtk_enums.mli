@@ -3,8 +3,19 @@
 
 (* AccessibleAnnouncementPriority - enumeration *)
 type accessibleannouncementpriority = [
+  (** The announcement is low priority,
+  and might be read only on the user's request. *)
   | `LOW
+  (** The announcement is of medium
+  priority, and is usually spoken at the next opportunity, such as at the
+  end of speaking the current sentence or when the user pauses typing. *)
   | `MEDIUM
+  (** The announcement is of high
+  priority, and is usually spoken immediately. Because an interruption
+  might disorient users or cause them to not complete their current task,
+  authors SHOULD NOT use high priority announcements unless the
+  interruption is imperative. An example would be a notification about a
+  critical battery power level. *)
   | `HIGH
 ]
 
@@ -78,7 +89,10 @@ type accessibleproperty = [
   | `HAS_POPUP
   (** Indicates keyboard shortcuts that an
    author has implemented to activate or give focus to an element. Value type:
-   string *)
+   string. The format of the value is a space-separated list of shortcuts, with
+   each shortcut consisting of one or more modifiers (`Control`, `Alt` or `Shift`),
+   followed by a non-modifier key, all separated by `+`.
+   Examples: `F2`, `Alt-F`, `Control+Shift+N` *)
   | `KEY_SHORTCUTS
   (** Defines a string value that labels the current
    element. Value type: string *)
@@ -127,8 +141,11 @@ type accessibleproperty = [
    Value type: double *)
   | `VALUE_NOW
   (** Defines the human readable text alternative
-   of aria-valuenow for a range widget. Value type: string *)
+   of [enum@Gtk.AccessibleProperty.VALUE_NOW] for a range widget. Value type: string *)
   | `VALUE_TEXT
+  (** Defines a string value that provides a description of non-standard keyboard
+interactions of the current element. Value type: string *)
+  | `HELP_TEXT
 ]
 
 val accessibleproperty_of_int : int -> accessibleproperty
@@ -162,8 +179,8 @@ type accessiblerelation = [
   (** Identifies the element (or elements) that
    provide additional information related to the object. Value type: reference *)
   | `DETAILS
-  (** Identifies the element that provides
-   an error message for an object. Value type: reference *)
+  (** Identifies the element (or elements) that
+   provide an error message for an object. Value type: reference *)
   | `ERROR_MESSAGE
   (** Identifies the next element (or elements)
    in an alternate reading order of content which, at the user's discretion,
@@ -189,7 +206,7 @@ type accessiblerelation = [
    Value type: integer *)
   | `ROW_INDEX
   (** Defines a human readable text
-   alternative of aria-rowindex. Value type: string *)
+   alternative of [enum@Gtk.AccessibleRelation.ROW_INDEX]. Value type: string *)
   | `ROW_INDEX_TEXT
   (** Defines the number of rows spanned by a
    cell or gridcell within a table, grid, or treegrid. Value type: integer *)
@@ -197,6 +214,38 @@ type accessiblerelation = [
   (** Defines the number of items in the current
    set of listitems or treeitems. Value type: integer *)
   | `SET_SIZE
+  (** Identifies the element (or elements) that are labeled by the
+current element. Value type: reference
+
+This relation is managed by GTK and should not be set from application code. *)
+  | `LABEL_FOR
+  (** Identifies the element (or elements) that are described by
+the current element. Value type: reference
+
+This relation is managed by GTK and should not be set from application code. *)
+  | `DESCRIPTION_FOR
+  (** Identifies the element (or elements) that the current
+element is controlled by. Value type: reference
+
+This relation is managed by GTK and should not be set from application code. *)
+  | `CONTROLLED_BY
+  (** Identifies the element (or elements) for which the current
+element provides additional information. Value type: reference
+
+This relation is managed by GTK and should not be set from application code. *)
+  | `DETAILS_FOR
+  (** Identifies the element (or elements) for which the current
+element provides an error message. Value type: reference
+
+This relation is managed by GTK and should not be set from application code. *)
+  | `ERROR_MESSAGE_FOR
+  (** Identifies the previous element (or elements) in an alternate
+reading order of content which, at the user's discretion, allows
+assistive technology to override the general default of reading in
+document source order. Value type: reference
+
+This relation is managed by GTK and should not be set from application code. *)
+  | `FLOW_FROM
 ]
 
 val accessiblerelation_of_int : int -> accessiblerelation
@@ -1042,16 +1091,31 @@ val filechoosererror_to_int : filechoosererror -> int
 (* FilterChange - enumeration *)
 type filterchange = [
   (** The filter change cannot be
-  described with any of the other enumeration values. *)
+  described with any of the other enumeration values *)
   | `DIFFERENT
   (** The filter is less strict than
-  it was before: All items that it used to return %TRUE for
-  still return %TRUE, others now may, too. *)
+  it was before: All items that it used to return true
+  still return true, others now may, too. *)
   | `LESS_STRICT
   (** The filter is more strict than
-  it was before: All items that it used to return %FALSE for
-  still return %FALSE, others now may, too. *)
+  it was before: All items that it used to return false
+  still return false, others now may, too. *)
   | `MORE_STRICT
+  (** Similar to [enum@Gtk.FilterChange.DIFFERENT],
+but signs that item watches should be recreated. This is used by
+[class@Gtk.FilterListModel] to keep the list up-to-date when items
+change. *)
+  | `DIFFERENT_REWATCH
+  (** Similar to [enum@Gtk.FilterChange.LESS_STRICT],
+but signs that item watches should be recreated. This is used by
+[class@Gtk.FilterListModel] to keep the list up-to-date when items
+change. *)
+  | `LESS_STRICT_REWATCH
+  (** Similar to [enum@Gtk.FilterChange.MORE_STRICT],
+but signs that item watches should be recreated. This is used by
+[class@Gtk.FilterListModel] to keep the list up-to-date when items
+change. *)
+  | `MORE_STRICT_REWATCH
 ]
 
 val filterchange_of_int : int -> filterchange
@@ -1060,13 +1124,13 @@ val filterchange_to_int : filterchange -> int
 (* FilterMatch - enumeration *)
 type filtermatch = [
   (** The filter matches some items,
-  gtk_filter_match() may return %TRUE or %FALSE *)
+  [method@Gtk.Filter.match] may return true or false *)
   | `SOME
   (** The filter does not match any item,
-  gtk_filter_match() will always return %FALSE. *)
+  [method@Gtk.Filter.match] will always return false *)
   | `NONE
   (** The filter matches all items,
-  gtk_filter_match() will alays return %TRUE. *)
+  [method@Gtk.Filter.match] will alays return true *)
   | `ALL
 ]
 
@@ -1087,6 +1151,19 @@ type fontlevel = [
 
 val fontlevel_of_int : int -> fontlevel
 val fontlevel_to_int : fontlevel -> int
+
+(* FontRendering - enumeration *)
+type fontrendering = [
+  (** Set up font rendering automatically,
+  taking factors like screen resolution and scale into account *)
+  | `AUTOMATIC
+  (** Follow low-level font-related settings
+  when configuring font rendering *)
+  | `MANUAL
+]
+
+val fontrendering_of_int : int -> fontrendering
+val fontrendering_to_int : fontrendering -> int
 
 (* GraphicsOffloadEnabled - enumeration *)
 type graphicsoffloadenabled = [
@@ -1200,6 +1277,36 @@ type inscriptionoverflow = [
 
 val inscriptionoverflow_of_int : int -> inscriptionoverflow
 val inscriptionoverflow_to_int : inscriptionoverflow -> int
+
+(* InterfaceColorScheme - enumeration *)
+type interfacecolorscheme = [
+  (** The system doesn't support color schemes *)
+  | `UNSUPPORTED
+  (** The default color scheme is used *)
+  | `DEFAULT
+  (** A dark color scheme is used *)
+  | `DARK
+  (** A light color scheme is used *)
+  | `LIGHT
+]
+
+val interfacecolorscheme_of_int : int -> interfacecolorscheme
+val interfacecolorscheme_to_int : interfacecolorscheme -> int
+
+(* InterfaceContrast - enumeration *)
+type interfacecontrast = [
+  (** The system doesn't support contrast levels *)
+  | `UNSUPPORTED
+  (** No particular preference for contrast *)
+  | `NO_PREFERENCE
+  (** More contrast is preferred *)
+  | `MORE
+  (** Less contrast is preferred *)
+  | `LESS
+]
+
+val interfacecontrast_of_int : int -> interfacecontrast
+val interfacecontrast_to_int : interfacecontrast -> int
 
 (* Justification - enumeration *)
 type justification = [
@@ -1398,6 +1505,8 @@ type padactiontype = [
   | `RING
   (** Action is triggered by a pad strip *)
   | `STRIP
+  (** Action is triggered by a pad dial *)
+  | `DIAL
 ]
 
 val padactiontype_of_int : int -> padactiontype
@@ -1515,7 +1624,8 @@ type printoperationaction = [
   (** Show the print dialog. *)
   | `PRINT_DIALOG
   (** Start to print without showing
-  the print dialog, based on the current print settings. *)
+  the print dialog, based on the current print settings, if possible.
+  Depending on the platform, a print dialog might appear anyway. *)
   | `PRINT
   (** Show the print preview. *)
   | `PREVIEW
@@ -1610,9 +1720,10 @@ type propagationlimit = [
   (** Events are handled regardless of what their
   target is. *)
   | `NONE
-  (** Events are only handled if their target
-  is in the same [iface@Native] as the event controllers widget. Note
-  that some event types have two targets (origin and destination). *)
+  (** Events are only handled if their target is in
+  the same [iface@Native] (or widget with [property@Gtk.Widget:limit-events]
+  set) as the event controllers widget.
+  Note that some event types have two targets (origin and destination). *)
   | `SAME_NATIVE
 ]
 
@@ -2041,13 +2152,13 @@ val stacktransitiontype_to_int : stacktransitiontype -> int
 (* StringFilterMatchMode - enumeration *)
 type stringfiltermatchmode = [
   (** The search string and
-  text must match exactly. *)
+  text must match exactly *)
   | `EXACT
   (** The search string
-  must be contained as a substring inside the text. *)
+  must be contained as a substring inside the text *)
   | `SUBSTRING
   (** The text must begin
-  with the search string. *)
+  with the search string *)
   | `PREFIX
 ]
 
@@ -2207,6 +2318,49 @@ type unit = [
 val unit_of_int : int -> unit
 val unit_to_int : unit -> int
 
+(* WindowGravity - enumeration *)
+type windowgravity = [
+  (** The top left corner *)
+  | `TOP_LEFT
+  (** The top edge *)
+  | `TOP
+  (** The top right corner *)
+  | `TOP_RIGHT
+  (** The left edge *)
+  | `LEFT
+  (** The center pointer *)
+  | `CENTER
+  (** The right edge *)
+  | `RIGHT
+  (** The bottom left corner *)
+  | `BOTTOM_LEFT
+  (** the bottom edge *)
+  | `BOTTOM
+  (** The bottom right corner *)
+  | `BOTTOM_RIGHT
+  (** The top left or top right corner,
+  depending on the text direction *)
+  | `TOP_START
+  (** The top right or top left corner,
+  depending on the text direction *)
+  | `TOP_END
+  (** The left or right edge,
+  depending on the text direction *)
+  | `START
+  (** The right or left edge,
+  depending on the text direction *)
+  | `END
+  (** The bottom left or top right corner,
+  depending on the text direction *)
+  | `BOTTOM_START
+  (** The bottom right or top left corner,
+  depending on the text direction *)
+  | `BOTTOM_END
+]
+
+val windowgravity_of_int : int -> windowgravity
+val windowgravity_to_int : windowgravity -> int
+
 (* WrapMode - enumeration *)
 type wrapmode = [
   (** do not wrap lines; just make the text area wider *)
@@ -2298,13 +2452,15 @@ type debugflags_flag = [
   (** Information about printing *)
   | `PRINTING
   (** Trace GtkBuilder operation *)
-  | `BUILDER
+  | `BUILDER_TRACE
   (** Information about size requests *)
   | `SIZE_REQUEST
   (** Disable the style property cache *)
   | `NO_CSS_CACHE
   (** Open the GTK inspector *)
   | `INTERACTIVE
+  (** Show touch UI elements for pointer events. *)
+  | `TOUCHSCREEN
   (** Information about actions and menu models *)
   | `ACTIONS
   (** Information from layout managers *)
@@ -2321,6 +2477,10 @@ type debugflags_flag = [
   | `ICONFALLBACK
   (** Inverts the default text-direction. *)
   | `INVERT_TEXT_DIR
+  (** Information about deprecated CSS features. *)
+  | `CSS
+  (** Information about deprecated GtkBuilder features. *)
+  | `BUILDER
 ]
 
 type debugflags = debugflags_flag list
@@ -2356,6 +2516,9 @@ type eventcontrollerscrollflags_flag = [
   | `DISCRETE
   (** Emit ::decelerate after continuous scroll finishes. *)
   | `KINETIC
+  (** A #GtkEventControllerScrollFlags value to prefer physical direction over
+logical direction (i.e. oblivious to natural scroll). *)
+  | `PHYSICAL_DIRECTION
   (** Emit scroll on both axes. *)
   | `BOTH_AXES
 ]
@@ -2386,6 +2549,8 @@ val fontchooserlevel_to_int : fontchooserlevel -> int
 
 (* IconLookupFlags - bitfield/flags *)
 type iconlookupflags_flag = [
+  (** Perform a regular lookup. *)
+  | `NONE
   (** Try to always load regular icons, even
   when symbolic icon names are given *)
   | `FORCE_REGULAR
@@ -2559,6 +2724,27 @@ type stylecontextprintflags = stylecontextprintflags_flag list
 
 val stylecontextprintflags_of_int : int -> stylecontextprintflags
 val stylecontextprintflags_to_int : stylecontextprintflags -> int
+
+(* TextBufferNotifyFlags - bitfield/flags *)
+type textbuffernotifyflags_flag = [
+  (** Be notified before text
+  is inserted into the underlying buffer. *)
+  | `BEFORE_INSERT
+  (** Be notified after text
+  has been inserted into the underlying buffer. *)
+  | `AFTER_INSERT
+  (** Be notified before text
+  is deleted from the underlying buffer. *)
+  | `BEFORE_DELETE
+  (** Be notified after text
+  has been deleted from the underlying buffer. *)
+  | `AFTER_DELETE
+]
+
+type textbuffernotifyflags = textbuffernotifyflags_flag list
+
+val textbuffernotifyflags_of_int : int -> textbuffernotifyflags
+val textbuffernotifyflags_to_int : textbuffernotifyflags -> int
 
 (* TextSearchFlags - bitfield/flags *)
 type textsearchflags_flag = [

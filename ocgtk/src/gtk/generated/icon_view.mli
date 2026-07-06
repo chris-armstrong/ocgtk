@@ -222,21 +222,19 @@ external get_selection_mode : t -> Gtk_enums.selectionmode
 external get_selected_items : t -> Tree_path.t list
   = "ml_gtk_icon_view_get_selected_items"
 (** Creates a list of paths of all selected items. Additionally, if you are
-planning on modifying the model after calling this function, you may
-want to convert the returned list into a list of `GtkTreeRowReferences`.
-To do this, you can use gtk_tree_row_reference_new().
+    planning on modifying the model after calling this function, you may want to
+    convert the returned list into a list of `GtkTreeRowReferences`. To do this,
+    you can use gtk_tree_row_reference_new().
 
-To free the return value, use `g_list_free_full`:
-|[<!-- language="C" -->
-GtkWidget *icon_view = gtk_icon_view_new ();
-// Use icon_view
+    To free the return value, use `g_list_free_full`:
 
-GList *list = gtk_icon_view_get_selected_items (GTK_ICON_VIEW (icon_view));
+    ```c GtkWidget *icon_view = gtk_icon_view_new (); // Use icon_view
 
-// use list
+    GList *list = gtk_icon_view_get_selected_items (GTK_ICON_VIEW (icon_view));
 
-g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-]| *)
+    // use list
+
+    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free); ``` *)
 
 external get_row_spacing : t -> int = "ml_gtk_icon_view_get_row_spacing"
 (** Returns the value of the ::row-spacing property. *)

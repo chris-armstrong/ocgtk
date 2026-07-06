@@ -178,21 +178,21 @@ your_editable_get_accessible_platform_state (GtkAccessible *accessible,
 {
   return gtk_editable_delegate_get_accessible_platform_state (GTK_EDITABLE (accessible), state);
 }
-``` *)
+```
+
+Note that the widget which is the delegate *must* be a direct child of
+this widget, otherwise your implementation of [vfunc@Gtk.Accessible.get_platform_state]
+might not even be called, as the platform change will originate from
+the parent of the delegate, and, as a result, will not work properly.
+
+So, if you can't ensure the direct child condition, you should give the
+delegate the %GTK_ACCESSIBLE_ROLE_TEXT_BOX role, or you can
+change your tree to allow this function to work. *)
 
 (* Properties *)
 
-external get_cursor_position : t -> int = "ml_gtk_editable_get_cursor_position"
-(** Get property: cursor-position *)
-
 external get_selection_bound : t -> int = "ml_gtk_editable_get_selection_bound"
 (** Get property: selection-bound *)
-
-external get_xalign : t -> float = "ml_gtk_editable_get_xalign"
-(** Get property: xalign *)
-
-external set_xalign : t -> float -> unit = "ml_gtk_editable_set_xalign"
-(** Set property: xalign *)
 
 let on_changed ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"changed" ~callback

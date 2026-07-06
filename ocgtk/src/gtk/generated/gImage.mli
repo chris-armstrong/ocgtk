@@ -21,10 +21,6 @@ class type image_t = object
   method set_from_resource : string option -> unit
   method set_icon_size : Gtk_enums.iconsize -> unit
   method set_pixel_size : int -> unit
-  method file : string
-  method set_file : string -> unit
-  method resource : string
-  method set_resource : string -> unit
   method use_fallback : bool
   method set_use_fallback : bool -> unit
   method as_image : Image.t

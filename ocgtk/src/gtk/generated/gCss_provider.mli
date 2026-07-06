@@ -8,6 +8,10 @@ class type css_provider_t = object
   method load_from_string : string -> unit
   method load_named : string -> string option -> unit
   method to_string : unit -> string
+  method prefers_color_scheme : Gtk_enums.interfacecolorscheme
+  method set_prefers_color_scheme : Gtk_enums.interfacecolorscheme -> unit
+  method prefers_contrast : Gtk_enums.interfacecontrast
+  method set_prefers_contrast : Gtk_enums.interfacecontrast -> unit
   method as_css_provider : Css_provider.t
 end
 

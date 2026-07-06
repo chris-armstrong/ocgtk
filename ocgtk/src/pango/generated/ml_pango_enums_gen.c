@@ -484,6 +484,37 @@ PangoEllipsizeMode PangoEllipsizeMode_val(value val) {
   }
 }
 
+#if PANGO_VERSION_CHECK(1,57,0)
+/* Convert PangoFontColor to OCaml value */
+value Val_PangoFontColor(PangoFontColor val) {
+  switch (val) {
+    case PANGO_FONT_COLOR_FORBIDDEN: return caml_hash_variant("FORBIDDEN"); /* `FORBIDDEN */
+    case PANGO_FONT_COLOR_REQUIRED: return caml_hash_variant("REQUIRED"); /* `REQUIRED */
+    case PANGO_FONT_COLOR_DONT_CARE: return caml_hash_variant("DONT_CARE"); /* `DONT_CARE */
+    default: {
+      char msg[128];
+      g_snprintf(msg, sizeof(msg), "Unknown PangoFontColor value: %d", (int)val);
+      g_warning("%s", msg);
+      caml_failwith(msg);
+    }
+  }
+}
+
+/* Convert OCaml value to PangoFontColor */
+PangoFontColor PangoFontColor_val(value val) {
+  if (val == caml_hash_variant("FORBIDDEN")) return PANGO_FONT_COLOR_FORBIDDEN; /* `FORBIDDEN */
+  else if (val == caml_hash_variant("REQUIRED")) return PANGO_FONT_COLOR_REQUIRED; /* `REQUIRED */
+  else if (val == caml_hash_variant("DONT_CARE")) return PANGO_FONT_COLOR_DONT_CARE; /* `DONT_CARE */
+  else {
+    char msg[128];
+    g_snprintf(msg, sizeof(msg), "Unknown PangoFontColor tag: %ld", val);
+    g_warning("%s", msg);
+    caml_failwith(msg);
+  }
+}
+
+#endif
+
 #if PANGO_VERSION_CHECK(1,50,0)
 /* Convert PangoFontScale to OCaml value */
 value Val_PangoFontScale(PangoFontScale val) {
@@ -1801,6 +1832,10 @@ value Val_PangoWrapMode(PangoWrapMode val) {
     case PANGO_WRAP_WORD: return caml_hash_variant("WORD"); /* `WORD */
     case PANGO_WRAP_CHAR: return caml_hash_variant("CHAR"); /* `CHAR */
     case PANGO_WRAP_WORD_CHAR: return caml_hash_variant("WORD_CHAR"); /* `WORD_CHAR */
+#if PANGO_VERSION_CHECK(1,56,0)
+    case PANGO_WRAP_NONE: return caml_hash_variant("NONE"); /* `NONE */
+
+#endif
     default: {
       char msg[128];
       g_snprintf(msg, sizeof(msg), "Unknown PangoWrapMode value: %d", (int)val);
@@ -1815,6 +1850,12 @@ PangoWrapMode PangoWrapMode_val(value val) {
   if (val == caml_hash_variant("WORD")) return PANGO_WRAP_WORD; /* `WORD */
   else if (val == caml_hash_variant("CHAR")) return PANGO_WRAP_CHAR; /* `CHAR */
   else if (val == caml_hash_variant("WORD_CHAR")) return PANGO_WRAP_WORD_CHAR; /* `WORD_CHAR */
+#if PANGO_VERSION_CHECK(1,56,0)
+  else if (val == caml_hash_variant("NONE")) return PANGO_WRAP_NONE; /* `NONE */
+
+#else
+  else if (val == caml_hash_variant("NONE")) caml_failwith("PangoWrapMode.NONE requires 1.56");
+#endif
   else {
     char msg[128];
     g_snprintf(msg, sizeof(msg), "Unknown PangoWrapMode tag: %ld", val);
@@ -1883,6 +1924,24 @@ value Val_PangoFontMask(PangoFontMask flags) {
   }
 
 #endif
+#if PANGO_VERSION_CHECK(1,56,0)
+  if (flags & PANGO_FONT_MASK_FEATURES) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("FEATURES")); /* `FEATURES */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+
+#endif
+#if PANGO_VERSION_CHECK(1,57,0)
+  if (flags & PANGO_FONT_MASK_COLOR) {
+    cons = caml_alloc(2, 0);
+    Store_field(cons, 0, caml_hash_variant("COLOR")); /* `COLOR */
+    Store_field(cons, 1, result);
+    result = cons;
+  }
+
+#endif
 
   CAMLreturn(result);
 }
@@ -1909,6 +1968,18 @@ PangoFontMask PangoFontMask_val(value list) {
 
 #else
     else if (tag == caml_hash_variant("VARIATIONS")) caml_failwith("PangoFontMask.VARIATIONS requires 1.42");
+#endif
+#if PANGO_VERSION_CHECK(1,56,0)
+    else if (tag == caml_hash_variant("FEATURES")) result |= PANGO_FONT_MASK_FEATURES; /* `FEATURES */
+
+#else
+    else if (tag == caml_hash_variant("FEATURES")) caml_failwith("PangoFontMask.FEATURES requires 1.56");
+#endif
+#if PANGO_VERSION_CHECK(1,57,0)
+    else if (tag == caml_hash_variant("COLOR")) result |= PANGO_FONT_MASK_COLOR; /* `COLOR */
+
+#else
+    else if (tag == caml_hash_variant("COLOR")) caml_failwith("PangoFontMask.COLOR requires 1.57");
 #endif
     list = Field(list, 1);
   }

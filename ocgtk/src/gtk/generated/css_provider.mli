@@ -61,3 +61,21 @@ external load_from_bytes : t -> Glib_bytes.t -> unit
 (** Loads @data into @css_provider.
 
 This clears any previously loaded information. *)
+
+(* Properties *)
+
+external get_prefers_color_scheme : t -> Gtk_enums.interfacecolorscheme
+  = "ml_gtk_css_provider_get_prefers_color_scheme"
+(** Get property: prefers-color-scheme *)
+
+external set_prefers_color_scheme : t -> Gtk_enums.interfacecolorscheme -> unit
+  = "ml_gtk_css_provider_set_prefers_color_scheme"
+(** Set property: prefers-color-scheme *)
+
+external get_prefers_contrast : t -> Gtk_enums.interfacecontrast
+  = "ml_gtk_css_provider_get_prefers_contrast"
+(** Get property: prefers-contrast *)
+
+external set_prefers_contrast : t -> Gtk_enums.interfacecontrast -> unit
+  = "ml_gtk_css_provider_set_prefers_contrast"
+(** Set property: prefers-contrast *)

@@ -5,16 +5,6 @@
 #define _gio_decls_h_
 
 #include <gio/gio.h>
-#if !(defined(_WIN32))
-#include <gio/gunixoutputstream.h>
-#include <gio/gunixmounts.h>
-#include <gio/gunixinputstream.h>
-#include <gio/gunixfdmessage.h>
-#include <gio/gfiledescriptorbased.h>
-#endif /* not windows */
-#if defined(__linux__)
-#include <gio/gdesktopappinfo.h>
-#endif /* linux */
 #include <caml/mlvalues.h>
 
 /* Class-specific conversion macros (shared) */
@@ -190,13 +180,6 @@
 #endif /* Val_GDebugControllerDBus */
 
 #endif
-#if defined(__linux__)
-#ifndef Val_GDesktopAppInfo
-#define GDesktopAppInfo_val(val) ((GDesktopAppInfo*)ml_gobject_ext_of_val(val))
-#define Val_GDesktopAppInfo(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GDesktopAppInfo */
-
-#endif /* linux */
 #ifndef Val_GEmblem
 #define GEmblem_val(val) ((GEmblem*)ml_gobject_ext_of_val(val))
 #define Val_GEmblem(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -622,34 +605,6 @@
 #endif /* Val_GUnixFDList */
 
 #if !(defined(_WIN32))
-#ifndef Val_GUnixFDMessage
-#define GUnixFDMessage_val(val) ((GUnixFDMessage*)ml_gobject_ext_of_val(val))
-#define Val_GUnixFDMessage(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GUnixFDMessage */
-
-#endif /* not windows */
-#if !(defined(_WIN32))
-#ifndef Val_GUnixInputStream
-#define GUnixInputStream_val(val) ((GUnixInputStream*)ml_gobject_ext_of_val(val))
-#define Val_GUnixInputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GUnixInputStream */
-
-#endif /* not windows */
-#if !(defined(_WIN32))
-#ifndef Val_GUnixMountMonitor
-#define GUnixMountMonitor_val(val) ((GUnixMountMonitor*)ml_gobject_ext_of_val(val))
-#define Val_GUnixMountMonitor(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GUnixMountMonitor */
-
-#endif /* not windows */
-#if !(defined(_WIN32))
-#ifndef Val_GUnixOutputStream
-#define GUnixOutputStream_val(val) ((GUnixOutputStream*)ml_gobject_ext_of_val(val))
-#define Val_GUnixOutputStream(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GUnixOutputStream */
-
-#endif /* not windows */
-#if !(defined(_WIN32))
 #ifndef Val_GUnixSocketAddress
 #define GUnixSocketAddress_val(val) ((GUnixSocketAddress*)ml_gobject_ext_of_val(val))
 #define Val_GUnixSocketAddress(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -749,13 +704,6 @@
 #endif /* Val_GDebugController */
 
 #endif
-#if defined(__linux__)
-#ifndef Val_GDesktopAppInfoLookup
-#define GDesktopAppInfoLookup_val(val) ((GDesktopAppInfoLookup*)ml_gobject_ext_of_val(val))
-#define Val_GDesktopAppInfoLookup(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GDesktopAppInfoLookup */
-
-#endif /* linux */
 #ifndef Val_GDrive
 #define GDrive_val(val) ((GDrive*)ml_gobject_ext_of_val(val))
 #define Val_GDrive(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -787,15 +735,6 @@
 #define Val_GFile(obj) ((value)(ml_gobject_val_of_ext(obj)))
 #endif /* Val_GFile */
 
-#if defined(__linux__)
-#if GLIB_CHECK_VERSION(2,24,0)
-#ifndef Val_GFileDescriptorBased
-#define GFileDescriptorBased_val(val) ((GFileDescriptorBased*)ml_gobject_ext_of_val(val))
-#define Val_GFileDescriptorBased(obj) ((value)(ml_gobject_val_of_ext(obj)))
-#endif /* Val_GFileDescriptorBased */
-
-#endif
-#endif /* linux */
 #ifndef Val_GIcon
 #define GIcon_val(val) ((GIcon*)ml_gobject_ext_of_val(val))
 #define Val_GIcon(obj) ((value)(ml_gobject_val_of_ext(obj)))
@@ -1103,20 +1042,6 @@ value Val_GSrvTarget_option(const GSrvTarget *ptr);
 GStaticResource *GStaticResource_val(value val);
 value Val_GStaticResource(const GStaticResource *ptr);
 value Val_GStaticResource_option(const GStaticResource *ptr);
-
-#if !(defined(_WIN32))
-/* Forward declarations for GUnixMountEntry converters */
-GUnixMountEntry *GUnixMountEntry_val(value val);
-value Val_GUnixMountEntry(const GUnixMountEntry *ptr);
-value Val_GUnixMountEntry_option(const GUnixMountEntry *ptr);
-#endif /* not windows */
-
-#if !(defined(_WIN32))
-/* Forward declarations for GUnixMountPoint converters */
-GUnixMountPoint *GUnixMountPoint_val(value val);
-value Val_GUnixMountPoint(const GUnixMountPoint *ptr);
-value Val_GUnixMountPoint_option(const GUnixMountPoint *ptr);
-#endif /* not windows */
 
 /* Const-safe string extraction for setters */
 #define ML_DECL_CONST_STRING(name, expr) const gchar *name = (const gchar *)(expr)

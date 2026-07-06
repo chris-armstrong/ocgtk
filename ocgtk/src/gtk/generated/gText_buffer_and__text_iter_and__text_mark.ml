@@ -184,6 +184,8 @@ class type text_buffer_t = object
     Text_buffer_and__text_iter_and__text_mark.Text_iter.t ->
     unit
 
+  method remove_commit_notify : int -> unit
+
   method remove_selection_clipboard :
     Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> unit
 
@@ -698,6 +700,11 @@ class text_buffer
       fun start end_ ->
         Text_buffer_and__text_iter_and__text_mark.Text_buffer.remove_all_tags
           obj start end_
+
+    method remove_commit_notify : int -> unit =
+      fun commit_notify_handler ->
+        Text_buffer_and__text_iter_and__text_mark.Text_buffer
+        .remove_commit_notify obj commit_notify_handler
 
     method remove_selection_clipboard :
         Ocgtk_gdk.Gdk.Clipboard.clipboard_t -> unit =

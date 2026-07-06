@@ -11,7 +11,10 @@ external new_ : unit -> t = "ml_g_filename_completer_new"
 external set_dirs_only : t -> bool -> unit
   = "ml_g_filename_completer_set_dirs_only"
 (** If @dirs_only is %TRUE, @completer will only
-complete directory names, and not file names. *)
+complete directory names, and not file names.
+
+This function needs to be called before waiting for results from the
+completer to be populated. *)
 
 external get_completions : t -> string -> string array
   = "ml_g_filename_completer_get_completions"
@@ -19,7 +22,10 @@ external get_completions : t -> string -> string array
 
 external get_completion_suffix : t -> string -> string option
   = "ml_g_filename_completer_get_completion_suffix"
-(** Obtains a completion for @initial_text from @completer. *)
+(** Obtains a suffix completion for @initial_text from @completer.
+
+Suffix will be an empty string if there's no shared suffix among matching
+completions. If there's no matching completions anyway, `NULL` is returned. *)
 
 val on_got_completion_data :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

@@ -340,6 +340,33 @@ gtk_text_view_get_visible_rect(GtkTextView_val(self), &out1);
 CAMLreturn(Val_GdkRectangle(&out1));
 }
 
+#if GTK_CHECK_VERSION(4,18,0)
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_visible_offset(value self)
+{
+CAMLparam1(self);
+double out1;
+double out2;
+
+gtk_text_view_get_visible_offset(GtkTextView_val(self), &out1, &out2);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, caml_copy_double(out1));
+    Store_field(ret, 1, caml_copy_double(out2));
+    CAMLreturn(ret);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_text_view_get_visible_offset(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("TextView requires GTK >= 4.18");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gtk_text_view_get_top_margin(value self)
 {
 CAMLparam1(self);

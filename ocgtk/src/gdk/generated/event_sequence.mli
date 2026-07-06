@@ -2,8 +2,7 @@
 (* EventSequence: EventSequence *)
 
 type t = [ `event_sequence ] Gobject.obj
-(** `GdkEventSequence` is an opaque type representing a sequence of related
-    touch events. *)
+(** An opaque type representing a sequence of related events. *)
 
 (* Methods *)
 

@@ -2,9 +2,9 @@
 (* Border: Border *)
 
 type t = [ `border ] Gobject.obj
-(** A struct that specifies a border around a rectangular area.
+(** Specifies a border around a rectangular area.
 
-    Each side can have different width. *)
+    Each side can have a different width. *)
 
 external new_ : unit -> t = "ml_gtk_border_new"
 (** Create a new Border *)

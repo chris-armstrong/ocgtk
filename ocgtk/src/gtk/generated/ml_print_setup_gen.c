@@ -50,7 +50,7 @@ CAMLparam1(self);
 
 GtkPrintSettings* result = gtk_print_setup_get_print_settings(GtkPrintSetup_val(self));
 if (result) g_object_ref_sink(result);
-CAMLreturn(Val_option(result, Val_GtkPrintSettings));
+CAMLreturn(Val_GtkPrintSettings(result));
 }
 
 CAMLexport CAMLprim value ml_gtk_print_setup_get_page_setup(value self)
@@ -59,7 +59,7 @@ CAMLparam1(self);
 
 GtkPageSetup* result = gtk_print_setup_get_page_setup(GtkPrintSetup_val(self));
 if (result) g_object_ref_sink(result);
-CAMLreturn(Val_option(result, Val_GtkPageSetup));
+CAMLreturn(Val_GtkPageSetup(result));
 }
 
 CAMLprim value ml_gtk_print_setup_get_type(value unit)

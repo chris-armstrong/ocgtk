@@ -761,6 +761,65 @@ g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,16,0)
+
+CAMLexport CAMLprim value ml_gtk_settings_get_gtk_font_rendering(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
+    GtkFontRendering prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-font-rendering");
+if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_font_rendering: property 'gtk-font-rendering' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "gtk-font-rendering", &prop_gvalue);
+          prop_value = (GtkFontRendering)g_value_get_enum(&prop_gvalue);
+
+      result = Val_GtkFontRendering(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_settings_get_gtk_font_rendering(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Settings requires GTK >= 4.16");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,16,0)
+
+CAMLexport CAMLprim value ml_gtk_settings_set_gtk_font_rendering(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
+    GtkFontRendering c_value = GtkFontRendering_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-font-rendering");
+if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_font_rendering: property 'gtk-font-rendering' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "gtk-font-rendering", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_settings_set_gtk_font_rendering(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Settings requires GTK >= 4.16");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gtk_settings_get_gtk_fontconfig_timestamp(value self)
 {
     CAMLparam1(self);
@@ -915,6 +974,124 @@ g_object_set_property(G_OBJECT(obj), "gtk-im-module", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
+
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gtk_settings_get_gtk_interface_color_scheme(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
+    GtkInterfaceColorScheme prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-interface-color-scheme");
+if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_interface_color_scheme: property 'gtk-interface-color-scheme' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "gtk-interface-color-scheme", &prop_gvalue);
+          prop_value = (GtkInterfaceColorScheme)g_value_get_enum(&prop_gvalue);
+
+      result = Val_GtkInterfaceColorScheme(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_settings_get_gtk_interface_color_scheme(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Settings requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gtk_settings_set_gtk_interface_color_scheme(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
+    GtkInterfaceColorScheme c_value = GtkInterfaceColorScheme_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-interface-color-scheme");
+if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_interface_color_scheme: property 'gtk-interface-color-scheme' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "gtk-interface-color-scheme", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_settings_set_gtk_interface_color_scheme(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Settings requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gtk_settings_get_gtk_interface_contrast(value self)
+{
+    CAMLparam1(self);
+    CAMLlocal1(result);
+GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
+    GtkInterfaceContrast prop_value;
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-interface-contrast");
+if (pspec == NULL) caml_failwith("ml_gtk_settings_get_gtk_interface_contrast: property 'gtk-interface-contrast' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+      g_object_get_property(G_OBJECT(obj), "gtk-interface-contrast", &prop_gvalue);
+          prop_value = (GtkInterfaceContrast)g_value_get_enum(&prop_gvalue);
+
+      result = Val_GtkInterfaceContrast(prop_value);
+g_value_unset(&prop_gvalue);
+CAMLreturn(result);}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_settings_get_gtk_interface_contrast(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Settings requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gtk_settings_set_gtk_interface_contrast(value self, value new_value)
+{
+    CAMLparam2(self, new_value);
+GtkSettings *obj = (GtkSettings *)GtkSettings_val(self);
+    GtkInterfaceContrast c_value = GtkInterfaceContrast_val(new_value);
+GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "gtk-interface-contrast");
+if (pspec == NULL) caml_failwith("ml_gtk_settings_set_gtk_interface_contrast: property 'gtk-interface-contrast' not found");
+GValue prop_gvalue = G_VALUE_INIT;
+g_value_init(&prop_gvalue, pspec->value_type);
+          g_value_set_enum(&prop_gvalue, c_value);
+g_object_set_property(G_OBJECT(obj), "gtk-interface-contrast", &prop_gvalue);
+g_value_unset(&prop_gvalue);
+    CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_settings_set_gtk_interface_contrast(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Settings requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gtk_settings_get_gtk_keynav_use_caret(value self)
 {

@@ -69,3 +69,8 @@ class drag_icon (obj : Drag_icon.t) : drag_icon_t =
 
     method as_drag_icon = obj
   end
+
+let get_for_drag (drag : Ocgtk_gdk.Gdk.Drag.drag_t) : drag_icon_t =
+  let drag = drag#as_drag in
+  let obj_ = Drag_icon.get_for_drag drag in
+  new drag_icon obj_

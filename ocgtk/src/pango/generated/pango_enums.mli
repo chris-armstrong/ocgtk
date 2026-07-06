@@ -225,6 +225,19 @@ type ellipsizemode = [
 val ellipsizemode_of_int : int -> ellipsizemode
 val ellipsizemode_to_int : ellipsizemode -> int
 
+(* FontColor - enumeration *)
+type fontcolor = [
+  (** The font should not have color glyphs *)
+  | `FORBIDDEN
+  (** The font should have color glyphs *)
+  | `REQUIRED
+  (** The font may or may not use color *)
+  | `DONT_CARE
+]
+
+val fontcolor_of_int : int -> fontcolor
+val fontcolor_to_int : fontcolor -> int
+
 (* FontScale - enumeration *)
 type fontscale = [
   (** Leave the font size unchanged *)
@@ -746,6 +759,8 @@ type wrapmode = [
   (** wrap lines at word boundaries, but fall back to
   character boundaries if there is not enough space for a full word. *)
   | `WORD_CHAR
+  (** do not wrap. *)
+  | `NONE
 ]
 
 val wrapmode_of_int : int -> wrapmode
@@ -765,10 +780,14 @@ type fontmask_flag = [
   | `STRETCH
   (** the font size is specified. *)
   | `SIZE
-  (** the font gravity is specified (Since: 1.16.) *)
+  (** The font gravity is specified. *)
   | `GRAVITY
-  (** OpenType font variations are specified (Since: 1.42) *)
+  (** OpenType font variations are specified. *)
   | `VARIATIONS
+  (** OpenType font features are specified. *)
+  | `FEATURES
+  (** Font color is specified. *)
+  | `COLOR
 ]
 
 type fontmask = fontmask_flag list

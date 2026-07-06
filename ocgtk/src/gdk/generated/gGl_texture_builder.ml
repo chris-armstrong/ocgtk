@@ -1,4 +1,6 @@
 class type gl_texture_builder_t = object
+  method get_color_state : unit -> Cicp_params_and__color_state.Color_state.t
+
   method get_context :
     unit -> GApp_launch_context_cycle_de440b34.gl_context_t option
 
@@ -9,6 +11,7 @@ class type gl_texture_builder_t = object
   method get_update_region : unit -> Ocgtk_cairo.Cairo.Region.region_t option
   method get_update_texture : unit -> GTexture.texture_t option
   method get_width : unit -> int
+  method set_color_state : Cicp_params_and__color_state.Color_state.t -> unit
 
   method set_context :
     GApp_launch_context_cycle_de440b34.gl_context_t option -> unit
@@ -26,6 +29,10 @@ end
 (* High-level class for GLTextureBuilder *)
 class gl_texture_builder (obj : Gl_texture_builder.t) : gl_texture_builder_t =
   object (self)
+    method get_color_state : unit -> Cicp_params_and__color_state.Color_state.t
+        =
+      fun () -> Gl_texture_builder.get_color_state obj
+
     method get_context :
         unit -> GApp_launch_context_cycle_de440b34.gl_context_t option =
       fun () ->
@@ -58,6 +65,10 @@ class gl_texture_builder (obj : Gl_texture_builder.t) : gl_texture_builder_t =
           (Gl_texture_builder.get_update_texture obj)
 
     method get_width : unit -> int = fun () -> Gl_texture_builder.get_width obj
+
+    method set_color_state : Cicp_params_and__color_state.Color_state.t -> unit
+        =
+      fun color_state -> Gl_texture_builder.set_color_state obj color_state
 
     method set_context :
         GApp_launch_context_cycle_de440b34.gl_context_t option -> unit =

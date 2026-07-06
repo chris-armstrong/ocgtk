@@ -95,6 +95,7 @@ and window_t = object
   method get_deletable : unit -> bool
   method get_destroy_with_parent : unit -> bool
   method get_focus_visible : unit -> bool
+  method get_gravity : unit -> Gtk_enums.windowgravity
   method get_group : unit -> window_group_t
   method get_handle_menubar_accel : unit -> bool
   method get_hide_on_close : unit -> bool
@@ -141,6 +142,7 @@ and window_t = object
   method set_destroy_with_parent : bool -> unit
   method set_display : Ocgtk_gdk.Gdk.Display.display_t -> unit
   method set_focus_visible : bool -> unit
+  method set_gravity : Gtk_enums.windowgravity -> unit
   method set_handle_menubar_accel : bool -> unit
   method set_hide_on_close : bool -> unit
   method set_icon_name : string option -> unit
@@ -164,21 +166,6 @@ and window_t = object
   method set_default_height : int -> unit
   method default_width : int
   method set_default_width : int -> unit
-
-  method focus_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
-  method set_focus_widget :
-    GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
-
-  method fullscreened : bool
-  method set_fullscreened : bool -> unit
-  method maximized : bool
-  method set_maximized : bool -> unit
-  method suspended : bool
   method as_window : Application_and__window_and__window_group.Window.t
 end
 
@@ -421,6 +408,9 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
       fun () ->
         Application_and__window_and__window_group.Window.get_focus_visible obj
 
+    method get_gravity : unit -> Gtk_enums.windowgravity =
+      fun () -> Application_and__window_and__window_group.Window.get_gravity obj
+
     method get_group : unit -> window_group_t =
       fun () ->
         new window_group
@@ -562,6 +552,10 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
         Application_and__window_and__window_group.Window.set_focus_visible obj
           setting
 
+    method set_gravity : Gtk_enums.windowgravity -> unit =
+      fun gravity ->
+        Application_and__window_and__window_group.Window.set_gravity obj gravity
+
     method set_handle_menubar_accel : bool -> unit =
       fun handle_menubar_accel ->
         Application_and__window_and__window_group.Window
@@ -636,35 +630,6 @@ and window (obj : Application_and__window_and__window_group.Window.t) : window_t
 
     method set_default_width v =
       Application_and__window_and__window_group.Window.set_default_width obj v
-
-    method focus_widget =
-      new
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget
-        (Application_and__window_and__window_group.Window.get_focus_widget obj)
-
-    method set_focus_widget :
-        GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
-      fun v ->
-        Application_and__window_and__window_group.Window.set_focus_widget obj
-          v#as_widget
-
-    method fullscreened =
-      Application_and__window_and__window_group.Window.get_fullscreened obj
-
-    method set_fullscreened v =
-      Application_and__window_and__window_group.Window.set_fullscreened obj v
-
-    method maximized =
-      Application_and__window_and__window_group.Window.get_maximized obj
-
-    method set_maximized v =
-      Application_and__window_and__window_group.Window.set_maximized obj v
-
-    method suspended =
-      Application_and__window_and__window_group.Window.get_suspended obj
 
     method as_window = obj
   end

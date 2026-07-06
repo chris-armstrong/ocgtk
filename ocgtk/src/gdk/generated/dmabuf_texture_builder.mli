@@ -12,7 +12,8 @@ external set_width : t -> int -> unit
   = "ml_gdk_dmabuf_texture_builder_set_width"
 (** Sets the width of the texture.
 
-    The width must be set before calling [method@Gdk.GLTextureBuilder.build]. *)
+    The width must be set before calling
+    [method@Gdk.DmabufTextureBuilder.build]. *)
 
 external set_update_texture : t -> Texture.t option -> unit
   = "ml_gdk_dmabuf_texture_builder_set_update_texture"
@@ -39,7 +40,7 @@ external set_stride : t -> int -> int -> unit
 (** Sets the stride for a plane.
 
     The stride must be set for all planes before calling
-    [method@Gdk.GLTextureBuilder.build]. *)
+    [method@Gdk.DmabufTextureBuilder.build]. *)
 
 external set_premultiplied : t -> bool -> unit
   = "ml_gdk_dmabuf_texture_builder_set_premultiplied"
@@ -64,8 +65,8 @@ external set_height : t -> int -> unit
   = "ml_gdk_dmabuf_texture_builder_set_height"
 (** Sets the height of the texture.
 
-    The height must be set before calling [method@Gdk.GLTextureBuilder.build].
-*)
+    The height must be set before calling
+    [method@Gdk.DmabufTextureBuilder.build]. *)
 
 external set_fourcc : t -> UInt32.t -> unit
   = "ml_gdk_dmabuf_texture_builder_set_fourcc"
@@ -73,8 +74,8 @@ external set_fourcc : t -> UInt32.t -> unit
 
     The format is specified as a fourcc code.
 
-    The format must be set before calling [method@Gdk.GLTextureBuilder.build].
-*)
+    The format must be set before calling
+    [method@Gdk.DmabufTextureBuilder.build]. *)
 
 external set_fd : t -> int -> int -> unit
   = "ml_gdk_dmabuf_texture_builder_set_fd"
@@ -85,6 +86,15 @@ external set_display : t -> App_launch_context_cycle_de440b34.Display.t -> unit
 (** Sets the display that this texture builder is associated with.
 
     The display is used to determine the supported dma-buf formats. *)
+
+external set_color_state :
+  t -> Cicp_params_and__color_state.Color_state.t option -> unit
+  = "ml_gdk_dmabuf_texture_builder_set_color_state"
+(** Sets the color state for the texture.
+
+    By default, the colorstate is `NULL`. In that case, GTK will choose the
+    correct colorstate based on the format. If you don't know what colorstates
+    are, this is probably the right thing. *)
 
 external get_width : t -> int = "ml_gdk_dmabuf_texture_builder_get_width"
 (** Gets the width previously set via gdk_dmabuf_texture_builder_set_width() or
@@ -135,5 +145,11 @@ external get_fd : t -> int -> int = "ml_gdk_dmabuf_texture_builder_get_fd"
 external get_display : t -> App_launch_context_cycle_de440b34.Display.t
   = "ml_gdk_dmabuf_texture_builder_get_display"
 (** Returns the display that this texture builder is associated with. *)
+
+external get_color_state :
+  t -> Cicp_params_and__color_state.Color_state.t option
+  = "ml_gdk_dmabuf_texture_builder_get_color_state"
+(** Gets the color state previously set via
+    gdk_dmabuf_texture_builder_set_color_state(). *)
 
 (* Properties *)

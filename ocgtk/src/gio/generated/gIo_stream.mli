@@ -7,7 +7,6 @@ class type io_stream_t = object
   method has_pending : unit -> bool
   method is_closed : unit -> bool
   method set_pending : unit -> (bool, GError.t) result
-  method closed : bool
   method as_io_stream : Io_stream.t
 end
 

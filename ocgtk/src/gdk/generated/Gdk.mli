@@ -11,7 +11,9 @@ module Wrappers : sig
 
   module Button_event = Button_event
   module Cairo_context = App_launch_context_cycle_de440b34.Cairo_context
+  module Cicp_params = Cicp_params_and__color_state.Cicp_params
   module Clipboard = App_launch_context_cycle_de440b34.Clipboard
+  module Color_state = Cicp_params_and__color_state.Color_state
   module Content_deserializer = Content_deserializer
   module Content_formats = Content_formats
   module Content_formats_builder = Content_formats_builder
@@ -47,6 +49,7 @@ module Wrappers : sig
   module Key_event = Key_event
   module Keymap_key = Keymap_key
   module Memory_texture = Memory_texture
+  module Memory_texture_builder = Memory_texture_builder
   module Monitor = App_launch_context_cycle_de440b34.Monitor
   module Motion_event = Motion_event
   module Pad_event = Pad_event
@@ -76,7 +79,9 @@ end
 module App_launch_context = GApp_launch_context
 module Button_event = GButton_event
 module Cairo_context = GCairo_context
+module Cicp_params = GCicp_params
 module Clipboard = GClipboard
+module Color_state = GColor_state
 module Content_deserializer = GContent_deserializer
 module Content_formats = GContent_formats
 module Content_formats_builder = GContent_formats_builder
@@ -112,6 +117,7 @@ module Grab_broken_event = GGrab_broken_event
 module Key_event = GKey_event
 module Keymap_key = GKeymap_key
 module Memory_texture = GMemory_texture
+module Memory_texture_builder = GMemory_texture_builder
 module Monitor = GMonitor
 module Motion_event = GMotion_event
 module Pad_event = GPad_event
@@ -138,6 +144,7 @@ module Vulkan_context = GVulkan_context
 (** {1 Enumerations and Bitfields} *)
 
 type axisuse = Gdk_enums.axisuse
+type cicprange = Gdk_enums.cicprange
 type crossingmode = Gdk_enums.crossingmode
 type devicepadfeature = Gdk_enums.devicepadfeature
 type devicetooltype = Gdk_enums.devicetooltype
@@ -152,6 +159,7 @@ type keymatch = Gdk_enums.keymatch
 type memoryformat = Gdk_enums.memoryformat
 type notifytype = Gdk_enums.notifytype
 type scrolldirection = Gdk_enums.scrolldirection
+type scrollrelativedirection = Gdk_enums.scrollrelativedirection
 type scrollunit = Gdk_enums.scrollunit
 type subpixellayout = Gdk_enums.subpixellayout
 type surfaceedge = Gdk_enums.surfaceedge
@@ -167,4 +175,5 @@ type glapi = Gdk_enums.glapi
 type modifiertype = Gdk_enums.modifiertype
 type paintableflags = Gdk_enums.paintableflags
 type seatcapabilities = Gdk_enums.seatcapabilities
+type toplevelcapabilities = Gdk_enums.toplevelcapabilities
 type toplevelstate = Gdk_enums.toplevelstate

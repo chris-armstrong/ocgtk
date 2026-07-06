@@ -35,7 +35,7 @@ external set_pixel_size : t -> int -> unit = "ml_gtk_image_set_pixel_size"
 (** Sets the pixel size to use for named icons.
 
     If the pixel size is set to a value != -1, it is used instead of the icon
-    size set by [method@Gtk.Image.set_from_icon_name]. *)
+    size set by [method@Gtk.Image.set_icon_size]. *)
 
 external set_icon_size : t -> Gtk_enums.iconsize -> unit
   = "ml_gtk_image_set_icon_size"
@@ -80,7 +80,12 @@ external set_from_file : t -> string option -> unit
   = "ml_gtk_image_set_from_file"
 (** Sets a `GtkImage` to show a file.
 
-    See [ctor@Gtk.Image.new_from_file] for details. *)
+    See [ctor@Gtk.Image.new_from_file] for details.
+
+    ::: warning Note that this function should not be used with untrusted data.
+    Use a proper image loading framework such as libglycin, which can load many
+    image formats into a `GdkTexture`, and then use
+    [method@Gtk.Image.set_from_paintable]. *)
 
 external get_storage_type : t -> Gtk_enums.imagetype
   = "ml_gtk_image_get_storage_type"
@@ -123,18 +128,6 @@ external clear : t -> unit = "ml_gtk_image_clear"
 (** Resets the image to be empty. *)
 
 (* Properties *)
-
-external get_file : t -> string = "ml_gtk_image_get_file"
-(** Get property: file *)
-
-external set_file : t -> string -> unit = "ml_gtk_image_set_file"
-(** Set property: file *)
-
-external get_resource : t -> string = "ml_gtk_image_get_resource"
-(** Get property: resource *)
-
-external set_resource : t -> string -> unit = "ml_gtk_image_set_resource"
-(** Set property: resource *)
 
 external get_use_fallback : t -> bool = "ml_gtk_image_get_use_fallback"
 (** Get property: use-fallback *)

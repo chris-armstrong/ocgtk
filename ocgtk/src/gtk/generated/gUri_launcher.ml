@@ -1,4 +1,7 @@
 class type uri_launcher_t = object
+  method can_launch :
+    GApplication_and__window_and__window_group.window_t option -> bool
+
   method get_uri : unit -> string option
 
   method launch_finish :
@@ -11,6 +14,12 @@ end
 (* High-level class for UriLauncher *)
 class uri_launcher (obj : Uri_launcher.t) : uri_launcher_t =
   object (self)
+    method can_launch :
+        GApplication_and__window_and__window_group.window_t option -> bool =
+      fun parent ->
+        let parent = Option.map (fun c -> c#as_window) parent in
+        Uri_launcher.can_launch obj parent
+
     method get_uri : unit -> string option = fun () -> Uri_launcher.get_uri obj
 
     method launch_finish :

@@ -1,9 +1,9 @@
 class type pixbuf_format_t = object
-  method get_description : unit -> string
-  method get_extensions : unit -> string array
-  method get_license : unit -> string
-  method get_mime_types : unit -> string array
-  method get_name : unit -> string
+  method get_description : unit -> string option
+  method get_extensions : unit -> string array option
+  method get_license : unit -> string option
+  method get_mime_types : unit -> string array option
+  method get_name : unit -> string option
   method is_disabled : unit -> bool
   method is_save_option_supported : string -> bool
   method is_scalable : unit -> bool
@@ -15,19 +15,21 @@ end
 (* High-level class for PixbufFormat *)
 class pixbuf_format (obj : Pixbuf_format.t) : pixbuf_format_t =
   object (self)
-    method get_description : unit -> string =
+    method get_description : unit -> string option =
       fun () -> Pixbuf_format.get_description obj
 
-    method get_extensions : unit -> string array =
+    method get_extensions : unit -> string array option =
       fun () -> Pixbuf_format.get_extensions obj
 
-    method get_license : unit -> string =
+    method get_license : unit -> string option =
       fun () -> Pixbuf_format.get_license obj
 
-    method get_mime_types : unit -> string array =
+    method get_mime_types : unit -> string array option =
       fun () -> Pixbuf_format.get_mime_types obj
 
-    method get_name : unit -> string = fun () -> Pixbuf_format.get_name obj
+    method get_name : unit -> string option =
+      fun () -> Pixbuf_format.get_name obj
+
     method is_disabled : unit -> bool = fun () -> Pixbuf_format.is_disabled obj
 
     method is_save_option_supported : string -> bool =

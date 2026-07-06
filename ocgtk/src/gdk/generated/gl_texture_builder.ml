@@ -85,6 +85,14 @@ external set_context :
     The context must be set before calling [method@Gdk.GLTextureBuilder.build].
 *)
 
+external set_color_state :
+  t -> Cicp_params_and__color_state.Color_state.t -> unit
+  = "ml_gdk_gl_texture_builder_set_color_state"
+(** Sets the color state for the texture.
+
+    By default, the sRGB colorstate is used. If you don't know what colorstates
+    are, this is probably the right thing. *)
+
 external get_width : t -> int = "ml_gdk_gl_texture_builder_get_width"
 (** Gets the width previously set via gdk_gl_texture_builder_set_width() or 0 if
     the width wasn't set. *)
@@ -119,5 +127,10 @@ external get_context :
   = "ml_gdk_gl_texture_builder_get_context"
 (** Gets the context previously set via gdk_gl_texture_builder_set_context() or
     %NULL if none was set. *)
+
+external get_color_state : t -> Cicp_params_and__color_state.Color_state.t
+  = "ml_gdk_gl_texture_builder_get_color_state"
+(** Gets the color state previously set via
+    gdk_gl_texture_builder_set_color_state(). *)
 
 (* Properties *)

@@ -2,8 +2,7 @@
 (* ContentFormats: ContentFormats *)
 
 type t = [ `content_formats ] Gobject.obj
-(** The `GdkContentFormats` structure is used to advertise and negotiate the
-    format of content.
+(** Used to advertise and negotiate the format of content.
 
     You will encounter `GdkContentFormats` when interacting with objects
     controlling operations that pass data between different widgets, window or
@@ -95,6 +94,9 @@ If no matching `GType` is found, %G_TYPE_INVALID is returned. *)
 
 external match_ : t -> t -> bool = "ml_gdk_content_formats_match"
 (** Checks if @first and @second have any matching formats. *)
+
+external is_empty : t -> bool = "ml_gdk_content_formats_is_empty"
+(** Returns whether the content formats contain any formats. *)
 
 external get_mime_types : t -> string array option * Gsize.t
   = "ml_gdk_content_formats_get_mime_types"

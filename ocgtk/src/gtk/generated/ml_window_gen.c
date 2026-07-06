@@ -144,6 +144,28 @@ return Val_unit;
 }
 #endif
 
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gtk_window_set_gravity(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_window_set_gravity(GtkWindow_val(self), GtkWindowGravity_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_window_set_gravity(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Window requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gtk_window_set_focus_visible(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -405,6 +427,27 @@ if (result) g_object_ref_sink(result);
 CAMLreturn(Val_GtkWindowGroup(result));
 }
 
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gtk_window_get_gravity(value self)
+{
+CAMLparam1(self);
+
+GtkWindowGravity result = gtk_window_get_gravity(GtkWindow_val(self));
+CAMLreturn(Val_GtkWindowGravity(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_window_get_gravity(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Window requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gtk_window_get_focus_visible(value self)
 {
 CAMLparam1(self);
@@ -582,129 +625,3 @@ g_object_set_property(G_OBJECT(obj), "default-width", &prop_gvalue);
 g_value_unset(&prop_gvalue);
     CAMLreturn(Val_unit);
 }
-
-CAMLexport CAMLprim value ml_gtk_window_get_focus_widget(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
-    GtkWidget *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "focus-widget");
-if (pspec == NULL) caml_failwith("ml_gtk_window_get_focus_widget: property 'focus-widget' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "focus-widget", &prop_gvalue);
-          prop_value = (GtkWidget*)g_value_get_object(&prop_gvalue);
-
-      result = Val_GtkWidget(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
-CAMLexport CAMLprim value ml_gtk_window_set_focus_widget(value self, value new_value)
-{
-    CAMLparam2(self, new_value);
-GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
-    GtkWidget *c_value = GtkWidget_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "focus-widget");
-if (pspec == NULL) caml_failwith("ml_gtk_window_set_focus_widget: property 'focus-widget' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-          g_value_set_object(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "focus-widget", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-    CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_window_get_fullscreened(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
-    gboolean *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "fullscreened");
-if (pspec == NULL) caml_failwith("ml_gtk_window_get_fullscreened: property 'fullscreened' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "fullscreened", &prop_gvalue);
-          prop_value = g_value_get_boolean(&prop_gvalue);
-
-      result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
-CAMLexport CAMLprim value ml_gtk_window_set_fullscreened(value self, value new_value)
-{
-    CAMLparam2(self, new_value);
-GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
-    gboolean *c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "fullscreened");
-if (pspec == NULL) caml_failwith("ml_gtk_window_set_fullscreened: property 'fullscreened' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-          g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "fullscreened", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-    CAMLreturn(Val_unit);
-}
-
-CAMLexport CAMLprim value ml_gtk_window_get_maximized(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
-    gboolean *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "maximized");
-if (pspec == NULL) caml_failwith("ml_gtk_window_get_maximized: property 'maximized' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "maximized", &prop_gvalue);
-          prop_value = g_value_get_boolean(&prop_gvalue);
-
-      result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
-CAMLexport CAMLprim value ml_gtk_window_set_maximized(value self, value new_value)
-{
-    CAMLparam2(self, new_value);
-GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
-    gboolean *c_value = Bool_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "maximized");
-if (pspec == NULL) caml_failwith("ml_gtk_window_set_maximized: property 'maximized' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-          g_value_set_boolean(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "maximized", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-    CAMLreturn(Val_unit);
-}
-
-#if GTK_CHECK_VERSION(4,12,0)
-
-CAMLexport CAMLprim value ml_gtk_window_get_suspended(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GtkWindow *obj = (GtkWindow *)GtkWindow_val(self);
-    gboolean *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "suspended");
-if (pspec == NULL) caml_failwith("ml_gtk_window_get_suspended: property 'suspended' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "suspended", &prop_gvalue);
-          prop_value = g_value_get_boolean(&prop_gvalue);
-
-      result = Val_bool(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
-#else
-
-CAMLexport CAMLprim value ml_gtk_window_get_suspended(value self)
-{
-CAMLparam1(self);
-(void)self;
-caml_failwith("Window requires GTK >= 4.12");
-return Val_unit;
-}
-#endif

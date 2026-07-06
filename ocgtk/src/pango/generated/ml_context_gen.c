@@ -111,7 +111,7 @@ CAMLexport CAMLprim value ml_pango_context_set_font_description(value self, valu
 {
 CAMLparam2(self, arg1);
 
-pango_context_set_font_description(PangoContext_val(self), Option_val(arg1, PangoFontDescription_val, NULL));
+pango_context_set_font_description(PangoContext_val(self), PangoFontDescription_val(arg1));
 CAMLreturn(Val_unit);
 }
 

@@ -15,6 +15,11 @@ external unselect_row : t -> List_box_row.t -> unit
 external unselect_all : t -> unit = "ml_gtk_list_box_unselect_all"
 (** Unselect all children of @box, if the selection mode allows it. *)
 
+external set_tab_behavior : t -> Gtk_enums.listtabbehavior -> unit
+  = "ml_gtk_list_box_set_tab_behavior"
+(** Sets the behavior of the <kbd>Tab</kbd> and <kbd>Shift</kbd>+<kbd>Tab</kbd>
+    keys. *)
+
 external set_show_separators : t -> bool -> unit
   = "ml_gtk_list_box_set_show_separators"
 (** Sets whether the list box should show separators between rows. *)
@@ -120,6 +125,11 @@ set, the widget will actually be inserted at the calculated position.
 If @position is -1, or larger than the total number of items in the
 @box, then the @child will be appended to the end. *)
 
+external get_tab_behavior : t -> Gtk_enums.listtabbehavior
+  = "ml_gtk_list_box_get_tab_behavior"
+(** Returns the behavior of the <kbd>Tab</kbd> and
+    <kbd>Shift</kbd>+<kbd>Tab</kbd> keys. *)
+
 external get_show_separators : t -> bool = "ml_gtk_list_box_get_show_separators"
 (** Returns whether the list box should show separators between rows. *)
 
@@ -203,7 +213,11 @@ val on_move_cursor :
   ?after:bool ->
   t ->
   callback:
-    (object_:Gtk_enums.movementstep -> p0:int -> p1:bool -> p2:bool -> unit) ->
+    (step:Gtk_enums.movementstep ->
+    count:int ->
+    extend:bool ->
+    modify:bool ->
+    unit) ->
   Gobject.Signal.handler_id
 
 val on_row_activated :

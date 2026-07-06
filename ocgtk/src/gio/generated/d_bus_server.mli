@@ -40,9 +40,6 @@ This is valid and non-empty if initializing the #GDBusServer succeeded. *)
 
 (* Properties *)
 
-external get_active : t -> bool = "ml_g_d_bus_server_get_active"
-(** Get property: active *)
-
 external get_address : t -> string = "ml_g_d_bus_server_get_address"
 (** Get property: address *)
 

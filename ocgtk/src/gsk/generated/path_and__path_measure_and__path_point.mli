@@ -7,7 +7,7 @@ module rec Path : sig
   (* Methods *)
 
   external to_string : t -> string = "ml_gsk_path_to_string"
-  (** Converts the path into a string that is suitable for printing.
+  (** Converts the path into a human-readable string.
 
       You can use this function in a debugger to get a quick overview of the
       path.
@@ -17,17 +17,16 @@ module rec Path : sig
 
   external to_cairo : t -> Ocgtk_cairo.Cairo.Wrappers.Context.t -> unit
     = "ml_gsk_path_to_cairo"
-  (** Appends the given @path to the given cairo context for drawing
-  with Cairo.
+  (** Appends the path to a cairo context for drawing with Cairo.
 
-  This may cause some suboptimal conversions to be performed as
-  Cairo does not support all features of `GskPath`.
+      This may cause some suboptimal conversions to be performed as Cairo does
+      not support all features of `GskPath`.
 
-  This function does not clear the existing Cairo path. Call
-  cairo_new_path() if you want this. *)
+      This function does not clear the existing Cairo path. Call
+      cairo_new_path() if you want this. *)
 
   external ref : t -> t = "ml_gsk_path_ref"
-  (** Increases the reference count of a `GskPath` by one. *)
+  (** Increases the reference count of a path by one. *)
 
   external is_empty : t -> bool = "ml_gsk_path_is_empty"
   (** Checks if the path is empty, i.e. contains no lines or curves. *)
@@ -38,46 +37,41 @@ module rec Path : sig
   external in_fill :
     t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> Gsk_enums.fillrule -> bool
     = "ml_gsk_path_in_fill"
-  (** Returns whether the given point is inside the area
-  that would be affected if the path was filled according
-  to @fill_rule.
+  (** Returns whether a point is inside the fill area of a path.
 
-  Note that this function assumes that filling a contour
-  implicitly closes it. *)
+      Note that this function assumes that filling a contour implicitly closes
+      it. *)
 
   external get_stroke_bounds :
     t -> Stroke.t -> bool * Ocgtk_graphene.Graphene.Wrappers.Rect.t
     = "ml_gsk_path_get_stroke_bounds"
-  (** Computes the bounds for stroking the given path with the
-  parameters in @stroke.
+  (** Computes the bounds for stroking the given path with the given parameters.
 
-  The returned bounds may be larger than necessary, because this
-  function aims to be fast, not accurate. The bounds are guaranteed
-  to contain the area affected by the stroke, including protrusions
-  like miters. *)
+      The returned bounds may be larger than necessary, because this function
+      aims to be fast, not accurate. The bounds are guaranteed to contain the
+      area affected by the stroke, including protrusions like miters. *)
 
   external get_start_point : t -> bool * Path_point.t
     = "ml_gsk_path_get_start_point"
   (** Gets the start point of the path.
 
-      An empty path has no points, so `FALSE` is returned in this case. *)
+      An empty path has no points, so false is returned in this case. *)
 
   external get_end_point : t -> bool * Path_point.t
     = "ml_gsk_path_get_end_point"
   (** Gets the end point of the path.
 
-      An empty path has no points, so `FALSE` is returned in this case. *)
+      An empty path has no points, so false is returned in this case. *)
 
   external get_closest_point :
     t ->
     Ocgtk_graphene.Graphene.Wrappers.Point.t ->
     float ->
     bool * Path_point.t * float = "ml_gsk_path_get_closest_point"
-  (** Computes the closest point on the path to the given point
-  and sets the @result to it.
+  (** Computes the closest point on the path to the given point.
 
-  If there is no point closer than the given threshold,
-  `FALSE` is returned. *)
+      If there is no point closer than the given threshold, false is returned.
+  *)
 
   external get_bounds : t -> bool * Ocgtk_graphene.Graphene.Wrappers.Rect.t
     = "ml_gsk_path_get_bounds"
@@ -91,10 +85,10 @@ module rec Path : sig
   This can happen when the path only describes a point or an
   axis-aligned line.
 
-  If the path is empty, `FALSE` is returned and @bounds are set to
+  If the path is empty, false is returned and @bounds are set to
   graphene_rect_zero(). This is different from the case where the path
   is a single point at the origin, where the @bounds will also be set to
-  the zero rectangle but `TRUE` will be returned. *)
+  the zero rectangle but true will be returned. *)
 end
 
 and Path_measure : sig
@@ -117,9 +111,9 @@ and Path_measure : sig
 
   external get_point : t -> float -> bool * Path_point.t
     = "ml_gsk_path_measure_get_point"
-  (** Sets @result to the point at the given distance into the path.
+  (** Gets the point at the given distance into the path.
 
-  An empty path has no points, so `FALSE` is returned in that case. *)
+      An empty path has no points, so false is returned in that case. *)
 
   external get_path : t -> Path.t = "ml_gsk_path_measure_get_path"
   (** Returns the path that the measure was created for. *)
@@ -144,12 +138,12 @@ and Path_point : sig
 
   Note that certain points on a path may not have a single
   tangent, such as sharp turns. At such points, there are
-  two tangents -- the direction of the path going into the
+  two tangents — the direction of the path going into the
   point, and the direction coming out of it. The @direction
   argument lets you choose which one to get.
 
   If the path is just a single point (e.g. a circle with
-  radius zero), then @tangent is set to `0, 0`.
+  radius zero), then the tangent is set to `0, 0`.
 
   If you want to orient something in the direction of the
   path, [method@Gsk.PathPoint.get_rotation] may be more
@@ -171,8 +165,7 @@ and Path_point : sig
 
   external get_distance : t -> Path_measure.t -> float
     = "ml_gsk_path_point_get_distance"
-  (** Returns the distance from the beginning of the path
-  to @point. *)
+  (** Returns the distance from the beginning of the path to the point. *)
 
   external get_curvature :
     t ->
@@ -186,15 +179,15 @@ and Path_point : sig
   The curvature is the inverse of the radius of the osculating circle.
 
   Lines have a curvature of zero (indicating an osculating circle of
-  infinite radius. In this case, the @center is not modified.
+  infinite radius). In this case, the @center is not modified.
 
   Circles with a radius of zero have `INFINITY` as curvature
 
   Note that certain points on a path may not have a single curvature,
-  such as sharp turns. At such points, there are two curvatures --
-  the (limit of) the curvature of the path going into the point,
-  and the (limit of) the curvature of the path coming out of it.
-  The @direction argument lets you choose which one to get.
+  such as sharp turns. At such points, there are two curvatures — the
+  (limit of) the curvature of the path going into the point, and the
+  (limit of) the curvature of the path coming out of it. The @direction
+  argument lets you choose which one to get.
 
   <picture>
     <source srcset="curvature-dark.png" media="(prefers-color-scheme: dark)">

@@ -2,7 +2,7 @@
 (* DBusMethodInfo: DBusMethodInfo *)
 
 type t = [ `d_bus_method_info ] Gobject.obj
-(** Information about a method on an D-Bus interface. *)
+(** Information about a method on a D-Bus interface. *)
 
 (* Methods *)
 

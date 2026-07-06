@@ -34,8 +34,6 @@ class type search_bar_t = object
 
   method set_search_mode : bool -> unit
   method set_show_close_button : bool -> unit
-  method search_mode_enabled : bool
-  method set_search_mode_enabled : bool -> unit
   method as_search_bar : Search_bar.t
 end
 
@@ -113,8 +111,6 @@ class search_bar (obj : Search_bar.t) : search_bar_t =
     method set_show_close_button : bool -> unit =
       fun visible -> Search_bar.set_show_close_button obj visible
 
-    method search_mode_enabled = Search_bar.get_search_mode_enabled obj
-    method set_search_mode_enabled v = Search_bar.set_search_mode_enabled obj v
     method as_search_bar = obj
   end
 

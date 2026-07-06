@@ -8,6 +8,15 @@ external new_ : unit -> t = "ml_gtk_header_bar_new"
 
 (* Methods *)
 
+external set_use_native_controls : t -> bool -> unit
+  = "ml_gtk_header_bar_set_use_native_controls"
+(** Sets whether this header bar shows native window controls.
+
+    This option shows the "stoplight" buttons on macOS. For Linux, this option
+    has no effect.
+
+    See also [Using GTK on Apple macOS](osx.html?native-window-controls). *)
+
 external set_title_widget :
   t ->
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -15,15 +24,15 @@ external set_title_widget :
   .t
   option ->
   unit = "ml_gtk_header_bar_set_title_widget"
-(** Sets the title for the `GtkHeaderBar`.
+(** Sets the title for the header bar.
 
-    When set to %NULL, the headerbar will display the title of the window it is
+    When set to `NULL`, the headerbar will display the title of the window it is
     contained in.
 
     The title should help a user identify the current view. To achieve the same
     style as the builtin title, use the “title” style class.
 
-    You should set the title widget to %NULL, for the window title label to be
+    You should set the title widget to `NULL`, for the window title label to be
     visible again. *)
 
 external set_show_title_buttons : t -> bool -> unit
@@ -56,7 +65,7 @@ external remove :
   .Widget
   .t ->
   unit = "ml_gtk_header_bar_remove"
-(** Removes a child from the `GtkHeaderBar`.
+(** Removes a child from the header bar.
 
     The child must have been added with [method@Gtk.HeaderBar.pack_start],
     [method@Gtk.HeaderBar.pack_end] or [method@Gtk.HeaderBar.set_title_widget].
@@ -68,8 +77,7 @@ external pack_start :
   .Widget
   .t ->
   unit = "ml_gtk_header_bar_pack_start"
-(** Adds @child to @bar, packed with reference to the
-start of the @bar. *)
+(** Adds a child to the header bar, packed with reference to the start. *)
 
 external pack_end :
   t ->
@@ -77,8 +85,11 @@ external pack_end :
   .Widget
   .t ->
   unit = "ml_gtk_header_bar_pack_end"
-(** Adds @child to @bar, packed with reference to the
-end of the @bar. *)
+(** Adds a child to the header bar, packed with reference to the end. *)
+
+external get_use_native_controls : t -> bool
+  = "ml_gtk_header_bar_get_use_native_controls"
+(** Returns whether this header bar shows platform native window controls. *)
 
 external get_title_widget :
   t ->
@@ -86,7 +97,7 @@ external get_title_widget :
   .Widget
   .t
   option = "ml_gtk_header_bar_get_title_widget"
-(** Retrieves the title widget of the header.
+(** Retrieves the title widget of the header bar.
 
     See [method@Gtk.HeaderBar.set_title_widget]. *)
 
@@ -96,6 +107,6 @@ external get_show_title_buttons : t -> bool
 
 external get_decoration_layout : t -> string option
   = "ml_gtk_header_bar_get_decoration_layout"
-(** Gets the decoration layout of the `GtkHeaderBar`. *)
+(** Gets the decoration layout of the header bar. *)
 
 (* Properties *)

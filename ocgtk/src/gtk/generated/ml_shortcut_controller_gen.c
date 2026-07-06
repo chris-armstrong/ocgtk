@@ -113,38 +113,6 @@ return Val_unit;
 }
 #endif
 
-CAMLexport CAMLprim value ml_gtk_shortcut_controller_get_mnemonic_modifiers(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GtkShortcutController *obj = (GtkShortcutController *)GtkShortcutController_val(self);
-    GdkModifierType prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "mnemonic-modifiers");
-if (pspec == NULL) caml_failwith("ml_gtk_shortcut_controller_get_mnemonic_modifiers: property 'mnemonic-modifiers' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "mnemonic-modifiers", &prop_gvalue);
-          prop_value = (GdkModifierType)g_value_get_flags(&prop_gvalue);
-
-      result = Val_GdkModifierType(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
-CAMLexport CAMLprim value ml_gtk_shortcut_controller_set_mnemonic_modifiers(value self, value new_value)
-{
-    CAMLparam2(self, new_value);
-GtkShortcutController *obj = (GtkShortcutController *)GtkShortcutController_val(self);
-    GdkModifierType c_value = GdkModifierType_val(new_value);
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "mnemonic-modifiers");
-if (pspec == NULL) caml_failwith("ml_gtk_shortcut_controller_set_mnemonic_modifiers: property 'mnemonic-modifiers' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-          g_value_set_flags(&prop_gvalue, c_value);
-g_object_set_property(G_OBJECT(obj), "mnemonic-modifiers", &prop_gvalue);
-g_value_unset(&prop_gvalue);
-    CAMLreturn(Val_unit);
-}
-
 #if GTK_CHECK_VERSION(4,8,0)
 
 CAMLexport CAMLprim value ml_gtk_shortcut_controller_get_n_items(value self)

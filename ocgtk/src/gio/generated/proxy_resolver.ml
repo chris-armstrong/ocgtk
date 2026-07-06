@@ -20,7 +20,7 @@ external lookup :
 (** Looks into the system proxy configuration to determine what proxy,
 if any, to use to connect to @uri. The returned proxy URIs are of
 the form `<protocol>://[user[:password]@]host[:port]` or
-`direct://`, where <protocol> could be http, rtsp, socks
+`direct://`, where `<protocol>` could be http, rtsp, socks
 or other proxying protocol.
 
 If you don't know what network protocol is being used on the

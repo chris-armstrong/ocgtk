@@ -99,7 +99,7 @@ CAMLexport CAMLprim value ml_graphene_point3d_near(value self, value arg1, value
 {
 CAMLparam3(self, arg1, arg2);
 
-_Bool result = graphene_point3d_near(graphene_point3d_t_val(self), graphene_point3d_t_val(arg1), Double_val(arg2));
+bool result = graphene_point3d_near(graphene_point3d_t_val(self), graphene_point3d_t_val(arg1), Double_val(arg2));
 CAMLreturn(Val_bool(result));
 }
 
@@ -151,7 +151,7 @@ CAMLexport CAMLprim value ml_graphene_point3d_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_point3d_equal(graphene_point3d_t_val(self), graphene_point3d_t_val(arg1));
+bool result = graphene_point3d_equal(graphene_point3d_t_val(self), graphene_point3d_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

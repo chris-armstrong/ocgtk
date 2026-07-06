@@ -127,7 +127,7 @@ CAMLexport CAMLprim value ml_graphene_triangle_get_uv(value self, value arg1, va
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 graphene_vec2_t out5;
 
-_Bool result = graphene_triangle_get_uv(graphene_triangle_t_val(self), Option_val(arg1, graphene_point3d_t_val, NULL), graphene_vec2_t_val(arg2), graphene_vec2_t_val(arg3), graphene_vec2_t_val(arg4), &out5);
+bool result = graphene_triangle_get_uv(graphene_triangle_t_val(self), Option_val(arg1, graphene_point3d_t_val, NULL), graphene_vec2_t_val(arg2), graphene_vec2_t_val(arg3), graphene_vec2_t_val(arg4), &out5);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
@@ -207,7 +207,7 @@ CAMLexport CAMLprim value ml_graphene_triangle_get_barycoords(value self, value 
 CAMLparam2(self, arg1);
 graphene_vec2_t out2;
 
-_Bool result = graphene_triangle_get_barycoords(graphene_triangle_t_val(self), Option_val(arg1, graphene_point3d_t_val, NULL), &out2);
+bool result = graphene_triangle_get_barycoords(graphene_triangle_t_val(self), Option_val(arg1, graphene_point3d_t_val, NULL), &out2);
 CAMLlocal1(ret);
     ret = caml_alloc(2, 0);
     Store_field(ret, 0, Val_bool(result));
@@ -227,7 +227,7 @@ CAMLexport CAMLprim value ml_graphene_triangle_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_triangle_equal(graphene_triangle_t_val(self), graphene_triangle_t_val(arg1));
+bool result = graphene_triangle_equal(graphene_triangle_t_val(self), graphene_triangle_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -235,7 +235,7 @@ CAMLexport CAMLprim value ml_graphene_triangle_contains_point(value self, value 
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_triangle_contains_point(graphene_triangle_t_val(self), graphene_point3d_t_val(arg1));
+bool result = graphene_triangle_contains_point(graphene_triangle_t_val(self), graphene_point3d_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

@@ -2,6 +2,7 @@ class type string_list_t = object
   inherit Ocgtk_gio.Gio.List_model.list_model_t
   inherit GBuildable.buildable_t
   method append : string -> unit
+  method find : string -> int
   method get_string : int -> string option
   method remove : int -> unit
   method splice : int -> int -> string array option -> unit
@@ -20,6 +21,7 @@ class string_list (obj : String_list.t) : string_list_t =
 
     inherit GBuildable.buildable (Buildable.from_gobject obj)
     method append : string -> unit = fun string -> String_list.append obj string
+    method find : string -> int = fun string -> String_list.find obj string
 
     method get_string : int -> string option =
       fun position -> String_list.get_string obj position

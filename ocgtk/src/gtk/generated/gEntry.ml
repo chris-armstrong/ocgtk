@@ -50,6 +50,7 @@ class type entry_t = object
   method get_input_purpose : unit -> Gtk_enums.inputpurpose
   method get_invisible_char : unit -> int
   method get_max_length : unit -> int
+  method get_menu_entry_icon_text : Gtk_enums.entryiconposition -> string option
   method get_overwrite_mode : unit -> bool
   method get_placeholder_text : unit -> string option
   method get_progress_fraction : unit -> float
@@ -97,6 +98,10 @@ class type entry_t = object
   method set_input_purpose : Gtk_enums.inputpurpose -> unit
   method set_invisible_char : int -> unit
   method set_max_length : int -> unit
+
+  method set_menu_entry_icon_text :
+    Gtk_enums.entryiconposition -> string -> unit
+
   method set_overwrite_mode : bool -> unit
   method set_placeholder_text : string option -> unit
   method set_progress_fraction : float -> unit
@@ -110,6 +115,10 @@ class type entry_t = object
   method set_im_module : string -> unit
   method invisible_char_set : bool
   method set_invisible_char_set : bool -> unit
+  method menu_entry_icon_primary_text : string
+  method set_menu_entry_icon_primary_text : string -> unit
+  method menu_entry_icon_secondary_text : string
+  method set_menu_entry_icon_secondary_text : string -> unit
   method primary_icon_activatable : bool
   method set_primary_icon_activatable : bool -> unit
   method primary_icon_gicon : Ocgtk_gio.Gio.Icon.icon_t
@@ -259,6 +268,10 @@ class entry (obj : Entry.t) : entry_t =
 
     method get_max_length : unit -> int = fun () -> Entry.get_max_length obj
 
+    method get_menu_entry_icon_text :
+        Gtk_enums.entryiconposition -> string option =
+      fun icon_pos -> Entry.get_menu_entry_icon_text obj icon_pos
+
     method get_overwrite_mode : unit -> bool =
       fun () -> Entry.get_overwrite_mode obj
 
@@ -376,6 +389,10 @@ class entry (obj : Entry.t) : entry_t =
     method set_max_length : int -> unit =
       fun max -> Entry.set_max_length obj max
 
+    method set_menu_entry_icon_text :
+        Gtk_enums.entryiconposition -> string -> unit =
+      fun icon_pos text -> Entry.set_menu_entry_icon_text obj icon_pos text
+
     method set_overwrite_mode : bool -> unit =
       fun overwrite -> Entry.set_overwrite_mode obj overwrite
 
@@ -408,6 +425,19 @@ class entry (obj : Entry.t) : entry_t =
     method set_im_module v = Entry.set_im_module obj v
     method invisible_char_set = Entry.get_invisible_char_set obj
     method set_invisible_char_set v = Entry.set_invisible_char_set obj v
+
+    method menu_entry_icon_primary_text =
+      Entry.get_menu_entry_icon_primary_text obj
+
+    method set_menu_entry_icon_primary_text v =
+      Entry.set_menu_entry_icon_primary_text obj v
+
+    method menu_entry_icon_secondary_text =
+      Entry.get_menu_entry_icon_secondary_text obj
+
+    method set_menu_entry_icon_secondary_text v =
+      Entry.set_menu_entry_icon_secondary_text obj v
+
     method primary_icon_activatable = Entry.get_primary_icon_activatable obj
 
     method set_primary_icon_activatable v =

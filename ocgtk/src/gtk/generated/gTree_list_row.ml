@@ -8,7 +8,6 @@ class type tree_list_row_t = object
   method get_position : unit -> int
   method is_expandable : unit -> bool
   method set_expanded : bool -> unit
-  method expandable : bool
   method as_tree_list_row : Tree_list_row.t
 end
 
@@ -49,6 +48,5 @@ class tree_list_row (obj : Tree_list_row.t) : tree_list_row_t =
     method set_expanded : bool -> unit =
       fun expanded -> Tree_list_row.set_expanded obj expanded
 
-    method expandable = Tree_list_row.get_expandable obj
     method as_tree_list_row = obj
   end

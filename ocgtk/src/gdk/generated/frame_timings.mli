@@ -2,8 +2,7 @@
 (* FrameTimings: FrameTimings *)
 
 type t = [ `frame_timings ] Gobject.obj
-(** A `GdkFrameTimings` object holds timing information for a single frame of
-    the application’s displays.
+(** Holds timing information for a single frame of the application’s displays.
 
     To retrieve `GdkFrameTimings` objects, use
     [method@Gdk.FrameClock.get_timings] or

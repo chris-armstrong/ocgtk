@@ -69,6 +69,3 @@ external clear_pending : t -> unit = "ml_g_io_stream_clear_pending"
 (** Clears the pending flag on @stream. *)
 
 (* Properties *)
-
-external get_closed : t -> bool = "ml_g_io_stream_get_closed"
-(** Get property: closed *)

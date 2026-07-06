@@ -228,15 +228,3 @@ To unset an error, the stream must be reset via a call to
 [method@Gtk.MediaStream.unprepared]. *)
 
 (* Properties *)
-
-external get_prepared : t -> bool = "ml_gtk_media_stream_get_prepared"
-(** Get property: prepared *)
-
-external set_prepared : t -> bool -> unit = "ml_gtk_media_stream_set_prepared"
-(** Set property: prepared *)
-
-external get_seekable : t -> bool = "ml_gtk_media_stream_get_seekable"
-(** Get property: seekable *)
-
-external get_seeking : t -> bool = "ml_gtk_media_stream_get_seeking"
-(** Get property: seeking *)

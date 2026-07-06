@@ -2,6 +2,7 @@ class type texture_t = object
   inherit GPaintable.paintable_t
   inherit Ocgtk_gio.Gio.Icon.icon_t
   inherit Ocgtk_gio.Gio.Loadable_icon.loadable_icon_t
+  method get_color_state : unit -> Cicp_params_and__color_state.Color_state.t
   method get_format : unit -> Gdk_enums.memoryformat
   method get_height : unit -> int
   method get_width : unit -> int
@@ -23,6 +24,10 @@ class texture (obj : Texture.t) : texture_t =
     inherit
       Ocgtk_gio.Gio.Loadable_icon.loadable_icon
         (Ocgtk_gio.Gio.Wrappers.Loadable_icon.from_gobject obj)
+
+    method get_color_state : unit -> Cicp_params_and__color_state.Color_state.t
+        =
+      fun () -> Texture.get_color_state obj
 
     method get_format : unit -> Gdk_enums.memoryformat =
       fun () -> Texture.get_format obj

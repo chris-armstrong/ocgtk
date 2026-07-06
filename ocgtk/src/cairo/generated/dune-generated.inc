@@ -27,6 +27,7 @@
    ml_device_gen
    ml_font_face_gen
    ml_font_options_gen
+   ml_glyph_gen
    ml_matrix_gen
    ml_path_gen
    ml_pattern_gen
@@ -35,6 +36,7 @@
    ml_region_gen
    ml_scaled_font_gen
    ml_surface_gen
+   ml_text_cluster_gen
   )
   (flags -fPIC -Igenerated -Icore -I../common (:include cflag-cairo.sexp) -Wno-deprecated-declarations -Wno-incompatible-pointer-types -Wno-int-conversion))
  (c_library_flags (:include clink-cairo.sexp)))

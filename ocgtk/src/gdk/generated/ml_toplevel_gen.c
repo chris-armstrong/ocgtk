@@ -97,6 +97,28 @@ gdk_toplevel_set_icon_list(GdkToplevel_val(self), arg1_list);
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gdk_toplevel_set_gravity(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gdk_toplevel_set_gravity(GdkToplevel_val(self), GdkGravity_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_toplevel_set_gravity(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Toplevel requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gdk_toplevel_set_deletable(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -160,6 +182,48 @@ CAMLparam1(self);
 GdkToplevelState result = gdk_toplevel_get_state(GdkToplevel_val(self));
 CAMLreturn(Val_GdkToplevelState(result));
 }
+
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gdk_toplevel_get_gravity(value self)
+{
+CAMLparam1(self);
+
+GdkGravity result = gdk_toplevel_get_gravity(GdkToplevel_val(self));
+CAMLreturn(Val_GdkGravity(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_toplevel_get_gravity(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Toplevel requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
+
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gdk_toplevel_get_capabilities(value self)
+{
+CAMLparam1(self);
+
+GdkToplevelCapabilities result = gdk_toplevel_get_capabilities(GdkToplevel_val(self));
+CAMLreturn(Val_GdkToplevelCapabilities(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_toplevel_get_capabilities(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Toplevel requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_gdk_toplevel_focus(value self, value arg1)
 {

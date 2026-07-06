@@ -1,17 +1,15 @@
 class type font_dialog_t = object
   method choose_face_finish :
     Ocgtk_gio.Gio.Async_result.async_result_t ->
-    (Ocgtk_pango.Pango.Font_face.font_face_t option, GError.t) result
+    (Ocgtk_pango.Pango.Font_face.font_face_t, GError.t) result
 
   method choose_family_finish :
     Ocgtk_gio.Gio.Async_result.async_result_t ->
-    (Ocgtk_pango.Pango.Font_family.font_family_t option, GError.t) result
+    (Ocgtk_pango.Pango.Font_family.font_family_t, GError.t) result
 
   method choose_font_finish :
     Ocgtk_gio.Gio.Async_result.async_result_t ->
-    ( Ocgtk_pango.Pango.Font_description.font_description_t option,
-      GError.t )
-    result
+    (Ocgtk_pango.Pango.Font_description.font_description_t, GError.t) result
 
   method get_filter : unit -> GFilter.filter_t option
   method get_font_map : unit -> Ocgtk_pango.Pango.Font_map.font_map_t option
@@ -31,41 +29,31 @@ class font_dialog (obj : Font_dialog.t) : font_dialog_t =
   object (self)
     method choose_face_finish :
         Ocgtk_gio.Gio.Async_result.async_result_t ->
-        (Ocgtk_pango.Pango.Font_face.font_face_t option, GError.t) result =
+        (Ocgtk_pango.Pango.Font_face.font_face_t, GError.t) result =
       fun result ->
         let result = result#as_async_result in
         Result.map
-          (fun ret ->
-            Option.map
-              (fun ret -> new Ocgtk_pango.Pango.Font_face.font_face ret)
-              ret)
+          (fun ret -> new Ocgtk_pango.Pango.Font_face.font_face ret)
           (Font_dialog.choose_face_finish obj result)
 
     method choose_family_finish :
         Ocgtk_gio.Gio.Async_result.async_result_t ->
-        (Ocgtk_pango.Pango.Font_family.font_family_t option, GError.t) result =
+        (Ocgtk_pango.Pango.Font_family.font_family_t, GError.t) result =
       fun result ->
         let result = result#as_async_result in
         Result.map
-          (fun ret ->
-            Option.map
-              (fun ret -> new Ocgtk_pango.Pango.Font_family.font_family ret)
-              ret)
+          (fun ret -> new Ocgtk_pango.Pango.Font_family.font_family ret)
           (Font_dialog.choose_family_finish obj result)
 
     method choose_font_finish :
         Ocgtk_gio.Gio.Async_result.async_result_t ->
-        ( Ocgtk_pango.Pango.Font_description.font_description_t option,
-          GError.t )
-        result =
+        (Ocgtk_pango.Pango.Font_description.font_description_t, GError.t) result
+        =
       fun result ->
         let result = result#as_async_result in
         Result.map
           (fun ret ->
-            Option.map
-              (fun ret ->
-                new Ocgtk_pango.Pango.Font_description.font_description ret)
-              ret)
+            new Ocgtk_pango.Pango.Font_description.font_description ret)
           (Font_dialog.choose_font_finish obj result)
 
     method get_filter : unit -> GFilter.filter_t option =

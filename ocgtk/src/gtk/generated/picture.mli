@@ -49,7 +49,7 @@ external set_paintable : t -> Ocgtk_gdk.Gdk.Wrappers.Paintable.t option -> unit
   = "ml_gtk_picture_set_paintable"
 (** Makes @self display the given @paintable.
 
-If @paintable is %NULL, nothing will be displayed.
+If @paintable is `NULL`, nothing will be displayed.
 
 See [ctor@Gtk.Picture.new_for_paintable] for details. *)
 
@@ -68,13 +68,25 @@ external set_filename : t -> string option -> unit
   = "ml_gtk_picture_set_filename"
 (** Makes @self load and display the given @filename.
 
-This is a utility function that calls [method@Gtk.Picture.set_file]. *)
+This is a utility function that calls [method@Gtk.Picture.set_file].
+
+::: warning
+    Note that this function should not be used with untrusted data.
+    Use a proper image loading framework such as libglycin, which can
+    load many image formats into a `GdkTexture`, and then use
+    [method@Gtk.Image.set_from_paintable]. *)
 
 external set_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option -> unit
   = "ml_gtk_picture_set_file"
 (** Makes @self load and display @file.
 
-See [ctor@Gtk.Picture.new_for_file] for details. *)
+See [ctor@Gtk.Picture.new_for_file] for details.
+
+::: warning
+    Note that this function should not be used with untrusted data.
+    Use a proper image loading framework such as libglycin, which can
+    load many image formats into a `GdkTexture`, and then use
+    [method@Gtk.Image.set_from_paintable]. *)
 
 external set_content_fit : t -> Gtk_enums.contentfit -> unit
   = "ml_gtk_picture_set_content_fit"

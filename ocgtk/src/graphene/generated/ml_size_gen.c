@@ -83,7 +83,7 @@ CAMLexport CAMLprim value ml_graphene_size_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_size_equal(graphene_size_t_val(self), graphene_size_t_val(arg1));
+bool result = graphene_size_equal(graphene_size_t_val(self), graphene_size_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

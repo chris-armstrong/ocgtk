@@ -9,7 +9,10 @@ external set_static_name : t -> string option -> unit
   = "ml_g_task_set_static_name"
 (** Sets @task’s name, used in debugging and profiling.
 
-This is a variant of g_task_set_name() that avoids copying @name. *)
+This is a variant of g_task_set_name() that avoids copying @name.
+
+This function is called automatically by [method@Gio.Task.set_source_tag]
+unless a name is set. *)
 
 external set_return_on_cancel : t -> bool -> bool
   = "ml_g_task_set_return_on_cancel"
@@ -60,8 +63,7 @@ For example, ‘Open file’ or ‘Connect to network host’. It is used to set
 name of the #GSource used for idle completion of the task.
 
 This function may only be called before the @task is first used in a thread
-other than the one it was constructed in. It is called automatically by
-g_task_set_source_tag() if not called already. *)
+other than the one it was constructed in. *)
 
 external set_check_cancellable : t -> bool -> unit
   = "ml_g_task_set_check_cancellable"

@@ -18,6 +18,9 @@ external new_loopback : Gio_enums.socketfamily -> t
 external to_string : t -> string = "ml_g_inet_address_to_string"
 (** Converts @address to string form. *)
 
+external get_scope_id : t -> UInt32.t = "ml_g_inet_address_get_scope_id"
+(** Gets the value of [property@Gio.InetAddress:scope-id]. *)
+
 external get_native_size : t -> Gsize.t = "ml_g_inet_address_get_native_size"
 (** Gets the size of the native raw binary address for @address. This
 is the size of the data that you get from g_inet_address_to_bytes(). *)
@@ -60,6 +63,9 @@ Internet). *)
 
 external get_is_any : t -> bool = "ml_g_inet_address_get_is_any"
 (** Tests whether @address is the "any" address for its family. *)
+
+external get_flowinfo : t -> UInt32.t = "ml_g_inet_address_get_flowinfo"
+(** Gets the value of [property@Gio.InetAddress:flowinfo]. *)
 
 external get_family : t -> Gio_enums.socketfamily
   = "ml_g_inet_address_get_family"

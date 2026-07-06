@@ -17,6 +17,28 @@
 #include "gtk_decls.h"
 
 
+#if GTK_CHECK_VERSION(4,18,0)
+
+CAMLexport CAMLprim value ml_gtk_accessible_update_platform_state(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gtk_accessible_update_platform_state(GtkAccessible_val(self), GtkAccessiblePlatformState_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_accessible_update_platform_state(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("Accessible requires GTK >= 4.18");
+return Val_unit;
+}
+#endif
+
 #if GTK_CHECK_VERSION(4,10,0)
 
 CAMLexport CAMLprim value ml_gtk_accessible_update_next_accessible_sibling(value self, value arg1)

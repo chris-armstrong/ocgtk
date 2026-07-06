@@ -11,9 +11,9 @@ external new_ : unit -> t = "ml_gtk_action_bar_new"
 external set_revealed : t -> bool -> unit = "ml_gtk_action_bar_set_revealed"
 (** Reveals or conceals the content of the action bar.
 
-Note: this does not show or hide @action_bar in the
-[property@Gtk.Widget:visible] sense, so revealing has
-no effect if the action bar is hidden. *)
+    Note: this does not show or hide the action bar in the
+    [property@Gtk.Widget:visible] sense, so revealing has no effect if the
+    action bar is hidden. *)
 
 external set_center_widget :
   t ->
@@ -22,7 +22,7 @@ external set_center_widget :
   .t
   option ->
   unit = "ml_gtk_action_bar_set_center_widget"
-(** Sets the center widget for the `GtkActionBar`. *)
+(** Sets the center widget for the action bar. *)
 
 external remove :
   t ->
@@ -30,7 +30,7 @@ external remove :
   .Widget
   .t ->
   unit = "ml_gtk_action_bar_remove"
-(** Removes a child from @action_bar. *)
+(** Removes a child from the action bar. *)
 
 external pack_start :
   t ->
@@ -38,8 +38,8 @@ external pack_start :
   .Widget
   .t ->
   unit = "ml_gtk_action_bar_pack_start"
-(** Adds @child to @action_bar, packed with reference to the
-start of the @action_bar. *)
+(** Adds a child to the action, packed with reference to the start of the action
+    bar. *)
 
 external pack_end :
   t ->
@@ -47,8 +47,8 @@ external pack_end :
   .Widget
   .t ->
   unit = "ml_gtk_action_bar_pack_end"
-(** Adds @child to @action_bar, packed with reference to the
-end of the @action_bar. *)
+(** Adds a child to the action bar, packed with reference to the end of the
+    action bar. *)
 
 external get_revealed : t -> bool = "ml_gtk_action_bar_get_revealed"
 (** Gets whether the contents of the action bar are revealed. *)

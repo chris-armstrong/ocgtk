@@ -261,8 +261,8 @@ type drivestartstoptype = [
    drives. *)
   | `MULTIDISK
   (** The start/stop methods will
-   unlock/lock the disk (for example using the ATA <quote>SECURITY
-   UNLOCK DEVICE</quote> command) *)
+   unlock/lock the disk (for example using the ATA `SECURITY UNLOCK
+   DEVICE` command) *)
   | `PASSWORD
 ]
 
@@ -990,10 +990,9 @@ val appinfocreateflags_to_int : appinfocreateflags -> int
 
 (* ApplicationFlags - bitfield/flags *)
 type applicationflags_flag = [
-  (** Default. Deprecated in 2.74, use
-  %G_APPLICATION_DEFAULT_FLAGS instead *)
+  (** Default flags. *)
   | `FLAGS_NONE
-  (** Default flags. Since: 2.74 *)
+  (** Default flags. *)
   | `DEFAULT_FLAGS
   (** Run as a service. In this mode, registration
      fails if the service is already running, and the application
@@ -1077,8 +1076,9 @@ type busnameownerflags_flag = [
   (** If another message bus connection owns the name and have
 specified %G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT, then take the name from the other connection. *)
   | `REPLACE
-  (** If another message bus connection owns the name, immediately
-return an error from g_bus_own_name() rather than entering the waiting queue for that name. (Since 2.54) *)
+  (** If another message bus connection owns the name, immediately return an error
+from [func@Gio.bus_own_name] rather than entering the waiting queue for that
+name. *)
   | `DO_NOT_QUEUE
 ]
 
@@ -1603,20 +1603,22 @@ val resourcelookupflags_to_int : resourcelookupflags -> int
 type settingsbindflags_flag = [
   (** Equivalent to `G_SETTINGS_BIND_GET|G_SETTINGS_BIND_SET` *)
   | `DEFAULT
-  (** Update the #GObject property when the setting changes.
-    It is an error to use this flag if the property is not writable. *)
+  (** Update the [class@GObject.Object] property when the setting changes.
+  It is an error to use this flag if the property is not writable. *)
   | `GET
-  (** Update the setting when the #GObject property changes.
-    It is an error to use this flag if the property is not readable. *)
+  (** Update the setting when the [class@GObject.Object] property changes.
+  It is an error to use this flag if the property is not readable. *)
   | `SET
-  (** Do not try to bind a "sensitivity" property to the writability of the setting *)
+  (** Do not try to bind a ‘sensitivity’ property to the writability of the setting *)
   | `NO_SENSITIVITY
-  (** When set in addition to %G_SETTINGS_BIND_GET, set the #GObject property
-    value initially from the setting, but do not listen for changes of the setting *)
+  (** When set in addition to [flags@Gio.SettingsBindFlags.GET],
+  set the [class@GObject.Object] property
+  value initially from the setting, but do not listen for changes of the setting *)
   | `GET_NO_CHANGES
-  (** When passed to g_settings_bind(), uses a pair of mapping functions that invert
-    the boolean value when mapping between the setting and the property.  The setting and property must both
-    be booleans.  You cannot pass this flag to g_settings_bind_with_mapping(). *)
+  (** When passed to [method@Gio.Settings.bind],
+  uses a pair of mapping functions that invert
+  the boolean value when mapping between the setting and the property.  The setting and property must both
+  be booleans.  You cannot pass this flag to [method@Gio.Settings.bind_with_mapping]. *)
   | `INVERT_BOOLEAN
 ]
 

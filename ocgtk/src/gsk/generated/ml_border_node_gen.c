@@ -64,6 +64,11 @@ CAMLexport CAMLprim value ml_gsk_border_node_get_colors(value self)
 CAMLparam1(self);
 
 const GdkRGBA* result = gsk_border_node_get_colors(GskBorderNode_val(self));
-if (result) result = g_boxed_copy(gdk_rgba_get_type(), result);
-CAMLreturn(Val_GdkRGBA(result));
+    int result_length = 4;
+    CAMLlocal1(ml_result);
+    ml_result = caml_alloc(result_length, 0);
+    for (int i = 0; i < result_length; i++) {
+      Store_field(ml_result, i, Val_GdkRGBA(&result[i]));
+    }
+CAMLreturn(ml_result);
 }

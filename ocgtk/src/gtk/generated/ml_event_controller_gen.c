@@ -77,7 +77,7 @@ CAMLparam1(self);
 
 GtkWidget* result = gtk_event_controller_get_widget(GtkEventController_val(self));
 if (result) g_object_ref_sink(result);
-CAMLreturn(Val_GtkWidget(result));
+CAMLreturn(Val_option(result, Val_GtkWidget));
 }
 
 CAMLexport CAMLprim value ml_gtk_event_controller_get_propagation_phase(value self)

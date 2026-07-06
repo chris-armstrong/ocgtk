@@ -2,8 +2,7 @@
 (* ToplevelSize: ToplevelSize *)
 
 type t = [ `toplevel_size ] Gobject.obj
-(** The `GdkToplevelSize` struct contains information that is useful to compute
-    the size of a toplevel. *)
+(** Contains information that is useful to compute the size of a toplevel. *)
 
 (* Methods *)
 
@@ -46,3 +45,5 @@ external get_bounds : t -> int * int = "ml_gdk_toplevel_size_get_bounds"
     be equivalent to the dimensions of the work area or the monitor on which the
     window is being presented on, or something else that limits the way a
     toplevel can be presented. *)
+
+external get_type : unit -> Gobject.Type.t = "ml_gdk_toplevel_size_get_type"

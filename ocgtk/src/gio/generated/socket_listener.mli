@@ -27,6 +27,9 @@ external add_socket :
 new clients from. The socket must be bound to a local
 address and listened to.
 
+For parallel calls to [class@Gio.SocketListener] methods to work, the socket
+must be in non-blocking mode. (See [property@Gio.Socket:blocking].)
+
 @source_object will be passed out in the various calls
 to accept to identify this particular source, which is
 useful if you're listening on multiple addresses and do
@@ -43,6 +46,14 @@ external add_inet_port :
 (** Helper function for g_socket_listener_add_address() that
 creates a TCP/IP socket listening on IPv4 and IPv6 (if
 supported) on the specified port on all interfaces.
+
+If possible, the [class@Gio.SocketListener] will listen on both IPv4 and
+IPv6 (listening on the same port on both). If listening on one of the socket
+families fails, the [class@Gio.SocketListener] will only listen on the other.
+If listening on both fails, an error will be returned.
+
+If you need to distinguish whether listening on IPv4 or IPv6 or both was
+successful, connect to [signal@Gio.SocketListener::event].
 
 @source_object will be passed out in the various calls
 to accept to identify this particular source, which is
@@ -61,6 +72,14 @@ IPv6 and IPv4 (if each is available).
 
 This is useful if you need to have a socket for incoming connections
 but don't care about the specific port number.
+
+If possible, the [class@Gio.SocketListener] will listen on both IPv4 and
+IPv6 (listening on the same port on both). If listening on one of the socket
+families fails, the [class@Gio.SocketListener] will only listen on the other.
+If listening on both fails, an error will be returned.
+
+If you need to distinguish whether listening on IPv4 or IPv6 or both was
+successful, connect to [signal@Gio.SocketListener::event].
 
 @source_object will be passed out in the various calls
 to accept to identify this particular source, which is

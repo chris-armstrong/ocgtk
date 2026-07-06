@@ -50,6 +50,7 @@ class type entry_t = object
   method get_input_purpose : unit -> Gtk_enums.inputpurpose
   method get_invisible_char : unit -> int
   method get_max_length : unit -> int
+  method get_menu_entry_icon_text : Gtk_enums.entryiconposition -> string option
   method get_overwrite_mode : unit -> bool
   method get_placeholder_text : unit -> string option
   method get_progress_fraction : unit -> float
@@ -97,6 +98,10 @@ class type entry_t = object
   method set_input_purpose : Gtk_enums.inputpurpose -> unit
   method set_invisible_char : int -> unit
   method set_max_length : int -> unit
+
+  method set_menu_entry_icon_text :
+    Gtk_enums.entryiconposition -> string -> unit
+
   method set_overwrite_mode : bool -> unit
   method set_placeholder_text : string option -> unit
   method set_progress_fraction : float -> unit
@@ -110,6 +115,10 @@ class type entry_t = object
   method set_im_module : string -> unit
   method invisible_char_set : bool
   method set_invisible_char_set : bool -> unit
+  method menu_entry_icon_primary_text : string
+  method set_menu_entry_icon_primary_text : string -> unit
+  method menu_entry_icon_secondary_text : string
+  method set_menu_entry_icon_secondary_text : string -> unit
   method primary_icon_activatable : bool
   method set_primary_icon_activatable : bool -> unit
   method primary_icon_gicon : Ocgtk_gio.Gio.Icon.icon_t

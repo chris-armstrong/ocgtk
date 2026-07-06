@@ -304,6 +304,31 @@ gtk_snapshot_push_cross_fade(GtkSnapshot_val(self), Double_val(arg1));
 CAMLreturn(Val_unit);
 }
 
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gtk_snapshot_push_component_transfer(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+
+gtk_snapshot_push_component_transfer(GtkSnapshot_val(self), GskComponentTransfer_val(arg1), GskComponentTransfer_val(arg2), GskComponentTransfer_val(arg3), GskComponentTransfer_val(arg4));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_snapshot_push_component_transfer(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("Snapshot requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gtk_snapshot_push_color_matrix(value self, value arg1, value arg2)
 {
 CAMLparam3(self, arg1, arg2);

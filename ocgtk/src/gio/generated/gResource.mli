@@ -5,6 +5,8 @@ class type resource_t = object
   method enumerate_children :
     string -> Gio_enums.resourcelookupflags -> (string array, GError.t) result
 
+  method has_children : string -> bool
+
   method lookup_data :
     string -> Gio_enums.resourcelookupflags -> (Glib_bytes.t, GError.t) result
 

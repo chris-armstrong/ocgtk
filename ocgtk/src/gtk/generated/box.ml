@@ -9,11 +9,10 @@ external new_ : Gtk_enums.orientation -> int -> t = "ml_gtk_box_new"
 (* Methods *)
 
 external set_spacing : t -> int -> unit = "ml_gtk_box_set_spacing"
-(** Sets the number of pixels to place between children of @box. *)
+(** Sets the number of pixels to place between children. *)
 
 external set_homogeneous : t -> bool -> unit = "ml_gtk_box_set_homogeneous"
-(** Sets whether or not all children of @box are given equal space
-in the box. *)
+(** Sets whether or not all children are given equal space in the box. *)
 
 external set_baseline_position : t -> Gtk_enums.baselineposition -> unit
   = "ml_gtk_box_set_baseline_position"
@@ -40,10 +39,12 @@ external reorder_child_after :
   .t
   option ->
   unit = "ml_gtk_box_reorder_child_after"
-(** Moves @child to the position after @sibling in the list
+(** Moves a child to a different position.
+
+The child is moved to the position after @sibling in the list
 of @box children.
 
-If @sibling is %NULL, move @child to the first position. *)
+If @sibling is `NULL`, the child is placed at the beginning. *)
 
 external remove :
   t ->
@@ -51,11 +52,10 @@ external remove :
   .Widget
   .t ->
   unit = "ml_gtk_box_remove"
-(** Removes a child widget from @box.
+(** Removes a child widget from the box.
 
-The child must have been added before with
-[method@Gtk.Box.append], [method@Gtk.Box.prepend], or
-[method@Gtk.Box.insert_child_after]. *)
+    The child must have been added before with [method@Gtk.Box.append],
+    [method@Gtk.Box.prepend], or [method@Gtk.Box.insert_child_after]. *)
 
 external prepend :
   t ->
@@ -63,7 +63,7 @@ external prepend :
   .Widget
   .t ->
   unit = "ml_gtk_box_prepend"
-(** Adds @child as the first child to @box. *)
+(** Adds a child at the beginning. *)
 
 external insert_child_after :
   t ->
@@ -75,23 +75,26 @@ external insert_child_after :
   .t
   option ->
   unit = "ml_gtk_box_insert_child_after"
-(** Inserts @child in the position after @sibling in the list
-of @box children.
+(** Inserts a child at a specific position.
 
-If @sibling is %NULL, insert @child at the first position. *)
+The child is added after @sibling in the list of @box children.
+
+If @sibling is `NULL`, the @child is placed at the beginning. *)
 
 external get_spacing : t -> int = "ml_gtk_box_get_spacing"
-(** Gets the value set by gtk_box_set_spacing(). *)
+(** Gets the value set by [method@Gtk.Box.set_spacing]. *)
 
 external get_homogeneous : t -> bool = "ml_gtk_box_get_homogeneous"
-(** Returns whether the box is homogeneous (all children are the same size). *)
+(** Returns whether the box is homogeneous.
+
+    In a homogeneous box all children are the same size. *)
 
 external get_baseline_position : t -> Gtk_enums.baselineposition
   = "ml_gtk_box_get_baseline_position"
-(** Gets the value set by gtk_box_set_baseline_position(). *)
+(** Gets the value set by [method@Gtk.Box.set_baseline_position]. *)
 
 external get_baseline_child : t -> int = "ml_gtk_box_get_baseline_child"
-(** Gets the value set by gtk_box_set_baseline_child(). *)
+(** Gets the value set by [method@Gtk.Box.set_baseline_child]. *)
 
 external append :
   t ->
@@ -99,6 +102,6 @@ external append :
   .Widget
   .t ->
   unit = "ml_gtk_box_append"
-(** Adds @child as the last child to @box. *)
+(** Adds a child at the end. *)
 
 (* Properties *)

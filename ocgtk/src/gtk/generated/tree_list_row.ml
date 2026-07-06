@@ -73,6 +73,3 @@ external get_child_row : t -> int -> t option
 number of children, %NULL is returned. *)
 
 (* Properties *)
-
-external get_expandable : t -> bool = "ml_gtk_tree_list_row_get_expandable"
-(** Get property: expandable *)

@@ -46,7 +46,7 @@ module rec Layout : sig
       The default value is %PANGO_WRAP_WORD. *)
 
   external set_width : t -> int -> unit = "ml_pango_layout_set_width"
-  (** Sets the width to which the lines of the `PangoLayout` should wrap or
+  (** Sets the width to which the lines of the `PangoLayout` should wrap or get
       ellipsized.
 
       The default value is -1: no width set. *)
@@ -310,7 +310,6 @@ module rec Layout : sig
   (** Queries whether the layout had to wrap any paragraphs.
 
   This returns %TRUE if a positive width is set on @layout,
-  ellipsization mode of @layout is set to %PANGO_ELLIPSIZE_NONE,
   and there are paragraphs exceeding the layout width that have
   to be wrapped. *)
 

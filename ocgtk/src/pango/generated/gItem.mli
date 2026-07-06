@@ -1,5 +1,6 @@
 class type item_t = object
   method apply_attrs : Attr_iterator.t -> unit
+  method get_char_offset : unit -> int
   method split : int -> int -> Item.t
   method as_item : Item.t
 end

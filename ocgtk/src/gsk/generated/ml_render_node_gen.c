@@ -49,6 +49,32 @@ GskRenderNode* result = gsk_render_node_ref(GskRenderNode_val(self));
 CAMLreturn(Val_GskRenderNode(result));
 }
 
+#if GTK_CHECK_VERSION(4,16,0)
+
+CAMLexport CAMLprim value ml_gsk_render_node_get_opaque_rect(value self)
+{
+CAMLparam1(self);
+graphene_rect_t out1;
+
+gboolean result = gsk_render_node_get_opaque_rect(GskRenderNode_val(self), &out1);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_bool(result));
+    Store_field(ret, 1, Val_graphene_rect_t(&out1));
+    CAMLreturn(ret);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gsk_render_node_get_opaque_rect(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("RenderNode requires GTK >= 4.16");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gsk_render_node_get_node_type(value self)
 {
 CAMLparam1(self);

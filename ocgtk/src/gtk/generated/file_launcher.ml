@@ -18,8 +18,9 @@ external set_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option -> unit
 
 external set_always_ask : t -> bool -> unit
   = "ml_gtk_file_launcher_set_always_ask"
-(** Sets whether to awlays ask the user to choose an app for opening the file.
-    If `FALSE`, the file might be opened with a default app or the previous
+(** Sets whether to always ask the user which app to use.
+
+    If false, the file might be opened with a default app or the previous
     choice. *)
 
 external open_containing_folder_finish :
@@ -42,6 +43,6 @@ external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option
 (** Gets the file that will be opened. *)
 
 external get_always_ask : t -> bool = "ml_gtk_file_launcher_get_always_ask"
-(** Returns whether to ask the user to choose an app for opening the file. *)
+(** Returns whether to ask the user which app to use. *)
 
 (* Properties *)

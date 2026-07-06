@@ -42,7 +42,6 @@ and clipboard_t = object
   method store_finish :
     Ocgtk_gio.Gio.Async_result.async_result_t -> (bool, GError.t) result
 
-  method local : bool
   method as_clipboard : App_launch_context_cycle_de440b34.Clipboard.t
 end
 
@@ -56,11 +55,13 @@ and device_t = object
     unit ->
     Gobject.Signal.handler_id
 
+  method get_active_layout_index : unit -> int
   method get_caps_lock_state : unit -> bool
   method get_device_tool : unit -> GDevice_tool.device_tool_t option
   method get_direction : unit -> Ocgtk_pango.Pango.direction
   method get_display : unit -> display_t
   method get_has_cursor : unit -> bool
+  method get_layout_names : unit -> string array option
   method get_modifier_state : unit -> Gdk_enums.modifiertype
   method get_name : unit -> string
   method get_num_lock_state : unit -> bool
@@ -73,7 +74,6 @@ and device_t = object
   method get_vendor_id : unit -> string option
   method has_bidi_layouts : unit -> bool
   method n_axes : int
-  method tool : GDevice_tool.device_tool_t
   method as_device : App_launch_context_cycle_de440b34.Device.t
 end
 
@@ -130,10 +130,6 @@ and display_t = object
   method supports_input_shapes : unit -> bool
   method supports_shadow_width : unit -> bool
   method sync : unit -> unit
-  method composited : bool
-  method input_shapes : bool
-  method rgba : bool
-  method shadow_width : bool
   method as_display : App_launch_context_cycle_de440b34.Display.t
 end
 
@@ -199,7 +195,6 @@ and monitor_t = object
   method get_subpixel_layout : unit -> Gdk_enums.subpixellayout
   method get_width_mm : unit -> int
   method is_valid : unit -> bool
-  method valid : bool
   method as_monitor : App_launch_context_cycle_de440b34.Monitor.t
 end
 
@@ -289,14 +284,12 @@ and surface_t = object
   method request_layout : unit -> unit
   method set_cursor : GCursor.cursor_t option -> unit
   method set_device_cursor : device_t -> GCursor.cursor_t -> unit
-  method set_input_region : Ocgtk_cairo.Cairo.Region.region_t -> unit
+  method set_input_region : Ocgtk_cairo.Cairo.Region.region_t option -> unit
   method set_opaque_region : Ocgtk_cairo.Cairo.Region.region_t option -> unit
   method as_surface : App_launch_context_cycle_de440b34.Surface.t
 end
 
 and vulkan_context_t = object
-  inherit Ocgtk_gio.Gio.Initable.initable_t
-
   method on_images_updated :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
 
@@ -411,7 +404,6 @@ and clipboard (obj : App_launch_context_cycle_de440b34.Clipboard.t) :
         let result = result#as_async_result in
         App_launch_context_cycle_de440b34.Clipboard.store_finish obj result
 
-    method local = App_launch_context_cycle_de440b34.Clipboard.get_local obj
     method as_clipboard = obj
   end
 
@@ -425,6 +417,10 @@ and device (obj : App_launch_context_cycle_de440b34.Device.t) : device_t =
       App_launch_context_cycle_de440b34.Device.on_tool_changed ~after
         self#as_device ~callback:(fun ~tool ->
           callback ~tool:(new GDevice_tool.device_tool tool))
+
+    method get_active_layout_index : unit -> int =
+      fun () ->
+        App_launch_context_cycle_de440b34.Device.get_active_layout_index obj
 
     method get_caps_lock_state : unit -> bool =
       fun () -> App_launch_context_cycle_de440b34.Device.get_caps_lock_state obj
@@ -444,6 +440,9 @@ and device (obj : App_launch_context_cycle_de440b34.Device.t) : device_t =
 
     method get_has_cursor : unit -> bool =
       fun () -> App_launch_context_cycle_de440b34.Device.get_has_cursor obj
+
+    method get_layout_names : unit -> string array option =
+      fun () -> App_launch_context_cycle_de440b34.Device.get_layout_names obj
 
     method get_modifier_state : unit -> Gdk_enums.modifiertype =
       fun () -> App_launch_context_cycle_de440b34.Device.get_modifier_state obj
@@ -480,11 +479,6 @@ and device (obj : App_launch_context_cycle_de440b34.Device.t) : device_t =
       fun () -> App_launch_context_cycle_de440b34.Device.has_bidi_layouts obj
 
     method n_axes = App_launch_context_cycle_de440b34.Device.get_n_axes obj
-
-    method tool =
-      new GDevice_tool.device_tool
-        (App_launch_context_cycle_de440b34.Device.get_tool obj)
-
     method as_device = obj
   end
 
@@ -616,17 +610,6 @@ and display (obj : App_launch_context_cycle_de440b34.Display.t) : display_t =
 
     method sync : unit -> unit =
       fun () -> App_launch_context_cycle_de440b34.Display.sync obj
-
-    method composited =
-      App_launch_context_cycle_de440b34.Display.get_composited obj
-
-    method input_shapes =
-      App_launch_context_cycle_de440b34.Display.get_input_shapes obj
-
-    method rgba = App_launch_context_cycle_de440b34.Display.get_rgba obj
-
-    method shadow_width =
-      App_launch_context_cycle_de440b34.Display.get_shadow_width obj
 
     method as_display = obj
   end
@@ -837,7 +820,6 @@ and monitor (obj : App_launch_context_cycle_de440b34.Monitor.t) : monitor_t =
     method is_valid : unit -> bool =
       fun () -> App_launch_context_cycle_de440b34.Monitor.is_valid obj
 
-    method valid = App_launch_context_cycle_de440b34.Monitor.get_valid obj
     method as_monitor = obj
   end
 
@@ -1009,9 +991,9 @@ and surface (obj : App_launch_context_cycle_de440b34.Surface.t) : surface_t =
         App_launch_context_cycle_de440b34.Surface.set_device_cursor obj device
           cursor
 
-    method set_input_region : Ocgtk_cairo.Cairo.Region.region_t -> unit =
+    method set_input_region : Ocgtk_cairo.Cairo.Region.region_t option -> unit =
       fun region ->
-        let region = region#as_region in
+        let region = Option.map (fun c -> c#as_region) region in
         App_launch_context_cycle_de440b34.Surface.set_input_region obj region
 
     method set_opaque_region : Ocgtk_cairo.Cairo.Region.region_t option -> unit
@@ -1026,10 +1008,6 @@ and surface (obj : App_launch_context_cycle_de440b34.Surface.t) : surface_t =
 and vulkan_context (obj : App_launch_context_cycle_de440b34.Vulkan_context.t) :
   vulkan_context_t =
   object (self)
-    inherit
-      Ocgtk_gio.Gio.Initable.initable
-        (Ocgtk_gio.Gio.Wrappers.Initable.from_gobject obj)
-
     method on_images_updated ?(after = false) ~callback () =
       App_launch_context_cycle_de440b34.Vulkan_context.on_images_updated ~after
         self#as_vulkan_context ~callback

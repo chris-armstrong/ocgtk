@@ -2,12 +2,11 @@
 (* PathBuilder: PathBuilder *)
 
 type t = [ `path_builder ] Gobject.obj
-(** `GskPathBuilder` is an auxiliary object for constructing
-`GskPath` objects.
+(** Constructs `GskPath` objects.
 
 A path is constructed like this:
 
-|[<!-- language="C" -->
+```c
 GskPath *
 construct_path (void)
 {
@@ -18,7 +17,7 @@ construct_path (void)
   // add contours to the path here
 
   return gsk_path_builder_free_to_path (builder);
-]|
+```
 
 Adding contours to the path can be done in two ways.
 The easiest option is to use the `gsk_path_builder_add_*` group
@@ -49,10 +48,11 @@ external new_ : unit -> t = "ml_gsk_path_builder_new"
 
 external to_path : t -> Path_and__path_measure_and__path_point.Path.t
   = "ml_gsk_path_builder_to_path"
-(** Creates a new `GskPath` from the given builder.
+(** Creates a new path from the given builder.
 
-    The given `GskPathBuilder` is reset once this function returns; you cannot
-    call this function multiple times on the same builder instance.
+    The given `GskPathBuilder` is reset to the initial state once this function
+    returns. Calling this function again on the same builder instance will
+    therefore produce an empty path, not a copy of the same path.
 
     This function is intended primarily for language bindings. C code should use
     [method@Gsk.PathBuilder.free_to_path]. *)
@@ -269,7 +269,7 @@ external add_segment :
   Path_and__path_measure_and__path_point.Path_point.t ->
   Path_and__path_measure_and__path_point.Path_point.t ->
   unit = "ml_gsk_path_builder_add_segment"
-(** Adds to @self the segment of @path from @start to @end.
+(** Adds a segment of a path to the builder.
 
 If @start is equal to or after @end, the path will first add the
 segment from @start to the end of the path, and then add the segment
@@ -281,9 +281,9 @@ and end point. To add a closed path, use [method@Gsk.PathBuilder.add_path]. *)
 
 external add_rounded_rect : t -> Rounded_rect.t -> unit
   = "ml_gsk_path_builder_add_rounded_rect"
-(** Adds @rect as a new contour to the path built in @self.
+(** Adds a rounded rectangle as a new contour.
 
-The path is going around the rectangle in clockwise direction. *)
+    The path is going around the rectangle in clockwise direction. *)
 
 external add_reverse_path :
   t -> Path_and__path_measure_and__path_point.Path.t -> unit
@@ -292,12 +292,12 @@ external add_reverse_path :
 
 external add_rect : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> unit
   = "ml_gsk_path_builder_add_rect"
-(** Adds @rect as a new contour to the path built by the builder.
+(** Adds a rectangle as a new contour.
 
-The path is going around the rectangle in clockwise direction.
+    The path is going around the rectangle in clockwise direction.
 
-If the the width or height are 0, the path will be a closed
-horizontal or vertical line. If both are 0, it'll be a closed dot. *)
+    If the the width or height are 0, the path will be a closed horizontal or
+    vertical line. If both are 0, it'll be a closed dot. *)
 
 external add_path : t -> Path_and__path_measure_and__path_point.Path.t -> unit
   = "ml_gsk_path_builder_add_path"
@@ -310,7 +310,7 @@ external add_layout : t -> Ocgtk_pango.Pango.Wrappers.Layout.t -> unit
 external add_circle :
   t -> Ocgtk_graphene.Graphene.Wrappers.Point.t -> float -> unit
   = "ml_gsk_path_builder_add_circle"
-(** Adds a circle with the @center and @radius.
+(** Adds a circle as a new contour.
 
 The path is going around the circle in clockwise direction.
 

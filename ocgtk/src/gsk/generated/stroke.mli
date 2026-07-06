@@ -2,8 +2,7 @@
 (* Stroke: Stroke *)
 
 type t = [ `stroke ] Gobject.obj
-(** A `GskStroke` struct collects the parameters that influence the operation of
-    stroking a path. *)
+(** Collects the parameters that are needed when stroking a path. *)
 
 external new_ : float -> t = "ml_gsk_stroke_new"
 (** Create a new Stroke *)
@@ -12,22 +11,24 @@ external new_ : float -> t = "ml_gsk_stroke_new"
 
 external to_cairo : t -> Ocgtk_cairo.Cairo.Wrappers.Context.t -> unit
   = "ml_gsk_stroke_to_cairo"
-(** A helper function that sets the stroke parameters
-of @cr from the values found in @self. *)
+(** A helper function that sets the stroke parameters of a cairo context from a
+    `GskStroke`. *)
 
 external set_miter_limit : t -> float -> unit = "ml_gsk_stroke_set_miter_limit"
-(** Sets the limit for the distance from the corner where sharp turns of joins
+(** Sets the miter limit to be used when stroking.
+
+    The miter limit is the distance from the corner where sharp turns of joins
     get cut off.
 
-    The miter limit is in units of line width and must be non-negative.
+    The limit is specfied in units of line width and must be non-negative.
 
-    For joins of type `GSK_LINE_JOIN_MITER` that exceed the miter limit, the
-    join gets rendered as if it was of type `GSK_LINE_JOIN_BEVEL`. *)
+    For joins of type [enum@Gsk.LineJoin.miter] that exceed the miter limit, the
+    join gets rendered as if it was of type [enum@Gsk.LineJoin.bevel]. *)
 
 external set_line_width : t -> float -> unit = "ml_gsk_stroke_set_line_width"
 (** Sets the line width to be used when stroking.
 
-    The line width must be > 0. *)
+    The line width must be >= 0. *)
 
 external set_line_join : t -> Gsk_enums.linejoin -> unit
   = "ml_gsk_stroke_set_line_join"
@@ -51,7 +52,7 @@ external set_dash_offset : t -> float -> unit = "ml_gsk_stroke_set_dash_offset"
 
 external set_dash : t -> float array option -> Gsize.t -> unit
   = "ml_gsk_stroke_set_dash"
-(** Sets the dash pattern to use by this stroke.
+(** Sets the dash pattern to use.
 
 A dash pattern is specified by an array of alternating non-negative
 values. Each value provides the length of alternate "on" and "off"
@@ -59,8 +60,8 @@ portions of the stroke.
 
 Each "on" segment will have caps applied as if the segment were a
 separate contour. In particular, it is valid to use an "on" length
-of 0 with `GSK_LINE_CAP_ROUND` or `GSK_LINE_CAP_SQUARE` to draw dots
-or squares along a path.
+of 0 with [enum@Gsk.LineCap.round] or [enum@Gsk.LineCap.square]
+to draw dots or squares along a path.
 
 If @n_dash is 0, if all elements in @dash are 0, or if there are
 negative values in @dash, then dashing is disabled.
@@ -76,7 +77,7 @@ You can specify a starting offset into the dash with
 [method@Gsk.Stroke.set_dash_offset]. *)
 
 external get_miter_limit : t -> float = "ml_gsk_stroke_get_miter_limit"
-(** Returns the miter limit of a `GskStroke`. *)
+(** Gets the miter limit. *)
 
 external get_line_width : t -> float = "ml_gsk_stroke_get_line_width"
 (** Gets the line width used. *)
@@ -92,9 +93,9 @@ external get_line_cap : t -> Gsk_enums.linecap = "ml_gsk_stroke_get_line_cap"
     See [enum@Gsk.LineCap] for details. *)
 
 external get_dash_offset : t -> float = "ml_gsk_stroke_get_dash_offset"
-(** Returns the dash_offset of a `GskStroke`. *)
+(** Gets the dash offset. *)
 
 external get_dash : t -> float array option * Gsize.t = "ml_gsk_stroke_get_dash"
-(** Gets the dash array in use or `NULL` if dashing is disabled. *)
+(** Gets the dash array in use. *)
 
 external get_type : unit -> Gobject.Type.t = "ml_gsk_stroke_get_type"

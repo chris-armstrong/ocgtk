@@ -23,7 +23,7 @@ module rec App_info : sig
     = "ml_g_app_info_set_as_last_used_for_type"
   (** Sets the application as the last used application for a given type. This
       will make the application appear as first in the list returned by
-      g_app_info_get_recommended_for_type(), regardless of the default
+      [func@Gio.AppInfo.get_recommended_for_type], regardless of the default
       application for that content type. *)
 
   external set_as_default_for_type : t -> string -> (bool, GError.t) result
@@ -41,7 +41,7 @@ module rec App_info : sig
 
   external launch_uris_finish : t -> Async_result.t -> (bool, GError.t) result
     = "ml_g_app_info_launch_uris_finish"
-  (** Finishes a g_app_info_launch_uris_async() operation. *)
+  (** Finishes a [method@Gio.AppInfo.launch_uris_async] operation. *)
 
   external launch_uris :
     t ->
@@ -55,7 +55,7 @@ module rec App_info : sig
   one URI per invocation as part of their command-line, multiple instances
   of the application will be spawned.
 
-  To launch the application without arguments pass a %NULL @uris list.
+  To launch the application without arguments pass a `NULL` @uris list.
 
   Note that even if the launch is successful the application launched
   can fail to start if it runs into problems during startup. There is
@@ -71,7 +71,7 @@ module rec App_info : sig
   about the details of the launcher (like what screen it is on).
   On error, @error will be set accordingly.
 
-  To launch the application without arguments pass a %NULL @files list.
+  To launch the application without arguments pass a `NULL` @files list.
 
   Note that even if the launch is successful the application launched
   can fail to start if it runs into problems during startup. There is
@@ -80,11 +80,11 @@ module rec App_info : sig
   Some URIs can be changed when passed through a GFile (for instance
   unsupported URIs with strange formats like mailto:), so if you have
   a textual URI you want to pass in as argument, consider using
-  g_app_info_launch_uris() instead.
+  [method@Gio.AppInfo.launch_uris] instead.
 
   The launched application inherits the environment of the launching
-  process, but it can be modified with g_app_launch_context_setenv()
-  and g_app_launch_context_unsetenv().
+  process, but it can be modified with [method@Gio.AppLaunchContext.setenv]
+  and [method@Gio.AppLaunchContext.unsetenv].
 
   On UNIX, this function sets the `GIO_LAUNCHED_DESKTOP_FILE`
   environment variable with the path of the launched desktop file and
@@ -98,32 +98,32 @@ module rec App_info : sig
     = "ml_g_app_info_get_supported_types"
   (** Retrieves the list of content types that @app_info claims to support.
   If this information is not provided by the environment, this function
-  will return %NULL.
+  will return `NULL`.
+
   This function does not take in consideration associations added with
-  g_app_info_add_supports_type(), but only those exported directly by
+  [method@Gio.AppInfo.add_supports_type], but only those exported directly by
   the application. *)
 
   external get_name : t -> string = "ml_g_app_info_get_name"
   (** Gets the installed name of the application. *)
 
   external get_id : t -> string option = "ml_g_app_info_get_id"
-  (** Gets the ID of an application. An id is a string that
-  identifies the application. The exact format of the id is
-  platform dependent. For instance, on Unix this is the
-  desktop file id from the xdg menu specification.
+  (** Gets the ID of an application. An id is a string that identifies the
+  application. The exact format of the id is platform dependent. For instance,
+  on Unix this is the desktop file id from the xdg menu specification.
 
-  Note that the returned ID may be %NULL, depending on how
-  the @appinfo has been constructed. *)
+  Note that the returned ID may be `NULL`, depending on how the @appinfo has
+  been constructed. *)
 
   external get_icon : t -> Icon.t option = "ml_g_app_info_get_icon"
   (** Gets the icon for the application. *)
 
   external get_executable : t -> string = "ml_g_app_info_get_executable"
-  (** Gets the executable's name for the installed application.
+  (** Gets the executable’s name for the installed application.
 
       This is intended to be used for debugging or labelling what program is
-      going to be run. To launch the executable, use g_app_info_launch() and
-      related functions, rather than spawning the return value from this
+      going to be run. To launch the executable, use [method@Gio.AppInfo.launch]
+      and related functions, rather than spawning the return value from this
       function. *)
 
   external get_display_name : t -> string = "ml_g_app_info_get_display_name"
@@ -139,29 +139,29 @@ module rec App_info : sig
   (** Gets the commandline with which the application will be started. *)
 
   external equal : t -> t -> bool = "ml_g_app_info_equal"
-  (** Checks if two #GAppInfos are equal.
+  (** Checks if two [iface@Gio.AppInfo]s are equal.
 
       Note that the check *may not* compare each individual field, and only does
       an identity check. In case detecting changes in the contents is needed,
       program code must additionally compare relevant fields. *)
 
   external dup : t -> t = "ml_g_app_info_dup"
-  (** Creates a duplicate of a #GAppInfo. *)
+  (** Creates a duplicate of a [iface@Gio.AppInfo]. *)
 
   external delete : t -> bool = "ml_g_app_info_delete"
-  (** Tries to delete a #GAppInfo.
+  (** Tries to delete a [iface@Gio.AppInfo].
 
       On some platforms, there may be a difference between user-defined
-      #GAppInfos which can be deleted, and system-wide ones which cannot. See
-      g_app_info_can_delete(). *)
+      [iface@Gio.AppInfo]s which can be deleted, and system-wide ones which
+      cannot. See [method@Gio.AppInfo.can_delete]. *)
 
   external can_remove_supports_type : t -> bool
     = "ml_g_app_info_can_remove_supports_type"
   (** Checks if a supported content type can be removed from an application. *)
 
   external can_delete : t -> bool = "ml_g_app_info_can_delete"
-  (** Obtains the information whether the #GAppInfo can be deleted. See
-      g_app_info_delete(). *)
+  (** Obtains the information whether the [iface@Gio.AppInfo] can be deleted.
+      See [method@Gio.AppInfo.delete]. *)
 
   external add_supports_type : t -> string -> (bool, GError.t) result
     = "ml_g_app_info_add_supports_type"
@@ -178,44 +178,44 @@ and App_launch_context : sig
   (* Methods *)
 
   external unsetenv : t -> string -> unit = "ml_g_app_launch_context_unsetenv"
-  (** Arranges for @variable to be unset in the child's environment
-  when @context is used to launch an application. *)
+  (** Arranges for @variable to be unset in the child’s environment when @context
+  is used to launch an application. *)
 
   external setenv : t -> string -> string -> unit
     = "ml_g_app_launch_context_setenv"
-  (** Arranges for @variable to be set to @value in the child's
-  environment when @context is used to launch an application. *)
+  (** Arranges for @variable to be set to @value in the child’s environment when
+  @context is used to launch an application. *)
 
   external launch_failed : t -> string -> unit
     = "ml_g_app_launch_context_launch_failed"
   (** Called when an application has failed to launch, so that it can cancel the
       application startup notification started in
-      g_app_launch_context_get_startup_notify_id(). *)
+      [method@Gio.AppLaunchContext.get_startup_notify_id]. *)
 
   external get_startup_notify_id :
-    t -> App_info.t -> File.t list -> string option
+    t -> App_info.t option -> File.t list option -> string option
     = "ml_g_app_launch_context_get_startup_notify_id"
   (** Initiates startup notification for the application and returns the
-      `XDG_ACTIVATION_TOKEN` or `DESKTOP_STARTUP_ID` for the launched operation,
-      if supported.
+  `XDG_ACTIVATION_TOKEN` or `DESKTOP_STARTUP_ID` for the launched operation,
+  if supported.
 
-      The returned token may be referred to equivalently as an ‘activation
-      token’ (using Wayland terminology) or a ‘startup sequence ID’ (using X11
-      terminology). The two
-      [are interoperable](https://gitlab.freedesktop.org/wayland/wayland-protocols/-/blob/main/staging/xdg-activation/x11-interoperation.rst).
+  The returned token may be referred to equivalently as an ‘activation token’
+  (using Wayland terminology) or a ‘startup sequence ID’ (using X11 terminology).
+  The two [are interoperable](https://gitlab.freedesktop.org/wayland/wayland-protocols/-/blob/main/staging/xdg-activation/x11-interoperation.rst).
 
-      Activation tokens are defined in the
-      [XDG Activation Protocol](https://wayland.app/protocols/xdg-activation-v1),
-      and startup notification IDs are defined in the
-      [freedesktop.org Startup Notification Protocol](http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
+  Activation tokens are defined in the [XDG Activation Protocol](https://wayland.app/protocols/xdg-activation-v1),
+  and startup notification IDs are defined in the
+  [freedesktop.org Startup Notification Protocol](http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
 
-      Support for the XDG Activation Protocol was added in GLib 2.76. *)
+  Support for the XDG Activation Protocol was added in GLib 2.76.
+  Since GLib 2.82 @info and @files can be `NULL`. If that’s not supported by the backend,
+  the returned token will be `NULL`. *)
 
   external get_environment : t -> string array
     = "ml_g_app_launch_context_get_environment"
   (** Gets the complete environment variable list to be passed to
   the child process when @context is used to launch an application.
-  This is a %NULL-terminated array of strings, where each string has
+  This is a `NULL`-terminated array of strings, where each string has
   the form `KEY=VALUE`. *)
 
   external get_display : t -> App_info.t -> File.t list -> string option
@@ -387,10 +387,13 @@ and File : sig
     = "ml_g_file_trash"
   (** Sends @file to the "Trashcan", if possible. This is similar to
   deleting it, but the user can recover it before emptying the trashcan.
-  Not all file systems support trashing, so this call can return the
+  Trashing is disabled for system mounts by default (see
+  g_unix_mount_entry_is_system_internal()), so this call can return the
   %G_IO_ERROR_NOT_SUPPORTED error. Since GLib 2.66, the `x-gvfs-notrash` unix
-  mount option can be used to disable g_file_trash() support for certain
+  mount option can be used to disable g_file_trash() support for particular
   mounts, the %G_IO_ERROR_NOT_SUPPORTED error will be returned in that case.
+  Since 2.82, the `x-gvfs-trash` unix mount option can be used to enable
+  g_file_trash() support for particular system mounts.
 
   If @cancellable is not %NULL, then the operation can be cancelled by
   triggering the cancellable object from another thread. If the operation
@@ -398,8 +401,8 @@ and File : sig
 
   external supports_thread_contexts : t -> bool
     = "ml_g_file_supports_thread_contexts"
-  (** Checks if @file supports
-  [thread-default contexts][g-main-context-push-thread-default-context].
+  (** Checks if @file supports thread-default main contexts
+  (see [method@GLib.MainContext.push_thread_default])
   If this returns %FALSE, you cannot perform asynchronous operations on
   @file in a thread that has a thread-default context. *)
 
@@ -694,35 +697,48 @@ and File : sig
     Cancellable.t option ->
     (File_info.t, GError.t) result = "ml_g_file_query_info"
   (** Gets the requested information about specified @file.
-  The result is a #GFileInfo object that contains key-value
+
+  The result is a [class@Gio.FileInfo] object that contains key-value
   attributes (such as the type or size of the file).
 
   The @attributes value is a string that specifies the file
   attributes that should be gathered. It is not an error if
-  it's not possible to read a particular requested attribute
-  from a file - it just won't be set. @attributes should be a
-  comma-separated list of attributes or attribute wildcards.
-  The wildcard "*" means all attributes, and a wildcard like
-  "standard::*" means all attributes in the standard namespace.
-  An example attribute query be "standard::*,owner::user".
-  The standard attributes are available as defines, like
-  %G_FILE_ATTRIBUTE_STANDARD_NAME.
+  it’s not possible to read a particular requested attribute
+  from a file — it just won't be set. In particular this means that if a file
+  is inaccessible (due to being in a folder with restrictive permissions), for
+  example, you can expect the returned [class@Gio.FileInfo] to have very few
+  attributes set. You should check whether an attribute is set using
+  [method@Gio.FileInfo.has_attribute] before trying to retrieve its value.
 
-  If @cancellable is not %NULL, then the operation can be cancelled
+  It is guaranteed that if any of the following attributes are listed in
+  @attributes, they will always be set in the returned [class@Gio.FileInfo],
+  even if the user doesn’t have permissions to access the file:
+
+   - [const@Gio.FILE_ATTRIBUTE_STANDARD_NAME]
+   - [const@Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]
+
+  @attributes should be a comma-separated list of attributes or attribute
+  wildcards. The wildcard `"*"` means all attributes, and a wildcard like
+  `"standard::*"` means all attributes in the standard namespace.
+  An example attribute query might be `"standard::*,owner::user"`.
+  The standard attributes are available as defines, like
+  [const@Gio.FILE_ATTRIBUTE_STANDARD_NAME].
+
+  If @cancellable is not `NULL`, then the operation can be cancelled
   by triggering the cancellable object from another thread. If the
-  operation was cancelled, the error %G_IO_ERROR_CANCELLED will be
+  operation was cancelled, the error [error@Gio.IOErrorEnum.CANCELLED] will be
   returned.
 
   For symlinks, normally the information about the target of the
   symlink is returned, rather than information about the symlink
-  itself. However if you pass %G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS
+  itself. However if you pass [flags@Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS]
   in @flags the information about the symlink itself will be returned.
   Also, for symlinks that point to non-existing files the information
   about the symlink itself will be returned.
 
-  If the file does not exist, the %G_IO_ERROR_NOT_FOUND error will be
+  If the file does not exist, the [error@Gio.IOErrorEnum.NOT_FOUND] error will be
   returned. Other errors are possible too, and depend on what kind of
-  filesystem the file is on. *)
+  file system the file is on. *)
 
   external query_filesystem_info_finish :
     t -> Async_result.t -> (File_info.t, GError.t) result
@@ -772,8 +788,12 @@ and File : sig
 
   external query_exists : t -> Cancellable.t option -> bool
     = "ml_g_file_query_exists"
-  (** Utility function to check if a particular file exists. This is implemented
-      using g_file_query_info() and as such does blocking I/O.
+  (** Utility function to check if a particular file exists.
+
+      The fallback implementation of this API is using
+      [method@Gio.File.query_info] and therefore may do blocking I/O. To
+      asynchronously query the existence of a file, use
+      [method@Gio.File.query_info_async].
 
       Note that in many cases it is
       [racy to first check for file existence](https://en.wikipedia.org/wiki/Time_of_check_to_time_of_use)
@@ -970,13 +990,17 @@ and File : sig
 
   external make_directory : t -> Cancellable.t option -> (bool, GError.t) result
     = "ml_g_file_make_directory"
-  (** Creates a directory. Note that this will only create a child directory
+  (** Creates a directory.
+
+  Note that this will only create a child directory
   of the immediate parent directory of the path or URI given by the #GFile.
   To recursively create directories, see g_file_make_directory_with_parents().
+
   This function will fail if the parent directory does not exist, setting
   @error to %G_IO_ERROR_NOT_FOUND. If the file system doesn't support
   creating directories, this function will fail, setting @error to
-  %G_IO_ERROR_NOT_SUPPORTED.
+  %G_IO_ERROR_NOT_SUPPORTED. If the directory already exists,
+  [error@Gio.IOErrorEnum.EXISTS] will be returned.
 
   For a local #GFile the newly created directory will have the default
   (current) ownership and permissions of the current process.
@@ -1457,22 +1481,20 @@ and File_monitor : sig
   (** Returns whether the monitor is canceled. *)
 
   external emit_event :
-    t -> File.t -> File.t -> Gio_enums.filemonitorevent -> unit
+    t -> File.t -> File.t option -> Gio_enums.filemonitorevent -> unit
     = "ml_g_file_monitor_emit_event"
   (** Emits the #GFileMonitor::changed signal if a change has taken place.
       Should be called from file monitor implementations only.
 
       Implementations are responsible to call this method from the
-      [thread-default main context][g-main-context-push-thread-default] of the
-      thread that the monitor was created in. *)
+      thread-default main context (see
+      [method@GLib.MainContext.push_thread_default]) of the thread that the
+      monitor was created in. *)
 
   external cancel : t -> bool = "ml_g_file_monitor_cancel"
   (** Cancels a file monitor. *)
 
   (* Properties *)
-
-  external get_cancelled : t -> bool = "ml_g_file_monitor_get_cancelled"
-  (** Get property: cancelled *)
 
   val on_changed :
     ?after:bool ->

@@ -82,7 +82,7 @@ CAMLparam2(self, arg1);
 GError *error = NULL;
 
 GdkRGBA* result = gtk_color_dialog_choose_rgba_finish(GtkColorDialog_val(self), GAsyncResult_val(arg1), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GdkRGBA))); else CAMLreturn(Res_Error(Val_GError(error)));
+if (error == NULL) CAMLreturn(Res_Ok(Val_GdkRGBA(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 #else

@@ -50,11 +50,11 @@ external unexport_menu_model : t -> int -> unit
 external unexport_action_group : t -> int -> unit
   = "ml_g_dbus_connection_unexport_action_group"
 (** Reverses the effect of a previous call to
-    g_dbus_connection_export_action_group().
+    [method@Gio.DBusConnection.export_action_group].
 
-    It is an error to call this function with an ID that wasn't returned from
-    g_dbus_connection_export_action_group() or to call it with the same ID more
-    than once. *)
+    It is an error to call this function with an ID that wasn’t returned from
+    [method@Gio.DBusConnection.export_action_group] or to call it with the same
+    ID more than once. *)
 
 external start_message_processing : t -> unit
   = "ml_g_dbus_connection_start_message_processing"
@@ -122,7 +122,8 @@ occurred. That is to say that the returned #GDBusMessage object may
 be of type %G_DBUS_MESSAGE_TYPE_ERROR. Use
 g_dbus_message_to_gerror() to transcode this to a #GError.
 
-See this [server][gdbus-server] and [client][gdbus-unix-fd-client]
+See this [server][class@Gio.DBusConnection#an-example-d-bus-server]
+and [client][class@Gio.DBusConnection#an-example-for-file-descriptor-passing]
 for an example of how to use this low-level API to send and receive
 UNIX file descriptors.
 
@@ -139,7 +140,8 @@ occurred. That is to say that the returned #GDBusMessage object may
 be of type %G_DBUS_MESSAGE_TYPE_ERROR. Use
 g_dbus_message_to_gerror() to transcode this to a #GError.
 
-See this [server][gdbus-server] and [client][gdbus-unix-fd-client]
+See this [server][class@Gio.DBusConnection#an-example-d-bus-server]
+and [client][class@Gio.DBusConnection#an-example-for-file-descriptor-passing]
 for an example of how to use this low-level API to send and receive
 UNIX file descriptors. *)
 
@@ -163,7 +165,8 @@ If @connection is closed then the operation will fail with
 %G_IO_ERROR_CLOSED. If @message is not well-formed,
 the operation fails with %G_IO_ERROR_INVALID_ARGUMENT.
 
-See this [server][gdbus-server] and [client][gdbus-unix-fd-client]
+See this [server][class@Gio.DBusConnection#an-example-d-bus-server]
+and [client][class@Gio.DBusConnection#an-example-for-file-descriptor-passing]
 for an example of how to use this low-level API to send and receive
 UNIX file descriptors.
 
@@ -279,7 +282,7 @@ If this constraint is violated, the export will fail and 0 will be
 returned (with @error set accordingly).
 
 You can unexport the action group using
-g_dbus_connection_unexport_action_group() with the return value of
+[method@Gio.DBusConnection.unexport_action_group] with the return value of
 this function.
 
 The thread default main context is taken at the time of this call.
@@ -376,6 +379,3 @@ external call_finish : t -> Async_result.t -> (Gvariant.t, GError.t) result
 (** Finishes an operation started with g_dbus_connection_call(). *)
 
 (* Properties *)
-
-external get_closed : t -> bool = "ml_g_d_bus_connection_get_closed"
-(** Get property: closed *)

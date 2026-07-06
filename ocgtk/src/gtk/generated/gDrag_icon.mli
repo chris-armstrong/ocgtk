@@ -25,3 +25,5 @@ class type drag_icon_t = object
 end
 
 class drag_icon : Drag_icon.t -> drag_icon_t
+
+val get_for_drag : Ocgtk_gdk.Gdk.Drag.drag_t -> drag_icon_t

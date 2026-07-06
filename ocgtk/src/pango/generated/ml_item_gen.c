@@ -40,6 +40,27 @@ PangoItem* result = pango_item_split(PangoItem_val(self), Int_val(arg1), Int_val
 CAMLreturn(Val_PangoItem(result));
 }
 
+#if PANGO_VERSION_CHECK(1,54,0)
+
+CAMLexport CAMLprim value ml_pango_item_get_char_offset(value self)
+{
+CAMLparam1(self);
+
+int result = pango_item_get_char_offset(PangoItem_val(self));
+CAMLreturn(Val_int(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_pango_item_get_char_offset(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Item requires Pango >= 1.54");
+return Val_unit;
+}
+#endif
+
 #if PANGO_VERSION_CHECK(1,44,0)
 
 CAMLexport CAMLprim value ml_pango_item_apply_attrs(value self, value arg1)

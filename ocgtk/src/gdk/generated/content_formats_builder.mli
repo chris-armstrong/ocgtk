@@ -2,8 +2,7 @@
 (* ContentFormatsBuilder: ContentFormatsBuilder *)
 
 type t = [ `content_formats_builder ] Gobject.obj
-(** A `GdkContentFormatsBuilder` is an auxiliary struct used to create new
-    `GdkContentFormats`, and should not be kept around. *)
+(** Creates `GdkContentFormats` objects. *)
 
 external new_ : unit -> t = "ml_gdk_content_formats_builder_new"
 (** Create a new ContentFormatsBuilder *)

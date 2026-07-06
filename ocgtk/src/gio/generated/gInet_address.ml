@@ -1,6 +1,7 @@
 class type inet_address_t = object
   method equal : inet_address_t -> bool
   method get_family : unit -> Gio_enums.socketfamily
+  method get_flowinfo : unit -> UInt32.t
   method get_is_any : unit -> bool
   method get_is_link_local : unit -> bool
   method get_is_loopback : unit -> bool
@@ -12,6 +13,7 @@ class type inet_address_t = object
   method get_is_multicast : unit -> bool
   method get_is_site_local : unit -> bool
   method get_native_size : unit -> Gsize.t
+  method get_scope_id : unit -> UInt32.t
   method to_string : unit -> string
   method as_inet_address : Inet_address.t
 end
@@ -26,6 +28,9 @@ class inet_address (obj : Inet_address.t) : inet_address_t =
 
     method get_family : unit -> Gio_enums.socketfamily =
       fun () -> Inet_address.get_family obj
+
+    method get_flowinfo : unit -> UInt32.t =
+      fun () -> Inet_address.get_flowinfo obj
 
     method get_is_any : unit -> bool = fun () -> Inet_address.get_is_any obj
 
@@ -58,6 +63,9 @@ class inet_address (obj : Inet_address.t) : inet_address_t =
 
     method get_native_size : unit -> Gsize.t =
       fun () -> Inet_address.get_native_size obj
+
+    method get_scope_id : unit -> UInt32.t =
+      fun () -> Inet_address.get_scope_id obj
 
     method to_string : unit -> string = fun () -> Inet_address.to_string obj
     method as_inet_address = obj

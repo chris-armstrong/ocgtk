@@ -40,6 +40,30 @@ GtkCssSection *obj = gtk_css_section_new(Option_val(arg1, GFile_val, NULL), GtkC
 
 CAMLreturn(Val_GtkCssSection(obj));
 }
+#if GTK_CHECK_VERSION(4,16,0)
+
+CAMLexport CAMLprim value ml_gtk_css_section_new_with_bytes(value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam4(arg1, arg2, arg3, arg4);
+
+GtkCssSection *obj = gtk_css_section_new_with_bytes(Option_val(arg1, GFile_val, NULL), Option_val(arg2, GBytes_val, NULL), GtkCssLocation_val(arg3), GtkCssLocation_val(arg4));
+
+CAMLreturn(Val_GtkCssSection(obj));
+}
+#else
+
+CAMLexport CAMLprim value ml_gtk_css_section_new_with_bytes(value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam4(arg1, arg2, arg3, arg4);
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("CssSection requires GTK >= 4.16");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gtk_css_section_to_string(value self)
 {
 CAMLparam1(self);
@@ -89,6 +113,27 @@ CAMLparam1(self);
 const GtkCssLocation* result = gtk_css_section_get_end_location(GtkCssSection_val(self));
 CAMLreturn(Val_GtkCssLocation(result));
 }
+
+#if GTK_CHECK_VERSION(4,16,0)
+
+CAMLexport CAMLprim value ml_gtk_css_section_get_bytes(value self)
+{
+CAMLparam1(self);
+
+GBytes* result = gtk_css_section_get_bytes(GtkCssSection_val(self));
+CAMLreturn(Val_option(result, Val_GBytes));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_css_section_get_bytes(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("CssSection requires GTK >= 4.16");
+return Val_unit;
+}
+#endif
 
 CAMLprim value ml_gtk_css_section_get_type(value unit)
 {

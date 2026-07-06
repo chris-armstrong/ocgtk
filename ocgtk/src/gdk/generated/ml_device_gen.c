@@ -134,6 +134,43 @@ GdkModifierType result = gdk_device_get_modifier_state(GdkDevice_val(self));
 CAMLreturn(Val_GdkModifierType(result));
 }
 
+#if GTK_CHECK_VERSION(4,18,0)
+
+CAMLexport CAMLprim value ml_gdk_device_get_layout_names(value self)
+{
+CAMLparam1(self);
+
+gchar** result = gdk_device_get_layout_names(GdkDevice_val(self));
+    CAMLlocal2(ml_result, ml_result_opt);
+    if (result == NULL) {
+      ml_result_opt = Val_none;
+    } else {
+      int result_length = 0;
+    while (result[result_length] != NULL) result_length++;
+      ml_result = caml_alloc(result_length, 0);
+      for (int i = 0; i < result_length; i++) {
+        Store_field(ml_result, i, caml_copy_string(result[i]));
+      }
+      ml_result_opt = Val_some(ml_result);
+            for (int i = 0; i < result_length; i++) {
+      g_free((gpointer)result[i]);
+    }
+    g_free(result);
+    }
+CAMLreturn(ml_result_opt);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_device_get_layout_names(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Device requires GTK >= 4.18");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gdk_device_get_has_cursor(value self)
 {
 CAMLparam1(self);
@@ -176,6 +213,27 @@ gboolean result = gdk_device_get_caps_lock_state(GdkDevice_val(self));
 CAMLreturn(Val_bool(result));
 }
 
+#if GTK_CHECK_VERSION(4,18,0)
+
+CAMLexport CAMLprim value ml_gdk_device_get_active_layout_index(value self)
+{
+CAMLparam1(self);
+
+gint result = gdk_device_get_active_layout_index(GdkDevice_val(self));
+CAMLreturn(Val_int(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_device_get_active_layout_index(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Device requires GTK >= 4.18");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gdk_device_get_n_axes(value self)
 {
     CAMLparam1(self);
@@ -190,22 +248,5 @@ g_value_init(&prop_gvalue, pspec->value_type);
           prop_value = g_value_get_uint(&prop_gvalue);
 
       result = Val_int(prop_value);
-g_value_unset(&prop_gvalue);
-CAMLreturn(result);}
-
-CAMLexport CAMLprim value ml_gdk_device_get_tool(value self)
-{
-    CAMLparam1(self);
-    CAMLlocal1(result);
-GdkDevice *obj = (GdkDevice *)GdkDevice_val(self);
-    GdkDeviceTool *prop_value;
-GParamSpec *pspec = g_object_class_find_property(G_OBJECT_GET_CLASS(obj), "tool");
-if (pspec == NULL) caml_failwith("ml_gdk_device_get_tool: property 'tool' not found");
-GValue prop_gvalue = G_VALUE_INIT;
-g_value_init(&prop_gvalue, pspec->value_type);
-      g_object_get_property(G_OBJECT(obj), "tool", &prop_gvalue);
-          prop_value = (GdkDeviceTool*)g_value_get_object(&prop_gvalue);
-
-      result = Val_GdkDeviceTool(prop_value);
 g_value_unset(&prop_gvalue);
 CAMLreturn(result);}

@@ -55,7 +55,7 @@ module rec Context : sig
       via one of the recommended methods should already have a suitable font
       map. *)
 
-  external set_font_description : t -> Font_description.t option -> unit
+  external set_font_description : t -> Font_description.t -> unit
     = "ml_pango_context_set_font_description"
   (** Set the default font description for the context *)
 
@@ -231,7 +231,7 @@ end = struct
       via one of the recommended methods should already have a suitable font
       map. *)
 
-  external set_font_description : t -> Font_description.t option -> unit
+  external set_font_description : t -> Font_description.t -> unit
     = "ml_pango_context_set_font_description"
   (** Set the default font description for the context *)
 
@@ -397,9 +397,12 @@ and Font : sig
       alive. In most uses this is not an issue as a `PangoContext` holds a
       reference to the font map. *)
 
-  external get_face : t -> Font_face_and__font_family.Font_face.t
+  external get_face : t -> Font_face_and__font_family.Font_face.t option
     = "ml_pango_font_get_face"
-  (** Gets the `PangoFontFace` to which @font belongs. *)
+  (** Gets the `PangoFontFace` to which @font belongs.
+
+  Note that this function can return `NULL` in cases
+  where the font outlives its font map. *)
 
   external get_coverage : t -> Language.t -> Coverage.t
     = "ml_pango_font_get_coverage"
@@ -459,9 +462,12 @@ end = struct
       alive. In most uses this is not an issue as a `PangoContext` holds a
       reference to the font map. *)
 
-  external get_face : t -> Font_face_and__font_family.Font_face.t
+  external get_face : t -> Font_face_and__font_family.Font_face.t option
     = "ml_pango_font_get_face"
-  (** Gets the `PangoFontFace` to which @font belongs. *)
+  (** Gets the `PangoFontFace` to which @font belongs.
+
+  Note that this function can return `NULL` in cases
+  where the font outlives its font map. *)
 
   external get_coverage : t -> Language.t -> Coverage.t
     = "ml_pango_font_get_coverage"
@@ -489,10 +495,14 @@ and Font_map : sig
   external reload_font :
     t -> Font.t -> float -> Context.t option -> string option -> Font.t
     = "ml_pango_font_map_reload_font"
-  (** Returns a new font that is like @font, except that its size
-  is multiplied by @scale, its backend-dependent configuration
-  (e.g. cairo font options) is replaced by the one in @context,
-  and its variations are replaced by @variations. *)
+  (** Returns a new font that is like @font, except that it is scaled
+  by @scale, its backend-dependent configuration (e.g. cairo font options)
+  is replaced by the one in @context, and its variations are replaced
+  by @variations.
+
+  Note that the scaling here is meant to be linear, so this
+  scaling can be used to render a font on a hi-dpi display
+  without changing its optical size. *)
 
   external load_fontset :
     t -> Context.t -> Font_description.t -> Language.t -> Fontset.t option
@@ -528,7 +538,8 @@ and Font_map : sig
   This can be used to automatically detect changes to a `PangoFontMap`,
   like in `PangoContext`. *)
 
-  external get_family : t -> string -> Font_face_and__font_family.Font_family.t
+  external get_family :
+    t -> string -> Font_face_and__font_family.Font_family.t option
     = "ml_pango_font_map_get_family"
   (** Gets a font family by name. *)
 
@@ -544,12 +555,19 @@ and Font_map : sig
   gtk_widget_get_pango_context(). Use those instead. *)
 
   external changed : t -> unit = "ml_pango_font_map_changed"
-  (** Forces a change in the context, which will cause any `PangoContext` using
+  (** Forces a change in the fontmap, which will cause any `PangoContext` using
       this fontmap to change.
 
       This function is only useful when implementing a new backend for Pango,
       something applications won't do. Backends should call this function if
-      they have attached extra data to the context and such data is changed. *)
+      they have attached extra data to the fontmap and such data is changed. *)
+
+  external add_font_file : t -> string -> (bool, GError.t) result
+    = "ml_pango_font_map_add_font_file"
+  (** Loads a font file with one or more fonts into the `PangoFontMap`.
+
+      The added fonts will take precedence over preexisting fonts with the same
+      name. *)
 
   (* Properties *)
 
@@ -567,10 +585,14 @@ end = struct
   external reload_font :
     t -> Font.t -> float -> Context.t option -> string option -> Font.t
     = "ml_pango_font_map_reload_font"
-  (** Returns a new font that is like @font, except that its size
-  is multiplied by @scale, its backend-dependent configuration
-  (e.g. cairo font options) is replaced by the one in @context,
-  and its variations are replaced by @variations. *)
+  (** Returns a new font that is like @font, except that it is scaled
+  by @scale, its backend-dependent configuration (e.g. cairo font options)
+  is replaced by the one in @context, and its variations are replaced
+  by @variations.
+
+  Note that the scaling here is meant to be linear, so this
+  scaling can be used to render a font on a hi-dpi display
+  without changing its optical size. *)
 
   external load_fontset :
     t -> Context.t -> Font_description.t -> Language.t -> Fontset.t option
@@ -606,7 +628,8 @@ end = struct
   This can be used to automatically detect changes to a `PangoFontMap`,
   like in `PangoContext`. *)
 
-  external get_family : t -> string -> Font_face_and__font_family.Font_family.t
+  external get_family :
+    t -> string -> Font_face_and__font_family.Font_family.t option
     = "ml_pango_font_map_get_family"
   (** Gets a font family by name. *)
 
@@ -622,12 +645,19 @@ end = struct
   gtk_widget_get_pango_context(). Use those instead. *)
 
   external changed : t -> unit = "ml_pango_font_map_changed"
-  (** Forces a change in the context, which will cause any `PangoContext` using
+  (** Forces a change in the fontmap, which will cause any `PangoContext` using
       this fontmap to change.
 
       This function is only useful when implementing a new backend for Pango,
       something applications won't do. Backends should call this function if
-      they have attached extra data to the context and such data is changed. *)
+      they have attached extra data to the fontmap and such data is changed. *)
+
+  external add_font_file : t -> string -> (bool, GError.t) result
+    = "ml_pango_font_map_add_font_file"
+  (** Loads a font file with one or more fonts into the `PangoFontMap`.
+
+      The added fonts will take precedence over preexisting fonts with the same
+      name. *)
 
   (* Properties *)
 

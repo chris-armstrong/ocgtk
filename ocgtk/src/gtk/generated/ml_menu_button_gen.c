@@ -60,7 +60,7 @@ CAMLexport CAMLprim value ml_gtk_menu_button_set_popover(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-gtk_menu_button_set_popover(GtkMenuButton_val(self), Option_val(arg1, GtkWidget_val, NULL));
+gtk_menu_button_set_popover(GtkMenuButton_val(self), Option_val(arg1, GtkPopover_val, NULL));
 CAMLreturn(Val_unit);
 }
 

@@ -1,6 +1,7 @@
 class type content_formats_t = object
   method contain_gtype : Gobject.Type.t -> bool
   method contain_mime_type : string -> bool
+  method is_empty : unit -> bool
   method match_ : Content_formats.t -> bool
   method match_gtype : Content_formats.t -> Gobject.Type.t
   method match_mime_type : Content_formats.t -> string option

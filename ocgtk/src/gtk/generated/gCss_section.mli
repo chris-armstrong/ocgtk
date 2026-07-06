@@ -1,4 +1,5 @@
 class type css_section_t = object
+  method get_bytes : unit -> Glib_bytes.t option
   method get_end_location : unit -> Css_location.t
   method get_file : unit -> Ocgtk_gio.Gio.File.file_t option
   method get_parent : unit -> Css_section.t option
@@ -12,6 +13,13 @@ class css_section : Css_section.t -> css_section_t
 
 val new_ :
   Ocgtk_gio.Gio.File.file_t option ->
+  Css_location.t ->
+  Css_location.t ->
+  css_section_t
+
+val new_with_bytes :
+  Ocgtk_gio.Gio.File.file_t option ->
+  Glib_bytes.t option ->
   Css_location.t ->
   Css_location.t ->
   css_section_t

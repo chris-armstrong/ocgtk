@@ -1,4 +1,5 @@
 class type css_section_t = object
+  method get_bytes : unit -> Glib_bytes.t option
   method get_end_location : unit -> Css_location.t
   method get_file : unit -> Ocgtk_gio.Gio.File.file_t option
   method get_parent : unit -> Css_section.t option
@@ -11,6 +12,9 @@ end
 (* High-level class for CssSection *)
 class css_section (obj : Css_section.t) : css_section_t =
   object (self)
+    method get_bytes : unit -> Glib_bytes.t option =
+      fun () -> Css_section.get_bytes obj
+
     method get_end_location : unit -> Css_location.t =
       fun () -> Css_section.get_end_location obj
 
@@ -35,4 +39,11 @@ let new_ (file : Ocgtk_gio.Gio.File.file_t option) (start : Css_location.t)
     (end_ : Css_location.t) : css_section_t =
   let file = Option.map (fun c -> c#as_file) file in
   let obj_ = Css_section.new_ file start end_ in
+  new css_section obj_
+
+let new_with_bytes (file : Ocgtk_gio.Gio.File.file_t option)
+    (bytes : Glib_bytes.t option) (start : Css_location.t)
+    (end_ : Css_location.t) : css_section_t =
+  let file = Option.map (fun c -> c#as_file) file in
+  let obj_ = Css_section.new_with_bytes file bytes start end_ in
   new css_section obj_

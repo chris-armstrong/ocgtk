@@ -53,12 +53,44 @@ const char* result = gtk_uri_launcher_get_uri(GtkUriLauncher_val(self));
 CAMLreturn(Val_option_string(result));
 }
 
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gtk_uri_launcher_can_launch(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+gboolean result = gtk_uri_launcher_can_launch(GtkUriLauncher_val(self), Option_val(arg1, GtkWindow_val, NULL));
+CAMLreturn(Val_bool(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gtk_uri_launcher_can_launch(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("UriLauncher requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
+
 #else
 
 
 CAMLexport CAMLprim value ml_gtk_uri_launcher_new(value arg1)
 {
 CAMLparam1(arg1);
+(void)arg1;
+caml_failwith("UriLauncher requires GTK >= 4.10");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_gtk_uri_launcher_can_launch(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
 (void)arg1;
 caml_failwith("UriLauncher requires GTK >= 4.10");
 return Val_unit;

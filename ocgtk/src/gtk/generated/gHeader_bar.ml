@@ -12,6 +12,8 @@ class type header_bar_t = object
     .widget_t
     option
 
+  method get_use_native_controls : unit -> bool
+
   method pack_end :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
     .widget_t ->
@@ -36,6 +38,7 @@ class type header_bar_t = object
     option ->
     unit
 
+  method set_use_native_controls : bool -> unit
   method as_header_bar : Header_bar.t
 end
 
@@ -69,6 +72,9 @@ class header_bar (obj : Header_bar.t) : header_bar_t =
               .widget
               ret)
           (Header_bar.get_title_widget obj)
+
+    method get_use_native_controls : unit -> bool =
+      fun () -> Header_bar.get_use_native_controls obj
 
     method pack_end :
         GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -108,6 +114,9 @@ class header_bar (obj : Header_bar.t) : header_bar_t =
       fun title_widget ->
         let title_widget = Option.map (fun c -> c#as_widget) title_widget in
         Header_bar.set_title_widget obj title_widget
+
+    method set_use_native_controls : bool -> unit =
+      fun setting -> Header_bar.set_use_native_controls obj setting
 
     method as_header_bar = obj
   end

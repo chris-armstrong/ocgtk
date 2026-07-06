@@ -7,8 +7,23 @@ external from_gobject : 'a Gobject.obj -> t
   = "ml_gtk_section_model_from_gobject"
 
 (* Methods *)
+
 external sections_changed : t -> int -> int -> unit
   = "ml_gtk_section_model_sections_changed"
+(** This function emits the [signal@Gtk.SectionModel::sections-changed] signal
+    to notify about changes to sections.
+
+    It must cover all positions that used to be a section start or that are now
+    a section start. It does not have to cover all positions for which the
+    section has changed.
+
+    The [signal@Gio.ListModel::items-changed] implies the effect of the
+    [signal@Gtk.SectionModel::sections-changed] signal for all the items it
+    covers.
+
+    It is recommended that when changes to the items cause section changes in a
+    larger range, that the larger range is included in the emission of the
+    [signal@Gio.ListModel::items-changed] instead of emitting two signals. *)
 
 external get_section : t -> int -> int * int
   = "ml_gtk_section_model_get_section"

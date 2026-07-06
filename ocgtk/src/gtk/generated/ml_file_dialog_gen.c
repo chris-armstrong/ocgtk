@@ -98,7 +98,7 @@ CAMLparam2(self, arg1);
 GError *error = NULL;
 
 GListModel* result = gtk_file_dialog_select_multiple_folders_finish(GtkFileDialog_val(self), GAsyncResult_val(arg1), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GListModel))); else CAMLreturn(Res_Error(Val_GError(error)));
+if (error == NULL) CAMLreturn(Res_Ok(Val_GListModel(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gtk_file_dialog_select_folder_finish(value self, value arg1)
@@ -107,7 +107,7 @@ CAMLparam2(self, arg1);
 GError *error = NULL;
 
 GFile* result = gtk_file_dialog_select_folder_finish(GtkFileDialog_val(self), GAsyncResult_val(arg1), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GFile))); else CAMLreturn(Res_Error(Val_GError(error)));
+if (error == NULL) CAMLreturn(Res_Ok(Val_GFile(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gtk_file_dialog_save_finish(value self, value arg1)
@@ -116,7 +116,7 @@ CAMLparam2(self, arg1);
 GError *error = NULL;
 
 GFile* result = gtk_file_dialog_save_finish(GtkFileDialog_val(self), GAsyncResult_val(arg1), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GFile))); else CAMLreturn(Res_Error(Val_GError(error)));
+if (error == NULL) CAMLreturn(Res_Ok(Val_GFile(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gtk_file_dialog_open_multiple_finish(value self, value arg1)
@@ -125,7 +125,7 @@ CAMLparam2(self, arg1);
 GError *error = NULL;
 
 GListModel* result = gtk_file_dialog_open_multiple_finish(GtkFileDialog_val(self), GAsyncResult_val(arg1), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GListModel))); else CAMLreturn(Res_Error(Val_GError(error)));
+if (error == NULL) CAMLreturn(Res_Ok(Val_GListModel(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gtk_file_dialog_open_finish(value self, value arg1)
@@ -134,7 +134,7 @@ CAMLparam2(self, arg1);
 GError *error = NULL;
 
 GFile* result = gtk_file_dialog_open_finish(GtkFileDialog_val(self), GAsyncResult_val(arg1), &error);
-if (error == NULL) CAMLreturn(Res_Ok(Val_option(result, Val_GFile))); else CAMLreturn(Res_Error(Val_GError(error)));
+if (error == NULL) CAMLreturn(Res_Ok(Val_GFile(result))); else CAMLreturn(Res_Error(Val_GError(error)));
 }
 
 CAMLexport CAMLprim value ml_gtk_file_dialog_get_title(value self)

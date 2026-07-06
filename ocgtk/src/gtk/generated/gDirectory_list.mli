@@ -11,7 +11,6 @@ class type directory_list_t = object
   method set_io_priority : int -> unit
   method set_monitored : bool -> unit
   method item_type : Gobject.Type.t
-  method loading : bool
   method n_items : int
   method as_directory_list : Directory_list.t
 end

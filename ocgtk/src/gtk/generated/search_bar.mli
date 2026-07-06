@@ -82,11 +82,3 @@ external connect_entry : t -> Editable.t -> unit
     bar (as in our main example). *)
 
 (* Properties *)
-
-external get_search_mode_enabled : t -> bool
-  = "ml_gtk_search_bar_get_search_mode_enabled"
-(** Get property: search-mode-enabled *)
-
-external set_search_mode_enabled : t -> bool -> unit
-  = "ml_gtk_search_bar_set_search_mode_enabled"
-(** Set property: search-mode-enabled *)

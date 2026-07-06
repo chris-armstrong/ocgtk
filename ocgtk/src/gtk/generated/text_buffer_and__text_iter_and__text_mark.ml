@@ -85,6 +85,14 @@ module rec Text_buffer : sig
   (** Removes a `GdkClipboard` added with
       [method@Gtk.TextBuffer.add_selection_clipboard] *)
 
+  external remove_commit_notify : t -> int -> unit
+    = "ml_gtk_text_buffer_remove_commit_notify"
+  (** Removes the `GtkTextBufferCommitNotify` handler previously registered with
+      [method@Gtk.TextBuffer.add_commit_notify].
+
+      This may result in the `user_data_destroy` being called that was passed
+      when registering the commit notify functions. *)
+
   external remove_all_tags : t -> Text_iter.t -> Text_iter.t -> unit
     = "ml_gtk_text_buffer_remove_all_tags"
   (** Removes all tags in the range between @start and @end.
@@ -746,6 +754,14 @@ end = struct
     = "ml_gtk_text_buffer_remove_selection_clipboard"
   (** Removes a `GdkClipboard` added with
       [method@Gtk.TextBuffer.add_selection_clipboard] *)
+
+  external remove_commit_notify : t -> int -> unit
+    = "ml_gtk_text_buffer_remove_commit_notify"
+  (** Removes the `GtkTextBufferCommitNotify` handler previously registered with
+      [method@Gtk.TextBuffer.add_commit_notify].
+
+      This may result in the `user_data_destroy` being called that was passed
+      when registering the commit notify functions. *)
 
   external remove_all_tags : t -> Text_iter.t -> Text_iter.t -> unit
     = "ml_gtk_text_buffer_remove_all_tags"
@@ -2786,7 +2802,16 @@ and Text_mark : sig
   (** Create a new TextMark *)
 
   (* Methods *)
+
   external set_visible : t -> bool -> unit = "ml_gtk_text_mark_set_visible"
+  (** Sets the visibility of @mark.
+
+  The insertion point is normally visible, i.e. you can see it as
+  a vertical bar. Also, the text widget uses a visible mark to
+  indicate where a drop will occur when dragging-and-dropping text.
+  Most other marks are not visible.
+
+  Marks are not visible by default. *)
 
   external get_visible : t -> bool = "ml_gtk_text_mark_get_visible"
   (** Returns %TRUE if the mark is visible.
@@ -2821,7 +2846,16 @@ end = struct
   (** Create a new TextMark *)
 
   (* Methods *)
+
   external set_visible : t -> bool -> unit = "ml_gtk_text_mark_set_visible"
+  (** Sets the visibility of @mark.
+
+  The insertion point is normally visible, i.e. you can see it as
+  a vertical bar. Also, the text widget uses a visible mark to
+  indicate where a drop will occur when dragging-and-dropping text.
+  Most other marks are not visible.
+
+  Marks are not visible by default. *)
 
   external get_visible : t -> bool = "ml_gtk_text_mark_get_visible"
   (** Returns %TRUE if the mark is visible.

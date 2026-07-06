@@ -8,6 +8,10 @@ class type css_provider_t = object
   method load_from_string : string -> unit
   method load_named : string -> string option -> unit
   method to_string : unit -> string
+  method prefers_color_scheme : Gtk_enums.interfacecolorscheme
+  method set_prefers_color_scheme : Gtk_enums.interfacecolorscheme -> unit
+  method prefers_contrast : Gtk_enums.interfacecontrast
+  method set_prefers_contrast : Gtk_enums.interfacecontrast -> unit
   method as_css_provider : Css_provider.t
 end
 
@@ -40,6 +44,13 @@ class css_provider (obj : Css_provider.t) : css_provider_t =
       fun name variant -> Css_provider.load_named obj name variant
 
     method to_string : unit -> string = fun () -> Css_provider.to_string obj
+    method prefers_color_scheme = Css_provider.get_prefers_color_scheme obj
+
+    method set_prefers_color_scheme v =
+      Css_provider.set_prefers_color_scheme obj v
+
+    method prefers_contrast = Css_provider.get_prefers_contrast obj
+    method set_prefers_contrast v = Css_provider.set_prefers_contrast obj v
     method as_css_provider = obj
   end
 

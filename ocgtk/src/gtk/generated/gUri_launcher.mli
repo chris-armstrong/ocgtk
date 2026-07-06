@@ -1,4 +1,7 @@
 class type uri_launcher_t = object
+  method can_launch :
+    GApplication_and__window_and__window_group.window_t option -> bool
+
   method get_uri : unit -> string option
 
   method launch_finish :

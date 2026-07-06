@@ -32,10 +32,7 @@ class type editable_t = object
   method set_position : int -> unit
   method set_text : string -> unit
   method set_width_chars : int -> unit
-  method cursor_position : int
   method selection_bound : int
-  method xalign : float
-  method set_xalign : float -> unit
   method as_editable : Editable.t
 end
 

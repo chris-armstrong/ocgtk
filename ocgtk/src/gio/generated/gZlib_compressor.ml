@@ -1,7 +1,9 @@
 class type zlib_compressor_t = object
   inherit GConverter.converter_t
   method get_file_info : unit -> GFile_info.file_info_t option
+  method get_os : unit -> int
   method set_file_info : GFile_info.file_info_t option -> unit
+  method set_os : int -> unit
   method format : Gio_enums.zlibcompressorformat
   method level : int
   method as_zlib_compressor : Zlib_compressor.t
@@ -18,11 +20,14 @@ class zlib_compressor (obj : Zlib_compressor.t) : zlib_compressor_t =
           (fun ret -> new GFile_info.file_info ret)
           (Zlib_compressor.get_file_info obj)
 
+    method get_os : unit -> int = fun () -> Zlib_compressor.get_os obj
+
     method set_file_info : GFile_info.file_info_t option -> unit =
       fun file_info ->
         let file_info = Option.map (fun c -> c#as_file_info) file_info in
         Zlib_compressor.set_file_info obj file_info
 
+    method set_os : int -> unit = fun os -> Zlib_compressor.set_os obj os
     method format = Zlib_compressor.get_format obj
     method level = Zlib_compressor.get_level obj
     method as_zlib_compressor = obj

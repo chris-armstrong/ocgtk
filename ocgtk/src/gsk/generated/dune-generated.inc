@@ -45,6 +45,8 @@
    ml_color_matrix_node_gen
    ml_color_node_gen
    ml_color_stop_gen
+   ml_component_transfer_gen
+   ml_component_transfer_node_gen
    ml_conic_gradient_node_gen
    ml_container_node_gen
    ml_cross_fade_node_gen

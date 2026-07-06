@@ -3,6 +3,10 @@
 
 type t = [ `drag_icon | `widget | `initially_unowned | `object_ ] Gobject.obj
 
+external get_for_drag : Ocgtk_gdk.Gdk.Wrappers.Drag.t -> t
+  = "ml_gtk_drag_icon_get_for_drag"
+(** Create a new DragIcon *)
+
 (* Methods *)
 
 external set_child :

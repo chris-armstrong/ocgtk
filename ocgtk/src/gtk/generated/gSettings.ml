@@ -47,6 +47,8 @@ class type settings_t = object
   method set_gtk_error_bell : bool -> unit
   method gtk_font_name : string
   method set_gtk_font_name : string -> unit
+  method gtk_font_rendering : Gtk_enums.fontrendering
+  method set_gtk_font_rendering : Gtk_enums.fontrendering -> unit
   method gtk_fontconfig_timestamp : int
   method set_gtk_fontconfig_timestamp : int -> unit
   method gtk_hint_font_metrics : bool
@@ -55,6 +57,10 @@ class type settings_t = object
   method set_gtk_icon_theme_name : string -> unit
   method gtk_im_module : string
   method set_gtk_im_module : string -> unit
+  method gtk_interface_color_scheme : Gtk_enums.interfacecolorscheme
+  method set_gtk_interface_color_scheme : Gtk_enums.interfacecolorscheme -> unit
+  method gtk_interface_contrast : Gtk_enums.interfacecontrast
+  method set_gtk_interface_contrast : Gtk_enums.interfacecontrast -> unit
   method gtk_keynav_use_caret : bool
   method set_gtk_keynav_use_caret : bool -> unit
   method gtk_label_select_on_focus : bool
@@ -224,6 +230,8 @@ class settings (obj : Settings.t) : settings_t =
     method set_gtk_error_bell v = Settings.set_gtk_error_bell obj v
     method gtk_font_name = Settings.get_gtk_font_name obj
     method set_gtk_font_name v = Settings.set_gtk_font_name obj v
+    method gtk_font_rendering = Settings.get_gtk_font_rendering obj
+    method set_gtk_font_rendering v = Settings.set_gtk_font_rendering obj v
     method gtk_fontconfig_timestamp = Settings.get_gtk_fontconfig_timestamp obj
 
     method set_gtk_fontconfig_timestamp v =
@@ -238,6 +246,18 @@ class settings (obj : Settings.t) : settings_t =
     method set_gtk_icon_theme_name v = Settings.set_gtk_icon_theme_name obj v
     method gtk_im_module = Settings.get_gtk_im_module obj
     method set_gtk_im_module v = Settings.set_gtk_im_module obj v
+
+    method gtk_interface_color_scheme =
+      Settings.get_gtk_interface_color_scheme obj
+
+    method set_gtk_interface_color_scheme v =
+      Settings.set_gtk_interface_color_scheme obj v
+
+    method gtk_interface_contrast = Settings.get_gtk_interface_contrast obj
+
+    method set_gtk_interface_contrast v =
+      Settings.set_gtk_interface_contrast obj v
+
     method gtk_keynav_use_caret = Settings.get_gtk_keynav_use_caret obj
     method set_gtk_keynav_use_caret v = Settings.set_gtk_keynav_use_caret obj v
 

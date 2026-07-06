@@ -261,6 +261,38 @@ GskTransform* result = gsk_transform_perspective(GskTransform_val(self), Double_
 CAMLreturn(Val_GskTransform(result));
 }
 
+#if GTK_CHECK_VERSION(4,20,0)
+
+CAMLexport CAMLprim value ml_gsk_transform_matrix_2d_native(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+CAMLxparam2(arg5, arg6);
+
+GskTransform* result = gsk_transform_matrix_2d(GskTransform_val(self), Double_val(arg1), Double_val(arg2), Double_val(arg3), Double_val(arg4), Double_val(arg5), Double_val(arg6));
+CAMLreturn(Val_option(result, Val_GskTransform));}
+
+CAMLexport CAMLprim value ml_gsk_transform_matrix_2d_bytecode(value * argv, int argn)
+{
+return ml_gsk_transform_matrix_2d_native(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gsk_transform_matrix_2d(value self, value arg1, value arg2, value arg3, value arg4, value arg5, value arg6)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+(void)arg5;
+(void)arg6;
+caml_failwith("Transform requires GTK >= 4.20");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gsk_transform_matrix(value self, value arg1)
 {
 CAMLparam2(self, arg1);

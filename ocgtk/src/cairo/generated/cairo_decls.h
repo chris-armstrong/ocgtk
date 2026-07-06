@@ -70,6 +70,16 @@ cairo_rectangle_int_t *cairo_rectangle_int_t_val(value val);
 value Val_cairo_rectangle_int_t(const cairo_rectangle_int_t *ptr);
 value Val_cairo_rectangle_int_t_option(const cairo_rectangle_int_t *ptr);
 
+/* Forward declarations for cairo_glyph_t converters */
+cairo_glyph_t *cairo_glyph_t_val(value val);
+value Val_cairo_glyph_t(const cairo_glyph_t *ptr);
+value Val_cairo_glyph_t_option(const cairo_glyph_t *ptr);
+
+/* Forward declarations for cairo_text_cluster_t converters */
+cairo_text_cluster_t *cairo_text_cluster_t_val(value val);
+value Val_cairo_text_cluster_t(const cairo_text_cluster_t *ptr);
+value Val_cairo_text_cluster_t_option(const cairo_text_cluster_t *ptr);
+
 /* Const-safe string extraction for setters */
 #define ML_DECL_CONST_STRING(name, expr) const gchar *name = (const gchar *)(expr)
 

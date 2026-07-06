@@ -7,7 +7,6 @@ class type io_stream_t = object
   method has_pending : unit -> bool
   method is_closed : unit -> bool
   method set_pending : unit -> (bool, GError.t) result
-  method closed : bool
   method as_io_stream : Io_stream.t
 end
 
@@ -41,6 +40,5 @@ class io_stream (obj : Io_stream.t) : io_stream_t =
     method set_pending : unit -> (bool, GError.t) result =
       fun () -> Io_stream.set_pending obj
 
-    method closed = Io_stream.get_closed obj
     method as_io_stream = obj
   end

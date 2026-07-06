@@ -198,3 +198,25 @@ caml_failwith("Texture requires GTK >= 4.10");
 return Val_unit;
 }
 #endif
+
+#if GTK_CHECK_VERSION(4,16,0)
+
+CAMLexport CAMLprim value ml_gdk_texture_get_color_state(value self)
+{
+CAMLparam1(self);
+
+GdkColorState* result = gdk_texture_get_color_state(GdkTexture_val(self));
+if (result) result = g_boxed_copy(gdk_color_state_get_type(), result);
+CAMLreturn(Val_GdkColorState(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_texture_get_color_state(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("Texture requires GTK >= 4.16");
+return Val_unit;
+}
+#endif

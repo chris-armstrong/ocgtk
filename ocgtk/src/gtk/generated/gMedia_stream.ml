@@ -29,10 +29,6 @@ class type media_stream_t = object
   method stream_unprepared : unit -> unit
   method unrealize : Ocgtk_gdk.Gdk.Surface.surface_t -> unit
   method update : int64 -> unit
-  method prepared : bool
-  method set_prepared : bool -> unit
-  method seekable : bool
-  method seeking : bool
   method as_media_stream : Media_stream.t
 end
 
@@ -108,9 +104,5 @@ class media_stream (obj : Media_stream.t) : media_stream_t =
     method update : int64 -> unit =
       fun timestamp -> Media_stream.update obj timestamp
 
-    method prepared = Media_stream.get_prepared obj
-    method set_prepared v = Media_stream.set_prepared obj v
-    method seekable = Media_stream.get_seekable obj
-    method seeking = Media_stream.get_seeking obj
     method as_media_stream = obj
   end

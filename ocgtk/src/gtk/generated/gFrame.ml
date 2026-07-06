@@ -33,8 +33,6 @@ class type frame_t = object
     option ->
     unit
 
-  method label_xalign : float
-  method set_label_xalign : float -> unit
   method as_frame : Frame.t
 end
 
@@ -104,8 +102,6 @@ class frame (obj : Frame.t) : frame_t =
         let label_widget = Option.map (fun c -> c#as_widget) label_widget in
         Frame.set_label_widget obj label_widget
 
-    method label_xalign = Frame.get_label_xalign obj
-    method set_label_xalign v = Frame.set_label_xalign obj v
     method as_frame = obj
   end
 

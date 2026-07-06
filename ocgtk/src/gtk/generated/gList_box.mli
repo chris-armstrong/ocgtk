@@ -9,7 +9,11 @@ class type list_box_t = object
   method on_move_cursor :
     ?after:bool ->
     callback:
-      (object_:Gtk_enums.movementstep -> p0:int -> p1:bool -> p2:bool -> unit) ->
+      (step:Gtk_enums.movementstep ->
+      count:int ->
+      extend:bool ->
+      modify:bool ->
+      unit) ->
     unit ->
     Gobject.Signal.handler_id
 
@@ -52,6 +56,7 @@ class type list_box_t = object
   method get_selected_rows : unit -> GList_box_row.list_box_row_t list
   method get_selection_mode : unit -> Gtk_enums.selectionmode
   method get_show_separators : unit -> bool
+  method get_tab_behavior : unit -> Gtk_enums.listtabbehavior
 
   method insert :
     GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
@@ -87,6 +92,7 @@ class type list_box_t = object
 
   method set_selection_mode : Gtk_enums.selectionmode -> unit
   method set_show_separators : bool -> unit
+  method set_tab_behavior : Gtk_enums.listtabbehavior -> unit
   method unselect_all : unit -> unit
   method unselect_row : GList_box_row.list_box_row_t -> unit
   method accept_unpaired_release : bool

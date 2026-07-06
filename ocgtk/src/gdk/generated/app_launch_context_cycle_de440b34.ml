@@ -233,9 +233,6 @@ and Clipboard : sig
 
   (* Properties *)
 
-  external get_local : t -> bool = "ml_gdk_clipboard_get_local"
-  (** Get property: local *)
-
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
@@ -317,9 +314,6 @@ end = struct
   current process, %NULL will be returned. *)
 
   (* Properties *)
-
-  external get_local : t -> bool = "ml_gdk_clipboard_get_local"
-  (** Get property: local *)
 
   let on_changed ?after obj ~callback =
     Gobject.Signal.connect_simple obj ~name:"changed" ~callback
@@ -417,6 +411,12 @@ and Device : sig
 
       This is only relevant for keyboard devices. *)
 
+  external get_layout_names : t -> string array option
+    = "ml_gdk_device_get_layout_names"
+  (** Retrieves the names of the layouts of the keyboard.
+
+      This is only relevant for keyboard devices. *)
+
   external get_has_cursor : t -> bool = "ml_gdk_device_get_has_cursor"
   (** Determines whether the pointer follows device motion.
 
@@ -444,13 +444,19 @@ and Device : sig
 
       This is only relevant for keyboard devices. *)
 
+  external get_active_layout_index : t -> int
+    = "ml_gdk_device_get_active_layout_index"
+  (** Retrieves the index of the active layout of the keyboard.
+
+      If there is no valid active layout for the `GdkDevice`, this function will
+      return -1;
+
+      This is only relevant for keyboard devices. *)
+
   (* Properties *)
 
   external get_n_axes : t -> int = "ml_gdk_device_get_n_axes"
   (** Get property: n-axes *)
-
-  external get_tool : t -> Device_tool.t = "ml_gdk_device_get_tool"
-  (** Get property: tool *)
 
   val on_changed :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -551,6 +557,12 @@ end = struct
 
       This is only relevant for keyboard devices. *)
 
+  external get_layout_names : t -> string array option
+    = "ml_gdk_device_get_layout_names"
+  (** Retrieves the names of the layouts of the keyboard.
+
+      This is only relevant for keyboard devices. *)
+
   external get_has_cursor : t -> bool = "ml_gdk_device_get_has_cursor"
   (** Determines whether the pointer follows device motion.
 
@@ -578,13 +590,19 @@ end = struct
 
       This is only relevant for keyboard devices. *)
 
+  external get_active_layout_index : t -> int
+    = "ml_gdk_device_get_active_layout_index"
+  (** Retrieves the index of the active layout of the keyboard.
+
+      If there is no valid active layout for the `GdkDevice`, this function will
+      return -1;
+
+      This is only relevant for keyboard devices. *)
+
   (* Properties *)
 
   external get_n_axes : t -> int = "ml_gdk_device_get_n_axes"
   (** Get property: n-axes *)
-
-  external get_tool : t -> Device_tool.t = "ml_gdk_device_get_tool"
-  (** Get property: tool *)
 
   let on_changed ?after obj ~callback =
     Gobject.Signal.connect_simple obj ~name:"changed" ~callback
@@ -803,7 +821,9 @@ and Display : sig
       The formats returned by this function can be used for negotiating buffer
       formats with producers such as v4l, pipewire or GStreamer.
 
-      To learn more about dma-bufs, see [class@Gdk.DmabufTextureBuilder]. *)
+      To learn more about dma-bufs, see [class@Gdk.DmabufTextureBuilder].
+
+      This function is threadsafe. It can be called from any thread. *)
 
   external get_default_seat : t -> Seat.t option
     = "ml_gdk_display_get_default_seat"
@@ -858,18 +878,6 @@ and Display : sig
   (** Emits a short beep on @display *)
 
   (* Properties *)
-
-  external get_composited : t -> bool = "ml_gdk_display_get_composited"
-  (** Get property: composited *)
-
-  external get_input_shapes : t -> bool = "ml_gdk_display_get_input_shapes"
-  (** Get property: input-shapes *)
-
-  external get_rgba : t -> bool = "ml_gdk_display_get_rgba"
-  (** Get property: rgba *)
-
-  external get_shadow_width : t -> bool = "ml_gdk_display_get_shadow_width"
-  (** Get property: shadow-width *)
 
   val on_closed :
     ?after:bool ->
@@ -1097,7 +1105,9 @@ end = struct
       The formats returned by this function can be used for negotiating buffer
       formats with producers such as v4l, pipewire or GStreamer.
 
-      To learn more about dma-bufs, see [class@Gdk.DmabufTextureBuilder]. *)
+      To learn more about dma-bufs, see [class@Gdk.DmabufTextureBuilder].
+
+      This function is threadsafe. It can be called from any thread. *)
 
   external get_default_seat : t -> Seat.t option
     = "ml_gdk_display_get_default_seat"
@@ -1152,18 +1162,6 @@ end = struct
   (** Emits a short beep on @display *)
 
   (* Properties *)
-
-  external get_composited : t -> bool = "ml_gdk_display_get_composited"
-  (** Get property: composited *)
-
-  external get_input_shapes : t -> bool = "ml_gdk_display_get_input_shapes"
-  (** Get property: input-shapes *)
-
-  external get_rgba : t -> bool = "ml_gdk_display_get_rgba"
-  (** Get property: rgba *)
-
-  external get_shadow_width : t -> bool = "ml_gdk_display_get_shadow_width"
-  (** Get property: shadow-width *)
 
   let on_closed ?after obj ~callback =
     let closure =
@@ -1373,10 +1371,12 @@ and Event : sig
   (** Returns whether a `GdkEvent` should trigger a context menu, according to
       platform conventions.
 
-      The right mouse button typically triggers context menus.
+      The right mouse button typically triggers context menus. On macOS,
+      Control+left mouse button also triggers.
 
       This function should always be used instead of simply checking for
-      event->button == %GDK_BUTTON_SECONDARY. *)
+
+      ```c event->button == GDK_BUTTON_SECONDARY ``` *)
 
   external ref : t -> t = "ml_gdk_event_ref"
   (** Increase the ref count of @event. *)
@@ -1499,10 +1499,12 @@ end = struct
   (** Returns whether a `GdkEvent` should trigger a context menu, according to
       platform conventions.
 
-      The right mouse button typically triggers context menus.
+      The right mouse button typically triggers context menus. On macOS,
+      Control+left mouse button also triggers.
 
       This function should always be used instead of simply checking for
-      event->button == %GDK_BUTTON_SECONDARY. *)
+
+      ```c event->button == GDK_BUTTON_SECONDARY ``` *)
 
   external ref : t -> t = "ml_gdk_event_ref"
   (** Increase the ref count of @event. *)
@@ -2013,9 +2015,6 @@ and Monitor : sig
 
   (* Properties *)
 
-  external get_valid : t -> bool = "ml_gdk_monitor_get_valid"
-  (** Get property: valid *)
-
   val on_invalidate :
     ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 end = struct
@@ -2102,9 +2101,6 @@ end = struct
       identifiers of a specific monitor. *)
 
   (* Properties *)
-
-  external get_valid : t -> bool = "ml_gdk_monitor_get_valid"
-  (** Get property: valid *)
 
   let on_invalidate ?after obj ~callback =
     Gobject.Signal.connect_simple obj ~name:"invalidate" ~callback
@@ -2274,7 +2270,8 @@ and Surface : sig
   background is not opaque, please update this property in your
   [GtkWidgetClass.css_changed](../gtk4/vfunc.Widget.css_changed.html) handler. *)
 
-  external set_input_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t -> unit
+  external set_input_region :
+    t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option -> unit
     = "ml_gdk_surface_set_input_region"
   (** Apply the region to the surface for the purpose of event
   handling.
@@ -2535,7 +2532,8 @@ end = struct
   background is not opaque, please update this property in your
   [GtkWidgetClass.css_changed](../gtk4/vfunc.Widget.css_changed.html) handler. *)
 
-  external set_input_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t -> unit
+  external set_input_region :
+    t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option -> unit
     = "ml_gdk_surface_set_input_region"
   (** Apply the region to the surface for the purpose of event
   handling.

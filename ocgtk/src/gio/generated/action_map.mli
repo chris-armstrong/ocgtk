@@ -9,11 +9,11 @@ external from_gobject : 'a Gobject.obj -> t = "ml_gio_action_map_from_gobject"
 
 external remove_action_entries : t -> Action_entry.t array -> int -> unit
   = "ml_g_action_map_remove_action_entries"
-(** Remove actions from a #GActionMap. This is meant as the reverse of
-g_action_map_add_action_entries().
+(** Remove actions from a [iface@Gio.ActionMap]. This is meant as the reverse of
+[method@Gio.ActionMap.add_action_entries].
 
 
-|[<!-- language="C" -->
+```c
 static const GActionEntry entries[] = {
     { "quit",         activate_quit              },
     { "print-string", activate_print_string, "s" }
@@ -30,7 +30,7 @@ remove_actions (GActionMap *map)
 {
   g_action_map_remove_action_entries (map, entries, G_N_ELEMENTS (entries));
 }
-]| *)
+``` *)
 
 external remove_action : t -> string -> unit = "ml_g_action_map_remove_action"
 (** Removes the named action from the action map.
@@ -41,7 +41,7 @@ external lookup_action : t -> string -> Action.t option
   = "ml_g_action_map_lookup_action"
 (** Looks up the action with the name @action_name in @action_map.
 
-If no such action exists, returns %NULL. *)
+If no such action exists, returns `NULL`. *)
 
 external add_action : t -> Action.t -> unit = "ml_g_action_map_add_action"
 (** Adds an action to the @action_map.

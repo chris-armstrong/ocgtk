@@ -101,6 +101,7 @@ type biditype = Pango_enums.biditype
 type coveragelevel = Pango_enums.coveragelevel
 type direction = Pango_enums.direction
 type ellipsizemode = Pango_enums.ellipsizemode
+type fontcolor = Pango_enums.fontcolor
 type fontscale = Pango_enums.fontscale
 type gravity = Pango_enums.gravity
 type gravityhint = Pango_enums.gravityhint

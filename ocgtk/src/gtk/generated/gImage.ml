@@ -21,10 +21,6 @@ class type image_t = object
   method set_from_resource : string option -> unit
   method set_icon_size : Gtk_enums.iconsize -> unit
   method set_pixel_size : int -> unit
-  method file : string
-  method set_file : string -> unit
-  method resource : string
-  method set_resource : string -> unit
   method use_fallback : bool
   method set_use_fallback : bool -> unit
   method as_image : Image.t
@@ -98,10 +94,6 @@ class image (obj : Image.t) : image_t =
     method set_pixel_size : int -> unit =
       fun pixel_size -> Image.set_pixel_size obj pixel_size
 
-    method file = Image.get_file obj
-    method set_file v = Image.set_file obj v
-    method resource = Image.get_resource obj
-    method set_resource v = Image.set_resource obj v
     method use_fallback = Image.get_use_fallback obj
     method set_use_fallback v = Image.set_use_fallback obj v
     method as_image = obj

@@ -10,6 +10,16 @@ external new_ :
 
 (* Methods *)
 
+external set_watch_items : t -> bool -> unit
+  = "ml_gtk_filter_list_model_set_watch_items"
+(** Sets the filter model to monitor properties of its items.
+
+    This allows implementations of [class@Gtk.Filter] that support expression
+    watching to react to property changes. This property has no effect if the
+    current filter doesn't support watching items.
+
+    By default, watching items is disabled. *)
+
 external set_model : t -> Ocgtk_gio.Gio.Wrappers.List_model.t option -> unit
   = "ml_gtk_filter_list_model_set_model"
 (** Sets the model to be filtered.
@@ -41,6 +51,12 @@ external set_incremental : t -> bool -> unit
 external set_filter : t -> Filter.t option -> unit
   = "ml_gtk_filter_list_model_set_filter"
 (** Sets the filter used to filter items. *)
+
+external get_watch_items : t -> bool
+  = "ml_gtk_filter_list_model_get_watch_items"
+(** Returns whether watching items is enabled.
+
+    See [method@Gtk.FilterListModel.set_watch_items]. *)
 
 external get_pending : t -> int = "ml_gtk_filter_list_model_get_pending"
 (** Returns the number of items that have not been filtered yet.

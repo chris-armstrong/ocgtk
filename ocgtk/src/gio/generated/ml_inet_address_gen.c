@@ -12,14 +12,6 @@
 #include "wrappers.h"
 
 #include <gio/gio.h>
-#ifdef __linux__
-#include <gio/gunixoutputstream.h>
-#include <gio/gunixmounts.h>
-#include <gio/gunixinputstream.h>
-#include <gio/gunixfdmessage.h>
-#include <gio/gfiledescriptorbased.h>
-#include <gio/gdesktopappinfo.h>
-#endif /* __linux__ */
 /* Include library-specific type conversions and forward declarations */
 #include "gio_decls.h"
 
@@ -107,6 +99,27 @@ CAMLexport CAMLprim value ml_g_inet_address_to_string(value self)
 CAMLparam1(self);
 (void)self;
 caml_failwith("InetAddress requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,86,0)
+
+CAMLexport CAMLprim value ml_g_inet_address_get_scope_id(value self)
+{
+CAMLparam1(self);
+
+guint32 result = g_inet_address_get_scope_id(GInetAddress_val(self));
+CAMLreturn(Val_uint32(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_inet_address_get_scope_id(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("InetAddress requires GLib >= 2.86");
 return Val_unit;
 }
 #endif
@@ -338,6 +351,27 @@ CAMLexport CAMLprim value ml_g_inet_address_get_is_any(value self)
 CAMLparam1(self);
 (void)self;
 caml_failwith("InetAddress requires GLib >= 2.22");
+return Val_unit;
+}
+#endif
+
+#if GLIB_CHECK_VERSION(2,86,0)
+
+CAMLexport CAMLprim value ml_g_inet_address_get_flowinfo(value self)
+{
+CAMLparam1(self);
+
+guint32 result = g_inet_address_get_flowinfo(GInetAddress_val(self));
+CAMLreturn(Val_uint32(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_g_inet_address_get_flowinfo(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("InetAddress requires GLib >= 2.86");
 return Val_unit;
 }
 #endif

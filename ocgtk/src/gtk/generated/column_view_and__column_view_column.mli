@@ -24,12 +24,14 @@ module rec Column_view : sig
   and [method@Gtk.ColumnViewColumn.set_sorter] has been called
   on @column to associate a sorter with the column.
 
-  If @column is %NULL, the view will be unsorted. *)
+  If @column is unset, the view will be unsorted. *)
 
   external set_tab_behavior : t -> Gtk_enums.listtabbehavior -> unit
     = "ml_gtk_column_view_set_tab_behavior"
-  (** Sets the behavior of the <kbd>Tab</kbd> and
-      <kbd>Shift</kbd>+<kbd>Tab</kbd> keys. *)
+  (** Sets the <kbd>Tab</kbd> key behavior.
+
+      This influences how the <kbd>Tab</kbd> and <kbd>Shift</kbd>+<kbd>Tab</kbd>
+      keys move the focus in the columnview. *)
 
   external set_single_click_activate : t -> bool -> unit
     = "ml_gtk_column_view_set_single_click_activate"
@@ -46,8 +48,9 @@ module rec Column_view : sig
 
   external set_row_factory : t -> List_item_factory.t option -> unit
     = "ml_gtk_column_view_set_row_factory"
-  (** Sets the factory used for configuring rows. The factory must be for
-      configuring [class@Gtk.ColumnViewRow] objects.
+  (** Sets the factory used for configuring rows.
+
+      The factory must be for configuring [class@Gtk.ColumnViewRow] objects.
 
       If this factory is not set - which is the default - then the defaults will
       be used.
@@ -68,10 +71,10 @@ module rec Column_view : sig
 
   external set_header_factory : t -> List_item_factory.t option -> unit
     = "ml_gtk_column_view_set_header_factory"
-  (** Sets the `GtkListItemFactory` to use for populating the
-      [class@Gtk.ListHeader] objects used in section headers.
+  (** Sets the factory to use for populating the [class@Gtk.ListHeader] objects
+      used in section headers.
 
-      If this factory is set to %NULL, the list will not show section headers.
+      If this factory is set to `NULL`, the list will not show section headers.
   *)
 
   external set_enable_rubberband : t -> bool -> unit
@@ -88,7 +91,7 @@ module rec Column_view : sig
   (** Scroll to the row at the given position - or cell if a column is
   given - and performs the actions specified in @flags.
 
-  This function works no matter if the listview is shown or focused.
+  This function works no matter if the columnview is shown or focused.
   If it isn't, then the changes will take effect once that happens. *)
 
   external remove_column : t -> Column_view_column.t -> unit
@@ -160,7 +163,7 @@ module rec Column_view : sig
 
   This list is constant over the lifetime of @self and can be used to
   monitor changes to the columns of @self by connecting to the
-  ::items-changed signal. *)
+  [signal@Gio.ListModel::items-changed] signal. *)
 
   external append_column : t -> Column_view_column.t -> unit
     = "ml_gtk_column_view_append_column"
@@ -199,7 +202,7 @@ and Column_view_column : sig
     = "ml_gtk_column_view_column_set_sorter"
   (** Associates a sorter with the column.
 
-  If @sorter is %NULL, the column will not let users change
+  If @sorter is unset, the column will not let users change
   the sorting by clicking on its header.
 
   This sorter can be made active by clicking on the column
@@ -229,8 +232,9 @@ and Column_view_column : sig
 
   external set_fixed_width : t -> int -> unit
     = "ml_gtk_column_view_column_set_fixed_width"
-  (** If @fixed_width is not -1, sets the fixed width of @column;
-  otherwise unsets it.
+  (** Sets the fixed width of the column.
+
+  If @fixed_width is -1, the fixed width of the column is unset.
 
   Setting a fixed width overrides the automatically calculated
   width. Interactive resizing also sets the “fixed-width” property. *)
@@ -244,15 +248,15 @@ and Column_view_column : sig
     = "ml_gtk_column_view_column_set_expand"
   (** Sets the column to take available extra space.
 
-      The extra space is shared equally amongst all columns that have the expand
-      set to %TRUE. *)
+      The extra space is shared equally amongst all columns that have are set to
+      expand. *)
 
   external get_visible : t -> bool = "ml_gtk_column_view_column_get_visible"
   (** Returns whether this column is visible. *)
 
   external get_title : t -> string option
     = "ml_gtk_column_view_column_get_title"
-  (** Returns the title set with gtk_column_view_column_set_title(). *)
+  (** Returns the title set with [method@Gtk.ColumnViewColumn.set_title]. *)
 
   external get_sorter : t -> Sorter.t option
     = "ml_gtk_column_view_column_get_sorter"
@@ -262,7 +266,7 @@ and Column_view_column : sig
   (** Returns whether this column is resizable. *)
 
   external get_id : t -> string option = "ml_gtk_column_view_column_get_id"
-  (** Returns the ID set with gtk_column_view_column_set_id(). *)
+  (** Returns the ID set with [method@Gtk.ColumnViewColumn.set_id]. *)
 
   external get_header_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
     = "ml_gtk_column_view_column_get_header_menu"
@@ -285,7 +289,7 @@ and Column_view_column : sig
     = "ml_gtk_column_view_column_get_column_view"
   (** Gets the column view that's currently displaying this column.
 
-  If @self has not been added to a column view yet, %NULL is returned. *)
+  If @self has not been added to a column view yet, `NULL` is returned. *)
 
   (* Properties *)
 end

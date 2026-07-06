@@ -56,7 +56,7 @@ CAMLexport CAMLprim value ml_graphene_sphere_is_empty(value self)
 {
 CAMLparam1(self);
 
-_Bool result = graphene_sphere_is_empty(graphene_sphere_t_val(self));
+bool result = graphene_sphere_is_empty(graphene_sphere_t_val(self));
 CAMLreturn(Val_bool(result));
 }
 
@@ -129,7 +129,7 @@ CAMLexport CAMLprim value ml_graphene_sphere_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_sphere_equal(graphene_sphere_t_val(self), graphene_sphere_t_val(arg1));
+bool result = graphene_sphere_equal(graphene_sphere_t_val(self), graphene_sphere_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -145,7 +145,7 @@ CAMLexport CAMLprim value ml_graphene_sphere_contains_point(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_sphere_contains_point(graphene_sphere_t_val(self), graphene_point3d_t_val(arg1));
+bool result = graphene_sphere_contains_point(graphene_sphere_t_val(self), graphene_point3d_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

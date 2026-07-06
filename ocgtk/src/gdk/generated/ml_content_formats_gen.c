@@ -139,6 +139,27 @@ gboolean result = gdk_content_formats_match(GdkContentFormats_val(self), GdkCont
 CAMLreturn(Val_bool(result));
 }
 
+#if GTK_CHECK_VERSION(4,18,0)
+
+CAMLexport CAMLprim value ml_gdk_content_formats_is_empty(value self)
+{
+CAMLparam1(self);
+
+gboolean result = gdk_content_formats_is_empty(GdkContentFormats_val(self));
+CAMLreturn(Val_bool(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_gdk_content_formats_is_empty(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("ContentFormats requires GTK >= 4.18");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_gdk_content_formats_get_mime_types(value self)
 {
 CAMLparam1(self);

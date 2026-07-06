@@ -44,8 +44,5 @@ external get_item_type : t -> Gobject.Type.t
   = "ml_gtk_bookmark_list_get_item_type"
 (** Get property: item-type *)
 
-external get_loading : t -> bool = "ml_gtk_bookmark_list_get_loading"
-(** Get property: loading *)
-
 external get_n_items : t -> int = "ml_gtk_bookmark_list_get_n_items"
 (** Get property: n-items *)

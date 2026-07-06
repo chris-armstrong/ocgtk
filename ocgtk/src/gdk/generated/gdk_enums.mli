@@ -34,6 +34,17 @@ type axisuse = [
 val axisuse_of_int : int -> axisuse
 val axisuse_to_int : axisuse -> int
 
+(* CicpRange - enumeration *)
+type cicprange = [
+  (** The values use the range of 16-235 (for Y) and 16-240 for u and v. *)
+  | `NARROW
+  (** The values use the full range. *)
+  | `FULL
+]
+
+val cicprange_of_int : int -> cicprange
+val cicprange_to_int : cicprange -> int
+
 (* CrossingMode - enumeration *)
 type crossingmode = [
   (** crossing because of pointer motion. *)
@@ -196,6 +207,8 @@ type eventtype = [
   (** A touchpad hold gesture event, the current state is determined by its phase
 field. *)
   | `TOUCHPAD_HOLD
+  (** A tablet pad axis event from a "dial". *)
+  | `PAD_DIAL
   (** marks the end of the GdkEventType enumeration. *)
   | `EVENT_LAST
 ]
@@ -375,6 +388,454 @@ the alpha value. *)
   | `R8G8B8X8
   (** 4 bytes; for unused, blue, green, red. *)
   | `X8B8G8R8
+  (** Multiplane format with 2 planes.
+
+The first plane contains the first channel, usually containing
+luma values.
+The second plane with interleaved chroma values, Cb followed by Cr.
+Subsampled in both the X and Y direction.
+
+Commonly known by the fourcc "NV12". *)
+  | `G8_B8R8_420
+  (** Multiplane format with 2 planes.
+
+The first plane contains the first channel, usually containing
+luma values.
+The second plane with interleaved chroma values, Cr followed by Cb.
+Subsampled in both the X and Y direction.
+
+Commonly known by the fourcc "NV21". *)
+  | `G8_R8B8_420
+  (** Multiplane format with 2 planes.
+
+The first plane contains the first channel, usually containing
+luma values.
+The second plane with interleaved chroma values, Cb followed by Cr.
+Subsampled in the X direction.
+
+Commonly known by the fourcc "NV16". *)
+  | `G8_B8R8_422
+  (** Multiplane format with 2 planes.
+
+The first plane contains the first channel, usually containing
+luma values.
+The second plane with interleaved chroma values, Cr followed by Cb.
+Subsampled in the X direction.
+
+Commonly known by the fourcc "NV61". *)
+  | `G8_R8B8_422
+  (** Multiplane format with 2 planes.
+
+The first plane contains the first channel, usually containing
+luma values.
+The second plane with interleaved chroma values, Cb followed by Cr.
+This format is not subsampled.
+
+Commonly known by the fourcc "NV24". *)
+  | `G8_B8R8_444
+  (** Multiplane format with 2 planes.
+
+The first plane contains the first channel, usually containing
+luma values.
+The second plane with interleaved chroma values, Cr followed by Cb.
+This format is not subsampled.
+
+Commonly known by the fourcc "NV42". *)
+  | `G8_R8B8_444
+  (** Multiplane format with 2 planes.
+
+Each channel is a 16 bit integer, but only the highest 10 bits are used.
+
+The first plane contains the first channel, usually containing
+luma values.
+The second plane with interleaved chroma values, Cr followed by Cb.
+This format is not subsampled.
+
+Commonly known by the fourcc "P010". *)
+  | `G10X6_B10X6R10X6_420
+  (** Multiplane format with 2 planes.
+
+Each channel is a 16 bit integer, but only the highest 10 bits are used.
+
+The first plane contains the first channel, usually containing
+luma values.
+The second plane with interleaved chroma values, Cr followed by Cb.
+This format is not subsampled.
+
+Commonly known by the fourcc "P012". *)
+  | `G12X4_B12X4R12X4_420
+  (** Multiplane format with 2 planes.
+
+Each channel is a 16 bit integer.
+
+The first plane contains the first channel, usually containing
+luma values.
+The second plane with interleaved chroma values, Cr followed by Cb.
+This format is not subsampled.
+
+Commonly known by the fourcc "P016". *)
+  | `G16_B16R16_420
+  (** Multiplane format with 3 planes.
+
+Each channel is a 8 bit integer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the first chroma chanel.
+Subsampled in both the X and Y direction with 4:1 ratio. It is
+mapped into the 3rd channel.
+
+The third plane usually contains the second chroma channel.
+Subsampled in both the X and Y direction with 4:1 ratio. It is
+mapped into the 1st channel.
+
+Commonly known by the fourcc "YUV410". *)
+  | `G8_B8_R8_410
+  (** Multiplane format with 3 planes.
+
+Each channel is a 8 bit integer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the second chroma chanel.
+Subsampled in both the X and Y direction with 4:1 ratio. It is
+mapped into the 1st channel.
+
+The third plane usually contains the first chroma channel.
+Subsampled in both the X and Y direction with 4:1 ratio. It is
+mapped into the 3rd channel.
+
+Commonly known by the fourcc "YVU410". *)
+  | `G8_R8_B8_410
+  (** Multiplane format with 3 planes.
+
+Each channel is a 8 bit integer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the first chroma chanel.
+Subsampled in the X direction with 4:1 ratio. It is
+mapped into the 3rd channel.
+
+The third plane usually contains the second chroma channel.
+Subsampled in the X direction with 4:1 ratio. It is
+mapped into the 1st channel.
+
+Commonly known by the fourcc "YUV411". *)
+  | `G8_B8_R8_411
+  (** Multiplane format with 3 planes.
+
+Each channel is a 8 bit integer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the second chroma chanel.
+Subsampled in the X direction with 4:1 ratio. It is
+mapped into the 1st channel.
+
+The third plane usually contains the first chroma channel.
+Subsampled in the X direction with 4:1 ratio. It is
+mapped into the 3rd channel.
+
+Commonly known by the fourcc "YVU411". *)
+  | `G8_R8_B8_411
+  (** Multiplane format with 3 planes.
+
+Each channel is a 8 bit integer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the first chroma chanel.
+Subsampled in both the X and Y direction. It is mapped into the
+3rd channel.
+
+The third plane usually contains the second chroma channel.
+Subsampled in both the X and Y direction. It is mapped into the
+1st channel.
+
+Commonly known by the fourcc "YUV420". *)
+  | `G8_B8_R8_420
+  (** Multiplane format with 3 planes.
+
+Each channel is a 8 bit integer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the second chroma chanel.
+Subsampled in both the X and Y direction. It is mapped into the
+1st channel.
+
+The third plane usually contains the first chroma channel.
+Subsampled in both the X and Y direction. It is mapped into the
+3rd channel.
+
+Commonly known by the fourcc "YVU420". *)
+  | `G8_R8_B8_420
+  (** Multiplane format with 3 planes.
+
+Each channel is a 8 bit integer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the first chroma chanel.
+Subsampled in the X direction. It is mapped into the 3rd channel.
+
+The third plane usually contains the second chroma channel.
+Subsampled in the X direction. It is mapped into the 1st channel.
+
+Commonly known by the fourcc "YUV422". *)
+  | `G8_B8_R8_422
+  (** Multiplane format with 3 planes.
+
+Each channel is a 8 bit integer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the second chroma chanel.
+Subsampled in the X direction. It is mapped into the 1st channel.
+
+The third plane usually contains the first chroma channel.
+Subsampled in the X direction. It is mapped into the 3rd channel.
+
+Commonly known by the fourcc "YVU422". *)
+  | `G8_R8_B8_422
+  (** Multiplane format with 3 planes.
+
+Each channel is a 8 bit integer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the first chroma chanel. It is
+mapped into the 3rd channel.
+
+The third plane usually contains the second chroma channel. It is
+mapped into the 1st channel.
+
+Commonly known by the fourcc "YUV444". *)
+  | `G8_B8_R8_444
+  (** Multiplane format with 3 planes.
+
+Each channel is a 8 bit integer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the second chroma chanel.
+Subsampled in the X direction. It is mapped into the 1st channel.
+
+The third plane usually contains the first chroma channel.
+Subsampled in the X direction. It is mapped into the 3rd channel.
+
+Commonly known by the fourcc "YVU444". *)
+  | `G8_R8_B8_444
+  (** Packed format with subsampled channels.
+
+Each channel is a 8 bit integer. The red and blue/chroma channels
+are subsampled and interleaved with the green/luma channel.
+
+Each block contains 2 pixels, so the width must be a multiple of
+2.
+
+Commonly known by the fourcc "YUYV". *)
+  | `G8B8G8R8_422
+  (** Packed format with subsampled channels.
+
+Each channel is a 8 bit integer. The red and blue/chroma channels
+are subsampled and interleaved with the green/luma channel.
+
+Each block contains 2 pixels, so the width must be a multiple of
+2.
+
+Commonly known by the fourcc "YVYU". *)
+  | `G8R8G8B8_422
+  (** Packed format with subsampled channels.
+
+Each channel is a 8 bit integer. The red and blue/chroma channels
+are subsampled and interleaved with the green/luma channel.
+
+Each block contains 2 pixels, so the width must be a multiple of
+2.
+
+Commonly known by the fourcc "VYUY". *)
+  | `R8G8B8G8_422
+  (** Packed format with subsampled channels.
+
+Each channel is a 8 bit integer. The red and blue/chroma channels
+are subsampled and interleaved with the green/luma channel.
+
+Each block contains 2 pixels, so the width must be a multiple of
+2.
+
+Commonly known by the fourcc "UYVY". *)
+  | `B8G8R8G8_422
+  (** Multiplane format with 3 planes.
+
+Each channel is a 16 bit integer.
+
+Only the 10 lower bits are used. The remaining ones must be set to 0 by the
+producer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the first chroma chanel.
+Subsampled in both the X and Y direction. It is mapped into the
+3rd channel.
+
+The third plane usually contains the second chroma channel.
+Subsampled in both the X and Y direction. It is mapped into the
+1st channel.
+
+Commonly known by the fourcc "S010". *)
+  | `X6G10_X6B10_X6R10_420
+  (** Multiplane format with 3 planes.
+
+Each channel is a 16 bit integer.
+
+Only the 10 lower bits are used. The remaining ones must be set to 0 by the
+producer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the first chroma chanel.
+Subsampled in the X direction. It is mapped into the 3rd channel.
+
+The third plane usually contains the second chroma channel.
+Subsampled in the X direction. It is mapped into the 1st channel.
+
+Commonly known by the fourcc "S210". *)
+  | `X6G10_X6B10_X6R10_422
+  (** Multiplane format with 3 planes.
+
+Each channel is a 16 bit integer.
+
+Only the 10 lower bits are used. The remaining ones must be set to 0 by the
+producer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the first chroma chanel. It is
+mapped into the 3rd channel.
+
+The third plane usually contains the second chroma channel. It is
+mapped into the 1st channel.
+
+Commonly known by the fourcc "S410". *)
+  | `X6G10_X6B10_X6R10_444
+  (** Multiplane format with 3 planes.
+
+Each channel is a 16 bit integer.
+
+Only the 12 lower bits are used. The remaining ones must be set to 0 by the
+producer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the first chroma chanel.
+Subsampled in both the X and Y direction. It is mapped into the
+3rd channel.
+
+The third plane usually contains the second chroma channel.
+Subsampled in both the X and Y direction. It is mapped into the
+1st channel.
+
+Commonly known by the fourcc "S012". *)
+  | `X4G12_X4B12_X4R12_420
+  (** Multiplane format with 3 planes.
+
+Each channel is a 16 bit integer.
+
+Only the 12 lower bits are used. The remaining ones must be set to 0 by the
+producer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the first chroma chanel.
+Subsampled in the X direction. It is mapped into the 3rd channel.
+
+The third plane usually contains the second chroma channel.
+Subsampled in the X direction. It is mapped into the 1st channel.
+
+Commonly known by the fourcc "S212". *)
+  | `X4G12_X4B12_X4R12_422
+  (** Multiplane format with 3 planes.
+
+Each channel is a 16 bit integer.
+
+Only the 12 lower bits are used. The remaining ones must be set to 0 by the
+producer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the first chroma chanel. It is
+mapped into the 3rd channel.
+
+The third plane usually contains the second chroma channel. It is
+mapped into the 1st channel.
+
+Commonly known by the fourcc "S412". *)
+  | `X4G12_X4B12_X4R12_444
+  (** Multiplane format with 3 planes.
+
+Each channel is a 16 bit integer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the first chroma chanel.
+Subsampled in both the X and Y direction. It is mapped into the
+3rd channel.
+
+The third plane usually contains the second chroma channel.
+Subsampled in both the X and Y direction. It is mapped into the
+1st channel.
+
+Commonly known by the fourcc "S016". *)
+  | `G16_B16_R16_420
+  (** Multiplane format with 3 planes.
+
+Each channel is a 16 bit integer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the first chroma chanel.
+Subsampled in the X direction. It is mapped into the 3rd channel.
+
+The third plane usually contains the second chroma channel.
+Subsampled in the X direction. It is mapped into the 1st channel.
+
+Commonly known by the fourcc "S216". *)
+  | `G16_B16_R16_422
+  (** Multiplane format with 3 planes.
+
+Each channel is a 16 bit integer.
+
+The first plane usually contains the luma channel. It is mapped
+into the 2nd channel.
+
+The second plane usually contains the first chroma chanel. It is
+mapped into the 3rd channel.
+
+The third plane usually contains the second chroma channel. It is
+mapped into the 1st channel.
+
+Commonly known by the fourcc "S416". *)
+  | `G16_B16_R16_444
   (** The number of formats. This value will change as
   more formats get added, so do not rely on its concrete integer. *)
   | `N_FORMATS
@@ -426,6 +887,19 @@ type scrolldirection = [
 
 val scrolldirection_of_int : int -> scrolldirection
 val scrolldirection_to_int : scrolldirection -> int
+
+(* ScrollRelativeDirection - enumeration *)
+type scrollrelativedirection = [
+  (** Physical motion and event motion are the same *)
+  | `IDENTICAL
+  (** Physical motion is inverted relative to event motion *)
+  | `INVERTED
+  (** Relative motion is unknown on this device or backend *)
+  | `UNKNOWN
+]
+
+val scrollrelativedirection_of_int : int -> scrollrelativedirection
+val scrollrelativedirection_to_int : scrollrelativedirection -> int
 
 (* ScrollUnit - enumeration *)
 type scrollunit = [
@@ -499,8 +973,11 @@ val textureerror_to_int : textureerror -> int
 
 (* TitlebarGesture - enumeration *)
 type titlebargesture = [
+  (** double click gesture *)
   | `DOUBLE_CLICK
+  (** right click gesture *)
   | `RIGHT_CLICK
+  (** middle click gesture *)
   | `MIDDLE_CLICK
 ]
 
@@ -596,6 +1073,8 @@ val axisflags_to_int : axisflags -> int
 
 (* DragAction - bitfield/flags *)
 type dragaction_flag = [
+  (** No action. *)
+  | `NONE
   (** Copy the data. *)
   | `COPY
   (** Move the data, i.e. first copy it, then delete
@@ -658,14 +1137,14 @@ type modifiertype_flag = [
   | `NO_MODIFIER_MASK
   (** the Shift key. *)
   | `SHIFT_MASK
-  (** a Lock key (depending on the modifier mapping of the
- X server this may either be CapsLock or ShiftLock). *)
+  (** a Lock key (depending on the Windowing System configuration,
+   this may either be <kbd>CapsLock</kbd> or <kbd>ShiftLock</kbd>). *)
   | `LOCK_MASK
   (** the Control key. *)
   | `CONTROL_MASK
-  (** the fourth modifier key (it depends on the modifier
- mapping of the X server which key is interpreted as this modifier, but
- normally it is the Alt key). *)
+  (** the fourth modifier key (it depends on the Windowing System
+   configuration which key is interpreted as this modifier, but normally it
+   is the <kbd>Alt</kbd> key). *)
   | `ALT_MASK
   (** the first mouse button. *)
   | `BUTTON1_MASK
@@ -677,11 +1156,11 @@ type modifiertype_flag = [
   | `BUTTON4_MASK
   (** the fifth mouse button. *)
   | `BUTTON5_MASK
-  (** the Super modifier *)
+  (** the Super modifier. *)
   | `SUPER_MASK
-  (** the Hyper modifier *)
+  (** the Hyper modifier. *)
   | `HYPER_MASK
-  (** the Meta modifier *)
+  (** the Meta modifier. Maps to Command on macOS. *)
   | `META_MASK
 ]
 
@@ -732,6 +1211,36 @@ type seatcapabilities = seatcapabilities_flag list
 val seatcapabilities_of_int : int -> seatcapabilities
 val seatcapabilities_to_int : seatcapabilities -> int
 
+(* ToplevelCapabilities - bitfield/flags *)
+type toplevelcapabilities_flag = [
+  (** Whether tiled window states are supported. *)
+  | `EDGE_CONSTRAINTS
+  (** Whether inhibiting system shortcuts is supported.
+See [method@Gdk.Toplevel.inhibit_system_shortcuts]. *)
+  | `INHIBIT_SHORTCUTS
+  (** Whether titlebar gestures are supported.
+See [method@Gdk.Toplevel.titlebar_gesture]. *)
+  | `TITLEBAR_GESTURES
+  (** Whether showing the window menu is supported.
+See [method@Gdk.Toplevel.show_window_menu]. *)
+  | `WINDOW_MENU
+  (** Whether the toplevel can be maximized. *)
+  | `MAXIMIZE
+  (** Whether the toplevel can be made fullscreen. *)
+  | `FULLSCREEN
+  (** Whether the toplevel can be minimized.
+See [method@Gdk.Toplevel.minimize]. *)
+  | `MINIMIZE
+  (** Whether the toplevel can be lowered.
+See [method@Gdk.Toplevel.lower]. *)
+  | `LOWER
+]
+
+type toplevelcapabilities = toplevelcapabilities_flag list
+
+val toplevelcapabilities_of_int : int -> toplevelcapabilities
+val toplevelcapabilities_to_int : toplevelcapabilities -> int
+
 (* ToplevelState - bitfield/flags *)
 type toplevelstate_flag = [
   (** the surface is minimized *)
@@ -766,7 +1275,7 @@ type toplevelstate_flag = [
   | `LEFT_TILED
   (** whether the left edge is resizable *)
   | `LEFT_RESIZABLE
-  (** the surface is not visible to the user *)
+  (** The surface is not visible to the user. *)
   | `SUSPENDED
 ]
 

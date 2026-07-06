@@ -49,7 +49,7 @@ CAMLexport CAMLprim value ml_graphene_ray_intersects_triangle(value self, value 
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_ray_intersects_triangle(graphene_ray_t_val(self), graphene_triangle_t_val(arg1));
+bool result = graphene_ray_intersects_triangle(graphene_ray_t_val(self), graphene_triangle_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -71,7 +71,7 @@ CAMLexport CAMLprim value ml_graphene_ray_intersects_sphere(value self, value ar
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_ray_intersects_sphere(graphene_ray_t_val(self), graphene_sphere_t_val(arg1));
+bool result = graphene_ray_intersects_sphere(graphene_ray_t_val(self), graphene_sphere_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -93,7 +93,7 @@ CAMLexport CAMLprim value ml_graphene_ray_intersects_box(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_ray_intersects_box(graphene_ray_t_val(self), graphene_box_t_val(arg1));
+bool result = graphene_ray_intersects_box(graphene_ray_t_val(self), graphene_box_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 
@@ -273,7 +273,7 @@ CAMLexport CAMLprim value ml_graphene_ray_equal(value self, value arg1)
 {
 CAMLparam2(self, arg1);
 
-_Bool result = graphene_ray_equal(graphene_ray_t_val(self), graphene_ray_t_val(arg1));
+bool result = graphene_ray_equal(graphene_ray_t_val(self), graphene_ray_t_val(arg1));
 CAMLreturn(Val_bool(result));
 }
 

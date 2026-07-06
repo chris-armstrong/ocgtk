@@ -10,15 +10,15 @@ external match_ : t -> [ `object_ ] Gobject.obj -> bool = "ml_gtk_filter_match"
 
 external get_strictness : t -> Gtk_enums.filtermatch
   = "ml_gtk_filter_get_strictness"
-(** Gets the known strictness of @filters.
+(** Gets the known strictness of a filter.
 
-If the strictness is not known, %GTK_FILTER_MATCH_SOME is returned.
+    If the strictness is not known, [enum@Gtk.FilterMatch.some] is returned.
 
-This value may change after emission of the [signal@Gtk.Filter::changed]
-signal.
+    This value may change after emission of the [signal@Gtk.Filter::changed]
+    signal.
 
-This function is meant purely for optimization purposes, filters can
-choose to omit implementing it, but `GtkFilterListModel` uses it. *)
+    This function is meant purely for optimization purposes. Filters can choose
+    to omit implementing it, but `GtkFilterListModel` uses it. *)
 
 external changed : t -> Gtk_enums.filterchange -> unit = "ml_gtk_filter_changed"
 (** Notifies all users of the filter that it has changed.

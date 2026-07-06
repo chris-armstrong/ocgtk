@@ -169,6 +169,50 @@ return Val_unit;
 }
 #endif
 
+#if PANGO_VERSION_CHECK(1,56,0)
+
+CAMLexport CAMLprim value ml_pango_font_description_set_features_static(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+pango_font_description_set_features_static(PangoFontDescription_val(self), String_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_pango_font_description_set_features_static(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FontDescription requires Pango >= 1.56");
+return Val_unit;
+}
+#endif
+
+#if PANGO_VERSION_CHECK(1,56,0)
+
+CAMLexport CAMLprim value ml_pango_font_description_set_features(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+pango_font_description_set_features(PangoFontDescription_val(self), String_option_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_pango_font_description_set_features(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FontDescription requires Pango >= 1.56");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_pango_font_description_set_family_static(value self, value arg1)
 {
 CAMLparam2(self, arg1);
@@ -184,6 +228,28 @@ CAMLparam2(self, arg1);
 pango_font_description_set_family(PangoFontDescription_val(self), String_val(arg1));
 CAMLreturn(Val_unit);
 }
+
+#if PANGO_VERSION_CHECK(1,57,0)
+
+CAMLexport CAMLprim value ml_pango_font_description_set_color(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+
+pango_font_description_set_color(PangoFontDescription_val(self), PangoFontColor_val(arg1));
+CAMLreturn(Val_unit);
+}
+
+#else
+
+CAMLexport CAMLprim value ml_pango_font_description_set_color(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+(void)self;
+(void)arg1;
+caml_failwith("FontDescription requires Pango >= 1.57");
+return Val_unit;
+}
+#endif
 
 #if PANGO_VERSION_CHECK(1,8,0)
 
@@ -342,6 +408,27 @@ return Val_unit;
 }
 #endif
 
+#if PANGO_VERSION_CHECK(1,56,0)
+
+CAMLexport CAMLprim value ml_pango_font_description_get_features(value self)
+{
+CAMLparam1(self);
+
+const char* result = pango_font_description_get_features(PangoFontDescription_val(self));
+CAMLreturn(Val_option_string(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_pango_font_description_get_features(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontDescription requires Pango >= 1.56");
+return Val_unit;
+}
+#endif
+
 CAMLexport CAMLprim value ml_pango_font_description_get_family(value self)
 {
 CAMLparam1(self);
@@ -349,6 +436,27 @@ CAMLparam1(self);
 const char* result = pango_font_description_get_family(PangoFontDescription_val(self));
 CAMLreturn(Val_option_string(result));
 }
+
+#if PANGO_VERSION_CHECK(1,57,0)
+
+CAMLexport CAMLprim value ml_pango_font_description_get_color(value self)
+{
+CAMLparam1(self);
+
+PangoFontColor result = pango_font_description_get_color(PangoFontDescription_val(self));
+CAMLreturn(Val_PangoFontColor(result));
+}
+
+#else
+
+CAMLexport CAMLprim value ml_pango_font_description_get_color(value self)
+{
+CAMLparam1(self);
+(void)self;
+caml_failwith("FontDescription requires Pango >= 1.57");
+return Val_unit;
+}
+#endif
 
 CAMLexport CAMLprim value ml_pango_font_description_equal(value self, value arg1)
 {

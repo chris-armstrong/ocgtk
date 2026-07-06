@@ -26,15 +26,15 @@ external read_byte : t -> Cancellable.t option -> (int, GError.t) result
 during this read.
 
 On success, the byte read from the stream is returned. On end of stream
--1 is returned but it's not an exceptional error and @error is not set.
+`-1` is returned but it's not an exceptional error and @error is not set.
 
-If @cancellable is not %NULL, then the operation can be cancelled by
+If @cancellable is not `NULL`, then the operation can be cancelled by
 triggering the cancellable object from another thread. If the operation
-was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. If an
-operation was partially finished when the operation was cancelled the
+was cancelled, the error [error@Gio.IOErrorEnum.CANCELLED] will be returned.
+If an operation was partially finished when the operation was cancelled the
 partial result will be returned, without an error.
 
-On error -1 is returned and @error is set accordingly. *)
+On error `-1` is returned and @error is set accordingly. *)
 
 external get_buffer_size : t -> Gsize.t
   = "ml_g_buffered_input_stream_get_buffer_size"
@@ -54,7 +54,8 @@ external fill : t -> int -> Cancellable.t option -> (int, GError.t) result
 Will block during this read.
 
 If @count is zero, returns zero and does nothing. A value of @count
-larger than %G_MAXSSIZE will cause a %G_IO_ERROR_INVALID_ARGUMENT error.
+larger than `G_MAXSSIZE` will cause a
+[error@Gio.IOErrorEnum.INVALID_ARGUMENT] error.
 
 On success, the number of bytes read into the buffer is returned.
 It is not an error if this is not the same as the requested size, as it
@@ -64,15 +65,15 @@ can happen e.g. near the end of a file. Zero is returned on end of file
 If @count is -1 then the attempted read size is equal to the number of
 bytes that are required to fill the buffer.
 
-If @cancellable is not %NULL, then the operation can be cancelled by
+If @cancellable is not `NULL`, then the operation can be cancelled by
 triggering the cancellable object from another thread. If the operation
-was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. If an
-operation was partially finished when the operation was cancelled the
+was cancelled, the error [error@Gio.IOErrorEnum.CANCELLED] will be returned.
+If an operation was partially finished when the operation was cancelled the
 partial result will be returned, without an error.
 
-On error -1 is returned and @error is set accordingly.
+On error `-1` is returned and @error is set accordingly.
 
 For the asynchronous, non-blocking, version of this function, see
-g_buffered_input_stream_fill_async(). *)
+[method@Gio.BufferedInputStream.fill_async]. *)
 
 (* Properties *)
