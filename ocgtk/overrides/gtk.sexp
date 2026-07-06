@@ -1,6 +1,17 @@
 (overrides
   (library "Gtk")
 
+  ;; GIR doesn't tag these two members with a `version` attribute even though
+  ;; they postdate the enum's baseline (confirmed via GTK gitlab source
+  ;; history: builder_trace landed in gtkdebug.h in the 4.18.0 cycle, dial
+  ;; landed in gtkpadcontroller.h in the 4.20.0 cycle).
+  (bitfield DebugFlags
+     (member builder_trace (version "4.18"))
+     )
+  (enumeration PadActionType
+     (member dial (version "4.20"))
+     )
+
   ;; Migrated from exclude_list.ml should_skip_class skip_list
   (class PrintJob (ignore))
   (class PrintUnixDialog (ignore))
