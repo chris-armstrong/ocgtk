@@ -1030,7 +1030,8 @@ let generate_bindings filter_file gir_file output_dir reference_files
         interfaces,
         gtk_enums,
         gtk_bitfields,
-        gtk_records ) =
+        gtk_records,
+        gtk_constants ) =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file filter_classes
   in
 
@@ -1039,6 +1040,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
   printf "Found %d Gtk enumerations\n" (List.length gtk_enums);
   printf "Found %d Gtk bitfields\n" (List.length gtk_bitfields);
   printf "Found %d records\n" (List.length gtk_records);
+  printf "Found %d constants\n" (List.length gtk_constants);
 
   (* ==== OVERRIDE APPLICATION STAGE ==== *)
 
@@ -1202,6 +1204,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
       enums = all_enums;
       bitfields = all_bitfields;
       records = all_records;
+      constants = gtk_constants;
       module_groups = Hashtbl.create 0;
       (* Temporary empty map *)
       current_cycle_classes = [];
@@ -1452,7 +1455,7 @@ let generate_references gir_file output_file overrides_file =
 
   let filter_classes = [] in
 
-  let repository, namespace, classes, interfaces, enums, bitfields, records =
+  let repository, namespace, classes, interfaces, enums, bitfields, records, constants =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file filter_classes
   in
 
@@ -1524,6 +1527,14 @@ let generate_references gir_file output_file overrides_file =
             cr_type = Crt_Record { opaque = rec_.opaque; get_type_func = rec_.glib_get_type };
             cr_c_type = rec_.c_type;
           }))
+    @ List.map
+        ~f:(fun cst ->
+          {
+            cr_name = cst.constant_name;
+            cr_type = Crt_Constant;
+            cr_c_type = cst.constant_c_type;
+          })
+        constants
   in
   let crns =
     Gir_gen_lib.Types.
@@ -1655,7 +1666,7 @@ let member_versions_from_docs members get_name get_doc =
 let generate_overrides gir_file output_file =
   printf "Parsing %s for Since version annotations...\n" gir_file;
 
-  let _repository, namespace, _classes, _interfaces, enums, bitfields, records =
+  let _repository, namespace, _classes, _interfaces, enums, bitfields, records, _constants =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file []
   in
   let lib_name = namespace.namespace_name in

@@ -164,6 +164,17 @@ type gir_bitfield_member = {
   flag_os : Os_filter.t option;
 }
 
+type gir_constant = {
+  constant_name : string;
+  constant_c_type : string;
+  value : string;
+  value_type : gir_type;
+  constant_doc : string option;
+  version : string option;
+  os : Os_filter.t option;
+  introspectable : bool;
+}
+
 type gir_bitfield = {
   bitfield_name : string;
   bitfield_c_type : string;
@@ -427,6 +438,7 @@ type cross_reference_type =
   | Crt_Record of { opaque : bool; get_type_func : string option [@sexp.option] }
   | Crt_Enum
   | Crt_Bitfield
+  | Crt_Constant
 [@@deriving sexp]
 
 type cross_reference_entity = {
@@ -463,6 +475,7 @@ type generation_context = {
   enums : gir_enum list;
   bitfields : gir_bitfield list;
   records : gir_record list;
+  constants : gir_constant list;
   module_groups : (string, string) Hashtbl.t;
       (* class_name -> combined_module_name *)
   current_cycle_classes : string list;

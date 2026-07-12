@@ -66,6 +66,7 @@ let create_context_with_external_enum () =
     enums = [ local_enum ];
     bitfields = [];
     records = [];
+    constants = [];
     (* External enum should NOT appear in forward declarations *)
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];

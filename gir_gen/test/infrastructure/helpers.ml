@@ -386,6 +386,7 @@ let create_test_context () =
     enums = [ text_direction_enum ];
     bitfields = [];
     records = [ gdk_time_coord_record; buildable_parse_context_record ];
+    constants = [];
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references = StringMap.empty;

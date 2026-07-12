@@ -44,7 +44,7 @@ let find_iface name interfaces =
 let real_gir_file = Filename.concat (Helpers.gir_data_dir ()) "Gtk-4.0.gir"
 
 let test_editable_glib_type_name () =
-  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records =
+  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file real_gir_file []
   in
   let editable =
@@ -56,7 +56,7 @@ let test_editable_glib_type_name () =
     "glib_type_name" (Some "GtkEditable") editable.glib_type_name
 
 let test_editable_glib_get_type () =
-  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records =
+  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file real_gir_file []
   in
   let editable =
@@ -68,7 +68,7 @@ let test_editable_glib_get_type () =
     "glib_get_type" (Some "gtk_editable_get_type") editable.glib_get_type
 
 let test_editable_prerequisites () =
-  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records =
+  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file real_gir_file []
   in
   let editable =
@@ -80,7 +80,7 @@ let test_editable_prerequisites () =
     "prerequisites" [ "Widget" ] editable.prerequisites
 
 let test_editable_introspectable () =
-  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records =
+  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file real_gir_file []
   in
   let editable =
@@ -91,7 +91,7 @@ let test_editable_introspectable () =
   Alcotest.(check bool) "introspectable" true editable.introspectable
 
 let test_editable_methods_nonempty () =
-  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records =
+  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file real_gir_file []
   in
   let editable =
@@ -104,7 +104,7 @@ let test_editable_methods_nonempty () =
     (List.length editable.methods > 0)
 
 let test_editable_properties_nonempty () =
-  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records =
+  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file real_gir_file []
   in
   let editable =
@@ -131,7 +131,7 @@ let non_introspectable_iface_xml =
     </interface>|}
 
 let test_introspectable_false () =
-  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records =
+  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records, _ =
     parse_gir_string non_introspectable_iface_xml
   in
   let iface =
@@ -155,7 +155,7 @@ let no_prereqs_iface_xml =
     </interface>|}
 
 let test_no_prerequisites () =
-  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records =
+  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records, _ =
     parse_gir_string no_prereqs_iface_xml
   in
   let iface =
@@ -180,7 +180,7 @@ let multi_prereqs_iface_xml =
     </interface>|}
 
 let test_multiple_prerequisites () =
-  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records =
+  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records, _ =
     parse_gir_string multi_prereqs_iface_xml
   in
   let iface =
@@ -203,7 +203,7 @@ let minimal_iface_xml =
     </interface>|}
 
 let test_missing_glib_attrs_are_none () =
-  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records =
+  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records, _ =
     parse_gir_string minimal_iface_xml
   in
   let iface =
@@ -217,7 +217,7 @@ let test_missing_glib_attrs_are_none () =
     "glib_get_type None when absent" None iface.glib_get_type
 
 let test_introspectable_defaults_true () =
-  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records =
+  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records, _ =
     parse_gir_string minimal_iface_xml
   in
   let iface =
