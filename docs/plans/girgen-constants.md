@@ -1,0 +1,124 @@
+# Plan: Constants Support in gir_gen
+
+Status: **planned** (not yet implemented)
+Branch: `feature/girgen-constants` (from latest `main`)
+
+## Goal
+
+Introduce generation of GIR `<constant>` elements into the gir_gen binding
+pipeline, with OCamldoc documentation and cross-namespace reference support.
+Constants are named literal values (e.g. `GTK_ACCESSIBLE_ATTRIBUTE_BACKGROUND`
+or `GDK_EVENT_STOP`) currently **not parsed at all** — the parser has no
+`constant` dispatch branch, so they are silently skipped.
+
+## Findings (from GIR inspection)
+
+- Counts: Gdk 2459, Gio 129, Gtk 97, Pango 13, Graphene 5, GdkPixbuf 4.
+- GIR shape:
+  ```xml
+  <constant name="ACCESSIBLE_ATTRIBUTE_BACKGROUND" value="bg-color"
+            c:type="GTK_ACCESSIBLE_ATTRIBUTE_BACKGROUND" version="4.14">
+    <doc xml:space="preserve" ...>...</doc>
+    <type name="utf8" c:type="gchar*"/>
+  </constant>
+  ```
+- The `value` attribute is always a literal (string, int, float, or `true`/`false`).
+- Observed `<type>` names: `gint` (2488), `utf8` (207), `gboolean` (4),
+  `guint` (3), `gdouble` (2), `Glyph` (3).
+- `gdouble` → graphene `PI`/`PI_2` (float literals).
+- `Glyph` is a **primitive alias** (`<alias>` to `guint32`), not a record.
+- Version info: **97** constants carry a native `version="X.Y"` XML attribute;
+  only **2** have `Since` in doc text. The native attr is read directly by the
+  parser, so the main `generate` command sees the version without any override
+  file. The `overrides` command's `Since`-extraction workflow is therefore
+  unnecessary for constants.
+
+## Design decisions
+
+| # | Decision |
+|---|----------|
+| Q1 | **Pure OCaml `let` bindings**, no C FFI stubs. The `value` literal is embedded directly. All observed types map cleanly. For any genuinely unmappable type (none observed), skip-with-warning. |
+| Q2 | Separate `<ns>_constants.ml/.mli` file, re-exported from the library module. |
+| Q3 | snake_case lower names (e.g. `accessible_attribute_background`). |
+| Q4 | Emit the constant `doc` as an OCamldoc `(** ... *)` using the existing `Utils.sanitize_doc`. No new documentation infrastructure. |
+| Q5 | Version handling is **doc-only**: emit `@since X.Y` in the OCamldoc from `gir_constant.version` (the native attr the parser reads). No filtering by version. |
+| Q6 | **Override workflow dropped.** No `constant_override`, no override parser/apply changes, no `overrides`-command extraction, no regeneration of `ocgtk/overrides/*.sexp`. Pure-OCaml constants can't use C `#if` OS guards, so OS overrides are useless, and version is already available from the native attr. |
+| Q7 | **Cross-namespace references required.** Add `Crt_Constant` (no extra data, mirroring `Crt_Enum`/`Crt_Bitfield`) to `cross_reference_type` and emit constants in the `references` command. |
+| Q8 | `Glyph`/`PangoGlyph` is a primitive alias → add to base type mappings in `type_mappings.ml` as `int` (matches `guint32`). Non-opaque-record-typed constants, if any appear later, are skipped (none observed). |
+
+Minor defaults: `Crt_Constant` carries no extra data; version rendered as the
+OCamldoc `@since X.Y` tag.
+
+## Phases
+
+### Phase 1 — AST & parsing
+
+- Add `gir_constant` to `types.ml`:
+  `constant_name`, `constant_c_type`, `value : string`, `value_type : gir_type`,
+  `constant_doc`, `version`, `os`, `introspectable`.
+- Add `constants : gir_constant list` to `generation_context`.
+- Add `parse_constant` to `parse/gir_parser.ml` (mirrors `parse_enumeration`),
+  dispatched on `local_name tag = "constant"` in `parse_document`.
+- Extend `parse_gir_file`'s return tuple from 7 → 8 (append `constants`);
+  update all 3 call sites in `bin/gir_gen.ml` (`generate`, `references`,
+  `overrides`).
+- Add `Glyph`/`PangoGlyph` → `int` to `type_mappings.ml` base mappings.
+- **Tests (folded in):** parser tests per type kind (utf8/gint/guint/gdouble/
+  gboolean/Glyph) + skip behavior; type-mapping test for `PangoGlyph` → `int`.
+
+### Phase 2 — Code generation
+
+- New `generate/constant_code.ml` (parallel to `enum_code.ml`) emitting
+  `<ns>_constants.ml/.mli`:
+  - snake_case `let` bindings;
+  - type annotation resolved via `type_mappings` (gint/guint/Glyph→`int`,
+    gdouble→`float`, utf8→`string`, gboolean→`bool`);
+  - OCamldoc `(** doc *)` from `constant_doc` via `Utils.sanitize_doc`, with
+    `@since X.Y` appended from `version`;
+  - value escaping for strings (quotes/backslashes).
+- Wire into `generate_bindings` (write the file), `library_module.ml`
+  (re-export the constants module), `dune_file.ml`/`dune-generated.inc`
+  (module list). No C stub file.
+- **Tests (folded in):** naming, value escaping, type mapping, doc + `@since`
+  emission, skip-with-warning for unmappable types.
+
+### Phase 3 — Cross-namespace references
+
+- Add `Crt_Constant` (no fields) to `cross_reference_type` in `types.ml`
+  ([@@deriving sexp]).
+- Emit constants in `generate_references` (bin) with `cr_type = Crt_Constant`
+  and `cr_c_type = constant.constant_c_type`.
+- **Tests (folded in):** references-output contains constants with
+  `Crt_Constant`; sexp round-trip via `sexp_of_cross_reference_namespace`.
+
+### Phase 4 — Docs & regeneration
+
+- Update `gir_gen/README.md` and `architecture/gir_gen/overrides.md` (constant
+  handling, references, naming).
+- Regenerate all 9 namespaces via `scripts/generate-bindings.sh`; commit new
+  `<ns>_constants.ml/.mli`.
+- **Verify:** `opam exec -- dune build @all`; `opam exec -- dune runtest gir_gen/`;
+  `xvfb-run dune test ocgtk/` all green.
+
+## Files touched (summary)
+
+| File | Change |
+|------|--------|
+| `gir_gen/lib/types.ml` | `gir_constant` type; `constants` on `generation_context`; `Crt_Constant` variant |
+| `gir_gen/lib/parse/gir_parser.ml` | `parse_constant`; `constant` dispatch; 8-tuple return |
+| `gir_gen/lib/type_mappings.ml` | `Glyph`/`PangoGlyph` → `int` base mapping |
+| `gir_gen/lib/generate/constant_code.ml` | **new** — OCaml emission |
+| `gir_gen/lib/generate/library_module.ml` | re-export constants module |
+| `gir_gen/lib/generate/dune_file.ml` | constants module in build |
+| `gir_gen/bin/gir_gen.ml` | 8-tuple call sites; references emission; generation wiring |
+| `gir_gen/test/...` | parser, mapping, generator, references tests |
+| `gir_gen/README.md`, `architecture/gir_gen/overrides.md` | docs |
+| `ocgtk/src/<ns>/generated/<ns>_constants.ml/.mli` | regenerated bindings |
+
+## Out of scope
+
+- Override `(ignore)` / `(os)` / `(version ...)` support for constants.
+- `Since`-in-doc extraction for constants via the `overrides` command.
+- General alias support (only `PangoGlyph` is added as a base mapping).
+- C FFI stubs for constants.
+- Documentation infrastructure beyond reusing `Utils.sanitize_doc`.
