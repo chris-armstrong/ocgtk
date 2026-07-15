@@ -1,7 +1,35 @@
 # Plan: Constants Support in gir_gen
 
-Status: **planned** (not yet implemented)
+Status: **in progress** — Phases 1–3 implemented; Phase 4 (docs + full
+regeneration + final verification) remaining.
 Branch: `feature/girgen-constants` (from latest `main`)
+
+## Progress
+
+- **Phase 1 — done** (`feat(gir_gen): parse GIR <constant> elements`).
+  `gir_constant` type, `constants` on `generation_context`, `parse_constant`
+  + dispatch, 8-tuple return, `Glyph`/`PangoGlyph` → `int` mappings, all call
+  sites updated.
+- **Phase 3 — done (folded into the Phase 1 commit).** The `Crt_Constant`
+  variant *and* the `references`-command emission
+  (`cr_type = Crt_Constant`, `cr_c_type = constant_c_type`) landed together in
+  the parse commit rather than as a separate step. No dedicated
+  references-output test for constants has been added yet — the signal corpus
+  baseline does not carry `Crt_Constant` entries (it is signal-specific), so
+  that bullet in the parse commit message is slightly overstated.
+- **Phase 2 — done** (`feat(gir_gen): generate <ns>_constants pure-OCaml
+  bindings`). `generate/constant_code.ml`, wired into `generate_bindings`
+  (after `generate_enum_files`) and re-exported from `library_module.ml`
+  plus the wrapper module alias. Proof-of-regen: `gtk_constants.ml/.mli`
+  (97 constants). Build (`dune build @all`) and `dune test gir_gen/` are green.
+  - Note: no `dune_file.ml` change was needed — the `<ns>_constants` module
+    is picked up by the main library's `(include_subdirs unqualified)` +
+    `(modules :standard)`; `dune-generated.inc` lists only C stub modules.
+    The plan's `dune_file.ml` row is therefore moot.
+- **Phase 4 — not started.** README / `architecture/gir_gen/overrides.md` not
+  updated; only Gtk regenerated (Gdk, Gio, Pango, Graphene, GdkPixbuf, Cairo,
+  Gsk, PangoCairo still pending); `xvfb-run dune test ocgtk/` not yet run as a
+  final check.
 
 ## Goal
 
@@ -51,7 +79,7 @@ OCamldoc `@since X.Y` tag.
 
 ## Phases
 
-### Phase 1 — AST & parsing
+### Phase 1 — AST & parsing  *(done)*
 
 - Add `gir_constant` to `types.ml`:
   `constant_name`, `constant_c_type`, `value : string`, `value_type : gir_type`,
@@ -66,7 +94,7 @@ OCamldoc `@since X.Y` tag.
 - **Tests (folded in):** parser tests per type kind (utf8/gint/guint/gdouble/
   gboolean/Glyph) + skip behavior; type-mapping test for `PangoGlyph` → `int`.
 
-### Phase 2 — Code generation
+### Phase 2 — Code generation  *(done)*
 
 - New `generate/constant_code.ml` (parallel to `enum_code.ml`) emitting
   `<ns>_constants.ml/.mli`:
@@ -82,7 +110,7 @@ OCamldoc `@since X.Y` tag.
 - **Tests (folded in):** naming, value escaping, type mapping, doc + `@since`
   emission, skip-with-warning for unmappable types.
 
-### Phase 3 — Cross-namespace references
+### Phase 3 — Cross-namespace references  *(done — folded into Phase 1 commit; dedicated test pending)*
 
 - Add `Crt_Constant` (no fields) to `cross_reference_type` in `types.ml`
   ([@@deriving sexp]).
@@ -91,7 +119,7 @@ OCamldoc `@since X.Y` tag.
 - **Tests (folded in):** references-output contains constants with
   `Crt_Constant`; sexp round-trip via `sexp_of_cross_reference_namespace`.
 
-### Phase 4 — Docs & regeneration
+### Phase 4 — Docs & regeneration  *(not started)*
 
 - Update `gir_gen/README.md` and `architecture/gir_gen/overrides.md` (constant
   handling, references, naming).
