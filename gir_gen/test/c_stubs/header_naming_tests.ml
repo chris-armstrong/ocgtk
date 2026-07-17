@@ -36,6 +36,7 @@ let create_test_context_with_namespace namespace_name =
     enums = [];
     bitfields = [];
     records = [];
+    constants = [];
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references = StringMap.empty;

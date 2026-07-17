@@ -224,6 +224,72 @@ let parse_bitfield input attrs =
       skip_element input 1;
       None
 
+(* Parse constant element *)
+let parse_constant input attrs =
+  match (get_attr "name" attrs, get_attr "value" attrs, get_attr "c:type" attrs) with
+  | Some name, Some value, Some c_type ->
+      let value_type =
+        ref
+          {
+            name = "void";
+            c_type = None;
+            nullable = false;
+            transfer_ownership = Types.TransferNone;
+            array = None;
+          }
+      in
+      let doc : string option ref = ref None in
+
+      let rec parse_constant_contents () =
+        match Xmlm.input input with
+        | `El_start ((_, tag), type_attrs) when local_name tag = "type" ->
+            let type_name =
+              match get_attr "name" type_attrs with
+              | Some n -> n
+              | None -> "void"
+            in
+            let c_type_name = get_attr "c:type" type_attrs in
+            let nullable =
+              get_attr "nullable" type_attrs |> Utils.parse_bool
+            in
+            value_type :=
+              {
+                name = type_name;
+                c_type = c_type_name;
+                nullable;
+                transfer_ownership = Types.TransferNone;
+                array = None;
+              };
+            skip_element input 1;
+            parse_constant_contents ()
+        | `El_start ((_, tag), _) when local_name tag = "doc" ->
+            doc := parse_doc_text input ();
+            parse_constant_contents ()
+        | `El_start _ ->
+            skip_element input 1;
+            parse_constant_contents ()
+        | `El_end -> ()
+        | `Data _ -> parse_constant_contents ()
+        | `Dtd _ -> parse_constant_contents ()
+      in
+
+      parse_constant_contents ();
+      Some
+        {
+          constant_name = name;
+          constant_c_type = c_type;
+          value;
+          value_type = !value_type;
+          constant_doc = !doc;
+          version = get_attr "version" attrs;
+          os = None;
+          introspectable =
+            get_attr "introspectable" attrs |> Utils.parse_bool ~default:true;
+        }
+  | _ ->
+      skip_element input 1;
+      None
+
 (* Parse only enums and bitfields from a GIR file (for external namespaces) *)
 let parse_gir_enums_only filename =
   let ic = open_in filename in
@@ -271,6 +337,7 @@ let parse_gir_file filename filter_classes =
   let enums = ref [] in
   let bitfields = ref [] in
   let records : gir_record list ref = ref [] in
+  let constants = ref [] in
   let namespace : gir_namespace option ref = ref None in
   let repository =
     ref
@@ -1534,6 +1601,11 @@ let parse_gir_file filename filter_classes =
           | Some record -> records := record :: !records
           | None -> ());
           parse_document ()
+      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "constant" ->
+          (match parse_constant input attrs with
+          | Some constant -> constants := constant :: !constants
+          | None -> ());
+          parse_document ()
       | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "namespace" ->
           let namespace_name = Option.get (get_attr "name" attrs) in
           let namespace_version = Option.get (get_attr "version" attrs) in
@@ -1577,4 +1649,5 @@ let parse_gir_file filename filter_classes =
     List.rev !interfaces,
     List.rev !enums,
     List.rev !bitfields,
-    List.rev !records )
+    List.rev !records,
+    List.rev !constants )

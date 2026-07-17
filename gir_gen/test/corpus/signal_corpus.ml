@@ -73,6 +73,7 @@ let build_context
     enums;
     bitfields;
     records;
+    constants = [];
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references;
@@ -83,7 +84,7 @@ let build_context
 (* ================================================================= *)
 
 let classify_signals_of_file ?(reference_files = []) filepath =
-  let repository, namespace, classes, interfaces, enums, bitfields, records =
+  let repository, namespace, classes, interfaces, enums, bitfields, records, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file filepath []
   in
   let cross_references = load_reference_files reference_files in
@@ -150,7 +151,7 @@ let coverage_of_namespace (namespace_name : string)
   { namespace = namespace_name; total_signals; supported; unsupported; by_reason }
 
 let coverage_of_file ?(reference_files = []) filepath =
-  let _, namespace, _, _, _, _, _ =
+  let _, namespace, _, _, _, _, _, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file filepath []
   in
   let outcomes = classify_signals_of_file ~reference_files filepath in

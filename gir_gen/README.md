@@ -46,6 +46,7 @@ GIR XML (e.g., Gtk-4.0.gir)
 | `generate/class_gen.ml` | High-level wrapper orchestration (Layer 2) |
 | `generate/signal_gen.ml` / `signal_marshaller.ml` | Signal handler generation |
 | `generate/enum_code.ml` | Enum/bitfield type and converter generation |
+| `generate/constant_code.ml` | GIR `<constant>` → pure-OCaml `let` bindings (`<ns>_constants.ml/.mli`) |
 | `generate/dune_file.ml` | Build configuration generation |
 
 ### Type Resolution Flow
@@ -196,6 +197,7 @@ Generated files are written to `ocgtk/src/<ns>/generated/` (e.g., `ocgtk/src/gtk
 - **Layer 1 (low-level)**: `<class_name>.ml/.mli` - External declarations (snake_case)
 - **Layer 2 (high-level)**: `g<Class>.ml/.mli` - OCaml wrapper classes (PascalCase)
 - **Enums**: `<ns>_enums.ml/.mli` - Enumeration and bitfield types for this namespace
+- **Constants**: `<ns>_constants.ml/.mli` - Pure-OCaml `let` bindings for GIR `<constant>` elements (omitted when the namespace has none, e.g. Cairo/Gsk/PangoCairo)
 - **Library module**: `<Ns>.ml/.mli` - Combined library module with all re-exports
 - **Wrapper module**: `ocgtk_<ns>.ml` - Library wrapper: `module <Ns> = <Ns>; include <Ns>` + core module aliases
 - **Declaration header**: `<ns>_decls.h` - C type converter declarations, includes dependency headers
@@ -303,6 +305,15 @@ the full signal architecture, marshalling, and generation details.
 - Polymorphic variant representations with C converters
 - Handles namespaced enums and digit-prefixed variant names (see `generate/enum_code.ml`)
 
+### Constants
+- GIR `<constant>` elements become pure-OCaml `let` bindings in `<ns>_constants.ml/.mli` (no C FFI stubs)
+- snake_case names (e.g. `ACCESSIBLE_ATTRIBUTE_BACKGROUND` → `accessible_attribute_background`)
+- Type mapping from the constant's `<type name=.../>`: `gint`/`guint`/`Glyph`/`PangoGlyph` → `int`, `gdouble`/`gfloat` → `float`, `utf8` → `string`, `gboolean` → `bool`; constants with unmappable types are skipped with a warning
+- OCamldoc from the GIR `<doc>`, with `@since X.Y` appended from the native `version` XML attribute
+- Re-exported from the library module and wrapper; no constants module is emitted for namespaces with no constants
+- Emitted in the `references` command as `cr_type = Crt_Constant` (see [cross-namespace references](#generate-cross-namespace-references))
+- No override workflow: pure-OCaml constants cannot use C `#if` OS guards, and the version is already available from the native XML attribute, so the `overrides` command's `Since`-extraction is not used for constants
+
 ### Build Integration
 - Automatic `dune-generated.inc` generation with C stubs list and module names (see `generate/dune_file.ml`)
 
@@ -316,6 +327,7 @@ the full signal architecture, marshalling, and generation details.
 - Interface extraction with methods, properties, c:symbol-prefix
 - Enumeration and bitfield extraction with values and C identifiers
 - Record extraction with boxed types, disguised/opaque flags, fields, methods
+- Constant extraction (`<constant>`) with name, c:type, value, value type, doc, and native version attribute
 - Cross-namespace reference loading for all 9 namespaces via sexp reference files
 - Documentation string extraction
 - Constructor `throws` attribute detection
@@ -329,6 +341,7 @@ the full signal architecture, marshalling, and generation details.
 ### Type Mapping (type_mappings.ml - ~784 lines)
 **Working:**
 - ~150 hardcoded GTK/GLib type mappings to OCaml types
+- `Glyph`/`PangoGlyph` (Pango's `guint32` alias) mapped to `int`, enabling Pango glyph methods and constant support
 - Nullable type handling with `option` wrapper
 - Polymorphic variants for enums via hash table lookup
 - Boxed record converters (`Val_*` / `*_val` macros)

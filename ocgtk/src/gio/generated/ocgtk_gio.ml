@@ -3,4 +3,5 @@
 
 module Gio = Gio
 module Gio_enums = Gio_enums
+module Gio_constants = Gio_constants
 module Gio_volume_monitor_core = Gio_volume_monitor_core

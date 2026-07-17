@@ -95,6 +95,7 @@ let generate_library_interface ~ctx =
   (* Generate enumeration and bitfield references *)
   let has_enums = ctx.enums <> [] in
   let has_bitfields = ctx.bitfields <> [] in
+  let has_constants = ctx.constants <> [] in
 
   if has_enums || has_bitfields then begin
     Buffer.add_string buf "(** {1 Enumerations and Bitfields} *)\n\n";
@@ -127,6 +128,16 @@ let generate_library_interface ~ctx =
             bitfield_name)
         sorted_bitfields
     end
+  end;
+
+  (* Generate constants module reference *)
+  if has_constants then begin
+    Buffer.add_string buf "\n(** {1 Constants} *)\n\n";
+    let constants_module =
+      internal_namespace_to_module_name ctx.namespace.namespace_name
+      ^ "_constants"
+    in
+    Printf.bprintf buf "module %s = %s\n" constants_module constants_module
   end;
 
   Buffer.contents buf
@@ -177,6 +188,7 @@ let generate_library_implementation ~ctx =
   (* Generate enumeration and bitfield references *)
   let has_enums = ctx.enums <> [] in
   let has_bitfields = ctx.bitfields <> [] in
+  let has_constants = ctx.constants <> [] in
 
   if has_enums || has_bitfields then begin
     Buffer.add_string buf "(** Enumerations and Bitfields *)\n\n";
@@ -211,6 +223,16 @@ let generate_library_implementation ~ctx =
             bitfield_name)
         sorted_bitfields
     end
+  end;
+
+  (* Generate constants module reference *)
+  if has_constants then begin
+    Buffer.add_string buf "\n(** Constants *)\n\n";
+    let constants_module =
+      internal_namespace_to_module_name ctx.namespace.namespace_name
+      ^ "_constants"
+    in
+    Printf.bprintf buf "module %s = %s\n" constants_module constants_module
   end;
 
   Buffer.contents buf

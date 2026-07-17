@@ -44,7 +44,7 @@ let test_overrides =
 
 let test_apply_with_parsed_gir_ignore_class_and_method () =
   let tmp = Fixtures.write_synthetic_gir ~test_name:"apply_with_parsed_gir" in
-  let _repository, _namespace, classes, interfaces, enums, bitfields, records =
+  let _repository, _namespace, classes, interfaces, enums, bitfields, records, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file tmp []
   in
   let result =

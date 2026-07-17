@@ -76,6 +76,7 @@ let create_context_with_base_namespace_refs () =
     enums = [];
     bitfields = [];
     records = [];
+    constants = [];
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references;

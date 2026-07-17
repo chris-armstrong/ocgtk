@@ -452,3 +452,7 @@ type testdbusflags = Gio_enums.testdbusflags
 type tlscertificateflags = Gio_enums.tlscertificateflags
 type tlsdatabaseverifyflags = Gio_enums.tlsdatabaseverifyflags
 type tlspasswordflags = Gio_enums.tlspasswordflags
+
+(** {1 Constants} *)
+
+module Gio_constants = Gio_constants

@@ -224,6 +224,14 @@ return Val_unit;
 }
 #endif
 
+CAMLexport CAMLprim value ml_pango_renderer_draw_glyph(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+
+pango_renderer_draw_glyph(PangoRenderer_val(self), PangoFont_val(arg1), Int_val(arg2), Double_val(arg3), Double_val(arg4));
+CAMLreturn(Val_unit);
+}
+
 CAMLexport CAMLprim value ml_pango_renderer_draw_error_underline(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
@@ -270,6 +278,19 @@ return Val_unit;
 
 
 CAMLexport CAMLprim value ml_pango_renderer_draw_error_underline(value self, value arg1, value arg2, value arg3, value arg4)
+{
+CAMLparam5(self, arg1, arg2, arg3, arg4);
+(void)self;
+(void)arg1;
+(void)arg2;
+(void)arg3;
+(void)arg4;
+caml_failwith("Renderer requires Pango >= 1.8");
+return Val_unit;
+}
+
+
+CAMLexport CAMLprim value ml_pango_renderer_draw_glyph(value self, value arg1, value arg2, value arg3, value arg4)
 {
 CAMLparam5(self, arg1, arg2, arg3, arg4);
 (void)self;

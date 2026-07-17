@@ -2,6 +2,14 @@ class type renderer_t = object
   method activate : unit -> unit
   method deactivate : unit -> unit
   method draw_error_underline : int -> int -> int -> int -> unit
+
+  method draw_glyph :
+    GContext_and__font_and__font_map_and__fontset.font_t ->
+    int ->
+    float ->
+    float ->
+    unit
+
   method draw_glyph_item : string option -> Glyph_item.t -> int -> int -> unit
 
   method draw_glyphs :
@@ -47,6 +55,16 @@ class renderer (obj : Renderer.t) : renderer_t =
 
     method draw_error_underline : int -> int -> int -> int -> unit =
       fun x y width height -> Renderer.draw_error_underline obj x y width height
+
+    method draw_glyph :
+        GContext_and__font_and__font_map_and__fontset.font_t ->
+        int ->
+        float ->
+        float ->
+        unit =
+      fun font glyph x y ->
+        let font = font#as_font in
+        Renderer.draw_glyph obj font glyph x y
 
     method draw_glyph_item : string option -> Glyph_item.t -> int -> int -> unit
         =

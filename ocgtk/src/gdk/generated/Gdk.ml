@@ -174,3 +174,7 @@ type paintableflags = Gdk_enums.paintableflags
 type seatcapabilities = Gdk_enums.seatcapabilities
 type toplevelcapabilities = Gdk_enums.toplevelcapabilities
 type toplevelstate = Gdk_enums.toplevelstate
+
+(** Constants *)
+
+module Gdk_constants = Gdk_constants

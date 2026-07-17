@@ -58,6 +58,7 @@ let create_context_with_cross_references ~namespace ~deps =
     enums = [];
     bitfields = [];
     records = [];
+    constants = [];
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references;

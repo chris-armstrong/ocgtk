@@ -47,6 +47,8 @@
   type_definition_tests
   external_decl_tests
   signature_tests
+  ; Constants generation (pure unit)
+  constant_code_tests
   ; Layer 2 — Class Generation (pure unit/pipeline)
   method_wrapper_tests
   constructor_wrapper_tests
@@ -63,6 +65,7 @@
   classify_type_tests
   header_pipeline_tests
   compilation_tests
+  constant_references_tests
   ; Override system
   types_tests
   parser_tests
