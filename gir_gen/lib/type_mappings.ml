@@ -487,10 +487,8 @@ let normalize_c_pointer_type lookup_str =
 let lookup_class classes lookup_str =
   let normalized_lookup =
     let base = normalize_c_pointer_type lookup_str in
-    if
-      String.length base > 0
-      && Char.equal (String.get base (String.length base - 1)) '*'
-    then String.sub base ~pos:0 ~len:(String.length base - 1)
+    if String.ends_with base ~suffix:"*" then
+      String.sub base ~pos:0 ~len:(String.length base - 1)
     else base
   in
   List.find_opt
@@ -531,10 +529,7 @@ let is_boxed_record (record : Types.gir_record) =
     that should be externalised *)
 let lookup_record records lookup_str =
   let normalized_lookup = normalize_c_pointer_type lookup_str in
-  let is_pointer =
-    String.length normalized_lookup > 0
-    && Char.equal normalized_lookup.[String.length normalized_lookup - 1] '*'
-  in
+  let is_pointer = String.ends_with normalized_lookup ~suffix:"*" in
   List.find_opt records ~f:(fun record ->
       String.equal record.record_name lookup_str)
   |> Option.map (fun record -> (record, is_pointer, is_boxed_record record))
