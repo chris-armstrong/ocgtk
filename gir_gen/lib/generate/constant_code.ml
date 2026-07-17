@@ -10,20 +10,29 @@ open Types
 let ocaml_name_of_constant name = String.lowercase_ascii name
 
 (** Map a GIR type name to its OCaml type string for constant declarations.
-    Returns [None] for unmappable types (to be skipped with a warning). *)
+    Reuses [Type_mappings.type_mappings] -- the same table the rest of the
+    generator uses -- rather than a second hand-rolled mapping, so each integer
+    width/sign resolves to its own module (gint32->Int32.t, gint64->int64,
+    guint32->UInt32.t, guint64->UInt64.t, gsize->Gsize.t) instead of collapsing
+    to [int]. Returns [None] for types that cannot back a pure-OCaml literal
+    constant (records/classes/enums, or anything not in the table) -- those are
+    skipped with a warning. *)
 let ocaml_type_of_gir_type_name type_name =
-  match type_name with
-  | "utf8" | "filename" | "gchararray" -> Some "string"
-  | "gint" | "gint32" | "gint64" | "guint" | "guint32" | "guint64"
-  | "gsize" | "gssize" | "gchar" | "gunichar" | "gulong" ->
-      Some "int"
-  | "gdouble" | "gfloat" | "double" | "float" -> Some "float"
-  | "gboolean" -> Some "bool"
-  | "Glyph" | "PangoGlyph" -> Some "int"
-  | _ -> None
+  (* Only these OCaml types can be written as a pure-OCaml literal/expression
+     with no C stub (see [serialize_value]). Class/record/enum mappings are
+     rejected here even if [type_mappings] knows them. *)
+  let serializable = function
+    | "int" | "Int32.t" | "int64" | "UInt32.t" | "UInt64.t" | "Gsize.t"
+    | "float" | "bool" | "string" as t ->
+        Some t
+    | _ -> None
+  in
+  match List.assoc_opt type_name Type_mappings.type_mappings with
+  | Some tm -> serializable tm.ocaml_type
+  | None -> None
 
-(** Serialize a constant value string to an OCaml literal.
-    [ocaml_type] is the resolved OCaml type string (e.g. "string", "int"). *)
+(** Serialize a constant value string to an OCaml literal or construction
+    expression for [ocaml_type]. *)
 let serialize_value ~ocaml_type value =
   match ocaml_type with
   | "string" -> sprintf "%S" value  (* escapes quotes and backslashes *)
@@ -31,7 +40,13 @@ let serialize_value ~ocaml_type value =
   | "float" ->
       (* Ensure OCaml float syntax: add ".0" if no decimal point *)
       if String.contains value '.' then value else value ^ ".0"
-  | _ -> value  (* int and other numeric types: decimal literal as-is *)
+  | "int" -> value  (* decimal literal as-is *)
+  | "Int32.t" -> value ^ "l"  (* OCaml int32 literal suffix *)
+  | "int64" -> value ^ "L"  (* OCaml int64 literal suffix *)
+  | "UInt32.t" -> "UInt32.of_int " ^ value
+  | "UInt64.t" -> "UInt64.of_int " ^ value
+  | "Gsize.t" -> "Gsize.of_int " ^ value
+  | _ -> value  (* unreachable: ocaml_type_of_gir_type_name filters first *)
 
 (** Iterate [constants], resolving each one's OCaml type. Calls [emit] for
     every mappable constant. For unmappable types, warns to stderr when

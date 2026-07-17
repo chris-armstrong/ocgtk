@@ -22,6 +22,11 @@ let guint_type = Type_factory.make_gir_type ~name:"guint" ~c_type:"guint" ()
 let gdouble_type = Type_factory.make_gir_type ~name:"gdouble" ~c_type:"gdouble" ()
 let gboolean_type = Type_factory.make_gir_type ~name:"gboolean" ~c_type:"gboolean" ()
 let glyph_type = Type_factory.make_gir_type ~name:"Glyph" ~c_type:"PangoGlyph" ()
+let gint32_type = Type_factory.make_gir_type ~name:"gint32" ~c_type:"gint32" ()
+let gint64_type = Type_factory.make_gir_type ~name:"gint64" ~c_type:"gint64" ()
+let guint32_type = Type_factory.make_gir_type ~name:"guint32" ~c_type:"guint32" ()
+let guint64_type = Type_factory.make_gir_type ~name:"guint64" ~c_type:"guint64" ()
+let gsize_type = Type_factory.make_gir_type ~name:"gsize" ~c_type:"gsize" ()
 let unknown_type =
   Type_factory.make_gir_type ~name:"SomeWeirdRecord" ~c_type:"SomeWeirdRecord*" ()
 
@@ -87,6 +92,11 @@ let test_type_mapping () =
       ("gboolean", gboolean_type, "bool");
       ("glyph", glyph_type, "int");
       ("utf8", utf8_type, "string");
+      ("gint32", gint32_type, "Int32.t");
+      ("gint64", gint64_type, "int64");
+      ("guint32", guint32_type, "UInt32.t");
+      ("guint64", guint64_type, "UInt64.t");
+      ("gsize", gsize_type, "Gsize.t");
     ]
 
 (* ---------- value serialization --------------------------------------- *)
@@ -134,6 +144,23 @@ let test_int_as_is () =
   has "int value as-is"
     (generate_constants_implementation ~namespace:ns [ c ])
     "let priority = 100"
+
+(* Wide/unsigned integer types resolve to their own module via
+   Type_mappings.type_mappings and serialize with the right literal or
+   construction form. None of these occur in the current GIR, but the
+   generator must emit valid OCaml if they ever do. *)
+let test_wide_integer_serialization () =
+  let check ?(value = "100") name vt needle =
+    let c = mk ~name:(String.uppercase_ascii name) ~c_type:name ~value ~value_type:vt () in
+    has (name ^ " serializes correctly")
+      (generate_constants_implementation ~namespace:ns [ c ])
+      needle
+  in
+  check "gint32" gint32_type "let gint32 = 100l";
+  check "gint64" gint64_type "let gint64 = 100L";
+  check "guint32" guint32_type "let guint32 = UInt32.of_int 100";
+  check "guint64" guint64_type "let guint64 = UInt64.of_int 100";
+  check "gsize" gsize_type "let gsize = Gsize.of_int 100"
 
 (* ---------- doc + @since emission ------------------------------------- *)
 
@@ -217,6 +244,7 @@ let tests =
     ("float with decimal unchanged", `Quick, test_float_with_decimal_unchanged);
     ("bool passthrough", `Quick, test_bool_passthrough);
     ("int as-is", `Quick, test_int_as_is);
+    ("wide integer serialization", `Quick, test_wide_integer_serialization);
     ("doc with @since", `Quick, test_doc_with_since);
     ("doc without version", `Quick, test_doc_without_version);
     ("version-only fallback", `Quick, test_version_only_fallback);

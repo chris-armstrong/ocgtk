@@ -46,6 +46,19 @@ Branch: `feature/girgen-constants` (from latest `main`)
     per value type, minimal, missing c:type, type without name).
   - Full suite green: `dune build @all`, `dune test gir_gen/`
     (416 unit + 125 integration), `xvfb-run dune test ocgtk/`.
+- **PR-review fix -- done.** A reviewer noted `ocaml_type_of_gir_type_name`
+  was a second hand-rolled table that (a) did not reuse `type_mappings.ml` and
+  (b) wrongly mapped `gint32`/`gint64`/`guint32`/`guint64`/`gsize` to `int`
+  instead of their own modules (`Int32.t`, `int64`, `UInt32.t`, `UInt64.t`,
+  `Gsize.t`). Rewrote it to look up `Type_mappings.type_mappings` (single source
+  of truth) and reject non-literal types (class/record/enum). Extended
+  `serialize_value` to emit the right literal/construction per OCaml type
+  (`Int32.t` -> suffix `l`, `int64` -> suffix `L`, `UInt32.t`/`UInt64.t`/`Gsize.t`
+  -> `<Mod>.of_int ...`). No generated bindings change (the GIR corpus only
+  contains `gint`/`guint`/`Glyph`/`utf8`/`gboolean`/`gdouble` constants), so this
+  is a correctness fix for the un-exercised wide types; added a
+  `wide_integer_serialization` test covering all five. Suite now 417 unit +
+  125 integration, `xvfb-run dune test ocgtk/` green.
   - Out of scope (pre-existing tech debt flagged by reviewers, not introduced
     here): banned partial functions in `gir_parser.ml`/`type_mappings.ml`
     (`List.assoc`/`int_of_string`/`Option.get`+try/with), missing
