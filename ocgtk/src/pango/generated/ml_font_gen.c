@@ -67,6 +67,20 @@ PangoFontMetrics* result = pango_font_get_metrics(PangoFont_val(self), Option_va
 CAMLreturn(Val_PangoFontMetrics(result));
 }
 
+CAMLexport CAMLprim value ml_pango_font_get_glyph_extents(value self, value arg1)
+{
+CAMLparam2(self, arg1);
+PangoRectangle out2;
+PangoRectangle out3;
+
+pango_font_get_glyph_extents(PangoFont_val(self), Int_val(arg1), &out2, &out3);
+CAMLlocal1(ret);
+    ret = caml_alloc(2, 0);
+    Store_field(ret, 0, Val_PangoRectangle(&out2));
+    Store_field(ret, 1, Val_PangoRectangle(&out3));
+    CAMLreturn(ret);
+}
+
 #if PANGO_VERSION_CHECK(1,10,0)
 
 CAMLexport CAMLprim value ml_pango_font_get_font_map(value self)

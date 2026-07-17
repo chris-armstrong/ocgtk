@@ -334,6 +334,28 @@ To support multiple guards, a future phase would need to:
 
 ---
 
+## Constants (no override workflow)
+
+GIR `<constant>` elements are generated as pure-OCaml `let` bindings in
+`<ns>_constants.ml/.mli` (see `generate/constant_code.ml`). They do **not**
+participate in the override system:
+
+- No `constant_override` type, no `overrides`-command extraction, and no
+  `(ignore)` / `(os)` / `(version ...)` support. There is no entry for constants
+  in the override files.
+- Version is read directly from the native `version="X.Y"` XML attribute the
+  parser already exposes (`gir_constant.version`) and rendered as the OCamldoc
+  `@since X.Y` tag — doc-only, never a C `#if` guard, because the value is a
+  pure-OCaml literal with no C stub to guard.
+- Constants with an unmappable `<type name=.../>` are skipped with a warning;
+  there is no override mechanism to force-include one.
+- Cross-namespace, constants are emitted by the `references` command as
+  `cr_type = Crt_Constant` (a payload-free variant alongside `Crt_Enum`/
+  `Crt_Bitfield`) so downstream namespaces see them, but no downstream code
+  currently maps a constant as a *type* — they exist only as named values.
+
+---
+
 ## Updating Override Files
 
 Override files are generated once with `gir_gen overrides` (extracts `Since X.Y`

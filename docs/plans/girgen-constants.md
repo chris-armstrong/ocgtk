@@ -1,7 +1,6 @@
 # Plan: Constants Support in gir_gen
 
-Status: **in progress** — Phases 1–3 implemented; Phase 4 (docs + full
-regeneration + final verification) remaining.
+Status: **complete** — all four phases implemented, reviewed, and verified.
 Branch: `feature/girgen-constants` (from latest `main`)
 
 ## Progress
@@ -53,9 +52,17 @@ Branch: `feature/girgen-constants` (from latest `main`)
     `open StdLabels` in `library_module.ml`/`gen_signal_baseline.ml`, and the
     broader `.mli` gap across `types.ml`/`gir_parser.ml`/`type_mappings.ml`/
     `library_module.ml`.
-- **Phase 4 — not started.** README / `architecture/gir_gen/overrides.md` not
-  updated; only Gtk regenerated (Gdk, Gio, Pango, Graphene, GdkPixbuf, Cairo,
-  Gsk, PangoCairo still pending).
+- **Phase 4 — done.** Updated `gir_gen/README.md` (Key Files row, Output
+  Files, a Constants layer section, parsing/type-mapping capabilities) and
+  `architecture/gir_gen/overrides.md` (constants deliberately outside the
+  override workflow). Regenerated all 9 namespaces via
+  `scripts/generate-bindings.sh`: new `<ns>_constants.ml/.mli` for Gdk,
+  GdkPixbuf, Gio, Graphene, Pango (Cairo/Gsk/PangoCairo have none); constants
+  re-exported from each library module + wrapper. The `Glyph`/`PangoGlyph` →
+  `int` mapping also newly enables Pango glyph methods (`draw_glyph`,
+  `get_glyph_extents`, …) and their C stubs, previously skipped. Full suite
+  green: `dune build @all`, `dune test gir_gen/` (416 unit + 125 integration),
+  `xvfb-run dune test ocgtk/`.
 
 ## Goal
 
@@ -136,7 +143,7 @@ OCamldoc `@since X.Y` tag.
 - **Tests (folded in):** naming, value escaping, type mapping, doc + `@since`
   emission, skip-with-warning for unmappable types.
 
-### Phase 3 — Cross-namespace references  *(done — folded into Phase 1 commit; dedicated test pending)*
+### Phase 3 — Cross-namespace references  *(done — folded into Phase 1 commit; dedicated tests added in review pass)*
 
 - Add `Crt_Constant` (no fields) to `cross_reference_type` in `types.ml`
   ([@@deriving sexp]).
@@ -145,7 +152,7 @@ OCamldoc `@since X.Y` tag.
 - **Tests (folded in):** references-output contains constants with
   `Crt_Constant`; sexp round-trip via `sexp_of_cross_reference_namespace`.
 
-### Phase 4 — Docs & regeneration  *(not started)*
+### Phase 4 — Docs & regeneration  *(done)*
 
 - Update `gir_gen/README.md` and `architecture/gir_gen/overrides.md` (constant
   handling, references, naming).

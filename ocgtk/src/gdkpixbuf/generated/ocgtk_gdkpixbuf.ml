@@ -3,3 +3,4 @@
 
 module GdkPixbuf = GdkPixbuf
 module Gdkpixbuf_enums = Gdkpixbuf_enums
+module Gdkpixbuf_constants = Gdkpixbuf_constants
