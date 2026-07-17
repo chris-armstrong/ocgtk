@@ -13,10 +13,9 @@ Branch: `feature/girgen-constants` (from latest `main`)
 - **Phase 3 — done (folded into the Phase 1 commit).** The `Crt_Constant`
   variant *and* the `references`-command emission
   (`cr_type = Crt_Constant`, `cr_c_type = constant_c_type`) landed together in
-  the parse commit rather than as a separate step. No dedicated
-  references-output test for constants has been added yet — the signal corpus
-  baseline does not carry `Crt_Constant` entries (it is signal-specific), so
-  that bullet in the parse commit message is slightly overstated.
+  the parse commit rather than as a separate step. The signal corpus baseline
+  does not carry `Crt_Constant` entries (it is signal-specific), so that bullet
+  in the parse commit message is slightly overstated.
 - **Phase 2 — done** (`feat(gir_gen): generate <ns>_constants pure-OCaml
   bindings`). `generate/constant_code.ml`, wired into `generate_bindings`
   (after `generate_enum_files`) and re-exported from `library_module.ml`
@@ -26,10 +25,37 @@ Branch: `feature/girgen-constants` (from latest `main`)
     is picked up by the main library's `(include_subdirs unqualified)` +
     `(modules :standard)`; `dune-generated.inc` lists only C stub modules.
     The plan's `dune_file.ml` row is therefore moot.
+- **Review fixes — done.** A deepseek-v4-flash review pass (6 reviewers)
+  flagged new-code issues, now addressed:
+  - Added `generate/constant_code.mli` exposing only
+    `generate_constants_files` and the two pure
+    `generate_constants_{interface,implementation}`; internal helpers
+    (`ocaml_name_of_constant`, `ocaml_type_of_gir_type_name`,
+    `serialize_value`, `iter_mappable_constants`, `emit_doc`) are now private.
+  - De-duplicated `constant_code.ml`: shared `iter_mappable_constants`
+    (resolve/type-check/skip, warn once on the .mli pass) + `emit_doc`, and
+    removed the redundant empty-list guard that the sub-generators already
+    handled. The .ml pass passes `~warn_unmappable:false` so the warning for an
+    unmappable constant fires once.
+  - Added the missing tests the plan promised:
+    `test/generate/constant_code_tests.ml` (17 cases: naming, per-value-type
+    mapping, string escaping, float `.0`, bool passthrough, `@since`,
+    version-only fallback, skip-with-warning, empty list);
+    `test/cross_namespace/constant_references_tests.ml` (3 cases: `Crt_Constant`
+    sexp round-trip, mixed namespace, sexp tag);
+    5 constant cases in `test/integration/gir_parser_tests.ml` (utf8 fields,
+    per value type, minimal, missing c:type, type without name).
+  - Full suite green: `dune build @all`, `dune test gir_gen/`
+    (416 unit + 125 integration), `xvfb-run dune test ocgtk/`.
+  - Out of scope (pre-existing tech debt flagged by reviewers, not introduced
+    here): banned partial functions in `gir_parser.ml`/`type_mappings.ml`
+    (`List.assoc`/`int_of_string`/`Option.get`+try/with), missing
+    `open StdLabels` in `library_module.ml`/`gen_signal_baseline.ml`, and the
+    broader `.mli` gap across `types.ml`/`gir_parser.ml`/`type_mappings.ml`/
+    `library_module.ml`.
 - **Phase 4 — not started.** README / `architecture/gir_gen/overrides.md` not
   updated; only Gtk regenerated (Gdk, Gio, Pango, Graphene, GdkPixbuf, Cairo,
-  Gsk, PangoCairo still pending); `xvfb-run dune test ocgtk/` not yet run as a
-  final check.
+  Gsk, PangoCairo still pending).
 
 ## Goal
 

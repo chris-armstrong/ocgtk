@@ -24,6 +24,8 @@ let () =
       ("Type Definitions (ML)", Type_definition_tests.tests);
       ("External Declarations (ML)", External_decl_tests.tests);
       ("Signatures (ML)", Signature_tests.tests);
+      (* Constants generation (pure unit) *)
+      ("Constant Code", Constant_code_tests.tests);
       (* Layer 2 — Class Generation (pure unit/pipeline) *)
       ("Layer2 Method Wrappers", Method_wrapper_tests.tests);
       ("Constructor Wrappers", Constructor_wrapper_tests.tests);
@@ -41,6 +43,8 @@ let () =
         No_external_bitfield_decls_tests.tests );
       ("Header Pipeline Tests (Stage 8)", Header_pipeline_tests.tests);
       ("Compilation Tests (Stage 8)", Compilation_tests.tests);
+      (* Constant cross-namespace references (pure unit) *)
+      ("Constant References", Constant_references_tests.tests);
       (* Override system *)
       ("Override Types", Types_tests.test_suite);
       ("Override Parser", Parser_tests.test_suite);

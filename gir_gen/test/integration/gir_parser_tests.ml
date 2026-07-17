@@ -415,6 +415,110 @@ let test_parse_enum_missing_ctype () =
   Alcotest.(check int) "Should skip enum without c:type" 0 (List.length enums)
 
 (* ========================================================================= *)
+(* Constant Parsing Tests *)
+(* ========================================================================= *)
+
+(* Parse a single <constant> and assert every field of [gir_constant]. *)
+let test_parse_constant_utf8 () =
+  let gir_xml =
+    wrap_namespace
+      {|
+    <constant name="ACCESSIBLE_ATTRIBUTE_BACKGROUND" value="bg-color"
+              c:type="GTK_ACCESSIBLE_ATTRIBUTE_BACKGROUND" version="4.14">
+      <doc xml:space="preserve">Background color attribute.</doc>
+      <type name="utf8" c:type="gchar*"/>
+    </constant>
+  |}
+  in
+
+  let _, _, _, _, _, _, _, constants = parse_gir_string gir_xml in
+
+  Alcotest.(check int) "one constant parsed" 1 (List.length constants);
+
+  let c = List.hd constants in
+  Alcotest.(check string) "name" "ACCESSIBLE_ATTRIBUTE_BACKGROUND" c.constant_name;
+  Alcotest.(check string) "c_type" "GTK_ACCESSIBLE_ATTRIBUTE_BACKGROUND"
+    c.constant_c_type;
+  Alcotest.(check string) "value" "bg-color" c.value;
+  Alcotest.(check string) "value type name" "utf8" c.value_type.name;
+  Alcotest.(check (option string)) "value c_type" (Some "gchar*")
+    c.value_type.c_type;
+  Alcotest.(check (option string)) "doc" (Some "Background color attribute.")
+    c.constant_doc;
+  Alcotest.(check (option string)) "version" (Some "4.14") c.version
+
+(* Exercise each observed GIR value type so the parser records the right
+   [value_type.name] for the downstream type mapper. *)
+let test_parse_constant_value_types () =
+  let one ~type_name xml_type =
+    let gir_xml =
+      wrap_namespace
+        (Printf.sprintf
+           {|<constant name="C" value="0" c:type="C">
+      %s
+    </constant>|}
+           xml_type)
+    in
+    let _, _, _, _, _, _, _, constants = parse_gir_string gir_xml in
+    Alcotest.(check int) (type_name ^ " parsed") 1 (List.length constants);
+    let c = List.hd constants in
+    Alcotest.(check string) (type_name ^ " value_type.name") type_name
+      c.value_type.name
+  in
+  one ~type_name:"gint" {|<type name="gint" c:type="gint"/>|};
+  one ~type_name:"guint" {|<type name="guint" c:type="guint"/>|};
+  one ~type_name:"gdouble" {|<type name="gdouble" c:type="gdouble"/>|};
+  one ~type_name:"gboolean" {|<type name="gboolean" c:type="gboolean"/>|};
+  one ~type_name:"Glyph" {|<type name="Glyph" c:type="PangoGlyph"/>|}
+
+(* A constant with no doc and no version still parses, with both as [None]. *)
+let test_parse_constant_minimal () =
+  let gir_xml =
+    wrap_namespace
+      {|
+    <constant name="SIMPLE" value="42" c:type="SIMPLE">
+      <type name="gint" c:type="gint"/>
+    </constant>
+  |}
+  in
+
+  let _, _, _, _, _, _, _, constants = parse_gir_string gir_xml in
+  Alcotest.(check int) "one constant" 1 (List.length constants);
+  let c = List.hd constants in
+  Alcotest.(check (option string)) "no doc" None c.constant_doc;
+  Alcotest.(check (option string)) "no version" None c.version;
+  Alcotest.(check bool) "introspectable default" true c.introspectable
+
+(* A <constant> missing the required c:type is skipped (parser returns None). *)
+let test_parse_constant_missing_ctype () =
+  let gir_xml =
+    wrap_namespace
+      {|
+    <constant name="NO_CTYPE" value="1">
+      <type name="gint" c:type="gint"/>
+    </constant>
+  |}
+  in
+
+  let _, _, _, _, _, _, _, constants = parse_gir_string gir_xml in
+  Alcotest.(check int) "constant without c:type skipped" 0 (List.length constants)
+
+(* A <constant> whose <type> has no name falls back to "void" for value_type. *)
+let test_parse_constant_type_without_name () =
+  let gir_xml =
+    wrap_namespace
+      {|
+    <constant name="C" value="1" c:type="C">
+      <type c:type="gchar*"/>
+    </constant>
+  |}
+  in
+
+  let _, _, _, _, _, _, _, constants = parse_gir_string gir_xml in
+  let c = List.hd constants in
+  Alcotest.(check string) "type name defaults to void" "void" c.value_type.name
+
+(* ========================================================================= *)
 (* Bitfield Parsing Tests *)
 (* ========================================================================= *)
 
@@ -1298,6 +1402,17 @@ let tests =
       test_parse_enum_missing_ctype;
     (* Bitfield tests *)
     Alcotest.test_case "Parse bitfield" `Quick test_parse_bitfield;
+    (* Constant tests *)
+    Alcotest.test_case "Parse constant (utf8)" `Quick
+      test_parse_constant_utf8;
+    Alcotest.test_case "Parse constant value types" `Quick
+      test_parse_constant_value_types;
+    Alcotest.test_case "Parse constant minimal" `Quick
+      test_parse_constant_minimal;
+    Alcotest.test_case "Parse constant missing c:type" `Quick
+      test_parse_constant_missing_ctype;
+    Alcotest.test_case "Parse constant type without name" `Quick
+      test_parse_constant_type_without_name;
     (* Record tests *)
     Alcotest.test_case "Parse record" `Quick test_parse_record;
     Alcotest.test_case "Parse opaque record" `Quick test_parse_opaque_record;
