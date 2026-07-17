@@ -4,37 +4,35 @@ open StdLabels
 open Types
 module StringSet = Set.Make (String)
 
+(* [or_none o ~f] keeps [o] when it is [Some _], else falls back to [f ()].
+   Lets a chain of "try this lookup, else the next" read as a pipeline instead of
+   nested [match]s. *)
+let or_none ~f = function
+  | Some _ as x -> x
+  | None -> f ()
+
 (* Get attribute value from XML attributes list *)
 let get_attr name attrs =
   let glib_ns = "http://www.gtk.org/introspection/glib/1.0" in
-  (* Try the default namespace first, then c: and glib: by stripping the
-     prefix from [name] (e.g. "c:type" -> "type") when it is long enough. *)
-  match List.assoc_opt ("", name) attrs with
-  | Some x -> Some x
-  | None ->
-      let c_name =
-        if String.length name >= 2 then
-          Some (String.sub ~pos:2 ~len:(String.length name - 2) name)
-        else None
-      in
-      (match c_name with
-       | Some n ->
-           (match
-              List.assoc_opt
-                ("http://www.gtk.org/introspection/c/1.0", n)
-                attrs
-            with
-            | Some x -> Some x
-            | None ->
-                let glib_name =
-                  match String.index_opt name ':' with
-                  | Some idx ->
-                      String.sub ~pos:(idx + 1)
-                        ~len:(String.length name - idx - 1) name
-                  | None -> name
-                in
-                List.assoc_opt (glib_ns, glib_name) attrs)
-       | None -> None)
+  (* Try the default namespace, then c: (strip the "c:" prefix, when [name] is
+     long enough), then glib: (strip everything up to and including ":"). *)
+  List.assoc_opt ("", name) attrs
+  |> or_none ~f:(fun () ->
+         if String.length name >= 2 then
+           List.assoc_opt
+             ( "http://www.gtk.org/introspection/c/1.0",
+               String.sub ~pos:2 ~len:(String.length name - 2) name )
+             attrs
+         else None)
+  |> or_none ~f:(fun () ->
+         let glib_name =
+           match String.index_opt name ':' with
+           | Some idx ->
+               String.sub ~pos:(idx + 1)
+                 ~len:(String.length name - idx - 1) name
+           | None -> name
+         in
+         List.assoc_opt (glib_ns, glib_name) attrs)
 
 let ns namespace =
   match namespace with
