@@ -24,7 +24,7 @@ open Gir_gen_lib.Override_types
     [test_name] is used to name the per-test pipeline_tmp/ directory. *)
 let parse_and_apply ~test_name overrides =
   let tmp = Fixtures.write_synthetic_gir ~test_name in
-  let _repository, _namespace, classes, interfaces, enums, bitfields, records =
+  let _repository, _namespace, classes, interfaces, enums, bitfields, records, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file tmp []
   in
   Gir_gen_lib.Override_apply.apply_overrides ~overrides ~classes ~interfaces
@@ -58,6 +58,7 @@ let make_ctx (result : Gir_gen_lib.Override_apply.apply_result) :
     enums = result.enums;
     bitfields = result.bitfields;
     records = result.records;
+    constants = [];
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references = StringMap.empty;

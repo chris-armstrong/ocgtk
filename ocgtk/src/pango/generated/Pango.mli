@@ -125,3 +125,7 @@ type layoutdeserializeflags = Pango_enums.layoutdeserializeflags
 type layoutserializeflags = Pango_enums.layoutserializeflags
 type shapeflags = Pango_enums.shapeflags
 type showflags = Pango_enums.showflags
+
+(** {1 Constants} *)
+
+module Pango_constants = Pango_constants

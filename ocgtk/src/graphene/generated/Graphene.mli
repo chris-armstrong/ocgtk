@@ -70,3 +70,7 @@ module Vec4 = GVec4
 
 type eulerorder = Graphene_enums.eulerorder
 type rayintersectionkind = Graphene_enums.rayintersectionkind
+
+(** {1 Constants} *)
+
+module Graphene_constants = Graphene_constants

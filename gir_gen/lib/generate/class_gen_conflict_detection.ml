@@ -154,7 +154,8 @@ let rec cross_ns_class_provides_interface ~ctx ~depth ~ns qualified_class_name
     | Some Crt_Interface
     | Some (Crt_Record _)
     | Some Crt_Enum
-    | Some Crt_Bitfield ->
+    | Some Crt_Bitfield
+    | Some Crt_Constant ->
         false
     | Some (Crt_Class { implements; parent }) ->
         let implements_match =

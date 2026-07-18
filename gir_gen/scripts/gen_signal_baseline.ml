@@ -21,7 +21,8 @@ let build_context
     (interfaces : Types.gir_interface list)
     (enums : Types.gir_enum list)
     (bitfields : Types.gir_bitfield list)
-    (records : Types.gir_record list) : Types.generation_context =
+    (records : Types.gir_record list)
+    (constants : Types.gir_constant list) : Types.generation_context =
   {
     Types.namespace;
     repository;
@@ -30,17 +31,18 @@ let build_context
     enums;
     bitfields;
     records;
+    constants;
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references = Types.StringMap.empty;
   }
 
 let classify_signals_of_file filepath =
-  let repository, namespace, classes, interfaces, enums, bitfields, records =
+  let repository, namespace, classes, interfaces, enums, bitfields, records, constants =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file filepath []
   in
   let ctx =
-    build_context namespace repository classes interfaces enums bitfields records
+    build_context namespace repository classes interfaces enums bitfields records constants
   in
   let classify_entity class_name signal =
     match Signal_gen.classify ~ctx signal with
@@ -100,7 +102,7 @@ let coverage_of_namespace (ns_name : string) (outcomes : classification_outcome 
   { namespace = ns_name; total_signals; supported; unsupported; by_reason }
 
 let coverage_of_file filepath =
-  let _, namespace, _, _, _, _, _ =
+  let _, namespace, _, _, _, _, _, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file filepath []
   in
   let outcomes = classify_signals_of_file filepath in

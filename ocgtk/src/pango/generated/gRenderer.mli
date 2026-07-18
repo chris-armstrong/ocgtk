@@ -2,6 +2,14 @@ class type renderer_t = object
   method activate : unit -> unit
   method deactivate : unit -> unit
   method draw_error_underline : int -> int -> int -> int -> unit
+
+  method draw_glyph :
+    GContext_and__font_and__font_map_and__fontset.font_t ->
+    int ->
+    float ->
+    float ->
+    unit
+
   method draw_glyph_item : string option -> Glyph_item.t -> int -> int -> unit
 
   method draw_glyphs :

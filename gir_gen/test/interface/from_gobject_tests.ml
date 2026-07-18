@@ -130,7 +130,7 @@ let test_cast_macro_gtk_orientable () =
 let real_gir_file = Filename.concat (Helpers.gir_data_dir ()) "Gtk-4.0.gir"
 
 let test_editable_gtype_macro_from_real_gir () =
-  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records =
+  let _repo, _ns, _classes, interfaces, _enums, _bitfields, _records, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file real_gir_file []
   in
   let editable =

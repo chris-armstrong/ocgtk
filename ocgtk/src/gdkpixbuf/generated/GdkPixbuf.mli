@@ -33,3 +33,7 @@ type pixbufalphamode = Gdkpixbuf_enums.pixbufalphamode
 type pixbuferror = Gdkpixbuf_enums.pixbuferror
 type pixbufrotation = Gdkpixbuf_enums.pixbufrotation
 type pixbufformatflags = Gdkpixbuf_enums.pixbufformatflags
+
+(** {1 Constants} *)
+
+module Gdkpixbuf_constants = Gdkpixbuf_constants

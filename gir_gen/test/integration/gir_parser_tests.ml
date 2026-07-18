@@ -33,7 +33,7 @@ let test_parse_simple_class () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
 
   Alcotest.(check int) "Should parse one class" 1 (List.length classes);
 
@@ -56,7 +56,7 @@ let test_parse_class_without_ctype () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
 
   Alcotest.(check int) "Should parse one class" 1 (List.length classes);
 
@@ -90,7 +90,7 @@ let test_parse_class_with_constructors () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let button = List.hd classes in
 
   Alcotest.(check int)
@@ -142,7 +142,7 @@ let test_parse_class_with_methods () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let button = List.hd classes in
 
   Alcotest.(check int) "Should have 2 methods" 2 (List.length button.methods);
@@ -180,7 +180,7 @@ let test_parse_class_with_properties () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let button = List.hd classes in
 
   Alcotest.(check int)
@@ -243,7 +243,7 @@ let test_parse_class_with_signals () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let button = List.hd classes in
 
   Alcotest.(check int) "Should have 2 signals" 2 (List.length button.signals);
@@ -288,7 +288,7 @@ let test_parse_signal_flags () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let widget = List.hd classes in
 
   let default_flags =
@@ -335,7 +335,7 @@ let test_parse_interface () =
   |}
   in
 
-  let _, _, _, interfaces, _, _, _ = parse_gir_string gir_xml in
+  let _, _, _, interfaces, _, _, _, _ = parse_gir_string gir_xml in
 
   Alcotest.(check int) "Should parse one interface" 1 (List.length interfaces);
 
@@ -356,7 +356,7 @@ let test_parse_interface_without_ctype () =
   |}
   in
 
-  let _, _, _, interfaces, _, _, _ = parse_gir_string gir_xml in
+  let _, _, _, interfaces, _, _, _, _ = parse_gir_string gir_xml in
   let iface = List.hd interfaces in
 
   (* When c:type is missing, parser should generate it as "Gtk" + name *)
@@ -383,7 +383,7 @@ let test_parse_enum () =
   |}
   in
 
-  let _, _, _, _, enums, _, _ = parse_gir_string gir_xml in
+  let _, _, _, _, enums, _, _, _ = parse_gir_string gir_xml in
 
   Alcotest.(check int) "Should parse one enum" 1 (List.length enums);
 
@@ -409,10 +409,114 @@ let test_parse_enum_missing_ctype () =
   |}
   in
 
-  let _, _, _, _, enums, _, _ = parse_gir_string gir_xml in
+  let _, _, _, _, enums, _, _, _ = parse_gir_string gir_xml in
 
   (* Enum without c:type should be skipped *)
   Alcotest.(check int) "Should skip enum without c:type" 0 (List.length enums)
+
+(* ========================================================================= *)
+(* Constant Parsing Tests *)
+(* ========================================================================= *)
+
+(* Parse a single <constant> and assert every field of [gir_constant]. *)
+let test_parse_constant_utf8 () =
+  let gir_xml =
+    wrap_namespace
+      {|
+    <constant name="ACCESSIBLE_ATTRIBUTE_BACKGROUND" value="bg-color"
+              c:type="GTK_ACCESSIBLE_ATTRIBUTE_BACKGROUND" version="4.14">
+      <doc xml:space="preserve">Background color attribute.</doc>
+      <type name="utf8" c:type="gchar*"/>
+    </constant>
+  |}
+  in
+
+  let _, _, _, _, _, _, _, constants = parse_gir_string gir_xml in
+
+  Alcotest.(check int) "one constant parsed" 1 (List.length constants);
+
+  let c = List.hd constants in
+  Alcotest.(check string) "name" "ACCESSIBLE_ATTRIBUTE_BACKGROUND" c.constant_name;
+  Alcotest.(check string) "c_type" "GTK_ACCESSIBLE_ATTRIBUTE_BACKGROUND"
+    c.constant_c_type;
+  Alcotest.(check string) "value" "bg-color" c.value;
+  Alcotest.(check string) "value type name" "utf8" c.value_type.name;
+  Alcotest.(check (option string)) "value c_type" (Some "gchar*")
+    c.value_type.c_type;
+  Alcotest.(check (option string)) "doc" (Some "Background color attribute.")
+    c.constant_doc;
+  Alcotest.(check (option string)) "version" (Some "4.14") c.version
+
+(* Exercise each observed GIR value type so the parser records the right
+   [value_type.name] for the downstream type mapper. *)
+let test_parse_constant_value_types () =
+  let one ~type_name xml_type =
+    let gir_xml =
+      wrap_namespace
+        (Printf.sprintf
+           {|<constant name="C" value="0" c:type="C">
+      %s
+    </constant>|}
+           xml_type)
+    in
+    let _, _, _, _, _, _, _, constants = parse_gir_string gir_xml in
+    Alcotest.(check int) (type_name ^ " parsed") 1 (List.length constants);
+    let c = List.hd constants in
+    Alcotest.(check string) (type_name ^ " value_type.name") type_name
+      c.value_type.name
+  in
+  one ~type_name:"gint" {|<type name="gint" c:type="gint"/>|};
+  one ~type_name:"guint" {|<type name="guint" c:type="guint"/>|};
+  one ~type_name:"gdouble" {|<type name="gdouble" c:type="gdouble"/>|};
+  one ~type_name:"gboolean" {|<type name="gboolean" c:type="gboolean"/>|};
+  one ~type_name:"Glyph" {|<type name="Glyph" c:type="PangoGlyph"/>|}
+
+(* A constant with no doc and no version still parses, with both as [None]. *)
+let test_parse_constant_minimal () =
+  let gir_xml =
+    wrap_namespace
+      {|
+    <constant name="SIMPLE" value="42" c:type="SIMPLE">
+      <type name="gint" c:type="gint"/>
+    </constant>
+  |}
+  in
+
+  let _, _, _, _, _, _, _, constants = parse_gir_string gir_xml in
+  Alcotest.(check int) "one constant" 1 (List.length constants);
+  let c = List.hd constants in
+  Alcotest.(check (option string)) "no doc" None c.constant_doc;
+  Alcotest.(check (option string)) "no version" None c.version;
+  Alcotest.(check bool) "introspectable default" true c.introspectable
+
+(* A <constant> missing the required c:type is skipped (parser returns None). *)
+let test_parse_constant_missing_ctype () =
+  let gir_xml =
+    wrap_namespace
+      {|
+    <constant name="NO_CTYPE" value="1">
+      <type name="gint" c:type="gint"/>
+    </constant>
+  |}
+  in
+
+  let _, _, _, _, _, _, _, constants = parse_gir_string gir_xml in
+  Alcotest.(check int) "constant without c:type skipped" 0 (List.length constants)
+
+(* A <constant> whose <type> has no name falls back to "void" for value_type. *)
+let test_parse_constant_type_without_name () =
+  let gir_xml =
+    wrap_namespace
+      {|
+    <constant name="C" value="1" c:type="C">
+      <type c:type="gchar*"/>
+    </constant>
+  |}
+  in
+
+  let _, _, _, _, _, _, _, constants = parse_gir_string gir_xml in
+  let c = List.hd constants in
+  Alcotest.(check string) "type name defaults to void" "void" c.value_type.name
 
 (* ========================================================================= *)
 (* Bitfield Parsing Tests *)
@@ -431,7 +535,7 @@ let test_parse_bitfield () =
   |}
   in
 
-  let _, _, _, _, _, bitfields, _ = parse_gir_string gir_xml in
+  let _, _, _, _, _, bitfields, _, _ = parse_gir_string gir_xml in
 
   Alcotest.(check int) "Should parse one bitfield" 1 (List.length bitfields);
 
@@ -481,7 +585,7 @@ let test_parse_record () =
   |}
   in
 
-  let _, _, _, _, _, _, records = parse_gir_string gir_xml in
+  let _, _, _, _, _, _, records, _ = parse_gir_string gir_xml in
 
   Alcotest.(check int) "Should parse one record" 1 (List.length records);
 
@@ -509,7 +613,7 @@ let test_parse_opaque_record () =
   |}
   in
 
-  let _, _, _, _, _, _, records = parse_gir_string gir_xml in
+  let _, _, _, _, _, _, records, _ = parse_gir_string gir_xml in
   let opaque = List.hd records in
 
   Alcotest.(check bool) "Record should be opaque" true opaque.opaque
@@ -537,7 +641,7 @@ let test_parse_nullable_parameters () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let widget = List.hd classes in
   let method_ = List.hd widget.methods in
   let param = List.hd method_.parameters in
@@ -566,7 +670,7 @@ let test_parse_parameter_directions () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let widget = List.hd classes in
   let method_ = List.hd widget.methods in
 
@@ -604,7 +708,7 @@ let test_parse_throws_attribute () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let file = List.hd classes in
 
   let ctor = List.hd file.constructors in
@@ -636,7 +740,7 @@ let test_parse_type_with_ctype () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let label = List.hd classes in
   let method_ = List.hd label.methods in
   let param = List.hd method_.parameters in
@@ -659,7 +763,7 @@ let test_parse_type_without_ctype () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let widget = List.hd classes in
   let method_ = List.hd widget.methods in
 
@@ -682,7 +786,7 @@ let test_parse_namespace () =
   |}
   in
 
-  let _, namespace, _, _, _, _, _ = parse_gir_string gir_xml in
+  let _, namespace, _, _, _, _, _, _ = parse_gir_string gir_xml in
 
   Alcotest.(check string) "Namespace name" "CustomLib" namespace.namespace_name;
   Alcotest.(check string) "Namespace version" "2.0" namespace.namespace_version;
@@ -706,7 +810,7 @@ let test_parse_empty_class () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let empty = List.hd classes in
 
   Alcotest.(check int) "No constructors" 0 (List.length empty.constructors);
@@ -727,7 +831,7 @@ let test_parse_multiple_classes () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
 
   Alcotest.(check int) "Should parse 3 classes" 3 (List.length classes);
 
@@ -757,7 +861,7 @@ let test_parse_mixed_types () =
   |}
   in
 
-  let _, _, classes, interfaces, enums, bitfields, records =
+  let _, _, classes, interfaces, enums, bitfields, records, _ =
     parse_gir_string gir_xml
   in
 
@@ -791,7 +895,7 @@ let test_parse_method_with_many_parameters () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let test_class = List.hd classes in
   let method_ = List.hd test_class.methods in
 
@@ -829,7 +933,7 @@ let test_parse_array_return_type () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let container = List.hd classes in
   let method_ = List.hd container.methods in
 
@@ -874,7 +978,7 @@ let test_parse_array_with_length () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let list_class = List.hd classes in
   let method_ = List.hd list_class.methods in
 
@@ -901,7 +1005,7 @@ let test_parse_array_zero_terminated () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let string_array = List.hd classes in
   let method_ = List.hd string_array.methods in
 
@@ -926,7 +1030,7 @@ let test_parse_array_fixed_size () =
   |}
   in
 
-  let _, _, _, _, _, _, records = parse_gir_string gir_xml in
+  let _, _, _, _, _, _, records, _ = parse_gir_string gir_xml in
   let point = List.hd records in
   let field = List.hd point.fields in
 
@@ -965,7 +1069,7 @@ let test_parse_array_parameter () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let list_class = List.hd classes in
   let method_ = List.hd list_class.methods in
   let items_param =
@@ -999,7 +1103,7 @@ let test_parse_array_property () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let model = List.hd classes in
   let prop = List.hd model.properties in
 
@@ -1029,7 +1133,7 @@ let test_parse_array_without_attributes () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let simple_array = List.hd classes in
   let method_ = List.hd simple_array.methods in
 
@@ -1063,7 +1167,7 @@ let test_parse_nested_array_type () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let matrix = List.hd classes in
   let method_ = List.hd matrix.methods in
 
@@ -1101,7 +1205,7 @@ let test_parse_glist_return_type () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let app = List.hd classes in
   let method_ = List.hd app.methods in
 
@@ -1141,7 +1245,7 @@ let test_parse_gslist_parameter () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let size_group = List.hd classes in
   let method_ = List.hd size_group.methods in
 
@@ -1173,7 +1277,7 @@ let test_parse_generic_type_without_nested () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let widget = List.hd classes in
   let method_ = List.hd widget.methods in
 
@@ -1208,7 +1312,7 @@ let test_parse_glist_with_cross_namespace_element () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let file_list = List.hd classes in
   let ctor = List.hd file_list.constructors in
   let files_param = List.hd ctor.ctor_parameters in
@@ -1252,7 +1356,7 @@ let test_parse_glist_with_same_namespace_element () =
   |}
   in
 
-  let _, _, classes, _, _, _, _ = parse_gir_string gir_xml in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
   let toplevel = List.find (fun c -> c.class_name = "Toplevel") classes in
   let method_ = List.hd toplevel.methods in
   let surfaces_param = List.hd method_.parameters in
@@ -1298,6 +1402,17 @@ let tests =
       test_parse_enum_missing_ctype;
     (* Bitfield tests *)
     Alcotest.test_case "Parse bitfield" `Quick test_parse_bitfield;
+    (* Constant tests *)
+    Alcotest.test_case "Parse constant (utf8)" `Quick
+      test_parse_constant_utf8;
+    Alcotest.test_case "Parse constant value types" `Quick
+      test_parse_constant_value_types;
+    Alcotest.test_case "Parse constant minimal" `Quick
+      test_parse_constant_minimal;
+    Alcotest.test_case "Parse constant missing c:type" `Quick
+      test_parse_constant_missing_ctype;
+    Alcotest.test_case "Parse constant type without name" `Quick
+      test_parse_constant_type_without_name;
     (* Record tests *)
     Alcotest.test_case "Parse record" `Quick test_parse_record;
     Alcotest.test_case "Parse opaque record" `Quick test_parse_opaque_record;

@@ -145,6 +145,15 @@ If @text is %NULL, this simply calls [method@Pango.Renderer.draw_glyphs].
 The default implementation of this method simply falls back to
 [method@Pango.Renderer.draw_glyphs]. *)
 
+external draw_glyph :
+  t ->
+  Context_and__font_and__font_map_and__fontset.Font.t ->
+  int ->
+  float ->
+  float ->
+  unit = "ml_pango_renderer_draw_glyph"
+(** Draws a single glyph with coordinates in device space. *)
+
 external draw_error_underline : t -> int -> int -> int -> int -> unit
   = "ml_pango_renderer_draw_error_underline"
 (** Draw a squiggly line that approximately covers the given rectangle

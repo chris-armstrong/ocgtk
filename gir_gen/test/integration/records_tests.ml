@@ -39,7 +39,7 @@ let test_record_support () =
   (* Write GIR file first so we can also parse it directly below *)
   let test_gir = "/tmp/test_record_gen.gir" in
   create_gir_file test_gir record_gir;
-  let _, _, classes, _, _, _, records =
+  let _, _, classes, _, _, _, records, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir []
   in
   assert_true "Should parse two records" (List.length records = 2);
