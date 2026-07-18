@@ -295,32 +295,30 @@ let parse_gir_enums_only filename =
   let enums = ref [] in
   let bitfields = ref [] in
 
-  (* Main parsing loop - only look for enums and bitfields *)
-  let rec parse_document () =
-    if Xmlm.eoi input then ()
-    else
-      match Xmlm.input input with
-      | `El_start ((_, tag), attrs) when local_name tag = "enumeration" ->
-          (match parse_enumeration input attrs with
-          | Some enum -> enums := enum :: !enums
-          | None -> ());
-          parse_document ()
-      | `El_start ((_, tag), attrs) when local_name tag = "bitfield" ->
-          (match parse_bitfield input attrs with
-          | Some bitfield -> bitfields := bitfield :: !bitfields
-          | None -> ());
-          parse_document ()
-      | `El_start ((_, tag), _) when tag = "repository" || tag = "namespace" ->
-          parse_document ()
-      | `El_start _ ->
-          skip_element input 1;
-          parse_document ()
-      | `El_end -> parse_document ()
-      | `Data _ -> parse_document ()
-      | `Dtd _ -> parse_document ()
+  (* Main parsing loop - only look for enums and bitfields. <repository> and
+     <namespace> are descended into via a nested [fold_element] so the enums
+     and bitfields inside the namespace are found. *)
+  let rec dispatch = function
+    | (_, "enumeration") ->
+        Some
+          (fun ~attrs () ->
+             match parse_enumeration input attrs with
+             | Some enum -> enums := enum :: !enums
+             | None -> ())
+    | (_, "bitfield") ->
+        Some
+          (fun ~attrs () ->
+             match parse_bitfield input attrs with
+             | Some bitfield -> bitfields := bitfield :: !bitfields
+             | None -> ())
+    | (_, "repository") | (_, "namespace") ->
+        Some
+          (fun ~attrs:_ () ->
+             Gir_xml_fold.fold_element ~input ~dispatch ~init:() ())
+    | _ -> None
   in
 
-  parse_document ();
+  Gir_xml_fold.fold_document ~input ~dispatch ~init:() ();
   close_in ic;
   (List.rev !enums, List.rev !bitfields)
 
@@ -1506,83 +1504,89 @@ let parse_gir_file filename filter_classes =
           }
   in
 
-  (* Main parsing loop *)
-  let rec parse_document () =
-    if Xmlm.eoi input then ()
-    else
-      match Xmlm.input input with
-      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "class" ->
-          (match parse_class attrs with
-          | Some cls -> controllers := cls :: !controllers
-          | None -> ());
-          parse_document ()
-      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "interface" ->
-          (match parse_interface attrs () with
-          | Some cls -> interfaces := cls :: !interfaces
-          | None -> ());
-          parse_document ()
-      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "enumeration"
-        ->
-          (match
-             parse_enumeration input
-               ~parse_functions:(fun _ -> parse_function)
-               attrs
-           with
-          | Some enum -> enums := enum :: !enums
-          | None -> ());
-          parse_document ()
-      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "bitfield" ->
-          (match parse_bitfield input attrs with
-          | Some bitfield -> bitfields := bitfield :: !bitfields
-          | None -> ());
-          parse_document ()
-      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "record" ->
-          (match parse_record attrs with
-          | Some record -> records := record :: !records
-          | None -> ());
-          parse_document ()
-      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "constant" ->
-          (match parse_constant input attrs with
-          | Some constant -> constants := constant :: !constants
-          | None -> ());
-          parse_document ()
-      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "namespace" ->
-          (match
-            ( get_attr "name" attrs,
-              get_attr "version" attrs,
-              get_attr "shared-library" attrs,
-              get_attr "c:identifier-prefixes" attrs,
-              get_attr "c:symbol-prefixes" attrs )
-           with
-          | Some name, Some version, Some shared_library, Some c_id_prefixes,
-            Some c_sym_prefixes ->
-              namespace :=
-                Some
-                  {
-                    namespace_name = name;
-                    namespace_version = version;
-                    namespace_shared_library = shared_library;
-                    namespace_c_identifier_prefixes = c_id_prefixes;
-                    namespace_c_symbol_prefixes = c_sym_prefixes;
-                  }
-          | _ ->
-              (* A well-formed GIR <repository> always carries one <namespace>
-                 with all five attributes; if any is missing the file is
-                 malformed and there is nothing useful to generate. *)
-              failwith
-                "gir_parser: <namespace> missing one of name, version, shared-library, c:identifier-prefixes, c:symbol-prefixes");
-          parse_document ()
-      | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "repository"
-        ->
-          repository := parse_repository attrs;
-          parse_document ()
-      | `El_start ((_, _), _) -> parse_document ()
-      | `El_end -> parse_document ()
-      | `Data _ -> parse_document ()
-      | `Dtd _ -> parse_document ()
+  (* Main parsing loop: fold the top-level element sequence until end-of-input.
+     <repository> is consumed by [parse_repository] (which stops before the
+     <namespace>); the <namespace> handler records the namespace and then
+     consumes it by folding its children with the same [dispatch], so the
+     class/interface/... entities inside it are parsed here rather than
+     leaked to the top level. *)
+  let rec dispatch = function
+    | (_, "class") ->
+        Some
+          (fun ~attrs () ->
+             match parse_class attrs with
+             | Some cls -> controllers := cls :: !controllers
+             | None -> ())
+    | (_, "interface") ->
+        Some
+          (fun ~attrs () ->
+             match parse_interface attrs () with
+             | Some cls -> interfaces := cls :: !interfaces
+             | None -> ())
+    | (_, "enumeration") ->
+        Some
+          (fun ~attrs () ->
+             match
+               parse_enumeration input ~parse_functions:(fun _ -> parse_function)
+                 attrs
+             with
+             | Some enum -> enums := enum :: !enums
+             | None -> ())
+    | (_, "bitfield") ->
+        Some
+          (fun ~attrs () ->
+             match parse_bitfield input attrs with
+             | Some bitfield -> bitfields := bitfield :: !bitfields
+             | None -> ())
+    | (_, "record") ->
+        Some
+          (fun ~attrs () ->
+             match parse_record attrs with
+             | Some record -> records := record :: !records
+             | None -> ())
+    | (_, "constant") ->
+        Some
+          (fun ~attrs () ->
+             match parse_constant input attrs with
+             | Some constant -> constants := constant :: !constants
+             | None -> ())
+    | (_, "namespace") ->
+        Some
+          (fun ~attrs () ->
+             (match
+                ( get_attr "name" attrs,
+                  get_attr "version" attrs,
+                  get_attr "shared-library" attrs,
+                  get_attr "c:identifier-prefixes" attrs,
+                  get_attr "c:symbol-prefixes" attrs )
+              with
+              | Some name, Some version, Some shared_library,
+                Some c_id_prefixes, Some c_sym_prefixes ->
+                  namespace :=
+                    Some
+                      {
+                        namespace_name = name;
+                        namespace_version = version;
+                        namespace_shared_library = shared_library;
+                        namespace_c_identifier_prefixes = c_id_prefixes;
+                        namespace_c_symbol_prefixes = c_sym_prefixes;
+                      }
+              | _ ->
+                  (* A well-formed GIR <repository> always carries one
+                     <namespace> with all five attributes; if any is missing
+                     the file is malformed and there is nothing useful to
+                     generate. *)
+                  failwith
+                    "gir_parser: <namespace> missing one of name, version, shared-library, c:identifier-prefixes, c:symbol-prefixes");
+             (* Consume the namespace by folding its children with the same
+                dispatch, so class/interface/... inside it are parsed here. *)
+             Gir_xml_fold.fold_element ~input ~dispatch ~init:() ())
+    | (_, "repository") ->
+        Some (fun ~attrs () -> repository := parse_repository attrs)
+    | _ -> None
   in
 
-  parse_document ();
+  Gir_xml_fold.fold_document ~input ~dispatch ~init:() ();
   close_in ic;
 
   ( !repository,
