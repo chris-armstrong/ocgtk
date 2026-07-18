@@ -762,7 +762,10 @@ let parse_gir_file filename filter_classes =
       Gir_xml_fold.fold_element ~input ~dispatch ~init ()
     in
     Some { Types.length; zero_terminated; fixed_size; element_type; array_name }
-  (* Parse return value type *)
+  (* Parse return value type. <type> is not a leaf here: for non-HashTable
+     types a nested <type> child is parsed as the element type and wrapped in
+     an array info; GLib.HashTable is skipped (it carries key/value types, not
+     an element type). <array> is consumed by [parse_array_type]. *)
   and parse_return_value attrs =
     let nullable_attr = get_attr "nullable" attrs |> Utils.parse_bool in
     let transfer_ownership_attr =
@@ -773,104 +776,94 @@ let parse_gir_file filename filter_classes =
       | Some "floating" -> Types.TransferFloating
       | _ -> Types.TransferNone (* default to none if not specified *)
     in
-    let type_info =
-      ref
-        {
-          name = "void";
-          c_type = None;
-          nullable = nullable_attr;
-          transfer_ownership = transfer_ownership_attr;
-          array = None;
-        }
+    let init =
+      {
+        name = "void";
+        c_type = None;
+        nullable = nullable_attr;
+        transfer_ownership = transfer_ownership_attr;
+        array = None;
+      }
     in
-
-    let rec parse_rv_contents () =
-      match Xmlm.input input with
-      | `El_start ((_, "type"), attrs) ->
-          let type_name =
-            match get_attr "name" attrs with Some n -> n | None -> "void"
-          in
-          let c_type_name = get_attr "c:type" attrs in
-          let nullable =
-            get_attr "nullable" attrs |> Utils.parse_bool || nullable_attr
-          in
-          (* Parse nested type element for element type (always do this for generic handling)
-             EXCEPT for GLib.HashTable which has key/value types, not an element type *)
-          let is_hash_table = type_name = "GLib.HashTable" in
-          let element_type_ref = ref None in
-          if not is_hash_table then begin
-            let rec parse_element_type () =
-              match Xmlm.input input with
-              | `El_start ((_, "type"), elem_attrs) ->
-                  let elem_name =
-                    match get_attr "name" elem_attrs with
-                    | Some n -> n
-                    | None -> "unknown"
-                  in
-                  let elem_c_type = get_attr "c:type" elem_attrs in
-                  element_type_ref :=
-                    Some
-                      {
-                        name = elem_name;
-                        c_type = elem_c_type;
-                        nullable = false;
-                        transfer_ownership = transfer_ownership_attr;
-                        array = None;
-                      };
+    let dispatch = function
+      | (_, "type") ->
+          Some
+            (fun ~attrs _acc ->
+              let type_name =
+                Option.value ~default:"void" (get_attr "name" attrs)
+              in
+              let c_type_name = get_attr "c:type" attrs in
+              let nullable =
+                get_attr "nullable" attrs |> Utils.parse_bool
+                || nullable_attr
+              in
+              let is_hash_table = String.equal type_name "GLib.HashTable" in
+              (* Parse a nested <type> child as the element type, except for
+                 GLib.HashTable which has key/value types, not an element type. *)
+              let element_type =
+                if is_hash_table then begin
                   skip_element input 1;
-                  parse_element_type ()
-              | `El_start _ ->
-                  skip_element input 1;
-                  parse_element_type ()
-              | `El_end -> ()
-              | `Data _ | `Dtd _ -> parse_element_type ()
-            in
-            parse_element_type ()
-          end
-          else skip_element input 1;
-          type_info :=
-            {
-              name = type_name;
-              c_type = c_type_name;
-              nullable;
-              transfer_ownership = transfer_ownership_attr;
-              array =
-                (match !element_type_ref with
-                | Some elem_type ->
-                    Some
-                      {
-                        Types.length = None;
-                        zero_terminated = false;
-                        fixed_size = None;
-                        element_type = elem_type;
-                        array_name = Some type_name;
-                      }
-                | None -> None);
-            };
-          parse_rv_contents ()
-      | `El_start ((_, "array"), array_attrs) ->
-          let array_info =
-            parse_array_type array_attrs transfer_ownership_attr nullable_attr
-          in
-          type_info :=
-            {
-              name = "array";
-              c_type = get_attr "c:type" array_attrs;
-              nullable = nullable_attr;
-              transfer_ownership = transfer_ownership_attr;
-              array = array_info;
-            };
-          parse_rv_contents ()
-      | `El_start _ ->
-          skip_element input 1;
-          parse_rv_contents ()
-      | `El_end -> ()
-      | `Data _ -> parse_rv_contents ()
-      | `Dtd _ -> parse_rv_contents ()
+                  None
+                end
+                else
+                  Gir_xml_fold.fold_element ~input
+                    ~dispatch:(function
+                      | (_, "type") ->
+                          Some
+                            (Gir_xml_fold.leaf ~input
+                               (fun ~attrs _ ->
+                                  let elem_name =
+                                    Option.value ~default:"unknown"
+                                      (get_attr "name" attrs)
+                                  in
+                                  let elem_c_type = get_attr "c:type" attrs in
+                                  Some
+                                    {
+                                      name = elem_name;
+                                      c_type = elem_c_type;
+                                      nullable = false;
+                                      transfer_ownership =
+                                        transfer_ownership_attr;
+                                      array = None;
+                                    }))
+                      | _ -> None)
+                    ~init:None
+                    ()
+              in
+              {
+                name = type_name;
+                c_type = c_type_name;
+                nullable;
+                transfer_ownership = transfer_ownership_attr;
+                array =
+                  (match element_type with
+                   | Some elem_type ->
+                       Some
+                         {
+                           Types.length = None;
+                           zero_terminated = false;
+                           fixed_size = None;
+                           element_type = elem_type;
+                           array_name = Some type_name;
+                         }
+                   | None -> None);
+              })
+      | (_, "array") ->
+          Some
+            (fun ~attrs _acc ->
+               let array_info =
+                 parse_array_type attrs transfer_ownership_attr nullable_attr
+               in
+               {
+                 name = "array";
+                 c_type = get_attr "c:type" attrs;
+                 nullable = nullable_attr;
+                 transfer_ownership = transfer_ownership_attr;
+                 array = array_info;
+               })
+      | _ -> None
     in
-
-    parse_rv_contents ();
-    !type_info
+    Gir_xml_fold.fold_element ~input ~dispatch ~init ()
   and parse_function attrs =
     let function_name = get_attr "name" attrs in
     let c_identifier = get_attr "c:identifier" attrs in
