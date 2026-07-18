@@ -608,45 +608,41 @@ let parse_gir_file filename filter_classes =
       version_namespace = None;
       os = None;
     }
-  (* Parse method contents to extract return type and parameters *)
+  (* Parse method contents to extract return type and parameters. Same
+     shape as [parse_signal]: <return-value> via [parse_return_value],
+     <parameters> via [parse_parameters], <doc> via [element_data]. *)
   and parse_method tag_attrs =
     let get_property = get_attr "glib:get-property" tag_attrs in
     let set_property = get_attr "glib:set-property" tag_attrs in
-    let return_type =
-      ref
-        {
-          name = "void";
-          c_type = None;
-          nullable = false;
-          transfer_ownership = Types.TransferNone;
-          array = None;
-        }
+    let void_type =
+      {
+        name = "void";
+        c_type = None;
+        nullable = false;
+        transfer_ownership = Types.TransferNone;
+        array = None;
+      }
     in
-    let params = ref [] in
-    let doc : string option ref = ref None in
-    let rec parse_method_contents () =
-      match Xmlm.input input with
-      | `El_start ((_, tag), _tag_attrs) -> (
-          match tag with
-          | "return-value" ->
-              return_type := parse_return_value _tag_attrs;
-              parse_method_contents ()
-          | "parameters" ->
-              params := parse_parameters ();
-              parse_method_contents ()
-          | "doc" ->
-              doc := element_data input ();
-              parse_method_contents ()
-          | _ ->
-              skip_element input 1;
-              parse_method_contents ())
-      | `El_end -> ()
-      | `Data _ -> parse_method_contents ()
-      | `Dtd _ -> parse_method_contents ()
+    let dispatch = function
+      | (_, "return-value") ->
+          Some
+            (fun ~attrs (_rt, params, doc) ->
+               (parse_return_value attrs, params, doc))
+      | (_, "parameters") ->
+          Some
+            (fun ~attrs:_ (rt, _params, doc) ->
+               (rt, parse_parameters (), doc))
+      | (_, "doc") ->
+          Some
+            (fun ~attrs:_ (rt, params, _doc) ->
+               (rt, params, element_data input ()))
+      | _ -> None
     in
-
-    parse_method_contents ();
-    (!return_type, List.rev !params, !doc, get_property, set_property)
+    let (return_type, params, doc) =
+      Gir_xml_fold.fold_element ~input ~dispatch ~init:(void_type, [], None)
+        ()
+    in
+    (return_type, List.rev params, doc, get_property, set_property)
   (* Parse glib:signal elements. <return-value> is consumed by
      [parse_return_value], <parameters> by [parse_parameters], and <doc>
      by [element_data]. *)
