@@ -39,11 +39,18 @@ val leaf : input:input -> (attrs:attrs -> 'acc -> 'acc) -> 'acc handler
     whose [`El_start] has just been consumed, and returns the accumulator at
     the matching [`El_end] (which it consumes).
 
-    [on_data] folds interleaved text data (default: ignore). *)
+    [on_data] folds interleaved text data (default: ignore).
+
+    [stop_on], when it returns [true] for a child's tag, terminates the fold
+    early and returns the accumulator *without consuming that child* — the
+    sentinel sibling is left for the caller. This expresses the "fold until a
+    sentinel" pattern (e.g. folding a parent's children until a particular
+    sibling that the caller will handle). *)
 val fold_element :
   input:input ->
   dispatch:'acc dispatch ->
   ?on_data:(string -> 'acc -> 'acc) ->
+  ?stop_on:(tag -> bool) ->
   init:'acc ->
   unit -> 'acc
 

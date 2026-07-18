@@ -1075,59 +1075,46 @@ let parse_gir_file filename filter_classes =
     in
     Gir_xml_fold.fold_element ~input ~dispatch ~init:[] ()
   and parse_repository _ =
-    let repository_c_includes = ref [] in
-    let repository_includes = ref [] in
-    let repository_packages = ref [] in
-    let rec parse_repository_contents () =
-      match Xmlm.peek input with
-      | `El_start (("http://www.gtk.org/introspection/c/1.0", "include"), attrs)
-        ->
-          let name = get_attr "name" attrs in
-
-          (match name with
-          | Some name -> repository_c_includes := name :: !repository_c_includes
-          | _ -> ());
-          ignore (Xmlm.input input);
-          skip_element input 1;
-          parse_repository_contents ()
-      | `El_start
-          (("http://www.gtk.org/introspection/core/1.0", "include"), attrs) ->
-          let name = get_attr "name" attrs in
-          let version = get_attr "version" attrs in
-          let _ =
-            match (name, version) with
-            | Some name, Some version ->
-                repository_includes :=
-                  { include_name = name; include_version = version }
-                  :: !repository_includes
-            | _ -> ()
-          in
-          ignore (Xmlm.input input);
-          skip_element input 1;
-          parse_repository_contents ()
-      | `El_start
-          (("http://www.gtk.org/introspection/core/1.0", "package"), attrs) ->
-          let name = get_attr "name" attrs in
-
-          let _ =
-            match name with
-            | Some name -> repository_packages := name :: !repository_packages
-            | _ -> ()
-          in
-          ignore (Xmlm.input input);
-          skip_element input 1;
-          parse_repository_contents ()
-      | `El_start ((_, "namespace"), _) -> ()
-      | _ ->
-          ignore (Xmlm.input input);
-          parse_repository_contents ()
+    let init =
+      { repository_c_includes = []; repository_includes = [];
+        repository_packages = [] }
     in
-    parse_repository_contents ();
-    {
-      repository_c_includes = !repository_c_includes;
-      repository_includes = !repository_includes;
-      repository_packages = !repository_packages;
-    }
+    let dispatch = function
+      | ("http://www.gtk.org/introspection/c/1.0", "include") ->
+          Some
+            (Gir_xml_fold.leaf ~input
+               (fun ~attrs acc ->
+                  { acc with repository_c_includes =
+                      (match get_attr "name" attrs with
+                       | Some name -> name :: acc.repository_c_includes
+                       | None -> acc.repository_c_includes) }))
+      | ("http://www.gtk.org/introspection/core/1.0", "include") ->
+          Some
+            (Gir_xml_fold.leaf ~input
+               (fun ~attrs acc ->
+                  { acc with repository_includes =
+                      (match (get_attr "name" attrs, get_attr "version" attrs)
+                       with
+                       | Some name, Some version ->
+                           { include_name = name; include_version = version }
+                           :: acc.repository_includes
+                       | _ -> acc.repository_includes) }))
+      | ("http://www.gtk.org/introspection/core/1.0", "package") ->
+          Some
+            (Gir_xml_fold.leaf ~input
+               (fun ~attrs acc ->
+                  { acc with repository_packages =
+                      (match get_attr "name" attrs with
+                       | Some name -> name :: acc.repository_packages
+                       | None -> acc.repository_packages) }))
+      | _ -> None
+    in
+    (* Stop before the <namespace> sibling, leaving it for [parse_document]'s
+       namespace handler. The lists are returned in reverse order, matching
+       the original parser. *)
+    Gir_xml_fold.fold_element ~input ~dispatch
+      ~stop_on:(function (_, "namespace") -> true | _ -> false)
+      ~init ()
   (* Parse a record element *)
   and parse_record attrs =
     match (get_attr "name" attrs, get_attr "c:type" attrs) with

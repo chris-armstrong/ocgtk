@@ -56,22 +56,32 @@ let default_on_data _ acc = acc
      interpreting an unknown child as anything else would silently mis-parse
      the parent's remaining children).
 
-   [on_data] folds interleaved text data (default: ignore). *)
-let fold_element ~input ~dispatch ?(on_data = default_on_data) ~init () =
+   [on_data] folds interleaved text data (default: ignore).
+
+   [stop_on], when it returns [true] for a child's tag, terminates the fold
+   early and returns the accumulator *without consuming that child* — the
+   sentinel sibling is left for the caller. This expresses the "fold until a
+   sentinel" pattern (e.g. [parse_repository] folding <include>/<package>
+   until it reaches the <namespace> sibling, which the caller handles). *)
+let fold_element ~input ~dispatch ?(on_data = default_on_data)
+    ?(stop_on = fun _ -> false) ~init () =
   let rec loop acc =
-    match Xmlm.input input with
-    | `El_start (tag, attrs) ->
-        let acc =
-          match dispatch tag with
-          | Some h -> h ~attrs acc
-          | None ->
-              skip_element input 1;
-              acc
-        in
-        loop acc
-    | `El_end -> acc
-    | `Data s -> loop (on_data s acc)
-    | `Dtd _ -> loop acc
+    match Xmlm.peek input with
+    | `El_start (tag, _) when stop_on tag -> acc
+    | _ ->
+        (match Xmlm.input input with
+         | `El_start (tag, attrs) ->
+             let acc =
+               match dispatch tag with
+               | Some h -> h ~attrs acc
+               | None ->
+                   skip_element input 1;
+                   acc
+             in
+             loop acc
+         | `El_end -> acc
+         | `Data s -> loop (on_data s acc)
+         | `Dtd _ -> loop acc)
   in
   loop init
 
