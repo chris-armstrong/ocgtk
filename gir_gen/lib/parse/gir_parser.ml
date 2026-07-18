@@ -4,6 +4,20 @@ open StdLabels
 open Types
 module StringSet = Set.Make (String)
 
+(* Accumulator for folding the children of a <class> or <interface>
+   element. [cc_methods] and [cc_virtual_methods] are kept separate so
+   [merge_methods] can dedupe at the end; [cc_implements] is used by <class>
+   and [cc_prerequisites] by <interface>. *)
+type class_contents = {
+  cc_constructors : gir_constructor list;
+  cc_methods : gir_method list;
+  cc_virtual_methods : gir_method list;
+  cc_properties : gir_property list;
+  cc_signals : gir_signal list;
+  cc_implements : string list;
+  cc_prerequisites : string list;
+}
+
 (* [or_none o ~f] keeps [o] when it is [Some _], else falls back to [f ()].
    Lets a chain of "try this lookup, else the next" read as a pipeline instead of
    nested [match]s. *)
@@ -366,167 +380,163 @@ let parse_gir_file filename filter_classes =
         let introspectable =
           get_attr "introspectable" attrs |> Utils.parse_bool ~default:true
         in
-        let constructors = ref [] in
-        let methods = ref [] in
-        let virtual_methods = ref [] in
-        let properties = ref [] in
-        let signals = ref [] in
-        let implements = ref [] in
-
-        let rec parse_class_contents () =
-          match Xmlm.input input with
-          | `El_start ((_, raw_tag), tag_attrs) -> (
-              let tag = local_name raw_tag in
-              match tag with
-              | "implements" ->
-                  (match get_attr "name" tag_attrs with
-                  | Some iface_name -> implements := iface_name :: !implements
-                  | None -> ());
-                  skip_element input 1;
-                  parse_class_contents ()
-              | "constructor" -> (
-                  match
-                    ( get_attr "name" tag_attrs,
-                      get_attr "c:identifier" tag_attrs )
-                  with
-                  | Some ctor_name, Some c_id ->
-                      let throws = get_attr "throws" tag_attrs = Some "1" in
-                      let ctor_introspectable =
-                        get_attr "introspectable" tag_attrs
-                        |> Utils.parse_bool ~default:true
-                      in
-                      let _return_type, params, doc, _, _ =
-                        parse_method tag_attrs
-                      in
-                      constructors :=
-                        {
-                          ctor_name;
-                          c_identifier = c_id;
-                          ctor_parameters = params;
-                          ctor_doc = doc;
-                          throws;
-                          ctor_introspectable;
-                          version = get_attr "version" tag_attrs;
-                          version_namespace = None;
-                          os = None;
-                        }
-                        :: !constructors;
-                      parse_class_contents ()
-                  | _ ->
-                      skip_element input 1;
-                      parse_class_contents ())
-              | "signal" -> (
-                  match parse_signal tag_attrs with
-                  | Some signal ->
-                      signals := signal :: !signals;
-                      parse_class_contents ()
-                  | None ->
-                      skip_element input 1;
-                      parse_class_contents ())
-              | "method" -> (
-                  match
-                    ( get_attr "name" tag_attrs,
-                      get_attr "c:identifier" tag_attrs )
-                  with
-                  | Some method_name, Some c_id ->
-                      let throws =
-                        get_attr "throws" tag_attrs |> Utils.parse_bool
-                      in
-                      let introspectable =
-                        get_attr "introspectable" tag_attrs
-                        |> Utils.parse_bool ~default:true
-                      in
-                      let return_type, params, doc, get_property, set_property =
-                        parse_method tag_attrs
-                      in
-                      methods :=
-                        {
-                          method_name;
-                          c_identifier = c_id;
-                          return_type;
-                          parameters = params;
-                          doc;
-                          throws;
-                          get_property;
-                          set_property;
-                          introspectable;
-                          version = get_attr "version" tag_attrs;
-                          version_namespace = None;
-                          os = None;
-                        }
-                        :: !methods;
-                      parse_class_contents ()
-                  | _ ->
-                      skip_element input 1;
-                      parse_class_contents ())
-              | "virtual-method" -> (
-                  match
-                    ( get_attr "name" tag_attrs,
-                      get_attr "c:identifier" tag_attrs )
-                  with
-                  | Some method_name, Some c_id ->
-                      let throws =
-                        get_attr "throws" tag_attrs |> Utils.parse_bool
-                      in
-                      let introspectable =
-                        get_attr "introspectable" tag_attrs
-                        |> Utils.parse_bool ~default:true
-                      in
-                      let return_type, params, doc, get_property, set_property =
-                        parse_method tag_attrs
-                      in
-                      virtual_methods :=
-                        {
-                          method_name;
-                          c_identifier = c_id;
-                          return_type;
-                          parameters = params;
-                          doc;
-                          throws;
-                          get_property;
-                          set_property;
-                          introspectable;
-                          version = get_attr "version" tag_attrs;
-                          version_namespace = None;
-                          os = None;
-                        }
-                        :: !virtual_methods;
-                      parse_class_contents ()
-                  | _ ->
-                      skip_element input 1;
-                      parse_class_contents ())
-              | "property" -> (
-                  match get_attr "name" tag_attrs with
-                  | Some prop_name ->
-                      let prop = parse_property prop_name tag_attrs in
-                      properties := prop :: !properties;
-                      parse_class_contents ()
-                  | None ->
-                      skip_element input 1;
-                      parse_class_contents ())
-              | _ ->
-                  skip_element input 1;
-                  parse_class_contents ())
-          | `El_end -> () (* End of class *)
-          | `Data _ -> parse_class_contents ()
-          | `Dtd _ -> parse_class_contents ()
+        let init =
+          {
+            cc_constructors = [];
+            cc_methods = [];
+            cc_virtual_methods = [];
+            cc_properties = [];
+            cc_signals = [];
+            cc_implements = [];
+            cc_prerequisites = [];
+          }
         in
-
-        parse_class_contents ();
+        let dispatch = function
+          | (_, "implements") ->
+              Some
+                (Gir_xml_fold.leaf ~input
+                   (fun ~attrs acc ->
+                      { acc with cc_implements =
+                          (match get_attr "name" attrs with
+                           | Some n -> n :: acc.cc_implements
+                           | None -> acc.cc_implements) }))
+          | (_, "constructor") ->
+              Some
+                (fun ~attrs acc ->
+                   match
+                     (get_attr "name" attrs, get_attr "c:identifier" attrs)
+                   with
+                   | Some ctor_name, Some c_id ->
+                       let throws = get_attr "throws" attrs = Some "1" in
+                       let ctor_introspectable =
+                         get_attr "introspectable" attrs
+                         |> Utils.parse_bool ~default:true
+                       in
+                       let _return_type, params, doc, _, _ = parse_method attrs in
+                       { acc with cc_constructors =
+                           {
+                             ctor_name;
+                             c_identifier = c_id;
+                             ctor_parameters = params;
+                             ctor_doc = doc;
+                             throws;
+                             ctor_introspectable;
+                             version = get_attr "version" attrs;
+                             version_namespace = None;
+                             os = None;
+                           }
+                           :: acc.cc_constructors }
+                   | _ ->
+                       skip_element input 1;
+                       acc)
+          | (_, "signal") ->
+              Some
+                (fun ~attrs acc ->
+                   match parse_signal attrs with
+                   | Some signal ->
+                       { acc with cc_signals = signal :: acc.cc_signals }
+                   | None -> acc (* already skipped by parse_signal *))
+          | (_, "method") ->
+              Some
+                (fun ~attrs acc ->
+                   match
+                     (get_attr "name" attrs, get_attr "c:identifier" attrs)
+                   with
+                   | Some method_name, Some c_id ->
+                       let throws =
+                         get_attr "throws" attrs |> Utils.parse_bool
+                       in
+                       let introspectable =
+                         get_attr "introspectable" attrs
+                         |> Utils.parse_bool ~default:true
+                       in
+                       let return_type, params, doc, get_property,
+                           set_property =
+                         parse_method attrs
+                       in
+                       { acc with cc_methods =
+                           {
+                             method_name;
+                             c_identifier = c_id;
+                             return_type;
+                             parameters = params;
+                             doc;
+                             throws;
+                             get_property;
+                             set_property;
+                             introspectable;
+                             version = get_attr "version" attrs;
+                             version_namespace = None;
+                             os = None;
+                           }
+                           :: acc.cc_methods }
+                   | _ ->
+                       skip_element input 1;
+                       acc)
+          | (_, "virtual-method") ->
+              Some
+                (fun ~attrs acc ->
+                   match
+                     (get_attr "name" attrs, get_attr "c:identifier" attrs)
+                   with
+                   | Some method_name, Some c_id ->
+                       let throws =
+                         get_attr "throws" attrs |> Utils.parse_bool
+                       in
+                       let introspectable =
+                         get_attr "introspectable" attrs
+                         |> Utils.parse_bool ~default:true
+                       in
+                       let return_type, params, doc, get_property,
+                           set_property =
+                         parse_method attrs
+                       in
+                       { acc with cc_virtual_methods =
+                           {
+                             method_name;
+                             c_identifier = c_id;
+                             return_type;
+                             parameters = params;
+                             doc;
+                             throws;
+                             get_property;
+                             set_property;
+                             introspectable;
+                             version = get_attr "version" attrs;
+                             version_namespace = None;
+                             os = None;
+                           }
+                           :: acc.cc_virtual_methods }
+                   | _ ->
+                       skip_element input 1;
+                       acc)
+          | (_, "property") ->
+              Some
+                (fun ~attrs acc ->
+                   match get_attr "name" attrs with
+                   | Some prop_name ->
+                       let prop = parse_property prop_name attrs in
+                       { acc with cc_properties = prop :: acc.cc_properties }
+                   | None ->
+                       skip_element input 1;
+                       acc)
+          | _ -> None
+        in
+        let cc = Gir_xml_fold.fold_element ~input ~dispatch ~init () in
         let methods =
-          merge_methods (List.rev !methods) (List.rev !virtual_methods)
+          merge_methods (List.rev cc.cc_methods) (List.rev cc.cc_virtual_methods)
         in
         Some
           {
             class_name = name;
             c_type;
             parent;
-            implements = List.rev !implements;
+            implements = List.rev cc.cc_implements;
             introspectable;
-            constructors = List.rev !constructors;
+            constructors = List.rev cc.cc_constructors;
             methods;
-            properties = List.rev !properties;
-            signals = List.rev !signals;
+            properties = List.rev cc.cc_properties;
+            signals = List.rev cc.cc_signals;
             class_doc = None;
             version = get_attr "version" attrs;
             os = None;
@@ -1358,123 +1368,122 @@ let parse_gir_file filename filter_classes =
         let introspectable =
           get_attr "introspectable" attrs |> Utils.parse_bool ~default:true
         in
-        let methods = ref [] in
-        let virtual_methods = ref [] in
-        let properties = ref [] in
-        let signals = ref [] in
-        let prerequisites = ref [] in
-        let rec parse_class_contents () =
-          match Xmlm.input input with
-          | `El_start ((_, raw_tag), tag_attrs) -> (
-              let tag = local_name raw_tag in
-              match tag with
-              | "signal" -> (
-                  match parse_signal tag_attrs with
-                  | Some signal ->
-                      signals := signal :: !signals;
-                      parse_class_contents ()
-                  | None ->
-                      skip_element input 1;
-                      parse_class_contents ())
-              | "method" -> (
-                  match
-                    ( get_attr "name" tag_attrs,
-                      get_attr "c:identifier" tag_attrs )
-                  with
-                  | Some method_name, Some c_id ->
-                      let throws =
-                        get_attr "throws" tag_attrs |> Utils.parse_bool
-                      in
-                      let introspectable =
-                        get_attr "introspectable" tag_attrs
-                        |> Utils.parse_bool ~default:true
-                      in
-                      let return_type, params, doc, get_property, set_property =
-                        parse_method tag_attrs
-                      in
-                      methods :=
-                        {
-                          method_name;
-                          c_identifier = c_id;
-                          return_type;
-                          parameters = params;
-                          doc;
-                          throws;
-                          get_property;
-                          set_property;
-                          introspectable;
-                          version = get_attr "version" tag_attrs;
-                          version_namespace = None;
-                          os = None;
-                        }
-                        :: !methods;
-                      parse_class_contents ()
-                  | _ ->
-                      skip_element input 1;
-                      parse_class_contents ())
-              | "virtual-method" -> (
-                  match
-                    ( get_attr "name" tag_attrs,
-                      get_attr "c:identifier" tag_attrs )
-                  with
-                  | Some method_name, Some c_id ->
-                      let throws =
-                        get_attr "throws" tag_attrs |> Utils.parse_bool
-                      in
-                      let introspectable =
-                        get_attr "introspectable" tag_attrs
-                        |> Utils.parse_bool ~default:true
-                      in
-                      let return_type, params, doc, get_property, set_property =
-                        parse_method tag_attrs
-                      in
-                      virtual_methods :=
-                        {
-                          method_name;
-                          c_identifier = c_id;
-                          return_type;
-                          parameters = params;
-                          doc;
-                          throws;
-                          get_property;
-                          set_property;
-                          introspectable;
-                          version = get_attr "version" tag_attrs;
-                          version_namespace = None;
-                          os = None;
-                        }
-                        :: !virtual_methods;
-                      parse_class_contents ()
-                  | _ ->
-                      skip_element input 1;
-                      parse_class_contents ())
-              | "property" -> (
-                  match get_attr "name" tag_attrs with
-                  | Some prop_name ->
-                      let prop = parse_property prop_name tag_attrs in
-                      properties := prop :: !properties;
-                      parse_class_contents ()
-                  | None ->
-                      skip_element input 1;
-                      parse_class_contents ())
-              | "prerequisite" ->
-                  (match get_attr "name" tag_attrs with
-                  | Some prereq_name ->
-                      prerequisites := prereq_name :: !prerequisites
-                  | None -> ());
-                  skip_element input 1;
-                  parse_class_contents ()
-              | _ ->
-                  skip_element input 1;
-                  parse_class_contents ())
-          | `El_end -> ()
-          | `Data _ -> parse_class_contents ()
-          | `Dtd _ -> parse_class_contents ()
+        let init =
+          {
+            cc_constructors = [];
+            cc_methods = [];
+            cc_virtual_methods = [];
+            cc_properties = [];
+            cc_signals = [];
+            cc_implements = [];
+            cc_prerequisites = [];
+          }
         in
-
-        parse_class_contents ();
+        let dispatch = function
+          | (_, "signal") ->
+              Some
+                (fun ~attrs acc ->
+                   match parse_signal attrs with
+                   | Some signal ->
+                       { acc with cc_signals = signal :: acc.cc_signals }
+                   | None -> acc (* already skipped by parse_signal *))
+          | (_, "method") ->
+              Some
+                (fun ~attrs acc ->
+                   match
+                     (get_attr "name" attrs, get_attr "c:identifier" attrs)
+                   with
+                   | Some method_name, Some c_id ->
+                       let throws =
+                         get_attr "throws" attrs |> Utils.parse_bool
+                       in
+                       let introspectable =
+                         get_attr "introspectable" attrs
+                         |> Utils.parse_bool ~default:true
+                       in
+                       let return_type, params, doc, get_property,
+                           set_property =
+                         parse_method attrs
+                       in
+                       { acc with cc_methods =
+                           {
+                             method_name;
+                             c_identifier = c_id;
+                             return_type;
+                             parameters = params;
+                             doc;
+                             throws;
+                             get_property;
+                             set_property;
+                             introspectable;
+                             version = get_attr "version" attrs;
+                             version_namespace = None;
+                             os = None;
+                           }
+                           :: acc.cc_methods }
+                   | _ ->
+                       skip_element input 1;
+                       acc)
+          | (_, "virtual-method") ->
+              Some
+                (fun ~attrs acc ->
+                   match
+                     (get_attr "name" attrs, get_attr "c:identifier" attrs)
+                   with
+                   | Some method_name, Some c_id ->
+                       let throws =
+                         get_attr "throws" attrs |> Utils.parse_bool
+                       in
+                       let introspectable =
+                         get_attr "introspectable" attrs
+                         |> Utils.parse_bool ~default:true
+                       in
+                       let return_type, params, doc, get_property,
+                           set_property =
+                         parse_method attrs
+                       in
+                       { acc with cc_virtual_methods =
+                           {
+                             method_name;
+                             c_identifier = c_id;
+                             return_type;
+                             parameters = params;
+                             doc;
+                             throws;
+                             get_property;
+                             set_property;
+                             introspectable;
+                             version = get_attr "version" attrs;
+                             version_namespace = None;
+                             os = None;
+                           }
+                           :: acc.cc_virtual_methods }
+                   | _ ->
+                       skip_element input 1;
+                       acc)
+          | (_, "property") ->
+              Some
+                (fun ~attrs acc ->
+                   match get_attr "name" attrs with
+                   | Some prop_name ->
+                       let prop = parse_property prop_name attrs in
+                       { acc with cc_properties = prop :: acc.cc_properties }
+                   | None ->
+                       skip_element input 1;
+                       acc)
+          | (_, "prerequisite") ->
+              Some
+                (Gir_xml_fold.leaf ~input
+                   (fun ~attrs acc ->
+                      { acc with cc_prerequisites =
+                          (match get_attr "name" attrs with
+                           | Some n -> n :: acc.cc_prerequisites
+                           | None -> acc.cc_prerequisites) }))
+          | _ -> None
+        in
+        let cc = Gir_xml_fold.fold_element ~input ~dispatch ~init () in
         let methods =
-          merge_methods (List.rev !methods) (List.rev !virtual_methods)
+          merge_methods (List.rev cc.cc_methods) (List.rev cc.cc_virtual_methods)
         in
         Some
           {
@@ -1486,11 +1495,11 @@ let parse_gir_file filename filter_classes =
               | None -> String.lowercase_ascii name);
             glib_type_name = get_attr "glib:type-name" attrs;
             glib_get_type = get_attr "glib:get-type" attrs;
-            prerequisites = List.rev !prerequisites;
+            prerequisites = List.rev cc.cc_prerequisites;
             introspectable;
             methods;
-            properties = List.rev !properties;
-            signals = List.rev !signals;
+            properties = List.rev cc.cc_properties;
+            signals = List.rev cc.cc_signals;
             interface_doc = None;
             version = get_attr "version" attrs;
             os = None;
