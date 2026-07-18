@@ -164,134 +164,120 @@ let merge_methods concrete virtuals =
   in
   concrete @ List.filter ~f:(fun m -> not (is_dup m)) virtuals
 
-(* Shared: Parse bitfield element *)
+(* Shared: Parse bitfield element. [Gir_xml_fold.fold_element] owns the
+   sibling-advance loop; each <member> handler consumes its child (recursing
+   into [fold_element] for the member's <doc>) and prepends to [flags]. The
+   list is reversed once at the end. *)
 let parse_bitfield input attrs =
   match (get_attr "name" attrs, get_attr "c:type" attrs) with
-  | Some name, Some c_type -> begin
-      let flags = ref [] in
-
-      let rec parse_bitfield_contents () =
-        match Xmlm.input input with
-        | `El_start ((_, "member"), member_attrs) -> (
-            match
-              ( get_attr "name" member_attrs,
-                get_attr "value" member_attrs,
-                get_attr "c:identifier" member_attrs )
-            with
-            | Some flag_name, Some value_str, Some c_id ->
-                let value = Option.value ~default:0 (int_of_string_opt value_str) in
-                let flag_doc = ref None in
-                let rec parse_flag_contents () =
-                  match Xmlm.input input with
-                  | `El_start ((_, tag), _) when local_name tag = "doc" ->
-                      flag_doc := parse_doc_text input ();
-                      parse_flag_contents ()
-                  | `El_start _ ->
-                      skip_element input 1;
-                      parse_flag_contents ()
-                  | `El_end -> ()
-                  | `Data _ | `Dtd _ -> parse_flag_contents ()
-                in
-                parse_flag_contents ();
-                flags :=
-                  {
-                    flag_name;
-                    flag_value = value;
-                    flag_c_identifier = c_id;
-                    flag_doc = !flag_doc;
-                    flag_version = get_attr "version" member_attrs;
-                    flag_os = None;
-                  }
-                  :: !flags;
-                parse_bitfield_contents ()
-            | _ ->
-                skip_element input 1;
-                parse_bitfield_contents ())
-        | `El_start _ ->
-            skip_element input 1;
-            parse_bitfield_contents ()
-        | `El_end -> ()
-        | `Data _ -> parse_bitfield_contents ()
-        | `Dtd _ -> parse_bitfield_contents ()
-      in
-
-      parse_bitfield_contents ();
-      Some
+  | Some name, Some c_type ->
+      let init =
         {
           bitfield_name = name;
           bitfield_c_type = c_type;
-          flags = List.rev !flags;
+          flags = [];
           bitfield_doc = None;
           bitfield_version = get_attr "version" attrs;
           bitfield_os = None;
         }
-    end
+      in
+      let dispatch = function
+        | (_, "member") ->
+            Some
+              (fun ~attrs acc ->
+                match
+                  ( get_attr "name" attrs,
+                    get_attr "value" attrs,
+                    get_attr "c:identifier" attrs )
+                with
+                | Some flag_name, Some value_str, Some c_id ->
+                    let value =
+                      Option.value ~default:0 (int_of_string_opt value_str)
+                    in
+                    let flag_doc =
+                      Gir_xml_fold.fold_element ~input
+                        ~dispatch:(function
+                          | (_, "doc") ->
+                              Some (fun ~attrs:_ _ -> parse_doc_text input ())
+                          | _ -> None)
+                        ~init:None
+                        ()
+                    in
+                    { acc with flags =
+                        {
+                          flag_name;
+                          flag_value = value;
+                          flag_c_identifier = c_id;
+                          flag_doc;
+                          flag_version = get_attr "version" attrs;
+                          flag_os = None;
+                        }
+                        :: acc.flags }
+                | _ ->
+                    skip_element input 1;
+                    acc)
+        | _ -> None
+      in
+      let result = Gir_xml_fold.fold_element ~input ~dispatch ~init () in
+      Some { result with flags = List.rev result.flags }
   | _ ->
       skip_element input 1;
       None
 
-(* Parse constant element *)
+(* Parse constant element. <type> is a leaf (attributes only, body skipped via
+   [Gir_xml_fold.leaf]); <doc> is a text leaf read by [parse_doc_text]. *)
 let parse_constant input attrs =
   match (get_attr "name" attrs, get_attr "value" attrs, get_attr "c:type" attrs) with
   | Some name, Some value, Some c_type ->
-      let value_type =
-        ref
-          {
-            name = "void";
-            c_type = None;
-            nullable = false;
-            transfer_ownership = Types.TransferNone;
-            array = None;
-          }
-      in
-      let doc : string option ref = ref None in
-
-      let rec parse_constant_contents () =
-        match Xmlm.input input with
-        | `El_start ((_, tag), type_attrs) when local_name tag = "type" ->
-            let type_name =
-              match get_attr "name" type_attrs with
-              | Some n -> n
-              | None -> "void"
-            in
-            let c_type_name = get_attr "c:type" type_attrs in
-            let nullable =
-              get_attr "nullable" type_attrs |> Utils.parse_bool
-            in
-            value_type :=
-              {
-                name = type_name;
-                c_type = c_type_name;
-                nullable;
-                transfer_ownership = Types.TransferNone;
-                array = None;
-              };
-            skip_element input 1;
-            parse_constant_contents ()
-        | `El_start ((_, tag), _) when local_name tag = "doc" ->
-            doc := parse_doc_text input ();
-            parse_constant_contents ()
-        | `El_start _ ->
-            skip_element input 1;
-            parse_constant_contents ()
-        | `El_end -> ()
-        | `Data _ -> parse_constant_contents ()
-        | `Dtd _ -> parse_constant_contents ()
-      in
-
-      parse_constant_contents ();
-      Some
+      let init =
         {
           constant_name = name;
           constant_c_type = c_type;
           value;
-          value_type = !value_type;
-          constant_doc = !doc;
+          value_type =
+            {
+              name = "void";
+              c_type = None;
+              nullable = false;
+              transfer_ownership = Types.TransferNone;
+              array = None;
+            };
+          constant_doc = None;
           version = get_attr "version" attrs;
           os = None;
           introspectable =
             get_attr "introspectable" attrs |> Utils.parse_bool ~default:true;
         }
+      in
+      let dispatch = function
+        | (_, "type") ->
+            Some
+              (Gir_xml_fold.leaf ~input
+                 (fun ~attrs acc ->
+                    let type_name =
+                      match get_attr "name" attrs with
+                      | Some n -> n
+                      | None -> "void"
+                    in
+                    let c_type_name = get_attr "c:type" attrs in
+                    let nullable =
+                      get_attr "nullable" attrs |> Utils.parse_bool
+                    in
+                    { acc with value_type =
+                        {
+                          name = type_name;
+                          c_type = c_type_name;
+                          nullable;
+                          transfer_ownership = Types.TransferNone;
+                          array = None;
+                        } }))
+        | (_, "doc") ->
+            Some
+              (fun ~attrs:_ acc ->
+                 { acc with constant_doc = parse_doc_text input () })
+        | _ -> None
+      in
+      Some (Gir_xml_fold.fold_element ~input ~dispatch ~init ())
   | _ ->
       skip_element input 1;
       None
@@ -1205,7 +1191,8 @@ let parse_gir_file filename filter_classes =
         let introspectable =
           get_attr "introspectable" attrs |> Utils.parse_bool ~default:true
         in
-        (* glib:type-name/get-type are namespaced attributes; the local names are "type-name" and "get-type" *)
+        (* glib:type-name/get-type are namespaced attributes; the local names
+           are "type-name" and "get-type" *)
         let glib_type_name =
           match get_attr "type-name" attrs with
           | Some v -> Some v
@@ -1224,173 +1211,7 @@ let parse_gir_file filename filter_classes =
         let opaque = get_attr "opaque" attrs |> Utils.parse_bool in
         let disguised = get_attr "disguised" attrs |> Utils.parse_bool in
         let c_symbol_prefix = get_attr "c:symbol-prefix" attrs in
-        let fields = ref [] in
-        let constructors = ref [] in
-        let methods = ref [] in
-        let functions = ref [] in
-        let record_doc : string option ref = ref None in
-
-        let rec parse_record_contents () =
-          match Xmlm.input input with
-          | `El_start ((_, raw_tag), field_attrs)
-            when local_name raw_tag = "field" ->
-              let field_name = get_attr "name" field_attrs in
-              let readable =
-                get_attr "readable" field_attrs |> Utils.parse_bool
-              in
-              let writable =
-                get_attr "writable" field_attrs |> Utils.parse_bool
-              in
-              let field_type = ref None in
-              let field_doc = ref None in
-
-              let rec parse_field_contents () =
-                match Xmlm.input input with
-                | `El_start ((_, "type"), type_attrs) ->
-                    let type_name =
-                      Option.value ~default:"unknown"
-                        (get_attr "name" type_attrs)
-                    in
-                    let c_type_name = get_attr "c:type" type_attrs in
-                    let nullable =
-                      get_attr "nullable" type_attrs |> Utils.parse_bool
-                    in
-                    field_type :=
-                      Some
-                        {
-                          name = type_name;
-                          c_type = c_type_name;
-                          nullable;
-                          transfer_ownership = Types.TransferNone;
-                          array = None;
-                        };
-                    skip_element input 1;
-                    parse_field_contents ()
-                | `El_start ((_, "array"), array_attrs) ->
-                    let array_info =
-                      parse_array_type array_attrs Types.TransferNone false
-                    in
-                    field_type :=
-                      Some
-                        {
-                          name = "array";
-                          c_type = get_attr "c:type" array_attrs;
-                          nullable = false;
-                          transfer_ownership = Types.TransferNone;
-                          array = array_info;
-                        };
-                    parse_field_contents ()
-                | `El_start ((_, tag), _) when local_name tag = "doc" ->
-                    field_doc := parse_doc_text input ();
-                    parse_field_contents ()
-                | `El_start _ ->
-                    skip_element input 1;
-                    parse_field_contents ()
-                | `El_end -> ()
-                | `Data _ | `Dtd _ -> parse_field_contents ()
-              in
-
-              parse_field_contents ();
-              (match field_name with
-              | Some name ->
-                  fields :=
-                    {
-                      field_name = name;
-                      field_type = !field_type;
-                      readable;
-                      writable;
-                      field_doc = !field_doc;
-                      field_version = get_attr "version" field_attrs;
-                      field_os = None;
-                    }
-                    :: !fields
-              | None -> ());
-              parse_record_contents ()
-          | `El_start ((_, raw_tag), tag_attrs)
-            when local_name raw_tag = "constructor" -> (
-              match
-                (get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs)
-              with
-              | Some ctor_name, Some c_id ->
-                  let throws = get_attr "throws" tag_attrs = Some "1" in
-                  let ctor_introspectable =
-                    get_attr "introspectable" tag_attrs
-                    |> Utils.parse_bool ~default:true
-                  in
-                  let _return_type, params, doc, _, _ =
-                    parse_method tag_attrs
-                  in
-                  constructors :=
-                    {
-                      ctor_name;
-                      c_identifier = c_id;
-                      ctor_parameters = params;
-                      ctor_doc = doc;
-                      throws;
-                      ctor_introspectable;
-                      version = get_attr "version" tag_attrs;
-                      version_namespace = None;
-                      os = None;
-                    }
-                    :: !constructors;
-                  parse_record_contents ()
-              | _ ->
-                  skip_element input 1;
-                  parse_record_contents ())
-          | `El_start ((_, raw_tag), tag_attrs)
-            when local_name raw_tag = "method" -> (
-              match
-                (get_attr "name" tag_attrs, get_attr "c:identifier" tag_attrs)
-              with
-              | Some method_name, Some c_id ->
-                  let throws =
-                    get_attr "throws" tag_attrs |> Utils.parse_bool
-                  in
-                  let introspectable =
-                    get_attr "introspectable" tag_attrs
-                    |> Utils.parse_bool ~default:true
-                  in
-                  let return_type, params, doc, get_property, set_property =
-                    parse_method tag_attrs
-                  in
-                  methods :=
-                    {
-                      method_name;
-                      c_identifier = c_id;
-                      return_type;
-                      parameters = params;
-                      doc;
-                      throws;
-                      get_property;
-                      set_property;
-                      introspectable;
-                      version = get_attr "version" tag_attrs;
-                      version_namespace = None;
-                      os = None;
-                    }
-                    :: !methods;
-                  parse_record_contents ()
-              | _ ->
-                  skip_element input 1;
-                  parse_record_contents ())
-          | `El_start ((_, raw_tag), _tag_attrs) when local_name raw_tag = "doc"
-            ->
-              record_doc := element_data input ();
-              parse_record_contents ()
-          | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "function"
-            ->
-              let function_ = parse_function attrs in
-              functions := function_ :: !functions
-          | `El_start _ ->
-              skip_element input 1;
-              parse_record_contents ()
-          | `El_end -> ()
-          | `Data _ -> parse_record_contents ()
-          | `Dtd _ -> parse_record_contents ()
-        in
-
-        parse_record_contents ();
-        Some
+        let init =
           {
             record_name;
             c_type;
@@ -1401,13 +1222,181 @@ let parse_gir_file filename filter_classes =
             introspectable;
             c_symbol_prefix;
             is_gtype_struct_for;
-            fields = List.rev !fields;
-            constructors = List.rev !constructors;
-            methods = List.rev !methods;
-            record_doc = !record_doc;
-            functions = !functions;
+            fields = [];
+            constructors = [];
+            methods = [];
+            functions = [];
+            record_doc = None;
             version = get_attr "version" attrs;
             os = None;
+          }
+        in
+        let dispatch = function
+          | (_, "field") ->
+              Some
+                (fun ~attrs acc ->
+                  let field_name = get_attr "name" attrs in
+                  let readable =
+                    get_attr "readable" attrs |> Utils.parse_bool
+                  in
+                  let writable =
+                    get_attr "writable" attrs |> Utils.parse_bool
+                  in
+                  (* Fold the field's children into (field_type, field_doc).
+                     <type> is a leaf; <array> is consumed by [parse_array_type];
+                     <doc> by [parse_doc_text]. *)
+                  let field_type, field_doc =
+                    Gir_xml_fold.fold_element ~input
+                      ~dispatch:(function
+                        | (_, "type") ->
+                            Some
+                              (Gir_xml_fold.leaf ~input
+                                 (fun ~attrs (_, fdoc) ->
+                                    let type_name =
+                                      Option.value ~default:"unknown"
+                                        (get_attr "name" attrs)
+                                    in
+                                    let c_type_name = get_attr "c:type" attrs in
+                                    let nullable =
+                                      get_attr "nullable" attrs
+                                      |> Utils.parse_bool
+                                    in
+                                    ( Some
+                                        {
+                                          name = type_name;
+                                          c_type = c_type_name;
+                                          nullable;
+                                          transfer_ownership =
+                                            Types.TransferNone;
+                                          array = None;
+                                        },
+                                      fdoc )))
+                        | (_, "array") ->
+                            Some
+                              (fun ~attrs (_, fdoc) ->
+                                 let array_info =
+                                   parse_array_type attrs Types.TransferNone
+                                     false
+                                 in
+                                 ( Some
+                                     {
+                                       name = "array";
+                                       c_type = get_attr "c:type" attrs;
+                                       nullable = false;
+                                       transfer_ownership =
+                                         Types.TransferNone;
+                                       array = array_info;
+                                     },
+                                   fdoc ))
+                        | (_, "doc") ->
+                            Some
+                              (fun ~attrs:_ (ftype, _) ->
+                                 (ftype, parse_doc_text input ()))
+                        | _ -> None)
+                      ~init:(None, None)
+                      ()
+                  in
+                  match field_name with
+                  | Some name ->
+                      { acc with fields =
+                          {
+                            field_name = name;
+                            field_type;
+                            readable;
+                            writable;
+                            field_doc;
+                            field_version = get_attr "version" attrs;
+                            field_os = None;
+                          }
+                          :: acc.fields }
+                  | None -> acc)
+          | (_, "constructor") ->
+              Some
+                (fun ~attrs acc ->
+                   match
+                     (get_attr "name" attrs, get_attr "c:identifier" attrs)
+                   with
+                   | Some ctor_name, Some c_id ->
+                       let throws = get_attr "throws" attrs = Some "1" in
+                       let ctor_introspectable =
+                         get_attr "introspectable" attrs
+                         |> Utils.parse_bool ~default:true
+                       in
+                       let _return_type, params, doc, _, _ =
+                         parse_method attrs
+                       in
+                       { acc with constructors =
+                           {
+                             ctor_name;
+                             c_identifier = c_id;
+                             ctor_parameters = params;
+                             ctor_doc = doc;
+                             throws;
+                             ctor_introspectable;
+                             version = get_attr "version" attrs;
+                             version_namespace = None;
+                             os = None;
+                           }
+                           :: acc.constructors }
+                   | _ ->
+                       skip_element input 1;
+                       acc)
+          | (_, "method") ->
+              Some
+                (fun ~attrs acc ->
+                   match
+                     (get_attr "name" attrs, get_attr "c:identifier" attrs)
+                   with
+                   | Some method_name, Some c_id ->
+                       let throws =
+                         get_attr "throws" attrs |> Utils.parse_bool
+                       in
+                       let introspectable =
+                         get_attr "introspectable" attrs
+                         |> Utils.parse_bool ~default:true
+                       in
+                       let return_type, params, doc, get_property,
+                           set_property =
+                         parse_method attrs
+                       in
+                       { acc with methods =
+                           {
+                             method_name;
+                             c_identifier = c_id;
+                             return_type;
+                             parameters = params;
+                             doc;
+                             throws;
+                             get_property;
+                             set_property;
+                             introspectable;
+                             version = get_attr "version" attrs;
+                             version_namespace = None;
+                             os = None;
+                           }
+                           :: acc.methods }
+                   | _ ->
+                       skip_element input 1;
+                       acc)
+          | (_, "doc") ->
+              Some
+                (fun ~attrs:_ acc ->
+                   { acc with record_doc = element_data input () })
+          | (_, "function") ->
+              Some
+                (fun ~attrs acc ->
+                   let function_ = parse_function attrs in
+                   { acc with functions = function_ :: acc.functions })
+          | _ -> None
+        in
+        let result = Gir_xml_fold.fold_element ~input ~dispatch ~init () in
+        (* [functions] is intentionally not reversed here, matching the
+           original parser's behaviour; fields/constructors/methods are. *)
+        Some
+          { result with
+            fields = List.rev result.fields;
+            constructors = List.rev result.constructors;
+            methods = List.rev result.methods;
           }
     | _ ->
         skip_element input 1;

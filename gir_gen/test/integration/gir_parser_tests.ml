@@ -518,6 +518,28 @@ let test_parse_constant_type_without_name () =
   let c = List.hd constants in
   Alcotest.(check string) "type name defaults to void" "void" c.value_type.name
 
+(* Regression: an unknown child element before <type> must not cause the
+   parser to drop <type> (or any later sibling). This is the bug class the
+   fold-based parser eliminates: the sibling-advance loop is owned by
+   [fold_element], not by each branch, so a branch cannot forget to advance. *)
+let test_parse_constant_with_unknown_child () =
+  let gir_xml =
+    wrap_namespace
+      {|
+    <constant name="C" value="x" c:type="C">
+      <annotation source="future"/>
+      <type name="utf8" c:type="gchar*"/>
+    </constant>
+  |}
+  in
+  let _, _, _, _, _, _, _, constants = parse_gir_string gir_xml in
+  Alcotest.(check int) "one constant" 1 (List.length constants);
+  let c = List.hd constants in
+  Alcotest.(check string) "value_type.name survives unknown sibling" "utf8"
+    c.value_type.name;
+  Alcotest.(check (option string)) "value c_type survives" (Some "gchar*")
+    c.value_type.c_type
+
 (* ========================================================================= *)
 (* Bitfield Parsing Tests *)
 (* ========================================================================= *)
@@ -551,6 +573,47 @@ let test_parse_bitfield () =
   Alcotest.(check int) "Flag value" 4 selected.flag_value;
   Alcotest.(check string)
     "Flag c_identifier" "GTK_STATE_FLAG_SELECTED" selected.flag_c_identifier
+
+(* Regression: an unknown child element between <member>s must not cause the
+   parser to drop the following members. *)
+let test_parse_bitfield_with_unknown_child () =
+  let gir_xml =
+    wrap_namespace
+      {|
+    <bitfield name="StateFlags" c:type="GtkStateFlags">
+      <member name="normal" value="0" c:identifier="GTK_STATE_FLAG_NORMAL"/>
+      <annotation source="future"/>
+      <member name="active" value="1" c:identifier="GTK_STATE_FLAG_ACTIVE"/>
+    </bitfield>
+  |}
+  in
+  let _, _, _, _, _, bitfields, _, _ = parse_gir_string gir_xml in
+  let state_flags = List.hd bitfields in
+  Alcotest.(check int) "both members survive unknown sibling" 2
+    (List.length state_flags.flags);
+  let names = List.map (fun f -> f.flag_name) state_flags.flags in
+  Alcotest.(check (list string)) "member order preserved"
+    [ "normal"; "active" ] names
+
+(* Regression: an unknown child inside a <member> before <doc> must not cause
+   the <doc> to be dropped. *)
+let test_parse_bitfield_member_with_unknown_child () =
+  let gir_xml =
+    wrap_namespace
+      {|
+    <bitfield name="StateFlags" c:type="GtkStateFlags">
+      <member name="normal" value="0" c:identifier="GTK_STATE_FLAG_NORMAL">
+        <annotation source="future"/>
+        <doc>Normal state</doc>
+      </member>
+    </bitfield>
+  |}
+  in
+  let _, _, _, _, _, bitfields, _, _ = parse_gir_string gir_xml in
+  let state_flags = List.hd bitfields in
+  let normal = List.hd state_flags.flags in
+  Alcotest.(check (option string)) "member doc survives unknown sibling"
+    (Some "Normal state") normal.flag_doc
 
 (* ========================================================================= *)
 (* Record Parsing Tests *)
@@ -617,6 +680,41 @@ let test_parse_opaque_record () =
   let opaque = List.hd records in
 
   Alcotest.(check bool) "Record should be opaque" true opaque.opaque
+
+(* Regression: a <function> inside a <record> must not cause the parser to
+   drop the siblings that follow it. The hand-written [parse_record_contents]
+   loop historically forgot to recurse after the <function> branch, so every
+   child after a <function> was silently dropped (or worse, reinterpreted as
+   top-level by [parse_document]). The fold-based parser advances
+   automatically, so this cannot happen. *)
+let test_parse_record_function_then_method () =
+  let gir_xml =
+    wrap_namespace
+      {|
+    <record name="R" c:type="R">
+      <method name="before" c:identifier="r_before">
+        <return-value><type name="none" c:type="void"/></return-value>
+      </method>
+      <function name="f" c:identifier="r_f">
+        <return-value><type name="none" c:type="void"/></return-value>
+      </function>
+      <method name="after" c:identifier="r_after">
+        <return-value><type name="none" c:type="void"/></return-value>
+      </method>
+    </record>
+  |}
+  in
+  let _, _, _, _, _, _, records, _ = parse_gir_string gir_xml in
+  Alcotest.(check int) "one record" 1 (List.length records);
+  let r = List.hd records in
+  Alcotest.(check int) "both methods survive the <function>" 2
+    (List.length r.methods);
+  Alcotest.(check int) "function parsed" 1 (List.length r.functions);
+  let method_names =
+    List.map (fun (m : gir_method) -> m.method_name) r.methods
+  in
+  Alcotest.(check (list string)) "method order preserved"
+    [ "before"; "after" ] method_names
 
 (* ========================================================================= *)
 (* Parameter Parsing Tests *)
@@ -1402,6 +1500,10 @@ let tests =
       test_parse_enum_missing_ctype;
     (* Bitfield tests *)
     Alcotest.test_case "Parse bitfield" `Quick test_parse_bitfield;
+    Alcotest.test_case "Parse bitfield with unknown child" `Quick
+      test_parse_bitfield_with_unknown_child;
+    Alcotest.test_case "Parse bitfield member with unknown child" `Quick
+      test_parse_bitfield_member_with_unknown_child;
     (* Constant tests *)
     Alcotest.test_case "Parse constant (utf8)" `Quick
       test_parse_constant_utf8;
@@ -1413,9 +1515,13 @@ let tests =
       test_parse_constant_missing_ctype;
     Alcotest.test_case "Parse constant type without name" `Quick
       test_parse_constant_type_without_name;
+    Alcotest.test_case "Parse constant with unknown child" `Quick
+      test_parse_constant_with_unknown_child;
     (* Record tests *)
     Alcotest.test_case "Parse record" `Quick test_parse_record;
     Alcotest.test_case "Parse opaque record" `Quick test_parse_opaque_record;
+    Alcotest.test_case "Parse record function-then-method" `Quick
+      test_parse_record_function_then_method;
     (* Parameter tests *)
     Alcotest.test_case "Parse nullable parameters" `Quick
       test_parse_nullable_parameters;

@@ -1,0 +1,59 @@
+(* Fold-based helper for parsing Xmlm element trees. See [Gir_xml_fold]. *)
+
+type input = Xmlm.input
+type attrs = Xmlm.attribute list
+type tag = Xmlm.name
+
+(** A child handler runs after the child's [`El_start] has been consumed by
+    [fold_element]. It receives the child's attributes and the current
+    accumulator, and must consume the rest of the child — including its
+    matching [`El_end] — returning the updated accumulator.
+
+    The handler typically does one of:
+    - recurse via [fold_element] (container children), which consumes the
+      child's [`El_end] as part of its own contract;
+    - use [leaf] (attribute-only children), which [skip_element]s the body
+      and [`El_end] automatically;
+    - call [skip_element] / a text reader directly for the rare special case.
+
+    [fold_element] owns the sibling-advance loop, so a handler cannot forget
+    to move to the next sibling — the bug class that drops the rest of an
+    element's children after a branch is eliminated by construction. *)
+type 'acc handler = attrs:attrs -> 'acc -> 'acc
+
+(** Dispatch maps a child's tag to its handler, or [None] for unknown tags.
+    [fold_element] skips unknown tags via [skip_element] — the only safe
+    default, since interpreting an unknown child as anything else would
+    silently mis-parse the parent's remaining children. *)
+type 'acc dispatch = tag -> 'acc handler option
+
+val skip_element : input -> int -> unit
+
+(** [leaf ~input f] is a handler for a child whose body is irrelevant — only
+    its attributes matter. It computes the new accumulator from [attrs] via
+    [f] and then [skip_element]s the rest of the child (consuming its
+    [`El_end]). Use for self-closing or empty children such as <type>. *)
+val leaf : input:input -> (attrs:attrs -> 'acc -> 'acc) -> 'acc handler
+
+(** [fold_element ~input ~dispatch ~init ()] folds the children of the element
+    whose [`El_start] has just been consumed, and returns the accumulator at
+    the matching [`El_end] (which it consumes).
+
+    [on_data] folds interleaved text data (default: ignore). *)
+val fold_element :
+  input:input ->
+  dispatch:'acc dispatch ->
+  ?on_data:(string -> 'acc -> 'acc) ->
+  init:'acc ->
+  unit -> 'acc
+
+(** [fold_document] is the top-level variant: it folds a sequence of sibling
+    elements until end-of-input rather than until a matching [`El_end]. The
+    GIR document is not wrapped in a single element, so the top-level
+    [parse_document] loop needs this, not [fold_element]. *)
+val fold_document :
+  input:input ->
+  dispatch:'acc dispatch ->
+  ?on_data:(string -> 'acc -> 'acc) ->
+  init:'acc ->
+  unit -> 'acc
