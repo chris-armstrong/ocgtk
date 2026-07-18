@@ -4,29 +4,35 @@ open StdLabels
 open Types
 module StringSet = Set.Make (String)
 
+(* [or_none o ~f] keeps [o] when it is [Some _], else falls back to [f ()].
+   Lets a chain of "try this lookup, else the next" read as a pipeline instead of
+   nested [match]s. *)
+let or_none ~f = function
+  | Some _ as x -> x
+  | None -> f ()
+
 (* Get attribute value from XML attributes list *)
 let get_attr name attrs =
   let glib_ns = "http://www.gtk.org/introspection/glib/1.0" in
-  try List.assoc ("", name) attrs |> fun x -> Some x
-  with Not_found -> (
-    (* Try with c: namespace *)
-    try
-      List.assoc
-        ( "http://www.gtk.org/introspection/c/1.0",
-          String.sub ~pos:2 ~len:(String.length name - 2) name )
-        attrs
-      |> fun x -> Some x
-    with Not_found -> (
-      (* Try with glib: namespace (used by signals) *)
-      try
-        let glib_name =
-          match String.index_opt name ':' with
-          | Some idx ->
-              String.sub ~pos:(idx + 1) ~len:(String.length name - idx - 1) name
-          | None -> name
-        in
-        List.assoc (glib_ns, glib_name) attrs |> fun x -> Some x
-      with Not_found -> None))
+  (* Try the default namespace, then c: (strip the "c:" prefix, when [name] is
+     long enough), then glib: (strip everything up to and including ":"). *)
+  List.assoc_opt ("", name) attrs
+  |> or_none ~f:(fun () ->
+         if String.length name >= 2 then
+           List.assoc_opt
+             ( "http://www.gtk.org/introspection/c/1.0",
+               String.sub ~pos:2 ~len:(String.length name - 2) name )
+             attrs
+         else None)
+  |> or_none ~f:(fun () ->
+         let glib_name =
+           match String.index_opt name ':' with
+           | Some idx ->
+               String.sub ~pos:(idx + 1)
+                 ~len:(String.length name - idx - 1) name
+           | None -> name
+         in
+         List.assoc_opt (glib_ns, glib_name) attrs)
 
 let ns namespace =
   match namespace with
@@ -86,7 +92,7 @@ let parse_enumeration input ?parse_functions attrs =
                 get_attr "c:identifier" member_attrs )
             with
             | Some member_name, Some value_str, Some c_id ->
-                let value = try int_of_string value_str with _ -> 0 in
+                let value = Option.value ~default:0 (int_of_string_opt value_str) in
                 let member_doc = ref None in
                 let rec parse_member_contents () =
                   match Xmlm.input input with
@@ -173,7 +179,7 @@ let parse_bitfield input attrs =
                 get_attr "c:identifier" member_attrs )
             with
             | Some flag_name, Some value_str, Some c_id ->
-                let value = try int_of_string value_str with _ -> 0 in
+                let value = Option.value ~default:0 (int_of_string_opt value_str) in
                 let flag_doc = ref None in
                 let rec parse_flag_contents () =
                   match Xmlm.input input with
@@ -749,7 +755,7 @@ let parse_gir_file filename filter_classes =
   and parse_array_type attrs transfer_ownership_attr nullable_attr =
     let length =
       match get_attr "length" attrs with
-      | Some s -> ( try Some (int_of_string s) with _ -> None)
+      | Some s -> int_of_string_opt s
       | None -> None
     in
     let zero_terminated =
@@ -757,7 +763,7 @@ let parse_gir_file filename filter_classes =
     in
     let fixed_size =
       match get_attr "fixed-size" attrs with
-      | Some s -> ( try Some (int_of_string s) with _ -> None)
+      | Some s -> int_of_string_opt s
       | None -> None
     in
     let array_name = get_attr "name" attrs in
@@ -1607,27 +1613,30 @@ let parse_gir_file filename filter_classes =
           | None -> ());
           parse_document ()
       | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "namespace" ->
-          let namespace_name = Option.get (get_attr "name" attrs) in
-          let namespace_version = Option.get (get_attr "version" attrs) in
-          let namespace_shared_library =
-            Option.get (get_attr "shared-library" attrs)
-          in
-          let namespace_c_identifier_prefixes =
-            Option.get (get_attr "c:identifier-prefixes" attrs)
-          in
-          let namespace_c_symbol_prefixes =
-            Option.get (get_attr "c:symbol-prefixes" attrs)
-          in
-          namespace :=
-            Some
-              {
-                namespace_name;
-                namespace_version;
-                namespace_shared_library;
-                namespace_c_identifier_prefixes;
-                namespace_c_symbol_prefixes;
-              };
-
+          (match
+            ( get_attr "name" attrs,
+              get_attr "version" attrs,
+              get_attr "shared-library" attrs,
+              get_attr "c:identifier-prefixes" attrs,
+              get_attr "c:symbol-prefixes" attrs )
+           with
+          | Some name, Some version, Some shared_library, Some c_id_prefixes,
+            Some c_sym_prefixes ->
+              namespace :=
+                Some
+                  {
+                    namespace_name = name;
+                    namespace_version = version;
+                    namespace_shared_library = shared_library;
+                    namespace_c_identifier_prefixes = c_id_prefixes;
+                    namespace_c_symbol_prefixes = c_sym_prefixes;
+                  }
+          | _ ->
+              (* A well-formed GIR <repository> always carries one <namespace>
+                 with all five attributes; if any is missing the file is
+                 malformed and there is nothing useful to generate. *)
+              failwith
+                "gir_parser: <namespace> missing one of name, version, shared-library, c:identifier-prefixes, c:symbol-prefixes");
           parse_document ()
       | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "repository"
         ->
@@ -1643,8 +1652,9 @@ let parse_gir_file filename filter_classes =
   close_in ic;
 
   ( !repository,
-    (try Option.get !namespace
-     with _ -> failwith "Unable to parse namespace correctly"),
+    (match !namespace with
+     | Some ns -> ns
+     | None -> failwith "Unable to parse namespace correctly"),
     List.rev !controllers,
     List.rev !interfaces,
     List.rev !enums,

@@ -1,4 +1,5 @@
 open Sexplib.Std
+open StdLabels
 module Types = Gir_gen_lib.Types
 module Signal_gen = Gir_gen_lib.Generate.Signal_gen
 
@@ -56,14 +57,14 @@ let classify_signals_of_file filepath =
           }
   in
   let class_outcomes =
-    List.concat_map (fun (cls : Types.gir_class) ->
-        List.map (classify_entity cls.Types.class_name) cls.Types.signals)
-      classes
+    List.concat_map classes ~f:(fun (cls : Types.gir_class) ->
+        List.map cls.Types.signals
+          ~f:(classify_entity cls.Types.class_name))
   in
   let iface_outcomes =
-    List.concat_map (fun (iface : Types.gir_interface) ->
-        List.map (classify_entity iface.Types.interface_name) iface.Types.signals)
-      interfaces
+    List.concat_map interfaces ~f:(fun (iface : Types.gir_interface) ->
+        List.map iface.Types.signals
+          ~f:(classify_entity iface.Types.interface_name))
   in
   class_outcomes @ iface_outcomes
 
@@ -80,23 +81,24 @@ let coverage_of_namespace (ns_name : string) (outcomes : classification_outcome 
     : signal_coverage =
   let total_signals = List.length outcomes in
   let supported =
-    List.fold_left (fun acc -> function Supported _ -> acc + 1 | _ -> acc) 0
-      outcomes
+    List.fold_left outcomes ~init:0
+      ~f:(fun acc -> function Supported _ -> acc + 1 | _ -> acc)
   in
   let unsupported = total_signals - supported in
   let reason_counts =
-    List.fold_left
-      (fun acc -> function
+    List.fold_left outcomes ~init:[]
+      ~f:(fun acc -> function
         | Unsupported { reason; _ } ->
-            let current = List.assoc_opt reason acc |> function
-              | Some n -> n + 1
-              | None -> 1
+            let current =
+              List.assoc_opt reason acc |> function Some n -> n + 1 | None -> 1
             in
-            (reason, current) :: List.filter (fun (r, _) -> not (String.equal r reason)) acc
+            (reason, current)
+            :: List.filter acc ~f:(fun (r, _) -> not (String.equal r reason))
         | Supported _ -> acc)
-      [] outcomes
   in
-  let by_reason = List.sort (fun (a, _) (b, _) -> String.compare a b) reason_counts in
+  let by_reason =
+    List.sort reason_counts ~cmp:(fun (a, _) (b, _) -> String.compare a b)
+  in
   { namespace = ns_name; total_signals; supported; unsupported; by_reason }
 
 let coverage_of_file filepath =
@@ -124,13 +126,12 @@ let () =
     | _ -> Filename.concat (Sys.getcwd ()) "gir"
   in
   let coverages =
-    List.map (fun (_ns, filename) ->
+    List.map gir_files ~f:(fun (_ns, filename) ->
         let filepath = Filename.concat gir_dir filename in
         Printf.eprintf "Processing %s...\n" filepath;
         coverage_of_file filepath)
-      gir_files
   in
-  let sexp_items = List.map sexp_of_signal_coverage coverages in
+  let sexp_items = List.map coverages ~f:sexp_of_signal_coverage in
   let sexp = Sexplib.Sexp.List sexp_items in
   let output_path =
     Filename.concat (Sys.getcwd ())
