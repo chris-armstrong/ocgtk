@@ -414,6 +414,35 @@ let test_parse_enum_missing_ctype () =
   (* Enum without c:type should be skipped *)
   Alcotest.(check int) "Should skip enum without c:type" 0 (List.length enums)
 
+(* Regression: a <function> inside an <enumeration> must not drop the
+   <member>s that follow it, and the function itself must be parsed via the
+   [parse_functions] callback. This exercises the recursive-fold-with-callback
+   shape of [parse_enumeration]. *)
+let test_parse_enum_with_function_and_members () =
+  let gir_xml =
+    wrap_namespace
+      {|
+    <enumeration name="Orientation" c:type="GtkOrientation">
+      <member name="horizontal" value="0" c:identifier="GTK_ORIENTATION_HORIZONTAL"/>
+      <function name="to_string" c:identifier="gtk_orientation_to_string">
+        <return-value><type name="utf8" c:type="gchar*"/></return-value>
+      </function>
+      <member name="vertical" value="1" c:identifier="GTK_ORIENTATION_VERTICAL"/>
+    </enumeration>
+  |}
+  in
+  let _, _, _, _, enums, _, _, _ = parse_gir_string gir_xml in
+  let orientation = List.hd enums in
+  Alcotest.(check int) "both members survive the <function>" 2
+    (List.length orientation.members);
+  Alcotest.(check int) "enum function parsed" 1
+    (List.length orientation.functions);
+  let member_names =
+    List.map (fun (m : gir_enum_member) -> m.member_name) orientation.members
+  in
+  Alcotest.(check (list string)) "member order preserved"
+    [ "horizontal"; "vertical" ] member_names
+
 (* ========================================================================= *)
 (* Constant Parsing Tests *)
 (* ========================================================================= *)
@@ -1498,6 +1527,8 @@ let tests =
     Alcotest.test_case "Parse enum" `Quick test_parse_enum;
     Alcotest.test_case "Parse enum missing c:type" `Quick
       test_parse_enum_missing_ctype;
+    Alcotest.test_case "Parse enum with function and members" `Quick
+      test_parse_enum_with_function_and_members;
     (* Bitfield tests *)
     Alcotest.test_case "Parse bitfield" `Quick test_parse_bitfield;
     Alcotest.test_case "Parse bitfield with unknown child" `Quick

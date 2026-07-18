@@ -76,80 +76,71 @@ let rec parse_doc_text input ?(text = "") () =
       parse_doc_text input ~text ()
   | `Dtd _ -> parse_doc_text input ~text ()
 
-(* Shared: Parse enumeration element *)
+(* Shared: Parse enumeration element. <member> recurses into [fold_element]
+   for its <doc>; <function> is dispatched to the optional [parse_functions]
+   callback (or skipped when none is supplied, e.g. for external namespaces). *)
 let parse_enumeration input ?parse_functions attrs =
   match (get_attr "name" attrs, get_attr "c:type" attrs) with
-  | Some name, Some c_type -> begin
-      let members = ref [] in
-      let functions = ref [] in
-
-      let rec parse_enum_contents () =
-        match Xmlm.input input with
-        | `El_start ((_, tag), member_attrs) when local_name tag = "member" -> (
-            match
-              ( get_attr "name" member_attrs,
-                get_attr "value" member_attrs,
-                get_attr "c:identifier" member_attrs )
-            with
-            | Some member_name, Some value_str, Some c_id ->
-                let value = Option.value ~default:0 (int_of_string_opt value_str) in
-                let member_doc = ref None in
-                let rec parse_member_contents () =
-                  match Xmlm.input input with
-                  | `El_start ((_, tag), _) when local_name tag = "doc" ->
-                      member_doc := parse_doc_text input ();
-                      parse_member_contents ()
-                  | `El_start _ ->
-                      skip_element input 1;
-                      parse_member_contents ()
-                  | `El_end -> ()
-                  | `Data _ | `Dtd _ -> parse_member_contents ()
-                in
-                parse_member_contents ();
-                members :=
-                  {
-                    member_name;
-                    member_value = value;
-                    c_identifier = c_id;
-                    member_doc = !member_doc;
-                    member_version = get_attr "version" member_attrs;
-                    member_os = None;
-                  }
-                  :: !members;
-                parse_enum_contents ()
-            | _ ->
-                skip_element input 1;
-                parse_enum_contents ())
-        | `El_start ((_, raw_tag), attrs) when local_name raw_tag = "function"
-          -> (
-            match parse_functions with
-            | Some parse_fn ->
-                let function_ = parse_fn input attrs in
-                functions := function_ :: !functions;
-                parse_enum_contents ()
-            | None ->
-                skip_element input 1;
-                parse_enum_contents ())
-        | `El_start _ ->
-            skip_element input 1;
-            parse_enum_contents ()
-        | `El_end -> ()
-        | `Data _ -> parse_enum_contents ()
-        | `Dtd _ -> parse_enum_contents ()
-      in
-
-      parse_enum_contents ();
-      Some
+  | Some name, Some c_type ->
+      let init =
         {
           enum_name = name;
           enum_c_type = c_type;
-          members = List.rev !members;
+          members = [];
+          functions = [];
           enum_doc = None;
-          functions = !functions;
           enum_version = get_attr "version" attrs;
           enum_os = None;
         }
-    end
+      in
+      let dispatch = function
+        | (_, "member") ->
+            Some
+              (fun ~attrs acc ->
+                match
+                  ( get_attr "name" attrs,
+                    get_attr "value" attrs,
+                    get_attr "c:identifier" attrs )
+                with
+                | Some member_name, Some value_str, Some c_id ->
+                    let value =
+                      Option.value ~default:0 (int_of_string_opt value_str)
+                    in
+                    let member_doc =
+                      Gir_xml_fold.fold_element ~input
+                        ~dispatch:(function
+                          | (_, "doc") ->
+                              Some (fun ~attrs:_ _ -> parse_doc_text input ())
+                          | _ -> None)
+                        ~init:None
+                        ()
+                    in
+                    { acc with members =
+                        {
+                          member_name;
+                          member_value = value;
+                          c_identifier = c_id;
+                          member_doc;
+                          member_version = get_attr "version" attrs;
+                          member_os = None;
+                        }
+                        :: acc.members }
+                | _ ->
+                    skip_element input 1;
+                    acc)
+        | (_, "function") ->
+            (match parse_functions with
+             | Some parse_fn ->
+                 Some
+                   (fun ~attrs acc ->
+                      let function_ = parse_fn input attrs in
+                      { acc with functions = function_ :: acc.functions })
+             | None -> None)
+        | _ -> None
+      in
+      let result = Gir_xml_fold.fold_element ~input ~dispatch ~init () in
+      (* [functions] is intentionally not reversed, matching the original. *)
+      Some { result with members = List.rev result.members }
   | _ ->
       skip_element input 1;
       None
