@@ -924,161 +924,152 @@ let parse_gir_file filename filter_classes =
           os = None;
         }
     | _, _, _ -> failwith "Unable to parse function correctly"
-  (* Parse parameters list *)
+  (* Parse parameters list. The outer fold collects <parameter> children
+     (skipping <instance-parameter>); each <parameter> handler folds the
+     parameter's children into (param_type, varargs). The parameter's own
+     attributes are captured as [param_attrs] so the nested <array> handler
+     can still read them. The list is returned in reverse order; callers
+     [List.rev] it. *)
   and parse_parameters () =
-    let params = ref [] in
-
-    let rec parse_params_contents () =
-      match Xmlm.input input with
-      | `El_start ((_, "parameter"), attrs) ->
-          let param_name =
-            match get_attr "name" attrs with Some n -> n | None -> "arg"
-          in
-          let nullable =
-            match get_attr "nullable" attrs with Some "1" -> true | _ -> false
-          in
-          let direction =
-            match get_attr "direction" attrs with
-            | Some "out" -> Out
-            | Some "inout" -> InOut
-            | _ -> In
-          in
-          let caller_allocates =
-            get_attr "caller-allocates" attrs |> Utils.parse_bool
-          in
-          let transfer_ownership =
-            match get_attr "transfer-ownership" attrs with
-            | Some "none" -> Types.TransferNone
-            | Some "full" -> Types.TransferFull
-            | Some "container" -> Types.TransferContainer
-            | Some "floating" -> Types.TransferFloating
-            | _ -> Types.TransferNone
-          in
-          let varargs = ref false in
-          let type_ =
-            ref
-              {
-                name = "void";
-                c_type = None;
-                nullable = false;
-                transfer_ownership;
-                array = None;
-              }
-          in
-          let rec parse_param_contents () =
-            match Xmlm.input input with
-            | `El_start ((_, "varargs"), _attrs) ->
-                varargs := true;
-                skip_element input 1;
-                parse_param_contents ()
-            | `El_start ((_, "type"), attrs) ->
-                let type_name =
-                  match get_attr "name" attrs with
-                  | Some n -> n
-                  | None -> "void"
-                in
-                let c_type_name = get_attr "c:type" attrs in
-                let nullable = get_attr "nullable" attrs |> Utils.parse_bool in
-                (* Parse nested type element for element type (but not for HashTable) *)
-                let is_hash_table = type_name = "GLib.HashTable" in
-                let element_type_ref = ref None in
-                if not is_hash_table then begin
-                  let rec parse_element_type () =
-                    match Xmlm.input input with
-                    | `El_start ((_, "type"), elem_attrs) ->
-                        let elem_name =
-                          match get_attr "name" elem_attrs with
-                          | Some n -> n
-                          | None -> "unknown"
-                        in
-                        let elem_c_type = get_attr "c:type" elem_attrs in
-                        element_type_ref :=
-                          Some
-                            {
-                              name = elem_name;
-                              c_type = elem_c_type;
-                              nullable = false;
-                              transfer_ownership;
-                              array = None;
-                            };
-                        skip_element input 1;
-                        parse_element_type ()
-                    | `El_start _ ->
-                        skip_element input 1;
-                        parse_element_type ()
-                    | `El_end -> ()
-                    | `Data _ | `Dtd _ -> parse_element_type ()
-                  in
-                  parse_element_type ()
-                end
-                else skip_element input 1;
-                type_ :=
-                  {
-                    name = type_name;
-                    c_type = c_type_name;
-                    nullable;
-                    transfer_ownership;
-                    array =
-                      (match !element_type_ref with
-                      | Some elem_type ->
-                          Some
-                            {
-                              Types.length = None;
-                              zero_terminated = false;
-                              fixed_size = None;
-                              element_type = elem_type;
-                              array_name = Some type_name;
-                            }
-                      | None -> None);
-                  };
-                parse_param_contents ()
-            | `El_start ((_, "array"), array_attrs) ->
-                let nullable_param =
-                  get_attr "nullable" attrs |> Utils.parse_bool
-                in
-                let array_info =
-                  parse_array_type array_attrs transfer_ownership nullable_param
-                in
-                type_ :=
-                  {
-                    name = "array";
-                    c_type = get_attr "c:type" array_attrs;
-                    nullable = nullable_param;
-                    transfer_ownership;
-                    array = array_info;
-                  };
-                parse_param_contents ()
-            | `El_start _ ->
-                skip_element input 1;
-                parse_param_contents ()
-            | `El_end -> (!type_, !varargs)
-            | `Data _ | `Dtd _ -> parse_param_contents ()
-          in
-          let param_type, varargs = parse_param_contents () in
-          params :=
-            {
-              param_name;
-              param_type;
-              direction;
-              nullable;
-              varargs;
-              caller_allocates;
-            }
-            :: !params;
-          parse_params_contents ()
-      | `El_start ((_, "instance-parameter"), _) ->
-          skip_element input 1;
-          parse_params_contents ()
-      | `El_start _ ->
-          skip_element input 1;
-          parse_params_contents ()
-      | `El_end -> ()
-      | `Data _ -> parse_params_contents ()
-      | `Dtd _ -> parse_params_contents ()
+    let dispatch = function
+      | (_, "parameter") ->
+          Some
+            (fun ~attrs acc ->
+              let param_attrs = attrs in
+              let param_name =
+                Option.value ~default:"arg" (get_attr "name" attrs)
+              in
+              let nullable =
+                match get_attr "nullable" attrs with Some "1" -> true
+                | _ -> false
+              in
+              let direction =
+                match get_attr "direction" attrs with
+                | Some "out" -> Out
+                | Some "inout" -> InOut
+                | _ -> In
+              in
+              let caller_allocates =
+                get_attr "caller-allocates" attrs |> Utils.parse_bool
+              in
+              let transfer_ownership =
+                match get_attr "transfer-ownership" attrs with
+                | Some "none" -> Types.TransferNone
+                | Some "full" -> Types.TransferFull
+                | Some "container" -> Types.TransferContainer
+                | Some "floating" -> Types.TransferFloating
+                | _ -> Types.TransferNone
+              in
+              let init_type =
+                {
+                  name = "void";
+                  c_type = None;
+                  nullable = false;
+                  transfer_ownership;
+                  array = None;
+                }
+              in
+              let param_type, varargs =
+                Gir_xml_fold.fold_element ~input
+                  ~dispatch:(function
+                    | (_, "varargs") ->
+                        Some
+                          (Gir_xml_fold.leaf ~input
+                             (fun ~attrs:_ (t, _) -> (t, true)))
+                    | (_, "type") ->
+                        Some
+                          (fun ~attrs (_t, varargs) ->
+                             let type_name =
+                               Option.value ~default:"void"
+                                 (get_attr "name" attrs)
+                             in
+                             let c_type_name = get_attr "c:type" attrs in
+                             let nullable =
+                               get_attr "nullable" attrs |> Utils.parse_bool
+                             in
+                             let is_hash_table =
+                               String.equal type_name "GLib.HashTable"
+                             in
+                             let element_type =
+                               if is_hash_table then begin
+                                 skip_element input 1;
+                                 None
+                               end
+                               else
+                                 Gir_xml_fold.fold_element ~input
+                                   ~dispatch:(function
+                                     | (_, "type") ->
+                                         Some
+                                           (Gir_xml_fold.leaf ~input
+                                              (fun ~attrs _ ->
+                                                 let elem_name =
+                                                   Option.value ~default:"unknown"
+                                                     (get_attr "name" attrs)
+                                                 in
+                                                 let elem_c_type =
+                                                   get_attr "c:type" attrs
+                                                 in
+                                                 Some
+                                                   {
+                                                     name = elem_name;
+                                                     c_type = elem_c_type;
+                                                     nullable = false;
+                                                     transfer_ownership;
+                                                     array = None;
+                                                   }))
+                                     | _ -> None)
+                                   ~init:None
+                                   ()
+                             in
+                             ( {
+                                 name = type_name;
+                                 c_type = c_type_name;
+                                 nullable;
+                                 transfer_ownership;
+                                 array =
+                                   (match element_type with
+                                    | Some et ->
+                                        Some
+                                          {
+                                            Types.length = None;
+                                            zero_terminated = false;
+                                            fixed_size = None;
+                                            element_type = et;
+                                            array_name = Some type_name;
+                                          }
+                                    | None -> None);
+                               },
+                               varargs ))
+                    | (_, "array") ->
+                        Some
+                          (fun ~attrs (_t, varargs) ->
+                             let nullable_param =
+                               get_attr "nullable" param_attrs
+                               |> Utils.parse_bool
+                             in
+                             let array_info =
+                               parse_array_type attrs transfer_ownership
+                                 nullable_param
+                             in
+                             ( {
+                                 name = "array";
+                                 c_type = get_attr "c:type" attrs;
+                                 nullable = nullable_param;
+                                 transfer_ownership;
+                                 array = array_info;
+                               },
+                               varargs ))
+                    | _ -> None)
+                  ~init:(init_type, false)
+                  ()
+              in
+              { param_name; param_type; direction; nullable; varargs;
+                caller_allocates }
+              :: acc)
+      | (_, "instance-parameter") -> None
+      | _ -> None
     in
-
-    parse_params_contents ();
-    !params
+    Gir_xml_fold.fold_element ~input ~dispatch ~init:[] ()
   and parse_repository _ =
     let repository_c_includes = ref [] in
     let repository_includes = ref [] in
