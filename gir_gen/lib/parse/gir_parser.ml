@@ -546,72 +546,60 @@ let parse_gir_file filename filter_classes =
       match get_attr "construct-only" attrs with Some "1" -> true | _ -> false
     in
     let property_nullable = get_attr "nullable" attrs |> Utils.parse_bool in
-
-    (* Parse property type from child element *)
-    let prop_type =
-      ref
-        {
-          name = "unknown";
-          c_type = None;
-          nullable = false;
-          transfer_ownership = Types.TransferNone;
-          array = None;
-        }
+    (* Fold the property's children into its [prop_type]. <type> is a leaf,
+       <array> is consumed by [parse_array_type], and <doc> is consumed via
+       [element_data] (its text is currently discarded, matching the original
+       parser which sets [prop_doc = None]). *)
+    let init =
+      {
+        name = "unknown";
+        c_type = None;
+        nullable = false;
+        transfer_ownership = Types.TransferNone;
+        array = None;
+      }
     in
-
-    let doc : string option ref = ref None in
-
-    let rec parse_prop_contents () =
-      match Xmlm.input input with
-      | `El_start ((_, "type"), type_attrs) ->
-          let type_name =
-            match get_attr "name" type_attrs with
-            | Some n -> n
-            | None -> "unknown"
-          in
-          let c_type_name = get_attr "c:type" type_attrs in
-          let nullable =
-            get_attr "nullable" type_attrs |> Utils.parse_bool
-            || property_nullable
-          in
-          prop_type :=
-            {
-              name = type_name;
-              c_type = c_type_name;
-              nullable;
-              transfer_ownership = Types.TransferNone;
-              array = None;
-            };
-          skip_element input 1;
-          parse_prop_contents ()
-      | `El_start ((_, "array"), array_attrs) ->
-          let array_info =
-            parse_array_type array_attrs Types.TransferNone property_nullable
-          in
-          prop_type :=
-            {
-              name = "array";
-              c_type = get_attr "c:type" array_attrs;
-              nullable = property_nullable;
-              transfer_ownership = Types.TransferNone;
-              array = array_info;
-            };
-          parse_prop_contents ()
-      | `El_start ((_, "doc"), _) ->
-          doc := element_data input ();
-          parse_prop_contents ()
-      | `El_start _ ->
-          skip_element input 1;
-          parse_prop_contents ()
-      | `El_end -> ()
-      | `Data _ -> parse_prop_contents ()
-      | `Dtd _ -> parse_prop_contents ()
+    let dispatch = function
+      | (_, "type") ->
+          Some
+            (Gir_xml_fold.leaf ~input
+               (fun ~attrs _acc ->
+                  let type_name =
+                    Option.value ~default:"unknown" (get_attr "name" attrs)
+                  in
+                  let c_type_name = get_attr "c:type" attrs in
+                  let nullable =
+                    get_attr "nullable" attrs |> Utils.parse_bool
+                    || property_nullable
+                  in
+                  {
+                    name = type_name;
+                    c_type = c_type_name;
+                    nullable;
+                    transfer_ownership = Types.TransferNone;
+                    array = None;
+                  }))
+      | (_, "array") ->
+          Some
+            (fun ~attrs _acc ->
+               let array_info =
+                 parse_array_type attrs Types.TransferNone property_nullable
+               in
+               {
+                 name = "array";
+                 c_type = get_attr "c:type" attrs;
+                 nullable = property_nullable;
+                 transfer_ownership = Types.TransferNone;
+                 array = array_info;
+               })
+      | (_, "doc") ->
+          Some (fun ~attrs:_ acc -> let _ = element_data input () in acc)
+      | _ -> None
     in
-
-    parse_prop_contents ();
+    let prop_type = Gir_xml_fold.fold_element ~input ~dispatch ~init () in
     {
       prop_name;
-      prop_type = !prop_type;
+      prop_type;
       readable;
       writable;
       construct_only;
@@ -659,46 +647,40 @@ let parse_gir_file filename filter_classes =
 
     parse_method_contents ();
     (!return_type, List.rev !params, !doc, get_property, set_property)
-  (* Parse glib:signal elements *)
+  (* Parse glib:signal elements. <return-value> is consumed by
+     [parse_return_value], <parameters> by [parse_parameters], and <doc>
+     by [element_data]. *)
   and parse_signal attrs =
     match get_attr "name" attrs with
     | Some signal_name ->
-        let return_type =
-          ref
-            {
-              name = "void";
-              c_type = None;
-              nullable = false;
-              transfer_ownership = Types.TransferNone;
-              array = None;
-            }
+        let void_type =
+          {
+            name = "void";
+            c_type = None;
+            nullable = false;
+            transfer_ownership = Types.TransferNone;
+            array = None;
+          }
         in
-        let params = ref [] in
-        let doc : string option ref = ref None in
-
-        let rec parse_signal_contents () =
-          match Xmlm.input input with
-          | `El_start ((_, raw_tag), tag_attrs) -> (
-              let tag = local_name raw_tag in
-              match tag with
-              | "return-value" ->
-                  return_type := parse_return_value tag_attrs;
-                  parse_signal_contents ()
-              | "parameters" ->
-                  params := parse_parameters ();
-                  parse_signal_contents ()
-              | "doc" ->
-                  doc := element_data input ();
-                  parse_signal_contents ()
-              | _ ->
-                  skip_element input 1;
-                  parse_signal_contents ())
-          | `El_end -> ()
-          | `Data _ -> parse_signal_contents ()
-          | `Dtd _ -> parse_signal_contents ()
+        let dispatch = function
+          | (_, "return-value") ->
+              Some
+                (fun ~attrs (_rt, params, doc) ->
+                   (parse_return_value attrs, params, doc))
+          | (_, "parameters") ->
+              Some
+                (fun ~attrs:_ (rt, _params, doc) ->
+                   (rt, parse_parameters (), doc))
+          | (_, "doc") ->
+              Some
+                (fun ~attrs:_ (rt, params, _doc) ->
+                   (rt, params, element_data input ()))
+          | _ -> None
         in
-
-        parse_signal_contents ();
+        let (return_type, params, doc) =
+          Gir_xml_fold.fold_element ~input ~dispatch ~init:(void_type, [], None)
+            ()
+        in
         let run_when =
           match get_attr "when" attrs with
           | Some "first" -> Some Types.RunFirst
@@ -714,9 +696,9 @@ let parse_gir_file filename filter_classes =
         Some
           {
             signal_name;
-            return_type = !return_type;
-            sig_parameters = List.rev !params;
-            doc = !doc;
+            return_type;
+            sig_parameters = List.rev params;
+            doc;
             version = get_attr "version" attrs;
             version_namespace = None;
             os = None;
@@ -744,57 +726,42 @@ let parse_gir_file filename filter_classes =
       | None -> None
     in
     let array_name = get_attr "name" attrs in
-
-    (* Parse the element type from nested <type> element *)
-    let element_type =
-      ref
-        {
-          name = "unknown";
-          c_type = None;
-          nullable = false;
-          transfer_ownership = transfer_ownership_attr;
-          array = None;
-        }
-    in
-
-    let rec parse_array_contents () =
-      match Xmlm.input input with
-      | `El_start ((_, "type"), type_attrs) ->
-          let type_name =
-            match get_attr "name" type_attrs with
-            | Some n -> n
-            | None -> "unknown"
-          in
-          let c_type_name = get_attr "c:type" type_attrs in
-          let nullable =
-            get_attr "nullable" type_attrs |> Utils.parse_bool || nullable_attr
-          in
-          element_type :=
-            {
-              name = type_name;
-              c_type = c_type_name;
-              nullable;
-              transfer_ownership = transfer_ownership_attr;
-              array = None;
-            };
-          skip_element input 1;
-          parse_array_contents ()
-      | `El_start _ ->
-          skip_element input 1;
-          parse_array_contents ()
-      | `El_end -> ()
-      | `Data _ | `Dtd _ -> parse_array_contents ()
-    in
-
-    parse_array_contents ();
-    Some
+    (* Parse the element type from the nested <type> child. *)
+    let init =
       {
-        Types.length;
-        zero_terminated;
-        fixed_size;
-        element_type = !element_type;
-        array_name;
+        name = "unknown";
+        c_type = None;
+        nullable = false;
+        transfer_ownership = transfer_ownership_attr;
+        array = None;
       }
+    in
+    let dispatch = function
+      | (_, "type") ->
+          Some
+            (Gir_xml_fold.leaf ~input
+               (fun ~attrs _acc ->
+                  let type_name =
+                    Option.value ~default:"unknown" (get_attr "name" attrs)
+                  in
+                  let c_type_name = get_attr "c:type" attrs in
+                  let nullable =
+                    get_attr "nullable" attrs |> Utils.parse_bool
+                    || nullable_attr
+                  in
+                  {
+                    name = type_name;
+                    c_type = c_type_name;
+                    nullable;
+                    transfer_ownership = transfer_ownership_attr;
+                    array = None;
+                  }))
+      | _ -> None
+    in
+    let element_type =
+      Gir_xml_fold.fold_element ~input ~dispatch ~init ()
+    in
+    Some { Types.length; zero_terminated; fixed_size; element_type; array_name }
   (* Parse return value type *)
   and parse_return_value attrs =
     let nullable_attr = get_attr "nullable" attrs |> Utils.parse_bool in
@@ -907,58 +874,56 @@ let parse_gir_file filename filter_classes =
   and parse_function attrs =
     let function_name = get_attr "name" attrs in
     let c_identifier = get_attr "c:identifier" attrs in
-    let return_type = ref None in
-    let params = ref [] in
-    let doc : string option ref = ref None in
     let throws = get_attr "throws" attrs |> Utils.parse_bool in
     let introspectable =
       get_attr "introspectable" attrs |> Utils.parse_bool ~default:true
     in
-
-    let rec parse_function_contents () =
-      match Xmlm.input input with
-      | `El_start ((_, "return-value"), attrs) ->
-          let type_name =
-            match get_attr "name" attrs with Some n -> n | None -> "void"
-          in
-          let c_type_name = get_attr "c:type" attrs in
-          let nullable =
-            get_attr "nullable" attrs |> Utils.parse_bool ~default:false
-          in
-          return_type :=
-            Some
-              {
-                name = type_name;
-                c_type = c_type_name;
-                nullable;
-                transfer_ownership = Types.TransferNone;
-                array = None;
-              };
-          skip_element input 1;
-          parse_function_contents ()
-      | `El_start ((_, "parameters"), _) ->
-          params := parse_parameters ();
-          parse_function_contents ()
-      | `El_start ((_, "doc"), _) ->
-          doc := element_data input ();
-          parse_function_contents ()
-      | `El_start _ ->
-          skip_element input 1;
-          parse_function_contents ()
-      | `El_end -> ()
-      | `Data _ -> parse_function_contents ()
-      | `Dtd _ -> parse_function_contents ()
+    (* Fold the function's children into (return_type, params, doc).
+       <return-value> is a leaf here (only its attributes are read, matching
+       the original parser); <parameters> is consumed by [parse_parameters];
+       <doc> by [element_data]. *)
+    let dispatch = function
+      | (_, "return-value") ->
+          Some
+            (Gir_xml_fold.leaf ~input
+               (fun ~attrs (_rt, params, doc) ->
+                  let type_name =
+                    Option.value ~default:"void" (get_attr "name" attrs)
+                  in
+                  let c_type_name = get_attr "c:type" attrs in
+                  let nullable =
+                    get_attr "nullable" attrs |> Utils.parse_bool ~default:false
+                  in
+                  ( Some
+                      {
+                        name = type_name;
+                        c_type = c_type_name;
+                        nullable;
+                        transfer_ownership = Types.TransferNone;
+                        array = None;
+                      },
+                    params,
+                    doc )))
+      | (_, "parameters") ->
+          Some
+            (fun ~attrs:_ (rt, _params, doc) -> (rt, parse_parameters (), doc))
+      | (_, "doc") ->
+          Some
+            (fun ~attrs:_ (rt, params, _doc) ->
+               (rt, params, element_data input ()))
+      | _ -> None
     in
-
-    parse_function_contents ();
-    match (function_name, c_identifier, !return_type) with
+    let (return_type, params, doc) =
+      Gir_xml_fold.fold_element ~input ~dispatch ~init:(None, [], None) ()
+    in
+    match (function_name, c_identifier, return_type) with
     | Some function_name, Some c_identifier, Some return_type ->
         {
           function_name;
           c_identifier;
           return_type;
-          parameters = List.rev !params;
-          doc = !doc;
+          parameters = List.rev params;
+          doc;
           throws;
           introspectable;
           version = get_attr "version" attrs;
