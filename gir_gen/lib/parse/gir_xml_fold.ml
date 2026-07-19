@@ -42,6 +42,24 @@ let leaf ~input f =
      skip_element input 1;
      acc')
 
+(* [skip_child ~input] consumes the rest of the current child (its body and
+   matching [`El_end]) and returns the accumulator unchanged. It is the
+   declarative spelling of [fun ~attrs:_ acc -> skip_element input 1; acc]. *)
+let skip_child ~input = fun ~attrs:_ acc -> skip_element input 1; acc
+
+(* [required ~input ~extract ~build] guards a child handler on a precondition
+   over its attributes. When [extract attrs] is [None], the child is skipped
+   (its body and [`El_end] consumed) and the accumulator is returned unchanged;
+   otherwise [build ~attrs v acc] consumes the child and updates [acc]. This
+   is the declarative form of [match required_attrs with Some _ -> parse_body
+   | _ -> skip_element input 1; acc], keeping [skip_element] out of dispatch
+   tables. *)
+let required ~input ~extract ~build =
+  fun ~attrs acc ->
+    match extract attrs with
+    | Some v -> build ~attrs v acc
+    | None -> skip_element input 1; acc
+
 let default_on_data _ acc = acc
 
 (* [fold_element ~input ~dispatch ~init ()] folds the children of the element

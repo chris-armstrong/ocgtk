@@ -35,6 +35,32 @@ val skip_element : input -> int -> unit
     [`El_end]). Use for self-closing or empty children such as <type>. *)
 val leaf : input:input -> (attrs:attrs -> 'acc -> 'acc) -> 'acc handler
 
+(** [skip_child ~input] is the handler that consumes the rest of the current
+    child (body + matching [`El_end]) and returns the accumulator unchanged.
+    It is the declarative spelling of [fun ~attrs:_ acc -> skip_element input 1;
+    acc]; prefer it over calling [skip_element] directly inside a handler, so
+    the imperative primitive stays confined to this module. *)
+val skip_child : input:input -> 'acc handler
+
+(** [required ~input ~extract ~build] is a handler for a child whose body is
+    only meaningful when its attributes satisfy a precondition.
+    - [extract attrs] checks the child's attributes; returning [Some v] means
+      they are sufficient and [v] carries the extracted values.
+    - [build ~attrs v acc] then consumes the rest of the child (body +
+      [`El_end], typically by recursing into [fold_element] / [leaf]) and
+      returns the updated accumulator.
+    - if [extract attrs = None], the child is [skip_child]ed and [acc] is
+      returned unchanged.
+
+    This is the declarative form of the [match required_attrs with Some _ ->
+    parse_body | _ -> skip_element input 1; acc] idiom that otherwise litters
+    dispatch tables, and it keeps [skip_element] out of handler bodies. *)
+val required :
+  input:input ->
+  extract:(attrs -> 'v option) ->
+  build:(attrs:attrs -> 'v -> 'acc -> 'acc) ->
+  'acc handler
+
 (** [fold_element ~input ~dispatch ~init ()] folds the children of the element
     whose [`El_start] has just been consumed, and returns the accumulator at
     the matching [`El_end] (which it consumes).
