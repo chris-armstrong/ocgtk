@@ -191,7 +191,7 @@ let generate_c_bitfield_converters ~namespace ~class_version bitfield =
     let c_val_func = sprintf "%s%s_val" namespace bitfield.bitfield_name in
 
     (* Special case: GdkPixbufFormatFlags is in GIR but marked skip in C headers *)
-    if bitfield.bitfield_c_type = "GdkPixbufFormatFlags" then begin
+    if String.equal bitfield.bitfield_c_type "GdkPixbufFormatFlags" then begin
       bprintf buf
         "/* GdkPixbufFormatFlags is in GIR but marked skip in C headers */\n";
       bprintf buf "#ifndef GDK_PIXBUF_FORMAT_WRITABLE\n";

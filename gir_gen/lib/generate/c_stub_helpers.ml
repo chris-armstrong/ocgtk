@@ -297,7 +297,7 @@ let nullable_c_to_ml_expr ~ctx ~var ~(gir_type : gir_type)
         | { record_info = Some ({ opaque = false; _ }, _, _); _ } ->
             sprintf "&%s" var
         | _ -> var)
-    | _ -> var
+    | In -> var
   in
   if not gir_type.nullable then sprintf "%s(%s)" mapping.c_to_ml var_expr
   else
@@ -326,7 +326,7 @@ let nullable_ml_to_c_expr ~var ~(gir_type : gir_type) ~(mapping : type_mapping)
         (* String with transfer-full: copy to mutable buffer before passing *)
         if not gir_type.nullable then sprintf "String_copy(%s)" var
         else sprintf "String_option_val(String_copy(%s))" var
-    | _ -> (
+    | TransferNone | TransferContainer | TransferFloating | TransferFull -> (
         if
           (* Normal case - no copy needed *)
           not gir_type.nullable
@@ -429,7 +429,7 @@ let emit_fallback_method_stub ~ctx ~c_type:_ ~class_name ~ml_name
     ~c_identifier:_ ~version (meth : gir_method) =
   let in_params =
     List.filter
-      ~f:(fun p -> match p.direction with Out -> false | _ -> true)
+      ~f:(fun p -> match p.direction with Out -> false | In | InOut -> true)
       meth.parameters
   in
   let param_count = 1 + List.length in_params in
@@ -471,7 +471,7 @@ let emit_fallback_record_method_stub ~ctx ~c_type:_ ~class_name ~ml_name
     ~version (meth : gir_method) =
   let in_params =
     List.filter
-      ~f:(fun p -> match p.direction with Out -> false | _ -> true)
+      ~f:(fun p -> match p.direction with Out -> false | In | InOut -> true)
       meth.parameters
   in
   let param_count = 1 + List.length in_params in
@@ -562,7 +562,7 @@ let emit_os_fallback_method_stub ~ctx:_ ~c_type:_ ~class_name ~ml_name
     ~c_identifier:_ ~os (meth : gir_method) =
   let in_params =
     List.filter
-      ~f:(fun p -> match p.direction with Out -> false | _ -> true)
+      ~f:(fun p -> match p.direction with Out -> false | In | InOut -> true)
       meth.parameters
   in
   let param_count = 1 + List.length in_params in

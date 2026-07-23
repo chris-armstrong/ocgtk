@@ -45,12 +45,12 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
       (match cr.cr_type with
       | Crt_Enum | Crt_Bitfield -> sprintf "Val_%s%s" namespace cr.cr_name
       | Crt_Constant -> sprintf "Val_%s" cr.cr_c_type
-      | _ -> "Val_" ^ cr.cr_c_type);
+      | Crt_Class _ | Crt_Interface | Crt_Record _ -> "Val_" ^ cr.cr_c_type);
     ml_to_c =
       (match cr.cr_type with
       | Crt_Enum | Crt_Bitfield -> sprintf "%s%s_val" namespace cr.cr_name
       | Crt_Constant -> sprintf "%s_val" cr.cr_c_type
-      | _ -> cr.cr_c_type ^ "_val");
+      | Crt_Class _ | Crt_Interface | Crt_Record _ -> cr.cr_c_type ^ "_val");
     layer2_class =
       (match cr.cr_type with
       | Crt_Class _ ->
@@ -87,12 +87,16 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
     is_value_type_record =
       (match cr.cr_type with
       | Crt_Record { opaque = false; _ } -> true
-      | _ -> false);
+      | Crt_Class _ | Crt_Interface | Crt_Record _ | Crt_Enum | Crt_Bitfield
+      | Crt_Constant ->
+          false);
     transfer_strategy =
       (match cr.cr_type with
       | Crt_Class _ | Crt_Interface -> Ts_gobject
       | Crt_Record { get_type_func = Some f; _ } -> Ts_boxed f
-      | _ -> Ts_none);
+      | Crt_Enum | Crt_Bitfield | Crt_Constant | Crt_Record { get_type_func = None; _ }
+        ->
+          Ts_none);
   }
 
 (** Type mappings for built-in / primitive types (integers, strings, etc.) *)

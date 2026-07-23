@@ -65,7 +65,7 @@ let resolve_parent_gir_type ~same_cluster_classes ~parent_name =
 let should_skip_method ~ctx ~entity_kind (meth : gir_method) =
   let has_out_param =
     List.exists meth.parameters ~f:(fun p ->
-        p.direction = Out || p.direction = InOut)
+        Gir_type_pred.Gir_direction.has_output p.direction)
   in
   let should_skip_binding =
     Filtering.should_skip_method_binding ~ctx ~entity_kind meth
