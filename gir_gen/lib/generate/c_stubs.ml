@@ -114,7 +114,7 @@ let generate_decls_header ~ctx ~classes ~interfaces ~gtk_enums ~gtk_bitfields
   let dependency_includes =
     generate_dependency_includes dependency_namespaces
   in
-  if not (String.is_empty dependency_includes) then begin
+  if not (CCString.is_empty dependency_includes) then begin
     Buffer.add_string buf "/* Dependency headers for cross-namespace types */\n";
     Buffer.add_string buf dependency_includes;
     Buffer.add_string buf "\n"
