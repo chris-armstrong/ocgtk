@@ -7,40 +7,18 @@
  *)
 
 open Gir_gen_lib.Override_types
+open Override_factory
 
 (* Programmatic overrides: ignore Button, ignore Widget.create *)
 let test_overrides =
-  {
-    library_name = "Gtk";
-    classes =
+  make_library_overrides ~name:"Gtk"
+    ~classes:
       [
-        {
-          class_name = "Button";
-          class_action = Some Ignore;
-          class_os = None;
-          constructors = [];
-          methods = [];
-          properties = [];
-          signals = [];
-        };
-        {
-          class_name = "Widget";
-          class_action = None;
-          class_os = None;
-          constructors = [];
-          methods =
-            [ { component_name = "create"; action = Some Ignore; os = None } ];
-          properties = [];
-          signals = [];
-        };
-      ];
-    interfaces = [];
-    records = [];
-    enums = [];
-    bitfields = [];
-    functions = [];
-    headers = [];
-  }
+        make_class_override ~action:(Some Ignore) ~name:"Button" ();
+        make_class_override ~name:"Widget"
+          ~methods:[ ignore_component ~name:"create" ] ();
+      ]
+    ()
 
 let test_apply_with_parsed_gir_ignore_class_and_method () =
   let tmp = Fixtures.write_synthetic_gir ~test_name:"apply_with_parsed_gir" in

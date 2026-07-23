@@ -19,6 +19,7 @@
   ml_validation
   layer2_helpers
   type_factory
+  override_factory
   fixtures)
  (libraries gir_gen_lib alcotest ppxlib sexplib str unix))
 

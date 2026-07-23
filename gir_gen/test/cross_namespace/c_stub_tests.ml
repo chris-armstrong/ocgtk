@@ -206,47 +206,17 @@ let test_copy_function_returns_copy_result () =
 
   (* Create a record with a copy method - simulates GdkPixbufFormat-like record *)
   let copy_method =
-    {
-      method_name = "copy";
-      c_identifier = "test_format_copy";
-      return_type =
-        {
-          name = "Format";
-          c_type = Some "TestFormat*";
-          nullable = false;
-          transfer_ownership = TransferFull;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      get_property = None;
-      set_property = None;
-      introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+    Type_factory.make_gir_method ~method_name:"copy"
+      ~c_identifier:"test_format_copy"
+      ~return_type:
+        (Type_factory.make_gir_type ~name:"Format" ~c_type:"TestFormat*"
+           ~transfer_ownership:TransferFull ())
+      ()
   in
   let record =
-    {
-      record_name = "Format";
-      c_type = "TestFormat";
-      glib_type_name = Some "TestFormat";
-      glib_get_type = Some "test_format_get_type";
-      opaque = false;
-      disguised = false;
-      c_symbol_prefix = Some "test_format";
-      is_gtype_struct_for = None;
-      fields = [];
-      constructors = [];
-      methods = [ copy_method ];
-      functions = [];
-      record_doc = None;
-      introspectable = true;
-      version = None;
-      os = None;
-    }
+    Type_factory.make_gir_record ~record_name:"Format" ~c_type:"TestFormat"
+      ~glib_type_name:"TestFormat" ~glib_get_type:"test_format_get_type"
+      ~c_symbol_prefix:"test_format" ~methods:[ copy_method ] ()
   in
 
   (* Generate the copy function C code *)
@@ -299,69 +269,26 @@ let test_record_copy_parses_successfully () =
      The fallback generates: return ml_gir_record_val_ptr(copy));
      which has an extra parenthesis causing a syntax error. *)
   let copy_method =
-    {
-      method_name = "clone";
+    Type_factory.make_gir_method ~method_name:"clone"
       (* Not "copy" - triggers fallback *)
-      c_identifier = "test_record_copy";
+      ~c_identifier:"test_record_copy"
       (* Ends with _copy *)
-      return_type =
-        {
-          name = "TestRecord";
-          c_type = Some "TestRecord*";
-          nullable = false;
-          transfer_ownership = TransferFull;
-          array = None;
-        };
-      parameters = [];
-      doc = None;
-      throws = false;
-      get_property = None;
-      set_property = None;
-      introspectable = true;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+      ~return_type:
+        (Type_factory.make_gir_type ~name:"TestRecord" ~c_type:"TestRecord*"
+           ~transfer_ownership:TransferFull ())
+      ()
   in
   let record =
-    {
-      record_name = "TestRecord";
-      c_type = "TestRecord";
-      glib_type_name = None;
-      glib_get_type = None;
-      opaque = false;
-      disguised = false;
-      c_symbol_prefix = Some "test_record";
-      is_gtype_struct_for = None;
-      fields =
+    Type_factory.make_gir_record ~record_name:"TestRecord"
+      ~c_type:"TestRecord" ~c_symbol_prefix:"test_record"
+      ~fields:
         [
-          {
-            field_name = "data";
-            field_type =
-              Some
-                {
-                  name = "gint";
-                  c_type = Some "int";
-                  nullable = false;
-                  transfer_ownership = TransferNone;
-                  array = None;
-                };
-            readable = true;
-            writable = true;
-            field_doc = None;
-            field_version = None;
-            field_os = None;
-          };
-        ];
-      constructors = [];
-      methods = [ copy_method ];
-      (* Has copy method via c_identifier *)
-      functions = [];
-      record_doc = None;
-      introspectable = true;
-      version = None;
-      os = None;
-    }
+          Type_factory.make_gir_record_field ~field_name:"data"
+            ~field_type:(Type_factory.make_gir_type ~name:"gint" ~c_type:"int" ())
+            ~writable:true ();
+        ]
+      ~methods:[ copy_method ] (* Has copy method via c_identifier *)
+      ()
   in
 
   (* Generate the copy function C code *)
@@ -397,48 +324,22 @@ let test_record_copy_parses_successfully () =
    So "GdkPixbuf" becomes "Gdkpixbuf" in the module name.
    Therefore, enums_module_name must return "Gdkpixbuf_enums" not "GdkPixbuf_enums". *)
 let test_enum_module_name_matches_dune_convention () =
-  let open Gir_gen_lib.Types in
   (* Create a context with a multi-word namespace like GdkPixbuf *)
   let namespace =
-    {
-      namespace_name = "GdkPixbuf";
-      namespace_version = "2.0";
-      namespace_shared_library = "libgdk_pixbuf-2.0.so.0";
-      namespace_c_identifier_prefixes = "Gdk";
-      namespace_c_symbol_prefixes = "gdk_pixbuf";
-    }
+    Type_factory.make_gir_namespace ~namespace_name:"GdkPixbuf"
+      ~namespace_version:"2.0"
+      ~namespace_shared_library:"libgdk_pixbuf-2.0.so.0"
+      ~namespace_c_identifier_prefixes:"Gdk"
+      ~namespace_c_symbol_prefixes:"gdk_pixbuf" ()
   in
   let ctx =
-    {
-      namespace;
-      repository =
-        {
-          repository_c_includes = [];
-          repository_includes = [];
-          repository_packages = [];
-        };
-      classes = [];
-      interfaces = [];
-      enums = [];
-      bitfields = [];
-      records = [];
-      constants = [];
-      module_groups = Hashtbl.create 0;
-      current_cycle_classes = [];
-      cross_references = Gir_gen_lib.Types.StringMap.empty;
-    }
+    Type_factory.make_generation_context ~namespace
+      ~repository:(Type_factory.make_gir_repository ()) ()
   in
   (* Create a dummy enum for the test *)
   let dummy_enum =
-    {
-      enum_name = "Colorspace";
-      enum_c_type = "GdkColorspace";
-      members = [];
-      functions = [];
-      enum_doc = None;
-      enum_version = None;
-      enum_os = None;
-    }
+    Type_factory.make_gir_enum ~enum_name:"Colorspace"
+      ~enum_c_type:"GdkColorspace" ()
   in
   (* Check that the module name follows dune convention *)
   let module_name = Gir_gen_lib.Utils.enums_module_name ctx dummy_enum in
@@ -449,14 +350,8 @@ let test_enum_module_name_matches_dune_convention () =
 
   (* Also test bitfields_module_name *)
   let dummy_bitfield =
-    {
-      bitfield_name = "PixbufRotation";
-      bitfield_c_type = "GdkPixbufRotation";
-      flags = [];
-      bitfield_doc = None;
-      bitfield_version = None;
-      bitfield_os = None;
-    }
+    Type_factory.make_gir_bitfield ~bitfield_name:"PixbufRotation"
+      ~bitfield_c_type:"GdkPixbufRotation" ()
   in
   let bitfield_module_name =
     Gir_gen_lib.Utils.bitfields_module_name ctx dummy_bitfield
@@ -520,84 +415,40 @@ let test_enum_array_element_conversion () =
   let open Gir_gen_lib.Types in
   (* Create a context with a Script enum (simulating PangoScript) *)
   let script_enum =
-    {
-      enum_name = "Script";
-      enum_c_type = "PangoScript";
-      members =
+    Type_factory.make_gir_enum ~enum_name:"Script" ~enum_c_type:"PangoScript"
+      ~members:
         [
-          {
-            member_name = "INVALID";
-            member_value = 0;
-            c_identifier = "PANGO_SCRIPT_INVALID";
-            member_doc = None;
-            member_version = None;
-            member_os = None;
-          };
-        ];
-      functions = [];
-      enum_doc = None;
-      enum_version = None;
-      enum_os = None;
-    }
+          Type_factory.make_gir_enum_member ~member_name:"INVALID"
+            ~member_value:0 ~c_identifier:"PANGO_SCRIPT_INVALID" ();
+        ]
+      ()
   in
   let ctx = { (Helpers.create_test_context ()) with enums = [ script_enum ] } in
 
   (* Create a method returning an array of Script enum with length param *)
   let meth =
-    {
-      method_name = "get_scripts";
-      c_identifier = "pango_language_get_scripts";
-      return_type =
-        {
-          name = "Script";
-          c_type = Some "const PangoScript*";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array =
-            Some
-              {
-                length = Some 0;
+    Type_factory.make_gir_method ~method_name:"get_scripts"
+      ~c_identifier:"pango_language_get_scripts"
+      ~return_type:
+        (Type_factory.make_gir_type ~name:"Script"
+           ~c_type:"const PangoScript*"
+           ~array:
+             (Type_factory.make_gir_array ~length:0
                 (* Length is parameter index 0 *)
-                zero_terminated = false;
-                fixed_size = None;
-                array_name = None;
-                element_type =
-                  {
-                    name = "Script";
-                    c_type = Some "PangoScript";
-                    nullable = false;
-                    transfer_ownership = TransferNone;
-                    array = None;
-                  };
-              };
-        };
-      parameters =
+                ~element_type:
+                  (Type_factory.make_gir_type ~name:"Script"
+                     ~c_type:"PangoScript" ())
+                ())
+           ())
+      ~parameters:
         [
-          {
-            param_name = "num_scripts";
-            param_type =
-              {
-                name = "gint";
-                c_type = Some "int*";
-                nullable = false;
-                transfer_ownership = TransferFull;
-                array = None;
-              };
-            direction = Out;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+          Type_factory.make_gir_param ~param_name:"num_scripts"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"gint" ~c_type:"int*"
+                 ~transfer_ownership:TransferFull ())
+            ~direction:Out ();
+        ]
+      ()
   in
 
   let c_code =
@@ -677,24 +528,15 @@ let test_bitfield_array_element_conversion () =
   let open Gir_gen_lib.Types in
   (* Create a context with an InhibitFlags bitfield *)
   let inhibit_flags_bitfield =
-    {
-      bitfield_name = "InhibitFlags";
-      bitfield_c_type = "GtkApplicationInhibitFlags";
-      flags =
+    Type_factory.make_gir_bitfield ~bitfield_name:"InhibitFlags"
+      ~bitfield_c_type:"GtkApplicationInhibitFlags"
+      ~flags:
         [
-          {
-            flag_name = "LOGOUT";
-            flag_value = 1;
-            flag_c_identifier = "GTK_APPLICATION_INHIBIT_LOGOUT";
-            flag_doc = None;
-            flag_version = None;
-            flag_os = None;
-          };
-        ];
-      bitfield_doc = None;
-      bitfield_version = None;
-      bitfield_os = None;
-    }
+          Type_factory.make_gir_bitfield_member ~flag_name:"LOGOUT"
+            ~flag_value:1
+            ~flag_c_identifier:"GTK_APPLICATION_INHIBIT_LOGOUT" ();
+        ]
+      ()
   in
   let ctx =
     {
@@ -705,59 +547,27 @@ let test_bitfield_array_element_conversion () =
 
   (* Create a method returning an array of InhibitFlags bitfield *)
   let meth =
-    {
-      method_name = "get_inhibit_flags";
-      c_identifier = "gtk_application_get_inhibit_flags";
-      return_type =
-        {
-          name = "InhibitFlags";
-          c_type = Some "const GtkApplicationInhibitFlags*";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array =
-            Some
-              {
-                length = Some 0;
-                zero_terminated = false;
-                fixed_size = None;
-                array_name = None;
-                element_type =
-                  {
-                    name = "InhibitFlags";
-                    c_type = Some "GtkApplicationInhibitFlags";
-                    nullable = false;
-                    transfer_ownership = TransferNone;
-                    array = None;
-                  };
-              };
-        };
-      parameters =
+    Type_factory.make_gir_method ~method_name:"get_inhibit_flags"
+      ~c_identifier:"gtk_application_get_inhibit_flags"
+      ~return_type:
+        (Type_factory.make_gir_type ~name:"InhibitFlags"
+           ~c_type:"const GtkApplicationInhibitFlags*"
+           ~array:
+             (Type_factory.make_gir_array ~length:0
+                ~element_type:
+                  (Type_factory.make_gir_type ~name:"InhibitFlags"
+                     ~c_type:"GtkApplicationInhibitFlags" ())
+                ())
+           ())
+      ~parameters:
         [
-          {
-            param_name = "n_flags";
-            param_type =
-              {
-                name = "gint";
-                c_type = Some "int*";
-                nullable = false;
-                transfer_ownership = TransferFull;
-                array = None;
-              };
-            direction = Out;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+          Type_factory.make_gir_param ~param_name:"n_flags"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"gint" ~c_type:"int*"
+                 ~transfer_ownership:TransferFull ())
+            ~direction:Out ();
+        ]
+      ()
   in
 
   let c_code =
@@ -821,43 +631,17 @@ let test_inout_record_param_pointer_type () =
   let open Gir_gen_lib.Types in
   (* Create a record type simulating PangoRectangle *)
   let rectangle_record =
-    {
-      record_name = "Rectangle";
-      c_type = "PangoRectangle";
-      glib_type_name = Some "PangoRectangle";
-      glib_get_type = Some "pango_rectangle_get_type";
-      opaque = false;
-      disguised = false;
-      c_symbol_prefix = Some "pango_rectangle";
-      is_gtype_struct_for = None;
-      fields =
+    Type_factory.make_gir_record ~record_name:"Rectangle"
+      ~c_type:"PangoRectangle" ~glib_type_name:"PangoRectangle"
+      ~glib_get_type:"pango_rectangle_get_type"
+      ~c_symbol_prefix:"pango_rectangle"
+      ~fields:
         [
-          {
-            field_name = "x";
-            field_type =
-              Some
-                {
-                  name = "gint";
-                  c_type = Some "int";
-                  nullable = false;
-                  transfer_ownership = TransferNone;
-                  array = None;
-                };
-            readable = true;
-            writable = true;
-            field_doc = None;
-            field_version = None;
-            field_os = None;
-          };
-        ];
-      constructors = [];
-      methods = [];
-      functions = [];
-      record_doc = None;
-      introspectable = true;
-      version = None;
-      os = None;
-    }
+          Type_factory.make_gir_record_field ~field_name:"x"
+            ~field_type:(Type_factory.make_gir_type ~name:"gint" ~c_type:"int" ())
+            ~writable:true ();
+        ]
+      ()
   in
   let ctx =
     { (Helpers.create_test_context ()) with records = [ rectangle_record ] }
@@ -865,61 +649,25 @@ let test_inout_record_param_pointer_type () =
 
   (* Create a method with inout Rectangle* parameter - simulates pango_matrix_transform_rectangle *)
   let meth =
-    {
-      method_name = "transform_rectangle";
-      c_identifier = "pango_matrix_transform_rectangle";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    Type_factory.make_gir_method ~method_name:"transform_rectangle"
+      ~c_identifier:"pango_matrix_transform_rectangle"
+      ~return_type:Type_factory.void_type
+      ~parameters:
         [
           (* self parameter - PangoMatrix* *)
-          {
-            param_name = "matrix";
-            param_type =
-              {
-                name = "Matrix";
-                c_type = Some "PangoMatrix*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
+          Type_factory.make_gir_param ~param_name:"matrix"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"Matrix"
+                 ~c_type:"PangoMatrix*" ())
+            ();
           (* inout Rectangle* parameter *)
-          {
-            param_name = "rect";
-            param_type =
-              {
-                name = "Rectangle";
-                c_type = Some "PangoRectangle*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = InOut;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+          Type_factory.make_gir_param ~param_name:"rect"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"Rectangle"
+                 ~c_type:"PangoRectangle*" ())
+            ~direction:InOut ();
+        ]
+      ()
   in
 
   let c_code =
@@ -1067,24 +815,9 @@ let test_fixed_size_array_out_param () =
   let open Gir_gen_lib.Types in
   (* Create a Vec3 record type simulating graphene_vec3_t *)
   let vec3_record =
-    {
-      record_name = "Vec3";
-      c_type = "graphene_vec3_t";
-      glib_type_name = Some "GrapheneVec3";
-      glib_get_type = Some "graphene_vec3_get_type";
-      opaque = false;
-      disguised = false;
-      c_symbol_prefix = Some "graphene_vec3";
-      is_gtype_struct_for = None;
-      fields = [];
-      constructors = [];
-      methods = [];
-      functions = [];
-      record_doc = None;
-      introspectable = true;
-      version = None;
-      os = None;
-    }
+    Type_factory.make_gir_record ~record_name:"Vec3" ~c_type:"graphene_vec3_t"
+      ~glib_type_name:"GrapheneVec3" ~glib_get_type:"graphene_vec3_get_type"
+      ~c_symbol_prefix:"graphene_vec3" ()
   in
   let ctx =
     { (Helpers.create_test_context ()) with records = [ vec3_record ] }
@@ -1099,62 +832,29 @@ let test_fixed_size_array_out_param () =
        </parameter>
      Note: The self parameter (box) is handled separately as the instance, not as a regular In parameter. *)
   let meth =
-    {
-      method_name = "get_vertices";
-      c_identifier = "graphene_box_get_vertices";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    Type_factory.make_gir_method ~method_name:"get_vertices"
+      ~c_identifier:"graphene_box_get_vertices"
+      ~return_type:Type_factory.void_type
+      ~parameters:
         [
           (* fixed-size array out param - caller-allocated *)
-          {
-            param_name = "vertices";
-            param_type =
-              {
-                name = "Vec3";
-                c_type = Some "graphene_vec3_t*";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array =
-                  Some
-                    {
-                      length = None;
-                      zero_terminated = false;
-                      fixed_size = Some 8;
+          Type_factory.make_gir_param ~param_name:"vertices"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"Vec3"
+                 ~c_type:"graphene_vec3_t*"
+                 ~array:
+                   (Type_factory.make_gir_array ~fixed_size:8
                       (* KEY: fixed-size=8 *)
-                      array_name = None;
-                      element_type =
-                        {
-                          name = "Vec3";
-                          c_type = Some "graphene_vec3_t";
-                          nullable = false;
-                          transfer_ownership = TransferNone;
-                          array = None;
-                        };
-                    };
-              };
-            direction = Out;
-            nullable = false;
-            varargs = false;
-            caller_allocates = true;
+                      ~element_type:
+                        (Type_factory.make_gir_type ~name:"Vec3"
+                           ~c_type:"graphene_vec3_t" ())
+                      ())
+                 ())
+            ~direction:Out ~caller_allocates:true
             (* KEY: caller-allocates=true *)
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+            ();
+        ]
+      ()
   in
 
   let c_code =
@@ -1239,7 +939,6 @@ let test_fixed_size_array_out_param () =
     For fixed-size return arrays like gsk_border_node_get_widths(4 floats),
     the generator should properly handle the fixed size without NULL-termination checks. *)
 let test_fixed_size_float_array_return () =
-  let open Gir_gen_lib.Types in
   let ctx = Helpers.create_test_context () in
 
   (* Create a method returning a fixed-size float array.
@@ -1250,44 +949,19 @@ let test_fixed_size_float_array_return () =
          </array>
        </return-value> *)
   let meth =
-    {
-      method_name = "get_widths";
-      c_identifier = "gsk_border_node_get_widths";
-      return_type =
-        {
-          name = "gfloat";
-          c_type = Some "const float*";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array =
-            Some
-              {
-                length = None;
-                zero_terminated = false;
-                fixed_size = Some 4;
+    Type_factory.make_gir_method ~method_name:"get_widths"
+      ~c_identifier:"gsk_border_node_get_widths"
+      ~return_type:
+        (Type_factory.make_gir_type ~name:"gfloat" ~c_type:"const float*"
+           ~array:
+             (Type_factory.make_gir_array ~fixed_size:4
                 (* KEY: fixed-size=4 *)
-                array_name = None;
-                element_type =
-                  {
-                    name = "gfloat";
-                    c_type = Some "float";
-                    nullable = false;
-                    transfer_ownership = TransferNone;
-                    array = None;
-                  };
-              };
-        };
-      parameters = [];
+                ~element_type:
+                  (Type_factory.make_gir_type ~name:"gfloat" ~c_type:"float" ())
+                ())
+           ())
       (* Only self, handled separately *)
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+      ()
   in
 
   let c_code =
@@ -1373,59 +1047,25 @@ let test_out_param_array_without_length_skipped () =
      with zero_terminated=false and no length/fixed_size.
      This simulates problematic cases like PangoTabArray* out params. *)
   let meth =
-    {
-      method_name = "get_tabs";
-      c_identifier = "pango_tab_array_get_tabs";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    Type_factory.make_gir_method ~method_name:"get_tabs"
+      ~c_identifier:"pango_tab_array_get_tabs"
+      ~return_type:Type_factory.void_type
+      ~parameters:
         [
-          {
-            param_name = "tabs";
-            param_type =
-              {
-                name = "TabArray";
-                c_type = Some "PangoTabArray**";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array =
-                  Some
-                    {
-                      length = None;
-                      zero_terminated = false;
-                      fixed_size = None;
-                      array_name = None;
-                      element_type =
-                        {
-                          name = "TabArray";
-                          c_type = Some "PangoTabArray*";
-                          nullable = false;
-                          transfer_ownership = TransferNone;
-                          array = None;
-                        };
-                    };
-              };
-            direction = Out;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+          Type_factory.make_gir_param ~param_name:"tabs"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"TabArray"
+                 ~c_type:"PangoTabArray**"
+                 ~array:
+                   (Type_factory.make_gir_array
+                      ~element_type:
+                        (Type_factory.make_gir_type ~name:"TabArray"
+                           ~c_type:"PangoTabArray*" ())
+                      ())
+                 ())
+            ~direction:Out ();
+        ]
+      ()
   in
 
   (* Critical: should_skip_method_binding should return true for this case *)
@@ -1446,45 +1086,19 @@ let test_double_pointer_out_param_skipped () =
      This is the case where the GIR doesn't specify array info but the c_type
      indicates it's a double pointer that needs special handling. *)
   let meth =
-    {
-      method_name = "get_tabs";
-      c_identifier = "pango_tab_array_get_tabs";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    Type_factory.make_gir_method ~method_name:"get_tabs"
+      ~c_identifier:"pango_tab_array_get_tabs"
+      ~return_type:Type_factory.void_type
+      ~parameters:
         [
-          {
-            param_name = "tabs";
-            param_type =
-              {
-                name = "TabArray";
-                c_type = Some "PangoTabArray**";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-                (* Not marked as array in GIR *)
-              };
-            direction = Out;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+          Type_factory.make_gir_param ~param_name:"tabs"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"TabArray"
+                 ~c_type:"PangoTabArray**" ())
+            ~direction:Out (* Not marked as array in GIR *)
+            ();
+        ]
+      ()
   in
 
   (* Critical: should_skip_method_binding should return true for double-pointer out params *)
@@ -1502,75 +1116,30 @@ let test_normal_out_param_not_skipped () =
   (* Create a method with an Out-direction array parameter that HAS a length parameter.
      This should NOT be skipped because we have the length info needed to process it. *)
   let meth =
-    {
-      method_name = "get_items";
-      c_identifier = "gtk_container_get_children";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    Type_factory.make_gir_method ~method_name:"get_items"
+      ~c_identifier:"gtk_container_get_children"
+      ~return_type:Type_factory.void_type
+      ~parameters:
         [
-          {
-            param_name = "children";
-            param_type =
-              {
-                name = "Widget";
-                c_type = Some "GList**";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array =
-                  Some
-                    {
-                      length = Some 1;
+          Type_factory.make_gir_param ~param_name:"children"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"Widget" ~c_type:"GList**"
+                 ~array:
+                   (Type_factory.make_gir_array ~length:1
                       (* Length is parameter index 1 *)
-                      zero_terminated = false;
-                      fixed_size = None;
-                      array_name = None;
-                      element_type =
-                        {
-                          name = "Widget";
-                          c_type = Some "GtkWidget*";
-                          nullable = false;
-                          transfer_ownership = TransferNone;
-                          array = None;
-                        };
-                    };
-              };
-            direction = Out;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-          {
-            param_name = "n_children";
-            param_type =
-              {
-                name = "guint";
-                c_type = Some "guint*";
-                nullable = false;
-                transfer_ownership = TransferFull;
-                array = None;
-              };
-            direction = Out;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+                      ~element_type:
+                        (Type_factory.make_gir_type ~name:"Widget"
+                           ~c_type:"GtkWidget*" ())
+                      ())
+                 ())
+            ~direction:Out ();
+          Type_factory.make_gir_param ~param_name:"n_children"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"guint" ~c_type:"guint*"
+                 ~transfer_ownership:TransferFull ())
+            ~direction:Out ();
+        ]
+      ()
   in
 
   (* Critical: should_skip_method_binding should return false for out-param with length *)
@@ -1585,35 +1154,20 @@ let test_normal_out_param_not_skipped () =
 
 (* Test 1: GdkPixbufFormatFlags bitfield should have #ifndef GDK_PIXBUF_FORMAT_WRITABLE guard *)
 let test_gdkpixbuf_format_flags_guarded () =
-  let open Gir_gen_lib.Types in
   (* Create a GdkPixbufFormatFlags bitfield *)
   let pixbuf_format_flags_bitfield =
-    {
-      bitfield_name = "FormatFlags";
-      bitfield_c_type = "GdkPixbufFormatFlags";
-      flags =
+    Type_factory.make_gir_bitfield ~bitfield_name:"FormatFlags"
+      ~bitfield_c_type:"GdkPixbufFormatFlags"
+      ~flags:
         [
-          {
-            flag_name = "WRITABLE";
-            flag_value = 1;
-            flag_c_identifier = "GDK_PIXBUF_FORMAT_WRITABLE";
-            flag_doc = None;
-            flag_version = None;
-            flag_os = None;
-          };
-          {
-            flag_name = "SCALABLE";
-            flag_value = 2;
-            flag_c_identifier = "GDK_PIXBUF_FORMAT_SCALABLE";
-            flag_doc = None;
-            flag_version = None;
-            flag_os = None;
-          };
-        ];
-      bitfield_doc = None;
-      bitfield_version = None;
-      bitfield_os = None;
-    }
+          Type_factory.make_gir_bitfield_member ~flag_name:"WRITABLE"
+            ~flag_value:1
+            ~flag_c_identifier:"GDK_PIXBUF_FORMAT_WRITABLE" ();
+          Type_factory.make_gir_bitfield_member ~flag_name:"SCALABLE"
+            ~flag_value:2
+            ~flag_c_identifier:"GDK_PIXBUF_FORMAT_SCALABLE" ();
+        ]
+      ()
   in
 
   (* Generate forward declarations *)
@@ -1640,27 +1194,17 @@ let test_gdkpixbuf_format_flags_guarded () =
 
 (* Test 2: Normal bitfield should NOT have the guard (negative control) *)
 let test_normal_bitfield_no_guard () =
-  let open Gir_gen_lib.Types in
   (* Create a normal bitfield (not GdkPixbufFormatFlags) *)
   let normal_bitfield =
-    {
-      bitfield_name = "InhibitFlags";
-      bitfield_c_type = "GtkApplicationInhibitFlags";
-      flags =
+    Type_factory.make_gir_bitfield ~bitfield_name:"InhibitFlags"
+      ~bitfield_c_type:"GtkApplicationInhibitFlags"
+      ~flags:
         [
-          {
-            flag_name = "LOGOUT";
-            flag_value = 1;
-            flag_c_identifier = "GTK_APPLICATION_INHIBIT_LOGOUT";
-            flag_doc = None;
-            flag_version = None;
-            flag_os = None;
-          };
-        ];
-      bitfield_doc = None;
-      bitfield_version = None;
-      bitfield_os = None;
-    }
+          Type_factory.make_gir_bitfield_member ~flag_name:"LOGOUT"
+            ~flag_value:1
+            ~flag_c_identifier:"GTK_APPLICATION_INHIBIT_LOGOUT" ();
+        ]
+      ()
   in
 
   (* Generate forward declarations *)
@@ -1689,93 +1233,43 @@ let test_normal_bitfield_no_guard () =
    2. Generating a C method that uses this enum as a parameter
    3. Verifying the generated code contains GdkPixbufColorspace_val (correct) *)
 let test_cross_namespace_c_converter_names () =
-  let open Gir_gen_lib.Types in
   (* Create a context with GdkPixbuf namespace and an external enum from that namespace *)
   let namespace =
-    {
-      namespace_name = "GdkPixbuf";
-      namespace_version = "2.0";
-      namespace_shared_library = "libgdk_pixbuf-2.0.so.0";
-      namespace_c_identifier_prefixes = "Gdk";
-      namespace_c_symbol_prefixes = "gdk_pixbuf";
-    }
+    Type_factory.make_gir_namespace ~namespace_name:"GdkPixbuf"
+      ~namespace_version:"2.0"
+      ~namespace_shared_library:"libgdk_pixbuf-2.0.so.0"
+      ~namespace_c_identifier_prefixes:"Gdk"
+      ~namespace_c_symbol_prefixes:"gdk_pixbuf" ()
   in
 
   (* Create the external enum - this simulates GdkPixbuf.Colorspace with c_type "GdkColorspace" *)
   let ctx =
-    {
-      namespace;
-      repository =
-        {
-          repository_c_includes = [];
-          repository_includes = [];
-          repository_packages = [];
-        };
-      classes = [];
-      interfaces = [];
-      enums =
+    Type_factory.make_generation_context ~namespace
+      ~repository:(Type_factory.make_gir_repository ())
+      ~enums:
         [
-          {
-            enum_name = "Colorspace";
-            enum_c_type = "GdkColorspace";
-            members = [];
-            functions = [];
-            enum_doc = None;
-            enum_version = None;
-            enum_os = None;
-          };
-        ];
-      bitfields = [];
-      records = [];
-      constants = [];
-      module_groups = Hashtbl.create 0;
-      current_cycle_classes = [];
-      cross_references = Gir_gen_lib.Types.StringMap.empty;
-    }
+          Type_factory.make_gir_enum ~enum_name:"Colorspace"
+            ~enum_c_type:"GdkColorspace" ();
+        ]
+      ()
   in
 
   (* Create a method that uses the Colorspace enum as a parameter.
      This simulates a method like gdk_pixbuf_set_colorspace that takes Colorspace as input,
      which generates the Colorspace_val converter (CAML value to C enum). *)
   let meth =
-    {
-      method_name = "set_colorspace";
-      c_identifier = "gdk_pixbuf_set_colorspace";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    Type_factory.make_gir_method ~method_name:"set_colorspace"
+      ~c_identifier:"gdk_pixbuf_set_colorspace"
+      ~return_type:Type_factory.void_type
+      ~parameters:
         [
-          {
-            param_name = "colorspace";
-            param_type =
-              {
-                name = "Colorspace";
-                c_type = Some "GdkColorspace";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+          Type_factory.make_gir_param ~param_name:"colorspace"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"Colorspace"
+                 ~c_type:"GdkColorspace" ())
+            ();
+        ]
+      ()
   in
 
   let c_code =
@@ -1812,11 +1306,9 @@ let test_cross_namespace_enum_array_element_conversion () =
   let gdk_entities =
     StringMap.empty
     |> StringMap.add "ModifierType"
-         {
-           cr_name = "ModifierType";
-           cr_type = Crt_Enum;
-           cr_c_type = "GdkModifierType";
-         }
+         (Type_factory.make_cross_reference_entity ~cr_name:"ModifierType"
+            ~cr_type:(Type_factory.make_cross_reference_type `Enum)
+            ~cr_c_type:"GdkModifierType" ())
   in
   let cross_refs =
     StringMap.empty
@@ -1828,59 +1320,27 @@ let test_cross_namespace_enum_array_element_conversion () =
 
   (* Create a method returning an array of Gdk.ModifierType with length param *)
   let meth =
-    {
-      method_name = "get_modifiers";
-      c_identifier = "gtk_widget_get_modifiers";
-      return_type =
-        {
-          name = "Gdk.ModifierType";
-          c_type = Some "const GdkModifierType*";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array =
-            Some
-              {
-                length = Some 0;
-                zero_terminated = false;
-                fixed_size = None;
-                array_name = None;
-                element_type =
-                  {
-                    name = "Gdk.ModifierType";
-                    c_type = Some "GdkModifierType";
-                    nullable = false;
-                    transfer_ownership = TransferNone;
-                    array = None;
-                  };
-              };
-        };
-      parameters =
+    Type_factory.make_gir_method ~method_name:"get_modifiers"
+      ~c_identifier:"gtk_widget_get_modifiers"
+      ~return_type:
+        (Type_factory.make_gir_type ~name:"Gdk.ModifierType"
+           ~c_type:"const GdkModifierType*"
+           ~array:
+             (Type_factory.make_gir_array ~length:0
+                ~element_type:
+                  (Type_factory.make_gir_type ~name:"Gdk.ModifierType"
+                     ~c_type:"GdkModifierType" ())
+                ())
+           ())
+      ~parameters:
         [
-          {
-            param_name = "num_modifiers";
-            param_type =
-              {
-                name = "gint";
-                c_type = Some "int*";
-                nullable = false;
-                transfer_ownership = TransferFull;
-                array = None;
-              };
-            direction = Out;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+          Type_factory.make_gir_param ~param_name:"num_modifiers"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"gint" ~c_type:"int*"
+                 ~transfer_ownership:TransferFull ())
+            ~direction:Out ();
+        ]
+      ()
   in
 
   let c_code =

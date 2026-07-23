@@ -11,67 +11,28 @@ let output_dir = "/tmp/test_no_ext_enum_decls_output"
 (* Helper: Create a context with external enums to verify they are NOT 
    included in forward declarations *)
 let create_context_with_external_enum () =
-  let open Gir_gen_lib.Types in
   let namespace =
-    {
-      namespace_name = "Gtk";
-      namespace_version = "4.0";
-      namespace_shared_library = "libgtk-4.so.1";
-      namespace_c_identifier_prefixes = "Gtk";
-      namespace_c_symbol_prefixes = "gtk";
-    }
+    Type_factory.make_gir_namespace ~namespace_name:"Gtk"
+      ~namespace_version:"4.0" ~namespace_shared_library:"libgtk-4.so.1"
+      ~namespace_c_identifier_prefixes:"Gtk"
+      ~namespace_c_symbol_prefixes:"gtk" ()
   in
 
   (* Create a local GTK enum *)
   let local_enum =
-    {
-      enum_name = "WrapMode";
-      enum_c_type = "GtkWrapMode";
-      members =
+    Type_factory.make_gir_enum ~enum_name:"WrapMode" ~enum_c_type:"GtkWrapMode"
+      ~members:
         [
-          {
-            member_name = "NONE";
-            member_value = 0;
-            c_identifier = "GTK_WRAP_NONE";
-            member_doc = None;
-            member_version = None;
-            member_os = None;
-          };
-          {
-            member_name = "WORD";
-            member_value = 1;
-            c_identifier = "GTK_WRAP_WORD";
-            member_doc = None;
-            member_version = None;
-            member_os = None;
-          };
-        ];
-      functions = [];
-      enum_doc = None;
-      enum_version = None;
-      enum_os = None;
-    }
+          Type_factory.make_gir_enum_member ~member_name:"NONE"
+            ~member_value:0 ~c_identifier:"GTK_WRAP_NONE" ();
+          Type_factory.make_gir_enum_member ~member_name:"WORD"
+            ~member_value:1 ~c_identifier:"GTK_WRAP_WORD" ();
+        ]
+      ()
   in
 
-  {
-    namespace;
-    repository =
-      {
-        repository_c_includes = [];
-        repository_includes = [];
-        repository_packages = [];
-      };
-    classes = [];
-    interfaces = [];
-    enums = [ local_enum ];
-    bitfields = [];
-    records = [];
-    constants = [];
-    (* External enum should NOT appear in forward declarations *)
-    module_groups = Hashtbl.create 0;
-    current_cycle_classes = [];
-    cross_references = StringMap.empty;
-  }
+  Type_factory.make_generation_context ~namespace ~enums:[ local_enum ]
+    ~repository:(Type_factory.make_gir_repository ()) ()
 
 (* Stage 2 Test: Generated header should NOT contain forward declarations
    for external enums. These declarations now come from included headers. *)
