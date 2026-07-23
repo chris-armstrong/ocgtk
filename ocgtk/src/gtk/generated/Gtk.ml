@@ -795,3 +795,7 @@ type stylecontextprintflags = Gtk_enums.stylecontextprintflags
 type textbuffernotifyflags = Gtk_enums.textbuffernotifyflags
 type textsearchflags = Gtk_enums.textsearchflags
 type treemodelflags = Gtk_enums.treemodelflags
+
+(** Constants *)
+
+module Gtk_constants = Gtk_constants

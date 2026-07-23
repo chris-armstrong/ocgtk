@@ -38,16 +38,18 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
           external_namespace ^ ".Wrappers."
           ^ Utils.module_name_of_class cr.cr_name
           ^ ".t"
-      | Crt_Bitfield | Crt_Enum ->
+      | Crt_Bitfield | Crt_Enum | Crt_Constant ->
           external_namespace ^ "." ^ String.lowercase_ascii cr.cr_name);
     c_type = cr.cr_c_type;
     c_to_ml =
       (match cr.cr_type with
       | Crt_Enum | Crt_Bitfield -> sprintf "Val_%s%s" namespace cr.cr_name
+      | Crt_Constant -> sprintf "Val_%s" cr.cr_c_type
       | _ -> "Val_" ^ cr.cr_c_type);
     ml_to_c =
       (match cr.cr_type with
       | Crt_Enum | Crt_Bitfield -> sprintf "%s%s_val" namespace cr.cr_name
+      | Crt_Constant -> sprintf "%s_val" cr.cr_c_type
       | _ -> cr.cr_c_type ^ "_val");
     layer2_class =
       (match cr.cr_type with
@@ -81,7 +83,7 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
               class_ml_name = c_name;
               class_layer1_accessor = "as_" ^ c_name;
             }
-      | Crt_Enum | Crt_Bitfield -> None);
+      | Crt_Enum | Crt_Bitfield | Crt_Constant -> None);
     is_value_type_record =
       (match cr.cr_type with
       | Crt_Record { opaque = false; _ } -> true
@@ -465,6 +467,27 @@ let type_mappings : (string * Types.type_mapping) list =
         is_value_type_record = false;
       transfer_strategy = Ts_none;
       } );
+    (* PangoGlyph is a primitive alias for guint32 *)
+    ( "Glyph",
+      {
+        ocaml_type = "int";
+        c_to_ml = "Val_int";
+        ml_to_c = "Int_val";
+        layer2_class = None;
+        c_type = "Glyph";
+        is_value_type_record = false;
+      transfer_strategy = Ts_none;
+      } );
+    ( "PangoGlyph",
+      {
+        ocaml_type = "int";
+        c_to_ml = "Val_int";
+        ml_to_c = "Int_val";
+        layer2_class = None;
+        c_type = "PangoGlyph";
+        is_value_type_record = false;
+      transfer_strategy = Ts_none;
+      } );
   ]
 
 let normalize_c_pointer_type lookup_str =
@@ -487,10 +510,8 @@ let normalize_c_pointer_type lookup_str =
 let lookup_class classes lookup_str =
   let normalized_lookup =
     let base = normalize_c_pointer_type lookup_str in
-    if
-      String.length base > 0
-      && Char.equal (String.get base (String.length base - 1)) '*'
-    then String.sub base ~pos:0 ~len:(String.length base - 1)
+    if String.ends_with base ~suffix:"*" then
+      String.sub base ~pos:0 ~len:(String.length base - 1)
     else base
   in
   List.find_opt
@@ -531,10 +552,7 @@ let is_boxed_record (record : Types.gir_record) =
     that should be externalised *)
 let lookup_record records lookup_str =
   let normalized_lookup = normalize_c_pointer_type lookup_str in
-  let is_pointer =
-    String.length normalized_lookup > 0
-    && Char.equal normalized_lookup.[String.length normalized_lookup - 1] '*'
-  in
+  let is_pointer = String.ends_with normalized_lookup ~suffix:"*" in
   List.find_opt records ~f:(fun record ->
       String.equal record.record_name lookup_str)
   |> Option.map (fun record -> (record, is_pointer, is_boxed_record record))
@@ -736,7 +754,8 @@ let classify_type ~ctx (gir_type : Types.gir_type) =
             | Crt_Bitfield -> Tk_Bitfield
             | Crt_Class _ -> Tk_Class
             | Crt_Interface -> Tk_Interface
-            | Crt_Record _ -> Tk_Record)
+            | Crt_Record _ -> Tk_Record
+            | Crt_Constant -> Tk_Primitive)
         | None ->
             if List.assoc_opt lookup_str type_mappings |> Option.is_some then
               Tk_Primitive

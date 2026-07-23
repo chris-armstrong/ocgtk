@@ -209,6 +209,20 @@ and Font : sig
   If @font is %NULL, this function gracefully sets some sane values in the
   output variables and returns. *)
 
+  external get_glyph_extents : t -> int -> Rectangle.t * Rectangle.t
+    = "ml_pango_font_get_glyph_extents"
+  (** Gets the logical and ink extents of a glyph within a font.
+
+  The coordinate system for each rectangle has its origin at the
+  base line and horizontal origin of the character with increasing
+  coordinates extending to the right and down. The macros PANGO_ASCENT(),
+  PANGO_DESCENT(), PANGO_LBEARING(), and PANGO_RBEARING() can be used to convert
+  from the extents rectangle to more traditional font metrics. The units
+  of the rectangles are in 1/PANGO_SCALE of a device unit.
+
+  If @font is %NULL, this function gracefully sets some sane values in the
+  output variables and returns. *)
+
   external get_font_map : t -> Font_map.t option = "ml_pango_font_get_font_map"
   (** Gets the font map for which the font was created.
 

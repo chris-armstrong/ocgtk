@@ -158,7 +158,7 @@ let parse_gir content =
   result
 
 let test_enum_member_doc_plain () =
-  let _repo, _ns, _classes, _ifaces, enums, _bitfields, _records =
+  let _repo, _ns, _classes, _ifaces, enums, _bitfields, _records, _ =
     parse_gir minimal_gir_with_enum_doc
   in
   match enums with
@@ -188,7 +188,7 @@ let test_enum_member_doc_plain () =
 let test_enum_member_doc_with_nested_elements () =
   (* parse_doc_text should skip nested XML elements (like <link>) and
      collect only the surrounding text *)
-  let _repo, _ns, _classes, _ifaces, enums, _bitfields, _records =
+  let _repo, _ns, _classes, _ifaces, enums, _bitfields, _records, _ =
     parse_gir minimal_gir_with_doc_nested_elements
   in
   match enums with
@@ -219,7 +219,7 @@ let test_enum_member_doc_with_nested_elements () =
         (Printf.sprintf "Expected 1 enum, got %d" (List.length other))
 
 let test_bitfield_flag_doc () =
-  let _repo, _ns, _classes, _ifaces, _enums, bitfields, _records =
+  let _repo, _ns, _classes, _ifaces, _enums, bitfields, _records, _ =
     parse_gir minimal_gir_with_bitfield_doc
   in
   match bitfields with
@@ -241,7 +241,7 @@ let test_bitfield_flag_doc () =
         (Printf.sprintf "Expected 1 bitfield, got %d" (List.length other))
 
 let test_record_field_doc () =
-  let _repo, _ns, _classes, _ifaces, _enums, _bitfields, records =
+  let _repo, _ns, _classes, _ifaces, _enums, _bitfields, records, _ =
     parse_gir minimal_gir_with_record_field_doc
   in
   match records with

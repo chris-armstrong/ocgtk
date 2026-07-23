@@ -22,7 +22,7 @@ let test_non_introspectable_record_filtered () =
   create_gir_file test_gir gir;
 
   (* Parse — both records should be in the AST *)
-  let _, _, _, _, _, _, records =
+  let _, _, _, _, _, _, records, _constants =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir []
   in
   let record_names =
@@ -88,7 +88,7 @@ let test_non_introspectable_constructor_filtered () =
   create_gir_file test_gir gir;
 
   (* Parse — both constructors should be in the AST *)
-  let _, _, classes, _, _, _, _ =
+  let _, _, classes, _, _, _, _, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir []
   in
   let cls =
@@ -156,7 +156,7 @@ let test_non_introspectable_method_skipped () =
   create_gir_file test_gir gir;
 
   (* Parse - both methods should be in the AST *)
-  let _, _, classes, _, _, _, _ =
+  let _, _, classes, _, _, _, _, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir []
   in
   let cls =
@@ -381,7 +381,7 @@ let test_non_gtk_namespace_c_type_prefix () =
   create_gir_file test_gir gir;
 
   (* Parse it *)
-  let _, _, classes, interfaces, _, _, _ =
+  let _, _, classes, interfaces, _, _, _, _ =
     Gir_gen_lib.Parse.Gir_parser.parse_gir_file test_gir []
   in
 

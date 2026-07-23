@@ -3,3 +3,4 @@
 
 module Graphene = Graphene
 module Graphene_enums = Graphene_enums
+module Graphene_constants = Graphene_constants

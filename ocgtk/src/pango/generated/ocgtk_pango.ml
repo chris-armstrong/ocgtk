@@ -3,3 +3,4 @@
 
 module Pango = Pango
 module Pango_enums = Pango_enums
+module Pango_constants = Pango_constants

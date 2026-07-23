@@ -194,6 +194,20 @@ let make_gir_bitfield ?(bitfield_name = "TestFlags")
     bitfield_os = None;
   }
 
+let make_gir_constant ?(constant_name = "TestConstant")
+    ?(constant_c_type = "TEST_CONSTANT") ?(value = "0") ?(value_type = make_gir_type ~name:"gint" ~c_type:"gint" ())
+    ?constant_doc ?version ?(introspectable = true) () =
+  {
+    constant_name;
+    constant_c_type;
+    value;
+    value_type;
+    constant_doc;
+    version;
+    os = None;
+    introspectable;
+  }
+
 let make_gir_class ?(class_name = "TestClass") ?(c_type = "TestClass") ?parent
     ?(implements = []) ?(introspectable = true) ?(constructors = [])
     ?(methods = []) ?(properties = []) ?(signals = []) ?class_doc ?version () =
@@ -287,6 +301,7 @@ let make_cross_reference_type ?parent = function
   | `Record opaque -> Crt_Record { opaque; get_type_func = None }
   | `Enum -> Crt_Enum
   | `Bitfield -> Crt_Bitfield
+  | `Constant -> Crt_Constant
 
 let make_cross_reference_entity ?(cr_name = "TestEntity")
     ?(cr_type = Crt_Interface) ?(cr_c_type = "TestEntity") () =
@@ -321,7 +336,7 @@ let make_cross_reference_map pairs =
 
 let make_generation_context ?(namespace = make_gir_namespace ())
     ?(repository = make_gir_repository ()) ?(classes = []) ?(interfaces = [])
-    ?(enums = []) ?(bitfields = []) ?(records = []) ?module_groups
+    ?(enums = []) ?(bitfields = []) ?(records = []) ?(constants = []) ?module_groups
     ?(current_cycle_classes = []) ?(cross_references = StringMap.empty) () =
   let module_groups_table =
     match module_groups with
@@ -339,6 +354,7 @@ let make_generation_context ?(namespace = make_gir_namespace ())
     enums;
     bitfields;
     records;
+    constants;
     module_groups = module_groups_table;
     current_cycle_classes;
     cross_references;
