@@ -15,6 +15,7 @@
 
 open Gir_gen_lib.Types
 open Gir_gen_lib.Override_types
+open Override_factory
 
 (* ========================================================================= *)
 (* Helpers *)
@@ -32,132 +33,57 @@ let parse_and_apply ~test_name overrides =
 
 (** Minimal namespace for building a generation_context in tests. *)
 let test_namespace : gir_namespace =
-  {
-    namespace_name = "Gtk";
-    namespace_version = "4.0";
-    namespace_shared_library = "libgtk-4.so.1";
-    namespace_c_identifier_prefixes = "Gtk";
-    namespace_c_symbol_prefixes = "gtk";
-  }
+  Type_factory.make_gir_namespace ~namespace_name:"Gtk"
+    ~namespace_version:"4.0" ~namespace_shared_library:"libgtk-4.so.1"
+    ~namespace_c_identifier_prefixes:"Gtk"
+    ~namespace_c_symbol_prefixes:"gtk" ()
 
-let test_repository : gir_repository =
-  {
-    repository_includes = [];
-    repository_c_includes = [];
-    repository_packages = [];
-  }
+let test_repository : gir_repository = Type_factory.make_gir_repository ()
 
 (** Build a generation_context from an apply_result for type-mapping tests. *)
 let make_ctx (result : Gir_gen_lib.Override_apply.apply_result) :
     generation_context =
-  {
-    namespace = test_namespace;
-    repository = test_repository;
-    classes = result.classes;
-    interfaces = result.interfaces;
-    enums = result.enums;
-    bitfields = result.bitfields;
-    records = result.records;
-    module_groups = Hashtbl.create 0;
-    current_cycle_classes = [];
-    cross_references = StringMap.empty;
-  }
+  Type_factory.make_generation_context ~namespace:test_namespace
+    ~repository:test_repository ~classes:result.classes
+    ~interfaces:result.interfaces ~enums:result.enums
+    ~bitfields:result.bitfields ~records:result.records ()
 
 (** A gir_type that references GtkButton* (as returned by a button constructor).
 *)
 let button_gir_type : gir_type =
-  {
-    name = "Button";
-    c_type = Some "GtkButton*";
-    nullable = false;
-    transfer_ownership = TransferNone;
-    array = None;
-  }
+  Type_factory.make_gir_type ~name:"Button" ~c_type:"GtkButton*" ()
 
 (** A gir_type that references GtkWidget* (survives override). *)
 let widget_gir_type : gir_type =
-  {
-    name = "Widget";
-    c_type = Some "GtkWidget*";
-    nullable = false;
-    transfer_ownership = TransferNone;
-    array = None;
-  }
+  Type_factory.make_gir_type ~name:"Widget" ~c_type:"GtkWidget*" ()
 
 (* ========================================================================= *)
 (* Overrides used across tests *)
 (* ========================================================================= *)
 
 let ignore_button_overrides =
-  {
-    library_name = "Gtk";
-    classes =
-      [
-        {
-          class_name = "Button";
-          class_action = Some Ignore;
-          class_os = None;
-          constructors = [];
-          methods = [];
-          properties = [];
-          signals = [];
-        };
-      ];
-    interfaces = [];
-    records = [];
-    enums = [];
-    bitfields = [];
-    functions = [];
-    headers = [];
-  }
+  make_library_overrides ~name:"Gtk"
+    ~classes:[ make_class_override ~action:(Some Ignore) ~name:"Button" () ]
+    ()
 
 let ignore_create_overrides =
-  {
-    library_name = "Gtk";
-    classes =
+  make_library_overrides ~name:"Gtk"
+    ~classes:
       [
-        {
-          class_name = "Widget";
-          class_action = None;
-          class_os = None;
-          constructors = [];
-          methods =
-            [ { component_name = "create"; action = Some Ignore; os = None } ];
-          properties = [];
-          signals = [];
-        };
-      ];
-    interfaces = [];
-    records = [];
-    enums = [];
-    bitfields = [];
-    functions = [];
-    headers = [];
-  }
+        make_class_override ~name:"Widget"
+          ~methods:[ ignore_component ~name:"create" ] ();
+      ]
+    ()
 
 let version_widget_overrides =
-  {
-    library_name = "Gtk";
-    classes =
+  make_library_overrides ~name:"Gtk"
+    ~classes:
       [
-        {
-          class_name = "Widget";
-          class_action =
-            Some (Set_version { vs_version = "4.10"; vs_namespace = None });
-          class_os = None;
-          constructors = [];
-          methods = [];
-          properties = [];
-          signals = [];
-        };
-      ];
-    interfaces = [];
-    records = [];
-    enums = [];
-    bitfields = [];
-    functions = [];
-    headers = [];
-  }
+        make_class_override ~name:"Widget"
+          ~action:(Some (Set_version (make_version_spec ~version:"4.10" ())))
+          ();
+      ]
+    ()
 
 (* ========================================================================= *)
 (* Tests: ctx-level class filtering *)
@@ -340,17 +266,7 @@ let test_sexp_parse_to_ctx_integration () =
 (* ========================================================================= *)
 
 let test_empty_overrides_preserve_all_classes () =
-  let empty_overrides =
-    {
-      library_name = "Gtk";
-      classes = [];
-      interfaces = [];
-      records = [];
-      enums = [];
-      bitfields = [];
-      functions = [];
-      headers = [];
-    }
+  let empty_overrides = make_empty_library_overrides ~name:"Gtk"
   in
   let result =
     parse_and_apply ~test_name:"empty_overrides_preserve_all_classes"

@@ -12,32 +12,24 @@ let create_context_with_base_namespace_refs () =
   let open Gir_gen_lib.Types in
   (* Create cross_references map including base namespaces *)
   let glib_cr =
-    {
-      cr_name = "Object";
-      cr_type = Crt_Class { parent = None; implements = [] };
-      cr_c_type = "GObject";
-    }
+    Type_factory.make_cross_reference_entity ~cr_name:"Object"
+      ~cr_type:(Type_factory.make_cross_reference_type `Class)
+      ~cr_c_type:"GObject" ()
   in
   let gobject_cr =
-    {
-      cr_name = "Object";
-      cr_type = Crt_Class { parent = None; implements = [] };
-      cr_c_type = "GObject";
-    }
+    Type_factory.make_cross_reference_entity ~cr_name:"Object"
+      ~cr_type:(Type_factory.make_cross_reference_type `Class)
+      ~cr_c_type:"GObject" ()
   in
   let gmodule_cr =
-    {
-      cr_name = "Module";
-      cr_type = Crt_Class { parent = None; implements = [] };
-      cr_c_type = "GModule";
-    }
+    Type_factory.make_cross_reference_entity ~cr_name:"Module"
+      ~cr_type:(Type_factory.make_cross_reference_type `Class)
+      ~cr_c_type:"GModule" ()
   in
   let gdk_cr =
-    {
-      cr_name = "Texture";
-      cr_type = Crt_Class { parent = None; implements = [] };
-      cr_c_type = "GdkTexture";
-    }
+    Type_factory.make_cross_reference_entity ~cr_name:"Texture"
+      ~cr_type:(Type_factory.make_cross_reference_type `Class)
+      ~cr_c_type:"GdkTexture" ()
   in
 
   let glib_map = StringMap.add "Object" glib_cr StringMap.empty in
@@ -54,32 +46,13 @@ let create_context_with_base_namespace_refs () =
   in
 
   let ns =
-    {
-      namespace_name = "Gtk";
-      namespace_version = "4.0";
-      namespace_shared_library = "libgtk-4.so.1";
-      namespace_c_identifier_prefixes = "Gtk";
-      namespace_c_symbol_prefixes = "gtk";
-    }
+    Type_factory.make_gir_namespace ~namespace_name:"Gtk"
+      ~namespace_version:"4.0" ~namespace_shared_library:"libgtk-4.so.1"
+      ~namespace_c_identifier_prefixes:"Gtk"
+      ~namespace_c_symbol_prefixes:"gtk" ()
   in
-
-  {
-    namespace = ns;
-    repository =
-      {
-        repository_c_includes = [];
-        repository_includes = [];
-        repository_packages = [];
-      };
-    classes = [];
-    interfaces = [];
-    enums = [];
-    bitfields = [];
-    records = [];
-    module_groups = Hashtbl.create 0;
-    current_cycle_classes = [];
-    cross_references;
-  }
+  Type_factory.make_generation_context ~namespace:ns
+    ~repository:(Type_factory.make_gir_repository ()) ~cross_references ()
 
 (* Stage 4 Test: GLib is NOT included as a dependency.
    GLib is a base library that doesn't need explicit header inclusion. *)

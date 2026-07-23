@@ -397,47 +397,22 @@ let test_record_copy_parses_successfully () =
    So "GdkPixbuf" becomes "Gdkpixbuf" in the module name.
    Therefore, enums_module_name must return "Gdkpixbuf_enums" not "GdkPixbuf_enums". *)
 let test_enum_module_name_matches_dune_convention () =
-  let open Gir_gen_lib.Types in
   (* Create a context with a multi-word namespace like GdkPixbuf *)
   let namespace =
-    {
-      namespace_name = "GdkPixbuf";
-      namespace_version = "2.0";
-      namespace_shared_library = "libgdk_pixbuf-2.0.so.0";
-      namespace_c_identifier_prefixes = "Gdk";
-      namespace_c_symbol_prefixes = "gdk_pixbuf";
-    }
+    Type_factory.make_gir_namespace ~namespace_name:"GdkPixbuf"
+      ~namespace_version:"2.0"
+      ~namespace_shared_library:"libgdk_pixbuf-2.0.so.0"
+      ~namespace_c_identifier_prefixes:"Gdk"
+      ~namespace_c_symbol_prefixes:"gdk_pixbuf" ()
   in
   let ctx =
-    {
-      namespace;
-      repository =
-        {
-          repository_c_includes = [];
-          repository_includes = [];
-          repository_packages = [];
-        };
-      classes = [];
-      interfaces = [];
-      enums = [];
-      bitfields = [];
-      records = [];
-      module_groups = Hashtbl.create 0;
-      current_cycle_classes = [];
-      cross_references = Gir_gen_lib.Types.StringMap.empty;
-    }
+    Type_factory.make_generation_context ~namespace
+      ~repository:(Type_factory.make_gir_repository ()) ()
   in
   (* Create a dummy enum for the test *)
   let dummy_enum =
-    {
-      enum_name = "Colorspace";
-      enum_c_type = "GdkColorspace";
-      members = [];
-      functions = [];
-      enum_doc = None;
-      enum_version = None;
-      enum_os = None;
-    }
+    Type_factory.make_gir_enum ~enum_name:"Colorspace"
+      ~enum_c_type:"GdkColorspace" ()
   in
   (* Check that the module name follows dune convention *)
   let module_name = Gir_gen_lib.Utils.enums_module_name ctx dummy_enum in
@@ -448,14 +423,8 @@ let test_enum_module_name_matches_dune_convention () =
 
   (* Also test bitfields_module_name *)
   let dummy_bitfield =
-    {
-      bitfield_name = "PixbufRotation";
-      bitfield_c_type = "GdkPixbufRotation";
-      flags = [];
-      bitfield_doc = None;
-      bitfield_version = None;
-      bitfield_os = None;
-    }
+    Type_factory.make_gir_bitfield ~bitfield_name:"PixbufRotation"
+      ~bitfield_c_type:"GdkPixbufRotation" ()
   in
   let bitfield_module_name =
     Gir_gen_lib.Utils.bitfields_module_name ctx dummy_bitfield
@@ -1688,92 +1657,43 @@ let test_normal_bitfield_no_guard () =
    2. Generating a C method that uses this enum as a parameter
    3. Verifying the generated code contains GdkPixbufColorspace_val (correct) *)
 let test_cross_namespace_c_converter_names () =
-  let open Gir_gen_lib.Types in
   (* Create a context with GdkPixbuf namespace and an external enum from that namespace *)
   let namespace =
-    {
-      namespace_name = "GdkPixbuf";
-      namespace_version = "2.0";
-      namespace_shared_library = "libgdk_pixbuf-2.0.so.0";
-      namespace_c_identifier_prefixes = "Gdk";
-      namespace_c_symbol_prefixes = "gdk_pixbuf";
-    }
+    Type_factory.make_gir_namespace ~namespace_name:"GdkPixbuf"
+      ~namespace_version:"2.0"
+      ~namespace_shared_library:"libgdk_pixbuf-2.0.so.0"
+      ~namespace_c_identifier_prefixes:"Gdk"
+      ~namespace_c_symbol_prefixes:"gdk_pixbuf" ()
   in
 
   (* Create the external enum - this simulates GdkPixbuf.Colorspace with c_type "GdkColorspace" *)
   let ctx =
-    {
-      namespace;
-      repository =
-        {
-          repository_c_includes = [];
-          repository_includes = [];
-          repository_packages = [];
-        };
-      classes = [];
-      interfaces = [];
-      enums =
+    Type_factory.make_generation_context ~namespace
+      ~repository:(Type_factory.make_gir_repository ())
+      ~enums:
         [
-          {
-            enum_name = "Colorspace";
-            enum_c_type = "GdkColorspace";
-            members = [];
-            functions = [];
-            enum_doc = None;
-            enum_version = None;
-            enum_os = None;
-          };
-        ];
-      bitfields = [];
-      records = [];
-      module_groups = Hashtbl.create 0;
-      current_cycle_classes = [];
-      cross_references = Gir_gen_lib.Types.StringMap.empty;
-    }
+          Type_factory.make_gir_enum ~enum_name:"Colorspace"
+            ~enum_c_type:"GdkColorspace" ();
+        ]
+      ()
   in
 
   (* Create a method that uses the Colorspace enum as a parameter.
      This simulates a method like gdk_pixbuf_set_colorspace that takes Colorspace as input,
      which generates the Colorspace_val converter (CAML value to C enum). *)
   let meth =
-    {
-      method_name = "set_colorspace";
-      c_identifier = "gdk_pixbuf_set_colorspace";
-      return_type =
-        {
-          name = "none";
-          c_type = Some "void";
-          nullable = false;
-          transfer_ownership = TransferNone;
-          array = None;
-        };
-      parameters =
+    Type_factory.make_gir_method ~method_name:"set_colorspace"
+      ~c_identifier:"gdk_pixbuf_set_colorspace"
+      ~return_type:Type_factory.void_type
+      ~parameters:
         [
-          {
-            param_name = "colorspace";
-            param_type =
-              {
-                name = "Colorspace";
-                c_type = Some "GdkColorspace";
-                nullable = false;
-                transfer_ownership = TransferNone;
-                array = None;
-              };
-            direction = In;
-            nullable = false;
-            varargs = false;
-            caller_allocates = false;
-          };
-        ];
-      doc = None;
-      throws = false;
-      introspectable = true;
-      get_property = None;
-      set_property = None;
-      version = None;
-      version_namespace = None;
-      os = None;
-    }
+          Type_factory.make_gir_param ~param_name:"colorspace"
+            ~param_type:
+              (Type_factory.make_gir_type ~name:"Colorspace"
+                 ~c_type:"GdkColorspace" ())
+            ();
+        ]
+      ()
   in
 
   let c_code =

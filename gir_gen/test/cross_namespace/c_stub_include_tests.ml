@@ -8,33 +8,15 @@ open C_validation
 
 (* Helper: Create a context for testing C stub header generation *)
 let create_test_context ~namespace =
-  let open Gir_gen_lib.Types in
   let ns =
-    {
-      namespace_name = namespace;
-      namespace_version = "4.0";
-      namespace_shared_library = "lib" ^ namespace ^ "-4.so.1";
-      namespace_c_identifier_prefixes = namespace;
-      namespace_c_symbol_prefixes = String.lowercase_ascii namespace;
-    }
+    Type_factory.make_gir_namespace ~namespace_name:namespace
+      ~namespace_version:"4.0"
+      ~namespace_shared_library:("lib" ^ namespace ^ "-4.so.1")
+      ~namespace_c_identifier_prefixes:namespace
+      ~namespace_c_symbol_prefixes:(String.lowercase_ascii namespace) ()
   in
-  {
-    namespace = ns;
-    repository =
-      {
-        repository_c_includes = [];
-        repository_includes = [];
-        repository_packages = [];
-      };
-    classes = [];
-    interfaces = [];
-    enums = [];
-    bitfields = [];
-    records = [];
-    module_groups = Hashtbl.create 0;
-    current_cycle_classes = [];
-    cross_references = StringMap.empty;
-  }
+  Type_factory.make_generation_context ~namespace:ns
+    ~repository:(Type_factory.make_gir_repository ()) ()
 
 (* Stage 5 Test: C stub file includes library-specific decls header.
    When generating C stubs for a namespace, the file should include

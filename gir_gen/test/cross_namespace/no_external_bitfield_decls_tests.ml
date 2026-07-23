@@ -11,65 +11,30 @@ let output_dir = "/tmp/test_no_ext_bitfield_decls_output"
 (* Helper: Create a context with external bitfields to verify they are NOT 
    included in forward declarations *)
 let create_context_with_external_bitfield () =
-  let open Gir_gen_lib.Types in
   let namespace =
-    {
-      namespace_name = "Gtk";
-      namespace_version = "4.0";
-      namespace_shared_library = "libgtk-4.so.1";
-      namespace_c_identifier_prefixes = "Gtk";
-      namespace_c_symbol_prefixes = "gtk";
-    }
+    Type_factory.make_gir_namespace ~namespace_name:"Gtk"
+      ~namespace_version:"4.0" ~namespace_shared_library:"libgtk-4.so.1"
+      ~namespace_c_identifier_prefixes:"Gtk"
+      ~namespace_c_symbol_prefixes:"gtk" ()
   in
 
   (* Create a local GTK bitfield *)
   let local_bitfield =
-    {
-      bitfield_name = "StateFlags";
-      bitfield_c_type = "GtkStateFlags";
-      flags =
+    Type_factory.make_gir_bitfield ~bitfield_name:"StateFlags"
+      ~bitfield_c_type:"GtkStateFlags"
+      ~flags:
         [
-          {
-            flag_name = "NORMAL";
-            flag_value = 0;
-            flag_c_identifier = "GTK_STATE_FLAG_NORMAL";
-            flag_doc = None;
-            flag_version = None;
-            flag_os = None;
-          };
-          {
-            flag_name = "ACTIVE";
-            flag_value = 1;
-            flag_c_identifier = "GTK_STATE_FLAG_ACTIVE";
-            flag_doc = None;
-            flag_version = None;
-            flag_os = None;
-          };
-        ];
-      bitfield_doc = None;
-      bitfield_version = None;
-      bitfield_os = None;
-    }
+          Type_factory.make_gir_bitfield_member ~flag_name:"NORMAL"
+            ~flag_value:0 ~flag_c_identifier:"GTK_STATE_FLAG_NORMAL" ();
+          Type_factory.make_gir_bitfield_member ~flag_name:"ACTIVE"
+            ~flag_value:1 ~flag_c_identifier:"GTK_STATE_FLAG_ACTIVE" ();
+        ]
+      ()
   in
 
-  {
-    namespace;
-    repository =
-      {
-        repository_c_includes = [];
-        repository_includes = [];
-        repository_packages = [];
-      };
-    classes = [];
-    interfaces = [];
-    enums = [];
-    bitfields = [ local_bitfield ];
-    records = [];
-    (* External bitfield should NOT appear in forward declarations *)
-    module_groups = Hashtbl.create 0;
-    current_cycle_classes = [];
-    cross_references = StringMap.empty;
-  }
+  Type_factory.make_generation_context ~namespace
+    ~bitfields:[ local_bitfield ]
+    ~repository:(Type_factory.make_gir_repository ()) ()
 
 (* Stage 3 Test: Generated header should NOT contain forward declarations
    for external bitfields. These declarations now come from included headers. *)

@@ -9,59 +9,34 @@ open C_validation
 (* Helper: Create a context with cross-references to verify that dependency
      headers are included *)
 let create_context_with_cross_references ~namespace ~deps =
-  let open Gir_gen_lib.Types in
   (* Create per-namespace entries in the outer cross_references map,
      matching the structure that get_dependency_namespaces expects *)
   let cross_references =
     List.fold_left
       (fun acc dep_ns ->
         let cr =
-          {
-            cr_name = "TestClass";
-            cr_type = Crt_Class { parent = None; implements = [] };
-            cr_c_type = dep_ns ^ "TestClass";
-          }
+          Type_factory.make_cross_reference_entity ~cr_name:"TestClass"
+            ~cr_type:(Type_factory.make_cross_reference_type `Class)
+            ~cr_c_type:(dep_ns ^ "TestClass") ()
         in
-        let ncr =
-          {
-            ncr_namespace_includes = [];
-            ncr_namespace_name = dep_ns;
-            ncr_entities = StringMap.add "TestClass" cr StringMap.empty;
-            ncr_namespace_packages = [];
-            ncr_namespace_c_includes = [];
-          }
+        let entities =
+          Gir_gen_lib.Types.StringMap.add "TestClass" cr
+            Gir_gen_lib.Types.StringMap.empty
         in
-        StringMap.add dep_ns ncr acc)
-      StringMap.empty deps
+        Gir_gen_lib.Types.StringMap.add dep_ns
+          (snd (Helpers.make_ncr dep_ns entities))
+          acc)
+      Gir_gen_lib.Types.StringMap.empty deps
   in
-
   let ns =
-    {
-      namespace_name = namespace;
-      namespace_version = "4.0";
-      namespace_shared_library = "lib" ^ namespace ^ "-4.so.1";
-      namespace_c_identifier_prefixes = namespace;
-      namespace_c_symbol_prefixes = String.lowercase_ascii namespace;
-    }
+    Type_factory.make_gir_namespace ~namespace_name:namespace
+      ~namespace_version:"4.0"
+      ~namespace_shared_library:("lib" ^ namespace ^ "-4.so.1")
+      ~namespace_c_identifier_prefixes:namespace
+      ~namespace_c_symbol_prefixes:(String.lowercase_ascii namespace) ()
   in
-
-  {
-    namespace = ns;
-    repository =
-      {
-        repository_c_includes = [];
-        repository_includes = [];
-        repository_packages = [];
-      };
-    classes = [];
-    interfaces = [];
-    enums = [];
-    bitfields = [];
-    records = [];
-    module_groups = Hashtbl.create 0;
-    current_cycle_classes = [];
-    cross_references;
-  }
+  Type_factory.make_generation_context ~namespace:ns
+    ~repository:(Type_factory.make_gir_repository ()) ~cross_references ()
 
 (* Stage 4 Test: Header includes dependency headers for cross-namespace types.
      When generating gtk_decls.h with Gdk and Gio as dependencies,
@@ -163,18 +138,14 @@ let test_get_dependency_namespaces_extracts_unique_namespaces () =
   let open Gir_gen_lib.Types in
   (* Create cross_references map with duplicate namespaces *)
   let cr1 =
-    {
-      cr_name = "Class1";
-      cr_type = Crt_Class { parent = None; implements = [] };
-      cr_c_type = "GdkClass1";
-    }
+    Type_factory.make_cross_reference_entity ~cr_name:"Class1"
+      ~cr_type:(Type_factory.make_cross_reference_type `Class)
+      ~cr_c_type:"GdkClass1" ()
   in
   let cr2 =
-    {
-      cr_name = "Class2";
-      cr_type = Crt_Class { parent = None; implements = [] };
-      cr_c_type = "GdkClass2";
-    }
+    Type_factory.make_cross_reference_entity ~cr_name:"Class2"
+      ~cr_type:(Type_factory.make_cross_reference_type `Class)
+      ~cr_c_type:"GdkClass2" ()
   in
   let gdk_map =
     StringMap.add "Class1" cr1 StringMap.empty |> StringMap.add "Class2" cr2
