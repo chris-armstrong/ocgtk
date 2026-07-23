@@ -296,11 +296,15 @@ let generate_ref_sink_stmt ~transfer_ownership (mapping : Types.type_mapping) =
       | Types.TransferNone ->
           sprintf "\nif (result) result = g_boxed_copy(%s(), result);"
             get_type_func
-      | _ -> "")
+      | Types.TransferFull | Types.TransferContainer | Types.TransferFloating
+        ->
+          "")
   | Types.Ts_gvariant ->
       (match transfer_ownership with
       | Types.TransferNone -> "\nif (result) g_variant_ref(result);"
-      | _ -> "")
+      | Types.TransferFull | Types.TransferContainer | Types.TransferFloating
+        ->
+          "")
   | Types.Ts_none -> ""
 
 (* [handle_void_return ~c_name ~args ~out_array_conv_code ~out_array_cleanup_list]
@@ -493,7 +497,7 @@ let compute_in_param_indices (parameters : gir_param list) =
     ~f:(fun (idx, acc) (p : gir_param) ->
       match p.direction with
       | Out -> (idx, acc)
-      | _ -> (idx + 1, (p, idx) :: acc))
+      | In | InOut -> (idx + 1, (p, idx) :: acc))
     ~init:(0, []) parameters
   |> snd |> List.rev
 
@@ -504,7 +508,8 @@ let build_param_to_ocaml_map (parameters : gir_param list) =
     ~f:(fun (param_idx, ocaml_idx, acc) param ->
       match param.direction with
       | Out -> (param_idx + 1, ocaml_idx, acc)
-      | _ -> (param_idx + 1, ocaml_idx + 1, (param_idx, ocaml_idx) :: acc))
+      | In | InOut ->
+          (param_idx + 1, ocaml_idx + 1, (param_idx, ocaml_idx) :: acc))
     ~init:(0, 0, []) parameters
   |> fun (_, _, acc) -> List.rev acc
 
@@ -678,7 +683,7 @@ let generate_c_method ~ctx ~c_type (meth : gir_method) class_name =
   let ml_name = Utils.ml_method_name ~class_name meth in
   let in_params =
     List.filter
-      ~f:(fun p -> match p.direction with Out -> false | _ -> true)
+      ~f:(fun p -> match p.direction with Out -> false | In | InOut -> true)
       meth.parameters
   in
   let param_count = 1 + List.length in_params in

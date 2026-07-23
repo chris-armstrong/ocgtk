@@ -104,7 +104,7 @@ let is_void_return_type (gir_type : Types.gir_type) : bool =
   let c_type =
     Option.value ~default:"" gir_type.c_type |> String.lowercase_ascii
   in
-  name = "void" || name = "none" || c_type = "void"
+  String.equal name "void" || String.equal name "none" || String.equal c_type "void"
 
 (* Extract namespace from C type name (e.g., "GtkAlign" -> "Gtk", "GdkGravity" -> "Gdk") *)
 let extract_namespace_from_c_type c_type =
@@ -124,7 +124,7 @@ let extract_namespace_from_c_type c_type =
   List.find_opt
     ~f:(fun prefix ->
       String.length c_type >= String.length prefix
-      && String.sub c_type ~pos:0 ~len:(String.length prefix) = prefix)
+      && String.equal (String.sub c_type ~pos:0 ~len:(String.length prefix)) prefix)
     prefixes
 
 (* Normalize a GIR class name for comparisons (strip namespace/prefix) *)
@@ -137,7 +137,7 @@ let normalize_class_name name =
   in
   if
     String.length without_namespace > 3
-    && String.sub without_namespace ~pos:0 ~len:3 = "Gtk"
+    && String.equal (String.sub without_namespace ~pos:0 ~len:3) "Gtk"
     &&
     (* Avoid stripping short names like "Gtl" accidentally *)
     let c = String.get without_namespace 3 in
@@ -200,7 +200,7 @@ let read_filter_file filename =
         let line = input_line ic in
         let trimmed = String.trim line in
         (* Skip empty lines and comments *)
-        if trimmed = "" || (String.length trimmed > 0 && trimmed.[0] = '#') then
+        if String.equal trimmed "" || (String.length trimmed > 0 && trimmed.[0] = '#') then
           read_lines acc
         else
           (* Extract class name (first word) *)

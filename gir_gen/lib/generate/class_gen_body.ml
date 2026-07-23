@@ -19,7 +19,7 @@ let generate_section ~(buf : Buffer.t) ~(items_seen : StringSet.t)
     List.fold_left items ~init:(items_seen, ()) ~f:(fun (items_seen, ()) item ->
         let chunk, items_seen = generator_fn items_seen item in
         Buffer.add_string buf chunk;
-        if add_newline && chunk <> "" then Buffer.add_char buf '\n';
+        if add_newline && not (CCString.is_empty chunk) then Buffer.add_char buf '\n';
         (items_seen, ()))
   in
   items_seen

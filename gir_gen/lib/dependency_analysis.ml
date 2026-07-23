@@ -64,7 +64,7 @@ module SCC = struct
                 stack := rest;
                 let w_state = Hashtbl.find state_tbl w in
                 w_state.on_stack <- false;
-                if w = node then w :: acc else pop_scc (w :: acc)
+                if String.equal w node then w :: acc else pop_scc (w :: acc)
           in
           let scc = pop_scc [] in
           sccs := scc :: !sccs
@@ -85,9 +85,9 @@ end
 
 (* Check if a name is a same-namespace entity *)
 let is_same_ns_entity (ctx : generation_context) name : bool =
-  List.exists ~f:(fun cls -> cls.class_name = name) ctx.classes
-  || List.exists ~f:(fun intf -> intf.interface_name = name) ctx.interfaces
-  || List.exists ~f:(fun rec_ -> rec_.record_name = name) ctx.records
+  List.exists ~f:(fun cls -> String.equal cls.class_name name) ctx.classes
+  || List.exists ~f:(fun intf -> String.equal intf.interface_name name) ctx.interfaces
+  || List.exists ~f:(fun rec_ -> String.equal rec_.record_name name) ctx.records
 
 (* Dependency extraction from types *)
 let extract_dependencies_from_type (ctx : generation_context)
@@ -97,7 +97,7 @@ let extract_dependencies_from_type (ctx : generation_context)
   (* For GList/GSList, also extract the element type as a dependency *)
   let list_elem_deps =
     match gir_type.array with
-    | Some arr when type_name = "GLib.List" || type_name = "GLib.SList" ->
+    | Some arr when String.equal type_name "GLib.List" || String.equal type_name "GLib.SList" ->
         let elem_name = arr.element_type.name in
         if is_same_ns_entity ctx elem_name then [ elem_name ] else []
     | _ -> []
@@ -164,7 +164,7 @@ let extract_class_dependencies (ctx : generation_context) (cls : gir_class) :
     parent_deps @ interface_deps @ method_deps @ property_deps
     @ constructor_deps @ signal_deps
   in
-  List.filter all_deps ~f:(fun dep -> dep <> cls.class_name)
+  List.filter all_deps ~f:(fun dep -> not (String.equal dep cls.class_name))
   |> List.sort_uniq ~cmp:String.compare
 
 (* Extract all dependencies for an interface *)
@@ -182,7 +182,7 @@ let extract_interface_dependencies (ctx : generation_context)
 
   (* Remove self-references and duplicates *)
   let all_deps = method_deps @ property_deps @ signal_deps in
-  List.filter all_deps ~f:(fun dep -> dep <> intf.interface_name)
+  List.filter all_deps ~f:(fun dep -> not (String.equal dep intf.interface_name))
   |> List.sort_uniq ~cmp:String.compare
 
 (* Extract all dependencies for a record *)
@@ -197,7 +197,7 @@ let extract_record_dependencies (ctx : generation_context) (rec_ : gir_record) :
 
   (* Remove self-references and duplicates *)
   let all_deps = method_deps @ constructor_deps in
-  List.filter all_deps ~f:(fun dep -> dep <> rec_.record_name)
+  List.filter all_deps ~f:(fun dep -> not (String.equal dep rec_.record_name))
   |> List.sort_uniq ~cmp:String.compare
 
 (* Build dependency graph for all entities *)

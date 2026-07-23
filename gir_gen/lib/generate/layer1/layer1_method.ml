@@ -59,7 +59,7 @@ let generate_method_decl ~ctx ~class_name ~c_type ~c_symbol_prefix ~entity_kind
       meth.method_name
   in
   let in_params =
-    List.filter ~f:(fun p -> p.direction <> Out) meth.parameters
+    List.filter ~f:(fun p -> Gir_type_pred.Gir_direction.is_in p.direction) meth.parameters
   in
   let param_count = 1 + List.length in_params in
 
