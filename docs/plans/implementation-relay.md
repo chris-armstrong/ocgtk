@@ -19,7 +19,9 @@ opencode setup; prompt text is tool-agnostic):
 | `test-reviewer` | test patterns, e2e | `test-patterns.md`, `atspi-e2e-testing.md` |
 
 Plus `review.txt` (coordinator that fans these out) and
-`.claude/agents/refactor-reviewer.md` (goal-attainment reviewer, unused here).
+`.claude/agents/refactor-reviewer.md` (goal-attainment reviewer). The first six
+form the standard review panel; `refactor-reviewer` is an optional 7th aspect,
+run only when the design states a quantified refactor goal.
 
 **Suggestion:** the six aspect reviewers above are exactly the "own aspect" parallel
 review agents the relay needs. We reuse them verbatim as the subreview prompt cores
@@ -223,14 +225,15 @@ and records the PR URL in status and log. Push/auth failure = intervention.
 - **Bounded orientation** — nobody reads `log.md` end-to-end; `handover.md` is the
   working continuity surface, kept compressed each round.
 
-## 6. Open questions for the human
+## 6. Resolved decisions (human-approved)
 
-1. Fix-budget default of 60 tool calls per fix leg — sensible, or prefer
-   wall-clock/finding-count bounds?
-2. Should the design reviewer's advisory decomposition be binding for leg 2
-   (first implementation slice) or purely advisory (recommended: advisory)?
-3. Should `refactor-reviewer` (goal-attainment) join the aspect panel when the
-   design names a measurable refactor goal? (Suggested: yes, optional seventh
-   aspect, only when the design has a quantified goal.)
-4. PR target branch and relay working mode (in-place on this branch vs
-   fresh worktree from the integration base)?
+1. **Fix budget:** 60 tool calls per fix leg, tracked; giving up is expected when
+   reviews expose more than one bounded leg can absorb.
+2. **Design decomposition:** advisory only — implementation slicing stays adaptive
+   (status + `handover.md` decide the next slice).
+3. **Goal-attainment reviewer:** included as an optional 7th aspect, run only when
+   the design states a quantified refactor goal; prompt core is
+   `.claude/agents/refactor-reviewer.md`.
+4. **Working mode:** decided per relay at preparation time (in-place branch vs
+   fresh worktree from the integration base); the choice and its facts are
+   recorded in that relay's `operations.md`.
