@@ -4,10 +4,14 @@ A pi Relay operational profile for turning a design document plus implementation
 instructions into a merged draft PR. Built on the `relay` method (base skill) with a
 custom profile derived from `relay-runner`.
 
-## 0. What exists in the repo already
+## 0. Review agents in this repo
 
-The repo ships a specialist-reviewer system under `.opencode/agents/` (ported from an
-opencode setup; prompt text is tool-agnostic):
+The six specialist aspect reviewers were historically defined under
+`.opencode/agents/` (ported from an opencode setup). They are now **ported to
+pi project agents** at `.pi/agents/` — that directory is the source of truth
+for the relay. The port made report-only mandatory (the original files had an
+opt-in "apply fixes" mode, which the relay forbids) and switched tool wording
+to pi (`read` tool):
 
 | Reviewer | Aspects | Guideline files (`docs/code_guidelines/`) |
 |---|---|---|
@@ -23,15 +27,27 @@ Plus `review.txt` (coordinator that fans these out) and
 form the standard review panel; `refactor-reviewer` is an optional 7th aspect,
 run only when the design states a quantified refactor goal.
 
-**Suggestion:** the six aspect reviewers above are exactly the "own aspect" parallel
-review agents the relay needs. We reuse them verbatim as the subreview prompt cores
-(they already enforce report-only-by-default, mandatory guideline reading, and a
-structured output). The relay profile records them as the canonical review-aspect
-definitions instead of inventing new ones. Minor adaptation needed: swap "Read tool"
-wording for pi's `read` tool — content is otherwise portable.
+**Suggestion, implemented:** the six aspect reviewers (plus
+`.claude/agents/refactor-reviewer.md` → `.pi/agents/refactor-reviewer.md` as the
+optional 7th aspect) are the relay's review panel. The opencode coordinator
+(`review.txt`) is deliberately **not** ported: in a Relay the review-leg runner
+consolidates — there is no standing coordinator. `.pi/agents/port-reviewers.sh`
+records the port transformation (report-only hardening, tool naming, YAML
+frontmatter) and can regenerate the agents if the `.opencode` originals change.
 
-The fixer leg maps each failed aspect to the same guideline files, so fixes are
+The fixer maps each failed aspect to the same guideline files, so fixes are
 anchored to the same authority the reviewers used.
+
+## 0a. Runnable profile assets
+
+The profile is implemented as reusable assets the preparation agent consumes:
+
+- `docs/relays/implementation-relay/profile.md` — operational profile to copy
+  into a relay's `operations.md` (models, verification gate, commit policy,
+  aspect panel, fix budget, gates, delivery).
+- `docs/relays/implementation-relay/dispatch-prompts.md` — handoff prompt
+  templates for every leg type (design review, implementation, review, fix,
+  delivery, post-query continuation).
 
 ## 1. Model assignments
 
