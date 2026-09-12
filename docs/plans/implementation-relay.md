@@ -53,8 +53,8 @@ The profile is implemented as reusable assets the preparation agent consumes:
 
 | Role | Model | Notes |
 |---|---|---|
-| Design reviewer | `glm-5.3` | light review only |
-| Controlling agent (prep, query resolution, dispatch) | this session / `glm-5.3` | owns packet, human gates |
+| Design reviewer | `glm-5.3` | light review; resolves non-material ambiguities itself |
+| Preparation session (per relay) | dispatching session | preflight, single dispatch; **not** a standing controller |
 | Implementation runners | `glm-5.3-flash` | sequential, one leg each |
 | Fixer | `glm-5.3` | bounded, may delegate |
 | Fix delegates | `glm-5.3-flash` | bounded subsessions inside the fixer's leg |
@@ -76,7 +76,8 @@ status.md               baton: current leg, next task, pointers, blockers,
                         review attempts: N, fix budget state
 log.md                  append-only history (targeted reads only)
 handover.md             SHARED implementation handover doc (multi-phase continuity)
-design-review.md        leg-1 light design review: findings + human resolutions
+design-review.md        leg-1 light design review: findings + dispositions
+                        (agent-resolved non-material; human-resolved material)
 reviews/round-<N>/      per-aspect consolidated findings, one file per aspect
 ```
 
@@ -92,16 +93,22 @@ active or imminent.
 ## 3. Leg chain
 
 ```
-Leg 1  design-review      glm-5.3        report → STOP (human gate 1)
-Gate  1 go-ahead          human (via controlling agent, ask_user)
-Leg 2..n implementation   glm-5.3-flash  sequential; each commits; STOP on arch query
-Leg r  aspect-review      deepseek-v4-flash (consolidator) + 6 parallel subsessions
+Leg 1  design-review      glm-5.3        report; resolves non-material ambiguities
+                                         itself; STOP only on material concerns
+Leg 2..n implementation   glm-5.3-flash  sequential; each commits; STOP (intervention)
+                                         on arch query or material concern
+Leg r  aspect-review      deepseek-v4-flash (consolidator) + parallel subsessions
+                                         (applicable aspects from the actual diff)
 Leg f  fix                glm-5.3        bounded tool budget; commits
 Leg r' re-review          deepseek-v4-flash  failed aspects only
 Leg f' fix                glm-5.3        second and final automatic round
-Gate  2 stop-and-notify   human          if blocking findings remain
+STOP   stop-and-notify    human          if blocking findings remain
 Leg d  delivery           push + gh pr create --draft
 ```
+
+Human involvement is limited to the preparation approval (before dispatch),
+intervention stops (exceptional, visible), and review of the draft PR after
+delivery. There is no standing controller between legs.
 
 ### Leg 1 — design review (glm-5.3)
 
@@ -112,19 +119,18 @@ Output: `design-review.md` containing:
 
 - recommendations (non-binding),
 - concerns that would affect implementation,
-- unresolved questions and ambiguities (numbered, each phrased as a decision the
-  human must make),
+- unresolved questions and ambiguities (numbered), each with a disposition:
+  either resolved by the reviewer itself within the charter's edges (recorded
+  with rationale) or marked **material** — meaning it would move the goal, an
+  edge, or a cost/feasibility assumption and requires a human decision,
 - a proposed rough decomposition into sequential parts (advisory only; real
   slicing stays adaptive per the base method).
 
-It writes nothing else, touches no code, then stops. It does not dispatch.
-
-### Gate 1 — human go-ahead
-
-The controlling agent presents `design-review.md`, resolves numbered questions with
-the human (`ask_user`), folds answers into the charter (if they move goal/edges) or
-into `design-review.md` resolutions (if they are route facts), and only then
-dispatches implementation. **Dispatch never happens without explicit go-ahead.**
+It writes nothing else, touches no code. If **no finding is material**, it
+updates status and hands off exactly once to the first implementation leg —
+the chain continues unattended. If any finding is material, it stops with the
+intervention signal and the human resolves; the relay resumes via a
+continuation dispatch naming the recorded decisions.
 
 ### Implementation legs (glm-5.3-flash, sequential)
 
@@ -138,10 +144,10 @@ Each leg:
    generated-code strategy. If a decision like this is needed, the agent:
    - writes the question to `handover.md` under *Open questions* with options and a
      recommendation,
-   - sets status to blocked-with-query,
-   - stops. The controlling agent takes it to the human, records the resolution in
-     `handover.md` (as a **decision** with rationale) and dispatches a fresh
-     continuation leg. This is the "hand back for query resolution" rule.
+   - sets status to blocked-with-query with the intervention signal,
+   - **stops**. The human resolves in the packet; the relay resumes via a
+     continuation dispatch that names the recorded decision. This is the
+     "visible stop for query resolution" rule — there is no intermediary agent.
 4. Verification gate (already defined — recorded verbatim in `operations.md`):
    - `opam exec -- dune build @all` (compile)
    - `opam exec -- dune test gir_gen/ && xvfb-run dune test ocgtk/` (tests)
@@ -161,16 +167,20 @@ review leg.
 One review leg per round, run by one consolidator. The consolidator:
 
 1. Computes the review diff (recorded base/HEAD range from `operations.md`).
-2. Spawns **parallel subsessions** (`spawn_subsession`), one per failed-or-all
-   aspect, each prompted with the corresponding `.opencode/agents/*-reviewer.txt`
-   text plus: repo, diff range, charter goal/edges, and **report-only** prohibition
-   (no writes at all, including packet).
+2. Spawns **parallel subsessions** (`spawn_subsession`), one per selected
+   aspect, each prompted with the corresponding `.pi/agents/<aspect>.md`
+   instructions plus: repo, diff range, charter goal/edges, and **report-only**
+   prohibition (no writes at all, including packet).
 3. `yield_to_subsessions`, collects reports, classifies each finding
    **blocking** (concrete evidence: reproduced failure, failing check, concrete
    violated guideline with specific code) vs **non-blocking**, writes
    `reviews/round-<N>/<aspect>.md`, updates status (`review attempts: N`), logs.
-4. Round 1 reviews **all six aspects**; round 2 reviews **only aspects with
-   blocking findings**, focusing on remediation and regressions (findings already
+4. Review is **proportionate, not fixed-panel**: the consolidator selects the
+   applicable aspects from the actual diff (e.g. `test-reviewer` only when test
+   files changed, `refactor-reviewer` only when the design states a quantified
+   goal), running at least one aspect and all aspects whose guideline files the
+   diff plausibly touches. Round 2 reviews **only aspects with blocking
+   findings**, focusing on remediation and regressions (findings already
    dispositioned are carried forward, not re-derived).
 
 Reviewers never fix. They write only their aspect report via the consolidator.
@@ -217,14 +227,19 @@ and records the PR URL in status and log. Push/auth failure = intervention.
 
 ## 4. Human interaction points (exhaustive)
 
-1. Relay preparation approval (packet draft review — standard relay-runner preflight).
-2. **Gate 1:** design-review go-ahead + ambiguity resolution.
-3. Architectural queries surfaced by implementation agents (as they arise; may be
-   batched if several legs stall on related questions).
-4. Fixer gives up / budget exhausted with material findings outstanding.
-5. Blocking findings survive round 2 → stop-and-notify.
-6. Any relay-runner intervention trigger (environment unusable, scope question,
-   delivery failure, …).
+The human reviews durable artifacts, not live agent chatter. Normal operation
+runs end-to-end without intervention; only visible stops surface to the human.
+
+1. **Relay preparation approval** (packet draft review — the only designed-in
+   gate; dispatch never happens without it).
+2. **Intervention stops** (exceptional): material design-review concerns;
+   architectural queries from implementation agents; fixer gives up / budget
+   exhausted with material findings outstanding; blocking findings surviving
+   round 2 (stop-and-notify); and any relay-runner trigger (environment
+   unusable, scope question, delivery failure, …). The human resolves in the
+   packet (decision + rationale recorded) and re-dispatches a continuation leg.
+3. **Draft-PR review** after delivery — the second designed-in checkpoint,
+   outside the relay itself.
 
 ## 5. Invariant mapping
 
@@ -237,7 +252,8 @@ and records the PR URL in status and log. Push/auth failure = intervention.
 - **Durability before handoff** — commit + `handover.md` + status + log precede
   every handoff; a leg that cannot commit does not hand off.
 - **No silent goal drift** — only the human can change charter/edges; agents'
-  decisions in `handover.md` are recorded facts, not authority.
+  dispositions in `design-review.md` and `handover.md` are recorded facts, not
+  authority.
 - **Bounded orientation** — nobody reads `log.md` end-to-end; `handover.md` is the
   working continuity surface, kept compressed each round.
 
@@ -253,3 +269,11 @@ and records the PR URL in status and log. Push/auth failure = intervention.
 4. **Working mode:** decided per relay at preparation time (in-place branch vs
    fresh worktree from the integration base); the choice and its facts are
    recorded in that relay's `operations.md`.
+5. **v2 — minimal intervention (replaces v1):** no standing controlling agent;
+   two designed-in checkpoints only (preparation approval, draft-PR review);
+   the design-review leg resolves non-material ambiguities itself and stops
+   only on material concerns; architectural queries become visible intervention
+   stops; review is proportionate (applicable aspects chosen from the actual
+   diff) rather than a fixed panel. Model economics, verification gate, commit
+   policy, handover doc, fix budget, and the two-attempt review/fix policy are
+   unchanged from v1.

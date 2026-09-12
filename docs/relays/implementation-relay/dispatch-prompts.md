@@ -1,10 +1,15 @@
-# implementation-relay — dispatch prompt templates
+# implementation-relay — dispatch prompt templates (v2, minimal intervention)
 
 Handoff prompts for each leg type. Every prompt names the `relay` and
 `relay-runner` skills (fresh sessions inherit nothing), passes the model
 explicitly, and points at the packet. Substitute `<angle brackets>`. The
-packet root is `.pi-web/relays/<name>/`. All prompts are dispatched with
-`spawn_session` as the dispatcher's final operational action.
+packet root is `.pi-web/relays/<name>/`.
+
+Dispatch rules: the preparation session dispatches leg 1 once after explicit
+human approval; after that, each runner hands off exactly once at the end of
+its leg. After an **intervention stop**, the human resolves in the packet and
+re-dispatches the continuation leg themselves (template 6) — no intermediary
+agent exists.
 
 ## 1. Design review (leg 1 — model `glm-5.3`)
 
@@ -21,19 +26,25 @@ Load the `relay` and `relay-runner` skills, then read:
 Your leg: LIGHT design review of the design recorded in the charter's source
 material. NOT a full design review. Check consistency (internal, and against
 this repository as the target) and size (is this one relay, one branch, a sane
-slice?). You do NOT implement, do NOT modify any file outside the packet, and
-do NOT dispatch anything.
+slice?). You do NOT implement and do NOT modify any file outside the packet.
 
 Write .pi-web/relays/<name>/design-review.md containing:
 1. Recommendations (non-binding).
 2. Concerns that would affect implementation.
-3. Unresolved questions / ambiguities — numbered, each phrased as a decision
-   the human must make.
+3. Unresolved questions / ambiguities — numbered, each with a disposition:
+   - resolved by you within the charter's edges (record the decision and
+     rationale), or
+   - MATERIAL: it would move the goal, an edge, or a cost/feasibility
+     assumption and needs a human decision.
 4. An advisory rough decomposition into sequential parts (advisory only).
 
-Then update status.md (leg 1 complete; next = human gate, not a dispatch),
-append log.md, and STOP. Do not spawn a successor: the human go-ahead gate
-belongs to the controlling agent.
+Then update status.md and append log.md. Next:
+- If NO finding is material: proceed normally — update status with the first
+  implementation slice, and hand off exactly once with spawn_session using
+  template 2 (model glm-5.3-flash). Do not stop.
+- If ANY finding is material: set the intervention signal in status.md
+  (blocked-on-material-concern, pointing at design-review.md) and STOP
+  without spawning. Do not guess what the human would decide.
 ```
 
 ## 2. Implementation leg (model `glm-5.3-flash`)
@@ -59,12 +70,15 @@ Rules:
   cross-cutting type changes, dependencies, FFI strategy, generated-code
   strategy). If one is needed: record the question with options and a
   recommendation under "Open questions" in handover.md, set status to
-  blocked-with-query, and STOP. Do not guess.
+  blocked-with-query with the intervention signal, and STOP. Do not guess.
+- If the design or the slice turns out to rest on a material ambiguity, STOP
+  the same way rather than inventing an interpretation.
 - Before finishing you MUST pass the verification gate defined in
   operations.md (build @all, tests, fmt), commit all and only your delivery
   changes (one commit, message explains why), update handover.md and
   status.md, append log.md — then hand off exactly once with spawn_session,
-  or stop if your slice is the final implementation slice.
+  or stop if your slice is the final implementation slice (next leg: aspect
+  review).
 - Record proposals as Open questions in handover.md; never record decisions
   as taken.
 ```
@@ -84,8 +98,12 @@ Load the `relay` and `relay-runner` skills, then read:
 Your leg: consolidate an aspect review of the exact diff recorded in
 operations.md (<review range>).
 
-- Aspects this round: <aspect agent list — round 1: all applicable; round 2:
-  failed aspects only>.
+- Select the APPLICABLE aspects from the actual diff (profile's proportionate
+  selection: at least one; every aspect whose guideline surfaces the diff
+  touches; refactor-reviewer only if the design states a quantified goal).
+  This round's aspects: <aspect agent list>. Round <N> focus: <round 1: full
+  review of selected aspects / round 2: failed aspects only, remediation and
+  regressions, prior dispositions carried forward>.
 - For each aspect, spawn one report-only subsession (spawn_subsession) with
   model deepseek-v4-flash. The subreviewer runs the pi project agent
   instructions for that aspect (e.g. .pi/agents/control-flow-reviewer.md):
@@ -99,9 +117,8 @@ operations.md (<review range>).
 - Write .pi-web/relays/<name>/reviews/round-<N>/<aspect>.md with the
   consolidated, classified findings in risk order; update status.md
   (review attempts: N) and log.md.
-- Do not fix anything yourself. Then hand off exactly once with
-  spawn_session (next: fix leg or, if no blocking findings, delivery),
-  or stop per the profile's stop-and-notify rule.
+- Do not fix anything yourself. Then hand off exactly once with spawn_session
+  (next: fix leg if blocking findings, else delivery).
 ```
 
 ## 4. Fix leg (model `glm-5.3`)
@@ -131,9 +148,10 @@ Rules:
   signal in status.md, append log.md, and STOP. Never half-fix across the
   board.
 - Same rules as implementation agents: no key architectural decisions
-  (hand back via Open questions), verification gate MUST pass, commit all
-  and only your delivery changes before handoff, update handover.md,
-  status.md, log.md, then hand off exactly once with spawn_session.
+  (intervention stop via Open questions), verification gate MUST pass,
+  commit all and only your delivery changes before handoff, update
+  handover.md, status.md, log.md, then hand off exactly once with
+  spawn_session (next: re-review of failed aspects, or delivery if clean).
 ```
 
 ## 5. Delivery leg (model of dispatching session)
@@ -154,12 +172,21 @@ mismatch is unexpected, STOP with the intervention signal.
 Then execute delivery only: `git push -u origin <branch>` and
 `gh pr create --draft` with a body stating what changed and why, behavioral
 changes, and exact verification results. Record the PR URL in status.md and
-log.md. No code changes on this leg.
+log.md. No code changes on this leg. After delivery the human reviews the
+draft PR — do not merge, address review comments, or iterate beyond the
+recorded delivery mechanism.
 ```
 
-## Continuation after query resolution
+## 6. Continuation after an intervention stop
 
-After the controlling agent resolves an implementation agent's architectural
-query, it dispatches a fresh implementation leg (template 2) whose slice
-statement names the recorded decision: "Decision (recorded in handover.md):
-<decision>. Continue with: <next slice>."
+After the human resolves a stop (decision + rationale recorded in
+`handover.md` or `design-review.md`), dispatch the continuation with the
+matching template (2, 3, or 4) plus this preamble:
+
+```text
+<template 2/3/4 text>
+
+Intervention resolution: the stop recorded in status.md has been resolved by
+the human. Decision (recorded in <file>): <decision + rationale>. Continue
+with: <next slice or leg>.
+```

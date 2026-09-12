@@ -1,17 +1,22 @@
-# implementation-relay — operational profile
+# implementation-relay — operational profile (v2, minimal intervention)
 
 Reusable profile for Relay chains that turn a design + implementation instructions
-into a draft PR. Derived from the `relay-runner` profile (see
-[relay-runner skill] and `docs/plans/implementation-relay.md` for the design).
-The preparation agent copies this file's content into the relay's
+into a draft PR with minimal human intervention. Derived from the `relay-runner`
+profile (see [relay-runner skill] and `docs/plans/implementation-relay.md` for the
+design record). The preparation agent copies this file's content into the relay's
 `.pi-web/relays/<name>/operations.md`, filling in the per-relay facts marked
 `<PER-RELAY>`.
 
+**v2 principle:** the human reviews durable artifacts (the charter at preparation,
+the draft PR at the end), not live agent chatter. The chain runs end-to-end
+unattended; every human touch is a visible intervention stop, exceptional by
+design. There is no standing controlling agent between legs.
+
 Review agents referenced below are pi project agents defined in `.pi/agents/`
-in this repo. They are the ported, report-only equivalents of the historical
-`.opencode/agents/*-reviewer.txt` definitions; `.pi/agents/` is the source of
+in this repo — the ported, report-only equivalents of the historical
+`.opencode/agents/*-reviewer.txt` definitions. `.pi/agents/` is the source of
 truth. The opencode coordinator (`review.txt`) is deliberately **not** ported:
-in a Relay, the review-leg runner consolidates; there is no standing coordinator.
+the review-leg runner consolidates; there is no standing coordinator.
 
 ## Per-relay facts
 
@@ -29,7 +34,7 @@ at dispatch, that is an intervention, not a silent substitution.
 | Role | Model |
 |---|---|
 | Design reviewer (leg 1) | `glm-5.3` |
-| Controlling agent (prep, gates, query resolution) | dispatching session |
+| Preparation session (per relay; single preflight dispatch) | dispatching session |
 | Implementation runners | `glm-5.3-flash` |
 | Fixer | `glm-5.3` |
 | Fix delegates (bounded subsessions) | `glm-5.3-flash` |
@@ -65,13 +70,25 @@ delivery commits. A leg that cannot commit does not hand off.
 | `control-flow-reviewer` | `nesting-and-control-flow.md`, `error-handling.md`, `partial-functions.md` |
 | `docs-reviewer` | `comments-and-documentation.md` |
 | `test-reviewer` | `test-patterns.md`, `atspi-e2e-testing.md` |
-| `refactor-reviewer` (optional 7th) | goal-attainment; run only when the design states a quantified refactor goal |
+| `refactor-reviewer` (optional 7th) | goal-attainment; only when the design states a quantified refactor goal |
 
-Run round 1 across all applicable aspects; round 2 reviews only aspects that had
-blocking findings, focused on remediation and regressions. Reviewers never fix;
-their only output is their aspect report. Blocking requires concrete evidence
-(reproduced failure, failing check, or a concretely violated guideline with
-specific code); everything else is non-blocking and does not consume a fix round.
+**Proportionate selection:** review is not a fixed panel. The consolidator selects
+the applicable aspects from the actual diff — at least one aspect, all aspects
+whose guideline surfaces the diff plausibly touches (e.g. `test-reviewer` only
+when test files changed), and `refactor-reviewer` only under the quantified-goal
+condition. Reviewers never fix; their only output is their aspect report.
+Blocking requires concrete evidence (reproduced failure, failing check, or a
+concretely violated guideline with specific code); everything else is
+non-blocking and does not consume a fix round.
+
+## Design-review leg policy
+
+Light review only: consistency (internal, and against the repository as target)
+and size (one relay, one branch, a sane slice). Numbered ambiguities each get a
+disposition: resolved by the reviewer within the charter's edges (rationale
+recorded), or marked **material** (would move goal, edge, or a cost/feasibility
+assumption). No material findings → proceed to implementation without a human
+gate. Any material finding → intervention stop.
 
 ## Fix-leg policy
 
@@ -88,22 +105,12 @@ specific code); everything else is non-blocking and does not consume a fix round
 
 ## Fix/review rounds
 
-- Round 1: full panel review → fix leg → round 2: failed aspects only → one
-  final fix leg.
+- Round 1: applicable-aspect review → fix leg → round 2: failed aspects only →
+  one final fix leg.
 - If blocking findings survive the second fix round, or a fixer gave up with
   material findings outstanding: **stop and notify the human**. No third
   automatic round. (The `relay-runner` exceptional third attempt exists only for
   a human to grant explicitly.)
-
-## Human gates (exhaustive)
-
-1. Relay preparation approval (packet draft review).
-2. Gate 1 — design-review go-ahead; numbered ambiguities resolved by the human.
-3. Architectural queries from implementation agents (never decided by agents).
-4. Fixer gives up / budget exhausted with material findings outstanding.
-5. Blocking findings survive round 2 — stop-and-notify.
-6. Any `relay-runner` intervention trigger (environment unusable, scope question,
-   delivery failure, …).
 
 ## Architectural-decision rule (implementation and fix agents)
 
@@ -111,9 +118,10 @@ New module boundaries, cross-cutting type changes, new dependencies, FFI
 strategy changes, and generated-code strategy changes are **key architectural
 decisions**: agents must not make them. The agent writes the question (options +
 recommendation) to `handover.md` under *Open questions*, sets status to
-blocked-with-query, and stops. The controlling agent resolves it with the human,
-records the decision with rationale in `handover.md`, and dispatches a fresh
-continuation leg.
+blocked-with-query with the intervention signal, and **stops**. The human
+resolves in the packet (decision + rationale recorded in `handover.md`); the
+relay resumes via a continuation dispatch naming the recorded decision. There is
+no intermediary agent between stop and resolution.
 
 ## Shared handover document
 
@@ -124,6 +132,25 @@ taken (with rationale), exact verification results, known rough edges, and the
 precise next slice. Agent **proposals** go under *Open questions*; agent decisions
 are never recorded as taken. This is the documented adaptation of the
 `relay-runner` optional-file policy.
+
+## Human checkpoints and intervention (exhaustive)
+
+Designed-in checkpoints (normal operation, not interventions):
+
+1. **Preparation approval** — the packet draft review; dispatch never happens
+   without it.
+2. **Draft-PR review** — after delivery; outside the relay itself.
+
+Intervention stops (exceptional, visible; human resolves in the packet and
+re-dispatches a continuation leg):
+
+- material design-review concerns;
+- architectural queries from implementation agents;
+- fixer gives up / budget exhausted with material findings outstanding;
+- blocking findings surviving round 2 (stop-and-notify);
+- any `relay-runner` trigger: environment unusable, scope question, delivery
+  or authentication failure, unexpected unrelated branch changes, finish line
+  infeasible, …
 
 ## Delivery
 
@@ -136,4 +163,4 @@ gh pr create --draft --title <title> --body <body with verification results>
 ```
 
 Record the PR URL in status and log. Push/auth failure is intervention, not
-completion.
+completion. The human reviews the draft PR as the second designed-in checkpoint.
