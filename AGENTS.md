@@ -89,6 +89,11 @@ See [gir_gen/README.md](gir_gen/README.md) for complete usage instructions, incl
 
 ## Relay tooling
 
+**When preparing or running a Relay in this repo, specialize the `relay-runner`
+profile with `docs/relays/implementation-relay/profile.md`** — it is mandatory
+input for the preparation, every handoff prompt, and every review/fix leg. Do
+not draft a relay packet without it.
+
 Relay chains (design → staged implementation → aspect review → bounded fixes →
 draft PR) run with the `implementation-relay` profile:
 
