@@ -21,14 +21,16 @@ If you are running in a clean container (e.g. Claude Code Web), you will need to
 
 ## Project Layout and Architecture
 
-This is a dune workspace with two projects: `ocgtk/` (GTK bindings) and `gir_gen/` (code generator). Run `dune build` and `dune test` from the repo root to cover both. For `ocamlformat`, `cd ocgtk` first (it has its own `.ocamlformat` config).
+This is a dune workspace with two projects: `ocgtk/` (GTK bindings) and `gir_gen/` (code generator). Run `dune build` and `dune test` from the repo root to cover both. For `ocamlformat`: the repo root formats `ocgtk/`; `gir_gen/` is a separate dune root with its own `.ocamlformat` — run `dune fmt` inside `gir_gen/` too (CI enforces `ocamlformat --check` on gir_gen sources).
 
 [The architecture documentation](./architecture/README.md) describes the project layout and system architecture.
 
 ## CI / Distro Compatibility Testing
 
-The `ci/` directory provides Docker-based build and test environments for Ubuntu 22.04,
-Debian 12, CentOS Stream 9, and OpenSUSE Leap 15.6. Use `./ci/oci` to manage them:
+The `ci/` directory provides Docker-based build and test environments. Default set:
+Ubuntu 22.04, Debian 12, CentOS Stream 9, OpenSUSE Leap 15.6, Fedora 40,
+Fedora 43, and Ubuntu 25.04 (`ubuntu24` is opt-in only — the dev environment
+already runs Ubuntu 24.04). Use `./ci/oci` to manage them:
 
 ```bash
 ./ci/oci build ubuntu22    # build image (once)
@@ -50,7 +52,7 @@ for full documentation.
 
 **When moving code or documentation**: ALWAYS use tools to copy the code to a temporary file and write it to the destination file. DO NOT REGENERATE the code yourself - this will save your token usage. ALWAYS remove the old code files and update the `dune` file accordingly.
 
-**When rewriting code or documentaiton**: THINK about what pattern exists in the changes you are making. Use a search and replace tool like `sed` or `awk` instead of rewriting the code yourself. Write a small utility in OCaml for more complex cases, validating it on a small sample before rewiring the whole codebase.
+**When rewriting code or documentation**: THINK about what pattern exists in the changes you are making. Use a search and replace tool like `sed` or `awk` instead of rewriting the code yourself. Write a small utility in OCaml for more complex cases, validating it on a small sample before rewiring the whole codebase.
 
 **When writing new code files or documentation files**: ALWAYS ensure the code file is added to the `dune` file and included (either directly or via code generation of a dune `(include ...)` or `(dynamic_include ...)`)
 
@@ -85,12 +87,4 @@ Design docs live under `gir_gen/docs/` — read the relevant one before working 
 
 📘 **[FFI Guidelines](./architecture/FFI_GUIDELINES.md)** — Comprehensive security and FFI guidelines for OCaml C bindings
 
-
-## When You Get Stuck on Solving problems
-
-1. **Check lablgtk3** - probably already solved
-2. **Check security guidelines** - ensure code follows best practices
-3. **Add debug output to file** - stderr may not work
-4. **Check pointer values** - catch wrapping issues early
-5. **Test first and incrementally** - write a test case first and/or isolate the failing case
 
