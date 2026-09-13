@@ -70,6 +70,14 @@ For instructions and best practices for writing and updating OCaml / C FFI, see 
 
 See [gir_gen/README.md](gir_gen/README.md) for complete usage instructions, including regeneration commands, override system, and cross-namespace type resolution.
 
+### API Documentation (Milestone 3)
+
+Design docs live under `gir_gen/docs/` — read the relevant one before working on docs generation:
+
+- [gir_gen/docs/research/reference-documentation.md](gir_gen/docs/research/reference-documentation.md) — the M3 design PRD (GIR `<doc>` format, odoc target, translation table, cross-reference resolver, page model).
+- [gir_gen/docs/plans/m3-doc-parsing.md](gir_gen/docs/plans/m3-doc-parsing.md) — completed: `<doc>`/`<doc-deprecated>`/deprecation capture into the AST.
+- [gir_gen/docs/plans/m3-odoc-emission-and-artifacts.md](gir_gen/docs/plans/m3-odoc-emission-and-artifacts.md) — agreed next slice: always-on odoc translation, local doc-artifact cache (`~/.cache/ocgtk-doc-artifacts`, keyed by commit sha, benchmark diffing). Rendered doc HTML is never published or committed; it lives in the artifact cache.
+
 
 ## Security Guidelines
 
