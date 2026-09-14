@@ -1,7 +1,8 @@
 # M3 Odoc Translation Slice — emission, wiring, artifact cache, per-branch preview
 
-**Status: DRAFT (revised after second plan review; not yet implemented)**
-**Created: 2026-09-08; revised: 2026-09-14**
+**Status: DRAFT (revised after second plan review; phased for implementation — not
+yet implemented)**
+**Created: 2026-09-08; revised: 2026-09-14 (testable phases added)**
 **Branch: `feat/m3-odoc-translation-slice`** (from `origin/m3` @ `9cec9171`, which
 contains the doc-parsing PR #184 and the
 [research PRD](../research/reference-documentation.md))
@@ -428,33 +429,210 @@ action's README).
 - Install via `opam install . --deps-only --with-doc` — both `.opam` files
   already carry `odoc {with-doc}` (dune's generator emits it), so **no new
   opam dependency** is being added.
-- Add the two `(documentation)` stanzas and the committed, generated
-  `index.mld`s.
-- First milestone of this leg: `dune build @doc` green from the repo root,
+- Add the two `(documentation)` stanzas in Phase 0; the committed, generated
+  `index.mld`s arrive in Phase 4.
+- Phase 0's milestone: `dune build @doc` green from the repo root,
   producing HTML for both packages; translation work then proceeds against a
   rendered baseline.
 
-## Sequencing
+## Phased implementation (each phase independently testable)
 
-1. **Leg 0**: `dune build @doc` green; `(documentation)` stanzas; committed
-   `index.mld`s via the bindings pipeline.
-2. **Translator**: `doc_translate.ml` (parse → AST → render) +
-   `doc_emit.ml`, with unit/expect tests, against the rendered baseline.
-3. **Emission**: suppression deletion + the three *new* wirings (combined
-   modules, ctor, signal) in one commit with regenerated bindings; tree
-   clean afterwards.
-4. **Cache driver**: `scripts/doc_artifacts.ml`.
-5. **Preview workflow** last — it needs `@doc` stable to be meaningful.
+This section replaces the earlier prose "Sequencing" list. Phases are ordered
+so that each ends in a state its own test gate can certify without depending
+on a later phase. Rules that hold for every phase:
 
-## Verification for this leg
+- **One phase = one (or at most two) commits**: the code change, its tests,
+  and — where generated files are affected — the regenerated bindings
+  committed in the same change, leaving `git status` empty.
+- **Standing invariant (checked in every phase):** `dune build @all` green,
+  `dune runtest gir_gen/` + the ocgtk tests green, and a fresh bindings
+  regeneration diff empty. Not repeated in each acceptance list below.
+- **Stop-and-fix rule:** if a phase's gate fails, fix within the phase; do
+  not push partial state forward. The committed-tree invariant makes every
+  intermediate commit shippable.
+
+### Phase 0 — odoc toolchain green (no generator changes)
+
+*Goal:* the rendered-HTML baseline every later phase works against.
+
+*Changes:* install odoc via `opam install . --deps-only --with-doc` (both
+`.opam` files already carry `odoc {with-doc}`); add the two
+`(documentation)` stanzas (`ocgtk/dune`, `gir_gen/dune`). No `.mld`, no
+generator edits — the bindings must be untouched.
+
+*Acceptance:*
+```bash
+opam exec -- dune build @doc          # exits 0 from the repo root
+find _build/default/_doc/_html -name index.html | head   # HTML for BOTH packages
+# + standing invariant (bindings regeneration diff empty — nothing wired yet)
+```
+
+### Phase 1 — `Doc_translate` (parse → AST → render) + tests, no wiring
+
+*Goal:* the pure translation engine exists and is certified against the
+corpus with **zero change to any emitted file**.
+
+*Changes:* new `lib/generate/doc_translate.ml`/`.mli` per the AST design
+above; new `test/generate/doc_translate_tests.ml` (following
+`constant_code_tests.ml` conventions); corpus smoke test covering all
+~39,850 bundled `<doc>` elements asserting invariants 1 (comment safety),
+2 (escaping), 3 (balance/fallbacks) and the AST round-trip
+`parse (render (parse x)) ≅ parse x` (invariant 5).
+
+*Unit cases (minimum set):* each render-policy table row; all four prose
+escapes; a `*)`-bearing doc; an unbalanced `[code` (inline fallback); a
+`{[ … ]}` block containing `]}` (verbatim fallback, else strip); headings in
+both contexts (entity normalisation incl. cap `{5}`, member `{b …}`
+lead-in); lists (bullet + ordered); https link; `[frag@…]` and legacy
+sigils → `Sym_ref`-degraded `[code]`; relative `.html` links → degraded
+bare text; `@param` sigil → `[name]`; `:::`/table/`<picture>`/quote
+stripping; idempotence-unfriendly fixture proving the wiring property
+holds.
+
+*Acceptance:*
+```bash
+opam exec -- dune build @all && opam exec -- dune test gir_gen/
+xvfb-run $(which dune) test ocgtk/    # unchanged bindings, still green
+# regenerate bindings for one namespace and diff — MUST be empty
+```
+
+### Phase 2 — `Doc_emit` + translator at the *existing* emit sites
+(suppressions stay)
+
+*Goal:* every doc that is *already* emitted now goes through the
+translator; no *new* docs appear. This isolates translator-induced diffs
+from un-suppression-induced diffs (Phase 3).
+
+*Changes:* new `lib/generate/doc_emit.ml`/`.mli` (`emit_item_doc` /
+`emit_entity_doc`: assembly prose-first-tags-last on the AST, final-comment
+sanitisation, `@since` append); rewire `constant_code.ml` `emit_doc`,
+`enum_code.ml` **member** docs, `layer1_method.ml` method docs;
+`test/generate/doc_emit_tests.ml` (comment safety, tag terminality,
+`@since` placement). Regenerate bindings; the diff is confined to
+doc-comment text at these three site kinds; commit it.
+
+*Acceptance:*
+```bash
+opam exec -- dune test gir_gen/ && xvfb-run $(which dune) test ocgtk/
+git status --porcelain        # empty — regenerated bindings committed
+# diff review: only doc comments changed, only at the three site kinds
+```
+Belt-and-braces: grep the regenerated tree for unneutralised `*)` outside
+legitimate comment syntax — any hit is a Phase-2 failure.
+
+### Phase 3 — Un-suppression + the three new wirings
+
+*Goal:* entity docs land; constructors, signals and combined modules carry
+docs. Diffs here are *additive* (previously-doc-less output gains docs) and
+must be reviewed as such.
+
+*Changes (four commits, each independently revertible, tree clean after
+each):*
+1. Delete the two suppression sites in `bin/gir_gen.ml` (~604, ~883) —
+   class/interface entity docs via the existing `layer1_main.ml` path;
+   enum/bitfield type docs via `enum_code.ml`.
+2. Thread entity docs into combined cyclic modules:
+   `layer1_main.ml`'s `generate_ml_interface_internal` /
+   `generate_combined_ml_modules` gain a doc parameter; one doc comment per
+   `module rec X : sig` arm; `ml_interface.ml` re-exports the updated
+   signature.
+3. Constructors: `layer1_constructor.ml` uses translated `ctor_doc` when
+   present, synthetic `Create a new X` as fallback.
+4. Signals: `signal_gen.ml` emits the signal `<doc>` on the L1 `on_<sig>`
+   val (Interface mode); L2 stays doc-less (deferred).
+
+Accepted effect: `ocamlformat` may reposition module comments onto the
+first declaration — fine (recorded in the inventory above).
+
+*Acceptance (after each commit, and cumulatively):*
+```bash
+opam exec -- dune build @all
+opam exec -- dune test gir_gen/ && xvfb-run $(which dune) test ocgtk/
+git status --porcelain     # empty
+opam exec -- dune build @doc   # renders new entity docs, no warning explosion
+```
+Spot checks against known corpus anchors: `Gtk.Button` class doc non-empty
+in `button.mli`; `gtk_enums.mli` gains ≥1 enum/bitfield type-level doc; a
+combined cyclic-module file gains one doc comment per `module rec` arm; a
+constructor with real `<doc>` shows GIR-derived text; a signal `on_<sig>`
+val carries its `<doc>`.
+
+### Phase 4 — `doc_index.ml`: committed, generated `index.mld`s
+
+*Goal:* per-package landing pages in the odoc HTML, produced by the
+bindings pipeline (provenance decision above).
+
+*Changes:* new `lib/generate/doc_index.ml`/`.mli` (one emit pass per
+namespace: intro + `{!…}` tables grouped by kind); called from
+`bin/gir_gen.ml` and hence from `scripts/generate-bindings.sh`; committed
+like the bindings; `doc_index` unit test (one fixture namespace → expected
+link groups).
+
+*Acceptance:*
+```bash
+opam exec -- dune build @all && opam exec -- dune test gir_gen/
+git status --porcelain        # empty — index.mld committed, idempotent
+opam exec -- dune build @doc
+# every {!…} link target resolves — odoc warnings for broken links are
+# Phase-4 BLOCKERS, not TODO counts
+```
+
+### Phase 5 — Artifact cache driver + warning report
+
+*Goal:* the local cache works; odoc warnings are classified, not dropped.
+
+*Changes:* `scripts/doc_artifacts.ml` with the full CLI (including
+`--force`) per the driver interface above; manifest + keying semantics as
+specified; warning capture from `dune build @doc` stderr, filtered to
+odoc-attributable lines, classified into buckets; trivially fixable
+classes fixed at emission here. Small OCaml test for the purely testable
+parts (manifest serialisation, bucket classification of synthetic warning
+lines, key/dirty-suffix logic); cache behaviour certified by the script
+itself.
+
+*Acceptance:*
+```bash
+opam exec -- ocaml scripts/doc_artifacts.ml build            # build + cache
+opam exec -- ocaml scripts/doc_artifacts.ml build            # cache hit, no rebuild
+opam exec -- ocaml scripts/doc_artifacts.ml build --force    # rebuilds
+opam exec -- ocaml scripts/doc_artifacts.ml list             # index.tsv entry
+opam exec -- ocaml scripts/doc_artifacts.ml warnings <sha>   # classified buckets
+opam exec -- ocaml scripts/doc_artifacts.ml set-baseline <sha> probe
+opam exec -- ocaml scripts/doc_artifacts.ml diff-baseline    # identical → empty
+# determinism probe: clear cache, rebuild same sha, diff-baseline → empty
+```
+Manifest carries sha, branch, date, odoc + dune versions, byte size, HTML
+file count, note, warning buckets. Dirty-tree build keys `<sha>-dirty` and
+is never a baseline candidate.
+
+### Phase 6 — Per-branch preview workflow (CI only)
+
+*Changes:* `.github/workflows/doc-preview.yml` + cleanup workflow per the
+sketch above (landing `index.html` step included).
+
+*Acceptance:* the workflow YAML passes `actionlint`/`yamllint` locally;
+on the PR, the preview URL comment's page shows (a) the member docs with
+`{b …}` heading lead-ins and (b) the `about_dialog` C-fence page as
+`{[ … ]}`. HTML appears **only** on `gh-pages`.
+
+### Phase dependencies
+
+- 0 blocks everything (baseline).
+- 1 → 2 → 3 (translator and emit helper must exist before sites consume
+  them; un-suppression must be separable from translation diffs).
+- 4 needs 0 only (can run parallel to 1–3); 5 needs 0 + a green `@doc`;
+  6 needs 4's landing-page semantics conceptually but is authored last —
+  `@doc` must be stable for the preview to be meaningful.
+
+## Verification for the whole leg (after all phases)
+
+Per-phase acceptance gates above are the primary verification; this is the
+closing checklist on top of them:
 
 - `opam exec -- dune build @all`; `opam exec -- dune test gir_gen/` (and the
   ocgtk tests, per CONTRIBUTORS).
-- Translator and `Doc_emit` unit/expect tests pass.
-- **Corpus smoke test**: run parse+render over all ~39,850 bundled `<doc>`
-  elements asserting the invariants (comment safety, balance, the
-  no-re-translation wiring property) — the long tail is where curated unit
-  tests are blind.
+- Translator and `Doc_emit` unit/expect tests pass; corpus smoke test green
+  (re-run at close).
 - Regenerated bindings (and `index.mld`s) committed; tree clean afterwards;
   the full test suite is green on the committed tree.
 - `doc_artifacts.ml build` twice in a row: second run is a cache hit;
