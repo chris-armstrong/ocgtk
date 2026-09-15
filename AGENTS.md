@@ -86,3 +86,21 @@ See [gir_gen/README.md](gir_gen/README.md) for complete usage instructions, incl
 4. **Check pointer values** - catch wrapping issues early
 5. **Test first and incrementally** - write a test case first and/or isolate the failing case
 
+
+## Relay tooling
+
+**When preparing or running a Relay in this repo, specialize the `relay-runner`
+profile with `docs/relays/implementation-relay/profile.md`** — it is mandatory
+input for the preparation, every handoff prompt, and every review/fix leg. Do
+not draft a relay packet without it.
+
+Relay chains (design → staged implementation → aspect review → bounded fixes →
+draft PR) run with the `implementation-relay` profile:
+
+- Design and decisions: [docs/plans/implementation-relay.md](./docs/plans/implementation-relay.md)
+- Operational profile (goes into a relay's `operations.md`): [docs/relays/implementation-relay/profile.md](./docs/relays/implementation-relay/profile.md)
+- Dispatch prompt templates per leg: [docs/relays/implementation-relay/dispatch-prompts.md](./docs/relays/implementation-relay/dispatch-prompts.md)
+- Report-only review panel (pi project agents): [.pi/agents/](./.pi/agents/) —
+  `abstractions-reviewer`, `type-correctness-reviewer`, `code-quality-reviewer`,
+  `control-flow-reviewer`, `docs-reviewer`, `test-reviewer`, and optional
+  goal-attainment `refactor-reviewer`. Reviewers never edit files.
