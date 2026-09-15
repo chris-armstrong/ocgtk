@@ -6,6 +6,7 @@
 2. ALWAYS run tests with `dune test gir_gen/ && xvfb-run dune test ocgtk/` from the repo root
 3. ALWAYS write scripts and supporting code in OCaml
 4. ALWAYS follow the mandatory code guidelines. Read [docs/code_guidelines/agent-summary.md](./docs/code_guidelines/agent-summary.md) — it covers all style, idiom, safety, and test requirements. The full guidelines are indexed at [docs/code_guidelines/index.md](./docs/code_guidelines/index.md).
+5. Before any OCaml, dune, or opam work in this repo, load the `ocamler` skill (`.pi/skills/ocamler/SKILL.md`) — opam environment setup, build/test/format commands, library location, ppx inspection, dune-lock diagnosis. Non-negotiable; the global AGENTS.md only carries the summary.
 ### ast-grep
 You are operating in an environment where ast-grep is installed. For any code search that requires understanding of syntax or code structure, you should default to using `ast-grep --lang [language] -p '<pattern>'`. Adjust the --lang flag as needed for the specific programming language. Avoid using text-only search tools unless a plain-text search is explicitly requested.
 
