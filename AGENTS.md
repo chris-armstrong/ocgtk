@@ -6,6 +6,7 @@
 2. ALWAYS run tests with `dune test gir_gen/ && xvfb-run dune test ocgtk/` from the repo root
 3. ALWAYS write scripts and supporting code in OCaml
 4. ALWAYS follow the mandatory code guidelines. Read [docs/code_guidelines/agent-summary.md](./docs/code_guidelines/agent-summary.md) — it covers all style, idiom, safety, and test requirements. The full guidelines are indexed at [docs/code_guidelines/index.md](./docs/code_guidelines/index.md).
+5. Before any OCaml, dune, or opam work in this repo, load the `ocamler` skill (`.pi/skills/ocamler/SKILL.md`) — opam environment setup, build/test/format commands, library location, ppx inspection, dune-lock diagnosis. Non-negotiable; the global AGENTS.md only carries the summary.
 ### ast-grep
 You are operating in an environment where ast-grep is installed. For any code search that requires understanding of syntax or code structure, you should default to using `ast-grep --lang [language] -p '<pattern>'`. Adjust the --lang flag as needed for the specific programming language. Avoid using text-only search tools unless a plain-text search is explicitly requested.
 
@@ -70,6 +71,14 @@ For instructions and best practices for writing and updating OCaml / C FFI, see 
 
 See [gir_gen/README.md](gir_gen/README.md) for complete usage instructions, including regeneration commands, override system, and cross-namespace type resolution.
 
+
+## Dispatching Implementation Subagents
+
+- Dispatch non-trivial implementation work to the `implementer` agent type (`.pi/agents/implementer.md`) — it carries the stop rule (bounded attempts per problem, no brute-forcing ppx/third-party behavior) and the handoff discipline.
+- The `.pi/extensions/agent-guards.ts` extension backs these rules mechanically in every session and subagent: it steers an agent off a repeated-failure/near-identical-command wall and aborts runs that approach the context window (warn ~75%, abort ~95%). No configuration needed.
+- Run implementation agents **in background** with `max_turns` (~120): a stalled run is then visible, steerable, and stoppable instead of silently blocking this session for hours.
+- Brief compactly: point at the plan file and on-disk state, not the full history. Include acceptance gates (build/test commands that define done).
+- If the agent ends with a handoff report, spawn a fresh agent with the report (plus the same acceptance gates) as its brief — do not resume the spent session.
 
 ## Security Guidelines
 

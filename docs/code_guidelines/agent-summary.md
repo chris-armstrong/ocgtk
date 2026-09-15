@@ -11,7 +11,18 @@ Run `ocamlformat` after every edit (`dune fmt` or `ocamlformat --inplace`).
 
 ## Allowed Libraries (open `containers` at global scope only)
 
-`containers` · `re` · `uutf` · `uri` · `uuseg` · `yojson` · `fmt` · `xmlm` · `fpath`
+| Library | Purpose |
+|---------|---------|
+| `containers` | Richer List/Map/String modules — prefer over stdlib equivalents |
+| `re` | **All regex work — never stdlib `Str`.** `Str` is stdlib and the path of least resistance; this repo uses `re` only (including its `Re.Str` compat shim, as in `gir_gen/lib/utils.ml`) |
+| `xmlm` | GIR XML stream parsing |
+| `yojson` | JSON manifests |
+| `fmt` | Structured/pretty output |
+| `uutf` · `uri` · `uuseg` · `fpath` | Pre-approved for future use; not currently in any `libraries` stanza — ask before adding to dune |
+
+Before hand-rolling GIR/doc extraction, grep `gir_gen/lib` for existing parsing utilities first.
+
+Deriving on a type named `t` generates **unprefixed** functions (`equal`, `show`); other type names get `equal_<name>`/`show_<name>`. See the `ppx-deriving` skill before debugging ppx errors.
 
 ---
 
