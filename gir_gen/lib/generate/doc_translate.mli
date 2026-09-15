@@ -186,49 +186,51 @@ type block =
 
 type t = { blocks : block list }
 
-(** One lossy or degraded translation, with enough payload to classify and
-    count it for the warnings report (GIR plan Phase 5). *)
+(** One lossy or degraded translation, with enough payload to classify and count
+    it for the warnings report (GIR plan Phase 5). *)
 type fallback =
   | Inline_code_unbalanced of string
-  (** v1 inline code contains []] — rendered as escaped plain prose. *)
+      (** v1 inline code would break its span — rendered as escaped plain
+      prose. *)
   | Code_block_verbatim of string
-  (** v1 code block contains [}] — rendered as [{[ {v ... v} ]}] verbatim. *)
+      (** v1 code block would break its block delimiter — rendered with the
+      verbatim form instead. *)
   | Code_block_stripped of string
-  (** v1 code block contains [}] and the verbatim fallback would break too —
-      the block is dropped. *)
+      (** v1 code block contains [}] and the verbatim fallback would break too —
+          the block is dropped. *)
   | Sym_ref_degraded of string
-  (** Fragment / legacy sigil rendered as [\[endpoint\]] code, awaiting the
-      §7 resolver leg. *)
+      (** Fragment / legacy sigil rendered as [[endpoint]] code, awaiting the §7
+          resolver leg. *)
   | Page_ref_degraded of string
-  (** Relative gi-docgen [.html] link rendered as bare text, awaiting the
-      §6.3 upstream-URL leg. *)
+      (** Relative gi-docgen [.html] link rendered as bare text, awaiting the
+          §6.3 upstream-URL leg. *)
   | Link_degraded of string
-  (** Markdown link to a non-https target — v1 [Link] is https-only — kept
-      as bare text. *)
+      (** Markdown link to a non-https target — v1 [Link] is https-only — kept
+          as bare text. *)
   | Admonition_stripped of string
-  (** [::: type] admonition stripped to its plain content. *)
-  | Table_stripped
-  (** Markdown table dropped (cell text is not prose). *)
+      (** [::: type] admonition stripped to its plain content. *)
+  | Table_stripped  (** Markdown table dropped (cell text is not prose). *)
   | Picture_stripped of string option
-  (** [<picture>]/[<source>] wrappers stripped; the [<img alt>] text (when
-      present) is kept as plain prose. *)
+      (** [<picture>]/[<source>] wrappers stripped; the [<img alt>] text (when
+          present) is kept as plain prose. *)
   | Image_stripped of string
-  (** Markdown image or bare [<img>]: the alt text is kept as plain prose. *)
+      (** Markdown image or bare [<img>]: the alt text is kept as plain prose.
+      *)
   | Quote_stripped
-  (** [> blockquote] marker stripped, content kept as plain prose. *)
+      (** [> blockquote] marker stripped, content kept as plain prose. *)
 [@@deriving eq]
 
 val parse : context -> string -> t
-(** [parse ctx gir_markdown] parses raw GIR [<doc>] content into the AST.
-    [ctx] is threaded to [render]; see module comment. *)
+(** [parse ctx gir_markdown] parses raw GIR [<doc>] content into the AST. [ctx]
+    is threaded to [render]; see module comment. *)
 
 val parse_with_fallbacks : context -> string -> t * fallback list
 (** [parse] plus the parse-time fallback events (stripped constructs). *)
 
 val render : t -> string
-(** Renders with the [Entity] heading policy (module comments are the
-    canonical attachment). Output is comment-hazard neutralised and contains
-    no unescaped [@] in prose. *)
+(** Renders with the [Entity] heading policy (module comments are the canonical
+    attachment). Output is comment-hazard neutralised and contains no unescaped
+    [@] in prose. *)
 
 val render_as : context -> t -> string
 (** [render] with the heading policy selected explicitly. *)
@@ -245,7 +247,8 @@ val translate_with_fallbacks : context -> string -> string * fallback list
 
 val equal_inline : inline -> inline -> bool
 val equal_block : block -> block -> bool
+
 val equal_t : t -> t -> bool
 (** Structural equality on the module's own AST (required for the round-trip
-    invariants in plans: string idempotence of [translate] is false by
-    design). *)
+    invariants in plans: string idempotence of [translate] is false by design).
+*)

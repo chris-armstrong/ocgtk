@@ -96,7 +96,9 @@ let starts_with s pos prefix =
   let n = String.length prefix in
   pos + n <= String.length s
   &&
-  let rec go i = i >= n || (String.get s (pos + i) = String.get prefix i && go (i + 1)) in
+  let rec go i =
+    i >= n || (String.get s (pos + i) = String.get prefix i && go (i + 1))
+  in
   go 0
 
 (** [contains_sub s sub] — substring containment. *)
@@ -127,7 +129,8 @@ let read_while f s pos =
 let split_anchor endpoint =
   match String.index_opt endpoint '#' with
   | Some i ->
-      (String.sub endpoint 0 i, Some (String.sub endpoint (i + 1) (String.length endpoint - i - 1)))
+      ( String.sub endpoint 0 i,
+        Some (String.sub endpoint (i + 1) (String.length endpoint - i - 1)) )
   | None -> (endpoint, None)
 
 (** Strip surrounding backticks from a backtick-wrapped endpoint. *)
@@ -166,9 +169,7 @@ let sym_kind_of_keyword kw =
 (* Inline scanner                                                          *)
 (* --------------------------------------------------------------------- *)
 
-type token =
-  | T_char of char
-  | T_nodes of inline list
+type token = T_char of char | T_nodes of inline list
 
 let backtick_run s pos =
   let n = String.length s in
@@ -199,7 +200,7 @@ let rec emphasis s pos =
   let n = String.length s in
   if pos >= n || s.[pos] <> '*' then None
   else if pos + 1 >= n then Some (T_char '*', pos + 1, [])
-  else if s.[pos + 1] = '*' then (
+  else if s.[pos + 1] = '*' then
     (* bold: find a closing [**] *)
     let rec find_bold j =
       if j + 1 >= n then None
@@ -215,16 +216,16 @@ let rec emphasis s pos =
         else
           let ins, fbs = parse_inline content in
           Some (T_nodes [ Bold ins ], j + 2, fbs)
-    | None -> Some (T_char '*', pos + 1, []))
+    | None -> Some (T_char '*', pos + 1, [])
   else if pos > 0 && s.[pos - 1] = '*' then Some (T_char '*', pos + 1, [])
-  else (
+  else
     (* italic: a closing single star, not adjacent to another star *)
     let rec find_italic j =
       if j >= n then None
       else
         let after_is_star = j + 1 < n && s.[j + 1] = '*' in
         let before_is_star = j > pos + 1 && s.[j - 1] = '*' in
-        if s.[j] = '*' && not after_is_star && not before_is_star then Some j
+        if s.[j] = '*' && (not after_is_star) && not before_is_star then Some j
         else find_italic (j + 1)
     in
     match find_italic (pos + 1) with
@@ -236,7 +237,7 @@ let rec emphasis s pos =
         else
           let ins, fbs = parse_inline content in
           Some (T_nodes [ Italic ins ], j + 1, fbs)
-    | None -> Some (T_char '*', pos + 1, []))
+    | None -> Some (T_char '*', pos + 1, [])
 
 (* A gi-docgen [keyword@endpoint] fragment. Only known fragment keywords
    count as references (unknown [foo@bar] bracket text falls through to the
@@ -249,26 +250,31 @@ and fragment s pos =
   let backticked = pos + 1 < n && s.[pos + 1] = '`' in
   let start = if backticked then pos + 2 else pos + 1 in
   let kw_end = read_while is_lower s start in
-  if kw_end > start && kw_end < n && s.[kw_end] = '@' then (
+  if kw_end > start && kw_end < n && s.[kw_end] = '@' then
     match sym_kind_of_keyword (String.sub s start (kw_end - start)) with
     | None -> None
-    | kind ->
+    | kind -> (
         let rec find_close i =
           if i >= n || s.[i] = '\n' then None
           else if s.[i] = ']' then Some i
           else find_close (i + 1)
         in
-        (match find_close (kw_end + 1) with
+        match find_close (kw_end + 1) with
         | Some close ->
             let raw = String.sub s (kw_end + 1) (close - kw_end - 1) in
             let raw =
-              if backticked && String.length raw > 0 && raw.[String.length raw - 1] = '`' then
-                String.sub raw 0 (String.length raw - 1)
+              if
+                backticked
+                && String.length raw > 0
+                && raw.[String.length raw - 1] = '`'
+              then String.sub raw 0 (String.length raw - 1)
               else raw
             in
-            let endpoint, anchor = split_anchor (strip_endpoint_backticks raw) in
+            let endpoint, anchor =
+              split_anchor (strip_endpoint_backticks raw)
+            in
             Some (T_nodes [ Sym_ref { kind; endpoint; anchor } ], close + 1, [])
-        | None -> None))
+        | None -> None)
   else None
 
 (* A markdown [text](url) link. The url is classified at parse time into
@@ -282,13 +288,13 @@ and link s pos =
     else find_bracket (i + 1)
   in
   match find_bracket (pos + 1) with
-  | Some bracket when bracket + 1 < n && s.[bracket + 1] = '(' ->
+  | Some bracket when bracket + 1 < n && s.[bracket + 1] = '(' -> (
       let rec find_paren i =
         if i >= n then None
         else if s.[i] = ')' then Some i
         else find_paren (i + 1)
       in
-      (match find_paren (bracket + 2) with
+      match find_paren (bracket + 2) with
       | Some paren ->
           let text_raw = String.sub s (pos + 1) (bracket - pos - 1) in
           let url = String.sub s (bracket + 2) (paren - bracket - 2) in
@@ -317,13 +323,13 @@ and image s pos =
       else find_bracket (i + 1)
     in
     match find_bracket (pos + 2) with
-    | Some bracket when bracket + 1 < n && s.[bracket + 1] = '(' ->
+    | Some bracket when bracket + 1 < n && s.[bracket + 1] = '(' -> (
         let rec find_paren i =
           if i >= n then None
           else if s.[i] = ')' then Some i
           else find_paren (i + 1)
         in
-        (match find_paren (bracket + 2) with
+        match find_paren (bracket + 2) with
         | Some paren ->
             let alt = String.sub s (pos + 2) (bracket - pos - 2) in
             Some (T_nodes [ Text alt ], paren + 1, [ Image_stripped alt ])
@@ -334,19 +340,23 @@ and extract_alt tag =
   let n = String.length tag in
   let rec find_eq i =
     if i + 4 >= n then None
-    else if tag.[i] = 'a' && tag.[i + 1] = 'l' && tag.[i + 2] = 't' && tag.[i + 3] = '='
+    else if
+      tag.[i] = 'a'
+      && tag.[i + 1] = 'l'
+      && tag.[i + 2] = 't'
+      && tag.[i + 3] = '='
     then Some (i + 4)
     else find_eq (i + 1)
   in
   match find_eq 0 with
   | None -> ""
-  | Some q when q < n && (tag.[q] = '"' || tag.[q] = '\'') ->
+  | Some q when q < n && (tag.[q] = '"' || tag.[q] = '\'') -> (
       let rec find_close j =
         if j >= n then None
         else if tag.[j] = tag.[q] then Some j
         else find_close (j + 1)
       in
-      (match find_close (q + 1) with
+      match find_close (q + 1) with
       | Some close -> String.sub tag (q + 1) (close - q - 1)
       | None -> "")
   | Some _ -> ""
@@ -356,22 +366,19 @@ and img_tag s pos =
   if not (starts_with s pos "<img") then None
   else
     let rec find_close i =
-      if i >= n then None
-      else if s.[i] = '>' then Some i
-      else find_close (i + 1)
+      if i >= n then None else if s.[i] = '>' then Some i else find_close (i + 1)
     in
-    (match find_close (pos + 4) with
+    match find_close (pos + 4) with
     | Some close ->
         let tag = String.sub s pos (close - pos + 1) in
         let alt = extract_alt tag in
         Some (T_nodes [ Text alt ], close + 1, [ Image_stripped alt ])
-    | None -> None)
+    | None -> None
 
 and is_escapeable c =
-  c = '`' || c = '*' || c = '_' || c = '{' || c = '}' || c = '['
-  || c = ']' || c = '(' || c = ')' || c = '#' || c = '+' || c = '-'
-  || c = '.' || c = '!' || c = '|' || c = '>' || c = '<' || c = '~'
-  || c = '@' || c = '\\'
+  c = '`' || c = '*' || c = '_' || c = '{' || c = '}' || c = '[' || c = ']'
+  || c = '(' || c = ')' || c = '#' || c = '+' || c = '-' || c = '.' || c = '!'
+  || c = '|' || c = '>' || c = '<' || c = '~' || c = '@' || c = '\\'
 
 and backslash_escape s pos =
   if s.[pos] <> '\\' then None
@@ -389,8 +396,10 @@ and param_ref s pos =
   else
     let id_end = read_while is_ident_char s (pos + 1) in
     let email_like =
-      id_end + 1 < n && s.[id_end] = '.'
-      && id_end + 2 < n && is_letter s.[id_end + 1]
+      id_end + 1 < n
+      && s.[id_end] = '.'
+      && id_end + 2 < n
+      && is_letter s.[id_end + 1]
     in
     if email_like then None
     else
@@ -433,7 +442,8 @@ and percent_sigil s pos =
   else
     let id_end = read_while is_ident_char s (pos + 1) in
     let endpoint = String.sub s (pos + 1) (id_end - pos - 1) in
-    Some (T_nodes [ Sym_ref { kind = None; endpoint; anchor = None } ], id_end, [])
+    Some
+      (T_nodes [ Sym_ref { kind = None; endpoint; anchor = None } ], id_end, [])
 
 and scan_token s pos =
   let n = String.length s in
@@ -444,10 +454,8 @@ and scan_token s pos =
     else if c = '`' then code_span s pos
     else if c = '<' && starts_with s pos "<img" then img_tag s pos
     else if c = '!' && pos + 1 < n && s.[pos + 1] = '[' then image s pos
-    else if c = '[' then (
-      match fragment s pos with
-      | Some tok -> Some tok
-      | None -> link s pos)
+    else if c = '[' then
+      match fragment s pos with Some tok -> Some tok | None -> link s pos
     else if c = '*' then emphasis s pos
     else if c = '@' then param_ref s pos
     else if c = '#' then hash_sigil s pos
@@ -486,7 +494,9 @@ and parse_inline s : inline list * fallback list =
 
 (** [array_slice lines lo hi] — inclusive index range as a list. *)
 let array_slice lines lo hi =
-  let rec go k acc = if k > hi then List.rev acc else go (k + 1) (lines.(k) :: acc) in
+  let rec go k acc =
+    if k > hi then List.rev acc else go (k + 1) (lines.(k) :: acc)
+  in
   go lo []
 
 let read_heading_level line =
@@ -507,7 +517,8 @@ let list_marker line =
   else if n >= 2 && line.[0] = '*' && line.[1] = ' ' then Some M_bullet
   else
     let d = read_while is_digit line 0 in
-    if d > 0 && d + 1 < n && line.[d] = '.' && line.[d + 1] = ' ' then Some M_ordered
+    if d > 0 && d + 1 < n && line.[d] = '.' && line.[d + 1] = ' ' then
+      Some M_ordered
     else None
 
 (** The text of a marker line, minus its leading marker. *)
@@ -571,11 +582,11 @@ let backtick_fence lines i =
         let run = read_while (fun c -> c = '`') t 0 in
         if run >= k then Some j else find_close (j + 1)
     in
-    (match find_close (i + 1) with
+    match find_close (i + 1) with
     | Some j ->
         let content = String.concat "\n" (array_slice lines (i + 1) (j - 1)) in
         Some (Code_block (strip_trailing_newline content), j + 1)
-    | None -> None)
+    | None -> None
 
 (* The gi-docgen pipe fence [|[...]|], optionally with a leading
    [<!-- language="X" -->] line. *)
@@ -590,17 +601,20 @@ let pipe_fence lines i =
         let t = String.trim lines.(j) in
         if starts_with t 0 "]|" then Some j else find_close (j + 1)
     in
-    (match find_close (i + 1) with
+    match find_close (i + 1) with
     | Some j ->
-        let raw_content = String.concat "\n" (array_slice lines (i + 1) (j - 1)) in
+        let raw_content =
+          String.concat "\n" (array_slice lines (i + 1) (j - 1))
+        in
         let content =
           match String.split_on_char '\n' raw_content with
-          | first :: rest when starts_with (String.trim first) 0 "<!-- language=" ->
+          | first :: rest
+            when starts_with (String.trim first) 0 "<!-- language=" ->
               String.concat "\n" rest
           | _ -> raw_content
         in
         Some (Code_block (strip_trailing_newline content), j + 1)
-    | None -> None)
+    | None -> None
 
 let fence_block lines i =
   match backtick_fence lines i with
@@ -648,7 +662,7 @@ let picture_block lines i =
       else if contains_sub lines.(j) "</picture>" then Some j
       else find_end (j + 1)
     in
-    (match find_end (i + 1) with
+    match find_end (i + 1) with
     | Some j ->
         let region = String.concat "\n" (array_slice lines i j) in
         let alt = extract_alt region in
@@ -657,7 +671,7 @@ let picture_block lines i =
         in
         let alt_opt = if String.equal alt "" then None else Some alt in
         Some (block, j + 1, [ Picture_stripped alt_opt ])
-    | None -> None)
+    | None -> None
 
 (* A [> quote]: markers stripped, content kept as plain prose; counted. *)
 let quote_block lines i =
@@ -671,7 +685,8 @@ let quote_block lines i =
       else
         let t = String.trim lines.(j) in
         if starts_with t 0 "> " then
-          gather (j + 1) (String.trim (String.sub t 2 (String.length t - 2)) :: acc)
+          gather (j + 1)
+            (String.trim (String.sub t 2 (String.length t - 2)) :: acc)
         else (List.rev acc, j)
     in
     let content, next = gather (i + 1) [ first ] in
@@ -686,7 +701,8 @@ let quote_block lines i =
    (cell text is not prose); counted. *)
 let table_block lines i =
   let line = String.trim lines.(i) in
-  if String.length line = 0 || line.[0] <> '|' || starts_with line 0 "|[" then None
+  if String.length line = 0 || line.[0] <> '|' || starts_with line 0 "|[" then
+    None
   else
     let n = Array.length lines in
     let rec go j =
@@ -699,10 +715,7 @@ let table_block lines i =
     in
     Some (go (i + 1), Table_stripped)
 
-type step =
-  | S_para
-  | S_blank
-  | S_block of block option * int * fallback list
+type step = S_para | S_blank | S_block of block option * int * fallback list
 
 let heading_detector lines i =
   match read_heading_level (String.trim lines.(i)) with
@@ -762,9 +775,7 @@ let rec first_some fns lines i =
   match fns with
   | [] -> S_para
   | f :: rest -> (
-      match f lines i with
-      | Some step -> step
-      | None -> first_some rest lines i)
+      match f lines i with Some step -> step | None -> first_some rest lines i)
 
 let classify_line lines i =
   let line = String.trim lines.(i) in
@@ -785,14 +796,15 @@ let parse_blocks (text : string) : block list * fallback list =
     if i >= n then flush_para paras blocks fbs
     else
       match classify_line lines i with
-      | S_para ->
-          go (i + 1) (String.trim lines.(i) :: paras) blocks fbs
+      | S_para -> go (i + 1) (String.trim lines.(i) :: paras) blocks fbs
       | S_blank ->
           let blocks, fbs = flush_para paras blocks fbs in
           go (i + 1) [] blocks fbs
       | S_block (blk, consumed, extra) ->
           let blocks, fbs = flush_para paras blocks fbs in
-          let blocks = match blk with Some b -> b :: blocks | None -> blocks in
+          let blocks =
+            match blk with Some b -> b :: blocks | None -> blocks
+          in
           let fbs = List.rev_append extra fbs in
           go (i + consumed) [] blocks fbs
   in
@@ -891,7 +903,8 @@ let neutralise_comment_hazards s =
     if i >= n then ()
     else
       let pair =
-        i + 1 < n && ((s.[i] = '*' && s.[i + 1] = ')') || (s.[i] = '(' && s.[i + 1] = '*'))
+        i + 1 < n
+        && ((s.[i] = '*' && s.[i + 1] = ')') || (s.[i] = '(' && s.[i + 1] = '*'))
       in
       if pair then (
         Buffer.add_char buf s.[i];
@@ -910,7 +923,8 @@ let render_with_fallbacks ctx (t : t) : string * fallback list =
      to {1}, deeper levels keep their offsets, capped at {5}. *)
   let shallowest =
     List.fold_left
-      (fun acc blk -> match blk with Heading (l, _) -> Int.min acc l | _ -> acc)
+      (fun acc blk ->
+        match blk with Heading (l, _) -> Int.min acc l | _ -> acc)
       7 t.blocks
   in
   let shift = shallowest - 1 in
@@ -950,7 +964,7 @@ let render_with_fallbacks ctx (t : t) : string * fallback list =
             Buffer.truncate buf (len - 1);
           fbs
       | Code_block content ->
-          if contains_sub content "]}" then (
+          if contains_sub content "]}" then
             if contains_sub content "v}" then
               (* neither {[ ... ]} nor {v ... v} can carry this content *)
               Code_block_stripped content :: []
@@ -958,7 +972,7 @@ let render_with_fallbacks ctx (t : t) : string * fallback list =
               Buffer.add_string buf "{v\n";
               Buffer.add_string buf content;
               Buffer.add_string buf "\nv}";
-              Code_block_verbatim content :: []))
+              Code_block_verbatim content :: [])
           else (
             if String.equal content "" then Buffer.add_string buf "{[]}"
             else (
@@ -977,7 +991,8 @@ let render_with_fallbacks ctx (t : t) : string * fallback list =
       ([], []) t.blocks
   in
   let output =
-    List.rev rendered |> List.filter (fun s -> not (String.equal s ""))
+    List.rev rendered
+    |> List.filter (fun s -> not (String.equal s ""))
     |> String.concat "\n\n"
   in
   (neutralise_comment_hazards output, fbs)
@@ -991,7 +1006,6 @@ let parse_with_fallbacks _ctx s =
   ({ blocks }, fbs)
 
 let parse ctx s = fst (parse_with_fallbacks ctx s)
-
 let render_as ctx t = fst (render_with_fallbacks ctx t)
 
 (* [render] is the [Entity] policy: module comments are the canonical

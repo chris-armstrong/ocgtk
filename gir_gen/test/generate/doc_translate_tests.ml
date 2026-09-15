@@ -36,21 +36,25 @@ let lacks msg s sub =
   Alcotest.(check bool) msg false (Helpers.string_contains s sub)
 
 let has_fallback msg kind fbs =
-  Alcotest.(check bool) msg true
-    (List.exists (fun fb -> match (fb, kind) with
-        | ( Inline_code_unbalanced _, `Inline_code_unbalanced )
-        | ( Code_block_verbatim _, `Code_block_verbatim )
-        | ( Code_block_stripped _, `Code_block_stripped )
-        | ( Sym_ref_degraded _, `Sym_ref_degraded )
-        | ( Page_ref_degraded _, `Page_ref_degraded )
-        | ( Link_degraded _, `Link_degraded )
-        | ( Admonition_stripped _, `Admonition_stripped )
-        | ( Picture_stripped _, `Picture_stripped )
-        | ( Image_stripped _, `Image_stripped )
-        | ( Quote_stripped, `Quote_stripped )
-        | ( Table_stripped, `Table_stripped ) -> true
-        | _ -> false)
-        fbs)
+  Alcotest.(check bool)
+    msg true
+    (List.exists
+       (fun fb ->
+         match (fb, kind) with
+         | Inline_code_unbalanced _, `Inline_code_unbalanced
+         | Code_block_verbatim _, `Code_block_verbatim
+         | Code_block_stripped _, `Code_block_stripped
+         | Sym_ref_degraded _, `Sym_ref_degraded
+         | Page_ref_degraded _, `Page_ref_degraded
+         | Link_degraded _, `Link_degraded
+         | Admonition_stripped _, `Admonition_stripped
+         | Picture_stripped _, `Picture_stripped
+         | Image_stripped _, `Image_stripped
+         | Quote_stripped, `Quote_stripped
+         | Table_stripped, `Table_stripped ->
+             true
+         | _ -> false)
+       fbs)
 
 (* ---------- v1 render policy table ------------------------------ *)
 
@@ -119,9 +123,7 @@ let test_code_block () =
 let test_code_block_leading_brace () =
   (* a corpus-shaped C snippet whose content starts with { — verified
      against odoc: {[ { ... } ]} renders, the brace is verbatim content *)
-  let out =
-    E.translate "```c\n{\n  GtkWidget *w;\n}\n```"
-  in
+  let out = E.translate "```c\n{\n  GtkWidget *w;\n}\n```" in
   has "content kept verbatim" out "{[\n{\n  GtkWidget *w;\n}\n]}"
 
 let test_empty_blocks () =
@@ -168,7 +170,9 @@ let test_literal_at_never_a_tag () =
 (* ---------- fragments and legacy sigils ------------------------- *)
 
 let test_fragment () =
-  let out, fbs = translate_with_fallbacks Entity "[method@Gtk.Widget.show] here" in
+  let out, fbs =
+    translate_with_fallbacks Entity "[method@Gtk.Widget.show] here"
+  in
   has "fragment degrades to [endpoint]" out "[Gtk.Widget.show]";
   has_fallback "fragment counted as degraded" `Sym_ref_degraded fbs
 
@@ -176,20 +180,26 @@ let test_fragment_kind_parsed () =
   let t = parse Entity "[class@Foo]" in
   match t.blocks with
   | [ Para [ Sym_ref { kind; endpoint; anchor } ] ] ->
-      Alcotest.(check bool) "class fragment kind" true
+      Alcotest.(check bool)
+        "class fragment kind" true
         (match kind with Some Class -> true | _ -> false);
       Alcotest.(check string) "endpoint" "Foo" endpoint;
       Alcotest.(check (option string)) "no anchor" None anchor
   | _ -> Alcotest.fail "expected a single Sym_ref paragraph"
 
 let test_fragment_anchor_and_backticks () =
-  let t = parse Entity "[class@Foo#bar] and [class@`Baz`] and [`ctor@Gtk.Box.new`]" in
+  let t =
+    parse Entity "[class@Foo#bar] and [class@`Baz`] and [`ctor@Gtk.Box.new`]"
+  in
   match t.blocks with
   | [ Para [ Sym_ref a; Text _; Sym_ref b; Text _; Sym_ref c ] ] ->
-      Alcotest.(check (option string)) "anchor kept on node" (Some "bar") a.anchor;
+      Alcotest.(check (option string))
+        "anchor kept on node" (Some "bar") a.anchor;
       Alcotest.(check string) "backticked endpoint stripped" "Baz" b.endpoint;
-      Alcotest.(check string) "whole-fragment backticks stripped" "Gtk.Box.new" c.endpoint;
-      Alcotest.(check bool) "whole-fragment kind kept" true
+      Alcotest.(check string)
+        "whole-fragment backticks stripped" "Gtk.Box.new" c.endpoint;
+      Alcotest.(check bool)
+        "whole-fragment kind kept" true
         (match c.kind with Some Ctor -> true | _ -> false)
   | _ -> Alcotest.fail "expected three Sym_ref nodes"
 
@@ -213,7 +223,9 @@ let test_legacy_sigils () =
 let test_sigil_guards () =
   (* GIR plan §3.5 guard rules: no false positives on URL fragments,
      headings, hex colours, spacing, or a hash preceded by a slash *)
-  let out = E.translate "# plain hashtag, https://x/#bar, #ff0000, 100%, a * b" in
+  let out =
+    E.translate "# plain hashtag, https://x/#bar, #ff0000, 100%, a * b"
+  in
   lacks "URL fragment not a sigil" out "[bar]";
   lacks "hex not a sigil" out "[ff0000]";
   lacks "percent with space not a sigil" out "[b]"
@@ -221,7 +233,7 @@ let test_sigil_guards () =
 let test_param_sigil () =
   let out = E.translate "Set by @amount." in
   has "param sigil becomes [name]" out "[amount]."
-  (* a bare @ is gone — no tag hazard *)
+(* a bare @ is gone — no tag hazard *)
 
 let test_param_email_guard () =
   (* "some@body" is an email/namespaced form, not a param reference *)
@@ -284,7 +296,8 @@ let test_admonition_stripped () =
 
 let test_table_stripped () =
   let out, fbs =
-    translate_with_fallbacks Entity "| a | b |\n| --- | --- |\n| 1 | 2 |\n\nText."
+    translate_with_fallbacks Entity
+      "| a | b |\n| --- | --- |\n| 1 | 2 |\n\nText."
   in
   lacks "table dropped" out "---";
   has "following paragraph kept" out "Text.";
@@ -293,20 +306,28 @@ let test_table_stripped () =
 let test_picture_stripped () =
   let out, fbs =
     translate_with_fallbacks Entity
-      "<picture>\n  <source srcset=\"x.svg\">\n  <img src=\"x.png\" alt=\"An example\">\n</picture>\n\nText."
+      "<picture>\n\
+      \  <source srcset=\"x.svg\">\n\
+      \  <img src=\"x.png\" alt=\"An example\">\n\
+       </picture>\n\n\
+       Text."
   in
   has "img alt kept as prose" out "An example";
   lacks "no picture markup" out "<picture>";
   has_fallback "picture counted" `Picture_stripped fbs
 
 let test_markdown_image_stripped () =
-  let out, fbs = translate_with_fallbacks Entity "See ![the logo](logo.png) here." in
+  let out, fbs =
+    translate_with_fallbacks Entity "See ![the logo](logo.png) here."
+  in
   has "alt kept as prose" out "the logo";
   lacks "no image link markup" out "![";
   has_fallback "image counted" `Image_stripped fbs
 
 let test_quote_stripped () =
-  let out, fbs = translate_with_fallbacks Entity "> quoted prose\n> more prose" in
+  let out, fbs =
+    translate_with_fallbacks Entity "> quoted prose\n> more prose"
+  in
   has "quote content kept" out "quoted prose\nmore prose";
   lacks "no quote markers" out ">";
   has_fallback "quote counted" `Quote_stripped fbs
@@ -315,24 +336,36 @@ let test_quote_stripped () =
 
 let roundtrip_strict ctx s =
   let t1 = parse ctx s in
-  let rendered = match ctx with Entity -> render t1 | Member -> render_as Member t1 in
+  let rendered =
+    match ctx with Entity -> render t1 | Member -> render_as Member t1
+  in
   let t2 = parse ctx rendered in
   equal_t t1 t2
 
 let test_roundtrip_plain_prose () =
   (* strict first-pass round-trip holds for escape-free prose *)
-  Alcotest.(check bool) "single paragraph" true (roundtrip_strict Entity "Plain prose.");
-  Alcotest.(check bool) "multi-line paragraph" true
+  Alcotest.(check bool)
+    "single paragraph" true
+    (roundtrip_strict Entity "Plain prose.");
+  Alcotest.(check bool)
+    "multi-line paragraph" true
     (roundtrip_strict Entity "Two lines\nin one paragraph.");
-  Alcotest.(check bool) "two paragraphs" true
+  Alcotest.(check bool)
+    "two paragraphs" true
     (roundtrip_strict Entity "First.\n\nSecond.");
-  Alcotest.(check bool) "member context" true
+  Alcotest.(check bool)
+    "member context" true
     (roundtrip_strict Member "Plain prose.")
 
 let projector ctx s =
   (* parse∘render is a fixed point after one application (the form of the
      AST round-trip that holds over markup; see the module .mli) *)
-  let once = parse ctx (match ctx with Entity -> translate Entity s | Member -> translate Member s) in
+  let once =
+    parse ctx
+      (match ctx with
+      | Entity -> translate Entity s
+      | Member -> translate Member s)
+  in
   let twice =
     parse ctx
       (match ctx with
@@ -354,8 +387,12 @@ let test_projector_fixed_point () =
   in
   List.iter
     (fun s ->
-      Alcotest.(check bool) ("entity fixed point: " ^ s) true (projector Entity s);
-      Alcotest.(check bool) ("member fixed point: " ^ s) true (projector Member s))
+      Alcotest.(check bool)
+        ("entity fixed point: " ^ s)
+        true (projector Entity s);
+      Alcotest.(check bool)
+        ("member fixed point: " ^ s)
+        true (projector Member s))
     cases
 
 let test_idempotence_is_false_by_design () =
@@ -367,7 +404,9 @@ let test_idempotence_is_false_by_design () =
   let s = "The `GtkButton` widget." in
   let once = translate Entity s in
   let twice = translate Entity once in
-  Alcotest.(check bool) "string idempotence is false" true (not (String.equal once twice))
+  Alcotest.(check bool)
+    "string idempotence is false" true
+    (not (String.equal once twice))
 
 (* ---------- suite ---------------------------------------------- *)
 
@@ -378,7 +417,9 @@ let tests =
     ("https link", `Quick, test_https_link);
     ("paragraph separation", `Quick, test_paragraph_separation);
     ("entity heading normalisation", `Quick, test_heading_entity);
-    ("entity heading shift and cap", `Quick, test_heading_entity_relative_and_cap);
+    ( "entity heading shift and cap",
+      `Quick,
+      test_heading_entity_relative_and_cap );
     ("entity heading offset shift", `Quick, test_heading_entity_shift);
     ("member heading {b} lead-in", `Quick, test_heading_member_leadin);
     ("bullet list", `Quick, test_bullet_list);
@@ -394,9 +435,12 @@ let tests =
     ("literal @ never a tag", `Quick, test_literal_at_never_a_tag);
     ("fragment degradation", `Quick, test_fragment);
     ("fragment kind parsed", `Quick, test_fragment_kind_parsed);
-    ("fragment anchors and backticks", `Quick, test_fragment_anchor_and_backticks);
-    ("whole-backtick fragment renders stable", `Quick,
-      test_whole_backtick_fragment_renders_stable);
+    ( "fragment anchors and backticks",
+      `Quick,
+      test_fragment_anchor_and_backticks );
+    ( "whole-backtick fragment renders stable",
+      `Quick,
+      test_whole_backtick_fragment_renders_stable );
     ("legacy sigil degradation", `Quick, test_legacy_sigils);
     ("sigil guard rules", `Quick, test_sigil_guards);
     ("param sigil -> [name]", `Quick, test_param_sigil);
@@ -404,7 +448,9 @@ let tests =
     ("relative .html link degraded", `Quick, test_relative_html_link_degraded);
     ("http link degraded", `Quick, test_http_link_degraded);
     ("unbalanced inline code fallback", `Quick, test_unbalanced_inline_code);
-    ("code block ]} verbatim fallback", `Quick, test_code_block_close_hazard_verbatim);
+    ( "code block ]} verbatim fallback",
+      `Quick,
+      test_code_block_close_hazard_verbatim );
     ("code block ]}+v} stripped", `Quick, test_code_block_close_hazard_strip);
     ("admonition stripped", `Quick, test_admonition_stripped);
     ("table stripped", `Quick, test_table_stripped);
@@ -413,5 +459,7 @@ let tests =
     ("quote stripped", `Quick, test_quote_stripped);
     ("AST round-trip plain prose", `Quick, test_roundtrip_plain_prose);
     ("AST round-trip fixed point", `Quick, test_projector_fixed_point);
-    ("string idempotence false by design", `Quick, test_idempotence_is_false_by_design);
+    ( "string idempotence false by design",
+      `Quick,
+      test_idempotence_is_false_by_design );
   ]
