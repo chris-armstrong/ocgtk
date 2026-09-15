@@ -74,6 +74,7 @@ See [gir_gen/README.md](gir_gen/README.md) for complete usage instructions, incl
 ## Dispatching Implementation Subagents
 
 - Dispatch non-trivial implementation work to the `implementer` agent type (`.pi/agents/implementer.md`) — it carries the stop rule (bounded attempts per problem, no brute-forcing ppx/third-party behavior) and the handoff discipline.
+- The `.pi/extensions/agent-guards.ts` extension backs these rules mechanically in every session and subagent: it steers an agent off a repeated-failure/near-identical-command wall and aborts runs that approach the context window (warn ~75%, abort ~95%). No configuration needed.
 - Run implementation agents **in background** with `max_turns` (~120): a stalled run is then visible, steerable, and stoppable instead of silently blocking this session for hours.
 - Brief compactly: point at the plan file and on-disk state, not the full history. Include acceptance gates (build/test commands that define done).
 - If the agent ends with a handoff report, spawn a fresh agent with the report (plus the same acceptance gates) as its brief — do not resume the spent session.
