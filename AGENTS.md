@@ -71,6 +71,13 @@ For instructions and best practices for writing and updating OCaml / C FFI, see 
 See [gir_gen/README.md](gir_gen/README.md) for complete usage instructions, including regeneration commands, override system, and cross-namespace type resolution.
 
 
+## Dispatching Implementation Subagents
+
+- Dispatch non-trivial implementation work to the `implementer` agent type (`.pi/agents/implementer.md`) — it carries the stop rule (bounded attempts per problem, no brute-forcing ppx/third-party behavior) and the handoff discipline.
+- Run implementation agents **in background** with `max_turns` (~120): a stalled run is then visible, steerable, and stoppable instead of silently blocking this session for hours.
+- Brief compactly: point at the plan file and on-disk state, not the full history. Include acceptance gates (build/test commands that define done).
+- If the agent ends with a handoff report, spawn a fresh agent with the report (plus the same acceptance gates) as its brief — do not resume the spent session.
+
 ## Security Guidelines
 
 **IMPORTANT**: All C bindings must follow security best practices documented in:

@@ -63,6 +63,22 @@ Type_mappings.find_type_mapping_for_gir_type()
                        or falls back to "unit" in some cases
 ```
 
+## Library Dependencies
+
+Each library is installed for a specific role — reach for these before hand-rolling anything:
+
+| Library | Role |
+|---------|------|
+| `xmlm` | GIR XML stream parsing (the parser's only XML backend) |
+| `re` | All regex work — **never stdlib `Str`**; `utils.ml` uses `re`'s `Re.Str` compat shim |
+| `containers` | Richer List/Map/String modules, preferred over stdlib |
+| `fmt` / `logs` | Structured output / logging |
+| `sexplib` + `ppx_sexp_conv` | Sexp converters for override and cross-reference types |
+| `ppx_deriving.eq` | Structural equality for override/os-filter types (see the `ppx-deriving` skill for generated-name rules) |
+| `cmdliner` | CLI for the generator binary |
+
+Before writing new GIR/doc extraction code, grep `gir_gen/lib` for existing parsing utilities first.
+
 ## Building
 
 ```bash
