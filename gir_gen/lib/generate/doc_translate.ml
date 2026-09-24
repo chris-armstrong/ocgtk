@@ -707,24 +707,21 @@ let heading_detector lines i =
       Some (S_block (Some (Heading (lvl, ins)), 1, fbs))
 
 let fence_detector lines i =
-  match fence_block lines i with
-  | Some (blk, next) -> Some (S_block (Some blk, next - i, []))
-  | None -> None
+  Option.map
+    (fun (blk, next) -> S_block (Some blk, next - i, []))
+    (fence_block lines i)
 
-let admonition_detector lines i =
-  match admonition_block lines i with
-  | Some (blk, next, fbs) -> Some (S_block (blk, next - i, fbs))
-  | None -> None
+(* [admonition_block], [picture_block] and [quote_block] all already return
+   the (optional block, next line, fallback events) shape [S_block] wants;
+   this just relocates [next] to be relative to [i]. *)
+let block_detector block_fn lines i =
+  Option.map
+    (fun (blk, next, fbs) -> S_block (blk, next - i, fbs))
+    (block_fn lines i)
 
-let picture_detector lines i =
-  match picture_block lines i with
-  | Some (blk, next, fbs) -> Some (S_block (blk, next - i, fbs))
-  | None -> None
-
-let quote_detector lines i =
-  match quote_block lines i with
-  | Some (blk, next, fbs) -> Some (S_block (blk, next - i, fbs))
-  | None -> None
+let admonition_detector = block_detector admonition_block
+let picture_detector = block_detector picture_block
+let quote_detector = block_detector quote_block
 
 let list_detector lines i =
   match list_marker (String.trim lines.(i)) with
@@ -734,9 +731,9 @@ let list_detector lines i =
       Some (S_block (Some blk, next - i, fbs))
 
 let table_detector lines i =
-  match table_block lines i with
-  | Some (next, fb) -> Some (S_block (None, next - i, [ fb ]))
-  | None -> None
+  Option.map
+    (fun (next, fb) -> S_block (None, next - i, [ fb ]))
+    (table_block lines i)
 
 let hr_detector lines i =
   if is_hr_line (String.trim lines.(i)) then Some S_blank else None
