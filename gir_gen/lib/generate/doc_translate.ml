@@ -538,10 +538,16 @@ let list_block kind lines i =
     let ins, extra = parse_inline text in
     (ins, List.rev_append extra fbs)
   in
+  (* end the list here: close out the item under construction and return
+     the finished block. Reached whenever the current line doesn't extend
+     the list (blank line, a marker of the other kind, or unindented text
+     after the item started) — every such exit builds the same node. *)
+  let stop j items fbs cur =
+    let ins, fbs = finish cur fbs in
+    (List (marker_ordered kind, List.rev (ins :: items)), j, fbs)
+  in
   let rec go j items fbs cur =
-    if j >= n || is_blank_line lines.(j) then
-      let ins, fbs = finish cur fbs in
-      (List (marker_ordered kind, List.rev (ins :: items)), j, fbs)
+    if j >= n || is_blank_line lines.(j) then stop j items fbs cur
     else
       let raw = lines.(j) in
       let line = String.trim raw in
@@ -550,17 +556,13 @@ let list_block kind lines i =
           if Bool.equal (marker_ordered k) (marker_ordered kind) then
             let ins, fbs = finish cur fbs in
             go (j + 1) (ins :: items) fbs [ item_text kind line ]
-          else
-            let ins, fbs = finish cur fbs in
-            (List (marker_ordered kind, List.rev (ins :: items)), j, fbs)
+          else stop j items fbs cur
       | None ->
           let indented =
             String.length raw > 0 && (raw.[0] = ' ' || raw.[0] = '\t')
           in
           if indented then go (j + 1) items fbs (line :: cur)
-          else
-            let ins, fbs = finish cur fbs in
-            (List (marker_ordered kind, List.rev (ins :: items)), j, fbs)
+          else stop j items fbs cur
   in
   go (i + 1) [] [] [ item_text kind (String.trim lines.(i)) ]
 
@@ -610,6 +612,18 @@ let fence_block lines i =
   | Some r -> Some r
   | None -> pipe_fence lines i
 
+(** [stripped_para_block next text fallback] — the block-scanner result shared
+    by every construct that strips its markers to plain prose: an empty [text]
+    degrades to no block at all (just the [fallback] event), otherwise [text] is
+    parsed into a paragraph and [fallback] is added to its own fallback events.
+    Used by [admonition_block] and [quote_block]; [picture_block] doesn't fit
+    (its content isn't parsed prose). *)
+let stripped_para_block next text fallback =
+  if String.equal text "" then Some (None, next, [ fallback ])
+  else
+    let ins, fbs = parse_inline text in
+    Some (Some (Para ins), next, fallback :: fbs)
+
 let is_hr_line line =
   let n = String.length line in
   n >= 3
@@ -632,10 +646,7 @@ let admonition_block lines i =
       List.map String.trim (array_slice lines (i + 1) (next - 1))
     in
     let text = String.concat "\n" content_lines in
-    if String.equal text "" then Some (None, next, [ Admonition_stripped typ ])
-    else
-      let ins, fbs = parse_inline text in
-      Some (Some (Para ins), next, Admonition_stripped typ :: fbs)
+    stripped_para_block next text (Admonition_stripped typ)
 
 (* A [<picture>] block: stripped to the first [<img alt>] text (plain
    prose); counted. *)
@@ -648,10 +659,8 @@ let picture_block lines i =
     | Some j ->
         let region = String.concat "\n" (array_slice lines i j) in
         let alt = extract_alt region in
-        let block =
-          if String.equal alt "" then None else Some (Para [ Text alt ])
-        in
         let alt_opt = if String.equal alt "" then None else Some alt in
+        let block = Option.map (fun a -> Para [ Text a ]) alt_opt in
         Some (block, j + 1, [ Picture_stripped alt_opt ])
     | None -> None
 
@@ -673,10 +682,7 @@ let quote_block lines i =
     in
     let content = List.filter (fun x -> not (String.equal x "")) content in
     let text = String.concat "\n" content in
-    if String.equal text "" then Some (None, next, [ Quote_stripped ])
-    else
-      let ins, fbs = parse_inline text in
-      Some (Some (Para ins), next, Quote_stripped :: fbs)
+    stripped_para_block next text Quote_stripped
 
 (* A markdown table: consecutive lines starting with [|]; dropped entirely
    (cell text is not prose); counted. *)
@@ -811,6 +817,14 @@ let escape_prose buf s =
   in
   go 0
 
+(** [emit_code_span buf content] — the [[content]] odoc code span, shared by
+    every inline node that degrades or renders to one ([Code]'s balanced case,
+    [Sym_ref], [Param_ref]). *)
+let emit_code_span buf content =
+  Buffer.add_char buf '[';
+  Buffer.add_string buf content;
+  Buffer.add_char buf ']'
+
 let rec render_inline ins buf fbs =
   List.fold_left
     (fun fbs' inl ->
@@ -824,27 +838,11 @@ let rec render_inline ins buf fbs =
             escape_prose buf s;
             Inline_code_unbalanced s :: fbs')
           else (
-            Buffer.add_char buf '[';
-            Buffer.add_string buf s;
-            Buffer.add_char buf ']';
+            emit_code_span buf s;
             fbs')
-      | Bold inner ->
-          Buffer.add_string buf "{b ";
-          let f = render_inline inner buf fbs' in
-          Buffer.add_char buf '}';
-          f
-      | Italic inner ->
-          Buffer.add_string buf "{i ";
-          let f = render_inline inner buf fbs' in
-          Buffer.add_char buf '}';
-          f
-      | Link { text; url } ->
-          Buffer.add_string buf "{{:";
-          Buffer.add_string buf url;
-          Buffer.add_char buf '}';
-          let f = render_inline text buf fbs' in
-          Buffer.add_char buf '}';
-          f
+      | Bold inner -> wrap buf "{b " "}" inner fbs'
+      | Italic inner -> wrap buf "{i " "}" inner fbs'
+      | Link { text; url } -> wrap buf ("{{:" ^ url ^ "}") "}" text fbs'
       | Page_ref { text; path; anchor = _ } ->
           (* v1: degraded to bare text (upstream-URL leg is a pure rewrite) *)
           let f = render_inline text buf fbs' in
@@ -852,15 +850,11 @@ let rec render_inline ins buf fbs =
       | Sym_ref { endpoint; kind = _; anchor = _ } ->
           (* v1: degraded to a code span (the §7 resolver leg is a pure
              rewrite to [Ref]) *)
-          Buffer.add_char buf '[';
-          Buffer.add_string buf endpoint;
-          Buffer.add_char buf ']';
+          emit_code_span buf endpoint;
           Sym_ref_degraded endpoint :: fbs'
       | Param_ref name ->
           (* always a code span: a bare @ would start an odoc tag *)
-          Buffer.add_char buf '[';
-          Buffer.add_string buf name;
-          Buffer.add_char buf ']';
+          emit_code_span buf name;
           fbs'
       | Ref path ->
           Buffer.add_string buf "{!";
@@ -868,6 +862,16 @@ let rec render_inline ins buf fbs =
           Buffer.add_char buf '}';
           fbs')
     fbs ins
+
+(* [prefix ... suffix], with [inner] rendered (recursively) in between —
+   shared by every "markup wrapped around nested inline content" case:
+   [Bold], [Italic] and [Link] here, and the heading policy in
+   [render_with_fallbacks] below. *)
+and wrap buf prefix suffix inner fbs =
+  Buffer.add_string buf prefix;
+  let f = render_inline inner buf fbs in
+  Buffer.add_string buf suffix;
+  f
 
 (* The comment-hazard pass (plan invariant 1): insert a backslash between
    the two characters of a star-paren / paren-star sequence, over the whole
@@ -913,17 +917,8 @@ let render_with_fallbacks ctx (t : t) : string * fallback list =
           match ctx with
           | Entity ->
               let level = Int.min (lvl - shift) 5 in
-              Buffer.add_char buf '{';
-              Buffer.add_string buf (string_of_int level);
-              Buffer.add_char buf ' ';
-              let f = render_inline ins buf [] in
-              Buffer.add_char buf '}';
-              f
-          | Member ->
-              Buffer.add_string buf "{b ";
-              let f = render_inline ins buf [] in
-              Buffer.add_char buf '}';
-              f)
+              wrap buf (Printf.sprintf "{%d " level) "}" ins []
+          | Member -> wrap buf "{b " "}" ins [])
       | List (ordered, items) ->
           let prefix = if ordered then "+ " else "- " in
           let fbs =
