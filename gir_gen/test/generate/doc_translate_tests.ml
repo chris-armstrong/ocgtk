@@ -78,22 +78,20 @@ let test_paragraph_separation () =
   let out = E.translate "First paragraph.\n\nSecond paragraph." in
   has "blank line kept" out "First paragraph.\n\nSecond paragraph."
 
-let test_heading_entity () =
+let test_heading_entity_normalisation () =
+  (* the doc's shallowest markdown heading level maps to {1}; deeper
+     levels keep their offset from that shift; anything past {5} is
+     capped there *)
   has "entity heading normalised to {1}"
     (E.entity "# CSS nodes\n\nProse.")
-    "{1 CSS nodes}"
-
-let test_heading_entity_relative_and_cap () =
-  (* shallowest level -> {1}; deeper levels keep offsets; capped at {5} *)
-  let out = E.entity "# A\n\n###### Six\n\n##### Five" in
-  has "level 6 capped at 5" out "{5 Six}";
-  has "level 5 stays at 5" out "{5 Five}"
-
-let test_heading_entity_shift () =
-  (* a doc whose shallowest heading is H2 maps to {1} *)
-  let out = E.entity "## Sub\n\n### Deeper" in
-  has "H2 -> {1}" out "{1 Sub}";
-  has "H3 -> {2}" out "{2 Deeper}"
+    "{1 CSS nodes}";
+  let capped = E.entity "# A\n\n###### Six\n\n##### Five" in
+  has "level 6 capped at 5" capped "{5 Six}";
+  has "level 5 stays at 5" capped "{5 Five}";
+  (* a doc whose shallowest heading is H2 maps to {1}, not H1 *)
+  let shifted = E.entity "## Sub\n\n### Deeper" in
+  has "H2 -> {1}" shifted "{1 Sub}";
+  has "H3 -> {2}" shifted "{2 Deeper}"
 
 let test_heading_member_leadin () =
   has "member heading becomes {b ...} lead-in"
@@ -416,11 +414,7 @@ let tests =
     ("bold and italic", `Quick, test_bold_italic);
     ("https link", `Quick, test_https_link);
     ("paragraph separation", `Quick, test_paragraph_separation);
-    ("entity heading normalisation", `Quick, test_heading_entity);
-    ( "entity heading shift and cap",
-      `Quick,
-      test_heading_entity_relative_and_cap );
-    ("entity heading offset shift", `Quick, test_heading_entity_shift);
+    ("entity heading normalisation", `Quick, test_heading_entity_normalisation);
     ("member heading {b} lead-in", `Quick, test_heading_member_leadin);
     ("bullet list", `Quick, test_bullet_list);
     ("ordered list", `Quick, test_ordered_list);
