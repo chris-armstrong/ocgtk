@@ -125,6 +125,20 @@ let read_while f s pos =
   let rec go i = if i < n && f s.[i] then go (i + 1) else i in
   go pos
 
+(** [find_before_newline s pos c] — index of the first [c] at or after [pos], or
+    [None] if a newline comes first (or [c] doesn't appear at all). Every inline
+    delimiter search that must not run past a line (the closing bracket in
+    [fragment], [link] and [image]) uses this; searches with no such bound (a
+    closing paren or angle bracket) just call [String.index_from_opt] directly.
+*)
+let find_before_newline s pos c =
+  match String.index_from_opt s pos c with
+  | None -> None
+  | Some i -> (
+      match String.index_from_opt s pos '\n' with
+      | Some j when j < i -> None
+      | _ -> Some i)
+
 (** Split an endpoint at the first [#]; the part after it is the anchor. *)
 let split_anchor endpoint =
   match String.index_opt endpoint '#' with
@@ -254,12 +268,7 @@ and fragment s pos =
     match sym_kind_of_keyword (String.sub s start (kw_end - start)) with
     | None -> None
     | kind -> (
-        let rec find_close i =
-          if i >= n || s.[i] = '\n' then None
-          else if s.[i] = ']' then Some i
-          else find_close (i + 1)
-        in
-        match find_close (kw_end + 1) with
+        match find_before_newline s (kw_end + 1) ']' with
         | Some close ->
             let raw = String.sub s (kw_end + 1) (close - kw_end - 1) in
             let raw =
@@ -282,19 +291,9 @@ and fragment s pos =
    a degraded bare-text link. *)
 and link s pos =
   let n = String.length s in
-  let rec find_bracket i =
-    if i >= n || s.[i] = '\n' then None
-    else if s.[i] = ']' then Some i
-    else find_bracket (i + 1)
-  in
-  match find_bracket (pos + 1) with
+  match find_before_newline s (pos + 1) ']' with
   | Some bracket when bracket + 1 < n && s.[bracket + 1] = '(' -> (
-      let rec find_paren i =
-        if i >= n then None
-        else if s.[i] = ')' then Some i
-        else find_paren (i + 1)
-      in
-      match find_paren (bracket + 2) with
+      match String.index_from_opt s (bracket + 2) ')' with
       | Some paren ->
           let text_raw = String.sub s (pos + 1) (bracket - pos - 1) in
           let url = String.sub s (bracket + 2) (paren - bracket - 2) in
@@ -317,19 +316,9 @@ and image s pos =
   let n = String.length s in
   if pos + 1 >= n || s.[pos] <> '!' || s.[pos + 1] <> '[' then None
   else
-    let rec find_bracket i =
-      if i >= n || s.[i] = '\n' then None
-      else if s.[i] = ']' then Some i
-      else find_bracket (i + 1)
-    in
-    match find_bracket (pos + 2) with
+    match find_before_newline s (pos + 2) ']' with
     | Some bracket when bracket + 1 < n && s.[bracket + 1] = '(' -> (
-        let rec find_paren i =
-          if i >= n then None
-          else if s.[i] = ')' then Some i
-          else find_paren (i + 1)
-        in
-        match find_paren (bracket + 2) with
+        match String.index_from_opt s (bracket + 2) ')' with
         | Some paren ->
             let alt = String.sub s (pos + 2) (bracket - pos - 2) in
             Some (T_nodes [ Text alt ], paren + 1, [ Image_stripped alt ])
@@ -351,24 +340,15 @@ and extract_alt tag =
   match find_eq 0 with
   | None -> ""
   | Some q when q < n && (tag.[q] = '"' || tag.[q] = '\'') -> (
-      let rec find_close j =
-        if j >= n then None
-        else if tag.[j] = tag.[q] then Some j
-        else find_close (j + 1)
-      in
-      match find_close (q + 1) with
+      match String.index_from_opt tag (q + 1) tag.[q] with
       | Some close -> String.sub tag (q + 1) (close - q - 1)
       | None -> "")
   | Some _ -> ""
 
 and img_tag s pos =
-  let n = String.length s in
   if not (starts_with s pos "<img") then None
   else
-    let rec find_close i =
-      if i >= n then None else if s.[i] = '>' then Some i else find_close (i + 1)
-    in
-    match find_close (pos + 4) with
+    match String.index_from_opt s (pos + 4) '>' with
     | Some close ->
         let tag = String.sub s pos (close - pos + 1) in
         let alt = extract_alt tag in
@@ -499,6 +479,24 @@ let array_slice lines lo hi =
   in
   go lo []
 
+(** [find_line lines start pred] — index of the first line at or after [start]
+    satisfying [pred], or [None] if none does. Every "scan ahead for a
+    closing/marker line" search below (fence closers, [</picture>]) is this. *)
+let find_line lines start pred =
+  let n = Array.length lines in
+  let rec go j =
+    if j >= n then None else if pred lines.(j) then Some j else go (j + 1)
+  in
+  go start
+
+(** [line_run lines start pred] — exclusive end index of the maximal run of
+    lines from [start] satisfying [pred]: the first index at or after [start]
+    that doesn't, or [Array.length lines] if all of them do. *)
+let line_run lines start pred =
+  let n = Array.length lines in
+  let rec go j = if j >= n || not (pred lines.(j)) then j else go (j + 1) in
+  go start
+
 let read_heading_level line =
   let n = String.length line in
   let rec count i = if i < n && line.[i] = '#' then count (i + 1) else i in
@@ -574,15 +572,10 @@ let backtick_fence lines i =
   let k = read_while (fun c -> c = '`') line 0 in
   if k < 2 then None
   else
-    let n = Array.length lines in
-    let rec find_close j =
-      if j >= n then None
-      else
-        let t = String.trim lines.(j) in
-        let run = read_while (fun c -> c = '`') t 0 in
-        if run >= k then Some j else find_close (j + 1)
+    let closes_fence line =
+      read_while (fun c -> c = '`') (String.trim line) 0 >= k
     in
-    match find_close (i + 1) with
+    match find_line lines (i + 1) closes_fence with
     | Some j ->
         let content = String.concat "\n" (array_slice lines (i + 1) (j - 1)) in
         Some (Code_block (strip_trailing_newline content), j + 1)
@@ -594,14 +587,10 @@ let pipe_fence lines i =
   let line = String.trim lines.(i) in
   if not (starts_with line 0 "|[") then None
   else
-    let n = Array.length lines in
-    let rec find_close j =
-      if j >= n then None
-      else
-        let t = String.trim lines.(j) in
-        if starts_with t 0 "]|" then Some j else find_close (j + 1)
-    in
-    match find_close (i + 1) with
+    match
+      find_line lines (i + 1) (fun line ->
+          starts_with (String.trim line) 0 "]|")
+    with
     | Some j ->
         let raw_content =
           String.concat "\n" (array_slice lines (i + 1) (j - 1))
@@ -638,13 +627,10 @@ let admonition_block lines i =
   if not (starts_with line 0 ":::") then None
   else
     let typ = String.trim (String.sub line 3 (String.length line - 3)) in
-    let n = Array.length lines in
-    let rec gather j acc =
-      if j >= n then (List.rev acc, j)
-      else if is_blank_line lines.(j) then (List.rev acc, j)
-      else gather (j + 1) (String.trim lines.(j) :: acc)
+    let next = line_run lines (i + 1) (fun line -> not (is_blank_line line)) in
+    let content_lines =
+      List.map String.trim (array_slice lines (i + 1) (next - 1))
     in
-    let content_lines, next = gather (i + 1) [] in
     let text = String.concat "\n" content_lines in
     if String.equal text "" then Some (None, next, [ Admonition_stripped typ ])
     else
@@ -656,13 +642,9 @@ let admonition_block lines i =
 let picture_block lines i =
   if not (contains_sub lines.(i) "<picture>") then None
   else
-    let n = Array.length lines in
-    let rec find_end j =
-      if j >= n then None
-      else if contains_sub lines.(j) "</picture>" then Some j
-      else find_end (j + 1)
-    in
-    match find_end (i + 1) with
+    match
+      find_line lines (i + 1) (fun line -> contains_sub line "</picture>")
+    with
     | Some j ->
         let region = String.concat "\n" (array_slice lines i j) in
         let alt = extract_alt region in
@@ -679,17 +661,16 @@ let quote_block lines i =
   if not (starts_with line 0 "> ") then None
   else
     let first = String.trim (String.sub line 2 (String.length line - 2)) in
-    let n = Array.length lines in
-    let rec gather j acc =
-      if j >= n then (List.rev acc, j)
-      else
-        let t = String.trim lines.(j) in
-        if starts_with t 0 "> " then
-          gather (j + 1)
-            (String.trim (String.sub t 2 (String.length t - 2)) :: acc)
-        else (List.rev acc, j)
+    let strip_marker line =
+      let t = String.trim line in
+      String.trim (String.sub t 2 (String.length t - 2))
     in
-    let content, next = gather (i + 1) [ first ] in
+    let next =
+      line_run lines (i + 1) (fun line -> starts_with (String.trim line) 0 "> ")
+    in
+    let content =
+      first :: List.map strip_marker (array_slice lines (i + 1) (next - 1))
+    in
     let content = List.filter (fun x -> not (String.equal x "")) content in
     let text = String.concat "\n" content in
     if String.equal text "" then Some (None, next, [ Quote_stripped ])
@@ -704,16 +685,11 @@ let table_block lines i =
   if String.length line = 0 || line.[0] <> '|' || starts_with line 0 "|[" then
     None
   else
-    let n = Array.length lines in
-    let rec go j =
-      if j >= n then j
-      else
-        let t = String.trim lines.(j) in
-        if String.length t > 0 && t.[0] = '|' && not (starts_with t 0 "|[") then
-          go (j + 1)
-        else j
+    let is_row line =
+      let t = String.trim line in
+      String.length t > 0 && t.[0] = '|' && not (starts_with t 0 "|[")
     in
-    Some (go (i + 1), Table_stripped)
+    Some (line_run lines (i + 1) is_row, Table_stripped)
 
 type step = S_para | S_blank | S_block of block option * int * fallback list
 
