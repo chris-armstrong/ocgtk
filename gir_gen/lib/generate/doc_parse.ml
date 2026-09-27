@@ -132,13 +132,10 @@ let rec emphasis s pos =
     in
     match find_bold (pos + 2) with
     | Some j ->
-        let content = String.sub s (pos + 2) (j - pos - 2) in
-        let trimmed = String.trim content in
-        if String.equal trimmed "" || not (String.equal trimmed content) then
-          Some (T_char '*', pos + 1, [])
-        else
-          let ins, fbs = parse_inline content in
-          Some (T_nodes [ Bold ins ], j + 2, fbs)
+        Some
+          (close_emphasis s pos ~start:(pos + 2) ~delim_len:2
+             ~wrap:(fun ins -> Bold ins)
+             j)
     | None -> Some (T_char '*', pos + 1, [])
   else if pos > 0 && s.[pos - 1] = '*' then Some (T_char '*', pos + 1, [])
   else
@@ -153,14 +150,25 @@ let rec emphasis s pos =
     in
     match find_italic (pos + 1) with
     | Some j ->
-        let content = String.sub s (pos + 1) (j - pos - 1) in
-        let trimmed = String.trim content in
-        if String.equal trimmed "" || not (String.equal trimmed content) then
-          Some (T_char '*', pos + 1, [])
-        else
-          let ins, fbs = parse_inline content in
-          Some (T_nodes [ Italic ins ], j + 1, fbs)
+        Some
+          (close_emphasis s pos ~start:(pos + 1) ~delim_len:1
+             ~wrap:(fun ins -> Italic ins)
+             j)
     | None -> Some (T_char '*', pos + 1, [])
+
+(* The bold/italic closer, once the matching delimiter run has been found at
+   [j]: reject an empty or space-padded run (a lone/space-bounded delimiter
+   is literal text), else parse the content and wrap it with [wrap]. Shared
+   by [emphasis]'s bold and italic branches, which differ only in where the
+   content starts, how long the delimiter is, and the constructor. *)
+and close_emphasis s pos ~start ~delim_len ~wrap j =
+  let content = String.sub s start (j - start) in
+  let trimmed = String.trim content in
+  if String.equal trimmed "" || not (String.equal trimmed content) then
+    (T_char '*', pos + 1, [])
+  else
+    let ins, fbs = parse_inline content in
+    (T_nodes [ wrap ins ], j + delim_len, fbs)
 
 (* A gi-docgen [keyword@endpoint] fragment. Only known fragment keywords
    count as references (unknown [foo@bar] bracket text falls through to the
