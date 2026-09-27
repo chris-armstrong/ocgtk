@@ -5,17 +5,22 @@ libraries. Each namespace below is a separate sub-library; the
 [.generated_stubs*] libraries (pure C stubs with no OCaml modules, used
 internally to link the generated bindings) are omitted from this index.
 
-{1 Library ocgtk}
+{1 Namespace libraries}
 
-The entry point of this library is the module {!Ocgtk}.
+{ul
+{- {!Ocgtk} }
+{- {!Ocgtk_cairo} }
+{- {!Ocgtk_gdk} }
+{- {!Ocgtk_gdkpixbuf} }
+{- {!Ocgtk_gio} }
+{- {!Ocgtk_graphene} }
+{- {!Ocgtk_gsk} }
+{- {!Ocgtk_gtk} }
+{- {!Ocgtk_pango} }
+{- {!Ocgtk_pangocairo} }
+}
 
-{1 Library ocgtk.cairo}
-
-The entry point of this library is the module {!Ocgtk_cairo}.
-
-{1 Library ocgtk.common}
-
-This library exposes the following toplevel modules:
+{1 Common utility modules (ocgtk.common)}
 
 {ul
 {- {!Bounded_int} }
@@ -35,35 +40,3 @@ This library exposes the following toplevel modules:
 {- {!UInt64} }
 {- {!UInt8} }
 }
-
-{1 Library ocgtk.gdk}
-
-The entry point of this library is the module {!Ocgtk_gdk}.
-
-{1 Library ocgtk.gdkpixbuf}
-
-The entry point of this library is the module {!Ocgtk_gdkpixbuf}.
-
-{1 Library ocgtk.gio}
-
-The entry point of this library is the module {!Ocgtk_gio}.
-
-{1 Library ocgtk.graphene}
-
-The entry point of this library is the module {!Ocgtk_graphene}.
-
-{1 Library ocgtk.gsk}
-
-The entry point of this library is the module {!Ocgtk_gsk}.
-
-{1 Library ocgtk.gtk}
-
-The entry point of this library is the module {!Ocgtk_gtk}.
-
-{1 Library ocgtk.pango}
-
-The entry point of this library is the module {!Ocgtk_pango}.
-
-{1 Library ocgtk.pangocairo}
-
-The entry point of this library is the module {!Ocgtk_pangocairo}.
