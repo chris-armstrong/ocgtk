@@ -8,20 +8,13 @@ open Doc_str
    benign warning, never a misparse), and code spans manage their own ]
    via the balance fallback. *)
 let escape_prose buf s =
-  let n = String.length s in
-  let rec go i =
-    if i >= n then ()
-    else
-      match s.[i] with
-      | '{' | '}' | '[' | '@' ->
-          Buffer.add_char buf '\\';
-          Buffer.add_char buf s.[i];
-          go (i + 1)
-      | _ ->
-          Buffer.add_char buf s.[i];
-          go (i + 1)
-  in
-  go 0
+  String.iter
+    (fun c ->
+      (match c with
+      | '{' | '}' | '[' | '@' -> Buffer.add_char buf '\\'
+      | _ -> ());
+      Buffer.add_char buf c)
+    s
 
 (** [emit_code_span buf content] — the [[content]] odoc code span, shared by
     every inline node that degrades or renders to one ([Code]'s balanced case,
@@ -144,12 +137,12 @@ let render_with_fallbacks ctx (t : t) : string * fallback list =
           if contains_sub content "]}" then
             if contains_sub content "v}" then
               (* neither {[ ... ]} nor {v ... v} can carry this content *)
-              Code_block_stripped content :: []
+              [ Code_block_stripped content ]
             else (
               Buffer.add_string buf "{v\n";
               Buffer.add_string buf content;
               Buffer.add_string buf "\nv}";
-              Code_block_verbatim content :: [])
+              [ Code_block_verbatim content ])
           else (
             if String.equal content "" then Buffer.add_string buf "{[]}"
             else (
