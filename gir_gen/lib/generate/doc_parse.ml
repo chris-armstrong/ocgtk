@@ -12,6 +12,12 @@
 open Doc_ast
 open Doc_str
 
+(* [let* x = o in body] is [Option.bind o (fun x -> body)]; [let+ x = o in
+   body] is [Option.map (fun x -> body) o]. Used throughout both scanners
+   below in place of a manual [match ... with None -> None | Some x -> ...]. *)
+let ( let* ) o f = Option.bind o f
+let ( let+ ) o f = Option.map f o
+
 (* --------------------------------------------------------------------- *)
 (* Character helpers                                                       *)
 (* --------------------------------------------------------------------- *)
@@ -125,8 +131,8 @@ module Cursor = struct
       string's end (a closing paren or angle bracket may legitimately follow a
       newline). *)
   let find c ch =
-    String.index_from_opt c.s c.pos ch
-    |> Option.map (fun i -> { c with pos = i })
+    let+ i = String.index_from_opt c.s c.pos ch in
+    { c with pos = i }
 
   (** As [find], but [None] if a newline comes first. Every inline delimiter
       search that must not run past a line (the closing bracket in [fragment],
@@ -142,11 +148,11 @@ module Cursor = struct
       from [c]. Shared by [link] and [image], which differ only in what they
       build from the span. *)
   let paren_link_span c =
-    Option.bind (find_before_newline c ']') (fun bracket ->
-        if peek_char bracket 1 '(' then
-          find (advance bracket 2) ')'
-          |> Option.map (fun paren -> (bracket, paren))
-        else None)
+    let* bracket = find_before_newline c ']' in
+    if not (peek_char bracket 1 '(') then None
+    else
+      let+ paren = find (advance bracket 2) ')' in
+      (bracket, paren)
 end
 
 (* --------------------------------------------------------------------- *)
@@ -171,56 +177,54 @@ let code_span c =
     else if backtick_run cj >= k then Some cj
     else find_close (Cursor.advance cj 1)
   in
-  match find_close (Cursor.advance c k) with
-  | Some cj ->
-      let content = Cursor.text_between (Cursor.advance c k) cj in
-      let close_run = backtick_run cj in
-      Some
-        (T_nodes [ Code content ], Cursor.advance cj (Int.min k close_run), [])
-  | None -> None
+  let+ cj = find_close (Cursor.advance c k) in
+  let content = Cursor.text_between (Cursor.advance c k) cj in
+  let close_run = backtick_run cj in
+  (T_nodes [ Code content ], Cursor.advance cj (Int.min k close_run), [])
 
 (* [*]/[**] emphasis. The opener must have a non-empty, space-free content
    and a matching closer; a lone or space-bounded star is literal text. *)
 let rec emphasis c =
-  if not (Cursor.is_char c '*') then None
-  else if not (Cursor.has c 1) then Some (T_char '*', Cursor.advance c 1, [])
-  else if Cursor.peek_char c 1 '*' then
-    (* bold: find a closing [**] *)
-    let rec find_bold cj =
-      if not (Cursor.has cj 1) then None
-      else if Cursor.peek_char cj 0 '*' && Cursor.peek_char cj 1 '*' then
-        Some cj
-      else find_bold (Cursor.advance cj 1)
-    in
-    Some
-      (match find_bold (Cursor.advance c 2) with
-      | Some cj ->
-          close_emphasis c ~start:(Cursor.advance c 2) ~delim_len:2
-            ~wrap:(fun ins -> Bold ins)
-            cj
-      | None -> (T_char '*', Cursor.advance c 1, []))
-  else if Cursor.peek_char c (-1) '*' then
-    Some (T_char '*', Cursor.advance c 1, [])
-  else
-    (* italic: a closing single star, not adjacent to another star *)
-    let rec find_italic cj =
-      if Cursor.eof cj then None
-      else if Cursor.is_char cj '*' then
-        let after_is_star = Cursor.peek_char cj 1 '*' in
-        let before_is_star =
-          Cursor.pos cj > Cursor.pos c + 1 && Cursor.peek_char cj (-1) '*'
-        in
-        if (not after_is_star) && not before_is_star then Some cj
+  match (Cursor.current c, Cursor.peek c 1) with
+  | Some '*', Some '*' ->
+      (* bold: find a closing [**] *)
+      let rec find_bold cj =
+        match (Cursor.current cj, Cursor.peek cj 1) with
+        | Some '*', Some '*' -> Some cj
+        | Some _, Some _ -> find_bold (Cursor.advance cj 1)
+        | _ -> None
+      in
+      Some
+        (match find_bold (Cursor.advance c 2) with
+        | Some cj ->
+            close_emphasis c ~start:(Cursor.advance c 2) ~delim_len:2
+              ~wrap:(fun ins -> Bold ins)
+              cj
+        | None -> (T_char '*', Cursor.advance c 1, []))
+  | Some '*', Some _ when Cursor.peek_char c (-1) '*' ->
+      Some (T_char '*', Cursor.advance c 1, [])
+  | Some '*', Some _ ->
+      (* italic: a closing single star, not adjacent to another star *)
+      let rec find_italic cj =
+        if Cursor.eof cj then None
+        else if Cursor.is_char cj '*' then
+          let after_is_star = Cursor.peek_char cj 1 '*' in
+          let before_is_star =
+            Cursor.pos cj > Cursor.pos c + 1 && Cursor.peek_char cj (-1) '*'
+          in
+          if (not after_is_star) && not before_is_star then Some cj
+          else find_italic (Cursor.advance cj 1)
         else find_italic (Cursor.advance cj 1)
-      else find_italic (Cursor.advance cj 1)
-    in
-    Some
-      (match find_italic (Cursor.advance c 1) with
-      | Some cj ->
-          close_emphasis c ~start:(Cursor.advance c 1) ~delim_len:1
-            ~wrap:(fun ins -> Italic ins)
-            cj
-      | None -> (T_char '*', Cursor.advance c 1, []))
+      in
+      Some
+        (match find_italic (Cursor.advance c 1) with
+        | Some cj ->
+            close_emphasis c ~start:(Cursor.advance c 1) ~delim_len:1
+              ~wrap:(fun ins -> Italic ins)
+              cj
+        | None -> (T_char '*', Cursor.advance c 1, []))
+  | Some '*', None -> Some (T_char '*', Cursor.advance c 1, [])
+  | _ -> None
 
 (* The bold/italic closer, once the matching delimiter run has been found at
    [cj]: reject an empty or space-padded run (a lone/space-bounded delimiter
@@ -247,26 +251,18 @@ and fragment c =
   let start = Cursor.advance c (if backticked then 2 else 1) in
   let kw_end = Cursor.skip_while start is_lower in
   if Cursor.pos kw_end > Cursor.pos start && Cursor.is_char kw_end '@' then
-    match sym_kind_of_keyword (Cursor.text_between start kw_end) with
-    | None -> None
-    | Some _ as kind ->
-        Cursor.find_before_newline (Cursor.advance kw_end 1) ']'
-        |> Option.map (fun close ->
-            let raw = Cursor.text_between (Cursor.advance kw_end 1) close in
-            let raw =
-              if
-                backticked
-                && String.length raw > 0
-                && raw.[String.length raw - 1] = '`'
-              then String.sub raw 0 (String.length raw - 1)
-              else raw
-            in
-            let endpoint, anchor =
-              split_anchor (strip_endpoint_backticks raw)
-            in
-            ( T_nodes [ Sym_ref { kind; endpoint; anchor } ],
-              Cursor.advance close 1,
-              [] ))
+    let* sym_kind = sym_kind_of_keyword (Cursor.text_between start kw_end) in
+    let kind = Some sym_kind in
+    let+ close = Cursor.find_before_newline (Cursor.advance kw_end 1) ']' in
+    let raw = Cursor.text_between (Cursor.advance kw_end 1) close in
+    let raw =
+      if
+        backticked && String.length raw > 0 && raw.[String.length raw - 1] = '`'
+      then String.sub raw 0 (String.length raw - 1)
+      else raw
+    in
+    let endpoint, anchor = split_anchor (strip_endpoint_backticks raw) in
+    (T_nodes [ Sym_ref { kind; endpoint; anchor } ], Cursor.advance close 1, [])
   else None
 
 (* A markdown [text](url) link. The url is classified at parse time into
@@ -287,20 +283,19 @@ and link_token c bracket paren =
   else (T_nodes text, next, Link_degraded url :: fbs)
 
 and link c =
-  Cursor.paren_link_span (Cursor.advance c 1)
-  |> Option.map (fun (bracket, paren) -> link_token c bracket paren)
+  let+ bracket, paren = Cursor.paren_link_span (Cursor.advance c 1) in
+  link_token c bracket paren
 
 (* A markdown [![alt](src)] image or a bare [<img ... alt="...">] element:
    the alt text is kept as plain prose and the construct is counted. *)
 and image c =
-  match Cursor.scan_char c '!' with
-  | Some after when Cursor.is_char after '[' ->
-      let start = Cursor.advance after 1 in
-      Cursor.paren_link_span start
-      |> Option.map (fun (bracket, paren) ->
-          let alt = Cursor.text_between start bracket in
-          (T_nodes [ Text alt ], Cursor.advance paren 1, [ Image_stripped alt ]))
-  | _ -> None
+  let* after = Cursor.scan_char c '!' in
+  if not (Cursor.is_char after '[') then None
+  else
+    let start = Cursor.advance after 1 in
+    let+ bracket, paren = Cursor.paren_link_span start in
+    let alt = Cursor.text_between start bracket in
+    (T_nodes [ Text alt ], Cursor.advance paren 1, [ Image_stripped alt ])
 
 and extract_alt tag =
   let rec find_eq c =
@@ -311,36 +306,30 @@ and extract_alt tag =
     then Some (Cursor.advance c 4)
     else find_eq (Cursor.advance c 1)
   in
-  let quote_pos =
-    Option.bind
-      (find_eq (Cursor.make tag 0))
-      (fun q ->
-        if Cursor.matches q (function '"' | '\'' -> true | _ -> false) then
-          Some q
-        else None)
+  let result =
+    let* q = find_eq (Cursor.make tag 0) in
+    let* q =
+      if Cursor.matches q (function '"' | '\'' -> true | _ -> false) then Some q
+      else None
+    in
+    let+ close = Cursor.find (Cursor.advance q 1) (Cursor.current_exn q) in
+    Cursor.text_between (Cursor.advance q 1) close
   in
-  Option.bind quote_pos (fun q ->
-      Cursor.find (Cursor.advance q 1) (Cursor.current_exn q)
-      |> Option.map (fun close ->
-          Cursor.text_between (Cursor.advance q 1) close))
-  |> Option.value ~default:""
+  Option.value result ~default:""
 
 and img_tag c =
   if not (Cursor.at_prefix c "<img") then None
   else
-    Cursor.find (Cursor.advance c 4) '>'
-    |> Option.map (fun close ->
-        let tag = Cursor.text_between c (Cursor.advance close 1) in
-        let alt = extract_alt tag in
-        (T_nodes [ Text alt ], Cursor.advance close 1, [ Image_stripped alt ]))
+    let+ close = Cursor.find (Cursor.advance c 4) '>' in
+    let tag = Cursor.text_between c (Cursor.advance close 1) in
+    let alt = extract_alt tag in
+    (T_nodes [ Text alt ], Cursor.advance close 1, [ Image_stripped alt ])
 
 and backslash_escape c =
-  match Cursor.scan_char c '\\' with
-  | None -> None
-  | Some after ->
-      if Cursor.matches after is_escapeable then
-        Some (T_char (Cursor.current_exn after), Cursor.advance after 1, [])
-      else Some (T_char '\\', after, [])
+  let+ after = Cursor.scan_char c '\\' in
+  if Cursor.matches after is_escapeable then
+    (T_char (Cursor.current_exn after), Cursor.advance after 1, [])
+  else (T_char '\\', after, [])
 
 (* A legacy gtk-doc [@param] reference. The name must start lowercase, must
    not be preceded by an identifier character, and must not run into a
@@ -349,19 +338,17 @@ and param_ref c =
   let preceded_by_ident = Cursor.peek_matches c (-1) is_ident_char in
   if preceded_by_ident then None
   else
-    match Cursor.scan_char c '@' with
-    | None -> None
-    | Some start ->
-        if not (Cursor.matches start is_lower) then None
-        else
-          let id_end = Cursor.skip_while start is_ident_char in
-          let email_like =
-            Cursor.is_char id_end '.' && Cursor.peek_matches id_end 1 is_letter
-          in
-          if email_like then None
-          else
-            let name = Cursor.text_between start id_end in
-            Some (T_nodes [ Param_ref name ], id_end, [])
+    let* start = Cursor.scan_char c '@' in
+    if not (Cursor.matches start is_lower) then None
+    else
+      let id_end = Cursor.skip_while start is_ident_char in
+      let email_like =
+        Cursor.is_char id_end '.' && Cursor.peek_matches id_end 1 is_letter
+      in
+      if email_like then None
+      else
+        let name = Cursor.text_between start id_end in
+        Some (T_nodes [ Param_ref name ], id_end, [])
 
 (* A legacy gtk-doc [#Type...] sigil. Guards (GIR plan §3.5): [#] not
    preceded by [/], then an uppercase identifier with no space. [#Type:p]
@@ -369,64 +356,54 @@ and param_ref c =
 and hash_sigil c =
   if Cursor.peek_char c (-1) '/' then None
   else
-    match Cursor.scan_char c '#' with
-    | None -> None
-    | Some start ->
-        if not (Cursor.matches start is_upper) then None
-        else
-          let id_end = Cursor.skip_while start is_ident_char in
-          let name = Cursor.text_between start id_end in
-          let extension =
-            if Cursor.is_char id_end ':' then
-              let sep = if Cursor.peek_char id_end 1 ':' then 2 else 1 in
-              let after = Cursor.advance id_end sep in
-              if Cursor.matches after is_ident_char then
-                Some
-                  (Cursor.text_between id_end
-                     (Cursor.skip_while after is_ident_char))
-              else None
-            else None
-          in
-          let endpoint, next =
-            match extension with
-            | Some e -> (name ^ e, Cursor.advance id_end (String.length e))
-            | None -> (name, id_end)
-          in
-          Some
-            ( T_nodes [ Sym_ref { kind = None; endpoint; anchor = None } ],
-              next,
-              [] )
+    let* start = Cursor.scan_char c '#' in
+    if not (Cursor.matches start is_upper) then None
+    else
+      let id_end = Cursor.skip_while start is_ident_char in
+      let name = Cursor.text_between start id_end in
+      let extension =
+        if Cursor.is_char id_end ':' then
+          let sep = if Cursor.peek_char id_end 1 ':' then 2 else 1 in
+          let after = Cursor.advance id_end sep in
+          if Cursor.matches after is_ident_char then
+            Some
+              (Cursor.text_between id_end
+                 (Cursor.skip_while after is_ident_char))
+          else None
+        else None
+      in
+      let endpoint, next =
+        match extension with
+        | Some e -> (name ^ e, Cursor.advance id_end (String.length e))
+        | None -> (name, id_end)
+      in
+      Some
+        (T_nodes [ Sym_ref { kind = None; endpoint; anchor = None } ], next, [])
 
 (* A legacy gtk-doc [%CONSTANT] sigil: [%] followed by an uppercase
    identifier with no space. *)
 and percent_sigil c =
-  match Cursor.scan_char c '%' with
-  | None -> None
-  | Some start ->
-      if not (Cursor.matches start is_upper) then None
-      else
-        let id_end = Cursor.skip_while start is_ident_char in
-        let endpoint = Cursor.text_between start id_end in
-        Some
-          ( T_nodes [ Sym_ref { kind = None; endpoint; anchor = None } ],
-            id_end,
-            [] )
+  let* start = Cursor.scan_char c '%' in
+  if not (Cursor.matches start is_upper) then None
+  else
+    let id_end = Cursor.skip_while start is_ident_char in
+    let endpoint = Cursor.text_between start id_end in
+    Some
+      (T_nodes [ Sym_ref { kind = None; endpoint; anchor = None } ], id_end, [])
 
 and scan_token c =
-  match Cursor.current c with
-  | None -> None
-  | Some ch ->
-      if ch = '\\' then backslash_escape c
-      else if ch = '`' then code_span c
-      else if ch = '<' && Cursor.at_prefix c "<img" then img_tag c
-      else if ch = '!' && Cursor.peek_char c 1 '[' then image c
-      else if ch = '[' then
-        match fragment c with Some tok -> Some tok | None -> link c
-      else if ch = '*' then emphasis c
-      else if ch = '@' then param_ref c
-      else if ch = '#' then hash_sigil c
-      else if ch = '%' then percent_sigil c
-      else None
+  let* ch = Cursor.current c in
+  if ch = '\\' then backslash_escape c
+  else if ch = '`' then code_span c
+  else if ch = '<' && Cursor.at_prefix c "<img" then img_tag c
+  else if ch = '!' && Cursor.peek_char c 1 '[' then image c
+  else if ch = '[' then
+    match fragment c with Some tok -> Some tok | None -> link c
+  else if ch = '*' then emphasis c
+  else if ch = '@' then param_ref c
+  else if ch = '#' then hash_sigil c
+  else if ch = '%' then percent_sigil c
+  else None
 
 and parse_inline s : inline list * fallback list =
   let text_buf = Buffer.create 32 in
@@ -563,10 +540,9 @@ let backtick_fence lines i =
     let closes_fence line =
       read_while (fun c -> c = '`') (String.trim line) 0 >= k
     in
-    find_line lines (i + 1) closes_fence
-    |> Option.map (fun j ->
-        let content = String.concat "\n" (array_slice lines (i + 1) (j - 1)) in
-        (Code_block (strip_trailing_newline content), j + 1))
+    let+ j = find_line lines (i + 1) closes_fence in
+    let content = String.concat "\n" (array_slice lines (i + 1) (j - 1)) in
+    (Code_block (strip_trailing_newline content), j + 1)
 
 (* The gi-docgen pipe fence [|[...]|], optionally with a leading
    [<!-- language="X" -->] line. *)
@@ -574,19 +550,18 @@ let pipe_fence lines i =
   let line = String.trim lines.(i) in
   if not (starts_with line 0 "|[") then None
   else
-    find_line lines (i + 1) (fun line -> starts_with (String.trim line) 0 "]|")
-    |> Option.map (fun j ->
-        let raw_content =
-          String.concat "\n" (array_slice lines (i + 1) (j - 1))
-        in
-        let content =
-          match String.split_on_char '\n' raw_content with
-          | first :: rest
-            when starts_with (String.trim first) 0 "<!-- language=" ->
-              String.concat "\n" rest
-          | _ -> raw_content
-        in
-        (Code_block (strip_trailing_newline content), j + 1))
+    let+ j =
+      find_line lines (i + 1) (fun line ->
+          starts_with (String.trim line) 0 "]|")
+    in
+    let raw_content = String.concat "\n" (array_slice lines (i + 1) (j - 1)) in
+    let content =
+      match String.split_on_char '\n' raw_content with
+      | first :: rest when starts_with (String.trim first) 0 "<!-- language=" ->
+          String.concat "\n" rest
+      | _ -> raw_content
+    in
+    (Code_block (strip_trailing_newline content), j + 1)
 
 let fence_block lines i =
   match backtick_fence lines i with
@@ -634,13 +609,14 @@ let admonition_block lines i =
 let picture_block lines i =
   if not (contains_sub lines.(i) "<picture>") then None
   else
-    find_line lines (i + 1) (fun line -> contains_sub line "</picture>")
-    |> Option.map (fun j ->
-        let region = String.concat "\n" (array_slice lines i j) in
-        let alt = extract_alt region in
-        let alt_opt = if String.equal alt "" then None else Some alt in
-        let block = Option.map (fun a -> Para [ Text a ]) alt_opt in
-        (block, j + 1, [ Picture_stripped alt_opt ]))
+    let+ j =
+      find_line lines (i + 1) (fun line -> contains_sub line "</picture>")
+    in
+    let region = String.concat "\n" (array_slice lines i j) in
+    let alt = extract_alt region in
+    let alt_opt = if String.equal alt "" then None else Some alt in
+    let block = Option.map (fun a -> Para [ Text a ]) alt_opt in
+    (block, j + 1, [ Picture_stripped alt_opt ])
 
 (* A [> quote]: markers stripped, content kept as plain prose; counted. *)
 let quote_block lines i =
@@ -678,38 +654,33 @@ let table_block lines i =
 type step = S_para | S_blank | S_block of block option * int * fallback list
 
 let heading_detector lines i =
-  read_heading_level (String.trim lines.(i))
-  |> Option.map (fun (lvl, text) ->
-      let ins, fbs = parse_inline text in
-      S_block (Some (Heading (lvl, ins)), 1, fbs))
+  let+ lvl, text = read_heading_level (String.trim lines.(i)) in
+  let ins, fbs = parse_inline text in
+  S_block (Some (Heading (lvl, ins)), 1, fbs)
 
 let fence_detector lines i =
-  Option.map
-    (fun (blk, next) -> S_block (Some blk, next - i, []))
-    (fence_block lines i)
+  let+ blk, next = fence_block lines i in
+  S_block (Some blk, next - i, [])
 
 (* [admonition_block], [picture_block] and [quote_block] all already return
    the (optional block, next line, fallback events) shape [S_block] wants;
    this just relocates [next] to be relative to [i]. *)
 let block_detector block_fn lines i =
-  Option.map
-    (fun (blk, next, fbs) -> S_block (blk, next - i, fbs))
-    (block_fn lines i)
+  let+ blk, next, fbs = block_fn lines i in
+  S_block (blk, next - i, fbs)
 
 let admonition_detector = block_detector admonition_block
 let picture_detector = block_detector picture_block
 let quote_detector = block_detector quote_block
 
 let list_detector lines i =
-  list_marker (String.trim lines.(i))
-  |> Option.map (fun kind ->
-      let blk, next, fbs = list_block kind lines i in
-      S_block (Some blk, next - i, fbs))
+  let+ kind = list_marker (String.trim lines.(i)) in
+  let blk, next, fbs = list_block kind lines i in
+  S_block (Some blk, next - i, fbs)
 
 let table_detector lines i =
-  Option.map
-    (fun (next, fb) -> S_block (None, next - i, [ fb ]))
-    (table_block lines i)
+  let+ next, fb = table_block lines i in
+  S_block (None, next - i, [ fb ])
 
 let hr_detector lines i =
   if is_hr_line (String.trim lines.(i)) then Some S_blank else None
