@@ -472,11 +472,14 @@ let line_run lines start pred =
   go start
 
 let read_heading_level line =
-  let n = String.length line in
-  let rec count i = if i < n && line.[i] = '#' then count (i + 1) else i in
-  let k = count 0 in
-  if k >= 1 && k <= 6 && (k >= n || line.[k] = ' ') then
-    Some (k, String.trim (String.sub line k (n - k)))
+  let after_hashes =
+    Cursor.skip_while (Cursor.make line 0) (fun c -> c = '#')
+  in
+  let k = Cursor.pos after_hashes in
+  if
+    k >= 1 && k <= 6
+    && (Cursor.eof after_hashes || Cursor.is_char after_hashes ' ')
+  then Some (k, String.trim (String.sub line k (String.length line - k)))
   else None
 
 type marker_kind = M_bullet | M_ordered
@@ -484,13 +487,16 @@ type marker_kind = M_bullet | M_ordered
 let marker_ordered = function M_ordered -> true | M_bullet -> false
 
 let list_marker line =
-  let n = String.length line in
-  if n >= 2 && line.[0] = '-' && line.[1] = ' ' then Some M_bullet
-  else if n >= 2 && line.[0] = '*' && line.[1] = ' ' then Some M_bullet
+  let c = Cursor.make line 0 in
+  if Cursor.is_char c '-' && Cursor.peek_char c 1 ' ' then Some M_bullet
+  else if Cursor.is_char c '*' && Cursor.peek_char c 1 ' ' then Some M_bullet
   else
-    let d = read_while is_digit line 0 in
-    if d > 0 && d + 1 < n && line.[d] = '.' && line.[d + 1] = ' ' then
-      Some M_ordered
+    let after_digits = Cursor.skip_while c is_digit in
+    if
+      Cursor.pos after_digits > 0
+      && Cursor.is_char after_digits '.'
+      && Cursor.peek_char after_digits 1 ' '
+    then Some M_ordered
     else None
 
 (** The text of a marker line, minus its leading marker. *)
@@ -533,7 +539,7 @@ let list_block kind lines i =
           else stop j items fbs cur
       | None ->
           let indented =
-            String.length raw > 0 && (raw.[0] = ' ' || raw.[0] = '\t')
+            Cursor.matches (Cursor.make raw 0) (fun c -> c = ' ' || c = '\t')
           in
           if indented then go (j + 1) items fbs (line :: cur)
           else stop j items fbs cur
@@ -592,13 +598,15 @@ let stripped_para_block next text fallback =
     Some (Some (Para ins), next, fallback :: fbs)
 
 let is_hr_line line =
-  let n = String.length line in
-  n >= 3
+  String.length line >= 3
   &&
-  match line.[0] with
-  | '-' | '*' | '_' ->
-      let rec all i = i >= n || (line.[i] = line.[0] && all (i + 1)) in
-      all 1
+  let c0 = Cursor.make line 0 in
+  match Cursor.current c0 with
+  | Some (('-' | '*' | '_') as ch) ->
+      let rec all c =
+        Cursor.eof c || (Cursor.is_char c ch && all (Cursor.advance c 1))
+      in
+      all (Cursor.advance c0 1)
   | _ -> false
 
 (* An admonition: [::: type] line, indented content until the next blank
@@ -653,12 +661,12 @@ let quote_block lines i =
    (cell text is not prose); counted. *)
 let table_block lines i =
   let line = String.trim lines.(i) in
-  if String.length line = 0 || line.[0] <> '|' || starts_with line 0 "|[" then
-    None
+  if (not (Cursor.is_char (Cursor.make line 0) '|')) || starts_with line 0 "|["
+  then None
   else
     let is_row line =
       let t = String.trim line in
-      String.length t > 0 && t.[0] = '|' && not (starts_with t 0 "|[")
+      Cursor.is_char (Cursor.make t 0) '|' && not (starts_with t 0 "|[")
     in
     Some (line_run lines (i + 1) is_row, Table_stripped)
 
