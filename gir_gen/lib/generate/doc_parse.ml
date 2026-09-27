@@ -72,11 +72,13 @@ let sym_kind_of_keyword kw =
 (* Cursor                                                                  *)
 (* --------------------------------------------------------------------- *)
 
-(* A cursor over the string being scanned: the position plus the accessors
-   ([current]/[peek]/[advance]/[at_prefix]/[find]) that replace direct
-   [s.[pos]] / bounds-check indexing through the inline scanner below. The
-   block scanner further down keeps its own [lines * int] indexing — a
-   coarser, line-at-a-time scan that doesn't share this module's concerns. *)
+(* A cursor over the string being scanned: the position, plus accessors
+   (current/peek/advance), named comparisons (is_char/peek_char/peek_matches/
+   matches/has) instead of ad hoc [= Some ch], and check-and-consume
+   combinators (scan_char/scan_prefix) that replace direct [s.[pos]] /
+   bounds-check indexing through the inline scanner below. The block scanner
+   further down keeps its own [lines * int] indexing — a coarser,
+   line-at-a-time scan that doesn't share this module's concerns. *)
 module Cursor = struct
   type t = { s : string; pos : int }
 
@@ -121,6 +123,13 @@ module Cursor = struct
   let scan_char c ch = if is_char c ch then Some (advance c 1) else None
 
   let at_prefix c prefix = starts_with c.s c.pos prefix
+
+  (** [scan_prefix c prefix] — [Some (advance c (String.length prefix))] iff [c]
+      starts with [prefix], else [None]. The whole-prefix counterpart to
+      [scan_char]. *)
+  let scan_prefix c prefix =
+    if at_prefix c prefix then Some (advance c (String.length prefix)) else None
+
   let skip_while c pred = { c with pos = read_while pred c.s c.pos }
 
   (** [text_between from until] — the text spanning two cursors over the same
@@ -251,18 +260,23 @@ and fragment c =
   let start = Cursor.advance c (if backticked then 2 else 1) in
   let kw_end = Cursor.skip_while start is_lower in
   if Cursor.pos kw_end > Cursor.pos start && Cursor.is_char kw_end '@' then
-    let* sym_kind = sym_kind_of_keyword (Cursor.text_between start kw_end) in
-    let kind = Some sym_kind in
-    let+ close = Cursor.find_before_newline (Cursor.advance kw_end 1) ']' in
-    let raw = Cursor.text_between (Cursor.advance kw_end 1) close in
-    let raw =
-      if
-        backticked && String.length raw > 0 && raw.[String.length raw - 1] = '`'
-      then String.sub raw 0 (String.length raw - 1)
-      else raw
-    in
-    let endpoint, anchor = split_anchor (strip_endpoint_backticks raw) in
-    (T_nodes [ Sym_ref { kind; endpoint; anchor } ], Cursor.advance close 1, [])
+    match sym_kind_of_keyword (Cursor.text_between start kw_end) with
+    | None -> None
+    | Some _ as kind ->
+        let+ close = Cursor.find_before_newline (Cursor.advance kw_end 1) ']' in
+        let raw = Cursor.text_between (Cursor.advance kw_end 1) close in
+        let raw =
+          if
+            backticked
+            && String.length raw > 0
+            && raw.[String.length raw - 1] = '`'
+          then String.sub raw 0 (String.length raw - 1)
+          else raw
+        in
+        let endpoint, anchor = split_anchor (strip_endpoint_backticks raw) in
+        ( T_nodes [ Sym_ref { kind; endpoint; anchor } ],
+          Cursor.advance close 1,
+          [] )
   else None
 
 (* A markdown [text](url) link. The url is classified at parse time into
@@ -290,12 +304,10 @@ and link c =
    the alt text is kept as plain prose and the construct is counted. *)
 and image c =
   let* after = Cursor.scan_char c '!' in
-  if not (Cursor.is_char after '[') then None
-  else
-    let start = Cursor.advance after 1 in
-    let+ bracket, paren = Cursor.paren_link_span start in
-    let alt = Cursor.text_between start bracket in
-    (T_nodes [ Text alt ], Cursor.advance paren 1, [ Image_stripped alt ])
+  let* start = Cursor.scan_char after '[' in
+  let+ bracket, paren = Cursor.paren_link_span start in
+  let alt = Cursor.text_between start bracket in
+  (T_nodes [ Text alt ], Cursor.advance paren 1, [ Image_stripped alt ])
 
 and extract_alt tag =
   let rec find_eq c =
@@ -318,12 +330,11 @@ and extract_alt tag =
   Option.value result ~default:""
 
 and img_tag c =
-  if not (Cursor.at_prefix c "<img") then None
-  else
-    let+ close = Cursor.find (Cursor.advance c 4) '>' in
-    let tag = Cursor.text_between c (Cursor.advance close 1) in
-    let alt = extract_alt tag in
-    (T_nodes [ Text alt ], Cursor.advance close 1, [ Image_stripped alt ])
+  let* start = Cursor.scan_prefix c "<img" in
+  let+ close = Cursor.find start '>' in
+  let tag = Cursor.text_between c (Cursor.advance close 1) in
+  let alt = extract_alt tag in
+  (T_nodes [ Text alt ], Cursor.advance close 1, [ Image_stripped alt ])
 
 and backslash_escape c =
   let+ after = Cursor.scan_char c '\\' in
