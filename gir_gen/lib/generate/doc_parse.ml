@@ -22,32 +22,6 @@ let read_while f s pos =
   let rec go i = if i < n && f s.[i] then go (i + 1) else i in
   go pos
 
-(** [find_before_newline s pos c] — index of the first [c] at or after [pos], or
-    [None] if a newline comes first (or [c] doesn't appear at all). Every inline
-    delimiter search that must not run past a line (the closing bracket in
-    [fragment], [link] and [image]) uses this; searches with no such bound (a
-    closing paren or angle bracket) just call [String.index_from_opt] directly.
-*)
-let find_before_newline s pos c =
-  Option.bind (String.index_from_opt s pos c) (fun i ->
-      match String.index_from_opt s pos '\n' with
-      | Some j when j < i -> None
-      | _ -> Some i)
-
-(** [paren_link_span s pos] — the closing-bracket and closing-paren indices of a
-    markdown [text](url)-shaped construct, searching for the closing bracket
-    from [pos]. Shared by [link] and [image], which differ only in what they
-    build from the span. *)
-let paren_link_span s pos =
-  let n = String.length s in
-  let bracket_opt =
-    Option.bind (find_before_newline s pos ']') (fun bracket ->
-        if bracket + 1 < n && s.[bracket + 1] = '(' then Some bracket else None)
-  in
-  Option.bind bracket_opt (fun bracket ->
-      String.index_from_opt s (bracket + 2) ')'
-      |> Option.map (fun paren -> (bracket, paren)))
-
 (** Split an endpoint at the first [#]; the part after it is the anchor. *)
 let split_anchor endpoint =
   match String.index_opt endpoint '#' with
@@ -89,86 +63,178 @@ let sym_kind_of_keyword kw =
   | _ -> None
 
 (* --------------------------------------------------------------------- *)
+(* Cursor                                                                  *)
+(* --------------------------------------------------------------------- *)
+
+(* A cursor over the string being scanned: the position plus the accessors
+   ([current]/[peek]/[advance]/[at_prefix]/[find]) that replace direct
+   [s.[pos]] / bounds-check indexing through the inline scanner below. The
+   block scanner further down keeps its own [lines * int] indexing — a
+   coarser, line-at-a-time scan that doesn't share this module's concerns. *)
+module Cursor = struct
+  type t = { s : string; pos : int }
+
+  let make s pos = { s; pos }
+  let pos c = c.pos
+  let len c = String.length c.s
+  let eof c = c.pos < 0 || c.pos >= String.length c.s
+  let current c = if eof c then None else Some c.s.[c.pos]
+  let current_exn c = c.s.[c.pos]
+
+  (** [peek c n] — the character [n] places ahead of [c] ([n] may be negative,
+      to look behind). *)
+  let peek c n =
+    let i = c.pos + n in
+    if i < 0 || i >= String.length c.s then None else Some c.s.[i]
+
+  let advance c n = { c with pos = c.pos + n }
+
+  (** [has c n] — [true] iff the character [n] places ahead of [c] is in bounds
+      (regardless of what it is). *)
+  let has c n = peek c n <> None
+
+  (** [is_char c ch] — [true] iff [c] isn't at eof and its current character is
+      [ch]. *)
+  let is_char c ch = current c = Some ch
+
+  (** [peek_char c n ch] — [true] iff the character [n] places ahead of [c] is
+      [ch] (and in bounds). *)
+  let peek_char c n ch = peek c n = Some ch
+
+  (** [peek_matches c n pred] — [true] iff the character [n] places ahead of [c]
+      is in bounds and satisfies [pred]. *)
+  let peek_matches c n pred =
+    match peek c n with Some ch -> pred ch | None -> false
+
+  (** [matches c pred] — [peek_matches c 0 pred]. *)
+  let matches c pred = peek_matches c 0 pred
+
+  (** [scan_char c ch] — [Some (advance c 1)] iff [c]'s current character is
+      [ch], else [None]. The single-character-literal counterpart to
+      [at_prefix]. *)
+  let scan_char c ch = if is_char c ch then Some (advance c 1) else None
+
+  let at_prefix c prefix = starts_with c.s c.pos prefix
+  let skip_while c pred = { c with pos = read_while pred c.s c.pos }
+
+  (** [text_between from until] — the text spanning two cursors over the same
+      underlying string, [from] inclusive up to but not including [until]. *)
+  let text_between from until = String.sub from.s from.pos (until.pos - from.pos)
+
+  (** [find c ch] — the first [ch] at or after [c], with no bound other than the
+      string's end (a closing paren or angle bracket may legitimately follow a
+      newline). *)
+  let find c ch =
+    String.index_from_opt c.s c.pos ch
+    |> Option.map (fun i -> { c with pos = i })
+
+  (** As [find], but [None] if a newline comes first. Every inline delimiter
+      search that must not run past a line (the closing bracket in [fragment],
+      [link] and [image]) uses this. *)
+  let find_before_newline c ch =
+    match (find c ch, find c '\n') with
+    | None, _ -> None
+    | Some found, Some nl when nl.pos < found.pos -> None
+    | Some found, _ -> Some found
+
+  (** [paren_link_span c] — the closing-bracket and closing-paren cursors of a
+      markdown [text](url)-shaped construct, searching for the closing bracket
+      from [c]. Shared by [link] and [image], which differ only in what they
+      build from the span. *)
+  let paren_link_span c =
+    Option.bind (find_before_newline c ']') (fun bracket ->
+        if peek_char bracket 1 '(' then
+          find (advance bracket 2) ')'
+          |> Option.map (fun paren -> (bracket, paren))
+        else None)
+end
+
+(* --------------------------------------------------------------------- *)
 (* Inline scanner                                                          *)
 (* --------------------------------------------------------------------- *)
 
 type token = T_char of char | T_nodes of inline list
 
-let backtick_run s pos =
-  let n = String.length s in
-  let rec go i = if i < n && s.[i] = '`' then go (i + 1) else i - pos in
-  go pos
+let backtick_run c =
+  let rec go c n =
+    if Cursor.is_char c '`' then go (Cursor.advance c 1) (n + 1) else n
+  in
+  go c 0
 
 (* A backtick-delimited code span. The closing run must be at least as long
    as the opening run. An unmatched opener is left as literal text (a
    one-sided backtick must not swallow the rest of the paragraph). *)
-let code_span s pos =
-  let k = backtick_run s pos in
-  let n = String.length s in
-  let rec find_close i =
-    if i + k > n then None
-    else if backtick_run s i >= k then Some i
-    else find_close (i + 1)
+let code_span c =
+  let k = backtick_run c in
+  let rec find_close cj =
+    if Cursor.pos cj + k > Cursor.len cj then None
+    else if backtick_run cj >= k then Some cj
+    else find_close (Cursor.advance cj 1)
   in
-  match find_close (pos + k) with
-  | Some j ->
-      let content = String.sub s (pos + k) (j - (pos + k)) in
-      let close_run = backtick_run s j in
-      Some (T_nodes [ Code content ], j + Int.min k close_run, [])
+  match find_close (Cursor.advance c k) with
+  | Some cj ->
+      let content = Cursor.text_between (Cursor.advance c k) cj in
+      let close_run = backtick_run cj in
+      Some
+        (T_nodes [ Code content ], Cursor.advance cj (Int.min k close_run), [])
   | None -> None
 
 (* [*]/[**] emphasis. The opener must have a non-empty, space-free content
    and a matching closer; a lone or space-bounded star is literal text. *)
-let rec emphasis s pos =
-  let n = String.length s in
-  if pos >= n || s.[pos] <> '*' then None
-  else if pos + 1 >= n then Some (T_char '*', pos + 1, [])
-  else if s.[pos + 1] = '*' then
+let rec emphasis c =
+  if not (Cursor.is_char c '*') then None
+  else if not (Cursor.has c 1) then Some (T_char '*', Cursor.advance c 1, [])
+  else if Cursor.peek_char c 1 '*' then
     (* bold: find a closing [**] *)
-    let rec find_bold j =
-      if j + 1 >= n then None
-      else if s.[j] = '*' && s.[j + 1] = '*' then Some j
-      else find_bold (j + 1)
+    let rec find_bold cj =
+      if not (Cursor.has cj 1) then None
+      else if Cursor.peek_char cj 0 '*' && Cursor.peek_char cj 1 '*' then
+        Some cj
+      else find_bold (Cursor.advance cj 1)
     in
-    match find_bold (pos + 2) with
-    | Some j ->
-        Some
-          (close_emphasis s pos ~start:(pos + 2) ~delim_len:2
-             ~wrap:(fun ins -> Bold ins)
-             j)
-    | None -> Some (T_char '*', pos + 1, [])
-  else if pos > 0 && s.[pos - 1] = '*' then Some (T_char '*', pos + 1, [])
+    Some
+      (match find_bold (Cursor.advance c 2) with
+      | Some cj ->
+          close_emphasis c ~start:(Cursor.advance c 2) ~delim_len:2
+            ~wrap:(fun ins -> Bold ins)
+            cj
+      | None -> (T_char '*', Cursor.advance c 1, []))
+  else if Cursor.peek_char c (-1) '*' then
+    Some (T_char '*', Cursor.advance c 1, [])
   else
     (* italic: a closing single star, not adjacent to another star *)
-    let rec find_italic j =
-      if j >= n then None
-      else
-        let after_is_star = j + 1 < n && s.[j + 1] = '*' in
-        let before_is_star = j > pos + 1 && s.[j - 1] = '*' in
-        if s.[j] = '*' && (not after_is_star) && not before_is_star then Some j
-        else find_italic (j + 1)
+    let rec find_italic cj =
+      if Cursor.eof cj then None
+      else if Cursor.is_char cj '*' then
+        let after_is_star = Cursor.peek_char cj 1 '*' in
+        let before_is_star =
+          Cursor.pos cj > Cursor.pos c + 1 && Cursor.peek_char cj (-1) '*'
+        in
+        if (not after_is_star) && not before_is_star then Some cj
+        else find_italic (Cursor.advance cj 1)
+      else find_italic (Cursor.advance cj 1)
     in
-    match find_italic (pos + 1) with
-    | Some j ->
-        Some
-          (close_emphasis s pos ~start:(pos + 1) ~delim_len:1
-             ~wrap:(fun ins -> Italic ins)
-             j)
-    | None -> Some (T_char '*', pos + 1, [])
+    Some
+      (match find_italic (Cursor.advance c 1) with
+      | Some cj ->
+          close_emphasis c ~start:(Cursor.advance c 1) ~delim_len:1
+            ~wrap:(fun ins -> Italic ins)
+            cj
+      | None -> (T_char '*', Cursor.advance c 1, []))
 
 (* The bold/italic closer, once the matching delimiter run has been found at
-   [j]: reject an empty or space-padded run (a lone/space-bounded delimiter
+   [cj]: reject an empty or space-padded run (a lone/space-bounded delimiter
    is literal text), else parse the content and wrap it with [wrap]. Shared
    by [emphasis]'s bold and italic branches, which differ only in where the
    content starts, how long the delimiter is, and the constructor. *)
-and close_emphasis s pos ~start ~delim_len ~wrap j =
-  let content = String.sub s start (j - start) in
+and close_emphasis c ~start ~delim_len ~wrap cj =
+  let content = Cursor.text_between start cj in
   let trimmed = String.trim content in
   if String.equal trimmed "" || not (String.equal trimmed content) then
-    (T_char '*', pos + 1, [])
+    (T_char '*', Cursor.advance c 1, [])
   else
     let ins, fbs = parse_inline content in
-    (T_nodes [ wrap ins ], j + delim_len, fbs)
+    (T_nodes [ wrap ins ], Cursor.advance cj delim_len, fbs)
 
 (* A gi-docgen [keyword@endpoint] fragment. Only known fragment keywords
    count as references (unknown [foo@bar] bracket text falls through to the
@@ -176,18 +242,17 @@ and close_emphasis s pos ~start ~delim_len ~wrap j =
    backtick-wrapped ([`method@Foo`]) — the backticks are allowed and
    stripped per the linking grammar; a trailing [#anchor] may be
    appended. *)
-and fragment s pos =
-  let n = String.length s in
-  let backticked = pos + 1 < n && s.[pos + 1] = '`' in
-  let start = if backticked then pos + 2 else pos + 1 in
-  let kw_end = read_while is_lower s start in
-  if kw_end > start && kw_end < n && s.[kw_end] = '@' then
-    match sym_kind_of_keyword (String.sub s start (kw_end - start)) with
+and fragment c =
+  let backticked = Cursor.peek_char c 1 '`' in
+  let start = Cursor.advance c (if backticked then 2 else 1) in
+  let kw_end = Cursor.skip_while start is_lower in
+  if Cursor.pos kw_end > Cursor.pos start && Cursor.is_char kw_end '@' then
+    match sym_kind_of_keyword (Cursor.text_between start kw_end) with
     | None -> None
     | Some _ as kind ->
-        find_before_newline s (kw_end + 1) ']'
+        Cursor.find_before_newline (Cursor.advance kw_end 1) ']'
         |> Option.map (fun close ->
-            let raw = String.sub s (kw_end + 1) (close - kw_end - 1) in
+            let raw = Cursor.text_between (Cursor.advance kw_end 1) close in
             let raw =
               if
                 backticked
@@ -199,17 +264,19 @@ and fragment s pos =
             let endpoint, anchor =
               split_anchor (strip_endpoint_backticks raw)
             in
-            (T_nodes [ Sym_ref { kind; endpoint; anchor } ], close + 1, []))
+            ( T_nodes [ Sym_ref { kind; endpoint; anchor } ],
+              Cursor.advance close 1,
+              [] ))
   else None
 
 (* A markdown [text](url) link. The url is classified at parse time into
    [Link] (https), [Page_ref] (relative .html page link or bare #anchor) or
    a degraded bare-text link. *)
-and link_token s pos bracket paren =
-  let text_raw = String.sub s (pos + 1) (bracket - pos - 1) in
-  let url = String.sub s (bracket + 2) (paren - bracket - 2) in
+and link_token c bracket paren =
+  let text_raw = Cursor.text_between (Cursor.advance c 1) bracket in
+  let url = Cursor.text_between (Cursor.advance bracket 2) paren in
   let text, fbs = parse_inline text_raw in
-  let next = paren + 1 in
+  let next = Cursor.advance paren 1 in
   if starts_with url 0 "https://" then
     (T_nodes [ Link { text; url } ], next, fbs)
   else if starts_with url 0 "http://" then
@@ -219,132 +286,147 @@ and link_token s pos bracket paren =
     (T_nodes [ Page_ref { text; path; anchor } ], next, fbs)
   else (T_nodes text, next, Link_degraded url :: fbs)
 
-and link s pos =
-  paren_link_span s (pos + 1)
-  |> Option.map (fun (bracket, paren) -> link_token s pos bracket paren)
+and link c =
+  Cursor.paren_link_span (Cursor.advance c 1)
+  |> Option.map (fun (bracket, paren) -> link_token c bracket paren)
 
 (* A markdown [![alt](src)] image or a bare [<img ... alt="...">] element:
    the alt text is kept as plain prose and the construct is counted. *)
-and image s pos =
-  let n = String.length s in
-  if pos + 1 >= n || s.[pos] <> '!' || s.[pos + 1] <> '[' then None
-  else
-    paren_link_span s (pos + 2)
-    |> Option.map (fun (bracket, paren) ->
-        let alt = String.sub s (pos + 2) (bracket - pos - 2) in
-        (T_nodes [ Text alt ], paren + 1, [ Image_stripped alt ]))
+and image c =
+  match Cursor.scan_char c '!' with
+  | Some after when Cursor.is_char after '[' ->
+      let start = Cursor.advance after 1 in
+      Cursor.paren_link_span start
+      |> Option.map (fun (bracket, paren) ->
+          let alt = Cursor.text_between start bracket in
+          (T_nodes [ Text alt ], Cursor.advance paren 1, [ Image_stripped alt ]))
+  | _ -> None
 
 and extract_alt tag =
-  let n = String.length tag in
-  let rec find_eq i =
-    if i + 4 >= n then None
+  let rec find_eq c =
+    if not (Cursor.has c 4) then None
     else if
-      tag.[i] = 'a'
-      && tag.[i + 1] = 'l'
-      && tag.[i + 2] = 't'
-      && tag.[i + 3] = '='
-    then Some (i + 4)
-    else find_eq (i + 1)
+      Cursor.is_char c 'a' && Cursor.peek_char c 1 'l'
+      && Cursor.peek_char c 2 't' && Cursor.peek_char c 3 '='
+    then Some (Cursor.advance c 4)
+    else find_eq (Cursor.advance c 1)
   in
   let quote_pos =
-    Option.bind (find_eq 0) (fun q ->
-        if q < n && (tag.[q] = '"' || tag.[q] = '\'') then Some q else None)
+    Option.bind
+      (find_eq (Cursor.make tag 0))
+      (fun q ->
+        if Cursor.matches q (function '"' | '\'' -> true | _ -> false) then
+          Some q
+        else None)
   in
   Option.bind quote_pos (fun q ->
-      String.index_from_opt tag (q + 1) tag.[q]
-      |> Option.map (fun close -> String.sub tag (q + 1) (close - q - 1)))
+      Cursor.find (Cursor.advance q 1) (Cursor.current_exn q)
+      |> Option.map (fun close ->
+          Cursor.text_between (Cursor.advance q 1) close))
   |> Option.value ~default:""
 
-and img_tag s pos =
-  if not (starts_with s pos "<img") then None
+and img_tag c =
+  if not (Cursor.at_prefix c "<img") then None
   else
-    String.index_from_opt s (pos + 4) '>'
+    Cursor.find (Cursor.advance c 4) '>'
     |> Option.map (fun close ->
-        let tag = String.sub s pos (close - pos + 1) in
+        let tag = Cursor.text_between c (Cursor.advance close 1) in
         let alt = extract_alt tag in
-        (T_nodes [ Text alt ], close + 1, [ Image_stripped alt ]))
+        (T_nodes [ Text alt ], Cursor.advance close 1, [ Image_stripped alt ]))
 
-and backslash_escape s pos =
-  if s.[pos] <> '\\' then None
-  else if pos + 1 < String.length s && is_escapeable s.[pos + 1] then
-    Some (T_char s.[pos + 1], pos + 2, [])
-  else Some (T_char '\\', pos + 1, [])
+and backslash_escape c =
+  match Cursor.scan_char c '\\' with
+  | None -> None
+  | Some after ->
+      if Cursor.matches after is_escapeable then
+        Some (T_char (Cursor.current_exn after), Cursor.advance after 1, [])
+      else Some (T_char '\\', after, [])
 
 (* A legacy gtk-doc [@param] reference. The name must start lowercase, must
    not be preceded by an identifier character, and must not run into a
    [.]+letter (the email / namespace guard). *)
-and param_ref s pos =
-  let n = String.length s in
-  if s.[pos] <> '@' || (pos > 0 && is_ident_char s.[pos - 1]) then None
-  else if pos + 1 >= n || not (is_lower s.[pos + 1]) then None
+and param_ref c =
+  let preceded_by_ident = Cursor.peek_matches c (-1) is_ident_char in
+  if preceded_by_ident then None
   else
-    let id_end = read_while is_ident_char s (pos + 1) in
-    let email_like =
-      id_end + 1 < n
-      && s.[id_end] = '.'
-      && id_end + 2 < n
-      && is_letter s.[id_end + 1]
-    in
-    if email_like then None
-    else
-      let name = String.sub s (pos + 1) (id_end - pos - 1) in
-      Some (T_nodes [ Param_ref name ], id_end, [])
+    match Cursor.scan_char c '@' with
+    | None -> None
+    | Some start ->
+        if not (Cursor.matches start is_lower) then None
+        else
+          let id_end = Cursor.skip_while start is_ident_char in
+          let email_like =
+            Cursor.is_char id_end '.' && Cursor.peek_matches id_end 1 is_letter
+          in
+          if email_like then None
+          else
+            let name = Cursor.text_between start id_end in
+            Some (T_nodes [ Param_ref name ], id_end, [])
 
 (* A legacy gtk-doc [#Type...] sigil. Guards (GIR plan §3.5): [#] not
    preceded by [/], then an uppercase identifier with no space. [#Type:p]
    and [#Type::s] suffixes stay on the endpoint. *)
-and hash_sigil s pos =
-  let n = String.length s in
-  if s.[pos] <> '#' || (pos > 0 && s.[pos - 1] = '/') then None
-  else if pos + 1 >= n || not (is_upper s.[pos + 1]) then None
+and hash_sigil c =
+  if Cursor.peek_char c (-1) '/' then None
   else
-    let id_end = read_while is_ident_char s (pos + 1) in
-    let name = String.sub s (pos + 1) (id_end - pos - 1) in
-    let extension =
-      if id_end < n && s.[id_end] = ':' then
-        let sep = if id_end + 1 < n && s.[id_end + 1] = ':' then 2 else 1 in
-        let after = id_end + sep in
-        if after < n && is_ident_char s.[after] then
-          let e2 = read_while is_ident_char s after in
-          Some (String.sub s id_end (e2 - id_end))
-        else None
-      else None
-    in
-    let endpoint, next =
-      match extension with
-      | Some e -> (name ^ e, id_end + String.length e)
-      | None -> (name, id_end)
-    in
-    Some (T_nodes [ Sym_ref { kind = None; endpoint; anchor = None } ], next, [])
+    match Cursor.scan_char c '#' with
+    | None -> None
+    | Some start ->
+        if not (Cursor.matches start is_upper) then None
+        else
+          let id_end = Cursor.skip_while start is_ident_char in
+          let name = Cursor.text_between start id_end in
+          let extension =
+            if Cursor.is_char id_end ':' then
+              let sep = if Cursor.peek_char id_end 1 ':' then 2 else 1 in
+              let after = Cursor.advance id_end sep in
+              if Cursor.matches after is_ident_char then
+                Some
+                  (Cursor.text_between id_end
+                     (Cursor.skip_while after is_ident_char))
+              else None
+            else None
+          in
+          let endpoint, next =
+            match extension with
+            | Some e -> (name ^ e, Cursor.advance id_end (String.length e))
+            | None -> (name, id_end)
+          in
+          Some
+            ( T_nodes [ Sym_ref { kind = None; endpoint; anchor = None } ],
+              next,
+              [] )
 
 (* A legacy gtk-doc [%CONSTANT] sigil: [%] followed by an uppercase
    identifier with no space. *)
-and percent_sigil s pos =
-  let n = String.length s in
-  if s.[pos] <> '%' then None
-  else if pos + 1 >= n || not (is_upper s.[pos + 1]) then None
-  else
-    let id_end = read_while is_ident_char s (pos + 1) in
-    let endpoint = String.sub s (pos + 1) (id_end - pos - 1) in
-    Some
-      (T_nodes [ Sym_ref { kind = None; endpoint; anchor = None } ], id_end, [])
+and percent_sigil c =
+  match Cursor.scan_char c '%' with
+  | None -> None
+  | Some start ->
+      if not (Cursor.matches start is_upper) then None
+      else
+        let id_end = Cursor.skip_while start is_ident_char in
+        let endpoint = Cursor.text_between start id_end in
+        Some
+          ( T_nodes [ Sym_ref { kind = None; endpoint; anchor = None } ],
+            id_end,
+            [] )
 
-and scan_token s pos =
-  let n = String.length s in
-  if pos >= n || pos < 0 then None
-  else
-    let c = s.[pos] in
-    if c = '\\' then backslash_escape s pos
-    else if c = '`' then code_span s pos
-    else if c = '<' && starts_with s pos "<img" then img_tag s pos
-    else if c = '!' && pos + 1 < n && s.[pos + 1] = '[' then image s pos
-    else if c = '[' then
-      match fragment s pos with Some tok -> Some tok | None -> link s pos
-    else if c = '*' then emphasis s pos
-    else if c = '@' then param_ref s pos
-    else if c = '#' then hash_sigil s pos
-    else if c = '%' then percent_sigil s pos
-    else None
+and scan_token c =
+  match Cursor.current c with
+  | None -> None
+  | Some ch ->
+      if ch = '\\' then backslash_escape c
+      else if ch = '`' then code_span c
+      else if ch = '<' && Cursor.at_prefix c "<img" then img_tag c
+      else if ch = '!' && Cursor.peek_char c 1 '[' then image c
+      else if ch = '[' then
+        match fragment c with Some tok -> Some tok | None -> link c
+      else if ch = '*' then emphasis c
+      else if ch = '@' then param_ref c
+      else if ch = '#' then hash_sigil c
+      else if ch = '%' then percent_sigil c
+      else None
 
 and parse_inline s : inline list * fallback list =
   let text_buf = Buffer.create 32 in
@@ -355,22 +437,22 @@ and parse_inline s : inline list * fallback list =
       Buffer.clear text_buf;
       t :: acc
   in
-  let rec go pos acc fbs =
-    if pos >= String.length s then (List.rev (flush acc), List.rev fbs)
+  let rec go c acc fbs =
+    if Cursor.eof c then (List.rev (flush acc), List.rev fbs)
     else
-      match scan_token s pos with
+      match scan_token c with
       | None ->
-          Buffer.add_char text_buf s.[pos];
-          go (pos + 1) acc fbs
-      | Some (T_char c, next, _extra) ->
-          Buffer.add_char text_buf c;
+          Buffer.add_char text_buf (Cursor.current_exn c);
+          go (Cursor.advance c 1) acc fbs
+      | Some (T_char ch, next, _extra) ->
+          Buffer.add_char text_buf ch;
           go next acc fbs
       | Some (T_nodes nodes, next, extra) ->
           let acc = flush acc in
           let acc = List.fold_right (fun nd a -> nd :: a) nodes acc in
           go next acc (List.rev_append extra fbs)
   in
-  go 0 [] []
+  go (Cursor.make s 0) [] []
 
 (* --------------------------------------------------------------------- *)
 (* Block scanner                                                           *)
