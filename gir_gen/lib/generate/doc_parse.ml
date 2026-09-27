@@ -393,17 +393,17 @@ and percent_sigil c =
 
 and scan_token c =
   let* ch = Cursor.current c in
-  if ch = '\\' then backslash_escape c
-  else if ch = '`' then code_span c
-  else if ch = '<' && Cursor.at_prefix c "<img" then img_tag c
-  else if ch = '!' && Cursor.peek_char c 1 '[' then image c
-  else if ch = '[' then
-    match fragment c with Some tok -> Some tok | None -> link c
-  else if ch = '*' then emphasis c
-  else if ch = '@' then param_ref c
-  else if ch = '#' then hash_sigil c
-  else if ch = '%' then percent_sigil c
-  else None
+  match ch with
+  | '\\' -> backslash_escape c
+  | '`' -> code_span c
+  | '<' when Cursor.at_prefix c "<img" -> img_tag c
+  | '!' when Cursor.peek_char c 1 '[' -> image c
+  | '[' -> ( match fragment c with Some tok -> Some tok | None -> link c)
+  | '*' -> emphasis c
+  | '@' -> param_ref c
+  | '#' -> hash_sigil c
+  | '%' -> percent_sigil c
+  | _ -> None
 
 and parse_inline s : inline list * fallback list =
   let text_buf = Buffer.create 32 in
