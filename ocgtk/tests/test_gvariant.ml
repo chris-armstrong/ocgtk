@@ -162,7 +162,8 @@ let test_uint64_large () =
   let large = UInt64.of_string "18446744073709551615" in
   let v = Gvariant.of_uint64 large in
   let result = Gvariant.to_uint64 v in
-  Alcotest.(check string) "uint64 max" "18446744073709551615" (UInt64.to_string result)
+  Alcotest.(check string)
+    "uint64 max" "18446744073709551615" (UInt64.to_string result)
 
 (** {2 Boundary Tests for Unsigned Types}
 
@@ -214,7 +215,8 @@ let test_uint64_serialization_roundtrip () =
   (* Verify roundtrip *)
   let result = Gvariant.to_uint64 v in
   Alcotest.(check string)
-    "uint64 large value roundtrip" "12345678901234567890" (UInt64.to_string result)
+    "uint64 large value roundtrip" "12345678901234567890"
+    (UInt64.to_string result)
 
 (** {2 Double Tests} *)
 

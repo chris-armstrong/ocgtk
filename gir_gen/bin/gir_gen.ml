@@ -1438,13 +1438,42 @@ let generate_bindings filter_file gir_file output_dir reference_files
       sprintf "module %s = %s\n" constants_module_name constants_module_name
     else ""
   in
+  (* Short odoc synopsis for the wrapper module's own page, shown on the
+     package index alongside the other namespace libraries. *)
+  let wrapper_synopsis =
+    match namespace.namespace_name with
+    | "Cairo" ->
+        "2D vector graphics: drawing contexts, paths, patterns and surfaces."
+    | "Gdk" ->
+        "Low-level windowing, displays, input and events that Gtk is built on."
+    | "GdkPixbuf" -> "Image loading, scaling and pixel-buffer manipulation."
+    | "Gio" ->
+        "I/O, files, and the application/networking abstractions from GLib's \
+         application framework."
+    | "Graphene" ->
+        "Lightweight 3D transform and geometry types (vectors, matrices, \
+         rectangles) used by Gsk and Gtk."
+    | "Gsk" ->
+        "The GTK scene graph: render nodes and transforms for drawing widgets."
+    | "Gtk" ->
+        "The widget toolkit: windows, widgets, layout and the application \
+         model."
+    | "Pango" -> "Text layout and internationalized font rendering."
+    | "PangoCairo" -> "Glue between Pango text layout and Cairo rendering."
+    | _ -> ""
+  in
+  let wrapper_doc_comment =
+    if String.equal wrapper_synopsis "" then ""
+    else sprintf "(** %s *)\n\n" wrapper_synopsis
+  in
   let wrapper_content =
     sprintf
       "(* GENERATED CODE - DO NOT EDIT *)\n\
        (* Library wrapper module - re-exports %s as the public API *)\n\n\
-       module %s = %s\n\
+       %smodule %s = %s\n\
        %s%s%s\n"
-      lib_name lib_name lib_name enums_alias_line constants_alias_line
+      lib_name wrapper_doc_comment lib_name lib_name enums_alias_line
+      constants_alias_line
       (String.concat ~sep:"\n" core_module_lines)
   in
   write_file ~path:wrapper_ml_file ~content:wrapper_content;
