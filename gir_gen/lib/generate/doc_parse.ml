@@ -10,39 +10,11 @@
    Both scanners collect the parse-time fallback events. *)
 
 open Doc_ast
+open Doc_str
 
 (* --------------------------------------------------------------------- *)
 (* Character helpers                                                       *)
 (* --------------------------------------------------------------------- *)
-
-let is_upper c = c >= 'A' && c <= 'Z'
-let is_lower c = c >= 'a' && c <= 'z'
-let is_digit c = c >= '0' && c <= '9'
-let is_letter c = is_upper c || is_lower c
-let is_ident_char c = is_letter c || is_digit c || c = '_'
-
-(** [starts_with s pos prefix] — [true] iff [s] has [prefix] at [pos]. *)
-let starts_with s pos prefix =
-  let n = String.length prefix in
-  pos + n <= String.length s
-  &&
-  let rec go i =
-    i >= n || (String.get s (pos + i) = String.get prefix i && go (i + 1))
-  in
-  go 0
-
-(** [contains_sub s sub] — substring containment. *)
-let contains_sub s sub =
-  let n = String.length s in
-  let m = String.length sub in
-  let rec find i = i + m <= n && (starts_with s i sub || find (i + 1)) in
-  find 0
-
-let is_blank_line line = String.equal (String.trim line) ""
-
-let strip_trailing_newline s =
-  let n = String.length s in
-  if n > 0 && s.[n - 1] = '\n' then String.sub s 0 (n - 1) else s
 
 (** [read_while f s pos] — first index at or after [pos] where [f] fails. *)
 let read_while f s pos =
@@ -57,12 +29,24 @@ let read_while f s pos =
     closing paren or angle bracket) just call [String.index_from_opt] directly.
 *)
 let find_before_newline s pos c =
-  match String.index_from_opt s pos c with
-  | None -> None
-  | Some i -> (
+  Option.bind (String.index_from_opt s pos c) (fun i ->
       match String.index_from_opt s pos '\n' with
       | Some j when j < i -> None
       | _ -> Some i)
+
+(** [paren_link_span s pos] — the closing-bracket and closing-paren indices of a
+    markdown [text](url)-shaped construct, searching for the closing bracket
+    from [pos]. Shared by [link] and [image], which differ only in what they
+    build from the span. *)
+let paren_link_span s pos =
+  let n = String.length s in
+  let bracket_opt =
+    Option.bind (find_before_newline s pos ']') (fun bracket ->
+        if bracket + 1 < n && s.[bracket + 1] = '(' then Some bracket else None)
+  in
+  Option.bind bracket_opt (fun bracket ->
+      String.index_from_opt s (bracket + 2) ')'
+      |> Option.map (fun paren -> (bracket, paren)))
 
 (** Split an endpoint at the first [#]; the part after it is the anchor. *)
 let split_anchor endpoint =
@@ -192,9 +176,9 @@ and fragment s pos =
   if kw_end > start && kw_end < n && s.[kw_end] = '@' then
     match sym_kind_of_keyword (String.sub s start (kw_end - start)) with
     | None -> None
-    | kind -> (
-        match find_before_newline s (kw_end + 1) ']' with
-        | Some close ->
+    | Some _ as kind ->
+        find_before_newline s (kw_end + 1) ']'
+        |> Option.map (fun close ->
             let raw = String.sub s (kw_end + 1) (close - kw_end - 1) in
             let raw =
               if
@@ -207,33 +191,29 @@ and fragment s pos =
             let endpoint, anchor =
               split_anchor (strip_endpoint_backticks raw)
             in
-            Some (T_nodes [ Sym_ref { kind; endpoint; anchor } ], close + 1, [])
-        | None -> None)
+            (T_nodes [ Sym_ref { kind; endpoint; anchor } ], close + 1, []))
   else None
 
 (* A markdown [text](url) link. The url is classified at parse time into
    [Link] (https), [Page_ref] (relative .html page link or bare #anchor) or
    a degraded bare-text link. *)
+and link_token s pos bracket paren =
+  let text_raw = String.sub s (pos + 1) (bracket - pos - 1) in
+  let url = String.sub s (bracket + 2) (paren - bracket - 2) in
+  let text, fbs = parse_inline text_raw in
+  let next = paren + 1 in
+  if starts_with url 0 "https://" then
+    (T_nodes [ Link { text; url } ], next, fbs)
+  else if starts_with url 0 "http://" then
+    (T_nodes text, next, Link_degraded url :: fbs)
+  else if starts_with url 0 "#" || contains_sub url ".html" then
+    let path, anchor = split_anchor url in
+    (T_nodes [ Page_ref { text; path; anchor } ], next, fbs)
+  else (T_nodes text, next, Link_degraded url :: fbs)
+
 and link s pos =
-  let n = String.length s in
-  match find_before_newline s (pos + 1) ']' with
-  | Some bracket when bracket + 1 < n && s.[bracket + 1] = '(' -> (
-      match String.index_from_opt s (bracket + 2) ')' with
-      | Some paren ->
-          let text_raw = String.sub s (pos + 1) (bracket - pos - 1) in
-          let url = String.sub s (bracket + 2) (paren - bracket - 2) in
-          let text, fbs = parse_inline text_raw in
-          let next = paren + 1 in
-          if starts_with url 0 "https://" then
-            Some (T_nodes [ Link { text; url } ], next, fbs)
-          else if starts_with url 0 "http://" then
-            Some (T_nodes text, next, Link_degraded url :: fbs)
-          else if starts_with url 0 "#" || contains_sub url ".html" then
-            let path, anchor = split_anchor url in
-            Some (T_nodes [ Page_ref { text; path; anchor } ], next, fbs)
-          else Some (T_nodes text, next, Link_degraded url :: fbs)
-      | None -> None)
-  | _ -> None
+  paren_link_span s (pos + 1)
+  |> Option.map (fun (bracket, paren) -> link_token s pos bracket paren)
 
 (* A markdown [![alt](src)] image or a bare [<img ... alt="...">] element:
    the alt text is kept as plain prose and the construct is counted. *)
@@ -241,14 +221,10 @@ and image s pos =
   let n = String.length s in
   if pos + 1 >= n || s.[pos] <> '!' || s.[pos + 1] <> '[' then None
   else
-    match find_before_newline s (pos + 2) ']' with
-    | Some bracket when bracket + 1 < n && s.[bracket + 1] = '(' -> (
-        match String.index_from_opt s (bracket + 2) ')' with
-        | Some paren ->
-            let alt = String.sub s (pos + 2) (bracket - pos - 2) in
-            Some (T_nodes [ Text alt ], paren + 1, [ Image_stripped alt ])
-        | None -> None)
-    | _ -> None
+    paren_link_span s (pos + 2)
+    |> Option.map (fun (bracket, paren) ->
+        let alt = String.sub s (pos + 2) (bracket - pos - 2) in
+        (T_nodes [ Text alt ], paren + 1, [ Image_stripped alt ]))
 
 and extract_alt tag =
   let n = String.length tag in
@@ -262,28 +238,23 @@ and extract_alt tag =
     then Some (i + 4)
     else find_eq (i + 1)
   in
-  match find_eq 0 with
-  | None -> ""
-  | Some q when q < n && (tag.[q] = '"' || tag.[q] = '\'') -> (
-      match String.index_from_opt tag (q + 1) tag.[q] with
-      | Some close -> String.sub tag (q + 1) (close - q - 1)
-      | None -> "")
-  | Some _ -> ""
+  let quote_pos =
+    Option.bind (find_eq 0) (fun q ->
+        if q < n && (tag.[q] = '"' || tag.[q] = '\'') then Some q else None)
+  in
+  Option.bind quote_pos (fun q ->
+      String.index_from_opt tag (q + 1) tag.[q]
+      |> Option.map (fun close -> String.sub tag (q + 1) (close - q - 1)))
+  |> Option.value ~default:""
 
 and img_tag s pos =
   if not (starts_with s pos "<img") then None
   else
-    match String.index_from_opt s (pos + 4) '>' with
-    | Some close ->
+    String.index_from_opt s (pos + 4) '>'
+    |> Option.map (fun close ->
         let tag = String.sub s pos (close - pos + 1) in
         let alt = extract_alt tag in
-        Some (T_nodes [ Text alt ], close + 1, [ Image_stripped alt ])
-    | None -> None
-
-and is_escapeable c =
-  c = '`' || c = '*' || c = '_' || c = '{' || c = '}' || c = '[' || c = ']'
-  || c = '(' || c = ')' || c = '#' || c = '+' || c = '-' || c = '.' || c = '!'
-  || c = '|' || c = '>' || c = '<' || c = '~' || c = '@' || c = '\\'
+        (T_nodes [ Text alt ], close + 1, [ Image_stripped alt ]))
 
 and backslash_escape s pos =
   if s.[pos] <> '\\' then None
@@ -502,11 +473,10 @@ let backtick_fence lines i =
     let closes_fence line =
       read_while (fun c -> c = '`') (String.trim line) 0 >= k
     in
-    match find_line lines (i + 1) closes_fence with
-    | Some j ->
+    find_line lines (i + 1) closes_fence
+    |> Option.map (fun j ->
         let content = String.concat "\n" (array_slice lines (i + 1) (j - 1)) in
-        Some (Code_block (strip_trailing_newline content), j + 1)
-    | None -> None
+        (Code_block (strip_trailing_newline content), j + 1))
 
 (* The gi-docgen pipe fence [|[...]|], optionally with a leading
    [<!-- language="X" -->] line. *)
@@ -514,11 +484,8 @@ let pipe_fence lines i =
   let line = String.trim lines.(i) in
   if not (starts_with line 0 "|[") then None
   else
-    match
-      find_line lines (i + 1) (fun line ->
-          starts_with (String.trim line) 0 "]|")
-    with
-    | Some j ->
+    find_line lines (i + 1) (fun line -> starts_with (String.trim line) 0 "]|")
+    |> Option.map (fun j ->
         let raw_content =
           String.concat "\n" (array_slice lines (i + 1) (j - 1))
         in
@@ -529,8 +496,7 @@ let pipe_fence lines i =
               String.concat "\n" rest
           | _ -> raw_content
         in
-        Some (Code_block (strip_trailing_newline content), j + 1)
-    | None -> None
+        (Code_block (strip_trailing_newline content), j + 1))
 
 let fence_block lines i =
   match backtick_fence lines i with
@@ -578,16 +544,13 @@ let admonition_block lines i =
 let picture_block lines i =
   if not (contains_sub lines.(i) "<picture>") then None
   else
-    match
-      find_line lines (i + 1) (fun line -> contains_sub line "</picture>")
-    with
-    | Some j ->
+    find_line lines (i + 1) (fun line -> contains_sub line "</picture>")
+    |> Option.map (fun j ->
         let region = String.concat "\n" (array_slice lines i j) in
         let alt = extract_alt region in
         let alt_opt = if String.equal alt "" then None else Some alt in
         let block = Option.map (fun a -> Para [ Text a ]) alt_opt in
-        Some (block, j + 1, [ Picture_stripped alt_opt ])
-    | None -> None
+        (block, j + 1, [ Picture_stripped alt_opt ]))
 
 (* A [> quote]: markers stripped, content kept as plain prose; counted. *)
 let quote_block lines i =
@@ -625,11 +588,10 @@ let table_block lines i =
 type step = S_para | S_blank | S_block of block option * int * fallback list
 
 let heading_detector lines i =
-  match read_heading_level (String.trim lines.(i)) with
-  | None -> None
-  | Some (lvl, text) ->
+  read_heading_level (String.trim lines.(i))
+  |> Option.map (fun (lvl, text) ->
       let ins, fbs = parse_inline text in
-      Some (S_block (Some (Heading (lvl, ins)), 1, fbs))
+      S_block (Some (Heading (lvl, ins)), 1, fbs))
 
 let fence_detector lines i =
   Option.map
@@ -649,11 +611,10 @@ let picture_detector = block_detector picture_block
 let quote_detector = block_detector quote_block
 
 let list_detector lines i =
-  match list_marker (String.trim lines.(i)) with
-  | None -> None
-  | Some kind ->
+  list_marker (String.trim lines.(i))
+  |> Option.map (fun kind ->
       let blk, next, fbs = list_block kind lines i in
-      Some (S_block (Some blk, next - i, fbs))
+      S_block (Some blk, next - i, fbs))
 
 let table_detector lines i =
   Option.map
@@ -675,11 +636,8 @@ let detectors =
     hr_detector;
   ]
 
-let rec first_some fns lines i =
-  match fns with
-  | [] -> S_para
-  | f :: rest -> (
-      match f lines i with Some step -> step | None -> first_some rest lines i)
+let first_some fns lines i =
+  List.find_map (fun f -> f lines i) fns |> Option.value ~default:S_para
 
 let classify_line lines i =
   let line = String.trim lines.(i) in

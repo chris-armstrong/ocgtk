@@ -1,27 +1,7 @@
 (* Doc_ast -> odoc markup renderer; see the .mli for the design. *)
 
 open Doc_ast
-
-(* --------------------------------------------------------------------- *)
-(* Character helpers                                                       *)
-(* --------------------------------------------------------------------- *)
-
-let contains_char s c =
-  let n = String.length s in
-  let rec go i = i < n && (String.get s i = c || go (i + 1)) in
-  go 0
-
-let contains_sub s sub =
-  let n = String.length s in
-  let m = String.length sub in
-  let starts_with pos =
-    pos + m <= n
-    &&
-    let rec go i = i >= m || (s.[pos + i] = sub.[i] && go (i + 1)) in
-    go 0
-  in
-  let rec find i = i + m <= n && (starts_with i || find (i + 1)) in
-  find 0
+open Doc_str
 
 (* odoc-special escaping in prose contexts: \{ \} \[ \@ (plan invariant 2).
    A stray ] is left bare: odoc treats it as literal text (at worst a
@@ -59,7 +39,7 @@ let rec render_inline ins buf fbs =
           escape_prose buf s;
           fbs'
       | Code s ->
-          if contains_char s ']' then (
+          if String.contains s ']' then (
             (* balance fallback (plan invariant 3): escaped plain prose *)
             escape_prose buf s;
             Inline_code_unbalanced s :: fbs')
