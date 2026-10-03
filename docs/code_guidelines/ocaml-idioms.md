@@ -7,9 +7,16 @@ Core OCaml idioms and formatting requirements for this project.
 `ocamlformat` is the project formatter. Run it after any edit to keep style consistent.
 `cd ocgtk && ocamlformat --inplace <file>` or just rely on `dune fmt`.
 
-## Structural Equality is Banned
+## Structural Equality is Banned (Except on `int`)
 
-See [core-idioms.md](./core-idioms.md) for the project-wide policy on polymorphic equality.
+Only `int` may use `=` / `<>`. Every other type uses its type-specific equality.
+See [core-idioms.md](./core-idioms.md) for the full policy.
+
+## Option Matches Use Combinators
+
+Do not match `None` to run a unit effect or supply a default. Use `Option.iter`,
+`Option.map`, `Option.value ~default:` or `Option.fold`, with callbacks passed via
+`@@`. See [core-idioms.md](./core-idioms.md#option-handling-never-match-none-for-unit-or-defaults).
 
 ## Nested Pattern Matching
 
