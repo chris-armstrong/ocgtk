@@ -2,6 +2,7 @@
 (* BorderNode: BorderNode *)
 
 type t = [ `border_node | `render_node ] Gobject.obj
+(** A render node for a border. *)
 
 external new_ :
   Rounded_rect.t -> float array -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t array -> t

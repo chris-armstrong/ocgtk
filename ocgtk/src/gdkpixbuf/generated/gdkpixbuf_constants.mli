@@ -2,15 +2,15 @@
 (* GdkPixbuf Constants *)
 
 val pixbuf_major : int
-(** Major version of gdk-pixbuf library, that is the "0" in "0.8.2" for example.
+(** Major version of gdk-pixbuf library, that is the “0” in “0.8.2” for example.
 *)
 
 val pixbuf_micro : int
-(** Micro version of gdk-pixbuf library, that is the "2" in "0.8.2" for example.
+(** Micro version of gdk-pixbuf library, that is the “2” in “0.8.2” for example.
 *)
 
 val pixbuf_minor : int
-(** Minor version of gdk-pixbuf library, that is the "8" in "0.8.2" for example.
+(** Minor version of gdk-pixbuf library, that is the “8” in “0.8.2” for example.
 *)
 
 val pixbuf_version : string

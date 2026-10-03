@@ -2,6 +2,30 @@
 (* IconView: IconView *)
 
 type t = [ `icon_view | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** [GtkIconView] is a widget which displays data in a grid of icons.
+
+    An example GtkIconView
+
+    [GtkIconView] provides an alternative view on a [GtkTreeModel]. It displays
+    the model as a grid of icons with labels. Like [Gtk.TreeView], it allows to
+    select one or multiple items (depending on the selection mode, see
+    [Gtk.IconView.set_selection_mode]). In addition to selection with the arrow
+    keys, [GtkIconView] supports rubberband selection, which is controlled by
+    dragging the pointer.
+
+    Note that if the tree model is backed by an actual tree store (as opposed to
+    a flat list where the mapping to icons is obvious), [GtkIconView] will only
+    display the first level of the tree and ignore the tree’s branches.
+
+    {b CSS nodes}
+
+    {[
+    iconview.view
+    ╰── [rubberband]
+    ]}
+
+    [GtkIconView] has a single CSS node with name iconview and style class
+    .view. For rubberband selection, a subnode with name rubberband is used. *)
 
 external new_ : unit -> t = "ml_gtk_icon_view_new"
 (** Create a new IconView *)

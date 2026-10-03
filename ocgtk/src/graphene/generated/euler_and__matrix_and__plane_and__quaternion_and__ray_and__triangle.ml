@@ -530,7 +530,7 @@ and Matrix : sig
     Vec3_and__vec4.Vec3.t ->
     Vec3_and__vec4.Vec3.t ->
     t = "ml_graphene_matrix_init_look_at"
-  (** Initializes a #graphene_matrix_t so that it positions the "camera" at the
+  (** Initializes a #graphene_matrix_t so that it positions the “camera” at the
       given [eye] coordinates towards an object at the [center] coordinates. The
       top of the camera is aligned to the direction of the [up] vector.
 
@@ -662,7 +662,7 @@ and Matrix : sig
 
       The algorithm for decomposing a matrix is taken from the CSS3 Transforms
       specification; specifically, the decomposition code is based on the
-      equivalent code published in "Graphics Gems II", edited by Jim Arvo, and
+      equivalent code published in “Graphics Gems II”, edited by Jim Arvo, and
       available online. *)
 end = struct
   type t = [ `matrix ] Gobject.obj
@@ -939,7 +939,7 @@ end = struct
     Vec3_and__vec4.Vec3.t ->
     Vec3_and__vec4.Vec3.t ->
     t = "ml_graphene_matrix_init_look_at"
-  (** Initializes a #graphene_matrix_t so that it positions the "camera" at the
+  (** Initializes a #graphene_matrix_t so that it positions the “camera” at the
       given [eye] coordinates towards an object at the [center] coordinates. The
       top of the camera is aligned to the direction of the [up] vector.
 
@@ -1071,7 +1071,7 @@ end = struct
 
       The algorithm for decomposing a matrix is taken from the CSS3 Transforms
       specification; specifically, the decomposition code is based on the
-      equivalent code published in "Graphics Gems II", edited by Jim Arvo, and
+      equivalent code published in “Graphics Gems II”, edited by Jim Arvo, and
       available online. *)
 end
 

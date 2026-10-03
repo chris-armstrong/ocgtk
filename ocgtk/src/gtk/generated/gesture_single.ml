@@ -3,6 +3,18 @@
 
 type t =
   [ `gesture_single | `gesture | `event_controller | `object_ ] Gobject.obj
+(** A [GtkGesture] subclass optimized for singe-touch and mouse gestures.
+
+    Under interaction, these gestures stick to the first interacting sequence,
+    which is accessible through [Gtk.GestureSingle.get_current_sequence] while
+    the gesture is being interacted with.
+
+    By default gestures react to both [GDK_BUTTON_PRIMARY] and touch events.
+    [Gtk.GestureSingle.set_touch_only] can be used to change the touch behavior.
+    Callers may also specify a different mouse button number to interact with
+    through [Gtk.GestureSingle.set_button], or react to any mouse button by
+    setting it to 0. While the gesture is active, the button being currently
+    pressed can be known through [Gtk.GestureSingle.get_current_button]. *)
 
 (* Methods *)
 
@@ -18,7 +30,7 @@ external set_exclusive : t -> bool -> unit
   = "ml_gtk_gesture_single_set_exclusive"
 (** Sets whether [gesture] is exclusive.
 
-    An exclusive gesture will only handle pointer and "pointer emulated" touch
+    An exclusive gesture will only handle pointer and “pointer emulated” touch
     events, so at any given time, there is only one sequence able to interact
     with those. *)
 

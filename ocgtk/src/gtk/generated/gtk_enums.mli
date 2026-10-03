@@ -777,7 +777,7 @@ type filechoosererror = [
   | `ALREADY_EXISTS (** Indicates a duplicate path (e.g. when
 adding a bookmark). *)
   | `INCOMPLETE_HOSTNAME (** Indicates an incomplete hostname
-(e.g. "http://foo" without a slash after that). *)
+(e.g. “http://foo” without a slash after that). *)
 ]
 
 val filechoosererror_of_int : int -> filechoosererror

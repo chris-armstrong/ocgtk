@@ -4,6 +4,10 @@
 type t =
   [ `cell_renderer_progress | `cell_renderer | `initially_unowned | `object_ ]
   Gobject.obj
+(** Renders numbers as progress bars
+
+    [GtkCellRendererProgress] renders a numeric value as a progress par in a
+    cell. Additionally, it can display a text on top of the progress bar. *)
 
 external new_ : unit -> t = "ml_gtk_cell_renderer_progress_new"
 (** Create a new CellRendererProgress *)

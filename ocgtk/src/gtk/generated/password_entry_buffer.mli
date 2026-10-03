@@ -2,6 +2,10 @@
 (* PasswordEntryBuffer: PasswordEntryBuffer *)
 
 type t = [ `password_entry_buffer | `entry_buffer | `object_ ] Gobject.obj
+(** A [GtkEntryBuffer] that locks the underlying memory to prevent it from being
+    swapped to disk.
+
+    [GtkPasswordEntry] uses a [GtkPasswordEntryBuffer]. *)
 
 external new_ : unit -> t = "ml_gtk_password_entry_buffer_new"
 (** Create a new PasswordEntryBuffer *)

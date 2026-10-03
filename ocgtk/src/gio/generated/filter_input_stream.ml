@@ -2,6 +2,10 @@
 (* FilterInputStream: FilterInputStream *)
 
 type t = [ `filter_input_stream | `input_stream | `object_ ] Gobject.obj
+(** Base class for input stream implementations that perform some kind of
+    filtering operation on a base stream. Typical examples of filtering
+    operations are character set conversion, compression and byte order
+    flipping. *)
 
 (* Methods *)
 

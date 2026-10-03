@@ -2,6 +2,30 @@
 (* Texture: Texture *)
 
 type t = [ `texture | `object_ ] Gobject.obj
+(** Refers to pixel data in various forms.
+
+    It is primarily meant for pixel data that will not change over multiple
+    frames, and will be used for a long time.
+
+    There are various ways to create [GdkTexture] objects from a
+    [GdkPixbuf.Pixbuf], or from bytes stored in memory, a file, or a
+    [Gio.Resource].
+
+    The ownership of the pixel data is transferred to the [GdkTexture] instance;
+    you can only make a copy of it, via [Gdk.Texture.download].
+
+    [GdkTexture] is an immutable object: That means you cannot change anything
+    about it other than increasing the reference count via [GObject.Object.ref],
+    and consequently, it is a threadsafe object.
+
+    GDK provides a number of threadsafe texture loading functions:
+    [Gdk.Texture.new_from_resource], [Gdk.Texture.new_from_bytes],
+    [Gdk.Texture.new_from_file], [Gdk.Texture.new_from_filename],
+    [Gdk.Texture.new_for_pixbuf]. Note that these are meant for loading icons
+    and resources that are shipped with the toolkit or application. It is
+    recommended that you use a dedicated image loading framework such as
+    {{:https://lib.rs/crates/glycin}glycin}, if you need to load untrusted image
+    data. *)
 
 external new_for_pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t -> t
   = "ml_gdk_texture_new_for_pixbuf"

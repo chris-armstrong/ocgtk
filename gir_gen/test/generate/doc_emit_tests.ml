@@ -145,6 +145,22 @@ let test_terminator_in_code_block () =
   | Some s -> assert_single_terminator "code block terminator neutralised" s
   | None -> Alcotest.fail "expected a comment"
 
+(* ---------- quotes ---------------------------------------------------- *)
+
+(* OCaml lexes string literals inside comments, so any ASCII double quote in
+   emitted prose could open a string. Every quote becomes typographic. *)
+let test_quotes_typographic () =
+  check_opt "quotes replaced, not left as ASCII"
+    (Some "(** Says \u{201C}hi\u{201D} here. *)")
+    (member (Some "Says \"hi\" here."))
+
+let test_no_ascii_quote_survives () =
+  (* An even count of quotes can still leave a string open for the lexer
+     (backslash-quoted words in GIR examples), so no ASCII quote may survive. *)
+  match member (Some "Example \\\"\"$(dir)/x\"\\ end.") with
+  | Some s -> Alcotest.(check int) "no ASCII quote left" 0 (count_sub s "\"")
+  | None -> Alcotest.fail "expected a comment"
+
 (* ---------- suite ----------------------------------------------------- *)
 
 let tests =
@@ -165,4 +181,6 @@ let tests =
     ("terminator in code span", `Quick, test_terminator_in_code_span);
     ("terminator in fallback", `Quick, test_terminator_in_fallback);
     ("terminator in code block", `Quick, test_terminator_in_code_block);
+    ("quotes typographic", `Quick, test_quotes_typographic);
+    ("no ASCII quote survives", `Quick, test_no_ascii_quote_survives);
   ]

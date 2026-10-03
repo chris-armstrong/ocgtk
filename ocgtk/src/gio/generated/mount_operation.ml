@@ -2,6 +2,28 @@
 (* MountOperation: MountOperation *)
 
 type t = [ `mount_operation | `object_ ] Gobject.obj
+(** [GMountOperation] provides a mechanism for interacting with the user. It can
+    be used for authenticating mountable operations, such as loop mounting
+    files, hard drive partitions or server locations. It can also be used to ask
+    the user questions or show a list of applications preventing unmount or
+    eject operations from completing.
+
+    Note that [GMountOperation] is used for more than just [Gio.Mount] objects –
+    for example it is also used in [Gio.Drive.start] and [Gio.Drive.stop].
+
+    Users should instantiate a subclass of this that implements all the various
+    callbacks to show the required dialogs, such as
+    {{:https://docs.gtk.org/gtk4/class.MountOperation.html}[GtkMountOperation]}.
+    If no user interaction is desired (for example when automounting filesystems
+    at login time), usually [NULL] can be passed, see each method taking a
+    [GMountOperation] for details.
+
+    Throughout the API, the term ‘TCRYPT’ is used to mean ‘compatible with
+    TrueCrypt and VeraCrypt’.
+    {{:https://en.wikipedia.org/wiki/TrueCrypt}TrueCrypt} is a discontinued
+    system for encrypting file containers, partitions or whole disks, typically
+    used with Windows. {{:https://www.veracrypt.fr/}VeraCrypt} is a maintained
+    fork of TrueCrypt with various improvements and auditing fixes. *)
 
 external new_ : unit -> t = "ml_g_mount_operation_new"
 (** Create a new MountOperation *)

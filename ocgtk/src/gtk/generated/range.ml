@@ -2,6 +2,20 @@
 (* Range: Range *)
 
 type t = [ `range | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** Base class for widgets which visualize an adjustment.
+
+    Widgets that are derived from [GtkRange] include [Gtk.Scale] and
+    [Gtk.Scrollbar].
+
+    Apart from signals for monitoring the parameters of the adjustment,
+    [GtkRange] provides properties and methods for setting a “fill level” on
+    range widgets. See [Gtk.Range.set_fill_level].
+
+    {b Shortcuts and Gestures}
+
+    The [GtkRange] slider is draggable. Holding the <kbd>Shift</kbd> key while
+    dragging, or initiating the drag with a long-press will enable the
+    fine-tuning mode. *)
 
 (* Methods *)
 

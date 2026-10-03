@@ -18,7 +18,7 @@ val vec2_len : int
       graphene_vec2_to_float (&vec, v);
 
       for (int i = 0; i < GRAPHENE_VEC2_LEN; i++)
-        fprintf (stdout, "component %d: %g\n", i, v[i]);
+        fprintf (stdout, “component %d: %g\n”, i, v[i]);
     ]}
     @since 1.0 *)
 
@@ -36,7 +36,7 @@ val vec3_len : int
       graphene_vec3_to_float (&vec, v);
 
       for (int i = 0; i < GRAPHENE_VEC2_LEN; i++)
-        fprintf (stdout, "component %d: %g\n", i, v[i]);
+        fprintf (stdout, “component %d: %g\n”, i, v[i]);
     ]}
     @since 1.0 *)
 
@@ -54,6 +54,6 @@ val vec4_len : int
       graphene_vec4_to_float (&vec, v);
 
       for (int i = 0; i < GRAPHENE_VEC4_LEN; i++)
-        fprintf (stdout, "component %d: %g\n", i, v[i]);
+        fprintf (stdout, “component %d: %g\n”, i, v[i]);
     ]}
     @since 1.0 *)

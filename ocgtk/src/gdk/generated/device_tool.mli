@@ -2,6 +2,7 @@
 (* DeviceTool: DeviceTool *)
 
 type t = [ `device_tool | `object_ ] Gobject.obj
+(** A physical tool associated to a [GdkDevice]. *)
 
 (* Methods *)
 

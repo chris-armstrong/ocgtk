@@ -4,6 +4,58 @@
 type t =
   [ `about_dialog | `window | `widget | `initially_unowned | `object_ ]
   Gobject.obj
+(** Displays information about a program.
+
+    The shown information includes the programs' logo, name, copyright, website
+    and license. It is also possible to give credits to the authors,
+    documenters, translators and artists who have worked on the program.
+
+    An about dialog is typically opened when the user selects the [About] option
+    from the [Help] menu. All parts of the dialog are optional.
+
+    An example GtkAboutDialog
+
+    About dialogs often contain links and email addresses. [GtkAboutDialog]
+    displays these as clickable links. By default, it calls
+    [Gtk.FileLauncher.launch] when a user clicks one. The behaviour can be
+    overridden with the [Gtk.AboutDialog::activate-link] signal.
+
+    To specify a person with an email address, use a string like
+    [Edgar Allan Poe <edgar@poe.com>]. To specify a website with a title, use a
+    string like [GTK team https://www.gtk.org].
+
+    To make constructing an about dialog as convenient as possible, you can use
+    the function [Gtk.show_about_dialog] which constructs and shows a dialog and
+    keeps it around so that it can be shown again.
+
+    Note that GTK sets a default title of [_(“About %s”)] on the dialog window
+    (where [%s] is replaced by the name of the application, but in order to
+    ensure proper translation of the title, applications should set the title
+    property explicitly when constructing an about dialog, as shown in the
+    following example:
+
+    {[
+    GFile *logo_file = g_file_new_for_path (“./logo.png”);
+    GdkTexture *example_logo = gdk_texture_new_from_file (logo_file, NULL);
+    g_object_unref (logo_file);
+
+    gtk_show_about_dialog (NULL,
+                           “program-name”, “ExampleCode”,
+                           “logo”, example_logo,
+                           “title”, _(“About ExampleCode”),
+                           NULL);
+    ]}
+
+    {b Shortcuts and Gestures}
+
+    [GtkAboutDialog] supports the following keyboard shortcuts:
+
+    - <kbd>Escape</kbd> closes the window.
+
+    {b CSS nodes}
+
+    [GtkAboutDialog] has a single CSS node with the name [window] and style
+    class [.aboutdialog]. *)
 
 external new_ : unit -> t = "ml_gtk_about_dialog_new"
 (** Create a new AboutDialog *)
@@ -36,9 +88,9 @@ external set_translator_credits : t -> string option -> unit
     simple way to achieve that is to mark the string for translation:
 
     {[
-    GtkWidget * about = gtk_about_dialog_new ();
-    gtk_about_dialog_set_translator_credits
-      (GTK_ABOUT_DIALOG about, _ "translator-credits")
+    GtkWidget *about = gtk_about_dialog_new ();
+     gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
+                                              _(“translator-credits”));
     ]}
 
     It is a good idea to use the customary [msgid] “translator-credits” for this
@@ -77,7 +129,7 @@ external set_license : t -> string option -> unit
 
 external set_documenters : t -> string array -> unit
   = "ml_gtk_about_dialog_set_documenters"
-(** Sets the names of the documenters which are displayed in the "Credits" page.
+(** Sets the names of the documenters which are displayed in the “Credits” page.
 *)
 
 external set_copyright : t -> string option -> unit
@@ -94,12 +146,12 @@ external set_comments : t -> string option -> unit
 
 external set_authors : t -> string array -> unit
   = "ml_gtk_about_dialog_set_authors"
-(** Sets the names of the authors which are displayed in the "Credits" page of
+(** Sets the names of the authors which are displayed in the “Credits” page of
     the about dialog. *)
 
 external set_artists : t -> string array -> unit
   = "ml_gtk_about_dialog_set_artists"
-(** Sets the names of the artists to be displayed in the "Credits" page. *)
+(** Sets the names of the artists to be displayed in the “Credits” page. *)
 
 external get_wrap_license : t -> bool = "ml_gtk_about_dialog_get_wrap_license"
 (** Returns whether the license text in the about dialog is automatically
@@ -159,7 +211,7 @@ external get_artists : t -> string array = "ml_gtk_about_dialog_get_artists"
 
 external add_credit_section : t -> string -> string array -> unit
   = "ml_gtk_about_dialog_add_credit_section"
-(** Creates a new section in the "Credits" page. *)
+(** Creates a new section in the “Credits” page. *)
 
 (* Properties *)
 

@@ -98,8 +98,8 @@ module rec Context : sig
       a new context is created and is increased whenever the context is changed
       using any of the setter functions, or the [PangoFontMap] it uses to find
       fonts has changed. The serial may wrap, but will never have the value 0.
-      Since it can wrap, never compare it with "less than", always use "not
-      equals".
+      Since it can wrap, never compare it with “less than”, always use “not
+      equals”.
 
       This can be used to automatically detect changes to a [PangoContext], and
       is only useful when implementing objects that need update when their
@@ -303,7 +303,7 @@ and Font_map : sig
       The serial number is initialized to an small number larger than zero when
       a new fontmap is created and is increased whenever the fontmap is changed.
       It may wrap, but will never have the value 0. Since it can wrap, never
-      compare it with "less than", always use "not equals".
+      compare it with “less than”, always use “not equals”.
 
       The fontmap can only be changed using backend-specific API, like changing
       fontmap resolution.

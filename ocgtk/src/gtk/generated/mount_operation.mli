@@ -2,6 +2,17 @@
 (* MountOperation: MountOperation *)
 
 type t = [ `mount_operation | `object_ ] Gobject.obj
+(** Asks the user for passwords and other information required to mount a
+    volume.
+
+    [GtkMountOperation] is needed when mounting volumes: It is an implementation
+    of [GMountOperation] that can be used with GIO functions for mounting
+    volumes such as [Gio.File.mount_enclosing_volume],
+    [Gio.File.mount_mountable], [Gio.Volume.mount],
+    [Gio.Mount.unmount_with_operation] and others.
+
+    When necessary, [GtkMountOperation] shows dialogs to let the user enter
+    passwords, ask questions or show processes blocking unmount. *)
 
 external new_ : Application_and__window_and__window_group.Window.t option -> t
   = "ml_gtk_mount_operation_new"

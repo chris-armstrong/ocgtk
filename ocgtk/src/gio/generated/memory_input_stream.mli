@@ -2,6 +2,11 @@
 (* MemoryInputStream: MemoryInputStream *)
 
 type t = [ `memory_input_stream | `input_stream | `object_ ] Gobject.obj
+(** [GMemoryInputStream] is a class for using arbitrary memory chunks as input
+    for GIO streaming input operations.
+
+    As of GLib 2.34, [GMemoryInputStream] implements [Gio.PollableInputStream].
+*)
 
 external new_ : unit -> t = "ml_g_memory_input_stream_new"
 (** Create a new MemoryInputStream *)

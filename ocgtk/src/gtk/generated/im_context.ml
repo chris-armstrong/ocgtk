@@ -2,6 +2,35 @@
 (* IMContext: IMContext *)
 
 type t = [ `im_context | `object_ ] Gobject.obj
+(** The interface for GTK input methods.
+
+    [GtkIMContext] is used by GTK text input widgets like [GtkText] to map from
+    key events to Unicode character strings.
+
+    An input method may consume multiple key events in sequence before finally
+    outputting the composed result. This is called {i preediting}, and an input
+    method may provide feedback about this process by displaying the
+    intermediate composition states as preedit text. To do so, the
+    [GtkIMContext] will emit [Gtk.IMContext::preedit-start],
+    [Gtk.IMContext::preedit-changed] and [Gtk.IMContext::preedit-end] signals.
+
+    For instance, the built-in GTK input method [Gtk.IMContextSimple] implements
+    the input of arbitrary Unicode code points by holding down the
+    <kbd>Control</kbd> and <kbd>Shift</kbd> keys and then typing <kbd>u</kbd>
+    followed by the hexadecimal digits of the code point. When releasing the
+    <kbd>Control</kbd> and <kbd>Shift</kbd> keys, preediting ends and the
+    character is inserted as text. For example,
+
+    Ctrl+Shift+u 2 0 A C
+
+    results in the € sign.
+
+    Additional input methods can be made available for use by GTK widgets as
+    loadable modules. An input method module is a small shared library which
+    provides a [GIOExtension] for the extension point named “gtk-im-module”.
+
+    To connect a widget to the users preferred input method, you should use
+    [Gtk.IMMulticontext]. *)
 
 (* Methods *)
 

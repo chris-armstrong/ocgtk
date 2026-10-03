@@ -66,13 +66,13 @@ type t = [ `resource ] Gobject.obj
     An example resource description:
 
     {[
-    <?xml version="1.0" encoding="UTF-8"?>
+    <?xml version=”1.0” encoding=”UTF-8”?>
     <gresources>
-      <gresource prefix="/org/gtk/Example">
+      <gresource prefix=”/org/gtk/Example”>
         <file>data/splashscreen.png</file>
-        <file compressed="true">dialog.ui</file>
-        <file preprocess="xml-stripblanks">menumarkup.xml</file>
-        <file alias="example.css">data/example.css</file>
+        <file compressed=”true”>dialog.ui</file>
+        <file preprocess=”xml-stripblanks”>menumarkup.xml</file>
+        <file alias=”example.css”>data/example.css</file>
       </gresource>
     </gresources>
     ]}

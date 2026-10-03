@@ -2,6 +2,10 @@
 (* NamedAction: NamedAction *)
 
 type t = [ `named_action | `shortcut_action | `object_ ] Gobject.obj
+(** Activates a named action.
+
+    See [Gtk.WidgetClass.install_action] and [Gtk.Widget.insert_action_group]
+    for ways to associate named actions with widgets. *)
 
 external new_ : string -> t = "ml_gtk_named_action_new"
 (** Create a new NamedAction *)

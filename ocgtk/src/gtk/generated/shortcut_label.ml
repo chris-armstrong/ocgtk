@@ -3,6 +3,10 @@
 
 type t =
   [ `shortcut_label | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** [GtkShortcutLabel] displays a single keyboard shortcut or gesture.
+
+    The main use case for [GtkShortcutLabel] is inside a [Gtk.ShortcutsWindow].
+*)
 
 external new_ : string -> t = "ml_gtk_shortcut_label_new"
 (** Create a new ShortcutLabel *)

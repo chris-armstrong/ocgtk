@@ -583,7 +583,7 @@ module rec Socket : sig
       something to you after you close the socket but before it has finished
       reading all of the data you sent. There is no easy generic way to avoid
       this problem; the easiest fix is to design the network protocol such that
-      the client will never send data "out of turn". Another solution is for the
+      the client will never send data “out of turn”. Another solution is for the
       server to half-close the connection by calling g_socket_shutdown() with
       only the [shutdown_write] flag set, and then wait for the client to notice
       this and close its side of the connection, after which the server can
@@ -1226,7 +1226,7 @@ end = struct
       something to you after you close the socket but before it has finished
       reading all of the data you sent. There is no easy generic way to avoid
       this problem; the easiest fix is to design the network protocol such that
-      the client will never send data "out of turn". Another solution is for the
+      the client will never send data “out of turn”. Another solution is for the
       server to half-close the connection by calling g_socket_shutdown() with
       only the [shutdown_write] flag set, and then wait for the client to notice
       this and close its side of the connection, after which the server can
@@ -1316,7 +1316,7 @@ and Socket_connection : sig
       g_socket_client_connect_async(), during emission of
       [G_SOCKET_CLIENT_CONNECTING], this function will return the remote address
       that will be used for the connection. This allows applications to print
-      e.g. "Connecting to example.com (10.42.77.3)...". *)
+      e.g. “Connecting to example.com (10.42.77.3)...”. *)
 
   external get_local_address :
     t ->
@@ -1368,7 +1368,7 @@ end = struct
       g_socket_client_connect_async(), during emission of
       [G_SOCKET_CLIENT_CONNECTING], this function will return the remote address
       that will be used for the connection. This allows applications to print
-      e.g. "Connecting to example.com (10.42.77.3)...". *)
+      e.g. “Connecting to example.com (10.42.77.3)...”. *)
 
   external get_local_address :
     t ->

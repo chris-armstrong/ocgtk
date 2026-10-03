@@ -2,6 +2,7 @@
 (* FocusEvent: FocusEvent *)
 
 type t = [ `focus_event | `event ] Gobject.obj
+(** An event related to a keyboard focus change. *)
 
 (* Methods *)
 

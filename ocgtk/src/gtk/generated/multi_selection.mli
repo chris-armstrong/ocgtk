@@ -2,6 +2,7 @@
 (* MultiSelection: MultiSelection *)
 
 type t = [ `multi_selection | `object_ ] Gobject.obj
+(** A selection model that allows selecting multiple elements. *)
 
 external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> t
   = "ml_gtk_multi_selection_new"

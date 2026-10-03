@@ -2,6 +2,20 @@
 (* Drop: Drop *)
 
 type t = [ `drop | `object_ ] Gobject.obj
+(** Represents the target of an ongoing DND operation.
+
+    Possible drop sites get informed about the status of the ongoing drag
+    operation with events of type [GDK_DRAG_ENTER], [GDK_DRAG_LEAVE],
+    [GDK_DRAG_MOTION] and [GDK_DROP_START]. The [GdkDrop] object can be obtained
+    from these [Gdk.Event] types using [Gdk.DNDEvent.get_drop].
+
+    The actual data transfer is initiated from the target side via an async
+    read, using one of the [GdkDrop] methods for this purpose:
+    [Gdk.Drop.read_async] or [Gdk.Drop.read_value_async].
+
+    GTK provides a higher level abstraction based on top of these functions, and
+    so they are not normally needed in GTK applications. See the “Drag and Drop”
+    section of the GTK documentation for more information. *)
 
 (* Methods *)
 

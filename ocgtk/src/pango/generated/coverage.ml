@@ -2,6 +2,13 @@
 (* Coverage: Coverage *)
 
 type t = [ `coverage | `object_ ] Gobject.obj
+(** A [PangoCoverage] structure is a map from Unicode characters to
+    [Pango.CoverageLevel] values.
+
+    It is often necessary in Pango to determine if a particular font can
+    represent a particular character, and also how well it can represent that
+    character. The [PangoCoverage] is a data structure that is used to represent
+    that information. It is an opaque structure with no public fields. *)
 
 external new_ : unit -> t = "ml_pango_coverage_new"
 (** Create a new Coverage *)

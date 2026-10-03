@@ -2,6 +2,52 @@
 (* Picture: Picture *)
 
 type t = [ `picture | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** Displays a [GdkPaintable].
+
+    An example GtkPicture
+
+    Many convenience functions are provided to make pictures simple to use. For
+    example, if you want to load an image from a file, and then display it,
+    there’s a convenience function to do this:
+
+    {[
+    GtkWidget *widget = gtk_picture_new_for_filename (“myfile.png”);
+    ]}
+
+    If the file isn’t loaded successfully, the picture will contain a “broken
+    image” icon similar to that used in many web browsers. If you want to handle
+    errors in loading the file yourself, for example by displaying an error
+    message, then load the image with and image loading framework such as
+    libglycin, then create the [GtkPicture] with
+    [Gtk.Picture.new_for_paintable].
+
+    Sometimes an application will want to avoid depending on external data
+    files, such as image files. See the documentation of [GResource] for
+    details. In this case, [Gtk.Picture.new_for_resource] and
+    [Gtk.Picture.set_resource] should be used.
+
+    [GtkPicture] displays an image at its natural size. See [Gtk.Image] if you
+    want to display a fixed-size image, such as an icon.
+
+    {b Sizing the paintable}
+
+    You can influence how the paintable is displayed inside the [GtkPicture] by
+    changing [Gtk.Picture:content-fit]. See [Gtk.ContentFit] for details.
+    [Gtk.Picture:can-shrink] can be unset to make sure that paintables are never
+    made smaller than their ideal size - but be careful if you do not know the
+    size of the paintable in use (like when displaying user-loaded images). This
+    can easily cause the picture to grow larger than the screen. And
+    [Gtk.Widget:halign] and [Gtk.Widget:valign] can be used to make sure the
+    paintable doesn't fill all available space but is instead displayed at its
+    original size.
+
+    {b CSS nodes}
+
+    [GtkPicture] has a single CSS node with the name [picture].
+
+    {b Accessibility}
+
+    [GtkPicture] uses the [Gtk.AccessibleRole.img] role. *)
 
 external new_ : unit -> t = "ml_gtk_picture_new"
 (** Create a new Picture *)
@@ -105,7 +151,7 @@ external set_alternative_text : t -> string option -> unit
   = "ml_gtk_picture_set_alternative_text"
 (** Sets an alternative textual description for the picture contents.
 
-    It is equivalent to the "alt" attribute for images on websites.
+    It is equivalent to the “alt” attribute for images on websites.
 
     This text will be made available to accessibility tools.
 

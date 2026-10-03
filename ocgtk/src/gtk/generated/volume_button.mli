@@ -4,6 +4,10 @@
 type t =
   [ `volume_button | `scale_button | `widget | `initially_unowned | `object_ ]
   Gobject.obj
+(** [GtkVolumeButton] is a [GtkScaleButton] subclass tailored for volume
+    control.
+
+    An example GtkVolumeButton *)
 
 external new_ : unit -> t = "ml_gtk_volume_button_new"
 (** Create a new VolumeButton *)

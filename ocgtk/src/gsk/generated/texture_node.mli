@@ -2,6 +2,7 @@
 (* TextureNode: TextureNode *)
 
 type t = [ `texture_node | `render_node ] Gobject.obj
+(** A render node for a [GdkTexture]. *)
 
 external new_ :
   Ocgtk_gdk.Gdk.Wrappers.Texture.t ->

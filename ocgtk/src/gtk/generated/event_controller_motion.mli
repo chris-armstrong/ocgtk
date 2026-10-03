@@ -2,6 +2,13 @@
 (* EventControllerMotion: EventControllerMotion *)
 
 type t = [ `event_controller_motion | `event_controller | `object_ ] Gobject.obj
+(** Tracks the pointer position.
+
+    The event controller offers [Gtk.EventControllerMotion::enter] and
+    [Gtk.EventControllerMotion::leave] signals, as well as
+    [Gtk.EventControllerMotion:is-pointer] and
+    [Gtk.EventControllerMotion:contains-pointer] properties which are updated to
+    reflect changes in the pointer position as it moves over the widget. *)
 
 external new_ : unit -> t = "ml_gtk_event_controller_motion_new"
 (** Create a new EventControllerMotion *)

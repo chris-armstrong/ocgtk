@@ -3,6 +3,23 @@
 
 type t =
   [ `color_dialog_button | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** Opens a color chooser dialog to select a color.
+
+    An example GtkColorDialogButton
+
+    It is suitable widget for selecting a color in a preference dialog.
+
+    {b CSS nodes}
+
+    {[
+    colorbutton
+    ╰── button.color
+        ╰── [content]
+    ]}
+
+    [GtkColorDialogButton] has a single CSS node with name colorbutton which
+    contains a button node. To differentiate it from a plain [GtkButton], it
+    gets the .color style class. *)
 
 external new_ : Color_dialog.t option -> t = "ml_gtk_color_dialog_button_new"
 (** Create a new ColorDialogButton *)
@@ -23,7 +40,7 @@ external get_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
 (** Returns the color of the button.
 
     This function is what should be used to obtain the color that was chosen by
-    the user. To get informed about changes, listen to "notify::rgba". *)
+    the user. To get informed about changes, listen to “notify::rgba”. *)
 
 external get_dialog : t -> Color_dialog.t option
   = "ml_gtk_color_dialog_button_get_dialog"

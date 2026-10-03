@@ -2,6 +2,9 @@
 (* FilenameCompleter: FilenameCompleter *)
 
 type t = [ `filename_completer | `object_ ] Gobject.obj
+(** Completes partial file and directory names given a partial string by looking
+    in the file system for clues. Can return a list of possible completion
+    strings for widget implementations. *)
 
 external new_ : unit -> t = "ml_g_filename_completer_new"
 (** Create a new FilenameCompleter *)

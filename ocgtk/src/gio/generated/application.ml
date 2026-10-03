@@ -2,6 +2,123 @@
 (* Application: Application *)
 
 type t = [ `application | `object_ ] Gobject.obj
+(** [GApplication] is the core class for application support.
+
+    A [GApplication] is the foundation of an application. It wraps some
+    low-level platform-specific services and is intended to act as the
+    foundation for higher-level application classes such as [GtkApplication] or
+    [MxApplication]. In general, you should not use this class outside of a
+    higher level framework.
+
+    [GApplication] provides convenient life-cycle management by maintaining a
+    “use count” for the primary application instance. The use count can be
+    changed using [Gio.Application.hold] and [Gio.Application.release]. If it
+    drops to zero, the application exits. Higher-level classes such as
+    [GtkApplication] employ the use count to ensure that the application stays
+    alive as long as it has any opened windows.
+
+    Another feature that [GApplication] (optionally) provides is process
+    uniqueness. Applications can make use of this functionality by providing a
+    unique application ID. If given, only one application with this ID can be
+    running at a time per session. The session concept is platform-dependent,
+    but corresponds roughly to a graphical desktop login. When your application
+    is launched again, its arguments are passed through platform communication
+    to the already running program. The already running instance of the program
+    is called the “primary instance”; for non-unique applications this is always
+    the current instance. On Linux, the D-Bus session bus is used for
+    communication.
+
+    The use of [GApplication] differs from some other commonly-used uniqueness
+    libraries (such as libunique) in important ways. The application is not
+    expected to manually register itself and check if it is the primary
+    instance. Instead, the main() function of a [GApplication] should do very
+    little more than instantiating the application instance, possibly connecting
+    signal handlers, then calling [Gio.Application.run]. All checks for
+    uniqueness are done internally. If the application is the primary instance
+    then the startup signal is emitted and the mainloop runs. If the application
+    is not the primary instance then a signal is sent to the primary instance
+    and [Gio.Application.run] promptly returns. See the code examples below.
+
+    If used, the expected form of an application identifier is the same as that
+    of a
+    {{:https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-bus}D-Bus
+     well-known bus name}. Examples include: [com.example.MyApp],
+    [org.example.internal_apps.Calculator], [org._7_zip.Archiver]. For details
+    on valid application identifiers, see [Gio.Application.id_is_valid].
+
+    On Linux, the application identifier is claimed as a well-known bus name on
+    the user's session bus. This means that the uniqueness of your application
+    is scoped to the current session. It also means that your application may
+    provide additional services (through registration of other object paths) at
+    that bus name. The registration of these object paths should be done with
+    the shared GDBus session bus. Note that due to the internal architecture of
+    GDBus, method calls can be dispatched at any time (even if a main loop is
+    not running). For this reason, you must ensure that any object paths that
+    you wish to register are registered before [GApplication] attempts to
+    acquire the bus name of your application (which happens in
+    [Gio.Application.register]). Unfortunately, this means that you cannot use
+    [Gio.Application:is-remote] to decide if you want to register object paths.
+
+    [GApplication] also implements the [Gio.ActionGroup] and [Gio.ActionMap]
+    interfaces and lets you easily export actions by adding them with
+    [Gio.ActionMap.add_action]. When invoking an action by calling
+    [Gio.ActionGroup.activate_action] on the application, it is always invoked
+    in the primary instance. The actions are also exported on the session bus,
+    and GIO provides the [Gio.DBusActionGroup] wrapper to conveniently access
+    them remotely. GIO provides a [Gio.DBusMenuModel] wrapper for remote access
+    to exported [Gio.MenuModel]s.
+
+    Note: Due to the fact that actions are exported on the session bus, using
+    [maybe] parameters is not supported, since D-Bus does not support [maybe]
+    types.
+
+    There is a number of different entry points into a [GApplication]:
+
+    - via 'Activate' (i.e. just starting the application)
+
+    - via 'Open' (i.e. opening some files)
+
+    - by handling a command-line
+
+    - via activating an action
+
+    The [Gio.Application::startup] signal lets you handle the application
+    initialization for all of these in a single place.
+
+    Regardless of which of these entry points is used to start the application,
+    [GApplication] passes some ‘platform data’ from the launching instance to
+    the primary instance, in the form of a [GLib.Variant] dictionary mapping
+    strings to variants. To use platform data, override the
+    [Gio.Application.before_emit] or [Gio.Application.after_emit] virtual
+    functions in your [GApplication] subclass. When dealing with
+    [Gio.ApplicationCommandLine] objects, the platform data is directly
+    available via [Gio.ApplicationCommandLine.get_cwd],
+    [Gio.ApplicationCommandLine.get_environ] and
+    [Gio.ApplicationCommandLine.get_platform_data].
+
+    As the name indicates, the platform data may vary depending on the operating
+    system, but it always includes the current directory (key [cwd]), and
+    optionally the environment (ie the set of environment variables and their
+    values) of the calling process (key [environ]). The environment is only
+    added to the platform data if the [G_APPLICATION_SEND_ENVIRONMENT] flag is
+    set. [GApplication] subclasses can add their own platform data by overriding
+    the [Gio.Application.add_platform_data] virtual function. For instance,
+    [GtkApplication] adds startup notification data in this way.
+
+    To parse commandline arguments you may handle the
+    [Gio.Application::command-line] signal or override the
+    [Gio.Application.local_command_line] virtual function, to parse them in
+    either the primary instance or the local instance, respectively.
+
+    For an example of opening files with a [GApplication], see
+    {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-open.c}gapplication-example-open.c}.
+
+    For an example of using actions with [GApplication], see
+    {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-actions.c}gapplication-example-actions.c}.
+
+    For an example of using extra D-Bus hooks with [GApplication], see
+    {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-dbushooks.c}gapplication-example-dbushooks.c}.
+*)
 
 external new_ : string option -> Gio_enums.applicationflags -> t
   = "ml_g_application_new"
@@ -60,11 +177,11 @@ external set_resource_base_path : t -> string option -> unit
     the [GApplication] object is constructed. Changes to the application ID
     after that point will not have an impact on the resource base path.
 
-    As an example, if the application has an ID of "org.example.app" then the
-    default resource base path will be "/org/example/app". If this is a
+    As an example, if the application has an ID of “org.example.app” then the
+    default resource base path will be “/org/example/app”. If this is a
     [GtkApplication] (and you have not manually changed the path) then Gtk will
     then search for the menus of the application at
-    "/org/example/app/gtk/menus.ui".
+    “/org/example/app/gtk/menus.ui”.
 
     See [GResource] for more information about adding resources to your
     application.
@@ -159,7 +276,7 @@ external send_notification : t -> string option -> Notification.t -> unit
 
     [id] may be any string that uniquely identifies the event for the
     application. It does not need to be in any special format. For example,
-    "new-message" might be appropriate for a notification about new messages.
+    “new-message” might be appropriate for a notification about new messages.
 
     If a previous notification was sent with the same [id], it will be replaced
     with [notification] and shown again as if it was a new notification. This
@@ -236,14 +353,14 @@ external run : t -> int -> string array option -> int = "ml_g_application_run"
     Since 2.40, applications that are not explicitly flagged as services or
     launchers (ie: neither [G_APPLICATION_IS_SERVICE] or
     [G_APPLICATION_IS_LAUNCHER] are given as flags) will check (from the default
-    handler for local_command_line) if "--gapplication-service" was given in the
+    handler for local_command_line) if “--gapplication-service” was given in the
     command line. If this flag is present then normal commandline processing is
     interrupted and the [G_APPLICATION_IS_SERVICE] flag is set. This provides a
-    "compromise" solution whereby running an application directly from the
+    “compromise” solution whereby running an application directly from the
     commandline will invoke it in the normal way (which can be useful for
     debugging) while still allowing applications to be D-Bus activated in
     service mode. The D-Bus service file should invoke the executable with
-    "--gapplication-service" as the sole commandline argument. This approach is
+    “--gapplication-service” as the sole commandline argument. This approach is
     suitable for use by most graphical applications but should not be used from
     applications like editors that need precise control over when processes
     invoked via the commandline will exit and what their exit status will be. *)
@@ -312,9 +429,9 @@ external open_ :
     [n_files] must be greater than zero.
 
     [hint] is simply passed through to the ::open signal. It is intended to be
-    used by applications that have multiple modes for opening files (eg: "view"
-    vs "edit", etc). Unless you have a need for this functionality, you should
-    use "".
+    used by applications that have multiple modes for opening files (eg: “view”
+    vs “edit”, etc). Unless you have a need for this functionality, you should
+    use “”.
 
     The application must be registered before calling this function and it must
     have the [G_APPLICATION_HANDLES_OPEN] flag set. *)

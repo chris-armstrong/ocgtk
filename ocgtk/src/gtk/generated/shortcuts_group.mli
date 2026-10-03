@@ -4,6 +4,21 @@
 type t =
   [ `shortcuts_group | `box | `widget | `initially_unowned | `object_ ]
   Gobject.obj
+(** A [GtkShortcutsGroup] represents a group of related keyboard shortcuts or
+    gestures.
+
+    The group has a title. It may optionally be associated with a view of the
+    application, which can be used to show only relevant shortcuts depending on
+    the application context.
+
+    This widget is only meant to be used with [Gtk.ShortcutsWindow].
+
+    The recommended way to construct a [GtkShortcutsGroup] is with
+    [Gtk.Builder], by using the [<child>] tag to populate a [GtkShortcutsGroup]
+    with one or more [Gtk.ShortcutsShortcut] instances.
+
+    If you need to add a shortcut programmatically, use
+    [Gtk.ShortcutsGroup.add_shortcut]. *)
 
 (* Methods *)
 

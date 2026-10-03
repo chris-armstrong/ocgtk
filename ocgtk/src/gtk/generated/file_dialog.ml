@@ -2,6 +2,13 @@
 (* FileDialog: FileDialog *)
 
 type t = [ `file_dialog | `object_ ] Gobject.obj
+(** Asynchronous API to present a file chooser dialog.
+
+    [GtkFileDialog] collects the arguments that are needed to present the dialog
+    to the user, such as a title for the dialog and whether it should be modal.
+
+    The dialog is shown with [Gtk.FileDialog.open], [Gtk.FileDialog.save], etc.
+*)
 
 external new_ : unit -> t = "ml_gtk_file_dialog_new"
 (** Create a new FileDialog *)

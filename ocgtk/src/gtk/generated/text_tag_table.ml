@@ -2,6 +2,27 @@
 (* TextTagTable: TextTagTable *)
 
 type t = [ `text_tag_table | `object_ ] Gobject.obj
+(** Collects the tags in a [GtkTextBuffer].
+
+    You may wish to begin by reading the text widget conceptual overview, which
+    gives an overview of all the objects and data types related to the text
+    widget and how they work together.
+
+    {b GtkTextTagTables as GtkBuildable}
+
+    The [GtkTextTagTable] implementation of the [GtkBuildable] interface
+    supports adding tags by specifying “tag” as the “type” attribute of a
+    [<child>] element.
+
+    An example of a UI definition fragment specifying tags:
+
+    {[
+    <object class=”GtkTextTagTable”>
+     <child type=”tag”>
+       <object class=”GtkTextTag”/>
+     </child>
+    </object>
+    ]} *)
 
 external new_ : unit -> t = "ml_gtk_text_tag_table_new"
 (** Create a new TextTagTable *)

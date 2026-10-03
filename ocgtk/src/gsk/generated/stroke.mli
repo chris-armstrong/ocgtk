@@ -55,22 +55,22 @@ external set_dash : t -> float array option -> Gsize.t -> unit
 (** Sets the dash pattern to use.
 
     A dash pattern is specified by an array of alternating non-negative values.
-    Each value provides the length of alternate "on" and "off" portions of the
+    Each value provides the length of alternate “on” and “off” portions of the
     stroke.
 
-    Each "on" segment will have caps applied as if the segment were a separate
-    contour. In particular, it is valid to use an "on" length of 0 with
+    Each “on” segment will have caps applied as if the segment were a separate
+    contour. In particular, it is valid to use an “on” length of 0 with
     [Gsk.LineCap.round] or [Gsk.LineCap.square] to draw dots or squares along a
     path.
 
     If [n_dash] is 0, if all elements in [dash] are 0, or if there are negative
     values in [dash], then dashing is disabled.
 
-    If [n_dash] is 1, an alternating "on" and "off" pattern with the single dash
+    If [n_dash] is 1, an alternating “on” and “off” pattern with the single dash
     length provided is assumed.
 
     If [n_dash] is uneven, the dash array will be used with the first element in
-    [dash] defining an "on" or "off" in alternating passes through the array.
+    [dash] defining an “on” or “off” in alternating passes through the array.
 
     You can specify a starting offset into the dash with
     [Gsk.Stroke.set_dash_offset]. *)

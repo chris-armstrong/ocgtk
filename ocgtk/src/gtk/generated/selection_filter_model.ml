@@ -2,6 +2,7 @@
 (* SelectionFilterModel: SelectionFilterModel *)
 
 type t = [ `selection_filter_model | `object_ ] Gobject.obj
+(** A list model that presents the selection from a [GtkSelectionModel]. *)
 
 external new_ : Selection_model.t option -> t
   = "ml_gtk_selection_filter_model_new"

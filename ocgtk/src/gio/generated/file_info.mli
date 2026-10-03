@@ -2,6 +2,42 @@
 (* FileInfo: FileInfo *)
 
 type t = [ `file_info | `object_ ] Gobject.obj
+(** Stores information about a file system object referenced by a [Gio.File].
+
+    Functionality for manipulating basic metadata for files. [GFileInfo]
+    implements methods for getting information that all files should contain,
+    and allows for manipulation of extended attributes.
+
+    See the file attributes document for more information on how GIO handles
+    file attributes.
+
+    To obtain a [GFileInfo] for a [Gio.File], use [Gio.File.query_info] (or its
+    async variant). To obtain a [GFileInfo] for a file input or output stream,
+    use [Gio.FileInputStream.query_info] or [Gio.FileOutputStream.query_info]
+    (or their async variants).
+
+    To change the actual attributes of a file, you should then set the attribute
+    in the [GFileInfo] and call [Gio.File.set_attributes_from_info] or
+    [Gio.File.set_attributes_async] on a [GFile].
+
+    However, not all attributes can be changed in the file. For instance, the
+    actual size of a file cannot be changed via [Gio.FileInfo.set_size]. You may
+    call [Gio.File.query_settable_attributes] and
+    [Gio.File.query_writable_namespaces] to discover the settable attributes of
+    a particular file at runtime.
+
+    The direct accessors, such as [Gio.FileInfo.get_name], are slightly more
+    optimized than the generic attribute accessors, such as
+    [Gio.FileInfo.get_attribute_byte_string].This optimization will matter only
+    if calling the API in a tight loop.
+
+    It is an error to call these accessors without specifying their required
+    file attributes when creating the [GFileInfo]. Use
+    [Gio.FileInfo.has_attribute] or [Gio.FileInfo.list_attributes] to check what
+    attributes are specified for a [GFileInfo].
+
+    [Gio.FileAttributeMatcher] allows for searching through a [GFileInfo] for
+    attributes. *)
 
 external new_ : unit -> t = "ml_g_file_info_new"
 (** Create a new FileInfo *)
@@ -35,11 +71,11 @@ external set_name : t -> string -> unit = "ml_g_file_info_set_name"
     [G_FILE_ATTRIBUTE_STANDARD_NAME]. *)
 
 external set_is_symlink : t -> bool -> unit = "ml_g_file_info_set_is_symlink"
-(** Sets the "is_symlink" attribute in a [GFileInfo] according to [is_symlink].
+(** Sets the “is_symlink” attribute in a [GFileInfo] according to [is_symlink].
     See [G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK]. *)
 
 external set_is_hidden : t -> bool -> unit = "ml_g_file_info_set_is_hidden"
-(** Sets the "is_hidden" attribute in a [GFileInfo] according to [is_hidden].
+(** Sets the “is_hidden” attribute in a [GFileInfo] according to [is_hidden].
     See [G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN]. *)
 
 external set_icon : t -> Icon.t -> unit = "ml_g_file_info_set_icon"
@@ -316,7 +352,7 @@ external get_attribute_as_string : t -> string -> string option
     trash_orig_path_byte_string = g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_TRASH_ORIG_PATH);
     trash_orig_path_utf8 = g_filename_to_utf8 (trash_orig_path_byte_string, -1, NULL, NULL, NULL);
     if (trash_orig_path_utf8 != NULL)
-      g_message ("Some larger UTF-8 string with filename embedded as %s", trash_orig_path_utf8);
+      g_message (“Some larger UTF-8 string with filename embedded as %s”, trash_orig_path_utf8);
     ]} *)
 
 external dup : t -> t = "ml_g_file_info_dup"

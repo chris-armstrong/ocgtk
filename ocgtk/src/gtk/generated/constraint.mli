@@ -2,6 +2,21 @@
 (* Constraint: Constraint *)
 
 type t = [ `constraint_ | `object_ ] Gobject.obj
+(** Describes a constraint between attributes of two widgets, expressed as a
+    linear equation.
+
+    The typical equation for a constraint is:
+
+    {[
+      target.target_attr = source.source_attr × multiplier + constant
+    ]}
+
+    Each [GtkConstraint] is part of a system that will be solved by a
+    [Gtk.ConstraintLayout] in order to allocate and position each child widget
+    or guide.
+
+    The source and target, as well as their attributes, of a [GtkConstraint]
+    instance are immutable after creation. *)
 
 external new_ :
   Constraint_target.t option ->

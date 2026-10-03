@@ -766,7 +766,7 @@ and File : sig
 
   external trash : t -> Cancellable.t option -> (bool, GError.t) result
     = "ml_g_file_trash"
-  (** Sends [file] to the "Trashcan", if possible. This is similar to deleting
+  (** Sends [file] to the “Trashcan”, if possible. This is similar to deleting
       it, but the user can recover it before emptying the trashcan. Trashing is
       disabled for system mounts by default (see
       g_unix_mount_entry_is_system_internal()), so this call can return the
@@ -838,7 +838,7 @@ and File : sig
 
       If there is any error during this operation then [error] will be set to
       the first error. Error on particular fields are flagged by setting the
-      "status" field in the attribute value to
+      “status” field in the attribute value to
       [G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING], which means you can also detect
       further errors.
 
@@ -1042,7 +1042,7 @@ and File : sig
     = "ml_g_file_query_writable_namespaces"
   (** Obtain the list of attribute namespaces where new attributes can be
       created by a user. An example of this is extended attributes (in the
-      "xattr" namespace).
+      “xattr” namespace).
 
       If [cancellable] is not [NULL], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
@@ -1096,9 +1096,9 @@ and File : sig
       - [Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]
 
       [attributes] should be a comma-separated list of attributes or attribute
-      wildcards. The wildcard ["*"] means all attributes, and a wildcard like
-      ["standard::*"] means all attributes in the standard namespace. An example
-      attribute query might be ["standard::*,owner::user"]. The standard
+      wildcards. The wildcard [“*”] means all attributes, and a wildcard like
+      [“standard::*”] means all attributes in the standard namespace. An example
+      attribute query might be [“standard::*,owner::user”]. The standard
       attributes are available as defines, like
       [Gio.FILE_ATTRIBUTE_STANDARD_NAME].
 
@@ -1135,9 +1135,9 @@ and File : sig
       particular requested attribute from a file - it just won't be set.
       [attributes] should be a comma-separated list of attributes or attribute
       wildcards. The wildcard
-      "{i " means all attributes, and a wildcard like "filesystem::}" means all
+      “{i “ means all attributes, and a wildcard like “filesystem::}” means all
       attributes in the filesystem namespace. The standard namespace for
-      filesystem attributes is "filesystem". Common attributes of interest are
+      filesystem attributes is “filesystem”. Common attributes of interest are
       [G_FILE_ATTRIBUTE_FILESYSTEM_SIZE] (the total size of the filesystem in
       bytes), [G_FILE_ATTRIBUTE_FILESYSTEM_FREE] (number of bytes available),
       and [G_FILE_ATTRIBUTE_FILESYSTEM_TYPE] (type of the filesystem).
@@ -1384,7 +1384,7 @@ and File : sig
   (** Checks to see if a file is native to the platform.
 
       A native file is one expressed in the platform-native filename format,
-      e.g. "C:\Windows" or "/usr/bin/". This does not mean the file is local, as
+      e.g. “C:\Windows” or “/usr/bin/”. This does not mean the file is local, as
       it might be on a locally mounted remote filesystem.
 
       On some systems non-native files may be available using the native
@@ -1430,10 +1430,10 @@ and File : sig
   (** Gets the URI scheme for a [GFile]. RFC 3986 decodes the scheme as:
 
       {[
-      URI = scheme ":" hier - part [ "?" query ] [ "#" fragment ]
+      URI = scheme “:” hier-part [ “?” query ] [ “#” fragment ]
       ]}
 
-      Common schemes include "file", "http", "ftp", etc.
+      Common schemes include “file”, “http”, “ftp”, etc.
 
       The scheme can be different from the one used to construct the [GFile], in
       that it might be replaced with one that is logically equivalent to the
@@ -1561,9 +1561,9 @@ and File : sig
       particular requested attribute from a file - it just won't be set.
       [attributes] should be a comma-separated list of attributes or attribute
       wildcards. The wildcard
-      "{i " means all attributes, and a wildcard like "standard::}" means all
+      “{i “ means all attributes, and a wildcard like “standard::}” means all
       attributes in the standard namespace. An example attribute query be
-      "standard::*,owner::user". The standard attributes are available as
+      “standard::*,owner::user”. The standard attributes are available as
       defines, like [G_FILE_ATTRIBUTE_STANDARD_NAME].
       [G_FILE_ATTRIBUTE_STANDARD_NAME] should always be specified if you plan to
       call g_file_enumerator_get_child() or g_file_enumerator_iterate() on the
@@ -1622,7 +1622,7 @@ and File : sig
         {
           // deletion failed for some reason other than the file not existing:
           // so report the error
-          g_warning ("Failed to delete %s: %s",
+          g_warning (“Failed to delete %s: %s”,
                      g_file_peek_path (my_file), local_error->message);
         }
       ]}
@@ -1785,7 +1785,7 @@ end = struct
 
   external trash : t -> Cancellable.t option -> (bool, GError.t) result
     = "ml_g_file_trash"
-  (** Sends [file] to the "Trashcan", if possible. This is similar to deleting
+  (** Sends [file] to the “Trashcan”, if possible. This is similar to deleting
       it, but the user can recover it before emptying the trashcan. Trashing is
       disabled for system mounts by default (see
       g_unix_mount_entry_is_system_internal()), so this call can return the
@@ -1857,7 +1857,7 @@ end = struct
 
       If there is any error during this operation then [error] will be set to
       the first error. Error on particular fields are flagged by setting the
-      "status" field in the attribute value to
+      “status” field in the attribute value to
       [G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING], which means you can also detect
       further errors.
 
@@ -2061,7 +2061,7 @@ end = struct
     = "ml_g_file_query_writable_namespaces"
   (** Obtain the list of attribute namespaces where new attributes can be
       created by a user. An example of this is extended attributes (in the
-      "xattr" namespace).
+      “xattr” namespace).
 
       If [cancellable] is not [NULL], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
@@ -2115,9 +2115,9 @@ end = struct
       - [Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]
 
       [attributes] should be a comma-separated list of attributes or attribute
-      wildcards. The wildcard ["*"] means all attributes, and a wildcard like
-      ["standard::*"] means all attributes in the standard namespace. An example
-      attribute query might be ["standard::*,owner::user"]. The standard
+      wildcards. The wildcard [“*”] means all attributes, and a wildcard like
+      [“standard::*”] means all attributes in the standard namespace. An example
+      attribute query might be [“standard::*,owner::user”]. The standard
       attributes are available as defines, like
       [Gio.FILE_ATTRIBUTE_STANDARD_NAME].
 
@@ -2154,9 +2154,9 @@ end = struct
       particular requested attribute from a file - it just won't be set.
       [attributes] should be a comma-separated list of attributes or attribute
       wildcards. The wildcard
-      "{i " means all attributes, and a wildcard like "filesystem::}" means all
+      “{i “ means all attributes, and a wildcard like “filesystem::}” means all
       attributes in the filesystem namespace. The standard namespace for
-      filesystem attributes is "filesystem". Common attributes of interest are
+      filesystem attributes is “filesystem”. Common attributes of interest are
       [G_FILE_ATTRIBUTE_FILESYSTEM_SIZE] (the total size of the filesystem in
       bytes), [G_FILE_ATTRIBUTE_FILESYSTEM_FREE] (number of bytes available),
       and [G_FILE_ATTRIBUTE_FILESYSTEM_TYPE] (type of the filesystem).
@@ -2403,7 +2403,7 @@ end = struct
   (** Checks to see if a file is native to the platform.
 
       A native file is one expressed in the platform-native filename format,
-      e.g. "C:\Windows" or "/usr/bin/". This does not mean the file is local, as
+      e.g. “C:\Windows” or “/usr/bin/”. This does not mean the file is local, as
       it might be on a locally mounted remote filesystem.
 
       On some systems non-native files may be available using the native
@@ -2449,10 +2449,10 @@ end = struct
   (** Gets the URI scheme for a [GFile]. RFC 3986 decodes the scheme as:
 
       {[
-      URI = scheme ":" hier - part [ "?" query ] [ "#" fragment ]
+      URI = scheme “:” hier-part [ “?” query ] [ “#” fragment ]
       ]}
 
-      Common schemes include "file", "http", "ftp", etc.
+      Common schemes include “file”, “http”, “ftp”, etc.
 
       The scheme can be different from the one used to construct the [GFile], in
       that it might be replaced with one that is logically equivalent to the
@@ -2580,9 +2580,9 @@ end = struct
       particular requested attribute from a file - it just won't be set.
       [attributes] should be a comma-separated list of attributes or attribute
       wildcards. The wildcard
-      "{i " means all attributes, and a wildcard like "standard::}" means all
+      “{i “ means all attributes, and a wildcard like “standard::}” means all
       attributes in the standard namespace. An example attribute query be
-      "standard::*,owner::user". The standard attributes are available as
+      “standard::*,owner::user”. The standard attributes are available as
       defines, like [G_FILE_ATTRIBUTE_STANDARD_NAME].
       [G_FILE_ATTRIBUTE_STANDARD_NAME] should always be specified if you plan to
       call g_file_enumerator_get_child() or g_file_enumerator_iterate() on the
@@ -2641,7 +2641,7 @@ end = struct
         {
           // deletion failed for some reason other than the file not existing:
           // so report the error
-          g_warning ("Failed to delete %s: %s",
+          g_warning (“Failed to delete %s: %s”,
                      g_file_peek_path (my_file), local_error->message);
         }
       ]}
@@ -3084,7 +3084,7 @@ and Mount : sig
     = "ml_g_mount_guess_content_type_sync"
   (** Tries to guess the type of content stored on [mount]. Returns one or more
       textual identifiers of well-known content types (typically prefixed with
-      "x-content/"), e.g. x-content/image-dcf for camera memory cards. See the
+      “x-content/”), e.g. x-content/image-dcf for camera memory cards. See the
       shared-mime-info specification for more on x-content types.
 
       This is a synchronous operation and as such may block doing IO; see
@@ -3221,7 +3221,7 @@ end = struct
     = "ml_g_mount_guess_content_type_sync"
   (** Tries to guess the type of content stored on [mount]. Returns one or more
       textual identifiers of well-known content types (typically prefixed with
-      "x-content/"), e.g. x-content/image-dcf for camera memory cards. See the
+      “x-content/”), e.g. x-content/image-dcf for camera memory cards. See the
       shared-mime-info specification for more on x-content types.
 
       This is a synchronous operation and as such may block doing IO; see

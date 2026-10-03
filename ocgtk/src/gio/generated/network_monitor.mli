@@ -2,6 +2,11 @@
 (* NetworkMonitor: NetworkMonitor *)
 
 type t = [ `network_monitor ] Gobject.obj
+(** [GNetworkMonitor] provides an easy-to-use cross-platform API for monitoring
+    network connectivity. On Linux, the available implementations are based on
+    the kernel's netlink interface and on NetworkManager.
+
+    There is also an implementation for use inside Flatpak sandboxes. *)
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_network_monitor_from_gobject"
@@ -15,7 +20,7 @@ external get_network_metered : t -> bool
 
 external get_network_available : t -> bool
   = "ml_g_network_monitor_get_network_available"
-(** Checks if the network is available. "Available" here means that the system
+(** Checks if the network is available. “Available” here means that the system
     has a default route available for at least one of IPv4 or IPv6. It does not
     necessarily imply that the public Internet is reachable. See
     [GNetworkMonitor:network]-available for more details. *)
@@ -32,15 +37,15 @@ external get_connectivity : t -> Gio_enums.networkconnectivity
     state will be [G_NETWORK_CONNECTIVITY_FULL] (if there is full Internet
     connectivity), [G_NETWORK_CONNECTIVITY_LIMITED] (if the host has a default
     route, but appears to be unable to actually reach the full Internet), or
-    [G_NETWORK_CONNECTIVITY_PORTAL] (if the host is trapped behind a "captive
-    portal" that requires some sort of login or acknowledgement before allowing
+    [G_NETWORK_CONNECTIVITY_PORTAL] (if the host is trapped behind a “captive
+    portal” that requires some sort of login or acknowledgement before allowing
     full Internet access).
 
     Note that in the case of [G_NETWORK_CONNECTIVITY_LIMITED] and
     [G_NETWORK_CONNECTIVITY_PORTAL], it is possible that some sites are
     reachable but others are not. In this case, applications can attempt to
     connect to remote servers, but should gracefully fall back to their
-    "offline" behavior if the connection attempt fails. *)
+    “offline” behavior if the connection attempt fails. *)
 
 external can_reach_finish : t -> Async_result.t -> (bool, GError.t) result
   = "ml_g_network_monitor_can_reach_finish"

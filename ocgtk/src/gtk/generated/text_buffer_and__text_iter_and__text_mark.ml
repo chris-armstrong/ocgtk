@@ -1558,7 +1558,7 @@ and Text_iter : sig
   external get_marks : t -> Text_mark.t list = "ml_gtk_text_iter_get_marks"
   (** Returns a list of all [GtkTextMark] at this location.
 
-      Because marks are not iterable (they don’t take up any "space" in the
+      Because marks are not iterable (they don’t take up any “space” in the
       buffer, they are just marks in between iterable locations), multiple marks
       can exist in the same place.
 
@@ -1773,7 +1773,7 @@ and Text_iter : sig
 
       For some Unicode characters, the equivalent of say the letter “a” with an
       accent mark will be represented as two characters, first the letter then a
-      "combining mark" that causes the accent to be rendered; so the cursor
+      “combining mark” that causes the accent to be rendered; so the cursor
       can’t go between those two characters.
 
       See also the [Pango.LogAttr] struct and the [Pango.break] function. *)
@@ -2249,7 +2249,7 @@ end = struct
   external get_marks : t -> Text_mark.t list = "ml_gtk_text_iter_get_marks"
   (** Returns a list of all [GtkTextMark] at this location.
 
-      Because marks are not iterable (they don’t take up any "space" in the
+      Because marks are not iterable (they don’t take up any “space” in the
       buffer, they are just marks in between iterable locations), multiple marks
       can exist in the same place.
 
@@ -2464,7 +2464,7 @@ end = struct
 
       For some Unicode characters, the equivalent of say the letter “a” with an
       accent mark will be represented as two characters, first the letter then a
-      "combining mark" that causes the accent to be rendered; so the cursor
+      “combining mark” that causes the accent to be rendered; so the cursor
       can’t go between those two characters.
 
       See also the [Pango.LogAttr] struct and the [Pango.break] function. *)

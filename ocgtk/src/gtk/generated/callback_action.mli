@@ -2,5 +2,6 @@
 (* CallbackAction: CallbackAction *)
 
 type t = [ `callback_action | `shortcut_action | `object_ ] Gobject.obj
+(** Invokes a callback. *)
 
 (* Methods *)

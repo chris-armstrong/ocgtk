@@ -2,6 +2,15 @@
 (* FileInputStream: FileInputStream *)
 
 type t = [ `file_input_stream | `input_stream | `object_ ] Gobject.obj
+(** [GFileInputStream] provides input streams that take their content from a
+    file.
+
+    [GFileInputStream] implements [Gio.Seekable], which allows the input stream
+    to jump to arbitrary positions in the file, provided the filesystem of the
+    file allows it. To find the position of a file input stream, use
+    [Gio.Seekable.tell]. To find out if a file input stream supports seeking,
+    use [Gio.Seekable.can_seek]. To position a file input stream, use
+    [Gio.Seekable.seek]. *)
 
 (* Methods *)
 

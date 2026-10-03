@@ -2,6 +2,12 @@
 (* Renderer: Renderer *)
 
 type t = [ `renderer | `object_ ] Gobject.obj
+(** [PangoRenderer] is a base class for objects that can render text provided as
+    [PangoGlyphString] or [PangoLayout].
+
+    By subclassing [PangoRenderer] and overriding operations such as
+    [draw_glyphs] and [draw_rectangle], renderers for particular font backends
+    and destinations can be created. *)
 
 (* Methods *)
 

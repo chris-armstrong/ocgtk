@@ -2,5 +2,6 @@
 (* NothingAction: NothingAction *)
 
 type t = [ `nothing_action | `shortcut_action | `object_ ] Gobject.obj
+(** Does nothing. *)
 
 (* Methods *)

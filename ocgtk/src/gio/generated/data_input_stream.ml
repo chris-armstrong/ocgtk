@@ -8,6 +8,8 @@ type t =
   | `input_stream
   | `object_ ]
   Gobject.obj
+(** Data input stream implements [Gio.InputStream] and includes functions for
+    reading structured data directly from a binary input stream. *)
 
 external new_ : Input_stream.t -> t = "ml_g_data_input_stream_new"
 (** Create a new DataInputStream *)
@@ -19,8 +21,8 @@ external set_newline_type : t -> Gio_enums.datastreamnewlinetype -> unit
 (** Sets the newline type for the [stream].
 
     Note that using G_DATA_STREAM_NEWLINE_TYPE_ANY is slightly unsafe. If a read
-    chunk ends in "CR" we must read an additional byte to know if this is "CR"
-    or "CR LF", and this might block if there is no more data available. *)
+    chunk ends in “CR” we must read an additional byte to know if this is “CR”
+    or “CR LF”, and this might block if there is no more data available. *)
 
 external set_byte_order : t -> Gio_enums.datastreambyteorder -> unit
   = "ml_g_data_input_stream_set_byte_order"

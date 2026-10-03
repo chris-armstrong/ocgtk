@@ -2,6 +2,7 @@
 (* TreeListModel: TreeListModel *)
 
 type t = [ `tree_list_model | `object_ ] Gobject.obj
+(** A list model that can create child models on demand. *)
 
 (* Methods *)
 

@@ -52,7 +52,7 @@ external get_license : t -> string option = "ml_gdk_pixbuf_format_get_license"
 (** Returns information about the license of the image loader for the format.
 
     The returned string should be a shorthand for a well known license, e.g.
-    "LGPL", "GPL", "QPL", "GPL/QPL", or "other" to indicate some other license.
+    “LGPL”, “GPL”, “QPL”, “GPL/QPL”, or “other” to indicate some other license.
 *)
 
 external get_extensions : t -> string array option

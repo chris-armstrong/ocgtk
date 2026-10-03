@@ -2,6 +2,8 @@
 (* StrokeNode: StrokeNode *)
 
 type t = [ `stroke_node | `render_node ] Gobject.obj
+(** A render node that will fill the area determined by stroking the the given
+    [Gsk.Path] using the [Gsk.Stroke] attributes. *)
 
 external new_ :
   Render_node.t ->

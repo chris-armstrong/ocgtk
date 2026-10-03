@@ -2,6 +2,45 @@
 (* SelectionModel: SelectionModel *)
 
 type t = [ `selection_model ] Gobject.obj
+(** An interface that adds support for selection to list models.
+
+    This support is then used by widgets using list models to add the ability to
+    select and unselect various items.
+
+    GTK provides default implementations of the most common selection modes such
+    as [Gtk.SingleSelection], so you will only need to implement this interface
+    if you want detailed control about how selections should be handled.
+
+    A [GtkSelectionModel] supports a single boolean per item indicating if an
+    item is selected or not. This can be queried via
+    [Gtk.SelectionModel.is_selected]. When the selected state of one or more
+    items changes, the model will emit the
+    [Gtk.SelectionModel::selection-changed] signal by calling the
+    [Gtk.SelectionModel.selection_changed] function. The positions given in that
+    signal may have their selection state changed, though that is not a
+    requirement. If new items added to the model via the
+    [Gio.ListModel::items-changed] signal are selected or not is up to the
+    implementation.
+
+    Note that items added via [Gio.ListModel::items-changed] may already be
+    selected and no [Gtk.SelectionModel::selection-changed] will be emitted for
+    them. So to track which items are selected, it is necessary to listen to
+    both signals.
+
+    Additionally, the interface can expose functionality to select and unselect
+    items. If these functions are implemented, GTK's list widgets will allow
+    users to select and unselect items. However, [GtkSelectionModel]s are free
+    to only implement them partially or not at all. In that case the widgets
+    will not support the unimplemented operations.
+
+    When selecting or unselecting is supported by a model, the return values of
+    the selection functions do {i not} indicate if selection or unselection
+    happened. They are only meant to indicate complete failure, like when this
+    mode of selecting is not supported by the model.
+
+    Selections may happen asynchronously, so the only reliable way to find out
+    when an item was selected is to listen to the signals that indicate
+    selection. *)
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gtk_selection_model_from_gobject"

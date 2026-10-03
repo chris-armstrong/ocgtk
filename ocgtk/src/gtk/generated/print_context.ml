@@ -2,6 +2,73 @@
 (* PrintContext: PrintContext *)
 
 type t = [ `print_context | `object_ ] Gobject.obj
+(** Encapsulates context information that is required when drawing pages for
+    printing.
+
+    This includes the cairo context and important parameters like page size and
+    resolution. It also lets you easily create [Pango.Layout] and
+    [Pango.Context] objects that match the font metrics of the cairo surface.
+
+    [GtkPrintContext] objects get passed to the
+    [Gtk.PrintOperation::begin-print], [Gtk.PrintOperation::end-print],
+    [Gtk.PrintOperation::request-page-setup] and [Gtk.PrintOperation::draw-page]
+    signals on the [Gtk.PrintOperation] object.
+
+    {b Using GtkPrintContext in a ::draw-page callback}
+
+    {[
+    static void
+    draw_page (GtkPrintOperation *operation,
+               GtkPrintContext   *context,
+               int                page_nr)
+    {
+      cairo_t *cr;
+      PangoLayout *layout;
+      PangoFontDescription *desc;
+
+      cr = gtk_print_context_get_cairo_context (context);
+
+      // Draw a red rectangle, as wide as the paper (inside the margins)
+      cairo_set_source_rgb (cr, 1.0, 0, 0);
+      cairo_rectangle (cr, 0, 0, gtk_print_context_get_width (context), 50);
+
+      cairo_fill (cr);
+
+      // Draw some lines
+      cairo_move_to (cr, 20, 10);
+      cairo_line_to (cr, 40, 20);
+      cairo_arc (cr, 60, 60, 20, 0, M_PI);
+      cairo_line_to (cr, 80, 20);
+
+      cairo_set_source_rgb (cr, 0, 0, 0);
+      cairo_set_line_width (cr, 5);
+      cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
+      cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
+
+      cairo_stroke (cr);
+
+      // Draw some text
+      layout = gtk_print_context_create_pango_layout (context);
+      pango_layout_set_text (layout, “Hello World! Printing is easy”, -1);
+      desc = pango_font_description_from_string (“sans 28”);
+      pango_layout_set_font_description (layout, desc);
+      pango_font_description_free (desc);
+
+      cairo_move_to (cr, 30, 20);
+      pango_cairo_layout_path (cr, layout);
+
+      // Font Outline
+      cairo_set_source_rgb (cr, 0.93, 1.0, 0.47);
+      cairo_set_line_width (cr, 0.5);
+      cairo_stroke_preserve (cr);
+
+      // Font Fill
+      cairo_set_source_rgb (cr, 0, 0.0, 1.0);
+      cairo_fill (cr);
+
+      g_object_unref (layout);
+    }
+    ]} *)
 
 (* Methods *)
 

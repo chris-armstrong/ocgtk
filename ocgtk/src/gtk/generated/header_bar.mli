@@ -2,6 +2,77 @@
 (* HeaderBar: HeaderBar *)
 
 type t = [ `header_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** Creates a custom titlebar for a window.
+
+    An example GtkHeaderBar
+
+    [GtkHeaderBar] is similar to a horizontal [GtkCenterBox]. It allows children
+    to be placed at the start or the end. In addition, it allows the window
+    title to be displayed. The title will be centered with respect to the width
+    of the box, even if the children at either side take up different amounts of
+    space.
+
+    [GtkHeaderBar] can add typical window frame controls, such as minimize,
+    maximize and close buttons, or the window icon.
+
+    For these reasons, [GtkHeaderBar] is the natural choice for use as the
+    custom titlebar widget of a [GtkWindow] (see [Gtk.Window.set_titlebar]), as
+    it gives features typical of titlebars while allowing the addition of child
+    widgets.
+
+    {b GtkHeaderBar as GtkBuildable}
+
+    The [GtkHeaderBar] implementation of the [GtkBuildable] interface supports
+    adding children at the start or end sides by specifying “start” or “end” as
+    the “type” attribute of a [<child>] element, or setting the title widget by
+    specifying “title” value.
+
+    By default the [GtkHeaderBar] uses a [GtkLabel] displaying the title of the
+    window it is contained in as the title widget, equivalent to the following
+    UI definition:
+
+    {[
+    <object class=”GtkHeaderBar”>
+      <property name=”title-widget”>
+        <object class=”GtkLabel”>
+          <property name=”label” translatable=”yes”>Label</property>
+          <property name=”single-line-mode”>True</property>
+          <property name=”ellipsize”>end</property>
+          <property name=”width-chars”>5</property>
+          <style>
+            <class name=”title”/>
+          </style>
+        </object>
+      </property>
+    </object>
+    ]}
+
+    {b CSS nodes}
+
+    {[
+    headerbar
+    ╰── windowhandle
+        ╰── box
+            ├── box.start
+            │   ├── windowcontrols.start
+            │   ╰── [other children]
+            ├── [Title Widget]
+            ╰── box.end
+                ├── [other children]
+                ╰── windowcontrols.end
+    ]}
+
+    A [GtkHeaderBar]'s CSS node is called [headerbar]. It contains a
+    [windowhandle] subnode, which contains a [box] subnode, which contains two
+    [box] subnodes at the start and end of the header bar, as well as a center
+    node that represents the title.
+
+    Each of the boxes contains a [windowcontrols] subnode, see
+    [Gtk.WindowControls] for details, as well as other children.
+
+    {b Accessibility}
+
+    [GtkHeaderBar] uses the [Gtk.AccessibleRole.group] role. *)
 
 external new_ : unit -> t = "ml_gtk_header_bar_new"
 (** Create a new HeaderBar *)
@@ -12,7 +83,7 @@ external set_use_native_controls : t -> bool -> unit
   = "ml_gtk_header_bar_set_use_native_controls"
 (** Sets whether this header bar shows native window controls.
 
-    This option shows the "stoplight" buttons on macOS. For Linux, this option
+    This option shows the “stoplight” buttons on macOS. For Linux, this option
     has no effect.
 
     See also Using GTK on Apple macOS. *)

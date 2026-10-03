@@ -2,6 +2,28 @@
 (* DirectoryList: DirectoryList *)
 
 type t = [ `directory_list | `object_ ] Gobject.obj
+(** A list model that wraps [Gio.File.enumerate_children_async].
+
+    It presents a [GListModel] and fills it asynchronously with the [GFileInfo]s
+    returned from that function.
+
+    Enumeration will start automatically when the [Gtk.DirectoryList:file]
+    property is set.
+
+    While the [GtkDirectoryList] is being filled, the
+    [Gtk.DirectoryList:loading] property will be set to [TRUE]. You can listen
+    to that property if you want to show information like a [GtkSpinner] or a
+    “Loading...” text.
+
+    If loading fails at any point, the [Gtk.DirectoryList:error] property will
+    be set to give more indication about the failure.
+
+    The [GFileInfo]s returned from a [GtkDirectoryList] have the
+    “standard::file” attribute set to the [GFile] they refer to. This way you
+    can get at the file that is referred to in the same way you would via
+    g_file_enumerator_get_child(). This means you do not need access to the
+    [GtkDirectoryList], but can access the [GFile] directly from the [GFileInfo]
+    when operating with a [GtkListView] or similar. *)
 
 external new_ : string option -> Ocgtk_gio.Gio.Wrappers.File.t option -> t
   = "ml_gtk_directory_list_new"

@@ -2,6 +2,20 @@
 (* ListItem: ListItem *)
 
 type t = [ `list_item | `object_ ] Gobject.obj
+(** Used by list widgets to represent items in a [Gio.ListModel].
+
+    [GtkListItem] objects are managed by the list widget (with its factory) and
+    cannot be created by applications, but they need to be populated by
+    application code. This is done by calling [Gtk.ListItem.set_child].
+
+    [GtkListItem] objects exist in 2 stages:
+
+    + The unbound stage where the listitem is not currently connected to an item
+      in the list. In that case, the [Gtk.ListItem:item] property is set to
+      [NULL].
+
+    + The bound stage where the listitem references an item from the list. The
+      [Gtk.ListItem:item] property is not [NULL]. *)
 
 (* Methods *)
 

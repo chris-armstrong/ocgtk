@@ -2,6 +2,26 @@
 (* CellView: CellView *)
 
 type t = [ `cell_view | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** A widget displaying a single row of a GtkTreeModel
+
+    A [GtkCellView] displays a single row of a [GtkTreeModel] using a
+    [GtkCellArea] and [GtkCellAreaContext]. A [GtkCellAreaContext] can be
+    provided to the [GtkCellView] at construction time in order to keep the
+    cellview in context of a group of cell views, this ensures that the
+    renderers displayed will be properly aligned with each other (like the
+    aligned cells in the menus of [GtkComboBox]).
+
+    [GtkCellView] is [GtkOrientable] in order to decide in which orientation the
+    underlying [GtkCellAreaContext] should be allocated. Taking the
+    [GtkComboBox] menu as an example, cellviews should be oriented horizontally
+    if the menus are listed top-to-bottom and thus all share the same width but
+    may have separate individual heights (left-to-right menus should be
+    allocated vertically since they all share the same height but may have
+    variable widths).
+
+    {b CSS nodes}
+
+    GtkCellView has a single CSS node with name cellview. *)
 
 external new_ : unit -> t = "ml_gtk_cell_view_new"
 (** Create a new CellView *)

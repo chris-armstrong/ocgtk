@@ -2,6 +2,7 @@
 (* MemoryTexture: MemoryTexture *)
 
 type t = [ `memory_texture | `texture | `object_ ] Gobject.obj
+(** A [GdkTexture] representing image data in memory. *)
 
 external new_ :
   int -> int -> Gdk_enums.memoryformat -> Glib_bytes.t -> Gsize.t -> t

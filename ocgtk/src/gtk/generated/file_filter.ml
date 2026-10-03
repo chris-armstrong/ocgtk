@@ -2,6 +2,49 @@
 (* FileFilter: FileFilter *)
 
 type t = [ `file_filter | `filter | `object_ ] Gobject.obj
+(** Filters files by name or mime type.
+
+    [GtkFileFilter] can be used to restrict the files being shown in a file
+    chooser. Files can be filtered based on their name (with
+    [Gtk.FileFilter.add_pattern] or [Gtk.FileFilter.add_suffix]) or on their
+    mime type (with [Gtk.FileFilter.add_mime_type]).
+
+    Filtering by mime types handles aliasing and subclassing of mime types; e.g.
+    a filter for text/plain also matches a file with mime type application/rtf,
+    since application/rtf is a subclass of text/plain. Note that [GtkFileFilter]
+    allows wildcards for the subtype of a mime type, so you can e.g. filter for
+    image/*.
+
+    Normally, file filters are used by adding them to a file chooser (see
+    [Gtk.FileDialog.set_filters]), but it is also possible to manually use a
+    file filter on any [Gtk.FilterListModel] containing [GFileInfo] objects.
+
+    {b GtkFileFilter as GtkBuildable}
+
+    The [GtkFileFilter] implementation of the [GtkBuildable] interface supports
+    adding rules using the [<mime-types>] and [<patterns>] and [<suffixes>]
+    elements and listing the rules within. Specifying a [<mime-type>] or
+    [<pattern>] or [<suffix>] has the same effect as as calling
+    [Gtk.FileFilter.add_mime_type] or [Gtk.FileFilter.add_pattern] or
+    [Gtk.FileFilter.add_suffix].
+
+    An example of a UI definition fragment specifying [GtkFileFilter] rules:
+
+    {[
+    <object class=”GtkFileFilter”>
+      <property name=”name” translatable=”yes”>Text and Images</property>
+      <mime-types>
+        <mime-type>text/plain</mime-type>
+        <mime-type>image/ *</mime-type>
+      </mime-types>
+      <patterns>
+        <pattern>*.txt</pattern>
+      </patterns>
+      <suffixes>
+        <suffix>png</suffix>
+      </suffixes>
+    </object>
+    ]} *)
 
 external new_ : unit -> t = "ml_gtk_file_filter_new"
 (** Create a new FileFilter *)
@@ -37,12 +80,12 @@ external get_attributes : t -> string array
 external add_suffix : t -> string -> unit = "ml_gtk_file_filter_add_suffix"
 (** Adds a suffix match rule to a filter.
 
-    This is similar to adding a match for the pattern "*.[suffix]"
+    This is similar to adding a match for the pattern “*.[suffix]”
 
-    An exaple to filter files with the suffix ".sub":
+    An exaple to filter files with the suffix “.sub”:
 
     {[
-    gtk_file_filter_add_suffix (filter, "sub")
+    gtk_file_filter_add_suffix (filter, “sub”);
     ]}
 
     Filters with multiple dots are allowed.

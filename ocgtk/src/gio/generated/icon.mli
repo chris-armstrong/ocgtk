@@ -2,6 +2,35 @@
 (* Icon: Icon *)
 
 type t = [ `icon ] Gobject.obj
+(** [GIcon] is a very minimal interface for icons. It provides functions for
+    checking the equality of two icons, hashing of icons and serializing an icon
+    to and from strings.
+
+    [GIcon] does not provide the actual pixmap for the icon as this is out of
+    GIO's scope, however implementations of [GIcon] may contain the name of an
+    icon (see [Gio.ThemedIcon]), or the path to an icon (see
+    [Gio.LoadableIcon]).
+
+    To obtain a hash of a [GIcon], see [Gio.Icon.hash].
+
+    To check if two [GIcon]s are equal, see [Gio.Icon.equal].
+
+    For serializing a [GIcon], use [Gio.Icon.serialize] and
+    [Gio.Icon.deserialize].
+
+    If you want to consume [GIcon] (for example, in a toolkit) you must be
+    prepared to handle at least the three following cases: [Gio.LoadableIcon],
+    [Gio.ThemedIcon] and [Gio.EmblemedIcon]. It may also make sense to have
+    fast-paths for other cases (like handling
+    {{:https://docs.gtk.org/gdk-pixbuf/class.Pixbuf.html}[GdkPixbuf]} directly,
+    for example) but all compliant [GIcon] implementations outside of GIO must
+    implement [Gio.LoadableIcon].
+
+    If your application or library provides one or more [GIcon] implementations
+    you need to ensure that your new implementation also implements
+    [Gio.LoadableIcon]. Additionally, you must provide an implementation of
+    [Gio.Icon.serialize] that gives a result that is understood by
+    [Gio.Icon.deserialize], yielding one of the built-in icon types. *)
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_icon_from_gobject"
 

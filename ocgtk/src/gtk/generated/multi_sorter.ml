@@ -2,6 +2,10 @@
 (* MultiSorter: MultiSorter *)
 
 type t = [ `multi_sorter | `sorter | `object_ ] Gobject.obj
+(** Combines multiple sorters by trying them in turn.
+
+    If the first sorter compares two items as equal, the second is tried next,
+    and so on. *)
 
 external new_ : unit -> t = "ml_gtk_multi_sorter_new"
 (** Create a new MultiSorter *)

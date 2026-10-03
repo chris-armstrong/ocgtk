@@ -2,6 +2,7 @@
 (* ColorNode: ColorNode *)
 
 type t = [ `color_node | `render_node ] Gobject.obj
+(** A render node for a solid color. *)
 
 external new_ :
   Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> t

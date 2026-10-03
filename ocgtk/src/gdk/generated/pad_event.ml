@@ -2,6 +2,7 @@
 (* PadEvent: PadEvent *)
 
 type t = [ `pad_event | `event ] Gobject.obj
+(** An event related to a pad-based device. *)
 
 (* Methods *)
 

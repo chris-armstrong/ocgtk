@@ -2,6 +2,7 @@
 (* KeyvalTrigger: KeyvalTrigger *)
 
 type t = [ `keyval_trigger | `shortcut_trigger | `object_ ] Gobject.obj
+(** Triggers when a specific keyval and modifiers are pressed. *)
 
 external new_ : int -> Ocgtk_gdk.Gdk.modifiertype -> t
   = "ml_gtk_keyval_trigger_new"

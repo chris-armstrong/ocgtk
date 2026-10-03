@@ -4,6 +4,20 @@
 type t =
   [ `buffered_input_stream | `filter_input_stream | `input_stream | `object_ ]
   Gobject.obj
+(** Buffered input stream implements [Gio.FilterInputStream] and provides for
+    buffered reads.
+
+    By default, [GBufferedInputStream]'s buffer size is set at 4 kilobytes.
+
+    To create a buffered input stream, use [Gio.BufferedInputStream.new], or
+    [Gio.BufferedInputStream.new_sized] to specify the buffer's size at
+    construction.
+
+    To get the size of a buffer within a buffered input stream, use
+    [Gio.BufferedInputStream.get_buffer_size]. To change the size of a buffered
+    input stream's buffer, use [Gio.BufferedInputStream.set_buffer_size]. Note
+    that the buffer's size cannot be reduced below the size of the data within
+    the buffer. *)
 
 external new_ : Input_stream.t -> t = "ml_g_buffered_input_stream_new"
 (** Create a new BufferedInputStream *)

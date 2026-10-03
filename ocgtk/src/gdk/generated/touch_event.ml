@@ -2,6 +2,7 @@
 (* TouchEvent: TouchEvent *)
 
 type t = [ `touch_event | `event ] Gobject.obj
+(** An event related to a touch-based device. *)
 
 (* Methods *)
 

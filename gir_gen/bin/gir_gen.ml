@@ -600,16 +600,9 @@ type namespace_info = {
 (* Generate a single ML file (interface or implementation) for an entity *)
 let generate_ml_file ~ctx ~output_dir ~kind ~parent_chain ?from_gobject_c_name
     entity =
-  (* Class and interface docs are captured in the AST as of the M3 doc-parsing
-     leg but not yet emitted; blanking them here keeps the generated bindings
-     byte-identical until the M3 emission leg wires docs into the page model.
-     Records keep their pre-existing doc emission ([entity.doc] mirrors
-     [record_doc] for records). *)
-  let emitted_class_doc =
-    match entity.Gir_gen_lib.Types.kind with
-    | Gir_gen_lib.Types.Record _ -> entity.Gir_gen_lib.Types.doc
-    | Gir_gen_lib.Types.Class _ | Gir_gen_lib.Types.Interface _ -> None
-  in
+  (* Class, interface and record docs are emitted as the module-level
+     description of each entity's L1 wrapper (translated by Doc_emit). *)
+  let emitted_class_doc = entity.Gir_gen_lib.Types.doc in
   let ext = match kind with Interface -> ".mli" | Implementation -> ".ml" in
   let ml_file =
     Filename.concat

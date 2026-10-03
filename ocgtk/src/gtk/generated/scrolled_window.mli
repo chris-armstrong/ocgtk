@@ -3,6 +3,82 @@
 
 type t =
   [ `scrolled_window | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** Makes its child scrollable.
+
+    An example GtkScrolledWindow
+
+    It does so using either internally added scrollbars or externally associated
+    adjustments, and optionally draws a frame around the child.
+
+    Widgets with native scrolling support, i.e. those whose classes implement
+    the [Gtk.Scrollable] interface, are added directly. For other types of
+    widget, the class [Gtk.Viewport] acts as an adaptor, giving scrollability to
+    other widgets. [Gtk.ScrolledWindow.set_child] intelligently accounts for
+    whether or not the added child is a [GtkScrollable]. If it isn’t, then it
+    wraps the child in a [GtkViewport]. Therefore, you can just add any child
+    widget and not worry about the details.
+
+    If [Gtk.ScrolledWindow.set_child] has added a [GtkViewport] for you, it will
+    be automatically removed when you unset the child. Unless
+    [Gtk.ScrolledWindow:hscrollbar-policy] and
+    [Gtk.ScrolledWindow:vscrollbar-policy] are [GTK_POLICY_NEVER] or
+    [GTK_POLICY_EXTERNAL], [GtkScrolledWindow] adds internal [GtkScrollbar]
+    widgets around its child. The scroll position of the child, and if
+    applicable the scrollbars, is controlled by the
+    [Gtk.ScrolledWindow:hadjustment] and [Gtk.ScrolledWindow:vadjustment] that
+    are associated with the [GtkScrolledWindow]. See the docs on [Gtk.Scrollbar]
+    for the details, but note that the “step_increment” and “page_increment”
+    fields are only effective if the policy causes scrollbars to be present.
+
+    If a [GtkScrolledWindow] doesn’t behave quite as you would like, or doesn’t
+    have exactly the right layout, it’s very possible to set up your own
+    scrolling with [GtkScrollbar] and for example a [GtkGrid].
+
+    {b Touch support}
+
+    [GtkScrolledWindow] has built-in support for touch devices. When a
+    touchscreen is used, swiping will move the scrolled window, and will expose
+    'kinetic' behavior. This can be turned off with the
+    [Gtk.ScrolledWindow:kinetic-scrolling] property if it is undesired.
+
+    [GtkScrolledWindow] also displays visual 'overshoot' indication when the
+    content is pulled beyond the end, and this situation can be captured with
+    the [Gtk.ScrolledWindow::edge-overshot] signal.
+
+    If no mouse device is present, the scrollbars will overlaid as narrow,
+    auto-hiding indicators over the content. If traditional scrollbars are
+    desired although no mouse is present, this behaviour can be turned off with
+    the [Gtk.ScrolledWindow:overlay-scrolling] property.
+
+    {b Shortcuts and Gestures}
+
+    The following signals have default keybindings:
+
+    - [Gtk.ScrolledWindow::scroll-child]
+
+    {b CSS nodes}
+
+    [GtkScrolledWindow] has a main CSS node with name scrolledwindow. It gets a
+    .frame style class added when [Gtk.ScrolledWindow:has-frame] is [TRUE].
+
+    It uses subnodes with names overshoot and undershoot to draw the overflow
+    and underflow indications. These nodes get the .left, .right, .top or
+    .bottom style class added depending on where the indication is drawn.
+
+    [GtkScrolledWindow] also sets the positional style classes (.left, .right,
+    .top, .bottom) and style classes related to overlay scrolling
+    (.overlay-indicator, .dragging, .hovering) on its scrollbars.
+
+    If both scrollbars are visible, the area where they meet is drawn with a
+    subnode named junction.
+
+    {b Accessibility}
+
+    Until GTK 4.10, [GtkScrolledWindow] used the [Gtk.AccessibleRole.group]
+    role.
+
+    Starting from GTK 4.12, [GtkScrolledWindow] uses the
+    [Gtk.AccessibleRole.generic] role. *)
 
 external new_ : unit -> t = "ml_gtk_scrolled_window_new"
 (** Create a new ScrolledWindow *)

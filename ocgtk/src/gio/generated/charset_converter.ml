@@ -2,6 +2,8 @@
 (* CharsetConverter: CharsetConverter *)
 
 type t = [ `charset_converter | `object_ ] Gobject.obj
+(** [GCharsetConverter] is an implementation of [Gio.Converter] based on
+    [GLib.IConv]. *)
 
 external new_ : string -> string -> (t, GError.t) result
   = "ml_g_charset_converter_new"

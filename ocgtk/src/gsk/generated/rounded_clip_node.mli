@@ -2,6 +2,7 @@
 (* RoundedClipNode: RoundedClipNode *)
 
 type t = [ `rounded_clip_node | `render_node ] Gobject.obj
+(** A render node applying a rounded rectangle clip to its single child. *)
 
 external new_ : Render_node.t -> Rounded_rect.t -> t
   = "ml_gsk_rounded_clip_node_new"

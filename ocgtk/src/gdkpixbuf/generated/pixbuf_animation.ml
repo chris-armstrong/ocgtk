@@ -2,6 +2,19 @@
 (* PixbufAnimation: PixbufAnimation *)
 
 type t = [ `pixbuf_animation | `object_ ] Gobject.obj
+(** An opaque object representing an animation.
+
+    The GdkPixBuf library provides a simple mechanism to load and represent
+    animations. An animation is conceptually a series of frames to be displayed
+    over time.
+
+    The animation may not be represented as a series of frames internally; for
+    example, it may be stored as a sprite and instructions for moving the sprite
+    around a background.
+
+    To display an animation you don't need to understand its representation,
+    however; you just ask [GdkPixbuf] what should be displayed at a given point
+    in time. *)
 
 external new_from_file : string -> (t, GError.t) result
   = "ml_gdk_pixbuf_animation_new_from_file"

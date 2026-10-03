@@ -2,6 +2,13 @@
 (* DropControllerMotion: DropControllerMotion *)
 
 type t = [ `drop_controller_motion | `event_controller | `object_ ] Gobject.obj
+(** An event controller tracking the pointer during Drag-and-Drop operations.
+
+    It is modeled after [Gtk.EventControllerMotion] so if you have used that,
+    this should feel really familiar.
+
+    This controller is not able to accept drops, use [Gtk.DropTarget] for that
+    purpose. *)
 
 external new_ : unit -> t = "ml_gtk_drop_controller_motion_new"
 (** Create a new DropControllerMotion *)

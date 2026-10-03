@@ -2,6 +2,7 @@
 (* LinearGradientNode: LinearGradientNode *)
 
 type t = [ `linear_gradient_node | `render_node ] Gobject.obj
+(** A render node for a linear gradient. *)
 
 external new_ :
   Ocgtk_graphene.Graphene.Wrappers.Rect.t ->

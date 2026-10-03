@@ -2,6 +2,23 @@
 (* OutputStream: OutputStream *)
 
 type t = [ `output_stream | `object_ ] Gobject.obj
+(** [GOutputStream] is a base class for implementing streaming output.
+
+    It has functions to write to a stream ([Gio.OutputStream.write]), to close a
+    stream ([Gio.OutputStream.close]) and to flush pending writes
+    ([Gio.OutputStream.flush]).
+
+    To copy the content of an input stream to an output stream without manually
+    handling the reads and writes, use [Gio.OutputStream.splice].
+
+    See the documentation for [Gio.IOStream] for details of thread safety of
+    streaming APIs.
+
+    All of these functions have async variants too.
+
+    All classes derived from [GOutputStream] {i should} implement synchronous
+    writing, splicing, flushing and closing streams, but {i may} implement
+    asynchronous versions. *)
 
 (* Methods *)
 

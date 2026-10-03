@@ -2,6 +2,11 @@
 (* MemoryOutputStream: MemoryOutputStream *)
 
 type t = [ `memory_output_stream | `output_stream | `object_ ] Gobject.obj
+(** [GMemoryOutputStream] is a class for using arbitrary memory chunks as output
+    for GIO streaming output operations.
+
+    As of GLib 2.34, [GMemoryOutputStream] trivially implements
+    [Gio.PollableOutputStream]: it always polls as ready. *)
 
 external new_resizable : unit -> t = "ml_g_memory_output_stream_new_resizable"
 (** Create a new MemoryOutputStream *)

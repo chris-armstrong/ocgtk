@@ -2,6 +2,45 @@
 (* Image: Image *)
 
 type t = [ `image | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** Displays an image.
+
+    An example GtkImage
+
+    Various kinds of object can be displayed as an image; most typically, you
+    would load a [GdkTexture] from a file, using the convenience function
+    [Gtk.Image.new_from_file], for instance:
+
+    {[
+    GtkWidget *image = gtk_image_new_from_file (“myfile.png”);
+    ]}
+
+    If the file isn’t loaded successfully, the image will contain a “broken
+    image” icon similar to that used in many web browsers.
+
+    If you want to handle errors in loading the file yourself, for example by
+    displaying an error message, then load the image with an image loading
+    framework such as libglycin, then create the [GtkImage] with
+    [Gtk.Image.new_from_paintable].
+
+    Sometimes an application will want to avoid depending on external data
+    files, such as image files. See the documentation of [GResource] inside GIO,
+    for details. In this case, [Gtk.Image:resource],
+    [Gtk.Image.new_from_resource], and [Gtk.Image.set_from_resource] should be
+    used.
+
+    [GtkImage] displays its image as an icon, with a size that is determined by
+    the application. See [Gtk.Picture] if you want to show an image at is actual
+    size.
+
+    {b CSS nodes}
+
+    [GtkImage] has a single CSS node with the name [image]. The style classes
+    [.normal-icons] or [.large-icons] may appear, depending on the
+    [Gtk.Image:icon-size] property.
+
+    {b Accessibility}
+
+    [GtkImage] uses the [Gtk.AccessibleRole.img] role. *)
 
 external new_ : unit -> t = "ml_gtk_image_new"
 (** Create a new Image *)

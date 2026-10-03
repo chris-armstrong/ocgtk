@@ -2,6 +2,7 @@
 (* ShadowNode: ShadowNode *)
 
 type t = [ `shadow_node | `render_node ] Gobject.obj
+(** A render node drawing one or more shadows behind its single child node. *)
 
 external new_ : Render_node.t -> Shadow.t array -> Gsize.t -> t
   = "ml_gsk_shadow_node_new"

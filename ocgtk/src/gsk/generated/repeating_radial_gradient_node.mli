@@ -2,6 +2,7 @@
 (* RepeatingRadialGradientNode: RepeatingRadialGradientNode *)
 
 type t = [ `repeating_radial_gradient_node | `render_node ] Gobject.obj
+(** A render node for a repeating radial gradient. *)
 
 external new_ :
   Ocgtk_graphene.Graphene.Wrappers.Rect.t ->

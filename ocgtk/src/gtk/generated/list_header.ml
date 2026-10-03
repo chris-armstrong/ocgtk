@@ -2,6 +2,11 @@
 (* ListHeader: ListHeader *)
 
 type t = [ `list_header | `object_ ] Gobject.obj
+(** Used by list widgets to represent the headers they display.
+
+    [GtkListHeader] objects are managed just like [Gtk.ListItem] objects via
+    their factory, but provide a different set of properties suitable for
+    managing the header instead of individual items. *)
 
 (* Methods *)
 

@@ -4,6 +4,10 @@
 type t =
   [ `gesture_stylus | `gesture_single | `gesture | `event_controller | `object_ ]
   Gobject.obj
+(** Recognizes tablet stylus input.
+
+    The provided signals just relay the basic information of the stylus events.
+*)
 
 external new_ : unit -> t = "ml_gtk_gesture_stylus_new"
 (** Create a new GestureStylus *)

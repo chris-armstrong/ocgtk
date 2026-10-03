@@ -2,6 +2,7 @@
 (* ObjectExpression: ObjectExpression *)
 
 type t = [ `object_expression | `expression ] Gobject.obj
+(** A [GObject] value in a [GtkExpression]. *)
 
 external new_ : [ `object_ ] Gobject.obj -> t = "ml_gtk_object_expression_new"
 (** Create a new ObjectExpression *)

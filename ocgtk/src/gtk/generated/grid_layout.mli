@@ -2,6 +2,19 @@
 (* GridLayout: GridLayout *)
 
 type t = [ `grid_layout | `layout_manager | `object_ ] Gobject.obj
+(** Arranges child widgets in rows and columns.
+
+    Children have an “attach point” defined by the horizontal and vertical index
+    of the cell they occupy; children can span multiple rows or columns. The
+    layout properties for setting the attach points and spans are set using the
+    [Gtk.GridLayoutChild] associated to each child widget.
+
+    The behaviour of [GtkGridLayout] when several children occupy the same grid
+    cell is undefined.
+
+    [GtkGridLayout] can be used like a [GtkBoxLayout] if all children are
+    attached to the same row or column; however, if you only ever need a single
+    row or column, you should consider using [GtkBoxLayout]. *)
 
 external new_ : unit -> t = "ml_gtk_grid_layout_new"
 (** Create a new GridLayout *)

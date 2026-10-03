@@ -2,6 +2,8 @@
 (* MenuItem: MenuItem *)
 
 type t = [ `menu_item | `object_ ] Gobject.obj
+(** [GMenuItem] is an opaque structure type. You must access it using the
+    functions below. *)
 
 external new_ : string option -> string option -> t = "ml_g_menu_item_new"
 (** Create a new MenuItem *)
@@ -26,7 +28,7 @@ external new_submenu :
 external set_submenu :
   t -> Menu_link_iter_and__menu_model.Menu_model.t option -> unit
   = "ml_g_menu_item_set_submenu"
-(** Sets or unsets the "submenu" link of [menu_item] to [submenu].
+(** Sets or unsets the “submenu” link of [menu_item] to [submenu].
 
     If [submenu] is non-[NULL], it is linked to. If it is [NULL] then the link
     is unset.
@@ -37,7 +39,7 @@ external set_submenu :
 external set_section :
   t -> Menu_link_iter_and__menu_model.Menu_model.t option -> unit
   = "ml_g_menu_item_set_section"
-(** Sets or unsets the "section" link of [menu_item] to [section].
+(** Sets or unsets the “section” link of [menu_item] to [section].
 
     The effect of having one menu appear as a section of another is exactly as
     it sounds: the items from [section] become a direct part of the menu that
@@ -59,7 +61,7 @@ external set_link :
     consecutive dashes. *)
 
 external set_label : t -> string option -> unit = "ml_g_menu_item_set_label"
-(** Sets or unsets the "label" attribute of [menu_item].
+(** Sets or unsets the “label” attribute of [menu_item].
 
     If [label] is non-[NULL] it is used as the label for the menu item. If it is
     [NULL] then the label attribute is unset. *)
@@ -70,15 +72,15 @@ external set_icon : t -> Icon.t -> unit = "ml_g_menu_item_set_icon"
     This call is the same as calling g_icon_serialize() and using the result as
     the value to g_menu_item_set_attribute_value() for [G_MENU_ATTRIBUTE_ICON].
 
-    This API is only intended for use with "noun" menu items; things like
-    bookmarks or applications in an "Open With" menu. Don't use it on menu items
+    This API is only intended for use with “noun” menu items; things like
+    bookmarks or applications in an “Open With” menu. Don't use it on menu items
     corresponding to verbs (eg: stock icons for 'Save' or 'Quit').
 
     If [icon] is [NULL] then the icon is unset. *)
 
 external set_detailed_action : t -> string -> unit
   = "ml_g_menu_item_set_detailed_action"
-(** Sets the "action" and possibly the "target" attribute of [menu_item].
+(** Sets the “action” and possibly the “target” attribute of [menu_item].
 
     The format of [detailed_action] is the same format parsed by
     g_action_parse_detailed_name().
@@ -113,24 +115,24 @@ external set_attribute_value : t -> string -> Gvariant.t option -> unit
 external set_action_and_target_value :
   t -> string option -> Gvariant.t option -> unit
   = "ml_g_menu_item_set_action_and_target_value"
-(** Sets or unsets the "action" and "target" attributes of [menu_item].
+(** Sets or unsets the “action” and “target” attributes of [menu_item].
 
-    If [action] is [NULL] then both the "action" and "target" attributes are
+    If [action] is [NULL] then both the “action” and “target” attributes are
     unset (and [target_value] is ignored).
 
-    If [action] is non-[NULL] then the "action" attribute is set. The "target"
+    If [action] is non-[NULL] then the “action” attribute is set. The “target”
     attribute is then set to the value of [target_value] if it is non-[NULL] or
     unset otherwise.
 
     Normal menu items (ie: not submenu, section or other custom item types) are
-    expected to have the "action" attribute set to identify the action that they
+    expected to have the “action” attribute set to identify the action that they
     are associated with. The state type of the action help to determine the
     disposition of the menu item. See [GAction] and [GActionGroup] for an
     overview of actions.
 
     In general, clicking on the menu item will result in activation of the named
-    action with the "target" attribute given as the parameter to the action
-    invocation. If the "target" attribute is not set then the action is invoked
+    action with the “target” attribute given as the parameter to the action
+    invocation. If the “target” attribute is not set then the action is invoked
     with no parameter.
 
     If the action has no state then the menu item is usually drawn as a plain

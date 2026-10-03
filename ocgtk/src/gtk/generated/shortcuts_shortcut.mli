@@ -3,6 +3,10 @@
 
 type t =
   [ `shortcuts_shortcut | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** A [GtkShortcutsShortcut] represents a single keyboard shortcut or gesture
+    with a short text.
+
+    This widget is only meant to be used with [GtkShortcutsWindow]. *)
 
 (* Methods *)
 (* Properties *)

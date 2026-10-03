@@ -2,6 +2,13 @@
 (* BookmarkList: BookmarkList *)
 
 type t = [ `bookmark_list | `object_ ] Gobject.obj
+(** A list model that wraps [GBookmarkFile].
+
+    It presents a [GListModel] and fills it asynchronously with the [GFileInfo]s
+    returned from that function.
+
+    The [GFileInfo]s in the list have some attributes in the recent namespace
+    added: [recent::private] (boolean) and [recent:applications] (stringv). *)
 
 external new_ : string option -> string option -> t = "ml_gtk_bookmark_list_new"
 (** Create a new BookmarkList *)

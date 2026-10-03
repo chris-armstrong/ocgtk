@@ -2,6 +2,16 @@
 (* ColorDialog: ColorDialog *)
 
 type t = [ `color_dialog | `object_ ] Gobject.obj
+(** Asynchronous API to present a color chooser dialog.
+
+    [GtkColorDialog] collects the arguments that are needed to present the
+    dialog to the user, such as a title for the dialog and whether it should be
+    modal.
+
+    The dialog is shown with the [Gtk.ColorDialog.choose_rgba] function.
+
+    See [Gtk.ColorDialogButton] for a convenient control that uses
+    [GtkColorDialog] and presents the results. *)
 
 external new_ : unit -> t = "ml_gtk_color_dialog_new"
 (** Create a new ColorDialog *)

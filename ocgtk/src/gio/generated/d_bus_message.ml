@@ -2,6 +2,8 @@
 (* DBusMessage: DBusMessage *)
 
 type t = [ `d_bus_message | `object_ ] Gobject.obj
+(** A type for representing D-Bus messages that can be sent or received on a
+    [Gio.DBusConnection]. *)
 
 external new_ : unit -> t = "ml_g_dbus_message_new"
 (** Create a new DBusMessage *)

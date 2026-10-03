@@ -2,6 +2,19 @@
 (* Video: Video *)
 
 type t = [ `video | `widget | `initially_unowned | `object_ ] Gobject.obj
+(** Shows a [GtkMediaStream] with media controls.
+
+    An example GtkVideo
+
+    The controls are available separately as [Gtk.MediaControls]. If you just
+    want to display a video without controls, you can treat it like any other
+    paintable and for example put it into a [Gtk.Picture].
+
+    [GtkVideo] aims to cover use cases such as previews, embedded animations,
+    etc. It supports autoplay, looping, and simple media controls. It does not
+    have support for video overlays, multichannel audio, device selection, or
+    input. If you are writing a full-fledged video player, you may want to use
+    the [Gdk.Paintable] API and a media framework such as Gstreamer directly. *)
 
 external new_ : unit -> t = "ml_gtk_video_new"
 (** Create a new Video *)

@@ -446,7 +446,7 @@ and Window : sig
 
       Setting the default size to a value <= 0 will cause it to be ignored and
       the natural size request will be used instead. It is possible to do this
-      while the window is showing to "reset" it to its initial size.
+      while the window is showing to “reset” it to its initial size.
 
       Unlike [Gtk.Widget.set_size_request], which sets a size request for a
       widget and thus would keep users from shrinking the window, this function

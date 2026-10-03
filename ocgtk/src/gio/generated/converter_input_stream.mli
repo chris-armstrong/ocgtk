@@ -4,6 +4,11 @@
 type t =
   [ `converter_input_stream | `filter_input_stream | `input_stream | `object_ ]
   Gobject.obj
+(** Converter input stream implements [Gio.InputStream] and allows conversion of
+    data of various types during reading.
+
+    As of GLib 2.34, [GConverterInputStream] implements
+    [Gio.PollableInputStream]. *)
 
 external new_ : Input_stream.t -> Converter.t -> t
   = "ml_g_converter_input_stream_new"

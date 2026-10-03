@@ -9,6 +9,22 @@ type t =
   | `initially_unowned
   | `object_ ]
   Gobject.obj
+(** [GtkAppChooserDialog] shows a [GtkAppChooserWidget] inside a [GtkDialog].
+
+    An example GtkAppChooserDialog
+
+    Note that [GtkAppChooserDialog] does not have any interesting methods of its
+    own. Instead, you should get the embedded [GtkAppChooserWidget] using
+    [Gtk.AppChooserDialog.get_widget] and call its methods if the generic
+    [Gtk.AppChooser] interface is not sufficient for your needs.
+
+    To set the heading that is shown above the [GtkAppChooserWidget], use
+    [Gtk.AppChooserDialog.set_heading].
+
+    {b CSS nodes}
+
+    [GtkAppChooserDialog] has a single CSS node with the name [window] and style
+    class [.appchooser]. *)
 
 external new_ :
   Application_and__window_and__window_group.Window.t option ->
