@@ -1,0 +1,65 @@
+{0 ocgtk index}
+
+The {b ocgtk} package provides OCaml bindings to GTK4 and its supporting
+libraries. Each namespace below is a separate sub-library; the
+[.generated_stubs*] libraries (pure C stubs with no OCaml modules, used
+internally to link the generated bindings) are omitted from this index.
+
+{1 Libraries}
+
+{2 {!Ocgtk} }
+The top-level module: re-exports every namespace below as a sub-module
+(e.g. [Ocgtk.Gtk.Widget]), plus {!Ocgtk_common} as [Ocgtk.Common].
+
+{2 {!Ocgtk_cairo} }
+2D vector graphics: drawing contexts, paths, patterns and surfaces.
+
+{2 {!Ocgtk_gdk} }
+Low-level windowing, displays, input and events that Gtk is built on.
+
+{2 {!Ocgtk_gdkpixbuf} }
+Image loading, scaling and pixel-buffer manipulation.
+
+{2 {!Ocgtk_gio} }
+I/O, files, and the application/networking abstractions from GLib's
+application framework.
+
+{2 {!Ocgtk_graphene} }
+Lightweight 3D transform and geometry types (vectors, matrices, rectangles)
+used by Gsk and Gtk.
+
+{2 {!Ocgtk_gsk} }
+The GTK scene graph: render nodes and transforms for drawing widgets.
+
+{2 {!Ocgtk_gtk} }
+The widget toolkit: windows, widgets, layout and the application model.
+
+{2 {!Ocgtk_pango} }
+Text layout and internationalized font rendering.
+
+{2 {!Ocgtk_pangocairo} }
+Glue between Pango text layout and Cairo rendering.
+
+{1 Common utility modules (ocgtk.common)}
+
+Hand-written modules shared across the binding libraries, also available as
+a single {!Ocgtk_common} namespace.
+
+{ul
+{- {!Bounded_int} — namespace re-exporting all the bounded integer modules below. }
+{- {!GError} — the error type for GTK/GLib functions. }
+{- {!Glib} — GLib's main event loop, timeouts and idle callbacks. }
+{- {!Glib_bytes} — [GBytes], an immutable reference-counted byte buffer. }
+{- {!Gobject} — the GObject type system, properties and signals. }
+{- {!Gsize} — a non-negative [gsize] ([size_t]). }
+{- {!Gvariant} — [GVariant] structured data serialization. }
+{- {!Gvariant_type} — [GVariant] type descriptions. }
+{- {!Int16} — signed 16-bit integer ([gint16]). }
+{- {!Int32} — signed 32-bit integer ([gint32]). }
+{- {!Int8} — signed 8-bit integer ([gint8]). }
+{- {!Ocgtk_common} — this library's own top module. }
+{- {!UInt16} — unsigned 16-bit integer ([guint16]). }
+{- {!UInt32} — unsigned 32-bit integer ([guint32]). }
+{- {!UInt64} — unsigned 64-bit integer ([guint64]). }
+{- {!UInt8} — unsigned 8-bit integer ([guint8]). }
+}

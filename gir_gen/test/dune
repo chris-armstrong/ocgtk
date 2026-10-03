@@ -50,6 +50,13 @@
   signature_tests
   ; Constants generation (pure unit)
   constant_code_tests
+  ; Doc_translate — pure translation engine (no wiring)
+  doc_translate_test_helpers
+  doc_parse_tests
+  doc_render_tests
+  doc_translate_tests
+  ; Doc_translate corpus smoke test (in-memory, both contexts)
+  doc_translate_corpus_tests
   ; Layer 2 — Class Generation (pure unit/pipeline)
   method_wrapper_tests
   constructor_wrapper_tests

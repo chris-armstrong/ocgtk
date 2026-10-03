@@ -26,6 +26,11 @@ let () =
       ("Signatures (ML)", Signature_tests.tests);
       (* Constants generation (pure unit) *)
       ("Constant Code", Constant_code_tests.tests);
+      (* Doc_translate — pure translation engine (no wiring) *)
+      ("Doc Parse", Doc_parse_tests.tests);
+      ("Doc Render", Doc_render_tests.tests);
+      ("Doc Translate", Doc_translate_tests.tests);
+      ("Doc Translate Corpus", Doc_translate_corpus_tests.tests);
       (* Layer 2 — Class Generation (pure unit/pipeline) *)
       ("Layer2 Method Wrappers", Method_wrapper_tests.tests);
       ("Constructor Wrappers", Constructor_wrapper_tests.tests);

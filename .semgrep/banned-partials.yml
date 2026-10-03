@@ -3,14 +3,11 @@
 # Why semgrep and not ast-grep: ast-grep 0.45.0 does not support OCaml
 # (`ast-grep --lang ocaml` -> "ocaml is not supported!"), and the `sg` binary
 # on PATH here is the login(1) group command, not ast-grep. semgrep has native
-# OCaml parsing and is what we run in CI alongside merlint.
+# OCaml parsing and is what we run in CI.
 #
 # These enforce the "Partial Functions — BANNED" table in
-# docs/code_guidelines/agent-summary.md. merlint has no per-function ban
-# (its disallowed_modules only bans whole modules), so these live here.
-# Stdlib.(=) / polymorphic comparison is left to merlint E106, which is
-# typed-tree aware and distinguishes local from foreign types; semgrep
-# cannot make that distinction, so it is intentionally NOT included here.
+# docs/code_guidelines/agent-summary.md. Polymorphic comparison (Stdlib.(=))
+# is intentionally NOT included: semgrep cannot tell local types from foreign ones.
 #
 # Run:  semgrep --config .semgrep/banned-partials.yml --error .
 
