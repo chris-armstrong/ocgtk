@@ -318,9 +318,8 @@ let generate_c_stub ~ctx ~output_dir entity =
 
     (* Append get_type stub for records registered with the GType system *)
     (match entity.kind with
-    | Gir_gen_lib.Types.Record record -> (
-        match record.glib_get_type with
-        | Some get_type_func ->
+    | Gir_gen_lib.Types.Record record ->
+        Option.iter (fun get_type_func ->
             let ns_snake =
               Gir_gen_lib.Utils.to_snake_case ctx.namespace.namespace_name
             in
@@ -336,8 +335,8 @@ let generate_c_stub ~ctx ~output_dir entity =
                  \  CAMLparam1(unit);\n\
                  \  CAMLreturn(Val_long(%s()));\n\
                   }\n"
-                 ml_name get_type_func)
-        | None -> ())
+                 ml_name get_type_func))
+        @@ record.glib_get_type
     | _ -> ());
 
     let body_content = Buffer.contents body_buf in
@@ -1648,11 +1647,11 @@ let render_enum_entry entity_kind component_kind entity_name entity_action
     ignore_components version_data =
   let buf = Buffer.create 128 in
   bprintf buf "\n  (%s %s\n" entity_kind entity_name;
-  (match entity_action with
-  | Some Gir_gen_lib.Override_types.Ignore -> bprintf buf "    (ignore)\n"
-  | Some (Gir_gen_lib.Override_types.Set_version vs) ->
-      bprintf buf "    (version \"%s\")\n" vs.vs_version
-  | None -> ());
+  Option.iter (function
+    | Gir_gen_lib.Override_types.Ignore -> bprintf buf "    (ignore)\n"
+    | Gir_gen_lib.Override_types.Set_version vs ->
+        bprintf buf "    (version \"%s\")\n" vs.vs_version)
+  @@ entity_action;
   List.iter
     ~f:(fun c -> bprintf buf "%s\n" (render_component ~kind:component_kind c))
     ignore_components;
@@ -1793,11 +1792,11 @@ let generate_overrides gir_file output_file =
     ~f:(fun (o : Gir_gen_lib.Override_types.class_override) ->
       let buf2 = Buffer.create 64 in
       bprintf buf2 "\n  (class %s\n" o.class_name;
-      (match o.class_action with
-      | Some Gir_gen_lib.Override_types.Ignore -> bprintf buf2 "    (ignore)\n"
-      | Some (Gir_gen_lib.Override_types.Set_version vs) ->
-          bprintf buf2 "    (version \"%s\")\n" vs.vs_version
-      | None -> ());
+      Option.iter (function
+        | Gir_gen_lib.Override_types.Ignore -> bprintf buf2 "    (ignore)\n"
+        | Gir_gen_lib.Override_types.Set_version vs ->
+            bprintf buf2 "    (version \"%s\")\n" vs.vs_version)
+      @@ o.class_action;
       List.iter
         ~f:(fun c ->
           bprintf buf2 "%s\n" (render_component ~kind:"constructor" c))

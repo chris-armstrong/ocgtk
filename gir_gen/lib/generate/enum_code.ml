@@ -30,9 +30,9 @@ let emit_member_branch ~namespace ~class_version ~member_version ~fallback_line
       | Error _ -> Buffer.add_string buf branch
       | Ok guard_if -> (
           bprintf buf "%s\n%s\n" guard_if branch;
-          (match fallback_line with
-          | None -> ()
-          | Some fb -> bprintf buf "%s\n%s\n" Version_guard.c_guard_else fb);
+          Option.iter (fun fb ->
+              bprintf buf "%s\n%s\n" Version_guard.c_guard_else fb)
+          @@ fallback_line;
           match Version_guard.emit_c_guard namespace v ~is_opening:false with
           | Ok guard_endif -> Buffer.add_string buf (guard_endif ^ "\n")
           | Error _ -> Buffer.add_string buf "#endif\n"))
@@ -43,9 +43,8 @@ let generate_ocaml_enum enum =
   let lower_name = Utils.ocaml_enum_name enum in
 
   bprintf buf "(* %s - enumeration *)\n" enum.enum_name;
-  (match enum.enum_doc with
-  | Some doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc)
-  | None -> ());
+  Option.iter (fun doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc))
+  @@ enum.enum_doc;
 
   bprintf buf "type %s = [\n" lower_name;
 
@@ -55,12 +54,9 @@ let generate_ocaml_enum enum =
       bprintf buf "  | `%s" vname;
       (* Odoc renders a polymorphic-variant member doc only when it follows
          the tag, so the doc goes after it, not before. *)
-      (match
-         Doc_emit.item_doc ~indent:"  " ~context:Doc_translate.Member
-           member.member_doc
-       with
-      | Some comment -> bprintf buf " %s" comment
-      | None -> ());
+      Option.iter (fun comment -> bprintf buf " %s" comment)
+      @@ Doc_emit.item_doc ~indent:"  " ~context:Doc_translate.Member
+           member.member_doc;
       if i < List.length enum.members - 1 then bprintf buf "\n"
       else bprintf buf "\n]\n\n")
     enum.members;
@@ -77,9 +73,8 @@ let generate_ocaml_bitfield bitfield =
   let lower_name = Utils.ocaml_bitfield_name bitfield in
 
   bprintf buf "(* %s - bitfield/flags *)\n" bitfield.bitfield_name;
-  (match bitfield.bitfield_doc with
-  | Some doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc)
-  | None -> ());
+  Option.iter (fun doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc))
+  @@ bitfield.bitfield_doc;
 
   bprintf buf "type %s_flag = [\n" lower_name;
 
@@ -87,12 +82,9 @@ let generate_ocaml_bitfield bitfield =
     ~f:(fun i flag ->
       let vname = variant_name_of_member flag.flag_name in
       bprintf buf "  | `%s" vname;
-      (match
-         Doc_emit.item_doc ~indent:"  " ~context:Doc_translate.Member
-           flag.flag_doc
-       with
-      | Some comment -> bprintf buf " %s" comment
-      | None -> ());
+      Option.iter (fun comment -> bprintf buf " %s" comment)
+      @@ Doc_emit.item_doc ~indent:"  " ~context:Doc_translate.Member
+           flag.flag_doc;
       if i < List.length bitfield.flags - 1 then bprintf buf "\n"
       else bprintf buf "\n]\n\n")
     bitfield.flags;

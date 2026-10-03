@@ -75,12 +75,9 @@ let emit_doc buf (cst : gir_constant) =
   let fallback =
     Option.map (fun _ -> sprintf "[%s]" cst.constant_c_type) cst.version
   in
-  match
-    Doc_emit.item_doc ~indent:"" ?since:cst.version ?fallback
-      ~context:Doc_translate.Member cst.constant_doc
-  with
-  | Some comment -> bprintf buf "%s\n" comment
-  | None -> ()
+  Option.iter (fun comment -> bprintf buf "%s\n" comment)
+  @@ Doc_emit.item_doc ~indent:"" ?since:cst.version ?fallback
+       ~context:Doc_translate.Member cst.constant_doc
 
 (** Generate the .mli content for the constants of a namespace. Returns just the
     file header when [constants] is empty. *)

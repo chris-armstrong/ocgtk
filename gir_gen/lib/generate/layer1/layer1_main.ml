@@ -61,24 +61,22 @@ let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ~base_type ?c_symbol_prefix ~entity_kind
     ?from_gobject_c_name ?(signals = []) ?glib_get_type buf : unit =
   generate_type_declaration ~output_mode ~base_type buf;
-  (match from_gobject_c_name with
-  | Some c_name ->
+  Option.iter (fun c_name ->
       bprintf buf "external from_gobject : 'a Gobject.obj -> t = \"%s\"\n\n"
-        c_name
-  | None -> ());
+        c_name)
+  @@ from_gobject_c_name;
   generate_constructors_section ~ctx ~class_name ~constructors buf;
   generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix
     ~entity_kind ~methods buf;
   generate_properties_section ~ctx ~class_name ~methods ~properties buf;
   generate_signal_bindings_section ~ctx ~output_mode ~class_name signals buf;
-  match glib_get_type with
-  | Some _ ->
+  Option.iter (fun _ ->
       let ns_snake = Utils.to_snake_case ctx.namespace.namespace_name in
       let class_snake = Utils.to_snake_case class_name in
       let c_stub = sprintf "ml_%s_%s_get_type" ns_snake class_snake in
       bprintf buf "\nexternal get_type : unit -> Gobject.Type.t = \"%s\"\n"
-        c_stub
-  | None -> ()
+        c_stub)
+  @@ glib_get_type
 
 let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
     ~parent_chain ~constructors ~methods ~properties ?c_symbol_prefix
@@ -97,11 +95,8 @@ let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
   (* The blank line makes this a floating module comment. Without it, the
      comment attaches to the first type, odoc no longer shows it as the
      module's synopsis on parent pages, and ocamlformat keeps it there. *)
-  (match
-     Doc_emit.item_doc ~indent:"" ~context:Doc_translate.Member class_doc
-   with
-  | Some comment -> bprintf buf "%s\n\n" comment
-  | None -> ());
+  Option.iter (fun comment -> bprintf buf "%s\n\n" comment)
+  @@ Doc_emit.item_doc ~indent:"" ~context:Doc_translate.Member class_doc;
   generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ?c_symbol_prefix ~base_type ~entity_kind
     ?from_gobject_c_name ~signals ?glib_get_type buf;
