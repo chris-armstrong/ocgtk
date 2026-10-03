@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AccessibleRange: AccessibleRange *)
 
-type t = [ `accessible_range ] Gobject.obj
 (** An interface for accessible objects containing a numeric value.
 
     [GtkAccessibleRange] describes ranged controls for Assistive Technologies.
@@ -27,6 +26,8 @@ type t = [ `accessible_range ] Gobject.obj
     - [GTK_ACCESSIBLE_PROPERTY_VALUE_MIN]
     - [GTK_ACCESSIBLE_PROPERTY_VALUE_NOW]
     - [GTK_ACCESSIBLE_PROPERTY_VALUE_TEXT] *)
+
+type t = [ `accessible_range ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gtk_accessible_range_from_gobject"

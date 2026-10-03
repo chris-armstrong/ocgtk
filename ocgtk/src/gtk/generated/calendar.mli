@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Calendar: Calendar *)
 
-type t = [ `calendar | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Displays a Gregorian calendar, one month at a time.
 
     An example GtkCalendar
@@ -52,6 +51,8 @@ type t = [ `calendar | `widget | `initially_unowned | `object_ ] Gobject.obj
     style class. The label of the current day get the .today style class.
 
     Marked day labels get the :selected state assigned. *)
+
+type t = [ `calendar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_calendar_new"
 (** Create a new Calendar *)

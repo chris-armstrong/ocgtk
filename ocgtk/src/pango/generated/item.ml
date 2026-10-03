@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Item: Item *)
 
-type t = [ `item ] Gobject.obj
 (** The [PangoItem] structure stores information about a segment of text.
 
     You typically obtain [PangoItems] by itemizing a piece of text with
     [itemize]. *)
+
+type t = [ `item ] Gobject.obj
 
 external new_ : unit -> t = "ml_pango_item_new"
 (** Create a new Item *)

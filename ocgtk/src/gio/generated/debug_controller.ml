@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DebugController: DebugController *)
 
-type t = [ `debug_controller ] Gobject.obj
 (** [GDebugController] is an interface to expose control of debugging features
     and debug output.
 
@@ -19,6 +18,8 @@ type t = [ `debug_controller ] Gobject.obj
     function, creating one of the built-in implementations of [GDebugController]
     should be all that’s needed to dynamically enable or disable debug output.
 *)
+
+type t = [ `debug_controller ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_debug_controller_from_gobject"

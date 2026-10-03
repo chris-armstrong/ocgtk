@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Spinner: Spinner *)
 
-type t = [ `spinner | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Displays an icon-size spinning animation.
 
     It is often used as an alternative to a [Gtk.ProgressBar] for displaying
@@ -20,6 +19,8 @@ type t = [ `spinner | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkSpinner] uses the [Gtk.AccessibleRole.progress_bar] role. *)
+
+type t = [ `spinner | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_spinner_new"
 (** Create a new Spinner *)

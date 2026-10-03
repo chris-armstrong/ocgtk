@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusNodeInfo: DBusNodeInfo *)
 
-type t = [ `d_bus_node_info ] Gobject.obj
 (** Information about nodes in a remote object hierarchy. *)
+
+type t = [ `d_bus_node_info ] Gobject.obj
 
 external new_for_xml : string -> (t, GError.t) result
   = "ml_g_dbus_node_info_new_for_xml"

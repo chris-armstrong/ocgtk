@@ -1,14 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileChooserDialog: FileChooserDialog *)
 
-type t =
-  [ `file_chooser_dialog
-  | `dialog
-  | `window
-  | `widget
-  | `initially_unowned
-  | `object_ ]
-  Gobject.obj
 (** [GtkFileChooserDialog] is a dialog suitable for use with “File Open” or
     “File Save” commands.
 
@@ -179,5 +171,14 @@ type t =
 
     [GtkFileChooserDialog] has a single CSS node with the name [window] and
     style class [.filechooser]. *)
+
+type t =
+  [ `file_chooser_dialog
+  | `dialog
+  | `window
+  | `widget
+  | `initially_unowned
+  | `object_ ]
+  Gobject.obj
 
 (* Methods *)

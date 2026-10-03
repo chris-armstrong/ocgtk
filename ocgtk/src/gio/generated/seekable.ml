@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Seekable: Seekable *)
 
-type t = [ `seekable ] Gobject.obj
 (** [GSeekable] is implemented by streams (implementations of [Gio.InputStream]
     or [Gio.OutputStream]) that support seeking.
 
@@ -14,6 +13,8 @@ type t = [ `seekable ] Gobject.obj
     [GSeekable] on resizable streams is approximately the same as POSIX
     [lseek()]) on a normal file. Seeking past the end and writing data will
     usually cause the stream to resize by introducing zero bytes. *)
+
+type t = [ `seekable ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_seekable_from_gobject"
 

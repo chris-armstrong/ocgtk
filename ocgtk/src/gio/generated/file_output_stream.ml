@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileOutputStream: FileOutputStream *)
 
-type t = [ `file_output_stream | `output_stream | `object_ ] Gobject.obj
 (** [GFileOutputStream] provides output streams that write their content to a
     file.
 
@@ -15,6 +14,8 @@ type t = [ `file_output_stream | `output_stream | `object_ ] Gobject.obj
     [Gio.Seekable.seek]. To find out if a file output stream supports
     truncating, use [Gio.Seekable.can_truncate]. To truncate a file output
     stream, use [Gio.Seekable.truncate]. *)
+
+type t = [ `file_output_stream | `output_stream | `object_ ] Gobject.obj
 
 (* Methods *)
 

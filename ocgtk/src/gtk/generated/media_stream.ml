@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MediaStream: MediaStream *)
 
-type t = [ `media_stream | `object_ ] Gobject.obj
 (** The integration point for media playback inside GTK.
 
     GTK provides an implementation of the [GtkMediaStream] interface that is
@@ -14,6 +13,8 @@ type t = [ `media_stream | `object_ ] Gobject.obj
     [Gtk.MediaStream.ended], [Gtk.MediaStream.seek_success],
     [Gtk.MediaStream.seek_failed], [Gtk.MediaStream.gerror],
     [Gtk.MediaStream.error], [Gtk.MediaStream.error_valist]. *)
+
+type t = [ `media_stream | `object_ ] Gobject.obj
 
 (* Methods *)
 

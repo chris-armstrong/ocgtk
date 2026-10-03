@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DeviceTool: DeviceTool *)
 
-type t = [ `device_tool | `object_ ] Gobject.obj
 (** A physical tool associated to a [GdkDevice]. *)
+
+type t = [ `device_tool | `object_ ] Gobject.obj
 
 (* Methods *)
 

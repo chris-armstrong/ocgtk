@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* EventControllerFocus: EventControllerFocus *)
 
-type t = [ `event_controller_focus | `event_controller | `object_ ] Gobject.obj
 (** Tracks keyboard focus.
 
     The event controller offers [Gtk.EventControllerFocus::enter] and
@@ -10,6 +9,8 @@ type t = [ `event_controller_focus | `event_controller | `object_ ] Gobject.obj
     [Gtk.EventControllerFocus:contains-focus] properties which are updated to
     reflect focus changes inside the widget hierarchy that is rooted at the
     controllers widget. *)
+
+type t = [ `event_controller_focus | `event_controller | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_event_controller_focus_new"
 (** Create a new EventControllerFocus *)

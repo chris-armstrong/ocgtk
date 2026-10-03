@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SearchEntry: SearchEntry *)
 
-type t = [ `search_entry | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** A single-line text entry widget for use as a search entry.
 
     The main API for interacting with a [GtkSearchEntry] as entry is the
@@ -52,6 +51,8 @@ type t = [ `search_entry | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkSearchEntry] uses the [Gtk.AccessibleRole.search_box] role. *)
+
+type t = [ `search_entry | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_search_entry_new"
 (** Create a new SearchEntry *)

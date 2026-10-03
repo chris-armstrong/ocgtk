@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* LockButton: LockButton *)
 
-type t =
-  [ `lock_button | `button | `widget | `initially_unowned | `object_ ]
-  Gobject.obj
 (** [GtkLockButton] is a widget to obtain and revoke authorizations needed to
     operate the controls.
 
@@ -39,6 +36,10 @@ type t =
     with the [Gtk.LockButton:text-lock], [Gtk.LockButton:text-unlock],
     [Gtk.LockButton:tooltip-lock], [Gtk.LockButton:tooltip-unlock] and
     [Gtk.LockButton:tooltip-not-authorized] properties. *)
+
+type t =
+  [ `lock_button | `button | `widget | `initially_unowned | `object_ ]
+  Gobject.obj
 
 external new_ : Ocgtk_gio.Gio.Wrappers.Permission.t option -> t
   = "ml_gtk_lock_button_new"

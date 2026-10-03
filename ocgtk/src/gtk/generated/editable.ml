@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Editable: Editable *)
 
-type t = [ `editable ] Gobject.obj
 (** Interface for single-line text editing widgets.
 
     Typical examples of editable widgets are [Gtk.Entry] and [Gtk.SpinButton].
@@ -129,6 +128,8 @@ type t = [ `editable ] Gobject.obj
     wish to connect to the [Gtk.Editable::insert-text] and
     [Gtk.Editable::delete-text] signals, you will need to connect to them on the
     delegate obtained via [Gtk.Editable.get_delegate]. *)
+
+type t = [ `editable ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gtk_editable_from_gobject"
 

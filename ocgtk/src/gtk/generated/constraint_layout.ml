@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ConstraintLayout: ConstraintLayout *)
 
-type t = [ `constraint_layout | `layout_manager | `object_ ] Gobject.obj
 (** Uses constraints to describe relations between widgets.
 
     [GtkConstraintLayout] is a layout manager that uses relations between widget
@@ -164,6 +163,8 @@ type t = [ `constraint_layout | `layout_manager | `object_ ] Gobject.obj
       // divided by 2 plus 12
       [button1(button2 / 2 + 12)]
     ]} *)
+
+type t = [ `constraint_layout | `layout_manager | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_constraint_layout_new"
 (** Create a new ConstraintLayout *)

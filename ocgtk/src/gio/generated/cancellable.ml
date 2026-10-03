@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Cancellable: Cancellable *)
 
-type t = [ `cancellable | `object_ ] Gobject.obj
 (** [GCancellable] allows operations to be cancelled.
 
     [GCancellable] is a thread-safe operation cancellation stack used throughout
     GIO to allow for cancellation of synchronous and asynchronous operations. *)
+
+type t = [ `cancellable | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_g_cancellable_new"
 (** Create a new Cancellable *)

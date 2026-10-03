@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GestureSwipe: GestureSwipe *)
 
-type t =
-  [ `gesture_swipe | `gesture_single | `gesture | `event_controller | `object_ ]
-  Gobject.obj
 (** Recognizes swipe gestures.
 
     After a press/move/.../move/release sequence happens, the
@@ -15,6 +12,10 @@ type t =
     handler.
 
     All velocities are reported in pixels/sec units. *)
+
+type t =
+  [ `gesture_swipe | `gesture_single | `gesture | `event_controller | `object_ ]
+  Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_gesture_swipe_new"
 (** Create a new GestureSwipe *)

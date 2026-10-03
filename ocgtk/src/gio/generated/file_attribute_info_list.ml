@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileAttributeInfoList: FileAttributeInfoList *)
 
-type t = [ `file_attribute_info_list ] Gobject.obj
 (** Acts as a lightweight registry for possible valid file attributes. The
     registry stores Key-Value pair formats as [GFileAttributeInfos]. *)
+
+type t = [ `file_attribute_info_list ] Gobject.obj
 
 external new_ : unit -> t = "ml_g_file_attribute_info_list_new"
 (** Create a new FileAttributeInfoList *)

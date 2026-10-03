@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ComboBox: ComboBox *)
 
-type t = [ `combo_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** A [GtkComboBox] is a widget that allows the user to choose from a list of
     valid choices.
 
@@ -60,6 +59,8 @@ type t = [ `combo_box | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkComboBox] uses the [Gtk.AccessibleRole.combo_box] role. *)
+
+type t = [ `combo_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_combo_box_new"
 (** Create a new ComboBox *)

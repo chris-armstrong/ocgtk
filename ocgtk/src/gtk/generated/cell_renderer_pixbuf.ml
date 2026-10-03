@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CellRendererPixbuf: CellRendererPixbuf *)
 
-type t =
-  [ `cell_renderer_pixbuf | `cell_renderer | `initially_unowned | `object_ ]
-  Gobject.obj
 (** Renders a pixbuf in a cell
 
     A [GtkCellRendererPixbuf] can be used to render an image in a cell. It
@@ -18,6 +15,10 @@ type t =
     renders that pixbuf, if the [GtkCellRenderer:is-expanded] property is
     [FALSE] and the [GtkCellRendererPixbuf:pixbuf-expander-closed] property is
     set to a pixbuf, it renders that one. *)
+
+type t =
+  [ `cell_renderer_pixbuf | `cell_renderer | `initially_unowned | `object_ ]
+  Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_cell_renderer_pixbuf_new"
 (** Create a new CellRendererPixbuf *)

@@ -1,14 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MessageDialog: MessageDialog *)
 
-type t =
-  [ `message_dialog
-  | `dialog
-  | `window
-  | `widget
-  | `initially_unowned
-  | `object_ ]
-  Gobject.obj
 (** [GtkMessageDialog] presents a dialog with some message text.
 
     An example GtkMessageDialog
@@ -67,6 +59,15 @@ type t =
     The [GtkMessageDialog] implementation of the [GtkBuildable] interface
     exposes the message area as an internal child with the name “message_area”.
 *)
+
+type t =
+  [ `message_dialog
+  | `dialog
+  | `window
+  | `widget
+  | `initially_unowned
+  | `object_ ]
+  Gobject.obj
 
 (* Methods *)
 

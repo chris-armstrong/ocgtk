@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* OpacityNode: OpacityNode *)
 
-type t = [ `opacity_node | `render_node ] Gobject.obj
 (** A render node controlling the opacity of its single child node. *)
+
+type t = [ `opacity_node | `render_node ] Gobject.obj
 
 external new_ : Render_node.t -> float -> t = "ml_gsk_opacity_node_new"
 (** Create a new OpacityNode *)

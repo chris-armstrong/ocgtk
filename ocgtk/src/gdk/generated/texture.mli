@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Texture: Texture *)
 
-type t = [ `texture | `object_ ] Gobject.obj
 (** Refers to pixel data in various forms.
 
     It is primarily meant for pixel data that will not change over multiple
@@ -26,6 +25,8 @@ type t = [ `texture | `object_ ] Gobject.obj
     recommended that you use a dedicated image loading framework such as
     {{:https://lib.rs/crates/glycin}glycin}, if you need to load untrusted image
     data. *)
+
+type t = [ `texture | `object_ ] Gobject.obj
 
 external new_for_pixbuf : Ocgtk_gdkpixbuf.GdkPixbuf.Wrappers.Pixbuf.t -> t
   = "ml_gdk_texture_new_for_pixbuf"

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DisplayManager: DisplayManager *)
 
-type t = [ `display_manager | `object_ ] Gobject.obj
 (** Offers notification when displays appear or disappear.
 
     [GdkDisplayManager] is a singleton object.
@@ -44,6 +43,8 @@ type t = [ `display_manager | `object_ ] Gobject.obj
     #endif
       g_error (“Unsupported GDK backend”);
     ]} *)
+
+type t = [ `display_manager | `object_ ] Gobject.obj
 
 (* Methods *)
 

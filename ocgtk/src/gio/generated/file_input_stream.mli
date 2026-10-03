@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileInputStream: FileInputStream *)
 
-type t = [ `file_input_stream | `input_stream | `object_ ] Gobject.obj
 (** [GFileInputStream] provides input streams that take their content from a
     file.
 
@@ -11,6 +10,8 @@ type t = [ `file_input_stream | `input_stream | `object_ ] Gobject.obj
     [Gio.Seekable.tell]. To find out if a file input stream supports seeking,
     use [Gio.Seekable.can_seek]. To position a file input stream, use
     [Gio.Seekable.seek]. *)
+
+type t = [ `file_input_stream | `input_stream | `object_ ] Gobject.obj
 
 (* Methods *)
 

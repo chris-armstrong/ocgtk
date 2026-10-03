@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ShortcutsWindow: ShortcutsWindow *)
 
-type t =
-  [ `shortcuts_window | `window | `widget | `initially_unowned | `object_ ]
-  Gobject.obj
 (** A [GtkShortcutsWindow] shows information about the keyboard shortcuts and
     gestures of an application.
 
@@ -65,6 +62,10 @@ type t =
 
     [GtkShortcutsWindow] has a single CSS node with the name [window] and style
     class [.shortcuts]. *)
+
+type t =
+  [ `shortcuts_window | `window | `widget | `initially_unowned | `object_ ]
+  Gobject.obj
 
 (* Methods *)
 

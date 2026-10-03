@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Application: Application *)
 
-type t = [ `application | `object_ ] Gobject.obj
 (** [GApplication] is the core class for application support.
 
     A [GApplication] is the foundation of an application. It wraps some
@@ -119,6 +118,8 @@ type t = [ `application | `object_ ] Gobject.obj
     For an example of using extra D-Bus hooks with [GApplication], see
     {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-dbushooks.c}gapplication-example-dbushooks.c}.
 *)
+
+type t = [ `application | `object_ ] Gobject.obj
 
 external new_ : string option -> Gio_enums.applicationflags -> t
   = "ml_g_application_new"

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreeModelSort: TreeModelSort *)
 
-type t = [ `tree_model_sort | `object_ ] Gobject.obj
 (** A GtkTreeModel which makes an underlying tree model sortable
 
     The [GtkTreeModelSort] is a model which implements the [GtkTreeSortable]
@@ -97,6 +96,8 @@ type t = [ `tree_model_sort | `object_ ] Gobject.obj
       g_free (modified_data);
     }
     ]} *)
+
+type t = [ `tree_model_sort | `object_ ] Gobject.obj
 
 external new_with_model : Tree_model.t -> t
   = "ml_gtk_tree_model_sort_new_with_model"

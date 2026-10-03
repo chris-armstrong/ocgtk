@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TextTag: TextTag *)
 
-type t = [ `text_tag | `object_ ] Gobject.obj
 (** Can be applied to text contained in a [GtkTextBuffer].
 
     You may wish to begin by reading the text widget conceptual overview, which
@@ -19,6 +18,8 @@ type t = [ `text_tag | `object_ ] Gobject.obj
     property has been set or not.
 
     They are maintained by GTK and you should not set them independently. *)
+
+type t = [ `text_tag | `object_ ] Gobject.obj
 
 external new_ : string option -> t = "ml_gtk_text_tag_new"
 (** Create a new TextTag *)

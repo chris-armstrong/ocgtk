@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AccessibleList: AccessibleList *)
 
-type t = [ `accessible_list ] Gobject.obj
 (** Wraps a list of references to [Gtk.Accessible] objects. *)
+
+type t = [ `accessible_list ] Gobject.obj
 
 external new_from_array :
   At_context_and__accessible.Accessible.t array -> Gsize.t -> t

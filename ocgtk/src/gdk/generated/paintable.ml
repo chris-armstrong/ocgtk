@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Paintable: Paintable *)
 
-type t = [ `paintable ] Gobject.obj
 (** An interface for content that can be painted.
 
     The content of a [GdkPaintable] can be painted anywhere at any size without
@@ -45,6 +44,8 @@ type t = [ `paintable ] Gobject.obj
     for implementing subclasses and should not be used by applications:
     [Gdk.Paintable.invalidate_contents], [Gdk.Paintable.invalidate_size],
     [Gdk.Paintable.new_empty]. *)
+
+type t = [ `paintable ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gdk_paintable_from_gobject"
 

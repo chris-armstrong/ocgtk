@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SortListModel: SortListModel *)
 
-type t = [ `sort_list_model | `object_ ] Gobject.obj
 (** A list model that sorts the elements of another model.
 
     The elements are sorted according to a [GtkSorter].
@@ -28,6 +27,8 @@ type t = [ `sort_list_model | `object_ ] Gobject.obj
     will sort all items with that sorter and items comparing equal with it will
     be put into the same section. The [Gtk.SortListModel:sorter] will then be
     used to sort items inside their sections. *)
+
+type t = [ `sort_list_model | `object_ ] Gobject.obj
 
 external new_ :
   Ocgtk_gio.Gio.Wrappers.List_model.t option -> Sorter.t option -> t

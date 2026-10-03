@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AsyncInitable: AsyncInitable *)
 
-type t = [ `async_initable ] Gobject.obj
 (** [GAsyncInitable] is an interface for asynchronously initializable objects.
 
     This is the asynchronous version of [Gio.Initable]; it behaves the same in
@@ -103,6 +102,8 @@ type t = [ `async_initable ] Gobject.obj
       iface->init_finish = foo_init_finish;
     }
     ]} *)
+
+type t = [ `async_initable ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_async_initable_from_gobject"

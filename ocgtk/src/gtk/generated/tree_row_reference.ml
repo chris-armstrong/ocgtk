@@ -1,10 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreeRowReference: TreeRowReference *)
 
-type t = [ `tree_row_reference ] Gobject.obj
 (** A GtkTreeRowReference tracks model changes so that it always refers to the
     same row (a [GtkTreePath] refers to a position, not a fixed row). Create a
     new GtkTreeRowReference with gtk_tree_row_reference_new(). *)
+
+type t = [ `tree_row_reference ] Gobject.obj
 
 external new_ : Tree_model.t -> Tree_path.t -> t
   = "ml_gtk_tree_row_reference_new"

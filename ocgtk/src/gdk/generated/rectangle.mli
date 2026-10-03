@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Rectangle: Rectangle *)
 
-type t = [ `rectangle ] Gobject.obj
 (** Represents a rectangle.
 
     [GdkRectangle] is identical to [cairo_rectangle_t]. Together with Cairo’s
@@ -17,6 +16,8 @@ type t = [ `rectangle ] Gobject.obj
 
     The Graphene library has a number of other data types for regions and
     volumes in 2D and 3D. *)
+
+type t = [ `rectangle ] Gobject.obj
 
 (* Methods *)
 

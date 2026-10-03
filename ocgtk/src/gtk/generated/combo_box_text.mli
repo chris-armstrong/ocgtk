@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ComboBoxText: ComboBoxText *)
 
-type t =
-  [ `combo_box_text | `combo_box | `widget | `initially_unowned | `object_ ]
-  Gobject.obj
 (** A [GtkComboBoxText] is a simple variant of [GtkComboBox] for text-only use
     cases.
 
@@ -59,6 +56,10 @@ type t =
     [GtkComboBoxText] has a single CSS node with name combobox. It adds the
     style class .combo to the main CSS nodes of its entry and button children,
     and the .linked class to the node of its internal box. *)
+
+type t =
+  [ `combo_box_text | `combo_box | `widget | `initially_unowned | `object_ ]
+  Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_combo_box_text_new"
 (** Create a new ComboBoxText *)

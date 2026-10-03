@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusAnnotationInfo: DBusAnnotationInfo *)
 
-type t = [ `d_bus_annotation_info ] Gobject.obj
 (** Information about an annotation. *)
+
+type t = [ `d_bus_annotation_info ] Gobject.obj
 
 (* Methods *)
 

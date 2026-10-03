@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* EventControllerScroll: EventControllerScroll *)
 
-type t = [ `event_controller_scroll | `event_controller | `object_ ] Gobject.obj
 (** Handles scroll events.
 
     It is capable of handling both discrete and continuous scroll events from
@@ -36,6 +35,8 @@ type t = [ `event_controller_scroll | `event_controller | `object_ ] Gobject.obj
     [Gtk.EventControllerScroll::decelerate] signal, emitted at the end of
     scrolling with two X/Y velocity arguments that are consistent with the
     motion that was received. *)
+
+type t = [ `event_controller_scroll | `event_controller | `object_ ] Gobject.obj
 
 external new_ : Gtk_enums.eventcontrollerscrollflags -> t
   = "ml_gtk_event_controller_scroll_new"

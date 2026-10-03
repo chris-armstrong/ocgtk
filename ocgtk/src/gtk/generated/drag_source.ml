@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DragSource: DragSource *)
 
-type t =
-  [ `drag_source | `gesture_single | `gesture | `event_controller | `object_ ]
-  Gobject.obj
 (** An event controller to initiate Drag-And-Drop operations.
 
     [GtkDragSource] can be set up with the necessary ingredients for a DND
@@ -76,6 +73,10 @@ type t =
     actions include [GDK_ACTION_MOVE], you need to listen for the
     [Gtk.DragSource::drag-end] signal and delete the data after it has been
     transferred. *)
+
+type t =
+  [ `drag_source | `gesture_single | `gesture | `event_controller | `object_ ]
+  Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_drag_source_new"
 (** Create a new DragSource *)

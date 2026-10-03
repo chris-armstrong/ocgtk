@@ -1,13 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MediaControls: MediaControls *)
 
-type t =
-  [ `media_controls | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Shows controls for video playback.
 
     An example GtkMediaControls
 
     Usually, [GtkMediaControls] is used as part of [Gtk.Video]. *)
+
+type t =
+  [ `media_controls | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : Media_stream.t option -> t = "ml_gtk_media_controls_new"
 (** Create a new MediaControls *)

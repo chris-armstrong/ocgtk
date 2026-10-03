@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Grid: Grid *)
 
-type t = [ `grid | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Arranges its child widgets in rows and columns.
 
     An example GtkGrid
@@ -85,6 +84,8 @@ type t = [ `grid | `widget | `initially_unowned | `object_ ] Gobject.obj
 
     Starting from GTK 4.12, [GtkGrid] uses the [Gtk.AccessibleRole.generic]
     role. *)
+
+type t = [ `grid | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_grid_new"
 (** Create a new Grid *)

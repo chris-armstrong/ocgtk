@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Matrix: Matrix *)
 
-type t = [ `matrix ] Gobject.obj
 (** A [PangoMatrix] specifies a transformation between user-space and device
     coordinates.
 
@@ -11,6 +10,8 @@ type t = [ `matrix ] Gobject.obj
     x_device = x_user * matrix->xx + y_user * matrix->xy + matrix->x0;
     y_device = x_user * matrix->yx + y_user * matrix->yy + matrix->y0;
     ]} *)
+
+type t = [ `matrix ] Gobject.obj
 
 (* Methods *)
 

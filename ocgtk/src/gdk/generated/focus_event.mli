@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FocusEvent: FocusEvent *)
 
-type t = [ `focus_event | `event ] Gobject.obj
 (** An event related to a keyboard focus change. *)
+
+type t = [ `focus_event | `event ] Gobject.obj
 
 (* Methods *)
 

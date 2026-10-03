@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Inscription: Inscription *)
 
-type t = [ `inscription | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Shows text in a predefined area.
 
     You likely want to use [GtkLabel] instead as this widget is intended only
@@ -18,6 +17,8 @@ type t = [ `inscription | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b CSS nodes}
 
     [GtkInscription] has a single CSS node with the name label. *)
+
+type t = [ `inscription | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : string option -> t = "ml_gtk_inscription_new"
 (** Create a new Inscription *)

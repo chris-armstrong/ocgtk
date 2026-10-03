@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Fixed: Fixed *)
 
-type t = [ `fixed | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Places its child widgets at fixed positions and with fixed sizes.
 
     [GtkFixed] performs no automatic layout management.
@@ -37,6 +36,8 @@ type t = [ `fixed | `widget | `initially_unowned | `object_ ] Gobject.obj
     If you know none of these things are an issue for your application, and
     prefer the simplicity of [GtkFixed], by all means use the widget. But you
     should be aware of the tradeoffs. *)
+
+type t = [ `fixed | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_fixed_new"
 (** Create a new Fixed *)

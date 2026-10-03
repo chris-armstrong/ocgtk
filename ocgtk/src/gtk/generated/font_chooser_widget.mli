@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FontChooserWidget: FontChooserWidget *)
 
-type t =
-  [ `font_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** The [GtkFontChooserWidget] widget lets the user select a font.
 
     It is used in the [GtkFontChooserDialog] widget to provide a dialog for
@@ -20,6 +18,9 @@ type t =
     {b CSS nodes}
 
     [GtkFontChooserWidget] has a single CSS node with name fontchooser. *)
+
+type t =
+  [ `font_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_font_chooser_widget_new"
 (** Create a new FontChooserWidget *)

@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* IconPaintable: IconPaintable *)
 
-type t = [ `icon_paintable | `object_ ] Gobject.obj
 (** Contains information found when looking up an icon in [GtkIconTheme] or
     loading it from a file.
 
     [GtkIconPaintable] implements [GdkPaintable] and [GtkSymbolicPaintable]. *)
+
+type t = [ `icon_paintable | `object_ ] Gobject.obj
 
 external new_for_file : Ocgtk_gio.Gio.Wrappers.File.t -> int -> int -> t
   = "ml_gtk_icon_paintable_new_for_file"

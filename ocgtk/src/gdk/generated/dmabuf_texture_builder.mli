@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DmabufTextureBuilder: DmabufTextureBuilder *)
 
-type t = [ `dmabuf_texture_builder | `object_ ] Gobject.obj
 (** Constructs [Gdk.Texture] objects from DMA buffers.
 
     DMA buffers are commonly called {b _dma-bufs_}.
@@ -67,6 +66,8 @@ type t = [ `dmabuf_texture_builder | `object_ ] Gobject.obj
     - The header file
       {{:https://gitlab.freedesktop.org/mesa/drm/-/blob/main/include/drm/drm_fourcc.h}drm_fourcc.h}
 *)
+
+type t = [ `dmabuf_texture_builder | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gdk_dmabuf_texture_builder_new"
 (** Create a new DmabufTextureBuilder *)

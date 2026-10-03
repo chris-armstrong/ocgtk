@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TlsPassword: TlsPassword *)
 
-type t = [ `tls_password | `object_ ] Gobject.obj
 (** An abstract interface representing a password used in TLS. Often used in
     user interaction such as unlocking a key storage token. *)
+
+type t = [ `tls_password | `object_ ] Gobject.obj
 
 external new_ : Gio_enums.tlspasswordflags -> string -> t
   = "ml_g_tls_password_new"

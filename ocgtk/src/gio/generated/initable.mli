@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Initable: Initable *)
 
-type t = [ `initable ] Gobject.obj
 (** [GInitable] is implemented by objects that can fail during initialization.
     If an object implements this interface then it must be initialized as the
     first thing after construction, either via [Gio.Initable.init] or
@@ -25,6 +24,8 @@ type t = [ `initable ] Gobject.obj
     the binding could check for objects implementing [GInitable] during normal
     construction and automatically initialize them, throwing an exception on
     failure. *)
+
+type t = [ `initable ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_initable_from_gobject"
 

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PopupLayout: PopupLayout *)
 
-type t = [ `popup_layout ] Gobject.obj
 (** Contains information that is necessary position a [Gdk.Popup] relative to
     its parent.
 
@@ -34,6 +33,8 @@ type t = [ `popup_layout ] Gobject.obj
     example, GtkPopover changes its arrow position accordingly. But you have to
     be careful avoid changing the size of the popover, or it has to be presented
     again. *)
+
+type t = [ `popup_layout ] Gobject.obj
 
 external new_ : Rectangle.t -> Gdk_enums.gravity -> Gdk_enums.gravity -> t
   = "ml_gdk_popup_layout_new"

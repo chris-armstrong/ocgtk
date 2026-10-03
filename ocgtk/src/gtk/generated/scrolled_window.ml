@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ScrolledWindow: ScrolledWindow *)
 
-type t =
-  [ `scrolled_window | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Makes its child scrollable.
 
     An example GtkScrolledWindow
@@ -79,6 +77,9 @@ type t =
 
     Starting from GTK 4.12, [GtkScrolledWindow] uses the
     [Gtk.AccessibleRole.generic] role. *)
+
+type t =
+  [ `scrolled_window | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_scrolled_window_new"
 (** Create a new ScrolledWindow *)

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* UnixSocketAddress: UnixSocketAddress *)
 
-type t = [ `unix_socket_address | `socket_address | `object_ ] Gobject.obj
 (** Support for UNIX-domain (also known as local) sockets, corresponding to
     [struct sockaddr_un].
 
@@ -21,6 +20,8 @@ type t = [ `unix_socket_address | `socket_address | `object_ ] Gobject.obj
     Before GLib 2.72, [<gio/gunixsocketaddress.h>] belonged to the UNIX-specific
     GIO interfaces, thus you had to use the [gio-unix-2.0.pc] pkg-config file
     when using it. This is no longer necessary since GLib 2.72. *)
+
+type t = [ `unix_socket_address | `socket_address | `object_ ] Gobject.obj
 
 external new_ : string -> t = "ml_g_unix_socket_address_new"
 (** Create a new UnixSocketAddress *)

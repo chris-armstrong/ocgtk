@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Video: Video *)
 
-type t = [ `video | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Shows a [GtkMediaStream] with media controls.
 
     An example GtkVideo
@@ -15,6 +14,8 @@ type t = [ `video | `widget | `initially_unowned | `object_ ] Gobject.obj
     have support for video overlays, multichannel audio, device selection, or
     input. If you are writing a full-fledged video player, you may want to use
     the [Gdk.Paintable] API and a media framework such as Gstreamer directly. *)
+
+type t = [ `video | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_video_new"
 (** Create a new Video *)

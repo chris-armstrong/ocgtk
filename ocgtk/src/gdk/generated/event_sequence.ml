@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* EventSequence: EventSequence *)
 
-type t = [ `event_sequence ] Gobject.obj
 (** An opaque type representing a sequence of related events. *)
+
+type t = [ `event_sequence ] Gobject.obj
 
 (* Methods *)
 

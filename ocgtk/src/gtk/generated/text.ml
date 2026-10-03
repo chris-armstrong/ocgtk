@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Text: Text *)
 
-type t = [ `text | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** A single-line text entry.
 
     [GtkText] is the common implementation of single-line text editing that is
@@ -112,6 +111,8 @@ type t = [ `text | `widget | `initially_unowned | `object_ ] Gobject.obj
     skipped for accessibility. This is because [GtkText] is expected to be used
     as a delegate for a [GtkEditable] implementation that will be represented to
     accessibility. *)
+
+type t = [ `text | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_text_new"
 (** Create a new Text *)

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Actionable: Actionable *)
 
-type t = [ `actionable ] Gobject.obj
 (** Provides a way to associate widgets with actions.
 
     It primarily consists of two properties: [Gtk.Actionable:action-name] and
@@ -13,6 +12,8 @@ type t = [ `actionable ] Gobject.obj
     or “app.” prefix that are associated with the [GtkApplicationWindow] or
     [GtkApplication], but other action groups that are added with
     [Gtk.Widget.insert_action_group] will be consulted as well. *)
+
+type t = [ `actionable ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gtk_actionable_from_gobject"
 

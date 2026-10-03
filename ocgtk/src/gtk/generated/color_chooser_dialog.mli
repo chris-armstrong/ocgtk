@@ -1,14 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColorChooserDialog: ColorChooserDialog *)
 
-type t =
-  [ `color_chooser_dialog
-  | `dialog
-  | `window
-  | `widget
-  | `initially_unowned
-  | `object_ ]
-  Gobject.obj
 (** A dialog for choosing a color.
 
     An example GtkColorChooserDialog
@@ -27,6 +19,15 @@ type t =
 
     [GtkColorChooserDialog] has a single CSS node with the name [window] and
     style class [.colorchooser]. *)
+
+type t =
+  [ `color_chooser_dialog
+  | `dialog
+  | `window
+  | `widget
+  | `initially_unowned
+  | `object_ ]
+  Gobject.obj
 
 external new_ :
   string option ->

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GLArea: GLArea *)
 
-type t = [ `gl_area | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Allows drawing with OpenGL.
 
     An example GtkGLArea
@@ -115,6 +114,8 @@ type t = [ `gl_area | `widget | `initially_unowned | `object_ ] Gobject.obj
 
     If you need to change the options for creating the [GdkGLContext] you should
     use the [Gtk.GLArea::create-context] signal. *)
+
+type t = [ `gl_area | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_gl_area_new"
 (** Create a new GLArea *)

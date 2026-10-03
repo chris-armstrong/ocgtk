@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* EventControllerKey: EventControllerKey *)
 
-type t = [ `event_controller_key | `event_controller | `object_ ] Gobject.obj
 (** Provides access to key events. *)
+
+type t = [ `event_controller_key | `event_controller | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_event_controller_key_new"
 (** Create a new EventControllerKey *)

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PageSetup: PageSetup *)
 
-type t = [ `page_setup | `object_ ] Gobject.obj
 (** Stores page size, orientation and margins for printing.
 
     The idea is that you can get one of these from the page setup dialog and
@@ -43,6 +42,8 @@ type t = [ `page_setup | `object_ ] Gobject.obj
       page_setup = new_page_setup;
     }
     ]} *)
+
+type t = [ `page_setup | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_page_setup_new"
 (** Create a new PageSetup *)

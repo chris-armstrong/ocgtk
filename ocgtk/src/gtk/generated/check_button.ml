@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CheckButton: CheckButton *)
 
-type t = [ `check_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Places a label next to an indicator.
 
     Example GtkCheckButtons
@@ -65,6 +64,8 @@ type t = [ `check_button | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkCheckButton] uses the [Gtk.AccessibleRole.checkbox] role. *)
+
+type t = [ `check_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_check_button_new"
 (** Create a new CheckButton *)

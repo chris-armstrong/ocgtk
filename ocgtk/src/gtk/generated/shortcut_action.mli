@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ShortcutAction: ShortcutAction *)
 
-type t = [ `shortcut_action | `object_ ] Gobject.obj
 (** Encodes an action that can be triggered by a keyboard shortcut.
 
     [GtkShortcutActions] contain functions that allow easy presentation to end
@@ -25,6 +24,8 @@ type t = [ `shortcut_action | `object_ ] Gobject.obj
     - [Gtk.NamedAction]: a shortcut action that calls
       gtk_widget_activate_action()
     - [Gtk.NothingAction]: a shortcut action that does nothing *)
+
+type t = [ `shortcut_action | `object_ ] Gobject.obj
 
 external parse_string : string -> t = "ml_gtk_shortcut_action_parse_string"
 (** Create a new ShortcutAction *)

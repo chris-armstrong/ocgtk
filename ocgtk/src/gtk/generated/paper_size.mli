@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PaperSize: PaperSize *)
 
-type t = [ `paper_size ] Gobject.obj
 (** [GtkPaperSize] handles paper sizes.
 
     It uses the standard called PWG 5101.1-2002 PWG: Standard for Media
@@ -11,6 +10,8 @@ type t = [ `paper_size ] Gobject.obj
 
     The [GtkPaperSize] object stores not only the dimensions (width and height)
     of a paper size and its name, it also provides default print margins. *)
+
+type t = [ `paper_size ] Gobject.obj
 
 external new_ : string option -> t = "ml_gtk_paper_size_new"
 (** Create a new PaperSize *)

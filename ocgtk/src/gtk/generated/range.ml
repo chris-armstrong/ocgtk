@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Range: Range *)
 
-type t = [ `range | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Base class for widgets which visualize an adjustment.
 
     Widgets that are derived from [GtkRange] include [Gtk.Scale] and
@@ -16,6 +15,8 @@ type t = [ `range | `widget | `initially_unowned | `object_ ] Gobject.obj
     The [GtkRange] slider is draggable. Holding the <kbd>Shift</kbd> key while
     dragging, or initiating the drag with a long-press will enable the
     fine-tuning mode. *)
+
+type t = [ `range | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 (* Methods *)
 

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DirectoryList: DirectoryList *)
 
-type t = [ `directory_list | `object_ ] Gobject.obj
 (** A list model that wraps [Gio.File.enumerate_children_async].
 
     It presents a [GListModel] and fills it asynchronously with the [GFileInfo]s
@@ -24,6 +23,8 @@ type t = [ `directory_list | `object_ ] Gobject.obj
     g_file_enumerator_get_child(). This means you do not need access to the
     [GtkDirectoryList], but can access the [GFile] directly from the [GFileInfo]
     when operating with a [GtkListView] or similar. *)
+
+type t = [ `directory_list | `object_ ] Gobject.obj
 
 external new_ : string option -> Ocgtk_gio.Gio.Wrappers.File.t option -> t
   = "ml_gtk_directory_list_new"

@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FixedLayoutChild: FixedLayoutChild *)
 
-type t = [ `fixed_layout_child | `layout_child | `object_ ] Gobject.obj
 (** [GtkLayoutChild] subclass for children in a [GtkFixedLayout]. *)
+
+type t = [ `fixed_layout_child | `layout_child | `object_ ] Gobject.obj
 
 (* Methods *)
 

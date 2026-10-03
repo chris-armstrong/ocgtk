@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusServer: DBusServer *)
 
-type t = [ `d_bus_server | `object_ ] Gobject.obj
 (** [GDBusServer] is a helper for listening to and accepting D-Bus connections.
     This can be used to create a new D-Bus server, allowing two peers to use the
     D-Bus protocol for their own specialized communication. A server instance
@@ -22,6 +21,8 @@ type t = [ `d_bus_server | `object_ ] Gobject.obj
     more simply by passing the
     [G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER] flag to the server.
 *)
+
+type t = [ `d_bus_server | `object_ ] Gobject.obj
 
 external new_sync :
   string ->

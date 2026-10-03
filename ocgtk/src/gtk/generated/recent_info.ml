@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RecentInfo: RecentInfo *)
 
-type t = [ `recent_info ] Gobject.obj
 (** Contains the metadata associated with an item in the recently used files
     list. *)
+
+type t = [ `recent_info ] Gobject.obj
 
 (* Methods *)
 

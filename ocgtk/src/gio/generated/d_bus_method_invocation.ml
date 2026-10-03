@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusMethodInvocation: DBusMethodInvocation *)
 
-type t = [ `d_bus_method_invocation | `object_ ] Gobject.obj
 (** Instances of the [GDBusMethodInvocation] class are used when handling D-Bus
     method calls. It provides a way to asynchronously return results and errors.
 
@@ -9,6 +8,8 @@ type t = [ `d_bus_method_invocation | `object_ ] Gobject.obj
     as an argument to the [handle_method_call()] function in a
     [Gio.DBusInterfaceVTable] that was passed to
     [Gio.DBusConnection.register_object]. *)
+
+type t = [ `d_bus_method_invocation | `object_ ] Gobject.obj
 
 (* Methods *)
 

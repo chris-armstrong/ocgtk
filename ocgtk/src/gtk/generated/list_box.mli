@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ListBox: ListBox *)
 
-type t = [ `list_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Shows a vertical list.
 
     An example GtkListBox
@@ -64,6 +63,8 @@ type t = [ `list_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 
     [GtkListBox] uses the [Gtk.AccessibleRole.list] role and [GtkListBoxRow]
     uses the [Gtk.AccessibleRole.list_item] role. *)
+
+type t = [ `list_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_list_box_new"
 (** Create a new ListBox *)

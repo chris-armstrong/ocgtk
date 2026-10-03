@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ToggleButton: ToggleButton *)
 
-type t =
-  [ `toggle_button | `button | `widget | `initially_unowned | `object_ ]
-  Gobject.obj
 (** Shows a button which remains “pressed-in” when clicked.
 
     Example GtkToggleButtons
@@ -77,6 +74,10 @@ type t =
       gtk_window_present (GTK_WINDOW (window));
     }
     ]} *)
+
+type t =
+  [ `toggle_button | `button | `widget | `initially_unowned | `object_ ]
+  Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_toggle_button_new"
 (** Create a new ToggleButton *)

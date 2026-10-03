@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RGBA: RGBA *)
 
-type t = [ `rgb_a ] Gobject.obj
 (** Represents a color, in a way that is compatible with cairo’s notion of
     color.
 
@@ -10,6 +9,8 @@ type t = [ `rgb_a ] Gobject.obj
     range from 0.0 to 1.0 inclusive. So the color (0.0, 0.0, 0.0, 0.0)
     represents transparent black and (1.0, 1.0, 1.0, 1.0) is opaque white. Other
     values will be clamped to this range when drawing. *)
+
+type t = [ `rgb_a ] Gobject.obj
 
 (* Methods *)
 

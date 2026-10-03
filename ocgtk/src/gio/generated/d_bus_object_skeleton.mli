@@ -1,12 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusObjectSkeleton: DBusObjectSkeleton *)
 
-type t = [ `d_bus_object_skeleton | `object_ ] Gobject.obj
 (** A [GDBusObjectSkeleton] instance is essentially a group of D-Bus interfaces.
     The set of exported interfaces on the object may be dynamic and change at
     runtime.
 
     This type is intended to be used with [Gio.DBusObjectManager]. *)
+
+type t = [ `d_bus_object_skeleton | `object_ ] Gobject.obj
 
 external new_ : string -> t = "ml_g_dbus_object_skeleton_new"
 (** Create a new DBusObjectSkeleton *)

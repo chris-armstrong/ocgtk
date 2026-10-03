@@ -1,12 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TabArray: TabArray *)
 
-type t = [ `tab_array ] Gobject.obj
 (** A [PangoTabArray] contains an array of tab stops.
 
     [PangoTabArray] can be used to set tab stops in a [PangoLayout]. Each tab
     stop has an alignment, a position, and optionally a character to use as
     decimal point. *)
+
+type t = [ `tab_array ] Gobject.obj
 
 external new_ : int -> bool -> t = "ml_pango_tab_array_new"
 (** Create a new TabArray *)

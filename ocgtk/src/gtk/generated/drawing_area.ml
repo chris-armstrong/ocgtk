@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DrawingArea: DrawingArea *)
 
-type t = [ `drawing_area | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Allows drawing with cairo.
 
     An example GtkDrawingArea
@@ -79,6 +78,8 @@ type t = [ `drawing_area | `widget | `initially_unowned | `object_ ] Gobject.obj
 
     If you need more complex control over your widget, you should consider
     creating your own [GtkWidget] subclass. *)
+
+type t = [ `drawing_area | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_drawing_area_new"
 (** Create a new DrawingArea *)

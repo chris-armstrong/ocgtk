@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* KeyEvent: KeyEvent *)
 
-type t = [ `key_event | `event ] Gobject.obj
 (** An event related to a key-based device. *)
+
+type t = [ `key_event | `event ] Gobject.obj
 
 (* Methods *)
 

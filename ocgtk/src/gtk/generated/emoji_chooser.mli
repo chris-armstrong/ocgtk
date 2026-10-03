@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* EmojiChooser: EmojiChooser *)
 
-type t =
-  [ `emoji_chooser | `popover | `widget | `initially_unowned | `object_ ]
-  Gobject.obj
 (** Used by text widgets to let users insert Emoji characters.
 
     An example GtkEmojiChooser
@@ -43,6 +40,10 @@ type t =
     between different emoji categories consists of buttons with the
     .emoji-section style class and gets the .emoji-toolbar style class itself.
 *)
+
+type t =
+  [ `emoji_chooser | `popover | `widget | `initially_unowned | `object_ ]
+  Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_emoji_chooser_new"
 (** Create a new EmojiChooser *)

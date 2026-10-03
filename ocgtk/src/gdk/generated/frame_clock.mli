@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FrameClock: FrameClock *)
 
-type t = [ `frame_clock | `object_ ] Gobject.obj
 (** Tells the application when to update and repaint a surface.
 
     This may be synced to the vertical refresh rate of the monitor, for example.
@@ -34,6 +33,8 @@ type t = [ `frame_clock | `object_ ] Gobject.obj
     [Gdk.FrameClock.get_frame_time] and the value inside the
     [Gdk.FrameClock::update] signal of the clock, they will stay exactly
     synchronized. *)
+
+type t = [ `frame_clock | `object_ ] Gobject.obj
 
 (* Methods *)
 

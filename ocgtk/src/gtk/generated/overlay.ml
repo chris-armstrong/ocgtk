@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Overlay: Overlay *)
 
-type t = [ `overlay | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Places “overlay” widgets on top of a single main child.
 
     An example GtkOverlay
@@ -33,6 +32,8 @@ type t = [ `overlay | `widget | `initially_unowned | `object_ ] Gobject.obj
     whose alignments cause them to be positioned at an edge get the style
     classes “.left”, “.right”, “.top”, and/or “.bottom” according to their
     position. *)
+
+type t = [ `overlay | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_overlay_new"
 (** Create a new Overlay *)

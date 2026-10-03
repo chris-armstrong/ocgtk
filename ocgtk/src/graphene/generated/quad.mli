@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Quad: Quad *)
 
-type t = [ `quad ] Gobject.obj
 (** A 4 vertex quadrilateral, as represented by four #graphene_point_t.
 
     The contents of a #graphene_quad_t are private and should never be accessed
     directly. *)
+
+type t = [ `quad ] Gobject.obj
 
 external alloc : unit -> t = "ml_graphene_quad_alloc"
 (** Create a new Quad *)

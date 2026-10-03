@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PasswordEntry: PasswordEntry *)
 
-type t =
-  [ `password_entry | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** A single-line text entry widget for entering passwords and other secrets.
 
     An example GtkPasswordEntry
@@ -35,6 +33,9 @@ type t =
     {b Accessibility}
 
     [GtkPasswordEntry] uses the [Gtk.AccessibleRole.text_box] role. *)
+
+type t =
+  [ `password_entry | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_password_entry_new"
 (** Create a new PasswordEntry *)

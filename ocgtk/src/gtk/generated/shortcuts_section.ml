@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ShortcutsSection: ShortcutsSection *)
 
-type t =
-  [ `shortcuts_section | `box | `widget | `initially_unowned | `object_ ]
-  Gobject.obj
 (** A [GtkShortcutsSection] collects all the keyboard shortcuts and gestures for
     a major application mode.
 
@@ -32,6 +29,10 @@ type t =
     The following signals have default keybindings:
 
     - [Gtk.ShortcutsSection::change-current-page] *)
+
+type t =
+  [ `shortcuts_section | `box | `widget | `initially_unowned | `object_ ]
+  Gobject.obj
 
 (* Methods *)
 

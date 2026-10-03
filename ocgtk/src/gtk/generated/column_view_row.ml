@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColumnViewRow: ColumnViewRow *)
 
-type t = [ `column_view_row | `object_ ] Gobject.obj
 (** Configures how rows are displayed in a [Gtk.ColumnView].
 
     It is not used to set the widgets displayed in the individual cells. For
     that see [GtkColumnViewColumn.set_factory] and [GtkColumnViewCell]. *)
+
+type t = [ `column_view_row | `object_ ] Gobject.obj
 
 (* Methods *)
 

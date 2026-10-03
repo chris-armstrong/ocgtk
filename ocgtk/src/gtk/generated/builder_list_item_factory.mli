@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BuilderListItemFactory: BuilderListItemFactory *)
 
-type t =
-  [ `builder_list_item_factory | `list_item_factory | `object_ ] Gobject.obj
 (** Creates widgets by instantiating [GtkBuilder] UI templates.
 
     The templates must extend the class that the parent widget expects. For
@@ -35,6 +33,9 @@ type t =
     surrounding UI file. Note that if you use this approach, extracting
     translatable strings with xgettext will not work for strings inside the
     marked section. *)
+
+type t =
+  [ `builder_list_item_factory | `list_item_factory | `object_ ] Gobject.obj
 
 external new_from_bytes : Builder_scope.t option -> Glib_bytes.t -> t
   = "ml_gtk_builder_list_item_factory_new_from_bytes"

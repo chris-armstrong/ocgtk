@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* LinkButton: LinkButton *)
 
-type t =
-  [ `link_button | `button | `widget | `initially_unowned | `object_ ]
-  Gobject.obj
 (** A button with a hyperlink.
 
     An example GtkLinkButton
@@ -43,6 +40,10 @@ type t =
     {b Accessibility}
 
     [GtkLinkButton] uses the [Gtk.AccessibleRole.link] role. *)
+
+type t =
+  [ `link_button | `button | `widget | `initially_unowned | `object_ ]
+  Gobject.obj
 
 external new_ : string -> t = "ml_gtk_link_button_new"
 (** Create a new LinkButton *)

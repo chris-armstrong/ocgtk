@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusInterfaceInfo: DBusInterfaceInfo *)
 
-type t = [ `d_bus_interface_info ] Gobject.obj
 (** Information about a D-Bus interface. *)
+
+type t = [ `d_bus_interface_info ] Gobject.obj
 
 (* Methods *)
 

@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ZlibCompressor: ZlibCompressor *)
 
-type t = [ `zlib_compressor | `object_ ] Gobject.obj
 (** [GZlibCompressor] is an implementation of [Gio.Converter] that compresses
     data using zlib. *)
+
+type t = [ `zlib_compressor | `object_ ] Gobject.obj
 
 external new_ : Gio_enums.zlibcompressorformat -> int -> t
   = "ml_g_zlib_compressor_new"

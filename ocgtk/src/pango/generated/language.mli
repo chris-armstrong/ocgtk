@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Language: Language *)
 
-type t = [ `language ] Gobject.obj
 (** The [PangoLanguage] structure is used to represent a language.
 
     [PangoLanguage] pointers can be efficiently copied and compared with each
     other. *)
+
+type t = [ `language ] Gobject.obj
 
 (* Methods *)
 

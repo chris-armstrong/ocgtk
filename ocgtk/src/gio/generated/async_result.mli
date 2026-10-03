@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AsyncResult: AsyncResult *)
 
-type t = [ `async_result ] Gobject.obj
 (** [GAsyncResult] provides a base class for implementing asynchronous function
     results.
 
@@ -85,6 +84,8 @@ type t = [ `async_result ] Gobject.obj
     Priorities are integers, with lower numbers indicating higher priority. It
     is recommended to choose priorities between [G_PRIORITY_LOW] and
     [G_PRIORITY_HIGH], with [G_PRIORITY_DEFAULT] as a default. *)
+
+type t = [ `async_result ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_async_result_from_gobject"
 

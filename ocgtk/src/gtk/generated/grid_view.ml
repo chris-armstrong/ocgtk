@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GridView: GridView *)
 
-type t =
-  [ `grid_view | `list_base | `widget | `initially_unowned | `object_ ]
-  Gobject.obj
 (** Presents a large dynamic grid of items.
 
     [GtkGridView] uses its factory to generate one child widget for each visible
@@ -45,6 +42,10 @@ type t =
 
     [GtkGridView] uses the [Gtk.AccessibleRole.grid] role, and the items use the
     [Gtk.AccessibleRole.grid_cell] role. *)
+
+type t =
+  [ `grid_view | `list_base | `widget | `initially_unowned | `object_ ]
+  Gobject.obj
 
 external new_ : Selection_model.t option -> List_item_factory.t option -> t
   = "ml_gtk_grid_view_new"

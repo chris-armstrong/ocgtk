@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* EditableLabel: EditableLabel *)
 
-type t =
-  [ `editable_label | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Allows users to edit the displayed text by switching to an “edit mode”.
 
     An example GtkEditableLabel
@@ -42,6 +40,9 @@ type t =
 
     For all the subnodes added to the text node in various situations, see
     [Gtk.Text]. *)
+
+type t =
+  [ `editable_label | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : string -> t = "ml_gtk_editable_label_new"
 (** Create a new EditableLabel *)

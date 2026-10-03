@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CssProvider: CssProvider *)
 
-type t = [ `css_provider | `object_ ] Gobject.obj
 (** A style provider for CSS.
 
     It is able to parse CSS-like input in order to style widgets.
@@ -28,6 +27,8 @@ type t = [ `css_provider | `object_ ] Gobject.obj
 
     To track errors while loading CSS, connect to the
     [Gtk.CssProvider::parsing-error] signal. *)
+
+type t = [ `css_provider | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_css_provider_new"
 (** Create a new CssProvider *)

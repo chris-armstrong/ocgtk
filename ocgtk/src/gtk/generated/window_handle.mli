@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* WindowHandle: WindowHandle *)
 
-type t =
-  [ `window_handle | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Implements titlebar functionality for a window.
 
     When added into a window, it can be dragged to move the window, and it
@@ -19,6 +17,9 @@ type t =
 
     Starting from GTK 4.12, [GtkWindowHandle] uses the
     [Gtk.AccessibleRole.generic] role. *)
+
+type t =
+  [ `window_handle | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_window_handle_new"
 (** Create a new WindowHandle *)

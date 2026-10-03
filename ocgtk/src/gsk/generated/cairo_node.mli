@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CairoNode: CairoNode *)
 
-type t = [ `cairo_node | `render_node ] Gobject.obj
 (** A render node for a Cairo surface. *)
+
+type t = [ `cairo_node | `render_node ] Gobject.obj
 
 external new_ : Ocgtk_graphene.Graphene.Wrappers.Rect.t -> t
   = "ml_gsk_cairo_node_new"

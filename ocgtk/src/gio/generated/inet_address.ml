@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* InetAddress: InetAddress *)
 
-type t = [ `inet_address | `object_ ] Gobject.obj
 (** [GInetAddress] represents an IPv4 or IPv6 internet address. Use
     [Gio.Resolver.lookup_by_name] or [Gio.Resolver.lookup_by_name_async] to look
     up the [GInetAddress] for a hostname. Use [Gio.Resolver.lookup_by_address]
@@ -11,6 +10,8 @@ type t = [ `inet_address | `object_ ] Gobject.obj
     To actually connect to a remote host, you will need a
     [Gio.InetSocketAddress] (which includes a [GInetAddress] as well as a port
     number). *)
+
+type t = [ `inet_address | `object_ ] Gobject.obj
 
 external new_any : Gio_enums.socketfamily -> t = "ml_g_inet_address_new_any"
 (** Create a new InetAddress *)

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MapListModel: MapListModel *)
 
-type t = [ `map_list_model | `object_ ] Gobject.obj
 (** A list model that maps the items in another model to different items.
 
     [GtkMapListModel] uses a [Gtk.MapListModelMapFunc].
@@ -32,6 +31,8 @@ type t = [ `map_list_model | `object_ ] Gobject.obj
     are no longer needed and recreate them if necessary.
 
     [GtkMapListModel] passes through sections from the underlying model. *)
+
+type t = [ `map_list_model | `object_ ] Gobject.obj
 
 (* Methods *)
 

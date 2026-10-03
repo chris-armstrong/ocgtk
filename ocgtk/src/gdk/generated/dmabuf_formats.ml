@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DmabufFormats: DmabufFormats *)
 
-type t = [ `dmabuf_formats ] Gobject.obj
 (** Provides information about supported DMA buffer formats.
 
     You can query whether a given format is supported with
@@ -19,6 +18,8 @@ type t = [ `dmabuf_formats ] Gobject.obj
     See [Gdk.DmabufTextureBuilder] for more information about DMA buffers.
 
     Note that DMA buffers only exist on Linux. *)
+
+type t = [ `dmabuf_formats ] Gobject.obj
 
 (* Methods *)
 

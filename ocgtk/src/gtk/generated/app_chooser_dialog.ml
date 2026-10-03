@@ -1,14 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AppChooserDialog: AppChooserDialog *)
 
-type t =
-  [ `app_chooser_dialog
-  | `dialog
-  | `window
-  | `widget
-  | `initially_unowned
-  | `object_ ]
-  Gobject.obj
 (** [GtkAppChooserDialog] shows a [GtkAppChooserWidget] inside a [GtkDialog].
 
     An example GtkAppChooserDialog
@@ -25,6 +17,15 @@ type t =
 
     [GtkAppChooserDialog] has a single CSS node with the name [window] and style
     class [.appchooser]. *)
+
+type t =
+  [ `app_chooser_dialog
+  | `dialog
+  | `window
+  | `widget
+  | `initially_unowned
+  | `object_ ]
+  Gobject.obj
 
 external new_ :
   Application_and__window_and__window_group.Window.t option ->

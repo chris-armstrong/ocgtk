@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusObjectManagerClient: DBusObjectManagerClient *)
 
-type t = [ `d_bus_object_manager_client | `object_ ] Gobject.obj
 (** [GDBusObjectManagerClient] is used to create, monitor and delete object
     proxies for remote objects exported by a [Gio.DBusObjectManagerServer] (or
     any code implementing the org.freedesktop.DBus.ObjectManager interface).
@@ -69,6 +68,8 @@ type t = [ `d_bus_object_manager_client | `object_ ] Gobject.obj
     [Gio.DBusObjectProxy] and [Gio.DBusProxy] objects originating from the
     [GDBusObjectManagerClient] object will be created in the same context and,
     consequently, will deliver signals in the same main loop. *)
+
+type t = [ `d_bus_object_manager_client | `object_ ] Gobject.obj
 
 external new_finish : Async_result.t -> (t, GError.t) result
   = "ml_g_dbus_object_manager_client_new_finish"

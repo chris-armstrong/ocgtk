@@ -1,12 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FontChooser: FontChooser *)
 
-type t = [ `font_chooser ] Gobject.obj
 (** [GtkFontChooser] is an interface that can be implemented by widgets for
     choosing fonts.
 
     In GTK, the main objects that implement this interface are
     [Gtk.FontChooserWidget], [Gtk.FontChooserDialog] and [Gtk.FontButton]. *)
+
+type t = [ `font_chooser ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gtk_font_chooser_from_gobject"
 

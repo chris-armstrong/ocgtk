@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Gesture: Gesture *)
 
-type t = [ `gesture | `event_controller | `object_ ] Gobject.obj
 (** The base class for gesture recognition.
 
     Although [GtkGesture] is quite generalized to serve as a base for
@@ -89,6 +88,8 @@ type t = [ `gesture | `event_controller | `object_ ] Gobject.obj
     - If the gesture has [GTK_PHASE_NONE], ensuring events of type
       [GDK_TOUCHPAD_SWIPE] and [GDK_TOUCHPAD_PINCH] are handled by the
       [GtkGesture] *)
+
+type t = [ `gesture | `event_controller | `object_ ] Gobject.obj
 
 (* Methods *)
 

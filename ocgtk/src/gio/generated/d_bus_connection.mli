@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusConnection: DBusConnection *)
 
-type t = [ `d_bus_connection | `object_ ] Gobject.obj
 (** The [GDBusConnection] type is used for D-Bus connections to remote peers
     such as a message buses.
 
@@ -54,6 +53,8 @@ type t = [ `d_bus_connection | `object_ ] Gobject.obj
     Here is an example for exporting a [GObject]:
     {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-export.c}gdbus-example-export.c}
 *)
+
+type t = [ `d_bus_connection | `object_ ] Gobject.obj
 
 external new_finish : Async_result.t -> (t, GError.t) result
   = "ml_g_dbus_connection_new_finish"

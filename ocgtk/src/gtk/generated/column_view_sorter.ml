@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColumnViewSorter: ColumnViewSorter *)
 
-type t = [ `column_view_sorter | `sorter | `object_ ] Gobject.obj
 (** Sorts [Gtk.ColumnView] columns.
 
     The sorter returned by [Gtk.ColumnView.get_sorter] is a
@@ -32,6 +31,8 @@ type t = [ `column_view_sorter | `sorter | `object_ ] Gobject.obj
         gtk_column_view_sort_by_column (view, column, order);
       }
     ]} *)
+
+type t = [ `column_view_sorter | `sorter | `object_ ] Gobject.obj
 
 (* Methods *)
 

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ProgressBar: ProgressBar *)
 
-type t = [ `progress_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Displays the progress of a long-running operation.
 
     [GtkProgressBar] provides a visual clue that processing is underway. It can
@@ -50,6 +49,8 @@ type t = [ `progress_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
     the [Gtk.AccessibleProperty.value_min], [Gtk.AccessibleProperty.value_max]
     and [Gtk.AccessibleProperty.value_now] properties to reflect the progress.
 *)
+
+type t = [ `progress_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_progress_bar_new"
 (** Create a new ProgressBar *)

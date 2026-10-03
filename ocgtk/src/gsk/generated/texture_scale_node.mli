@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TextureScaleNode: TextureScaleNode *)
 
-type t = [ `texture_scale_node | `render_node ] Gobject.obj
 (** A render node for a [GdkTexture], with control over scaling. *)
+
+type t = [ `texture_scale_node | `render_node ] Gobject.obj
 
 external new_ :
   Ocgtk_gdk.Gdk.Wrappers.Texture.t ->

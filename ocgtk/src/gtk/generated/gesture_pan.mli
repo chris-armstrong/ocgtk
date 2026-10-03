@@ -1,14 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GesturePan: GesturePan *)
 
-type t =
-  [ `gesture_pan
-  | `gesture_drag
-  | `gesture_single
-  | `gesture
-  | `event_controller
-  | `object_ ]
-  Gobject.obj
 (** Recognizes pan gestures.
 
     These are drags that are locked to happen along one axis. The axis that a
@@ -22,6 +14,15 @@ type t =
     Once a panning gesture along the expected axis is recognized, the
     [Gtk.GesturePan::pan] signal will be emitted as input events are received,
     containing the offset in the given axis. *)
+
+type t =
+  [ `gesture_pan
+  | `gesture_drag
+  | `gesture_single
+  | `gesture
+  | `event_controller
+  | `object_ ]
+  Gobject.obj
 
 external new_ : Gtk_enums.orientation -> t = "ml_gtk_gesture_pan_new"
 (** Create a new GesturePan *)

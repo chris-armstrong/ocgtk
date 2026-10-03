@@ -1,13 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FontDescription: FontDescription *)
 
-type t = [ `font_description ] Gobject.obj
 (** A [PangoFontDescription] describes a font in an implementation-independent
     manner.
 
     [PangoFontDescription] structures are used both to list what fonts are
     available on the system and also for specifying the characteristics of a
     font to load. *)
+
+type t = [ `font_description ] Gobject.obj
 
 external new_ : unit -> t = "ml_pango_font_description_new"
 (** Create a new FontDescription *)

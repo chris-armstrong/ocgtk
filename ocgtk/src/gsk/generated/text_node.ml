@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TextNode: TextNode *)
 
-type t = [ `text_node | `render_node ] Gobject.obj
 (** A render node drawing a set of glyphs. *)
+
+type t = [ `text_node | `render_node ] Gobject.obj
 
 external new_ :
   Ocgtk_pango.Pango.Wrappers.Font.t ->

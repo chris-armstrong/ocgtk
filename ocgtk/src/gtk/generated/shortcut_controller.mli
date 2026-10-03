@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ShortcutController: ShortcutController *)
 
-type t = [ `shortcut_controller | `event_controller | `object_ ] Gobject.obj
 (** Manages keyboard shortcuts and their activation.
 
     Most common shortcuts are using this controller implicitly, e.g. by adding a
@@ -43,6 +42,8 @@ type t = [ `shortcut_controller | `event_controller | `object_ ] Gobject.obj
     syntax for other kinds of [Gtk.ShortcutAction]. See
     [Gtk.ShortcutTrigger.parse_string] to learn more about the syntax for
     triggers. *)
+
+type t = [ `shortcut_controller | `event_controller | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_shortcut_controller_new"
 (** Create a new ShortcutController *)

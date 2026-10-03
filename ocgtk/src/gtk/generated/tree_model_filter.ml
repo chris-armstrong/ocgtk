@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreeModelFilter: TreeModelFilter *)
 
-type t = [ `tree_model_filter | `object_ ] Gobject.obj
 (** A [GtkTreeModel] which hides parts of an underlying tree model
 
     A [GtkTreeModelFilter] is a tree model which wraps another tree model, and
@@ -66,6 +65,8 @@ type t = [ `tree_model_filter | `object_ ] Gobject.obj
     case, either rely on [GtkTreeStore] to emit all signals because it does not
     implement reference counting, or for models that do implement reference
     counting, obtain references on these child levels yourself. *)
+
+type t = [ `tree_model_filter | `object_ ] Gobject.obj
 
 (* Methods *)
 

@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SignalListItemFactory: SignalListItemFactory *)
 
-type t =
-  [ `signal_list_item_factory | `list_item_factory | `object_ ] Gobject.obj
 (** Emits signals to manage listitems.
 
     Signals are emitted for every listitem in the same order:
@@ -42,6 +40,9 @@ type t =
     signal is recommended. The signal can be connected in the
     [Gtk.SignalListItemFactory::setup] signal and removed again during
     [Gtk.SignalListItemFactory::teardown]. *)
+
+type t =
+  [ `signal_list_item_factory | `list_item_factory | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_signal_list_item_factory_new"
 (** Create a new SignalListItemFactory *)

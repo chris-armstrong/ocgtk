@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BufferedOutputStream: BufferedOutputStream *)
 
-type t =
-  [ `buffered_output_stream | `filter_output_stream | `output_stream | `object_ ]
-  Gobject.obj
 (** Buffered output stream implements [Gio.FilterOutputStream] and provides for
     buffered writes.
 
@@ -18,6 +15,10 @@ type t =
     output stream's buffer, use [Gio.BufferedOutputStream.set_buffer_size]. Note
     that the buffer's size cannot be reduced below the size of the data within
     the buffer. *)
+
+type t =
+  [ `buffered_output_stream | `filter_output_stream | `output_stream | `object_ ]
+  Gobject.obj
 
 external new_ : Output_stream.t -> t = "ml_g_buffered_output_stream_new"
 (** Create a new BufferedOutputStream *)

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* LevelBar: LevelBar *)
 
-type t = [ `level_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Shows a level indicator.
 
     Typical use cases are displaying the strength of a password, or showing the
@@ -99,6 +98,8 @@ type t = [ `level_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkLevelBar] uses the [Gtk.AccessibleRole.meter] role. *)
+
+type t = [ `level_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_level_bar_new"
 (** Create a new LevelBar *)

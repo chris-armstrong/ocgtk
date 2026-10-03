@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* IconTheme: IconTheme *)
 
-type t = [ `icon_theme | `object_ ] Gobject.obj
 (** Loads themed icons.
 
     The main reason for using a name rather than simply providing a filename is
@@ -33,6 +32,8 @@ type t = [ `icon_theme | `object_ ] Gobject.obj
     // Use the paintable
     g_object_unref (icon);
     ]} *)
+
+type t = [ `icon_theme | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_icon_theme_new"
 (** Create a new IconTheme *)

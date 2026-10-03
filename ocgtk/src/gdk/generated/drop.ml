@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Drop: Drop *)
 
-type t = [ `drop | `object_ ] Gobject.obj
 (** Represents the target of an ongoing DND operation.
 
     Possible drop sites get informed about the status of the ongoing drag
@@ -16,6 +15,8 @@ type t = [ `drop | `object_ ] Gobject.obj
     GTK provides a higher level abstraction based on top of these functions, and
     so they are not normally needed in GTK applications. See the “Drag and Drop”
     section of the GTK documentation for more information. *)
+
+type t = [ `drop | `object_ ] Gobject.obj
 
 (* Methods *)
 

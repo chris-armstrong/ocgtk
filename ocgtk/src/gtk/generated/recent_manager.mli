@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RecentManager: RecentManager *)
 
-type t = [ `recent_manager | `object_ ] Gobject.obj
 (** Manages and looks up recently used files.
 
     Each recently used file is identified by its URI, and has meta-data
@@ -55,6 +54,8 @@ type t = [ `recent_manager | `object_ ] Gobject.obj
 
     Note that the maximum age of the recently used files list is controllable
     through the [Gtk.Settings:gtk-recent-files-max-age] property. *)
+
+type t = [ `recent_manager | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_recent_manager_new"
 (** Create a new RecentManager *)

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SubprocessLauncher: SubprocessLauncher *)
 
-type t = [ `subprocess_launcher | `object_ ] Gobject.obj
 (** This class contains a set of options for launching child processes, such as
     where its standard input and output will be directed, the argument list, the
     environment, and more.
@@ -9,6 +8,8 @@ type t = [ `subprocess_launcher | `object_ ] Gobject.obj
     While the [Gio.Subprocess] class has high level functions covering popular
     cases, use of this class allows access to more advanced options. It can also
     be used to launch multiple subprocesses with a similar configuration. *)
+
+type t = [ `subprocess_launcher | `object_ ] Gobject.obj
 
 external new_ : Gio_enums.subprocessflags -> t = "ml_g_subprocess_launcher_new"
 (** Create a new SubprocessLauncher *)

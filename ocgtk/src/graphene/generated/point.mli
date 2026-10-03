@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Point: Point *)
 
-type t = [ `point ] Gobject.obj
 (** A point with two coordinates. *)
+
+type t = [ `point ] Gobject.obj
 
 external alloc : unit -> t = "ml_graphene_point_alloc"
 (** Create a new Point *)

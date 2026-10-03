@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* StackPage: StackPage *)
 
-type t = [ `stack_page | `object_ ] Gobject.obj
 (** An auxiliary class used by [GtkStack]. *)
+
+type t = [ `stack_page | `object_ ] Gobject.obj
 
 (* Methods *)
 

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Picture: Picture *)
 
-type t = [ `picture | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Displays a [GdkPaintable].
 
     An example GtkPicture
@@ -48,6 +47,8 @@ type t = [ `picture | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkPicture] uses the [Gtk.AccessibleRole.img] role. *)
+
+type t = [ `picture | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_picture_new"
 (** Create a new Picture *)

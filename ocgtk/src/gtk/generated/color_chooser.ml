@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColorChooser: ColorChooser *)
 
-type t = [ `color_chooser ] Gobject.obj
 (** [GtkColorChooser] is an interface that is implemented by widgets for
     choosing colors.
 
@@ -10,6 +9,8 @@ type t = [ `color_chooser ] Gobject.obj
 
     In GTK, the main widgets that implement this interface are
     [Gtk.ColorChooserWidget], [Gtk.ColorChooserDialog] and [Gtk.ColorButton]. *)
+
+type t = [ `color_chooser ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gtk_color_chooser_from_gobject"

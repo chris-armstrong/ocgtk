@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ActionMap: ActionMap *)
 
-type t = [ `action_map ] Gobject.obj
 (** [GActionMap] is an interface for action containers.
 
     The [GActionMap] interface is implemented by [Gio.ActionGroup]
@@ -12,6 +11,8 @@ type t = [ `action_map ] Gobject.obj
     various action groups to unique, prefixed names (e.g. by prepending “app.”
     or “win.”). This is the motivation for the ‘Map’ part of the interface name.
 *)
+
+type t = [ `action_map ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_action_map_from_gobject"
 

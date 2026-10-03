@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ContentFormatsBuilder: ContentFormatsBuilder *)
 
-type t = [ `content_formats_builder ] Gobject.obj
 (** Creates [GdkContentFormats] objects. *)
+
+type t = [ `content_formats_builder ] Gobject.obj
 
 external new_ : unit -> t = "ml_gdk_content_formats_builder_new"
 (** Create a new ContentFormatsBuilder *)

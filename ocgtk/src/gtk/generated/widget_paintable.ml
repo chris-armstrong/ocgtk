@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* WidgetPaintable: WidgetPaintable *)
 
-type t = [ `widget_paintable | `object_ ] Gobject.obj
 (** A [GdkPaintable] that displays the contents of a widget.
 
     [GtkWidgetPaintable] will also take care of the widget not being in a state
@@ -20,6 +19,8 @@ type t = [ `widget_paintable | `object_ ] Gobject.obj
     recursion when this happens. If you do this however, ensure that the
     [Gtk.Picture:can-shrink] property is set to [TRUE] or you might end up with
     an infinitely growing widget. *)
+
+type t = [ `widget_paintable | `object_ ] Gobject.obj
 
 external new_ :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

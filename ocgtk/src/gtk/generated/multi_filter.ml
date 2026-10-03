@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MultiFilter: MultiFilter *)
 
-type t = [ `multi_filter | `filter | `object_ ] Gobject.obj
 (** Base class for filters that combine multiple filters. *)
+
+type t = [ `multi_filter | `filter | `object_ ] Gobject.obj
 
 (* Methods *)
 

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PollableOutputStream: PollableOutputStream *)
 
-type t = [ `pollable_output_stream ] Gobject.obj
 (** [GPollableOutputStream] is implemented by [Gio.OutputStream]s that can be
     polled for readiness to write. This can be used when interfacing with a
     non-GIO API that expects UNIX-file-descriptor-style asynchronous I/O rather
@@ -11,6 +10,8 @@ type t = [ `pollable_output_stream ] Gobject.obj
     instances of that class be pollable. If [Gio.PollableOutputStream.can_poll]
     returns false, then the behavior of other [GPollableOutputStream] methods is
     undefined. *)
+
+type t = [ `pollable_output_stream ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_pollable_output_stream_from_gobject"

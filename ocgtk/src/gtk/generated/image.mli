@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Image: Image *)
 
-type t = [ `image | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Displays an image.
 
     An example GtkImage
@@ -41,6 +40,8 @@ type t = [ `image | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkImage] uses the [Gtk.AccessibleRole.img] role. *)
+
+type t = [ `image | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_image_new"
 (** Create a new Image *)

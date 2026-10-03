@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Notebook: Notebook *)
 
-type t = [ `notebook | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Switches between children using tabs.
 
     An example GtkNotebook
@@ -117,6 +116,8 @@ type t = [ `notebook | `widget | `initially_unowned | `object_ ] Gobject.obj
     - [Gtk.AccessibleRole.tab_list] for the list of tabs
     - [Gtk.AccessibleRole.tab] role for each tab
     - [Gtk.AccessibleRole.tab_panel] for each page *)
+
+type t = [ `notebook | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_notebook_new"
 (** Create a new Notebook *)

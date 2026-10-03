@@ -1,12 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Toplevel: Toplevel *)
 
-type t = [ `toplevel ] Gobject.obj
 (** A freestanding toplevel surface.
 
     The [GdkToplevel] interface provides useful APIs for interacting with the
     windowing system, such as controlling maximization and size of the surface,
     setting icons and transient parents for dialogs. *)
+
+type t = [ `toplevel ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gdk_toplevel_from_gobject"
 

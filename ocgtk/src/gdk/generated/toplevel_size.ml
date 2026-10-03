@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ToplevelSize: ToplevelSize *)
 
-type t = [ `toplevel_size ] Gobject.obj
 (** Contains information that is useful to compute the size of a toplevel. *)
+
+type t = [ `toplevel_size ] Gobject.obj
 
 (* Methods *)
 

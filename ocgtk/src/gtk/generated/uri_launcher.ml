@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* UriLauncher: UriLauncher *)
 
-type t = [ `uri_launcher | `object_ ] Gobject.obj
 (** Asynchronous API to open a uri with an application.
 
     [GtkUriLauncher] collects the arguments that are needed to open the uri.
@@ -13,6 +12,8 @@ type t = [ `uri_launcher | `object_ ] Gobject.obj
     The operation is started with the [Gtk.UriLauncher.launch] function.
 
     To launch a file, use [Gtk.FileLauncher]. *)
+
+type t = [ `uri_launcher | `object_ ] Gobject.obj
 
 external new_ : string option -> t = "ml_gtk_uri_launcher_new"
 (** Create a new UriLauncher *)

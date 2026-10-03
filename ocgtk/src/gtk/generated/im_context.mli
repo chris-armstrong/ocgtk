@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* IMContext: IMContext *)
 
-type t = [ `im_context | `object_ ] Gobject.obj
 (** The interface for GTK input methods.
 
     [GtkIMContext] is used by GTK text input widgets like [GtkText] to map from
@@ -31,6 +30,8 @@ type t = [ `im_context | `object_ ] Gobject.obj
 
     To connect a widget to the users preferred input method, you should use
     [Gtk.IMMulticontext]. *)
+
+type t = [ `im_context | `object_ ] Gobject.obj
 
 (* Methods *)
 

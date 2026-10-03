@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusObjectManagerServer: DBusObjectManagerServer *)
 
-type t = [ `d_bus_object_manager_server | `object_ ] Gobject.obj
 (** [GDBusObjectManagerServer] is used to export [Gio.DBusObject] instances
     using the standardized [org.freedesktop.DBus.ObjectManager] interface. For
     example, remote D-Bus clients can get all objects and properties in a single
@@ -22,6 +21,8 @@ type t = [ `d_bus_object_manager_server | `object_ ] Gobject.obj
     See [Gio.DBusObjectManagerClient] for the client-side code that is intended
     to be used with [GDBusObjectManagerServer] or any D-Bus object implementing
     the [org.freedesktop.DBus.ObjectManager] interface. *)
+
+type t = [ `d_bus_object_manager_server | `object_ ] Gobject.obj
 
 external new_ : string -> t = "ml_g_dbus_object_manager_server_new"
 (** Create a new DBusObjectManagerServer *)

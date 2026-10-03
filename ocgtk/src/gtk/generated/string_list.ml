@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* StringList: StringList *)
 
-type t = [ `string_list | `object_ ] Gobject.obj
 (** A list model that wraps an array of strings.
 
     The objects in the model are of type [Gtk.StringObject] and have a “string”
@@ -28,6 +27,8 @@ type t = [ `string_list | `object_ ] Gobject.obj
       </items>
     </object>
     ]} *)
+
+type t = [ `string_list | `object_ ] Gobject.obj
 
 external new_ : string array option -> t = "ml_gtk_string_list_new"
 (** Create a new StringList *)

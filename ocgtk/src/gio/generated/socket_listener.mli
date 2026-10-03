@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SocketListener: SocketListener *)
 
-type t = [ `socket_listener | `object_ ] Gobject.obj
 (** A [GSocketListener] is an object that keeps track of a set of server sockets
     and helps you accept sockets from any of the socket, either sync or async.
 
@@ -15,6 +14,8 @@ type t = [ `socket_listener | `object_ ] Gobject.obj
     If you want to implement a network server, also look at [Gio.SocketService]
     and [Gio.ThreadedSocketService] which are subclasses of [GSocketListener]
     that make this even easier. *)
+
+type t = [ `socket_listener | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_g_socket_listener_new"
 (** Create a new SocketListener *)

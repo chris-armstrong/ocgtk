@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MemoryMonitor: MemoryMonitor *)
 
-type t = [ `memory_monitor ] Gobject.obj
 (** [GMemoryMonitor] will monitor system memory and suggest to the application
     when to free memory so as to leave more room for other applications. It is
     implemented on Linux using the
@@ -53,6 +52,8 @@ type t = [ `memory_monitor ] Gobject.obj
 
     Don’t forget to disconnect the [Gio.MemoryMonitor::low-memory-warning]
     signal, and unref the [GMemoryMonitor] itself when exiting. *)
+
+type t = [ `memory_monitor ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_memory_monitor_from_gobject"

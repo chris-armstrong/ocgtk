@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PrintOperationPreview: PrintOperationPreview *)
 
-type t = [ `print_operation_preview ] Gobject.obj
 (** The interface that is used to implement print preview.
 
     A [GtkPrintOperationPreview] object is passed to the
     [Gtk.PrintOperation::preview] signal by [Gtk.PrintOperation]. *)
+
+type t = [ `print_operation_preview ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gtk_print_operation_preview_from_gobject"

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ProxyResolver: ProxyResolver *)
 
-type t = [ `proxy_resolver ] Gobject.obj
 (** [GProxyResolver] provides synchronous and asynchronous network proxy
     resolution. [GProxyResolver] is used within [Gio.SocketClient] through the
     method [Gio.SocketConnectable.proxy_enumerate].
@@ -10,6 +9,8 @@ type t = [ `proxy_resolver ] Gobject.obj
     {{:https://github.com/libproxy/libproxy}libproxy} and GNOME settings can be
     found in {{:https://gitlab.gnome.org/GNOME/glib-networking}glib-networking}.
     GIO comes with an implementation for use inside Flatpak portals. *)
+
+type t = [ `proxy_resolver ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_proxy_resolver_from_gobject"

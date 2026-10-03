@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Size: Size *)
 
-type t = [ `size ] Gobject.obj
 (** A size. *)
+
+type t = [ `size ] Gobject.obj
 
 external alloc : unit -> t = "ml_graphene_size_alloc"
 (** Create a new Size *)

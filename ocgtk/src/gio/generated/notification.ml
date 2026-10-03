@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Notification: Notification *)
 
-type t = [ `notification | `object_ ] Gobject.obj
 (** [GNotification] is a mechanism for creating a notification to be shown to
     the user — typically as a pop-up notification presented by the desktop
     environment shell.
@@ -46,6 +45,8 @@ type t = [ `notification | `object_ ] Gobject.obj
     result of a notification being clicked.
 
     A notification can be sent with [Gio.Application.send_notification]. *)
+
+type t = [ `notification | `object_ ] Gobject.obj
 
 external new_ : string -> t = "ml_g_notification_new"
 (** Create a new Notification *)

@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SubsurfaceNode: SubsurfaceNode *)
 
-type t = [ `subsurface_node | `render_node ] Gobject.obj
 (** A render node that potentially diverts a part of the scene graph to a
     subsurface. *)
+
+type t = [ `subsurface_node | `render_node ] Gobject.obj
 
 (* Methods *)
 

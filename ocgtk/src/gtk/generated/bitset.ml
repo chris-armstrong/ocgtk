@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Bitset: Bitset *)
 
-type t = [ `bitset ] Gobject.obj
 (** A set of unsigned integers.
 
     Another name for this data structure is “bitmap”.
@@ -19,6 +18,8 @@ type t = [ `bitset ] Gobject.obj
 
     The main use case for [GtkBitset] is implementing complex selections for
     [Gtk.SelectionModel]. *)
+
+type t = [ `bitset ] Gobject.obj
 
 external new_empty : unit -> t = "ml_gtk_bitset_new_empty"
 (** Create a new Bitset *)

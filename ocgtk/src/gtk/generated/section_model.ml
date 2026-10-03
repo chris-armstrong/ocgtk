@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SectionModel: SectionModel *)
 
-type t = [ `section_model ] Gobject.obj
 (** An interface that adds support for sections to list models.
 
     A [GtkSectionModel] groups successive items into so-called sections. List
@@ -17,6 +16,8 @@ type t = [ `section_model ] Gobject.obj
     range then need to be queried again. The [Gio.ListModel::items-changed]
     signal has the same effect, all sections in that range are invalidated, too.
 *)
+
+type t = [ `section_model ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gtk_section_model_from_gobject"

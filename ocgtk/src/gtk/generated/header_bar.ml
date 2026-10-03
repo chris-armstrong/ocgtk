@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* HeaderBar: HeaderBar *)
 
-type t = [ `header_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Creates a custom titlebar for a window.
 
     An example GtkHeaderBar
@@ -73,6 +72,8 @@ type t = [ `header_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkHeaderBar] uses the [Gtk.AccessibleRole.group] role. *)
+
+type t = [ `header_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_header_bar_new"
 (** Create a new HeaderBar *)

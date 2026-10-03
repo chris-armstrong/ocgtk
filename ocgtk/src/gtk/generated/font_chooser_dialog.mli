@@ -1,14 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FontChooserDialog: FontChooserDialog *)
 
-type t =
-  [ `font_chooser_dialog
-  | `dialog
-  | `window
-  | `widget
-  | `initially_unowned
-  | `object_ ]
-  Gobject.obj
 (** The [GtkFontChooserDialog] widget is a dialog for selecting a font.
 
     An example GtkFontChooserDialog
@@ -27,6 +19,15 @@ type t =
 
     [GtkFontChooserDialog] has a single CSS node with the name [window] and
     style class [.fontchooser]. *)
+
+type t =
+  [ `font_chooser_dialog
+  | `dialog
+  | `window
+  | `widget
+  | `initially_unowned
+  | `object_ ]
+  Gobject.obj
 
 external new_ :
   string option ->

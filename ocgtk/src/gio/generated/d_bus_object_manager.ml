@@ -1,13 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusObjectManager: DBusObjectManager *)
 
-type t = [ `d_bus_object_manager ] Gobject.obj
 (** The [GDBusObjectManager] type is the base type for service- and client-side
     implementations of the standardized [org.freedesktop.DBus.ObjectManager]
     interface.
 
     See [Gio.DBusObjectManagerClient] for the client-side implementation and
     [Gio.DBusObjectManagerServer] for the service-side implementation. *)
+
+type t = [ `d_bus_object_manager ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_d_bus_object_manager_from_gobject"

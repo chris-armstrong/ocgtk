@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* WindowControls: WindowControls *)
 
-type t =
-  [ `window_controls | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Shows window frame controls.
 
     Typical window frame controls are minimize, maximize and close buttons, and
@@ -52,6 +50,9 @@ type t =
     {b Accessibility}
 
     [GtkWindowControls] uses the [Gtk.AccessibleRole.group] role. *)
+
+type t =
+  [ `window_controls | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : Gtk_enums.packtype -> t = "ml_gtk_window_controls_new"
 (** Create a new WindowControls *)

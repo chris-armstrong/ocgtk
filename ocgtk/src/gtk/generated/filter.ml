@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Filter: Filter *)
 
-type t = [ `filter | `object_ ] Gobject.obj
 (** Describes the filtering to be performed by a [Gtk.FilterListModel].
 
     The model will use the filter to determine if it should include items or not
@@ -19,6 +18,8 @@ type t = [ `filter | `object_ ] Gobject.obj
 
     However, in particular for large lists or complex search methods, it is also
     possible to subclass [GtkFilter] and provide one's own filter. *)
+
+type t = [ `filter | `object_ ] Gobject.obj
 
 (* Methods *)
 

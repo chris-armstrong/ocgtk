@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Subprocess: Subprocess *)
 
-type t = [ `subprocess | `object_ ] Gobject.obj
 (** [GSubprocess] allows the creation of and interaction with child processes.
 
     Processes can be communicated with using standard GIO-style APIs (ie:
@@ -60,6 +59,8 @@ type t = [ `subprocess | `object_ ] Gobject.obj
     a command-line utility that uses [GSubprocess], you may need to take into
     account the fact that your program will not automatically be killed if it
     tries to write to [stdout] after it has been closed. *)
+
+type t = [ `subprocess | `object_ ] Gobject.obj
 
 external newv :
   string array -> Gio_enums.subprocessflags -> (t, GError.t) result

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GLShader: GLShader *)
 
-type t = [ `gl_shader | `object_ ] Gobject.obj
 (** Implements a fragment shader using GLSL.
 
     A fragment shader gets the coordinates being rendered as input and produces
@@ -110,6 +109,8 @@ type t = [ `gl_shader | `object_ ] Gobject.obj
       fragColor = position * source1 + (1.0 - position) * source2;
     }
     ]} *)
+
+type t = [ `gl_shader | `object_ ] Gobject.obj
 
 external new_from_bytes : Glib_bytes.t -> t = "ml_gsk_gl_shader_new_from_bytes"
 (** Create a new GLShader *)

@@ -1,10 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TcpConnection: TcpConnection *)
 
-type t =
-  [ `tcp_connection | `socket_connection | `io_stream | `object_ ] Gobject.obj
 (** This is the subclass of [Gio.SocketConnection] that is created for TCP/IP
     sockets. *)
+
+type t =
+  [ `tcp_connection | `socket_connection | `io_stream | `object_ ] Gobject.obj
 
 (* Methods *)
 

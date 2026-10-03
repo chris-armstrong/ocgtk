@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* OutputStream: OutputStream *)
 
-type t = [ `output_stream | `object_ ] Gobject.obj
 (** [GOutputStream] is a base class for implementing streaming output.
 
     It has functions to write to a stream ([Gio.OutputStream.write]), to close a
@@ -19,6 +18,8 @@ type t = [ `output_stream | `object_ ] Gobject.obj
     All classes derived from [GOutputStream] {i should} implement synchronous
     writing, splicing, flushing and closing streams, but {i may} implement
     asynchronous versions. *)
+
+type t = [ `output_stream | `object_ ] Gobject.obj
 
 (* Methods *)
 

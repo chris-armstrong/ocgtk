@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Resolver: Resolver *)
 
-type t = [ `resolver | `object_ ] Gobject.obj
 (** The object that handles DNS resolution. Use [Gio.Resolver.get_default] to
     get the default resolver.
 
@@ -20,6 +19,8 @@ type t = [ `resolver | `object_ ] Gobject.obj
 
     This is an abstract type; subclasses of it implement different resolvers for
     different platforms and situations. *)
+
+type t = [ `resolver | `object_ ] Gobject.obj
 
 (* Methods *)
 

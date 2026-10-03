@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Frame: Frame *)
 
-type t = [ `frame | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Surrounds its child with a decorative frame and an optional label.
 
     An example GtkFrame
@@ -43,6 +42,8 @@ type t = [ `frame | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkFrame] uses the [Gtk.AccessibleRole.group] role. *)
+
+type t = [ `frame | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : string option -> t = "ml_gtk_frame_new"
 (** Create a new Frame *)

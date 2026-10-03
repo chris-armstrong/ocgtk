@@ -1,12 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FlowBoxChild: FlowBoxChild *)
 
-type t =
-  [ `flow_box_child | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** The kind of widget that can be added to a [GtkFlowBox].
 
     [Gtk.FlowBox] will automatically wrap its children in a [GtkFlowBoxChild]
     when necessary. *)
+
+type t =
+  [ `flow_box_child | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_flow_box_child_new"
 (** Create a new FlowBoxChild *)

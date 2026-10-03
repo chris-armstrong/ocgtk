@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SrvTarget: SrvTarget *)
 
-type t = [ `srv_target ] Gobject.obj
 (** A single target host/port that a network service is running on.
 
     SRV (service) records are used by some network protocols to provide
@@ -17,6 +16,8 @@ type t = [ `srv_target ] Gobject.obj
     service. However, if you are simply planning to connect to the remote
     service, you can use [Gio.NetworkService]’s [Gio.SocketConnectable]
     interface and not need to worry about [GSrvTarget] at all. *)
+
+type t = [ `srv_target ] Gobject.obj
 
 external new_ : string -> UInt16.t -> UInt16.t -> UInt16.t -> t
   = "ml_g_srv_target_new"

@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ApplicationWindow: ApplicationWindow *)
 
-type t =
-  [ `application_window | `window | `widget | `initially_unowned | `object_ ]
-  Gobject.obj
 (** A [GtkWindow] subclass that integrates with [GtkApplication].
 
     Notably, [GtkApplicationWindow] can handle an application menubar.
@@ -71,6 +68,10 @@ type t =
 
     GtkWidget *window = gtk_application_window_new (app);
     ]} *)
+
+type t =
+  [ `application_window | `window | `widget | `initially_unowned | `object_ ]
+  Gobject.obj
 
 external new_ : Application_and__window_and__window_group.Application.t -> t
   = "ml_gtk_application_window_new"

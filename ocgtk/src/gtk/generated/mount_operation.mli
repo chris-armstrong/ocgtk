@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MountOperation: MountOperation *)
 
-type t = [ `mount_operation | `object_ ] Gobject.obj
 (** Asks the user for passwords and other information required to mount a
     volume.
 
@@ -13,6 +12,8 @@ type t = [ `mount_operation | `object_ ] Gobject.obj
 
     When necessary, [GtkMountOperation] shows dialogs to let the user enter
     passwords, ask questions or show processes blocking unmount. *)
+
+type t = [ `mount_operation | `object_ ] Gobject.obj
 
 external new_ : Application_and__window_and__window_group.Window.t option -> t
   = "ml_gtk_mount_operation_new"

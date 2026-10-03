@@ -1,13 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CellRendererSpin: CellRendererSpin *)
 
-type t =
-  [ `cell_renderer_spin
-  | `cell_renderer_text
-  | `cell_renderer
-  | `initially_unowned
-  | `object_ ]
-  Gobject.obj
 (** Renders a spin button in a cell
 
     [GtkCellRendererSpin] renders text in a cell like [GtkCellRendererText] from
@@ -23,6 +16,14 @@ type t =
     [GtkCellRendererSpin:digits] to display. Other [GtkSpinButton] properties
     can be set in a handler for the [GtkCellRenderer::editing-started] signal.
 *)
+
+type t =
+  [ `cell_renderer_spin
+  | `cell_renderer_text
+  | `cell_renderer
+  | `initially_unowned
+  | `object_ ]
+  Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_cell_renderer_spin_new"
 (** Create a new CellRendererSpin *)

@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileChooserWidget: FileChooserWidget *)
 
-type t =
-  [ `file_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** [GtkFileChooserWidget] is a widget for choosing files.
 
     It exposes the [Gtk.FileChooser] interface, and you should use the methods
@@ -32,6 +30,9 @@ type t =
     {b CSS nodes}
 
     [GtkFileChooserWidget] has a single CSS node with name filechooser. *)
+
+type t =
+  [ `file_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : Gtk_enums.filechooseraction -> t
   = "ml_gtk_file_chooser_widget_new"

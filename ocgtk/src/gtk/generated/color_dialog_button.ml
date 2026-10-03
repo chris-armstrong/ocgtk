@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColorDialogButton: ColorDialogButton *)
 
-type t =
-  [ `color_dialog_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Opens a color chooser dialog to select a color.
 
     An example GtkColorDialogButton
@@ -20,6 +18,9 @@ type t =
     [GtkColorDialogButton] has a single CSS node with name colorbutton which
     contains a button node. To differentiate it from a plain [GtkButton], it
     gets the .color style class. *)
+
+type t =
+  [ `color_dialog_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : Color_dialog.t option -> t = "ml_gtk_color_dialog_button_new"
 (** Create a new ColorDialogButton *)

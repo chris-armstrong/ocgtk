@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Label: Label *)
 
-type t = [ `label | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Displays a small amount of text.
 
     Most labels are used to label another widget (such as an [Entry]).
@@ -214,6 +213,8 @@ type t = [ `label | `widget | `initially_unowned | `object_ ] Gobject.obj
     It is possible to implement custom handling for links and their tooltips
     with the [Gtk.Label::activate-link] signal and the
     [Gtk.Label.get_current_uri] function. *)
+
+type t = [ `label | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : string option -> t = "ml_gtk_label_new"
 (** Create a new Label *)

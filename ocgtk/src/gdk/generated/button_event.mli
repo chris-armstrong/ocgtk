@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ButtonEvent: ButtonEvent *)
 
-type t = [ `button_event | `event ] Gobject.obj
 (** An event related to a button on a pointer device. *)
+
+type t = [ `button_event | `event ] Gobject.obj
 
 (* Methods *)
 

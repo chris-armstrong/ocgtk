@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TlsClientConnection: TlsClientConnection *)
 
-type t = [ `tls_client_connection ] Gobject.obj
 (** [GTlsClientConnection] is the client-side subclass of [Gio.TlsConnection],
     representing a client-side TLS connection. *)
+
+type t = [ `tls_client_connection ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_tls_client_connection_from_gobject"

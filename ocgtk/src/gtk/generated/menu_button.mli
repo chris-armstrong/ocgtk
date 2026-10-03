@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MenuButton: MenuButton *)
 
-type t = [ `menu_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Displays a popup when clicked.
 
     An example GtkMenuButton
@@ -57,6 +56,8 @@ type t = [ `menu_button | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkMenuButton] uses the [Gtk.AccessibleRole.button] role. *)
+
+type t = [ `menu_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_menu_button_new"
 (** Create a new MenuButton *)

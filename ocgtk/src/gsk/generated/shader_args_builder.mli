@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ShaderArgsBuilder: ShaderArgsBuilder *)
 
-type t = [ `shader_args_builder ] Gobject.obj
 (** Builds the uniforms data for a [GskGLShader]. *)
+
+type t = [ `shader_args_builder ] Gobject.obj
 
 external new_ : Gl_shader.t -> Glib_bytes.t option -> t
   = "ml_gsk_shader_args_builder_new"

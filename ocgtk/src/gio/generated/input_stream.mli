@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* InputStream: InputStream *)
 
-type t = [ `input_stream | `object_ ] Gobject.obj
 (** [GInputStream] is a base class for implementing streaming input.
 
     It has functions to read from a stream ([Gio.InputStream.read]), to close a
@@ -15,6 +14,8 @@ type t = [ `input_stream | `object_ ] Gobject.obj
     streaming APIs.
 
     All of these functions have async variants too. *)
+
+type t = [ `input_stream | `object_ ] Gobject.obj
 
 (* Methods *)
 

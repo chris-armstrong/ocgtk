@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DtlsConnection: DtlsConnection *)
 
-type t = [ `dtls_connection ] Gobject.obj
 (** [GDtlsConnection] is the base DTLS connection class type, which wraps a
     [Gio.DatagramBased] and provides DTLS encryption on top of it. Its
     subclasses, [Gio.DtlsClientConnection] and [Gio.DtlsServerConnection],
@@ -21,6 +20,8 @@ type t = [ `dtls_connection ] Gobject.obj
     is up to the caller to do that if they wish. If they do not, and
     [Gio.Socket.close] is called on the base socket, the [GDtlsConnection] will
     not raise a [G_IO_ERROR_NOT_CONNECTED] error on further I/O. *)
+
+type t = [ `dtls_connection ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_dtls_connection_from_gobject"

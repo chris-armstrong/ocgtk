@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SizeGroup: SizeGroup *)
 
-type t = [ `size_group | `object_ ] Gobject.obj
 (** Groups widgets together so they all request the same size.
 
     This is typically useful when you want a column of widgets to have the same
@@ -100,6 +99,8 @@ type t = [ `size_group | `object_ ] Gobject.obj
       </widgets>
     </object>
     ]} *)
+
+type t = [ `size_group | `object_ ] Gobject.obj
 
 external new_ : Gtk_enums.sizegroupmode -> t = "ml_gtk_size_group_new"
 (** Create a new SizeGroup *)

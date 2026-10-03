@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* StackSwitcher: StackSwitcher *)
 
-type t =
-  [ `stack_switcher | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Shows a row of buttons to switch between [GtkStack] pages.
 
     An example GtkStackSwitcher
@@ -34,6 +32,9 @@ type t =
     Since GTK 4.4, [GtkStackSwitcher] implements [GtkOrientable] allowing the
     stack switcher to be made vertical with [gtk_orientable_set_orientation()].
 *)
+
+type t =
+  [ `stack_switcher | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_stack_switcher_new"
 (** Create a new StackSwitcher *)

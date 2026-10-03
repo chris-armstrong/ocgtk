@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PropertyAction: PropertyAction *)
 
-type t = [ `property_action | `object_ ] Gobject.obj
 (** A [GPropertyAction] is a way to get a [Gio.Action] with a state value
     reflecting and controlling the value of a [GObject.Object] property.
 
@@ -53,6 +52,8 @@ type t = [ `property_action | `object_ ] Gobject.obj
     value is* [Gio.Settings]. If you want a [Gio.Action] to control a setting
     stored in [Gio.Settings], see [Gio.Settings.create_action] instead, and
     possibly combine its use with [Gio.Settings.bind]. *)
+
+type t = [ `property_action | `object_ ] Gobject.obj
 
 external new_ : string -> [ `object_ ] Gobject.obj -> string -> t
   = "ml_g_property_action_new"

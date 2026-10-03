@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Vec2: Vec2 *)
 
-type t = [ `vec2 ] Gobject.obj
 (** A structure capable of holding a vector with two dimensions, x and y.
 
     The contents of the #graphene_vec2_t structure are private and should never
     be accessed directly. *)
+
+type t = [ `vec2 ] Gobject.obj
 
 external alloc : unit -> t = "ml_graphene_vec2_alloc"
 (** Create a new Vec2 *)

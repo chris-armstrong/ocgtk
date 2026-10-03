@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SelectionModel: SelectionModel *)
 
-type t = [ `selection_model ] Gobject.obj
 (** An interface that adds support for selection to list models.
 
     This support is then used by widgets using list models to add the ability to
@@ -41,6 +40,8 @@ type t = [ `selection_model ] Gobject.obj
     Selections may happen asynchronously, so the only reliable way to find out
     when an item was selected is to listen to the signals that indicate
     selection. *)
+
+type t = [ `selection_model ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gtk_selection_model_from_gobject"

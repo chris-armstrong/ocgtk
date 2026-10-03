@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* NetworkService: NetworkService *)
 
-type t = [ `network_service | `object_ ] Gobject.obj
 (** Like [Gio.NetworkAddress] does with hostnames, [GNetworkService] provides an
     easy way to resolve a SRV record, and then attempt to connect to one of the
     hosts that implements that service, handling service priority/weighting,
@@ -10,6 +9,8 @@ type t = [ `network_service | `object_ ] Gobject.obj
     See [Gio.SrvTarget] for more information about SRV records, and see
     [Gio.SocketConnectable] for an example of using the connectable interface.
 *)
+
+type t = [ `network_service | `object_ ] Gobject.obj
 
 external new_ : string -> string -> string -> t = "ml_g_network_service_new"
 (** Create a new NetworkService *)

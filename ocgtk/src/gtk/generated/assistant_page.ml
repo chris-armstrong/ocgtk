@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AssistantPage: AssistantPage *)
 
-type t = [ `assistant_page | `object_ ] Gobject.obj
 (** [GtkAssistantPage] is an auxiliary object used by [GtkAssistant]. *)
+
+type t = [ `assistant_page | `object_ ] Gobject.obj
 
 (* Methods *)
 

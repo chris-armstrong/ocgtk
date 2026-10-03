@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FontMetrics: FontMetrics *)
 
-type t = [ `font_metrics ] Gobject.obj
 (** A [PangoFontMetrics] structure holds the overall metric information for a
     font.
 
@@ -13,6 +12,8 @@ type t = [ `font_metrics ] Gobject.obj
     For an overview of the most important metrics, see:
 
     Font metrics *)
+
+type t = [ `font_metrics ] Gobject.obj
 
 (* Methods *)
 

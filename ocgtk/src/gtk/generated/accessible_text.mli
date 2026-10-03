@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AccessibleText: AccessibleText *)
 
-type t = [ `accessible_text ] Gobject.obj
 (** An interface for accessible objects containing formatted text.
 
     The [GtkAccessibleText] interfaces is meant to be implemented by accessible
@@ -11,6 +10,8 @@ type t = [ `accessible_text ] Gobject.obj
     You should use the [Gtk.AccessibleProperty.LABEL] or the
     [Gtk.AccessibleProperty.DESCRIPTION] properties for accessible objects
     containing simple, unformatted text. *)
+
+type t = [ `accessible_text ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gtk_accessible_text_from_gobject"

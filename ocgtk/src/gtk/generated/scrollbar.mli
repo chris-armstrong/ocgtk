@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Scrollbar: Scrollbar *)
 
-type t = [ `scrollbar | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Shows a horizontal or vertical scrollbar.
 
     An example GtkScrollbar
@@ -42,6 +41,8 @@ type t = [ `scrollbar | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkScrollbar] uses the [Gtk.AccessibleRole.scrollbar] role. *)
+
+type t = [ `scrollbar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : Gtk_enums.orientation -> Adjustment.t option -> t
   = "ml_gtk_scrollbar_new"

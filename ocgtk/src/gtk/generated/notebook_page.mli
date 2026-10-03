@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* NotebookPage: NotebookPage *)
 
-type t = [ `notebook_page | `object_ ] Gobject.obj
 (** An auxiliary object used by [GtkNotebook]. *)
+
+type t = [ `notebook_page | `object_ ] Gobject.obj
 
 (* Methods *)
 

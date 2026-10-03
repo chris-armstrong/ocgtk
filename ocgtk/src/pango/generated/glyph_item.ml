@@ -1,13 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GlyphItem: GlyphItem *)
 
-type t = [ `glyph_item ] Gobject.obj
 (** A [PangoGlyphItem] is a pair of a [PangoItem] and the glyphs resulting from
     shaping the items text.
 
     As an example of the usage of [PangoGlyphItem], the results of shaping text
     with [PangoLayout] is a list of [PangoLayoutLine], each of which contains a
     list of [PangoGlyphItem]. *)
+
+type t = [ `glyph_item ] Gobject.obj
 
 (* Methods *)
 

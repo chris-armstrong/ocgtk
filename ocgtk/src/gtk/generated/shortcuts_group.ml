@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ShortcutsGroup: ShortcutsGroup *)
 
-type t =
-  [ `shortcuts_group | `box | `widget | `initially_unowned | `object_ ]
-  Gobject.obj
 (** A [GtkShortcutsGroup] represents a group of related keyboard shortcuts or
     gestures.
 
@@ -19,6 +16,10 @@ type t =
 
     If you need to add a shortcut programmatically, use
     [Gtk.ShortcutsGroup.add_shortcut]. *)
+
+type t =
+  [ `shortcuts_group | `box | `widget | `initially_unowned | `object_ ]
+  Gobject.obj
 
 (* Methods *)
 

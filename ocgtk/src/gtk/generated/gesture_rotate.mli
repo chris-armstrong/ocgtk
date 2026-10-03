@@ -1,12 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GestureRotate: GestureRotate *)
 
-type t =
-  [ `gesture_rotate | `gesture | `event_controller | `object_ ] Gobject.obj
 (** Recognizes 2-finger rotation gestures.
 
     Whenever the angle between both handled sequences changes, the
     [Gtk.GestureRotate::angle-changed] signal is emitted. *)
+
+type t =
+  [ `gesture_rotate | `gesture | `event_controller | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_gesture_rotate_new"
 (** Create a new GestureRotate *)

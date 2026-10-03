@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* NetworkAddress: NetworkAddress *)
 
-type t = [ `network_address | `object_ ] Gobject.obj
 (** [GNetworkAddress] provides an easy way to resolve a hostname and then
     attempt to connect to that host, handling the possibility of multiple IP
     addresses and multiple address families.
@@ -12,6 +11,8 @@ type t = [ `network_address | `object_ ] Gobject.obj
 
     See [Gio.SocketConnectable] for an example of using the connectable
     interface. *)
+
+type t = [ `network_address | `object_ ] Gobject.obj
 
 external new_ : string -> UInt16.t -> t = "ml_g_network_address_new"
 (** Create a new NetworkAddress *)

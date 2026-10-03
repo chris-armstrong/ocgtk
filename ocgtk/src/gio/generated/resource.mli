@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Resource: Resource *)
 
-type t = [ `resource ] Gobject.obj
 (** Applications and libraries often contain binary or textual data that is
     really part of the application, rather than user data. For instance
     {{:https://docs.gtk.org/gtk4/class.Builder.html}[GtkBuilder]} [.ui] files,
@@ -163,6 +162,8 @@ type t = [ `resource ] Gobject.obj
     before the [=]. The path after the slash should ideally be absolute, but
     this is not strictly required. It is possible to overlay the location of a
     single resource with an individual file. *)
+
+type t = [ `resource ] Gobject.obj
 
 external new_from_data : Glib_bytes.t -> (t, GError.t) result
   = "ml_g_resource_new_from_data"

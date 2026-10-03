@@ -1,10 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TlsBackend: TlsBackend *)
 
-type t = [ `tls_backend ] Gobject.obj
 (** TLS (Transport Layer Security, aka SSL) and DTLS backend. This is an
     internal type used to coordinate the different classes implemented by a TLS
     backend. *)
+
+type t = [ `tls_backend ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_tls_backend_from_gobject"
 

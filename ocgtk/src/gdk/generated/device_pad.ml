@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DevicePad: DevicePad *)
 
-type t = [ `device_pad ] Gobject.obj
 (** An interface for tablet pad devices.
 
     It allows querying the features provided by the pad device.
@@ -18,6 +17,8 @@ type t = [ `device_pad ] Gobject.obj
     modes. The number of available modes in a group can be found out through
     [Gdk.DevicePad.get_group_n_modes], and the current mode for a given group
     will be notified through events of type [GDK_PAD_GROUP_MODE]. *)
+
+type t = [ `device_pad ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gdk_device_pad_from_gobject"
 

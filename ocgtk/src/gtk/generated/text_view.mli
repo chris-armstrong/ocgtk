@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TextView: TextView *)
 
-type t = [ `text_view | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Displays the contents of a [Gtk.TextBuffer].
 
     An example GtkTextView
@@ -76,6 +75,8 @@ type t = [ `text_view | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkTextView] uses the [Gtk.AccessibleRole.text_box] role. *)
+
+type t = [ `text_view | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_text_view_new"
 (** Create a new TextView *)

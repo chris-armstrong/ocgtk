@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BoxLayout: BoxLayout *)
 
-type t = [ `box_layout | `layout_manager | `object_ ] Gobject.obj
 (** Arranges children in a single row or column.
 
     Whether it is a row or column depends on the value of its
@@ -14,6 +13,8 @@ type t = [ `box_layout | `layout_manager | `object_ ] Gobject.obj
 
     If you want to specify the amount of space placed between each child, you
     can use the [Gtk.BoxLayout:spacing] property. *)
+
+type t = [ `box_layout | `layout_manager | `object_ ] Gobject.obj
 
 external new_ : Gtk_enums.orientation -> t = "ml_gtk_box_layout_new"
 (** Create a new BoxLayout *)

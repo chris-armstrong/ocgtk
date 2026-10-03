@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PadController: PadController *)
 
-type t = [ `pad_controller | `event_controller | `object_ ] Gobject.obj
 (** Handles input from the pads found in drawing tablets.
 
     Pads are the collection of buttons and tactile sensors often found around
@@ -55,6 +54,8 @@ type t = [ `pad_controller | `event_controller | `object_ ] Gobject.obj
     one logical scroll wheel detent in the positive direction. Devices that
     support high-resolution scrolling may send events with fractions of 120 to
     signify a smaller motion. *)
+
+type t = [ `pad_controller | `event_controller | `object_ ] Gobject.obj
 
 external new_ :
   Ocgtk_gio.Gio.Wrappers.Action_group.t ->

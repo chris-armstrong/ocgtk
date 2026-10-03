@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ComponentTransfer: ComponentTransfer *)
 
-type t = [ `component_transfer ] Gobject.obj
 (** Specifies a transfer function for a color component to be applied while
     rendering.
 
@@ -10,6 +9,8 @@ type t = [ `component_transfer ] Gobject.obj
 
     Note that the transfer function is applied to un-premultiplied values, and
     all results are clamped to the \[0, 1\] range. *)
+
+type t = [ `component_transfer ] Gobject.obj
 
 external new_discrete : int -> float array -> t
   = "ml_gsk_component_transfer_new_discrete"
