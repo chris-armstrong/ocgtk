@@ -6,13 +6,12 @@ type t = [ `cell_renderer | `initially_unowned | `object_ ] Gobject.obj
 (* Methods *)
 
 external stop_editing : t -> bool -> unit = "ml_gtk_cell_renderer_stop_editing"
-(** Informs the cell renderer that the editing is stopped.
-If @canceled is %TRUE, the cell renderer will emit the
-`GtkCellRenderer`::editing-canceled signal.
+(** Informs the cell renderer that the editing is stopped. If [canceled] is
+    [TRUE], the cell renderer will emit the [GtkCellRenderer]::editing-canceled
+    signal.
 
-This function should be called by cell renderer implementations
-in response to the `GtkCellEditable::editing-done` signal of
-`GtkCellEditable`. *)
+    This function should be called by cell renderer implementations in response
+    to the [GtkCellEditable::editing-done] signal of [GtkCellEditable]. *)
 
 external start_editing :
   t ->
@@ -27,8 +26,9 @@ external start_editing :
   Cell_editable.t option
   = "ml_gtk_cell_renderer_start_editing_bytecode"
     "ml_gtk_cell_renderer_start_editing_native"
-(** Starts editing the contents of this @cell, through a new `GtkCellEditable`
-widget created by the `GtkCellRenderer`Class.start_editing virtual function. *)
+(** Starts editing the contents of this [cell], through a new [GtkCellEditable]
+    widget created by the [GtkCellRenderer]Class.start_editing virtual function.
+*)
 
 external snapshot :
   t ->
@@ -42,13 +42,13 @@ external snapshot :
   unit
   = "ml_gtk_cell_renderer_snapshot_bytecode"
     "ml_gtk_cell_renderer_snapshot_native"
-(** Invokes the virtual render function of the `GtkCellRenderer`. The three
-passed-in rectangles are areas in @cr. Most renderers will draw within
-@cell_area; the xalign, yalign, xpad, and ypad fields of the `GtkCellRenderer`
-should be honored with respect to @cell_area. @background_area includes the
-blank space around the cell, and also the area containing the tree expander;
-so the @background_area rectangles for all cells tile to cover the entire
-@window. *)
+(** Invokes the virtual render function of the [GtkCellRenderer]. The three
+    passed-in rectangles are areas in [cr]. Most renderers will draw within
+    [cell_area]; the xalign, yalign, xpad, and ypad fields of the
+    [GtkCellRenderer] should be honored with respect to [cell_area].
+    [background_area] includes the blank space around the cell, and also the
+    area containing the tree expander; so the [background_area] rectangles for
+    all cells tile to cover the entire [window]. *)
 
 external set_visible : t -> bool -> unit = "ml_gtk_cell_renderer_set_visible"
 (** Sets the cell renderer’s visibility. *)
@@ -63,11 +63,11 @@ external set_padding : t -> int -> int -> unit
 
 external set_is_expander : t -> bool -> unit
   = "ml_gtk_cell_renderer_set_is_expander"
-(** Sets whether the given `GtkCellRenderer` is an expander. *)
+(** Sets whether the given [GtkCellRenderer] is an expander. *)
 
 external set_is_expanded : t -> bool -> unit
   = "ml_gtk_cell_renderer_set_is_expanded"
-(** Sets whether the given `GtkCellRenderer` is expanded. *)
+(** Sets whether the given [GtkCellRenderer] is expanded. *)
 
 external set_fixed_size : t -> int -> int -> unit
   = "ml_gtk_cell_renderer_set_fixed_size"
@@ -91,8 +91,8 @@ external get_state :
   option ->
   Gtk_enums.cellrendererstate ->
   Gtk_enums.stateflags = "ml_gtk_cell_renderer_get_state"
-(** Translates the cell renderer state to `GtkStateFlags`, based on the cell
-    renderer and widget sensitivity, and the given `GtkCellRenderer`State. *)
+(** Translates the cell renderer state to [GtkStateFlags], based on the cell
+    renderer and widget sensitivity, and the given [GtkCellRenderer]State. *)
 
 external get_sensitive : t -> bool = "ml_gtk_cell_renderer_get_sensitive"
 (** Returns the cell renderer’s sensitivity. *)
@@ -109,8 +109,8 @@ external get_preferred_width_for_height :
   .t ->
   int ->
   int * int = "ml_gtk_cell_renderer_get_preferred_width_for_height"
-(** Retrieves a cell renderers’s minimum and natural width if it were rendered to
-@widget with the specified @height. *)
+(** Retrieves a cell renderers’s minimum and natural width if it were rendered
+    to [widget] with the specified [height]. *)
 
 external get_preferred_width :
   t ->
@@ -118,7 +118,7 @@ external get_preferred_width :
   .Widget
   .t ->
   int * int = "ml_gtk_cell_renderer_get_preferred_width"
-(** Retrieves a renderer’s natural size when rendered to @widget. *)
+(** Retrieves a renderer’s natural size when rendered to [widget]. *)
 
 external get_preferred_size :
   t ->
@@ -136,8 +136,8 @@ external get_preferred_height_for_width :
   .t ->
   int ->
   int * int = "ml_gtk_cell_renderer_get_preferred_height_for_width"
-(** Retrieves a cell renderers’s minimum and natural height if it were rendered to
-@widget with the specified @width. *)
+(** Retrieves a cell renderers’s minimum and natural height if it were rendered
+    to [widget] with the specified [width]. *)
 
 external get_preferred_height :
   t ->
@@ -145,23 +145,23 @@ external get_preferred_height :
   .Widget
   .t ->
   int * int = "ml_gtk_cell_renderer_get_preferred_height"
-(** Retrieves a renderer’s natural size when rendered to @widget. *)
+(** Retrieves a renderer’s natural size when rendered to [widget]. *)
 
 external get_padding : t -> int * int = "ml_gtk_cell_renderer_get_padding"
-(** Fills in @xpad and @ypad with the appropriate values of @cell. *)
+(** Fills in [xpad] and [ypad] with the appropriate values of [cell]. *)
 
 external get_is_expander : t -> bool = "ml_gtk_cell_renderer_get_is_expander"
-(** Checks whether the given `GtkCellRenderer` is an expander. *)
+(** Checks whether the given [GtkCellRenderer] is an expander. *)
 
 external get_is_expanded : t -> bool = "ml_gtk_cell_renderer_get_is_expanded"
-(** Checks whether the given `GtkCellRenderer` is expanded. *)
+(** Checks whether the given [GtkCellRenderer] is expanded. *)
 
 external get_fixed_size : t -> int * int = "ml_gtk_cell_renderer_get_fixed_size"
-(** Fills in @width and @height with the appropriate size of @cell. *)
+(** Fills in [width] and [height] with the appropriate size of [cell]. *)
 
 external get_alignment : t -> float * float
   = "ml_gtk_cell_renderer_get_alignment"
-(** Fills in @xalign and @yalign with the appropriate values of @cell. *)
+(** Fills in [xalign] and [yalign] with the appropriate values of [cell]. *)
 
 external get_aligned_area :
   t ->
@@ -171,8 +171,8 @@ external get_aligned_area :
   Gtk_enums.cellrendererstate ->
   Ocgtk_gdk.Gdk.Wrappers.Rectangle.t ->
   Ocgtk_gdk.Gdk.Wrappers.Rectangle.t = "ml_gtk_cell_renderer_get_aligned_area"
-(** Gets the aligned area used by @cell inside @cell_area. Used for finding
-the appropriate edit and focus rectangle. *)
+(** Gets the aligned area used by [cell] inside [cell_area]. Used for finding
+    the appropriate edit and focus rectangle. *)
 
 external activate :
   t ->
@@ -188,7 +188,7 @@ external activate :
   = "ml_gtk_cell_renderer_activate_bytecode"
     "ml_gtk_cell_renderer_activate_native"
 (** Passes an activate event to the cell renderer for possible processing. Some
-    cell renderers may use events; for example, `GtkCellRendererToggle` toggles
+    cell renderers may use events; for example, [GtkCellRendererToggle] toggles
     when it gets a mouse click. *)
 
 (* Properties *)

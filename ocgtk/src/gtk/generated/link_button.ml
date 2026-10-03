@@ -15,25 +15,25 @@ external new_with_label : string -> string option -> t
 (* Methods *)
 
 external set_visited : t -> bool -> unit = "ml_gtk_link_button_set_visited"
-(** Sets the “visited” state of the `GtkLinkButton`.
+(** Sets the “visited” state of the [GtkLinkButton].
 
-    See [method@Gtk.LinkButton.get_visited] for more details. *)
+    See [Gtk.LinkButton.get_visited] for more details. *)
 
 external set_uri : t -> string -> unit = "ml_gtk_link_button_set_uri"
-(** Sets @uri as the URI where the `GtkLinkButton` points.
+(** Sets [uri] as the URI where the [GtkLinkButton] points.
 
-As a side-effect this unsets the “visited” state of the button. *)
+    As a side-effect this unsets the “visited” state of the button. *)
 
 external get_visited : t -> bool = "ml_gtk_link_button_get_visited"
-(** Retrieves the “visited” state of the `GtkLinkButton`.
+(** Retrieves the “visited” state of the [GtkLinkButton].
 
     The button becomes visited when it is clicked. If the URI is changed on the
     button, the “visited” state is unset again.
 
-    The state may also be changed using [method@Gtk.LinkButton.set_visited]. *)
+    The state may also be changed using [Gtk.LinkButton.set_visited]. *)
 
 external get_uri : t -> string = "ml_gtk_link_button_get_uri"
-(** Retrieves the URI of the `GtkLinkButton`. *)
+(** Retrieves the URI of the [GtkLinkButton]. *)
 
 (* Properties *)
 

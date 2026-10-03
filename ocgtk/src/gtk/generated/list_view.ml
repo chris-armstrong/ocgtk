@@ -31,18 +31,18 @@ external set_model : t -> Selection_model.t option -> unit
   = "ml_gtk_list_view_set_model"
 (** Sets the model to use.
 
-    This must be a [iface@Gtk.SelectionModel] to use. *)
+    This must be a [Gtk.SelectionModel] to use. *)
 
 external set_header_factory : t -> List_item_factory.t option -> unit
   = "ml_gtk_list_view_set_header_factory"
-(** Sets the `GtkListItemFactory` to use for populating the
-    [class@Gtk.ListHeader] objects used in section headers.
+(** Sets the [GtkListItemFactory] to use for populating the [Gtk.ListHeader]
+    objects used in section headers.
 
-    If this factory is set to `NULL`, the list will not show section headers. *)
+    If this factory is set to [NULL], the list will not show section headers. *)
 
 external set_factory : t -> List_item_factory.t option -> unit
   = "ml_gtk_list_view_set_factory"
-(** Sets the `GtkListItemFactory` to use for populating list items. *)
+(** Sets the [GtkListItemFactory] to use for populating list items. *)
 
 external set_enable_rubberband : t -> bool -> unit
   = "ml_gtk_list_view_set_enable_rubberband"
@@ -51,11 +51,11 @@ external set_enable_rubberband : t -> bool -> unit
 external scroll_to :
   t -> int -> Gtk_enums.listscrollflags -> Scroll_info.t option -> unit
   = "ml_gtk_list_view_scroll_to"
-(** Scrolls to the item at the given position and performs the actions
-specified in @flags.
+(** Scrolls to the item at the given position and performs the actions specified
+    in [flags].
 
-This function works no matter if the listview is shown or focused.
-If it isn't, then the changes will take effect once that happens. *)
+    This function works no matter if the listview is shown or focused. If it
+    isn't, then the changes will take effect once that happens. *)
 
 external get_tab_behavior : t -> Gtk_enums.listtabbehavior
   = "ml_gtk_list_view_get_tab_behavior"

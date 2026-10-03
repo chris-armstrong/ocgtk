@@ -11,8 +11,8 @@ external new_for_xml : string -> (t, GError.t) result
 (* Methods *)
 
 external ref : t -> t = "ml_g_dbus_node_info_ref"
-(** If @info is statically allocated does nothing. Otherwise increases
-the reference count. *)
+(** If [info] is statically allocated does nothing. Otherwise increases the
+    reference count. *)
 
 external lookup_interface : t -> string -> D_bus_interface_info.t option
   = "ml_g_dbus_node_info_lookup_interface"

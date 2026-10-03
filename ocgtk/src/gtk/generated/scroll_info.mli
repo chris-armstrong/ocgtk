@@ -22,7 +22,7 @@ external set_enable_horizontal : t -> bool -> unit
 (** Turns horizontal scrolling on or off. *)
 
 external ref : t -> t = "ml_gtk_scroll_info_ref"
-(** Increases the reference count of a `GtkScrollInfo` by one. *)
+(** Increases the reference count of a [GtkScrollInfo] by one. *)
 
 external get_enable_vertical : t -> bool
   = "ml_gtk_scroll_info_get_enable_vertical"

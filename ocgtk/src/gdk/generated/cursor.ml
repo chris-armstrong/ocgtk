@@ -15,12 +15,12 @@ external new_from_texture : Texture.t -> int -> int -> t option -> t
 external get_texture : t -> Texture.t option = "ml_gdk_cursor_get_texture"
 (** Returns the texture for the cursor.
 
-    If the cursor is a named cursor, %NULL will be returned. *)
+    If the cursor is a named cursor, [NULL] will be returned. *)
 
 external get_name : t -> string option = "ml_gdk_cursor_get_name"
 (** Returns the name of the cursor.
 
-    If the cursor is not a named cursor, %NULL will be returned. *)
+    If the cursor is not a named cursor, [NULL] will be returned. *)
 
 external get_hotspot_y : t -> int = "ml_gdk_cursor_get_hotspot_y"
 (** Returns the vertical offset of the hotspot.
@@ -29,7 +29,7 @@ external get_hotspot_y : t -> int = "ml_gdk_cursor_get_hotspot_y"
 
     Note that named cursors may have a nonzero hotspot, but this function will
     only return the hotspot position for cursors created with
-    [ctor@Gdk.Cursor.new_from_texture]. *)
+    [Gdk.Cursor.new_from_texture]. *)
 
 external get_hotspot_x : t -> int = "ml_gdk_cursor_get_hotspot_x"
 (** Returns the horizontal offset of the hotspot.
@@ -38,15 +38,15 @@ external get_hotspot_x : t -> int = "ml_gdk_cursor_get_hotspot_x"
 
     Note that named cursors may have a nonzero hotspot, but this function will
     only return the hotspot position for cursors created with
-    [ctor@Gdk.Cursor.new_from_texture]. *)
+    [Gdk.Cursor.new_from_texture]. *)
 
 external get_fallback : t -> t option = "ml_gdk_cursor_get_fallback"
-(** Returns the fallback for this @cursor.
+(** Returns the fallback for this [cursor].
 
-The fallback will be used if this cursor is not available on a given
-`GdkDisplay`. For named cursors, this can happen when using nonstandard
-names or when using an incomplete cursor theme. For textured cursors,
-this can happen when the texture is too large or when the `GdkDisplay`
-it is used on does not support textured cursors. *)
+    The fallback will be used if this cursor is not available on a given
+    [GdkDisplay]. For named cursors, this can happen when using nonstandard
+    names or when using an incomplete cursor theme. For textured cursors, this
+    can happen when the texture is too large or when the [GdkDisplay] it is used
+    on does not support textured cursors. *)
 
 (* Properties *)

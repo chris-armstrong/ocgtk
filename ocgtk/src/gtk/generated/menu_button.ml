@@ -19,46 +19,46 @@ external set_primary : t -> bool -> unit = "ml_gtk_menu_button_set_primary"
 
 external set_popover : t -> Popover.t option -> unit
   = "ml_gtk_menu_button_set_popover"
-(** Sets the `GtkPopover` that will be popped up when the @menu_button is clicked.
+(** Sets the [GtkPopover] that will be popped up when the [menu_button] is
+    clicked.
 
-If @popover is %NULL, the button is disabled.
+    If [popover] is [NULL], the button is disabled.
 
-If [property@Gtk.MenuButton:menu-model] is set, the menu model is dissociated
-from the @menu_button, and the property is set to %NULL. *)
+    If [Gtk.MenuButton:menu-model] is set, the menu model is dissociated from
+    the [menu_button], and the property is set to [NULL]. *)
 
 external set_menu_model :
   t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit
   = "ml_gtk_menu_button_set_menu_model"
-(** Sets the `GMenuModel` from which the popup will be constructed.
+(** Sets the [GMenuModel] from which the popup will be constructed.
 
-If @menu_model is %NULL, the button is disabled.
+    If [menu_model] is [NULL], the button is disabled.
 
-A [class@Gtk.Popover] will be created from the menu model with
-[ctor@Gtk.PopoverMenu.new_from_model]. Actions will be connected
-as documented for this function.
+    A [Gtk.Popover] will be created from the menu model with
+    [Gtk.PopoverMenu.new_from_model]. Actions will be connected as documented
+    for this function.
 
-If [property@Gtk.MenuButton:popover] is already set, it will be
-dissociated from the @menu_button, and the property is set to %NULL. *)
+    If [Gtk.MenuButton:popover] is already set, it will be dissociated from the
+    [menu_button], and the property is set to [NULL]. *)
 
 external set_label : t -> string -> unit = "ml_gtk_menu_button_set_label"
 (** Sets the label to show inside the menu button.
 
-    Setting a label resets [property@Gtk.MenuButton:icon-name] and
-    [property@Gtk.MenuButton:child].
+    Setting a label resets [Gtk.MenuButton:icon-name] and
+    [Gtk.MenuButton:child].
 
-    If [property@Gtk.MenuButton:direction] is not `GTK_ARROW_NONE`, a dropdown
-    arrow will be shown next to the label. *)
+    If [Gtk.MenuButton:direction] is not [GTK_ARROW_NONE], a dropdown arrow will
+    be shown next to the label. *)
 
 external set_icon_name : t -> string -> unit
   = "ml_gtk_menu_button_set_icon_name"
 (** Sets the name of an icon to show inside the menu button.
 
-    Setting icon name resets [property@Gtk.MenuButton:label] and
-    [property@Gtk.MenuButton:child].
+    Setting icon name resets [Gtk.MenuButton:label] and [Gtk.MenuButton:child].
 
-    If [property@Gtk.MenuButton:always-show-arrow] is set to `TRUE` and
-    [property@Gtk.MenuButton:direction] is not `GTK_ARROW_NONE`, a dropdown
-    arrow will be shown next to the icon. *)
+    If [Gtk.MenuButton:always-show-arrow] is set to [TRUE] and
+    [Gtk.MenuButton:direction] is not [GTK_ARROW_NONE], a dropdown arrow will be
+    shown next to the icon. *)
 
 external set_has_frame : t -> bool -> unit = "ml_gtk_menu_button_set_has_frame"
 (** Sets the style of the button. *)
@@ -67,14 +67,14 @@ external set_direction : t -> Gtk_enums.arrowtype -> unit
   = "ml_gtk_menu_button_set_direction"
 (** Sets the direction in which the popup will be popped up.
 
-If the button is automatically populated with an arrow icon,
-its direction will be changed to match.
+    If the button is automatically populated with an arrow icon, its direction
+    will be changed to match.
 
-If the does not fit in the available space in the given direction,
-GTK will its best to keep it inside the screen and fully visible.
+    If the does not fit in the available space in the given direction, GTK will
+    its best to keep it inside the screen and fully visible.
 
-If you pass %GTK_ARROW_NONE for a @direction, the popup will behave
-as if you passed %GTK_ARROW_DOWN (although you won’t see any arrows). *)
+    If you pass [GTK_ARROW_NONE] for a [direction], the popup will behave as if
+    you passed [GTK_ARROW_DOWN] (although you won’t see any arrows). *)
 
 external set_child :
   t ->
@@ -83,23 +83,23 @@ external set_child :
   .t
   option ->
   unit = "ml_gtk_menu_button_set_child"
-(** Sets the child widget of @menu_button.
+(** Sets the child widget of [menu_button].
 
-Setting a child resets [property@Gtk.MenuButton:label] and
-[property@Gtk.MenuButton:icon-name].
+    Setting a child resets [Gtk.MenuButton:label] and
+    [Gtk.MenuButton:icon-name].
 
-If [property@Gtk.MenuButton:always-show-arrow] is set to `TRUE` and
-[property@Gtk.MenuButton:direction] is not `GTK_ARROW_NONE`, a dropdown arrow
-will be shown next to the child. *)
+    If [Gtk.MenuButton:always-show-arrow] is set to [TRUE] and
+    [Gtk.MenuButton:direction] is not [GTK_ARROW_NONE], a dropdown arrow will be
+    shown next to the child. *)
 
 external set_can_shrink : t -> bool -> unit
   = "ml_gtk_menu_button_set_can_shrink"
-(** Sets whether the button size can be smaller than the natural size of
-its contents.
+(** Sets whether the button size can be smaller than the natural size of its
+    contents.
 
-For text buttons, setting @can_shrink to true will ellipsize the label.
+    For text buttons, setting [can_shrink] to true will ellipsize the label.
 
-For icon buttons, this function has no effect. *)
+    For icon buttons, this function has no effect. *)
 
 external set_always_show_arrow : t -> bool -> unit
   = "ml_gtk_menu_button_set_always_show_arrow"
@@ -122,13 +122,13 @@ external get_primary : t -> bool = "ml_gtk_menu_button_get_primary"
 (** Returns whether the menu button acts as a primary menu. *)
 
 external get_popover : t -> Popover.t option = "ml_gtk_menu_button_get_popover"
-(** Returns the `GtkPopover` that pops out of the button.
+(** Returns the [GtkPopover] that pops out of the button.
 
-    If the button is not using a `GtkPopover`, this function returns %NULL. *)
+    If the button is not using a [GtkPopover], this function returns [NULL]. *)
 
 external get_menu_model : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
   = "ml_gtk_menu_button_get_menu_model"
-(** Returns the `GMenuModel` used to generate the popup. *)
+(** Returns the [GMenuModel] used to generate the popup. *)
 
 external get_label : t -> string option = "ml_gtk_menu_button_get_label"
 (** Gets the label shown in the button *)
@@ -149,7 +149,7 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_menu_button_get_child"
-(** Gets the child widget of @menu_button. *)
+(** Gets the child widget of [menu_button]. *)
 
 external get_can_shrink : t -> bool = "ml_gtk_menu_button_get_can_shrink"
 (** Retrieves whether the button can be smaller than the natural size of its

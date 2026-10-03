@@ -16,31 +16,30 @@ external set_use_native_controls : t -> bool -> unit
     This option shows the "stoplight" buttons on macOS. For Linux, this option
     has no effect.
 
-    See also [Using GTK on Apple macOS](osx.html?native-window-controls). *)
+    See also Using GTK on Apple macOS. *)
 
 external set_side : t -> Gtk_enums.packtype -> unit
   = "ml_gtk_window_controls_set_side"
 (** Determines which part of decoration layout the window controls widget uses.
 
-    See [property@Gtk.WindowControls:decoration-layout]. *)
+    See [Gtk.WindowControls:decoration-layout]. *)
 
 external set_decoration_layout : t -> string option -> unit
   = "ml_gtk_window_controls_set_decoration_layout"
 (** Sets the decoration layout for the title buttons.
 
-This overrides the [property@Gtk.Settings:gtk-decoration-layout]
-setting.
+    This overrides the [Gtk.Settings:gtk-decoration-layout] setting.
 
-The format of the string is button names, separated by commas.
-A colon separates the buttons that should appear on the left
-from those on the right. Recognized button names are minimize,
-maximize, close and icon (the window icon).
+    The format of the string is button names, separated by commas. A colon
+    separates the buttons that should appear on the left from those on the
+    right. Recognized button names are minimize, maximize, close and icon (the
+    window icon).
 
-For example, “icon:minimize,maximize,close” specifies a icon
-on the left, and minimize, maximize and close buttons on the right.
+    For example, “icon:minimize,maximize,close” specifies a icon on the left,
+    and minimize, maximize and close buttons on the right.
 
-If [property@Gtk.WindowControls:side] value is [enum@Gtk.PackType.start],
-@self will display the part before the colon, otherwise after that. *)
+    If [Gtk.WindowControls:side] value is [Gtk.PackType.start], [self] will
+    display the part before the colon, otherwise after that. *)
 
 external get_use_native_controls : t -> bool
   = "ml_gtk_window_controls_get_use_native_controls"

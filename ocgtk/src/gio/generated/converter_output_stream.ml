@@ -16,6 +16,6 @@ external new_ : Output_stream.t -> Converter.t -> t
 
 external get_converter : t -> Converter.t
   = "ml_g_converter_output_stream_get_converter"
-(** Gets the #GConverter that is used by @converter_stream. *)
+(** Gets the [GConverter] that is used by [converter_stream]. *)
 
 (* Properties *)

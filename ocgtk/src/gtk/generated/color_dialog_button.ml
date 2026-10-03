@@ -15,7 +15,7 @@ external set_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t -> unit
 
 external set_dialog : t -> Color_dialog.t -> unit
   = "ml_gtk_color_dialog_button_set_dialog"
-(** Sets a `GtkColorDialog` object to use for creating the color chooser dialog
+(** Sets a [GtkColorDialog] object to use for creating the color chooser dialog
     that is presented when the user clicks the button. *)
 
 external get_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
@@ -27,7 +27,7 @@ external get_rgba : t -> Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t
 
 external get_dialog : t -> Color_dialog.t option
   = "ml_gtk_color_dialog_button_get_dialog"
-(** Returns the `GtkColorDialog` of @self. *)
+(** Returns the [GtkColorDialog] of [self]. *)
 
 (* Properties *)
 

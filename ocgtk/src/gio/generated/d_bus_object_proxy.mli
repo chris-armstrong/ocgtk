@@ -10,7 +10,7 @@ external new_ : D_bus_connection.t -> string -> t = "ml_g_dbus_object_proxy_new"
 
 external get_connection : t -> D_bus_connection.t
   = "ml_g_dbus_object_proxy_get_connection"
-(** Gets the connection that @proxy is for. *)
+(** Gets the connection that [proxy] is for. *)
 
 (* Properties *)
 

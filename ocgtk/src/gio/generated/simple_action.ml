@@ -22,14 +22,13 @@ external set_state_hint : t -> Gvariant.t option -> unit
 external set_state : t -> Gvariant.t -> unit = "ml_g_simple_action_set_state"
 (** Sets the state of the action.
 
-This directly updates the 'state' property to the given value.
+    This directly updates the 'state' property to the given value.
 
-This should only be called by the implementor of the action.  Users
-of the action should not attempt to directly modify the 'state'
-property.  Instead, they should call g_action_change_state() to
-request the change.
+    This should only be called by the implementor of the action. Users of the
+    action should not attempt to directly modify the 'state' property. Instead,
+    they should call g_action_change_state() to request the change.
 
-If the @value GVariant is floating, it is consumed. *)
+    If the [value] GVariant is floating, it is consumed. *)
 
 external set_enabled : t -> bool -> unit = "ml_g_simple_action_set_enabled"
 (** Sets the action as enabled or not.

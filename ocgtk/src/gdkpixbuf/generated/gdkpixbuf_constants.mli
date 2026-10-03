@@ -17,4 +17,4 @@ val pixbuf_version : string
 (** Contains the full version of GdkPixbuf as a string.
 
     This is the version being compiled against; contrast with
-    `gdk_pixbuf_version`. *)
+    [gdk_pixbuf_version]. *)

@@ -15,7 +15,7 @@ external ref : t -> t = "ml_g_file_attribute_info_list_ref"
 
 external lookup : t -> string -> File_attribute_info.t
   = "ml_g_file_attribute_info_list_lookup"
-(** Gets the file attribute with the name @name from @list. *)
+(** Gets the file attribute with the name [name] from [list]. *)
 
 external dup : t -> t = "ml_g_file_attribute_info_list_dup"
 (** Makes a duplicate of a file attribute info list. *)
@@ -26,8 +26,8 @@ external add :
   Gio_enums.fileattributetype ->
   Gio_enums.fileattributeinfoflags ->
   unit = "ml_g_file_attribute_info_list_add"
-(** Adds a new attribute with @name to the @list, setting
-its @type and @flags. *)
+(** Adds a new attribute with [name] to the [list], setting its [type] and
+    [flags]. *)
 
 external get_type : unit -> Gobject.Type.t
   = "ml_gio_file_attribute_info_list_get_type"

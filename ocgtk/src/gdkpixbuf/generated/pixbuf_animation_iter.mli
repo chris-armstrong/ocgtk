@@ -8,9 +8,9 @@ type t = [ `pixbuf_animation_iter | `object_ ] Gobject.obj
 external on_currently_loading_frame : t -> bool
   = "ml_gdk_pixbuf_animation_iter_on_currently_loading_frame"
 (** Used to determine how to respond to the area_updated signal on
-    #GdkPixbufLoader when loading an animation.
+    [GdkPixbufLoader] when loading an animation.
 
-    The `::area_updated` signal is emitted for an area of the frame currently
+    The [::area_updated] signal is emitted for an area of the frame currently
     streaming in to the loader. So if you're on the currently loading frame, you
     will need to redraw the screen for the updated area. *)
 
@@ -36,7 +36,7 @@ external get_delay_time : t -> int
 (** Gets the number of milliseconds the current pixbuf should be displayed, or
     -1 if the current pixbuf should be displayed forever.
 
-    The `g_timeout_add()` function conveniently takes a timeout in milliseconds,
+    The [g_timeout_add()] function conveniently takes a timeout in milliseconds,
     so you can use a timeout to schedule the next update.
 
     Note that some formats, like GIF, might clamp the timeout values in the

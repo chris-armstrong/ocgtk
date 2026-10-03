@@ -14,11 +14,11 @@ external new_ : Ocgtk_gio.Gio.Wrappers.Permission.t option -> t
 external set_permission :
   t -> Ocgtk_gio.Gio.Wrappers.Permission.t option -> unit
   = "ml_gtk_lock_button_set_permission"
-(** Sets the `GPermission` object that controls @button. *)
+(** Sets the [GPermission] object that controls [button]. *)
 
 external get_permission : t -> Ocgtk_gio.Gio.Wrappers.Permission.t option
   = "ml_gtk_lock_button_get_permission"
-(** Obtains the `GPermission` object that controls @button. *)
+(** Obtains the [GPermission] object that controls [button]. *)
 
 (* Properties *)
 

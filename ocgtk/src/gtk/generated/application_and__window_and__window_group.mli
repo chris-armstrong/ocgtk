@@ -13,7 +13,7 @@ module rec Application : sig
   external uninhibit : t -> int -> unit = "ml_gtk_application_uninhibit"
   (** Removes an inhibitor that has been previously established.
 
-      See [method@Gtk.Application.inhibit].
+      See [Gtk.Application.inhibit].
 
       Inhibitors are also cleared when the application exits. *)
 
@@ -24,8 +24,8 @@ module rec Application : sig
       This is a menubar in the traditional sense.
 
       This can only be done in the primary instance of the application, after it
-      has been registered. [vfunc@GIO.Application.startup] is a good place to
-      call this.
+      has been registered. [GIO.Application.startup] is a good place to call
+      this.
 
       Depending on the desktop environment, this may appear at the top of each
       window, or at the top of the screen. In some environments, if both the
@@ -35,7 +35,7 @@ module rec Application : sig
       may be rendered by the desktop shell while the menubar (if set) remains in
       each individual window.
 
-      Use the base `GActionMap` interface to add actions, to respond to the user
+      Use the base [GActionMap] interface to add actions, to respond to the user
       selecting these menu items. *)
 
   external set_accels_for_action : t -> string -> string array -> unit
@@ -43,22 +43,21 @@ module rec Application : sig
   (** Sets zero or more keyboard accelerators that will trigger the
   given action.
 
-  The first item in @accels will be the primary accelerator,
+  The first item in [accels] will be the primary accelerator,
   which may be displayed in the UI.
 
   To remove all accelerators for an action, use an empty,
-  zero-terminated array for @accels.
+  zero-terminated array for [accels].
 
-  For the @detailed_action_name, see [func@Gio.Action.parse_detailed_name]
-  and [Gio.Action.print_detailed_name]. *)
+  For the [detailed_action_name], see [Gio.Action.parse_detailed_name]
+  and \[Gio.Action.print_detailed_name]. *)
 
   external remove_window : t -> Window.t -> unit
     = "ml_gtk_application_remove_window"
   (** Remove a window from the application.
 
       If the window belongs to the application then this call is equivalent to
-      setting the [property@Gtk.Window:application] property of the window to
-      `NULL`.
+      setting the [Gtk.Window:application] property of the window to [NULL].
 
       The application may stop running as a result of a call to this function,
       if the window was the last window of the application. *)
@@ -67,7 +66,7 @@ module rec Application : sig
     = "ml_gtk_application_list_action_descriptions"
   (** Lists the detailed action names which have associated accelerators.
 
-      See [method@Gtk.Application.set_accels_for_action]. *)
+      See [Gtk.Application.set_accels_for_action]. *)
 
   external inhibit :
     t ->
@@ -76,32 +75,31 @@ module rec Application : sig
     string option ->
     int = "ml_gtk_application_inhibit"
   (** Informs the session manager that certain types of actions should be
-  inhibited.
+      inhibited.
 
-  This is not guaranteed to work on all platforms and for all types of
-  actions.
+      This is not guaranteed to work on all platforms and for all types of
+      actions.
 
-  Applications should invoke this method when they begin an operation
-  that should not be interrupted, such as creating a CD or DVD. The
-  types of actions that may be blocked are specified by the @flags
-  parameter. When the application completes the operation it should
-  call [method@Gtk.Application.uninhibit] to remove the inhibitor. Note
-  that an application can have multiple inhibitors, and all of them must
-  be individually removed. Inhibitors are also cleared when the
-  application exits.
+      Applications should invoke this method when they begin an operation that
+      should not be interrupted, such as creating a CD or DVD. The types of
+      actions that may be blocked are specified by the [flags] parameter. When
+      the application completes the operation it should call
+      [Gtk.Application.uninhibit] to remove the inhibitor. Note that an
+      application can have multiple inhibitors, and all of them must be
+      individually removed. Inhibitors are also cleared when the application
+      exits.
 
-  Applications should not expect that they will always be able to block
-  the action. In most cases, users will be given the option to force
-  the action to take place.
+      Applications should not expect that they will always be able to block the
+      action. In most cases, users will be given the option to force the action
+      to take place.
 
-  The @reason message should be short and to the point.
+      The [reason] message should be short and to the point.
 
-  If a window is given, the session manager may point the user to
-  this window to find out more about why the action is inhibited.
+      If a window is given, the session manager may point the user to this
+      window to find out more about why the action is inhibited.
 
-  The cookie that is returned by this function  should be used as an
-  argument to [method@Gtk.Application.uninhibit] in order to remove
-  the request. *)
+      The cookie that is returned by this function should be used as an argument
+      to [Gtk.Application.uninhibit] in order to remove the request. *)
 
   external get_windows : t -> Window.t list = "ml_gtk_application_get_windows"
   (** Gets a list of the window associated with the application.
@@ -118,8 +116,8 @@ module rec Application : sig
     = "ml_gtk_application_get_window_by_id"
   (** Returns the window with the given ID.
 
-      The ID of a `GtkApplicationWindow` can be retrieved with
-      [method@Gtk.ApplicationWindow.get_id]. *)
+      The ID of a [GtkApplicationWindow] can be retrieved with
+      [Gtk.ApplicationWindow.get_id]. *)
 
   external get_menubar : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
     = "ml_gtk_application_get_menubar"
@@ -129,9 +127,7 @@ module rec Application : sig
     = "ml_gtk_application_get_menu_by_id"
   (** Gets a menu from automatically loaded resources.
 
-      See
-      [the section on Automatic resources](class.Application.html#automatic-resources)
-      for more information. *)
+      See the section on Automatic resources for more information. *)
 
   external get_active_window : t -> Window.t option
     = "ml_gtk_application_get_active_window"
@@ -155,11 +151,11 @@ module rec Application : sig
       cases where the actions never appear in the same context.
 
       In case there are no actions for a given accelerator, an empty array is
-      returned. `NULL` is never returned.
+      returned. [NULL] is never returned.
 
       It is a programmer error to pass an invalid accelerator string.
 
-      If you are unsure, check it with [func@Gtk.accelerator_parse] first. *)
+      If you are unsure, check it with [Gtk.accelerator_parse] first. *)
 
   external get_accels_for_action : t -> string -> string array
     = "ml_gtk_application_get_accels_for_action"
@@ -169,18 +165,18 @@ module rec Application : sig
   external add_window : t -> Window.t -> unit = "ml_gtk_application_add_window"
   (** Adds a window to the application.
 
-  This call can only happen after the application has started;
-  typically, you should add new application windows in response
-  to the emission of the [signal@GIO.Application::activate] signal.
+      This call can only happen after the application has started; typically,
+      you should add new application windows in response to the emission of the
+      [GIO.Application::activate] signal.
 
-  This call is equivalent to setting the [property@Gtk.Window:application]
-  property of the window to @application.
+      This call is equivalent to setting the [Gtk.Window:application] property
+      of the window to [application].
 
-  Normally, the connection between the application and the window
-  will remain until the window is destroyed, but you can explicitly
-  remove it with [method@Gtk.Application.remove_window].
+      Normally, the connection between the application and the window will
+      remain until the window is destroyed, but you can explicitly remove it
+      with [Gtk.Application.remove_window].
 
-  GTK will keep the application running as long as it has any windows. *)
+      GTK will keep the application running as long as it has any windows. *)
 
   (* Properties *)
 
@@ -229,8 +225,8 @@ and Window : sig
       minimize it again, or there may not be a window manager in which case
       minimization isn’t possible, etc.
 
-      You can track result of this operation via the
-      [property@Gdk.Toplevel:state] property. *)
+      You can track result of this operation via the [Gdk.Toplevel:state]
+      property. *)
 
   external unmaximize : t -> unit = "ml_gtk_window_unmaximize"
   (** Asks to unmaximize the window.
@@ -244,9 +240,9 @@ and Window : sig
       the initial state is at the window managers discretion. For example, it
       might decide to maximize a window that almost fills the screen.
 
-      You can track the result of this operation via the
-      [property@Gdk.Toplevel:state] property, or by listening to notifications
-      on the [property@Gtk.Window:maximized] property. *)
+      You can track the result of this operation via the [Gdk.Toplevel:state]
+      property, or by listening to notifications on the [Gtk.Window:maximized]
+      property. *)
 
   external unfullscreen : t -> unit = "ml_gtk_window_unfullscreen"
   (** Asks to remove the fullscreen state for the window, and return to its
@@ -261,25 +257,24 @@ and Window : sig
       If a window is not explicitly fullscreened or unfullscreened before it is
       shown, the initial state is at the window managers discretion.
 
-      You can track the result of this operation via the
-      [property@Gdk.Toplevel:state] property, or by listening to notifications
-      of the [property@Gtk.Window:fullscreened] property. *)
+      You can track the result of this operation via the [Gdk.Toplevel:state]
+      property, or by listening to notifications of the
+      [Gtk.Window:fullscreened] property. *)
 
   external set_transient_for : t -> t option -> unit
     = "ml_gtk_window_set_transient_for"
   (** Sets a transient parent for the window.
 
-  Dialog windows should be set transient for the main application
-  window they were spawned from. This allows window managers to e.g.
-  keep the dialog on top of the main window, or center the dialog
-  over the main window. [ctor@Gtk.Dialog.new_with_buttons] and other
-  convenience functions in GTK will sometimes call this function on
-  your behalf.
+      Dialog windows should be set transient for the main application window
+      they were spawned from. This allows window managers to e.g. keep the
+      dialog on top of the main window, or center the dialog over the main
+      window. [Gtk.Dialog.new_with_buttons] and other convenience functions in
+      GTK will sometimes call this function on your behalf.
 
-  Passing `NULL` for @parent unsets the current transient window.
+      Passing [NULL] for [parent] unsets the current transient window.
 
-  On Windows, this function puts the child window on top of the parent,
-  much as the window manager would have done on X. *)
+      On Windows, this function puts the child window on top of the parent, much
+      as the window manager would have done on X. *)
 
   external set_titlebar :
     t ->
@@ -290,14 +285,14 @@ and Window : sig
     unit = "ml_gtk_window_set_titlebar"
   (** Sets a custom titlebar for the window.
 
-      A typical widget used here is [class@Gtk.HeaderBar], as it provides
-      various features expected of a titlebar while allowing the addition of
-      child widgets to it.
+      A typical widget used here is [Gtk.HeaderBar], as it provides various
+      features expected of a titlebar while allowing the addition of child
+      widgets to it.
 
       If you set a custom titlebar, GTK will do its best to convince the window
       manager not to put its own titlebar on the window. Depending on the
       system, this function may not work for a window that is already visible,
-      so you set the titlebar before calling [method@Gtk.Widget.show]. *)
+      so you set the titlebar before calling [Gtk.Widget.show]. *)
 
   external set_title : t -> string option -> unit = "ml_gtk_window_set_title"
   (** Sets the title of the window.
@@ -309,7 +304,7 @@ and Window : sig
       they may have open. A good title might include the application name and
       current document filename, for example.
 
-      Passing `NULL` does the same as setting the title to an empty string. *)
+      Passing [NULL] does the same as setting the title to an empty string. *)
 
   external set_startup_id : t -> string -> unit = "ml_gtk_window_set_startup_id"
   (** Sets the startup notification ID.
@@ -317,13 +312,13 @@ and Window : sig
       Startup notification identifiers are used by desktop environment to track
       application startup, to provide user feedback and other features. This
       function changes the corresponding property on the underlying
-      `GdkSurface`.
+      [GdkSurface].
 
       Normally, startup identifier is managed automatically and you should only
       use this function in special cases like transferring focus from other
       processes. You should use this function before calling
-      [method@Gtk.Window.present] or any equivalent function generating a window
-      map event.
+      [Gtk.Window.present] or any equivalent function generating a window map
+      event.
 
       This function is only useful on Wayland or X11, not with other GDK
       backends. *)
@@ -338,7 +333,7 @@ and Window : sig
 
       Modal windows prevent interaction with other windows in the same
       application. To keep modal dialogs on top of main application windows, use
-      [method@Gtk.Window.set_transient_for] to make the dialog transient for the
+      [Gtk.Window.set_transient_for] to make the dialog transient for the
       parent; most window managers will then disallow lowering the dialog below
       the parent. *)
 
@@ -353,8 +348,8 @@ and Window : sig
     = "ml_gtk_window_set_icon_name"
   (** Sets the icon for the window from a named themed icon.
 
-      See the docs for [class@Gtk.IconTheme] for more details. On some
-      platforms, the window icon is not used at all.
+      See the docs for [Gtk.IconTheme] for more details. On some platforms, the
+      window icon is not used at all.
 
       Note that this has nothing to do with the WM_ICON_NAME property which is
       mentioned in the ICCCM. *)
@@ -390,11 +385,11 @@ and Window : sig
     unit = "ml_gtk_window_set_focus"
   (** Sets the focus widget.
 
-  If @focus is not the current focus widget, and is focusable,
-  sets it as the focus widget for the window. If @focus is %NULL,
-  unsets the focus widget for this window. To set the focus to a
-  particular widget in the toplevel, it is usually more convenient
-  to use [method@Gtk.Widget.grab_focus] instead of this function. *)
+      If [focus] is not the current focus widget, and is focusable, sets it as
+      the focus widget for the window. If [focus] is [NULL], unsets the focus
+      widget for this window. To set the focus to a particular widget in the
+      toplevel, it is usually more convenient to use [Gtk.Widget.grab_focus]
+      instead of this function. *)
 
   external set_display : t -> Ocgtk_gdk.Gdk.Wrappers.Display.t -> unit
     = "ml_gtk_window_set_display"
@@ -418,8 +413,7 @@ and Window : sig
       property to false using this function, GTK will do its best to convince
       the window manager not to show a close button. Depending on the system,
       this function may not have any effect when called on a window that is
-      already visible, so you should call it before calling
-      [method@Gtk.Widget.show].
+      already visible, so you should call it before calling [Gtk.Widget.show].
 
       On Windows, this function always works, since there’s no window manager
       policy involved. *)
@@ -454,17 +448,17 @@ and Window : sig
       the natural size request will be used instead. It is possible to do this
       while the window is showing to "reset" it to its initial size.
 
-      Unlike [method@Gtk.Widget.set_size_request], which sets a size request for
-      a widget and thus would keep users from shrinking the window, this
-      function only sets the initial size, just as if the user had resized the
-      window themselves. Users can still shrink the window again as they
-      normally would. Setting a default size of -1 means to use the “natural”
-      default size (the size request of the window).
+      Unlike [Gtk.Widget.set_size_request], which sets a size request for a
+      widget and thus would keep users from shrinking the window, this function
+      only sets the initial size, just as if the user had resized the window
+      themselves. Users can still shrink the window again as they normally
+      would. Setting a default size of -1 means to use the “natural” default
+      size (the size request of the window).
 
       If you use this function to reestablish a previously saved window size,
       note that the appropriate size to save is the one returned by
-      [method@Gtk.Window.get_default_size]. Using the window allocation directly
-      will not work in all circumstances and can lead to growing or shrinking
+      [Gtk.Window.get_default_size]. Using the window allocation directly will
+      not work in all circumstances and can lead to growing or shrinking
       windows. *)
 
   external set_decorated : t -> bool -> unit = "ml_gtk_window_set_decorated"
@@ -476,7 +470,7 @@ and Window : sig
       function, GTK will do its best to convince the window manager not to
       decorate the window. Depending on the system, this function may not have
       any effect when called on a window that is already visible, so you should
-      call it before calling [method@Gtk.Widget.show].
+      call it before calling [Gtk.Widget.show].
 
       On Windows, this function always works, since there’s no window manager
       policy involved. *)
@@ -494,23 +488,22 @@ and Window : sig
     = "ml_gtk_window_set_application"
   (** Sets or unsets the application object associated with the window.
 
-  The application will be kept alive for at least as long as it has
-  any windows associated with it (see [method@Gio.Application.hold]
-  for a way to keep it alive without windows).
+      The application will be kept alive for at least as long as it has any
+      windows associated with it (see [Gio.Application.hold] for a way to keep
+      it alive without windows).
 
-  Normally, the connection between the application and the window will
-  remain until the window is destroyed, but you can explicitly remove
-  it by setting the @application to %NULL.
+      Normally, the connection between the application and the window will
+      remain until the window is destroyed, but you can explicitly remove it by
+      setting the [application] to [NULL].
 
-  This is equivalent to calling [method@Gtk.Application.remove_window]
-  and/or [method@Gtk.Application.add_window] on the old/new applications
-  as relevant. *)
+      This is equivalent to calling [Gtk.Application.remove_window] and/or
+      [Gtk.Application.add_window] on the old/new applications as relevant. *)
 
   external present_with_time : t -> UInt32.t -> unit
     = "ml_gtk_window_present_with_time"
   (** Presents a window to the user in response to an user interaction.
 
-      See [method@Gtk.Window.present] for more details.
+      See [Gtk.Window.present] for more details.
 
       The timestamp should be gathered when the window was requested to be shown
       (when clicking a link for example), rather than once the window is ready
@@ -519,12 +512,12 @@ and Window : sig
   external present : t -> unit = "ml_gtk_window_present"
   (** Presents a window to the user.
 
-  This may mean raising the window in the stacking order,
-  unminimizing it, moving it to the current desktop and/or
-  giving it the keyboard focus (possibly dependent on the user’s
-  platform, window manager and preferences).
+      This may mean raising the window in the stacking order, unminimizing it,
+      moving it to the current desktop and/or giving it the keyboard focus
+      (possibly dependent on the user’s platform, window manager and
+      preferences).
 
-  If @window is hidden, this function also makes it visible. *)
+      If [window] is hidden, this function also makes it visible. *)
 
   external minimize : t -> unit = "ml_gtk_window_minimize"
   (** Asks to minimize the window.
@@ -538,8 +531,8 @@ and Window : sig
       It’s permitted to call this function before showing a window, in which
       case the window will be minimized before it ever appears onscreen.
 
-      You can track result of this operation via the
-      [property@Gdk.Toplevel:state] property. *)
+      You can track result of this operation via the [Gdk.Toplevel:state]
+      property. *)
 
   external maximize : t -> unit = "ml_gtk_window_maximize"
   (** Asks to maximize the window, so that it fills the screen.
@@ -555,9 +548,9 @@ and Window : sig
       the initial state is at the window managers discretion. For example, it
       might decide to maximize a window that almost fills the screen.
 
-      You can track the result of this operation via the
-      [property@Gdk.Toplevel:state] property, or by listening to notifications
-      on the [property@Gtk.Window:maximized] property. *)
+      You can track the result of this operation via the [Gdk.Toplevel:state]
+      property, or by listening to notifications on the [Gtk.Window:maximized]
+      property. *)
 
   external is_suspended : t -> bool = "ml_gtk_window_is_suspended"
   (** Retrieves the current suspended state of the window.
@@ -571,8 +564,7 @@ and Window : sig
       Note that since maximization is ultimately handled by the window manager
       and happens asynchronously to an application request, you shouldn’t assume
       the return value of this function changing immediately (or at all), as an
-      effect of calling [method@Gtk.Window.maximize] or
-      [method@Gtk.Window.unmaximize].
+      effect of calling [Gtk.Window.maximize] or [Gtk.Window.unmaximize].
 
       If the window isn't yet mapped, the value returned will whether the
       initial requested state is maximized. *)
@@ -583,8 +575,7 @@ and Window : sig
       Note that since fullscreening is ultimately handled by the window manager
       and happens asynchronously to an application request, you shouldn’t assume
       the return value of this function changing immediately (or at all), as an
-      effect of calling [method@Gtk.Window.fullscreen] or
-      [method@Gtk.Window.unfullscreen].
+      effect of calling [Gtk.Window.fullscreen] or [Gtk.Window.unfullscreen].
 
       If the window isn't yet mapped, the value returned will whether the
       initial requested state is fullscreen. *)
@@ -594,7 +585,7 @@ and Window : sig
 
       The active toplevel is the window receiving keystrokes.
 
-      The return value is %TRUE if the window is active toplevel itself. You
+      The return value is [TRUE] if the window is active toplevel itself. You
       might use this function if you wanted to draw a widget differently in an
       active window from a widget in an inactive window. *)
 
@@ -610,8 +601,7 @@ and Window : sig
     .Widget
     .t
     option = "ml_gtk_window_get_titlebar"
-  (** Returns the titlebar that has been set with
-      [method@Gtk.Window.set_titlebar]. *)
+  (** Returns the titlebar that has been set with [Gtk.Window.set_titlebar]. *)
 
   external get_title : t -> string option = "ml_gtk_window_get_title"
   (** Retrieves the title of the window. *)
@@ -661,7 +651,7 @@ and Window : sig
 
       Note that this is the widget that would have the focus if the toplevel
       window focused; if the toplevel window is not focused then
-      `gtk_widget_has_focus (widget)` will not be false for the widget. *)
+      [gtk_widget_has_focus (widget)] will not be false for the widget. *)
 
   external get_destroy_with_parent : t -> bool
     = "ml_gtk_window_get_destroy_with_parent"
@@ -676,18 +666,17 @@ and Window : sig
     .Widget
     .t
     option = "ml_gtk_window_get_default_widget"
-  (** Returns the default widget for @window. *)
+  (** Returns the default widget for [window]. *)
 
   external get_default_size : t -> int * int = "ml_gtk_window_get_default_size"
   (** Gets the default size of the window.
 
-      A value of 0 for the width or height indicates that a default size has not
-      been explicitly set for that dimension, so the “natural” size of the
-      window will be used.
+  A value of 0 for the width or height indicates that a default
+  size has not been explicitly set for that dimension, so the
+  “natural” size of the window will be used.
 
-      This function is the recommended way for
-      [saving window state across restarts of applications](https://developer.gnome.org/documentation/tutorials/save-state.html).
-  *)
+  This function is the recommended way for \[saving window state
+  across restarts of applications](https://developer.gnome.org/documentation/tutorials/save-state.html). *)
 
   external get_decorated : t -> bool = "ml_gtk_window_get_decorated"
   (** Returns whether the window has been set to have decorations. *)
@@ -712,9 +701,9 @@ and Window : sig
       afterward, or that the windowing system allows fullscreen windows on any
       given monitor.
 
-      You can track the result of this operation via the
-      [property@Gdk.Toplevel:state] property, or by listening to notifications
-      of the [property@Gtk.Window:fullscreened] property. *)
+      You can track the result of this operation via the [Gdk.Toplevel:state]
+      property, or by listening to notifications of the
+      [Gtk.Window:fullscreened] property. *)
 
   external fullscreen : t -> unit = "ml_gtk_window_fullscreen"
   (** Asks to place the window in the fullscreen state.
@@ -727,9 +716,9 @@ and Window : sig
       If a window is not explicitly fullscreened or unfullscreened before it is
       shown, the initial state is at the window managers discretion.
 
-      You can track the result of this operation via the
-      [property@Gdk.Toplevel:state] property, or by listening to notifications
-      of the [property@Gtk.Window:fullscreened] property. *)
+      You can track the result of this operation via the [Gdk.Toplevel:state]
+      property, or by listening to notifications of the
+      [Gtk.Window:fullscreened] property. *)
 
   external destroy : t -> unit = "ml_gtk_window_destroy"
   (** Drops the internal reference GTK holds on toplevel windows. *)
@@ -787,12 +776,12 @@ and Window_group : sig
 
   external remove_window : t -> Window.t -> unit
     = "ml_gtk_window_group_remove_window"
-  (** Removes a window from a `GtkWindowGroup`. *)
+  (** Removes a window from a [GtkWindowGroup]. *)
 
   external list_windows : t -> Window.t list
     = "ml_gtk_window_group_list_windows"
-  (** Returns a list of the `GtkWindows` that belong to @window_group. *)
+  (** Returns a list of the [GtkWindows] that belong to [window_group]. *)
 
   external add_window : t -> Window.t -> unit = "ml_gtk_window_group_add_window"
-  (** Adds a window to a `GtkWindowGroup`. *)
+  (** Adds a window to a [GtkWindowGroup]. *)
 end

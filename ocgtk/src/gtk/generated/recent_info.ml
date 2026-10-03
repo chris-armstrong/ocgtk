@@ -8,34 +8,33 @@ type t = [ `recent_info ] Gobject.obj
 (* Methods *)
 
 external ref : t -> t = "ml_gtk_recent_info_ref"
-(** Increases the reference count of @recent_info by one. *)
+(** Increases the reference count of [recent_info] by one. *)
 
 external match_ : t -> t -> bool = "ml_gtk_recent_info_match"
-(** Checks whether two `GtkRecentInfo` point to the same resource. *)
+(** Checks whether two [GtkRecentInfo] point to the same resource. *)
 
 external last_application : t -> string = "ml_gtk_recent_info_last_application"
-(** Gets the name of the last application that have registered the
-recently used resource represented by @info. *)
+(** Gets the name of the last application that have registered the recently used
+    resource represented by [info]. *)
 
 external is_local : t -> bool = "ml_gtk_recent_info_is_local"
 (** Checks whether the resource is local or not by looking at the scheme of its
     URI. *)
 
 external has_group : t -> string -> bool = "ml_gtk_recent_info_has_group"
-(** Checks whether @group_name appears inside the groups
-registered for the recently used item @info. *)
+(** Checks whether [group_name] appears inside the groups registered for the
+    recently used item [info]. *)
 
 external has_application : t -> string -> bool
   = "ml_gtk_recent_info_has_application"
-(** Checks whether an application registered this resource using @app_name. *)
+(** Checks whether an application registered this resource using [app_name]. *)
 
 external get_uri_display : t -> string option
   = "ml_gtk_recent_info_get_uri_display"
 (** Gets a displayable version of the resource’s URI.
 
     If the resource is local, it returns a local path; if the resource is not
-    local, it returns the UTF-8 encoded content of
-    [method@Gtk.RecentInfo.get_uri]. *)
+    local, it returns the UTF-8 encoded content of [Gtk.RecentInfo.get_uri]. *)
 
 external get_uri : t -> string = "ml_gtk_recent_info_get_uri"
 (** Gets the URI of the resource. *)
@@ -50,7 +49,7 @@ external get_short_name : t -> string = "ml_gtk_recent_info_get_short_name"
 external get_private_hint : t -> bool = "ml_gtk_recent_info_get_private_hint"
 (** Gets the value of the “private” flag.
 
-    Resources in the recently used list that have this flag set to %TRUE should
+    Resources in the recently used list that have this flag set to [TRUE] should
     only be displayed by the applications that have registered them. *)
 
 external get_mime_type : t -> string = "ml_gtk_recent_info_get_mime_type"
@@ -58,10 +57,10 @@ external get_mime_type : t -> string = "ml_gtk_recent_info_get_mime_type"
 
 external get_groups : t -> string array * Gsize.t
   = "ml_gtk_recent_info_get_groups"
-(** Returns all groups registered for the recently used item @info.
+(** Returns all groups registered for the recently used item [info].
 
-The array of returned group names will be %NULL terminated, so
-length might optionally be %NULL. *)
+    The array of returned group names will be [NULL] terminated, so length might
+    optionally be [NULL]. *)
 
 external get_gicon : t -> Ocgtk_gio.Gio.Wrappers.Icon.t option
   = "ml_gtk_recent_info_get_gicon"
@@ -80,22 +79,21 @@ external get_applications : t -> string array * Gsize.t
 (** Retrieves the list of applications that have registered this resource. *)
 
 external get_age : t -> int = "ml_gtk_recent_info_get_age"
-(** Gets the number of days elapsed since the last update
-of the resource pointed by @info. *)
+(** Gets the number of days elapsed since the last update of the resource
+    pointed by [info]. *)
 
 external exists : t -> bool = "ml_gtk_recent_info_exists"
-(** Checks whether the resource pointed by @info still exists.
-At the moment this check is done only on resources pointing
-to local files. *)
+(** Checks whether the resource pointed by [info] still exists. At the moment
+    this check is done only on resources pointing to local files. *)
 
 external create_app_info :
   t ->
   string option ->
   (Ocgtk_gio.Gio.Wrappers.App_info.t option, GError.t) result
   = "ml_gtk_recent_info_create_app_info"
-(** Creates a `GAppInfo` for the specified `GtkRecentInfo`
+(** Creates a [GAppInfo] for the specified [GtkRecentInfo]
 
-In case of error, @error will be set either with a
-%GTK_RECENT_MANAGER_ERROR or a %G_IO_ERROR *)
+    In case of error, [error] will be set either with a
+    [GTK_RECENT_MANAGER_ERROR] or a [G_IO_ERROR] *)
 
 external get_type : unit -> Gobject.Type.t = "ml_gtk_recent_info_get_type"

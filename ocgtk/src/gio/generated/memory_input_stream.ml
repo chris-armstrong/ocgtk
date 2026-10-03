@@ -14,4 +14,4 @@ external new_from_bytes : Glib_bytes.t -> t
 
 external add_bytes : t -> Glib_bytes.t -> unit
   = "ml_g_memory_input_stream_add_bytes"
-(** Appends @bytes to data that can be read from the input stream. *)
+(** Appends [bytes] to data that can be read from the input stream. *)

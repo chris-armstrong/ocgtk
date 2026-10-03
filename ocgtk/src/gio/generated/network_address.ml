@@ -12,13 +12,13 @@ external new_loopback : UInt16.t -> t = "ml_g_network_address_new_loopback"
 (* Methods *)
 
 external get_scheme : t -> string option = "ml_g_network_address_get_scheme"
-(** Gets @addr's scheme *)
+(** Gets [addr]'s scheme *)
 
 external get_port : t -> UInt16.t = "ml_g_network_address_get_port"
-(** Gets @addr's port number *)
+(** Gets [addr]'s port number *)
 
 external get_hostname : t -> string = "ml_g_network_address_get_hostname"
-(** Gets @addr's hostname. This might be either UTF-8 or ASCII-encoded,
-depending on what @addr was created with. *)
+(** Gets [addr]'s hostname. This might be either UTF-8 or ASCII-encoded,
+    depending on what [addr] was created with. *)
 
 (* Properties *)

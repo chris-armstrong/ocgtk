@@ -10,7 +10,7 @@ external get_mode : t -> Gdk_enums.crossingmode
 (** Extracts the crossing mode from a crossing event. *)
 
 external get_focus : t -> bool = "ml_gdk_crossing_event_get_focus"
-(** Checks if the @event surface is the focus surface. *)
+(** Checks if the [event] surface is the focus surface. *)
 
 external get_detail : t -> Gdk_enums.notifytype
   = "ml_gdk_crossing_event_get_detail"

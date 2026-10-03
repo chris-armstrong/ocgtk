@@ -25,27 +25,27 @@ external set_model : t -> Selection_model.t option -> unit
   = "ml_gtk_grid_view_set_model"
 (** Sets the model to use.
 
-    This must be a [iface@Gtk.SelectionModel]. *)
+    This must be a [Gtk.SelectionModel]. *)
 
 external set_min_columns : t -> int -> unit = "ml_gtk_grid_view_set_min_columns"
 (** Sets the minimum number of columns to use.
 
-This number must be at least 1.
+    This number must be at least 1.
 
-If @min_columns is smaller than the minimum set via
-[method@Gtk.GridView.set_max_columns], that value is ignored. *)
+    If [min_columns] is smaller than the minimum set via
+    [Gtk.GridView.set_max_columns], that value is ignored. *)
 
 external set_max_columns : t -> int -> unit = "ml_gtk_grid_view_set_max_columns"
 (** Sets the maximum number of columns to use.
 
-This number must be at least 1.
+    This number must be at least 1.
 
-If @max_columns is smaller than the minimum set via
-[method@Gtk.GridView.set_min_columns], that value is used instead. *)
+    If [max_columns] is smaller than the minimum set via
+    [Gtk.GridView.set_min_columns], that value is used instead. *)
 
 external set_factory : t -> List_item_factory.t option -> unit
   = "ml_gtk_grid_view_set_factory"
-(** Sets the `GtkListItemFactory` to use for populating list items. *)
+(** Sets the [GtkListItemFactory] to use for populating list items. *)
 
 external set_enable_rubberband : t -> bool -> unit
   = "ml_gtk_grid_view_set_enable_rubberband"
@@ -54,11 +54,11 @@ external set_enable_rubberband : t -> bool -> unit
 external scroll_to :
   t -> int -> Gtk_enums.listscrollflags -> Scroll_info.t option -> unit
   = "ml_gtk_grid_view_scroll_to"
-(** Scrolls to the item at the given position and performs the actions
-specified in @flags.
+(** Scrolls to the item at the given position and performs the actions specified
+    in [flags].
 
-This function works no matter if the gridview is shown or focused.
-If it isn't, then the changes will take effect once that happens. *)
+    This function works no matter if the gridview is shown or focused. If it
+    isn't, then the changes will take effect once that happens. *)
 
 external get_tab_behavior : t -> Gtk_enums.listtabbehavior
   = "ml_gtk_grid_view_get_tab_behavior"

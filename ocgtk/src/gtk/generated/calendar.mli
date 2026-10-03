@@ -52,31 +52,26 @@ external get_year : t -> int = "ml_gtk_calendar_get_year"
 
 external get_show_week_numbers : t -> bool
   = "ml_gtk_calendar_get_show_week_numbers"
-(** Returns whether @self is showing week numbers right
-now.
+(** Returns whether [self] is showing week numbers right now.
 
-This is the value of the [property@Gtk.Calendar:show-week-numbers]
-property. *)
+    This is the value of the [Gtk.Calendar:show-week-numbers] property. *)
 
 external get_show_heading : t -> bool = "ml_gtk_calendar_get_show_heading"
-(** Returns whether @self is currently showing the heading.
+(** Returns whether [self] is currently showing the heading.
 
-This is the value of the [property@Gtk.Calendar:show-heading]
-property. *)
+    This is the value of the [Gtk.Calendar:show-heading] property. *)
 
 external get_show_day_names : t -> bool = "ml_gtk_calendar_get_show_day_names"
-(** Returns whether @self is currently showing the names
-of the week days.
+(** Returns whether [self] is currently showing the names of the week days.
 
-This is the value of the [property@Gtk.Calendar:show-day-names]
-property. *)
+    This is the value of the [Gtk.Calendar:show-day-names] property. *)
 
 external get_month : t -> int = "ml_gtk_calendar_get_month"
 (** Gets the month of the selected date. *)
 
 external get_day_is_marked : t -> int -> bool
   = "ml_gtk_calendar_get_day_is_marked"
-(** Returns if the @day of the @calendar is already marked. *)
+(** Returns if the [day] of the [calendar] is already marked. *)
 
 external get_day : t -> int = "ml_gtk_calendar_get_day"
 (** Gets the day of the selected date. *)

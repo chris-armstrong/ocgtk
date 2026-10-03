@@ -10,26 +10,26 @@ external new_ : Gio_enums.zlibcompressorformat -> int -> t
 (* Methods *)
 
 external set_os : t -> int -> unit = "ml_g_zlib_compressor_set_os"
-(** Sets the [property@Gio.ZlibCompressor:os] property.
+(** Sets the [Gio.ZlibCompressor:os] property.
 
-Note: it is an error to call this function while a compression is in
-progress; it may only be called immediately after creation of @compressor,
-or after resetting it with [method@Gio.Converter.reset]. *)
+    Note: it is an error to call this function while a compression is in
+    progress; it may only be called immediately after creation of [compressor],
+    or after resetting it with [Gio.Converter.reset]. *)
 
 external set_file_info : t -> File_info.t option -> unit
   = "ml_g_zlib_compressor_set_file_info"
-(** Sets the [property@Gio.ZlibCompressor:file-info] property.
+(** Sets the [Gio.ZlibCompressor:file-info] property.
 
-Note: it is an error to call this function while a compression is in
-progress; it may only be called immediately after creation of @compressor,
-or after resetting it with [method@Gio.Converter.reset]. *)
+    Note: it is an error to call this function while a compression is in
+    progress; it may only be called immediately after creation of [compressor],
+    or after resetting it with [Gio.Converter.reset]. *)
 
 external get_os : t -> int = "ml_g_zlib_compressor_get_os"
-(** Gets the [property@Gio.ZlibCompressor:os] property. *)
+(** Gets the [Gio.ZlibCompressor:os] property. *)
 
 external get_file_info : t -> File_info.t option
   = "ml_g_zlib_compressor_get_file_info"
-(** Gets the [property@Gio.ZlibCompressor:file-info] property. *)
+(** Gets the [Gio.ZlibCompressor:file-info] property. *)
 
 (* Properties *)
 

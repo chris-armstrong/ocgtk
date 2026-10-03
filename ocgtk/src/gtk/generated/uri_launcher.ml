@@ -14,7 +14,7 @@ external set_uri : t -> string option -> unit = "ml_gtk_uri_launcher_set_uri"
 external launch_finish :
   t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result
   = "ml_gtk_uri_launcher_launch_finish"
-(** Finishes the [method@Gtk.UriLauncher.launch] call and returns the result. *)
+(** Finishes the [Gtk.UriLauncher.launch] call and returns the result. *)
 
 external get_uri : t -> string option = "ml_gtk_uri_launcher_get_uri"
 (** Gets the uri that will be opened. *)

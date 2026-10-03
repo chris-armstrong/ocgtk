@@ -14,8 +14,7 @@ external set_content_width : t -> int -> unit
 
     Note that because widgets may be allocated larger sizes than they requested,
     it is possible that the actual width passed to your draw function is larger
-    than the width set here. You can use [method@Gtk.Widget.set_halign] to avoid
-    that.
+    than the width set here. You can use [Gtk.Widget.set_halign] to avoid that.
 
     If the width is set to 0 (the default), the drawing area may disappear. *)
 
@@ -25,17 +24,16 @@ external set_content_height : t -> int -> unit
 
     Note that because widgets may be allocated larger sizes than they requested,
     it is possible that the actual height passed to your draw function is larger
-    than the height set here. You can use [method@Gtk.Widget.set_valign] to
-    avoid that.
+    than the height set here. You can use [Gtk.Widget.set_valign] to avoid that.
 
     If the height is set to 0 (the default), the drawing area may disappear. *)
 
 external get_content_width : t -> int = "ml_gtk_drawing_area_get_content_width"
-(** Retrieves the content width of the `GtkDrawingArea`. *)
+(** Retrieves the content width of the [GtkDrawingArea]. *)
 
 external get_content_height : t -> int
   = "ml_gtk_drawing_area_get_content_height"
-(** Retrieves the content height of the `GtkDrawingArea`. *)
+(** Retrieves the content height of the [GtkDrawingArea]. *)
 
 (* Properties *)
 

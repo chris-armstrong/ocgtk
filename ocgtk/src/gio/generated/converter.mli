@@ -14,4 +14,4 @@ external reset : t -> unit = "ml_g_converter_reset"
 
 external convert_bytes : t -> Glib_bytes.t -> (Glib_bytes.t, GError.t) result
   = "ml_g_converter_convert_bytes"
-(** Applies @converter to the data in @bytes. *)
+(** Applies [converter] to the data in [bytes]. *)

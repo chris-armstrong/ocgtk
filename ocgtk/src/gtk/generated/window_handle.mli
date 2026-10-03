@@ -16,7 +16,7 @@ external set_child :
   .t
   option ->
   unit = "ml_gtk_window_handle_set_child"
-(** Sets the child widget of @self. *)
+(** Sets the child widget of [self]. *)
 
 external get_child :
   t ->
@@ -24,6 +24,6 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_window_handle_get_child"
-(** Gets the child widget of @self. *)
+(** Gets the child widget of [self]. *)
 
 (* Properties *)

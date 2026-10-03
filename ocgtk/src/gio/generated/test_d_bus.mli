@@ -22,17 +22,17 @@ external up : t -> unit = "ml_g_test_dbus_up"
 external stop : t -> unit = "ml_g_test_dbus_stop"
 (** Stop the session bus started by g_test_dbus_up().
 
-    Unlike g_test_dbus_down(), this won't verify the #GDBusConnection singleton
+    Unlike g_test_dbus_down(), this won't verify the [GDBusConnection] singleton
     returned by g_bus_get() or g_bus_get_sync() is destroyed. Unit tests wanting
     to verify behaviour after the session bus has been stopped can use this
     function but should still call g_test_dbus_down() when done. *)
 
 external get_flags : t -> Gio_enums.testdbusflags = "ml_g_test_dbus_get_flags"
-(** Get the flags of the #GTestDBus object. *)
+(** Get the flags of the [GTestDBus] object. *)
 
 external get_bus_address : t -> string option = "ml_g_test_dbus_get_bus_address"
 (** Get the address on which dbus-daemon is running. If g_test_dbus_up() has not
-    been called yet, %NULL is returned. This can be used with
+    been called yet, [NULL] is returned. This can be used with
     g_dbus_connection_new_for_address(). *)
 
 external down : t -> unit = "ml_g_test_dbus_down"

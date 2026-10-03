@@ -16,6 +16,6 @@ external get_origin : t -> Gio_enums.emblemorigin = "ml_g_emblem_get_origin"
 (** Gets the origin of the emblem. *)
 
 external get_icon : t -> Icon.t = "ml_g_emblem_get_icon"
-(** Gives back the icon from @emblem. *)
+(** Gives back the icon from [emblem]. *)
 
 (* Properties *)

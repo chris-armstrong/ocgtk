@@ -21,19 +21,19 @@ type t = [ `rounded_rect ] Gobject.obj
 
 external shrink : t -> float -> float -> float -> float -> t
   = "ml_gsk_rounded_rect_shrink"
-(** Shrinks (or grows) a rounded rectangle by moving the 4 sides
-according to the offsets given.
+(** Shrinks (or grows) a rounded rectangle by moving the 4 sides according to
+    the offsets given.
 
-The corner radii will be changed in a way that tries to keep
-the center of the corner circle intact. This emulates CSS behavior.
+    The corner radii will be changed in a way that tries to keep the center of
+    the corner circle intact. This emulates CSS behavior.
 
-This function also works for growing rounded rectangles
-if you pass negative values for the @top, @right, @bottom or @left. *)
+    This function also works for growing rounded rectangles if you pass negative
+    values for the [top], [right], [bottom] or [left]. *)
 
 external offset : t -> float -> float -> t = "ml_gsk_rounded_rect_offset"
-(** Offsets the rounded rectangle's origin by @dx and @dy.
+(** Offsets the rounded rectangle's origin by [dx] and [dy].
 
-The size and corners of the rounded rectangle are unchanged. *)
+    The size and corners of the rounded rectangle are unchanged. *)
 
 external normalize : t -> t = "ml_gsk_rounded_rect_normalize"
 (** Normalizes a rounded rectangle.
@@ -46,8 +46,8 @@ external is_rectilinear : t -> bool = "ml_gsk_rounded_rect_is_rectilinear"
 (** Checks if all corners of a rounded rectangle are right angles and the
     rectangle covers all of its bounds.
 
-    This information can be used to decide if [ctor@Gsk.ClipNode.new] or
-    [ctor@Gsk.RoundedClipNode.new] should be called. *)
+    This information can be used to decide if [Gsk.ClipNode.new] or
+    [Gsk.RoundedClipNode.new] should be called. *)
 
 external intersects_rect : t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> bool
   = "ml_gsk_rounded_rect_intersects_rect"

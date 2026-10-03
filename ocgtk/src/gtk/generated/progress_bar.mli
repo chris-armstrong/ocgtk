@@ -9,36 +9,33 @@ external new_ : unit -> t = "ml_gtk_progress_bar_new"
 (* Methods *)
 
 external set_text : t -> string option -> unit = "ml_gtk_progress_bar_set_text"
-(** Causes the given @text to appear next to the progress bar.
+(** Causes the given [text] to appear next to the progress bar.
 
-If @text is %NULL and [property@Gtk.ProgressBar:show-text] is %TRUE,
-the current value of [property@Gtk.ProgressBar:fraction] will be displayed
-as a percentage.
+    If [text] is [NULL] and [Gtk.ProgressBar:show-text] is [TRUE], the current
+    value of [Gtk.ProgressBar:fraction] will be displayed as a percentage.
 
-If @text is non-%NULL and [property@Gtk.ProgressBar:show-text] is %TRUE,
-the text will be displayed. In this case, it will not display the progress
-percentage. If @text is the empty string, the progress bar will still
-be styled and sized suitably for containing text, as long as
-[property@Gtk.ProgressBar:show-text] is %TRUE. *)
+    If [text] is non-[NULL] and [Gtk.ProgressBar:show-text] is [TRUE], the text
+    will be displayed. In this case, it will not display the progress
+    percentage. If [text] is the empty string, the progress bar will still be
+    styled and sized suitably for containing text, as long as
+    [Gtk.ProgressBar:show-text] is [TRUE]. *)
 
 external set_show_text : t -> bool -> unit = "ml_gtk_progress_bar_set_show_text"
 (** Sets whether the progress bar will show text next to the bar.
 
-    The shown text is either the value of the [property@Gtk.ProgressBar:text]
-    property or, if that is %NULL, the [property@Gtk.ProgressBar:fraction]
-    value, as a percentage.
+    The shown text is either the value of the [Gtk.ProgressBar:text] property
+    or, if that is [NULL], the [Gtk.ProgressBar:fraction] value, as a
+    percentage.
 
     To make a progress bar that is styled and sized suitably for containing text
-    (even if the actual text is blank), set [property@Gtk.ProgressBar:show-text]
-    to %TRUE and [property@Gtk.ProgressBar:text] to the empty string (not
-    %NULL). *)
+    (even if the actual text is blank), set [Gtk.ProgressBar:show-text] to
+    [TRUE] and [Gtk.ProgressBar:text] to the empty string (not [NULL]). *)
 
 external set_pulse_step : t -> float -> unit
   = "ml_gtk_progress_bar_set_pulse_step"
 (** Sets the fraction of total progress bar length to move the bouncing block.
 
-    The bouncing block is moved when [method@Gtk.ProgressBar.pulse] is called.
-*)
+    The bouncing block is moved when [Gtk.ProgressBar.pulse] is called. *)
 
 external set_inverted : t -> bool -> unit = "ml_gtk_progress_bar_set_inverted"
 (** Sets whether the progress bar is inverted.
@@ -62,9 +59,9 @@ external pulse : t -> unit = "ml_gtk_progress_bar_pulse"
 (** Indicates that some progress has been made, but you don’t know how much.
 
     Causes the progress bar to enter “activity mode,” where a block bounces back
-    and forth. Each call to [method@Gtk.ProgressBar.pulse] causes the block to
-    move by a little bit (the amount of movement per pulse is determined by
-    [method@Gtk.ProgressBar.set_pulse_step]). *)
+    and forth. Each call to [Gtk.ProgressBar.pulse] causes the block to move by
+    a little bit (the amount of movement per pulse is determined by
+    [Gtk.ProgressBar.set_pulse_step]). *)
 
 external get_text : t -> string option = "ml_gtk_progress_bar_get_text"
 (** Retrieves the text that is displayed with the progress bar.
@@ -73,14 +70,14 @@ external get_text : t -> string option = "ml_gtk_progress_bar_get_text"
     become invalid if you change the text in the progress bar. *)
 
 external get_show_text : t -> bool = "ml_gtk_progress_bar_get_show_text"
-(** Returns whether the `GtkProgressBar` shows text.
+(** Returns whether the [GtkProgressBar] shows text.
 
-    See [method@Gtk.ProgressBar.set_show_text]. *)
+    See [Gtk.ProgressBar.set_show_text]. *)
 
 external get_pulse_step : t -> float = "ml_gtk_progress_bar_get_pulse_step"
 (** Retrieves the pulse step.
 
-    See [method@Gtk.ProgressBar.set_pulse_step]. *)
+    See [Gtk.ProgressBar.set_pulse_step]. *)
 
 external get_inverted : t -> bool = "ml_gtk_progress_bar_get_inverted"
 (** Returns whether the progress bar is inverted. *)
@@ -92,6 +89,6 @@ external get_ellipsize : t -> Ocgtk_pango.Pango.ellipsizemode
   = "ml_gtk_progress_bar_get_ellipsize"
 (** Returns the ellipsizing position of the progress bar.
 
-    See [method@Gtk.ProgressBar.set_ellipsize]. *)
+    See [Gtk.ProgressBar.set_ellipsize]. *)
 
 (* Properties *)

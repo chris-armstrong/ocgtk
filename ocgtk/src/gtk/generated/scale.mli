@@ -21,9 +21,9 @@ external set_value_pos : t -> Gtk_enums.positiontype -> unit
 external set_has_origin : t -> bool -> unit = "ml_gtk_scale_set_has_origin"
 (** Sets whether the scale has an origin.
 
-    If [property@Gtk.Scale:has-origin] is set to %TRUE (the default), the scale
-    will highlight the part of the trough between the origin (bottom or left
-    side) and the current value. *)
+    If [Gtk.Scale:has-origin] is set to [TRUE] (the default), the scale will
+    highlight the part of the trough between the origin (bottom or left side)
+    and the current value. *)
 
 external set_draw_value : t -> bool -> unit = "ml_gtk_scale_set_draw_value"
 (** Specifies whether the current value is displayed as a string next to the
@@ -34,32 +34,31 @@ external set_digits : t -> int -> unit = "ml_gtk_scale_set_digits"
 
     Also causes the value of the adjustment to be rounded to this number of
     digits, so the retrieved value matches the displayed one, if
-    [property@Gtk.Scale:draw-value] is %TRUE when the value changes. If you want
-    to enforce rounding the value when [property@Gtk.Scale:draw-value] is
-    %FALSE, you can set [property@Gtk.Range:round-digits] instead.
+    [Gtk.Scale:draw-value] is [TRUE] when the value changes. If you want to
+    enforce rounding the value when [Gtk.Scale:draw-value] is [FALSE], you can
+    set [Gtk.Range:round-digits] instead.
 
     Note that rounding to a small number of digits can interfere with the smooth
-    autoscrolling that is built into `GtkScale`. As an alternative, you can use
-    [method@Gtk.Scale.set_format_value_func] to format the displayed value
-    yourself. *)
+    autoscrolling that is built into [GtkScale]. As an alternative, you can use
+    [Gtk.Scale.set_format_value_func] to format the displayed value yourself. *)
 
 external get_value_pos : t -> Gtk_enums.positiontype
   = "ml_gtk_scale_get_value_pos"
 (** Gets the position in which the current value is displayed. *)
 
 external get_layout_offsets : t -> int * int = "ml_gtk_scale_get_layout_offsets"
-(** Obtains the coordinates where the scale will draw the `PangoLayout`
+(** Obtains the coordinates where the scale will draw the [PangoLayout]
     representing the text in the scale.
 
-    Remember when using the `PangoLayout` function you need to convert to and
-    from pixels using `PANGO_PIXELS()` or `PANGO_SCALE`.
+    Remember when using the [PangoLayout] function you need to convert to and
+    from pixels using [PANGO_PIXELS()] or [PANGO_SCALE].
 
-    If the [property@Gtk.Scale:draw-value] property is %FALSE, the return values
-    are undefined. *)
+    If the [Gtk.Scale:draw-value] property is [FALSE], the return values are
+    undefined. *)
 
 external get_layout : t -> Ocgtk_pango.Pango.Wrappers.Layout.t option
   = "ml_gtk_scale_get_layout"
-(** Gets the `PangoLayout` used to display the scale.
+(** Gets the [PangoLayout] used to display the scale.
 
     The returned object is owned by the scale so does not need to be freed by
     the caller. *)
@@ -80,14 +79,14 @@ external clear_marks : t -> unit = "ml_gtk_scale_clear_marks"
 external add_mark :
   t -> float -> Gtk_enums.positiontype -> string option -> unit
   = "ml_gtk_scale_add_mark"
-(** Adds a mark at @value.
+(** Adds a mark at [value].
 
-A mark is indicated visually by drawing a tick mark next to the scale,
-and GTK makes it easy for the user to position the scale exactly at the
-marks value.
+    A mark is indicated visually by drawing a tick mark next to the scale, and
+    GTK makes it easy for the user to position the scale exactly at the marks
+    value.
 
-If @markup is not %NULL, text is shown next to the tick mark.
+    If [markup] is not [NULL], text is shown next to the tick mark.
 
-To remove marks from a scale, use [method@Gtk.Scale.clear_marks]. *)
+    To remove marks from a scale, use [Gtk.Scale.clear_marks]. *)
 
 (* Properties *)

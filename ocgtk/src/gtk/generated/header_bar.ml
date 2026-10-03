@@ -15,7 +15,7 @@ external set_use_native_controls : t -> bool -> unit
     This option shows the "stoplight" buttons on macOS. For Linux, this option
     has no effect.
 
-    See also [Using GTK on Apple macOS](osx.html?native-window-controls). *)
+    See also Using GTK on Apple macOS. *)
 
 external set_title_widget :
   t ->
@@ -26,13 +26,13 @@ external set_title_widget :
   unit = "ml_gtk_header_bar_set_title_widget"
 (** Sets the title for the header bar.
 
-    When set to `NULL`, the headerbar will display the title of the window it is
+    When set to [NULL], the headerbar will display the title of the window it is
     contained in.
 
     The title should help a user identify the current view. To achieve the same
     style as the builtin title, use the “title” style class.
 
-    You should set the title widget to `NULL`, for the window title label to be
+    You should set the title widget to [NULL], for the window title label to be
     visible again. *)
 
 external set_show_title_buttons : t -> bool -> unit
@@ -43,8 +43,7 @@ external set_decoration_layout : t -> string option -> unit
   = "ml_gtk_header_bar_set_decoration_layout"
 (** Sets the decoration layout for this header bar.
 
-    This property overrides the [property@Gtk.Settings:gtk-decoration-layout]
-    setting.
+    This property overrides the [Gtk.Settings:gtk-decoration-layout] setting.
 
     There can be valid reasons for overriding the setting, such as a header bar
     design that does not allow for buttons to take room on the right, or only
@@ -67,9 +66,8 @@ external remove :
   unit = "ml_gtk_header_bar_remove"
 (** Removes a child from the header bar.
 
-    The child must have been added with [method@Gtk.HeaderBar.pack_start],
-    [method@Gtk.HeaderBar.pack_end] or [method@Gtk.HeaderBar.set_title_widget].
-*)
+    The child must have been added with [Gtk.HeaderBar.pack_start],
+    [Gtk.HeaderBar.pack_end] or [Gtk.HeaderBar.set_title_widget]. *)
 
 external pack_start :
   t ->
@@ -99,7 +97,7 @@ external get_title_widget :
   option = "ml_gtk_header_bar_get_title_widget"
 (** Retrieves the title widget of the header bar.
 
-    See [method@Gtk.HeaderBar.set_title_widget]. *)
+    See [Gtk.HeaderBar.set_title_widget]. *)
 
 external get_show_title_buttons : t -> bool
   = "ml_gtk_header_bar_get_show_title_buttons"

@@ -14,19 +14,19 @@ external alloc : unit -> t = "ml_graphene_frustum_alloc"
 
 external intersects_sphere : t -> Box_and__sphere.Sphere.t -> bool
   = "ml_graphene_frustum_intersects_sphere"
-(** Checks whether the given @sphere intersects a plane of
-a #graphene_frustum_t. *)
+(** Checks whether the given [sphere] intersects a plane of a
+    #graphene_frustum_t. *)
 
 external intersects_box : t -> Box_and__sphere.Box.t -> bool
   = "ml_graphene_frustum_intersects_box"
-(** Checks whether the given @box intersects a plane of
-a #graphene_frustum_t. *)
+(** Checks whether the given [box] intersects a plane of a #graphene_frustum_t.
+*)
 
 external init_from_matrix :
   t ->
   Euler_and__matrix_and__plane_and__quaternion_and__ray_and__triangle.Matrix.t ->
   t = "ml_graphene_frustum_init_from_matrix"
-(** Initializes a #graphene_frustum_t using the given @matrix. *)
+(** Initializes a #graphene_frustum_t using the given [matrix]. *)
 
 external init_from_frustum : t -> t -> t
   = "ml_graphene_frustum_init_from_frustum"

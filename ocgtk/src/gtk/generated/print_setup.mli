@@ -17,20 +17,20 @@ type t = [ `print_setup ] Gobject.obj
 (* Methods *)
 
 external ref : t -> t = "ml_gtk_print_setup_ref"
-(** Increase the reference count of @setup. *)
+(** Increase the reference count of [setup]. *)
 
 external get_print_settings : t -> Print_settings.t
   = "ml_gtk_print_setup_get_print_settings"
-(** Returns the print settings of @setup.
+(** Returns the print settings of [setup].
 
-They may be different from the `GtkPrintDialog`'s settings
-if the user changed them during the setup process. *)
+    They may be different from the [GtkPrintDialog]'s settings if the user
+    changed them during the setup process. *)
 
 external get_page_setup : t -> Page_setup.t
   = "ml_gtk_print_setup_get_page_setup"
-(** Returns the page setup of @setup.
+(** Returns the page setup of [setup].
 
-It may be different from the `GtkPrintDialog`'s page setup
-if the user changed it during the setup process. *)
+    It may be different from the [GtkPrintDialog]'s page setup if the user
+    changed it during the setup process. *)
 
 external get_type : unit -> Gobject.Type.t = "ml_gtk_print_setup_get_type"

@@ -2,8 +2,8 @@
 (* Gtk Constants *)
 
 val accessible_attribute_background : string
-(** An attribute for the background color, expressed as an RGB value
-encoded in a string using the format: `{r8},{g8},{b8}`.
+(** An attribute for the background color, expressed as an RGB value encoded in
+    a string using the format: [{r8},{g8},{b8}].
     @since 4.14 *)
 
 val accessible_attribute_family : string
@@ -11,8 +11,8 @@ val accessible_attribute_family : string
     @since 4.14 *)
 
 val accessible_attribute_foreground : string
-(** An attribute for the foreground color, expressed as an RGB value
-encoded in a string using the format: `{r8},{g8},{b8}`.
+(** An attribute for the foreground color, expressed as an RGB value encoded in
+    a string using the format: [{r8},{g8},{b8}].
     @since 4.14 *)
 
 val accessible_attribute_overline : string
@@ -20,17 +20,17 @@ val accessible_attribute_overline : string
 
     Possible values are:
 
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE_NONE]
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE_SINGLE]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE_NONE]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE_SINGLE]
 
     @since 4.14 *)
 
 val accessible_attribute_overline_none : string
-(** The "none" overline value for [const@Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE].
+(** The "none" overline value for [Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE].
     @since 4.14 *)
 
 val accessible_attribute_overline_single : string
-(** The "single" overline value for [const@Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE].
+(** The "single" overline value for [Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE].
     @since 4.14 *)
 
 val accessible_attribute_size : string
@@ -42,59 +42,53 @@ val accessible_attribute_stretch : string
 
     Possible values are:
 
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH_ULTRA_CONDENSED]
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH_EXTRA_CONDENSED]
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH_CONDENSED]
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH_SEMI_CONDENSED]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH_ULTRA_CONDENSED]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH_EXTRA_CONDENSED]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH_CONDENSED]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH_SEMI_CONDENSED]
 
     @since 4.14 *)
 
 val accessible_attribute_stretch_condensed : string
-(** The "condensed" stretch value for [const@Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The "condensed" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_stretch_expanded : string
-(** The "expanded" stretch value for [const@Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The "expanded" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_stretch_extra_condensed : string
-(** The "extra condensed" stretch value for
-    [const@Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The "extra condensed" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_stretch_extra_expanded : string
-(** The "extra expanded" stretch value for
-    [const@Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The "extra expanded" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_stretch_normal : string
-(** The "normal" stretch value for [const@Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The "normal" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_stretch_semi_condensed : string
-(** The "semi condensed" stretch value for
-    [const@Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The "semi condensed" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_stretch_semi_expanded : string
-(** The "semi expanded" stretch value for
-    [const@Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The "semi expanded" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_stretch_ultra_condensed : string
-(** The "ultra condensed" stretch value for
-    [const@Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The "ultra condensed" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_stretch_ultra_expanded : string
-(** The "ultra expanded" stretch value for
-    [const@Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
+(** The "ultra expanded" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].
     @since 4.14 *)
 
 val accessible_attribute_strikethrough : string
 (** An attribute for strikethrough text.
 
-    Possible values are `true` or `false`.
+    Possible values are [true] or [false].
     @since 4.14 *)
 
 val accessible_attribute_style : string
@@ -102,22 +96,22 @@ val accessible_attribute_style : string
 
     Possible values are:
 
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_STYLE_NORMAL]
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_STYLE_OBLIQUE]
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_STYLE_ITALIC]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE_NORMAL]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE_OBLIQUE]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE_ITALIC]
 
     @since 4.14 *)
 
 val accessible_attribute_style_italic : string
-(** The "italic" style value for [const@Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].
+(** The "italic" style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].
     @since 4.14 *)
 
 val accessible_attribute_style_normal : string
-(** The "normal" style value for [const@Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].
+(** The "normal" style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].
     @since 4.14 *)
 
 val accessible_attribute_style_oblique : string
-(** The "oblique" style value for [const@Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].
+(** The "oblique" style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].
     @since 4.14 *)
 
 val accessible_attribute_underline : string
@@ -125,27 +119,27 @@ val accessible_attribute_underline : string
 
     Possible values are:
 
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE_NONE]
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE_SINGLE]
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE_DOUBLE]
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE_ERROR]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE_NONE]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE_SINGLE]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE_DOUBLE]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE_ERROR]
 
     @since 4.14 *)
 
 val accessible_attribute_underline_double : string
-(** The "double" underline value for [const@Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
+(** The "double" underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
     @since 4.14 *)
 
 val accessible_attribute_underline_error : string
-(** The "error" underline value for [const@Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
+(** The "error" underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
     @since 4.14 *)
 
 val accessible_attribute_underline_none : string
-(** The "none" underline value for [const@Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
+(** The "none" underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
     @since 4.14 *)
 
 val accessible_attribute_underline_single : string
-(** The "single" underline value for [const@Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
+(** The "single" underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].
     @since 4.14 *)
 
 val accessible_attribute_variant : string
@@ -153,40 +147,37 @@ val accessible_attribute_variant : string
 
     Possible values are:
 
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_SMALL_CAPS]
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_ALL_SMALL_CAPS]
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_PETITE_CAPS]
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_ALL_PETITE_CAPS]
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_UNICASE]
-    - [const@Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_TITLE_CAPS]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_SMALL_CAPS]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_ALL_SMALL_CAPS]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_PETITE_CAPS]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_ALL_PETITE_CAPS]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_UNICASE]
+    - [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_TITLE_CAPS]
 
     @since 4.14 *)
 
 val accessible_attribute_variant_all_petite_caps : string
-(** The "all petite caps" variant value for
-    [const@Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
+(** The "all petite caps" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
     @since 4.14 *)
 
 val accessible_attribute_variant_all_small_caps : string
-(** The "all small caps" variant value for
-    [const@Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
+(** The "all small caps" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
     @since 4.14 *)
 
 val accessible_attribute_variant_petite_caps : string
-(** The "petite caps" variant value for
-    [const@Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
+(** The "petite caps" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
     @since 4.14 *)
 
 val accessible_attribute_variant_small_caps : string
-(** The "small caps" variant value for [const@Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
+(** The "small caps" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
     @since 4.14 *)
 
 val accessible_attribute_variant_title_caps : string
-(** The "title caps" variant value for [const@Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
+(** The "title caps" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
     @since 4.14 *)
 
 val accessible_attribute_variant_unicase : string
-(** The "unicase" variant value for [const@Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
+(** The "unicase" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].
     @since 4.14 *)
 
 val accessible_attribute_weight : string
@@ -198,7 +189,7 @@ val accessible_value_undefined : int
     is undefined. *)
 
 val binary_age : int
-(** Like [func@get_binary_age], but from the headers used at application compile
+(** Like [get_binary_age], but from the headers used at application compile
     time, rather than from the library linked against at application run time.
 *)
 
@@ -209,15 +200,15 @@ val input_error : int
 (** Constant to return from a signal handler for the ::input signal in case of
     conversion failure.
 
-    See [signal@Gtk.SpinButton::input]. *)
+    See [Gtk.SpinButton::input]. *)
 
 val interface_age : int
-(** Like [func@get_interface_age], but from the headers used at application
-    compile time, rather than from the library linked against at application run
-    time. *)
+(** Like [get_interface_age], but from the headers used at application compile
+    time, rather than from the library linked against at application run time.
+*)
 
 val invalid_list_position : int
-(** The value used to refer to a guaranteed invalid position in a `GListModel`.
+(** The value used to refer to a guaranteed invalid position in a [GListModel].
 
     This value may be returned from some functions, others may accept it as
     input. Its interpretation may differ for different functions.
@@ -226,18 +217,18 @@ val invalid_list_position : int
     it does. *)
 
 val level_bar_offset_full : string
-(** The name used for the stock full offset included by `GtkLevelBar`. *)
+(** The name used for the stock full offset included by [GtkLevelBar]. *)
 
 val level_bar_offset_high : string
-(** The name used for the stock high offset included by `GtkLevelBar`. *)
+(** The name used for the stock high offset included by [GtkLevelBar]. *)
 
 val level_bar_offset_low : string
-(** The name used for the stock low offset included by `GtkLevelBar`. *)
+(** The name used for the stock low offset included by [GtkLevelBar]. *)
 
 val major_version : int
-(** Like [func@get_major_version], but from the headers used at application
-    compile time, rather than from the library linked against at application run
-    time. *)
+(** Like [get_major_version], but from the headers used at application compile
+    time, rather than from the library linked against at application run time.
+*)
 
 val max_compose_len : int
 (** Evaluates to the maximum length of a compose sequence.
@@ -248,14 +239,14 @@ val media_file_extension_point_name : string
 (** The default extension point name for media file. *)
 
 val micro_version : int
-(** Like [func@get_micro_version], but from the headers used at application
-    compile time, rather than from the library linked against at application run
-    time. *)
+(** Like [get_micro_version], but from the headers used at application compile
+    time, rather than from the library linked against at application run time.
+*)
 
 val minor_version : int
-(** Like [func@get_minor_version], but from the headers used at application
-    compile time, rather than from the library linked against at application run
-    time. *)
+(** Like [get_minor_version], but from the headers used at application compile
+    time, rather than from the library linked against at application run time.
+*)
 
 val paper_name_a3 : string
 (** Name for the A3 paper size. *)
@@ -401,26 +392,25 @@ val priority_resize : int
 (** Use this priority for functionality related to size allocation.
 
     It is used internally by GTK+ to compute the sizes of widgets. This priority
-    is higher than %GDK_PRIORITY_REDRAW to avoid resizing a widget which was
+    is higher than [GDK_PRIORITY_REDRAW] to avoid resizing a widget which was
     just redrawn. *)
 
 val style_provider_priority_application : int
-(** A priority that can be used when adding a `GtkStyleProvider` for
+(** A priority that can be used when adding a [GtkStyleProvider] for
     application-specific style information. *)
 
 val style_provider_priority_fallback : int
-(** The priority used for default style information
-that is used in the absence of themes.
+(** The priority used for default style information that is used in the absence
+    of themes.
 
-Note that this is not very useful for providing default
-styling for custom style classes - themes are likely to
-override styling provided at this priority with
-catch-all `* {...}` rules. *)
+    Note that this is not very useful for providing default styling for custom
+    style classes - themes are likely to override styling provided at this
+    priority with catch-all [* {...}] rules. *)
 
 val style_provider_priority_settings : int
-(** The priority used for style information provided via `GtkSettings`.
+(** The priority used for style information provided via [GtkSettings].
 
-    This priority is higher than %GTK_STYLE_PROVIDER_PRIORITY_THEME to let
+    This priority is higher than [GTK_STYLE_PROVIDER_PRIORITY_THEME] to let
     settings override themes. *)
 
 val style_provider_priority_theme : int
@@ -428,7 +418,7 @@ val style_provider_priority_theme : int
 
 val style_provider_priority_user : int
 (** The priority used for the style information from
-    `$XDG_CONFIG_HOME/gtk-4.0/gtk.css`.
+    [$XDG_CONFIG_HOME/gtk-4.0/gtk.css].
 
     You should not use priorities higher than this, to give the user the last
     word. *)
@@ -438,11 +428,11 @@ val text_view_priority_validate : int
     in the background. *)
 
 val tree_sortable_default_sort_column_id : int
-(** Uses the default sort function in a [iface@Gtk.TreeSortable].
+(** Uses the default sort function in a [Gtk.TreeSortable].
 
-    See also: [method@Gtk.TreeSortable.set_sort_column_id] *)
+    See also: [Gtk.TreeSortable.set_sort_column_id] *)
 
 val tree_sortable_unsorted_sort_column_id : int
-(** Disables sorting in a [iface@Gtk.TreeSortable].
+(** Disables sorting in a [Gtk.TreeSortable].
 
-    See also: [method@Gtk.TreeSortable.set_sort_column_id] *)
+    See also: [Gtk.TreeSortable.set_sort_column_id] *)

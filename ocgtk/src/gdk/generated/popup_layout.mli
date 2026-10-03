@@ -68,14 +68,13 @@ external set_anchor_hints : t -> Gdk_enums.anchorhints -> unit
   = "ml_gdk_popup_layout_set_anchor_hints"
 (** Set new anchor hints.
 
-The set @anchor_hints determines how @surface will be moved
-if the anchor points cause it to move off-screen. For example,
-`GDK_ANCHOR_FLIP_X` will replace `GDK_GRAVITY_NORTH_WEST` with
-`GDK_GRAVITY_NORTH_EAST` and vice versa if @surface extends
-beyond the left or right edges of the monitor. *)
+    The set [anchor_hints] determines how [surface] will be moved if the anchor
+    points cause it to move off-screen. For example, [GDK_ANCHOR_FLIP_X] will
+    replace [GDK_GRAVITY_NORTH_WEST] with [GDK_GRAVITY_NORTH_EAST] and vice
+    versa if [surface] extends beyond the left or right edges of the monitor. *)
 
 external ref : t -> t = "ml_gdk_popup_layout_ref"
-(** Increases the reference count of @value. *)
+(** Increases the reference count of [value]. *)
 
 external get_surface_anchor : t -> Gdk_enums.gravity
   = "ml_gdk_popup_layout_get_surface_anchor"
@@ -101,6 +100,6 @@ external get_anchor_hints : t -> Gdk_enums.anchorhints
 (** Get the anchor hints. *)
 
 external equal : t -> t -> bool = "ml_gdk_popup_layout_equal"
-(** Check whether @layout and @other has identical layout properties. *)
+(** Check whether [layout] and [other] has identical layout properties. *)
 
 external get_type : unit -> Gobject.Type.t = "ml_gdk_popup_layout_get_type"

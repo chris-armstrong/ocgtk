@@ -22,7 +22,7 @@ external write_mime_type_finish :
   = "ml_gdk_content_provider_write_mime_type_finish"
 (** Finishes an asynchronous write operation.
 
-    See [method@Gdk.ContentProvider.write_mime_type_async]. *)
+    See [Gdk.ContentProvider.write_mime_type_async]. *)
 
 external ref_storable_formats : t -> Content_formats.t
   = "ml_gdk_content_provider_ref_storable_formats"
@@ -31,8 +31,7 @@ external ref_storable_formats : t -> Content_formats.t
 
     An example of such an application would be a clipboard manager.
 
-    This can be assumed to be a subset of
-    [method@Gdk.ContentProvider.ref_formats]. *)
+    This can be assumed to be a subset of [Gdk.ContentProvider.ref_formats]. *)
 
 external ref_formats : t -> Content_formats.t
   = "ml_gdk_content_provider_ref_formats"
@@ -40,13 +39,13 @@ external ref_formats : t -> Content_formats.t
 
 external get_value : t -> (bool * Gobject.Value.t, GError.t) result
   = "ml_gdk_content_provider_get_value"
-(** Gets the contents of @provider stored in @value.
+(** Gets the contents of [provider] stored in [value].
 
-The @value will have been initialized to the `GType` the value should be
-provided in. This given `GType` does not need to be listed in the formats
-returned by [method@Gdk.ContentProvider.ref_formats]. However, if the
-given `GType` is not supported, this operation can fail and
-`G_IO_ERROR_NOT_SUPPORTED` will be reported. *)
+    The [value] will have been initialized to the [GType] the value should be
+    provided in. This given [GType] does not need to be listed in the formats
+    returned by [Gdk.ContentProvider.ref_formats]. However, if the given [GType]
+    is not supported, this operation can fail and [G_IO_ERROR_NOT_SUPPORTED]
+    will be reported. *)
 
 external content_changed : t -> unit = "ml_gdk_content_provider_content_changed"
 (** Emits the ::content-changed signal. *)

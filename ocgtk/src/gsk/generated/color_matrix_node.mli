@@ -14,11 +14,12 @@ external new_ :
 
 external get_color_offset : t -> Ocgtk_graphene.Graphene.Wrappers.Vec4.t
   = "ml_gsk_color_matrix_node_get_color_offset"
-(** Retrieves the color offset used by the @node. *)
+(** Retrieves the color offset used by the [node]. *)
 
 external get_color_matrix : t -> Ocgtk_graphene.Graphene.Wrappers.Matrix.t
   = "ml_gsk_color_matrix_node_get_color_matrix"
-(** Retrieves the color matrix used by the @node. *)
+(** Retrieves the color matrix used by the [node]. *)
 
 external get_child : t -> Render_node.t = "ml_gsk_color_matrix_node_get_child"
-(** Gets the child node that is getting its colors modified by the given @node. *)
+(** Gets the child node that is getting its colors modified by the given [node].
+*)

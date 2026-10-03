@@ -13,12 +13,13 @@ module rec Vec3 : sig
   (** Copies the components of a #graphene_vec3_t into the given array. *)
 
   external subtract : t -> t -> t = "ml_graphene_vec3_subtract"
-  (** Subtracts from each component of the first operand @a the
-  corresponding component of the second operand @b and places
-  each result into the components of @res. *)
+  (** Subtracts from each component of the first operand [a] the corresponding
+      component of the second operand [b] and places each result into the
+      components of [res]. *)
 
   external scale : t -> float -> t = "ml_graphene_vec3_scale"
-  (** Multiplies all components of the given vector with the given scalar @factor. *)
+  (** Multiplies all components of the given vector with the given scalar
+      [factor]. *)
 
   external normalize : t -> t = "ml_graphene_vec3_normalize"
   (** Normalizes the given #graphene_vec3_t. *)
@@ -27,8 +28,8 @@ module rec Vec3 : sig
   (** Negates the given #graphene_vec3_t. *)
 
   external near : t -> t -> float -> bool = "ml_graphene_vec3_near"
-  (** Compares the two given #graphene_vec3_t vectors and checks
-  whether their values are within the given @epsilon. *)
+  (** Compares the two given #graphene_vec3_t vectors and checks whether their
+      values are within the given [epsilon]. *)
 
   external multiply : t -> t -> t = "ml_graphene_vec3_multiply"
   (** Multiplies each component of the two given vectors. *)
@@ -42,10 +43,10 @@ module rec Vec3 : sig
       contains the maximum values. *)
 
   external length : t -> float = "ml_graphene_vec3_length"
-  (** Retrieves the length of the given vector @v. *)
+  (** Retrieves the length of the given vector [v]. *)
 
   external interpolate : t -> t -> float -> t = "ml_graphene_vec3_interpolate"
-  (** Linearly interpolates @v1 and @v2 using the given @factor. *)
+  (** Linearly interpolates [v1] and [v2] using the given [factor]. *)
 
   external init_from_vec3 : t -> t -> t = "ml_graphene_vec3_init_from_vec3"
   (** Initializes a #graphene_vec3_t with the values of another
@@ -61,14 +62,14 @@ module rec Vec3 : sig
       This function can be called multiple times. *)
 
   external get_z : t -> float = "ml_graphene_vec3_get_z"
-  (** Retrieves the third component of the given vector @v. *)
+  (** Retrieves the third component of the given vector [v]. *)
 
   external get_y : t -> float = "ml_graphene_vec3_get_y"
-  (** Retrieves the second component of the given vector @v. *)
+  (** Retrieves the second component of the given vector [v]. *)
 
   external get_xyzw : t -> float -> Vec4.t = "ml_graphene_vec3_get_xyzw"
-  (** Converts a #graphene_vec3_t in a #graphene_vec4_t using @w as
-  the value of the fourth component of the resulting vector. *)
+  (** Converts a #graphene_vec3_t in a #graphene_vec4_t using [w] as the value
+      of the fourth component of the resulting vector. *)
 
   external get_xyz1 : t -> Vec4.t = "ml_graphene_vec3_get_xyz1"
   (** Converts a #graphene_vec3_t in a #graphene_vec4_t using 1.0 as the value
@@ -87,7 +88,7 @@ module rec Vec3 : sig
       of the given #graphene_vec3_t. *)
 
   external get_x : t -> float = "ml_graphene_vec3_get_x"
-  (** Retrieves the first component of the given vector @v. *)
+  (** Retrieves the first component of the given vector [v]. *)
 
   external equal : t -> t -> bool = "ml_graphene_vec3_equal"
   (** Checks whether the two given #graphene_vec3_t are equal. *)
@@ -96,9 +97,9 @@ module rec Vec3 : sig
   (** Computes the dot product of the two given vectors. *)
 
   external divide : t -> t -> t = "ml_graphene_vec3_divide"
-  (** Divides each component of the first operand @a by the corresponding
-  component of the second operand @b, and places the results into the
-  vector @res. *)
+  (** Divides each component of the first operand [a] by the corresponding
+      component of the second operand [b], and places the results into the
+      vector [res]. *)
 
   external cross : t -> t -> t = "ml_graphene_vec3_cross"
   (** Computes the cross product of the two given vectors. *)
@@ -120,12 +121,13 @@ and Vec4 : sig
       floating point values. *)
 
   external subtract : t -> t -> t = "ml_graphene_vec4_subtract"
-  (** Subtracts from each component of the first operand @a the
-  corresponding component of the second operand @b and places
-  each result into the components of @res. *)
+  (** Subtracts from each component of the first operand [a] the corresponding
+      component of the second operand [b] and places each result into the
+      components of [res]. *)
 
   external scale : t -> float -> t = "ml_graphene_vec4_scale"
-  (** Multiplies all components of the given vector with the given scalar @factor. *)
+  (** Multiplies all components of the given vector with the given scalar
+      [factor]. *)
 
   external normalize : t -> t = "ml_graphene_vec4_normalize"
   (** Normalizes the given #graphene_vec4_t. *)
@@ -134,8 +136,8 @@ and Vec4 : sig
   (** Negates the given #graphene_vec4_t. *)
 
   external near : t -> t -> float -> bool = "ml_graphene_vec4_near"
-  (** Compares the two given #graphene_vec4_t vectors and checks
-  whether their values are within the given @epsilon. *)
+  (** Compares the two given #graphene_vec4_t vectors and checks whether their
+      values are within the given [epsilon]. *)
 
   external multiply : t -> t -> t = "ml_graphene_vec4_multiply"
   (** Multiplies each component of the two given vectors. *)
@@ -152,7 +154,7 @@ and Vec4 : sig
   (** Computes the length of the given #graphene_vec4_t. *)
 
   external interpolate : t -> t -> float -> t = "ml_graphene_vec4_interpolate"
-  (** Linearly interpolates @v1 and @v2 using the given @factor. *)
+  (** Linearly interpolates [v1] and [v2] using the given [factor]. *)
 
   external init_from_vec4 : t -> t -> t = "ml_graphene_vec4_init_from_vec4"
   (** Initializes a #graphene_vec4_t using the components of another
@@ -160,13 +162,13 @@ and Vec4 : sig
 
   external init_from_vec3 : t -> Vec3.t -> float -> t
     = "ml_graphene_vec4_init_from_vec3"
-  (** Initializes a #graphene_vec4_t using the components of a
-  #graphene_vec3_t and the value of @w. *)
+  (** Initializes a #graphene_vec4_t using the components of a #graphene_vec3_t
+      and the value of [w]. *)
 
   external init_from_vec2 : t -> Vec2.t -> float -> float -> t
     = "ml_graphene_vec4_init_from_vec2"
-  (** Initializes a #graphene_vec4_t using the components of a
-  #graphene_vec2_t and the values of @z and @w. *)
+  (** Initializes a #graphene_vec4_t using the components of a #graphene_vec2_t
+      and the values of [z] and [w]. *)
 
   external init_from_float : t -> float array -> t
     = "ml_graphene_vec4_init_from_float"
@@ -209,9 +211,9 @@ and Vec4 : sig
   (** Computes the dot product of the two given vectors. *)
 
   external divide : t -> t -> t = "ml_graphene_vec4_divide"
-  (** Divides each component of the first operand @a by the corresponding
-  component of the second operand @b, and places the results into the
-  vector @res. *)
+  (** Divides each component of the first operand [a] by the corresponding
+      component of the second operand [b], and places the results into the
+      vector [res]. *)
 
   external add : t -> t -> t = "ml_graphene_vec4_add"
   (** Adds each component of the two given vectors. *)

@@ -28,6 +28,6 @@ external get_widget :
   .Widget
   .t
   option = "ml_gtk_widget_paintable_get_widget"
-(** Returns the widget that is observed or %NULL if none. *)
+(** Returns the widget that is observed or [NULL] if none. *)
 
 (* Properties *)

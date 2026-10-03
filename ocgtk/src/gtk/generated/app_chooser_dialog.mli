@@ -37,7 +37,7 @@ external get_widget :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_app_chooser_dialog_get_widget"
-(** Returns the `GtkAppChooserWidget` of this dialog. *)
+(** Returns the [GtkAppChooserWidget] of this dialog. *)
 
 external get_heading : t -> string option
   = "ml_gtk_app_chooser_dialog_get_heading"

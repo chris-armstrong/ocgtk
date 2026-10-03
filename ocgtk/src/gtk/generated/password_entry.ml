@@ -13,13 +13,12 @@ external set_show_peek_icon : t -> bool -> unit
   = "ml_gtk_password_entry_set_show_peek_icon"
 (** Sets whether the entry should have a clickable icon to reveal the contents.
 
-    Setting this to %FALSE also hides the text again. *)
+    Setting this to [FALSE] also hides the text again. *)
 
 external set_extra_menu :
   t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit
   = "ml_gtk_password_entry_set_extra_menu"
-(** Sets a menu model to add when constructing
-the context menu for @entry. *)
+(** Sets a menu model to add when constructing the context menu for [entry]. *)
 
 external get_show_peek_icon : t -> bool
   = "ml_gtk_password_entry_get_show_peek_icon"

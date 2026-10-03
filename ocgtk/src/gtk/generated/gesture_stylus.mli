@@ -25,12 +25,11 @@ external get_stylus_only : t -> bool = "ml_gtk_gesture_stylus_get_stylus_only"
 
 external get_device_tool : t -> Ocgtk_gdk.Gdk.Wrappers.Device_tool.t option
   = "ml_gtk_gesture_stylus_get_device_tool"
-(** Returns the `GdkDeviceTool` currently driving input through this gesture.
+(** Returns the [GdkDeviceTool] currently driving input through this gesture.
 
     This function must be called from the handler of one of the
-    [signal@Gtk.GestureStylus::down], [signal@Gtk.GestureStylus::motion],
-    [signal@Gtk.GestureStylus::up] or [signal@Gtk.GestureStylus::proximity]
-    signals. *)
+    [Gtk.GestureStylus::down], [Gtk.GestureStylus::motion],
+    [Gtk.GestureStylus::up] or [Gtk.GestureStylus::proximity] signals. *)
 
 external get_backlog :
   t -> bool * Ocgtk_gdk.Gdk.Wrappers.Time_coord.t array * int
@@ -40,23 +39,22 @@ external get_backlog :
 By default, GTK will limit rate of input events. On stylus input
 where accuracy of strokes is paramount, this function returns the
 accumulated coordinate/timing state before the emission of the
-current [Gtk.GestureStylus::motion] signal.
+current \[Gtk.GestureStylus::motion] signal.
 
-This function may only be called within a [signal@Gtk.GestureStylus::motion]
+This function may only be called within a [Gtk.GestureStylus::motion]
 signal handler, the state given in this signal and obtainable through
-[method@Gtk.GestureStylus.get_axis] express the latest (most up-to-date)
+[Gtk.GestureStylus.get_axis] express the latest (most up-to-date)
 state in motion history.
 
-The @backlog is provided in chronological order. *)
+The [backlog] is provided in chronological order. *)
 
 external get_axis : t -> Ocgtk_gdk.Gdk.axisuse -> bool * float
   = "ml_gtk_gesture_stylus_get_axis"
-(** Returns the current value for the requested @axis.
+(** Returns the current value for the requested [axis].
 
-This function must be called from the handler of one of the
-[signal@Gtk.GestureStylus::down], [signal@Gtk.GestureStylus::motion],
-[signal@Gtk.GestureStylus::up] or [signal@Gtk.GestureStylus::proximity]
-signals. *)
+    This function must be called from the handler of one of the
+    [Gtk.GestureStylus::down], [Gtk.GestureStylus::motion],
+    [Gtk.GestureStylus::up] or [Gtk.GestureStylus::proximity] signals. *)
 
 (* Properties *)
 

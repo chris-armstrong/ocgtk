@@ -12,20 +12,19 @@ external set_width : t -> int -> unit
   = "ml_gdk_dmabuf_texture_builder_set_width"
 (** Sets the width of the texture.
 
-    The width must be set before calling
-    [method@Gdk.DmabufTextureBuilder.build]. *)
+    The width must be set before calling [Gdk.DmabufTextureBuilder.build]. *)
 
 external set_update_texture : t -> Texture.t option -> unit
   = "ml_gdk_dmabuf_texture_builder_set_update_texture"
 (** Sets the texture to be updated by this texture. See
-    [method@Gdk.DmabufTextureBuilder.set_update_region] for an explanation. *)
+    [Gdk.DmabufTextureBuilder.set_update_region] for an explanation. *)
 
 external set_update_region :
   t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option -> unit
   = "ml_gdk_dmabuf_texture_builder_set_update_region"
 (** Sets the region to be updated by this texture. Together with
-    [property@Gdk.DmabufTextureBuilder:update-texture] this describes an update
-    of a previous texture.
+    [Gdk.DmabufTextureBuilder:update-texture] this describes an update of a
+    previous texture.
 
     When rendering animations of large textures, it is possible that consecutive
     textures are only updating contents in parts of the texture. It is then
@@ -40,7 +39,7 @@ external set_stride : t -> int -> int -> unit
 (** Sets the stride for a plane.
 
     The stride must be set for all planes before calling
-    [method@Gdk.DmabufTextureBuilder.build]. *)
+    [Gdk.DmabufTextureBuilder.build]. *)
 
 external set_premultiplied : t -> bool -> unit
   = "ml_gdk_dmabuf_texture_builder_set_premultiplied"
@@ -65,8 +64,7 @@ external set_height : t -> int -> unit
   = "ml_gdk_dmabuf_texture_builder_set_height"
 (** Sets the height of the texture.
 
-    The height must be set before calling
-    [method@Gdk.DmabufTextureBuilder.build]. *)
+    The height must be set before calling [Gdk.DmabufTextureBuilder.build]. *)
 
 external set_fourcc : t -> UInt32.t -> unit
   = "ml_gdk_dmabuf_texture_builder_set_fourcc"
@@ -74,8 +72,7 @@ external set_fourcc : t -> UInt32.t -> unit
 
     The format is specified as a fourcc code.
 
-    The format must be set before calling
-    [method@Gdk.DmabufTextureBuilder.build]. *)
+    The format must be set before calling [Gdk.DmabufTextureBuilder.build]. *)
 
 external set_fd : t -> int -> int -> unit
   = "ml_gdk_dmabuf_texture_builder_set_fd"
@@ -92,7 +89,7 @@ external set_color_state :
   = "ml_gdk_dmabuf_texture_builder_set_color_state"
 (** Sets the color state for the texture.
 
-    By default, the colorstate is `NULL`. In that case, GTK will choose the
+    By default, the colorstate is [NULL]. In that case, GTK will choose the
     correct colorstate based on the format. If you don't know what colorstates
     are, this is probably the right thing. *)
 
@@ -103,12 +100,13 @@ external get_width : t -> int = "ml_gdk_dmabuf_texture_builder_get_width"
 external get_update_texture : t -> Texture.t option
   = "ml_gdk_dmabuf_texture_builder_get_update_texture"
 (** Gets the texture previously set via
-    gdk_dmabuf_texture_builder_set_update_texture() or %NULL if none was set. *)
+    gdk_dmabuf_texture_builder_set_update_texture() or [NULL] if none was set.
+*)
 
 external get_update_region : t -> Ocgtk_cairo.Cairo.Wrappers.Region.t option
   = "ml_gdk_dmabuf_texture_builder_get_update_region"
 (** Gets the region previously set via
-    gdk_dmabuf_texture_builder_set_update_region() or %NULL if none was set. *)
+    gdk_dmabuf_texture_builder_set_update_region() or [NULL] if none was set. *)
 
 external get_stride : t -> int -> int
   = "ml_gdk_dmabuf_texture_builder_get_stride"

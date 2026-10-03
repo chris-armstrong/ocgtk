@@ -17,18 +17,18 @@ external set_start_widget :
   unit = "ml_gtk_center_box_set_start_widget"
 (** Sets the start widget.
 
-    To remove the existing start widget, pass `NULL`. *)
+    To remove the existing start widget, pass [NULL]. *)
 
 external set_shrink_center_last : t -> bool -> unit
   = "ml_gtk_center_box_set_shrink_center_last"
 (** Sets whether to shrink the center widget after other children.
 
-By default, when there's no space to give all three children their
-natural widths, the start and end widgets start shrinking and the
-center child keeps natural width until they reach minimum width.
+    By default, when there's no space to give all three children their natural
+    widths, the start and end widgets start shrinking and the center child keeps
+    natural width until they reach minimum width.
 
-If @shrink_center_last is false, start and end widgets keep natural
-width and the center widget starts shrinking instead. *)
+    If [shrink_center_last] is false, start and end widgets keep natural width
+    and the center widget starts shrinking instead. *)
 
 external set_end_widget :
   t ->
@@ -39,7 +39,7 @@ external set_end_widget :
   unit = "ml_gtk_center_box_set_end_widget"
 (** Sets the end widget.
 
-    To remove the existing end widget, pass `NULL`. *)
+    To remove the existing end widget, pass [NULL]. *)
 
 external set_center_widget :
   t ->
@@ -50,17 +50,16 @@ external set_center_widget :
   unit = "ml_gtk_center_box_set_center_widget"
 (** Sets the center widget.
 
-    To remove the existing center widget, pass `NULL`. *)
+    To remove the existing center widget, pass [NULL]. *)
 
 external set_baseline_position : t -> Gtk_enums.baselineposition -> unit
   = "ml_gtk_center_box_set_baseline_position"
 (** Sets the baseline position of a center box.
 
-This affects only horizontal boxes with at least one baseline
-aligned child. If there is more vertical space available than
-requested, and the baseline is not allocated by the parent then
-@position is used to allocate the baseline with respect to the
-extra space available. *)
+    This affects only horizontal boxes with at least one baseline aligned child.
+    If there is more vertical space available than requested, and the baseline
+    is not allocated by the parent then [position] is used to allocate the
+    baseline with respect to the extra space available. *)
 
 external get_start_widget :
   t ->
@@ -94,6 +93,6 @@ external get_baseline_position : t -> Gtk_enums.baselineposition
   = "ml_gtk_center_box_get_baseline_position"
 (** Gets the baseline position of the center box.
 
-    See [method@Gtk.CenterBox.set_baseline_position]. *)
+    See [Gtk.CenterBox.set_baseline_position]. *)
 
 (* Properties *)

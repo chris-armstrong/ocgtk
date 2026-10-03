@@ -26,8 +26,8 @@ external set_label_align : t -> float -> unit = "ml_gtk_frame_set_label_align"
     The default value for a newly created frame is 0.0. *)
 
 external set_label : t -> string option -> unit = "ml_gtk_frame_set_label"
-(** Creates a new `GtkLabel` with the @label and sets it as the frame's
-label widget. *)
+(** Creates a new [GtkLabel] with the [label] and sets it as the frame's label
+    widget. *)
 
 external set_child :
   t ->
@@ -36,7 +36,7 @@ external set_child :
   .t
   option ->
   unit = "ml_gtk_frame_set_child"
-(** Sets the child widget of @frame. *)
+(** Sets the child widget of [frame]. *)
 
 external get_label_widget :
   t ->
@@ -52,7 +52,7 @@ external get_label_align : t -> float = "ml_gtk_frame_get_label_align"
 external get_label : t -> string option = "ml_gtk_frame_get_label"
 (** Returns the frame labels text.
 
-    If the frame's label widget is not a `GtkLabel`, %NULL is returned. *)
+    If the frame's label widget is not a [GtkLabel], [NULL] is returned. *)
 
 external get_child :
   t ->
@@ -60,6 +60,6 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_frame_get_child"
-(** Gets the child widget of @frame. *)
+(** Gets the child widget of [frame]. *)
 
 (* Properties *)

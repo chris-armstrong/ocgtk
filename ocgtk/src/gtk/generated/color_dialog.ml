@@ -34,9 +34,9 @@ external choose_rgba_finish :
   Ocgtk_gio.Gio.Wrappers.Async_result.t ->
   (Ocgtk_gdk.Gdk.Wrappers.Rgb_a.t, GError.t) result
   = "ml_gtk_color_dialog_choose_rgba_finish"
-(** Finishes the [method@Gtk.ColorDialog.choose_rgba] call
+(** Finishes the [Gtk.ColorDialog.choose_rgba] call
 
-    Note that this function returns a [error@Gtk.DialogError.DISMISSED] error if
-    the user cancels the dialog. *)
+    Note that this function returns a [Gtk.DialogError.DISMISSED] error if the
+    user cancels the dialog. *)
 
 (* Properties *)

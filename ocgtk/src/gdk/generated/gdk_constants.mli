@@ -4,8 +4,8 @@
 val action_all : int
 (** Defines all possible DND actions.
 
-    This can be used in [method@Gdk.Drop.status] messages when any drop can be
-    accepted or a more specific drop method is not yet known. *)
+    This can be used in [Gdk.Drop.status] messages when any drop can be accepted
+    or a more specific drop method is not yet known. *)
 
 val button_middle : int
 (** The middle button. *)
@@ -2481,7 +2481,7 @@ val key_zerosuperior : int
 val key_zstroke : int
 
 val modifier_mask : int
-(** A mask covering all entries in `GdkModifierType`. *)
+(** A mask covering all entries in [GdkModifierType]. *)
 
 val priority_redraw : int
 (** This is the priority that the idle handler processing surface updates is

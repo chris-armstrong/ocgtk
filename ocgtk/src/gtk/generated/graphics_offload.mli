@@ -26,13 +26,13 @@ external set_child :
   .t
   option ->
   unit = "ml_gtk_graphics_offload_set_child"
-(** Sets the child of @self. *)
+(** Sets the child of [self]. *)
 
 external set_black_background : t -> bool -> unit
   = "ml_gtk_graphics_offload_set_black_background"
 (** Sets whether this GtkGraphicsOffload widget will draw a black background.
 
-    A main use case for this is **_letterboxing_** where black bars are visible
+    A main use case for this is {b _letterboxing_} where black bars are visible
     next to the content if the aspect ratio of the content does not match the
     dimensions of the monitor.
 
@@ -41,12 +41,12 @@ external set_black_background : t -> bool -> unit
     copies in the compositor.
 
     On Wayland, this is implemented using the
-    [single-pixel buffer](https://wayland.app/protocols/single-pixel-buffer-v1)
+    {{:https://wayland.app/protocols/single-pixel-buffer-v1}single-pixel buffer}
     protocol. *)
 
 external get_enabled : t -> Gtk_enums.graphicsoffloadenabled
   = "ml_gtk_graphics_offload_get_enabled"
-(** Returns whether offload is enabled for @self. *)
+(** Returns whether offload is enabled for [self]. *)
 
 external get_child :
   t ->
@@ -54,12 +54,12 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_graphics_offload_get_child"
-(** Gets the child of @self. *)
+(** Gets the child of [self]. *)
 
 external get_black_background : t -> bool
   = "ml_gtk_graphics_offload_get_black_background"
 (** Returns whether the widget draws a black background.
 
-    See [method@Gtk.GraphicsOffload.set_black_background]. *)
+    See [Gtk.GraphicsOffload.set_black_background]. *)
 
 (* Properties *)

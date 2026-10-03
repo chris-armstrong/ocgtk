@@ -16,7 +16,7 @@ external set_expression : t -> Expression.t option -> unit
   = "ml_gtk_string_sorter_set_expression"
 (** Sets the expression that is evaluated to obtain strings from items.
 
-    The expression must have the type %G_TYPE_STRING. *)
+    The expression must have the type [G_TYPE_STRING]. *)
 
 external set_collation : t -> Gtk_enums.collation -> unit
   = "ml_gtk_string_sorter_set_collation"

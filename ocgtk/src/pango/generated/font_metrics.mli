@@ -29,7 +29,7 @@ external get_underline_position : t -> int
   = "ml_pango_font_metrics_get_underline_position"
 (** Gets the suggested position to draw the underline.
 
-    The value returned is the distance *above* the baseline of the top of the
+    The value returned is the distance {i above} the baseline of the top of the
     underline. Since most fonts have underline positions beneath the baseline,
     this value is typically negative. *)
 
@@ -41,7 +41,7 @@ external get_strikethrough_position : t -> int
   = "ml_pango_font_metrics_get_strikethrough_position"
 (** Gets the suggested position to draw the strikethrough.
 
-    The value returned is the distance *above* the baseline of the top of the
+    The value returned is the distance {i above} the baseline of the top of the
     strikethrough. *)
 
 external get_height : t -> int = "ml_pango_font_metrics_get_height"

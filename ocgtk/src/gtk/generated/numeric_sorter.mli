@@ -16,11 +16,11 @@ external set_expression : t -> Expression.t option -> unit
   = "ml_gtk_numeric_sorter_set_expression"
 (** Sets the expression that is evaluated to obtain numbers from items.
 
-Unless an expression is set on @self, the sorter will always
-compare items as invalid.
+    Unless an expression is set on [self], the sorter will always compare items
+    as invalid.
 
-The expression must have a return type that can be compared
-numerically, such as %G_TYPE_INT or %G_TYPE_DOUBLE. *)
+    The expression must have a return type that can be compared numerically,
+    such as [G_TYPE_INT] or [G_TYPE_DOUBLE]. *)
 
 external get_sort_order : t -> Gtk_enums.sorttype
   = "ml_gtk_numeric_sorter_get_sort_order"

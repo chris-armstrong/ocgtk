@@ -18,25 +18,25 @@ external set_start_child :
   .t
   option ->
   unit = "ml_gtk_paned_set_start_child"
-(** Sets the start child of @paned to @child.
+(** Sets the start child of [paned] to [child].
 
-If @child is `NULL`, the existing child will be removed. *)
+    If [child] is [NULL], the existing child will be removed. *)
 
 external set_shrink_start_child : t -> bool -> unit
   = "ml_gtk_paned_set_shrink_start_child"
-(** Sets whether the [property@Gtk.Paned:start-child] can shrink. *)
+(** Sets whether the [Gtk.Paned:start-child] can shrink. *)
 
 external set_shrink_end_child : t -> bool -> unit
   = "ml_gtk_paned_set_shrink_end_child"
-(** Sets whether the [property@Gtk.Paned:end-child] can shrink. *)
+(** Sets whether the [Gtk.Paned:end-child] can shrink. *)
 
 external set_resize_start_child : t -> bool -> unit
   = "ml_gtk_paned_set_resize_start_child"
-(** Sets whether the [property@Gtk.Paned:start-child] can be resized. *)
+(** Sets whether the [Gtk.Paned:start-child] can be resized. *)
 
 external set_resize_end_child : t -> bool -> unit
   = "ml_gtk_paned_set_resize_end_child"
-(** Sets whether the [property@Gtk.Paned:end-child] can be resized. *)
+(** Sets whether the [Gtk.Paned:end-child] can be resized. *)
 
 external set_position : t -> int -> unit = "ml_gtk_paned_set_position"
 (** Sets the position of the divider between the two panes. *)
@@ -48,9 +48,9 @@ external set_end_child :
   .t
   option ->
   unit = "ml_gtk_paned_set_end_child"
-(** Sets the end child of @paned to @child.
+(** Sets the end child of [paned] to [child].
 
-If @child is `NULL`, the existing child will be removed. *)
+    If [child] is [NULL], the existing child will be removed. *)
 
 external get_wide_handle : t -> bool = "ml_gtk_paned_get_wide_handle"
 (** Gets whether the separator should be wide. *)
@@ -61,21 +61,21 @@ external get_start_child :
   .Widget
   .t
   option = "ml_gtk_paned_get_start_child"
-(** Retrieves the start child of the given `GtkPaned`. *)
+(** Retrieves the start child of the given [GtkPaned]. *)
 
 external get_shrink_start_child : t -> bool
   = "ml_gtk_paned_get_shrink_start_child"
-(** Returns whether the [property@Gtk.Paned:start-child] can shrink. *)
+(** Returns whether the [Gtk.Paned:start-child] can shrink. *)
 
 external get_shrink_end_child : t -> bool = "ml_gtk_paned_get_shrink_end_child"
-(** Returns whether the [property@Gtk.Paned:end-child] can shrink. *)
+(** Returns whether the [Gtk.Paned:end-child] can shrink. *)
 
 external get_resize_start_child : t -> bool
   = "ml_gtk_paned_get_resize_start_child"
-(** Returns whether the [property@Gtk.Paned:start-child] can be resized. *)
+(** Returns whether the [Gtk.Paned:start-child] can be resized. *)
 
 external get_resize_end_child : t -> bool = "ml_gtk_paned_get_resize_end_child"
-(** Returns whether the [property@Gtk.Paned:end-child] can be resized. *)
+(** Returns whether the [Gtk.Paned:end-child] can be resized. *)
 
 external get_position : t -> int = "ml_gtk_paned_get_position"
 (** Obtains the position of the divider between the two panes. *)
@@ -86,7 +86,7 @@ external get_end_child :
   .Widget
   .t
   option = "ml_gtk_paned_get_end_child"
-(** Retrieves the end child of the given `GtkPaned`. *)
+(** Retrieves the end child of the given [GtkPaned]. *)
 
 (* Properties *)
 

@@ -9,18 +9,18 @@ external new_ : unit -> t = "ml_gtk_statusbar_new"
 (* Methods *)
 
 external remove_all : t -> int -> unit = "ml_gtk_statusbar_remove_all"
-(** Forces the removal of all messages from a statusbar's
-stack with the exact @context_id. *)
+(** Forces the removal of all messages from a statusbar's stack with the exact
+    [context_id]. *)
 
 external remove : t -> int -> int -> unit = "ml_gtk_statusbar_remove"
-(** Forces the removal of a message from a statusbar’s stack.
-The exact @context_id and @message_id must be specified. *)
+(** Forces the removal of a message from a statusbar’s stack. The exact
+    [context_id] and [message_id] must be specified. *)
 
 external push : t -> int -> string -> int = "ml_gtk_statusbar_push"
 (** Pushes a new message onto a statusbar’s stack. *)
 
 external pop : t -> int -> unit = "ml_gtk_statusbar_pop"
-(** Removes the first message in the `GtkStatusbar`’s stack with the given
+(** Removes the first message in the [GtkStatusbar]’s stack with the given
     context id.
 
     Note that this may not change the displayed message, if the message at the

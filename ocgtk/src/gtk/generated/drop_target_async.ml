@@ -22,17 +22,16 @@ external set_actions : t -> Ocgtk_gdk.Gdk.dragaction -> unit
 
 external reject_drop : t -> Ocgtk_gdk.Gdk.Wrappers.Drop.t -> unit
   = "ml_gtk_drop_target_async_reject_drop"
-(** Sets the @drop as not accepted on this drag site.
+(** Sets the [drop] as not accepted on this drag site.
 
-This function should be used when delaying the decision
-on whether to accept a drag or not until after reading
-the data. *)
+    This function should be used when delaying the decision on whether to accept
+    a drag or not until after reading the data. *)
 
 external get_formats : t -> Ocgtk_gdk.Gdk.Wrappers.Content_formats.t option
   = "ml_gtk_drop_target_async_get_formats"
 (** Gets the data formats that this drop target accepts.
 
-    If the result is %NULL, all formats are expected to be supported. *)
+    If the result is [NULL], all formats are expected to be supported. *)
 
 external get_actions : t -> Ocgtk_gdk.Gdk.dragaction
   = "ml_gtk_drop_target_async_get_actions"

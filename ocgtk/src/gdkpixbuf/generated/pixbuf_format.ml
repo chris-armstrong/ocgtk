@@ -31,10 +31,10 @@ external is_scalable : t -> bool = "ml_gdk_pixbuf_format_is_scalable"
 
 external is_save_option_supported : t -> string -> bool
   = "ml_gdk_pixbuf_format_is_save_option_supported"
-(** Returns `TRUE` if the save option specified by @option_key is supported when
-saving a pixbuf using the module implementing @format.
+(** Returns [TRUE] if the save option specified by [option_key] is supported
+    when saving a pixbuf using the module implementing [format].
 
-See gdk_pixbuf_save() for more information about option keys. *)
+    See gdk_pixbuf_save() for more information about option keys. *)
 
 external is_disabled : t -> bool = "ml_gdk_pixbuf_format_is_disabled"
 (** Returns whether this image format is disabled.

@@ -14,7 +14,7 @@ type t = [ `frame_timings ] Gobject.obj
 (* Methods *)
 
 external ref : t -> t = "ml_gdk_frame_timings_ref"
-(** Increases the reference count of @timings. *)
+(** Increases the reference count of [timings]. *)
 
 external get_refresh_interval : t -> int64
   = "ml_gdk_frame_timings_get_refresh_interval"
@@ -36,39 +36,37 @@ external get_predicted_presentation_time : t -> int64
 
     Although no predicted time may be available, if one is available, it will be
     available while the frame is being generated, in contrast to
-    [method@Gdk.FrameTimings.get_presentation_time], which is only available
-    after the frame has been presented.
+    [Gdk.FrameTimings.get_presentation_time], which is only available after the
+    frame has been presented.
 
     In general, if you are simply animating, you should use
-    [method@Gdk.FrameClock.get_frame_time] rather than this function, but this
-    function is useful for applications that want exact control over latency.
-    For example, a movie player may want this information for Audio/Video
+    [Gdk.FrameClock.get_frame_time] rather than this function, but this function
+    is useful for applications that want exact control over latency. For
+    example, a movie player may want this information for Audio/Video
     synchronization. *)
 
 external get_frame_time : t -> int64 = "ml_gdk_frame_timings_get_frame_time"
 (** Returns the frame time for the frame.
 
     This is the time value that is typically used to time animations for the
-    frame. See [method@Gdk.FrameClock.get_frame_time]. *)
+    frame. See [Gdk.FrameClock.get_frame_time]. *)
 
 external get_frame_counter : t -> int64
   = "ml_gdk_frame_timings_get_frame_counter"
-(** Gets the frame counter value of the `GdkFrameClock` when this frame was
+(** Gets the frame counter value of the [GdkFrameClock] when this frame was
     drawn. *)
 
 external get_complete : t -> bool = "ml_gdk_frame_timings_get_complete"
-(** Returns whether @timings are complete.
+(** Returns whether [timings] are complete.
 
-The timing information in a `GdkFrameTimings` is filled in
-incrementally as the frame as drawn and passed off to the
-window system for processing and display to the user. The
-accessor functions for `GdkFrameTimings` can return 0 to
-indicate an unavailable value for two reasons: either because
-the information is not yet available, or because it isn't
-available at all.
+    The timing information in a [GdkFrameTimings] is filled in incrementally as
+    the frame as drawn and passed off to the window system for processing and
+    display to the user. The accessor functions for [GdkFrameTimings] can return
+    0 to indicate an unavailable value for two reasons: either because the
+    information is not yet available, or because it isn't available at all.
 
-Once this function returns %TRUE for a frame, you can be
-certain that no further values will become available and be
-stored in the `GdkFrameTimings`. *)
+    Once this function returns [TRUE] for a frame, you can be certain that no
+    further values will become available and be stored in the [GdkFrameTimings].
+*)
 
 external get_type : unit -> Gobject.Type.t = "ml_gdk_frame_timings_get_type"

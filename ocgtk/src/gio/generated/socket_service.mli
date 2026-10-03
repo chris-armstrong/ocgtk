@@ -19,7 +19,7 @@ external stop : t -> unit = "ml_g_socket_service_stop"
     listening sockets, and you can call g_socket_service_start() again later to
     begin listening again. To close the listening sockets, call
     g_socket_listener_close(). (This will happen automatically when the
-    #GSocketService is finalized.)
+    [GSocketService] is finalized.)
 
     This must be called before calling g_socket_listener_close() as the socket
     service will start accepting connections immediately when a new socket is

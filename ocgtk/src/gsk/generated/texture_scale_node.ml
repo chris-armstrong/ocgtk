@@ -14,8 +14,8 @@ external new_ :
 
 external get_texture : t -> Ocgtk_gdk.Gdk.Wrappers.Texture.t
   = "ml_gsk_texture_scale_node_get_texture"
-(** Retrieves the `GdkTexture` used when creating this `GskRenderNode`. *)
+(** Retrieves the [GdkTexture] used when creating this [GskRenderNode]. *)
 
 external get_filter : t -> Gsk_enums.scalingfilter
   = "ml_gsk_texture_scale_node_get_filter"
-(** Retrieves the `GskScalingFilter` used when creating this `GskRenderNode`. *)
+(** Retrieves the [GskScalingFilter] used when creating this [GskRenderNode]. *)

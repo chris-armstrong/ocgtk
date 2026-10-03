@@ -21,7 +21,7 @@ external set_orientation : t -> Gtk_enums.orientation -> unit
 
 external get_orientation : t -> Gtk_enums.orientation
   = "ml_gtk_gesture_pan_get_orientation"
-(** Returns the orientation of the pan gestures that this @gesture expects. *)
+(** Returns the orientation of the pan gestures that this [gesture] expects. *)
 
 (* Properties *)
 

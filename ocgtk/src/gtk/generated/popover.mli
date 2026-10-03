@@ -10,27 +10,26 @@ external new_ : unit -> t = "ml_gtk_popover_new"
 
 external set_position : t -> Gtk_enums.positiontype -> unit
   = "ml_gtk_popover_set_position"
-(** Sets the preferred position for @popover to appear.
+(** Sets the preferred position for [popover] to appear.
 
-If the @popover is currently visible, it will be immediately
-updated.
+    If the [popover] is currently visible, it will be immediately updated.
 
-This preference will be respected where possible, although
-on lack of space (eg. if close to the window edges), the
-`GtkPopover` may choose to appear on the opposite side. *)
+    This preference will be respected where possible, although on lack of space
+    (eg. if close to the window edges), the [GtkPopover] may choose to appear on
+    the opposite side. *)
 
 external set_pointing_to :
   t -> Ocgtk_gdk.Gdk.Wrappers.Rectangle.t option -> unit
   = "ml_gtk_popover_set_pointing_to"
-(** Sets the rectangle that @popover points to.
+(** Sets the rectangle that [popover] points to.
 
-This is in the coordinate space of the @popover parent. *)
+    This is in the coordinate space of the [popover] parent. *)
 
 external set_offset : t -> int -> int -> unit = "ml_gtk_popover_set_offset"
 (** Sets the offset to use when calculating the position of the popover.
 
-    These values are used when preparing the [struct@Gdk.PopupLayout] for
-    positioning the popover. *)
+    These values are used when preparing the [Gdk.PopupLayout] for positioning
+    the popover. *)
 
 external set_mnemonics_visible : t -> bool -> unit
   = "ml_gtk_popover_set_mnemonics_visible"
@@ -47,11 +46,11 @@ external set_default_widget :
   .t
   option ->
   unit = "ml_gtk_popover_set_default_widget"
-(** Sets the default widget of a `GtkPopover`.
+(** Sets the default widget of a [GtkPopover].
 
     The default widget is the widget that’s activated when the user presses
     Enter in a dialog (for example). This function sets or unsets the default
-    widget for a `GtkPopover`. *)
+    widget for a [GtkPopover]. *)
 
 external set_child :
   t ->
@@ -60,59 +59,57 @@ external set_child :
   .t
   option ->
   unit = "ml_gtk_popover_set_child"
-(** Sets the child widget of @popover. *)
+(** Sets the child widget of [popover]. *)
 
 external set_cascade_popdown : t -> bool -> unit
   = "ml_gtk_popover_set_cascade_popdown"
-(** If @cascade_popdown is %TRUE, the popover will be
-closed when a child modal popover is closed.
+(** If [cascade_popdown] is [TRUE], the popover will be closed when a child
+    modal popover is closed.
 
-If %FALSE, @popover will stay visible. *)
+    If [FALSE], [popover] will stay visible. *)
 
 external set_autohide : t -> bool -> unit = "ml_gtk_popover_set_autohide"
-(** Sets whether @popover is modal.
+(** Sets whether [popover] is modal.
 
-A modal popover will grab the keyboard focus on it when being
-displayed. Focus will wrap around within the popover. Clicking
-outside the popover area or pressing Esc will dismiss the popover.
+    A modal popover will grab the keyboard focus on it when being displayed.
+    Focus will wrap around within the popover. Clicking outside the popover area
+    or pressing Esc will dismiss the popover.
 
-Called this function on an already showing popup with a new
-autohide value different from the current one, will cause the
-popup to be hidden. *)
+    Called this function on an already showing popup with a new autohide value
+    different from the current one, will cause the popup to be hidden. *)
 
 external present : t -> unit = "ml_gtk_popover_present"
-(** Allocate a size for the `GtkPopover`.
+(** Allocate a size for the [GtkPopover].
 
     This function needs to be called in size-allocate by widgets who have a
-    `GtkPopover` as child. When using a layout manager, this is happening
+    [GtkPopover] as child. When using a layout manager, this is happening
     automatically.
 
-    To make a popover appear on screen, use [method@Gtk.Popover.popup]. *)
+    To make a popover appear on screen, use [Gtk.Popover.popup]. *)
 
 external popup : t -> unit = "ml_gtk_popover_popup"
-(** Pops @popover up. *)
+(** Pops [popover] up. *)
 
 external popdown : t -> unit = "ml_gtk_popover_popdown"
-(** Pops @popover down.
+(** Pops [popover] down.
 
-This may have the side-effect of closing a parent popover
-as well. See [property@Gtk.Popover:cascade-popdown]. *)
+    This may have the side-effect of closing a parent popover as well. See
+    [Gtk.Popover:cascade-popdown]. *)
 
 external get_position : t -> Gtk_enums.positiontype
   = "ml_gtk_popover_get_position"
-(** Returns the preferred position of @popover. *)
+(** Returns the preferred position of [popover]. *)
 
 external get_pointing_to : t -> bool * Ocgtk_gdk.Gdk.Wrappers.Rectangle.t
   = "ml_gtk_popover_get_pointing_to"
 (** Gets the rectangle that the popover points to.
 
-If a rectangle to point to has been set, this function will
-return %TRUE and fill in @rect with such rectangle, otherwise
-it will return %FALSE and fill in @rect with the parent
-widget coordinates. *)
+    If a rectangle to point to has been set, this function will return [TRUE]
+    and fill in [rect] with such rectangle, otherwise it will return [FALSE] and
+    fill in [rect] with the parent widget coordinates. *)
 
 external get_offset : t -> int * int = "ml_gtk_popover_get_offset"
-(** Gets the offset previous set with [method@Gtk.Popover.set_offset]. *)
+(** Gets the offset previous set with [Gtk.Popover.set_offset]. *)
 
 external get_mnemonics_visible : t -> bool
   = "ml_gtk_popover_get_mnemonics_visible"
@@ -128,7 +125,7 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_popover_get_child"
-(** Gets the child widget of @popover. *)
+(** Gets the child widget of [popover]. *)
 
 external get_cascade_popdown : t -> bool = "ml_gtk_popover_get_cascade_popdown"
 (** Returns whether the popover will close after a modal child is closed. *)
@@ -136,7 +133,7 @@ external get_cascade_popdown : t -> bool = "ml_gtk_popover_get_cascade_popdown"
 external get_autohide : t -> bool = "ml_gtk_popover_get_autohide"
 (** Returns whether the popover is modal.
 
-    See [method@Gtk.Popover.set_autohide] for the implications of this. *)
+    See [Gtk.Popover.set_autohide] for the implications of this. *)
 
 (* Properties *)
 

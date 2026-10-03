@@ -12,11 +12,11 @@ external set_sorter : t -> Sorter.t option -> unit
   = "ml_gtk_tree_list_row_sorter_set_sorter"
 (** Sets the sorter to use for items with the same parent.
 
-This sorter will be passed the [property@Gtk.TreeListRow:item] of
-the tree list rows passed to @self. *)
+    This sorter will be passed the [Gtk.TreeListRow:item] of the tree list rows
+    passed to [self]. *)
 
 external get_sorter : t -> Sorter.t option
   = "ml_gtk_tree_list_row_sorter_get_sorter"
-(** Returns the sorter used by @self. *)
+(** Returns the sorter used by [self]. *)
 
 (* Properties *)

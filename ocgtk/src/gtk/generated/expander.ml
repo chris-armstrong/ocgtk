@@ -37,15 +37,15 @@ external set_label_widget :
 *)
 
 external set_label : t -> string option -> unit = "ml_gtk_expander_set_label"
-(** Sets the text of the label of the expander to @label.
+(** Sets the text of the label of the expander to [label].
 
-This will also clear any previously set labels. *)
+    This will also clear any previously set labels. *)
 
 external set_expanded : t -> bool -> unit = "ml_gtk_expander_set_expanded"
 (** Sets the state of the expander.
 
-    Set to %TRUE, if you want the child widget to be revealed, and %FALSE if you
-    want the child widget to be hidden. *)
+    Set to [TRUE], if you want the child widget to be revealed, and [FALSE] if
+    you want the child widget to be hidden. *)
 
 external set_child :
   t ->
@@ -54,7 +54,7 @@ external set_child :
   .t
   option ->
   unit = "ml_gtk_expander_set_child"
-(** Sets the child widget of @expander. *)
+(** Sets the child widget of [expander]. *)
 
 external get_use_underline : t -> bool = "ml_gtk_expander_get_use_underline"
 (** Returns whether an underline in the text indicates a mnemonic. *)
@@ -78,14 +78,14 @@ external get_label : t -> string option = "ml_gtk_expander_get_label"
 (** Fetches the text from a label widget.
 
     This is including any embedded underlines indicating mnemonics and Pango
-    markup, as set by [method@Gtk.Expander.set_label]. If the label text has not
-    been set the return value will be %NULL. This will be the case if you create
-    an empty button with gtk_button_new() to use as a container. *)
+    markup, as set by [Gtk.Expander.set_label]. If the label text has not been
+    set the return value will be [NULL]. This will be the case if you create an
+    empty button with gtk_button_new() to use as a container. *)
 
 external get_expanded : t -> bool = "ml_gtk_expander_get_expanded"
-(** Queries a `GtkExpander` and returns its current state.
+(** Queries a [GtkExpander] and returns its current state.
 
-    Returns %TRUE if the child widget is revealed. *)
+    Returns [TRUE] if the child widget is revealed. *)
 
 external get_child :
   t ->
@@ -93,7 +93,7 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_expander_get_child"
-(** Gets the child widget of @expander. *)
+(** Gets the child widget of [expander]. *)
 
 (* Properties *)
 
