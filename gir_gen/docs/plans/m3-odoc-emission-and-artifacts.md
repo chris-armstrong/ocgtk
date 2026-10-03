@@ -1,7 +1,8 @@
 # M3 Odoc Translation Slice — emission, wiring, artifact cache, per-branch preview
 
-**Status: DRAFT (revised after second plan review; phased for implementation — not
-yet implemented)**
+**Status: Phases 0–2 implemented; Phase 3 partly implemented (per-phase status
+below).** Phase 0 and 1: PR #188 (merged into `m3`) and PR #190 (open, base `m3`).
+Phase 2 and the first part of Phase 3: branch `m3-p2`, stacked on `m3-p1-fix`.
 **Created: 2026-09-08; revised: 2026-09-14 (testable phases added)**
 **Branch: `feat/m3-odoc-translation-slice`** (from `origin/m3` @ `9cec9171`, which
 contains the doc-parsing PR #184 and the
@@ -502,6 +503,13 @@ xvfb-run $(which dune) test ocgtk/    # unchanged bindings, still green
 ### Phase 2 — `Doc_emit` + translator at the *existing* emit sites
 (suppressions stay)
 
+**Status: done** (branch `m3-p2`). Commits: `1d372dc4` (`Doc_emit`),
+`f75c7cde` (constant, enum/bitfield member, method docs), `759d373b` (remove 42
+stale generated files), `351b2720` (record/class entity docs through `Doc_emit`),
+`dca00048` (escape `]`), `c2edb1e2` (remove gtk enum interface copies). Later
+Phase 3 commits are listed under Phase 3. The additions this phase needed beyond
+the original text are recorded below; the original text is kept for reference.
+
 *Goal:* every doc that is *already* emitted now goes through the
 translator; no *new* docs appear. This isolates translator-induced diffs
 from un-suppression-induced diffs (Phase 3).
@@ -553,6 +561,21 @@ legitimate comment syntax — any hit is a Phase-2 failure.
 docs. Diffs here are *additive* (previously-doc-less output gains docs) and
 must be reviewed as such.
 
+**Status: partly done.** Item 1 is done for class/interface (`adc30fe6`,
+`742d1a77`); the enum/bitfield type-doc suppression is still in place
+(`bin/gir_gen.ml` ~881, ~885). Items 2–4 are not started. Additional items
+done in this phase, which the original list did not contain:
+
+- *Comment safety for quotes:* OCaml lexes string literals inside comments, and
+  GIR prose can leave one open. `Doc_emit` replaces every `"` in an emitted
+  comment with a typographic quote (`adc30fe6`). This changes rendered quotes
+  in existing docs too.
+- *Module comment placement:* a class description must be a floating module
+  comment, so it needs a blank line after it. Without one, it attaches to the
+  first type, `ocamlformat` keeps it there, and odoc no longer uses it as the
+  module synopsis on parent pages (`742d1a77`). This resolves the "accepted
+  effect" noted below.
+
 *Changes (four commits, each independently revertible, tree clean after
 each):*
 1. Delete the two suppression sites in `bin/gir_gen.ml` (~604, ~883) —
@@ -569,7 +592,11 @@ each):*
    val (Interface mode); L2 stays doc-less (deferred).
 
 Accepted effect: `ocamlformat` may reposition module comments onto the
-first declaration — fine (recorded in the inventory above).
+first declaration. Superseded: a blank line after the module comment keeps it
+in place (`742d1a77`); see the status note above.
+
+*Open for Phase 3:* the L2 class-method docs (`class-button/` pages) are
+still undocumented; they are outside this phase's list and need a decision.
 
 *Acceptance (after each commit, and cumulatively):*
 ```bash
