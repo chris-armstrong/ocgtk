@@ -19,7 +19,7 @@ type t = private int
 
 val of_int : int -> t
 (** [of_int n] is [n] as a [gsize].
-    Raises [Invalid_argument] if [n < 0]. *)
+    Raises {{:https://ocaml.org/manual/5.3/api/Stdlib.html#EXCEPTIONInvalid_argument}Invalid_argument} if [n < 0]. *)
 
 val to_int : t -> int
 (** [to_int v] returns the underlying integer value. *)
