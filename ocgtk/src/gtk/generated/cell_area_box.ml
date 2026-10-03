@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CellAreaBox: CellAreaBox *)
 
-type t =
-  [ `cell_area_box | `cell_area | `initially_unowned | `object_ ] Gobject.obj
 (** A cell area that renders GtkCellRenderers into a row or a column
 
     The [GtkCellAreaBox] renders cell renderers into a row or a column depending
@@ -20,6 +18,9 @@ type t =
     by configuring the [GtkCellAreaBox] align child cell property with
     gtk_cell_area_cell_set_property() or by specifying the “align” argument to
     gtk_cell_area_box_pack_start() and gtk_cell_area_box_pack_end(). *)
+
+type t =
+  [ `cell_area_box | `cell_area | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_cell_area_box_new"
 (** Create a new CellAreaBox *)

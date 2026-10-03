@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GlyphItemIter: GlyphItemIter *)
 
-type t = [ `glyph_item_iter ] Gobject.obj
 (** A [PangoGlyphItemIter] is an iterator over the clusters in a
     [PangoGlyphItem].
 
@@ -43,6 +42,8 @@ type t = [ `glyph_item_iter ] Gobject.obj
 
     None of the members of a [PangoGlyphItemIter] should be modified manually.
 *)
+
+type t = [ `glyph_item_iter ] Gobject.obj
 
 (* Methods *)
 

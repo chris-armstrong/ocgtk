@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* OutsetShadowNode: OutsetShadowNode *)
 
-type t = [ `outset_shadow_node | `render_node ] Gobject.obj
 (** A render node for an outset shadow. *)
+
+type t = [ `outset_shadow_node | `render_node ] Gobject.obj
 
 external new_ :
   Rounded_rect.t ->

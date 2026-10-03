@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PowerProfileMonitor: PowerProfileMonitor *)
 
-type t = [ `power_profile_monitor ] Gobject.obj
 (** [GPowerProfileMonitor] makes it possible for applications as well as OS
     components to monitor system power profiles and act upon them. It currently
     only exports whether the system is in “Power Saver” mode (known as “Low
@@ -26,6 +25,8 @@ type t = [ `power_profile_monitor ] Gobject.obj
     Don’t forget to disconnect the [GObject.Object::notify] signal for
     [Gio.PowerProfileMonitor:power-saver-enabled], and unref the
     [GPowerProfileMonitor] itself when exiting. *)
+
+type t = [ `power_profile_monitor ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_power_profile_monitor_from_gobject"

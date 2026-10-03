@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ScrollEvent: ScrollEvent *)
 
-type t = [ `scroll_event | `event ] Gobject.obj
 (** An event related to a scrolling motion. *)
+
+type t = [ `scroll_event | `event ] Gobject.obj
 
 (* Methods *)
 

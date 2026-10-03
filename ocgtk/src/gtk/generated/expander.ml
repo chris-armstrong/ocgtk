@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Expander: Expander *)
 
-type t = [ `expander | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Allows the user to reveal or conceal a child widget.
 
     An example GtkExpander
@@ -88,6 +87,8 @@ type t = [ `expander | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkExpander] uses the [Gtk.AccessibleRole.button] role. *)
+
+type t = [ `expander | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : string option -> t = "ml_gtk_expander_new"
 (** Create a new Expander *)

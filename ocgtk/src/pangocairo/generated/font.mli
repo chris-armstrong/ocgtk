@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Font: Font *)
 
-type t = [ `font ] Gobject.obj
 (** [PangoCairoFont] is an interface exported by fonts for use with Cairo.
 
     The actual type of the font will depend on the particular font technology
     Cairo was compiled to use. *)
+
+type t = [ `font ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_pangocairo_font_from_gobject"
 

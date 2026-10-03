@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Sorter: Sorter *)
 
-type t = [ `sorter | `object_ ] Gobject.obj
 (** Describes sorting criteria for a [Gtk.SortListModel].
 
     Its primary user is [Gtk.SortListModel]
@@ -21,6 +20,8 @@ type t = [ `sorter | `object_ ] Gobject.obj
 
     Of course, in particular for large lists, it is also possible to subclass
     [GtkSorter] and provide one's own sorter. *)
+
+type t = [ `sorter | `object_ ] Gobject.obj
 
 (* Methods *)
 

@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GestureDrag: GestureDrag *)
 
-type t =
-  [ `gesture_drag | `gesture_single | `gesture | `event_controller | `object_ ]
-  Gobject.obj
 (** Recognizes drag gestures.
 
     The drag operation itself can be tracked throughout the
@@ -11,6 +8,10 @@ type t =
     [Gtk.GestureDrag::drag-end] signals, and the relevant coordinates can be
     extracted through [Gtk.GestureDrag.get_offset] and
     [Gtk.GestureDrag.get_start_point]. *)
+
+type t =
+  [ `gesture_drag | `gesture_single | `gesture | `event_controller | `object_ ]
+  Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_gesture_drag_new"
 (** Create a new GestureDrag *)

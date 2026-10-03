@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AttrList: AttrList *)
 
-type t = [ `attr_list ] Gobject.obj
 (** A [PangoAttrList] represents a list of attributes that apply to a section of
     text.
 
@@ -14,6 +13,8 @@ type t = [ `attr_list ] Gobject.obj
     suitable for storing attributes for large amounts of text. In general, you
     should not use a single [PangoAttrList] for more than one paragraph of text.
 *)
+
+type t = [ `attr_list ] Gobject.obj
 
 external new_ : unit -> t = "ml_pango_attr_list_new"
 (** Create a new AttrList *)

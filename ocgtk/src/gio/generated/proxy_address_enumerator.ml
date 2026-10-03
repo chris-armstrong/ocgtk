@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ProxyAddressEnumerator: ProxyAddressEnumerator *)
 
-type t =
-  [ `proxy_address_enumerator | `socket_address_enumerator | `object_ ]
-  Gobject.obj
 (** [GProxyAddressEnumerator] is a wrapper around [Gio.SocketAddressEnumerator]
     which takes the [Gio.SocketAddress] instances returned by the
     [Gio.SocketAddressEnumerator] and wraps them in [Gio.ProxyAddress]
@@ -13,6 +10,10 @@ type t =
     [Gio.SocketConnectable.enumerate]) as appropriate when a proxy is
     configured; there should be no need to manually wrap a
     [Gio.SocketAddressEnumerator] instance with one. *)
+
+type t =
+  [ `proxy_address_enumerator | `socket_address_enumerator | `object_ ]
+  Gobject.obj
 
 (* Methods *)
 (* Properties *)

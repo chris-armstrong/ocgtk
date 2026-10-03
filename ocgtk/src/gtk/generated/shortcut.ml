@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Shortcut: Shortcut *)
 
-type t = [ `shortcut | `object_ ] Gobject.obj
 (** Describes a keyboard shortcut.
 
     It contains a description of how to trigger the shortcut via a
@@ -16,6 +15,8 @@ type t = [ `shortcut | `object_ ] Gobject.obj
     [GtkShortcut] does provide functionality to make it easy for users to work
     with shortcuts, either by providing informational strings for display
     purposes or by allowing shortcuts to be configured. *)
+
+type t = [ `shortcut | `object_ ] Gobject.obj
 
 external new_ : Shortcut_trigger.t option -> Shortcut_action.t option -> t
   = "ml_gtk_shortcut_new"

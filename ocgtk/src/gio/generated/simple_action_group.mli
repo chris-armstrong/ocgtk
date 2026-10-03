@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SimpleActionGroup: SimpleActionGroup *)
 
-type t = [ `simple_action_group | `object_ ] Gobject.obj
 (** [GSimpleActionGroup] is a hash table filled with [Gio.Action] objects,
     implementing the [Gio.ActionGroup] and [Gio.ActionMap] interfaces. *)
+
+type t = [ `simple_action_group | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_g_simple_action_group_new"
 (** Create a new SimpleActionGroup *)

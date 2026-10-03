@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* InsetShadowNode: InsetShadowNode *)
 
-type t = [ `inset_shadow_node | `render_node ] Gobject.obj
 (** A render node for an inset shadow. *)
+
+type t = [ `inset_shadow_node | `render_node ] Gobject.obj
 
 external new_ :
   Rounded_rect.t ->

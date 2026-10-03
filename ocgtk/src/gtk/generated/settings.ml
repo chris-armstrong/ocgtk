@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Settings: Settings *)
 
-type t = [ `settings | `object_ ] Gobject.obj
 (** Provides a mechanism to share global settings between applications.
 
     On the X window system, this sharing is realized by an XSettings manager
@@ -28,6 +27,8 @@ type t = [ `settings | `object_ ] Gobject.obj
     There is one [GtkSettings] instance per display. It can be obtained with
     [Gtk.Settings.get_for_display], but in many cases, it is more convenient to
     use [Gtk.Widget.get_settings]. *)
+
+type t = [ `settings | `object_ ] Gobject.obj
 
 (* Methods *)
 

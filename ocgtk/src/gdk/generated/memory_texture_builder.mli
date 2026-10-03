@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MemoryTextureBuilder: MemoryTextureBuilder *)
 
-type t = [ `memory_texture_builder | `object_ ] Gobject.obj
 (** Constructs [Gdk.Texture] objects from system memory provided via
     [GLib.Bytes].
 
@@ -15,6 +14,8 @@ type t = [ `memory_texture_builder | `object_ ] Gobject.obj
     [GdkMemoryTextureBuilder] can be used for quick one-shot construction of
     textures as well as kept around and reused to construct multiple textures.
 *)
+
+type t = [ `memory_texture_builder | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gdk_memory_texture_builder_new"
 (** Create a new MemoryTextureBuilder *)

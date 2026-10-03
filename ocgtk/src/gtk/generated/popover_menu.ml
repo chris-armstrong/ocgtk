@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PopoverMenu: PopoverMenu *)
 
-type t =
-  [ `popover_menu | `popover | `widget | `initially_unowned | `object_ ]
-  Gobject.obj
 (** A subclass of [GtkPopover] that implements menu behavior.
 
     An example GtkPopoverMenu
@@ -121,6 +118,10 @@ type t =
     the [Gtk.AccessibleRole.menu_item], [Gtk.AccessibleRole.checkbox] or
     [Gtk.AccessibleRole.menu_item_radio] roles, depending on the action they are
     connected to. *)
+
+type t =
+  [ `popover_menu | `popover | `widget | `initially_unowned | `object_ ]
+  Gobject.obj
 
 external new_from_model : Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> t
   = "ml_gtk_popover_menu_new_from_model"

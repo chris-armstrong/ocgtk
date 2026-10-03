@@ -1,13 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GestureLongPress: GestureLongPress *)
 
-type t =
-  [ `gesture_long_press
-  | `gesture_single
-  | `gesture
-  | `event_controller
-  | `object_ ]
-  Gobject.obj
 (** Recognizes long press gestures.
 
     This gesture is also known as “Press and Hold”.
@@ -22,6 +15,14 @@ type t =
     How long the timeout is before the ::pressed signal gets emitted is
     determined by the [Gtk.Settings:gtk-long-press-time] setting. It can be
     modified by the [Gtk.GestureLongPress:delay-factor] property. *)
+
+type t =
+  [ `gesture_long_press
+  | `gesture_single
+  | `gesture
+  | `event_controller
+  | `object_ ]
+  Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_gesture_long_press_new"
 (** Create a new GestureLongPress *)

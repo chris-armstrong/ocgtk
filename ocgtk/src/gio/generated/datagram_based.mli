@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DatagramBased: DatagramBased *)
 
-type t = [ `datagram_based ] Gobject.obj
 (** Interface for socket-like objects with datagram semantics.
 
     A [GDatagramBased] is a networking interface for representing datagram-based
@@ -52,6 +51,8 @@ type t = [ `datagram_based ] Gobject.obj
     Like most other APIs in GLib, [GDatagramBased] is not inherently thread
     safe. To use a [GDatagramBased] concurrently from multiple threads, you must
     implement your own locking. *)
+
+type t = [ `datagram_based ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_datagram_based_from_gobject"

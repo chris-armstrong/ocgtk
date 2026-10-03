@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileIOStream: FileIOStream *)
 
-type t = [ `file_io_stream | `io_stream | `object_ ] Gobject.obj
 (** [GFileIOStream] provides I/O streams that both read and write to the same
     file handle.
 
@@ -20,6 +19,8 @@ type t = [ `file_io_stream | `io_stream | `object_ ] Gobject.obj
     The default implementation of all the [GFileIOStream] operations and the
     implementation of [Gio.Seekable] just call into the same operations on the
     output stream. *)
+
+type t = [ `file_io_stream | `io_stream | `object_ ] Gobject.obj
 
 (* Methods *)
 

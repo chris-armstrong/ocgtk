@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SimpleAsyncResult: SimpleAsyncResult *)
 
-type t = [ `simple_async_result | `object_ ] Gobject.obj
 (** As of GLib 2.46, [GSimpleAsyncResult] is deprecated in favor of [Gio.Task],
     which provides a simpler API.
 
@@ -163,6 +162,8 @@ type t = [ `simple_async_result | `object_ ] Gobject.obj
       return g_object_ref (cake);
     }
     ]} *)
+
+type t = [ `simple_async_result | `object_ ] Gobject.obj
 
 (* Methods *)
 

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AttrIterator: AttrIterator *)
 
-type t = [ `attr_iterator ] Gobject.obj
 (** A [PangoAttrIterator] is used to iterate through a [PangoAttrList].
 
     A new iterator is created with [Pango.AttrList.get_iterator]. Once the
@@ -9,6 +8,8 @@ type t = [ `attr_iterator ] Gobject.obj
     text using [Pango.AttrIterator.next]. At each style change, the range of the
     current style segment and the attributes currently in effect can be queried.
 *)
+
+type t = [ `attr_iterator ] Gobject.obj
 
 (* Methods *)
 

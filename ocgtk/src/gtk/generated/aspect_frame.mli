@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AspectFrame: AspectFrame *)
 
-type t = [ `aspect_frame | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Preserves the aspect ratio of its child.
 
     The frame can respect the aspect ratio of the child widget, or use its own
@@ -17,6 +16,8 @@ type t = [ `aspect_frame | `widget | `initially_unowned | `object_ ] Gobject.obj
 
     Starting from GTK 4.12, [GtkAspectFrame] uses the
     [Gtk.AccessibleRole.generic] role. *)
+
+type t = [ `aspect_frame | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : float -> float -> float -> bool -> t = "ml_gtk_aspect_frame_new"
 (** Create a new AspectFrame *)

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Cursor: Cursor *)
 
-type t = [ `cursor | `object_ ] Gobject.obj
 (** Used to create and destroy cursors.
 
     Cursors are immutable objects, so once you created them, there is no way to
@@ -34,6 +33,8 @@ type t = [ `cursor | `object_ ] Gobject.obj
     fallback cursors again, so it is possible to provide a chain of
     progressively easier to support cursors. If none of the provided cursors can
     be supported, the default cursor will be the ultimate fallback. *)
+
+type t = [ `cursor | `object_ ] Gobject.obj
 
 external new_from_name : string -> t option -> t = "ml_gdk_cursor_new_from_name"
 (** Create a new Cursor *)

@@ -1,13 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SingleSelection: SingleSelection *)
 
-type t = [ `single_selection | `object_ ] Gobject.obj
 (** A selection model that allows selecting a single item.
 
     Note that the selection is {i persistent} -- if the selected item is removed
     and re-added in the same [Gio.ListModel::items-changed] emission, it stays
     selected. In particular, this means that changing the sort order of an
     underlying sort model will preserve the selection. *)
+
+type t = [ `single_selection | `object_ ] Gobject.obj
 
 external new_ : Ocgtk_gio.Gio.Wrappers.List_model.t option -> t
   = "ml_gtk_single_selection_new"

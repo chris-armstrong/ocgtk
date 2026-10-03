@@ -1,12 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Proxy: Proxy *)
 
-type t = [ `proxy ] Gobject.obj
 (** A [GProxy] handles connecting to a remote host via a given type of proxy
     server. It is implemented by the [gio-proxy] extension point. The extensions
     are named after their proxy protocol name. As an example, a SOCKS5 proxy
     implementation can be retrieved with the name [socks5] using the function
     [Gio.IOExtensionPoint.get_extension_by_name]. *)
+
+type t = [ `proxy ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_proxy_from_gobject"
 

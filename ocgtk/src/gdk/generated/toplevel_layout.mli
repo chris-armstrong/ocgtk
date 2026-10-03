@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ToplevelLayout: ToplevelLayout *)
 
-type t = [ `toplevel_layout ] Gobject.obj
 (** Contains information that is necessary to present a sovereign window on
     screen.
 
@@ -10,6 +9,8 @@ type t = [ `toplevel_layout ] Gobject.obj
 
     Toplevel surfaces are sovereign windows that can be presented to the user in
     various states (maximized, on all workspaces, etc). *)
+
+type t = [ `toplevel_layout ] Gobject.obj
 
 external new_ : unit -> t = "ml_gdk_toplevel_layout_new"
 (** Create a new ToplevelLayout *)

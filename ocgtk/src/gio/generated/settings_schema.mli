@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SettingsSchema: SettingsSchema *)
 
-type t = [ `settings_schema ] Gobject.obj
 (** The [Gio.SettingsSchemaSource] and [GSettingsSchema] APIs provide a
     mechanism for advanced control over the loading of schemas and a mechanism
     for introspecting their content.
@@ -90,6 +89,8 @@ type t = [ `settings_schema ] Gobject.obj
     (ie: [.gschema.xml] files) instead of a [gschemas.compiled] file. In that
     case, the plugin loading system must compile the schemas for itself before
     attempting to create the settings source. *)
+
+type t = [ `settings_schema ] Gobject.obj
 
 (* Methods *)
 

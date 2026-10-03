@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GridLayoutChild: GridLayoutChild *)
 
-type t = [ `grid_layout_child | `layout_child | `object_ ] Gobject.obj
 (** [GtkLayoutChild] subclass for children in a [GtkGridLayout]. *)
+
+type t = [ `grid_layout_child | `layout_child | `object_ ] Gobject.obj
 
 (* Methods *)
 

@@ -1,12 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ScrollInfo: ScrollInfo *)
 
-type t = [ `scroll_info ] Gobject.obj
 (** Provides detailed information on how a scroll operation should be performed.
 
     Scrolling functions usually allow passing a [NULL] scroll info which will
     cause the default values to be used and just scroll the element into view.
 *)
+
+type t = [ `scroll_info ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_scroll_info_new"
 (** Create a new ScrollInfo *)

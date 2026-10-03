@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CenterLayout: CenterLayout *)
 
-type t = [ `center_layout | `layout_manager | `object_ ] Gobject.obj
 (** Manages up to three children.
 
     The start widget is allocated at the start of the layout (left in
@@ -9,6 +8,8 @@ type t = [ `center_layout | `layout_manager | `object_ ] Gobject.obj
     at the end.
 
     The center widget is centered regarding the full width of the layout's. *)
+
+type t = [ `center_layout | `layout_manager | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_center_layout_new"
 (** Create a new CenterLayout *)

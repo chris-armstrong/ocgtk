@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Switch: Switch *)
 
-type t = [ `switch | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Shows a “light switch” that has two states: on or off.
 
     An example GtkSwitch
@@ -39,6 +38,8 @@ type t = [ `switch | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkSwitch] uses the [Gtk.AccessibleRole.switch] role. *)
+
+type t = [ `switch | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_switch_new"
 (** Create a new Switch *)

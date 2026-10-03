@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Point3D: Point3D *)
 
-type t = [ `point3_d ] Gobject.obj
 (** A point with three components: X, Y, and Z. *)
+
+type t = [ `point3_d ] Gobject.obj
 
 external alloc : unit -> t = "ml_graphene_point3d_alloc"
 (** Create a new Point3D *)

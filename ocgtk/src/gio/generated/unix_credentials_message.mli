@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* UnixCredentialsMessage: UnixCredentialsMessage *)
 
-type t =
-  [ `unix_credentials_message | `socket_control_message | `object_ ] Gobject.obj
 (** This [Gio.SocketControlMessage] contains a [Gio.Credentials] instance. It
     may be sent using [Gio.Socket.send_message] and received using
     [Gio.Socket.receive_message] over UNIX sockets (ie: sockets in the
@@ -21,6 +19,9 @@ type t =
     UNIX-specific GIO interfaces, thus you had to use the [gio-unix-2.0.pc]
     pkg-config file when using it. This is no longer necessary since GLib 2.72.
 *)
+
+type t =
+  [ `unix_credentials_message | `socket_control_message | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_g_unix_credentials_message_new"
 (** Create a new UnixCredentialsMessage *)

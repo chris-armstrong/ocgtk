@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Stack: Stack *)
 
-type t = [ `stack | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Shows one of its children at a time.
 
     An example GtkStack
@@ -48,6 +47,8 @@ type t = [ `stack | `widget | `initially_unowned | `object_ ] Gobject.obj
 
     [GtkStack] uses the [Gtk.AccessibleRole.tab_panel] role for the stack pages,
     which are the accessible parent objects of the child widgets. *)
+
+type t = [ `stack | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_stack_new"
 (** Create a new Stack *)

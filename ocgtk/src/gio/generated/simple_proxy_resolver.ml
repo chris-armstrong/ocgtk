@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SimpleProxyResolver: SimpleProxyResolver *)
 
-type t = [ `simple_proxy_resolver | `object_ ] Gobject.obj
 (** [GSimpleProxyResolver] is a simple [Gio.ProxyResolver] implementation that
     handles a single default proxy, multiple URI-scheme-specific proxies, and a
     list of hosts that proxies should not be used for.
@@ -10,6 +9,8 @@ type t = [ `simple_proxy_resolver | `object_ ] Gobject.obj
     used as the base class for another proxy resolver implementation, or it can
     be created and used manually, such as with
     [Gio.SocketClient.set_proxy_resolver]. *)
+
+type t = [ `simple_proxy_resolver | `object_ ] Gobject.obj
 
 (* Methods *)
 

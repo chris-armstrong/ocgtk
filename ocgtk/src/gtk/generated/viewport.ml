@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Viewport: Viewport *)
 
-type t = [ `viewport | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Implements scrollability for widgets that don't support scrolling on their
     own.
 
@@ -21,6 +20,8 @@ type t = [ `viewport | `widget | `initially_unowned | `object_ ] Gobject.obj
 
     Starting from GTK 4.12, [GtkViewport] uses the [Gtk.AccessibleRole.generic]
     role. *)
+
+type t = [ `viewport | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : Adjustment.t option -> Adjustment.t option -> t
   = "ml_gtk_viewport_new"

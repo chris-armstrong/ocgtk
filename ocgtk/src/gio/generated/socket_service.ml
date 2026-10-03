@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SocketService: SocketService *)
 
-type t = [ `socket_service | `socket_listener | `object_ ] Gobject.obj
 (** A [GSocketService] is an object that represents a service that is provided
     to the network or over local sockets. When a new connection is made to the
     service the [Gio.SocketService::incoming] signal is emitted.
@@ -26,6 +25,8 @@ type t = [ `socket_service | `socket_listener | `object_ ] Gobject.obj
     is not threadsafe in general. However, the calls to start and stop the
     service are thread-safe so these can be used from threads that handle
     incoming clients. *)
+
+type t = [ `socket_service | `socket_listener | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_g_socket_service_new"
 (** Create a new SocketService *)

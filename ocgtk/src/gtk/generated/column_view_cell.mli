@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColumnViewCell: ColumnViewCell *)
 
-type t = [ `column_view_cell | `list_item | `object_ ] Gobject.obj
 (** Represents items in a cell in [Gtk.ColumnView].
 
     The [GtkColumnViewCell]s are managed by the [Gtk.ColumnView] widget (with
@@ -17,6 +16,8 @@ type t = [ `column_view_cell | `list_item | `object_ ] Gobject.obj
 
     + The bound stage where the listitem references an item from the list. The
       [Gtk.ColumnViewCell:item] property is not [NULL]. *)
+
+type t = [ `column_view_cell | `list_item | `object_ ] Gobject.obj
 
 (* Methods *)
 

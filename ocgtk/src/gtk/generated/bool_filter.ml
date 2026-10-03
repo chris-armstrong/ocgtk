@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BoolFilter: BoolFilter *)
 
-type t = [ `bool_filter | `filter | `object_ ] Gobject.obj
 (** Evaluates a boolean expression to determine whether to include items. *)
+
+type t = [ `bool_filter | `filter | `object_ ] Gobject.obj
 
 external new_ : Expression.t option -> t = "ml_gtk_bool_filter_new"
 (** Create a new BoolFilter *)

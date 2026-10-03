@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TextureDownloader: TextureDownloader *)
 
-type t = [ `texture_downloader ] Gobject.obj
 (** Used to download the contents of a [Gdk.Texture].
 
     It is intended to be created as a short-term object for a single download,
@@ -11,6 +10,8 @@ type t = [ `texture_downloader ] Gobject.obj
     [GdkTextureDownloader] can be used to convert data between different
     formats. Create a [GdkTexture] for the existing format and then download it
     in a different format. *)
+
+type t = [ `texture_downloader ] Gobject.obj
 
 external new_ : Texture.t -> t = "ml_gdk_texture_downloader_new"
 (** Create a new TextureDownloader *)

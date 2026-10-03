@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AppChooserWidget: AppChooserWidget *)
 
-type t =
-  [ `app_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** [GtkAppChooserWidget] is a widget for selecting applications.
 
     It is the main building block for [Gtk.AppChooserDialog]. Most applications
@@ -23,6 +21,9 @@ type t =
     {b CSS nodes}
 
     [GtkAppChooserWidget] has a single CSS node with name appchooser. *)
+
+type t =
+  [ `app_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : string -> t = "ml_gtk_app_chooser_widget_new"
 (** Create a new AppChooserWidget *)

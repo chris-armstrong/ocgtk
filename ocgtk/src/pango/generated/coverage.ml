@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Coverage: Coverage *)
 
-type t = [ `coverage | `object_ ] Gobject.obj
 (** A [PangoCoverage] structure is a map from Unicode characters to
     [Pango.CoverageLevel] values.
 
@@ -9,6 +8,8 @@ type t = [ `coverage | `object_ ] Gobject.obj
     represent a particular character, and also how well it can represent that
     character. The [PangoCoverage] is a data structure that is used to represent
     that information. It is an opaque structure with no public fields. *)
+
+type t = [ `coverage | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_pango_coverage_new"
 (** Create a new Coverage *)

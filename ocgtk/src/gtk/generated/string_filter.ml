@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* StringFilter: StringFilter *)
 
-type t = [ `string_filter | `filter | `object_ ] Gobject.obj
 (** Determines whether to include items by comparing strings to a fixed search
     term.
 
@@ -15,6 +14,8 @@ type t = [ `string_filter | `filter | `object_ ] Gobject.obj
 
     It is also possible to make case-insensitive comparisons, with
     [Gtk.StringFilter.set_ignore_case]. *)
+
+type t = [ `string_filter | `filter | `object_ ] Gobject.obj
 
 external new_ : Expression.t option -> t = "ml_gtk_string_filter_new"
 (** Create a new StringFilter *)

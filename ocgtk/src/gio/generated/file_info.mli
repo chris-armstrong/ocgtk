@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileInfo: FileInfo *)
 
-type t = [ `file_info | `object_ ] Gobject.obj
 (** Stores information about a file system object referenced by a [Gio.File].
 
     Functionality for manipulating basic metadata for files. [GFileInfo]
@@ -38,6 +37,8 @@ type t = [ `file_info | `object_ ] Gobject.obj
 
     [Gio.FileAttributeMatcher] allows for searching through a [GFileInfo] for
     attributes. *)
+
+type t = [ `file_info | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_g_file_info_new"
 (** Create a new FileInfo *)

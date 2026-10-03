@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FrameTimings: FrameTimings *)
 
-type t = [ `frame_timings ] Gobject.obj
 (** Holds timing information for a single frame of the application’s displays.
 
     To retrieve [GdkFrameTimings] objects, use [Gdk.FrameClock.get_timings] or
@@ -9,6 +8,8 @@ type t = [ `frame_timings ] Gobject.obj
     is useful for precise synchronization of video with the event or audio
     streams, and for measuring quality metrics for the application’s display,
     such as latency and jitter. *)
+
+type t = [ `frame_timings ] Gobject.obj
 
 (* Methods *)
 

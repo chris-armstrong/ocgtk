@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Menu: Menu *)
 
-type t = [ `menu | `menu_model | `object_ ] Gobject.obj
 (** [GMenu] is a simple implementation of [Gio.MenuModel]. You populate a
     [GMenu] by adding [Gio.MenuItem] instances to it.
 
@@ -9,6 +8,8 @@ type t = [ `menu | `menu_model | `object_ ] Gobject.obj
     (avoiding [Gio.MenuItem]) for the common cases. To add a regular item, use
     [Gio.Menu.insert]. To add a section, use [Gio.Menu.insert_section]. To add a
     submenu, use [Gio.Menu.insert_submenu]. *)
+
+type t = [ `menu | `menu_model | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_g_menu_new"
 (** Create a new Menu *)

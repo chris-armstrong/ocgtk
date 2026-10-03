@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GraphicsOffload: GraphicsOffload *)
 
-type t =
-  [ `graphics_offload | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Bypasses gsk rendering by passing the content of its child directly to the
     compositor.
 
@@ -42,6 +40,9 @@ type t =
     GDK_DEBUG=offload GDK_DEBUG=dmabuf
 
     The GTK inspector provides a visual debugging tool for graphics offload. *)
+
+type t =
+  [ `graphics_offload | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget

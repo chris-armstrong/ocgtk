@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* IOExtension: IOExtension *)
 
-type t = [ `io_extension ] Gobject.obj
 (** [GIOExtension] is an opaque data structure and can only be accessed using
     the following functions. *)
+
+type t = [ `io_extension ] Gobject.obj
 
 (* Methods *)
 

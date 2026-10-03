@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Assistant: Assistant *)
 
-type t =
-  [ `assistant | `window | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** [GtkAssistant] is used to represent a complex as a series of steps.
 
     An example GtkAssistant
@@ -38,6 +36,9 @@ type t =
 
     [GtkAssistant] has a single CSS node with the name window and style class
     .assistant. *)
+
+type t =
+  [ `assistant | `window | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_assistant_new"
 (** Create a new Assistant *)

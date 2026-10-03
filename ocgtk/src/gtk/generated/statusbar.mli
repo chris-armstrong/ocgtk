@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Statusbar: Statusbar *)
 
-type t = [ `statusbar | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** A [GtkStatusbar] widget is usually placed along the bottom of an
     application's main [Gtk.Window].
 
@@ -38,6 +37,8 @@ type t = [ `statusbar | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b CSS node}
 
     [GtkStatusbar] has a single CSS node with name [statusbar]. *)
+
+type t = [ `statusbar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_statusbar_new"
 (** Create a new Statusbar *)

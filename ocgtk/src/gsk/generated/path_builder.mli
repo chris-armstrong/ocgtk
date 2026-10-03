@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PathBuilder: PathBuilder *)
 
-type t = [ `path_builder ] Gobject.obj
 (** Constructs [GskPath] objects.
 
     A path is constructed like this:
@@ -39,6 +38,8 @@ type t = [ `path_builder ] Gobject.obj
 
     Note that [GskPathBuilder] will reduce the degree of added Bézier curves as
     much as possible, to simplify rendering. *)
+
+type t = [ `path_builder ] Gobject.obj
 
 external new_ : unit -> t = "ml_gsk_path_builder_new"
 (** Create a new PathBuilder *)

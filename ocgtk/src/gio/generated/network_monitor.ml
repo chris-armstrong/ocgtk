@@ -1,12 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* NetworkMonitor: NetworkMonitor *)
 
-type t = [ `network_monitor ] Gobject.obj
 (** [GNetworkMonitor] provides an easy-to-use cross-platform API for monitoring
     network connectivity. On Linux, the available implementations are based on
     the kernel's netlink interface and on NetworkManager.
 
     There is also an implementation for use inside Flatpak sandboxes. *)
+
+type t = [ `network_monitor ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_network_monitor_from_gobject"

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* NativeDialog: NativeDialog *)
 
-type t = [ `native_dialog | `object_ ] Gobject.obj
 (** Base class for platform dialogs that don't use [GtkDialog].
 
     Native dialogs are used in order to integrate better with a platform, by
@@ -17,6 +16,8 @@ type t = [ `native_dialog | `object_ ] Gobject.obj
     Note that unlike [GtkDialog], [GtkNativeDialog] objects are not toplevel
     widgets, and GTK does not keep them alive. It is your responsibility to keep
     a reference until you are done with the object. *)
+
+type t = [ `native_dialog | `object_ ] Gobject.obj
 
 (* Methods *)
 

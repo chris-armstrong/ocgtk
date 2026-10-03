@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreePath: TreePath *)
 
-type t = [ `tree_path ] Gobject.obj
 (** An opaque structure representing a path to a row in a model. *)
+
+type t = [ `tree_path ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_tree_path_new"
 (** Create a new TreePath *)

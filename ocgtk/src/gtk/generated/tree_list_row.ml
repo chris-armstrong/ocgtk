@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreeListRow: TreeListRow *)
 
-type t = [ `tree_list_row | `object_ ] Gobject.obj
 (** The type of item used by [GtkTreeListModel].
 
     It allows navigating the model as a tree and modify the state of rows.
@@ -13,6 +12,8 @@ type t = [ `tree_list_row | `object_ ] Gobject.obj
     objects, such as the [Gtk.TreeExpander] widget that allows displaying an
     icon to expand or collapse a row or [Gtk.TreeListRowSorter] that makes it
     possible to sort trees properly. *)
+
+type t = [ `tree_list_row | `object_ ] Gobject.obj
 
 (* Methods *)
 

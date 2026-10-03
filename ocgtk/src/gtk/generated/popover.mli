@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Popover: Popover *)
 
-type t = [ `popover | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Presents a bubble-like popup.
 
     An example GtkPopover
@@ -93,6 +92,8 @@ type t = [ `popover | `widget | `initially_unowned | `object_ ] Gobject.obj
     the same. The arrow also does not support any border shape other than solid,
     no border-radius, only one border width (border-bottom-width is used) and no
     box-shadow. *)
+
+type t = [ `popover | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_popover_new"
 (** Create a new Popover *)

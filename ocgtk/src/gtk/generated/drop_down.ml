@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DropDown: DropDown *)
 
-type t = [ `drop_down | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Allows the user to choose an item from a list of options.
 
     An example GtkDropDown
@@ -55,6 +54,8 @@ type t = [ `drop_down | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkDropDown] uses the [Gtk.AccessibleRole.combo_box] role. *)
+
+type t = [ `drop_down | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ :
   Ocgtk_gio.Gio.Wrappers.List_model.t option -> Expression.t option -> t

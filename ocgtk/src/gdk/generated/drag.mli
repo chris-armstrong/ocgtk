@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Drag: Drag *)
 
-type t = [ `drag | `object_ ] Gobject.obj
 (** Represents the source of an ongoing DND operation.
 
     A [GdkDrag] is created when a drag is started, and stays alive for duration
@@ -12,6 +11,8 @@ type t = [ `drag | `object_ ] Gobject.obj
     GTK provides a higher level abstraction based on top of these functions, and
     so they are not normally needed in GTK applications. See the “Drag and Drop”
     section of the GTK documentation for more information. *)
+
+type t = [ `drag | `object_ ] Gobject.obj
 
 (* Methods *)
 

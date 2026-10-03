@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* StaticResource: StaticResource *)
 
-type t = [ `static_resource ] Gobject.obj
 (** [GStaticResource] is an opaque data structure and can only be accessed using
     the following functions. *)
+
+type t = [ `static_resource ] Gobject.obj
 
 (* Methods *)
 

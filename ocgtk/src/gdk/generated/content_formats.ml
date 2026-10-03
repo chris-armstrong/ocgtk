@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ContentFormats: ContentFormats *)
 
-type t = [ `content_formats ] Gobject.obj
 (** Used to advertise and negotiate the format of content.
 
     You will encounter [GdkContentFormats] when interacting with objects
@@ -33,6 +32,8 @@ type t = [ `content_formats ] Gobject.obj
     change the types it represents. Instead, new [GdkContentFormats] have to be
     created. The [Gdk.ContentFormatsBuilder] structure is meant to help in this
     endeavor. *)
+
+type t = [ `content_formats ] Gobject.obj
 
 external new_ : string array option -> int -> t = "ml_gdk_content_formats_new"
 (** Create a new ContentFormats *)

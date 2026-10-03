@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Color: Color *)
 
-type t = [ `color ] Gobject.obj
 (** The [PangoColor] structure is used to represent a color in an uncalibrated
     RGB color-space. *)
+
+type t = [ `color ] Gobject.obj
 
 (* Methods *)
 

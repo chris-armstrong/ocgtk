@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DebugNode: DebugNode *)
 
-type t = [ `debug_node | `render_node ] Gobject.obj
 (** A render node that emits a debugging message when drawing its child node. *)
+
+type t = [ `debug_node | `render_node ] Gobject.obj
 
 external new_ : Render_node.t -> string -> t = "ml_gsk_debug_node_new"
 (** Create a new DebugNode *)

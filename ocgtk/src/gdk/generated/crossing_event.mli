@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CrossingEvent: CrossingEvent *)
 
-type t = [ `crossing_event | `event ] Gobject.obj
 (** An event caused by a pointing device moving between surfaces. *)
+
+type t = [ `crossing_event | `event ] Gobject.obj
 
 (* Methods *)
 

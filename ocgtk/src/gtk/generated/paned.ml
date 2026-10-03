@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Paned: Paned *)
 
-type t = [ `paned | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Arranges its children in two panes, horizontally or vertically.
 
     An example GtkPaned
@@ -79,6 +78,8 @@ type t = [ `paned | `widget | `initially_unowned | `object_ ] Gobject.obj
     gtk_paned_set_shrink_end_child (GTK_PANED hpaned, FALSE);
     gtk_widget_set_size_request (frame2, 50, -1)
     ]} *)
+
+type t = [ `paned | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : Gtk_enums.orientation -> t = "ml_gtk_paned_new"
 (** Create a new Paned *)

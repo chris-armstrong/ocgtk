@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ActionBar: ActionBar *)
 
-type t = [ `action_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Presents contextual actions.
 
     An example GtkActionBar
@@ -40,6 +39,8 @@ type t = [ `action_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
     respectively, as well as a center node that represents the center child.
 
     Each of the boxes contains children packed for that side. *)
+
+type t = [ `action_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_action_bar_new"
 (** Create a new ActionBar *)

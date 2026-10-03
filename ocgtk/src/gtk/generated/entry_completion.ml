@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* EntryCompletion: EntryCompletion *)
 
-type t = [ `entry_completion | `object_ ] Gobject.obj
 (** [GtkEntryCompletion] is an auxiliary object to provide completion
     functionality for [GtkEntry].
 
@@ -36,6 +35,8 @@ type t = [ `entry_completion | `object_ ] Gobject.obj
     reason, you need the original model, use [Gtk.TreeModelFilter.get_model].
     Don’t forget to use [Gtk.TreeModelFilter.convert_iter_to_child_iter] to
     obtain a matching iter. *)
+
+type t = [ `entry_completion | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_entry_completion_new"
 (** Create a new EntryCompletion *)

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Settings: Settings *)
 
-type t = [ `settings | `object_ ] Gobject.obj
 (** The [GSettings] class provides a convenient API for storing and retrieving
     application settings.
 
@@ -390,6 +389,8 @@ type t = [ `settings | `object_ ] Gobject.obj
     Translations {b must not} be included in the [.gschema.xml] file by the
     build system, for example by using a rule to generate the XML file from a
     template. *)
+
+type t = [ `settings | `object_ ] Gobject.obj
 
 external new_ : string -> t = "ml_g_settings_new"
 (** Create a new Settings *)

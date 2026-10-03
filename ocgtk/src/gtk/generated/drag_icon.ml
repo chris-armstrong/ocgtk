@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DragIcon: DragIcon *)
 
-type t = [ `drag_icon | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** A [GtkRoot] implementation for drag icons.
 
     A drag icon moves with the pointer during a Drag-and-Drop operation and is
@@ -13,6 +12,8 @@ type t = [ `drag_icon | `widget | `initially_unowned | `object_ ] Gobject.obj
     widget should be used for the drag icon.
 
     Keep in mind that drag icons do not allow user input. *)
+
+type t = [ `drag_icon | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external get_for_drag : Ocgtk_gdk.Gdk.Wrappers.Drag.t -> t
   = "ml_gtk_drag_icon_get_for_drag"

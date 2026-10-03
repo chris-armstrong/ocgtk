@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Box: Box *)
 
-type t = [ `box | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Arranges child widgets into a single row or column.
 
     An example GtkBox
@@ -37,6 +36,8 @@ type t = [ `box | `widget | `initially_unowned | `object_ ] Gobject.obj
 
     Starting from GTK 4.12, [GtkBox] uses the [Gtk.AccessibleRole.generic] role.
 *)
+
+type t = [ `box | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : Gtk_enums.orientation -> int -> t = "ml_gtk_box_new"
 (** Create a new Box *)

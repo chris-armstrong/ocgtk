@@ -1,12 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* InetSocketAddress: InetSocketAddress *)
 
-type t = [ `inet_socket_address | `socket_address | `object_ ] Gobject.obj
 (** An IPv4 or IPv6 socket address. That is, the combination of a
     [Gio.InetAddress] and a port number.
 
     In UNIX terms, [GInetSocketAddress] corresponds to a [struct sockaddr_in6]
     or [struct sockaddr_in]). *)
+
+type t = [ `inet_socket_address | `socket_address | `object_ ] Gobject.obj
 
 external new_ : Inet_address.t -> UInt16.t -> t = "ml_g_inet_socket_address_new"
 (** Create a new InetSocketAddress *)

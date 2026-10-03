@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PixbufSimpleAnim: PixbufSimpleAnim *)
 
-type t = [ `pixbuf_simple_anim | `pixbuf_animation | `object_ ] Gobject.obj
 (** An opaque struct representing a simple animation. *)
+
+type t = [ `pixbuf_simple_anim | `pixbuf_animation | `object_ ] Gobject.obj
 
 external new_ : int -> int -> float -> t = "ml_gdk_pixbuf_simple_anim_new"
 (** Create a new PixbufSimpleAnim *)

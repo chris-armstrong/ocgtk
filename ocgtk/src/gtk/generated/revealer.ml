@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Revealer: Revealer *)
 
-type t = [ `revealer | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Animates the transition of its child from invisible to visible.
 
     The style of transition can be controlled with
@@ -22,6 +21,8 @@ type t = [ `revealer | `widget | `initially_unowned | `object_ ] Gobject.obj
 
     The child of [GtkRevealer], if set, is always available in the accessibility
     tree, regardless of the state of the revealer widget. *)
+
+type t = [ `revealer | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_revealer_new"
 (** Create a new Revealer *)

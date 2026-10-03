@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Transform: Transform *)
 
-type t = [ `transform ] Gobject.obj
 (** Describes a 3D transform.
 
     Unlike [graphene_matrix_t], [GskTransform] retains the steps in how a
@@ -11,6 +10,8 @@ type t = [ `transform ] Gobject.obj
     [GskTransform] objects are immutable and cannot be changed after creation.
     This means code can safely expose them as properties of objects without
     having to worry about others changing them. *)
+
+type t = [ `transform ] Gobject.obj
 
 external new_ : unit -> t = "ml_gsk_transform_new"
 (** Create a new Transform *)

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* IMContextSimple: IMContextSimple *)
 
-type t = [ `im_context_simple | `im_context | `object_ ] Gobject.obj
 (** Supports compose sequences, dead keys and numeric Unicode input.
 
     {b Compose sequences}
@@ -40,6 +39,8 @@ type t = [ `im_context_simple | `im_context | `object_ ] Gobject.obj
 
     yields U+00E! LATIN SMALL LETTER_A WITH ACUTE, i.e. á. Note that this
     depends on the keyboard layout including dead keys. *)
+
+type t = [ `im_context_simple | `im_context | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_im_context_simple_new"
 (** Create a new IMContextSimple *)

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Converter: Converter *)
 
-type t = [ `converter ] Gobject.obj
 (** [GConverter] is an interface for streaming conversions.
 
     [GConverter] is implemented by objects that convert binary data in various
@@ -9,6 +8,8 @@ type t = [ `converter ] Gobject.obj
 
     Some example conversions are: character set conversion, compression,
     decompression and regular expression replace. *)
+
+type t = [ `converter ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_converter_from_gobject"
 

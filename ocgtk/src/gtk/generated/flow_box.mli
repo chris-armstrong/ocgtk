@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FlowBox: FlowBox *)
 
-type t = [ `flow_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Puts child widgets in a reflowing grid.
 
     An example GtkFlowBox
@@ -57,6 +56,8 @@ type t = [ `flow_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 
     [GtkFlowBox] uses the [Gtk.AccessibleRole.grid] role, and [GtkFlowBoxChild]
     uses the [Gtk.AccessibleRole.grid_cell] role. *)
+
+type t = [ `flow_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_flow_box_new"
 (** Create a new FlowBox *)

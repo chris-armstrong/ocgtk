@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MenuAttributeIter: MenuAttributeIter *)
 
-type t = [ `menu_attribute_iter | `object_ ] Gobject.obj
 (** [GMenuAttributeIter] is an opaque structure type. You must access it using
     the functions below. *)
+
+type t = [ `menu_attribute_iter | `object_ ] Gobject.obj
 
 (* Methods *)
 

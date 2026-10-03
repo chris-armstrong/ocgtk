@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusAuthObserver: DBusAuthObserver *)
 
-type t = [ `d_bus_auth_observer | `object_ ] Gobject.obj
 (** [GDBusAuthObserver] provides a mechanism for participating in how a
     [Gio.DBusServer] (or a [Gio.DBusConnection]) authenticates remote peers.
 
@@ -63,6 +62,8 @@ type t = [ `d_bus_auth_observer | `object_ ] Gobject.obj
       return authorized;
     }
     ]} *)
+
+type t = [ `d_bus_auth_observer | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_g_dbus_auth_observer_new"
 (** Create a new DBusAuthObserver *)

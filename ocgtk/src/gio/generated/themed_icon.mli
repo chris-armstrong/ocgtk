@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ThemedIcon: ThemedIcon *)
 
-type t = [ `themed_icon | `object_ ] Gobject.obj
 (** [GThemedIcon] is an implementation of [Gio.Icon] that supports icon themes.
 
     [GThemedIcon] contains a list of all of the icons present in an icon theme,
@@ -9,6 +8,8 @@ type t = [ `themed_icon | `object_ ] Gobject.obj
     actual pixmaps for icons, just the icon names. Ideally something like
     [Gtk.IconTheme.choose_icon] should be used to resolve the list of names so
     that fallback icons work nicely with themes that inherit other themes. *)
+
+type t = [ `themed_icon | `object_ ] Gobject.obj
 
 external new_ : string -> t = "ml_g_themed_icon_new"
 (** Create a new ThemedIcon *)

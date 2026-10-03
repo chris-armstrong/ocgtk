@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Attribute: Attribute *)
 
-type t = [ `attribute ] Gobject.obj
 (** The [PangoAttribute] structure represents the common portions of all
     attributes.
 
@@ -10,6 +9,8 @@ type t = [ `attribute ] Gobject.obj
     value in the type-specific part of the attribute applies and should be
     initialized using [Pango.Attribute.init]. By default, an attribute will have
     an all-inclusive range of \[0,[G_MAXUINT]\]. *)
+
+type t = [ `attribute ] Gobject.obj
 
 (* Methods *)
 

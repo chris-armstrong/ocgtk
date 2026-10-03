@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* InfoBar: InfoBar *)
 
-type t = [ `info_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** [GtkInfoBar] can be used to show messages to the user without a dialog.
 
     An example GtkInfoBar
@@ -75,6 +74,8 @@ type t = [ `info_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
     of the style classes .info, .warning, .error or .question, depending on the
     message type. If the info bar shows a close button, that button will have
     the .close style class applied. *)
+
+type t = [ `info_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_info_bar_new"
 (** Create a new InfoBar *)

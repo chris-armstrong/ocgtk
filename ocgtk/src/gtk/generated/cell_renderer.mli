@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CellRenderer: CellRenderer *)
 
-type t = [ `cell_renderer | `initially_unowned | `object_ ] Gobject.obj
 (** An object for rendering a single cell
 
     The [GtkCellRenderer] is a base class of a set of objects used for rendering
@@ -37,6 +36,8 @@ type t = [ `cell_renderer | `initially_unowned | `object_ ] Gobject.obj
     “set” property, e.g. “cell-background-set” corresponds to “cell-background”.
     These “set” properties reflect whether a property has been set or not. You
     should not set them independently. *)
+
+type t = [ `cell_renderer | `initially_unowned | `object_ ] Gobject.obj
 
 (* Methods *)
 

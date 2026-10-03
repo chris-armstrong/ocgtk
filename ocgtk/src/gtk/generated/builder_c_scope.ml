@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BuilderCScope: BuilderCScope *)
 
-type t = [ `builder_c_scope | `object_ ] Gobject.obj
 (** A [GtkBuilderScope] implementation for the C language.
 
     [GtkBuilderCScope] instances use symbols explicitly added to [builder] with
@@ -16,6 +15,8 @@ type t = [ `builder_c_scope | `object_ ] Gobject.obj
     Note that unless [Gtk.BuilderCScope.add_callback_symbol] is called for all
     signal callbacks which are referenced by the loaded XML, this functionality
     will require that [GModule] be supported on the platform. *)
+
+type t = [ `builder_c_scope | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_builder_cscope_new"
 (** Create a new BuilderCScope *)

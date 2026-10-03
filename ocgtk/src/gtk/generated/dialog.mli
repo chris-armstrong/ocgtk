@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Dialog: Dialog *)
 
-type t =
-  [ `dialog | `window | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Dialogs are a convenient way to prompt the user for a small amount of input.
 
     An example GtkDialog
@@ -120,6 +118,9 @@ type t =
     {b Accessibility}
 
     [GtkDialog] uses the [GTK_ACCESSIBLE_ROLE_DIALOG] role. *)
+
+type t =
+  [ `dialog | `window | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_dialog_new"
 (** Create a new Dialog *)

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileLauncher: FileLauncher *)
 
-type t = [ `file_launcher | `object_ ] Gobject.obj
 (** Asynchronous API to open a file with an application.
 
     [GtkFileLauncher] collects the arguments that are needed to open the file.
@@ -13,6 +12,8 @@ type t = [ `file_launcher | `object_ ] Gobject.obj
     The operation is started with the [Gtk.FileLauncher.launch] function.
 
     To launch uris that don't represent files, use [Gtk.UriLauncher]. *)
+
+type t = [ `file_launcher | `object_ ] Gobject.obj
 
 external new_ : Ocgtk_gio.Gio.Wrappers.File.t option -> t
   = "ml_gtk_file_launcher_new"

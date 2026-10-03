@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DragSurfaceSize: DragSurfaceSize *)
 
-type t = [ `drag_surface_size ] Gobject.obj
 (** Contains information that is useful to compute the size of a drag surface.
 *)
+
+type t = [ `drag_surface_size ] Gobject.obj
 
 (* Methods *)
 

@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CssSection: CssSection *)
 
-type t = [ `css_section ] Gobject.obj
 (** Defines a part of a CSS document.
 
     Because sections are nested into one another, you can use
     [CssSection.get_parent] to get the containing region. *)
+
+type t = [ `css_section ] Gobject.obj
 
 external new_ :
   Ocgtk_gio.Gio.Wrappers.File.t option -> Css_location.t -> Css_location.t -> t

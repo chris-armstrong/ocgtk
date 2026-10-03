@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileAttributeMatcher: FileAttributeMatcher *)
 
-type t = [ `file_attribute_matcher ] Gobject.obj
 (** Determines if a string matches a file attribute. *)
+
+type t = [ `file_attribute_matcher ] Gobject.obj
 
 external new_ : string -> t = "ml_g_file_attribute_matcher_new"
 (** Create a new FileAttributeMatcher *)

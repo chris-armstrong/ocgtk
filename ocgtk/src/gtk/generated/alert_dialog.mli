@@ -1,13 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AlertDialog: AlertDialog *)
 
-type t = [ `alert_dialog | `object_ ] Gobject.obj
 (** Collects the arguments that are needed to present a message to the user.
 
     The message is shown with the [Gtk.AlertDialog.choose] function.
 
     If you don't need to wait for a button to be clicked, you can use
     [Gtk.AlertDialog.show]. *)
+
+type t = [ `alert_dialog | `object_ ] Gobject.obj
 
 (* Methods *)
 

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Action: Action *)
 
-type t = [ `action ] Gobject.obj
 (** [GAction] represents a single named action.
 
     The main interface to an action is that it can be activated with
@@ -29,6 +28,8 @@ type t = [ `action ] Gobject.obj
 
     Probably the only useful thing to do with a [GAction] is to put it inside of
     a [Gio.SimpleActionGroup]. *)
+
+type t = [ `action ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_action_from_gobject"
 

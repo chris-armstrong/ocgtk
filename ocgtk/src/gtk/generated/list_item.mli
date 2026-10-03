@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ListItem: ListItem *)
 
-type t = [ `list_item | `object_ ] Gobject.obj
 (** Used by list widgets to represent items in a [Gio.ListModel].
 
     [GtkListItem] objects are managed by the list widget (with its factory) and
@@ -16,6 +15,8 @@ type t = [ `list_item | `object_ ] Gobject.obj
 
     + The bound stage where the listitem references an item from the list. The
       [Gtk.ListItem:item] property is not [NULL]. *)
+
+type t = [ `list_item | `object_ ] Gobject.obj
 
 (* Methods *)
 

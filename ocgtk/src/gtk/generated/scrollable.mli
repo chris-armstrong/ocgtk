@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Scrollable: Scrollable *)
 
-type t = [ `scrollable ] Gobject.obj
 (** An interface for widgets with native scrolling ability.
 
     To implement this interface you should override the
@@ -29,6 +28,8 @@ type t = [ `scrollable ] Gobject.obj
 
     - When any of the adjustments emits the [Gtk.Adjustment::value-changed]
       signal, the scrollable widget should scroll its contents. *)
+
+type t = [ `scrollable ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gtk_scrollable_from_gobject"
 

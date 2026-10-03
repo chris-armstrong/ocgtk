@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Permission: Permission *)
 
-type t = [ `permission | `object_ ] Gobject.obj
 (** A [GPermission] represents the status of the caller’s permission to perform
     a certain action.
 
@@ -16,6 +15,8 @@ type t = [ `permission | `object_ ] Gobject.obj
     used to decide if it is appropriate to show a “Click here to unlock” button
     in a dialog and to provide the mechanism to invoke when that button is
     clicked. *)
+
+type t = [ `permission | `object_ ] Gobject.obj
 
 (* Methods *)
 

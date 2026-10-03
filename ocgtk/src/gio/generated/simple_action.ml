@@ -1,10 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SimpleAction: SimpleAction *)
 
-type t = [ `simple_action | `object_ ] Gobject.obj
 (** A [GSimpleAction] is the obvious simple implementation of the [Gio.Action]
     interface. This is the easiest way to create an action for purposes of
     adding it to a [Gio.SimpleActionGroup]. *)
+
+type t = [ `simple_action | `object_ ] Gobject.obj
 
 external new_ : string -> Gvariant_type.t option -> t = "ml_g_simple_action_new"
 (** Create a new SimpleAction *)

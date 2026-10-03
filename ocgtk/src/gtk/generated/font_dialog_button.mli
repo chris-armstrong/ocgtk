@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FontDialogButton: FontDialogButton *)
 
-type t =
-  [ `font_dialog_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Opens a font chooser dialog to select a font.
 
     An example GtkFontDialogButton
@@ -19,6 +17,9 @@ type t =
 
     [GtkFontDialogButton] has a single CSS node with name fontbutton which
     contains a button node with the .font style class. *)
+
+type t =
+  [ `font_dialog_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : Font_dialog.t option -> t = "ml_gtk_font_dialog_button_new"
 (** Create a new FontDialogButton *)

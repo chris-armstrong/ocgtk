@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SpinButton: SpinButton *)
 
-type t = [ `spin_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Allows to enter or change numeric values.
 
     An example GtkSpinButton
@@ -118,6 +117,8 @@ type t = [ `spin_button | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkSpinButton] uses the [Gtk.AccessibleRole.spin_button] role. *)
+
+type t = [ `spin_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : Adjustment.t option -> float -> int -> t
   = "ml_gtk_spin_button_new"

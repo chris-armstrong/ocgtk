@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* IOExtensionPoint: IOExtensionPoint *)
 
-type t = [ `io_extension_point ] Gobject.obj
 (** [GIOExtensionPoint] provides a mechanism for modules to extend the
     functionality of the library or application that loaded it in an organized
     fashion.
@@ -48,6 +47,8 @@ type t = [ `io_extension_point ] Gobject.obj
     base name in different directories, then the latter one will be ignored. If
     additional directories are specified GIO will load modules from the built-in
     directory last. *)
+
+type t = [ `io_extension_point ] Gobject.obj
 
 (* Methods *)
 

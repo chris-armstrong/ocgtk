@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RoundedRect: RoundedRect *)
 
-type t = [ `rounded_rect ] Gobject.obj
 (** A rectangular region with rounded corners.
 
     Application code should normalize rectangles using
@@ -16,6 +15,8 @@ type t = [ `rounded_rect ] Gobject.obj
     The algorithm used for normalizing corner sizes is described in
     {{:https://drafts.csswg.org/css-backgrounds-3/#border-radius}the CSS
      specification}. *)
+
+type t = [ `rounded_rect ] Gobject.obj
 
 (* Methods *)
 

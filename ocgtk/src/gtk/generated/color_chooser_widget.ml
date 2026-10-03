@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColorChooserWidget: ColorChooserWidget *)
 
-type t =
-  [ `color_chooser_widget | `widget | `initially_unowned | `object_ ]
-  Gobject.obj
 (** The [GtkColorChooserWidget] widget lets the user select a color.
 
     By default, the chooser presents a predefined palette of colors, plus a
@@ -35,6 +32,10 @@ type t =
     {b CSS names}
 
     [GtkColorChooserWidget] has a single CSS node with name colorchooser. *)
+
+type t =
+  [ `color_chooser_widget | `widget | `initially_unowned | `object_ ]
+  Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_color_chooser_widget_new"
 (** Create a new ColorChooserWidget *)

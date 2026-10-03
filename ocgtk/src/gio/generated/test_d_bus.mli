@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TestDBus: TestDBus *)
 
-type t = [ `test_d_bus | `object_ ] Gobject.obj
 (** A helper class for testing code which uses D-Bus without touching the user’s
     session bus.
 
@@ -79,6 +78,8 @@ type t = [ `test_d_bus | `object_ ] Gobject.obj
 
         CLEANFILES += gschemas.compiled
     ]} *)
+
+type t = [ `test_d_bus | `object_ ] Gobject.obj
 
 external new_ : Gio_enums.testdbusflags -> t = "ml_g_test_dbus_new"
 (** Create a new TestDBus *)

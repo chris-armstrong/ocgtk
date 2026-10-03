@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ListBase: ListBase *)
 
-type t = [ `list_base | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** The abstract base class for GTK's list widgets.
 
     {b Shortcuts and Gestures}
@@ -46,6 +45,8 @@ type t = [ `list_base | `widget | `initially_unowned | `object_ ] Gobject.obj
     - [listitem.select] changes selection if the item is selectable.
     - [listitem.scroll-to] moves the visible area of the list to this item with
       the minimum amount of scrolling required. *)
+
+type t = [ `list_base | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 (* Methods *)
 (* Properties *)

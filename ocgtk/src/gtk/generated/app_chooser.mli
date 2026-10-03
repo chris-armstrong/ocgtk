@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AppChooser: AppChooser *)
 
-type t = [ `app_chooser ] Gobject.obj
 (** [GtkAppChooser] is an interface for widgets which allow the user to choose
     an application.
 
@@ -19,6 +18,8 @@ type t = [ `app_chooser ] Gobject.obj
 
     To obtain the application that has been selected in a [GtkAppChooser], use
     [Gtk.AppChooser.get_app_info]. *)
+
+type t = [ `app_chooser ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gtk_app_chooser_from_gobject"
 

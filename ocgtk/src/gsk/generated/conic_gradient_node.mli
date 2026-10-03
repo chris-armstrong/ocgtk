@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ConicGradientNode: ConicGradientNode *)
 
-type t = [ `conic_gradient_node | `render_node ] Gobject.obj
 (** A render node for a conic gradient. *)
+
+type t = [ `conic_gradient_node | `render_node ] Gobject.obj
 
 external new_ :
   Ocgtk_graphene.Graphene.Wrappers.Rect.t ->

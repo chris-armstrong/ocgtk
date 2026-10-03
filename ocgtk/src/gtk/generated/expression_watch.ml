@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ExpressionWatch: ExpressionWatch *)
 
-type t = [ `expression_watch ] Gobject.obj
 (** An opaque structure representing a watched [GtkExpression].
 
     The contents of [GtkExpressionWatch] should only be accessed through the
     provided API. *)
+
+type t = [ `expression_watch ] Gobject.obj
 
 (* Methods *)
 

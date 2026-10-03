@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Button: Button *)
 
-type t = [ `button | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Calls a callback function when the button is clicked.
 
     An example GtkButton
@@ -36,6 +35,8 @@ type t = [ `button | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkButton] uses the [Gtk.AccessibleRole.button] role. *)
+
+type t = [ `button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_button_new"
 (** Create a new Button *)

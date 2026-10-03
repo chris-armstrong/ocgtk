@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreeStore: TreeStore *)
 
-type t = [ `tree_store | `object_ ] Gobject.obj
 (** A tree-like data structure that can be used with the [Gtk.TreeView].
 
     The [GtkTreeStore] object is a list model for use with a [GtkTreeView]
@@ -33,6 +32,8 @@ type t = [ `tree_store | `object_ ] Gobject.obj
       </columns>
     </object>
     ]} *)
+
+type t = [ `tree_store | `object_ ] Gobject.obj
 
 external newv : int -> Gobject.Type.t array -> t = "ml_gtk_tree_store_newv"
 (** Create a new TreeStore *)

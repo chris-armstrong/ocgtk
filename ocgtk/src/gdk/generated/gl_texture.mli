@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GLTexture: GLTexture *)
 
-type t = [ `gl_texture | `texture | `object_ ] Gobject.obj
 (** A [GdkTexture] representing a GL texture object. *)
+
+type t = [ `gl_texture | `texture | `object_ ] Gobject.obj
 
 (* Methods *)
 

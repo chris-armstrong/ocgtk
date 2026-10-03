@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ContentSerializer: ContentSerializer *)
 
-type t = [ `content_serializer | `object_ ] Gobject.obj
 (** Serializes content for inter-application data transfers.
 
     The [GdkContentSerializer] transforms an object that is identified by a
@@ -13,6 +12,8 @@ type t = [ `content_serializer | `object_ ] Gobject.obj
     functions, use [Gdk.content_register_serializer].
 
     Also see [Gdk.ContentDeserializer]. *)
+
+type t = [ `content_serializer | `object_ ] Gobject.obj
 
 (* Methods *)
 

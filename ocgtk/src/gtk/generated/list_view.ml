@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ListView: ListView *)
 
-type t =
-  [ `list_view | `list_base | `widget | `initially_unowned | `object_ ]
-  Gobject.obj
 (** Presents a large dynamic list of items.
 
     [GtkListView] uses its factory to generate one row widget for each visible
@@ -107,6 +104,10 @@ type t =
 
     [GtkListView] uses the [Gtk.AccessibleRole.list] role, and the list items
     use the [Gtk.AccessibleRole.list_item] role. *)
+
+type t =
+  [ `list_view | `list_base | `widget | `initially_unowned | `object_ ]
+  Gobject.obj
 
 external new_ : Selection_model.t option -> List_item_factory.t option -> t
   = "ml_gtk_list_view_new"

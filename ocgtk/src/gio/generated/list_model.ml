@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ListModel: ListModel *)
 
-type t = [ `list_model ] Gobject.obj
 (** [GListModel] is an interface that represents a mutable list of
     [GObject.Object]. Its main intention is as a model for various widgets in
     user interfaces, such as list views, but it can also be used as a convenient
@@ -61,6 +60,8 @@ type t = [ `list_model ] Gobject.obj
       g_param_spec_uint (“n-items”, NULL, NULL, 0, G_MAXUINT, 0,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
     ]} *)
+
+type t = [ `list_model ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_list_model_from_gobject"
 

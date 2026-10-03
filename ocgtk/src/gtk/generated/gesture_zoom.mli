@@ -1,12 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GestureZoom: GestureZoom *)
 
-type t = [ `gesture_zoom | `gesture | `event_controller | `object_ ] Gobject.obj
 (** Recognizes 2-finger pinch/zoom gestures.
 
     Whenever the distance between both tracked sequences changes, the
     [Gtk.GestureZoom::scale-changed] signal is emitted to report the scale
     factor. *)
+
+type t = [ `gesture_zoom | `gesture | `event_controller | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_gesture_zoom_new"
 (** Create a new GestureZoom *)

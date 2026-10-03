@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SettingsSchemaSource: SettingsSchemaSource *)
 
-type t = [ `settings_schema_source ] Gobject.obj
 (** This is an opaque structure type. You may not access it directly. *)
+
+type t = [ `settings_schema_source ] Gobject.obj
 
 external new_from_directory : string -> t option -> bool -> (t, GError.t) result
   = "ml_g_settings_schema_source_new_from_directory"

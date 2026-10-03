@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* IconView: IconView *)
 
-type t = [ `icon_view | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** [GtkIconView] is a widget which displays data in a grid of icons.
 
     An example GtkIconView
@@ -26,6 +25,8 @@ type t = [ `icon_view | `widget | `initially_unowned | `object_ ] Gobject.obj
 
     [GtkIconView] has a single CSS node with name iconview and style class
     .view. For rubberband selection, a subnode with name rubberband is used. *)
+
+type t = [ `icon_view | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_icon_view_new"
 (** Create a new IconView *)

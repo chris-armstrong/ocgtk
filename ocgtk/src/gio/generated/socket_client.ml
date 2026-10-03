@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SocketClient: SocketClient *)
 
-type t = [ `socket_client | `object_ ] Gobject.obj
 (** [GSocketClient] is a lightweight high-level utility class for connecting to
     a network host using a connection oriented socket type.
 
@@ -15,6 +14,8 @@ type t = [ `socket_client | `object_ ] Gobject.obj
 
     As [GSocketClient] is a lightweight object, you don't need to cache it. You
     can just create a new one any time you need one. *)
+
+type t = [ `socket_client | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_g_socket_client_new"
 (** Create a new SocketClient *)

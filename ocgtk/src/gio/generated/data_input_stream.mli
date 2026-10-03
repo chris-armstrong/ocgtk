@@ -1,6 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DataInputStream: DataInputStream *)
 
+(** Data input stream implements [Gio.InputStream] and includes functions for
+    reading structured data directly from a binary input stream. *)
+
 type t =
   [ `data_input_stream
   | `buffered_input_stream
@@ -8,8 +11,6 @@ type t =
   | `input_stream
   | `object_ ]
   Gobject.obj
-(** Data input stream implements [Gio.InputStream] and includes functions for
-    reading structured data directly from a binary input stream. *)
 
 external new_ : Input_stream.t -> t = "ml_g_data_input_stream_new"
 (** Create a new DataInputStream *)

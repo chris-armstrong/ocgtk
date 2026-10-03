@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DtlsClientConnection: DtlsClientConnection *)
 
-type t = [ `dtls_client_connection ] Gobject.obj
 (** [GDtlsClientConnection] is the client-side subclass of [Gio.DtlsConnection],
     representing a client-side DTLS connection. *)
+
+type t = [ `dtls_client_connection ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_dtls_client_connection_from_gobject"

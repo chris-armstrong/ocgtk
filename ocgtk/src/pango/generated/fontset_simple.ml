@@ -1,12 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FontsetSimple: FontsetSimple *)
 
-type t = [ `fontset_simple | `fontset | `object_ ] Gobject.obj
 (** [PangoFontsetSimple] is a implementation of the abstract [PangoFontset] base
     class as an array of fonts.
 
     When creating a [PangoFontsetSimple], you have to provide the array of fonts
     that make up the fontset. *)
+
+type t = [ `fontset_simple | `fontset | `object_ ] Gobject.obj
 
 external new_ : Language.t -> t = "ml_pango_fontset_simple_new"
 (** Create a new FontsetSimple *)

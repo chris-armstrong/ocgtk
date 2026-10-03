@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AppInfoMonitor: AppInfoMonitor *)
 
-type t = [ `app_info_monitor | `object_ ] Gobject.obj
 (** [GAppInfoMonitor] monitors application information for changes.
 
     [GAppInfoMonitor] is a very simple object used for monitoring the app info
@@ -40,6 +39,8 @@ type t = [ `app_info_monitor | `object_ ] Gobject.obj
     is that changes to the list of installed applications often come in groups
     (like during system updates) and rescanning the list on every change is
     pointless and expensive. *)
+
+type t = [ `app_info_monitor | `object_ ] Gobject.obj
 
 (* Methods *)
 val on_changed :

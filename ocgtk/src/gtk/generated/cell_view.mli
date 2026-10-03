@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CellView: CellView *)
 
-type t = [ `cell_view | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** A widget displaying a single row of a GtkTreeModel
 
     A [GtkCellView] displays a single row of a [GtkTreeModel] using a
@@ -22,6 +21,8 @@ type t = [ `cell_view | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b CSS nodes}
 
     GtkCellView has a single CSS node with name cellview. *)
+
+type t = [ `cell_view | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_cell_view_new"
 (** Create a new CellView *)

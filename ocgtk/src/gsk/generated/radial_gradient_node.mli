@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RadialGradientNode: RadialGradientNode *)
 
-type t = [ `radial_gradient_node | `render_node ] Gobject.obj
 (** A render node for a radial gradient. *)
+
+type t = [ `radial_gradient_node | `render_node ] Gobject.obj
 
 external new_ :
   Ocgtk_graphene.Graphene.Wrappers.Rect.t ->

@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* AboutDialog: AboutDialog *)
 
-type t =
-  [ `about_dialog | `window | `widget | `initially_unowned | `object_ ]
-  Gobject.obj
 (** Displays information about a program.
 
     The shown information includes the programs' logo, name, copyright, website
@@ -56,6 +53,10 @@ type t =
 
     [GtkAboutDialog] has a single CSS node with the name [window] and style
     class [.aboutdialog]. *)
+
+type t =
+  [ `about_dialog | `window | `widget | `initially_unowned | `object_ ]
+  Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_about_dialog_new"
 (** Create a new AboutDialog *)

@@ -1,13 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CellRendererCombo: CellRendererCombo *)
 
-type t =
-  [ `cell_renderer_combo
-  | `cell_renderer_text
-  | `cell_renderer
-  | `initially_unowned
-  | `object_ ]
-  Gobject.obj
 (** Renders a combobox in a cell
 
     [GtkCellRendererCombo] renders text in a cell like [GtkCellRendererText]
@@ -21,6 +14,14 @@ type t =
     [GtkCellRendererCombo]:text-column property. Further properties of the combo
     box can be set in a handler for the [GtkCellRenderer::editing-started]
     signal. *)
+
+type t =
+  [ `cell_renderer_combo
+  | `cell_renderer_text
+  | `cell_renderer
+  | `initially_unowned
+  | `object_ ]
+  Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_cell_renderer_combo_new"
 (** Create a new CellRendererCombo *)

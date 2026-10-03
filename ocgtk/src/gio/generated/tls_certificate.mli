@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TlsCertificate: TlsCertificate *)
 
-type t = [ `tls_certificate | `object_ ] Gobject.obj
 (** A certificate used for TLS authentication and encryption. This can represent
     either a certificate only (eg, the certificate received by a client from a
     server), or the combination of a certificate and a private key (which is
     needed when acting as a [Gio.TlsServerConnection]). *)
+
+type t = [ `tls_certificate | `object_ ] Gobject.obj
 
 external new_from_file : string -> (t, GError.t) result
   = "ml_g_tls_certificate_new_from_file"

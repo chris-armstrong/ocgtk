@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Stroke: Stroke *)
 
-type t = [ `stroke ] Gobject.obj
 (** Collects the parameters that are needed when stroking a path. *)
+
+type t = [ `stroke ] Gobject.obj
 
 external new_ : float -> t = "ml_gsk_stroke_new"
 (** Create a new Stroke *)

@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TextChildAnchor: TextChildAnchor *)
 
-type t = [ `text_child_anchor | `object_ ] Gobject.obj
 (** Marks a spot in a [GtkTextBuffer] where child widgets can be “anchored”.
 
     The anchor can have multiple widgets anchored, to allow for multiple views.
 *)
+
+type t = [ `text_child_anchor | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_text_child_anchor_new"
 (** Create a new TextChildAnchor *)

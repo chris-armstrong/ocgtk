@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Scale: Scale *)
 
-type t =
-  [ `scale | `range | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Allows to select a numeric value with a slider control.
 
     An example GtkScale
@@ -91,6 +89,9 @@ type t =
     {b Accessibility}
 
     [GtkScale] uses the [Gtk.AccessibleRole.slider] role. *)
+
+type t =
+  [ `scale | `range | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : Gtk_enums.orientation -> Adjustment.t option -> t
   = "ml_gtk_scale_new"

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Expression: Expression *)
 
-type t = [ `expression ] Gobject.obj
 (** Provides a way to describe references to values.
 
     An important aspect of expressions is that the value can be obtained from a
@@ -170,6 +169,8 @@ type t = [ `expression ] Gobject.obj
         </binding>
       </object>
     ]} *)
+
+type t = [ `expression ] Gobject.obj
 
 (* Methods *)
 

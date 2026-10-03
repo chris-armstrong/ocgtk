@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Vfs: Vfs *)
 
-type t = [ `vfs | `object_ ] Gobject.obj
 (** Entry point for using GIO functionality. *)
+
+type t = [ `vfs | `object_ ] Gobject.obj
 
 (* Methods *)
 

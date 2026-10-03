@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ActionGroup: ActionGroup *)
 
-type t = [ `action_group ] Gobject.obj
 (** [GActionGroup] represents a group of actions.
 
     Actions can be used to expose functionality in a structured way, either from
@@ -47,6 +46,8 @@ type t = [ `action_group ] Gobject.obj
     [Gio.ActionGroup.query_action]. The other virtual functions should not be
     implemented — their ‘wrappers’ are actually implemented with calls to
     [Gio.ActionGroup.query_action]. *)
+
+type t = [ `action_group ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_action_group_from_gobject"
 

@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreeDragSource: TreeDragSource *)
 
-type t = [ `tree_drag_source ] Gobject.obj
 (** Interface for Drag-and-Drop destinations in [GtkTreeView]. *)
+
+type t = [ `tree_drag_source ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gtk_tree_drag_source_from_gobject"

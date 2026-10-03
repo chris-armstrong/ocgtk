@@ -1,13 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CellEditable: CellEditable *)
 
-type t = [ `cell_editable ] Gobject.obj
 (** Interface for widgets that can be used for editing cells
 
     The [GtkCellEditable] interface must be implemented for widgets to be usable
     to edit the contents of a [GtkTreeView] cell. It provides a way to specify
     how temporary widgets should be configured for editing, get the new value,
     etc. *)
+
+type t = [ `cell_editable ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gtk_cell_editable_from_gobject"

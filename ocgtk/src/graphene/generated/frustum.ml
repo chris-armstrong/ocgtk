@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Frustum: Frustum *)
 
-type t = [ `frustum ] Gobject.obj
 (** A 3D volume delimited by 2D clip planes.
 
     The contents of the [graphene_frustum_t] are private, and should not be
     modified directly. *)
+
+type t = [ `frustum ] Gobject.obj
 
 external alloc : unit -> t = "ml_graphene_frustum_alloc"
 (** Create a new Frustum *)

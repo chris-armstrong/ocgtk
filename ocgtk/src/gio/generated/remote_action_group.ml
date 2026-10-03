@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RemoteActionGroup: RemoteActionGroup *)
 
-type t = [ `remote_action_group ] Gobject.obj
 (** The [GRemoteActionGroup] interface is implemented by [Gio.ActionGroup]
     instances that either transmit action invocations to other processes or
     receive action invocations in the local process from other processes.
@@ -20,6 +19,8 @@ type t = [ `remote_action_group ] Gobject.obj
     [_full] variants of the calls if available. This provides a mechanism by
     which to receive platform data for action invocations that arrive by way of
     D-Bus. *)
+
+type t = [ `remote_action_group ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gio_remote_action_group_from_gobject"

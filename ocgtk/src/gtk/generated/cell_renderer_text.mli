@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CellRendererText: CellRendererText *)
 
-type t =
-  [ `cell_renderer_text | `cell_renderer | `initially_unowned | `object_ ]
-  Gobject.obj
 (** Renders text in a cell
 
     A [GtkCellRendererText] renders a given text in its cell, using the font,
@@ -13,6 +10,10 @@ type t =
 
     If the [GtkCellRenderer:mode] is [GTK_CELL_RENDERER_MODE_EDITABLE], the
     [GtkCellRendererText] allows to edit its text using an entry. *)
+
+type t =
+  [ `cell_renderer_text | `cell_renderer | `initially_unowned | `object_ ]
+  Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_cell_renderer_text_new"
 (** Create a new CellRendererText *)

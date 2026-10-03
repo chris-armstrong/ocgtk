@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DropTargetAsync: DropTargetAsync *)
 
-type t = [ `drop_target_async | `event_controller | `object_ ] Gobject.obj
 (** An event controller to receive Drag-and-Drop operations, asynchronously.
 
     It is the more complete but also more complex method of handling drop
@@ -34,6 +33,8 @@ type t = [ `drop_target_async | `event_controller | `object_ ] Gobject.obj
     Between the ::drag-enter and ::drag-leave signals the widget is a current
     drop target, and will receive the [GTK_STATE_FLAG_DROP_ACTIVE] state, which
     can be used by themes to style the widget as a drop target. *)
+
+type t = [ `drop_target_async | `event_controller | `object_ ] Gobject.obj
 
 external new_ :
   Ocgtk_gdk.Gdk.Wrappers.Content_formats.t option ->

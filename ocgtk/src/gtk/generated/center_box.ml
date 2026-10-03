@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CenterBox: CenterBox *)
 
-type t = [ `center_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Arranges three children in a row, keeping the middle child centered as well
     as possible.
 
@@ -36,6 +35,8 @@ type t = [ `center_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 
     Starting from GTK 4.12, [GtkCenterBox] uses the [Gtk.AccessibleRole.generic]
     role. *)
+
+type t = [ `center_box | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_center_box_new"
 (** Create a new CenterBox *)

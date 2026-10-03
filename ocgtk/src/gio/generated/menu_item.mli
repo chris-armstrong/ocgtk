@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MenuItem: MenuItem *)
 
-type t = [ `menu_item | `object_ ] Gobject.obj
 (** [GMenuItem] is an opaque structure type. You must access it using the
     functions below. *)
+
+type t = [ `menu_item | `object_ ] Gobject.obj
 
 external new_ : string option -> string option -> t = "ml_g_menu_item_new"
 (** Create a new MenuItem *)

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GlyphGeometry: GlyphGeometry *)
 
-type t = [ `glyph_geometry ] Gobject.obj
 (** The [PangoGlyphGeometry] structure contains width and positioning
     information for a single glyph.
 
@@ -17,5 +16,7 @@ type t = [ `glyph_geometry ] Gobject.obj
     + Render the current glyph at (x + x_offset, y + y_offset),
     + Advance the current point to (x + width, y)
     + Render the next glyph *)
+
+type t = [ `glyph_geometry ] Gobject.obj
 
 (* Methods *)

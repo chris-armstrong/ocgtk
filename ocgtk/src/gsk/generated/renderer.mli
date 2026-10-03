@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Renderer: Renderer *)
 
-type t = [ `renderer | `object_ ] Gobject.obj
 (** Renders a scene graph defined via a tree of [Gsk.RenderNode] instances.
 
     Typically you will use a [GskRenderer] instance to repeatedly call
@@ -12,6 +11,8 @@ type t = [ `renderer | `object_ ] Gobject.obj
     [Gsk.Renderer.realize] before calling [Gsk.Renderer.render], in order to
     create the appropriate windowing system resources needed to render the
     scene. *)
+
+type t = [ `renderer | `object_ ] Gobject.obj
 
 external new_for_surface : Ocgtk_gdk.Gdk.Wrappers.Surface.t -> t
   = "ml_gsk_renderer_new_for_surface"

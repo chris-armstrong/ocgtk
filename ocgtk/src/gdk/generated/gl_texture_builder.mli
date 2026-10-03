@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GLTextureBuilder: GLTextureBuilder *)
 
-type t = [ `gl_texture_builder | `object_ ] Gobject.obj
 (** Constructs [Gdk.Texture] objects from GL textures.
 
     The operation is quite simple: Create a texture builder, set all the
@@ -14,6 +13,8 @@ type t = [ `gl_texture_builder | `object_ ] Gobject.obj
     [GdkGLTextureBuilder] can be used for quick one-shot construction of
     textures as well as kept around and reused to construct multiple textures.
 *)
+
+type t = [ `gl_texture_builder | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gdk_gl_texture_builder_new"
 (** Create a new GLTextureBuilder *)

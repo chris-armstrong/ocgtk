@@ -1,12 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreeSortable: TreeSortable *)
 
-type t = [ `tree_sortable ] Gobject.obj
 (** The interface for sortable models used by GtkTreeView
 
     [GtkTreeSortable] is an interface to be implemented by tree models which
     support sorting. The [GtkTreeView] uses the methods provided by this
     interface to sort the model. *)
+
+type t = [ `tree_sortable ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gtk_tree_sortable_from_gobject"

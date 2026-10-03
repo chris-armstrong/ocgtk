@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FontDialog: FontDialog *)
 
-type t = [ `font_dialog | `object_ ] Gobject.obj
 (** Asynchronous API to present a font chooser dialog.
 
     [GtkFontDialog] collects the arguments that are needed to present the dialog
@@ -12,6 +11,8 @@ type t = [ `font_dialog | `object_ ] Gobject.obj
 
     See [Gtk.FontDialogButton] for a convenient control that uses
     [GtkFontDialog] and presents the results. *)
+
+type t = [ `font_dialog | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_font_dialog_new"
 (** Create a new FontDialog *)

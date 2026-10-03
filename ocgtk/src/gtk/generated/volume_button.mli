@@ -1,13 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* VolumeButton: VolumeButton *)
 
-type t =
-  [ `volume_button | `scale_button | `widget | `initially_unowned | `object_ ]
-  Gobject.obj
 (** [GtkVolumeButton] is a [GtkScaleButton] subclass tailored for volume
     control.
 
     An example GtkVolumeButton *)
+
+type t =
+  [ `volume_button | `scale_button | `widget | `initially_unowned | `object_ ]
+  Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_volume_button_new"
 (** Create a new VolumeButton *)

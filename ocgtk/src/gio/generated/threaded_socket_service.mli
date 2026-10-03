@@ -1,9 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ThreadedSocketService: ThreadedSocketService *)
 
-type t =
-  [ `threaded_socket_service | `socket_service | `socket_listener | `object_ ]
-  Gobject.obj
 (** A [GThreadedSocketService] is a simple subclass of [Gio.SocketService] that
     handles incoming connections by creating a worker thread and dispatching the
     connection to it by emitting the [Gio.ThreadedSocketService::run signal] in
@@ -20,6 +17,10 @@ type t =
     As with [Gio.SocketService], you may connect to
     [Gio.ThreadedSocketService::run], or subclass and override the default
     handler. *)
+
+type t =
+  [ `threaded_socket_service | `socket_service | `socket_listener | `object_ ]
+  Gobject.obj
 
 external new_ : int -> t = "ml_g_threaded_socket_service_new"
 (** Create a new ThreadedSocketService *)

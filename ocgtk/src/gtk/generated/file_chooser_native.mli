@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileChooserNative: FileChooserNative *)
 
-type t = [ `file_chooser_native | `native_dialog | `object_ ] Gobject.obj
 (** [GtkFileChooserNative] is an abstraction of a dialog suitable for use with
     “File Open” or “File Save as” commands.
 
@@ -146,6 +145,8 @@ type t = [ `file_chooser_native | `native_dialog | `object_ ] Gobject.obj
     not supported:
 
     - Shortcut folders. *)
+
+type t = [ `file_chooser_native | `native_dialog | `object_ ] Gobject.obj
 
 external new_ :
   string option ->

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MountOperation: MountOperation *)
 
-type t = [ `mount_operation | `object_ ] Gobject.obj
 (** [GMountOperation] provides a mechanism for interacting with the user. It can
     be used for authenticating mountable operations, such as loop mounting
     files, hard drive partitions or server locations. It can also be used to ask
@@ -24,6 +23,8 @@ type t = [ `mount_operation | `object_ ] Gobject.obj
     system for encrypting file containers, partitions or whole disks, typically
     used with Windows. {{:https://www.veracrypt.fr/}VeraCrypt} is a maintained
     fork of TrueCrypt with various improvements and auditing fixes. *)
+
+type t = [ `mount_operation | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_g_mount_operation_new"
 (** Create a new MountOperation *)

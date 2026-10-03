@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* IOStream: IOStream *)
 
-type t = [ `io_stream | `object_ ] Gobject.obj
 (** [GIOStream] represents an object that has both read and write streams.
     Generally the two streams act as separate input and output streams, but they
     share some common resources and state. For instance, for seekable streams,
@@ -49,6 +48,8 @@ type t = [ `io_stream | `object_ ] Gobject.obj
     the wrapper stream is idle. Note that the semantics of such operations may
     not be well-defined due to the state the wrapper stream leaves the base
     stream in (though they are guaranteed not to crash). *)
+
+type t = [ `io_stream | `object_ ] Gobject.obj
 
 (* Methods *)
 

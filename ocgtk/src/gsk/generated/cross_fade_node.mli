@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CrossFadeNode: CrossFadeNode *)
 
-type t = [ `cross_fade_node | `render_node ] Gobject.obj
 (** A render node cross fading between two child nodes. *)
+
+type t = [ `cross_fade_node | `render_node ] Gobject.obj
 
 external new_ : Render_node.t -> Render_node.t -> float -> t
   = "ml_gsk_cross_fade_node_new"

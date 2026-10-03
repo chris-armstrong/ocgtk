@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreeModel: TreeModel *)
 
-type t = [ `tree_model ] Gobject.obj
 (** The tree interface used by GtkTreeView
 
     The [GtkTreeModel] interface defines a generic tree interface for use by the
@@ -189,6 +188,8 @@ type t = [ `tree_model ] Gobject.obj
       required for levels in which nodes are referenced. For the root level
       however, signals must be emitted at all times (however the root level is
       always referenced when any view is attached). *)
+
+type t = [ `tree_model ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gtk_tree_model_from_gobject"
 

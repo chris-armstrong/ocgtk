@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PopoverMenuBar: PopoverMenuBar *)
 
-type t =
-  [ `popover_menu_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Presents a horizontal bar of items that pop up menus when clicked.
 
     An example GtkPopoverMenuBar
@@ -30,6 +28,9 @@ type t =
     [GtkPopoverMenuBar] uses the [Gtk.AccessibleRole.menu_bar] role, the menu
     items use the [Gtk.AccessibleRole.menu_item] role and the menus use the
     [Gtk.AccessibleRole.menu] role. *)
+
+type t =
+  [ `popover_menu_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_from_model : Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> t
   = "ml_gtk_popover_menu_bar_new_from_model"

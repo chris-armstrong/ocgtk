@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SearchBar: SearchBar *)
 
-type t = [ `search_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Reveals a search entry when search is started.
 
     An example GtkSearchBar
@@ -51,6 +50,8 @@ type t = [ `search_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkSearchBar] uses the [Gtk.AccessibleRole.search] role. *)
+
+type t = [ `search_bar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_search_bar_new"
 (** Create a new SearchBar *)

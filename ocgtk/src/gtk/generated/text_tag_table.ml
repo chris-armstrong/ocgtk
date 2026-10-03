@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TextTagTable: TextTagTable *)
 
-type t = [ `text_tag_table | `object_ ] Gobject.obj
 (** Collects the tags in a [GtkTextBuffer].
 
     You may wish to begin by reading the text widget conceptual overview, which
@@ -23,6 +22,8 @@ type t = [ `text_tag_table | `object_ ] Gobject.obj
      </child>
     </object>
     ]} *)
+
+type t = [ `text_tag_table | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_text_tag_table_new"
 (** Create a new TextTagTable *)

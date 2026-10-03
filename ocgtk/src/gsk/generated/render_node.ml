@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RenderNode: RenderNode *)
 
-type t = [ `render_node ] Gobject.obj
 (** The basic block in a scene graph to be rendered using [Gsk.Renderer].
 
     Each node has a parent, except the top-level node; each node may have
@@ -14,6 +13,8 @@ type t = [ `render_node ] Gobject.obj
     [Gsk.Renderer] it's safe to release any reference you have on them. All
     [Gsk.RenderNode]s are immutable, you can only specify their properties
     during construction. *)
+
+type t = [ `render_node ] Gobject.obj
 
 (* Methods *)
 

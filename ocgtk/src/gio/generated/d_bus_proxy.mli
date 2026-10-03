@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusProxy: DBusProxy *)
 
-type t = [ `d_bus_proxy | `object_ ] Gobject.obj
 (** [GDBusProxy] is a base class used for proxies to access a D-Bus interface on
     a remote object. A [GDBusProxy] can be constructed for both well-known and
     unique names.
@@ -48,6 +47,8 @@ type t = [ `d_bus_proxy | `object_ ] Gobject.obj
     An example using a proxy for a well-known name can be found in
     {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-watch-proxy.c}
      [gdbus-example-watch-proxy.c]}. *)
+
+type t = [ `d_bus_proxy | `object_ ] Gobject.obj
 
 external new_finish : Async_result.t -> (t, GError.t) result
   = "ml_g_dbus_proxy_new_finish"

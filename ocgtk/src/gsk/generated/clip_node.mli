@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ClipNode: ClipNode *)
 
-type t = [ `clip_node | `render_node ] Gobject.obj
 (** A render node applying a rectangular clip to its single child node. *)
+
+type t = [ `clip_node | `render_node ] Gobject.obj
 
 external new_ : Render_node.t -> Ocgtk_graphene.Graphene.Wrappers.Rect.t -> t
   = "ml_gsk_clip_node_new"

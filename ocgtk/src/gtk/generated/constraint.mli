@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Constraint: Constraint *)
 
-type t = [ `constraint_ | `object_ ] Gobject.obj
 (** Describes a constraint between attributes of two widgets, expressed as a
     linear equation.
 
@@ -17,6 +16,8 @@ type t = [ `constraint_ | `object_ ] Gobject.obj
 
     The source and target, as well as their attributes, of a [GtkConstraint]
     instance are immutable after creation. *)
+
+type t = [ `constraint_ | `object_ ] Gobject.obj
 
 external new_ :
   Constraint_target.t option ->

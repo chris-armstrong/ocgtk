@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RepeatNode: RepeatNode *)
 
-type t = [ `repeat_node | `render_node ] Gobject.obj
 (** A render node repeating its single child node. *)
+
+type t = [ `repeat_node | `render_node ] Gobject.obj
 
 external new_ :
   Ocgtk_graphene.Graphene.Wrappers.Rect.t ->

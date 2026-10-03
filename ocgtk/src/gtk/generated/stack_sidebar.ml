@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* StackSidebar: StackSidebar *)
 
-type t =
-  [ `stack_sidebar | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Uses a sidebar to switch between [GtkStack] pages.
 
     An example GtkStackSidebar
@@ -19,6 +17,9 @@ type t =
 
     When circumstances require it, [GtkStackSidebar] adds the .needs-attention
     style class to the widgets representing the stack pages. *)
+
+type t =
+  [ `stack_sidebar | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_stack_sidebar_new"
 (** Create a new StackSidebar *)

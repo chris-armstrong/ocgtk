@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DropTarget: DropTarget *)
 
-type t = [ `drop_target | `event_controller | `object_ ] Gobject.obj
 (** An event controller to receive Drag-and-Drop operations.
 
     The most basic way to use a [GtkDropTarget] to receive drops on a widget is
@@ -71,6 +70,8 @@ type t = [ `drop_target | `event_controller | `object_ ] Gobject.obj
     If you are not interested in receiving the drop, but just want to update UI
     state during a Drag-and-Drop operation (e.g. switching tabs), you can use
     [Gtk.DropControllerMotion]. *)
+
+type t = [ `drop_target | `event_controller | `object_ ] Gobject.obj
 
 external new_ : Gobject.Type.t -> Ocgtk_gdk.Gdk.dragaction -> t
   = "ml_gtk_drop_target_new"

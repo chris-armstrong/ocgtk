@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PrintContext: PrintContext *)
 
-type t = [ `print_context | `object_ ] Gobject.obj
 (** Encapsulates context information that is required when drawing pages for
     printing.
 
@@ -69,6 +68,8 @@ type t = [ `print_context | `object_ ] Gobject.obj
       g_object_unref (layout);
     }
     ]} *)
+
+type t = [ `print_context | `object_ ] Gobject.obj
 
 (* Methods *)
 

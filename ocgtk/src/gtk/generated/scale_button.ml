@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ScaleButton: ScaleButton *)
 
-type t = [ `scale_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Provides a button which pops up a scale widget.
 
     This kind of widget is commonly used for volume controls in multimedia
@@ -24,6 +23,8 @@ type t = [ `scale_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
     [GtkScaleButton] has a single CSS node with name scalebutton and [.scale]
     style class, and contains a [button] node with a [.toggle] style class. *)
+
+type t = [ `scale_button | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : float -> float -> float -> string array option -> t
   = "ml_gtk_scale_button_new"

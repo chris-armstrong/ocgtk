@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Entry: Entry *)
 
-type t = [ `entry | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** A single-line text entry widget.
 
     An example GtkEntry
@@ -86,6 +85,8 @@ type t = [ `entry | `widget | `initially_unowned | `object_ ] Gobject.obj
     {b Accessibility}
 
     [GtkEntry] uses the [Gtk.AccessibleRole.text_box] role. *)
+
+type t = [ `entry | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_entry_new"
 (** Create a new Entry *)

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* MediaFile: MediaFile *)
 
-type t = [ `media_file | `media_stream | `object_ ] Gobject.obj
 (** Implements the [GtkMediaStream] interface for files.
 
     This provides a simple way to play back video files with GTK.
@@ -10,6 +9,8 @@ type t = [ `media_file | `media_stream | `object_ ] Gobject.obj
     allow for external implementations using various media frameworks.
 
     GTK itself includes an implementation using GStreamer. *)
+
+type t = [ `media_file | `media_stream | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_media_file_new"
 (** Create a new MediaFile *)

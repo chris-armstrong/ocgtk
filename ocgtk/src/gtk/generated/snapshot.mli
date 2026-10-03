@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Snapshot: Snapshot *)
 
-type t = [ `snapshot | `object_ ] Gobject.obj
 (** Assists in creating [Gsk.RenderNode]s for widgets.
 
     It functions in a similar way to a cairo context, and maintains a stack of
@@ -14,6 +13,8 @@ type t = [ `snapshot | `object_ ] Gobject.obj
     The typical way to obtain a [GtkSnapshot] object is as an argument to the
     [Gtk.Widget.snapshot] vfunc. If you need to create your own [GtkSnapshot],
     use [Gtk.Snapshot.new]. *)
+
+type t = [ `snapshot | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_snapshot_new"
 (** Create a new Snapshot *)

@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PrintSetup: PrintSetup *)
 
-type t = [ `print_setup ] Gobject.obj
 (** An auxiliary object for printing that allows decoupling the setup from the
     printing.
 
@@ -13,6 +12,8 @@ type t = [ `print_setup ] Gobject.obj
     Applications may wish to store the page_setup and print_settings from the
     print setup and copy them to the PrintDialog if they want to keep using
     them. *)
+
+type t = [ `print_setup ] Gobject.obj
 
 (* Methods *)
 

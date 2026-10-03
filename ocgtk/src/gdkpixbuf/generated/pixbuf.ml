@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Pixbuf: Pixbuf *)
 
-type t = [ `pixbuf | `object_ ] Gobject.obj
 (** A pixel buffer.
 
     [GdkPixbuf] contains information about an image's pixel data, its color
@@ -129,6 +128,8 @@ type t = [ `pixbuf | `object_ ] Gobject.obj
     file formats. The formatted data can be written to a file or to a memory
     buffer. [GdkPixbuf] can also call a user-defined callback on the data, which
     allows to e.g. write the image to a socket or store it in a database. *)
+
+type t = [ `pixbuf | `object_ ] Gobject.obj
 
 external new_ : Gdkpixbuf_enums.colorspace -> bool -> int -> int -> int -> t
   = "ml_gdk_pixbuf_new"

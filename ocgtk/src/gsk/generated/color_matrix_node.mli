@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColorMatrixNode: ColorMatrixNode *)
 
-type t = [ `color_matrix_node | `render_node ] Gobject.obj
 (** A render node controlling the color matrix of its single child node. *)
+
+type t = [ `color_matrix_node | `render_node ] Gobject.obj
 
 external new_ :
   Render_node.t ->

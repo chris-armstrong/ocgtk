@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Icon: Icon *)
 
-type t = [ `icon ] Gobject.obj
 (** [GIcon] is a very minimal interface for icons. It provides functions for
     checking the equality of two icons, hashing of icons and serializing an icon
     to and from strings.
@@ -31,6 +30,8 @@ type t = [ `icon ] Gobject.obj
     [Gio.LoadableIcon]. Additionally, you must provide an implementation of
     [Gio.Icon.serialize] that gives a result that is understood by
     [Gio.Icon.deserialize], yielding one of the built-in icon types. *)
+
+type t = [ `icon ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gio_icon_from_gobject"
 

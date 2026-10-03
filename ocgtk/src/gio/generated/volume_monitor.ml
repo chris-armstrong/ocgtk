@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* VolumeMonitor: VolumeMonitor *)
 
-type t = [ `volume_monitor | `object_ ] Gobject.obj
 (** [GVolumeMonitor] is for listing the user interesting devices and volumes on
     the computer. In other words, what a file selector or file manager would
     show in a sidebar.
@@ -12,6 +11,8 @@ type t = [ `volume_monitor | `object_ ] Gobject.obj
 
     In order to receive updates about volumes and mounts monitored through GVFS,
     a main loop must be running. *)
+
+type t = [ `volume_monitor | `object_ ] Gobject.obj
 
 (* Methods *)
 

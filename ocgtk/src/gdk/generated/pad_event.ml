@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PadEvent: PadEvent *)
 
-type t = [ `pad_event | `event ] Gobject.obj
 (** An event related to a pad-based device. *)
+
+type t = [ `pad_event | `event ] Gobject.obj
 
 (* Methods *)
 

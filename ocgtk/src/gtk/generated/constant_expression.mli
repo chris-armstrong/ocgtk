@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ConstantExpression: ConstantExpression *)
 
-type t = [ `constant_expression | `expression ] Gobject.obj
 (** A constant value in a [GtkExpression]. *)
+
+type t = [ `constant_expression | `expression ] Gobject.obj
 
 external new_for_value : Gobject.Value.t -> t
   = "ml_gtk_constant_expression_new_for_value"

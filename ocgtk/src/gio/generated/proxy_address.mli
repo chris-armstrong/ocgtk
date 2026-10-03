@@ -1,10 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ProxyAddress: ProxyAddress *)
 
+(** A [Gio.InetSocketAddress] representing a connection via a proxy server. *)
+
 type t =
   [ `proxy_address | `inet_socket_address | `socket_address | `object_ ]
   Gobject.obj
-(** A [Gio.InetSocketAddress] representing a connection via a proxy server. *)
 
 external new_ :
   Inet_address.t ->

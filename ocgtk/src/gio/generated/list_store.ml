@@ -1,12 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ListStore: ListStore *)
 
-type t = [ `list_store | `object_ ] Gobject.obj
 (** [GListStore] is a simple implementation of [Gio.ListModel] that stores all
     items in memory.
 
     It provides insertions, deletions, and lookups in logarithmic time with a
     fast path for the common case of iterating the list linearly. *)
+
+type t = [ `list_store | `object_ ] Gobject.obj
 
 external new_ : Gobject.Type.t -> t = "ml_g_list_store_new"
 (** Create a new ListStore *)

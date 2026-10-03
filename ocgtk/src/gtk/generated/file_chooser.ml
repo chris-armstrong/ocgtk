@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileChooser: FileChooser *)
 
-type t = [ `file_chooser ] Gobject.obj
 (** [GtkFileChooser] is an interface that can be implemented by file selection
     widgets.
 
@@ -41,6 +40,8 @@ type t = [ `file_chooser ] Gobject.obj
     can have multiple options. If a choice has no option, it will be rendered as
     a check button with the given label; if a choice has options, it will be
     rendered as a combo box. *)
+
+type t = [ `file_chooser ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gtk_file_chooser_from_gobject"
 

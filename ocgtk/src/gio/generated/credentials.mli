@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Credentials: Credentials *)
 
-type t = [ `credentials | `object_ ] Gobject.obj
 (** The [GCredentials] type is a reference-counted wrapper for native
     credentials.
 
@@ -40,6 +39,8 @@ type t = [ `credentials | `object_ ] Gobject.obj
 
     Since GLib 2.72, on Windows, the native credentials may contain the PID of a
     process. This corresponds to [G_CREDENTIALS_TYPE_WIN32_PID]. *)
+
+type t = [ `credentials | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_g_credentials_new"
 (** Create a new Credentials *)

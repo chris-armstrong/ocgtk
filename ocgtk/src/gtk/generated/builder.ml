@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Builder: Builder *)
 
-type t = [ `builder | `object_ ] Gobject.obj
 (** Reads XML descriptions of a user interface and instantiates the described
     objects.
 
@@ -356,6 +355,8 @@ type t = [ `builder | `object_ ] Gobject.obj
     handlers to instance fields and function symbols.
 
     For more information, see the [GtkWidget] documentation for details. *)
+
+type t = [ `builder | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_builder_new"
 (** Create a new Builder *)

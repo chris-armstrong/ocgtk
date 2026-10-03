@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BuilderScope: BuilderScope *)
 
-type t = [ `builder_scope ] Gobject.obj
 (** Provides language binding support to [GtkBuilder].
 
     The goal of [GtkBuilderScope] is to look up programming-language-specific
@@ -19,6 +18,8 @@ type t = [ `builder_scope ] Gobject.obj
     If you implement [GtkBuilderScope] for a language binding, you may want to
     (partially) derive from or fall back to a [Gtk.BuilderCScope], as that class
     implements support for automatic lookups from C symbols. *)
+
+type t = [ `builder_scope ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t
   = "ml_gtk_builder_scope_from_gobject"

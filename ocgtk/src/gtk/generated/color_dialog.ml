@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColorDialog: ColorDialog *)
 
-type t = [ `color_dialog | `object_ ] Gobject.obj
 (** Asynchronous API to present a color chooser dialog.
 
     [GtkColorDialog] collects the arguments that are needed to present the
@@ -12,6 +11,8 @@ type t = [ `color_dialog | `object_ ] Gobject.obj
 
     See [Gtk.ColorDialogButton] for a convenient control that uses
     [GtkColorDialog] and presents the results. *)
+
+type t = [ `color_dialog | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_color_dialog_new"
 (** Create a new ColorDialog *)

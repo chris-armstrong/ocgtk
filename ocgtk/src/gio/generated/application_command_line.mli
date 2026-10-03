@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ApplicationCommandLine: ApplicationCommandLine *)
 
-type t = [ `application_command_line | `object_ ] Gobject.obj
 (** [GApplicationCommandLine] represents a command-line invocation of an
     application.
 
@@ -170,6 +169,8 @@ type t = [ `application_command_line | `object_ ] Gobject.obj
     The complete example can be found here:
     {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline3.c}gapplication-example-cmdline3.c}
 *)
+
+type t = [ `application_command_line | `object_ ] Gobject.obj
 
 (* Methods *)
 

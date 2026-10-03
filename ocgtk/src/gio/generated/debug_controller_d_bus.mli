@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DebugControllerDBus: DebugControllerDBus *)
 
-type t = [ `debug_controller_d_bus | `object_ ] Gobject.obj
 (** [GDebugControllerDBus] is an implementation of [Gio.DebugController] which
     exposes debug settings as a D-Bus object.
 
@@ -113,6 +112,8 @@ type t = [ `debug_controller_d_bus | `object_ ] Gobject.obj
         return polkit_authorization_result_get_is_authorized (auth_result);
       }
     ]} *)
+
+type t = [ `debug_controller_d_bus | `object_ ] Gobject.obj
 
 external new_ :
   D_bus_connection.t -> Cancellable.t option -> (t, GError.t) result

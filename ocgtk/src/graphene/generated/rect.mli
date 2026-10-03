@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Rect: Rect *)
 
-type t = [ `rect ] Gobject.obj
 (** The location and size of a rectangle region.
 
     The width and height of a #graphene_rect_t can be negative; for instance, a
@@ -14,6 +13,8 @@ type t = [ `rect ] Gobject.obj
     positive values. All functions taking a #graphene_rect_t as an argument will
     internally operate on a normalized copy; all functions returning a
     #graphene_rect_t will always return a normalized rectangle. *)
+
+type t = [ `rect ] Gobject.obj
 
 (* Methods *)
 

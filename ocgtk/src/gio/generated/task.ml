@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Task: Task *)
 
-type t = [ `task | `object_ ] Gobject.obj
 (** A [GTask] represents and manages a cancellable ‘task’.
 
     {b Asynchronous operations}
@@ -511,6 +510,8 @@ type t = [ `task | `object_ ] Gobject.obj
     - Keep iterating a main context in the main thread and defer dropping the
       reference to the source object to that main context when the task is
       finalized *)
+
+type t = [ `task | `object_ ] Gobject.obj
 
 (* Methods *)
 

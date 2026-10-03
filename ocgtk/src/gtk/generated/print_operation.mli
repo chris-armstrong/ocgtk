@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PrintOperation: PrintOperation *)
 
-type t = [ `print_operation | `object_ ] Gobject.obj
 (** High-level, portable printing API.
 
     It looks a bit different than other GTK dialogs such as the
@@ -62,6 +61,8 @@ type t = [ `print_operation | `object_ ] Gobject.obj
     [Gtk.PrintOperationPreview.end_preview] and
     [Gtk.PrintOperationPreview.is_selected] are useful when implementing a print
     preview. *)
+
+type t = [ `print_operation | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_print_operation_new"
 (** Create a new PrintOperation *)

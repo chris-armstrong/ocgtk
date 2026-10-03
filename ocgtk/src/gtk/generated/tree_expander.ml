@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreeExpander: TreeExpander *)
 
-type t =
-  [ `tree_expander | `widget | `initially_unowned | `object_ ] Gobject.obj
 (** Provides an expander for a tree-like list.
 
     It is typically placed as a bottommost child into a [GtkListView] to allow
@@ -77,6 +75,9 @@ type t =
 
     Since GTK 4.12, [GtkTreeExpander] uses the [Gtk.AccessibleRole.button] role.
     Toggling it will change the [GTK_ACCESSIBLE_STATE_EXPANDED] state. *)
+
+type t =
+  [ `tree_expander | `widget | `initially_unowned | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_tree_expander_new"
 (** Create a new TreeExpander *)

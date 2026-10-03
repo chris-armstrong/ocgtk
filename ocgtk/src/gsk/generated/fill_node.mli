@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FillNode: FillNode *)
 
-type t = [ `fill_node | `render_node ] Gobject.obj
 (** A render node filling the area given by [Gsk.Path] and [Gsk.FillRule] with
     the child node. *)
+
+type t = [ `fill_node | `render_node ] Gobject.obj
 
 external new_ :
   Render_node.t ->

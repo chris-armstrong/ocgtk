@@ -1,8 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GestureSingle: GestureSingle *)
 
-type t =
-  [ `gesture_single | `gesture | `event_controller | `object_ ] Gobject.obj
 (** A [GtkGesture] subclass optimized for singe-touch and mouse gestures.
 
     Under interaction, these gestures stick to the first interacting sequence,
@@ -15,6 +13,9 @@ type t =
     through [Gtk.GestureSingle.set_button], or react to any mouse button by
     setting it to 0. While the gesture is active, the button being currently
     pressed can be known through [Gtk.GestureSingle.get_current_button]. *)
+
+type t =
+  [ `gesture_single | `gesture | `event_controller | `object_ ] Gobject.obj
 
 (* Methods *)
 

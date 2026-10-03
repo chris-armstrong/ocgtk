@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Buildable: Buildable *)
 
-type t = [ `buildable ] Gobject.obj
 (** Allows objects to extend and customize deserialization from ui files.
 
     The [GtkBuildable] interface includes methods for setting names and
@@ -15,6 +14,8 @@ type t = [ `buildable ] Gobject.obj
     An object only needs to implement this interface if it needs to extend the
     [GtkBuilder] XML format or run any extra routines at deserialization time.
 *)
+
+type t = [ `buildable ] Gobject.obj
 
 external from_gobject : 'a Gobject.obj -> t = "ml_gtk_buildable_from_gobject"
 

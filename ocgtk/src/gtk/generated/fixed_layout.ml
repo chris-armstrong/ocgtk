@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FixedLayout: FixedLayout *)
 
-type t = [ `fixed_layout | `layout_manager | `object_ ] Gobject.obj
 (** Places child widgets at fixed positions.
 
     Most applications should never use this layout manager; fixed positioning
@@ -30,6 +29,8 @@ type t = [ `fixed_layout | `layout_manager | `object_ ] Gobject.obj
     Finally, fixed positioning makes it kind of annoying to add/remove UI
     elements, since you have to reposition all the other elements. This is a
     long-term maintenance problem for your application. *)
+
+type t = [ `fixed_layout | `layout_manager | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_fixed_layout_new"
 (** Create a new FixedLayout *)

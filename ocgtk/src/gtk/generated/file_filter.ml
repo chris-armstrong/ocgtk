@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileFilter: FileFilter *)
 
-type t = [ `file_filter | `filter | `object_ ] Gobject.obj
 (** Filters files by name or mime type.
 
     [GtkFileFilter] can be used to restrict the files being shown in a file
@@ -45,6 +44,8 @@ type t = [ `file_filter | `filter | `object_ ] Gobject.obj
       </suffixes>
     </object>
     ]} *)
+
+type t = [ `file_filter | `filter | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gtk_file_filter_new"
 (** Create a new FileFilter *)

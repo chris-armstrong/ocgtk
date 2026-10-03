@@ -1,7 +1,6 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PixbufLoader: PixbufLoader *)
 
-type t = [ `pixbuf_loader | `object_ ] Gobject.obj
 (** Incremental image loader.
 
     [GdkPixbufLoader] provides a way for applications to drive the process of
@@ -44,6 +43,8 @@ type t = [ `pixbuf_loader | `object_ ] Gobject.obj
     [GdkPixbuf.PixbufAnimation.get_iter] to get a
     [GdkPixbuf.PixbufAnimationIter] to retrieve the pixbuf for the desired time
     stamp. *)
+
+type t = [ `pixbuf_loader | `object_ ] Gobject.obj
 
 external new_ : unit -> t = "ml_gdk_pixbuf_loader_new"
 (** Create a new PixbufLoader *)
