@@ -84,7 +84,8 @@ let neutralise_comment_hazards s =
     else
       let pair =
         i + 1 < n
-        && ((s.[i] = '*' && s.[i + 1] = ')') || (s.[i] = '(' && s.[i + 1] = '*'))
+        && ((Char.equal s.[i] '*' && Char.equal s.[i + 1] ')')
+           || (Char.equal s.[i] '(' && Char.equal s.[i + 1] '*'))
       in
       if pair then (
         Buffer.add_char buf s.[i];
@@ -131,7 +132,7 @@ let render_with_fallbacks ctx (t : t) : string * fallback list =
               [] items
           in
           let len = Buffer.length buf in
-          if len > 0 && Buffer.nth buf (len - 1) = '\n' then
+          if len > 0 && Char.equal (Buffer.nth buf (len - 1)) '\n' then
             Buffer.truncate buf (len - 1);
           fbs
       | Code_block content ->

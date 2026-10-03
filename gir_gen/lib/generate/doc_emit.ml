@@ -25,7 +25,7 @@ let neutralise_quotes s =
   let buf = Buffer.create (String.length s + 8) in
   String.iteri
     (fun i c ->
-      if c <> '"' then Buffer.add_char buf c
+      if not (Char.equal c '"') then Buffer.add_char buf c
       else
         let opening =
           i = 0

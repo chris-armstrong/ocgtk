@@ -1088,7 +1088,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
                 ~records:gtk_records ~functions:[]
             in
             List.iter result.warnings ~f:(fun w -> eprintf "Warning: %s\n" w);
-            if result.ignored_entities <> [] then
+            if not (List.is_empty result.ignored_entities) then
               printf "Ignored %d entity(ies): %s\n"
                 (List.length result.ignored_entities)
                 (String.concat ~sep:", " result.ignored_entities);
@@ -1824,7 +1824,7 @@ let generate_overrides gir_file output_file =
             (fun m -> m.member_name)
             (fun m -> m.member_doc)
         in
-        if vs <> [] then Some (enm.enum_name, vs) else None)
+        if not (List.is_empty vs) then Some (enm.enum_name, vs) else None)
       enums
   in
   Buffer.add_string buf
@@ -1844,7 +1844,7 @@ let generate_overrides gir_file output_file =
             (fun f -> f.flag_name)
             (fun f -> f.flag_doc)
         in
-        if vs <> [] then Some (bf.bitfield_name, vs) else None)
+        if not (List.is_empty vs) then Some (bf.bitfield_name, vs) else None)
       bitfields
   in
   Buffer.add_string buf
@@ -1864,7 +1864,7 @@ let generate_overrides gir_file output_file =
             (fun f -> f.field_name)
             (fun f -> f.field_doc)
         in
-        if vs <> [] then Some (rec_.record_name, vs) else None)
+        if not (List.is_empty vs) then Some (rec_.record_name, vs) else None)
       records
   in
   Buffer.add_string buf
