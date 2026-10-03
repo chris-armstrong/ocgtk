@@ -74,8 +74,8 @@ external remove_rectangle : t -> int -> int -> int -> int -> unit
 
 external remove_range_closed : t -> int -> int -> unit
   = "ml_gtk_bitset_remove_range_closed"
-(** Removes the closed range \[[first], [last]], so [first], [last] and all
-values in between. [first] must be smaller than [last]. *)
+(** Removes the closed range \[[first], [last]\], so [first], [last] and all
+    values in between. [first] must be smaller than [last]. *)
 
 external remove_range : t -> int -> int -> unit = "ml_gtk_bitset_remove_range"
 (** Removes all values from [start] (inclusive) to [start] + [n_items]
@@ -158,8 +158,8 @@ external add_rectangle : t -> int -> int -> int -> int -> unit
 
 external add_range_closed : t -> int -> int -> unit
   = "ml_gtk_bitset_add_range_closed"
-(** Adds the closed range \[[first], [last]], so [first], [last] and all
-values in between. [first] must be smaller than [last]. *)
+(** Adds the closed range \[[first], [last]\], so [first], [last] and all values
+    in between. [first] must be smaller than [last]. *)
 
 external add_range : t -> int -> int -> unit = "ml_gtk_bitset_add_range"
 (** Adds all values from [start] (inclusive) to [start] + [n_items] (exclusive)

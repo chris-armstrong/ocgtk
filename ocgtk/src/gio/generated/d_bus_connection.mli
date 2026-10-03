@@ -97,52 +97,49 @@ external send_message_with_reply_sync :
   Cancellable.t option ->
   (D_bus_message.t * UInt32.t, GError.t) result
   = "ml_g_dbus_connection_send_message_with_reply_sync"
-(** Synchronously sends [message] to the peer represented by [connection]
-and blocks the calling thread until a reply is received or the
-timeout is reached. See g_dbus_connection_send_message_with_reply()
-for the asynchronous version of this method.
+(** Synchronously sends [message] to the peer represented by [connection] and
+    blocks the calling thread until a reply is received or the timeout is
+    reached. See g_dbus_connection_send_message_with_reply() for the
+    asynchronous version of this method.
 
-Unless [flags] contain the
-[G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL] flag, the serial number
-will be assigned by [connection] and set on [message] via
-g_dbus_message_set_serial(). If [out_serial] is not [NULL], then the
-serial number used will be written to this location prior to
-submitting the message to the underlying transport. While it has a [volatile]
-qualifier, this is a historical artifact and the argument passed to it should
-not be [volatile].
+    Unless [flags] contain the [G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL] flag,
+    the serial number will be assigned by [connection] and set on [message] via
+    g_dbus_message_set_serial(). If [out_serial] is not [NULL], then the serial
+    number used will be written to this location prior to submitting the message
+    to the underlying transport. While it has a [volatile] qualifier, this is a
+    historical artifact and the argument passed to it should not be [volatile].
 
-If [connection] is closed then the operation will fail with
-[G_IO_ERROR_CLOSED]. If [cancellable] is canceled, the operation will
-fail with [G_IO_ERROR_CANCELLED]. If [message] is not well-formed,
-the operation fails with [G_IO_ERROR_INVALID_ARGUMENT].
+    If [connection] is closed then the operation will fail with
+    [G_IO_ERROR_CLOSED]. If [cancellable] is canceled, the operation will fail
+    with [G_IO_ERROR_CANCELLED]. If [message] is not well-formed, the operation
+    fails with [G_IO_ERROR_INVALID_ARGUMENT].
 
-Note that [error] is only set if a local in-process error
-occurred. That is to say that the returned [GDBusMessage] object may
-be of type [G_DBUS_MESSAGE_TYPE_ERROR]. Use
-g_dbus_message_to_gerror() to transcode this to a [GError].
+    Note that [error] is only set if a local in-process error occurred. That is
+    to say that the returned [GDBusMessage] object may be of type
+    [G_DBUS_MESSAGE_TYPE_ERROR]. Use g_dbus_message_to_gerror() to transcode
+    this to a [GError].
 
-See this \[server][Gio.DBusConnection]
-and \[client][Gio.DBusConnection]
-for an example of how to use this low-level API to send and receive
-UNIX file descriptors.
+    See this \[server\][Gio.DBusConnection] and \[client\][Gio.DBusConnection]
+    for an example of how to use this low-level API to send and receive UNIX
+    file descriptors.
 
-Note that [message] must be unlocked, unless [flags] contain the
-[G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL] flag. *)
+    Note that [message] must be unlocked, unless [flags] contain the
+    [G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL] flag. *)
 
 external send_message_with_reply_finish :
   t -> Async_result.t -> (D_bus_message.t, GError.t) result
   = "ml_g_dbus_connection_send_message_with_reply_finish"
-(** Finishes an operation started with g_dbus_connection_send_message_with_reply().
+(** Finishes an operation started with
+    g_dbus_connection_send_message_with_reply().
 
-Note that [error] is only set if a local in-process error
-occurred. That is to say that the returned [GDBusMessage] object may
-be of type [G_DBUS_MESSAGE_TYPE_ERROR]. Use
-g_dbus_message_to_gerror() to transcode this to a [GError].
+    Note that [error] is only set if a local in-process error occurred. That is
+    to say that the returned [GDBusMessage] object may be of type
+    [G_DBUS_MESSAGE_TYPE_ERROR]. Use g_dbus_message_to_gerror() to transcode
+    this to a [GError].
 
-See this \[server][Gio.DBusConnection]
-and \[client][Gio.DBusConnection]
-for an example of how to use this low-level API to send and receive
-UNIX file descriptors. *)
+    See this \[server\][Gio.DBusConnection] and \[client\][Gio.DBusConnection]
+    for an example of how to use this low-level API to send and receive UNIX
+    file descriptors. *)
 
 external send_message :
   t ->
@@ -151,26 +148,23 @@ external send_message :
   (bool * UInt32.t, GError.t) result = "ml_g_dbus_connection_send_message"
 (** Asynchronously sends [message] to the peer represented by [connection].
 
-Unless [flags] contain the
-[G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL] flag, the serial number
-will be assigned by [connection] and set on [message] via
-g_dbus_message_set_serial(). If [out_serial] is not [NULL], then the
-serial number used will be written to this location prior to
-submitting the message to the underlying transport. While it has a [volatile]
-qualifier, this is a historical artifact and the argument passed to it should
-not be [volatile].
+    Unless [flags] contain the [G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL] flag,
+    the serial number will be assigned by [connection] and set on [message] via
+    g_dbus_message_set_serial(). If [out_serial] is not [NULL], then the serial
+    number used will be written to this location prior to submitting the message
+    to the underlying transport. While it has a [volatile] qualifier, this is a
+    historical artifact and the argument passed to it should not be [volatile].
 
-If [connection] is closed then the operation will fail with
-[G_IO_ERROR_CLOSED]. If [message] is not well-formed,
-the operation fails with [G_IO_ERROR_INVALID_ARGUMENT].
+    If [connection] is closed then the operation will fail with
+    [G_IO_ERROR_CLOSED]. If [message] is not well-formed, the operation fails
+    with [G_IO_ERROR_INVALID_ARGUMENT].
 
-See this \[server][Gio.DBusConnection]
-and \[client][Gio.DBusConnection]
-for an example of how to use this low-level API to send and receive
-UNIX file descriptors.
+    See this \[server\][Gio.DBusConnection] and \[client\][Gio.DBusConnection]
+    for an example of how to use this low-level API to send and receive UNIX
+    file descriptors.
 
-Note that [message] must be unlocked, unless [flags] contain the
-[G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL] flag. *)
+    Note that [message] must be unlocked, unless [flags] contain the
+    [G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL] flag. *)
 
 external remove_filter : t -> int -> unit = "ml_g_dbus_connection_remove_filter"
 (** Removes a filter.

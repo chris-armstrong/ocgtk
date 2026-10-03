@@ -108,15 +108,13 @@ external get_method_info : t -> D_bus_method_info.t option
 
 external get_message : t -> D_bus_message.t
   = "ml_g_dbus_method_invocation_get_message"
-(** Gets the [GDBusMessage] for the method invocation. This is useful if
-you need to use low-level protocol features, such as UNIX file
-descriptor passing, that cannot be properly expressed in the
-[GVariant] API.
+(** Gets the [GDBusMessage] for the method invocation. This is useful if you
+    need to use low-level protocol features, such as UNIX file descriptor
+    passing, that cannot be properly expressed in the [GVariant] API.
 
-See this \[server][Gio.DBusConnection]
-and \[client][Gio.DBusConnection]
-for an example of how to use this low-level API to send and receive
-UNIX file descriptors. *)
+    See this \[server\][Gio.DBusConnection] and \[client\][Gio.DBusConnection]
+    for an example of how to use this low-level API to send and receive UNIX
+    file descriptors. *)
 
 external get_interface_name : t -> string option
   = "ml_g_dbus_method_invocation_get_interface_name"

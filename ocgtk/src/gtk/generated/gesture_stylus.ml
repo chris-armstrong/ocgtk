@@ -36,17 +36,17 @@ external get_backlog :
   = "ml_gtk_gesture_stylus_get_backlog"
 (** Returns the accumulated backlog of tracking information.
 
-By default, GTK will limit rate of input events. On stylus input
-where accuracy of strokes is paramount, this function returns the
-accumulated coordinate/timing state before the emission of the
-current \[Gtk.GestureStylus::motion] signal.
+    By default, GTK will limit rate of input events. On stylus input where
+    accuracy of strokes is paramount, this function returns the accumulated
+    coordinate/timing state before the emission of the current
+    \[Gtk.GestureStylus::motion\] signal.
 
-This function may only be called within a [Gtk.GestureStylus::motion]
-signal handler, the state given in this signal and obtainable through
-[Gtk.GestureStylus.get_axis] express the latest (most up-to-date)
-state in motion history.
+    This function may only be called within a [Gtk.GestureStylus::motion] signal
+    handler, the state given in this signal and obtainable through
+    [Gtk.GestureStylus.get_axis] express the latest (most up-to-date) state in
+    motion history.
 
-The [backlog] is provided in chronological order. *)
+    The [backlog] is provided in chronological order. *)
 
 external get_axis : t -> Ocgtk_gdk.Gdk.axisuse -> bool * float
   = "ml_gtk_gesture_stylus_get_axis"

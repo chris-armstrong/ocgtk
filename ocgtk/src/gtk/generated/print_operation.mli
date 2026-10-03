@@ -144,59 +144,59 @@ external run :
   = "ml_gtk_print_operation_run"
 (** Runs the print operation.
 
-Normally that this function does not return until the rendering
-of all pages is complete. You can connect to the
-[Gtk.PrintOperation::status-changed] signal on [op] to obtain
-some information about the progress of the print operation.
+    Normally that this function does not return until the rendering of all pages
+    is complete. You can connect to the [Gtk.PrintOperation::status-changed]
+    signal on [op] to obtain some information about the progress of the print
+    operation.
 
-Furthermore, it may use a recursive mainloop to show the print dialog.
+    Furthermore, it may use a recursive mainloop to show the print dialog.
 
-If you set the \[Gtk.PrintOperation:allow-async] property, the operation
-will run asynchronously if this is supported on the platform. The
-[Gtk.PrintOperation::done] signal will be emitted with the result
-of the operation when the it is done (i.e. when the dialog is canceled,
-or when the print succeeds or fails).
+    If you set the \[Gtk.PrintOperation:allow-async\] property, the operation
+    will run asynchronously if this is supported on the platform. The
+    [Gtk.PrintOperation::done] signal will be emitted with the result of the
+    operation when the it is done (i.e. when the dialog is canceled, or when the
+    print succeeds or fails).
 
-{[
-if (settings != NULL)
-  gtk_print_operation_set_print_settings (print, settings);
+    {[
+    if (settings != NULL)
+      gtk_print_operation_set_print_settings (print, settings);
 
-if (page_setup != NULL)
-  gtk_print_operation_set_default_page_setup (print, page_setup);
+    if (page_setup != NULL)
+      gtk_print_operation_set_default_page_setup (print, page_setup);
 
-g_signal_connect (print, "begin-print",
-                  G_CALLBACK (begin_print), &data);
-g_signal_connect (print, "draw-page",
-                  G_CALLBACK (draw_page), &data);
+    g_signal_connect (print, "begin-print",
+                      G_CALLBACK (begin_print), &data);
+    g_signal_connect (print, "draw-page",
+                      G_CALLBACK (draw_page), &data);
 
-res = gtk_print_operation_run (print,
-                               GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
-                               parent,
-                               &error);
+    res = gtk_print_operation_run (print,
+                                   GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
+                                   parent,
+                                   &error);
 
-if (res == GTK_PRINT_OPERATION_RESULT_ERROR)
- {
-   error_dialog = gtk_message_dialog_new (GTK_WINDOW (parent),
-  			                     GTK_DIALOG_DESTROY_WITH_PARENT,
-					     GTK_MESSAGE_ERROR,
-					     GTK_BUTTONS_CLOSE,
-					     "Error printing file:\n%s",
-					     error->message);
-   g_signal_connect (error_dialog, "response",
-                     G_CALLBACK (gtk_window_destroy), NULL);
-   gtk_window_present (GTK_WINDOW (error_dialog));
-   g_error_free (error);
- }
-else if (res == GTK_PRINT_OPERATION_RESULT_APPLY)
- {
-   if (settings != NULL)
-g_object_unref (settings);
-   settings = g_object_ref (gtk_print_operation_get_print_settings (print));
- }
-]}
+    if (res == GTK_PRINT_OPERATION_RESULT_ERROR)
+     {
+       error_dialog = gtk_message_dialog_new (GTK_WINDOW (parent),
+      			                     GTK_DIALOG_DESTROY_WITH_PARENT,
+    					     GTK_MESSAGE_ERROR,
+    					     GTK_BUTTONS_CLOSE,
+    					     "Error printing file:\n%s",
+    					     error->message);
+       g_signal_connect (error_dialog, "response",
+                         G_CALLBACK (gtk_window_destroy), NULL);
+       gtk_window_present (GTK_WINDOW (error_dialog));
+       g_error_free (error);
+     }
+    else if (res == GTK_PRINT_OPERATION_RESULT_APPLY)
+     {
+       if (settings != NULL)
+    g_object_unref (settings);
+       settings = g_object_ref (gtk_print_operation_get_print_settings (print));
+     }
+    ]}
 
-Note that gtk_print_operation_run() can only be called once on a
-given [GtkPrintOperation]. *)
+    Note that gtk_print_operation_run() can only be called once on a given
+    [GtkPrintOperation]. *)
 
 external is_finished : t -> bool = "ml_gtk_print_operation_is_finished"
 (** A convenience function to find out if the print operation is finished.
