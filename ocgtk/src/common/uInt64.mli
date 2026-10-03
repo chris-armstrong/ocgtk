@@ -34,7 +34,7 @@ val mul : t -> t -> t
 
 val of_string : string -> t
 (** Parse a decimal (or 0x/0o/0b prefixed) unsigned integer.
-    @raise Invalid_argument if the string is not a valid unsigned integer. *)
+    Raises [Invalid_argument] if the string is not a valid unsigned integer. *)
 
 val to_string : t -> string
 (** Format as an unsigned decimal string. *)

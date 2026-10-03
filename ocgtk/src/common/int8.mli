@@ -19,7 +19,7 @@ type t = private int
 
 val of_int : int -> t
 (** [of_int n] converts [n] to an [Int8.t].
-    @raise Invalid_argument if [n < -128 || n > 127]. *)
+    Raises [Invalid_argument] if [n < -128 || n > 127]. *)
 
 val to_int : t -> int
 (** [to_int v] returns the underlying integer value. *)

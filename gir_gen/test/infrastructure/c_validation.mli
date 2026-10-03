@@ -29,7 +29,7 @@ val assert_local_include_exists : string -> string -> unit
     [assert_local_include_exists header_content expected_path] checks for an
     include directive like [#include "path"].
 
-    @raise Alcotest.Test_error if the include is not found *)
+    Raises [Alcotest.Test_error] if the include is not found *)
 
 val assert_local_include_not_exists : string -> string -> unit
 (** Assert that a local include directive does NOT exist in the header.
@@ -37,7 +37,7 @@ val assert_local_include_not_exists : string -> string -> unit
     [assert_local_include_not_exists header_content unexpected_path] checks that
     an include directive like [#include "path"] is NOT present.
 
-    @raise Alcotest.Test_error if the include is found *)
+    Raises [Alcotest.Test_error] if the include is found *)
 
 (** {1 Header Guard Parsing} *)
 
@@ -58,7 +58,7 @@ val assert_forward_decl_exists : string -> string -> string -> unit
     declarations like [prefix<c_type>] (e.g., [Val_GtkWrapMode] when
     prefix="Val_" and c_type="GtkWrapMode").
 
-    @raise Alcotest.Test_error if the declaration is not found *)
+    Raises [Alcotest.Test_error] if the declaration is not found *)
 
 val assert_forward_decl_not_exists : string -> string -> string -> unit
 (** Assert that a forward declaration does NOT exist in the header.
@@ -66,7 +66,7 @@ val assert_forward_decl_not_exists : string -> string -> string -> unit
     [assert_forward_decl_not_exists header_content c_type prefix] ensures that
     macro declarations like [prefix<c_type>] are NOT present in the header.
 
-    @raise Alcotest.Test_error if the declaration is found *)
+    Raises [Alcotest.Test_error] if the declaration is found *)
 
 val assert_header_guard_format : string -> string -> unit
 (** Assert that a header guard exists with the expected pattern.
@@ -75,7 +75,7 @@ val assert_header_guard_format : string -> string -> unit
     the header contains a complete guard (ifndef/define/endif) where the guard
     name ends with [expected_pattern].
 
-    @raise Alcotest.Test_error
+    Raises [Alcotest.Test_error]
       if no matching guard is found or if it's incomplete *)
 
 (** {1 Copy Function Declarations} *)
@@ -87,7 +87,7 @@ val assert_copy_func_decl_exists : string -> string -> unit
     [value copy_<c_type>(] declaration line in the header, which is the
     prototype for a value-like record's copy helper.
 
-    @raise Alcotest.Test_error if the declaration is not found *)
+    Raises [Alcotest.Test_error] if the declaration is not found *)
 
 (** {1 Conditional Compilation Guards} *)
 
@@ -99,7 +99,7 @@ val assert_conditional_guard_exists : string -> string -> unit
     the conditional block may protect something other than [guard_name], so only
     the presence of [#ifndef] is required.
 
-    @raise Alcotest.Test_error if the guard is not found *)
+    Raises [Alcotest.Test_error] if the guard is not found *)
 
 val assert_conditional_guard_not_exists : string -> string -> unit
 (** Assert that a conditional compilation guard does NOT exist.
@@ -107,7 +107,7 @@ val assert_conditional_guard_not_exists : string -> string -> unit
     [assert_conditional_guard_not_exists header_content guard_name] checks that
     no [#ifndef GUARD_NAME] directive is present in the header.
 
-    @raise Alcotest.Test_error if [#ifndef GUARD_NAME] is present *)
+    Raises [Alcotest.Test_error] if [#ifndef GUARD_NAME] is present *)
 
 val extract_conditional_guard_content : string -> string -> string
 (** Extract the content between a conditional compilation guard's [#ifndef] and

@@ -21,7 +21,7 @@ type t = private int
 
 val of_int : int -> t
 (** [of_int n] converts [n] to a [UInt32.t].
-    @raise Invalid_argument if [n < 0 || n > 4294967295]. *)
+    Raises [Invalid_argument] if [n < 0 || n > 4294967295]. *)
 
 val to_int : t -> int
 (** [to_int v] returns the underlying integer value. *)
@@ -43,8 +43,8 @@ val max_value : int
 
 val of_string : string -> t
 (** Parse a decimal integer string into a [UInt32.t].
-    @raise Failure if the string is not a valid integer.
-    @raise Invalid_argument if the value is out of [[0, 4294967295]]. *)
+    Raises [Failure] if the string is not a valid integer.
+    Raises [Invalid_argument] if the value is out of [[0, 4294967295]]. *)
 
 val to_string : t -> string
 (** Format as a decimal string. *)

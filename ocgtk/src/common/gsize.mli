@@ -19,7 +19,7 @@ type t = private int
 
 val of_int : int -> t
 (** [of_int n] is [n] as a [gsize].
-    @raise Invalid_argument if [n < 0]. *)
+    Raises [Invalid_argument] if [n < 0]. *)
 
 val to_int : t -> int
 (** [to_int v] returns the underlying integer value. *)
