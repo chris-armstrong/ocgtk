@@ -79,21 +79,17 @@ let test_doc_wins_over_fallback () =
 
 let test_translation_applied () =
   let got = member (Some "Some **bold** text.") in
-  match got with
-  | Some s ->
+  Helpers.expect_some "expected a comment" got (fun s ->
       Alcotest.(check bool)
         "bold markup translated to odoc" true
-        (Helpers.string_contains s "{b bold}")
-  | None -> Alcotest.fail "expected a comment"
+        (Helpers.string_contains s "{b bold}"))
 
 let test_member_heading_policy () =
   let got = member (Some "# Title\n\nBody.") in
-  match got with
-  | Some s ->
+  Helpers.expect_some "expected a comment" got (fun s ->
       Alcotest.(check bool)
         "member heading is a bold lead-in, not a section" true
-        (Helpers.string_contains s "{b Title}")
-  | None -> Alcotest.fail "expected a comment"
+        (Helpers.string_contains s "{b Title}"))
 
 (* ---------- tags last ------------------------------------------------- *)
 
@@ -101,8 +97,8 @@ let test_member_heading_policy () =
    literal [@] in prose is escaped. Either way no bare upstream [@] can
    start a tag, and the real [@since] comes last. *)
 let test_tags_come_last () =
-  match member ~since:"4.14" (Some "Uses @self and @Widget here.") with
-  | Some s ->
+  let got = member ~since:"4.14" (Some "Uses @self and @Widget here.") in
+  Helpers.expect_some "expected a comment" got (fun s ->
       Alcotest.(check bool)
         "param sigil becomes a code span" true
         (Helpers.string_contains s "[self]");
@@ -114,8 +110,7 @@ let test_tags_come_last () =
         "escaped prose precedes the real tag" true
         (index_of s "\\@Widget" < index_of s "@since");
       Alcotest.(check int)
-        "exactly one real @since tag" 1 (count_sub s "@since")
-  | None -> Alcotest.fail "expected a comment"
+        "exactly one real @since tag" 1 (count_sub s "@since"))
 
 (* ---------- comment safety -------------------------------------------- *)
 
@@ -126,24 +121,24 @@ let assert_single_terminator msg s =
   Alcotest.(check int) msg 1 (count_sub s "*)")
 
 let test_terminator_in_prose () =
-  match member (Some "Ends with *) and opens (* here.") with
-  | Some s -> assert_single_terminator "prose terminator neutralised" s
-  | None -> Alcotest.fail "expected a comment"
+  Helpers.expect_some "expected a comment"
+    (member (Some "Ends with *) and opens (* here."))
+    (assert_single_terminator "prose terminator neutralised")
 
 let test_terminator_in_code_span () =
-  match member (Some "Use [a *) b] here.") with
-  | Some s -> assert_single_terminator "terminator in a code span neutralised" s
-  | None -> Alcotest.fail "expected a comment"
+  Helpers.expect_some "expected a comment"
+    (member (Some "Use [a *) b] here."))
+    (assert_single_terminator "terminator in a code span neutralised")
 
 let test_terminator_in_fallback () =
-  match member ~fallback:"[*)]" None with
-  | Some s -> assert_single_terminator "fallback neutralised" s
-  | None -> Alcotest.fail "expected a comment"
+  Helpers.expect_some "expected a comment"
+    (member ~fallback:"[*)]" None)
+    (assert_single_terminator "fallback neutralised")
 
 let test_terminator_in_code_block () =
-  match member (Some "Example:\n\n```\nlet x = (* a *) 1 *)\n```") with
-  | Some s -> assert_single_terminator "code block terminator neutralised" s
-  | None -> Alcotest.fail "expected a comment"
+  Helpers.expect_some "expected a comment"
+    (member (Some "Example:\n\n```\nlet x = (* a *) 1 *)\n```"))
+    (assert_single_terminator "code block terminator neutralised")
 
 (* ---------- quotes ---------------------------------------------------- *)
 
@@ -157,9 +152,9 @@ let test_quotes_typographic () =
 let test_no_ascii_quote_survives () =
   (* An even count of quotes can still leave a string open for the lexer
      (backslash-quoted words in GIR examples), so no ASCII quote may survive. *)
-  match member (Some "Example \\\"\"$(dir)/x\"\\ end.") with
-  | Some s -> Alcotest.(check int) "no ASCII quote left" 0 (count_sub s "\"")
-  | None -> Alcotest.fail "expected a comment"
+  Helpers.expect_some "expected a comment"
+    (member (Some "Example \\\"\"$(dir)/x\"\\ end.")) (fun s ->
+      Alcotest.(check int) "no ASCII quote left" 0 (count_sub s "\""))
 
 (* ---------- suite ----------------------------------------------------- *)
 

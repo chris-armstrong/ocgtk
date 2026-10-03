@@ -145,17 +145,14 @@ let generate_c_enum_converters ~namespace ~class_version enum =
       ~f:(fun i enum_member ->
         let variant_name = variant_name_of_member enum_member.member_name in
         let fallback_line =
-          match enum_member.member_version with
-          | None -> None
-          | Some v_str ->
-              let msg =
-                sprintf
-                  "  %sif (val == caml_hash_variant(\"%s\")) \
-                   caml_failwith(\"%s.%s requires %s\");"
-                  (if i = 0 then "" else "else ")
-                  variant_name enum.enum_c_type variant_name v_str
-              in
-              Some msg
+          Option.map
+            (fun v_str ->
+              sprintf
+                "  %sif (val == caml_hash_variant(\"%s\")) \
+                 caml_failwith(\"%s.%s requires %s\");"
+                (if i = 0 then "" else "else ")
+                variant_name enum.enum_c_type variant_name v_str)
+            enum_member.member_version
         in
         let branch_line =
           sprintf
@@ -243,17 +240,14 @@ let generate_c_bitfield_converters ~namespace ~class_version bitfield =
       ~f:(fun i flag ->
         let variant_name = variant_name_of_member flag.flag_name in
         let fallback_line =
-          match flag.flag_version with
-          | None -> None
-          | Some v_str ->
-              let msg =
-                sprintf
-                  "    %sif (tag == caml_hash_variant(\"%s\")) \
-                   caml_failwith(\"%s.%s requires %s\");"
-                  (if i = 0 then "" else "else ")
-                  variant_name bitfield.bitfield_c_type variant_name v_str
-              in
-              Some msg
+          Option.map
+            (fun v_str ->
+              sprintf
+                "    %sif (tag == caml_hash_variant(\"%s\")) \
+                 caml_failwith(\"%s.%s requires %s\");"
+                (if i = 0 then "" else "else ")
+                variant_name bitfield.bitfield_c_type variant_name v_str)
+            flag.flag_version
         in
         let branch_line =
           sprintf

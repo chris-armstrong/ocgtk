@@ -218,14 +218,13 @@ let gtype_macro_from_get_type get_type_fn =
     else get_type_fn
   in
   let screaming = String.uppercase_ascii name in
-  match String.index_opt screaming '_' with
-  | None -> screaming
-  | Some i ->
+  Option.fold ~none:screaming ~some:(fun i ->
       let prefix = String.sub screaming ~pos:0 ~len:i in
       let rest =
         String.sub screaming ~pos:(i + 1) ~len:(String.length screaming - i - 1)
       in
-      prefix ^ "_TYPE_" ^ rest
+      prefix ^ "_TYPE_" ^ rest)
+  @@ String.index_opt screaming '_'
 
 let generate_from_gobject_stub ~namespace_name (intf : gir_interface) =
   match (intf.glib_type_name, intf.glib_get_type) with
@@ -243,9 +242,10 @@ let generate_from_gobject_stub ~namespace_name (intf : gir_interface) =
       (* Prefer deriving the GType macro from glib:get-type (already snake_case)
          to avoid to_snake_case mishandling acronym-heavy names like GDBusInterface *)
       let gtype_macro =
-        match get_type_opt with
-        | Some get_type_fn -> gtype_macro_from_get_type get_type_fn
-        | None -> Gir_gen_lib.Utils.gtype_macro_of_type_name type_name
+        Option.fold
+          ~none:(Gir_gen_lib.Utils.gtype_macro_of_type_name type_name)
+          ~some:gtype_macro_from_get_type
+        @@ get_type_opt
       in
       sprintf
         {|CAMLexport CAMLprim value %s(value obj)
@@ -486,9 +486,9 @@ let generate_c_stub ~ctx ~output_dir entity =
 
     (* Apply OS guard (outer) wrapping the version-guarded content *)
     let version_guarded = Buffer.contents version_buf in
-    (match entity.os with
-    | None -> Buffer.add_string buf version_guarded
-    | Some os_val ->
+    Option.fold
+      ~none:(Buffer.add_string buf version_guarded)
+      ~some:(fun os_val ->
         (* Generate OS-fallback stubs for the #else branch *)
         let os_fallback_buf = Buffer.create 2048 in
         List.iter
@@ -570,7 +570,8 @@ let generate_c_stub ~ctx ~output_dir entity =
         Buffer.add_char buf '\n';
         Buffer.add_string buf
           (Gir_gen_lib.Generate.C_stub_helpers.os_to_c_guard_close os_val);
-        Buffer.add_char buf '\n');
+        Buffer.add_char buf '\n')
+      entity.os;
 
     write_file ~path:c_file ~content:(Buffer.contents buf);
     Some stub_name
@@ -867,6 +868,21 @@ let generate_cyclic_shim_files ~ctx ~output_dir ~combined_module_name ~entity =
   write_file ~path:shim_file ~content:ml_content;
   write_file ~path:shim_sig_file ~content:mli_content
 
+(* Wrap C converters in the namespace version guard when the entity is versioned *)
+let guard_converters ~namespace_name version_opt converters =
+  Option.fold ~none:converters
+    ~some:(fun version_str ->
+      match Gir_gen_lib.Version_guard.parse_version version_str with
+      | Error _ -> converters
+      | Ok version -> (
+          match
+            Gir_gen_lib.Version_guard.emit_c_guard namespace_name version
+              ~is_opening:true
+          with
+          | Error _ -> converters
+          | Ok guard_if -> guard_if ^ "\n" ^ converters ^ "#endif\n\n"))
+    version_opt
+
 (* Generate enum and bitfield files for a namespace *)
 let generate_enum_files ~output_dir ~generated_stubs namespace enums bitfields =
   if List.length enums = 0 && List.length bitfields = 0 then ()
@@ -945,19 +961,8 @@ let generate_enum_files ~output_dir ~generated_stubs namespace enums bitfields =
               Gir_gen_lib.Generate.Enum_code.generate_c_enum_converters
                 ~namespace:namespace.name ~class_version:enum.enum_version enum
             in
-            match enum.enum_version with
-            | None -> converters
-            | Some version_str -> (
-                match Gir_gen_lib.Version_guard.parse_version version_str with
-                | Error _ -> converters
-                | Ok version -> (
-                    match
-                      Gir_gen_lib.Version_guard.emit_c_guard namespace.name
-                        version ~is_opening:true
-                    with
-                    | Error _ -> converters
-                    | Ok guard_if -> guard_if ^ "\n" ^ converters ^ "#endif\n\n"
-                    )))
+            guard_converters ~namespace_name:namespace.name enum.enum_version
+              converters)
           enums
       @ List.map
           ~f:(fun (bitfield : gir_bitfield) ->
@@ -966,19 +971,8 @@ let generate_enum_files ~output_dir ~generated_stubs namespace enums bitfields =
                 ~namespace:namespace.name
                 ~class_version:bitfield.bitfield_version bitfield
             in
-            match bitfield.bitfield_version with
-            | None -> converters
-            | Some version_str -> (
-                match Gir_gen_lib.Version_guard.parse_version version_str with
-                | Error _ -> converters
-                | Ok version -> (
-                    match
-                      Gir_gen_lib.Version_guard.emit_c_guard namespace.name
-                        version ~is_opening:true
-                    with
-                    | Error _ -> converters
-                    | Ok guard_if -> guard_if ^ "\n" ^ converters ^ "#endif\n\n"
-                    )))
+            guard_converters ~namespace_name:namespace.name
+              bitfield.bitfield_version converters)
           bitfields
     in
     write_file ~path:c_file ~content:(String.concat ~sep:"" c_content_parts);
@@ -1028,13 +1022,12 @@ let generate_bindings filter_file gir_file output_dir reference_files
 
   (* Read filter file if specified *)
   let filter_classes =
-    match filter_file with
-    | Some f ->
+    Option.fold ~none:[] ~some:(fun f ->
         printf "Reading filter file: %s\n" f;
         let classes = Gir_gen_lib.Utils.read_filter_file f in
         printf "Filter includes %d classes\n" (List.length classes);
-        classes
-    | None -> []
+        classes)
+    @@ filter_file
   in
 
   (* ==== PARSING STAGE ==== *)
@@ -1069,9 +1062,9 @@ let generate_bindings filter_file gir_file output_dir reference_files
         gtk_bitfields,
         gtk_records,
         header_overrides ) =
-    match overrides_file with
-    | None -> (classes, interfaces, gtk_enums, gtk_bitfields, gtk_records, [])
-    | Some file -> (
+    Option.fold
+      ~none:(classes, interfaces, gtk_enums, gtk_bitfields, gtk_records, [])
+      ~some:(fun file ->
         printf "Loading overrides from %s\n" file;
         match Gir_gen_lib.Override_parser.parse_overrides file with
         | Error e ->
@@ -1097,6 +1090,7 @@ let generate_bindings filter_file gir_file output_dir reference_files
               result.bitfields,
               result.records,
               ov.headers ))
+    @@ overrides_file
   in
 
   (* ==== PREPROCESSING STAGE ==== *)
@@ -1141,29 +1135,29 @@ let generate_bindings filter_file gir_file output_dir reference_files
         let qualified = ns ^ "." ^ name in
         match List.assoc_opt name gobject_known_classes with
         | Some (Some parent) -> qualified :: aux ns parent (depth + 1)
-        | Some None -> [ qualified ] (* root class *)
-        | None -> [ qualified ] (* unknown GObject class, treat as terminal *)
+        | Some None | None -> [ qualified ] (* root, or unknown: terminal *)
       else
-        match StringMap.find_opt ns cross_references with
-        | None -> [ ns ^ "." ^ name ]
-        | Some ncr -> (
-            match StringMap.find_opt name ncr.ncr_entities with
-            | None -> [ ns ^ "." ^ name ]
-            | Some cr -> (
-                let qualified = ns ^ "." ^ name in
-                match cr.cr_type with
-                | Crt_Class { parent = Some p; _ } ->
-                    if String.contains p '.' then
-                      let dot = String.rindex p '.' in
-                      let p_ns = String.sub p ~pos:0 ~len:dot in
-                      let p_name =
-                        String.sub p ~pos:(dot + 1)
-                          ~len:(String.length p - dot - 1)
-                      in
-                      qualified :: aux p_ns p_name (depth + 1)
-                    else qualified :: aux ns p (depth + 1)
-                | Crt_Class { parent = None; _ } -> [ qualified ]
-                | _ -> [ qualified ]))
+        let entity =
+          Option.bind (StringMap.find_opt ns cross_references) (fun ncr ->
+              StringMap.find_opt name ncr.ncr_entities)
+        in
+        Option.fold
+          ~none:[ ns ^ "." ^ name ]
+          ~some:(fun cr ->
+            let qualified = ns ^ "." ^ name in
+            match cr.cr_type with
+            | Crt_Class { parent = Some p; _ } ->
+                if String.contains p '.' then
+                  let dot = String.rindex p '.' in
+                  let p_ns = String.sub p ~pos:0 ~len:dot in
+                  let p_name =
+                    String.sub p ~pos:(dot + 1) ~len:(String.length p - dot - 1)
+                  in
+                  qualified :: aux p_ns p_name (depth + 1)
+                else qualified :: aux ns p (depth + 1)
+            | Crt_Class { parent = None; _ } -> [ qualified ]
+            | _ -> [ qualified ])
+          entity
     in
     aux ns name 0
   in
@@ -1530,9 +1524,8 @@ let generate_references gir_file output_file overrides_file =
 
   (* Apply overrides to filter ignored entities from references *)
   let classes, interfaces, enums, bitfields, records =
-    match overrides_file with
-    | None -> (classes, interfaces, enums, bitfields, records)
-    | Some file -> (
+    Option.fold ~none:(classes, interfaces, enums, bitfields, records)
+      ~some:(fun file ->
         printf "Loading overrides from %s\n" file;
         match Gir_gen_lib.Override_parser.parse_overrides file with
         | Error e ->
@@ -1552,6 +1545,7 @@ let generate_references gir_file output_file overrides_file =
               result.enums,
               result.bitfields,
               result.records ))
+    @@ overrides_file
   in
 
   printf "References will be written to: %s\n" output_file;
@@ -1632,12 +1626,14 @@ let render_version_component ~kind (name : string) (version : string) =
 
 (* Render a single component override back to human-friendly sexp. *)
 let render_component ~kind (c : Gir_gen_lib.Override_types.component_override) =
-  match c.action with
-  | Some Gir_gen_lib.Override_types.Ignore ->
-      sprintf "    (%s %s (ignore))" kind c.component_name
-  | Some (Gir_gen_lib.Override_types.Set_version vs) ->
-      sprintf "    (%s %s (version \"%s\"))" kind c.component_name vs.vs_version
-  | None -> sprintf "    (%s %s)" kind c.component_name
+  Option.fold ~none:(sprintf "    (%s %s)" kind c.component_name)
+    ~some:(function
+    | Gir_gen_lib.Override_types.Ignore ->
+        sprintf "    (%s %s (ignore))" kind c.component_name
+    | Gir_gen_lib.Override_types.Set_version vs ->
+        sprintf "    (%s %s (version \"%s\"))" kind c.component_name
+          vs.vs_version)
+  @@ c.action
 
 (* Render an enum override entry, merging existing ignores with fresh version data.
    [ignore_components]: component-level ignores to preserve from the existing file.
@@ -1685,9 +1681,7 @@ let merge_version_entities ~entity_kind ~component_kind ~existing ~gir_versions
           existing
       in
       let entity_action, ignore_components =
-        match existing_ov with
-        | None -> (None, [])
-        | Some ov ->
+        Option.fold ~none:(None, []) ~some:(fun ov ->
             let ignores =
               List.filter
                 ~f:(fun (c : Gir_gen_lib.Override_types.component_override) ->
@@ -1697,7 +1691,8 @@ let merge_version_entities ~entity_kind ~component_kind ~existing ~gir_versions
                       false)
                 (get_components ov)
             in
-            (get_entity_action ov, ignores)
+            (get_entity_action ov, ignores))
+        @@ existing_ov
       in
       bprintf buf "%s\n"
         (render_enum_entry entity_kind component_kind entity_name entity_action
@@ -1723,12 +1718,8 @@ let merge_version_entities ~entity_kind ~component_kind ~existing ~gir_versions
 let member_versions_from_docs members get_name get_doc =
   List.filter_map
     ~f:(fun m ->
-      match get_doc m with
-      | None -> None
-      | Some doc -> (
-          match extract_since_version doc with
-          | None -> None
-          | Some v -> Some (get_name m, v)))
+      Option.bind (get_doc m) @@ fun doc ->
+      Option.map (fun v -> (get_name m, v)) @@ extract_since_version doc)
     members
 
 (* Generate overrides sexp file from parsed GIR data, merging with any existing file.

@@ -5,9 +5,9 @@
    because the two render [@since] differently (see [item_doc]). *)
 let prose_of ~context doc fallback =
   let translated =
-    match doc with
-    | None -> ""
-    | Some raw -> String.trim (Doc_translate.translate context raw)
+    Option.fold ~none:""
+      ~some:(fun raw -> String.trim (Doc_translate.translate context raw))
+      doc
   in
   if not (String.equal translated "") then Some (translated, false)
   else

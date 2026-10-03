@@ -27,9 +27,8 @@ let ocaml_type_of_gir_type_name type_name =
         Some t
     | _ -> None
   in
-  match List.assoc_opt type_name Type_mappings.type_mappings with
-  | Some tm -> serializable tm.ocaml_type
-  | None -> None
+  Option.bind (List.assoc_opt type_name Type_mappings.type_mappings) (fun tm ->
+      serializable tm.ocaml_type)
 
 (** Serialize a constant value string to an OCaml literal or construction
     expression for [ocaml_type]. *)
