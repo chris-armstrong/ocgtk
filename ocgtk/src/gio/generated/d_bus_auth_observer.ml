@@ -11,11 +11,12 @@ external new_ : unit -> t = "ml_g_dbus_auth_observer_new"
 external authorize_authenticated_peer :
   t -> Io_stream.t -> Credentials.t option -> bool
   = "ml_g_dbus_auth_observer_authorize_authenticated_peer"
-(** Emits the #GDBusAuthObserver::authorize-authenticated-peer signal on @observer. *)
+(** Emits the [GDBusAuthObserver::authorize]-authenticated-peer signal on
+    [observer]. *)
 
 external allow_mechanism : t -> string -> bool
   = "ml_g_dbus_auth_observer_allow_mechanism"
-(** Emits the #GDBusAuthObserver::allow-mechanism signal on @observer. *)
+(** Emits the [GDBusAuthObserver::allow]-mechanism signal on [observer]. *)
 
 let on_allow_mechanism ?after obj ~callback =
   let closure =

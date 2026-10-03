@@ -15,7 +15,7 @@ external get_volumes : t -> App_info_cycle_64c425a0.Volume.t list
 external get_volume_for_uuid :
   t -> string -> App_info_cycle_64c425a0.Volume.t option
   = "ml_g_volume_monitor_get_volume_for_uuid"
-(** Finds a #GVolume object by its UUID (see g_volume_get_uuid()) *)
+(** Finds a [GVolume] object by its UUID (see g_volume_get_uuid()) *)
 
 external get_mounts : t -> App_info_cycle_64c425a0.Mount.t list
   = "ml_g_volume_monitor_get_mounts"
@@ -27,7 +27,7 @@ external get_mounts : t -> App_info_cycle_64c425a0.Mount.t list
 external get_mount_for_uuid :
   t -> string -> App_info_cycle_64c425a0.Mount.t option
   = "ml_g_volume_monitor_get_mount_for_uuid"
-(** Finds a #GMount object by its UUID (see g_mount_get_uuid()) *)
+(** Finds a [GMount] object by its UUID (see g_mount_get_uuid()) *)
 
 external get_connected_drives : t -> App_info_cycle_64c425a0.Drive.t list
   = "ml_g_volume_monitor_get_connected_drives"

@@ -16,24 +16,24 @@ external new_with_area :
 external set_text_column : t -> int -> unit
   = "ml_gtk_entry_completion_set_text_column"
 (** Convenience function for setting up the most used case of this code: a
-completion list with just strings.
+    completion list with just strings.
 
-This function will set up @completion
-to have a list displaying all (and just) strings in the completion list,
-and to get those strings from @column in the model of @completion.
+    This function will set up [completion] to have a list displaying all (and
+    just) strings in the completion list, and to get those strings from [column]
+    in the model of [completion].
 
-This functions creates and adds a `GtkCellRendererText` for the selected
-column. If you need to set the text column, but don't want the cell
-renderer, use g_object_set() to set the
-[property@Gtk.EntryCompletion:text-column] property directly. *)
+    This functions creates and adds a [GtkCellRendererText] for the selected
+    column. If you need to set the text column, but don't want the cell
+    renderer, use g_object_set() to set the [Gtk.EntryCompletion:text-column]
+    property directly. *)
 
 external set_popup_single_match : t -> bool -> unit
   = "ml_gtk_entry_completion_set_popup_single_match"
 (** Sets whether the completion popup window will appear even if there is only a
     single match.
 
-    You may want to set this to %FALSE if you are using
-    [property@Gtk.EntryCompletion:inline-completion]. *)
+    You may want to set this to [FALSE] if you are using
+    [Gtk.EntryCompletion:inline-completion]. *)
 
 external set_popup_set_width : t -> bool -> unit
   = "ml_gtk_entry_completion_set_popup_set_width"
@@ -46,20 +46,19 @@ external set_popup_completion : t -> bool -> unit
 
 external set_model : t -> Tree_model.t option -> unit
   = "ml_gtk_entry_completion_set_model"
-(** Sets the model for a `GtkEntryCompletion`.
+(** Sets the model for a [GtkEntryCompletion].
 
-If @completion already has a model set, it will remove it
-before setting the new model. If model is %NULL, then it
-will unset the model. *)
+    If [completion] already has a model set, it will remove it before setting
+    the new model. If model is [NULL], then it will unset the model. *)
 
 external set_minimum_key_length : t -> int -> unit
   = "ml_gtk_entry_completion_set_minimum_key_length"
-(** Requires the length of the search key for @completion to be at least
-@length.
+(** Requires the length of the search key for [completion] to be at least
+    [length].
 
-This is useful for long lists, where completing using a small
-key takes a lot of time and will come up with meaningless results anyway
-(ie, a too large dataset). *)
+    This is useful for long lists, where completing using a small key takes a
+    lot of time and will come up with meaningless results anyway (ie, a too
+    large dataset). *)
 
 external set_inline_selection : t -> bool -> unit
   = "ml_gtk_entry_completion_set_inline_selection"
@@ -75,7 +74,7 @@ external insert_prefix : t -> unit = "ml_gtk_entry_completion_insert_prefix"
 (** Requests a prefix insertion. *)
 
 external get_text_column : t -> int = "ml_gtk_entry_completion_get_text_column"
-(** Returns the column in the model of @completion to get strings from. *)
+(** Returns the column in the model of [completion] to get strings from. *)
 
 external get_popup_single_match : t -> bool
   = "ml_gtk_entry_completion_get_popup_single_match"
@@ -93,17 +92,17 @@ external get_popup_completion : t -> bool
 
 external get_model : t -> Tree_model.t option
   = "ml_gtk_entry_completion_get_model"
-(** Returns the model the `GtkEntryCompletion` is using as data source.
+(** Returns the model the [GtkEntryCompletion] is using as data source.
 
-    Returns %NULL if the model is unset. *)
+    Returns [NULL] if the model is unset. *)
 
 external get_minimum_key_length : t -> int
   = "ml_gtk_entry_completion_get_minimum_key_length"
-(** Returns the minimum key length as set for @completion. *)
+(** Returns the minimum key length as set for [completion]. *)
 
 external get_inline_selection : t -> bool
   = "ml_gtk_entry_completion_get_inline_selection"
-(** Returns %TRUE if inline-selection mode is turned on. *)
+(** Returns [TRUE] if inline-selection mode is turned on. *)
 
 external get_inline_completion : t -> bool
   = "ml_gtk_entry_completion_get_inline_completion"
@@ -115,21 +114,21 @@ external get_entry :
   Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
   .Widget
   .t = "ml_gtk_entry_completion_get_entry"
-(** Gets the entry @completion has been attached to. *)
+(** Gets the entry [completion] has been attached to. *)
 
 external get_completion_prefix : t -> string option
   = "ml_gtk_entry_completion_get_completion_prefix"
 (** Get the original text entered by the user that triggered the completion or
-    %NULL if there’s no completion ongoing. *)
+    [NULL] if there’s no completion ongoing. *)
 
 external compute_prefix : t -> string -> string option
   = "ml_gtk_entry_completion_compute_prefix"
-(** Computes the common prefix that is shared by all rows in @completion
-that start with @key.
+(** Computes the common prefix that is shared by all rows in [completion] that
+    start with [key].
 
-If no row matches @key, %NULL will be returned.
-Note that a text column must have been set for this function to work,
-see [method@Gtk.EntryCompletion.set_text_column] for details. *)
+    If no row matches [key], [NULL] will be returned. Note that a text column
+    must have been set for this function to work, see
+    [Gtk.EntryCompletion.set_text_column] for details. *)
 
 external complete : t -> unit = "ml_gtk_entry_completion_complete"
 (** Requests a completion operation, or in other words a refiltering of the

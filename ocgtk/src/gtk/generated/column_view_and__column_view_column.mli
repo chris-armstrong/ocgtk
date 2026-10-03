@@ -15,16 +15,16 @@ module rec Column_view : sig
     = "ml_gtk_column_view_sort_by_column"
   (** Sets the sorting of the view.
 
-  This function should be used to set up the initial sorting.
-  At runtime, users can change the sorting of a column view
-  by clicking on the list headers.
+      This function should be used to set up the initial sorting. At runtime,
+      users can change the sorting of a column view by clicking on the list
+      headers.
 
-  This call only has an effect if the sorter returned by
-  [method@Gtk.ColumnView.get_sorter] is set on a sort model,
-  and [method@Gtk.ColumnViewColumn.set_sorter] has been called
-  on @column to associate a sorter with the column.
+      This call only has an effect if the sorter returned by
+      [Gtk.ColumnView.get_sorter] is set on a sort model, and
+      [Gtk.ColumnViewColumn.set_sorter] has been called on [column] to associate
+      a sorter with the column.
 
-  If @column is unset, the view will be unsorted. *)
+      If [column] is unset, the view will be unsorted. *)
 
   external set_tab_behavior : t -> Gtk_enums.listtabbehavior -> unit
     = "ml_gtk_column_view_set_tab_behavior"
@@ -50,14 +50,14 @@ module rec Column_view : sig
     = "ml_gtk_column_view_set_row_factory"
   (** Sets the factory used for configuring rows.
 
-      The factory must be for configuring [class@Gtk.ColumnViewRow] objects.
+      The factory must be for configuring [Gtk.ColumnViewRow] objects.
 
       If this factory is not set - which is the default - then the defaults will
       be used.
 
       This factory is not used to set the widgets displayed in the individual
-      cells. For that see [method@GtkColumnViewColumn.set_factory] and
-      [class@GtkColumnViewCell]. *)
+      cells. For that see [GtkColumnViewColumn.set_factory] and
+      [GtkColumnViewCell]. *)
 
   external set_reorderable : t -> bool -> unit
     = "ml_gtk_column_view_set_reorderable"
@@ -67,14 +67,14 @@ module rec Column_view : sig
     = "ml_gtk_column_view_set_model"
   (** Sets the model to use.
 
-      This must be a [iface@Gtk.SelectionModel]. *)
+      This must be a [Gtk.SelectionModel]. *)
 
   external set_header_factory : t -> List_item_factory.t option -> unit
     = "ml_gtk_column_view_set_header_factory"
-  (** Sets the factory to use for populating the [class@Gtk.ListHeader] objects
-      used in section headers.
+  (** Sets the factory to use for populating the [Gtk.ListHeader] objects used
+      in section headers.
 
-      If this factory is set to `NULL`, the list will not show section headers.
+      If this factory is set to [NULL], the list will not show section headers.
   *)
 
   external set_enable_rubberband : t -> bool -> unit
@@ -88,21 +88,21 @@ module rec Column_view : sig
     Gtk_enums.listscrollflags ->
     Scroll_info.t option ->
     unit = "ml_gtk_column_view_scroll_to"
-  (** Scroll to the row at the given position - or cell if a column is
-  given - and performs the actions specified in @flags.
+  (** Scroll to the row at the given position - or cell if a column is given -
+      and performs the actions specified in [flags].
 
-  This function works no matter if the columnview is shown or focused.
-  If it isn't, then the changes will take effect once that happens. *)
+      This function works no matter if the columnview is shown or focused. If it
+      isn't, then the changes will take effect once that happens. *)
 
   external remove_column : t -> Column_view_column.t -> unit
     = "ml_gtk_column_view_remove_column"
-  (** Removes the @column from the list of columns of @self. *)
+  (** Removes the [column] from the list of columns of [self]. *)
 
   external insert_column : t -> int -> Column_view_column.t -> unit
     = "ml_gtk_column_view_insert_column"
-  (** Inserts a column at the given position in the columns of @self.
+  (** Inserts a column at the given position in the columns of [self].
 
-  If @column is already a column of @self, it will be repositioned. *)
+      If [column] is already a column of [self], it will be repositioned. *)
 
   external get_tab_behavior : t -> Gtk_enums.listtabbehavior
     = "ml_gtk_column_view_get_tab_behavior"
@@ -116,14 +116,18 @@ module rec Column_view : sig
       sorter needs to be set on the sort model underneath the model that is
       displayed by the view.
 
-      See [method@Gtk.ColumnViewColumn.set_sorter] for setting up per-column
-      sorting.
+      See [Gtk.ColumnViewColumn.set_sorter] for setting up per-column sorting.
 
-      Here is an example: ```c gtk_column_view_column_set_sorter (column,
-      sorter); gtk_column_view_append_column (view, column); sorter =
-      g_object_ref (gtk_column_view_get_sorter (view))); model =
-      gtk_sort_list_model_new (store, sorter); selection = gtk_no_selection_new
-      (model); gtk_column_view_set_model (view, selection); ``` *)
+      Here is an example:
+
+      {[
+      gtk_column_view_column_set_sorter (column, sorter);
+      gtk_column_view_append_column (view, column);
+      sorter = g_object_ref (gtk_column_view_get_sorter (view)));
+      model = gtk_sort_list_model_new (store, sorter);
+      selection = gtk_no_selection_new (model);
+      gtk_column_view_set_model (view, selection);
+      ]} *)
 
   external get_single_click_activate : t -> bool
     = "ml_gtk_column_view_get_single_click_activate"
@@ -140,7 +144,7 @@ module rec Column_view : sig
 
   external get_row_factory : t -> List_item_factory.t option
     = "ml_gtk_column_view_get_row_factory"
-  (** Gets the factory set via [method@Gtk.ColumnView.set_row_factory]. *)
+  (** Gets the factory set via [Gtk.ColumnView.set_row_factory]. *)
 
   external get_reorderable : t -> bool = "ml_gtk_column_view_get_reorderable"
   (** Returns whether columns are reorderable. *)
@@ -161,13 +165,13 @@ module rec Column_view : sig
     = "ml_gtk_column_view_get_columns"
   (** Gets the list of columns in this column view.
 
-  This list is constant over the lifetime of @self and can be used to
-  monitor changes to the columns of @self by connecting to the
-  [signal@Gio.ListModel::items-changed] signal. *)
+      This list is constant over the lifetime of [self] and can be used to
+      monitor changes to the columns of [self] by connecting to the
+      [Gio.ListModel::items-changed] signal. *)
 
   external append_column : t -> Column_view_column.t -> unit
     = "ml_gtk_column_view_append_column"
-  (** Appends the @column to the end of the columns in @self. *)
+  (** Appends the [column] to the end of the columns in [self]. *)
 
   (* Properties *)
 
@@ -195,21 +199,21 @@ and Column_view_column : sig
     = "ml_gtk_column_view_column_set_title"
   (** Sets the title of this column.
 
-      The title is displayed in the header of a `GtkColumnView` for this column
+      The title is displayed in the header of a [GtkColumnView] for this column
       and is therefore user-facing text that should be translated. *)
 
   external set_sorter : t -> Sorter.t option -> unit
     = "ml_gtk_column_view_column_set_sorter"
   (** Associates a sorter with the column.
 
-  If @sorter is unset, the column will not let users change
-  the sorting by clicking on its header.
+      If [sorter] is unset, the column will not let users change the sorting by
+      clicking on its header.
 
-  This sorter can be made active by clicking on the column
-  header, or by calling [method@Gtk.ColumnView.sort_by_column].
+      This sorter can be made active by clicking on the column header, or by
+      calling [Gtk.ColumnView.sort_by_column].
 
-  See [method@Gtk.ColumnView.get_sorter] for the necessary steps
-  for setting up customizable sorting for [class@Gtk.ColumnView]. *)
+      See [Gtk.ColumnView.get_sorter] for the necessary steps for setting up
+      customizable sorting for [Gtk.ColumnView]. *)
 
   external set_resizable : t -> bool -> unit
     = "ml_gtk_column_view_column_set_resizable"
@@ -234,14 +238,14 @@ and Column_view_column : sig
     = "ml_gtk_column_view_column_set_fixed_width"
   (** Sets the fixed width of the column.
 
-  If @fixed_width is -1, the fixed width of the column is unset.
+      If [fixed_width] is -1, the fixed width of the column is unset.
 
-  Setting a fixed width overrides the automatically calculated
-  width. Interactive resizing also sets the “fixed-width” property. *)
+      Setting a fixed width overrides the automatically calculated width.
+      Interactive resizing also sets the “fixed-width” property. *)
 
   external set_factory : t -> List_item_factory.t option -> unit
     = "ml_gtk_column_view_column_set_factory"
-  (** Sets the `GtkListItemFactory` to use for populating list items for this
+  (** Sets the [GtkListItemFactory] to use for populating list items for this
       column. *)
 
   external set_expand : t -> bool -> unit
@@ -256,7 +260,7 @@ and Column_view_column : sig
 
   external get_title : t -> string option
     = "ml_gtk_column_view_column_get_title"
-  (** Returns the title set with [method@Gtk.ColumnViewColumn.set_title]. *)
+  (** Returns the title set with [Gtk.ColumnViewColumn.set_title]. *)
 
   external get_sorter : t -> Sorter.t option
     = "ml_gtk_column_view_column_get_sorter"
@@ -266,7 +270,7 @@ and Column_view_column : sig
   (** Returns whether this column is resizable. *)
 
   external get_id : t -> string option = "ml_gtk_column_view_column_get_id"
-  (** Returns the ID set with [method@Gtk.ColumnViewColumn.set_id]. *)
+  (** Returns the ID set with [Gtk.ColumnViewColumn.set_id]. *)
 
   external get_header_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
     = "ml_gtk_column_view_column_get_header_menu"
@@ -289,7 +293,7 @@ and Column_view_column : sig
     = "ml_gtk_column_view_column_get_column_view"
   (** Gets the column view that's currently displaying this column.
 
-  If @self has not been added to a column view yet, `NULL` is returned. *)
+      If [self] has not been added to a column view yet, [NULL] is returned. *)
 
   (* Properties *)
 end

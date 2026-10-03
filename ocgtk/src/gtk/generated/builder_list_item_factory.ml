@@ -24,7 +24,7 @@ external get_resource : t -> string option
 
 external get_bytes : t -> Glib_bytes.t
   = "ml_gtk_builder_list_item_factory_get_bytes"
-(** Gets the data used as the `GtkBuilder` UI template for constructing
+(** Gets the data used as the [GtkBuilder] UI template for constructing
     listitems. *)
 
 (* Properties *)

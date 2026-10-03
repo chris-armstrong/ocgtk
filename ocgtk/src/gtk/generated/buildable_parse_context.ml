@@ -19,7 +19,7 @@ external get_element_stack : t -> string array
   = "ml_gtk_buildable_parse_context_get_element_stack"
 (** Retrieves the element stack from the internal state of the parser.
 
-    The returned `GPtrArray` is an array of strings where the last item is the
+    The returned [GPtrArray] is an array of strings where the last item is the
     currently open tag (as would be returned by
     gtk_buildable_parse_context_get_element()) and the previous item is its
     immediate parent.

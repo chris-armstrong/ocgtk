@@ -8,7 +8,7 @@ type t = [ `menu_attribute_iter | `object_ ] Gobject.obj
 external next : t -> bool = "ml_g_menu_attribute_iter_next"
 (** Attempts to advance the iterator to the next (possibly first) attribute.
 
-    %TRUE is returned on success, or %FALSE if there are no more attributes.
+    [TRUE] is returned on success, or [FALSE] if there are no more attributes.
 
     You must call this function when you first acquire the iterator to advance
     it to the first attribute (and determine if the first attribute exists at

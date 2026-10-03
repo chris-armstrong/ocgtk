@@ -506,10 +506,25 @@ xvfb-run $(which dune) test ocgtk/    # unchanged bindings, still green
 translator; no *new* docs appear. This isolates translator-induced diffs
 from un-suppression-induced diffs (Phase 3).
 
-*Changes:* new `lib/generate/doc_emit.ml`/`.mli` (`emit_item_doc` /
-`emit_entity_doc`: assembly prose-first-tags-last on the AST, final-comment
-sanitisation, `@since` append); rewire `constant_code.ml` `emit_doc`,
-`enum_code.ml` **member** docs, `layer1_method.ml` method docs;
+*Changes:* new `lib/generate/doc_emit.ml`/`.mli` (`item_doc`: translation,
+tags-last `@since`, final-comment sanitisation, constant version-only
+fallback; `emit_entity_doc` waits for Phase 3); rewire `constant_code.ml`
+`emit_doc`, `enum_code.ml` **member and bitfield flag** docs,
+`layer1_method.ml` method docs.
+
+*Placement change (found by testing, Phase 2 commit 2):* polymorphic-variant
+member docs must follow their tag. Before the tag, odoc silently drops them
+from the HTML (and the compiler warns, warning 50). Member docs are therefore
+emitted as `` | `TAG (** doc *) ``. This is a visible change beyond the
+"doc text only" wording, and it makes enum and bitfield member docs appear
+on their pages for the first time.
+
+*Known residue after Phase 2 (not from this phase):* about 320 odoc warnings
+remain, all in 34 unprefixed `.mli` files the generator no longer writes
+(relocated duplicates such as `unix_fd_message.mli` beside the live
+`gUnix_fd_message.mli`, and enum files duplicated across `gtk/` and their own
+library). Per the stale-file note, these must be deleted
+in a separate change, not this phase;
 `test/generate/doc_emit_tests.ml` (comment safety, tag terminality,
 `@since` placement). Regenerate bindings; the diff is confined to
 doc-comment text at these three site kinds; commit it.

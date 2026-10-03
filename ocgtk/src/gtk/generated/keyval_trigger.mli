@@ -11,11 +11,9 @@ external new_ : int -> Ocgtk_gdk.Gdk.modifiertype -> t
 
 external get_modifiers : t -> Ocgtk_gdk.Gdk.modifiertype
   = "ml_gtk_keyval_trigger_get_modifiers"
-(** Gets the modifiers that must be present to succeed
-triggering @self. *)
+(** Gets the modifiers that must be present to succeed triggering [self]. *)
 
 external get_keyval : t -> int = "ml_gtk_keyval_trigger_get_keyval"
-(** Gets the keyval that must be pressed to succeed
-triggering @self. *)
+(** Gets the keyval that must be pressed to succeed triggering [self]. *)
 
 (* Properties *)

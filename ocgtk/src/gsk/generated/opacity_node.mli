@@ -12,4 +12,4 @@ external get_opacity : t -> float = "ml_gsk_opacity_node_get_opacity"
 (** Gets the transparency factor for an opacity node. *)
 
 external get_child : t -> Render_node.t = "ml_gsk_opacity_node_get_child"
-(** Gets the child node that is getting opacityed by the given @node. *)
+(** Gets the child node that is getting opacityed by the given [node]. *)

@@ -15,11 +15,11 @@ external set_flags : t -> Gtk_enums.eventcontrollerscrollflags -> unit
 
 external get_unit : t -> Ocgtk_gdk.Gdk.scrollunit
   = "ml_gtk_event_controller_scroll_get_unit"
-(** Gets the scroll unit of the last [signal@Gtk.EventControllerScroll::scroll]
-    signal received.
+(** Gets the scroll unit of the last [Gtk.EventControllerScroll::scroll] signal
+    received.
 
-    Always returns %GDK_SCROLL_UNIT_WHEEL if the
-    %GTK_EVENT_CONTROLLER_SCROLL_DISCRETE flag is set. *)
+    Always returns [GDK_SCROLL_UNIT_WHEEL] if the
+    [GTK_EVENT_CONTROLLER_SCROLL_DISCRETE] flag is set. *)
 
 external get_flags : t -> Gtk_enums.eventcontrollerscrollflags
   = "ml_gtk_event_controller_scroll_get_flags"

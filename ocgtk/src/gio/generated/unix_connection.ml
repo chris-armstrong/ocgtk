@@ -41,7 +41,7 @@ external send_credentials : t -> Cancellable.t option -> (bool, GError.t) result
     - GNU/Hurd since GLib 2.40
 
     Other ways to exchange credentials with a foreign peer includes the
-    #GUnixCredentialsMessage type and g_socket_get_credentials() function. *)
+    [GUnixCredentialsMessage] type and g_socket_get_credentials() function. *)
 
 external receive_fd : t -> Cancellable.t option -> (int, GError.t) result
   = "ml_g_unix_connection_receive_fd"
@@ -77,4 +77,4 @@ external receive_credentials :
     - GNU/Hurd since GLib 2.40
 
     Other ways to exchange credentials with a foreign peer includes the
-    #GUnixCredentialsMessage type and g_socket_get_credentials() function. *)
+    [GUnixCredentialsMessage] type and g_socket_get_credentials() function. *)

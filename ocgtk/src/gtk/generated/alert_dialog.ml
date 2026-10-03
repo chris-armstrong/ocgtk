@@ -10,12 +10,12 @@ external show :
   = "ml_gtk_alert_dialog_show"
 (** Shows the alert to the user.
 
-    This function is a simpler version of [method@Gtk.AlertDialog.choose]
-    intended for dialogs with a single button.
+    This function is a simpler version of [Gtk.AlertDialog.choose] intended for
+    dialogs with a single button.
 
     If you want to cancel the dialog or if the alert has more than one button,
-    you should use that function instead and provide it with a
-    [class@Gio.Cancellable] and callback respectively. *)
+    you should use that function instead and provide it with a [Gio.Cancellable]
+    and callback respectively. *)
 
 external set_modal : t -> bool -> unit = "ml_gtk_alert_dialog_set_modal"
 (** Sets whether the alert blocks interaction with the parent window while it is
@@ -31,15 +31,15 @@ external set_default_button : t -> int -> unit
   = "ml_gtk_alert_dialog_set_default_button"
 (** Sets the index of the default button.
 
-    See [property@Gtk.AlertDialog:default-button] for details of how this value
-    is used. *)
+    See [Gtk.AlertDialog:default-button] for details of how this value is used.
+*)
 
 external set_cancel_button : t -> int -> unit
   = "ml_gtk_alert_dialog_set_cancel_button"
 (** Sets the index of the cancel button.
 
-    See [property@Gtk.AlertDialog:cancel-button] for details of how this value
-    is used. *)
+    See [Gtk.AlertDialog:cancel-button] for details of how this value is used.
+*)
 
 external set_buttons : t -> string array -> unit
   = "ml_gtk_alert_dialog_set_buttons"
@@ -69,6 +69,6 @@ external get_buttons : t -> string array option
 external choose_finish :
   t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (int, GError.t) result
   = "ml_gtk_alert_dialog_choose_finish"
-(** Finishes the [method@Gtk.AlertDialog.choose] call. *)
+(** Finishes the [Gtk.AlertDialog.choose] call. *)
 
 (* Properties *)

@@ -26,14 +26,13 @@ external set_always_ask : t -> bool -> unit
 external open_containing_folder_finish :
   t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result
   = "ml_gtk_file_launcher_open_containing_folder_finish"
-(** Finishes the [method@Gtk.FileLauncher.open_containing_folder] call and
-    returns the result. *)
+(** Finishes the [Gtk.FileLauncher.open_containing_folder] call and returns the
+    result. *)
 
 external launch_finish :
   t -> Ocgtk_gio.Gio.Wrappers.Async_result.t -> (bool, GError.t) result
   = "ml_gtk_file_launcher_launch_finish"
-(** Finishes the [method@Gtk.FileLauncher.launch] call and returns the result.
-*)
+(** Finishes the [Gtk.FileLauncher.launch] call and returns the result. *)
 
 external get_writable : t -> bool = "ml_gtk_file_launcher_get_writable"
 (** Returns whether to make the file writable for the handler. *)

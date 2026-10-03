@@ -19,10 +19,10 @@ external get_n_features : t -> Gdk_enums.devicepadfeature -> int
 
 external get_group_n_modes : t -> int -> int
   = "ml_gdk_device_pad_get_group_n_modes"
-(** Returns the number of modes that @group may have. *)
+(** Returns the number of modes that [group] may have. *)
 
 external get_feature_group : t -> Gdk_enums.devicepadfeature -> int -> int
   = "ml_gdk_device_pad_get_feature_group"
-(** Returns the group the given @feature and @idx belong to.
+(** Returns the group the given [feature] and [idx] belong to.
 
-f the feature or index do not exist in @pad, -1 is returned. *)
+    f the feature or index do not exist in [pad], -1 is returned. *)

@@ -15,6 +15,6 @@ external new_with_credentials : Credentials.t -> t
 
 external get_credentials : t -> Credentials.t
   = "ml_g_unix_credentials_message_get_credentials"
-(** Gets the credentials stored in @message. *)
+(** Gets the credentials stored in [message]. *)
 
 (* Properties *)

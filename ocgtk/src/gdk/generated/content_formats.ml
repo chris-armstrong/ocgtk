@@ -45,79 +45,77 @@ external new_for_gtype : Gobject.Type.t -> t
 
 external union_serialize_mime_types : t -> t
   = "ml_gdk_content_formats_union_serialize_mime_types"
-(** Add mime types for GTypes in @formats for which serializers are
-registered. *)
+(** Add mime types for GTypes in [formats] for which serializers are registered.
+*)
 
 external union_serialize_gtypes : t -> t
   = "ml_gdk_content_formats_union_serialize_gtypes"
-(** Add GTypes for the mime types in @formats for which serializers are
-registered. *)
+(** Add GTypes for the mime types in [formats] for which serializers are
+    registered. *)
 
 external union_deserialize_mime_types : t -> t
   = "ml_gdk_content_formats_union_deserialize_mime_types"
-(** Add mime types for GTypes in @formats for which deserializers are
-registered. *)
+(** Add mime types for GTypes in [formats] for which deserializers are
+    registered. *)
 
 external union_deserialize_gtypes : t -> t
   = "ml_gdk_content_formats_union_deserialize_gtypes"
-(** Add GTypes for mime types in @formats for which deserializers are
-registered. *)
+(** Add GTypes for mime types in [formats] for which deserializers are
+    registered. *)
 
 external union : t -> t -> t = "ml_gdk_content_formats_union"
-(** Append all missing types from @second to @first, in the order
-they had in @second. *)
+(** Append all missing types from [second] to [first], in the order they had in
+    [second]. *)
 
 external to_string : t -> string = "ml_gdk_content_formats_to_string"
-(** Prints the given @formats into a human-readable string.
+(** Prints the given [formats] into a human-readable string.
 
-The resulting string can be parsed with [func@Gdk.ContentFormats.parse].
+    The resulting string can be parsed with [Gdk.ContentFormats.parse].
 
-This is a small wrapper around [method@Gdk.ContentFormats.print]
-to help when debugging. *)
+    This is a small wrapper around [Gdk.ContentFormats.print] to help when
+    debugging. *)
 
 external ref : t -> t = "ml_gdk_content_formats_ref"
-(** Increases the reference count of a `GdkContentFormats` by one. *)
+(** Increases the reference count of a [GdkContentFormats] by one. *)
 
 external match_mime_type : t -> t -> string option
   = "ml_gdk_content_formats_match_mime_type"
-(** Finds the first mime type from @first that is also contained
-in @second.
+(** Finds the first mime type from [first] that is also contained in [second].
 
-If no matching mime type is found, %NULL is returned. *)
+    If no matching mime type is found, [NULL] is returned. *)
 
 external match_gtype : t -> t -> Gobject.Type.t
   = "ml_gdk_content_formats_match_gtype"
-(** Finds the first `GType` from @first that is also contained
-in @second.
+(** Finds the first [GType] from [first] that is also contained in [second].
 
-If no matching `GType` is found, %G_TYPE_INVALID is returned. *)
+    If no matching [GType] is found, [G_TYPE_INVALID] is returned. *)
 
 external match_ : t -> t -> bool = "ml_gdk_content_formats_match"
-(** Checks if @first and @second have any matching formats. *)
+(** Checks if [first] and [second] have any matching formats. *)
 
 external is_empty : t -> bool = "ml_gdk_content_formats_is_empty"
 (** Returns whether the content formats contain any formats. *)
 
 external get_mime_types : t -> string array option * Gsize.t
   = "ml_gdk_content_formats_get_mime_types"
-(** Gets the mime types included in @formats.
+(** Gets the mime types included in [formats].
 
-Note that @formats may not contain any mime types, in particular
-when they are empty. In that case %NULL will be returned. *)
+    Note that [formats] may not contain any mime types, in particular when they
+    are empty. In that case [NULL] will be returned. *)
 
 external get_gtypes : t -> Gobject.Type.t array option * Gsize.t
   = "ml_gdk_content_formats_get_gtypes"
-(** Gets the `GType`s included in @formats.
+(** Gets the [GType]s included in [formats].
 
-Note that @formats may not contain any `GType`s, in particular when
-they are empty. In that case %NULL will be returned. *)
+    Note that [formats] may not contain any [GType]s, in particular when they
+    are empty. In that case [NULL] will be returned. *)
 
 external contain_mime_type : t -> string -> bool
   = "ml_gdk_content_formats_contain_mime_type"
-(** Checks if a given mime type is part of the given @formats. *)
+(** Checks if a given mime type is part of the given [formats]. *)
 
 external contain_gtype : t -> Gobject.Type.t -> bool
   = "ml_gdk_content_formats_contain_gtype"
-(** Checks if a given `GType` is part of the given @formats. *)
+(** Checks if a given [GType] is part of the given [formats]. *)
 
 external get_type : unit -> Gobject.Type.t = "ml_gdk_content_formats_get_type"

@@ -23,27 +23,27 @@ type t = [ `rectangle ] Gobject.obj
 external union : t -> t -> t = "ml_gdk_rectangle_union"
 (** Calculates the union of two rectangles.
 
-The union of rectangles @src1 and @src2 is the smallest rectangle which
-includes both @src1 and @src2 within it. It is allowed for @dest to be
-the same as either @src1 or @src2.
+    The union of rectangles [src1] and [src2] is the smallest rectangle which
+    includes both [src1] and [src2] within it. It is allowed for [dest] to be
+    the same as either [src1] or [src2].
 
-Note that this function does not ignore 'empty' rectangles (ie. with
-zero width or height). *)
+    Note that this function does not ignore 'empty' rectangles (ie. with zero
+    width or height). *)
 
 external intersect : t -> t -> bool * t = "ml_gdk_rectangle_intersect"
 (** Calculates the intersection of two rectangles.
 
-It is allowed for @dest to be the same as either @src1 or @src2.
-If the rectangles do not intersect, @dest’s width and height is set
-to 0 and its x and y values are undefined. If you are only interested
-in whether the rectangles intersect, but not in the intersecting area
-itself, pass %NULL for @dest. *)
+    It is allowed for [dest] to be the same as either [src1] or [src2]. If the
+    rectangles do not intersect, [dest]’s width and height is set to 0 and its x
+    and y values are undefined. If you are only interested in whether the
+    rectangles intersect, but not in the intersecting area itself, pass [NULL]
+    for [dest]. *)
 
 external equal : t -> t -> bool = "ml_gdk_rectangle_equal"
 (** Checks if the two given rectangles are equal. *)
 
 external contains_point : t -> int -> int -> bool
   = "ml_gdk_rectangle_contains_point"
-(** Returns %TRUE if @rect contains the point described by @x and @y. *)
+(** Returns [TRUE] if [rect] contains the point described by [x] and [y]. *)
 
 external get_type : unit -> Gobject.Type.t = "ml_gdk_rectangle_get_type"

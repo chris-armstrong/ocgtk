@@ -13,7 +13,7 @@ external get_primary_sort_order : t -> Gtk_enums.sorttype
     column view header of the primary sort column points upwards or downwards.
 
     If there is no primary sort column, then this function returns
-    `GTK_SORT_ASCENDING`. *)
+    [GTK_SORT_ASCENDING]. *)
 
 external get_primary_sort_column :
   t -> Column_view_and__column_view_column.Column_view_column.t option
@@ -28,10 +28,10 @@ external get_nth_sort_column :
   int ->
   Column_view_and__column_view_column.Column_view_column.t option
   * Gtk_enums.sorttype = "ml_gtk_column_view_sorter_get_nth_sort_column"
-(** Gets the @position'th sort column and its associated sort order.
+(** Gets the [position]'th sort column and its associated sort order.
 
-Use the [signal@Gtk.Sorter::changed] signal to get notified
-when sort columns change. *)
+    Use the [Gtk.Sorter::changed] signal to get notified when sort columns
+    change. *)
 
 external get_n_sort_columns : t -> int
   = "ml_gtk_column_view_sorter_get_n_sort_columns"
@@ -40,7 +40,7 @@ external get_n_sort_columns : t -> int
     If the sorter of the primary sort column does not determine a total order,
     then the secondary sorters are consulted to break the ties.
 
-    Use the [signal@Gtk.Sorter::changed] signal to get notified when the number
-    of sort columns changes. *)
+    Use the [Gtk.Sorter::changed] signal to get notified when the number of sort
+    columns changes. *)
 
 (* Properties *)

@@ -47,12 +47,12 @@ type t = [ `io_extension_point ] Gobject.obj
 
 external set_required_type : t -> Gobject.Type.t -> unit
   = "ml_g_io_extension_point_set_required_type"
-(** Sets the required type for @extension_point to @type.
-All implementations must henceforth have this type. *)
+(** Sets the required type for [extension_point] to [type]. All implementations
+    must henceforth have this type. *)
 
 external get_required_type : t -> Gobject.Type.t
   = "ml_g_io_extension_point_get_required_type"
-(** Gets the required type for @extension_point. *)
+(** Gets the required type for [extension_point]. *)
 
 external get_extensions : t -> Io_extension.t list
   = "ml_g_io_extension_point_get_extensions"
@@ -61,4 +61,4 @@ external get_extensions : t -> Io_extension.t list
 
 external get_extension_by_name : t -> string -> Io_extension.t
   = "ml_g_io_extension_point_get_extension_by_name"
-(** Finds a #GIOExtension for an extension point by name. *)
+(** Finds a [GIOExtension] for an extension point by name. *)

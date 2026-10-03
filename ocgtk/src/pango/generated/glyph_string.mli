@@ -32,8 +32,8 @@ external index_to_x_full :
     "ml_pango_glyph_string_index_to_x_full_native"
 (** Converts from character position to x position.
 
-    This variant of [method@Pango.GlyphString.index_to_x] additionally accepts a
-    `PangoLogAttr` array. The grapheme boundary information in it can be used to
+    This variant of [Pango.GlyphString.index_to_x] additionally accepts a
+    [PangoLogAttr] array. The grapheme boundary information in it can be used to
     disambiguate positioning inside some complex clusters. *)
 
 external index_to_x : t -> string -> int -> Analysis.t -> int -> bool -> int
@@ -45,17 +45,15 @@ external index_to_x : t -> string -> int -> Analysis.t -> int -> bool -> int
     positions are obtained using font metrics for ligatures where available, and
     computed by dividing up each cluster into equal portions, otherwise.
 
-    <picture> <source srcset="glyphstring-positions-dark.png"
-    media="(prefers-color-scheme: dark)"> <img alt="Glyph positions"
-    src="glyphstring-positions-light.png"> </picture> *)
+    Glyph positions *)
 
 external get_width : t -> int = "ml_pango_glyph_string_get_width"
 (** Computes the logical width of the glyph string.
 
-This can also be computed using [method@Pango.GlyphString.extents].
-However, since this only computes the width, it's much faster. This
-is in fact only a convenience function that computes the sum of
-@geometry.width for each glyph in the @glyphs. *)
+    This can also be computed using [Pango.GlyphString.extents]. However, since
+    this only computes the width, it's much faster. This is in fact only a
+    convenience function that computes the sum of \@geometry.width for each
+    glyph in the [glyphs]. *)
 
 external extents_range :
   t ->
@@ -75,11 +73,9 @@ external extents :
   Rectangle.t * Rectangle.t = "ml_pango_glyph_string_extents"
 (** Compute the logical and ink extents of a glyph string.
 
-    See the documentation for [method@Pango.Font.get_glyph_extents] for details
-    about the interpretation of the rectangles.
+    See the documentation for [Pango.Font.get_glyph_extents] for details about
+    the interpretation of the rectangles.
 
-    Examples of logical (red) and ink (green) rects:
-
-    ![](rects1.png) ![](rects2.png) *)
+    Examples of logical (red) and ink (green) rects: *)
 
 external get_type : unit -> Gobject.Type.t = "ml_pango_glyph_string_get_type"

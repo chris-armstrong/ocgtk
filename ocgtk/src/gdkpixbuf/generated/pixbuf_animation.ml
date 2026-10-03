@@ -28,7 +28,7 @@ external is_static_image : t -> bool = "ml_gdk_pixbuf_animation_is_static_image"
 (** Checks whether the animation is a static image.
 
     If you load a file with gdk_pixbuf_animation_new_from_file() and it turns
-    out to be a plain, unanimated image, then this function will return `TRUE`.
+    out to be a plain, unanimated image, then this function will return [TRUE].
     Use gdk_pixbuf_animation_get_static_image() to retrieve the image. *)
 
 external get_width : t -> int = "ml_gdk_pixbuf_animation_get_width"
@@ -46,7 +46,7 @@ external get_static_image : t -> Pixbuf.t
     something more sophisticated depending on the file format.
 
     If an animation hasn't loaded any frames yet, this function will return
-    `NULL`. *)
+    [NULL]. *)
 
 external get_height : t -> int = "ml_gdk_pixbuf_animation_get_height"
 (** Queries the height of the bounding box of a pixbuf animation. *)

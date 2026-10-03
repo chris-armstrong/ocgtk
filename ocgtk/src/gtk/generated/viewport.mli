@@ -21,7 +21,7 @@ external set_child :
   .t
   option ->
   unit = "ml_gtk_viewport_set_child"
-(** Sets the child widget of @viewport. *)
+(** Sets the child widget of [viewport]. *)
 
 external scroll_to :
   t ->
@@ -44,6 +44,6 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_viewport_get_child"
-(** Gets the child widget of @viewport. *)
+(** Gets the child widget of [viewport]. *)
 
 (* Properties *)

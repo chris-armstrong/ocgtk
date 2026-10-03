@@ -17,6 +17,6 @@ external new_ : Io_stream.t -> Socket_and__socket_connection.Socket.t -> t
 
 external get_base_io_stream : t -> Io_stream.t
   = "ml_g_tcp_wrapper_connection_get_base_io_stream"
-(** Gets @conn's base #GIOStream *)
+(** Gets [conn]'s base [GIOStream] *)
 
 (* Properties *)

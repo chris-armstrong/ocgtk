@@ -15,22 +15,21 @@ external new_for_bus_finish : Async_result.t -> (t, GError.t) result
 
 external get_name_owner : t -> string option
   = "ml_g_dbus_object_manager_client_get_name_owner"
-(** The unique name that owns the name that @manager is for or %NULL if
-no-one currently owns that name. You can connect to the
-#GObject::notify signal to track changes to the
-#GDBusObjectManagerClient:name-owner property. *)
+(** The unique name that owns the name that [manager] is for or [NULL] if no-one
+    currently owns that name. You can connect to the [GObject::notify] signal to
+    track changes to the [GDBusObjectManagerClient:name]-owner property. *)
 
 external get_name : t -> string = "ml_g_dbus_object_manager_client_get_name"
-(** Gets the name that @manager is for, or %NULL if not a message bus
-connection. *)
+(** Gets the name that [manager] is for, or [NULL] if not a message bus
+    connection. *)
 
 external get_flags : t -> Gio_enums.dbusobjectmanagerclientflags
   = "ml_g_dbus_object_manager_client_get_flags"
-(** Gets the flags that @manager was constructed with. *)
+(** Gets the flags that [manager] was constructed with. *)
 
 external get_connection : t -> D_bus_connection.t
   = "ml_g_dbus_object_manager_client_get_connection"
-(** Gets the #GDBusConnection used by @manager. *)
+(** Gets the [GDBusConnection] used by [manager]. *)
 
 (* Properties *)
 

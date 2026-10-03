@@ -19,18 +19,18 @@ external new_from_model_full :
 external set_menu_model :
   t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit
   = "ml_gtk_popover_menu_set_menu_model"
-(** Sets a new menu model on @popover.
+(** Sets a new menu model on [popover].
 
-The existing contents of @popover are removed, and
-the @popover is populated with new contents according
-to @model. *)
+    The existing contents of [popover] are removed, and the [popover] is
+    populated with new contents according to [model]. *)
 
 external set_flags : t -> Gtk_enums.popovermenuflags -> unit
   = "ml_gtk_popover_menu_set_flags"
-(** Sets the flags that @popover uses to create/display a menu from its model.
+(** Sets the flags that [popover] uses to create/display a menu from its model.
 
-If a model is set and the flags change, contents are rebuilt, so if setting
-properties individually, set flags before model to avoid a redundant rebuild. *)
+    If a model is set and the flags change, contents are rebuilt, so if setting
+    properties individually, set flags before model to avoid a redundant
+    rebuild. *)
 
 external remove_child :
   t ->
@@ -39,7 +39,7 @@ external remove_child :
   .t ->
   bool = "ml_gtk_popover_menu_remove_child"
 (** Removes a widget that has previously been added with
-    [method@Gtk.PopoverMenu.add_child] *)
+    [Gtk.PopoverMenu.add_child] *)
 
 external get_menu_model : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
   = "ml_gtk_popover_menu_get_menu_model"
@@ -47,7 +47,8 @@ external get_menu_model : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
 
 external get_flags : t -> Gtk_enums.popovermenuflags
   = "ml_gtk_popover_menu_get_flags"
-(** Returns the flags that @popover uses to create/display a menu from its model. *)
+(** Returns the flags that [popover] uses to create/display a menu from its
+    model. *)
 
 external add_child :
   t ->
@@ -58,8 +59,8 @@ external add_child :
   bool = "ml_gtk_popover_menu_add_child"
 (** Adds a custom widget to a generated menu.
 
-For this to work, the menu model of @popover must have
-an item with a `custom` attribute that matches @id. *)
+    For this to work, the menu model of [popover] must have an item with a
+    [custom] attribute that matches [id]. *)
 
 (* Properties *)
 

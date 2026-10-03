@@ -16,35 +16,34 @@ val analysis_flag_need_hyphen : int
     @since 1.44 *)
 
 val attr_index_from_text_beginning : int
-(** Value for @start_index in `PangoAttribute` that indicates
-the beginning of the text.
+(** Value for [start_index] in [PangoAttribute] that indicates the beginning of
+    the text.
     @since 1.24 *)
 
 val attr_index_to_text_end : int
-(** Value for @end_index in `PangoAttribute` that indicates
-the end of the text.
+(** Value for [end_index] in [PangoAttribute] that indicates the end of the
+    text.
     @since 1.24 *)
 
 val glyph_empty : int
-(** A `PangoGlyph` value that indicates a zero-width empty glpyh.
+(** A [PangoGlyph] value that indicates a zero-width empty glpyh.
 
     This is useful for example in shaper modules, to use as the glyph for
-    various zero-width Unicode characters (those passing [func@is_zero_width]).
-*)
+    various zero-width Unicode characters (those passing [is_zero_width]). *)
 
 val glyph_invalid_input : int
-(** A `PangoGlyph` value for invalid input.
+(** A [PangoGlyph] value for invalid input.
 
-    `PangoLayout` produces one such glyph per invalid input UTF-8 byte and such
+    [PangoLayout] produces one such glyph per invalid input UTF-8 byte and such
     a glyph is rendered as a crossed box.
 
     Note that this value is defined such that it has the
-    %PANGO_GLYPH_UNKNOWN_FLAG set.
+    [PANGO_GLYPH_UNKNOWN_FLAG] set.
     @since 1.20 *)
 
 val glyph_unknown_flag : int
-(** Flag used in `PangoGlyph` to turn a `gunichar` value of a valid Unicode
-    character into an unknown-character glyph for that `gunichar`.
+(** Flag used in [PangoGlyph] to turn a [gunichar] value of a valid Unicode
+    character into an unknown-character glyph for that [gunichar].
 
     Such unknown-character glyphs may be rendered as a 'hex box'. *)
 
@@ -52,7 +51,7 @@ val scale : int
 (** The scale between dimensions used for Pango distances and device units.
 
     The definition of device units is dependent on the output device; it will
-    typically be pixels for a screen, and points for a printer. %PANGO_SCALE is
+    typically be pixels for a screen, and points for a printer. [PANGO_SCALE] is
     currently 1024, but this may be changed in the future.
 
     When setting font sizes, device units are always considered to be points (as

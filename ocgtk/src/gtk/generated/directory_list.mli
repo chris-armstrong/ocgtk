@@ -24,34 +24,32 @@ external set_io_priority : t -> int -> unit
   = "ml_gtk_directory_list_set_io_priority"
 (** Sets the IO priority to use while loading directories.
 
-Setting the priority while @self is loading will reprioritize the
-ongoing load as soon as possible.
+    Setting the priority while [self] is loading will reprioritize the ongoing
+    load as soon as possible.
 
-The default IO priority is %G_PRIORITY_DEFAULT, which is higher than
-the GTK redraw priority. If you are loading a lot of directories in
-parallel, lowering it to something like %G_PRIORITY_DEFAULT_IDLE
-may increase responsiveness. *)
+    The default IO priority is [G_PRIORITY_DEFAULT], which is higher than the
+    GTK redraw priority. If you are loading a lot of directories in parallel,
+    lowering it to something like [G_PRIORITY_DEFAULT_IDLE] may increase
+    responsiveness. *)
 
 external set_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option -> unit
   = "ml_gtk_directory_list_set_file"
-(** Sets the @file to be enumerated and starts the enumeration.
+(** Sets the [file] to be enumerated and starts the enumeration.
 
-If @file is %NULL, the result will be an empty list. *)
+    If [file] is [NULL], the result will be an empty list. *)
 
 external set_attributes : t -> string option -> unit
   = "ml_gtk_directory_list_set_attributes"
-(** Sets the @attributes to be enumerated and starts the enumeration.
+(** Sets the [attributes] to be enumerated and starts the enumeration.
 
-If @attributes is %NULL, the list of file infos will still be created, it will just
-not contain any extra attributes. *)
+    If [attributes] is [NULL], the list of file infos will still be created, it
+    will just not contain any extra attributes. *)
 
 external is_loading : t -> bool = "ml_gtk_directory_list_is_loading"
-(** Returns %TRUE if the children enumeration is currently in
-progress.
+(** Returns [TRUE] if the children enumeration is currently in progress.
 
-Files will be added to @self from time to time while loading is
-going on. The order in which are added is undefined and may change
-in between runs. *)
+    Files will be added to [self] from time to time while loading is going on.
+    The order in which are added is undefined and may change in between runs. *)
 
 external get_monitored : t -> bool = "ml_gtk_directory_list_get_monitored"
 (** Returns whether the directory list is monitoring the directory for changes.

@@ -20,7 +20,7 @@ external set_help_overlay : t -> Shortcuts_window.t option -> unit
   = "ml_gtk_application_window_set_help_overlay"
 (** Associates a shortcuts window with the application window.
 
-    Additionally, sets up an action with the name `win.show-help-overlay` to
+    Additionally, sets up an action with the name [win.show-help-overlay] to
     present it.
 
     The window takes responsibility for destroying the help overlay. *)
@@ -33,12 +33,12 @@ external get_show_menubar : t -> bool
 external get_id : t -> int = "ml_gtk_application_window_get_id"
 (** Returns the unique ID of the window.
 
-    If the window has not yet been added to a `GtkApplication`, returns `0`. *)
+    If the window has not yet been added to a [GtkApplication], returns [0]. *)
 
 external get_help_overlay : t -> Shortcuts_window.t option
   = "ml_gtk_application_window_get_help_overlay"
-(** Gets the `GtkShortcutsWindow` that is associated with @window.
+(** Gets the [GtkShortcutsWindow] that is associated with [window].
 
-See [method@Gtk.ApplicationWindow.set_help_overlay]. *)
+    See [Gtk.ApplicationWindow.set_help_overlay]. *)
 
 (* Properties *)

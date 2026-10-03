@@ -13,12 +13,12 @@ external new_ : unit -> t = "ml_gtk_cell_renderer_text_new"
 external set_fixed_height_from_font : t -> int -> unit
   = "ml_gtk_cell_renderer_text_set_fixed_height_from_font"
 (** Sets the height of a renderer to explicitly be determined by the “font” and
-“y_pad” property set on it.  Further changes in these properties do not
-affect the height, so they must be accompanied by a subsequent call to this
-function.  Using this function is inflexible, and should really only be used
-if calculating the size of a cell is too slow (ie, a massive number of cells
-displayed).  If @number_of_rows is -1, then the fixed height is unset, and
-the height is determined by the properties again. *)
+    “y_pad” property set on it. Further changes in these properties do not
+    affect the height, so they must be accompanied by a subsequent call to this
+    function. Using this function is inflexible, and should really only be used
+    if calculating the size of a cell is too slow (ie, a massive number of cells
+    displayed). If [number_of_rows] is -1, then the fixed height is unset, and
+    the height is determined by the properties again. *)
 
 (* Properties *)
 

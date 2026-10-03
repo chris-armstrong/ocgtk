@@ -16,4 +16,4 @@ external append :
   = "ml_pango_fontset_simple_append"
 (** Adds a font to the fontset.
 
-The fontset takes ownership of @font. *)
+    The fontset takes ownership of [font]. *)

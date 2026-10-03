@@ -6,33 +6,30 @@ type t = [ `filter | `object_ ] Gobject.obj
 (* Methods *)
 
 external match_ : t -> [ `object_ ] Gobject.obj -> bool = "ml_gtk_filter_match"
-(** Checks if the given @item is matched by the filter or not. *)
+(** Checks if the given [item] is matched by the filter or not. *)
 
 external get_strictness : t -> Gtk_enums.filtermatch
   = "ml_gtk_filter_get_strictness"
 (** Gets the known strictness of a filter.
 
-    If the strictness is not known, [enum@Gtk.FilterMatch.some] is returned.
+    If the strictness is not known, [Gtk.FilterMatch.some] is returned.
 
-    This value may change after emission of the [signal@Gtk.Filter::changed]
-    signal.
+    This value may change after emission of the [Gtk.Filter::changed] signal.
 
     This function is meant purely for optimization purposes. Filters can choose
-    to omit implementing it, but `GtkFilterListModel` uses it. *)
+    to omit implementing it, but [GtkFilterListModel] uses it. *)
 
 external changed : t -> Gtk_enums.filterchange -> unit = "ml_gtk_filter_changed"
 (** Notifies all users of the filter that it has changed.
 
-This emits the [signal@Gtk.Filter::changed] signal. Users
-of the filter should then check items again via
-[method@Gtk.Filter.match].
+    This emits the [Gtk.Filter::changed] signal. Users of the filter should then
+    check items again via [Gtk.Filter.match].
 
-Depending on the @change parameter, not all items need to
-be changed, but only some. Refer to the [enum@Gtk.FilterChange]
-documentation for details.
+    Depending on the [change] parameter, not all items need to be changed, but
+    only some. Refer to the [Gtk.FilterChange] documentation for details.
 
-This function is intended for implementers of `GtkFilter`
-subclasses and should not be called from other functions. *)
+    This function is intended for implementers of [GtkFilter] subclasses and
+    should not be called from other functions. *)
 
 let on_changed ?after obj ~callback =
   let closure =

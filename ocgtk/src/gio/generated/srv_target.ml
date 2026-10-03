@@ -26,22 +26,20 @@ external new_ : string -> UInt16.t -> UInt16.t -> UInt16.t -> t
 (* Methods *)
 
 external get_weight : t -> UInt16.t = "ml_g_srv_target_get_weight"
-(** Gets @target's weight. You should not need to look at this;
-#GResolver already sorts the targets according to the algorithm in
-RFC 2782. *)
+(** Gets [target]'s weight. You should not need to look at this; [GResolver]
+    already sorts the targets according to the algorithm in RFC 2782. *)
 
 external get_priority : t -> UInt16.t = "ml_g_srv_target_get_priority"
-(** Gets @target's priority. You should not need to look at this;
-#GResolver already sorts the targets according to the algorithm in
-RFC 2782. *)
+(** Gets [target]'s priority. You should not need to look at this; [GResolver]
+    already sorts the targets according to the algorithm in RFC 2782. *)
 
 external get_port : t -> UInt16.t = "ml_g_srv_target_get_port"
-(** Gets @target's port *)
+(** Gets [target]'s port *)
 
 external get_hostname : t -> string = "ml_g_srv_target_get_hostname"
-(** Gets @target's hostname (in ASCII form; if you are going to present
-this to the user, you should use g_hostname_is_ascii_encoded() to
-check if it contains encoded Unicode segments, and use
-g_hostname_to_unicode() to convert it if it does.) *)
+(** Gets [target]'s hostname (in ASCII form; if you are going to present this to
+    the user, you should use g_hostname_is_ascii_encoded() to check if it
+    contains encoded Unicode segments, and use g_hostname_to_unicode() to
+    convert it if it does.) *)
 
 external get_type : unit -> Gobject.Type.t = "ml_gio_srv_target_get_type"

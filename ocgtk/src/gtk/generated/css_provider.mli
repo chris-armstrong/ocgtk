@@ -9,13 +9,11 @@ external new_ : unit -> t = "ml_gtk_css_provider_new"
 (* Methods *)
 
 external to_string : t -> string = "ml_gtk_css_provider_to_string"
-(** Converts the @provider into a string representation in CSS
-format.
+(** Converts the [provider] into a string representation in CSS format.
 
-Using [method@Gtk.CssProvider.load_from_string] with the return
-value from this function on a new provider created with
-[ctor@Gtk.CssProvider.new] will basically create a duplicate
-of this @provider. *)
+    Using [Gtk.CssProvider.load_from_string] with the return value from this
+    function on a new provider created with [Gtk.CssProvider.new] will basically
+    create a duplicate of this [provider]. *)
 
 external load_named : t -> string -> string option -> unit
   = "ml_gtk_css_provider_load_named"
@@ -27,40 +25,40 @@ external load_named : t -> string -> string option -> unit
 
 external load_from_string : t -> string -> unit
   = "ml_gtk_css_provider_load_from_string"
-(** Loads @string into @css_provider.
+(** Loads [string] into [css_provider].
 
-This clears any previously loaded information. *)
+    This clears any previously loaded information. *)
 
 external load_from_resource : t -> string -> unit
   = "ml_gtk_css_provider_load_from_resource"
-(** Loads the data contained in the resource at @resource_path into
-the @css_provider.
+(** Loads the data contained in the resource at [resource_path] into the
+    [css_provider].
 
-This clears any previously loaded information. *)
+    This clears any previously loaded information. *)
 
 external load_from_path : t -> string -> unit
   = "ml_gtk_css_provider_load_from_path"
-(** Loads the data contained in @path into @css_provider.
+(** Loads the data contained in [path] into [css_provider].
 
-This clears any previously loaded information. *)
+    This clears any previously loaded information. *)
 
 external load_from_file : t -> Ocgtk_gio.Gio.Wrappers.File.t -> unit
   = "ml_gtk_css_provider_load_from_file"
-(** Loads the data contained in @file into @css_provider.
+(** Loads the data contained in [file] into [css_provider].
 
-This clears any previously loaded information. *)
+    This clears any previously loaded information. *)
 
 external load_from_data : t -> string -> int -> unit
   = "ml_gtk_css_provider_load_from_data"
-(** Loads @data into @css_provider.
+(** Loads [data] into [css_provider].
 
-This clears any previously loaded information. *)
+    This clears any previously loaded information. *)
 
 external load_from_bytes : t -> Glib_bytes.t -> unit
   = "ml_gtk_css_provider_load_from_bytes"
-(** Loads @data into @css_provider.
+(** Loads [data] into [css_provider].
 
-This clears any previously loaded information. *)
+    This clears any previously loaded information. *)
 
 (* Properties *)
 

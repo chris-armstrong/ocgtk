@@ -11,9 +11,9 @@ external add_shortcut : t -> Shortcuts_shortcut.t -> unit
   = "ml_gtk_shortcuts_group_add_shortcut"
 (** Adds a shortcut to the shortcuts group.
 
-    This is the programmatic equivalent to using [class@Gtk.Builder] and a
-    `<child>` tag to add the child. Adding children with other API is not
-    appropriate as `GtkShortcutsGroup` manages its children internally. *)
+    This is the programmatic equivalent to using [Gtk.Builder] and a [<child>]
+    tag to add the child. Adding children with other API is not appropriate as
+    [GtkShortcutsGroup] manages its children internally. *)
 
 (* Properties *)
 

@@ -67,21 +67,20 @@ let iter_mappable_constants ~warn_unmappable ~emit constants =
       | Some ocaml_type -> emit ~ocaml_name ~ocaml_type cst)
     constants
 
-(** Emit the OCamldoc line preceding a [val] declaration, using [constant_doc]
-    (sanitized) and the native [version] attribute rendered as [@since]. *)
+(** Emit the OCamldoc line preceding a [val] declaration: [constant_doc]
+    translated through [Doc_emit], with the native [version] rendered as
+    [@since]. With no doc but a version, a synthetic line naming the C type
+    stands in; with neither, nothing is emitted. *)
 let emit_doc buf (cst : gir_constant) =
-  match cst.constant_doc with
-  | Some doc ->
-      let doc_text = Utils.sanitize_doc doc in
-      bprintf buf "(** %s" doc_text;
-      (match cst.version with
-      | Some v -> bprintf buf "\n    @since %s" v
-      | None -> ());
-      bprintf buf " *)\n"
-  | None -> (
-      match cst.version with
-      | Some v -> bprintf buf "(** [%s] @since %s *)\n" cst.constant_c_type v
-      | None -> ())
+  let fallback =
+    Option.map (fun _ -> sprintf "[%s]" cst.constant_c_type) cst.version
+  in
+  match
+    Doc_emit.item_doc ~indent:"" ?since:cst.version ?fallback
+      ~context:Doc_translate.Member cst.constant_doc
+  with
+  | Some comment -> bprintf buf "%s\n" comment
+  | None -> ()
 
 (** Generate the .mli content for the constants of a namespace. Returns just the
     file header when [constants] is empty. *)

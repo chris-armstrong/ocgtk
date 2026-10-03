@@ -24,8 +24,8 @@ external get_message_area :
 
     This is the box where the dialog’s primary and secondary labels are packed.
     You can add your own extra content to that box and it will appear below
-    those labels. See [method@Gtk.Dialog.get_content_area] for the corresponding
-    function in the parent [class@Gtk.Dialog]. *)
+    those labels. See [Gtk.Dialog.get_content_area] for the corresponding
+    function in the parent [Gtk.Dialog]. *)
 
 (* Properties *)
 

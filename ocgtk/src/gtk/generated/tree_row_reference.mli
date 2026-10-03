@@ -18,12 +18,12 @@ external new_proxy :
 (* Methods *)
 
 external valid : t -> bool = "ml_gtk_tree_row_reference_valid"
-(** Returns %TRUE if the @reference is non-%NULL and refers to
-a current valid path. *)
+(** Returns [TRUE] if the [reference] is non-[NULL] and refers to a current
+    valid path. *)
 
 external get_path : t -> Tree_path.t option
   = "ml_gtk_tree_row_reference_get_path"
-(** Returns a path that the row reference currently points to, or %NULL if the
+(** Returns a path that the row reference currently points to, or [NULL] if the
     path pointed to is no longer valid. *)
 
 external get_model : t -> Tree_model.t = "ml_gtk_tree_row_reference_get_model"

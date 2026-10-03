@@ -11,13 +11,13 @@ external new_ : Font_dialog.t option -> t = "ml_gtk_font_dialog_button_new"
 
 external set_use_size : t -> bool -> unit
   = "ml_gtk_font_dialog_button_set_use_size"
-(** If @use_size is `TRUE`, the font name will be written
-using the selected font size. *)
+(** If [use_size] is [TRUE], the font name will be written using the selected
+    font size. *)
 
 external set_use_font : t -> bool -> unit
   = "ml_gtk_font_dialog_button_set_use_font"
-(** If @use_font is `TRUE`, the font name will be written
-using the selected font. *)
+(** If [use_font] is [TRUE], the font name will be written using the selected
+    font. *)
 
 external set_level : t -> Gtk_enums.fontlevel -> unit
   = "ml_gtk_font_dialog_button_set_level"
@@ -39,7 +39,7 @@ external set_font_desc :
 
 external set_dialog : t -> Font_dialog.t -> unit
   = "ml_gtk_font_dialog_button_set_dialog"
-(** Sets a `GtkFontDialog` object to use for creating the font chooser dialog
+(** Sets a [GtkFontDialog] object to use for creating the font chooser dialog
     that is presented when the user clicks the button. *)
 
 external get_use_size : t -> bool = "ml_gtk_font_dialog_button_get_use_size"
@@ -66,8 +66,7 @@ external get_font_features : t -> string option
     "notify::font-features".
 
     Note that the button will only let users choose font features if
-    [property@Gtk.FontDialogButton:level] is set to `GTK_FONT_LEVEL_FEATURES`.
-*)
+    [Gtk.FontDialogButton:level] is set to [GTK_FONT_LEVEL_FEATURES]. *)
 
 external get_font_desc :
   t -> Ocgtk_pango.Pango.Wrappers.Font_description.t option
@@ -79,7 +78,7 @@ external get_font_desc :
 
 external get_dialog : t -> Font_dialog.t option
   = "ml_gtk_font_dialog_button_get_dialog"
-(** Returns the `GtkFontDialog` of @self. *)
+(** Returns the [GtkFontDialog] of [self]. *)
 
 (* Properties *)
 

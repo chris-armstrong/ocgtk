@@ -13,4 +13,4 @@ external new_ :
 
 external get_texture : t -> Ocgtk_gdk.Gdk.Wrappers.Texture.t
   = "ml_gsk_texture_node_get_texture"
-(** Retrieves the `GdkTexture` used when creating this `GskRenderNode`. *)
+(** Retrieves the [GdkTexture] used when creating this [GskRenderNode]. *)

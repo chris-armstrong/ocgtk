@@ -24,14 +24,14 @@ external get_icon_name : t -> string option
     gtk_icon_theme_lookup_icon() or the always-available "image-missing". The
     icon chosen is returned by this function.
 
-    If the icon was created without an icon theme, this function returns %NULL.
+    If the icon was created without an icon theme, this function returns [NULL].
 *)
 
 external get_file : t -> Ocgtk_gio.Gio.Wrappers.File.t option
   = "ml_gtk_icon_paintable_get_file"
-(** Gets the `GFile` that was used to load the icon.
+(** Gets the [GFile] that was used to load the icon.
 
-    Returns %NULL if the icon was not loaded from a file. *)
+    Returns [NULL] if the icon was not loaded from a file. *)
 
 (* Properties *)
 

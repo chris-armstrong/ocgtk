@@ -32,31 +32,33 @@ external set_translator_credits : t -> string option -> unit
 (** Sets the translator credits string which is displayed in the credits page.
 
     The intended use for this string is to display the translator of the
-    language which is currently used in the user interface. Using `gettext()`, a
+    language which is currently used in the user interface. Using [gettext()], a
     simple way to achieve that is to mark the string for translation:
 
-    ```c GtkWidget *about = gtk_about_dialog_new ();
-    gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
-    _("translator-credits")); ```
+    {[
+    GtkWidget * about = gtk_about_dialog_new ();
+    gtk_about_dialog_set_translator_credits
+      (GTK_ABOUT_DIALOG about, _ "translator-credits")
+    ]}
 
-    It is a good idea to use the customary `msgid` “translator-credits” for this
-    purpose, since translators will already know the purpose of that `msgid`,
-    and since `GtkAboutDialog` will detect if “translator-credits” is
+    It is a good idea to use the customary [msgid] “translator-credits” for this
+    purpose, since translators will already know the purpose of that [msgid],
+    and since [GtkAboutDialog] will detect if “translator-credits” is
     untranslated and omit translator credits. *)
 
 external set_system_information : t -> string option -> unit
   = "ml_gtk_about_dialog_set_system_information"
 (** Sets the system information to be displayed in the about dialog.
 
-    If `system_information` is `NULL`, the system information page is hidden.
+    If [system_information] is [NULL], the system information page is hidden.
 
-    See [property@Gtk.AboutDialog:system-information]. *)
+    See [Gtk.AboutDialog:system-information]. *)
 
 external set_program_name : t -> string option -> unit
   = "ml_gtk_about_dialog_set_program_name"
 (** Sets the name to display in the about dialog.
 
-    If `name` is not set, the string returned by `g_get_application_name()` is
+    If [name] is not set, the string returned by [g_get_application_name()] is
     used. *)
 
 external set_logo_icon_name : t -> string option -> unit
@@ -71,7 +73,7 @@ external set_license : t -> string option -> unit
   = "ml_gtk_about_dialog_set_license"
 (** Sets the license information to be displayed in the about dialog.
 
-    If `license` is `NULL`, the license page is hidden. *)
+    If [license] is [NULL], the license page is hidden. *)
 
 external set_documenters : t -> string array -> unit
   = "ml_gtk_about_dialog_set_documenters"

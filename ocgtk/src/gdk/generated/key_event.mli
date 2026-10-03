@@ -23,7 +23,7 @@ external get_match : t -> bool * int * Gdk_enums.modifiertype
   = "ml_gdk_key_event_get_match"
 (** Gets a keyval and modifier combination that will match the event.
 
-    See [method@Gdk.KeyEvent.matches]. *)
+    See [Gdk.KeyEvent.matches]. *)
 
 external get_level : t -> int = "ml_gdk_key_event_get_level"
 (** Extracts the shift level from a key event. *)

@@ -13,7 +13,7 @@ external new_from_gvariant : Gvariant.t -> t
 (* Methods *)
 
 external to_gvariant : t -> Gvariant.t = "ml_gtk_file_filter_to_gvariant"
-(** Serialize a file filter to an `a{sv}` variant. *)
+(** Serialize a file filter to an [a{sv}] variant. *)
 
 external set_name : t -> string option -> unit = "ml_gtk_file_filter_set_name"
 (** Sets a human-readable name of the filter.
@@ -24,11 +24,11 @@ external set_name : t -> string option -> unit = "ml_gtk_file_filter_set_name"
 external get_name : t -> string option = "ml_gtk_file_filter_get_name"
 (** Gets the human-readable name for the filter.
 
-    See [method@Gtk.FileFilter.set_name]. *)
+    See [Gtk.FileFilter.set_name]. *)
 
 external get_attributes : t -> string array
   = "ml_gtk_file_filter_get_attributes"
-(** Gets the attributes that need to be filled in for the `GFileInfo` passed to
+(** Gets the attributes that need to be filled in for the [GFileInfo] passed to
     this filter.
 
     This function will not typically be used by applications; it is intended for
@@ -37,22 +37,25 @@ external get_attributes : t -> string array
 external add_suffix : t -> string -> unit = "ml_gtk_file_filter_add_suffix"
 (** Adds a suffix match rule to a filter.
 
-    This is similar to adding a match for the pattern "*.@suffix"
+    This is similar to adding a match for the pattern "*.[suffix]"
 
-    An exaple to filter files with the suffix ".sub": ```c
-    gtk_file_filter_add_suffix (filter, "sub"); ```
+    An exaple to filter files with the suffix ".sub":
+
+    {[
+    gtk_file_filter_add_suffix (filter, "sub")
+    ]}
 
     Filters with multiple dots are allowed.
 
-    In contrast to pattern matches, suffix matches are *always*
+    In contrast to pattern matches, suffix matches are {i always}
     case-insensitive. *)
 
 external add_pixbuf_formats : t -> unit
   = "ml_gtk_file_filter_add_pixbuf_formats"
-(** Adds a rule allowing image files in the formats supported by `GdkPixbuf`.
+(** Adds a rule allowing image files in the formats supported by [GdkPixbuf].
 
-    This is equivalent to calling [method@Gtk.FileFilter.add_mime_type] for all
-    the supported mime types. *)
+    This is equivalent to calling [Gtk.FileFilter.add_mime_type] for all the
+    supported mime types. *)
 
 external add_pattern : t -> string -> unit = "ml_gtk_file_filter_add_pattern"
 (** Adds a rule allowing a shell style glob pattern.

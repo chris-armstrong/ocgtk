@@ -16,7 +16,7 @@ external new_from_list : Ocgtk_gio.Gio.Wrappers.File.t list -> t
 
 external get_files : t -> Ocgtk_gio.Gio.Wrappers.File.t list
   = "ml_gdk_file_list_get_files"
-(** Retrieves the list of files inside a `GdkFileList`.
+(** Retrieves the list of files inside a [GdkFileList].
 
     This function is meant for language bindings. *)
 

@@ -47,25 +47,25 @@ None of the members of a `PangoGlyphItemIter` should be modified manually. *)
 
 external prev_cluster : t -> bool = "ml_pango_glyph_item_iter_prev_cluster"
 (** Moves the iterator to the preceding cluster in the glyph item. See
-    `PangoGlyphItemIter` for details of cluster orders. *)
+    [PangoGlyphItemIter] for details of cluster orders. *)
 
 external next_cluster : t -> bool = "ml_pango_glyph_item_iter_next_cluster"
 (** Advances the iterator to the next cluster in the glyph item.
 
-    See `PangoGlyphItemIter` for details of cluster orders. *)
+    See [PangoGlyphItemIter] for details of cluster orders. *)
 
 external init_start : t -> Glyph_item.t -> string -> bool
   = "ml_pango_glyph_item_iter_init_start"
-(** Initializes a `PangoGlyphItemIter` structure to point to the first cluster
+(** Initializes a [PangoGlyphItemIter] structure to point to the first cluster
     in a glyph item.
 
-    See `PangoGlyphItemIter` for details of cluster orders. *)
+    See [PangoGlyphItemIter] for details of cluster orders. *)
 
 external init_end : t -> Glyph_item.t -> string -> bool
   = "ml_pango_glyph_item_iter_init_end"
-(** Initializes a `PangoGlyphItemIter` structure to point to the last cluster in
+(** Initializes a [PangoGlyphItemIter] structure to point to the last cluster in
     a glyph item.
 
-    See `PangoGlyphItemIter` for details of cluster orders. *)
+    See [PangoGlyphItemIter] for details of cluster orders. *)
 
 external get_type : unit -> Gobject.Type.t = "ml_pango_glyph_item_iter_get_type"

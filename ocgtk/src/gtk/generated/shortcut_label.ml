@@ -11,11 +11,11 @@ external new_ : string -> t = "ml_gtk_shortcut_label_new"
 
 external set_disabled_text : t -> string -> unit
   = "ml_gtk_shortcut_label_set_disabled_text"
-(** Sets the text to be displayed by @self when no accelerator is set. *)
+(** Sets the text to be displayed by [self] when no accelerator is set. *)
 
 external set_accelerator : t -> string -> unit
   = "ml_gtk_shortcut_label_set_accelerator"
-(** Sets the accelerator to be displayed by @self. *)
+(** Sets the accelerator to be displayed by [self]. *)
 
 external get_disabled_text : t -> string option
   = "ml_gtk_shortcut_label_get_disabled_text"
@@ -23,6 +23,6 @@ external get_disabled_text : t -> string option
 
 external get_accelerator : t -> string option
   = "ml_gtk_shortcut_label_get_accelerator"
-(** Retrieves the current accelerator of @self. *)
+(** Retrieves the current accelerator of [self]. *)
 
 (* Properties *)

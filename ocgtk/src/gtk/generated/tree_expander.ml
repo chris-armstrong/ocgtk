@@ -37,17 +37,17 @@ external set_child :
 
 external get_list_row : t -> Tree_list_row.t option
   = "ml_gtk_tree_expander_get_list_row"
-(** Gets the list row managed by @self. *)
+(** Gets the list row managed by [self]. *)
 
 external get_item : t -> [ `object_ ] Gobject.obj option
   = "ml_gtk_tree_expander_get_item"
-(** Forwards the item set on the `GtkTreeListRow` that @self is managing.
+(** Forwards the item set on the [GtkTreeListRow] that [self] is managing.
 
-This call is essentially equivalent to calling:
+    This call is essentially equivalent to calling:
 
-```c
-gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
-``` *)
+    {[
+    gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
+    ]} *)
 
 external get_indent_for_icon : t -> bool
   = "ml_gtk_tree_expander_get_indent_for_icon"
@@ -68,6 +68,6 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_tree_expander_get_child"
-(** Gets the child widget displayed by @self. *)
+(** Gets the child widget displayed by [self]. *)
 
 (* Properties *)

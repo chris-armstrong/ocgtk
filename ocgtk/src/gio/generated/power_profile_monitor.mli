@@ -13,7 +13,7 @@ external get_power_saver_enabled : t -> bool
 (** Gets whether the system is in “Power Saver” mode.
 
     You are expected to listen to the
-    #GPowerProfileMonitor::notify::power-saver-enabled signal to know when the
+    [GPowerProfileMonitor::notify]::power-saver-enabled signal to know when the
     profile has changed. *)
 
 (* Properties *)

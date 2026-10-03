@@ -24,12 +24,12 @@ external set_visibility : t -> bool -> unit = "ml_gtk_text_set_visibility"
     to the clipboard.
 
     By default, GTK picks the best invisible character available in the current
-    font, but it can be changed with [method@Gtk.Text.set_invisible_char].
+    font, but it can be changed with [Gtk.Text.set_invisible_char].
 
-    Note that you probably want to set [property@Gtk.Text:input-purpose] to
-    [enum@Gtk.InputPurpose.password] or [enum@Gtk.InputPurpose.pin] to inform
-    input methods about the purpose of this widget, in addition to setting
-    visibility to false. *)
+    Note that you probably want to set [Gtk.Text:input-purpose] to
+    [Gtk.InputPurpose.password] or [Gtk.InputPurpose.pin] to inform input
+    methods about the purpose of this widget, in addition to setting visibility
+    to false. *)
 
 external set_truncate_multiline : t -> bool -> unit
   = "ml_gtk_text_set_truncate_multiline"
@@ -57,11 +57,11 @@ external set_overwrite_mode : t -> bool -> unit
 external set_max_length : t -> int -> unit = "ml_gtk_text_set_max_length"
 (** Sets the maximum allowed length of the contents.
 
-If the current contents are longer than the given length,
-they will be truncated to fit.
+    If the current contents are longer than the given length, they will be
+    truncated to fit.
 
-This is equivalent to getting @self's `GtkEntryBuffer` and
-calling [method@Gtk.EntryBuffer.set_max_length] on it. *)
+    This is equivalent to getting [self]'s [GtkEntryBuffer] and calling
+    [Gtk.EntryBuffer.set_max_length] on it. *)
 
 external set_invisible_char : t -> int -> unit
   = "ml_gtk_text_set_invisible_char"
@@ -104,23 +104,20 @@ external set_attributes :
 
 external set_activates_default : t -> bool -> unit
   = "ml_gtk_text_set_activates_default"
-(** Sets whether pressing <kbd>Enter</kbd> will activate
-the default widget.
+(** Sets whether pressing <kbd>Enter</kbd> will activate the default widget.
 
-This usually means that the dialog containing @self will
-be closed, since the default widget is usually one of
-the dialog buttons. *)
+    This usually means that the dialog containing [self] will be closed, since
+    the default widget is usually one of the dialog buttons. *)
 
 external grab_focus_without_selecting : t -> bool
   = "ml_gtk_text_grab_focus_without_selecting"
 (** Causes the text widget to have the keyboard focus.
 
-It behaves like [method@Gtk.Widget.grab_focus],
-except that it does not select the contents of @self.
+    It behaves like [Gtk.Widget.grab_focus], except that it does not select the
+    contents of [self].
 
-You only want to call this on some special entries
-which the user usually doesn't want to replace all
-text in, such as search-as-you-type entries. *)
+    You only want to call this on some special entries which the user usually
+    doesn't want to replace all text in, such as search-as-you-type entries. *)
 
 external get_visibility : t -> bool = "ml_gtk_text_get_visibility"
 (** Retrieves whether the text is visible. *)
@@ -132,14 +129,14 @@ external get_truncate_multiline : t -> bool
 external get_text_length : t -> UInt16.t = "ml_gtk_text_get_text_length"
 (** Retrieves the length of the contents.
 
-This is equivalent to getting @self's `GtkEntryBuffer`
-and calling [method@Gtk.EntryBuffer.get_length] on it. *)
+    This is equivalent to getting [self]'s [GtkEntryBuffer] and calling
+    [Gtk.EntryBuffer.get_length] on it. *)
 
 external get_tabs : t -> Ocgtk_pango.Pango.Wrappers.Tab_array.t option
   = "ml_gtk_text_get_tabs"
 (** Gets the tab stops for the text widget.
 
-    See [method@Gtk.Text.set_tabs]. *)
+    See [Gtk.Text.set_tabs]. *)
 
 external get_propagate_text_width : t -> bool
   = "ml_gtk_text_get_propagate_text_width"
@@ -150,27 +147,27 @@ external get_placeholder_text : t -> string option
 (** Retrieves the text that will be displayed when the text widget is empty and
     unfocused
 
-    See [method@Gtk.Text.set_placeholder_text]. *)
+    See [Gtk.Text.set_placeholder_text]. *)
 
 external get_overwrite_mode : t -> bool = "ml_gtk_text_get_overwrite_mode"
 (** Gets whether text is overwritten when typing.
 
-    See [method@Gtk.Text.set_overwrite_mode]. *)
+    See [Gtk.Text.set_overwrite_mode]. *)
 
 external get_max_length : t -> int = "ml_gtk_text_get_max_length"
 (** Retrieves the maximum allowed length of the contents.
 
-See [method@Gtk.Text.set_max_length].
+    See [Gtk.Text.set_max_length].
 
-This is equivalent to getting @self's `GtkEntryBuffer` and
-calling [method@Gtk.EntryBuffer.get_max_length] on it. *)
+    This is equivalent to getting [self]'s [GtkEntryBuffer] and calling
+    [Gtk.EntryBuffer.get_max_length] on it. *)
 
 external get_invisible_char : t -> int = "ml_gtk_text_get_invisible_char"
 (** Retrieves the character displayed when visibility is set to false.
 
     Note that GTK does not compute this value unless it needs it, so the value
     returned by this function is not very useful unless it has been explicitly
-    set with [method@Gtk.Text.set_invisible_char]. *)
+    set with [Gtk.Text.set_invisible_char]. *)
 
 external get_input_purpose : t -> Gtk_enums.inputpurpose
   = "ml_gtk_text_get_input_purpose"
@@ -184,7 +181,7 @@ external get_extra_menu : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
   = "ml_gtk_text_get_extra_menu"
 (** Gets the extra menu model of the text widget.
 
-    See [method@Gtk.Text.set_extra_menu]. *)
+    See [Gtk.Text.set_extra_menu]. *)
 
 external get_enable_emoji_completion : t -> bool
   = "ml_gtk_text_get_enable_emoji_completion"
@@ -197,13 +194,13 @@ external get_attributes : t -> Ocgtk_pango.Pango.Wrappers.Attr_list.t option
   = "ml_gtk_text_get_attributes"
 (** Gets the attribute list that was set on the text widget.
 
-    See [method@Gtk.Text.set_attributes]. *)
+    See [Gtk.Text.set_attributes]. *)
 
 external get_activates_default : t -> bool = "ml_gtk_text_get_activates_default"
 (** Returns whether pressing <kbd>Enter</kbd> will activate the default widget
     for the window containing the widget.
 
-    See [method@Gtk.Text.set_activates_default]. *)
+    See [Gtk.Text.set_activates_default]. *)
 
 external compute_cursor_extents :
   t ->

@@ -13,8 +13,7 @@ external new_from_model : Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> t
 external set_menu_model :
   t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option -> unit
   = "ml_gtk_popover_menu_bar_set_menu_model"
-(** Sets a menu model from which @bar should take
-its contents. *)
+(** Sets a menu model from which [bar] should take its contents. *)
 
 external remove_child :
   t ->
@@ -27,7 +26,7 @@ external remove_child :
 
 external get_menu_model : t -> Ocgtk_gio.Gio.Wrappers.Menu_model.t option
   = "ml_gtk_popover_menu_bar_get_menu_model"
-(** Returns the model from which the contents of @bar are taken. *)
+(** Returns the model from which the contents of [bar] are taken. *)
 
 external add_child :
   t ->
@@ -38,7 +37,7 @@ external add_child :
   bool = "ml_gtk_popover_menu_bar_add_child"
 (** Adds a custom widget to a generated menubar.
 
-For this to work, the menu model of @bar must have an
-item with a `custom` attribute that matches @id. *)
+    For this to work, the menu model of [bar] must have an item with a [custom]
+    attribute that matches [id]. *)
 
 (* Properties *)

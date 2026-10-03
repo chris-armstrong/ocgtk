@@ -10,22 +10,25 @@ external from_gobject : 'a Gobject.obj -> t
 
 external start_editing : t -> Ocgtk_gdk.Gdk.Wrappers.Event.t option -> unit
   = "ml_gtk_cell_editable_start_editing"
-(** Begins editing on a @cell_editable.
+(** Begins editing on a [cell_editable].
 
-The `GtkCellRenderer` for the cell creates and returns a `GtkCellEditable` from
-gtk_cell_renderer_start_editing(), configured for the `GtkCellRenderer` type.
+    The [GtkCellRenderer] for the cell creates and returns a [GtkCellEditable]
+    from gtk_cell_renderer_start_editing(), configured for the [GtkCellRenderer]
+    type.
 
-gtk_cell_editable_start_editing() can then set up @cell_editable suitably for
-editing a cell, e.g. making the Esc key emit `GtkCellEditable::editing-done`.
+    gtk_cell_editable_start_editing() can then set up [cell_editable] suitably
+    for editing a cell, e.g. making the Esc key emit
+    [GtkCellEditable::editing-done].
 
-Note that the @cell_editable is created on-demand for the current edit; its
-lifetime is temporary and does not persist across other edits and/or cells. *)
+    Note that the [cell_editable] is created on-demand for the current edit; its
+    lifetime is temporary and does not persist across other edits and/or cells.
+*)
 
 external remove_widget : t -> unit = "ml_gtk_cell_editable_remove_widget"
-(** Emits the `GtkCellEditable::remove-widget` signal. *)
+(** Emits the [GtkCellEditable::remove-widget] signal. *)
 
 external editing_done : t -> unit = "ml_gtk_cell_editable_editing_done"
-(** Emits the `GtkCellEditable::editing-done` signal. *)
+(** Emits the [GtkCellEditable::editing-done] signal. *)
 
 (* Properties *)
 

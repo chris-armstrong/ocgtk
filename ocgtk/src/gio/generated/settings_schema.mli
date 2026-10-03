@@ -96,44 +96,44 @@ itself before attempting to create the settings source. *)
 (* Methods *)
 
 external ref : t -> t = "ml_g_settings_schema_ref"
-(** Increase the reference count of @schema, returning a new reference. *)
+(** Increase the reference count of [schema], returning a new reference. *)
 
 external list_keys : t -> string array = "ml_g_settings_schema_list_keys"
-(** Introspects the list of keys on @schema.
+(** Introspects the list of keys on [schema].
 
-You should probably not be calling this function from "normal" code
-(since you should already know what keys are in your schema).  This
-function is intended for introspection reasons. *)
+    You should probably not be calling this function from "normal" code (since
+    you should already know what keys are in your schema). This function is
+    intended for introspection reasons. *)
 
 external list_children : t -> string array
   = "ml_g_settings_schema_list_children"
-(** Gets the list of children in @schema.
+(** Gets the list of children in [schema].
 
-You should free the return value with g_strfreev() when you are done
-with it. *)
+    You should free the return value with g_strfreev() when you are done with
+    it. *)
 
 external has_key : t -> string -> bool = "ml_g_settings_schema_has_key"
-(** Checks if @schema has a key named @name. *)
+(** Checks if [schema] has a key named [name]. *)
 
 external get_path : t -> string option = "ml_g_settings_schema_get_path"
-(** Gets the path associated with @schema, or %NULL.
+(** Gets the path associated with [schema], or [NULL].
 
-Schemas may be single-instance or relocatable.  Single-instance
-schemas correspond to exactly one set of keys in the backend
-database: those located at the path returned by this function.
+    Schemas may be single-instance or relocatable. Single-instance schemas
+    correspond to exactly one set of keys in the backend database: those located
+    at the path returned by this function.
 
-Relocatable schemas can be referenced by other schemas and can
-therefore describe multiple sets of keys at different locations.  For
-relocatable schemas, this function will return %NULL. *)
+    Relocatable schemas can be referenced by other schemas and can therefore
+    describe multiple sets of keys at different locations. For relocatable
+    schemas, this function will return [NULL]. *)
 
 external get_key : t -> string -> Settings_schema_key.t
   = "ml_g_settings_schema_get_key"
-(** Gets the key named @name from @schema.
+(** Gets the key named [name] from [schema].
 
-It is a programmer error to request a key that does not exist.  See
-g_settings_schema_list_keys(). *)
+    It is a programmer error to request a key that does not exist. See
+    g_settings_schema_list_keys(). *)
 
 external get_id : t -> string = "ml_g_settings_schema_get_id"
-(** Get the ID of @schema. *)
+(** Get the ID of [schema]. *)
 
 external get_type : unit -> Gobject.Type.t = "ml_gio_settings_schema_get_type"

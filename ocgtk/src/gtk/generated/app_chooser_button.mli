@@ -12,7 +12,7 @@ external new_ : string -> t = "ml_gtk_app_chooser_button_new"
 external set_show_dialog_item : t -> bool -> unit
   = "ml_gtk_app_chooser_button_set_show_dialog_item"
 (** Sets whether the dropdown menu of this button should show an entry to
-    trigger a `GtkAppChooserDialog`. *)
+    trigger a [GtkAppChooserDialog]. *)
 
 external set_show_default_item : t -> bool -> unit
   = "ml_gtk_app_chooser_button_set_show_default_item"
@@ -32,14 +32,13 @@ external set_active_custom_item : t -> string -> unit
   = "ml_gtk_app_chooser_button_set_active_custom_item"
 (** Selects a custom item.
 
-    See [method@Gtk.AppChooserButton.append_custom_item].
+    See [Gtk.AppChooserButton.append_custom_item].
 
-    Use [method@Gtk.AppChooser.refresh] to bring the selection to its initial
-    state. *)
+    Use [Gtk.AppChooser.refresh] to bring the selection to its initial state. *)
 
 external get_show_dialog_item : t -> bool
   = "ml_gtk_app_chooser_button_get_show_dialog_item"
-(** Returns whether the dropdown menu shows an item for a `GtkAppChooserDialog`.
+(** Returns whether the dropdown menu shows an item for a [GtkAppChooserDialog].
 *)
 
 external get_show_default_item : t -> bool
@@ -66,11 +65,10 @@ external append_custom_item :
     popup.
 
     The item name must be unique per-widget. Clients can use the provided name
-    as a detail for the [signal@Gtk.AppChooserButton::custom-item-activated]
-    signal, to add a callback for the activation of a particular custom item in
-    the list.
+    as a detail for the [Gtk.AppChooserButton::custom-item-activated] signal, to
+    add a callback for the activation of a particular custom item in the list.
 
-    See also [method@Gtk.AppChooserButton.append_separator]. *)
+    See also [Gtk.AppChooserButton.append_separator]. *)
 
 (* Properties *)
 

@@ -11,7 +11,7 @@ external new_ : Shortcut_trigger.t option -> Shortcut_action.t option -> t
 
 external set_trigger : t -> Shortcut_trigger.t option -> unit
   = "ml_gtk_shortcut_set_trigger"
-(** Sets the new trigger for @self to be @trigger. *)
+(** Sets the new trigger for [self] to be [trigger]. *)
 
 external set_arguments : t -> Gvariant.t option -> unit
   = "ml_gtk_shortcut_set_arguments"
@@ -19,11 +19,11 @@ external set_arguments : t -> Gvariant.t option -> unit
 
 external set_action : t -> Shortcut_action.t option -> unit
   = "ml_gtk_shortcut_set_action"
-(** Sets the new action for @self to be @action. *)
+(** Sets the new action for [self] to be [action]. *)
 
 external get_trigger : t -> Shortcut_trigger.t option
   = "ml_gtk_shortcut_get_trigger"
-(** Gets the trigger used to trigger @self. *)
+(** Gets the trigger used to trigger [self]. *)
 
 external get_arguments : t -> Gvariant.t option
   = "ml_gtk_shortcut_get_arguments"

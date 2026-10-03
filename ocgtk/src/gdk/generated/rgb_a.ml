@@ -14,19 +14,18 @@ type t = [ `rgb_a ] Gobject.obj
 (* Methods *)
 
 external to_string : t -> string = "ml_gdk_rgba_to_string"
-(** Returns a textual specification of @rgba in the form
-`rgb(r,g,b)` or `rgba(r,g,b,a)`, where “r”, “g”, “b” and
-“a” represent the red, green, blue and alpha values
-respectively. “r”, “g”, and “b” are represented as integers
-in the range 0 to 255, and “a” is represented as a floating
-point value in the range 0 to 1.
+(** Returns a textual specification of [rgba] in the form [rgb(r,g,b)] or
+    [rgba(r,g,b,a)], where “r”, “g”, “b” and “a” represent the red, green, blue
+    and alpha values respectively. “r”, “g”, and “b” are represented as integers
+    in the range 0 to 255, and “a” is represented as a floating point value in
+    the range 0 to 1.
 
-These string forms are string forms that are supported by
-the CSS3 colors module, and can be parsed by [method@Gdk.RGBA.parse].
+    These string forms are string forms that are supported by the CSS3 colors
+    module, and can be parsed by [Gdk.RGBA.parse].
 
-Note that this string representation may lose some precision,
-since “r”, “g” and “b” are represented as 8-bit integers. If
-this is a concern, you should use a different representation. *)
+    Note that this string representation may lose some precision, since “r”, “g”
+    and “b” are represented as 8-bit integers. If this is a concern, you should
+    use a different representation. *)
 
 external parse : t -> string -> bool = "ml_gdk_rgba_parse"
 (** Parses a textual representation of a color.
@@ -34,10 +33,10 @@ external parse : t -> string -> bool = "ml_gdk_rgba_parse"
     The string can be either one of:
 
     - A standard name (Taken from the CSS specification).
-    - A hexadecimal value in the form “\#rgb”, “\#rrggbb”, “\#rrrgggbbb” or
-      ”\#rrrrggggbbbb”
-    - A hexadecimal value in the form “\#rgba”, “\#rrggbbaa”, or
-      ”\#rrrrggggbbbbaaaa”
+    - A hexadecimal value in the form “#rgb”, “#rrggbb”, “#rrrgggbbb” or
+      ”#rrrrggggbbbb”
+    - A hexadecimal value in the form “#rgba”, “#rrggbbaa”, or
+      ”#rrrrggggbbbbaaaa”
     - A RGB color in the form “rgb(r,g,b)” (In this case the color will have
       full opacity)
     - A RGBA color in the form “rgba(r,g,b,a)”
@@ -50,21 +49,21 @@ external parse : t -> string -> bool = "ml_gdk_rgba_parse"
     a floating point value in the range 0 to 1. *)
 
 external is_opaque : t -> bool = "ml_gdk_rgba_is_opaque"
-(** Checks if an @rgba value is opaque.
+(** Checks if an [rgba] value is opaque.
 
-That is, drawing with the value will not retain any results
-from previous contents. *)
+    That is, drawing with the value will not retain any results from previous
+    contents. *)
 
 external is_clear : t -> bool = "ml_gdk_rgba_is_clear"
-(** Checks if an @rgba value is transparent.
+(** Checks if an [rgba] value is transparent.
 
-That is, drawing with the value would not produce any change. *)
+    That is, drawing with the value would not produce any change. *)
 
 external hash : t -> int = "ml_gdk_rgba_hash"
-(** A hash function suitable for using for a hash table that stores `GdkRGBA`s.
+(** A hash function suitable for using for a hash table that stores [GdkRGBA]s.
 *)
 
 external equal : t -> t -> bool = "ml_gdk_rgba_equal"
-(** Compares two `GdkRGBA` colors. *)
+(** Compares two [GdkRGBA] colors. *)
 
 external get_type : unit -> Gobject.Type.t = "ml_gdk_rgb_a_get_type"
