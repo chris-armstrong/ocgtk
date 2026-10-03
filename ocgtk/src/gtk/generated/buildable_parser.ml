@@ -2,6 +2,6 @@
 (* BuildableParser: BuildableParser *)
 
 type t = [ `buildable_parser ] Gobject.obj
-(** A sub-parser for `GtkBuildable` implementations. *)
+(** A sub-parser for [GtkBuildable] implementations. *)
 
 (* Methods *)

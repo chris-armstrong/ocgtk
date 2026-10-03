@@ -2,7 +2,7 @@
 (* GlyphString: GlyphString *)
 
 type t = [ `glyph_string ] Gobject.obj
-(** A `PangoGlyphString` is used to store strings of glyphs with geometry and
+(** A [PangoGlyphString] is used to store strings of glyphs with geometry and
     visual attribute information.
 
     The storage for the glyph information is owned by the structure which

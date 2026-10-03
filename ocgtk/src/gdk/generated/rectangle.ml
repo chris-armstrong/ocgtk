@@ -4,15 +4,15 @@
 type t = [ `rectangle ] Gobject.obj
 (** Represents a rectangle.
 
-    `GdkRectangle` is identical to `cairo_rectangle_t`. Together with Cairo’s
-    `cairo_region_t` data type, these are the central types for representing
+    [GdkRectangle] is identical to [cairo_rectangle_t]. Together with Cairo’s
+    [cairo_region_t] data type, these are the central types for representing
     sets of pixels.
 
     The intersection of two rectangles can be computed with
-    [method@Gdk.Rectangle.intersect]; to find the union of two rectangles use
-    [method@Gdk.Rectangle.union].
+    [Gdk.Rectangle.intersect]; to find the union of two rectangles use
+    [Gdk.Rectangle.union].
 
-    The `cairo_region_t` type provided by Cairo is usually used for managing
+    The [cairo_region_t] type provided by Cairo is usually used for managing
     non-rectangular clipping of graphical operations.
 
     The Graphene library has a number of other data types for regions and

@@ -5,7 +5,7 @@ type t = [ `css_section ] Gobject.obj
 (** Defines a part of a CSS document.
 
     Because sections are nested into one another, you can use
-    [method@CssSection.get_parent] to get the containing region. *)
+    [CssSection.get_parent] to get the containing region. *)
 
 external new_ :
   Ocgtk_gio.Gio.Wrappers.File.t option -> Css_location.t -> Css_location.t -> t

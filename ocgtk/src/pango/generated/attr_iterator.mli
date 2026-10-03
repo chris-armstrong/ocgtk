@@ -2,13 +2,13 @@
 (* AttrIterator: AttrIterator *)
 
 type t = [ `attr_iterator ] Gobject.obj
-(** A `PangoAttrIterator` is used to iterate through a `PangoAttrList`.
+(** A [PangoAttrIterator] is used to iterate through a [PangoAttrList].
 
-    A new iterator is created with [method@Pango.AttrList.get_iterator]. Once
-    the iterator is created, it can be advanced through the style changes in the
-    text using [method@Pango.AttrIterator.next]. At each style change, the range
-    of the current style segment and the attributes currently in effect can be
-    queried. *)
+    A new iterator is created with [Pango.AttrList.get_iterator]. Once the
+    iterator is created, it can be advanced through the style changes in the
+    text using [Pango.AttrIterator.next]. At each style change, the range of the
+    current style segment and the attributes currently in effect can be queried.
+*)
 
 (* Methods *)
 

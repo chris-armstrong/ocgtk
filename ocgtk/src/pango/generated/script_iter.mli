@@ -2,7 +2,7 @@
 (* ScriptIter: ScriptIter *)
 
 type t = [ `script_iter ] Gobject.obj
-(** A `PangoScriptIter` is used to iterate through a string and identify ranges
+(** A [PangoScriptIter] is used to iterate through a string and identify ranges
     in different scripts. *)
 
 external new_ : string -> int -> t = "ml_pango_script_iter_new"

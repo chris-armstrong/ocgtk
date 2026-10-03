@@ -5,7 +5,7 @@ type t = [ `rgb_a ] Gobject.obj
 (** Represents a color, in a way that is compatible with cairo’s notion of
     color.
 
-    `GdkRGBA` is a convenient way to pass colors around. It’s based on cairo’s
+    [GdkRGBA] is a convenient way to pass colors around. It’s based on cairo’s
     way to deal with colors and mirrors its behavior. All values are in the
     range from 0.0 to 1.0 inclusive. So the color (0.0, 0.0, 0.0, 0.0)
     represents transparent black and (1.0, 1.0, 1.0, 1.0) is opaque white. Other

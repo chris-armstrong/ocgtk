@@ -2,10 +2,10 @@
 (* FontDescription: FontDescription *)
 
 type t = [ `font_description ] Gobject.obj
-(** A `PangoFontDescription` describes a font in an implementation-independent
+(** A [PangoFontDescription] describes a font in an implementation-independent
     manner.
 
-    `PangoFontDescription` structures are used both to list what fonts are
+    [PangoFontDescription] structures are used both to list what fonts are
     available on the system and also for specifying the characteristics of a
     font to load. *)
 

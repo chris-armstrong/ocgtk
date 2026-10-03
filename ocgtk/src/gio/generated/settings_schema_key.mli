@@ -2,7 +2,7 @@
 (* SettingsSchemaKey: SettingsSchemaKey *)
 
 type t = [ `settings_schema_key ] Gobject.obj
-(** #GSettingsSchemaKey is an opaque data structure and can only be accessed
+(** [GSettingsSchemaKey] is an opaque data structure and can only be accessed
     using the following functions. *)
 
 (* Methods *)

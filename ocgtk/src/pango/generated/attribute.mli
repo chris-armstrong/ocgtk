@@ -2,14 +2,14 @@
 (* Attribute: Attribute *)
 
 type t = [ `attribute ] Gobject.obj
-(** The `PangoAttribute` structure represents the common portions of all
-    attributes.
+(** The [PangoAttribute] structure represents the common portions of all
+attributes.
 
-    Particular types of attributes include this structure as their initial
-    portion. The common portion of the attribute holds the range to which the
-    value in the type-specific part of the attribute applies and should be
-    initialized using [method@Pango.Attribute.init]. By default, an attribute
-    will have an all-inclusive range of [0,%G_MAXUINT]. *)
+Particular types of attributes include this structure as their initial
+portion. The common portion of the attribute holds the range to which
+the value in the type-specific part of the attribute applies and should
+be initialized using [Pango.Attribute.init]. By default, an attribute
+will have an all-inclusive range of \[0,[G_MAXUINT]]. *)
 
 (* Methods *)
 

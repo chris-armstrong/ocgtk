@@ -2,15 +2,14 @@
 (* PaperSize: PaperSize *)
 
 type t = [ `paper_size ] Gobject.obj
-(** `GtkPaperSize` handles paper sizes.
+(** [GtkPaperSize] handles paper sizes.
 
-    It uses the standard called
-    [PWG 5101.1-2002 PWG: Standard for Media Standardized Names](http://www.pwg.org/standards.html)
-    to name the paper sizes (and to get the data for the page sizes). In
-    addition to standard paper sizes, `GtkPaperSize` allows to construct custom
-    paper sizes with arbitrary dimensions.
+    It uses the standard called PWG 5101.1-2002 PWG: Standard for Media
+    Standardized Names to name the paper sizes (and to get the data for the page
+    sizes). In addition to standard paper sizes, [GtkPaperSize] allows to
+    construct custom paper sizes with arbitrary dimensions.
 
-    The `GtkPaperSize` object stores not only the dimensions (width and height)
+    The [GtkPaperSize] object stores not only the dimensions (width and height)
     of a paper size and its name, it also provides default print margins. *)
 
 external new_ : string option -> t = "ml_gtk_paper_size_new"

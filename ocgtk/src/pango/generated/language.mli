@@ -2,9 +2,9 @@
 (* Language: Language *)
 
 type t = [ `language ] Gobject.obj
-(** The `PangoLanguage` structure is used to represent a language.
+(** The [PangoLanguage] structure is used to represent a language.
 
-    `PangoLanguage` pointers can be efficiently copied and compared with each
+    [PangoLanguage] pointers can be efficiently copied and compared with each
     other. *)
 
 (* Methods *)

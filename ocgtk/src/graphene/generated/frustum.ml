@@ -4,7 +4,7 @@
 type t = [ `frustum ] Gobject.obj
 (** A 3D volume delimited by 2D clip planes.
 
-    The contents of the `graphene_frustum_t` are private, and should not be
+    The contents of the [graphene_frustum_t] are private, and should not be
     modified directly. *)
 
 external alloc : unit -> t = "ml_graphene_frustum_alloc"

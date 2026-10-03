@@ -4,12 +4,11 @@
 type t = [ `frame_timings ] Gobject.obj
 (** Holds timing information for a single frame of the application’s displays.
 
-    To retrieve `GdkFrameTimings` objects, use
-    [method@Gdk.FrameClock.get_timings] or
-    [method@Gdk.FrameClock.get_current_timings]. The information in
-    `GdkFrameTimings` is useful for precise synchronization of video with the
-    event or audio streams, and for measuring quality metrics for the
-    application’s display, such as latency and jitter. *)
+    To retrieve [GdkFrameTimings] objects, use [Gdk.FrameClock.get_timings] or
+    [Gdk.FrameClock.get_current_timings]. The information in [GdkFrameTimings]
+    is useful for precise synchronization of video with the event or audio
+    streams, and for measuring quality metrics for the application’s display,
+    such as latency and jitter. *)
 
 (* Methods *)
 

@@ -510,24 +510,33 @@ from un-suppression-induced diffs (Phase 3).
 tags-last `@since`, final-comment sanitisation, constant version-only
 fallback; `emit_entity_doc` waits for Phase 3); rewire `constant_code.ml`
 `emit_doc`, `enum_code.ml` **member and bitfield flag** docs,
-`layer1_method.ml` method docs.
-
-*Placement change (found by testing, Phase 2 commit 2):* polymorphic-variant
-member docs must follow their tag. Before the tag, odoc silently drops them
-from the HTML (and the compiler warns, warning 50). Member docs are therefore
-emitted as `` | `TAG (** doc *) ``. This is a visible change beyond the
-"doc text only" wording, and it makes enum and bitfield member docs appear
-on their pages for the first time.
-
-*Known residue after Phase 2 (not from this phase):* about 320 odoc warnings
-remain, all in 34 unprefixed `.mli` files the generator no longer writes
-(relocated duplicates such as `unix_fd_message.mli` beside the live
-`gUnix_fd_message.mli`, and enum files duplicated across `gtk/` and their own
-library). Per the stale-file note, these must be deleted
-in a separate change, not this phase;
+`layer1_method.ml` method docs, and the class/record entity doc in
+`layer1_main.ml` (already emitted raw before Phase 2; found by the residual
+odoc warnings, so it is routed through `Doc_emit` here as well);
 `test/generate/doc_emit_tests.ml` (comment safety, tag terminality,
 `@since` placement). Regenerate bindings; the diff is confined to
-doc-comment text at these three site kinds; commit it.
+doc-comment text at these site kinds; commit it.
+
+*Placement change (found by testing):* polymorphic-variant member docs must
+follow their tag. Before the tag, odoc silently drops them from the HTML (and
+the compiler warns, warning 50). Member docs are therefore emitted as
+`` | `TAG (** doc *) ``. This is a visible change beyond the "doc text only"
+wording, and it makes enum and bitfield member docs appear on their pages for
+the first time.
+
+*Stale generated files (found by testing):* 42 tracked `.ml`/`.mli` files
+under `ocgtk/src/*/generated/` were never produced by a clean regeneration.
+The generator only writes and never deletes, so these survived relocations
+(e.g. `unix_fd_message.mli`, `gUnix_fd_message.mli`, `tooltip.mli`). They
+were removed in a separate commit. The six gtk `*_enums.mli` files are not
+produced either, but `gtk/dune` lists them in `modules_without_implementation`,
+so they stay.
+
+*Residue after Phase 2 (open):* odoc warnings went from 5,237 to 53. 49 are
+unpaired `]` in prose: the translator escapes `\[` but leaves a bare `]`,
+which odoc reads as end-of-code. Fix: escape `]` in `Doc_render` prose (changes
+the Phase 1 escape tests). Four are `@GDK_…`/`@PANGO_…` names in the kept gtk enum
+copies, which the generator no longer writes.
 
 *Acceptance:*
 ```bash

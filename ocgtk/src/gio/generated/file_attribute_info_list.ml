@@ -3,7 +3,7 @@
 
 type t = [ `file_attribute_info_list ] Gobject.obj
 (** Acts as a lightweight registry for possible valid file attributes. The
-    registry stores Key-Value pair formats as #GFileAttributeInfos. *)
+    registry stores Key-Value pair formats as [GFileAttributeInfos]. *)
 
 external new_ : unit -> t = "ml_g_file_attribute_info_list_new"
 (** Create a new FileAttributeInfoList *)

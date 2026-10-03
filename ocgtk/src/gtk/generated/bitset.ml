@@ -7,18 +7,18 @@ type t = [ `bitset ] Gobject.obj
     Another name for this data structure is “bitmap”.
 
     The current implementation is based on
-    [roaring bitmaps](https://roaringbitmap.org/).
+    {{:https://roaringbitmap.org/}roaring bitmaps}.
 
     A bitset allows adding a set of integers and provides support for set
     operations like unions, intersections and checks for equality or if a value
-    is contained in the set. `GtkBitset` also contains various functions to
+    is contained in the set. [GtkBitset] also contains various functions to
     query metadata about the bitset, such as the minimum or maximum values or
     its size.
 
-    The fastest way to iterate values in a bitset is [struct@Gtk.BitsetIter].
+    The fastest way to iterate values in a bitset is [Gtk.BitsetIter].
 
-    The main use case for `GtkBitset` is implementing complex selections for
-    [iface@Gtk.SelectionModel]. *)
+    The main use case for [GtkBitset] is implementing complex selections for
+    [Gtk.SelectionModel]. *)
 
 external new_empty : unit -> t = "ml_gtk_bitset_new_empty"
 (** Create a new Bitset *)

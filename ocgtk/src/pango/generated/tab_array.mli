@@ -2,9 +2,9 @@
 (* TabArray: TabArray *)
 
 type t = [ `tab_array ] Gobject.obj
-(** A `PangoTabArray` contains an array of tab stops.
+(** A [PangoTabArray] contains an array of tab stops.
 
-    `PangoTabArray` can be used to set tab stops in a `PangoLayout`. Each tab
+    [PangoTabArray] can be used to set tab stops in a [PangoLayout]. Each tab
     stop has an alignment, a position, and optionally a character to use as
     decimal point. *)
 

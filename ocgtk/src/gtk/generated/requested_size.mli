@@ -5,6 +5,6 @@ type t = [ `requested_size ] Gobject.obj
 (** Represents a request of a screen object in a given orientation.
 
     These are primarily used in container implementations when allocating a
-    natural size for children. See [func@distribute_natural_allocation]. *)
+    natural size for children. See [distribute_natural_allocation]. *)
 
 (* Methods *)
